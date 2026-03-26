@@ -6,6 +6,7 @@ import { act, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import TimedEventPanel from "./TimedEventPanel";
 import { useGameStore } from "@/game/state";
+import { GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY } from "@/game/gamblerSession";
 
 vi.mock("@/components/game/TooltipWrapper", () => ({
   TooltipWrapper: ({ children }: { children: React.ReactElement }) => children,
@@ -83,6 +84,15 @@ describe("TimedEventPanel gambler coverage", () => {
     });
 
     useGameStore.getState().initialize();
+    useGameStore.setState((s) => ({
+      story: {
+        ...s.story,
+        seen: {
+          ...s.story.seen,
+          [GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY]: 0,
+        },
+      },
+    }));
   });
 
   afterEach(() => {

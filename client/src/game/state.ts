@@ -43,7 +43,12 @@ import {
   incrementButtonUsage,
 } from "@/game/buttonUpgrades";
 import { getExecutionTime } from "@/game/rules";
-import { gamblerDiceResumeOnLoad } from "@/game/gamblerSession";
+import {
+  gamblerDiceResumeOnLoad,
+  getGamblerTutorialPlaysRemaining,
+  GAMBLER_TUTORIAL_PLAYS,
+  GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY,
+} from "@/game/gamblerSession";
 import { logger } from "@/lib/logger";
 import { madnessEvents } from "@/game/rules/eventsMadness";
 import { DISGRACED_PRIOR_UPGRADES } from "@/game/rules/skillUpgrades";
@@ -873,7 +878,9 @@ export const createInitialState = (): GameState => ({
   gamblerGame: null,
 
   story: {
-    seen: {},
+    seen: {
+      [GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY]: GAMBLER_TUTORIAL_PLAYS,
+    },
     merchantPurchases: 0,
   },
 
@@ -2454,10 +2461,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
       set((state) => {
         const isGambler =
           !!(isActive && event && event.id.split("-")[0] === "gambler");
+        const tutorialLeft = getGamblerTutorialPlaysRemaining(
+          state.story?.seen,
+        );
         const gamblerRoundsRemaining = isGambler
-          ? state.relics?.bone_dice
-            ? 2
-            : 1
+          ? tutorialLeft > 0
+            ? tutorialLeft
+            : state.relics?.bone_dice
+              ? 2
+              : 1
           : undefined;
         return {
           timedEventTab: {

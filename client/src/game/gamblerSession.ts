@@ -1,6 +1,22 @@
 import type { GameState } from "@shared/schema";
 import { INITIAL_GOAL } from "@/game/diceFifteenGame";
 
+/** First-time gambler visit: this many free practice rounds (no gold) before real wagers. */
+export const GAMBLER_TUTORIAL_PLAYS = 3;
+
+export const GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY =
+  "gamblerTutorialPlaysRemaining" as const;
+
+/** Legacy saves omit this — treat as tutorial complete (0). New games set `GAMBLER_TUTORIAL_PLAYS`. */
+export function getGamblerTutorialPlaysRemaining(
+  seen: GameState["story"]["seen"] | undefined,
+): number {
+  const raw = seen?.[GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY];
+  const n = typeof raw === "number" ? raw : Number(raw);
+  if (!Number.isFinite(n) || n <= 0) return 0;
+  return Math.min(GAMBLER_TUTORIAL_PLAYS, Math.floor(n));
+}
+
 /** Minimal timed-tab slice used when deciding whether to reopen the gambler UI after load. */
 export type GamblerResumeTimedTab = {
   isActive: boolean;

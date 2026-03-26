@@ -14,7 +14,11 @@ import {
 import { bloodMoonSacrificeAmount } from "@/game/cruelMode";
 import GamblerDiceDialog from "@/components/game/GamblerDiceDialog";
 import { getTotalLuck } from "@/game/rules/effectsCalculation";
-import { createDefaultGamblerSession } from "@/game/gamblerSession";
+import {
+  createDefaultGamblerSession,
+  getGamblerTutorialPlaysRemaining,
+  GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY,
+} from "@/game/gamblerSession";
 
 // Stat icon mapping
 const statIcons: Record<string, { icon: string; color: string }> = {
@@ -671,23 +675,30 @@ export default function TimedEventPanel() {
               if (prev?.roundsRemainingThisEvent != null) {
                 roundsRemainingThisEvent = prev.roundsRemainingThisEvent;
               } else {
-                const tr = s.timedEventTab?.gamblerRoundsRemaining;
-                if (tr != null && tr >= 1) {
-                  roundsRemainingThisEvent = tr;
+                const tutorialLeft = getGamblerTutorialPlaysRemaining(
+                  s.story?.seen,
+                );
+                if (wager === 0 && tutorialLeft > 0) {
+                  roundsRemainingThisEvent = tutorialLeft;
                 } else {
-                  roundsRemainingThisEvent = s.relics?.bone_dice ? 2 : 1;
+                  const tr = s.timedEventTab?.gamblerRoundsRemaining;
+                  if (tr != null && tr >= 1) {
+                    roundsRemainingThisEvent = tr;
+                  } else {
+                    roundsRemainingThisEvent = s.relics?.bone_dice ? 2 : 1;
+                  }
                 }
               }
 
               const lazyInitTab =
                 isGamblerTab &&
-                s.timedEventTab.gamblerRoundsRemaining == null
+                  s.timedEventTab.gamblerRoundsRemaining == null
                   ? {
-                      timedEventTab: {
-                        ...s.timedEventTab,
-                        gamblerRoundsRemaining: roundsRemainingThisEvent,
-                      },
-                    }
+                    timedEventTab: {
+                      ...s.timedEventTab,
+                      gamblerRoundsRemaining: roundsRemainingThisEvent,
+                    },
+                  }
                   : {};
 
               return {
@@ -702,14 +713,31 @@ export default function TimedEventPanel() {
             });
           }}
           onOutcomeResolved={(outcome, wager, snapshot) => {
+            const practice = wager === 0;
             if (outcome === "win") {
               useGameStore.setState((s) => {
                 const gamblerWinsTotal =
-                  (Number(s.story?.seen?.gamblerWinsTotal) || 0) + 1;
+                  (Number(s.story?.seen?.gamblerWinsTotal) || 0) +
+                  (practice ? 0 : 1);
+                const gold = (s.resources?.gold ?? 0) + (practice ? 0 : wager);
+                const logEntry = practice
+                  ? {
+                    id: `gambler-practice-win-${Date.now()}`,
+                    message:
+                      "You won the practice round (no gold at stake).",
+                    timestamp: Date.now(),
+                    type: "system" as const,
+                  }
+                  : {
+                    id: `gambler-win-${Date.now()}`,
+                    message: `You won ${wager} gold from the obsessed gambler.`,
+                    timestamp: Date.now(),
+                    type: "system" as const,
+                  };
                 return {
                   resources: {
                     ...s.resources,
-                    gold: (s.resources?.gold ?? 0) + wager,
+                    gold,
                   },
                   gamblerGame: {
                     wager,
@@ -719,27 +747,24 @@ export default function TimedEventPanel() {
                     roundsRemainingThisEvent:
                       s.gamblerGame?.roundsRemainingThisEvent,
                   },
-                  story: {
-                    ...s.story,
-                    seen: {
-                      ...s.story?.seen,
-                      gamblerWinsTotal,
-                    },
-                  },
-                  log: [
-                    ...s.log,
-                    {
-                      id: `gambler-win-${Date.now()}`,
-                      message: `You won ${wager} gold from the obsessed gambler.`,
-                      timestamp: Date.now(),
-                      type: "system" as const,
-                    },
-                  ],
+                  ...(practice
+                    ? {}
+                    : {
+                      story: {
+                        ...s.story,
+                        seen: {
+                          ...s.story?.seen,
+                          gamblerWinsTotal,
+                        },
+                      },
+                    }),
+                  log: [...s.log, logEntry],
                 };
               });
             } else {
               useGameStore.setState((s) => {
-                const takeStake = s.gamblerGame?.stakeNotYetDeducted === true;
+                const takeStake =
+                  !practice && s.gamblerGame?.stakeNotYetDeducted === true;
                 const gold = s.resources?.gold ?? 0;
                 return {
                   resources: {
@@ -758,7 +783,9 @@ export default function TimedEventPanel() {
                     ...s.log,
                     {
                       id: `gambler-lose-${Date.now()}`,
-                      message: `You lost ${wager} gold to the obsessed gambler.`,
+                      message: practice
+                        ? "You lost the practice round (no gold at stake)."
+                        : `You lost ${wager} gold to the obsessed gambler.`,
                       timestamp: Date.now(),
                       type: "system" as const,
                     },
@@ -777,6 +804,59 @@ export default function TimedEventPanel() {
                 st.timedEventTab.gamblerRoundsRemaining ??
                 1;
               const next = rem - 1;
+              const practiceRound = gg.wager === 0;
+
+              if (practiceRound && next > 0) {
+                useGameStore.setState((s) => ({
+                  gamblerGame: {
+                    wager: 0,
+                    roundsRemainingThisEvent: next,
+                  },
+                  timedEventTab:
+                    s.timedEventTab.event?.id?.split("-")[0] === "gambler"
+                      ? {
+                        ...s.timedEventTab,
+                        gamblerRoundsRemaining: next,
+                      }
+                      : s.timedEventTab,
+                  story: {
+                    ...s.story,
+                    seen: {
+                      ...s.story?.seen,
+                      [GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY]: next,
+                    },
+                  },
+                }));
+                setGamblerDialogRoundKey((k) => k + 1);
+                return;
+              }
+
+              if (practiceRound && next === 0) {
+                const paidRounds = st.relics?.bone_dice ? 2 : 1;
+                useGameStore.setState((s) => ({
+                  gamblerGame: {
+                    wager: 0,
+                    roundsRemainingThisEvent: paidRounds,
+                  },
+                  timedEventTab:
+                    s.timedEventTab.event?.id?.split("-")[0] === "gambler"
+                      ? {
+                        ...s.timedEventTab,
+                        gamblerRoundsRemaining: paidRounds,
+                      }
+                      : s.timedEventTab,
+                  story: {
+                    ...s.story,
+                    seen: {
+                      ...s.story?.seen,
+                      [GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY]: 0,
+                    },
+                  },
+                }));
+                setGamblerDialogRoundKey((k) => k + 1);
+                return;
+              }
+
               if (next > 0) {
                 useGameStore.setState((s) => ({
                   gamblerGame: {
@@ -786,9 +866,9 @@ export default function TimedEventPanel() {
                   timedEventTab:
                     s.timedEventTab.event?.id?.split("-")[0] === "gambler"
                       ? {
-                          ...s.timedEventTab,
-                          gamblerRoundsRemaining: next,
-                        }
+                        ...s.timedEventTab,
+                        gamblerRoundsRemaining: next,
+                      }
                       : s.timedEventTab,
                 }));
                 setGamblerDialogRoundKey((k) => k + 1);

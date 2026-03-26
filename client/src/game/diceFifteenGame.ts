@@ -1,5 +1,7 @@
 export const WAGER_TIERS = [10, 50, 250, 500, 750, 1000] as const;
 export type WagerTier = (typeof WAGER_TIERS)[number];
+/** Wager tier or 0 for first-visit practice rounds. */
+export type GamblerWagerPick = WagerTier | 0;
 
 export const WAGER_LUCK_THRESHOLDS: Record<WagerTier, number> = {
   10: 0,

@@ -49,9 +49,20 @@ vi.mock("@/components/ui/dialog", () => ({
 }));
 
 import GamblerDiceDialog from "./GamblerDiceDialog";
+import { useGameStore } from "@/game/state";
+import { GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY } from "@/game/gamblerSession";
 
 describe("GamblerDiceDialog", () => {
   beforeEach(() => {
+    useGameStore.setState((s) => ({
+      story: {
+        ...s.story,
+        seen: {
+          ...s.story.seen,
+          [GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY]: 0,
+        },
+      },
+    }));
     vi.useFakeTimers();
 
     Object.defineProperty(window, "matchMedia", {

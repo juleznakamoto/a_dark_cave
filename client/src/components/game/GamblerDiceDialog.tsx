@@ -26,10 +26,13 @@ import {
   resolveRoll,
   npcRollOrStand,
   resolveShowdown,
+  type GamblerWagerPick,
   type WagerTier,
 } from "@/game/diceFifteenGame";
 import { useGameStore } from "@/game/state";
 import {
+  GAMBLER_TUTORIAL_PLAYS,
+  getGamblerTutorialPlaysRemaining,
   resolveGamblerSessionForHydrate,
   type GamblerDiceSession,
 } from "@/game/gamblerSession";
@@ -39,8 +42,10 @@ const SPIN_FACES = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
 const ROLL_SPIN_MS_MIN = 600;
 const ROLL_SPIN_MS_MAX = 1200;
 const SPIN_INTERVAL = 60;
-/** Pause after the player's die settles before the gambler acts (not applied after No Roll). */
+/** Pause after a die settles before the other side acts (player→NPC when rolling; not after No Roll). */
 const PAUSE_MS_AFTER_PLAYER_ROLL = 500;
+/** Same duration after the gambler acts (roll settles or stand) before the player can roll again. */
+const PAUSE_MS_AFTER_NPC_ROLL = PAUSE_MS_AFTER_PLAYER_ROLL;
 
 function randomRollSpinDurationMs(): number {
   return (
@@ -113,16 +118,15 @@ function RulesInfoButton() {
     <TooltipWrapper
       tooltip={
         <div className="text-xs space-y-1 max-w-[200px]">
-          <p>You and the gambler take turns rolling a dice.</p>
-          <p>The points of each player's rolls are added up.</p>
+          <p>You and the Gambler take turns rolling a dice.</p>
+          <p>Each player's rolls are added up.</p>
           <p>The first player to exceed the goal loses.</p>
           <p>
-            The goal starts at <strong>15</strong>.
+            The goal begins at 15.
           </p>
-          <p>In case of a tie the goal is raised by 10.</p>
+          <p>In case of a tie, the goal is raised by 10 and the game continues.</p>
           <p>
-            If you have more points than the gambler you can decide to not role
-            in this round.
+            If your total exceeds the Gambler's, you may choose to hold instead of rolling.
           </p>
         </div>
       }
@@ -147,6 +151,13 @@ export default function GamblerDiceDialog({
   onWagerSelected,
 }: GamblerDiceDialogProps) {
   const hasBoneDice = useGameStore((s) => !!s.relics?.bone_dice);
+  const gamblerRoundsRemaining = useGameStore(
+    (s) => s.gamblerGame?.roundsRemainingThisEvent,
+  );
+  const tutorialPlaysLeft = useGameStore((s) =>
+    getGamblerTutorialPlaysRemaining(s.story?.seen),
+  );
+  const inGamblerTutorial = tutorialPlaysLeft > 0;
   const [phase, setPhase] = useState<Phase>("wager");
   const [wager, setWager] = useState<number>(0);
   const [playerTotal, setPlayerTotal] = useState(0);
@@ -397,7 +408,7 @@ export default function GamblerDiceDialog({
 
   totalsRef.current = { playerTotal, npcTotal, goal };
 
-  const handleWager = (tier: WagerTier) => {
+  const handleWager = (tier: GamblerWagerPick) => {
     const el = dialogContentRef.current;
     if (el && typeof window !== "undefined") {
       const w = el.offsetWidth;
@@ -478,7 +489,17 @@ export default function GamblerDiceDialog({
         const playerLocked = playerStoppedRef.current || p === g;
         if (!playerLocked) {
           setNpcTurnChain(0);
-          setPhase("playerTurn");
+          clearTimeoutRef(npcTimeoutRef);
+          npcTimeoutRef.current = setTimeout(() => {
+            if (
+              cancelled ||
+              !isOpenRef.current ||
+              myNonce !== npcTurnNonceRef.current
+            )
+              return;
+            setPhase("playerTurn");
+            npcTimeoutRef.current = null;
+          }, PAUSE_MS_AFTER_NPC_ROLL);
           return;
         }
         const showdown = resolveShowdown(p, n, g);
@@ -512,15 +533,26 @@ export default function GamblerDiceDialog({
         if (step.status === "bust") {
           setOutcome("win");
           setPhase("outcome");
+          npcTimeoutRef.current = null;
         } else if (p === g && step.newTotal === g) {
           scheduleGoalRaiseAfterTie();
+          npcTimeoutRef.current = null;
         } else if (p === g) {
           setNpcTurnChain((c) => c + 1);
+          npcTimeoutRef.current = null;
         } else {
           setNpcTurnChain(0);
-          setPhase("playerTurn");
+          npcTimeoutRef.current = setTimeout(() => {
+            if (
+              cancelled ||
+              !isOpenRef.current ||
+              myNonce !== npcTurnNonceRef.current
+            )
+              return;
+            setPhase("playerTurn");
+            npcTimeoutRef.current = null;
+          }, PAUSE_MS_AFTER_NPC_ROLL);
         }
-        npcTimeoutRef.current = null;
       }, spinMs);
     }, delayMs);
 
@@ -571,50 +603,64 @@ export default function GamblerDiceDialog({
           {phase === "wager" && (
             <div className="space-y-3">
               <p className="text-xs text-muted-foreground">
-                {hasBoneDice
-                  ? "Place your bet. Because you own Bone Dice you can play two times against the Gambler."
-                  : "Place your bet."}
+                {inGamblerTutorial
+                  ? `To help you learn the game, the gambler offers to play ${GAMBLER_TUTORIAL_PLAYS} times without a bet (${tutorialPlaysLeft} of ${GAMBLER_TUTORIAL_PLAYS} remaining).`
+                  : hasBoneDice
+                    ? `Place your bet. Because you own Bone Dice you can play two times against the Gambler (${gamblerRoundsRemaining ?? 2} of 2 remaining).`
+                    : "Place your bet."}
               </p>
               <div className="flex flex-wrap gap-2">
-                {WAGER_TIERS.map((tier) => {
-                  const requiredLuck = WAGER_LUCK_THRESHOLDS[tier];
-                  const isUnlocked = playerLuck >= requiredLuck;
-                  const canAfford = playerGold >= tier;
-                  const isDisabled = !isUnlocked || !canAfford;
+                {inGamblerTutorial ? (
+                  <Button
+                    variant="outline"
+                    size="xs"
+                    onClick={() => handleWager(0)}
+                    className="text-xs"
+                    button_id="gambler-wager-0"
+                  >
+                    0 Gold
+                  </Button>
+                ) : (
+                  WAGER_TIERS.map((tier) => {
+                    const requiredLuck = WAGER_LUCK_THRESHOLDS[tier];
+                    const isUnlocked = playerLuck >= requiredLuck;
+                    const canAfford = playerGold >= tier;
+                    const isDisabled = !isUnlocked || !canAfford;
 
-                  const button = (
-                    <Button
-                      key={tier}
-                      variant="outline"
-                      size="xs"
-                      disabled={isDisabled}
-                      onClick={() => handleWager(tier)}
-                      className={`text-xs ${!isUnlocked ? "opacity-40" : ""}`}
-                      button_id={`gambler-wager-${tier}`}
-                    >
-                      {tier} Gold
-                    </Button>
-                  );
-
-                  if (!isUnlocked) {
-                    return (
-                      <TooltipWrapper
+                    const button = (
+                      <Button
                         key={tier}
-                        tooltip={
-                          <div className="text-xs">
-                            Requires {requiredLuck} Luck to unlock
-                          </div>
-                        }
-                        tooltipId={`gambler-wager-lock-${tier}`}
-                        disabled={true}
+                        variant="outline"
+                        size="xs"
+                        disabled={isDisabled}
+                        onClick={() => handleWager(tier)}
+                        className={`text-xs ${!isUnlocked ? "opacity-40" : ""}`}
+                        button_id={`gambler-wager-${tier}`}
                       >
-                        {button}
-                      </TooltipWrapper>
+                        {tier} Gold
+                      </Button>
                     );
-                  }
 
-                  return button;
-                })}
+                    if (!isUnlocked) {
+                      return (
+                        <TooltipWrapper
+                          key={tier}
+                          tooltip={
+                            <div className="text-xs">
+                              Requires {requiredLuck} Luck to unlock
+                            </div>
+                          }
+                          tooltipId={`gambler-wager-lock-${tier}`}
+                          disabled={true}
+                        >
+                          {button}
+                        </TooltipWrapper>
+                      );
+                    }
+
+                    return button;
+                  })
+                )}
               </div>
               <div className="flex justify-end">
                 <Button
@@ -638,7 +684,9 @@ export default function GamblerDiceDialog({
                   <span>
                     Bet:{" "}
                     <span className="font-semibold text-foreground tabular-nums">
-                      {wager} Gold
+                      {wager === 0
+                        ? "Practice (0 Gold)"
+                        : `${wager} Gold`}
                     </span>
                   </span>
                   <span>
@@ -739,7 +787,9 @@ export default function GamblerDiceDialog({
                 <span>
                   Bet:{" "}
                   <span className="font-semibold text-foreground tabular-nums">
-                    {wager} Gold
+                    {wager === 0
+                      ? "Practice (0 Gold)"
+                      : `${wager} Gold`}
                   </span>
                 </span>
                 <span>
@@ -784,7 +834,11 @@ export default function GamblerDiceDialog({
               <div className="shrink-0">
                 <div className="h-px w-full bg-white/10" />
                 <div className="text-center text-xs text-foreground pt-4">
-                  {outcome === "win" ? `+${wager} Gold` : `-${wager} Gold`}
+                  {wager === 0
+                    ? "Practice round — no gold won or lost."
+                    : outcome === "win"
+                      ? `+${wager} Gold`
+                      : `-${wager} Gold`}
                 </div>
               </div>
 
