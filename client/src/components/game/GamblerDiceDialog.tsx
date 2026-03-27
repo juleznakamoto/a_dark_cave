@@ -118,17 +118,15 @@ function RulesInfoButton() {
       tooltip={
         <div className="text-xs space-y-1 max-w-[200px]">
           <p>You and the Gambler take turns rolling a dice.</p>
-          <p>Each side's rolls are added up.</p>
+          <p>Each player's rolls are added up.</p>
           <p>
-            Reach the goal exactly to win the round. If you go over, you bust and lose. The same
-            applies to the Gambler.
+            The goal is set to 15.
           </p>
           <p>
-            The goal begins at 15.
+            If a player reaches the goal exactly, he wins. If he goes over, he loses.
           </p>
           <p>
-            If your total exceeds the Gambler's, you may choose to hold instead of rolling.
-          </p>
+            If the player whose turn it is has more total points than their opponent, he may choose not to roll.          </p>
         </div>
       }
       tooltipId="gambler-rules"
@@ -183,7 +181,12 @@ export default function GamblerDiceDialog({
   const npcTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const totalsRef = useRef({ playerTotal: 0, npcTotal: 0, goal: INITIAL_GOAL });
   const npcTurnNonceRef = useRef(0);
-  const pauseAfterPlayerRollRef = useRef(false);
+  /**
+   * Mirrors persisted `pauseAfterNextPlayerRoll`: after a non-terminal player roll, we wait before
+   * `npcTurn`. Must be state (not only a ref) so Roll stays disabled during that window — otherwise
+   * the player could cancel the handoff timeout and roll again without the gambler acting.
+   */
+  const [pauseAfterPlayerRoll, setPauseAfterPlayerRoll] = useState(false);
   /** True only after the player chooses No Roll; showdown runs only then. */
   const playerStoppedRef = useRef(false);
 
@@ -216,7 +219,7 @@ export default function GamblerDiceDialog({
     setHasRolledThisRound(false);
     outcomeReportedRef.current = false;
     setLockedDialogSize(null);
-    pauseAfterPlayerRollRef.current = false;
+    setPauseAfterPlayerRoll(false);
     playerStoppedRef.current = false;
   }, [clearPendingTimeouts]);
 
@@ -263,7 +266,7 @@ export default function GamblerDiceDialog({
       setNpcLastRoll(s.npcLastRoll);
       setHasRolledThisRound(s.hasRolledThisRound);
       playerStoppedRef.current = s.playerStopped;
-      pauseAfterPlayerRollRef.current = s.pauseAfterNextPlayerRoll;
+      setPauseAfterPlayerRoll(s.pauseAfterNextPlayerRoll);
       setOutcome(null);
       setSpinning(false);
       setNpcSpinning(false);
@@ -281,7 +284,7 @@ export default function GamblerDiceDialog({
       ) {
         playerTimeoutRef.current = setTimeout(() => {
           if (!isOpenRef.current) return;
-          pauseAfterPlayerRollRef.current = false;
+          setPauseAfterPlayerRoll(false);
           setPhase("npcTurn");
           playerTimeoutRef.current = null;
         }, PAUSE_MS_AFTER_PLAYER_ROLL);
@@ -307,7 +310,7 @@ export default function GamblerDiceDialog({
       npcLastRoll,
       hasRolledThisRound,
       playerStopped: playerStoppedRef.current,
-      pauseAfterNextPlayerRoll: pauseAfterPlayerRollRef.current,
+      pauseAfterNextPlayerRoll: pauseAfterPlayerRoll,
     };
 
     const cur = gg;
@@ -336,6 +339,7 @@ export default function GamblerDiceDialog({
     playerLastRoll,
     npcLastRoll,
     hasRolledThisRound,
+    pauseAfterPlayerRoll,
   ]);
 
   useEffect(() => {
@@ -381,7 +385,7 @@ export default function GamblerDiceDialog({
   };
 
   const handlePlayerRoll = () => {
-    if (spinning || phase !== "playerTurn") return;
+    if (spinning || phase !== "playerTurn" || pauseAfterPlayerRoll) return;
     setSpinning(true);
     clearTimeoutRef(playerTimeoutRef);
     const spinMs = randomRollSpinDurationMs();
@@ -404,10 +408,10 @@ export default function GamblerDiceDialog({
         playerTimeoutRef.current = null;
       } else {
         playerStoppedRef.current = false;
-        pauseAfterPlayerRollRef.current = true;
+        setPauseAfterPlayerRoll(true);
         playerTimeoutRef.current = setTimeout(() => {
           if (!isOpenRef.current) return;
-          pauseAfterPlayerRollRef.current = false;
+          setPauseAfterPlayerRoll(false);
           setPhase("npcTurn");
           playerTimeoutRef.current = null;
         }, PAUSE_MS_AFTER_PLAYER_ROLL);
@@ -420,14 +424,14 @@ export default function GamblerDiceDialog({
     if (!canPlayerChooseNoRoll(playerTotal, npcTotal)) return;
     if (isStopBlockedTiedFarUnderGoal(playerTotal, npcTotal, goal)) return;
     playerStoppedRef.current = true;
-    pauseAfterPlayerRollRef.current = false;
+    setPauseAfterPlayerRoll(false);
     setPhase("npcTurn");
   };
 
   useEffect(() => {
     if (phase !== "npcTurn") return;
 
-    pauseAfterPlayerRollRef.current = false;
+    setPauseAfterPlayerRoll(false);
 
     const myNonce = ++npcTurnNonceRef.current;
     let cancelled = false;
@@ -691,6 +695,7 @@ export default function GamblerDiceDialog({
                       disabled={
                         phase !== "playerTurn" ||
                         spinning ||
+                        pauseAfterPlayerRoll ||
                         playerTotal >= goal
                       }
                       className="text-xs"
@@ -706,6 +711,7 @@ export default function GamblerDiceDialog({
                         phase !== "playerTurn" ||
                         !hasRolledThisRound ||
                         spinning ||
+                        pauseAfterPlayerRoll ||
                         !canPlayerChooseNoRoll(playerTotal, npcTotal) ||
                         isStopBlockedTiedFarUnderGoal(
                           playerTotal,
