@@ -126,7 +126,7 @@ function RulesInfoButton() {
             If a player reaches the goal exactly, he wins. If he goes over, he loses.
           </p>
           <p>
-            If the player whose turn it is has more total points than their opponent, he may choose not to roll.          </p>
+            If the player whose turn it is has more total points than the opponent, he may choose not to roll.          </p>
         </div>
       }
       tooltipId="gambler-rules"
@@ -150,13 +150,26 @@ export default function GamblerDiceDialog({
   onWagerSelected,
 }: GamblerDiceDialogProps) {
   const hasBoneDice = useGameStore((s) => !!s.relics?.bone_dice);
-  const gamblerRoundsRemaining = useGameStore(
-    (s) => s.gamblerGame?.roundsRemainingThisEvent,
-  );
+  const gamblerRoundsRemaining = useGameStore((s) => {
+    const gg = s.gamblerGame;
+    if (gg?.roundsRemainingThisEvent != null) {
+      return gg.roundsRemainingThisEvent;
+    }
+    const tr = s.timedEventTab?.gamblerRoundsRemaining;
+    if (tr != null) return tr;
+    return undefined;
+  });
   const tutorialPlaysLeft = useGameStore((s) =>
     getGamblerTutorialPlaysRemaining(s.story?.seen),
   );
   const inGamblerTutorial = tutorialPlaysLeft > 0;
+  const totalGamesThisVisit = inGamblerTutorial
+    ? GAMBLER_TUTORIAL_PLAYS
+    : hasBoneDice
+      ? 2
+      : 1;
+  const gamesRemainingDisplay =
+    gamblerRoundsRemaining ?? totalGamesThisVisit;
   const [phase, setPhase] = useState<Phase>("wager");
   const [wager, setWager] = useState<number>(0);
   const [playerTotal, setPlayerTotal] = useState(0);
@@ -557,13 +570,19 @@ export default function GamblerDiceDialog({
         <div className="flex flex-1 flex-col min-h-0 overflow-y-auto">
           {phase === "wager" && (
             <div className="space-y-3">
-              <p className="text-xs text-muted-foreground">
-                {inGamblerTutorial
-                  ? `To help you learn the game, the gambler offers to play ${GAMBLER_TUTORIAL_PLAYS} times without a bet (${tutorialPlaysLeft} of ${GAMBLER_TUTORIAL_PLAYS} remaining).`
-                  : hasBoneDice
-                    ? `Place your bet. Because you own Bone Dice you can play two times against the Gambler (${gamblerRoundsRemaining ?? 2} of 2 remaining).`
-                    : "Place your bet."}
-              </p>
+              <div className="text-xs text-muted-foreground space-y-1">
+                <p>
+                  {inGamblerTutorial
+                    ? `To help you learn the game, the Gambler offers to play ${GAMBLER_TUTORIAL_PLAYS} times without a bet.`
+                    : hasBoneDice
+                      ? "Place your bet. Because you own Bone Dice you can play two times against the Gambler."
+                      : "Place your bet."}
+                </p>
+                <p>
+                  {gamesRemainingDisplay} of {totalGamesThisVisit} games
+                  remaining.
+                </p>
+              </div>
               <div className="flex flex-wrap gap-2">
                 {inGamblerTutorial ? (
                   <Button
@@ -785,7 +804,7 @@ export default function GamblerDiceDialog({
                 <div className="h-px w-full bg-white/10" />
                 <div className="text-center text-xs text-foreground pt-4">
                   {wager === 0
-                    ? "Practice round — no gold won or lost."
+                    ? "Practice round. No gold won or lost."
                     : outcome === "win"
                       ? `+${wager} Gold`
                       : `-${wager} Gold`}

@@ -1,6 +1,10 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
+/** Shown in EventDialog when the player finishes all dice games this visit (bone dice: 2, else 1). */
+export const GAMBLER_LEAVE_AFTER_GAMES_MESSAGE =
+  "The gambler pockets his dice, gives a last crooked smile, and disappears into the darkness of the woods.";
+
 export const gamblerEvents: Record<string, GameEvent> = {
   gambler: {
     id: "gambler",

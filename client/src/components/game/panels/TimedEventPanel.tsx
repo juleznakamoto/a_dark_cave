@@ -3,7 +3,7 @@ import { useGameStore } from "@/game/state";
 import { Button } from "@/components/ui/button";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { merchantTooltip } from "@/game/rules/tooltips";
-import { EventChoice } from "@/game/rules/events";
+import { EventChoice, type LogEntry } from "@/game/rules/events";
 import { logger } from "@/lib/logger";
 import { formatNumber } from "@/lib/utils";
 import {
@@ -12,11 +12,13 @@ import {
   isKnowledgeBonusMaxed,
 } from "@/game/rules/effectsStats";
 import { bloodMoonSacrificeAmount } from "@/game/cruelMode";
+import { GAMBLER_LEAVE_AFTER_GAMES_MESSAGE } from "@/game/rules/eventsGambler";
 import GamblerDiceDialog from "@/components/game/GamblerDiceDialog";
 import { getTotalLuck } from "@/game/rules/effectsCalculation";
 import {
   createDefaultGamblerSession,
   getGamblerTutorialPlaysRemaining,
+  GAMBLER_TUTORIAL_PLAYS,
   GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY,
 } from "@/game/gamblerSession";
 
@@ -32,6 +34,7 @@ export default function TimedEventPanel() {
     timedEventTab,
     applyEventChoice,
     setTimedEventTab,
+    setEventDialog,
     setHighlightedResources,
     setShopDialogOpen,
     setGamblerDiceDialogOpen,
@@ -720,20 +723,12 @@ export default function TimedEventPanel() {
                   (Number(s.story?.seen?.gamblerWinsTotal) || 0) +
                   (practice ? 0 : 1);
                 const gold = (s.resources?.gold ?? 0) + (practice ? 0 : wager);
-                const logEntry = practice
-                  ? {
-                    id: `gambler-practice-win-${Date.now()}`,
-                    message:
-                      "You won the practice round (no gold at stake).",
-                    timestamp: Date.now(),
-                    type: "system" as const,
-                  }
-                  : {
-                    id: `gambler-win-${Date.now()}`,
-                    message: `You won ${wager} gold from the obsessed gambler.`,
-                    timestamp: Date.now(),
-                    type: "system" as const,
-                  };
+                const logEntry = {
+                  id: `gambler-win-${Date.now()}`,
+                  message: `You won ${wager} gold from the obsessed gambler.`,
+                  timestamp: Date.now(),
+                  type: "system" as const,
+                };
                 return {
                   resources: {
                     ...s.resources,
@@ -758,7 +753,7 @@ export default function TimedEventPanel() {
                         },
                       },
                     }),
-                  log: [...s.log, logEntry],
+                  ...(practice ? {} : { log: [...s.log, logEntry] }),
                 };
               });
             } else {
@@ -778,17 +773,19 @@ export default function TimedEventPanel() {
                     roundsRemainingThisEvent:
                       s.gamblerGame?.roundsRemainingThisEvent,
                   },
-                  log: [
-                    ...s.log,
-                    {
-                      id: `gambler-lose-${Date.now()}`,
-                      message: practice
-                        ? "You lost the practice round (no gold at stake)."
-                        : `You lost ${wager} gold to the obsessed gambler.`,
-                      timestamp: Date.now(),
-                      type: "system" as const,
-                    },
-                  ],
+                  ...(practice
+                    ? {}
+                    : {
+                      log: [
+                        ...s.log,
+                        {
+                          id: `gambler-lose-${Date.now()}`,
+                          message: `You lost ${wager} gold to the obsessed gambler.`,
+                          timestamp: Date.now(),
+                          type: "system" as const,
+                        },
+                      ],
+                    }),
                 };
               });
             }
@@ -797,6 +794,7 @@ export default function TimedEventPanel() {
             const st = useGameStore.getState();
             const gg = st.gamblerGame;
             const resolved = gg?.outcome != null;
+            let showGamblerDepartureDialog = false;
             if (resolved) {
               const rem =
                 gg.roundsRemainingThisEvent ??
@@ -804,6 +802,25 @@ export default function TimedEventPanel() {
                 1;
               const next = rem - 1;
               const practiceRound = gg.wager === 0;
+
+              if (practiceRound) {
+                const outcome = gg.outcome;
+                const msg =
+                  next > 0
+                    ? `${outcome === "win" ? "You won" : "You lost"} the practice round (no gold at stake). ${next} of ${GAMBLER_TUTORIAL_PLAYS} practice games remaining.`
+                    : `${outcome === "win" ? "You won" : "You lost"} the practice round (no gold at stake). Practice complete — you may place a gold wager.`;
+                useGameStore.setState((s) => ({
+                  log: [
+                    ...s.log,
+                    {
+                      id: `gambler-practice-round-${Date.now()}`,
+                      message: msg,
+                      timestamp: Date.now(),
+                      type: "system" as const,
+                    },
+                  ],
+                }));
+              }
 
               if (practiceRound && next > 0) {
                 useGameStore.setState((s) => ({
@@ -873,14 +890,39 @@ export default function TimedEventPanel() {
                 setGamblerDialogRoundKey((k) => k + 1);
                 return;
               }
+
+              showGamblerDepartureDialog = !practiceRound && next === 0;
             }
             setGamblerDialogOpen(false);
             useGameStore.setState((s) =>
               s.gamblerGame ? { gamblerGame: null } : {},
             );
             if (resolved && isGamblerEvent) {
+              const gamblerEventTitle =
+                st.timedEventTab.event?.title ?? "The Obsessed Gambler";
               setHighlightedResources([]);
               setTimedEventTab(false);
+              if (showGamblerDepartureDialog) {
+                setEventDialog(false);
+                setTimeout(() => {
+                  const departureEntry: LogEntry = {
+                    id: `gambler-depart-${Date.now()}`,
+                    message: GAMBLER_LEAVE_AFTER_GAMES_MESSAGE,
+                    timestamp: Date.now(),
+                    type: "event",
+                    title: gamblerEventTitle,
+                    choices: [
+                      {
+                        id: "acknowledge",
+                        label: "Continue",
+                        effect: () => ({}),
+                      },
+                    ],
+                    skipSound: true,
+                  };
+                  setEventDialog(true, departureEntry);
+                }, 200);
+              }
             }
           }}
         />
