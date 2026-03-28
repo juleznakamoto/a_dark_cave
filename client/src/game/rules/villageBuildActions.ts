@@ -1,5 +1,24 @@
 import { Action, GameState } from "@shared/schema";
 
+/**
+ * Stranger-approach bonus per completed building level, by `GameState.buildings` key.
+ * effectsCalculation applies `count * bonus`; tooltips must use these same values.
+ */
+const VILLAGE_BUILDING_STRANGER_APPROACH_BONUS = {
+  woodenHut: 0.015,
+  stoneHut: 0.01,
+  longhouse: 0.005,
+  furTents: 0.005,
+} as const;
+
+function formatStackedStrangerApproachPercent(
+  count: number,
+  bonus: number,
+): string {
+  const pct = count * bonus * 100;
+  return Number.isInteger(pct) ? String(pct) : pct.toFixed(1);
+}
+
 // Utility function to get the next building level
 export const getNextBuildingLevel = (
   actionId: string,
@@ -28,10 +47,15 @@ export const villageBuildActions: Record<string, Action> = {
         count > 0
           ? [`+${totalPopulation} Max Population`]
           : ["+2 Max Population"];
-      if (count > 0) effects.push(`+${count * 2}% New Villager Chance`);
+      if (count > 0) {
+        effects.push(
+          `+${formatStackedStrangerApproachPercent(count, VILLAGE_BUILDING_STRANGER_APPROACH_BONUS.woodenHut)}% New Villager Chance`,
+        );
+      }
       return effects;
     },
-    strangerApproachBonus: 0.02,
+    strangerApproachBonus:
+      VILLAGE_BUILDING_STRANGER_APPROACH_BONUS.woodenHut,
     building: true,
     show_when: {
       1: {
@@ -1283,10 +1307,14 @@ export const villageBuildActions: Record<string, Action> = {
         count > 0
           ? [`+${totalPopulation} Max Population`]
           : ["+4 Max Population"];
-      if (count > 0) effects.push(`+${count}% New Villager Chance`);
+      if (count > 0) {
+        effects.push(
+          `+${formatStackedStrangerApproachPercent(count, VILLAGE_BUILDING_STRANGER_APPROACH_BONUS.stoneHut)}% New Villager Chance`,
+        );
+      }
       return effects;
     },
-    strangerApproachBonus: 0.01,
+    strangerApproachBonus: VILLAGE_BUILDING_STRANGER_APPROACH_BONUS.stoneHut,
     building: true,
     show_when: {
       1: {
@@ -1459,10 +1487,14 @@ export const villageBuildActions: Record<string, Action> = {
         count > 0
           ? [`+${totalPopulation} Max Population`]
           : ["+8 Max Population"];
-      if (count > 0) effects.push(`+${Math.round(count * 0.5)}% New Villager Chance`);
+      if (count > 0) {
+        effects.push(
+          `+${formatStackedStrangerApproachPercent(count, VILLAGE_BUILDING_STRANGER_APPROACH_BONUS.longhouse)}% New Villager Chance`,
+        );
+      }
       return effects;
     },
-    strangerApproachBonus: 0.005,
+    strangerApproachBonus: VILLAGE_BUILDING_STRANGER_APPROACH_BONUS.longhouse,
     building: true,
     show_when: {
       1: {
@@ -1541,10 +1573,14 @@ export const villageBuildActions: Record<string, Action> = {
         count > 0
           ? [`+${totalPopulation} Max Population`]
           : ["+4 Max Population"];
-      if (count > 0) effects.push(`+${Math.round(count * 0.5)}% New Villager Chance`);
+      if (count > 0) {
+        effects.push(
+          `+${formatStackedStrangerApproachPercent(count, VILLAGE_BUILDING_STRANGER_APPROACH_BONUS.furTents)}% New Villager Chance`,
+        );
+      }
       return effects;
     },
-    strangerApproachBonus: 0.005,
+    strangerApproachBonus: VILLAGE_BUILDING_STRANGER_APPROACH_BONUS.furTents,
     building: true,
     show_when: {
       1: {

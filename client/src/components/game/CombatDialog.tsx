@@ -58,6 +58,7 @@ export default function CombatDialog({
   const bloodflameSphereLevel = useGameStore(
     (state) => state.combatSkills.bloodflameSphereLevel,
   );
+  const hasFortress = useGameStore((state) => state.flags.hasFortress);
 
   const [combatStarted, setCombatStarted] = useState(false);
   const [currentEnemy, setCurrentEnemy] = useState<Enemy | null>(null);
@@ -99,6 +100,9 @@ export default function CombatDialog({
   const integrityDamageIndicatorTimeoutRef = useRef<
     ReturnType<typeof setTimeout> | null
   >(null);
+  const enemyDamageIndicatorTimeoutRef = useRef<
+    ReturnType<typeof setTimeout> | null
+  >(null);
 
   const showIntegrityDamage = (amount: number) => {
     if (integrityDamageIndicatorTimeoutRef.current) {
@@ -109,6 +113,20 @@ export default function CombatDialog({
     integrityDamageIndicatorTimeoutRef.current = setTimeout(() => {
       setIntegrityDamageIndicator({ amount: 0, visible: false });
       integrityDamageIndicatorTimeoutRef.current = null;
+    }, 3000);
+  };
+
+  const showEnemyDamage = (amount: number) => {
+    if (enemyDamageIndicatorTimeoutRef.current) {
+      clearTimeout(enemyDamageIndicatorTimeoutRef.current);
+      enemyDamageIndicatorTimeoutRef.current = null;
+    }
+    setEnemyDamageIndicator({ amount, visible: true });
+    enemyDamageIndicatorTimeoutRef.current = setTimeout(() => {
+      setEnemyDamageIndicator({ amount: 0, visible: false });
+      setWasCriticalStrike(false);
+      setPlayerStrikeFailed(false);
+      enemyDamageIndicatorTimeoutRef.current = null;
     }, 3000);
   };
 
@@ -138,6 +156,10 @@ export default function CombatDialog({
         clearTimeout(integrityDamageIndicatorTimeoutRef.current);
         integrityDamageIndicatorTimeoutRef.current = null;
       }
+      if (enemyDamageIndicatorTimeoutRef.current) {
+        clearTimeout(enemyDamageIndicatorTimeoutRef.current);
+        enemyDamageIndicatorTimeoutRef.current = null;
+      }
     };
   }, []);
 
@@ -147,6 +169,10 @@ export default function CombatDialog({
       if (integrityDamageIndicatorTimeoutRef.current) {
         clearTimeout(integrityDamageIndicatorTimeoutRef.current);
         integrityDamageIndicatorTimeoutRef.current = null;
+      }
+      if (enemyDamageIndicatorTimeoutRef.current) {
+        clearTimeout(enemyDamageIndicatorTimeoutRef.current);
+        enemyDamageIndicatorTimeoutRef.current = null;
       }
       setCombatStarted(false);
       setCurrentEnemy({ ...enemy });
@@ -280,10 +306,7 @@ export default function CombatDialog({
     // Show damage indicator on enemy health bar
     setPlayerStrikeFailed(false);
     setWasCriticalStrike(false);
-    setEnemyDamageIndicator({ amount: config.damage, visible: true });
-    setTimeout(() => {
-      setEnemyDamageIndicator({ amount: 0, visible: false });
-    }, 3000);
+    showEnemyDamage(config.damage);
 
     // Check if enemy is defeated
     if (newEnemyHealth <= 0) {
@@ -331,10 +354,7 @@ export default function CombatDialog({
     // Show damage indicator on enemy health bar
     setPlayerStrikeFailed(false);
     setWasCriticalStrike(false);
-    setEnemyDamageIndicator({ amount: config.damage, visible: true });
-    setTimeout(() => {
-      setEnemyDamageIndicator({ amount: 0, visible: false });
-    }, 3000);
+    showEnemyDamage(config.damage);
 
     // Check if enemy is defeated
     if (newEnemyHealth <= 0) {
@@ -374,10 +394,20 @@ export default function CombatDialog({
       // Show damage indicator on enemy health bar
       setPlayerStrikeFailed(false);
       setWasCriticalStrike(false);
-      setEnemyDamageIndicator({ amount: finalDamage, visible: true });
-      setTimeout(() => {
-        setEnemyDamageIndicator({ amount: 0, visible: false });
-      }, 3000);
+      showEnemyDamage(finalDamage);
+
+      // 5% chance for bomb to backfire: hurt player with 100% of its damage
+      const backfire = Math.random() < 0.05;
+      if (backfire) {
+        const newIntegrityValue = Math.max(0, currentIntegrity - finalDamage);
+        setCurrentIntegrity(newIntegrityValue);
+        showIntegrityDamage(finalDamage);
+        if (newIntegrityValue <= 0) {
+          setCombatEnded(true);
+          setCombatResult("defeat");
+          return;
+        }
+      }
 
       // Check if enemy is defeated by bombs
       if (newEnemyHealth <= 0) {
@@ -473,15 +503,9 @@ export default function CombatDialog({
     currentEnemyHealth = newHealth;
 
     // Show damage indicator on enemy health bar
-    setEnemyDamageIndicator({
-      amount: playerDamage + poisonDamageDealt + burnDamageDealt,
-      visible: true,
-    });
-    setTimeout(() => {
-      setEnemyDamageIndicator({ amount: 0, visible: false });
-      setWasCriticalStrike(false);
-      setPlayerStrikeFailed(false);
-    }, 3000);
+    showEnemyDamage(
+      playerDamage + poisonDamageDealt + burnDamageDealt,
+    );
 
     setCurrentEnemy((prev) =>
       prev ? { ...prev, currentHealth: newHealth } : null,
@@ -618,37 +642,71 @@ export default function CombatDialog({
                     <DialogTitle className="text-lg font-semibold">
                       Combat - Round {round}
                     </DialogTitle>
-                    {calculateCriticalStrikeChance(getTotalLuck(gameState)) +
-                      getTotalCriticalChance(gameState) >
-                      0 && (
+                    {(() => {
+                      const luckCrit = calculateCriticalStrikeChance(
+                        getTotalLuck(gameState),
+                      );
+                      const itemCrit = getTotalCriticalChance(gameState);
+                      const totalCrit = luckCrit + itemCrit;
+                      const failPct = getCombatAttackFailChancePercent(
+                        getTotalMadness(gameState),
+                      );
+                      if (totalCrit <= 0 && failPct <= 0) return null;
+                      return (
                         <TooltipWrapper
                           tooltip={
-                            <div className="text-xs whitespace-nowrap">
-                              {calculateCriticalStrikeChance(
-                                getTotalLuck(gameState),
-                              ) + getTotalCriticalChance(gameState)}
-                              % critical strike chance<br></br>
-                              {calculateCriticalStrikeChance(
-                                getTotalLuck(gameState),
-                              ) > 0 &&
-                                ` ${calculateCriticalStrikeChance(getTotalLuck(gameState))}% from Luck${getTotalLuck(gameState) >= 50 ? " max" : ""}`}
-                              <br></br>
-                              {getTotalCriticalChance(gameState) > 0 &&
-                                ` ${calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 ? "" : ""}${getTotalCriticalChance(gameState)}% from equipment`}
+                            <div className="text-xs space-y-2 max-w-[220px]">
+                              {totalCrit > 0 && (
+                                <div className="space-y-1">
+                                  <div>{totalCrit}% critical strike chance</div>
+                                  {luckCrit > 0 && (
+                                    <div className="text-gray-400/70">
+                                      {luckCrit}% from Luck
+                                      {getTotalLuck(gameState) >= 50
+                                        ? " (max)"
+                                        : ""}
+                                    </div>
+                                  )}
+                                  {itemCrit > 0 && (
+                                    <div className="text-gray-400/70">
+                                      {itemCrit}% from Items
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                              {failPct > 0 && (
+                                <div
+                                  className={
+                                    totalCrit > 0
+                                      ? "pt-1 border-t border-gray-600/50"
+                                      : ""
+                                  }
+                                >
+                                  <div className="text-gray-300">
+                                    {failPct}% miss chance (based on Madness)
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           }
-                          tooltipId="combat-luck"
+                          tooltipId="combat-luck-madness"
+                          tooltipContentClassName="max-w-xs"
+                          className="inline-flex items-center justify-center w-4 h-4 shrink-0 rounded-full text-muted-foreground text-sm font-bold hover:text-foreground cursor-pointer"
                         >
-                          <span className="text-green-300/80 cursor-pointer hover:text-green-300 transition-colors inline-block text-xl">
-                            ☆
+                          <span
+                            className="leading-none"
+                            aria-label="Combat attack details"
+                          >
+                            ⓘ
                           </span>
                         </TooltipWrapper>
-                      )}
+                      );
+                    })()}
                   </div>
                 </DialogHeader>
 
                 {/* Enemy Stats */}
-                <div className="space-y-3">
+                <div className="mt-3 space-y-3">
                   <div className="relative">
                     <div className="flex justify-between text-sm">
                       <div className="flex items-center gap-1">
@@ -682,22 +740,37 @@ export default function CombatDialog({
                           </span>
                         )}
                       </div>
-                      <span>
-                        {currentEnemy?.currentHealth}/{currentEnemy?.maxHealth}{" "}
-                      </span>
+                      <TooltipWrapper
+                        tooltip={
+                          <span className="text-gray-400">Integrity</span>
+                        }
+                        tooltipId="combat-enemy-integrity-symbol"
+                        className="inline-block"
+                      >
+                        <span className="flex items-center gap-1">
+                          <span className="inline-flex w-4 justify-center text-green-400/60">
+                            ✚
+                          </span>
+                          <span>
+                            {formatNumber(currentEnemy?.currentHealth ?? 0)}/
+                            {formatNumber(currentEnemy?.maxHealth ?? 0)}
+                          </span>
+                        </span>
+                      </TooltipWrapper>
                     </div>
                     <div className="relative">
                       <Progress
                         value={healthPercentage}
                         hideBorder
-                        className="h-3 mt-2 [&>div]:bg-red-900" // Darker red for enemy health
+                        flashOnDecrease
+                        className="h-2 mt-2 [&>div]:bg-red-900" // Darker red for enemy health
                       />
                       {enemyDamageIndicator.visible && (
                         <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-red-900 font-bold text-sm pointer-events-none">
                           {playerStrikeFailed ? (
                             enemyDamageIndicator.amount > 0 ? (
                               <>
-                                -{enemyDamageIndicator.amount}{" "}
+                                -{formatNumber(enemyDamageIndicator.amount)}{" "}
                                 (Attack failed)
                               </>
                             ) : (
@@ -705,16 +778,27 @@ export default function CombatDialog({
                             )
                           ) : (
                             <>
-                              -{enemyDamageIndicator.amount}
+                              -{formatNumber(enemyDamageIndicator.amount)}
                               {wasCriticalStrike && " (critical)"}
                             </>
                           )}
                         </div>
                       )}
                     </div>
-                    <div className="text-xs mt-2">
-                      Attack: {currentEnemy?.attack}
-                    </div>
+                    <TooltipWrapper
+                      tooltip={<span className="text-gray-400">Attack</span>}
+                      tooltipId="combat-enemy-attack-symbol"
+                      className="inline-block"
+                    >
+                      <div className="text-xs mt-2 flex items-center gap-1">
+                        <span className="inline-flex w-4 justify-center text-red-400/60">
+                          ⟐
+                        </span>
+                        <span>
+                          {formatNumber(currentEnemy?.attack ?? 0)}
+                        </span>
+                      </div>
+                    </TooltipWrapper>
                   </div>
 
                   {/* Player Stats */}
@@ -722,30 +806,69 @@ export default function CombatDialog({
                     {/* Bastion Integrity */}
                     <div className="relative">
                       <div className="flex justify-between text-sm">
-                        <span className="font-medium">Bastion Integrity</span>
-                        <span>
-                          {currentIntegrity}/{maxIntegrityForCombat}
+                        <span className="font-medium">
+                          {hasFortress ? "Fortress" : "Bastion"}
                         </span>
+                        <TooltipWrapper
+                          tooltip={
+                            <span className="text-gray-400">Integrity</span>
+                          }
+                          tooltipId="combat-player-integrity-symbol"
+                          className="inline-block"
+                        >
+                          <span className="flex items-center gap-1">
+                            <span className="inline-flex w-4 justify-center text-green-400/60">
+                              ✚
+                            </span>
+                            <span>
+                              {formatNumber(currentIntegrity)}/
+                              {formatNumber(maxIntegrityForCombat)}
+                            </span>
+                          </span>
+                        </TooltipWrapper>
                       </div>
                       <div className="relative">
                         <Progress
                           value={integrityPercentage}
                           hideBorder
-                          className="h-3 mt-2 [&>div]:bg-green-900" // Darker green for bastion integrity
+                          flashOnDecrease
+                          className="h-2 mt-2 [&>div]:bg-green-900" // Darker green for bastion integrity
                         />
                         {integrityDamageIndicator.visible && (
                           <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-green-900 font-bold text-sm pointer-events-none">
-                            -{integrityDamageIndicator.amount}
+                            -{formatNumber(integrityDamageIndicator.amount)}
                           </div>
                         )}
                       </div>
                     </div>
 
-                    <div className="text-xs mt-2">
-                      <div>
-                        Attack: {bastionStats.attack}, Defense:{" "}
-                        {bastionStats.defense}
-                      </div>
+                    <div className="text-xs mt-2 flex items-center gap-3">
+                      <TooltipWrapper
+                        tooltip={<span className="text-gray-400">Attack</span>}
+                        tooltipId="combat-player-attack-symbol"
+                        className="inline-block"
+                      >
+                        <div className="flex items-center gap-1">
+                          <span className="inline-flex w-4 justify-center text-red-400/60">
+                            ⟐
+                          </span>
+                          <span>{formatNumber(bastionStats.attack)}</span>
+                        </div>
+                      </TooltipWrapper>
+                      <TooltipWrapper
+                        tooltip={
+                          <span className="text-gray-400">Defense</span>
+                        }
+                        tooltipId="combat-player-defense-symbol"
+                        className="inline-block"
+                      >
+                        <div className="flex items-center gap-1">
+                          <span className="inline-flex w-4 justify-center text-blue-400/60">
+                            ⧈
+                          </span>
+                          <span>{formatNumber(bastionStats.defense)}</span>
+                        </div>
+                      </TooltipWrapper>
                     </div>
                   </div>
 
@@ -808,9 +931,18 @@ export default function CombatDialog({
                                       }
                                       variant="outline"
                                       size="sm"
-                                      className="text-xs w-full"
+                                      className="text-xs w-full inline-flex items-center justify-center gap-1"
                                       button_id={`combat-use-${item.id}`}
                                     >
+                                      {item.id === "poison_arrows" && (
+                                        <span
+                                          className="text-green-600"
+                                          role="img"
+                                          aria-label="poison-icon"
+                                        >
+                                          ▲
+                                        </span>
+                                      )}
                                       {item.name}
                                     </Button>
                                   </div>
@@ -853,9 +985,16 @@ export default function CombatDialog({
                                 }
                                 variant="outline"
                                 size="sm"
-                                className="text-xs w-full"
+                                className="text-xs w-full inline-flex items-center justify-center gap-1"
                                 button_id="combat-use-crushing-strike"
                               >
+                                <span
+                                  className="text-yellow-600"
+                                  role="img"
+                                  aria-label="stun-icon"
+                                >
+                                  ◈
+                                </span>
                                 Crushing Strike
                               </Button>
                             </div>
@@ -895,9 +1034,16 @@ export default function CombatDialog({
                                 }
                                 variant="outline"
                                 size="sm"
-                                className="text-xs w-full"
+                                className="text-xs w-full inline-flex items-center justify-center gap-1"
                                 button_id="combat-use-bloodflame-sphere"
                               >
+                                <span
+                                  className="text-orange-600"
+                                  role="img"
+                                  aria-label="burn-icon"
+                                >
+                                  ✵
+                                </span>
                                 Bloodflame Sphere
                               </Button>
                             </div>
