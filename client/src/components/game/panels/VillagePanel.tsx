@@ -42,22 +42,7 @@ import {
   type BubbleWithParticles,
 } from "@/components/ui/bubbly-button.particles";
 import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
-import {
-  PRIOR_ELIGIBLE_ACTIONS,
-  priorUsesMidpointGains,
-} from "@/game/buttonUpgrades";
-import type { GameState } from "@shared/schema";
-
-function getInkwardenHighlightResources(
-  actionId: string,
-  state: GameState,
-): string[] {
-  const r = getResourcesFromActionCost(actionId, state);
-  if (priorUsesMidpointGains(state, actionId) && !r.includes("food")) {
-    r.push("food");
-  }
-  return r;
-}
+import { PRIOR_ELIGIBLE_ACTIONS } from "@/game/buttonUpgrades";
 import {
   curseLikeDurationMs,
   disgustDurationMs,
@@ -577,7 +562,7 @@ export default function VillagePanel() {
           // Only highlight resources if Inkwarden Academy is built
           if (buildings.inkwardenAcademy > 0) {
             setHighlightedResources(
-              getInkwardenHighlightResources(actionId, state),
+              getResourcesFromActionCost(actionId, state),
             );
           }
         }}

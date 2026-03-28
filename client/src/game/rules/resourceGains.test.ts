@@ -1577,17 +1577,3 @@ describe('Resource Gain Tests', () => {
     });
   });
 });
-
-describe("Disgraced Prior midpoint tooltips", () => {
-  it("calculateResourceGains collapses chopWood range when Prior assigned", () => {
-    const state = createTestState({
-      fellowship: { disgraced_prior: true },
-      disgracedPriorSkills: { level: 2 },
-      priorAssignedActions: ["chopWood"],
-    });
-    const { gains } = calculateResourceGains("chopWood", state);
-    const wood = gains.find((g) => g.resource === "wood");
-    expect(wood?.min).toBe(18);
-    expect(wood?.max).toBe(18);
-  });
-});

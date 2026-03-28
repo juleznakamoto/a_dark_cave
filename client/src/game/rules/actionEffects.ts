@@ -11,7 +11,6 @@ import {
 import {
   getUpgradeBonusMultiplier,
   ACTION_TO_UPGRADE_KEY,
-  priorUsesMidpointGains,
 } from "../buttonUpgrades";
 import { getNextBuildingLevel } from "./villageBuildActions";
 import { calculateAdjustedCost } from "./costCalculation";
@@ -175,15 +174,7 @@ export function applyActionCostsOnly(actionId: string, state: GameState): Partia
   return updates;
 }
 
-function rollResourceGain(
-  min: number,
-  max: number,
-  state: GameState,
-  actionId: string,
-): number {
-  if (priorUsesMidpointGains(state, actionId)) {
-    return Math.floor((min + max) / 2);
-  }
+function rollResourceGain(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -379,7 +370,7 @@ export function applyActionEffects(
             }
 
             // Generate and assign the random value for sacrifice actions
-            const baseAmount = rollResourceGain(min, max, state, actionId);
+            const baseAmount = rollResourceGain(min, max);
             const originalAmount =
               state.resources[finalKey as keyof typeof state.resources] || 0;
             current[finalKey] = originalAmount + baseAmount;
@@ -443,7 +434,7 @@ export function applyActionEffects(
               max = Math.floor(max * 2);
             }
 
-            const baseAmount = rollResourceGain(min, max, state, actionId);
+            const baseAmount = rollResourceGain(min, max);
             const originalAmount =
               state.resources[finalKey as keyof typeof state.resources] || 0;
             current[finalKey] = originalAmount + baseAmount;
@@ -564,7 +555,7 @@ export function applyActionEffects(
 
               const rolledAmount =
                 pathParts[0] === "resources"
-                  ? rollResourceGain(min, max, state, actionId)
+                  ? rollResourceGain(min, max)
                   : Math.floor(Math.random() * (max - min + 1)) + min;
 
               if (pathParts[0] === "resources") {

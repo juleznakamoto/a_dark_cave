@@ -129,9 +129,6 @@ export const DISGRACED_PRIOR_UPGRADES = [
   },
 ];
 
-/** Food cost when the game loop auto-runs an assigned action (per execution). */
-export const DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION = 25;
-
 // Crow's Eye skill upgrade configurations (from One-eyed Crow fellowship member)
 // Provides chance to double resources from all gathering actions
 export const CROWS_EYE_UPGRADES = [

@@ -31,21 +31,8 @@ import {
   ACTION_TO_UPGRADE_KEY,
   PRIOR_ELIGIBLE_ACTIONS,
   getUpgradeLevel,
-  priorUsesMidpointGains,
   type UpgradeKey,
 } from "@/game/buttonUpgrades";
-import type { GameState } from "@shared/schema";
-
-function getInkwardenHighlightResources(
-  actionId: string,
-  state: GameState,
-): string[] {
-  const r = getResourcesFromActionCost(actionId, state);
-  if (priorUsesMidpointGains(state, actionId) && !r.includes("food")) {
-    r.push("food");
-  }
-  return r;
-}
 import { getCraftProduceAmount } from "@/game/craftUpgradeUtils";
 import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
 
@@ -413,7 +400,7 @@ export default function CavePanel() {
           onMouseEnter={() => {
             if (state.buildings.inkwardenAcademy > 0) {
               setHighlightedResources(
-                getInkwardenHighlightResources(actionId, state),
+                getResourcesFromActionCost(actionId, state),
               );
             }
           }}
@@ -467,7 +454,7 @@ export default function CavePanel() {
         onMouseEnter={() => {
           if (state.buildings.inkwardenAcademy > 0) {
             setHighlightedResources(
-              getInkwardenHighlightResources(actionId, state),
+              getResourcesFromActionCost(actionId, state),
             );
           }
         }}

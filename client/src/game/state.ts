@@ -52,29 +52,11 @@ import {
 } from "@/game/gamblerSession";
 import { logger } from "@/lib/logger";
 import { madnessEvents } from "@/game/rules/eventsMadness";
-import {
-  DISGRACED_PRIOR_UPGRADES,
-  DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION,
-} from "@/game/rules/skillUpgrades";
+import { DISGRACED_PRIOR_UPGRADES } from "@/game/rules/skillUpgrades";
 import {
   generateMerchantChoices,
   merchantEvents,
 } from "@/game/rules/eventsMerchant";
-
-function applyPriorAutomationFoodDeduction(
-  result: ActionResult,
-  state: GameState,
-  priorInvocation?: boolean,
-): void {
-  if (!priorInvocation || !result.stateUpdates) return;
-  const baseFood =
-    result.stateUpdates.resources?.food ?? state.resources?.food ?? 0;
-  result.stateUpdates.resources = {
-    ...state.resources,
-    ...(result.stateUpdates.resources || {}),
-    food: baseFood - DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION,
-  };
-}
 
 // Types
 interface GameStore extends GameState {
@@ -242,10 +224,7 @@ interface GameStore extends GameState {
 
   // Actions
   getAndResetResourceAnalytics: () => Record<string, number> | null;
-  executeAction: (
-    actionId: string,
-    options?: { priorInvocation?: boolean },
-  ) => void;
+  executeAction: (actionId: string) => void;
   setActiveTab: (tab: GameTab) => void;
   setBoostMode: (enabled: boolean) => void;
   setMusicMuted: (muted: boolean) => void;
@@ -277,10 +256,7 @@ interface GameStore extends GameState {
   updatePopulation: () => void;
   setCooldown: (action: string, duration: number) => void;
   tickCooldowns: () => void;
-  startActionExecution: (
-    actionId: string,
-    options?: { fromPrior?: boolean },
-  ) => void;
+  startActionExecution: (actionId: string) => void;
   completeActionExecution: (actionId: string) => void;
   togglePriorAction: (actionId: string) => void;
   setCompassGlow: (actionId: string | null) => void;
@@ -1160,7 +1136,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     StateManager.scheduleEffectsUpdate(get);
   },
 
-  executeAction: (actionId: string, options?: { priorInvocation?: boolean }) => {
+  executeAction: (actionId: string) => {
     const state = get();
     const action = gameActions[actionId];
 
@@ -1172,9 +1148,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         // This prevents the Prior (or any caller) from draining resources for
         // an action whose show_when conditions are no longer satisfied.
         if (!shouldShowAction(actionId, state as any)) return;
-        get().startActionExecution(actionId, {
-          fromPrior: options?.priorInvocation,
-        });
+        get().startActionExecution(actionId);
         return;
       }
     }
@@ -1187,7 +1161,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
 
       const result = executeGameAction(actionId, state);
-      applyPriorAutomationFoodDeduction(result, state, options?.priorInvocation);
 
       if (result.stateUpdates && Object.keys(result.stateUpdates).length > 0) {
         set((state) => ({
@@ -1211,7 +1184,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       return;
 
     const result = executeGameAction(actionId, state);
-    applyPriorAutomationFoodDeduction(result, state, options?.priorInvocation);
 
     // Track button usage and check for level up (only if book_of_ascension is owned)
     const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
@@ -1468,10 +1440,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
 
-  startActionExecution: (
-    actionId: string,
-    execOptions?: { fromPrior?: boolean },
-  ) => {
+  startActionExecution: (actionId: string) => {
     const state = get();
     const action = gameActions[actionId];
     const duration = getExecutionTime(actionId, state);
@@ -1503,19 +1472,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
       baseExpeditionVillagers[actionId] = expeditionRequired;
     }
 
-    const pending = state.priorAutomationPending ?? [];
-    const newPending =
-      execOptions?.fromPrior && !pending.includes(actionId)
-        ? [...pending, actionId]
-        : pending;
-
     set({
       ...costUpdates,
       villagers: baseVillagers,
       expeditionVillagers: baseExpeditionVillagers,
       executionStartTimes: { ...state.executionStartTimes, [actionId]: now },
       executionDurations: { ...state.executionDurations, [actionId]: duration },
-      priorAutomationPending: newPending,
     });
   },
 
@@ -1534,10 +1496,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       delete updatedExpeditionVillagers[actionId];
     }
 
-    const pending = state.priorAutomationPending ?? [];
-    const fromPrior = pending.includes(actionId);
-    const newPending = pending.filter((id) => id !== actionId);
-
     set({
       executionStartTimes: newStartTimes,
       executionDurations: newDurations,
@@ -1546,12 +1504,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
         free: (state.villagers.free || 0) + releasedVillagers,
       },
       expeditionVillagers: updatedExpeditionVillagers,
-      priorAutomationPending: newPending,
       _completingExecution: actionId,
     });
 
     // Execute the actual action (bypasses execution-time check via _completingExecution)
-    get().executeAction(actionId, { priorInvocation: fromPrior });
+    get().executeAction(actionId);
     set({ _completingExecution: undefined });
   },
 
@@ -1936,7 +1893,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
           purchasedIds: [],
         }, // Load merchant trades
         gamblerGame: gamblerGameForResume,
-        priorAutomationPending: [],
       };
 
       const savedExpeditionVillagers = savedState.expeditionVillagers || {};

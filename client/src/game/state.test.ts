@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { createInitialState, useGameStore, detectRewards, rewardDialogActions } from "./state";
 import { GameState } from "@shared/schema";
-import { DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION } from "./rules/skillUpgrades";
 
 const { mockLoadGame, mockSetLastGameLoadTime } = vi.hoisted(() => ({
   mockLoadGame: vi.fn(),
@@ -619,49 +618,5 @@ describe("Gambler resume on load", () => {
         .getState()
         .log.some((e) => e.message.includes("silence as forfeit")),
     ).toBe(false);
-  });
-});
-
-describe("Disgraced Prior automation food", () => {
-  beforeEach(() => {
-    useGameStore.getState().initialize();
-  });
-
-  it("executeAction feedFire with priorInvocation deducts upkeep Food", () => {
-    const init = createInitialState();
-    useGameStore.setState({
-      ...init,
-      buildings: { ...init.buildings, heartfire: 1 },
-      resources: {
-        ...init.resources,
-        wood: 200,
-        food: 80,
-      },
-      heartfireState: { level: 0, lastLevelDecrease: Date.now() },
-      cooldowns: { feedFire: 0 },
-    });
-    const foodBefore = useGameStore.getState().resources.food!;
-    useGameStore.getState().executeAction("feedFire", { priorInvocation: true });
-    expect(useGameStore.getState().resources.food).toBe(
-      foodBefore - DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION,
-    );
-  });
-
-  it("executeAction feedFire without priorInvocation does not deduct Prior Food", () => {
-    const init = createInitialState();
-    useGameStore.setState({
-      ...init,
-      buildings: { ...init.buildings, heartfire: 1 },
-      resources: {
-        ...init.resources,
-        wood: 200,
-        food: 80,
-      },
-      heartfireState: { level: 0, lastLevelDecrease: Date.now() },
-      cooldowns: { feedFire: 0 },
-    });
-    const foodBefore = useGameStore.getState().resources.food!;
-    useGameStore.getState().executeAction("feedFire");
-    expect(useGameStore.getState().resources.food).toBe(foodBefore);
   });
 });

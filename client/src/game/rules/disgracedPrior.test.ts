@@ -146,34 +146,37 @@ describe("getActionBonuses — Disgraced Prior multiplier", () => {
 // ─── applyActionEffects end-to-end ───────────────────────────────────────────
 
 describe("applyActionEffects — Prior multiplier applied to resource output", () => {
-  it("chopWood with Prior at level 0 uses midpoint of base range (6–12) → 9", () => {
+  it("chopWood with Prior at level 0 stays within base random range (6–12)", () => {
     const state = priorState(0);
     state.resources.wood = 0;
 
     const result = applyActionEffects("chopWood", state);
     const gained = (result.resources?.wood ?? 0) - 0;
-    expect(gained).toBe(9);
+    expect(gained).toBeGreaterThanOrEqual(6);
+    expect(gained).toBeLessThanOrEqual(12);
   });
 
-  it("chopWood with Prior at level 2 uses midpoint of scaled range (12–24) → 18", () => {
+  it("chopWood with Prior at level 2 stays within scaled random range (12–24)", () => {
     const state = priorState(2);
     state.resources.wood = 0;
 
     const result = applyActionEffects("chopWood", state);
     const gained = result.resources?.wood ?? 0;
-    expect(gained).toBe(18);
+    expect(gained).toBeGreaterThanOrEqual(12);
+    expect(gained).toBeLessThanOrEqual(24);
   });
 
-  it("chopWood with Prior at level 4 uses midpoint of scaled range (18–36) → 27", () => {
+  it("chopWood with Prior at level 4 stays within scaled random range (18–36)", () => {
     const state = priorState(4);
     state.resources.wood = 0;
 
     const result = applyActionEffects("chopWood", state);
     const gained = result.resources?.wood ?? 0;
-    expect(gained).toBe(27);
+    expect(gained).toBeGreaterThanOrEqual(18);
+    expect(gained).toBeLessThanOrEqual(36);
   });
 
-  it("mineStone assigned to Prior at level 2 uses midpoint of scaled range (8–16) → 12", () => {
+  it("mineStone assigned to Prior at level 2 stays within scaled random range (8–16)", () => {
     // No pickaxe equipped (stone_pickaxe gives 1.25× mining bonus which we exclude here
     // to isolate the Prior's contribution). BTP=0 keeps the baseline range(4,8).
     const state = priorState(2, ["mineStone"]);
@@ -182,7 +185,8 @@ describe("applyActionEffects — Prior multiplier applied to resource output", (
 
     const result = applyActionEffects("mineStone", state);
     const gained = (result.resources?.stone ?? 0) - 0;
-    expect(gained).toBe(12);
+    expect(gained).toBeGreaterThanOrEqual(8);
+    expect(gained).toBeLessThanOrEqual(16);
   });
 
   it("mineStone NOT assigned to Prior is unaffected by Prior level", () => {
@@ -234,7 +238,7 @@ describe("applyActionEffects — Prior multiplier applied to resource output", (
     expect(gained).toBe(1);
   });
 
-  it("hunt assigned to Prior at level 2 uses midpoint food fur bones (×2)", () => {
+  it("hunt assigned to Prior at level 2 applies ×2 to food fur bones random ranges", () => {
     const state = priorState(2, ["hunt"]);
     state.resources.food = 0;
     state.resources.fur = 0;
@@ -243,10 +247,13 @@ describe("applyActionEffects — Prior multiplier applied to resource output", (
     (state as any).BTP = 0;
 
     const result = applyActionEffects("hunt", state);
-    // food 6–12 → mid 9 ×2 → 18; fur/bones 2–5 → ×2 gives 4–10 → mid 7
-    expect(result.resources?.food).toBe(18);
-    expect(result.resources?.fur).toBe(7);
-    expect(result.resources?.bones).toBe(7);
+    // food random(6,12)×2 → 12–24; fur/bones random(2,5)×2 → 4–10
+    expect(result.resources?.food).toBeGreaterThanOrEqual(12);
+    expect(result.resources?.food).toBeLessThanOrEqual(24);
+    expect(result.resources?.fur).toBeGreaterThanOrEqual(4);
+    expect(result.resources?.fur).toBeLessThanOrEqual(10);
+    expect(result.resources?.bones).toBeGreaterThanOrEqual(4);
+    expect(result.resources?.bones).toBeLessThanOrEqual(10);
   });
 
   it("craftEmberBomb assigned to Prior at level 2 yields 2× bombs (base 1 → 2)", () => {
@@ -262,14 +269,16 @@ describe("applyActionEffects — Prior multiplier applied to resource output", (
     expect(gained).toBe(2);
   });
 
-  it("exploreCave assigned to Prior at level 4 uses midpoint stone (×3)", () => {
+  it("exploreCave assigned to Prior at level 4 stays within scaled stone random range (×3)", () => {
     const state = priorState(4, ["exploreCave"]);
     state.resources.stone = 0;
     state.story.seen.hasWood = true;
     (state as any).tools = {};
 
     const result = applyActionEffects("exploreCave", state);
-    // stone random(3,7) → 5 ×3 → 15
-    expect(result.resources?.stone).toBe(15);
+    // stone random(3,7)×3 → 9–21
+    const stone = result.resources?.stone ?? 0;
+    expect(stone).toBeGreaterThanOrEqual(9);
+    expect(stone).toBeLessThanOrEqual(21);
   });
 });

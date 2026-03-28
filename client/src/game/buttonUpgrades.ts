@@ -199,17 +199,6 @@ export const PRIOR_ELIGIBLE_ACTIONS = new Set<string>([
   "craftVoidBomb",
 ]);
 
-/** Disgraced Prior: assigned actions use midpoint of random resource ranges (gameplay + tooltips). */
-export function priorUsesMidpointGains(
-  state: GameState,
-  actionId: string,
-): boolean {
-  return !!(
-    state.fellowship?.disgraced_prior &&
-    (state.priorAssignedActions ?? []).includes(actionId)
-  );
-}
-
 /**
  * Upgrade chains for Prior-eligible actions.
  * When a Prior-assigned action becomes hidden (superseded by a tool/building upgrade),

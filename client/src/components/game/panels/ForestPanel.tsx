@@ -16,20 +16,7 @@ import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
 import {
   ACTION_TO_UPGRADE_KEY,
   PRIOR_ELIGIBLE_ACTIONS,
-  priorUsesMidpointGains,
 } from "@/game/buttonUpgrades";
-import type { GameState } from "@shared/schema";
-
-function getInkwardenHighlightResources(
-  actionId: string,
-  state: GameState,
-): string[] {
-  const r = getResourcesFromActionCost(actionId, state);
-  if (priorUsesMidpointGains(state, actionId) && !r.includes("food")) {
-    r.push("food");
-  }
-  return r;
-}
 import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
 import {
   BubblyButtonGlobalPortal,
@@ -424,14 +411,7 @@ export default function ForestPanel() {
                 }
               } else {
                 // For non-trade actions, use existing logic
-                resources.push(...getInkwardenHighlightResources(actionId, state));
-              }
-
-              if (
-                priorUsesMidpointGains(state, actionId) &&
-                !resources.includes("food")
-              ) {
-                resources.push("food");
+                resources.push(...getResourcesFromActionCost(actionId, state));
               }
 
               setHighlightedResources(resources);
@@ -478,7 +458,7 @@ export default function ForestPanel() {
         onMouseEnter={() => {
           if (state.buildings.inkwardenAcademy > 0) {
             setHighlightedResources(
-              getInkwardenHighlightResources(actionId, state),
+              getResourcesFromActionCost(actionId, state),
             );
           }
         }}
