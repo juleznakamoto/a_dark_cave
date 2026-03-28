@@ -245,12 +245,9 @@ const WAVE_RULES: Record<AttackWaveId, WaveRules> = {
   },
   fourthWave: {
     prerequisiteMet: (state: AttackWaveChartState) =>
-      Boolean(
-        state.weapons.frostglass_sword && state.story.seen.thirdWaveVictory,
-      ),
+      Boolean(state.story.seen.thirdWaveVictory),
     condition: (state: GameState) =>
       Boolean(
-        state.weapons.frostglass_sword &&
         state.story.seen.thirdWaveVictory &&
         !state.story.seen.fourthWaveVictory,
       ),
@@ -259,9 +256,12 @@ const WAVE_RULES: Record<AttackWaveId, WaveRules> = {
   },
   fifthWave: {
     prerequisiteMet: (state: AttackWaveChartState) =>
-      Boolean(state.story.seen.fourthWaveVictory),
+      Boolean(
+        state.weapons.frostglass_sword && state.story.seen.fourthWaveVictory,
+      ),
     condition: (state: GameState) =>
       Boolean(
+        state.weapons.frostglass_sword &&
         state.story.seen.fourthWaveVictory &&
         !state.story.seen.fifthWaveVictory,
       ),
@@ -270,12 +270,9 @@ const WAVE_RULES: Record<AttackWaveId, WaveRules> = {
   },
   sixthWave: {
     prerequisiteMet: (state: AttackWaveChartState) =>
-      Boolean(
-        state.weapons.bloodstone_staff && state.story.seen.fifthWaveVictory,
-      ),
+      Boolean(state.story.seen.fifthWaveVictory),
     condition: (state: GameState) =>
       Boolean(
-        state.weapons.bloodstone_staff &&
         state.story.seen.fifthWaveVictory &&
         !state.story.seen.sixthWaveVictory,
       ),
@@ -295,9 +292,12 @@ const WAVE_RULES: Record<AttackWaveId, WaveRules> = {
   },
   eighthWave: {
     prerequisiteMet: (state: AttackWaveChartState) =>
-      Boolean(state.story.seen.seventhWaveVictory),
+      Boolean(
+        state.weapons.bloodstone_staff && state.story.seen.seventhWaveVictory,
+      ),
     condition: (state: GameState) =>
       Boolean(
+        state.weapons.bloodstone_staff &&
         state.story.seen.seventhWaveVictory &&
         !state.story.seen.eighthWaveVictory,
       ),
