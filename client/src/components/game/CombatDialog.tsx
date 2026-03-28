@@ -21,6 +21,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { formatNumber } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
@@ -505,7 +506,7 @@ export default function CombatDialog({
             ? "No villagers died."
             : combatSummary.casualties === 1
               ? "1 villager died."
-              : `${combatSummary.casualties} villagers died.`,
+              : `${formatNumber(combatSummary.casualties!)} villagers died.`,
         className: "text-gray-400 text-sm",
       },
       ...(combatSummary.woundedFellows ?? []).map((f) => ({
@@ -527,7 +528,22 @@ export default function CombatDialog({
   const victoryResultLines: { key: string; text: string; className: string }[] = combatSummary
     ? [
       ...(combatSummary.silverReward !== undefined
-        ? [{ key: "silver", text: `+${combatSummary.silverReward} silver claimed.`, className: "text-slate-300 text-sm" }]
+        ? [
+          {
+            key: "silver",
+            text: `+${formatNumber(combatSummary.silverReward)} silver claimed.`,
+            className: "text-slate-300 text-sm",
+          },
+        ]
+        : []),
+      ...(combatSummary.goldReward !== undefined
+        ? [
+          {
+            key: "gold",
+            text: `+${formatNumber(combatSummary.goldReward)} gold claimed.`,
+            className: "text-slate-300 text-sm",
+          },
+        ]
         : []),
     ]
     : [];
@@ -659,7 +675,7 @@ export default function CombatDialog({
                             ✚
                           </span>
                           <span>
-                            {currentEnemy?.currentHealth}/{currentEnemy?.maxHealth}
+                            {formatNumber(currentEnemy?.currentHealth ?? 0)}/{formatNumber(currentEnemy?.maxHealth ?? 0)}
                           </span>
                         </span>
                       </TooltipWrapper>
@@ -673,7 +689,7 @@ export default function CombatDialog({
                       />
                       {enemyDamageIndicator.visible && (
                         <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-red-900 font-bold text-sm pointer-events-none">
-                          -{enemyDamageIndicator.amount}
+                          -{formatNumber(enemyDamageIndicator.amount)}
                           {wasCriticalStrike && " (critical)"}
                         </div>
                       )}
@@ -687,7 +703,7 @@ export default function CombatDialog({
                         <span className="inline-flex w-4 justify-center text-red-400/60">
                           ⟐
                         </span>
-                        <span>{currentEnemy?.attack}</span>
+                        <span>{formatNumber(currentEnemy?.attack ?? 0)}</span>
                       </div>
                     </TooltipWrapper>
                   </div>
@@ -710,7 +726,7 @@ export default function CombatDialog({
                               ✚
                             </span>
                             <span>
-                              {currentIntegrity}/{maxIntegrityForCombat}
+                              {formatNumber(currentIntegrity)}/{formatNumber(maxIntegrityForCombat)}
                             </span>
                           </span>
                         </TooltipWrapper>
@@ -724,7 +740,7 @@ export default function CombatDialog({
                         />
                         {integrityDamageIndicator.visible && (
                           <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-green-900 font-bold text-sm pointer-events-none">
-                            -{integrityDamageIndicator.amount}
+                            -{formatNumber(integrityDamageIndicator.amount)}
                           </div>
                         )}
                       </div>
@@ -740,7 +756,7 @@ export default function CombatDialog({
                           <span className="inline-flex w-4 justify-center text-red-400/60">
                             ⟐
                           </span>
-                          <span>{bastionStats.attack}</span>
+                          <span>{formatNumber(bastionStats.attack)}</span>
                         </div>
                       </TooltipWrapper>
                       <TooltipWrapper
@@ -752,7 +768,7 @@ export default function CombatDialog({
                           <span className="inline-flex w-4 justify-center text-blue-400/60">
                             ⧈
                           </span>
-                          <span>{bastionStats.defense}</span>
+                          <span>{formatNumber(bastionStats.defense)}</span>
                         </div>
                       </TooltipWrapper>
                     </div>

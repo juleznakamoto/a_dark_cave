@@ -110,21 +110,21 @@ export const SLEEP_INTENSITY_UPGRADES = [
 // Odd levels (1, 3, 5) add an action slot. Even levels (2, 4) increase the reward multiplier.
 export const DISGRACED_PRIOR_UPGRADES = [
   { level: 0, maxActions: 1, rewardMultiplier: 1, cost: 0, currency: null },
-  { level: 1, maxActions: 2, rewardMultiplier: 1, cost: 500, currency: "gold" },
-  { level: 2, maxActions: 2, rewardMultiplier: 2, cost: 1000, currency: "gold" },
-  { level: 3, maxActions: 3, rewardMultiplier: 2, cost: 1500, currency: "gold" },
+  { level: 1, maxActions: 2, rewardMultiplier: 1, cost: 1000, currency: "gold" },
+  { level: 2, maxActions: 2, rewardMultiplier: 2, cost: 2000, currency: "gold" },
+  { level: 3, maxActions: 3, rewardMultiplier: 2, cost: 3000, currency: "gold" },
   {
     level: 4,
     maxActions: 3,
     rewardMultiplier: 3,
-    cost: 2000,
+    cost: 4000,
     currency: "gold",
   },
   {
     level: 5,
     maxActions: 4,
     rewardMultiplier: 3,
-    cost: 2500,
+    cost: 5000,
     currency: "gold",
   },
 ];
@@ -133,9 +133,9 @@ export const DISGRACED_PRIOR_UPGRADES = [
 // Provides chance to double resources from all gathering actions
 export const CROWS_EYE_UPGRADES = [
   { level: 0, doubleChance: 0.5, cost: 0, currency: null },
-  { level: 1, doubleChance: 2.5, cost: 250, currency: "gold" },
-  { level: 2, doubleChance: 5, cost: 500, currency: "gold" },
-  { level: 3, doubleChance: 7.5, cost: 750, currency: "gold" },
-  { level: 4, doubleChance: 10, cost: 1000, currency: "gold" },
-  { level: 5, doubleChance: 15, cost: 1500, currency: "gold" },
+  { level: 1, doubleChance: 2.5, cost: 500, currency: "gold" },
+  { level: 2, doubleChance: 5, cost: 1000, currency: "gold" },
+  { level: 3, doubleChance: 7.5, cost: 1500, currency: "gold" },
+  { level: 4, doubleChance: 10, cost: 2000, currency: "gold" },
+  { level: 5, doubleChance: 15, cost: 2500, currency: "gold" },
 ];

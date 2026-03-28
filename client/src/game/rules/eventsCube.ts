@@ -337,7 +337,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     id: "cube08",
     condition: (state: GameState) =>
       Boolean(
-        state.story.seen.secondWaveVictory &&
+        state.story.seen.thirdWaveVictory &&
         state.events.cube07 &&
         !state.events.cube08,
       ),
@@ -366,7 +366,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     id: "cube09",
     condition: (state: GameState) =>
       Boolean(
-        state.story.seen.thirdWaveVictory &&
+        state.story.seen.fourthWaveVictory &&
         state.events.cube08 &&
         !state.events.cube09,
       ),
@@ -395,7 +395,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     id: "cube10",
     condition: (state: GameState) =>
       Boolean(
-        state.story.seen.fourthWaveVictory &&
+        state.story.seen.sixthWaveVictory &&
         state.events.cube09 &&
         !state.events.cube10,
       ),
@@ -424,7 +424,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     id: "cube11",
     condition: (state: GameState) =>
       Boolean(
-        state.story.seen.fifthWaveVictory &&
+        state.story.seen.eighthWaveVictory &&
         state.events.cube10 &&
         !state.events.cube11,
       ),
@@ -453,7 +453,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     id: "cube12",
     condition: (state: GameState) =>
       Boolean(
-        state.story.seen.sixthWaveVictory &&
+        state.story.seen.tenthWaveVictory &&
         state.events.cube11 &&
         !state.events.cube12,
       ),

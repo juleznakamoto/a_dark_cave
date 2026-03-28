@@ -1,5 +1,6 @@
 import React from "react";
 import { GameState } from "@shared/schema";
+import { formatNumber } from "@/lib/utils";
 import OutcomeDialog from "./OutcomeDialog";
 
 interface MadnessDialogData {
@@ -41,7 +42,7 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
     Object.entries(rewards.resources).forEach(([resource, amount]) => {
       rewardItems.push(
         <div key={`resource-${resource}`} className="text-sm text-foreground">
-          {amount} {formatName(resource)}
+          {formatNumber(amount)} {formatName(resource)}
         </div>
       );
     });
@@ -123,7 +124,7 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
       if (stat === "madness" || stat === "madnessFromEvents") return;
       rewardItems.push(
         <div key={`stat-${stat}`} className="text-sm text-foreground">
-          +{amount} {formatName(stat)}
+          +{formatNumber(amount)} {formatName(stat)}
         </div>
       );
     });
@@ -135,7 +136,7 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
     <>
       {hasRewardItems && <div className="space-y-1">{rewardItems}</div>}
       <div className="text-sm text-center text-violet-300">
-        {madnessChange > 0 ? "+" : "-"} {Math.abs(madnessChange)} Madness
+        {madnessChange > 0 ? "+" : "-"} {formatNumber(Math.abs(madnessChange))} Madness
       </div>
     </>
   );

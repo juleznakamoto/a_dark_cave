@@ -4,10 +4,9 @@ import { isResourceLimited, getResourceLimit } from "./resourceLimits";
 import { getTotalEventDeathReduction } from "./rules/effectsCalculation";
 
 /**
- * Merge combat victory updates onto live `prevState`. Attack wave `onVictory` used to return
- * `resources: { ...state.resources, silver: ... }` with `state` from when the event fired, which
- * overwrote bomb (and any other) deductions made during combat. Silver in `victoryResult.resources`
- * is treated as a **delta** to add to `prevState.resources.silver`.
+ * Merge combat victory updates onto live `prevState`. Combat `onVictory` must not spread stale
+ * `state.resources` (that would revert bombs spent during combat). `silver` and `gold` in
+ * `victoryResult.resources` are **deltas** added to the live store.
  */
 export function mergeCombatVictoryState(
   prevState: GameState,
@@ -23,6 +22,7 @@ export function mergeCombatVictoryState(
     resources: {
       ...prevState.resources,
       silver: (prevState.resources.silver ?? 0) + (vr.silver ?? 0),
+      gold: (prevState.resources.gold ?? 0) + (vr.gold ?? 0),
     },
   };
 }

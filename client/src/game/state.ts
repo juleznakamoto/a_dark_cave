@@ -312,7 +312,9 @@ export const detectRewards = (
     tools?: (keyof GameState["tools"])[];
     weapons?: (keyof GameState["weapons"])[];
     clothing?: (keyof GameState["clothing"])[];
+    clothingLost?: (keyof GameState["clothing"])[];
     relics?: (keyof GameState["relics"])[];
+    relicsLost?: (keyof GameState["relics"])[];
     blessings?: (keyof GameState["blessings"])[];
     books?: (keyof GameState["books"])[];
     schematics?: (keyof GameState["schematics"])[];
@@ -351,6 +353,15 @@ export const detectRewards = (
     if (newClothing.length > 0) {
       rewards.clothing = newClothing as (keyof GameState["clothing"])[];
     }
+    const lostClothing = Object.keys(stateUpdates.clothing).filter((id) => {
+      if (stateUpdates.clothing![id as keyof typeof stateUpdates.clothing] !== false) {
+        return false;
+      }
+      return Boolean(currentState.clothing[id as keyof typeof currentState.clothing]);
+    });
+    if (lostClothing.length > 0) {
+      rewards.clothingLost = lostClothing as (keyof GameState["clothing"])[];
+    }
   }
 
   // Check for new relics (items set to true that weren't owned before)
@@ -361,6 +372,15 @@ export const detectRewards = (
     );
     if (newRelics.length > 0) {
       rewards.relics = newRelics as (keyof GameState["relics"])[];
+    }
+    const lostRelics = Object.keys(stateUpdates.relics).filter((id) => {
+      if (stateUpdates.relics![id as keyof typeof stateUpdates.relics] !== false) {
+        return false;
+      }
+      return Boolean(currentState.relics[id as keyof typeof currentState.relics]);
+    });
+    if (lostRelics.length > 0) {
+      rewards.relicsLost = lostRelics as (keyof GameState["relics"])[];
     }
   }
 
@@ -2146,9 +2166,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
         Object.keys(rewards.resourceLosses).length > 0;
       const hasVillagersLost =
         typeof rewards.villagersLost === "number" && rewards.villagersLost > 0;
-      const hasLosses = hasResourceLosses || hasVillagersLost;
+      const hasRelicsLost = (rewards.relicsLost?.length ?? 0) > 0;
+      const hasClothingLost = (rewards.clothingLost?.length ?? 0) > 0;
+      const hasLosses =
+        hasResourceLosses ||
+        hasVillagersLost ||
+        hasRelicsLost ||
+        hasClothingLost;
       const hasRewards = Object.entries(rewards).some(([key, value]) => {
-        if (key === "resourceLosses" || key === "villagersLost" || !value) {
+        if (
+          key === "resourceLosses" ||
+          key === "villagersLost" ||
+          key === "relicsLost" ||
+          key === "clothingLost" ||
+          !value
+        ) {
           return false;
         }
         if (typeof value === "number" && value > 0) {

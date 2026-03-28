@@ -3,7 +3,7 @@
  * Prefer importing from here instead of scattering literals across rules and UI.
  *
  * Exception: attack-wave **enemy** scaling (`cruelBonus` per wave) lives in
- * `eventsAttackWaves.ts` as `WAVE_PARAMS`, since those values are tied to each wave definition.
+ * `eventsAttackWaves.ts` as `ATTACK_WAVE_DEFINITIONS`, since those values are tied to each wave definition.
  */
 
 /** 0 in normal mode, 1 when cruel mode — multiplies `whenCruel` / cruel-only terms in formulas. */

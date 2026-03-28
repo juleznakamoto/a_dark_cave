@@ -53,7 +53,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
     timeProbability: 15,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 1 * 60 * 1000, // 3 minutes
+    timedTabDuration: 3 * 60 * 1000, // 3 minutes
     choices: (state: GameState): EventChoice[] => {
       // Filter for items the player actually owns
       const ownedItems = COLLECTOR_ITEMS.filter((itemId) => {

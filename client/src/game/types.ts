@@ -124,6 +124,7 @@ export interface CombatResultSummary {
   damagedBuildings?: string[];
   woundedFellows?: string[];
   silverReward?: number;
+  goldReward?: number;
 }
 
 /**

@@ -626,7 +626,7 @@ export const caveExploreActions: Record<string, Action> = {
     label: "Venture beyond Gate",
     expeditionVillagersRequired: () => 6,
     show_when: {
-      "story.seen.sixthWaveVictory": true,
+      "story.seen.tenthWaveVictory": true,
       "story.seen.encounteredBeyondPortal": false,
     },
     cost: {

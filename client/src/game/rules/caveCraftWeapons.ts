@@ -253,7 +253,7 @@ export const caveCraftWeapons: Record<string, Action> = {
       "weapons.frostglass_sword": true,
       "story.seen.hasFrostglassSword": true,
     },
-    executionTime: 60,
+    executionTime: 150,
     cooldown: 0,
   },
 
@@ -312,7 +312,7 @@ export const caveCraftWeapons: Record<string, Action> = {
       "weapons.bloodstone_staff": true,
       "story.seen.hasBloodstoneStaff": true,
     },
-    executionTime: 60,
+    executionTime: 150,
     cooldown: 0,
   },
 

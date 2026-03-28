@@ -2,68 +2,23 @@ import { useGameStore } from "@/game/state";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import { getAttackWavesChartRows } from "@/game/rules/eventsAttackWaves";
+import { TOTAL_ATTACK_WAVES } from "@/game/rules/attackWaveOrder";
 
 export default function AttackWavesChart() {
-  const { story, buildings, attackWaveTimers } = useGameStore();
-  const [timeRemaining, setTimeRemaining] = useState<Record<string, number>>({});
+  // Subscribe to slices that drive chart rows and timers; timer label ticks once per second.
+  const story = useGameStore((s) => s.story);
+  const buildings = useGameStore((s) => s.buildings);
+  const weapons = useGameStore((s) => s.weapons);
+  const attackWaveTimers = useGameStore((s) => s.attackWaveTimers);
+  const [, setTimerTick] = useState(0);
 
-  const waves = [
-    { 
-      id: "firstWave", 
-      name: "First Wave",
-      completed: story?.seen?.firstWaveVictory || false,
-      conditionMet: story.seen.portalBlasted && buildings.bastion,
-    },
-    { 
-      id: "secondWave", 
-      name: "Second Wave",
-      completed: story?.seen?.secondWaveVictory || false,
-      conditionMet: story?.seen?.firstWaveVictory,
-    },
-    { 
-      id: "thirdWave", 
-      name: "Third Wave",
-      completed: story?.seen?.thirdWaveVictory || false,
-      conditionMet: story?.seen?.wizardDecryptsScrolls && story?.seen?.secondWaveVictory,
-    },
-    { 
-      id: "fourthWave", 
-      name: "Fourth Wave",
-      completed: story?.seen?.fourthWaveVictory || false,
-      conditionMet: useGameStore.getState().weapons?.frostglass_sword && story?.seen?.thirdWaveVictory,
-    },
-    { 
-      id: "fifthWave", 
-      name: "Fifth Wave",
-      completed: story?.seen?.fifthWaveVictory || false,
-      conditionMet: story?.seen?.fourthWaveVictory,
-    },
-    { 
-      id: "sixthWave", 
-      name: "Sixth Wave",
-      completed: story?.seen?.sixthWaveVictory || false,
-      conditionMet: useGameStore.getState().weapons?.bloodstone_staff && story?.seen?.fifthWaveVictory,
-    },
-  ];
-
-  // Update timer display every second
   useEffect(() => {
-    const interval = setInterval(() => {
-      const newTimeRemaining: Record<string, number> = {};
-
-      Object.entries(attackWaveTimers || {}).forEach(([waveId, timer]) => {
-        if (!timer.defeated && timer.startTime > 0) {
-          const elapsed = timer.elapsedTime || 0;
-          const remaining = Math.max(0, timer.duration - elapsed);
-          newTimeRemaining[waveId] = remaining;
-        }
-      });
-
-      setTimeRemaining(newTimeRemaining);
-    }, 1000);
-
+    const interval = setInterval(() => setTimerTick((t) => t + 1), 1000);
     return () => clearInterval(interval);
-  }, [attackWaveTimers]);
+  }, []);
+
+  const waves = getAttackWavesChartRows({ story, buildings, weapons });
 
   const handleProvoke = async (waveId: string) => {
     const timer = attackWaveTimers?.[waveId];
@@ -71,8 +26,6 @@ export default function AttackWavesChart() {
     const remaining = timer ? Math.max(0, timer.duration - elapsed) : 0;
 
     if (timer && !timer.defeated && remaining > 0 && !timer.provoked) {
-
-      // Set the timer to expired and mark as provoked
       useGameStore.setState((state) => ({
         attackWaveTimers: {
           ...state.attackWaveTimers,
@@ -84,12 +37,7 @@ export default function AttackWavesChart() {
         },
       }));
 
-
-      // Check if event will be triggered
-      const state = useGameStore.getState();
-
-      // Trigger immediate save to persist provoked state
-      const { manualSave } = await import('@/game/loop');
+      const { manualSave } = await import("@/game/loop");
       await manualSave();
     }
   };
@@ -98,10 +46,9 @@ export default function AttackWavesChart() {
     if (ms <= 0) return "soon";
     const minutes = Math.floor(ms / 60000);
     const seconds = Math.floor((ms % 60000) / 1000);
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
 
-  // Helper to calculate remaining time synchronously
   const getTimeRemaining = (waveId: string): number => {
     const timer = attackWaveTimers?.[waveId];
     if (!timer || timer.defeated || timer.startTime <= 0) return 0;
@@ -110,23 +57,25 @@ export default function AttackWavesChart() {
     return Math.max(0, timer.duration - elapsed);
   };
 
-  // Find current active wave (first incomplete wave with condition met)
-  const activeWave = waves.find(wave => !wave.completed && wave.conditionMet);
+  const activeWave = waves.find((wave) => !wave.completed && wave.conditionMet);
 
-  // Only show if bastion exists
   const shouldShowChart = buildings.bastion || false;
 
   if (!shouldShowChart) {
     return null;
   }
 
-  // Find current wave index for progress bar
   const currentWaveIndex = waves.findIndex((wave) => !wave.completed);
-  const currentWave = currentWaveIndex === -1 ? 6 : currentWaveIndex;
-  const totalWaves = 6;
-  const completedWaves = currentWaveIndex === -1 ? 6 : currentWaveIndex;
+  const totalWaves = TOTAL_ATTACK_WAVES;
+  const completedWaves =
+    currentWaveIndex === -1 ? TOTAL_ATTACK_WAVES : currentWaveIndex;
   const allWavesCompleted = currentWaveIndex === -1;
-  const currentWavePercentage = allWavesCompleted ? 100 : ((completedWaves) / totalWaves) * 100;
+  const displayCurrentWave = allWavesCompleted
+    ? totalWaves
+    : currentWaveIndex + 1;
+  const currentWavePercentage = allWavesCompleted
+    ? 100
+    : (completedWaves / totalWaves) * 100;
 
   return (
     <div className="space-y-3">
@@ -135,13 +84,13 @@ export default function AttackWavesChart() {
           Attack Waves
         </span>
         <span className="text-xs text-muted-foreground">
-          {currentWave}/{totalWaves}
+          {displayCurrentWave}/{totalWaves}
         </span>
       </div>
       <Progress
         value={currentWavePercentage}
         className="h-2"
-        segments={6}
+        segments={TOTAL_ATTACK_WAVES}
         indicatorClassName="bg-orange-950"
       />
 
@@ -152,7 +101,7 @@ export default function AttackWavesChart() {
               {activeWave.name}
             </span>
             <span className="text-xs text-muted-foreground">
-              {attackWaveTimers?.[activeWave.id] 
+              {attackWaveTimers?.[activeWave.id]
                 ? formatTime(getTimeRemaining(activeWave.id))
                 : "It is calm, for now..."}
             </span>
@@ -164,18 +113,23 @@ export default function AttackWavesChart() {
               size="xs"
               className="w-19 hover:bg-background hover:text-foreground"
               button_id="provoke-attack"
-              disabled={attackWaveTimers[activeWave.id]?.provoked || getTimeRemaining(activeWave.id) <= 0}
+              disabled={
+                attackWaveTimers[activeWave.id]?.provoked ||
+                getTimeRemaining(activeWave.id) <= 0
+              }
             >
               Provoke
             </Button>
           )}
         </div>
-      ) : currentWave < totalWaves && (
-        <div>
-          <span className="text-xs italic text-muted-foreground">
-            It is calm, for now...
-          </span>
-        </div>
+      ) : (
+        !allWavesCompleted && (
+          <div>
+            <span className="text-xs italic text-muted-foreground">
+              It is calm, for now...
+            </span>
+          </div>
+        )
       )}
     </div>
   );

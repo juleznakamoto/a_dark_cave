@@ -35,6 +35,7 @@ import {
   resolveGamblerSessionForHydrate,
   type GamblerDiceSession,
 } from "@/game/gamblerSession";
+import { formatNumber } from "@/lib/utils";
 
 const DICE_FACES = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"] as const;
 const SPIN_FACES = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
@@ -579,7 +580,7 @@ export default function GamblerDiceDialog({
                       : "Place your bet."}
                 </p>
                 <p>
-                  {gamesRemainingDisplay} of {totalGamesThisVisit} games
+                  {formatNumber(gamesRemainingDisplay)} of {formatNumber(totalGamesThisVisit)} games
                   remaining.
                 </p>
               </div>
@@ -611,7 +612,7 @@ export default function GamblerDiceDialog({
                         className={`text-xs ${!isUnlocked ? "opacity-40" : ""}`}
                         button_id={`gambler-wager-${tier}`}
                       >
-                        {tier} Gold
+                        {formatNumber(tier)} Gold
                       </Button>
                     );
 
@@ -658,13 +659,13 @@ export default function GamblerDiceDialog({
                   <span className="font-semibold text-foreground tabular-nums">
                     {wager === 0
                       ? "Practice (0 Gold)"
-                      : `${wager} Gold`}
+                      : `${formatNumber(wager)} Gold`}
                   </span>
                 </span>
                 <span>
                   Goal:{" "}
                   <span className="font-semibold text-foreground tabular-nums">
-                    {goal}
+                    {formatNumber(goal)}
                   </span>
                 </span>
               </div>
@@ -681,7 +682,7 @@ export default function GamblerDiceDialog({
                       className="text-2xl font-bold tabular-nums"
                       data-testid="player-running-total"
                     >
-                      {playerTotal}
+                      {formatNumber(playerTotal)}
                     </div>
                     <div className="h-10 flex items-center justify-center">
                       <DiceFace value={playerLastRoll} spinning={spinning} />
@@ -697,7 +698,7 @@ export default function GamblerDiceDialog({
                       className="text-2xl font-bold tabular-nums"
                       data-testid="gambler-running-total"
                     >
-                      {npcTotal}
+                      {formatNumber(npcTotal)}
                     </div>
                     <div className="h-10 flex items-center justify-center">
                       <DiceFace value={npcLastRoll} spinning={npcSpinning} />
@@ -758,13 +759,13 @@ export default function GamblerDiceDialog({
                   <span className="font-semibold text-foreground tabular-nums">
                     {wager === 0
                       ? "Practice (0 Gold)"
-                      : `${wager} Gold`}
+                      : `${formatNumber(wager)} Gold`}
                   </span>
                 </span>
                 <span>
                   Goal:{" "}
                   <span className="font-semibold text-foreground tabular-nums">
-                    {goal}
+                    {formatNumber(goal)}
                   </span>
                 </span>
               </div>
@@ -775,7 +776,7 @@ export default function GamblerDiceDialog({
                   <div
                     className={`text-2xl font-bold ${playerTotal > goal ? "text-red-400" : ""}`}
                   >
-                    {playerTotal}
+                    {formatNumber(playerTotal)}
                   </div>
                 </div>
                 <div className="text-center space-y-1">
@@ -783,7 +784,7 @@ export default function GamblerDiceDialog({
                   <div
                     className={`text-2xl font-bold ${npcTotal > goal ? "text-red-400" : ""}`}
                   >
-                    {npcTotal}
+                    {formatNumber(npcTotal)}
                   </div>
                 </div>
               </div>
@@ -806,8 +807,8 @@ export default function GamblerDiceDialog({
                   {wager === 0
                     ? "Practice round. No gold won or lost."
                     : outcome === "win"
-                      ? `+${wager} Gold`
-                      : `-${wager} Gold`}
+                      ? `+${formatNumber(wager)} Gold`
+                      : `-${formatNumber(wager)} Gold`}
                 </div>
               </div>
 

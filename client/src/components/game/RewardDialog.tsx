@@ -1,5 +1,6 @@
 import React from "react";
 import { GameState } from "@shared/schema";
+import { formatNumber } from "@/lib/utils";
 import OutcomeDialog from "./OutcomeDialog";
 
 interface RewardDialogData {
@@ -11,7 +12,9 @@ interface RewardDialogData {
     tools?: (keyof GameState["tools"])[];
     weapons?: (keyof GameState["weapons"])[];
     clothing?: (keyof GameState["clothing"])[];
+    clothingLost?: (keyof GameState["clothing"])[];
     relics?: (keyof GameState["relics"])[];
+    relicsLost?: (keyof GameState["relics"])[];
     blessings?: (keyof GameState["blessings"])[];
     books?: (keyof GameState["books"])[];
     schematics?: (keyof GameState["schematics"])[];
@@ -59,7 +62,7 @@ export default function RewardDialog({
       if (stat === "madness" || stat === "madnessFromEvents") return;
       rewardItems.push(
         <div key={`stat-${stat}`} className="text-sm text-foreground">
-          +{amount} {formatName(stat)}
+          +{formatNumber(amount)} {formatName(stat)}
         </div>
       );
     });
@@ -67,7 +70,8 @@ export default function RewardDialog({
   if (typeof rewards.populationGained === "number" && rewards.populationGained > 0) {
     rewardItems.push(
       <div key="population-gained" className="text-sm text-foreground">
-        +{rewards.populationGained} {rewards.populationGained === 1 ? "Villager" : "Villagers"}
+        +{formatNumber(rewards.populationGained)}{" "}
+        {rewards.populationGained === 1 ? "Villager" : "Villagers"}
       </div>
     );
   }
@@ -148,7 +152,7 @@ export default function RewardDialog({
       const amount = rewards.resources![resource as keyof typeof rewards.resources];
       rewardItems.push(
         <div key={`resource-${resource}`} className="text-sm text-foreground">
-          {amount} {formatName(resource)}
+          {formatNumber(amount!)} {formatName(resource)}
         </div>
       );
     });
@@ -158,7 +162,8 @@ export default function RewardDialog({
   if (typeof rewards.villagersLost === "number" && rewards.villagersLost > 0) {
     lossItems.push(
       <div key="villagers-lost" className="text-sm text-foreground">
-        -{rewards.villagersLost} {rewards.villagersLost === 1 ? "Villager" : "Villagers"}
+        -{formatNumber(rewards.villagersLost)}{" "}
+        {rewards.villagersLost === 1 ? "Villager" : "Villagers"}
       </div>
     );
   }
@@ -167,7 +172,25 @@ export default function RewardDialog({
       const amount = rewards.resourceLosses![resource as keyof typeof rewards.resourceLosses];
       lossItems.push(
         <div key={`resource-loss-${resource}`} className="text-sm text-foreground">
-          -{amount} {formatName(resource)}
+          -{formatNumber(amount!)} {formatName(resource)}
+        </div>
+      );
+    });
+  }
+  if (rewards.relicsLost?.length) {
+    rewards.relicsLost.forEach((relic) => {
+      lossItems.push(
+        <div key={`relic-lost-${relic}`} className="text-sm text-foreground">
+          -{formatName(relic)}
+        </div>
+      );
+    });
+  }
+  if (rewards.clothingLost?.length) {
+    rewards.clothingLost.forEach((clothing) => {
+      lossItems.push(
+        <div key={`clothing-lost-${clothing}`} className="text-sm text-foreground">
+          -{formatName(clothing)}
         </div>
       );
     });

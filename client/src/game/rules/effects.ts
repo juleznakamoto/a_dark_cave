@@ -543,7 +543,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     description: "Blade forged from frostglass, radiating cold power",
     bonuses: {
       generalBonuses: {
-        strength: 30,
+        strength: 35,
       },
     },
   },
@@ -554,7 +554,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     description: "Staff crowned with bloodstone, pulsing with dark energy",
     bonuses: {
       generalBonuses: {
-        strength: 5,
+        strength: 10,
         knowledge: 30,
       },
     },
