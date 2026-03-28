@@ -31,8 +31,21 @@ import {
   ACTION_TO_UPGRADE_KEY,
   PRIOR_ELIGIBLE_ACTIONS,
   getUpgradeLevel,
+  priorUsesMidpointGains,
   type UpgradeKey,
 } from "@/game/buttonUpgrades";
+import type { GameState } from "@shared/schema";
+
+function getInkwardenHighlightResources(
+  actionId: string,
+  state: GameState,
+): string[] {
+  const r = getResourcesFromActionCost(actionId, state);
+  if (priorUsesMidpointGains(state, actionId) && !r.includes("food")) {
+    r.push("food");
+  }
+  return r;
+}
 import { getCraftProduceAmount } from "@/game/craftUpgradeUtils";
 import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
 
@@ -399,8 +412,9 @@ export default function CavePanel() {
           }
           onMouseEnter={() => {
             if (state.buildings.inkwardenAcademy > 0) {
-              const resources = getResourcesFromActionCost(actionId, state);
-              setHighlightedResources(resources);
+              setHighlightedResources(
+                getInkwardenHighlightResources(actionId, state),
+              );
             }
           }}
           onMouseLeave={() => {
@@ -452,13 +466,14 @@ export default function CavePanel() {
         }
         onMouseEnter={() => {
           if (state.buildings.inkwardenAcademy > 0) {
-            const resources = getResourcesFromActionCost(actionId, state);
-            setHighlightedResources(new Set(resources));
+            setHighlightedResources(
+              getInkwardenHighlightResources(actionId, state),
+            );
           }
         }}
         onMouseLeave={() => {
           if (state.buildings.inkwardenAcademy > 0) {
-            setHighlightedResources(new Set());
+            setHighlightedResources([]);
           }
         }}
         style={{ pointerEvents: "auto" }}
@@ -482,22 +497,66 @@ export default function CavePanel() {
 
   return (
     <>
-    <ScrollArea className="h-full w-full">
-      {explosionEffect.ExplosionEffectRenderer()}
-      <div className="space-y-4 mt-2 mb-2 pl-[3px] pr-[3px]">
-        {actionGroups.map((group, groupIndex) => {
-          // Handle groups with subGroups (like Craft)
-          if (group.subGroups) {
-            const hasAnyVisibleActions = group.subGroups.some((subGroup) =>
-              subGroup.actions.some((action) => {
-                if (action.showWhen !== undefined) {
-                  return action.showWhen;
-                }
-                return shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id];
-              }),
-            );
+      <ScrollArea className="h-full w-full">
+        {explosionEffect.ExplosionEffectRenderer()}
+        <div className="space-y-4 mt-2 mb-2 pl-[3px] pr-[3px]">
+          {actionGroups.map((group, groupIndex) => {
+            // Handle groups with subGroups (like Craft)
+            if (group.subGroups) {
+              const hasAnyVisibleActions = group.subGroups.some((subGroup) =>
+                subGroup.actions.some((action) => {
+                  if (action.showWhen !== undefined) {
+                    return action.showWhen;
+                  }
+                  return shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id];
+                }),
+              );
 
-            if (!hasAnyVisibleActions) return null;
+              if (!hasAnyVisibleActions) return null;
+
+              return (
+                <div key={groupIndex} className="space-y-2">
+                  {group.title && (
+                    <h3 className="text-xs font-medium text-foreground">
+                      {group.title}
+                    </h3>
+                  )}
+                  {group.subGroups.map((subGroup, subGroupIndex) => {
+                    const visibleActions = subGroup.actions.filter((action) => {
+                      if (action.showWhen !== undefined) {
+                        return action.showWhen;
+                      }
+                      return shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id];
+                    });
+
+                    if (visibleActions.length === 0) return null;
+
+                    return (
+                      <div className="w-full md:max-w-96">
+
+                        <div key={subGroupIndex} className="flex flex-wrap gap-2">
+                          {visibleActions.map((action) =>
+                            renderButton(action.id, action.label),
+                          )}
+                        </div>                    </div>
+
+                    );
+                  })}
+                </div>
+              );
+            }
+
+            // Handle regular groups (like Explore, Mine)
+            const visibleActions = group.actions.filter((action) => {
+              // Handle custom show conditions
+              if (action.showWhen !== undefined) {
+                return action.showWhen;
+              }
+              // Use standard shouldShowAction for others, or keep visible if executing
+              return shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id];
+            });
+
+            if (visibleActions.length === 0) return null;
 
             return (
               <div key={groupIndex} className="space-y-2">
@@ -506,62 +565,18 @@ export default function CavePanel() {
                     {group.title}
                   </h3>
                 )}
-                {group.subGroups.map((subGroup, subGroupIndex) => {
-                  const visibleActions = subGroup.actions.filter((action) => {
-                    if (action.showWhen !== undefined) {
-                      return action.showWhen;
-                    }
-                    return shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id];
-                  });
-
-                  if (visibleActions.length === 0) return null;
-
-                  return (
-                    <div className="w-full md:max-w-96">
-
-                    <div key={subGroupIndex} className="flex flex-wrap gap-2">
-                      {visibleActions.map((action) =>
-                        renderButton(action.id, action.label),
-                      )}
-                    </div>                    </div>
-
-                  );
-                })}
-              </div>
-            );
-          }
-
-          // Handle regular groups (like Explore, Mine)
-          const visibleActions = group.actions.filter((action) => {
-            // Handle custom show conditions
-            if (action.showWhen !== undefined) {
-              return action.showWhen;
-            }
-            // Use standard shouldShowAction for others, or keep visible if executing
-            return shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id];
-          });
-
-          if (visibleActions.length === 0) return null;
-
-          return (
-            <div key={groupIndex} className="space-y-2">
-              {group.title && (
-                <h3 className="text-xs font-medium text-foreground">
-                  {group.title}
-                </h3>
-              )}
                 <div className="flex flex-wrap gap-2">
                   {visibleActions.map((action) =>
                     renderButton(action.id, action.label),
                   )}
                 </div>
-            </div>
-          );
-        })}
-      </div>
-      <ScrollBar orientation="vertical" />
-    </ScrollArea>
-    <BubblyButtonGlobalPortal bubbles={[...craftBubbles, ...mineBubbles, ...exploreBubbles, ...chopWoodBubbles]} />
+              </div>
+            );
+          })}
+        </div>
+        <ScrollBar orientation="vertical" />
+      </ScrollArea>
+      <BubblyButtonGlobalPortal bubbles={[...craftBubbles, ...mineBubbles, ...exploreBubbles, ...chopWoodBubbles]} />
     </>
   );
 }

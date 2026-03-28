@@ -13,7 +13,23 @@ import CooldownButton from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
 import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
-import { ACTION_TO_UPGRADE_KEY, PRIOR_ELIGIBLE_ACTIONS } from "@/game/buttonUpgrades";
+import {
+  ACTION_TO_UPGRADE_KEY,
+  PRIOR_ELIGIBLE_ACTIONS,
+  priorUsesMidpointGains,
+} from "@/game/buttonUpgrades";
+import type { GameState } from "@shared/schema";
+
+function getInkwardenHighlightResources(
+  actionId: string,
+  state: GameState,
+): string[] {
+  const r = getResourcesFromActionCost(actionId, state);
+  if (priorUsesMidpointGains(state, actionId) && !r.includes("food")) {
+    r.push("food");
+  }
+  return r;
+}
 import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
 import {
   BubblyButtonGlobalPortal,
@@ -408,16 +424,22 @@ export default function ForestPanel() {
                 }
               } else {
                 // For non-trade actions, use existing logic
-                const actionResources = getResourcesFromActionCost(actionId, state);
-                resources.push(...actionResources);
+                resources.push(...getInkwardenHighlightResources(actionId, state));
               }
 
-              setHighlightedResources(new Set(resources));
+              if (
+                priorUsesMidpointGains(state, actionId) &&
+                !resources.includes("food")
+              ) {
+                resources.push("food");
+              }
+
+              setHighlightedResources(resources);
             }
           }}
           onMouseLeave={() => {
             if (state.buildings.inkwardenAcademy > 0) {
-              setHighlightedResources(new Set());
+              setHighlightedResources([]);
             }
           }}
           style={{ pointerEvents: 'auto' }}
@@ -455,13 +477,14 @@ export default function ForestPanel() {
         }
         onMouseEnter={() => {
           if (state.buildings.inkwardenAcademy > 0) {
-            const resources = getResourcesFromActionCost(actionId, state);
-            setHighlightedResources(new Set(resources));
+            setHighlightedResources(
+              getInkwardenHighlightResources(actionId, state),
+            );
           }
         }}
         onMouseLeave={() => {
           if (state.buildings.inkwardenAcademy > 0) {
-            setHighlightedResources(new Set());
+            setHighlightedResources([]);
           }
         }}
         style={{ pointerEvents: 'auto' }}

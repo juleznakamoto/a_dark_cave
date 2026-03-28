@@ -15,7 +15,10 @@ import { formatSaveTimestamp } from "@/lib/utils";
 import { gameActions, canExecuteAction, shouldShowAction } from "./rules";
 import { getResourceLimit, isResourceLimited } from "./resourceLimits";
 import { getPriorActionSuccessor } from "./buttonUpgrades";
-import { DISGRACED_PRIOR_UPGRADES } from "./rules/skillUpgrades";
+import {
+  DISGRACED_PRIOR_UPGRADES,
+  DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION,
+} from "./rules/skillUpgrades";
 import { CRUEL_MODE, cruelModeScale } from "./cruelMode";
 
 let gameLoopId: number | null = null;
@@ -38,6 +41,10 @@ function canPriorExecute(actionId: string, state: GameState): boolean {
   if (now - (priorLastCompleted.get(actionId) ?? 0) < PRIOR_EXECUTION_GAP_MS) return false;
   // Never re-trigger while this action is still executing.
   if ((state as any).executionStartTimes?.[actionId]) return false;
+
+  if ((state.resources?.food ?? 0) < DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION) {
+    return false;
+  }
 
   // Don't execute actions that are no longer visible (e.g. superseded by a tool upgrade).
   // Without this check, the Prior drains resources for a hidden action indefinitely because
@@ -673,7 +680,7 @@ function processTick() {
   // a full storage cap resume automatically once storage frees up.
   // Note: processTick is not called during events (eventDialog.isOpen) or sleep
   // (idleModeState?.isActive) — the outer loop returns early in those cases.
-  const freshState = useGameStore.getState();
+  let freshState = useGameStore.getState();
   if (freshState.fellowship?.disgraced_prior) {
     const assigned = freshState.priorAssignedActions ?? [];
 
@@ -701,9 +708,10 @@ function processTick() {
     }
 
     for (const actionId of toExecute) {
+      freshState = useGameStore.getState();
       const isReadyNow = (freshState.cooldowns[actionId] ?? 0) === 0;
       if (isReadyNow && canPriorExecute(actionId, freshState as unknown as GameState)) {
-        freshState.executeAction(actionId);
+        freshState.executeAction(actionId, { priorInvocation: true });
         const afterExecution = useGameStore.getState();
         if (afterExecution.executionStartTimes?.[actionId]) {
           priorInFlightExecutions.add(actionId);

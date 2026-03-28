@@ -24,6 +24,7 @@ import {
   SLEEP_INTENSITY_UPGRADES,
   CROWS_EYE_UPGRADES,
   DISGRACED_PRIOR_UPGRADES,
+  DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION,
 } from "@/game/rules/skillUpgrades";
 import { focusTooltip } from "@/game/rules/tooltips";
 import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
@@ -651,14 +652,14 @@ export default function EstatePanel() {
                       <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].bones - HUNTING_SKILL_UPGRADES[huntingSkills.level].bones} Bones per Hunter</div>
                     )}
                     {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]?.huntBonus > HUNTING_SKILL_UPGRADES[huntingSkills.level]?.huntBonus && (
-                      <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].huntBonus - HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus}% Hunt bonus</div>
+                      <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].huntBonus - HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus}% Hunt Bonus</div>
                     )}
                   </>}
                   description={[
-                    `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus}% hunt bonus`,
-                    HUNTING_SKILL_UPGRADES[huntingSkills.level].food > 0 && `hunter: +${HUNTING_SKILL_UPGRADES[huntingSkills.level].food} food`,
-                    HUNTING_SKILL_UPGRADES[huntingSkills.level].fur > 0 && `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].fur} fur`,
-                    HUNTING_SKILL_UPGRADES[huntingSkills.level].bones > 0 && `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].bones} bones`,
+                    `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus}% Hunt Bonus`,
+                    HUNTING_SKILL_UPGRADES[huntingSkills.level].food > 0 && `Hunter: +${HUNTING_SKILL_UPGRADES[huntingSkills.level].food} Food`,
+                    HUNTING_SKILL_UPGRADES[huntingSkills.level].fur > 0 && `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].fur} Fur`,
+                    HUNTING_SKILL_UPGRADES[huntingSkills.level].bones > 0 && `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].bones} Bones`,
                   ].filter(Boolean).join(", ")}
                 />
               )}
@@ -675,13 +676,13 @@ export default function EstatePanel() {
                   onUpgrade={handleCrushingStrikeUpgrade}
                   tooltipContent={<>
                     {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1]?.damage > CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]?.damage && (
-                      <div>+{CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].damage - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].damage} damage</div>
+                      <div>+{CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].damage - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].damage} Damage</div>
                     )}
                     {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1]?.stunRounds > CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]?.stunRounds && (
-                      <div>+{CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].stunRounds - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds} stun round</div>
+                      <div>+{CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].stunRounds - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds} Stun Round</div>
                     )}
                   </>}
-                  description={`${CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].damage} damage, ${CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds} round${CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds > 1 ? "s" : ""} stun`}
+                  description={`${CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].damage} Damage, ${CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds} Round${CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds > 1 ? "s" : ""} Stun`}
                 />
               )}
 
@@ -700,12 +701,12 @@ export default function EstatePanel() {
                     buttonId="upgrade-bloodflame-sphere"
                     onUpgrade={handleBloodflameSphereUpgrade}
                     tooltipContent={<>
-                      {nxt?.damage > cur?.damage && <div>+{nxt.damage - cur.damage} damage</div>}
-                      {nxt?.burnDamage > cur?.burnDamage && <div>+{nxt.burnDamage - cur.burnDamage} burn damage</div>}
-                      {nxt?.burnRounds > cur?.burnRounds && <div>+{nxt.burnRounds - cur.burnRounds} burn round</div>}
-                      {nxt?.healthCost > cur?.healthCost && <div>+{nxt.healthCost - cur.healthCost} health cost</div>}
+                      {nxt?.damage > cur?.damage && <div>+{nxt.damage - cur.damage} Damage</div>}
+                      {nxt?.burnDamage > cur?.burnDamage && <div>+{nxt.burnDamage - cur.burnDamage} Burn Damage</div>}
+                      {nxt?.burnRounds > cur?.burnRounds && <div>+{nxt.burnRounds - cur.burnRounds} Burn Round</div>}
+                      {nxt?.healthCost > cur?.healthCost && <div>+{nxt.healthCost - cur.healthCost} Health Cost</div>}
                     </>}
-                    description={`${cur.damage} damage, ${cur.burnDamage} burn damage x ${cur.burnRounds} round${cur.burnRounds > 1 ? "s" : ""}, ${cur.healthCost} health cost`}
+                    description={`${cur.damage} Damage, ${cur.burnDamage} Burn Damage × ${cur.burnRounds} Round${cur.burnRounds > 1 ? "s" : ""}, ${cur.healthCost} Health Cost`}
                   />
                 );
               })()}
@@ -724,8 +725,8 @@ export default function EstatePanel() {
                     tooltipId="upgrade-crows-eye-button"
                     buttonId="upgrade-crows-eye"
                     onUpgrade={handleCrowsEyeUpgrade}
-                    tooltipContent={<div>+{nxt?.doubleChance - cur?.doubleChance}% double gain chance</div>}
-                    description={`${cur.doubleChance}% chance to double gains from actions`}
+                    tooltipContent={<div>+{nxt?.doubleChance - cur?.doubleChance}% Double Gain chance</div>}
+                    description={`${cur.doubleChance}% chance to double Gains from actions`}
                   />
                 );
               })()}
@@ -739,13 +740,14 @@ export default function EstatePanel() {
                 const bonusPercent = nxt ? (nxt.rewardMultiplier - 1) * 100 : 0;
                 const tooltipContent = nxt ? (
                   actionDelta > 0
-                    ? <div>+{actionDelta} concurrent action{actionDelta > 1 ? "s" : ""}</div>
-                    : <div>+{bonusPercent}% bonus on assigned actions</div>
+                    ? <div>+{actionDelta} concurrent Action{actionDelta > 1 ? "s" : ""}</div>
+                    : <div>+{bonusPercent}% Bonus on assigned actions</div>
                 ) : <div>Max level</div>;
                 const curBonusPercent = (cur.rewardMultiplier - 1) * 100;
-                const description = curBonusPercent > 0
-                  ? `${cur.maxActions} action${cur.maxActions > 1 ? "s" : ""}, +${curBonusPercent}% bonus`
-                  : `${cur.maxActions} concurrent action${cur.maxActions > 1 ? "s" : ""}`;
+                const foodLine = `, ${DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION} Food per assigned action per cycle`;
+                const description = (curBonusPercent > 0
+                  ? `${cur.maxActions} Action${cur.maxActions > 1 ? "s" : ""}, +${curBonusPercent}% Bonus`
+                  : `${cur.maxActions} concurrent Action${cur.maxActions > 1 ? "s" : ""}`) + foodLine;
                 return (
                   <SkillUpgradeRow
                     title="Disgraced Prior"

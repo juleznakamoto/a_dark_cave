@@ -1533,7 +1533,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildFurTents: {
     id: "buildFurTents",
     label: "Fur Tent",
-    description: "Warm fur shelter learned from the wandering tribe",
+    description: "Warm fur shelter used by the wandering tribe",
     tooltipEffects: (state: GameState) => {
       const count = state.buildings.furTents || 0;
       const totalPopulation = count * 4;

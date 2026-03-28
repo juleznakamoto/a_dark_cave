@@ -27,21 +27,21 @@ export interface UpgradeLevel {
   label?: string; // Optional label for display
 }
 
-export const MAX_UPGRADE_LEVEL =   10;
+export const MAX_UPGRADE_LEVEL = 10;
 
 // Mining upgrade levels (faster progression)
 export const MINE_UPGRADE_LEVELS: UpgradeLevel[] = [
-  { level: 0, clicksRequired: 0, bonus: 0},
-  { level: 1, clicksRequired: 10, bonus: 10},
-  { level: 2, clicksRequired: 25, bonus: 25},
-  { level: 3, clicksRequired: 45, bonus: 50},
-  { level: 4, clicksRequired: 70, bonus: 75},
-  { level: 5, clicksRequired: 100, bonus: 100},
-  { level: 6, clicksRequired: 135, bonus: 125},
-  { level: 7, clicksRequired: 175, bonus: 150},
-  { level: 8, clicksRequired: 220, bonus: 175},
-  { level: 9, clicksRequired: 270, bonus: 200},
-  { level: 10, clicksRequired: 325, bonus: 225},
+  { level: 0, clicksRequired: 0, bonus: 0 },
+  { level: 1, clicksRequired: 10, bonus: 10 },
+  { level: 2, clicksRequired: 25, bonus: 25 },
+  { level: 3, clicksRequired: 45, bonus: 50 },
+  { level: 4, clicksRequired: 70, bonus: 75 },
+  { level: 5, clicksRequired: 100, bonus: 100 },
+  { level: 6, clicksRequired: 135, bonus: 125 },
+  { level: 7, clicksRequired: 175, bonus: 150 },
+  { level: 8, clicksRequired: 220, bonus: 175 },
+  { level: 9, clicksRequired: 270, bonus: 200 },
+  { level: 10, clicksRequired: 325, bonus: 225 },
 ];
 
 // Hunt upgrade levels
@@ -61,32 +61,32 @@ export const HUNT_UPGRADE_LEVELS: UpgradeLevel[] = [
 
 // Chop wood upgrade levels
 export const CHOP_WOOD_UPGRADE_LEVELS: UpgradeLevel[] = [
-  { level: 0, clicksRequired: 0, bonus: 0},
-  { level: 1, clicksRequired: 25, bonus: 10},
-  { level: 2, clicksRequired: 50, bonus: 25},
-  { level: 3, clicksRequired: 100, bonus: 50},
-  { level: 4, clicksRequired: 250, bonus: 75},
-  { level: 5, clicksRequired: 450, bonus: 100},
-  { level: 6, clicksRequired: 700, bonus: 125},
-  { level: 7, clicksRequired: 1000, bonus: 150},
-  { level: 8, clicksRequired: 1350, bonus: 175},
-  { level: 9, clicksRequired: 1750, bonus: 200},
-  { level: 10, clicksRequired: 2200, bonus: 225},
+  { level: 0, clicksRequired: 0, bonus: 0 },
+  { level: 1, clicksRequired: 25, bonus: 10 },
+  { level: 2, clicksRequired: 50, bonus: 25 },
+  { level: 3, clicksRequired: 100, bonus: 50 },
+  { level: 4, clicksRequired: 250, bonus: 75 },
+  { level: 5, clicksRequired: 450, bonus: 100 },
+  { level: 6, clicksRequired: 700, bonus: 125 },
+  { level: 7, clicksRequired: 1000, bonus: 150 },
+  { level: 8, clicksRequired: 1350, bonus: 175 },
+  { level: 9, clicksRequired: 1750, bonus: 200 },
+  { level: 10, clicksRequired: 2200, bonus: 225 },
 ];
 
 // Cave explore upgrade levels
 export const CAVE_EXPLORE_UPGRADE_LEVELS: UpgradeLevel[] = [
-  { level: 0, clicksRequired: 0, bonus: 0},
-  { level: 1, clicksRequired: 10, bonus: 10},
-  { level: 2, clicksRequired: 22, bonus: 20},
-  { level: 3, clicksRequired: 36, bonus: 30},
-  { level: 4, clicksRequired: 52, bonus: 40},
-  { level: 5, clicksRequired: 70, bonus: 50},
-  { level: 6, clicksRequired: 90, bonus: 60},
-  { level: 7, clicksRequired: 112, bonus: 70},
-  { level: 8, clicksRequired: 136, bonus: 80},
-  { level: 9, clicksRequired: 162, bonus: 90},
-  { level: 10, clicksRequired: 190, bonus: 100},
+  { level: 0, clicksRequired: 0, bonus: 0 },
+  { level: 1, clicksRequired: 10, bonus: 10 },
+  { level: 2, clicksRequired: 22, bonus: 20 },
+  { level: 3, clicksRequired: 36, bonus: 30 },
+  { level: 4, clicksRequired: 52, bonus: 40 },
+  { level: 5, clicksRequired: 70, bonus: 50 },
+  { level: 6, clicksRequired: 90, bonus: 60 },
+  { level: 7, clicksRequired: 112, bonus: 70 },
+  { level: 8, clicksRequired: 136, bonus: 80 },
+  { level: 9, clicksRequired: 162, bonus: 90 },
+  { level: 10, clicksRequired: 190, bonus: 100 },
 ];
 
 // Craft torches upgrade levels (cost/gain scale by 1+level; level 10 halves execution time)
@@ -132,7 +132,16 @@ export function getUpgradeLevelsForKey(key: UpgradeKey): UpgradeLevel[] {
   if (key === "chopWood") {
     return CHOP_WOOD_UPGRADE_LEVELS;
   }
-  if (key === "caveExplore") {
+  const caveExploreKeys: UpgradeKey[] = [
+    "exploreCave",
+    "ventureDeeper",
+    "descendFurther",
+    "exploreRuins",
+    "exploreTemple",
+    "exploreCitadel",
+    "caveExplore",
+  ];
+  if (caveExploreKeys.includes(key)) {
     return CAVE_EXPLORE_UPGRADE_LEVELS;
   }
   if (key === "craftTorches") {
@@ -141,6 +150,7 @@ export function getUpgradeLevelsForKey(key: UpgradeKey): UpgradeLevel[] {
   if (key === "craftBoneTotems" || key === "craftLeatherTotems") {
     return CRAFT_TOTEM_UPGRADE_LEVELS;
   }
+  throw new Error(`Unknown upgrade key: ${String(key)}`);
 }
 
 export const UPGRADE_LABELS: Record<UpgradeKey, string> = {
@@ -188,6 +198,17 @@ export const PRIOR_ELIGIBLE_ACTIONS = new Set<string>([
   "craftAshfireBomb",
   "craftVoidBomb",
 ]);
+
+/** Disgraced Prior: assigned actions use midpoint of random resource ranges (gameplay + tooltips). */
+export function priorUsesMidpointGains(
+  state: GameState,
+  actionId: string,
+): boolean {
+  return !!(
+    state.fellowship?.disgraced_prior &&
+    (state.priorAssignedActions ?? []).includes(actionId)
+  );
+}
 
 /**
  * Upgrade chains for Prior-eligible actions.

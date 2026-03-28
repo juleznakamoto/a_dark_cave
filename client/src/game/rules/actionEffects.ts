@@ -11,6 +11,7 @@ import {
 import {
   getUpgradeBonusMultiplier,
   ACTION_TO_UPGRADE_KEY,
+  priorUsesMidpointGains,
 } from "../buttonUpgrades";
 import { getNextBuildingLevel } from "./villageBuildActions";
 import { calculateAdjustedCost } from "./costCalculation";
@@ -172,6 +173,18 @@ export function applyActionCostsOnly(actionId: string, state: GameState): Partia
   }
 
   return updates;
+}
+
+function rollResourceGain(
+  min: number,
+  max: number,
+  state: GameState,
+  actionId: string,
+): number {
+  if (priorUsesMidpointGains(state, actionId)) {
+    return Math.floor((min + max) / 2);
+  }
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 // Main export: applyActionEffects
@@ -366,8 +379,7 @@ export function applyActionEffects(
             }
 
             // Generate and assign the random value for sacrifice actions
-            const baseAmount =
-              Math.floor(Math.random() * (max - min + 1)) + min;
+            const baseAmount = rollResourceGain(min, max, state, actionId);
             const originalAmount =
               state.resources[finalKey as keyof typeof state.resources] || 0;
             current[finalKey] = originalAmount + baseAmount;
@@ -431,8 +443,7 @@ export function applyActionEffects(
               max = Math.floor(max * 2);
             }
 
-            const baseAmount =
-              Math.floor(Math.random() * (max - min + 1)) + min;
+            const baseAmount = rollResourceGain(min, max, state, actionId);
             const originalAmount =
               state.resources[finalKey as keyof typeof state.resources] || 0;
             current[finalKey] = originalAmount + baseAmount;
@@ -551,15 +562,17 @@ export function applyActionEffects(
                 max = Math.floor(max * 2);
               }
 
-              const randomAmount =
-                Math.floor(Math.random() * (max - min + 1)) + min;
+              const rolledAmount =
+                pathParts[0] === "resources"
+                  ? rollResourceGain(min, max, state, actionId)
+                  : Math.floor(Math.random() * (max - min + 1)) + min;
 
               if (pathParts[0] === "resources") {
                 current[finalKey] =
                   (state.resources[finalKey as keyof typeof state.resources] ||
-                    0) + randomAmount;
+                    0) + rolledAmount;
               } else {
-                current[finalKey] = randomAmount;
+                current[finalKey] = rolledAmount;
               }
             }
           } else if (typeof probabilityEffect.value === "number") {

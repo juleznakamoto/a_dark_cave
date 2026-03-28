@@ -15,6 +15,7 @@ import {
 import { formatNumber } from "@/lib/utils";
 import type { TooltipConfig } from "@/game/types";
 import { getMaxBombLimit, isBombAtLimit } from "@/game/resourceLimits";
+import { priorUsesMidpointGains } from "@/game/buttonUpgrades";
 
 const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
@@ -35,6 +36,19 @@ const FOCUS_ELIGIBLE_ACTIONS = [
 
 // Re-export for convenience
 export type { TooltipConfig } from "@/game/types";
+
+function collapsePriorMidpoint(
+  state: GameState,
+  actionId: string,
+  min: number,
+  max: number,
+): { min: number; max: number } {
+  if (priorUsesMidpointGains(state, actionId) && min !== max) {
+    const mid = Math.floor((min + max) / 2);
+    return { min: mid, max: mid };
+  }
+  return { min, max };
+}
 
 // Helper function to calculate resource gains and costs (for tests and tooltips)
 export const calculateResourceGains = (
@@ -140,13 +154,19 @@ export const calculateResourceGains = (
               max += flatBonus;
             }
 
-            gains.push({ resource, min, max });
+            const collapsed = collapsePriorMidpoint(state, actionId, min, max);
+            gains.push({ resource, min: collapsed.min, max: collapsed.max });
 
             if (
               actionId === "boneTotems" &&
               (state.buildings?.consecratedPaleCross || 0) >= 1
             ) {
-              gains.push({ resource: "gold", min: 50, max: 100 });
+              const goldRange = collapsePriorMidpoint(state, actionId, 50, 100);
+              gains.push({
+                resource: "gold",
+                min: goldRange.min,
+                max: goldRange.max,
+              });
             }
           }
         }
@@ -204,7 +224,8 @@ export const calculateResourceGains = (
               max = Math.floor(max * 2);
             }
 
-            gains.push({ resource, min, max });
+            const collapsed = collapsePriorMidpoint(state, actionId, min, max);
+            gains.push({ resource, min: collapsed.min, max: collapsed.max });
           }
         } else if (typeof value === "number") {
           // Fixed value

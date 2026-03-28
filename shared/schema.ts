@@ -625,6 +625,9 @@ export const gameStateSchema = z.object({
 
   priorAssignedActions: z.array(z.string()).default([]),
 
+  /** Action IDs whose current execution was started by Prior automation (for food charge on complete). */
+  priorAutomationPending: z.array(z.string()).default([]),
+
   tradeEstablishState: z
     .object({
       remainingOptions: z
