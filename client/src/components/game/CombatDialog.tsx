@@ -7,9 +7,13 @@ import {
   getTotalKnowledge,
   getTotalLuck,
   getTotalCriticalChance,
+  getTotalMadness,
 } from "@/game/rules/effectsCalculation";
 import { combatItemTooltips } from "@/game/rules/tooltips";
-import { calculateCriticalStrikeChance } from "@/game/rules/effectsStats";
+import {
+  calculateCriticalStrikeChance,
+  getCombatAttackFailChancePercent,
+} from "@/game/rules/effectsStats";
 import {
   BLOODFLAME_SPHERE_UPGRADES,
   CRUSHING_STRIKE_UPGRADES,
@@ -89,6 +93,7 @@ export default function CombatDialog({
   const [enemyBurnRounds, setEnemyBurnRounds] = useState(0);
   const [enemyBurnDamage, setEnemyBurnDamage] = useState(0);
   const [wasCriticalStrike, setWasCriticalStrike] = useState(false);
+  const [playerStrikeFailed, setPlayerStrikeFailed] = useState(false);
   const integrityDamageIndicatorTimeoutRef = useRef<
     ReturnType<typeof setTimeout> | null
   >(null);
@@ -161,6 +166,7 @@ export default function CombatDialog({
       setEnemyBurnRounds(0);
       setEnemyBurnDamage(0);
       setWasCriticalStrike(false);
+      setPlayerStrikeFailed(false);
       const maxIntegrity = bastionStats.integrity;
       setMaxIntegrityForCombat(maxIntegrity);
       setCurrentIntegrity(maxIntegrity);
@@ -254,6 +260,8 @@ export default function CombatDialog({
     );
 
     // Show damage indicator on enemy health bar
+    setPlayerStrikeFailed(false);
+    setWasCriticalStrike(false);
     setEnemyDamageIndicator({ amount: config.damage, visible: true });
     setTimeout(() => {
       setEnemyDamageIndicator({ amount: 0, visible: false });
@@ -303,6 +311,8 @@ export default function CombatDialog({
     );
 
     // Show damage indicator on enemy health bar
+    setPlayerStrikeFailed(false);
+    setWasCriticalStrike(false);
     setEnemyDamageIndicator({ amount: config.damage, visible: true });
     setTimeout(() => {
       setEnemyDamageIndicator({ amount: 0, visible: false });
@@ -344,6 +354,8 @@ export default function CombatDialog({
       gameState.updateResource(item.id as keyof typeof gameState.resources, -1);
 
       // Show damage indicator on enemy health bar
+      setPlayerStrikeFailed(false);
+      setWasCriticalStrike(false);
       setEnemyDamageIndicator({ amount: finalDamage, visible: true });
       setTimeout(() => {
         setEnemyDamageIndicator({ amount: 0, visible: false });
@@ -415,6 +427,19 @@ export default function CombatDialog({
       setWasCriticalStrike(false);
     }
 
+    const madnessFailChancePct = getCombatAttackFailChancePercent(
+      getTotalMadness(gameState),
+    );
+    const attackFailed =
+      madnessFailChancePct > 0 && Math.random() < madnessFailChancePct / 100;
+    if (attackFailed) {
+      playerDamage = 0;
+      setWasCriticalStrike(false);
+      setPlayerStrikeFailed(true);
+    } else {
+      setPlayerStrikeFailed(false);
+    }
+
     // Apply poison damage if active (works for all rounds poison is active)
     const poisonArrowsUsedThisRound = usedItemsInRound.has("poison_arrows");
     if (NIGHTSHADE_BOW_OWNED && poisonArrowsUsedThisRound) {
@@ -465,6 +490,7 @@ export default function CombatDialog({
     setTimeout(() => {
       setEnemyDamageIndicator({ amount: 0, visible: false });
       setWasCriticalStrike(false);
+      setPlayerStrikeFailed(false);
     }, 3000);
 
     setCurrentEnemy((prev) =>
@@ -591,42 +617,66 @@ export default function CombatDialog({
                     <DialogTitle className="text-lg font-semibold">
                       Combat
                     </DialogTitle>
-                    {calculateCriticalStrikeChance(getTotalLuck(gameState)) +
-                      getTotalCriticalChance(gameState) >
-                      0 && (
+                    {(() => {
+                      const luckCrit = calculateCriticalStrikeChance(
+                        getTotalLuck(gameState),
+                      );
+                      const itemCrit = getTotalCriticalChance(gameState);
+                      const totalCrit = luckCrit + itemCrit;
+                      const failPct = getCombatAttackFailChancePercent(
+                        getTotalMadness(gameState),
+                      );
+                      if (totalCrit <= 0 && failPct <= 0) return null;
+                      return (
                         <TooltipWrapper
                           tooltip={
-                            <div className="text-xs whitespace-nowrap">
-                              {/* First line normal */}
-                              {calculateCriticalStrikeChance(
-                                getTotalLuck(gameState),
-                              ) + getTotalCriticalChance(gameState)}
-                              % critical strike chance
-                              <br />
-                              {/* Other lines muted */}
-                              <span className="text-gray-400/70">
-                                {calculateCriticalStrikeChance(
-                                  getTotalLuck(gameState),
-                                ) > 0 &&
-                                  ` ${calculateCriticalStrikeChance(getTotalLuck(gameState))}% from Luck${getTotalLuck(gameState) >= 50 ? " max" : ""
-                                  }`}
-                              </span>
-                              <br />
-                              <span className="text-gray-400/70">
-                                {getTotalCriticalChance(gameState) > 0 &&
-                                  `${calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 ? "" : ""}${getTotalCriticalChance(
-                                    gameState,
-                                  )}% from Items`}
-                              </span>
+                            <div className="text-xs space-y-2 max-w-[220px]">
+                              {totalCrit > 0 && (
+                                <div className="space-y-1">
+                                  <div>
+                                    {totalCrit}% critical strike chance (based on Luck)
+                                  </div>
+                                  {luckCrit > 0 && (
+                                    <div className="text-gray-400/70">
+                                      {luckCrit}% from Luck
+                                      {getTotalLuck(gameState) >= 50 ? " (max)" : ""}
+                                    </div>
+                                  )}
+                                  {itemCrit > 0 && (
+                                    <div className="text-gray-400/70">
+                                      {itemCrit}% from Items
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                              {failPct > 0 && (
+                                <div
+                                  className={
+                                    totalCrit > 0
+                                      ? "pt-1 border-t border-gray-600/50"
+                                      : ""
+                                  }
+                                >
+                                  <div className="text-gray-300">
+                                    {failPct}% miss chance (based on Madness)
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           }
-                          tooltipId="combat-luck"
+                          tooltipId="combat-luck-madness"
+                          tooltipContentClassName="max-w-xs"
+                          className="inline-flex items-center justify-center w-4 h-4 shrink-0 rounded-full text-muted-foreground text-sm font-bold hover:text-foreground cursor-pointer"
                         >
-                          <span className="text-green-300/80 cursor-pointer hover:text-green-300 transition-colors inline-block text-xl">
-                            ☆
+                          <span
+                            className="leading-none"
+                            aria-label="Combat attack details"
+                          >
+                            ⓘ
                           </span>
                         </TooltipWrapper>
-                      )}
+                      );
+                    })()}
                   </div>
                 </DialogHeader>
 
@@ -689,8 +739,14 @@ export default function CombatDialog({
                       />
                       {enemyDamageIndicator.visible && (
                         <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-red-900 font-bold text-sm pointer-events-none">
-                          -{formatNumber(enemyDamageIndicator.amount)}
-                          {wasCriticalStrike && " (critical)"}
+                          {playerStrikeFailed ? (
+                            "FAILED"
+                          ) : (
+                            <>
+                              -{formatNumber(enemyDamageIndicator.amount)}
+                              {wasCriticalStrike && " (critical)"}
+                            </>
+                          )}
                         </div>
                       )}
                     </div>
