@@ -1049,6 +1049,30 @@ export function handleBuildTraps(
   return trapsResult;
 }
 
+export function handleBuildImprovedTraps(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const improvedResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildImprovedTraps",
+    "improvedTraps",
+  );
+
+  if (state.buildings.improvedTraps === 0) {
+    improvedResult.logEntries!.push({
+      id: `improved-traps-built-${Date.now()}`,
+      message:
+        "The village perimeter is reinforced with covered pits, spring snares, and steel mechanisms. Attackers face a far deadlier welcome.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return improvedResult;
+}
+
 export function handleBuildBlackMonolith(
   state: GameState,
   result: ActionResult,

@@ -1329,31 +1329,31 @@ export const villageBuildActions: Record<string, Action> = {
         "resources.stone": 1000,
       },
       2: {
-        "resources.stone": 1500,
-      },
-      3: {
         "resources.stone": 2000,
       },
-      4: {
-        "resources.stone": 2500,
-      },
-      5: {
+      3: {
         "resources.stone": 3000,
       },
-      6: {
+      4: {
         "resources.stone": 4000,
       },
-      7: {
+      5: {
         "resources.stone": 5000,
       },
-      8: {
+      6: {
         "resources.stone": 6000,
       },
-      9: {
+      7: {
         "resources.stone": 7000,
       },
-      10: {
+      8: {
         "resources.stone": 8000,
+      },
+      9: {
+        "resources.stone": 9000,
+      },
+      10: {
+        "resources.stone": 10000,
       },
     },
     effects: {
@@ -1627,6 +1627,37 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     executionTime: 30,
+    cooldown: 0,
+  },
+
+  buildImprovedTraps: {
+    id: "buildImprovedTraps",
+    label: "Improved Traps",
+    description: "Upgrade perimeter traps with stronger mechanisms and better coverage",
+    tooltipEffects: [
+      "+20% chance to win against attacking foes and fewer villagers killed",
+    ],
+    building: true,
+    show_when: {
+      1: {
+        "buildings.traps": 1,
+        "buildings.woodenHut": 6,
+        "buildings.improvedTraps": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 2500,
+        "resources.steel": 1000,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.improvedTraps": 1,
+        "buildings.traps": 1,
+      },
+    },
+    executionTime: 60,
     cooldown: 0,
   },
 

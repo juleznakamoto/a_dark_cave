@@ -9,28 +9,28 @@ export const BUILDING_HIERARCHIES: Record<string, string[]> = {
     "fortifiedMoat",
     "chitinPlating",
   ],
-  
+
   // Blacksmith chain
   blacksmith: ["blacksmith", "advancedBlacksmith", "grandBlacksmith"],
-  
+
   // Trade chain
   trade: ["tradePost", "grandBazaar", "merchantsGuild"],
-  
+
   // Tannery chain
   tannery: ["tannery", "masterTannery", "highTannery"],
-  
+
   // Foundry chain
   foundry: ["foundry", "primeFoundry", "masterworkFoundry"],
-  
+
   // Religious buildings chain
   religious: ["altar", "shrine", "temple", "sanctum"],
-  
+
   // Dark buildings chain
   dark: ["blackMonolith", "pillarOfClarity", "boneTemple"],
 
   // Pale Cross chain
   paleCross: ["paleCross", "consecratedPaleCross"],
-  
+
   // Storage chain
   storage: [
     "supplyHut",
@@ -40,13 +40,16 @@ export const BUILDING_HIERARCHIES: Record<string, string[]> = {
     "grandRepository",
     "greatVault",
   ],
-  
+
   // Pit chain
   pit: ["shallowPit", "deepeningPit", "deepPit", "bottomlessPit"],
-  
+
   // Cabin chain
   cabin: ["cabin", "greatCabin", "grandHunterLodge"],
-  
+
+  // Traps: side panel shows Improved Traps only once the upgrade exists (traps count stays 2 for combat)
+  traps: ["traps", "improvedTraps"],
+
   // Clerk chain
   clerk: ["clerksHut", "scriptorium", "inkwardenAcademy"],
 };
@@ -61,7 +64,7 @@ export function shouldHideBuilding(
   // Check each hierarchy
   for (const hierarchy of Object.values(BUILDING_HIERARCHIES)) {
     const buildingIndex = hierarchy.indexOf(buildingKey);
-    
+
     // If building is in this hierarchy
     if (buildingIndex !== -1) {
       // Hide if any higher-tier building in the chain exists
@@ -72,7 +75,7 @@ export function shouldHideBuilding(
       }
     }
   }
-  
+
   return false;
 }
 

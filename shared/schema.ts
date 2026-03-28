@@ -281,6 +281,7 @@ export const gameStateSchema = z.object({
       fortifiedMoat: z.number().default(0),
       wizardTower: z.number().default(0),
       traps: z.number().default(0),
+      improvedTraps: z.number().default(0),
       blackMonolith: z.number().default(0),
       boneTemple: z.number().default(0),
       paleCross: z.number().default(0),

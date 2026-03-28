@@ -60,3 +60,14 @@ export function calculateCriticalStrikeChance(luck: number): number {
   if (luck >= 10) return 5;
   return 0;
 }
+
+/** Madness-based chance (0–15%) that a Fight-click bastion strike deals no damage. */
+export function getCombatAttackFailChancePercent(madness: number): number {
+  if (madness >= 60) return 15;
+  if (madness >= 50) return 12.5;
+  if (madness >= 40) return 10;
+  if (madness >= 30) return 7.5;
+  if (madness >= 20) return 5;
+  if (madness >= 10) return 2.5;
+  return 0;
+}

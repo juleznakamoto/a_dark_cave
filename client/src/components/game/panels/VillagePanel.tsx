@@ -213,6 +213,7 @@ export default function VillagePanel() {
         { id: "buildDarkEstate", label: "Dark Estate" },
         { id: "buildPillarOfClarity", label: "Pillar of Clarity" },
         { id: "buildTraps", label: "Traps" },
+        { id: "buildImprovedTraps", label: "Improved Traps" },
         { id: "buildBastion", label: "Bastion" },
         { id: "buildWatchtower", label: "Watchtower" },
         { id: "buildPalisades", label: "Palisades" },

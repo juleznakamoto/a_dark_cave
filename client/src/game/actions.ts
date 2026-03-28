@@ -128,6 +128,7 @@ import {
   handleBuildFortifiedMoat,
   handleBuildChitinPlating,
   handleBuildTraps,
+  handleBuildImprovedTraps,
   handleBuildBlackMonolith,
   handleBuildMasterworkFoundry,
   handleBuildDarkEstate,
@@ -229,7 +230,7 @@ export function executeGameAction(
     logEntries: [],
     delayedEffects: [],
   };
-  
+
   // Set initialCooldowns for all actions (needed for cooldown animation persistence)
   (result.stateUpdates as any).initialCooldowns = {
     [actionId]: cooldownDuration,
@@ -508,6 +509,8 @@ export function executeGameAction(
       return handleBuildChitinPlating(state, result);
     case "buildTraps":
       return handleBuildTraps(state, result);
+    case "buildImprovedTraps":
+      return handleBuildImprovedTraps(state, result);
     case "buildBlackMonolith":
       return handleBuildBlackMonolith(state, result);
     case "buildDarkEstate":
@@ -562,7 +565,7 @@ export function executeGameAction(
       return handleLeatherTotems(state, result);
     case "animals":
       return handleAnimals(state, result);
-      case "humans":
+    case "humans":
       return handleHumans(state, result);
 
     // Forest Trade Actions
