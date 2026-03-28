@@ -1111,7 +1111,7 @@ export function handleBlastPortal(
   result.logEntries!.push({
     id: `portal-blasted-${Date.now()}`,
     message:
-      "The ember bombs detonate in a bright flash of fire and light. The ancient gate cracks and crumbles. Whatever could have been sealed within has been released... We have to get ready for whatever comes out of there.",
+      "The ember bombs detonate in a bright flash of fire and light. The ancient gate cracks and crumbles. Whatever could have been sealed within has been released. The city should get ready for whatever comes out of there.",
     timestamp: Date.now(),
     type: "system",
   });

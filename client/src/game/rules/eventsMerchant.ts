@@ -812,7 +812,7 @@ const toolTrades = [
       if (purchases === 4) return state.buildings.stoneHut >= 8;
       return false;
     },
-    costs: [{ resource: "gold", amounts: [150] }],
+    costs: [{ resource: "gold", amounts: [200] }],
     message: "You drink the Elixir of Clarity. Your mind feels clearer.",
   },
 ];

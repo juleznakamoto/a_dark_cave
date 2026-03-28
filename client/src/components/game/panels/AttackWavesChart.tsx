@@ -70,21 +70,18 @@ export default function AttackWavesChart() {
   const completedWaves =
     currentWaveIndex === -1 ? TOTAL_ATTACK_WAVES : currentWaveIndex;
   const allWavesCompleted = currentWaveIndex === -1;
-  const displayCurrentWave = allWavesCompleted
-    ? totalWaves
-    : currentWaveIndex + 1;
   const currentWavePercentage = allWavesCompleted
     ? 100
     : (completedWaves / totalWaves) * 100;
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center gap-2 flex-wrap">
         <span className="text-xs font-medium text-foreground">
           Attack Waves
         </span>
         <span className="text-xs text-muted-foreground">
-          {displayCurrentWave}/{totalWaves}
+          {completedWaves}/{totalWaves}
         </span>
       </div>
       <Progress
@@ -96,7 +93,7 @@ export default function AttackWavesChart() {
 
       {activeWave ? (
         <div className="space-y-2 pt-2">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="text-xs font-medium text-foreground">
               {activeWave.name}
             </span>

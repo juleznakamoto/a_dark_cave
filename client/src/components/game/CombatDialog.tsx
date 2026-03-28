@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGameStore } from "@/game/state";
-import { audioManager, SOUND_VOLUME } from "@/lib/audio";
+import { audioManager } from "@/lib/audio";
 import { calculateBastionStats } from "@/game/bastionStats";
 import {
   getTotalKnowledge,
@@ -25,12 +25,12 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { formatNumber } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { Enemy, CombatItem, CombatResultSummary } from "@/game/types";
 import { ProceduralGroundBackground } from "@/components/ui/procedural-ground-background";
+import { formatNumber } from "@/lib/utils";
 
 interface CombatDialogProps {
   isOpen: boolean;
@@ -58,7 +58,6 @@ export default function CombatDialog({
   const bloodflameSphereLevel = useGameStore(
     (state) => state.combatSkills.bloodflameSphereLevel,
   );
-  const hasFortress = useGameStore((state) => state.flags.hasFortress);
 
   const [combatStarted, setCombatStarted] = useState(false);
   const [currentEnemy, setCurrentEnemy] = useState<Enemy | null>(null);
@@ -72,7 +71,6 @@ export default function CombatDialog({
   const [combatResult, setCombatResult] = useState<"victory" | "defeat" | null>(
     null,
   );
-  const [combatSummary, setCombatSummary] = useState<CombatResultSummary | null>(null);
   const [currentIntegrity, setCurrentIntegrity] = useState(0);
   const [maxIntegrityForCombat, setMaxIntegrityForCombat] = useState(0);
   const [enemyDamageIndicator, setEnemyDamageIndicator] = useState<{
@@ -94,10 +92,13 @@ export default function CombatDialog({
   const [enemyBurnDamage, setEnemyBurnDamage] = useState(0);
   const [wasCriticalStrike, setWasCriticalStrike] = useState(false);
   const [playerStrikeFailed, setPlayerStrikeFailed] = useState(false);
+  const [combatSummary, setCombatSummary] = useState<CombatResultSummary | null>(
+    null,
+  );
+  const consequencesAppliedRef = useRef(false);
   const integrityDamageIndicatorTimeoutRef = useRef<
     ReturnType<typeof setTimeout> | null
   >(null);
-  const consequencesAppliedRef = useRef(false);
 
   const showIntegrityDamage = (amount: number) => {
     if (integrityDamageIndicatorTimeoutRef.current) {
@@ -120,7 +121,7 @@ export default function CombatDialog({
   // Starting on user click satisfies browser autoplay policy
   useEffect(() => {
     if (isOpen && combatStarted) {
-      audioManager.playLoopingSound("combat", SOUND_VOLUME.combat);
+      audioManager.playLoopingSound("combat", 0.3);
     } else {
       audioManager.stopLoopingSound("combat");
     }
@@ -131,11 +132,11 @@ export default function CombatDialog({
     };
   }, [isOpen, combatStarted]);
 
-  // Clear integrity damage timeout on unmount
   useEffect(() => {
     return () => {
       if (integrityDamageIndicatorTimeoutRef.current) {
         clearTimeout(integrityDamageIndicatorTimeoutRef.current);
+        integrityDamageIndicatorTimeoutRef.current = null;
       }
     };
   }, []);
@@ -143,6 +144,10 @@ export default function CombatDialog({
   // Reset state when dialog opens
   useEffect(() => {
     if (isOpen && enemy) {
+      if (integrityDamageIndicatorTimeoutRef.current) {
+        clearTimeout(integrityDamageIndicatorTimeoutRef.current);
+        integrityDamageIndicatorTimeoutRef.current = null;
+      }
       setCombatStarted(false);
       setCurrentEnemy({ ...enemy });
       setRound(1);
@@ -151,14 +156,8 @@ export default function CombatDialog({
       setIsProcessingRound(false);
       setCombatEnded(false);
       setCombatResult(null);
-      setCombatSummary(null);
-      consequencesAppliedRef.current = false;
       setEnemyDamageIndicator({ amount: 0, visible: false });
       setPlayerDamageIndicator({ amount: 0, visible: false });
-      if (integrityDamageIndicatorTimeoutRef.current) {
-        clearTimeout(integrityDamageIndicatorTimeoutRef.current);
-        integrityDamageIndicatorTimeoutRef.current = null;
-      }
       setIntegrityDamageIndicator({ amount: 0, visible: false });
       setUsedCrushingStrike(false);
       setUsedBloodflameSphere(false);
@@ -167,12 +166,31 @@ export default function CombatDialog({
       setEnemyBurnDamage(0);
       setWasCriticalStrike(false);
       setPlayerStrikeFailed(false);
+      setCombatSummary(null);
+      consequencesAppliedRef.current = false;
       const maxIntegrity = bastionStats.integrity;
       setMaxIntegrityForCombat(maxIntegrity);
       setCurrentIntegrity(maxIntegrity);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, enemy]); // Only reset when the dialog opens, not when bastion stats recalculate mid-combat
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- Only reset when the dialog opens, not when bastion stats recalculate mid-combat
+  }, [isOpen, enemy]);
+
+  // Apply combat outcome as soon as the fight ends so the result overlay can show summaries.
+  useLayoutEffect(() => {
+    if (
+      (combatResult !== "victory" && combatResult !== "defeat") ||
+      consequencesAppliedRef.current
+    ) {
+      return;
+    }
+    consequencesAppliedRef.current = true;
+    if (combatResult === "victory") {
+      setCombatSummary(onVictory() ?? {});
+    } else {
+      setCombatSummary(onDefeat() ?? {});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once per combat outcome; callbacks are stable from store
+  }, [combatResult]);
 
   // Available combat items with max limits
   const MAX_EMBER_BOMBS = gameState.clothing.grenadier_bag ? 4 : 3;
@@ -284,7 +302,7 @@ export default function CombatDialog({
     const newIntegrityValue = Math.max(0, currentIntegrity - config.healthCost);
     setCurrentIntegrity(newIntegrityValue);
 
-    // Show integrity damage indicator
+    // Show integrity damage indicator (cancel prior hide so Fight damage isn't cleared early)
     showIntegrityDamage(config.healthCost);
 
     // Check if integrity is depleted
@@ -361,19 +379,6 @@ export default function CombatDialog({
         setEnemyDamageIndicator({ amount: 0, visible: false });
       }, 3000);
 
-      // 5% chance for bomb to backfire: hurt player with 100% of its damage
-      const backfire = Math.random() < 0.05;
-      if (backfire) {
-        const newIntegrityValue = Math.max(0, currentIntegrity - finalDamage);
-        setCurrentIntegrity(newIntegrityValue);
-        showIntegrityDamage(finalDamage);
-        if (newIntegrityValue <= 0) {
-          setCombatEnded(true);
-          setCombatResult("defeat");
-          return;
-        }
-      }
-
       // Check if enemy is defeated by bombs
       if (newEnemyHealth <= 0) {
         setCombatEnded(true);
@@ -381,21 +386,6 @@ export default function CombatDialog({
       }
     }
   };
-
-  // Auto-apply consequences as soon as combat ends, so results appear without extra clicks.
-  // updateBastionStats is intentionally deferred to handleEndFight — calling it here would
-  // change bastionStats.integrity and re-trigger the dialog-open useEffect, resetting combat.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if ((combatResult === "victory" || combatResult === "defeat") && !consequencesAppliedRef.current) {
-      consequencesAppliedRef.current = true;
-      if (combatResult === "victory") {
-        setCombatSummary(onVictory() || {});
-      } else {
-        setCombatSummary(onDefeat() || {});
-      }
-    }
-  }, [combatResult]); // intentionally omitting onVictory/onDefeat to prevent re-runs
 
   const handleEndFight = () => {
     gameState.updateBastionStats();
@@ -520,60 +510,71 @@ export default function CombatDialog({
     ? (currentIntegrity / maxIntegrityForCombat) * 100
     : 0;
 
-  // Pre-compute result lines so both the staggered list and the button delay share the same data
   const DEFEAT_LINES_START = 3.4;
   const DEFEAT_LINE_STAGGER = 1.0;
-  const defeatResultLines: { key: string; text: string; className: string }[] = combatSummary
-    ? [
-      {
-        key: "casualties",
-        text:
-          (combatSummary.casualties ?? 0) === 0
-            ? "No villagers died."
-            : combatSummary.casualties === 1
-              ? "1 villager died."
-              : `${formatNumber(combatSummary.casualties!)} villagers died.`,
-        className: "text-gray-400 text-sm",
-      },
-      ...(combatSummary.woundedFellows ?? []).map((f) => ({
-        key: `fellow-${f}`,
-        text: `${f} got injured.`,
-        className: "text-gray-400 text-sm",
-      })),
-      ...(combatSummary.damagedBuildings ?? []).map((b) => ({
-        key: `building-${b}`,
-        text: `${b} got damaged.`,
-        className: "text-gray-400 text-sm capitalize",
-      })),
-    ]
-    : [];
-  const defeatButtonDelay = DEFEAT_LINES_START + Math.max(0, defeatResultLines.length - 1) * DEFEAT_LINE_STAGGER + 0.4 + 0.5;
+  const defeatResultLines: { key: string; text: string; className: string }[] =
+    combatSummary
+      ? [
+        {
+          key: "casualties",
+          text:
+            (combatSummary.casualties ?? 0) === 0
+              ? "No villagers died."
+              : combatSummary.casualties === 1
+                ? "1 villager died."
+                : `${formatNumber(combatSummary.casualties!)} villagers died.`,
+          className: "text-gray-400 text-sm",
+        },
+        ...(combatSummary.woundedFellows ?? []).map((f) => ({
+          key: `fellow-${f}`,
+          text: `${f} got injured.`,
+          className: "text-gray-400 text-sm",
+        })),
+        ...(combatSummary.damagedBuildings ?? []).map((b) => ({
+          key: `building-${b}`,
+          text: `${b} got damaged.`,
+          className: "text-gray-400 text-sm capitalize",
+        })),
+      ]
+      : [];
+  const defeatButtonDelay =
+    DEFEAT_LINES_START +
+    Math.max(0, defeatResultLines.length - 1) * DEFEAT_LINE_STAGGER +
+    0.4 +
+    0.5;
 
   const VICTORY_LINES_START = 1.8;
   const VICTORY_LINE_STAGGER = 0.3;
-  const victoryResultLines: { key: string; text: string; className: string }[] = combatSummary
-    ? [
-      ...(combatSummary.silverReward !== undefined
-        ? [
-          {
-            key: "silver",
-            text: `+${formatNumber(combatSummary.silverReward)} silver claimed.`,
-            className: "text-slate-300 text-sm",
-          },
-        ]
-        : []),
-      ...(combatSummary.goldReward !== undefined
-        ? [
-          {
-            key: "gold",
-            text: `+${formatNumber(combatSummary.goldReward)} gold claimed.`,
-            className: "text-slate-300 text-sm",
-          },
-        ]
-        : []),
-    ]
-    : [];
-  const victoryButtonDelay = VICTORY_LINES_START + Math.max(0, victoryResultLines.length - 1) * VICTORY_LINE_STAGGER + 0.4 + 0.5;
+  const victoryResultLines: { key: string; text: string; className: string }[] =
+    combatSummary
+      ? [
+        ...(combatSummary.silverReward !== undefined &&
+          combatSummary.silverReward > 0
+          ? [
+            {
+              key: "silver",
+              text: `${formatNumber(combatSummary.silverReward)} Silver claimed.`,
+              className: "text-slate-300 text-sm",
+            },
+          ]
+          : []),
+        ...(combatSummary.goldReward !== undefined &&
+          combatSummary.goldReward > 0
+          ? [
+            {
+              key: "gold",
+              text: `${formatNumber(combatSummary.goldReward)} Gold claimed.`,
+              className: "text-slate-300 text-sm",
+            },
+          ]
+          : []),
+      ]
+      : [];
+  const victoryButtonDelay =
+    VICTORY_LINES_START +
+    Math.max(0, victoryResultLines.length - 1) * VICTORY_LINE_STAGGER +
+    0.4 +
+    0.5;
 
   return (
     <>
@@ -615,73 +616,39 @@ export default function CombatDialog({
                 <DialogHeader>
                   <div className="flex items-start justify-between">
                     <DialogTitle className="text-lg font-semibold">
-                      Combat
+                      Combat - Round {round}
                     </DialogTitle>
-                    {(() => {
-                      const luckCrit = calculateCriticalStrikeChance(
-                        getTotalLuck(gameState),
-                      );
-                      const itemCrit = getTotalCriticalChance(gameState);
-                      const totalCrit = luckCrit + itemCrit;
-                      const failPct = getCombatAttackFailChancePercent(
-                        getTotalMadness(gameState),
-                      );
-                      if (totalCrit <= 0 && failPct <= 0) return null;
-                      return (
+                    {calculateCriticalStrikeChance(getTotalLuck(gameState)) +
+                      getTotalCriticalChance(gameState) >
+                      0 && (
                         <TooltipWrapper
                           tooltip={
-                            <div className="text-xs space-y-2 max-w-[220px]">
-                              {totalCrit > 0 && (
-                                <div className="space-y-1">
-                                  <div>
-                                    {totalCrit}% critical strike chance (based on Luck)
-                                  </div>
-                                  {luckCrit > 0 && (
-                                    <div className="text-gray-400/70">
-                                      {luckCrit}% from Luck
-                                      {getTotalLuck(gameState) >= 50 ? " (max)" : ""}
-                                    </div>
-                                  )}
-                                  {itemCrit > 0 && (
-                                    <div className="text-gray-400/70">
-                                      {itemCrit}% from Items
-                                    </div>
-                                  )}
-                                </div>
-                              )}
-                              {failPct > 0 && (
-                                <div
-                                  className={
-                                    totalCrit > 0
-                                      ? "pt-1 border-t border-gray-600/50"
-                                      : ""
-                                  }
-                                >
-                                  <div className="text-gray-300">
-                                    {failPct}% miss chance (based on Madness)
-                                  </div>
-                                </div>
-                              )}
+                            <div className="text-xs whitespace-nowrap">
+                              {calculateCriticalStrikeChance(
+                                getTotalLuck(gameState),
+                              ) + getTotalCriticalChance(gameState)}
+                              % critical strike chance<br></br>
+                              {calculateCriticalStrikeChance(
+                                getTotalLuck(gameState),
+                              ) > 0 &&
+                                ` ${calculateCriticalStrikeChance(getTotalLuck(gameState))}% from Luck${getTotalLuck(gameState) >= 50 ? " max" : ""}`}
+                              <br></br>
+                              {getTotalCriticalChance(gameState) > 0 &&
+                                ` ${calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 ? "" : ""}${getTotalCriticalChance(gameState)}% from equipment`}
                             </div>
                           }
-                          tooltipId="combat-luck-madness"
-                          tooltipContentClassName="max-w-xs"
-                          className="inline-flex items-center justify-center w-4 h-4 shrink-0 rounded-full text-muted-foreground text-sm font-bold hover:text-foreground cursor-pointer"
+                          tooltipId="combat-luck"
                         >
-                          <span
-                            className="leading-none"
-                            aria-label="Combat attack details"
-                          >
-                            ⓘ
+                          <span className="text-green-300/80 cursor-pointer hover:text-green-300 transition-colors inline-block text-xl">
+                            ☆
                           </span>
                         </TooltipWrapper>
-                      );
-                    })()}
+                      )}
                   </div>
                 </DialogHeader>
 
                 {/* Enemy Stats */}
-                <div className="mt-3 space-y-3">
+                <div className="space-y-3">
                   <div className="relative">
                     <div className="flex justify-between text-sm">
                       <div className="flex items-center gap-1">
@@ -715,53 +682,39 @@ export default function CombatDialog({
                           </span>
                         )}
                       </div>
-                      <TooltipWrapper
-                        tooltip={<span className="text-gray-400">Integrity</span>}
-                        tooltipId="combat-enemy-integrity-symbol"
-                        className="inline-block"
-                      >
-                        <span className="flex items-center gap-1">
-                          <span className="inline-flex w-4 justify-center text-green-400/60">
-                            ✚
-                          </span>
-                          <span>
-                            {formatNumber(currentEnemy?.currentHealth ?? 0)}/{formatNumber(currentEnemy?.maxHealth ?? 0)}
-                          </span>
-                        </span>
-                      </TooltipWrapper>
+                      <span>
+                        {currentEnemy?.currentHealth}/{currentEnemy?.maxHealth}{" "}
+                      </span>
                     </div>
                     <div className="relative">
                       <Progress
                         value={healthPercentage}
                         hideBorder
-                        flashOnDecrease
-                        className="h-2 mt-2 [&>div]:bg-red-900" // Darker red for enemy health
+                        className="h-3 mt-2 [&>div]:bg-red-900" // Darker red for enemy health
                       />
                       {enemyDamageIndicator.visible && (
                         <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-red-900 font-bold text-sm pointer-events-none">
                           {playerStrikeFailed ? (
-                            "FAILED"
+                            enemyDamageIndicator.amount > 0 ? (
+                              <>
+                                -{enemyDamageIndicator.amount}{" "}
+                                (Attack failed)
+                              </>
+                            ) : (
+                              "Attack failed"
+                            )
                           ) : (
                             <>
-                              -{formatNumber(enemyDamageIndicator.amount)}
+                              -{enemyDamageIndicator.amount}
                               {wasCriticalStrike && " (critical)"}
                             </>
                           )}
                         </div>
                       )}
                     </div>
-                    <TooltipWrapper
-                      tooltip={<span className="text-gray-400">Attack</span>}
-                      tooltipId="combat-enemy-attack-symbol"
-                      className="inline-block"
-                    >
-                      <div className="text-xs mt-2 flex items-center gap-1">
-                        <span className="inline-flex w-4 justify-center text-red-400/60">
-                          ⟐
-                        </span>
-                        <span>{formatNumber(currentEnemy?.attack ?? 0)}</span>
-                      </div>
-                    </TooltipWrapper>
+                    <div className="text-xs mt-2">
+                      Attack: {currentEnemy?.attack}
+                    </div>
                   </div>
 
                   {/* Player Stats */}
@@ -769,64 +722,30 @@ export default function CombatDialog({
                     {/* Bastion Integrity */}
                     <div className="relative">
                       <div className="flex justify-between text-sm">
-                        <span className="font-medium">
-                          {hasFortress ? "Fortress" : "Bastion"}
+                        <span className="font-medium">Bastion Integrity</span>
+                        <span>
+                          {currentIntegrity}/{maxIntegrityForCombat}
                         </span>
-                        <TooltipWrapper
-                          tooltip={<span className="text-gray-400">Integrity</span>}
-                          tooltipId="combat-player-integrity-symbol"
-                          className="inline-block"
-                        >
-                          <span className="flex items-center gap-1">
-                            <span className="inline-flex w-4 justify-center text-green-400/60">
-                              ✚
-                            </span>
-                            <span>
-                              {formatNumber(currentIntegrity)}/{formatNumber(maxIntegrityForCombat)}
-                            </span>
-                          </span>
-                        </TooltipWrapper>
                       </div>
                       <div className="relative">
                         <Progress
                           value={integrityPercentage}
                           hideBorder
-                          flashOnDecrease
-                          className="h-2 mt-2 [&>div]:bg-green-900" // Darker green for bastion integrity
+                          className="h-3 mt-2 [&>div]:bg-green-900" // Darker green for bastion integrity
                         />
                         {integrityDamageIndicator.visible && (
                           <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-green-900 font-bold text-sm pointer-events-none">
-                            -{formatNumber(integrityDamageIndicator.amount)}
+                            -{integrityDamageIndicator.amount}
                           </div>
                         )}
                       </div>
                     </div>
 
-                    <div className="text-xs mt-2 flex items-center gap-3">
-                      <TooltipWrapper
-                        tooltip={<span className="text-gray-400">Attack</span>}
-                        tooltipId="combat-player-attack-symbol"
-                        className="inline-block"
-                      >
-                        <div className="flex items-center gap-1">
-                          <span className="inline-flex w-4 justify-center text-red-400/60">
-                            ⟐
-                          </span>
-                          <span>{formatNumber(bastionStats.attack)}</span>
-                        </div>
-                      </TooltipWrapper>
-                      <TooltipWrapper
-                        tooltip={<span className="text-gray-400">Defense</span>}
-                        tooltipId="combat-player-defense-symbol"
-                        className="inline-block"
-                      >
-                        <div className="flex items-center gap-1">
-                          <span className="inline-flex w-4 justify-center text-blue-400/60">
-                            ⧈
-                          </span>
-                          <span>{formatNumber(bastionStats.defense)}</span>
-                        </div>
-                      </TooltipWrapper>
+                    <div className="text-xs mt-2">
+                      <div>
+                        Attack: {bastionStats.attack}, Defense:{" "}
+                        {bastionStats.defense}
+                      </div>
                     </div>
                   </div>
 
@@ -892,15 +811,6 @@ export default function CombatDialog({
                                       className="text-xs w-full"
                                       button_id={`combat-use-${item.id}`}
                                     >
-                                      {item.id === "poison_arrows" && (
-                                        <span
-                                          className="text-green-600"
-                                          role="img"
-                                          aria-label="poison-icon"
-                                        >
-                                          ▲
-                                        </span>
-                                      )}
                                       {item.name}
                                     </Button>
                                   </div>
@@ -914,9 +824,7 @@ export default function CombatDialog({
                   {/* Combat Skills Section - only show if any fellowship member is unlocked */}
                   {(HAS_RESTLESS_KNIGHT || HAS_ELDER_WIZARD) && (
                     <div className="pt-3">
-                      <div className="text-sm font-medium mb-2">
-                        Combat Skills
-                      </div>
+                      <div className="text-sm font-medium mb-2">Combat Skills</div>
                       <div className="grid grid-cols-2 gap-2">
                         {HAS_RESTLESS_KNIGHT && (
                           <TooltipWrapper
@@ -948,13 +856,6 @@ export default function CombatDialog({
                                 className="text-xs w-full"
                                 button_id="combat-use-crushing-strike"
                               >
-                                <span
-                                  className="text-yellow-600"
-                                  role="img"
-                                  aria-label="stun-icon"
-                                >
-                                  ◈
-                                </span>
                                 Crushing Strike
                               </Button>
                             </div>
@@ -974,8 +875,9 @@ export default function CombatDialog({
                               usedBloodflameSphere ||
                               isProcessingRound ||
                               currentIntegrity <=
-                              BLOODFLAME_SPHERE_UPGRADES[bloodflameSphereLevel]
-                                .healthCost ||
+                              BLOODFLAME_SPHERE_UPGRADES[
+                                bloodflameSphereLevel
+                              ].healthCost ||
                               gameState.story?.seen?.elderWizardWounded
                             }
                           >
@@ -996,13 +898,6 @@ export default function CombatDialog({
                                 className="text-xs w-full"
                                 button_id="combat-use-bloodflame-sphere"
                               >
-                                <span
-                                  className="text-orange-600"
-                                  role="img"
-                                  aria-label="burn-icon"
-                                >
-                                  ✵
-                                </span>
                                 Bloodflame Sphere
                               </Button>
                             </div>
@@ -1011,38 +906,28 @@ export default function CombatDialog({
                       </div>
                     </div>
                   )}
-
-                  {/* Fight / End Fight (victory only) Button */}
-                  <div className="pt-3">
-                    {combatEnded && combatResult === "victory" ? (
-                      <Button
-                        onClick={handleEndFight}
-                        className="w-full"
-                        variant="outline"
-                        button_id="combat-end-fight"
-                      >
-                        End Fight
-                      </Button>
-                    ) : !combatEnded ? (
-                      <Button
-                        onClick={handleFight}
-                        disabled={
-                          isProcessingRound ||
-                          (currentEnemy?.currentHealth || 0) <= 0
-                        }
-                        className="w-full"
-                        variant="outline"
-                        button_id="combat-fight"
-                      >
-                        {isProcessingRound ? "Fighting..." : "Fight"}
-                      </Button>
-                    ) : null}
-                  </div>
                 </div>
 
-                {/* Defeat overlay - Dark Souls style, fills entire dialog */}
+                {/* Fight Button — overlays replace this once combat ends */}
+                <div className="pt-3">
+                  {!combatEnded ? (
+                    <Button
+                      onClick={handleFight}
+                      disabled={
+                        isProcessingRound ||
+                        (currentEnemy?.currentHealth || 0) <= 0
+                      }
+                      className="w-full"
+                      variant="outline"
+                      button_id="combat-fight"
+                    >
+                      {isProcessingRound ? "Fighting..." : "Fight"}
+                    </Button>
+                  ) : null}
+                </div>
+
                 <AnimatePresence>
-                  {combatResult === "defeat" && (
+                  {combatResult === "defeat" && combatSummary !== null && (
                     <motion.div
                       className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black px-6"
                       initial={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
@@ -1054,12 +939,15 @@ export default function CombatDialog({
                           className="font-sans text-red-700 text-xl tracking-[0.25em] uppercase select-none defeat-text-pulse"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: [0, 1, 0.8] }}
-                          transition={{ duration: 2, delay: 1.5, ease: "easeInOut" }}
+                          transition={{
+                            duration: 2,
+                            delay: 1.5,
+                            ease: "easeInOut",
+                          }}
                         >
                           You lost
                         </motion.span>
 
-                        {/* Defeat consequence details — each line staggered in individually */}
                         <div className="mt-5 flex flex-col items-center gap-1 text-center">
                           {defeatResultLines.map((line, i) => (
                             <motion.p
@@ -1069,7 +957,8 @@ export default function CombatDialog({
                               animate={{ opacity: 1 }}
                               transition={{
                                 duration: 0.4,
-                                delay: DEFEAT_LINES_START + i * DEFEAT_LINE_STAGGER,
+                                delay:
+                                  DEFEAT_LINES_START + i * DEFEAT_LINE_STAGGER,
                               }}
                             >
                               {line.text}
@@ -1078,29 +967,28 @@ export default function CombatDialog({
                         </div>
                       </div>
 
-                      {/* Only mount once combatSummary is known so defeatButtonDelay is accurate */}
-                      {combatSummary !== null && (
-                        <motion.div
-                          className="absolute bottom-6 left-6 right-6"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 0.5, delay: defeatButtonDelay }}
+                      <motion.div
+                        className="absolute bottom-6 left-6 right-6"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{
+                          duration: 0.5,
+                          delay: defeatButtonDelay,
+                        }}
+                      >
+                        <Button
+                          onClick={handleEndFight}
+                          className="w-full"
+                          variant="outline"
+                          button_id="combat-end-fight"
                         >
-                          <Button
-                            onClick={handleEndFight}
-                            className="w-full"
-                            variant="outline"
-                            button_id="combat-end-fight"
-                          >
-                            Continue
-                          </Button>
-                        </motion.div>
-                      )}
+                          Continue
+                        </Button>
+                      </motion.div>
                     </motion.div>
                   )}
                 </AnimatePresence>
 
-                {/* Victory overlay */}
                 <AnimatePresence>
                   {combatResult === "victory" && combatSummary !== null && (
                     <motion.div
@@ -1114,12 +1002,15 @@ export default function CombatDialog({
                           className="font-sans text-white text-xl tracking-[0.25em] uppercase select-none"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
-                          transition={{ duration: 1.2, delay: 0.3, ease: "easeInOut" }}
+                          transition={{
+                            duration: 1.2,
+                            delay: 0.3,
+                            ease: "easeInOut",
+                          }}
                         >
                           You win
                         </motion.span>
 
-                        {/* Victory result lines — staggered in individually */}
                         <div className="mt-5 flex flex-col items-center gap-1 text-center">
                           {victoryResultLines.map((line, i) => (
                             <motion.p
@@ -1129,7 +1020,9 @@ export default function CombatDialog({
                               animate={{ opacity: 1 }}
                               transition={{
                                 duration: 0.4,
-                                delay: VICTORY_LINES_START + i * VICTORY_LINE_STAGGER,
+                                delay:
+                                  VICTORY_LINES_START +
+                                  i * VICTORY_LINE_STAGGER,
                               }}
                             >
                               {line.text}
@@ -1142,7 +1035,10 @@ export default function CombatDialog({
                         className="absolute bottom-6 left-6 right-6"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5, delay: victoryButtonDelay }}
+                        transition={{
+                          duration: 0.5,
+                          delay: victoryButtonDelay,
+                        }}
                       >
                         <Button
                           onClick={handleEndFight}

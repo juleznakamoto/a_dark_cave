@@ -731,7 +731,11 @@ export default function GameContainer() {
       <CombatDialog
         isOpen={combatDialog.isOpen}
         onClose={() => setCombatDialog(false)}
-        combat={combatDialog.currentCombat}
+        enemy={combatDialog.enemy}
+        eventTitle={combatDialog.eventTitle}
+        eventMessage={combatDialog.eventMessage}
+        onVictory={combatDialog.onVictory || (() => ({}))}
+        onDefeat={combatDialog.onDefeat || (() => ({}))}
       />
 
       {/* Idle Mode Dialog */}

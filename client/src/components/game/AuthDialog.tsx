@@ -11,8 +11,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { signIn, signUp, signInWithGoogle } from "@/game/auth";
+import { saveGame } from "@/game/save";
+import { buildGameState } from "@/game/stateHelpers";
 import { useToast } from "@/hooks/use-toast";
 import { useGameStore } from "@/game/state";
+import { logger } from "@/lib/logger";
 
 interface AuthDialogProps {
   isOpen: boolean;
@@ -46,6 +49,17 @@ export default function AuthDialog({
       setMode("signup");
     }
   }, [isOpen, signUpPromptEligibleForGold]);
+
+  /** Persist guest progress right before OAuth/email sign-up (reload-safe). */
+  const flushBeforeSignUp = async () => {
+    if (useGameStore.getState().isUserSignedIn) return;
+    try {
+      await saveGame(buildGameState(useGameStore.getState()), false);
+    } catch (e) {
+      logger.error("[AUTH] Pre-sign-up save failed:", e);
+    }
+  };
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -93,6 +107,7 @@ export default function AuthDialog({
         onAuthSuccess();
         onClose();
       } else if (mode === "signup") {
+        await flushBeforeSignUp();
         const referralCode = getReferralCode();
         await signUp(email, password, referralCode || undefined);
         // Award 250 gold if user signed up after seeing the sign-up prompt dialog
@@ -143,6 +158,9 @@ export default function AuthDialog({
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
+      if (mode === "signup") {
+        await flushBeforeSignUp();
+      }
       await signInWithGoogle();
       // Supabase will redirect to Google and then back to your app
     } catch (error: any) {

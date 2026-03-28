@@ -576,7 +576,7 @@ export default function GamblerDiceDialog({
                   {inGamblerTutorial
                     ? `To help you learn the game, the Gambler offers to play ${GAMBLER_TUTORIAL_PLAYS} times without a bet.`
                     : hasBoneDice
-                      ? "Place your bet. Because you own Bone Dice you can play two times against the Gambler."
+                      ? "Place your bet. Owning Bone Dice allows you to play two times against the Gambler."
                       : "Place your bet."}
                 </p>
                 <p>

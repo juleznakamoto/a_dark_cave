@@ -37,11 +37,11 @@ export const MINE_UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 3, clicksRequired: 45, bonus: 50 },
   { level: 4, clicksRequired: 70, bonus: 75 },
   { level: 5, clicksRequired: 100, bonus: 100 },
-  { level: 6, clicksRequired: 135, bonus: 125 },
-  { level: 7, clicksRequired: 175, bonus: 150 },
-  { level: 8, clicksRequired: 220, bonus: 175 },
-  { level: 9, clicksRequired: 270, bonus: 200 },
-  { level: 10, clicksRequired: 325, bonus: 225 },
+  { level: 6, clicksRequired: 155, bonus: 125 },
+  { level: 7, clicksRequired: 215, bonus: 150 },
+  { level: 8, clicksRequired: 280, bonus: 175 },
+  { level: 9, clicksRequired: 350, bonus: 200 },
+  { level: 10, clicksRequired: 425, bonus: 225 },
 ];
 
 // Hunt upgrade levels
@@ -52,11 +52,11 @@ export const HUNT_UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 3, clicksRequired: 120, bonus: 50 },
   { level: 4, clicksRequired: 200, bonus: 75 },
   { level: 5, clicksRequired: 300, bonus: 100 },
-  { level: 6, clicksRequired: 420, bonus: 125 },
-  { level: 7, clicksRequired: 560, bonus: 150 },
-  { level: 8, clicksRequired: 720, bonus: 175 },
-  { level: 9, clicksRequired: 900, bonus: 200 },
-  { level: 10, clicksRequired: 1100, bonus: 225 },
+  { level: 6, clicksRequired: 440, bonus: 125 },
+  { level: 7, clicksRequired: 640, bonus: 150 },
+  { level: 8, clicksRequired: 840, bonus: 175 },
+  { level: 9, clicksRequired: 1060, bonus: 200 },
+  { level: 10, clicksRequired: 1300, bonus: 225 },
 ];
 
 // Chop wood upgrade levels
@@ -67,11 +67,11 @@ export const CHOP_WOOD_UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 3, clicksRequired: 100, bonus: 50 },
   { level: 4, clicksRequired: 250, bonus: 75 },
   { level: 5, clicksRequired: 450, bonus: 100 },
-  { level: 6, clicksRequired: 700, bonus: 125 },
-  { level: 7, clicksRequired: 1000, bonus: 150 },
-  { level: 8, clicksRequired: 1350, bonus: 175 },
-  { level: 9, clicksRequired: 1750, bonus: 200 },
-  { level: 10, clicksRequired: 2200, bonus: 225 },
+  { level: 6, clicksRequired: 800, bonus: 125 },
+  { level: 7, clicksRequired: 1200, bonus: 150 },
+  { level: 8, clicksRequired: 1650, bonus: 175 },
+  { level: 9, clicksRequired: 2150, bonus: 200 },
+  { level: 10, clicksRequired: 2700, bonus: 225 },
 ];
 
 // Cave explore upgrade levels
@@ -82,11 +82,11 @@ export const CAVE_EXPLORE_UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 3, clicksRequired: 36, bonus: 30 },
   { level: 4, clicksRequired: 52, bonus: 40 },
   { level: 5, clicksRequired: 70, bonus: 50 },
-  { level: 6, clicksRequired: 90, bonus: 60 },
-  { level: 7, clicksRequired: 112, bonus: 70 },
-  { level: 8, clicksRequired: 136, bonus: 80 },
-  { level: 9, clicksRequired: 162, bonus: 90 },
-  { level: 10, clicksRequired: 190, bonus: 100 },
+  { level: 6, clicksRequired: 110, bonus: 60 },
+  { level: 7, clicksRequired: 152, bonus: 70 },
+  { level: 8, clicksRequired: 196, bonus: 80 },
+  { level: 9, clicksRequired: 242, bonus: 90 },
+  { level: 10, clicksRequired: 290, bonus: 100 },
 ];
 
 // Craft torches upgrade levels (cost/gain scale by 1+level; level 10 halves execution time)
@@ -97,11 +97,11 @@ export const CRAFT_TORCHES_UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 3, clicksRequired: 45, bonus: 300 },
   { level: 4, clicksRequired: 75, bonus: 400 },
   { level: 5, clicksRequired: 110, bonus: 500 },
-  { level: 6, clicksRequired: 150, bonus: 600 },
-  { level: 7, clicksRequired: 195, bonus: 700 },
-  { level: 8, clicksRequired: 245, bonus: 800 },
-  { level: 9, clicksRequired: 300, bonus: 900 },
-  { level: 10, clicksRequired: 360, bonus: 900 },
+  { level: 6, clicksRequired: 170, bonus: 600 },
+  { level: 7, clicksRequired: 235, bonus: 700 },
+  { level: 8, clicksRequired: 305, bonus: 800 },
+  { level: 9, clicksRequired: 380, bonus: 900 },
+  { level: 10, clicksRequired: 460, bonus: 900 },
 ];
 
 // Craft totem upgrade levels (shared by bone and leather)
@@ -112,11 +112,11 @@ export const CRAFT_TOTEM_UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 3, clicksRequired: 30, bonus: 300 },
   { level: 4, clicksRequired: 50, bonus: 400 },
   { level: 5, clicksRequired: 75, bonus: 500 },
-  { level: 6, clicksRequired: 105, bonus: 600 },
-  { level: 7, clicksRequired: 140, bonus: 700 },
-  { level: 8, clicksRequired: 180, bonus: 800 },
-  { level: 9, clicksRequired: 225, bonus: 900 },
-  { level: 10, clicksRequired: 275, bonus: 900 },
+  { level: 6, clicksRequired: 125, bonus: 600 },
+  { level: 7, clicksRequired: 180, bonus: 700 },
+  { level: 8, clicksRequired: 240, bonus: 800 },
+  { level: 9, clicksRequired: 305, bonus: 900 },
+  { level: 10, clicksRequired: 375, bonus: 900 },
 ];
 
 // Get the appropriate upgrade levels for a given key

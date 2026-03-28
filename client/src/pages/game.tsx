@@ -5,7 +5,6 @@ import { useGameStore } from "@/game/state";
 import { startGameLoop, stopGameLoop } from "@/game/loop";
 import { loadGame, saveGame } from "@/game/save"; // Import saveGame
 const EventDialog = lazy(() => import("@/components/game/EventDialog"));
-const CombatDialog = lazy(() => import("@/components/game/CombatDialog"));
 const EmailConfirmedDialog = lazy(() => import("@/components/game/EmailConfirmedDialog"));
 const PlaylightWelcomeDialog = lazy(() => import("@/components/game/PlaylightWelcomeDialog"));
 import { logger } from "@/lib/logger";
@@ -19,8 +18,6 @@ export default function Game() {
   const {
     eventDialog,
     setEventDialog,
-    combatDialog,
-    setCombatDialog,
     setShopDialogOpen,
   } = useGameStore();
   const [isInitialized, setIsInitialized] = useState(false);
@@ -337,16 +334,6 @@ export default function Game() {
         isOpen={eventDialog.isOpen}
         onClose={() => setEventDialog(false)}
         event={eventDialog.currentEvent}
-      />
-
-      <CombatDialog
-        isOpen={combatDialog.isOpen}
-        onClose={() => setCombatDialog(false)}
-        enemy={combatDialog.enemy}
-        eventTitle={combatDialog.eventTitle}
-        eventMessage={combatDialog.eventMessage}
-        onVictory={combatDialog.onVictory || (() => ({}))}
-        onDefeat={combatDialog.onDefeat || (() => ({}))}
       />
 
       <EmailConfirmedDialog

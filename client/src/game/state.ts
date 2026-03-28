@@ -2017,23 +2017,51 @@ export const useGameStore = create<GameStore>((set, get) => ({
           eventMessage: combatData.eventMessage,
           onVictory: () => {
             const victoryResult = combatData.onVictory();
-            // Apply victory state changes (merge resources onto live state — see mergeCombatVictoryState)
+            const { _logMessage, _combatSummary, ...forMerge } =
+              victoryResult as Record<string, unknown> & {
+                _logMessage?: string;
+                _combatSummary?: Record<string, unknown>;
+              };
             set((prevState) => ({
-              ...mergeCombatVictoryState(prevState, victoryResult),
+              ...mergeCombatVictoryState(
+                prevState,
+                forMerge as Parameters<typeof mergeCombatVictoryState>[1],
+              ),
               log: prevState.log,
             }));
-            // Return summary for CombatDialog to display before closing
-            return victoryResult._combatSummary || {};
+            if (_logMessage) {
+              get().addLogEntry({
+                id: `combat-victory-${Date.now()}`,
+                message: _logMessage,
+                timestamp: Date.now(),
+                type: "system",
+              });
+            }
+            return _combatSummary || {};
           },
           onDefeat: () => {
             const defeatResult = combatData.onDefeat();
-            // Apply defeat state changes (no log entry — shown in dialog instead)
+            const { _logMessage, _combatSummary, ...stateUpdates } =
+              defeatResult as Record<string, unknown> & {
+                _logMessage?: string;
+                _combatSummary?: Record<string, unknown>;
+              };
             set((prevState) => ({
               ...prevState,
-              ...defeatResult,
+              ...(stateUpdates as object),
+              log: _logMessage
+                ? [
+                  ...prevState.log,
+                  {
+                    id: `combat-defeat-${Date.now()}`,
+                    message: _logMessage,
+                    timestamp: Date.now(),
+                    type: "system" as const,
+                  },
+                ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
+                : prevState.log,
             }));
-            // Return summary for CombatDialog to display before closing
-            return defeatResult._combatSummary || {};
+            return _combatSummary || {};
           },
         });
       } else {

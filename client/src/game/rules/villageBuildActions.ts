@@ -1633,7 +1633,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildImprovedTraps: {
     id: "buildImprovedTraps",
     label: "Improved Traps",
-    description: "Upgrade perimeter traps with stronger mechanisms and better coverage",
+    description: "Upgraded perimeter traps with stronger mechanisms and better coverage",
     tooltipEffects: [
       "+20% chance to win against attacking foes and fewer villagers killed",
     ],
