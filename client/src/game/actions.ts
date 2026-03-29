@@ -154,6 +154,7 @@ import {
   handleForestCave,
   handleBlackreachCanyon,
   handleSteelDelivery,
+  handleCanyonBridge,
 } from "@/game/rules/forestScoutActions";
 
 import {
@@ -163,7 +164,10 @@ import {
   handleHumans,
 } from "@/game/rules/forestSacrificeActions";
 
-import { handleTradeAction } from "@/game/rules/forestTradeActions";
+import {
+  handleTradeAction,
+  handleForestSellAction,
+} from "@/game/rules/forestTradeActions";
 
 import {
   handleMineStone,
@@ -557,6 +561,8 @@ export function executeGameAction(
       return handleHiddenLibrary(state, result);
     case "steelDelivery":
       return handleSteelDelivery(state, result);
+    case "canyonBridge":
+      return handleCanyonBridge(state, result);
 
     // Forest Sacrifice Actions
     case "boneTotems":
@@ -583,6 +589,10 @@ export function executeGameAction(
     case "tradeGoldForAshfireBomb":
     case "tradeGoldForVoidBomb":
       return handleTradeAction(actionId, state, result);
+    case "sellLeatherBatch":
+    case "sellSteelBatch":
+    case "sellBlacksteelBatch":
+      return handleForestSellAction(actionId, state, result);
 
     default:
       logger.warn(`No handler found for action: ${actionId}`);

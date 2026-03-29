@@ -326,6 +326,25 @@ export const forestScoutActions: Record<string, Action> = {
     executionTime: 90,
     cooldown: 0,
   },
+
+  canyonBridge: {
+    id: "canyonBridge",
+    label: "Canyon Bridge",
+    minVillagers: 0,
+    show_when: {
+      "story.seen.ashwraithCanyonTradeOfferSeen": true,
+      "!story.seen.canyonBridgeBuilt": true,
+    },
+    cost: {
+      "resources.stone": 25000,
+      "resources.steel": 25000,
+      "resources.wood": 10000,
+    },
+    effects: {},
+    executionTime: 300,
+    expeditionVillagersRequired: () => 30,
+    cooldown: 0,
+  },
 };
 
 // Action handlers
@@ -890,6 +909,32 @@ export function handleSteelDelivery(
     id: `steel-delivery-success-${Date.now()}`,
     message:
       "Your caravan delivers the steel to the Swamp Tribe as promised. In return, the tribe presents you with Chitin Plates harvested from swamp creatures. These can be used to construct powerful fortifications.",
+    timestamp: Date.now(),
+    type: "system",
+  });
+
+  return result;
+}
+
+export function handleCanyonBridge(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("canyonBridge", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  result.stateUpdates.story = {
+    ...state.story,
+    seen: {
+      ...state.story.seen,
+      canyonBridgeBuilt: true,
+    },
+  };
+
+  result.logEntries!.push({
+    id: `canyon-bridge-complete-${Date.now()}`,
+    message:
+      "The canyon bridge stands complete. Ashwraith traders can now reach your settlement—and you can sell goods to them at agreed rates.",
     timestamp: Date.now(),
     type: "system",
   });

@@ -314,7 +314,7 @@ export const ringEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "nodSilently",
-        label: "Nod silently",
+        label: "Continue",
         effect: (state: GameState) => {
           return {
             resources: {

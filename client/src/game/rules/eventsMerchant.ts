@@ -31,6 +31,15 @@ const PRICES = {
   gold: 1,
 } as const;
 
+export type MerchantGoldPricedResource = keyof typeof PRICES;
+
+/** Gold cost per 1 unit when buying that resource from the merchant (forest Buy / merchant events). */
+export function getMerchantGoldPricePerUnit(
+  resource: MerchantGoldPricedResource,
+): number {
+  return PRICES[resource];
+}
+
 // Round cost according to specified rules
 function roundCost(cost: number, direction: "up" | "down" = "down"): number {
   cost = cost * 1.1;
@@ -729,7 +738,7 @@ const toolTrades = [
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 6 &&
       !state.schematics.stormglass_halberd_schematic,
-    costs: [{ resource: "gold", amounts: [1000] }],
+    costs: [{ resource: "gold", amounts: [1500] }],
     message:
       "You purchase the stormglass halberd schematic. The merchant reveals the faded plans: 'With this design, you can forge a halberd of tremendous power.'",
   },
@@ -740,7 +749,7 @@ const toolTrades = [
     giveItem: "natharit_pickaxe",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 8 && !state.tools.natharit_pickaxe,
-    costs: [{ resource: "gold", amounts: [1500] }],
+    costs: [{ resource: "gold", amounts: [2000] }],
     message:
       "You purchase the natharit pickaxe. The merchant hands you the sturdy tool: 'Extremely durable pickaxe of unknown material. Its quality is exceptional.'",
   },
@@ -752,7 +761,7 @@ const toolTrades = [
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 9 &&
       !state.schematics.nightshade_bow_schematic,
-    costs: [{ resource: "gold", amounts: [1500] }],
+    costs: [{ resource: "gold", amounts: [2500] }],
     message:
       "You purchase the nightshade bow schematic. The merchant grins darkly: 'This bow's design is cruel. Its arrows will poison your enemies.'",
   },

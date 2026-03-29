@@ -28,6 +28,73 @@ import {
   getHuntParticleConfig,
   type BubbleWithParticles,
 } from "@/components/ui/bubbly-button.particles";
+import type { Action, GameState } from "@shared/schema";
+
+function isTieredNumericRecord(r: unknown): r is Record<number, unknown> {
+  if (!r || typeof r !== "object") return false;
+  const keys = Object.keys(r as object);
+  if (keys.length === 0) return false;
+  return keys.every((k) => !isNaN(Number(k)));
+}
+
+function getForestPanelTradeActiveTier(action: Action, state: GameState): number {
+  const sw = action.show_when;
+  if (!isTieredNumericRecord(sw)) return 1;
+
+  const tieredSw = sw as Record<number, Record<string, number>>;
+  let activeTier = 1;
+  if (tieredSw[3]) {
+    const tier3Satisfied = Object.entries(tieredSw[3]).every(
+      ([key, value]) => {
+        const [category, prop] = key.split(".");
+        return (
+          (state[category as keyof GameState]?.[prop as never] as number | undefined) ||
+          0
+        ) >= value;
+      },
+    );
+    if (tier3Satisfied) activeTier = 3;
+  }
+  if (activeTier === 1 && tieredSw[2]) {
+    const tier2Satisfied = Object.entries(tieredSw[2]).every(
+      ([key, value]) => {
+        const [category, prop] = key.split(".");
+        return (
+          (state[category as keyof GameState]?.[prop as never] as number | undefined) ||
+          0
+        ) >= value;
+      },
+    );
+    if (tier2Satisfied) activeTier = 2;
+  }
+  return activeTier;
+}
+
+function resolveForestPanelTradeEffects(
+  action: Action,
+  state: GameState,
+): Record<string, number> | undefined {
+  if (!action.effects || typeof action.effects === "function") return undefined;
+  const raw = action.effects as Record<string, Record<string, number>>;
+  if (!isTieredNumericRecord(raw)) {
+    return raw as unknown as Record<string, number>;
+  }
+  const tier = getForestPanelTradeActiveTier(action, state);
+  return raw[tier];
+}
+
+function resolveForestPanelTradeCost(
+  action: Action,
+  state: GameState,
+): Record<string, number> | undefined {
+  if (!action.cost || typeof action.cost === "function") return undefined;
+  const raw = action.cost as Record<string, Record<string, number>>;
+  if (!isTieredNumericRecord(raw)) {
+    return raw as unknown as Record<string, number>;
+  }
+  const tier = getForestPanelTradeActiveTier(action, state);
+  return raw[tier];
+}
 
 export default function ForestPanel() {
   const { executeAction, setHighlightedResources } = useGameStore();
@@ -76,6 +143,7 @@ export default function ForestPanel() {
         { id: "sunkenTemple", label: "Sunken Temple" },
         { id: "blackreachCanyon", label: "Blackreach Canyon" },
         { id: "steelDelivery", label: "Steel Delivery" },
+        { id: "canyonBridge", label: "Canyon Bridge" },
       ],
     },
     {
@@ -105,6 +173,14 @@ export default function ForestPanel() {
         { id: "tradeSilverForGold", label: "Gold" },
       ],
     },
+    {
+      title: "Sell",
+      actions: [
+        { id: "sellLeatherBatch", label: "Leather" },
+        { id: "sellSteelBatch", label: "Steel" },
+        { id: "sellBlacksteelBatch", label: "Blacksteel" },
+      ],
+    },
   ];
 
   const renderButton = (actionId: string, label: string) => {
@@ -113,41 +189,12 @@ export default function ForestPanel() {
 
     let canExecute = canExecuteAction(actionId, state);
     const showCost = action.cost && Object.keys(action.cost).length > 0;
-    const isTradeButton = actionId.startsWith("trade");
+    const isTradeButton =
+      actionId.startsWith("trade") || actionId.startsWith("sell");
 
     // For trade buttons, check if there's enough space for the resource being bought
     if (isTradeButton && canExecute && action.effects) {
-      // Determine active tier
-      let activeTier = 1;
-      if (action.show_when?.[3]) {
-        const tier3Conditions = action.show_when[3];
-        const tier3Satisfied = Object.entries(tier3Conditions).every(
-          ([key, value]) => {
-            const [category, prop] = key.split(".");
-            return (
-              (state[category as keyof typeof state]?.[prop as any] || 0) >=
-              value
-            );
-          },
-        );
-        if (tier3Satisfied) activeTier = 3;
-      }
-      if (activeTier === 1 && action.show_when?.[2]) {
-        const tier2Conditions = action.show_when[2];
-        const tier2Satisfied = Object.entries(tier2Conditions).every(
-          ([key, value]) => {
-            const [category, prop] = key.split(".");
-            return (
-              (state[category as keyof typeof state]?.[prop as any] || 0) >=
-              value
-            );
-          },
-        );
-        if (tier2Satisfied) activeTier = 2;
-      }
-
-      // Get the effect amount for the active tier
-      const effects = action.effects[activeTier];
+      const effects = resolveForestPanelTradeEffects(action, state);
       if (effects) {
         const resourceKey = Object.keys(effects)[0];
         const amount = effects[resourceKey];
@@ -202,45 +249,7 @@ export default function ForestPanel() {
     // Get dynamic label for trade buttons based on the amount
     let displayLabel = label;
     if (isTradeButton && action.effects) {
-      // Determine which tier is active based on show_when conditions
-      let activeTier = 1;
-
-      // Check tier 3 first (highest tier)
-      if (action.show_when?.[3]) {
-        const tier3Conditions = action.show_when[3];
-        const tier3Satisfied = Object.entries(tier3Conditions).every(
-          ([key, value]) => {
-            const [category, prop] = key.split(".");
-            return (
-              (state[category as keyof typeof state]?.[prop as any] || 0) >=
-              value
-            );
-          },
-        );
-        if (tier3Satisfied) {
-          activeTier = 3;
-        }
-      }
-
-      // Check tier 2 if tier 3 not satisfied
-      if (activeTier === 1 && action.show_when?.[2]) {
-        const tier2Conditions = action.show_when[2];
-        const tier2Satisfied = Object.entries(tier2Conditions).every(
-          ([key, value]) => {
-            const [category, prop] = key.split(".");
-            return (
-              (state[category as keyof typeof state]?.[prop as any] || 0) >=
-              value
-            );
-          },
-        );
-        if (tier2Satisfied) {
-          activeTier = 2;
-        }
-      }
-
-      // Get the effect amount for the active tier
-      const effects = action.effects[activeTier];
+      const effects = resolveForestPanelTradeEffects(action, state);
       if (effects) {
         const resourceKey = Object.keys(effects)[0];
         const amount = effects[resourceKey];
@@ -367,47 +376,21 @@ export default function ForestPanel() {
 
               // For trade buttons, extract both buy and sell resources
               if (isTradeButton && action.cost && action.effects) {
-                // Determine active tier
-                let activeTier = 1;
-                if (action.show_when?.[3]) {
-                  const tier3Conditions = action.show_when[3];
-                  const tier3Satisfied = Object.entries(tier3Conditions).every(
-                    ([key, value]) => {
-                      const [category, prop] = key.split(".");
-                      return (
-                        (state[category as keyof typeof state]?.[prop as any] || 0) >=
-                        value
-                      );
-                    },
-                  );
-                  if (tier3Satisfied) activeTier = 3;
-                }
-                if (activeTier === 1 && action.show_when?.[2]) {
-                  const tier2Conditions = action.show_when[2];
-                  const tier2Satisfied = Object.entries(tier2Conditions).every(
-                    ([key, value]) => {
-                      const [category, prop] = key.split(".");
-                      return (
-                        (state[category as keyof typeof state]?.[prop as any] || 0) >=
-                        value
-                      );
-                    },
-                  );
-                  if (tier2Satisfied) activeTier = 2;
-                }
+                const costRow = resolveForestPanelTradeCost(action, state);
+                const effectRow = resolveForestPanelTradeEffects(action, state);
 
-                // Get cost resource (what you pay)
-                const costKeys = Object.keys(action.cost[activeTier] || {});
-                const costResourceKey = costKeys.find(key => key.startsWith('resources.'));
+                const costResourceKey = costRow
+                  ? Object.keys(costRow).find((key) => key.startsWith("resources."))
+                  : undefined;
                 if (costResourceKey) {
-                  resources.push(costResourceKey.split('.')[1]);
+                  resources.push(costResourceKey.split(".")[1]);
                 }
 
-                // Get effect resource (what you get)
-                const effectKeys = Object.keys(action.effects[activeTier] || {});
-                const effectResourceKey = effectKeys.find(key => key.startsWith('resources.'));
+                const effectResourceKey = effectRow
+                  ? Object.keys(effectRow).find((key) => key.startsWith("resources."))
+                  : undefined;
                 if (effectResourceKey) {
-                  resources.push(effectResourceKey.split('.')[1]);
+                  resources.push(effectResourceKey.split(".")[1]);
                 }
               } else {
                 // For non-trade actions, use existing logic

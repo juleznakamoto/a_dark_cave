@@ -404,4 +404,35 @@ export const storyEvents: Record<string, GameEvent> = {
     ],
   },
 
+  ashwraithCanyonTradeOffer: {
+    id: "ashwraithCanyonTradeOffer",
+    condition: (state: GameState) =>
+      Boolean(
+        state.story.seen.secondWaveVictory == true &&
+        state.fellowship.ashwraith_huntress &&
+        !state.story.seen.ashwraithCanyonTradeOfferSeen,
+      ),
+    timeProbability: 20,
+    title: "A Bridge for Trade",
+    message:
+      "The Ashwraith Huntress approaches you. 'My people wish to trade,' she says, 'but between our lands lies a deep canyon. We need a bridge so caravans can cross. Build it, and both our peoples will prosper.'",
+    priority: 5,
+    repeatable: false,
+    choices: [
+      {
+        id: "continue",
+        label: "Continue",
+        effect: (state: GameState) => ({
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              ashwraithCanyonTradeOfferSeen: true,
+            },
+          },
+        }),
+      },
+    ],
+  },
+
 };

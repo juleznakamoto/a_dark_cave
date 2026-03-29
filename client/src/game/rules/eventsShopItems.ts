@@ -362,7 +362,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "forge",
-        label: "Nod silently",
+        label: "Continue",
         effect: (state: GameState) => {
           return {
             resources: {

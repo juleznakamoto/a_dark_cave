@@ -2,6 +2,10 @@ import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
 import { getTotalKnowledge } from "./effectsCalculation";
 import { applyActionEffects } from "./actionEffects";
+import { getMerchantGoldPricePerUnit } from "./eventsMerchant";
+
+/** Ashwraith bridge sell pays this fraction of the merchant gold-per-unit rate. */
+const FOREST_BRIDGE_SELL_GOLD_RATIO = 0.5;
 
 export const forestTradeActions: Record<string, Action> = {
   tradeGoldForFood: {
@@ -323,6 +327,61 @@ export const forestTradeActions: Record<string, Action> = {
     },
   },
 
+  sellLeatherBatch: {
+    id: "sellLeatherBatch",
+    label: "Sell Leather",
+    show_when: {
+      "story.seen.canyonBridgeBuilt": true,
+    },
+    cost: {
+      "resources.leather": 500,
+    },
+    effects: (_state: GameState) => ({
+      "resources.gold": Math.round(
+        500 *
+        getMerchantGoldPricePerUnit("leather") *
+        FOREST_BRIDGE_SELL_GOLD_RATIO,
+      ),
+    }),
+  },
+
+  sellSteelBatch: {
+    id: "sellSteelBatch",
+    label: "Sell Steel",
+    show_when: {
+      "story.seen.canyonBridgeBuilt": true,
+    },
+    cost: {
+      "resources.steel": 500,
+    },
+    effects: (_state: GameState) => ({
+      "resources.gold": Math.round(
+        500 *
+        getMerchantGoldPricePerUnit("steel") *
+        FOREST_BRIDGE_SELL_GOLD_RATIO,
+      ),
+    }),
+  },
+
+  sellBlacksteelBatch: {
+    id: "sellBlacksteelBatch",
+    label: "Sell Blacksteel",
+    show_when: {
+      "buildings.masterworkFoundry": 1,
+      "story.seen.canyonBridgeBuilt": true,
+    },
+    cost: {
+      "resources.blacksteel": 100,
+    },
+    effects: (_state: GameState) => ({
+      "resources.gold": Math.round(
+        100 *
+        getMerchantGoldPricePerUnit("blacksteel") *
+        FOREST_BRIDGE_SELL_GOLD_RATIO,
+      ),
+    }),
+  },
+
   tradeGoldForTorch: {
     id: "tradeGoldForTorch",
     label: "Buy Torch",
@@ -493,6 +552,38 @@ export function handleTradeAction(
   (result.stateUpdates as any).initialCooldowns = {
     ...(result.stateUpdates as any).initialCooldowns,
     [actionId]: actualCooldown,
+  };
+
+  return result;
+}
+
+const FOREST_SELL_ACTION_IDS = new Set([
+  "sellLeatherBatch",
+  "sellSteelBatch",
+  "sellBlacksteelBatch",
+]);
+
+export function handleForestSellAction(
+  actionId: string,
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  if (!FOREST_SELL_ACTION_IDS.has(actionId)) {
+    return result;
+  }
+
+  const effectUpdates = applyActionEffects(actionId, state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  const sellCooldownSeconds = 60;
+  result.stateUpdates.cooldowns = {
+    ...result.stateUpdates.cooldowns,
+    [actionId]: sellCooldownSeconds,
+  };
+
+  (result.stateUpdates as any).initialCooldowns = {
+    ...(result.stateUpdates as any).initialCooldowns,
+    [actionId]: sellCooldownSeconds,
   };
 
   return result;

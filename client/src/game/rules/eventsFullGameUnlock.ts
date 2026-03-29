@@ -34,7 +34,7 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "nod",
-        label: "Nod silently",
+        label: "Continue",
         effect: (state: GameState) => {
           return {
             story: {
@@ -71,7 +71,7 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "nod",
-        label: "Nod silently",
+        label: "Continue",
         effect: (state: GameState) => {
           return {
             story: {
@@ -109,7 +109,7 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "nod",
-        label: "Nod silently",
+        label: "Continue",
         effect: (state: GameState) => {
           // Open the full game purchase dialog
           setTimeout(() => {
