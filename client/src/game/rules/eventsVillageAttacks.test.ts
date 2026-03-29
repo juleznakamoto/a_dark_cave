@@ -49,6 +49,7 @@ describe('Ashen Greatshield Event Death Reduction', () => {
         sanctum: 0,
         blackMonolith: 0,
         boneTemple: 0,
+        boneyard: 0,
         clerksHut: 0,
         scriptorium: 0,
         inkwardenAcademy: 0,
@@ -240,6 +241,13 @@ describe('Ashen Greatshield Event Death Reduction', () => {
       expect(result.villagers?.free).toBe(0);
       const totalRemaining = (result.villagers?.gatherer || 0) + (result.villagers?.hunter || 0);
       expect(totalRemaining).toBe(11); // 15 - 4 = 11
+    });
+
+    it('should increment villagerDeathsLifetime by villagers actually killed', () => {
+      (mockState.stats as { villagerDeathsLifetime?: number }).villagerDeathsLifetime = 50;
+      const result = killVillagers(mockState, 4);
+      expect(result.villagersKilled).toBe(4);
+      expect((result.stats as { villagerDeathsLifetime?: number }).villagerDeathsLifetime).toBe(54);
     });
   });
 });

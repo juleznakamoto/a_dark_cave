@@ -47,15 +47,13 @@ function handleBuildingConstruction(
     result.stateUpdates.resources = newResources;
   }
 
-  // Apply building effects
-  for (const [path, effect] of Object.entries(actionEffects) as [
-    string,
-    number,
-  ][]) {
+  // Apply building effects (story.seen values may be functions evaluated at build time, like applyActionEffects)
+  for (const [path, effectRaw] of Object.entries(actionEffects)) {
     if (path.startsWith("buildings.")) {
       const building = path.split(".")[1] as keyof GameState["buildings"];
       const currentBuildingCount = state.buildings[building] || 0;
-      const newCount = currentBuildingCount + effect;
+      const delta = effectRaw as number;
+      const newCount = currentBuildingCount + delta;
 
       if (!result.stateUpdates) {
         result.stateUpdates = {};
@@ -70,6 +68,10 @@ function handleBuildingConstruction(
       result.stateUpdates.buildings = newBuildings;
     } else if (path.startsWith("story.seen.")) {
       const storyKey = path.split(".").slice(2).join(".");
+      const resolved =
+        typeof effectRaw === "function"
+          ? (effectRaw as (s: GameState) => number | boolean)(state)
+          : effectRaw;
 
       if (!result.stateUpdates.story) {
         result.stateUpdates.story = {
@@ -82,12 +84,12 @@ function handleBuildingConstruction(
       }
       result.stateUpdates.story.seen = {
         ...result.stateUpdates.story.seen,
-        [storyKey]: effect as boolean,
+        [storyKey]: resolved as boolean | number,
       };
     } else if (path.startsWith("stats.")) {
       const stat = path.split(".")[1] as keyof GameState["stats"];
       const currentStatValue = state.stats[stat] || 0;
-      const newStatValue = currentStatValue + (effect as number);
+      const newStatValue = currentStatValue + (effectRaw as number);
 
       if (!result.stateUpdates.stats) {
         result.stateUpdates.stats = {
@@ -1180,6 +1182,18 @@ export function handleBuildPillarOfClarity(
   }
 
   return pillarOfClarityResult;
+}
+
+export function handleBuildBoneyard(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(
+    state,
+    result,
+    "buildBoneyard",
+    "boneyard",
+  );
 }
 
 export function handleBuildBoneTemple(

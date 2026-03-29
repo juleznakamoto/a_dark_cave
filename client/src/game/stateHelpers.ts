@@ -202,10 +202,20 @@ export function killVillagers(state: GameState, deathCount: number): Partial<Gam
     }
   }
 
-  return {
+  const updates: Partial<GameState> & { villagersKilled?: number } = {
     villagers: updatedVillagers,
-    villagersKilled: totalKilled
+    villagersKilled: totalKilled,
   };
+
+  if (totalKilled > 0) {
+    updates.stats = {
+      ...state.stats,
+      villagerDeathsLifetime:
+        (state.stats.villagerDeathsLifetime ?? 0) + totalKilled,
+    };
+  }
+
+  return updates;
 }
 
 /**

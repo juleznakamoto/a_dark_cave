@@ -106,6 +106,7 @@ export const madnessEvents: Record<string, GameEvent> = {
               },
               stats: {
                 ...state.stats,
+                ...(deathResult.stats || {}),
                 madnessFromEvents:
                   (state.stats.madnessFromEvents || 0) +
                   withCruelMadnessBonus(state, 3),
@@ -129,6 +130,7 @@ export const madnessEvents: Record<string, GameEvent> = {
             },
             stats: {
               ...state.stats,
+              ...(deathResult.stats || {}),
               madnessFromEvents:
                 (state.stats.madnessFromEvents || 0) +
                 withCruelMadnessBonus(state, 2),
@@ -341,6 +343,7 @@ export const madnessEvents: Record<string, GameEvent> = {
             },
             stats: {
               ...state.stats,
+              ...(deathResult.stats || {}),
               madnessFromEvents:
                 (state.stats.madnessFromEvents || 0) +
                 withCruelMadnessBonus(state, 2),
@@ -402,6 +405,7 @@ export const madnessEvents: Record<string, GameEvent> = {
             },
             stats: {
               ...state.stats,
+              ...(deathResult.stats || {}),
               madnessFromEvents:
                 (state.stats.madnessFromEvents || 0) +
                 withCruelMadnessBonus(state, 1),
@@ -466,6 +470,7 @@ export const madnessEvents: Record<string, GameEvent> = {
             },
             stats: {
               ...state.stats,
+              ...(deathResult.stats || {}),
               madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
             _logMessage: `You board up the well with wooden planks, forbidding all access to the unholy water. Building a new well takes too long to finish, and ${thirstDeaths} of the weaker villagers perish of thirst.`,
@@ -522,6 +527,7 @@ export const madnessEvents: Record<string, GameEvent> = {
               },
               stats: {
                 ...state.stats,
+                ...(deathResult.stats || {}),
                 madnessFromEvents:
                   (state.stats.madnessFromEvents || 0) +
                   withCruelMadnessBonus(state, 3),

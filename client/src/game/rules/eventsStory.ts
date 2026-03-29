@@ -50,7 +50,27 @@ export const storyEvents: Record<string, GameEvent> = {
     }),
   },
 
-
+  boneyardPlea: {
+    id: "boneyardPlea",
+    condition: (state: GameState) =>
+      Boolean(state.story.seen.firstWaveVictory) &&
+      !state.story.seen.boneyardUnlocked,
+    timeProbability: 20,
+    title: "Burying the Dead",
+    message:
+      "A delegation of villagers finds you: 'Many of us have died. We need a proper place to bury our dead, so they may finally rest.'",
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          boneyardUnlocked: true,
+        },
+      },
+    }),
+  },
 
   mysteriousNote: {
     id: "mysteriousNote",

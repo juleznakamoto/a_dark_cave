@@ -12,6 +12,7 @@ import { getMaxPopulation } from "../population";
 import { ACTION_TO_UPGRADE_KEY, getUpgradeBonus } from "../buttonUpgrades";
 import { HUNT_BONUSES, DISGRACED_PRIOR_UPGRADES } from "./skillUpgrades";
 import { CRUEL_MODE } from "../cruelMode";
+import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
 
 // Craft actions handle their own cost/gain scaling; exclude from generic upgrade multiplier
 const CRAFT_UPGRADE_ACTIONS = ["craftTorches", "craftBoneTotems", "craftLeatherTotems"];
@@ -899,6 +900,12 @@ export const calculateTotalEffects = (state: GameState) => {
       effects.madness_reduction.pillarOfClarity_madness =
         buildAction.statsEffects.madness;
     }
+  }
+
+  // Boneyard: madness reduction scales with villager deaths since it was built
+  const boneyardMadness = getBoneyardBurialMadnessReduction(state);
+  if (boneyardMadness !== 0) {
+    effects.madness_reduction.boneyard_madness = boneyardMadness;
   }
 
   // Add Bone Temple madness reduction (applies independently, includes Black Monolith effects)

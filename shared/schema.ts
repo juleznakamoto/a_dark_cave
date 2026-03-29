@@ -69,6 +69,7 @@ export const gameStateSchema = z.object({
       luck: z.number().min(0).default(0),
       madness: z.number().min(0).default(0),
       madnessFromEvents: z.number().default(0), // Can go negative; display clamped to >=0
+      villagerDeathsLifetime: z.number().min(0).default(0),
     })
     .default({}),
   boostMode: z.boolean().default(false),
@@ -284,6 +285,7 @@ export const gameStateSchema = z.object({
       improvedTraps: z.number().default(0),
       blackMonolith: z.number().default(0),
       boneTemple: z.number().default(0),
+      boneyard: z.number().default(0),
       paleCross: z.number().default(0),
       consecratedPaleCross: z.number().default(0),
       pillarOfClarity: z.number().default(0),

@@ -321,11 +321,13 @@ export const choiceEvents: Record<string, GameEvent> = {
               ) +
               CRUEL_MODE.offerForestGods.failAdditionalDeaths.base +
               cruelModeScale(state) * CRUEL_MODE.offerForestGods.failAdditionalDeaths.whenCruel;
+            const stateAfterInitialKill = {
+              ...state,
+              villagers: deathResult.villagers || state.villagers,
+              stats: { ...state.stats, ...(deathResult.stats || {}) },
+            };
             const totalDeathResult = killVillagers(
-              {
-                ...state,
-                villagers: deathResult.villagers || state.villagers,
-              },
+              stateAfterInitialKill,
               additionalDeaths,
             );
             const actualAdditionalDeaths =
@@ -333,6 +335,7 @@ export const choiceEvents: Record<string, GameEvent> = {
 
             return {
               villagers: totalDeathResult.villagers,
+              stats: totalDeathResult.stats,
               clothing: {
                 ...state.clothing,
                 ebony_ring: true,
@@ -1190,6 +1193,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             ...executionResult,
             stats: {
               ...state.stats,
+              ...(executionResult.stats || {}),
               madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
             story: {
@@ -1269,10 +1273,12 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           // All remaining villagers leave in disgust
           const remainingPopulation = currentPopulation - 2;
-          const leaveResult = killVillagers(
-            { ...state, villagers: tradeResult.villagers || state.villagers },
-            remainingPopulation,
-          );
+          const stateAfterTrade = {
+            ...state,
+            villagers: tradeResult.villagers || state.villagers,
+            stats: { ...state.stats, ...(tradeResult.stats || {}) },
+          };
+          const leaveResult = killVillagers(stateAfterTrade, remainingPopulation);
 
           return {
             ...leaveResult,
@@ -1281,8 +1287,9 @@ export const choiceEvents: Record<string, GameEvent> = {
               steel: state.resources.steel + 100,
             },
             stats: {
-              ...state.stats,
-              madness: state.stats.madness + 1,
+              ...(leaveResult.stats || stateAfterTrade.stats),
+              madness:
+                (leaveResult.stats?.madness ?? stateAfterTrade.stats.madness) + 1,
             },
             story: {
               ...state.story,
@@ -1365,7 +1372,11 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...deathResult,
               stats: {
                 ...state.stats,
-                madness: Math.max(0, state.stats.madness - 1),
+                ...(deathResult.stats || {}),
+                madness: Math.max(
+                  0,
+                  (deathResult.stats?.madness ?? state.stats.madness) - 1,
+                ),
               },
               story: {
                 ...state.story,
@@ -2125,6 +2136,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             ...deathResult,
             stats: {
               ...state.stats,
+              ...(deathResult.stats || {}),
               madnessFromEvents: (state.stats.madnessFromEvents || 0) + 1,
             },
             story: {
@@ -2152,6 +2164,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             ...deathResult,
             stats: {
               ...state.stats,
+              ...(deathResult.stats || {}),
               madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2,
             },
             story: {

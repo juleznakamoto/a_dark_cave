@@ -1,4 +1,5 @@
 import { Action, GameState } from "@shared/schema";
+import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
 
 /**
  * Stranger-approach bonus per completed building level, by `GameState.buildings` key.
@@ -1781,6 +1782,45 @@ export const villageBuildActions: Record<string, Action> = {
       madness: -40,
     },
     executionTime: 90,
+    cooldown: 0,
+  },
+
+  buildBoneyard: {
+    id: "buildBoneyard",
+    label: "Boneyard",
+    description:
+      "Ground where the dead are laid to rest, easing the villager's grief.",
+    tooltipEffects: (state: GameState) => {
+      const reduction = getBoneyardBurialMadnessReduction(state);
+      const current =
+        reduction === 0 ? "0" : String(Math.abs(reduction));
+      return [
+        "Up to -10 Madness",
+        "-1 Madness per 50 villagers lost since built",
+        `Current: -${current} Madness`,
+      ];
+    },
+    building: true,
+    show_when: {
+      1: {
+        "story.seen.boneyardUnlocked": true,
+        "buildings.boneyard": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 10000,
+        "resources.bones": 5000,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.boneyard": 1,
+        "story.seen.boneyardDeathBaseline": (state: GameState) =>
+          state.stats.villagerDeathsLifetime ?? 0,
+      },
+    },
+    executionTime: 60,
     cooldown: 0,
   },
 

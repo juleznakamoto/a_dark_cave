@@ -973,9 +973,12 @@ function handleStarvationCheck() {
       // Use the centralized killVillagers function
       const deathResult = killVillagers(state, starvationDeaths);
 
-      useGameStore.setState({
-        villagers: deathResult.villagers || state.villagers,
-      });
+      useGameStore.setState((s) => ({
+        villagers: deathResult.villagers || s.villagers,
+        ...(deathResult.stats && {
+          stats: { ...s.stats, ...deathResult.stats },
+        }),
+      }));
 
       const message =
         starvationDeaths === 1
@@ -1017,9 +1020,12 @@ function handleFreezingCheck() {
       // Use the centralized killVillagers function
       const deathResult = killVillagers(state, freezingDeaths);
 
-      useGameStore.setState({
-        villagers: deathResult.villagers || state.villagers,
-      });
+      useGameStore.setState((s) => ({
+        villagers: deathResult.villagers || s.villagers,
+        ...(deathResult.stats && {
+          stats: { ...s.stats, ...deathResult.stats },
+        }),
+      }));
 
       const message =
         freezingDeaths === 1
@@ -1090,9 +1096,12 @@ function handleMadnessCheck() {
       // Use the centralized killVillagers function
       const deathResult = killVillagers(state, madnessDeaths);
 
-      useGameStore.setState({
-        villagers: deathResult.villagers || state.villagers,
-      });
+      useGameStore.setState((s) => ({
+        villagers: deathResult.villagers || s.villagers,
+        ...(deathResult.stats && {
+          stats: { ...s.stats, ...deathResult.stats },
+        }),
+      }));
 
       const message =
         madnessDeaths === 1
