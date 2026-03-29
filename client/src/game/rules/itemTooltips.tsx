@@ -15,6 +15,15 @@ import { capitalizeWords } from "@/lib/utils";
 import { useGameStore } from "../state";
 import { CRUEL_MODE } from "../cruelMode";
 
+/** Format unit probability (0–1) as a % label; keeps one decimal when needed so 2.5% does not round to 3%. */
+function formatProbabilityPercent(probability: number): string {
+  const pct = probability * 100;
+  const roundedTenth = Math.round(pct * 10) / 10;
+  return Math.abs(roundedTenth - Math.round(roundedTenth)) < 1e-6
+    ? `${Math.round(roundedTenth)}`
+    : roundedTenth.toFixed(1);
+}
+
 export function renderItemTooltip(
   itemId: string,
   itemType: "weapon" | "tool" | "blessing" | "book" | "building" | "fellowship",
@@ -316,7 +325,7 @@ export function renderItemTooltip(
                 Object.entries(bonus.probabilityBonus).map(
                   ([resource, probability]) => (
                     <div key={resource}>
-                      {capitalizeWords(actionId)}: {Math.round(probability * 100)}% chance for +50 {capitalizeWords(resource)}
+                      {capitalizeWords(actionId)}: {formatProbabilityPercent(probability)}% chance for +50 {capitalizeWords(resource)}
                     </div>
                   ),
                 )}

@@ -1,6 +1,13 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 import { applyActionEffects } from "./actionEffects";
+import { calculateTotalEffects } from "./effectsCalculation";
+
+/** P(silver vein) from active items' mining probabilityBonus (e.g. Natharit pickaxe in toolEffects). */
+function miningBonusSilverProbability(state: GameState): number {
+  const p = calculateTotalEffects(state).probability_bonus.mining_silver ?? 0;
+  return Math.min(1, Math.max(0, p));
+}
 
 export const caveMineActions: Record<string, Action> = {
   mineStone: {
@@ -18,7 +25,7 @@ export const caveMineActions: Record<string, Action> = {
       return {
         "resources.stone": `random(${4 + bonus},${8 + bonus})`,
         "resources.silver": {
-          probability: (state) => state.tools?.natharit_pickaxe ? 0.05 : 0,
+          probability: miningBonusSilverProbability,
           value: 50,
           logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
         },
@@ -45,7 +52,7 @@ export const caveMineActions: Record<string, Action> = {
       return {
         "resources.iron": `random(${4 + bonus},${8 + bonus})`,
         "resources.silver": {
-          probability: (state) => state.tools?.natharit_pickaxe ? 0.05 : 0,
+          probability: miningBonusSilverProbability,
           value: 50,
           logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
         },
@@ -72,7 +79,7 @@ export const caveMineActions: Record<string, Action> = {
       return {
         "resources.coal": `random(${4 + bonus},${8 + bonus})`,
         "resources.silver": {
-          probability: (state) => state.tools?.natharit_pickaxe ? 0.05 : 0,
+          probability: miningBonusSilverProbability,
           value: 50,
           logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
         },
@@ -100,7 +107,7 @@ export const caveMineActions: Record<string, Action> = {
       return {
         "resources.sulfur": `random(${4 + bonus},${8 + bonus})`,
         "resources.silver": {
-          probability: (state) => state.tools?.natharit_pickaxe ? 0.05 : 0,
+          probability: miningBonusSilverProbability,
           value: 50,
           logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
         },
@@ -127,7 +134,7 @@ export const caveMineActions: Record<string, Action> = {
       return {
         "resources.obsidian": `random(${3 + bonus},${7 + bonus})`,
         "resources.silver": {
-          probability: (state) => state.tools?.natharit_pickaxe ? 0.05 : 0,
+          probability: miningBonusSilverProbability,
           value: 50,
           logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
         },
@@ -154,7 +161,7 @@ export const caveMineActions: Record<string, Action> = {
       return {
         "resources.adamant": `random(${2 + bonus},${6 + bonus})`,
         "resources.silver": {
-          probability: (state) => state.tools?.natharit_pickaxe ? 0.05 : 0,
+          probability: miningBonusSilverProbability,
           value: 50,
           logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
         },
