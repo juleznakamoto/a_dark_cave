@@ -10,6 +10,12 @@ const NORMAL_PLAY_EXIT_WINDOW_MS = 5 * 60 * 1000;
 const NORMAL_PLAY_EXIT_MAX_PER_WINDOW = 3;
 /** Ignore duplicate `exitIntent` emissions from the SDK within one gesture. */
 const EXIT_INTENT_EVENT_DEDUP_MS = 600;
+/**
+ * After the last allowed show in normal play we must not set `exitIntent.enabled: false` until
+ * the SDK has run its auto-dismiss (~1500ms in their bundle); doing it immediately breaks the
+ * close timer and the top bar can stay stuck open.
+ */
+const EXIT_INTENT_DISABLE_DEFER_MS = 2000;
 
 type ExitIntentGameSlice = {
   flags: { gameStarted?: boolean };
@@ -39,6 +45,8 @@ function isNormalPlayExitContext(state: ExitIntentGameSlice): boolean {
 
 const normalPlayExitIntentTimestamps: number[] = [];
 let normalPlayExitUnlockTimerId: number | null = null;
+let exitIntentDisableDeferredUntil = 0;
+let exitIntentDeferTimerId: number | null = null;
 /** Skip quota for the next `exitIntent` event (e.g. after `setDiscovery()` from the menu). */
 let skipNextExitIntentQuota = false;
 let lastExitIntentEventRecordedAt = 0;
@@ -117,6 +125,14 @@ export async function initPlaylight() {
         }, delay);
       };
 
+      const clearExitIntentDisableDefer = () => {
+        exitIntentDisableDeferredUntil = 0;
+        if (exitIntentDeferTimerId !== null) {
+          clearTimeout(exitIntentDeferTimerId);
+          exitIntentDeferTimerId = null;
+        }
+      };
+
       const recordNormalPlayExitIntentShown = () => {
         const now = Date.now();
         if (now - lastExitIntentEventRecordedAt < EXIT_INTENT_EVENT_DEDUP_MS) {
@@ -127,6 +143,21 @@ export async function initPlaylight() {
         pruneNormalPlayExitIntentTimestamps();
         normalPlayExitIntentTimestamps.push(now);
         pruneNormalPlayExitIntentTimestamps();
+
+        const atCap =
+          normalPlayExitIntentTimestamps.length >= NORMAL_PLAY_EXIT_MAX_PER_WINDOW;
+        if (atCap) {
+          exitIntentDisableDeferredUntil = now + EXIT_INTENT_DISABLE_DEFER_MS;
+          if (exitIntentDeferTimerId !== null) {
+            clearTimeout(exitIntentDeferTimerId);
+          }
+          exitIntentDeferTimerId = window.setTimeout(() => {
+            exitIntentDeferTimerId = null;
+            exitIntentDisableDeferredUntil = 0;
+            syncExitIntent(useGameStore.getState());
+          }, EXIT_INTENT_DISABLE_DEFER_MS);
+        }
+
         syncExitIntent(useGameStore.getState());
         scheduleNormalPlayExitUnlock();
       };
@@ -136,13 +167,22 @@ export async function initPlaylight() {
 
         let shouldEnableExitIntent: boolean;
         if (!gameStarted) {
+          clearExitIntentDisableDefer();
           shouldEnableExitIntent = false;
         } else if (isSpecialExitContext(state)) {
+          clearExitIntentDisableDefer();
           shouldEnableExitIntent = true;
         } else {
           pruneNormalPlayExitIntentTimestamps();
-          shouldEnableExitIntent =
-            normalPlayExitIntentTimestamps.length < NORMAL_PLAY_EXIT_MAX_PER_WINDOW;
+          const atCap =
+            normalPlayExitIntentTimestamps.length >= NORMAL_PLAY_EXIT_MAX_PER_WINDOW;
+          if (!atCap) {
+            clearExitIntentDisableDefer();
+            shouldEnableExitIntent = true;
+          } else {
+            const deferActive = Date.now() < exitIntentDisableDeferredUntil;
+            shouldEnableExitIntent = deferActive;
+          }
         }
 
         playlightSDK.setConfig({

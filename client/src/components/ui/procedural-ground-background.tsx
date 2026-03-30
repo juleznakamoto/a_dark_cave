@@ -120,10 +120,10 @@ export const ProceduralGroundBackground: React.FC = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 w-full h-full bg-zinc-950 z-[45] overlay-fade-in">
+    <div className="fixed inset-0 z-[55] w-full h-full bg-zinc-950 pointer-events-auto overlay-fade-in">
       <canvas
         ref={canvasRef}
-        className="w-full h-full block touch-none"
+        className="pointer-events-auto w-full h-full block touch-none"
         style={{ filter: 'contrast(1.1) brightness(0.9)' }}
       />
     </div>
