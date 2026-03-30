@@ -362,7 +362,7 @@ export default function ForestPanel() {
                 {(villagerMessage || costBreakdown.length > 0) && (
                   <div className="border-t border-border my-1" />
                 )}
-                <div>Receive {formatNumber(sellGoldReward)} Gold</div>
+                <div>+{formatNumber(sellGoldReward)} Gold</div>
               </>
             )}
             {successPercentage && (
