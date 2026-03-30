@@ -2,7 +2,7 @@ import { GameEvent, calculateSuccessChance } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { getTotalStrength } from "./effectsCalculation";
-import { getMaxPopulation } from "@/game/population";
+import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
 import { woodcutterEvents } from "./eventsWoodcutter";
 import { loreEvents } from "./eventsLore";
 import { shopItemEvents } from "./eventsShopItems";
@@ -616,10 +616,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "way_of_first_flame",
         label: "Way of the First Flame",
         effect: (state: GameState) => {
-          const currentPop = Object.values(state.villagers).reduce(
-            (sum, count) => sum + (count || 0),
-            0,
-          );
+          const currentPop = getCurrentPopulation(state);
           const maxPop = getMaxPopulation(state);
           const canAdd = Math.min(4, maxPop - currentPop);
 
@@ -1241,7 +1238,7 @@ export const choiceEvents: Record<string, GameEvent> = {
   slaveTrader: {
     id: "slaveTrader",
     condition: (state: GameState) => {
-      const currentPopulation = state.current_population;
+      const currentPopulation = getCurrentPopulation(state);
       const maxPopulation = getMaxPopulation(state);
       const hasRoomForTwo = maxPopulation - currentPopulation >= 2;
 
@@ -1263,10 +1260,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "sellVillagers",
         label: "Sell 2 villagers",
         effect: (state: GameState) => {
-          const currentPopulation = Object.values(state.villagers).reduce(
-            (sum, count) => sum + (count || 0),
-            0,
-          );
+          const currentPopulation = getCurrentPopulation(state);
 
           // Kill 2 villagers for the trade
           const tradeResult = killVillagers(state, 2);
@@ -1324,10 +1318,7 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           if (Math.random() < successChance) {
             // Success: free the captives and take the steel
-            const currentPopulation = Object.values(state.villagers).reduce(
-              (sum, count) => sum + (count || 0),
-              0,
-            );
+            const currentPopulation = getCurrentPopulation(state);
             const maxPopulation = getMaxPopulation(state);
             const villagersToAdd = Math.min(
               2,

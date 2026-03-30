@@ -1,7 +1,11 @@
 import { useGameStore, StateManager } from "./state";
 import { saveGame } from "./save";
 import { GameState } from "@shared/schema";
-import { getPopulationProduction, getMaxPopulation } from "./population";
+import {
+  getCurrentPopulation,
+  getPopulationProduction,
+  getMaxPopulation,
+} from "./population";
 import { killVillagers, buildGameState } from "@/game/stateHelpers";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import {
@@ -1143,10 +1147,7 @@ async function handleAutoSave() {
 function handleStrangerApproach() {
   const state = useGameStore.getState();
 
-  const currentPopulation = Object.values(state.villagers).reduce(
-    (sum, count) => sum + (count || 0),
-    0,
-  );
+  const currentPopulation = getCurrentPopulation(state);
   const maxPopulation = getMaxPopulation(state);
 
   // Only trigger if there's room for more villagers
@@ -1157,10 +1158,7 @@ function handleStrangerApproach() {
   // Check if stranger(s) approach based on probability
   if (Math.random() < probability) {
     // Calculate available room
-    const currentPop = Object.values(state.villagers).reduce(
-      (sum, count) => sum + (count || 0),
-      0,
-    );
+    const currentPop = getCurrentPopulation(state);
     const maxPop = getMaxPopulation(state);
     const availableRoom = maxPop - currentPop;
 

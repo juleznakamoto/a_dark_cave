@@ -14,6 +14,7 @@ import { ACTION_TO_UPGRADE_KEY, getUpgradeLevel } from "@/game/buttonUpgrades";
 import { calculateAdjustedCost } from "./costCalculation";
 import { getActionBonuses } from "./effectsCalculation";
 import { formatNumber } from "@/lib/utils";
+import { getVillagersInVillage } from "@/game/population";
 
 // Import action modules
 import { caveCraftResources } from "./caveCraftResources";
@@ -544,10 +545,7 @@ export function getActionCostBreakdown(
   // Handle dynamic cost for humans sacrifice
   if (actionId === "humans") {
     const dynamicCost = getHumansCost(state);
-    const totalVillagers = Object.values(state.villagers).reduce(
-      (sum, count) => sum + (count || 0),
-      0,
-    );
+    const totalVillagers = getVillagersInVillage(state);
     return [
       {
         text: `-${formatNumber(dynamicCost)} Villager${dynamicCost !== 1 ? "s" : ""}`,

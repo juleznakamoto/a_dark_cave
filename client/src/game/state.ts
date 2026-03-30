@@ -36,7 +36,7 @@ import {
   getTotalMadness,
 } from "@/game/rules/effectsCalculation";
 import { calculateBastionStats } from "@/game/bastionStats";
-import { getMaxPopulation } from "@/game/population";
+import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { GAME_CONSTANTS } from "@/game/constants";
 import {
@@ -2416,16 +2416,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   // Computed getter for current population
   get current_population() {
-    const state = get();
-    const assignedToExpeditions = Object.values(
-      state.expeditionVillagers || {},
-    ).reduce((sum, count) => sum + (count || 0), 0);
-    return (
-      Object.values(state.villagers).reduce(
-        (sum, count) => sum + (count || 0),
-        0,
-      ) + assignedToExpeditions
-    );
+    return getCurrentPopulation(get());
   },
 
   setEventDialog: (isOpen: boolean, currentEvent?: LogEntry) => {

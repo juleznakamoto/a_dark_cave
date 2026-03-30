@@ -8,7 +8,7 @@ import {
   EffectDefinition,
 } from "./effects";
 import { villageBuildActions } from "./villageBuildActions";
-import { getMaxPopulation } from "../population";
+import { getCurrentPopulation, getMaxPopulation } from "../population";
 import { ACTION_TO_UPGRADE_KEY, getUpgradeBonus } from "../buttonUpgrades";
 import { HUNT_BONUSES, DISGRACED_PRIOR_UPGRADES } from "./skillUpgrades";
 import { CRUEL_MODE } from "../cruelMode";
@@ -596,10 +596,7 @@ export function getStrangerApproachProbability(state: GameState): {
   fromEvents: number;
   fromHeartfire: number;
 } {
-  const currentPopulation = Object.values(state.villagers).reduce(
-    (sum, count) => sum + (count || 0),
-    0,
-  );
+  const currentPopulation = getCurrentPopulation(state);
   const maxPopulation = getMaxPopulation(state);
   const atCapacity = currentPopulation >= maxPopulation;
 

@@ -1,5 +1,5 @@
 import { GameState } from "@shared/schema";
-import { getMaxPopulation } from "./population";
+import { getCurrentPopulation, getMaxPopulation } from "./population";
 import { isResourceLimited, getResourceLimit } from "./resourceLimits";
 import { getTotalEventDeathReduction } from "./rules/effectsCalculation";
 
@@ -71,10 +71,7 @@ export function updateFlag(
 export const updatePopulationCounts = (
   state: GameState,
 ): Partial<GameState> => {
-  const current = Object.values(state.villagers).reduce(
-    (sum, count) => sum + (count || 0),
-    0,
-  );
+  const current = getCurrentPopulation(state);
 
   const total = getMaxPopulation(state);
   const prevMax = Number(state.story?.seen?.maxPopulationReached) || 0;

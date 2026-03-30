@@ -16,6 +16,7 @@ import { Progress } from "@/components/ui/progress";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import CubeDialog from "./CubeDialog";
 import { bloodMoonSacrificeAmount } from "@/game/cruelMode";
+import { getVillagersInVillage } from "@/game/population";
 
 interface EventDialogProps {
   isOpen: boolean;
@@ -289,7 +290,7 @@ export default function EventDialog({
                     gameState.cruelMode,
                     gameState.bloodMoonState?.occurrenceCount ?? 0,
                   );
-                  const totalVillagers = Object.values(gameState.villagers).reduce((sum, count) => sum + count, 0);
+                  const totalVillagers = getVillagersInVillage(gameState);
                   if (totalVillagers < sacrificeAmount) {
                     isDisabled = true;
                   }

@@ -3,6 +3,7 @@ import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { getTotalStrength, getTotalLuck } from "./effectsCalculation";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
+import { getCurrentPopulation, getVillagersInVillage } from "../population";
 
 export const villageAttackEvents: Record<string, GameEvent> = {
   boneArmyAttack: {
@@ -11,7 +12,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
       state.boneDevourerState.lastAcceptedLevel >= 6 &&
       !state.clothing.devourer_crown &&
       !state.relics.bone_devourer_blood &&
-      state.current_population > 10,
+      getCurrentPopulation(state) > 10,
     timeProbability: 0.015,
     title: "The Bone Army",
     message:
@@ -83,7 +84,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           const mdd = CRUEL_MODE.villageAttacks.boneArmy.maxDeathsDefend;
           const maxPotentialDeaths = Math.min(
             Math.floor(Math.random() * mdd.randMax) + mdd.base + cruelModeScale(state) * mdd.whenCruel,
-            state.current_population,
+            getVillagersInVillage(state),
           );
           for (let i = 0; i < maxPotentialDeaths; i++) {
             if (Math.random() < casualtyChance) {
@@ -196,7 +197,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               Math.floor(Math.random() * bh.maxDeaths.randMax) +
               bh.maxDeaths.base +
               cruelModeScale(state) * bh.maxDeaths.whenCruel,
-              state.current_population,
+              getVillagersInVillage(state),
             );
             for (let i = 0; i < maxPotentialDeaths; i++) {
               if (Math.random() < casualtyChance) {
@@ -246,7 +247,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 3 &&
       !state.clothing.alphas_hide &&
-      state.current_population > 10,
+      getCurrentPopulation(state) > 10,
     timeProbability: 40,
     title: "Wolf Attack",
     message:
@@ -327,7 +328,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             state.buildings.woodenHut * wmd.perHut +
             cruelModeScale(state) * wmd.whenCruel -
             traps * wmd.trapMult,
-            state.current_population,
+            getVillagersInVillage(state),
           );
           for (let i = 0; i < maxPotentialDeaths; i++) {
             if (Math.random() < casualtyChance) {
@@ -452,7 +453,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               state.buildings.woodenHut * whd.perHutHalf -
               traps * whd.trapMult +
               cruelModeScale(state) * whd.whenCruel,
-              state.current_population,
+              getVillagersInVillage(state),
             );
             for (let i = 0; i < maxPotentialDeaths; i++) {
               if (Math.random() < casualtyChance) {
@@ -509,7 +510,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
     id: "cannibalRaid",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 8 &&
-      state.current_population > 10 &&
+      getCurrentPopulation(state) > 10 &&
       !state.story.seen.cannibalRaidVictory,
 
     timeProbability: 40,
@@ -546,7 +547,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             const vm = CRUEL_MODE.villageAttacks.cannibal.victoryMinimalDeaths;
             const minimalDeaths = Math.min(
               Math.floor(Math.random() * vm.randMax) + cruelModeScale(state) * vm.whenCruel,
-              state.current_population,
+              getVillagersInVillage(state),
             );
             const deathResult = killVillagers(state, minimalDeaths);
             const actualDeaths = deathResult.villagersKilled || 0;
@@ -591,7 +592,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             state.buildings.woodenHut * cmd.perHut -
             traps * cmd.trapMult +
             cruelModeScale(state) * cmd.whenCruel,
-            state.current_population,
+            getVillagersInVillage(state),
           );
 
           for (let i = 0; i < maxPotentialCasualties; i++) {
@@ -690,7 +691,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               Math.floor(state.buildings.woodenHut * ch.maxCasualties.perHutHalf) -
               traps * ch.maxCasualties.trapMult +
               cruelModeScale(state) * ch.maxCasualties.whenCruel,
-              state.current_population,
+              getVillagersInVillage(state),
             );
 
             for (let i = 0; i < maxPotentialCasualties; i++) {

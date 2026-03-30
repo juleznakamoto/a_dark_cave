@@ -258,10 +258,10 @@ export const getPopulationProduction = (
   if (totalMadness >= 10) {
     const madnessMultiplier =
       totalMadness >= 50 ? 0.5
-      : totalMadness >= 40 ? 0.6
-      : totalMadness >= 30 ? 0.7
-      : totalMadness >= 20 ? 0.8
-      : 0.9; // madness >= 10
+        : totalMadness >= 40 ? 0.6
+          : totalMadness >= 30 ? 0.7
+            : totalMadness >= 20 ? 0.8
+              : 0.9; // madness >= 10
     baseProduction.forEach((prod) => {
       // Only reduce positive production (not consumption)
       if (prod.totalAmount > 0) {
@@ -367,6 +367,40 @@ export const getPopulationProduction = (
   return baseProduction;
 };
 
+/**
+ * Full village headcount for housing cap, stranger arrivals, and economy-wide totals
+ * (e.g. base food/wood). Includes villagers on expeditions — they still count against max
+ * population while away.
+ */
+export function getCurrentPopulation(
+  state: Pick<GameState, "villagers" | "expeditionVillagers">,
+): number {
+  return getVillagersInVillage(state) + getExpeditionVillagerCount(state);
+}
+
+/** Count of villagers assigned to in-progress expeditions (deducted from `free`, tracked separately). */
+export function getExpeditionVillagerCount(
+  state: Pick<GameState, "expeditionVillagers">,
+): number {
+  return Object.values(state.expeditionVillagers ?? {}).reduce(
+    (sum, count) => sum + (count || 0),
+    0,
+  );
+}
+
+/**
+ * Villagers present in job/free counts only. Excludes those on expeditions — they cannot be
+ * sacrificed or killed by attack waves and similar events until they return.
+ */
+export function getVillagersInVillage(
+  state: Pick<GameState, "villagers">,
+): number {
+  return Object.values(state.villagers).reduce(
+    (sum, count) => sum + (count || 0),
+    0,
+  );
+}
+
 export const getTotalPopulationEffects = (
   state: GameState,
   visibleJobIds: string[],
@@ -375,10 +409,7 @@ export const getTotalPopulationEffects = (
   const totalEffects: Record<string, number> = {};
 
   // Calculate total population for base consumption
-  const totalPopulation = Object.values(state.villagers).reduce(
-    (sum, count) => sum + (count || 0),
-    0,
-  );
+  const totalPopulation = getCurrentPopulation(state);
 
   // Add base consumption for all villagers (1 wood and 1 food per villager)
   if (totalPopulation > 0) {

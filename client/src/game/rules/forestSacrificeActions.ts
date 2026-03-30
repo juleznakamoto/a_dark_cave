@@ -2,6 +2,7 @@ import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 import { applyActionEffects } from "./actionEffects";
 import { killVillagers } from "../stateHelpers";
+import { getVillagersInVillage } from "../population";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 
 // Helper function to get dynamic cost for bone totems
@@ -115,10 +116,7 @@ export const forestSacrificeActions: Record<string, Action> = {
       }
 
       const currentCost = getHumansCost(state);
-      const totalVillagers = Object.values(state.villagers).reduce(
-        (sum, count) => sum + (count || 0),
-        0,
-      );
+      const totalVillagers = getVillagersInVillage(state);
 
       return totalVillagers >= currentCost;
     },
@@ -342,11 +340,7 @@ export function handleHumans(
   const currentCost = getHumansCost(state);
   const isCompletingExecution = (state as any)._completingExecution === "humans";
 
-  // Calculate total villagers
-  const totalVillagers = Object.values(state.villagers).reduce(
-    (sum, count) => sum + (count || 0),
-    0,
-  );
+  const totalVillagers = getVillagersInVillage(state);
 
   // Check if player has enough villagers (skip when completing execution - already consumed)
   if (!isCompletingExecution && totalVillagers < currentCost) {

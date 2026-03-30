@@ -2,7 +2,7 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { getTotalMadness, getTotalLuck } from "./effectsCalculation";
-import { getMaxPopulation } from "../population";
+import { getCurrentPopulation, getMaxPopulation } from "../population";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 
 const withCruelMadnessBonus = (state: GameState, baseMadnessGain: number): number =>
@@ -222,10 +222,7 @@ export const madnessEvents: Record<string, GameEvent> = {
   wrongVillagers: {
     id: "wrongVillagers",
     condition: (state: GameState) => {
-      const currentPopulation = Object.values(state.villagers).reduce(
-        (sum, count) => sum + (count || 0),
-        0,
-      );
+      const currentPopulation = getCurrentPopulation(state);
       const maxPopulation = getMaxPopulation(state);
       const spaceForThree = currentPopulation + 3 <= maxPopulation;
 
@@ -242,10 +239,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     priority: 2,
     repeatable: false,
     effect: (state: GameState) => {
-      const currentPopulation = Object.values(state.villagers).reduce(
-        (sum, count) => sum + (count || 0),
-        0,
-      );
+      const currentPopulation = getCurrentPopulation(state);
       const maxPopulation = getMaxPopulation(state);
       const villagersToAdd = Math.min(3, maxPopulation - currentPopulation);
 

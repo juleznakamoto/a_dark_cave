@@ -3,6 +3,7 @@ import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { useGameStore } from "@/game/state";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
+import { getVillagersInVillage } from "../population";
 import { ATTACK_WAVE_IDS, type AttackWaveId, isFinalAttackWave } from "./attackWaveOrder";
 
 // Helper function to calculate enemy stats
@@ -368,10 +369,7 @@ function handleDefeat(
   maxCasualties: number,
   fellowshipWoundedMultiplier: number,
 ) {
-  const currentPopulation = Object.values(state.villagers).reduce(
-    (sum, count) => sum + (count || 0),
-    0,
-  );
+  const currentPopulation = getVillagersInVillage(state);
   const minCasualities = Math.ceil(
     Math.random() * 0.8 * maxCasualties +
     0.2 * maxCasualties +

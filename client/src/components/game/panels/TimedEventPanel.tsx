@@ -12,6 +12,7 @@ import {
   isKnowledgeBonusMaxed,
 } from "@/game/rules/effectsStats";
 import { bloodMoonSacrificeAmount } from "@/game/cruelMode";
+import { getVillagersInVillage } from "@/game/population";
 import { GAMBLER_LEAVE_AFTER_GAMES_MESSAGE } from "@/game/rules/eventsGambler";
 import GamblerDiceDialog from "@/components/game/GamblerDiceDialog";
 import { getTotalLuck } from "@/game/rules/effectsCalculation";
@@ -470,7 +471,7 @@ export default function TimedEventPanel() {
                   gameState.cruelMode,
                   gameState.bloodMoonState?.occurrenceCount ?? 0,
                 );
-                const totalVillagers = Object.values(gameState.villagers).reduce((sum, count) => sum + count, 0);
+                const totalVillagers = getVillagersInVillage(gameState);
                 if (totalVillagers < sacrificeAmount) {
                   villagersCheckPassed = false;
                 }

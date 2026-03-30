@@ -1,6 +1,11 @@
 
 import { describe, it, expect } from 'vitest';
-import { getPopulationProduction, getTotalPopulationEffects } from './population';
+import {
+  getCurrentPopulation,
+  getVillagersInVillage,
+  getPopulationProduction,
+  getTotalPopulationEffects,
+} from './population';
 import { GameState } from '@shared/schema';
 
 // Helper to create a minimal test state
@@ -237,6 +242,35 @@ const createTestState = (overrides?: Partial<GameState>): GameState => {
   } as GameState;
 };
 
+describe('getCurrentPopulation', () => {
+  it('sums villager job counts when no one is on expedition', () => {
+    const state = createTestState({
+      villagers: { ...createTestState().villagers, free: 2, gatherer: 3 },
+      expeditionVillagers: {},
+    });
+    expect(getCurrentPopulation(state)).toBe(5);
+  });
+
+  it('adds expedition assignments so totals match in-village headcount', () => {
+    const state = createTestState({
+      villagers: { ...createTestState().villagers, free: 2, gatherer: 5 },
+      expeditionVillagers: { exploreCave: 3 },
+    });
+    expect(getCurrentPopulation(state)).toBe(10);
+  });
+});
+
+describe('getVillagersInVillage', () => {
+  it('counts only job/free buckets, not expedition assignments', () => {
+    const state = createTestState({
+      villagers: { ...createTestState().villagers, free: 1, gatherer: 4 },
+      expeditionVillagers: { exploreCave: 5 },
+    });
+    expect(getVillagersInVillage(state)).toBe(5);
+    expect(getCurrentPopulation(state)).toBe(10);
+  });
+});
+
 describe('Population Production Display Tests', () => {
   describe('Gatherer production matches display', () => {
     it('single gatherer production matches displayed value', () => {
@@ -252,7 +286,7 @@ describe('Population Production Display Tests', () => {
       const displayedEffects = getTotalPopulationEffects(state, ['gatherer']);
 
       // Calculate total population for base consumption
-      const totalPop = Object.values(state.villagers).reduce((sum, count) => sum + count, 0);
+      const totalPop = getCurrentPopulation(state);
 
       // Verify each resource matches (accounting for base consumption)
       actualProduction.forEach(prod => {

@@ -1,4 +1,5 @@
 import { GameState } from "@shared/schema";
+import { getCurrentPopulation } from "../population";
 import { LogEntry } from "./events";
 import { GAME_CONSTANTS } from "../constants";
 
@@ -10,7 +11,7 @@ export function checkMilestoneLogEntries(state: GameState): Partial<GameState> {
   const modifiedUpdates: Partial<GameState> = {};
 
   // Check if village reaches 4 villagers for the first time
-  const currentPopulation = state.current_population || 0;
+  const currentPopulation = getCurrentPopulation(state);
   const hasShown4VillagerMilestone = state.story?.seen?.village4VillagersMilestone;
 
   if (currentPopulation >= 4 && !hasShown4VillagerMilestone) {

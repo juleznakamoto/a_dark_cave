@@ -11,7 +11,10 @@ import { useGameStore } from "@/game/state";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { capitalizeWords } from "@/lib/utils";
 import cn from "clsx";
-import { getPopulationProduction } from "@/game/population";
+import {
+  getCurrentPopulation,
+  getPopulationProduction,
+} from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { resetProductionCycle } from "@/game/loop";
 import { BOMB_RESOURCES } from "@/game/resourceLimits";
@@ -143,10 +146,7 @@ function simulatePopulationConsumption(
   multiplier: number,
   accumulatedResources: Record<string, number>,
 ) {
-  const totalPopulation = Object.values(state.villagers).reduce(
-    (sum, count) => sum + ((count as number) || 0),
-    0,
-  );
+  const totalPopulation = getCurrentPopulation(state);
 
   if (totalPopulation > 0) {
     // Food consumption (1 per villager per 15 seconds)
