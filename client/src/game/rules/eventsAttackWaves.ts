@@ -346,9 +346,9 @@ function createDefeatMessage(
       "The defenses crumble under the assault before the remaining creatures retreat to the depths.";
   } else if (casualties === 1) {
     msg +=
-      "One villager falls before the remaining creatures retreat to the depths.";
+      "One Villager falls before the remaining creatures retreat to the depths.";
   } else {
-    msg += `${casualties} villagers fall before the remaining creatures retreat to the depths.`;
+    msg += `${casualties} Villagers fall before the remaining creatures retreat to the depths.`;
   }
 
   if (damagedBuildings.length > 0) {
@@ -424,7 +424,7 @@ function handleDefeat(
     chance(baseChance)
   ) {
     buildingDamage = { ...buildingDamage, bastionDamaged: true };
-    damagedBuildings.push("bastion");
+    damagedBuildings.push("Bastion");
   }
 
   if (
@@ -433,7 +433,7 @@ function handleDefeat(
     chance(baseChance)
   ) {
     buildingDamage = { ...buildingDamage, watchtowerDamaged: true };
-    damagedBuildings.push("watchtower");
+    damagedBuildings.push("Watchtower");
   }
 
   if (
@@ -442,7 +442,7 @@ function handleDefeat(
     chance(baseChance)
   ) {
     buildingDamage = { ...buildingDamage, palisadesDamaged: true };
-    damagedBuildings.push("palisades");
+    damagedBuildings.push("Palisades");
   }
 
   return {

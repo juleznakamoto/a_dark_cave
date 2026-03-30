@@ -1393,6 +1393,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
     }
 
+    if (
+      actionId === "repairBastion" ||
+      actionId === "repairWatchtower" ||
+      actionId === "repairPalisades"
+    ) {
+      setTimeout(() => get().updateBastionStats(), 0);
+    }
+
     // Handle event dialogs
     if (result.logEntries) {
       result.logEntries.forEach((entry) => {

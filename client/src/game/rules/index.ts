@@ -25,6 +25,7 @@ import { forestSacrificeActions } from "./forestSacrificeActions";
 import { forestTradeActions } from "./forestTradeActions";
 import { caveExploreActions } from "./caveExploreActions";
 import { forestScoutActions } from "./forestScoutActions";
+import { bastionActions } from "./bastionActions";
 
 // Import event modules
 import { caveEvents } from "./eventsCave";
@@ -58,6 +59,7 @@ registerActions({
   ...forestSacrificeActions,
   ...forestTradeActions,
   ...forestScoutActions,
+  ...bastionActions,
 });
 
 // Export the registry getter for external use

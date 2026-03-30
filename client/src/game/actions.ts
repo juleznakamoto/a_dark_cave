@@ -597,6 +597,86 @@ export function executeGameAction(
     case "sellBlacksteelBatch":
       return handleForestSellAction(actionId, state, result);
 
+    case "healRestlessKnight":
+      return {
+        stateUpdates: {
+          cooldowns: { healRestlessKnight: 0 },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              restlessKnightWounded: false,
+            },
+          },
+        },
+        logEntries: [],
+        delayedEffects: [],
+      };
+
+    case "healElderWizard":
+      return {
+        stateUpdates: {
+          cooldowns: { healElderWizard: 0 },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              elderWizardWounded: false,
+            },
+          },
+        },
+        logEntries: [],
+        delayedEffects: [],
+      };
+
+    case "repairBastion":
+      return {
+        stateUpdates: {
+          cooldowns: { repairBastion: 0 },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              bastionDamaged: false,
+            },
+          },
+        },
+        logEntries: [],
+        delayedEffects: [],
+      };
+
+    case "repairWatchtower":
+      return {
+        stateUpdates: {
+          cooldowns: { repairWatchtower: 0 },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              watchtowerDamaged: false,
+            },
+          },
+        },
+        logEntries: [],
+        delayedEffects: [],
+      };
+
+    case "repairPalisades":
+      return {
+        stateUpdates: {
+          cooldowns: { repairPalisades: 0 },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              palisadesDamaged: false,
+            },
+          },
+        },
+        logEntries: [],
+        delayedEffects: [],
+      };
+
     default:
       logger.warn(`No handler found for action: ${actionId}`);
       return result;

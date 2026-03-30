@@ -29,6 +29,7 @@ import {
   type BubbleWithParticles,
 } from "@/components/ui/bubbly-button.particles";
 import type { Action, GameState } from "@shared/schema";
+import { formatNumber } from "@/lib/utils";
 
 function isTieredNumericRecord(r: unknown): r is Record<number, unknown> {
   if (!r || typeof r !== "object") return false;
@@ -74,13 +75,31 @@ function resolveForestPanelTradeEffects(
   action: Action,
   state: GameState,
 ): Record<string, number> | undefined {
-  if (!action.effects || typeof action.effects === "function") return undefined;
+  if (!action.effects) return undefined;
+  if (typeof action.effects === "function") {
+    return action.effects(state) as Record<string, number>;
+  }
   const raw = action.effects as Record<string, Record<string, number>>;
   if (!isTieredNumericRecord(raw)) {
     return raw as unknown as Record<string, number>;
   }
   const tier = getForestPanelTradeActiveTier(action, state);
   return raw[tier];
+}
+
+function formatForestPanelResourceRowLabel(
+  row: Record<string, number> | undefined,
+): string | null {
+  if (!row) return null;
+  const key = Object.keys(row).find((k) => k.startsWith("resources."));
+  if (!key || typeof row[key] !== "number") return null;
+  const resourceName = key.split(".")[1];
+  const formattedName = resourceName
+    .replace(/_/g, " ")
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+  return `${formatNumber(row[key])} ${formattedName}`;
 }
 
 function resolveForestPanelTradeCost(
@@ -191,6 +210,7 @@ export default function ForestPanel() {
     const showCost = action.cost && Object.keys(action.cost).length > 0;
     const isTradeButton =
       actionId.startsWith("trade") || actionId.startsWith("sell");
+    const isSellButton = actionId.startsWith("sell");
 
     // For trade buttons, check if there's enough space for the resource being bought
     if (isTradeButton && canExecute && action.effects) {
@@ -246,21 +266,24 @@ export default function ForestPanel() {
     const isFocusAffected = FOCUS_ELIGIBLE_ACTIONS.includes(actionId);
     const shouldGlow = isFocusAffected && state.focusState?.isActive;
 
-    // Get dynamic label for trade buttons based on the amount
+    // Get dynamic label: sell = amount + resource sold; buy = amount + resource received
     let displayLabel = label;
-    if (isTradeButton && action.effects) {
+    if (isSellButton && action.cost) {
+      const costRow = resolveForestPanelTradeCost(action, state);
+      const sellText = formatForestPanelResourceRowLabel(costRow);
+      if (sellText) displayLabel = sellText;
+    } else if (isTradeButton && action.effects) {
       const effects = resolveForestPanelTradeEffects(action, state);
       if (effects) {
         const resourceKey = Object.keys(effects)[0];
         const amount = effects[resourceKey];
         const resourceName = resourceKey.split(".")[1];
-        // Replace underscores with spaces and capitalize
         const formattedName = resourceName
           .replace(/_/g, ' ')
           .split(' ')
           .map(word => word.charAt(0).toUpperCase() + word.slice(1))
           .join(' ');
-        displayLabel = `${amount} ${formattedName}`;
+        displayLabel = `${formatNumber(amount)} ${formattedName}`;
       }
     }
 
@@ -313,6 +336,13 @@ export default function ForestPanel() {
       } else {
         // Other actions with costs and/or success chance
         const costBreakdown = getActionCostBreakdown(actionId, state);
+        const sellGoldReward = isSellButton
+          ? (() => {
+            const eff = resolveForestPanelTradeEffects(action, state);
+            const g = eff?.["resources.gold"];
+            return typeof g === "number" ? g : null;
+          })()
+          : null;
         tooltipContent = (
           <div className="text-xs whitespace-nowrap">
             {villagerMessage}
@@ -327,9 +357,17 @@ export default function ForestPanel() {
                 {costItem.text}
               </div>
             ))}
+            {sellGoldReward != null && (
+              <>
+                {(villagerMessage || costBreakdown.length > 0) && (
+                  <div className="border-t border-border my-1" />
+                )}
+                <div>Receive {formatNumber(sellGoldReward)} Gold</div>
+              </>
+            )}
             {successPercentage && (
               <>
-                {costBreakdown.length > 0 && (
+                {(costBreakdown.length > 0 || sellGoldReward != null) && (
                   <div className="border-t border-border my-1" />
                 )}
                 <div className="flex items-center gap-1">

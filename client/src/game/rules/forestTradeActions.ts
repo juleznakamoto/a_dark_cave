@@ -575,7 +575,7 @@ export function handleForestSellAction(
   const effectUpdates = applyActionEffects(actionId, state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-  const sellCooldownSeconds = 60;
+  const sellCooldownSeconds = 90;
   result.stateUpdates.cooldowns = {
     ...result.stateUpdates.cooldowns,
     [actionId]: sellCooldownSeconds,

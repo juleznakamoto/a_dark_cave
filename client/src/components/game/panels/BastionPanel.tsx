@@ -1,10 +1,12 @@
+import type { GameState } from "@shared/schema";
 import { useGameStore } from "@/game/state";
-import { gameActions } from "@/game/rules";
-import { getTotalBuildingCostReduction } from "@/game/rules/effectsCalculation";
-import { Button } from "@/components/ui/button";
-import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import {
+  canExecuteAction,
+  getActionCostBreakdown,
+  getResourcesFromActionCost,
+} from "@/game/rules";
 import AttackWavesChart from "./AttackWavesChart";
-import { CRUEL_MODE } from "@/game/cruelMode";
+import CooldownButton from "@/components/CooldownButton";
 
 // Helper to get building label based on level
 const getBuildingLabel = (
@@ -34,9 +36,9 @@ const getBuildingLabel = (
 };
 
 export default function BastionPanel() {
-  const { buildings, story, resources, fellowship, setHighlightedResources } =
+  const { buildings, story, setHighlightedResources, executeAction } =
     useGameStore();
-  const state = useGameStore.getState();
+  const state = useGameStore.getState() as unknown as GameState;
 
   const bastionDamaged = story?.seen?.bastionDamaged || false;
   const watchtowerDamaged = story?.seen?.watchtowerDamaged || false;
@@ -44,151 +46,6 @@ export default function BastionPanel() {
 
   const hasDamagedBuildings =
     bastionDamaged || watchtowerDamaged || palisadesDamaged;
-
-  // Helper to calculate 50% repair cost from action cost
-  const getRepairCost = (actionId: string, level: number = 1) => {
-    const action = gameActions[actionId];
-    const actionCost = action?.cost?.[level];
-    if (!actionCost) return {};
-
-    const buildingCostReduction = getTotalBuildingCostReduction(state);
-
-    const repairCost: Record<string, number> = {};
-    for (const [path, cost] of Object.entries(actionCost)) {
-      if (path.startsWith("resources.")) {
-        const resource = path.split(".")[1];
-        // Apply building cost reduction to repair cost
-        const reducedCost = Math.floor(
-          cost * CRUEL_MODE.bastion.repairCostFactor * (1 - buildingCostReduction),
-        );
-        repairCost[resource] = reducedCost;
-      }
-    }
-    return repairCost;
-  };
-
-  const canAffordRepair = (repairCost: Record<string, number>) => {
-    return Object.entries(repairCost).every(([resource, cost]) => {
-      return resources[resource as keyof typeof resources] >= cost;
-    });
-  };
-
-  // Helper to format repair cost for tooltip
-  const getRepairCostText = (repairCost: Record<string, number>) => {
-    return Object.entries(repairCost).map(([resource, cost]) => {
-      const resourceName = resource
-        .split("_")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
-      const currentAmount = resources[resource as keyof typeof resources] || 0;
-      const satisfied = currentAmount >= cost;
-      return {
-        text: `-${cost} ${resourceName}`,
-        satisfied,
-      };
-    });
-  };
-
-  const deductRepairCost = (repairCost: Record<string, number>) => {
-    const newResources = { ...resources };
-    for (const [resource, cost] of Object.entries(repairCost)) {
-      newResources[resource as keyof typeof newResources] -= cost;
-    }
-    return newResources;
-  };
-
-  const repairBastion = () => {
-    const repairCost = getRepairCost("buildBastion", 1);
-    if (canAffordRepair(repairCost)) {
-      // First, update the state with new damage flags and deducted resources
-      useGameStore.setState((state) => ({
-        resources: deductRepairCost(repairCost),
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            bastionDamaged: false,
-          },
-        },
-      }));
-
-      // Then recalculate bastion stats after state has been updated
-      setTimeout(() => {
-        useGameStore.getState().updateBastionStats();
-      }, 0);
-    }
-  };
-
-  const repairWatchtower = () => {
-    const level = buildings.watchtower || 0;
-    const repairCost = getRepairCost("buildWatchtower", level);
-
-    if (canAffordRepair(repairCost)) {
-      // First, update the state with new damage flags and deducted resources
-      useGameStore.setState((state) => ({
-        resources: deductRepairCost(repairCost),
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            watchtowerDamaged: false,
-          },
-        },
-      }));
-
-      // Then recalculate bastion stats after state has been updated
-      setTimeout(() => {
-        useGameStore.getState().updateBastionStats();
-      }, 0);
-    }
-  };
-
-  const repairPalisades = () => {
-    const level = buildings.palisades || 0;
-    const repairCost = getRepairCost("buildPalisades", level);
-
-    if (canAffordRepair(repairCost)) {
-      // First, update the state with new damage flags and deducted resources
-      useGameStore.setState((state) => ({
-        resources: deductRepairCost(repairCost),
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            palisadesDamaged: false,
-          },
-        },
-      }));
-
-      // Then recalculate bastion stats after state has been updated
-      setTimeout(() => {
-        useGameStore.getState().updateBastionStats();
-      }, 0);
-    }
-  };
-
-  const getResourcesFromActionCost = (actionId: string, state: any) => {
-    const action = gameActions[actionId];
-    const cost = action?.cost?.[1]; // Assuming level 1 cost for highlighting
-    if (!cost) return [];
-
-    const buildingCostReduction = getTotalBuildingCostReduction(state);
-
-    const resources: string[] = [];
-    for (const [path, amount] of Object.entries(cost)) {
-      if (path.startsWith("resources.")) {
-        const resource = path.split(".")[1];
-        // Apply building cost reduction to highlight cost (as it would be paid)
-        const effectiveCost = Math.floor(
-          amount * CRUEL_MODE.bastion.repairCostFactor * (1 - buildingCostReduction),
-        );
-        if (effectiveCost > 0) {
-          resources.push(resource);
-        }
-      }
-    }
-    return resources;
-  };
 
   return (
     <div className="w-full md:max-w-96 space-y-4 mt-2 mb-2 pl-[3px] pr-[3px]">
@@ -200,117 +57,86 @@ export default function BastionPanel() {
         <div className="space-y-2">
           <h3 className="text-xs font-medium text-foreground">Heal</h3>
           <div className="flex flex-wrap gap-2">
-            {story?.seen?.restlessKnightWounded && fellowship?.restless_knight && (
-              <TooltipWrapper
+            {story?.seen?.restlessKnightWounded && state.fellowship?.restless_knight && (
+              <CooldownButton
                 key="restless-knight"
+                actionId="healRestlessKnight"
+                button_id="heal-restless-knight"
+                onClick={() => executeAction("healRestlessKnight")}
+                cooldownMs={0}
+                data-testid="button-heal-restless-knight"
+                disabled={!canExecuteAction("healRestlessKnight", state)}
+                variant="outline"
+                size="xs"
+                className="hover:bg-background hover:text-foreground"
                 tooltip={
                   <div className="text-xs whitespace-nowrap">
-                    <div className={resources.food >= 1500 ? "" : "text-muted-foreground"}>
-                      -1500 Food
-                    </div>
+                    {getActionCostBreakdown("healRestlessKnight", state).map(
+                      (row, index) => (
+                        <div
+                          key={index}
+                          className={
+                            row.satisfied ? "" : "text-muted-foreground"
+                          }
+                        >
+                          {row.text}
+                        </div>
+                      ),
+                    )}
                   </div>
                 }
-                tooltipId="heal-restless-knight"
-                disabled={resources.food < 1500}
                 onMouseEnter={() => {
-                  setHighlightedResources(['food']);
+                  setHighlightedResources(
+                    getResourcesFromActionCost("healRestlessKnight", state),
+                  );
                 }}
                 onMouseLeave={() => {
                   setHighlightedResources([]);
                 }}
               >
-                <Button
-                  onClick={() => {
-                    if (resources.food >= 1500) {
-                      useGameStore.setState((state) => ({
-                        resources: {
-                          ...state.resources,
-                          food: state.resources.food - 1500,
-                        },
-                        story: {
-                          ...state.story,
-                          seen: {
-                            ...state.story.seen,
-                            restlessKnightWounded: false,
-                          },
-                        },
-                      }));
-                    }
-                  }}
-                  disabled={resources.food < 1500}
-                  variant="outline"
-                  size="xs"
-                  className="hover:bg-background hover:text-foreground"
-                  button_id="heal-restless-knight"
-                >
-                  Restless Knight
-                </Button>
-              </TooltipWrapper>
+                Restless Knight
+              </CooldownButton>
             )}
 
-            {story?.seen?.elderWizardWounded && fellowship?.elder_wizard && (
-              <TooltipWrapper
+            {story?.seen?.elderWizardWounded && state.fellowship?.elder_wizard && (
+              <CooldownButton
                 key="elder-wizard"
+                actionId="healElderWizard"
+                button_id="heal-elder-wizard"
+                onClick={() => executeAction("healElderWizard")}
+                cooldownMs={0}
+                data-testid="button-heal-elder-wizard"
+                disabled={!canExecuteAction("healElderWizard", state)}
+                variant="outline"
+                size="xs"
+                className="hover:bg-background hover:text-foreground"
                 tooltip={
                   <div className="text-xs whitespace-nowrap">
-                    <div className={resources.food >= 1500 ? "" : "text-muted-foreground"}>
-                      -1500 Food
-                    </div>
+                    {getActionCostBreakdown("healElderWizard", state).map(
+                      (row, index) => (
+                        <div
+                          key={index}
+                          className={
+                            row.satisfied ? "" : "text-muted-foreground"
+                          }
+                        >
+                          {row.text}
+                        </div>
+                      ),
+                    )}
                   </div>
                 }
-                tooltipId="heal-elder-wizard"
-                disabled={resources.food < 1500}
-                onClick={() => {
-                  if (resources.food >= 1500) {
-                    useGameStore.setState((state) => ({
-                      resources: {
-                        ...state.resources,
-                        food: state.resources.food - 1500,
-                      },
-                      story: {
-                        ...state.story,
-                        seen: {
-                          ...state.story.seen,
-                          elderWizardWounded: false,
-                        },
-                      },
-                    }));
-                  }
-                }}
                 onMouseEnter={() => {
-                  setHighlightedResources(['food']);
+                  setHighlightedResources(
+                    getResourcesFromActionCost("healElderWizard", state),
+                  );
                 }}
                 onMouseLeave={() => {
                   setHighlightedResources([]);
                 }}
               >
-                <Button
-                  onClick={() => {
-                    if (resources.food >= 1500) {
-                      useGameStore.setState((state) => ({
-                        resources: {
-                          ...state.resources,
-                          food: state.resources.food - 1500,
-                        },
-                        story: {
-                          ...state.story,
-                          seen: {
-                            ...state.story.seen,
-                            elderWizardWounded: false,
-                          },
-                        },
-                      }));
-                    }
-                  }}
-                  disabled={resources.food < 1500}
-                  variant="outline"
-                  size="xs"
-                  className="hover:bg-background hover:text-foreground"
-                  button_id="heal-elder-wizard"
-                >
-                  Elder Wizard
-                </Button>
-              </TooltipWrapper>
+                Elder Wizard
+              </CooldownButton>
             )}
           </div>
         </div>
@@ -322,11 +148,20 @@ export default function BastionPanel() {
           <h3 className="text-xs font-medium text-foreground">Repair</h3>
           <div className="flex flex-wrap gap-2">
             {bastionDamaged && buildings.bastion > 0 && (
-              <TooltipWrapper
+              <CooldownButton
                 key="bastion"
+                actionId="repairBastion"
+                button_id="repair-bastion"
+                onClick={() => executeAction("repairBastion")}
+                cooldownMs={0}
+                data-testid="button-repair-bastion"
+                disabled={!canExecuteAction("repairBastion", state)}
+                variant="outline"
+                size="xs"
+                className="hover:bg-background hover:text-foreground"
                 tooltip={
                   <div className="text-xs whitespace-nowrap">
-                    {getRepairCostText(getRepairCost("buildBastion", 1)).map(
+                    {getActionCostBreakdown("repairBastion", state).map(
                       (cost, index) => (
                         <div
                           key={index}
@@ -340,148 +175,105 @@ export default function BastionPanel() {
                     )}
                   </div>
                 }
-                tooltipId="repair-bastion"
-                disabled={!canAffordRepair(getRepairCost("buildBastion", 1))}
                 onMouseEnter={() => {
-                  const resources = Object.keys(getRepairCost("buildBastion", 1));
-                  setHighlightedResources(resources);
+                  setHighlightedResources(
+                    getResourcesFromActionCost("repairBastion", state),
+                  );
                 }}
                 onMouseLeave={() => {
                   setHighlightedResources([]);
                 }}
               >
-                <Button
-                  onClick={repairBastion}
-                  disabled={
-                    !canAffordRepair(getRepairCost("buildBastion", 1))
-                  }
-                  variant="outline"
-                  size="xs"
-                  className="hover:bg-background hover:text-foreground"
-                  button_id="repair-bastion"
-                >
-                  Bastion
-                </Button>
-              </TooltipWrapper>
+                Bastion
+              </CooldownButton>
             )}
 
             {watchtowerDamaged && buildings.watchtower > 0 && (
-              <TooltipWrapper
+              <CooldownButton
                 key="watchtower"
+                actionId="repairWatchtower"
+                button_id="repair-watchtower"
+                onClick={() => executeAction("repairWatchtower")}
+                cooldownMs={0}
+                data-testid="button-repair-watchtower"
+                disabled={!canExecuteAction("repairWatchtower", state)}
+                variant="outline"
+                size="xs"
+                className="hover:bg-background hover:text-foreground"
                 tooltip={
                   <div className="text-xs whitespace-nowrap">
-                    {getRepairCostText(
-                      getRepairCost("buildWatchtower", buildings.watchtower),
-                    ).map((cost, index) => (
-                      <div
-                        key={index}
-                        className={
-                          cost.satisfied ? "" : "text-muted-foreground"
-                        }
-                      >
-                        {cost.text}
-                      </div>
-                    ))}
+                    {getActionCostBreakdown("repairWatchtower", state).map(
+                      (cost, index) => (
+                        <div
+                          key={index}
+                          className={
+                            cost.satisfied ? "" : "text-muted-foreground"
+                          }
+                        >
+                          {cost.text}
+                        </div>
+                      ),
+                    )}
                   </div>
                 }
-                tooltipId="repair-watchtower"
-                disabled={
-                  !canAffordRepair(
-                    getRepairCost(
-                      "buildWatchtower",
-                      buildings.watchtower,
-                    ),
-                  )
-                }
-                onClick={repairWatchtower}
                 onMouseEnter={() => {
-                  const resources = Object.keys(getRepairCost("buildWatchtower", buildings.watchtower));
-                  setHighlightedResources(resources);
+                  setHighlightedResources(
+                    getResourcesFromActionCost("repairWatchtower", state),
+                  );
                 }}
                 onMouseLeave={() => {
                   setHighlightedResources([]);
                 }}
               >
-                <Button
-                  onClick={repairWatchtower}
-                  disabled={
-                    !canAffordRepair(
-                      getRepairCost(
-                        "buildWatchtower",
-                        buildings.watchtower,
-                      ),
-                    )
-                  }
-                  variant="outline"
-                  size="xs"
-                  className="hover:bg-background hover:text-foreground"
-                  button_id="repair-watchtower"
-                >
-                  {getBuildingLabel(
-                    "watchtower",
-                    buildings.watchtower || 0,
-                  )}
-                </Button>
-              </TooltipWrapper>
+                {getBuildingLabel(
+                  "watchtower",
+                  buildings.watchtower || 0,
+                )}
+              </CooldownButton>
             )}
 
             {palisadesDamaged && buildings.palisades > 0 && (
-              <TooltipWrapper
+              <CooldownButton
                 key="palisades"
+                actionId="repairPalisades"
+                button_id="repair-palisades"
+                onClick={() => executeAction("repairPalisades")}
+                cooldownMs={0}
+                data-testid="button-repair-palisades"
+                disabled={!canExecuteAction("repairPalisades", state)}
+                variant="outline"
+                size="xs"
+                className="hover:bg-background hover:text-foreground"
                 tooltip={
                   <div className="text-xs whitespace-nowrap">
-                    {getRepairCostText(
-                      getRepairCost("buildPalisades", buildings.palisades),
-                    ).map((cost, index) => (
-                      <div
-                        key={index}
-                        className={
-                          cost.satisfied ? "" : "text-muted-foreground"
-                        }
-                      >
-                        {cost.text}
-                      </div>
-                    ))}
+                    {getActionCostBreakdown("repairPalisades", state).map(
+                      (cost, index) => (
+                        <div
+                          key={index}
+                          className={
+                            cost.satisfied ? "" : "text-muted-foreground"
+                          }
+                        >
+                          {cost.text}
+                        </div>
+                      ),
+                    )}
                   </div>
                 }
-                tooltipId="repair-palisades"
-                disabled={
-                  !canAffordRepair(
-                    getRepairCost(
-                      "buildPalisades",
-                      buildings.palisades,
-                    ),
-                  )
-                }
                 onMouseEnter={() => {
-                  const resources = Object.keys(getRepairCost("buildPalisades", buildings.palisades));
-                  setHighlightedResources(resources);
+                  setHighlightedResources(
+                    getResourcesFromActionCost("repairPalisades", state),
+                  );
                 }}
                 onMouseLeave={() => {
                   setHighlightedResources([]);
                 }}
               >
-                <Button
-                  onClick={repairPalisades}
-                  disabled={
-                    !canAffordRepair(
-                      getRepairCost(
-                        "buildPalisades",
-                        buildings.palisades,
-                      ),
-                    )
-                  }
-                  variant="outline"
-                  size="xs"
-                  className="hover:bg-background hover:text-foreground"
-                  button_id="repair-palisades"
-                >
-                  {getBuildingLabel(
-                    "palisades",
-                    buildings.palisades || 0,
-                  )}
-                </Button>
-              </TooltipWrapper>
+                {getBuildingLabel(
+                  "palisades",
+                  buildings.palisades || 0,
+                )}
+              </CooldownButton>
             )}
           </div>
         </div>

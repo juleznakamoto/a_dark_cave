@@ -543,10 +543,10 @@ export default function CombatDialog({
           key: "casualties",
           text:
             (combatSummary.casualties ?? 0) === 0
-              ? "No villagers died."
+              ? "No Villagers died."
               : combatSummary.casualties === 1
-                ? "1 villager died."
-                : `${formatNumber(combatSummary.casualties!)} villagers died.`,
+                ? "1 Villager died."
+                : `${formatNumber(combatSummary.casualties!)} Villagers died.`,
           className: "text-gray-400 text-sm",
         },
         ...(combatSummary.woundedFellows ?? []).map((f) => ({
@@ -557,7 +557,7 @@ export default function CombatDialog({
         ...(combatSummary.damagedBuildings ?? []).map((b) => ({
           key: `building-${b}`,
           text: `${b} got damaged.`,
-          className: "text-gray-400 text-sm capitalize",
+          className: "text-gray-400 text-sm",
         })),
       ]
       : [];
