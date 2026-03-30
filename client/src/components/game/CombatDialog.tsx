@@ -691,13 +691,13 @@ export default function CombatDialog({
                           }
                           tooltipId="combat-luck-madness"
                           tooltipContentClassName="max-w-xs"
-                          className="inline-flex items-center justify-center w-4 h-4 shrink-0 rounded-full text-muted-foreground text-sm font-bold hover:text-foreground cursor-pointer"
+                          className="inline-flex items-center justify-center w-4 h-4 shrink-0 rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
                         >
                           <span
-                            className="leading-none"
+                            className="inline-flex shrink-0 items-center justify-center font-sans text-sm font-normal leading-none"
                             aria-label="Combat attack details"
                           >
-                            ⓘ
+                            🛈
                           </span>
                         </TooltipWrapper>
                       );

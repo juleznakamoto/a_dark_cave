@@ -1089,9 +1089,14 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     tooltipId="skull-lantern-info"
                                     disabled
                                     tooltipContentClassName="max-w-xs border border-amber-600"
-                                    className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 text-sm font-bold cursor-pointer"
+                                    className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer"
                                   >
-                                    <span>ⓘ</span>
+                                    <span
+                                      className="inline-flex shrink-0 items-center justify-center font-sans text-sm font-normal leading-none"
+                                      aria-hidden
+                                    >
+                                      🛈
+                                    </span>
                                   </TooltipWrapper>
                                 )}
                                 {item.id === "tarnished_compass" && (
@@ -1110,9 +1115,14 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     tooltipId="tarnished-compass-info"
                                     disabled
                                     tooltipContentClassName="max-w-[14rem] border border-amber-600"
-                                    className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 text-sm font-bold cursor-pointer"
+                                    className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer"
                                   >
-                                    <span>ⓘ</span>
+                                    <span
+                                      className="inline-flex shrink-0 items-center justify-center font-sans text-sm font-normal leading-none"
+                                      aria-hidden
+                                    >
+                                      🛈
+                                    </span>
                                   </TooltipWrapper>
                                 )}
                               </CardTitle>
@@ -1164,9 +1174,14 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           tooltipId={`traders-gratitude-${item.id}`}
                                           disabled
                                           tooltipContentClassName="max-w-xs border border-amber-600"
-                                          className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm font-bold hover:text-foreground cursor-pointer"
+                                          className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
                                         >
-                                          <span>ⓘ</span>
+                                          <span
+                                            className="inline-flex shrink-0 items-center justify-center font-sans text-sm font-normal leading-none"
+                                            aria-hidden
+                                          >
+                                            🛈
+                                          </span>
                                         </TooltipWrapper>
                                       )}
                                       {showPlaylightInfo && (
@@ -1181,9 +1196,14 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           tooltipId={`playlight-discount-${item.id}`}
                                           disabled
                                           tooltipContentClassName="max-w-xs border border-amber-600"
-                                          className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm font-bold hover:text-foreground cursor-pointer"
+                                          className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
                                         >
-                                          <span>ⓘ</span>
+                                          <span
+                                            className="inline-flex shrink-0 items-center justify-center font-sans text-sm font-normal leading-none"
+                                            aria-hidden
+                                          >
+                                            🛈
+                                          </span>
                                         </TooltipWrapper>
                                       )}
                                     </>
