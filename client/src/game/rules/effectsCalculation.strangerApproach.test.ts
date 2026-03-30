@@ -58,7 +58,7 @@ describe("getStrangerApproachProbability", () => {
       buildings: { ...createInitialState().buildings, woodenHut: 5 },
     });
     const result = getStrangerApproachProbability(state);
-    expect(result.fromBuildings).toBe(0.1); // 5 * 0.02 (wooden hut +2% each)
+    expect(result.fromBuildings).toBe(0.075); // 5 * 0.015 (wooden hut +1.5% each)
   });
 
   it("should aggregate fromBuildings from all housing types", () => {
@@ -73,8 +73,8 @@ describe("getStrangerApproachProbability", () => {
       },
     });
     const result = getStrangerApproachProbability(state);
-    // 2*0.02 + 3*0.01 + 2*0.005 + 2*0.005 = 0.04 + 0.03 + 0.01 + 0.01 = 0.09
-    expect(result.fromBuildings).toBe(0.09);
+    // 2*0.015 + 3*0.01 + 2*0.005 + 2*0.005 = 0.03 + 0.03 + 0.01 + 0.01 = 0.08
+    expect(result.fromBuildings).toBeCloseTo(0.08, 10);
   });
 
   it("should add fromBlessings for ravens_mark", () => {
@@ -156,7 +156,7 @@ describe("getStrangerApproachProbability", () => {
       result.fromBlessings +
       result.fromEvents;
     expect(result.rawChance).toBe(breakdownSum); // tooltip main number matches breakdown
-    expect(result.fromBuildings).toBe(0.02); // 1 wooden hut +2%
+    expect(result.fromBuildings).toBe(0.015); // 1 wooden hut +1.5%
   });
 
   it("should have breakdown sum equal pre-cap probability", () => {

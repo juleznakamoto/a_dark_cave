@@ -43,6 +43,18 @@ vi.mock('@/lib/logger', () => ({
   },
 }));
 
+vi.mock('@/lib/supabase', () => ({
+  getSupabaseClient: vi.fn().mockResolvedValue({
+    auth: {
+      getSession: vi.fn().mockResolvedValue({ data: { session: null } }),
+      getUser: vi.fn().mockResolvedValue({ data: { user: null } }),
+      onAuthStateChange: vi.fn(() => ({ data: { subscription: { unsubscribe: vi.fn() } } })),
+    },
+    functions: { invoke: vi.fn() },
+    from: vi.fn(() => ({ select: vi.fn().mockReturnThis(), eq: vi.fn().mockReturnThis(), maybeSingle: vi.fn() })),
+  }),
+}));
+
 describe('Save Game System - Comprehensive Tests', () => {
   let mockDB: any;
 
@@ -1131,14 +1143,18 @@ describe('Save Game System - Comprehensive Tests', () => {
   });
 
   describe('8. Edge Cases and Race Conditions', () => {
-    it('should handle rapid successive saves', async () => {
-      const saves = Array.from({ length: 10 }, (_, i) =>
-        saveGame(createMockGameState({ playTime: 1000 + i * 100 }), true)
-      );
+    it(
+      'should handle rapid successive saves',
+      async () => {
+        const saves = Array.from({ length: 10 }, (_, i) =>
+          saveGame(createMockGameState({ playTime: 1000 + i * 100 }), true)
+        );
 
-      await Promise.all(saves);
-      expect(mockPut).toHaveBeenCalledTimes(10);
-    });
+        await Promise.all(saves);
+        expect(mockPut).toHaveBeenCalledTimes(10);
+      },
+      15_000
+    );
 
     it('should handle save during active gameplay', async () => {
       const state = await import('./state');

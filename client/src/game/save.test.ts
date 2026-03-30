@@ -5,10 +5,24 @@ import { GameState } from '@shared/schema';
 
 vi.mock('idb');
 vi.mock('./auth');
+vi.mock('@/lib/supabase', () => ({
+  getSupabaseClient: vi.fn().mockResolvedValue({
+    auth: {
+      getSession: vi.fn().mockResolvedValue({ data: { session: null } }),
+      getUser: vi.fn().mockResolvedValue({ data: { user: null } }),
+      onAuthStateChange: vi.fn(() => ({ data: { subscription: { unsubscribe: vi.fn() } } })),
+    },
+    functions: { invoke: vi.fn() },
+    from: vi.fn(() => ({ select: vi.fn().mockReturnThis(), eq: vi.fn().mockReturnThis(), maybeSingle: vi.fn() })),
+  }),
+}));
 
 describe('Game Save/Load', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
+    const auth = await import('./auth');
+    vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
+    vi.mocked(auth.processReferralAfterConfirmation).mockResolvedValue(undefined);
   });
 
   it('should preserve cooldowns after save/load cycle', async () => {
