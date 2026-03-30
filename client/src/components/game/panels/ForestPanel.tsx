@@ -102,6 +102,14 @@ function formatForestPanelResourceRowLabel(
   return `${formatNumber(row[key])} ${formattedName}`;
 }
 
+/** Tooltip line for resource gained (e.g. "+250 Food", "+125 Gold"). */
+function formatForestPanelResourceGainLine(
+  row: Record<string, number> | undefined,
+): string | null {
+  const line = formatForestPanelResourceRowLabel(row);
+  return line ? `+${line}` : null;
+}
+
 function resolveForestPanelTradeCost(
   action: Action,
   state: GameState,
@@ -336,13 +344,12 @@ export default function ForestPanel() {
       } else {
         // Other actions with costs and/or success chance
         const costBreakdown = getActionCostBreakdown(actionId, state);
-        const sellGoldReward = isSellButton
-          ? (() => {
-            const eff = resolveForestPanelTradeEffects(action, state);
-            const g = eff?.["resources.gold"];
-            return typeof g === "number" ? g : null;
-          })()
-          : null;
+        const forestTradeGainLine =
+          isTradeButton && action.effects
+            ? formatForestPanelResourceGainLine(
+              resolveForestPanelTradeEffects(action, state),
+            )
+            : null;
         tooltipContent = (
           <div className="text-xs whitespace-nowrap">
             {villagerMessage}
@@ -357,17 +364,17 @@ export default function ForestPanel() {
                 {costItem.text}
               </div>
             ))}
-            {sellGoldReward != null && (
+            {forestTradeGainLine != null && (
               <>
                 {(villagerMessage || costBreakdown.length > 0) && (
                   <div className="border-t border-border my-1" />
                 )}
-                <div>+{formatNumber(sellGoldReward)} Gold</div>
+                <div>{forestTradeGainLine}</div>
               </>
             )}
             {successPercentage && (
               <>
-                {(costBreakdown.length > 0 || sellGoldReward != null) && (
+                {(costBreakdown.length > 0 || forestTradeGainLine != null) && (
                   <div className="border-t border-border my-1" />
                 )}
                 <div className="flex items-center gap-1">
