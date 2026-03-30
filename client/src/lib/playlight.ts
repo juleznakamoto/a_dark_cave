@@ -8,6 +8,8 @@ export function isPlaylightReferralUrl(): boolean {
 
 const NORMAL_PLAY_EXIT_WINDOW_MS = 5 * 60 * 1000;
 const NORMAL_PLAY_EXIT_MAX_PER_WINDOW = 3;
+/** Ignore duplicate `exitIntent` emissions from the SDK within one gesture. */
+const EXIT_INTENT_EVENT_DEDUP_MS = 600;
 
 type ExitIntentGameSlice = {
   flags: { gameStarted?: boolean };
@@ -16,9 +18,15 @@ type ExitIntentGameSlice = {
   idleModeDialog: { isOpen: boolean };
 };
 
+/**
+ * Contexts where exit intent stays unlimited. Player pause counts only when the player
+ * paused the game — not when we paused for Playlight discovery (`playlightCausedPause`),
+ * otherwise a discovery open would re-enable exit intent and void the normal-play cap.
+ */
 function isSpecialExitContext(state: ExitIntentGameSlice): boolean {
+  const playerPausedNotForDiscovery = state.isPaused && !playlightCausedPause;
   return (
-    state.isPaused ||
+    playerPausedNotForDiscovery ||
     state.leaderboardDialogOpen ||
     state.idleModeDialog.isOpen ||
     (typeof window !== "undefined" && window.location.pathname === "/end-screen")
@@ -31,8 +39,9 @@ function isNormalPlayExitContext(state: ExitIntentGameSlice): boolean {
 
 const normalPlayExitIntentTimestamps: number[] = [];
 let normalPlayExitUnlockTimerId: number | null = null;
-/** Next `discoveryOpen` from ProfileMenu `setDiscovery()` must not consume normal-play quota. */
-let skipNextDiscoveryOpenCount = false;
+/** Skip quota for the next `exitIntent` event (e.g. after `setDiscovery()` from the menu). */
+let skipNextExitIntentQuota = false;
+let lastExitIntentEventRecordedAt = 0;
 
 function pruneNormalPlayExitIntentTimestamps(now = Date.now()) {
   const cutoff = now - NORMAL_PLAY_EXIT_WINDOW_MS;
@@ -45,11 +54,11 @@ function pruneNormalPlayExitIntentTimestamps(now = Date.now()) {
 }
 
 /**
- * Call immediately before `playlightSDK.setDiscovery()` so that open does not count
- * toward the normal-play exit-intent rate limit.
+ * Call immediately before `playlightSDK.setDiscovery()` so that the resulting flow does not
+ * consume normal-play exit-intent quota if the SDK emits `exitIntent`.
  */
 export function markPlaylightDiscoveryUserInitiated() {
-  skipNextDiscoveryOpenCount = true;
+  skipNextExitIntentQuota = true;
 }
 
 // Track Playlight SDK initialization state to prevent duplicate subscriptions
@@ -108,6 +117,20 @@ export async function initPlaylight() {
         }, delay);
       };
 
+      const recordNormalPlayExitIntentShown = () => {
+        const now = Date.now();
+        if (now - lastExitIntentEventRecordedAt < EXIT_INTENT_EVENT_DEDUP_MS) {
+          return;
+        }
+        lastExitIntentEventRecordedAt = now;
+
+        pruneNormalPlayExitIntentTimestamps();
+        normalPlayExitIntentTimestamps.push(now);
+        pruneNormalPlayExitIntentTimestamps();
+        syncExitIntent(useGameStore.getState());
+        scheduleNormalPlayExitUnlock();
+      };
+
       const syncExitIntent = (state: StoreState) => {
         const gameStarted = !!state.flags.gameStarted;
 
@@ -143,6 +166,19 @@ export async function initPlaylight() {
       // Reactively update exit intent based on game state
       gameStoreUnsubscribe = useGameStore.subscribe(syncExitIntent);
 
+      // Rate limit uses SDK `exitIntent` (top bar / indicator), not discovery opens.
+      playlightSDK.onEvent("exitIntent", () => {
+        const state = useGameStore.getState();
+        if (skipNextExitIntentQuota) {
+          skipNextExitIntentQuota = false;
+          return;
+        }
+        if (!isNormalPlayExitContext(state)) {
+          return;
+        }
+        recordNormalPlayExitIntentShown();
+      });
+
       // Set up event listeners for game pause/unpause
       playlightSDK.onEvent("discoveryOpen", () => {
         const state = useGameStore.getState();
@@ -150,24 +186,11 @@ export async function initPlaylight() {
           return;
         }
 
-        const userInitiated = skipNextDiscoveryOpenCount;
-        if (skipNextDiscoveryOpenCount) {
-          skipNextDiscoveryOpenCount = false;
-        }
-
         if (!state.isPaused) {
           playlightCausedPause = true;
           state.togglePause();
         } else {
           playlightCausedPause = false;
-        }
-
-        if (!userInitiated && isNormalPlayExitContext(state)) {
-          pruneNormalPlayExitIntentTimestamps();
-          normalPlayExitIntentTimestamps.push(Date.now());
-          pruneNormalPlayExitIntentTimestamps();
-          syncExitIntent(useGameStore.getState());
-          scheduleNormalPlayExitUnlock();
         }
       });
 
@@ -178,8 +201,8 @@ export async function initPlaylight() {
           return;
         }
         if (playlightCausedPause && state.isPaused) {
-          playlightCausedPause = false;
           state.togglePause();
+          playlightCausedPause = false;
         }
       });
     } catch (error) {
