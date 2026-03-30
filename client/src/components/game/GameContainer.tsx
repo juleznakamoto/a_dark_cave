@@ -92,9 +92,26 @@ export default function GameContainer() {
   const _achStory = useGameStore((s) => s.story);
   const _achFocus = useGameStore((s) => s.totalFocusEarned);
   const unclaimedAchievementIds = useMemo(
-    () => getUnclaimedAchievementIds(!!relics?.survivors_notes),
+    () =>
+      getUnclaimedAchievementIds(
+        !!relics?.survivors_notes,
+        !!books?.book_of_trials,
+      ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [_achBuildings, _achClaimed, _achTools, _achWeapons, _achClothing, _achRelics, _achFellowship, _achUpgrades, _achStory, _achFocus, relics?.survivors_notes],
+    [
+      _achBuildings,
+      _achClaimed,
+      _achTools,
+      _achWeapons,
+      _achClothing,
+      _achRelics,
+      _achFellowship,
+      _achUpgrades,
+      _achStory,
+      _achFocus,
+      relics?.survivors_notes,
+      books?.book_of_trials,
+    ],
   );
   const hasUnviewedAchievement =
     unclaimedAchievementIds.length > 0 &&

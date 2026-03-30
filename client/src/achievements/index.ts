@@ -3,11 +3,24 @@ import { getUnclaimedItemIds, itemChartConfig } from "./configs/item";
 import { getUnclaimedActionIds, actionChartConfig } from "./configs/action";
 import { getUnclaimedBasicIds, basicChartConfig } from "./configs/basic";
 
-/** Returns IDs of achievements that are full (claimable) but not yet claimed. */
-export function getUnclaimedAchievementIds(includeBasic = true): string[] {
+/**
+ * Returns IDs of achievements that are full (claimable) but not yet claimed.
+ * @param includeBasic — Survivor's Notes basic ring (matches panel visibility)
+ * @param includeAdvanced — building/item/action rings (only claimable in UI with Book of Trials)
+ */
+export function getUnclaimedAchievementIds(
+  includeBasic = true,
+  includeAdvanced = true,
+): string[] {
   const ids: string[] = [];
   if (includeBasic) ids.push(...getUnclaimedBasicIds());
-  ids.push(...getUnclaimedBuildingIds(), ...getUnclaimedItemIds(), ...getUnclaimedActionIds());
+  if (includeAdvanced) {
+    ids.push(
+      ...getUnclaimedBuildingIds(),
+      ...getUnclaimedItemIds(),
+      ...getUnclaimedActionIds(),
+    );
+  }
   return ids;
 }
 
