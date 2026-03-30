@@ -6,6 +6,52 @@ export function isPlaylightReferralUrl(): boolean {
   return new URLSearchParams(window.location.search).get("utm_source") === "playlight";
 }
 
+const NORMAL_PLAY_EXIT_WINDOW_MS = 5 * 60 * 1000;
+const NORMAL_PLAY_EXIT_MAX_PER_WINDOW = 3;
+
+type ExitIntentGameSlice = {
+  flags: { gameStarted?: boolean };
+  isPaused: boolean;
+  leaderboardDialogOpen: boolean;
+  idleModeDialog: { isOpen: boolean };
+};
+
+function isSpecialExitContext(state: ExitIntentGameSlice): boolean {
+  return (
+    state.isPaused ||
+    state.leaderboardDialogOpen ||
+    state.idleModeDialog.isOpen ||
+    (typeof window !== "undefined" && window.location.pathname === "/end-screen")
+  );
+}
+
+function isNormalPlayExitContext(state: ExitIntentGameSlice): boolean {
+  return !!state.flags.gameStarted && !isSpecialExitContext(state);
+}
+
+const normalPlayExitIntentTimestamps: number[] = [];
+let normalPlayExitUnlockTimerId: number | null = null;
+/** Next `discoveryOpen` from ProfileMenu `setDiscovery()` must not consume normal-play quota. */
+let skipNextDiscoveryOpenCount = false;
+
+function pruneNormalPlayExitIntentTimestamps(now = Date.now()) {
+  const cutoff = now - NORMAL_PLAY_EXIT_WINDOW_MS;
+  while (
+    normalPlayExitIntentTimestamps.length > 0 &&
+    normalPlayExitIntentTimestamps[0]! <= cutoff
+  ) {
+    normalPlayExitIntentTimestamps.shift();
+  }
+}
+
+/**
+ * Call immediately before `playlightSDK.setDiscovery()` so that open does not count
+ * toward the normal-play exit-intent rate limit.
+ */
+export function markPlaylightDiscoveryUserInitiated() {
+  skipNextDiscoveryOpenCount = true;
+}
+
 // Track Playlight SDK initialization state to prevent duplicate subscriptions
 let playlightSDKInstance: any = null;
 let gameStoreUnsubscribe: (() => void) | null = null;
@@ -42,21 +88,39 @@ export async function initPlaylight() {
       // Import game store
       const { useGameStore } = await import("../game/state");
       type StoreState = ReturnType<typeof useGameStore.getState>;
-      (window as any).playlightSDK = playlightSDK;
 
-      // Clean up previous subscription if it exists (shouldn't happen, but defensive)
-      if (gameStoreUnsubscribe) {
-        gameStoreUnsubscribe();
-        gameStoreUnsubscribe = null;
-      }
+      const scheduleNormalPlayExitUnlock = () => {
+        if (normalPlayExitUnlockTimerId !== null) {
+          clearTimeout(normalPlayExitUnlockTimerId);
+          normalPlayExitUnlockTimerId = null;
+        }
+        pruneNormalPlayExitIntentTimestamps();
+        if (normalPlayExitIntentTimestamps.length < NORMAL_PLAY_EXIT_MAX_PER_WINDOW) {
+          return;
+        }
+        const oldest = normalPlayExitIntentTimestamps[0]!;
+        const delay = Math.max(0, oldest + NORMAL_PLAY_EXIT_WINDOW_MS - Date.now());
+        normalPlayExitUnlockTimerId = window.setTimeout(() => {
+          normalPlayExitUnlockTimerId = null;
+          pruneNormalPlayExitIntentTimestamps();
+          syncExitIntent(useGameStore.getState());
+          scheduleNormalPlayExitUnlock();
+        }, delay);
+      };
 
       const syncExitIntent = (state: StoreState) => {
-        const isEndScreen = window.location.pathname === "/end-screen";
-        const shouldEnableExitIntent =
-          state.isPaused ||
-          state.leaderboardDialogOpen ||
-          state.idleModeDialog.isOpen ||
-          isEndScreen;
+        const gameStarted = !!state.flags.gameStarted;
+
+        let shouldEnableExitIntent: boolean;
+        if (!gameStarted) {
+          shouldEnableExitIntent = false;
+        } else if (isSpecialExitContext(state)) {
+          shouldEnableExitIntent = true;
+        } else {
+          pruneNormalPlayExitIntentTimestamps();
+          shouldEnableExitIntent =
+            normalPlayExitIntentTimestamps.length < NORMAL_PLAY_EXIT_MAX_PER_WINDOW;
+        }
 
         playlightSDK.setConfig({
           exitIntent: {
@@ -66,6 +130,14 @@ export async function initPlaylight() {
         });
       };
 
+      (window as any).playlightSDK = playlightSDK;
+
+      // Clean up previous subscription if it exists (shouldn't happen, but defensive)
+      if (gameStoreUnsubscribe) {
+        gameStoreUnsubscribe();
+        gameStoreUnsubscribe = null;
+      }
+
       syncExitIntent(useGameStore.getState());
 
       // Reactively update exit intent based on game state
@@ -74,15 +146,28 @@ export async function initPlaylight() {
       // Set up event listeners for game pause/unpause
       playlightSDK.onEvent("discoveryOpen", () => {
         const state = useGameStore.getState();
-        // Don't toggle pause if sleep mode is active
         if (state.idleModeDialog.isOpen) {
           return;
         }
+
+        const userInitiated = skipNextDiscoveryOpenCount;
+        if (skipNextDiscoveryOpenCount) {
+          skipNextDiscoveryOpenCount = false;
+        }
+
         if (!state.isPaused) {
           playlightCausedPause = true;
           state.togglePause();
         } else {
           playlightCausedPause = false;
+        }
+
+        if (!userInitiated && isNormalPlayExitContext(state)) {
+          pruneNormalPlayExitIntentTimestamps();
+          normalPlayExitIntentTimestamps.push(Date.now());
+          pruneNormalPlayExitIntentTimestamps();
+          syncExitIntent(useGameStore.getState());
+          scheduleNormalPlayExitUnlock();
         }
       });
 

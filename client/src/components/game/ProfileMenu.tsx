@@ -22,7 +22,7 @@ import AuthDialog from "./AuthDialog";
 import LeaderboardDialog from "./LeaderboardDialog";
 import { RestartGameDialog } from "./RestartGameDialog";
 import SignUpPromptDialog from "./SignUpPromptDialog";
-import { initPlaylight } from "@/lib/playlight";
+import { initPlaylight, markPlaylightDiscoveryUserInitiated } from "@/lib/playlight";
 
 
 // Social media platform configurations
@@ -278,6 +278,7 @@ export default function ProfileMenu() {
       }
     }
     if (playlightSDK && typeof playlightSDK.setDiscovery === "function") {
+      markPlaylightDiscoveryUserInitiated();
       playlightSDK.setDiscovery();
     }
   };
