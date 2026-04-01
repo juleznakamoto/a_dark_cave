@@ -5,6 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Info } from "lucide-react";
 import { RadioGroup } from "@/components/ui/radio";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
@@ -14,6 +15,7 @@ import {
   getSuccessChancePercent,
   JACKPOT,
   TOTAL_LOSS_PCT,
+  lossPercentInclusiveRange,
   winPercentInclusiveRange,
 } from "@/game/rules/investmentHallTables";
 import type { InvestmentDurationMin } from "@/game/rules/investmentHallTables";
@@ -33,11 +35,10 @@ function offerRowLabel(durationMin: InvestmentDurationMin): string {
   return "Long (60 min)";
 }
 
-function formatLuckSuccessBonusPct(luck: number): string {
+function formatLuckSuccessLine(luck: number): string {
   const bonus = getLuckWinChanceBonus(luck);
-  if (bonus === 0) return "No extra success chance from Luck yet.";
   const pct = Number.isInteger(bonus) ? String(bonus) : bonus.toFixed(1);
-  return `+${pct}% success chance due to Luck`;
+  return `+${pct}% Success Chance from Luck (already included)`;
 }
 
 function formatPercentDisplay(p: number): string {
@@ -102,6 +103,40 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
       <p className="text-xs text-muted-foreground">Dev: investments run 20× faster.</p>
     ) : null;
 
+  const strategyTableInfoTooltip = (
+    <div className="text-xs space-y-2 max-w-[280px]">
+      <p className="font-medium text-foreground border-b border-border pb-2 mb-0.5">
+        {formatLuckSuccessLine(luck)}
+      </p>
+      <ul className="space-y-1.5 pl-0 list-none text-muted-foreground">
+        <li>
+          <span className="text-foreground font-medium">Term</span> — How long the investment runs.
+          Longer terms use different odds and payouts.
+        </li>
+        <li>
+          <span className="text-foreground font-medium">Success chance</span> — Final odds of a
+          successful payout (Luck is already included in this number).
+        </li>
+        <li>
+          <span className="text-foreground font-medium">Profit</span> — If successful, your stake
+          grows by a random percentage in this range.
+        </li>
+        <li>
+          <span className="text-foreground font-medium">Lucky Chance / Multiplier</span> — Chance
+          to multiply that profit by the shown factor (e.g. 3x).
+        </li>
+        <li>
+          <span className="text-foreground font-medium">Loss</span> — If the investment fails and
+          you avoid Total Loss, you lose a random share of your stake in this range.
+        </li>
+        <li>
+          <span className="text-foreground font-medium">Total Loss Chance</span> — Chance to lose
+          your entire stake when the investment fails.
+        </li>
+      </ul>
+    </div>
+  );
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90dvh] overflow-y-auto">
@@ -134,25 +169,24 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
               <div className="flex items-center gap-2">
                 <p className="text-sm font-medium">Investment Strategy</p>
                 <TooltipWrapper
-                  tooltip={
-                    <div className="text-xs max-w-[220px]">
-                      {formatLuckSuccessBonusPct(luck)}
-                    </div>
-                  }
-                  tooltipId="invest-luck-success"
-                  tooltipContentClassName="max-w-xs"
+                  tooltip={strategyTableInfoTooltip}
+                  tooltipId="invest-strategy-table-info"
+                  disabled
+                  tooltipContentClassName="max-w-sm"
+                  className="inline-flex items-center justify-center shrink-0 rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
                 >
-                  <span
-                    className="text-green-300/80 cursor-pointer hover:text-green-300 transition-colors inline-block text-base leading-none"
-                    aria-label="Luck effect on investment success"
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center p-0.5 rounded-full border-0 bg-transparent cursor-pointer"
+                    aria-label="Explain strategy table columns"
                   >
-                    ☆
-                  </span>
+                    <Info className="h-4 w-4" strokeWidth={2} />
+                  </button>
                 </TooltipWrapper>
               </div>
               <RadioGroup value={strategy} onChange={setStrategy}>
                 <div className="overflow-x-auto">
-                  <table className="w-full min-w-[480px] border-collapse text-foreground">
+                  <table className="w-full min-w-[560px] border-collapse text-foreground">
                     <thead>
                       <tr className="text-left text-xs">
                         <th className="w-10 py-2 pl-2 pr-1 font-medium" aria-hidden />
@@ -162,6 +196,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                         <th className="py-2 pr-3 font-medium">
                           Lucky Chance / Multiplier
                         </th>
+                        <th className="py-2 pr-3 font-medium">Loss</th>
                         <th className="py-2 pr-2 font-medium">Total Loss Chance</th>
                       </tr>
                     </thead>
@@ -174,6 +209,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                         );
                         const winR = winPercentInclusiveRange(offer.tier, offer.durationMin);
                         const [jpChance, jpMult] = JACKPOT[offer.tier];
+                        const lossR = lossPercentInclusiveRange(offer.tier);
                         const tl = TOTAL_LOSS_PCT[offer.tier];
                         return (
                           <tr
@@ -201,6 +237,9 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             <td className="py-2 pr-3 align-middle tabular-nums">
                               {jpChance} % / {jpMult}x
                             </td>
+                            <td className="py-2 pr-3 align-middle tabular-nums">
+                              {lossR.from} % – {lossR.to} %
+                            </td>
                             <td className="py-2 pr-2 align-middle tabular-nums">{tl} %</td>
                           </tr>
                         );
@@ -209,12 +248,6 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                   </table>
                 </div>
               </RadioGroup>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                On success, profit is paid as a percentage of your stake. Lucky chance is the
-                odds of applying the multiplier to that profit (e.g. 3x). On failure, Total Loss
-                Chance is the odds of losing your full stake; otherwise you keep part of your
-                Gold.
-              </p>
             </div>
 
             <div className="space-y-2">
