@@ -409,9 +409,9 @@ export default function VillagePanel() {
           Invest opens again when it completes.
         </div>
       ) : currentPlayTime < nextWave ? (
-        <div className="text-xs max-w-[220px]">
-          Next wave in {formatRemaining(Math.max(0, nextWave - currentPlayTime))}.
-          The invest window opens when the wave is ready.
+        <div className="text-xs whitespace-nowrap">
+          Next investment available in{" "}
+          {formatRemaining(Math.max(0, nextWave - currentPlayTime))}
         </div>
       ) : !investReady ? (
         <div className="text-xs whitespace-nowrap">Preparing investment offers…</div>
