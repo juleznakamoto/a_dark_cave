@@ -273,9 +273,9 @@ export function startGameLoop() {
       key => (key === 'full_game' || key.startsWith('purchase-full_game-')) && state.activatedPurchases?.[key]
     );
 
-    // Modal dialogs that freeze simulation (core UI). Invest dialog is special: while an
-    // investment is maturing, keep playTime / production running so the timer can finish.
-    const coreModalDialogOpen =
+    // Modal dialogs that freeze simulation (core UI), including Invest (village feast / events
+    // must not advance while the player reads the dialog).
+    const IsDialogOpen =
       state.eventDialog.isOpen ||
       state.combatDialog.isOpen ||
       state.authDialogOpen ||
@@ -288,12 +288,8 @@ export function startGameLoop() {
       state.rewardDialog.isOpen ||
       state.madnessDialog.isOpen ||
       state.signUpPromptDialogOpen ||
-      state.playlightWelcomeDialogOpen;
-
-    const investDialogBlocksSimulation =
-      state.investDialogOpen && !state.investmentHallState.active;
-
-    const IsDialogOpen = coreModalDialogOpen || investDialogBlocksSimulation;
+      state.playlightWelcomeDialogOpen ||
+      state.investDialogOpen;
 
     const isPaused =
       state.isPaused ||

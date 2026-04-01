@@ -114,7 +114,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
         </li>
         <li>
           <span className="text-foreground font-medium">Success Chance</span>: Chance of a
-          successful payout (Luck bonus is already included in this number).
+          successful investment (Luck bonus is already included).
         </li>
         <li>
           <span className="text-foreground font-medium">Profit</span>: The profit you gain in case of success.
