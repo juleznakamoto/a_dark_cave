@@ -143,6 +143,9 @@ import {
   handleBuildGrandRepository,
   handleBuildGreatVault,
   handleBuildHeartfire,
+  handleBuildCoinhouse,
+  handleBuildBank,
+  handleBuildTreasury,
 } from "./rules/villageBuildHandlers";
 
 import {
@@ -542,6 +545,12 @@ export function executeGameAction(
       return handleBuildGreatVault(state, result);
     case "buildHeartfire":
       return handleBuildHeartfire(state, result);
+    case "buildCoinhouse":
+      return handleBuildCoinhouse(state, result);
+    case "buildBank":
+      return handleBuildBank(state, result);
+    case "buildTreasury":
+      return handleBuildTreasury(state, result);
 
     // Forest Scout Actions
     case "hunt":

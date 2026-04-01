@@ -1343,3 +1343,24 @@ export function handleBuildHeartfire(
 
   return heartfireResult;
 }
+
+export function handleBuildCoinhouse(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(state, result, "buildCoinhouse", "coinhouse");
+}
+
+export function handleBuildBank(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(state, result, "buildBank", "bank");
+}
+
+export function handleBuildTreasury(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(state, result, "buildTreasury", "treasury");
+}
