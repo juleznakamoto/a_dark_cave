@@ -6,6 +6,7 @@ import {
   formatInvestmentCompletionLog,
   getLuckWinChanceBonus,
   getSuccessChancePercent,
+  isInvestmentWaveReadyForUi,
   maxJackpotSuccessProfitGold,
   maxSuccessProfitGold,
   randomIntInclusive,
@@ -46,6 +47,74 @@ describe("maxSuccessProfitGold / maxJackpotSuccessProfitGold", () => {
   it("uses top win % and jackpot multiplier", () => {
     expect(maxSuccessProfitGold(100, "A", 30)).toBe(10);
     expect(maxJackpotSuccessProfitGold(100, "A", 30)).toBe(50);
+  });
+});
+
+describe("isInvestmentWaveReadyForUi", () => {
+  const threeOffers = [
+    { durationMin: 10 as const, tier: "A" as const },
+    { durationMin: 30 as const, tier: "B" as const },
+    { durationMin: 60 as const, tier: "C" as const },
+  ];
+
+  it("false when investment active", () => {
+    expect(
+      isInvestmentWaveReadyForUi({
+        playTime: 100,
+        investmentHallState: {
+          offers: threeOffers,
+          active: {
+            startPlayTime: 0,
+            endPlayTime: 500,
+            amountGold: 100,
+            durationMin: 10,
+            tier: "A",
+            success: true,
+            payoutGold: 105,
+          },
+          nextWavePlayTime: 0,
+        },
+      }),
+    ).toBe(false);
+  });
+
+  it("false before next wave", () => {
+    expect(
+      isInvestmentWaveReadyForUi({
+        playTime: 100,
+        investmentHallState: {
+          offers: [],
+          active: null,
+          nextWavePlayTime: 500,
+        },
+      }),
+    ).toBe(false);
+  });
+
+  it("false with fewer than 3 offers", () => {
+    expect(
+      isInvestmentWaveReadyForUi({
+        playTime: 500,
+        investmentHallState: {
+          offers: threeOffers.slice(0, 2),
+          active: null,
+          nextWavePlayTime: 0,
+        },
+      }),
+    ).toBe(false);
+  });
+
+  it("true when idle, wave ready, and 3 offers", () => {
+    expect(
+      isInvestmentWaveReadyForUi({
+        playTime: 500,
+        investmentHallState: {
+          offers: threeOffers,
+          active: null,
+          nextWavePlayTime: 0,
+        },
+      }),
+    ).toBe(true);
   });
 });
 
@@ -121,7 +190,7 @@ describe("formatInvestmentCompletionLog", () => {
       effectiveWinPercent: 5,
       payoutGold: 105,
     });
-    expect(s).toContain("success");
+    expect(s).toContain("Success");
     expect(s).toContain("105");
   });
 });

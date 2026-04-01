@@ -13,6 +13,7 @@ import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
   getLuckWinChanceBonus,
   getSuccessChancePercent,
+  isInvestmentWaveReadyForUi,
   JACKPOT,
   TOTAL_LOSS_PCT,
   lossPercentInclusiveRange,
@@ -23,13 +24,6 @@ import {
 import type { InvestmentDurationMin } from "@/game/rules/investmentHallTables";
 import { formatNumber, cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
-
-function formatRemainingMs(ms: number): string {
-  const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-}
 
 function termMinutesLabel(durationMin: InvestmentDurationMin): string {
   return `${durationMin} min`;
@@ -72,11 +66,12 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
   const [strategy, setStrategy] = useState("0");
   const [amountStr, setAmountStr] = useState("100");
 
-  const active = investmentHallState.active;
   const offers = investmentHallState.offers;
-  const nextWave = investmentHallState.nextWavePlayTime;
 
-  const waveReady = playTime >= nextWave && !active;
+  const canInvestUi = useMemo(
+    () => isInvestmentWaveReadyForUi({ playTime, investmentHallState }),
+    [playTime, investmentHallState],
+  );
 
   const potentialProfitGold = useMemo(() => {
     const idx = Number(strategy);
@@ -92,19 +87,19 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
   }, [offers, strategy, amountStr]);
 
   useEffect(() => {
-    if (open && waveReady && maxStake >= 100) {
+    if (open && canInvestUi && maxStake >= 100) {
       const allowed = amounts.filter((a) => a <= maxStake);
       if (!allowed.includes(Number(amountStr) as 100 | 500 | 1000)) {
         setAmountStr(String(allowed[allowed.length - 1]));
       }
     }
-  }, [open, waveReady, maxStake, amountStr]);
+  }, [open, canInvestUi, maxStake, amountStr]);
 
   useEffect(() => {
-    if (open && active) {
+    if (open && !canInvestUi) {
       onOpenChange(false);
     }
-  }, [open, active, onOpenChange]);
+  }, [open, canInvestUi, onOpenChange]);
 
   const handleCommit = () => {
     const idx = Number(strategy);
@@ -117,11 +112,6 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
     toast({ title: "Investment started", description: "Funds are locked until maturity." });
     onOpenChange(false);
   };
-
-  const devSpeedHint =
-    import.meta.env.DEV && active ? (
-      <p className="text-xs text-muted-foreground">Dev: investments run 20× faster.</p>
-    ) : null;
 
   const strategyTableInfoTooltip = (
     <div className="text-xs space-y-2 max-w-[280px]">
@@ -162,28 +152,14 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
       <DialogContent className="max-w-2xl max-h-[90dvh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Invest</DialogTitle>
+          {import.meta.env.DEV ? (
+            <p className="text-xs text-muted-foreground pt-1">
+              Dev: investment duration runs 20× faster.
+            </p>
+          ) : null}
         </DialogHeader>
 
-        {active ? (
-          <div className="space-y-3">
-            <p className="text-sm text-muted-foreground">
-              An investment is maturing. New options will appear after it completes and the
-              waiting period.
-            </p>
-            <p className="text-lg font-medium">
-              Completes in{" "}
-              {formatRemainingMs(active.endPlayTime - playTime)}
-            </p>
-            {devSpeedHint}
-          </div>
-        ) : playTime < nextWave ? (
-          <div className="space-y-2">
-            <p className="text-sm text-muted-foreground">Next investment wave in:</p>
-            <p className="text-lg font-medium">
-              {formatRemainingMs(nextWave - playTime)}
-            </p>
-          </div>
-        ) : (
+        {canInvestUi ? (
           <div className="space-y-4">
             <div className="space-y-2">
               <div className="flex items-center gap-1.5">
@@ -338,7 +314,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
               </Button>
             </div>
           </div>
-        )}
+        ) : null}
       </DialogContent>
     </Dialog>
   );

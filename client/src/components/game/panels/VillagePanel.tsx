@@ -51,6 +51,7 @@ import {
 import { isBuildingUpgrade } from "@/game/buildingHierarchy";
 import cn from "clsx";
 import InvestDialog from "@/components/game/InvestDialog";
+import { isInvestmentWaveReadyForUi } from "@/game/rules/investmentHallTables";
 
 export default function VillagePanel() {
   const {
@@ -72,7 +73,7 @@ export default function VillagePanel() {
 
   const handleInvestDialogOpenChange = useCallback(
     (next: boolean) => {
-      if (next && useGameStore.getState().investmentHallState?.active) return;
+      if (next && !isInvestmentWaveReadyForUi(useGameStore.getState())) return;
       setInvestDialogOpen(next);
     },
     [setInvestDialogOpen],
@@ -398,15 +399,22 @@ export default function VillagePanel() {
       } else if (currentPlayTime < nextWave) {
         extra = formatRemaining(Math.max(0, nextWave - currentPlayTime));
       }
+      const investReady = isInvestmentWaveReadyForUi({
+        playTime: currentPlayTime,
+        investmentHallState: ih,
+      });
       const tooltipContent = active ? (
         <div className="text-xs max-w-[220px]">
           Matures in {formatRemaining(Math.max(0, active.endPlayTime - currentPlayTime))}.
           Invest opens again when it completes.
         </div>
       ) : currentPlayTime < nextWave ? (
-        <div className="text-xs whitespace-nowrap">
-          Next wave in {formatRemaining(Math.max(0, nextWave - currentPlayTime))}
+        <div className="text-xs max-w-[220px]">
+          Next wave in {formatRemaining(Math.max(0, nextWave - currentPlayTime))}.
+          The invest window opens when the wave is ready.
         </div>
+      ) : !investReady ? (
+        <div className="text-xs whitespace-nowrap">Preparing investment offers…</div>
       ) : (
         <div className="text-xs">Open to invest gold</div>
       );
@@ -418,7 +426,7 @@ export default function VillagePanel() {
             data-testid="button-invest"
             actionId="invest"
             button_id="invest"
-            disabled={!!active}
+            disabled={!investReady}
             size="xs"
             variant="outline"
             className="hover:bg-background hover:text-foreground"

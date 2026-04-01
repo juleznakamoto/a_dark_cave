@@ -180,6 +180,18 @@ export function generateInvestmentOffers(rng: () => number): InvestmentOffer[] {
   }));
 }
 
+/** Invest UI (button + dialog) may open only when not maturing, wave cooldown done, and offers exist. */
+export function isInvestmentWaveReadyForUi(state: {
+  playTime: number;
+  investmentHallState: GameState["investmentHallState"];
+}): boolean {
+  const ih = state.investmentHallState;
+  if (ih.active) return false;
+  if (state.playTime < ih.nextWavePlayTime) return false;
+  if (ih.offers.length < 3) return false;
+  return true;
+}
+
 export type InvestmentActive = NonNullable<
   GameState["investmentHallState"]["active"]
 >;
