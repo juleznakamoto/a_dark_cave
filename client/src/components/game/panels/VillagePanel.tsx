@@ -393,12 +393,6 @@ export default function VillagePanel() {
         const seconds = totalSeconds % 60;
         return `${minutes}:${seconds.toString().padStart(2, "0")}`;
       };
-      let extra = "";
-      if (active) {
-        extra = formatRemaining(Math.max(0, active.endPlayTime - currentPlayTime));
-      } else if (currentPlayTime < nextWave) {
-        extra = formatRemaining(Math.max(0, nextWave - currentPlayTime));
-      }
       const investReady = isInvestmentWaveReadyForUi({
         playTime: currentPlayTime,
         investmentHallState: ih,
@@ -433,14 +427,7 @@ export default function VillagePanel() {
             tooltip={tooltipContent}
             style={{ pointerEvents: "auto" }}
           >
-            <span className="flex items-center gap-1">
-              {label}
-              {extra ? (
-                <span className="text-muted-foreground text-[10px] tabular-nums">
-                  {extra}
-                </span>
-              ) : null}
-            </span>
+            <span className="flex items-center gap-1">{label}</span>
           </CooldownButton>
           <InvestDialog
             open={investDialogOpen}
