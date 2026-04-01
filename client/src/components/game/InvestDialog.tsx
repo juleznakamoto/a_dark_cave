@@ -8,7 +8,9 @@ import {
 import { RadioGroup } from "@/components/ui/radio";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
+  getLuckWinChanceBonus,
   getSuccessChancePercent,
   JACKPOT,
   LOSS_PCT_RANGE,
@@ -30,7 +32,16 @@ function formatRemainingMs(ms: number): string {
 const DURATIONS: InvestmentDurationMin[] = [10, 30, 60];
 
 function offerRowLabel(durationMin: InvestmentDurationMin): string {
-  return `${durationMin} min`;
+  if (durationMin === 10) return "Short (10 min)";
+  if (durationMin === 30) return "Medium (30 min)";
+  return "Long (60 min)";
+}
+
+function formatLuckSuccessBonusPct(luck: number): string {
+  const bonus = getLuckWinChanceBonus(luck);
+  if (bonus === 0) return "No extra success chance from Luck yet.";
+  const pct = Number.isInteger(bonus) ? String(bonus) : bonus.toFixed(1);
+  return `+${pct}% success chance due to Luck`;
 }
 
 type Props = {
@@ -115,13 +126,26 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
           </div>
         ) : (
           <div className="space-y-4">
-            <p className="text-sm text-muted-foreground">
-              Gold: {formatNumber(resources.gold ?? 0)} · Luck (success bonus uses highest
-              tier): {luck}
-            </p>
-
             <div className="space-y-2">
-              <p className="text-sm font-medium">Strategy</p>
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-medium">Strategy</p>
+                <TooltipWrapper
+                  tooltip={
+                    <div className="text-xs max-w-[220px]">
+                      {formatLuckSuccessBonusPct(luck)}
+                    </div>
+                  }
+                  tooltipId="invest-luck-success"
+                  tooltipContentClassName="max-w-xs"
+                >
+                  <span
+                    className="text-green-300/80 cursor-pointer hover:text-green-300 transition-colors inline-block text-base leading-none"
+                    aria-label="Luck effect on investment success"
+                  >
+                    ☆
+                  </span>
+                </TooltipWrapper>
+              </div>
               <RadioGroup value={strategy} onChange={setStrategy}>
                 <div className="flex flex-col gap-3">
                   {offers.map((offer, i) => {
@@ -138,9 +162,9 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                     const tl = TOTAL_LOSS_PCT[offer.tier];
                     return (
                       <RadioGroup.Item key={i} value={String(i)}>
-                        <div className="flex flex-col gap-0.5 text-left">
-                          <span>
-                            {offerRowLabel(offer.durationMin)} · Tier {offer.tier}
+                        <div className="flex flex-col gap-0.5 text-left min-w-0">
+                          <span className="font-medium">
+                            {offerRowLabel(offer.durationMin)}
                           </span>
                           <span className="text-muted-foreground text-xs">
                             Success {baseSuccess}% → {withLuck.toFixed(1)}% with luck · Win{" "}
@@ -153,6 +177,11 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                   })}
                 </div>
               </RadioGroup>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                If the investment succeeds, Jackpot is the chance to multiply your gains. If it
+                fails, Total loss is the chance to lose your full stake (otherwise you recover
+                part of your gold).
+              </p>
             </div>
 
             <div className="space-y-2">
@@ -175,11 +204,14 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
 
             <Button
               onClick={handleCommit}
+              variant="outline"
+              className="w-full flex items-center justify-center text-sm font-medium"
               disabled={
                 offers.length < 3 ||
                 (resources.gold ?? 0) < Number(amountStr) ||
                 Number(amountStr) > maxStake
               }
+              button_id="invest-commit"
             >
               Commit investment
             </Button>

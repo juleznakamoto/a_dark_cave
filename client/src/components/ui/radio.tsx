@@ -55,7 +55,7 @@ const RadioGroupItem = ({
   return (
     <label
       className={cn(
-        "flex items-center gap-2 cursor-pointer font-sans text-[13px] text-gray-1000 leading-3 group",
+        "flex items-start gap-2.5 cursor-pointer font-sans text-[13px] text-gray-1000 leading-snug group",
         disabled && "cursor-not-allowed text-gray-500",
       )}
     >
@@ -71,7 +71,7 @@ const RadioGroupItem = ({
       />
       <span
         className={cn(
-          "w-4 h-4 bg-background-100 relative border rounded-full duration-200 after:duration-200 flex items-center justify-center after:absolute after:top-1/2 after:left-1/2 after:-translate-y-1/2 after:-translate-x-1/2 after:rounded-full after:bg-gray-1000",
+          "mt-0.5 shrink-0 w-4 h-4 bg-background-100 relative border rounded-full duration-200 after:duration-200 flex items-center justify-center after:absolute after:top-1/2 after:left-1/2 after:-translate-y-1/2 after:-translate-x-1/2 after:rounded-full after:bg-gray-1000",
           isSelected && "border-gray-1000 after:w-2 after:h-2",
           !isSelected && "border-gray-700 after:w-0 after:h-0",
           !isSelected &&
