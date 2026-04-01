@@ -27,7 +27,7 @@ import { Button } from "@/components/ui/button";
 import { getPopulationProduction } from "@/game/population";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { capitalizeWords, formatNumber } from "@/lib/utils";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
@@ -69,6 +69,15 @@ export default function VillagePanel() {
     investDialogOpen,
     setInvestDialogOpen,
   } = useGameStore();
+
+  const handleInvestDialogOpenChange = useCallback(
+    (next: boolean) => {
+      if (next && useGameStore.getState().investmentHallState?.active) return;
+      setInvestDialogOpen(next);
+    },
+    [setInvestDialogOpen],
+  );
+
   const state = useGameStore.getState();
 
   // Particle effect state
@@ -390,8 +399,9 @@ export default function VillagePanel() {
         extra = formatRemaining(Math.max(0, nextWave - currentPlayTime));
       }
       const tooltipContent = active ? (
-        <div className="text-xs whitespace-nowrap">
-          Matures in {formatRemaining(Math.max(0, active.endPlayTime - currentPlayTime))}
+        <div className="text-xs max-w-[220px]">
+          Matures in {formatRemaining(Math.max(0, active.endPlayTime - currentPlayTime))}.
+          Invest opens again when it completes.
         </div>
       ) : currentPlayTime < nextWave ? (
         <div className="text-xs whitespace-nowrap">
@@ -408,7 +418,7 @@ export default function VillagePanel() {
             data-testid="button-invest"
             actionId="invest"
             button_id="invest"
-            disabled={false}
+            disabled={!!active}
             size="xs"
             variant="outline"
             className="hover:bg-background hover:text-foreground"
@@ -426,7 +436,7 @@ export default function VillagePanel() {
           </CooldownButton>
           <InvestDialog
             open={investDialogOpen}
-            onOpenChange={setInvestDialogOpen}
+            onOpenChange={handleInvestDialogOpenChange}
           />
         </React.Fragment>
       );

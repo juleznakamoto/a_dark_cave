@@ -100,6 +100,12 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
     }
   }, [open, waveReady, maxStake, amountStr]);
 
+  useEffect(() => {
+    if (open && active) {
+      onOpenChange(false);
+    }
+  }, [open, active, onOpenChange]);
+
   const handleCommit = () => {
     const idx = Number(strategy);
     const amt = Number(amountStr);
@@ -109,6 +115,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
       return;
     }
     toast({ title: "Investment started", description: "Funds are locked until maturity." });
+    onOpenChange(false);
   };
 
   const devSpeedHint =
@@ -123,7 +130,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
       </p>
       <ul className="space-y-1.5 pl-0 list-none text-muted-foreground">
         <li>
-          <span className="text-foreground font-medium">Term</span>: How long the investment runs.
+          <span className="text-foreground font-medium">Duration</span>: How long the investment runs.
         </li>
         <li>
           <span className="text-foreground font-medium">Success Chance</span>: Chance of a
@@ -205,7 +212,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                     <thead>
                       <tr className="text-left text-xs">
                         <th className="w-6 py-2 pl-0 pr-2 font-medium" aria-hidden />
-                        <th className="py-2 pr-3 font-medium">Term</th>
+                        <th className="py-2 pr-3 font-medium">Duration</th>
                         <th className="py-2 pr-3 font-medium">Success Chance</th>
                         <th className="py-2 pr-3 font-medium">Profit</th>
                         <th className="py-2 pr-3 font-medium">Lucky Chance</th>

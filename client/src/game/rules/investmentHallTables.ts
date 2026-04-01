@@ -190,14 +190,14 @@ export type CommitInvestmentResult = { ok: true; active: InvestmentActive };
 
 export function formatInvestmentCompletionLog(active: InvestmentActive): string {
   if (active.success) {
-    const jp = active.jackpotHit ? " Jackpot!" : "";
-    return `Investment complete: success.${jp} Received ${active.payoutGold} gold (tier ${active.tier}, ${active.durationMin} min).`;
+    const jp = active.jackpotHit ? " Lucky Chance!" : "Success.";
+    return `Investment complete: ${jp} You gained ${active.payoutGold} Gold.`;
   }
   if (active.totalLoss) {
-    return `Investment complete: failure. Total loss of ${active.amountGold} gold (tier ${active.tier}).`;
+    return `Investment complete: Wipeout. You lost your full investment of ${active.amountGold} Gold.`;
   }
   const lp = active.lossPercentInt ?? 0;
-  return `Investment complete: failure. Recovered ${active.payoutGold} gold from ${active.amountGold} staked (tier ${active.tier}, ${lp}% loss).`;
+  return `Investment complete: Failure. You lost ${active.amountGold - active.payoutGold} Gold.`;
 }
 
 export function getMaxInvestmentStake(state: {
