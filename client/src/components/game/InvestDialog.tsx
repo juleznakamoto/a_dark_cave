@@ -29,10 +29,8 @@ function formatRemainingMs(ms: number): string {
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 }
 
-function offerRowLabel(durationMin: InvestmentDurationMin): string {
-  if (durationMin === 10) return "Short (10 min)";
-  if (durationMin === 30) return "Medium (30 min)";
-  return "Long (60 min)";
+function termMinutesLabel(durationMin: InvestmentDurationMin): string {
+  return `${durationMin} min`;
 }
 
 function formatLuckSuccessLine(luck: number): string {
@@ -120,15 +118,15 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
           <span className="text-foreground font-medium">Profit</span>: The profit you gain in case of success.
         </li>
         <li>
-          <span className="text-foreground font-medium">Lucky Chance / Multiplier</span>: Chance
+          <span className="text-foreground font-medium">Lucky Chance</span>: Chance
           to multiply your profit by the shown factor (e.g. 3x).
         </li>
         <li>
           <span className="text-foreground font-medium">Loss</span>: The portion of your investment you lose in case of failure.
         </li>
         <li>
-          <span className="text-foreground font-medium">Total Loss Chance</span>: Chance to lose
-          your entire investment in case of failure.
+          <span className="text-foreground font-medium">Wipeout</span>: Chance to lose your entire
+          investment in case of failure.
         </li>
       </ul>
     </div>
@@ -188,15 +186,13 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                   <table className="w-full min-w-[560px] border-collapse text-foreground">
                     <thead>
                       <tr className="text-left text-xs">
-                        <th className="w-10 py-2 pl-2 pr-1 font-medium" aria-hidden />
+                        <th className="w-6 py-2 pl-0 pr-2 font-medium" aria-hidden />
                         <th className="py-2 pr-3 font-medium">Term</th>
                         <th className="py-2 pr-3 font-medium">Success Chance</th>
                         <th className="py-2 pr-3 font-medium">Profit</th>
-                        <th className="py-2 pr-3 font-medium">
-                          Lucky Chance / Multiplier
-                        </th>
+                        <th className="py-2 pr-3 font-medium">Lucky Chance</th>
                         <th className="py-2 pr-3 font-medium">Loss</th>
-                        <th className="py-2 pr-2 font-medium">Total Loss Chance</th>
+                        <th className="py-2 pr-2 font-medium">Wipeout</th>
                       </tr>
                     </thead>
                     <tbody className="text-[11px] leading-snug">
@@ -219,13 +215,13 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             )}
                             onClick={() => setStrategy(String(i))}
                           >
-                            <td className="py-2 pl-2 pr-1 align-middle">
+                            <td className="w-6 py-2 pl-0 pr-2 align-middle">
                               <RadioGroup.Item value={String(i)}>
-                                <span className="sr-only">{offerRowLabel(offer.durationMin)}</span>
+                                <span className="sr-only">{termMinutesLabel(offer.durationMin)}</span>
                               </RadioGroup.Item>
                             </td>
                             <td className="py-2 pr-3 align-middle text-xs font-medium">
-                              {offerRowLabel(offer.durationMin)}
+                              {termMinutesLabel(offer.durationMin)}
                             </td>
                             <td className="py-2 pr-3 align-middle tabular-nums">
                               {formatPercentDisplay(finalSuccess)} %
