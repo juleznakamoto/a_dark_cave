@@ -94,6 +94,27 @@ export function winPercentInclusiveRange(
   return { from: Math.round(min), to: Math.round(max) };
 }
 
+/** Max gold profit on success using highest win % roll (no lucky multiplier). */
+export function maxSuccessProfitGold(
+  amountGold: number,
+  tier: InvestmentTier,
+  durationMin: InvestmentDurationMin,
+): number {
+  const { to } = winPercentInclusiveRange(tier, durationMin);
+  return Math.floor((amountGold * to) / 100);
+}
+
+/** Max gold profit on success if highest win % roll gets the lucky multiplier. */
+export function maxJackpotSuccessProfitGold(
+  amountGold: number,
+  tier: InvestmentTier,
+  durationMin: InvestmentDurationMin,
+): number {
+  const { to } = winPercentInclusiveRange(tier, durationMin);
+  const [, jpMult] = JACKPOT[tier];
+  return Math.floor((amountGold * to * jpMult) / 100);
+}
+
 export function lossPercentInclusiveRange(
   tier: InvestmentTier,
 ): { from: number; to: number } {

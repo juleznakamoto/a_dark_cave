@@ -6,6 +6,8 @@ import {
   formatInvestmentCompletionLog,
   getLuckWinChanceBonus,
   getSuccessChancePercent,
+  maxJackpotSuccessProfitGold,
+  maxSuccessProfitGold,
   randomIntInclusive,
   winPercentInclusiveRange,
 } from "./investmentHallTables";
@@ -37,6 +39,13 @@ describe("winPercentInclusiveRange", () => {
     const r = winPercentInclusiveRange("A", 30);
     expect(r.from).toBe(5);
     expect(r.to).toBe(10);
+  });
+});
+
+describe("maxSuccessProfitGold / maxJackpotSuccessProfitGold", () => {
+  it("uses top win % and jackpot multiplier", () => {
+    expect(maxSuccessProfitGold(100, "A", 30)).toBe(10);
+    expect(maxJackpotSuccessProfitGold(100, "A", 30)).toBe(50);
   });
 });
 

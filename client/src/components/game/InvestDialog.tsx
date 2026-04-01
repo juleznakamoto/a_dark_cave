@@ -16,6 +16,8 @@ import {
   JACKPOT,
   TOTAL_LOSS_PCT,
   lossPercentInclusiveRange,
+  maxJackpotSuccessProfitGold,
+  maxSuccessProfitGold,
   winPercentInclusiveRange,
 } from "@/game/rules/investmentHallTables";
 import type { InvestmentDurationMin } from "@/game/rules/investmentHallTables";
@@ -76,6 +78,19 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
 
   const waveReady = playTime >= nextWave && !active;
 
+  const potentialProfitGold = useMemo(() => {
+    const idx = Number(strategy);
+    const offer = offers[idx];
+    const stake = Number(amountStr);
+    if (!offer || !Number.isFinite(stake) || stake <= 0) {
+      return { normal: 0, jackpot: 0 };
+    }
+    return {
+      normal: maxSuccessProfitGold(stake, offer.tier, offer.durationMin),
+      jackpot: maxJackpotSuccessProfitGold(stake, offer.tier, offer.durationMin),
+    };
+  }, [offers, strategy, amountStr]);
+
   useEffect(() => {
     if (open && waveReady && maxStake >= 100) {
       const allowed = amounts.filter((a) => a <= maxStake);
@@ -128,6 +143,9 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
           <span className="text-foreground font-medium">Wipeout</span>: Chance to lose your entire
           investment in case of failure.
         </li>
+        <li>
+          <span className="text-foreground font-medium">Potential profit</span>: Maximum profit you can gain on your investment. Second value is with the lucky multiplier applied.
+        </li>
       </ul>
     </div>
   );
@@ -175,7 +193,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                   <button
                     type="button"
                     className="inline-flex h-full w-full items-center justify-center rounded-full border-0 bg-transparent p-0 cursor-pointer"
-                    aria-label="Explain strategy table columns"
+                    aria-label="Explain investment strategy table and potential profit"
                   >
                     <Info className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
                   </button>
@@ -287,7 +305,17 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
               </RadioGroup>
             </div>
 
-            <div className="flex justify-center pt-1">
+            <div className="flex flex-col items-center gap-2 pt-1">
+              <p className="text-center text-xs text-muted-foreground tabular-nums">
+                Potential profit:{" "}
+                <span className="text-foreground font-medium">
+                  {formatNumber(potentialProfitGold.normal)} Gold
+                </span>
+                {" / "}
+                <span className="text-foreground font-medium">
+                  {formatNumber(potentialProfitGold.jackpot)} Gold
+                </span>
+              </p>
               <Button
                 onClick={handleCommit}
                 variant="outline"
