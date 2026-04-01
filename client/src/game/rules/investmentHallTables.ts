@@ -218,6 +218,53 @@ export function formatInvestmentCompletionLog(active: InvestmentActive): string 
   return `Investment complete: Failure. You lost ${active.amountGold - active.payoutGold} Gold.`;
 }
 
+/** UI outcome for the post-maturity result dialog (maps to ⇧ / ⇮ / rotated ⇮ / ⇩). */
+export type InvestmentOutcomeUiKind =
+  | "success"
+  | "jackpot"
+  | "partial_loss"
+  | "wipeout";
+
+export type InvestmentResultDialogPayload = {
+  kind: InvestmentOutcomeUiKind;
+  /** Net vs stake: profit when successful, negative when not. */
+  goldDelta: number;
+  briefText: string;
+};
+
+export function buildInvestmentResultDialogPayload(
+  active: InvestmentActive,
+): InvestmentResultDialogPayload {
+  if (active.success) {
+    const profit = active.payoutGold - active.amountGold;
+    if (active.jackpotHit) {
+      return {
+        kind: "jackpot",
+        goldDelta: profit,
+        briefText: "Lucky Chance multiplied your return.",
+      };
+    }
+    return {
+      kind: "success",
+      goldDelta: profit,
+      briefText: "Your investment matured successfully.",
+    };
+  }
+  if (active.totalLoss) {
+    return {
+      kind: "wipeout",
+      goldDelta: -active.amountGold,
+      briefText: "Wipeout — the full stake was lost.",
+    };
+  }
+  const lost = active.amountGold - active.payoutGold;
+  return {
+    kind: "partial_loss",
+    goldDelta: -lost,
+    briefText: "The venture failed; you kept part of your stake.",
+  };
+}
+
 export function getMaxInvestmentStake(state: {
   buildings: Pick<
     GameState["buildings"],

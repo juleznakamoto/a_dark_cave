@@ -21,6 +21,7 @@ import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
 import { ShopDialog } from "./ShopDialog";
 import LeaderboardDialog from "./LeaderboardDialog";
 import RewardDialog from "./RewardDialog";
+import InvestmentResultDialog from "./InvestmentResultDialog";
 import MadnessDialog from "./MadnessDialog";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark } from "lucide-react";
@@ -68,6 +69,12 @@ export default function GameContainer() {
   );
   const rewardDialog = useGameStore((state) => state.rewardDialog);
   const setRewardDialog = useGameStore((state) => state.setRewardDialog);
+  const investmentResultDialog = useGameStore(
+    (state) => state.investmentResultDialog,
+  );
+  const setInvestmentResultDialog = useGameStore(
+    (state) => state.setInvestmentResultDialog,
+  );
   const madnessDialog = useGameStore((state) => state.madnessDialog);
   const setMadnessDialog = useGameStore((state) => state.setMadnessDialog);
 
@@ -785,6 +792,11 @@ export default function GameContainer() {
         isOpen={rewardDialog.isOpen}
         data={rewardDialog.data}
         onClose={() => setRewardDialog(false)}
+      />
+      <InvestmentResultDialog
+        isOpen={investmentResultDialog.isOpen}
+        data={investmentResultDialog.data}
+        onClose={() => setInvestmentResultDialog(false)}
       />
       <MadnessDialog
         isOpen={madnessDialog.isOpen}

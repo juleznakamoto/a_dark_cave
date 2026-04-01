@@ -228,6 +228,7 @@ const UI_ONLY_PROPERTIES = [
   'authDialogOpen',
   'shopDialogOpen',
   'investDialogOpen',
+  'investmentResultDialog',
   'idleModeDialog',
   'inactivityDialogOpen',
   'inactivityReason',

@@ -1,0 +1,19 @@
+---
+description: When adding game UI dialogs, check isModalDialogOpen and UI-only save list
+alwaysApply: true
+---
+
+# Game modal dialogs — simulation pause
+
+When you **add or wire a new modal dialog** in the game client (new `*Dialog` component, new `*DialogOpen` / dialog slice on the store, or mounting a dialog in `GameContainer` / `pages/game.tsx`):
+
+1. **Should the world freeze while it is open?**  
+   If the player should not advance production, play time, random events, or attack-wave timers while reading the UI, treat it as **blocking**.
+
+2. **If blocking:** add its open flag to **`isModalDialogOpen`** in `client/src/game/state.ts` (search for `export function isModalDialogOpen`). That is the **only** place to OR modal flags for the loop — do **not** re-list dialogs in `loop.ts`.
+
+3. **If dialog state must not be saved:** ensure the property is listed in **`UI_ONLY_PROPERTIES`** in `client/src/game/stateHelpers.ts` (or under an object already listed, e.g. nested UI-only slices).
+
+4. **If non-blocking** (e.g. purely informational popover): skip `isModalDialogOpen`; document briefly in code or PR why it does not pause sim.
+
+When **editing** an existing dialog, re-check whether it became blocking or should be removed from `isModalDialogOpen`.

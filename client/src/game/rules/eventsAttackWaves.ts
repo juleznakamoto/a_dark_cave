@@ -1,7 +1,7 @@
 import type { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
-import { useGameStore } from "@/game/state";
+import { useGameStore, isModalDialogOpen } from "@/game/state";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 import { getVillagersInVillage } from "../population";
 import { ATTACK_WAVE_IDS, type AttackWaveId, isFinalAttackWave } from "./attackWaveOrder";
@@ -60,17 +60,6 @@ export type AttackWaveChartState = Pick<
   GameState,
   "story" | "buildings" | "weapons"
 >;
-
-/** Event loop passes full zustand store; schema `GameState` omits UI fields. */
-type AttackWaveRuntimeState = GameState & {
-  eventDialog?: { isOpen: boolean };
-  combatDialog?: { isOpen: boolean };
-  authDialogOpen?: boolean;
-  shopDialogOpen?: boolean;
-  leaderboardDialogOpen?: boolean;
-  idleModeDialog?: { isOpen: boolean };
-  isPaused?: boolean;
-};
 
 type WaveRules = {
   /** When true, player can start this wave's timer (chart / UX), independent of victory. */
@@ -501,15 +490,10 @@ function createAttackWaveEvent(waveId: AttackWaveId): GameEvent {
 
       if (timer.defeated) return false;
 
-      const rt = state as AttackWaveRuntimeState;
-      const isDialogOpen =
-        rt.eventDialog?.isOpen ||
-        rt.combatDialog?.isOpen ||
-        rt.authDialogOpen ||
-        rt.shopDialogOpen ||
-        rt.leaderboardDialogOpen ||
-        rt.idleModeDialog?.isOpen;
-      const isPaused = Boolean(rt.isPaused || isDialogOpen);
+      const store = useGameStore.getState();
+      const isPaused = Boolean(
+        store.isPaused || isModalDialogOpen(store),
+      );
 
       if (isPaused) {
         if (timer.startTime && timer.elapsedTime !== undefined) {

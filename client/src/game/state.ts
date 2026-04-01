@@ -58,6 +58,7 @@ import {
   merchantEvents,
 } from "@/game/rules/eventsMerchant";
 import {
+  buildInvestmentResultDialogPayload,
   commitInvestmentRolls,
   formatInvestmentCompletionLog,
   generateInvestmentOffers,
@@ -97,6 +98,10 @@ interface GameStore extends GameState {
   gamblerDiceDialogOpen: boolean;
   /** Village Invest modal open; game loop treats offer-picker as modal pause but keeps sim running while an investment is maturing. */
   investDialogOpen: boolean;
+  investmentResultDialog: {
+    isOpen: boolean;
+    data: ReturnType<typeof buildInvestmentResultDialogPayload> | null;
+  };
   leaderboardDialogOpen: boolean;
   fullGamePurchaseDialogOpen: boolean;
   idleModeDialog: {
@@ -287,6 +292,10 @@ interface GameStore extends GameState {
   setShopDialogOpen: (isOpen: boolean) => void;
   setGamblerDiceDialogOpen: (isOpen: boolean) => void;
   setInvestDialogOpen: (isOpen: boolean) => void;
+  setInvestmentResultDialog: (
+    isOpen: boolean,
+    data?: ReturnType<typeof buildInvestmentResultDialogPayload> | null,
+  ) => void;
   setLeaderboardDialogOpen: (isOpen: boolean) => void;
   setFullGamePurchaseDialogOpen: (isOpen: boolean) => void;
   setIdleModeDialog: (isOpen: boolean) => void;
@@ -929,6 +938,10 @@ export const createInitialState = (): GameState => ({
     isOpen: false,
     data: null,
   },
+  investmentResultDialog: {
+    isOpen: false,
+    data: null,
+  },
   madnessDialog: {
     isOpen: false,
     data: null,
@@ -973,6 +986,30 @@ export class StateManager {
   }
 }
 
+/**
+ * True while any blocking modal is open — simulation should freeze (loop, attack-wave timers, etc.).
+ * When adding a new blocking dialog, add its flag here only.
+ */
+export function isModalDialogOpen(state: GameStore): boolean {
+  return (
+    state.eventDialog.isOpen ||
+    state.combatDialog.isOpen ||
+    state.authDialogOpen ||
+    state.shopDialogOpen ||
+    state.gamblerDiceDialogOpen ||
+    state.leaderboardDialogOpen ||
+    state.fullGamePurchaseDialogOpen ||
+    state.idleModeDialog.isOpen ||
+    state.restartGameDialogOpen ||
+    state.rewardDialog.isOpen ||
+    state.investmentResultDialog.isOpen ||
+    state.madnessDialog.isOpen ||
+    state.signUpPromptDialogOpen ||
+    state.playlightWelcomeDialogOpen ||
+    state.investDialogOpen
+  );
+}
+
 // Main store
 export const useGameStore = create<GameStore>((set, get) => ({
   ...defaultGameState,
@@ -1006,6 +1043,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
   shopDialogOpen: false,
   gamblerDiceDialogOpen: false,
   investDialogOpen: false,
+  investmentResultDialog: {
+    isOpen: false,
+    data: null,
+  },
   leaderboardDialogOpen: false,
   fullGamePurchaseDialogOpen: false,
   musicMuted: false,
@@ -1992,10 +2033,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // If the game is paused, do not process events
     if (state.isPaused) return;
 
-    // Don't check for new events if any dialog is already open
-    const isAnyDialogOpen =
-      state.eventDialog.isOpen || state.combatDialog.isOpen;
-    if (isAnyDialogOpen) return;
+    if (isModalDialogOpen(state)) return;
 
     // Don't check for new timed tab events if one is already active
     const timedTabActive = get().timedEventTab.isActive;
@@ -2630,6 +2668,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
             offers: [],
             nextWavePlayTime: state.playTime + getInvestmentWaveGapMs(),
           },
+          investmentResultDialog: {
+            isOpen: true,
+            data: buildInvestmentResultDialogPayload(active),
+          },
         };
       }
       if (
@@ -2713,6 +2755,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setInvestDialogOpen: (isOpen: boolean) => {
     set({ investDialogOpen: isOpen });
+  },
+
+  setInvestmentResultDialog: (isOpen, data) => {
+    set(() => ({
+      investmentResultDialog: {
+        isOpen,
+        data: data ?? null,
+      },
+    }));
   },
 
   setLeaderboardDialogOpen: (isOpen: boolean) => {

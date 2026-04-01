@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { gameStateSchema } from "@shared/schema";
 import {
+  buildInvestmentResultDialogPayload,
   clampSuccessChance,
   commitInvestmentRolls,
   formatInvestmentCompletionLog,
@@ -173,6 +174,67 @@ describe("gameStateSchema investment hall", () => {
     expect(s.buildings.coinhouse).toBe(0);
     expect(s.buildings.bank).toBe(0);
     expect(s.buildings.treasury).toBe(0);
+  });
+});
+
+describe("buildInvestmentResultDialogPayload", () => {
+  it("maps success, jackpot, partial loss, wipeout", () => {
+    expect(
+      buildInvestmentResultDialogPayload({
+        startPlayTime: 0,
+        endPlayTime: 1,
+        amountGold: 100,
+        durationMin: 10,
+        tier: "A",
+        success: true,
+        winPercentInt: 5,
+        jackpotHit: false,
+        effectiveWinPercent: 5,
+        payoutGold: 105,
+      }),
+    ).toMatchObject({ kind: "success", goldDelta: 5 });
+
+    expect(
+      buildInvestmentResultDialogPayload({
+        startPlayTime: 0,
+        endPlayTime: 1,
+        amountGold: 100,
+        durationMin: 10,
+        tier: "A",
+        success: true,
+        winPercentInt: 5,
+        jackpotHit: true,
+        effectiveWinPercent: 25,
+        payoutGold: 125,
+      }),
+    ).toMatchObject({ kind: "jackpot", goldDelta: 25 });
+
+    expect(
+      buildInvestmentResultDialogPayload({
+        startPlayTime: 0,
+        endPlayTime: 1,
+        amountGold: 100,
+        durationMin: 10,
+        tier: "A",
+        success: false,
+        totalLoss: false,
+        lossPercentInt: 20,
+        payoutGold: 80,
+      }),
+    ).toMatchObject({ kind: "partial_loss", goldDelta: -20 });
+
+    expect(
+      buildInvestmentResultDialogPayload({
+        startPlayTime: 0,
+        endPlayTime: 1,
+        amountGold: 100,
+        durationMin: 10,
+        tier: "A",
+        success: false,
+        totalLoss: true,
+        payoutGold: 0,
+      }),
+    ).toMatchObject({ kind: "wipeout", goldDelta: -100 });
   });
 });
 

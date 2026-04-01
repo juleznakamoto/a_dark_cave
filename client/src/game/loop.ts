@@ -1,4 +1,4 @@
-import { useGameStore, StateManager } from "./state";
+import { useGameStore, StateManager, isModalDialogOpen } from "./state";
 import { saveGame } from "./save";
 import { GameState } from "@shared/schema";
 import {
@@ -273,30 +273,14 @@ export function startGameLoop() {
       key => (key === 'full_game' || key.startsWith('purchase-full_game-')) && state.activatedPurchases?.[key]
     );
 
-    // Modal dialogs that freeze simulation (core UI), including Invest (village feast / events
-    // must not advance while the player reads the dialog).
-    const IsDialogOpen =
-      state.eventDialog.isOpen ||
-      state.combatDialog.isOpen ||
-      state.authDialogOpen ||
-      state.shopDialogOpen ||
-      state.gamblerDiceDialogOpen ||
-      state.leaderboardDialogOpen ||
-      state.fullGamePurchaseDialogOpen ||
-      state.idleModeDialog.isOpen ||
-      state.restartGameDialogOpen ||
-      state.rewardDialog.isOpen ||
-      state.madnessDialog.isOpen ||
-      state.signUpPromptDialogOpen ||
-      state.playlightWelcomeDialogOpen ||
-      state.investDialogOpen;
+    // Blocking modals: `isModalDialogOpen` in state.ts (add new dialogs there only).
+    const IsDialogOpen = isModalDialogOpen(state);
 
     const isPaused =
       state.isPaused ||
       IsDialogOpen ||
       requiresFullGamePurchase ||
-      state.idleModeState?.isActive ||
-      state.idleModeDialog.isOpen;
+      state.idleModeState?.isActive;
 
     if (isPaused) {
       // Stop all sounds when paused (unless already stopped by mute)
