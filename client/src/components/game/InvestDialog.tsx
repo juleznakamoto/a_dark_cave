@@ -11,9 +11,7 @@ import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
   getLuckWinChanceBonus,
-  getSuccessChancePercent,
   JACKPOT,
-  LOSS_PCT_RANGE,
   SUCCESS_PCT,
   TOTAL_LOSS_PCT,
   winPercentInclusiveRange,
@@ -42,6 +40,11 @@ function formatLuckSuccessBonusPct(luck: number): string {
   if (bonus === 0) return "No extra success chance from Luck yet.";
   const pct = Number.isInteger(bonus) ? String(bonus) : bonus.toFixed(1);
   return `+${pct}% success chance due to Luck`;
+}
+
+function formatLuckBonusPoints(luck: number): string {
+  const bonus = getLuckWinChanceBonus(luck);
+  return Number.isInteger(bonus) ? String(bonus) : bonus.toFixed(1);
 }
 
 type Props = {
@@ -151,26 +154,18 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                   {offers.map((offer, i) => {
                     const di = DURATIONS.indexOf(offer.durationMin);
                     const baseSuccess = SUCCESS_PCT[offer.tier][di];
-                    const withLuck = getSuccessChancePercent(
-                      offer.tier,
-                      offer.durationMin,
-                      luck,
-                    );
+                    const luckBonusPts = formatLuckBonusPoints(luck);
                     const winR = winPercentInclusiveRange(offer.tier, offer.durationMin);
                     const [jpChance, jpMult] = JACKPOT[offer.tier];
-                    const lossR = LOSS_PCT_RANGE[offer.tier];
                     const tl = TOTAL_LOSS_PCT[offer.tier];
+                    const statsLine = `Success Chance: ${baseSuccess} % + ${luckBonusPts} %, ROI: ${winR.from} % - ${winR.to} %, Jackpot Chance: ${jpChance} %, Jackpot Multiplier: ${jpMult}, Total Loss Chance: ${tl} %`;
                     return (
                       <RadioGroup.Item key={i} value={String(i)}>
-                        <div className="flex flex-col gap-0.5 text-left min-w-0">
+                        <div className="flex flex-col gap-1 text-left min-w-0 text-foreground">
                           <span className="font-medium">
                             {offerRowLabel(offer.durationMin)}
                           </span>
-                          <span className="text-muted-foreground text-xs">
-                            Success {baseSuccess}% → {withLuck.toFixed(1)}% with luck · Win{" "}
-                            {winR.from}–{winR.to}% (int) · Jackpot {jpChance}% ×{jpMult} · On
-                            fail loss {lossR[0]}–{lossR[1]}% · Total loss {tl}%
-                          </span>
+                          <span className="text-[13px] leading-snug">{statsLine}</span>
                         </div>
                       </RadioGroup.Item>
                     );
@@ -192,7 +187,11 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                     const disabled = a > maxStake;
                     return (
                       <RadioGroup.Item key={a} value={String(a)} disabled={disabled}>
-                        <span className={disabled ? "text-muted-foreground" : ""}>
+                        <span
+                          className={
+                            disabled ? "text-muted-foreground" : "text-foreground"
+                          }
+                        >
                           {formatNumber(a)} gold
                         </span>
                       </RadioGroup.Item>

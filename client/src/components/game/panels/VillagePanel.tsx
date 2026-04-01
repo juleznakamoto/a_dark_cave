@@ -66,8 +66,9 @@ export default function VillagePanel() {
     setHighlightedResources,
     callMerchant,
     investmentHallState,
+    investDialogOpen,
+    setInvestDialogOpen,
   } = useGameStore();
-  const [investDialogOpen, setInvestDialogOpen] = useState(false);
   const state = useGameStore.getState();
 
   // Particle effect state

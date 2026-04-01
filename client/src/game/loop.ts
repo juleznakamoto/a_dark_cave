@@ -273,8 +273,9 @@ export function startGameLoop() {
       key => (key === 'full_game' || key.startsWith('purchase-full_game-')) && state.activatedPurchases?.[key]
     );
 
-    // Calculate isDialogOpen from fresh state to ensure accuracy
-    const IsDialogOpen =
+    // Modal dialogs that freeze simulation (core UI). Invest dialog is special: while an
+    // investment is maturing, keep playTime / production running so the timer can finish.
+    const coreModalDialogOpen =
       state.eventDialog.isOpen ||
       state.combatDialog.isOpen ||
       state.authDialogOpen ||
@@ -289,7 +290,17 @@ export function startGameLoop() {
       state.signUpPromptDialogOpen ||
       state.playlightWelcomeDialogOpen;
 
-    const isPaused = state.isPaused || IsDialogOpen || requiresFullGamePurchase || state.idleModeState?.isActive || state.idleModeDialog.isOpen;
+    const investDialogBlocksSimulation =
+      state.investDialogOpen && !state.investmentHallState.active;
+
+    const IsDialogOpen = coreModalDialogOpen || investDialogBlocksSimulation;
+
+    const isPaused =
+      state.isPaused ||
+      IsDialogOpen ||
+      requiresFullGamePurchase ||
+      state.idleModeState?.isActive ||
+      state.idleModeDialog.isOpen;
 
     if (isPaused) {
       // Stop all sounds when paused (unless already stopped by mute)

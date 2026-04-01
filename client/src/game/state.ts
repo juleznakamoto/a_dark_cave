@@ -95,6 +95,8 @@ interface GameStore extends GameState {
   shopDialogOpen: boolean;
   /** True while the obsessed gambler dice minigame UI is open (freezes production like other modal dialogs). */
   gamblerDiceDialogOpen: boolean;
+  /** Village Invest modal open; game loop treats offer-picker as modal pause but keeps sim running while an investment is maturing. */
+  investDialogOpen: boolean;
   leaderboardDialogOpen: boolean;
   fullGamePurchaseDialogOpen: boolean;
   idleModeDialog: {
@@ -284,6 +286,7 @@ interface GameStore extends GameState {
   setAuthDialogOpen: (isOpen: boolean) => void;
   setShopDialogOpen: (isOpen: boolean) => void;
   setGamblerDiceDialogOpen: (isOpen: boolean) => void;
+  setInvestDialogOpen: (isOpen: boolean) => void;
   setLeaderboardDialogOpen: (isOpen: boolean) => void;
   setFullGamePurchaseDialogOpen: (isOpen: boolean) => void;
   setIdleModeDialog: (isOpen: boolean) => void;
@@ -1002,6 +1005,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   authDialogOpen: false,
   shopDialogOpen: false,
   gamblerDiceDialogOpen: false,
+  investDialogOpen: false,
   leaderboardDialogOpen: false,
   fullGamePurchaseDialogOpen: false,
   musicMuted: false,
@@ -1650,6 +1654,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         expiryTime: 0,
       },
       gamblerDiceDialogOpen: false,
+      investDialogOpen: false,
 
       // Recalculate derived state
       effects: calculateTotalEffects({ ...defaultGameState, ...preserved }),
@@ -2704,6 +2709,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setGamblerDiceDialogOpen: (isOpen: boolean) => {
     set({ gamblerDiceDialogOpen: isOpen });
+  },
+
+  setInvestDialogOpen: (isOpen: boolean) => {
+    set({ investDialogOpen: isOpen });
   },
 
   setLeaderboardDialogOpen: (isOpen: boolean) => {
