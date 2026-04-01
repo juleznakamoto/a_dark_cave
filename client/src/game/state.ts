@@ -62,7 +62,7 @@ import {
   formatInvestmentCompletionLog,
   generateInvestmentOffers,
   getMaxInvestmentStake,
-  INVESTMENT_WAVE_GAP_MS,
+  getInvestmentWaveGapMs,
 } from "@/game/rules/investmentHallTables";
 
 // Types
@@ -2628,7 +2628,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             ...ih,
             active: null,
             offers: [],
-            nextWavePlayTime: state.playTime + INVESTMENT_WAVE_GAP_MS,
+            nextWavePlayTime: state.playTime + getInvestmentWaveGapMs(),
           },
         };
       }
