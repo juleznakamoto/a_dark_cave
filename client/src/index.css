@@ -121,6 +121,13 @@ body {
   --shadow-lg: 0px 2px 0px 0px hsla(0, 89%, 53%, 0), 0px 4px 6px -1px hsla(0, 89%, 53%, 0);
   --shadow-xl: 0px 2px 0px 0px hsla(0, 89%, 53%, 0), 0px 8px 10px -1px hsla(0, 89%, 53%, 0);
   --shadow-2xl: 0px 2px 0px 0px hsla(0, 89%, 53%, 0);
+  --context-card-border: hsla(0, 0%, 18%, 1);
+  --ds-gray-200: hsla(0, 0%, 12%, 1);
+  --ds-gray-500: hsla(0, 0%, 27%, 1);
+  --ds-gray-700: hsla(0, 0%, 56%, 1);
+  --ds-gray-900: hsla(0, 0%, 63%, 1);
+  --ds-gray-1000: hsla(0, 0%, 93%, 1);
+  --ds-background-100: hsla(0, 0%, 4%, 1);
 }
 
 .legal-content,

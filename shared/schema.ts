@@ -292,6 +292,9 @@ export const gameStateSchema = z.object({
       darkEstate: z.number().default(0),
       heartfire: z.number().default(0),
       chitinPlating: z.number().default(0),
+      coinhouse: z.number().default(0),
+      bank: z.number().default(0),
+      treasury: z.number().default(0),
     })
     .default({}),
 
@@ -756,6 +759,45 @@ export const gameStateSchema = z.object({
       }),
     )
     .default([]),
+
+  investmentHallState: z
+    .object({
+      offers: z
+        .array(
+          z.object({
+            durationMin: z.union([
+              z.literal(10),
+              z.literal(30),
+              z.literal(60),
+            ]),
+            tier: z.enum(["A", "B", "C", "D"]),
+          }),
+        )
+        .default([]),
+      active: z
+        .object({
+          startPlayTime: z.number(),
+          endPlayTime: z.number(),
+          amountGold: z.number(),
+          durationMin: z.union([
+            z.literal(10),
+            z.literal(30),
+            z.literal(60),
+          ]),
+          tier: z.enum(["A", "B", "C", "D"]),
+          success: z.boolean(),
+          winPercentInt: z.number().optional(),
+          jackpotHit: z.boolean().optional(),
+          effectiveWinPercent: z.number().optional(),
+          totalLoss: z.boolean().optional(),
+          lossPercentInt: z.number().optional(),
+          payoutGold: z.number(),
+        })
+        .nullable()
+        .default(null),
+      nextWavePlayTime: z.number().default(0),
+    })
+    .default({ offers: [], active: null, nextWavePlayTime: 0 }),
 
   gamblerGame: z
     .object({

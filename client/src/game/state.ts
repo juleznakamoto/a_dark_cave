@@ -57,6 +57,13 @@ import {
   generateMerchantChoices,
   merchantEvents,
 } from "@/game/rules/eventsMerchant";
+import {
+  commitInvestmentRolls,
+  formatInvestmentCompletionLog,
+  generateInvestmentOffers,
+  getMaxInvestmentStake,
+  INVESTMENT_WAVE_GAP_MS,
+} from "@/game/rules/investmentHallTables";
 
 // Types
 interface GameStore extends GameState {
@@ -269,6 +276,11 @@ interface GameStore extends GameState {
   setCombatDialog: (isOpen: boolean, data?: any) => void;
   setTimedEventTab: (isActive: boolean, event?: LogEntry | null, duration?: number) => Promise<void>;
   callMerchant: () => void;
+  startInvestment: (
+    offerIndex: number,
+    amountGold: number,
+  ) => { ok: true } | { ok: false; reason: string };
+  tickInvestmentHall: () => void;
   setAuthDialogOpen: (isOpen: boolean) => void;
   setShopDialogOpen: (isOpen: boolean) => void;
   setGamblerDiceDialogOpen: (isOpen: boolean) => void;
@@ -1901,6 +1913,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
           purchasedIds: [],
         }, // Load merchant trades
         gamblerGame: gamblerGameForResume,
+        investmentHallState:
+          savedState.investmentHallState ?? defaultGameState.investmentHallState,
       };
 
       const savedExpeditionVillagers = savedState.expeditionVillagers || {};
@@ -2589,6 +2603,95 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     audioManager.playSound("merchant", SOUND_VOLUME.merchant);
     get().setTimedEventTab(true, eventData, 4 * 60 * 1000);
+  },
+
+  tickInvestmentHall: () => {
+    let logMessage: string | null = null;
+    set((state) => {
+      if (!state.buildings.coinhouse) return {};
+      const ih = state.investmentHallState;
+      const active = ih.active;
+      if (active && state.playTime >= active.endPlayTime) {
+        const payout = active.payoutGold;
+        logMessage = formatInvestmentCompletionLog(active);
+        return {
+          resources: {
+            ...state.resources,
+            gold: state.resources.gold + payout,
+          },
+          investmentHallState: {
+            ...ih,
+            active: null,
+            offers: [],
+            nextWavePlayTime: state.playTime + INVESTMENT_WAVE_GAP_MS,
+          },
+        };
+      }
+      if (
+        !active &&
+        state.playTime >= ih.nextWavePlayTime &&
+        ih.offers.length === 0
+      ) {
+        return {
+          investmentHallState: {
+            ...ih,
+            offers: generateInvestmentOffers(Math.random),
+          },
+        };
+      }
+      return {};
+    });
+    if (logMessage) {
+      get().addLogEntry({
+        id: `investment-${Date.now()}`,
+        message: logMessage,
+        timestamp: Date.now(),
+        type: "system",
+      });
+    }
+  },
+
+  startInvestment: (offerIndex, amountGold) => {
+    const state = get();
+    if (!state.buildings.coinhouse) {
+      return { ok: false, reason: "Build Coinhouse first." };
+    }
+    const ih = state.investmentHallState;
+    if (ih.active) {
+      return { ok: false, reason: "An investment is already running." };
+    }
+    if (state.playTime < ih.nextWavePlayTime) {
+      return { ok: false, reason: "Next wave is not ready yet." };
+    }
+    const offer = ih.offers[offerIndex];
+    if (!offer) {
+      return { ok: false, reason: "Invalid offer." };
+    }
+    const maxStake = getMaxInvestmentStake(state);
+    if (![100, 500, 1000].includes(amountGold) || amountGold > maxStake) {
+      return { ok: false, reason: "Invalid stake amount." };
+    }
+    if (state.resources.gold < amountGold) {
+      return { ok: false, reason: "Not enough gold." };
+    }
+    const rolled = commitInvestmentRolls({
+      playTime: state.playTime,
+      amountGold,
+      offer,
+      luck: state.stats.luck,
+      rng: Math.random,
+    });
+    set((s) => ({
+      resources: {
+        ...s.resources,
+        gold: s.resources.gold - amountGold,
+      },
+      investmentHallState: {
+        ...s.investmentHallState,
+        active: rolled.active,
+      },
+    }));
+    return { ok: true };
   },
 
   setAuthDialogOpen: (isOpen: boolean) => {

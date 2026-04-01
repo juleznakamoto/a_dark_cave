@@ -50,6 +50,7 @@ import {
 } from "@/game/cruelMode";
 import { isBuildingUpgrade } from "@/game/buildingHierarchy";
 import cn from "clsx";
+import InvestDialog from "@/components/game/InvestDialog";
 
 export default function VillagePanel() {
   const {
@@ -64,7 +65,9 @@ export default function VillagePanel() {
     unassignVillager,
     setHighlightedResources,
     callMerchant,
+    investmentHallState,
   } = useGameStore();
+  const [investDialogOpen, setInvestDialogOpen] = useState(false);
   const state = useGameStore.getState();
 
   // Particle effect state
@@ -167,6 +170,11 @@ export default function VillagePanel() {
               timedEventTab?.event?.id?.includes?.("merchant")
             ),
         },
+        {
+          id: "invest",
+          label: "Invest",
+          showWhen: () => (buildings?.coinhouse ?? 0) >= 1,
+        },
       ],
     },
     {
@@ -220,6 +228,9 @@ export default function VillagePanel() {
         { id: "buildPalisades", label: "Palisades" },
         { id: "buildFortifiedMoat", label: "Fortified Moat" },
         { id: "buildChitinPlating", label: "Chitin Plating" },
+        { id: "buildCoinhouse", label: "Coinhouse" },
+        { id: "buildBank", label: "Bank" },
+        { id: "buildTreasury", label: "Treasury" },
         { id: "buildSupplyHut", label: "Supply Hut" },
         { id: "buildStorehouse", label: "Storehouse" },
         { id: "buildFortifiedStorehouse", label: "Fortified Storehouse" },
@@ -352,8 +363,73 @@ export default function VillagePanel() {
 
   const renderButton = (actionId: string, label: string) => {
     const action = gameActions[actionId];
-    if (!action && actionId !== "feedFire" && actionId !== "callMerchant")
+    if (
+      !action &&
+      actionId !== "feedFire" &&
+      actionId !== "callMerchant" &&
+      actionId !== "invest"
+    )
       return null;
+
+    if (actionId === "invest") {
+      const ih = investmentHallState;
+      const active = ih?.active;
+      const nextWave = ih?.nextWavePlayTime ?? 0;
+      const currentPlayTime = playTime ?? 0;
+      const formatRemaining = (ms: number) => {
+        const totalSeconds = Math.ceil(ms / 1000);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+      };
+      let extra = "";
+      if (active) {
+        extra = formatRemaining(Math.max(0, active.endPlayTime - currentPlayTime));
+      } else if (currentPlayTime < nextWave) {
+        extra = formatRemaining(Math.max(0, nextWave - currentPlayTime));
+      }
+      const tooltipContent = active ? (
+        <div className="text-xs whitespace-nowrap">
+          Matures in {formatRemaining(Math.max(0, active.endPlayTime - currentPlayTime))}
+        </div>
+      ) : currentPlayTime < nextWave ? (
+        <div className="text-xs whitespace-nowrap">
+          Next wave in {formatRemaining(Math.max(0, nextWave - currentPlayTime))}
+        </div>
+      ) : (
+        <div className="text-xs">Open to invest gold</div>
+      );
+      return (
+        <React.Fragment key="invest">
+          <CooldownButton
+            onClick={() => setInvestDialogOpen(true)}
+            cooldownMs={0}
+            data-testid="button-invest"
+            actionId="invest"
+            button_id="invest"
+            disabled={false}
+            size="xs"
+            variant="outline"
+            className="hover:bg-background hover:text-foreground"
+            tooltip={tooltipContent}
+            style={{ pointerEvents: "auto" }}
+          >
+            <span className="flex items-center gap-1">
+              {label}
+              {extra ? (
+                <span className="text-muted-foreground text-[10px] tabular-nums">
+                  {extra}
+                </span>
+              ) : null}
+            </span>
+          </CooldownButton>
+          <InvestDialog
+            open={investDialogOpen}
+            onOpenChange={setInvestDialogOpen}
+          />
+        </React.Fragment>
+      );
+    }
 
     // Special case for Call Merchant button (same CooldownButton structure as other actions)
     if (actionId === "callMerchant") {

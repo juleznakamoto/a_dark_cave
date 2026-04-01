@@ -334,6 +334,7 @@ export function startGameLoop() {
       !IsDialogOpen // Added: Stop playTime when dialogs are open
     ) {
       currentState.updatePlayTime(deltaTime);
+      useGameStore.getState().tickInvestmentHall();
     }
 
     if (!IsDialogOpen) {

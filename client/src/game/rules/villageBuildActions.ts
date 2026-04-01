@@ -931,6 +931,92 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 0,
   },
 
+  buildCoinhouse: {
+    id: "buildCoinhouse",
+    label: "Coinhouse",
+    description: "Modest financial building allowing to make small investments",
+    tooltipEffects: ["Unlocks Investments"],
+    building: true,
+    show_when: {
+      1: {
+        "buildings.woodenHut": 7,
+        "buildings.coinhouse": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 1000,
+        "resources.wood": 500,
+        "resources.gold": 50,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.coinhouse": 1,
+      },
+    },
+    executionTime: 30,
+    cooldown: 0,
+  },
+
+  buildBank: {
+    id: "buildBank",
+    label: "Bank",
+    description: "Financial building allowing to make larger investments",
+    tooltipEffects: ["Unlocks Investments", "Invest up to 500 Gold"],
+    building: true,
+    show_when: {
+      1: {
+        "buildings.coinhouse": 1,
+        "buildings.stoneHut": 4,
+        "buildings.bank": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 5000,
+        "resources.iron": 2500,
+        "resources.gold": 250,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.bank": 1,
+      },
+    },
+    executionTime: 60,
+    cooldown: 0,
+  },
+
+  buildTreasury: {
+    id: "buildTreasury",
+    label: "Treasury",
+    description: "Big financial building allowing to make very large investments",
+    tooltipEffects: ["Unlocks Investments", "Invest up to 1000 Gold"],
+    building: true,
+    show_when: {
+      1: {
+        "buildings.bank": 1,
+        "buildings.stoneHut": 8,
+        "buildings.treasury": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 10000,
+        "resources.steel": 5000,
+        "resources.gold": 500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.treasury": 1,
+      },
+    },
+    executionTime: 90,
+    cooldown: 0,
+  },
+
   buildShrine: {
     id: "buildShrine",
     label: "Shrine",
