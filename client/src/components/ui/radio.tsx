@@ -41,22 +41,33 @@ interface RadioGroupItemProps {
   value?: string;
   children?: React.ReactNode;
   disabled?: boolean;
+  /** When disabled: default `not-allowed` (prohibited cursor). Use `help` for tooltip-style hints without the blocked cursor. */
+  disabledCursor?: "not-allowed" | "help" | "default";
 }
 
 const RadioGroupItem = ({
   value,
   children,
   disabled: itemDisabled,
+  disabledCursor = "not-allowed",
 }: RadioGroupItemProps) => {
   const context = useContext(RadioGroupContext);
   const isSelected = context?.value === value;
   const disabled = Boolean(context?.disabled || itemDisabled);
 
+  const disabledCursorClass =
+    disabled &&
+    (disabledCursor === "help"
+      ? "cursor-help"
+      : disabledCursor === "default"
+        ? "cursor-default"
+        : "cursor-not-allowed");
+
   return (
     <label
       className={cn(
-        "flex items-start gap-2.5 cursor-pointer font-sans text-[13px] text-gray-1000 leading-snug group",
-        disabled && "cursor-not-allowed text-gray-500",
+        "flex items-start gap-2.5 font-sans text-[13px] text-gray-1000 leading-snug group",
+        disabled ? cn("text-gray-500", disabledCursorClass) : "cursor-pointer",
       )}
     >
       <input

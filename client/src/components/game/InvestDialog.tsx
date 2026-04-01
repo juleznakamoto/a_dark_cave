@@ -17,7 +17,7 @@ import {
   winPercentInclusiveRange,
 } from "@/game/rules/investmentHallTables";
 import type { InvestmentDurationMin } from "@/game/rules/investmentHallTables";
-import { formatNumber } from "@/lib/utils";
+import { formatNumber, cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 
 function formatRemainingMs(ms: number): string {
@@ -52,6 +52,10 @@ type Props = {
   onOpenChange: (open: boolean) => void;
 };
 
+const AMOUNT_UNLOCK_TOOLTIP = (
+  <span className="text-xs">Unlocks at higher building level</span>
+);
+
 export default function InvestDialog({ open, onOpenChange }: Props) {
   const playTime = useGameStore((s) => s.playTime);
   const luck = useGameStore((s) => s.stats.luck);
@@ -75,6 +79,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
   const nextWave = investmentHallState.nextWavePlayTime;
 
   const waveReady = playTime >= nextWave && !active;
+  const luckBonusPts = formatLuckBonusPoints(luck);
 
   useEffect(() => {
     if (open && waveReady && maxStake >= 100) {
@@ -103,7 +108,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg max-h-[90dvh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90dvh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Invest</DialogTitle>
         </DialogHeader>
@@ -131,7 +136,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
           <div className="space-y-4">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <p className="text-sm font-medium">Strategy</p>
+                <p className="text-sm font-medium">Investment Strategy</p>
                 <TooltipWrapper
                   tooltip={
                     <div className="text-xs max-w-[220px]">
@@ -150,70 +155,122 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                 </TooltipWrapper>
               </div>
               <RadioGroup value={strategy} onChange={setStrategy}>
-                <div className="flex flex-col gap-3">
-                  {offers.map((offer, i) => {
-                    const di = DURATIONS.indexOf(offer.durationMin);
-                    const baseSuccess = SUCCESS_PCT[offer.tier][di];
-                    const luckBonusPts = formatLuckBonusPoints(luck);
-                    const winR = winPercentInclusiveRange(offer.tier, offer.durationMin);
-                    const [jpChance, jpMult] = JACKPOT[offer.tier];
-                    const tl = TOTAL_LOSS_PCT[offer.tier];
-                    const statsLine = `Success Chance: ${baseSuccess} % + ${luckBonusPts} %, ROI: ${winR.from} % - ${winR.to} %, Jackpot Chance: ${jpChance} %, Jackpot Multiplier: ${jpMult}, Total Loss Chance: ${tl} %`;
-                    return (
-                      <RadioGroup.Item key={i} value={String(i)}>
-                        <div className="flex flex-col gap-1 text-left min-w-0 text-foreground">
-                          <span className="font-medium">
-                            {offerRowLabel(offer.durationMin)}
-                          </span>
-                          <span className="text-[13px] leading-snug">{statsLine}</span>
-                        </div>
-                      </RadioGroup.Item>
-                    );
-                  })}
+                <div className="overflow-x-auto rounded-md border border-border">
+                  <table className="w-full min-w-[520px] border-collapse text-sm text-foreground">
+                    <thead>
+                      <tr className="border-b border-border bg-muted/30 text-left">
+                        <th className="w-10 py-2 pl-2 pr-1 font-medium" aria-hidden />
+                        <th className="py-2 pr-3 font-medium">Term</th>
+                        <th className="py-2 pr-3 font-medium">Success chance</th>
+                        <th className="py-2 pr-3 font-medium">ROI</th>
+                        <th className="py-2 pr-3 font-medium">Jackpot chance</th>
+                        <th className="py-2 pr-3 font-medium">Multiplier</th>
+                        <th className="py-2 pr-2 font-medium">Total loss</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {offers.map((offer, i) => {
+                        const di = DURATIONS.indexOf(offer.durationMin);
+                        const baseSuccess = SUCCESS_PCT[offer.tier][di];
+                        const winR = winPercentInclusiveRange(offer.tier, offer.durationMin);
+                        const [jpChance, jpMult] = JACKPOT[offer.tier];
+                        const tl = TOTAL_LOSS_PCT[offer.tier];
+                        return (
+                          <tr
+                            key={i}
+                            className={cn(
+                              "border-b border-border/60 last:border-0 cursor-pointer hover:bg-muted/15",
+                              strategy === String(i) && "bg-muted/20",
+                            )}
+                            onClick={() => setStrategy(String(i))}
+                          >
+                            <td className="py-2 pl-2 pr-1 align-middle">
+                              <RadioGroup.Item value={String(i)}>
+                                <span className="sr-only">{offerRowLabel(offer.durationMin)}</span>
+                              </RadioGroup.Item>
+                            </td>
+                            <td className="py-2 pr-3 align-middle font-medium">
+                              {offerRowLabel(offer.durationMin)}
+                            </td>
+                            <td className="py-2 pr-3 align-middle tabular-nums">
+                              {baseSuccess} % + {luckBonusPts} %
+                            </td>
+                            <td className="py-2 pr-3 align-middle tabular-nums">
+                              {winR.from} % – {winR.to} %
+                            </td>
+                            <td className="py-2 pr-3 align-middle tabular-nums">{jpChance} %</td>
+                            <td className="py-2 pr-3 align-middle tabular-nums">{jpMult}</td>
+                            <td className="py-2 pr-2 align-middle tabular-nums">{tl} %</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </div>
               </RadioGroup>
               <p className="text-xs text-muted-foreground leading-relaxed">
                 If the investment succeeds, Jackpot is the chance to multiply your gains. If it
                 fails, Total loss is the chance to lose your full stake (otherwise you recover
-                part of your gold).
+                part of your Gold).
               </p>
             </div>
 
             <div className="space-y-2">
-              <p className="text-sm font-medium">Amount (gold)</p>
+              <p className="text-sm font-medium">Investment Amount</p>
               <RadioGroup value={amountStr} onChange={setAmountStr}>
                 <div className="flex flex-col gap-2">
                   {amounts.map((a) => {
                     const disabled = a > maxStake;
-                    return (
-                      <RadioGroup.Item key={a} value={String(a)} disabled={disabled}>
+                    const amountItem = (
+                      <RadioGroup.Item
+                        value={String(a)}
+                        disabled={disabled}
+                        disabledCursor={disabled ? "help" : "not-allowed"}
+                      >
                         <span
                           className={
                             disabled ? "text-muted-foreground" : "text-foreground"
                           }
                         >
-                          {formatNumber(a)} gold
+                          {formatNumber(a)} Gold
                         </span>
                       </RadioGroup.Item>
+                    );
+                    if (!disabled) {
+                      return <div key={a}>{amountItem}</div>;
+                    }
+                    return (
+                      <TooltipWrapper
+                        key={a}
+                        tooltip={AMOUNT_UNLOCK_TOOLTIP}
+                        tooltipId={`invest-amount-${a}`}
+                        disabled
+                        className="block w-full"
+                        tooltipContentClassName="max-w-xs"
+                      >
+                        {amountItem}
+                      </TooltipWrapper>
                     );
                   })}
                 </div>
               </RadioGroup>
             </div>
 
-            <Button
-              onClick={handleCommit}
-              variant="outline"
-              className="w-full flex items-center justify-center text-sm font-medium"
-              disabled={
-                offers.length < 3 ||
-                (resources.gold ?? 0) < Number(amountStr) ||
-                Number(amountStr) > maxStake
-              }
-              button_id="invest-commit"
-            >
-              Commit investment
-            </Button>
+            <div className="flex justify-center pt-1">
+              <Button
+                onClick={handleCommit}
+                variant="outline"
+                className="h-8 px-4 text-xs font-medium"
+                disabled={
+                  offers.length < 3 ||
+                  (resources.gold ?? 0) < Number(amountStr) ||
+                  Number(amountStr) > maxStake
+                }
+                button_id="invest-commit"
+              >
+                Start investment
+              </Button>
+            </div>
           </div>
         )}
       </DialogContent>
