@@ -13,6 +13,8 @@ export interface TooltipWrapperProps {
   tooltipId?: string;
   disabled?: boolean;
   className?: string;
+  /** Classes for the Radix trigger span (default full-width block for panel rows). */
+  tooltipTriggerClassName?: string;
   tooltipContentClassName?: string;
   onMouseEnter?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onMouseLeave?: (e?: React.MouseEvent<HTMLDivElement>) => void;
@@ -32,6 +34,7 @@ export function TooltipWrapper({
   tooltipId,
   disabled = false,
   className = "relative inline-block",
+  tooltipTriggerClassName,
   tooltipContentClassName,
   onMouseEnter,
   onMouseLeave,
@@ -94,13 +97,13 @@ export function TooltipWrapper({
 
         const wrappedOnClick = onClick
           ? () => {
-              actionExecutedRef.current = true;
-              onClick(e);
-              setTimeout(() => {
-                actionExecutedRef.current = false;
-              }, 100);
-            }
-          : () => {};
+            actionExecutedRef.current = true;
+            onClick(e);
+            setTimeout(() => {
+              actionExecutedRef.current = false;
+            }, 100);
+          }
+          : () => { };
         globalTooltip.handleMouseUp(finalTooltipId, disabled, wrappedOnClick, e);
       }}
       onTouchStart={(e) => {
@@ -117,25 +120,27 @@ export function TooltipWrapper({
 
         const wrappedOnClick = onClick
           ? () => {
-              actionExecutedRef.current = true;
-              onClick(e);
-              setTimeout(() => {
-                actionExecutedRef.current = false;
-              }, 100);
-            }
-          : () => {};
+            actionExecutedRef.current = true;
+            onClick(e);
+            setTimeout(() => {
+              actionExecutedRef.current = false;
+            }, 100);
+          }
+          : () => { };
         globalTooltip.handleTouchEnd(finalTooltipId, disabled, wrappedOnClick, e);
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       <TooltipProvider>
-        <Tooltip 
-          open={globalTooltip.isTooltipOpen(finalTooltipId)} 
+        <Tooltip
+          open={globalTooltip.isTooltipOpen(finalTooltipId)}
           delayDuration={300}
         >
           <TooltipTrigger asChild>
-            <span className="block w-full">
+            <span
+              className={tooltipTriggerClassName ?? "block w-full"}
+            >
               {children}
             </span>
           </TooltipTrigger>

@@ -33,9 +33,9 @@ describe("clampSuccessChance", () => {
 });
 
 describe("winPercentInclusiveRange", () => {
-  it("handles fractional min", () => {
+  it("returns inclusive integer bounds for tier A 30 min", () => {
     const r = winPercentInclusiveRange("A", 30);
-    expect(r.from).toBe(3);
+    expect(r.from).toBe(5);
     expect(r.to).toBe(10);
   });
 });

@@ -20,40 +20,40 @@ export const SUCCESS_PCT: Record<
   D: [30, 35, 40],
 };
 
-/** Win % min/max on success; [tier][durationIndex] */
+/** Win % min/max on success; [tier][durationIndex] for 10 / 30 / 60 min */
 export const WIN_PCT_RANGE: Record<
   InvestmentTier,
   [readonly [number, number], readonly [number, number], readonly [number, number]]
 > = {
   A: [
     [0, 10],
-    [2.5, 10],
     [5, 10],
+    [5, 15],
   ],
   B: [
     [10, 20],
-    [12.5, 20],
     [15, 20],
+    [15, 25],
   ],
   C: [
     [20, 40],
-    [22.5, 40],
     [25, 40],
+    [25, 45],
   ],
   D: [
     [40, 60],
-    [42.5, 60],
     [45, 60],
+    [45, 65],
   ],
 };
 
 /** Loss % range on failure (not total loss); [min, max] inclusive int */
 export const LOSS_PCT_RANGE: Record<InvestmentTier, readonly [number, number]> =
 {
-  A: [0, 5],
-  B: [10, 15],
-  C: [15, 25],
-  D: [25, 35],
+  A: [0, 10],
+  B: [10, 20],
+  C: [20, 30],
+  D: [30, 40],
 };
 
 /** Jackpot: [chance %, multiplier on winPercentInt] */

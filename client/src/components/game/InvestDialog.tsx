@@ -11,8 +11,8 @@ import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
   getLuckWinChanceBonus,
+  getSuccessChancePercent,
   JACKPOT,
-  SUCCESS_PCT,
   TOTAL_LOSS_PCT,
   winPercentInclusiveRange,
 } from "@/game/rules/investmentHallTables";
@@ -27,8 +27,6 @@ function formatRemainingMs(ms: number): string {
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 }
 
-const DURATIONS: InvestmentDurationMin[] = [10, 30, 60];
-
 function offerRowLabel(durationMin: InvestmentDurationMin): string {
   if (durationMin === 10) return "Short (10 min)";
   if (durationMin === 30) return "Medium (30 min)";
@@ -42,9 +40,8 @@ function formatLuckSuccessBonusPct(luck: number): string {
   return `+${pct}% success chance due to Luck`;
 }
 
-function formatLuckBonusPoints(luck: number): string {
-  const bonus = getLuckWinChanceBonus(luck);
-  return Number.isInteger(bonus) ? String(bonus) : bonus.toFixed(1);
+function formatPercentDisplay(p: number): string {
+  return Number.isInteger(p) ? String(p) : p.toFixed(1);
 }
 
 type Props = {
@@ -79,7 +76,6 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
   const nextWave = investmentHallState.nextWavePlayTime;
 
   const waveReady = playTime >= nextWave && !active;
-  const luckBonusPts = formatLuckBonusPoints(luck);
 
   useEffect(() => {
     if (open && waveReady && maxStake >= 100) {
@@ -155,23 +151,27 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                 </TooltipWrapper>
               </div>
               <RadioGroup value={strategy} onChange={setStrategy}>
-                <div className="overflow-x-auto rounded-md border border-border">
-                  <table className="w-full min-w-[520px] border-collapse text-sm text-foreground">
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-[480px] border-collapse text-foreground">
                     <thead>
-                      <tr className="border-b border-border bg-muted/30 text-left">
+                      <tr className="text-left text-xs">
                         <th className="w-10 py-2 pl-2 pr-1 font-medium" aria-hidden />
                         <th className="py-2 pr-3 font-medium">Term</th>
                         <th className="py-2 pr-3 font-medium">Success chance</th>
-                        <th className="py-2 pr-3 font-medium">ROI</th>
-                        <th className="py-2 pr-3 font-medium">Jackpot chance</th>
-                        <th className="py-2 pr-3 font-medium">Multiplier</th>
-                        <th className="py-2 pr-2 font-medium">Total loss</th>
+                        <th className="py-2 pr-3 font-medium">Profit</th>
+                        <th className="py-2 pr-3 font-medium">
+                          Lucky Chance / Multiplier
+                        </th>
+                        <th className="py-2 pr-2 font-medium">Total Loss Chance</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="text-[11px] leading-snug">
                       {offers.map((offer, i) => {
-                        const di = DURATIONS.indexOf(offer.durationMin);
-                        const baseSuccess = SUCCESS_PCT[offer.tier][di];
+                        const finalSuccess = getSuccessChancePercent(
+                          offer.tier,
+                          offer.durationMin,
+                          luck,
+                        );
                         const winR = winPercentInclusiveRange(offer.tier, offer.durationMin);
                         const [jpChance, jpMult] = JACKPOT[offer.tier];
                         const tl = TOTAL_LOSS_PCT[offer.tier];
@@ -179,7 +179,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                           <tr
                             key={i}
                             className={cn(
-                              "border-b border-border/60 last:border-0 cursor-pointer hover:bg-muted/15",
+                              "cursor-pointer hover:bg-muted/15 rounded-sm",
                               strategy === String(i) && "bg-muted/20",
                             )}
                             onClick={() => setStrategy(String(i))}
@@ -189,17 +189,18 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                                 <span className="sr-only">{offerRowLabel(offer.durationMin)}</span>
                               </RadioGroup.Item>
                             </td>
-                            <td className="py-2 pr-3 align-middle font-medium">
+                            <td className="py-2 pr-3 align-middle text-xs font-medium">
                               {offerRowLabel(offer.durationMin)}
                             </td>
                             <td className="py-2 pr-3 align-middle tabular-nums">
-                              {baseSuccess} % + {luckBonusPts} %
+                              {formatPercentDisplay(finalSuccess)} %
                             </td>
                             <td className="py-2 pr-3 align-middle tabular-nums">
                               {winR.from} % – {winR.to} %
                             </td>
-                            <td className="py-2 pr-3 align-middle tabular-nums">{jpChance} %</td>
-                            <td className="py-2 pr-3 align-middle tabular-nums">{jpMult}</td>
+                            <td className="py-2 pr-3 align-middle tabular-nums">
+                              {jpChance} % / {jpMult}x
+                            </td>
                             <td className="py-2 pr-2 align-middle tabular-nums">{tl} %</td>
                           </tr>
                         );
@@ -209,9 +210,10 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                 </div>
               </RadioGroup>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                If the investment succeeds, Jackpot is the chance to multiply your gains. If it
-                fails, Total loss is the chance to lose your full stake (otherwise you recover
-                part of your Gold).
+                On success, profit is paid as a percentage of your stake. Lucky chance is the
+                odds of applying the multiplier to that profit (e.g. 3x). On failure, Total Loss
+                Chance is the odds of losing your full stake; otherwise you keep part of your
+                Gold.
               </p>
             </div>
 
@@ -221,35 +223,36 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                 <div className="flex flex-col gap-2">
                   {amounts.map((a) => {
                     const disabled = a > maxStake;
-                    const amountItem = (
-                      <RadioGroup.Item
-                        value={String(a)}
-                        disabled={disabled}
-                        disabledCursor={disabled ? "help" : "not-allowed"}
-                      >
-                        <span
-                          className={
-                            disabled ? "text-muted-foreground" : "text-foreground"
-                          }
-                        >
-                          {formatNumber(a)} Gold
-                        </span>
-                      </RadioGroup.Item>
-                    );
-                    if (!disabled) {
-                      return <div key={a}>{amountItem}</div>;
-                    }
+                    const labelClass = disabled
+                      ? "text-muted-foreground"
+                      : "text-foreground";
                     return (
-                      <TooltipWrapper
-                        key={a}
-                        tooltip={AMOUNT_UNLOCK_TOOLTIP}
-                        tooltipId={`invest-amount-${a}`}
-                        disabled
-                        className="block w-full"
-                        tooltipContentClassName="max-w-xs"
-                      >
-                        {amountItem}
-                      </TooltipWrapper>
+                      <div key={a}>
+                        <RadioGroup.Item
+                          value={String(a)}
+                          disabled={disabled}
+                          disabledCursor={disabled ? "default" : "not-allowed"}
+                        >
+                          {disabled ? (
+                            <TooltipWrapper
+                              tooltip={AMOUNT_UNLOCK_TOOLTIP}
+                              tooltipId={`invest-amount-${a}`}
+                              disabled
+                              className="inline-block w-fit"
+                              tooltipTriggerClassName="inline-block w-fit max-w-full"
+                              tooltipContentClassName="max-w-xs"
+                            >
+                              <span className={labelClass}>
+                                {formatNumber(a)} Gold
+                              </span>
+                            </TooltipWrapper>
+                          ) : (
+                            <span className={labelClass}>
+                              {formatNumber(a)} Gold
+                            </span>
+                          )}
+                        </RadioGroup.Item>
+                      </div>
                     );
                   })}
                 </div>
