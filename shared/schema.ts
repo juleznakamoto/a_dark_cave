@@ -766,9 +766,9 @@ export const gameStateSchema = z.object({
         .array(
           z.object({
             durationMin: z.union([
-              z.literal(10),
+              z.literal(5),
+              z.literal(15),
               z.literal(30),
-              z.literal(60),
             ]),
             tier: z.enum(["A", "B", "C", "D"]),
           }),
@@ -780,9 +780,9 @@ export const gameStateSchema = z.object({
           endPlayTime: z.number(),
           amountGold: z.number(),
           durationMin: z.union([
-            z.literal(10),
+            z.literal(5),
+            z.literal(15),
             z.literal(30),
-            z.literal(60),
           ]),
           tier: z.enum(["A", "B", "C", "D"]),
           success: z.boolean(),

@@ -1,9 +1,9 @@
 import type { GameState } from "@shared/schema";
 
 export type InvestmentTier = "A" | "B" | "C" | "D";
-export type InvestmentDurationMin = 10 | 30 | 60;
+export type InvestmentDurationMin = 5 | 15 | 30;
 
-const DURATION_ORDER: InvestmentDurationMin[] = [10, 30, 60];
+const DURATION_ORDER: InvestmentDurationMin[] = [5, 15, 30];
 
 export function durationIndex(durationMin: InvestmentDurationMin): number {
   return DURATION_ORDER.indexOf(durationMin);
@@ -20,7 +20,7 @@ export const SUCCESS_PCT: Record<
   D: [30, 35, 40],
 };
 
-/** Win % min/max on success; [tier][durationIndex] for 10 / 30 / 60 min */
+/** Win % min/max on success; [tier][durationIndex] for 5 / 15 / 30 min */
 export const WIN_PCT_RANGE: Record<
   InvestmentTier,
   [readonly [number, number], readonly [number, number], readonly [number, number]]
@@ -188,7 +188,7 @@ export type InvestmentOffer = {
   tier: InvestmentTier;
 };
 
-/** One random tier per duration slot (10 / 30 / 60). */
+/** One random tier per duration slot (5 / 15 / 30 min). */
 export function generateInvestmentOffers(rng: () => number): InvestmentOffer[] {
   const tiers: InvestmentTier[] = ["A", "B", "C", "D"];
   return DURATION_ORDER.map((durationMin) => ({
@@ -228,13 +228,13 @@ export type CommitInvestmentResult = { ok: true; active: InvestmentActive };
 export function formatInvestmentCompletionLog(active: InvestmentActive): string {
   if (active.success) {
     const outcomeNote = active.luckyChanceHit ? " Lucky Chance!" : "Success.";
-    return `Investment complete: ${outcomeNote} You gained ${active.payoutGold} Gold.`;
+    return `${active.amountGold} Gold investment complete: ${outcomeNote} You gained ${active.payoutGold} Gold.`;
   }
   if (active.totalLoss) {
-    return `Investment complete: Wipeout. You lost your full investment of ${active.amountGold} Gold.`;
+    return `${active.amountGold} Gold investment complete: Wipeout. You lost your full investment of ${active.amountGold} Gold.`;
   }
   const lp = active.lossPercentInt ?? 0;
-  return `Investment complete: Failure. You lost ${active.amountGold - active.payoutGold} Gold.`;
+  return `${active.amountGold} Gold investment complete: Failure. You lost ${active.amountGold - active.payoutGold} Gold.`;
 }
 
 /** UI outcome for the post-maturity result dialog (maps to ⇧ / ⇮ / rotated ⇮ / ⇩). */
@@ -260,27 +260,27 @@ export function buildInvestmentResultDialogPayload(
       return {
         kind: "lucky_chance",
         goldDelta: profit,
-        briefText: "Lucky Chance multiplied your return.",
+        briefText: "Lucky Chance. Your gains are multiplied.",
       };
     }
     return {
       kind: "success",
       goldDelta: profit,
-      briefText: "Your investment matured successfully.",
+      briefText: "Your investment was successful.",
     };
   }
   if (active.totalLoss) {
     return {
       kind: "wipeout",
       goldDelta: -active.amountGold,
-      briefText: "Wipeout — the full stake was lost.",
+      briefText: "Wipeout. You lost your full investment.",
     };
   }
   const lost = active.amountGold - active.payoutGold;
   return {
     kind: "partial_loss",
     goldDelta: -lost,
-    briefText: "The venture failed; you kept part of your stake.",
+    briefText: "Your investment failed.",
   };
 }
 

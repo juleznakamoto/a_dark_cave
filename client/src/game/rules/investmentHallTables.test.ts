@@ -25,7 +25,7 @@ describe("getLuckWinChanceBonus", () => {
 
 describe("getSuccessChancePercent", () => {
   it("adds highest luck tier to base success", () => {
-    const p = getSuccessChancePercent("A", 60, 50);
+    const p = getSuccessChancePercent("A", 30, 50);
     expect(p).toBe(80);
   });
 });
@@ -37,8 +37,8 @@ describe("clampSuccessChance", () => {
 });
 
 describe("winPercentInclusiveRange", () => {
-  it("returns inclusive integer bounds for tier A 30 min", () => {
-    const r = winPercentInclusiveRange("A", 30);
+  it("returns inclusive integer bounds for tier A 15 min", () => {
+    const r = winPercentInclusiveRange("A", 15);
     expect(r.from).toBe(5);
     expect(r.to).toBe(10);
   });
@@ -46,16 +46,16 @@ describe("winPercentInclusiveRange", () => {
 
 describe("maxSuccessProfitGold / maxLuckyChanceSuccessProfitGold", () => {
   it("uses top win % and Lucky Chance multiplier", () => {
-    expect(maxSuccessProfitGold(100, "A", 30)).toBe(10);
-    expect(maxLuckyChanceSuccessProfitGold(100, "A", 30)).toBe(50);
+    expect(maxSuccessProfitGold(100, "A", 15)).toBe(10);
+    expect(maxLuckyChanceSuccessProfitGold(100, "A", 15)).toBe(50);
   });
 });
 
 describe("isInvestmentWaveReadyForUi", () => {
   const threeOffers = [
-    { durationMin: 10 as const, tier: "A" as const },
-    { durationMin: 30 as const, tier: "B" as const },
-    { durationMin: 60 as const, tier: "C" as const },
+    { durationMin: 5 as const, tier: "A" as const },
+    { durationMin: 15 as const, tier: "B" as const },
+    { durationMin: 30 as const, tier: "C" as const },
   ];
 
   it("false when investment active", () => {
@@ -68,7 +68,7 @@ describe("isInvestmentWaveReadyForUi", () => {
             startPlayTime: 0,
             endPlayTime: 500,
             amountGold: 100,
-            durationMin: 10,
+            durationMin: 5,
             tier: "A",
             success: true,
             payoutGold: 105,
@@ -137,7 +137,7 @@ describe("commitInvestmentRolls", () => {
     const r = commitInvestmentRolls({
       playTime: 0,
       amountGold: 100,
-      offer: { durationMin: 10, tier: "A" },
+      offer: { durationMin: 5, tier: "A" },
       luck: 0,
       luckyChanceBonusPct: 0,
       rng,
@@ -156,7 +156,7 @@ describe("commitInvestmentRolls", () => {
     const r = commitInvestmentRolls({
       playTime: 0,
       amountGold: 100,
-      offer: { durationMin: 10, tier: "B" },
+      offer: { durationMin: 5, tier: "B" },
       luck: 0,
       luckyChanceBonusPct: 0,
       rng,
@@ -175,7 +175,7 @@ describe("commitInvestmentRolls", () => {
     const coinhouseOnly = commitInvestmentRolls({
       playTime: 0,
       amountGold: 100,
-      offer: { durationMin: 10, tier: "A" },
+      offer: { durationMin: 5, tier: "A" },
       luck: 0,
       luckyChanceBonusPct: 0,
       rng: makeRng(),
@@ -183,7 +183,7 @@ describe("commitInvestmentRolls", () => {
     const withBank = commitInvestmentRolls({
       playTime: 0,
       amountGold: 100,
-      offer: { durationMin: 10, tier: "A" },
+      offer: { durationMin: 5, tier: "A" },
       luck: 0,
       luckyChanceBonusPct: 1,
       rng: makeRng(),
@@ -212,7 +212,7 @@ describe("buildInvestmentResultDialogPayload", () => {
         startPlayTime: 0,
         endPlayTime: 1,
         amountGold: 100,
-        durationMin: 10,
+        durationMin: 5,
         tier: "A",
         success: true,
         winPercentInt: 5,
@@ -227,7 +227,7 @@ describe("buildInvestmentResultDialogPayload", () => {
         startPlayTime: 0,
         endPlayTime: 1,
         amountGold: 100,
-        durationMin: 10,
+        durationMin: 5,
         tier: "A",
         success: true,
         winPercentInt: 5,
@@ -242,7 +242,7 @@ describe("buildInvestmentResultDialogPayload", () => {
         startPlayTime: 0,
         endPlayTime: 1,
         amountGold: 100,
-        durationMin: 10,
+        durationMin: 5,
         tier: "A",
         success: false,
         totalLoss: false,
@@ -256,7 +256,7 @@ describe("buildInvestmentResultDialogPayload", () => {
         startPlayTime: 0,
         endPlayTime: 1,
         amountGold: 100,
-        durationMin: 10,
+        durationMin: 5,
         tier: "A",
         success: false,
         totalLoss: true,
@@ -272,7 +272,7 @@ describe("formatInvestmentCompletionLog", () => {
       startPlayTime: 0,
       endPlayTime: 1,
       amountGold: 100,
-      durationMin: 10,
+      durationMin: 5,
       tier: "A",
       success: true,
       winPercentInt: 5,

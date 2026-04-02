@@ -25,7 +25,6 @@ import {
 } from "@/game/rules/investmentHallTables";
 import type { InvestmentDurationMin } from "@/game/rules/investmentHallTables";
 import { formatNumber, cn } from "@/lib/utils";
-import { toast } from "@/hooks/use-toast";
 
 const INVEST_RADIO_INDICATOR_PX = 8;
 
@@ -135,11 +134,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
     const idx = Number(strategy);
     const amt = Number(amountStr);
     const r = startInvestment(idx, amt);
-    if (!r.ok) {
-      toast({ title: "Cannot invest", description: r.reason, variant: "destructive" });
-      return;
-    }
-    toast({ title: "Investment started", description: "Funds are locked until maturity." });
+    if (!r.ok) return;
     onOpenChange(false);
   };
 
