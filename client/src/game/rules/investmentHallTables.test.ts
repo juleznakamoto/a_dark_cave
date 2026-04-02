@@ -139,6 +139,7 @@ describe("commitInvestmentRolls", () => {
       amountGold: 100,
       offer: { durationMin: 10, tier: "A" },
       luck: 0,
+      luckyChanceBonusPct: 0,
       rng,
     });
     expect(r.ok).toBe(true);
@@ -157,11 +158,38 @@ describe("commitInvestmentRolls", () => {
       amountGold: 100,
       offer: { durationMin: 10, tier: "B" },
       luck: 0,
+      luckyChanceBonusPct: 0,
       rng,
     });
     expect(r.active.success).toBe(false);
     expect(r.active.totalLoss).toBe(true);
     expect(r.active.payoutGold).toBe(0);
+  });
+
+  it("Bank lucky bonus (+1%) widens jackpot roll vs coinhouse only", () => {
+    const makeRng = () => {
+      let n = 0;
+      // Jackpot roll: 0.02 * 100 = 2 → 2 < 2 false with 0 bonus; 2 < 3 true with +1
+      return () => [0.3, 0.5, 0.02][n++] ?? 0;
+    };
+    const coinhouseOnly = commitInvestmentRolls({
+      playTime: 0,
+      amountGold: 100,
+      offer: { durationMin: 10, tier: "A" },
+      luck: 0,
+      luckyChanceBonusPct: 0,
+      rng: makeRng(),
+    });
+    const withBank = commitInvestmentRolls({
+      playTime: 0,
+      amountGold: 100,
+      offer: { durationMin: 10, tier: "A" },
+      luck: 0,
+      luckyChanceBonusPct: 1,
+      rng: makeRng(),
+    });
+    expect(coinhouseOnly.active.jackpotHit).toBe(false);
+    expect(withBank.active.jackpotHit).toBe(true);
   });
 });
 

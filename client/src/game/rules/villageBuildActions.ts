@@ -963,7 +963,11 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildBank",
     label: "Bank",
     description: "Financial building allowing to make larger investments",
-    tooltipEffects: ["Unlocks Investments", "Invest up to 500 Gold"],
+    tooltipEffects: [
+      "Unlocks Investments",
+      "Invest up to 500 Gold",
+      "+1% Lucky Chance",
+    ],
     building: true,
     show_when: {
       1: {
@@ -992,7 +996,11 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildTreasury",
     label: "Treasury",
     description: "Big financial building allowing to make very large investments",
-    tooltipEffects: ["Unlocks Investments", "Invest up to 1000 Gold"],
+    tooltipEffects: [
+      "Unlocks Investments",
+      "Invest up to 1000 Gold",
+      "+2% Lucky Chance",
+    ],
     building: true,
     show_when: {
       1: {

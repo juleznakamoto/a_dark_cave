@@ -64,6 +64,23 @@ export const JACKPOT: Record<InvestmentTier, readonly [number, number]> = {
   D: [5, 2],
 };
 
+/** Extra Lucky Chance % from investment hall: Bank +1%, Treasury +2% (overrides Bank). Coinhouse only → 0. */
+export function investmentHallLuckyChanceBonusPct(buildings: {
+  bank?: number;
+  treasury?: number;
+}): number {
+  if ((buildings.treasury ?? 0) > 0) return 2;
+  if ((buildings.bank ?? 0) > 0) return 1;
+  return 0;
+}
+
+export function getEffectiveJackpotChancePercent(
+  baseChance: number,
+  luckyBonusPct: number,
+): number {
+  return Math.min(100, baseChance + luckyBonusPct);
+}
+
 /** Total loss chance % on failure */
 export const TOTAL_LOSS_PCT: Record<InvestmentTier, number> = {
   A: 0,
@@ -201,6 +218,8 @@ export type CommitInvestmentInput = {
   amountGold: number;
   offer: InvestmentOffer;
   luck: number;
+  /** 0 coinhouse-only, 1 Bank, 2 Treasury — see `investmentHallLuckyChanceBonusPct`. */
+  luckyChanceBonusPct: number;
   rng: () => number;
 };
 
@@ -283,7 +302,7 @@ export function getMaxInvestmentStake(state: {
 export function commitInvestmentRolls(
   input: CommitInvestmentInput,
 ): CommitInvestmentResult {
-  const { playTime, amountGold, offer, luck, rng } = input;
+  const { playTime, amountGold, offer, luck, luckyChanceBonusPct, rng } = input;
   const { tier, durationMin } = offer;
   const successChance = getSuccessChancePercent(tier, durationMin, luck);
   const successRoll = rng() * 100;
@@ -296,7 +315,11 @@ export function commitInvestmentRolls(
     const { from, to } = winPercentInclusiveRange(tier, durationMin);
     const winPercentInt = randomIntInclusive(from, to, rng);
     const [jpChance, jpMult] = JACKPOT[tier];
-    const jackpotHit = rng() * 100 < jpChance;
+    const effectiveJpChance = getEffectiveJackpotChancePercent(
+      jpChance,
+      luckyChanceBonusPct,
+    );
+    const jackpotHit = rng() * 100 < effectiveJpChance;
     const effectiveWinPercent = jackpotHit
       ? winPercentInt * jpMult
       : winPercentInt;

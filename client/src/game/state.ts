@@ -64,6 +64,7 @@ import {
   generateInvestmentOffers,
   getMaxInvestmentStake,
   getInvestmentWaveGapMs,
+  investmentHallLuckyChanceBonusPct,
 } from "@/game/rules/investmentHallTables";
 
 // Types
@@ -2726,6 +2727,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       amountGold,
       offer,
       luck: state.stats.luck,
+      luckyChanceBonusPct: investmentHallLuckyChanceBonusPct(state.buildings),
       rng: Math.random,
     });
     set((s) => ({

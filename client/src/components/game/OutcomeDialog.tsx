@@ -20,16 +20,19 @@ const variantStyles = {
   success: {
     border: "border-amber-600",
     glow: "reward-dialog-glow-success",
+    iconRing: "border-amber-500/45 bg-amber-950/35",
   },
   loss: {
     border: "border-orange-800",
     glow: "reward-dialog-glow-loss",
+    iconRing: "border-orange-700/45 bg-orange-950/25",
   },
   madness: {
     border: "border-violet-600",
     glow: "madness-dialog-glow",
+    iconRing: "border-violet-500/45 bg-violet-950/35",
   },
-};
+} as const;
 
 export default function OutcomeDialog({
   isOpen,
@@ -42,7 +45,7 @@ export default function OutcomeDialog({
   buttonId,
   children,
 }: OutcomeDialogProps) {
-  const { border, glow } = variantStyles[variant];
+  const { border, glow, iconRing } = variantStyles[variant];
 
   return (
     <>
@@ -74,15 +77,23 @@ export default function OutcomeDialog({
           className={`w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden border-2 shadow-2xl ${border}`}
         >
           <div className={`absolute inset-0 -z-10 pointer-events-none ${glow}`} />
-          <DialogHeader>
-            <div className="flex justify-center">{icon}</div>
+          <DialogHeader className="text-center sm:text-center">
+            <div className="flex justify-center">
+              <div
+                className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 ${iconRing}`}
+              >
+                {icon}
+              </div>
+            </div>
+            <DialogTitle className="text-center text-lg font-semibold text-foreground tracking-tight">
+              {title}
+            </DialogTitle>
             {successLog && (
-              <div className="text-sm text-foreground text-center px-2 pb-2">
+              <div className="text-sm text-foreground text-center px-2 pb-0 pt-0">
                 {successLog}
               </div>
             )}
             <div className="my-2 h-px w-full bg-white/10" />
-            <DialogTitle className="sr-only">{title}</DialogTitle>
           </DialogHeader>
 
           <div className="text-sm pb-2 space-y-1">{children}</div>

@@ -11,8 +11,10 @@ import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
+  getEffectiveJackpotChancePercent,
   getLuckWinChanceBonus,
   getSuccessChancePercent,
+  investmentHallLuckyChanceBonusPct,
   isInvestmentWaveReadyForUi,
   JACKPOT,
   TOTAL_LOSS_PCT,
@@ -33,6 +35,17 @@ function formatLuckSuccessLine(luck: number): string {
   const bonus = getLuckWinChanceBonus(luck);
   const pct = Number.isInteger(bonus) ? String(bonus) : bonus.toFixed(1);
   return `+${pct}% Success Chance from Luck`;
+}
+
+/** Matches `investmentHallLuckyChanceBonusPct`: Treasury → 2, Bank → 1; coinhouse-only → null (no line). */
+function formatInvestmentHallLuckyLine(bonusPct: number): string | null {
+  if (bonusPct >= 2) {
+    return "+2 % Lucky Chance based on building level (included in the table).";
+  }
+  if (bonusPct >= 1) {
+    return "+1 % Lucky Chance based on building level (included in the table).";
+  }
+  return null;
 }
 
 function formatPercentDisplay(p: number): string {
@@ -61,6 +74,15 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
     if (buildings.bank > 0) return 500;
     return 100;
   }, [buildings.treasury, buildings.bank]);
+
+  const luckyBonusPct = useMemo(
+    () =>
+      investmentHallLuckyChanceBonusPct({
+        bank: buildings.bank,
+        treasury: buildings.treasury,
+      }),
+    [buildings.bank, buildings.treasury],
+  );
 
   const amounts = [100, 500, 1000] as const;
   const [strategy, setStrategy] = useState("0");
@@ -101,6 +123,8 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
     }
   }, [open, canInvestUi, onOpenChange]);
 
+  const investmentHallLuckyTooltipLine = formatInvestmentHallLuckyLine(luckyBonusPct);
+
   const handleCommit = () => {
     const idx = Number(strategy);
     const amt = Number(amountStr);
@@ -115,16 +139,19 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
 
   const strategyTableInfoTooltip = (
     <div className="text-xs space-y-2 max-w-[280px]">
-      <p className="font-medium text-foreground border-b border-border pb-2 mb-0.5">
-        {formatLuckSuccessLine(luck)}
-      </p>
+      <div className="space-y-1.5 border-b border-border pb-2 mb-0.5">
+        <p className="font-medium text-foreground">{formatLuckSuccessLine(luck)}</p>
+        {investmentHallLuckyTooltipLine ? (
+          <p className="font-medium text-foreground">{investmentHallLuckyTooltipLine}</p>
+        ) : null}
+      </div>
       <ul className="space-y-1.5 pl-0 list-none text-muted-foreground">
         <li>
           <span className="text-foreground font-medium">Duration</span>: How long the investment runs.
         </li>
         <li>
           <span className="text-foreground font-medium">Success Chance</span>: Chance of a
-          successful investment (Luck bonus is already included).
+          successful investment.
         </li>
         <li>
           <span className="text-foreground font-medium">Profit</span>: The profit you gain in case of success.
@@ -205,6 +232,10 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                         );
                         const winR = winPercentInclusiveRange(offer.tier, offer.durationMin);
                         const [jpChance, jpMult] = JACKPOT[offer.tier];
+                        const jpDisplay = getEffectiveJackpotChancePercent(
+                          jpChance,
+                          luckyBonusPct,
+                        );
                         const lossR = lossPercentInclusiveRange(offer.tier);
                         const tl = TOTAL_LOSS_PCT[offer.tier];
                         return (
@@ -231,7 +262,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                               {winR.from} % – {winR.to} %
                             </td>
                             <td className="py-2 pr-3 align-middle tabular-nums">
-                              {jpChance} % / {jpMult}x
+                              {formatPercentDisplay(jpDisplay)} % / {jpMult}x
                             </td>
                             <td className="py-2 pr-3 align-middle tabular-nums">
                               {lossR.from} % – {lossR.to} %

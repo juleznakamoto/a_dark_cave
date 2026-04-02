@@ -53,7 +53,7 @@ export default function InvestmentResultDialog({
   const isLoss = kind === "partial_loss" || kind === "wipeout";
 
   const goldLine = (
-    <div className="text-center text-base font-semibold text-foreground tabular-nums">
+    <div className="text-sm text-foreground tabular-nums">
       {goldDelta >= 0 ? "+" : "-"}
       {formatNumber(Math.abs(goldDelta))} Gold
     </div>
@@ -65,10 +65,10 @@ export default function InvestmentResultDialog({
       onClose={onClose}
       icon={<OutcomeIcon kind={kind} />}
       successLog={briefText}
-      title="Investment result"
+      title="Investment Result"
       variant={isLoss ? "loss" : "success"}
       buttonText="Continue"
-      button_id="investment-result-dialog-continue"
+      buttonId="investment-result-dialog-continue"
     >
       {goldLine}
     </OutcomeDialog>
