@@ -8,7 +8,7 @@ import {
 import { Info } from "lucide-react";
 import { RadioGroup } from "@/components/ui/radio";
 
-const INVEST_RADIO_INDICATOR_PX = 11;
+const INVEST_RADIO_INDICATOR_PX = 8;
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
@@ -216,11 +216,11 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                 onChange={setStrategy}
                 indicatorSizePx={INVEST_RADIO_INDICATOR_PX}
               >
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto pl-2">
                   <table className="w-full min-w-[560px] border-collapse text-foreground">
                     <thead>
                       <tr className="text-left text-xs">
-                        <th className="w-6 py-2 pl-0 pr-2 font-medium" aria-hidden />
+                        <th className="w-8 min-w-8 py-2 pl-0 pr-2 font-medium" aria-hidden />
                         <th className="py-2 pr-3 font-medium">Duration</th>
                         <th className="py-2 pr-3 font-medium">Success Chance</th>
                         <th className="py-2 pr-3 font-medium">Profit</th>
@@ -253,7 +253,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             )}
                             onClick={() => setStrategy(String(i))}
                           >
-                            <td className="w-6 py-2 pl-0 pr-2 align-middle">
+                            <td className="w-8 min-w-8 py-2 pl-0 pr-2 align-middle">
                               <RadioGroup.Item value={String(i)}>
                                 <span className="sr-only">{termMinutesLabel(offer.durationMin)}</span>
                               </RadioGroup.Item>

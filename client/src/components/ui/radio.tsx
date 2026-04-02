@@ -28,9 +28,11 @@ function PriorStyleRadioIndicator({
     hovered,
   });
 
+  /* Shadow on outer shell only; inner uses overflow-hidden to clip the diagonal fill
+     without clipping the ring shadow (same element + overflow-hidden cuts box-shadow). */
   return (
     <span
-      className="relative mt-0.5 shrink-0 inline-block rounded-full overflow-hidden"
+      className="relative shrink-0 inline-block rounded-full"
       style={{
         width: diameterPx,
         height: diameterPx,
@@ -40,15 +42,17 @@ function PriorStyleRadioIndicator({
       }}
       aria-hidden="true"
     >
-      <span
-        style={getPriorDiscInnerFillStyle({
-          active: isSelected,
-          fillSize,
-          fillOffsetInPx,
-          fillOffsetOutPx,
-          mutedFill: disabled && isSelected,
-        })}
-      />
+      <span className="absolute inset-0 overflow-hidden rounded-full pointer-events-none">
+        <span
+          style={getPriorDiscInnerFillStyle({
+            active: isSelected,
+            fillSize,
+            fillOffsetInPx,
+            fillOffsetOutPx,
+            mutedFill: disabled && isSelected,
+          })}
+        />
+      </span>
     </span>
   );
 }
@@ -130,7 +134,7 @@ const RadioGroupItem = ({
   return (
     <label
       className={cn(
-        "flex items-start gap-2.5 font-sans text-[13px] text-gray-1000 leading-snug group",
+        "flex items-center gap-2.5 font-sans text-[13px] text-gray-1000 leading-snug group",
         disabled ? cn("text-gray-500", disabledCursorClass) : "cursor-pointer",
       )}
       onMouseEnter={() => setHovered(true)}
@@ -200,7 +204,7 @@ export const Radio = ({
   return (
     <label
       className={cn(
-        "flex items-center gap-2 cursor-pointer font-sans text-[13px] leading-3 group",
+        "flex items-center gap-2 cursor-pointer font-sans text-[13px] leading-snug group",
         disabled && "cursor-not-allowed",
       )}
       onMouseEnter={() => setHovered(true)}

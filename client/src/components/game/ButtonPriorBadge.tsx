@@ -80,20 +80,21 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
               borderRadius: "50%",
               background,
               boxShadow,
-              overflow: "hidden",
               cursor: atCapacity ? "default" : "pointer",
               zIndex: 20,
               transition: PRIOR_DISC_OUTER_TRANSITION,
             }}
           >
-            <div
-              style={getPriorDiscInnerFillStyle({
-                active: isAssigned,
-                fillSize: badgeFillMetrics.fillSize,
-                fillOffsetInPx: badgeFillMetrics.fillOffsetInPx,
-                fillOffsetOutPx: badgeFillMetrics.fillOffsetOutPx,
-              })}
-            />
+            <div className="absolute inset-0 overflow-hidden rounded-full pointer-events-none">
+              <div
+                style={getPriorDiscInnerFillStyle({
+                  active: isAssigned,
+                  fillSize: badgeFillMetrics.fillSize,
+                  fillOffsetInPx: badgeFillMetrics.fillOffsetInPx,
+                  fillOffsetOutPx: badgeFillMetrics.fillOffsetOutPx,
+                })}
+              />
+            </div>
           </div>
         </TooltipTrigger>
         <TooltipContent
