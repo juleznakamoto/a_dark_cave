@@ -7,8 +7,6 @@ import {
 } from "@/components/ui/dialog";
 import { Info } from "lucide-react";
 import { RadioGroup } from "@/components/ui/radio";
-
-const INVEST_RADIO_INDICATOR_PX = 8;
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
@@ -28,6 +26,8 @@ import {
 import type { InvestmentDurationMin } from "@/game/rules/investmentHallTables";
 import { formatNumber, cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
+
+const INVEST_RADIO_INDICATOR_PX = 8;
 
 function termMinutesLabel(durationMin: InvestmentDurationMin): string {
   return `${durationMin} min`;
@@ -180,37 +180,30 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90dvh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Invest</DialogTitle>
-          {import.meta.env.DEV ? (
-            <p className="text-xs text-muted-foreground pt-1">
-              Dev: investment duration runs 20× faster.
-            </p>
-          ) : null}
+          <div className="flex items-center gap-2 pr-10">
+            <DialogTitle className="m-0">Invest</DialogTitle>
+            <TooltipWrapper
+              tooltip={strategyTableInfoTooltip}
+              tooltipId="invest-dialog-info"
+              disabled
+              tooltipContentClassName="max-w-sm"
+              className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
+            >
+              <button
+                type="button"
+                className="inline-flex h-full w-full items-center justify-center rounded-full border-0 bg-transparent p-0 cursor-pointer"
+                aria-label="Explain investments and the strategy table"
+              >
+                <Info className="h-4 w-4" strokeWidth={2} aria-hidden />
+              </button>
+            </TooltipWrapper>
+          </div>
         </DialogHeader>
 
         {canInvestUi ? (
           <div className="space-y-4">
             <div className="space-y-2">
-              <div className="flex items-center gap-1.5">
-                <span className="text-sm font-medium leading-5">
-                  Investment Strategy
-                </span>
-                <TooltipWrapper
-                  tooltip={strategyTableInfoTooltip}
-                  tooltipId="invest-strategy-table-info"
-                  disabled
-                  tooltipContentClassName="max-w-sm"
-                  className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:text-foreground cursor-pointer translate-y-[3px]"
-                >
-                  <button
-                    type="button"
-                    className="inline-flex h-full w-full items-center justify-center rounded-full border-0 bg-transparent p-0 cursor-pointer"
-                    aria-label="Explain investment strategy table and potential profit"
-                  >
-                    <Info className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
-                  </button>
-                </TooltipWrapper>
-              </div>
+              <p className="text-sm font-medium">Investment Strategy</p>
               <RadioGroup
                 value={strategy}
                 onChange={setStrategy}
