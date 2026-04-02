@@ -22,10 +22,10 @@ export const SUCCESS_PCT: Record<
   InvestmentTier,
   [number, number, number]
 > = {
-  A: [60, 65, 70],
-  B: [50, 55, 60],
-  C: [40, 45, 50],
-  D: [30, 35, 40],
+  A: [65, 70, 80],
+  B: [55, 60, 65],
+  C: [45, 50, 55],
+  D: [35, 50, 45],
 };
 
 /** Win % min/max on success; [tier][durationIndex] for 5 / 15 / 30 min */
