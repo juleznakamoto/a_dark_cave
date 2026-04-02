@@ -185,7 +185,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
       <DialogContent className="max-w-2xl max-h-[90dvh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center gap-2 pr-10">
-            <DialogTitle className="m-0 flex h-7 items-center leading-none">
+            <DialogTitle className="m-0 leading-none">
               Invest
             </DialogTitle>
             <TooltipWrapper
@@ -193,14 +193,19 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
               tooltipId="invest-dialog-info"
               disabled
               tooltipContentClassName="max-w-sm"
-              className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
+              tooltipTriggerClassName="flex h-full w-full items-center justify-center"
             >
               <button
                 type="button"
-                className="inline-flex h-full w-full items-center justify-center rounded-full border-0 bg-transparent p-0 cursor-pointer"
+                className="flex h-full w-full items-center justify-center rounded-full border-0 bg-transparent p-0 cursor-pointer"
                 aria-label="Explain investments and the strategy table"
               >
-                <Info className="h-4 w-4" strokeWidth={2} aria-hidden />
+                <Info
+                  className="h-[15px] w-[15px] shrink-0 text-current"
+                  strokeWidth={2}
+                  aria-hidden
+                />
               </button>
             </TooltipWrapper>
           </div>

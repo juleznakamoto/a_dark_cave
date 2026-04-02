@@ -397,20 +397,27 @@ export default function VillagePanel() {
         playTime: currentPlayTime,
         investmentHallState: ih,
       });
-      const tooltipContent = active ? (
-        <div className="text-xs max-w-[220px]">
-          Investment completed in {formatRemaining(Math.max(0, active.endPlayTime - currentPlayTime))}
-        </div>
-      ) : currentPlayTime < nextWave ? (
-        <div className="text-xs whitespace-nowrap">
-          Next investment available in{" "}
-          {formatRemaining(Math.max(0, nextWave - currentPlayTime))}
-        </div>
-      ) : !investReady ? (
-        <div className="text-xs whitespace-nowrap">Preparing investment offers…</div>
-      ) : (
-        <div className="text-xs">Open to invest gold</div>
-      );
+      const tooltipContent = !investReady
+        ? active
+          ? (
+            <div className="text-xs max-w-[220px]">
+              Investment completes in{" "}
+              {formatRemaining(Math.max(0, active.endPlayTime - currentPlayTime))}
+            </div>
+          )
+          : currentPlayTime < nextWave
+            ? (
+              <div className="text-xs whitespace-nowrap">
+                Next investment available in{" "}
+                {formatRemaining(Math.max(0, nextWave - currentPlayTime))}
+              </div>
+            )
+            : (
+              <div className="text-xs whitespace-nowrap">
+                Preparing investment offers…
+              </div>
+            )
+        : undefined;
       return (
         <React.Fragment key="invest">
           <CooldownButton
