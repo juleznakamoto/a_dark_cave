@@ -2,6 +2,12 @@ import React, { useState } from "react";
 import { useGameStore } from "@/game/state";
 import { DISGRACED_PRIOR_UPGRADES } from "@/game/rules/skillUpgrades";
 import {
+  getPriorDiscFillMetrics,
+  getPriorDiscInnerFillStyle,
+  getPriorDiscSurfaceColors,
+  PRIOR_DISC_OUTER_TRANSITION,
+} from "@/lib/priorDiscStyles";
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -10,7 +16,7 @@ import {
 
 const BADGE_SIZE = 10;
 const BADGE_SIZE_ASSIGNED = 8;
-const FILL_SIZE = BADGE_SIZE * 2.2;
+const badgeFillMetrics = getPriorDiscFillMetrics(BADGE_SIZE);
 
 interface ButtonPriorBadgeProps {
   actionId: string;
@@ -45,25 +51,11 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
       ? "Click to remove Disgraced Prior"
       : "Click to assign Disgraced Prior";
 
-  // Base background: provides the always-visible dim fill (inactive/locked).
-  // When active, the animated fill div slides over it.
-  const bg = atCapacity
-    ? "rgba(235,235,235,0.12)"
-    : hovered && !isAssigned
-      ? "rgba(235,235,235,0.9)"
-      : "rgba(235,235,235,0.5)";
-
-  // active: dark gap + bright outer ring; inactive/locked: simple ring
-  const shadow = isAssigned
-    ? `0 0 0 1.5px #252525, 0 0 0 2.5px ${hovered ? "rgba(235,235,235,1)" : "rgba(235,235,235,0.95)"}`
-    : atCapacity
-      ? "0 0 0 0.5px rgba(235,235,235,0.15)"
-      : `0 0 0 0.5px ${hovered ? "rgba(235,235,235,0.8)" : "rgba(235,235,235,0.7)"}`;
-
-  // Animated fill div slides in from top-left when assigned
-  const fillOffset = isAssigned
-    ? `-${Math.round(BADGE_SIZE * 0.3)}px`
-    : `-${FILL_SIZE + 2}px`;
+  const { background, boxShadow } = getPriorDiscSurfaceColors({
+    active: isAssigned,
+    surfaceLocked: atCapacity,
+    hovered,
+  });
 
   return (
     <TooltipProvider delayDuration={400}>
@@ -86,25 +78,21 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
                 ? `${BADGE_SIZE_ASSIGNED}px`
                 : `${BADGE_SIZE}px`,
               borderRadius: "50%",
-              background: bg,
-              boxShadow: shadow,
+              background,
+              boxShadow,
               overflow: "hidden",
               cursor: atCapacity ? "default" : "pointer",
               zIndex: 20,
-              transition: "background 700ms, box-shadow 800ms",
+              transition: PRIOR_DISC_OUTER_TRANSITION,
             }}
           >
             <div
-              style={{
-                width: `${FILL_SIZE}px`,
-                height: `${FILL_SIZE}px`,
-                background: "rgba(235,235,235,1)",
-                position: "absolute",
-                top: fillOffset,
-                left: fillOffset,
-                transform: "rotateZ(45deg)",
-                transition: "top 600ms ease, left 600ms ease",
-              }}
+              style={getPriorDiscInnerFillStyle({
+                active: isAssigned,
+                fillSize: badgeFillMetrics.fillSize,
+                fillOffsetInPx: badgeFillMetrics.fillOffsetInPx,
+                fillOffsetOutPx: badgeFillMetrics.fillOffsetOutPx,
+              })}
             />
           </div>
         </TooltipTrigger>

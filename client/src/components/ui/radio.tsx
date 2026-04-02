@@ -1,5 +1,54 @@
 import React, { createContext, useContext, useEffect, useId, useState } from "react";
 import { cn } from "@/lib/utils";
+import {
+  getPriorDiscFillMetrics,
+  getPriorDiscInnerFillStyle,
+  getPriorDiscSurfaceColors,
+  PRIOR_DISC_OUTER_TRANSITION,
+} from "@/lib/priorDiscStyles";
+
+const PRIOR_RADIO_PX = 16;
+const radioFillMetrics = getPriorDiscFillMetrics(PRIOR_RADIO_PX);
+
+function PriorStyleRadioIndicator({
+  isSelected,
+  disabled,
+  hovered,
+}: {
+  isSelected: boolean;
+  disabled: boolean;
+  hovered: boolean;
+}) {
+  const { background, boxShadow } = getPriorDiscSurfaceColors({
+    active: isSelected,
+    surfaceLocked: disabled,
+    hovered,
+  });
+
+  return (
+    <span
+      className="relative mt-0.5 shrink-0 inline-block rounded-full overflow-hidden"
+      style={{
+        width: PRIOR_RADIO_PX,
+        height: PRIOR_RADIO_PX,
+        background,
+        boxShadow,
+        transition: PRIOR_DISC_OUTER_TRANSITION,
+      }}
+      aria-hidden="true"
+    >
+      <span
+        style={getPriorDiscInnerFillStyle({
+          active: isSelected,
+          fillSize: radioFillMetrics.fillSize,
+          fillOffsetInPx: radioFillMetrics.fillOffsetInPx,
+          fillOffsetOutPx: radioFillMetrics.fillOffsetOutPx,
+          mutedFill: disabled && isSelected,
+        })}
+      />
+    </span>
+  );
+}
 
 const RadioGroupContext = createContext<{
   value: string | undefined | null;
@@ -54,6 +103,7 @@ const RadioGroupItem = ({
   const context = useContext(RadioGroupContext);
   const isSelected = context?.value === value;
   const disabled = Boolean(context?.disabled || itemDisabled);
+  const [hovered, setHovered] = useState(false);
 
   const disabledCursorClass =
     disabled &&
@@ -69,10 +119,12 @@ const RadioGroupItem = ({
         "flex items-start gap-2.5 font-sans text-[13px] text-gray-1000 leading-snug group",
         disabled ? cn("text-gray-500", disabledCursorClass) : "cursor-pointer",
       )}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       <input
         type="radio"
-        className="absolute w-4 h-4 opacity-0"
+        className="sr-only"
         checked={!!isSelected}
         onChange={(event) => context?.onChange(event.target.value)}
         disabled={disabled}
@@ -80,17 +132,10 @@ const RadioGroupItem = ({
         name={context?.name}
         value={value}
       />
-      <span
-        className={cn(
-          "mt-0.5 shrink-0 w-4 h-4 bg-background-100 relative border rounded-full duration-200 after:duration-200 flex items-center justify-center after:absolute after:top-1/2 after:left-1/2 after:-translate-y-1/2 after:-translate-x-1/2 after:rounded-full after:bg-gray-1000",
-          isSelected && "border-gray-1000 after:w-2 after:h-2",
-          !isSelected && "border-gray-700 after:w-0 after:h-0",
-          !isSelected &&
-          !disabled &&
-          "group-hover:bg-gray-200 group-hover:border-gray-900",
-          disabled && "after:bg-gray-500 border-gray-500",
-        )}
-        aria-hidden="true"
+      <PriorStyleRadioIndicator
+        isSelected={!!isSelected}
+        disabled={disabled}
+        hovered={hovered}
       />
       {children}
     </label>
@@ -117,6 +162,7 @@ export const Radio = ({
   const [internalChecked, setInternalChecked] = useState<boolean>(
     checked ?? false,
   );
+  const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
     if (typeof checked === "boolean") {
@@ -139,27 +185,22 @@ export const Radio = ({
         "flex items-center gap-2 cursor-pointer font-sans text-[13px] leading-3 group",
         disabled && "cursor-not-allowed",
       )}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       <input
         type="radio"
-        className="absolute w-4 h-4 opacity-0"
+        className="sr-only"
         checked={isChecked}
         onChange={handleChange}
         disabled={disabled}
         required={required}
         value={value}
       />
-      <span
-        className={cn(
-          "w-4 h-4 bg-background-100 relative border rounded-full duration-200 after:duration-200 flex items-center justify-center after:absolute after:top-1/2 after:left-1/2 after:-translate-y-1/2 after:-translate-x-1/2 after:rounded-full after:bg-gray-1000",
-          isChecked && "border-gray-1000 after:w-2 after:h-2",
-          !isChecked && "border-gray-700 after:w-0 after:h-0",
-          !isChecked &&
-          !disabled &&
-          "group-hover:bg-gray-200 group-hover:border-gray-900",
-          disabled && "after:bg-gray-500 border-gray-500",
-        )}
-        aria-hidden="true"
+      <PriorStyleRadioIndicator
+        isSelected={isChecked}
+        disabled={!!disabled}
+        hovered={hovered}
       />
     </label>
   );

@@ -34,16 +34,16 @@ function termMinutesLabel(durationMin: InvestmentDurationMin): string {
 function formatLuckSuccessLine(luck: number): string {
   const bonus = getLuckWinChanceBonus(luck);
   const pct = Number.isInteger(bonus) ? String(bonus) : bonus.toFixed(1);
-  return `+${pct}% Success Chance from Luck`;
+  return `+${pct} % Success Chance from Luck (included in table).`;
 }
 
 /** Matches `investmentHallLuckyChanceBonusPct`: Treasury → 2, Bank → 1; coinhouse-only → null (no line). */
 function formatInvestmentHallLuckyLine(bonusPct: number): string | null {
   if (bonusPct >= 2) {
-    return "+2 % Lucky Chance based on building level (included in the table).";
+    return "+2 % Lucky Chance based on building level (included in table).";
   }
   if (bonusPct >= 1) {
-    return "+1 % Lucky Chance based on building level (included in the table).";
+    return "+1 % Lucky Chance based on building level (included in table).";
   }
   return null;
 }
