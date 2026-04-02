@@ -65,6 +65,7 @@ import {
   getMaxInvestmentStake,
   getInvestmentWaveGapMs,
   investmentHallLuckyChanceBonusPct,
+  normalizeInvestmentHallState,
 } from "@/game/rules/investmentHallTables";
 
 // Types
@@ -1960,8 +1961,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
           purchasedIds: [],
         }, // Load merchant trades
         gamblerGame: gamblerGameForResume,
-        investmentHallState:
+        investmentHallState: normalizeInvestmentHallState(
           savedState.investmentHallState ?? defaultGameState.investmentHallState,
+        ),
       };
 
       const savedExpeditionVillagers = savedState.expeditionVillagers || {};
