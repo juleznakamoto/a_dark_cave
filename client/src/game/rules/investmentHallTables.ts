@@ -306,27 +306,27 @@ export function buildInvestmentResultDialogPayload(
       return {
         kind: "lucky_chance",
         goldDelta: profit,
-        briefText: "Lucky Chance. Your gains are multiplied.",
+        briefText: `Lucky Chance. The gains on your ${active.amountGold} Gold investment are multiplied`,
       };
     }
     return {
       kind: "success",
       goldDelta: profit,
-      briefText: "Your investment was successful.",
+      briefText: `Your ${active.amountGold} Gold investment was successful.`,
     };
   }
   if (active.totalLoss) {
     return {
       kind: "wipeout",
       goldDelta: -active.amountGold,
-      briefText: "Wipeout. You lost your full investment.",
+      briefText: `Wipeout. You lost your full ${active.amountGold} Gold investment.`,
     };
   }
   const lost = active.amountGold - active.payoutGold;
   return {
     kind: "partial_loss",
     goldDelta: -lost,
-    briefText: "Your investment failed.",
+    briefText: `Your ${active.amountGold} Gold investment failed.`,
   };
 }
 
