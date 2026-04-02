@@ -200,7 +200,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                   tooltipId="invest-strategy-table-info"
                   disabled
                   tooltipContentClassName="max-w-sm"
-                  className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
+                  className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:text-foreground cursor-pointer translate-y-[3px]"
                 >
                   <button
                     type="button"
