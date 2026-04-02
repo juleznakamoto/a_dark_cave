@@ -290,14 +290,14 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                 onChange={setAmountStr}
                 indicatorSizePx={INVEST_RADIO_INDICATOR_PX}
               >
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-row flex-wrap items-center gap-x-6 gap-y-2 pl-2">
                   {amounts.map((a) => {
                     const disabled = a > maxStake;
                     const labelClass = disabled
                       ? "text-muted-foreground"
                       : "text-foreground";
                     return (
-                      <div key={a}>
+                      <div key={a} className="shrink-0">
                         <RadioGroup.Item
                           value={String(a)}
                           disabled={disabled}
