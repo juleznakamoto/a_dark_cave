@@ -1,6 +1,11 @@
 import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+/** Matches `RewardDialog` icon wrapper so outcome glyphs read the same (size + white on amber/orange). */
+export const OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS =
+  "text-4xl text-white leading-none" as const;
 
 export type OutcomeDialogVariant = "success" | "loss" | "madness";
 
@@ -78,9 +83,13 @@ export default function OutcomeDialog({
         >
           <div className={`absolute inset-0 -z-10 pointer-events-none ${glow}`} />
           <DialogHeader className="text-center sm:text-center">
-            <div className="flex justify-center">
+            <div className="relative z-[1] flex justify-center">
               <div
-                className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 ${iconRing}`}
+                className={cn(
+                  "flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2",
+                  iconRing,
+                  variant !== "madness" && "text-white",
+                )}
               >
                 {icon}
               </div>

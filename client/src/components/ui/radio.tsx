@@ -112,12 +112,16 @@ interface RadioGroupItemProps {
   disabledCursor?: "not-allowed" | "help" | "default";
 }
 
-const RadioGroupItem = ({
-  value,
-  children,
-  disabled: itemDisabled,
-  disabledCursor = "not-allowed",
-}: RadioGroupItemProps) => {
+const RadioGroupItem = React.forwardRef<HTMLLabelElement, RadioGroupItemProps>(
+  function RadioGroupItem(
+    {
+      value,
+      children,
+      disabled: itemDisabled,
+      disabledCursor = "not-allowed",
+    },
+    ref,
+  ) {
   const context = useContext(RadioGroupContext);
   const isSelected = context?.value === value;
   const disabled = Boolean(context?.disabled || itemDisabled);
@@ -133,6 +137,7 @@ const RadioGroupItem = ({
 
   return (
     <label
+      ref={ref}
       className={cn(
         "flex items-center gap-2.5 font-sans text-[13px] text-gray-1000 leading-snug group",
         disabled ? cn("text-gray-500", disabledCursorClass) : "cursor-pointer",
@@ -159,7 +164,8 @@ const RadioGroupItem = ({
       {children}
     </label>
   );
-};
+  },
+);
 
 RadioGroup.Item = RadioGroupItem;
 

@@ -8,7 +8,7 @@ import {
   getLuckWinChanceBonus,
   getSuccessChancePercent,
   isInvestmentWaveReadyForUi,
-  maxJackpotSuccessProfitGold,
+  maxLuckyChanceSuccessProfitGold,
   maxSuccessProfitGold,
   randomIntInclusive,
   winPercentInclusiveRange,
@@ -44,10 +44,10 @@ describe("winPercentInclusiveRange", () => {
   });
 });
 
-describe("maxSuccessProfitGold / maxJackpotSuccessProfitGold", () => {
-  it("uses top win % and jackpot multiplier", () => {
+describe("maxSuccessProfitGold / maxLuckyChanceSuccessProfitGold", () => {
+  it("uses top win % and Lucky Chance multiplier", () => {
     expect(maxSuccessProfitGold(100, "A", 30)).toBe(10);
-    expect(maxJackpotSuccessProfitGold(100, "A", 30)).toBe(50);
+    expect(maxLuckyChanceSuccessProfitGold(100, "A", 30)).toBe(50);
   });
 });
 
@@ -130,9 +130,9 @@ describe("randomIntInclusive", () => {
 });
 
 describe("commitInvestmentRolls", () => {
-  it("success path uses integer win and jackpot multiplier", () => {
+  it("success path uses integer win and Lucky Chance multiplier", () => {
     let n = 0;
-    // 0.3*100=30 < 60 success; win int floor(0.5*11)=5; 0.01*100=1 < 2 jackpot
+    // 0.3*100=30 < 60 success; win int floor(0.5*11)=5; 0.01*100=1 < 2 Lucky Chance
     const rng = () => [0.3, 0.5, 0.01][n++] ?? 0;
     const r = commitInvestmentRolls({
       playTime: 0,
@@ -145,7 +145,7 @@ describe("commitInvestmentRolls", () => {
     expect(r.ok).toBe(true);
     expect(r.active.success).toBe(true);
     expect(r.active.winPercentInt).toBe(5);
-    expect(r.active.jackpotHit).toBe(true);
+    expect(r.active.luckyChanceHit).toBe(true);
     expect(r.active.effectiveWinPercent).toBe(25);
     expect(r.active.payoutGold).toBe(125);
   });
@@ -166,10 +166,10 @@ describe("commitInvestmentRolls", () => {
     expect(r.active.payoutGold).toBe(0);
   });
 
-  it("Bank lucky bonus (+1%) widens jackpot roll vs coinhouse only", () => {
+  it("Bank lucky bonus (+1%) widens Lucky Chance roll vs coinhouse only", () => {
     const makeRng = () => {
       let n = 0;
-      // Jackpot roll: 0.02 * 100 = 2 → 2 < 2 false with 0 bonus; 2 < 3 true with +1
+      // Lucky Chance roll: 0.02 * 100 = 2 → 2 < 2 false with 0 bonus; 2 < 3 true with +1
       return () => [0.3, 0.5, 0.02][n++] ?? 0;
     };
     const coinhouseOnly = commitInvestmentRolls({
@@ -188,8 +188,8 @@ describe("commitInvestmentRolls", () => {
       luckyChanceBonusPct: 1,
       rng: makeRng(),
     });
-    expect(coinhouseOnly.active.jackpotHit).toBe(false);
-    expect(withBank.active.jackpotHit).toBe(true);
+    expect(coinhouseOnly.active.luckyChanceHit).toBe(false);
+    expect(withBank.active.luckyChanceHit).toBe(true);
   });
 });
 
@@ -206,7 +206,7 @@ describe("gameStateSchema investment hall", () => {
 });
 
 describe("buildInvestmentResultDialogPayload", () => {
-  it("maps success, jackpot, partial loss, wipeout", () => {
+  it("maps success, lucky chance, partial loss, wipeout", () => {
     expect(
       buildInvestmentResultDialogPayload({
         startPlayTime: 0,
@@ -216,7 +216,7 @@ describe("buildInvestmentResultDialogPayload", () => {
         tier: "A",
         success: true,
         winPercentInt: 5,
-        jackpotHit: false,
+        luckyChanceHit: false,
         effectiveWinPercent: 5,
         payoutGold: 105,
       }),
@@ -231,11 +231,11 @@ describe("buildInvestmentResultDialogPayload", () => {
         tier: "A",
         success: true,
         winPercentInt: 5,
-        jackpotHit: true,
+        luckyChanceHit: true,
         effectiveWinPercent: 25,
         payoutGold: 125,
       }),
-    ).toMatchObject({ kind: "jackpot", goldDelta: 25 });
+    ).toMatchObject({ kind: "lucky_chance", goldDelta: 25 });
 
     expect(
       buildInvestmentResultDialogPayload({
@@ -276,7 +276,7 @@ describe("formatInvestmentCompletionLog", () => {
       tier: "A",
       success: true,
       winPercentInt: 5,
-      jackpotHit: false,
+      luckyChanceHit: false,
       effectiveWinPercent: 5,
       payoutGold: 105,
     });

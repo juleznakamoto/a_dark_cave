@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { cn } from "@/lib/utils";
 import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
 import {
   Tooltip,
@@ -15,6 +16,12 @@ export interface TooltipWrapperProps {
   className?: string;
   /** Classes for the Radix trigger span (default full-width block for panel rows). */
   tooltipTriggerClassName?: string;
+  /**
+   * When true, the Radix trigger merges onto `children` instead of wrapping them in a span.
+   * Use with a single ref-forwarding element (e.g. `RadioGroup.Item`’s label) so hover on the
+   * full control—including the radio disc—opens the tooltip.
+   */
+  tooltipTriggerAsChild?: boolean;
   tooltipContentClassName?: string;
   onMouseEnter?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onMouseLeave?: (e?: React.MouseEvent<HTMLDivElement>) => void;
@@ -35,6 +42,7 @@ export function TooltipWrapper({
   disabled = false,
   className = "relative inline-block",
   tooltipTriggerClassName,
+  tooltipTriggerAsChild = false,
   tooltipContentClassName,
   onMouseEnter,
   onMouseLeave,
@@ -138,11 +146,26 @@ export function TooltipWrapper({
           delayDuration={300}
         >
           <TooltipTrigger asChild>
-            <span
-              className={tooltipTriggerClassName ?? "block w-full"}
-            >
-              {children}
-            </span>
+            {tooltipTriggerAsChild && React.isValidElement(children) ? (
+              tooltipTriggerClassName ? (
+                React.cloneElement(
+                  children as React.ReactElement<{ className?: string }>,
+                  {
+                    className: cn(
+                      (children as React.ReactElement<{ className?: string }>).props
+                        .className,
+                      tooltipTriggerClassName,
+                    ),
+                  },
+                )
+              ) : (
+                children
+              )
+            ) : (
+              <span className={tooltipTriggerClassName ?? "block w-full"}>
+                {children}
+              </span>
+            )}
           </TooltipTrigger>
           <TooltipContent className={tooltipContentClassName}>{tooltip}</TooltipContent>
         </Tooltip>

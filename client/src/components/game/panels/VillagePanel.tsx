@@ -399,7 +399,7 @@ export default function VillagePanel() {
       });
       const tooltipContent = active ? (
         <div className="text-xs max-w-[220px]">
-          Investment completed in {formatRemaining(Math.max(0, active.endPlayTime - currentPlayTime))}.
+          Investment completed in {formatRemaining(Math.max(0, active.endPlayTime - currentPlayTime))}
         </div>
       ) : currentPlayTime < nextWave ? (
         <div className="text-xs whitespace-nowrap">

@@ -56,8 +56,8 @@ export const LOSS_PCT_RANGE: Record<InvestmentTier, readonly [number, number]> =
   D: [30, 40],
 };
 
-/** Jackpot: [chance %, multiplier on winPercentInt] */
-export const JACKPOT: Record<InvestmentTier, readonly [number, number]> = {
+/** Lucky Chance: [chance %, multiplier on winPercentInt] */
+export const LUCKY_CHANCE: Record<InvestmentTier, readonly [number, number]> = {
   A: [2, 5],
   B: [3, 4],
   C: [4, 3],
@@ -74,7 +74,7 @@ export function investmentHallLuckyChanceBonusPct(buildings: {
   return 0;
 }
 
-export function getEffectiveJackpotChancePercent(
+export function getEffectiveLuckyChancePercent(
   baseChance: number,
   luckyBonusPct: number,
 ): number {
@@ -121,15 +121,15 @@ export function maxSuccessProfitGold(
   return Math.floor((amountGold * to) / 100);
 }
 
-/** Max gold profit on success if highest win % roll gets the lucky multiplier. */
-export function maxJackpotSuccessProfitGold(
+/** Max gold profit on success if highest win % roll gets the Lucky Chance multiplier. */
+export function maxLuckyChanceSuccessProfitGold(
   amountGold: number,
   tier: InvestmentTier,
   durationMin: InvestmentDurationMin,
 ): number {
   const { to } = winPercentInclusiveRange(tier, durationMin);
-  const [, jpMult] = JACKPOT[tier];
-  return Math.floor((amountGold * to * jpMult) / 100);
+  const [, lcMult] = LUCKY_CHANCE[tier];
+  return Math.floor((amountGold * to * lcMult) / 100);
 }
 
 export function lossPercentInclusiveRange(
@@ -227,8 +227,8 @@ export type CommitInvestmentResult = { ok: true; active: InvestmentActive };
 
 export function formatInvestmentCompletionLog(active: InvestmentActive): string {
   if (active.success) {
-    const jp = active.jackpotHit ? " Lucky Chance!" : "Success.";
-    return `Investment complete: ${jp} You gained ${active.payoutGold} Gold.`;
+    const outcomeNote = active.luckyChanceHit ? " Lucky Chance!" : "Success.";
+    return `Investment complete: ${outcomeNote} You gained ${active.payoutGold} Gold.`;
   }
   if (active.totalLoss) {
     return `Investment complete: Wipeout. You lost your full investment of ${active.amountGold} Gold.`;
@@ -240,7 +240,7 @@ export function formatInvestmentCompletionLog(active: InvestmentActive): string 
 /** UI outcome for the post-maturity result dialog (maps to ⇧ / ⇮ / rotated ⇮ / ⇩). */
 export type InvestmentOutcomeUiKind =
   | "success"
-  | "jackpot"
+  | "lucky_chance"
   | "partial_loss"
   | "wipeout";
 
@@ -256,9 +256,9 @@ export function buildInvestmentResultDialogPayload(
 ): InvestmentResultDialogPayload {
   if (active.success) {
     const profit = active.payoutGold - active.amountGold;
-    if (active.jackpotHit) {
+    if (active.luckyChanceHit) {
       return {
-        kind: "jackpot",
+        kind: "lucky_chance",
         goldDelta: profit,
         briefText: "Lucky Chance multiplied your return.",
       };
@@ -314,14 +314,14 @@ export function commitInvestmentRolls(
   if (success) {
     const { from, to } = winPercentInclusiveRange(tier, durationMin);
     const winPercentInt = randomIntInclusive(from, to, rng);
-    const [jpChance, jpMult] = JACKPOT[tier];
-    const effectiveJpChance = getEffectiveJackpotChancePercent(
-      jpChance,
+    const [lcChance, lcMult] = LUCKY_CHANCE[tier];
+    const effectiveLuckyChancePct = getEffectiveLuckyChancePercent(
+      lcChance,
       luckyChanceBonusPct,
     );
-    const jackpotHit = rng() * 100 < effectiveJpChance;
-    const effectiveWinPercent = jackpotHit
-      ? winPercentInt * jpMult
+    const luckyChanceHit = rng() * 100 < effectiveLuckyChancePct;
+    const effectiveWinPercent = luckyChanceHit
+      ? winPercentInt * lcMult
       : winPercentInt;
     const payoutGold =
       amountGold + Math.floor((amountGold * effectiveWinPercent) / 100);
@@ -336,7 +336,7 @@ export function commitInvestmentRolls(
         tier,
         success: true,
         winPercentInt,
-        jackpotHit,
+        luckyChanceHit,
         effectiveWinPercent,
         payoutGold,
       },

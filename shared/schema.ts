@@ -787,7 +787,7 @@ export const gameStateSchema = z.object({
           tier: z.enum(["A", "B", "C", "D"]),
           success: z.boolean(),
           winPercentInt: z.number().optional(),
-          jackpotHit: z.boolean().optional(),
+          luckyChanceHit: z.boolean().optional(),
           effectiveWinPercent: z.number().optional(),
           totalLoss: z.boolean().optional(),
           lossPercentInt: z.number().optional(),

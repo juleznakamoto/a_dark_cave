@@ -1,7 +1,9 @@
 import React from "react";
 import { GameState } from "@shared/schema";
 import { formatNumber } from "@/lib/utils";
-import OutcomeDialog from "./OutcomeDialog";
+import OutcomeDialog, {
+  OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS,
+} from "./OutcomeDialog";
 
 interface RewardDialogData {
   rewards: {
@@ -210,7 +212,11 @@ export default function RewardDialog({
     <OutcomeDialog
       isOpen={isOpen}
       onClose={onClose}
-      icon={<span className="text-4xl text-white">⁂</span>}
+      icon={
+        <span className={OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS} aria-hidden>
+          ⁂
+        </span>
+      }
       successLog={successLog}
       title="Action Reward"
       variant={isLossVariant ? "loss" : "success"}

@@ -11,15 +11,15 @@ import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
-  getEffectiveJackpotChancePercent,
+  getEffectiveLuckyChancePercent,
   getLuckWinChanceBonus,
   getSuccessChancePercent,
   investmentHallLuckyChanceBonusPct,
   isInvestmentWaveReadyForUi,
-  JACKPOT,
+  LUCKY_CHANCE,
   TOTAL_LOSS_PCT,
   lossPercentInclusiveRange,
-  maxJackpotSuccessProfitGold,
+  maxLuckyChanceSuccessProfitGold,
   maxSuccessProfitGold,
   winPercentInclusiveRange,
 } from "@/game/rules/investmentHallTables";
@@ -102,11 +102,15 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
     const offer = offers[idx];
     const stake = Number(amountStr);
     if (!offer || !Number.isFinite(stake) || stake <= 0) {
-      return { normal: 0, jackpot: 0 };
+      return { normal: 0, luckyChance: 0 };
     }
     return {
       normal: maxSuccessProfitGold(stake, offer.tier, offer.durationMin),
-      jackpot: maxJackpotSuccessProfitGold(stake, offer.tier, offer.durationMin),
+      luckyChance: maxLuckyChanceSuccessProfitGold(
+        stake,
+        offer.tier,
+        offer.durationMin,
+      ),
     };
   }, [offers, strategy, amountStr]);
 
@@ -170,7 +174,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
           investment in case of failure.
         </li>
         <li>
-          <span className="text-foreground font-medium">Potential profit</span>: Maximum profit you can gain on your investment. Second value is with the lucky multiplier applied.
+          <span className="text-foreground font-medium">Potential Profit</span>: Maximum profit you can gain on your investment. Second value is with the lucky multiplier applied.
         </li>
       </ul>
     </div>
@@ -181,7 +185,9 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
       <DialogContent className="max-w-2xl max-h-[90dvh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center gap-2 pr-10">
-            <DialogTitle className="m-0">Invest</DialogTitle>
+            <DialogTitle className="m-0 flex h-7 items-center leading-none">
+              Invest
+            </DialogTitle>
             <TooltipWrapper
               tooltip={strategyTableInfoTooltip}
               tooltipId="invest-dialog-info"
@@ -230,9 +236,9 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                           luck,
                         );
                         const winR = winPercentInclusiveRange(offer.tier, offer.durationMin);
-                        const [jpChance, jpMult] = JACKPOT[offer.tier];
-                        const jpDisplay = getEffectiveJackpotChancePercent(
-                          jpChance,
+                        const [lcChance, lcMult] = LUCKY_CHANCE[offer.tier];
+                        const lcDisplay = getEffectiveLuckyChancePercent(
+                          lcChance,
                           luckyBonusPct,
                         );
                         const lossR = lossPercentInclusiveRange(offer.tier);
@@ -261,7 +267,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                               {winR.from} % – {winR.to} %
                             </td>
                             <td className="py-2 pr-3 align-middle tabular-nums">
-                              {formatPercentDisplay(jpDisplay)} % / {jpMult}x
+                              {formatPercentDisplay(lcDisplay)} % / {lcMult}x
                             </td>
                             <td className="py-2 pr-3 align-middle tabular-nums">
                               {lossR.from} % – {lossR.to} %
@@ -291,30 +297,32 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                       : "text-foreground";
                     return (
                       <div key={a} className="shrink-0">
-                        <RadioGroup.Item
-                          value={String(a)}
-                          disabled={disabled}
-                          disabledCursor={disabled ? "default" : "not-allowed"}
-                        >
-                          {disabled ? (
-                            <TooltipWrapper
-                              tooltip={AMOUNT_UNLOCK_TOOLTIP}
-                              tooltipId={`invest-amount-${a}`}
+                        {disabled ? (
+                          <TooltipWrapper
+                            tooltip={AMOUNT_UNLOCK_TOOLTIP}
+                            tooltipId={`invest-amount-${a}`}
+                            disabled
+                            className="inline-flex shrink-0"
+                            tooltipTriggerAsChild
+                            tooltipContentClassName="max-w-xs"
+                          >
+                            <RadioGroup.Item
+                              value={String(a)}
                               disabled
-                              className="inline-block w-fit"
-                              tooltipTriggerClassName="inline-block w-fit max-w-full"
-                              tooltipContentClassName="max-w-xs"
+                              disabledCursor="default"
                             >
                               <span className={labelClass}>
                                 {formatNumber(a)} Gold
                               </span>
-                            </TooltipWrapper>
-                          ) : (
+                            </RadioGroup.Item>
+                          </TooltipWrapper>
+                        ) : (
+                          <RadioGroup.Item value={String(a)}>
                             <span className={labelClass}>
                               {formatNumber(a)} Gold
                             </span>
-                          )}
-                        </RadioGroup.Item>
+                          </RadioGroup.Item>
+                        )}
                       </div>
                     );
                   })}
@@ -322,15 +330,15 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
               </RadioGroup>
             </div>
 
-            <div className="flex flex-col items-center gap-2 pt-1">
+            <div className="flex flex-col items-center gap-4 pt-1">
               <p className="text-center text-xs text-muted-foreground tabular-nums">
-                Potential profit:{" "}
+                Potential Profit:{" "}
                 <span className="text-foreground font-medium">
                   {formatNumber(potentialProfitGold.normal)} Gold
                 </span>
                 {" / "}
                 <span className="text-foreground font-medium">
-                  {formatNumber(potentialProfitGold.jackpot)} Gold
+                  {formatNumber(potentialProfitGold.luckyChance)} Gold
                 </span>
               </p>
               <Button
@@ -344,7 +352,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                 }
                 button_id="invest-commit"
               >
-                Start investment
+                Start Investment
               </Button>
             </div>
           </div>
