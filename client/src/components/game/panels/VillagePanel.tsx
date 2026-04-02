@@ -401,14 +401,14 @@ export default function VillagePanel() {
         ? active
           ? (
             <div className="text-xs max-w-[220px]">
-              Investment completes in{" "}
+              Investment complete in{" "}
               {formatRemaining(Math.max(0, active.endPlayTime - currentPlayTime))}
             </div>
           )
           : currentPlayTime < nextWave
             ? (
               <div className="text-xs whitespace-nowrap">
-                Next investment available in{" "}
+                Investments available in{" "}
                 {formatRemaining(Math.max(0, nextWave - currentPlayTime))}
               </div>
             )
