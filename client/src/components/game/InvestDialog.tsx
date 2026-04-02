@@ -7,6 +7,8 @@ import {
 } from "@/components/ui/dialog";
 import { Info } from "lucide-react";
 import { RadioGroup } from "@/components/ui/radio";
+
+const INVEST_RADIO_INDICATOR_PX = 11;
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
@@ -209,7 +211,11 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                   </button>
                 </TooltipWrapper>
               </div>
-              <RadioGroup value={strategy} onChange={setStrategy}>
+              <RadioGroup
+                value={strategy}
+                onChange={setStrategy}
+                indicatorSizePx={INVEST_RADIO_INDICATOR_PX}
+              >
                 <div className="overflow-x-auto">
                   <table className="w-full min-w-[560px] border-collapse text-foreground">
                     <thead>
@@ -279,7 +285,11 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
 
             <div className="space-y-2">
               <p className="text-sm font-medium">Investment Amount</p>
-              <RadioGroup value={amountStr} onChange={setAmountStr}>
+              <RadioGroup
+                value={amountStr}
+                onChange={setAmountStr}
+                indicatorSizePx={INVEST_RADIO_INDICATOR_PX}
+              >
                 <div className="flex flex-col gap-2">
                   {amounts.map((a) => {
                     const disabled = a > maxStake;

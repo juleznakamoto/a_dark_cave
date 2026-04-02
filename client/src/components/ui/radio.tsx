@@ -7,18 +7,21 @@ import {
   PRIOR_DISC_OUTER_TRANSITION,
 } from "@/lib/priorDiscStyles";
 
-const PRIOR_RADIO_PX = 16;
-const radioFillMetrics = getPriorDiscFillMetrics(PRIOR_RADIO_PX);
+export const DEFAULT_RADIO_INDICATOR_PX = 16;
 
 function PriorStyleRadioIndicator({
   isSelected,
   disabled,
   hovered,
+  diameterPx,
 }: {
   isSelected: boolean;
   disabled: boolean;
   hovered: boolean;
+  diameterPx: number;
 }) {
+  const { fillSize, fillOffsetInPx, fillOffsetOutPx } =
+    getPriorDiscFillMetrics(diameterPx);
   const { background, boxShadow } = getPriorDiscSurfaceColors({
     active: isSelected,
     surfaceLocked: disabled,
@@ -29,8 +32,8 @@ function PriorStyleRadioIndicator({
     <span
       className="relative mt-0.5 shrink-0 inline-block rounded-full overflow-hidden"
       style={{
-        width: PRIOR_RADIO_PX,
-        height: PRIOR_RADIO_PX,
+        width: diameterPx,
+        height: diameterPx,
         background,
         boxShadow,
         transition: PRIOR_DISC_OUTER_TRANSITION,
@@ -40,9 +43,9 @@ function PriorStyleRadioIndicator({
       <span
         style={getPriorDiscInnerFillStyle({
           active: isSelected,
-          fillSize: radioFillMetrics.fillSize,
-          fillOffsetInPx: radioFillMetrics.fillOffsetInPx,
-          fillOffsetOutPx: radioFillMetrics.fillOffsetOutPx,
+          fillSize,
+          fillOffsetInPx,
+          fillOffsetOutPx,
           mutedFill: disabled && isSelected,
         })}
       />
@@ -56,6 +59,7 @@ const RadioGroupContext = createContext<{
   disabled: boolean;
   required: boolean;
   name: string;
+  indicatorSizePx: number;
 } | null>(null);
 
 interface RadioGroupProps {
@@ -64,6 +68,8 @@ interface RadioGroupProps {
   onChange: (value: string) => void;
   disabled?: boolean;
   required?: boolean;
+  /** Prior-style disc diameter in px (default 16). */
+  indicatorSizePx?: number;
   children?: React.ReactNode;
 }
 
@@ -73,12 +79,20 @@ export const RadioGroup = ({
   onChange,
   disabled = false,
   required = false,
+  indicatorSizePx = DEFAULT_RADIO_INDICATOR_PX,
   children,
 }: RadioGroupProps) => {
   const name = useId();
   return (
     <RadioGroupContext.Provider
-      value={{ value, onChange, disabled, required, name }}
+      value={{
+        value,
+        onChange,
+        disabled,
+        required,
+        name,
+        indicatorSizePx,
+      }}
     >
       {label && <span className="sr-only">{label}</span>}
       {children}
@@ -136,6 +150,7 @@ const RadioGroupItem = ({
         isSelected={!!isSelected}
         disabled={disabled}
         hovered={hovered}
+        diameterPx={context?.indicatorSizePx ?? DEFAULT_RADIO_INDICATOR_PX}
       />
       {children}
     </label>
@@ -150,6 +165,8 @@ interface RadioProps {
   checked?: boolean;
   onChange?: (value: string) => void;
   value?: string;
+  /** Prior-style disc diameter in px (default 16). */
+  indicatorSizePx?: number;
 }
 
 export const Radio = ({
@@ -158,6 +175,7 @@ export const Radio = ({
   required,
   onChange,
   value,
+  indicatorSizePx = DEFAULT_RADIO_INDICATOR_PX,
 }: RadioProps) => {
   const [internalChecked, setInternalChecked] = useState<boolean>(
     checked ?? false,
@@ -201,6 +219,7 @@ export const Radio = ({
         isSelected={isChecked}
         disabled={!!disabled}
         hovered={hovered}
+        diameterPx={indicatorSizePx}
       />
     </label>
   );
