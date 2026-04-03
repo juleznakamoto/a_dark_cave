@@ -69,10 +69,10 @@ export const LUCKY_CHANCE_WIN_MULTIPLIER = 4 as const;
 
 /** Lucky Chance: [base chance % before hall bonus, multiplier — always {@link LUCKY_CHANCE_WIN_MULTIPLIER}]. */
 export const LUCKY_CHANCE: Record<InvestmentTier, readonly [number, number]> = {
-  A: [2, LUCKY_CHANCE_WIN_MULTIPLIER],
-  B: [3, LUCKY_CHANCE_WIN_MULTIPLIER],
-  C: [4, LUCKY_CHANCE_WIN_MULTIPLIER],
-  D: [5, LUCKY_CHANCE_WIN_MULTIPLIER],
+  A: [1, LUCKY_CHANCE_WIN_MULTIPLIER],
+  B: [2, LUCKY_CHANCE_WIN_MULTIPLIER],
+  C: [3, LUCKY_CHANCE_WIN_MULTIPLIER],
+  D: [4, LUCKY_CHANCE_WIN_MULTIPLIER],
 };
 
 /** Extra Lucky Chance % from investment hall: Bank +1%, Treasury +2% (overrides Bank). Coinhouse only → 0. */
