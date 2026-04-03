@@ -17,6 +17,7 @@ import {
   investmentHallLuckyChanceBonusPct,
   isInvestmentWaveReadyForUi,
   LUCKY_CHANCE,
+  LUCKY_CHANCE_WIN_MULTIPLIER,
   TOTAL_LOSS_PCT,
   lossPercentInclusiveRange,
   maxLuckyChanceSuccessProfitGold,
@@ -170,7 +171,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
         </li>
         <li>
           <span className="text-foreground font-medium">Lucky Chance</span>: Chance
-          to multiply your profit by the shown factor (e.g. 3x).
+          on success to multiply your profit by {LUCKY_CHANCE_WIN_MULTIPLIER}.
         </li>
         <li>
           <span className="text-foreground font-medium">Loss</span>: The portion of your investment you lose in case of failure.
@@ -180,7 +181,8 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
           investment in case of failure.
         </li>
         <li>
-          <span className="text-foreground font-medium">Potential Profit</span>: Maximum profit you can gain on your investment. Second value is with the lucky multiplier applied.
+          <span className="text-foreground font-medium">Potential Profit</span>: Maximum profit you can gain on your investment. Second value is if Lucky Chance hits (profit ×{" "}
+          {LUCKY_CHANCE_WIN_MULTIPLIER}).
         </li>
       </ul>
     </div>
@@ -277,7 +279,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                           offer.tier,
                           offer.durationMin,
                         );
-                        const [lcChance, lcMult] = LUCKY_CHANCE[offer.tier];
+                        const [lcChance] = LUCKY_CHANCE[offer.tier];
                         const lcDisplay = getEffectiveLuckyChancePercent(
                           lcChance,
                           luckyBonusPct,
@@ -316,7 +318,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                               {formatPercentRange(winR.from, winR.to)}
                             </td>
                             <td className="py-2 pr-2 align-middle tabular-nums whitespace-nowrap">
-                              {formatPercentDisplay(lcDisplay)} % / {lcMult}x
+                              {formatPercentDisplay(lcDisplay)} %
                             </td>
                             <td className="py-2 pr-2 align-middle tabular-nums whitespace-nowrap">
                               {formatPercentRange(lossR.from, lossR.to)}

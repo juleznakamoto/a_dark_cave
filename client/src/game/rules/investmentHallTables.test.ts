@@ -26,7 +26,7 @@ describe("getLuckWinChanceBonus", () => {
 describe("getSuccessChancePercent", () => {
   it("adds highest luck tier to base success", () => {
     const p = getSuccessChancePercent("A", 30, 50);
-    expect(p).toBe(80);
+    expect(p).toBe(90);
   });
 });
 
@@ -40,14 +40,14 @@ describe("winPercentInclusiveRange", () => {
   it("returns inclusive integer bounds for tier A 15 min", () => {
     const r = winPercentInclusiveRange("A", 15);
     expect(r.from).toBe(5);
-    expect(r.to).toBe(10);
+    expect(r.to).toBe(15);
   });
 });
 
 describe("maxSuccessProfitGold / maxLuckyChanceSuccessProfitGold", () => {
-  it("uses top win % and Lucky Chance multiplier", () => {
-    expect(maxSuccessProfitGold(100, "A", 15)).toBe(10);
-    expect(maxLuckyChanceSuccessProfitGold(100, "A", 15)).toBe(50);
+  it("uses top win % and Lucky Chance ×4 multiplier", () => {
+    expect(maxSuccessProfitGold(100, "A", 15)).toBe(15);
+    expect(maxLuckyChanceSuccessProfitGold(100, "A", 15)).toBe(60);
   });
 });
 
@@ -130,7 +130,7 @@ describe("randomIntInclusive", () => {
 });
 
 describe("commitInvestmentRolls", () => {
-  it("success path uses integer win and Lucky Chance multiplier", () => {
+  it("success path uses integer win and Lucky Chance ×4", () => {
     let n = 0;
     // 0.3*100=30 < 60 success; win int floor(0.5*11)=5; 0.01*100=1 < 2 Lucky Chance
     const rng = () => [0.3, 0.5, 0.01][n++] ?? 0;
@@ -146,8 +146,8 @@ describe("commitInvestmentRolls", () => {
     expect(r.active.success).toBe(true);
     expect(r.active.winPercentInt).toBe(5);
     expect(r.active.luckyChanceHit).toBe(true);
-    expect(r.active.effectiveWinPercent).toBe(25);
-    expect(r.active.payoutGold).toBe(125);
+    expect(r.active.effectiveWinPercent).toBe(20);
+    expect(r.active.payoutGold).toBe(120);
   });
 
   it("failure total loss when roll below threshold", () => {
@@ -232,10 +232,10 @@ describe("buildInvestmentResultDialogPayload", () => {
         success: true,
         winPercentInt: 5,
         luckyChanceHit: true,
-        effectiveWinPercent: 25,
-        payoutGold: 125,
+        effectiveWinPercent: 20,
+        payoutGold: 120,
       }),
-    ).toMatchObject({ kind: "lucky_chance", goldDelta: 25 });
+    ).toMatchObject({ kind: "lucky_chance", goldDelta: 20 });
 
     expect(
       buildInvestmentResultDialogPayload({

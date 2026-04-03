@@ -64,12 +64,15 @@ export const LOSS_PCT_RANGE: Record<InvestmentTier, readonly [number, number]> =
   D: [30, 40],
 };
 
-/** Lucky Chance: [chance %, multiplier on winPercentInt] */
+/** On Lucky Chance hit, rolled win % is multiplied by this factor (fixed for all tiers). */
+export const LUCKY_CHANCE_WIN_MULTIPLIER = 4 as const;
+
+/** Lucky Chance: [base chance % before hall bonus, multiplier — always {@link LUCKY_CHANCE_WIN_MULTIPLIER}]. */
 export const LUCKY_CHANCE: Record<InvestmentTier, readonly [number, number]> = {
-  A: [2, 5],
-  B: [3, 4],
-  C: [4, 3],
-  D: [5, 2],
+  A: [2, LUCKY_CHANCE_WIN_MULTIPLIER],
+  B: [3, LUCKY_CHANCE_WIN_MULTIPLIER],
+  C: [4, LUCKY_CHANCE_WIN_MULTIPLIER],
+  D: [5, LUCKY_CHANCE_WIN_MULTIPLIER],
 };
 
 /** Extra Lucky Chance % from investment hall: Bank +1%, Treasury +2% (overrides Bank). Coinhouse only → 0. */
@@ -137,8 +140,9 @@ export function maxLuckyChanceSuccessProfitGold(
   durationMin: number,
 ): number {
   const { to } = winPercentInclusiveRange(tier, durationMin);
-  const [, lcMult] = LUCKY_CHANCE[tier];
-  return Math.floor((amountGold * to * lcMult) / 100);
+  return Math.floor(
+    (amountGold * to * LUCKY_CHANCE_WIN_MULTIPLIER) / 100,
+  );
 }
 
 export function lossPercentInclusiveRange(
@@ -306,7 +310,7 @@ export function buildInvestmentResultDialogPayload(
       return {
         kind: "lucky_chance",
         goldDelta: profit,
-        briefText: `Lucky Chance. The gains on your ${active.amountGold} Gold investment are multiplied`,
+        briefText: `Lucky Chance. The gains on your ${active.amountGold} Gold investment are multiplied by ${LUCKY_CHANCE_WIN_MULTIPLIER}.`,
       };
     }
     return {
@@ -360,14 +364,14 @@ export function commitInvestmentRolls(
   if (success) {
     const { from, to } = winPercentInclusiveRange(tier, durationMin);
     const winPercentInt = randomIntInclusive(from, to, rng);
-    const [lcChance, lcMult] = LUCKY_CHANCE[tier];
+    const [lcChance] = LUCKY_CHANCE[tier];
     const effectiveLuckyChancePct = getEffectiveLuckyChancePercent(
       lcChance,
       luckyChanceBonusPct,
     );
     const luckyChanceHit = rng() * 100 < effectiveLuckyChancePct;
     const effectiveWinPercent = luckyChanceHit
-      ? winPercentInt * lcMult
+      ? winPercentInt * LUCKY_CHANCE_WIN_MULTIPLIER
       : winPercentInt;
     const payoutGold =
       amountGold + Math.floor((amountGold * effectiveWinPercent) / 100);
