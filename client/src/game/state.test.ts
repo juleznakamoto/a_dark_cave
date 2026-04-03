@@ -1,5 +1,11 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { createInitialState, useGameStore, detectRewards, rewardDialogActions } from "./state";
+import {
+  createInitialState,
+  useGameStore,
+  detectRewards,
+  rewardDialogActions,
+  rewardPayloadHasPositiveChanges,
+} from "./state";
 import { GameState } from "@shared/schema";
 
 const { mockLoadGame, mockSetLastGameLoadTime } = vi.hoisted(() => ({
@@ -219,6 +225,29 @@ describe("Reward Dialog System", () => {
   beforeEach(() => {
     initialState = createInitialState();
     useGameStore.setState(initialState);
+  });
+
+  describe("rewardPayloadHasPositiveChanges", () => {
+    it("is false for empty payload", () => {
+      expect(rewardPayloadHasPositiveChanges({})).toBe(false);
+    });
+
+    it("is false for losses only", () => {
+      expect(
+        rewardPayloadHasPositiveChanges({
+          resourceLosses: { food: 10 },
+          villagersLost: 2,
+        }),
+      ).toBe(false);
+    });
+
+    it("is true when resources gained", () => {
+      expect(
+        rewardPayloadHasPositiveChanges({
+          resources: { gold: 5 },
+        }),
+      ).toBe(true);
+    });
   });
 
   describe("layTrap action", () => {
