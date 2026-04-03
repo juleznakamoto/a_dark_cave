@@ -67,11 +67,11 @@ const AMOUNT_UNLOCK_TOOLTIP = (
   <span className="text-xs">Unlocks at higher building level</span>
 );
 
-/** Fixed width for strategy table radio column (disc + ring). */
-const INVEST_RADIO_COLUMN_CLASS = "w-7 min-w-7 shrink-0";
+/** Narrow column: disc is 8px; keeps Duration close without clipping the ring. */
+const INVEST_RADIO_COLUMN_CLASS = "w-6 min-w-6 shrink-0";
 
-/** Same horizontal inset for strategy table scroller and amount row so radios line up; padding avoids overflow-x clipping the disc. */
-const INVEST_SECTION_INSET = "pl-3 pr-2";
+/** Same horizontal inset for strategy scroller and amount row; pl-2 limits clip while sitting a bit left of pl-3. */
+const INVEST_SECTION_INSET = "pl-2 pr-2";
 
 export default function InvestDialog({ open, onOpenChange }: Props) {
   const playTime = useGameStore((s) => s.playTime);
@@ -237,12 +237,12 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                       <tr className="text-left text-xs leading-tight">
                         <th
                           className={cn(
-                            "py-2 pr-0.5 align-bottom",
+                            "py-2 pr-0 align-bottom",
                             INVEST_RADIO_COLUMN_CLASS,
                           )}
                           aria-hidden
                         />
-                        <th className="py-2 pr-2 font-medium align-bottom">
+                        <th className="py-2 pl-0 pr-2 font-medium align-bottom">
                           Duration
                         </th>
                         <th className="py-2 pr-2 font-medium align-bottom">
@@ -296,7 +296,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                           >
                             <td
                               className={cn(
-                                "py-2 pr-0.5 align-middle",
+                                "py-2 pr-0 align-middle",
                                 INVEST_RADIO_COLUMN_CLASS,
                               )}
                             >
@@ -306,7 +306,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                                 </span>
                               </RadioGroup.Item>
                             </td>
-                            <td className="py-2 pr-2 align-middle text-xs font-medium whitespace-nowrap">
+                            <td className="py-2 pl-0 pr-2 align-middle text-xs font-medium whitespace-nowrap">
                               {termMinutesLabel(offer.durationMin)}
                             </td>
                             <td className="py-2 pr-2 align-middle tabular-nums whitespace-nowrap">
