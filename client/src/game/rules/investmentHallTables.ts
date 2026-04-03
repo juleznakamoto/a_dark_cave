@@ -34,7 +34,7 @@ export const WIN_PCT_RANGE: Record<
   [readonly [number, number], readonly [number, number], readonly [number, number]]
 > = {
   A: [
-    [0, 10],
+    [1, 10],
     [5, 15],
     [10, 20],
   ],
@@ -58,7 +58,7 @@ export const WIN_PCT_RANGE: Record<
 /** Loss % range on failure (not total loss); [min, max] inclusive int */
 export const LOSS_PCT_RANGE: Record<InvestmentTier, readonly [number, number]> =
 {
-  A: [0, 10],
+  A: [1, 10],
   B: [10, 20],
   C: [20, 30],
   D: [30, 40],
