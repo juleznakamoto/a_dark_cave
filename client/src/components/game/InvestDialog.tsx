@@ -177,7 +177,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90dvh] overflow-y-auto">
+      <DialogContent className="w-max max-w-[calc(100vw-2rem)] max-h-[90dvh] overflow-y-auto min-w-0">
         <DialogHeader>
           <div className="flex items-center gap-1 pr-10">
             <DialogTitle className="m-0 leading-none">
@@ -220,19 +220,19 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                     <thead>
                       <tr className="text-left text-xs leading-tight">
                         <th className="w-7 min-w-7 py-2 pl-0 pr-0.5 font-medium" aria-hidden />
-                        <th className="py-2 pr-1 font-medium">Duration</th>
-                        <th className="py-2 pr-1 font-medium">
+                        <th className="py-2 pr-2 font-medium">Duration</th>
+                        <th className="py-2 pr-2 font-medium">
                           Success
                           <br />
                           Chance
                         </th>
-                        <th className="py-2 pr-1 font-medium">Profit</th>
-                        <th className="py-2 pr-1 font-medium">
+                        <th className="py-2 pr-2 font-medium">Profit</th>
+                        <th className="py-2 pr-2 font-medium">
                           Lucky
                           <br />
                           Chance
                         </th>
-                        <th className="py-2 pr-1 font-medium">Loss</th>
+                        <th className="py-2 pr-2 font-medium">Loss</th>
                         <th className="py-2 pr-0 font-medium">Wipeout</th>
                       </tr>
                     </thead>
@@ -265,19 +265,19 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                                 <span className="sr-only">{termMinutesLabel(offer.durationMin)}</span>
                               </RadioGroup.Item>
                             </td>
-                            <td className="py-2 pr-1 align-middle text-xs font-medium whitespace-nowrap">
+                            <td className="py-2 pr-2 align-middle text-xs font-medium whitespace-nowrap">
                               {termMinutesLabel(offer.durationMin)}
                             </td>
-                            <td className="py-2 pr-1 align-middle tabular-nums whitespace-nowrap">
+                            <td className="py-2 pr-2 align-middle tabular-nums whitespace-nowrap">
                               {formatPercentDisplay(finalSuccess)} %
                             </td>
-                            <td className="py-2 pr-1 align-middle tabular-nums whitespace-nowrap">
+                            <td className="py-2 pr-2 align-middle tabular-nums whitespace-nowrap">
                               {winR.from} % – {winR.to} %
                             </td>
-                            <td className="py-2 pr-1 align-middle tabular-nums whitespace-nowrap">
+                            <td className="py-2 pr-2 align-middle tabular-nums whitespace-nowrap">
                               {formatPercentDisplay(lcDisplay)} % / {lcMult}x
                             </td>
-                            <td className="py-2 pr-1 align-middle tabular-nums whitespace-nowrap">
+                            <td className="py-2 pr-2 align-middle tabular-nums whitespace-nowrap">
                               {lossR.from} % – {lossR.to} %
                             </td>
                             <td className="py-2 pr-0 align-middle tabular-nums whitespace-nowrap">{tl} %</td>
@@ -297,7 +297,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                 onChange={setAmountStr}
                 indicatorSizePx={INVEST_RADIO_INDICATOR_PX}
               >
-                <div className="flex flex-row flex-wrap items-center gap-x-6 gap-y-2 pl-2">
+                <div className="flex flex-row flex-wrap items-center gap-x-6 gap-y-2 pl-0">
                   {amounts.map((a) => {
                     const disabled = a > maxStake;
                     const labelClass = disabled
