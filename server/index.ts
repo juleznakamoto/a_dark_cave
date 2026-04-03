@@ -42,8 +42,37 @@ function readRootPackageVersion(): string {
 
 const APP_PACKAGE_VERSION = readRootPackageVersion();
 
-/** Deploy commit id from CI/host env (first non-empty wins). */
-function readDeployGitSha(): string | null {
+type BuildMeta = { sha: string | null; builtAt: string | null };
+
+/** Written by `node scripts/write-build-meta.mjs` at the end of `npm run build`. */
+function readBuildMetaFile(): BuildMeta {
+  const candidates = [
+    path.join(__dirname, "build-meta.json"),
+    path.join(__dirname, "..", "dist", "build-meta.json"),
+  ];
+  for (const metaPath of candidates) {
+    try {
+      if (!fs.existsSync(metaPath)) continue;
+      const raw = fs.readFileSync(metaPath, "utf-8");
+      const j = JSON.parse(raw) as { sha?: unknown; builtAt?: unknown };
+      const sha =
+        typeof j.sha === "string" && j.sha.length > 0 ? j.sha : null;
+      const builtAt =
+        typeof j.builtAt === "string" && j.builtAt.length > 0
+          ? j.builtAt
+          : null;
+      return { sha, builtAt };
+    } catch {
+      /* try next path */
+    }
+  }
+  return { sha: null, builtAt: null };
+}
+
+const BUILD_META_FILE = readBuildMetaFile();
+
+/** Deploy commit id from CI/host env (first non-empty wins). Overrides build-meta. */
+function readDeployGitShaFromEnv(): string | null {
   for (const key of [
     "GIT_COMMIT_SHA",
     "GITHUB_SHA",
@@ -56,8 +85,8 @@ function readDeployGitSha(): string | null {
   return null;
 }
 
-/** Optional build timestamp: ISO string in BUILD_TIME, or SOURCE_DATE_EPOCH (seconds). */
-function readDeployBuiltAt(): string | null {
+/** Optional build timestamp from env. Overrides build-meta for builtAt. */
+function readDeployBuiltAtFromEnv(): string | null {
   const buildTime = process.env.BUILD_TIME?.trim();
   if (buildTime) return buildTime;
   const epoch = process.env.SOURCE_DATE_EPOCH?.trim();
@@ -67,8 +96,10 @@ function readDeployBuiltAt(): string | null {
   return null;
 }
 
-const DEPLOY_GIT_SHA = readDeployGitSha();
-const DEPLOY_BUILT_AT = readDeployBuiltAt();
+const DEPLOY_GIT_SHA =
+  readDeployGitShaFromEnv() ?? BUILD_META_FILE.sha;
+const DEPLOY_BUILT_AT =
+  readDeployBuiltAtFromEnv() ?? BUILD_META_FILE.builtAt;
 
 const app = express();
 

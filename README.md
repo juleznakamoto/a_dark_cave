@@ -47,8 +47,8 @@ The live site exposes a small JSON endpoint you can use to see **which build is 
 | Field     | Type             | Meaning |
 | --------- | ---------------- | ------- |
 | `version` | string           | Package semver for the deployment (from the project’s published version label). |
-| `sha`     | string or `null` | Source control revision for this deployment when the host or CI provides one; otherwise `null`. |
-| `builtAt` | string or `null` | Optional build timestamp when the deployment environment supplies it; otherwise `null`. |
+| `sha`     | string or `null` | Git commit of the **built** snapshot (`git rev-parse HEAD` recorded when `npm run build` finishes), unless a host env var overrides it. `null` if the build ran without a Git checkout. |
+| `builtAt` | string or `null` | ISO time when that build metadata was written, unless overridden by the deployment environment. |
 
 Example (illustrative):
 
@@ -60,7 +60,11 @@ Example (illustrative):
 }
 ```
 
-When comparing the live site to a Git branch, use `sha` when it is present; when it is `null`, the deployment may still be current but does not advertise a revision.
+### Matching production to GitHub
+
+After each production build, `sha` is the full commit hash of the tree that was built. Compare it to the tip of your branch (for example the `sha` field from GitHub’s API for `GET /repos/<owner>/<repo>/commits/<branch>`). If they are equal, the deployed bundle was produced from that commit.
+
+Some hosts omit the `.git` directory from the build environment; in that case `sha` may be `null` until the pipeline is adjusted so `git rev-parse HEAD` can run during `npm run build`.
 
 ## Play
 
