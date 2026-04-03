@@ -191,7 +191,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-max max-w-[calc(100vw-2rem)] max-h-[90dvh] overflow-y-auto min-w-0">
-        <DialogHeader>
+        <DialogHeader className="min-w-0">
           <div className="flex items-center gap-1 pr-10">
             <DialogTitle className="m-0 leading-none">
               Invest
@@ -220,8 +220,8 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
         </DialogHeader>
 
         {canInvestUi ? (
-          <div className="space-y-4">
-            <div className="space-y-2">
+          <div className="min-w-0 w-full max-w-full space-y-4">
+            <div className="min-w-0 space-y-2">
               <p className="text-sm font-medium">Investment Strategy</p>
               <RadioGroup
                 value={strategy}
@@ -230,11 +230,11 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
               >
                 <div
                   className={cn(
-                    "overflow-x-auto overflow-y-visible min-w-0",
+                    "max-w-full min-w-0 w-full overflow-x-auto overflow-y-visible overscroll-x-contain",
                     INVEST_SECTION_INSET,
                   )}
                 >
-                  <table className="w-max max-w-full min-w-0 border-collapse text-foreground">
+                  <table className="w-max border-collapse text-foreground">
                     <thead>
                       <tr className="text-left text-xs leading-tight">
                         <th
