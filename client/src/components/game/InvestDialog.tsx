@@ -166,14 +166,14 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
           <span className="text-foreground font-medium">Duration</span>: How long the investment runs.
         </li>
         <li>
-          <span className="text-foreground font-medium">Success %</span>: Chance of a
+          <span className="text-foreground font-medium">Success</span>: Chance of a
           successful investment.
         </li>
         <li>
           <span className="text-foreground font-medium">Profit</span>: The profit you gain in case of success.
         </li>
         <li>
-          <span className="text-foreground font-medium">Lucky Chance</span>: Chance
+          <span className="text-foreground font-medium">Lucky</span>: Chance
           on success to multiply your profit by {LUCKY_CHANCE_WIN_MULTIPLIER}.
         </li>
         <li>
@@ -262,7 +262,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             INVEST_TABLE_LINE,
                           )}
                         >
-                          Success %
+                          Success
                         </th>
                         <th
                           className={cn(
@@ -278,7 +278,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             INVEST_TABLE_LINE,
                           )}
                         >
-                          Lucky %
+                          Lucky
                         </th>
                         <th
                           className={cn(
