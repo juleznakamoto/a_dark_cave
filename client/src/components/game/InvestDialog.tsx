@@ -179,7 +179,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90dvh] overflow-y-auto">
         <DialogHeader>
-          <div className="flex items-center gap-2 pr-10">
+          <div className="flex items-center gap-1 pr-10">
             <DialogTitle className="m-0 leading-none">
               Invest
             </DialogTitle>
@@ -188,7 +188,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
               tooltipId="invest-dialog-info"
               disabled
               tooltipContentClassName="max-w-sm"
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
+              className="-ml-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
               tooltipTriggerClassName="flex h-full w-full items-center justify-center"
             >
               <button
@@ -215,17 +215,25 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                 onChange={setStrategy}
                 indicatorSizePx={INVEST_RADIO_INDICATOR_PX}
               >
-                <div className="overflow-x-auto pl-2">
-                  <table className="w-full min-w-[560px] border-collapse text-foreground">
+                <div className="overflow-x-auto pl-1">
+                  <table className="w-full min-w-[480px] border-collapse text-foreground">
                     <thead>
-                      <tr className="text-left text-xs">
-                        <th className="w-8 min-w-8 py-2 pl-0 pr-2 font-medium" aria-hidden />
-                        <th className="py-2 pr-3 font-medium">Duration</th>
-                        <th className="py-2 pr-3 font-medium">Success Chance</th>
-                        <th className="py-2 pr-3 font-medium">Profit</th>
-                        <th className="py-2 pr-3 font-medium">Lucky Chance</th>
-                        <th className="py-2 pr-3 font-medium">Loss</th>
-                        <th className="py-2 pr-2 font-medium">Wipeout</th>
+                      <tr className="text-left text-xs leading-tight">
+                        <th className="w-8 min-w-8 py-2 pl-0 pr-1 font-medium" aria-hidden />
+                        <th className="py-2 pr-2 font-medium">Duration</th>
+                        <th className="py-2 pr-2 font-medium">
+                          Success
+                          <br />
+                          Chance
+                        </th>
+                        <th className="py-2 pr-2 font-medium">Profit</th>
+                        <th className="py-2 pr-2 font-medium">
+                          Lucky
+                          <br />
+                          Chance
+                        </th>
+                        <th className="py-2 pr-2 font-medium">Loss</th>
+                        <th className="py-2 pr-1 font-medium">Wipeout</th>
                       </tr>
                     </thead>
                     <tbody className="text-[11px] leading-snug">
@@ -252,27 +260,27 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             )}
                             onClick={() => setStrategy(String(i))}
                           >
-                            <td className="w-8 min-w-8 py-2 pl-0 pr-2 align-middle">
+                            <td className="w-8 min-w-8 py-2 pl-0 pr-1 align-middle">
                               <RadioGroup.Item value={String(i)}>
                                 <span className="sr-only">{termMinutesLabel(offer.durationMin)}</span>
                               </RadioGroup.Item>
                             </td>
-                            <td className="py-2 pr-3 align-middle text-xs font-medium">
+                            <td className="py-2 pr-2 align-middle text-xs font-medium">
                               {termMinutesLabel(offer.durationMin)}
                             </td>
-                            <td className="py-2 pr-3 align-middle tabular-nums">
+                            <td className="py-2 pr-2 align-middle tabular-nums">
                               {formatPercentDisplay(finalSuccess)} %
                             </td>
-                            <td className="py-2 pr-3 align-middle tabular-nums">
+                            <td className="py-2 pr-2 align-middle tabular-nums">
                               {winR.from} % – {winR.to} %
                             </td>
-                            <td className="py-2 pr-3 align-middle tabular-nums">
+                            <td className="py-2 pr-2 align-middle tabular-nums">
                               {formatPercentDisplay(lcDisplay)} % / {lcMult}x
                             </td>
-                            <td className="py-2 pr-3 align-middle tabular-nums">
+                            <td className="py-2 pr-2 align-middle tabular-nums">
                               {lossR.from} % – {lossR.to} %
                             </td>
-                            <td className="py-2 pr-2 align-middle tabular-nums">{tl} %</td>
+                            <td className="py-2 pr-1 align-middle tabular-nums">{tl} %</td>
                           </tr>
                         );
                       })}
