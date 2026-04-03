@@ -70,22 +70,6 @@ const AMOUNT_UNLOCK_TOOLTIP = (
 /** Matches strategy grid radio column so amount radios line up vertically. */
 const INVEST_RADIO_COLUMN_CLASS = "w-7 min-w-7 shrink-0";
 
-const strategyGridCols =
-  "[grid-template-columns:auto_max-content_max-content_max-content_max-content_max-content_max-content_max-content]";
-
-const strategyHeaderCell =
-  "py-2 pr-2 text-left text-xs font-medium leading-tight";
-
-const strategyDataCell =
-  "py-2 pr-2 text-[11px] leading-snug tabular-nums whitespace-nowrap";
-
-function strategyRowBg(selected: boolean) {
-  return cn(
-    "group-hover/strategy-row:bg-muted/15 rounded-sm",
-    selected && "bg-muted/20",
-  );
-}
-
 export default function InvestDialog({ open, onOpenChange }: Props) {
   const playTime = useGameStore((s) => s.playTime);
   const luck = useGameStore((s) => s.stats.luck);
@@ -240,100 +224,103 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                 indicatorSizePx={INVEST_RADIO_INDICATOR_PX}
               >
                 <div className="overflow-x-auto pl-0">
-                  <div
-                    role="table"
-                    className={cn(
-                      "inline-grid w-max text-foreground",
-                      strategyGridCols,
-                    )}
-                  >
-                    <div
-                      className={cn(
-                        "py-2 pr-0.5",
-                        INVEST_RADIO_COLUMN_CLASS,
-                      )}
-                      aria-hidden
-                    />
-                    <div className={strategyHeaderCell}>Duration</div>
-                    <div className={strategyHeaderCell}>
-                      Success
-                      <br />
-                      Chance
-                    </div>
-                    <div className={strategyHeaderCell}>Profit</div>
-                    <div className={strategyHeaderCell}>
-                      Lucky
-                      <br />
-                      Chance
-                    </div>
-                    <div className={strategyHeaderCell}>Loss</div>
-                    <div className={cn(strategyHeaderCell, "pr-0")}>Wipeout</div>
-                    {offers.map((offer, i) => {
-                      const finalSuccess = getSuccessChancePercent(
-                        offer.tier,
-                        offer.durationMin,
-                        luck,
-                      );
-                      const winR = winPercentInclusiveRange(
-                        offer.tier,
-                        offer.durationMin,
-                      );
-                      const [lcChance, lcMult] = LUCKY_CHANCE[offer.tier];
-                      const lcDisplay = getEffectiveLuckyChancePercent(
-                        lcChance,
-                        luckyBonusPct,
-                      );
-                      const lossR = lossPercentInclusiveRange(offer.tier);
-                      const tl = TOTAL_LOSS_PCT[offer.tier];
-                      const selected = strategy === String(i);
-                      const rowBg = strategyRowBg(selected);
-                      return (
-                        <div
-                          key={i}
-                          className="contents cursor-pointer group/strategy-row"
-                          onClick={() => setStrategy(String(i))}
-                        >
-                          <div
+                  <table className="w-max max-w-full min-w-0 border-collapse text-foreground">
+                    <thead>
+                      <tr className="text-left text-xs leading-tight">
+                        <th
+                          className={cn(
+                            "py-2 pr-0.5 align-bottom",
+                            INVEST_RADIO_COLUMN_CLASS,
+                          )}
+                          aria-hidden
+                        />
+                        <th className="py-2 pr-2 font-medium align-bottom">
+                          Duration
+                        </th>
+                        <th className="py-2 pr-2 font-medium align-bottom">
+                          Success
+                          <br />
+                          Chance
+                        </th>
+                        <th className="py-2 pr-2 font-medium align-bottom">
+                          Profit
+                        </th>
+                        <th className="py-2 pr-2 font-medium align-bottom">
+                          Lucky
+                          <br />
+                          Chance
+                        </th>
+                        <th className="py-2 pr-2 font-medium align-bottom">
+                          Loss
+                        </th>
+                        <th className="py-2 pr-0 font-medium align-bottom">
+                          Wipeout
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-[11px] leading-snug">
+                      {offers.map((offer, i) => {
+                        const finalSuccess = getSuccessChancePercent(
+                          offer.tier,
+                          offer.durationMin,
+                          luck,
+                        );
+                        const winR = winPercentInclusiveRange(
+                          offer.tier,
+                          offer.durationMin,
+                        );
+                        const [lcChance, lcMult] = LUCKY_CHANCE[offer.tier];
+                        const lcDisplay = getEffectiveLuckyChancePercent(
+                          lcChance,
+                          luckyBonusPct,
+                        );
+                        const lossR = lossPercentInclusiveRange(offer.tier);
+                        const tl = TOTAL_LOSS_PCT[offer.tier];
+                        const selected = strategy === String(i);
+                        return (
+                          <tr
+                            key={i}
                             className={cn(
-                              "flex items-center py-2 pr-0.5",
-                              INVEST_RADIO_COLUMN_CLASS,
-                              rowBg,
+                              "cursor-pointer rounded-sm hover:bg-muted/15",
+                              selected && "bg-muted/20",
                             )}
+                            onClick={() => setStrategy(String(i))}
                           >
-                            <RadioGroup.Item value={String(i)}>
-                              <span className="sr-only">
-                                {termMinutesLabel(offer.durationMin)}
-                              </span>
-                            </RadioGroup.Item>
-                          </div>
-                          <div
-                            className={cn(
-                              strategyDataCell,
-                              "text-xs font-medium",
-                              rowBg,
-                            )}
-                          >
-                            {termMinutesLabel(offer.durationMin)}
-                          </div>
-                          <div className={cn(strategyDataCell, rowBg)}>
-                            {formatPercentDisplay(finalSuccess)} %
-                          </div>
-                          <div className={cn(strategyDataCell, rowBg)}>
-                            {formatPercentRange(winR.from, winR.to)}
-                          </div>
-                          <div className={cn(strategyDataCell, rowBg)}>
-                            {formatPercentDisplay(lcDisplay)} % / {lcMult}x
-                          </div>
-                          <div className={cn(strategyDataCell, rowBg)}>
-                            {formatPercentRange(lossR.from, lossR.to)}
-                          </div>
-                          <div className={cn(strategyDataCell, "pr-0", rowBg)}>
-                            {tl} %
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
+                            <td
+                              className={cn(
+                                "py-2 pr-0.5 align-middle",
+                                INVEST_RADIO_COLUMN_CLASS,
+                              )}
+                            >
+                              <RadioGroup.Item value={String(i)}>
+                                <span className="sr-only">
+                                  {termMinutesLabel(offer.durationMin)}
+                                </span>
+                              </RadioGroup.Item>
+                            </td>
+                            <td className="py-2 pr-2 align-middle text-xs font-medium whitespace-nowrap">
+                              {termMinutesLabel(offer.durationMin)}
+                            </td>
+                            <td className="py-2 pr-2 align-middle tabular-nums whitespace-nowrap">
+                              {formatPercentDisplay(finalSuccess)} %
+                            </td>
+                            <td className="py-2 pr-2 align-middle tabular-nums whitespace-nowrap">
+                              {formatPercentRange(winR.from, winR.to)}
+                            </td>
+                            <td className="py-2 pr-2 align-middle tabular-nums whitespace-nowrap">
+                              {formatPercentDisplay(lcDisplay)} % / {lcMult}x
+                            </td>
+                            <td className="py-2 pr-2 align-middle tabular-nums whitespace-nowrap">
+                              {formatPercentRange(lossR.from, lossR.to)}
+                            </td>
+                            <td className="py-2 pr-0 align-middle tabular-nums whitespace-nowrap">
+                              {tl} %
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </div>
               </RadioGroup>
             </div>
