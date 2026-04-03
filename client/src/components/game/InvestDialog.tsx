@@ -74,6 +74,9 @@ const INVEST_RADIO_COLUMN_CLASS = "w-6 min-w-6 shrink-0";
 /** Same horizontal inset for strategy scroller and amount row; pl-2 limits clip while sitting a bit left of pl-3. */
 const INVEST_SECTION_INSET = "pl-1 pr-0";
 
+/** Inner grid lines only (no table outer frame). */
+const INVEST_TABLE_LINE = "border-muted-foreground/25";
+
 export default function InvestDialog({ open, onOpenChange }: Props) {
   const playTime = useGameStore((s) => s.playTime);
   const luck = useGameStore((s) => s.stats.luck);
@@ -234,36 +237,67 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                     INVEST_SECTION_INSET,
                   )}
                 >
-                  <table className="w-max border-collapse text-foreground">
+                  <table className="w-max border-collapse border-0 text-foreground">
                     <thead>
                       <tr className="text-left text-xs leading-tight">
                         <th
                           className={cn(
-                            "py-2 pr-0 align-bottom",
+                            "border-b py-2 pr-0 align-bottom",
                             INVEST_RADIO_COLUMN_CLASS,
+                            INVEST_TABLE_LINE,
                           )}
                           aria-hidden
                         />
-                        <th className="py-2 pl-0 pr-2 font-medium align-bottom">
+                        <th
+                          className={cn(
+                            "border-b border-l py-2 pl-0 pr-2 font-medium align-bottom",
+                            INVEST_TABLE_LINE,
+                          )}
+                        >
                           Duration
                         </th>
-                        <th className="py-2 pr-2 font-medium align-bottom">
+                        <th
+                          className={cn(
+                            "border-b border-l py-2 pr-2 font-medium align-bottom",
+                            INVEST_TABLE_LINE,
+                          )}
+                        >
                           Success
                           <br />
                           Chance
                         </th>
-                        <th className="py-2 pr-2 font-medium align-bottom">
+                        <th
+                          className={cn(
+                            "border-b border-l py-2 pr-2 font-medium align-bottom",
+                            INVEST_TABLE_LINE,
+                          )}
+                        >
                           Profit
                         </th>
-                        <th className="py-2 pr-2 font-medium align-bottom">
+                        <th
+                          className={cn(
+                            "border-b border-l py-2 pr-2 font-medium align-bottom",
+                            INVEST_TABLE_LINE,
+                          )}
+                        >
                           Lucky
                           <br />
                           Chance
                         </th>
-                        <th className="py-2 pr-2 font-medium align-bottom">
+                        <th
+                          className={cn(
+                            "border-b border-l py-2 pr-2 font-medium align-bottom",
+                            INVEST_TABLE_LINE,
+                          )}
+                        >
                           Loss
                         </th>
-                        <th className="py-2 pr-0 font-medium align-bottom">
+                        <th
+                          className={cn(
+                            "border-b border-l py-2 pr-0 font-medium align-bottom",
+                            INVEST_TABLE_LINE,
+                          )}
+                        >
                           Wipeout
                         </th>
                       </tr>
@@ -300,6 +334,8 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                               className={cn(
                                 "py-2 pr-0 align-middle",
                                 INVEST_RADIO_COLUMN_CLASS,
+                                i > 0 && "border-t",
+                                INVEST_TABLE_LINE,
                               )}
                             >
                               <RadioGroup.Item value={String(i)}>
@@ -308,22 +344,58 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                                 </span>
                               </RadioGroup.Item>
                             </td>
-                            <td className="py-2 pl-0 pr-2 align-middle text-xs font-medium whitespace-nowrap">
+                            <td
+                              className={cn(
+                                "border-l py-2 pl-0 pr-2 align-middle text-xs font-medium whitespace-nowrap",
+                                i > 0 && "border-t",
+                                INVEST_TABLE_LINE,
+                              )}
+                            >
                               {termMinutesLabel(offer.durationMin)}
                             </td>
-                            <td className="py-2 pr-2 align-middle tabular-nums whitespace-nowrap">
+                            <td
+                              className={cn(
+                                "border-l py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
+                                i > 0 && "border-t",
+                                INVEST_TABLE_LINE,
+                              )}
+                            >
                               {formatPercentDisplay(finalSuccess)} %
                             </td>
-                            <td className="py-2 pr-2 align-middle tabular-nums whitespace-nowrap">
+                            <td
+                              className={cn(
+                                "border-l py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
+                                i > 0 && "border-t",
+                                INVEST_TABLE_LINE,
+                              )}
+                            >
                               {formatPercentRange(winR.from, winR.to)}
                             </td>
-                            <td className="py-2 pr-2 align-middle tabular-nums whitespace-nowrap">
+                            <td
+                              className={cn(
+                                "border-l py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
+                                i > 0 && "border-t",
+                                INVEST_TABLE_LINE,
+                              )}
+                            >
                               {formatPercentDisplay(lcDisplay)} %
                             </td>
-                            <td className="py-2 pr-2 align-middle tabular-nums whitespace-nowrap">
+                            <td
+                              className={cn(
+                                "border-l py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
+                                i > 0 && "border-t",
+                                INVEST_TABLE_LINE,
+                              )}
+                            >
                               {formatPercentRange(lossR.from, lossR.to)}
                             </td>
-                            <td className="py-2 pr-0 align-middle tabular-nums whitespace-nowrap">
+                            <td
+                              className={cn(
+                                "border-l py-2 pr-0 align-middle tabular-nums whitespace-nowrap",
+                                i > 0 && "border-t",
+                                INVEST_TABLE_LINE,
+                              )}
+                            >
                               {tl} %
                             </td>
                           </tr>
