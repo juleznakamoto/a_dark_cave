@@ -215,25 +215,25 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                 onChange={setStrategy}
                 indicatorSizePx={INVEST_RADIO_INDICATOR_PX}
               >
-                <div className="overflow-x-auto pl-1">
-                  <table className="w-full min-w-[480px] border-collapse text-foreground">
+                <div className="overflow-x-auto pl-0">
+                  <table className="w-max max-w-full min-w-[400px] border-collapse text-foreground">
                     <thead>
                       <tr className="text-left text-xs leading-tight">
-                        <th className="w-8 min-w-8 py-2 pl-0 pr-1 font-medium" aria-hidden />
-                        <th className="py-2 pr-2 font-medium">Duration</th>
-                        <th className="py-2 pr-2 font-medium">
+                        <th className="w-7 min-w-7 py-2 pl-0 pr-0.5 font-medium" aria-hidden />
+                        <th className="py-2 pr-1 font-medium">Duration</th>
+                        <th className="py-2 pr-1 font-medium">
                           Success
                           <br />
                           Chance
                         </th>
-                        <th className="py-2 pr-2 font-medium">Profit</th>
-                        <th className="py-2 pr-2 font-medium">
+                        <th className="py-2 pr-1 font-medium">Profit</th>
+                        <th className="py-2 pr-1 font-medium">
                           Lucky
                           <br />
                           Chance
                         </th>
-                        <th className="py-2 pr-2 font-medium">Loss</th>
-                        <th className="py-2 pr-1 font-medium">Wipeout</th>
+                        <th className="py-2 pr-1 font-medium">Loss</th>
+                        <th className="py-2 pr-0 font-medium">Wipeout</th>
                       </tr>
                     </thead>
                     <tbody className="text-[11px] leading-snug">
@@ -260,27 +260,27 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             )}
                             onClick={() => setStrategy(String(i))}
                           >
-                            <td className="w-8 min-w-8 py-2 pl-0 pr-1 align-middle">
+                            <td className="w-7 min-w-7 py-2 pl-0 pr-0.5 align-middle">
                               <RadioGroup.Item value={String(i)}>
                                 <span className="sr-only">{termMinutesLabel(offer.durationMin)}</span>
                               </RadioGroup.Item>
                             </td>
-                            <td className="py-2 pr-2 align-middle text-xs font-medium">
+                            <td className="py-2 pr-1 align-middle text-xs font-medium whitespace-nowrap">
                               {termMinutesLabel(offer.durationMin)}
                             </td>
-                            <td className="py-2 pr-2 align-middle tabular-nums">
+                            <td className="py-2 pr-1 align-middle tabular-nums whitespace-nowrap">
                               {formatPercentDisplay(finalSuccess)} %
                             </td>
-                            <td className="py-2 pr-2 align-middle tabular-nums">
+                            <td className="py-2 pr-1 align-middle tabular-nums whitespace-nowrap">
                               {winR.from} % – {winR.to} %
                             </td>
-                            <td className="py-2 pr-2 align-middle tabular-nums">
+                            <td className="py-2 pr-1 align-middle tabular-nums whitespace-nowrap">
                               {formatPercentDisplay(lcDisplay)} % / {lcMult}x
                             </td>
-                            <td className="py-2 pr-2 align-middle tabular-nums">
+                            <td className="py-2 pr-1 align-middle tabular-nums whitespace-nowrap">
                               {lossR.from} % – {lossR.to} %
                             </td>
-                            <td className="py-2 pr-1 align-middle tabular-nums">{tl} %</td>
+                            <td className="py-2 pr-0 align-middle tabular-nums whitespace-nowrap">{tl} %</td>
                           </tr>
                         );
                       })}
