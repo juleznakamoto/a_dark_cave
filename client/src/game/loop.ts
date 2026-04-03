@@ -1,4 +1,10 @@
-import { useGameStore, StateManager, isModalDialogOpen } from "./state";
+import {
+  useGameStore,
+  StateManager,
+  isModalDialogOpen,
+  syncTimedEventTabPauseTracking,
+  getTimedEventTabEffectiveRemainingMs,
+} from "./state";
 import { saveGame } from "./save";
 import { GameState } from "@shared/schema";
 import {
@@ -516,9 +522,13 @@ export function startGameLoop() {
 }
 
 export function clearExpiredTimedEventTab() {
+  syncTimedEventTabPauseTracking();
   const state = useGameStore.getState();
   if (!state.timedEventTab.isActive || !state.timedEventTab.expiryTime) return;
-  if (state.timedEventTab.expiryTime > Date.now()) return;
+  if (state.isPaused || isModalDialogOpen(state)) return;
+
+  const remaining = getTimedEventTabEffectiveRemainingMs(state);
+  if (remaining == null || remaining > 0) return;
 
   const ev = state.timedEventTab.event;
   /** Keep the timed tab while the dice UI is open — including the outcome screen after `outcome` is set — so the panel/dialog stay mounted until the player closes and `onClose` clears `gamblerGame`. */

@@ -9,16 +9,16 @@ describe('Game Loop Production', () => {
 
   it('should produce resources based on villager assignments', async () => {
     const store = useGameStore.getState();
-    
+
     // Assign gatherers
     store.updateResource('free' as any, 5);
     store.assignVillager('gatherer');
     store.assignVillager('gatherer');
-    
+
     // Simulate production tick
     const { getPopulationProduction } = await import('./population');
     const production = getPopulationProduction('gatherer', 2, store);
-    
+
     expect(production.length).toBeGreaterThan(0);
     // Gatherers produce wood and stone, not food
     expect(production.some(p => p.resource === 'wood' || p.resource === 'stone')).toBe(true);
@@ -26,23 +26,23 @@ describe('Game Loop Production', () => {
 
   it('should handle starvation when food runs out', async () => {
     const store = useGameStore.getState();
-    
+
     // Set up starvation scenario
     store.updateResource('free' as any, 10);
     store.setFlag('starvationActive', true);
     store.updateResource('food', -999); // No food
 
     const initialPopulation = Object.values(store.villagers).reduce((sum, v) => sum + v, 0);
-    
+
     // Simulate starvation check (would be called by game loop)
     // Note: This would require extracting the starvation logic to a testable function
-    
+
     expect(store.resources.food).toBe(0);
   });
 
   it('should pause production when dialogs are open', () => {
     const store = useGameStore.getState();
-    
+
     // Set event dialog without triggering sound
     store.setEventDialog(true, {
       id: 'test-event',
@@ -134,5 +134,40 @@ describe('Game Loop Production', () => {
     expect(s.timedEventTab.isActive).toBe(true);
     expect(s.timedEventTab.event).toEqual(gamblerEvent);
     expect(s.gamblerGame?.outcome).toBe("lose");
+  });
+
+  it("does not clear timed tab when raw expiry passed but pause credit extends the deadline", () => {
+    const mockEvent = {
+      id: "test-event",
+      eventId: "test-event",
+      message: "Test event",
+      title: "Test Event",
+      type: "event" as const,
+      choices: [{ id: "choice1", label: "Choice 1", effect: () => ({}) }],
+      fallbackChoice: { id: "choice1", label: "Choice 1", effect: () => ({}) },
+    };
+
+    const applySpy = vi.spyOn(useGameStore.getState(), "applyEventChoice");
+
+    const now = Date.now();
+    useGameStore.setState({
+      timedEventTab: {
+        isActive: true,
+        event: mockEvent,
+        expiryTime: now - 60_000,
+        startTime: now - 62_000,
+        pauseAccumMs: 120_000,
+        pauseStartedAt: 0,
+      },
+    });
+
+    clearExpiredTimedEventTab();
+
+    const s = useGameStore.getState();
+    expect(s.timedEventTab.isActive).toBe(true);
+    expect(s.timedEventTab.event).toEqual(mockEvent);
+    expect(applySpy).not.toHaveBeenCalled();
+
+    applySpy.mockRestore();
   });
 });

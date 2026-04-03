@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 import React from "react";
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import TimedEventPanel from "./TimedEventPanel";
 import { useGameStore } from "@/game/state";
@@ -68,6 +68,7 @@ describe("TimedEventPanel gambler coverage", () => {
   beforeEach(() => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-03-21T12:00:00Z"));
+    vi.clearAllTimers();
 
     Object.defineProperty(window, "matchMedia", {
       writable: true,
@@ -96,7 +97,11 @@ describe("TimedEventPanel gambler coverage", () => {
   });
 
   afterEach(() => {
-    vi.runOnlyPendingTimers();
+    cleanup();
+    // Drop pending fake timers before restoring real timers so deferred work (e.g. gambler
+    // departure `setTimeout(200)` opening `eventDialog`) is not migrated onto the real clock
+    // and cannot fire during the next test while `setTimedEventTab` is mocked.
+    vi.clearAllTimers();
     vi.useRealTimers();
   });
 

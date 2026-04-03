@@ -184,6 +184,14 @@ interface GameStore extends GameState {
     startTime?: number;
     /** Gambler only: plays left this visit; set when tab opens, decremented on resolved dismiss. Stops Accept from re-granting bone-dice quota after gamblerGame is cleared. */
     gamblerRoundsRemaining?: number;
+    /**
+     * Countdown pause tracking (game pause + blocking modals). Matches TimedEventPanel / loop expiry:
+     * remaining = expiryTime + pauseAccumMs - (pauseStartedAt || now).
+     * Not persisted; reset on load and when activating a new timed tab.
+     */
+    pauseAccumMs?: number;
+    /** Wall time when the current pause segment started; 0 while the countdown is running. */
+    pauseStartedAt?: number;
   };
 
   // Merchant trades state
@@ -989,8 +997,8 @@ export class StateManager {
 }
 
 /**
- * True while any blocking modal is open — simulation should freeze (loop, attack-wave timers, etc.).
- * When adding a new blocking dialog, add its flag here only.
+ * True while any blocking modal is open — simulation should freeze (loop, attack-wave timers, timed-event tab
+ * countdown, etc.). When adding a new blocking dialog, add its flag here only.
  */
 export function isModalDialogOpen(state: GameStore): boolean {
   return (
@@ -1847,13 +1855,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
         savedState.gameId ??
         `game-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 
-      const timedEventTab =
+      const rawTimedEventTab =
         (savedState as { timedEventTab?: GameStore["timedEventTab"] })
           .timedEventTab ?? {
           isActive: false,
           event: null,
           expiryTime: 0,
         };
+      const timedEventTab = {
+        ...rawTimedEventTab,
+        pauseAccumMs: 0,
+        pauseStartedAt: 0,
+      };
       const gamblerGameForResume =
         savedState.gamblerGame !== undefined
           ? savedState.gamblerGame
@@ -2544,6 +2557,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
           event: event || null, // Don't store choices in event
           expiryTime: duration ? Date.now() + duration : 0,
           startTime: Date.now(),
+          pauseAccumMs: 0,
+          pauseStartedAt: 0,
         },
         merchantTrades: {
           choices, // SSOT: Use the choices that were already generated
@@ -2564,6 +2579,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
             event: null,
             expiryTime: 0,
             startTime: undefined,
+            pauseAccumMs: 0,
+            pauseStartedAt: 0,
           },
           merchantTrades: {
             choices: [],
@@ -2601,6 +2618,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
             event: event || null,
             expiryTime: isActive && duration ? Date.now() + duration : 0,
             startTime: isActive ? Date.now() : undefined,
+            pauseAccumMs: 0,
+            pauseStartedAt: 0,
             ...(gamblerRoundsRemaining != null && { gamblerRoundsRemaining }),
           },
         };
@@ -2914,3 +2933,51 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }));
   },
 }));
+
+/**
+ * Updates `timedEventTab.pauseAccumMs` / `pauseStartedAt` from game pause + blocking modals.
+ * Call before reading effective remaining time (panel timer, clearExpiredTimedEventTab).
+ */
+export function syncTimedEventTabPauseTracking(): void {
+  const state = useGameStore.getState();
+  const tab = state.timedEventTab;
+  if (!tab.isActive || !tab.expiryTime) return;
+
+  const frozen = state.isPaused || isModalDialogOpen(state);
+  const pauseAccumMs = tab.pauseAccumMs ?? 0;
+  const pauseStartedAt = tab.pauseStartedAt ?? 0;
+  const now = Date.now();
+
+  if (frozen) {
+    if (pauseStartedAt === 0) {
+      useGameStore.setState((s) => ({
+        timedEventTab: {
+          ...s.timedEventTab,
+          pauseAccumMs: s.timedEventTab.pauseAccumMs ?? 0,
+          pauseStartedAt: now,
+        },
+      }));
+    }
+  } else if (pauseStartedAt > 0) {
+    const added = now - pauseStartedAt;
+    useGameStore.setState((s) => ({
+      timedEventTab: {
+        ...s.timedEventTab,
+        pauseAccumMs: (s.timedEventTab.pauseAccumMs ?? 0) + added,
+        pauseStartedAt: 0,
+      },
+    }));
+  }
+}
+
+/** Effective ms left on the timed tab after pause extension; null if tab inactive. */
+export function getTimedEventTabEffectiveRemainingMs(state: GameStore): number | null {
+  const tab = state.timedEventTab;
+  if (!tab.isActive || !tab.expiryTime) return null;
+  const pauseAccumMs = tab.pauseAccumMs ?? 0;
+  const pauseStartedAt = tab.pauseStartedAt ?? 0;
+  if (pauseStartedAt > 0) {
+    return Math.max(0, tab.expiryTime + pauseAccumMs - pauseStartedAt);
+  }
+  return Math.max(0, tab.expiryTime + pauseAccumMs - Date.now());
+}

@@ -1,5 +1,16 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
-import { useGameStore } from "@/game/state";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import {
+  useGameStore,
+  isModalDialogOpen,
+  syncTimedEventTabPauseTracking,
+  getTimedEventTabEffectiveRemainingMs,
+} from "@/game/state";
 import { Button } from "@/components/ui/button";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { merchantTooltip } from "@/game/rules/tooltips";
@@ -46,18 +57,26 @@ export default function TimedEventPanel() {
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
   const [safetyTimeRemaining, setSafetyTimeRemaining] = useState<number>(0);
   const lastLoggedEventId = useRef<string | null>(null);
-  const pauseStartRef = useRef<number>(0);
-  const totalPausedMsRef = useRef<number>(0);
 
   // Gambler dialog state
   const [gamblerDialogOpen, setGamblerDialogOpen] = useState(false);
   /** Bumped when bone dice advances to the next round while the dialog stays open — remounts dialog so hydrate effect runs (isOpen alone does not change). */
   const [gamblerDialogRoundKey, setGamblerDialogRoundKey] = useState(0);
 
+  /** Keep `gamblerDiceDialogOpen` in sync in the same turn as local state so `isModalDialogOpen` and the timed-tab timer do not race a frame behind the visible dice UI. */
+  const openGamblerDiceDialog = useCallback(() => {
+    setGamblerDialogOpen(true);
+    setGamblerDiceDialogOpen(true);
+  }, [setGamblerDiceDialogOpen]);
+
+  const closeGamblerDiceDialog = useCallback(() => {
+    setGamblerDialogOpen(false);
+    setGamblerDiceDialogOpen(false);
+  }, [setGamblerDiceDialogOpen]);
+
   useEffect(() => {
-    setGamblerDiceDialogOpen(gamblerDialogOpen);
     return () => setGamblerDiceDialogOpen(false);
-  }, [gamblerDialogOpen, setGamblerDiceDialogOpen]);
+  }, [setGamblerDiceDialogOpen]);
 
   // Get merchant trades from state (generated once when event starts)
   const isMerchantEvent = timedEventTab.event?.id.split("-")[0] === "merchant";
@@ -131,31 +150,21 @@ export default function TimedEventPanel() {
     }
 
     const event = timedEventTab.event;
-    const expiryTime = timedEventTab.expiryTime;
     const startTime = timedEventTab.startTime || Date.now();
     const safetyEndTime = startTime + 1000;
-    pauseStartRef.current = 0;
-    totalPausedMsRef.current = 0;
     /** Interval keeps firing at 0:00; expiry side-effects must run only once per event. */
     let expiryHandled = false;
 
     const updateTimer = () => {
+      syncTimedEventTabPauseTracking();
       const st = useGameStore.getState();
-      const gamblerDialogPausesTimer =
-        event.id.split("-")[0] === "gambler" && st.gamblerDiceDialogOpen;
-      const isPaused = st.isPaused || gamblerDialogPausesTimer;
+      const isPaused = st.isPaused || isModalDialogOpen(st);
       if (isPaused) {
-        if (pauseStartRef.current === 0) {
-          pauseStartRef.current = Date.now();
-        }
         return;
-      } else if (pauseStartRef.current > 0) {
-        totalPausedMsRef.current += Date.now() - pauseStartRef.current;
-        pauseStartRef.current = 0;
       }
 
       const now = Date.now();
-      const remaining = Math.max(0, expiryTime + totalPausedMsRef.current - now);
+      const remaining = getTimedEventTabEffectiveRemainingMs(st) ?? 0;
       const safetyRemaining = Math.max(0, safetyEndTime - now);
 
       setTimeRemaining(remaining);
@@ -179,6 +188,7 @@ export default function TimedEventPanel() {
         ) {
           gamblerMidRoundForfeitHandled = true;
           setGamblerDialogOpen(false);
+          useGameStore.getState().setGamblerDiceDialogOpen(false);
           useGameStore.setState((state) => {
             const w = gg.wager ?? 0;
             const gold = state.resources?.gold ?? 0;
@@ -202,6 +212,7 @@ export default function TimedEventPanel() {
         } else if (gamblerPrefix && gg?.outcome != null) {
           // Timer ran out on the outcome screen — close UI, clear marker (economics already done).
           setGamblerDialogOpen(false);
+          useGameStore.getState().setGamblerDiceDialogOpen(false);
           useGameStore.setState({ gamblerGame: null });
         }
 
@@ -308,7 +319,7 @@ export default function TimedEventPanel() {
         if (gameState.timedEventTab?.gamblerRoundsRemaining === 0) {
           return;
         }
-        setGamblerDialogOpen(true);
+        openGamblerDiceDialog();
       } else {
         setTimedEventTab(false);
       }
@@ -894,7 +905,7 @@ export default function TimedEventPanel() {
 
               showGamblerDepartureDialog = !practiceRound && next === 0;
             }
-            setGamblerDialogOpen(false);
+            closeGamblerDiceDialog();
             useGameStore.setState((s) =>
               s.gamblerGame ? { gamblerGame: null } : {},
             );

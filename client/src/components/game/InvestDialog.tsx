@@ -74,7 +74,7 @@ const INVEST_RADIO_COLUMN_CLASS = "w-6 min-w-6 shrink-0";
 /** Same horizontal inset for strategy scroller and amount row; pl-2 limits clip while sitting a bit left of pl-3. */
 const INVEST_SECTION_INSET = "pl-1 pr-0";
 
-/** Inner grid lines only (no table outer frame). */
+/** Horizontal rules only (no vertical lines, no table outer frame). */
 const INVEST_TABLE_LINE = "border-muted-foreground/25";
 
 export default function InvestDialog({ open, onOpenChange }: Props) {
@@ -250,7 +250,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                         />
                         <th
                           className={cn(
-                            "border-b border-l py-2 pl-0 pr-2 font-medium align-bottom",
+                            "border-b py-2 pl-0 pr-2 font-medium align-bottom",
                             INVEST_TABLE_LINE,
                           )}
                         >
@@ -258,7 +258,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                         </th>
                         <th
                           className={cn(
-                            "border-b border-l py-2 pr-2 font-medium align-bottom",
+                            "border-b py-2 pr-2 font-medium align-bottom",
                             INVEST_TABLE_LINE,
                           )}
                         >
@@ -268,7 +268,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                         </th>
                         <th
                           className={cn(
-                            "border-b border-l py-2 pr-2 font-medium align-bottom",
+                            "border-b py-2 pr-2 font-medium align-bottom",
                             INVEST_TABLE_LINE,
                           )}
                         >
@@ -276,7 +276,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                         </th>
                         <th
                           className={cn(
-                            "border-b border-l py-2 pr-2 font-medium align-bottom",
+                            "border-b py-2 pr-2 font-medium align-bottom",
                             INVEST_TABLE_LINE,
                           )}
                         >
@@ -286,7 +286,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                         </th>
                         <th
                           className={cn(
-                            "border-b border-l py-2 pr-2 font-medium align-bottom",
+                            "border-b py-2 pr-2 font-medium align-bottom",
                             INVEST_TABLE_LINE,
                           )}
                         >
@@ -294,7 +294,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                         </th>
                         <th
                           className={cn(
-                            "border-b border-l py-2 pr-0 font-medium align-bottom",
+                            "border-b py-2 pr-0 font-medium align-bottom",
                             INVEST_TABLE_LINE,
                           )}
                         >
@@ -346,7 +346,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             </td>
                             <td
                               className={cn(
-                                "border-l py-2 pl-0 pr-2 align-middle text-xs font-medium whitespace-nowrap",
+                                "py-2 pl-0 pr-2 align-middle text-xs font-medium whitespace-nowrap",
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
@@ -355,7 +355,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             </td>
                             <td
                               className={cn(
-                                "border-l py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
+                                "py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
@@ -364,7 +364,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             </td>
                             <td
                               className={cn(
-                                "border-l py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
+                                "py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
@@ -373,7 +373,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             </td>
                             <td
                               className={cn(
-                                "border-l py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
+                                "py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
@@ -382,7 +382,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             </td>
                             <td
                               className={cn(
-                                "border-l py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
+                                "py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
@@ -391,7 +391,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             </td>
                             <td
                               className={cn(
-                                "border-l py-2 pr-0 align-middle tabular-nums whitespace-nowrap",
+                                "py-2 pr-0 align-middle tabular-nums whitespace-nowrap",
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
