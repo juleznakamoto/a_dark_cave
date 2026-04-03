@@ -5,16 +5,10 @@ export type InvestmentDurationMin = 5 | 15 | 30;
 
 const DURATION_ORDER: InvestmentDurationMin[] = [5, 15, 30];
 
-/**
- * Index into per-duration tables. Handles legacy persisted minutes `10` / `60`
- * (and safe fallbacks) so older saves do not yield `-1` and break table lookups.
- */
+/** Index 0..2 for duration slots `5` / `15` / `30` minutes. */
 export function durationIndex(durationMin: number): number {
-  const i = (DURATION_ORDER as readonly number[]).indexOf(durationMin);
-  if (i !== -1) return i;
-  if (durationMin === 10) return 0;
-  if (durationMin === 60) return 2;
-  return 0;
+  const i = DURATION_ORDER.indexOf(durationMin as InvestmentDurationMin);
+  return i !== -1 ? i : 0;
 }
 
 /** Success chance % before luck; [tier][durationIndex] */
@@ -184,11 +178,9 @@ export function getInvestmentDurationScale(): number {
   return import.meta.env.DEV ? 1 / 20 : 1;
 }
 
-/** Wall-clock length of a nominal duration; maps legacy `10`/`60` minutes to current slot lengths. */
+/** Wall-clock length of a nominal duration in minutes (5 / 15 / 30). */
 export function nominalDurationToPlayTimeMs(durationMin: number): number {
-  const m =
-    durationMin === 10 ? 5 : durationMin === 60 ? 30 : durationMin;
-  return m * 60 * 1000 * getInvestmentDurationScale();
+  return durationMin * 60 * 1000 * getInvestmentDurationScale();
 }
 
 /** Production: 30 min between waves after an investment completes. Dev: 30 s. */
@@ -223,40 +215,6 @@ export function isInvestmentWaveReadyForUi(state: {
   if (state.playTime < ih.nextWavePlayTime) return false;
   if (ih.offers.length < 3) return false;
   return true;
-}
-
-/**
- * Rewrites pre–5/15/30 saves (`10` / `30` / `60` minute slots) so offers and `active`
- * match the current schema. If any `10` or `60` appears, every `30` is treated as the old middle slot → `15`.
- */
-export function normalizeInvestmentHallState(
-  ih: GameState["investmentHallState"],
-): GameState["investmentHallState"] {
-  const durs: number[] = [
-    ...ih.offers.map((o) => o.durationMin as number),
-    ...(ih.active ? [ih.active.durationMin as number] : []),
-  ];
-  const hasLegacy = durs.some((d) => d === 10 || d === 60);
-  if (!hasLegacy) return ih;
-
-  const mapDur = (d: number): InvestmentDurationMin => {
-    if (d === 10) return 5;
-    if (d === 30) return 15;
-    if (d === 60) return 30;
-    if (d === 5 || d === 15 || d === 30) return d;
-    return 5;
-  };
-
-  return {
-    ...ih,
-    offers: ih.offers.map((o) => ({
-      ...o,
-      durationMin: mapDur(o.durationMin),
-    })),
-    active: ih.active
-      ? { ...ih.active, durationMin: mapDur(ih.active.durationMin) }
-      : null,
-  };
 }
 
 export type InvestmentActive = NonNullable<

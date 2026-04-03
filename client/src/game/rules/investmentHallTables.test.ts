@@ -132,8 +132,8 @@ describe("randomIntInclusive", () => {
 describe("commitInvestmentRolls", () => {
   it("success path uses integer win and Lucky Chance ×4", () => {
     let n = 0;
-    // 0.3*100=30 < 60 success; win int floor(0.5*11)=5; 0.01*100=1 < 2 Lucky Chance
-    const rng = () => [0.3, 0.5, 0.01][n++] ?? 0;
+    // success: 30 < 65; win int in [1,10] with 0.5 → 6; lucky 0.005*100 < 1% base → hit
+    const rng = () => [0.3, 0.5, 0.005][n++] ?? 0;
     const r = commitInvestmentRolls({
       playTime: 0,
       amountGold: 100,
@@ -144,10 +144,10 @@ describe("commitInvestmentRolls", () => {
     });
     expect(r.ok).toBe(true);
     expect(r.active.success).toBe(true);
-    expect(r.active.winPercentInt).toBe(5);
+    expect(r.active.winPercentInt).toBe(6);
     expect(r.active.luckyChanceHit).toBe(true);
-    expect(r.active.effectiveWinPercent).toBe(20);
-    expect(r.active.payoutGold).toBe(120);
+    expect(r.active.effectiveWinPercent).toBe(24);
+    expect(r.active.payoutGold).toBe(124);
   });
 
   it("failure total loss when roll below threshold", () => {
@@ -169,8 +169,8 @@ describe("commitInvestmentRolls", () => {
   it("Bank lucky bonus (+1%) widens Lucky Chance roll vs coinhouse only", () => {
     const makeRng = () => {
       let n = 0;
-      // Lucky Chance roll: 0.02 * 100 = 2 → 2 < 2 false with 0 bonus; 2 < 3 true with +1
-      return () => [0.3, 0.5, 0.02][n++] ?? 0;
+      // Tier A base Lucky 1%: 1.5 < 1 false (miss); +1% → 2%: 1.5 < 2 true (hit)
+      return () => [0.3, 0.5, 0.015][n++] ?? 0;
     };
     const coinhouseOnly = commitInvestmentRolls({
       playTime: 0,
