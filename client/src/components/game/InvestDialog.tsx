@@ -77,9 +77,6 @@ const INVEST_SECTION_INSET = "pl-1 pr-0";
 /** Horizontal rules only (no vertical lines, no table outer frame). */
 const INVEST_TABLE_LINE = "border-muted-foreground/25";
 
-/** Matches resource value styling in the side panel (`font-mono`). */
-const INVEST_TABLE_NUMBERS_CLASS = "font-mono tabular-nums";
-
 export default function InvestDialog({ open, onOpenChange }: Props) {
   const playTime = useGameStore((s) => s.playTime);
   const luck = useGameStore((s) => s.stats.luck);
@@ -346,7 +343,6 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             <td
                               className={cn(
                                 "py-2 pl-0 pr-2 align-middle text-xs font-medium whitespace-nowrap",
-                                INVEST_TABLE_NUMBERS_CLASS,
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
@@ -355,8 +351,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             </td>
                             <td
                               className={cn(
-                                "py-2 pr-2 align-middle whitespace-nowrap",
-                                INVEST_TABLE_NUMBERS_CLASS,
+                                "py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
@@ -365,8 +360,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             </td>
                             <td
                               className={cn(
-                                "py-2 pr-2 align-middle whitespace-nowrap",
-                                INVEST_TABLE_NUMBERS_CLASS,
+                                "py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
@@ -375,8 +369,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             </td>
                             <td
                               className={cn(
-                                "py-2 pr-2 align-middle whitespace-nowrap",
-                                INVEST_TABLE_NUMBERS_CLASS,
+                                "py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
@@ -385,8 +378,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             </td>
                             <td
                               className={cn(
-                                "py-2 pr-2 align-middle whitespace-nowrap",
-                                INVEST_TABLE_NUMBERS_CLASS,
+                                "py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
@@ -395,8 +387,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             </td>
                             <td
                               className={cn(
-                                "py-2 pr-0 align-middle whitespace-nowrap",
-                                INVEST_TABLE_NUMBERS_CLASS,
+                                "py-2 pr-0 align-middle tabular-nums whitespace-nowrap",
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}

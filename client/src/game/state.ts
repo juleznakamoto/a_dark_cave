@@ -999,6 +999,8 @@ export class StateManager {
 /**
  * True while any blocking modal is open — simulation should freeze (loop, attack-wave timers, timed-event tab
  * countdown, etc.). When adding a new blocking dialog, add its flag here only.
+ * `inactivityDialogOpen` is included for the same pause semantics; the inactivity path also stops the rAF loop
+ * separately to reduce idle CPU.
  */
 export function isModalDialogOpen(state: GameStore): boolean {
   return (
@@ -1011,6 +1013,7 @@ export function isModalDialogOpen(state: GameStore): boolean {
     state.fullGamePurchaseDialogOpen ||
     state.idleModeDialog.isOpen ||
     state.restartGameDialogOpen ||
+    state.inactivityDialogOpen ||
     state.rewardDialog.isOpen ||
     state.investmentResultDialog.isOpen ||
     state.madnessDialog.isOpen ||
