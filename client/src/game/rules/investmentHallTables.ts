@@ -174,8 +174,9 @@ export function getSuccessChancePercent(
   return clampSuccessChance(base + getLuckWinChanceBonus(luck));
 }
 
+/** Dev: wall-clock investment length is nominal minutes ÷ 40 (40× faster than prod). */
 export function getInvestmentDurationScale(): number {
-  return import.meta.env.DEV ? 1 / 20 : 1;
+  return import.meta.env.DEV ? 1 / 40 : 1;
 }
 
 /** Wall-clock length of a nominal duration in minutes (5 / 15 / 30). */
