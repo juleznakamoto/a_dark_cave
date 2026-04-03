@@ -533,6 +533,29 @@ export const detectRewards = (
   return rewards;
 };
 
+/** True if a detectRewards payload includes any gain (not losses-only). Gates RewardDialog. */
+export const rewardPayloadHasPositiveChanges = (
+  rewards: ReturnType<typeof detectRewards>,
+): boolean =>
+  Object.entries(rewards).some(([key, value]) => {
+    if (
+      key === "resourceLosses" ||
+      key === "villagersLost" ||
+      key === "relicsLost" ||
+      key === "clothingLost" ||
+      !value
+    ) {
+      return false;
+    }
+    if (typeof value === "number" && value > 0) {
+      return true;
+    }
+    if (Array.isArray(value)) {
+      return value.length > 0;
+    }
+    return typeof value === "object" && Object.keys(value).length > 0;
+  });
+
 const detectMadnessChange = (
   stateUpdates: Partial<GameState>,
   currentState: GameState,
@@ -1337,7 +1360,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // This allows us to extract and remove success log entries before they're added to the event log
     if (rewardDialogActions.has(actionId)) {
       const rewards = detectRewards(result.stateUpdates, state, actionId);
-      if (rewards && Object.keys(rewards).length > 0) {
+      if (rewards && rewardPayloadHasPositiveChanges(rewards)) {
         // Extract success log from either _logMessage in stateUpdates or from logEntries
         let successLog: string | undefined = (result.stateUpdates as any)._logMessage;
 
@@ -2278,46 +2301,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     if (!combatData) {
       const rewards = detectRewards(updatedChanges, state, eventId, { trackLosses: true });
-      const hasResourceLosses =
-        !!rewards.resourceLosses &&
-        Object.keys(rewards.resourceLosses).length > 0;
-      const hasVillagersLost =
-        typeof rewards.villagersLost === "number" && rewards.villagersLost > 0;
-      const hasRelicsLost = (rewards.relicsLost?.length ?? 0) > 0;
-      const hasClothingLost = (rewards.clothingLost?.length ?? 0) > 0;
-      const hasLosses =
-        hasResourceLosses ||
-        hasVillagersLost ||
-        hasRelicsLost ||
-        hasClothingLost;
-      const hasRewards = Object.entries(rewards).some(([key, value]) => {
-        if (
-          key === "resourceLosses" ||
-          key === "villagersLost" ||
-          key === "relicsLost" ||
-          key === "clothingLost" ||
-          !value
-        ) {
-          return false;
-        }
-        if (typeof value === "number" && value > 0) {
-          return true;
-        }
-        if (Array.isArray(value)) {
-          return value.length > 0;
-        }
-        return typeof value === "object" && Object.keys(value).length > 0;
-      });
+      const hasRewards = rewardPayloadHasPositiveChanges(rewards);
       const successLog = logMessage || undefined;
-      const hasAnyOutcome = hasRewards || hasLosses;
       const isMerchantEvent = eventId === "merchant" || eventId?.startsWith?.("merchant-");
       const isCubeDiscoveryEvent = eventId === "cubeDiscovery";
+      const isFeastEvent = eventId?.startsWith?.("feast");
 
-      if (hasAnyOutcome && !isMerchantEvent && !isCubeDiscoveryEvent) {
+      if (hasRewards && !isMerchantEvent && !isCubeDiscoveryEvent && !isFeastEvent) {
         rewardDialogData = {
           rewards,
           successLog,
-          variant: hasRewards ? "success" : "loss",
+          variant: "success",
         };
         shouldShowRewardDialog = true;
       }
@@ -2332,8 +2326,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
 
       // Only clear logMessage when it will be shown in reward or madness dialog.
-      // For events that suppress the reward dialog (cubeDiscovery, merchant)
-      // but have hasAnyOutcome, we must keep logMessage so the narrative dialog can show it.
+      // For events that suppress the reward dialog (cubeDiscovery, merchant, feast)
+      // but have outcomes, we must keep logMessage so the narrative dialog can show it.
       if (shouldShowRewardDialog || shouldShowMadnessDialog) {
         logMessage = null;
       }
@@ -2365,7 +2359,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       return;
     }
 
-    // Show reward dialog for village attack events if rewards were detected
+    // Show reward dialog when the choice included positive gains
     if (shouldShowRewardDialog && rewardDialogData) {
       get().setEventDialog(false);
       setTimeout(() => {

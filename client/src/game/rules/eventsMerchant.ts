@@ -822,7 +822,7 @@ const toolTrades = [
       return false;
     },
     costs: [{ resource: "gold", amounts: [200] }],
-    message: "You drink the Elixir of Clarity. Your mind feels clearer.",
+    message: "You drink the Elixir of Clarity. Your mind feels lighter.",
   },
 ];
 
