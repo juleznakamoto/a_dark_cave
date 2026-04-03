@@ -67,8 +67,11 @@ const AMOUNT_UNLOCK_TOOLTIP = (
   <span className="text-xs">Unlocks at higher building level</span>
 );
 
-/** Matches strategy grid radio column so amount radios line up vertically. */
+/** Fixed width for strategy table radio column (disc + ring). */
 const INVEST_RADIO_COLUMN_CLASS = "w-7 min-w-7 shrink-0";
+
+/** Same horizontal inset for strategy table scroller and amount row so radios line up; padding avoids overflow-x clipping the disc. */
+const INVEST_SECTION_INSET = "pl-3 pr-2";
 
 export default function InvestDialog({ open, onOpenChange }: Props) {
   const playTime = useGameStore((s) => s.playTime);
@@ -223,7 +226,12 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                 onChange={setStrategy}
                 indicatorSizePx={INVEST_RADIO_INDICATOR_PX}
               >
-                <div className="overflow-x-auto pl-0">
+                <div
+                  className={cn(
+                    "overflow-x-auto overflow-y-visible min-w-0",
+                    INVEST_SECTION_INSET,
+                  )}
+                >
                   <table className="w-max max-w-full min-w-0 border-collapse text-foreground">
                     <thead>
                       <tr className="text-left text-xs leading-tight">
@@ -332,8 +340,12 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                 onChange={setAmountStr}
                 indicatorSizePx={INVEST_RADIO_INDICATOR_PX}
               >
-                <div className="flex flex-row flex-wrap items-center gap-x-6 gap-y-2">
-                  <div className={INVEST_RADIO_COLUMN_CLASS} aria-hidden />
+                <div
+                  className={cn(
+                    "flex flex-row flex-wrap items-center justify-start gap-x-6 gap-y-2",
+                    INVEST_SECTION_INSET,
+                  )}
+                >
                   {amounts.map((a) => {
                     const disabled = a > maxStake;
                     const labelClass = disabled

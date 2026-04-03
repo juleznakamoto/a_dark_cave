@@ -739,7 +739,8 @@ const mergeStateUpdates = (
     stateUpdates.weapons ||
     stateUpdates.clothing ||
     stateUpdates.relics ||
-    stateUpdates.books
+    stateUpdates.books ||
+    stateUpdates.buildings
   ) {
     const tempState = { ...prevState, ...merged };
     merged.effects = calculateTotalEffects(tempState);
@@ -1420,13 +1421,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
       });
     }
 
-    // Schedule updates
+    // Schedule updates (buildings affect derived effects/stats, e.g. madness from shrines)
     if (
       result.stateUpdates.tools ||
       result.stateUpdates.weapons ||
       result.stateUpdates.clothing ||
       result.stateUpdates.relics ||
-      result.stateUpdates.books
+      result.stateUpdates.books ||
+      result.stateUpdates.buildings
     ) {
       StateManager.scheduleEffectsUpdate(get);
     }
