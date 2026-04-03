@@ -77,6 +77,9 @@ const INVEST_SECTION_INSET = "pl-1 pr-0";
 /** Horizontal rules only (no vertical lines, no table outer frame). */
 const INVEST_TABLE_LINE = "border-muted-foreground/25";
 
+/** Matches resource value styling in the side panel (`font-mono`). */
+const INVEST_TABLE_NUMBERS_CLASS = "font-mono tabular-nums";
+
 export default function InvestDialog({ open, onOpenChange }: Props) {
   const playTime = useGameStore((s) => s.playTime);
   const luck = useGameStore((s) => s.stats.luck);
@@ -166,7 +169,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
           <span className="text-foreground font-medium">Duration</span>: How long the investment runs.
         </li>
         <li>
-          <span className="text-foreground font-medium">Success Chance</span>: Chance of a
+          <span className="text-foreground font-medium">Success %</span>: Chance of a
           successful investment.
         </li>
         <li>
@@ -180,7 +183,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
           <span className="text-foreground font-medium">Loss</span>: The portion of your investment you lose in case of failure.
         </li>
         <li>
-          <span className="text-foreground font-medium">Wipeout</span>: Chance to lose your entire
+          <span className="text-foreground font-medium">Wipeout %</span>: Chance to lose your entire
           investment in case of failure.
         </li>
         <li>
@@ -262,9 +265,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             INVEST_TABLE_LINE,
                           )}
                         >
-                          Success
-                          <br />
-                          Chance
+                          Success %
                         </th>
                         <th
                           className={cn(
@@ -280,9 +281,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             INVEST_TABLE_LINE,
                           )}
                         >
-                          Lucky
-                          <br />
-                          Chance
+                          Lucky %
                         </th>
                         <th
                           className={cn(
@@ -347,6 +346,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             <td
                               className={cn(
                                 "py-2 pl-0 pr-2 align-middle text-xs font-medium whitespace-nowrap",
+                                INVEST_TABLE_NUMBERS_CLASS,
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
@@ -355,7 +355,8 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             </td>
                             <td
                               className={cn(
-                                "py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
+                                "py-2 pr-2 align-middle whitespace-nowrap",
+                                INVEST_TABLE_NUMBERS_CLASS,
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
@@ -364,7 +365,8 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             </td>
                             <td
                               className={cn(
-                                "py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
+                                "py-2 pr-2 align-middle whitespace-nowrap",
+                                INVEST_TABLE_NUMBERS_CLASS,
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
@@ -373,7 +375,8 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             </td>
                             <td
                               className={cn(
-                                "py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
+                                "py-2 pr-2 align-middle whitespace-nowrap",
+                                INVEST_TABLE_NUMBERS_CLASS,
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
@@ -382,7 +385,8 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             </td>
                             <td
                               className={cn(
-                                "py-2 pr-2 align-middle tabular-nums whitespace-nowrap",
+                                "py-2 pr-2 align-middle whitespace-nowrap",
+                                INVEST_TABLE_NUMBERS_CLASS,
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
@@ -391,7 +395,8 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             </td>
                             <td
                               className={cn(
-                                "py-2 pr-0 align-middle tabular-nums whitespace-nowrap",
+                                "py-2 pr-0 align-middle whitespace-nowrap",
+                                INVEST_TABLE_NUMBERS_CLASS,
                                 i > 0 && "border-t",
                                 INVEST_TABLE_LINE,
                               )}
