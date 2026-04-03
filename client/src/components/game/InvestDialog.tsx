@@ -72,7 +72,7 @@ const AMOUNT_UNLOCK_TOOLTIP = (
 const INVEST_RADIO_COLUMN_CLASS = "w-6 min-w-6 shrink-0";
 
 /** Same horizontal inset for strategy scroller and amount row; pl-2 limits clip while sitting a bit left of pl-3. */
-const INVEST_SECTION_INSET = "pl-1 pr-1";
+const INVEST_SECTION_INSET = "pl-1 pr-0";
 
 export default function InvestDialog({ open, onOpenChange }: Props) {
   const playTime = useGameStore((s) => s.playTime);
