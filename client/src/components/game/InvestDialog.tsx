@@ -53,6 +53,11 @@ function formatPercentDisplay(p: number): string {
   return Number.isInteger(p) ? String(p) : p.toFixed(1);
 }
 
+/** Single trailing percent, en dash between values (e.g. `10–20 %`). */
+function formatPercentRange(from: number, to: number): string {
+  return `${formatPercentDisplay(from)}–${formatPercentDisplay(to)} %`;
+}
+
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -61,6 +66,25 @@ type Props = {
 const AMOUNT_UNLOCK_TOOLTIP = (
   <span className="text-xs">Unlocks at higher building level</span>
 );
+
+/** Matches strategy grid radio column so amount radios line up vertically. */
+const INVEST_RADIO_COLUMN_CLASS = "w-7 min-w-7 shrink-0";
+
+const strategyGridCols =
+  "[grid-template-columns:auto_max-content_max-content_max-content_max-content_max-content_max-content_max-content]";
+
+const strategyHeaderCell =
+  "py-2 pr-2 text-left text-xs font-medium leading-tight";
+
+const strategyDataCell =
+  "py-2 pr-2 text-[11px] leading-snug tabular-nums whitespace-nowrap";
+
+function strategyRowBg(selected: boolean) {
+  return cn(
+    "group-hover/strategy-row:bg-muted/15 rounded-sm",
+    selected && "bg-muted/20",
+  );
+}
 
 export default function InvestDialog({ open, onOpenChange }: Props) {
   const playTime = useGameStore((s) => s.playTime);
@@ -216,76 +240,100 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                 indicatorSizePx={INVEST_RADIO_INDICATOR_PX}
               >
                 <div className="overflow-x-auto pl-0">
-                  <table className="w-max max-w-full min-w-[400px] border-collapse text-foreground">
-                    <thead>
-                      <tr className="text-left text-xs leading-tight">
-                        <th className="w-7 min-w-7 py-2 pl-0 pr-0.5 font-medium" aria-hidden />
-                        <th className="py-2 pr-2 font-medium">Duration</th>
-                        <th className="py-2 pr-2 font-medium">
-                          Success
-                          <br />
-                          Chance
-                        </th>
-                        <th className="py-2 pr-2 font-medium">Profit</th>
-                        <th className="py-2 pr-2 font-medium">
-                          Lucky
-                          <br />
-                          Chance
-                        </th>
-                        <th className="py-2 pr-2 font-medium">Loss</th>
-                        <th className="py-2 pr-0 font-medium">Wipeout</th>
-                      </tr>
-                    </thead>
-                    <tbody className="text-[11px] leading-snug">
-                      {offers.map((offer, i) => {
-                        const finalSuccess = getSuccessChancePercent(
-                          offer.tier,
-                          offer.durationMin,
-                          luck,
-                        );
-                        const winR = winPercentInclusiveRange(offer.tier, offer.durationMin);
-                        const [lcChance, lcMult] = LUCKY_CHANCE[offer.tier];
-                        const lcDisplay = getEffectiveLuckyChancePercent(
-                          lcChance,
-                          luckyBonusPct,
-                        );
-                        const lossR = lossPercentInclusiveRange(offer.tier);
-                        const tl = TOTAL_LOSS_PCT[offer.tier];
-                        return (
-                          <tr
-                            key={i}
+                  <div
+                    role="table"
+                    className={cn(
+                      "inline-grid w-max text-foreground",
+                      strategyGridCols,
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        "py-2 pr-0.5",
+                        INVEST_RADIO_COLUMN_CLASS,
+                      )}
+                      aria-hidden
+                    />
+                    <div className={strategyHeaderCell}>Duration</div>
+                    <div className={strategyHeaderCell}>
+                      Success
+                      <br />
+                      Chance
+                    </div>
+                    <div className={strategyHeaderCell}>Profit</div>
+                    <div className={strategyHeaderCell}>
+                      Lucky
+                      <br />
+                      Chance
+                    </div>
+                    <div className={strategyHeaderCell}>Loss</div>
+                    <div className={cn(strategyHeaderCell, "pr-0")}>Wipeout</div>
+                    {offers.map((offer, i) => {
+                      const finalSuccess = getSuccessChancePercent(
+                        offer.tier,
+                        offer.durationMin,
+                        luck,
+                      );
+                      const winR = winPercentInclusiveRange(
+                        offer.tier,
+                        offer.durationMin,
+                      );
+                      const [lcChance, lcMult] = LUCKY_CHANCE[offer.tier];
+                      const lcDisplay = getEffectiveLuckyChancePercent(
+                        lcChance,
+                        luckyBonusPct,
+                      );
+                      const lossR = lossPercentInclusiveRange(offer.tier);
+                      const tl = TOTAL_LOSS_PCT[offer.tier];
+                      const selected = strategy === String(i);
+                      const rowBg = strategyRowBg(selected);
+                      return (
+                        <div
+                          key={i}
+                          className="contents cursor-pointer group/strategy-row"
+                          onClick={() => setStrategy(String(i))}
+                        >
+                          <div
                             className={cn(
-                              "cursor-pointer hover:bg-muted/15 rounded-sm",
-                              strategy === String(i) && "bg-muted/20",
+                              "flex items-center py-2 pr-0.5",
+                              INVEST_RADIO_COLUMN_CLASS,
+                              rowBg,
                             )}
-                            onClick={() => setStrategy(String(i))}
                           >
-                            <td className="w-7 min-w-7 py-2 pl-0 pr-0.5 align-middle">
-                              <RadioGroup.Item value={String(i)}>
-                                <span className="sr-only">{termMinutesLabel(offer.durationMin)}</span>
-                              </RadioGroup.Item>
-                            </td>
-                            <td className="py-2 pr-2 align-middle text-xs font-medium whitespace-nowrap">
-                              {termMinutesLabel(offer.durationMin)}
-                            </td>
-                            <td className="py-2 pr-2 align-middle tabular-nums whitespace-nowrap">
-                              {formatPercentDisplay(finalSuccess)} %
-                            </td>
-                            <td className="py-2 pr-2 align-middle tabular-nums whitespace-nowrap">
-                              {winR.from} % – {winR.to} %
-                            </td>
-                            <td className="py-2 pr-2 align-middle tabular-nums whitespace-nowrap">
-                              {formatPercentDisplay(lcDisplay)} % / {lcMult}x
-                            </td>
-                            <td className="py-2 pr-2 align-middle tabular-nums whitespace-nowrap">
-                              {lossR.from} % – {lossR.to} %
-                            </td>
-                            <td className="py-2 pr-0 align-middle tabular-nums whitespace-nowrap">{tl} %</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
+                            <RadioGroup.Item value={String(i)}>
+                              <span className="sr-only">
+                                {termMinutesLabel(offer.durationMin)}
+                              </span>
+                            </RadioGroup.Item>
+                          </div>
+                          <div
+                            className={cn(
+                              strategyDataCell,
+                              "text-xs font-medium",
+                              rowBg,
+                            )}
+                          >
+                            {termMinutesLabel(offer.durationMin)}
+                          </div>
+                          <div className={cn(strategyDataCell, rowBg)}>
+                            {formatPercentDisplay(finalSuccess)} %
+                          </div>
+                          <div className={cn(strategyDataCell, rowBg)}>
+                            {formatPercentRange(winR.from, winR.to)}
+                          </div>
+                          <div className={cn(strategyDataCell, rowBg)}>
+                            {formatPercentDisplay(lcDisplay)} % / {lcMult}x
+                          </div>
+                          <div className={cn(strategyDataCell, rowBg)}>
+                            {formatPercentRange(lossR.from, lossR.to)}
+                          </div>
+                          <div className={cn(strategyDataCell, "pr-0", rowBg)}>
+                            {tl} %
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </RadioGroup>
             </div>
@@ -297,7 +345,8 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                 onChange={setAmountStr}
                 indicatorSizePx={INVEST_RADIO_INDICATOR_PX}
               >
-                <div className="flex flex-row flex-wrap items-center gap-x-6 gap-y-2 pl-0">
+                <div className="flex flex-row flex-wrap items-center gap-x-6 gap-y-2">
+                  <div className={INVEST_RADIO_COLUMN_CLASS} aria-hidden />
                   {amounts.map((a) => {
                     const disabled = a > maxStake;
                     const labelClass = disabled
