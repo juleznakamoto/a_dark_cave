@@ -68,7 +68,7 @@ const AMOUNT_UNLOCK_TOOLTIP = (
   <span className="text-xs">Unlocks at higher building level</span>
 );
 
-/** Narrow column: disc is 8px; keeps Duration close without clipping the ring. */
+/** Narrow column: disc is 8px; keeps Time column close without clipping the ring. */
 const INVEST_RADIO_COLUMN_CLASS = "w-6 min-w-6 shrink-0";
 
 /** Same horizontal inset for strategy scroller and amount row; pl-2 limits clip while sitting a bit left of pl-3. */
@@ -163,7 +163,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
       </div>
       <ul className="space-y-1.5 pl-0 list-none text-muted-foreground">
         <li>
-          <span className="text-foreground font-medium">Duration</span>: How long the investment runs.
+          <span className="text-foreground font-medium">Time</span>: How long the investment runs.
         </li>
         <li>
           <span className="text-foreground font-medium">Success</span>: Chance of a
@@ -254,7 +254,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             INVEST_TABLE_LINE,
                           )}
                         >
-                          Duration
+                          Time
                         </th>
                         <th
                           className={cn(
