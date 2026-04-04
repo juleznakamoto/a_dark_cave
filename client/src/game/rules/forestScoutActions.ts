@@ -1,7 +1,7 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "./actionEffects";
-import { killVillagers } from "@/game/stateHelpers";
+import { addFreeVillagersWithinCap, killVillagers } from "@/game/stateHelpers";
 import { calculateSuccessChance, gameEvents, LogEntry } from "./events";
 import { logger } from "@/lib/logger";
 import { ActionEffectUpdates } from "@/game/types";
@@ -323,6 +323,33 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 2500,
     },
     effects: {},
+    executionTime: 90,
+    cooldown: 0,
+  },
+
+  risingSmoke: {
+    id: "risingSmoke",
+    label: "Rising smoke",
+    minVillagers: 16,
+    expeditionVillagersRequired: (state: GameState) =>
+      CRUEL_MODE.forestExpedition.risingSmoke.base +
+      cruelModeScale(state) * CRUEL_MODE.forestExpedition.risingSmoke.whenCruel,
+    show_when: {
+      "story.seen.risingSmokeUnlocked": true,
+      "!story.seen.risingSmokeExplored": true,
+    },
+    cost: {
+      "resources.food": 2500,
+    },
+    effects: {},
+    success_chance: (state: GameState) =>
+      calculateSuccessChance(
+        state,
+        0.1,
+        { type: "strength", multiplier: 0.0025 },
+        { type: "knowledge", multiplier: 0.0025 },
+      ),
+    relevant_stats: ["strength", "knowledge"],
     executionTime: 90,
     cooldown: 0,
   },
@@ -912,6 +939,89 @@ export function handleSteelDelivery(
     timestamp: Date.now(),
     type: "system",
   });
+
+  return result;
+}
+
+export function handleRisingSmoke(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("risingSmoke", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  const action = forestScoutActions.risingSmoke;
+  const successChance = action.success_chance
+    ? action.success_chance(state)
+    : 0;
+
+  if (Math.random() < successChance) {
+    const isCompletingExecution =
+      (state as any)._completingExecution === "risingSmoke";
+    let goldGain = 500;
+    if (state.tools.skeleton_key) {
+      goldGain += 250;
+    }
+
+    const { added, patch: captivePatch } = addFreeVillagersWithinCap(
+      state,
+      20,
+    );
+
+    Object.assign(result.stateUpdates, captivePatch);
+
+    result.stateUpdates.resources = {
+      ...state.resources,
+      gold: (state.resources.gold || 0) + goldGain,
+      ...(isCompletingExecution
+        ? {}
+        : { food: (state.resources.food || 0) - 2500 }),
+    };
+
+    result.stateUpdates.story = {
+      ...state.story,
+      seen: {
+        ...state.story.seen,
+        ...(captivePatch.story?.seen),
+        risingSmokeExplored: true,
+      },
+    };
+
+    const keyPart = state.tools.skeleton_key
+      ? " With your skeleton key you open a hidden compartment and find another 250 Gold."
+      : "";
+    const captivePart =
+      added > 0
+        ? added === 1
+          ? " 1 captive from the camp chooses to join the village."
+          : ` ${added} captives from the camp choose to join the village.`
+        : "";
+
+    result.logEntries!.push({
+      id: `rising-smoke-success-${Date.now()}`,
+      message: `Your expedition finds an outlaw camp. The fight is brutal, but you win. In a chest you find 500 Gold.${keyPart}${captivePart}`,
+      timestamp: Date.now(),
+      type: "system",
+    });
+  } else {
+    const rs = CRUEL_MODE.forestScout.risingSmoke.failureDeaths;
+    const villagerDeaths = Math.min(
+      state.current_population,
+      Math.floor(Math.random() * rs.randMax) +
+      rs.base +
+      cruelModeScale(state) * rs.whenCruel,
+    );
+    const deathResult = killVillagers(state, villagerDeaths);
+    const actualDeaths = deathResult.villagersKilled || 0;
+    Object.assign(result.stateUpdates, deathResult);
+
+    result.logEntries!.push({
+      id: `rising-smoke-failure-${Date.now()}`,
+      message: `Your expedition reaches an outlaw camp, but the fight goes terribly wrong. ${actualDeaths} villager${actualDeaths === 1 ? "" : "s"} fall${actualDeaths === 1 ? "s" : ""} before the survivors flee back to the village.`,
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
 
   return result;
 }

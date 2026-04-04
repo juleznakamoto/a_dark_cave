@@ -1,6 +1,6 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
-import { killVillagers } from "@/game/stateHelpers";
+import { addFreeVillagersWithinCap, killVillagers } from "@/game/stateHelpers";
 import { getTotalMadness, getTotalLuck } from "./effectsCalculation";
 import { getCurrentPopulation, getMaxPopulation } from "../population";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
@@ -239,18 +239,13 @@ export const madnessEvents: Record<string, GameEvent> = {
     priority: 2,
     repeatable: false,
     effect: (state: GameState) => {
-      const currentPopulation = getCurrentPopulation(state);
-      const maxPopulation = getMaxPopulation(state);
-      const villagersToAdd = Math.min(3, maxPopulation - currentPopulation);
+      const { patch } = addFreeVillagersWithinCap(state, 3);
 
       return {
+        ...patch,
         events: {
           ...state.events,
           wrongVillagers: true,
-        },
-        villagers: {
-          ...state.villagers,
-          free: state.villagers.free + villagersToAdd,
         },
         stats: {
           ...state.stats,

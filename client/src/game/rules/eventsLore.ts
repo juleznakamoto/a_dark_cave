@@ -591,4 +591,34 @@ export const loreEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  risingSmokeRumor: {
+    id: "risingSmokeRumor",
+    condition: (state: GameState): boolean =>
+      Boolean(state.story.seen.fourthWaveVictory) &&
+      Boolean(state.flags.forestUnlocked) &&
+      !Boolean(state.story.seen.risingSmokeUnlocked),
+    timeProbability: 20,
+    repeatable: true,
+    title: "Rising smoke",
+    message:
+      "Villagers come to you. They saw a very dense pillar of smoke rising in the woods. Maybe it makes sense to investigate it.",
+    priority: 3,
+    skipEventLog: true,
+    choices: [
+      {
+        id: "continue",
+        label: "Continue",
+        effect: (state: GameState) => ({
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              risingSmokeUnlocked: true,
+            },
+          },
+        }),
+      },
+    ],
+  },
 };

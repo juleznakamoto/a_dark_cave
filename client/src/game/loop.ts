@@ -12,7 +12,11 @@ import {
   getPopulationProduction,
   getMaxPopulation,
 } from "./population";
-import { killVillagers, buildGameState } from "@/game/stateHelpers";
+import {
+  addFreeVillagersWithinCap,
+  killVillagers,
+  buildGameState,
+} from "@/game/stateHelpers";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import {
   getTotalMadness,
@@ -1240,27 +1244,25 @@ function handleStrangerApproach() {
       );
     }
 
-    // Add the villager(s) - only the amount that fits
-    const actualStrangersToAdd = Math.min(strangersCount, availableRoom);
+    const gameStateForCap = buildGameState(state);
+    const { added, patch } = addFreeVillagersWithinCap(
+      gameStateForCap,
+      strangersCount,
+    );
 
-    if (actualStrangersToAdd <= 0) return; // No room for anyone
+    if (added <= 0) return;
 
     useGameStore.setState({
-      villagers: {
-        ...state.villagers,
-        free: state.villagers.free + actualStrangersToAdd,
-      },
+      ...patch,
       story: {
         ...state.story,
         seen: {
           ...state.story.seen,
+          ...(patch.story?.seen),
           hasVillagers: true,
         },
       },
     });
-
-    // Update population immediately
-    state.updatePopulation();
 
     // Add log entry for stranger approach
     const selectedMessage = messages[Math.floor(Math.random() * messages.length)];

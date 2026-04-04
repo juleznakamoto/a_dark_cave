@@ -162,6 +162,7 @@ export const CRUEL_MODE = {
     sunkenTemple: { failureDeaths: { randMax: 13, base: 4, whenCruel: 4 } },
     collapsedTower: { failureDeaths: { randMax: 9, base: 2, whenCruel: 4 } },
     forestCave: { failureDeaths: { randMax: 8, base: 2, whenCruel: 3 } },
+    risingSmoke: { failureDeaths: { randMax: 10, base: 3, whenCruel: 4 } },
   },
 
   particles: {
@@ -176,10 +177,11 @@ export const CRUEL_MODE = {
 
   forestExpedition: {
     castleRuins: { base: 10, whenCruel: 4 },
-    hillGrave: { base: 13, whenCruel: 4 },
+    hillGrave: { base: 12, whenCruel: 4 },
     sunkenTemple: { base: 16, whenCruel: 4 },
     collapsedTower: { base: 10, whenCruel: 4 },
-    forestCave: { base: 9, whenCruel: 3 },
+    forestCave: { base: 10, whenCruel: 4 },
+    risingSmoke: { base: 16, whenCruel: 4 },
   },
 
   paleFigure: {

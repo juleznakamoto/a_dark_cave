@@ -589,6 +589,7 @@ export const rewardDialogActions = new Set([
   "forestCave",
   "blackreachCanyon",
   "steelDelivery",
+  "risingSmoke",
   "lowChamber",
   "occultistChamber",
   "hiddenLibrary",

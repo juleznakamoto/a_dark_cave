@@ -1,6 +1,6 @@
 import { GameEvent, calculateSuccessChance } from "./events";
 import { GameState } from "@shared/schema";
-import { killVillagers } from "@/game/stateHelpers";
+import { addFreeVillagersWithinCap, killVillagers } from "@/game/stateHelpers";
 import { getTotalStrength } from "./effectsCalculation";
 import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
 import { woodcutterEvents } from "./eventsWoodcutter";
@@ -616,15 +616,10 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "way_of_first_flame",
         label: "Way of the First Flame",
         effect: (state: GameState) => {
-          const currentPop = getCurrentPopulation(state);
-          const maxPop = getMaxPopulation(state);
-          const canAdd = Math.min(4, maxPop - currentPop);
+          const { patch } = addFreeVillagersWithinCap(state, 4);
 
           return {
-            villagers: {
-              ...state.villagers,
-              free: (state.villagers.free || 0) + canAdd,
-            },
+            ...patch,
             blessings: {
               ...state.blessings,
               flames_touch: true,
@@ -633,6 +628,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
+                ...(patch.story?.seen),
                 templeDedicated: true,
               },
             },
@@ -1318,18 +1314,10 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           if (Math.random() < successChance) {
             // Success: free the captives and take the steel
-            const currentPopulation = getCurrentPopulation(state);
-            const maxPopulation = getMaxPopulation(state);
-            const villagersToAdd = Math.min(
-              2,
-              maxPopulation - currentPopulation,
-            );
+            const { patch } = addFreeVillagersWithinCap(state, 2);
 
             return {
-              villagers: {
-                ...state.villagers,
-                free: state.villagers.free + villagersToAdd,
-              },
+              ...patch,
               resources: {
                 ...state.resources,
                 steel: state.resources.steel + 100,
@@ -1342,6 +1330,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 ...state.story,
                 seen: {
                   ...state.story.seen,
+                  ...(patch.story?.seen),
                   slaveTraderEvent: true,
                 },
               },

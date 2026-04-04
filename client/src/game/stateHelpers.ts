@@ -92,6 +92,45 @@ export const updatePopulationCounts = (
   };
 };
 
+/** How many villagers can be added without exceeding housing cap. */
+export function countVillagersAddableWithinCap(
+  state: GameState,
+  desired: number,
+): number {
+  const room = Math.max(
+    0,
+    getMaxPopulation(state) - getCurrentPopulation(state),
+  );
+  return Math.min(desired, room);
+}
+
+/**
+ * Adds up to `desired` villagers to `free`, clamped by housing.
+ * Includes `updatePopulationCounts` so stored population fields stay in sync.
+ */
+export function addFreeVillagersWithinCap(
+  state: GameState,
+  desired: number,
+): { added: number; patch: Partial<GameState> } {
+  const added = countVillagersAddableWithinCap(state, desired);
+  if (added <= 0) {
+    return { added: 0, patch: {} };
+  }
+  const villagers = {
+    ...state.villagers,
+    free: (state.villagers.free || 0) + added,
+  };
+  const nextState: GameState = { ...state, villagers };
+  const popPatch = updatePopulationCounts(nextState);
+  return {
+    added,
+    patch: {
+      villagers,
+      ...popPatch,
+    },
+  };
+}
+
 export function assignVillagerToJob(
   state: GameState,
   job: keyof GameState['villagers']
