@@ -8,7 +8,7 @@ const EventDialog = lazy(() => import("@/components/game/EventDialog"));
 const EmailConfirmedDialog = lazy(() => import("@/components/game/EmailConfirmedDialog"));
 const PlaylightWelcomeDialog = lazy(() => import("@/components/game/PlaylightWelcomeDialog"));
 import { logger } from "@/lib/logger";
-import { getCurrentUser } from "@/game/auth";
+import { getCurrentUser, flushPendingMarketingPreferences } from "@/game/auth";
 import { initSessionTracker } from "@/lib/sessionTracker";
 import { gamblerDiceResumeOnLoad } from "@/game/gamblerSession";
 import type { TimedEventTabState } from "@/game/types";
@@ -65,6 +65,7 @@ export default function Game() {
         const user = await getCurrentUser();
         if (user) {
           logger.log("[GAME PAGE] User authenticated, loading game");
+          await flushPendingMarketingPreferences();
         }
 
         // Parse URL query parameters

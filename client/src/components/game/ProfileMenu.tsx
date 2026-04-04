@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { deleteSave } from "@/game/save";
 import { getCurrentUser, signOut } from "@/game/auth";
+import { getSupabaseClient } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
 import { saveGame } from "@/game/save";
 import { buildGameState } from "@/game/stateHelpers";
@@ -23,6 +24,7 @@ import LeaderboardDialog from "./LeaderboardDialog";
 import { RestartGameDialog } from "./RestartGameDialog";
 import SignUpPromptDialog from "./SignUpPromptDialog";
 import { initPlaylight, markPlaylightDiscoveryUserInitiated } from "@/lib/playlight";
+import { Mail } from "lucide-react";
 
 
 // Social media platform configurations
@@ -78,11 +80,38 @@ export default function ProfileMenu() {
     id: string;
     email: string;
   } | null>(null);
+  const [marketingOptIn, setMarketingOptIn] = useState(false);
+  const [marketingPrefLoading, setMarketingPrefLoading] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
     checkAuth();
   }, []);
+
+  useEffect(() => {
+    if (!accountDropdownOpen || !currentUser) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const supabase = await getSupabaseClient();
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+        if (!session?.access_token || cancelled) return;
+        const res = await fetch("/api/marketing/preferences", {
+          headers: { Authorization: `Bearer ${session.access_token}` },
+        });
+        if (!res.ok || cancelled) return;
+        const j = (await res.json()) as { marketing_opt_in?: boolean };
+        if (!cancelled) setMarketingOptIn(j.marketing_opt_in === true);
+      } catch {
+        /* ignore */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [accountDropdownOpen, currentUser]);
 
   // Sync auth dialog state from store (e.g. when opened from ShopDialog)
   useEffect(() => {
@@ -290,6 +319,60 @@ export default function ProfileMenu() {
     setAuthDialogOpen(true);
   };
 
+  const handleMarketingPreferenceToggle = async () => {
+    if (!currentUser || marketingPrefLoading) return;
+    setMarketingPrefLoading(true);
+    try {
+      const supabase = await getSupabaseClient();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        toast({
+          title: "Not signed in",
+          variant: "destructive",
+        });
+        return;
+      }
+      const next = !marketingOptIn;
+      const res = await fetch("/api/marketing/preferences", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          marketing_opt_in: next,
+          consent_source: "settings_toggle",
+          consent_text_version: 1,
+          prompt_version: 1,
+        }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(
+          typeof err.error === "string" ? err.error : "Request failed",
+        );
+      }
+      setMarketingOptIn(next);
+      toast({
+        title: next ? "You're subscribed" : "You're unsubscribed",
+        description: next
+          ? "We'll send occasional updates and offers to your email."
+          : "You won't receive marketing emails from us.",
+      });
+      setAccountDropdownOpen(false);
+    } catch (e: unknown) {
+      toast({
+        title: "Could not update preference",
+        description: e instanceof Error ? e.message : "Try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setMarketingPrefLoading(false);
+    }
+  };
+
   return (
     <div className="fixed top-2 right-2 z-50 pointer-events-auto flex flex-col items-end gap-2">
       <SignUpPromptDialog
@@ -422,17 +505,17 @@ export default function ProfileMenu() {
                   : ""
               }
             >
-              <div className="flex items-center justify-between w-full">
-                <div className="flex items-center gap-1">
-                  <span>Invite&nbsp;</span>
+              <div className="flex items-center justify-between w-full gap-2">
+                <div className="flex items-center gap-1.5 min-w-0">
                   <img
                     src="/person-add.png"
                     alt=""
-                    className="w-4 h-4 opacity-90"
+                    className="w-4 h-4 shrink-0 opacity-90"
                   />
+                  <span>Invite</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold">&nbsp;+250 Gold</span>
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className="font-semibold">+250 Gold</span>
                   {(referralCount || 0) >= 10 && (
                     <span className="text-xs text-muted-foreground">
                       ✓
@@ -467,16 +550,11 @@ export default function ProfileMenu() {
                         : "cursor-pointer"
                     }
                   >
-                    <div className="flex items-center justify-between w-full">
-                      <div className="flex items-center gap-1">
-                        {platform.id === "instagram" ? (
-                          <span>Follow&nbsp;</span>
-                        ) : (
-                          <span>Join&nbsp;</span>
-                        )}
+                    <div className="flex items-center justify-between w-full gap-2">
+                      <div className="flex items-center gap-1.5 min-w-0">
                         {platform.id === "instagram" ? (
                           <svg
-                            className="w-3 h-3"
+                            className="w-3 h-3 shrink-0"
                             viewBox="0 0 24 24"
                             fill="currentColor"
                           >
@@ -484,7 +562,7 @@ export default function ProfileMenu() {
                           </svg>
                         ) : platform.id === "reddit" ? (
                           <svg
-                            className="w-3 h-3"
+                            className="w-3 h-3 shrink-0"
                             viewBox="0 0 24 24"
                             fill="currentColor"
                           >
@@ -494,13 +572,20 @@ export default function ProfileMenu() {
                           <img
                             src={platform.icon}
                             alt={platform.name}
-                            className="w-3 h-3 opacity-90"
+                            className="w-3 h-3 shrink-0 opacity-90"
                           />
                         )}
+                        <span>
+                          {platform.id === "instagram"
+                            ? "Follow"
+                            : platform.id === "reddit"
+                              ? "Join"
+                              : platform.name}
+                        </span>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 shrink-0">
                         <span className="font-semibold">
-                          &nbsp;+{platform.reward} Gold
+                          +{platform.reward} Gold
                         </span>
                         {isClaimed && (
                           <span className="text-xs text-muted-foreground">
@@ -516,6 +601,29 @@ export default function ProfileMenu() {
                 </div>
               );
             })}
+            {currentUser && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  disabled={marketingPrefLoading}
+                  onClick={() => {
+                    void handleMarketingPreferenceToggle();
+                  }}
+                >
+                  <div className="flex items-center gap-1.5">
+                    <Mail
+                      className="w-3.5 h-3.5 shrink-0 opacity-90"
+                      aria-hidden
+                    />
+                    <span>
+                      {marketingOptIn
+                        ? "Unsubscribe from updates"
+                        : "Subscribe to updates"}
+                    </span>
+                  </div>
+                </DropdownMenuItem>
+              </>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

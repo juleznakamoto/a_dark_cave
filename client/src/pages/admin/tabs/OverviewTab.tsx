@@ -43,6 +43,11 @@ interface OverviewTabProps {
   dailyActiveUsersData: Array<{ date: string; active_user_count: number }>;
   chartTimeRange: "1m" | "3m" | "6m" | "1y";
   setChartTimeRange: (range: "1m" | "3m" | "6m" | "1y") => void;
+  marketingMetrics?: {
+    marketingUsersPrompted: number;
+    marketingUsersOptedIn: number;
+    marketingOptInRate: number;
+  };
 }
 
 export default function OverviewTab(props: OverviewTabProps) {
@@ -69,7 +74,8 @@ export default function OverviewTab(props: OverviewTabProps) {
     getGainPerHundredOverTime,
     dailyActiveUsersData,
     chartTimeRange,
-    setChartTimeRange
+    setChartTimeRange,
+    marketingMetrics,
   } = props;
 
   const [sessionData, setSessionData] = useState<SessionStats[]>([]);
@@ -293,6 +299,41 @@ export default function OverviewTab(props: OverviewTabProps) {
           </div>
         </CardContent>
       </Card>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Marketing opt-ins</CardTitle>
+            <CardDescription>
+              Users who went through the new consent flow (row in{" "}
+              <code className="text-xs">marketing_preferences</code>)
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-3xl font-bold">
+              {marketingMetrics?.marketingUsersOptedIn ?? 0}
+            </p>
+            <p className="text-sm text-muted-foreground mt-2">
+              Currently opted in to marketing emails
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Marketing opt-in rate</CardTitle>
+            <CardDescription>% of prompted users who opted in</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-3xl font-bold">
+              {(marketingMetrics?.marketingOptInRate ?? 0).toFixed(1)}%
+            </p>
+            <p className="text-sm text-muted-foreground mt-2">
+              Prompted: {marketingMetrics?.marketingUsersPrompted ?? 0}{" "}
+              (legacy accounts without a row are excluded)
+            </p>
+          </CardContent>
+        </Card>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>

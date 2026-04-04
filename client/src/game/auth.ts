@@ -7,7 +7,85 @@ import type { AuthUser } from '@/game/types';
 // Re-export AuthUser for convenience
 export type { AuthUser } from '@/game/types';
 
-export async function signUp(email: string, password: string, referralCode?: string) {
+/** Session key: pending marketing choice from signup (email or Google) until first authenticated session. */
+export const PENDING_MARKETING_OPT_IN_KEY = 'adc_pending_marketing_opt_in';
+
+export type PendingMarketingPayload = {
+  optIn: boolean;
+  google: boolean;
+  ts: number;
+};
+
+export function setPendingMarketingOptInFromSignup(
+  optIn: boolean,
+  google: boolean,
+): void {
+  try {
+    const payload: PendingMarketingPayload = {
+      optIn: optIn === true,
+      google,
+      ts: Date.now(),
+    };
+    sessionStorage.setItem(PENDING_MARKETING_OPT_IN_KEY, JSON.stringify(payload));
+  } catch {
+    /* ignore */
+  }
+}
+
+/** After email confirmation or OAuth, persist marketing row once (same API as settings toggle). */
+export async function flushPendingMarketingPreferences(): Promise<void> {
+  let raw: string | null = null;
+  try {
+    raw = sessionStorage.getItem(PENDING_MARKETING_OPT_IN_KEY);
+  } catch {
+    return;
+  }
+  if (!raw) return;
+
+  let parsed: PendingMarketingPayload | null = null;
+  try {
+    parsed = JSON.parse(raw) as PendingMarketingPayload;
+  } catch {
+    return;
+  }
+
+  const supabase = await getSupabaseClient();
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.access_token) return;
+
+  const consentSource = parsed.google ? 'google_signup' : 'email_signup';
+
+  try {
+    const res = await fetch('/api/marketing/preferences', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session.access_token}`,
+      },
+      body: JSON.stringify({
+        marketing_opt_in: parsed.optIn === true,
+        consent_source: consentSource,
+        consent_text_version: 1,
+        prompt_version: 1,
+      }),
+    });
+    if (res.ok) {
+      sessionStorage.removeItem(PENDING_MARKETING_OPT_IN_KEY);
+    } else {
+      const errBody = await res.json().catch(() => ({}));
+      logger.warn('[MARKETING] flush pending failed:', res.status, errBody);
+    }
+  } catch (e) {
+    logger.warn('[MARKETING] flush pending failed:', e);
+  }
+}
+
+export async function signUp(
+  email: string,
+  password: string,
+  referralCode?: string,
+  marketingOptIn?: boolean,
+) {
   const supabase = await getSupabaseClient();
 
   // Store referral code in user metadata - will be processed after email confirmation
@@ -25,6 +103,9 @@ export async function signUp(email: string, password: string, referralCode?: str
   });
 
   if (error) throw error;
+
+  // Persisted on first confirmed session via flushPendingMarketingPreferences()
+  setPendingMarketingOptInFromSignup(marketingOptIn === true, false);
 
   return data;
 }
@@ -166,10 +247,19 @@ export async function signIn(email: string, password: string) {
     throw new Error('Please confirm your email address before signing in. Check your inbox for the confirmation link.');
   }
 
+  await flushPendingMarketingPreferences();
+
   return data;
 }
 
-export async function signInWithGoogle() {
+export async function signInWithGoogle(opts?: {
+  signupFlow?: boolean;
+  marketingOptIn?: boolean;
+}) {
+  if (opts?.signupFlow) {
+    setPendingMarketingOptInFromSignup(opts.marketingOptIn === true, true);
+  }
+
   const supabase = await getSupabaseClient();
   
   // Determine the correct redirect URL based on environment

@@ -252,6 +252,15 @@ app.get("/api/version", (_req, res) => {
 
 // Server-side Supabase admin client (bypasses RLS)
 import { createClient } from "@supabase/supabase-js";
+import {
+  MARKETING_CONSENT_TEXT_VERSION,
+  MARKETING_PROMPT_VERSION,
+  CLIENT_ALLOWED_MARKETING_SOURCES,
+  getMarketingAdminEnv,
+  upsertMarketingPreferences,
+  hashMarketingToken,
+  type MarketingConsentSource,
+} from "./marketing";
 
 // Helper function to mask emails
 function maskEmail(email: string | null): string {
@@ -325,6 +334,31 @@ const getAdminClient = (env: "dev" | "prod" = "dev") => {
   adminClients.set(env, client);
   return client;
 };
+
+async function getSessionUserFromBearer(
+  req: Request,
+): Promise<{ id: string; email: string | undefined } | null> {
+  const authHeader = req.headers.authorization;
+  if (!authHeader?.startsWith("Bearer ")) {
+    return null;
+  }
+  const jwt = authHeader.slice(7);
+  const config = getSupabaseConfig();
+  if (!config.supabaseUrl || !config.supabaseAnonKey) {
+    return null;
+  }
+  const anonClient = createClient(config.supabaseUrl, config.supabaseAnonKey, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+  const {
+    data: { user },
+    error,
+  } = await anonClient.auth.getUser(jwt);
+  if (error || !user?.id || !user.email_confirmed_at) {
+    return null;
+  }
+  return { id: user.id, email: user.email ?? undefined };
+}
 
 // Internal gender detection - calls local Python service. Not exposed in public API docs.
 // Requires: GENDER_SERVICE_URL (e.g. http://127.0.0.1:5001), GENDER_SERVICE_TOKEN
@@ -404,6 +438,154 @@ app.post("/api/gender", async (req, res) => {
     return res.status(500).json({
       error: "Gender detection failed",
       hint: isFetch ? "Gender service unreachable - is it running on GENDER_SERVICE_URL?" : msg,
+    });
+  }
+});
+
+app.get("/api/marketing/preferences", async (req, res) => {
+  try {
+    const user = await getSessionUserFromBearer(req);
+    if (!user) {
+      return res.status(401).json({ error: "Authorization required" });
+    }
+    const env = getMarketingAdminEnv();
+    const adminClient = getAdminClient(env);
+    const { data, error } = await adminClient
+      .from("marketing_preferences")
+      .select("marketing_opt_in, consent_source, updated_at")
+      .eq("user_id", user.id)
+      .maybeSingle();
+    if (error) {
+      throw error;
+    }
+    return res.json({
+      marketing_opt_in: data?.marketing_opt_in === true,
+      has_preference_record: !!data,
+      consent_source: data?.consent_source ?? null,
+      updated_at: data?.updated_at ?? null,
+    });
+  } catch (err: any) {
+    log("❌ GET /api/marketing/preferences failed:", err);
+    return res.status(500).json({ error: err?.message ?? "Failed to load preferences" });
+  }
+});
+
+app.post("/api/marketing/preferences", async (req, res) => {
+  try {
+    const user = await getSessionUserFromBearer(req);
+    if (!user) {
+      return res.status(401).json({ error: "Authorization required" });
+    }
+    const body = req.body ?? {};
+    const marketingOptIn = body.marketing_opt_in === true;
+    const consentSource = body.consent_source as string | undefined;
+    if (
+      !consentSource ||
+      !CLIENT_ALLOWED_MARKETING_SOURCES.has(
+        consentSource as MarketingConsentSource,
+      )
+    ) {
+      return res.status(400).json({ error: "Invalid or missing consent_source" });
+    }
+    const consentTextVersion =
+      typeof body.consent_text_version === "number"
+        ? body.consent_text_version
+        : MARKETING_CONSENT_TEXT_VERSION;
+    const promptVersion =
+      typeof body.prompt_version === "number"
+        ? body.prompt_version
+        : MARKETING_PROMPT_VERSION;
+
+    const env = getMarketingAdminEnv();
+    const adminClient = getAdminClient(env);
+    await upsertMarketingPreferences(
+      adminClient,
+      user.id,
+      typeof body.email === "string" ? body.email : user.email,
+      marketingOptIn,
+      consentSource as MarketingConsentSource,
+      consentTextVersion,
+      promptVersion,
+    );
+    return res.json({ ok: true });
+  } catch (err: any) {
+    log("❌ POST /api/marketing/preferences failed:", err);
+    return res.status(500).json({ error: err?.message ?? "Failed to save preferences" });
+  }
+});
+
+app.post("/api/marketing/unsubscribe", async (req, res) => {
+  try {
+    const token = typeof req.body?.token === "string" ? req.body.token.trim() : "";
+    if (!token) {
+      return res.status(400).json({ error: "token required", status: "invalid" });
+    }
+    const tokenHash = hashMarketingToken(token);
+    const env = getMarketingAdminEnv();
+    const adminClient = getAdminClient(env);
+
+    const { data: row, error: findError } = await adminClient
+      .from("marketing_unsubscribe_tokens")
+      .select("id, user_id, expires_at, used_at")
+      .eq("token_hash", tokenHash)
+      .maybeSingle();
+
+    if (findError) {
+      throw findError;
+    }
+    if (!row) {
+      return res.json({
+        ok: false,
+        status: "invalid",
+        message: "This unsubscribe link is invalid or has already been used.",
+      });
+    }
+    if (row.used_at) {
+      return res.json({
+        ok: false,
+        status: "used",
+        message: "This unsubscribe link was already used.",
+      });
+    }
+    const exp = new Date(row.expires_at).getTime();
+    if (Number.isFinite(exp) && Date.now() > exp) {
+      return res.json({
+        ok: false,
+        status: "expired",
+        message: "This unsubscribe link has expired.",
+      });
+    }
+
+    const nowIso = new Date().toISOString();
+    const { error: useErr } = await adminClient
+      .from("marketing_unsubscribe_tokens")
+      .update({ used_at: nowIso })
+      .eq("id", row.id)
+      .is("used_at", null);
+    if (useErr) {
+      throw useErr;
+    }
+
+    await upsertMarketingPreferences(
+      adminClient,
+      row.user_id,
+      undefined,
+      false,
+      "unsubscribe_link",
+      MARKETING_CONSENT_TEXT_VERSION,
+      MARKETING_PROMPT_VERSION,
+    );
+
+    return res.json({
+      ok: true,
+      status: "unsubscribed",
+      message: "You've been unsubscribed from marketing emails.",
+    });
+  } catch (err: any) {
+    log("❌ POST /api/marketing/unsubscribe failed:", err);
+    return res.status(500).json({
+      error: err?.message ?? "Unsubscribe failed",
+      status: "error",
     });
   }
 });
@@ -600,6 +782,39 @@ app.get("/api/admin/data", async (req, res) => {
       log("❌ Error processing auth-derived stats:", error);
     }
 
+    let marketingMetrics = {
+      marketingUsersPrompted: 0,
+      marketingUsersOptedIn: 0,
+      marketingOptInRate: 0,
+    };
+    try {
+      const { count: prompted, error: promptedErr } = await adminClient
+        .from("marketing_preferences")
+        .select("*", { count: "exact", head: true });
+      if (promptedErr) {
+        throw promptedErr;
+      }
+      const { count: optedIn, error: optedErr } = await adminClient
+        .from("marketing_preferences")
+        .select("*", { count: "exact", head: true })
+        .eq("marketing_opt_in", true);
+      if (optedErr) {
+        throw optedErr;
+      }
+      const promptedN = prompted ?? 0;
+      const optedN = optedIn ?? 0;
+      marketingMetrics = {
+        marketingUsersPrompted: promptedN,
+        marketingUsersOptedIn: optedN,
+        marketingOptInRate:
+          promptedN > 0
+            ? Math.round((optedN / promptedN) * 10000) / 100
+            : 0,
+      };
+    } catch (mErr: any) {
+      log("⚠️ Marketing metrics skipped:", mErr?.message ?? mErr);
+    }
+
     res.json({
       clicks: clicksResult.data,
       saves: savesResult.data,
@@ -609,6 +824,7 @@ app.get("/api/admin/data", async (req, res) => {
       emailConfirmationStats: emailConfirmationStats,
       registrationMethodStats: registrationMethodStats,
       authSignups,
+      marketingMetrics,
     });
   } catch (error: any) {
     log("❌ Admin data fetch failed:", error);

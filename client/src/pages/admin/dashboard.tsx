@@ -183,6 +183,16 @@ export default function AdminDashboard() {
     googleRegistrations: 0,
   });
 
+  const [marketingMetrics, setMarketingMetrics] = useState<{
+    marketingUsersPrompted: number;
+    marketingUsersOptedIn: number;
+    marketingOptInRate: number;
+  }>({
+    marketingUsersPrompted: 0,
+    marketingUsersOptedIn: 0,
+    marketingOptInRate: 0,
+  });
+
   // Filter states
   const [timeRange, setTimeRange] = useState<"1d" | "3d" | "7d" | "30d" | "all">(
     "30d",
@@ -949,6 +959,16 @@ export default function AdminDashboard() {
       if (data.registrationMethodStats) {
         setRegistrationMethodStats(data.registrationMethodStats);
       }
+      if (data.marketingMetrics && typeof data.marketingMetrics === "object") {
+        setMarketingMetrics({
+          marketingUsersPrompted:
+            Number(data.marketingMetrics.marketingUsersPrompted) || 0,
+          marketingUsersOptedIn:
+            Number(data.marketingMetrics.marketingUsersOptedIn) || 0,
+          marketingOptInRate:
+            Number(data.marketingMetrics.marketingOptInRate) || 0,
+        });
+      }
 
       // Collect unique user IDs only from users who have click data
       const userIdsWithClicks = new Set<string>();
@@ -1428,6 +1448,7 @@ export default function AdminDashboard() {
 
                     return data;
                   }}
+                  marketingMetrics={marketingMetrics}
                 />
               </TabsContent>
 

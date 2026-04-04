@@ -64,6 +64,7 @@ export default function AuthDialog({
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [signupSuccess, setSignupSuccess] = useState(false);
   const { toast } = useToast();
 
@@ -73,6 +74,7 @@ export default function AuthDialog({
       setEmail("");
       setPassword("");
       setAcceptedTerms(false);
+      setMarketingOptIn(false);
       onClose();
     }
   };
@@ -109,7 +111,7 @@ export default function AuthDialog({
       } else if (mode === "signup") {
         await flushBeforeSignUp();
         const referralCode = getReferralCode();
-        await signUp(email, password, referralCode || undefined);
+        await signUp(email, password, referralCode || undefined, marketingOptIn);
         // Award 250 gold if user signed up after seeing the sign-up prompt dialog
         const { signUpPromptEligibleForGold: eligible } = useGameStore.getState();
         if (eligible) {
@@ -161,7 +163,10 @@ export default function AuthDialog({
       if (mode === "signup") {
         await flushBeforeSignUp();
       }
-      await signInWithGoogle();
+      await signInWithGoogle({
+        signupFlow: mode === "signup",
+        marketingOptIn,
+      });
       // Supabase will redirect to Google and then back to your app
     } catch (error: any) {
       const isNetworkError =
@@ -275,6 +280,27 @@ export default function AuthDialog({
                 </label>
               </div>
             )}
+            {mode === "signup" && (
+              <div className="flex items-start space-x-2">
+                <Checkbox
+                  id="marketing"
+                  checked={marketingOptIn}
+                  onCheckedChange={(checked) =>
+                    setMarketingOptIn(checked === true)
+                  }
+                />
+                <label
+                  htmlFor="marketing"
+                  className="text-sm leading-snug peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Get updates, discounts, and exclusive rewards
+                  <span className="text-muted-foreground font-normal">
+                    {" "}
+                    (optional)
+                  </span>
+                </label>
+              </div>
+            )}
             <div className="flex flex-col space-y-2">
               <Button
                 type="submit"
@@ -340,6 +366,7 @@ export default function AuthDialog({
                 onClick={() => {
                   setMode(mode === "signin" ? "signup" : "signin");
                   setAcceptedTerms(false);
+                  setMarketingOptIn(false);
                 }}
               >
                 {mode === "signin"

@@ -22,6 +22,7 @@ const Imprint = lazy(() => import("@/pages/imprint"));
 const Privacy = lazy(() => import("@/pages/privacy"));
 const Terms = lazy(() => import("@/pages/terms"));
 const Withdrawal = lazy(() => import("@/pages/withdrawal"));
+const Unsubscribe = lazy(() => import("@/pages/unsubscribe"));
 const ButtonTest = lazy(() => import("@/pages/button-test"));
 const ExplosionTest = lazy(() => import("@/pages/explosion-test"));
 
@@ -41,6 +42,7 @@ function Router() {
         <Route path="/privacy" component={Privacy} />
         <Route path="/terms" component={Terms} />
         <Route path="/withdrawal" component={Withdrawal} />
+        <Route path="/unsubscribe" component={Unsubscribe} />
         <Route path="/reset-password" component={ResetPassword} />
         <Route path="/button-test" component={ButtonTest} />
         <Route path="/explosion-test" component={ExplosionTest} />

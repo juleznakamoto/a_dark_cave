@@ -119,6 +119,28 @@ export default function Privacy() {
                 Art. 6(1)(b) GDPR (performance of a contract).
               </p>
 
+              <h4>e) Optional marketing emails:</h4>
+              <p>
+                We may send promotional emails (updates, discounts, rewards)
+                <strong> only if you opt in</strong> via a separate optional
+                checkbox at sign-up or later in your profile. The legal basis
+                is <strong>Art. 6(1)(a) GDPR (consent)</strong>. You can withdraw
+                consent at any time without affecting your account or cloud
+                save—use the unsubscribe link in any marketing email, or use
+                the subscribe / unsubscribe control in the in-game profile
+                menu.
+              </p>
+              <p>
+                To demonstrate consent and withdrawals, we store a marketing
+                preference record for your account, including: email (as
+                provided), whether you opted in, how the choice was recorded
+                (e.g. sign-up, Google sign-up, settings, or unsubscribe link),
+                consent text and prompt version numbers, and timestamps for when
+                you consented or withdrew. Unsubscribe links use a
+                single-use token (we store only a cryptographic hash of the
+                token until it is used or expires).
+              </p>
+
               <h3>4. Cookies and Local Storage</h3>
               <p>
                 We use session storage on your device to maintain your
@@ -132,7 +154,10 @@ export default function Privacy() {
                 TDDDG.
               </p>
               <p>
-                We do not use any tracking, analytics, or marketing cookies.
+                We do not use tracking, analytics, or marketing{" "}
+                <em>cookies</em> for advertising. Optional marketing{" "}
+                <em>emails</em> are only sent with your separate consent (see
+                section 3e).
               </p>
 
               <h3>5. Third-Party Services</h3>
@@ -177,6 +202,11 @@ export default function Privacy() {
                   <strong>Purchase History:</strong> For legal and accounting
                   reasons, we are required to retain purchase data for up to 10
                   years (according to German commercial and tax law).
+                </li>
+                <li>
+                  <strong>Marketing preferences:</strong> Kept for as long as
+                  your account exists so we can honor opt-in/opt-out and
+                  demonstrate consent; deleted when your account is deleted.
                 </li>
               </ul>
 

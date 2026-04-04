@@ -30,6 +30,7 @@ export default function Terms() {
             <ol>
               <li>"A Dark Cave" is a text-based incremental survival/strategy game. The basic version of the game can be played free of charge.</li>
               <li>Users have the option to create a free account to save their game progress on the Provider's servers ("Cloud Save"). The game can also be played without an account, in which case progress is saved locally in the User's browser.</li>
+              <li>Optional promotional emails (e.g. updates or offers) are sent only with your separate consent and can be withdrawn anytime; see the <a href="/privacy" className="underline">Privacy Policy</a> for details.</li>
               <li>The Provider reserves the right to modify, interrupt, or discontinue the Game or parts thereof, temporarily or permanently, with or without notice.</li>
             </ol>
 
