@@ -671,8 +671,9 @@ export default function ProfileMenu() {
                 <DropdownMenuItemWithTooltip
                   tooltip={
                     <p className="text-xs">
-                      Receive updates, discounts, and exclusive rewards via
-                      e-mail.
+                      {marketingOptIn
+                        ? "You are currently receiving emails with updates, discounts, and exclusive rewards. Tap to turn off."
+                        : "You are currently not receiving emails with updates, discounts, and exclusive rewards. Tap to turn on."}
                     </p>
                   }
                   tooltipId="marketing-email-updates-info"
