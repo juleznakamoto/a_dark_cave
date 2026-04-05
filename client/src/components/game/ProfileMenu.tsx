@@ -48,6 +48,10 @@ const SOCIAL_PLATFORMS = [
   // Add more platforms here as needed
 ];
 
+/** One-time profile-menu gold for opting in to marketing email (see social_media_rewards). */
+const MARKETING_EMAIL_REWARD_KEY = "marketing_email";
+const MARKETING_SUBSCRIBE_GOLD = 100;
+
 export default function ProfileMenu() {
   const {
     restartGame,
@@ -335,8 +339,9 @@ export default function ProfileMenu() {
       setDeleteAccountDialogOpen(false);
       useGameStore.getState().initialize({} as any);
       toast({
-        title: "Account deleted",
-        description: "Your session and local save have been cleared.",
+        title: "Your account was deleted",
+        description:
+          "You've been signed out and this device's local save was cleared.",
       });
     } catch (e: unknown) {
       toast({
@@ -385,6 +390,42 @@ export default function ProfileMenu() {
         );
       }
       setMarketingOptIn(next);
+
+      if (
+        next &&
+        !useGameStore.getState().social_media_rewards[MARKETING_EMAIL_REWARD_KEY]
+          ?.claimed
+      ) {
+        useGameStore.setState((state) => ({
+          social_media_rewards: {
+            ...state.social_media_rewards,
+            [MARKETING_EMAIL_REWARD_KEY]: {
+              claimed: true,
+              timestamp: Date.now(),
+            },
+          },
+        }));
+        updateResource("gold", MARKETING_SUBSCRIBE_GOLD);
+        const rewardLog: LogEntry = {
+          id: `marketing-email-reward-${Date.now()}`,
+          message: `You received ${MARKETING_SUBSCRIBE_GOLD} Gold for subscribing to email updates!`,
+          timestamp: Date.now(),
+          type: "system",
+        };
+        addLogEntry(rewardLog);
+        try {
+          const currentState = useGameStore.getState();
+          const gameState = buildGameState(currentState);
+          await saveGame(gameState, false);
+          useGameStore.setState({
+            lastSaved: new Date().toLocaleTimeString(),
+            isNewGame: false,
+          });
+        } catch (err) {
+          logger.error("Failed to save marketing subscribe reward:", err);
+        }
+      }
+
       toast({
         title: next ? "You're subscribed" : "You're unsubscribed",
         description: next
@@ -642,24 +683,40 @@ export default function ProfileMenu() {
             {currentUser && (
               <>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem
+                <DropdownMenuItemWithTooltip
+                  tooltip={
+                    <p className="text-xs">
+                      Receive updates, discount, and exclusive rewards via
+                      e-mail.
+                    </p>
+                  }
+                  tooltipId="marketing-email-updates-info"
+                  tooltipContentClassName="max-w-xs"
                   disabled={marketingPrefLoading}
-                  onClick={() => {
+                  onTooltipAction={() => {
                     void handleMarketingPreferenceToggle();
                   }}
+                  className={marketingPrefLoading ? "opacity-50 cursor-wait" : ""}
                 >
-                  <div className="flex items-center gap-1.5">
-                    <Mail
-                      className="w-3.5 h-3.5 shrink-0 opacity-90"
-                      aria-hidden
-                    />
-                    <span>
-                      {marketingOptIn
-                        ? "Unsubscribe from updates"
-                        : "Subscribe to updates"}
-                    </span>
+                  <div className="flex items-center justify-between w-full gap-2">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <Mail
+                        className="w-3.5 h-3.5 shrink-0 opacity-90"
+                        aria-hidden
+                      />
+                      <span>Subscribe/unsubscribe</span>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="font-semibold">
+                        +{MARKETING_SUBSCRIBE_GOLD} Gold
+                      </span>
+                      {social_media_rewards[MARKETING_EMAIL_REWARD_KEY]
+                        ?.claimed && (
+                          <span className="text-xs text-muted-foreground">✓</span>
+                        )}
+                    </div>
                   </div>
-                </DropdownMenuItem>
+                </DropdownMenuItemWithTooltip>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   className="text-[10px] text-muted-foreground focus:text-muted-foreground focus:bg-muted/50"
