@@ -22,19 +22,18 @@ export function DeleteAccountDialog({
   isDeleting = false,
 }: DeleteAccountDialogProps) {
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && !isDeleting && onClose()}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => !open && !isDeleting && onClose()}
+    >
       <DialogContent className="w-[95vw] sm:max-w-md z-[70]">
         <DialogHeader>
           <DialogTitle className="leading-6">Delete account</DialogTitle>
           <DialogDescription className="py-2 space-y-2 text-left">
             <p>
-              This permanently deletes your login, purchases record, leaderboard
-              entry, and analytics tied to your account. Your device save will be
-              cleared.
-            </p>
-            <p className="text-muted-foreground text-sm">
-              An anonymized copy of your cloud progress may be kept for aggregate
-              game statistics (no account link).
+              Deleting your account is permanent and cannot be undone. Your
+              account, including your login credentials, purchases, leaderboard
+              entries, and save games, will be deleted.
             </p>
           </DialogDescription>
         </DialogHeader>
