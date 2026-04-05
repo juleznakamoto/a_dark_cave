@@ -704,7 +704,9 @@ export default function ProfileMenu() {
                         className="w-3.5 h-3.5 shrink-0 opacity-90"
                         aria-hidden
                       />
-                      <span>Subscribe/unsubscribe</span>
+                      <span>
+                        {marketingOptIn ? "Unsubscribe" : "Subscribe"}
+                      </span>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
                       <span className="font-semibold">
