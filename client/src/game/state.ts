@@ -117,6 +117,7 @@ interface GameStore extends GameState {
   inactivityReason: "timeout" | "multitab" | null;
   versionCheckDialogOpen: boolean; // Added for version check dialog
   restartGameDialogOpen: boolean;
+  deleteAccountDialogOpen: boolean;
   playlightWelcomeDialogOpen: boolean;
 
   // Notification state for shop
@@ -309,6 +310,7 @@ interface GameStore extends GameState {
   setFullGamePurchaseDialogOpen: (isOpen: boolean) => void;
   setIdleModeDialog: (isOpen: boolean) => void;
   setRestartGameDialogOpen: (isOpen: boolean) => void;
+  setDeleteAccountDialogOpen: (isOpen: boolean) => void;
   updateEffects: () => void;
   updateBastionStats: () => void;
   updateStats: () => void;
@@ -1037,6 +1039,7 @@ export function isModalDialogOpen(state: GameStore): boolean {
     state.fullGamePurchaseDialogOpen ||
     state.idleModeDialog.isOpen ||
     state.restartGameDialogOpen ||
+    state.deleteAccountDialogOpen ||
     state.inactivityDialogOpen ||
     state.rewardDialog.isOpen ||
     state.investmentResultDialog.isOpen ||
@@ -1100,6 +1103,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   inactivityReason: null,
   versionCheckDialogOpen: false, // Initialize version check dialog state
   restartGameDialogOpen: false,
+  deleteAccountDialogOpen: false,
   playlightWelcomeDialogOpen: false,
   sleepUpgrades: {
     lengthLevel: 0,
@@ -2806,6 +2810,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setRestartGameDialogOpen: (isOpen: boolean) => {
     set({ restartGameDialogOpen: isOpen });
+  },
+
+  setDeleteAccountDialogOpen: (isOpen: boolean) => {
+    set({ deleteAccountDialogOpen: isOpen });
   },
 
   updateEffects: () => {

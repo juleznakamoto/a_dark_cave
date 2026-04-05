@@ -1,4 +1,5 @@
 import { getSupabaseClient } from '@/lib/supabase';
+import { apiUrl } from '@/lib/apiUrl';
 import { GameState, SaveData } from '@shared/schema';
 import { logger } from '@/lib/logger';
 import { Json } from '@shared/schema/helpers';
@@ -56,7 +57,7 @@ export async function flushPendingMarketingPreferences(): Promise<void> {
   const consentSource = parsed.google ? 'google_signup' : 'email_signup';
 
   try {
-    const res = await fetch('/api/marketing/preferences', {
+    const res = await fetch(apiUrl('/api/marketing/preferences'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -153,7 +154,7 @@ async function processReferralInBackground(): Promise<void> {
 
   while (attempts < maxAttempts) {
     try {
-      const response = await fetch('/api/referral/process', {
+      const response = await fetch(apiUrl('/api/referral/process'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -261,10 +262,10 @@ export async function signInWithGoogle(opts?: {
   }
 
   const supabase = await getSupabaseClient();
-  
+
   // Determine the correct redirect URL based on environment
   const redirectTo = window.location.origin + '/?game=true';
-  
+
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
@@ -278,6 +279,51 @@ export async function signInWithGoogle(opts?: {
 
   if (error) throw error;
   return data;
+}
+
+/** Permanently deletes the Supabase user; anonymizes cloud save row; clears local save and session. */
+export async function deleteAccount(): Promise<void> {
+  const supabase = await getSupabaseClient();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  if (!session?.access_token) {
+    throw new Error("Not signed in");
+  }
+
+  const res = await fetch(apiUrl("/api/account/delete"), {
+    method: "POST",
+    headers: { Authorization: `Bearer ${session.access_token}` },
+  });
+  const body = (await res.json().catch(() => ({}))) as { error?: string };
+  if (!res.ok) {
+    throw new Error(
+      typeof body.error === "string" ? body.error : "Account deletion failed",
+    );
+  }
+
+  const { deleteSave } = await import("./save");
+  await deleteSave();
+
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    logger.warn("[AUTH] signOut after account delete:", error);
+  }
+
+  try {
+    const { openDB } = await import("idb");
+    const db = await openDB("ADarkCaveDB", 2);
+    await db.delete("lastCloudState", "lastCloudState");
+  } catch {
+    /* ignore */
+  }
+
+  try {
+    const { stopGameLoop } = await import("./loop");
+    stopGameLoop();
+  } catch {
+    /* ignore */
+  }
 }
 
 export async function signOut() {
@@ -448,13 +494,13 @@ export async function saveGameToSupabase(
   // 4. Writing merged state
   // All in one transaction - prevents race conditions
   const { error, data } = await supabase.rpc("save_game_with_analytics", {
-        p_user_id: user.id,
-        p_game_state_diff: sanitizedDiff as unknown as Json,
-        p_click_analytics: clickAnalyticsParam as unknown as Json,
-        p_resource_analytics: resourceAnalyticsParam as unknown as Json,
-        p_clear_clicks: isNewGame,
-        p_allow_playtime_overwrite: allowOverwrite,
-      });
+    p_user_id: user.id,
+    p_game_state_diff: sanitizedDiff as unknown as Json,
+    p_click_analytics: clickAnalyticsParam as unknown as Json,
+    p_resource_analytics: resourceAnalyticsParam as unknown as Json,
+    p_clear_clicks: isNewGame,
+    p_allow_playtime_overwrite: allowOverwrite,
+  });
 
   if (error) {
     // Check if it's an OCC violation

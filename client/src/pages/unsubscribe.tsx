@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { apiUrl } from "@/lib/apiUrl";
 import { Helmet } from "react-helmet-async";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -23,7 +24,7 @@ export default function UnsubscribePage() {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch("/api/marketing/unsubscribe", {
+        const res = await fetch(apiUrl("/api/marketing/unsubscribe"), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ token }),

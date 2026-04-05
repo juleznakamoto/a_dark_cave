@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { deleteSave } from "@/game/save";
-import { getCurrentUser, signOut } from "@/game/auth";
+import { getCurrentUser, signOut, deleteAccount } from "@/game/auth";
 import { getSupabaseClient } from "@/lib/supabase";
+import { apiUrl } from "@/lib/apiUrl";
 import { useToast } from "@/hooks/use-toast";
 import { saveGame } from "@/game/save";
 import { buildGameState } from "@/game/stateHelpers";
@@ -22,6 +23,7 @@ import {
 import AuthDialog from "./AuthDialog";
 import LeaderboardDialog from "./LeaderboardDialog";
 import { RestartGameDialog } from "./RestartGameDialog";
+import { DeleteAccountDialog } from "./DeleteAccountDialog";
 import SignUpPromptDialog from "./SignUpPromptDialog";
 import { initPlaylight, markPlaylightDiscoveryUserInitiated } from "@/lib/playlight";
 import { Mail } from "lucide-react";
@@ -68,6 +70,8 @@ export default function ProfileMenu() {
     hasWonAnyGame,
     restartGameDialogOpen, // Added from store
     setRestartGameDialogOpen, // Added from store
+    deleteAccountDialogOpen,
+    setDeleteAccountDialogOpen,
     cooldowns,
     cooldownDurations,
     lastSaved,
@@ -82,6 +86,7 @@ export default function ProfileMenu() {
   } | null>(null);
   const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [marketingPrefLoading, setMarketingPrefLoading] = useState(false);
+  const [deleteAccountInProgress, setDeleteAccountInProgress] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -98,7 +103,7 @@ export default function ProfileMenu() {
           data: { session },
         } = await supabase.auth.getSession();
         if (!session?.access_token || cancelled) return;
-        const res = await fetch("/api/marketing/preferences", {
+        const res = await fetch(apiUrl("/api/marketing/preferences"), {
           headers: { Authorization: `Bearer ${session.access_token}` },
         });
         if (!res.ok || cancelled) return;
@@ -319,6 +324,31 @@ export default function ProfileMenu() {
     setAuthDialogOpen(true);
   };
 
+  const handleConfirmDeleteAccount = async () => {
+    if (deleteAccountInProgress) return;
+    setDeleteAccountInProgress(true);
+    try {
+      await deleteAccount();
+      setCurrentUser(null);
+      setIsUserSignedIn(false);
+      setMarketingOptIn(false);
+      setDeleteAccountDialogOpen(false);
+      useGameStore.getState().initialize({} as any);
+      toast({
+        title: "Account deleted",
+        description: "Your session and local save have been cleared.",
+      });
+    } catch (e: unknown) {
+      toast({
+        title: "Could not delete account",
+        description: e instanceof Error ? e.message : "Try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setDeleteAccountInProgress(false);
+    }
+  };
+
   const handleMarketingPreferenceToggle = async () => {
     if (!currentUser || marketingPrefLoading) return;
     setMarketingPrefLoading(true);
@@ -335,7 +365,7 @@ export default function ProfileMenu() {
         return;
       }
       const next = !marketingOptIn;
-      const res = await fetch("/api/marketing/preferences", {
+      const res = await fetch(apiUrl("/api/marketing/preferences"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -394,6 +424,14 @@ export default function ProfileMenu() {
         isOpen={restartGameDialogOpen}
         onClose={() => setRestartGameDialogOpen(false)}
         onConfirm={handleConfirmRestart}
+      />
+      <DeleteAccountDialog
+        isOpen={deleteAccountDialogOpen}
+        onClose={() => {
+          if (!deleteAccountInProgress) setDeleteAccountDialogOpen(false);
+        }}
+        onConfirm={handleConfirmDeleteAccount}
+        isDeleting={deleteAccountInProgress}
       />
       <div className="flex flex-wrap items-center justify-end gap-2 max-w-[200px]">
         <DropdownMenu
@@ -621,6 +659,16 @@ export default function ProfileMenu() {
                         : "Subscribe to updates"}
                     </span>
                   </div>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="text-[10px] text-muted-foreground focus:text-muted-foreground focus:bg-muted/50"
+                  onClick={() => {
+                    setAccountDropdownOpen(false);
+                    setDeleteAccountDialogOpen(true);
+                  }}
+                >
+                  Delete account
                 </DropdownMenuItem>
               </>
             )}

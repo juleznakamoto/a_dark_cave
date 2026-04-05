@@ -16,6 +16,7 @@ import { buildGameState } from "@/game/stateHelpers";
 import { useToast } from "@/hooks/use-toast";
 import { useGameStore } from "@/game/state";
 import { logger } from "@/lib/logger";
+import { cn } from "@/lib/utils";
 
 interface AuthDialogProps {
   isOpen: boolean;
@@ -158,6 +159,16 @@ export default function AuthDialog({
   };
 
   const handleGoogleSignIn = async () => {
+    if (mode === "signup" && !acceptedTerms) {
+      toast({
+        title: "Terms required",
+        description:
+          "You must accept the Terms of Service and Privacy Policy to create an account.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setLoading(true);
     try {
       if (mode === "signup") {
@@ -184,6 +195,9 @@ export default function AuthDialog({
       setLoading(false);
     }
   };
+
+  const signupNeedsTerms =
+    mode === "signup" && !acceptedTerms;
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
@@ -304,8 +318,12 @@ export default function AuthDialog({
             <div className="flex flex-col space-y-2">
               <Button
                 type="submit"
-                className="font-medium text-sm"
+                className={cn(
+                  "font-medium text-sm",
+                  signupNeedsTerms && "opacity-50 cursor-not-allowed",
+                )}
                 disabled={loading}
+                aria-disabled={signupNeedsTerms || undefined}
               >
                 {loading
                   ? "Loading..."
@@ -332,7 +350,11 @@ export default function AuthDialog({
                     variant="outline"
                     onClick={handleGoogleSignIn}
                     disabled={loading}
-                    className="font-medium text-sm"
+                    aria-disabled={signupNeedsTerms || undefined}
+                    className={cn(
+                      "font-medium text-sm",
+                      signupNeedsTerms && "opacity-50 cursor-not-allowed",
+                    )}
                   >
                     <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                       <path
