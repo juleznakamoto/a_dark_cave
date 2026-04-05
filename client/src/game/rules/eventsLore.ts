@@ -427,7 +427,8 @@ export const loreEvents: Record<string, GameEvent> = {
       state.story.seen.restlessKnightDesertFailed ? 20 : 10,
     title: "The Knight's Final Journey",
     message:
-      "The knight returns, 'I traveled far south to a vast desert. There, I met a man devoted to recovering lost technology of the ancients. He showed me devices once embedded in the skull, enhancing senses beyond natural limits. ' He pauses, 'I have traveled enough. You could use a veteran blade. I offer my service in combat, if you accept.'", priority: 3,
+      "The knight returns, 'I traveled far south to a vast desert. There, I met a man devoted to recovering lost technology of the ancients. He showed me devices once embedded in the skull, enhancing senses beyond natural limits. ' He pauses, 'I have traveled enough. You could use a veteran blade. I offer my service in combat, if you accept.'",
+    priority: 3,
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
@@ -599,7 +600,7 @@ export const loreEvents: Record<string, GameEvent> = {
       Boolean(state.flags.forestUnlocked) &&
       !Boolean(state.story.seen.risingSmokeUnlocked),
     timeProbability: 20,
-    repeatable: true,
+    repeatable: false,
     title: "Rising smoke",
     message:
       "Villagers come to you. They saw a very dense pillar of smoke rising in the woods. Maybe it makes sense to investigate it.",
