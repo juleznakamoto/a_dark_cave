@@ -320,7 +320,7 @@ export default function AuthDialog({
                 type="submit"
                 className={cn(
                   "font-medium text-sm",
-                  signupNeedsTerms && "opacity-50 cursor-not-allowed",
+                  signupNeedsTerms && "opacity-50",
                 )}
                 disabled={loading}
                 aria-disabled={signupNeedsTerms || undefined}
@@ -353,7 +353,7 @@ export default function AuthDialog({
                     aria-disabled={signupNeedsTerms || undefined}
                     className={cn(
                       "font-medium text-sm",
-                      signupNeedsTerms && "opacity-50 cursor-not-allowed",
+                      signupNeedsTerms && "opacity-50",
                     )}
                   >
                     <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
