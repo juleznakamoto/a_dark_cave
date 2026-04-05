@@ -1180,7 +1180,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   whispering_cube: {
     id: "whispering_cube",
     name: "Whispering Cube",
-    description: "Perfectly polished metal cube of unknown origin",
+    description: "Perfectly polished metal cube of unknown origin, whispering fragments of the history of the vanished civilization.",
     bonuses: {},
   },
 

@@ -12,14 +12,12 @@ const SOCIAL_PLATFORMS = [
   {
     id: 'instagram',
     name: 'Instagram',
-    icon: '/camera.png',
     url: 'https://www.instagram.com/a_dark_cave/',
     reward: 100,
   },
   {
     id: 'reddit',
     name: 'Reddit',
-    icon: '/reddit.png',
     url: 'https://www.reddit.com/r/aDarkCave/',
     reward: 100,
   },
@@ -145,7 +143,7 @@ export default function SocialMediaRewards() {
               <div className="flex items-center gap-2">
                 <span className="font-semibold">&nbsp;+{platform.reward} Gold</span>
                 {isClaimed && <span className="text-xs text-muted-foreground">✓</span>}
-                
+
               </div>
             </div>
           </DropdownMenuItem>

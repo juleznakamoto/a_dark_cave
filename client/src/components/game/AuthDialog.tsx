@@ -305,13 +305,10 @@ export default function AuthDialog({
                 />
                 <label
                   htmlFor="marketing"
-                  className="text-sm leading-snug peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="flex items-center justify-between text-sm leading-snug peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Get updates, discounts, and exclusive rewards
-                  <span className="text-muted-foreground font-normal">
-                    {" "}
-                    (optional)
-                  </span>
+                  <span>Get updates, discounts & exclusive rewards</span>
+                  <span className="text-muted-foreground font-normal">(optional)</span>
                 </label>
               </div>
             )}
