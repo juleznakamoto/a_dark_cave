@@ -704,7 +704,9 @@ export default function ProfileMenu() {
                         )}
                       {social_media_rewards[MARKETING_EMAIL_REWARD_KEY]
                         ?.claimed && (
-                          <span className="text-xs text-muted-foreground">✓</span>
+                          <span className="text-xs text-muted-foreground opacity-50">
+                            ✓
+                          </span>
                         )}
                     </div>
                   </div>
