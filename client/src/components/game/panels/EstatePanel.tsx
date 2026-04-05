@@ -166,9 +166,20 @@ export default function EstatePanel() {
     const updateFocusProgress = () => {
       const now = Date.now();
       if (focusState?.isActive && focusState.endTime > now) {
-        const focusDuration = focusState.duration || 60000; // Default to 1 minute if not set
+        const fromStored =
+          typeof focusState.duration === "number" && focusState.duration > 0
+            ? focusState.duration
+            : null;
+        const fromRange =
+          focusState.startTime &&
+            focusState.endTime > focusState.startTime
+            ? focusState.endTime - focusState.startTime
+            : null;
+        const focusDuration = fromStored ?? fromRange ?? 60_000;
         const focusElapsed = focusDuration - (focusState.endTime - now);
-        setFocusProgress((focusElapsed / focusDuration) * 100);
+        setFocusProgress(
+          Math.min(100, Math.max(0, (focusElapsed / focusDuration) * 100)),
+        );
       } else {
         setFocusProgress(0);
         // Clear focus state when timer expires

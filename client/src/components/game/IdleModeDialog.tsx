@@ -17,7 +17,20 @@ import {
 } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { resetProductionCycle } from "@/game/loop";
-import { BOMB_RESOURCES } from "@/game/resourceLimits";
+import { BOMB_RESOURCES, capResourceToLimit } from "@/game/resourceLimits";
+import type { GameState } from "@shared/schema";
+
+/** Match live play: limited resources cannot exceed storage cap during sleep simulation. */
+function clampSimulatedResourcesToStorage(
+  simulated: Record<string, number>,
+  gameState: GameState,
+): void {
+  for (const key of Object.keys(simulated)) {
+    const v = simulated[key];
+    if (v === undefined || v === null || Number.isNaN(v)) continue;
+    simulated[key] = capResourceToLimit(key, Math.max(0, v), gameState);
+  }
+}
 
 // Sleep upgrade configurations
 const SLEEP_LENGTH_UPGRADES = [
@@ -182,6 +195,7 @@ function getProductionPerInterval(
   simulateHunterProduction(state, multiplier, simulatedResources);
   simulateMinerProduction(state, multiplier, simulatedResources);
   simulatePopulationConsumption(state, multiplier, simulatedResources);
+  clampSimulatedResourcesToStorage(simulatedResources, state);
   const productionPerInterval: Record<string, number> = {};
   const allResources = new Set([
     ...Object.keys(before),
@@ -284,6 +298,7 @@ export default function IdleModeDialog() {
             PRODUCTION_SPEED_MULTIPLIER,
             offlineResources,
           );
+          clampSimulatedResourcesToStorage(offlineResources, currentState);
         }
 
         // Calculate the delta (change) from starting resources
@@ -435,6 +450,7 @@ export default function IdleModeDialog() {
           PRODUCTION_SPEED_MULTIPLIER,
           simulatedResources,
         );
+        clampSimulatedResourcesToStorage(simulatedResources, currentState);
 
         // Calculate new deltas from initial state
         const newDeltas: Record<string, number> = {};

@@ -2893,8 +2893,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ versionCheckDialogOpen: isOpen });
   },
 
-  updateFocusState: (focusState) => {
-    set({ focusState });
+  updateFocusState: (partial) => {
+    set((state) => ({
+      focusState: {
+        ...state.focusState,
+        ...partial,
+      },
+    }));
   },
 
   updateResources: (updates) => {
