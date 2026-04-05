@@ -193,6 +193,9 @@ export default function AdminDashboard() {
     marketingOptInRate: 0,
   });
 
+  const [accountsDeletedAnonymized, setAccountsDeletedAnonymized] =
+    useState(0);
+
   // Filter states
   const [timeRange, setTimeRange] = useState<"1d" | "3d" | "7d" | "30d" | "all">(
     "30d",
@@ -969,6 +972,11 @@ export default function AdminDashboard() {
             Number(data.marketingMetrics.marketingOptInRate) || 0,
         });
       }
+      if (typeof data.accountsDeletedAnonymized === "number") {
+        setAccountsDeletedAnonymized(
+          Math.max(0, Math.floor(data.accountsDeletedAnonymized)),
+        );
+      }
 
       // Collect unique user IDs only from users who have click data
       const userIdsWithClicks = new Set<string>();
@@ -1283,7 +1291,7 @@ export default function AdminDashboard() {
                     }
 
                     const now = new Date();
-                    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
                     return Array.from({ length: days }, (_, i) => {
                       const d = new Date(Date.UTC(
                         now.getUTCFullYear(),
@@ -1449,6 +1457,7 @@ export default function AdminDashboard() {
                     return data;
                   }}
                   marketingMetrics={marketingMetrics}
+                  accountsDeletedAnonymized={accountsDeletedAnonymized}
                 />
               </TabsContent>
 

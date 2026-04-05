@@ -48,6 +48,8 @@ interface OverviewTabProps {
     marketingUsersOptedIn: number;
     marketingOptInRate: number;
   };
+  /** Rows in game_saves with user_id cleared after in-app delete (migration 009). */
+  accountsDeletedAnonymized: number;
 }
 
 export default function OverviewTab(props: OverviewTabProps) {
@@ -76,10 +78,20 @@ export default function OverviewTab(props: OverviewTabProps) {
     chartTimeRange,
     setChartTimeRange,
     marketingMetrics,
+    accountsDeletedAnonymized,
   } = props;
 
   const [sessionData, setSessionData] = useState<SessionStats[]>([]);
   const [conversionRange, setConversionRange] = useState<ConversionRange>("1m");
+
+  const prompted = marketingMetrics?.marketingUsersPrompted ?? 0;
+  // Deleted users lose their marketing_preferences row (CASCADE); adding anonymized saves
+  // approximates a non-legacy cohort comparable to "sign-ups" that hit the consent flow.
+  const nonLegacySignupsApprox = prompted + accountsDeletedAnonymized;
+  const deletionVsNonLegacyPct =
+    nonLegacySignupsApprox > 0
+      ? (100 * accountsDeletedAnonymized) / nonLegacySignupsApprox
+      : 0;
 
   useEffect(() => {
     fetch(`/api/admin/sessions?env=${environment}&days=365`)
@@ -330,6 +342,44 @@ export default function OverviewTab(props: OverviewTabProps) {
             <p className="text-sm text-muted-foreground mt-2">
               Prompted: {marketingMetrics?.marketingUsersPrompted ?? 0}{" "}
               (legacy accounts without a row are excluded)
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Accounts deleted</CardTitle>
+            <CardDescription>
+              In-app deletions that had a cloud save: row kept with{" "}
+              <code className="text-xs">user_id</code> cleared (
+              <code className="text-xs">game_saves</code>). No row if the user
+              never synced.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-3xl font-bold">{accountsDeletedAnonymized}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Deletions vs non-legacy sign-ups</CardTitle>
+            <CardDescription>
+              Share of approximate non-legacy cohort: current{" "}
+              <code className="text-xs">marketing_preferences</code> rows (
+              {prompted}) plus anonymized saves ({accountsDeletedAnonymized}) —{" "}
+              {nonLegacySignupsApprox} total. Legacy-only accounts (no consent
+              row) are excluded from the denominator; legacy deletions with a
+              save inflate it slightly.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-3xl font-bold">
+              {deletionVsNonLegacyPct.toFixed(1)}%
+            </p>
+            <p className="text-sm text-muted-foreground mt-2">
+              {accountsDeletedAnonymized} ÷ {nonLegacySignupsApprox || "—"}
             </p>
           </CardContent>
         </Card>

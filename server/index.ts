@@ -693,6 +693,21 @@ app.get("/api/admin/data", async (req, res) => {
       log("⚠️ Marketing metrics skipped:", mErr?.message ?? mErr);
     }
 
+    // Anonymized cloud saves after self-service delete (game_saves.user_id cleared; see migration 009).
+    let accountsDeletedAnonymized = 0;
+    try {
+      const { count: anonCount, error: anonErr } = await adminClient
+        .from("game_saves")
+        .select("*", { count: "exact", head: true })
+        .is("user_id", null);
+      if (anonErr) {
+        throw anonErr;
+      }
+      accountsDeletedAnonymized = anonCount ?? 0;
+    } catch (anonCatch: any) {
+      log("⚠️ accountsDeletedAnonymized skipped:", anonCatch?.message ?? anonCatch);
+    }
+
     res.json({
       clicks: clicksResult.data,
       saves: savesResult.data,
@@ -703,6 +718,7 @@ app.get("/api/admin/data", async (req, res) => {
       registrationMethodStats: registrationMethodStats,
       authSignups,
       marketingMetrics,
+      accountsDeletedAnonymized,
     });
   } catch (error: any) {
     log("❌ Admin data fetch failed:", error);
