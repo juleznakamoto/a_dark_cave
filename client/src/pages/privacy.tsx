@@ -17,7 +17,7 @@ export default function Privacy() {
               <CardTitle className="text-3xl text-white">
                 Privacy Policy
               </CardTitle>
-              <p className="text-sm text-gray-400">Last Updated: 03.11.2025</p>
+              <p className="text-sm text-gray-400">Last Updated: 04.04.2026</p>
             </CardHeader>
             <CardContent className="prose prose-sm prose-invert max-w-none text-white legal-content">
               <h3>1. General Information</h3>
@@ -188,6 +188,19 @@ export default function Privacy() {
                 this sensitive financial data. Stripe is responsible for the
                 secure processing of your payment data. The legal basis for
                 using Stripe is Art. 6(1)(b) GDPR (performance of a contract).
+              </p>
+
+              <h4>c) Resend:</h4>
+              <p>
+                We use Resend Inc. (USA) to send email on our behalf, including
+                account-related messages (e.g. sign-up or password reset, where
+                applicable) and—if you have opted in—promotional emails as
+                described in section 3e. Resend processes the recipient address
+                and the content needed to deliver each message. The legal basis
+                is Art. 6(1)(b) GDPR for emails necessary to provide the
+                service, and Art. 6(1)(a) GDPR for marketing emails (consent).
+                We have entered into a DPA with Resend where required for
+                processor relationships.
               </p>
 
               <h3>6. Data Retention</h3>
