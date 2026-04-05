@@ -170,6 +170,7 @@ export default function ForestPanel() {
         { id: "sunkenTemple", label: "Sunken Temple" },
         { id: "blackreachCanyon", label: "Blackreach Canyon" },
         { id: "steelDelivery", label: "Steel Delivery" },
+        { id: "risingSmoke", label: "Rising smoke" },
         { id: "canyonBridge", label: "Canyon Bridge" },
       ],
     },
