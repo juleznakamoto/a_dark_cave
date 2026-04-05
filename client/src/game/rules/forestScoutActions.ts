@@ -11,15 +11,23 @@ import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 function processTriggeredEvents(
   effectUpdates: ActionEffectUpdates,
   result: ActionResult,
-  state: GameState
+  state: GameState,
 ): void {
-  if (effectUpdates.triggeredEvents && effectUpdates.triggeredEvents.length > 0) {
-    logger.log(`[FOREST SCOUT] Processing triggered events:`, effectUpdates.triggeredEvents);
+  if (
+    effectUpdates.triggeredEvents &&
+    effectUpdates.triggeredEvents.length > 0
+  ) {
+    logger.log(
+      `[FOREST SCOUT] Processing triggered events:`,
+      effectUpdates.triggeredEvents,
+    );
 
     effectUpdates.triggeredEvents.forEach((eventId: string) => {
       // Prevent event from happening again if it's already been triggered
       if (state.triggeredEvents?.[eventId]) {
-        logger.log(`[FOREST SCOUT] Skipping already triggered event: ${eventId}`);
+        logger.log(
+          `[FOREST SCOUT] Skipping already triggered event: ${eventId}`,
+        );
         return;
       }
 
@@ -27,22 +35,25 @@ function processTriggeredEvents(
       if (eventDef) {
         logger.log(`[FOREST SCOUT] Found event definition for: ${eventId}`, {
           title: eventDef.title,
-          hasChoices: !!eventDef.choices
+          hasChoices: !!eventDef.choices,
         });
 
         // Mark as triggered in state updates
-        if (!effectUpdates.triggeredEventsState) effectUpdates.triggeredEventsState = {};
+        if (!effectUpdates.triggeredEventsState)
+          effectUpdates.triggeredEventsState = {};
         effectUpdates.triggeredEventsState[eventId] = true;
 
         // Create a log entry for the event
-        const eventChoices = typeof eventDef.choices === 'function' ? undefined : eventDef.choices;
+        const eventChoices =
+          typeof eventDef.choices === "function" ? undefined : eventDef.choices;
         const logEntry: LogEntry = {
           id: `${eventId}-${Date.now()}`,
-          message: typeof eventDef.message === 'string'
-            ? eventDef.message
-            : Array.isArray(eventDef.message)
-              ? eventDef.message[0]
-              : '',
+          message:
+            typeof eventDef.message === "string"
+              ? eventDef.message
+              : Array.isArray(eventDef.message)
+                ? eventDef.message[0]
+                : "",
           timestamp: Date.now(),
           type: "event",
           title: eventDef.title,
@@ -64,7 +75,7 @@ function processTriggeredEvents(
     if (effectUpdates.triggeredEventsState) {
       effectUpdates.triggeredEvents = {
         ...(state.triggeredEvents || {}),
-        ...effectUpdates.triggeredEventsState
+        ...effectUpdates.triggeredEventsState,
       };
       delete effectUpdates.triggeredEventsState;
     } else {
@@ -94,8 +105,10 @@ export const forestScoutActions: Record<string, Action> = {
             const stoneHuts = state.buildings.stoneHut || 0;
             let prob =
               CRUEL_MODE.forestScout.huntBlacksmithHammerProb.base +
-              stoneHuts * CRUEL_MODE.forestScout.huntBlacksmithHammerProb.perStoneHut -
-              cruelModeScale(state) * CRUEL_MODE.forestScout.huntBlacksmithHammerProb.whenCruel;
+              stoneHuts *
+                CRUEL_MODE.forestScout.huntBlacksmithHammerProb.perStoneHut -
+              cruelModeScale(state) *
+                CRUEL_MODE.forestScout.huntBlacksmithHammerProb.whenCruel;
             return prob;
           },
           value: true,
@@ -111,7 +124,8 @@ export const forestScoutActions: Record<string, Action> = {
             let prob =
               CRUEL_MODE.forestScout.huntRedMaskProb.base +
               stoneHuts * CRUEL_MODE.forestScout.huntRedMaskProb.perStoneHut -
-              cruelModeScale(state) * CRUEL_MODE.forestScout.huntRedMaskProb.whenCruel;
+              cruelModeScale(state) *
+                CRUEL_MODE.forestScout.huntRedMaskProb.whenCruel;
             return prob;
           },
           value: true,
@@ -213,7 +227,8 @@ export const forestScoutActions: Record<string, Action> = {
     minVillagers: 6,
     expeditionVillagersRequired: (state: GameState) =>
       CRUEL_MODE.forestExpedition.sunkenTemple.base +
-      cruelModeScale(state) * CRUEL_MODE.forestExpedition.sunkenTemple.whenCruel,
+      cruelModeScale(state) *
+        CRUEL_MODE.forestExpedition.sunkenTemple.whenCruel,
     show_when: {
       "story.seen.wizardBloodstone": true,
       "!story.seen.sunkenTempleExplored": true,
@@ -243,7 +258,8 @@ export const forestScoutActions: Record<string, Action> = {
     minVillagers: 6,
     expeditionVillagersRequired: (state: GameState) =>
       CRUEL_MODE.forestExpedition.collapsedTower.base +
-      cruelModeScale(state) * CRUEL_MODE.forestExpedition.collapsedTower.whenCruel,
+      cruelModeScale(state) *
+        CRUEL_MODE.forestExpedition.collapsedTower.whenCruel,
     show_when: {
       "story.seen.collapsedTowerUnlocked": true,
       "!story.seen.collapsedTowerExplored": true,
@@ -347,7 +363,7 @@ export const forestScoutActions: Record<string, Action> = {
         state,
         0.1,
         { type: "strength", multiplier: 0.0025 },
-        { type: "knowledge", multiplier: 0.0025 },
+        { type: "knowledge", multiplier: 0.002 },
       ),
     relevant_stats: ["strength", "knowledge"],
     executionTime: 90,
@@ -385,7 +401,9 @@ export function handleHunt(
   // Filter out any log entries that are event dialogs (have choices)
   // These should only appear as dialogs, not in the log
   if (result.logEntries) {
-    result.logEntries = result.logEntries.filter(entry => !entry.choices || entry.choices.length === 0);
+    result.logEntries = result.logEntries.filter(
+      (entry) => !entry.choices || entry.choices.length === 0,
+    );
   }
 
   // Handle any log messages from probability effects
@@ -444,15 +462,15 @@ export function handleLayTrap(
       villagerDeaths = Math.min(
         state.current_population,
         Math.floor(Math.random() * gbt.victoryDeaths.randMax) +
-        cruelModeScale(state) * gbt.victoryDeaths.whenCruel,
+          cruelModeScale(state) * gbt.victoryDeaths.whenCruel,
       );
     } else {
       // Defeat with heavy casualties
       villagerDeaths = Math.min(
         state.current_population,
         Math.floor(Math.random() * gbt.defeatDeaths.randMax) +
-        gbt.defeatDeaths.base +
-        cruelModeScale(state) * gbt.defeatDeaths.whenCruel,
+          gbt.defeatDeaths.base +
+          cruelModeScale(state) * gbt.defeatDeaths.whenCruel,
       );
     }
 
@@ -531,12 +549,15 @@ export function handleCastleRuins(
     };
 
     // Food cost already consumed at execution start; only apply rewards here
-    const isCompletingExecution = (state as any)._completingExecution === "castleRuins";
+    const isCompletingExecution =
+      (state as any)._completingExecution === "castleRuins";
     result.stateUpdates.resources = {
       ...state.resources,
       silver: (state.resources.silver || 0) + 100,
       gold: (state.resources.gold || 0) + 50,
-      ...(isCompletingExecution ? {} : { food: (state.resources.food || 0) - 2500 }),
+      ...(isCompletingExecution
+        ? {}
+        : { food: (state.resources.food || 0) - 2500 }),
     };
 
     result.logEntries!.push({
@@ -551,12 +572,16 @@ export function handleCastleRuins(
     const failureRand = Math.random();
 
     const cr = CRUEL_MODE.forestScout.castleRuins;
-    if (failureRand < cr.minorUndeadChance.base - cruelModeScale(state) * cr.minorUndeadChance.whenCruel) {
+    if (
+      failureRand <
+      cr.minorUndeadChance.base -
+        cruelModeScale(state) * cr.minorUndeadChance.whenCruel
+    ) {
       const villagerDeaths = Math.min(
         state.current_population,
         Math.floor(Math.random() * cr.minorDeaths.randMax) +
-        cr.minorDeaths.base +
-        cruelModeScale(state) * cr.minorDeaths.whenCruel,
+          cr.minorDeaths.base +
+          cruelModeScale(state) * cr.minorDeaths.whenCruel,
       );
       const deathResult = killVillagers(state, villagerDeaths);
       const actualDeaths = deathResult.villagersKilled || 0;
@@ -572,8 +597,8 @@ export function handleCastleRuins(
       const villagerDeaths = Math.min(
         state.current_population,
         Math.floor(Math.random() * cr.majorDeaths.randMax) +
-        cr.majorDeaths.base +
-        cruelModeScale(state) * cr.majorDeaths.whenCruel,
+          cr.majorDeaths.base +
+          cruelModeScale(state) * cr.majorDeaths.whenCruel,
       );
       const deathResult = killVillagers(state, villagerDeaths);
       const actualDeaths = deathResult.villagersKilled || 0;
@@ -608,12 +633,15 @@ export function handleHillGrave(
   if (rand < successChance) {
     // Success: Find frostglass
     // Food cost already consumed at execution start; only apply rewards here
-    const isCompletingExecution = (state as any)._completingExecution === "hillGrave";
+    const isCompletingExecution =
+      (state as any)._completingExecution === "hillGrave";
     result.stateUpdates.resources = {
       ...state.resources,
       silver: (state.resources.silver || 0) + 200,
       gold: (state.resources.gold || 0) + 100,
-      ...(isCompletingExecution ? {} : { food: (state.resources.food || 0) - 5000 }),
+      ...(isCompletingExecution
+        ? {}
+        : { food: (state.resources.food || 0) - 5000 }),
     };
 
     result.stateUpdates.relics = {
@@ -641,7 +669,9 @@ export function handleHillGrave(
     const hg = CRUEL_MODE.forestScout.hillGrave.failureDeaths;
     const villagerDeaths = Math.min(
       state.current_population,
-      Math.floor(Math.random() * hg.randMax) + hg.base + cruelModeScale(state) * hg.whenCruel,
+      Math.floor(Math.random() * hg.randMax) +
+        hg.base +
+        cruelModeScale(state) * hg.whenCruel,
     );
     const deathResult = killVillagers(state, villagerDeaths);
     const actualDeaths = deathResult.villagersKilled || 0;
@@ -675,12 +705,15 @@ export function handleSunkenTemple(
   if (rand < successChance) {
     // Success: Find bloodstone
     // Food cost already consumed at execution start; only apply rewards here
-    const isCompletingExecution = (state as any)._completingExecution === "sunkenTemple";
+    const isCompletingExecution =
+      (state as any)._completingExecution === "sunkenTemple";
     result.stateUpdates.resources = {
       ...state.resources,
       silver: (state.resources.silver || 0) + 500,
       gold: (state.resources.gold || 0) + 250,
-      ...(isCompletingExecution ? {} : { food: (state.resources.food || 0) - 5000 }),
+      ...(isCompletingExecution
+        ? {}
+        : { food: (state.resources.food || 0) - 5000 }),
     };
 
     result.stateUpdates.relics = {
@@ -709,7 +742,9 @@ export function handleSunkenTemple(
     const st = CRUEL_MODE.forestScout.sunkenTemple.failureDeaths;
     const villagerDeaths = Math.min(
       state.current_population,
-      Math.floor(Math.random() * st.randMax) + st.base + cruelModeScale(state) * st.whenCruel,
+      Math.floor(Math.random() * st.randMax) +
+        st.base +
+        cruelModeScale(state) * st.whenCruel,
     );
     const deathResult = killVillagers(state, villagerDeaths);
     const actualDeaths = deathResult.villagersKilled || 0;
@@ -743,12 +778,15 @@ export function handlecollapsedTower(
   if (rand < successChance) {
     // Success: Discover the necromancer's plot
     // Food cost already consumed at execution start; only apply rewards here
-    const isCompletingExecution = (state as any)._completingExecution === "collapsedTower";
+    const isCompletingExecution =
+      (state as any)._completingExecution === "collapsedTower";
     result.stateUpdates.resources = {
       ...state.resources,
       silver: (state.resources.silver || 0) + 500,
       gold: (state.resources.gold || 0) + 250,
-      ...(isCompletingExecution ? {} : { food: (state.resources.food || 0) - 2500 }),
+      ...(isCompletingExecution
+        ? {}
+        : { food: (state.resources.food || 0) - 2500 }),
     };
 
     // Give the bone saw tool
@@ -783,7 +821,9 @@ export function handlecollapsedTower(
     const ct = CRUEL_MODE.forestScout.collapsedTower.failureDeaths;
     const villagerDeaths = Math.min(
       state.current_population,
-      Math.floor(Math.random() * ct.randMax) + ct.base + cruelModeScale(state) * ct.whenCruel,
+      Math.floor(Math.random() * ct.randMax) +
+        ct.base +
+        cruelModeScale(state) * ct.whenCruel,
     );
     const deathResult = killVillagers(state, villagerDeaths);
     const actualDeaths = deathResult.villagersKilled || 0;
@@ -816,13 +856,16 @@ export function handleForestCave(
   if (rand < successChance) {
     // Success: Defeat the hounds
     // Food cost already consumed at execution start; only apply rewards here
-    const isCompletingExecution = (state as any)._completingExecution === "forestCave";
+    const isCompletingExecution =
+      (state as any)._completingExecution === "forestCave";
     result.stateUpdates.resources = {
       ...state.resources,
       silver: (state.resources.silver || 0) + 250,
       gold: (state.resources.gold || 0) + 100,
       fur: (state.resources.fur || 0) + 500,
-      ...(isCompletingExecution ? {} : { food: (state.resources.food || 0) - 1000 }),
+      ...(isCompletingExecution
+        ? {}
+        : { food: (state.resources.food || 0) - 1000 }),
     };
 
     // Set flag to mark cave as explored
@@ -845,7 +888,9 @@ export function handleForestCave(
     const fc = CRUEL_MODE.forestScout.forestCave.failureDeaths;
     const villagerDeaths = Math.min(
       state.current_population,
-      Math.floor(Math.random() * fc.randMax) + fc.base + cruelModeScale(state) * fc.whenCruel,
+      Math.floor(Math.random() * fc.randMax) +
+        fc.base +
+        cruelModeScale(state) * fc.whenCruel,
     );
     const deathResult = killVillagers(state, villagerDeaths);
     const actualDeaths = deathResult.villagersKilled || 0;
@@ -882,7 +927,8 @@ export function handleBlackreachCanyon(
   };
 
   // Food cost already consumed at execution start; skip re-deduction on completion
-  const isCompletingExecution = (state as any)._completingExecution === "blackreachCanyon";
+  const isCompletingExecution =
+    (state as any)._completingExecution === "blackreachCanyon";
   if (!isCompletingExecution) {
     result.stateUpdates.resources = {
       ...state.resources,
@@ -909,7 +955,8 @@ export function handleSteelDelivery(
   Object.assign(result.stateUpdates, effectUpdates);
 
   // Steel and food costs already consumed at execution start; skip re-deduction on completion
-  const isCompletingExecution = (state as any)._completingExecution === "steelDelivery";
+  const isCompletingExecution =
+    (state as any)._completingExecution === "steelDelivery";
   if (!isCompletingExecution) {
     result.stateUpdates.resources = {
       ...state.resources,
@@ -963,10 +1010,7 @@ export function handleRisingSmoke(
       goldGain += 250;
     }
 
-    const { added, patch: captivePatch } = addFreeVillagersWithinCap(
-      state,
-      20,
-    );
+    const { added, patch: captivePatch } = addFreeVillagersWithinCap(state, 20);
 
     Object.assign(result.stateUpdates, captivePatch);
 
@@ -982,7 +1026,7 @@ export function handleRisingSmoke(
       ...state.story,
       seen: {
         ...state.story.seen,
-        ...(captivePatch.story?.seen),
+        ...captivePatch.story?.seen,
         risingSmokeExplored: true,
       },
     };
@@ -1008,8 +1052,8 @@ export function handleRisingSmoke(
     const villagerDeaths = Math.min(
       state.current_population,
       Math.floor(Math.random() * rs.randMax) +
-      rs.base +
-      cruelModeScale(state) * rs.whenCruel,
+        rs.base +
+        cruelModeScale(state) * rs.whenCruel,
     );
     const deathResult = killVillagers(state, villagerDeaths);
     const actualDeaths = deathResult.villagersKilled || 0;
