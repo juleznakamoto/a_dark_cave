@@ -41,7 +41,7 @@ function checkRateLimit(userId: string, maxRequests: number, windowMs: number): 
 
 serve(async (req) => {
   const requestId = crypto.randomUUID()
-  
+
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -53,8 +53,8 @@ serve(async (req) => {
     if (contentLength && parseInt(contentLength) > 500000) {
       return new Response(
         JSON.stringify({ error: 'Payload too large', requestId }),
-        { 
-          status: 413, 
+        {
+          status: 413,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         }
       )
@@ -63,13 +63,13 @@ serve(async (req) => {
     // Get JWT from Authorization header
     const authHeader = req.headers.get('Authorization')
     console.log(`[${requestId}] Authorization header present:`, !!authHeader)
-    
+
     if (!authHeader) {
       console.error(`[${requestId}] Missing authorization header`)
       return new Response(
         JSON.stringify({ error: 'Missing authorization header', requestId }),
-        { 
-          status: 401, 
+        {
+          status: 401,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         }
       )
@@ -80,8 +80,8 @@ serve(async (req) => {
       console.error(`[${requestId}] Invalid authorization format:`, authHeader.substring(0, 20))
       return new Response(
         JSON.stringify({ error: 'Invalid authorization format', requestId }),
-        { 
-          status: 401, 
+        {
+          status: 401,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         }
       )
@@ -96,21 +96,21 @@ serve(async (req) => {
       console.error(`[${requestId}] Auth error:`, authError?.message || 'No user found')
       return new Response(
         JSON.stringify({ error: 'Invalid or expired token', details: authError?.message, requestId }),
-        { 
-          status: 401, 
+        {
+          status: 401,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         }
       )
     }
-    
+
     console.log(`[${requestId}] User authenticated:`, user.id)
 
     // Rate limit: 2 saves per second per user
     if (!checkRateLimit(user.id, 2, 1000)) {
       return new Response(
         JSON.stringify({ error: 'Rate limit exceeded. Please slow down.', requestId }),
-        { 
-          status: 429, 
+        {
+          status: 429,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         }
       )
@@ -124,13 +124,13 @@ serve(async (req) => {
       console.error(`[${requestId}] Failed to parse JSON body:`, parseError)
       return new Response(
         JSON.stringify({ error: 'Invalid JSON in request body', requestId }),
-        { 
-          status: 400, 
+        {
+          status: 400,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         }
       )
     }
-    
+
     const {
       gameStateDiff,
       clickAnalytics,
@@ -141,14 +141,14 @@ serve(async (req) => {
 
     console.log(`[${requestId}] Request body keys:`, Object.keys(body))
     console.log(`[${requestId}] gameStateDiff type:`, typeof gameStateDiff, 'is array:', Array.isArray(gameStateDiff))
-    
+
     // Validate request shape
     if (!gameStateDiff || typeof gameStateDiff !== 'object' || Array.isArray(gameStateDiff)) {
       console.error(`[${requestId}] Invalid gameStateDiff validation failed`)
       return new Response(
         JSON.stringify({ error: 'Invalid gameStateDiff: must be a non-null object', requestId }),
-        { 
-          status: 400, 
+        {
+          status: 400,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         }
       )
@@ -158,13 +158,13 @@ serve(async (req) => {
       console.error(`[${requestId}] Empty gameStateDiff`)
       return new Response(
         JSON.stringify({ error: 'Invalid gameStateDiff: cannot be empty', requestId }),
-        { 
-          status: 400, 
+        {
+          status: 400,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         }
       )
     }
-    
+
     console.log(`[${requestId}] gameStateDiff keys:`, Object.keys(gameStateDiff))
 
     // Backup size check (in case Content-Length was missing)
@@ -172,8 +172,8 @@ serve(async (req) => {
     if (payloadSize > 500000) {
       return new Response(
         JSON.stringify({ error: 'Payload too large', requestId }),
-        { 
-          status: 413, 
+        {
+          status: 413,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         }
       )
@@ -207,12 +207,27 @@ serve(async (req) => {
 
     if (dbError) {
       console.error(`[${requestId}] Database error:`, dbError)
-      throw dbError
+      const code = (dbError as { code?: string }).code
+      const hint = (dbError as { hint?: string }).hint
+      const details = (dbError as { details?: string }).details
+      return new Response(
+        JSON.stringify({
+          error: dbError.message,
+          code,
+          hint,
+          details,
+          requestId,
+        }),
+        {
+          status: 503,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        },
+      )
     }
 
     return new Response(
       JSON.stringify({ success: true }),
-      { 
+      {
         status: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
@@ -222,7 +237,7 @@ serve(async (req) => {
     console.error(`[${requestId}] Edge function error:`, error)
     return new Response(
       JSON.stringify({ error: error.message, requestId }),
-      { 
+      {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
