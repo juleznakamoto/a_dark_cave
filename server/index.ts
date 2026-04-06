@@ -11,6 +11,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 import { createPaymentIntent, verifyPayment } from "./stripe";
 import { processReferral } from "./referral";
+import {
+  loadResendContactRowsSplit,
+  rowsToResendContactCsv,
+  RESEND_MARKETING_CSV_FILENAME,
+  RESEND_NO_MARKETING_CSV_FILENAME,
+} from "./resendContactCsv";
 import { Filter } from "bad-words";
 
 // Supabase config endpoint for production
@@ -358,6 +364,22 @@ async function getSessionUserFromBearer(
     return null;
   }
   return { id: user.id, email: user.email ?? undefined };
+}
+
+/** Comma-separated admin emails (same list as client `VITE_ADMIN_EMAILS`; optional `ADMIN_EMAILS` on server). */
+function isConfiguredAdminEmail(email: string | undefined): boolean {
+  if (!email?.trim()) return false;
+  const raw =
+    process.env.VITE_ADMIN_EMAILS?.trim() ||
+    process.env.ADMIN_EMAILS?.trim() ||
+    "";
+  const allowed = new Set(
+    raw
+      .split(",")
+      .map((s) => s.trim().toLowerCase())
+      .filter(Boolean),
+  );
+  return allowed.has(email.trim().toLowerCase());
 }
 
 /** Any valid session user id (e.g. account deletion); does not require confirmed email. */
@@ -1429,6 +1451,58 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
     } catch (error: any) {
       log("❌ Session stats failed:", error);
       res.status(500).json({ error: error.message });
+    }
+  });
+
+  /**
+   * Production-only Resend CSV export for admins. Streams CSV in memory (no repo files).
+   * Query: file=marketing | no-marketing
+   */
+  app.get("/api/admin/resend-contact-csv", async (req, res) => {
+    try {
+      const sessionUser = await getSessionUserFromBearer(req);
+      if (!sessionUser?.email) {
+        return res.status(401).json({ error: "Authorization required" });
+      }
+      if (!isConfiguredAdminEmail(sessionUser.email)) {
+        return res.status(403).json({ error: "Forbidden" });
+      }
+
+      const file = req.query.file;
+      if (file !== "marketing" && file !== "no-marketing") {
+        return res.status(400).json({
+          error: 'Invalid file (use "marketing" or "no-marketing")',
+        });
+      }
+
+      const adminClient = getAdminClient("prod");
+      const { marketing, noMarketing } =
+        await loadResendContactRowsSplit(adminClient);
+      const body =
+        file === "marketing"
+          ? rowsToResendContactCsv(marketing)
+          : rowsToResendContactCsv(noMarketing);
+      const rowCount = file === "marketing" ? marketing.length : noMarketing.length;
+      const filename =
+        file === "marketing"
+          ? RESEND_MARKETING_CSV_FILENAME
+          : RESEND_NO_MARKETING_CSV_FILENAME;
+
+      res.setHeader("Cache-Control", "no-store");
+      res.setHeader("Content-Type", "text/csv; charset=utf-8");
+      res.setHeader(
+        "Content-Disposition",
+        `attachment; filename="${filename}"`,
+      );
+      log(
+        `📧 Resend CSV export (${file}): ${rowCount} rows, admin=${sessionUser.email}`,
+      );
+      return res.status(200).send(body);
+    } catch (error: any) {
+      log("❌ /api/admin/resend-contact-csv failed:", error);
+      return res.status(500).json({
+        error: error?.message ?? "Export failed",
+      });
     }
   });
 

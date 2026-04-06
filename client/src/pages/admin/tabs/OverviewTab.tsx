@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { AreaChart, Area, BarChart, Bar, CartesianGrid, XAxis, YAxis, ResponsiveContainer, LineChart, Line, Legend, PieChart, Pie, Cell, Tooltip } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -50,6 +51,10 @@ interface OverviewTabProps {
   };
   /** Rows in game_saves with user_id cleared after in-app delete (migration 009). */
   accountsDeletedAnonymized: number;
+  /** Production only: download Resend CSV in the browser (no files on server/repo). */
+  showResendCsvExport?: boolean;
+  resendCsvBusy?: null | "marketing" | "no-marketing";
+  onResendCsvDownload?: (file: "marketing" | "no-marketing") => void | Promise<void>;
 }
 
 export default function OverviewTab(props: OverviewTabProps) {
@@ -79,6 +84,9 @@ export default function OverviewTab(props: OverviewTabProps) {
     setChartTimeRange,
     marketingMetrics,
     accountsDeletedAnonymized,
+    showResendCsvExport,
+    resendCsvBusy,
+    onResendCsvDownload,
   } = props;
 
   const [sessionData, setSessionData] = useState<SessionStats[]>([]);
@@ -346,6 +354,49 @@ export default function OverviewTab(props: OverviewTabProps) {
           </CardContent>
         </Card>
       </div>
+
+      {showResendCsvExport && onResendCsvDownload ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>Resend contact export (production)</CardTitle>
+            <CardDescription>
+              Download CSV for{" "}
+              <a
+                className="underline text-primary"
+                href="https://resend.com/docs/dashboard/audiences/contacts"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Resend Audience → Import CSV
+              </a>
+              . Files are generated in memory and saved only to your device — nothing is written
+              to the server disk or repo.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col sm:flex-row gap-3">
+            <Button
+              type="button"
+              variant="secondary"
+              disabled={!!resendCsvBusy}
+              onClick={() => onResendCsvDownload("marketing")}
+            >
+              {resendCsvBusy === "marketing"
+                ? "Preparing…"
+                : "Download marketing opt-in CSV"}
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              disabled={!!resendCsvBusy}
+              onClick={() => onResendCsvDownload("no-marketing")}
+            >
+              {resendCsvBusy === "no-marketing"
+                ? "Preparing…"
+                : "Download no-marketing CSV"}
+            </Button>
+          </CardContent>
+        </Card>
+      ) : null}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card>

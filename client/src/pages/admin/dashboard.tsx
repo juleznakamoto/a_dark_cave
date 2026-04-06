@@ -195,6 +195,9 @@ export default function AdminDashboard() {
 
   const [accountsDeletedAnonymized, setAccountsDeletedAnonymized] =
     useState(0);
+  const [resendCsvBusy, setResendCsvBusy] = useState<
+    null | "marketing" | "no-marketing"
+  >(null);
 
   // Filter states
   const [timeRange, setTimeRange] = useState<"1d" | "3d" | "7d" | "30d" | "all">(
@@ -994,6 +997,55 @@ export default function AdminDashboard() {
     }
   };
 
+  const downloadResendProdCsv = useCallback(
+    async (file: "marketing" | "no-marketing") => {
+      if (environment !== "prod") return;
+      setResendCsvBusy(file);
+      try {
+        const supabase = await getSupabaseClient();
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+        if (!session?.access_token) {
+          logger.error("Resend CSV: no session");
+          return;
+        }
+        const res = await fetch(`/api/admin/resend-contact-csv?file=${file}`, {
+          headers: { Authorization: `Bearer ${session.access_token}` },
+        });
+        if (!res.ok) {
+          const text = await res.text();
+          logger.error("Resend CSV download failed:", res.status, text);
+          return;
+        }
+        const blob = await res.blob();
+        let filename =
+          file === "marketing"
+            ? "resend-marketing-opt-in.csv"
+            : "resend-no-marketing.csv";
+        const cd = res.headers.get("Content-Disposition");
+        const quoted = cd?.match(/filename="([^"]+)"/);
+        const plain = cd?.match(/filename=([^;\s]+)/);
+        if (quoted?.[1]) {
+          filename = quoted[1].trim();
+        } else if (plain?.[1]) {
+          filename = plain[1].trim();
+        }
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      } finally {
+        setResendCsvBusy(null);
+      }
+    },
+    [environment],
+  );
+
   const formatTime = (minutes: number) => {
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
@@ -1458,6 +1510,9 @@ export default function AdminDashboard() {
                   }}
                   marketingMetrics={marketingMetrics}
                   accountsDeletedAnonymized={accountsDeletedAnonymized}
+                  showResendCsvExport={environment === "prod"}
+                  resendCsvBusy={resendCsvBusy}
+                  onResendCsvDownload={downloadResendProdCsv}
                 />
               </TabsContent>
 
