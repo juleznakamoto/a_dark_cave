@@ -18,8 +18,8 @@ export const SUCCESS_PCT: Record<
 > = {
   A: [65, 70, 80],
   B: [55, 60, 65],
-  C: [45, 50, 55],
-  D: [35, 50, 45],
+  C: [50, 55, 60],
+  D: [45, 50, 55],
 };
 
 /** Win % min/max on success; [tier][durationIndex] for 5 / 15 / 30 min */
