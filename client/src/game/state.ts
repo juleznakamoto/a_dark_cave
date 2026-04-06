@@ -1023,12 +1023,13 @@ export class StateManager {
 }
 
 /**
- * True while any blocking modal is open — simulation should freeze (loop, attack-wave timers, timed-event tab
- * countdown, etc.). When adding a new blocking dialog, add its flag here only.
+ * True when any blocking modal except the reward dialog is open. Single place to OR new blocking flags;
+ * `isModalDialogOpen` adds `rewardDialog` on top.
+ * When adding a new blocking dialog, add its flag here only (see workspace rule for `loop.ts`).
  * `inactivityDialogOpen` is included for the same pause semantics; the inactivity path also stops the rAF loop
  * separately to reduce idle CPU.
  */
-export function isModalDialogOpen(state: GameStore): boolean {
+function isNonRewardBlockingModalOpen(state: GameStore): boolean {
   return (
     state.eventDialog.isOpen ||
     state.combatDialog.isOpen ||
@@ -1041,13 +1042,41 @@ export function isModalDialogOpen(state: GameStore): boolean {
     state.restartGameDialogOpen ||
     state.deleteAccountDialogOpen ||
     state.inactivityDialogOpen ||
-    state.rewardDialog.isOpen ||
     state.investmentResultDialog.isOpen ||
     state.madnessDialog.isOpen ||
     state.signUpPromptDialogOpen ||
     state.playlightWelcomeDialogOpen ||
     state.investDialogOpen
   );
+}
+
+/** True while any blocking modal is open — simulation should freeze (loop, attack-wave timers, timed-event tab countdown, etc.). */
+export function isModalDialogOpen(state: GameStore): boolean {
+  return state.rewardDialog.isOpen || isNonRewardBlockingModalOpen(state);
+}
+
+const REWARD_DIALOG_DEFER_RETRY_MS = 200;
+
+/**
+ * After `initialDelayMs`, opens the reward dialog only when no other blocking modal is open;
+ * otherwise retries every {@link REWARD_DIALOG_DEFER_RETRY_MS} so rewards do not stack on event/combat/etc.
+ */
+function scheduleRewardDialogWhenClear(
+  get: () => GameStore,
+  data: NonNullable<GameStore["rewardDialog"]["data"]>,
+  initialDelayMs: number,
+): void {
+  setTimeout(() => {
+    const tryOpen = () => {
+      const store = get();
+      if (isNonRewardBlockingModalOpen(store)) {
+        setTimeout(tryOpen, REWARD_DIALOG_DEFER_RETRY_MS);
+        return;
+      }
+      store.setRewardDialog(true, data);
+    };
+    tryOpen();
+  }, initialDelayMs);
 }
 
 // Main store
@@ -1389,9 +1418,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
           delete (result.stateUpdates as any)._logMessage;
         }
 
-        setTimeout(() => {
-          get().setRewardDialog(true, { rewards, successLog });
-        }, 500); // Small delay to let the log message appear first
+        scheduleRewardDialogWhenClear(
+          get,
+          { rewards, successLog },
+          500,
+        ); // Initial delay preserves prior pacing; deferral avoids stacking on other modals
       }
     }
 
@@ -2367,9 +2398,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Show reward dialog when the choice included positive gains
     if (shouldShowRewardDialog && rewardDialogData) {
       get().setEventDialog(false);
-      setTimeout(() => {
-        get().setRewardDialog(true, rewardDialogData);
-      }, 200);
+      scheduleRewardDialogWhenClear(get, rewardDialogData, 200);
       return;
     }
 
