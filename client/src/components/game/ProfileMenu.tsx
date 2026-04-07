@@ -682,7 +682,13 @@ export default function ProfileMenu() {
                   onTooltipAction={() => {
                     void handleMarketingPreferenceToggle();
                   }}
-                  className={marketingPrefLoading ? "opacity-50 cursor-wait" : ""}
+                  className={
+                    marketingPrefLoading
+                      ? "opacity-50 cursor-wait"
+                      : marketingOptIn
+                        ? "opacity-50"
+                        : ""
+                  }
                 >
                   <div className="flex items-center justify-between w-full gap-2">
                     <div className="flex items-center gap-1.5 min-w-0">
@@ -695,16 +701,12 @@ export default function ProfileMenu() {
                       </span>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
-                      {!marketingOptIn &&
-                        !social_media_rewards[MARKETING_EMAIL_REWARD_KEY]
-                          ?.claimed && (
-                          <span className="font-semibold">
-                            +{MARKETING_SUBSCRIBE_GOLD} Gold
-                          </span>
-                        )}
+                      <span className="font-semibold">
+                        +{MARKETING_SUBSCRIBE_GOLD} Gold
+                      </span>
                       {social_media_rewards[MARKETING_EMAIL_REWARD_KEY]
                         ?.claimed && (
-                          <span className="text-xs text-muted-foreground opacity-50">
+                          <span className="text-xs text-muted-foreground">
                             ✓
                           </span>
                         )}
