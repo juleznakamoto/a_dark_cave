@@ -517,7 +517,7 @@ app.get("/api/admin/data", async (req, res) => {
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
     const oneYearAgoFilter = oneYearAgo.toISOString();
 
-    const [clicksResult, savesResult, purchasesResult, dauResult] = await Promise.all([
+    const [clicksResult, savesResult, dauResult] = await Promise.all([
       adminClient
         .from("button_clicks")
         .select("*")
@@ -529,11 +529,6 @@ app.get("/api/admin/data", async (req, res) => {
         .select("user_id, game_state, updated_at, created_at")
         .or(`created_at.gte.${oneYearAgoFilter},updated_at.gte.${oneYearAgoFilter}`) // Load 1 year of data for both signups and activity
         .order("updated_at", { ascending: false })
-        .limit(QUERY_LIMIT),
-      adminClient
-        .from("purchases")
-        .select("*")
-        .order("purchased_at", { ascending: false })
         .limit(QUERY_LIMIT),
       adminClient
         .from("daily_active_users")
@@ -548,12 +543,39 @@ app.get("/api/admin/data", async (req, res) => {
     if (savesResult.error) {
       throw savesResult.error;
     }
-    if (purchasesResult.error) {
-      throw purchasesResult.error;
-    }
     if (dauResult.error) {
       throw dauResult.error;
     }
+
+    // Purchases: paginate with .range() — PostgREST max_rows often caps single .limit() responses (~1000).
+    const PURCHASES_PAGE_SIZE = 1000;
+    const allPurchases: any[] = [];
+    let purchaseOffset = 0;
+    while (true) {
+      const { data: purchasePage, error: purchasesPageError } =
+        await adminClient
+          .from("purchases")
+          .select("*")
+          .order("purchased_at", { ascending: true })
+          .order("id", { ascending: true })
+          .range(
+            purchaseOffset,
+            purchaseOffset + PURCHASES_PAGE_SIZE - 1,
+          );
+      if (purchasesPageError) {
+        throw purchasesPageError;
+      }
+      if (!purchasePage || purchasePage.length === 0) {
+        break;
+      }
+      allPurchases.push(...purchasePage);
+      if (purchasePage.length < PURCHASES_PAGE_SIZE) {
+        break;
+      }
+      purchaseOffset += PURCHASES_PAGE_SIZE;
+    }
+    // Match previous single-query behavior: newest first
+    allPurchases.reverse();
 
     // Helper function to calculate email confirmation stats for a time range
     const calculateEmailStats = (users: any[], startDate?: Date) => {
@@ -733,7 +755,7 @@ app.get("/api/admin/data", async (req, res) => {
     res.json({
       clicks: clicksResult.data,
       saves: savesResult.data,
-      purchases: purchasesResult.data,
+      purchases: allPurchases,
       dau: dauResult.data,
       totalUserCount: totalUserCount || 0,
       emailConfirmationStats: emailConfirmationStats,

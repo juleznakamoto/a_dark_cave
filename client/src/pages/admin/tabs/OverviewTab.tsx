@@ -260,9 +260,6 @@ export default function OverviewTab(props: OverviewTabProps) {
           </CardHeader>
           <CardContent>
             <p className="text-4xl font-bold">{totalUserCount}</p>
-            <p className="text-sm text-muted-foreground mt-2">
-              {gameSaves.length} active in last 30 days
-            </p>
           </CardContent>
         </Card>
       </div>
@@ -398,39 +395,28 @@ export default function OverviewTab(props: OverviewTabProps) {
         </Card>
       ) : null}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         <Card>
-          <CardHeader>
-            <CardTitle>Accounts deleted</CardTitle>
-            <CardDescription>
-              In-app deletions that had a cloud save: row kept with{" "}
-              <code className="text-xs">user_id</code> cleared (
-              <code className="text-xs">game_saves</code>). No row if the user
-              never synced.
-            </CardDescription>
+          <CardHeader className="py-2 px-3 space-y-0">
+            <CardTitle className="text-sm font-medium leading-tight">
+              Accounts deleted
+            </CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">{accountsDeletedAnonymized}</p>
+          <CardContent className="pt-0 pb-3 px-3">
+            <p className="text-2xl font-bold tabular-nums">
+              {accountsDeletedAnonymized}
+            </p>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader>
-            <CardTitle>Deletions vs non-legacy sign-ups</CardTitle>
-            <CardDescription>
-              Share of approximate non-legacy cohort: current{" "}
-              <code className="text-xs">marketing_preferences</code> rows (
-              {prompted}) plus anonymized saves ({accountsDeletedAnonymized}) —{" "}
-              {nonLegacySignupsApprox} total. Legacy-only accounts (no consent
-              row) are excluded from the denominator; legacy deletions with a
-              save inflate it slightly.
-            </CardDescription>
+          <CardHeader className="py-2 px-3 space-y-0">
+            <CardTitle className="text-sm font-medium leading-tight">
+              Deletions vs non-legacy sign-ups
+            </CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">
+          <CardContent className="pt-0 pb-3 px-3">
+            <p className="text-2xl font-bold tabular-nums">
               {deletionVsNonLegacyPct.toFixed(1)}%
-            </p>
-            <p className="text-sm text-muted-foreground mt-2">
-              {accountsDeletedAnonymized} ÷ {nonLegacySignupsApprox || "—"}
             </p>
           </CardContent>
         </Card>
