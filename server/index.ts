@@ -556,7 +556,6 @@ app.get("/api/admin/data", async (req, res) => {
         await adminClient
           .from("purchases")
           .select("*")
-          .order("purchased_at", { ascending: true })
           .order("id", { ascending: true })
           .range(
             purchaseOffset,
@@ -574,8 +573,14 @@ app.get("/api/admin/data", async (req, res) => {
       }
       purchaseOffset += PURCHASES_PAGE_SIZE;
     }
-    // Match previous single-query behavior: newest first
-    allPurchases.reverse();
+    // Match previous single-query behavior: newest first (by purchase time)
+    allPurchases.sort(
+      (a: { purchased_at?: string }, b: { purchased_at?: string }) => {
+        const ta = a.purchased_at ? new Date(a.purchased_at).getTime() : 0;
+        const tb = b.purchased_at ? new Date(b.purchased_at).getTime() : 0;
+        return tb - ta;
+      },
+    );
 
     // Helper function to calculate email confirmation stats for a time range
     const calculateEmailStats = (users: any[], startDate?: Date) => {
@@ -752,6 +757,35 @@ app.get("/api/admin/data", async (req, res) => {
       log("⚠️ accountsDeletedAnonymized skipped:", anonCatch?.message ?? anonCatch);
     }
 
+    // All-time paid totals in SQL — not subject to PostgREST max_rows (see migration 012).
+    let purchaseMetrics: {
+      total_revenue_cents: number;
+      paid_buyer_count: number;
+    } | null = null;
+    try {
+      const { data: pm, error: pmErr } =
+        await adminClient.rpc("admin_purchase_metrics");
+      if (pmErr) {
+        log("⚠️ admin_purchase_metrics skipped:", pmErr.message ?? pmErr);
+      } else if (
+        pm &&
+        typeof pm === "object" &&
+        "total_revenue_cents" in pm &&
+        "paid_buyer_count" in pm
+      ) {
+        const row = pm as {
+          total_revenue_cents: number | string;
+          paid_buyer_count: number | string;
+        };
+        purchaseMetrics = {
+          total_revenue_cents: Number(row.total_revenue_cents) || 0,
+          paid_buyer_count: Number(row.paid_buyer_count) || 0,
+        };
+      }
+    } catch (pmCatch: any) {
+      log("⚠️ admin_purchase_metrics skipped:", pmCatch?.message ?? pmCatch);
+    }
+
     res.json({
       clicks: clicksResult.data,
       saves: savesResult.data,
@@ -763,6 +797,7 @@ app.get("/api/admin/data", async (req, res) => {
       authSignups,
       marketingMetrics,
       accountsDeletedAnonymized,
+      purchaseMetrics,
     });
   } catch (error: any) {
     log("❌ Admin data fetch failed:", error);

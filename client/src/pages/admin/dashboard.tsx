@@ -195,6 +195,11 @@ export default function AdminDashboard() {
 
   const [accountsDeletedAnonymized, setAccountsDeletedAnonymized] =
     useState(0);
+  /** From DB RPC `admin_purchase_metrics` when migration 012 is applied; avoids PostgREST row caps on raw rows. */
+  const [purchaseMetrics, setPurchaseMetrics] = useState<{
+    totalRevenueCents: number;
+    paidBuyerCount: number;
+  } | null>(null);
   const [resendCsvBusy, setResendCsvBusy] = useState<
     null | "marketing" | "no-marketing"
   >(null);
@@ -250,6 +255,19 @@ export default function AdminDashboard() {
   const clickData = useMemo(() => filterByTimeRange(rawClickData, "timestamp", timeRange), [rawClickData, timeRange]);
   const gameSaves = useMemo(() => filterByTimeRange(rawGameSaves, "updated_at", timeRange), [rawGameSaves, timeRange]);
   const purchases = useMemo(() => filterByTimeRange(rawPurchases, "purchased_at", timeRange), [rawPurchases, timeRange]);
+
+  const purchaseTotalsFromRaw = useMemo(() => {
+    const paid = rawPurchases.filter((p) => p.price_paid > 0 && !p.bundle_id);
+    return {
+      revenueCents: paid.reduce((sum, p) => sum + p.price_paid, 0),
+      paidBuyerCount: new Set(paid.map((p) => p.user_id)).size,
+    };
+  }, [rawPurchases]);
+
+  const kpiRevenueCents =
+    purchaseMetrics?.totalRevenueCents ?? purchaseTotalsFromRaw.revenueCents;
+  const kpiPaidBuyerCount =
+    purchaseMetrics?.paidBuyerCount ?? purchaseTotalsFromRaw.paidBuyerCount;
 
   useEffect(() => {
     checkAdminAccess();
@@ -980,6 +998,25 @@ export default function AdminDashboard() {
           Math.max(0, Math.floor(data.accountsDeletedAnonymized)),
         );
       }
+      const pm = data.purchaseMetrics as
+        | {
+          total_revenue_cents?: number | string;
+          paid_buyer_count?: number | string;
+        }
+        | undefined
+        | null;
+      if (
+        pm &&
+        pm.total_revenue_cents != null &&
+        pm.paid_buyer_count != null
+      ) {
+        setPurchaseMetrics({
+          totalRevenueCents: Number(pm.total_revenue_cents) || 0,
+          paidBuyerCount: Number(pm.paid_buyer_count) || 0,
+        });
+      } else {
+        setPurchaseMetrics(null);
+      }
 
       // Collect unique user IDs only from users who have click data
       const userIdsWithClicks = new Set<string>();
@@ -1251,37 +1288,22 @@ export default function AdminDashboard() {
                     );
                     return Math.floor(totalPlayTime / completedSaves.length / 60000);
                   }}
-                  getConversionRate={() => {
-                    const paidPurchases = rawPurchases.filter(
-                      (p) => p.price_paid > 0 && !p.bundle_id
-                    );
-                    const uniqueBuyers = new Set(paidPurchases.map((p) => p.user_id));
-                    return totalUserCount > 0
-                      ? Math.round((uniqueBuyers.size / totalUserCount) * 100)
-                      : 0;
-                  }}
-                  getBuyersPerHundred={() => {
-                    const paidPurchases = rawPurchases.filter(
-                      (p) => p.price_paid > 0 && !p.bundle_id
-                    );
-                    const uniqueBuyers = new Set(paidPurchases.map((p) => p.user_id));
-                    return totalUserCount > 0
-                      ? ((uniqueBuyers.size / totalUserCount) * 100).toFixed(2)
-                      : "0.00";
-                  }}
-                  getARPU={() => {
-                    const totalRevenue = rawPurchases
-                      .filter((p) => p.price_paid > 0 && !p.bundle_id)
-                      .reduce((sum, p) => sum + p.price_paid, 0);
-                    return totalUserCount > 0
-                      ? (totalRevenue / 100 / totalUserCount).toFixed(2)
-                      : "0.00";
-                  }}
-                  getTotalRevenue={() =>
-                    rawPurchases
-                      .filter((p) => p.price_paid > 0 && !p.bundle_id)
-                      .reduce((sum, p) => sum + p.price_paid, 0)
+                  getConversionRate={() =>
+                    totalUserCount > 0
+                      ? Math.round((kpiPaidBuyerCount / totalUserCount) * 100)
+                      : 0
                   }
+                  getBuyersPerHundred={() =>
+                    totalUserCount > 0
+                      ? ((kpiPaidBuyerCount / totalUserCount) * 100).toFixed(2)
+                      : "0.00"
+                  }
+                  getARPU={() =>
+                    totalUserCount > 0
+                      ? (kpiRevenueCents / 100 / totalUserCount).toFixed(2)
+                      : "0.00"
+                  }
+                  getTotalRevenue={() => kpiRevenueCents}
                   getUserRetention={() => {
                     const data: Array<{ day: string; users: number }> = [];
                     const now = new Date();
@@ -1629,11 +1651,7 @@ export default function AdminDashboard() {
               <TabsContent value="purchases">
                 <PurchasesTab
                   purchases={purchases}
-                  getTotalRevenue={() =>
-                    rawPurchases
-                      .filter((p) => p.price_paid > 0 && !p.bundle_id)
-                      .reduce((sum, p) => sum + p.price_paid, 0)
-                  }
+                  getTotalRevenue={() => kpiRevenueCents}
                   getDailyPurchases={getDailyPurchases}
                   getPurchasesByPlaytime={getPurchasesByPlaytime}
                   getPurchaseStats={getPurchaseStats}
