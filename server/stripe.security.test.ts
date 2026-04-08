@@ -22,6 +22,12 @@ const getMockPaymentIntents = () => {
   return mockStripe.paymentIntents;
 };
 
+function latestChargeForVerify(): Stripe.Charge {
+  return {
+    billing_details: { address: { country: null } },
+  } as Stripe.Charge;
+}
+
 // Mock Supabase
 const createMockSupabase = () => ({
   from: vi.fn((table: string) => ({
@@ -94,7 +100,9 @@ describe('Bundle Purchase Security Tests', () => {
         id: 'pi_test',
         amount: 1099, // Correct price for advanced_bundle
         status: 'succeeded',
+        currency: 'eur',
         metadata: { itemId: 'advanced_bundle' },
+        latest_charge: latestChargeForVerify(),
       } as Stripe.PaymentIntent;
 
       mockPaymentIntents.retrieve.mockResolvedValue(mockIntent);
@@ -115,10 +123,12 @@ describe('Bundle Purchase Security Tests', () => {
         id: 'pi_test',
         amount: 824,
         status: 'succeeded',
+        currency: 'eur',
         metadata: {
           itemId: 'advanced_bundle',
           tradersGratitudeDiscountApplied: 'true',
         },
+        latest_charge: latestChargeForVerify(),
       } as Stripe.PaymentIntent;
 
       mockPaymentIntents.retrieve.mockResolvedValue(mockIntent);
@@ -191,7 +201,7 @@ describe('Bundle Purchase Security Tests', () => {
     });
 
     it('should log warning when client price differs from server price', async () => {
-      const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => { });
 
       mockPaymentIntents.create.mockResolvedValue({
         client_secret: 'test_secret',
@@ -238,7 +248,9 @@ describe('Bundle Purchase Security Tests', () => {
         id: 'pi_test',
         amount: 1099,
         status: 'succeeded',
+        currency: 'eur',
         metadata: { itemId: 'advanced_bundle' },
+        latest_charge: latestChargeForVerify(),
       } as Stripe.PaymentIntent;
 
       mockPaymentIntents.retrieve.mockResolvedValue(mockIntent);
@@ -252,12 +264,15 @@ describe('Bundle Purchase Security Tests', () => {
       expect(insertCalls[0].item_id).toBe('advanced_bundle');
       expect(insertCalls[0].price_paid).toBe(1099);
       expect(insertCalls[0].bundle_id).toBe(null);
+      expect(insertCalls[0].currency).toBe('eur');
 
       // Component purchases should be free and reference bundle
       expect(insertCalls[1].price_paid).toBe(0);
       expect(insertCalls[1].bundle_id).toBe('advanced_bundle');
+      expect(insertCalls[1].currency).toBe('eur');
       expect(insertCalls[2].price_paid).toBe(0);
       expect(insertCalls[2].bundle_id).toBe('advanced_bundle');
+      expect(insertCalls[2].currency).toBe('eur');
     });
   });
 
@@ -305,7 +320,9 @@ describe('Bundle Purchase Security Tests', () => {
         id: 'pi_test',
         amount: 1099,
         status: 'succeeded',
+        currency: 'eur',
         metadata: { itemId: 'advanced_bundle' },
+        latest_charge: latestChargeForVerify(),
       } as Stripe.PaymentIntent;
 
       mockPaymentIntents.retrieve.mockResolvedValue(mockIntent);

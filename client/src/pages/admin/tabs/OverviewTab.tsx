@@ -27,20 +27,25 @@ interface OverviewTabProps {
   getMonthlyActiveUsers: () => number;
   totalUserCount: number;
   gameSaves: any[];
-  emailConfirmationStats: any;
   registrationMethodStats: any;
   formatTime: (minutes: number) => string;
   getAveragePlaytime: () => number;
   getAveragePlaytimeToCompletion: () => number;
   getConversionRate: () => number;
   getBuyersPerHundred: () => string;
-  getARPU: () => string;
-  getTotalRevenue: () => number;
+  getArpuEur: () => string;
+  getArpuUsd: () => string;
+  getTotalRevenueEurCents: () => number;
+  getTotalRevenueUsdCents: () => number;
   getUserRetention: () => Array<{ day: string; users: number }>;
   getDailySignups: () => Array<{ day: string; signups: number }>;
   getHourlySignups: () => Array<{ hour: string; signups: number }>;
   getBuyersPerHundredOverTime: () => Array<{ date: string; buyersPerHundred: number }>;
-  getGainPerHundredOverTime: () => Array<{ date: string; gainPerHundred: number }>;
+  getGainPerHundredOverTime: () => Array<{
+    date: string;
+    gainPerHundredEur: number;
+    gainPerHundredUsd: number;
+  }>;
   dailyActiveUsersData: Array<{ date: string; active_user_count: number }>;
   chartTimeRange: "1m" | "3m" | "6m" | "1y";
   setChartTimeRange: (range: "1m" | "3m" | "6m" | "1y") => void;
@@ -65,15 +70,16 @@ export default function OverviewTab(props: OverviewTabProps) {
     getMonthlyActiveUsers,
     totalUserCount,
     gameSaves,
-    emailConfirmationStats,
     registrationMethodStats,
     formatTime,
     getAveragePlaytime,
     getAveragePlaytimeToCompletion,
     getConversionRate,
     getBuyersPerHundred,
-    getARPU,
-    getTotalRevenue,
+    getArpuEur,
+    getArpuUsd,
+    getTotalRevenueEurCents,
+    getTotalRevenueUsdCents,
     getUserRetention,
     getDailySignups,
     getHourlySignups,
@@ -422,152 +428,6 @@ export default function OverviewTab(props: OverviewTabProps) {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Email Confirmation Rate</CardTitle>
-            <CardDescription>% who clicked verification link</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              <div>
-                <p className="text-4xl font-bold">
-                  {emailConfirmationStats?.allTime?.totalRegistrations > 0
-                    ? Math.round((emailConfirmationStats.allTime.confirmedUsers / emailConfirmationStats.allTime.totalRegistrations) * 100)
-                    : 0}%
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  All-time: {emailConfirmationStats?.allTime?.confirmedUsers || 0} / {emailConfirmationStats?.allTime?.totalRegistrations || 0}
-                </p>
-              </div>
-              <div className="text-sm border-t pt-2">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">30 days:</span>
-                  <span className="font-semibold">
-                    {emailConfirmationStats?.last30Days?.totalRegistrations > 0
-                      ? Math.round((emailConfirmationStats.last30Days.confirmedUsers / emailConfirmationStats.last30Days.totalRegistrations) * 100)
-                      : 0}%
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">7 days:</span>
-                  <span className="font-semibold">
-                    {emailConfirmationStats?.last7Days?.totalRegistrations > 0
-                      ? Math.round((emailConfirmationStats.last7Days.confirmedUsers / emailConfirmationStats.last7Days.totalRegistrations) * 100)
-                      : 0}%
-                  </span>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Unconfirmed Users</CardTitle>
-            <CardDescription>Registered but not verified</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              <div>
-                <p className="text-4xl font-bold">
-                  {emailConfirmationStats?.allTime?.unconfirmedUsers || 0}
-                </p>
-                <p className="text-xs text-muted-foreground">All-time</p>
-              </div>
-              <div className="text-sm border-t pt-2">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">30 days:</span>
-                  <span className="font-semibold">{emailConfirmationStats?.last30Days?.unconfirmedUsers || 0}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">7 days:</span>
-                  <span className="font-semibold">{emailConfirmationStats?.last7Days?.unconfirmedUsers || 0}</span>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Avg Confirmation Time</CardTitle>
-            <CardDescription>Time to first sign-in</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              <div>
-                <p className="text-4xl font-bold">
-                  {emailConfirmationStats?.allTime?.usersWithSignIn > 0
-                    ? formatTime(Math.round(emailConfirmationStats.allTime.totalConfirmationDelay / emailConfirmationStats.allTime.usersWithSignIn))
-                    : '0m'}
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  All-time: {emailConfirmationStats?.allTime?.usersWithSignIn || 0} users
-                </p>
-              </div>
-              <div className="text-sm border-t pt-2">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">30 days:</span>
-                  <span className="font-semibold">
-                    {emailConfirmationStats?.last30Days?.usersWithSignIn > 0
-                      ? formatTime(Math.round(emailConfirmationStats.last30Days.totalConfirmationDelay / emailConfirmationStats.last30Days.usersWithSignIn))
-                      : '0m'}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">7 days:</span>
-                  <span className="font-semibold">
-                    {emailConfirmationStats?.last7Days?.usersWithSignIn > 0
-                      ? formatTime(Math.round(emailConfirmationStats.last7Days.totalConfirmationDelay / emailConfirmationStats.last7Days.usersWithSignIn))
-                      : '0m'}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Sign-in Rate</CardTitle>
-            <CardDescription>Confirmed users who signed in</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              <div>
-                <p className="text-4xl font-bold">
-                  {emailConfirmationStats?.allTime?.confirmedUsers > 0
-                    ? Math.round((emailConfirmationStats.allTime.usersWithSignIn / emailConfirmationStats.allTime.confirmedUsers) * 100)
-                    : 0}%
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  All-time: {emailConfirmationStats?.allTime?.usersWithSignIn || 0} / {emailConfirmationStats?.allTime?.confirmedUsers || 0}
-                </p>
-              </div>
-              <div className="text-sm border-t pt-2">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">30 days:</span>
-                  <span className="font-semibold">
-                    {emailConfirmationStats?.last30Days?.confirmedUsers > 0
-                      ? Math.round((emailConfirmationStats.last30Days.usersWithSignIn / emailConfirmationStats.last30Days.confirmedUsers) * 100)
-                      : 0}%
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">7 days:</span>
-                  <span className="font-semibold">
-                    {emailConfirmationStats?.last7Days?.confirmedUsers > 0
-                      ? Math.round((emailConfirmationStats.last7Days.usersWithSignIn / emailConfirmationStats.last7Days.confirmedUsers) * 100)
-                      : 0}%
-                  </span>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader>
@@ -642,20 +502,28 @@ export default function OverviewTab(props: OverviewTabProps) {
         <Card>
           <CardHeader>
             <CardTitle>ARPU</CardTitle>
-            <CardDescription>Average Revenue Per User</CardDescription>
+            <CardDescription>Average revenue per user (same denominator)</CardDescription>
           </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold">€{getARPU()}</p>
+          <CardContent className="space-y-1">
+            <p className="text-2xl font-bold">€{getArpuEur()}</p>
+            <p className="text-2xl font-bold">${getArpuUsd()}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
             <CardTitle>Total Revenue</CardTitle>
-            <CardDescription>All time</CardDescription>
+            <CardDescription>
+              All-time paid totals by charge currency (not combined)
+            </CardDescription>
           </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold">€{(getTotalRevenue() / 100).toFixed(2)}</p>
+          <CardContent className="space-y-1">
+            <p className="text-3xl font-bold">
+              €{(getTotalRevenueEurCents() / 100).toFixed(2)}
+            </p>
+            <p className="text-3xl font-bold">
+              ${(getTotalRevenueUsdCents() / 100).toFixed(2)}
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -845,7 +713,9 @@ export default function OverviewTab(props: OverviewTabProps) {
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle>Gain per 100 Sign-ups ({getTimeRangeLabel()})</CardTitle>
-                <CardDescription>Rolling 30-day: € revenue per 100 sign-ups in that window</CardDescription>
+                <CardDescription>
+                  Rolling 30-day: revenue per 100 sign-ups (EUR vs USD, not summed)
+                </CardDescription>
               </div>
               <Select value={chartTimeRange} onValueChange={(value: "1m" | "3m" | "6m" | "1y") => setChartTimeRange(value)}>
                 <SelectTrigger className="w-[140px]">
@@ -865,9 +735,23 @@ export default function OverviewTab(props: OverviewTabProps) {
               <AreaChart data={getGainPerHundredOverTime()}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
-                <YAxis tickFormatter={(value) => `€${value}`} />
+                <YAxis />
+                <Legend />
                 <ChartTooltip content={<ChartTooltipContent />} />
-                <Area type="monotone" dataKey="gainPerHundred" stroke="#00C49F" fill="#00C49F" />
+                <Area
+                  type="monotone"
+                  dataKey="gainPerHundredEur"
+                  name="EUR / 100 sign-ups"
+                  stroke="#00C49F"
+                  fill="#00C49F"
+                />
+                <Area
+                  type="monotone"
+                  dataKey="gainPerHundredUsd"
+                  name="USD / 100 sign-ups"
+                  stroke="#0088FE"
+                  fill="#0088FE"
+                />
               </AreaChart>
             </ChartContainer>
           </CardContent>

@@ -1,4 +1,4 @@
-
+import { formatPurchaseMinorUnits } from "@shared/purchaseRevenueEur";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -116,10 +116,10 @@ export default function LookupTab(props: LookupTabProps) {
                     <p className="text-sm">
                       {lookupResult.game_state?.playTime
                         ? formatTime(
-                            Math.round(
-                              lookupResult.game_state.playTime / 1000 / 60,
-                            ),
-                          )
+                          Math.round(
+                            lookupResult.game_state.playTime / 1000 / 60,
+                          ),
+                        )
                         : "0m"}
                     </p>
                   </CardContent>
@@ -198,9 +198,10 @@ export default function LookupTab(props: LookupTabProps) {
                             )}
                           </div>
                           <p className="font-bold">
-                            {purchase.price_paid === 0
-                              ? "Free"
-                              : `€${(purchase.price_paid / 100).toFixed(2)}`}
+                            {formatPurchaseMinorUnits(
+                              purchase.price_paid,
+                              purchase.currency,
+                            )}
                           </p>
                         </div>
                       ))}

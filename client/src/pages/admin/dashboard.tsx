@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo, useCallback } from "react";
 import { useLocation } from "wouter";
 import { getSupabaseClient } from "@/lib/supabase";
 import { logger } from "@/lib/logger";
+import { isUsdPurchaseCurrency } from "@shared/purchaseRevenueEur";
 import {
   Card,
   CardContent,
@@ -67,6 +68,8 @@ interface PurchaseData {
   bundle_id?: string;
   country?: string;
   cruel_mode?: boolean | null;
+  /** Stripe charge currency (eur|usd); legacy rows treated as eur. */
+  currency?: string | null;
 }
 
 interface AuthSignupData {
@@ -154,30 +157,6 @@ export default function AdminDashboard() {
   const [currentMau, setCurrentMau] = useState<number>(0);
   const [dailySignupsData, setDailySignupsData] = useState<Array<{ day: string; signups: number }>>([]);
   const [hourlySignupsData, setHourlySignupsData] = useState<Array<{ hour_start: string; signups: number }>>([]);
-  const [emailConfirmationStats, setEmailConfirmationStats] = useState<any>({
-    allTime: {
-      totalRegistrations: 0,
-      confirmedUsers: 0,
-      unconfirmedUsers: 0,
-      totalConfirmationDelay: 0,
-      usersWithSignIn: 0,
-    },
-    last30Days: {
-      totalRegistrations: 0,
-      confirmedUsers: 0,
-      unconfirmedUsers: 0,
-      totalConfirmationDelay: 0,
-      usersWithSignIn: 0,
-    },
-    last7Days: {
-      totalRegistrations: 0,
-      confirmedUsers: 0,
-      unconfirmedUsers: 0,
-      totalConfirmationDelay: 0,
-      usersWithSignIn: 0,
-    },
-  });
-
   const [registrationMethodStats, setRegistrationMethodStats] = useState<any>({
     emailRegistrations: 0,
     googleRegistrations: 0,
@@ -197,7 +176,8 @@ export default function AdminDashboard() {
     useState(0);
   /** From DB RPC `admin_purchase_metrics` when migration 012 is applied; avoids PostgREST row caps on raw rows. */
   const [purchaseMetrics, setPurchaseMetrics] = useState<{
-    totalRevenueCents: number;
+    totalRevenueEurCents: number;
+    totalRevenueUsdCents: number;
     paidBuyerCount: number;
   } | null>(null);
   const [resendCsvBusy, setResendCsvBusy] = useState<
@@ -258,14 +238,28 @@ export default function AdminDashboard() {
 
   const purchaseTotalsFromRaw = useMemo(() => {
     const paid = rawPurchases.filter((p) => p.price_paid > 0 && !p.bundle_id);
+    let revenueEurCents = 0;
+    let revenueUsdCents = 0;
+    for (const p of paid) {
+      if (isUsdPurchaseCurrency(p.currency)) {
+        revenueUsdCents += p.price_paid;
+      } else {
+        revenueEurCents += p.price_paid;
+      }
+    }
     return {
-      revenueCents: paid.reduce((sum, p) => sum + p.price_paid, 0),
+      revenueEurCents,
+      revenueUsdCents,
       paidBuyerCount: new Set(paid.map((p) => p.user_id)).size,
     };
   }, [rawPurchases]);
 
-  const kpiRevenueCents =
-    purchaseMetrics?.totalRevenueCents ?? purchaseTotalsFromRaw.revenueCents;
+  const kpiRevenueEurCents =
+    purchaseMetrics?.totalRevenueEurCents ??
+    purchaseTotalsFromRaw.revenueEurCents;
+  const kpiRevenueUsdCents =
+    purchaseMetrics?.totalRevenueUsdCents ??
+    purchaseTotalsFromRaw.revenueUsdCents;
   const kpiPaidBuyerCount =
     purchaseMetrics?.paidBuyerCount ?? purchaseTotalsFromRaw.paidBuyerCount;
 
@@ -763,25 +757,6 @@ export default function AdminDashboard() {
       .sort((a, b) => b.count - a.count);
   }, [purchases]);
 
-  const getPurchasesByCountry = useCallback(() => {
-    const countryRevenue = new Map<string, { count: number; revenue: number }>();
-
-    purchases
-      .filter((p) => p.price_paid > 0 && !p.bundle_id)
-      .forEach((purchase) => {
-        const key = purchase.country || "Unknown";
-        const existing = countryRevenue.get(key) ?? { count: 0, revenue: 0 };
-        countryRevenue.set(key, {
-          count: existing.count + 1,
-          revenue: existing.revenue + purchase.price_paid,
-        });
-      });
-
-    return Array.from(countryRevenue.entries())
-      .map(([country, { count, revenue }]) => ({ country, count, revenue }))
-      .sort((a, b) => b.revenue - a.revenue);
-  }, [purchases]);
-
   const getTotalReferrals = useCallback(() => {
     return gameSaves.reduce((sum, save) => {
       return sum + (save.game_state?.referrals?.length || 0);
@@ -977,9 +952,6 @@ export default function AdminDashboard() {
       if (typeof data.totalUserCount === 'number') {
         setTotalUserCount(data.totalUserCount);
       }
-      if (data.emailConfirmationStats) {
-        setEmailConfirmationStats(data.emailConfirmationStats);
-      }
       if (data.registrationMethodStats) {
         setRegistrationMethodStats(data.registrationMethodStats);
       }
@@ -1000,18 +972,21 @@ export default function AdminDashboard() {
       }
       const pm = data.purchaseMetrics as
         | {
-          total_revenue_cents?: number | string;
-          paid_buyer_count?: number | string;
-        }
+            total_revenue_eur_cents?: number | string;
+            total_revenue_usd_cents?: number | string;
+            paid_buyer_count?: number | string;
+          }
         | undefined
         | null;
       if (
         pm &&
-        pm.total_revenue_cents != null &&
+        pm.total_revenue_eur_cents != null &&
+        pm.total_revenue_usd_cents != null &&
         pm.paid_buyer_count != null
       ) {
         setPurchaseMetrics({
-          totalRevenueCents: Number(pm.total_revenue_cents) || 0,
+          totalRevenueEurCents: Number(pm.total_revenue_eur_cents) || 0,
+          totalRevenueUsdCents: Number(pm.total_revenue_usd_cents) || 0,
           paidBuyerCount: Number(pm.paid_buyer_count) || 0,
         });
       } else {
@@ -1245,7 +1220,6 @@ export default function AdminDashboard() {
                   getWeeklyActiveUsers={() => currentWau}
                   getMonthlyActiveUsers={() => currentMau}
                   totalUserCount={totalUserCount}
-                  emailConfirmationStats={emailConfirmationStats}
                   formatTime={formatTime}
                   getAveragePlaytime={() => {
                     const filteredSaves = selectedUser === "all"
@@ -1298,12 +1272,18 @@ export default function AdminDashboard() {
                       ? ((kpiPaidBuyerCount / totalUserCount) * 100).toFixed(2)
                       : "0.00"
                   }
-                  getARPU={() =>
+                  getArpuEur={() =>
                     totalUserCount > 0
-                      ? (kpiRevenueCents / 100 / totalUserCount).toFixed(2)
+                      ? (kpiRevenueEurCents / 100 / totalUserCount).toFixed(2)
                       : "0.00"
                   }
-                  getTotalRevenue={() => kpiRevenueCents}
+                  getArpuUsd={() =>
+                    totalUserCount > 0
+                      ? (kpiRevenueUsdCents / 100 / totalUserCount).toFixed(2)
+                      : "0.00"
+                  }
+                  getTotalRevenueEurCents={() => kpiRevenueEurCents}
+                  getTotalRevenueUsdCents={() => kpiRevenueUsdCents}
                   getUserRetention={() => {
                     const data: Array<{ day: string; users: number }> = [];
                     const now = new Date();
@@ -1463,7 +1443,11 @@ export default function AdminDashboard() {
                     return data;
                   }}
                   getGainPerHundredOverTime={() => {
-                    const data: Array<{ date: string; gainPerHundred: number }> = [];
+                    const data: Array<{
+                      date: string;
+                      gainPerHundredEur: number;
+                      gainPerHundredUsd: number;
+                    }> = [];
                     const now = new Date();
 
                     // Determine number of days based on chartTimeRange
@@ -1489,8 +1473,7 @@ export default function AdminDashboard() {
                       (p) => p.price_paid > 0 && !p.bundle_id
                     );
 
-                    // Rolling 30-day: for each day X, revenue and sign-ups in the last 30 days ending on X
-                    // Gain per 100 sign-ups = € revenue per 100 sign-ups in that window
+                    // Rolling 30-day: EUR and USD revenue per 100 sign-ups (not combined).
                     for (let i = days - 1; i >= 0; i--) {
                       const date = subDays(now, i);
                       const windowEnd = endOfDay(date);
@@ -1507,24 +1490,38 @@ export default function AdminDashboard() {
                       );
                       const signUps = signUpUserIds.size;
 
-                      // Revenue in this 30-day window (cents)
-                      const windowRevenueCents = paidPurchases
-                        .filter((p) => {
-                          const purchaseDate = parseISO(p.purchased_at);
-                          return purchaseDate >= windowStart && purchaseDate <= windowEnd;
-                        })
-                        .reduce((sum, p) => sum + p.price_paid, 0);
+                      const inWindow = paidPurchases.filter((p) => {
+                        const purchaseDate = parseISO(p.purchased_at);
+                        return purchaseDate >= windowStart && purchaseDate <= windowEnd;
+                      });
+                      let windowEur = 0;
+                      let windowUsd = 0;
+                      for (const p of inWindow) {
+                        if (isUsdPurchaseCurrency(p.currency)) {
+                          windowUsd += p.price_paid;
+                        } else {
+                          windowEur += p.price_paid;
+                        }
+                      }
 
-                      // € per 100 sign-ups
-                      const gainPerHundred =
+                      const gainPerHundredEur =
                         signUps > 0
-                          ? (windowRevenueCents / 100) / (signUps / 100)
+                          ? (windowEur / 100) / (signUps / 100)
+                          : 0;
+                      const gainPerHundredUsd =
+                        signUps > 0
+                          ? (windowUsd / 100) / (signUps / 100)
                           : 0;
 
                       const dateFormat = days > 90 ? "MMM dd" : "MMM dd";
                       data.push({
                         date: format(date, dateFormat),
-                        gainPerHundred: parseFloat(gainPerHundred.toFixed(2)),
+                        gainPerHundredEur: parseFloat(
+                          gainPerHundredEur.toFixed(2),
+                        ),
+                        gainPerHundredUsd: parseFloat(
+                          gainPerHundredUsd.toFixed(2),
+                        ),
                       });
                     }
 
@@ -1651,11 +1648,11 @@ export default function AdminDashboard() {
               <TabsContent value="purchases">
                 <PurchasesTab
                   purchases={purchases}
-                  getTotalRevenue={() => kpiRevenueCents}
+                  getTotalRevenueEurCents={() => kpiRevenueEurCents}
+                  getTotalRevenueUsdCents={() => kpiRevenueUsdCents}
                   getDailyPurchases={getDailyPurchases}
                   getPurchasesByPlaytime={getPurchasesByPlaytime}
                   getPurchaseStats={getPurchaseStats}
-                  getPurchasesByCountry={getPurchasesByCountry}
                   purchasesChartTimeRange={purchasesChartTimeRange}
                   setPurchasesChartTimeRange={setPurchasesChartTimeRange}
                 />

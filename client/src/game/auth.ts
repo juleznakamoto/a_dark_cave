@@ -281,7 +281,7 @@ export async function signInWithGoogle(opts?: {
   return data;
 }
 
-/** Permanently deletes the Supabase user; anonymizes cloud save row; clears local save and session. */
+/** Permanently deletes the Supabase user and their cloud game_saves row; clears local save and session. */
 export async function deleteAccount(): Promise<void> {
   const supabase = await getSupabaseClient();
   const {

@@ -501,13 +501,10 @@ app.get("/api/admin/data", async (req, res) => {
 
     // Calculate date filters
     const now = new Date();
-    const sevenDaysAgo = new Date(now);
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
     const thirtyDaysAgo = new Date(now);
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     const filterDate = thirtyDaysAgo.toISOString();
 
-    // totalUserCount will be set from auth.users pagination below
     let totalUserCount = 0;
 
     // Fetch data with 30-day filter for clicks, but 1 year for saves to support chart time ranges
@@ -517,7 +514,13 @@ app.get("/api/admin/data", async (req, res) => {
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
     const oneYearAgoFilter = oneYearAgo.toISOString();
 
-    const [clicksResult, savesResult, dauResult] = await Promise.all([
+    const [
+      clicksResult,
+      savesResult,
+      marketingMetricsRpc,
+      authDashboardRpc,
+      purchaseMetricsRpc,
+    ] = await Promise.all([
       adminClient
         .from("button_clicks")
         .select("*")
@@ -530,11 +533,9 @@ app.get("/api/admin/data", async (req, res) => {
         .or(`created_at.gte.${oneYearAgoFilter},updated_at.gte.${oneYearAgoFilter}`) // Load 1 year of data for both signups and activity
         .order("updated_at", { ascending: false })
         .limit(QUERY_LIMIT),
-      adminClient
-        .from("daily_active_users")
-        .select("date, active_user_count")
-        .order("date", { ascending: true })
-        .limit(365), // Load 1 year of DAU data
+      adminClient.rpc("admin_marketing_dashboard_metrics"),
+      adminClient.rpc("admin_auth_dashboard_stats"),
+      adminClient.rpc("admin_purchase_metrics"),
     ]);
 
     if (clicksResult.error) {
@@ -543,8 +544,103 @@ app.get("/api/admin/data", async (req, res) => {
     if (savesResult.error) {
       throw savesResult.error;
     }
-    if (dauResult.error) {
-      throw dauResult.error;
+
+    let registrationMethodStats = {
+      emailRegistrations: 0,
+      googleRegistrations: 0,
+    };
+
+    let authSignups: Array<{ id: string; created_at: string }> = [];
+
+    let marketingMetrics = {
+      marketingUsersPrompted: 0,
+      marketingUsersOptedIn: 0,
+      marketingOptInRate: 0,
+    };
+    let accountsDeletedAnonymized = 0;
+
+    if (marketingMetricsRpc.error) {
+      log(
+        "⚠️ admin_marketing_dashboard_metrics skipped:",
+        marketingMetricsRpc.error.message ?? marketingMetricsRpc.error,
+      );
+    } else {
+      const mm = marketingMetricsRpc.data as Record<string, unknown> | null;
+      if (mm && typeof mm === "object") {
+        marketingMetrics = {
+          marketingUsersPrompted:
+            Number(mm.marketing_users_prompted) || 0,
+          marketingUsersOptedIn:
+            Number(mm.marketing_users_opted_in) || 0,
+          marketingOptInRate: Number(mm.marketing_opt_in_rate) || 0,
+        };
+        accountsDeletedAnonymized =
+          Number(mm.accounts_deleted_anonymized) || 0;
+      }
+    }
+
+    if (authDashboardRpc.error) {
+      log(
+        "⚠️ admin_auth_dashboard_stats skipped:",
+        authDashboardRpc.error.message ?? authDashboardRpc.error,
+      );
+    } else {
+      const authPayload = authDashboardRpc.data as Record<
+        string,
+        unknown
+      > | null;
+      if (authPayload && typeof authPayload === "object") {
+        totalUserCount = Number(authPayload.total_user_count) || 0;
+        const rms = authPayload.registration_method_stats as
+          | {
+              emailRegistrations?: number;
+              googleRegistrations?: number;
+            }
+          | undefined;
+        if (rms && typeof rms === "object") {
+          registrationMethodStats = {
+            emailRegistrations: Number(rms.emailRegistrations) || 0,
+            googleRegistrations: Number(rms.googleRegistrations) || 0,
+          };
+        }
+        const signups = authPayload.auth_signups;
+        if (Array.isArray(signups)) {
+          authSignups = signups.map((row: any) => ({
+            id: String(row.id),
+            created_at: String(row.created_at),
+          }));
+        }
+      }
+    }
+
+    // All-time paid totals in SQL — not subject to PostgREST max_rows (see migration 012).
+    let purchaseMetrics: {
+      total_revenue_eur_cents: number;
+      total_revenue_usd_cents: number;
+      paid_buyer_count: number;
+    } | null = null;
+    if (purchaseMetricsRpc.error) {
+      log(
+        "⚠️ admin_purchase_metrics skipped:",
+        purchaseMetricsRpc.error.message ?? purchaseMetricsRpc.error,
+      );
+    } else {
+      const pm = purchaseMetricsRpc.data as Record<string, unknown> | null;
+      if (
+        pm &&
+        typeof pm === "object" &&
+        "total_revenue_eur_cents" in pm &&
+        "total_revenue_usd_cents" in pm &&
+        "paid_buyer_count" in pm
+      ) {
+        purchaseMetrics = {
+          total_revenue_eur_cents:
+            Number(pm.total_revenue_eur_cents) || 0,
+          total_revenue_usd_cents:
+            Number(pm.total_revenue_usd_cents) || 0,
+          paid_buyer_count: Number(pm.paid_buyer_count) || 0,
+        };
+      }
     }
 
     // Purchases: paginate with .range() — PostgREST max_rows often caps single .limit() responses (~1000).
@@ -582,217 +678,11 @@ app.get("/api/admin/data", async (req, res) => {
       },
     );
 
-    // Helper function to calculate email confirmation stats for a time range
-    const calculateEmailStats = (users: any[], startDate?: Date) => {
-      const filteredUsers = startDate
-        ? users.filter((user: any) => new Date(user.created_at) >= startDate)
-        : users;
-
-      const confirmedUsers = filteredUsers.filter((user: any) => user.email_confirmed_at);
-      const unconfirmedUsers = filteredUsers.length - confirmedUsers.length;
-
-      let totalDelayMinutes = 0;
-      let usersWithSignIn = 0;
-
-      confirmedUsers.forEach((user: any) => {
-        if (user.last_sign_in_at) {
-          usersWithSignIn++;
-          const confirmTime = new Date(user.email_confirmed_at);
-          const signInTime = new Date(user.last_sign_in_at);
-          const delayMs = signInTime.getTime() - confirmTime.getTime();
-          totalDelayMinutes += Math.max(0, delayMs / 1000 / 60);
-        }
-      });
-
-      return {
-        totalRegistrations: filteredUsers.length,
-        confirmedUsers: confirmedUsers.length,
-        unconfirmedUsers,
-        totalConfirmationDelay: totalDelayMinutes,
-        usersWithSignIn,
-      };
-    };
-
-    // Fetch email confirmation stats from auth.users
-    let emailConfirmationStats = {
-      allTime: {
-        totalRegistrations: 0,
-        confirmedUsers: 0,
-        unconfirmedUsers: 0,
-        totalConfirmationDelay: 0,
-        usersWithSignIn: 0,
-      },
-      last30Days: {
-        totalRegistrations: 0,
-        confirmedUsers: 0,
-        unconfirmedUsers: 0,
-        totalConfirmationDelay: 0,
-        usersWithSignIn: 0,
-      },
-      last7Days: {
-        totalRegistrations: 0,
-        confirmedUsers: 0,
-        unconfirmedUsers: 0,
-        totalConfirmationDelay: 0,
-        usersWithSignIn: 0,
-      },
-    };
-
-    let registrationMethodStats = {
-      emailRegistrations: 0,
-      googleRegistrations: 0,
-    };
-
-    let authSignups: Array<{ id: string; created_at: string }> = [];
-
-    try {
-      log("📧 Fetching auth users for email and registration stats...");
-
-      // Paginate through all users once and reuse data for all stats
-      let allUsers: any[] = [];
-      let page = 1;
-      const perPage = 1000;
-
-      while (true) {
-        const { data: authData, error: authError } = await adminClient.auth.admin.listUsers({
-          page,
-          perPage,
-        });
-
-        if (authError) {
-          log("❌ Error fetching auth users for registration method:", authError);
-          break;
-        }
-
-        if (!authData || authData.users.length === 0) {
-          break;
-        }
-
-        allUsers = allUsers.concat(authData.users);
-
-        if (authData.users.length < perPage) {
-          break;
-        }
-
-        page++;
-      }
-
-      log(`📧 Total auth users found: ${allUsers.length}`);
-      totalUserCount = allUsers.length;
-
-      // Build auth sign-ups for charts (id + created_at, last 2 years for 1y chart support)
-      const twoYearsAgo = new Date(now);
-      twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
-      authSignups = allUsers
-        .filter((u: any) => new Date(u.created_at) >= twoYearsAgo)
-        .map((u: any) => ({ id: u.id, created_at: u.created_at }));
-
-      // Calculate email confirmation stats for all three time periods
-      emailConfirmationStats.allTime = calculateEmailStats(allUsers);
-      emailConfirmationStats.last30Days = calculateEmailStats(allUsers, thirtyDaysAgo);
-      emailConfirmationStats.last7Days = calculateEmailStats(allUsers, sevenDaysAgo);
-
-      // Count registration methods
-      allUsers.forEach((user: any) => {
-        const provider = user.app_metadata?.provider;
-        const providers = user.app_metadata?.providers || [];
-        const hasGoogleProvider = provider === 'google' || providers.includes('google');
-
-        if (hasGoogleProvider) {
-          registrationMethodStats.googleRegistrations++;
-        } else {
-          registrationMethodStats.emailRegistrations++;
-        }
-      });
-      log("📧 Stats calculated for all time periods and registration methods");
-    } catch (error: any) {
-      log("❌ Error processing auth-derived stats:", error);
-    }
-
-    let marketingMetrics = {
-      marketingUsersPrompted: 0,
-      marketingUsersOptedIn: 0,
-      marketingOptInRate: 0,
-    };
-    try {
-      const { count: prompted, error: promptedErr } = await adminClient
-        .from("marketing_preferences")
-        .select("*", { count: "exact", head: true });
-      if (promptedErr) {
-        throw promptedErr;
-      }
-      const { count: optedIn, error: optedErr } = await adminClient
-        .from("marketing_preferences")
-        .select("*", { count: "exact", head: true })
-        .eq("marketing_opt_in", true);
-      if (optedErr) {
-        throw optedErr;
-      }
-      const promptedN = prompted ?? 0;
-      const optedN = optedIn ?? 0;
-      marketingMetrics = {
-        marketingUsersPrompted: promptedN,
-        marketingUsersOptedIn: optedN,
-        marketingOptInRate:
-          promptedN > 0
-            ? Math.round((optedN / promptedN) * 10000) / 100
-            : 0,
-      };
-    } catch (mErr: any) {
-      log("⚠️ Marketing metrics skipped:", mErr?.message ?? mErr);
-    }
-
-    // Anonymized cloud saves after self-service delete (game_saves.user_id cleared; see migration 009).
-    let accountsDeletedAnonymized = 0;
-    try {
-      const { count: anonCount, error: anonErr } = await adminClient
-        .from("game_saves")
-        .select("*", { count: "exact", head: true })
-        .is("user_id", null);
-      if (anonErr) {
-        throw anonErr;
-      }
-      accountsDeletedAnonymized = anonCount ?? 0;
-    } catch (anonCatch: any) {
-      log("⚠️ accountsDeletedAnonymized skipped:", anonCatch?.message ?? anonCatch);
-    }
-
-    // All-time paid totals in SQL — not subject to PostgREST max_rows (see migration 012).
-    let purchaseMetrics: {
-      total_revenue_cents: number;
-      paid_buyer_count: number;
-    } | null = null;
-    try {
-      const { data: pm, error: pmErr } =
-        await adminClient.rpc("admin_purchase_metrics");
-      if (pmErr) {
-        log("⚠️ admin_purchase_metrics skipped:", pmErr.message ?? pmErr);
-      } else if (
-        pm &&
-        typeof pm === "object" &&
-        "total_revenue_cents" in pm &&
-        "paid_buyer_count" in pm
-      ) {
-        const row = pm as {
-          total_revenue_cents: number | string;
-          paid_buyer_count: number | string;
-        };
-        purchaseMetrics = {
-          total_revenue_cents: Number(row.total_revenue_cents) || 0,
-          paid_buyer_count: Number(row.paid_buyer_count) || 0,
-        };
-      }
-    } catch (pmCatch: any) {
-      log("⚠️ admin_purchase_metrics skipped:", pmCatch?.message ?? pmCatch);
-    }
-
     res.json({
       clicks: clicksResult.data,
       saves: savesResult.data,
       purchases: allPurchases,
-      dau: dauResult.data,
       totalUserCount: totalUserCount || 0,
-      emailConfirmationStats: emailConfirmationStats,
       registrationMethodStats: registrationMethodStats,
       authSignups,
       marketingMetrics,
@@ -1307,12 +1197,12 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
       const env = getMarketingAdminEnv();
       const adminClient = getAdminClient(env);
 
-      const { error: anonError } = await adminClient
+      const { error: savesDeleteError } = await adminClient
         .from("game_saves")
-        .update({ user_id: null, username: null })
+        .delete()
         .eq("user_id", user.id);
-      if (anonError) {
-        throw anonError;
+      if (savesDeleteError) {
+        throw savesDeleteError;
       }
 
       const { error: delError } = await adminClient.auth.admin.deleteUser(

@@ -127,13 +127,26 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
       }
     }
 
-    const billingCountry = (paymentIntent.latest_charge as any)?.billing_details?.address?.country ?? null;
+    const chargeRaw = paymentIntent.latest_charge;
+    const charge =
+      chargeRaw && typeof chargeRaw === 'object'
+        ? (chargeRaw as Stripe.Charge)
+        : null;
+    if (!charge) {
+      throw new Error('Missing charge on succeeded PaymentIntent');
+    }
+
+    const billingCountry =
+      charge.billing_details?.address?.country ?? null;
     const cruelMode =
       paymentIntent.metadata.cruelMode === 'true'
         ? true
         : paymentIntent.metadata.cruelMode === 'false'
           ? false
           : null;
+
+    const ccy = (paymentIntent.currency || 'eur').toLowerCase();
+    const chargeCurrency = ccy === 'eur' || ccy === 'usd' ? ccy : 'eur';
 
     // Save purchase to database; use actual amount charged
     const { data: purchaseData, error: purchaseError } = await supabase
@@ -147,6 +160,7 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
         purchased_at: new Date().toISOString(),
         country: billingCountry,
         cruel_mode: cruelMode,
+        currency: chargeCurrency,
       })
       .select()
       .single();
@@ -175,6 +189,7 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
               bundle_id: itemId, // Reference to parent bundle
               purchased_at: new Date().toISOString(),
               cruel_mode: cruelMode,
+              currency: chargeCurrency,
             });
 
           if (componentError) {

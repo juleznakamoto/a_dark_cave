@@ -4,7 +4,6 @@ import Stripe from 'stripe';
 
 // Mock Stripe with factory function
 vi.mock('stripe', () => {
-  // Create mock inside factory to avoid hoisting issues
   const mockPaymentIntents = {
     create: vi.fn(),
     retrieve: vi.fn(),
@@ -26,6 +25,12 @@ const getMockPaymentIntents = () => {
   const mockStripe = new Stripe('', { apiVersion: '2024-12-18.acacia' });
   return mockStripe.paymentIntents;
 };
+
+function latestChargeForVerify(): Stripe.Charge {
+  return {
+    billing_details: { address: { country: null } },
+  } as Stripe.Charge;
+}
 
 // Mock Supabase
 const mockSupabase = {
@@ -268,7 +273,9 @@ describe('Stripe Shop Integration', () => {
         id: 'pi_test',
         amount: 99,
         status: 'succeeded',
+        currency: 'eur',
         metadata: { itemId: 'gold_250' },
+        latest_charge: latestChargeForVerify(),
       } as Stripe.PaymentIntent;
 
       mockPaymentIntents.retrieve.mockResolvedValue(mockIntent);
@@ -316,10 +323,12 @@ describe('Stripe Shop Integration', () => {
         id: 'pi_test',
         amount: 74, // 25% off gold_250 (99 -> 74)
         status: 'succeeded',
+        currency: 'eur',
         metadata: {
           itemId: 'gold_250',
           tradersGratitudeDiscountApplied: 'true',
         },
+        latest_charge: latestChargeForVerify(),
       } as Stripe.PaymentIntent;
 
       mockPaymentIntents.retrieve.mockResolvedValue(mockIntent);
@@ -336,10 +345,12 @@ describe('Stripe Shop Integration', () => {
         id: 'pi_test',
         amount: 64,
         status: 'succeeded',
+        currency: 'eur',
         metadata: {
           itemId: 'gold_250',
           playlightFirstPurchaseDiscountApplied: 'true',
         },
+        latest_charge: latestChargeForVerify(),
       } as Stripe.PaymentIntent;
 
       mockPaymentIntents.retrieve.mockResolvedValue(mockIntent);

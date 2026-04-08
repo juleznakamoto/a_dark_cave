@@ -1,4 +1,7 @@
-
+import {
+  formatPurchaseMinorUnits,
+  isUsdPurchaseCurrency,
+} from "@shared/purchaseRevenueEur";
 import { useState, useMemo } from "react";
 import { parseISO, startOfDay, addDays, subDays, format } from "date-fns";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,19 +27,29 @@ const TOP_N_COUNTRIES = 8;
 
 interface PurchasesTabProps {
   purchases: any[];
-  getTotalRevenue: () => number;
+  getTotalRevenueEurCents: () => number;
+  getTotalRevenueUsdCents: () => number;
   getDailyPurchases: () => Array<{ day: string; purchases: number }>;
   getPurchasesByPlaytime: () => Array<{ playtime: string; purchases: number }>;
   getPurchaseStats: () => Array<{ name: string; count: number }>;
-  getPurchasesByCountry: () => Array<{ country: string; count: number; revenue: number }>;
   purchasesChartTimeRange: TimeRange;
   setPurchasesChartTimeRange: (range: TimeRange) => void;
+}
+
+type CountryChartMode = "count" | "revenue_eur" | "revenue_usd";
+
+function countryContribution(p: any, mode: CountryChartMode): number {
+  if (mode === "count") return 1;
+  if (mode === "revenue_eur") {
+    return isUsdPurchaseCurrency(p.currency) ? 0 : p.price_paid;
+  }
+  return isUsdPurchaseCurrency(p.currency) ? p.price_paid : 0;
 }
 
 function buildDailyCountryData(
   purchases: any[],
   days: number,
-  mode: "count" | "revenue",
+  mode: CountryChartMode,
 ) {
   const now = new Date();
   const start = startOfDay(subDays(now, days - 1));
@@ -46,11 +59,12 @@ function buildDailyCountryData(
     return parseISO(p.purchased_at) >= start;
   });
 
-  // Find top N countries by total for this period
   const totals = new Map<string, number>();
   relevant.forEach((p) => {
+    const add = countryContribution(p, mode);
+    if (mode !== "count" && add <= 0) return;
     const c = p.country || "Unknown";
-    totals.set(c, (totals.get(c) ?? 0) + (mode === "count" ? 1 : p.price_paid));
+    totals.set(c, (totals.get(c) ?? 0) + add);
   });
 
   const topCountries = Array.from(totals.entries())
@@ -58,9 +72,10 @@ function buildDailyCountryData(
     .slice(0, TOP_N_COUNTRIES)
     .map(([c]) => c);
 
-  // Build one row per day
   const rows: Record<string, any>[] = Array.from({ length: days }, (_, i) => {
-    const row: Record<string, any> = { day: format(addDays(start, i), days > 90 ? "MMM d" : "MMM d") };
+    const row: Record<string, any> = {
+      day: format(addDays(start, i), days > 90 ? "MMM d" : "MMM d"),
+    };
     topCountries.forEach((c) => (row[c] = 0));
     return row;
   });
@@ -68,10 +83,12 @@ function buildDailyCountryData(
   relevant.forEach((p) => {
     const c = p.country || "Unknown";
     if (!topCountries.includes(c)) return;
+    const add = countryContribution(p, mode);
+    if (mode !== "count" && add <= 0) return;
     const d = startOfDay(parseISO(p.purchased_at));
     const idx = Math.round((d.getTime() - start.getTime()) / 86400000);
     if (idx >= 0 && idx < rows.length) {
-      rows[idx][c] = (rows[idx][c] ?? 0) + (mode === "count" ? 1 : p.price_paid);
+      rows[idx][c] = (rows[idx][c] ?? 0) + add;
     }
   });
 
@@ -97,7 +114,8 @@ function TimeRangeSelect({ value, onChange }: { value: TimeRange; onChange: (v: 
 export default function PurchasesTab(props: PurchasesTabProps) {
   const {
     purchases,
-    getTotalRevenue,
+    getTotalRevenueEurCents,
+    getTotalRevenueUsdCents,
     getDailyPurchases,
     getPurchasesByPlaytime,
     getPurchaseStats,
@@ -113,8 +131,23 @@ export default function PurchasesTab(props: PurchasesTabProps) {
     [purchases, countryCountRange],
   );
 
-  const { data: countryRevenueData, countries: countryRevenueList } = useMemo(
-    () => buildDailyCountryData(purchases, TIME_RANGE_DAYS[countryRevenueRange], "revenue"),
+  const { data: countryRevenueEurData, countries: countryRevenueEurList } = useMemo(
+    () =>
+      buildDailyCountryData(
+        purchases,
+        TIME_RANGE_DAYS[countryRevenueRange],
+        "revenue_eur",
+      ),
+    [purchases, countryRevenueRange],
+  );
+
+  const { data: countryRevenueUsdData, countries: countryRevenueUsdList } = useMemo(
+    () =>
+      buildDailyCountryData(
+        purchases,
+        TIME_RANGE_DAYS[countryRevenueRange],
+        "revenue_usd",
+      ),
     [purchases, countryRevenueRange],
   );
 
@@ -131,9 +164,17 @@ export default function PurchasesTab(props: PurchasesTabProps) {
         <Card>
           <CardHeader>
             <CardTitle>Total Revenue</CardTitle>
+            <CardDescription>
+              All-time paid totals by charge currency (not combined)
+            </CardDescription>
           </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold">€{(getTotalRevenue() / 100).toFixed(2)}</p>
+          <CardContent className="space-y-1">
+            <p className="text-3xl font-bold">
+              €{(getTotalRevenueEurCents() / 100).toFixed(2)}
+            </p>
+            <p className="text-3xl font-bold">
+              ${(getTotalRevenueUsdCents() / 100).toFixed(2)}
+            </p>
           </CardContent>
         </Card>
 
@@ -220,20 +261,22 @@ export default function PurchasesTab(props: PurchasesTabProps) {
         <CardHeader>
           <div className="flex justify-between items-start">
             <div>
-              <CardTitle>Daily Revenue by Country</CardTitle>
-              <CardDescription>€ revenue per day, top {TOP_N_COUNTRIES} countries (paid only)</CardDescription>
+              <CardTitle>Daily EUR revenue by country</CardTitle>
+              <CardDescription>
+                EUR charges only (minor units), top {TOP_N_COUNTRIES} countries (paid only)
+              </CardDescription>
             </div>
             <TimeRangeSelect value={countryRevenueRange} onChange={setCountryRevenueRange} />
           </div>
         </CardHeader>
         <CardContent>
-          {countryRevenueList.length === 0 ? (
+          {countryRevenueEurList.length === 0 ? (
             <p className="text-muted-foreground text-sm py-4">
-              No country data yet. Country is captured from billing address on new purchases.
+              No EUR revenue in this range, or no country data yet.
             </p>
           ) : (
             <ChartContainer config={{}} className="h-[400px] w-full">
-              <LineChart data={countryRevenueData}>
+              <LineChart data={countryRevenueEurData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   dataKey="day"
@@ -248,7 +291,57 @@ export default function PurchasesTab(props: PurchasesTabProps) {
                   ]}
                 />
                 <Legend />
-                {countryRevenueList.map((country, i) => (
+                {countryRevenueEurList.map((country, i) => (
+                  <Line
+                    key={country}
+                    type="monotone"
+                    dataKey={country}
+                    stroke={COUNTRY_COLORS[i % COUNTRY_COLORS.length]}
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                ))}
+              </LineChart>
+            </ChartContainer>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <div className="flex justify-between items-start">
+            <div>
+              <CardTitle>Daily USD revenue by country</CardTitle>
+              <CardDescription>
+                USD charges only (minor units), top {TOP_N_COUNTRIES} countries (paid only)
+              </CardDescription>
+            </div>
+            <TimeRangeSelect value={countryRevenueRange} onChange={setCountryRevenueRange} />
+          </div>
+        </CardHeader>
+        <CardContent>
+          {countryRevenueUsdList.length === 0 ? (
+            <p className="text-muted-foreground text-sm py-4">
+              No USD revenue in this range, or no country data yet.
+            </p>
+          ) : (
+            <ChartContainer config={{}} className="h-[400px] w-full">
+              <LineChart data={countryRevenueUsdData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="day"
+                  interval={xAxisInterval(TIME_RANGE_DAYS[countryRevenueRange])}
+                  tick={{ fontSize: 11 }}
+                />
+                <YAxis tickFormatter={(v) => `$${(v / 100).toFixed(0)}`} />
+                <Tooltip
+                  formatter={(value: number, name: string) => [
+                    `$${(value / 100).toFixed(2)}`,
+                    name,
+                  ]}
+                />
+                <Legend />
+                {countryRevenueUsdList.map((country, i) => (
                   <Line
                     key={country}
                     type="monotone"
@@ -375,7 +468,12 @@ export default function PurchasesTab(props: PurchasesTabProps) {
                       )}
                     </p>
                   </div>
-                  <p className="font-bold">€{(purchase.price_paid / 100).toFixed(2)}</p>
+                  <p className="font-bold">
+                    {formatPurchaseMinorUnits(
+                      purchase.price_paid,
+                      purchase.currency,
+                    )}
+                  </p>
                 </div>
               ))}
           </div>
