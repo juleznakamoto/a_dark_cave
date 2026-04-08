@@ -74,7 +74,7 @@ export default function SidePanel() {
   // Get game state once for the entire component (needed early for stat calculations)
   const gameState = useGameStore();
 
-  // Calculate total stats including bonuses from relics/clothing (needed early for seenStatsRef)
+  // Calculate total stats including bonuses from relics/clothing
   const totalLuck = getTotalLuck(gameState);
   const totalStrength = getTotalStrength(gameState);
   const totalKnowledge = getTotalKnowledge(gameState);
@@ -89,15 +89,6 @@ export default function SidePanel() {
       seenResourcesRef.current.add(key);
     }
   });
-
-  // Track which stats have ever been seen
-  const seenStatsRef = useRef<Set<string>>(new Set());
-
-  // Update seen stats
-  if (totalLuck > 0) seenStatsRef.current.add("luck");
-  if (totalStrength > 0) seenStatsRef.current.add("strength");
-  if (totalKnowledge > 0) seenStatsRef.current.add("knowledge");
-  if (totalMadness > 0) seenStatsRef.current.add("madness");
 
   // Dynamically generate resource items from state (gold and silver first, then others)
   // Show resource if it has ever been > 0, even if currently 0
@@ -478,57 +469,48 @@ export default function SidePanel() {
   const hasScriptorium = buildings.scriptorium > 0;
   const hasClerksHut = buildings.clerksHut > 0;
 
-  // Show luck if it has ever been > 0
-  if (seenStatsRef.current.has("luck")) {
-    statsItems.push({
-      id: "luck",
-      label: "Luck",
-      value: totalLuck,
-      testId: "stat-luck",
-      visible: true,
-      icon: hasScriptorium ? "☆" : undefined,
-      iconColor: hasScriptorium ? "text-green-300/80" : undefined,
-      tooltip: hasClerksHut ? (
-        <span className="text-gray-400">Bends fate in your favor</span>
-      ) : undefined,
-    });
-  }
+  statsItems.push({
+    id: "luck",
+    label: "Luck",
+    value: totalLuck,
+    testId: "stat-luck",
+    visible: true,
+    icon: hasScriptorium ? "☆" : undefined,
+    iconColor: hasScriptorium ? "text-green-300/80" : undefined,
+    tooltip: hasClerksHut ? (
+      <span className="text-gray-400">Bends fate in your favor</span>
+    ) : undefined,
+  });
 
-  // Show strength if it has ever been > 0
-  if (seenStatsRef.current.has("strength")) {
-    statsItems.push({
-      id: "strength",
-      label: "Strength",
-      value: totalStrength,
-      testId: "stat-strength",
-      visible: true,
-      icon: hasScriptorium ? "⬡" : undefined,
-      iconColor: hasScriptorium ? "text-red-300/80" : undefined,
-      tooltip: hasClerksHut ? (
-        <span className="text-gray-400">
-          Helps where words reach their limit
-        </span>
-      ) : undefined,
-    });
-  }
+  statsItems.push({
+    id: "strength",
+    label: "Strength",
+    value: totalStrength,
+    testId: "stat-strength",
+    visible: true,
+    icon: hasScriptorium ? "⬡" : undefined,
+    iconColor: hasScriptorium ? "text-red-300/80" : undefined,
+    tooltip: hasClerksHut ? (
+      <span className="text-gray-400">
+        Helps where words reach their limit
+      </span>
+    ) : undefined,
+  });
 
-  // Show knowledge if it has ever been > 0
-  if (seenStatsRef.current.has("knowledge")) {
-    statsItems.push({
-      id: "knowledge",
-      label: "Knowledge",
-      value: totalKnowledge,
-      testId: "stat-knowledge",
-      visible: true,
-      icon: hasScriptorium ? "✧" : undefined,
-      iconColor: hasScriptorium ? "text-blue-300/80" : undefined,
-      tooltip: hasClerksHut ? (
-        <span className="text-gray-400">
-          Influences things where cleverness helps
-        </span>
-      ) : undefined,
-    });
-  }
+  statsItems.push({
+    id: "knowledge",
+    label: "Knowledge",
+    value: totalKnowledge,
+    testId: "stat-knowledge",
+    visible: true,
+    icon: hasScriptorium ? "✧" : undefined,
+    iconColor: hasScriptorium ? "text-blue-300/80" : undefined,
+    tooltip: hasClerksHut ? (
+      <span className="text-gray-400">
+        Influences things where cleverness helps
+      </span>
+    ) : undefined,
+  });
 
   // Build combined madness tooltip
   let madnessTooltipContent: React.ReactNode = undefined;
@@ -550,18 +532,16 @@ export default function SidePanel() {
     madnessTooltipContent = undefined;
   }
 
-  if (seenStatsRef.current.has("madness")) {
-    statsItems.push({
-      id: "madness",
-      label: "Madness",
-      value: totalMadness,
-      testId: "stat-madness",
-      visible: true,
-      icon: hasScriptorium ? "✺" : undefined,
-      iconColor: hasScriptorium ? "text-violet-300/80" : undefined,
-      tooltip: hasClerksHut ? madnessTooltipContent : undefined,
-    });
-  }
+  statsItems.push({
+    id: "madness",
+    label: "Madness",
+    value: totalMadness,
+    testId: "stat-madness",
+    visible: true,
+    icon: hasScriptorium ? "✺" : undefined,
+    iconColor: hasScriptorium ? "text-violet-300/80" : undefined,
+    tooltip: hasClerksHut ? madnessTooltipContent : undefined,
+  });
 
   // Dynamically generate fortification items from state
   const fortificationItems = Object.entries(buildings)

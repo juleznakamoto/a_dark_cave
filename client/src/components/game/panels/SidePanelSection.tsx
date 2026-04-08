@@ -288,7 +288,12 @@ export default function SidePanelSection({
     const isAnimated = animatedItems.has(item.id);
     const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
     const isMaxAnimated = maxAnimatedItems.has(item.id);
-    const displayValue = formatValue(item.value);
+    const displayValue =
+      item.id === "madness" &&
+      typeof item.value === "number" &&
+      item.value < 0
+        ? `0 (-${formatNumber(Math.abs(item.value))})`
+        : formatValue(item.value);
     const isLimited = isResourceLimited(item.id, gameState);
     const limit = isLimited ? getResourceLimit(gameState) : null;
     const isAtMax =
@@ -341,7 +346,11 @@ export default function SidePanelSection({
       item.id === "madness" && madnessTooltipContent.length > 0;
 
     const isMadness = item.id === "madness";
-    const madnessClasses = isMadness ? getMadnessClasses(item.value) : "";
+    const madnessForStyle =
+      isMadness && typeof item.value === "number"
+        ? Math.max(0, item.value)
+        : 0;
+    const madnessClasses = isMadness ? getMadnessClasses(madnessForStyle) : "";
 
     // Only apply pulse to items that have tooltips (effects or item.tooltip)
     const shouldPulse =
