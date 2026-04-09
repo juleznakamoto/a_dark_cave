@@ -210,7 +210,7 @@ describe('Stripe Shop Integration', () => {
     });
 
     describe('Playlight first-purchase discount', () => {
-      it('should apply Beta + Playlight (35% off) when playlightFirstPurchaseDiscount is true', async () => {
+      it('should apply 10% off catalog price when playlightFirstPurchaseDiscount is true', async () => {
         mockPaymentIntents.create.mockResolvedValue({
           client_secret: 'test_secret',
         } as any);
@@ -226,10 +226,10 @@ describe('Stripe Shop Integration', () => {
           true,
         );
 
-        // 99 * (1 - 0.25 - 0.1) = 64.35 -> 64
+        // gold_250 price 99; floor(99 * 0.9) = 89
         expect(mockPaymentIntents.create).toHaveBeenCalledWith(
           expect.objectContaining({
-            amount: 64,
+            amount: 89,
             metadata: expect.objectContaining({
               playlightFirstPurchaseDiscountApplied: 'true',
             }),
@@ -237,7 +237,7 @@ describe('Stripe Shop Integration', () => {
         );
       });
 
-      it('should use Playlight price when both Trader and Playlight flags are set', async () => {
+      it('should use the better price when both Trader and Playlight flags are set', async () => {
         mockPaymentIntents.create.mockResolvedValue({
           client_secret: 'test_secret',
         } as any);
@@ -253,10 +253,10 @@ describe('Stripe Shop Integration', () => {
           true,
         );
 
-        // Playlight path (35% off) beats Trader-only (25% off)
+        // Trader's Gratitude (25% off) beats Playlight (10% off) on the same base price
         expect(mockPaymentIntents.create).toHaveBeenCalledWith(
           expect.objectContaining({
-            amount: 64,
+            amount: 74,
             metadata: expect.objectContaining({
               tradersGratitudeDiscountApplied: 'true',
               playlightFirstPurchaseDiscountApplied: 'true',
@@ -343,7 +343,7 @@ describe('Stripe Shop Integration', () => {
     it('should accept Playlight-only discounted payment when metadata is set', async () => {
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 64,
+        amount: 89,
         status: 'succeeded',
         currency: 'eur',
         metadata: {
