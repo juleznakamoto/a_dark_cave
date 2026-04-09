@@ -1147,6 +1147,18 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         tradersGratitude: tradersGratitudeActive,
                                       })
                                       : item.price;
+                                  const tradersOnlyCents =
+                                    item.price > 0
+                                      ? getDiscountedShopPriceCents(item.price, {
+                                        tradersGratitude: true,
+                                      })
+                                      : item.price;
+                                  const playlightOnlyCents =
+                                    item.price > 0
+                                      ? getDiscountedShopPriceCents(item.price, {
+                                        playlightFirstPurchase: true,
+                                      })
+                                      : item.price;
                                   const discounted =
                                     item.price > 0 && displayPrice < item.price;
                                   const priceClassName = discounted
@@ -1155,9 +1167,13 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   const showTradersGratitudeInfo =
                                     item.price > 0 &&
                                     tradersGratitudeActive &&
-                                    !playlightFirstPurchaseActive;
+                                    displayPrice === tradersOnlyCents &&
+                                    displayPrice < item.price;
                                   const showPlaylightInfo =
-                                    item.price > 0 && playlightFirstPurchaseActive;
+                                    item.price > 0 &&
+                                    playlightFirstPurchaseActive &&
+                                    displayPrice === playlightOnlyCents &&
+                                    displayPrice < item.price;
                                   return (
                                     <>
                                       <span className={priceClassName}>
@@ -1188,9 +1204,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         <TooltipWrapper
                                           tooltip={
                                             <div className="text-xs">
-                                              35% off: Beta discount (25%) plus an extra
-                                              10% for your first real-money purchase as a
-                                              Playlight player.
+                                              10% additional discount for your first
+                                              real-money purchase as a Playlight player.
                                             </div>
                                           }
                                           tooltipId={`playlight-discount-${item.id}`}
