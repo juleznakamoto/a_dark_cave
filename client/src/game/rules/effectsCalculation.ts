@@ -565,9 +565,9 @@ const STRANGER_APPROACH_BUILDINGS = [
  * New Villager Chance (stranger approach probability) per production cycle.
  *
  * Sources:
- * - Buildings: Wooden Hut +2% each (max 10), Stone Hut +1% each (max 10),
+ * - Buildings: Wooden Hut +1% each (max 10), Stone Hut +7.5% each (max 10),
  *   Longhouse +0.5% each (max 5), Fur Tent +0.5% each (max 5).
- *   Max from buildings: 35%.
+ *   Max from buildings: 90%.
  * - Blessings: ravens_mark +10%, ravens_mark_enhanced +15%. Both stack: 25%.
  * - Low population (pop ≤ 4): see CRUEL_MODE.strangerApproach.lowPopBonusWhenPopLte4.
  * - Events: Solstice active +50%.
@@ -576,7 +576,7 @@ const STRANGER_APPROACH_BUILDINGS = [
  * Total = lowPopulationBonus + fromBuildings + fromBlessings + fromEvents + fromHeartfire.
  * Capped at 100%. Effective probability is 0 when at max population.
  *
- * Absolute maximum: 50 + 35 + 25 + 50 = 160% → 100% (cap).
+ * Absolute maximum: 50 + 90 + 25 + 50 = 215% → 100% (cap).
  */
 const HEARTFIRE_VILLAGER_BONUS: Record<number, number> = {
   1: 0.01,
