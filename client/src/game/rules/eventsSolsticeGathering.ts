@@ -29,8 +29,8 @@ export const solsticeGatheringEvent: GameEvent = {
     return (state.buildings.woodenHut || 0) >= 3;
   },
 
-  timeProbability: 45,
-  cooldownPercent: 0.75,
+  timeProbability: 40,
+  cooldownPercent: 0.65,
   title: "Solstice Gathering",
   message:
     "The villagers propose a gathering to mark the longest night of the year. Fires will be lit, food prepared, and games held. Travelers may come, drawn by the light.",

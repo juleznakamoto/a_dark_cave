@@ -185,10 +185,8 @@ function CheckoutForm({
       </div>
 
       <div className="space-y-2 border-t pt-4 mt-4">
-        <p className="text-[10px] text-muted-foreground">
-          By completing this purchase, you agree that the delivery of the
-          digital item begins immediately and acknowledge that you thereby lose
-          your right of withdrawal. For more information, please see our{" "}
+        <p className="text-[11px] text-muted-foreground">
+          By purchasing, you consent to immediate delivery of digital content and waive your right of withdrawal. For more information, see our{" "}
           <a
             href="/terms"
             target="_blank"

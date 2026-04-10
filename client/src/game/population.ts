@@ -139,7 +139,7 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
 };
 
 export interface GetPopulationProductionOptions {
-  /** When true, excludes temporary bonuses (feast, curse, frostfall, fog, disgust, mining boost). Use for sleep check since no bonuses are active during sleep. */
+  /** When true, excludes temporary bonuses (feast, solstice gathering, curse, frostfall, fog, disgust, mining boost). Use for sleep check since no bonuses are active during sleep. */
   excludeTemporaryBonuses?: boolean;
 }
 
@@ -341,6 +341,21 @@ export const getPopulationProduction = (
     } else if (isFeast) {
       baseProduction.forEach((prod) => {
         prod.totalAmount = Math.ceil(prod.totalAmount * 2.0);
+      });
+    }
+
+    // Solstice Gathering: +10% village production (positive output only) while active
+    const solsticeState = state?.solsticeState;
+    if (
+      solsticeState?.isActive &&
+      solsticeState.endTime > Date.now()
+    ) {
+      baseProduction.forEach((prod) => {
+        if (prod.totalAmount > 0) {
+          // +10% with integer amounts: ceil(n * 1.1) === floor((11n + 9) / 10); avoids float error (e.g. 50 * 1.1).
+          const n = prod.totalAmount;
+          prod.totalAmount = Math.floor((n * 11 + 9) / 10);
+        }
       });
     }
   }

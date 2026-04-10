@@ -1125,6 +1125,34 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     </span>
                                   </TooltipWrapper>
                                 )}
+                                {item.id === "cruel_mode" && (
+                                  <TooltipWrapper
+                                    tooltip={
+                                      <div className="text-xs">
+                                        <div className="font-bold mb-1">
+                                          Cruel Mode
+                                        </div>
+                                        <div className="mt-1 space-y-0.5">
+                                          <div>More Events</div>
+                                          <div>More Items</div>
+                                          <div>Stronger Enemies</div>
+                                          <div>Harder Challenges</div>
+                                        </div>
+                                      </div>
+                                    }
+                                    tooltipId="cruel-mode-info"
+                                    disabled
+                                    tooltipContentClassName="max-w-xs border border-amber-600"
+                                    className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer"
+                                  >
+                                    <span
+                                      className="inline-flex shrink-0 items-center justify-center font-sans text-sm font-normal leading-none"
+                                      aria-hidden
+                                    >
+                                      🛈
+                                    </span>
+                                  </TooltipWrapper>
+                                )}
                               </CardTitle>
                               <CardDescription className="!m-0 text-bold flex flex-wrap items-center gap-1">
                                 {item.originalPrice && (

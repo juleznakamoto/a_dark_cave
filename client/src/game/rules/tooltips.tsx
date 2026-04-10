@@ -451,6 +451,7 @@ export const solsticeTooltip: TooltipConfig = {
       return (
         <>
           <div className="font-bold">Solstice Gathering</div>
+          <div>Production Bonus: +10%</div>
           <div>New Villager Chance +50%</div>
           <div>{remainingMinutes} min remaining</div>
         </>

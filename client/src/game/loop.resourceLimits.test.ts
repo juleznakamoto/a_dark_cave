@@ -331,6 +331,31 @@ describe('Game Loop - Resource Limits Integration', () => {
         expect(useGameStore.getState().resources.food).toBe(1000);
       }
     });
+
+    it('applies solstice gathering +10% to positive gatherer production', () => {
+      useGameStore.setState((state) => ({
+        villagers: {
+          ...state.villagers,
+          gatherer: 5,
+          free: 0,
+        },
+        solsticeState: {
+          isActive: true,
+          endTime: Date.now() + 60000,
+          tier: 1,
+          activationsCount: 0,
+        },
+      }));
+
+      const production = getPopulationProduction(
+        'gatherer',
+        5,
+        useGameStore.getState(),
+      );
+      const woodProd = production.find((p) => p.resource === 'wood');
+      // 5×10 wood, +10% solstice → 55; dev test env applies 10× production multiplier → 550
+      expect(woodProd?.totalAmount).toBe(550);
+    });
   });
 
   describe('Silver and Gold Exceptions', () => {
@@ -363,4 +388,4 @@ describe('Game Loop - Resource Limits Integration', () => {
     });
   });
 
-  });
+});
