@@ -21,12 +21,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   subDays,
-  subMonths,
   startOfDay,
   endOfDay,
   format,
-  differenceInDays,
-  isWithinInterval,
   parseISO,
 } from "date-fns";
 import {
@@ -101,49 +98,6 @@ const cleanButtonName = (buttonId: string): string => {
     .replace(/[-_]\d{13,}$/, ""); // Remove -timestamp or _timestamp
 };
 
-// Helper function to filter data by time range - defined outside component as pure function
-function filterByTimeRange<
-  T extends {
-    timestamp?: string;
-    updated_at?: string;
-    purchased_at?: string;
-    created_at?: string;
-  }
->(
-  data: T[],
-  dateField: keyof T,
-  timeRange: "1d" | "3d" | "7d" | "30d" | "all"
-): T[] {
-  if (timeRange === "all") return data;
-
-  const now = new Date();
-  let cutoffDate: Date;
-
-  switch (timeRange) {
-    case "1d":
-      cutoffDate = subDays(now, 1);
-      break;
-    case "3d":
-      cutoffDate = subDays(now, 3);
-      break;
-    case "7d":
-      cutoffDate = subDays(now, 7);
-      break;
-    case "30d":
-      cutoffDate = subDays(now, 30);
-      break;
-    default:
-      return data;
-  }
-
-  return data.filter((item) => {
-    const dateValue = item[dateField];
-    if (!dateValue || typeof dateValue !== "string") return false;
-    const itemDate = parseISO(dateValue);
-    return itemDate >= cutoffDate;
-  });
-}
-
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -154,7 +108,6 @@ export default function AdminDashboard() {
   const [rawGameSaves, setRawGameSaves] = useState<GameSaveData[]>([]);
   const [rawPurchases, setRawPurchases] = useState<PurchaseData[]>([]);
   const [rawAuthSignups, setRawAuthSignups] = useState<AuthSignupData[]>([]);
-  const [users, setUsers] = useState<Array<{ id: string; email: string }>>([]);
   const [totalUserCount, setTotalUserCount] = useState<number>(0);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date()); // State to track last data update
   const [dauData, setDauData] = useState<Array<{ date: string; active_user_count: number }>>([]);
@@ -190,12 +143,6 @@ export default function AdminDashboard() {
     null | "marketing" | "no-marketing"
   >(null);
 
-  // Filter states
-  const [timeRange, setTimeRange] = useState<"1d" | "3d" | "7d" | "30d" | "all">(
-    "30d",
-  );
-
-  const [selectedUser, setSelectedUser] = useState<string>("all");
   const [selectedButtons, setSelectedButtons] = useState<Set<string>>(
     new Set(["mine", "hunt", "chopWood", "caveExplore"]),
   ); // Initialize with all buttons
@@ -246,10 +193,10 @@ export default function AdminDashboard() {
   const [referralsChartTimeRange, setReferralsChartTimeRange] =
     useState<AdminTwelveMonthChartRange>("1m");
 
-  // Prefiltered data based on timeRange - MOVED AFTER ALL useState
-  const clickData = useMemo(() => filterByTimeRange(rawClickData, "timestamp", timeRange), [rawClickData, timeRange]);
-  const gameSaves = useMemo(() => filterByTimeRange(rawGameSaves, "updated_at", timeRange), [rawGameSaves, timeRange]);
-  const purchases = useMemo(() => filterByTimeRange(rawPurchases, "purchased_at", timeRange), [rawPurchases, timeRange]);
+  // Full history for the selected environment (per-tab chart dropdowns still window their own series)
+  const clickData = rawClickData;
+  const gameSaves = rawGameSaves;
+  const purchases = rawPurchases;
 
   const purchaseTotalsFromRaw = useMemo(() => {
     const paid = rawPurchases.filter((p) => p.price_paid > 0 && !p.bundle_id);
@@ -290,22 +237,10 @@ export default function AdminDashboard() {
     }
   }, [environment, isAuthorized]);
 
-  // Helper function to filter data by user
-  const filterByUser = <T extends { user_id: string }>(data: T[]): T[] => {
-    if (selectedUser === "all") {
-      return data;
-    }
-    return data.filter((item) => item.user_id === selectedUser);
-  };
-
   // Define all hooks BEFORE conditional returns to comply with React rules
   const getButtonClicksOverTime = useCallback(() => {
-    const filteredClickData = selectedUser === "all"
-      ? clickData
-      : clickData.filter((d) => d.user_id === selectedUser);
-
     const filteredByCompletion = showCompletedOnly
-      ? filteredClickData.filter((d) => {
+      ? clickData.filter((d) => {
         const save = gameSaves.find((s) => s.user_id === d.user_id);
         return save && (
           save.game_state?.events?.cube15a ||
@@ -317,7 +252,7 @@ export default function AdminDashboard() {
           save.game_state?.events?.cube14d
         );
       })
-      : filteredClickData;
+      : clickData;
 
     if (filteredByCompletion.length === 0) {
       return Array.from({ length: 24 }, (_, i) => ({ time: `${i}h`, clicks: 0 }));
@@ -352,19 +287,15 @@ export default function AdminDashboard() {
     return Object.entries(timeBuckets)
       .map(([time, clicks]) => ({ time, clicks }))
       .sort((a, b) => parseInt(a.time) - parseInt(b.time));
-  }, [clickData, gameSaves, selectedUser, showCompletedOnly]);
+  }, [clickData, gameSaves, showCompletedOnly]);
 
   const getClickTypesByTimestamp = useCallback(() => {
-    const filteredClickData = selectedUser === "all"
-      ? clickData
-      : clickData.filter((d) => d.user_id === selectedUser);
-
     const filteredByCompletion = showCompletedOnly
-      ? filteredClickData.filter((d) => {
+      ? clickData.filter((d) => {
         const save = gameSaves.find((s) => s.user_id === d.user_id);
         return save?.game_state?.gameComplete;
       })
-      : filteredClickData;
+      : clickData;
 
     const timeBuckets: Record<string, Record<string, number>> = {};
     for (let i = 0; i < 24; i++) {
@@ -402,19 +333,15 @@ export default function AdminDashboard() {
     return Object.entries(timeBuckets)
       .map(([time, clicks]) => ({ time, ...clicks }))
       .sort((a, b) => parseInt(a.time) - parseInt(b.time));
-  }, [clickData, gameSaves, selectedUser, showCompletedOnly, selectedClickTypes]);
+  }, [clickData, gameSaves, showCompletedOnly, selectedClickTypes]);
 
   const getTotalClicksByButton = useCallback(() => {
-    const filteredClickData = selectedUser === "all"
-      ? clickData
-      : clickData.filter((d) => d.user_id === selectedUser);
-
     const filteredByCompletion = showCompletedOnly
-      ? filteredClickData.filter((d) => {
+      ? clickData.filter((d) => {
         const save = gameSaves.find((s) => s.user_id === d.user_id);
         return save?.game_state?.gameComplete;
       })
-      : filteredClickData;
+      : clickData;
 
     const buttonTotals: Record<string, number> = {};
     filteredByCompletion.forEach((entry) => {
@@ -431,19 +358,15 @@ export default function AdminDashboard() {
       .map(([button, total]) => ({ button, total }))
       .sort((a, b) => b.total - a.total)
       .slice(0, 15);
-  }, [clickData, gameSaves, selectedUser, showCompletedOnly]);
+  }, [clickData, gameSaves, showCompletedOnly]);
 
   const getAverageClicksByButton = useCallback(() => {
-    const filteredClickData = selectedUser === "all"
-      ? clickData
-      : clickData.filter((d) => d.user_id === selectedUser);
-
     const filteredByCompletion = showCompletedOnly
-      ? filteredClickData.filter((d) => {
+      ? clickData.filter((d) => {
         const save = gameSaves.find((s) => s.user_id === d.user_id);
         return save?.game_state?.gameComplete;
       })
-      : filteredClickData;
+      : clickData;
 
     const buttonStats: Record<string, { total: number; users: Set<string> }> = {};
     filteredByCompletion.forEach((entry) => {
@@ -465,11 +388,11 @@ export default function AdminDashboard() {
       }))
       .sort((a, b) => b.average - a.average)
       .slice(0, 15);
-  }, [clickData, gameSaves, selectedUser, showCompletedOnly]);
+  }, [clickData, gameSaves, showCompletedOnly]);
 
   // All memos MUST be defined before conditional returns to comply with React rules
   const getStatsOverPlaytime = useMemo(() => {
-    const relevant = filterByUser(clickData);
+    const relevant = clickData;
 
     if (relevant.length === 0) {
       return Array.from({ length: 24 }, (_, i) => ({
@@ -526,10 +449,10 @@ export default function AdminDashboard() {
         madness: stats.madness.length > 0 ? stats.madness.reduce((a, b) => a + b, 0) / stats.madness.length : 0,
       };
     });
-  }, [clickData, selectedUser, selectedStats]);
+  }, [clickData, selectedStats]);
 
   const getResourceStatsOverPlaytime = useMemo(() => {
-    const relevant = filterByUser(clickData);
+    const relevant = clickData;
     const resourceKeys = ['food', 'bones', 'fur', 'wood', 'stone', 'iron', 'coal', 'sulfur', 'obsidian', 'adamant', 'moonstone', 'leather', 'steel', 'gold', 'silver'];
 
     if (relevant.length === 0) {
@@ -578,10 +501,10 @@ export default function AdminDashboard() {
       });
       return result;
     });
-  }, [clickData, selectedUser, selectedResources]);
+  }, [clickData, selectedResources]);
 
   const getButtonUpgradesOverPlaytime = useMemo(() => {
-    const relevant = filterByUser(gameSaves);
+    const relevant = gameSaves;
 
     if (relevant.length === 0) {
       return Array.from({ length: 24 }, (_, i) => ({
@@ -653,12 +576,10 @@ export default function AdminDashboard() {
     });
 
     return result;
-  }, [gameSaves, selectedUser, selectedMiningTypes]);
+  }, [gameSaves, selectedMiningTypes]);
 
   const getGameCompletionStats = useCallback(() => {
-    const relevantSaves = selectedUser === "all"
-      ? gameSaves
-      : gameSaves.filter((s) => s.user_id === selectedUser);
+    const relevantSaves = gameSaves;
 
     let completedCount = 0;
     let notCompletedCount = 0;
@@ -684,7 +605,7 @@ export default function AdminDashboard() {
       { name: "Completed", value: completedCount },
       { name: "Not Completed", value: notCompletedCount },
     ];
-  }, [gameSaves, selectedUser]);
+  }, [gameSaves]);
 
   const getDailyPurchases = useCallback(() => {
     const data: Array<{ day: string; purchases: number }> = [];
@@ -829,13 +750,9 @@ export default function AdminDashboard() {
   }, [gameSaves]);
 
   const getSleepUpgradesDistribution = useCallback(() => {
-    const filteredSaves = selectedUser === "all"
-      ? gameSaves
-      : gameSaves.filter((s) => s.user_id === selectedUser);
-
     const completedSaves = showCompletedOnly
-      ? filteredSaves.filter((s) => s.game_state?.gameComplete)
-      : filteredSaves;
+      ? gameSaves.filter((s) => s.game_state?.gameComplete)
+      : gameSaves;
 
     const distribution = new Map<number, { lengthUsers: number; intensityUsers: number }>();
 
@@ -867,7 +784,7 @@ export default function AdminDashboard() {
     }
 
     return result;
-  }, [gameSaves, selectedUser, showCompletedOnly]);
+  }, [gameSaves, showCompletedOnly]);
 
   const checkAdminAccess = async () => {
     try {
@@ -940,7 +857,7 @@ export default function AdminDashboard() {
 
       const data = await response.json();
 
-      // Set the raw data (will be filtered by timeRange useMemo)
+      // Set dashboard data for the active environment
       if (data.clicks) {
         setRawClickData(data.clicks);
       }
@@ -997,16 +914,6 @@ export default function AdminDashboard() {
         setPurchaseMetrics(null);
       }
 
-      // Collect unique user IDs only from users who have click data
-      const userIdsWithClicks = new Set<string>();
-      data.clicks?.forEach((c: any) => userIdsWithClicks.add(c.user_id));
-
-      const userList = Array.from(userIdsWithClicks).map((id) => ({
-        id,
-        email: id.substring(0, 8) + "...",
-      }));
-
-      setUsers(userList);
       setLastUpdated(new Date());
     } catch (error) {
       logger.error("Failed to load admin data:", error);
@@ -1162,36 +1069,6 @@ export default function AdminDashboard() {
                     <SelectItem value="prod">Production</SelectItem>
                   </SelectContent>
                 </Select>
-                <Select value={selectedUser} onValueChange={setSelectedUser}>
-                  <SelectTrigger className="w-[200px]">
-                    <SelectValue placeholder="Select user" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Users</SelectItem>
-                    {users.map((user) => (
-                      <SelectItem key={user.id} value={user.id}>
-                        {user.email}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Select
-                  value={timeRange}
-                  onValueChange={(value: "1d" | "3d" | "7d" | "30d" | "all") =>
-                    setTimeRange(value)
-                  }
-                >
-                  <SelectTrigger className="w-[120px]">
-                    <SelectValue placeholder="Time Range" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="1d">Last 24 Hours</SelectItem>
-                    <SelectItem value="3d">Last 3 Days</SelectItem>
-                    <SelectItem value="7d">Last 7 Days</SelectItem>
-                    <SelectItem value="30d">Last 30 Days</SelectItem>
-                    <SelectItem value="all">All Time</SelectItem>
-                  </SelectContent>
-                </Select>
               </div>
             </div>
 
@@ -1226,13 +1103,9 @@ export default function AdminDashboard() {
                   totalUserCount={totalUserCount}
                   formatTime={formatTime}
                   getAveragePlaytime={() => {
-                    const filteredSaves = selectedUser === "all"
-                      ? gameSaves
-                      : gameSaves.filter((s) => s.user_id === selectedUser);
-
                     const completedSaves = showCompletedOnly
-                      ? filteredSaves.filter((s) => s.game_state?.gameComplete)
-                      : filteredSaves;
+                      ? gameSaves.filter((s) => s.game_state?.gameComplete)
+                      : gameSaves;
 
                     if (completedSaves.length === 0) return 0;
 
@@ -1243,11 +1116,7 @@ export default function AdminDashboard() {
                     return Math.floor(totalPlayTime / completedSaves.length / 60000);
                   }}
                   getAveragePlaytimeToCompletion={() => {
-                    const filteredSaves = selectedUser === "all"
-                      ? gameSaves
-                      : gameSaves.filter((s) => s.user_id === selectedUser);
-
-                    const completedSaves = filteredSaves.filter(
+                    const completedSaves = gameSaves.filter(
                       (s) =>
                         s.game_state?.events?.cube15a ||
                         s.game_state?.events?.cube15b ||
@@ -1497,13 +1366,9 @@ export default function AdminDashboard() {
                     }
                     buckets["24h+"] = 0;
 
-                    const filteredSaves = selectedUser === "all"
-                      ? gameSaves
-                      : gameSaves.filter((s) => s.user_id === selectedUser);
-
                     const completedSaves = showCompletedOnly
-                      ? filteredSaves.filter((s) => s.game_state?.gameComplete)
-                      : filteredSaves;
+                      ? gameSaves.filter((s) => s.game_state?.gameComplete)
+                      : gameSaves;
 
                     completedSaves.forEach((save) => {
                       const playTime = save.game_state?.playTime || 0;
@@ -1518,13 +1383,9 @@ export default function AdminDashboard() {
                     }));
                   }}
                   getAveragePlaytime={() => {
-                    const filteredSaves = selectedUser === "all"
-                      ? gameSaves
-                      : gameSaves.filter((s) => s.user_id === selectedUser);
-
                     const completedSaves = showCompletedOnly
-                      ? filteredSaves.filter((s) => s.game_state?.gameComplete)
-                      : filteredSaves;
+                      ? gameSaves.filter((s) => s.game_state?.gameComplete)
+                      : gameSaves;
 
                     if (completedSaves.length === 0) return 0;
 
@@ -1535,11 +1396,7 @@ export default function AdminDashboard() {
                     return Math.floor(totalPlayTime / completedSaves.length / 60000);
                   }}
                   getAveragePlaytimeToCompletion={() => {
-                    const filteredSaves = selectedUser === "all"
-                      ? gameSaves
-                      : gameSaves.filter((s) => s.user_id === selectedUser);
-
-                    const completedSaves = filteredSaves.filter(
+                    const completedSaves = gameSaves.filter(
                       (s) =>
                         s.game_state?.events?.cube15a ||
                         s.game_state?.events?.cube15b ||
@@ -1565,7 +1422,6 @@ export default function AdminDashboard() {
               <TabsContent value="clicks">
                 <ClicksTab
                   gameSaves={gameSaves}
-                  selectedUser={selectedUser}
                   showCompletedOnly={showCompletedOnly}
                   setShowCompletedOnly={setShowCompletedOnly}
                   selectedClickTypes={selectedClickTypes}
@@ -1637,7 +1493,6 @@ export default function AdminDashboard() {
               <TabsContent value="sleep">
                 <SleepTab
                   gameSaves={gameSaves}
-                  selectedUser={selectedUser}
                   showCompletedOnly={showCompletedOnly}
                   setShowCompletedOnly={setShowCompletedOnly}
                   getSleepUpgradesDistribution={getSleepUpgradesDistribution()}
@@ -1649,7 +1504,6 @@ export default function AdminDashboard() {
                   showCompletedOnly={showCompletedOnly}
                   setShowCompletedOnly={setShowCompletedOnly}
                   gameSaves={gameSaves}
-                  selectedUser={selectedUser}
                   selectedStats={selectedStats}
                   setSelectedStats={setSelectedStats}
                   selectedResources={selectedResources}
@@ -1665,7 +1519,6 @@ export default function AdminDashboard() {
                   showCompletedOnly={showCompletedOnly}
                   setShowCompletedOnly={setShowCompletedOnly}
                   gameSaves={gameSaves}
-                  selectedUser={selectedUser}
                   selectedMiningTypes={selectedMiningTypes}
                   setSelectedMiningTypes={setSelectedMiningTypes}
                   buttonUpgradesOverPlaytime={getButtonUpgradesOverPlaytime}

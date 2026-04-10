@@ -7,12 +7,11 @@ interface ClicksTabProps {
   showCompletedOnly: boolean;
   setShowCompletedOnly: (value: boolean) => void;
   gameSaves: any[];
-  selectedUser: string;
   selectedClickTypes: Set<string>;
   setSelectedClickTypes: (value: Set<string>) => void;
   getAllButtonNames: () => string[];
   getButtonClicksOverTime: () => Array<{ time: string; clicks: number }>;
-  getClickTypesByTimestamp: () => Array<{ time: string; [key: string]: any }>;
+  getClickTypesByTimestamp: () => Array<{ time: string;[key: string]: any }>;
   getTotalClicksByButton: () => Array<{ button: string; total: number }>;
   getAverageClicksByButton: () => Array<{ button: string; average: number }>;
   COLORS: string[];
@@ -29,7 +28,6 @@ export default function ClicksTab(props: ClicksTabProps) {
     showCompletedOnly,
     setShowCompletedOnly,
     gameSaves,
-    selectedUser,
     selectedClickTypes,
     setSelectedClickTypes,
     getAllButtonNames,
@@ -74,11 +72,7 @@ export default function ClicksTab(props: ClicksTabProps) {
           <CardTitle>Button Clicks Over Time</CardTitle>
           <CardDescription>
             Total button clicks in 1-hour intervals (time elapsed since first click){" "}
-            {selectedUser !== "all"
-              ? "for selected user"
-              : showCompletedOnly
-                ? "for completed players only"
-                : "across all users"}
+            {showCompletedOnly ? "for completed players only" : "across all users"}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -119,11 +113,7 @@ export default function ClicksTab(props: ClicksTabProps) {
           <CardTitle>Individual Click Types Over Playtime</CardTitle>
           <CardDescription>
             Click counts by type in 1-hour intervals (time elapsed since first click){" "}
-            {selectedUser !== "all"
-              ? "for selected user"
-              : showCompletedOnly
-                ? "for completed players only"
-                : "across all users"}
+            {showCompletedOnly ? "for completed players only" : "across all users"}
           </CardDescription>
         </CardHeader>
         <CardContent>

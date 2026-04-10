@@ -6,10 +6,9 @@ interface UpgradesTabProps {
   showCompletedOnly: boolean;
   setShowCompletedOnly: (value: boolean) => void;
   gameSaves: any[];
-  selectedUser: string;
   selectedMiningTypes: Set<string>;
   setSelectedMiningTypes: (value: Set<string>) => void;
-  buttonUpgradesOverPlaytime: Array<{ time: string; [key: string]: any }>;
+  buttonUpgradesOverPlaytime: Array<{ time: string;[key: string]: any }>;
   COLORS: string[];
 }
 
@@ -18,7 +17,6 @@ export default function UpgradesTab(props: UpgradesTabProps) {
     showCompletedOnly,
     setShowCompletedOnly,
     gameSaves,
-    selectedUser,
     selectedMiningTypes,
     setSelectedMiningTypes,
     buttonUpgradesOverPlaytime,
@@ -59,11 +57,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
           <CardTitle>Cave Exploring Upgrades Over Playtime</CardTitle>
           <CardDescription>
             Average upgrade level over time (1-hour intervals){" "}
-            {selectedUser !== "all"
-              ? "for selected user"
-              : showCompletedOnly
-                ? "for completed players only"
-                : "across all users"}
+            {showCompletedOnly ? "for completed players only" : "across all users"}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -107,11 +101,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
           <CardTitle>Mining Upgrades Over Playtime</CardTitle>
           <CardDescription>
             Average upgrade level over time (1-hour intervals){" "}
-            {selectedUser !== "all"
-              ? "for selected user"
-              : showCompletedOnly
-                ? "for completed players only"
-                : "across all users"}
+            {showCompletedOnly ? "for completed players only" : "across all users"}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -262,11 +252,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
           <CardTitle>Hunting Upgrades Over Playtime</CardTitle>
           <CardDescription>
             Average upgrade level over time (1-hour intervals){" "}
-            {selectedUser !== "all"
-              ? "for selected user"
-              : showCompletedOnly
-                ? "for completed players only"
-                : "across all users"}
+            {showCompletedOnly ? "for completed players only" : "across all users"}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -310,11 +296,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
           <CardTitle>Woodcutting Upgrades Over Playtime</CardTitle>
           <CardDescription>
             Average upgrade level over time (1-hour intervals){" "}
-            {selectedUser !== "all"
-              ? "for selected user"
-              : showCompletedOnly
-                ? "for completed players only"
-                : "across all users"}
+            {showCompletedOnly ? "for completed players only" : "across all users"}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -358,11 +340,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
           <CardTitle>All Button Upgrades Over Playtime (Combined)</CardTitle>
           <CardDescription>
             Average upgrade levels over time (1-hour intervals){" "}
-            {selectedUser !== "all"
-              ? "for selected user"
-              : showCompletedOnly
-                ? "for completed players only"
-                : "across all users"}
+            {showCompletedOnly ? "for completed players only" : "across all users"}
           </CardDescription>
         </CardHeader>
         <CardContent>

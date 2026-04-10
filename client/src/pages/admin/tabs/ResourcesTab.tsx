@@ -6,13 +6,12 @@ interface ResourcesTabProps {
   showCompletedOnly: boolean;
   setShowCompletedOnly: (value: boolean) => void;
   gameSaves: any[];
-  selectedUser: string;
   selectedStats: Set<string>;
   setSelectedStats: (value: Set<string>) => void;
   selectedResources: Set<string>;
   setSelectedResources: (value: Set<string>) => void;
-  statsOverPlaytime: Array<{ time: string; [key: string]: any }>;
-  resourceStatsOverPlaytime: Array<{ time: string; [key: string]: any }>;
+  statsOverPlaytime: Array<{ time: string;[key: string]: any }>;
+  resourceStatsOverPlaytime: Array<{ time: string;[key: string]: any }>;
   COLORS: string[];
 }
 
@@ -21,7 +20,6 @@ export default function ResourcesTab(props: ResourcesTabProps) {
     showCompletedOnly,
     setShowCompletedOnly,
     gameSaves,
-    selectedUser,
     selectedStats,
     setSelectedStats,
     selectedResources,

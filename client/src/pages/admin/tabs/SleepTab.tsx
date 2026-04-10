@@ -7,7 +7,6 @@ interface SleepTabProps {
   showCompletedOnly: boolean;
   setShowCompletedOnly: (value: boolean) => void;
   gameSaves: any[];
-  selectedUser: string;
   getSleepUpgradesDistribution: Array<{ level: string; lengthUsers: number; intensityUsers: number }>;
 }
 
@@ -16,7 +15,6 @@ export default function SleepTab(props: SleepTabProps) {
     showCompletedOnly,
     setShowCompletedOnly,
     gameSaves,
-    selectedUser,
     getSleepUpgradesDistribution,
   } = props;
 
@@ -54,11 +52,7 @@ export default function SleepTab(props: SleepTabProps) {
           <CardTitle>Sleep Upgrade Levels Distribution</CardTitle>
           <CardDescription>
             Number of users at each SLEEP_LENGTH_UPGRADES and SLEEP_INTENSITY_UPGRADES level{" "}
-            {selectedUser !== "all"
-              ? "for selected user"
-              : showCompletedOnly
-                ? "for completed players only"
-                : "across all users"}
+            {showCompletedOnly ? "for completed players only" : "across all users"}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -107,13 +101,13 @@ export default function SleepTab(props: SleepTabProps) {
             <p className="text-4xl font-bold text-center py-8">
               {gameSaves.length > 0
                 ? (
-                    gameSaves.reduce(
-                      (sum, save) =>
-                        sum +
-                        (save.game_state?.sleepUpgrades?.lengthLevel || 0),
-                      0,
-                    ) / gameSaves.length
-                  ).toFixed(2)
+                  gameSaves.reduce(
+                    (sum, save) =>
+                      sum +
+                      (save.game_state?.sleepUpgrades?.lengthLevel || 0),
+                    0,
+                  ) / gameSaves.length
+                ).toFixed(2)
                 : "0.00"}
             </p>
           </CardContent>
@@ -128,13 +122,13 @@ export default function SleepTab(props: SleepTabProps) {
             <p className="text-4xl font-bold text-center py-8">
               {gameSaves.length > 0
                 ? (
-                    gameSaves.reduce(
-                      (sum, save) =>
-                        sum +
-                        (save.game_state?.sleepUpgrades?.intensityLevel || 0),
-                      0,
-                    ) / gameSaves.length
-                  ).toFixed(2)
+                  gameSaves.reduce(
+                    (sum, save) =>
+                      sum +
+                      (save.game_state?.sleepUpgrades?.intensityLevel || 0),
+                    0,
+                  ) / gameSaves.length
+                ).toFixed(2)
                 : "0.00"}
             </p>
           </CardContent>
