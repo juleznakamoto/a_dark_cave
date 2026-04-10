@@ -1,17 +1,33 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { AreaChart, Area, BarChart, Bar, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from "recharts";
+import { AreaChart, Area, BarChart, Bar, CartesianGrid, XAxis, YAxis } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import {
+  ADMIN_TWELVE_MONTH_CHART_DAYS,
+  adminChartXAxisIntervalForDays,
+  ChartTimeRangeSelectTwelveMonth,
+  type AdminTwelveMonthChartRange,
+} from "../adminChartTimeRange";
 
 interface ReferralsTabProps {
   getTotalReferrals: () => number;
   gameSaves: any[];
   getDailyReferrals: () => Array<{ day: string; referrals: number }>;
   getTopReferrers: () => Array<{ userId: string; count: number }>;
+  referralsChartTimeRange: AdminTwelveMonthChartRange;
+  setReferralsChartTimeRange: (range: AdminTwelveMonthChartRange) => void;
 }
 
 export default function ReferralsTab(props: ReferralsTabProps) {
-  const { getTotalReferrals, gameSaves, getDailyReferrals, getTopReferrers } = props;
+  const {
+    getTotalReferrals,
+    gameSaves,
+    getDailyReferrals,
+    getTopReferrers,
+    referralsChartTimeRange,
+    setReferralsChartTimeRange,
+  } = props;
+
+  const referralsChartDays = ADMIN_TWELVE_MONTH_CHART_DAYS[referralsChartTimeRange];
 
   return (
     <div className="space-y-4">
@@ -58,14 +74,26 @@ export default function ReferralsTab(props: ReferralsTabProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle>Daily Referrals (Last 30 Days)</CardTitle>
-          <CardDescription>New referrals over time</CardDescription>
+          <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-start">
+            <div>
+              <CardTitle>Daily Referrals</CardTitle>
+              <CardDescription>New referrals over time</CardDescription>
+            </div>
+            <ChartTimeRangeSelectTwelveMonth
+              value={referralsChartTimeRange}
+              onChange={setReferralsChartTimeRange}
+            />
+          </div>
         </CardHeader>
         <CardContent>
           <ChartContainer config={{}} className="h-[400px] w-full">
             <AreaChart data={getDailyReferrals()}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="day" />
+              <XAxis
+                dataKey="day"
+                interval={adminChartXAxisIntervalForDays(referralsChartDays)}
+                tick={{ fontSize: 11 }}
+              />
               <YAxis />
               <ChartTooltip content={<ChartTooltipContent />} />
               <Area type="monotone" dataKey="referrals" stroke="#8884d8" fill="#8884d8" />

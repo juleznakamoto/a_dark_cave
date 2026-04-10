@@ -5,18 +5,14 @@ import {
 import { useState, useMemo } from "react";
 import { parseISO, startOfDay, addDays, subDays, format } from "date-fns";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AreaChart, Area, LineChart, Line, BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-
-type TimeRange = "1m" | "3m" | "6m" | "12m";
-
-const TIME_RANGE_DAYS: Record<TimeRange, number> = {
-  "1m": 30,
-  "3m": 90,
-  "6m": 180,
-  "12m": 365,
-};
+import {
+  ADMIN_TWELVE_MONTH_CHART_DAYS,
+  adminChartXAxisIntervalForDays,
+  ChartTimeRangeSelectTwelveMonth,
+  type AdminTwelveMonthChartRange,
+} from "../adminChartTimeRange";
 
 const COUNTRY_COLORS = [
   "#8884d8", "#82ca9d", "#ffc658", "#ff7f7f", "#a4de6c",
@@ -32,8 +28,8 @@ interface PurchasesTabProps {
   getDailyPurchases: () => Array<{ day: string; purchases: number }>;
   getPurchasesByPlaytime: () => Array<{ playtime: string; purchases: number }>;
   getPurchaseStats: () => Array<{ name: string; count: number }>;
-  purchasesChartTimeRange: TimeRange;
-  setPurchasesChartTimeRange: (range: TimeRange) => void;
+  purchasesChartTimeRange: AdminTwelveMonthChartRange;
+  setPurchasesChartTimeRange: (range: AdminTwelveMonthChartRange) => void;
 }
 
 type CountryChartMode = "count" | "revenue_eur" | "revenue_usd";
@@ -95,22 +91,6 @@ function buildDailyCountryData(
   return { data: rows, countries: topCountries };
 }
 
-function TimeRangeSelect({ value, onChange }: { value: TimeRange; onChange: (v: TimeRange) => void }) {
-  return (
-    <Select value={value} onValueChange={(v) => onChange(v as TimeRange)}>
-      <SelectTrigger className="w-[140px]">
-        <SelectValue placeholder="Time Range" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="1m">Last Month</SelectItem>
-        <SelectItem value="3m">Last 3 Months</SelectItem>
-        <SelectItem value="6m">Last 6 Months</SelectItem>
-        <SelectItem value="12m">Last 12 Months</SelectItem>
-      </SelectContent>
-    </Select>
-  );
-}
-
 export default function PurchasesTab(props: PurchasesTabProps) {
   const {
     purchases,
@@ -123,11 +103,16 @@ export default function PurchasesTab(props: PurchasesTabProps) {
     setPurchasesChartTimeRange,
   } = props;
 
-  const [countryCountRange, setCountryCountRange] = useState<TimeRange>("1m");
-  const [countryRevenueRange, setCountryRevenueRange] = useState<TimeRange>("1m");
+  const [countryCountRange, setCountryCountRange] = useState<AdminTwelveMonthChartRange>("1m");
+  const [countryRevenueRange, setCountryRevenueRange] = useState<AdminTwelveMonthChartRange>("1m");
 
   const { data: countryCountData, countries: countryCountList } = useMemo(
-    () => buildDailyCountryData(purchases, TIME_RANGE_DAYS[countryCountRange], "count"),
+    () =>
+      buildDailyCountryData(
+        purchases,
+        ADMIN_TWELVE_MONTH_CHART_DAYS[countryCountRange],
+        "count",
+      ),
     [purchases, countryCountRange],
   );
 
@@ -135,7 +120,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
     () =>
       buildDailyCountryData(
         purchases,
-        TIME_RANGE_DAYS[countryRevenueRange],
+        ADMIN_TWELVE_MONTH_CHART_DAYS[countryRevenueRange],
         "revenue_eur",
       ),
     [purchases, countryRevenueRange],
@@ -145,18 +130,11 @@ export default function PurchasesTab(props: PurchasesTabProps) {
     () =>
       buildDailyCountryData(
         purchases,
-        TIME_RANGE_DAYS[countryRevenueRange],
+        ADMIN_TWELVE_MONTH_CHART_DAYS[countryRevenueRange],
         "revenue_usd",
       ),
     [purchases, countryRevenueRange],
   );
-
-  const xAxisInterval = (days: number) => {
-    if (days <= 30) return 6;
-    if (days <= 90) return 13;
-    if (days <= 180) return 29;
-    return 60;
-  };
 
   return (
     <div className="space-y-4">
@@ -198,7 +176,10 @@ export default function PurchasesTab(props: PurchasesTabProps) {
               <CardTitle>Daily Purchases</CardTitle>
               <CardDescription>Purchase activity over time</CardDescription>
             </div>
-            <TimeRangeSelect value={purchasesChartTimeRange} onChange={setPurchasesChartTimeRange} />
+            <ChartTimeRangeSelectTwelveMonth
+              value={purchasesChartTimeRange}
+              onChange={setPurchasesChartTimeRange}
+            />
           </div>
         </CardHeader>
         <CardContent>
@@ -221,7 +202,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
               <CardTitle>Daily Sales by Country</CardTitle>
               <CardDescription>Number of purchases per day, top {TOP_N_COUNTRIES} countries (paid only)</CardDescription>
             </div>
-            <TimeRangeSelect value={countryCountRange} onChange={setCountryCountRange} />
+            <ChartTimeRangeSelectTwelveMonth value={countryCountRange} onChange={setCountryCountRange} />
           </div>
         </CardHeader>
         <CardContent>
@@ -235,7 +216,9 @@ export default function PurchasesTab(props: PurchasesTabProps) {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   dataKey="day"
-                  interval={xAxisInterval(TIME_RANGE_DAYS[countryCountRange])}
+                  interval={adminChartXAxisIntervalForDays(
+                    ADMIN_TWELVE_MONTH_CHART_DAYS[countryCountRange],
+                  )}
                   tick={{ fontSize: 11 }}
                 />
                 <YAxis allowDecimals={false} />
@@ -266,7 +249,10 @@ export default function PurchasesTab(props: PurchasesTabProps) {
                 EUR charges only (minor units), top {TOP_N_COUNTRIES} countries (paid only)
               </CardDescription>
             </div>
-            <TimeRangeSelect value={countryRevenueRange} onChange={setCountryRevenueRange} />
+            <ChartTimeRangeSelectTwelveMonth
+              value={countryRevenueRange}
+              onChange={setCountryRevenueRange}
+            />
           </div>
         </CardHeader>
         <CardContent>
@@ -280,7 +266,9 @@ export default function PurchasesTab(props: PurchasesTabProps) {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   dataKey="day"
-                  interval={xAxisInterval(TIME_RANGE_DAYS[countryRevenueRange])}
+                  interval={adminChartXAxisIntervalForDays(
+                    ADMIN_TWELVE_MONTH_CHART_DAYS[countryRevenueRange],
+                  )}
                   tick={{ fontSize: 11 }}
                 />
                 <YAxis tickFormatter={(v) => `€${(v / 100).toFixed(0)}`} />
@@ -316,7 +304,10 @@ export default function PurchasesTab(props: PurchasesTabProps) {
                 USD charges only (minor units), top {TOP_N_COUNTRIES} countries (paid only)
               </CardDescription>
             </div>
-            <TimeRangeSelect value={countryRevenueRange} onChange={setCountryRevenueRange} />
+            <ChartTimeRangeSelectTwelveMonth
+              value={countryRevenueRange}
+              onChange={setCountryRevenueRange}
+            />
           </div>
         </CardHeader>
         <CardContent>
@@ -330,7 +321,9 @@ export default function PurchasesTab(props: PurchasesTabProps) {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   dataKey="day"
-                  interval={xAxisInterval(TIME_RANGE_DAYS[countryRevenueRange])}
+                  interval={adminChartXAxisIntervalForDays(
+                    ADMIN_TWELVE_MONTH_CHART_DAYS[countryRevenueRange],
+                  )}
                   tick={{ fontSize: 11 }}
                 />
                 <YAxis tickFormatter={(v) => `$${(v / 100).toFixed(0)}`} />

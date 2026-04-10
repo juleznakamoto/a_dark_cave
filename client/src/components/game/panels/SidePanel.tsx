@@ -862,6 +862,12 @@ export default function SidePanel() {
   // Check if estate is unlocked
   const estateUnlocked = gameState.buildings.darkEstate >= 1;
 
+  const anyPlayerStatPositive =
+    totalLuck > 0 ||
+    totalStrength > 0 ||
+    totalKnowledge > 0 ||
+    totalMadness > 0;
+
   // Determine which sections to show based on active tab
   const shouldShowSection = (sectionName: string): boolean => {
     switch (activeTab) {
@@ -970,7 +976,7 @@ export default function SidePanel() {
               titleTooltip="Each villager consumes 1 Food and 1 Wood"
             />
           )}
-          {statsItems.length > 0 && shouldShowSection("stats") && (
+          {anyPlayerStatPositive && shouldShowSection("stats") && (
             <SidePanelSection title="Stats" items={statsItems} />
           )}
           {fortificationItems.length > 0 &&

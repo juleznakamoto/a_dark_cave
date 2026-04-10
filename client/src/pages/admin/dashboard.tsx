@@ -29,6 +29,12 @@ import {
   isWithinInterval,
   parseISO,
 } from "date-fns";
+import {
+  ADMIN_OVERVIEW_CHART_DAYS,
+  ADMIN_TWELVE_MONTH_CHART_DAYS,
+  type AdminOverviewChartRange,
+  type AdminTwelveMonthChartRange,
+} from "./adminChartTimeRange";
 
 // Import tab components
 import OverviewTab from "./tabs/OverviewTab";
@@ -225,11 +231,20 @@ export default function AdminDashboard() {
   // State for selected cube events
   const [selectedCubeEvents, setSelectedCubeEvents] = useState<Set<string>>(new Set());
 
-  // Chart time range state for Daily Active Users and Daily Sign-ups
-  const [chartTimeRange, setChartTimeRange] = useState<"1m" | "3m" | "6m" | "1y">("1m");
+  // Overview tab: each chart has its own range (avoid coupling conversion / DAU / sign-ups / revenue charts)
+  const [dauChartTimeRange, setDauChartTimeRange] = useState<AdminOverviewChartRange>("1m");
+  const [dailySignupsChartTimeRange, setDailySignupsChartTimeRange] =
+    useState<AdminOverviewChartRange>("1m");
+  const [buyersPerHundredChartTimeRange, setBuyersPerHundredChartTimeRange] =
+    useState<AdminOverviewChartRange>("1m");
+  const [gainPerHundredChartTimeRange, setGainPerHundredChartTimeRange] =
+    useState<AdminOverviewChartRange>("1m");
 
-  // Chart time range state for Purchases chart
-  const [purchasesChartTimeRange, setPurchasesChartTimeRange] = useState<"1m" | "3m" | "6m" | "12m">("1m");
+  const [purchasesChartTimeRange, setPurchasesChartTimeRange] =
+    useState<AdminTwelveMonthChartRange>("1m");
+
+  const [referralsChartTimeRange, setReferralsChartTimeRange] =
+    useState<AdminTwelveMonthChartRange>("1m");
 
   // Prefiltered data based on timeRange - MOVED AFTER ALL useState
   const clickData = useMemo(() => filterByTimeRange(rawClickData, "timestamp", timeRange), [rawClickData, timeRange]);
@@ -675,24 +690,7 @@ export default function AdminDashboard() {
     const data: Array<{ day: string; purchases: number }> = [];
     const now = new Date();
 
-    // Determine number of days based on purchasesChartTimeRange
-    let days: number;
-    switch (purchasesChartTimeRange) {
-      case "1m":
-        days = 30;
-        break;
-      case "3m":
-        days = 90;
-        break;
-      case "6m":
-        days = 180;
-        break;
-      case "12m":
-        days = 365;
-        break;
-      default:
-        days = 30;
-    }
+    const days = ADMIN_TWELVE_MONTH_CHART_DAYS[purchasesChartTimeRange];
 
     for (let i = days - 1; i >= 0; i--) {
       const date = subDays(now, i);
@@ -767,12 +765,15 @@ export default function AdminDashboard() {
     const data: Array<{ day: string; referrals: number }> = [];
     const now = new Date();
 
-    for (let i = 29; i >= 0; i--) {
+    const days = ADMIN_TWELVE_MONTH_CHART_DAYS[referralsChartTimeRange];
+
+    for (let i = days - 1; i >= 0; i--) {
       const date = subDays(now, i);
       const dayStart = startOfDay(date);
       const dayEnd = endOfDay(date);
 
-      const dailyReferrals = gameSaves.reduce((sum, save) => {
+      // Use raw saves so the chart window is not clipped by the dashboard time-range filter
+      const dailyReferrals = rawGameSaves.reduce((sum, save) => {
         const referrals = save.game_state?.referrals || [];
         return sum + referrals.filter((ref: any) => {
           const timestamp = ref.timestamp || ref.created_at;
@@ -796,14 +797,15 @@ export default function AdminDashboard() {
         }).length;
       }, 0);
 
+      const dateFormat = days > 90 ? "MMM d" : "MMM dd";
       data.push({
-        day: format(date, "MMM dd"),
+        day: format(date, dateFormat),
         referrals: dailyReferrals,
       });
     }
 
     return data;
-  }, [gameSaves]);
+  }, [rawGameSaves, referralsChartTimeRange]);
 
   const getTopReferrers = useCallback(() => {
     const referrerCounts = new Map<string, number>();
@@ -1290,24 +1292,7 @@ export default function AdminDashboard() {
                     const data: Array<{ day: string; users: number }> = [];
                     const now = new Date();
 
-                    // Determine number of days based on chartTimeRange
-                    let days: number;
-                    switch (chartTimeRange) {
-                      case "1m":
-                        days = 30;
-                        break;
-                      case "3m":
-                        days = 90;
-                        break;
-                      case "6m":
-                        days = 180;
-                        break;
-                      case "1y":
-                        days = 365;
-                        break;
-                      default:
-                        days = 30;
-                    }
+                    const days = ADMIN_OVERVIEW_CHART_DAYS[dauChartTimeRange];
 
                     for (let i = days - 1; i >= 0; i--) {
                       const date = subDays(now, i);
@@ -1330,14 +1315,7 @@ export default function AdminDashboard() {
                     return data;
                   }}
                   getDailySignups={() => {
-                    let days: number;
-                    switch (chartTimeRange) {
-                      case "1m": days = 30; break;
-                      case "3m": days = 90; break;
-                      case "6m": days = 180; break;
-                      case "1y": days = 365; break;
-                      default: days = 30;
-                    }
+                    const days = ADMIN_OVERVIEW_CHART_DAYS[dailySignupsChartTimeRange];
 
                     // Server keys are UTC calendar dates (DATE(created_at) in Postgres/UTC).
                     // Generate our range in UTC too so keys align regardless of the browser's timezone.
@@ -1359,8 +1337,15 @@ export default function AdminDashboard() {
                       return { day: label, signups: lookup.get(key) ?? 0 };
                     });
                   }}
-                  chartTimeRange={chartTimeRange}
-                  setChartTimeRange={setChartTimeRange}
+                  dailySignupsData={dailySignupsData}
+                  dauChartTimeRange={dauChartTimeRange}
+                  setDauChartTimeRange={setDauChartTimeRange}
+                  dailySignupsChartTimeRange={dailySignupsChartTimeRange}
+                  setDailySignupsChartTimeRange={setDailySignupsChartTimeRange}
+                  buyersPerHundredChartTimeRange={buyersPerHundredChartTimeRange}
+                  setBuyersPerHundredChartTimeRange={setBuyersPerHundredChartTimeRange}
+                  gainPerHundredChartTimeRange={gainPerHundredChartTimeRange}
+                  setGainPerHundredChartTimeRange={setGainPerHundredChartTimeRange}
                   getHourlySignups={() => {
                     const now = new Date();
 
@@ -1382,24 +1367,7 @@ export default function AdminDashboard() {
                     const data: Array<{ date: string; buyersPerHundred: number }> = [];
                     const now = new Date();
 
-                    // Determine number of days based on chartTimeRange
-                    let days: number;
-                    switch (chartTimeRange) {
-                      case "1m":
-                        days = 30;
-                        break;
-                      case "3m":
-                        days = 90;
-                        break;
-                      case "6m":
-                        days = 180;
-                        break;
-                      case "1y":
-                        days = 365;
-                        break;
-                      default:
-                        days = 30;
-                    }
+                    const days = ADMIN_OVERVIEW_CHART_DAYS[buyersPerHundredChartTimeRange];
 
                     const paidPurchases = rawPurchases.filter(
                       (p) => p.price_paid > 0 && !p.bundle_id
@@ -1452,24 +1420,7 @@ export default function AdminDashboard() {
                     }> = [];
                     const now = new Date();
 
-                    // Determine number of days based on chartTimeRange
-                    let days: number;
-                    switch (chartTimeRange) {
-                      case "1m":
-                        days = 30;
-                        break;
-                      case "3m":
-                        days = 90;
-                        break;
-                      case "6m":
-                        days = 180;
-                        break;
-                      case "1y":
-                        days = 365;
-                        break;
-                      default:
-                        days = 30;
-                    }
+                    const days = ADMIN_OVERVIEW_CHART_DAYS[gainPerHundredChartTimeRange];
 
                     const paidPurchases = rawPurchases.filter(
                       (p) => p.price_paid > 0 && !p.bundle_id
@@ -1666,6 +1617,8 @@ export default function AdminDashboard() {
                   gameSaves={gameSaves}
                   getDailyReferrals={getDailyReferrals}
                   getTopReferrers={getTopReferrers}
+                  referralsChartTimeRange={referralsChartTimeRange}
+                  setReferralsChartTimeRange={setReferralsChartTimeRange}
                 />
               </TabsContent>
 
