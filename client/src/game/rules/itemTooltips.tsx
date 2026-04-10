@@ -131,9 +131,7 @@ export function renderItemTooltip(
         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
           <span className="font-bold">{buildAction.label}</span>
           {hierarchyLevel != null && (
-            <span className="font-normal text-muted-foreground">
-              Level {hierarchyLevel}
-            </span>
+            <span className="font-normal text-gray-400">Level {hierarchyLevel}</span>
           )}
         </div>
         {tooltipParts}
