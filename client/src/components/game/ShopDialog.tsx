@@ -1137,6 +1137,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           <div>• More Items</div>
                                           <div>• Stronger Enemies</div>
                                           <div>• Harder Challenges</div>
+                                          <div>• Reuse existing Purchases</div>
                                         </div>
                                       </div>
                                     }
