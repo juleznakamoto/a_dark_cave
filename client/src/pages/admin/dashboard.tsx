@@ -811,10 +811,12 @@ export default function AdminDashboard() {
     gameSaves.forEach((save) => {
       const referrals = save.game_state?.referrals || [];
       if (referrals.length > 0) {
-        referrerCounts.set(
-          save.user_id.substring(0, 8) + "...",
-          referrals.length
-        );
+        const uid = save.user_id;
+        const label =
+          uid != null && uid !== ""
+            ? String(uid).substring(0, 8) + "..."
+            : "(unknown)...";
+        referrerCounts.set(label, referrals.length);
       }
     });
 
@@ -972,10 +974,10 @@ export default function AdminDashboard() {
       }
       const pm = data.purchaseMetrics as
         | {
-            total_revenue_eur_cents?: number | string;
-            total_revenue_usd_cents?: number | string;
-            paid_buyer_count?: number | string;
-          }
+          total_revenue_eur_cents?: number | string;
+          total_revenue_usd_cents?: number | string;
+          paid_buyer_count?: number | string;
+        }
         | undefined
         | null;
       if (
