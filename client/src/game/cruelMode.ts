@@ -223,6 +223,16 @@ export const CRUEL_MODE = {
     banishLeavers: { base: 10, whenCruel: 5 },
     sacrificeLeavers: { base: 21, whenCruel: 10 },
   },
+
+  gambler: {
+    /** Average minutes between gambler time-based rolls (`GameEvent.timeProbability`). Lower = more frequent. */
+    timeProbabilityMinutes: { normal: 50, cruel: 40 },
+  },
+
+  investmentHall: {
+    /** Subtracted from investment success chance % (percentage points) in cruel mode. */
+    successChanceSubtractPct: 5,
+  },
 } as const;
 
 const MS_PER_MIN = 60 * 1000;

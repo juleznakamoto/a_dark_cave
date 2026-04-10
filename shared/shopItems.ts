@@ -22,11 +22,14 @@ export interface ShopItem {
   bundleComponents?: string[]; // IDs of component items for bundles
 }
 
+/** Duration of an activated Great Feast (shop purchase), in milliseconds. */
+export const GREAT_FEAST_DURATION_MS = 60 * 60 * 1000;
+
 export const SHOP_ITEMS: Record<string, ShopItem> = {
   gold_100_free: {
     id: "gold_100_free",
     name: "100 Gold (Daily Gift)",
-    description: "A small daily mercy in a cold world",
+    description: "A small mercy in a cold world",
     price: 0,
     rewards: {
       resources: { gold: 100 },
@@ -59,8 +62,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Cruel Mode",
     description:
       "A more cruel world, expanded story, more items, deadlier foes. Endure, or vanish.",
-    originalPrice: 699,
-    price: 0, // Free
+    originalPrice: 599, // $5.99
+    price: 449, // $4.49
     rewards: {},
     canPurchaseMultipleTimes: false,
     category: "blessing",
@@ -137,7 +140,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   great_feast_1: {
     id: "great_feast_1",
     name: "1 Great Feast",
-    description: "Boost villager production by 4x for 30 minutes",
+    description: `Boost villager production by 4x for ${GREAT_FEAST_DURATION_MS / 60000} minutes`,
     originalPrice: 199,
     price: 149, // 1.49 €
     rewards: {
@@ -153,7 +156,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   great_feast_3: {
     id: "great_feast_3",
     name: "3 Great Feasts",
-    description: "Boost villager production by 4x for 30 minutes (3 times)",
+    description: `Boost villager production by 4x for ${GREAT_FEAST_DURATION_MS / 60000} minutes (3 times)`,
     originalPrice: 399,
     price: 299, // 2.99 €
     rewards: {

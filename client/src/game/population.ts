@@ -143,6 +143,26 @@ export interface GetPopulationProductionOptions {
   excludeTemporaryBonuses?: boolean;
 }
 
+/** Positive production multiplier from madness (1 = no penalty). Only meaningful when totalMadness >= 10. */
+export function getMadnessProductionMultiplier(
+  totalMadness: number,
+  cruelMode: boolean,
+): number {
+  if (totalMadness < 10) return 1;
+  if (cruelMode) {
+    if (totalMadness >= 50) return 0.4;
+    if (totalMadness >= 40) return 0.55;
+    if (totalMadness >= 30) return 0.65;
+    if (totalMadness >= 20) return 0.75;
+    return 0.85;
+  }
+  if (totalMadness >= 50) return 0.5;
+  if (totalMadness >= 40) return 0.6;
+  if (totalMadness >= 30) return 0.7;
+  if (totalMadness >= 20) return 0.8;
+  return 0.9;
+}
+
 export const getPopulationProduction = (
   jobId: string,
   count: number,
@@ -253,15 +273,13 @@ export const getPopulationProduction = (
     });
   }
 
-  // Apply madness penalty if active (scales with madness level)
+  // Apply madness penalty if active (scales with madness level; harsher in cruel mode)
   const totalMadness = state ? getTotalMadness(state) : 0;
   if (totalMadness >= 10) {
-    const madnessMultiplier =
-      totalMadness >= 50 ? 0.5
-        : totalMadness >= 40 ? 0.6
-          : totalMadness >= 30 ? 0.7
-            : totalMadness >= 20 ? 0.8
-              : 0.9; // madness >= 10
+    const madnessMultiplier = getMadnessProductionMultiplier(
+      totalMadness,
+      Boolean(state?.cruelMode),
+    );
     baseProduction.forEach((prod) => {
       // Only reduce positive production (not consumption)
       if (prod.totalAmount > 0) {

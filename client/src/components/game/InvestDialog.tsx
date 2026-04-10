@@ -42,10 +42,10 @@ function formatLuckSuccessLine(luck: number): string {
 /** Matches `investmentHallLuckyChanceBonusPct`: Treasury → 2, Bank → 1; coinhouse-only → null (no line). */
 function formatInvestmentHallLuckyLine(bonusPct: number): string | null {
   if (bonusPct >= 2) {
-    return "+2 % Lucky Chance based on building level (included in table).";
+    return "+2 % Lucky Chance from building level (included in table).";
   }
   if (bonusPct >= 1) {
-    return "+1 % Lucky Chance based on building level (included in table).";
+    return "+1 % Lucky Chance from building level (included in table).";
   }
   return null;
 }
@@ -80,6 +80,7 @@ const INVEST_TABLE_LINE = "border-muted-foreground/25";
 export default function InvestDialog({ open, onOpenChange }: Props) {
   const playTime = useGameStore((s) => s.playTime);
   const luck = useGameStore((s) => s.stats.luck);
+  const cruelMode = useGameStore((s) => s.cruelMode);
   const resources = useGameStore((s) => s.resources);
   const investmentHallState = useGameStore((s) => s.investmentHallState);
   const buildings = useGameStore((s) => s.buildings);
@@ -304,6 +305,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                           offer.tier,
                           offer.durationMin,
                           luck,
+                          cruelMode,
                         );
                         const winR = winPercentInclusiveRange(
                           offer.tier,

@@ -6,8 +6,8 @@ import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
  * effectsCalculation applies `count * bonus`; tooltips must use these same values.
  */
 const VILLAGE_BUILDING_STRANGER_APPROACH_BONUS = {
-  woodenHut: 0.015,
-  stoneHut: 0.01,
+  woodenHut: 0.01,
+  stoneHut: 0.075,
   longhouse: 0.005,
   furTents: 0.005,
 } as const;

@@ -2782,6 +2782,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       luck: state.stats.luck,
       luckyChanceBonusPct: investmentHallLuckyChanceBonusPct(state.buildings),
       rng: Math.random,
+      cruelMode: state.cruelMode,
     });
     set((s) => ({
       resources: {

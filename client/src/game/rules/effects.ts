@@ -891,7 +891,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "bone_dice",
     name: "Bone Dice",
     description:
-      "Dice carved from bones, polished to a soft, unsettling smoothness. Grants one extra game, each time the Gambler visits.",
+      "Dice carved from bones, polished to a soft, unsettling smoothness. Grants one extra game at the Gambler.",
     bonuses: {
       generalBonuses: {
         luck: 5,
@@ -925,7 +925,8 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   hollow_king_scepter: {
     id: "hollow_king_scepter",
     name: "Hollow King Scepter",
-    description: "Scepter of the lost king, radiating power and madness",
+    description:
+      "Scepter of the lost king, radiating power and madness. Mining yields 25% more resources, and each mine action has a 5% chance to double all gains from that action.",
     bonuses: {
       actionBonuses: {
         mining: {
@@ -934,8 +935,9 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       },
       generalBonuses: {
         strength: 3,
-        knowledge: 7,
-        madness: 5,
+        knowledge: 6,
+        madness: 6,
+        miningDoubleChance: 0.05,
       },
     },
   },

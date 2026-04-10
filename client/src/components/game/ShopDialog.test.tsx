@@ -250,7 +250,7 @@ describe('ShopDialog', () => {
       });
 
       const claimButton = getClaimButtonForItem('100 Gold (Daily Gift)');
-      
+
       // First claim
       await user.click(claimButton);
 
@@ -416,7 +416,7 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        // In dev mode, cruel_mode should be visible; free items show "Already Claimed"
+        // Non-repeatable item already owned: button shows "Already Purchased" (or "Already Claimed" for $0 items)
         if (import.meta.env.DEV) {
           const disabledButton = screen.getByRole('button', { name: /already (claimed|purchased)/i });
           expect(disabledButton).toBeDisabled();

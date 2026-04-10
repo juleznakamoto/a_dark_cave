@@ -307,6 +307,8 @@ export interface EffectDefinition {
       eventDeathReduction?: number; // Percentage reduction in villager deaths from events (0.25 = 25% reduction)
       criticalChance?: number; // Percentage chance for critical hits during combat (0.05 = 5% chance)
       actionBonusChance?: number; // Chance to double action gains (0.1 = 10% chance)
+      /** Chance to double gains from mining actions only (`mine*` action ids). Independent of actionBonusChance. */
+      miningDoubleChance?: number;
       merchantDiscount?: number; // Additional discount at wandering merchant (0.05 = 5% discount)
       strangerApproachBonus?: number; // Bonus to stranger approach probability (0.1 = 10%)
     };

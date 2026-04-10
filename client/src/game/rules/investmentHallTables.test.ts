@@ -28,6 +28,11 @@ describe("getSuccessChancePercent", () => {
     const p = getSuccessChancePercent("A", 30, 50);
     expect(p).toBe(90);
   });
+
+  it("subtracts cruel mode penalty (percentage points) after luck", () => {
+    expect(getSuccessChancePercent("A", 30, 50, true)).toBe(85);
+    expect(getSuccessChancePercent("A", 30, 0, true)).toBe(75);
+  });
 });
 
 describe("clampSuccessChance", () => {

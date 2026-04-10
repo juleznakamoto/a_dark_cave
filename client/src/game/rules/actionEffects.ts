@@ -685,6 +685,29 @@ export function applyActionEffects(
     (updates as any).compassBonusTriggered = true;
   }
 
+  // Hollow King Scepter: separate roll to double gains from mining actions only
+  const miningDoubleChance =
+    actionId.startsWith("mine") && state.relics?.hollow_king_scepter
+      ? clothingEffects.hollow_king_scepter.bonuses.generalBonuses
+        ?.miningDoubleChance ?? 0
+      : 0;
+  if (
+    miningDoubleChance > 0 &&
+    updates.resources &&
+    Math.random() < miningDoubleChance
+  ) {
+    const originalResources = { ...state.resources };
+    Object.keys(updates.resources).forEach((resource) => {
+      const originalAmount =
+        originalResources[resource as keyof typeof originalResources] || 0;
+      const newAmount = updates.resources![resource];
+      const gainedAmount = newAmount - originalAmount;
+      if (gainedAmount > 0) {
+        updates.resources![resource] = originalAmount + gainedAmount * 2;
+      }
+    });
+  }
+
   // Accumulate resource gains for basic achievements (totalWoodGathered, etc.)
   const RESOURCE_ACCUMULATOR_KEYS: Record<string, string> = {
     wood: "totalWoodGathered",

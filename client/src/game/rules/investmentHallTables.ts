@@ -1,4 +1,5 @@
 import type { GameState } from "@shared/schema";
+import { CRUEL_MODE } from "../cruelMode";
 
 export type InvestmentTier = "A" | "B" | "C" | "D";
 export type InvestmentDurationMin = 5 | 15 | 30;
@@ -168,10 +169,15 @@ export function getSuccessChancePercent(
   tier: InvestmentTier,
   durationMin: number,
   luck: number,
+  cruelMode = false,
 ): number {
   const idx = durationIndex(durationMin);
   const base = SUCCESS_PCT[tier][idx] ?? SUCCESS_PCT[tier][0];
-  return clampSuccessChance(base + getLuckWinChanceBonus(luck));
+  let pct = base + getLuckWinChanceBonus(luck);
+  if (cruelMode) {
+    pct -= CRUEL_MODE.investmentHall.successChanceSubtractPct;
+  }
+  return clampSuccessChance(pct);
 }
 
 /** Dev: wall-clock investment length is nominal minutes ÷ 40 (40× faster than prod). */
@@ -230,6 +236,7 @@ export type CommitInvestmentInput = {
   /** 0 coinhouse-only, 1 Bank, 2 Treasury — see `investmentHallLuckyChanceBonusPct`. */
   luckyChanceBonusPct: number;
   rng: () => number;
+  cruelMode?: boolean;
 };
 
 export type CommitInvestmentResult = { ok: true; active: InvestmentActive };
@@ -311,9 +318,15 @@ export function getMaxInvestmentStake(state: {
 export function commitInvestmentRolls(
   input: CommitInvestmentInput,
 ): CommitInvestmentResult {
-  const { playTime, amountGold, offer, luck, luckyChanceBonusPct, rng } = input;
+  const { playTime, amountGold, offer, luck, luckyChanceBonusPct, rng, cruelMode } =
+    input;
   const { tier, durationMin } = offer;
-  const successChance = getSuccessChancePercent(tier, durationMin, luck);
+  const successChance = getSuccessChancePercent(
+    tier,
+    durationMin,
+    luck,
+    Boolean(cruelMode),
+  );
   const successRoll = rng() * 100;
   const success = successRoll < successChance;
 

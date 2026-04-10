@@ -29,7 +29,10 @@ import {
 } from "@stripe/react-stripe-js";
 import { supabase } from "@/lib/supabase";
 import { getCurrentUser } from "@/game/auth";
-import { SHOP_ITEMS } from "../../../../shared/shopItems";
+import {
+  GREAT_FEAST_DURATION_MS,
+  SHOP_ITEMS,
+} from "../../../../shared/shopItems";
 import { getDiscountedShopPriceCents } from "../../../../shared/shopCheckoutPrice";
 import { tailwindToHex } from "@/lib/tailwindColors";
 
@@ -796,8 +799,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       }
 
       // Activate a Great Feast
-      const feastDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
-      const endTime = Date.now() + feastDuration;
+      const endTime = Date.now() + GREAT_FEAST_DURATION_MS;
 
       useGameStore.setState((state) => ({
         feastActivations: {

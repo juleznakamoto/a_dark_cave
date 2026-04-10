@@ -35,8 +35,8 @@ export async function createPaymentIntent(
   }
 
   // SECURITY: Prevent claiming paid items as free
-  // gold_100_free and cruel_mode are allowed to be free (claimed directly via client)
-  if (item.price === 0 && itemId !== 'gold_100_free' && itemId !== 'cruel_mode') {
+  // Only gold_100_free may be price 0 (claimed directly on the client).
+  if (item.price === 0 && itemId !== 'gold_100_free') {
     logger.error(`Attempt to claim paid item as free: ${itemId}`);
     throw new Error('Invalid item configuration');
   }
