@@ -1001,7 +1001,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
 
   bone_devourer_blood: {
     id: "bone_devourer_blood",
-    name: "Bone Devourer Blood",
+    name: "Devourer Blood",
     description: "A vial of pale blood harvested from the Bone Devourer. Its effects are unknown.",
     bonuses: {
       generalBonuses: {},

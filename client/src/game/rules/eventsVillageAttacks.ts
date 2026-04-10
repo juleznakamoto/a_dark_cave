@@ -44,7 +44,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           );
 
           if (Math.random() < victoryChance) {
-            // Victory! Get Bone Devourer Blood and Devourer Crown
+            // Victory! Get Devourer Blood and Devourer Crown
             return {
               clothing: {
                 ...state.clothing,
