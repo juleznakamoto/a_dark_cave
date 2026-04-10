@@ -99,3 +99,26 @@ export function isBuildingUpgrade(buildingKey: string): boolean {
   }
   return false;
 }
+
+/** Stackable housing — not chain upgrades; omit "Level" in building tooltips. */
+const BUILDING_TOOLTIP_LEVEL_EXCLUSIONS = new Set([
+  "woodenHut",
+  "stoneHut",
+  "furTents",
+  "longhouse",
+]);
+
+/**
+ * 1-based tier in an upgrade chain (`BUILDING_HIERARCHIES`) for tooltip labels.
+ * Returns null if not in a chain or excluded.
+ */
+export function getBuildingHierarchyTooltipLevel(
+  buildingKey: string,
+): number | null {
+  if (BUILDING_TOOLTIP_LEVEL_EXCLUSIONS.has(buildingKey)) return null;
+  for (const hierarchy of Object.values(BUILDING_HIERARCHIES)) {
+    const index = hierarchy.indexOf(buildingKey);
+    if (index !== -1) return index + 1;
+  }
+  return null;
+}
