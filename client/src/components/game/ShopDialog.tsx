@@ -1133,10 +1133,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           Cruel Mode
                                         </div>
                                         <div className="mt-1 space-y-0.5">
-                                          <div>More Events</div>
-                                          <div>More Items</div>
-                                          <div>Stronger Enemies</div>
-                                          <div>Harder Challenges</div>
+                                          <div>• More Events</div>
+                                          <div>• More Items</div>
+                                          <div>• Stronger Enemies</div>
+                                          <div>• Harder Challenges</div>
                                         </div>
                                       </div>
                                     }
