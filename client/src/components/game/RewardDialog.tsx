@@ -25,6 +25,8 @@ interface RewardDialogData {
   };
   successLog?: string;
   variant?: "success" | "loss";
+  /** Dialog heading; omit for generic action rewards (e.g. cave actions). */
+  title?: string;
 }
 
 interface RewardDialogProps {
@@ -55,7 +57,7 @@ export default function RewardDialog({
 }: RewardDialogProps) {
   if (!data) return null;
 
-  const { rewards, successLog, variant = "success" } = data;
+  const { rewards, successLog, variant = "success", title } = data;
   const isLossVariant = variant === "loss";
 
   const rewardItems: JSX.Element[] = [];
@@ -218,7 +220,7 @@ export default function RewardDialog({
         </span>
       }
       successLog={successLog}
-      title="Action Reward"
+      title={title?.trim() ? title : "Action Reward"}
       variant={isLossVariant ? "loss" : "success"}
       buttonText={isLossVariant ? "Continue" : "Claim Rewards"}
       buttonId="reward-dialog-continue"

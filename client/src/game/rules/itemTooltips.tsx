@@ -124,25 +124,21 @@ export function renderItemTooltip(
       }
     }
 
-    // Combine tooltip parts
-    if (tooltipParts.length > 0) {
-      const hierarchyLevel = getBuildingHierarchyTooltipLevel(itemId);
-      return (
-        <div className="text-xs">
-          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
-            <span className="font-bold">{buildAction.label}</span>
-            {hierarchyLevel != null && (
-              <span className="font-normal text-muted-foreground">
-                Level {hierarchyLevel}
-              </span>
-            )}
-          </div>
-          {tooltipParts}
+    // Side panel Buildings: always show title row (name + optional chain tier); body may be empty.
+    const hierarchyLevel = getBuildingHierarchyTooltipLevel(itemId);
+    return (
+      <div className="text-xs">
+        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
+          <span className="font-bold">{buildAction.label}</span>
+          {hierarchyLevel != null && (
+            <span className="font-normal text-muted-foreground">
+              Level {hierarchyLevel}
+            </span>
+          )}
         </div>
-      );
-    }
-
-    return null;
+        {tooltipParts}
+      </div>
+    );
   }
 
   // Bombs use combat tooltips (damage info) + name/description from effects
