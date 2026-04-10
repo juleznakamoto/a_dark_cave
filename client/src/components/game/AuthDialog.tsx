@@ -258,6 +258,17 @@ export default function AuthDialog({
                   placeholder="••••••••"
                   minLength={6}
                 />
+                {mode === "signin" && (
+                  <div className="flex justify-end pt-0.5">
+                    <button
+                      type="button"
+                      onClick={() => setMode("reset")}
+                      className="text-xs text-muted-foreground hover:text-foreground/70 underline-offset-2 hover:underline"
+                    >
+                      Forgot password?
+                    </button>
+                  </div>
+                )}
               </div>
             )}
             {mode === "signup" && (
@@ -308,7 +319,7 @@ export default function AuthDialog({
                   className="flex items-center justify-between text-sm leading-snug peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   <span>Get updates, discounts & exclusive rewards</span>
-                  <span className="text-muted-foreground font-normal"> (optional)</span>
+                  <span className="text-muted-foreground font-normal">{" (optional)"}</span>
                 </label>
               </div>
             )}
@@ -394,16 +405,6 @@ export default function AuthDialog({
                     ? "Already have an account? Sign in"
                     : "Back to sign in"}
               </Button>
-              {mode === "signin" && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="text-xs !m-0"
-                  onClick={() => setMode("reset")}
-                >
-                  Forgot password?
-                </Button>
-              )}
             </div>
           </form>
         )}
