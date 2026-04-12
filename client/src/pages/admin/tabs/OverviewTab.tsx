@@ -469,8 +469,11 @@ export default function OverviewTab(props: OverviewTabProps) {
 
         <Card>
           <CardHeader>
-            <CardTitle>Buyers per 100</CardTitle>
-            <CardDescription>Non-free purchases</CardDescription>
+            <CardTitle>Buyers per 100 users</CardTitle>
+            <CardDescription>
+              Registered users who made a paid purchase (not per sign-up; see chart below for the
+              sign-up-based rate)
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-4xl font-bold">{getBuyersPerHundred()}</p>
@@ -664,7 +667,8 @@ export default function OverviewTab(props: OverviewTabProps) {
                   Gain per 100 Sign-ups ({adminOverviewChartTitleSuffix(gainPerHundredChartTimeRange)})
                 </CardTitle>
                 <CardDescription>
-                  Rolling 30-day: revenue per 100 sign-ups (EUR vs USD, not summed)
+                  Rolling 30-day: revenue per 100 sign-ups (EUR vs USD; uses Stripe FX columns when
+                  present, else charge currency only)
                 </CardDescription>
               </div>
               <ChartTimeRangeSelectOverview

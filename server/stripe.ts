@@ -1,6 +1,7 @@
 import Stripe from 'stripe';
 import { getDiscountedShopPriceCents } from '../shared/shopCheckoutPrice';
 import { SHOP_ITEMS, type ShopItem } from '../shared/shopItems';
+import { reportingEurUsdCentsFromStripeFx } from './stripeFxQuote';
 
 const logger = console;
 
@@ -106,6 +107,21 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
   });
 
   if (paymentIntent.status === 'succeeded') {
+    const { data: existingByPi } = await supabase
+      .from('purchases')
+      .select()
+      .eq('stripe_payment_intent_id', paymentIntentId)
+      .maybeSingle();
+
+    if (existingByPi) {
+      logger.log('✅ Purchase already recorded for PaymentIntent:', paymentIntentId);
+      return {
+        success: true,
+        itemId: existingByPi.item_id,
+        purchase: existingByPi,
+      };
+    }
+
     const itemId = paymentIntent.metadata.itemId;
     const item = SHOP_ITEMS[itemId];
     if (item) {
@@ -148,6 +164,11 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
     const ccy = (paymentIntent.currency || 'eur').toLowerCase();
     const chargeCurrency = ccy === 'eur' || ccy === 'usd' ? ccy : 'eur';
 
+    const fx = await reportingEurUsdCentsFromStripeFx(
+      paymentIntent.amount,
+      chargeCurrency,
+    );
+
     // Save purchase to database; use actual amount charged
     const { data: purchaseData, error: purchaseError } = await supabase
       .from('purchases')
@@ -161,11 +182,33 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
         country: billingCountry,
         cruel_mode: cruelMode,
         currency: chargeCurrency,
+        stripe_payment_intent_id: paymentIntentId,
+        stripe_fx_quote_id: fx.stripe_fx_quote_id,
+        reporting_eur_cents: fx.reporting_eur_cents,
+        reporting_usd_cents: fx.reporting_usd_cents,
       })
       .select()
       .single();
 
     if (purchaseError) {
+      const msg = String((purchaseError as { message?: string }).message ?? '');
+      const isUniquePi =
+        (purchaseError as { code?: string }).code === '23505' ||
+        /duplicate key|unique constraint/i.test(msg);
+      if (isUniquePi) {
+        const { data: raceRow } = await supabase
+          .from('purchases')
+          .select()
+          .eq('stripe_payment_intent_id', paymentIntentId)
+          .maybeSingle();
+        if (raceRow) {
+          return {
+            success: true,
+            itemId: raceRow.item_id,
+            purchase: raceRow,
+          };
+        }
+      }
       logger.error('❌ Failed to save purchase:', purchaseError);
       throw new Error('Failed to save purchase');
     }

@@ -2,7 +2,11 @@ import { useEffect, useState, useMemo, useCallback } from "react";
 import { useLocation } from "wouter";
 import { getSupabaseClient } from "@/lib/supabase";
 import { logger } from "@/lib/logger";
-import { isUsdPurchaseCurrency } from "@shared/purchaseRevenueEur";
+import {
+  analyticsEurCents,
+  analyticsUsdCents,
+  isUsdPurchaseCurrency,
+} from "@shared/purchaseRevenueEur";
 import {
   Card,
   CardContent,
@@ -73,6 +77,10 @@ interface PurchaseData {
   cruel_mode?: boolean | null;
   /** Stripe charge currency (eur|usd); legacy rows treated as eur. */
   currency?: string | null;
+  stripe_payment_intent_id?: string | null;
+  stripe_fx_quote_id?: string | null;
+  reporting_eur_cents?: number | null;
+  reporting_usd_cents?: number | null;
 }
 
 interface AuthSignupData {
@@ -1319,11 +1327,8 @@ export default function AdminDashboard() {
                       let windowEur = 0;
                       let windowUsd = 0;
                       for (const p of inWindow) {
-                        if (isUsdPurchaseCurrency(p.currency)) {
-                          windowUsd += p.price_paid;
-                        } else {
-                          windowEur += p.price_paid;
-                        }
+                        windowEur += analyticsEurCents(p);
+                        windowUsd += analyticsUsdCents(p);
                       }
 
                       const gainPerHundredEur =

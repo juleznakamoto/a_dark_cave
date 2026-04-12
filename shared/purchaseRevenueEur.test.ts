@@ -1,19 +1,36 @@
-import { describe, it, expect } from "vitest";
-import {
-  formatPurchaseMinorUnits,
-  isUsdPurchaseCurrency,
-} from "./purchaseRevenueEur";
+import { describe, expect, it } from "vitest";
+import { analyticsEurCents, analyticsUsdCents } from "./purchaseRevenueEur";
 
-describe("purchaseRevenueEur", () => {
-  it("detects USD currency", () => {
-    expect(isUsdPurchaseCurrency("usd")).toBe(true);
-    expect(isUsdPurchaseCurrency("EUR")).toBe(false);
-    expect(isUsdPurchaseCurrency(null)).toBe(false);
+describe("analyticsEurUsdCents", () => {
+  it("uses reporting columns when set", () => {
+    expect(
+      analyticsEurCents({
+        price_paid: 999,
+        currency: "usd",
+        reporting_eur_cents: 888,
+      }),
+    ).toBe(888);
+    expect(
+      analyticsUsdCents({
+        price_paid: 999,
+        currency: "eur",
+        reporting_usd_cents: 777,
+      }),
+    ).toBe(777);
   });
 
-  it("formats display by currency", () => {
-    expect(formatPurchaseMinorUnits(799, "eur")).toBe("€7.99");
-    expect(formatPurchaseMinorUnits(799, "usd")).toBe("$7.99");
-    expect(formatPurchaseMinorUnits(0, "usd")).toBe("Free");
+  it("falls back to charge currency", () => {
+    expect(
+      analyticsEurCents({ price_paid: 100, currency: "eur" }),
+    ).toBe(100);
+    expect(
+      analyticsUsdCents({ price_paid: 100, currency: "eur" }),
+    ).toBe(0);
+    expect(
+      analyticsUsdCents({ price_paid: 200, currency: "usd" }),
+    ).toBe(200);
+    expect(
+      analyticsEurCents({ price_paid: 200, currency: "usd" }),
+    ).toBe(0);
   });
 });
