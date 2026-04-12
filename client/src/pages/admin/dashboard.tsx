@@ -215,11 +215,62 @@ export default function AdminDashboard() {
 
   const kpiRevenueEurUnifiedCents =
     purchaseMetrics != null &&
-    purchaseMetrics.totalRevenueEurUnifiedCents !== null
+      purchaseMetrics.totalRevenueEurUnifiedCents !== null
       ? purchaseMetrics.totalRevenueEurUnifiedCents
       : purchaseTotalsFromRaw.revenueEurUnifiedCents;
   const kpiPaidBuyerCount =
     purchaseMetrics?.paidBuyerCount ?? purchaseTotalsFromRaw.paidBuyerCount;
+
+  /** Same series as "Buyers per 100 Sign-ups" chart; last point = rolling 30 days ending today. */
+  const buyersPerHundredSignupsSeries = useMemo(() => {
+    const data: Array<{ date: string; buyersPerHundred: number }> = [];
+    const now = new Date();
+    const days = ADMIN_OVERVIEW_CHART_DAYS[buyersPerHundredChartTimeRange];
+    const paidPurchases = rawPurchases.filter(
+      (p) => p.price_paid > 0 && !p.bundle_id,
+    );
+    for (let i = days - 1; i >= 0; i--) {
+      const date = subDays(now, i);
+      const windowEnd = endOfDay(date);
+      const windowStart = startOfDay(subDays(date, 29));
+      const signUpUserIds = new Set(
+        rawAuthSignups
+          .filter((u) => {
+            const createdDate = parseISO(u.created_at);
+            return createdDate >= windowStart && createdDate <= windowEnd;
+          })
+          .map((u) => u.id),
+      );
+      const signUps = signUpUserIds.size;
+      const windowBuyers = new Set(
+        paidPurchases
+          .filter((p) => {
+            const purchaseDate = parseISO(p.purchased_at);
+            return purchaseDate >= windowStart && purchaseDate <= windowEnd;
+          })
+          .map((p) => p.user_id),
+      );
+      const buyersPerHundred =
+        signUps > 0 ? (windowBuyers.size / signUps) * 100 : 0;
+      const dateFormat = days > 90 ? "MMM dd" : "MMM dd";
+      data.push({
+        date: format(date, dateFormat),
+        buyersPerHundred: parseFloat(buyersPerHundred.toFixed(2)),
+      });
+    }
+    return data;
+  }, [rawPurchases, rawAuthSignups, buyersPerHundredChartTimeRange]);
+
+  const getBuyersPerHundredOverTime = useCallback(
+    () => buyersPerHundredSignupsSeries,
+    [buyersPerHundredSignupsSeries],
+  );
+
+  const getBuyersPerHundred = useCallback(() => {
+    const s = buyersPerHundredSignupsSeries;
+    if (s.length === 0) return "0.00";
+    return s[s.length - 1].buyersPerHundred.toFixed(2);
+  }, [buyersPerHundredSignupsSeries]);
 
   useEffect(() => {
     checkAdminAccess();
@@ -1133,11 +1184,7 @@ export default function AdminDashboard() {
                       ? Math.round((kpiPaidBuyerCount / totalUserCount) * 100)
                       : 0
                   }
-                  getBuyersPerHundred={() =>
-                    totalUserCount > 0
-                      ? ((kpiPaidBuyerCount / totalUserCount) * 100).toFixed(2)
-                      : "0.00"
-                  }
+                  getBuyersPerHundred={getBuyersPerHundred}
                   getArpuEur={() =>
                     totalUserCount > 0
                       ? (kpiRevenueEurUnifiedCents / 100 / totalUserCount).toFixed(2)
@@ -1221,55 +1268,7 @@ export default function AdminDashboard() {
                       return { hour: key, signups: lookup.get(key) ?? 0 };
                     });
                   }}
-                  getBuyersPerHundredOverTime={() => {
-                    const data: Array<{ date: string; buyersPerHundred: number }> = [];
-                    const now = new Date();
-
-                    const days = ADMIN_OVERVIEW_CHART_DAYS[buyersPerHundredChartTimeRange];
-
-                    const paidPurchases = rawPurchases.filter(
-                      (p) => p.price_paid > 0 && !p.bundle_id
-                    );
-
-                    // Rolling 30-day: for each day X, sign-ups and buyers in the last 30 days ending on X
-                    for (let i = days - 1; i >= 0; i--) {
-                      const date = subDays(now, i);
-                      const windowEnd = endOfDay(date);
-                      const windowStart = startOfDay(subDays(date, 29));
-
-                      // Sign-ups in last 30 days (auth account creation)
-                      const signUpUserIds = new Set(
-                        rawAuthSignups
-                          .filter((u) => {
-                            const createdDate = parseISO(u.created_at);
-                            return createdDate >= windowStart && createdDate <= windowEnd;
-                          })
-                          .map((u) => u.id)
-                      );
-                      const signUps = signUpUserIds.size;
-
-                      // Unique buyers who purchased in this 30-day window
-                      const windowBuyers = new Set(
-                        paidPurchases
-                          .filter((p) => {
-                            const purchaseDate = parseISO(p.purchased_at);
-                            return purchaseDate >= windowStart && purchaseDate <= windowEnd;
-                          })
-                          .map((p) => p.user_id)
-                      );
-
-                      const buyersPerHundred =
-                        signUps > 0 ? (windowBuyers.size / signUps) * 100 : 0;
-
-                      const dateFormat = days > 90 ? "MMM dd" : "MMM dd";
-                      data.push({
-                        date: format(date, dateFormat),
-                        buyersPerHundred: parseFloat(buyersPerHundred.toFixed(2)),
-                      });
-                    }
-
-                    return data;
-                  }}
+                  getBuyersPerHundredOverTime={getBuyersPerHundredOverTime}
                   getGainPerHundredOverTime={() => {
                     const data: Array<{
                       date: string;

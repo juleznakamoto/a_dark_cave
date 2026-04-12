@@ -465,10 +465,9 @@ export default function OverviewTab(props: OverviewTabProps) {
 
         <Card>
           <CardHeader>
-            <CardTitle>Buyers per 100 users</CardTitle>
+            <CardTitle>Buyers per 100 sign-ups</CardTitle>
             <CardDescription>
-              Registered users who made a paid purchase (not per sign-up; see chart below for the
-              sign-up-based rate)
+              Same metric as the chart below: rolling 30 days ending today (rightmost point)
             </CardDescription>
           </CardHeader>
           <CardContent>
