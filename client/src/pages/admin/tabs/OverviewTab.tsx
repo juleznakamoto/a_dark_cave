@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { AreaChart, Area, BarChart, Bar, CartesianGrid, XAxis, YAxis, ResponsiveContainer, LineChart, Line, Legend, PieChart, Pie, Cell, Tooltip } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { format, parseISO } from "date-fns";
+import { ADMIN_HISTORICAL_USD_PER_EUR } from "@shared/purchaseRevenueEur";
 import {
   ADMIN_OVERVIEW_CHART_DAYS,
   ADMIN_TWELVE_MONTH_CHART_DAYS,
@@ -34,9 +35,7 @@ interface OverviewTabProps {
   getConversionRate: () => number;
   getBuyersPerHundred: () => string;
   getArpuEur: () => string;
-  getArpuUsd: () => string;
-  getTotalRevenueEurCents: () => number;
-  getTotalRevenueUsdCents: () => number;
+  getTotalRevenueEurUnifiedCents: () => number;
   getUserRetention: () => Array<{ day: string; users: number }>;
   getDailySignups: () => Array<{ day: string; signups: number }>;
   getHourlySignups: () => Array<{ hour: string; signups: number }>;
@@ -44,7 +43,6 @@ interface OverviewTabProps {
   getGainPerHundredOverTime: () => Array<{
     date: string;
     gainPerHundredEur: number;
-    gainPerHundredUsd: number;
   }>;
   dailyActiveUsersData: Array<{ date: string; active_user_count: number }>;
   /** UTC date key → signups (same source as `getDailySignups`; used so conversion chart is independent of sign-ups chart range). */
@@ -85,9 +83,7 @@ export default function OverviewTab(props: OverviewTabProps) {
     getConversionRate,
     getBuyersPerHundred,
     getArpuEur,
-    getArpuUsd,
-    getTotalRevenueEurCents,
-    getTotalRevenueUsdCents,
+    getTotalRevenueEurUnifiedCents,
     getUserRetention,
     getDailySignups,
     getHourlySignups,
@@ -483,11 +479,12 @@ export default function OverviewTab(props: OverviewTabProps) {
         <Card>
           <CardHeader>
             <CardTitle>ARPU</CardTitle>
-            <CardDescription>Average revenue per user (same denominator)</CardDescription>
+            <CardDescription>
+              Average revenue per user (EUR), all charges converted to EUR
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-1">
             <p className="text-2xl font-bold">€{getArpuEur()}</p>
-            <p className="text-2xl font-bold">${getArpuUsd()}</p>
           </CardContent>
         </Card>
 
@@ -495,15 +492,13 @@ export default function OverviewTab(props: OverviewTabProps) {
           <CardHeader>
             <CardTitle>Total Revenue</CardTitle>
             <CardDescription>
-              All-time paid totals by charge currency (not combined)
+              All-time paid total in EUR (Stripe FX at purchase when available; otherwise USD at{" "}
+              {ADMIN_HISTORICAL_USD_PER_EUR} USD/EUR)
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-1">
             <p className="text-3xl font-bold">
-              €{(getTotalRevenueEurCents() / 100).toFixed(2)}
-            </p>
-            <p className="text-3xl font-bold">
-              ${(getTotalRevenueUsdCents() / 100).toFixed(2)}
+              €{(getTotalRevenueEurUnifiedCents() / 100).toFixed(2)}
             </p>
           </CardContent>
         </Card>
@@ -667,8 +662,7 @@ export default function OverviewTab(props: OverviewTabProps) {
                   Gain per 100 Sign-ups ({adminOverviewChartTitleSuffix(gainPerHundredChartTimeRange)})
                 </CardTitle>
                 <CardDescription>
-                  Rolling 30-day: revenue per 100 sign-ups (EUR vs USD; uses Stripe FX columns when
-                  present, else charge currency only)
+                  Rolling 30-day: unified EUR revenue per 100 sign-ups (FX at purchase when stored)
                 </CardDescription>
               </div>
               <ChartTimeRangeSelectOverview
@@ -682,7 +676,7 @@ export default function OverviewTab(props: OverviewTabProps) {
               <AreaChart data={getGainPerHundredOverTime()}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
-                <YAxis />
+                <YAxis tickFormatter={(v) => `€${Number(v).toFixed(0)}`} />
                 <Legend />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <Area
@@ -691,13 +685,6 @@ export default function OverviewTab(props: OverviewTabProps) {
                   name="EUR / 100 sign-ups"
                   stroke="#00C49F"
                   fill="#00C49F"
-                />
-                <Area
-                  type="monotone"
-                  dataKey="gainPerHundredUsd"
-                  name="USD / 100 sign-ups"
-                  stroke="#0088FE"
-                  fill="#0088FE"
                 />
               </AreaChart>
             </ChartContainer>

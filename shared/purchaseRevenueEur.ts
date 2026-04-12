@@ -1,4 +1,4 @@
-/** Display helpers for admin purchase rows (charge currency only; no FX). */
+/** Display helpers for admin purchase rows. */
 
 export type PurchaseRowForReporting = {
   price_paid: number;
@@ -7,16 +7,27 @@ export type PurchaseRowForReporting = {
   reporting_usd_cents?: number | null;
 };
 
-/** EUR minor units for charts: prefer Stripe FX reporting when present. */
-export function analyticsEurCents(p: PurchaseRowForReporting): number {
+/**
+ * Approximate USD per 1 EUR for legacy USD charges without `reporting_eur_cents`.
+ * Keep in sync with `supabase/migrations/016_admin_revenue_unified_eur.sql`.
+ */
+export const ADMIN_HISTORICAL_USD_PER_EUR = 1.09;
+
+/**
+ * All admin revenue charts and KPIs: value in EUR minor units.
+ * Order: Stripe `reporting_eur_cents` (purchase-time FX) → EUR charge → USD at fixed rate.
+ */
+export function adminUnifiedRevenueEurCents(p: PurchaseRowForReporting): number {
   if (p.reporting_eur_cents != null) return p.reporting_eur_cents;
-  return isUsdPurchaseCurrency(p.currency) ? 0 : p.price_paid;
+  if (isUsdPurchaseCurrency(p.currency)) {
+    return Math.round(p.price_paid / ADMIN_HISTORICAL_USD_PER_EUR);
+  }
+  return p.price_paid;
 }
 
-/** USD minor units for charts: prefer Stripe FX reporting when present. */
-export function analyticsUsdCents(p: PurchaseRowForReporting): number {
-  if (p.reporting_usd_cents != null) return p.reporting_usd_cents;
-  return isUsdPurchaseCurrency(p.currency) ? p.price_paid : 0;
+/** @deprecated Use adminUnifiedRevenueEurCents */
+export function analyticsEurCents(p: PurchaseRowForReporting): number {
+  return adminUnifiedRevenueEurCents(p);
 }
 
 export function isUsdPurchaseCurrency(
@@ -33,4 +44,10 @@ export function formatPurchaseMinorUnits(
   const amount = (pricePaid / 100).toFixed(2);
   if (isUsdPurchaseCurrency(currency)) return `$${amount}`;
   return `€${amount}`;
+}
+
+/** Admin lists: paid amounts as unified EUR; free/bundle lines unchanged. */
+export function formatAdminUnifiedRevenueEur(p: PurchaseRowForReporting): string {
+  if (p.price_paid <= 0) return formatPurchaseMinorUnits(p.price_paid, p.currency);
+  return `€${(adminUnifiedRevenueEurCents(p) / 100).toFixed(2)}`;
 }

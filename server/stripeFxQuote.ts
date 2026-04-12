@@ -51,8 +51,9 @@ async function createFxQuote(
 }
 
 /**
- * Returns EUR and USD minor-unit amounts for analytics. Uses Stripe's quoted exchange_rate
- * (EUR→USD: multiply EUR cents by rate; USD→EUR: divide USD cents by rate per Stripe docs).
+ * Returns EUR and USD minor-unit amounts for analytics.
+ * Stripe defines `exchange_rate` as to_currency per from_currency; convert with
+ * `to_amount = from_amount * exchange_rate` (same minor units on both sides).
  */
 export async function reportingEurUsdCentsFromStripeFx(
   amountCents: number,
@@ -91,7 +92,7 @@ export async function reportingEurUsdCentsFromStripeFx(
       throw new Error("Missing or invalid FX rate usd→eur");
     }
     return {
-      reporting_eur_cents: Math.round(amountCents / r),
+      reporting_eur_cents: Math.round(amountCents * r),
       reporting_usd_cents: amountCents,
       stripe_fx_quote_id: q.id ?? null,
     };

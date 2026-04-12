@@ -1,6 +1,7 @@
 import {
-  formatPurchaseMinorUnits,
-  isUsdPurchaseCurrency,
+  ADMIN_HISTORICAL_USD_PER_EUR,
+  adminUnifiedRevenueEurCents,
+  formatAdminUnifiedRevenueEur,
 } from "@shared/purchaseRevenueEur";
 import { useState, useMemo } from "react";
 import { parseISO, startOfDay, addDays, subDays, format } from "date-fns";
@@ -23,8 +24,7 @@ const TOP_N_COUNTRIES = 8;
 
 interface PurchasesTabProps {
   purchases: any[];
-  getTotalRevenueEurCents: () => number;
-  getTotalRevenueUsdCents: () => number;
+  getTotalRevenueEurUnifiedCents: () => number;
   getDailyPurchases: () => Array<{ day: string; purchases: number }>;
   getPurchasesByPlaytime: () => Array<{ playtime: string; purchases: number }>;
   getPurchaseStats: () => Array<{ name: string; count: number }>;
@@ -32,14 +32,11 @@ interface PurchasesTabProps {
   setPurchasesChartTimeRange: (range: AdminTwelveMonthChartRange) => void;
 }
 
-type CountryChartMode = "count" | "revenue_eur" | "revenue_usd";
+type CountryChartMode = "count" | "revenue_unified_eur";
 
 function countryContribution(p: any, mode: CountryChartMode): number {
   if (mode === "count") return 1;
-  if (mode === "revenue_eur") {
-    return isUsdPurchaseCurrency(p.currency) ? 0 : p.price_paid;
-  }
-  return isUsdPurchaseCurrency(p.currency) ? p.price_paid : 0;
+  return adminUnifiedRevenueEurCents(p);
 }
 
 function buildDailyCountryData(
@@ -94,8 +91,7 @@ function buildDailyCountryData(
 export default function PurchasesTab(props: PurchasesTabProps) {
   const {
     purchases,
-    getTotalRevenueEurCents,
-    getTotalRevenueUsdCents,
+    getTotalRevenueEurUnifiedCents,
     getDailyPurchases,
     getPurchasesByPlaytime,
     getPurchaseStats,
@@ -116,25 +112,16 @@ export default function PurchasesTab(props: PurchasesTabProps) {
     [purchases, countryCountRange],
   );
 
-  const { data: countryRevenueEurData, countries: countryRevenueEurList } = useMemo(
-    () =>
-      buildDailyCountryData(
-        purchases,
-        ADMIN_TWELVE_MONTH_CHART_DAYS[countryRevenueRange],
-        "revenue_eur",
-      ),
-    [purchases, countryRevenueRange],
-  );
-
-  const { data: countryRevenueUsdData, countries: countryRevenueUsdList } = useMemo(
-    () =>
-      buildDailyCountryData(
-        purchases,
-        ADMIN_TWELVE_MONTH_CHART_DAYS[countryRevenueRange],
-        "revenue_usd",
-      ),
-    [purchases, countryRevenueRange],
-  );
+  const { data: countryRevenueUnifiedData, countries: countryRevenueUnifiedList } =
+    useMemo(
+      () =>
+        buildDailyCountryData(
+          purchases,
+          ADMIN_TWELVE_MONTH_CHART_DAYS[countryRevenueRange],
+          "revenue_unified_eur",
+        ),
+      [purchases, countryRevenueRange],
+    );
 
   return (
     <div className="space-y-4">
@@ -143,15 +130,13 @@ export default function PurchasesTab(props: PurchasesTabProps) {
           <CardHeader>
             <CardTitle>Total Revenue</CardTitle>
             <CardDescription>
-              All-time paid totals by charge currency (not combined)
+              All-time paid total in EUR (Stripe FX when stored; else USD at{" "}
+              {ADMIN_HISTORICAL_USD_PER_EUR} USD/EUR)
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-1">
             <p className="text-3xl font-bold">
-              €{(getTotalRevenueEurCents() / 100).toFixed(2)}
-            </p>
-            <p className="text-3xl font-bold">
-              ${(getTotalRevenueUsdCents() / 100).toFixed(2)}
+              €{(getTotalRevenueEurUnifiedCents() / 100).toFixed(2)}
             </p>
           </CardContent>
         </Card>
@@ -244,9 +229,10 @@ export default function PurchasesTab(props: PurchasesTabProps) {
         <CardHeader>
           <div className="flex justify-between items-start">
             <div>
-              <CardTitle>Daily EUR revenue by country</CardTitle>
+              <CardTitle>Daily revenue by country (EUR)</CardTitle>
               <CardDescription>
-                EUR charges only (minor units), top {TOP_N_COUNTRIES} countries (paid only)
+                Unified EUR minor units (Stripe FX or {ADMIN_HISTORICAL_USD_PER_EUR} USD/EUR), top{" "}
+                {TOP_N_COUNTRIES} countries (paid only)
               </CardDescription>
             </div>
             <ChartTimeRangeSelectTwelveMonth
@@ -256,13 +242,13 @@ export default function PurchasesTab(props: PurchasesTabProps) {
           </div>
         </CardHeader>
         <CardContent>
-          {countryRevenueEurList.length === 0 ? (
+          {countryRevenueUnifiedList.length === 0 ? (
             <p className="text-muted-foreground text-sm py-4">
-              No EUR revenue in this range, or no country data yet.
+              No paid revenue in this range, or no country data yet.
             </p>
           ) : (
             <ChartContainer config={{}} className="h-[400px] w-full">
-              <LineChart data={countryRevenueEurData}>
+              <LineChart data={countryRevenueUnifiedData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   dataKey="day"
@@ -279,62 +265,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
                   ]}
                 />
                 <Legend />
-                {countryRevenueEurList.map((country, i) => (
-                  <Line
-                    key={country}
-                    type="monotone"
-                    dataKey={country}
-                    stroke={COUNTRY_COLORS[i % COUNTRY_COLORS.length]}
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                ))}
-              </LineChart>
-            </ChartContainer>
-          )}
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <div className="flex justify-between items-start">
-            <div>
-              <CardTitle>Daily USD revenue by country</CardTitle>
-              <CardDescription>
-                USD charges only (minor units), top {TOP_N_COUNTRIES} countries (paid only)
-              </CardDescription>
-            </div>
-            <ChartTimeRangeSelectTwelveMonth
-              value={countryRevenueRange}
-              onChange={setCountryRevenueRange}
-            />
-          </div>
-        </CardHeader>
-        <CardContent>
-          {countryRevenueUsdList.length === 0 ? (
-            <p className="text-muted-foreground text-sm py-4">
-              No USD revenue in this range, or no country data yet.
-            </p>
-          ) : (
-            <ChartContainer config={{}} className="h-[400px] w-full">
-              <LineChart data={countryRevenueUsdData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="day"
-                  interval={adminChartXAxisIntervalForDays(
-                    ADMIN_TWELVE_MONTH_CHART_DAYS[countryRevenueRange],
-                  )}
-                  tick={{ fontSize: 11 }}
-                />
-                <YAxis tickFormatter={(v) => `$${(v / 100).toFixed(0)}`} />
-                <Tooltip
-                  formatter={(value: number, name: string) => [
-                    `$${(value / 100).toFixed(2)}`,
-                    name,
-                  ]}
-                />
-                <Legend />
-                {countryRevenueUsdList.map((country, i) => (
+                {countryRevenueUnifiedList.map((country, i) => (
                   <Line
                     key={country}
                     type="monotone"
@@ -462,10 +393,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
                     </p>
                   </div>
                   <p className="font-bold">
-                    {formatPurchaseMinorUnits(
-                      purchase.price_paid,
-                      purchase.currency,
-                    )}
+                    {formatAdminUnifiedRevenueEur(purchase)}
                   </p>
                 </div>
               ))}

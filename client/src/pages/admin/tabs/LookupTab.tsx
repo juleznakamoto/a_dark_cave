@@ -1,4 +1,4 @@
-import { formatPurchaseMinorUnits } from "@shared/purchaseRevenueEur";
+import { formatAdminUnifiedRevenueEur } from "@shared/purchaseRevenueEur";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -198,10 +198,7 @@ export default function LookupTab(props: LookupTabProps) {
                             )}
                           </div>
                           <p className="font-bold">
-                            {formatPurchaseMinorUnits(
-                              purchase.price_paid,
-                              purchase.currency,
-                            )}
+                            {formatAdminUnifiedRevenueEur(purchase)}
                           </p>
                         </div>
                       ))}

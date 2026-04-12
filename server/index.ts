@@ -618,6 +618,7 @@ app.get("/api/admin/data", async (req, res) => {
       total_revenue_eur_cents: number;
       total_revenue_usd_cents: number;
       paid_buyer_count: number;
+      total_revenue_eur_unified_cents: number | null;
     } | null = null;
     if (purchaseMetricsRpc.error) {
       log(
@@ -633,12 +634,17 @@ app.get("/api/admin/data", async (req, res) => {
         "total_revenue_usd_cents" in pm &&
         "paid_buyer_count" in pm
       ) {
+        const unifiedRaw = pm.total_revenue_eur_unified_cents;
         purchaseMetrics = {
           total_revenue_eur_cents:
             Number(pm.total_revenue_eur_cents) || 0,
           total_revenue_usd_cents:
             Number(pm.total_revenue_usd_cents) || 0,
           paid_buyer_count: Number(pm.paid_buyer_count) || 0,
+          total_revenue_eur_unified_cents:
+            unifiedRaw !== undefined && unifiedRaw !== null
+              ? Number(unifiedRaw) || 0
+              : null,
         };
       }
     }

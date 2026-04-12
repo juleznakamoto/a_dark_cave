@@ -2,11 +2,7 @@ import { useEffect, useState, useMemo, useCallback } from "react";
 import { useLocation } from "wouter";
 import { getSupabaseClient } from "@/lib/supabase";
 import { logger } from "@/lib/logger";
-import {
-  analyticsEurCents,
-  analyticsUsdCents,
-  isUsdPurchaseCurrency,
-} from "@shared/purchaseRevenueEur";
+import { adminUnifiedRevenueEurCents } from "@shared/purchaseRevenueEur";
 import {
   Card,
   CardContent,
@@ -141,10 +137,9 @@ export default function AdminDashboard() {
 
   const [accountsDeletedAnonymized, setAccountsDeletedAnonymized] =
     useState(0);
-  /** From DB RPC `admin_purchase_metrics` when migration 012 is applied; avoids PostgREST row caps on raw rows. */
+  /** From DB RPC `admin_purchase_metrics`; avoids PostgREST row caps on raw rows. */
   const [purchaseMetrics, setPurchaseMetrics] = useState<{
-    totalRevenueEurCents: number;
-    totalRevenueUsdCents: number;
+    totalRevenueEurUnifiedCents: number | null;
     paidBuyerCount: number;
   } | null>(null);
   const [resendCsvBusy, setResendCsvBusy] = useState<
@@ -208,28 +203,21 @@ export default function AdminDashboard() {
 
   const purchaseTotalsFromRaw = useMemo(() => {
     const paid = rawPurchases.filter((p) => p.price_paid > 0 && !p.bundle_id);
-    let revenueEurCents = 0;
-    let revenueUsdCents = 0;
+    let revenueEurUnifiedCents = 0;
     for (const p of paid) {
-      if (isUsdPurchaseCurrency(p.currency)) {
-        revenueUsdCents += p.price_paid;
-      } else {
-        revenueEurCents += p.price_paid;
-      }
+      revenueEurUnifiedCents += adminUnifiedRevenueEurCents(p);
     }
     return {
-      revenueEurCents,
-      revenueUsdCents,
+      revenueEurUnifiedCents,
       paidBuyerCount: new Set(paid.map((p) => p.user_id)).size,
     };
   }, [rawPurchases]);
 
-  const kpiRevenueEurCents =
-    purchaseMetrics?.totalRevenueEurCents ??
-    purchaseTotalsFromRaw.revenueEurCents;
-  const kpiRevenueUsdCents =
-    purchaseMetrics?.totalRevenueUsdCents ??
-    purchaseTotalsFromRaw.revenueUsdCents;
+  const kpiRevenueEurUnifiedCents =
+    purchaseMetrics != null &&
+    purchaseMetrics.totalRevenueEurUnifiedCents !== null
+      ? purchaseMetrics.totalRevenueEurUnifiedCents
+      : purchaseTotalsFromRaw.revenueEurUnifiedCents;
   const kpiPaidBuyerCount =
     purchaseMetrics?.paidBuyerCount ?? purchaseTotalsFromRaw.paidBuyerCount;
 
@@ -901,22 +889,19 @@ export default function AdminDashboard() {
       }
       const pm = data.purchaseMetrics as
         | {
-          total_revenue_eur_cents?: number | string;
-          total_revenue_usd_cents?: number | string;
           paid_buyer_count?: number | string;
+          total_revenue_eur_unified_cents?: number | string;
         }
         | undefined
         | null;
-      if (
-        pm &&
-        pm.total_revenue_eur_cents != null &&
-        pm.total_revenue_usd_cents != null &&
-        pm.paid_buyer_count != null
-      ) {
+      if (pm && pm.paid_buyer_count != null) {
+        const unifiedRaw = pm.total_revenue_eur_unified_cents;
         setPurchaseMetrics({
-          totalRevenueEurCents: Number(pm.total_revenue_eur_cents) || 0,
-          totalRevenueUsdCents: Number(pm.total_revenue_usd_cents) || 0,
           paidBuyerCount: Number(pm.paid_buyer_count) || 0,
+          totalRevenueEurUnifiedCents:
+            unifiedRaw !== undefined && unifiedRaw !== null
+              ? Number(unifiedRaw) || 0
+              : null,
         });
       } else {
         setPurchaseMetrics(null);
@@ -1155,16 +1140,12 @@ export default function AdminDashboard() {
                   }
                   getArpuEur={() =>
                     totalUserCount > 0
-                      ? (kpiRevenueEurCents / 100 / totalUserCount).toFixed(2)
+                      ? (kpiRevenueEurUnifiedCents / 100 / totalUserCount).toFixed(2)
                       : "0.00"
                   }
-                  getArpuUsd={() =>
-                    totalUserCount > 0
-                      ? (kpiRevenueUsdCents / 100 / totalUserCount).toFixed(2)
-                      : "0.00"
+                  getTotalRevenueEurUnifiedCents={() =>
+                    kpiRevenueEurUnifiedCents
                   }
-                  getTotalRevenueEurCents={() => kpiRevenueEurCents}
-                  getTotalRevenueUsdCents={() => kpiRevenueUsdCents}
                   getUserRetention={() => {
                     const data: Array<{ day: string; users: number }> = [];
                     const now = new Date();
@@ -1293,7 +1274,6 @@ export default function AdminDashboard() {
                     const data: Array<{
                       date: string;
                       gainPerHundredEur: number;
-                      gainPerHundredUsd: number;
                     }> = [];
                     const now = new Date();
 
@@ -1303,7 +1283,7 @@ export default function AdminDashboard() {
                       (p) => p.price_paid > 0 && !p.bundle_id
                     );
 
-                    // Rolling 30-day: EUR and USD revenue per 100 sign-ups (not combined).
+                    // Rolling 30-day: unified EUR revenue (minor units) per 100 sign-ups.
                     for (let i = days - 1; i >= 0; i--) {
                       const date = subDays(now, i);
                       const windowEnd = endOfDay(date);
@@ -1325,19 +1305,13 @@ export default function AdminDashboard() {
                         return purchaseDate >= windowStart && purchaseDate <= windowEnd;
                       });
                       let windowEur = 0;
-                      let windowUsd = 0;
                       for (const p of inWindow) {
-                        windowEur += analyticsEurCents(p);
-                        windowUsd += analyticsUsdCents(p);
+                        windowEur += adminUnifiedRevenueEurCents(p);
                       }
 
                       const gainPerHundredEur =
                         signUps > 0
                           ? (windowEur / 100) / (signUps / 100)
-                          : 0;
-                      const gainPerHundredUsd =
-                        signUps > 0
-                          ? (windowUsd / 100) / (signUps / 100)
                           : 0;
 
                       const dateFormat = days > 90 ? "MMM dd" : "MMM dd";
@@ -1345,9 +1319,6 @@ export default function AdminDashboard() {
                         date: format(date, dateFormat),
                         gainPerHundredEur: parseFloat(
                           gainPerHundredEur.toFixed(2),
-                        ),
-                        gainPerHundredUsd: parseFloat(
-                          gainPerHundredUsd.toFixed(2),
                         ),
                       });
                     }
@@ -1462,8 +1433,9 @@ export default function AdminDashboard() {
               <TabsContent value="purchases">
                 <PurchasesTab
                   purchases={purchases}
-                  getTotalRevenueEurCents={() => kpiRevenueEurCents}
-                  getTotalRevenueUsdCents={() => kpiRevenueUsdCents}
+                  getTotalRevenueEurUnifiedCents={() =>
+                    kpiRevenueEurUnifiedCents
+                  }
                   getDailyPurchases={getDailyPurchases}
                   getPurchasesByPlaytime={getPurchasesByPlaytime}
                   getPurchaseStats={getPurchaseStats}
