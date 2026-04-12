@@ -7,7 +7,7 @@ import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
  */
 const VILLAGE_BUILDING_STRANGER_APPROACH_BONUS = {
   woodenHut: 0.01,
-  stoneHut: 0.075,
+  stoneHut: 0.0075,
   longhouse: 0.005,
   furTents: 0.005,
 } as const;
@@ -17,7 +17,7 @@ function formatStackedStrangerApproachPercent(
   bonus: number,
 ): string {
   const pct = count * bonus * 100;
-  return Number.isInteger(pct) ? String(pct) : pct.toFixed(1);
+  return String(Number(pct.toFixed(2)));
 }
 
 // Utility function to get the next building level
