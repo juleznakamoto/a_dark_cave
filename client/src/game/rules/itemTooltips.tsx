@@ -154,12 +154,12 @@ export function renderItemTooltip(
         <div className="text-xs">
           <div className="font-bold">{effect?.name ?? itemId}</div>
           {effect?.description && (
-            <div className="text-gray-400 mb-0.5">{effect.description}</div>
+            <div className="text-gray-400 mb-1">{effect.description}</div>
           )}
           <pre className="whitespace-pre-wrap font-sans text-xs text-foreground">
             {content}
           </pre>
-          <div className="text-gray-500 mt-1">Max: {maxBombs}</div>
+          <div className="text-gray-400 mt-1">Max: {maxBombs}</div>
         </div>
       );
     }
@@ -207,7 +207,7 @@ export function renderItemTooltip(
     <div className="text-xs">
       {effect.name && <div className="font-bold">{effect.name}</div>}
       {effect.description && (
-        <div className="text-gray-400 mb-0.5">{effect.description}</div>
+        <div className="text-gray-400 mb-1">{effect.description}</div>
       )}
       {effect.bonuses?.generalBonuses && (
         <div>
