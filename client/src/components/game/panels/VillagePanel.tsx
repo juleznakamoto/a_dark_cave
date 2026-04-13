@@ -909,7 +909,7 @@ export default function VillagePanel() {
                         )}
                         {fromBuildings > 0 && (
                           <div className="text-gray-400/70">
-                            {Math.round(fromBuildings * 100)} % from buildings
+                            {Math.round(fromBuildings * 100)} % from Buildings
                           </div>
                         )}
                         {fromBlessings > 0 && (
