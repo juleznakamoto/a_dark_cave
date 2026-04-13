@@ -560,7 +560,7 @@ const Hero: React.FC<HeroProps> = ({
 
           {/* Support Section */}
           <div className="py-3 flex flex-col items-center gap-3 mt-14 animate-fade-in-up animation-delay-4000 w-full min-w-0">
-            <p className="text-sm sm:text-base font-medium text-gray-200 text-center max-w-md px-2 sm:px-4 break-words">
+            <p className="text-sm sm:text-base font-medium text-grey-200 text-center max-w-md px-2 sm:px-4 break-words">
               If you enjoyed the game, I would be very happy if you support me so I can continue
               to develop it.
             </p>
@@ -581,7 +581,7 @@ const Hero: React.FC<HeroProps> = ({
 
           {/* Incremental DB & IndieDB Vote Section */}
           <div className="py-3 flex flex-col items-center gap-3 mt-8 animate-fade-in-up animation-delay-4500 w-full min-w-0">
-            <p className="text-sm sm:text-base font-medium text-gray-200 text-center max-w-md px-2 sm:px-4 break-words">
+            <p className="text-sm sm:text-base font-medium text-grey-200 text-center max-w-md px-2 sm:px-4 break-words">
               You can support the game for free by leaving a vote or review. It makes a huge difference. Thank you! ♡
             </p>
             <div className="flex gap-2 sm:gap-3 flex-wrap justify-center px-2">
@@ -687,11 +687,11 @@ const Hero: React.FC<HeroProps> = ({
                 )}
                 {buttons?.feedback && (
                   <button
-                  onClick={buttons.feedback.onClick}
-                  button_id={buttons.feedback.buttonId}
-                  className="px-3 sm:px-4 py-2 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-sm sm:text-base transition-all duration-300 hover:scale-105 backdrop-blur-sm"
-                >
-                  {buttons.feedback.text}
+                    onClick={buttons.feedback.onClick}
+                    button_id={buttons.feedback.buttonId}
+                    className="px-3 sm:px-4 py-2 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-sm sm:text-base transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+                  >
+                    {buttons.feedback.text}
                   </button>
                 )}
               </div>

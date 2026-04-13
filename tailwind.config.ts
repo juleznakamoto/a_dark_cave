@@ -61,12 +61,6 @@ export default {
           border: "var(--sidebar-border)",
           ring: "var(--sidebar-ring)",
         },
-        "gray-200": "var(--ds-gray-200)",
-        "gray-500": "var(--ds-gray-500)",
-        "gray-700": "var(--ds-gray-700)",
-        "gray-900": "var(--ds-gray-900)",
-        "gray-1000": "var(--ds-gray-1000)",
-        "background-100": "var(--ds-background-100)",
       },
       fontFamily: {
         sans: ["var(--font-sans)"],

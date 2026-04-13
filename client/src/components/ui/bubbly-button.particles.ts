@@ -52,7 +52,7 @@ const DEFAULT_PARTICLE_CONFIG: Required<ParticleConfig> = {
   ease: [0, 0, 0.5, 1],
 };
 
-const BUILD_SMALL_PARTICLE_ONLY_COLORS = [tailwindToHex("gray-200")];
+const BUILD_SMALL_PARTICLE_ONLY_COLORS = [tailwindToHex("grey-200")];
 
 /** Build preset - stone/neutral tones, default sizing */
 export const BUILD_PARTICLE_CONFIG: Partial<ParticleConfig> = {
@@ -316,11 +316,11 @@ export function mergeParticleConfig(
 ): MergedParticleConfig {
   const merged = override
     ? {
-        ...DEFAULT_PARTICLE_CONFIG,
-        ...base,
-        ...override,
-        colors: override.colors ?? base.colors ?? DEFAULT_PARTICLE_CONFIG.colors,
-      }
+      ...DEFAULT_PARTICLE_CONFIG,
+      ...base,
+      ...override,
+      colors: override.colors ?? base.colors ?? DEFAULT_PARTICLE_CONFIG.colors,
+    }
     : { ...DEFAULT_PARTICLE_CONFIG, ...base };
   // All particles start at once, so we only need durationMax + small buffer for cleanup
   return {
