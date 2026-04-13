@@ -18,6 +18,7 @@ vi.mock('stripe', () => {
 
 // Import after mocking
 import { createPaymentIntent, verifyPayment } from './stripe';
+import { createSupabaseMockForStripeVerify } from './stripeVerifyTestSupabase';
 
 // Get reference to the mocked methods for test assertions
 // We need to access the actual mock instance
@@ -32,30 +33,18 @@ function latestChargeForVerify(): Stripe.Charge {
   } as Stripe.Charge;
 }
 
-// Mock Supabase
-const mockSupabase = {
-  from: vi.fn(() => ({
-    insert: vi.fn(() => ({
-      select: vi.fn(() => ({
-        single: vi.fn(() => ({
-          data: { id: 'purchase123', item_id: 'gold_250', user_id: 'user123' },
-          error: null,
-        })),
-      })),
-    })),
-  })),
-};
-
 vi.mock('@/lib/supabase', () => ({
-  supabase: mockSupabase,
+  supabase: {},
 }));
 
 describe('Stripe Shop Integration', () => {
   let mockPaymentIntents: ReturnType<typeof getMockPaymentIntents>;
+  let mockSupabase: ReturnType<typeof createSupabaseMockForStripeVerify>;
 
   beforeEach(() => {
     vi.clearAllMocks();
     mockPaymentIntents = getMockPaymentIntents();
+    mockSupabase = createSupabaseMockForStripeVerify();
   });
 
   describe('createPaymentIntent', () => {
@@ -436,18 +425,7 @@ describe('Purchase Restrictions', () => {
   });
 
   it('REGRESSION TEST: should prevent the exploit from screenshot (multiple free advanced_bundles)', async () => {
-    const mockSupabase = {
-      from: vi.fn(() => ({
-        insert: vi.fn(() => ({
-          select: vi.fn(() => ({
-            single: vi.fn(() => ({
-              data: null,
-              error: null,
-            })),
-          })),
-        })),
-      })),
-    };
+    const regressionSupabase = createSupabaseMockForStripeVerify();
 
     // This is what the attacker did: got advanced_bundle with price=0
     const mockIntent: Stripe.PaymentIntent = {
@@ -461,14 +439,14 @@ describe('Purchase Restrictions', () => {
 
     // Try to verify 3 times (as seen in screenshot)
     for (let i = 0; i < 3; i++) {
-      const result = await verifyPayment('pi_exploit_058cbb69', '058cbb69-e1d5-473e-b99b-cddd0f2ff43e', mockSupabase);
+      const result = await verifyPayment('pi_exploit_058cbb69', '058cbb69-e1d5-473e-b99b-cddd0f2ff43e', regressionSupabase);
 
       // Should REJECT every time
       expect(result.success).toBe(false);
       expect(result.error).toBe('Payment amount verification failed');
     }
 
-    // Should NEVER have created purchases
-    expect(mockSupabase.from).not.toHaveBeenCalled();
+    // Duplicate-check query runs; no purchase rows may be inserted
+    expect(regressionSupabase.insertSpy).not.toHaveBeenCalled();
   });
 });

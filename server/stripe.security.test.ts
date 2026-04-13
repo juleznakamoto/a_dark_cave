@@ -16,6 +16,7 @@ vi.mock('stripe', () => {
 });
 
 import { createPaymentIntent, verifyPayment } from './stripe';
+import { createSupabaseMockForStripeVerify } from './stripeVerifyTestSupabase';
 
 const getMockPaymentIntents = () => {
   const mockStripe = new Stripe('', { apiVersion: '2024-12-18.acacia' });
@@ -28,19 +29,14 @@ function latestChargeForVerify(): Stripe.Charge {
   } as Stripe.Charge;
 }
 
-// Mock Supabase
-const createMockSupabase = () => ({
-  from: vi.fn((table: string) => ({
-    insert: vi.fn(() => ({
-      select: vi.fn(() => ({
-        single: vi.fn(() => ({
-          data: { id: 'purchase123', item_id: 'advanced_bundle', user_id: 'user123' },
-          error: null,
-        })),
-      })),
-    })),
-  })),
-});
+const createMockSupabase = () =>
+  createSupabaseMockForStripeVerify({
+    insertSingleData: {
+      id: 'purchase123',
+      item_id: 'advanced_bundle',
+      user_id: 'user123',
+    },
+  });
 
 describe('Bundle Purchase Security Tests', () => {
   let mockPaymentIntents: ReturnType<typeof getMockPaymentIntents>;
@@ -223,26 +219,7 @@ describe('Bundle Purchase Security Tests', () => {
 
   describe('Component Purchase Security', () => {
     it('should create component purchases with price_paid=0 and bundle_id set', async () => {
-      const insertCalls: any[] = [];
-
-      const mockFrom = vi.fn(() => {
-        const insertFn = vi.fn((data: any) => {
-          insertCalls.push(data);
-          return {
-            select: vi.fn(() => ({
-              single: vi.fn(() => ({
-                data: { id: 'purchase123', ...data },
-                error: null,
-              })),
-            })),
-          };
-        });
-        return { insert: insertFn };
-      });
-
-      const mockSupabase = {
-        from: mockFrom,
-      };
+      const mockSupabase = createMockSupabase();
 
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
@@ -256,6 +233,11 @@ describe('Bundle Purchase Security Tests', () => {
       mockPaymentIntents.retrieve.mockResolvedValue(mockIntent);
 
       await verifyPayment('pi_test', 'user123', mockSupabase);
+
+      const insertCalls = mockSupabase.insertSpy.mock.calls.map((c) => c[0]) as Record<
+        string,
+        unknown
+      >[];
 
       // Should have 3 inserts: 1 bundle + 2 components
       expect(insertCalls).toHaveLength(3);

@@ -4,7 +4,7 @@ import { killVillagers } from "@/game/stateHelpers";
 import { useGameStore, isModalDialogOpen } from "@/game/state";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 import { getVillagersInVillage } from "../population";
-import { ATTACK_WAVE_IDS, type AttackWaveId, isFinalAttackWave } from "./attackWaveOrder";
+import { ATTACK_WAVE_IDS, type AttackWaveId } from "./attackWaveOrder";
 
 // Helper function to calculate enemy stats
 function calculateEnemyStats(
@@ -318,40 +318,6 @@ const WAVE_RULES: Record<AttackWaveId, WaveRules> = {
   },
 };
 
-const VICTORY_MESSAGE = (goldReward: number) =>
-  `The defenses hold! The pale creatures crash against the walls but cannot break through. You claim ${goldReward} gold from the fallen creatures.`;
-
-const FINAL_WAVE_VICTORY_MESSAGE = (goldReward: number) =>
-  `The final wave has been defeated! The path beyond the shattered gate now lies open. You can venture deeper into the depths to discover what lies beyond. You claim ${goldReward} gold from the fallen creatures.`;
-
-function createDefeatMessage(
-  casualties: number,
-  damagedBuildings: string[],
-  woundedFellows: string[] = [],
-): string {
-  let msg = "The creatures overwhelm your defenses. ";
-
-  if (casualties === 0) {
-    msg +=
-      "The defenses crumble under the assault before the remaining creatures retreat to the depths.";
-  } else if (casualties === 1) {
-    msg +=
-      "One Villager falls before the remaining creatures retreat to the depths.";
-  } else {
-    msg += `${casualties} Villagers fall before the remaining creatures retreat to the depths.`;
-  }
-
-  if (damagedBuildings.length > 0) {
-    msg += ` The ${damagedBuildings.join(" and ")} ${damagedBuildings.length === 1 ? "is" : "are"} damaged in the assault.`;
-  }
-
-  if (woundedFellows.length > 0) {
-    msg += ` ${woundedFellows.join(" and ")} ${woundedFellows.length === 1 ? "is" : "are"} wounded in battle.`;
-  }
-
-  return msg;
-}
-
 function handleDefeat(
   state: GameState,
   DamageBuildingMultiplier: number,
@@ -442,11 +408,6 @@ function handleDefeat(
         ...fellowshipWounded,
       },
     },
-    _logMessage: createDefeatMessage(
-      actualCasualties,
-      damagedBuildings,
-      woundedFellows,
-    ),
     _combatSummary: {
       casualties: actualCasualties,
       damagedBuildings,
@@ -565,9 +526,6 @@ function createAttackWaveEvent(waveId: AttackWaveId): GameEvent {
                 defeated: true,
               },
             },
-            _logMessage: isFinalAttackWave(waveId)
-              ? FINAL_WAVE_VICTORY_MESSAGE(def.goldReward)
-              : VICTORY_MESSAGE(def.goldReward),
             _combatSummary: {
               goldReward: def.goldReward,
             },

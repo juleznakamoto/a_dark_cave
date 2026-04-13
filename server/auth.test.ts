@@ -4,6 +4,8 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 vi.mock('@supabase/supabase-js');
 vi.mock('../client/src/lib/supabase', () => ({
   getSupabaseClient: vi.fn(),
+  getCachedAuthUser: vi.fn(() => null),
+  isAuthStateReady: vi.fn(() => false),
 }));
 
 describe('Authentication', () => {
