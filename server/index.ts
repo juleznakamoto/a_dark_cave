@@ -236,6 +236,7 @@ app.get("/api/config", (req, res) => {
   const config = getSupabaseConfig();
   if (!config.supabaseUrl || !config.supabaseAnonKey) {
     log("⚠️ Supabase config not found in environment variables");
+    res.set("Cache-Control", "no-store");
     return res
       .status(500)
       .json({ error: "Supabase configuration not available" });
@@ -593,9 +594,9 @@ app.get("/api/admin/data", async (req, res) => {
         totalUserCount = Number(authPayload.total_user_count) || 0;
         const rms = authPayload.registration_method_stats as
           | {
-              emailRegistrations?: number;
-              googleRegistrations?: number;
-            }
+            emailRegistrations?: number;
+            googleRegistrations?: number;
+          }
           | undefined;
         if (rms && typeof rms === "object") {
           registrationMethodStats = {
@@ -1480,6 +1481,18 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
   const port = parseInt(process.env.PORT || "5000", 10);
+
+  if (process.env.NODE_ENV === "production") {
+    const cfg = getSupabaseConfig();
+    if (!cfg.supabaseUrl || !cfg.supabaseAnonKey) {
+      log(
+        "FATAL: Set VITE_SUPABASE_URL_PROD and VITE_SUPABASE_ANON_KEY_PROD on the server. Auth and /api/config require them.",
+      );
+      process.exit(1);
+    }
+    log("Supabase public config is present (production)");
+  }
+
   server.listen(
     {
       port,

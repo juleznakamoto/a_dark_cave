@@ -33,13 +33,57 @@ async function initializeSupabase(): Promise<SupabaseClient> {
       }
     });
   } else {
-    // In production, fetch config from server
-    const response = await fetch('/api/config');
-    if (!response.ok) {
-      throw new Error('Failed to load Supabase config');
+    // In production, fetch config from server (retry transient 5xx / network blips)
+    const maxAttempts = 4;
+    let lastStatus = 0;
+    let config: { supabaseUrl?: string; supabaseAnonKey?: string } | null = null;
+
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      try {
+        const response = await fetch("/api/config");
+        lastStatus = response.status;
+        if (response.ok) {
+          config = await response.json();
+          break;
+        }
+        const retryable =
+          response.status >= 500 ||
+          response.status === 429 ||
+          response.status === 408;
+        if (retryable && attempt < maxAttempts - 1) {
+          await new Promise((r) =>
+            setTimeout(r, 250 * Math.pow(2, attempt)),
+          );
+          continue;
+        }
+        throw new Error(`Failed to load Supabase config (${response.status})`);
+      } catch (e) {
+        if (e instanceof Error && e.message.startsWith("Failed to load")) {
+          throw e;
+        }
+        // Transient network / CORS-ish failures often surface as TypeError (message text varies by browser).
+        if (attempt < maxAttempts - 1 && e instanceof TypeError) {
+          await new Promise((r) =>
+            setTimeout(r, 250 * Math.pow(2, attempt)),
+          );
+          continue;
+        }
+        throw new Error(
+          lastStatus
+            ? `Failed to load Supabase config (${lastStatus})`
+            : "Failed to load Supabase config",
+        );
+      }
     }
 
-    const config = await response.json();
+    if (!config?.supabaseUrl || !config?.supabaseAnonKey) {
+      throw new Error(
+        lastStatus
+          ? `Failed to load Supabase config (${lastStatus})`
+          : "Failed to load Supabase config",
+      );
+    }
+
     logger.log('Loaded Supabase config from server');
 
     return createClient(config.supabaseUrl, config.supabaseAnonKey, {
@@ -63,11 +107,11 @@ export async function getSupabaseClient(): Promise<SupabaseClient> {
   if (!initPromise) {
     initPromise = initializeSupabase().then(client => {
       supabaseClient = client;
-      
+
       // Setup auth state listener once
       if (!authStateListenerSetup) {
         authStateListenerSetup = true;
-        
+
         // Listen to auth state changes with minimal overhead
         client.auth.onAuthStateChange((_event, session) => {
           const newUser = session?.user || null;
@@ -77,14 +121,14 @@ export async function getSupabaseClient(): Promise<SupabaseClient> {
           }
           authStateInitialized = true;
         });
-        
+
         // Initialize current session
         client.auth.getSession().then(({ data: { session } }) => {
           cachedAuthUser = session?.user || null;
           authStateInitialized = true;
         });
       }
-      
+
       return client;
     });
   }
