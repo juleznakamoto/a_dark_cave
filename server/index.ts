@@ -508,12 +508,16 @@ app.get("/api/admin/data", async (req, res) => {
 
     let totalUserCount = 0;
 
-    // Fetch data with 30-day filter for clicks, but 1 year for saves to support chart time ranges
-    // Use a high limit to get all results (Supabase default is 1000)
-    const QUERY_LIMIT = 10000000;
+    // Admin dashboard: cap rows and select only columns the UI needs (large JSON in game_state/clicks
+    // still dominates; avoid shipping unused table columns like clicks.id / purchases.id).
+    const ADMIN_DATA_CLICKS_LIMIT = 10_000;
+    const ADMIN_DATA_SAVES_LIMIT = 10_000;
     const oneYearAgo = new Date(now);
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
     const oneYearAgoFilter = oneYearAgo.toISOString();
+
+    const purchasesListColumns =
+      "user_id,item_id,item_name,price_paid,purchased_at,bundle_id,country,cruel_mode,currency,stripe_payment_intent_id,stripe_fx_quote_id,reporting_eur_cents,reporting_usd_cents";
 
     const [
       clicksResult,
@@ -524,16 +528,16 @@ app.get("/api/admin/data", async (req, res) => {
     ] = await Promise.all([
       adminClient
         .from("button_clicks")
-        .select("*")
+        .select("user_id,timestamp,clicks,resources")
         .gte("timestamp", filterDate)
         .order("timestamp", { ascending: false })
-        .limit(QUERY_LIMIT),
+        .limit(ADMIN_DATA_CLICKS_LIMIT),
       adminClient
         .from("game_saves")
-        .select("user_id, game_state, updated_at, created_at")
-        .or(`created_at.gte.${oneYearAgoFilter},updated_at.gte.${oneYearAgoFilter}`) // Load 1 year of data for both signups and activity
+        .select("user_id,username,game_state,updated_at,created_at")
+        .or(`created_at.gte.${oneYearAgoFilter},updated_at.gte.${oneYearAgoFilter}`)
         .order("updated_at", { ascending: false })
-        .limit(QUERY_LIMIT),
+        .limit(ADMIN_DATA_SAVES_LIMIT),
       adminClient.rpc("admin_marketing_dashboard_metrics"),
       adminClient.rpc("admin_auth_dashboard_stats"),
       adminClient.rpc("admin_purchase_metrics"),
@@ -658,7 +662,7 @@ app.get("/api/admin/data", async (req, res) => {
       const { data: purchasePage, error: purchasesPageError } =
         await adminClient
           .from("purchases")
-          .select("*")
+          .select(purchasesListColumns)
           .order("id", { ascending: true })
           .range(
             purchaseOffset,
