@@ -354,7 +354,7 @@ export const getPopulationProduction = (
   if (!excludeTemporary) {
     if (isGreatFeast) {
       baseProduction.forEach((prod) => {
-        prod.totalAmount = Math.ceil(prod.totalAmount * 4.0);
+        prod.totalAmount = Math.ceil(prod.totalAmount * 5.0);
       });
     } else if (isFeast) {
       baseProduction.forEach((prod) => {

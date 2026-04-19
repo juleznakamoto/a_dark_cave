@@ -417,7 +417,7 @@ export const feastTooltip: TooltipConfig = {
       return (
         <>
           <div className="font-bold">Great Village Feast</div>
-          <div>Production Bonus: 300%</div>
+          <div>Production Bonus: 400%</div>
           <div>{remainingMinutes} min remaining</div>
         </>
       );

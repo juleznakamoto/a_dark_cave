@@ -576,10 +576,10 @@ describe('Population Production Display Tests', () => {
 
       const totalPop = 5;
 
-      // Great feast 4x multiplier: 2 hunters produce (5*4)*2 = 40 food
-      expect(displayedEffects.food).toBe(40 - totalPop); // 40 - 5 = 35
-      expect(displayedEffects.fur).toBe(8); // (1*4)*2
-      expect(displayedEffects.bones).toBe(8); // (1*4)*2
+      // Great feast 5x multiplier: 2 hunters produce (5*5)*2 = 50 food
+      expect(displayedEffects.food).toBe(50 - totalPop); // 50 - 5 = 45
+      expect(displayedEffects.fur).toBe(10); // (1*5)*2
+      expect(displayedEffects.bones).toBe(10); // (1*5)*2
       expect(displayedEffects.wood).toBe(-totalPop);
     });
   });

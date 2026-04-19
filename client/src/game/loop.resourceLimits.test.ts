@@ -300,7 +300,7 @@ describe('Game Loop - Resource Limits Integration', () => {
       }
     });
 
-    it('should cap great feast 4x production', () => {
+    it('should cap great feast 5x production', () => {
       const store = useGameStore.getState();
 
       useGameStore.setState((state) => ({
@@ -322,7 +322,7 @@ describe('Game Loop - Resource Limits Integration', () => {
         },
       }));
 
-      // Great feast 4x production (5 hunters * 5 food * 4 = 100 food)
+      // Great feast 5x production (default blessings e.g. sharp_aim can add per-hunter food; 50 * 5 = 250 food)
       const production = getPopulationProduction('hunter', 5, useGameStore.getState());
       const foodProd = production.find(p => p.resource === 'food');
 
