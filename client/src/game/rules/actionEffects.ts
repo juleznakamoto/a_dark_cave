@@ -36,9 +36,14 @@ export const FOCUS_ELIGIBLE_ACTIONS = [
 import { CROWS_EYE_UPGRADES } from "./skillUpgrades";
 import { getGameActions } from "./actionsRegistry";
 
-const evaluateCondition = (condition: string, state: GameState): boolean => {
-  const isNegated = condition.startsWith("!");
-  const path = isNegated ? condition.slice(1) : condition;
+/** Single path or leading-! path only (no && / ||). */
+const evaluateConditionAtom = (
+  condition: string,
+  state: GameState,
+): boolean => {
+  const trimmed = condition.trim();
+  const isNegated = trimmed.startsWith("!");
+  const path = isNegated ? trimmed.slice(1) : trimmed;
   const pathParts = path.split(".");
   let current: any = state;
 
@@ -52,6 +57,33 @@ const evaluateCondition = (condition: string, state: GameState): boolean => {
   }
 
   return isNegated ? !current : !!current;
+};
+
+/**
+ * String conditions used on probability effects may combine clauses with && / ||.
+ * Previously the whole string was treated as one dot-path, so e.g.
+ * `!story.seen.mapFragmentHuntFound && !story.seen.swampMapAssembled` never worked.
+ */
+const evaluateCondition = (condition: string, state: GameState): boolean => {
+  const trimmed = condition.trim();
+  if (!trimmed) return true;
+
+  const orSegments = trimmed.split(/\s*\|\|\s*/);
+  if (orSegments.length > 1) {
+    return orSegments.some((seg) => evaluateConditionAnd(seg.trim(), state));
+  }
+  return evaluateConditionAnd(trimmed, state);
+};
+
+const evaluateConditionAnd = (
+  condition: string,
+  state: GameState,
+): boolean => {
+  const andParts = condition.split(/\s*&&\s*/);
+  if (andParts.length > 1) {
+    return andParts.every((part) => evaluateConditionAtom(part, state));
+  }
+  return evaluateConditionAtom(condition, state);
 };
 
 /**
