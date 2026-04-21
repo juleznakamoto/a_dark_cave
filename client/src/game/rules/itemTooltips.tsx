@@ -212,6 +212,13 @@ export function renderItemTooltip(
       ? getMapFragmentCount(useGameStore.getState() as GameState)
       : 0;
 
+  const mapFragmentMoonGlyph =
+    itemId === "map_fragment"
+      ? MAP_FRAGMENT_MOON_GLYPHS[
+      Math.min(mapFragmentCount, MAP_FRAGMENT_MOON_GLYPHS.length - 1)
+      ]
+      : null;
+
   return (
     <div className="text-xs">
       {effect.name &&
@@ -219,21 +226,10 @@ export function renderItemTooltip(
           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
             <span className="font-bold">{effect.name}</span>
             <span
-              className="font-noto-symbols-2 font-normal tabular-nums tracking-wide select-none"
+              className="font-noto-symbols-2 font-normal tabular-nums tracking-wide select-none text-foreground"
               aria-label={`${mapFragmentCount} of ${MAP_FRAGMENT_TOTAL} map fragments`}
             >
-              {MAP_FRAGMENT_MOON_GLYPHS.map((glyph, i) => (
-                <span
-                  key={i}
-                  className={
-                    i < mapFragmentCount
-                      ? "text-foreground"
-                      : "text-gray-500"
-                  }
-                >
-                  {glyph}
-                </span>
-              ))}
+              {mapFragmentMoonGlyph}
             </span>
           </div>
         ) : (
