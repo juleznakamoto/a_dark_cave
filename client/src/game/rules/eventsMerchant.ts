@@ -637,12 +637,6 @@ const sellTrades = [
   ),
 ];
 
-/** Offered in addition to the one random tool trade (not part of the random pool). */
-const MAP_FRAGMENT_MERCHANT_TRADE_IDS = new Set([
-  "trade_map_fragment_wooden",
-  "trade_map_fragment_stone",
-]);
-
 const toolTrades = [
   {
     id: "trade_book_of_trials",
@@ -1094,18 +1088,18 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
     false,
   );
 
-  // Filter tool trades (map fragments are always listed separately when available)
-  const filteredToolTrades = toolTrades.filter((trade) => {
-    return (
-      trade.condition(state) &&
-      !MAP_FRAGMENT_MERCHANT_TRADE_IDS.has(trade.id)
-    );
-  });
+  // At most one special (book/tool/schematic/weapon/relic) trade per visit — all eligible
+  // options share one random draw, including map fragments.
+  const eligibleSpecialTrades = toolTrades.filter((trade) =>
+    trade.condition(state),
+  );
 
   const availableToolTrades: MerchantTradeData[] = [];
-  if (filteredToolTrades.length > 0) {
+  if (eligibleSpecialTrades.length > 0) {
     const trade =
-      filteredToolTrades[Math.floor(Math.random() * filteredToolTrades.length)];
+      eligibleSpecialTrades[
+      Math.floor(Math.random() * eligibleSpecialTrades.length)
+      ];
 
     // Tool trades always cost gold (no 1.1 markup - use exact discounted price)
     const goldCost = trade.costs[0].amounts[0];
@@ -1115,29 +1109,7 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
       id: trade.id,
       label: trade.label,
       cost: `${discountedCost} Gold`,
-      buyResource: trade.give, // Category: "tool", "book", "schematic", or "weapon"
-      buyAmount: 1,
-      buyItem: trade.giveItem, // Specific item ID: "skull_lantern", "giant_trap", etc.
-      sellResource: "gold",
-      sellAmount: discountedCost,
-      executed: false,
-    });
-  }
-
-  for (const trade of toolTrades) {
-    if (
-      !MAP_FRAGMENT_MERCHANT_TRADE_IDS.has(trade.id) ||
-      !trade.condition(state)
-    ) {
-      continue;
-    }
-    const goldCost = trade.costs[0].amounts[0];
-    const discountedCost = Math.ceil(goldCost * (1 - discount));
-    availableToolTrades.push({
-      id: trade.id,
-      label: trade.label,
-      cost: `${discountedCost} Gold`,
-      buyResource: trade.give,
+      buyResource: trade.give, // Category: "tool", "book", "schematic", "weapon", "relic", …
       buyAmount: 1,
       buyItem: trade.giveItem,
       sellResource: "gold",
