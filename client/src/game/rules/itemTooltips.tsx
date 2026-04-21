@@ -229,13 +229,10 @@ export function renderItemTooltip(
         (itemId === "map_fragment" ? (
           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
             <span className="font-bold">{effect.name}</span>
-            <span className="tabular-nums font-medium text-foreground">
-              {mapFragmentCount}/{MAP_FRAGMENT_TOTAL}
-            </span>
             <span
               className={`font-noto-symbols-2 font-normal tabular-nums tracking-wide select-none ${mapFragmentCount > 0 ? "text-foreground" : "text-gray-500"
                 }`}
-              aria-hidden
+              aria-label={`${mapFragmentCount} of ${MAP_FRAGMENT_TOTAL} map fragments`}
             >
               {mapFragmentMoonGlyph}
             </span>

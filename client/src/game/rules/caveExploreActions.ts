@@ -135,7 +135,8 @@ const caveItems = {
       key: "mapFragmentCaveFound",
       probability: 0.005,
       category: "story",
-      stageOnly: true,
+      // Not stageOnly: inherited to deeper actions (Descend Further → Citadel).
+      // stageOnly would skip this whenever currentIndex !== ventureDeeper (e.g. exploreCitadel).
       condition:
         "!story.seen.mapFragmentCaveFound && !story.seen.swampMapAssembled",
       logMessage:
