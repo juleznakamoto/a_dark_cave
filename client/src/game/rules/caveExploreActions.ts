@@ -135,12 +135,9 @@ const caveItems = {
       key: "mapFragmentCaveFound",
       probability: 0.005,
       category: "story",
-      // Not stageOnly: inherited to deeper actions (Descend Further → Citadel).
-      // stageOnly would skip this whenever currentIndex !== ventureDeeper (e.g. exploreCitadel).
       condition:
         "!story.seen.mapFragmentCaveFound && !story.seen.swampMapAssembled",
-      logMessage:
-        "On the cave floor you find a tattered fragment of a map.",
+      logMessage: "On the cave floor you find a tattered fragment of a map.",
     },
   ],
   descendFurther: [
@@ -273,25 +270,36 @@ function getInheritedItems(actionId: string) {
             ? ` && !story.seen.${item.eventId}`
             : "";
         const itemCondition =
-          "condition" in item && typeof (item as { condition?: string }).condition === "string"
+          "condition" in item &&
+          typeof (item as { condition?: string }).condition === "string"
             ? (item as { condition: string }).condition
             : undefined;
         const baseCondition =
           itemCondition != null
             ? (state: GameState) => {
-              const cat = (state as Record<string, unknown>)[category];
-              if (cat && typeof cat === "object" && (cat as Record<string, unknown>)[item.key]) return false;
-              if ("eventId" in item && item.eventId && state.story?.seen?.[item.eventId]) return false;
-              const isNegated = itemCondition.startsWith("!");
-              const path = isNegated ? itemCondition.slice(1) : itemCondition;
-              const parts = path.split(".");
-              let cur: unknown = state;
-              for (const p of parts) {
-                cur = (cur as Record<string, unknown>)?.[p];
-                if (cur === undefined) return isNegated;
+                const cat = (state as Record<string, unknown>)[category];
+                if (
+                  cat &&
+                  typeof cat === "object" &&
+                  (cat as Record<string, unknown>)[item.key]
+                )
+                  return false;
+                if (
+                  "eventId" in item &&
+                  item.eventId &&
+                  state.story?.seen?.[item.eventId]
+                )
+                  return false;
+                const isNegated = itemCondition.startsWith("!");
+                const path = isNegated ? itemCondition.slice(1) : itemCondition;
+                const parts = path.split(".");
+                let cur: unknown = state;
+                for (const p of parts) {
+                  cur = (cur as Record<string, unknown>)?.[p];
+                  if (cur === undefined) return isNegated;
+                }
+                return isNegated ? !cur : !!cur;
               }
-              return isNegated ? !cur : !!cur;
-            }
             : basePath + eventPart;
         inheritedItems[`${category}.${item.key}`] = {
           probability: Math.min(adjustedProbability, 1.0),
@@ -697,7 +705,8 @@ export function handleLightFire(
   }
 
   const playlightNewMember =
-    isPlaylightReferralUrl() && state.story.seen.playlightMemberGoldGranted !== true;
+    isPlaylightReferralUrl() &&
+    state.story.seen.playlightMemberGoldGranted !== true;
 
   if (playlightNewMember) {
     const mergedRes = result.stateUpdates.resources
