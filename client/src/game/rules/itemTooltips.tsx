@@ -18,7 +18,13 @@ import { CRUEL_MODE } from "../cruelMode";
 import { getMapFragmentCount, MAP_FRAGMENT_TOTAL } from "../mapFragments";
 import type { GameState } from "@shared/schema";
 
+/** Moon phase for n fragments: 1→◔, 2→◑, 3→◕, 4→● (index = n − 1). */
 const MAP_FRAGMENT_MOON_GLYPHS = ["◔", "◑", "◕", "●"] as const;
+
+function mapFragmentMoonGlyphIndex(fragmentCount: number): number {
+  if (fragmentCount <= 0) return 0;
+  return Math.min(fragmentCount - 1, MAP_FRAGMENT_MOON_GLYPHS.length - 1);
+}
 
 /** Format unit probability (0–1) as a % label; keeps one decimal when needed so 2.5% does not round to 3%. */
 function formatProbabilityPercent(probability: number): string {
@@ -209,14 +215,12 @@ export function renderItemTooltip(
 
   const mapFragmentCount =
     itemId === "map_fragment"
-      ? getMapFragmentCount(useGameStore.getState() as GameState)
+      ? getMapFragmentCount(useGameStore.getState() as unknown as GameState)
       : 0;
 
   const mapFragmentMoonGlyph =
     itemId === "map_fragment"
-      ? MAP_FRAGMENT_MOON_GLYPHS[
-      Math.min(mapFragmentCount, MAP_FRAGMENT_MOON_GLYPHS.length - 1)
-      ]
+      ? MAP_FRAGMENT_MOON_GLYPHS[mapFragmentMoonGlyphIndex(mapFragmentCount)]
       : null;
 
   return (
@@ -225,9 +229,13 @@ export function renderItemTooltip(
         (itemId === "map_fragment" ? (
           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
             <span className="font-bold">{effect.name}</span>
+            <span className="tabular-nums font-medium text-foreground">
+              {mapFragmentCount}/{MAP_FRAGMENT_TOTAL}
+            </span>
             <span
-              className="font-noto-symbols-2 font-normal tabular-nums tracking-wide select-none text-foreground"
-              aria-label={`${mapFragmentCount} of ${MAP_FRAGMENT_TOTAL} map fragments`}
+              className={`font-noto-symbols-2 font-normal tabular-nums tracking-wide select-none ${mapFragmentCount > 0 ? "text-foreground" : "text-gray-500"
+                }`}
+              aria-hidden
             >
               {mapFragmentMoonGlyph}
             </span>
