@@ -78,6 +78,13 @@ body {
   }
 }
 
+@layer utilities {
+
+  /* Force symbol blocks (e.g. map fragment moons) to use the loaded Noto face */
+  .font-noto-symbols-2 {
+    font-family: "Noto Sans Symbols 2", ui-sans-serif, system-ui, sans-serif;
+  }
+}
 
 .dark {
   --background: hsl(0, 0%, 5%);

@@ -1125,6 +1125,40 @@ export function handleBuildDarkEstate(
   return estateResult;
 }
 
+export function handleBuildBlackEstate(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const constructionResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildBlackEstate",
+    "blackEstate",
+  );
+
+  if (!constructionResult.stateUpdates) {
+    constructionResult.stateUpdates = {};
+  }
+
+  constructionResult.stateUpdates.relics = {
+    ...state.relics,
+    ...(constructionResult.stateUpdates.relics || {}),
+    black_wood: false,
+  };
+
+  if (state.buildings.blackEstate === 0) {
+    constructionResult.logEntries!.push({
+      id: `black-estate-built-${Date.now()}`,
+      message:
+        "The Black Estate rises from the hill, encircled by a veil of mist.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return constructionResult;
+}
+
 export function handleBuildChitinPlating(
   state: GameState,
   result: ActionResult,

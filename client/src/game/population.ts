@@ -381,7 +381,8 @@ export const getPopulationProduction = (
   // Apply heartfire multiplier if active
   const heartfireLevel = state.heartfireState?.level || 0;
   if (heartfireLevel > 0) {
-    const heartfireBonus = 1 + heartfireLevel * 0.05;
+    const perLevel = state.blessings?.ebon_grace ? 0.1 : 0.05;
+    const heartfireBonus = 1 + heartfireLevel * perLevel;
     baseProduction.forEach((prod) => {
       // Only apply to positive production (don't increase consumption)
       if (prod.totalAmount > 0) {
@@ -498,12 +499,15 @@ export function getMaxPopulation(state: GameState): number {
     templeBonus = 8;
   }
 
+  const blackEstateCapacity = (state.buildings.blackEstate || 0) * 10;
+
   return (
     woodenHutCapacity +
     stoneHutCapacity +
     longhouseCapacity +
     furTentsCapacity +
-    templeBonus
+    templeBonus +
+    blackEstateCapacity
   );
 }
 

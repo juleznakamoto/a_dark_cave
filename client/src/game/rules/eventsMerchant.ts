@@ -637,6 +637,12 @@ const sellTrades = [
   ),
 ];
 
+/** Offered in addition to the one random tool trade (not part of the random pool). */
+const MAP_FRAGMENT_MERCHANT_TRADE_IDS = new Set([
+  "trade_map_fragment_wooden",
+  "trade_map_fragment_stone",
+]);
+
 const toolTrades = [
   {
     id: "trade_book_of_trials",
@@ -790,6 +796,30 @@ const toolTrades = [
     costs: [{ resource: "gold", amounts: [2000] }],
     message:
       "You purchase the tarnished compass. Artifact of the vanished civilization, its needle points to hidden places.",
+  },
+  {
+    id: "trade_map_fragment_wooden",
+    label: "Map Fragment",
+    give: "relic",
+    giveItem: "map_fragment",
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 6 &&
+      !state.story.seen.mapFragmentMerchantWoodenBought &&
+      !state.story.seen.swampMapAssembled,
+    costs: [{ resource: "gold", amounts: [1000] }],
+    message: "You purchase a tattered map fragment.",
+  },
+  {
+    id: "trade_map_fragment_stone",
+    label: "Map Fragment",
+    give: "relic",
+    giveItem: "map_fragment",
+    condition: (state: GameState) =>
+      state.buildings.stoneHut >= 6 &&
+      !state.story.seen.mapFragmentMerchantStoneBought &&
+      !state.story.seen.swampMapAssembled,
+    costs: [{ resource: "gold", amounts: [2000] }],
+    message: "You purchase a tattered map fragment.",
   },
   {
     id: "trade_crow_harness",
@@ -1064,9 +1094,12 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
     false,
   );
 
-  // Filter tool trades
+  // Filter tool trades (map fragments are always listed separately when available)
   const filteredToolTrades = toolTrades.filter((trade) => {
-    return trade.condition(state);
+    return (
+      trade.condition(state) &&
+      !MAP_FRAGMENT_MERCHANT_TRADE_IDS.has(trade.id)
+    );
   });
 
   const availableToolTrades: MerchantTradeData[] = [];
@@ -1085,6 +1118,28 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
       buyResource: trade.give, // Category: "tool", "book", "schematic", or "weapon"
       buyAmount: 1,
       buyItem: trade.giveItem, // Specific item ID: "skull_lantern", "giant_trap", etc.
+      sellResource: "gold",
+      sellAmount: discountedCost,
+      executed: false,
+    });
+  }
+
+  for (const trade of toolTrades) {
+    if (
+      !MAP_FRAGMENT_MERCHANT_TRADE_IDS.has(trade.id) ||
+      !trade.condition(state)
+    ) {
+      continue;
+    }
+    const goldCost = trade.costs[0].amounts[0];
+    const discountedCost = Math.ceil(goldCost * (1 - discount));
+    availableToolTrades.push({
+      id: trade.id,
+      label: trade.label,
+      cost: `${discountedCost} Gold`,
+      buyResource: trade.give,
+      buyAmount: 1,
+      buyItem: trade.giveItem,
       sellResource: "gold",
       sellAmount: discountedCost,
       executed: false,

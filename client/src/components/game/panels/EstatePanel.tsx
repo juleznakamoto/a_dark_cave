@@ -358,6 +358,9 @@ export default function EstatePanel() {
       (s, level) => ({ combatSkills: { ...s.combatSkills, bloodflameSphereLevel: level } }),
     );
 
+  const blackEstateBonusHours = (state.buildings.blackEstate || 0) * 3;
+  const blackEstateBonusIntensity = (state.buildings.blackEstate || 0) * 5;
+
   const currentLengthUpgrade = SLEEP_LENGTH_UPGRADES[sleepUpgrades.lengthLevel];
   const nextLengthUpgrade =
     SLEEP_LENGTH_UPGRADES[sleepUpgrades.lengthLevel + 1];
@@ -557,7 +560,9 @@ export default function EstatePanel() {
               growAnimationMs={ESTATE_BAR_GROW_ANIMATION_MS}
             />
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>{currentLengthUpgrade.hours}h</span>
+              <span>
+                {currentLengthUpgrade.hours + blackEstateBonusHours}h
+              </span>
             </div>
           </div>
 
@@ -627,7 +632,11 @@ export default function EstatePanel() {
               growAnimationMs={ESTATE_BAR_GROW_ANIMATION_MS}
             />
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>{currentIntensityUpgrade.percentage}%</span>
+              <span>
+                {currentIntensityUpgrade.percentage +
+                  blackEstateBonusIntensity}
+                %
+              </span>
             </div>
           </div>
         </div>

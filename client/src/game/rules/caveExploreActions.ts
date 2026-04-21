@@ -131,6 +131,16 @@ const caveItems = {
       alsoSet: { "story.seen.silverSackFound": true },
       stageOnly: true, // Only on Venture Deeper, not inherited to later stages
     },
+    {
+      key: "mapFragmentCaveFound",
+      probability: 0.005,
+      category: "story",
+      stageOnly: true,
+      condition:
+        "!story.seen.mapFragmentCaveFound && !story.seen.swampMapAssembled",
+      logMessage:
+        "On the cave floor you find a tattered fragment of a map.",
+    },
   ],
   descendFurther: [
     {
@@ -237,6 +247,22 @@ function getInheritedItems(actionId: string) {
             ? { condition: requireCaveExplored(baseCondition) }
             : baseCondition && { condition: baseCondition }),
           ...("alsoSet" in item && item.alsoSet && { alsoSet: item.alsoSet }),
+        };
+      } else if (category === "story") {
+        const itemKey = item.key as string;
+        const baseCondition =
+          "condition" in item && typeof item.condition === "string"
+            ? item.condition
+            : undefined;
+        const fullPath = `story.seen.${itemKey}`;
+        inheritedItems[fullPath] = {
+          probability: Math.min(adjustedProbability, 1.0),
+          value: true,
+          ...(isExploreCaveStage
+            ? { condition: requireCaveExplored(baseCondition) }
+            : baseCondition && { condition: baseCondition }),
+          ...("logMessage" in item &&
+            item.logMessage && { logMessage: item.logMessage }),
         };
       } else {
         // Clothing/relic: boolean item

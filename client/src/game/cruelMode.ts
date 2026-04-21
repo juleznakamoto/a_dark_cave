@@ -148,6 +148,11 @@ export const CRUEL_MODE = {
       perStoneHut: 0.01,
       whenCruel: 0.0025,
     },
+    huntMapFragmentProb: {
+      base: 0.0005,
+      perStoneHut: 0.001,
+      whenCruel: 0.0005,
+    },
     giantBearTrap: {
       fightChance: { base: 0.1, perStrength: 0.02, whenCruel: 0.05 },
       victoryDeaths: { randMax: 4, whenCruel: 1 },
@@ -182,6 +187,7 @@ export const CRUEL_MODE = {
     collapsedTower: { base: 10, whenCruel: 4 },
     forestCave: { base: 10, whenCruel: 4 },
     risingSmoke: { base: 16, whenCruel: 4 },
+    swampSanctuary: { base: 20, whenCruel: 4 },
   },
 
   paleFigure: {

@@ -132,6 +132,7 @@ import {
   handleBuildBlackMonolith,
   handleBuildMasterworkFoundry,
   handleBuildDarkEstate,
+  handleBuildBlackEstate,
   handleBuildPillarOfClarity,
   handleBuildBoneyard,
   handleBuildBoneTemple,
@@ -154,6 +155,7 @@ import {
   handleCastleRuins,
   handleHillGrave,
   handleSunkenTemple,
+  handleSwampSanctuary,
   handlecollapsedTower,
   handleForestCave,
   handleBlackreachCanyon,
@@ -524,6 +526,8 @@ export function executeGameAction(
       return handleBuildBlackMonolith(state, result);
     case "buildDarkEstate":
       return handleBuildDarkEstate(state, result);
+    case "buildBlackEstate":
+      return handleBuildBlackEstate(state, result);
     case "buildPillarOfClarity":
       return handleBuildPillarOfClarity(state, result);
     case "buildBoneyard":
@@ -564,6 +568,8 @@ export function executeGameAction(
       return handleHillGrave(state, result);
     case "sunkenTemple":
       return handleSunkenTemple(state, result);
+    case "swampSanctuary":
+      return handleSwampSanctuary(state, result);
     case "collapsedTower":
       return handlecollapsedTower(state, result);
     case "forestCave":

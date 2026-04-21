@@ -489,11 +489,39 @@ export class EventManager {
               ...(state.weapons || {}),
               [trade.buyItem]: true,
             };
+          } else if (trade.buyResource === "relic") {
+            if (trade.buyItem === "map_fragment") {
+              stateChanges.story = {
+                ...stateChanges.story,
+                seen: {
+                  ...state.story.seen,
+                  ...(choiceId === "trade_map_fragment_wooden"
+                    ? { mapFragmentMerchantWoodenBought: true }
+                    : choiceId === "trade_map_fragment_stone"
+                      ? { mapFragmentMerchantStoneBought: true }
+                      : {}),
+                },
+              };
+            } else if (trade.buyItem) {
+              stateChanges.relics = {
+                ...(state.relics || {}),
+                [trade.buyItem]: true,
+              };
+            }
           } else if (trade.buyResource && trade.buyAmount !== undefined) {
             // Regular resource - ensure we don't pollute resources with item IDs
             // The buyResource for item trades is "book", "tool", etc. but the actual item ID is in buyItem
             // For regular resources, buyResource is the resource name (e.g. "food", "gold")
-            if (!["book", "tool", "schematic", "weapon", "consumable"].includes(trade.buyResource)) {
+            if (
+              ![
+                "book",
+                "tool",
+                "schematic",
+                "weapon",
+                "consumable",
+                "relic",
+              ].includes(trade.buyResource)
+            ) {
               if (!stateChanges.resources) {
                 stateChanges.resources = { ...state.resources };
               }

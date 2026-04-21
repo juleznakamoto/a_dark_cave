@@ -1,5 +1,6 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
+import { getMapFragmentCount, MAP_FRAGMENT_TOTAL } from "../mapFragments";
 
 export const storyEvents: Record<string, GameEvent> = {
   portalDiscovered: {
@@ -459,6 +460,49 @@ export const storyEvents: Record<string, GameEvent> = {
         }),
       },
     ],
+  },
+
+  mapFragmentsAssembled: {
+    id: "mapFragmentsAssembled",
+    title: "A Map Revealed",
+    condition: (state: GameState) =>
+      !state.story.seen.swampMapAssembled &&
+      getMapFragmentCount(state) >= MAP_FRAGMENT_TOTAL,
+    message:
+      "You piece together the map fragments. They reveal the map to a forgotten sanctuary deep in the swamp.",
+    priority: 10,
+    repeatable: false,
+    showAsTimedTab: true,
+    timedTabDuration: 3 * 60 * 1000,
+    skipEventLog: true,
+    choices: [
+      {
+        id: "continue",
+        label: "Continue",
+        effect: (state: GameState) => ({
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              swampMapAssembled: true,
+            },
+          },
+        }),
+      },
+    ],
+    fallbackChoice: {
+      id: "continue",
+      label: "Continue",
+      effect: (state: GameState) => ({
+        story: {
+          ...state.story,
+          seen: {
+            ...state.story.seen,
+            swampMapAssembled: true,
+          },
+        },
+      }),
+    },
   },
 
 };

@@ -19,7 +19,7 @@ import {
   getTotalBuildingCostReduction,
 } from "@/game/rules/effectsCalculation";
 import { bookEffects, fellowshipEffects } from "@/game/rules/effects";
-import { gameStateSchema, FELLOWSHIP_MEMBER_ORDER } from "@shared/schema";
+import { gameStateSchema, FELLOWSHIP_MEMBER_ORDER, type GameState } from "@shared/schema";
 import {
   getStorageLimitText,
   isResourceLimited,
@@ -31,6 +31,7 @@ import {
   shouldExcludeFromBuildingsSection,
 } from "@/game/buildingHierarchy";
 import { getTotalPopulationEffects } from "@/game/population";
+import { getMapFragmentCount } from "@/game/mapFragments";
 
 // Extract property order from schema by parsing defaults
 const defaultGameState = gameStateSchema.parse({});
@@ -272,6 +273,10 @@ export default function SidePanel() {
     }));
 
   // Dynamically generate relic items from state (whispering_cube always first)
+  const mapFragmentCount = getMapFragmentCount(gameState as GameState);
+  const showMapFragmentRow =
+    mapFragmentCount > 0 && !gameState.story?.seen?.swampMapAssembled;
+
   const relicItems = Object.entries(gameState.relics || {})
     .filter(([key, value]) => value === true)
     .map(([key, value]) => ({
@@ -287,6 +292,19 @@ export default function SidePanel() {
       if (b.id === "whispering_cube") return 1;
       return 0;
     });
+
+  if (showMapFragmentRow) {
+    const mapRow = {
+      id: "map_fragment",
+      label: clothingEffects.map_fragment?.name || "Map Fragment",
+      value: mapFragmentCount,
+      testId: "relic-map_fragment",
+      visible: true,
+      tooltip: true,
+    };
+    const insertAt = relicItems[0]?.id === "whispering_cube" ? 1 : 0;
+    relicItems.splice(insertAt, 0, mapRow);
+  }
 
   // Dynamically generate book items from state
   const bookItems = Object.entries(gameState.books || {})

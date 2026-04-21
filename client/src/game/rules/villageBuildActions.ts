@@ -2073,6 +2073,40 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 0,
   },
 
+  buildBlackEstate: {
+    id: "buildBlackEstate",
+    label: "Black Estate",
+    description:
+      "Towering estate of black wood and stone, overlooking the city.",
+    tooltipEffects: [
+      "Sleep Length +3 hours",
+      "Sleep Intensity +5%",
+      "+10 Max Villagers",
+    ],
+    building: true,
+    show_when: {
+      1: {
+        "buildings.darkEstate": 1,
+        "buildings.blackEstate": 0,
+        "relics.black_wood": true,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 10000,
+        "resources.adamant": 5000,
+        "relics.black_wood": true,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.blackEstate": 1,
+      },
+    },
+    executionTime: 120,
+    cooldown: 0,
+  },
+
   buildSupplyHut: {
     id: "buildSupplyHut",
     label: "Supply Hut",

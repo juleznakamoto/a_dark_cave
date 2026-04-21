@@ -1186,6 +1186,14 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {},
   },
 
+  map_fragment: {
+    id: "map_fragment",
+    name: "Map Fragment",
+    description:
+      "Fragments of a map leading to an unknown place.",
+    bonuses: {},
+  },
+
   survivors_notes: {
     id: "survivors_notes",
     name: "Survivor's Notes",
@@ -1207,6 +1215,18 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     name: "Bloodstone",
     description: "Crimson gem pulsing with dark energy",
     bonuses: {},
+  },
+
+  black_wood: {
+    id: "black_wood",
+    name: "Black Wood",
+    description:
+      "A slab of dense, light-drinking wood from the sanctuary tree.",
+    bonuses: {
+      generalBonuses: {
+        madness: 5,
+      },
+    },
   },
 
   frostglass: {
@@ -1322,6 +1342,18 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         luck: 5,
+        knowledge: 5,
+      },
+    },
+  },
+
+  ebon_grace: {
+    id: "ebon_grace",
+    name: "Ebon Grace",
+    description:
+      "A dark benediction. Your mind expands, and the hearth fire burns twice as bright.",
+    bonuses: {
+      generalBonuses: {
         knowledge: 5,
       },
     },

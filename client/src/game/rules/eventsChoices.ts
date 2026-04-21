@@ -2474,4 +2474,71 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  swampSanctuaryChoice: {
+    id: "swampSanctuaryChoice",
+    condition: () => false,
+    title: "Swamp Sanctuary",
+    message:
+      "Your expedition reaches the forgotten swamp sanctuary. Crumbling ruins encircle a massive tree of dark black wood. What do you do?",
+    priority: 0,
+    repeatable: false,
+    choices: [
+      {
+        id: "chopBlackTree",
+        label: "Chop down tree",
+        effect: (state: GameState) => ({
+          relics: {
+            ...state.relics,
+            black_wood: true,
+          },
+          stats: {
+            ...state.stats,
+            madnessFromEvents: (state.stats.madnessFromEvents || 0) + 5,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              swampSanctuaryChoiceMade: true,
+            },
+          },
+          _logMessage:
+            "The black wood resists, but your people bring it down. You claim the black cursed timber.",
+        }),
+      },
+      {
+        id: "sacrificeAtTree",
+        label: "Sacrifice animals at the tree",
+        cost: "1000 Food",
+        effect: (state: GameState) => {
+          if ((state.resources.food || 0) < 1000) {
+            return {
+              _logMessage:
+                "You have not enough food for a worthy offering. The tree waits.",
+            };
+          }
+          return {
+            resources: {
+              ...state.resources,
+              food: (state.resources.food || 0) - 1000,
+            },
+            blessings: {
+              ...state.blessings,
+              ebon_grace: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                swampSanctuaryChoiceMade: true,
+              },
+            },
+            _logMessage:
+              "Blood and smoke rise from the offering. A chill grace settles on the village.",
+          };
+        },
+      },
+    ],
+  },
 };

@@ -206,6 +206,7 @@ export const gameStateSchema = z.object({
       necromancer_blood: z.boolean().default(false),
       bone_devourer_blood: z.boolean().default(false),
       survivors_notes: z.boolean().default(false),
+      black_wood: z.boolean().default(false),
     })
     .default({}),
   fellowship: z.object(fellowshipShape).default({}),
@@ -225,6 +226,7 @@ export const gameStateSchema = z.object({
       fishers_hand: z.boolean().default(false),
       survivors_last_words: z.boolean().default(false),
       blood_baptized: z.boolean().default(false),
+      ebon_grace: z.boolean().default(false),
     })
     .default({}),
   books: z
@@ -290,6 +292,7 @@ export const gameStateSchema = z.object({
       consecratedPaleCross: z.number().default(0),
       pillarOfClarity: z.number().default(0),
       darkEstate: z.number().default(0),
+      blackEstate: z.number().default(0),
       heartfire: z.number().default(0),
       chitinPlating: z.number().default(0),
       coinhouse: z.number().default(0),

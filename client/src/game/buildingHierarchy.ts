@@ -53,6 +53,9 @@ export const BUILDING_HIERARCHIES: Record<string, string[]> = {
   // Clerk chain
   clerk: ["clerksHut", "scriptorium", "inkwardenAcademy"],
 
+  // Estate chain
+  estate: ["darkEstate", "blackEstate"],
+
   // Investment hall chain
   investmentHall: ["coinhouse", "bank", "treasury"],
 };

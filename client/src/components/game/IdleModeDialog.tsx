@@ -219,6 +219,7 @@ export default function IdleModeDialog() {
     sleepUpgrades,
     gameId,
     devMode,
+    buildings,
   } = useGameStore();
   const [accumulatedResources, setAccumulatedResources] = useState<
     Record<string, number>
@@ -233,13 +234,18 @@ export default function IdleModeDialog() {
 
   const state = useGameStore.getState();
 
-  // Get current sleep duration and multiplier from upgrades
+  // Get current sleep duration and multiplier from upgrades (+ Black Estate)
+  const blackEstateCount = buildings?.blackEstate ?? 0;
+  const estateBonusHours = blackEstateCount * 3;
+  const estateBonusIntensityPct = blackEstateCount * 5;
   const sleepLengthConfig =
     SLEEP_LENGTH_UPGRADES[sleepUpgrades?.lengthLevel || 0];
   const sleepIntensityConfig =
     SLEEP_INTENSITY_UPGRADES[sleepUpgrades?.intensityLevel || 0];
-  const IDLE_DURATION_MS = sleepLengthConfig.hours * 60 * 60 * 1000;
-  const PRODUCTION_SPEED_MULTIPLIER = sleepIntensityConfig.percentage / 100;
+  const IDLE_DURATION_MS =
+    (sleepLengthConfig.hours + estateBonusHours) * 60 * 60 * 1000;
+  const PRODUCTION_SPEED_MULTIPLIER =
+    (sleepIntensityConfig.percentage + estateBonusIntensityPct) / 100;
 
   // Reset local state when game changes (new game started)
   useEffect(() => {

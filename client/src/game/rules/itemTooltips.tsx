@@ -15,6 +15,10 @@ import { villageBuildActions } from "./villageBuildActions";
 import { capitalizeWords } from "@/lib/utils";
 import { useGameStore } from "../state";
 import { CRUEL_MODE } from "../cruelMode";
+import { getMapFragmentCount, MAP_FRAGMENT_TOTAL } from "../mapFragments";
+import type { GameState } from "@shared/schema";
+
+const MAP_FRAGMENT_MOON_GLYPHS = ["◔", "◑", "◕", "●"] as const;
 
 /** Format unit probability (0–1) as a % label; keeps one decimal when needed so 2.5% does not round to 3%. */
 function formatProbabilityPercent(probability: number): string {
@@ -203,9 +207,38 @@ export function renderItemTooltip(
     madnessValue += CRUEL_MODE.itemMadness.highMadnessExtra;
   }
 
+  const mapFragmentCount =
+    itemId === "map_fragment"
+      ? getMapFragmentCount(useGameStore.getState() as GameState)
+      : 0;
+
   return (
     <div className="text-xs">
-      {effect.name && <div className="font-bold">{effect.name}</div>}
+      {effect.name &&
+        (itemId === "map_fragment" ? (
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
+            <span className="font-bold">{effect.name}</span>
+            <span
+              className="font-noto-symbols-2 font-normal tabular-nums tracking-wide select-none"
+              aria-label={`${mapFragmentCount} of ${MAP_FRAGMENT_TOTAL} map fragments`}
+            >
+              {MAP_FRAGMENT_MOON_GLYPHS.map((glyph, i) => (
+                <span
+                  key={i}
+                  className={
+                    i < mapFragmentCount
+                      ? "text-foreground"
+                      : "text-gray-500"
+                  }
+                >
+                  {glyph}
+                </span>
+              ))}
+            </span>
+          </div>
+        ) : (
+          <div className="font-bold">{effect.name}</div>
+        ))}
       {effect.description && (
         <div className="text-gray-400 mb-1">{effect.description}</div>
       )}
