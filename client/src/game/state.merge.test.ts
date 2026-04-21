@@ -166,6 +166,8 @@ const createMockGameState = (): GameState => ({
   sleepUpgrades: { lengthLevel: 0, intensityLevel: 0 },
   combatSkills: { crushingStrikeLevel: 0, bloodflameSphereLevel: 0 },
   clickAnalytics: {},
+  traderDialogOpens: 0,
+  completePurchaseDialogOpens: 0,
   madness: 0,
   miningBoostState: null,
   greatFeastActivations: 0,

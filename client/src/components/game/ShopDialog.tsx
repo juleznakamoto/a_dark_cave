@@ -632,6 +632,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     });
 
     const { clientSecret: secret } = await response.json();
+    if (secret) {
+      useGameStore.getState().recordCompletePurchaseDialogOpen();
+    }
     setClientSecret(secret);
     setSelectedItem(itemId);
     // Keep shop dialog open during payment to maintain game pause

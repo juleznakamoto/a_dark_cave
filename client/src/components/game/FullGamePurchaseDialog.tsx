@@ -325,6 +325,9 @@ export default function FullGamePurchaseDialog({
     });
 
     const { clientSecret } = await response.json();
+    if (clientSecret) {
+      useGameStore.getState().recordCompletePurchaseDialogOpen();
+    }
     setClientSecret(clientSecret);
   };
 

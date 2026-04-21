@@ -300,6 +300,7 @@ interface GameStore extends GameState {
   tickInvestmentHall: () => void;
   setAuthDialogOpen: (isOpen: boolean) => void;
   setShopDialogOpen: (isOpen: boolean) => void;
+  recordCompletePurchaseDialogOpen: () => void;
   setGamblerDiceDialogOpen: (isOpen: boolean) => void;
   setInvestDialogOpen: (isOpen: boolean) => void;
   setInvestmentResultDialog: (
@@ -2024,6 +2025,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         disgustState: savedState.disgustState || defaultGameState.disgustState, // Load disgustState
         solsticeState: savedState.solsticeState || defaultGameState.solsticeState, // Load solsticeState
         lastFreeGoldClaim: savedState.lastFreeGoldClaim || 0, // Load lastFreeGoldClaim
+        traderDialogOpens: savedState.traderDialogOpens ?? 0,
+        completePurchaseDialogOpens:
+          savedState.completePurchaseDialogOpens ?? 0,
         unlockedAchievements: savedState.unlockedAchievements || [], // Load unlocked achievements
         claimedAchievements: savedState.claimedAchievements || [], // Load claimed achievements
         gameId: gameId, // Load or generate gameId
@@ -2806,7 +2810,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setShopDialogOpen: (isOpen: boolean) => {
-    set({ shopDialogOpen: isOpen });
+    const prev = get().shopDialogOpen;
+    if (isOpen && !prev) {
+      set((s) => ({
+        shopDialogOpen: true,
+        traderDialogOpens: (s.traderDialogOpens ?? 0) + 1,
+      }));
+    } else {
+      set({ shopDialogOpen: isOpen });
+    }
+  },
+
+  recordCompletePurchaseDialogOpen: () => {
+    set((s) => ({
+      completePurchaseDialogOpens: (s.completePurchaseDialogOpens ?? 0) + 1,
+    }));
   },
 
   setGamblerDiceDialogOpen: (isOpen: boolean) => {

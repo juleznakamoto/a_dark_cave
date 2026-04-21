@@ -736,6 +736,10 @@ export const gameStateSchema = z.object({
     }),
   // Analytics: Track button clicks since last save (not persisted to local storage)
   clickAnalytics: z.record(z.number()).default({}), // Track button clicks by button ID
+  /** Times the Trader (shop) dialog was opened (false → true). Persisted for event triggers. */
+  traderDialogOpens: z.number().int().min(0).default(0),
+  /** Aggregate times the embedded Stripe checkout step was entered (shop + full game). Persisted for event triggers. */
+  completePurchaseDialogOpens: z.number().int().min(0).default(0),
   // Achievements
   unlockedAchievements: z.array(z.string()).default([]),
   claimedAchievements: z.array(z.string()).default([]), // Achievement segment IDs that have been claimed for silver
