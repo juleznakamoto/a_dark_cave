@@ -738,20 +738,11 @@ export default function VillagePanel() {
   const renderPopulationControl = (jobId: string, label: string) => {
     const currentCount = villagers[jobId as keyof typeof villagers] || 0;
 
-    // Get total production for this job type
-    const getTotalProductionText = (jobId: string, count: number): string => {
-      if (count === 0) return "";
-
-      const production = getPopulationProduction(jobId, count, state);
-      const productionText = production
-        .map(
-          (prod) =>
-            `${prod.totalAmount > 0 ? "+" : ""}${prod.totalAmount} ${capitalizeWords(prod.resource)}`,
-        )
-        .join(", ");
-
-      return productionText ? ` ${productionText}` : "";
-    };
+    const productionEntries =
+      currentCount > 0 ? getPopulationProduction(jobId, currentCount, state) : [];
+    const productionKey = productionEntries
+      .map((p) => `${p.resource}:${p.totalAmount}`)
+      .join("|");
 
     return (
       <div key={jobId} className="flex items-center justify-between">
@@ -815,10 +806,25 @@ export default function VillagePanel() {
           </Button>
         </div>
         <span className="text-xs ml-1 text-left flex-1">
-          {label}{" "}
-          <span className="text-xs text-muted-foreground">
-            {getTotalProductionText(jobId, currentCount)}
-          </span>
+          {label}
+          {productionEntries.length > 0 && (
+            <span
+              key={productionKey}
+              className="text-xs text-muted-foreground"
+            >
+              {" "}
+              {productionEntries.map((prod, i) => (
+                <React.Fragment key={prod.resource}>
+                  {i > 0 && ", "}
+                  <span translate="no" className="notranslate">
+                    {prod.totalAmount > 0 ? "+" : ""}
+                    {prod.totalAmount}
+                  </span>{" "}
+                  {capitalizeWords(prod.resource)}
+                </React.Fragment>
+              ))}
+            </span>
+          )}
         </span>
       </div>
     );
