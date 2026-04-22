@@ -472,9 +472,6 @@ export const storyEvents: Record<string, GameEvent> = {
       "You piece together the map fragments. They reveal the map to a forgotten sanctuary deep in the swamp.",
     priority: 10,
     repeatable: false,
-    showAsTimedTab: true,
-    timedTabDuration: 3 * 60 * 1000,
-    skipEventLog: true,
     choices: [
       {
         id: "continue",
@@ -490,19 +487,6 @@ export const storyEvents: Record<string, GameEvent> = {
         }),
       },
     ],
-    fallbackChoice: {
-      id: "continue",
-      label: "Continue",
-      effect: (state: GameState) => ({
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            swampMapAssembled: true,
-          },
-        },
-      }),
-    },
   },
 
 };
