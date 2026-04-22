@@ -2509,7 +2509,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "sacrificeAtTree",
-        label: "Sacrifice animals at the tree",
+        label: "Sacrifice animals at tree",
         cost: "1000 Food",
         effect: (state: GameState) => {
           if ((state.resources.food || 0) < 1000) {

@@ -285,7 +285,7 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 5000,
     },
     effects: {},
-    executionTime: 300,
+    executionTime: 180,
     cooldown: 0,
   },
 

@@ -121,7 +121,13 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
   }
   if (rewards?.stats && Object.keys(rewards.stats).length > 0) {
     Object.entries(rewards.stats).forEach(([stat, amount]) => {
-      if (stat === "madness" || stat === "madnessFromEvents") return;
+      if (
+        stat === "madness" ||
+        stat === "madnessFromEvents" ||
+        stat === "villagerDeathsLifetime"
+      ) {
+        return;
+      }
       rewardItems.push(
         <div key={`stat-${stat}`} className="text-sm text-foreground">
           +{formatNumber(amount)} {formatName(stat)}

@@ -333,6 +333,12 @@ interface GameStore extends GameState {
   setMadnessDialog: (isOpen: boolean, data?: any) => void;
 }
 
+/**
+ * Stats that change in `stateUpdates.stats` but are bookkeeping / internal only.
+ * They must not appear as "+N …" in reward or madness outcome UI.
+ */
+const REWARD_UI_HIDDEN_STATS = new Set<string>(["villagerDeathsLifetime"]);
+
 // Helper function to detect rewards from state updates
 export const detectRewards = (
   stateUpdates: Partial<GameState>,
@@ -520,6 +526,9 @@ export const detectRewards = (
   if (stateUpdates.stats) {
     const rewardStats: Record<string, number> = {};
     Object.entries(stateUpdates.stats).forEach(([stat, finalAmount]) => {
+      if (REWARD_UI_HIDDEN_STATS.has(stat)) {
+        return;
+      }
       if (typeof finalAmount === 'number') {
         const originalAmount = currentState.stats[stat as keyof typeof currentState.stats] || 0;
         const gained = finalAmount - originalAmount;
@@ -558,6 +567,28 @@ export const rewardPayloadHasPositiveChanges = (
     }
     return typeof value === "object" && Object.keys(value).length > 0;
   });
+
+/** True when the reward dialog should list losses (villagers, resources, etc.). Used with event outcomes that have no "gains" but still need the outcome dialog. */
+export const rewardPayloadHasOutcomeLosses = (
+  rewards: ReturnType<typeof detectRewards>,
+): boolean => {
+  if (typeof rewards.villagersLost === "number" && rewards.villagersLost > 0) {
+    return true;
+  }
+  if (
+    rewards.resourceLosses &&
+    Object.keys(rewards.resourceLosses).length > 0
+  ) {
+    return true;
+  }
+  if (rewards.relicsLost && rewards.relicsLost.length > 0) {
+    return true;
+  }
+  if (rewards.clothingLost && rewards.clothingLost.length > 0) {
+    return true;
+  }
+  return false;
+};
 
 const detectMadnessChange = (
   stateUpdates: Partial<GameState>,
@@ -2342,7 +2373,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     if (!combatData) {
       const rewards = detectRewards(updatedChanges, state, eventId, { trackLosses: true });
-      const hasRewards = rewardPayloadHasPositiveChanges(rewards);
+      // Losses alone open the outcome dialog only when there is narrative (`_logMessage` → logMessage),
+      // so silent resource updates do not suddenly pop the reward modal.
+      const hasRewards =
+        rewardPayloadHasPositiveChanges(rewards) ||
+        (rewardPayloadHasOutcomeLosses(rewards) && Boolean(logMessage));
       const successLog = logMessage || undefined;
       const isMerchantEvent = eventId === "merchant" || eventId?.startsWith?.("merchant-");
       const isCubeDiscoveryEvent = eventId === "cubeDiscovery";

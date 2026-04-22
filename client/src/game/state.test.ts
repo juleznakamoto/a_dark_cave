@@ -5,6 +5,7 @@ import {
   detectRewards,
   rewardDialogActions,
   rewardPayloadHasPositiveChanges,
+  rewardPayloadHasOutcomeLosses,
 } from "./state";
 import { GameState } from "@shared/schema";
 
@@ -247,6 +248,32 @@ describe("Reward Dialog System", () => {
           resources: { gold: 5 },
         }),
       ).toBe(true);
+    });
+  });
+
+  describe("detectRewards internal stats", () => {
+    it("does not surface villagerDeathsLifetime as a reward stat", () => {
+      const currentState = {
+        ...initialState,
+        stats: {
+          ...initialState.stats,
+          villagerDeathsLifetime: 0,
+        },
+      };
+      const stateUpdates = {
+        stats: {
+          ...currentState.stats,
+          villagerDeathsLifetime: 5,
+        },
+        villagersKilled: 5,
+      };
+      const rewards = detectRewards(stateUpdates, currentState, "bloodMoonAttack", {
+        trackLosses: true,
+      });
+      expect(rewards.stats).toBeUndefined();
+      expect(rewards.villagersLost).toBe(5);
+      expect(rewardPayloadHasPositiveChanges(rewards)).toBe(false);
+      expect(rewardPayloadHasOutcomeLosses(rewards)).toBe(true);
     });
   });
 
