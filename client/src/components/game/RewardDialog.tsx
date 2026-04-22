@@ -1,6 +1,11 @@
 import React from "react";
 import { GameState } from "@shared/schema";
 import { formatNumber } from "@/lib/utils";
+import {
+  clothingEffects,
+  bookEffects,
+  fellowshipEffects,
+} from "@/game/rules/effects";
 import OutcomeDialog, {
   OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS,
 } from "./OutcomeDialog";
@@ -40,6 +45,16 @@ const formatName = (name: string) =>
     .split("_")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
+
+const effectDisplayName = (
+  id: string,
+  kind: "relic" | "clothing" | "blessing" | "book" | "schematic" | "fellowship",
+) => {
+  if (kind === "book") return bookEffects[id]?.name ?? formatName(id);
+  if (kind === "fellowship")
+    return fellowshipEffects[id]?.name ?? formatName(id);
+  return clothingEffects[id]?.name ?? formatName(id);
+};
 
 const sortResourceKeys = (keys: string[]) =>
   [...keys].sort((a, b) => {
@@ -89,7 +104,7 @@ export default function RewardDialog({
     rewards.fellowship.forEach((member) => {
       rewardItems.push(
         <div key={`fellowship-${member}`} className="text-sm text-foreground">
-          {formatName(member)}
+          {effectDisplayName(member, "fellowship")}
         </div>
       );
     });
@@ -116,7 +131,7 @@ export default function RewardDialog({
     rewards.clothing.forEach((clothing) => {
       rewardItems.push(
         <div key={`clothing-${clothing}`} className="text-sm text-foreground">
-          {formatName(clothing)}
+          {effectDisplayName(clothing, "clothing")}
         </div>
       );
     });
@@ -125,7 +140,7 @@ export default function RewardDialog({
     rewards.relics.forEach((relic) => {
       rewardItems.push(
         <div key={`relic-${relic}`} className="text-sm text-foreground">
-          {formatName(relic)}
+          {effectDisplayName(relic, "relic")}
         </div>
       );
     });
@@ -134,7 +149,7 @@ export default function RewardDialog({
     rewards.blessings.forEach((blessing) => {
       rewardItems.push(
         <div key={`blessing-${blessing}`} className="text-sm text-foreground">
-          {formatName(blessing)}
+          {effectDisplayName(blessing, "blessing")}
         </div>
       );
     });
@@ -143,7 +158,7 @@ export default function RewardDialog({
     rewards.books.forEach((book) => {
       rewardItems.push(
         <div key={`book-${book}`} className="text-sm text-foreground">
-          {formatName(book)}
+          {effectDisplayName(book, "book")}
         </div>
       );
     });
@@ -152,7 +167,7 @@ export default function RewardDialog({
     rewards.schematics.forEach((schematic) => {
       rewardItems.push(
         <div key={`schematic-${schematic}`} className="text-sm text-foreground">
-          {formatName(schematic)}
+          {effectDisplayName(schematic, "schematic")}
         </div>
       );
     });

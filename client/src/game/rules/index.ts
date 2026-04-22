@@ -15,6 +15,7 @@ import { calculateAdjustedCost } from "./costCalculation";
 import { getActionBonuses } from "./effectsCalculation";
 import { formatNumber } from "@/lib/utils";
 import { getVillagersInVillage } from "@/game/population";
+import { clothingEffects } from "./effects";
 
 // Import action modules
 import { caveCraftResources } from "./caveCraftResources";
@@ -638,11 +639,14 @@ export function getActionCostBreakdown(
       state,
     );
 
-    // Replace underscores with spaces and capitalize each word
-    const resourceNameFormatted = resourceName
-      .split("_")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
+    // Player-facing name: use effect catalog for relics so labels match tooltips (e.g. Black Timber).
+    const resourceNameFormatted =
+      resource.startsWith("relics.") && clothingEffects[resourceName]?.name
+        ? clothingEffects[resourceName].name
+        : resourceName
+            .split("_")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
 
     // Handle boolean true values as -1
     const displayCost = adjustedAmount === true ? 1 : adjustedAmount;
@@ -694,11 +698,13 @@ export function getEventChoiceCostBreakdown(
         ? resource.split(".").pop()!
         : resource;
 
-      // Replace underscores with spaces and capitalize each word
-      const resourceNameFormatted = resourceName
-        .split("_")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
+      const resourceNameFormatted =
+        resource.startsWith("relics.") && clothingEffects[resourceName]?.name
+          ? clothingEffects[resourceName].name
+          : resourceName
+              .split("_")
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" ");
 
       const displayCost = amount as number;
       const satisfied =

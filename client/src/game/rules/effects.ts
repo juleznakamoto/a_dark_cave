@@ -1219,14 +1219,10 @@ export const clothingEffects: Record<string, EffectDefinition> = {
 
   black_wood: {
     id: "black_wood",
-    name: "Black Wood",
+    name: "Black Timber",
     description:
-      "A slab of dense, light-drinking wood from the sanctuary tree.",
-    bonuses: {
-      generalBonuses: {
-        madness: 5,
-      },
-    },
+      "A slab of dense, light-drinking timber from the sanctuary tree.",
+    bonuses: {},
   },
 
   frostglass: {
@@ -1351,7 +1347,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "ebon_grace",
     name: "Ebon Grace",
     description:
-      "A dark benediction. Your mind expands, and the hearth fire burns twice as bright.",
+      "Dark blessing received by the black tree. Doubling production bonus from Heartfire.",
     bonuses: {
       generalBonuses: {
         knowledge: 5,

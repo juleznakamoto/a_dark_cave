@@ -2077,7 +2077,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildBlackEstate",
     label: "Black Estate",
     description:
-      "Towering estate of black wood and stone, overlooking the city.",
+      "Towering estate of black timber and stone, overlooking the city.",
     tooltipEffects: [
       "Sleep Length +3 hours",
       "Sleep Intensity +5%",

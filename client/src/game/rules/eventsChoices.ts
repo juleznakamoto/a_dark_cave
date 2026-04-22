@@ -2480,7 +2480,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: () => false,
     title: "Swamp Sanctuary",
     message:
-      "Your expedition reaches the forgotten swamp sanctuary. Crumbling ruins encircle a massive tree of dark black wood. What do you do?",
+      "Your expedition reaches the forgotten swamp sanctuary. Crumbling ruins encircle a massive tree of dark black timber. What do you do?",
     priority: 0,
     repeatable: false,
     choices: [
@@ -2504,7 +2504,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             },
           },
           _logMessage:
-            "The black wood resists, but your people bring it down. You claim the black cursed timber.",
+            "The black timber resists, but your people bring it down. You claim the black cursed timber.",
         }),
       },
       {
