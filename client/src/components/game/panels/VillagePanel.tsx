@@ -806,25 +806,22 @@ export default function VillagePanel() {
           </Button>
         </div>
         <span className="text-xs ml-1 text-left flex-1">
-          {label}
-          {productionEntries.length > 0 && (
-            <span
-              key={productionKey}
-              className="text-xs text-muted-foreground"
-            >
-              {" "}
-              {productionEntries.map((prod, i) => (
-                <React.Fragment key={prod.resource}>
-                  {i > 0 && ", "}
-                  <span translate="no" className="notranslate">
-                    {prod.totalAmount > 0 ? "+" : ""}
-                    {prod.totalAmount}
-                  </span>{" "}
-                  {capitalizeWords(prod.resource)}
-                </React.Fragment>
-              ))}
-            </span>
-          )}
+          {label}{" "}
+          <span
+            key={productionKey}
+            className="text-xs text-muted-foreground"
+          >
+            {productionEntries.map((prod, i) => (
+              <React.Fragment key={prod.resource}>
+                {i > 0 && ", "}
+                <span translate="no" className="notranslate">
+                  {prod.totalAmount > 0 ? "+" : ""}
+                  {prod.totalAmount}
+                </span>{" "}
+                {capitalizeWords(prod.resource)}
+              </React.Fragment>
+            ))}
+          </span>
         </span>
       </div>
     );
