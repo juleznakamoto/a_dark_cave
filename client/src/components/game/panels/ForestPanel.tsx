@@ -168,6 +168,7 @@ export default function ForestPanel() {
         { id: "castleRuins", label: "Castle Ruins" },
         { id: "hillGrave", label: "Hill Grave" },
         { id: "sunkenTemple", label: "Sunken Temple" },
+        { id: "swampSanctuary", label: "Swamp Sanctuary" },
         { id: "blackreachCanyon", label: "Blackreach Canyon" },
         { id: "steelDelivery", label: "Steel Delivery" },
         { id: "risingSmoke", label: "Rising smoke" },
