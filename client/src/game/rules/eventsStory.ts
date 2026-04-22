@@ -90,7 +90,7 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 5,
     title: "A Mysterious Note",
     message:
-      "As dusk settles, you find a piece of paper on the doorstep of your estate. Someone left a note in a careful, elegant handwriting: \n \"I hope you're enjoying your time here. If you do, please consider supporting the journey ahead, either by visiting the shop or donating. Your help keeps this world alive and free to enjoy. Thank you!\"",
+      'As dusk settles, you find a piece of paper on the doorstep of your estate. Someone left a note in a careful, elegant handwriting: \n "I hope you\'re enjoying your time here. If you do, please consider supporting the journey ahead, either by visiting the shop or donating. Your help keeps this world alive and free to enjoy. Thank you!"',
     priority: 5,
     repeatable: false,
     choices: [
@@ -117,8 +117,7 @@ export const storyEvents: Record<string, GameEvent> = {
   mysteriousBook: {
     id: "mysteriousBook",
     condition: (state: GameState) =>
-      state.buildings.darkEstate >= 1 &&
-      !state.books.book_of_ascension,
+      state.buildings.darkEstate >= 1 && !state.books.book_of_ascension,
     timeProbability: 3,
     title: "A Quiet Knock",
     message:
@@ -144,7 +143,6 @@ export const storyEvents: Record<string, GameEvent> = {
   },
 
   wizardArrives: {
-
     id: "wizardArrives",
     condition: (state: GameState) =>
       state.buildings.bastion >= 1 && !state.story.seen.wizardArrives,
@@ -436,8 +434,8 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       Boolean(
         state.story.seen.secondWaveVictory == true &&
-        state.fellowship.ashwraith_huntress &&
-        !state.story.seen.ashwraithCanyonTradeOfferSeen,
+          state.fellowship.ashwraith_huntress &&
+          !state.story.seen.ashwraithCanyonTradeOfferSeen,
       ),
     timeProbability: 20,
     title: "A Bridge for Trade",
@@ -464,6 +462,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   mapFragmentsAssembled: {
     id: "mapFragmentsAssembled",
+    timeProbability: 0.05,
     title: "A Map Revealed",
     condition: (state: GameState) =>
       !state.story.seen.swampMapAssembled &&
@@ -488,5 +487,4 @@ export const storyEvents: Record<string, GameEvent> = {
       },
     ],
   },
-
 };
