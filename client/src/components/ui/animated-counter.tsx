@@ -20,8 +20,9 @@ export function AnimatedCounter({ value }: { value: number }) {
 
   return (
     <div
+      translate="no"
       style={{ fontSize }}
-      className="flex overflow-hidden leading-none tabular-nums"
+      className="notranslate flex overflow-hidden leading-none tabular-nums"
     >
       {digits.map((place) => (
         <Digit key={place} place={place} value={value} />
