@@ -833,8 +833,10 @@ export function handleSwampSanctuary(
       : eventDef.title;
   const title = typeof titleRaw === "string" ? titleRaw : undefined;
 
+  // id prefix must match `gameEvents` key so EventDialog's `event.id.split("-")[0]` resolves
+  // the correct definition (e.g. "swamp-sanctuary-…" would wrongly yield eventId "swamp").
   result.logEntries!.push({
-    id: `swamp-sanctuary-${Date.now()}`,
+    id: `swampSanctuaryChoice-${Date.now()}`,
     message,
     timestamp: Date.now(),
     type: "event",
