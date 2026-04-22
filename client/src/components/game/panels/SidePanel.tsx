@@ -296,7 +296,7 @@ export default function SidePanel() {
   if (showMapFragmentRow) {
     const mapRow = {
       id: "map_fragment",
-      label: clothingEffects.map_fragment?.name || "Map Fragment",
+      label: "Map Fragments",
       value: mapFragmentCount,
       testId: "relic-map_fragment",
       visible: true,
