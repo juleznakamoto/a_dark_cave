@@ -540,6 +540,12 @@ export const gameStateSchema = z.object({
     })
     .default({ accepted: false }),
 
+  tradersSonGratitudeState: z
+    .object({
+      accepted: z.boolean().default(false),
+    })
+    .default({ accepted: false }),
+
   fogState: z
     .object({
       isActive: z.boolean().default(false),

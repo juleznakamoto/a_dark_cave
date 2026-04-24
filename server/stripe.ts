@@ -28,7 +28,8 @@ export async function createPaymentIntent(
   currency?: string,
   tradersGratitudeDiscount?: boolean,
   cruelMode?: boolean,
-  playlightFirstPurchaseDiscount?: boolean
+  playlightFirstPurchaseDiscount?: boolean,
+  tradersSonGratitudeDiscount?: boolean
 ) {
   const item = SHOP_ITEMS[itemId];
   if (!item) {
@@ -42,17 +43,26 @@ export async function createPaymentIntent(
     throw new Error('Invalid item configuration');
   }
 
+  // Full game is never discounted; shop discounts (Playlight, trader gratitude) apply only to other items.
+  const allowShopDiscounts = itemId !== "full_game";
+
   // CRITICAL: Always use server-side price, never trust client
   const tradersRequested =
-    item.price > 0 && tradersGratitudeDiscount === true;
+    allowShopDiscounts && item.price > 0 && tradersGratitudeDiscount === true;
   const playlightRequested =
-    item.price > 0 && playlightFirstPurchaseDiscount === true;
+    allowShopDiscounts &&
+    item.price > 0 &&
+    playlightFirstPurchaseDiscount === true;
+  const sonRequested =
+    allowShopDiscounts && item.price > 0 && tradersSonGratitudeDiscount === true;
   const amount = getDiscountedShopPriceCents(item.price, {
     playlightFirstPurchase: playlightRequested,
     tradersGratitude: tradersRequested,
+    tradersSonGratitude: sonRequested,
   });
   const tradersApplied = tradersRequested;
   const playlightApplied = playlightRequested;
+  const sonApplied = sonRequested;
 
   // Optional: Log if client sent a different price (potential attack attempt)
   if (clientPrice !== undefined && clientPrice !== item.price) {
@@ -74,6 +84,7 @@ export async function createPaymentIntent(
         playlightFirstPurchaseDiscountApplied: 'true',
       }),
       ...(tradersApplied && { tradersGratitudeDiscountApplied: 'true' }),
+      ...(sonApplied && { tradersSonGratitudeDiscountApplied: 'true' }),
     },
   };
 
@@ -131,6 +142,8 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
           'true',
         tradersGratitude:
           paymentIntent.metadata.tradersGratitudeDiscountApplied === 'true',
+        tradersSonGratitude:
+          paymentIntent.metadata.tradersSonGratitudeDiscountApplied === 'true',
       });
       if (paymentIntent.amount !== expectedAmount) {
         logger.error(

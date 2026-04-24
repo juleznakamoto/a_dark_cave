@@ -700,6 +700,8 @@ const mergeStateUpdates = (
     frostfallState: stateUpdates.frostfallState || prevState.frostfallState,
     woodcutterState: stateUpdates.woodcutterState || prevState.woodcutterState,
     tradersGratitudeState: stateUpdates.tradersGratitudeState || prevState.tradersGratitudeState,
+    tradersSonGratitudeState:
+      stateUpdates.tradersSonGratitudeState || prevState.tradersSonGratitudeState,
     fogState: stateUpdates.fogState || prevState.fogState,
     disgustState: stateUpdates.disgustState || prevState.disgustState,
     sleepUpgrades: stateUpdates.sleepUpgrades || prevState.sleepUpgrades,
@@ -912,6 +914,9 @@ export const createInitialState = (): GameState => ({
     endTime: 0,
   },
   tradersGratitudeState: {
+    accepted: false,
+  },
+  tradersSonGratitudeState: {
     accepted: false,
   },
   fogState: {
@@ -2053,6 +2058,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         frostfallState:
           savedState.frostfallState || defaultGameState.frostfallState, // Load frostfallState
         fogState: savedState.fogState || defaultGameState.fogState, // Load fogState
+        tradersSonGratitudeState:
+          savedState.tradersSonGratitudeState ??
+          defaultGameState.tradersSonGratitudeState,
         disgustState: savedState.disgustState || defaultGameState.disgustState, // Load disgustState
         solsticeState: savedState.solsticeState || defaultGameState.solsticeState, // Load solsticeState
         lastFreeGoldClaim: savedState.lastFreeGoldClaim || 0, // Load lastFreeGoldClaim

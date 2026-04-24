@@ -407,6 +407,28 @@ export const forestScoutActions: Record<string, Action> = {
     cooldown: 0,
   },
 
+  banditLair: {
+    id: "banditLair",
+    label: "Bandit Lair",
+    minVillagers: 5,
+    expeditionVillagersRequired: () => 5,
+    show_when: {
+      "flags.forestUnlocked": true,
+      "story.seen.tradersSonQuestActive": true,
+      "!story.seen.tradersSonLairComplete": true,
+      "!triggeredEvents.traders_daughter_helped": true,
+    },
+    cost: {
+      "resources.food": 500,
+    },
+    effects: {},
+    success_chance: (state: GameState) =>
+      calculateSuccessChance(state, 0, { type: "strength", multiplier: 0.01 }),
+    relevant_stats: ["strength"],
+    executionTime: 120,
+    cooldown: 0,
+  },
+
   canyonBridge: {
     id: "canyonBridge",
     label: "Canyon Bridge",
@@ -1149,6 +1171,59 @@ export function handleRisingSmoke(
     result.logEntries!.push({
       id: `rising-smoke-failure-${Date.now()}`,
       message: `Your expedition reaches an outlaw camp, but the fight goes terribly wrong. ${actualDeaths} villager${actualDeaths === 1 ? "" : "s"} fall${actualDeaths === 1 ? "s" : ""} before the survivors flee back to the village.`,
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return result;
+}
+
+export function handleBanditLair(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("banditLair", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  const action = forestScoutActions.banditLair;
+  const successChance = action.success_chance
+    ? action.success_chance(state)
+    : 0;
+  const rand = Math.random();
+
+  if (rand < successChance) {
+    const isCompletingExecution =
+      (state as any)._completingExecution === "banditLair";
+    result.stateUpdates.resources = {
+      ...state.resources,
+      silver: (state.resources.silver || 0) + 250,
+      ...(isCompletingExecution
+        ? {}
+        : { food: (state.resources.food || 0) - 500 }),
+    };
+
+    result.stateUpdates.story = {
+      ...state.story,
+      seen: {
+        ...state.story.seen,
+        tradersSonLairComplete: true,
+        tradersSonQuestActive: false,
+      },
+    };
+
+    result.logEntries!.push({
+      id: `bandit-lair-success-${Date.now()}`,
+      message:
+        "Your party tracks the bandit to a ramshackle lair. You overwhelm him, recover the trader's dagger, and find 250 silver stashed among his plunder.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  } else {
+    result.logEntries!.push({
+      id: `bandit-lair-failure-${Date.now()}`,
+      message:
+        "Your villagers search the hills but cannot corner the bandit. The trail goes cold, and the dagger is still in his hands.",
       timestamp: Date.now(),
       type: "system",
     });

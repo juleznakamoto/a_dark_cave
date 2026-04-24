@@ -612,6 +612,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     const user = await getCurrentUser();
     const tradersGratitudeDiscount =
       gameState.tradersGratitudeState?.accepted === true;
+    const tradersSonGratitudeDiscount =
+      gameState.tradersSonGratitudeState?.accepted === true;
     const playlightFirstPurchaseDiscount =
       gameState.story?.seen?.playlightFirstPurchaseDiscountActive === true &&
       !gameState.hasMadeNonFreePurchase;
@@ -624,6 +626,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         userId: user?.id,
         currency: currency.toLowerCase(),
         tradersGratitudeDiscount: tradersGratitudeDiscount || undefined,
+        tradersSonGratitudeDiscount: tradersSonGratitudeDiscount || undefined,
         cruelMode: gameState.cruelMode ?? false,
         playlightFirstPurchaseDiscount: playlightFirstPurchaseDiscount
           ? true
@@ -656,6 +659,17 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         triggeredEvents: {
           ...(state.triggeredEvents || {}),
           traders_gratitude_used: true,
+        },
+      }));
+      setTimedEventTab(false);
+    }
+
+    if (gameState.tradersSonGratitudeState?.accepted) {
+      useGameStore.setState((state) => ({
+        tradersSonGratitudeState: { accepted: false },
+        triggeredEvents: {
+          ...(state.triggeredEvents || {}),
+          traders_son_gratitude_used: true,
         },
       }));
       setTimedEventTab(false);
@@ -1167,6 +1181,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 {(() => {
                                   const tradersGratitudeActive =
                                     gameState.tradersGratitudeState?.accepted === true;
+                                  const tradersSonGratitudeActive =
+                                    gameState.tradersSonGratitudeState?.accepted ===
+                                    true;
                                   const playlightFirstPurchaseActive =
                                     gameState.story?.seen
                                       ?.playlightFirstPurchaseDiscountActive === true &&
@@ -1177,12 +1194,19 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         playlightFirstPurchase:
                                           playlightFirstPurchaseActive,
                                         tradersGratitude: tradersGratitudeActive,
+                                        tradersSonGratitude: tradersSonGratitudeActive,
                                       })
                                       : item.price;
                                   const tradersOnlyCents =
                                     item.price > 0
                                       ? getDiscountedShopPriceCents(item.price, {
                                         tradersGratitude: true,
+                                      })
+                                      : item.price;
+                                  const sonOnlyCents =
+                                    item.price > 0
+                                      ? getDiscountedShopPriceCents(item.price, {
+                                        tradersSonGratitude: true,
                                       })
                                       : item.price;
                                   const playlightOnlyCents =
@@ -1200,6 +1224,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     item.price > 0 &&
                                     tradersGratitudeActive &&
                                     displayPrice === tradersOnlyCents &&
+                                    displayPrice < item.price;
+                                  const showTradersSonInfo =
+                                    item.price > 0 &&
+                                    tradersSonGratitudeActive &&
+                                    displayPrice === sonOnlyCents &&
                                     displayPrice < item.price;
                                   const showPlaylightInfo =
                                     item.price > 0 &&
@@ -1220,6 +1249,27 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                             </div>
                                           }
                                           tooltipId={`traders-gratitude-${item.id}`}
+                                          disabled
+                                          tooltipContentClassName="max-w-xs border border-amber-600"
+                                          className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
+                                        >
+                                          <span
+                                            className="inline-flex shrink-0 items-center justify-center font-sans text-sm font-normal leading-none"
+                                            aria-hidden
+                                          >
+                                            🛈
+                                          </span>
+                                        </TooltipWrapper>
+                                      )}
+                                      {showTradersSonInfo && (
+                                        <TooltipWrapper
+                                          tooltip={
+                                            <div className="text-xs">
+                                              20% additional discount from the
+                                              Trader&apos;s Son event.
+                                            </div>
+                                          }
+                                          tooltipId={`traders-son-gratitude-${item.id}`}
                                           disabled
                                           tooltipContentClassName="max-w-xs border border-amber-600"
                                           className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
@@ -1520,6 +1570,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         const item = SHOP_ITEMS[selectedItem];
                         const tradersGratitudeActive =
                           gameState.tradersGratitudeState?.accepted === true;
+                        const tradersSonGratitudeActive =
+                          gameState.tradersSonGratitudeState?.accepted === true;
                         const playlightActive =
                           gameState.story?.seen
                             ?.playlightFirstPurchaseDiscountActive === true &&
@@ -1534,6 +1586,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                             item &&
                             item.price > 0 &&
                             tradersGratitudeActive
+                          ),
+                          tradersSonGratitude: !!(
+                            item &&
+                            item.price > 0 &&
+                            tradersSonGratitudeActive
                           ),
                         });
                       })()

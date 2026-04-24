@@ -161,6 +161,7 @@ import {
   handleBlackreachCanyon,
   handleSteelDelivery,
   handleRisingSmoke,
+  handleBanditLair,
   handleCanyonBridge,
 } from "@/game/rules/forestScoutActions";
 
@@ -582,6 +583,8 @@ export function executeGameAction(
       return handleSteelDelivery(state, result);
     case "risingSmoke":
       return handleRisingSmoke(state, result);
+    case "banditLair":
+      return handleBanditLair(state, result);
     case "canyonBridge":
       return handleCanyonBridge(state, result);
 

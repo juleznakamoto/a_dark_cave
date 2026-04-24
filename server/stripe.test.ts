@@ -198,6 +198,38 @@ describe('Stripe Shop Integration', () => {
       });
     });
 
+    describe("Trader's Son discount", () => {
+      it("should apply 20% discount when tradersSonGratitudeDiscount is true", async () => {
+        mockPaymentIntents.create.mockResolvedValue({
+          client_secret: "test_secret",
+        } as any);
+
+        await createPaymentIntent(
+          "gold_250",
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          false,
+          undefined,
+          false,
+          true,
+        );
+
+        // gold_250 price is 99 cents, 20% off = floor(99 * 0.8) = 79
+        expect(mockPaymentIntents.create).toHaveBeenCalledWith(
+          expect.objectContaining({
+            amount: 79,
+            metadata: expect.objectContaining({
+              itemId: "gold_250",
+              priceInCents: "79",
+              tradersSonGratitudeDiscountApplied: "true",
+            }),
+          }),
+        );
+      });
+    });
+
     describe('Playlight first-purchase discount', () => {
       it('should apply 10% off catalog price when playlightFirstPurchaseDiscount is true', async () => {
         mockPaymentIntents.create.mockResolvedValue({
@@ -252,6 +284,36 @@ describe('Stripe Shop Integration', () => {
             }),
           }),
         );
+      });
+    });
+
+    describe("Full game (no shop discounts)", () => {
+      it("should charge catalog price and ignore discount flags", async () => {
+        mockPaymentIntents.create.mockResolvedValue({
+          client_secret: "test_secret",
+        } as any);
+
+        await createPaymentIntent(
+          "full_game",
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          true,
+          undefined,
+          true,
+          true,
+        );
+
+        const call = mockPaymentIntents.create.mock.calls[0][0];
+        expect(call.amount).toBe(799);
+        expect(call.metadata).toMatchObject({
+          itemId: "full_game",
+          priceInCents: "799",
+        });
+        expect(call.metadata).not.toHaveProperty("tradersGratitudeDiscountApplied");
+        expect(call.metadata).not.toHaveProperty("playlightFirstPurchaseDiscountApplied");
+        expect(call.metadata).not.toHaveProperty("tradersSonGratitudeDiscountApplied");
       });
     });
   });

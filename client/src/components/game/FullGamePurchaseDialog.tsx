@@ -16,7 +16,6 @@ import {
 } from "@stripe/react-stripe-js";
 import { getCurrentUser } from "@/game/auth";
 import { SHOP_ITEMS } from "../../../../shared/shopItems";
-import { getDiscountedShopPriceCents } from "../../../../shared/shopCheckoutPrice";
 import { logger } from "@/lib/logger";
 import { useGameStore } from "@/game/state";
 
@@ -261,16 +260,8 @@ export default function FullGamePurchaseDialog({
   const { toast } = useToast();
 
   const item = SHOP_ITEMS.full_game;
-  const playlightFirstPurchaseEligible =
-    gameState.story?.seen?.playlightFirstPurchaseDiscountActive === true &&
-    !gameState.hasMadeNonFreePurchase;
-  const tradersGratitudeActive =
-    gameState.tradersGratitudeState?.accepted === true;
-  const fullGameChargeCents = getDiscountedShopPriceCents(item.price, {
-    playlightFirstPurchase:
-      playlightFirstPurchaseEligible && item.price > 0,
-    tradersGratitude: tradersGratitudeActive && item.price > 0,
-  });
+  // Shop discounts (Playlight first purchase, traders' gratitude) do not apply to the full game price.
+  const fullGameChargeCents = item.price;
 
   useEffect(() => {
     const initializeDialog = async () => {
@@ -304,11 +295,6 @@ export default function FullGamePurchaseDialog({
   const handlePurchaseClick = async () => {
     const user = await getCurrentUser();
     const state = useGameStore.getState();
-    const playlightDiscount =
-      state.story?.seen?.playlightFirstPurchaseDiscountActive === true &&
-      !state.hasMadeNonFreePurchase;
-    const tradersGratitudeDiscount =
-      state.tradersGratitudeState?.accepted === true;
 
     const response = await fetch("/api/payment/create-intent", {
       method: "POST",
@@ -318,9 +304,7 @@ export default function FullGamePurchaseDialog({
         userEmail: user?.email,
         userId: user?.id,
         currency: currency.toLowerCase(),
-        tradersGratitudeDiscount: tradersGratitudeDiscount || undefined,
         cruelMode: state.cruelMode ?? false,
-        playlightFirstPurchaseDiscount: playlightDiscount ? true : undefined,
       }),
     });
 
@@ -342,8 +326,6 @@ export default function FullGamePurchaseDialog({
       fullGamePurchaseDialogOpen: stateBefore.fullGamePurchaseDialogOpen,
     });
 
-    const hadTradersGratitude = stateBefore.tradersGratitudeState?.accepted === true;
-
     useGameStore.setState((s) => ({
       hasMadeNonFreePurchase: true,
       BTP: 0, // Deactivate BTP mode
@@ -356,18 +338,7 @@ export default function FullGamePurchaseDialog({
           playlightFirstPurchaseDiscountActive: false,
         },
       },
-      ...(hadTradersGratitude && {
-        tradersGratitudeState: { accepted: false },
-        triggeredEvents: {
-          ...(s.triggeredEvents || {}),
-          traders_gratitude_used: true,
-        },
-      }),
     }));
-
-    if (hadTradersGratitude) {
-      void useGameStore.getState().setTimedEventTab(false);
-    }
 
     logger.log('[FULL GAME] State updated, BTP=0, isPaused=false');
 
@@ -471,11 +442,6 @@ export default function FullGamePurchaseDialog({
                             {formatPrice(item.originalPrice)}
                           </span>
                         )}
-                        {fullGameChargeCents < item.price ? (
-                          <span className="line-through text-muted-foreground mr-2 text-lg">
-                            {formatPrice(item.price)}
-                          </span>
-                        ) : null}
                         {formatPrice(fullGameChargeCents)}
                       </div>
                       <p className="text-xs text-muted-foreground mt-1">

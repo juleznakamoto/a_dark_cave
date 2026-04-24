@@ -313,6 +313,14 @@ export default function TimedEventPanel() {
       return;
     }
 
+    if (
+      eventId === "traders_son_gratitude" &&
+      choiceId === "accept_traders_son_gratitude"
+    ) {
+      setShopDialogOpen(true);
+      return;
+    }
+
     // For gambler events: accept opens the dialog, decline closes tab
     if (isGamblerEvent) {
       if (choiceId === "accept") {

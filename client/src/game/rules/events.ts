@@ -81,6 +81,7 @@ import { crowEvents } from "./eventsCrow";
 import { wanderingCollectorEvents } from "./eventsWanderingCollector";
 import { exiledScholarEvents } from "./eventsExiledScholar";
 import { tradersDaughterEvents } from "./eventsTradersDaughter";
+import { tradersSonEvents } from "./eventsTradersSon";
 import { disgracedPriorEvents } from "./eventsDisgracedPrior";
 import { gamblerEvents } from "./eventsGambler";
 import { GAME_CONSTANTS } from "../constants";
@@ -162,6 +163,7 @@ export const gameEvents: Record<string, GameEvent> = {
   ...wanderingCollectorEvents,
   ...exiledScholarEvents,
   ...tradersDaughterEvents,
+  ...tradersSonEvents,
   ...disgracedPriorEvents,
   ...gamblerEvents,
 };
