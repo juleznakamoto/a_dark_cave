@@ -1033,7 +1033,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       </Button>
                     </div>
 
-                    <div className="ml-1.5 mr-1.5 grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                       {Object.values(SHOP_ITEMS)
                         .filter((item) => {
                           // Hide full_game item when BTP=0
