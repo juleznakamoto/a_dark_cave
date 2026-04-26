@@ -28,8 +28,8 @@ export const GREAT_FEAST_DURATION_MS = 30 * 60 * 1000;
 export const SHOP_ITEMS: Record<string, ShopItem> = {
   gold_100_free: {
     id: "gold_100_free",
-    name: "100 Gold (Daily Gift)",
-    description: "A small mercy in a cold world",
+    name: "100 Gold Gift",
+    description: "A small daily mercy in a cold world",
     price: 0,
     rewards: {
       resources: { gold: 100 },
