@@ -11,6 +11,7 @@ import { logger } from "@/lib/logger";
 import { getCurrentUser, flushPendingMarketingPreferences } from "@/game/auth";
 import { initSessionTracker } from "@/lib/sessionTracker";
 import { gamblerDiceResumeOnLoad } from "@/game/gamblerSession";
+import { processStripePaymentReturn } from "@/lib/stripePaymentReturn";
 import type { TimedEventTabState } from "@/game/types";
 
 export default function Game() {
@@ -261,13 +262,15 @@ export default function Game() {
           logger.log("[GAME] Game initialized with defaults");
         }
 
+        await processStripePaymentReturn();
+
         // Remove Google Ads source parameter from URL if it was present
         if (googleAdsSource) {
-          urlParams.delete("c");
-          // Also remove src parameter if present (legacy)
-          urlParams.delete("src");
+          const adsParams = new URLSearchParams(window.location.search);
+          adsParams.delete("c");
+          adsParams.delete("src");
           const newUrl = window.location.pathname +
-            (urlParams.toString() ? `?${urlParams.toString()}` : "") +
+            (adsParams.toString() ? `?${adsParams.toString()}` : "") +
             window.location.hash;
           window.history.replaceState({}, document.title, newUrl);
           logger.log("[GAME] Removed Google Ads source parameter from URL");

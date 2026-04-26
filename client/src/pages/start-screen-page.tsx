@@ -18,9 +18,18 @@ export default function StartScreenPage() {
   useEffect(() => {
     const checkGameState = async () => {
       const searchParams = new URLSearchParams(window.location.search);
+      // Stripe PayPal (etc.): return URL includes these; we must load Game to verify and update state
+      if (
+        searchParams.get("payment_intent") &&
+        searchParams.get("redirect_status")
+      ) {
+        setShouldLoadGame(true);
+        setIsChecking(false);
+        return;
+      }
       const isGamePath = window.location.pathname === "/boost" ||
-                        searchParams.get("game") === "true" ||
-                        searchParams.get("email_confirmed") === "true";
+        searchParams.get("game") === "true" ||
+        searchParams.get("email_confirmed") === "true";
 
       // If it's a game path or email confirmation redirect, load Game immediately
       if (isGamePath) {

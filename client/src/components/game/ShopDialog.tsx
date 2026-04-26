@@ -35,6 +35,7 @@ import {
 } from "../../../../shared/shopItems";
 import { getDiscountedShopPriceCents } from "../../../../shared/shopCheckoutPrice";
 import { tailwindToHex } from "@/lib/tailwindColors";
+import { getStripeReturnUrlForConfirm } from "@/lib/stripePaymentReturn";
 
 const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
@@ -177,6 +178,9 @@ function CheckoutForm({
       const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
         redirect: "if_required",
+        confirmParams: {
+          return_url: getStripeReturnUrlForConfirm(),
+        },
       });
 
       if (error) {

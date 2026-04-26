@@ -18,6 +18,7 @@ import { getCurrentUser } from "@/game/auth";
 import { SHOP_ITEMS } from "../../../../shared/shopItems";
 import { logger } from "@/lib/logger";
 import { useGameStore } from "@/game/state";
+import { getStripeReturnUrlForConfirm } from "@/lib/stripePaymentReturn";
 
 const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
@@ -114,6 +115,9 @@ function CheckoutForm({
       const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
         redirect: "if_required",
+        confirmParams: {
+          return_url: getStripeReturnUrlForConfirm(),
+        },
       });
 
       if (error) {
