@@ -141,10 +141,10 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getByText('100 Gold (Daily Gift)')).toBeInTheDocument();
+        expect(screen.getByText('100 Gold Gift')).toBeInTheDocument();
       });
 
-      const claimButton = getClaimButtonForItem('100 Gold (Daily Gift)');
+      const claimButton = getClaimButtonForItem('100 Gold Gift');
       await user.click(claimButton);
 
       await waitFor(() => {
@@ -192,10 +192,10 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getByText('100 Gold (Daily Gift)')).toBeInTheDocument();
+        expect(screen.getByText('100 Gold Gift')).toBeInTheDocument();
       });
 
-      const claimButton = getClaimButtonForItem('100 Gold (Daily Gift)');
+      const claimButton = getClaimButtonForItem('100 Gold Gift');
       await user.click(claimButton);
 
       await waitFor(() => {
@@ -221,7 +221,7 @@ describe('ShopDialog', () => {
 
       let claimButton: HTMLElement;
       await waitFor(() => {
-        claimButton = getClaimButtonForItem('100 Gold (Daily Gift)');
+        claimButton = getClaimButtonForItem('100 Gold Gift');
         expect(claimButton).not.toBeDisabled();
       });
 
@@ -246,10 +246,10 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getByText('100 Gold (Daily Gift)')).toBeInTheDocument();
+        expect(screen.getByText('100 Gold Gift')).toBeInTheDocument();
       });
 
-      const claimButton = getClaimButtonForItem('100 Gold (Daily Gift)');
+      const claimButton = getClaimButtonForItem('100 Gold Gift');
 
       // First claim
       await user.click(claimButton);
