@@ -82,7 +82,7 @@ export default function GameFooter() {
 
   const emphasizeFooterSocialIcons =
     isPaused || idleModeDialog.isOpen || leaderboardDialogOpen;
-  const socialIconClass = `hover:opacity-100 transition-opacity duration-[2000ms] ease-in-out flex items-center justify-center w-4 h-4 ${emphasizeFooterSocialIcons ? "opacity-90" : "opacity-35"
+  const socialIconClass = `hover:opacity-100 transition-opacity duration-[2000ms] ease-in-out flex items-center justify-center w-4 h-4 ${emphasizeFooterSocialIcons ? "opacity-90" : "opacity-60"
     }`;
 
   return (
