@@ -206,14 +206,12 @@ export default function StartScreen() {
             </div>
           }
           tooltipId="boost-indicator"
+          disabled={false}
+          onClick={() => {
+            setBoostMode(false);
+          }}
         >
-          <div
-            className="absolute bottom-4 right-4 z-20 cursor-pointer"
-            onClick={(e) => {
-              e.preventDefault();
-              setBoostMode(false);
-            }}
-          >
+          <div className="absolute bottom-4 right-4 z-20 cursor-pointer">
             <div className="text-green-600 text-xl">↑</div>
           </div>
         </TooltipWrapper>

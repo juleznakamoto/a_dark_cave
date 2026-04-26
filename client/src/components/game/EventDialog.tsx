@@ -249,6 +249,7 @@ export default function EventDialog({
                         </div>
                       }
                       tooltipId="event-time-bonus"
+                      disabled
                     >
                       <span className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-xl">
                         ✧
@@ -333,9 +334,10 @@ export default function EventDialog({
                   successPercentage = `${Math.round(successChance * 100)}%`;
                 }
 
+                const selectChoice = () => handleChoice(choice.id);
                 const buttonContent = (
                   <Button
-                    onClick={() => handleChoice(choice.id)}
+                    onClick={selectChoice}
                     variant="outline"
                     className="w-full flex items-center justify-between text-left"
                     disabled={isDisabled}
@@ -389,6 +391,7 @@ export default function EventDialog({
                     }
                     tooltipId={choice.id}
                     disabled={isDisabled}
+                    onClick={isDisabled ? undefined : selectChoice}
                   >
                     {buttonContent}
                   </TooltipWrapper>

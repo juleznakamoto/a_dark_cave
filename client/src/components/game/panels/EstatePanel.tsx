@@ -75,6 +75,7 @@ function SkillUpgradeRow({
             }
             tooltipId={tooltipId}
             disabled={!canAfford}
+            onClick={canAfford ? onUpgrade : undefined}
             onMouseEnter={() => setHighlightedResources(["gold"])}
             onMouseLeave={() => setHighlightedResources([])}
           >
@@ -392,6 +393,7 @@ export default function EstatePanel() {
                   </div>
                 }
                 tooltipId="focus-progress"
+                disabled
               >
                 <div className="text-xs text-primary flex items-center gap-0.5 cursor-pointer">
                   <div className="relative inline-flex items-center gap-1 mt-[0px]">
@@ -504,6 +506,7 @@ export default function EstatePanel() {
                   </div>
                 }
                 tooltipId={SLEEP_LENGTH_TOOLTIP_ID}
+                disabled
                 className={cn(
                   "relative inline-block pb-1 text-xs font-medium text-foreground",
                   !hoveredTooltips[SLEEP_LENGTH_TOOLTIP_ID] && "new-item-pulse",
@@ -576,6 +579,7 @@ export default function EstatePanel() {
                   </div>
                 }
                 tooltipId={SLEEP_INTENSITY_TOOLTIP_ID}
+                disabled
                 className={cn(
                   "relative inline-block pb-1 text-xs font-medium text-foreground",
                   !hoveredTooltips[SLEEP_INTENSITY_TOOLTIP_ID] && "new-item-pulse",
@@ -789,29 +793,34 @@ export default function EstatePanel() {
           <h3 className="text-xs font-medium text-foreground">Cube</h3>
 
           <div className="grid grid-cols-6 gap-5 w-40 h-12 gap-y-3">
-            {completedCubeEvents.map((event) => (
-              <TooltipWrapper
-                key={event.id}
-                tooltip={
-                  <div className="text-xs">{event.title}</div>
-                }
-                tooltipId={`cube-${event.id}`}
-              >
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    useGameStore
-                      .getState()
-                      .trackButtonClick(`cube-${event.id}`);
-                    handleCubeClick(event);
-                  }}
-                  className="w-6 h-6 bg-neutral-900 border border-neutral-800 rounded-md flex items-center justify-center hover:bg-neutral-800 hover:border-neutral-500 transition-all cursor-pointer group relative"
+            {completedCubeEvents.map((event) => {
+              const openCubeEvent = () => {
+                useGameStore.getState().trackButtonClick(`cube-${event.id}`);
+                handleCubeClick(event);
+              };
+
+              return (
+                <TooltipWrapper
+                  key={event.id}
+                  tooltip={
+                    <div className="text-xs">{event.title}</div>
+                  }
+                  tooltipId={`cube-${event.id}`}
+                  onClick={openCubeEvent}
                 >
-                  <div className="text-md">▣</div>
-                  <div className="absolute inset-0 cube-dialog-glow opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none rounded"></div>
-                </button>
-              </TooltipWrapper>
-            ))}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openCubeEvent();
+                    }}
+                    className="w-6 h-6 bg-neutral-900 border border-neutral-800 rounded-md flex items-center justify-center hover:bg-neutral-800 hover:border-neutral-500 transition-all cursor-pointer group relative"
+                  >
+                    <div className="text-md">▣</div>
+                    <div className="absolute inset-0 cube-dialog-glow opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none rounded"></div>
+                  </button>
+                </TooltipWrapper>
+              );
+            })}
           </div>
         </div>
       </div>

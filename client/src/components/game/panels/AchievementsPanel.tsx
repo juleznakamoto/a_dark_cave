@@ -97,6 +97,7 @@ function AchievementRowComponent({
       <TooltipWrapper
         tooltip={`${Math.floor(row.currentCount)}/${row.maxCount}`}
         tooltipId={`achievement-progress-${row.achievementId}`}
+        disabled
         className="w-full"
       >
         <Progress

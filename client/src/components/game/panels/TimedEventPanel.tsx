@@ -429,6 +429,7 @@ export default function TimedEventPanel() {
                         </div>
                       }
                       tooltipId="merchant-discount"
+                      disabled
                     >
                       <span className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-lg pl-2">
                         ✧

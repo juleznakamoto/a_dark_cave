@@ -25,7 +25,7 @@ class GlobalTooltipManager {
       this.clearAllPressTimers();
       this.tooltipsOpenedByTimer.clear();
     }
-    
+
     this.openTooltipId = id;
     if (openedByTimer && id) {
       this.tooltipsOpenedByTimer.add(id);
@@ -156,14 +156,14 @@ export function useGlobalTooltip() {
   const handleMouseDown = useCallback((id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
     // Clear any existing timer before creating a new one
     globalTooltipManager.clearPressTimer(id);
-    
+
     // Don't prevent default to allow button interaction
     // Start timer to show tooltip after 300ms (works on all devices including tablets)
     const timer = setTimeout(() => {
       globalTooltipManager.setOpenTooltip(id, true); // Mark as opened by timer
       globalTooltipManager.clearPressTimer(id);
     }, 300);
-    
+
     globalTooltipManager.setPressTimer(id, timer);
   }, []);
 
@@ -171,11 +171,11 @@ export function useGlobalTooltip() {
     const wasPressing = globalTooltipManager.isPressing(id);
     const tooltipWasOpen = globalTooltipManager.isTooltipOpen(id);
     globalTooltipManager.clearPressTimer(id);
-    
+
     // If tooltip is already open
     if (tooltipWasOpen) {
       const wasOpenedByTimer = globalTooltipManager.wasOpenedByTimer(id);
-      
+
       // If tooltip was opened by long press: keep it open, prevent action. User clicks elsewhere to close.
       if (wasOpenedByTimer) {
         e.preventDefault();
@@ -183,8 +183,10 @@ export function useGlobalTooltip() {
         globalTooltipManager.clearOpenedByTimer(id);
         return;
       }
-      
-      // If tooltip was already open (not from timer), close on release and allow click to proceed
+
+      // If tooltip was already open (not from timer), close on release and allow
+      // the normal child click to proceed. Closing a tooltip should not itself
+      // execute an action.
       globalTooltipManager.setOpenTooltip(null);
       globalTooltipManager.clearOpenedByTimer(id);
       if (!disabled) return;
@@ -192,7 +194,7 @@ export function useGlobalTooltip() {
       e.stopPropagation();
       return;
     }
-    
+
     // On mobile, short taps on disabled controls should open the tooltip directly.
     // Relying on a later click is unreliable because disabled buttons may not emit one.
     if (wasPressing && !tooltipWasOpen) {
@@ -232,11 +234,11 @@ export function useGlobalTooltip() {
     const wasPressing = globalTooltipManager.isPressing(id);
     const tooltipWasOpen = globalTooltipManager.isTooltipOpen(id);
     globalTooltipManager.clearPressTimer(id);
-    
+
     // If tooltip is already open
     if (tooltipWasOpen) {
       const wasOpenedByTimer = globalTooltipManager.wasOpenedByTimer(id);
-      
+
       // If tooltip was opened by long press: keep it open, prevent action. User taps elsewhere to close.
       if (wasOpenedByTimer) {
         if (e.cancelable) e.preventDefault();
@@ -244,8 +246,10 @@ export function useGlobalTooltip() {
         globalTooltipManager.clearOpenedByTimer(id);
         return;
       }
-      
-      // If tooltip was already open (not from timer), close on release and allow click to proceed
+
+      // If tooltip was already open (not from timer), close on release and allow
+      // the normal child click to proceed. Closing a tooltip should not itself
+      // execute an action.
       globalTooltipManager.setOpenTooltip(null);
       globalTooltipManager.clearOpenedByTimer(id);
       if (!disabled) return;
@@ -253,7 +257,7 @@ export function useGlobalTooltip() {
       e.stopPropagation();
       return;
     }
-    
+
     // On mobile, short taps on disabled controls should open the tooltip directly.
     // Relying on a later click is unreliable because disabled buttons may not emit one.
     if (wasPressing && !tooltipWasOpen) {
