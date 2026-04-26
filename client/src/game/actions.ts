@@ -708,10 +708,27 @@ export function executeGameAction(
           delayedEffects: [],
         };
       }
+      // Preserve standard executeGameAction fields (cooldowns, initialCooldowns, story.seen action flags).
       return {
-        stateUpdates: updates,
-        logEntries: [],
-        delayedEffects: [],
+        ...result,
+        stateUpdates: {
+          ...result.stateUpdates,
+          ...updates,
+          cooldowns: {
+            ...result.stateUpdates.cooldowns,
+            ...updates.cooldowns,
+          },
+          story: {
+            ...state.story,
+            ...result.stateUpdates.story,
+            ...updates.story,
+            seen: {
+              ...state.story.seen,
+              ...result.stateUpdates.story?.seen,
+              ...updates.story?.seen,
+            },
+          },
+        },
       };
     }
 
