@@ -106,9 +106,9 @@ export const forestScoutActions: Record<string, Action> = {
             let prob =
               CRUEL_MODE.forestScout.huntBlacksmithHammerProb.base +
               stoneHuts *
-              CRUEL_MODE.forestScout.huntBlacksmithHammerProb.perStoneHut -
+                CRUEL_MODE.forestScout.huntBlacksmithHammerProb.perStoneHut -
               cruelModeScale(state) *
-              CRUEL_MODE.forestScout.huntBlacksmithHammerProb.whenCruel;
+                CRUEL_MODE.forestScout.huntBlacksmithHammerProb.whenCruel;
             return prob;
           },
           value: true,
@@ -125,7 +125,7 @@ export const forestScoutActions: Record<string, Action> = {
               CRUEL_MODE.forestScout.huntRedMaskProb.base +
               stoneHuts * CRUEL_MODE.forestScout.huntRedMaskProb.perStoneHut -
               cruelModeScale(state) *
-              CRUEL_MODE.forestScout.huntRedMaskProb.whenCruel;
+                CRUEL_MODE.forestScout.huntRedMaskProb.whenCruel;
             return prob;
           },
           value: true,
@@ -140,9 +140,9 @@ export const forestScoutActions: Record<string, Action> = {
             return (
               CRUEL_MODE.forestScout.huntMapFragmentProb.base +
               stoneHuts *
-              CRUEL_MODE.forestScout.huntMapFragmentProb.perStoneHut +
+                CRUEL_MODE.forestScout.huntMapFragmentProb.perStoneHut +
               cruelModeScale(state) *
-              CRUEL_MODE.forestScout.huntMapFragmentProb.whenCruel
+                CRUEL_MODE.forestScout.huntMapFragmentProb.whenCruel
             );
           },
           value: true,
@@ -245,7 +245,7 @@ export const forestScoutActions: Record<string, Action> = {
     expeditionVillagersRequired: (state: GameState) =>
       CRUEL_MODE.forestExpedition.sunkenTemple.base +
       cruelModeScale(state) *
-      CRUEL_MODE.forestExpedition.sunkenTemple.whenCruel,
+        CRUEL_MODE.forestExpedition.sunkenTemple.whenCruel,
     show_when: {
       "story.seen.wizardBloodstone": true,
       "!story.seen.sunkenTempleExplored": true,
@@ -276,7 +276,7 @@ export const forestScoutActions: Record<string, Action> = {
     expeditionVillagersRequired: (state: GameState) =>
       CRUEL_MODE.forestExpedition.swampSanctuary.base +
       cruelModeScale(state) *
-      CRUEL_MODE.forestExpedition.swampSanctuary.whenCruel,
+        CRUEL_MODE.forestExpedition.swampSanctuary.whenCruel,
     show_when: {
       "story.seen.swampMapAssembled": true,
       "!story.seen.swampSanctuaryExplored": true,
@@ -296,7 +296,7 @@ export const forestScoutActions: Record<string, Action> = {
     expeditionVillagersRequired: (state: GameState) =>
       CRUEL_MODE.forestExpedition.collapsedTower.base +
       cruelModeScale(state) *
-      CRUEL_MODE.forestExpedition.collapsedTower.whenCruel,
+        CRUEL_MODE.forestExpedition.collapsedTower.whenCruel,
     show_when: {
       "story.seen.collapsedTowerUnlocked": true,
       "!story.seen.collapsedTowerExplored": true,
@@ -419,7 +419,7 @@ export const forestScoutActions: Record<string, Action> = {
       "!triggeredEvents.traders_daughter_helped": true,
     },
     cost: {
-      "resources.food": 500,
+      "resources.food": 1000,
     },
     effects: {},
     success_chance: (state: GameState) =>
@@ -521,15 +521,15 @@ export function handleLayTrap(
       villagerDeaths = Math.min(
         state.current_population,
         Math.floor(Math.random() * gbt.victoryDeaths.randMax) +
-        cruelModeScale(state) * gbt.victoryDeaths.whenCruel,
+          cruelModeScale(state) * gbt.victoryDeaths.whenCruel,
       );
     } else {
       // Defeat with heavy casualties
       villagerDeaths = Math.min(
         state.current_population,
         Math.floor(Math.random() * gbt.defeatDeaths.randMax) +
-        gbt.defeatDeaths.base +
-        cruelModeScale(state) * gbt.defeatDeaths.whenCruel,
+          gbt.defeatDeaths.base +
+          cruelModeScale(state) * gbt.defeatDeaths.whenCruel,
       );
     }
 
@@ -634,13 +634,13 @@ export function handleCastleRuins(
     if (
       failureRand <
       cr.minorUndeadChance.base -
-      cruelModeScale(state) * cr.minorUndeadChance.whenCruel
+        cruelModeScale(state) * cr.minorUndeadChance.whenCruel
     ) {
       const villagerDeaths = Math.min(
         state.current_population,
         Math.floor(Math.random() * cr.minorDeaths.randMax) +
-        cr.minorDeaths.base +
-        cruelModeScale(state) * cr.minorDeaths.whenCruel,
+          cr.minorDeaths.base +
+          cruelModeScale(state) * cr.minorDeaths.whenCruel,
       );
       const deathResult = killVillagers(state, villagerDeaths);
       const actualDeaths = deathResult.villagersKilled || 0;
@@ -656,8 +656,8 @@ export function handleCastleRuins(
       const villagerDeaths = Math.min(
         state.current_population,
         Math.floor(Math.random() * cr.majorDeaths.randMax) +
-        cr.majorDeaths.base +
-        cruelModeScale(state) * cr.majorDeaths.whenCruel,
+          cr.majorDeaths.base +
+          cruelModeScale(state) * cr.majorDeaths.whenCruel,
       );
       const deathResult = killVillagers(state, villagerDeaths);
       const actualDeaths = deathResult.villagersKilled || 0;
@@ -729,8 +729,8 @@ export function handleHillGrave(
     const villagerDeaths = Math.min(
       state.current_population,
       Math.floor(Math.random() * hg.randMax) +
-      hg.base +
-      cruelModeScale(state) * hg.whenCruel,
+        hg.base +
+        cruelModeScale(state) * hg.whenCruel,
     );
     const deathResult = killVillagers(state, villagerDeaths);
     const actualDeaths = deathResult.villagersKilled || 0;
@@ -802,8 +802,8 @@ export function handleSunkenTemple(
     const villagerDeaths = Math.min(
       state.current_population,
       Math.floor(Math.random() * st.randMax) +
-      st.base +
-      cruelModeScale(state) * st.whenCruel,
+        st.base +
+        cruelModeScale(state) * st.whenCruel,
     );
     const deathResult = killVillagers(state, villagerDeaths);
     const actualDeaths = deathResult.villagersKilled || 0;
@@ -931,8 +931,8 @@ export function handlecollapsedTower(
     const villagerDeaths = Math.min(
       state.current_population,
       Math.floor(Math.random() * ct.randMax) +
-      ct.base +
-      cruelModeScale(state) * ct.whenCruel,
+        ct.base +
+        cruelModeScale(state) * ct.whenCruel,
     );
     const deathResult = killVillagers(state, villagerDeaths);
     const actualDeaths = deathResult.villagersKilled || 0;
@@ -998,8 +998,8 @@ export function handleForestCave(
     const villagerDeaths = Math.min(
       state.current_population,
       Math.floor(Math.random() * fc.randMax) +
-      fc.base +
-      cruelModeScale(state) * fc.whenCruel,
+        fc.base +
+        cruelModeScale(state) * fc.whenCruel,
     );
     const deathResult = killVillagers(state, villagerDeaths);
     const actualDeaths = deathResult.villagersKilled || 0;
@@ -1161,8 +1161,8 @@ export function handleRisingSmoke(
     const villagerDeaths = Math.min(
       state.current_population,
       Math.floor(Math.random() * rs.randMax) +
-      rs.base +
-      cruelModeScale(state) * rs.whenCruel,
+        rs.base +
+        cruelModeScale(state) * rs.whenCruel,
     );
     const deathResult = killVillagers(state, villagerDeaths);
     const actualDeaths = deathResult.villagersKilled || 0;

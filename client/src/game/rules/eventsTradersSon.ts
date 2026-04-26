@@ -15,7 +15,7 @@ export const tradersSonEvents: Record<string, GameEvent> = {
     message:
       "The village trader's son approaches you. He wore his father's prized dagger to impress a woman, but a nearby bandit mugged him. He asks you to retrieve it.",
     priority: 3,
-    repeatable: true,
+    repeatable: false,
     choices: [
       {
         id: "agree_recover_dagger",
@@ -65,7 +65,7 @@ export const tradersSonEvents: Record<string, GameEvent> = {
     timeProbability: 0.5,
     title: "The Trader's Son's Gratitude",
     message:
-      "The trader's son returns, holding his father's dagger. He is full of gratitude andoffers you a great discount on your next purchase of his father's goods.",
+      "The trader's son returns, holding his father's dagger. He is full of gratitude and offers you a great discount on your next purchase of his father's goods.",
     priority: 3,
     repeatable: false,
     showAsTimedTab: true,
