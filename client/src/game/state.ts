@@ -620,6 +620,7 @@ export const rewardDialogActions = new Set([
   "hillGrave",
   "sunkenTemple",
   "collapsedTower",
+  "banditLair",
   "forestCave",
   "blackreachCanyon",
   "steelDelivery",
