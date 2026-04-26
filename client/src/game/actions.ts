@@ -11,6 +11,7 @@ import {
   getHumansCost,
 } from "@/game/rules/forestSacrificeActions";
 import { killVillagers } from "@/game/stateHelpers";
+import { getProvokeAttackWaveExecutionUpdates } from "@/game/rules/bastionActions";
 // Import all handlers from the modular action files
 import {
   handleLightFire,
@@ -697,6 +698,22 @@ export function executeGameAction(
         logEntries: [],
         delayedEffects: [],
       };
+
+    case "provokeAttackWave": {
+      const updates = getProvokeAttackWaveExecutionUpdates(state);
+      if (!updates) {
+        return {
+          stateUpdates: {},
+          logEntries: [],
+          delayedEffects: [],
+        };
+      }
+      return {
+        stateUpdates: updates,
+        logEntries: [],
+        delayedEffects: [],
+      };
+    }
 
     default:
       logger.warn(`No handler found for action: ${actionId}`);

@@ -2,6 +2,8 @@ import { Action, GameState } from "@shared/schema";
 import { getGameActions } from "./actionsRegistry";
 import { CRUEL_MODE } from "@/game/cruelMode";
 import { getTotalBuildingCostReduction } from "./effectsCalculation";
+import { getAttackWavesChartRows } from "./eventsAttackWaves";
+import { applyActionEffects } from "./actionEffects";
 
 /** Repair resource paths and amounts (same formula as former Bastion panel helpers). */
 export function getBastionRepairCostPaths(
@@ -25,6 +27,53 @@ export function getBastionRepairCostPaths(
     }
   }
   return out;
+}
+
+/** True when the active wave can be provoked (timer running, not already provoked, etc.). */
+export function canProvokeAttackWave(state: GameState): boolean {
+  const waves = getAttackWavesChartRows({
+    story: state.story,
+    buildings: state.buildings,
+    weapons: state.weapons,
+  });
+  const activeWave = waves.find((w) => !w.completed && w.conditionMet);
+  if (!activeWave) {
+    return false;
+  }
+  const timer = state.attackWaveTimers?.[activeWave.id];
+  if (!timer || timer.defeated || timer.provoked) {
+    return false;
+  }
+  const remaining = Math.max(0, timer.duration - (timer.elapsedTime || 0));
+  return remaining > 0;
+}
+
+/** State updates for a successful provoke: pay cost via action effects + set timer. */
+export function getProvokeAttackWaveExecutionUpdates(
+  state: GameState,
+): Partial<GameState> | null {
+  if (!canProvokeAttackWave(state)) {
+    return null;
+  }
+  const waves = getAttackWavesChartRows({
+    story: state.story,
+    buildings: state.buildings,
+    weapons: state.weapons,
+  });
+  const activeWave = waves.find((w) => !w.completed && w.conditionMet)!;
+  const timer = state.attackWaveTimers![activeWave.id]!;
+  const effectUpdates = applyActionEffects("provokeAttackWave", state);
+  return {
+    ...effectUpdates,
+    attackWaveTimers: {
+      ...state.attackWaveTimers,
+      [activeWave.id]: {
+        ...timer,
+        elapsedTime: timer.duration,
+        provoked: true,
+      },
+    },
+  };
 }
 
 export const bastionActions: Record<string, Action> = {
@@ -92,6 +141,18 @@ export const bastionActions: Record<string, Action> = {
       "story.seen.palisadesDamaged": true,
       "buildings.palisades": 1,
     },
+    effects: {},
+  },
+  provokeAttackWave: {
+    id: "provokeAttackWave",
+    label: "Provoke attack wave",
+    executionTime: 0,
+    cooldown: 0,
+    cost: { "resources.food": 500 },
+    show_when: {
+      "buildings.bastion": 1,
+    },
+    canExecute: (state: GameState) => canProvokeAttackWave(state),
     effects: {},
   },
 };

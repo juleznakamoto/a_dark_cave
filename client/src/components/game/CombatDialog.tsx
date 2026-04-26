@@ -132,6 +132,12 @@ export default function CombatDialog({
 
   const HAS_RESTLESS_KNIGHT = gameState.fellowship.restless_knight || false;
   const HAS_ELDER_WIZARD = gameState.fellowship.elder_wizard || false;
+  const isRestlessKnightWounded = Boolean(
+    gameState.story?.seen?.restlessKnightWounded,
+  );
+  const isElderWizardWounded = Boolean(
+    gameState.story?.seen?.elderWizardWounded,
+  );
 
   const bastionStats = calculateBastionStats(gameState);
 
@@ -691,6 +697,7 @@ export default function CombatDialog({
                           }
                           tooltipId="combat-luck-madness"
                           tooltipContentClassName="max-w-xs"
+                          disabled
                           className="inline-flex items-center justify-center w-4 h-4 shrink-0 rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
                         >
                           <span
@@ -745,6 +752,7 @@ export default function CombatDialog({
                           <span className="text-gray-400">Integrity</span>
                         }
                         tooltipId="combat-enemy-integrity-symbol"
+                        disabled
                         className="inline-block"
                       >
                         <span className="flex items-center gap-1">
@@ -788,6 +796,7 @@ export default function CombatDialog({
                     <TooltipWrapper
                       tooltip={<span className="text-gray-400">Attack</span>}
                       tooltipId="combat-enemy-attack-symbol"
+                      disabled
                       className="inline-block"
                     >
                       <div className="text-xs mt-2 flex items-center gap-1">
@@ -814,6 +823,7 @@ export default function CombatDialog({
                             <span className="text-gray-400">Integrity</span>
                           }
                           tooltipId="combat-player-integrity-symbol"
+                          disabled
                           className="inline-block"
                         >
                           <span className="flex items-center gap-1">
@@ -846,6 +856,7 @@ export default function CombatDialog({
                       <TooltipWrapper
                         tooltip={<span className="text-gray-400">Attack</span>}
                         tooltipId="combat-player-attack-symbol"
+                        disabled
                         className="inline-block"
                       >
                         <div className="flex items-center gap-1">
@@ -860,6 +871,7 @@ export default function CombatDialog({
                           <span className="text-gray-400">Defense</span>
                         }
                         tooltipId="combat-player-defense-symbol"
+                        disabled
                         className="inline-block"
                       >
                         <div className="flex items-center gap-1">
@@ -922,6 +934,7 @@ export default function CombatDialog({
                                   }
                                   tooltipId={`combat-item-${item.id}`}
                                   disabled={!item.available || isProcessingRound}
+                                  onClick={() => handleUseItem(item)}
                                 >
                                   <div className="w-full">
                                     <Button
@@ -971,7 +984,7 @@ export default function CombatDialog({
                             disabled={
                               usedCrushingStrike ||
                               isProcessingRound ||
-                              gameState.story?.seen?.restlessKnightWounded
+                              isRestlessKnightWounded
                             }
                             onClick={handleUseCrushingStrike}
                           >
@@ -981,7 +994,7 @@ export default function CombatDialog({
                                 disabled={
                                   usedCrushingStrike ||
                                   isProcessingRound ||
-                                  gameState.story?.seen?.restlessKnightWounded
+                                  isRestlessKnightWounded
                                 }
                                 variant="outline"
                                 size="sm"
@@ -1017,8 +1030,9 @@ export default function CombatDialog({
                               BLOODFLAME_SPHERE_UPGRADES[
                                 bloodflameSphereLevel
                               ].healthCost ||
-                              gameState.story?.seen?.elderWizardWounded
+                              isElderWizardWounded
                             }
+                            onClick={handleUseBloodflameSphere}
                           >
                             <div className="w-full">
                               <Button
@@ -1030,7 +1044,7 @@ export default function CombatDialog({
                                   BLOODFLAME_SPHERE_UPGRADES[
                                     bloodflameSphereLevel
                                   ].healthCost ||
-                                  gameState.story?.seen?.elderWizardWounded
+                                  isElderWizardWounded
                                 }
                                 variant="outline"
                                 size="sm"

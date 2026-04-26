@@ -1,9 +1,17 @@
+import type { GameState } from "@shared/schema";
 import { useGameStore } from "@/game/state";
 import { Progress } from "@/components/ui/progress";
-import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { getAttackWavesChartRows } from "@/game/rules/eventsAttackWaves";
 import { TOTAL_ATTACK_WAVES } from "@/game/rules/attackWaveOrder";
+import {
+  canExecuteAction,
+  getActionCostBreakdown,
+  getResourcesFromActionCost,
+} from "@/game/rules";
+import CooldownButton from "@/components/CooldownButton";
+
+const PROVOKE_ACTION_ID = "provokeAttackWave" as const;
 
 export default function AttackWavesChart() {
   // Subscribe to slices that drive chart rows and timers; timer label ticks once per second.
@@ -11,6 +19,8 @@ export default function AttackWavesChart() {
   const buildings = useGameStore((s) => s.buildings);
   const weapons = useGameStore((s) => s.weapons);
   const attackWaveTimers = useGameStore((s) => s.attackWaveTimers);
+  const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
+  const executeAction = useGameStore((s) => s.executeAction);
   const [, setTimerTick] = useState(0);
 
   useEffect(() => {
@@ -20,27 +30,7 @@ export default function AttackWavesChart() {
 
   const waves = getAttackWavesChartRows({ story, buildings, weapons });
 
-  const handleProvoke = async (waveId: string) => {
-    const timer = attackWaveTimers?.[waveId];
-    const elapsed = timer?.elapsedTime || 0;
-    const remaining = timer ? Math.max(0, timer.duration - elapsed) : 0;
-
-    if (timer && !timer.defeated && remaining > 0 && !timer.provoked) {
-      useGameStore.setState((state) => ({
-        attackWaveTimers: {
-          ...state.attackWaveTimers,
-          [waveId]: {
-            ...timer,
-            elapsedTime: timer.duration,
-            provoked: true,
-          },
-        },
-      }));
-
-      const { manualSave } = await import("@/game/loop");
-      await manualSave();
-    }
-  };
+  const state = useGameStore.getState() as unknown as GameState;
 
   const formatTime = (ms: number): string => {
     if (ms <= 0) return "soon";
@@ -104,19 +94,47 @@ export default function AttackWavesChart() {
             </span>
           </div>
           {attackWaveTimers?.[activeWave.id] && (
-            <Button
-              onClick={() => handleProvoke(activeWave.id)}
+            <CooldownButton
+              actionId={PROVOKE_ACTION_ID}
+              onClick={async () => {
+                executeAction(PROVOKE_ACTION_ID);
+                const { manualSave } = await import("@/game/loop");
+                await manualSave();
+              }}
+              cooldownMs={0}
               variant="outline"
               size="xs"
               className="w-19 hover:bg-background hover:text-foreground"
               button_id="provoke-attack"
-              disabled={
-                attackWaveTimers[activeWave.id]?.provoked ||
-                getTimeRemaining(activeWave.id) <= 0
+              data-testid="button-provoke-attack"
+              disabled={!canExecuteAction(PROVOKE_ACTION_ID, state)}
+              tooltip={
+                <div className="text-xs whitespace-nowrap">
+                  {getActionCostBreakdown(PROVOKE_ACTION_ID, state).map(
+                    (row, index) => (
+                      <div
+                        key={index}
+                        className={
+                          row.satisfied ? "" : "text-muted-foreground"
+                        }
+                      >
+                        {row.text}
+                      </div>
+                    ),
+                  )}
+                </div>
               }
+              onMouseEnter={() => {
+                setHighlightedResources(
+                  getResourcesFromActionCost(PROVOKE_ACTION_ID, state),
+                );
+              }}
+              onMouseLeave={() => {
+                setHighlightedResources([]);
+              }}
             >
               Provoke
-            </Button>
+            </CooldownButton>
           )}
         </div>
       ) : (
