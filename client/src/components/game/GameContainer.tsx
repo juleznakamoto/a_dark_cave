@@ -98,7 +98,6 @@ export default function GameContainer() {
   const [fadePhaseTabs, setFadePhaseTabs] = useState<Set<string>>(new Set());
   const [lastViewedUnclaimedAchievementIds, setLastViewedUnclaimedAchievementIds] =
     useState<string[]>([]);
-  const tabNavRef = useRef<HTMLElement | null>(null);
   const tabButtonRowRef = useRef<HTMLDivElement | null>(null);
   const [pauseHotkeyHint, setPauseHotkeyHint] = useState<{
     top: number;
@@ -553,26 +552,26 @@ export default function GameContainer() {
       setPauseHotkeyBadges([]);
       return;
     }
-    const nav = tabNavRef.current;
     const row = tabButtonRowRef.current;
-    if (!nav) {
+    if (!row) {
       setPauseHotkeyHint(null);
       setPauseHotkeyBadges([]);
       return;
     }
-    const rowRect = row?.getBoundingClientRect();
-    const navRect = nav.getBoundingClientRect();
-    const alignRect = rowRect && rowRect.width > 0 ? rowRect : navRect;
+    const rowRect = row.getBoundingClientRect();
+    const nav = row.closest("nav");
+    const navRect = nav?.getBoundingClientRect() ?? rowRect;
     setPauseHotkeyHint({
-      top: Math.max(4, alignRect.top - 42),
-      left: alignRect.left + alignRect.width / 2,
+      top: Math.max(4, navRect.top - 42),
+      left: rowRect.left + rowRect.width / 2,
     });
+    const queryTabButton = (testId: string) =>
+      row.querySelector<HTMLElement>(`[data-testid="${testId}"]`) ??
+      document.querySelector<HTMLElement>(`[data-testid="${testId}"]`);
     const next: { key: string; left: number; top: number; label: string }[] =
       [];
     visibleHotkeyTabs.forEach((tab, i) => {
-      const el = document.querySelector<HTMLElement>(
-        `[data-testid="tab-${tab}"]`,
-      );
+      const el = queryTabButton(`tab-${tab}`);
       if (!el) return;
       const r = el.getBoundingClientRect();
       next.push({
@@ -583,9 +582,7 @@ export default function GameContainer() {
       });
     });
     if (traderUnlocked) {
-      const el = document.querySelector<HTMLElement>(
-        '[data-testid="tab-trader"]',
-      );
+      const el = queryTabButton("tab-trader");
       if (el) {
         const r = el.getBoundingClientRect();
         next.push({
@@ -756,10 +753,7 @@ export default function GameContainer() {
         {/* Right Content Area with Horizontal Tabs and Actions - Below for mobile, right for desktop */}
         <section className="flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
           {/* Horizontal Game Tabs */}
-          <nav
-            ref={tabNavRef}
-            className="border-t border-border pl-2 md:pl-4 flex-shrink-0"
-          >
+          <nav className="border-t border-border pl-2 md:pl-4 flex-shrink-0">
             {useLimelightNav ? (
               // Alternative LimelightNav design
               <LimelightNav
@@ -777,7 +771,10 @@ export default function GameContainer() {
               />
             ) : (
               // Standard button design
-              <div ref={tabButtonRowRef} className="flex space-x-3 pl-[3px] ">
+              <div
+                ref={tabButtonRowRef}
+                className="inline-flex max-w-full flex-wrap items-baseline gap-x-3 pl-[3px]"
+              >
                 <button
                   className={`py-2 text-sm bg-transparent ${activeTab === "cave"
                     ? "font-semibold opacity-100"
