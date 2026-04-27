@@ -99,7 +99,10 @@ export default function GameContainer() {
   const [lastViewedUnclaimedAchievementIds, setLastViewedUnclaimedAchievementIds] =
     useState<string[]>([]);
   const tabNavRef = useRef<HTMLElement | null>(null);
-  const [pauseHotkeyHintTop, setPauseHotkeyHintTop] = useState<number | null>(null);
+  const [pauseHotkeyHint, setPauseHotkeyHint] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
   const [pauseHotkeyBadges, setPauseHotkeyBadges] = useState<
     { key: string; left: number; top: number; label: string }[]
   >([]);
@@ -545,18 +548,21 @@ export default function GameContainer() {
 
   const measurePauseHotkeyOverlay = useCallback(() => {
     if (!isPaused || useLimelightNav) {
-      setPauseHotkeyHintTop(null);
+      setPauseHotkeyHint(null);
       setPauseHotkeyBadges([]);
       return;
     }
     const nav = tabNavRef.current;
     if (!nav) {
-      setPauseHotkeyHintTop(null);
+      setPauseHotkeyHint(null);
       setPauseHotkeyBadges([]);
       return;
     }
     const navRect = nav.getBoundingClientRect();
-    setPauseHotkeyHintTop(Math.max(4, navRect.top - 42));
+    setPauseHotkeyHint({
+      top: Math.max(4, navRect.top - 42),
+      left: navRect.left + navRect.width / 2,
+    });
     const next: { key: string; left: number; top: number; label: string }[] =
       [];
     visibleHotkeyTabs.forEach((tab, i) => {
@@ -582,7 +588,7 @@ export default function GameContainer() {
           key: "hotkey-trader",
           left: r.left + r.width / 2,
           top: r.top - 2,
-          label: "t",
+          label: "[t]",
         });
       }
     }
@@ -689,15 +695,17 @@ export default function GameContainer() {
           style={{ top: 0, bottom: "45px" }}
           aria-hidden
         >
-          {pauseHotkeyHintTop != null && (
+          {pauseHotkeyHint != null && (
             <p
-              className="absolute left-1/2 w-[min(100%,36rem)] -translate-x-1/2 px-2 text-center text-xs leading-snug text-foreground drop-shadow"
-              style={{ top: pauseHotkeyHintTop }}
+              className="absolute max-w-[min(100vw-1rem,28rem)] px-2 text-center text-xs leading-snug text-foreground drop-shadow"
+              style={{
+                top: pauseHotkeyHint.top,
+                left: pauseHotkeyHint.left,
+                transform: "translateX(-50%)",
+              }}
             >
-              <span>Use the follwing keys or arrow keys </span>
-              <span className="text-base font-medium leading-none">←</span>
-              <span> </span>
-              <span className="text-base font-medium leading-none">→</span>
+              <span>Use keys or </span>
+              <span className="text-sm font-medium">{"[←] [→]"}</span>
               <span> to switch between tabs</span>
             </p>
           )}
