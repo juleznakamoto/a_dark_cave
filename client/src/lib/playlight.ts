@@ -16,8 +16,8 @@ const EXIT_INTENT_EVENT_DEDUP_MS = 600;
  * close timer and the top bar can stay stuck open.
  */
 const EXIT_INTENT_DISABLE_DEFER_MS = 2000;
-/** If the player stays paused (not for Playlight-initiated discovery) this long, show Discovery. */
-const LONG_PAUSE_DISCOVERY_MS = 60 * 1000;
+/** No mouse/keys/etc. (see `getMsSinceUserActivity` in `loop.ts`) for this long while eligible → show Discovery. */
+const DISCOVERY_INACTIVITY_MS = 10 * 1000;
 
 type ExitIntentGameSlice = {
   flags: { gameStarted?: boolean };
@@ -77,14 +77,18 @@ let gameStoreUnsubscribe: (() => void) | null = null;
 let initPlaylightPromise: Promise<void> | null = null;
 // Tracks whether Playlight itself triggered the pause (vs. the player already being paused)
 let playlightCausedPause = false;
-let longPauseDiscoveryTimerId: number | null = null;
+let longPauseDiscoveryPollIntervalId: number | null = null;
 /** One automatic Discovery open per pause streak until the player unpauses. */
 let longPauseDiscoveryFiredThisPauseStreak = false;
 
-function clearLongPauseDiscoveryTimer() {
-  if (longPauseDiscoveryTimerId !== null) {
-    clearTimeout(longPauseDiscoveryTimerId);
-    longPauseDiscoveryTimerId = null;
+function resetLongPauseDiscoveryFired() {
+  longPauseDiscoveryFiredThisPauseStreak = false;
+}
+
+function teardownLongPauseDiscoveryPoll() {
+  if (longPauseDiscoveryPollIntervalId !== null) {
+    clearInterval(longPauseDiscoveryPollIntervalId);
+    longPauseDiscoveryPollIntervalId = null;
   }
   longPauseDiscoveryFiredThisPauseStreak = false;
 }
@@ -115,8 +119,9 @@ export async function initPlaylight() {
         ...(fromPlaylight && { sidebar: { forceVisible: true } }),
       });
 
-      // Import game store
+      // Import game store + inactivity (store does not update on input)
       const { useGameStore } = await import("../game/state");
+      const { getMsSinceUserActivity } = await import("../game/loop");
       type StoreState = ReturnType<typeof useGameStore.getState>;
 
       const scheduleNormalPlayExitUnlock = () => {
@@ -211,10 +216,11 @@ export async function initPlaylight() {
           !!state.flags.gameStarted &&
           state.isPaused &&
           !playlightCausedPause &&
-          !state.idleModeDialog.isOpen;
+          !state.idleModeDialog.isOpen &&
+          (typeof document === "undefined" || !document.hidden);
 
         if (!eligible) {
-          clearLongPauseDiscoveryTimer();
+          resetLongPauseDiscoveryFired();
           return;
         }
 
@@ -222,14 +228,13 @@ export async function initPlaylight() {
           return;
         }
 
-        if (longPauseDiscoveryTimerId === null) {
-          longPauseDiscoveryTimerId = window.setTimeout(() => {
-            longPauseDiscoveryTimerId = null;
-            longPauseDiscoveryFiredThisPauseStreak = true;
-            markPlaylightDiscoveryUserInitiated();
-            playlightSDK.setDiscovery(true);
-          }, LONG_PAUSE_DISCOVERY_MS);
+        if (getMsSinceUserActivity() < DISCOVERY_INACTIVITY_MS) {
+          return;
         }
+
+        longPauseDiscoveryFiredThisPauseStreak = true;
+        markPlaylightDiscoveryUserInitiated();
+        playlightSDK.setDiscovery(true);
       };
 
       const syncFromStore = (state: StoreState) => {
@@ -244,12 +249,16 @@ export async function initPlaylight() {
         gameStoreUnsubscribe();
         gameStoreUnsubscribe = null;
       }
-      clearLongPauseDiscoveryTimer();
+      teardownLongPauseDiscoveryPoll();
 
       syncFromStore(useGameStore.getState());
 
-      // Reactively update exit intent and long-pause discovery from game state
+      // Reactively update exit intent and discovery from game state; poll inactivity (store is not
+      // updated on mouse/keys).
       gameStoreUnsubscribe = useGameStore.subscribe(syncFromStore);
+      longPauseDiscoveryPollIntervalId = window.setInterval(() => {
+        syncLongPauseDiscovery(useGameStore.getState());
+      }, 500);
 
       // Rate limit uses SDK `exitIntent` (top bar / indicator), not discovery opens.
       playlightSDK.onEvent("exitIntent", () => {

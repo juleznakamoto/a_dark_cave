@@ -137,6 +137,16 @@ let sessionCheckInterval: NodeJS.Timeout | null = null; // Added for session che
 let isInactive = false;
 let lastGameLoadTime = 0; // Track when game was last loaded
 
+/**
+ * Time since the last user activity the game loop tracks (mouse, key, touch, scroll, tab visible again).
+ * Returns 0 before `startGameLoop` initializes the baseline (treated as active so Playlight auto-discovery
+ * does not run pre-game).
+ */
+export function getMsSinceUserActivity(): number {
+  if (lastUserActivity === 0) return 0;
+  return Date.now() - lastUserActivity;
+}
+
 export function startGameLoop() {
   if (gameLoopId) {
     return; // Already running
