@@ -99,6 +99,7 @@ export default function GameContainer() {
   const [lastViewedUnclaimedAchievementIds, setLastViewedUnclaimedAchievementIds] =
     useState<string[]>([]);
   const tabNavRef = useRef<HTMLElement | null>(null);
+  const tabButtonRowRef = useRef<HTMLDivElement | null>(null);
   const [pauseHotkeyHint, setPauseHotkeyHint] = useState<{
     top: number;
     left: number;
@@ -553,15 +554,18 @@ export default function GameContainer() {
       return;
     }
     const nav = tabNavRef.current;
+    const row = tabButtonRowRef.current;
     if (!nav) {
       setPauseHotkeyHint(null);
       setPauseHotkeyBadges([]);
       return;
     }
+    const rowRect = row?.getBoundingClientRect();
     const navRect = nav.getBoundingClientRect();
+    const alignRect = rowRect && rowRect.width > 0 ? rowRect : navRect;
     setPauseHotkeyHint({
-      top: Math.max(4, navRect.top - 42),
-      left: navRect.left + navRect.width / 2,
+      top: Math.max(4, alignRect.top - 42),
+      left: alignRect.left + alignRect.width / 2,
     });
     const next: { key: string; left: number; top: number; label: string }[] =
       [];
@@ -696,7 +700,7 @@ export default function GameContainer() {
           aria-hidden
         >
           {pauseHotkeyHint != null && (
-            <p
+            <div
               className="absolute max-w-[min(100vw-1rem,28rem)] px-2 text-center text-xs leading-snug text-foreground drop-shadow"
               style={{
                 top: pauseHotkeyHint.top,
@@ -704,10 +708,12 @@ export default function GameContainer() {
                 transform: "translateX(-50%)",
               }}
             >
-              <span>Use keys or </span>
-              <span className="text-sm font-medium">{"[←] [→]"}</span>
+              <span>Use keys below or </span>
+              <span className="text-sm font-medium">←</span>
+              <span> </span>
+              <span className="text-sm font-medium">→</span>
               <span> to switch between tabs</span>
-            </p>
+            </div>
           )}
           {pauseHotkeyBadges.map((b) => (
             <span
@@ -771,7 +777,7 @@ export default function GameContainer() {
               />
             ) : (
               // Standard button design
-              <div className="flex space-x-3 pl-[3px] ">
+              <div ref={tabButtonRowRef} className="flex space-x-3 pl-[3px] ">
                 <button
                   className={`py-2 text-sm bg-transparent ${activeTab === "cave"
                     ? "font-semibold opacity-100"
