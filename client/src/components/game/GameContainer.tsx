@@ -33,7 +33,6 @@ import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
 import MistBackground from "@/components/ui/mist-background";
 import { getUnclaimedAchievementIds } from "@/achievements";
-import { audioManager } from "@/lib/audio";
 import type { ReactNode } from "react";
 
 /** Hotkey text above tab label; avoids overflow clipping and keeps hints readable. */
@@ -76,7 +75,6 @@ export default function GameContainer() {
     restartGameDialogOpen,
     setRestartGameDialogOpen,
     restartGame,
-    togglePause,
   } = useGameStore();
 
   // State selectors for dialogs - must be at top before any conditional returns
@@ -216,24 +214,6 @@ export default function GameContainer() {
     const onKeyDown = (e: KeyboardEvent) => {
       if (typingInField(e.target)) return;
 
-      if ((e.key === "m" || e.key === "M") && !e.ctrlKey && !e.metaKey && !e.altKey) {
-        e.preventDefault();
-        const s = useGameStore.getState();
-        const next = !s.musicMuted;
-        s.setMusicMuted(next);
-        audioManager.musicMute(next);
-        return;
-      }
-
-      if (e.key === "," && !e.ctrlKey && !e.metaKey && !e.altKey) {
-        e.preventDefault();
-        const s = useGameStore.getState();
-        const next = !s.sfxMuted;
-        s.setSfxMuted(next);
-        audioManager.sfxMute(next);
-        return;
-      }
-
       const st = useGameStore.getState();
       if (isModalDialogOpen(st)) return;
 
@@ -246,13 +226,6 @@ export default function GameContainer() {
         if ((st.buildings.tradePost ?? 0) < 1) return;
         e.preventDefault();
         openTraderShop();
-        return;
-      }
-
-      if (e.code === "Space") {
-        if (st.idleModeDialog.isOpen) return;
-        e.preventDefault();
-        togglePause();
         return;
       }
 
@@ -282,7 +255,7 @@ export default function GameContainer() {
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [togglePause, mainNavHotkeyTargets, openTraderShop]);
+  }, [mainNavHotkeyTargets, openTraderShop]);
 
   // Debug: Log when full game dialog state changes
   useEffect(() => {

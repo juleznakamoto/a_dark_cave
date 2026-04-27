@@ -91,75 +91,52 @@ export default function GameFooter() {
         onClose={() => setFullGamePurchaseDialogOpen(false)}
         openedFromFooter={true}
       />
-      <footer
-        className={`border-t border-border px-2 py-2 text-xs text-muted-foreground pointer-events-auto z-50 ${isPaused ? "pointer-events-none" : ""}`}
-      >
+      <footer className="border-t border-border px-2 py-2 text-xs text-muted-foreground pointer-events-auto z-50">
         <div className="flex justify-between items-center">
-          <div className="flex items-end gap-1.5 flex-1 flex-wrap">
+          <div className="flex items-center space-x-0 flex-1 flex-wrap">
             {devMode && (
               <div className="px-1 py-1 text-xs font-mono">{displayTime}</div>
             )}
-            <div className="flex flex-col items-center gap-0.5 min-h-[2.25rem] justify-end">
-              {isPaused && !idleModeDialog.isOpen && (
-                <span className="text-[10px] font-mono leading-none text-muted-foreground select-none">
-                  Space
-                </span>
-              )}
-              <Button
-                variant="ghost"
-                size="xs"
-                onClick={togglePause}
-                data-testid="button-pause-game"
-                disabled={idleModeDialog.isOpen}
-                className={`px-1 py-1 text-xs hover ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "text-red-600 hover:text-red-500" : ""}`}
-              >
-                {isPaused ? "▶" : "❚❚"}
-              </Button>
-            </div>
-            <div className="flex flex-col items-center gap-0.5 min-h-[2.25rem] justify-end">
-              {isPaused && (
-                <span className="text-[10px] font-mono leading-none text-muted-foreground select-none">
-                  M
-                </span>
-              )}
-              <Button
-                variant="ghost"
-                size="xs"
-                onClick={toggleMusic}
-                data-testid="button-toggle-music"
-                className="px-1 py-1 text-xs hover"
-                title={musicMuted ? "Unmute music" : "Mute music"}
-              >
-                <img
-                  src={musicMuted ? "/music_off.png" : "/music_on.png"}
-                  alt={musicMuted ? "Unmute music" : "Mute music"}
-                  className="w-4 h-4 opacity-60"
-                  style={{ filter: "invert(1)" }}
-                />
-              </Button>
-            </div>
-            <div className="flex flex-col items-center gap-0.5 min-h-[2.25rem] justify-end">
-              {isPaused && (
-                <span className="text-[10px] font-mono leading-none text-muted-foreground select-none">
-                  ,
-                </span>
-              )}
-              <Button
-                variant="ghost"
-                size="xs"
-                onClick={toggleSfx}
-                data-testid="button-toggle-sfx"
-                className="px-1 py-1 text-xs hover"
-                title={sfxMuted ? "Unmute sound effects" : "Mute sound effects"}
-              >
-                <img
-                  src={sfxMuted ? "/sound_off.png" : "/sound_on.png"}
-                  alt={sfxMuted ? "Unmute sound effects" : "Mute sound effects"}
-                  className="w-4 h-4 opacity-60"
-                  style={{ filter: "invert(1)" }}
-                />
-              </Button>
-            </div>
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={togglePause}
+              data-testid="button-pause-game"
+              disabled={idleModeDialog.isOpen}
+              className={`px-1 py-1 text-xs hover ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "text-red-600 hover:text-red-500" : ""}`}
+            >
+              {isPaused ? "▶" : "❚❚"}
+            </Button>
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={toggleMusic}
+              data-testid="button-toggle-music"
+              className="px-1 py-1 text-xs hover"
+              title={musicMuted ? "Unmute music" : "Mute music"}
+            >
+              <img
+                src={musicMuted ? "/music_off.png" : "/music_on.png"}
+                alt={musicMuted ? "Unmute music" : "Mute music"}
+                className="w-4 h-4 opacity-60"
+                style={{ filter: "invert(1)" }}
+              />
+            </Button>
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={toggleSfx}
+              data-testid="button-toggle-sfx"
+              className="px-1 py-1 text-xs hover"
+              title={sfxMuted ? "Unmute sound effects" : "Mute sound effects"}
+            >
+              <img
+                src={sfxMuted ? "/sound_off.png" : "/sound_on.png"}
+                alt={sfxMuted ? "Unmute sound effects" : "Mute sound effects"}
+                className="w-4 h-4 opacity-60"
+                style={{ filter: "invert(1)" }}
+              />
+            </Button>
 
             {BTP === 1 ? (
               <Button
