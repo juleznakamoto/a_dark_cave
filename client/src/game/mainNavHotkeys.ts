@@ -28,14 +28,89 @@ export type MainNavHotkeyUiHooks = {
   setLastViewedUnclaimedAchievementIds: (ids: string[]) => void;
 };
 
-/** Top-row `1`–`7` or numpad `Numpad1`–`Numpad7` → 1–7; otherwise null. */
+/** Top-row `Digit1`–`Digit7` (physical), then `1`–`7` in `e.key`, then numpad. */
 export function pauseNavDigitIndexFromKeyboard(
   e: Pick<KeyboardEvent, "key" | "code">,
 ): number | null {
+  const codeDigit = /^Digit([1-7])$/.exec(e.code);
+  if (codeDigit) return Number(codeDigit[1]);
   if (/^[1-7]$/.test(e.key)) return Number(e.key);
-  const m = /^Numpad([1-7])$/.exec(e.code);
-  if (m) return Number(m[1]);
+  const mNumpad = /^Numpad([1-7])$/.exec(e.code);
+  if (mNumpad) return Number(mNumpad[1]);
   return null;
+}
+
+export function isMainNavArrowKey(e: Pick<KeyboardEvent, "key" | "code">): "left" | "right" | null {
+  if (e.code === "ArrowLeft" || e.key === "ArrowLeft") return "left";
+  if (e.code === "ArrowRight" || e.key === "ArrowRight") return "right";
+  return null;
+}
+
+export type MainNavKeydownContext = {
+  isTypingInField: boolean;
+  isModalOpen: boolean;
+  isPaused: boolean;
+  hasTradePost: boolean;
+  activeTab: GameTab;
+  mainNavHotkeyTargets: MainNavHotkeyTarget[];
+};
+
+/**
+ * Returns true if the key was handled (and `preventDefault` was called when needed).
+ * Used by GameContainer and unit-tested. Keeps T / pause digits / arrows in one place.
+ */
+export function tryHandleMainNavKeydown(
+  e: {
+    key: string;
+    code: string;
+    ctrlKey: boolean;
+    metaKey: boolean;
+    altKey: boolean;
+    preventDefault: () => void;
+  },
+  ctx: MainNavKeydownContext,
+  actions: { openTrader: () => void },
+): boolean {
+  if (ctx.isTypingInField) return false;
+  if (ctx.isModalOpen) return false;
+
+  if (
+    (e.key === "t" || e.key === "T") &&
+    !e.ctrlKey &&
+    !e.metaKey &&
+    !e.altKey
+  ) {
+    if (!ctx.hasTradePost) return false;
+    e.preventDefault();
+    actions.openTrader();
+    return true;
+  }
+
+  if (!ctx.isPaused) return false;
+  const { mainNavHotkeyTargets } = ctx;
+
+  const dir = isMainNavArrowKey(e);
+  if (dir) {
+    if (mainNavHotkeyTargets.length === 0) return false;
+    const len = mainNavHotkeyTargets.length;
+    let i = mainNavHotkeyTargets.findIndex((x) => x.tab === ctx.activeTab);
+    if (i < 0) i = 0;
+    const delta = dir === "right" ? 1 : -1;
+    const j = (i + delta + len) % len;
+    mainNavHotkeyTargets[j].activate();
+    e.preventDefault();
+    return true;
+  }
+
+  const n = pauseNavDigitIndexFromKeyboard(e);
+  if (n == null) return false;
+  const entry = mainNavHotkeyTargets.find((x) => x.index1Based === n);
+  if (entry) {
+    entry.activate();
+    e.preventDefault();
+    return true;
+  }
+  return false;
 }
 
 /**

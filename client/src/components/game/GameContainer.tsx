@@ -14,7 +14,7 @@ import StartScreen from "./StartScreen";
 import { useGameStore, isModalDialogOpen } from "@/game/state";
 import {
   buildMainNavHotkeyTargets,
-  pauseNavDigitIndexFromKeyboard,
+  tryHandleMainNavKeydown,
 } from "@/game/mainNavHotkeys";
 import type { GameTab } from "@/game/types";
 import EventDialog from "./EventDialog";
@@ -37,7 +37,7 @@ import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
 import MistBackground from "@/components/ui/mist-background";
 import { getUnclaimedAchievementIds } from "@/achievements";
-/** Pause: faint hotkey (e.g. [1], [T]) as underlay; tab label stays on top, layout unchanged. */
+/** Pause: very faint [n]/[T] underlay; label above with legible stack + shadow. */
 function TabWithHotkeyLayer({
   isPaused,
   hotkey,
@@ -52,18 +52,20 @@ function TabWithHotkeyLayer({
   return (
     <button
       type="button"
-      className={`relative inline-flex items-center justify-center overflow-hidden py-2 text-sm bg-transparent ${className}`}
+      className={`relative isolate inline-flex min-w-[2.75rem] items-center justify-center overflow-visible py-2 text-sm bg-transparent ${className}`}
       {...rest}
     >
       {isPaused && hotkey ? (
         <span
-          className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center font-mono text-[1.1rem] leading-none text-foreground/30 tabular-nums sm:text-[1.2rem] sm:text-foreground/25"
+          className="pointer-events-none absolute left-1/2 top-1/2 z-[1] w-[3.25rem] -translate-x-1/2 -translate-y-1/2 select-none text-center font-mono text-[0.65rem] font-normal leading-none text-foreground/15 opacity-50 tabular-nums sm:text-[0.7rem] sm:opacity-40"
           aria-hidden
         >
           {hotkey}
         </span>
       ) : null}
-      <span className="relative z-10">{children}</span>
+      <span className="relative z-10 [text-shadow:0_0_0.5px_hsl(var(--background)),0_1px_1px_hsl(var(--background)),0_0_6px_hsl(var(--background))]">
+        {children}
+      </span>
     </button>
   );
 }
@@ -289,51 +291,27 @@ export default function GameContainer() {
       !!target.closest("input, textarea, select, [contenteditable=true]");
 
     const onKeyDown = (e: KeyboardEvent) => {
-      if (typingInField(e.target)) return;
-
       const st = useGameStore.getState();
-      if (isModalDialogOpen(st)) return;
-
-      if (
-        (e.key === "t" || e.key === "T") &&
-        !e.ctrlKey &&
-        !e.metaKey &&
-        !e.altKey
-      ) {
-        if ((st.buildings.tradePost ?? 0) < 1) return;
-        e.preventDefault();
-        openTraderShop();
-        return;
-      }
-
-      if (!st.isPaused) return;
-
-      const mainNavHotkeyTargets = mainNavHotkeyTargetsRef.current;
-
-      if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
-        if (mainNavHotkeyTargets.length === 0) return;
-        const len = mainNavHotkeyTargets.length;
-        let i = mainNavHotkeyTargets.findIndex((x) => x.tab === st.activeTab);
-        if (i < 0) i = 0;
-        const delta = e.key === "ArrowRight" ? 1 : -1;
-        const j = (i + delta + len) % len;
-        mainNavHotkeyTargets[j].activate();
-        e.preventDefault();
-        return;
-      }
-
-      const n = pauseNavDigitIndexFromKeyboard(e);
-      if (n == null) return;
-      const entry = mainNavHotkeyTargets.find((x) => x.index1Based === n);
-      if (entry) {
-        entry.activate();
-        e.preventDefault();
-      }
+      tryHandleMainNavKeydown(
+        e,
+        {
+          isTypingInField: typingInField(e.target),
+          isModalOpen: isModalDialogOpen(st),
+          isPaused: st.isPaused,
+          hasTradePost: (st.buildings.tradePost ?? 0) >= 1,
+          activeTab: st.activeTab,
+          mainNavHotkeyTargets: mainNavHotkeyTargetsRef.current,
+        },
+        { openTrader: openTraderShop },
+      );
     };
 
-    // Capture: run before scroll areas / focused panels handle Arrow keys or digits.
-    window.addEventListener("keydown", onKeyDown, true);
-    return () => window.removeEventListener("keydown", onKeyDown, true);
+    // Capture on window: earliest phase; `e.code` (Digit1–7) for non–US keyboard layouts.
+    const opts: AddEventListenerOptions = { capture: true, passive: false };
+    window.addEventListener("keydown", onKeyDown, opts);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown, opts);
+    };
   }, [openTraderShop]);
 
   // Debug: Log when full game dialog state changes
@@ -712,19 +690,12 @@ export default function GameContainer() {
 
           {/* Right Content Area with Horizontal Tabs and Actions - Below for mobile, right for desktop */}
           <section className="flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
-            {isPaused && mainNavBox ? (
-              <div
-                className="flex-shrink-0"
-                style={{ height: mainNavBox.height }}
-                aria-hidden
-              />
-            ) : null}
-            {/* Horizontal Game Tabs: fixed + z-50 when paused so strip sits above the global dimmer (z-40). */}
+            {/* When paused, nav is position:fixed — no in-flow placeholder, so the panel is not pushed down. */}
             <nav
               ref={mainNavRef}
               className={`border-t border-border pl-2 md:pl-4 flex-shrink-0 ${isPaused && mainNavBox
-                  ? "fixed z-50 border-border bg-background"
-                  : ""
+                ? "fixed z-50 border-border bg-background"
+                : ""
                 }`}
               style={
                 isPaused && mainNavBox
@@ -740,8 +711,10 @@ export default function GameContainer() {
             >
               {isPaused && mainNavHotkeyTargets.length > 0 && (
                 <p className="select-none pl-[3px] pr-2 pb-1.5 pt-0.5 text-[11px] text-foreground/95 [text-shadow:0_0_6px_hsl(var(--background)),0_0_1px_hsl(var(--background))]">
-                  Use the following keys or <span className="font-mono">←</span> and{" "}
-                  <span className="font-mono">→</span> to navigate between tabs
+                  Use the following keys or{" "}
+                  <span className="font-mono text-sm leading-none sm:text-base">←</span> and{" "}
+                  <span className="font-mono text-sm leading-none sm:text-base">→</span> to
+                  navigate between tabs
                 </p>
               )}
               {useLimelightNav ? (
