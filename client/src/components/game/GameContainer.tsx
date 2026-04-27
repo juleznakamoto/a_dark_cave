@@ -12,7 +12,6 @@ import LogPanel from "./panels/LogPanel";
 import StartScreen from "./StartScreen";
 import { useGameStore, isModalDialogOpen } from "@/game/state";
 import { buildMainNavHotkeyTargets } from "@/game/mainNavHotkeys";
-import { PauseHotkeyBadge } from "@/components/game/PauseHotkeyBadge";
 import type { GameTab } from "@/game/types";
 import EventDialog from "./EventDialog";
 import CombatDialog from "./CombatDialog";
@@ -35,6 +34,29 @@ import { toast } from "@/hooks/use-toast";
 import MistBackground from "@/components/ui/mist-background";
 import { getUnclaimedAchievementIds } from "@/achievements";
 import { audioManager } from "@/lib/audio";
+import type { ReactNode } from "react";
+
+/** Hotkey text above tab label; avoids overflow clipping and keeps hints readable. */
+function TabHotkeyStack({
+  show,
+  hint,
+  children,
+}: {
+  show: boolean;
+  hint: string | null;
+  children: ReactNode;
+}) {
+  return (
+    <span className="flex flex-col items-center justify-center gap-0.5">
+      {show && hint != null && hint.length > 0 ? (
+        <span className="font-mono text-[12px] leading-none text-foreground/90 tabular-nums">
+          {hint}
+        </span>
+      ) : null}
+      {children}
+    </span>
+  );
+}
 export default function GameContainer() {
   const {
     activeTab,
@@ -621,291 +643,303 @@ export default function GameContainer() {
         </div>
       )}
 
-      {/* Event Log - Fixed Height at Top */}
-      <div className="w-full overflow-hidden pb-0 p-2 flex-shrink-0 pr-14">
-        <LogPanel />
-      </div>
-
-      {/* Main Content Area - Fills remaining space */}
-      <main className="flex-1 pb-0 flex flex-col md:flex-row min-h-0 overflow-hidden">
-        {/* Left Sidebar for Resources - On top for mobile, left for desktop */}
-        <div className="min-h-[36vh] w-full pl-2 pr-2 md:w-[28rem] border-t md:border-r overflow-hidden">
-          <GameTabs />
+      <div
+        className={`flex min-h-0 flex-1 flex-col overflow-hidden ${isPaused ? "pointer-events-none" : ""}`}
+      >
+        {/* Event Log - Fixed Height at Top */}
+        <div className="w-full overflow-hidden pb-0 p-2 flex-shrink-0 pr-14">
+          <LogPanel />
         </div>
 
-        {/* Right Content Area with Horizontal Tabs and Actions - Below for mobile, right for desktop */}
-        <section className="flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
-          {/* Horizontal Game Tabs */}
-          <nav
-            className={`border-t border-border pl-2 md:pl-4 flex-shrink-0 ${isPaused ? "relative z-[45]" : ""}`}
-          >
-            {useLimelightNav ? (
-              // Alternative LimelightNav design
-              <LimelightNav
-                items={limelightNavItems}
-                defaultActiveIndex={limelightNavItems.findIndex(
-                  (item) => item.id === activeTab,
-                )}
-                onTabChange={(index) => {
-                  const selectedTab = limelightNavItems[index];
-                  if (selectedTab && selectedTab.onClick) {
-                    selectedTab.onClick();
-                  }
-                }}
-                className="bg-transparent border-0"
-              />
-            ) : (
-              // Standard button design
-              <div className="flex space-x-3 pl-[3px] ">
-                <button
-                  className={`relative py-2 text-sm bg-transparent ${activeTab === "cave"
-                    ? "font-semibold opacity-100"
-                    : "opacity-60"
-                    } `}
-                  onClick={() => setActiveTab("cave")}
-                  data-testid="tab-cave"
-                >
-                  Cave
-                  <PauseHotkeyBadge
-                    show={isPaused && pauseDigitByTabId.has("cave")}
-                    label={`[${pauseDigitByTabId.get("cave")}]`}
-                  />
-                </button>
+        {/* Main Content Area - Fills remaining space */}
+        <main className="flex-1 pb-0 flex flex-col md:flex-row min-h-0 overflow-hidden">
+          {/* Left Sidebar for Resources - On top for mobile, left for desktop */}
+          <div className="min-h-[36vh] w-full pl-2 pr-2 md:w-[28rem] border-t md:border-r overflow-hidden">
+            <GameTabs />
+          </div>
 
-                {flags.villageUnlocked && (
+          {/* Right Content Area with Horizontal Tabs and Actions - Below for mobile, right for desktop */}
+          <section className="flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
+            {/* Horizontal Game Tabs */}
+            <nav
+              className="border-t border-border pl-2 md:pl-4 flex-shrink-0"
+            >
+              {useLimelightNav ? (
+                // Alternative LimelightNav design
+                <LimelightNav
+                  items={limelightNavItems}
+                  defaultActiveIndex={limelightNavItems.findIndex(
+                    (item) => item.id === activeTab,
+                  )}
+                  onTabChange={(index) => {
+                    const selectedTab = limelightNavItems[index];
+                    if (selectedTab && selectedTab.onClick) {
+                      selectedTab.onClick();
+                    }
+                  }}
+                  className="bg-transparent border-0"
+                />
+              ) : (
+                // Standard button design
+                <div className="flex space-x-3 pl-[3px] ">
                   <button
-                    className={`relative py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("village")
-                      ? fadePhaseTabs.has("village")
-                        ? "tab-fade-in"
-                        : "tab-blink-new"
-                      : activeTab === "village"
-                        ? "font-semibold opacity-100"
-                        : "opacity-60"
-                      }`}
-                    onClick={() => {
-                      setAnimatingTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("village");
-                        return next;
-                      });
-                      setFadePhaseTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("village");
-                        return next;
-                      });
-                      setActiveTab("village");
-                    }}
-                    data-testid="tab-village"
-                  >
-                    {buildings.stoneHut >= 5 ? "City" : "Village"}
-                    <PauseHotkeyBadge
-                      show={isPaused && pauseDigitByTabId.has("village")}
-                      label={`[${pauseDigitByTabId.get("village")}]`}
-                    />
-                  </button>
-                )}
-
-                {/* Estate Tab Button */}
-                {(estateUnlocked || buildings.darkEstate >= 1) && (
-                  <button
-                    className={`relative py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("estate")
-                      ? fadePhaseTabs.has("estate")
-                        ? "tab-fade-in"
-                        : "tab-blink-new"
-                      : activeTab === "estate"
-                        ? "font-semibold opacity-100"
-                        : "opacity-60"
-                      }`}
-                    onClick={() => {
-                      setAnimatingTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("estate");
-                        return next;
-                      });
-                      setFadePhaseTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("estate");
-                        return next;
-                      });
-                      setActiveTab("estate");
-                    }}
-                    data-testid="tab-estate"
-                  >
-                    Estate
-                    <PauseHotkeyBadge
-                      show={isPaused && pauseDigitByTabId.has("estate")}
-                      label={`[${pauseDigitByTabId.get("estate")}]`}
-                    />
-                  </button>
-                )}
-
-                {flags.forestUnlocked && (
-                  <button
-                    className={`relative py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("forest")
-                      ? fadePhaseTabs.has("forest")
-                        ? "tab-fade-in"
-                        : "tab-blink-new"
-                      : activeTab === "forest"
-                        ? "font-semibold opacity-100"
-                        : "opacity-60"
-                      }`}
-                    onClick={() => {
-                      setAnimatingTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("forest");
-                        return next;
-                      });
-                      setFadePhaseTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("forest");
-                        return next;
-                      });
-                      setActiveTab("forest");
-                    }}
-                    data-testid="tab-forest"
-                  >
-                    Forest
-                    <PauseHotkeyBadge
-                      show={isPaused && pauseDigitByTabId.has("forest")}
-                      label={`[${pauseDigitByTabId.get("forest")}]`}
-                    />
-                  </button>
-                )}
-
-                {flags.bastionUnlocked && (
-                  <button
-                    className={`relative py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("bastion")
-                      ? fadePhaseTabs.has("bastion")
-                        ? "tab-fade-in"
-                        : "tab-blink-new"
-                      : activeTab === "bastion"
-                        ? "font-semibold opacity-100"
-                        : "opacity-60"
-                      }`}
-                    onClick={() => {
-                      setAnimatingTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("bastion");
-                        return next;
-                      });
-                      setFadePhaseTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("bastion");
-                        return next;
-                      });
-                      setActiveTab("bastion");
-                    }}
-                    data-testid="tab-bastion"
-                  >
-                    {flags.hasFortress ? "Fortress" : "Bastion"}
-                    <PauseHotkeyBadge
-                      show={isPaused && pauseDigitByTabId.has("bastion")}
-                      label={`[${pauseDigitByTabId.get("bastion")}]`}
-                    />
-                  </button>
-                )}
-
-                {/* Trader Tab Button */}
-                {traderUnlocked && (
-                  <button
-                    className={`relative py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("trader")
-                      ? fadePhaseTabs.has("trader")
-                        ? "tab-fade-in"
-                        : "tab-blink-new"
-                      : "opacity-60"
-                      }`}
-                    onClick={openTraderShop}
-                    data-testid="tab-trader"
-                  >
-                    Trader
-                    <PauseHotkeyBadge
-                      show={isPaused}
-                      label="[T]"
-                    />
-                  </button>
-                )}
-
-                {/* Achievements Tab Button ⚜︎ */}
-                {(relics?.survivors_notes || books?.book_of_trials) && (
-                  <button
-                    className={`relative py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("achievements")
-                      ? fadePhaseTabs.has("achievements")
-                        ? "tab-fade-in"
-                        : "tab-blink-new"
-                      : activeTab === "achievements"
-                        ? "font-semibold opacity-100"
-                        : "opacity-60"
-                      }`}
-                    onClick={() => {
-                      setAnimatingTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("achievements");
-                        return next;
-                      });
-                      setFadePhaseTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("achievements");
-                        return next;
-                      });
-                      setLastViewedUnclaimedAchievementIds(unclaimedAchievementIds);
-                      setActiveTab("achievements");
-                    }}
-                    data-testid="tab-achievements"
-                  >
-                    {"\u269C\uFE0E"}
-                    <PauseHotkeyBadge
-                      show={isPaused && pauseDigitByTabId.has("achievements")}
-                      label={`[${pauseDigitByTabId.get("achievements")}]`}
-                    />
-                  </button>
-                )}
-
-                {/* Timed Event Tab Button */}
-                {timedEventTab.isActive && (
-                  <button
-                    className={`relative py-2 text-sm bg-transparent ${activeTab === "timedevent"
+                    className={`flex flex-col items-center justify-center py-2 text-sm bg-transparent ${activeTab === "cave"
                       ? "font-semibold opacity-100"
                       : "opacity-60"
-                      }`}
-                    onClick={() => setActiveTab("timedevent")}
-                    data-testid="tab-timedevent"
+                      } `}
+                    onClick={() => setActiveTab("cave")}
+                    data-testid="tab-cave"
                   >
-                    <span className="timer-symbol">⊚</span>
-                    <PauseHotkeyBadge
-                      show={isPaused && pauseDigitByTabId.has("timedevent")}
-                      label={`[${pauseDigitByTabId.get("timedevent")}]`}
-                    />
+                    <TabHotkeyStack
+                      show={isPaused}
+                      hint={pauseDigitByTabId.has("cave") ? `[${pauseDigitByTabId.get("cave")!}]` : null}
+                    >
+                      Cave
+                    </TabHotkeyStack>
                   </button>
-                )}
-              </div>
-            )}
-            {isPaused && mainNavHotkeyTargets.length > 0 && (
-              <p className="select-none pl-[3px] pb-1 pt-0.5 text-[10px] text-muted-foreground">
-                <span className="font-mono">←</span>
-                {" "}
-                <span className="font-mono">→</span>
-                {" Use arrow keys to switch between tabs"}
-              </p>
-            )}
-          </nav>
 
-          {/* Action Panels */}
-          <div
-            className={`flex-1 overflow-x-hidden pl-2 pr-2 md:pl-4 md:pr-4 min-h-0 ${activeTab === "achievements"
-              ? "overflow-hidden"
-              : "overflow-y-auto scrollbar-hide"
-              }`}
-          >
-            {activeTab === "cave" && <CavePanel />}
-            {activeTab === "village" && <VillagePanel />}
-            {activeTab === "forest" && <ForestPanel />}
-            {activeTab === "estate" && <EstatePanel />}
-            {activeTab === "bastion" && <BastionPanel />}
-            {activeTab === "achievements" && <AchievementsPanel />}
-            {activeTab === "timedevent" && <TimedEventPanel />}
-          </div>
-        </section>
-      </main>
+                  {flags.villageUnlocked && (
+                    <button
+                      className={`flex flex-col items-center justify-center py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("village")
+                        ? fadePhaseTabs.has("village")
+                          ? "tab-fade-in"
+                          : "tab-blink-new"
+                        : activeTab === "village"
+                          ? "font-semibold opacity-100"
+                          : "opacity-60"
+                        }`}
+                      onClick={() => {
+                        setAnimatingTabs((prev) => {
+                          const next = new Set(prev);
+                          next.delete("village");
+                          return next;
+                        });
+                        setFadePhaseTabs((prev) => {
+                          const next = new Set(prev);
+                          next.delete("village");
+                          return next;
+                        });
+                        setActiveTab("village");
+                      }}
+                      data-testid="tab-village"
+                    >
+                      <TabHotkeyStack
+                        show={isPaused}
+                        hint={pauseDigitByTabId.has("village") ? `[${pauseDigitByTabId.get("village")!}]` : null}
+                      >
+                        {buildings.stoneHut >= 5 ? "City" : "Village"}
+                      </TabHotkeyStack>
+                    </button>
+                  )}
+
+                  {/* Estate Tab Button */}
+                  {(estateUnlocked || buildings.darkEstate >= 1) && (
+                    <button
+                      className={`flex flex-col items-center justify-center py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("estate")
+                        ? fadePhaseTabs.has("estate")
+                          ? "tab-fade-in"
+                          : "tab-blink-new"
+                        : activeTab === "estate"
+                          ? "font-semibold opacity-100"
+                          : "opacity-60"
+                        }`}
+                      onClick={() => {
+                        setAnimatingTabs((prev) => {
+                          const next = new Set(prev);
+                          next.delete("estate");
+                          return next;
+                        });
+                        setFadePhaseTabs((prev) => {
+                          const next = new Set(prev);
+                          next.delete("estate");
+                          return next;
+                        });
+                        setActiveTab("estate");
+                      }}
+                      data-testid="tab-estate"
+                    >
+                      <TabHotkeyStack
+                        show={isPaused}
+                        hint={pauseDigitByTabId.has("estate") ? `[${pauseDigitByTabId.get("estate")!}]` : null}
+                      >
+                        Estate
+                      </TabHotkeyStack>
+                    </button>
+                  )}
+
+                  {flags.forestUnlocked && (
+                    <button
+                      className={`flex flex-col items-center justify-center py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("forest")
+                        ? fadePhaseTabs.has("forest")
+                          ? "tab-fade-in"
+                          : "tab-blink-new"
+                        : activeTab === "forest"
+                          ? "font-semibold opacity-100"
+                          : "opacity-60"
+                        }`}
+                      onClick={() => {
+                        setAnimatingTabs((prev) => {
+                          const next = new Set(prev);
+                          next.delete("forest");
+                          return next;
+                        });
+                        setFadePhaseTabs((prev) => {
+                          const next = new Set(prev);
+                          next.delete("forest");
+                          return next;
+                        });
+                        setActiveTab("forest");
+                      }}
+                      data-testid="tab-forest"
+                    >
+                      <TabHotkeyStack
+                        show={isPaused}
+                        hint={pauseDigitByTabId.has("forest") ? `[${pauseDigitByTabId.get("forest")!}]` : null}
+                      >
+                        Forest
+                      </TabHotkeyStack>
+                    </button>
+                  )}
+
+                  {flags.bastionUnlocked && (
+                    <button
+                      className={`flex flex-col items-center justify-center py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("bastion")
+                        ? fadePhaseTabs.has("bastion")
+                          ? "tab-fade-in"
+                          : "tab-blink-new"
+                        : activeTab === "bastion"
+                          ? "font-semibold opacity-100"
+                          : "opacity-60"
+                        }`}
+                      onClick={() => {
+                        setAnimatingTabs((prev) => {
+                          const next = new Set(prev);
+                          next.delete("bastion");
+                          return next;
+                        });
+                        setFadePhaseTabs((prev) => {
+                          const next = new Set(prev);
+                          next.delete("bastion");
+                          return next;
+                        });
+                        setActiveTab("bastion");
+                      }}
+                      data-testid="tab-bastion"
+                    >
+                      <TabHotkeyStack
+                        show={isPaused}
+                        hint={pauseDigitByTabId.has("bastion") ? `[${pauseDigitByTabId.get("bastion")!}]` : null}
+                      >
+                        {flags.hasFortress ? "Fortress" : "Bastion"}
+                      </TabHotkeyStack>
+                    </button>
+                  )}
+
+                  {/* Trader Tab Button */}
+                  {traderUnlocked && (
+                    <button
+                      className={`flex flex-col items-center justify-center py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("trader")
+                        ? fadePhaseTabs.has("trader")
+                          ? "tab-fade-in"
+                          : "tab-blink-new"
+                        : "opacity-60"
+                        }`}
+                      onClick={openTraderShop}
+                      data-testid="tab-trader"
+                    >
+                      <TabHotkeyStack
+                        show={isPaused}
+                        hint="[T]"
+                      >
+                        Trader
+                      </TabHotkeyStack>
+                    </button>
+                  )}
+
+                  {/* Achievements Tab Button ⚜︎ */}
+                  {(relics?.survivors_notes || books?.book_of_trials) && (
+                    <button
+                      className={`flex flex-col items-center justify-center py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("achievements")
+                        ? fadePhaseTabs.has("achievements")
+                          ? "tab-fade-in"
+                          : "tab-blink-new"
+                        : activeTab === "achievements"
+                          ? "font-semibold opacity-100"
+                          : "opacity-60"
+                        }`}
+                      onClick={() => {
+                        setAnimatingTabs((prev) => {
+                          const next = new Set(prev);
+                          next.delete("achievements");
+                          return next;
+                        });
+                        setFadePhaseTabs((prev) => {
+                          const next = new Set(prev);
+                          next.delete("achievements");
+                          return next;
+                        });
+                        setLastViewedUnclaimedAchievementIds(unclaimedAchievementIds);
+                        setActiveTab("achievements");
+                      }}
+                      data-testid="tab-achievements"
+                    >
+                      <TabHotkeyStack
+                        show={isPaused}
+                        hint={pauseDigitByTabId.has("achievements") ? `[${pauseDigitByTabId.get("achievements")!}]` : null}
+                      >
+                        {"\u269C\uFE0E"}
+                      </TabHotkeyStack>
+                    </button>
+                  )}
+
+                  {/* Timed Event Tab Button */}
+                  {timedEventTab.isActive && (
+                    <button
+                      className={`flex flex-col items-center justify-center py-2 text-sm bg-transparent ${activeTab === "timedevent"
+                        ? "font-semibold opacity-100"
+                        : "opacity-60"
+                        }`}
+                      onClick={() => setActiveTab("timedevent")}
+                      data-testid="tab-timedevent"
+                    >
+                      <TabHotkeyStack
+                        show={isPaused}
+                        hint={pauseDigitByTabId.has("timedevent") ? `[${pauseDigitByTabId.get("timedevent")!}]` : null}
+                      >
+                        <span className="timer-symbol">⊚</span>
+                      </TabHotkeyStack>
+                    </button>
+                  )}
+                </div>
+              )}
+              {isPaused && mainNavHotkeyTargets.length > 0 && (
+                <p className="select-none pl-[3px] pb-1 pt-0.5 text-[10px] text-muted-foreground">
+                  <span className="font-mono">←</span>
+                  {" "}
+                  <span className="font-mono">→</span>
+                  {" Use arrow keys to switch between tabs"}
+                </p>
+              )}
+            </nav>
+
+            {/* Action Panels */}
+            <div
+              className={`flex-1 overflow-x-hidden pl-2 pr-2 md:pl-4 md:pr-4 min-h-0 ${activeTab === "achievements"
+                ? "overflow-hidden"
+                : "overflow-y-auto scrollbar-hide"
+                }`}
+            >
+              {activeTab === "cave" && <CavePanel />}
+              {activeTab === "village" && <VillagePanel />}
+              {activeTab === "forest" && <ForestPanel />}
+              {activeTab === "estate" && <EstatePanel />}
+              {activeTab === "bastion" && <BastionPanel />}
+              {activeTab === "achievements" && <AchievementsPanel />}
+              {activeTab === "timedevent" && <TimedEventPanel />}
+            </div>
+          </section>
+        </main>
+      </div>
 
       {/* Footer - Fixed at Bottom */}
       <div className="flex-shrink-0">
