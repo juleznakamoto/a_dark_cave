@@ -448,6 +448,33 @@ body {
   animation: continue-pause-flash 2s ease-in-out infinite;
 }
 
+/* Pause: help line + [1]… tab badges (desktop md+) */
+@keyframes pause-hotkey-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.pause-hotkey-hint-animated,
+.pause-hotkey-badge-animated {
+  opacity: 0;
+  /* Same beat as footer pause (▶) .continue-pause-flash, after 2s intro fade */
+  animation:
+    pause-hotkey-fade-in 2s ease-out forwards,
+    continue-pause-flash 2s ease-in-out 2s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pause-hotkey-hint-animated,
+  .pause-hotkey-badge-animated {
+    opacity: 1;
+    animation: none;
+  }
+}
+
 @keyframes focus-glow {
 
   0%,

@@ -707,7 +707,7 @@ export default function GameContainer() {
         >
           {pauseHotkeyHint != null && (
             <div
-              className="absolute max-w-[min(100vw-1rem,28rem)] px-2 text-center text-xs leading-snug text-foreground drop-shadow"
+              className="pause-hotkey-hint-animated absolute max-w-[min(100vw-1rem,28rem)] px-2 text-center text-xs leading-snug text-foreground drop-shadow"
               style={{
                 top: pauseHotkeyHint.top,
                 left: pauseHotkeyHint.left,
@@ -724,7 +724,7 @@ export default function GameContainer() {
           {pauseHotkeyBadges.map((b) => (
             <span
               key={b.key}
-              className="absolute text-xs font-semibold text-foreground drop-shadow"
+              className="pause-hotkey-badge-animated absolute text-xs font-semibold text-foreground drop-shadow"
               style={{
                 left: b.left,
                 top: b.top,
