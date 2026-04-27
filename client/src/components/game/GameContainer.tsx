@@ -598,7 +598,7 @@ export default function GameContainer() {
           key: "hotkey-trader",
           left: r.left + r.width / 2,
           top: r.top - 2,
-          label: "[t]",
+          label: "[T]",
         });
       }
     }

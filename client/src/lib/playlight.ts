@@ -16,6 +16,8 @@ const EXIT_INTENT_EVENT_DEDUP_MS = 600;
  * close timer and the top bar can stay stuck open.
  */
 const EXIT_INTENT_DISABLE_DEFER_MS = 2000;
+/** If the player stays paused (not for Playlight-initiated discovery) this long, show Discovery. */
+const LONG_PAUSE_DISCOVERY_MS = 30 * 1000;
 
 type ExitIntentGameSlice = {
   flags: { gameStarted?: boolean };
@@ -75,6 +77,17 @@ let gameStoreUnsubscribe: (() => void) | null = null;
 let initPlaylightPromise: Promise<void> | null = null;
 // Tracks whether Playlight itself triggered the pause (vs. the player already being paused)
 let playlightCausedPause = false;
+let longPauseDiscoveryTimerId: number | null = null;
+/** One automatic Discovery open per pause streak until the player unpauses. */
+let longPauseDiscoveryFiredThisPauseStreak = false;
+
+function clearLongPauseDiscoveryTimer() {
+  if (longPauseDiscoveryTimerId !== null) {
+    clearTimeout(longPauseDiscoveryTimerId);
+    longPauseDiscoveryTimerId = null;
+  }
+  longPauseDiscoveryFiredThisPauseStreak = false;
+}
 
 // Export Playlight SDK initialization function - call after main component mounts
 export async function initPlaylight() {
@@ -193,6 +206,37 @@ export async function initPlaylight() {
         });
       };
 
+      const syncLongPauseDiscovery = (state: StoreState) => {
+        const eligible =
+          !!state.flags.gameStarted &&
+          state.isPaused &&
+          !playlightCausedPause &&
+          !state.idleModeDialog.isOpen;
+
+        if (!eligible) {
+          clearLongPauseDiscoveryTimer();
+          return;
+        }
+
+        if (longPauseDiscoveryFiredThisPauseStreak) {
+          return;
+        }
+
+        if (longPauseDiscoveryTimerId === null) {
+          longPauseDiscoveryTimerId = window.setTimeout(() => {
+            longPauseDiscoveryTimerId = null;
+            longPauseDiscoveryFiredThisPauseStreak = true;
+            markPlaylightDiscoveryUserInitiated();
+            playlightSDK.setDiscovery(true);
+          }, LONG_PAUSE_DISCOVERY_MS);
+        }
+      };
+
+      const syncFromStore = (state: StoreState) => {
+        syncExitIntent(state);
+        syncLongPauseDiscovery(state);
+      };
+
       (window as any).playlightSDK = playlightSDK;
 
       // Clean up previous subscription if it exists (shouldn't happen, but defensive)
@@ -200,11 +244,12 @@ export async function initPlaylight() {
         gameStoreUnsubscribe();
         gameStoreUnsubscribe = null;
       }
+      clearLongPauseDiscoveryTimer();
 
-      syncExitIntent(useGameStore.getState());
+      syncFromStore(useGameStore.getState());
 
-      // Reactively update exit intent based on game state
-      gameStoreUnsubscribe = useGameStore.subscribe(syncExitIntent);
+      // Reactively update exit intent and long-pause discovery from game state
+      gameStoreUnsubscribe = useGameStore.subscribe(syncFromStore);
 
       // Rate limit uses SDK `exitIntent` (top bar / indicator), not discovery opens.
       playlightSDK.onEvent("exitIntent", () => {
