@@ -17,7 +17,7 @@ const EXIT_INTENT_EVENT_DEDUP_MS = 600;
  */
 const EXIT_INTENT_DISABLE_DEFER_MS = 2000;
 /** No mouse/keys/etc. (see `getMsSinceUserActivity` in `loop.ts`) for this long while eligible → show Discovery. */
-const DISCOVERY_INACTIVITY_MS = 10 * 1000;
+const DISCOVERY_INACTIVITY_MS = 30 * 1000;
 
 type ExitIntentGameSlice = {
   flags: { gameStarted?: boolean };
