@@ -683,6 +683,9 @@ export default function GameContainer() {
   // Check if blood moon event is active
   const isBloodMoonActive = timedEventTab.isActive && timedEventTab.event?.eventId === 'bloodMoonAttack';
 
+  /** Muted tab labels use ~60% opacity; full brightness while paused (dim overlay). */
+  const tabInactiveTextClass = isPaused ? "opacity-100" : "opacity-60";
+
   return (
     <div
       className="fixed inset-0 bg-background text-foreground flex flex-col"
@@ -787,7 +790,7 @@ export default function GameContainer() {
                 <button
                   className={`py-2 text-sm bg-transparent ${activeTab === "cave"
                     ? "font-semibold opacity-100"
-                    : "opacity-60"
+                    : tabInactiveTextClass
                     } `}
                   onClick={() => setActiveTab("cave")}
                   data-testid="tab-cave"
@@ -803,7 +806,7 @@ export default function GameContainer() {
                         : "tab-blink-new"
                       : activeTab === "village"
                         ? "font-semibold opacity-100"
-                        : "opacity-60"
+                        : tabInactiveTextClass
                       }`}
                     onClick={() => {
                       setAnimatingTabs((prev) => {
@@ -833,7 +836,7 @@ export default function GameContainer() {
                         : "tab-blink-new"
                       : activeTab === "estate"
                         ? "font-semibold opacity-100"
-                        : "opacity-60"
+                        : tabInactiveTextClass
                       }`}
                     onClick={() => {
                       setAnimatingTabs((prev) => {
@@ -862,7 +865,7 @@ export default function GameContainer() {
                         : "tab-blink-new"
                       : activeTab === "forest"
                         ? "font-semibold opacity-100"
-                        : "opacity-60"
+                        : tabInactiveTextClass
                       }`}
                     onClick={() => {
                       setAnimatingTabs((prev) => {
@@ -891,7 +894,7 @@ export default function GameContainer() {
                         : "tab-blink-new"
                       : activeTab === "bastion"
                         ? "font-semibold opacity-100"
-                        : "opacity-60"
+                        : tabInactiveTextClass
                       }`}
                     onClick={() => {
                       setAnimatingTabs((prev) => {
@@ -919,7 +922,7 @@ export default function GameContainer() {
                       ? fadePhaseTabs.has("trader")
                         ? "tab-fade-in"
                         : "tab-blink-new"
-                      : "opacity-60"
+                      : tabInactiveTextClass
                       }`}
                     onClick={() => {
                       setAnimatingTabs((prev) => {
@@ -949,7 +952,7 @@ export default function GameContainer() {
                         : "tab-blink-new"
                       : activeTab === "achievements"
                         ? "font-semibold opacity-100"
-                        : "opacity-60"
+                        : tabInactiveTextClass
                       }`}
                     onClick={() => {
                       setAnimatingTabs((prev) => {
@@ -976,7 +979,7 @@ export default function GameContainer() {
                   <button
                     className={`py-2 text-sm bg-transparent ${activeTab === "timedevent"
                       ? "font-semibold opacity-100"
-                      : "opacity-60"
+                      : tabInactiveTextClass
                       }`}
                     onClick={() => setActiveTab("timedevent")}
                     data-testid="tab-timedevent"
