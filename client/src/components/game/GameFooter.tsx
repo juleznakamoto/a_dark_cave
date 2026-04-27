@@ -3,6 +3,7 @@ import { useGameStore } from "@/game/state";
 import { audioManager } from "@/lib/audio";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
+import { PauseHotkeyBadge } from "@/components/game/PauseHotkeyBadge";
 import { useState, useEffect } from "react";
 
 export default function GameFooter() {
@@ -103,16 +104,20 @@ export default function GameFooter() {
               onClick={togglePause}
               data-testid="button-pause-game"
               disabled={idleModeDialog.isOpen}
-              className={`px-1 py-1 text-xs hover ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "text-red-600 hover:text-red-500" : ""} ${isPaused && !idleModeDialog.isOpen ? "continue-pause-flash" : ""}`}
+              className={`relative px-1 py-1 text-xs hover ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "text-red-600 hover:text-red-500" : ""} ${isPaused && !idleModeDialog.isOpen ? "continue-pause-flash" : ""}`}
             >
               {isPaused ? "▶" : "❚❚"}
+              <PauseHotkeyBadge
+                show={isPaused && !idleModeDialog.isOpen}
+                label="[Space]"
+              />
             </Button>
             <Button
               variant="ghost"
               size="xs"
               onClick={toggleMusic}
               data-testid="button-toggle-music"
-              className="px-1 py-1 text-xs hover"
+              className="relative px-1 py-1 text-xs hover"
               title={musicMuted ? "Unmute music" : "Mute music"}
             >
               <img
@@ -121,13 +126,14 @@ export default function GameFooter() {
                 className="w-4 h-4 opacity-60"
                 style={{ filter: "invert(1)" }}
               />
+              <PauseHotkeyBadge show={isPaused} label="[M]" />
             </Button>
             <Button
               variant="ghost"
               size="xs"
               onClick={toggleSfx}
               data-testid="button-toggle-sfx"
-              className="px-1 py-1 text-xs hover"
+              className="relative px-1 py-1 text-xs hover"
               title={sfxMuted ? "Unmute sound effects" : "Mute sound effects"}
             >
               <img
@@ -136,6 +142,7 @@ export default function GameFooter() {
                 className="w-4 h-4 opacity-60"
                 style={{ filter: "invert(1)" }}
               />
+              <PauseHotkeyBadge show={isPaused} label="[,]" />
             </Button>
 
             {BTP === 1 ? (

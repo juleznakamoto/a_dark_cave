@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import GameTabs from "./GameTabs";
 import GameFooter from "./GameFooter";
 import CavePanel from "./panels/CavePanel";
@@ -10,7 +10,10 @@ import AchievementsPanel from "./panels/AchievementsPanel";
 import TimedEventPanel from "./panels/TimedEventPanel";
 import LogPanel from "./panels/LogPanel";
 import StartScreen from "./StartScreen";
-import { useGameStore } from "@/game/state";
+import { useGameStore, isModalDialogOpen } from "@/game/state";
+import { buildMainNavHotkeyTargets } from "@/game/mainNavHotkeys";
+import { PauseHotkeyBadge } from "@/components/game/PauseHotkeyBadge";
+import type { GameTab } from "@/game/types";
 import EventDialog from "./EventDialog";
 import CombatDialog from "./CombatDialog";
 import IdleModeDialog from "./IdleModeDialog";
@@ -31,6 +34,7 @@ import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
 import MistBackground from "@/components/ui/mist-background";
 import { getUnclaimedAchievementIds } from "@/achievements";
+import { audioManager } from "@/lib/audio";
 export default function GameContainer() {
   const {
     activeTab,
@@ -50,6 +54,7 @@ export default function GameContainer() {
     restartGameDialogOpen,
     setRestartGameDialogOpen,
     restartGame,
+    togglePause,
   } = useGameStore();
 
   // State selectors for dialogs - must be at top before any conditional returns
@@ -80,6 +85,7 @@ export default function GameContainer() {
 
   // Estate unlocks when Dark Estate is built
   const estateUnlocked = buildings.darkEstate >= 1;
+  const traderUnlocked = buildings.tradePost >= 1;
 
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
   const [fadePhaseTabs, setFadePhaseTabs] = useState<Set<string>>(new Set());
@@ -126,6 +132,136 @@ export default function GameContainer() {
       (id) => !lastViewedUnclaimedAchievementIds.includes(id),
     );
 
+  const clearTabBlink = useCallback((tabId: string) => {
+    setAnimatingTabs((prev) => {
+      const next = new Set(prev);
+      next.delete(tabId);
+      return next;
+    });
+    setFadePhaseTabs((prev) => {
+      const next = new Set(prev);
+      next.delete(tabId);
+      return next;
+    });
+  }, []);
+
+  const openTraderShop = useCallback(() => {
+    setAnimatingTabs((prev) => {
+      const next = new Set(prev);
+      next.delete("trader");
+      return next;
+    });
+    setFadePhaseTabs((prev) => {
+      const next = new Set(prev);
+      next.delete("trader");
+      return next;
+    });
+    setShopDialogOpen(true);
+  }, [setShopDialogOpen]);
+
+  const mainNavHotkeyTargets = useMemo(
+    () =>
+      buildMainNavHotkeyTargets(() => useGameStore.getState(), {
+        clearTabBlink,
+        setLastViewedUnclaimedAchievementIds,
+      }),
+    [
+      flags.villageUnlocked,
+      flags.forestUnlocked,
+      flags.bastionUnlocked,
+      estateUnlocked,
+      buildings.darkEstate,
+      relics?.survivors_notes,
+      books?.book_of_trials,
+      timedEventTab.isActive,
+      clearTabBlink,
+    ],
+  );
+
+  const pauseDigitByTabId = useMemo(() => {
+    const m = new Map<GameTab, number>();
+    for (const t of mainNavHotkeyTargets) {
+      m.set(t.tab, t.index1Based);
+    }
+    return m;
+  }, [mainNavHotkeyTargets]);
+
+  useEffect(() => {
+    const typingInField = (target: EventTarget | null) =>
+      target instanceof HTMLElement &&
+      !!target.closest("input, textarea, select, [contenteditable=true]");
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (typingInField(e.target)) return;
+
+      if ((e.key === "m" || e.key === "M") && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        e.preventDefault();
+        const s = useGameStore.getState();
+        const next = !s.musicMuted;
+        s.setMusicMuted(next);
+        audioManager.musicMute(next);
+        return;
+      }
+
+      if (e.key === "," && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        e.preventDefault();
+        const s = useGameStore.getState();
+        const next = !s.sfxMuted;
+        s.setSfxMuted(next);
+        audioManager.sfxMute(next);
+        return;
+      }
+
+      const st = useGameStore.getState();
+      if (isModalDialogOpen(st)) return;
+
+      if (
+        (e.key === "t" || e.key === "T") &&
+        !e.ctrlKey &&
+        !e.metaKey &&
+        !e.altKey
+      ) {
+        if ((st.buildings.tradePost ?? 0) < 1) return;
+        e.preventDefault();
+        openTraderShop();
+        return;
+      }
+
+      if (e.code === "Space") {
+        if (st.idleModeDialog.isOpen) return;
+        e.preventDefault();
+        togglePause();
+        return;
+      }
+
+      if (!st.isPaused) return;
+
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+        if (mainNavHotkeyTargets.length === 0) return;
+        const len = mainNavHotkeyTargets.length;
+        let i = mainNavHotkeyTargets.findIndex((x) => x.tab === st.activeTab);
+        if (i < 0) i = 0;
+        const delta = e.key === "ArrowRight" ? 1 : -1;
+        const j = (i + delta + len) % len;
+        mainNavHotkeyTargets[j].activate();
+        e.preventDefault();
+        return;
+      }
+
+      if (/^[1-7]$/.test(e.key)) {
+        const n = Number(e.key);
+        const entry = mainNavHotkeyTargets.find((x) => x.index1Based === n);
+        if (entry) {
+          entry.activate();
+          e.preventDefault();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [togglePause, mainNavHotkeyTargets, openTraderShop]);
+
   // Debug: Log when full game dialog state changes
   useEffect(() => {
     if (!fullGamePurchaseDialogOpen) {
@@ -139,7 +275,6 @@ export default function GameContainer() {
   }, [fullGamePurchaseDialogOpen]);
 
   // Track unlocked tabs to trigger blink until clicked
-  const traderUnlocked = buildings.tradePost >= 1;
   const achievementsUnlocked = !!relics?.survivors_notes || !!books?.book_of_trials;
   const prevFlagsRef = useRef({
     villageUnlocked: flags.villageUnlocked,
@@ -498,7 +633,9 @@ export default function GameContainer() {
         {/* Right Content Area with Horizontal Tabs and Actions - Below for mobile, right for desktop */}
         <section className="flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
           {/* Horizontal Game Tabs */}
-          <nav className="border-t border-border pl-2 md:pl-4 flex-shrink-0">
+          <nav
+            className={`border-t border-border pl-2 md:pl-4 flex-shrink-0 ${isPaused ? "relative z-[45]" : ""}`}
+          >
             {useLimelightNav ? (
               // Alternative LimelightNav design
               <LimelightNav
@@ -518,7 +655,7 @@ export default function GameContainer() {
               // Standard button design
               <div className="flex space-x-3 pl-[3px] ">
                 <button
-                  className={`py-2 text-sm bg-transparent ${activeTab === "cave"
+                  className={`relative py-2 text-sm bg-transparent ${activeTab === "cave"
                     ? "font-semibold opacity-100"
                     : "opacity-60"
                     } `}
@@ -526,11 +663,15 @@ export default function GameContainer() {
                   data-testid="tab-cave"
                 >
                   Cave
+                  <PauseHotkeyBadge
+                    show={isPaused && pauseDigitByTabId.has("cave")}
+                    label={`[${pauseDigitByTabId.get("cave")}]`}
+                  />
                 </button>
 
                 {flags.villageUnlocked && (
                   <button
-                    className={`py-2 text-sm bg-transparent ${animatingTabs.has("village")
+                    className={`relative py-2 text-sm bg-transparent ${animatingTabs.has("village")
                       ? fadePhaseTabs.has("village")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -554,13 +695,17 @@ export default function GameContainer() {
                     data-testid="tab-village"
                   >
                     {buildings.stoneHut >= 5 ? "City" : "Village"}
+                    <PauseHotkeyBadge
+                      show={isPaused && pauseDigitByTabId.has("village")}
+                      label={`[${pauseDigitByTabId.get("village")}]`}
+                    />
                   </button>
                 )}
 
                 {/* Estate Tab Button */}
                 {(estateUnlocked || buildings.darkEstate >= 1) && (
                   <button
-                    className={`py-2 text-sm bg-transparent ${animatingTabs.has("estate")
+                    className={`relative py-2 text-sm bg-transparent ${animatingTabs.has("estate")
                       ? fadePhaseTabs.has("estate")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -584,12 +729,16 @@ export default function GameContainer() {
                     data-testid="tab-estate"
                   >
                     Estate
+                    <PauseHotkeyBadge
+                      show={isPaused && pauseDigitByTabId.has("estate")}
+                      label={`[${pauseDigitByTabId.get("estate")}]`}
+                    />
                   </button>
                 )}
 
                 {flags.forestUnlocked && (
                   <button
-                    className={`py-2 text-sm bg-transparent ${animatingTabs.has("forest")
+                    className={`relative py-2 text-sm bg-transparent ${animatingTabs.has("forest")
                       ? fadePhaseTabs.has("forest")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -613,12 +762,16 @@ export default function GameContainer() {
                     data-testid="tab-forest"
                   >
                     Forest
+                    <PauseHotkeyBadge
+                      show={isPaused && pauseDigitByTabId.has("forest")}
+                      label={`[${pauseDigitByTabId.get("forest")}]`}
+                    />
                   </button>
                 )}
 
                 {flags.bastionUnlocked && (
                   <button
-                    className={`py-2 text-sm bg-transparent ${animatingTabs.has("bastion")
+                    className={`relative py-2 text-sm bg-transparent ${animatingTabs.has("bastion")
                       ? fadePhaseTabs.has("bastion")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -642,41 +795,37 @@ export default function GameContainer() {
                     data-testid="tab-bastion"
                   >
                     {flags.hasFortress ? "Fortress" : "Bastion"}
+                    <PauseHotkeyBadge
+                      show={isPaused && pauseDigitByTabId.has("bastion")}
+                      label={`[${pauseDigitByTabId.get("bastion")}]`}
+                    />
                   </button>
                 )}
 
                 {/* Trader Tab Button */}
                 {traderUnlocked && (
                   <button
-                    className={`py-2 text-sm bg-transparent ${animatingTabs.has("trader")
+                    className={`relative py-2 text-sm bg-transparent ${animatingTabs.has("trader")
                       ? fadePhaseTabs.has("trader")
                         ? "tab-fade-in"
                         : "tab-blink-new"
                       : "opacity-60"
                       }`}
-                    onClick={() => {
-                      setAnimatingTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("trader");
-                        return next;
-                      });
-                      setFadePhaseTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("trader");
-                        return next;
-                      });
-                      setShopDialogOpen(true);
-                    }}
+                    onClick={openTraderShop}
                     data-testid="tab-trader"
                   >
                     Trader
+                    <PauseHotkeyBadge
+                      show={isPaused}
+                      label="[T]"
+                    />
                   </button>
                 )}
 
                 {/* Achievements Tab Button ⚜︎ */}
                 {(relics?.survivors_notes || books?.book_of_trials) && (
                   <button
-                    className={`py-2 text-sm bg-transparent ${animatingTabs.has("achievements")
+                    className={`relative py-2 text-sm bg-transparent ${animatingTabs.has("achievements")
                       ? fadePhaseTabs.has("achievements")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -701,13 +850,17 @@ export default function GameContainer() {
                     data-testid="tab-achievements"
                   >
                     {"\u269C\uFE0E"}
+                    <PauseHotkeyBadge
+                      show={isPaused && pauseDigitByTabId.has("achievements")}
+                      label={`[${pauseDigitByTabId.get("achievements")}]`}
+                    />
                   </button>
                 )}
 
                 {/* Timed Event Tab Button */}
                 {timedEventTab.isActive && (
                   <button
-                    className={`py-2 text-sm bg-transparent ${activeTab === "timedevent"
+                    className={`relative py-2 text-sm bg-transparent ${activeTab === "timedevent"
                       ? "font-semibold opacity-100"
                       : "opacity-60"
                       }`}
@@ -715,9 +868,33 @@ export default function GameContainer() {
                     data-testid="tab-timedevent"
                   >
                     <span className="timer-symbol">⊚</span>
+                    <PauseHotkeyBadge
+                      show={isPaused && pauseDigitByTabId.has("timedevent")}
+                      label={`[${pauseDigitByTabId.get("timedevent")}]`}
+                    />
                   </button>
                 )}
               </div>
+            )}
+            {isPaused && mainNavHotkeyTargets.length > 0 && (
+              <p className="select-none pl-[3px] pb-1 pt-0.5 text-[10px] text-muted-foreground">
+                <span className="font-mono">←</span>
+                <span className="font-mono">→</span>
+                {" switch area · "}
+                <span className="font-mono">
+                  1–{mainNavHotkeyTargets.length}
+                </span>
+                {" jump · "}
+                <span className="font-mono">Space</span>
+                {" resume"}
+                {traderUnlocked && (
+                  <>
+                    {" · "}
+                    <span className="font-mono">T</span>
+                    {" trader"}
+                  </>
+                )}
+              </p>
             )}
           </nav>
 
