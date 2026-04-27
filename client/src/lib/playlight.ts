@@ -17,7 +17,7 @@ const EXIT_INTENT_EVENT_DEDUP_MS = 600;
  */
 const EXIT_INTENT_DISABLE_DEFER_MS = 2000;
 /** If the player stays paused (not for Playlight-initiated discovery) this long, show Discovery. */
-const LONG_PAUSE_DISCOVERY_MS = 30 * 1000;
+const LONG_PAUSE_DISCOVERY_MS = 60 * 1000;
 
 type ExitIntentGameSlice = {
   flags: { gameStarted?: boolean };
