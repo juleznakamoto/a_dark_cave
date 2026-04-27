@@ -1225,9 +1225,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   username: undefined,
   setUsername: (username: string) => set({ username }),
 
-  setActiveTab: (
-    tab: "cave" | "village" | "forest" | "bastion" | "estate" | "achievements",
-  ) => set({ activeTab: tab }),
+  setActiveTab: (tab: GameTab) => set({ activeTab: tab }),
 
   setBoostMode: (enabled: boolean) => set({ boostMode: enabled }),
   setMusicMuted: (muted: boolean) => set({ musicMuted: muted }),

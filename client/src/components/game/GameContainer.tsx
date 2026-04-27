@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import GameTabs from "./GameTabs";
 import GameFooter from "./GameFooter";
 import CavePanel from "./panels/CavePanel";
@@ -10,7 +10,8 @@ import AchievementsPanel from "./panels/AchievementsPanel";
 import TimedEventPanel from "./panels/TimedEventPanel";
 import LogPanel from "./panels/LogPanel";
 import StartScreen from "./StartScreen";
-import { useGameStore } from "@/game/state";
+import { useGameStore, isModalDialogOpen } from "@/game/state";
+import type { GameTab } from "@/game/types";
 import EventDialog from "./EventDialog";
 import CombatDialog from "./CombatDialog";
 import IdleModeDialog from "./IdleModeDialog";
@@ -31,6 +32,11 @@ import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
 import MistBackground from "@/components/ui/mist-background";
 import { getUnclaimedAchievementIds } from "@/achievements";
+import {
+  getVisibleHotkeyTabs,
+  isEditableKeyboardTarget,
+} from "./tabHotkeys";
+
 export default function GameContainer() {
   const {
     activeTab,
@@ -447,6 +453,132 @@ export default function GameContainer() {
     books?.book_of_trials,
     timedEventTab.isActive,
     timedEventTab.event?.title,
+  ]);
+
+  const visibleHotkeyTabs = useMemo(
+    () =>
+      getVisibleHotkeyTabs({
+        villageUnlocked: flags.villageUnlocked,
+        forestUnlocked: flags.forestUnlocked,
+        bastionUnlocked: flags.bastionUnlocked,
+        darkEstate: buildings.darkEstate ?? 0,
+        survivorsNotes: !!relics?.survivors_notes,
+        bookOfTrials: !!books?.book_of_trials,
+        timedEventActive: timedEventTab.isActive,
+      }),
+    [
+      flags.villageUnlocked,
+      flags.forestUnlocked,
+      flags.bastionUnlocked,
+      buildings.darkEstate,
+      relics?.survivors_notes,
+      books?.book_of_trials,
+      timedEventTab.isActive,
+    ],
+  );
+
+  const clearTabAnimation = useCallback((tabId: string) => {
+    setAnimatingTabs((prev) => {
+      const next = new Set(prev);
+      next.delete(tabId);
+      return next;
+    });
+    setFadePhaseTabs((prev) => {
+      const next = new Set(prev);
+      next.delete(tabId);
+      return next;
+    });
+  }, []);
+
+  const applyHotkeyTab = useCallback(
+    (tab: GameTab) => {
+      switch (tab) {
+        case "village":
+          clearTabAnimation("village");
+          setActiveTab("village");
+          break;
+        case "estate":
+          clearTabAnimation("estate");
+          setActiveTab("estate");
+          break;
+        case "forest":
+          clearTabAnimation("forest");
+          setActiveTab("forest");
+          break;
+        case "bastion":
+          clearTabAnimation("bastion");
+          setActiveTab("bastion");
+          break;
+        case "achievements":
+          clearTabAnimation("achievements");
+          setLastViewedUnclaimedAchievementIds(unclaimedAchievementIds);
+          setActiveTab("achievements");
+          break;
+        default:
+          setActiveTab(tab);
+      }
+    },
+    [
+      clearTabAnimation,
+      setActiveTab,
+      unclaimedAchievementIds,
+      setLastViewedUnclaimedAchievementIds,
+    ],
+  );
+
+  const openTraderFromHotkey = useCallback(() => {
+    clearTabAnimation("trader");
+    setShopDialogOpen(true);
+  }, [clearTabAnimation, setShopDialogOpen]);
+
+  useEffect(() => {
+    if (!flags.gameStarted) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.defaultPrevented) return;
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      if (isEditableKeyboardTarget(e.target)) return;
+      if (isModalDialogOpen(useGameStore.getState())) return;
+
+      const key = e.key;
+
+      if (key === "t" || key === "T") {
+        if (!traderUnlocked) return;
+        e.preventDefault();
+        openTraderFromHotkey();
+        return;
+      }
+
+      if (key >= "1" && key <= "9") {
+        const index = Number(key) - 1;
+        if (index < 0 || index >= visibleHotkeyTabs.length) return;
+        e.preventDefault();
+        applyHotkeyTab(visibleHotkeyTabs[index]!);
+        return;
+      }
+
+      if (key === "ArrowLeft" || key === "ArrowRight") {
+        if (visibleHotkeyTabs.length === 0) return;
+        const { activeTab: current } = useGameStore.getState();
+        let idx = visibleHotkeyTabs.findIndex((t) => t === current);
+        if (idx < 0) idx = 0;
+        const nextIdx =
+          key === "ArrowRight"
+            ? (idx + 1) % visibleHotkeyTabs.length
+            : (idx - 1 + visibleHotkeyTabs.length) % visibleHotkeyTabs.length;
+        e.preventDefault();
+        applyHotkeyTab(visibleHotkeyTabs[nextIdx]!);
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown, true);
+    return () => window.removeEventListener("keydown", onKeyDown, true);
+  }, [
+    flags.gameStarted,
+    traderUnlocked,
+    visibleHotkeyTabs,
+    applyHotkeyTab,
+    openTraderFromHotkey,
   ]);
 
   // Show start screen if game hasn't started yet
