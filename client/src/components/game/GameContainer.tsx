@@ -552,6 +552,15 @@ export default function GameContainer() {
       setPauseHotkeyBadges([]);
       return;
     }
+    // Match Tailwind `md:` — do not show hotkey hint/badges on small viewports
+    if (
+      typeof window !== "undefined" &&
+      !window.matchMedia("(min-width: 768px)").matches
+    ) {
+      setPauseHotkeyHint(null);
+      setPauseHotkeyBadges([]);
+      return;
+    }
     const row = tabButtonRowRef.current;
     if (!row) {
       setPauseHotkeyHint(null);
@@ -692,7 +701,7 @@ export default function GameContainer() {
 
       {isPaused && !useLimelightNav && (
         <div
-          className="pointer-events-none fixed inset-x-0 z-[45]"
+          className="pointer-events-none fixed inset-x-0 z-[45] hidden md:block"
           style={{ top: 0, bottom: "45px" }}
           aria-hidden
         >
