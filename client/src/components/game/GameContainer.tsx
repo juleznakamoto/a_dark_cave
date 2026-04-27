@@ -1,4 +1,11 @@
-import { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useCallback,
+} from "react";
 import GameTabs from "./GameTabs";
 import GameFooter from "./GameFooter";
 import CavePanel from "./panels/CavePanel";
@@ -91,6 +98,11 @@ export default function GameContainer() {
   const [fadePhaseTabs, setFadePhaseTabs] = useState<Set<string>>(new Set());
   const [lastViewedUnclaimedAchievementIds, setLastViewedUnclaimedAchievementIds] =
     useState<string[]>([]);
+  const tabNavRef = useRef<HTMLElement | null>(null);
+  const [pauseHotkeyHintTop, setPauseHotkeyHintTop] = useState<number | null>(null);
+  const [pauseHotkeyBadges, setPauseHotkeyBadges] = useState<
+    { key: string; left: number; top: number; label: string }[]
+  >([]);
 
   // Compute unclaimed achievements for tab blink.
   // Subscribe to the specific slices that affect achievement progress so the memo re-runs.
@@ -531,6 +543,72 @@ export default function GameContainer() {
     setShopDialogOpen(true);
   }, [clearTabAnimation, setShopDialogOpen]);
 
+  const measurePauseHotkeyOverlay = useCallback(() => {
+    if (!isPaused || useLimelightNav) {
+      setPauseHotkeyHintTop(null);
+      setPauseHotkeyBadges([]);
+      return;
+    }
+    const nav = tabNavRef.current;
+    if (!nav) {
+      setPauseHotkeyHintTop(null);
+      setPauseHotkeyBadges([]);
+      return;
+    }
+    const navRect = nav.getBoundingClientRect();
+    setPauseHotkeyHintTop(Math.max(4, navRect.top - 42));
+    const next: { key: string; left: number; top: number; label: string }[] =
+      [];
+    visibleHotkeyTabs.forEach((tab, i) => {
+      const el = document.querySelector<HTMLElement>(
+        `[data-testid="tab-${tab}"]`,
+      );
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      next.push({
+        key: `hotkey-${tab}`,
+        left: r.left + r.width / 2,
+        top: r.top - 2,
+        label: `[${i + 1}]`,
+      });
+    });
+    if (traderUnlocked) {
+      const el = document.querySelector<HTMLElement>(
+        '[data-testid="tab-trader"]',
+      );
+      if (el) {
+        const r = el.getBoundingClientRect();
+        next.push({
+          key: "hotkey-trader",
+          left: r.left + r.width / 2,
+          top: r.top - 2,
+          label: "t",
+        });
+      }
+    }
+    setPauseHotkeyBadges(next);
+  }, [isPaused, useLimelightNav, visibleHotkeyTabs, traderUnlocked]);
+
+  useLayoutEffect(() => {
+    if (!isPaused) {
+      measurePauseHotkeyOverlay();
+      return;
+    }
+    const id = requestAnimationFrame(() => {
+      measurePauseHotkeyOverlay();
+    });
+    return () => cancelAnimationFrame(id);
+  }, [isPaused, measurePauseHotkeyOverlay]);
+
+  useEffect(() => {
+    if (!isPaused) return;
+    const onResize = () => {
+      measurePauseHotkeyOverlay();
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [isPaused, measurePauseHotkeyOverlay]);
+
   useEffect(() => {
     if (!flags.gameStarted) return;
 
@@ -605,6 +683,40 @@ export default function GameContainer() {
         />
       )}
 
+      {isPaused && !useLimelightNav && (
+        <div
+          className="pointer-events-none fixed inset-x-0 z-[45]"
+          style={{ top: 0, bottom: "45px" }}
+          aria-hidden
+        >
+          {pauseHotkeyHintTop != null && (
+            <p
+              className="absolute left-1/2 w-[min(100%,36rem)] -translate-x-1/2 px-2 text-center text-xs leading-snug text-foreground drop-shadow"
+              style={{ top: pauseHotkeyHintTop }}
+            >
+              <span>Use the follwing keys or arrow keys </span>
+              <span className="text-base font-medium leading-none">←</span>
+              <span> </span>
+              <span className="text-base font-medium leading-none">→</span>
+              <span> to switch between tabs</span>
+            </p>
+          )}
+          {pauseHotkeyBadges.map((b) => (
+            <span
+              key={b.key}
+              className="absolute text-xs font-semibold text-foreground drop-shadow"
+              style={{
+                left: b.left,
+                top: b.top,
+                transform: "translate(-50%, -100%)",
+              }}
+            >
+              {b.label}
+            </span>
+          ))}
+        </div>
+      )}
+
       {/* Sleep Mode Mist Background - covers everything except footer and profile menu */}
       {idleModeDialog.isOpen && (
         <div
@@ -630,7 +742,10 @@ export default function GameContainer() {
         {/* Right Content Area with Horizontal Tabs and Actions - Below for mobile, right for desktop */}
         <section className="flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
           {/* Horizontal Game Tabs */}
-          <nav className="border-t border-border pl-2 md:pl-4 flex-shrink-0">
+          <nav
+            ref={tabNavRef}
+            className="border-t border-border pl-2 md:pl-4 flex-shrink-0"
+          >
             {useLimelightNav ? (
               // Alternative LimelightNav design
               <LimelightNav
