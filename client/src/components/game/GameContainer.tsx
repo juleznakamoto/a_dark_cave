@@ -325,7 +325,7 @@ export default function GameContainer() {
     const tabButton = document.querySelector('[data-testid="tab-timedevent"]');
     if (!tabButton) return;
 
-    if (timedEventTab.isActive && timedEventTab.expiryTime) {
+    if (!isPaused && timedEventTab.isActive && timedEventTab.expiryTime) {
       const updatePulse = () => {
         const now = Date.now();
         const remaining = Math.max(0, timedEventTab.expiryTime! - now);
@@ -351,14 +351,14 @@ export default function GameContainer() {
     } else {
       tabButton.classList.remove("timer-tab-pulse");
     }
-  }, [timedEventTab.isActive, timedEventTab.expiryTime]);
+  }, [isPaused, timedEventTab.isActive, timedEventTab.expiryTime]);
 
   // Apply pulse animation to achievement tab when there are unviewed achievements
   useEffect(() => {
     const tabButton = document.querySelector('[data-testid="tab-achievements"]');
     if (!tabButton) return;
 
-    if (hasUnviewedAchievement) {
+    if (!isPaused && hasUnviewedAchievement) {
       tabButton.classList.add("timer-tab-pulse");
     } else {
       tabButton.classList.remove("timer-tab-pulse");
@@ -367,12 +367,15 @@ export default function GameContainer() {
     return () => {
       tabButton.classList.remove("timer-tab-pulse");
     };
-  }, [hasUnviewedAchievement]);
+  }, [hasUnviewedAchievement, isPaused]);
 
   // Apply pulse animation to Bastion tab when wave countdown is in last 30 seconds
   useEffect(() => {
     const tabButton = document.querySelector('[data-testid="tab-bastion"]');
-    if (!tabButton || !flags.bastionUnlocked) return;
+    if (!tabButton || !flags.bastionUnlocked || isPaused) {
+      tabButton?.classList.remove("timer-tab-pulse");
+      return;
+    }
 
     const updatePulse = () => {
       const timers = useGameStore.getState().attackWaveTimers || {};
@@ -400,7 +403,7 @@ export default function GameContainer() {
       clearInterval(interval);
       tabButton.classList.remove("timer-tab-pulse");
     };
-  }, [flags.bastionUnlocked]);
+  }, [flags.bastionUnlocked, isPaused]);
 
   // Track when new tabs are unlocked and trigger animations
   useEffect(() => {
@@ -671,7 +674,7 @@ export default function GameContainer() {
 
                 {flags.villageUnlocked && (
                   <button
-                    className={`relative py-2 text-sm bg-transparent ${animatingTabs.has("village")
+                    className={`relative py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("village")
                       ? fadePhaseTabs.has("village")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -705,7 +708,7 @@ export default function GameContainer() {
                 {/* Estate Tab Button */}
                 {(estateUnlocked || buildings.darkEstate >= 1) && (
                   <button
-                    className={`relative py-2 text-sm bg-transparent ${animatingTabs.has("estate")
+                    className={`relative py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("estate")
                       ? fadePhaseTabs.has("estate")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -738,7 +741,7 @@ export default function GameContainer() {
 
                 {flags.forestUnlocked && (
                   <button
-                    className={`relative py-2 text-sm bg-transparent ${animatingTabs.has("forest")
+                    className={`relative py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("forest")
                       ? fadePhaseTabs.has("forest")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -771,7 +774,7 @@ export default function GameContainer() {
 
                 {flags.bastionUnlocked && (
                   <button
-                    className={`relative py-2 text-sm bg-transparent ${animatingTabs.has("bastion")
+                    className={`relative py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("bastion")
                       ? fadePhaseTabs.has("bastion")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -805,7 +808,7 @@ export default function GameContainer() {
                 {/* Trader Tab Button */}
                 {traderUnlocked && (
                   <button
-                    className={`relative py-2 text-sm bg-transparent ${animatingTabs.has("trader")
+                    className={`relative py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("trader")
                       ? fadePhaseTabs.has("trader")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -825,7 +828,7 @@ export default function GameContainer() {
                 {/* Achievements Tab Button ⚜︎ */}
                 {(relics?.survivors_notes || books?.book_of_trials) && (
                   <button
-                    className={`relative py-2 text-sm bg-transparent ${animatingTabs.has("achievements")
+                    className={`relative py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("achievements")
                       ? fadePhaseTabs.has("achievements")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -879,21 +882,9 @@ export default function GameContainer() {
             {isPaused && mainNavHotkeyTargets.length > 0 && (
               <p className="select-none pl-[3px] pb-1 pt-0.5 text-[10px] text-muted-foreground">
                 <span className="font-mono">←</span>
+                {" "}
                 <span className="font-mono">→</span>
-                {" switch area · "}
-                <span className="font-mono">
-                  1–{mainNavHotkeyTargets.length}
-                </span>
-                {" jump · "}
-                <span className="font-mono">Space</span>
-                {" resume"}
-                {traderUnlocked && (
-                  <>
-                    {" · "}
-                    <span className="font-mono">T</span>
-                    {" trader"}
-                  </>
-                )}
+                {" Use arrow keys to switch between tabs"}
               </p>
             )}
           </nav>

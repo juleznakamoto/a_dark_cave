@@ -104,7 +104,7 @@ export default function GameFooter() {
               onClick={togglePause}
               data-testid="button-pause-game"
               disabled={idleModeDialog.isOpen}
-              className={`relative px-1 py-1 text-xs hover ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "text-red-600 hover:text-red-500" : ""} ${isPaused && !idleModeDialog.isOpen ? "continue-pause-flash" : ""}`}
+              className={`relative px-1 py-1 text-xs hover ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "text-red-600 hover:text-red-500" : ""}`}
             >
               {isPaused ? "▶" : "❚❚"}
               <PauseHotkeyBadge
