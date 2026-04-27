@@ -722,20 +722,19 @@ export default function GameContainer() {
             {/* Horizontal Game Tabs: fixed + z-50 when paused so strip sits above the global dimmer (z-40). */}
             <nav
               ref={mainNavRef}
-              className={`border-t border-border pl-2 md:pl-4 flex-shrink-0 ${
-                isPaused && mainNavBox
+              className={`border-t border-border pl-2 md:pl-4 flex-shrink-0 ${isPaused && mainNavBox
                   ? "fixed z-50 border-border bg-background"
                   : ""
-              }`}
+                }`}
               style={
                 isPaused && mainNavBox
                   ? {
-                      top: mainNavBox.top,
-                      left: mainNavBox.left,
-                      width: mainNavBox.width,
-                      minHeight: mainNavBox.height,
-                      boxSizing: "border-box",
-                    }
+                    top: mainNavBox.top,
+                    left: mainNavBox.left,
+                    width: mainNavBox.width,
+                    minHeight: mainNavBox.height,
+                    boxSizing: "border-box",
+                  }
                   : undefined
               }
             >
