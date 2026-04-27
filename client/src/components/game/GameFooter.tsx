@@ -81,8 +81,9 @@ export default function GameFooter() {
 
   const emphasizeFooterSocialIcons =
     isPaused || idleModeDialog.isOpen || leaderboardDialogOpen;
-  const socialIconClass = `hover:opacity-100 transition-opacity duration-[2000ms] ease-in-out flex items-center justify-center w-4 h-4 ${emphasizeFooterSocialIcons ? "opacity-90" : "opacity-35"
-    }`;
+  const socialIconClass = `hover:opacity-100 transition-opacity duration-[2000ms] ease-in-out flex items-center justify-center w-4 h-4 text-neutral-300 ${
+    emphasizeFooterSocialIcons ? "opacity-90" : "opacity-60"
+  }`;
 
   return (
     <>
@@ -163,14 +164,14 @@ export default function GameFooter() {
                     });
                   }
                 }}
-                className={`px-1 py-1 text-xs hover relative text-neutral-300 ${isEarlyGameplay ? 'opacity-50' : 'opacity-100'} hover:!opacity-100`}
+                className={`px-1 py-1 text-xs hover relative text-neutral-300 ${isEarlyGameplay ? "opacity-50" : "opacity-100"} hover:!opacity-100`}
               >
                 Trader
                 {((shopNotificationVisible && !shopNotificationSeen) ||
                   (story.seen.mysteriousNoteReceived &&
                     !mysteriousNoteShopNotificationSeen)) && (
-                    <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full notification-pulse" />
-                  )}
+                  <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full notification-pulse" />
+                )}
               </Button>
             )}
             <Button
@@ -187,7 +188,7 @@ export default function GameFooter() {
                   });
                 }
               }}
-              className={`px-1 py-1 text-xs hover relative text-neutral-300 ${isEarlyGameplay ? 'opacity-50' : 'opacity-100'} hover:!opacity-100`}
+              className={`px-1 py-1 text-xs hover relative text-neutral-300 ${isEarlyGameplay ? "opacity-50" : "opacity-100"} hover:!opacity-100`}
             >
               Donate
               {story.seen.mysteriousNoteReceived &&
