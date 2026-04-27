@@ -81,7 +81,7 @@ export default function GameFooter() {
 
   const emphasizeFooterSocialIcons =
     isPaused || idleModeDialog.isOpen || leaderboardDialogOpen;
-  const socialIconClass = `hover:opacity-100 transition-opacity duration-[2000ms] ease-in-out flex items-center justify-center w-4 h-4 text-neutral-300 ${emphasizeFooterSocialIcons ? "opacity-90" : "opacity-60"
+  const socialIconClass = `hover:opacity-100 transition-opacity duration-[2000ms] ease-in-out flex items-center justify-center w-4 h-4 ${emphasizeFooterSocialIcons ? "opacity-90" : "opacity-35"
     }`;
 
   return (
@@ -93,7 +93,7 @@ export default function GameFooter() {
       />
       <footer className="border-t border-border px-2 py-2 text-xs text-muted-foreground pointer-events-auto z-50">
         <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-0 flex-1 flex-wrap">
+          <div className="flex items-center space-x-0 flex-1">
             {devMode && (
               <div className="px-1 py-1 text-xs font-mono">{displayTime}</div>
             )}
@@ -103,7 +103,7 @@ export default function GameFooter() {
               onClick={togglePause}
               data-testid="button-pause-game"
               disabled={idleModeDialog.isOpen}
-              className={`px-1 py-1 text-xs hover ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "text-red-600 hover:text-red-500" : ""}`}
+              className={`px-1 py-1 text-xs hover ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "text-red-600 hover:text-red-500" : ""} ${isPaused && !idleModeDialog.isOpen ? "continue-pause-flash" : ""}`}
             >
               {isPaused ? "▶" : "❚❚"}
             </Button>

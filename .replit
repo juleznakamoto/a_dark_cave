@@ -53,7 +53,3 @@ waitForPort = 5000
 
 [userenv.shared]
 GENDER_SERVICE_URL = "http://127.0.0.1:5001"
-
-[postMerge]
-path = "scripts/post-merge.sh"
-timeoutMs = 20000
