@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   buildMainNavHotkeyTabOrder,
   buildMainNavHotkeyTargets,
+  pauseNavDigitIndexFromKeyboard,
 } from "./mainNavHotkeys";
 
 describe("buildMainNavHotkeyTabOrder", () => {
@@ -71,5 +72,20 @@ describe("buildMainNavHotkeyTargets", () => {
     targets[0].activate();
     expect(setActiveTab).toHaveBeenCalledWith("cave");
     expect(ui.clearTabBlink).not.toHaveBeenCalled();
+  });
+});
+
+describe("pauseNavDigitIndexFromKeyboard", () => {
+  it("maps top row 1-7 and numpad codes", () => {
+    expect(pauseNavDigitIndexFromKeyboard({ key: "1", code: "Digit1" })).toBe(1);
+    expect(pauseNavDigitIndexFromKeyboard({ key: "7", code: "Digit7" })).toBe(7);
+    expect(pauseNavDigitIndexFromKeyboard({ key: "1", code: "Numpad1" })).toBe(1);
+    expect(pauseNavDigitIndexFromKeyboard({ key: "3", code: "Numpad3" })).toBe(3);
+  });
+
+  it("returns null for out-of-range or non-digit keys", () => {
+    expect(pauseNavDigitIndexFromKeyboard({ key: "8", code: "Digit8" })).toBeNull();
+    expect(pauseNavDigitIndexFromKeyboard({ key: "a", code: "KeyA" })).toBeNull();
+    expect(pauseNavDigitIndexFromKeyboard({ key: "9", code: "Numpad9" })).toBeNull();
   });
 });

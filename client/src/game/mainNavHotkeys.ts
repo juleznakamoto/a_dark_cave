@@ -28,6 +28,16 @@ export type MainNavHotkeyUiHooks = {
   setLastViewedUnclaimedAchievementIds: (ids: string[]) => void;
 };
 
+/** Top-row `1`–`7` or numpad `Numpad1`–`Numpad7` → 1–7; otherwise null. */
+export function pauseNavDigitIndexFromKeyboard(
+  e: Pick<KeyboardEvent, "key" | "code">,
+): number | null {
+  if (/^[1-7]$/.test(e.key)) return Number(e.key);
+  const m = /^Numpad([1-7])$/.exec(e.code);
+  if (m) return Number(m[1]);
+  return null;
+}
+
 /**
  * Fixed order for non-Trader main nav: matches {@link buildMainNavHotkeyTabOrder}
  * and the standard tab strip in `GameContainer`.

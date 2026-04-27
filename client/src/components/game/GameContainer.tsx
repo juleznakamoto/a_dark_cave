@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import { useState, useEffect, useLayoutEffect, useMemo, useRef, useCallback } from "react";
+import type { ButtonHTMLAttributes, ReactNode } from "react";
 import GameTabs from "./GameTabs";
 import GameFooter from "./GameFooter";
 import CavePanel from "./panels/CavePanel";
@@ -11,7 +12,10 @@ import TimedEventPanel from "./panels/TimedEventPanel";
 import LogPanel from "./panels/LogPanel";
 import StartScreen from "./StartScreen";
 import { useGameStore, isModalDialogOpen } from "@/game/state";
-import { buildMainNavHotkeyTargets } from "@/game/mainNavHotkeys";
+import {
+  buildMainNavHotkeyTargets,
+  pauseNavDigitIndexFromKeyboard,
+} from "@/game/mainNavHotkeys";
 import type { GameTab } from "@/game/types";
 import EventDialog from "./EventDialog";
 import CombatDialog from "./CombatDialog";
@@ -33,27 +37,34 @@ import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
 import MistBackground from "@/components/ui/mist-background";
 import { getUnclaimedAchievementIds } from "@/achievements";
-import type { ReactNode } from "react";
-
-/** Hotkey text above tab label; avoids overflow clipping and keeps hints readable. */
-function TabHotkeyStack({
-  show,
-  hint,
+/** Pause: faint hotkey (e.g. [1], [T]) as underlay; tab label stays on top, layout unchanged. */
+function TabWithHotkeyLayer({
+  isPaused,
+  hotkey,
   children,
-}: {
-  show: boolean;
-  hint: string | null;
+  className = "",
+  ...rest
+}: ButtonHTMLAttributes<HTMLButtonElement> & {
+  isPaused: boolean;
+  hotkey: string | null;
   children: ReactNode;
 }) {
   return (
-    <span className="flex flex-col items-center justify-center gap-0.5">
-      {show && hint != null && hint.length > 0 ? (
-        <span className="font-mono text-[12px] leading-none text-foreground/90 tabular-nums">
-          {hint}
+    <button
+      type="button"
+      className={`relative inline-flex items-center justify-center overflow-hidden py-2 text-sm bg-transparent ${className}`}
+      {...rest}
+    >
+      {isPaused && hotkey ? (
+        <span
+          className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center font-mono text-[1.1rem] leading-none text-foreground/30 tabular-nums sm:text-[1.2rem] sm:text-foreground/25"
+          aria-hidden
+        >
+          {hotkey}
         </span>
       ) : null}
-      {children}
-    </span>
+      <span className="relative z-10">{children}</span>
+    </button>
   );
 }
 export default function GameContainer() {
@@ -206,6 +217,72 @@ export default function GameContainer() {
     return m;
   }, [mainNavHotkeyTargets]);
 
+  const mainNavHotkeyTargetsRef = useRef(mainNavHotkeyTargets);
+  mainNavHotkeyTargetsRef.current = mainNavHotkeyTargets;
+
+  /** Pause overlay (z-40) sits above the main column; lift tab nav with fixed + z-50 + measured box so it stays legible. */
+  const mainNavRef = useRef<HTMLElement | null>(null);
+  const [mainNavBox, setMainNavBox] = useState<{
+    top: number;
+    left: number;
+    width: number;
+    height: number;
+  } | null>(null);
+
+  const syncMainNavBox = useCallback(() => {
+    if (!isPaused) {
+      setMainNavBox(null);
+      return;
+    }
+    const el = mainNavRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    setMainNavBox((prev) => {
+      const next = {
+        top: r.top,
+        left: r.left,
+        width: r.width,
+        height: r.height,
+      };
+      if (
+        prev &&
+        Math.abs(prev.top - next.top) < 0.5 &&
+        Math.abs(prev.left - next.left) < 0.5 &&
+        Math.abs(prev.width - next.width) < 0.5 &&
+        Math.abs(prev.height - next.height) < 0.5
+      ) {
+        return prev;
+      }
+      return next;
+    });
+  }, [isPaused]);
+
+  useLayoutEffect(() => {
+    if (!isPaused) {
+      setMainNavBox(null);
+      return;
+    }
+    syncMainNavBox();
+    let raf0 = 0;
+    let raf1 = 0;
+    raf0 = requestAnimationFrame(() => {
+      raf1 = requestAnimationFrame(() => {
+        syncMainNavBox();
+      });
+    });
+    const onResize = () => syncMainNavBox();
+    window.addEventListener("resize", onResize);
+    const el = mainNavRef.current;
+    const ro = el ? new ResizeObserver(() => syncMainNavBox()) : null;
+    if (el) ro?.observe(el);
+    return () => {
+      cancelAnimationFrame(raf0);
+      cancelAnimationFrame(raf1);
+      window.removeEventListener("resize", onResize);
+      ro?.disconnect();
+    };
+  }, [isPaused, syncMainNavBox]);
+
   useEffect(() => {
     const typingInField = (target: EventTarget | null) =>
       target instanceof HTMLElement &&
@@ -231,6 +308,8 @@ export default function GameContainer() {
 
       if (!st.isPaused) return;
 
+      const mainNavHotkeyTargets = mainNavHotkeyTargetsRef.current;
+
       if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
         if (mainNavHotkeyTargets.length === 0) return;
         const len = mainNavHotkeyTargets.length;
@@ -243,19 +322,19 @@ export default function GameContainer() {
         return;
       }
 
-      if (/^[1-7]$/.test(e.key)) {
-        const n = Number(e.key);
-        const entry = mainNavHotkeyTargets.find((x) => x.index1Based === n);
-        if (entry) {
-          entry.activate();
-          e.preventDefault();
-        }
+      const n = pauseNavDigitIndexFromKeyboard(e);
+      if (n == null) return;
+      const entry = mainNavHotkeyTargets.find((x) => x.index1Based === n);
+      if (entry) {
+        entry.activate();
+        e.preventDefault();
       }
     };
 
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [mainNavHotkeyTargets, openTraderShop]);
+    // Capture: run before scroll areas / focused panels handle Arrow keys or digits.
+    window.addEventListener("keydown", onKeyDown, true);
+    return () => window.removeEventListener("keydown", onKeyDown, true);
+  }, [openTraderShop]);
 
   // Debug: Log when full game dialog state changes
   useEffect(() => {
@@ -633,10 +712,39 @@ export default function GameContainer() {
 
           {/* Right Content Area with Horizontal Tabs and Actions - Below for mobile, right for desktop */}
           <section className="flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
-            {/* Horizontal Game Tabs */}
+            {isPaused && mainNavBox ? (
+              <div
+                className="flex-shrink-0"
+                style={{ height: mainNavBox.height }}
+                aria-hidden
+              />
+            ) : null}
+            {/* Horizontal Game Tabs: fixed + z-50 when paused so strip sits above the global dimmer (z-40). */}
             <nav
-              className="border-t border-border pl-2 md:pl-4 flex-shrink-0"
+              ref={mainNavRef}
+              className={`border-t border-border pl-2 md:pl-4 flex-shrink-0 ${
+                isPaused && mainNavBox
+                  ? "fixed z-50 border-border bg-background"
+                  : ""
+              }`}
+              style={
+                isPaused && mainNavBox
+                  ? {
+                      top: mainNavBox.top,
+                      left: mainNavBox.left,
+                      width: mainNavBox.width,
+                      minHeight: mainNavBox.height,
+                      boxSizing: "border-box",
+                    }
+                  : undefined
+              }
             >
+              {isPaused && mainNavHotkeyTargets.length > 0 && (
+                <p className="select-none pl-[3px] pr-2 pb-1.5 pt-0.5 text-[11px] text-foreground/95 [text-shadow:0_0_6px_hsl(var(--background)),0_0_1px_hsl(var(--background))]">
+                  Use the following keys or <span className="font-mono">←</span> and{" "}
+                  <span className="font-mono">→</span> to navigate between tabs
+                </p>
+              )}
               {useLimelightNav ? (
                 // Alternative LimelightNav design
                 <LimelightNav
@@ -653,34 +761,31 @@ export default function GameContainer() {
                   className="bg-transparent border-0"
                 />
               ) : (
-                // Standard button design
+                // Standard button design: hotkey digits are watermarks behind labels (no extra height)
                 <div className="flex space-x-3 pl-[3px] ">
-                  <button
-                    className={`flex flex-col items-center justify-center py-2 text-sm bg-transparent ${activeTab === "cave"
-                      ? "font-semibold opacity-100"
-                      : "opacity-60"
-                      } `}
+                  <TabWithHotkeyLayer
+                    isPaused={isPaused}
+                    hotkey={pauseDigitByTabId.has("cave") ? `[${pauseDigitByTabId.get("cave")!}]` : null}
+                    className={activeTab === "cave" ? "font-semibold opacity-100" : "opacity-60"}
                     onClick={() => setActiveTab("cave")}
                     data-testid="tab-cave"
                   >
-                    <TabHotkeyStack
-                      show={isPaused}
-                      hint={pauseDigitByTabId.has("cave") ? `[${pauseDigitByTabId.get("cave")!}]` : null}
-                    >
-                      Cave
-                    </TabHotkeyStack>
-                  </button>
+                    Cave
+                  </TabWithHotkeyLayer>
 
                   {flags.villageUnlocked && (
-                    <button
-                      className={`flex flex-col items-center justify-center py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("village")
-                        ? fadePhaseTabs.has("village")
-                          ? "tab-fade-in"
-                          : "tab-blink-new"
-                        : activeTab === "village"
-                          ? "font-semibold opacity-100"
-                          : "opacity-60"
-                        }`}
+                    <TabWithHotkeyLayer
+                      isPaused={isPaused}
+                      hotkey={pauseDigitByTabId.has("village") ? `[${pauseDigitByTabId.get("village")!}]` : null}
+                      className={
+                        !isPaused && animatingTabs.has("village")
+                          ? fadePhaseTabs.has("village")
+                            ? "tab-fade-in"
+                            : "tab-blink-new"
+                          : activeTab === "village"
+                            ? "font-semibold opacity-100"
+                            : "opacity-60"
+                      }
                       onClick={() => {
                         setAnimatingTabs((prev) => {
                           const next = new Set(prev);
@@ -696,26 +801,24 @@ export default function GameContainer() {
                       }}
                       data-testid="tab-village"
                     >
-                      <TabHotkeyStack
-                        show={isPaused}
-                        hint={pauseDigitByTabId.has("village") ? `[${pauseDigitByTabId.get("village")!}]` : null}
-                      >
-                        {buildings.stoneHut >= 5 ? "City" : "Village"}
-                      </TabHotkeyStack>
-                    </button>
+                      {buildings.stoneHut >= 5 ? "City" : "Village"}
+                    </TabWithHotkeyLayer>
                   )}
 
                   {/* Estate Tab Button */}
                   {(estateUnlocked || buildings.darkEstate >= 1) && (
-                    <button
-                      className={`flex flex-col items-center justify-center py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("estate")
-                        ? fadePhaseTabs.has("estate")
-                          ? "tab-fade-in"
-                          : "tab-blink-new"
-                        : activeTab === "estate"
-                          ? "font-semibold opacity-100"
-                          : "opacity-60"
-                        }`}
+                    <TabWithHotkeyLayer
+                      isPaused={isPaused}
+                      hotkey={pauseDigitByTabId.has("estate") ? `[${pauseDigitByTabId.get("estate")!}]` : null}
+                      className={
+                        !isPaused && animatingTabs.has("estate")
+                          ? fadePhaseTabs.has("estate")
+                            ? "tab-fade-in"
+                            : "tab-blink-new"
+                          : activeTab === "estate"
+                            ? "font-semibold opacity-100"
+                            : "opacity-60"
+                      }
                       onClick={() => {
                         setAnimatingTabs((prev) => {
                           const next = new Set(prev);
@@ -731,25 +834,23 @@ export default function GameContainer() {
                       }}
                       data-testid="tab-estate"
                     >
-                      <TabHotkeyStack
-                        show={isPaused}
-                        hint={pauseDigitByTabId.has("estate") ? `[${pauseDigitByTabId.get("estate")!}]` : null}
-                      >
-                        Estate
-                      </TabHotkeyStack>
-                    </button>
+                      Estate
+                    </TabWithHotkeyLayer>
                   )}
 
                   {flags.forestUnlocked && (
-                    <button
-                      className={`flex flex-col items-center justify-center py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("forest")
-                        ? fadePhaseTabs.has("forest")
-                          ? "tab-fade-in"
-                          : "tab-blink-new"
-                        : activeTab === "forest"
-                          ? "font-semibold opacity-100"
-                          : "opacity-60"
-                        }`}
+                    <TabWithHotkeyLayer
+                      isPaused={isPaused}
+                      hotkey={pauseDigitByTabId.has("forest") ? `[${pauseDigitByTabId.get("forest")!}]` : null}
+                      className={
+                        !isPaused && animatingTabs.has("forest")
+                          ? fadePhaseTabs.has("forest")
+                            ? "tab-fade-in"
+                            : "tab-blink-new"
+                          : activeTab === "forest"
+                            ? "font-semibold opacity-100"
+                            : "opacity-60"
+                      }
                       onClick={() => {
                         setAnimatingTabs((prev) => {
                           const next = new Set(prev);
@@ -765,25 +866,23 @@ export default function GameContainer() {
                       }}
                       data-testid="tab-forest"
                     >
-                      <TabHotkeyStack
-                        show={isPaused}
-                        hint={pauseDigitByTabId.has("forest") ? `[${pauseDigitByTabId.get("forest")!}]` : null}
-                      >
-                        Forest
-                      </TabHotkeyStack>
-                    </button>
+                      Forest
+                    </TabWithHotkeyLayer>
                   )}
 
                   {flags.bastionUnlocked && (
-                    <button
-                      className={`flex flex-col items-center justify-center py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("bastion")
-                        ? fadePhaseTabs.has("bastion")
-                          ? "tab-fade-in"
-                          : "tab-blink-new"
-                        : activeTab === "bastion"
-                          ? "font-semibold opacity-100"
-                          : "opacity-60"
-                        }`}
+                    <TabWithHotkeyLayer
+                      isPaused={isPaused}
+                      hotkey={pauseDigitByTabId.has("bastion") ? `[${pauseDigitByTabId.get("bastion")!}]` : null}
+                      className={
+                        !isPaused && animatingTabs.has("bastion")
+                          ? fadePhaseTabs.has("bastion")
+                            ? "tab-fade-in"
+                            : "tab-blink-new"
+                          : activeTab === "bastion"
+                            ? "font-semibold opacity-100"
+                            : "opacity-60"
+                      }
                       onClick={() => {
                         setAnimatingTabs((prev) => {
                           const next = new Set(prev);
@@ -799,47 +898,43 @@ export default function GameContainer() {
                       }}
                       data-testid="tab-bastion"
                     >
-                      <TabHotkeyStack
-                        show={isPaused}
-                        hint={pauseDigitByTabId.has("bastion") ? `[${pauseDigitByTabId.get("bastion")!}]` : null}
-                      >
-                        {flags.hasFortress ? "Fortress" : "Bastion"}
-                      </TabHotkeyStack>
-                    </button>
+                      {flags.hasFortress ? "Fortress" : "Bastion"}
+                    </TabWithHotkeyLayer>
                   )}
 
                   {/* Trader Tab Button */}
                   {traderUnlocked && (
-                    <button
-                      className={`flex flex-col items-center justify-center py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("trader")
-                        ? fadePhaseTabs.has("trader")
-                          ? "tab-fade-in"
-                          : "tab-blink-new"
-                        : "opacity-60"
-                        }`}
+                    <TabWithHotkeyLayer
+                      isPaused={isPaused}
+                      hotkey="[T]"
+                      className={
+                        !isPaused && animatingTabs.has("trader")
+                          ? fadePhaseTabs.has("trader")
+                            ? "tab-fade-in"
+                            : "tab-blink-new"
+                          : "opacity-60"
+                      }
                       onClick={openTraderShop}
                       data-testid="tab-trader"
                     >
-                      <TabHotkeyStack
-                        show={isPaused}
-                        hint="[T]"
-                      >
-                        Trader
-                      </TabHotkeyStack>
-                    </button>
+                      Trader
+                    </TabWithHotkeyLayer>
                   )}
 
                   {/* Achievements Tab Button ⚜︎ */}
                   {(relics?.survivors_notes || books?.book_of_trials) && (
-                    <button
-                      className={`flex flex-col items-center justify-center py-2 text-sm bg-transparent ${!isPaused && animatingTabs.has("achievements")
-                        ? fadePhaseTabs.has("achievements")
-                          ? "tab-fade-in"
-                          : "tab-blink-new"
-                        : activeTab === "achievements"
-                          ? "font-semibold opacity-100"
-                          : "opacity-60"
-                        }`}
+                    <TabWithHotkeyLayer
+                      isPaused={isPaused}
+                      hotkey={pauseDigitByTabId.has("achievements") ? `[${pauseDigitByTabId.get("achievements")!}]` : null}
+                      className={
+                        !isPaused && animatingTabs.has("achievements")
+                          ? fadePhaseTabs.has("achievements")
+                            ? "tab-fade-in"
+                            : "tab-blink-new"
+                          : activeTab === "achievements"
+                            ? "font-semibold opacity-100"
+                            : "opacity-60"
+                      }
                       onClick={() => {
                         setAnimatingTabs((prev) => {
                           const next = new Set(prev);
@@ -856,42 +951,23 @@ export default function GameContainer() {
                       }}
                       data-testid="tab-achievements"
                     >
-                      <TabHotkeyStack
-                        show={isPaused}
-                        hint={pauseDigitByTabId.has("achievements") ? `[${pauseDigitByTabId.get("achievements")!}]` : null}
-                      >
-                        {"\u269C\uFE0E"}
-                      </TabHotkeyStack>
-                    </button>
+                      {"\u269C\uFE0E"}
+                    </TabWithHotkeyLayer>
                   )}
 
                   {/* Timed Event Tab Button */}
                   {timedEventTab.isActive && (
-                    <button
-                      className={`flex flex-col items-center justify-center py-2 text-sm bg-transparent ${activeTab === "timedevent"
-                        ? "font-semibold opacity-100"
-                        : "opacity-60"
-                        }`}
+                    <TabWithHotkeyLayer
+                      isPaused={isPaused}
+                      hotkey={pauseDigitByTabId.has("timedevent") ? `[${pauseDigitByTabId.get("timedevent")!}]` : null}
+                      className={activeTab === "timedevent" ? "font-semibold opacity-100" : "opacity-60"}
                       onClick={() => setActiveTab("timedevent")}
                       data-testid="tab-timedevent"
                     >
-                      <TabHotkeyStack
-                        show={isPaused}
-                        hint={pauseDigitByTabId.has("timedevent") ? `[${pauseDigitByTabId.get("timedevent")!}]` : null}
-                      >
-                        <span className="timer-symbol">⊚</span>
-                      </TabHotkeyStack>
-                    </button>
+                      <span className="timer-symbol">⊚</span>
+                    </TabWithHotkeyLayer>
                   )}
                 </div>
-              )}
-              {isPaused && mainNavHotkeyTargets.length > 0 && (
-                <p className="select-none pl-[3px] pb-1 pt-0.5 text-[10px] text-muted-foreground">
-                  <span className="font-mono">←</span>
-                  {" "}
-                  <span className="font-mono">→</span>
-                  {" Use arrow keys to switch between tabs"}
-                </p>
               )}
             </nav>
 
