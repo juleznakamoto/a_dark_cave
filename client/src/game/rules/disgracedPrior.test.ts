@@ -47,9 +47,9 @@ describe("DISGRACED_PRIOR_UPGRADES table", () => {
     expect(DISGRACED_PRIOR_UPGRADES[4].rewardMultiplier).toBeGreaterThan(DISGRACED_PRIOR_UPGRADES[3].rewardMultiplier);
   });
 
-  it("level 2 gives +100% (×2) and level 4 gives +200% (×3)", () => {
-    expect(DISGRACED_PRIOR_UPGRADES[2].rewardMultiplier).toBe(2);
-    expect(DISGRACED_PRIOR_UPGRADES[4].rewardMultiplier).toBe(3);
+  it("level 2 gives ×2.5 and level 4 gives ×4 rewardMultiplier", () => {
+    expect(DISGRACED_PRIOR_UPGRADES[2].rewardMultiplier).toBe(2.5);
+    expect(DISGRACED_PRIOR_UPGRADES[4].rewardMultiplier).toBe(4);
   });
 
   it("maxActions never decreases as level increases", () => {
@@ -72,28 +72,28 @@ describe("getActionBonuses — Disgraced Prior multiplier", () => {
     }
   });
 
-  it("+100% at level 2: resourceMultiplier is 2", () => {
+  it("levels 2–3 use ×2.5 resourceMultiplier", () => {
     const state = priorState(2);
     const bonuses = getActionBonuses("chopWood", state);
-    expect(bonuses.resourceMultiplier).toBe(2);
+    expect(bonuses.resourceMultiplier).toBe(2.5);
   });
 
-  it("multiplier stays ×2 at level 3", () => {
+  it("multiplier stays ×2.5 at level 3", () => {
     const state = priorState(3);
     const bonuses = getActionBonuses("chopWood", state);
-    expect(bonuses.resourceMultiplier).toBe(2);
+    expect(bonuses.resourceMultiplier).toBe(2.5);
   });
 
-  it("+200% at level 4: resourceMultiplier is 3", () => {
+  it("levels 4–5 use ×4 resourceMultiplier", () => {
     const state = priorState(4);
     const bonuses = getActionBonuses("chopWood", state);
-    expect(bonuses.resourceMultiplier).toBe(3);
+    expect(bonuses.resourceMultiplier).toBe(4);
   });
 
-  it("multiplier stays ×3 at level 5", () => {
+  it("multiplier stays ×4 at level 5", () => {
     const state = priorState(5);
     const bonuses = getActionBonuses("chopWood", state);
-    expect(bonuses.resourceMultiplier).toBe(3);
+    expect(bonuses.resourceMultiplier).toBe(4);
   });
 
   it("bonus only applies to assigned actions, not unassigned ones", () => {
@@ -103,16 +103,16 @@ describe("getActionBonuses — Disgraced Prior multiplier", () => {
     const woodBonuses = getActionBonuses("chopWood", state);
     const stoneBonuses = getActionBonuses("mineStone", state);
 
-    expect(woodBonuses.resourceMultiplier).toBe(2);   // assigned → bonus applies
+    expect(woodBonuses.resourceMultiplier).toBe(2.5);   // assigned → bonus applies
     expect(stoneBonuses.resourceMultiplier).toBe(1);  // not assigned → no bonus
   });
 
   it("bonus applies to each action independently when multiple are assigned", () => {
     const state = priorState(4, ["chopWood", "mineStone", "mineIron"]);
 
-    expect(getActionBonuses("chopWood", state).resourceMultiplier).toBe(3);
-    expect(getActionBonuses("mineStone", state).resourceMultiplier).toBe(3);
-    expect(getActionBonuses("mineIron", state).resourceMultiplier).toBe(3);
+    expect(getActionBonuses("chopWood", state).resourceMultiplier).toBe(4);
+    expect(getActionBonuses("mineStone", state).resourceMultiplier).toBe(4);
+    expect(getActionBonuses("mineIron", state).resourceMultiplier).toBe(4);
   });
 
   it("no bonus when Prior is not in fellowship", () => {
@@ -133,8 +133,8 @@ describe("getActionBonuses — Disgraced Prior multiplier", () => {
 
   it("Prior bonus stacks additively with tool bonuses", () => {
     // iron_axe gives +50% wood (resourceMultiplier 1.5)
-    // Prior level 2 gives +100% (adds 1.0)
-    // Total should be 1 + 0.5 + 1.0 = 2.5
+    // Prior level 2 adds (2.5 - 1) = +1.5 to resourceMultiplier (additive semantics)
+    // Total should be 1 + 0.5 + 1.5 = 3
     const state = priorState(2, ["chopWood"]);
     state.tools.iron_axe = true;
 
@@ -156,27 +156,27 @@ describe("applyActionEffects — Prior multiplier applied to resource output", (
     expect(gained).toBeLessThanOrEqual(12);
   });
 
-  it("chopWood with Prior at level 2 stays within scaled random range (12–24)", () => {
+  it("chopWood with Prior at level 2 stays within scaled random range (6–12)×2.5 → 15–30", () => {
     const state = priorState(2);
     state.resources.wood = 0;
 
     const result = applyActionEffects("chopWood", state);
     const gained = result.resources?.wood ?? 0;
-    expect(gained).toBeGreaterThanOrEqual(12);
-    expect(gained).toBeLessThanOrEqual(24);
+    expect(gained).toBeGreaterThanOrEqual(15);
+    expect(gained).toBeLessThanOrEqual(30);
   });
 
-  it("chopWood with Prior at level 4 stays within scaled random range (18–36)", () => {
+  it("chopWood with Prior at level 4 stays within scaled random range (6–12)×4 → 24–48", () => {
     const state = priorState(4);
     state.resources.wood = 0;
 
     const result = applyActionEffects("chopWood", state);
     const gained = result.resources?.wood ?? 0;
-    expect(gained).toBeGreaterThanOrEqual(18);
-    expect(gained).toBeLessThanOrEqual(36);
+    expect(gained).toBeGreaterThanOrEqual(24);
+    expect(gained).toBeLessThanOrEqual(48);
   });
 
-  it("mineStone assigned to Prior at level 2 stays within scaled random range (8–16)", () => {
+  it("mineStone assigned to Prior at level 2 stays within scaled random range (4–8)×2.5 → 10–20", () => {
     // No pickaxe equipped (stone_pickaxe gives 1.25× mining bonus which we exclude here
     // to isolate the Prior's contribution). BTP=0 keeps the baseline range(4,8).
     const state = priorState(2, ["mineStone"]);
@@ -185,8 +185,8 @@ describe("applyActionEffects — Prior multiplier applied to resource output", (
 
     const result = applyActionEffects("mineStone", state);
     const gained = (result.resources?.stone ?? 0) - 0;
-    expect(gained).toBeGreaterThanOrEqual(8);
-    expect(gained).toBeLessThanOrEqual(16);
+    expect(gained).toBeGreaterThanOrEqual(10);
+    expect(gained).toBeLessThanOrEqual(20);
   });
 
   it("mineStone NOT assigned to Prior is unaffected by Prior level", () => {
@@ -202,7 +202,7 @@ describe("applyActionEffects — Prior multiplier applied to resource output", (
     expect(gained).toBeLessThanOrEqual(8);
   });
 
-  it("craftTorches assigned to Prior at level 2 yields 2× torches (base 1 → 2)", () => {
+  it("craftTorches assigned to Prior at level 2 yields 2× torches (base 1 ×2.5 floored)", () => {
     const state = priorState(2, ["craftTorches"]);
     state.resources.wood = 100;
     state.story.seen.hasWood = true;
@@ -210,11 +210,11 @@ describe("applyActionEffects — Prior multiplier applied to resource output", (
 
     const result = applyActionEffects("craftTorches", state);
     const gained = result.resources?.torch ?? 0;
-    // Base 1 torch × Prior 2 = 2 torches
+    // Base 1 torch × Prior 2.5 floored → 2 torches
     expect(gained).toBe(2);
   });
 
-  it("craftBoneTotems assigned to Prior at level 4 yields 3× totems (base 1 → 3)", () => {
+  it("craftBoneTotems assigned to Prior at level 4 yields 4× totems (base 1 → 4)", () => {
     const state = priorState(4, ["craftBoneTotems"]);
     state.resources.bones = 500;
     state.buildings.altar = 1;
@@ -222,8 +222,8 @@ describe("applyActionEffects — Prior multiplier applied to resource output", (
 
     const result = applyActionEffects("craftBoneTotems", state);
     const gained = result.resources?.bone_totem ?? 0;
-    // Base 1 totem × Prior 3 = 3 totems
-    expect(gained).toBe(3);
+    // Base 1 totem × Prior 4 = 4 totems
+    expect(gained).toBe(4);
   });
 
   it("craftTorches NOT assigned to Prior is unaffected by Prior level", () => {
@@ -238,7 +238,7 @@ describe("applyActionEffects — Prior multiplier applied to resource output", (
     expect(gained).toBe(1);
   });
 
-  it("hunt assigned to Prior at level 2 applies ×2 to food fur bones random ranges", () => {
+  it("hunt assigned to Prior at level 2 applies ×2.5 to food fur bones random ranges", () => {
     const state = priorState(2, ["hunt"]);
     state.resources.food = 0;
     state.resources.fur = 0;
@@ -247,16 +247,16 @@ describe("applyActionEffects — Prior multiplier applied to resource output", (
     (state as any).BTP = 0;
 
     const result = applyActionEffects("hunt", state);
-    // food random(6,12)×2 → 12–24; fur/bones random(2,5)×2 → 4–10
-    expect(result.resources?.food).toBeGreaterThanOrEqual(12);
-    expect(result.resources?.food).toBeLessThanOrEqual(24);
-    expect(result.resources?.fur).toBeGreaterThanOrEqual(4);
-    expect(result.resources?.fur).toBeLessThanOrEqual(10);
-    expect(result.resources?.bones).toBeGreaterThanOrEqual(4);
-    expect(result.resources?.bones).toBeLessThanOrEqual(10);
+    // food random(6,12)×2.5 → 15–30; fur/bones random(2,5)×2.5 → 5–12
+    expect(result.resources?.food).toBeGreaterThanOrEqual(15);
+    expect(result.resources?.food).toBeLessThanOrEqual(30);
+    expect(result.resources?.fur).toBeGreaterThanOrEqual(5);
+    expect(result.resources?.fur).toBeLessThanOrEqual(12);
+    expect(result.resources?.bones).toBeGreaterThanOrEqual(5);
+    expect(result.resources?.bones).toBeLessThanOrEqual(12);
   });
 
-  it("craftEmberBomb assigned to Prior at level 2 yields 2× bombs (base 1 → 2)", () => {
+  it("craftEmberBomb assigned to Prior at level 2 yields 2× bombs (base 1 ×2.5 floored)", () => {
     const state = priorState(2, ["craftEmberBomb"]);
     state.resources.iron = 200;
     state.resources.black_powder = 100;
@@ -265,20 +265,20 @@ describe("applyActionEffects — Prior multiplier applied to resource output", (
 
     const result = applyActionEffects("craftEmberBomb", state);
     const gained = result.resources?.ember_bomb ?? 0;
-    // Base 1 bomb × Prior 2 = 2 bombs
+    // Base 1 bomb × Prior 2.5 floored → 2 bombs
     expect(gained).toBe(2);
   });
 
-  it("exploreCave assigned to Prior at level 4 stays within scaled stone random range (×3)", () => {
+  it("exploreCave assigned to Prior at level 4 stays within scaled stone random range (×4)", () => {
     const state = priorState(4, ["exploreCave"]);
     state.resources.stone = 0;
     state.story.seen.hasWood = true;
     (state as any).tools = {};
 
     const result = applyActionEffects("exploreCave", state);
-    // stone random(3,7)×3 → 9–21
+    // stone random(3,7)×4 → 12–28
     const stone = result.resources?.stone ?? 0;
-    expect(stone).toBeGreaterThanOrEqual(9);
-    expect(stone).toBeLessThanOrEqual(21);
+    expect(stone).toBeGreaterThanOrEqual(12);
+    expect(stone).toBeLessThanOrEqual(28);
   });
 });

@@ -683,8 +683,13 @@ export default function GameContainer() {
   // Check if blood moon event is active
   const isBloodMoonActive = timedEventTab.isActive && timedEventTab.event?.eventId === 'bloodMoonAttack';
 
-  /** Muted tab labels use ~60% opacity; full brightness while paused (dim overlay). */
-  const tabInactiveTextClass = isPaused ? "opacity-100" : "opacity-60";
+  /** Muted tab labels use ~60% opacity; while paused, distinguish inactive via color (all tabs use semibold to avoid layout shift). */
+  const tabInactiveTextClass = isPaused
+    ? "opacity-100 text-muted-foreground"
+    : "opacity-60";
+  const tabActiveTextClass = isPaused
+    ? "opacity-100 text-foreground"
+    : "opacity-100";
 
   return (
     <div
@@ -788,8 +793,8 @@ export default function GameContainer() {
                 className="inline-flex max-w-full flex-wrap items-baseline gap-x-3 pl-[3px]"
               >
                 <button
-                  className={`py-2 text-sm bg-transparent ${activeTab === "cave"
-                    ? "font-semibold opacity-100"
+                  className={`py-2 text-sm bg-transparent font-semibold ${activeTab === "cave"
+                    ? tabActiveTextClass
                     : tabInactiveTextClass
                     } `}
                   onClick={() => setActiveTab("cave")}
@@ -800,12 +805,12 @@ export default function GameContainer() {
 
                 {flags.villageUnlocked && (
                   <button
-                    className={`py-2 text-sm bg-transparent ${animatingTabs.has("village")
+                    className={`py-2 text-sm bg-transparent font-semibold ${animatingTabs.has("village")
                       ? fadePhaseTabs.has("village")
                         ? "tab-fade-in"
                         : "tab-blink-new"
                       : activeTab === "village"
-                        ? "font-semibold opacity-100"
+                        ? tabActiveTextClass
                         : tabInactiveTextClass
                       }`}
                     onClick={() => {
@@ -830,12 +835,12 @@ export default function GameContainer() {
                 {/* Estate Tab Button */}
                 {(estateUnlocked || buildings.darkEstate >= 1) && (
                   <button
-                    className={`py-2 text-sm bg-transparent ${animatingTabs.has("estate")
+                    className={`py-2 text-sm bg-transparent font-semibold ${animatingTabs.has("estate")
                       ? fadePhaseTabs.has("estate")
                         ? "tab-fade-in"
                         : "tab-blink-new"
                       : activeTab === "estate"
-                        ? "font-semibold opacity-100"
+                        ? tabActiveTextClass
                         : tabInactiveTextClass
                       }`}
                     onClick={() => {
@@ -859,12 +864,12 @@ export default function GameContainer() {
 
                 {flags.forestUnlocked && (
                   <button
-                    className={`py-2 text-sm bg-transparent ${animatingTabs.has("forest")
+                    className={`py-2 text-sm bg-transparent font-semibold ${animatingTabs.has("forest")
                       ? fadePhaseTabs.has("forest")
                         ? "tab-fade-in"
                         : "tab-blink-new"
                       : activeTab === "forest"
-                        ? "font-semibold opacity-100"
+                        ? tabActiveTextClass
                         : tabInactiveTextClass
                       }`}
                     onClick={() => {
@@ -888,12 +893,12 @@ export default function GameContainer() {
 
                 {flags.bastionUnlocked && (
                   <button
-                    className={`py-2 text-sm bg-transparent ${animatingTabs.has("bastion")
+                    className={`py-2 text-sm bg-transparent font-semibold ${animatingTabs.has("bastion")
                       ? fadePhaseTabs.has("bastion")
                         ? "tab-fade-in"
                         : "tab-blink-new"
                       : activeTab === "bastion"
-                        ? "font-semibold opacity-100"
+                        ? tabActiveTextClass
                         : tabInactiveTextClass
                       }`}
                     onClick={() => {
@@ -918,7 +923,7 @@ export default function GameContainer() {
                 {/* Trader Tab Button */}
                 {traderUnlocked && (
                   <button
-                    className={`py-2 text-sm bg-transparent ${animatingTabs.has("trader")
+                    className={`py-2 text-sm bg-transparent font-semibold ${animatingTabs.has("trader")
                       ? fadePhaseTabs.has("trader")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -946,12 +951,12 @@ export default function GameContainer() {
                 {/* Achievements Tab Button ⚜︎ */}
                 {(relics?.survivors_notes || books?.book_of_trials) && (
                   <button
-                    className={`py-2 text-sm bg-transparent ${animatingTabs.has("achievements")
+                    className={`py-2 text-sm bg-transparent font-semibold ${animatingTabs.has("achievements")
                       ? fadePhaseTabs.has("achievements")
                         ? "tab-fade-in"
                         : "tab-blink-new"
                       : activeTab === "achievements"
-                        ? "font-semibold opacity-100"
+                        ? tabActiveTextClass
                         : tabInactiveTextClass
                       }`}
                     onClick={() => {
@@ -977,8 +982,8 @@ export default function GameContainer() {
                 {/* Timed Event Tab Button */}
                 {timedEventTab.isActive && (
                   <button
-                    className={`py-2 text-sm bg-transparent ${activeTab === "timedevent"
-                      ? "font-semibold opacity-100"
+                    className={`py-2 text-sm bg-transparent font-semibold ${activeTab === "timedevent"
+                      ? tabActiveTextClass
                       : tabInactiveTextClass
                       }`}
                     onClick={() => setActiveTab("timedevent")}
