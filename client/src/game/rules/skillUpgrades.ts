@@ -111,20 +111,20 @@ export const SLEEP_INTENSITY_UPGRADES = [
 export const DISGRACED_PRIOR_UPGRADES = [
   { level: 0, maxActions: 1, rewardMultiplier: 1, cost: 0, currency: null },
   { level: 1, maxActions: 2, rewardMultiplier: 1, cost: 1000, currency: "gold" },
-  { level: 2, maxActions: 2, rewardMultiplier: 2, cost: 2000, currency: "gold" },
-  { level: 3, maxActions: 3, rewardMultiplier: 2, cost: 3000, currency: "gold" },
+  { level: 2, maxActions: 2, rewardMultiplier: 2.5, cost: 1500, currency: "gold" },
+  { level: 3, maxActions: 3, rewardMultiplier: 2.5, cost: 2000, currency: "gold" },
   {
     level: 4,
     maxActions: 3,
-    rewardMultiplier: 3,
-    cost: 4000,
+    rewardMultiplier: 4,
+    cost: 3000,
     currency: "gold",
   },
   {
     level: 5,
     maxActions: 4,
-    rewardMultiplier: 3,
-    cost: 5000,
+    rewardMultiplier: 4,
+    cost: 4000,
     currency: "gold",
   },
 ];

@@ -4,11 +4,16 @@ import { GameState } from "@shared/schema";
 export const disgracedPriorEvents: Record<string, GameEvent> = {
   disgracedPriorOffer: {
     id: "disgracedPriorOffer",
-    condition: (state: GameState) =>
-      state.buildings.stoneHut >= 6 &&
-      !state.fellowship.disgraced_prior &&
-      !state.story?.seen?.disgracedPriorJoined,
-    timeProbability: 0.020,
+    condition: (state: GameState) => {
+      const minWoodenHuts = state.cruelMode ? 4 : 8;
+      return (
+        state.buildings.woodenHut >= minWoodenHuts &&
+        state.buildings.darkEstate >= 1 &&
+        !state.fellowship.disgraced_prior &&
+        !state.story?.seen?.disgracedPriorJoined
+      );
+    },
+    timeProbability: 10,
     title: "A Silent Repairman",
     message:
       "Your villagers report a gaunt man in tattered robes quietly repairing the walls of stone huts. He works without speaking, without rest, asking for nothing. When approached, he only says he has much to make amends for.",
