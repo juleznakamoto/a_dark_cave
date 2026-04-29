@@ -109,7 +109,7 @@ describe('Stripe Shop Integration', () => {
     });
 
     describe('Trader\'s Gratitude discount', () => {
-      it('should apply 25% discount when tradersGratitudeDiscount is true', async () => {
+      it('should apply 20% discount when tradersGratitudeDiscount is true', async () => {
         mockPaymentIntents.create.mockResolvedValue({
           client_secret: 'test_secret',
         } as any);
@@ -123,13 +123,13 @@ describe('Stripe Shop Integration', () => {
           true
         );
 
-        // gold_250 price is 99 cents, 25% off = floor(99 * 0.75) = 74
+        // gold_250 price is 99 cents, 20% off = floor(99 * 0.8) = 79
         expect(mockPaymentIntents.create).toHaveBeenCalledWith(
           expect.objectContaining({
-            amount: 74,
+            amount: 79,
             metadata: expect.objectContaining({
               itemId: 'gold_250',
-              priceInCents: '74',
+              priceInCents: '79',
               tradersGratitudeDiscountApplied: 'true',
             }),
           })
@@ -184,22 +184,22 @@ describe('Stripe Shop Integration', () => {
           client_secret: 'test_secret',
         } as any);
 
-        // gold_250 = 99; 99 * 0.75 = 74.25 -> floor = 74
+        // gold_250 = 99; 99 * 0.8 = 79.2 -> floor = 79
         await createPaymentIntent('gold_250', undefined, undefined, undefined, undefined, true);
         expect(mockPaymentIntents.create).toHaveBeenCalledWith(
-          expect.objectContaining({ amount: 74 })
+          expect.objectContaining({ amount: 79 })
         );
 
-        // gold_1000 = 249; 249 * 0.75 = 186.75 -> floor = 186
+        // gold_1000 = 249; 249 * 0.8 = 199.2 -> floor = 199
         await createPaymentIntent('gold_1000', undefined, undefined, undefined, undefined, true);
         expect(mockPaymentIntents.create).toHaveBeenCalledWith(
-          expect.objectContaining({ amount: 186 })
+          expect.objectContaining({ amount: 199 })
         );
       });
     });
 
     describe("Trader's Son discount", () => {
-      it("should apply 20% discount when tradersSonGratitudeDiscount is true", async () => {
+      it("should apply 15% discount when tradersSonGratitudeDiscount is true", async () => {
         mockPaymentIntents.create.mockResolvedValue({
           client_secret: "test_secret",
         } as any);
@@ -216,13 +216,13 @@ describe('Stripe Shop Integration', () => {
           true,
         );
 
-        // gold_250 price is 99 cents, 20% off = floor(99 * 0.8) = 79
+        // gold_250 price is 99 cents, 15% off = floor(99 * 0.85) = 84
         expect(mockPaymentIntents.create).toHaveBeenCalledWith(
           expect.objectContaining({
-            amount: 79,
+            amount: 84,
             metadata: expect.objectContaining({
               itemId: "gold_250",
-              priceInCents: "79",
+              priceInCents: "84",
               tradersSonGratitudeDiscountApplied: "true",
             }),
           }),
@@ -274,10 +274,10 @@ describe('Stripe Shop Integration', () => {
           true,
         );
 
-        // Trader's Gratitude (25% off) beats Playlight (10% off) on the same base price
+        // Trader's Gratitude (20% off) beats Playlight (10% off) on the same base price
         expect(mockPaymentIntents.create).toHaveBeenCalledWith(
           expect.objectContaining({
-            amount: 74,
+            amount: 79,
             metadata: expect.objectContaining({
               tradersGratitudeDiscountApplied: 'true',
               playlightFirstPurchaseDiscountApplied: 'true',
@@ -372,7 +372,7 @@ describe('Stripe Shop Integration', () => {
     it('should accept discounted payment when tradersGratitudeDiscountApplied is set', async () => {
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 74, // 25% off gold_250 (99 -> 74)
+        amount: 79, // 20% off gold_250 (99 -> 79)
         status: 'succeeded',
         currency: 'eur',
         metadata: {
@@ -415,7 +415,7 @@ describe('Stripe Shop Integration', () => {
     it('should reject discounted amount without tradersGratitudeDiscountApplied metadata', async () => {
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 74, // Looks like discounted amount
+        amount: 79, // Looks like discounted amount
         status: 'succeeded',
         metadata: { itemId: 'gold_250' }, // No discount metadata - attacker trying to pay less
       } as Stripe.PaymentIntent;
@@ -431,7 +431,7 @@ describe('Stripe Shop Integration', () => {
     it('should reject wrong discounted amount even with metadata', async () => {
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 50, // Wrong - should be 74 for gold_250
+        amount: 50, // Wrong - should be 79 for gold_250
         status: 'succeeded',
         metadata: {
           itemId: 'gold_250',

@@ -1248,7 +1248,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         <TooltipWrapper
                                           tooltip={
                                             <div className="text-xs">
-                                              25% additional Discount due to
+                                              20% additional Discount due to
                                               Trader&apos;s Gratitude Event
                                             </div>
                                           }
@@ -1269,7 +1269,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         <TooltipWrapper
                                           tooltip={
                                             <div className="text-xs">
-                                              20% additional discount from the
+                                              15% additional discount from the
                                               Trader&apos;s Son event.
                                             </div>
                                           }

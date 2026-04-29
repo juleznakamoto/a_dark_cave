@@ -15,7 +15,7 @@ describe("getDiscountedShopPriceCents", () => {
     expect(
       getDiscountedShopPriceCents(99, { playlightFirstPurchase: true }),
     ).toBe(89);
-    expect(getDiscountedShopPriceCents(99, { tradersGratitude: true })).toBe(74);
+    expect(getDiscountedShopPriceCents(99, { tradersGratitude: true })).toBe(79);
   });
 
   it("uses the better price when both discounts apply", () => {
@@ -24,12 +24,12 @@ describe("getDiscountedShopPriceCents", () => {
         playlightFirstPurchase: true,
         tradersGratitude: true,
       }),
-    ).toBe(74);
+    ).toBe(79);
   });
 
-  it("applies Trader's Son as 20% off catalog price", () => {
+  it("applies Trader's Son as 15% off catalog price", () => {
     expect(getDiscountedShopPriceCents(99, { tradersSonGratitude: true })).toBe(
-      79,
+      84,
     );
   });
 
@@ -40,7 +40,7 @@ describe("getDiscountedShopPriceCents", () => {
         tradersGratitude: true,
         tradersSonGratitude: true,
       }),
-    ).toBe(74);
+    ).toBe(79);
   });
 
   it("returns base price when no discount flags", () => {

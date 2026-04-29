@@ -111,13 +111,13 @@ describe('Bundle Purchase Security Tests', () => {
   });
 
   describe('Trader\'s Gratitude discount security', () => {
-    it('should accept valid discounted payment (25% off)', async () => {
+    it('should accept valid discounted payment (20% off)', async () => {
       const mockSupabase = createMockSupabase();
 
-      // advanced_bundle: 1099 -> floor(1099 * 0.75) = 824
+      // advanced_bundle: 1099 -> floor(1099 * 0.8) = 879
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 824,
+        amount: 879,
         status: 'succeeded',
         currency: 'eur',
         metadata: {
@@ -141,7 +141,7 @@ describe('Bundle Purchase Security Tests', () => {
       // Attacker fakes discounted amount - metadata only set by server at createPaymentIntent
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 824, // Looks like 25% off
+        amount: 879, // Looks like 20% off
         status: 'succeeded',
         metadata: { itemId: 'advanced_bundle' }, // No tradersGratitudeDiscountApplied
       } as Stripe.PaymentIntent;
@@ -154,12 +154,12 @@ describe('Bundle Purchase Security Tests', () => {
       expect(result.error).toBe('Payment amount verification failed');
     });
 
-    it('should apply only server-defined 25% discount, not client-sent percentage', async () => {
+    it('should apply only server-defined 20% discount, not client-sent percentage', async () => {
       mockPaymentIntents.create.mockResolvedValue({
         client_secret: 'test_secret',
       } as any);
 
-      // Client sends tradersGratitudeDiscount: true - server applies fixed 25%
+      // Client sends tradersGratitudeDiscount: true - server applies fixed 20%
       await createPaymentIntent(
         'advanced_bundle',
         undefined,
@@ -169,10 +169,10 @@ describe('Bundle Purchase Security Tests', () => {
         true
       );
 
-      // Must be floor(1099 * 0.75) = 824, not arbitrary
+      // Must be floor(1099 * 0.8) = 879, not arbitrary
       expect(mockPaymentIntents.create).toHaveBeenCalledWith(
         expect.objectContaining({
-          amount: 824,
+          amount: 879,
           metadata: expect.objectContaining({
             tradersGratitudeDiscountApplied: 'true',
           }),
