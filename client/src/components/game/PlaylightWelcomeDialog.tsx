@@ -42,7 +42,7 @@ export default function PlaylightWelcomeDialog() {
                   <span className="text-foreground font-medium">
                     10% off your first purchase
                   </span>{" "}
-                  in the shop. It applies automatically at checkout.
+                  in the shop. The discount is applied automatically.
                 </p>
               ) : null}
             </div>

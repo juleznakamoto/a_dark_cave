@@ -838,7 +838,7 @@ const toolTrades = [
       const purchases =
         (state.story?.seen?.clarityElixirPurchases as number) ?? 0;
       if (purchases >= 5) return false;
-      if (purchases === 0) return state.buildings.woodenHut >= 4;
+      if (purchases === 0) return state.buildings.woodenHut >= 3;
       if (purchases === 1) return state.buildings.woodenHut >= 7;
       if (purchases === 2) return state.buildings.woodenHut >= 10;
       if (purchases === 3) return state.buildings.stoneHut >= 4;
