@@ -14,6 +14,7 @@ import {
   getTotalStrength,
   getTotalKnowledge,
   getTotalMadness,
+  getMadnessComponents,
   getAllActionBonuses,
   getTotalCraftingCostReduction,
   getTotalBuildingCostReduction,
@@ -533,15 +534,17 @@ export default function SidePanel() {
   // Build combined madness tooltip
   let madnessTooltipContent: React.ReactNode = undefined;
   if (hasClerksHut) {
-    const eventMadness = Math.max(0, gameState.stats.madnessFromEvents || 0);
-    const itemMadness = totalMadness - eventMadness;
+    const { fromItemsAndBuildings, fromEvents } =
+      getMadnessComponents(gameState);
+    const showMadnessBreakdown =
+      fromItemsAndBuildings !== 0 || fromEvents !== 0;
     madnessTooltipContent = (
       <>
         <div className="text-gray-400">Leads thoughts into dangerous paths</div>
-        {totalMadness > 0 && (
+        {showMadnessBreakdown && (
           <div>
-            <div>{itemMadness} from Items & Buildings</div>
-            <div>{eventMadness} from Events</div>
+            <div>{fromItemsAndBuildings} from Items & Buildings</div>
+            <div>{fromEvents} from Events</div>
           </div>
         )}
       </>

@@ -668,24 +668,34 @@ export const getTotalKnowledge = (state: GameState): number => {
   return effects.statBonuses?.knowledge || 0;
 };
 
-// Helper function to calculate total madness
-export const getTotalMadness = (state: GameState): number => {
+/** Unclamped contributions; total matches getTotalMadness (clamped). */
+export const getMadnessComponents = (
+  state: GameState,
+): {
+  fromItemsAndBuildings: number;
+  fromEvents: number;
+  total: number;
+} => {
   const effects = calculateTotalEffects(state);
 
-  // Add madness from effects
   const effectMadness = effects.statBonuses?.madness || 0;
 
-  // Apply madness reduction from effects (includes building madness reductions)
   let madnessReduction = 0;
-  Object.entries(effects.madness_reduction).forEach(([key, reduction]) => {
-    madnessReduction += reduction; // Already negative values
+  Object.entries(effects.madness_reduction).forEach(([, reduction]) => {
+    madnessReduction += reduction;
   });
 
-  // Add madness from events (e.g. whispering voices, shadows move)
-  const madnessFromEvents = state.stats?.madnessFromEvents || 0;
+  const fromEvents = state.stats?.madnessFromEvents || 0;
+  const fromItemsAndBuildings = effectMadness + madnessReduction;
 
-  const finalMadness = Math.max(0, effectMadness + madnessReduction + madnessFromEvents);
-  return finalMadness;
+  const total = Math.max(0, fromItemsAndBuildings + fromEvents);
+
+  return { fromItemsAndBuildings, fromEvents, total };
+};
+
+// Helper function to calculate total madness
+export const getTotalMadness = (state: GameState): number => {
+  return getMadnessComponents(state).total;
 };
 
 // Helper function to calculate total crafting cost reduction

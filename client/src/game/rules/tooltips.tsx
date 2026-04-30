@@ -4,9 +4,10 @@ import {
   getActionBonuses,
   getTotalCraftingCostReduction,
   getTotalBuildingCostReduction,
+  getMadnessComponents,
+  getTotalMadness,
 } from "./effectsCalculation";
 import { gameActions } from "./index";
-import { getTotalMadness } from "./effectsCalculation";
 import { getBoneTotemsCost } from "./forestSacrificeActions";
 import {
   CRUSHING_STRIKE_UPGRADES,
@@ -365,13 +366,11 @@ export const buildingTooltips: Record<string, TooltipConfig> = {
 // Madness tooltip
 export const madnessTooltip: TooltipConfig = {
   getContent: (state) => {
-    const totalMadness = getTotalMadness(state);
-    const eventMadness = Math.max(0, state.stats.madnessFromEvents || 0);
-    const itemMadness = totalMadness - eventMadness;
-    if (totalMadness > 0) {
-      return `${itemMadness} from Items/Buildings\n${eventMadness} from Events`;
+    const { fromItemsAndBuildings, fromEvents } = getMadnessComponents(state);
+    if (fromItemsAndBuildings === 0 && fromEvents === 0) {
+      return "";
     }
-    return "";
+    return `${fromItemsAndBuildings} from Items/Buildings\n${fromEvents} from Events`;
   },
 };
 
