@@ -534,16 +534,19 @@ export default function SidePanel() {
   // Build combined madness tooltip
   let madnessTooltipContent: React.ReactNode = undefined;
   if (hasClerksHut) {
-    const { fromItemsAndBuildings, fromEvents } =
+    const { fromItems, fromBuildings, fromEvents } =
       getMadnessComponents(gameState);
     const showMadnessBreakdown =
-      fromItemsAndBuildings !== 0 || fromEvents !== 0;
+      fromItems !== 0 ||
+      fromBuildings !== 0 ||
+      fromEvents !== 0;
     madnessTooltipContent = (
       <>
         <div className="text-gray-400">Leads thoughts into dangerous paths</div>
         {showMadnessBreakdown && (
           <div>
-            <div>{fromItemsAndBuildings} from Items & Buildings</div>
+            <div>{fromItems} from Items</div>
+            <div>{fromBuildings} from Buildings</div>
             <div>{fromEvents} from Events</div>
           </div>
         )}

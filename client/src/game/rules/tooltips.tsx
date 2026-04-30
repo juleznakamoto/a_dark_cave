@@ -366,11 +366,16 @@ export const buildingTooltips: Record<string, TooltipConfig> = {
 // Madness tooltip
 export const madnessTooltip: TooltipConfig = {
   getContent: (state) => {
-    const { fromItemsAndBuildings, fromEvents } = getMadnessComponents(state);
-    if (fromItemsAndBuildings === 0 && fromEvents === 0) {
+    const { fromItems, fromBuildings, fromEvents } =
+      getMadnessComponents(state);
+    if (
+      fromItems === 0 &&
+      fromBuildings === 0 &&
+      fromEvents === 0
+    ) {
       return "";
     }
-    return `${fromItemsAndBuildings} from Items/Buildings\n${fromEvents} from Events`;
+    return `${fromItems} from Items\n${fromBuildings} from Buildings\n${fromEvents} from Events`;
   },
 };
 

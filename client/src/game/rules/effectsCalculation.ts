@@ -672,7 +672,8 @@ export const getTotalKnowledge = (state: GameState): number => {
 export const getMadnessComponents = (
   state: GameState,
 ): {
-  fromItemsAndBuildings: number;
+  fromItems: number;
+  fromBuildings: number;
   fromEvents: number;
   total: number;
 } => {
@@ -680,17 +681,23 @@ export const getMadnessComponents = (
 
   const effectMadness = effects.statBonuses?.madness || 0;
 
-  let madnessReduction = 0;
-  Object.entries(effects.madness_reduction).forEach(([, reduction]) => {
-    madnessReduction += reduction;
+  let buildingMadness = 0;
+  let itemMadnessReduction = 0;
+  Object.entries(effects.madness_reduction).forEach(([key, reduction]) => {
+    // calculateTotalEffects: gear/fellowship use "*_madness_reduction", buildings use "*_madness"
+    if (key.endsWith("_madness_reduction")) {
+      itemMadnessReduction += reduction;
+    } else {
+      buildingMadness += reduction;
+    }
   });
 
+  const fromItems = effectMadness + itemMadnessReduction;
+  const fromBuildings = buildingMadness;
   const fromEvents = state.stats?.madnessFromEvents || 0;
-  const fromItemsAndBuildings = effectMadness + madnessReduction;
+  const total = Math.max(0, fromItems + fromBuildings + fromEvents);
 
-  const total = Math.max(0, fromItemsAndBuildings + fromEvents);
-
-  return { fromItemsAndBuildings, fromEvents, total };
+  return { fromItems, fromBuildings, fromEvents, total };
 };
 
 // Helper function to calculate total madness
