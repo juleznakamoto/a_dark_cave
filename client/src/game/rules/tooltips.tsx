@@ -13,7 +13,7 @@ import {
   CRUSHING_STRIKE_UPGRADES,
   BLOODFLAME_SPHERE_UPGRADES,
 } from "./skillUpgrades";
-import { formatNumber } from "@/lib/utils";
+import { formatNumber, formatSignedNumber } from "@/lib/utils";
 import type { TooltipConfig } from "@/game/types";
 import { getMaxBombLimit, isBombAtLimit } from "@/game/resourceLimits";
 const FOCUS_ELIGIBLE_ACTIONS = [
@@ -375,7 +375,7 @@ export const madnessTooltip: TooltipConfig = {
     ) {
       return "";
     }
-    return `${fromItems} from Items\n${fromBuildings} from Buildings\n${fromEvents} from Events`;
+    return `${formatSignedNumber(fromItems)} from Items\n${formatSignedNumber(fromBuildings)} from Buildings\n${formatSignedNumber(fromEvents)} from Events`;
   },
 };
 

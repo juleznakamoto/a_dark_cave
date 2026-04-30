@@ -5,7 +5,7 @@ import { clothingEffects } from "@/game/rules/effects";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { logger } from "@/lib/logger";
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
-import { capitalizeWords } from "@/lib/utils";
+import { capitalizeWords, formatSignedNumber } from "@/lib/utils";
 import React, { useState, useEffect, useRef } from "react";
 import { calculateBastionStats } from "@/game/bastionStats";
 import {
@@ -545,9 +545,9 @@ export default function SidePanel() {
         <div className="text-gray-400">Leads thoughts into dangerous paths</div>
         {showMadnessBreakdown && (
           <div>
-            <div>{fromItems} from Items</div>
-            <div>{fromBuildings} from Buildings</div>
-            <div>{fromEvents} from Events</div>
+            <div>{formatSignedNumber(fromItems)} from Items</div>
+            <div>{formatSignedNumber(fromBuildings)} from Buildings</div>
+            <div>{formatSignedNumber(fromEvents)} from Events</div>
           </div>
         )}
       </>

@@ -22,6 +22,11 @@ export function formatNumber(value: number): string {
   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
 }
 
+export function formatSignedNumber(value: number): string {
+  const formatted = formatNumber(value);
+  return value > 0 ? `+${formatted}` : formatted;
+}
+
 export function formatSaveTimestamp(): string {
   const now = new Date();
   return now.toLocaleString('en-US', {
