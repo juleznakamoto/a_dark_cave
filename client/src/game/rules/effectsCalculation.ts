@@ -13,6 +13,7 @@ import { ACTION_TO_UPGRADE_KEY, getUpgradeBonus } from "../buttonUpgrades";
 import { HUNT_BONUSES, DISGRACED_PRIOR_UPGRADES } from "./skillUpgrades";
 import { CRUEL_MODE } from "../cruelMode";
 import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
+import { BUILDING_HIERARCHIES } from "@/game/buildingHierarchy";
 
 // Craft actions handle their own cost/gain scaling; exclude from generic upgrade multiplier
 const CRAFT_UPGRADE_ACTIONS = ["craftTorches", "craftBoneTotems", "craftLeatherTotems"];
@@ -865,30 +866,62 @@ export const calculateTotalEffects = (state: GameState) => {
     }
   }
 
-  // Add Black Monolith madness reduction (applies independently)
-  if (state.buildings.blackMonolith > 0) {
+  // Dark chain (matches BUILDING_HIERARCHIES.dark / Side Panel): highest built tier only.
+  const darkChain = BUILDING_HIERARCHIES.dark;
+  let activeDarkKey: string | null = null;
+  for (let i = darkChain.length - 1; i >= 0; i--) {
+    const key = darkChain[i];
+    if ((state.buildings[key as keyof typeof state.buildings] ?? 0) > 0) {
+      activeDarkKey = key;
+      break;
+    }
+  }
+
+  if (activeDarkKey === "blackMonolith") {
     const buildAction = villageBuildActions.buildBlackMonolith;
     if (buildAction?.statsEffects?.madness) {
       effects.madness_reduction.blackMonolith_madness =
         buildAction.statsEffects.madness;
     }
 
-    // Add madness reduction from animal sacrifices
     const animalUsageCount =
       Number(state.story?.seen?.animalsSacrificeLevel) || 0;
     if (animalUsageCount > 0) {
-      const sacrificeMadnessReduction = animalUsageCount * -1;
       effects.madness_reduction.animals_sacrifice_madness =
-        sacrificeMadnessReduction;
+        animalUsageCount * -1;
     }
 
-    // Add madness reduction from human sacrifices
     const humanUsageCount =
       Number(state.story?.seen?.humansSacrificeLevel) || 0;
     if (humanUsageCount > 0) {
-      const humanMadnessReduction = humanUsageCount * -2;
       effects.madness_reduction.humans_sacrifice_madness =
-        humanMadnessReduction;
+        humanUsageCount * -2;
+    }
+  } else if (activeDarkKey === "pillarOfClarity") {
+    const buildAction = villageBuildActions.buildPillarOfClarity;
+    if (buildAction?.statsEffects?.madness) {
+      effects.madness_reduction.pillarOfClarity_madness =
+        buildAction.statsEffects.madness;
+    }
+  } else if (activeDarkKey === "boneTemple") {
+    const buildAction = villageBuildActions.buildBoneTemple;
+    if (buildAction?.statsEffects?.madness) {
+      effects.madness_reduction.boneTemple_madness =
+        buildAction.statsEffects.madness;
+    }
+
+    const animalUsageCount =
+      Number(state.story?.seen?.animalsSacrificeLevel) || 0;
+    if (animalUsageCount > 0) {
+      effects.madness_reduction.animals_sacrifice_madness =
+        animalUsageCount * -1;
+    }
+
+    const humanUsageCount =
+      Number(state.story?.seen?.humansSacrificeLevel) || 0;
+    if (humanUsageCount > 0) {
+      effects.madness_reduction.humans_sacrifice_madness =
+        humanUsageCount * -2;
     }
   }
 
@@ -907,45 +940,10 @@ export const calculateTotalEffects = (state: GameState) => {
     }
   }
 
-  // Add Pillar of Clarity madness reduction (applies independently)
-  if (state.buildings.pillarOfClarity > 0) {
-    const buildAction = villageBuildActions.buildPillarOfClarity;
-    if (buildAction?.statsEffects?.madness) {
-      effects.madness_reduction.pillarOfClarity_madness =
-        buildAction.statsEffects.madness;
-    }
-  }
-
   // Boneyard: madness reduction scales with villager deaths since it was built
   const boneyardMadness = getBoneyardBurialMadnessReduction(state);
   if (boneyardMadness !== 0) {
     effects.madness_reduction.boneyard_madness = boneyardMadness;
-  }
-
-  // Add Bone Temple madness reduction (applies independently, includes Black Monolith effects)
-  if (state.buildings.boneTemple > 0) {
-    const buildAction = villageBuildActions.buildBoneTemple;
-    if (buildAction?.statsEffects?.madness) {
-      effects.madness_reduction.boneTemple_madness =
-        buildAction.statsEffects.madness;
-    }
-
-    // Bone Temple inherits sacrifice bonuses from Black Monolith
-    const animalUsageCount =
-      Number(state.story?.seen?.animalsSacrificeLevel) || 0;
-    if (animalUsageCount > 0) {
-      const sacrificeMadnessReduction = animalUsageCount * -1;
-      effects.madness_reduction.animals_sacrifice_madness =
-        sacrificeMadnessReduction;
-    }
-
-    const humanUsageCount =
-      Number(state.story?.seen?.humansSacrificeLevel) || 0;
-    if (humanUsageCount > 0) {
-      const humanMadnessReduction = humanUsageCount * -2;
-      effects.madness_reduction.humans_sacrifice_madness =
-        humanMadnessReduction;
-    }
   }
 
   // Apply knowledge bonus from highest tier building only
