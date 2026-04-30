@@ -5,7 +5,7 @@ export const disgracedPriorEvents: Record<string, GameEvent> = {
   disgracedPriorOffer: {
     id: "disgracedPriorOffer",
     condition: (state: GameState) => {
-      const minWoodenHuts = state.cruelMode ? 4 : 8;
+      const minWoodenHuts = state.cruelMode ? 6 : 8;
       return (
         state.buildings.woodenHut >= minWoodenHuts &&
         state.buildings.darkEstate >= 1 &&
