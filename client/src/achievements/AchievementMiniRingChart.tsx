@@ -25,7 +25,10 @@ export default function AchievementMiniRingChart({
 }: Props) {
   const state = useGameStore.getState();
   const claimedAchievements = useGameStore((s) => s.claimedAchievements || []);
-  void useGameStore((s) => s.totalFocusEarned ?? 0);
+  void useGameStore(
+    (s) =>
+      (s.story?.heavySleeperHours ?? 0) + (s.totalFocusEarned ?? 0),
+  );
 
   const size = 58;
   const centerHoleRadius = 10; // Space for icon in center, rings start outside

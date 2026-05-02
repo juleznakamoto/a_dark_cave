@@ -222,7 +222,13 @@ export const actionChartConfig: AchievementChartConfig = {
         label: "Heavy Sleeper",
         reward: 500,
         getCount: (state: GameState) => {
-          const count = Math.min(Number(state.totalFocusEarned) || 0, 20);
+          const count = Math.min(
+            Math.max(
+              Number(state.story?.heavySleeperHours) || 0,
+              Number(state.totalFocusEarned) || 0,
+            ),
+            20,
+          );
           return [1, 2, 3].includes(count) ? 3 : count;
         },
       },
@@ -241,11 +247,12 @@ export const actionChartConfig: AchievementChartConfig = {
 /** Returns IDs of action achievements that are full but not yet claimed. */
 export function getUnclaimedActionIds(): string[] {
   const state = useGameStore.getState();
+  const gameState = state as unknown as GameState;
   const claimedAchievements = state.claimedAchievements || [];
   const result: string[] = [];
   actionChartConfig.rings.forEach((segments) => {
     segments.forEach((seg) => {
-      const count = seg.getCount(state);
+      const count = seg.getCount(gameState);
       if (
         count >= seg.maxCount &&
         !claimedAchievements.includes(

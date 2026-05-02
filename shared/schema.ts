@@ -330,8 +330,9 @@ export const gameStateSchema = z.object({
     .object({
       seen: z.record(z.union([z.boolean(), z.number()])).default({}),
       merchantPurchases: z.number().default(0),
+      heavySleeperHours: z.number().default(0),
     })
-    .default({ seen: {}, merchantPurchases: 0 }),
+    .default({ seen: {}, merchantPurchases: 0, heavySleeperHours: 0 }),
   hoveredTooltips: z.record(z.boolean()).default({}),
   scrollIndicatorSeen: z.record(z.boolean()).default({}),
   damagedBuildings: z

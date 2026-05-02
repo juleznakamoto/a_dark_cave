@@ -531,10 +531,15 @@ export default function IdleModeDialog() {
         points: newFocusPoints,
       });
 
-      // Increment total focus earned for achievement tracking
-      useGameStore.setState({
-        totalFocusEarned: (currentGameState.totalFocusEarned || 0) + hoursSlept,
-      });
+      // Persist on story like merchantPurchases; keep totalFocusEarned for older saves
+      useGameStore.setState((prev) => ({
+        totalFocusEarned: (prev.totalFocusEarned || 0) + hoursSlept,
+        story: {
+          ...prev.story,
+          heavySleeperHours:
+            (prev.story?.heavySleeperHours ?? 0) + hoursSlept,
+        },
+      }));
     }
 
     // Create log message showing resources gained
