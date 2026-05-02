@@ -1233,7 +1233,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   </TooltipWrapper>
                                 )}
                               </CardTitle>
-                              <CardDescription className="!m-0 text-bold flex flex-wrap items-center gap-1">
+                              <CardDescription className="!m-0 text-bold flex flex-wrap items-center gap-1 pt-1">
                                 {(() => {
                                   const listCents =
                                     shopCardStrikethroughListCents(item);
