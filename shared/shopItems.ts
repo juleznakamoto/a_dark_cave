@@ -71,7 +71,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     activationMessage:
       "Cruel Mode activated! Start a new game to experience the ultimate challenge.",
     symbol: "⛤",
-    symbolColor: "text-red-600",
+    symbolColor: "text-red-500",
   },
 
   gold_250: {

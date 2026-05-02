@@ -39,6 +39,16 @@ describe("Trader's Son intro (traders_son)", () => {
     expect(tradersSonEvents.traders_son.condition!(state)).toBe(true);
   });
 
+  it("is eligible after a completed non-free shop purchase (hasMadeNonFreePurchase)", () => {
+    const state = createMinimalState({
+      flags: { forestUnlocked: true },
+      traderDialogOpens: 0,
+      completePurchaseDialogOpens: 0,
+      hasMadeNonFreePurchase: true,
+    });
+    expect(tradersSonEvents.traders_son.condition!(state)).toBe(true);
+  });
+
   it("is not eligible if the trader's daughter was helped (search party already sent)", () => {
     const state = createMinimalState({
       flags: { forestUnlocked: true },

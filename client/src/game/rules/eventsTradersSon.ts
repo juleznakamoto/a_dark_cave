@@ -6,7 +6,8 @@ export const tradersSonEvents: Record<string, GameEvent> = {
     id: "traders_son",
     condition: (state: GameState) =>
       ((state.traderDialogOpens ?? 0) >= 10 ||
-        (state.completePurchaseDialogOpens ?? 0) >= 1) &&
+        (state.completePurchaseDialogOpens ?? 0) >= 1 ||
+        state.hasMadeNonFreePurchase === true) &&
       state.flags.forestUnlocked === true &&
       !state.triggeredEvents?.traders_son_intro_resolved &&
       state.triggeredEvents?.traders_daughter_helped !== true,
