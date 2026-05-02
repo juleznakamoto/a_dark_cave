@@ -1128,10 +1128,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                             key={item.id}
                             className={`border-neutral-500 flex flex-col relative ${item.category === "bundle" ? "border border-amber-600" : ""}`}
                           >
-                            <CardHeader className="!md:leading-snug !leading-tight p-2 md:p-6 pb-1 md:pb-2 relative md:text-lg text-md ">
+                            <CardHeader className="!md:leading-snug !leading-tight p-2 md:p-4 pb-1 md:pb-2 relative md:text-lg text-md ">
                               {item.symbol && (
                                 <span
-                                  className="font-noto-symbols-2 md:leading-[0.9] leading-[0.9] text-md md:text-lg text-right absolute top-3 right-2 md:top-6 md:right-6"
+                                  className="font-noto-symbols-2 md:leading-[0.9] leading-[0.9] text-md md:text-lg text-right absolute top-3 right-2 md:top-5 md:right-5"
                                   style={{
                                     color: tailwindToHex(
                                       item.symbolColor.replace("text-", ""),
@@ -1144,7 +1144,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   {item.symbol}
                                 </span>
                               )}
-                              <CardTitle className="!m-0 text-md pr-6 items-center gap-1">
+                              <CardTitle className="!m-0 text-md pr-5 items-center gap-1">
                                 {item.name}
                                 {item.id === "skull_lantern" && (
                                   <TooltipWrapper
@@ -1413,12 +1413,12 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 })()}
                               </CardDescription>
                             </CardHeader>
-                            <CardContent className="min-h-16 pl-3 pr-3 md:pl-6 md:pr-6 pb-3 md:pb-4 flex-1">
+                            <CardContent className="min-h-16 pl-3 pr-3 md:pl-4 md:pr-4 pb-3 md:pb-4 flex-1">
                               <p className="md:leading-snug leading-tight text-sm opacity-80">
                                 {item.description}
                               </p>
                             </CardContent>
-                            <CardFooter className="pl-3 pr-3 md:pl-6 md:pr-6 pb-4 md:pb-6 flex-col gap-2">
+                            <CardFooter className="pl-3 pr-3 md:pl-4 md:pr-4 pb-4 md:pb-4 flex-col gap-2">
                               <Button
                                 onClick={() => handlePurchaseClick(item.id)}
                                 disabled={

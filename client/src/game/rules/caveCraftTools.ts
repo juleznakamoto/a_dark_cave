@@ -568,7 +568,7 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasShadowBoots": true,
       "story.seen.actionCraftShadowBoots": true,
     },
-    executionTime: 40,
+    executionTime: 45,
     cooldown: 0,
   },
 
@@ -588,7 +588,7 @@ export const caveCraftTools: Record<string, Action> = {
     effects: {
       "tools.skeleton_key": true,
     },
-    executionTime: 3,
+    executionTime: 60,
     cooldown: 0,
   },
 };
@@ -610,7 +610,6 @@ export function handleCraftStoneAxe(
   const effectUpdates = applyActionEffects("craftStoneAxe", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-
   // Add village unlocked message when stone axe is crafted
   if (!state.flags.villageUnlocked) {
     result.logEntries!.push({
@@ -631,7 +630,6 @@ export function handleCraftStonePickaxe(
 ): ActionResult {
   const effectUpdates = applyActionEffects("craftStonePickaxe", state);
   Object.assign(result.stateUpdates, effectUpdates);
-
 
   return result;
 }
