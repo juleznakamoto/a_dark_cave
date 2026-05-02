@@ -381,7 +381,7 @@ export default function SidePanelSection({
         {item.icon !== undefined && (
           <span
             className={cn(
-              "mr-1",
+              "mr-1 font-noto-symbols-2",
               (title === "Stats" ||
                 title === "Bastion" ||
                 title === "Fortress") &&

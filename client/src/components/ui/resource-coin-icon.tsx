@@ -68,7 +68,7 @@ export function ResourceCoinIcon({ resource, className = "" }: ResourceCoinIconP
     <>
       <span
         ref={iconRef}
-        className={`inline-block cursor-default ${className}`}
+        className={`font-noto-symbols-2 inline-block cursor-default ${className}`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >

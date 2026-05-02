@@ -701,7 +701,7 @@ export default function CombatDialog({
                           className="inline-flex items-center justify-center w-4 h-4 shrink-0 rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
                         >
                           <span
-                            className="inline-flex shrink-0 items-center justify-center font-sans text-sm font-normal leading-none"
+                            className="font-noto-symbols-2 inline-flex shrink-0 items-center justify-center text-sm font-normal leading-none"
                             aria-label="Combat attack details"
                           >
                             🛈
@@ -721,7 +721,7 @@ export default function CombatDialog({
                         {NIGHTSHADE_BOW_OWNED &&
                           usedItemsInCombat.includes("poison_arrows") && (
                             <span
-                              className="text-green-600"
+                              className="font-noto-symbols-2 text-green-600"
                               role="img"
                               aria-label="poison-icon"
                             >
@@ -730,7 +730,7 @@ export default function CombatDialog({
                           )}
                         {enemyStunnedRounds > 0 && (
                           <span
-                            className="text-yellow-600"
+                            className="font-noto-symbols-2 text-yellow-600"
                             role="img"
                             aria-label="stun-icon"
                           >
@@ -739,7 +739,7 @@ export default function CombatDialog({
                         )}
                         {enemyBurnRounds > 0 && (
                           <span
-                            className="text-orange-600"
+                            className="font-noto-symbols-2 text-orange-600"
                             role="img"
                             aria-label="burn-icon"
                           >
@@ -756,7 +756,7 @@ export default function CombatDialog({
                         className="inline-block"
                       >
                         <span className="flex items-center gap-1">
-                          <span className="inline-flex w-4 justify-center text-green-400/60">
+                          <span className="font-noto-symbols-2 inline-flex w-4 justify-center text-green-400/60">
                             ✚
                           </span>
                           <span>
@@ -800,7 +800,7 @@ export default function CombatDialog({
                       className="inline-block"
                     >
                       <div className="text-xs mt-2 flex items-center gap-1">
-                        <span className="inline-flex w-4 justify-center text-red-400/60">
+                        <span className="font-noto-symbols-2 inline-flex w-4 justify-center text-red-400/60">
                           ⟐
                         </span>
                         <span>
@@ -827,7 +827,7 @@ export default function CombatDialog({
                           className="inline-block"
                         >
                           <span className="flex items-center gap-1">
-                            <span className="inline-flex w-4 justify-center text-green-400/60">
+                            <span className="font-noto-symbols-2 inline-flex w-4 justify-center text-green-400/60">
                               ✚
                             </span>
                             <span>
@@ -860,7 +860,7 @@ export default function CombatDialog({
                         className="inline-block"
                       >
                         <div className="flex items-center gap-1">
-                          <span className="inline-flex w-4 justify-center text-red-400/60">
+                          <span className="font-noto-symbols-2 inline-flex w-4 justify-center text-red-400/60">
                             ⟐
                           </span>
                           <span>{formatNumber(bastionStats.attack)}</span>
@@ -875,7 +875,7 @@ export default function CombatDialog({
                         className="inline-block"
                       >
                         <div className="flex items-center gap-1">
-                          <span className="inline-flex w-4 justify-center text-blue-400/60">
+                          <span className="font-noto-symbols-2 inline-flex w-4 justify-center text-blue-400/60">
                             ⧈
                           </span>
                           <span>{formatNumber(bastionStats.defense)}</span>
@@ -949,7 +949,7 @@ export default function CombatDialog({
                                     >
                                       {item.id === "poison_arrows" && (
                                         <span
-                                          className="text-green-600"
+                                          className="font-noto-symbols-2 text-green-600"
                                           role="img"
                                           aria-label="poison-icon"
                                         >
@@ -1002,7 +1002,7 @@ export default function CombatDialog({
                                 button_id="combat-use-crushing-strike"
                               >
                                 <span
-                                  className="text-yellow-600"
+                                  className="font-noto-symbols-2 text-yellow-600"
                                   role="img"
                                   aria-label="stun-icon"
                                 >
@@ -1052,7 +1052,7 @@ export default function CombatDialog({
                                 button_id="combat-use-bloodflame-sphere"
                               >
                                 <span
-                                  className="text-orange-600"
+                                  className="font-noto-symbols-2 text-orange-600"
                                   role="img"
                                   aria-label="burn-icon"
                                 >

@@ -166,7 +166,7 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
     <OutcomeDialog
       isOpen={isOpen}
       onClose={onClose}
-      icon={<span className="text-4xl text-violet-300/90">✺</span>}
+      icon={<span className="font-noto-symbols-2 text-4xl text-violet-300/90">✺</span>}
       successLog={successLog}
       title="Madness Event"
       variant="madness"

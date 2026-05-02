@@ -225,6 +225,34 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     bundleComponents: ["skull_lantern", "tarnished_compass", "crow_harness"],
   },
 
+  ashen_throne_bundle: {
+    id: "ashen_throne_bundle",
+    name: "Ashen Throne Bundle",
+    description:
+      "Ultimate bundle with 20,000 Gold, 3 Great Feasts, Skull Lantern, Tarnished Compass, and Crow Harness",
+    originalPrice: 2299, // $22.99
+    price: 1699, // $16.99
+    rewards: {
+      resources: { gold: 20000 },
+      feastActivations: 3,
+      tools: ["skull_lantern", "crow_harness"],
+      relics: ["tarnished_compass"],
+    },
+    canPurchaseMultipleTimes: false,
+    category: "bundle",
+    activationMessage:
+      "Ashen Throne Bundle components have been added to your purchases!",
+    symbol: "⯓",
+    symbolColor: "text-stone-400",
+    bundleComponents: [
+      "gold_20000",
+      "great_feast_3",
+      "skull_lantern",
+      "tarnished_compass",
+      "crow_harness",
+    ],
+  },
+
   skull_lantern: {
     id: "skull_lantern",
     name: "Skull Lantern",

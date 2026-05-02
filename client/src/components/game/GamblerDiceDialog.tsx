@@ -136,7 +136,7 @@ function RulesInfoButton() {
       className="inline-flex items-center justify-center w-4 h-4 shrink-0 rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
     >
       <span
-        className="inline-flex shrink-0 items-center justify-center font-sans text-sm font-normal leading-none"
+        className="font-noto-symbols-2 inline-flex shrink-0 items-center justify-center text-sm font-normal leading-none"
         aria-label="Dice game rules"
       >
         🛈

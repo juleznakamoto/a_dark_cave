@@ -312,4 +312,77 @@ describe('Shop Items Configuration', () => {
       expect(bundle.description.toLowerCase()).toContain('feast');
     });
   });
+
+  describe("Ashen Throne Bundle", () => {
+    it('should be defined as a bundle', () => {
+      expect(SHOP_ITEMS.ashen_throne_bundle).toBeDefined();
+      expect(SHOP_ITEMS.ashen_throne_bundle.category).toBe('bundle');
+      expect(SHOP_ITEMS.ashen_throne_bundle.name.toLowerCase()).toContain(
+        'bundle',
+      );
+    });
+
+    it('should list five leaf components in a fixed order', () => {
+      const bundle = SHOP_ITEMS.ashen_throne_bundle;
+      expect(bundle.bundleComponents).toEqual([
+        'gold_20000',
+        'great_feast_3',
+        'skull_lantern',
+        'tarnished_compass',
+        'crow_harness',
+      ]);
+    });
+
+    it('should have correct catalog pricing', () => {
+      const bundle = SHOP_ITEMS.ashen_throne_bundle;
+      expect(bundle.price).toBe(1699);
+      expect(bundle.originalPrice).toBe(2299);
+    });
+
+    it('should be cheaper than summed component prices and than the two bundles combined', () => {
+      const bundle = SHOP_ITEMS.ashen_throne_bundle;
+      const componentsCost = bundle.bundleComponents!.reduce((total, id) => {
+        return total + SHOP_ITEMS[id].price;
+      }, 0);
+      expect(bundle.price).toBeLessThan(componentsCost);
+      expect(bundle.price).toBeLessThan(
+        SHOP_ITEMS.advanced_bundle.price + SHOP_ITEMS.artifact_bundle.price,
+      );
+    });
+
+    it('should merge Pale King and Dark Artifacts rewards', () => {
+      const bundle = SHOP_ITEMS.ashen_throne_bundle;
+      expect(bundle.rewards.resources?.gold).toBe(20000);
+      expect(bundle.rewards.feastActivations).toBe(3);
+      expect(bundle.rewards.tools).toEqual(['skull_lantern', 'crow_harness']);
+      expect(bundle.rewards.relics).toEqual(['tarnished_compass']);
+    });
+
+    it('should not be repeatable (artifacts are one-time)', () => {
+      expect(SHOP_ITEMS.ashen_throne_bundle.canPurchaseMultipleTimes).toBe(
+        false,
+      );
+    });
+
+    it('should have reasonable strikethrough discount', () => {
+      const bundle = SHOP_ITEMS.ashen_throne_bundle;
+      const discountPercent =
+        ((bundle.originalPrice! - bundle.price) / bundle.originalPrice!) * 100;
+      expect(discountPercent).toBeGreaterThanOrEqual(10);
+      expect(discountPercent).toBeLessThanOrEqual(50);
+    });
+
+    it('should reference only non-bundle components', () => {
+      SHOP_ITEMS.ashen_throne_bundle.bundleComponents!.forEach((id) => {
+        expect(SHOP_ITEMS[id].category).not.toBe('bundle');
+      });
+    });
+
+    it('should have activation and description mentioning bundle and contents', () => {
+      const bundle = SHOP_ITEMS.ashen_throne_bundle;
+      expect(bundle.activationMessage?.toLowerCase()).toContain('bundle');
+      expect(bundle.description.toLowerCase()).toContain('gold');
+      expect(bundle.description.toLowerCase()).toContain('feast');
+    });
+  });
 });

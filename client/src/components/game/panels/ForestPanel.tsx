@@ -386,11 +386,11 @@ export default function ForestPanel() {
                     <div className="flex gap-1">
                       {action.relevant_stats.map((stat) => {
                         if (stat === "strength") {
-                          return <span key={stat} className="text-red-300/80">⬡</span>;
+                          return <span key={stat} className="font-noto-symbols-2 text-red-300/80">⬡</span>;
                         } else if (stat === "knowledge") {
-                          return <span key={stat} className="text-blue-300/80">✧</span>;
+                          return <span key={stat} className="font-noto-symbols-2 text-blue-300/80">✧</span>;
                         } else if (stat === "luck") {
-                          return <span key={stat} className="text-green-300/80">☆</span>;
+                          return <span key={stat} className="font-noto-symbols-2 text-green-300/80">☆</span>;
                         }
                         return null;
                       })}

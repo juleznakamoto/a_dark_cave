@@ -1077,7 +1077,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                             <CardHeader className="leading-snug p-3 md:p-6 pb-1 md:pb-2 relative">
                               {item.symbol && (
                                 <span
-                                  className="leading-[0.9] text-lg text-right absolute top-3 right-3 md:top-6 md:right-6"
+                                  className="font-noto-symbols-2 leading-[0.9] text-lg text-right absolute top-3 right-3 md:top-6 md:right-6"
                                   style={{
                                     color: tailwindToHex(
                                       item.symbolColor.replace("text-", ""),
@@ -1113,7 +1113,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer"
                                   >
                                     <span
-                                      className="inline-flex shrink-0 items-center justify-center font-sans text-sm font-normal leading-none"
+                                      className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
                                       aria-hidden
                                     >
                                       🛈
@@ -1139,7 +1139,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer"
                                   >
                                     <span
-                                      className="inline-flex shrink-0 items-center justify-center font-sans text-sm font-normal leading-none"
+                                      className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
                                       aria-hidden
                                     >
                                       🛈
@@ -1168,7 +1168,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer"
                                   >
                                     <span
-                                      className="inline-flex shrink-0 items-center justify-center font-sans text-sm font-normal leading-none"
+                                      className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
                                       aria-hidden
                                     >
                                       🛈
@@ -1258,7 +1258,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
                                         >
                                           <span
-                                            className="inline-flex shrink-0 items-center justify-center font-sans text-sm font-normal leading-none"
+                                            className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
                                             aria-hidden
                                           >
                                             🛈
@@ -1279,7 +1279,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
                                         >
                                           <span
-                                            className="inline-flex shrink-0 items-center justify-center font-sans text-sm font-normal leading-none"
+                                            className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
                                             aria-hidden
                                           >
                                             🛈
@@ -1300,7 +1300,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer"
                                         >
                                           <span
-                                            className="inline-flex shrink-0 items-center justify-center font-sans text-sm font-normal leading-none"
+                                            className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
                                             aria-hidden
                                           >
                                             🛈

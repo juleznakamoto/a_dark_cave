@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 /** Matches `RewardDialog` icon wrapper so outcome glyphs read the same (size + white on amber/orange). */
 export const OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS =
-  "text-4xl text-white leading-none" as const;
+  "font-noto-symbols-2 text-4xl text-white leading-none" as const;
 
 export type OutcomeDialogVariant = "success" | "loss" | "madness";
 

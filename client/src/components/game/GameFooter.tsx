@@ -207,7 +207,7 @@ export default function GameFooter() {
                 disabled
                 className="px-1 py-1 cursor-pointer opacity-60 hover:opacity-100 transition-opacity flex items-center"
               >
-                <span className="text-red-600 text-xs font-bold">⛤</span>
+                <span className="font-noto-symbols-2 text-red-600 text-xs font-bold">⛤</span>
               </TooltipWrapper>
             )}
           </div>

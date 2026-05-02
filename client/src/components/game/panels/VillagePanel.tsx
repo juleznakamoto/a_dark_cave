@@ -631,7 +631,7 @@ export default function VillagePanel() {
           )}
         </div>
         {isUpgrade && (
-          <span className="text-green-700 leading-none shrink-0">↑</span>
+          <span className="font-noto-symbols-2 text-green-700 leading-none shrink-0">↑</span>
         )}
       </div>
     );
@@ -1006,7 +1006,7 @@ export default function VillagePanel() {
                               }
                             />
                             <span
-                              className={`absolute inset-0 flex items-center justify-center font-extrabold ${isGreatFeast ? "text-[12px] -mt-[0px] text-orange-600" : "text-[12px] -mt-[1px] text-yellow-600"}`}
+                              className={`font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold ${isGreatFeast ? "text-[12px] -mt-[0px] text-orange-600" : "text-[12px] -mt-[1px] text-yellow-600"}`}
                             >
                               {isGreatFeast ? "✦" : "⟡"}
                             </span>
@@ -1033,7 +1033,7 @@ export default function VillagePanel() {
                               strokeWidth={2}
                               className="text-orange-500"
                             />
-                            <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[10px] -mt-[0px] text-orange-500">
+                            <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[10px] -mt-[0px] text-orange-500">
                               ☼
                             </span>
                           </div>
@@ -1072,7 +1072,7 @@ export default function VillagePanel() {
                               strokeWidth={2}
                               className="text-purple-600"
                             />
-                            <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-purple-600">
+                            <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-purple-600">
                               ✶
                             </span>
                           </div>
@@ -1111,7 +1111,7 @@ export default function VillagePanel() {
                               strokeWidth={2}
                               className="text-green-800"
                             />
-                            <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-green-800">
+                            <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-green-800">
                               ⥉
                             </span>
                           </div>
@@ -1143,7 +1143,7 @@ export default function VillagePanel() {
                               strokeWidth={2}
                               className="text-amber-600"
                             />
-                            <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[7px] -mt-[0px] text-amber-600">
+                            <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[7px] -mt-[0px] text-amber-600">
                               ⛰
                             </span>
                           </div>
@@ -1175,7 +1175,7 @@ export default function VillagePanel() {
                               strokeWidth={2}
                               className="text-red-700"
                             />
-                            <span className="absolute inset-0 flex items-center justify-center font-extrabold text-red-700">
+                            <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-red-700">
                               {getHeartfireSymbol(state.heartfireState.level)}
                             </span>
                           </div>
@@ -1215,7 +1215,7 @@ export default function VillagePanel() {
                               strokeWidth={2}
                               className="text-blue-600"
                             />
-                            <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-blue-600">
+                            <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-blue-600">
                               ✼
                             </span>
                           </div>
@@ -1260,7 +1260,7 @@ export default function VillagePanel() {
                                 strokeWidth={2}
                                 className="text-gray-500"
                               />
-                              <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[1px] text-gray-500">
+                              <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[1px] text-gray-500">
                                 ≋
                               </span>
                             </div>
@@ -1290,7 +1290,7 @@ export default function VillagePanel() {
                                 strokeWidth={2}
                                 className="text-violet-600"
                               />
-                              <span className="absolute inset-0 flex items-center justify-center font-normal text-[12px] -mt-[0px] text-violet-600">
+                              <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-normal text-[12px] -mt-[0px] text-violet-600">
                                 ✺
                               </span>
                             </div>

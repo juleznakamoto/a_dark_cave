@@ -251,7 +251,7 @@ export default function EventDialog({
                       tooltipId="event-time-bonus"
                       disabled
                     >
-                      <span className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-xl">
+                      <span className="font-noto-symbols-2 text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-xl">
                         ✧
                       </span>
                     </TooltipWrapper>
@@ -264,7 +264,7 @@ export default function EventDialog({
                         return (
                           <span
                             key={stat}
-                            className={`text-xs ${statInfo.color}`}
+                            className={`font-noto-symbols-2 text-xs ${statInfo.color}`}
                             title={stat}
                           >
                             {statInfo.icon}
@@ -358,7 +358,7 @@ export default function EventDialog({
                             return (
                               <span
                                 key={stat}
-                                className={`text-xs ${statInfo.color}`}
+                                className={`font-noto-symbols-2 text-xs ${statInfo.color}`}
                                 title={stat}
                               >
                                 {statInfo.icon}

@@ -431,7 +431,7 @@ export default function TimedEventPanel() {
                       tooltipId="merchant-discount"
                       disabled
                     >
-                      <span className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-lg pl-2">
+                      <span className="font-noto-symbols-2 text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-lg pl-2">
                         ✧
                       </span>
                     </TooltipWrapper>
@@ -548,7 +548,7 @@ export default function TimedEventPanel() {
                             return (
                               <span
                                 key={stat}
-                                className={`text-xs ${statInfo.color}`}
+                                className={`font-noto-symbols-2 text-xs ${statInfo.color}`}
                                 title={stat}
                               >
                                 {statInfo.icon}
@@ -559,7 +559,7 @@ export default function TimedEventPanel() {
                       )}
                   </div>
                   <div className="flex items-center flex-shrink-0">
-                    {isPurchased && <span className="ml-1">✓</span>}
+                    {isPurchased && <span className="ml-1 font-noto-symbols-2">✓</span>}
                   </div>
                 </Button>
               );
