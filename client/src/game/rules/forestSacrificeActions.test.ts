@@ -451,8 +451,8 @@ describe("Bone and Leather Totem Sacrifices - Buildings and Items", () => {
         story: { seen: {} },
       });
 
-      const gainsBase = runTotemSacrificeSamples("boneTotems", stateBase, 100);
-      const gainsWithTemple = runTotemSacrificeSamples("boneTotems", stateWithTemple, 100);
+      const gainsBase = runTotemSacrificeSamples("boneTotems", stateBase, 300);
+      const gainsWithTemple = runTotemSacrificeSamples("boneTotems", stateWithTemple, 300);
 
       const avgBase = gainsBase.reduce((a, b) => a + b, 0) / gainsBase.length;
       const avgWithTemple = gainsWithTemple.reduce((a, b) => a + b, 0) / gainsWithTemple.length;

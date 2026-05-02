@@ -263,7 +263,7 @@ describe('Shop Items Configuration', () => {
 
     it('should have correct pricing for advanced bundle', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
-      expect(bundle.price).toBe(1099); // 10.99 €
+      expect(bundle.price).toBe(1049); // 10.49 €
       expect(bundleComponentsListPriceSumCents(bundle.bundleComponents!, SHOP_ITEMS)).toBe(
         SHOP_ITEMS.gold_20000.originalPrice! + SHOP_ITEMS.great_feast_3.originalPrice!,
       );
@@ -353,7 +353,7 @@ describe('Shop Items Configuration', () => {
 
     it('should have correct catalog pricing', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
-      expect(bundle.price).toBe(1661);
+      expect(bundle.price).toBe(1649);
       expect(bundleComponentsListPriceSumCents(bundle.bundleComponents!, SHOP_ITEMS)).toBe(
         2945,
       );

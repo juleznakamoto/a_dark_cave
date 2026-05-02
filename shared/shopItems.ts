@@ -209,7 +209,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "advanced_bundle",
     name: "Pale King's Bundle",
     description: "Powerful Bundle with 20'000 Gold and 3 Great Feasts",
-    price: 1099, // 10.99 €
+    price: 1049, // 10.49 €
     rewards: {
       resources: { gold: 20000 },
       feastActivations: 3,

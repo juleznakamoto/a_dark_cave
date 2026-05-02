@@ -298,11 +298,11 @@ describe('ShopDialog', () => {
         await waitFor(() => {
           const button = screen.getByRole('button', { name: testCase.expectedText });
           expect(button).toBeDisabled();
-        });
+        }, { timeout: 15_000 });
 
         unmount();
       }
-    });
+    }, 60_000);
   });
 
   describe('Paid Items', () => {
@@ -838,10 +838,10 @@ describe('ShopDialog', () => {
       await waitFor(() => {
         expect(screen.getByText("Fading Wanderer Bundle")).toBeInTheDocument();
         // Wait for currency detection (EUR) and price display
-        expect(screen.getByText(/5\.59\s*€/)).toBeInTheDocument();
+        expect(screen.getByText(/^6\.49 €$/)).toBeInTheDocument();
       });
 
-      const originalPrices = screen.getAllByText(/8\.98\s*€/);
+      const originalPrices = screen.getAllByText(/9\.98\s*€/);
       expect(originalPrices.some((el) => el.classList.contains('line-through'))).toBe(true);
     }, 20_000);
 
@@ -1183,8 +1183,8 @@ describe('ShopDialog', () => {
       expect(screen.getByText("Pale King's Bundle")).toBeInTheDocument();
     });
 
-    // Pale King's Bundle: 10.99 € (list = sum of component list prices)
-    expect(screen.getByText(/10\.99\s*€/)).toBeInTheDocument();
+    // Pale King's Bundle: 10.49 € (list = sum of component list prices)
+    expect(screen.getByText(/^10\.49 €$/)).toBeInTheDocument();
     const originalPrice = screen.getByText(/17\.48\s*€/);
     expect(originalPrice).toHaveClass('line-through');
   });

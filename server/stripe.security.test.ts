@@ -76,7 +76,7 @@ describe('Bundle Purchase Security Tests', () => {
 
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 100, // Wrong amount (should be 1099)
+        amount: 100, // Wrong amount (should be 1049)
         status: 'succeeded',
         metadata: { itemId: 'advanced_bundle' },
       } as Stripe.PaymentIntent;
@@ -94,7 +94,7 @@ describe('Bundle Purchase Security Tests', () => {
 
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 1099, // Correct price for advanced_bundle
+        amount: 1049, // Correct price for advanced_bundle
         status: 'succeeded',
         currency: 'eur',
         metadata: { itemId: 'advanced_bundle' },
@@ -114,10 +114,10 @@ describe('Bundle Purchase Security Tests', () => {
     it('should accept valid discounted payment (20% off)', async () => {
       const mockSupabase = createMockSupabase();
 
-      // advanced_bundle: 1099 -> floor(1099 * 0.8) = 879
+      // advanced_bundle: 1049 -> floor(1049 * 0.8) = 839
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 879,
+        amount: 839,
         status: 'succeeded',
         currency: 'eur',
         metadata: {
@@ -141,7 +141,7 @@ describe('Bundle Purchase Security Tests', () => {
       // Attacker fakes discounted amount - metadata only set by server at createPaymentIntent
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 879, // Looks like 20% off
+        amount: 839, // Looks like 20% off
         status: 'succeeded',
         metadata: { itemId: 'advanced_bundle' }, // No tradersGratitudeDiscountApplied
       } as Stripe.PaymentIntent;
@@ -169,10 +169,10 @@ describe('Bundle Purchase Security Tests', () => {
         true
       );
 
-      // Must be floor(1099 * 0.8) = 879, not arbitrary
+      // Must be floor(1049 * 0.8) = 839, not arbitrary
       expect(mockPaymentIntents.create).toHaveBeenCalledWith(
         expect.objectContaining({
-          amount: 879,
+          amount: 839,
           metadata: expect.objectContaining({
             tradersGratitudeDiscountApplied: 'true',
           }),
@@ -191,7 +191,7 @@ describe('Bundle Purchase Security Tests', () => {
 
       expect(mockPaymentIntents.create).toHaveBeenCalledWith(
         expect.objectContaining({
-          amount: 1099, // Server enforces correct price
+          amount: 1049, // Server enforces correct price
         })
       );
     });
@@ -223,7 +223,7 @@ describe('Bundle Purchase Security Tests', () => {
 
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 1099,
+        amount: 1049,
         status: 'succeeded',
         currency: 'eur',
         metadata: { itemId: 'advanced_bundle' },
@@ -244,7 +244,7 @@ describe('Bundle Purchase Security Tests', () => {
 
       // Bundle purchase
       expect(insertCalls[0].item_id).toBe('advanced_bundle');
-      expect(insertCalls[0].price_paid).toBe(1099);
+      expect(insertCalls[0].price_paid).toBe(1049);
       expect(insertCalls[0].bundle_id).toBe(null);
       expect(insertCalls[0].currency).toBe('eur');
 
@@ -264,7 +264,7 @@ describe('Bundle Purchase Security Tests', () => {
 
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 1099,
+        amount: 1049,
         status: 'pending',
         metadata: { itemId: 'advanced_bundle' },
       } as Stripe.PaymentIntent;
@@ -281,7 +281,7 @@ describe('Bundle Purchase Security Tests', () => {
 
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 1099,
+        amount: 1049,
         status: 'canceled',
         metadata: { itemId: 'advanced_bundle' },
       } as Stripe.PaymentIntent;
@@ -300,7 +300,7 @@ describe('Bundle Purchase Security Tests', () => {
 
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 1099,
+        amount: 1049,
         status: 'succeeded',
         currency: 'eur',
         metadata: { itemId: 'advanced_bundle' },
