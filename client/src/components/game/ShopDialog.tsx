@@ -1087,7 +1087,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         Bundles
                       </Button>
                     </div>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-3 md:gap-4 gap-3">
                       {Object.values(SHOP_ITEMS)
                         .filter((item) => {
                           // Hide full_game item when BTP=0
@@ -1128,10 +1128,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                             key={item.id}
                             className={`border-neutral-500 flex flex-col relative ${item.category === "bundle" ? "border border-amber-600" : ""}`}
                           >
-                            <CardHeader className="leading-snug p-3 md:p-6 pb-1 md:pb-2 relative">
+                            <CardHeader className="!md:leading-snug !leading-tight p-2 md:p-6 pb-1 md:pb-2 relative md:text-lg text-md ">
                               {item.symbol && (
                                 <span
-                                  className="font-noto-symbols-2 leading-[0.9] text-lg text-right absolute top-3 right-3 md:top-6 md:right-6"
+                                  className="font-noto-symbols-2 md:leading-[0.9] leading-[0.9] text-md md:text-lg text-right absolute top-3 right-2 md:top-6 md:right-6"
                                   style={{
                                     color: tailwindToHex(
                                       item.symbolColor.replace("text-", ""),
@@ -1233,7 +1233,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   </TooltipWrapper>
                                 )}
                               </CardTitle>
-                              <CardDescription className="!m-0 text-bold flex flex-wrap items-center gap-1">
+                              <CardDescription className="!m-0 text-bold flex flex-wrap items-center gap-1 pt-2">
                                 {(() => {
                                   const listCents =
                                     shopCardStrikethroughListCents(item);
@@ -1244,7 +1244,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     return null;
                                   }
                                   return (
-                                    <span className="text-xs line-through text-muted-foreground mr-1">
+                                    <span className="text-xs line-through text-muted-foreground">
                                       {formatPrice(listCents)}
                                     </span>
                                   );
@@ -1407,14 +1407,14 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           : "ml-1 px-1 py-[1px] text-xs text-green-600 font-medium border border-green-600 rounded bg-green-950/40"
                                       }
                                     >
-                                      - {pct}%
+                                      -{pct}%
                                     </span>
                                   );
                                 })()}
                               </CardDescription>
                             </CardHeader>
                             <CardContent className="min-h-16 pl-3 pr-3 md:pl-6 md:pr-6 pb-3 md:pb-4 flex-1">
-                              <p className="leading-snug text-sm text-muted-foreground">
+                              <p className="md:leading-snug leading-tight text-sm opacity-80">
                                 {item.description}
                               </p>
                             </CardContent>
