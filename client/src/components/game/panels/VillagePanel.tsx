@@ -327,31 +327,31 @@ export default function VillagePanel() {
     > = {
       1: {
         symbol: "·",
-        marginTop: "-1px",
-        textSize: "text-[14px]",
+        marginTop: "3px",
+        textSize: "text-[16px]",
         fontWeight: 800,
       },
       2: {
         symbol: ":",
-        marginTop: "-2px",
+        marginTop: "1px",
         textSize: "text-[12px]",
         fontWeight: 800,
       },
       3: {
         symbol: "∴",
-        marginTop: "-2px",
+        marginTop: "1px",
         textSize: "text-[12px]",
         fontWeight: 900,
       },
       4: {
         symbol: "⁘",
-        marginTop: "-4px",
+        marginTop: "0px",
         textSize: "text-[16px]",
         fontWeight: 700,
       },
       5: {
         symbol: "⁙",
-        marginTop: "-4px",
+        marginTop: "0px",
         textSize: "text-[14px]",
         fontWeight: 700,
       },
@@ -398,27 +398,23 @@ export default function VillagePanel() {
         playTime: currentPlayTime,
         investmentHallState: ih,
       });
-      const tooltipContent = !investReady
-        ? active
-          ? (
-            <div className="text-xs max-w-[220px]">
-              Investment complete in{" "}
-              {formatRemaining(Math.max(0, active.endPlayTime - currentPlayTime))}
-            </div>
-          )
-          : currentPlayTime < nextWave
-            ? (
-              <div className="text-xs whitespace-nowrap">
-                Investments available in{" "}
-                {formatRemaining(Math.max(0, nextWave - currentPlayTime))}
-              </div>
-            )
-            : (
-              <div className="text-xs whitespace-nowrap">
-                Preparing investment offers…
-              </div>
-            )
-        : undefined;
+      const tooltipContent = !investReady ? (
+        active ? (
+          <div className="text-xs max-w-[220px]">
+            Investment complete in{" "}
+            {formatRemaining(Math.max(0, active.endPlayTime - currentPlayTime))}
+          </div>
+        ) : currentPlayTime < nextWave ? (
+          <div className="text-xs whitespace-nowrap">
+            Investments available in{" "}
+            {formatRemaining(Math.max(0, nextWave - currentPlayTime))}
+          </div>
+        ) : (
+          <div className="text-xs whitespace-nowrap">
+            Preparing investment offers…
+          </div>
+        )
+      ) : undefined;
       return (
         <React.Fragment key="invest">
           <CooldownButton
@@ -631,7 +627,9 @@ export default function VillagePanel() {
           )}
         </div>
         {isUpgrade && (
-          <span className="font-noto-symbols-2 text-green-700 leading-none shrink-0">↑</span>
+          <span className="font-noto-symbols-2 text-green-700 leading-none shrink-0">
+            ↑
+          </span>
         )}
       </div>
     );
@@ -739,7 +737,9 @@ export default function VillagePanel() {
     const currentCount = villagers[jobId as keyof typeof villagers] || 0;
 
     const productionEntries =
-      currentCount > 0 ? getPopulationProduction(jobId, currentCount, state) : [];
+      currentCount > 0
+        ? getPopulationProduction(jobId, currentCount, state)
+        : [];
     const productionKey = productionEntries
       .map((p) => `${p.resource}:${p.totalAmount}`)
       .join("|");
@@ -807,10 +807,7 @@ export default function VillagePanel() {
         </div>
         <span className="text-xs ml-1 text-left flex-1">
           {label}{" "}
-          <span
-            key={productionKey}
-            className="text-xs text-muted-foreground"
-          >
+          <span key={productionKey} className="text-xs text-muted-foreground">
             {productionEntries.map((prod, i) => (
               <React.Fragment key={prod.resource}>
                 {i > 0 && ", "}
