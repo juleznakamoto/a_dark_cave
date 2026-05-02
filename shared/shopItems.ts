@@ -78,7 +78,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "250 Gold",
     description: "A decent amount of gold",
     originalPrice: 149,
-    price: 99, // 0.99 €
+    price: 109, // 1.09 €
     rewards: {
       resources: { gold: 250 },
     },
@@ -94,7 +94,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "1'000 Gold",
     description: "A substantial treasure",
     originalPrice: 349,
-    price: 249, // 2.99 €
+    price: 259, // 2.59 €
     rewards: {
       resources: { gold: 1000 },
     },
@@ -110,7 +110,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "5'000 Gold",
     description: "A fortune in gold",
     originalPrice: 699,
-    price: 499, // 4.99 €
+    price: 519, // 5.19 €
     rewards: {
       resources: { gold: 5000 },
     },
@@ -243,7 +243,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     activationMessage:
       "Ashen Throne Bundle components have been added to your purchases!",
     symbol: "⯓",
-    symbolColor: "text-stone-400",
+    symbolColor: "text-stone-300",
     bundleComponents: [
       "gold_20000",
       "great_feast_3",
@@ -259,7 +259,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     description:
       "Forged from cursed bone illuminating the deepest depths. Unlocks Skull Lantern storyline.",
     originalPrice: 349,
-    price: 249, // 2.49 €
+    price: 259, // 2.59 €
     rewards: {
       tools: ["skull_lantern"],
     },
