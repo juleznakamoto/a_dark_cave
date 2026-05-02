@@ -17,7 +17,7 @@ vi.mock('stripe', () => {
 });
 
 // Import after mocking
-import { createPaymentIntent, verifyPayment } from './stripe';
+import { createPaymentIntent, verifyPayment, paymentTypeSummaryFromCharge } from './stripe';
 import { createSupabaseMockForStripeVerify } from './stripeVerifyTestSupabase';
 
 // Get reference to the mocked methods for test assertions
@@ -32,6 +32,39 @@ function latestChargeForVerify(): Stripe.Charge {
     billing_details: { address: { country: null } },
   } as Stripe.Charge;
 }
+
+function chargeWithCard(brand: string): Stripe.Charge {
+  return {
+    billing_details: { address: { country: null } },
+    payment_method_details: {
+      type: 'card',
+      card: { brand },
+    },
+  } as Stripe.Charge;
+}
+
+describe('paymentTypeSummaryFromCharge', () => {
+  it('returns card:brand for card payments', () => {
+    expect(
+      paymentTypeSummaryFromCharge(chargeWithCard('visa') as Stripe.Charge),
+    ).toBe('card:visa');
+    expect(
+      paymentTypeSummaryFromCharge(chargeWithCard('mastercard') as Stripe.Charge),
+    ).toBe('card:mastercard');
+  });
+
+  it('returns non-card type as-is', () => {
+    const ch = {
+      billing_details: {},
+      payment_method_details: { type: 'link' },
+    } as Stripe.Charge;
+    expect(paymentTypeSummaryFromCharge(ch)).toBe('link');
+  });
+
+  it('returns null when details missing', () => {
+    expect(paymentTypeSummaryFromCharge(latestChargeForVerify())).toBeNull();
+  });
+});
 
 vi.mock('@/lib/supabase', () => ({
   supabase: {},
@@ -322,7 +355,7 @@ describe('Stripe Shop Integration', () => {
     it('should verify successful payment', async () => {
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 99,
+        amount: 109,
         status: 'succeeded',
         currency: 'eur',
         metadata: { itemId: 'gold_250' },
@@ -336,6 +369,32 @@ describe('Stripe Shop Integration', () => {
       expect(result.success).toBe(true);
       expect(result.itemId).toBe('gold_250');
       expect(mockSupabase.from).toHaveBeenCalledWith('purchases');
+    });
+
+    it('persists payment_type from Stripe charge (card brand)', async () => {
+      const mockIntent: Stripe.PaymentIntent = {
+        id: 'pi_test',
+        amount: 109,
+        status: 'succeeded',
+        currency: 'eur',
+        metadata: { itemId: 'gold_250' },
+        latest_charge: chargeWithCard('visa'),
+      } as Stripe.PaymentIntent;
+
+      mockPaymentIntents.retrieve.mockResolvedValue(mockIntent);
+
+      const result = await verifyPayment('pi_test', 'user123', mockSupabase);
+      expect(result.success).toBe(true);
+
+      const mainInsert = mockSupabase.insertSpy.mock.calls.find(
+        (call) =>
+          (call[0] as { item_id?: string; price_paid?: number })?.item_id ===
+            'gold_250' &&
+          Number((call[0] as { price_paid?: number }).price_paid) > 0,
+      );
+      expect(mainInsert?.[0]).toMatchObject({
+        payment_type: 'card:visa',
+      });
     });
 
     it('should reject payment with incorrect amount', async () => {

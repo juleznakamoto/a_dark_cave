@@ -76,6 +76,8 @@ interface PurchaseData {
   stripe_payment_intent_id?: string | null;
   stripe_fx_quote_id?: string | null;
   reporting_eur_cents?: number | null;
+  /** Stripe payment method summary (e.g. card:visa); null for legacy / non-Stripe rows */
+  payment_type?: string | null;
   reporting_usd_cents?: number | null;
 }
 

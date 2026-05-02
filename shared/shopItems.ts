@@ -209,7 +209,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "advanced_bundle",
     name: "Pale King's Bundle",
     description: "Powerful Bundle with 20'000 Gold and 3 Great Feasts",
-    price: 1099, // 10.99 €
+    price: 1089, // 10.89 €
     rewards: {
       resources: { gold: 20000 },
       feastActivations: 3,
@@ -228,7 +228,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Ashen Throne Bundle",
     description:
       "Ultimate Bundle with 20'000 Gold, 3 Great Feasts, Skull Lantern, Tarnished Compass, and Crow Harness",
-    price: 1699, // $16.99
+    price: 1689, // $16.89
     rewards: {
       resources: { gold: 20000 },
       feastActivations: 3,

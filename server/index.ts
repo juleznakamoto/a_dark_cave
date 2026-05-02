@@ -517,7 +517,7 @@ app.get("/api/admin/data", async (req, res) => {
     const oneYearAgoFilter = oneYearAgo.toISOString();
 
     const purchasesListColumns =
-      "user_id,item_id,item_name,price_paid,purchased_at,bundle_id,country,cruel_mode,currency,stripe_payment_intent_id,stripe_fx_quote_id,reporting_eur_cents,reporting_usd_cents";
+      "user_id,item_id,item_name,price_paid,purchased_at,bundle_id,country,cruel_mode,currency,stripe_payment_intent_id,stripe_fx_quote_id,reporting_eur_cents,reporting_usd_cents,payment_type";
 
     const [
       clicksResult,

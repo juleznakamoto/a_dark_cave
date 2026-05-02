@@ -21,6 +21,9 @@ const COUNTRY_COLORS = [
 ];
 
 const TOP_N_COUNTRIES = 8;
+const TOP_N_PAYMENT_TYPES = 8;
+
+const SERIES_COLORS = COUNTRY_COLORS;
 
 interface PurchasesTabProps {
   purchases: any[];
@@ -33,6 +36,16 @@ interface PurchasesTabProps {
 }
 
 type CountryChartMode = "count" | "revenue_unified_eur";
+
+/** Readable legend label for stored payment_type keys. */
+function paymentTypeChartLabel(stored: string): string {
+  if (stored === "Unknown") return "Unknown";
+  if (stored.startsWith("card:")) {
+    const brand = stored.slice(5);
+    return brand ? `Card (${brand})` : "Card";
+  }
+  return stored.charAt(0).toUpperCase() + stored.slice(1).replace(/_/g, " ");
+}
 
 function countryContribution(p: any, mode: CountryChartMode): number {
   if (mode === "count") return 1;
@@ -88,6 +101,66 @@ function buildDailyCountryData(
   return { data: rows, countries: topCountries };
 }
 
+type PaymentTypeChartMode = "count" | "revenue_unified_eur";
+
+function paymentTypeContribution(p: any, mode: PaymentTypeChartMode): number {
+  if (mode === "count") return 1;
+  return adminUnifiedRevenueEurCents(p);
+}
+
+function buildDailyPaymentTypeData(
+  purchases: any[],
+  days: number,
+  mode: PaymentTypeChartMode,
+) {
+  const now = new Date();
+  const start = startOfDay(subDays(now, days - 1));
+
+  const relevant = purchases.filter((p) => {
+    if (p.price_paid <= 0 || p.bundle_id) return false;
+    return parseISO(p.purchased_at) >= start;
+  });
+
+  const totals = new Map<string, number>();
+  relevant.forEach((p) => {
+    const add = paymentTypeContribution(p, mode);
+    if (mode !== "count" && add <= 0) return;
+    const key = p.payment_type && String(p.payment_type).trim() !== ""
+      ? String(p.payment_type)
+      : "Unknown";
+    totals.set(key, (totals.get(key) ?? 0) + add);
+  });
+
+  const topTypes = Array.from(totals.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, TOP_N_PAYMENT_TYPES)
+    .map(([k]) => k);
+
+  const rows: Record<string, any>[] = Array.from({ length: days }, (_, i) => {
+    const row: Record<string, any> = {
+      day: format(addDays(start, i), days > 90 ? "MMM d" : "MMM d"),
+    };
+    topTypes.forEach((k) => (row[k] = 0));
+    return row;
+  });
+
+  relevant.forEach((p) => {
+    const key = p.payment_type && String(p.payment_type).trim() !== ""
+      ? String(p.payment_type)
+      : "Unknown";
+    if (!topTypes.includes(key)) return;
+    const add = paymentTypeContribution(p, mode);
+    if (mode !== "count" && add <= 0) return;
+    const d = startOfDay(parseISO(p.purchased_at));
+    const idx = Math.round((d.getTime() - start.getTime()) / 86400000);
+    if (idx >= 0 && idx < rows.length) {
+      rows[idx][key] = (rows[idx][key] ?? 0) + add;
+    }
+  });
+
+  return { data: rows, paymentTypes: topTypes };
+}
+
 export default function PurchasesTab(props: PurchasesTabProps) {
   const {
     purchases,
@@ -101,6 +174,10 @@ export default function PurchasesTab(props: PurchasesTabProps) {
 
   const [countryCountRange, setCountryCountRange] = useState<AdminTwelveMonthChartRange>("1m");
   const [countryRevenueRange, setCountryRevenueRange] = useState<AdminTwelveMonthChartRange>("1m");
+  const [paymentTypeCountRange, setPaymentTypeCountRange] =
+    useState<AdminTwelveMonthChartRange>("1m");
+  const [paymentTypeRevenueRange, setPaymentTypeRevenueRange] =
+    useState<AdminTwelveMonthChartRange>("1m");
 
   const { data: countryCountData, countries: countryCountList } = useMemo(
     () =>
@@ -122,6 +199,29 @@ export default function PurchasesTab(props: PurchasesTabProps) {
         ),
       [purchases, countryRevenueRange],
     );
+
+  const { data: paymentTypeCountData, paymentTypes: paymentTypeCountList } = useMemo(
+    () =>
+      buildDailyPaymentTypeData(
+        purchases,
+        ADMIN_TWELVE_MONTH_CHART_DAYS[paymentTypeCountRange],
+        "count",
+      ),
+    [purchases, paymentTypeCountRange],
+  );
+
+  const {
+    data: paymentTypeRevenueUnifiedData,
+    paymentTypes: paymentTypeRevenueUnifiedList,
+  } = useMemo(
+    () =>
+      buildDailyPaymentTypeData(
+        purchases,
+        ADMIN_TWELVE_MONTH_CHART_DAYS[paymentTypeRevenueRange],
+        "revenue_unified_eur",
+      ),
+    [purchases, paymentTypeRevenueRange],
+  );
 
   return (
     <div className="space-y-4">
@@ -214,7 +314,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
                     key={country}
                     type="monotone"
                     dataKey={country}
-                    stroke={COUNTRY_COLORS[i % COUNTRY_COLORS.length]}
+                    stroke={SERIES_COLORS[i % SERIES_COLORS.length]}
                     strokeWidth={2}
                     dot={false}
                   />
@@ -270,7 +370,119 @@ export default function PurchasesTab(props: PurchasesTabProps) {
                     key={country}
                     type="monotone"
                     dataKey={country}
-                    stroke={COUNTRY_COLORS[i % COUNTRY_COLORS.length]}
+                    stroke={SERIES_COLORS[i % SERIES_COLORS.length]}
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                ))}
+              </LineChart>
+            </ChartContainer>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <div className="flex justify-between items-start">
+            <div>
+              <CardTitle>Daily purchases by payment type</CardTitle>
+              <CardDescription>
+                Stripe payment method (paid rows only); top {TOP_N_PAYMENT_TYPES} types. Legacy
+                rows without stored type count as Unknown.
+              </CardDescription>
+            </div>
+            <ChartTimeRangeSelectTwelveMonth
+              value={paymentTypeCountRange}
+              onChange={setPaymentTypeCountRange}
+            />
+          </div>
+        </CardHeader>
+        <CardContent>
+          {paymentTypeCountList.length === 0 ? (
+            <p className="text-muted-foreground text-sm py-4">
+              No paid purchases in this range.
+            </p>
+          ) : (
+            <ChartContainer config={{}} className="h-[400px] w-full">
+              <LineChart data={paymentTypeCountData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="day"
+                  interval={adminChartXAxisIntervalForDays(
+                    ADMIN_TWELVE_MONTH_CHART_DAYS[paymentTypeCountRange],
+                  )}
+                  tick={{ fontSize: 11 }}
+                />
+                <YAxis allowDecimals={false} />
+                <Tooltip
+                  labelFormatter={(label) => label}
+                  formatter={(value: number, name: string) => [
+                    value,
+                    paymentTypeChartLabel(name),
+                  ]}
+                />
+                <Legend formatter={(value) => paymentTypeChartLabel(String(value))} />
+                {paymentTypeCountList.map((pt, i) => (
+                  <Line
+                    key={pt}
+                    type="monotone"
+                    dataKey={pt}
+                    stroke={SERIES_COLORS[i % SERIES_COLORS.length]}
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                ))}
+              </LineChart>
+            </ChartContainer>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <div className="flex justify-between items-start">
+            <div>
+              <CardTitle>Daily revenue by payment type (EUR)</CardTitle>
+              <CardDescription>
+                Unified EUR per method; top {TOP_N_PAYMENT_TYPES} types (paid only)
+              </CardDescription>
+            </div>
+            <ChartTimeRangeSelectTwelveMonth
+              value={paymentTypeRevenueRange}
+              onChange={setPaymentTypeRevenueRange}
+            />
+          </div>
+        </CardHeader>
+        <CardContent>
+          {paymentTypeRevenueUnifiedList.length === 0 ? (
+            <p className="text-muted-foreground text-sm py-4">
+              No paid revenue in this range.
+            </p>
+          ) : (
+            <ChartContainer config={{}} className="h-[400px] w-full">
+              <LineChart data={paymentTypeRevenueUnifiedData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="day"
+                  interval={adminChartXAxisIntervalForDays(
+                    ADMIN_TWELVE_MONTH_CHART_DAYS[paymentTypeRevenueRange],
+                  )}
+                  tick={{ fontSize: 11 }}
+                />
+                <YAxis tickFormatter={(v) => `€${(v / 100).toFixed(0)}`} />
+                <Tooltip
+                  formatter={(value: number, name: string) => [
+                    `€${(value / 100).toFixed(2)}`,
+                    paymentTypeChartLabel(name),
+                  ]}
+                />
+                <Legend formatter={(value) => paymentTypeChartLabel(String(value))} />
+                {paymentTypeRevenueUnifiedList.map((pt, i) => (
+                  <Line
+                    key={pt}
+                    type="monotone"
+                    dataKey={pt}
+                    stroke={SERIES_COLORS[i % SERIES_COLORS.length]}
                     strokeWidth={2}
                     dot={false}
                   />

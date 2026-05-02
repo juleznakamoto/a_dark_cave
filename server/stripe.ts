@@ -17,6 +17,32 @@ const stripe = new Stripe(stripeSecretKey || '', {
   apiVersion: '2024-12-18.acacia',
 });
 
+/**
+ * Compact key for admin charts/DB, from Charge.payment_method_details.
+ * Examples: `card:visa`, `link`, `paypal`. Null if Stripe omits details (legacy charges).
+ */
+export function paymentTypeSummaryFromCharge(
+  charge: Stripe.Charge,
+): string | null {
+  const d = charge.payment_method_details;
+  if (!d || typeof d !== "object" || !("type" in d)) {
+    return null;
+  }
+  const type = (d as { type?: string }).type;
+  if (!type || typeof type !== "string") {
+    return null;
+  }
+  if (type === "card") {
+    const card = (d as { card?: { brand?: string | null } }).card;
+    const brand = card?.brand;
+    if (brand && typeof brand === "string") {
+      return `card:${brand}`;
+    }
+    return "card";
+  }
+  return type;
+}
+
 export { SHOP_ITEMS };
 export type { ShopItem };
 
@@ -167,6 +193,7 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
 
     const billingCountry =
       charge.billing_details?.address?.country ?? null;
+    const paymentType = paymentTypeSummaryFromCharge(charge);
     const cruelMode =
       paymentIntent.metadata.cruelMode === 'true'
         ? true
@@ -193,6 +220,7 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
         bundle_id: null,
         purchased_at: new Date().toISOString(),
         country: billingCountry,
+        payment_type: paymentType,
         cruel_mode: cruelMode,
         currency: chargeCurrency,
         stripe_payment_intent_id: paymentIntentId,
