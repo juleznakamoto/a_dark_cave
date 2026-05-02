@@ -91,7 +91,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
 
   gold_1000: {
     id: "gold_1000",
-    name: "1000 Gold",
+    name: "1'000 Gold",
     description: "A substantial treasure",
     originalPrice: 349,
     price: 249, // 2.99 €
@@ -107,7 +107,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
 
   gold_5000: {
     id: "gold_5000",
-    name: "5000 Gold",
+    name: "5'000 Gold",
     description: "A fortune in gold",
     originalPrice: 699,
     price: 499, // 4.99 €
@@ -123,7 +123,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
 
   gold_20000: {
     id: "gold_20000",
-    name: "20000 Gold",
+    name: "20'000 Gold",
     description: "Unholy amounts of gold",
     originalPrice: 1349,
     price: 999, // 9.99 €
@@ -132,7 +132,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: true,
     category: "resource",
-    activationMessage: "20000 Gold have been added to your inventory.",
+    activationMessage: "20'000 Gold have been added to your inventory.",
     symbol: "◉◉◉◉",
     symbolColor: "text-yellow-600",
   },
@@ -172,7 +172,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   basic_survival_bundle: {
     id: "basic_survival_bundle",
     name: "Fading Wanderer Bundle",
-    description: "Basic Bundle with 5000 Gold and 1 Great Feast",
+    description: "Basic Bundle with 5'000 Gold and 1 Great Feast",
     originalPrice: 749, // 10.99 €
     price: 549, // 5.49 €
     rewards: {
@@ -186,25 +186,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbol: "◈",
     symbolColor: "text-purple-600",
     bundleComponents: ["gold_5000", "great_feast_1"], // Component items
-  },
-
-  advanced_bundle: {
-    id: "advanced_bundle",
-    name: "Pale King's Bundle",
-    description: "Powerful Bundle with 20000 Gold and 3 Great Feasts",
-    originalPrice: 1499, // 21.99 €
-    price: 1099, // 10.99 €
-    rewards: {
-      resources: { gold: 20000 },
-      feastActivations: 3,
-    },
-    canPurchaseMultipleTimes: true,
-    category: "bundle",
-    activationMessage:
-      "Pale King's Bundle components have been added to your purchases!",
-    symbol: "✣",
-    symbolColor: "text-rose-600",
-    bundleComponents: ["gold_20000", "great_feast_3"], // Component items
   },
 
   artifact_bundle: {
@@ -225,11 +206,30 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     bundleComponents: ["skull_lantern", "tarnished_compass", "crow_harness"],
   },
 
+  advanced_bundle: {
+    id: "advanced_bundle",
+    name: "Pale King's Bundle",
+    description: "Powerful Bundle with 20'000 Gold and 3 Great Feasts",
+    originalPrice: 1499, // 21.99 €
+    price: 1099, // 10.99 €
+    rewards: {
+      resources: { gold: 20000 },
+      feastActivations: 3,
+    },
+    canPurchaseMultipleTimes: true,
+    category: "bundle",
+    activationMessage:
+      "Pale King's Bundle components have been added to your purchases!",
+    symbol: "✣",
+    symbolColor: "text-rose-600",
+    bundleComponents: ["gold_20000", "great_feast_3"], // Component items
+  },
+
   ashen_throne_bundle: {
     id: "ashen_throne_bundle",
     name: "Ashen Throne Bundle",
     description:
-      "Ultimate bundle with 20,000 Gold, 3 Great Feasts, Skull Lantern, Tarnished Compass, and Crow Harness",
+      "Ultimate Bundle with 20'000 Gold, 3 Great Feasts, Skull Lantern, Tarnished Compass, and Crow Harness",
     originalPrice: 2299, // $22.99
     price: 1699, // $16.99
     rewards: {
