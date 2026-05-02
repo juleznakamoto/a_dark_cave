@@ -313,7 +313,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     id: "crow_harness",
     name: "Crow Harness",
     description:
-      "A specially crafted harness for catching crows. Can be used to catch the one-eyed crow in Blackreach Canyon.",
+      "A specially crafted harness for catching crows. Can be used to catch a crow in Blackreach Canyon.",
     bonuses: {
       actionBonuses: {},
     },
@@ -669,22 +669,19 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   ember_bomb: {
     id: "ember_bomb",
     name: "Ember Bomb",
-    description:
-      "Powerful bomb with a glowing core creating intense heat",
+    description: "Powerful bomb with a glowing core creating intense heat",
     bonuses: { actionBonuses: {} },
   },
   ashfire_bomb: {
     id: "ashfire_bomb",
     name: "Ashfire Bomb",
-    description:
-      "Devastating bomb glowing with otherworldly fire",
+    description: "Devastating bomb glowing with otherworldly fire",
     bonuses: { actionBonuses: {} },
   },
   void_bomb: {
     id: "void_bomb",
     name: "Void Bomb",
-    description:
-      "Terrifying bomb seeming to distort space around it",
+    description: "Terrifying bomb seeming to distort space around it",
     bonuses: { actionBonuses: {} },
   },
 };
@@ -984,7 +981,8 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   lycan_blood: {
     id: "lycan_blood",
     name: "Lycan Blood",
-    description: "A vial of thick blood from a Lycanthrope alpha. Its effects are unknown.",
+    description:
+      "A vial of thick blood from a Lycanthrope alpha. Its effects are unknown.",
     bonuses: {
       generalBonuses: {},
     },
@@ -993,7 +991,8 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   necromancer_blood: {
     id: "necromancer_blood",
     name: "Necromancer Blood",
-    description: "A vial of dark blood harvested from a Necromancer. Its effects are unknown.",
+    description:
+      "A vial of dark blood harvested from a Necromancer. Its effects are unknown.",
     bonuses: {
       generalBonuses: {},
     },
@@ -1002,7 +1001,8 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   bone_devourer_blood: {
     id: "bone_devourer_blood",
     name: "Devourer Blood",
-    description: "A vial of pale blood harvested from the Bone Devourer. Its effects are unknown.",
+    description:
+      "A vial of pale blood harvested from the Bone Devourer. Its effects are unknown.",
     bonuses: {
       generalBonuses: {},
     },
@@ -1182,15 +1182,15 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   whispering_cube: {
     id: "whispering_cube",
     name: "Whispering Cube",
-    description: "Perfectly polished metal cube of unknown origin, whispering fragments of the history of the vanished civilization.",
+    description:
+      "Perfectly polished metal cube of unknown origin, whispering fragments of the history of the vanished civilization.",
     bonuses: {},
   },
 
   map_fragment: {
     id: "map_fragment",
     name: "Map Fragment",
-    description:
-      "Fragments of a map leading to an unknown place.",
+    description: "Fragments of a map leading to an unknown place.",
     bonuses: {},
   },
 
