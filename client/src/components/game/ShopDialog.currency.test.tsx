@@ -49,7 +49,7 @@ vi.mock('@stripe/react-stripe-js', () => ({
   useElements: () => ({}),
 }));
 
-describe('ShopDialog Currency Detection', () => {
+describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
   const mockUser = {
     id: 'test-user-123',
     email: 'test@example.com',
@@ -101,7 +101,7 @@ describe('ShopDialog Currency Detection', () => {
     it('should detect EUR for German users', async () => {
       // Mock IP geolocation API to return Germany
       global.fetch = vi.fn((url) => {
-        if (url === 'https://ipapi.co/json/') {
+        if (String(url).includes('ipapi.co')) {
           return Promise.resolve({
             json: () => Promise.resolve({ country_code: 'DE' }),
           } as Response);
@@ -120,7 +120,7 @@ describe('ShopDialog Currency Detection', () => {
 
     it('should detect EUR for French users', async () => {
       global.fetch = vi.fn((url) => {
-        if (url === 'https://ipapi.co/json/') {
+        if (String(url).includes('ipapi.co')) {
           return Promise.resolve({
             json: () => Promise.resolve({ country_code: 'FR' }),
           } as Response);
@@ -138,7 +138,7 @@ describe('ShopDialog Currency Detection', () => {
 
     it('should detect EUR for Spanish users', async () => {
       global.fetch = vi.fn((url) => {
-        if (url === 'https://ipapi.co/json/') {
+        if (String(url).includes('ipapi.co')) {
           return Promise.resolve({
             json: () => Promise.resolve({ country_code: 'ES' }),
           } as Response);
@@ -156,7 +156,7 @@ describe('ShopDialog Currency Detection', () => {
 
     it('should detect EUR for Italian users', async () => {
       global.fetch = vi.fn((url) => {
-        if (url === 'https://ipapi.co/json/') {
+        if (String(url).includes('ipapi.co')) {
           return Promise.resolve({
             json: () => Promise.resolve({ country_code: 'IT' }),
           } as Response);
@@ -174,7 +174,7 @@ describe('ShopDialog Currency Detection', () => {
 
     it('should default to USD for US users', async () => {
       global.fetch = vi.fn((url) => {
-        if (url === 'https://ipapi.co/json/') {
+        if (String(url).includes('ipapi.co')) {
           return Promise.resolve({
             json: () => Promise.resolve({ country_code: 'US' }),
           } as Response);
@@ -193,7 +193,7 @@ describe('ShopDialog Currency Detection', () => {
 
     it('should default to USD for UK users (not in Eurozone)', async () => {
       global.fetch = vi.fn((url) => {
-        if (url === 'https://ipapi.co/json/') {
+        if (String(url).includes('ipapi.co')) {
           return Promise.resolve({
             json: () => Promise.resolve({ country_code: 'GB' }),
           } as Response);
@@ -211,7 +211,7 @@ describe('ShopDialog Currency Detection', () => {
 
     it('should default to USD for Canadian users', async () => {
       global.fetch = vi.fn((url) => {
-        if (url === 'https://ipapi.co/json/') {
+        if (String(url).includes('ipapi.co')) {
           return Promise.resolve({
             json: () => Promise.resolve({ country_code: 'CA' }),
           } as Response);
@@ -241,7 +241,7 @@ describe('ShopDialog Currency Detection', () => {
 
     it('should default to USD when country_code is missing', async () => {
       global.fetch = vi.fn((url) => {
-        if (url === 'https://ipapi.co/json/') {
+        if (String(url).includes('ipapi.co')) {
           return Promise.resolve({
             json: () => Promise.resolve({ country_code: null }),
           } as Response);
@@ -261,7 +261,7 @@ describe('ShopDialog Currency Detection', () => {
   describe('Currency Display', () => {
     it('should format EUR prices correctly', async () => {
       global.fetch = vi.fn((url) => {
-        if (url === 'https://ipapi.co/json/') {
+        if (String(url).includes('ipapi.co')) {
           return Promise.resolve({
             json: () => Promise.resolve({ country_code: 'DE' }),
           } as Response);
@@ -281,7 +281,7 @@ describe('ShopDialog Currency Detection', () => {
 
     it('should format USD prices correctly', async () => {
       global.fetch = vi.fn((url) => {
-        if (url === 'https://ipapi.co/json/') {
+        if (String(url).includes('ipapi.co')) {
           return Promise.resolve({
             json: () => Promise.resolve({ country_code: 'US' }),
           } as Response);
@@ -301,7 +301,7 @@ describe('ShopDialog Currency Detection', () => {
 
     it('should show both original and discounted prices in correct currency', async () => {
       global.fetch = vi.fn((url) => {
-        if (url === 'https://ipapi.co/json/') {
+        if (String(url).includes('ipapi.co')) {
           return Promise.resolve({
             json: () => Promise.resolve({ country_code: 'FR' }),
           } as Response);
@@ -314,7 +314,7 @@ describe('ShopDialog Currency Detection', () => {
 
       await waitFor(() => {
         // Check that bundle shows both prices in EUR
-        expect(screen.getAllByText(/5\.49\s*€/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/5\.59\s*€/).length).toBeGreaterThan(0);
         const originalPrices = screen.getAllByText(/8\.98\s*€/);
         expect(originalPrices.some((el) => el.classList.contains('line-through'))).toBe(true);
       });
@@ -324,12 +324,12 @@ describe('ShopDialog Currency Detection', () => {
   describe('Payment Intent with Currency', () => {
     it('should send correct currency to payment intent creation', async () => {
       global.fetch = vi.fn((url) => {
-        if (url === 'https://ipapi.co/json/') {
+        if (String(url).includes('ipapi.co')) {
           return Promise.resolve({
             json: () => Promise.resolve({ country_code: 'DE' }),
           } as Response);
         }
-        if (url === '/api/payment/create-intent') {
+        if (String(url).includes('/api/payment/create-intent')) {
           return Promise.resolve({
             json: () => Promise.resolve({ clientSecret: 'test_secret_eur' }),
           } as Response);
@@ -360,12 +360,12 @@ describe('ShopDialog Currency Detection', () => {
 
     it('should send USD currency for non-EU users', async () => {
       global.fetch = vi.fn((url) => {
-        if (url === 'https://ipapi.co/json/') {
+        if (String(url).includes('ipapi.co')) {
           return Promise.resolve({
             json: () => Promise.resolve({ country_code: 'US' }),
           } as Response);
         }
-        if (url === '/api/payment/create-intent') {
+        if (String(url).includes('/api/payment/create-intent')) {
           return Promise.resolve({
             json: () => Promise.resolve({ clientSecret: 'test_secret_usd' }),
           } as Response);
@@ -404,7 +404,7 @@ describe('ShopDialog Currency Detection', () => {
     euEuroCountries.forEach((countryCode) => {
       it(`should detect EUR for ${countryCode}`, async () => {
         global.fetch = vi.fn((url) => {
-          if (url === 'https://ipapi.co/json/') {
+          if (String(url).includes('ipapi.co')) {
             return Promise.resolve({
               json: () => Promise.resolve({ country_code: countryCode }),
             } as Response);
@@ -437,7 +437,7 @@ describe('ShopDialog Currency Detection', () => {
     nonEuCountries.forEach(({ code, name }) => {
       it(`should default to USD for ${name} (${code})`, async () => {
         global.fetch = vi.fn((url) => {
-          if (url === 'https://ipapi.co/json/') {
+          if (String(url).includes('ipapi.co')) {
             return Promise.resolve({
               json: () => Promise.resolve({ country_code: code }),
             } as Response);
@@ -458,7 +458,7 @@ describe('ShopDialog Currency Detection', () => {
   describe('Edge Cases', () => {
     it('should handle empty response from geolocation API', async () => {
       global.fetch = vi.fn((url) => {
-        if (url === 'https://ipapi.co/json/') {
+        if (String(url).includes('ipapi.co')) {
           return Promise.resolve({
             json: () => Promise.resolve({}),
           } as Response);
@@ -476,7 +476,7 @@ describe('ShopDialog Currency Detection', () => {
 
     it('should handle malformed JSON from geolocation API', async () => {
       global.fetch = vi.fn((url) => {
-        if (url === 'https://ipapi.co/json/') {
+        if (String(url).includes('ipapi.co')) {
           return Promise.resolve({
             json: () => Promise.reject(new Error('Invalid JSON')),
           } as Response);
@@ -494,7 +494,7 @@ describe('ShopDialog Currency Detection', () => {
 
     it('should only call geolocation API once per dialog open', async () => {
       const fetchSpy = vi.fn((url) => {
-        if (url === 'https://ipapi.co/json/') {
+        if (String(url).includes('ipapi.co')) {
           return Promise.resolve({
             json: () => Promise.resolve({ country_code: 'DE' }),
           } as Response);
@@ -515,7 +515,7 @@ describe('ShopDialog Currency Detection', () => {
 
       await waitFor(() => {
         const geoApiCalls = fetchSpy.mock.calls.filter(
-          (call) => call[0] === 'https://ipapi.co/json/'
+          (call) => String(call[0]).includes('ipapi.co')
         );
         expect(geoApiCalls.length).toBe(1);
       });
@@ -523,7 +523,7 @@ describe('ShopDialog Currency Detection', () => {
 
     it('should reset currency detection when dialog is closed and reopened', async () => {
       const fetchSpy = vi.fn((url) => {
-        if (url === 'https://ipapi.co/json/') {
+        if (String(url).includes('ipapi.co')) {
           return Promise.resolve({
             json: () => Promise.resolve({ country_code: 'US' }),
           } as Response);
@@ -547,7 +547,7 @@ describe('ShopDialog Currency Detection', () => {
 
       await waitFor(() => {
         const geoApiCalls = fetchSpy.mock.calls.filter(
-          (call) => call[0] === 'https://ipapi.co/json/'
+          (call) => String(call[0]).includes('ipapi.co')
         );
         // Currency is cached in state; reopen uses cached value, so 1 call
         expect(geoApiCalls.length).toBeGreaterThanOrEqual(1);

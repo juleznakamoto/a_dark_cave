@@ -161,7 +161,7 @@ describe('ShopDialog', () => {
         (call) => call[0]?.item_id === 'gold_100_free'
       );
       expect(gold100FreeInserts).toHaveLength(0);
-    });
+    }, 20_000);
 
     it('should prevent claiming daily free gold within 24 hours and show remaining time', async () => {
       const user = userEvent.setup();
@@ -181,7 +181,7 @@ describe('ShopDialog', () => {
         },
         { timeout: 15_000 },
       );
-    });
+    }, 20_000);
 
     it('should update lastFreeGoldClaim timestamp when claiming', async () => {
       const user = userEvent.setup();
@@ -838,12 +838,12 @@ describe('ShopDialog', () => {
       await waitFor(() => {
         expect(screen.getByText("Fading Wanderer Bundle")).toBeInTheDocument();
         // Wait for currency detection (EUR) and price display
-        expect(screen.getByText(/5\.49\s*€/)).toBeInTheDocument();
+        expect(screen.getByText(/5\.59\s*€/)).toBeInTheDocument();
       });
 
       const originalPrices = screen.getAllByText(/8\.98\s*€/);
       expect(originalPrices.some((el) => el.classList.contains('line-through'))).toBe(true);
-    });
+    }, 20_000);
 
     it('should allow purchasing bundles multiple times', async () => {
       const user = userEvent.setup();

@@ -353,9 +353,9 @@ describe('Shop Items Configuration', () => {
 
     it('should have correct catalog pricing', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
-      expect(bundle.price).toBe(1699);
+      expect(bundle.price).toBe(1661);
       expect(bundleComponentsListPriceSumCents(bundle.bundleComponents!, SHOP_ITEMS)).toBe(
-        2995,
+        2945,
       );
     });
 

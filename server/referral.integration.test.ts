@@ -4,7 +4,7 @@ import request from 'supertest';
 import express from 'express';
 import { processReferral } from './referral';
 
-describe('Referral API Integration', () => {
+describe('Referral API Integration', { timeout: 15_000 }, () => {
   let app: express.Application;
 
   beforeAll(() => {

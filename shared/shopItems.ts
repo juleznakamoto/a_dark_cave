@@ -192,7 +192,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "artifact_bundle",
     name: "Dark Artifacts Bundle",
     description: "Uncover dark forgotten truths with the Skull Lantern, Tarnished Compass, and Crow Harness",
-    price: 769, // 7.69 €
+    price: 739, // 7.39 €
     rewards: {
       tools: ["skull_lantern", "crow_harness"],
       relics: ["tarnished_compass"],
@@ -255,8 +255,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Skull Lantern",
     description:
       "Forged from cursed bone illuminating the deepest depths. Unlocks Skull Lantern storyline.",
-    originalPrice: 349,
-    price: 259, // 2.59 €
+    originalPrice: 399,
+    price: 299, // 2.99 €
     rewards: {
       tools: ["skull_lantern"],
     },
@@ -291,8 +291,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Crow Harness",
     description:
       "Specially crafted harness for messenger crows. Unlocks Crow storyline. Adds Fellowship Member.",
-    originalPrice: 499,
-    price: 369, // 3.69 €
+    originalPrice: 399,
+    price: 299, // 2.99 €
     rewards: {
       tools: ["crow_harness"],
     },

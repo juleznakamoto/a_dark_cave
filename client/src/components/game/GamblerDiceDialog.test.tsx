@@ -48,6 +48,10 @@ vi.mock("@/components/ui/dialog", () => ({
   ),
 }));
 
+vi.mock("@/game/save", () => ({
+  saveGame: vi.fn().mockResolvedValue(undefined),
+}));
+
 import GamblerDiceDialog from "./GamblerDiceDialog";
 import { useGameStore } from "@/game/state";
 import { GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY } from "@/game/gamblerSession";
@@ -78,8 +82,6 @@ describe("GamblerDiceDialog", () => {
         dispatchEvent: vi.fn(),
       })),
     });
-
-    vi.restoreAllMocks();
   });
 
   afterEach(() => {

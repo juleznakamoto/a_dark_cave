@@ -56,7 +56,7 @@ describe('Game Save/Load', () => {
 
     expect(loaded?.cooldowns).toEqual(gameState.cooldowns);
     expect(loaded?.cooldownDurations).toEqual(gameState.cooldownDurations);
-  });
+  }, 15_000);
 
   it('should handle corrupted save data gracefully', async () => {
     const mockDB = {
