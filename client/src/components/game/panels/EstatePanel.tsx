@@ -724,12 +724,11 @@ export default function EstatePanel() {
                     buttonId="upgrade-bloodflame-sphere"
                     onUpgrade={handleBloodflameSphereUpgrade}
                     tooltipContent={<>
-                      {nxt?.damage > cur?.damage && <div>+{nxt.damage - cur.damage} Damage</div>}
                       {nxt?.burnDamage > cur?.burnDamage && <div>+{nxt.burnDamage - cur.burnDamage} Burn Damage</div>}
                       {nxt?.burnRounds > cur?.burnRounds && <div>+{nxt.burnRounds - cur.burnRounds} Burn Round</div>}
                       {nxt?.healthCost > cur?.healthCost && <div>+{nxt.healthCost - cur.healthCost} Health Cost</div>}
                     </>}
-                    description={`${cur.damage} Damage, ${cur.burnDamage} Burn Damage × ${cur.burnRounds} Round${cur.burnRounds > 1 ? "s" : ""}, ${cur.healthCost} Health Cost`}
+                    description={`${cur.burnDamage} Damage on cast and for ${cur.burnRounds} Round${cur.burnRounds > 1 ? "s" : ""}, ${cur.healthCost} Health Cost`}
                   />
                 );
               })()}

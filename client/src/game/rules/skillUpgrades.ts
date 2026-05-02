@@ -14,7 +14,6 @@ export const CRUSHING_STRIKE_UPGRADES = [
 export const BLOODFLAME_SPHERE_UPGRADES = [
   {
     level: 0,
-    damage: 10,
     burnDamage: 10,
     burnRounds: 1,
     healthCost: 10,
@@ -23,7 +22,6 @@ export const BLOODFLAME_SPHERE_UPGRADES = [
   },
   {
     level: 1,
-    damage: 15,
     burnDamage: 15,
     burnRounds: 1,
     healthCost: 10,
@@ -41,7 +39,6 @@ export const BLOODFLAME_SPHERE_UPGRADES = [
   },
   {
     level: 3,
-    damage: 25,
     burnDamage: 25,
     burnRounds: 2,
     healthCost: 20,
@@ -59,7 +56,6 @@ export const BLOODFLAME_SPHERE_UPGRADES = [
   },
   {
     level: 5,
-    damage: 35,
     burnDamage: 35,
     burnRounds: 3,
     healthCost: 20,

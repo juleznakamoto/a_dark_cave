@@ -162,11 +162,11 @@ export const actionChartConfig: AchievementChartConfig = {
     [
       {
         segmentId: "3-emberBombs",
-        maxCount: 25,
+        maxCount: 20,
         label: "Ember Bombs Crafter",
         reward: 500,
         getCount: (state: GameState) =>
-          Math.min(Number(state.story?.seen?.emberBombsCrafted) || 0, 25),
+          Math.min(Number(state.story?.seen?.emberBombsCrafted) || 0, 20),
       },
       {
         segmentId: "3-ashfireBombs",

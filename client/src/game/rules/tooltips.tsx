@@ -671,7 +671,7 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
     getContent: (state) => {
       const level = state.combatSkills.bloodflameSphereLevel ?? 0;
       const config = BLOODFLAME_SPHERE_UPGRADES[level];
-      return `Damage: ${config.damage}\nBurn: ${config.burnDamage}×${config.burnRounds} round${config.burnRounds > 1 ? "s" : ""}\nHealth Cost: ${config.healthCost}`;
+      return `Damage: ${config.burnDamage} on cast and each round for (${config.burnRounds} round${config.burnRounds > 1 ? "s" : ""})\nHealth Cost: ${config.healthCost}`;
     },
   },
 };

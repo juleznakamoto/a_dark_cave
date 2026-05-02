@@ -341,10 +341,9 @@ export default function CombatDialog({
       return;
     }
 
-    // Apply immediate base damage
     const newEnemyHealth = Math.max(
       0,
-      (currentEnemy?.currentHealth || 0) - config.damage,
+      (currentEnemy?.currentHealth || 0) - config.burnDamage,
     );
 
     // Set burn effect for subsequent rounds
@@ -360,7 +359,7 @@ export default function CombatDialog({
     // Show damage indicator on enemy health bar
     setPlayerStrikeFailed(false);
     setWasCriticalStrike(false);
-    showEnemyDamage(config.damage);
+    showEnemyDamage(config.burnDamage);
 
     // Check if enemy is defeated
     if (newEnemyHealth <= 0) {
