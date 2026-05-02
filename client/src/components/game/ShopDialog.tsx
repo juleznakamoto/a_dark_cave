@@ -32,6 +32,7 @@ import { getCurrentUser } from "@/game/auth";
 import {
   GREAT_FEAST_DURATION_MS,
   SHOP_ITEMS,
+  type ShopItem,
 } from "../../../../shared/shopItems";
 import { getDiscountedShopPriceCents } from "../../../../shared/shopCheckoutPrice";
 import { tailwindToHex } from "@/lib/tailwindColors";
@@ -96,6 +97,41 @@ function purchaseIdToItemId(purchaseId: string): string | null {
   }
   // Numeric or other: single suffix segment
   return parts.slice(0, -1).join("-") || null;
+}
+
+/** Sum of each bundle component's list price (`originalPrice`, else `price`). */
+function bundleComponentsListPriceSumCents(componentIds: string[]): number {
+  return componentIds.reduce((total, id) => {
+    const c = SHOP_ITEMS[id];
+    return total + (c?.originalPrice ?? c?.price ?? 0);
+  }, 0);
+}
+
+/**
+ * Rounded % saved vs list price for the shop card badge.
+ * Bundles: compare bundle `price` to the sum of each component's list price (so catalog/Beta savings on parts are included).
+ * Other paid items: compare `price` to `originalPrice`.
+ */
+function shopListDiscountPercent(item: ShopItem): number | null {
+  if (item.price <= 0) return null;
+  if (item.bundleComponents && item.bundleComponents.length > 0) {
+    const listSum = bundleComponentsListPriceSumCents(item.bundleComponents);
+    if (listSum <= 0 || item.price >= listSum) return null;
+    return Math.round(((listSum - item.price) / listSum) * 100);
+  }
+  const list = item.originalPrice;
+  if (list === undefined || list <= 0 || item.price >= list) return null;
+  return Math.round(((list - item.price) / list) * 100);
+}
+
+/** Strikethrough list price on the card: bundles use summed component list prices; others use `originalPrice`. */
+function shopCardStrikethroughListCents(item: ShopItem): number | null {
+  if (item.bundleComponents && item.bundleComponents.length > 0) {
+    const sum = bundleComponentsListPriceSumCents(item.bundleComponents);
+    return sum > 0 ? sum : null;
+  }
+  const o = item.originalPrice;
+  return o !== undefined && o > 0 ? o : null;
 }
 
 // EU countries with Euro as main currency
@@ -1177,11 +1213,20 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 )}
                               </CardTitle>
                               <CardDescription className="!m-0 text-bold flex flex-wrap items-center gap-1">
-                                {item.originalPrice && (
-                                  <span className="text-xs line-through text-muted-foreground mr-1">
-                                    {formatPrice(item.originalPrice)}
-                                  </span>
-                                )}
+                                {(() => {
+                                  const listCents = shopCardStrikethroughListCents(item);
+                                  if (
+                                    listCents === null ||
+                                    (item.price > 0 && listCents <= item.price)
+                                  ) {
+                                    return null;
+                                  }
+                                  return (
+                                    <span className="text-xs line-through text-muted-foreground mr-1">
+                                      {formatPrice(listCents)}
+                                    </span>
+                                  );
+                                })()}
                                 {(() => {
                                   const tradersGratitudeActive =
                                     gameState.tradersGratitudeState?.accepted === true;
@@ -1310,15 +1355,21 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     </>
                                   );
                                 })()}
-                                {item.bundleComponents && item.bundleComponents.length > 0 && (() => {
-                                  const componentsCost = item.bundleComponents.reduce((total, componentId) => {
-                                    return total + SHOP_ITEMS[componentId].price;
-                                  }, 0);
-                                  const savings = componentsCost - item.price;
-                                  const savingsPercent = Math.round((savings / componentsCost) * 100);
+                                {(() => {
+                                  const pct = shopListDiscountPercent(item);
+                                  if (pct === null || pct <= 0) return null;
+                                  const isBundle =
+                                    item.category === "bundle" &&
+                                    !!item.bundleComponents?.length;
                                   return (
-                                    <span className="ml-2 px-1 py-[1px] text-xs text-green-600 font-semibold border border-green-800 rounded bg-green-950/50">
-                                      - {savingsPercent}%
+                                    <span
+                                      className={
+                                        isBundle
+                                          ? "ml-2 px-1 py-[1px] text-xs text-green-600 font-semibold border border-green-800 rounded bg-green-950/50"
+                                          : "ml-2 px-1 py-[1px] text-xs text-muted-foreground font-medium border border-muted-foreground/30 rounded bg-muted/30"
+                                      }
+                                    >
+                                      - {pct}%
                                     </span>
                                   );
                                 })()}
