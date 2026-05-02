@@ -247,7 +247,8 @@ function CheckoutForm({
           // Payment succeeded on Stripe but server verification failed (e.g. DB error).
           // Do NOT release discount reservation - user was charged; requires manual intervention.
           setErrorMessage(
-            result.error || "Payment verification failed. Please contact support."
+            result.error ||
+              "Payment verification failed. Please contact support.",
           );
         }
         setIsProcessing(false);
@@ -282,7 +283,8 @@ function CheckoutForm({
 
       <div className="space-y-2 border-t pt-4 mt-4">
         <p className="text-[11px] text-muted-foreground">
-          By purchasing, you consent to immediate delivery of digital content and waive your right of withdrawal. For more information, see our{" "}
+          By purchasing, you consent to immediate delivery of digital content
+          and waive your right of withdrawal. For more information, see our{" "}
           <a
             href="/terms"
             target="_blank"
@@ -343,7 +345,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const [purchasedItems, setPurchasedItems] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"shop" | "purchases">("shop");
-  const [selectedFilter, setSelectedFilter] = useState<"gold" | "artifacts" | "boosts" | "bundles" | null>(null);
+  const [selectedFilter, setSelectedFilter] = useState<
+    "gold" | "artifacts" | "boosts" | "bundles" | null
+  >(null);
   const [currentUser, setCurrentUser] = useState<{
     id: string;
     email: string;
@@ -766,7 +770,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         if (componentItem?.rewards.feastActivations) {
           // Find the latest purchase for this component
           const allMatchingPurchases = updatedPurchasedItems.filter(
-            (pid) => purchaseIdToItemId(pid) === componentId
+            (pid) => purchaseIdToItemId(pid) === componentId,
           );
 
           const componentPurchaseId = allMatchingPurchases.pop();
@@ -826,7 +830,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         message: isCurrentlyActivated
           ? "Cruel Mode deactivated. New games will use normal difficulty."
           : item.activationMessage ||
-          "Cruel Mode activated! Start a new game to experience the ultimate challenge.",
+            "Cruel Mode activated! Start a new game to experience the ultimate challenge.",
         timestamp: Date.now(),
         type: "system",
       });
@@ -999,7 +1003,13 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             )}
 
             {!isLoading && (
-              <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "shop" | "purchases")} className="w-full">
+              <Tabs
+                value={activeTab}
+                onValueChange={(value) =>
+                  setActiveTab(value as "shop" | "purchases")
+                }
+                className="w-full"
+              >
                 <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="shop">For Sale</TabsTrigger>
                   <TabsTrigger value="purchases" disabled={!currentUser}>
@@ -1010,22 +1020,26 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 <TabsContent value="shop" className="mt-3">
                   <ScrollAreaWithIndicator
                     className={
-                      !currentUser ? "h-[calc(80vh-260px)]" : "h-[calc(80vh-180px)]"
+                      !currentUser
+                        ? "h-[calc(80vh-260px)]"
+                        : "h-[calc(80vh-180px)]"
                     }
                     scrollAreaId="shop-for-sale"
                   >
                     {" "}
                     <div className="pb-3 text-muted-foreground text-sm">
                       <p className="text-md font-medium">
-                        All in-game purchases are currently ~25 % discounted during Beta
-                        phase. Bundles offer additional savings. Purchases can be reused in every playthrough.
+                        All in-game purchases are currently ~25 % discounted
+                        during Beta phase. Bundles offer additional savings.
+                        Purchases can be reused in every playthrough.
                       </p>
                     </div>
-
                     {/* Filter Chips */}
                     <div className="flex flex-wrap gap-1.5 mb-3">
                       <Button
-                        variant={selectedFilter === null ? "default" : "outline"}
+                        variant={
+                          selectedFilter === null ? "default" : "outline"
+                        }
                         size="xs"
                         onClick={() => setSelectedFilter(null)}
                         className="h-6 text-xs"
@@ -1033,7 +1047,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         All
                       </Button>
                       <Button
-                        variant={selectedFilter === "gold" ? "default" : "outline"}
+                        variant={
+                          selectedFilter === "gold" ? "default" : "outline"
+                        }
                         size="xs"
                         onClick={() => setSelectedFilter("gold")}
                         className="h-6 text-xs"
@@ -1041,7 +1057,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         Gold
                       </Button>
                       <Button
-                        variant={selectedFilter === "artifacts" ? "default" : "outline"}
+                        variant={
+                          selectedFilter === "artifacts" ? "default" : "outline"
+                        }
                         size="xs"
                         onClick={() => setSelectedFilter("artifacts")}
                         className="h-6 text-xs"
@@ -1049,7 +1067,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         Artifacts
                       </Button>
                       <Button
-                        variant={selectedFilter === "boosts" ? "default" : "outline"}
+                        variant={
+                          selectedFilter === "boosts" ? "default" : "outline"
+                        }
                         size="xs"
                         onClick={() => setSelectedFilter("boosts")}
                         className="h-6 text-xs"
@@ -1057,7 +1077,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         Boosts
                       </Button>
                       <Button
-                        variant={selectedFilter === "bundles" ? "default" : "outline"}
+                        variant={
+                          selectedFilter === "bundles" ? "default" : "outline"
+                        }
                         size="xs"
                         onClick={() => setSelectedFilter("bundles")}
                         className="h-6 text-xs"
@@ -1065,26 +1087,29 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         Bundles
                       </Button>
                     </div>
-
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                       {Object.values(SHOP_ITEMS)
                         .filter((item) => {
                           // Hide full_game item when BTP=0
-                          if (item.id === 'full_game' && gameState.BTP === 0) {
+                          if (item.id === "full_game" && gameState.BTP === 0) {
                             return false;
                           }
 
                           // Apply filter based on selectedFilter
                           if (selectedFilter === "gold") {
                             // Gold items are resources with gold rewards
-                            return item.category === "resource" &&
-                              item.rewards.resources?.gold !== undefined;
+                            return (
+                              item.category === "resource" &&
+                              item.rewards.resources?.gold !== undefined
+                            );
                           }
                           if (selectedFilter === "artifacts") {
                             // Artifacts are tools, weapons, or relics
-                            return item.category === "tool" ||
+                            return (
+                              item.category === "tool" ||
                               item.category === "weapon" ||
-                              item.category === "relic";
+                              item.category === "relic"
+                            );
                           }
                           if (selectedFilter === "boosts") {
                             // Boosts include Great Feasts and other boost items
@@ -1158,7 +1183,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         </div>
                                         <div className="mt-1 space-y-0.5">
                                           <div>+5 Luck</div>
-                                          <div>10% chance to double gains from all actions</div>
+                                          <div>
+                                            10% chance to double gains from all
+                                            actions
+                                          </div>
                                         </div>
                                       </div>
                                     }
@@ -1207,7 +1235,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                               </CardTitle>
                               <CardDescription className="!m-0 text-bold flex flex-wrap items-center gap-1">
                                 {(() => {
-                                  const listCents = shopCardStrikethroughListCents(item);
+                                  const listCents =
+                                    shopCardStrikethroughListCents(item);
                                   if (
                                     listCents === null ||
                                     (item.price > 0 && listCents <= item.price)
@@ -1222,40 +1251,55 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 })()}
                                 {(() => {
                                   const tradersGratitudeActive =
-                                    gameState.tradersGratitudeState?.accepted === true;
+                                    gameState.tradersGratitudeState
+                                      ?.accepted === true;
                                   const tradersSonGratitudeActive =
-                                    gameState.tradersSonGratitudeState?.accepted ===
-                                    true;
+                                    gameState.tradersSonGratitudeState
+                                      ?.accepted === true;
                                   const playlightFirstPurchaseActive =
                                     gameState.story?.seen
-                                      ?.playlightFirstPurchaseDiscountActive === true &&
-                                    !gameState.hasMadeNonFreePurchase;
+                                      ?.playlightFirstPurchaseDiscountActive ===
+                                      true && !gameState.hasMadeNonFreePurchase;
                                   const displayPrice =
                                     item.price > 0
-                                      ? getDiscountedShopPriceCents(item.price, {
-                                        playlightFirstPurchase:
-                                          playlightFirstPurchaseActive,
-                                        tradersGratitude: tradersGratitudeActive,
-                                        tradersSonGratitude: tradersSonGratitudeActive,
-                                      })
+                                      ? getDiscountedShopPriceCents(
+                                          item.price,
+                                          {
+                                            playlightFirstPurchase:
+                                              playlightFirstPurchaseActive,
+                                            tradersGratitude:
+                                              tradersGratitudeActive,
+                                            tradersSonGratitude:
+                                              tradersSonGratitudeActive,
+                                          },
+                                        )
                                       : item.price;
                                   const tradersOnlyCents =
                                     item.price > 0
-                                      ? getDiscountedShopPriceCents(item.price, {
-                                        tradersGratitude: true,
-                                      })
+                                      ? getDiscountedShopPriceCents(
+                                          item.price,
+                                          {
+                                            tradersGratitude: true,
+                                          },
+                                        )
                                       : item.price;
                                   const sonOnlyCents =
                                     item.price > 0
-                                      ? getDiscountedShopPriceCents(item.price, {
-                                        tradersSonGratitude: true,
-                                      })
+                                      ? getDiscountedShopPriceCents(
+                                          item.price,
+                                          {
+                                            tradersSonGratitude: true,
+                                          },
+                                        )
                                       : item.price;
                                   const playlightOnlyCents =
                                     item.price > 0
-                                      ? getDiscountedShopPriceCents(item.price, {
-                                        playlightFirstPurchase: true,
-                                      })
+                                      ? getDiscountedShopPriceCents(
+                                          item.price,
+                                          {
+                                            playlightFirstPurchase: true,
+                                          },
+                                        )
                                       : item.price;
                                   const discounted =
                                     item.price > 0 && displayPrice < item.price;
@@ -1328,8 +1372,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         <TooltipWrapper
                                           tooltip={
                                             <div className="text-xs">
-                                              10% additional discount for your first
-                                              real-money purchase as a Playlight player.
+                                              10% additional discount for your
+                                              first real-money purchase as a
+                                              Playlight player.
                                             </div>
                                           }
                                           tooltipId={`playlight-discount-${item.id}`}
@@ -1358,8 +1403,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     <span
                                       className={
                                         isBundle
-                                          ? "ml-2 px-1 py-[1px] text-xs text-green-500 font-medium border border-green-500 rounded bg-green-950/50"
-                                          : "ml-2 px-1 py-[1px] text-xs text-gray-200/70 font-medium border border-gray-200/70 rounded bg-gray-300/10"
+                                          ? "ml-1 px-1 py-[1px] text-xs text-green-500 font-medium border border-green-500 rounded bg-green-950/50"
+                                          : "ml-1 px-1 py-[1px] text-xs text-gray-200/70 font-medium border border-gray-200/70 rounded bg-gray-300/10"
                                       }
                                     >
                                       - {pct}%
@@ -1381,12 +1426,13 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   (item.id === "gold_100_free" &&
                                     (Date.now() -
                                       (gameState.lastFreeGoldClaim || 0)) /
-                                    (1000 * 60 * 60) <
-                                    24) ||
+                                      (1000 * 60 * 60) <
+                                      24) ||
                                   (item.id !== "gold_100_free" &&
                                     !item.canPurchaseMultipleTimes &&
                                     purchasedItems.some(
-                                      (pid) => purchaseIdToItemId(pid) === item.id
+                                      (pid) =>
+                                        purchaseIdToItemId(pid) === item.id,
                                     ))
                                 }
                                 className="h-8 md:h-10 w-full"
@@ -1394,25 +1440,27 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                               >
                                 {item.id === "gold_100_free"
                                   ? (Date.now() -
-                                    (gameState.lastFreeGoldClaim || 0)) /
-                                    (1000 * 60 * 60) <
+                                      (gameState.lastFreeGoldClaim || 0)) /
+                                      (1000 * 60 * 60) <
                                     24
                                     ? (() => {
-                                      const hoursRemaining = Math.ceil(
-                                        24 -
-                                        (Date.now() -
-                                          (gameState.lastFreeGoldClaim || 0)) /
-                                        (1000 * 60 * 60),
-                                      );
-                                      return hoursRemaining === 1
-                                        ? "Available in 1 hour"
-                                        : `Available in ${hoursRemaining} hours`;
-                                    })()
+                                        const hoursRemaining = Math.ceil(
+                                          24 -
+                                            (Date.now() -
+                                              (gameState.lastFreeGoldClaim ||
+                                                0)) /
+                                              (1000 * 60 * 60),
+                                        );
+                                        return hoursRemaining === 1
+                                          ? "Available in 1 hour"
+                                          : `Available in ${hoursRemaining} hours`;
+                                      })()
                                     : "Claim"
                                   : !item.canPurchaseMultipleTimes &&
-                                    purchasedItems.some(
-                                      (pid) => purchaseIdToItemId(pid) === item.id
-                                    )
+                                      purchasedItems.some(
+                                        (pid) =>
+                                          purchaseIdToItemId(pid) === item.id,
+                                      )
                                     ? item.price === 0
                                       ? "Already Claimed"
                                       : "Already Purchased"
@@ -1433,20 +1481,23 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 <TabsContent value="purchases" className="mt-4">
                   <ScrollAreaWithIndicator
                     className={
-                      !currentUser ? "h-[calc(80vh-250px)]" : "h-[calc(80vh-180px)]"
+                      !currentUser
+                        ? "h-[calc(80vh-250px)]"
+                        : "h-[calc(80vh-180px)]"
                     }
                     scrollAreaId="shop-purchases"
                   >
                     {purchasedItems.length === 0 &&
-                      Object.keys(gameState.feastActivations || {}).length === 0 ? ( // Changed feastPurchases to feastActivations
+                    Object.keys(gameState.feastActivations || {}).length ===
+                      0 ? ( // Changed feastPurchases to feastActivations
                       <div className="text-center py-8 text-muted-foreground">
                         No purchases yet. Visit the For Sale tab to buy items.
                       </div>
                     ) : (
                       <div className="pr-4">
                         <p className="text-sm text-muted-foreground mb-4">
-                          Activate your purchases to receive rewards. Each purchase
-                          can be activated once per game.
+                          Activate your purchases to receive rewards. Each
+                          purchase can be activated once per game.
                         </p>
                         <div className="space-y-2">
                           {Object.entries(gameState.feastActivations || {}).map(
@@ -1476,7 +1527,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   <div className="flex flex-col">
                                     <span className="text-sm font-medium">
                                       {item.name} ({activationsRemaining}/
-                                      {item.rewards.feastActivations!} available){" "}
+                                      {item.rewards.feastActivations!}{" "}
+                                      available){" "}
                                       {/* Display remaining activations */}
                                     </span>
                                     <span className="text-xs text-muted-foreground">
@@ -1497,7 +1549,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     size="sm"
                                     variant={
                                       isGreatFeastActive ||
-                                        activationsRemaining <= 0
+                                      activationsRemaining <= 0
                                         ? "outline"
                                         : "default"
                                     }
@@ -1550,7 +1602,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                       {item.name}
                                       {isCruelModeItem && (
                                         <span className="text-md  font-medium ml-2">
-                                          (to play activate and start a new game)
+                                          (to play activate and start a new
+                                          game)
                                         </span>
                                       )}
                                     </span>
@@ -1564,7 +1617,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     }
                                     disabled={!isCruelModeItem && isActivated}
                                     size="sm"
-                                    variant={isActivated ? "outline" : "default"}
+                                    variant={
+                                      isActivated ? "outline" : "default"
+                                    }
                                     button_id={`shop-activate-${itemId}`}
                                   >
                                     {isCruelModeItem
@@ -1613,41 +1668,41 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     onSuccess={handlePurchaseSuccess}
                     currency={currency}
                     onCancel={handleCancelPayment}
-                    displayPriceCents={
-                      (() => {
-                        const item = SHOP_ITEMS[selectedItem];
-                        const tradersGratitudeActive =
-                          gameState.tradersGratitudeState?.accepted === true;
-                        const tradersSonGratitudeActive =
-                          gameState.tradersSonGratitudeState?.accepted === true;
-                        const playlightActive =
-                          gameState.story?.seen
-                            ?.playlightFirstPurchaseDiscountActive === true &&
-                          !gameState.hasMadeNonFreePurchase;
-                        return getDiscountedShopPriceCents(item?.price ?? 0, {
-                          playlightFirstPurchase: !!(
-                            item &&
-                            item.price > 0 &&
-                            playlightActive
-                          ),
-                          tradersGratitude: !!(
-                            item &&
-                            item.price > 0 &&
-                            tradersGratitudeActive
-                          ),
-                          tradersSonGratitude: !!(
-                            item &&
-                            item.price > 0 &&
-                            tradersSonGratitudeActive
-                          ),
-                        });
-                      })()
-                    }
+                    displayPriceCents={(() => {
+                      const item = SHOP_ITEMS[selectedItem];
+                      const tradersGratitudeActive =
+                        gameState.tradersGratitudeState?.accepted === true;
+                      const tradersSonGratitudeActive =
+                        gameState.tradersSonGratitudeState?.accepted === true;
+                      const playlightActive =
+                        gameState.story?.seen
+                          ?.playlightFirstPurchaseDiscountActive === true &&
+                        !gameState.hasMadeNonFreePurchase;
+                      return getDiscountedShopPriceCents(item?.price ?? 0, {
+                        playlightFirstPurchase: !!(
+                          item &&
+                          item.price > 0 &&
+                          playlightActive
+                        ),
+                        tradersGratitude: !!(
+                          item &&
+                          item.price > 0 &&
+                          tradersGratitudeActive
+                        ),
+                        tradersSonGratitude: !!(
+                          item &&
+                          item.price > 0 &&
+                          tradersSonGratitudeActive
+                        ),
+                      });
+                    })()}
                   />
                 </Elements>
               ) : (
                 <div className="flex justify-center py-8">
-                  <div className="text-muted-foreground">Loading payment system...</div>
+                  <div className="text-muted-foreground">
+                    Loading payment system...
+                  </div>
                 </div>
               )}
             </div>
