@@ -32,6 +32,7 @@ import { getCurrentUser } from "@/game/auth";
 import {
   GREAT_FEAST_DURATION_MS,
   SHOP_ITEMS,
+  bundleComponentsListPriceSumCents,
   type ShopItem,
 } from "../../../../shared/shopItems";
 import { getDiscountedShopPriceCents } from "../../../../shared/shopCheckoutPrice";
@@ -97,14 +98,6 @@ function purchaseIdToItemId(purchaseId: string): string | null {
   }
   // Numeric or other: single suffix segment
   return parts.slice(0, -1).join("-") || null;
-}
-
-/** Sum of each bundle component's list price (`originalPrice`, else `price`). */
-function bundleComponentsListPriceSumCents(componentIds: string[]): number {
-  return componentIds.reduce((total, id) => {
-    const c = SHOP_ITEMS[id];
-    return total + (c?.originalPrice ?? c?.price ?? 0);
-  }, 0);
 }
 
 /**

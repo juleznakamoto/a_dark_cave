@@ -12,7 +12,8 @@ export interface ShopItem {
   name: string;
   description: string;
   price: number; // in cents
-  originalPrice?: number; // in cents, for showing crossed-out prices
+  /** List price for strikethrough (non-bundles). Bundles omit this; use `bundleComponentsListPriceSumCents`. */
+  originalPrice?: number; // in cents
   rewards: ShopItemRewards;
   canPurchaseMultipleTimes: boolean;
   category: "resource" | "weapon" | "tool" | "blessing" | "feast" | "bundle" | "relic";
@@ -173,7 +174,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "basic_survival_bundle",
     name: "Fading Wanderer Bundle",
     description: "Basic Bundle with 5'000 Gold and 1 Great Feast",
-    originalPrice: 749, // 10.99 €
     price: 549, // 5.49 €
     rewards: {
       resources: { gold: 5000 },
@@ -192,7 +192,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "artifact_bundle",
     name: "Dark Artifacts Bundle",
     description: "Uncover dark forgotten truths with the Skull Lantern, Tarnished Compass, and Crow Harness",
-    originalPrice: 999, // 14.99 €
     price: 759, // 7.59 €
     rewards: {
       tools: ["skull_lantern", "crow_harness"],
@@ -210,7 +209,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "advanced_bundle",
     name: "Pale King's Bundle",
     description: "Powerful Bundle with 20'000 Gold and 3 Great Feasts",
-    originalPrice: 1499, // 21.99 €
     price: 1099, // 10.99 €
     rewards: {
       resources: { gold: 20000 },
@@ -230,7 +228,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Ashen Throne Bundle",
     description:
       "Ultimate Bundle with 20'000 Gold, 3 Great Feasts, Skull Lantern, Tarnished Compass, and Crow Harness",
-    originalPrice: 2299, // $22.99
     price: 1699, // $16.99
     rewards: {
       resources: { gold: 20000 },
@@ -295,7 +292,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     description:
       "Specially crafted harness for messenger crows. Unlocks Crow storyline. Adds Fellowship Member.",
     originalPrice: 499,
-    price: 349, // 3.49 €
+    price: 359, // 3.59 €
     rewards: {
       tools: ["crow_harness"],
     },
@@ -307,3 +304,14 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-slate-400",
   },
 };
+
+/** Sum of each component's list price (`originalPrice`, else `price`). */
+export function bundleComponentsListPriceSumCents(
+  componentIds: string[],
+  catalog: Record<string, ShopItem> = SHOP_ITEMS,
+): number {
+  return componentIds.reduce((total, id) => {
+    const c = catalog[id];
+    return total + (c?.originalPrice ?? c?.price ?? 0);
+  }, 0);
+}

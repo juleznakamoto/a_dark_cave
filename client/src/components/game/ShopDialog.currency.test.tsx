@@ -315,7 +315,7 @@ describe('ShopDialog Currency Detection', () => {
       await waitFor(() => {
         // Check that bundle shows both prices in EUR
         expect(screen.getAllByText(/5\.49\s*€/).length).toBeGreaterThan(0);
-        const originalPrices = screen.getAllByText(/7\.49\s*€/);
+        const originalPrices = screen.getAllByText(/8\.98\s*€/);
         expect(originalPrices.some((el) => el.classList.contains('line-through'))).toBe(true);
       });
     });

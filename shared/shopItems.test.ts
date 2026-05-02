@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { SHOP_ITEMS } from './shopItems';
+import { SHOP_ITEMS, bundleComponentsListPriceSumCents } from './shopItems';
 
 describe('Shop Items Configuration', () => {
   describe('Item Structure', () => {
@@ -17,9 +17,17 @@ describe('Shop Items Configuration', () => {
     });
 
     it('should have valid prices', () => {
-      Object.values(SHOP_ITEMS).forEach(item => {
-        if (item.originalPrice) {
+      Object.values(SHOP_ITEMS).forEach((item) => {
+        if (item.originalPrice !== undefined) {
           expect(item.originalPrice).toBeGreaterThan(item.price);
+        }
+      });
+    });
+
+    it('should not set originalPrice on bundles (derived from bundleComponents)', () => {
+      Object.values(SHOP_ITEMS).forEach((item) => {
+        if (item.category === 'bundle') {
+          expect(item.originalPrice).toBeUndefined();
         }
       });
     });
@@ -122,17 +130,19 @@ describe('Shop Items Configuration', () => {
       expect(bundle.bundleComponents).toContain('great_feast_1');
     });
 
-    it('should have discounted bundle pricing', () => {
+    it('should have discounted bundle pricing vs summed component list prices', () => {
       const bundle = SHOP_ITEMS.basic_survival_bundle;
-      expect(bundle.originalPrice).toBeDefined();
-      expect(bundle.originalPrice).toBeGreaterThan(bundle.price);
+      const listSum = bundleComponentsListPriceSumCents(
+        bundle.bundleComponents!,
+        SHOP_ITEMS,
+      );
+      expect(listSum).toBeGreaterThan(bundle.price);
 
-      // Check that bundle is cheaper than buying components separately
-      const componentsCost = bundle.bundleComponents!.reduce((total, componentId) => {
+      const componentsSaleSum = bundle.bundleComponents!.reduce((total, componentId) => {
         return total + SHOP_ITEMS[componentId].price;
       }, 0);
 
-      expect(bundle.price).toBeLessThan(componentsCost);
+      expect(bundle.price).toBeLessThan(componentsSaleSum);
     });
 
     it('should allow bundle to be purchased multiple times', () => {
@@ -196,13 +206,15 @@ describe('Shop Items Configuration', () => {
       expect(bundle.price).toBeLessThan(individualPricesTotal);
     });
 
-    it('should have bundle with reasonable discount percentage', () => {
+    it('should have bundle with reasonable discount percentage vs list sum', () => {
       const bundle = SHOP_ITEMS.basic_survival_bundle;
-      const discountPercent = ((bundle.originalPrice! - bundle.price) / bundle.originalPrice!) * 100;
+      const listSum = bundleComponentsListPriceSumCents(
+        bundle.bundleComponents!,
+        SHOP_ITEMS,
+      );
+      const discountPercent = ((listSum - bundle.price) / listSum) * 100;
 
-      // Should have at least 10% discount to make bundle attractive
       expect(discountPercent).toBeGreaterThanOrEqual(10);
-      // But not more than 50% (too generous)
       expect(discountPercent).toBeLessThanOrEqual(50);
     });
 
@@ -252,7 +264,9 @@ describe('Shop Items Configuration', () => {
     it('should have correct pricing for advanced bundle', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
       expect(bundle.price).toBe(1099); // 10.99 €
-      expect(bundle.originalPrice).toBe(1499); // 14.99 €
+      expect(bundleComponentsListPriceSumCents(bundle.bundleComponents!, SHOP_ITEMS)).toBe(
+        SHOP_ITEMS.gold_20000.originalPrice! + SHOP_ITEMS.great_feast_3.originalPrice!,
+      );
     });
 
     it('should have correct rewards for advanced bundle', () => {
@@ -263,7 +277,11 @@ describe('Shop Items Configuration', () => {
 
     it('should have reasonable discount for advanced bundle', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
-      const discountPercent = ((bundle.originalPrice! - bundle.price) / bundle.originalPrice!) * 100;
+      const listSum = bundleComponentsListPriceSumCents(
+        bundle.bundleComponents!,
+        SHOP_ITEMS,
+      );
+      const discountPercent = ((listSum - bundle.price) / listSum) * 100;
 
       expect(discountPercent).toBeGreaterThanOrEqual(10);
       expect(discountPercent).toBeLessThanOrEqual(50);
@@ -336,7 +354,9 @@ describe('Shop Items Configuration', () => {
     it('should have correct catalog pricing', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
       expect(bundle.price).toBe(1699);
-      expect(bundle.originalPrice).toBe(2299);
+      expect(bundleComponentsListPriceSumCents(bundle.bundleComponents!, SHOP_ITEMS)).toBe(
+        2995,
+      );
     });
 
     it('should be cheaper than summed component prices and than the two bundles combined', () => {
@@ -366,8 +386,11 @@ describe('Shop Items Configuration', () => {
 
     it('should have reasonable strikethrough discount', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
-      const discountPercent =
-        ((bundle.originalPrice! - bundle.price) / bundle.originalPrice!) * 100;
+      const listSum = bundleComponentsListPriceSumCents(
+        bundle.bundleComponents!,
+        SHOP_ITEMS,
+      );
+      const discountPercent = ((listSum - bundle.price) / listSum) * 100;
       expect(discountPercent).toBeGreaterThanOrEqual(10);
       expect(discountPercent).toBeLessThanOrEqual(50);
     });

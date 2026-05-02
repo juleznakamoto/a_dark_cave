@@ -24,7 +24,7 @@ function getClaimButtonForItem(itemName: string): HTMLElement {
 import userEvent from '@testing-library/user-event';
 import { ShopDialog } from './ShopDialog';
 import { useGameStore } from '@/game/state';
-import { SHOP_ITEMS } from '@shared/shopItems';
+import { SHOP_ITEMS, bundleComponentsListPriceSumCents } from '@shared/shopItems';
 
 // Use vi.hoisted so mock is available when vi.mock factory runs
 const { mockSupabaseClient, mockGetCurrentUser, mockInsert } = vi.hoisted(() => {
@@ -826,7 +826,7 @@ describe('ShopDialog', () => {
         expect(screen.getByText(/5\.49\s*€/)).toBeInTheDocument();
       });
 
-      const originalPrices = screen.getAllByText(/7\.49\s*€/);
+      const originalPrices = screen.getAllByText(/8\.98\s*€/);
       expect(originalPrices.some((el) => el.classList.contains('line-through'))).toBe(true);
     });
 
@@ -1137,7 +1137,11 @@ describe('ShopDialog', () => {
 
   it('should have bundle with reasonable discount percentage', () => {
     const bundle = SHOP_ITEMS.basic_survival_bundle;
-    const discountPercent = ((bundle.originalPrice! - bundle.price) / bundle.originalPrice!) * 100;
+    const listSum = bundleComponentsListPriceSumCents(
+      bundle.bundleComponents!,
+      SHOP_ITEMS,
+    );
+    const discountPercent = ((listSum - bundle.price) / listSum) * 100;
 
     // Should have at least 20% discount to make bundle attractive
     expect(discountPercent).toBeGreaterThanOrEqual(20);
@@ -1164,9 +1168,9 @@ describe('ShopDialog', () => {
       expect(screen.getByText("Pale King's Bundle")).toBeInTheDocument();
     });
 
-    // Pale King's Bundle: 10.99 € (original 14.99 €)
+    // Pale King's Bundle: 10.99 € (list = sum of component list prices)
     expect(screen.getByText(/10\.99\s*€/)).toBeInTheDocument();
-    const originalPrice = screen.getByText(/14\.99\s*€/);
+    const originalPrice = screen.getByText(/17\.48\s*€/);
     expect(originalPrice).toHaveClass('line-through');
   });
 
