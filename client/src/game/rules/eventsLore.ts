@@ -601,7 +601,7 @@ export const loreEvents: Record<string, GameEvent> = {
     repeatable: false,
     title: "What He Kept",
     message:
-      "The restless knight finds you alone. 'There is one thing I never spoke of,' he says. 'I meant to spare everyone. But you might want to know it.'",
+      "The restless knight comes to you. 'There is one thing I never spoke of,' he says. 'I meant to spare everyone. But you might want to know it.'",
     priority: 3,
     showAsTimedTab: true,
     timedTabDuration: 5 * 60 * 1000,

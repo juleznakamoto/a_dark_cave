@@ -724,9 +724,9 @@ export function getEventChoiceCostBreakdown(
 
     for (const part of costParts) {
       // Match patterns like "250 gold", "+10 Food", "-5 wood"
-      const match = part.match(/[+-]?\s*(\d+)\s+([a-zA-Z_\s]+)/);
+      const match = part.match(/[+-]?\s*([\d']+)\s+([a-zA-Z_\s]+)/);
       if (match) {
-        const amount = parseInt(match[1]);
+        const amount = parseInt(match[1].replace(/'/g, ""), 10);
         const resource = match[2].trim().toLowerCase().replace(/\s+/g, '_');
 
         // Replace underscores with spaces and capitalize each word

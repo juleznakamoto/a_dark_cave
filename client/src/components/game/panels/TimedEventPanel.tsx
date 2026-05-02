@@ -363,7 +363,7 @@ export default function TimedEventPanel() {
   // Helper function to extract buy resource from label text
   const extractBuyResourceFromLabel = (labelText: string): string | null => {
     // Match patterns like "250 Food", "100 Wood", etc. (first resource in label)
-    const match = labelText.match(/\d+\s+([a-zA-Z\s]+)/);
+    const match = labelText.match(/[\d']+\s+([a-zA-Z\s]+)/);
     if (match) {
       return match[1].trim().toLowerCase().replace(/\s+/g, "_");
     }

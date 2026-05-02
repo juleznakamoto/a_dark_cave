@@ -1,5 +1,6 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
+import { formatNumber } from "@/lib/utils";
 
 interface FeastConfig {
   level: number;
@@ -91,8 +92,8 @@ function createFeastEvent(config: FeastConfig): GameEvent {
     choices: [
       {
         id: "makeFeast",
-        label: `Spend ${foodCost} Food`,
-        cost: `${foodCost} food`,
+        label: `Spend ${formatNumber(foodCost)} Food`,
+        cost: `${formatNumber(foodCost)} food`,
         effect: (
           state: GameState,
         ): Partial<GameState> & { _logMessage?: string } => {

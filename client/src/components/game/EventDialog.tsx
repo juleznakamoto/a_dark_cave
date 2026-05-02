@@ -306,9 +306,11 @@ export default function EventDialog({
                   const resourceKeys = Object.keys(gameState.resources) as Array<keyof typeof gameState.resources>;
                   for (const resourceKey of resourceKeys) {
                     if (costText.includes(resourceKey)) {
-                      const match = costText.match(new RegExp(`(\\d+)\\s*${resourceKey}`));
+                      const match = costText.match(
+                        new RegExp(`([\\d']+)\\s*${resourceKey}`),
+                      );
                       if (match) {
-                        const cost = parseInt(match[1]);
+                        const cost = parseInt(match[1].replace(/'/g, ""), 10);
                         if (gameState.resources[resourceKey] < cost) {
                           canAfford = false;
                           isDisabled = true;

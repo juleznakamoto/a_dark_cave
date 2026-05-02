@@ -771,9 +771,9 @@ function parseResourceText(
   text: string,
 ): { resource: string; amount: number } | null {
   // Match patterns like "250 gold", "+10 Food", "-5 wood"
-  const match = text.match(/[+-]?\s*(\d+)\s+([a-zA-Z_\s]+)/);
+  const match = text.match(/[+-]?\s*([\d']+)\s+([a-zA-Z_\s]+)/);
   if (match) {
-    const amount = parseInt(match[1]);
+    const amount = parseInt(match[1].replace(/'/g, ""), 10);
     const resource = match[2].trim().toLowerCase().replace(/\s+/g, "_");
     return { resource, amount };
   }
