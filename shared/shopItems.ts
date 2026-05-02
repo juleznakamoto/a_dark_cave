@@ -174,7 +174,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "basic_survival_bundle",
     name: "Fading Wanderer Bundle",
     description: "Basic Bundle with 5'000 Gold and 1 Great Feast",
-    price: 559, // 5.59 €
+    price: 649, // 6.49 €
     rewards: {
       resources: { gold: 5000 },
       feastActivations: 1,
@@ -192,7 +192,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "artifact_bundle",
     name: "Dark Artifacts Bundle",
     description: "Uncover dark forgotten truths with the Skull Lantern, Tarnished Compass, and Crow Harness",
-    price: 739, // 7.39 €
+    price: 749, // 7.49 €
     rewards: {
       tools: ["skull_lantern", "crow_harness"],
       relics: ["tarnished_compass"],
@@ -228,7 +228,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Ashen Throne Bundle",
     description:
       "Ultimate Bundle with 20'000 Gold, 3 Great Feasts, Skull Lantern, Tarnished Compass, and Crow Harness",
-    price: 1689, // $16.89
+    price: 1649, // $16.49
     rewards: {
       resources: { gold: 20000 },
       feastActivations: 3,
