@@ -122,6 +122,8 @@ function AchievementTabContent({
   const claimedAchievements = useGameStore(
     (s) => s.claimedAchievements || []
   );
+  /** Sleeper achievement tracks `totalFocusEarned`; without this selector only `claimedAchievements` triggers updates */
+  void useGameStore((s) => s.totalFocusEarned ?? 0);
   const rows = getAchievementRows(
     config,
     useGameStore.getState(),

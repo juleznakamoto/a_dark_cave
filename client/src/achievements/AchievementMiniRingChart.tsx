@@ -1,3 +1,4 @@
+import type { GameState } from "@shared/schema";
 import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { tailwindToHex } from "@/lib/tailwindColors";
@@ -24,6 +25,7 @@ export default function AchievementMiniRingChart({
 }: Props) {
   const state = useGameStore.getState();
   const claimedAchievements = useGameStore((s) => s.claimedAchievements || []);
+  void useGameStore((s) => s.totalFocusEarned ?? 0);
 
   const size = 58;
   const centerHoleRadius = 10; // Space for icon in center, rings start outside
@@ -62,7 +64,7 @@ export default function AchievementMiniRingChart({
 
             let currentStartAngle = startAngle;
             const progressSegments = ring.segments.map((seg) => {
-              const currentCount = hideProgress ? 0 : seg.getCount(state);
+              const currentCount = hideProgress ? 0 : seg.getCount(state as unknown as GameState);
               const segmentDegrees =
                 (totalDegrees * seg.maxCount) / totalMaxCount;
               const adjustedCount = currentCount === 1 ? 1.3 : currentCount;
