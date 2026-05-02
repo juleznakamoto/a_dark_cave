@@ -728,7 +728,7 @@ export default function EstatePanel() {
                       {nxt?.burnRounds > cur?.burnRounds && <div>+{nxt.burnRounds - cur.burnRounds} Burn Round</div>}
                       {nxt?.healthCost > cur?.healthCost && <div>+{nxt.healthCost - cur.healthCost} Health Cost</div>}
                     </>}
-                    description={`${cur.burnDamage} Damage on cast and for ${cur.burnRounds} Round${cur.burnRounds > 1 ? "s" : ""}, ${cur.healthCost} Health Cost`}
+                    description={`${cur.burnDamage} Damage on Cast and for ${cur.burnRounds} Round${cur.burnRounds > 1 ? "s" : ""}, ${cur.healthCost} Health Cost`}
                   />
                 );
               })()}
