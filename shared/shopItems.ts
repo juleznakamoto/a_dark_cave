@@ -39,7 +39,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     category: "resource",
     activationMessage: "100 Gold have been added to your inventory as a gift!",
     symbol: "⚵",
-    symbolColor: "text-sky-700",
+    symbolColor: "text-sky-600",
   },
 
   full_game: {
