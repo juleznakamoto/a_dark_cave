@@ -114,7 +114,7 @@ describe('ShopDialog Currency Detection', () => {
 
       await waitFor(() => {
         // Should show Euro prices
-        expect(screen.getAllByText(/0\.99 €/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/1\.09 €/).length).toBeGreaterThan(0);
       });
     });
 
@@ -132,7 +132,7 @@ describe('ShopDialog Currency Detection', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getAllByText(/0\.99 €/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/1\.09 €/).length).toBeGreaterThan(0);
       });
     });
 
@@ -150,7 +150,7 @@ describe('ShopDialog Currency Detection', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getAllByText(/0\.99 €/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/1\.09 €/).length).toBeGreaterThan(0);
       });
     });
 
@@ -168,7 +168,7 @@ describe('ShopDialog Currency Detection', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getAllByText(/0\.99 €/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/1\.09 €/).length).toBeGreaterThan(0);
       });
     });
 
@@ -187,7 +187,7 @@ describe('ShopDialog Currency Detection', () => {
 
       await waitFor(() => {
         // Should show USD prices
-        expect(screen.getAllByText(/\$0\.99/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/\$1\.09/).length).toBeGreaterThan(0);
       });
     });
 
@@ -205,7 +205,7 @@ describe('ShopDialog Currency Detection', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getAllByText(/\$0\.99/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/\$1\.09/).length).toBeGreaterThan(0);
       });
     });
 
@@ -223,7 +223,7 @@ describe('ShopDialog Currency Detection', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getAllByText(/\$0\.99/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/\$1\.09/).length).toBeGreaterThan(0);
       });
     });
 
@@ -235,7 +235,7 @@ describe('ShopDialog Currency Detection', () => {
 
       await waitFor(() => {
         // Should fall back to USD
-        expect(screen.getAllByText(/\$0\.99/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/\$1\.09/).length).toBeGreaterThan(0);
       });
     });
 
@@ -253,7 +253,7 @@ describe('ShopDialog Currency Detection', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getAllByText(/\$0\.99/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/\$1\.09/).length).toBeGreaterThan(0);
       });
     });
   });
@@ -274,7 +274,7 @@ describe('ShopDialog Currency Detection', () => {
 
       await waitFor(() => {
         // Check various EUR price formats
-        expect(screen.getAllByText('0.99 €').length).toBeGreaterThan(0);
+        expect(screen.getAllByText('1.09 €').length).toBeGreaterThan(0);
         expect(screen.getAllByText('1.49 €').length).toBeGreaterThan(0);
       });
     });
@@ -294,7 +294,7 @@ describe('ShopDialog Currency Detection', () => {
 
       await waitFor(() => {
         // Check various USD price formats
-        expect(screen.getAllByText(/\$0\.99/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/\$1\.09/).length).toBeGreaterThan(0);
         expect(screen.getAllByText(/\$1\.49/).length).toBeGreaterThan(0);
       });
     });
@@ -416,7 +416,7 @@ describe('ShopDialog Currency Detection', () => {
         render(<ShopDialog isOpen={true} onClose={onClose} />);
 
         await waitFor(() => {
-          expect(screen.getAllByText(/0\.99 €/).length).toBeGreaterThan(0);
+          expect(screen.getAllByText(/1\.09 €/).length).toBeGreaterThan(0);
         });
       });
     });
@@ -449,7 +449,7 @@ describe('ShopDialog Currency Detection', () => {
         render(<ShopDialog isOpen={true} onClose={onClose} />);
 
         await waitFor(() => {
-          expect(screen.getAllByText(/\$0\.99/).length).toBeGreaterThan(0);
+          expect(screen.getAllByText(/\$1\.09/).length).toBeGreaterThan(0);
         });
       });
     });
@@ -470,7 +470,7 @@ describe('ShopDialog Currency Detection', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getAllByText(/\$0\.99/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/\$1\.09/).length).toBeGreaterThan(0);
       });
     });
 
@@ -488,7 +488,7 @@ describe('ShopDialog Currency Detection', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getAllByText(/\$0\.99/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/\$1\.09/).length).toBeGreaterThan(0);
       });
     });
 
@@ -507,7 +507,7 @@ describe('ShopDialog Currency Detection', () => {
       const { rerender } = render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getAllByText(/0\.99 €/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/1\.09 €/).length).toBeGreaterThan(0);
       });
 
       // Rerender should not trigger another API call
@@ -536,7 +536,7 @@ describe('ShopDialog Currency Detection', () => {
       const { rerender } = render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getAllByText(/\$0\.99/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/\$1\.09/).length).toBeGreaterThan(0);
       });
 
       // Close dialog

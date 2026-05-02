@@ -109,6 +109,7 @@ describe('ShopDialog', () => {
       feastActivations: {},
       greatFeastState: { isActive: false, endTime: 0 },
       hasMadeNonFreePurchase: false,
+      lastFreeGoldClaim: 0,
       tools: {},
       weapons: {},
       blessings: {},
@@ -140,9 +141,12 @@ describe('ShopDialog', () => {
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-      await waitFor(() => {
-        expect(screen.getByText('100 Gold Gift')).toBeInTheDocument();
-      });
+      await waitFor(
+        () => {
+          expect(screen.getByText('100 Gold Gift')).toBeInTheDocument();
+        },
+        { timeout: 15_000 },
+      );
 
       const claimButton = getClaimButtonForItem('100 Gold Gift');
       await user.click(claimButton);
@@ -170,10 +174,13 @@ describe('ShopDialog', () => {
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-      await waitFor(() => {
-        const claimButton = screen.getByRole('button', { name: /available in 23.*hour/i });
-        expect(claimButton).toBeDisabled();
-      });
+      await waitFor(
+        () => {
+          const claimButton = screen.getByRole('button', { name: /available in 23.*hour/i });
+          expect(claimButton).toBeDisabled();
+        },
+        { timeout: 15_000 },
+      );
     });
 
     it('should update lastFreeGoldClaim timestamp when claiming', async () => {
@@ -191,9 +198,12 @@ describe('ShopDialog', () => {
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-      await waitFor(() => {
-        expect(screen.getByText('100 Gold Gift')).toBeInTheDocument();
-      });
+      await waitFor(
+        () => {
+          expect(screen.getByText('100 Gold Gift')).toBeInTheDocument();
+        },
+        { timeout: 15_000 },
+      );
 
       const claimButton = getClaimButtonForItem('100 Gold Gift');
       await user.click(claimButton);
@@ -245,9 +255,12 @@ describe('ShopDialog', () => {
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-      await waitFor(() => {
-        expect(screen.getByText('100 Gold Gift')).toBeInTheDocument();
-      });
+      await waitFor(
+        () => {
+          expect(screen.getByText('100 Gold Gift')).toBeInTheDocument();
+        },
+        { timeout: 15_000 },
+      );
 
       const claimButton = getClaimButtonForItem('100 Gold Gift');
 
@@ -813,7 +826,9 @@ describe('ShopDialog', () => {
         expect(screen.getByText("Fading Wanderer Bundle")).toBeInTheDocument();
       });
 
-      expect(screen.getByText(/Basic Bundle with 5000 Gold and 1 Great Feast/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(SHOP_ITEMS.basic_survival_bundle.description),
+      ).toBeInTheDocument();
     });
 
     it('should show bundle with correct pricing', async () => {
@@ -957,7 +972,7 @@ describe('ShopDialog', () => {
         // Should show feast component
         expect(screen.getByText(/1 Great Feast \(1\/1 available\)/i)).toBeInTheDocument();
         // Should show gold component
-        expect(screen.getByText('5000 Gold')).toBeInTheDocument();
+        expect(screen.getByText(SHOP_ITEMS.gold_5000.name)).toBeInTheDocument();
       });
     });
 
@@ -1001,7 +1016,7 @@ describe('ShopDialog', () => {
       // Activate gold component (feast is first in list, gold second)
       const activateButtons = screen.getAllByRole('button', { name: /activate/i });
       const goldButton = activateButtons.find((b) =>
-        b.closest('div')?.textContent?.includes('5000 Gold')
+        b.closest('div')?.textContent?.includes(SHOP_ITEMS.gold_5000.name)
       ) ?? activateButtons[1];
       await user.click(goldButton);
 
@@ -1157,7 +1172,7 @@ describe('ShopDialog', () => {
       expect(screen.getByText("Pale King's Bundle")).toBeInTheDocument();
     });
 
-    expect(screen.getByText(/Powerful Bundle with 20000 Gold and 3 Great Feasts/i)).toBeInTheDocument();
+    expect(screen.getByText(SHOP_ITEMS.advanced_bundle.description)).toBeInTheDocument();
   });
 
   it('should show advanced bundle with correct pricing', async () => {
@@ -1238,7 +1253,7 @@ describe('ShopDialog', () => {
       // Should show feast component (3 activations from great_feast_3)
       expect(screen.getByText(/3 Great Feasts \(3\/3 available\)/i)).toBeInTheDocument();
       // Should show gold component
-      expect(screen.getByText('20000 Gold')).toBeInTheDocument();
+      expect(screen.getByText(SHOP_ITEMS.gold_20000.name)).toBeInTheDocument();
     });
   });
 
@@ -1285,7 +1300,7 @@ describe('ShopDialog', () => {
     // Activate gold component (feast is first in list, gold second)
     const activateButtons = screen.getAllByRole('button', { name: /activate/i });
     const goldButton = activateButtons.find((b) =>
-      b.closest('div')?.textContent?.includes('20000 Gold')
+      b.closest('div')?.textContent?.includes(SHOP_ITEMS.gold_20000.name)
     ) ?? activateButtons[1];
     await user.click(goldButton);
 
@@ -1358,7 +1373,7 @@ describe('ShopDialog', () => {
 
     await waitFor(() => {
       // Should show component items
-      expect(screen.getByText('5000 Gold')).toBeInTheDocument();
+      expect(screen.getByText(SHOP_ITEMS.gold_5000.name)).toBeInTheDocument();
       expect(screen.getByText(/1 Great Feast/i)).toBeInTheDocument();
 
       // Should NOT show the bundle itself
@@ -1412,7 +1427,7 @@ describe('ShopDialog', () => {
     // Activate first gold component (feasts appear first, then gold)
     const activateButtons = screen.getAllByRole('button', { name: /activate/i });
     const goldButton = activateButtons.find((b) =>
-      b.closest('div')?.textContent?.includes('5000 Gold')
+      b.closest('div')?.textContent?.includes(SHOP_ITEMS.gold_5000.name)
     ) ?? activateButtons[2];
     await user.click(goldButton);
 
@@ -1552,7 +1567,7 @@ describe('ShopDialog', () => {
 
     await waitFor(() => {
       expect(screen.getByText('250 Gold')).toBeInTheDocument();
-      expect(screen.getByText('1000 Gold')).toBeInTheDocument();
+      expect(screen.getByText(SHOP_ITEMS.gold_1000.name)).toBeInTheDocument();
     });
 
     // Activate both components

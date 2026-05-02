@@ -292,7 +292,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     description:
       "Specially crafted harness for messenger crows. Unlocks Crow storyline. Adds Fellowship Member.",
     originalPrice: 499,
-    price: 359, // 3.59 €
+    price: 369, // 3.69 €
     rewards: {
       tools: ["crow_harness"],
     },
