@@ -599,7 +599,7 @@ export const loreEvents: Record<string, GameEvent> = {
       state.cruelMode === true && Boolean(state.fellowship?.restless_knight),
     timeProbability: 45,
     repeatable: false,
-    title: "What He Kept",
+    title: "The unspeakable Burden",
     message:
       "The restless knight comes to you. 'There is one thing I never spoke of,' he says. 'I meant to spare everyone. But you might want to know it.'",
     priority: 3,
