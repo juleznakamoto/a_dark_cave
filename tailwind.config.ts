@@ -85,8 +85,8 @@ export default {
           },
         },
         "shop-info-pulse": {
-          "0%, 100%": { opacity: "0.88", transform: "scale(1)" },
-          "50%": { opacity: "1", transform: "scale(1.07)" },
+          "0%, 100%": { opacity: "0.6" },
+          "50%": { opacity: "1" },
         },
       },
       animation: {
