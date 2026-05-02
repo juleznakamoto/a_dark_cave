@@ -227,6 +227,7 @@ export const gameStateSchema = z.object({
       survivors_last_words: z.boolean().default(false),
       blood_baptized: z.boolean().default(false),
       ebon_grace: z.boolean().default(false),
+      knights_burden: z.boolean().default(false),
     })
     .default({}),
   books: z

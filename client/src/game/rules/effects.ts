@@ -1355,6 +1355,20 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  knights_burden: {
+    id: "knights_burden",
+    name: "Knight's Burden",
+    description:
+      "Knowledge the knight shared with you, weighing heavily on your mind",
+    bonuses: {
+      generalBonuses: {
+        madness: 5,
+        knowledge: 5,
+        criticalChance: 2.5,
+      },
+    },
+  },
+
   fishers_hand: {
     id: "fishers_hand",
     name: "Fisher's Hand",

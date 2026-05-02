@@ -593,6 +593,58 @@ export const loreEvents: Record<string, GameEvent> = {
     ],
   },
 
+  restlessKnightBurden: {
+    id: "restlessKnightBurden",
+    condition: (state: GameState) =>
+      state.cruelMode === true && Boolean(state.fellowship?.restless_knight),
+    timeProbability: 45,
+    repeatable: false,
+    title: "What He Kept",
+    message:
+      "The restless knight finds you alone. 'There is one thing I never spoke of,' he says. 'I meant to spare everyone. But you might want to know it.'",
+    priority: 3,
+    showAsTimedTab: true,
+    timedTabDuration: 5 * 60 * 1000,
+    fallbackChoice: {
+      id: "decline",
+      label: "Decline",
+      effect: (state: GameState) => ({
+        stats: {
+          ...state.stats,
+          madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
+        },
+        _logMessage:
+          "You refuse. His face tightens, he gives a short nod and says nothing. The weight continues to stay on him alone.",
+      }),
+    },
+    choices: [
+      {
+        id: "accept",
+        label: "Accept",
+        effect: (state: GameState) => ({
+          blessings: {
+            ...state.blessings,
+            knights_burden: true,
+          },
+          _logMessage:
+            "He speaks of the skull device collector in the desert. He captured humans to implant the devices, without mercy and without success. The knight found a trench filled with hundreds of dead.",
+        }),
+      },
+      {
+        id: "decline",
+        label: "Decline",
+        effect: (state: GameState) => ({
+          stats: {
+            ...state.stats,
+            madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
+          },
+          _logMessage:
+            "You refuse. His face tightens, he gives a short nod and says nothing. The weight continues to stay on him alone.",
+        }),
+      },
+    ],
+  },
+
   risingSmokeRumor: {
     id: "risingSmokeRumor",
     condition: (state: GameState): boolean =>
