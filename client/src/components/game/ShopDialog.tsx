@@ -1182,17 +1182,45 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           Tarnished Compass
                                         </div>
                                         <div className="mt-1 space-y-0.5">
-                                          <div>+5 Luck</div>
                                           <div>
                                             10% chance to double gains from all
                                             actions
                                           </div>
+                                          <div>+5 Luck</div>
                                         </div>
                                       </div>
                                     }
                                     tooltipId="tarnished-compass-info"
                                     disabled
                                     tooltipContentClassName="max-w-[14rem] border border-amber-600"
+                                    className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse"
+                                  >
+                                    <span
+                                      className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
+                                      aria-hidden
+                                    >
+                                      🛈
+                                    </span>
+                                  </TooltipWrapper>
+                                )}
+                                {item.id === "crow_harness" && (
+                                  <TooltipWrapper
+                                    tooltip={
+                                      <div className="text-xs">
+                                        <div className="font-bold mb-1">
+                                          One-eyed Crow
+                                        </div>
+                                        <div className="mt-1 space-y-0.5">
+                                          <div>
+                                            up to 15% chance to double action
+                                            gains
+                                          </div>
+                                        </div>
+                                      </div>
+                                    }
+                                    tooltipId="crow-harness-info"
+                                    disabled
+                                    tooltipContentClassName="max-w-xs border border-amber-600"
                                     className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse"
                                   >
                                     <span

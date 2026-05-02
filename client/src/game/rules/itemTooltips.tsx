@@ -245,6 +245,15 @@ export function renderItemTooltip(
       )}
       {effect.bonuses?.generalBonuses && (
         <div>
+          {effect.bonuses.generalBonuses.actionBonusChance != null &&
+            effect.bonuses.generalBonuses.actionBonusChance > 0 && (
+              <div>
+                {formatProbabilityPercent(
+                  effect.bonuses.generalBonuses.actionBonusChance,
+                )}
+                % chance to double gains from an action
+              </div>
+            )}
           {effect.bonuses.generalBonuses.luck && (
             <div>Luck: +{effect.bonuses.generalBonuses.luck}</div>
           )}
