@@ -193,7 +193,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Dark Artifacts Bundle",
     description: "Uncover dark forgotten truths with the Skull Lantern, Tarnished Compass, and Crow Harness.",
     originalPrice: 999, // 14.99 €
-    price: 749, // 7.49 €
+    price: 759, // 7.59 €
     rewards: {
       tools: ["skull_lantern", "crow_harness"],
       relics: ["tarnished_compass"],
