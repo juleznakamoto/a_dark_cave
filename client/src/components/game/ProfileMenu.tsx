@@ -614,21 +614,6 @@ export default function ProfileMenu() {
         </DropdownMenu>
       </div>
       <div className="flex-wrap justify-end max-w-[140px] flex items-center gap-1">
-        {showExclusiveItemShortcut && (
-          <TooltipWrapper
-            tooltip={<p className="text-xs">Exclusive Item</p>}
-            tooltipId="exclusive-item-shortcut"
-            className="relative p-0 w-7 h-7 rounded-md bg-background backdrop-blur-sm border border-border flex items-center justify-center cursor-pointer hover:bg-muted/50 transition-colors shrink-0"
-            onClick={() => setSocialPromptDialogOpen(true)}
-          >
-            <span
-              className="text-[15px] leading-none select-none text-[#39ff14]"
-              aria-hidden
-            >
-              ⯍
-            </span>
-          </TooltipWrapper>
-        )}
         {!currentUser && (
           <TooltipWrapper
             tooltip={
@@ -650,18 +635,35 @@ export default function ProfileMenu() {
             </span>
           </TooltipWrapper>
         )}
-        {(hasWonAnyGame || devMode) && (
-          <Button
-            variant="ghost"
-            size="xs"
-            onClick={() => setLeaderboardDialogOpen(true)}
-            className="p-0 w-7 h-7 bg-background backdrop-blur-sm border border-border flex items-center justify-center group"
-          >
-            <span className="text-lg opacity-60 group-hover:opacity-100 transition-opacity">
-              ♕
-            </span>
-          </Button>
-        )}
+        <div className="flex items-center gap-1 shrink-0">
+          {showExclusiveItemShortcut && (
+            <TooltipWrapper
+              tooltip={<p className="text-xs">Exclusive Item</p>}
+              tooltipId="exclusive-item-shortcut"
+              className="relative p-0 w-7 h-7 rounded-md bg-transparent flex items-center justify-center cursor-pointer hover:bg-muted/30 transition-colors shrink-0 border-0 shadow-none"
+              onClick={() => setSocialPromptDialogOpen(true)}
+            >
+              <span
+                className="text-[15px] leading-none select-none text-[#39ff14]"
+                aria-hidden
+              >
+                ⯍
+              </span>
+            </TooltipWrapper>
+          )}
+          {(hasWonAnyGame || devMode) && (
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={() => setLeaderboardDialogOpen(true)}
+              className="p-0 w-7 h-7 bg-background backdrop-blur-sm border border-border flex items-center justify-center group"
+            >
+              <span className="text-lg opacity-60 group-hover:opacity-100 transition-opacity">
+                ♕
+              </span>
+            </Button>
+          )}
+        </div>
         <Button
           variant="ghost"
           size="xs"
