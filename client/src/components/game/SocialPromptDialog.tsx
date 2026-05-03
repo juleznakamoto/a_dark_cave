@@ -124,8 +124,7 @@ export default function SocialPromptDialog({
 
       toast({
         title: "You're subscribed",
-        description:
-          "We'll send occasional updates and offers to your email.",
+        description: "We'll send occasional updates and offers to your email.",
       });
     } catch (e: unknown) {
       toast({
@@ -160,21 +159,16 @@ export default function SocialPromptDialog({
   return (
     <Dialog
       open={isOpen}
-      onOpenChange={(open) =>
-        !open && setSocialPromptDialogOpen(false)
-      }
+      onOpenChange={(open) => !open && setSocialPromptDialogOpen(false)}
     >
       <DialogContent className="w-[95vw] sm:max-w-lg z-[70] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Stay connected &amp; earn Gold</DialogTitle>
           <DialogDescription className="text-left pt-1 space-y-2">
             <p>
-              Complete any items below for bonuses—the same rewards as in
-              Profile (email updates, social follows, and invites).
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Completed items show a green check. Open Profile anytime for the
-              same actions.
+              Complete the tasks below to receive bonuses. If you complete all
+              tasks you will receive an exlusive item (only one friend invite
+              needed).
             </p>
           </DialogDescription>
         </DialogHeader>
@@ -209,7 +203,7 @@ export default function SocialPromptDialog({
                   disabled={prefLoading || subscribeLoading}
                   onClick={() => void handleSubscribe()}
                 >
-                  Turn on email updates
+                  Subscribe
                 </Button>
               )}
               {marketingOptIn && (
@@ -222,8 +216,7 @@ export default function SocialPromptDialog({
 
           {/* Social */}
           {SOCIAL_PLATFORMS.map((platform) => {
-            const claimed =
-              social_media_rewards[platform.id]?.claimed ?? false;
+            const claimed = social_media_rewards[platform.id]?.claimed ?? false;
             return (
               <div
                 key={platform.id}
@@ -289,8 +282,8 @@ export default function SocialPromptDialog({
               </div>
               <p className="text-xs text-muted-foreground leading-snug">
                 Invite your friends and both of you will receive 250 gold. You
-                can invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends. ({referralCount}/
-                {SOCIAL_PROMPT_REFERRAL_CAP} invited).
+                can invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends. (
+                {referralCount}/{SOCIAL_PROMPT_REFERRAL_CAP} invited).
               </p>
               {!referralsComplete && (
                 <Button
