@@ -28,6 +28,7 @@ import {
   getSocialPromoExclusiveProgress,
   syncSocialPromoExclusiveRewardPending,
   isExclusiveInviteStepDone,
+  isSocialPromoExclusiveRewardComplete,
 } from "@/game/socialPromoExclusiveReward";
 
 interface SocialPromptDialogProps {
@@ -177,6 +178,11 @@ export default function SocialPromptDialog({
     referralCount,
     referrals,
   });
+  const exclusiveRewardComplete = isSocialPromoExclusiveRewardComplete({
+    social_media_rewards,
+    referralCount,
+    referrals,
+  });
 
   return (
     <Dialog
@@ -310,7 +316,9 @@ export default function SocialPromptDialog({
         <div className="mt-1 pt-3 border-t border-border space-y-2">
           <div className="flex justify-between gap-2 text-sm font-medium text-foreground">
             <span className="leading-snug">
-              Progress toward exclusive reward
+              {exclusiveRewardComplete
+                ? "You fulfilled the tasks. You will soon get your reward."
+                : "Progress toward exclusive reward"}
             </span>
             <span className="shrink-0 tabular-nums">
               {exclusiveProgress.completed}/{exclusiveProgress.total}
