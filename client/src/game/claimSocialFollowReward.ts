@@ -59,6 +59,10 @@ export function claimSocialFollowReward(
     } catch (error) {
       logger.error("Failed to save social media reward claim:", error);
     }
+    const { syncSocialPromoExclusiveRewardPending } = await import(
+      "./socialPromoExclusiveReward"
+    );
+    syncSocialPromoExclusiveRewardPending();
   })();
 
   return true;

@@ -575,6 +575,10 @@ export const gameStateSchema = z.object({
    * Auto social prompt scheduler: 0 = awaiting first 30min play gate, 1 = awaiting +90min repeat gate, 2 = done (no more auto prompts).
    */
   socialPromptAutoPhase: z.number().int().min(0).max(2).default(0),
+  /**
+   * Set true once email + both social follows + ≥1 invite are satisfied; future event can grant exclusive item then clear or consume this flag.
+   */
+  socialPromoExclusiveRewardPending: z.boolean().default(false),
   mysteriousNoteShopNotificationSeen: z.boolean().default(false), // Track if mysterious note shop notification has been seen
   mysteriousNoteDonateNotificationSeen: z.boolean().default(false), // Track if mysterious note donate notification has been seen
   isUserSignedIn: z.boolean().default(false), // Track if user is currently signed in

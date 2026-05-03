@@ -46,10 +46,17 @@ export async function postMarketingPreference(params: {
 
 /** One-time gold + log + save when turning marketing emails on (same rules as Profile). */
 export function applyMarketingSubscribeGoldReward(): void {
+  const scheduleExclusiveRewardSync = () => {
+    void import("./socialPromoExclusiveReward").then((m) =>
+      m.syncSocialPromoExclusiveRewardPending(),
+    );
+  };
+
   if (
     useGameStore.getState().social_media_rewards[MARKETING_EMAIL_REWARD_KEY]
       ?.claimed
   ) {
+    scheduleExclusiveRewardSync();
     return;
   }
 
@@ -85,5 +92,6 @@ export function applyMarketingSubscribeGoldReward(): void {
     } catch (err) {
       logger.error("Failed to save marketing subscribe reward:", err);
     }
+    scheduleExclusiveRewardSync();
   })();
 }

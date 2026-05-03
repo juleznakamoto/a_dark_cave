@@ -12,6 +12,7 @@ import { getSupabaseClient } from "@/lib/supabase";
 import { apiUrl } from "@/lib/apiUrl";
 import { useToast } from "@/hooks/use-toast";
 import {
+  MARKETING_EMAIL_REWARD_KEY,
   MARKETING_SUBSCRIBE_GOLD,
   applyMarketingSubscribeGoldReward,
   postMarketingPreference,
@@ -23,6 +24,11 @@ import { getCurrentUser } from "@/game/auth";
 import { Check, Circle, Mail, UserPlus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SOCIAL_PROMPT_REFERRAL_CAP } from "@/game/socialPromptAuto";
+import {
+  getSocialPromoExclusiveProgress,
+  syncSocialPromoExclusiveRewardPending,
+  isExclusiveInviteStepDone,
+} from "@/game/socialPromoExclusiveReward";
 
 interface SocialPromptDialogProps {
   isOpen: boolean;
@@ -53,6 +59,7 @@ export default function SocialPromptDialog({
   );
   const social_media_rewards = useGameStore((s) => s.social_media_rewards);
   const referralCount = useGameStore((s) => s.referralCount ?? 0);
+  const referrals = useGameStore((s) => s.referrals ?? []);
 
   const [prefLoading, setPrefLoading] = useState(false);
   const [subscribeLoading, setSubscribeLoading] = useState(false);
@@ -96,6 +103,10 @@ export default function SocialPromptDialog({
       cancelled = true;
     };
   }, [isOpen]);
+
+  useEffect(() => {
+    syncSocialPromoExclusiveRewardPending();
+  }, [isOpen, social_media_rewards, referralCount, referrals]);
 
   const handleSubscribe = async () => {
     if (subscribeLoading || prefLoading) return;
@@ -155,6 +166,17 @@ export default function SocialPromptDialog({
   };
 
   const referralsComplete = referralCount >= SOCIAL_PROMPT_REFERRAL_CAP;
+  const emailRewardClaimed =
+    !!social_media_rewards[MARKETING_EMAIL_REWARD_KEY]?.claimed;
+  const exclusiveInviteDone = isExclusiveInviteStepDone({
+    referralCount,
+    referrals,
+  });
+  const exclusiveProgress = getSocialPromoExclusiveProgress({
+    social_media_rewards,
+    referralCount,
+    referrals,
+  });
 
   return (
     <Dialog
@@ -163,7 +185,7 @@ export default function SocialPromptDialog({
     >
       <DialogContent className="w-[95vw] sm:max-w-lg z-[70] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Stay connected &amp; earn Gold</DialogTitle>
+          <DialogTitle>Stay connected and earn Rewards</DialogTitle>
           <DialogDescription className="text-left pt-1 space-y-2">
             <p>
               Complete the tasks below to receive bonuses. If you complete all
@@ -178,11 +200,11 @@ export default function SocialPromptDialog({
           <div
             className={cn(
               "rounded-md border border-border p-3 flex gap-3",
-              marketingOptIn && "border-green-500/40 bg-green-500/5",
+              emailRewardClaimed && "border-green-500/40 bg-green-500/5",
             )}
           >
             <div className="pt-0.5">
-              <StatusIcon done={marketingOptIn} />
+              <StatusIcon done={emailRewardClaimed} />
             </div>
             <div className="min-w-0 flex-1 space-y-2">
               <div className="flex items-center gap-2">
@@ -191,25 +213,21 @@ export default function SocialPromptDialog({
                   Email updates (+{MARKETING_SUBSCRIBE_GOLD} Gold)
                 </span>
               </div>
-              <p className="text-xs text-muted-foreground leading-snug">
-                {marketingOptIn
-                  ? "We'll send occasional updates and offers to your email."
-                  : "You are currently not receiving emails with updates, discounts, and exclusive rewards."}
-              </p>
-              {!marketingOptIn && (
+              {!emailRewardClaimed && !marketingOptIn && (
+                <p className="text-xs text-muted-foreground leading-snug">
+                  You are currently not receiving emails with updates, discounts,
+                  and exclusive rewards.
+                </p>
+              )}
+              {!emailRewardClaimed && (
                 <Button
                   size="sm"
-                  className="w-full sm:w-auto"
+                  className="w-full sm:w-auto font-medium"
                   disabled={prefLoading || subscribeLoading}
                   onClick={() => void handleSubscribe()}
                 >
                   Subscribe
                 </Button>
-              )}
-              {marketingOptIn && (
-                <p className="text-xs font-medium text-green-600 dark:text-green-400">
-                  Done — you&apos;re subscribed.
-                </p>
               )}
             </div>
           </div>
@@ -239,8 +257,7 @@ export default function SocialPromptDialog({
                   {!claimed && (
                     <Button
                       size="sm"
-                      variant="secondary"
-                      className="w-full sm:w-auto"
+                      className="w-full sm:w-auto font-medium"
                       onClick={() =>
                         claimSocialFollowReward(
                           platform.id,
@@ -250,13 +267,8 @@ export default function SocialPromptDialog({
                         )
                       }
                     >
-                      {platform.actionLabel} &amp; claim Gold
+                      {platform.actionLabel}
                     </Button>
-                  )}
-                  {claimed && (
-                    <p className="text-xs font-medium text-green-600 dark:text-green-400">
-                      Done — reward claimed.
-                    </p>
                   )}
                 </div>
               </div>
@@ -267,11 +279,11 @@ export default function SocialPromptDialog({
           <div
             className={cn(
               "rounded-md border border-border p-3 flex gap-3",
-              referralsComplete && "border-green-500/40 bg-green-500/5",
+              exclusiveInviteDone && "border-green-500/40 bg-green-500/5",
             )}
           >
             <div className="pt-0.5">
-              <StatusIcon done={referralsComplete} />
+              <StatusIcon done={exclusiveInviteDone} />
             </div>
             <div className="min-w-0 flex-1 space-y-2">
               <div className="flex items-center gap-2">
@@ -288,31 +300,39 @@ export default function SocialPromptDialog({
               {!referralsComplete && (
                 <Button
                   size="sm"
-                  variant="secondary"
-                  className="w-full sm:w-auto"
+                  className="w-full sm:w-auto font-medium"
                   onClick={() => void handleCopyInvite()}
                 >
                   Copy invite link
                 </Button>
               )}
-              {referralsComplete && (
-                <p className="text-xs font-medium text-green-600 dark:text-green-400">
-                  Done — you&apos;ve reached the invite limit (
-                  {SOCIAL_PROMPT_REFERRAL_CAP}/{SOCIAL_PROMPT_REFERRAL_CAP}).
-                </p>
-              )}
             </div>
           </div>
         </div>
 
-        <Button
-          variant="outline"
-          onClick={() => setSocialPromptDialogOpen(false)}
-          disabled={subscribeLoading}
-          className="w-full"
-        >
-          Close
-        </Button>
+        <div className="mt-1 pt-3 border-t border-border space-y-2">
+          <div className="flex justify-between gap-2 text-xs text-muted-foreground">
+            <span className="leading-snug">
+              Progress toward exclusive reward
+            </span>
+            <span className="shrink-0 tabular-nums">
+              {exclusiveProgress.completed}/{exclusiveProgress.total}
+            </span>
+          </div>
+          <div
+            className="h-2 w-full rounded-full bg-muted overflow-hidden"
+            role="progressbar"
+            aria-valuenow={exclusiveProgress.completed}
+            aria-valuemin={0}
+            aria-valuemax={exclusiveProgress.total}
+            aria-label="Exclusive reward progress"
+          >
+            <div
+              className="h-full rounded-full bg-primary transition-[width] duration-300 ease-out"
+              style={{ width: `${exclusiveProgress.percent}%` }}
+            />
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );

@@ -186,6 +186,10 @@ export default function Game() {
           });
           logger.log("[GAME] Game loaded from save");
 
+          void import("@/game/socialPromoExclusiveReward").then((m) =>
+            m.syncSocialPromoExclusiveRewardPending(),
+          );
+
           // Save Google Ads source if it was set
           if (stateUpdates.googleAdsSource) {
             setTimeout(async () => {

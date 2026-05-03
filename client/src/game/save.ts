@@ -169,6 +169,10 @@ async function processUnclaimedReferrals(
       referrals: updatedGameState.referrals,
     });
 
+    void import("./socialPromoExclusiveReward").then((m) =>
+      m.syncSocialPromoExclusiveRewardPending(),
+    );
+
     // CRITICAL: Save the claimed referrals back to Supabase immediately
     logger.log('[REFERRAL] 💾 Saving claimed referrals to Supabase...');
     try {
