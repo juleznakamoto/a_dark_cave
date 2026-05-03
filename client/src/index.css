@@ -432,6 +432,50 @@ body {
   animation: notification-pulse .8s ease-in-out infinite;
 }
 
+/* Exclusive promo shortcut: green shockwave ~every 10s (same cadence idea as notification ripples) */
+@keyframes exclusive-promo-shockwave {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.85;
+    border-color: rgba(57, 255, 20, 0.9);
+  }
+
+  12% {
+    transform: translate(-50%, -50%) scale(2.45);
+    opacity: 0;
+    border-color: rgba(57, 255, 20, 0);
+  }
+
+  12.01%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+    border-color: transparent;
+  }
+}
+
+.exclusive-promo-shockwave-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.125rem;
+  height: 1.125rem;
+  box-sizing: border-box;
+  transform: translate(-50%, -50%);
+  border-radius: 0.25rem;
+  border: 2px solid rgba(57, 255, 20, 0.85);
+  pointer-events: none;
+  z-index: 0;
+  animation: exclusive-promo-shockwave 10s cubic-bezier(0.33, 1, 0.68, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .exclusive-promo-shockwave-ring {
+    animation: none;
+  }
+}
+
 @keyframes continue-pause-flash {
 
   0%,

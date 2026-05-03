@@ -635,51 +635,57 @@ export default function ProfileMenu() {
             </span>
           </TooltipWrapper>
         )}
-        <div className="flex items-center gap-1 shrink-0">
+        <div className="flex items-start gap-0.5 shrink-0">
           {showExclusiveItemShortcut && (
             <TooltipWrapper
               tooltip={<p className="text-xs">Exclusive Item</p>}
               tooltipId="exclusive-item-shortcut"
-              className="relative p-0 w-7 h-7 rounded-md bg-transparent flex items-center justify-center cursor-pointer hover:bg-muted/30 transition-colors shrink-0 border-0 shadow-none"
+              className="relative p-0 w-7 h-7 rounded-md bg-transparent flex items-center justify-center cursor-pointer hover:bg-muted/30 transition-colors shrink-0 border-0 shadow-none overflow-visible"
               onClick={() => setSocialPromptDialogOpen(true)}
             >
-              <span
-                className="text-[15px] leading-none select-none text-[#39ff14]"
-                aria-hidden
-              >
-                ⯍
-              </span>
+              <div className="relative flex h-full w-full items-center justify-center overflow-visible">
+                <span
+                  className="exclusive-promo-shockwave-ring"
+                  aria-hidden
+                />
+                <span
+                  className="relative z-[1] text-[15px] leading-none select-none text-[#39ff14]"
+                  aria-hidden
+                >
+                  ⯍
+                </span>
+              </div>
             </TooltipWrapper>
           )}
-        </div>
-        <div className="flex flex-col gap-1 items-end shrink-0">
-          {(hasWonAnyGame || devMode) && (
+          <div className="flex flex-col gap-1 items-end shrink-0">
+            {(hasWonAnyGame || devMode) && (
+              <Button
+                variant="ghost"
+                size="xs"
+                onClick={() => setLeaderboardDialogOpen(true)}
+                className="p-0 w-7 h-7 bg-background backdrop-blur-sm border border-border flex items-center justify-center group"
+              >
+                <span className="text-lg opacity-60 group-hover:opacity-100 transition-opacity">
+                  ♕
+                </span>
+              </Button>
+            )}
             <Button
               variant="ghost"
               size="xs"
-              onClick={() => setLeaderboardDialogOpen(true)}
-              className="p-0 w-7 h-7 bg-background backdrop-blur-sm border border-border flex items-center justify-center group"
+              onClick={handleDiscovery}
+              className="relative p-0 w-7 h-7 bg-background/70 backdrop-blur-sm border border-border flex items-center justify-center group"
             >
-              <span className="text-lg opacity-60 group-hover:opacity-100 transition-opacity">
-                ♕
-              </span>
+              <img
+                src="/flashlight.png"
+                alt="Discovery"
+                className="w-full h-full object-contain rounded-md transition-all duration-300 invert opacity-60 group-hover:invert-0 group-hover:opacity-100"
+              />
+              {isPaused && (
+                <span className="absolute -top-[4px] -right-[4px] w-2 h-2 bg-red-600 rounded-full notification-pulse" />
+              )}
             </Button>
-          )}
-          <Button
-            variant="ghost"
-            size="xs"
-            onClick={handleDiscovery}
-            className="relative p-0 w-7 h-7 bg-background/70 backdrop-blur-sm border border-border flex items-center justify-center group"
-          >
-            <img
-              src="/flashlight.png"
-              alt="Discovery"
-              className="w-full h-full object-contain rounded-md transition-all duration-300 invert opacity-60 group-hover:invert-0 group-hover:opacity-100"
-            />
-            {isPaused && (
-              <span className="absolute -top-[4px] -right-[4px] w-2 h-2 bg-red-600 rounded-full notification-pulse" />
-            )}
-          </Button>
+          </div>
         </div>
       </div>
     </div>
