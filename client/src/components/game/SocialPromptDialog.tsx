@@ -206,19 +206,19 @@ export default function SocialPromptDialog({
             <div className="shrink-0">
               <StatusIcon done={emailRewardClaimed} />
             </div>
-            <div className="min-w-0 flex-1 space-y-2">
-              <div className="flex items-center gap-2">
-                <Mail className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
-                <span className="font-medium text-sm">
-                  Email updates (+{MARKETING_SUBSCRIBE_GOLD} Gold)
-                </span>
+            <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
+              <div className="min-w-0 flex-1 space-y-1">
+                <div className="flex items-center gap-2">
+                  <Mail className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
+                  <span className="font-medium text-sm">
+                    Email updates (+{MARKETING_SUBSCRIBE_GOLD} Gold)
+                  </span>
+                </div>
               </div>
-              {!emailRewardClaimed && !marketingOptIn && (
-              )}
               {!emailRewardClaimed && (
                 <Button
                   size="xs"
-                  className="shrink-0 font-medium px-3"
+                  className="shrink-0 font-medium px-3 self-center"
                   disabled={prefLoading || subscribeLoading}
                   onClick={() => void handleSubscribe()}
                 >
@@ -308,7 +308,7 @@ export default function SocialPromptDialog({
         </div>
 
         <div className="mt-1 pt-3 border-t border-border space-y-2">
-          <div className="flex justify-between gap-2 text-xs text-muted-foreground">
+          <div className="flex justify-between gap-2 text-sm font-medium text-foreground">
             <span className="leading-snug">
               Progress toward exclusive reward
             </span>
@@ -325,7 +325,7 @@ export default function SocialPromptDialog({
             aria-label="Exclusive item progress"
           >
             <div
-              className="h-full rounded-full bg-primary transition-[width] duration-300 ease-out"
+              className="h-full rounded-full bg-primary transition-all duration-300 ease-out"
               style={{ width: `${exclusiveProgress.percent}%` }}
             />
           </div>
