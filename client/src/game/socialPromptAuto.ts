@@ -8,6 +8,9 @@ export const SOCIAL_PROMPT_INITIAL_PLAY_MS = 30 * 60 * 1000;
 /** Second auto prompt runs after this much additional play time past the first milestone (ms). */
 export const SOCIAL_PROMPT_REPEAT_PLAY_MS = 90 * 60 * 1000;
 
+/** Further auto prompts (phase ≥ 2): same eligibility as repeat wave, every this much play time after the last milestone (ms). */
+export const SOCIAL_PROMPT_LONG_REPEAT_PLAY_MS = 4 * 60 * 60 * 1000;
+
 export const SOCIAL_PROMPT_REFERRAL_CAP = 10;
 
 function socialPlatformsRewardDone(

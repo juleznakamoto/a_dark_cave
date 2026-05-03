@@ -199,30 +199,32 @@ export default function SocialPromptDialog({
           {/* Email */}
           <div
             className={cn(
-              "rounded-md border border-border p-3 flex gap-3",
+              "rounded-md border border-border p-3 flex gap-3 items-center",
               emailRewardClaimed && "border-green-500/40 bg-green-500/5",
             )}
           >
-            <div className="pt-0.5">
+            <div className="shrink-0">
               <StatusIcon done={emailRewardClaimed} />
             </div>
-            <div className="min-w-0 flex-1 space-y-2">
-              <div className="flex items-center gap-2">
-                <Mail className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
-                <span className="font-medium text-sm">
-                  Email updates (+{MARKETING_SUBSCRIBE_GOLD} Gold)
-                </span>
+            <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
+              <div className="min-w-0 flex-1 space-y-1">
+                <div className="flex items-center gap-2">
+                  <Mail className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
+                  <span className="font-medium text-sm">
+                    Email updates (+{MARKETING_SUBSCRIBE_GOLD} Gold)
+                  </span>
+                </div>
+                {!emailRewardClaimed && !marketingOptIn && (
+                  <p className="text-xs text-muted-foreground leading-snug">
+                    You are currently not receiving emails with updates,
+                    discounts, and exclusive rewards.
+                  </p>
+                )}
               </div>
-              {!emailRewardClaimed && !marketingOptIn && (
-                <p className="text-xs text-muted-foreground leading-snug">
-                  You are currently not receiving emails with updates, discounts,
-                  and exclusive rewards.
-                </p>
-              )}
               {!emailRewardClaimed && (
                 <Button
-                  size="sm"
-                  className="w-full sm:w-auto font-medium"
+                  size="xs"
+                  className="shrink-0 font-medium px-3"
                   disabled={prefLoading || subscribeLoading}
                   onClick={() => void handleSubscribe()}
                 >
@@ -239,25 +241,24 @@ export default function SocialPromptDialog({
               <div
                 key={platform.id}
                 className={cn(
-                  "rounded-md border border-border p-3 flex gap-3",
+                  "rounded-md border border-border p-3 flex gap-3 items-center",
                   claimed && "border-green-500/40 bg-green-500/5",
                 )}
               >
-                <div className="pt-0.5">
+                <div className="shrink-0">
                   <StatusIcon done={claimed} />
                 </div>
-                <div className="min-w-0 flex-1 space-y-2">
-                  <div className="flex items-center gap-2">
+                <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 min-w-0">
                     <SocialPlatformGlyph platformId={platform.id} />
-                    <span className="font-medium text-sm">
-                      {platform.actionLabel} on {platform.name} (+
-                      {platform.reward} Gold)
+                    <span className="font-medium text-sm truncate">
+                      {platform.name}
                     </span>
                   </div>
                   {!claimed && (
                     <Button
-                      size="sm"
-                      className="w-full sm:w-auto font-medium"
+                      size="xs"
+                      className="shrink-0 font-medium px-3"
                       onClick={() =>
                         claimSocialFollowReward(
                           platform.id,
@@ -278,29 +279,31 @@ export default function SocialPromptDialog({
           {/* Invite */}
           <div
             className={cn(
-              "rounded-md border border-border p-3 flex gap-3",
+              "rounded-md border border-border p-3 flex gap-3 items-center",
               exclusiveInviteDone && "border-green-500/40 bg-green-500/5",
             )}
           >
-            <div className="pt-0.5">
+            <div className="shrink-0">
               <StatusIcon done={exclusiveInviteDone} />
             </div>
-            <div className="min-w-0 flex-1 space-y-2">
-              <div className="flex items-center gap-2">
-                <UserPlus className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
-                <span className="font-medium text-sm">
-                  Invite friends (+250 Gold each)
-                </span>
+            <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
+              <div className="min-w-0 flex-1 space-y-1">
+                <div className="flex items-center gap-2">
+                  <UserPlus className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
+                  <span className="font-medium text-sm">
+                    Invite friends (+250 Gold each)
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground leading-snug">
+                  Invite your friends and both of you will receive 250 gold. You
+                  can invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends. (
+                  {referralCount}/{SOCIAL_PROMPT_REFERRAL_CAP} invited).
+                </p>
               </div>
-              <p className="text-xs text-muted-foreground leading-snug">
-                Invite your friends and both of you will receive 250 gold. You
-                can invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends. (
-                {referralCount}/{SOCIAL_PROMPT_REFERRAL_CAP} invited).
-              </p>
               {!referralsComplete && (
                 <Button
-                  size="sm"
-                  className="w-full sm:w-auto font-medium"
+                  size="xs"
+                  className="shrink-0 font-medium px-3 self-center"
                   onClick={() => void handleCopyInvite()}
                 >
                   Copy invite link
@@ -311,7 +314,7 @@ export default function SocialPromptDialog({
         </div>
 
         <div className="mt-1 pt-3 border-t border-border space-y-2">
-          <div className="flex justify-between gap-2 text-xs text-muted-foreground">
+          <div className="flex justify-between gap-2 text-sm font-medium text-foreground">
             <span className="leading-snug">
               Progress toward exclusive reward
             </span>

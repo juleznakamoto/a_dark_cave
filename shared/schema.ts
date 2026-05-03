@@ -569,10 +569,11 @@ export const gameStateSchema = z.object({
   authNotificationSeen: z.boolean().default(false), // Added new field for auth notification
   authNotificationVisible: z.boolean().default(false), // Added new field for auth notification visibility
   lastSignUpPromptPlayTime: z.number().default(0), // playTime when sign-up prompt was last shown (for 30 min repeat)
-  /** playTime when the last social auto-prompt milestone ran (first or repeat gate). */
+  /** playTime at last social auto-prompt milestone (30m / 90m gates or each 4h repeat checkpoint). */
   lastSocialPromptPlayTime: z.number().default(0),
   /**
-   * Auto social prompt scheduler: 0 = awaiting first 30min play gate, 1 = awaiting +90min repeat gate, 2 = done (no more auto prompts).
+   * Auto social prompt scheduler: 0 = awaiting first 30min gate, 1 = awaiting +90min repeat gate,
+   * 2 = initial cadence finished; further prompts use lastSocialPromptPlayTime + 4h with repeat-wave rules.
    */
   socialPromptAutoPhase: z.number().int().min(0).max(2).default(0),
   /**
