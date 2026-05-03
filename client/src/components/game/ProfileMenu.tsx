@@ -613,7 +613,7 @@ export default function ProfileMenu() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="flex-wrap justify-end max-w-[140px] flex items-center gap-1">
+      <div className="flex-wrap justify-end max-w-[140px] flex items-start gap-1">
         {!currentUser && (
           <TooltipWrapper
             tooltip={
@@ -651,6 +651,8 @@ export default function ProfileMenu() {
               </span>
             </TooltipWrapper>
           )}
+        </div>
+        <div className="flex flex-col gap-1 items-end shrink-0">
           {(hasWonAnyGame || devMode) && (
             <Button
               variant="ghost"
@@ -663,22 +665,22 @@ export default function ProfileMenu() {
               </span>
             </Button>
           )}
+          <Button
+            variant="ghost"
+            size="xs"
+            onClick={handleDiscovery}
+            className="relative p-0 w-7 h-7 bg-background/70 backdrop-blur-sm border border-border flex items-center justify-center group"
+          >
+            <img
+              src="/flashlight.png"
+              alt="Discovery"
+              className="w-full h-full object-contain rounded-md transition-all duration-300 invert opacity-60 group-hover:invert-0 group-hover:opacity-100"
+            />
+            {isPaused && (
+              <span className="absolute -top-[4px] -right-[4px] w-2 h-2 bg-red-600 rounded-full notification-pulse" />
+            )}
+          </Button>
         </div>
-        <Button
-          variant="ghost"
-          size="xs"
-          onClick={handleDiscovery}
-          className="p-0 w-7 h-7 bg-background/70 backdrop-blur-sm border border-border flex items-center justify-center group"
-        >
-          <img
-            src="/flashlight.png"
-            alt="Discovery"
-            className="w-full h-full object-contain rounded-md transition-all duration-300 invert opacity-60 group-hover:invert-0 group-hover:opacity-100"
-          />
-          {isPaused && (
-            <span className="absolute -top-[4px] -right-[4px] w-2 h-2 bg-red-600 rounded-full notification-pulse" />
-          )}
-        </Button>
       </div>
     </div>
   );
