@@ -206,21 +206,15 @@ export default function SocialPromptDialog({
             <div className="shrink-0">
               <StatusIcon done={emailRewardClaimed} />
             </div>
-            <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
-              <div className="min-w-0 flex-1 space-y-1">
-                <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
-                  <span className="font-medium text-sm">
-                    Email updates (+{MARKETING_SUBSCRIBE_GOLD} Gold)
-                  </span>
-                </div>
-                {!emailRewardClaimed && !marketingOptIn && (
-                  <p className="text-xs text-muted-foreground leading-snug">
-                    You are currently not receiving emails with updates,
-                    discounts, and exclusive rewards.
-                  </p>
-                )}
+            <div className="min-w-0 flex-1 space-y-2">
+              <div className="flex items-center gap-2">
+                <Mail className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
+                <span className="font-medium text-sm">
+                  Email updates (+{MARKETING_SUBSCRIBE_GOLD} Gold)
+                </span>
               </div>
+              {!emailRewardClaimed && !marketingOptIn && (
+              )}
               {!emailRewardClaimed && (
                 <Button
                   size="xs"
@@ -314,7 +308,7 @@ export default function SocialPromptDialog({
         </div>
 
         <div className="mt-1 pt-3 border-t border-border space-y-2">
-          <div className="flex justify-between gap-2 text-sm font-medium text-foreground">
+          <div className="flex justify-between gap-2 text-xs text-muted-foreground">
             <span className="leading-snug">
               Progress toward exclusive reward
             </span>
@@ -328,7 +322,7 @@ export default function SocialPromptDialog({
             aria-valuenow={exclusiveProgress.completed}
             aria-valuemin={0}
             aria-valuemax={exclusiveProgress.total}
-            aria-label="Exclusive reward progress"
+            aria-label="Exclusive item progress"
           >
             <div
               className="h-full rounded-full bg-primary transition-[width] duration-300 ease-out"
