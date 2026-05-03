@@ -215,8 +215,8 @@ export default function SocialPromptDialog({
               </div>
               {!emailRewardClaimed && !marketingOptIn && (
                 <p className="text-xs text-muted-foreground leading-snug">
-                  You are currently not receiving emails with updates, discounts,
-                  and exclusive rewards.
+                  You are currently not receiving emails with updates,
+                  discounts, and exclusive rewards.
                 </p>
               )}
               {!emailRewardClaimed && (
@@ -312,9 +312,7 @@ export default function SocialPromptDialog({
 
         <div className="mt-1 pt-3 border-t border-border space-y-2">
           <div className="flex justify-between gap-2 text-xs text-muted-foreground">
-            <span className="leading-snug">
-              Progress toward exclusive reward
-            </span>
+            <span className="leading-snug">Progress toward exclusive item</span>
             <span className="shrink-0 tabular-nums">
               {exclusiveProgress.completed}/{exclusiveProgress.total}
             </span>
@@ -325,7 +323,7 @@ export default function SocialPromptDialog({
             aria-valuenow={exclusiveProgress.completed}
             aria-valuemin={0}
             aria-valuemax={exclusiveProgress.total}
-            aria-label="Exclusive reward progress"
+            aria-label="Exclusive item progress"
           >
             <div
               className="h-full rounded-full bg-primary transition-[width] duration-300 ease-out"
