@@ -8,6 +8,7 @@ export type MarketingConsentSource =
   | "email_signup"
   | "google_signup"
   | "settings_toggle"
+  | "social_prompt_dialog"
   | "unsubscribe_link";
 
 /** Sources the browser may send (unsubscribe_link is server-only). */
@@ -15,6 +16,7 @@ export const CLIENT_ALLOWED_MARKETING_SOURCES = new Set<MarketingConsentSource>(
   "email_signup",
   "google_signup",
   "settings_toggle",
+  "social_prompt_dialog",
 ]);
 
 export function hashMarketingToken(raw: string): string {

@@ -31,6 +31,12 @@ import { getResourceLimit, isResourceLimited } from "./resourceLimits";
 import { getPriorActionSuccessor } from "./buttonUpgrades";
 import { DISGRACED_PRIOR_UPGRADES } from "./rules/skillUpgrades";
 import { CRUEL_MODE, cruelModeScale } from "./cruelMode";
+import {
+  SOCIAL_PROMPT_INITIAL_PLAY_MS,
+  SOCIAL_PROMPT_REPEAT_PLAY_MS,
+  isSocialPromptFirstWaveEligible,
+  isSocialPromptRepeatWaveEligible,
+} from "./socialPromptAuto";
 
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
@@ -482,6 +488,52 @@ export function startGameLoop() {
               signUpPromptDialogOpen: true,
               lastSignUpPromptPlayTime: playTime,
             });
+          }
+        }
+
+        // Social prompt (signed-in only): first after 30m play if incomplete tasks exist;
+        // optional second prompt after +90m play (invite cap ignored on repeat). Max two auto opens.
+        if (
+          state.isUserSignedIn &&
+          (state.socialPromptAutoPhase ?? 0) < 2
+        ) {
+          const playTimeMs = state.playTime || 0;
+          const phase = state.socialPromptAutoPhase ?? 0;
+
+          if (
+            phase === 0 &&
+            playTimeMs >= SOCIAL_PROMPT_INITIAL_PLAY_MS
+          ) {
+            if (isSocialPromptFirstWaveEligible(state)) {
+              useGameStore.setState({
+                socialPromptDialogOpen: true,
+                lastSocialPromptPlayTime: playTimeMs,
+                socialPromptAutoPhase: 1,
+              });
+            } else {
+              useGameStore.setState({
+                lastSocialPromptPlayTime: playTimeMs,
+                socialPromptAutoPhase: 2,
+              });
+            }
+          } else if (
+            phase === 1 &&
+            playTimeMs >=
+              (state.lastSocialPromptPlayTime || 0) +
+                SOCIAL_PROMPT_REPEAT_PLAY_MS
+          ) {
+            if (isSocialPromptRepeatWaveEligible(state)) {
+              useGameStore.setState({
+                socialPromptDialogOpen: true,
+                lastSocialPromptPlayTime: playTimeMs,
+                socialPromptAutoPhase: 2,
+              });
+            } else {
+              useGameStore.setState({
+                lastSocialPromptPlayTime: playTimeMs,
+                socialPromptAutoPhase: 2,
+              });
+            }
           }
         }
 

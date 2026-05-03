@@ -569,6 +569,12 @@ export const gameStateSchema = z.object({
   authNotificationSeen: z.boolean().default(false), // Added new field for auth notification
   authNotificationVisible: z.boolean().default(false), // Added new field for auth notification visibility
   lastSignUpPromptPlayTime: z.number().default(0), // playTime when sign-up prompt was last shown (for 30 min repeat)
+  /** playTime when the last social auto-prompt milestone ran (first or repeat gate). */
+  lastSocialPromptPlayTime: z.number().default(0),
+  /**
+   * Auto social prompt scheduler: 0 = awaiting first 30min play gate, 1 = awaiting +90min repeat gate, 2 = done (no more auto prompts).
+   */
+  socialPromptAutoPhase: z.number().int().min(0).max(2).default(0),
   mysteriousNoteShopNotificationSeen: z.boolean().default(false), // Track if mysterious note shop notification has been seen
   mysteriousNoteDonateNotificationSeen: z.boolean().default(false), // Track if mysterious note donate notification has been seen
   isUserSignedIn: z.boolean().default(false), // Track if user is currently signed in

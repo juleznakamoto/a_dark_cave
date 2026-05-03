@@ -133,6 +133,9 @@ interface GameStore extends GameState {
   signUpPromptEligibleForGold: boolean; // Set when user clicks Sign Up on prompt; cleared after signup or dialog close
   lastSignUpPromptPlayTime: number; // playTime when we last showed the dialog (for 30 min repeat)
 
+  /** Social / email / invite prompt (signed-in users; same play-time cadence as sign-up prompt). */
+  socialPromptDialogOpen: boolean;
+
   // Notification state for mysterious note
   mysteriousNoteShopNotificationSeen: boolean;
   mysteriousNoteDonateNotificationSeen: boolean;
@@ -260,6 +263,8 @@ interface GameStore extends GameState {
   setSignUpPromptDialogOpen: (isOpen: boolean) => void;
   setSignUpPromptEligibleForGold: (eligible: boolean) => void;
   setLastSignUpPromptPlayTime: (playTime: number) => void;
+  setSocialPromptDialogOpen: (isOpen: boolean) => void;
+  setLastSocialPromptPlayTime: (playTime: number) => void;
   setMysteriousNoteShopNotificationSeen: (seen: boolean) => void;
   setMysteriousNoteDonateNotificationSeen: (seen: boolean) => void;
   setHighlightedResources: (resources: string[]) => void;
@@ -954,6 +959,9 @@ export const createInitialState = (): GameState => ({
   signUpPromptDialogOpen: false,
   signUpPromptEligibleForGold: false,
   lastSignUpPromptPlayTime: 0,
+  socialPromptDialogOpen: false,
+  lastSocialPromptPlayTime: 0,
+  socialPromptAutoPhase: 0,
 
   // Initialize mysterious note notification state
   mysteriousNoteShopNotificationSeen: false,
@@ -1083,6 +1091,7 @@ function isNonRewardBlockingModalOpen(state: GameStore): boolean {
     state.investmentResultDialog.isOpen ||
     state.madnessDialog.isOpen ||
     state.signUpPromptDialogOpen ||
+    state.socialPromptDialogOpen ||
     state.playlightWelcomeDialogOpen ||
     state.investDialogOpen
   );
@@ -1192,6 +1201,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   signUpPromptDialogOpen: false,
   signUpPromptEligibleForGold: false,
   lastSignUpPromptPlayTime: 0,
+  socialPromptDialogOpen: false,
+  lastSocialPromptPlayTime: 0,
+  socialPromptAutoPhase: 0,
   // Initialize mysterious note notification state
   mysteriousNoteShopNotificationSeen: false,
   mysteriousNoteDonateNotificationSeen: false,
@@ -1244,6 +1256,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ signUpPromptEligibleForGold: eligible }),
   setLastSignUpPromptPlayTime: (playTime: number) =>
     set({ lastSignUpPromptPlayTime: playTime }),
+  setSocialPromptDialogOpen: (isOpen: boolean) =>
+    set({ socialPromptDialogOpen: isOpen }),
+  setLastSocialPromptPlayTime: (playTime: number) =>
+    set({ lastSocialPromptPlayTime: playTime }),
   setMysteriousNoteShopNotificationSeen: (seen: boolean) =>
     set({ mysteriousNoteShopNotificationSeen: seen }),
   setMysteriousNoteDonateNotificationSeen: (seen: boolean) =>
