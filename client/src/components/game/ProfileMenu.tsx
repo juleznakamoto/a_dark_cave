@@ -37,6 +37,7 @@ import { SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
 import { SOCIAL_PROMPT_REFERRAL_CAP } from "@/game/socialPromptAuto";
 import { claimSocialFollowReward } from "@/game/claimSocialFollowReward";
 import { SocialPlatformGlyph } from "@/components/game/SocialPlatformGlyph";
+import { isSocialPromoExclusiveRewardComplete } from "@/game/socialPromoExclusiveReward";
 
 export default function ProfileMenu() {
   const {
@@ -49,10 +50,13 @@ export default function ProfileMenu() {
     signUpPromptDialogOpen,
     setSignUpPromptDialogOpen,
     socialPromptDialogOpen,
+    setSocialPromptDialogOpen,
     setSignUpPromptEligibleForGold,
     setIsUserSignedIn,
     referralCount,
+    referrals,
     social_media_rewards,
+    lastSocialPromptPlayTime,
     leaderboardDialogOpen,
     setLeaderboardDialogOpen,
     isPaused,
@@ -76,6 +80,16 @@ export default function ProfileMenu() {
   const [marketingPrefLoading, setMarketingPrefLoading] = useState(false);
   const [deleteAccountInProgress, setDeleteAccountInProgress] = useState(false);
   const { toast } = useToast();
+
+  /** After the social prompt scheduler passes its first milestone (`lastSocialPromptPlayTime` set). */
+  const showExclusiveItemShortcut =
+    !!currentUser &&
+    lastSocialPromptPlayTime > 0 &&
+    !isSocialPromoExclusiveRewardComplete({
+      social_media_rewards,
+      referralCount,
+      referrals,
+    });
 
   useEffect(() => {
     checkAuth();
@@ -599,7 +613,22 @@ export default function ProfileMenu() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="flex-wrap justify-end max-w-[54px] flex items-center gap-1">
+      <div className="flex-wrap justify-end max-w-[140px] flex items-center gap-1">
+        {showExclusiveItemShortcut && (
+          <TooltipWrapper
+            tooltip={<p className="text-xs">Exclusive Item</p>}
+            tooltipId="exclusive-item-shortcut"
+            className="relative p-0 w-7 h-7 rounded-md bg-background backdrop-blur-sm border border-border flex items-center justify-center cursor-pointer hover:bg-muted/50 transition-colors shrink-0"
+            onClick={() => setSocialPromptDialogOpen(true)}
+          >
+            <span
+              className="text-[15px] leading-none select-none text-[#39ff14]"
+              aria-hidden
+            >
+              ⯍
+            </span>
+          </TooltipWrapper>
+        )}
         {!currentUser && (
           <TooltipWrapper
             tooltip={
