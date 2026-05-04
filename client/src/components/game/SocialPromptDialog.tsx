@@ -316,7 +316,7 @@ export default function SocialPromptDialog({
           </div>
         </div>
 
-        <div className="mt-1 space-y-3 pt-3 pb-6 border-t border-border">
+        <div className="mt-1 space-y-3 pt-3 pb-3">
           <div className="flex gap-2.5 items-start">
             <span
               className="shrink-0 text-[17px] leading-none select-none text-lime-500 pt-0.5"
@@ -328,8 +328,8 @@ export default function SocialPromptDialog({
               <div className="flex justify-between gap-2 text-sm font-medium text-foreground">
                 <span className="leading-snug">
                   {exclusiveRewardComplete
-                    ? "You fulfilled the tasks. You will soon get your reward."
-                    : "Progress toward exclusive reward"}
+                    ? "You fulfilled the tasks. You will soon get the exclusive item."
+                    : "Progress toward exclusive item"}
                 </span>
                 <span className="shrink-0 tabular-nums">
                   {exclusiveProgress.completed}/{exclusiveProgress.total}
