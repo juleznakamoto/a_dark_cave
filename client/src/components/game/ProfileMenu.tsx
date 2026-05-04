@@ -652,7 +652,7 @@ export default function ProfileMenu() {
                   className="relative z-[1] text-[15px] leading-none select-none text-[#39ff14]"
                   aria-hidden
                 >
-                  ⯍
+                  ⯫
                 </span>
               </div>
             </TooltipWrapper>

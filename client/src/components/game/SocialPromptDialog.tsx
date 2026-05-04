@@ -29,6 +29,7 @@ import {
   syncSocialPromoExclusiveRewardPending,
   isExclusiveInviteStepDone,
   isSocialPromoExclusiveRewardComplete,
+  SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL,
 } from "@/game/socialPromoExclusiveReward";
 
 interface SocialPromptDialogProps {
@@ -313,29 +314,52 @@ export default function SocialPromptDialog({
           </div>
         </div>
 
-        <div className="mt-1 pt-3 border-t border-border space-y-2">
-          <div className="flex justify-between gap-2 text-sm font-medium text-foreground">
-            <span className="leading-snug">
-              {exclusiveRewardComplete
-                ? "You fulfilled the tasks. You will soon get your reward."
-                : "Progress toward exclusive reward"}
+        <div className="mt-1 pt-3 pb-6 border-t border-border">
+          <div className="flex gap-2.5 items-start">
+            <span
+              className="shrink-0 text-[17px] leading-none select-none text-[#39ff14] pt-0.5"
+              aria-hidden
+            >
+              ⯫
             </span>
-            <span className="shrink-0 tabular-nums">
-              {exclusiveProgress.completed}/{exclusiveProgress.total}
-            </span>
-          </div>
-          <div
-            className="h-2 w-full rounded-full bg-muted overflow-hidden"
-            role="progressbar"
-            aria-valuenow={exclusiveProgress.completed}
-            aria-valuemin={0}
-            aria-valuemax={exclusiveProgress.total}
-            aria-label="Exclusive item progress"
-          >
-            <div
-              className="h-full rounded-full bg-primary transition-all duration-300 ease-out"
-              style={{ width: `${exclusiveProgress.percent}%` }}
-            />
+            <div className="min-w-0 flex-1 space-y-3">
+              <div className="flex justify-between gap-2 text-sm font-medium text-foreground">
+                <span className="leading-snug">
+                  {exclusiveRewardComplete
+                    ? "You fulfilled the tasks. You will soon get your reward."
+                    : "Progress toward exclusive reward"}
+                </span>
+                <span className="shrink-0 tabular-nums">
+                  {exclusiveProgress.completed}/{exclusiveProgress.total}
+                </span>
+              </div>
+              <div
+                className="relative h-2.5 w-full overflow-hidden rounded-full bg-muted"
+                role="progressbar"
+                aria-valuenow={exclusiveProgress.completed}
+                aria-valuemin={0}
+                aria-valuemax={exclusiveProgress.total}
+                aria-label="Exclusive item progress"
+              >
+                <div
+                  className="h-full rounded-full bg-primary transition-all duration-300 ease-out"
+                  style={{ width: `${exclusiveProgress.percent}%` }}
+                />
+                {Array.from(
+                  { length: SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL - 1 },
+                  (_, i) => i + 1,
+                ).map((step) => (
+                  <div
+                    key={step}
+                    className="pointer-events-none absolute inset-y-0 z-[1] w-px bg-background"
+                    style={{
+                      left: `${(step / SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL) * 100}%`,
+                      transform: "translateX(-50%)",
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </DialogContent>
