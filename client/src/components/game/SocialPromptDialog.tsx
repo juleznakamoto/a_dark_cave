@@ -227,7 +227,7 @@ export default function SocialPromptDialog({
     await navigator.clipboard.writeText(inviteLink);
     toast({
       title: "Invite link copied!",
-      description: "Share it with friends to earn 250 gold each.",
+      description: "Share it with friends to earn 250 Gold each.",
     });
   };
 
@@ -402,7 +402,7 @@ export default function SocialPromptDialog({
                   </span>
                 </div>
                 <p className="text-xs text-muted-foreground leading-snug">
-                  Invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends and each time both of you will receive 250 gold ({referralCount}/
+                  Invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends and each time both of you will receive 250 Gold ({referralCount}/
                   {SOCIAL_PROMPT_REFERRAL_CAP} invited).
                 </p>
               </div>

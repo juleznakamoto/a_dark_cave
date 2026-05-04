@@ -221,7 +221,7 @@ export default function ProfileMenu() {
     navigator.clipboard.writeText(inviteLink);
     toast({
       title: "Invite link copied!",
-      description: "Share it with friends to earn 250 gold each.",
+      description: "Share it with friends to earn 250 Gold each.",
     });
     setAccountDropdownOpen(false);
   };
@@ -421,7 +421,7 @@ export default function ProfileMenu() {
                 <DropdownMenuItemWithTooltip
                   tooltip={
                     <p className="text-xs">
-                      Invite your friends and both of you will receive 250 gold.
+                      Invite your friends and both of you will receive 250 Gold.
                       You can invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends. ({referralCount || 0}/{SOCIAL_PROMPT_REFERRAL_CAP}
                       invited).
                     </p>
