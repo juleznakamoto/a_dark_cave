@@ -33,6 +33,7 @@ import {
   syncSocialPromoExclusiveRewardPending,
   isExclusiveInviteStepDone,
   isSocialPromoExclusiveRewardComplete,
+  isSignUpRewardsStepDone,
   SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL,
 } from "@/game/socialPromoExclusiveReward";
 
@@ -98,6 +99,13 @@ export default function SocialPromptDialog({
   const referralCount = useGameStore((s) => s.referralCount ?? 0);
   const referrals = useGameStore((s) => s.referrals ?? []);
   const isUserSignedIn = useGameStore((s) => s.isUserSignedIn);
+  const signupWelcomeGoldClaimed = useGameStore(
+    (s) => s.signupWelcomeGoldClaimed === true,
+  );
+  const signUpTaskDone = isSignUpRewardsStepDone({
+    isUserSignedIn,
+    signupWelcomeGoldClaimed,
+  });
   const setAuthDialogOpen = useGameStore((s) => s.setAuthDialogOpen);
   const setSignUpPromptEligibleForGold = useGameStore(
     (s) => s.setSignUpPromptEligibleForGold,
@@ -148,7 +156,14 @@ export default function SocialPromptDialog({
 
   useEffect(() => {
     syncSocialPromoExclusiveRewardPending();
-  }, [isOpen, social_media_rewards, referralCount, referrals, isUserSignedIn]);
+  }, [
+    isOpen,
+    social_media_rewards,
+    referralCount,
+    referrals,
+    isUserSignedIn,
+    signupWelcomeGoldClaimed,
+  ]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -158,6 +173,7 @@ export default function SocialPromptDialog({
         referralCount,
         referrals,
         isUserSignedIn,
+        signupWelcomeGoldClaimed,
       })
     ) {
       setSocialPromptDialogOpen(false);
@@ -168,6 +184,7 @@ export default function SocialPromptDialog({
     referralCount,
     referrals,
     isUserSignedIn,
+    signupWelcomeGoldClaimed,
     setSocialPromptDialogOpen,
   ]);
 
@@ -246,12 +263,14 @@ export default function SocialPromptDialog({
     referralCount,
     referrals,
     isUserSignedIn,
+    signupWelcomeGoldClaimed,
   });
   const exclusiveRewardComplete = isSocialPromoExclusiveRewardComplete({
     social_media_rewards,
     referralCount,
     referrals,
     isUserSignedIn,
+    signupWelcomeGoldClaimed,
   });
 
   return (
@@ -275,11 +294,11 @@ export default function SocialPromptDialog({
           <div
             className={cn(
               "rounded-md border border-border p-3 flex gap-3 items-center",
-              isUserSignedIn && "border-green-500/40 bg-green-500/5",
+              signUpTaskDone && "border-green-500/40 bg-green-500/5",
             )}
           >
             <div className="shrink-0">
-              <StatusIcon done={isUserSignedIn} />
+              <StatusIcon done={signUpTaskDone} />
             </div>
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1 space-y-1">
@@ -294,7 +313,7 @@ export default function SocialPromptDialog({
                   across devices. Without an account, your progress may be lost.
                 </p>
               </div>
-              {!isUserSignedIn && (
+              {!signUpTaskDone && (
                 <Button
                   size="xs"
                   className="shrink-0 font-medium px-3 self-center"

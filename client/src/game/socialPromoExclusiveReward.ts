@@ -14,7 +14,21 @@ export type SocialPromoExclusiveSlice = {
   socialPromoExclusiveRewardPending?: boolean;
   /** Account sign-up / session (first rewards task). */
   isUserSignedIn?: boolean;
+  /** Welcome gold granted once after creating an account (may be true before email confirm / before UI auth sync). */
+  signupWelcomeGoldClaimed?: boolean;
 };
+
+/** First rewards row: done when gameplay session is active or welcome bonus was already granted. */
+export function isSignUpRewardsStepDone(
+  state: Pick<
+    SocialPromoExclusiveSlice,
+    "isUserSignedIn" | "signupWelcomeGoldClaimed"
+  >,
+): boolean {
+  return (
+    state.isUserSignedIn === true || state.signupWelcomeGoldClaimed === true
+  );
+}
 
 /** At least one successful invite for the exclusive-item track (gold rewards may still go up to 10). */
 export function isExclusiveInviteStepDone(
@@ -30,7 +44,7 @@ export function socialPromoExclusiveStepsCompleted(
 ): number {
   const rewards = state.social_media_rewards ?? {};
   let n = 0;
-  if (state.isUserSignedIn) n++;
+  if (isSignUpRewardsStepDone(state)) n++;
   if (!!rewards[MARKETING_EMAIL_REWARD_KEY]?.claimed) n++;
   for (const p of SOCIAL_PLATFORMS) {
     if (rewards[p.id]?.claimed) n++;

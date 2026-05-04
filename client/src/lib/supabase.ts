@@ -114,18 +114,25 @@ export async function getSupabaseClient(): Promise<SupabaseClient> {
 
         // Listen to auth state changes with minimal overhead
         client.auth.onAuthStateChange((_event, session) => {
-          const newUser = session?.user || null;
-          // Only update if user actually changed
-          if (newUser?.id !== cachedAuthUser?.id) {
-            cachedAuthUser = newUser;
-          }
+          const nextUser = session?.user ?? null;
+          cachedAuthUser = nextUser;
           authStateInitialized = true;
+
+          void import("@/game/state").then(({ useGameStore }) => {
+            const gameplaySignedIn = !!nextUser?.email_confirmed_at;
+            useGameStore.getState().setIsUserSignedIn(gameplaySignedIn);
+          });
         });
 
         // Initialize current session
         client.auth.getSession().then(({ data: { session } }) => {
           cachedAuthUser = session?.user || null;
           authStateInitialized = true;
+          void import("@/game/state").then(({ useGameStore }) => {
+            useGameStore
+              .getState()
+              .setIsUserSignedIn(!!session?.user?.email_confirmed_at);
+          });
         });
       }
 

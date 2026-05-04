@@ -62,7 +62,10 @@ export default function ProfileMenu() {
     lastSaved,
     devMode,
     isUserSignedIn,
+    signupWelcomeGoldClaimed,
   } = useGameStore();
+
+  const signupWelcomeGoldClaimedBool = signupWelcomeGoldClaimed === true;
 
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
@@ -82,6 +85,7 @@ export default function ProfileMenu() {
       referralCount,
       referrals,
       isUserSignedIn,
+      signupWelcomeGoldClaimed: signupWelcomeGoldClaimedBool,
     });
 
   useEffect(() => {
