@@ -213,7 +213,7 @@ export default function Game() {
             // Use setTimeout to ensure state is fully set before saving
             setTimeout(async () => {
               try {
-                await saveGame(savedState, false, false);
+                await saveGame(savedState, false);
                 logger.log(
                   "[GAME] Successfully saved claimed referrals to cloud",
                 );

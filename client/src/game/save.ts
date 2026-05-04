@@ -90,8 +90,25 @@ async function getDB() {
   }
 }
 
-// Helper function to process unclaimed referrals
+/** Serialize referral claiming so concurrent loadGame() paths cannot double-award. */
+let referralClaimGate = Promise.resolve();
+
 async function processUnclaimedReferrals(
+  gameState: GameState,
+): Promise<GameState> {
+  await referralClaimGate;
+  let release!: () => void;
+  referralClaimGate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  try {
+    return await processUnclaimedReferralsImpl(gameState);
+  } finally {
+    release();
+  }
+}
+
+async function processUnclaimedReferralsImpl(
   gameState: GameState,
 ): Promise<GameState> {
   const { useGameStore } = await import("./state");
@@ -114,19 +131,17 @@ async function processUnclaimedReferrals(
     return gameState;
   }
 
-  let updatedGameState = { ...gameState };
   let goldGained = 0;
-  let logEntriesAdded: any[] = [];
+  const logEntriesAdded: any[] = [];
 
   // Process unclaimed referrals
-  const updatedReferrals = updatedGameState.referrals.map((referral) => {
+  const updatedReferrals = gameState.referrals.map((referral) => {
     if (!referral.claimed) {
       logger.log('[REFERRAL] 💰 Claiming referral:', {
         userId: referral.userId,
         timestamp: referral.timestamp,
       });
 
-      // Claim this referral
       goldGained += REFERRAL_REWARD_GOLD;
       logEntriesAdded.push({
         id: `referral-claimed-${referral.userId}-${Date.now()}`,
@@ -140,61 +155,65 @@ async function processUnclaimedReferrals(
     return referral;
   });
 
-  // Update game state if any referrals were claimed
-  if (goldGained > 0) {
-    const oldGold = updatedGameState.resources?.gold || 0;
-    const newGold = oldGold + goldGained;
+  if (goldGained <= 0) {
+    logger.log('[REFERRAL] ℹ️ No unclaimed referrals to process');
+    return gameState;
+  }
 
-    logger.log('[REFERRAL] ✅ Awarding gold:', {
-      oldGold,
-      goldGained,
-      newGold,
-      claimedCount: logEntriesAdded.length,
-    });
+  const oldGold = gameState.resources?.gold || 0;
+  const newGold = oldGold + goldGained;
 
-    updatedGameState = {
-      ...updatedGameState,
-      referrals: updatedReferrals,
-      resources: {
-        ...updatedGameState.resources,
-        gold: newGold,
+  logger.log('[REFERRAL] ✅ Referral rewards ready (applied after cloud save):', {
+    oldGold,
+    goldGained,
+    newGold,
+    claimedCount: logEntriesAdded.length,
+  });
+
+  const cooldownDurations =
+    (gameState as unknown as { cooldownDurations?: Record<string, number> })
+      .cooldownDurations || {};
+
+  const updatedGameState = {
+    ...gameState,
+    referrals: updatedReferrals,
+    resources: {
+      ...gameState.resources,
+      gold: newGold,
+    },
+    log: [...(gameState.log || []), ...logEntriesAdded].slice(-100),
+    cooldownDurations,
+  };
+
+  logger.log('[REFERRAL] 💾 Saving claimed referrals to Supabase...');
+  try {
+    // Omit playTime so cloud OCC does not reject saves where playTime did not increase since load.
+    await saveGameToSupabase(
+      {
+        referrals: updatedReferrals,
+        resources: updatedGameState.resources,
+        log: updatedGameState.log,
       },
-      log: [...(updatedGameState.log || []), ...logEntriesAdded].slice(-100),
-      cooldownDurations: updatedGameState.cooldownDurations || {},
-    };
+      undefined,
+      false,
+    );
+    logger.log('[REFERRAL] ✅ Successfully saved claimed referrals to cloud');
 
-    // Update the store as well
     useGameStore.setState({
       resources: updatedGameState.resources,
       log: updatedGameState.log,
-      referrals: updatedGameState.referrals,
+      referrals: updatedReferrals,
     });
 
     void import("./socialPromoExclusiveReward").then((m) =>
       m.syncSocialPromoExclusiveRewardPending(),
     );
 
-    // CRITICAL: Save the claimed referrals back to Supabase immediately
-    logger.log('[REFERRAL] 💾 Saving claimed referrals to Supabase...');
-    try {
-      await saveGameToSupabase(
-        {
-          referrals: updatedReferrals,
-          resources: updatedGameState.resources,
-          log: updatedGameState.log,
-        },
-        updatedGameState.playTime,
-        false
-      );
-      logger.log('[REFERRAL] ✅ Successfully saved claimed referrals to cloud');
-    } catch (error) {
-      logger.error('[REFERRAL] ❌ Failed to save claimed referrals to cloud:', error);
-    }
-  } else {
-    logger.log('[REFERRAL] ℹ️ No unclaimed referrals to process');
+    return updatedGameState;
+  } catch (error) {
+    logger.error('[REFERRAL] ❌ Failed to save claimed referrals to cloud:', error);
+    return gameState;
   }
-
-  return updatedGameState;
 }
 
 export async function saveGame(

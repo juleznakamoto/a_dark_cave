@@ -459,7 +459,7 @@ export default function SocialPromptDialog({
               <div className="flex justify-between gap-2 text-sm font-medium text-foreground">
                 <span className="leading-snug">
                   {exclusiveRewardComplete
-                    ? "You have finished all tasks. You will soon receive your exclusive reward.."
+                    ? "You have finished all tasks. You will soon receive your reward."
                     : "Progress toward exclusive item"}
                 </span>
                 <span className="shrink-0 tabular-nums">
