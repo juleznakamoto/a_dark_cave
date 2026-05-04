@@ -102,6 +102,7 @@ export default function SocialPromptDialog({
   const signupWelcomeGoldClaimed = useGameStore(
     (s) => s.signupWelcomeGoldClaimed === true,
   );
+  const giftedRingGranted = useGameStore((s) => s.clothing?.gifted_ring === true);
   const signUpTaskDone = isSignUpRewardsStepDone({
     isUserSignedIn,
     signupWelcomeGoldClaimed,
@@ -167,6 +168,7 @@ export default function SocialPromptDialog({
 
   useEffect(() => {
     if (!isOpen) return;
+    // Stay dismissible manually until gifted_ring (exclusive narrative reward).
     if (
       isSocialPromoExclusiveRewardComplete({
         social_media_rewards,
@@ -174,7 +176,8 @@ export default function SocialPromptDialog({
         referrals,
         isUserSignedIn,
         signupWelcomeGoldClaimed,
-      })
+      }) &&
+      giftedRingGranted
     ) {
       setSocialPromptDialogOpen(false);
     }
@@ -185,6 +188,7 @@ export default function SocialPromptDialog({
     referrals,
     isUserSignedIn,
     signupWelcomeGoldClaimed,
+    giftedRingGranted,
     setSocialPromptDialogOpen,
   ]);
 

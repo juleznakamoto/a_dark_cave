@@ -63,6 +63,7 @@ export default function ProfileMenu() {
     devMode,
     isUserSignedIn,
     signupWelcomeGoldClaimed,
+    clothing,
   } = useGameStore();
 
   const signupWelcomeGoldClaimedBool = signupWelcomeGoldClaimed === true;
@@ -78,15 +79,16 @@ export default function ProfileMenu() {
   const [deleteAccountInProgress, setDeleteAccountInProgress] = useState(false);
   const { toast } = useToast();
 
-  /** Rewards/tasks shortcut; visible until exclusive-track is complete. */
+  /** Rewards/tasks shortcut; visible until exclusive-track is complete *and* the ring reward event granted gifted_ring. */
+  const exclusiveTrackTasksDone = isSocialPromoExclusiveRewardComplete({
+    social_media_rewards,
+    referralCount,
+    referrals,
+    isUserSignedIn,
+    signupWelcomeGoldClaimed: signupWelcomeGoldClaimedBool,
+  });
   const showRewardsTasksShortcut =
-    !isSocialPromoExclusiveRewardComplete({
-      social_media_rewards,
-      referralCount,
-      referrals,
-      isUserSignedIn,
-      signupWelcomeGoldClaimed: signupWelcomeGoldClaimedBool,
-    });
+    !exclusiveTrackTasksDone || clothing?.gifted_ring !== true;
 
   useEffect(() => {
     checkAuth();
