@@ -10,6 +10,21 @@ import OutcomeDialog, {
   OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS,
 } from "./OutcomeDialog";
 
+/** Same center symbol + shockwave as Profile → “Rewards tasks” shortcut (exclusive promo track). */
+function SocialPromoTasksOutcomeIcon() {
+  return (
+    <span className="relative flex h-full w-full items-center justify-center overflow-visible">
+      <span className="exclusive-promo-shockwave-ring" aria-hidden />
+      <span
+        className="relative z-[1] text-[26px] leading-none select-none text-lime-500"
+        aria-hidden
+      >
+        ⯫
+      </span>
+    </span>
+  );
+}
+
 interface RewardDialogData {
   rewards: {
     resources?: Partial<Record<keyof GameState["resources"], number>>;
@@ -223,6 +238,9 @@ export default function RewardDialog({
 
   const hasRewardItems = rewardItems.length > 0;
   const hasLosses = lossItems.length > 0;
+  const useSocialPromoIcon =
+    variant === "success" &&
+    Boolean(rewards.clothing?.includes("gifted_ring"));
 
   const content = (
     <>
@@ -236,9 +254,13 @@ export default function RewardDialog({
       isOpen={isOpen}
       onClose={onClose}
       icon={
-        <span className={OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS} aria-hidden>
-          ⁂
-        </span>
+        useSocialPromoIcon ? (
+          <SocialPromoTasksOutcomeIcon />
+        ) : (
+          <span className={OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS} aria-hidden>
+            ⁂
+          </span>
+        )
       }
       successLog={successLog}
       title={title?.trim() ? title : "Action Reward"}

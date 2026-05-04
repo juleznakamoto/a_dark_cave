@@ -98,7 +98,7 @@ export default function OutcomeDialog({
               {title}
             </DialogTitle>
             {successLog && (
-              <div className="text-sm text-foreground text-center px-2 pb-0 pt-0">
+              <div className="text-sm text-foreground text-center px-2 pb-2 pt-0">
                 {successLog}
               </div>
             )}

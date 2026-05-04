@@ -90,17 +90,18 @@ async function getDB() {
   }
 }
 
-/** Serialize referral claiming so concurrent loadGame() paths cannot double-award. */
+/** Serialize referral claiming so concurrent loadGame() paths cannot double-award (promise chain: swap gate before awaiting prev). */
 let referralClaimGate = Promise.resolve();
 
 async function processUnclaimedReferrals(
   gameState: GameState,
 ): Promise<GameState> {
-  await referralClaimGate;
+  const prevGate = referralClaimGate;
   let release!: () => void;
   referralClaimGate = new Promise<void>((resolve) => {
     release = resolve;
   });
+  await prevGate;
   try {
     return await processUnclaimedReferralsImpl(gameState);
   } finally {

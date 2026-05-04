@@ -11,7 +11,7 @@ export const socialPromoExclusiveEvents: Record<string, GameEvent> = {
     timeProbability: 0.5,
     priority: 10,
     repeatable: true,
-    title: "An Unexpected Gift",
+    title: "An Expected Gift",
     message:
       "One morning, on a tree stump beside the cave entrance, you find a ring, as though someone left it there for you.",
     choices: [
@@ -25,7 +25,7 @@ export const socialPromoExclusiveEvents: Record<string, GameEvent> = {
           },
           socialPromoExclusiveRewardPending: false,
           _logMessage:
-            "You slip the ring on. It rests lightly on your finger, faintly warm and welcoming.",
+            "You hold the ring in your hand. It feels soft, faintly warm and welcoming.",
         }),
       },
     ],

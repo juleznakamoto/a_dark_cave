@@ -748,7 +748,7 @@ export default function EstatePanel() {
                     buttonId="upgrade-crows-eye"
                     onUpgrade={handleCrowsEyeUpgrade}
                     tooltipContent={<div>+{nxt?.doubleChance - cur?.doubleChance}% Double Gain chance</div>}
-                    description={`${cur.doubleChance}% chance to double Gains from actions`}
+                    description={`${cur.doubleChance}% chance to double actions gains`}
                   />
                 );
               })()}
