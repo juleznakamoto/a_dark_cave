@@ -434,61 +434,57 @@ export default function ProfileMenu() {
                   Sign Out
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
+                <DropdownMenuItemWithTooltip
+                  tooltip={
+                    <p className="text-xs">
+                      Invite your friends and both of you will receive 250 gold.
+                      You can invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends. ({referralCount || 0}/{SOCIAL_PROMPT_REFERRAL_CAP}
+                      invited).
+                    </p>
+                  }
+                  tooltipId="referral-info"
+                  disabled={(referralCount || 0) >= SOCIAL_PROMPT_REFERRAL_CAP}
+                  onTooltipAction={() => {
+                    handleCopyInviteLink();
+                    setAccountDropdownOpen(false);
+                  }}
+                  tooltipContentClassName="max-w-xs"
+                  className={
+                    (referralCount || 0) >= SOCIAL_PROMPT_REFERRAL_CAP
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
+                  }
+                >
+                  <div className="flex items-center justify-between w-full gap-2">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <UserPlus
+                        className="w-4 h-4 shrink-0 opacity-90"
+                        aria-hidden
+                      />
+                      <span>Invite</span>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="font-semibold">+250 Gold</span>
+                      {(referralCount || 0) >= SOCIAL_PROMPT_REFERRAL_CAP && (
+                        <span className="text-xs text-muted-foreground">
+                          ✓
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </DropdownMenuItemWithTooltip>
               </>
             ) : (
-              <>
-                <DropdownMenuItem
-                  onClick={() => {
-                    setAccountDropdownOpen(false);
-                    handleSetAuthDialogOpen(true);
-                    setAuthNotificationSeen(true);
-                  }}
-                >
-                  Sign In/Up
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-              </>
+              <DropdownMenuItem
+                onClick={() => {
+                  setAccountDropdownOpen(false);
+                  handleSetAuthDialogOpen(true);
+                  setAuthNotificationSeen(true);
+                }}
+              >
+                Sign In/Up
+              </DropdownMenuItem>
             )}
-
-            <DropdownMenuItemWithTooltip
-              tooltip={
-                <p className="text-xs">
-                  Invite your friends and both of you will receive 250 gold.
-                  You can invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends. ({referralCount || 0}/{SOCIAL_PROMPT_REFERRAL_CAP}
-                  invited).
-                </p>
-              }
-              tooltipId="referral-info"
-              disabled={!currentUser || (referralCount || 0) >= SOCIAL_PROMPT_REFERRAL_CAP}
-              onTooltipAction={() => {
-                handleCopyInviteLink();
-                setAccountDropdownOpen(false);
-              }}
-              tooltipContentClassName="max-w-xs"
-              className={
-                !currentUser || (referralCount || 0) >= SOCIAL_PROMPT_REFERRAL_CAP
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
-              }
-            >
-              <div className="flex items-center justify-between w-full gap-2">
-                <div className="flex items-center gap-1.5 min-w-0">
-                  <UserPlus
-                    className="w-4 h-4 shrink-0 opacity-90"
-                    aria-hidden
-                  />
-                  <span>Invite</span>
-                </div>
-                <div className="flex items-center gap-2 shrink-0">
-                  <span className="font-semibold">+250 Gold</span>
-                  {(referralCount || 0) >= SOCIAL_PROMPT_REFERRAL_CAP && (
-                    <span className="text-xs text-muted-foreground">
-                      ✓
-                    </span>
-                  )}
-                </div>
-              </div>
-            </DropdownMenuItemWithTooltip>
             {currentUser && (
               <>
                 <DropdownMenuSeparator />
@@ -567,9 +563,9 @@ export default function ProfileMenu() {
               setAccountDropdownOpen(true);
               setAuthNotificationSeen(true);
             }}
-            className="w-5 h-5 rounded-full border border-orange-500 flex items-center justify-center cursor-pointer opacity-80 hover:opacity-100 transition-opacity relative"
+            className="w-5 h-5 shrink-0 rounded-full border border-orange-500 flex items-center justify-center cursor-pointer opacity-80 hover:opacity-100 transition-opacity"
           >
-            <span className="absolute inset-0 flex items-center justify-center text-orange-500 text-xs font-bold">
+            <span className="text-orange-500 text-xs font-bold leading-none translate-y-0.5">
               !
             </span>
           </TooltipWrapper>
