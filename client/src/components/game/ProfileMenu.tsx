@@ -551,7 +551,7 @@ export default function ProfileMenu() {
               setAccountDropdownOpen(true);
               setAuthNotificationSeen(true);
             }}
-            className="relative inline-flex size-5 shrink-0 rounded-full border border-orange-500 cursor-pointer opacity-80 hover:opacity-100 transition-opacity"
+            className="relative inline-flex size-5 shrink-0 translate-y-1 rounded-full border border-orange-500 cursor-pointer opacity-80 hover:opacity-100 transition-opacity"
           >
             <span className="text-orange-500 text-xs font-bold leading-none">
               !
