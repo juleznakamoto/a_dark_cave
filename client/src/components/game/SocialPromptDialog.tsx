@@ -62,7 +62,9 @@ function LockedSocialButton({
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <span className="inline-flex shrink-0 cursor-not-allowed">{button}</span>
+        <span className="inline-flex shrink-0 cursor-not-allowed">
+          {button}
+        </span>
       </TooltipTrigger>
       <TooltipContent>{TASK_REQUIRES_SIGNUP_TOOLTIP}</TooltipContent>
     </Tooltip>
@@ -241,8 +243,8 @@ export default function SocialPromptDialog({
             <DialogTitle>Stay connected and earn Rewards</DialogTitle>
             <DialogDescription className="text-left pt-1 space-y-2">
               <p>
-                Complete the tasks below to receive bonuses. Complete all tasks to
-                receive an exlusive item (only one friend invite needed).
+                Complete the tasks below to receive bonuses. Complete all tasks
+                to receive an exlusive item (only one friend invite needed).
               </p>
             </DialogDescription>
           </DialogHeader>
@@ -267,10 +269,9 @@ export default function SocialPromptDialog({
                     </span>
                   </div>
                   <p className="text-xs text-muted-foreground leading-snug">
-                    Create a free account to save your game progress and sync across devices. Without an account, your progress may be lost.
-                  </p>
-                  <p className="text-xs font-medium text-foreground leading-snug">
-                    Sign up now and receive <strong>250 Gold</strong> as a bonus!
+                    Create a free account to save your game progress and sync
+                    across devices. Without an account, your progress may be
+                    lost.
                   </p>
                 </div>
                 {!isUserSignedIn && (
@@ -320,7 +321,8 @@ export default function SocialPromptDialog({
 
             {/* Social */}
             {SOCIAL_PLATFORMS.map((platform) => {
-              const claimed = social_media_rewards[platform.id]?.claimed ?? false;
+              const claimed =
+                social_media_rewards[platform.id]?.claimed ?? false;
               return (
                 <div
                   key={platform.id}
@@ -382,8 +384,8 @@ export default function SocialPromptDialog({
                     </span>
                   </div>
                   <p className="text-xs text-muted-foreground leading-snug">
-                    Invite your friends and both of you will receive 250 gold. You
-                    can invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends. (
+                    Invite your friends and both of you will receive 250 gold.
+                    You can invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends. (
                     {referralCount}/{SOCIAL_PROMPT_REFERRAL_CAP} invited).
                   </p>
                 </div>
