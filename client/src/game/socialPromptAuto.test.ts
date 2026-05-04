@@ -4,7 +4,25 @@ import {
   isSocialPromptFirstWaveEligible,
   isSocialPromptRepeatWaveEligible,
   SOCIAL_PROMPT_REFERRAL_CAP,
+  socialPromptMilestoneFloorFromPlayTime,
 } from "@/game/socialPromptAuto";
+
+const MIN = 60 * 1000;
+
+describe("socialPromptMilestoneFloorFromPlayTime", () => {
+  it("counts thresholds strictly by active-play milestones", () => {
+    expect(socialPromptMilestoneFloorFromPlayTime(0)).toBe(0);
+    expect(socialPromptMilestoneFloorFromPlayTime(14 * MIN)).toBe(0);
+    expect(socialPromptMilestoneFloorFromPlayTime(15 * MIN)).toBe(1);
+    expect(socialPromptMilestoneFloorFromPlayTime(29 * MIN)).toBe(1);
+    expect(socialPromptMilestoneFloorFromPlayTime(30 * MIN)).toBe(2);
+    expect(socialPromptMilestoneFloorFromPlayTime(59 * MIN)).toBe(2);
+    expect(socialPromptMilestoneFloorFromPlayTime(60 * MIN)).toBe(3);
+    expect(socialPromptMilestoneFloorFromPlayTime(119 * MIN)).toBe(3);
+    expect(socialPromptMilestoneFloorFromPlayTime(120 * MIN)).toBe(4);
+    expect(socialPromptMilestoneFloorFromPlayTime(24 * 60 * MIN)).toBe(4);
+  });
+});
 
 describe("socialPromptAuto eligibility", () => {
   const emptyRewards = {};

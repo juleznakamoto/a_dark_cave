@@ -39,6 +39,7 @@ import { calculateBastionStats } from "@/game/bastionStats";
 import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { GAME_CONSTANTS } from "@/game/constants";
+import { socialPromptMilestoneFloorFromPlayTime } from "@/game/socialPromptAuto";
 import {
   ACTION_TO_UPGRADE_KEY,
   incrementButtonUsage,
@@ -956,6 +957,7 @@ export const createInitialState = (): GameState => ({
   lastSignUpPromptPlayTime: 0,
   socialPromptDialogOpen: false,
   lastSocialPromptPlayTime: 0,
+  socialPromptMilestoneIndex: 0,
   socialPromptAutoPhase: 0,
   socialPromoExclusiveRewardPending: false,
 
@@ -1196,6 +1198,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   lastSignUpPromptPlayTime: 0,
   socialPromptDialogOpen: false,
   lastSocialPromptPlayTime: 0,
+  socialPromptMilestoneIndex: 0,
   socialPromptAutoPhase: 0,
   socialPromoExclusiveRewardPending: false,
   // Initialize mysterious note notification state
@@ -2035,6 +2038,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
           savedState.lastSignUpPromptPlayTime !== undefined
             ? savedState.lastSignUpPromptPlayTime
             : 0,
+        socialPromptMilestoneIndex: Math.max(
+          (savedState as { socialPromptMilestoneIndex?: number })
+            .socialPromptMilestoneIndex ?? 0,
+          socialPromptMilestoneFloorFromPlayTime(loadedPlayTime),
+        ),
         mysteriousNoteShopNotificationSeen:
           savedState.mysteriousNoteShopNotificationSeen !== undefined
             ? savedState.mysteriousNoteShopNotificationSeen

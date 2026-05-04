@@ -147,6 +147,27 @@ export default function SocialPromptDialog({
     syncSocialPromoExclusiveRewardPending();
   }, [isOpen, social_media_rewards, referralCount, referrals, isUserSignedIn]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    if (
+      isSocialPromoExclusiveRewardComplete({
+        social_media_rewards,
+        referralCount,
+        referrals,
+        isUserSignedIn,
+      })
+    ) {
+      setSocialPromptDialogOpen(false);
+    }
+  }, [
+    isOpen,
+    social_media_rewards,
+    referralCount,
+    referrals,
+    isUserSignedIn,
+    setSocialPromptDialogOpen,
+  ]);
+
   const handleSignUpTaskClick = () => {
     setSignUpPromptEligibleForGold(true);
     setAuthDialogOpen(true);

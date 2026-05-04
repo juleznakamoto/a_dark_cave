@@ -50,7 +50,6 @@ export default function ProfileMenu() {
     referralCount,
     referrals,
     social_media_rewards,
-    lastSocialPromptPlayTime,
     leaderboardDialogOpen,
     setLeaderboardDialogOpen,
     isPaused,
@@ -76,10 +75,8 @@ export default function ProfileMenu() {
   const [deleteAccountInProgress, setDeleteAccountInProgress] = useState(false);
   const { toast } = useToast();
 
-  /** After first social-prompt milestone; hidden once exclusive-track tasks are done (see `isSocialPromoExclusiveRewardComplete`). */
-  const showExclusiveItemShortcut =
-    isUserSignedIn &&
-    lastSocialPromptPlayTime > 0 &&
+  /** Rewards/tasks shortcut; visible until exclusive-track is complete. */
+  const showRewardsTasksShortcut =
     !isSocialPromoExclusiveRewardComplete({
       social_media_rewards,
       referralCount,
@@ -537,9 +534,9 @@ export default function ProfileMenu() {
       </div>
       <div className="flex-wrap justify-end max-w-[140px] flex items-start gap-1">
         <div className="flex items-start gap-0.5 shrink-0">
-          {showExclusiveItemShortcut && (
+          {showRewardsTasksShortcut && (
             <TooltipWrapper
-              tooltip={<p className="text-xs">Exclusive Item</p>}
+              tooltip={<p className="text-xs">Rewards tasks</p>}
               tooltipId="exclusive-item-shortcut"
               className="relative p-0 w-7 h-7 rounded-md bg-transparent flex items-center justify-center cursor-pointer hover:bg-muted/30 transition-colors shrink-0 border-0 shadow-none overflow-visible"
               onClick={() => setSocialPromptDialogOpen(true)}

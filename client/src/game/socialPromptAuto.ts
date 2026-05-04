@@ -2,14 +2,39 @@ import type { GameState } from "@shared/schema";
 import { MARKETING_EMAIL_REWARD_KEY } from "@/game/marketingEmailReward";
 import { SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
 
-/** First auto social prompt after this much active play time (ms). */
+/** @deprecated Legacy signed-in scheduler; auto-open now uses {@link SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS}. */
 export const SOCIAL_PROMPT_INITIAL_PLAY_MS = 30 * 60 * 1000;
 
-/** Second auto prompt runs after this much additional play time past the first milestone (ms). */
+/** @deprecated Legacy signed-in scheduler. */
 export const SOCIAL_PROMPT_REPEAT_PLAY_MS = 90 * 60 * 1000;
 
-/** Further auto prompts (phase ≥ 2): same eligibility as repeat wave, every this much play time after the last milestone (ms). */
+/** @deprecated Legacy signed-in scheduler. */
 export const SOCIAL_PROMPT_LONG_REPEAT_PLAY_MS = 4 * 60 * 60 * 1000;
+
+/**
+ * Active-play milestones (ms) at which the rewards dialog auto-opens once each,
+ * for both guests and signed-in players.
+ */
+export const SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS = [
+  15 * 60 * 1000,
+  30 * 60 * 1000,
+  60 * 60 * 1000,
+  120 * 60 * 1000,
+] as const;
+
+export const SOCIAL_PROMPT_AUTO_OPEN_COUNT = SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS.length;
+
+/** How many {@link SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS} thresholds `playTimeMs` has already passed (for save migration). */
+export function socialPromptMilestoneFloorFromPlayTime(
+  playTimeMs: number,
+): number {
+  let n = 0;
+  for (const m of SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS) {
+    if (playTimeMs >= m) n++;
+    else break;
+  }
+  return n;
+}
 
 export const SOCIAL_PROMPT_REFERRAL_CAP = 10;
 

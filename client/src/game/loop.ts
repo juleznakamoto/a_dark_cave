@@ -32,12 +32,10 @@ import { getPriorActionSuccessor } from "./buttonUpgrades";
 import { DISGRACED_PRIOR_UPGRADES } from "./rules/skillUpgrades";
 import { CRUEL_MODE, cruelModeScale } from "./cruelMode";
 import {
-  SOCIAL_PROMPT_INITIAL_PLAY_MS,
-  SOCIAL_PROMPT_REPEAT_PLAY_MS,
-  SOCIAL_PROMPT_LONG_REPEAT_PLAY_MS,
-  isSocialPromptFirstWaveEligible,
-  isSocialPromptRepeatWaveEligible,
+  SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS,
+  SOCIAL_PROMPT_AUTO_OPEN_COUNT,
 } from "./socialPromptAuto";
+import { isSocialPromoExclusiveRewardComplete } from "@/game/socialPromoExclusiveReward";
 
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
@@ -121,9 +119,6 @@ const SHOP_NOTIFICATION_INITIAL_DELAY = 45 * 60 * 1000; // 45 minutes in millise
 const SHOP_NOTIFICATION_REPEAT_INTERVAL = 90 * 60 * 1000; // 90 minutes in milliseconds
 const AUTH_NOTIFICATION_INITIAL_DELAY = 15 * 60 * 1000; // 15 minutes in milliseconds
 const AUTH_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milliseconds
-const SIGN_UP_PROMPT_INITIAL_DELAY = 30 * 60 * 1000; // 30 minutes of play time
-const SIGN_UP_PROMPT_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes between prompts
-
 const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minute in milliseconds
 const TARGET_FPS = 4;
 const FRAME_DURATION = 1000 / TARGET_FPS; // 250ms per frame at 4 FPS
@@ -468,80 +463,18 @@ export function startGameLoop() {
           }
         }
 
-        // Social prompt for guests (same cadence as former sign-up prompt): rewards dialog includes sign-up task
-        if (!state.isUserSignedIn) {
-          const playTime = state.playTime || 0;
-          const lastShown = state.lastSignUpPromptPlayTime || 0;
-
-          if (playTime >= SIGN_UP_PROMPT_INITIAL_DELAY && lastShown === 0) {
-            useGameStore.setState({
-              socialPromptDialogOpen: true,
-              lastSignUpPromptPlayTime: playTime,
-            });
-          } else if (
-            lastShown > 0 &&
-            playTime >= lastShown + SIGN_UP_PROMPT_REPEAT_INTERVAL
-          ) {
-            useGameStore.setState({
-              socialPromptDialogOpen: true,
-              lastSignUpPromptPlayTime: playTime,
-            });
-          }
-        }
-
-        // Social prompt (signed-in): 30m first wave → +90m repeat wave → then every +4h repeat wave (invite cap ignored).
-        if (state.isUserSignedIn) {
+        // Rewards dialog: auto-open at play-time milestones until exclusive-item tasks are done (same bar as profile shortcut).
+        if (!isSocialPromoExclusiveRewardComplete(state)) {
           const playTimeMs = state.playTime || 0;
-          const phase = state.socialPromptAutoPhase ?? 0;
-          const lastSocial = state.lastSocialPromptPlayTime || 0;
-
-          if (phase < 2) {
-            if (
-              phase === 0 &&
-              playTimeMs >= SOCIAL_PROMPT_INITIAL_PLAY_MS
-            ) {
-              if (isSocialPromptFirstWaveEligible(state)) {
-                useGameStore.setState({
-                  socialPromptDialogOpen: true,
-                  lastSocialPromptPlayTime: playTimeMs,
-                  socialPromptAutoPhase: 1,
-                });
-              } else {
-                useGameStore.setState({
-                  lastSocialPromptPlayTime: playTimeMs,
-                  socialPromptAutoPhase: 2,
-                });
-              }
-            } else if (
-              phase === 1 &&
-              playTimeMs >= lastSocial + SOCIAL_PROMPT_REPEAT_PLAY_MS
-            ) {
-              if (isSocialPromptRepeatWaveEligible(state)) {
-                useGameStore.setState({
-                  socialPromptDialogOpen: true,
-                  lastSocialPromptPlayTime: playTimeMs,
-                  socialPromptAutoPhase: 2,
-                });
-              } else {
-                useGameStore.setState({
-                  lastSocialPromptPlayTime: playTimeMs,
-                  socialPromptAutoPhase: 2,
-                });
-              }
-            }
-          } else if (
-            playTimeMs >= lastSocial + SOCIAL_PROMPT_LONG_REPEAT_PLAY_MS
+          const idx = state.socialPromptMilestoneIndex ?? 0;
+          if (
+            idx < SOCIAL_PROMPT_AUTO_OPEN_COUNT &&
+            playTimeMs >= SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS[idx]
           ) {
-            if (isSocialPromptRepeatWaveEligible(state)) {
-              useGameStore.setState({
-                socialPromptDialogOpen: true,
-                lastSocialPromptPlayTime: playTimeMs,
-              });
-            } else {
-              useGameStore.setState({
-                lastSocialPromptPlayTime: playTimeMs,
-              });
-            }
+            useGameStore.setState({
+              socialPromptDialogOpen: true,
+              socialPromptMilestoneIndex: idx + 1,
+            });
           }
         }
 

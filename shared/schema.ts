@@ -568,13 +568,15 @@ export const gameStateSchema = z.object({
   shopNotificationSeen: z.boolean().default(false), // Added new field for shop notification
   authNotificationSeen: z.boolean().default(false), // Added new field for auth notification
   authNotificationVisible: z.boolean().default(false), // Added new field for auth notification visibility
-  lastSignUpPromptPlayTime: z.number().default(0), // Guest rewards-dialog auto prompt cadence (same timers as former sign-up prompt)
-  /** playTime at last social auto-prompt milestone (30m / 90m gates or each 4h repeat checkpoint). */
+  lastSignUpPromptPlayTime: z.number().default(0),
+  /** Legacy; lastSocialPromptPlayTime is no longer used to schedule auto-open. */
   lastSocialPromptPlayTime: z.number().default(0),
   /**
-   * Auto social prompt scheduler: 0 = awaiting first 30min gate, 1 = awaiting +90min repeat gate,
-   * 2 = initial cadence finished; further prompts use lastSocialPromptPlayTime + 4h with repeat-wave rules.
+   * Next rewards-dialog auto-open milestone index (0–4). When playTime reaches
+   * `socialPromptAuto`’s `SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS[index]`, the dialog opens once and index increments.
    */
+  socialPromptMilestoneIndex: z.number().int().min(0).max(4).default(0),
+  /** Legacy scheduler phase (retained for save compatibility; unused for auto-open). */
   socialPromptAutoPhase: z.number().int().min(0).max(2).default(0),
   /**
    * Set true once signed in + email reward + both social follows + ≥1 invite are satisfied; future event can grant exclusive item then clear or consume this flag.
