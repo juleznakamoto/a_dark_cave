@@ -170,6 +170,7 @@ export default function SocialPromptDialog({
 
   const handleSignUpTaskClick = () => {
     setSignUpPromptEligibleForGold(true);
+    setSocialPromptDialogOpen(false);
     setAuthDialogOpen(true);
   };
 
@@ -401,7 +402,7 @@ export default function SocialPromptDialog({
                   </span>
                 </div>
                 <p className="text-xs text-muted-foreground leading-snug">
-                  Invite your friends and both of you will receive 250 gold. You
+                  Invite your friends and both of you will receive 250 Gold. You
                   can invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends. (
                   {referralCount}/{SOCIAL_PROMPT_REFERRAL_CAP} invited).
                 </p>
