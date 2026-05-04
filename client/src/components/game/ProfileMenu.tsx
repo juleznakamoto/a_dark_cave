@@ -32,7 +32,7 @@ import {
   applyMarketingSubscribeGoldReward,
   postMarketingPreference,
 } from "@/game/marketingEmailReward";
-import { SOCIAL_PROMPT_REFERRAL_CAP } from "@/game/socialPromptAuto";
+import { SOCIAL_PROMPT_REFERRAL_CAP, REFERRAL_REWARD_GOLD } from "@/game/socialPromptAuto";
 import { isSocialPromoExclusiveRewardComplete } from "@/game/socialPromoExclusiveReward";
 
 export default function ProfileMenu() {
@@ -221,7 +221,7 @@ export default function ProfileMenu() {
     navigator.clipboard.writeText(inviteLink);
     toast({
       title: "Invite link copied!",
-      description: "Share it with friends to earn 250 Gold each.",
+      description: `Share it with friends to earn ${REFERRAL_REWARD_GOLD} Gold each.`,
     });
     setAccountDropdownOpen(false);
   };
@@ -421,7 +421,7 @@ export default function ProfileMenu() {
                 <DropdownMenuItemWithTooltip
                   tooltip={
                     <p className="text-xs">
-                      Invite your friends and both of you will receive 250 Gold.
+                      Invite your friends and both of you will receive {REFERRAL_REWARD_GOLD} Gold.
                       You can invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends. ({referralCount || 0}/{SOCIAL_PROMPT_REFERRAL_CAP}
                       invited).
                     </p>
@@ -448,7 +448,7 @@ export default function ProfileMenu() {
                       <span>Invite</span>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className="font-semibold">+250 Gold</span>
+                      <span className="font-semibold">+{REFERRAL_REWARD_GOLD} Gold</span>
                       {(referralCount || 0) >= SOCIAL_PROMPT_REFERRAL_CAP && (
                         <span className="text-xs text-muted-foreground">
                           ✓

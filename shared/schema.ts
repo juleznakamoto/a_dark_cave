@@ -31,6 +31,12 @@ const fellowshipShape = {
 /** Canonical order of fellowship members for UI display. */
 export const FELLOWSHIP_MEMBER_ORDER = Object.keys(fellowshipShape) as (keyof typeof fellowshipShape)[];
 
+/**
+ * Gold per successful referral (invitee via server + inviter when claiming in-game).
+ * Social Prompt / Profile strings import via `@/game/socialPromptAuto`.
+ */
+export const REFERRAL_REWARD_GOLD = 250;
+
 // Game state schema for A Dark Cave
 export const gameStateSchema = z.object({
   gameId: z.string().optional(), // Unique identifier for this game playthrough

@@ -10,7 +10,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { signIn, signUp, signInWithGoogle } from "@/game/auth";
+import {
+  signIn,
+  signUp,
+  signInWithGoogle,
+  clearPendingReferralCode,
+} from "@/game/auth";
 import { saveGame } from "@/game/save";
 import { buildGameState } from "@/game/stateHelpers";
 import { useToast } from "@/hooks/use-toast";
@@ -111,6 +116,7 @@ export default function AuthDialog({
         onClose();
       } else if (mode === "signup") {
         await flushBeforeSignUp();
+        clearPendingReferralCode();
         const referralCode = getReferralCode();
         await signUp(email, password, referralCode || undefined, marketingOptIn);
         // Award 250 gold when signing up after opting in via the rewards dialog sign-up task
@@ -177,6 +183,8 @@ export default function AuthDialog({
       await signInWithGoogle({
         signupFlow: mode === "signup",
         marketingOptIn,
+        referralCode:
+          mode === "signup" ? getReferralCode() : undefined,
       });
       // Supabase will redirect to Google and then back to your app
     } catch (error: any) {

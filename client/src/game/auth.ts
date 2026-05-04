@@ -10,6 +10,74 @@ export type { AuthUser } from '@/game/types';
 /** Session key: pending marketing choice from signup (email or Google) until first authenticated session. */
 export const PENDING_MARKETING_OPT_IN_KEY = 'adc_pending_marketing_opt_in';
 
+/** Pending referrer user id from `?ref=` for Google OAuth sign-up (metadata applied after redirect). */
+export const PENDING_REFERRAL_CODE_KEY = 'adc_pending_referral_code';
+
+/** Removes stale OAuth referral cookie before email/password signup so abandoned Google flows cannot attach `referral_code` wrongly. */
+export function clearPendingReferralCode(): void {
+  try {
+    sessionStorage.removeItem(PENDING_REFERRAL_CODE_KEY);
+  } catch {
+    /* ignore */
+  }
+}
+
+function stashPendingReferralCodeForOAuth(referralCode: string | null | undefined): void {
+  const trimmed =
+    typeof referralCode === 'string' ? referralCode.trim() : '';
+  if (!trimmed) return;
+  try {
+    sessionStorage.setItem(PENDING_REFERRAL_CODE_KEY, trimmed);
+  } catch {
+    /* ignore */
+  }
+}
+
+/**
+ * Merge pending OAuth referral into Supabase `user_metadata.referral_code` before referral processing.
+ * No-op if already set (email sign-up path) or user not signed in.
+ */
+export async function flushPendingReferralToUserMetadata(): Promise<void> {
+  let pending: string | null = null;
+  try {
+    pending = sessionStorage.getItem(PENDING_REFERRAL_CODE_KEY);
+  } catch {
+    return;
+  }
+  const code = pending?.trim();
+  if (!code) return;
+
+  const supabase = await getSupabaseClient();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  if (!session?.access_token) return;
+
+  const {
+    data: { user: authUser },
+    error: userErr,
+  } = await supabase.auth.getUser();
+  if (userErr || !authUser?.id) return;
+
+  const existing =
+    typeof authUser.user_metadata?.referral_code === 'string'
+      ? authUser.user_metadata.referral_code.trim()
+      : '';
+  if (existing) {
+    clearPendingReferralCode();
+    return;
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    data: { referral_code: code },
+  });
+  if (!error) {
+    clearPendingReferralCode();
+  } else {
+    logger.warn('[REFERRAL] Pending referral metadata flush failed:', error);
+  }
+}
+
 export type PendingMarketingPayload = {
   optIn: boolean;
   google: boolean;
@@ -255,9 +323,12 @@ export async function signIn(email: string, password: string) {
 export async function signInWithGoogle(opts?: {
   signupFlow?: boolean;
   marketingOptIn?: boolean;
+  /** Referrer user id from `?ref=` — stored until OAuth completes, then merged via {@link flushPendingReferralToUserMetadata}. */
+  referralCode?: string | null;
 }) {
   if (opts?.signupFlow) {
     setPendingMarketingOptInFromSignup(opts.marketingOptIn === true, true);
+    stashPendingReferralCodeForOAuth(opts.referralCode);
   }
 
   const supabase = await getSupabaseClient();
@@ -336,6 +407,8 @@ export async function signOut() {
   }
 
   logger.log('[AUTH] ✅ User signed out from Supabase');
+
+  clearPendingReferralCode();
 
   // PRESERVE local save - only clear lastCloudState to allow fresh sync on next login
   try {

@@ -24,7 +24,10 @@ import { getCurrentUser } from "@/game/auth";
 import { Check, Circle, Mail, User, UserPlus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
-import { SOCIAL_PROMPT_REFERRAL_CAP } from "@/game/socialPromptAuto";
+import {
+  SOCIAL_PROMPT_REFERRAL_CAP,
+  REFERRAL_REWARD_GOLD,
+} from "@/game/socialPromptAuto";
 import {
   getSocialPromoExclusiveProgress,
   syncSocialPromoExclusiveRewardPending,
@@ -227,7 +230,7 @@ export default function SocialPromptDialog({
     await navigator.clipboard.writeText(inviteLink);
     toast({
       title: "Invite link copied!",
-      description: "Share it with friends to earn 250 Gold each.",
+      description: `Share it with friends to earn ${REFERRAL_REWARD_GOLD} Gold each.`,
     });
   };
 
@@ -398,11 +401,11 @@ export default function SocialPromptDialog({
                     aria-hidden
                   />
                   <span className="font-medium text-sm">
-                    Invite 1 friend (+250 Gold each)
+                    Invite 1 friend (+{REFERRAL_REWARD_GOLD} Gold each)
                   </span>
                 </div>
                 <p className="text-xs text-muted-foreground leading-snug">
-                  Invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends and each time both of you will receive 250 Gold ({referralCount}/
+                  Invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends and each time both of you will receive {REFERRAL_REWARD_GOLD} Gold ({referralCount}/
                   {SOCIAL_PROMPT_REFERRAL_CAP} invited).
                 </p>
               </div>

@@ -1,9 +1,10 @@
 import { openDB, DBSchema } from "idb";
-import { GameState, SaveData } from "@shared/schema";
+import { GameState, SaveData, REFERRAL_REWARD_GOLD } from "@shared/schema";
 import {
   saveGameToSupabase,
   loadGameFromSupabase,
   getCurrentUser,
+  flushPendingReferralToUserMetadata,
   processReferralAfterConfirmation,
 } from "./auth";
 import { logger } from "@/lib/logger";
@@ -126,11 +127,11 @@ async function processUnclaimedReferrals(
       });
 
       // Claim this referral
-      goldGained += 100;
+      goldGained += REFERRAL_REWARD_GOLD;
       logEntriesAdded.push({
         id: `referral-claimed-${referral.userId}-${Date.now()}`,
         timestamp: Date.now(),
-        message: `You invited someone new to this world! +250 Gold`,
+        message: `You invited someone new to this world! +${REFERRAL_REWARD_GOLD} Gold`,
         type: "system",
       });
 
@@ -396,7 +397,7 @@ export async function saveGame(
 
 export async function loadGame(): Promise<GameState | null> {
   try {
-    // Process referral if user just confirmed email
+    await flushPendingReferralToUserMetadata();
     await processReferralAfterConfirmation();
 
     const db = await getDB();

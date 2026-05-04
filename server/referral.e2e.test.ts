@@ -1,4 +1,5 @@
 
+import { REFERRAL_REWARD_GOLD } from '@shared/schema';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { processReferral } from './referral';
 
@@ -72,7 +73,9 @@ describe('Referral E2E Flow', () => {
     // Step 3: Verify new user got bonus gold
     const newUserUpsertCall = mockUpsert.mock.calls[0];
     expect(newUserUpsertCall).toBeDefined();
-    expect(newUserUpsertCall[0].game_state.resources.gold).toBe(100);
+    expect(newUserUpsertCall[0].game_state.resources.gold).toBe(
+      REFERRAL_REWARD_GOLD,
+    );
   });
 
   it('should prevent referral after user has already started playing', async () => {

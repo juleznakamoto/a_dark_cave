@@ -1,5 +1,7 @@
-
 import { createClient } from '@supabase/supabase-js';
+import { REFERRAL_REWARD_GOLD } from '@shared/schema';
+
+type ReferralEntry = { userId: string; claimed?: boolean; timestamp?: number };
 
 const getSupabaseAdmin = () => {
   const isDev = process.env.NODE_ENV === 'development';
@@ -65,7 +67,7 @@ export async function processReferral(newUserId: string, referralCode: string) {
   }
 
   // Check if this user was already referred
-  if (referrals.some(r => r.userId === newUserId)) {
+  if (referrals.some((r: ReferralEntry) => r.userId === newUserId)) {
     return { success: false, reason: 'already_referred' };
   }
 
@@ -119,7 +121,7 @@ export async function processReferral(newUserId: string, referralCode: string) {
   };
 
   const oldNewUserGold = initialGameState.resources?.gold || 0;
-  const newNewUserGold = oldNewUserGold + 100;
+  const newNewUserGold = oldNewUserGold + REFERRAL_REWARD_GOLD;
 
   const updatedUserState = {
     ...initialGameState,
@@ -133,7 +135,7 @@ export async function processReferral(newUserId: string, referralCode: string) {
       ...(initialGameState.log || []),
       {
         id: `referral-bonus-new-${Date.now()}`,
-        message: "You were invited by someone to this world! +250 Gold",
+        message: `You were invited by someone to this world! +${REFERRAL_REWARD_GOLD} Gold`,
         timestamp: Date.now(),
         type: "system",
       }

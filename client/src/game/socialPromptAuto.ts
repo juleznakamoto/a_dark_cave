@@ -38,6 +38,8 @@ export function socialPromptMilestoneFloorFromPlayTime(
 
 export const SOCIAL_PROMPT_REFERRAL_CAP = 10;
 
+export { REFERRAL_REWARD_GOLD } from "@shared/schema";
+
 function socialPlatformsRewardDone(
   rewards: GameState["social_media_rewards"],
 ): boolean {
