@@ -262,7 +262,7 @@ export default function SocialPromptDialog({
           <DialogDescription className="text-left pt-1 space-y-2">
             <p>
               Complete the tasks below to receive bonuses. Complete all tasks to
-              receive an exlusive item (only one friend invite needed).
+              receive an exlusive item..
             </p>
           </DialogDescription>
         </DialogHeader>
@@ -398,13 +398,12 @@ export default function SocialPromptDialog({
                     aria-hidden
                   />
                   <span className="font-medium text-sm">
-                    Invite friends (+250 Gold each)
+                    Invite 1 friend (+250 Gold each)
                   </span>
                 </div>
                 <p className="text-xs text-muted-foreground leading-snug">
-                  Invite your friends and both of you will receive 250 Gold. You
-                  can invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends. (
-                  {referralCount}/{SOCIAL_PROMPT_REFERRAL_CAP} invited).
+                  Invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends and each time both of you will receive 250 gold ({referralCount}/
+                  {SOCIAL_PROMPT_REFERRAL_CAP} invited).
                 </p>
               </div>
               {!referralsComplete && (
