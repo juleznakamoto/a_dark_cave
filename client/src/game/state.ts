@@ -773,10 +773,18 @@ const mergeStateUpdates = (
       stateUpdates.referralCount !== undefined
         ? stateUpdates.referralCount
         : prevState.referralCount, // Merge referralCount
-    referredUsers: stateUpdates.referredUsers || prevState.referredUsers, // Merge referredUsers
-    referrals: stateUpdates.referrals || prevState.referrals, // Merge referrals
+    referredUsers:
+      stateUpdates.referredUsers !== undefined
+        ? stateUpdates.referredUsers
+        : prevState.referredUsers, // Merge referredUsers (was `||`, which wrongly kept [] over prev)
+    referrals:
+      stateUpdates.referrals !== undefined
+        ? stateUpdates.referrals
+        : prevState.referrals, // Merge referrals (was `||`, which wrongly kept [] over prev)
     social_media_rewards:
-      stateUpdates.social_media_rewards || prevState.social_media_rewards, // Merge social_media_rewards
+      stateUpdates.social_media_rewards !== undefined
+        ? stateUpdates.social_media_rewards
+        : prevState.social_media_rewards, // Merge social rewards (was `||`, {} overwrote unintentionally)
     lastResourceSnapshotTime:
       stateUpdates.lastResourceSnapshotTime !== undefined
         ? stateUpdates.lastResourceSnapshotTime
@@ -2063,7 +2071,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
           startTime: 0,
           needsDisplay: false,
         }, // Load idle mode state
-        referrals: savedState.referrals || [], // Load referrals list
+        referrals: Array.isArray(savedState.referrals)
+          ? savedState.referrals
+          : [],
+        referralCount: Math.max(
+          typeof savedState.referralCount === "number"
+            ? savedState.referralCount
+            : 0,
+          Array.isArray(savedState.referrals) ? savedState.referrals.length : 0,
+        ),
         social_media_rewards:
           savedState.social_media_rewards ||
           defaultGameState.social_media_rewards, // Load social_media_rewards
