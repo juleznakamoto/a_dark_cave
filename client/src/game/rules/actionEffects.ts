@@ -7,6 +7,7 @@ import {
 import {
   getActionBonuses as getActionBonusesCalc,
   getTotalLuck as getTotalLuckCalc,
+  getDoubleGainChance,
 } from "./effectsCalculation";
 import {
   getUpgradeBonusMultiplier,
@@ -33,7 +34,6 @@ export const FOCUS_ELIGIBLE_ACTIONS = [
   "chopWood",
 ];
 
-import { CROWS_EYE_UPGRADES } from "./skillUpgrades";
 import { getGameActions } from "./actionsRegistry";
 
 /** Single path or leading-! path only (no && / ||). */
@@ -223,7 +223,7 @@ export function applyActionEffects(
     triggeredEvents?: string[];
   } = {};
 
-  // Check for action bonus chance (Tarnished Compass effect)
+  // Check for action bonus chance (compass + other `actionBonusChance` effects, plus Crow's Eye skill — see `getDoubleGainChance`)
   const BONUS_CHANCE_ELIGIBLE_ACTIONS = [
     "exploreCave",
     "ventureDeeper",
@@ -243,24 +243,7 @@ export function applyActionEffects(
 
   let actionBonusChanceTriggered = false;
   if (BONUS_CHANCE_ELIGIBLE_ACTIONS.includes(actionId)) {
-    // Get total actionBonusChance from effects
-    let totalActionBonusChance = 0;
-
-    // Check relics for actionBonusChance (Tarnished Compass)
-    if (state.relics?.tarnished_compass) {
-      const compassEffect = clothingEffects.tarnished_compass;
-      totalActionBonusChance += compassEffect.bonuses.generalBonuses?.actionBonusChance || 0;
-    }
-
-    // Check Crow's Eye skill for additional actionBonusChance
-    if (state.crowsEyeSkills?.level > 0) {
-      const upgrade = CROWS_EYE_UPGRADES.find(u => u.level === state.crowsEyeSkills.level);
-      if (upgrade) {
-        totalActionBonusChance += upgrade.doubleChance / 100;
-      }
-    }
-
-    // Roll for bonus chance
+    const totalActionBonusChance = getDoubleGainChance(state);
     if (totalActionBonusChance > 0 && Math.random() < totalActionBonusChance) {
       actionBonusChanceTriggered = true;
     }

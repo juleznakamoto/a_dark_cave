@@ -10,7 +10,7 @@ import {
 import { villageBuildActions } from "./villageBuildActions";
 import { getCurrentPopulation, getMaxPopulation } from "../population";
 import { ACTION_TO_UPGRADE_KEY, getUpgradeBonus } from "../buttonUpgrades";
-import { HUNT_BONUSES, DISGRACED_PRIOR_UPGRADES } from "./skillUpgrades";
+import { HUNT_BONUSES, DISGRACED_PRIOR_UPGRADES, CROWS_EYE_UPGRADES } from "./skillUpgrades";
 import { CRUEL_MODE } from "../cruelMode";
 import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
 import { BUILDING_HIERARCHIES } from "@/game/buildingHierarchy";
@@ -1210,3 +1210,32 @@ export const getTotalCriticalChance = (state: GameState): number => {
 
   return criticalChance;
 };
+
+/** Sum of `generalBonuses.actionBonusChance` from all active item/tool/relic/blessing/book/fellowship effects. */
+export function getTotalActionBonusChance(state: GameState): number {
+  let total = 0;
+  getActiveEffects(state).forEach((effect) => {
+    const p = effect.bonuses.generalBonuses?.actionBonusChance;
+    if (typeof p === "number") {
+      total += p;
+    }
+  });
+  return total;
+}
+
+/**
+ * Probability (0–1) that eligible actions double resource gains after other modifiers (`applyActionEffects`).
+ * Uses `getTotalActionBonusChance` plus Crow's Eye skill tiers on `crowsEyeSkills` (not defined on static effect entries).
+ */
+export function getDoubleGainChance(state: GameState): number {
+  let total = getTotalActionBonusChance(state);
+  if (state.crowsEyeSkills && state.crowsEyeSkills.level > 0) {
+    const upgrade = CROWS_EYE_UPGRADES.find(
+      (u) => u.level === state.crowsEyeSkills!.level,
+    );
+    if (upgrade) {
+      total += upgrade.doubleChance / 100;
+    }
+  }
+  return Math.min(1, total);
+}

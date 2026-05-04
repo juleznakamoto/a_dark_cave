@@ -18,6 +18,7 @@ import {
   getAllActionBonuses,
   getTotalCraftingCostReduction,
   getTotalBuildingCostReduction,
+  getDoubleGainChance,
 } from "@/game/rules/effectsCalculation";
 import { bookEffects, fellowshipEffects } from "@/game/rules/effects";
 import { gameStateSchema, FELLOWSHIP_MEMBER_ORDER, type GameState } from "@shared/schema";
@@ -879,6 +880,17 @@ export default function SidePanel() {
       label: "Build Discount",
       value: `${Number((buildingCostReduction * 100).toFixed(1))}%`,
       testId: "bonus-building-cost-reduction",
+      visible: true,
+    });
+  }
+
+  const doubleGainChance = getDoubleGainChance(gameState);
+  if (doubleGainChance > 0) {
+    bonusItems.push({
+      id: "doubleGainChance",
+      label: "Double Gain Chance",
+      value: `${Number((doubleGainChance * 100).toFixed(1))}%`,
+      testId: "bonus-double-gain-chance",
       visible: true,
     });
   }
