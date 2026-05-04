@@ -466,7 +466,7 @@ body {
   border: 2px solid rgba(57, 255, 20, 0.85);
   pointer-events: none;
   z-index: 0;
-  animation: exclusive-promo-shockwave 5s cubic-bezier(0.33, 1, 0.68, 1) infinite;
+  animation: exclusive-promo-shockwave 15s cubic-bezier(0.33, 1, 0.68, 1) infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
