@@ -195,9 +195,8 @@ export default function SocialPromptDialog({
           <DialogTitle>Stay connected and earn Rewards</DialogTitle>
           <DialogDescription className="text-left pt-1 space-y-2">
             <p>
-              Complete the tasks below to receive bonuses. If you complete all
-              tasks you will receive an exlusive item (only one friend invite
-              needed).
+              Complete the tasks below to receive bonuses. Complete all tasks to
+              receive an exlusive item (only one friend invite needed).
             </p>
           </DialogDescription>
         </DialogHeader>
@@ -290,7 +289,10 @@ export default function SocialPromptDialog({
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex items-center gap-2">
-                  <UserPlus className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
+                  <UserPlus
+                    className="h-4 w-4 shrink-0 opacity-90"
+                    aria-hidden
+                  />
                   <span className="font-medium text-sm">
                     Invite friends (+250 Gold each)
                   </span>
