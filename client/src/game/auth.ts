@@ -1,6 +1,6 @@
 import { getSupabaseClient } from '@/lib/supabase';
 import { apiUrl } from '@/lib/apiUrl';
-import { GameState, SaveData } from '@shared/schema';
+import { GameState, SaveData, SIGN_UP_WELCOME_GOLD } from '@shared/schema';
 import { logger } from '@/lib/logger';
 import type { AuthUser } from '@/game/types';
 
@@ -12,6 +12,28 @@ export const PENDING_MARKETING_OPT_IN_KEY = 'adc_pending_marketing_opt_in';
 
 /** Pending referrer user id from `?ref=` for Google OAuth sign-up (metadata applied after redirect). */
 export const PENDING_REFERRAL_CODE_KEY = 'adc_pending_referral_code';
+
+/** Set when starting Google OAuth from Create Account — welcome gold applied after load if the auth user is new. */
+export const PENDING_SIGNUP_WELCOME_KEY = 'adc_pending_signup_welcome_gold';
+
+/** Existing Google accounts signing in via the Sign Up tab must not receive welcome gold (`created_at` gate). */
+const GOOGLE_SIGNUP_NEW_ACCOUNT_MAX_MS = 15 * 60 * 1000;
+
+function stashPendingSignupWelcomeForOAuth(): void {
+  try {
+    sessionStorage.setItem(PENDING_SIGNUP_WELCOME_KEY, '1');
+  } catch {
+    /* ignore */
+  }
+}
+
+export function clearPendingSignupWelcome(): void {
+  try {
+    sessionStorage.removeItem(PENDING_SIGNUP_WELCOME_KEY);
+  } catch {
+    /* ignore */
+  }
+}
 
 /** Removes stale OAuth referral cookie before email/password signup so abandoned Google flows cannot attach `referral_code` wrongly. */
 export function clearPendingReferralCode(): void {
@@ -75,6 +97,88 @@ export async function flushPendingReferralToUserMetadata(): Promise<void> {
     clearPendingReferralCode();
   } else {
     logger.warn('[REFERRAL] Pending referral metadata flush failed:', error);
+  }
+}
+
+/** Email/password signup: always grant welcome gold once (tracked in save via `signupWelcomeGoldClaimed`). */
+export async function grantSignupWelcomeBonusEmailSignup(): Promise<boolean> {
+  const { useGameStore } = await import('./state');
+  const s = useGameStore.getState();
+  if (s.signupWelcomeGoldClaimed) return false;
+
+  s.updateResource('gold', SIGN_UP_WELCOME_GOLD);
+  s.addLogEntry({
+    id: `signup-welcome-gold-${Date.now()}`,
+    timestamp: Date.now(),
+    message: `You received ${SIGN_UP_WELCOME_GOLD} Gold as a welcome bonus for creating an account!`,
+    type: 'system',
+  });
+  useGameStore.setState({ signupWelcomeGoldClaimed: true });
+
+  try {
+    const { saveGame } = await import('./save');
+    await saveGame(useGameStore.getState(), false);
+  } catch (e) {
+    logger.warn('[AUTH] signup welcome bonus save failed:', e);
+  }
+  return true;
+}
+
+/**
+ * After game state is in the store: if the user started Google signup from Create Account,
+ * grant welcome gold once for genuinely new accounts (`created_at` fresh).
+ */
+export async function applySignupWelcomeBonusAfterOAuthLoad(): Promise<void> {
+  let pending = false;
+  try {
+    pending = sessionStorage.getItem(PENDING_SIGNUP_WELCOME_KEY) === '1';
+  } catch {
+    return;
+  }
+  if (!pending) return;
+
+  const loggedIn = await getCurrentUser();
+  if (!loggedIn) return;
+
+  const supabase = await getSupabaseClient();
+  const {
+    data: { user: authUser },
+    error: userErr,
+  } = await supabase.auth.getUser();
+  if (userErr || !authUser?.created_at) return;
+
+  const createdMs = new Date(authUser.created_at).getTime();
+  if (
+    !Number.isFinite(createdMs) ||
+    Date.now() - createdMs > GOOGLE_SIGNUP_NEW_ACCOUNT_MAX_MS
+  ) {
+    clearPendingSignupWelcome();
+    return;
+  }
+
+  const { useGameStore } = await import('./state');
+  const s = useGameStore.getState();
+  if (s.signupWelcomeGoldClaimed) {
+    clearPendingSignupWelcome();
+    return;
+  }
+
+  clearPendingSignupWelcome();
+
+  s.updateResource('gold', SIGN_UP_WELCOME_GOLD);
+  s.addLogEntry({
+    id: `signup-welcome-gold-${Date.now()}`,
+    timestamp: Date.now(),
+    message: `You received ${SIGN_UP_WELCOME_GOLD} Gold as a welcome bonus for creating an account!`,
+    type: 'system',
+  });
+  useGameStore.setState({ signupWelcomeGoldClaimed: true });
+
+  try {
+    const { saveGame } = await import('./save');
+    await saveGame(useGameStore.getState(), false);
+  } catch (e) {
+    logger.warn('[AUTH] OAuth signup welcome bonus save failed:', e);
   }
 }
 
@@ -329,6 +433,7 @@ export async function signInWithGoogle(opts?: {
   if (opts?.signupFlow) {
     setPendingMarketingOptInFromSignup(opts.marketingOptIn === true, true);
     stashPendingReferralCodeForOAuth(opts.referralCode);
+    stashPendingSignupWelcomeForOAuth();
   }
 
   const supabase = await getSupabaseClient();
@@ -409,6 +514,7 @@ export async function signOut() {
   logger.log('[AUTH] ✅ User signed out from Supabase');
 
   clearPendingReferralCode();
+  clearPendingSignupWelcome();
 
   // PRESERVE local save - only clear lastCloudState to allow fresh sync on next login
   try {

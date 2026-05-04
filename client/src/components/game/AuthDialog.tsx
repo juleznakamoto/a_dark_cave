@@ -15,6 +15,8 @@ import {
   signUp,
   signInWithGoogle,
   clearPendingReferralCode,
+  clearPendingSignupWelcome,
+  grantSignupWelcomeBonusEmailSignup,
 } from "@/game/auth";
 import { saveGame } from "@/game/save";
 import { buildGameState } from "@/game/stateHelpers";
@@ -22,6 +24,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useGameStore } from "@/game/state";
 import { logger } from "@/lib/logger";
 import { cn } from "@/lib/utils";
+import { SIGN_UP_WELCOME_GOLD } from "@shared/schema";
 
 interface AuthDialogProps {
   isOpen: boolean;
@@ -117,22 +120,15 @@ export default function AuthDialog({
       } else if (mode === "signup") {
         await flushBeforeSignUp();
         clearPendingReferralCode();
+        clearPendingSignupWelcome();
         const referralCode = getReferralCode();
         await signUp(email, password, referralCode || undefined, marketingOptIn);
-        // Award 250 gold when signing up after opting in via the rewards dialog sign-up task
-        const { signUpPromptEligibleForGold: eligible } = useGameStore.getState();
-        if (eligible) {
-          useGameStore.getState().setSignUpPromptEligibleForGold(false);
-          useGameStore.getState().updateResource("gold", 250);
-          useGameStore.getState().addLogEntry({
-            id: `signup-gold-${Date.now()}`,
-            timestamp: Date.now(),
-            message: "You received 250 Gold as a welcome bonus for creating an account!",
-            type: "system",
-          });
+        useGameStore.getState().setSignUpPromptEligibleForGold(false);
+        const granted = await grantSignupWelcomeBonusEmailSignup();
+        if (granted) {
           toast({
             title: "Welcome bonus!",
-            description: "You received 250 Gold for signing up.",
+            description: `You received ${SIGN_UP_WELCOME_GOLD} Gold for signing up.`,
           });
         }
         setSignupSuccess(true);

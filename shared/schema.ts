@@ -37,6 +37,9 @@ export const FELLOWSHIP_MEMBER_ORDER = Object.keys(fellowshipShape) as (keyof ty
  */
 export const REFERRAL_REWARD_GOLD = 250;
 
+/** One-time welcome gold when creating an account (email or Google). */
+export const SIGN_UP_WELCOME_GOLD = 250;
+
 // Game state schema for A Dark Cave
 export const gameStateSchema = z.object({
   gameId: z.string().optional(), // Unique identifier for this game playthrough
@@ -592,6 +595,8 @@ export const gameStateSchema = z.object({
   mysteriousNoteShopNotificationSeen: z.boolean().default(false), // Track if mysterious note shop notification has been seen
   mysteriousNoteDonateNotificationSeen: z.boolean().default(false), // Track if mysterious note donate notification has been seen
   isUserSignedIn: z.boolean().default(false), // Track if user is currently signed in
+  /** One-time account-creation gold granted (persists across devices via cloud save). */
+  signupWelcomeGoldClaimed: z.boolean().default(false),
   detectedCurrency: z.enum(["EUR", "USD"]).nullable().default(null), // Currency detection (persists across game restarts)
   googleAdsSource: z.string().nullable().default(null), // Google Ads source tracking (persists across game restarts)
   playTime: z.number().default(0), // Track total play time in milliseconds

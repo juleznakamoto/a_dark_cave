@@ -1782,6 +1782,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       referrals: state.referrals || [],
       referralCount: state.referralCount || 0,
       referredUsers: state.referredUsers || [],
+      signupWelcomeGoldClaimed: state.signupWelcomeGoldClaimed === true,
 
       // Social media rewards (persist forever)
       social_media_rewards: state.social_media_rewards || {},
@@ -2055,6 +2056,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         isNewGame: false, // Clear the new game flag when loading
         startTime:
           savedState.startTime !== undefined ? savedState.startTime : 0, // Ensure startTime is loaded
+        signupWelcomeGoldClaimed:
+          savedState.signupWelcomeGoldClaimed === true,
         idleModeState: savedState.idleModeState || {
           isActive: false,
           startTime: 0,
@@ -2151,6 +2154,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
       get().addLogEntry(initialLogEntry);
     }
+
+    const { applySignupWelcomeBonusAfterOAuthLoad } = await import("@/game/auth");
+    await applySignupWelcomeBonusAfterOAuthLoad();
 
     StateManager.scheduleEffectsUpdate(get);
   },

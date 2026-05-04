@@ -8,7 +8,7 @@ const EventDialog = lazy(() => import("@/components/game/EventDialog"));
 const EmailConfirmedDialog = lazy(() => import("@/components/game/EmailConfirmedDialog"));
 const PlaylightWelcomeDialog = lazy(() => import("@/components/game/PlaylightWelcomeDialog"));
 import { logger } from "@/lib/logger";
-import { getCurrentUser, flushPendingMarketingPreferences } from "@/game/auth";
+import { getCurrentUser, flushPendingMarketingPreferences, applySignupWelcomeBonusAfterOAuthLoad } from "@/game/auth";
 import { initSessionTracker } from "@/lib/sessionTracker";
 import { gamblerDiceResumeOnLoad } from "@/game/gamblerSession";
 import { processStripePaymentReturn } from "@/lib/stripePaymentReturn";
@@ -265,6 +265,8 @@ export default function Game() {
 
           logger.log("[GAME] Game initialized with defaults");
         }
+
+        await applySignupWelcomeBonusAfterOAuthLoad();
 
         await processStripePaymentReturn();
 
