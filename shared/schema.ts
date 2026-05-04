@@ -568,7 +568,7 @@ export const gameStateSchema = z.object({
   shopNotificationSeen: z.boolean().default(false), // Added new field for shop notification
   authNotificationSeen: z.boolean().default(false), // Added new field for auth notification
   authNotificationVisible: z.boolean().default(false), // Added new field for auth notification visibility
-  lastSignUpPromptPlayTime: z.number().default(0), // playTime when sign-up prompt was last shown (for 30 min repeat)
+  lastSignUpPromptPlayTime: z.number().default(0), // Guest rewards-dialog auto prompt cadence (same timers as former sign-up prompt)
   /** playTime at last social auto-prompt milestone (30m / 90m gates or each 4h repeat checkpoint). */
   lastSocialPromptPlayTime: z.number().default(0),
   /**
@@ -577,7 +577,7 @@ export const gameStateSchema = z.object({
    */
   socialPromptAutoPhase: z.number().int().min(0).max(2).default(0),
   /**
-   * Set true once email + both social follows + ≥1 invite are satisfied; future event can grant exclusive item then clear or consume this flag.
+   * Set true once signed in + email reward + both social follows + ≥1 invite are satisfied; future event can grant exclusive item then clear or consume this flag.
    */
   socialPromoExclusiveRewardPending: z.boolean().default(false),
   mysteriousNoteShopNotificationSeen: z.boolean().default(false), // Track if mysterious note shop notification has been seen

@@ -23,7 +23,6 @@ import AuthDialog from "./AuthDialog";
 import LeaderboardDialog from "./LeaderboardDialog";
 import { RestartGameDialog } from "./RestartGameDialog";
 import { DeleteAccountDialog } from "./DeleteAccountDialog";
-import SignUpPromptDialog from "./SignUpPromptDialog";
 import SocialPromptDialog from "./SocialPromptDialog";
 import { initPlaylight, markPlaylightDiscoveryUserInitiated } from "@/lib/playlight";
 import { Mail, UserPlus } from "lucide-react";
@@ -44,8 +43,6 @@ export default function ProfileMenu() {
     authNotificationSeen,
     setAuthNotificationSeen,
     authNotificationVisible,
-    signUpPromptDialogOpen,
-    setSignUpPromptDialogOpen,
     socialPromptDialogOpen,
     setSocialPromptDialogOpen,
     setSignUpPromptEligibleForGold,
@@ -65,6 +62,7 @@ export default function ProfileMenu() {
     cooldowns,
     lastSaved,
     devMode,
+    isUserSignedIn,
   } = useGameStore();
 
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
@@ -80,12 +78,13 @@ export default function ProfileMenu() {
 
   /** After first social-prompt milestone; hidden once exclusive-track tasks are done (see `isSocialPromoExclusiveRewardComplete`). */
   const showExclusiveItemShortcut =
-    !!currentUser &&
+    isUserSignedIn &&
     lastSocialPromptPlayTime > 0 &&
     !isSocialPromoExclusiveRewardComplete({
       social_media_rewards,
       referralCount,
       referrals,
+      isUserSignedIn,
     });
 
   useEffect(() => {
@@ -252,13 +251,6 @@ export default function ProfileMenu() {
     }
   };
 
-  const handleSignUpFromPrompt = () => {
-    setSignUpPromptDialogOpen(false);
-    setSignUpPromptEligibleForGold(true);
-    handleSetAuthDialogOpen(true);
-    setAuthDialogOpen(true);
-  };
-
   const handleConfirmDeleteAccount = async () => {
     if (deleteAccountInProgress) return;
     setDeleteAccountInProgress(true);
@@ -332,11 +324,6 @@ export default function ProfileMenu() {
 
   return (
     <div className="fixed top-2 right-2 z-50 pointer-events-auto flex flex-col items-end gap-2">
-      <SignUpPromptDialog
-        isOpen={signUpPromptDialogOpen}
-        onClose={() => setSignUpPromptDialogOpen(false)}
-        onSignUpClick={handleSignUpFromPrompt}
-      />
       <SocialPromptDialog isOpen={socialPromptDialogOpen} />
       <AuthDialog
         isOpen={authDialogOpen}
@@ -559,13 +546,14 @@ export default function ProfileMenu() {
             }
             tooltipId="login-reminder"
             disabled={false}
+            tooltipTriggerClassName="flex size-full items-center justify-center"
             onClick={() => {
               setAccountDropdownOpen(true);
               setAuthNotificationSeen(true);
             }}
-            className="w-5 h-5 shrink-0 rounded-full border border-orange-500 flex items-center justify-center cursor-pointer opacity-80 hover:opacity-100 transition-opacity"
+            className="relative inline-flex size-5 shrink-0 rounded-full border border-orange-500 cursor-pointer opacity-80 hover:opacity-100 transition-opacity"
           >
-            <span className="text-orange-500 text-xs font-bold leading-none translate-y-0.5">
+            <span className="text-orange-500 text-xs font-bold leading-none">
               !
             </span>
           </TooltipWrapper>

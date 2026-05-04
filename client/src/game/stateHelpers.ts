@@ -271,7 +271,6 @@ const UI_ONLY_PROPERTIES = [
   'idleModeDialog',
   'inactivityDialogOpen',
   'inactivityReason',
-  'signUpPromptDialogOpen',
   'restartGameDialogOpen',
   'deleteAccountDialogOpen',
   'playlightWelcomeDialogOpen',

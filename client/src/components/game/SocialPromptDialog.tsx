@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ComponentProps } from "react";
 import {
   Dialog,
   DialogContent,
@@ -21,8 +21,14 @@ import { SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
 import { claimSocialFollowReward } from "@/game/claimSocialFollowReward";
 import { SocialPlatformGlyph } from "@/components/game/SocialPlatformGlyph";
 import { getCurrentUser } from "@/game/auth";
-import { Check, Circle, Mail, UserPlus } from "lucide-react";
+import { Check, Circle, Mail, User, UserPlus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { SOCIAL_PROMPT_REFERRAL_CAP } from "@/game/socialPromptAuto";
 import {
   getSocialPromoExclusiveProgress,
@@ -34,6 +40,33 @@ import {
 
 interface SocialPromptDialogProps {
   isOpen: boolean;
+}
+
+const TASK_REQUIRES_SIGNUP_TOOLTIP = "sign up to complete task";
+
+function LockedSocialButton({
+  locked,
+  className,
+  ...props
+}: ComponentProps<typeof Button> & { locked: boolean }) {
+  const { disabled, ...rest } = props;
+  const mergedDisabled = locked || disabled;
+  const button = (
+    <Button
+      {...rest}
+      disabled={mergedDisabled}
+      className={cn("shrink-0 font-medium px-3", className)}
+    />
+  );
+  if (!locked) return button;
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span className="inline-flex shrink-0 cursor-not-allowed">{button}</span>
+      </TooltipTrigger>
+      <TooltipContent>{TASK_REQUIRES_SIGNUP_TOOLTIP}</TooltipContent>
+    </Tooltip>
+  );
 }
 
 function StatusIcon({ done }: { done: boolean }) {
@@ -62,6 +95,11 @@ export default function SocialPromptDialog({
   const social_media_rewards = useGameStore((s) => s.social_media_rewards);
   const referralCount = useGameStore((s) => s.referralCount ?? 0);
   const referrals = useGameStore((s) => s.referrals ?? []);
+  const isUserSignedIn = useGameStore((s) => s.isUserSignedIn);
+  const setAuthDialogOpen = useGameStore((s) => s.setAuthDialogOpen);
+  const setSignUpPromptEligibleForGold = useGameStore(
+    (s) => s.setSignUpPromptEligibleForGold,
+  );
 
   const [prefLoading, setPrefLoading] = useState(false);
   const [subscribeLoading, setSubscribeLoading] = useState(false);
@@ -108,7 +146,12 @@ export default function SocialPromptDialog({
 
   useEffect(() => {
     syncSocialPromoExclusiveRewardPending();
-  }, [isOpen, social_media_rewards, referralCount, referrals]);
+  }, [isOpen, social_media_rewards, referralCount, referrals, isUserSignedIn]);
+
+  const handleSignUpTaskClick = () => {
+    setSignUpPromptEligibleForGold(true);
+    setAuthDialogOpen(true);
+  };
 
   const handleSubscribe = async () => {
     if (subscribeLoading || prefLoading) return;
@@ -178,11 +221,13 @@ export default function SocialPromptDialog({
     social_media_rewards,
     referralCount,
     referrals,
+    isUserSignedIn,
   });
   const exclusiveRewardComplete = isSocialPromoExclusiveRewardComplete({
     social_media_rewards,
     referralCount,
     referrals,
+    isUserSignedIn,
   });
 
   return (
@@ -191,179 +236,220 @@ export default function SocialPromptDialog({
       onOpenChange={(open) => !open && setSocialPromptDialogOpen(false)}
     >
       <DialogContent className="w-[95vw] sm:max-w-lg z-[70] max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Stay connected and earn Rewards</DialogTitle>
-          <DialogDescription className="text-left pt-1 space-y-2">
-            <p>
-              Complete the tasks below to receive bonuses. Complete all tasks to
-              receive an exlusive item (only one friend invite needed).
-            </p>
-          </DialogDescription>
-        </DialogHeader>
+        <TooltipProvider>
+          <DialogHeader>
+            <DialogTitle>Stay connected and earn Rewards</DialogTitle>
+            <DialogDescription className="text-left pt-1 space-y-2">
+              <p>
+                Complete the tasks below to receive bonuses. Complete all tasks to
+                receive an exlusive item (only one friend invite needed).
+              </p>
+            </DialogDescription>
+          </DialogHeader>
 
-        <div className="flex flex-col gap-3">
-          {/* Email */}
-          <div
-            className={cn(
-              "rounded-md border border-border p-3 flex gap-3 items-center",
-              emailRewardClaimed && "border-green-500/40 bg-green-500/5",
-            )}
-          >
-            <div className="shrink-0">
-              <StatusIcon done={emailRewardClaimed} />
-            </div>
-            <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
-              <div className="min-w-0 flex-1 space-y-1">
-                <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
-                  <span className="font-medium text-sm">
-                    Email updates (+{MARKETING_SUBSCRIBE_GOLD} Gold)
-                  </span>
-                </div>
-              </div>
-              {!emailRewardClaimed && (
-                <Button
-                  size="xs"
-                  className="shrink-0 font-medium px-3 self-center"
-                  disabled={prefLoading || subscribeLoading}
-                  onClick={() => void handleSubscribe()}
-                >
-                  Subscribe
-                </Button>
+          <div className="flex flex-col gap-3">
+            {/* Sign up (first task) */}
+            <div
+              className={cn(
+                "rounded-md border border-border p-3 flex gap-3 items-center",
+                isUserSignedIn && "border-green-500/40 bg-green-500/5",
               )}
-            </div>
-          </div>
-
-          {/* Social */}
-          {SOCIAL_PLATFORMS.map((platform) => {
-            const claimed = social_media_rewards[platform.id]?.claimed ?? false;
-            return (
-              <div
-                key={platform.id}
-                className={cn(
-                  "rounded-md border border-border p-3 flex gap-3 items-center",
-                  claimed && "border-green-500/40 bg-green-500/5",
-                )}
-              >
-                <div className="shrink-0">
-                  <StatusIcon done={claimed} />
-                </div>
-                <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
-                  <div className="flex items-center gap-2 min-w-0">
-                    <SocialPlatformGlyph platformId={platform.id} />
-                    <span className="font-medium text-sm truncate">
-                      {platform.name}
+            >
+              <div className="shrink-0">
+                <StatusIcon done={isUserSignedIn} />
+              </div>
+              <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
+                <div className="min-w-0 flex-1 space-y-1">
+                  <div className="flex items-center gap-2">
+                    <User className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
+                    <span className="font-medium text-sm">
+                      Sign up (+250 Gold)
                     </span>
                   </div>
-                  {!claimed && (
-                    <Button
-                      size="xs"
-                      className="shrink-0 font-medium px-3"
-                      onClick={() =>
-                        claimSocialFollowReward(
-                          platform.id,
-                          platform.url,
-                          platform.reward,
-                          platform.name,
-                        )
-                      }
-                    >
-                      {platform.actionLabel}
-                    </Button>
-                  )}
+                  <p className="text-xs text-muted-foreground leading-snug">
+                    Create a free account to save your game progress and sync across devices. Without an account, your progress may be lost.
+                  </p>
+                  <p className="text-xs font-medium text-foreground leading-snug">
+                    Sign up now and receive <strong>250 Gold</strong> as a bonus!
+                  </p>
                 </div>
+                {!isUserSignedIn && (
+                  <Button
+                    size="xs"
+                    className="shrink-0 font-medium px-3 self-center"
+                    onClick={handleSignUpTaskClick}
+                  >
+                    Sign Up
+                  </Button>
+                )}
               </div>
-            );
-          })}
-
-          {/* Invite */}
-          <div
-            className={cn(
-              "rounded-md border border-border p-3 flex gap-3 items-center",
-              exclusiveInviteDone && "border-green-500/40 bg-green-500/5",
-            )}
-          >
-            <div className="shrink-0">
-              <StatusIcon done={exclusiveInviteDone} />
             </div>
-            <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
-              <div className="min-w-0 flex-1 space-y-1">
-                <div className="flex items-center gap-2">
-                  <UserPlus
-                    className="h-4 w-4 shrink-0 opacity-90"
-                    aria-hidden
-                  />
-                  <span className="font-medium text-sm">
-                    Invite friends (+250 Gold each)
+
+            {/* Email */}
+            <div
+              className={cn(
+                "rounded-md border border-border p-3 flex gap-3 items-center",
+                emailRewardClaimed && "border-green-500/40 bg-green-500/5",
+              )}
+            >
+              <div className="shrink-0">
+                <StatusIcon done={emailRewardClaimed} />
+              </div>
+              <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
+                <div className="min-w-0 flex-1 space-y-1">
+                  <div className="flex items-center gap-2">
+                    <Mail className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
+                    <span className="font-medium text-sm">
+                      Email updates (+{MARKETING_SUBSCRIBE_GOLD} Gold)
+                    </span>
+                  </div>
+                </div>
+                {!emailRewardClaimed && (
+                  <LockedSocialButton
+                    locked={!isUserSignedIn}
+                    size="xs"
+                    className="self-center"
+                    disabled={prefLoading || subscribeLoading}
+                    onClick={() => void handleSubscribe()}
+                  >
+                    Subscribe
+                  </LockedSocialButton>
+                )}
+              </div>
+            </div>
+
+            {/* Social */}
+            {SOCIAL_PLATFORMS.map((platform) => {
+              const claimed = social_media_rewards[platform.id]?.claimed ?? false;
+              return (
+                <div
+                  key={platform.id}
+                  className={cn(
+                    "rounded-md border border-border p-3 flex gap-3 items-center",
+                    claimed && "border-green-500/40 bg-green-500/5",
+                  )}
+                >
+                  <div className="shrink-0">
+                    <StatusIcon done={claimed} />
+                  </div>
+                  <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <SocialPlatformGlyph platformId={platform.id} />
+                      <span className="font-medium text-sm truncate">
+                        {platform.name}
+                      </span>
+                    </div>
+                    {!claimed && (
+                      <LockedSocialButton
+                        locked={!isUserSignedIn}
+                        size="xs"
+                        onClick={() =>
+                          claimSocialFollowReward(
+                            platform.id,
+                            platform.url,
+                            platform.reward,
+                            platform.name,
+                          )
+                        }
+                      >
+                        {platform.actionLabel}
+                      </LockedSocialButton>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* Invite */}
+            <div
+              className={cn(
+                "rounded-md border border-border p-3 flex gap-3 items-center",
+                exclusiveInviteDone && "border-green-500/40 bg-green-500/5",
+              )}
+            >
+              <div className="shrink-0">
+                <StatusIcon done={exclusiveInviteDone} />
+              </div>
+              <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
+                <div className="min-w-0 flex-1 space-y-1">
+                  <div className="flex items-center gap-2">
+                    <UserPlus
+                      className="h-4 w-4 shrink-0 opacity-90"
+                      aria-hidden
+                    />
+                    <span className="font-medium text-sm">
+                      Invite friends (+250 Gold each)
+                    </span>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-snug">
+                    Invite your friends and both of you will receive 250 gold. You
+                    can invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends. (
+                    {referralCount}/{SOCIAL_PROMPT_REFERRAL_CAP} invited).
+                  </p>
+                </div>
+                {!referralsComplete && (
+                  <LockedSocialButton
+                    locked={!isUserSignedIn}
+                    size="xs"
+                    className="self-center"
+                    onClick={() => void handleCopyInvite()}
+                  >
+                    Copy invite link
+                  </LockedSocialButton>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-1 space-y-3 pt-3 pb-3">
+            <div className="flex gap-2.5 items-start">
+              <span
+                className="shrink-0 text-[17px] leading-none select-none text-lime-500 pt-0.5"
+                aria-hidden
+              >
+                ⯫
+              </span>
+              <div className="min-w-0 flex-1">
+                <div className="flex justify-between gap-2 text-sm font-medium text-foreground">
+                  <span className="leading-snug">
+                    {exclusiveRewardComplete
+                      ? "You fulfilled the tasks. You will soon get the exclusive item."
+                      : "Progress toward exclusive item"}
+                  </span>
+                  <span className="shrink-0 tabular-nums">
+                    {exclusiveProgress.completed}/{exclusiveProgress.total}
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground leading-snug">
-                  Invite your friends and both of you will receive 250 gold. You
-                  can invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends. (
-                  {referralCount}/{SOCIAL_PROMPT_REFERRAL_CAP} invited).
-                </p>
-              </div>
-              {!referralsComplete && (
-                <Button
-                  size="xs"
-                  className="shrink-0 font-medium px-3 self-center"
-                  onClick={() => void handleCopyInvite()}
-                >
-                  Copy invite link
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-1 space-y-3 pt-3 pb-3">
-          <div className="flex gap-2.5 items-start">
-            <span
-              className="shrink-0 text-[17px] leading-none select-none text-lime-500 pt-0.5"
-              aria-hidden
-            >
-              ⯫
-            </span>
-            <div className="min-w-0 flex-1">
-              <div className="flex justify-between gap-2 text-sm font-medium text-foreground">
-                <span className="leading-snug">
-                  {exclusiveRewardComplete
-                    ? "You fulfilled the tasks. You will soon get the exclusive item."
-                    : "Progress toward exclusive item"}
-                </span>
-                <span className="shrink-0 tabular-nums">
-                  {exclusiveProgress.completed}/{exclusiveProgress.total}
-                </span>
               </div>
             </div>
-          </div>
-          <div
-            className="relative h-2.5 w-full overflow-hidden rounded-full bg-muted"
-            role="progressbar"
-            aria-valuenow={exclusiveProgress.completed}
-            aria-valuemin={0}
-            aria-valuemax={exclusiveProgress.total}
-            aria-label="Exclusive item progress"
-          >
             <div
-              className="h-full rounded-full bg-primary transition-all duration-300 ease-out"
-              style={{ width: `${exclusiveProgress.percent}%` }}
-            />
-            {Array.from(
-              { length: SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL - 1 },
-              (_, i) => i + 1,
-            ).map((step) => (
+              className="relative h-2.5 w-full overflow-hidden rounded-full bg-muted"
+              role="progressbar"
+              aria-valuenow={exclusiveProgress.completed}
+              aria-valuemin={0}
+              aria-valuemax={exclusiveProgress.total}
+              aria-label="Exclusive item progress"
+            >
               <div
-                key={step}
-                className="pointer-events-none absolute inset-y-0 z-[1] w-px bg-background"
-                style={{
-                  left: `${(step / SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL) * 100}%`,
-                  transform: "translateX(-50%)",
-                }}
+                className="h-full rounded-full bg-primary transition-all duration-300 ease-out"
+                style={{ width: `${exclusiveProgress.percent}%` }}
               />
-            ))}
+              {Array.from(
+                { length: SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL - 1 },
+                (_, i) => i + 1,
+              ).map((step) => (
+                <div
+                  key={step}
+                  className="pointer-events-none absolute inset-y-0 z-[1] w-px bg-background"
+                  style={{
+                    left: `${(step / SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL) * 100}%`,
+                    transform: "translateX(-50%)",
+                  }}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        </TooltipProvider>
       </DialogContent>
     </Dialog>
   );

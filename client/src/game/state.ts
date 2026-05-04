@@ -128,12 +128,10 @@ interface GameStore extends GameState {
   authNotificationSeen: boolean;
   authNotificationVisible: boolean;
 
-  // Sign-up prompt dialog (after 30 min play time for guests)
-  signUpPromptDialogOpen: boolean;
-  signUpPromptEligibleForGold: boolean; // Set when user clicks Sign Up on prompt; cleared after signup or dialog close
-  lastSignUpPromptPlayTime: number; // playTime when we last showed the dialog (for 30 min repeat)
+  signUpPromptEligibleForGold: boolean; // Set when opening auth from rewards sign-up task; cleared after signup or dialog close
+  lastSignUpPromptPlayTime: number; // playTime when guest rewards dialog was last auto-shown (repeat cadence)
 
-  /** Social / email / invite prompt (signed-in users; same play-time cadence as sign-up prompt). */
+  /** Social / email / invite / sign-up rewards prompt (guest + signed-in schedules in game loop). */
   socialPromptDialogOpen: boolean;
 
   // Notification state for mysterious note
@@ -260,7 +258,6 @@ interface GameStore extends GameState {
   setShopNotificationVisible: (visible: boolean) => void;
   setAuthNotificationSeen: (seen: boolean) => void;
   setAuthNotificationVisible: (visible: boolean) => void;
-  setSignUpPromptDialogOpen: (isOpen: boolean) => void;
   setSignUpPromptEligibleForGold: (eligible: boolean) => void;
   setLastSignUpPromptPlayTime: (playTime: number) => void;
   setSocialPromptDialogOpen: (isOpen: boolean) => void;
@@ -955,8 +952,6 @@ export const createInitialState = (): GameState => ({
   authNotificationSeen: false,
   authNotificationVisible: false,
 
-  // Sign-up prompt dialog state
-  signUpPromptDialogOpen: false,
   signUpPromptEligibleForGold: false,
   lastSignUpPromptPlayTime: 0,
   socialPromptDialogOpen: false,
@@ -1091,7 +1086,6 @@ function isNonRewardBlockingModalOpen(state: GameStore): boolean {
     state.inactivityDialogOpen ||
     state.investmentResultDialog.isOpen ||
     state.madnessDialog.isOpen ||
-    state.signUpPromptDialogOpen ||
     state.socialPromptDialogOpen ||
     state.playlightWelcomeDialogOpen ||
     state.investDialogOpen
@@ -1198,8 +1192,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   // Initialize auth notification state
   authNotificationSeen: false,
   authNotificationVisible: false,
-  // Sign-up prompt dialog state
-  signUpPromptDialogOpen: false,
   signUpPromptEligibleForGold: false,
   lastSignUpPromptPlayTime: 0,
   socialPromptDialogOpen: false,
@@ -1252,8 +1244,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ authNotificationSeen: seen }),
   setAuthNotificationVisible: (visible: boolean) =>
     set({ authNotificationVisible: visible }),
-  setSignUpPromptDialogOpen: (isOpen: boolean) =>
-    set({ signUpPromptDialogOpen: isOpen }),
   setSignUpPromptEligibleForGold: (eligible: boolean) =>
     set({ signUpPromptEligibleForGold: eligible }),
   setLastSignUpPromptPlayTime: (playTime: number) =>

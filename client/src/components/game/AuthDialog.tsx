@@ -39,12 +39,12 @@ export default function AuthDialog({
     return params.get("ref");
   };
 
-  // Default to signup if there's a referral code or sign-up prompt, otherwise signin
+  // Default to signup if there's a referral code or rewards sign-up task opened auth, otherwise signin
   const [mode, setMode] = useState<"signin" | "signup" | "reset">(
     getReferralCode() || signUpPromptEligibleForGold ? "signup" : "signin",
   );
 
-  // When opening from sign-up prompt, switch to signup mode
+  // When opening from rewards sign-up task, switch to signup mode
   useEffect(() => {
     if (isOpen && signUpPromptEligibleForGold) {
       setMode("signup");
@@ -113,7 +113,7 @@ export default function AuthDialog({
         await flushBeforeSignUp();
         const referralCode = getReferralCode();
         await signUp(email, password, referralCode || undefined, marketingOptIn);
-        // Award 250 gold if user signed up after seeing the sign-up prompt dialog
+        // Award 250 gold when signing up after opting in via the rewards dialog sign-up task
         const { signUpPromptEligibleForGold: eligible } = useGameStore.getState();
         if (eligible) {
           useGameStore.getState().setSignUpPromptEligibleForGold(false);

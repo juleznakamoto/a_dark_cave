@@ -9,11 +9,26 @@ import {
 describe("socialPromptAuto eligibility", () => {
   const emptyRewards = {};
 
-  it("first wave: eligible when anything missing", () => {
+  it("first wave: eligible when anything missing (signed in)", () => {
     expect(
       isSocialPromptFirstWaveEligible({
         social_media_rewards: emptyRewards,
         referralCount: 0,
+        isUserSignedIn: true,
+      }),
+    ).toBe(true);
+  });
+
+  it("first wave: eligible when not signed in even if rewards complete", () => {
+    expect(
+      isSocialPromptFirstWaveEligible({
+        social_media_rewards: {
+          instagram: { claimed: true, timestamp: 1 },
+          reddit: { claimed: true, timestamp: 1 },
+          marketing_email: { claimed: true, timestamp: 1 },
+        },
+        referralCount: SOCIAL_PROMPT_REFERRAL_CAP,
+        isUserSignedIn: false,
       }),
     ).toBe(true);
   });
@@ -27,6 +42,7 @@ describe("socialPromptAuto eligibility", () => {
           marketing_email: { claimed: true, timestamp: 1 },
         },
         referralCount: SOCIAL_PROMPT_REFERRAL_CAP,
+        isUserSignedIn: true,
       }),
     ).toBe(false);
   });
@@ -40,6 +56,7 @@ describe("socialPromptAuto eligibility", () => {
           marketing_email: { claimed: true, timestamp: 1 },
         },
         referralCount: SOCIAL_PROMPT_REFERRAL_CAP - 1,
+        isUserSignedIn: true,
       }),
     ).toBe(true);
   });
@@ -52,8 +69,22 @@ describe("socialPromptAuto eligibility", () => {
           reddit: { claimed: true, timestamp: 1 },
           marketing_email: { claimed: true, timestamp: 1 },
         },
+        isUserSignedIn: true,
       }),
     ).toBe(false);
+  });
+
+  it("repeat wave: eligible when not signed in", () => {
+    expect(
+      isSocialPromptRepeatWaveEligible({
+        social_media_rewards: {
+          instagram: { claimed: true, timestamp: 1 },
+          reddit: { claimed: true, timestamp: 1 },
+          marketing_email: { claimed: true, timestamp: 1 },
+        },
+        isUserSignedIn: false,
+      }),
+    ).toBe(true);
   });
 
   it("repeat wave: eligible when a platform is missing even at referral cap", () => {
@@ -63,6 +94,7 @@ describe("socialPromptAuto eligibility", () => {
           instagram: { claimed: true, timestamp: 1 },
           marketing_email: { claimed: true, timestamp: 1 },
         },
+        isUserSignedIn: true,
       }),
     ).toBe(true);
   });
@@ -76,10 +108,14 @@ describe("socialPromptAuto eligibility", () => {
       isSocialPromptFirstWaveEligible({
         social_media_rewards: rewards,
         referralCount: SOCIAL_PROMPT_REFERRAL_CAP,
+        isUserSignedIn: true,
       }),
     ).toBe(true);
     expect(
-      isSocialPromptRepeatWaveEligible({ social_media_rewards: rewards }),
+      isSocialPromptRepeatWaveEligible({
+        social_media_rewards: rewards,
+        isUserSignedIn: true,
+      }),
     ).toBe(true);
   });
 });

@@ -468,25 +468,22 @@ export function startGameLoop() {
           }
         }
 
-        // Sign-up prompt dialog (first after 30 min play time, then every 30 min) - only if not signed in
+        // Social prompt for guests (same cadence as former sign-up prompt): rewards dialog includes sign-up task
         if (!state.isUserSignedIn) {
           const playTime = state.playTime || 0;
           const lastShown = state.lastSignUpPromptPlayTime || 0;
 
-          // First prompt after 30 minutes of play time
           if (playTime >= SIGN_UP_PROMPT_INITIAL_DELAY && lastShown === 0) {
             useGameStore.setState({
-              signUpPromptDialogOpen: true,
+              socialPromptDialogOpen: true,
               lastSignUpPromptPlayTime: playTime,
             });
-          }
-          // Subsequent prompts every 30 minutes of play time after the last one
-          else if (
+          } else if (
             lastShown > 0 &&
             playTime >= lastShown + SIGN_UP_PROMPT_REPEAT_INTERVAL
           ) {
             useGameStore.setState({
-              signUpPromptDialogOpen: true,
+              socialPromptDialogOpen: true,
               lastSignUpPromptPlayTime: playTime,
             });
           }

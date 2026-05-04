@@ -32,12 +32,14 @@ export function isMarketingEmailRewardClaimedForPrompt(
 export type SocialPromptRewardSlice = {
   social_media_rewards?: GameState["social_media_rewards"];
   referralCount?: number;
+  isUserSignedIn?: boolean;
 };
 
 /** First wave: show if any of email, all platforms, or invite cap is still incomplete. */
 export function isSocialPromptFirstWaveEligible(
   state: SocialPromptRewardSlice,
 ): boolean {
+  if (!state.isUserSignedIn) return true;
   const rewards = state.social_media_rewards ?? {};
   const platformsDone = socialPlatformsRewardDone(rewards);
   const emailDone = isMarketingEmailRewardClaimedForPrompt(rewards);
@@ -50,6 +52,7 @@ export function isSocialPromptFirstWaveEligible(
 export function isSocialPromptRepeatWaveEligible(
   state: SocialPromptRewardSlice,
 ): boolean {
+  if (!state.isUserSignedIn) return true;
   const rewards = state.social_media_rewards ?? {};
   const platformsDone = socialPlatformsRewardDone(rewards);
   const emailDone = isMarketingEmailRewardClaimedForPrompt(rewards);

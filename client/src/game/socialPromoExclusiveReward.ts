@@ -4,14 +4,16 @@ import { SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
 import { useGameStore } from "@/game/state";
 import { logger } from "@/lib/logger";
 
-/** Steps: email reward, Instagram, Reddit, at least one invite (exclusive item track). */
-export const SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL = 4;
+/** Steps: signed in, email reward, Instagram, Reddit, at least one invite (exclusive item track). */
+export const SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL = 5;
 
 export type SocialPromoExclusiveSlice = {
   social_media_rewards?: GameState["social_media_rewards"];
   referralCount?: number;
   referrals?: GameState["referrals"];
   socialPromoExclusiveRewardPending?: boolean;
+  /** Account sign-up / session (first rewards task). */
+  isUserSignedIn?: boolean;
 };
 
 /** At least one successful invite for the exclusive-item track (gold rewards may still go up to 10). */
@@ -28,6 +30,7 @@ export function socialPromoExclusiveStepsCompleted(
 ): number {
   const rewards = state.social_media_rewards ?? {};
   let n = 0;
+  if (state.isUserSignedIn) n++;
   if (!!rewards[MARKETING_EMAIL_REWARD_KEY]?.claimed) n++;
   for (const p of SOCIAL_PLATFORMS) {
     if (rewards[p.id]?.claimed) n++;
