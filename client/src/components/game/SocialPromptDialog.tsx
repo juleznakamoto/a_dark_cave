@@ -61,7 +61,7 @@ function LockedSocialButton({
       tooltipId={tooltipId}
       disabled
       className="inline-flex shrink-0"
-      tooltipTriggerClassName="inline-flex shrink-0 cursor-not-allowed"
+      tooltipTriggerClassName="inline-flex shrink-0 cursor-default"
     >
       {button}
     </TooltipWrapper>
