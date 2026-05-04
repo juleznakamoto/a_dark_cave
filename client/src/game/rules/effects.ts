@@ -1131,6 +1131,18 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  gifted_ring: {
+    id: "gifted_ring",
+    name: "Gifted Ring",
+    description:
+      "Plain ring someone left for you to find",
+    bonuses: {
+      generalBonuses: {
+        actionBonusChance: 0.05,
+      },
+    },
+  },
+
   ring_of_obedience: {
     id: "ring_of_obedience",
     name: "Ring of Obedience",

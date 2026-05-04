@@ -83,6 +83,7 @@ import { exiledScholarEvents } from "./eventsExiledScholar";
 import { tradersDaughterEvents } from "./eventsTradersDaughter";
 import { tradersSonEvents } from "./eventsTradersSon";
 import { disgracedPriorEvents } from "./eventsDisgracedPrior";
+import { socialPromoExclusiveEvents } from "./eventsSocialPromoExclusive";
 import { gamblerEvents } from "./eventsGambler";
 import { GAME_CONSTANTS } from "../constants";
 
@@ -165,6 +166,7 @@ export const gameEvents: Record<string, GameEvent> = {
   ...tradersDaughterEvents,
   ...tradersSonEvents,
   ...disgracedPriorEvents,
+  ...socialPromoExclusiveEvents,
   ...gamblerEvents,
 };
 

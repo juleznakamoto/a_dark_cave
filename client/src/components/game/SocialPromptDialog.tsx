@@ -262,7 +262,7 @@ export default function SocialPromptDialog({
           <DialogDescription className="text-left pt-1 space-y-2">
             <p>
               Complete the tasks below to receive bonuses. Complete all tasks to
-              receive an exlusive item..
+              receive an exclusive item.
             </p>
           </DialogDescription>
         </DialogHeader>
@@ -433,7 +433,7 @@ export default function SocialPromptDialog({
               <div className="flex justify-between gap-2 text-sm font-medium text-foreground">
                 <span className="leading-snug">
                   {exclusiveRewardComplete
-                    ? "You fulfilled the tasks. You will soon get the exclusive item."
+                    ? "You've finished every task. Your exclusive reward will appear as you keep playing."
                     : "Progress toward exclusive item"}
                 </span>
                 <span className="shrink-0 tabular-nums">

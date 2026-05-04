@@ -180,6 +180,7 @@ export const gameStateSchema = z.object({
       ravens_orb: z.boolean().default(false),
       devourer_crown: z.boolean().default(false),
       ring_of_obedience: z.boolean().default(false),
+      gifted_ring: z.boolean().default(false),
     })
     .default({}),
   relics: z
