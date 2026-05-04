@@ -649,7 +649,7 @@ export default function ProfileMenu() {
                   aria-hidden
                 />
                 <span
-                  className="relative z-[1] text-[15px] leading-none select-none text-[#39ff14]"
+                  className="relative z-[1] text-[15px] leading-none select-none text-lime-500"
                   aria-hidden
                 >
                   ⯫

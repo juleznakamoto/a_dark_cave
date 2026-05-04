@@ -437,13 +437,13 @@ body {
   0% {
     transform: translate(-50%, -50%) scale(1);
     opacity: 0.85;
-    border-color: rgba(57, 255, 20, 0.9);
+    border-color: rgba(132, 204, 22, 0.9);
   }
 
   12% {
     transform: translate(-50%, -50%) scale(2.0);
     opacity: 0;
-    border-color: rgba(57, 255, 20, 0);
+    border-color: rgba(132, 204, 22, 0);
   }
 
   12.01%,
@@ -463,7 +463,7 @@ body {
   box-sizing: border-box;
   transform: translate(-50%, -50%);
   border-radius: 0.5rem;
-  border: 2px solid rgba(57, 255, 20, 0.85);
+  border: 2px solid rgba(132, 204, 22, 0.85);
   pointer-events: none;
   z-index: 0;
   animation: exclusive-promo-shockwave 15s cubic-bezier(0.33, 1, 0.68, 1) infinite;
