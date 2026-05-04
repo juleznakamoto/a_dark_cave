@@ -536,28 +536,6 @@ export default function ProfileMenu() {
         </DropdownMenu>
       </div>
       <div className="flex-wrap justify-end max-w-[140px] flex items-start gap-1">
-        {!currentUser && (
-          <TooltipWrapper
-            tooltip={
-              <>
-                <p className="text-xs">Game progress is auto-saved locally.</p>
-                <p className="text-xs">Sign in to save in the cloud.</p>
-              </>
-            }
-            tooltipId="login-reminder"
-            disabled={false}
-            tooltipTriggerClassName="flex size-full items-center justify-center"
-            onClick={() => {
-              setAccountDropdownOpen(true);
-              setAuthNotificationSeen(true);
-            }}
-            className="relative inline-flex size-5 shrink-0 translate-y-1 rounded-full border border-orange-500 cursor-pointer opacity-80 hover:opacity-100 transition-opacity"
-          >
-            <span className="text-orange-500 text-xs font-bold leading-none">
-              !
-            </span>
-          </TooltipWrapper>
-        )}
         <div className="flex items-start gap-0.5 shrink-0">
           {showExclusiveItemShortcut && (
             <TooltipWrapper

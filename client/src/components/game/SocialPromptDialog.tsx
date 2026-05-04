@@ -23,12 +23,7 @@ import { SocialPlatformGlyph } from "@/components/game/SocialPlatformGlyph";
 import { getCurrentUser } from "@/game/auth";
 import { Check, Circle, Mail, User, UserPlus } from "lucide-react";
 import { cn } from "@/lib/utils";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { SOCIAL_PROMPT_REFERRAL_CAP } from "@/game/socialPromptAuto";
 import {
   getSocialPromoExclusiveProgress,
@@ -46,9 +41,10 @@ const TASK_REQUIRES_SIGNUP_TOOLTIP = "sign up to complete task";
 
 function LockedSocialButton({
   locked,
+  tooltipId,
   className,
   ...props
-}: ComponentProps<typeof Button> & { locked: boolean }) {
+}: ComponentProps<typeof Button> & { locked: boolean; tooltipId: string }) {
   const { disabled, ...rest } = props;
   const mergedDisabled = locked || disabled;
   const button = (
@@ -60,12 +56,15 @@ function LockedSocialButton({
   );
   if (!locked) return button;
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <span className="inline-flex shrink-0 cursor-not-allowed">{button}</span>
-      </TooltipTrigger>
-      <TooltipContent>{TASK_REQUIRES_SIGNUP_TOOLTIP}</TooltipContent>
-    </Tooltip>
+    <TooltipWrapper
+      tooltip={<p className="text-xs">{TASK_REQUIRES_SIGNUP_TOOLTIP}</p>}
+      tooltipId={tooltipId}
+      disabled
+      className="inline-flex shrink-0"
+      tooltipTriggerClassName="inline-flex shrink-0 cursor-not-allowed"
+    >
+      {button}
+    </TooltipWrapper>
   );
 }
 
@@ -236,18 +235,17 @@ export default function SocialPromptDialog({
       onOpenChange={(open) => !open && setSocialPromptDialogOpen(false)}
     >
       <DialogContent className="w-[95vw] sm:max-w-lg z-[70] max-h-[90vh] overflow-y-auto">
-        <TooltipProvider>
-          <DialogHeader>
-            <DialogTitle>Stay connected and earn Rewards</DialogTitle>
-            <DialogDescription className="text-left pt-1 space-y-2">
-              <p>
-                Complete the tasks below to receive bonuses. Complete all tasks to
-                receive an exlusive item (only one friend invite needed).
-              </p>
-            </DialogDescription>
-          </DialogHeader>
+        <DialogHeader>
+          <DialogTitle>Stay connected and earn Rewards</DialogTitle>
+          <DialogDescription className="text-left pt-1 space-y-2">
+            <p>
+              Complete the tasks below to receive bonuses. Complete all tasks to
+              receive an exlusive item (only one friend invite needed).
+            </p>
+          </DialogDescription>
+        </DialogHeader>
 
-          <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3">
             {/* Sign up (first task) */}
             <div
               className={cn(
@@ -307,6 +305,7 @@ export default function SocialPromptDialog({
                 {!emailRewardClaimed && (
                   <LockedSocialButton
                     locked={!isUserSignedIn}
+                    tooltipId="social-prompt-subscribe"
                     size="xs"
                     className="self-center"
                     disabled={prefLoading || subscribeLoading}
@@ -342,6 +341,7 @@ export default function SocialPromptDialog({
                     {!claimed && (
                       <LockedSocialButton
                         locked={!isUserSignedIn}
+                        tooltipId={`social-prompt-follow-${platform.id}`}
                         size="xs"
                         onClick={() =>
                           claimSocialFollowReward(
@@ -390,6 +390,7 @@ export default function SocialPromptDialog({
                 {!referralsComplete && (
                   <LockedSocialButton
                     locked={!isUserSignedIn}
+                    tooltipId="social-prompt-invite"
                     size="xs"
                     className="self-center"
                     onClick={() => void handleCopyInvite()}
@@ -449,7 +450,6 @@ export default function SocialPromptDialog({
               ))}
             </div>
           </div>
-        </TooltipProvider>
       </DialogContent>
     </Dialog>
   );
