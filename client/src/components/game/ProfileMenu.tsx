@@ -33,10 +33,7 @@ import {
   applyMarketingSubscribeGoldReward,
   postMarketingPreference,
 } from "@/game/marketingEmailReward";
-import { SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
 import { SOCIAL_PROMPT_REFERRAL_CAP } from "@/game/socialPromptAuto";
-import { claimSocialFollowReward } from "@/game/claimSocialFollowReward";
-import { SocialPlatformGlyph } from "@/components/game/SocialPlatformGlyph";
 import { isSocialPromoExclusiveRewardComplete } from "@/game/socialPromoExclusiveReward";
 
 export default function ProfileMenu() {
@@ -81,7 +78,7 @@ export default function ProfileMenu() {
   const [deleteAccountInProgress, setDeleteAccountInProgress] = useState(false);
   const { toast } = useToast();
 
-  /** After the social prompt scheduler passes its first milestone (`lastSocialPromptPlayTime` set). */
+  /** After first social-prompt milestone; hidden once exclusive-track tasks are done (see `isSocialPromoExclusiveRewardComplete`). */
   const showExclusiveItemShortcut =
     !!currentUser &&
     lastSocialPromptPlayTime > 0 &&
@@ -231,15 +228,6 @@ export default function ProfileMenu() {
       description: "Share it with friends to earn 250 gold each.",
     });
     setAccountDropdownOpen(false);
-  };
-
-  const handleSocialFollow = (
-    platformId: string,
-    url: string,
-    reward: number,
-    platformName: string,
-  ) => {
-    claimSocialFollowReward(platformId, url, reward, platformName);
   };
 
   const handleAuthSuccess = async () => {
@@ -501,55 +489,6 @@ export default function ProfileMenu() {
                 </div>
               </div>
             </DropdownMenuItemWithTooltip>
-            <DropdownMenuSeparator />
-            {SOCIAL_PLATFORMS.map((platform, index) => {
-              const isClaimed =
-                social_media_rewards[platform.id]?.claimed ?? false;
-              const isActive = !isClaimed && !!currentUser;
-
-              return (
-                <div key={platform.id}>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      if (isActive) {
-                        handleSocialFollow(
-                          platform.id,
-                          platform.url,
-                          platform.reward,
-                          platform.name,
-                        );
-                      }
-                    }}
-                    disabled={!isActive}
-                    className={
-                      !isActive
-                        ? "opacity-50 cursor-not-allowed"
-                        : "cursor-pointer"
-                    }
-                  >
-                    <div className="flex items-center justify-between w-full gap-2">
-                      <div className="flex items-center gap-1.5 min-w-0">
-                        <SocialPlatformGlyph platformId={platform.id} />
-                        <span>{platform.actionLabel}</span>
-                      </div>
-                      <div className="flex items-center gap-2 shrink-0">
-                        <span className="font-semibold">
-                          +{platform.reward} Gold
-                        </span>
-                        {isClaimed && (
-                          <span className="text-xs text-muted-foreground">
-                            ✓
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </DropdownMenuItem>
-                  {index < SOCIAL_PLATFORMS.length - 1 && (
-                    <DropdownMenuSeparator />
-                  )}
-                </div>
-              );
-            })}
             {currentUser && (
               <>
                 <DropdownMenuSeparator />
