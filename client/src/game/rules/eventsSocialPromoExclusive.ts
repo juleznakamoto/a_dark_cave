@@ -10,7 +10,7 @@ export const socialPromoExclusiveEvents: Record<string, GameEvent> = {
       !state.clothing.gifted_ring,
     timeProbability: 0.5,
     priority: 10,
-    repeatable: false,
+    repeatable: true,
     title: "An Unexpected Gift",
     message:
       "One morning, on a tree stump beside the cave entrance, you find a ring, as though someone left it there for you.",
