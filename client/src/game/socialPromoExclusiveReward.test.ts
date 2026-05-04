@@ -13,7 +13,7 @@ describe("socialPromoExclusiveReward", () => {
     referrals: [],
   };
 
-  it("counts four independent steps", () => {
+  it("counts exclusive-track steps as rewards accumulate", () => {
     expect(socialPromoExclusiveStepsCompleted(empty)).toBe(0);
     expect(
       socialPromoExclusiveStepsCompleted({
@@ -47,8 +47,9 @@ describe("socialPromoExclusiveReward", () => {
     ).toBe(true);
   });
 
-  it("complete when all four satisfied", () => {
+  it("complete when all five exclusive-track steps satisfied", () => {
     const full = {
+      isUserSignedIn: true,
       social_media_rewards: {
         marketing_email: { claimed: true, timestamp: 1 },
         instagram: { claimed: true, timestamp: 1 },
@@ -59,7 +60,7 @@ describe("socialPromoExclusiveReward", () => {
     };
     expect(isSocialPromoExclusiveRewardComplete(full)).toBe(true);
     const p = getSocialPromoExclusiveProgress(full);
-    expect(p.completed).toBe(4);
+    expect(p.completed).toBe(5);
     expect(p.percent).toBe(100);
   });
 });

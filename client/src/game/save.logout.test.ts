@@ -23,6 +23,7 @@ vi.mock('./auth', () => ({
   saveGameToSupabase: vi.fn(),
   loadGameFromSupabase: vi.fn(),
   processReferralAfterConfirmation: vi.fn().mockResolvedValue(undefined),
+  flushPendingReferralToUserMetadata: vi.fn().mockResolvedValue(undefined),
 }));
 
 // Mock state module

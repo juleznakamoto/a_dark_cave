@@ -69,6 +69,18 @@ function mergeStateDiff(
   return { ...baseState, ...diff };
 }
 
+/** Reconcile `GameState.playTime` with top-level save metadata (they can drift; envelope is authoritative for OCC/comparisons). */
+function mergeSavePlayTimeIntoState(
+  save: { playTime?: number },
+  state: GameState,
+): GameState {
+  const top = Math.floor(save.playTime ?? 0);
+  const emb = Math.floor(state.playTime ?? 0);
+  const merged = Math.max(top, emb);
+  if (merged === emb) return state;
+  return { ...state, playTime: merged };
+}
+
 async function getDB() {
   try {
     const db = await openDB<GameDB>(DB_NAME, DB_VERSION, {
@@ -480,23 +492,24 @@ export async function loadGame(): Promise<GameState | null> {
               cooldownDurations: loadedState.cooldownDurations || {},
             };
             const processedState = await processUnclaimedReferrals(stateWithDefaults);
+            const reconciled = mergeSavePlayTimeIntoState(localSave, processedState);
 
             // Sync local progress to cloud
             try {
               await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
-              await saveGame(processedState, false);
-              await db.put("lastCloudState", processedState, LAST_CLOUD_STATE_KEY);
+              await saveGame(reconciled, false);
+              await db.put("lastCloudState", reconciled, LAST_CLOUD_STATE_KEY);
               logger.log("[LOAD] ✅ Local progress synced to cloud");
             } catch (syncError: any) {
               if (syncError.message?.includes("OCC violation")) {
                 logger.log("[LOAD] 📊 Cloud already has this save state - skipping sync");
-                await db.put("lastCloudState", processedState, LAST_CLOUD_STATE_KEY);
+                await db.put("lastCloudState", reconciled, LAST_CLOUD_STATE_KEY);
               } else {
                 throw syncError;
               }
             }
 
-            return processedState;
+            return reconciled;
           } else {
             // Cloud save is newer or equal - use cloud
             logger.log("[LOAD] ☁️ Cloud save is newer - using cloud save");
@@ -579,25 +592,26 @@ export async function loadGame(): Promise<GameState | null> {
             cooldownDurations: loadedState.cooldownDurations || {},
           };
           const processedState = await processUnclaimedReferrals(stateWithDefaults);
+          const reconciled = mergeSavePlayTimeIntoState(localSave, processedState);
 
           try {
             // Force sync by clearing lastCloudState, then saveGame will handle it
             await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
             // Do NOT use allowPlaytimeOverwrite here - this is not a new game
-            await saveGame(processedState, false);
-            await db.put("lastCloudState", processedState, LAST_CLOUD_STATE_KEY);
+            await saveGame(reconciled, false);
+            await db.put("lastCloudState", reconciled, LAST_CLOUD_STATE_KEY);
           } catch (syncError: any) {
             // If OCC violates due to equal playTimes, that's fine - cloud already has this state
             if (syncError.message?.includes("OCC violation")) {
               if (isDev)
                 logger.log("[LOAD] 📊 Cloud already has this save state - skipping sync");
-              await db.put("lastCloudState", processedState, LAST_CLOUD_STATE_KEY);
+              await db.put("lastCloudState", reconciled, LAST_CLOUD_STATE_KEY);
             } else {
               throw syncError;
             }
           }
 
-          return processedState;
+          return reconciled;
         }
       } catch (cloudError) {
         logger.error("Failed to load from cloud:", cloudError);
@@ -607,7 +621,7 @@ export async function loadGame(): Promise<GameState | null> {
           const processedState = await processUnclaimedReferrals(
             localSave.gameState,
           );
-          return processedState;
+          return mergeSavePlayTimeIntoState(localSave, processedState);
         }
       }
     } else {
@@ -625,7 +639,7 @@ export async function loadGame(): Promise<GameState | null> {
             cooldownDurations: processedState.cooldownDurations,
           });
         }
-        return processedState;
+        return mergeSavePlayTimeIntoState(localSave, processedState);
       }
     }
 
