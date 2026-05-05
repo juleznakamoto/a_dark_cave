@@ -713,6 +713,20 @@ app.get("/api/admin/data", async (req, res) => {
       },
     );
 
+    // Call new referral metrics RPC (much more efficient than scanning all game_state JSONB in JS)
+    let referralMetrics = null;
+    const referralRpc = await adminClient.rpc("admin_referral_metrics");
+    if (referralRpc.error) {
+      log("⚠️ admin_referral_metrics skipped:", referralRpc.error.message ?? referralRpc.error);
+    } else if (referralRpc.data) {
+      referralMetrics = referralRpc.data;
+      console.log("[ADMIN REFERRALS] RPC returned:", {
+        total: referralMetrics.total_referrals,
+        usersWithReferrals: referralMetrics.users_with_referrals,
+        dailyCount: Array.isArray(referralMetrics.daily_referrals) ? referralMetrics.daily_referrals.length : 0
+      });
+    }
+
     res.json({
       clicks: clicksResult.data,
       saves: savesResult.data,
@@ -723,6 +737,7 @@ app.get("/api/admin/data", async (req, res) => {
       marketingMetrics,
       accountsDeletedAnonymized,
       purchaseMetrics,
+      referralMetrics,
     });
   } catch (error: any) {
     log("❌ Admin data fetch failed:", error);

@@ -12,7 +12,11 @@ interface ReferralsTabProps {
   getTotalReferrals: () => number;
   gameSaves: any[];
   getDailyReferrals: () => Array<{ day: string; referrals: number }>;
-  getTopReferrers: () => Array<{ userId: string; count: number }>;
+  referralMetrics?: {
+    total_referrals: number;
+    users_with_referrals: number;
+    daily_referrals?: Array<{ day: string; referrals: number }>;
+  } | null;
   referralsChartTimeRange: AdminTwelveMonthChartRange;
   setReferralsChartTimeRange: (range: AdminTwelveMonthChartRange) => void;
 }
@@ -22,12 +26,17 @@ export default function ReferralsTab(props: ReferralsTabProps) {
     getTotalReferrals,
     gameSaves,
     getDailyReferrals,
-    getTopReferrers,
+    referralMetrics,
     referralsChartTimeRange,
     setReferralsChartTimeRange,
   } = props;
 
   const referralsChartDays = ADMIN_TWELVE_MONTH_CHART_DAYS[referralsChartTimeRange];
+
+  // Prefer pre-computed metrics from RPC when available
+  const totalReferrals = referralMetrics?.total_referrals ?? getTotalReferrals();
+  const usersWithReferrals = referralMetrics?.users_with_referrals 
+    ?? gameSaves.filter((s) => (s.game_state?.referrals || []).length > 0).length;
 
   return (
     <div className="space-y-4">
@@ -38,7 +47,7 @@ export default function ReferralsTab(props: ReferralsTabProps) {
             <CardDescription>All time</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">{getTotalReferrals()}</p>
+            <p className="text-4xl font-bold">{totalReferrals}</p>
           </CardContent>
         </Card>
 
@@ -48,9 +57,7 @@ export default function ReferralsTab(props: ReferralsTabProps) {
             <CardDescription>Players who referred others</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold">
-              {gameSaves.filter((s) => (s.game_state?.referrals || []).length > 0).length}
-            </p>
+            <p className="text-4xl font-bold">{usersWithReferrals}</p>
           </CardContent>
         </Card>
 
@@ -61,11 +68,8 @@ export default function ReferralsTab(props: ReferralsTabProps) {
           </CardHeader>
           <CardContent>
             <p className="text-4xl font-bold">
-              {gameSaves.filter((s) => (s.game_state?.referrals || []).length > 0).length > 0
-                ? (
-                    getTotalReferrals() /
-                    gameSaves.filter((s) => (s.game_state?.referrals || []).length > 0).length
-                  ).toFixed(1)
+              {usersWithReferrals > 0
+                ? (totalReferrals / usersWithReferrals).toFixed(1)
                 : 0}
             </p>
           </CardContent>
@@ -102,23 +106,6 @@ export default function ReferralsTab(props: ReferralsTabProps) {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Top Referrers</CardTitle>
-          <CardDescription>Users who referred the most players</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ChartContainer config={{}} className="h-[400px] w-full">
-            <BarChart data={getTopReferrers()}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="userId" />
-              <YAxis />
-              <ChartTooltip content={<ChartTooltipContent />} />
-              <Bar dataKey="count" fill="#ffc658" />
-            </BarChart>
-          </ChartContainer>
-        </CardContent>
-      </Card>
     </div>
   );
 }
