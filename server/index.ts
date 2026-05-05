@@ -494,6 +494,11 @@ app.post("/api/gender", async (req, res) => {
 // API endpoint to fetch admin dashboard data (server-side, bypasses RLS)
 app.get("/api/admin/data", async (req, res) => {
   try {
+    console.log("=== ADMIN DATA ENDPOINT CALLED ===", {
+      env: req.query.env,
+      timestamp: new Date().toISOString()
+    });
+
     // Cache for 5 minutes to reduce repeated fetches
     res.set("Cache-Control", "public, max-age=300");
 
@@ -548,6 +553,17 @@ app.get("/api/admin/data", async (req, res) => {
     if (savesResult.error) {
       throw savesResult.error;
     }
+
+    // === REFERRAL DEBUG ===
+    const referralSaves = (savesResult.data || []).filter(
+      (s: any) => (s.game_state?.referrals?.length || 0) > 0
+    );
+    const totalReferrals = referralSaves.reduce((sum: number, s: any) =>
+      sum + (s.game_state?.referrals?.length || 0), 0
+    );
+
+    console.log("[ADMIN REFERRALS] Loaded", savesResult.data?.length || 0,
+      "game_saves. Found", referralSaves.length, "with referrals. TOTAL REFERRALS:", totalReferrals);
 
     let registrationMethodStats = {
       emailRegistrations: 0,
