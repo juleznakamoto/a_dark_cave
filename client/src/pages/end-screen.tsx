@@ -10,7 +10,7 @@ export default function EndScreenPage() {
 
   const handleCruelMode = async () => {
     // Navigate back to game with shop open
-    window.location.href = "/?game=true&openShop=true";
+    window.location.href = "/?game=true&openShop=true&cruelHighlight=true";
   };
 
   const handleFeedback = () => {

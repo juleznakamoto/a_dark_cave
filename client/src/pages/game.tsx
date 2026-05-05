@@ -79,6 +79,8 @@ export default function Game() {
 
         // Check for openShop query parameter only (not /boost path)
         const openShop = urlParams.get("openShop") === "true";
+        const cruelShopHighlight =
+          openShop && urlParams.get("cruelHighlight") === "true";
 
         // Check for Google Ads source parameter (c)
         const googleAdsSource = urlParams.get("c");
@@ -282,6 +284,17 @@ export default function Game() {
           logger.log("[GAME] Removed Google Ads source parameter from URL");
         }
 
+        if (openShop || cruelShopHighlight) {
+          const shopParams = new URLSearchParams(window.location.search);
+          if (openShop) shopParams.delete("openShop");
+          if (cruelShopHighlight) shopParams.delete("cruelHighlight");
+          const newShopUrl =
+            window.location.pathname +
+            (shopParams.toString() ? `?${shopParams.toString()}` : "") +
+            window.location.hash;
+          window.history.replaceState({}, document.title, newShopUrl);
+        }
+
         // Mark as initialized
         setIsInitialized(true);
 
@@ -309,6 +322,9 @@ export default function Game() {
         // Open shop if requested (after a delay to ensure game is loaded)
         if (openShop) {
           setTimeout(() => {
+            if (cruelShopHighlight) {
+              useGameStore.getState().setShopCruelModeHighlight(true);
+            }
             setShopDialogOpen(true);
           }, 500);
         }

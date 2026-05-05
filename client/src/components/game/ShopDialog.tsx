@@ -363,6 +363,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const gameState = useGameStore();
   const setAuthDialogOpen = useGameStore((state) => state.setAuthDialogOpen);
   const setTimedEventTab = useGameStore((state) => state.setTimedEventTab);
+  const shopCruelModeHighlight = useGameStore(
+    (state) => state.shopCruelModeHighlight,
+  );
   const activatedPurchases = gameState.activatedPurchases || {};
   const { toast } = useToast();
 
@@ -372,6 +375,16 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       setSelectedFilter(null);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen || !shopCruelModeHighlight) return;
+    const t = window.setTimeout(() => {
+      document
+        .getElementById("shop-card-cruel_mode")
+        ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 450);
+    return () => window.clearTimeout(t);
+  }, [isOpen, shopCruelModeHighlight]);
 
   // Initialize component and load user data
   useEffect(() => {
@@ -960,12 +973,25 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   animation: bundle-glow-pulse 3.5s ease-in-out infinite;
                 }
 
+                .cruel-mode-card-glow {
+                  animation: cruel-mode-glow-pulse 3.5s ease-in-out infinite;
+                }
+
               @keyframes bundle-glow-pulse {
                 0%, 100% {
                   box-shadow: 0 0 7px 2px rgba(234, 179, 8, 0.25);
                 }
                 50% {
                   box-shadow: 0 0 0px 0px rgba(234, 179, 8, 0.5);
+                }
+              }
+
+              @keyframes cruel-mode-glow-pulse {
+                0%, 100% {
+                  box-shadow: 0 0 7px 2px rgba(220, 38, 38, 0.35);
+                }
+                50% {
+                  box-shadow: 0 0 0px 0px rgba(220, 38, 38, 0.55);
                 }
               }
               `}</style>
@@ -1126,7 +1152,12 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         .map((item) => (
                           <Card
                             key={item.id}
-                            className={`border-neutral-500 flex flex-col relative ${item.category === "bundle" ? "border border-amber-600" : ""}`}
+                            id={
+                              item.id === "cruel_mode"
+                                ? "shop-card-cruel_mode"
+                                : undefined
+                            }
+                            className={`border-neutral-500 flex flex-col relative ${item.category === "bundle" ? "border border-amber-600" : ""}${item.id === "cruel_mode" && shopCruelModeHighlight ? " border border-red-600" : ""}`}
                           >
                             <CardHeader className="!md:leading-snug !leading-tight p-2 md:p-4 pb-1 md:pb-2 relative md:text-lg text-md ">
                               {item.symbol && (
@@ -1496,8 +1527,12 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                       : "Purchase"}
                               </Button>
                             </CardFooter>
-                            {item.category === "bundle" && (
-                              <div className="absolute inset-0 -z-10 bundle-card-glow pointer-events-none rounded-lg"></div>
+                            {(item.category === "bundle" ||
+                              (item.id === "cruel_mode" &&
+                                shopCruelModeHighlight)) && (
+                              <div
+                                className={`absolute inset-0 -z-10 pointer-events-none rounded-lg ${item.category === "bundle" ? "bundle-card-glow" : "cruel-mode-card-glow"}`}
+                              ></div>
                             )}
                           </Card>
                         ))}
