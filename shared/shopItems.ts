@@ -170,86 +170,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-orange-600",
   },
 
-  basic_survival_bundle: {
-    id: "basic_survival_bundle",
-    name: "Fading Wanderer Bundle",
-    description: "Basic Bundle with 5'000 Gold and 1 Great Feast",
-    price: 649, // 6.49 €
-    rewards: {
-      resources: { gold: 5000 },
-      feastActivations: 1,
-    },
-    canPurchaseMultipleTimes: true,
-    category: "bundle",
-    activationMessage:
-      "Fading Wanderer Bundle components have been added to your purchases!",
-    symbol: "◈",
-    symbolColor: "text-purple-600",
-    bundleComponents: ["gold_5000", "great_feast_1"], // Component items
-  },
-
-  artifact_bundle: {
-    id: "artifact_bundle",
-    name: "Dark Artifacts Bundle",
-    description: "Uncover dark forgotten truths with the Skull Lantern, Tarnished Compass, and Crow Harness",
-    price: 749, // 7.49 €
-    rewards: {
-      tools: ["skull_lantern", "crow_harness"],
-      relics: ["tarnished_compass"],
-    },
-    canPurchaseMultipleTimes: false,
-    category: "bundle",
-    activationMessage: "Dark Artifacts Bundle components have been added to your purchases!",
-    symbol: "🜋",
-    symbolColor: "text-green-600/90",
-    bundleComponents: ["skull_lantern", "tarnished_compass", "crow_harness"],
-  },
-
-  advanced_bundle: {
-    id: "advanced_bundle",
-    name: "Pale King's Bundle",
-    description: "Powerful Bundle with 20'000 Gold and 3 Great Feasts",
-    price: 1049, // 10.49 €
-    rewards: {
-      resources: { gold: 20000 },
-      feastActivations: 3,
-    },
-    canPurchaseMultipleTimes: true,
-    category: "bundle",
-    activationMessage:
-      "Pale King's Bundle components have been added to your purchases!",
-    symbol: "✣",
-    symbolColor: "text-rose-600",
-    bundleComponents: ["gold_20000", "great_feast_3"], // Component items
-  },
-
-  ashen_throne_bundle: {
-    id: "ashen_throne_bundle",
-    name: "Ashen Throne Bundle",
-    description:
-      "Ultimate Bundle with 20'000 Gold, 3 Great Feasts, Skull Lantern, Tarnished Compass, and Crow Harness",
-    price: 1649, // $16.49
-    rewards: {
-      resources: { gold: 20000 },
-      feastActivations: 3,
-      tools: ["skull_lantern", "crow_harness"],
-      relics: ["tarnished_compass"],
-    },
-    canPurchaseMultipleTimes: false,
-    category: "bundle",
-    activationMessage:
-      "Ashen Throne Bundle components have been added to your purchases!",
-    symbol: "⯓",
-    symbolColor: "text-stone-300",
-    bundleComponents: [
-      "gold_20000",
-      "great_feast_3",
-      "skull_lantern",
-      "tarnished_compass",
-      "crow_harness",
-    ],
-  },
-
   skull_lantern: {
     id: "skull_lantern",
     name: "Skull Lantern",
@@ -302,6 +222,86 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
       "The Crow Harness has been added to your tools! Now you must seek out a crow to bind to the harness.",
     symbol: "⟑",
     symbolColor: "text-slate-400",
+  },
+
+  basic_survival_bundle: {
+    id: "basic_survival_bundle",
+    name: "Fading Wanderer Bundle",
+    description: "Basic Bundle with 5'000 Gold and 1 Great Feast",
+    price: 649, // 6.49 €
+    rewards: {
+      resources: { gold: 5000 },
+      feastActivations: 1,
+    },
+    canPurchaseMultipleTimes: true,
+    category: "bundle",
+    activationMessage:
+      "Fading Wanderer Bundle components have been added to your purchases!",
+    symbol: "◈",
+    symbolColor: "text-purple-600",
+    bundleComponents: ["gold_5000", "great_feast_1"], // Component items
+  },
+
+  advanced_bundle: {
+    id: "advanced_bundle",
+    name: "Pale King's Bundle",
+    description: "Powerful Bundle with 20'000 Gold and 3 Great Feasts",
+    price: 1049, // 10.49 €
+    rewards: {
+      resources: { gold: 20000 },
+      feastActivations: 3,
+    },
+    canPurchaseMultipleTimes: true,
+    category: "bundle",
+    activationMessage:
+      "Pale King's Bundle components have been added to your purchases!",
+    symbol: "✣",
+    symbolColor: "text-rose-600",
+    bundleComponents: ["gold_20000", "great_feast_3"], // Component items
+  },
+
+  artifact_bundle: {
+    id: "artifact_bundle",
+    name: "Dark Artifacts Bundle",
+    description: "Uncover dark forgotten truths with the Skull Lantern, Tarnished Compass, and Crow Harness",
+    price: 749, // 7.49 €
+    rewards: {
+      tools: ["skull_lantern", "crow_harness"],
+      relics: ["tarnished_compass"],
+    },
+    canPurchaseMultipleTimes: false,
+    category: "bundle",
+    activationMessage: "Dark Artifacts Bundle components have been added to your purchases!",
+    symbol: "🜋",
+    symbolColor: "text-green-600/90",
+    bundleComponents: ["skull_lantern", "tarnished_compass", "crow_harness"],
+  },
+
+  ashen_throne_bundle: {
+    id: "ashen_throne_bundle",
+    name: "Ashen Throne Bundle",
+    description:
+      "Ultimate Bundle with 20'000 Gold, 3 Great Feasts, Skull Lantern, Tarnished Compass, and Crow Harness",
+    price: 1649, // $16.49
+    rewards: {
+      resources: { gold: 20000 },
+      feastActivations: 3,
+      tools: ["skull_lantern", "crow_harness"],
+      relics: ["tarnished_compass"],
+    },
+    canPurchaseMultipleTimes: false,
+    category: "bundle",
+    activationMessage:
+      "Ashen Throne Bundle components have been added to your purchases!",
+    symbol: "⯓",
+    symbolColor: "text-stone-300",
+    bundleComponents: [
+      "gold_20000",
+      "great_feast_3",
+      "skull_lantern",
+      "tarnished_compass",
+      "crow_harness",
+    ],
   },
 };
 
