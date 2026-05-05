@@ -510,11 +510,10 @@ app.get("/api/admin/data", async (req, res) => {
 
     // Admin dashboard: cap rows and select only columns the UI needs (large JSON in game_state/clicks
     // still dominates; avoid shipping unused table columns like clicks.id / purchases.id).
+    // IMPORTANT: Referrals are stored in old `game_saves` rows that may not have been updated
+    // in months/years. We must load ALL saves that contain referrals (only ~59 such rows).
     const ADMIN_DATA_CLICKS_LIMIT = 10_000;
-    const ADMIN_DATA_SAVES_LIMIT = 10_000;
-    const oneYearAgo = new Date(now);
-    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-    const oneYearAgoFilter = oneYearAgo.toISOString();
+    const ADMIN_DATA_SAVES_LIMIT = 25_000;
 
     const purchasesListColumns =
       "user_id,item_id,item_name,price_paid,purchased_at,bundle_id,country,cruel_mode,currency,stripe_payment_intent_id,stripe_fx_quote_id,reporting_eur_cents,reporting_usd_cents,payment_type";
@@ -535,7 +534,7 @@ app.get("/api/admin/data", async (req, res) => {
       adminClient
         .from("game_saves")
         .select("user_id,username,game_state,updated_at,created_at")
-        .or(`created_at.gte.${oneYearAgoFilter},updated_at.gte.${oneYearAgoFilter}`)
+        // No date filter — we need old referrer saves that contain historical referrals
         .order("updated_at", { ascending: false })
         .limit(ADMIN_DATA_SAVES_LIMIT),
       adminClient.rpc("admin_marketing_dashboard_metrics"),
