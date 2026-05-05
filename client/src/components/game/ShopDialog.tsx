@@ -32,6 +32,7 @@ import { getCurrentUser } from "@/game/auth";
 import {
   GREAT_FEAST_DURATION_MS,
   SHOP_ITEMS,
+  HIGHLIGHTS_ORDER,
   bundleComponentsListPriceSumCents,
   type ShopItem,
 } from "../../../../shared/shopItems";
@@ -1070,7 +1071,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         onClick={() => setSelectedFilter(null)}
                         className="h-6 text-xs"
                       >
-                        All
+                        Highlights
                       </Button>
                       <Button
                         variant={
@@ -1114,7 +1115,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       </Button>
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-3 md:gap-4 gap-3">
-                      {Object.values(SHOP_ITEMS)
+                      {(selectedFilter === null
+                        ? HIGHLIGHTS_ORDER.map((id) => SHOP_ITEMS[id]).filter(Boolean)
+                        : Object.values(SHOP_ITEMS)
+                      )
                         .filter((item) => {
                           // Hide full_game item when BTP=0
                           if (item.id === "full_game" && gameState.BTP === 0) {
@@ -1146,7 +1150,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                             return item.category === "bundle";
                           }
 
-                          // Show all if no filter selected
+                          // For Highlights tab we already filtered by HIGHLIGHTS_ORDER
+                          if (selectedFilter === null) return true;
+
                           return true;
                         })
                         .map((item) => (
@@ -1157,7 +1163,16 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 ? "shop-card-cruel_mode"
                                 : undefined
                             }
-                            className={`border-neutral-500 flex flex-col relative ${item.category === "bundle" ? "border border-amber-600" : ""}${item.id === "cruel_mode" && shopCruelModeHighlight ? " border border-red-600" : ""}`}
+                            className={`border-neutral-500 flex flex-col relative ${item.category === "bundle"
+                                ? "border border-amber-600"
+                                : ""
+                              }${item.id === "cruel_mode" && shopCruelModeHighlight
+                                ? " border border-red-600"
+                                : ""
+                              }${item.id === "gold_100_free"
+                                ? " border border-sky-600"
+                                : ""
+                              }`}
                           >
                             <CardHeader className="!md:leading-snug !leading-tight p-2 md:p-4 pb-1 md:pb-2 relative md:text-lg text-md ">
                               {item.symbol && (
@@ -1530,10 +1545,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                             {(item.category === "bundle" ||
                               (item.id === "cruel_mode" &&
                                 shopCruelModeHighlight)) && (
-                              <div
-                                className={`absolute inset-0 -z-10 pointer-events-none rounded-lg ${item.category === "bundle" ? "bundle-card-glow" : "cruel-mode-card-glow"}`}
-                              ></div>
-                            )}
+                                <div
+                                  className={`absolute inset-0 -z-10 pointer-events-none rounded-lg ${item.category === "bundle" ? "bundle-card-glow" : "cruel-mode-card-glow"}`}
+                                ></div>
+                              )}
                           </Card>
                         ))}
                     </div>
