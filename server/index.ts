@@ -519,6 +519,7 @@ app.get("/api/admin/data", async (req, res) => {
     // in months/years. We must load ALL saves that contain referrals (only ~59 such rows).
     const ADMIN_DATA_CLICKS_LIMIT = 10_000;
     const ADMIN_DATA_SAVES_LIMIT = 25_000;
+    const ADMIN_DATA_SAVES_BATCH_SIZE = 1000;
 
     const purchasesListColumns =
       "user_id,item_id,item_name,price_paid,purchased_at,bundle_id,country,cruel_mode,currency,stripe_payment_intent_id,stripe_fx_quote_id,reporting_eur_cents,reporting_usd_cents,payment_type";
@@ -536,12 +537,26 @@ app.get("/api/admin/data", async (req, res) => {
         .gte("timestamp", filterDate)
         .order("timestamp", { ascending: false })
         .limit(ADMIN_DATA_CLICKS_LIMIT),
-      adminClient
-        .from("game_saves")
-        .select("user_id,username,game_state,updated_at,created_at")
-        // No date filter — we need old referrer saves that contain historical referrals
-        .order("updated_at", { ascending: false })
-        .limit(ADMIN_DATA_SAVES_LIMIT),
+      // Use pagination to bypass PostgREST default row limit (often 1000)
+      // We need ALL historical referrer saves, not just recent ones.
+      (async () => {
+        const allSaves: any[] = [];
+        let offset = 0;
+        while (true) {
+          const { data, error } = await adminClient
+            .from("game_saves")
+            .select("user_id,username,game_state,updated_at,created_at")
+            .order("updated_at", { ascending: false })
+            .range(offset, offset + ADMIN_DATA_SAVES_BATCH_SIZE - 1);
+          if (error) throw error;
+          if (!data || data.length === 0) break;
+          allSaves.push(...data);
+          if (data.length < ADMIN_DATA_SAVES_BATCH_SIZE) break;
+          offset += ADMIN_DATA_SAVES_BATCH_SIZE;
+          if (allSaves.length > ADMIN_DATA_SAVES_LIMIT) break;
+        }
+        return { data: allSaves };
+      })(),
       adminClient.rpc("admin_marketing_dashboard_metrics"),
       adminClient.rpc("admin_auth_dashboard_stats"),
       adminClient.rpc("admin_purchase_metrics"),
