@@ -1164,8 +1164,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 : undefined
                             }
                             className={`border-neutral-500 flex flex-col relative ${item.category === "bundle"
-                                ? "border border-amber-600"
-                                : ""
+                              ? "border border-amber-600"
+                              : ""
                               }${item.id === "cruel_mode" && shopCruelModeHighlight
                                 ? " border border-red-600"
                                 : ""
@@ -1180,7 +1180,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   className="font-noto-symbols-2 md:leading-[0.9] leading-[0.9] text-md md:text-lg text-right absolute top-3 right-2 md:top-5 md:right-5"
                                   style={{
                                     color: tailwindToHex(
-                                      item.symbolColor.replace("text-", ""),
+                                      (item.symbolColor || "").replace("text-", ""),
                                     ),
                                     maxWidth: "2.2em",
                                     wordBreak: "break-all",
@@ -1397,7 +1397,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   return (
                                     <>
                                       <span className={priceClassName}>
-                                        {formatPrice(displayPrice)}
+                                        {item.price === 0 ? "Free" : formatPrice(displayPrice)}
                                       </span>
                                       {showTradersGratitudeInfo && (
                                         <TooltipWrapper
