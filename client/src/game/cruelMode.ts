@@ -90,14 +90,6 @@ export const CRUEL_MODE = {
     },
   },
 
-  madnessEvents: {
-    hollowStaresConfront: { baseChance: 0.3, whenCruel: 0.05 },
-    skinCrawlingCalm: { luckBase: 0.5, luckPer: 0.005, whenCruel: 0.1 },
-    skinCrawlingScratchDeaths: { randMax: 4, base: 3, whenCruel: 2 },
-    wrongReflectionsThirst: { randMax: 5, base: 6, whenCruel: 2 },
-    villagersStareWake: { baseChance: 0.6, whenCruel: 0.15 },
-  },
-
   villageAttacks: {
     boneArmy: {
       defendCasualtyWhenCruel: 0.05,

@@ -1,4 +1,4 @@
-import { GameEvent } from "./events";
+import { GameEvent, calculateSuccessChance } from "./events";
 import { GameState } from "@shared/schema";
 import { addFreeVillagersWithinCap, killVillagers } from "@/game/stateHelpers";
 import { getTotalMadness, getTotalLuck } from "./effectsCalculation";
@@ -75,13 +75,20 @@ export const madnessEvents: Record<string, GameEvent> = {
       {
         id: "confront",
         label: "Confront villager",
+        relevant_stats: ["knowledge"],
+        success_chance: (state: GameState) => {
+          return calculateSuccessChance(state, 0.1, {
+            type: "knowledge",
+            multiplier: 0.01,
+          });
+        },
         effect: (state: GameState) => {
-          const rand = Math.random();
-          if (
-            rand <
-            CRUEL_MODE.madnessEvents.hollowStaresConfront.baseChance -
-            cruelModeScale(state) * CRUEL_MODE.madnessEvents.hollowStaresConfront.whenCruel
-          ) {
+          const successChance = calculateSuccessChance(state, 0.1, {
+            type: "knowledge",
+            multiplier: 0.01,
+          });
+
+          if (Math.random() < successChance) {
             return {
               events: {
                 ...state.events,
@@ -183,20 +190,51 @@ export const madnessEvents: Record<string, GameEvent> = {
       {
         id: "examine",
         label: "Examine faces",
-        effect: (state: GameState) => ({
-          events: {
-            ...state.events,
-            facesInWalls: true,
-          },
-          stats: {
-            ...state.stats,
-            madnessFromEvents:
-              (state.stats.madnessFromEvents || 0) +
-              withCruelMadnessBonus(state, 5),
-          },
-          _logMessage:
-            "You lean close to one of the faces. Its eyes snap open and it whispers your name. You recognize the face as someone who died years ago.",
-        }),
+        relevant_stats: ["knowledge"],
+        success_chance: (state: GameState) => {
+          return calculateSuccessChance(state, 0.0, {
+            type: "knowledge",
+            multiplier: 0.0075,
+          });
+        },
+        effect: (state: GameState) => {
+          const successChance = calculateSuccessChance(state, 0.0, {
+            type: "knowledge",
+            multiplier: 0.0075,
+          });
+
+          if (Math.random() < successChance) {
+            return {
+              events: {
+                ...state.events,
+                facesInWalls: true,
+              },
+              stats: {
+                ...state.stats,
+                madnessFromEvents:
+                  (state.stats.madnessFromEvents || 0) +
+                  withCruelMadnessBonus(state, 1),
+              },
+              _logMessage:
+                "Upon closer inspection, it seems to have been merely an optical illusion. You breathe a sigh of relief.",
+            };
+          } else {
+            return {
+              events: {
+                ...state.events,
+                facesInWalls: true,
+              },
+              stats: {
+                ...state.stats,
+                madnessFromEvents:
+                  (state.stats.madnessFromEvents || 0) +
+                  withCruelMadnessBonus(state, 5),
+              },
+              _logMessage:
+                "You lean close to one of the faces. Its eyes snap open and it whispers your name. You recognize the face as someone who died long time ago.",
+            };
+          }
+        },
       },
       {
         id: "ignore",
@@ -273,16 +311,26 @@ export const madnessEvents: Record<string, GameEvent> = {
       {
         id: "calm_down",
         label: "Try to calm down",
+        relevant_stats: ["knowledge", "luck"],
+        success_chance: (state: GameState) => {
+          return calculateSuccessChance(state, 0.0, {
+            type: "knowledge",
+            multiplier: 0.005,
+          }, {
+            type: "luck",
+            multiplier: 0.01,
+          });
+        },
         effect: (state: GameState) => {
-          const luck = getTotalLuck(state);
-          const successChance = Math.min(
-            0.9,
-            CRUEL_MODE.madnessEvents.skinCrawlingCalm.luckBase +
-            luck * CRUEL_MODE.madnessEvents.skinCrawlingCalm.luckPer -
-            cruelModeScale(state) * CRUEL_MODE.madnessEvents.skinCrawlingCalm.whenCruel,
-          );
-          const rand = Math.random();
-          if (rand < successChance) {
+          const successChance = calculateSuccessChance(state, 0.0, {
+            type: "knowledge",
+            multiplier: 0.005,
+          }, {
+            type: "luck",
+            multiplier: 0.01,
+          });
+
+          if (Math.random() < successChance) {
             return {
               events: {
                 ...state.events,
@@ -317,12 +365,7 @@ export const madnessEvents: Record<string, GameEvent> = {
         id: "keep_scratching",
         label: "Keep scratching",
         effect: (state: GameState) => {
-          const killedVillagers =
-            Math.floor(
-              Math.random() * CRUEL_MODE.madnessEvents.skinCrawlingScratchDeaths.randMax,
-            ) +
-            CRUEL_MODE.madnessEvents.skinCrawlingScratchDeaths.base +
-            cruelModeScale(state) * CRUEL_MODE.madnessEvents.skinCrawlingScratchDeaths.whenCruel;
+          const killedVillagers = 5 + cruelModeScale(state) * 3;
           const deathResult = killVillagers(state, killedVillagers);
           return {
             ...deathResult,
@@ -360,6 +403,70 @@ export const madnessEvents: Record<string, GameEvent> = {
     baseDecisionTime: 15,
     choices: [
       {
+        id: "burn_hut",
+        label: "Burn hut",
+        relevant_stats: ["luck"],
+        success_chance: (state: GameState) => {
+          return calculateSuccessChance(state, 0.1, {
+            type: "luck",
+            multiplier: 0.015,
+          });
+        },
+        effect: (state: GameState) => {
+          const successChance = calculateSuccessChance(state, 0.1, {
+            type: "luck",
+            multiplier: 0.015,
+          });
+
+          if (Math.random() < successChance) {
+            return {
+              events: {
+                ...state.events,
+                creatureInHut: true,
+              },
+              resources: {
+                ...state.resources,
+                gold: (state.resources.gold || 0) + 250,
+              },
+              buildings: {
+                ...state.buildings,
+                woodenHut: Math.max(0, state.buildings.woodenHut - 1),
+              },
+              stats: {
+                ...state.stats,
+                madnessFromEvents:
+                  (state.stats.madnessFromEvents || 0) +
+                  withCruelMadnessBonus(state, 0),
+              },
+              _logMessage:
+                "You set the hut ablaze. The flames consume the creature. Searching the ruins afterward, you find a small chest hidden beneath the floorboards containing 250 Gold.",
+            };
+          } else {
+            const deathResult = killVillagers(state, 2);
+            return {
+              ...deathResult,
+              events: {
+                ...state.events,
+                creatureInHut: true,
+              },
+              buildings: {
+                ...state.buildings,
+                woodenHut: Math.max(0, state.buildings.woodenHut - 1),
+              },
+              stats: {
+                ...state.stats,
+                ...(deathResult.stats || {}),
+                madnessFromEvents:
+                  (state.stats.madnessFromEvents || 0) +
+                  withCruelMadnessBonus(state, 3),
+              },
+              _logMessage:
+                "You set the hut ablaze. The flames consume everything, including the two villagers sleeping inside. In the morning, you find only ash and the lingering smell of something that was never meant to burn.",
+            };
+          }
+        },
+      },
+      {
         id: "do_nothing",
         label: "Do nothing",
         effect: (state: GameState) => ({
@@ -376,33 +483,6 @@ export const madnessEvents: Record<string, GameEvent> = {
           _logMessage:
             "You turn away and try to forget what you saw. But in your dreams, the creature visits you. It whispers your name with a voice like grinding stone, and shows you visions of what lies beneath the earth.",
         }),
-      },
-      {
-        id: "burn_hut",
-        label: "Burn hut",
-        effect: (state: GameState) => {
-          const deathResult = killVillagers(state, 2);
-          return {
-            ...deathResult,
-            events: {
-              ...state.events,
-              creatureInHut: true,
-            },
-            buildings: {
-              ...state.buildings,
-              woodenHut: Math.max(0, state.buildings.woodenHut - 1),
-            },
-            stats: {
-              ...state.stats,
-              ...(deathResult.stats || {}),
-              madnessFromEvents:
-                (state.stats.madnessFromEvents || 0) +
-                withCruelMadnessBonus(state, 1),
-            },
-            _logMessage:
-              "You set the hut ablaze. The flames consume everything - including the two villagers sleeping inside. In the morning, you find only ash and the lingering smell of something that was never meant to burn.",
-          };
-        },
       },
     ],
   },
@@ -423,32 +503,62 @@ export const madnessEvents: Record<string, GameEvent> = {
       {
         id: "investigate",
         label: "Look deeper into well",
-        effect: (state: GameState) => ({
-          events: {
-            ...state.events,
-            wrongReflections: true,
-          },
-          stats: {
-            ...state.stats,
-            madnessFromEvents:
-              (state.stats.madnessFromEvents || 0) +
-              withCruelMadnessBonus(state, 5),
-          },
-          _logMessage:
-            "You lean over the well's edge. Your reflection grins back with too many teeth and whispers secrets about what was once built where the village stands now. You pull back, but the knowledge remains, burning in your mind.",
-        }),
+        relevant_stats: ["knowledge", "luck"],
+        success_chance: (state: GameState) => {
+          return calculateSuccessChance(state, 0.1, {
+            type: "knowledge",
+            multiplier: 0.0025,
+          }, {
+            type: "luck",
+            multiplier: 0.005,
+          });
+        },
+        effect: (state: GameState) => {
+          const successChance = calculateSuccessChance(state, 0.1, {
+            type: "knowledge",
+            multiplier: 0.0025,
+          }, {
+            type: "luck",
+            multiplier: 0.005,
+          });
+
+          if (Math.random() < successChance) {
+            return {
+              events: {
+                ...state.events,
+                wrongReflections: true,
+              },
+              stats: {
+                ...state.stats,
+                madnessFromEvents: (state.stats.madnessFromEvents || 0),
+              },
+              _logMessage:
+                "Upon inspection, you see nothing unusual in the well. It must have been a trick of the light or your imagination. The unease lingers, but you feel slightly better.",
+            };
+          } else {
+            return {
+              events: {
+                ...state.events,
+                wrongReflections: true,
+              },
+              stats: {
+                ...state.stats,
+                madnessFromEvents:
+                  (state.stats.madnessFromEvents || 0) +
+                  withCruelMadnessBonus(state, 5),
+              },
+              _logMessage:
+                "You lean over the well's edge. Your reflection grins back with too many teeth and whispers secrets about what was once built where the village stands now. You pull back, but the knowledge remains, burning in your mind.",
+            };
+          }
+        },
       },
       {
         id: "cover_well",
         label: "Cover well with planks",
         effect: (state: GameState) => {
-          // Kill 4-8 older villagers from thirst
-          const thirstDeaths =
-            Math.floor(
-              Math.random() * CRUEL_MODE.madnessEvents.wrongReflectionsThirst.randMax,
-            ) +
-            CRUEL_MODE.madnessEvents.wrongReflectionsThirst.base +
-            cruelModeScale(state) * CRUEL_MODE.madnessEvents.wrongReflectionsThirst.whenCruel;
+          // In cruel mode, exactly 8 villagers perish of thirst
+          const thirstDeaths = state.cruelMode ? 8 : 4;
           const deathResult = killVillagers(state, thirstDeaths);
 
           return {
@@ -462,7 +572,7 @@ export const madnessEvents: Record<string, GameEvent> = {
               ...(deathResult.stats || {}),
               madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
-            _logMessage: `You board up the well with wooden planks, forbidding all access to the unholy water. Building a new well takes too long to finish, and ${thirstDeaths} of the weaker villagers perish of thirst.`,
+            _logMessage: `You board up the well with wooden planks, forbidding all access to the unholy water. Building a new well takes too long to finish, and ${thirstDeaths} of the villagers perish of thirst.`,
           };
         },
       },
@@ -485,23 +595,30 @@ export const madnessEvents: Record<string, GameEvent> = {
       {
         id: "shake_them",
         label: "Wake them",
+        relevant_stats: ["knowledge", "luck"],
+        success_chance: (state: GameState) => {
+          return calculateSuccessChance(state, 0.1, {
+            type: "knowledge",
+            multiplier: 0.0025,
+          }, {
+            type: "luck",
+            multiplier: 0.005,
+          });
+        },
         effect: (state: GameState) => {
-          const rand = Math.random();
-          if (
-            rand <
-            CRUEL_MODE.madnessEvents.villagersStareWake.baseChance -
-            cruelModeScale(state) * CRUEL_MODE.madnessEvents.villagersStareWake.whenCruel
-          ) {
+          const successChance = calculateSuccessChance(state, 0.1, {
+            type: "knowledge",
+            multiplier: 0.0025,
+          }, {
+            type: "luck",
+            multiplier: 0.005,
+          });
+
+          if (Math.random() < successChance) {
             return {
               events: {
                 ...state.events,
                 villagersStareAtSky: true,
-              },
-              stats: {
-                ...state.stats,
-                madnessFromEvents:
-                  (state.stats.madnessFromEvents || 0) +
-                  withCruelMadnessBonus(state, 2),
               },
               _logMessage:
                 "You grab the nearest villager and shake them. They blink once and return to normal, but whisper 'It's coming' before resuming their work. The others slowly follow suit.",
