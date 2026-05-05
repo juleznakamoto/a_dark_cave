@@ -35,7 +35,7 @@ export default function ReferralsTab(props: ReferralsTabProps) {
 
   // Prefer pre-computed metrics from RPC when available
   const totalReferrals = referralMetrics?.total_referrals ?? getTotalReferrals();
-  const usersWithReferrals = referralMetrics?.users_with_referrals 
+  const usersWithReferrals = referralMetrics?.users_with_referrals
     ?? gameSaves.filter((s) => (s.game_state?.referrals || []).length > 0).length;
 
   return (
