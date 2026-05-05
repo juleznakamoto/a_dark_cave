@@ -4,6 +4,7 @@
 import React from 'react';
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { render, screen, waitFor, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 /** Wait for dialog to finish loading, then return the Purchases tab */
 async function waitForPurchasesTab() {
@@ -21,7 +22,15 @@ function getClaimButtonForItem(itemName: string): HTMLElement {
   }
   throw new Error(`No claim button found for item: ${itemName}`);
 }
-import userEvent from '@testing-library/user-event';
+
+async function clickShopFilter(
+  user: ReturnType<typeof userEvent.setup>,
+  label: string,
+) {
+  await user.click(
+    screen.getByRole('button', { name: new RegExp(`^${label}$`, 'i') }),
+  );
+}
 import { ShopDialog } from './ShopDialog';
 import { useGameStore } from '@/game/state';
 import { SHOP_ITEMS, bundleComponentsListPriceSumCents } from '@shared/shopItems';
@@ -307,9 +316,16 @@ describe('ShopDialog', () => {
 
   describe('Paid Items', () => {
     it('should show purchase button for paid items', async () => {
+      const user = userEvent.setup();
       const onClose = vi.fn();
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('100 Gold Gift')).toBeInTheDocument();
+      });
+
+      await clickShopFilter(user, 'Gold');
 
       await waitFor(() => {
         expect(screen.getByText('250 Gold')).toBeInTheDocument();
@@ -330,6 +346,12 @@ describe('ShopDialog', () => {
       ) as any;
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('100 Gold Gift')).toBeInTheDocument();
+      });
+
+      await clickShopFilter(user, 'Gold');
 
       await waitFor(() => {
         expect(screen.getByText('250 Gold')).toBeInTheDocument();
@@ -701,8 +723,8 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        // great_feast_1 has originalPrice 199 (1.99 €), price 149 (1.49 €)
-        const originalPrice = screen.getByText(/1\.99\s*€/);
+        // gold_20000 on Highlights: list 13.49 € vs sale 9.99 €
+        const originalPrice = screen.getByText(/13\.49\s*€/);
         expect(originalPrice).toHaveClass('line-through');
       });
     });
@@ -751,6 +773,12 @@ describe('ShopDialog', () => {
       });
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('100 Gold Gift')).toBeInTheDocument();
+      });
+
+      await clickShopFilter(user, 'Gold');
 
       await waitFor(() => {
         expect(screen.getByText('Test Free Item')).toBeInTheDocument();
@@ -819,8 +847,15 @@ describe('ShopDialog', () => {
 
   describe('Bundle Purchases', () => {
     it('should display bundle items in shop', async () => {
+      const user = userEvent.setup();
       const onClose = vi.fn();
       render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('100 Gold Gift')).toBeInTheDocument();
+      });
+
+      await clickShopFilter(user, 'Bundles');
 
       await waitFor(() => {
         expect(screen.getByText("Fading Wanderer Bundle")).toBeInTheDocument();
@@ -832,8 +867,15 @@ describe('ShopDialog', () => {
     });
 
     it('should show bundle with correct pricing', async () => {
+      const user = userEvent.setup();
       const onClose = vi.fn();
       render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('100 Gold Gift')).toBeInTheDocument();
+      });
+
+      await clickShopFilter(user, 'Bundles');
 
       await waitFor(() => {
         expect(screen.getByText("Fading Wanderer Bundle")).toBeInTheDocument();
@@ -908,6 +950,12 @@ describe('ShopDialog', () => {
       };
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('100 Gold Gift')).toBeInTheDocument();
+      });
+
+      await clickShopFilter(user, 'Bundles');
 
       await waitFor(() => {
         expect(screen.getByText('Test Free Bundle')).toBeInTheDocument();
@@ -1098,6 +1146,12 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
+        expect(screen.getByText('100 Gold Gift')).toBeInTheDocument();
+      });
+
+      await clickShopFilter(user, 'Bundles');
+
+      await waitFor(() => {
         expect(screen.getByText("Fading Wanderer Bundle")).toBeInTheDocument();
       });
 
@@ -1106,8 +1160,15 @@ describe('ShopDialog', () => {
     });
 
     it('should show bundle symbol and color', async () => {
+      const user = userEvent.setup();
       const onClose = vi.fn();
       render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('100 Gold Gift')).toBeInTheDocument();
+      });
+
+      await clickShopFilter(user, 'Bundles');
 
       await waitFor(() => {
         expect(screen.getByText("Fading Wanderer Bundle")).toBeInTheDocument();
@@ -1119,6 +1180,7 @@ describe('ShopDialog', () => {
     });
 
     it('should not prevent bundle repurchase even if components were purchased separately', async () => {
+      const user = userEvent.setup();
       const onClose = vi.fn();
 
       // Mock that individual components exist
@@ -1139,6 +1201,12 @@ describe('ShopDialog', () => {
       }));
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('100 Gold Gift')).toBeInTheDocument();
+      });
+
+      await clickShopFilter(user, 'Bundles');
 
       await waitFor(() => {
         expect(screen.getByText("Fading Wanderer Bundle")).toBeInTheDocument();

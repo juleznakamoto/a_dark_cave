@@ -114,7 +114,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
 
       await waitFor(() => {
         // Should show Euro prices
-        expect(screen.getAllByText(/0\.99 €/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/9\.99 €/).length).toBeGreaterThan(0);
       });
     });
 
@@ -132,7 +132,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getAllByText(/0\.99 €/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/9\.99 €/).length).toBeGreaterThan(0);
       });
     });
 
@@ -150,7 +150,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getAllByText(/0\.99 €/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/9\.99 €/).length).toBeGreaterThan(0);
       });
     });
 
@@ -168,7 +168,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getAllByText(/0\.99 €/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/9\.99 €/).length).toBeGreaterThan(0);
       });
     });
 
@@ -187,7 +187,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
 
       await waitFor(() => {
         // Should show USD prices
-        expect(screen.getAllByText(/\$0\.99/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/\$9\.99/).length).toBeGreaterThan(0);
       });
     });
 
@@ -205,7 +205,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getAllByText(/\$0\.99/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/\$9\.99/).length).toBeGreaterThan(0);
       });
     });
 
@@ -223,7 +223,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getAllByText(/\$0\.99/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/\$9\.99/).length).toBeGreaterThan(0);
       });
     });
 
@@ -235,7 +235,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
 
       await waitFor(() => {
         // Should fall back to USD
-        expect(screen.getAllByText(/\$0\.99/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/\$9\.99/).length).toBeGreaterThan(0);
       });
     });
 
@@ -253,7 +253,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getAllByText(/\$0\.99/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/\$9\.99/).length).toBeGreaterThan(0);
       });
     });
   });
@@ -273,9 +273,9 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        // Check various EUR price formats
-        expect(screen.getAllByText('0.99 €').length).toBeGreaterThan(0);
-        expect(screen.getAllByText('1.49 €').length).toBeGreaterThan(0);
+        // Highlights: gold_20000 sale + list (EUR)
+        expect(screen.getAllByText('9.99 €').length).toBeGreaterThan(0);
+        expect(screen.getAllByText('13.49 €').length).toBeGreaterThan(0);
       });
     });
 
@@ -293,9 +293,9 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        // Check various USD price formats
-        expect(screen.getAllByText(/\$0\.99/).length).toBeGreaterThan(0);
-        expect(screen.getAllByText(/\$1\.49/).length).toBeGreaterThan(0);
+        // Check various USD price formats (gold_20000 on Highlights)
+        expect(screen.getAllByText(/\$9\.99/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/\$13\.49/).length).toBeGreaterThan(0);
       });
     });
 
@@ -313,9 +313,9 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        // Check that bundle shows both prices in EUR
-        expect(screen.getAllByText(/^6\.49 €$/).length).toBeGreaterThan(0);
-        const originalPrices = screen.getAllByText(/9\.98\s*€/);
+        // gold_20000 on Highlights: sale vs list in EUR
+        expect(screen.getAllByText(/^9\.99 €$/).length).toBeGreaterThan(0);
+        const originalPrices = screen.getAllByText(/13\.49\s*€/);
         expect(originalPrices.some((el) => el.classList.contains('line-through'))).toBe(true);
       });
     });
@@ -341,7 +341,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getByText('250 Gold')).toBeInTheDocument();
+        expect(screen.getByText("20'000 Gold")).toBeInTheDocument();
       });
 
       const purchaseButton = screen.getAllByRole('button', { name: /purchase/i })[0];
@@ -377,7 +377,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getByText('250 Gold')).toBeInTheDocument();
+        expect(screen.getByText("20'000 Gold")).toBeInTheDocument();
       });
 
       const purchaseButton = screen.getAllByRole('button', { name: /purchase/i })[0];
@@ -416,7 +416,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
         render(<ShopDialog isOpen={true} onClose={onClose} />);
 
         await waitFor(() => {
-          expect(screen.getAllByText(/0\.99 €/).length).toBeGreaterThan(0);
+          expect(screen.getAllByText(/9\.99 €/).length).toBeGreaterThan(0);
         });
       });
     });
@@ -449,7 +449,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
         render(<ShopDialog isOpen={true} onClose={onClose} />);
 
         await waitFor(() => {
-          expect(screen.getAllByText(/\$0\.99/).length).toBeGreaterThan(0);
+          expect(screen.getAllByText(/\$9\.99/).length).toBeGreaterThan(0);
         });
       });
     });
@@ -470,7 +470,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getAllByText(/\$0\.99/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/\$9\.99/).length).toBeGreaterThan(0);
       });
     });
 
@@ -488,7 +488,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getAllByText(/\$0\.99/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/\$9\.99/).length).toBeGreaterThan(0);
       });
     });
 
@@ -507,7 +507,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       const { rerender } = render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getAllByText(/0\.99 €/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/9\.99 €/).length).toBeGreaterThan(0);
       });
 
       // Rerender should not trigger another API call
@@ -536,7 +536,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       const { rerender } = render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getAllByText(/\$0\.99/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/\$9\.99/).length).toBeGreaterThan(0);
       });
 
       // Close dialog
