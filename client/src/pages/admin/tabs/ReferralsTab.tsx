@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { AreaChart, Area, BarChart, Bar, CartesianGrid, XAxis, YAxis } from "recharts";
+import { AreaChart, Area, CartesianGrid, XAxis, YAxis } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import {
   ADMIN_TWELVE_MONTH_CHART_DAYS,
@@ -9,72 +9,33 @@ import {
 } from "../adminChartTimeRange";
 
 interface ReferralsTabProps {
-  getTotalReferrals: () => number;
-  gameSaves: any[];
+  totalReferrals: number;
   getDailyReferrals: () => Array<{ day: string; referrals: number }>;
-  referralMetrics?: {
-    total_referrals: number;
-    users_with_referrals: number;
-    daily_referrals?: Array<{ day: string; referrals: number }>;
-  } | null;
   referralsChartTimeRange: AdminTwelveMonthChartRange;
   setReferralsChartTimeRange: (range: AdminTwelveMonthChartRange) => void;
 }
 
 export default function ReferralsTab(props: ReferralsTabProps) {
   const {
-    getTotalReferrals,
-    gameSaves,
+    totalReferrals,
     getDailyReferrals,
-    referralMetrics,
     referralsChartTimeRange,
     setReferralsChartTimeRange,
   } = props;
 
   const referralsChartDays = ADMIN_TWELVE_MONTH_CHART_DAYS[referralsChartTimeRange];
 
-  // Prefer pre-computed metrics from RPC when available
-  const totalReferrals = referralMetrics?.total_referrals ?? getTotalReferrals();
-  const usersWithReferrals = referralMetrics?.users_with_referrals
-    ?? gameSaves.filter((s) => (s.game_state?.referrals || []).length > 0).length;
-
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Total Referrals</CardTitle>
-            <CardDescription>All time</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold">{totalReferrals}</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Users with Referrals</CardTitle>
-            <CardDescription>Players who referred others</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold">{usersWithReferrals}</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Avg Referrals per User</CardTitle>
-            <CardDescription>Among users with referrals</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold">
-              {usersWithReferrals > 0
-                ? (totalReferrals / usersWithReferrals).toFixed(1)
-                : 0}
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Total Referrals</CardTitle>
+          <CardDescription>All time (from daily aggregates)</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-4xl font-bold">{totalReferrals}</p>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
@@ -105,7 +66,6 @@ export default function ReferralsTab(props: ReferralsTabProps) {
           </ChartContainer>
         </CardContent>
       </Card>
-
     </div>
   );
 }

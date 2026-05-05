@@ -145,12 +145,10 @@ export default function AdminDashboard() {
     paidBuyerCount: number;
   } | null>(null);
 
-  /** From new RPC `admin_referral_metrics` - contains pre-aggregated historical data */
+  /** Referrals tab: `daily_active_users.referral_count` via `admin_referral_dashboard` RPC */
   const [referralMetrics, setReferralMetrics] = useState<{
     total_referrals: number;
-    users_with_referrals: number;
     daily_referrals: Array<{ day: string; referrals: number }>;
-    top_referrers: Array<{ userId: string; count: number }>;
   } | null>(null);
   const [resendCsvBusy, setResendCsvBusy] = useState<
     null | "marketing" | "no-marketing"
@@ -733,69 +731,21 @@ export default function AdminDashboard() {
       .sort((a, b) => b.count - a.count);
   }, [purchases]);
 
-  const getTotalReferrals = useCallback(() => {
-    if (referralMetrics?.total_referrals !== undefined) {
-      return referralMetrics.total_referrals;
-    }
-    // Fallback for backward compatibility
-    return gameSaves.reduce((sum, save) => {
-      return sum + (save.game_state?.referrals?.length || 0);
-    }, 0);
-  }, [gameSaves, referralMetrics]);
-
   const getDailyReferrals = useCallback(() => {
-    if (referralMetrics?.daily_referrals && referralMetrics.daily_referrals.length > 0) {
-      const days = ADMIN_TWELVE_MONTH_CHART_DAYS[referralsChartTimeRange];
-      // Take only the most recent N days from the full history returned by the RPC
-      return referralMetrics.daily_referrals.slice(0, days);
-    }
-
-    // Fallback to old client-side logic (for dev or if RPC fails)
-    const data: Array<{ day: string; referrals: number }> = [];
-    const now = new Date();
-
     const days = ADMIN_TWELVE_MONTH_CHART_DAYS[referralsChartTimeRange];
+    const rows = referralMetrics?.daily_referrals;
+    if (!rows || rows.length === 0) return [];
 
-    for (let i = days - 1; i >= 0; i--) {
-      const date = subDays(now, i);
-      const dayStart = startOfDay(date);
-      const dayEnd = endOfDay(date);
+    // RPC returns newest-first; chart reads left-to-right as oldest → newest
+    const slice = rows.slice(0, days);
+    const chronological = [...slice].reverse();
 
-      const dailyReferrals = rawGameSaves.reduce((sum, save) => {
-        const referrals = save.game_state?.referrals || [];
-        return sum + referrals.filter((ref: any) => {
-          const timestamp = ref.timestamp || ref.created_at;
-          if (!timestamp) return false;
-
-          let refDate: Date;
-          try {
-            if (typeof timestamp === 'number') {
-              refDate = new Date(timestamp);
-            } else if (typeof timestamp === 'string') {
-              refDate = parseISO(timestamp);
-            } else {
-              return false;
-            }
-
-            return refDate >= dayStart && refDate <= dayEnd;
-          } catch {
-            return false;
-          }
-        }).length;
-      }, 0);
-
-      const dateFormat = days > 90 ? "MMM d" : "MMM dd";
-      data.push({
-        day: format(date, dateFormat),
-        referrals: dailyReferrals,
-      });
-    }
-
-    return data;
-  }, [rawGameSaves, referralsChartTimeRange, referralMetrics]);
-
-  // Top Referrers functionality has been removed entirely
-  const getTopReferrers = useCallback(() => [], []);
+    const dateFormat = days > 90 ? "MMM d" : "MMM dd";
+    return chronological.map((row) => ({
+      day: row.day ? format(parseISO(row.day), dateFormat) : "",
+      referrals: row.referrals,
+    }));
+  }, [referralsChartTimeRange, referralMetrics]);
 
   const getSleepUpgradesDistribution = useCallback(() => {
     const completedSaves = showCompletedOnly
@@ -959,16 +909,17 @@ export default function AdminDashboard() {
         setPurchaseMetrics(null);
       }
 
-      // New referral metrics from dedicated RPC (much more efficient than scanning all game_state JSON)
       if (data.referralMetrics && typeof data.referralMetrics === "object") {
+        const rm = data.referralMetrics as Record<string, unknown>;
         setReferralMetrics({
-          total_referrals: Number(data.referralMetrics.total_referrals) || 0,
-          users_with_referrals: Number(data.referralMetrics.users_with_referrals) || 0,
-          daily_referrals: Array.isArray(data.referralMetrics.daily_referrals)
-            ? data.referralMetrics.daily_referrals
-            : [],
-          top_referrers: Array.isArray(data.referralMetrics.top_referrers)
-            ? data.referralMetrics.top_referrers
+          total_referrals: Number(rm.total_referrals) || 0,
+          daily_referrals: Array.isArray(rm.daily_referrals)
+            ? (rm.daily_referrals as Array<{ day?: string; referrals?: number }>).map(
+              (row) => ({
+                day: String(row.day ?? ""),
+                referrals: Number(row.referrals) || 0,
+              }),
+            )
             : [],
         });
       } else {
@@ -1462,10 +1413,8 @@ export default function AdminDashboard() {
 
               <TabsContent value="referrals">
                 <ReferralsTab
-                  getTotalReferrals={getTotalReferrals}
-                  gameSaves={gameSaves}
+                  totalReferrals={referralMetrics?.total_referrals ?? 0}
                   getDailyReferrals={getDailyReferrals}
-                  referralMetrics={referralMetrics}
                   referralsChartTimeRange={referralsChartTimeRange}
                   setReferralsChartTimeRange={setReferralsChartTimeRange}
                 />

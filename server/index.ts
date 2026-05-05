@@ -494,11 +494,6 @@ app.post("/api/gender", async (req, res) => {
 // API endpoint to fetch admin dashboard data (server-side, bypasses RLS)
 app.get("/api/admin/data", async (req, res) => {
   try {
-    console.log("=== ADMIN DATA ENDPOINT CALLED ===", {
-      env: req.query.env,
-      timestamp: new Date().toISOString()
-    });
-
     // Cache for 5 minutes to reduce repeated fetches
     res.set("Cache-Control", "public, max-age=300");
 
@@ -513,44 +508,34 @@ app.get("/api/admin/data", async (req, res) => {
 
     let totalUserCount = 0;
 
-    // Admin dashboard: cap rows and select only columns the UI needs (large JSON in game_state/clicks
-    // still dominates; avoid shipping unused table columns like clicks.id / purchases.id).
-    // IMPORTANT: Referrals are stored in old `game_saves` rows that may not have been updated
-    // in months/years. We must load ALL saves that contain referrals (only ~59 such rows).
     const ADMIN_DATA_CLICKS_LIMIT = 10_000;
-    const ADMIN_DATA_SAVES_LIMIT = 25_000;
-    const ADMIN_DATA_SAVES_BATCH_SIZE = 1000;
+    const ADMIN_DATA_SAVES_LIMIT = 10_000;
+    const oneYearAgo = new Date(now);
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+    const oneYearAgoFilter = oneYearAgo.toISOString();
 
     const purchasesListColumns =
       "user_id,item_id,item_name,price_paid,purchased_at,bundle_id,country,cruel_mode,currency,stripe_payment_intent_id,stripe_fx_quote_id,reporting_eur_cents,reporting_usd_cents,payment_type";
 
-    const clicksResult = await adminClient
-      .from("button_clicks")
-      .select("user_id,timestamp,clicks,resources")
-      .gte("timestamp", filterDate)
-      .order("timestamp", { ascending: false })
-      .limit(ADMIN_DATA_CLICKS_LIMIT);
-
-    // Load ALL game_saves with pagination to get historical referrals (many old referrers have old updated_at)
-    const allSaves: any[] = [];
-    let offset = 0;
-    const BATCH_SIZE = 1000;
-    while (true) {
-      const { data, error } = await adminClient
+    const [
+      clicksResult,
+      savesResult,
+      marketingMetricsRpc,
+      authDashboardRpc,
+      purchaseMetricsRpc,
+    ] = await Promise.all([
+      adminClient
+        .from("button_clicks")
+        .select("user_id,timestamp,clicks,resources")
+        .gte("timestamp", filterDate)
+        .order("timestamp", { ascending: false })
+        .limit(ADMIN_DATA_CLICKS_LIMIT),
+      adminClient
         .from("game_saves")
         .select("user_id,username,game_state,updated_at,created_at")
-        .order("id", { ascending: true }) // stable ordering
-        .range(offset, offset + BATCH_SIZE - 1);
-      if (error) throw error;
-      if (!data || data.length === 0) break;
-      allSaves.push(...data);
-      if (data.length < BATCH_SIZE) break;
-      offset += BATCH_SIZE;
-      if (allSaves.length > 25000) break; // safety
-    }
-    const savesResult = { data: allSaves };
-
-    const [marketingMetricsRpc, authDashboardRpc, purchaseMetricsRpc] = await Promise.all([
+        .or(`created_at.gte.${oneYearAgoFilter},updated_at.gte.${oneYearAgoFilter}`)
+        .order("updated_at", { ascending: false })
+        .limit(ADMIN_DATA_SAVES_LIMIT),
       adminClient.rpc("admin_marketing_dashboard_metrics"),
       adminClient.rpc("admin_auth_dashboard_stats"),
       adminClient.rpc("admin_purchase_metrics"),
@@ -562,17 +547,6 @@ app.get("/api/admin/data", async (req, res) => {
     if (savesResult.error) {
       throw savesResult.error;
     }
-
-    // === REFERRAL DEBUG ===
-    const referralSaves = (savesResult.data || []).filter(
-      (s: any) => (s.game_state?.referrals?.length || 0) > 0
-    );
-    const totalReferrals = referralSaves.reduce((sum: number, s: any) =>
-      sum + (s.game_state?.referrals?.length || 0), 0
-    );
-
-    console.log("[ADMIN REFERRALS] Loaded", savesResult.data?.length || 0,
-      "game_saves. Found", referralSaves.length, "with referrals. TOTAL REFERRALS:", totalReferrals);
 
     let registrationMethodStats = {
       emailRegistrations: 0,
@@ -713,18 +687,13 @@ app.get("/api/admin/data", async (req, res) => {
       },
     );
 
-    // Call new referral metrics RPC (much more efficient than scanning all game_state JSONB in JS)
+    // Referrals tab: pre-aggregated in daily_active_users (see migration 020)
     let referralMetrics = null;
-    const referralRpc = await adminClient.rpc("admin_referral_metrics");
+    const referralRpc = await adminClient.rpc("admin_referral_dashboard");
     if (referralRpc.error) {
-      log("⚠️ admin_referral_metrics skipped:", referralRpc.error.message ?? referralRpc.error);
+      log("⚠️ admin_referral_dashboard skipped:", referralRpc.error.message ?? referralRpc.error);
     } else if (referralRpc.data) {
       referralMetrics = referralRpc.data;
-      console.log("[ADMIN REFERRALS] RPC returned:", {
-        total: referralMetrics.total_referrals,
-        usersWithReferrals: referralMetrics.users_with_referrals,
-        dailyCount: Array.isArray(referralMetrics.daily_referrals) ? referralMetrics.daily_referrals.length : 0
-      });
     }
 
     res.json({
