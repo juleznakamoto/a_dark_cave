@@ -620,6 +620,23 @@ const Hero: React.FC<HeroProps> = ({
               <button
                 onClick={() =>
                   window.open(
+                    "https://www.indiedb.com/games/a-dark-cave",
+                    "_blank",
+                    "noopener,noreferrer",
+                  )
+                }
+                className="px-3 sm:px-4 py-2 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-1.5 sm:gap-2 min-w-0"
+              >
+                <img
+                  src="/indiedb_logo_black.png"
+                  alt="IndieDB"
+                  className="h-5 w-5 object-contain flex-shrink-0 invert"
+                />
+                <span>IndieDB</span>
+              </button>
+              <button
+                onClick={() =>
+                  window.open(
                     "https://www.producthunt.com/products/a-dark-cave?launch=a-dark-cave",
                     "_blank",
                     "noopener,noreferrer",
@@ -634,23 +651,6 @@ const Hero: React.FC<HeroProps> = ({
                   aria-hidden
                 />
                 <span>Product Hunt</span>
-              </button>
-              <button
-                onClick={() =>
-                  window.open(
-                    "https://www.indiedb.com/games/a-dark-cave",
-                    "_blank",
-                    "noopener,noreferrer",
-                  )
-                }
-                className="px-3 sm:px-4 py-2 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-1.5 sm:gap-2 min-w-0"
-              >
-                <img
-                  src="/indiedb_logo_black.png"
-                  alt="IndieDB"
-                  className="h-5 w-5 object-contain flex-shrink-0 invert"
-                />
-                <span>IndieDB</span>
               </button>
             </div>
           </div>
