@@ -810,7 +810,7 @@ float clouds(vec2 p) {
 void main(void) {
 	// Stretch UV vertically so the flame/cloud effect reaches further toward top and bottom
 	vec2 uv=(FC-.5*R)/MN;
-	uv.y *= 1.22;
+	uv.y *= 1.0;
 	vec2 st=uv*vec2(2,1);
 	// Animate flame colors over time: red -> orange -> yellow
 	vec3 flameColor1 = vec3(1.4, 0.1, 0.0);
