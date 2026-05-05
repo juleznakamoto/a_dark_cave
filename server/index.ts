@@ -524,39 +524,33 @@ app.get("/api/admin/data", async (req, res) => {
     const purchasesListColumns =
       "user_id,item_id,item_name,price_paid,purchased_at,bundle_id,country,cruel_mode,currency,stripe_payment_intent_id,stripe_fx_quote_id,reporting_eur_cents,reporting_usd_cents,payment_type";
 
-    const [
-      clicksResult,
-      savesResult,
-      marketingMetricsRpc,
-      authDashboardRpc,
-      purchaseMetricsRpc,
-    ] = await Promise.all([
-      adminClient
-        .from("button_clicks")
-        .select("user_id,timestamp,clicks,resources")
-        .gte("timestamp", filterDate)
-        .order("timestamp", { ascending: false })
-        .limit(ADMIN_DATA_CLICKS_LIMIT),
-      // Use pagination to bypass PostgREST default row limit (often 1000)
-      // We need ALL historical referrer saves, not just recent ones.
-      (async () => {
-        const allSaves: any[] = [];
-        let offset = 0;
-        while (true) {
-          const { data, error } = await adminClient
-            .from("game_saves")
-            .select("user_id,username,game_state,updated_at,created_at")
-            .order("updated_at", { ascending: false })
-            .range(offset, offset + ADMIN_DATA_SAVES_BATCH_SIZE - 1);
-          if (error) throw error;
-          if (!data || data.length === 0) break;
-          allSaves.push(...data);
-          if (data.length < ADMIN_DATA_SAVES_BATCH_SIZE) break;
-          offset += ADMIN_DATA_SAVES_BATCH_SIZE;
-          if (allSaves.length > ADMIN_DATA_SAVES_LIMIT) break;
-        }
-        return { data: allSaves };
-      })(),
+    const clicksResult = await adminClient
+      .from("button_clicks")
+      .select("user_id,timestamp,clicks,resources")
+      .gte("timestamp", filterDate)
+      .order("timestamp", { ascending: false })
+      .limit(ADMIN_DATA_CLICKS_LIMIT);
+
+    // Load ALL game_saves with pagination to get historical referrals (many old referrers have old updated_at)
+    const allSaves: any[] = [];
+    let offset = 0;
+    const BATCH_SIZE = 1000;
+    while (true) {
+      const { data, error } = await adminClient
+        .from("game_saves")
+        .select("user_id,username,game_state,updated_at,created_at")
+        .order("id", { ascending: true }) // stable ordering
+        .range(offset, offset + BATCH_SIZE - 1);
+      if (error) throw error;
+      if (!data || data.length === 0) break;
+      allSaves.push(...data);
+      if (data.length < BATCH_SIZE) break;
+      offset += BATCH_SIZE;
+      if (allSaves.length > 25000) break; // safety
+    }
+    const savesResult = { data: allSaves };
+
+    const [marketingMetricsRpc, authDashboardRpc, purchaseMetricsRpc] = await Promise.all([
       adminClient.rpc("admin_marketing_dashboard_metrics"),
       adminClient.rpc("admin_auth_dashboard_stats"),
       adminClient.rpc("admin_purchase_metrics"),
