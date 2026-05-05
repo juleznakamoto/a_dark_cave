@@ -497,7 +497,7 @@ const Hero: React.FC<HeroProps> = ({
 
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full object-contain touch-none"
+        className="absolute inset-0 w-full h-full object-cover min-h-full touch-none"
         style={{ background: "black" }}
       />
 
@@ -666,10 +666,10 @@ const Hero: React.FC<HeroProps> = ({
                 {socialButtons?.instagram && (
                   <button
                     onClick={socialButtons.instagram.onClick}
-                    className="px-3 sm:px-4 py-2 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-sm sm:text-base transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1.5 sm:gap-2 min-w-0"
+                    className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5 min-w-0"
                   >
                     <svg
-                      className="w-4 h-4"
+                      className="w-3.5 h-3.5 shrink-0"
                       viewBox="0 0 24 24"
                       fill="currentColor"
                     >
@@ -681,10 +681,10 @@ const Hero: React.FC<HeroProps> = ({
                 {socialButtons?.reddit && (
                   <button
                     onClick={socialButtons.reddit.onClick}
-                    className="px-3 sm:px-4 py-2 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-sm sm:text-base transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1.5 sm:gap-2 min-w-0"
+                    className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5 min-w-0"
                   >
                     <svg
-                      className="w-4 h-4"
+                      className="w-3.5 h-3.5 shrink-0"
                       viewBox="0 0 24 24"
                       fill="currentColor"
                     >
@@ -696,25 +696,32 @@ const Hero: React.FC<HeroProps> = ({
                 {socialButtons?.fandomWiki && (
                   <button
                     onClick={socialButtons.fandomWiki.onClick}
-                    className="px-3 sm:px-4 py-2 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-sm sm:text-base transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1.5 sm:gap-2 min-w-0"
+                    className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5 min-w-0"
                   >
                     <svg
-                      className="w-4 h-4"
+                      className="w-3.5 h-3.5 shrink-0"
                       viewBox="0 0 24 24"
                       fill="currentColor"
                     >
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                      <path d="M8.123.008a.431.431 0 00-.512.42v9.746L4.104 6.666a.432.432 0 00-.66.064.428.428 0 00-.071.239v10.064a2.387 2.387 0 00.701 1.694l4.565 4.57a2.4 2.4 0 001.693.703h3.34c.635 0 1.242-.252 1.691-.701l4.565-4.572a2.394 2.394 0 00.699-1.694V13.41a2.39 2.39 0 00-.7-1.693L8.343.125a.427.427 0 00-.219-.117zM9.646 12.51a.719.719 0 01.508.21l1.848 1.85 1.844-1.85a.714.714 0 011.015 0l1.32 1.321a.724.724 0 01.212.508v1.406a.72.72 0 01-.21.508l-3.68 3.7a.72.72 0 01-1.019 0l-3.668-3.7a.716.716 0 01-.209-.506v-1.408a.71.71 0 01.211-.506l1.32-1.322a.713.713 0 01.508-.211Z" />
                     </svg>
-                    <span>Fandom Wiki</span>
+                    <span>Wiki</span>
                   </button>
                 )}
                 {buttons?.feedback && (
                   <button
                     onClick={buttons.feedback.onClick}
                     button_id={buttons.feedback.buttonId}
-                    className="px-3 sm:px-4 py-2 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-sm sm:text-base transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+                    className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5"
                   >
-                    {buttons.feedback.text}
+                    <svg
+                      className="w-3.5 h-3.5 shrink-0"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                    </svg>
+                    <span>{buttons.feedback.text}</span>
                   </button>
                 )}
               </div>
@@ -723,7 +730,7 @@ const Hero: React.FC<HeroProps> = ({
                   <button
                     onClick={buttons.secondary.onClick}
                     button_id={buttons.secondary.buttonId}
-                    className="px-4 sm:px-6 py-2.5 sm:py-3 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-sm sm:text-base transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+                    className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25"
                   >
                     {buttons.secondary.text}
                   </button>
@@ -801,7 +808,10 @@ float clouds(vec2 p) {
 	return t;
 }
 void main(void) {
-	vec2 uv=(FC-.5*R)/MN,st=uv*vec2(2,1);
+	// Stretch UV vertically so the flame/cloud effect reaches further toward top and bottom
+	vec2 uv=(FC-.5*R)/MN;
+	uv.y *= 1.22;
+	vec2 st=uv*vec2(2,1);
 	// Animate flame colors over time: red -> orange -> yellow
 	vec3 flameColor1 = vec3(1.4, 0.1, 0.0);
 	vec3 flameColor2 = vec3(1.8, 0.4, 0.1);
