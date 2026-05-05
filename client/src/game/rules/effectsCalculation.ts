@@ -494,13 +494,17 @@ export const getAllActionBonuses = (
         actionId === "caveExplore"
           ? "Cave Explore"
           : actionId === "mining"
-            ? "Mine (All)" // Changed label here
-            : actionId
-              .replace(/([A-Z])/g, " $1")
-              .trim()
-              .split(" ")
-              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-              .join(" ");
+            ? "Mine (All)"
+            : actionId === "craftBoneTotems"
+              ? "Bone Totems"
+              : actionId === "craftLeatherTotems"
+                ? "Leather Totems"
+                : actionId
+                  .replace(/([A-Z])/g, " $1")
+                  .trim()
+                  .split(" ")
+                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(" ");
 
       // Build value string (flat bonus not displayed - only boneTotems has one, and it's omitted)
       let valueStr = "";
@@ -516,8 +520,29 @@ export const getAllActionBonuses = (
         displayValue: valueStr,
       };
     })
-    .filter((item) => item.multiplier - 1 > 0 || item.flatBonus > 0)
-    .sort((a, b) => a.label.localeCompare(b.label));
+    .filter((item) => item.multiplier - 1 > 0 || item.flatBonus > 0);
+
+  // Custom order for the Bonuses section in SidePanel (matches user's requested sequence)
+  const BONUS_DISPLAY_ORDER: Record<string, number> = {
+    "Cave Explore": 0,
+    "Chop Wood": 1,
+    "Hunt": 2,
+    "Mine (All)": 3,
+    "Mine Stone": 4,
+    "Mine Iron": 5,
+    "Mine Coal": 6,
+    "Mine Sulfur": 7,
+    "Mine Obsidian": 8,
+    "Mine Adamant": 9,
+    "Bone Totems": 10,
+    "Leather Totems": 11,
+  };
+
+  actionBonuses.sort((a, b) => {
+    const orderA = BONUS_DISPLAY_ORDER[a.label] ?? 999;
+    const orderB = BONUS_DISPLAY_ORDER[b.label] ?? 999;
+    return orderA - orderB;
+  });
 
   // Add hunt bonus from hunting skills
   if (state.huntingSkills?.level > 0) {
