@@ -745,8 +745,9 @@ export default function AdminDashboard() {
 
   const getDailyReferrals = useCallback(() => {
     if (referralMetrics?.daily_referrals && referralMetrics.daily_referrals.length > 0) {
-      // The RPC already returns full history. Client-side filtering by time range is no longer needed.
-      return referralMetrics.daily_referrals;
+      const days = ADMIN_TWELVE_MONTH_CHART_DAYS[referralsChartTimeRange];
+      // Take only the most recent N days from the full history returned by the RPC
+      return referralMetrics.daily_referrals.slice(0, days);
     }
 
     // Fallback to old client-side logic (for dev or if RPC fails)
