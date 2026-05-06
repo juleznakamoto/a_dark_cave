@@ -328,35 +328,45 @@ export function bundleComponentsListPriceSumCents(
   }, 0);
 }
 
+/** Sum of each component's catalog sale price (`price`). Excludes MSRP; use for "Save %" on top of Beta pricing. */
+export function bundleComponentsCatalogPriceSumCents(
+  componentIds: string[],
+  catalog: Record<string, ShopItem> = SHOP_ITEMS,
+): number {
+  return componentIds.reduce((total, id) => {
+    const c = catalog[id];
+    return total + (c?.price ?? 0);
+  }, 0);
+}
+
 const SMALLEST_GOLD_PACK_ID = "gold_250" as const;
 
 /**
- * What this much gold would cost at list price if bought only via the smallest pack (`gold_250`).
+ * What this much gold would cost at the current catalog (Beta) per-unit rate using the smallest pack.
  */
-export function goldAmountBaselineListCents(
+export function goldAmountBaselineCatalogCents(
   goldAmount: number,
   catalog: Record<string, ShopItem> = SHOP_ITEMS,
 ): number | null {
   const small = catalog[SMALLEST_GOLD_PACK_ID];
   const unitGold = small?.rewards.resources?.gold;
   if (!small || unitGold == null || unitGold <= 0) return null;
-  const listPerPack = small.originalPrice ?? small.price;
-  if (listPerPack <= 0) return null;
-  return Math.round((goldAmount / unitGold) * listPerPack);
+  const catalogPerPack = small.price;
+  if (catalogPerPack <= 0) return null;
+  return Math.round((goldAmount / unitGold) * catalogPerPack);
 }
 
-/** List-price total for three single Great Feasts (same activations as `great_feast_3`). */
-export function greatFeast3BaselineListCents(
+/** Catalog (Beta) price for three single Great Feasts — same activations as `great_feast_3`. */
+export function greatFeast3BaselineCatalogCents(
   catalog: Record<string, ShopItem> = SHOP_ITEMS,
 ): number {
   const one = catalog.great_feast_1;
-  const list = one.originalPrice ?? one.price;
-  return Math.round(3 * list);
+  return Math.round(3 * one.price);
 }
 
 /**
- * "Save X %" for shop rows: catalog `price` vs buying the same value at list via smallest gold pack,
- * 3× single feast, or summed bundle components (list prices).
+ * "Save X %" on shop cards: extra savings vs buying the same value at catalog (Beta) prices
+ * (smallest-gold rate, 3× single feast, or summed component `price`). MSRP / beta-vs-list is excluded.
  */
 export function shopPackageSavingsPercent(
   item: ShopItem,
@@ -368,11 +378,14 @@ export function shopPackageSavingsPercent(
 
   const gold = item.rewards.resources?.gold;
   if (item.category === "resource" && gold != null && gold > 250) {
-    baseline = goldAmountBaselineListCents(gold, catalog);
+    baseline = goldAmountBaselineCatalogCents(gold, catalog);
   } else if (item.id === "great_feast_3") {
-    baseline = greatFeast3BaselineListCents(catalog);
+    baseline = greatFeast3BaselineCatalogCents(catalog);
   } else if (item.category === "bundle" && item.bundleComponents?.length) {
-    const sum = bundleComponentsListPriceSumCents(item.bundleComponents, catalog);
+    const sum = bundleComponentsCatalogPriceSumCents(
+      item.bundleComponents,
+      catalog,
+    );
     baseline = sum > 0 ? sum : null;
   } else {
     return null;

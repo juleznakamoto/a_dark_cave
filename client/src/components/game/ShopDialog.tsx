@@ -1227,413 +1227,413 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         .map((item) => {
                           const packageSavePct = shopPackageSavingsPercent(item);
                           return (
-                          <Card
-                            key={item.id}
-                            id={
-                              item.id === "cruel_mode"
-                                ? "shop-card-cruel_mode"
-                                : undefined
-                            }
-                            className={`border-neutral-500 flex flex-col relative ${item.category === "bundle"
-                              ? "border border-amber-600"
-                              : ""
-                              }${item.id === "cruel_mode" && shopCruelModeHighlight
-                                ? " border border-red-600"
+                            <Card
+                              key={item.id}
+                              id={
+                                item.id === "cruel_mode"
+                                  ? "shop-card-cruel_mode"
+                                  : undefined
+                              }
+                              className={`border-neutral-500 flex flex-col relative ${item.category === "bundle"
+                                ? "border border-amber-600"
                                 : ""
-                              }${item.id === "gold_100_free"
-                                ? " border border-sky-600"
-                                : ""
-                              }`}
-                          >
-                            <CardHeader className="!md:leading-snug !leading-tight p-2 md:p-4 pb-1 md:pb-2 relative md:text-lg text-md ">
-                              {item.symbol && (
-                                <span
-                                  className="font-noto-symbols-2 md:leading-[0.9] leading-[0.9] text-md md:text-lg text-right absolute top-3 right-2 md:top-5 md:right-5"
-                                  style={{
-                                    color: tailwindToHex(
-                                      (item.symbolColor || "").replace("text-", ""),
-                                    ),
-                                    maxWidth: "2.2em",
-                                    wordBreak: "break-all",
-                                    overflowWrap: "anywhere",
-                                  }}
-                                >
-                                  {item.symbol}
-                                </span>
-                              )}
-                              <CardTitle className="!m-0 text-md pr-5 items-center gap-1">
-                                {item.name}
-                                {item.id === "skull_lantern" && (
-                                  <TooltipWrapper
-                                    tooltip={
-                                      <div className="text-xs">
-                                        <div className="font-bold mb-1">
-                                          Skull Lantern
-                                        </div>
-                                        <div className="mt-1 space-y-0.5">
-                                          <div>Cave Explore: +200% Bonus</div>
-                                          <div>Cave Explore: -5s Cooldown</div>
-                                          <div>Mining: +200% Bonus</div>
-                                          <div>Mining: -5s Cooldown</div>
-                                        </div>
-                                      </div>
-                                    }
-                                    tooltipId="skull-lantern-info"
-                                    disabled
-                                    tooltipContentClassName="max-w-xs border border-amber-600"
-                                    className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse"
+                                }${item.id === "cruel_mode" && shopCruelModeHighlight
+                                  ? " border border-red-600"
+                                  : ""
+                                }${item.id === "gold_100_free"
+                                  ? " border border-sky-600"
+                                  : ""
+                                }`}
+                            >
+                              <CardHeader className="!md:leading-snug !leading-tight p-2 md:p-4 pb-1 md:pb-2 relative md:text-lg text-md ">
+                                {item.symbol && (
+                                  <span
+                                    className="font-noto-symbols-2 md:leading-[0.9] leading-[0.9] text-md md:text-lg text-right absolute top-3 right-2 md:top-5 md:right-5"
+                                    style={{
+                                      color: tailwindToHex(
+                                        (item.symbolColor || "").replace("text-", ""),
+                                      ),
+                                      maxWidth: "2.2em",
+                                      wordBreak: "break-all",
+                                      overflowWrap: "anywhere",
+                                    }}
                                   >
-                                    <span
-                                      className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
-                                      aria-hidden
-                                    >
-                                      🛈
-                                    </span>
-                                  </TooltipWrapper>
-                                )}
-                                {item.id === "tarnished_compass" && (
-                                  <TooltipWrapper
-                                    tooltip={
-                                      <div className="text-xs">
-                                        <div className="font-bold mb-1">
-                                          Tarnished Compass
-                                        </div>
-                                        <div className="mt-1 space-y-0.5">
-                                          <div>
-                                            10% chance to double actions gains
-                                          </div>
-                                          <div>+5 Luck</div>
-                                        </div>
-                                      </div>
-                                    }
-                                    tooltipId="tarnished-compass-info"
-                                    disabled
-                                    tooltipContentClassName="max-w-[14rem] border border-amber-600"
-                                    className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse"
-                                  >
-                                    <span
-                                      className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
-                                      aria-hidden
-                                    >
-                                      🛈
-                                    </span>
-                                  </TooltipWrapper>
-                                )}
-                                {item.id === "crow_harness" && (
-                                  <TooltipWrapper
-                                    tooltip={
-                                      <div className="text-xs">
-                                        <div className="font-bold mb-1">
-                                          One-eyed Crow
-                                        </div>
-                                        <div className="mt-1 space-y-0.5">
-                                          <div>
-                                            up to 15% chance to double action
-                                            gains
-                                          </div>
-                                        </div>
-                                      </div>
-                                    }
-                                    tooltipId="crow-harness-info"
-                                    disabled
-                                    tooltipContentClassName="max-w-xs border border-amber-600"
-                                    className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse"
-                                  >
-                                    <span
-                                      className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
-                                      aria-hidden
-                                    >
-                                      🛈
-                                    </span>
-                                  </TooltipWrapper>
-                                )}
-                                {item.id === "cruel_mode" && (
-                                  <TooltipWrapper
-                                    tooltip={
-                                      <div className="text-xs">
-                                        <div className="font-bold mb-1">
-                                          Cruel Mode
-                                        </div>
-                                        <div className="mt-1 space-y-0.5">
-                                          <div>• More Events</div>
-                                          <div>• More Items</div>
-                                          <div>• Stronger Enemies</div>
-                                          <div>• Harder Challenges</div>
-                                          <div>• Reuse existing Purchases</div>
-                                        </div>
-                                      </div>
-                                    }
-                                    tooltipId="cruel-mode-info"
-                                    disabled
-                                    tooltipContentClassName="max-w-xs border border-amber-600"
-                                    className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse"
-                                  >
-                                    <span
-                                      className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
-                                      aria-hidden
-                                    >
-                                      🛈
-                                    </span>
-                                  </TooltipWrapper>
-                                )}
-                              </CardTitle>
-                              {packageSavePct != null && packageSavePct > 0 && (
-                                <div className="mt-1.5 flex flex-wrap items-center gap-2">
-                                  <span className="inline-flex items-center rounded border border-red-500 bg-red-950/45 px-1.5 py-0.5 text-[0.75rem] font-semibold text-red-400">
-                                    Save {packageSavePct}%
+                                    {item.symbol}
                                   </span>
-                                </div>
-                              )}
-                              <CardDescription className="!m-0 text-bold flex flex-wrap items-center gap-1 pt-2">
-                                {(() => {
-                                  const listCents =
-                                    shopCardStrikethroughListCents(item);
-                                  if (
-                                    listCents === null ||
-                                    (item.price > 0 && listCents <= item.price)
-                                  ) {
-                                    return null;
-                                  }
-                                  return (
-                                    <span className="text-xs line-through text-muted-foreground">
-                                      {formatPrice(listCents)}
-                                    </span>
-                                  );
-                                })()}
-                                {(() => {
-                                  const tradersGratitudeActive =
-                                    gameState.tradersGratitudeState
-                                      ?.accepted === true;
-                                  const tradersSonGratitudeActive =
-                                    gameState.tradersSonGratitudeState
-                                      ?.accepted === true;
-                                  const playlightFirstPurchaseActive =
-                                    gameState.story?.seen
-                                      ?.playlightFirstPurchaseDiscountActive ===
-                                    true && !gameState.hasMadeNonFreePurchase;
-                                  const displayPrice =
-                                    item.price > 0
-                                      ? getDiscountedShopPriceCents(
-                                        item.price,
-                                        {
-                                          playlightFirstPurchase:
-                                            playlightFirstPurchaseActive,
-                                          tradersGratitude:
-                                            tradersGratitudeActive,
-                                          tradersSonGratitude:
-                                            tradersSonGratitudeActive,
-                                        },
-                                      )
-                                      : item.price;
-                                  const tradersOnlyCents =
-                                    item.price > 0
-                                      ? getDiscountedShopPriceCents(
-                                        item.price,
-                                        {
-                                          tradersGratitude: true,
-                                        },
-                                      )
-                                      : item.price;
-                                  const sonOnlyCents =
-                                    item.price > 0
-                                      ? getDiscountedShopPriceCents(
-                                        item.price,
-                                        {
-                                          tradersSonGratitude: true,
-                                        },
-                                      )
-                                      : item.price;
-                                  const playlightOnlyCents =
-                                    item.price > 0
-                                      ? getDiscountedShopPriceCents(
-                                        item.price,
-                                        {
-                                          playlightFirstPurchase: true,
-                                        },
-                                      )
-                                      : item.price;
-                                  const discounted =
-                                    item.price > 0 && displayPrice < item.price;
-                                  const priceClassName = discounted
-                                    ? "!font-semibold text-green-500"
-                                    : "";
-                                  const showTradersGratitudeInfo =
-                                    item.price > 0 &&
-                                    tradersGratitudeActive &&
-                                    displayPrice === tradersOnlyCents &&
-                                    displayPrice < item.price;
-                                  const showTradersSonInfo =
-                                    item.price > 0 &&
-                                    tradersSonGratitudeActive &&
-                                    displayPrice === sonOnlyCents &&
-                                    displayPrice < item.price;
-                                  const showPlaylightInfo =
-                                    item.price > 0 &&
-                                    playlightFirstPurchaseActive &&
-                                    displayPrice === playlightOnlyCents &&
-                                    displayPrice < item.price;
-                                  return (
-                                    <>
-                                      <span className={priceClassName}>
-                                        {item.price === 0 ? "Free" : formatPrice(displayPrice)}
-                                      </span>
-                                      {showTradersGratitudeInfo && (
-                                        <TooltipWrapper
-                                          tooltip={
-                                            <div className="text-xs">
-                                              20% additional Discount due to
-                                              Trader&apos;s Gratitude Event
-                                            </div>
-                                          }
-                                          tooltipId={`traders-gratitude-${item.id}`}
-                                          disabled
-                                          tooltipContentClassName="max-w-xs border border-amber-600"
-                                          className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse"
-                                        >
-                                          <span
-                                            className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
-                                            aria-hidden
-                                          >
-                                            🛈
-                                          </span>
-                                        </TooltipWrapper>
-                                      )}
-                                      {showTradersSonInfo && (
-                                        <TooltipWrapper
-                                          tooltip={
-                                            <div className="text-xs">
-                                              15% additional discount from the
-                                              Trader&apos;s Son event.
-                                            </div>
-                                          }
-                                          tooltipId={`traders-son-gratitude-${item.id}`}
-                                          disabled
-                                          tooltipContentClassName="max-w-xs border border-amber-600"
-                                          className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse"
-                                        >
-                                          <span
-                                            className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
-                                            aria-hidden
-                                          >
-                                            🛈
-                                          </span>
-                                        </TooltipWrapper>
-                                      )}
-                                      {showPlaylightInfo && (
-                                        <TooltipWrapper
-                                          tooltip={
-                                            <div className="text-xs">
-                                              10% additional discount for your
-                                              first real-money purchase as a
-                                              Playlight player.
-                                            </div>
-                                          }
-                                          tooltipId={`playlight-discount-${item.id}`}
-                                          disabled
-                                          tooltipContentClassName="max-w-xs border border-amber-600"
-                                          className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse"
-                                        >
-                                          <span
-                                            className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
-                                            aria-hidden
-                                          >
-                                            🛈
-                                          </span>
-                                        </TooltipWrapper>
-                                      )}
-                                    </>
-                                  );
-                                })()}
-                                {(() => {
-                                  if (
-                                    packageSavePct != null &&
-                                    packageSavePct > 0
-                                  ) {
-                                    return null;
-                                  }
-                                  const pct = shopListDiscountPercent(item);
-                                  if (pct === null || pct <= 0) return null;
-                                  const isBundle =
-                                    item.category === "bundle" &&
-                                    !!item.bundleComponents?.length;
-                                  return (
-                                    <span
-                                      className={
-                                        isBundle
-                                          ? "ml-1 px-1 py-[1px] text-xs text-green-500 font-medium border border-green-500 rounded bg-green-800/40"
-                                          : "ml-1 px-1 py-[1px] text-xs text-green-600 font-medium border border-green-600 rounded bg-green-950/40"
+                                )}
+                                <CardTitle className="!m-0 text-md pr-5 items-center gap-1">
+                                  {item.name}
+                                  {item.id === "skull_lantern" && (
+                                    <TooltipWrapper
+                                      tooltip={
+                                        <div className="text-xs">
+                                          <div className="font-bold mb-1">
+                                            Skull Lantern
+                                          </div>
+                                          <div className="mt-1 space-y-0.5">
+                                            <div>Cave Explore: +200% Bonus</div>
+                                            <div>Cave Explore: -5s Cooldown</div>
+                                            <div>Mining: +200% Bonus</div>
+                                            <div>Mining: -5s Cooldown</div>
+                                          </div>
+                                        </div>
                                       }
+                                      tooltipId="skull-lantern-info"
+                                      disabled
+                                      tooltipContentClassName="max-w-xs border border-amber-600"
+                                      className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse"
                                     >
-                                      -{pct}%
+                                      <span
+                                        className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
+                                        aria-hidden
+                                      >
+                                        🛈
+                                      </span>
+                                    </TooltipWrapper>
+                                  )}
+                                  {item.id === "tarnished_compass" && (
+                                    <TooltipWrapper
+                                      tooltip={
+                                        <div className="text-xs">
+                                          <div className="font-bold mb-1">
+                                            Tarnished Compass
+                                          </div>
+                                          <div className="mt-1 space-y-0.5">
+                                            <div>
+                                              10% chance to double actions gains
+                                            </div>
+                                            <div>+5 Luck</div>
+                                          </div>
+                                        </div>
+                                      }
+                                      tooltipId="tarnished-compass-info"
+                                      disabled
+                                      tooltipContentClassName="max-w-[14rem] border border-amber-600"
+                                      className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse"
+                                    >
+                                      <span
+                                        className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
+                                        aria-hidden
+                                      >
+                                        🛈
+                                      </span>
+                                    </TooltipWrapper>
+                                  )}
+                                  {item.id === "crow_harness" && (
+                                    <TooltipWrapper
+                                      tooltip={
+                                        <div className="text-xs">
+                                          <div className="font-bold mb-1">
+                                            One-eyed Crow
+                                          </div>
+                                          <div className="mt-1 space-y-0.5">
+                                            <div>
+                                              up to 15% chance to double action
+                                              gains
+                                            </div>
+                                          </div>
+                                        </div>
+                                      }
+                                      tooltipId="crow-harness-info"
+                                      disabled
+                                      tooltipContentClassName="max-w-xs border border-amber-600"
+                                      className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse"
+                                    >
+                                      <span
+                                        className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
+                                        aria-hidden
+                                      >
+                                        🛈
+                                      </span>
+                                    </TooltipWrapper>
+                                  )}
+                                  {item.id === "cruel_mode" && (
+                                    <TooltipWrapper
+                                      tooltip={
+                                        <div className="text-xs">
+                                          <div className="font-bold mb-1">
+                                            Cruel Mode
+                                          </div>
+                                          <div className="mt-1 space-y-0.5">
+                                            <div>• More Events</div>
+                                            <div>• More Items</div>
+                                            <div>• Stronger Enemies</div>
+                                            <div>• Harder Challenges</div>
+                                            <div>• Reuse existing Purchases</div>
+                                          </div>
+                                        </div>
+                                      }
+                                      tooltipId="cruel-mode-info"
+                                      disabled
+                                      tooltipContentClassName="max-w-xs border border-amber-600"
+                                      className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse"
+                                    >
+                                      <span
+                                        className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
+                                        aria-hidden
+                                      >
+                                        🛈
+                                      </span>
+                                    </TooltipWrapper>
+                                  )}
+                                </CardTitle>
+                                {packageSavePct != null && packageSavePct > 0 && (
+                                  <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                                    <span className="inline-flex items-center rounded border border-red-500 bg-red-950/45 px-1.5 py-0.5 text-[0.75rem] font-semibold text-red-400">
+                                      Save {packageSavePct}%
                                     </span>
-                                  );
-                                })()}
-                              </CardDescription>
-                            </CardHeader>
-                            <CardContent className="min-h-16 pl-3 pr-3 md:pl-4 md:pr-4 pb-3 md:pb-4 flex-1">
-                              <p className="md:leading-snug leading-tight text-sm opacity-80">
-                                {item.description}
-                              </p>
-                            </CardContent>
-                            <CardFooter className="pl-3 pr-3 md:pl-4 md:pr-4 pb-4 md:pb-4 flex-col gap-2">
-                              <Button
-                                onClick={() => handlePurchaseClick(item.id)}
-                                disabled={
-                                  !currentUser ||
-                                  (item.id === "gold_100_free" &&
-                                    (Date.now() -
+                                  </div>
+                                )}
+                                <CardDescription className="!m-0 text-bold flex flex-wrap items-center gap-1 pt-2">
+                                  {(() => {
+                                    const listCents =
+                                      shopCardStrikethroughListCents(item);
+                                    if (
+                                      listCents === null ||
+                                      (item.price > 0 && listCents <= item.price)
+                                    ) {
+                                      return null;
+                                    }
+                                    return (
+                                      <span className="text-xs line-through text-muted-foreground">
+                                        {formatPrice(listCents)}
+                                      </span>
+                                    );
+                                  })()}
+                                  {(() => {
+                                    const tradersGratitudeActive =
+                                      gameState.tradersGratitudeState
+                                        ?.accepted === true;
+                                    const tradersSonGratitudeActive =
+                                      gameState.tradersSonGratitudeState
+                                        ?.accepted === true;
+                                    const playlightFirstPurchaseActive =
+                                      gameState.story?.seen
+                                        ?.playlightFirstPurchaseDiscountActive ===
+                                      true && !gameState.hasMadeNonFreePurchase;
+                                    const displayPrice =
+                                      item.price > 0
+                                        ? getDiscountedShopPriceCents(
+                                          item.price,
+                                          {
+                                            playlightFirstPurchase:
+                                              playlightFirstPurchaseActive,
+                                            tradersGratitude:
+                                              tradersGratitudeActive,
+                                            tradersSonGratitude:
+                                              tradersSonGratitudeActive,
+                                          },
+                                        )
+                                        : item.price;
+                                    const tradersOnlyCents =
+                                      item.price > 0
+                                        ? getDiscountedShopPriceCents(
+                                          item.price,
+                                          {
+                                            tradersGratitude: true,
+                                          },
+                                        )
+                                        : item.price;
+                                    const sonOnlyCents =
+                                      item.price > 0
+                                        ? getDiscountedShopPriceCents(
+                                          item.price,
+                                          {
+                                            tradersSonGratitude: true,
+                                          },
+                                        )
+                                        : item.price;
+                                    const playlightOnlyCents =
+                                      item.price > 0
+                                        ? getDiscountedShopPriceCents(
+                                          item.price,
+                                          {
+                                            playlightFirstPurchase: true,
+                                          },
+                                        )
+                                        : item.price;
+                                    const discounted =
+                                      item.price > 0 && displayPrice < item.price;
+                                    const priceClassName = discounted
+                                      ? "!font-semibold text-green-500"
+                                      : "";
+                                    const showTradersGratitudeInfo =
+                                      item.price > 0 &&
+                                      tradersGratitudeActive &&
+                                      displayPrice === tradersOnlyCents &&
+                                      displayPrice < item.price;
+                                    const showTradersSonInfo =
+                                      item.price > 0 &&
+                                      tradersSonGratitudeActive &&
+                                      displayPrice === sonOnlyCents &&
+                                      displayPrice < item.price;
+                                    const showPlaylightInfo =
+                                      item.price > 0 &&
+                                      playlightFirstPurchaseActive &&
+                                      displayPrice === playlightOnlyCents &&
+                                      displayPrice < item.price;
+                                    return (
+                                      <>
+                                        <span className={priceClassName}>
+                                          {item.price === 0 ? "Free" : formatPrice(displayPrice)}
+                                        </span>
+                                        {showTradersGratitudeInfo && (
+                                          <TooltipWrapper
+                                            tooltip={
+                                              <div className="text-xs">
+                                                20% additional Discount due to
+                                                Trader&apos;s Gratitude Event
+                                              </div>
+                                            }
+                                            tooltipId={`traders-gratitude-${item.id}`}
+                                            disabled
+                                            tooltipContentClassName="max-w-xs border border-amber-600"
+                                            className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse"
+                                          >
+                                            <span
+                                              className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
+                                              aria-hidden
+                                            >
+                                              🛈
+                                            </span>
+                                          </TooltipWrapper>
+                                        )}
+                                        {showTradersSonInfo && (
+                                          <TooltipWrapper
+                                            tooltip={
+                                              <div className="text-xs">
+                                                15% additional discount from the
+                                                Trader&apos;s Son event.
+                                              </div>
+                                            }
+                                            tooltipId={`traders-son-gratitude-${item.id}`}
+                                            disabled
+                                            tooltipContentClassName="max-w-xs border border-amber-600"
+                                            className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse"
+                                          >
+                                            <span
+                                              className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
+                                              aria-hidden
+                                            >
+                                              🛈
+                                            </span>
+                                          </TooltipWrapper>
+                                        )}
+                                        {showPlaylightInfo && (
+                                          <TooltipWrapper
+                                            tooltip={
+                                              <div className="text-xs">
+                                                10% additional discount for your
+                                                first real-money purchase as a
+                                                Playlight player.
+                                              </div>
+                                            }
+                                            tooltipId={`playlight-discount-${item.id}`}
+                                            disabled
+                                            tooltipContentClassName="max-w-xs border border-amber-600"
+                                            className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse"
+                                          >
+                                            <span
+                                              className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
+                                              aria-hidden
+                                            >
+                                              🛈
+                                            </span>
+                                          </TooltipWrapper>
+                                        )}
+                                      </>
+                                    );
+                                  })()}
+                                  {(() => {
+                                    if (
+                                      packageSavePct != null &&
+                                      packageSavePct > 0
+                                    ) {
+                                      return null;
+                                    }
+                                    const pct = shopListDiscountPercent(item);
+                                    if (pct === null || pct <= 0) return null;
+                                    const isBundle =
+                                      item.category === "bundle" &&
+                                      !!item.bundleComponents?.length;
+                                    return (
+                                      <span
+                                        className={
+                                          isBundle
+                                            ? "ml-1 px-1 py-[1px] text-xs text-green-500 font-medium border border-green-500 rounded bg-green-800/40"
+                                            : "ml-1 px-1 py-[1px] text-xs text-green-600 font-medium border border-green-600 rounded bg-green-950/40"
+                                        }
+                                      >
+                                        -{pct}%
+                                      </span>
+                                    );
+                                  })()}
+                                </CardDescription>
+                              </CardHeader>
+                              <CardContent className="min-h-16 pl-3 pr-3 md:pl-4 md:pr-4 pb-3 md:pb-4 flex-1">
+                                <p className="md:leading-snug leading-tight text-sm opacity-80">
+                                  {item.description}
+                                </p>
+                              </CardContent>
+                              <CardFooter className="pl-3 pr-3 md:pl-4 md:pr-4 pb-4 md:pb-4 flex-col gap-2">
+                                <Button
+                                  onClick={() => handlePurchaseClick(item.id)}
+                                  disabled={
+                                    !currentUser ||
+                                    (item.id === "gold_100_free" &&
+                                      (Date.now() -
+                                        (gameState.lastFreeGoldClaim || 0)) /
+                                      (1000 * 60 * 60) <
+                                      24) ||
+                                    (item.id !== "gold_100_free" &&
+                                      !item.canPurchaseMultipleTimes &&
+                                      purchasedItems.some(
+                                        (pid) =>
+                                          purchaseIdToItemId(pid) === item.id,
+                                      ))
+                                  }
+                                  className="h-8 md:h-10 w-full"
+                                  button_id={`shop-purchase-${item.id}`}
+                                >
+                                  {item.id === "gold_100_free"
+                                    ? (Date.now() -
                                       (gameState.lastFreeGoldClaim || 0)) /
-                                    (1000 * 60 * 60) <
-                                    24) ||
-                                  (item.id !== "gold_100_free" &&
-                                    !item.canPurchaseMultipleTimes &&
-                                    purchasedItems.some(
-                                      (pid) =>
-                                        purchaseIdToItemId(pid) === item.id,
-                                    ))
-                                }
-                                className="h-8 md:h-10 w-full"
-                                button_id={`shop-purchase-${item.id}`}
-                              >
-                                {item.id === "gold_100_free"
-                                  ? (Date.now() -
-                                    (gameState.lastFreeGoldClaim || 0)) /
-                                    (1000 * 60 * 60) <
-                                    24
-                                    ? (() => {
-                                      const hoursRemaining = Math.ceil(
-                                        24 -
-                                        (Date.now() -
-                                          (gameState.lastFreeGoldClaim ||
-                                            0)) /
-                                        (1000 * 60 * 60),
-                                      );
-                                      return hoursRemaining === 1
-                                        ? "Available in 1 hour"
-                                        : `Available in ${hoursRemaining} hours`;
-                                    })()
-                                    : "Claim"
-                                  : !item.canPurchaseMultipleTimes &&
-                                    purchasedItems.some(
-                                      (pid) =>
-                                        purchaseIdToItemId(pid) === item.id,
-                                    )
-                                    ? item.price === 0
-                                      ? "Already Claimed"
-                                      : "Already Purchased"
-                                    : item.price === 0
-                                      ? "Claim"
-                                      : "Purchase"}
-                              </Button>
-                            </CardFooter>
-                            {(item.category === "bundle" ||
-                              (item.id === "cruel_mode" &&
-                                shopCruelModeHighlight)) && (
-                                <div
-                                  className={`absolute inset-0 -z-10 pointer-events-none rounded-lg ${item.category === "bundle" ? "bundle-card-glow" : "cruel-mode-card-glow"}`}
-                                ></div>
-                              )}
-                          </Card>
+                                      (1000 * 60 * 60) <
+                                      24
+                                      ? (() => {
+                                        const hoursRemaining = Math.ceil(
+                                          24 -
+                                          (Date.now() -
+                                            (gameState.lastFreeGoldClaim ||
+                                              0)) /
+                                          (1000 * 60 * 60),
+                                        );
+                                        return hoursRemaining === 1
+                                          ? "Available in 1 hour"
+                                          : `Available in ${hoursRemaining} hours`;
+                                      })()
+                                      : "Claim"
+                                    : !item.canPurchaseMultipleTimes &&
+                                      purchasedItems.some(
+                                        (pid) =>
+                                          purchaseIdToItemId(pid) === item.id,
+                                      )
+                                      ? item.price === 0
+                                        ? "Already Claimed"
+                                        : "Already Purchased"
+                                      : item.price === 0
+                                        ? "Claim"
+                                        : "Purchase"}
+                                </Button>
+                              </CardFooter>
+                              {(item.category === "bundle" ||
+                                (item.id === "cruel_mode" &&
+                                  shopCruelModeHighlight)) && (
+                                  <div
+                                    className={`absolute inset-0 -z-10 pointer-events-none rounded-lg ${item.category === "bundle" ? "bundle-card-glow" : "cruel-mode-card-glow"}`}
+                                  ></div>
+                                )}
+                            </Card>
                           );
                         })}
                     </div>

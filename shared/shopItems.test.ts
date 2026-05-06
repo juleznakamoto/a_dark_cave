@@ -2,9 +2,10 @@ import { describe, it, expect } from 'vitest';
 import {
   SHOP_ITEMS,
   bundleComponentsListPriceSumCents,
+  bundleComponentsCatalogPriceSumCents,
   shopPackageSavingsPercent,
-  goldAmountBaselineListCents,
-  greatFeast3BaselineListCents,
+  goldAmountBaselineCatalogCents,
+  greatFeast3BaselineCatalogCents,
 } from './shopItems';
 
 describe('Shop Items Configuration', () => {
@@ -416,13 +417,13 @@ describe('Shop Items Configuration', () => {
   });
 
   describe('shopPackageSavingsPercent', () => {
-    it('computes gold baseline from smallest pack list price', () => {
-      expect(goldAmountBaselineListCents(1000, SHOP_ITEMS)).toBe(596);
-      expect(goldAmountBaselineListCents(250, SHOP_ITEMS)).toBe(149);
+    it('computes gold baseline from smallest pack catalog (Beta) price', () => {
+      expect(goldAmountBaselineCatalogCents(1000, SHOP_ITEMS)).toBe(396);
+      expect(goldAmountBaselineCatalogCents(250, SHOP_ITEMS)).toBe(99);
     });
 
-    it('uses 3x single Great Feast list for the 3-pack', () => {
-      expect(greatFeast3BaselineListCents(SHOP_ITEMS)).toBe(597);
+    it('uses 3x single Great Feast catalog price for the 3-pack', () => {
+      expect(greatFeast3BaselineCatalogCents(SHOP_ITEMS)).toBe(447);
     });
 
     it('returns null for gold_250 and single feast', () => {
@@ -430,16 +431,16 @@ describe('Shop Items Configuration', () => {
       expect(shopPackageSavingsPercent(SHOP_ITEMS.great_feast_1)).toBeNull();
     });
 
-    it('returns savings for gold packs above 250, feast 3, and bundles', () => {
-      expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_1000)).toBe(50);
-      expect(shopPackageSavingsPercent(SHOP_ITEMS.great_feast_3)).toBe(50);
+    it('returns savings vs catalog baselines only (no MSRP / beta-off-list)', () => {
+      expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_1000)).toBe(24);
+      expect(shopPackageSavingsPercent(SHOP_ITEMS.great_feast_3)).toBe(33);
       const bundle = SHOP_ITEMS.basic_survival_bundle;
-      const listSum = bundleComponentsListPriceSumCents(
+      const catalogSum = bundleComponentsCatalogPriceSumCents(
         bundle.bundleComponents!,
         SHOP_ITEMS,
       );
       expect(shopPackageSavingsPercent(bundle)).toBe(
-        Math.round((1 - bundle.price / listSum) * 100),
+        Math.round((1 - bundle.price / catalogSum) * 100),
       );
     });
   });
