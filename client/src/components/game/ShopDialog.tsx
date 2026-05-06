@@ -1127,8 +1127,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
                           // Apply filter based on selectedFilter
                           if (selectedFilter === "gold") {
-                            // Gold items are resources with gold rewards
+                            // Gold items are resources with gold rewards (free gift is Highlights-only)
                             return (
+                              item.id !== "gold_100_free" &&
                               item.category === "resource" &&
                               item.rewards.resources?.gold !== undefined
                             );
