@@ -1380,7 +1380,12 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 {packageSavePct != null && packageSavePct > 0 && (
                                   <div className="mt-1.5 flex flex-wrap items-center gap-2">
                                     <span className="inline-flex items-center rounded border border-red-500 bg-red-950/45 px-1.5 py-0.5 text-[0.75rem] font-semibold text-red-400">
-                                      Save {packageSavePct}%
+                                      {item.id === "great_feast_3" ||
+                                        (item.category === "resource" &&
+                                          (item.rewards.resources?.gold ?? 0) >
+                                          250)
+                                        ? `${packageSavePct}% more value`
+                                        : `Save ${packageSavePct}%`}
                                     </span>
                                   </div>
                                 )}
