@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { SHOP_ITEMS, bundleComponentsListPriceSumCents } from './shopItems';
+import {
+  SHOP_ITEMS,
+  bundleComponentsListPriceSumCents,
+  shopPackageSavingsPercent,
+  goldAmountBaselineListCents,
+  greatFeast3BaselineListCents,
+} from './shopItems';
 
 describe('Shop Items Configuration', () => {
   describe('Item Structure', () => {
@@ -406,6 +412,35 @@ describe('Shop Items Configuration', () => {
       expect(bundle.activationMessage?.toLowerCase()).toContain('bundle');
       expect(bundle.description.toLowerCase()).toContain('gold');
       expect(bundle.description.toLowerCase()).toContain('feast');
+    });
+  });
+
+  describe('shopPackageSavingsPercent', () => {
+    it('computes gold baseline from smallest pack list price', () => {
+      expect(goldAmountBaselineListCents(1000, SHOP_ITEMS)).toBe(596);
+      expect(goldAmountBaselineListCents(250, SHOP_ITEMS)).toBe(149);
+    });
+
+    it('uses 3x single Great Feast list for the 3-pack', () => {
+      expect(greatFeast3BaselineListCents(SHOP_ITEMS)).toBe(597);
+    });
+
+    it('returns null for gold_250 and single feast', () => {
+      expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_250)).toBeNull();
+      expect(shopPackageSavingsPercent(SHOP_ITEMS.great_feast_1)).toBeNull();
+    });
+
+    it('returns savings for gold packs above 250, feast 3, and bundles', () => {
+      expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_1000)).toBe(50);
+      expect(shopPackageSavingsPercent(SHOP_ITEMS.great_feast_3)).toBe(50);
+      const bundle = SHOP_ITEMS.basic_survival_bundle;
+      const listSum = bundleComponentsListPriceSumCents(
+        bundle.bundleComponents!,
+        SHOP_ITEMS,
+      );
+      expect(shopPackageSavingsPercent(bundle)).toBe(
+        Math.round((1 - bundle.price / listSum) * 100),
+      );
     });
   });
 });

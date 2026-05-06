@@ -34,6 +34,7 @@ import {
   SHOP_ITEMS,
   HIGHLIGHTS_ORDER,
   bundleComponentsListPriceSumCents,
+  shopPackageSavingsPercent,
   type ShopItem,
 } from "../../../../shared/shopItems";
 import { getDiscountedShopPriceCents } from "../../../../shared/shopCheckoutPrice";
@@ -126,6 +127,68 @@ function shopCardStrikethroughListCents(item: ShopItem): number | null {
   }
   const o = item.originalPrice;
   return o !== undefined && o > 0 ? o : null;
+}
+
+type ShopCheckoutDiscountOpts = {
+  playlightFirstPurchase?: boolean;
+  tradersGratitude?: boolean;
+  tradersSonGratitude?: boolean;
+};
+
+function getShopCheckoutDiscountOptions(
+  item: ShopItem | undefined,
+  gameState: {
+    story?: { seen?: { playlightFirstPurchaseDiscountActive?: boolean } };
+    hasMadeNonFreePurchase?: boolean;
+    tradersGratitudeState?: { accepted?: boolean };
+    tradersSonGratitudeState?: { accepted?: boolean };
+  },
+): ShopCheckoutDiscountOpts {
+  if (!item || item.price <= 0) return {};
+  return {
+    playlightFirstPurchase: !!(
+      item.price > 0 &&
+      gameState.story?.seen?.playlightFirstPurchaseDiscountActive === true &&
+      !gameState.hasMadeNonFreePurchase
+    ),
+    tradersGratitude: !!(
+      item.price > 0 && gameState.tradersGratitudeState?.accepted === true
+    ),
+    tradersSonGratitude: !!(
+      item.price > 0 && gameState.tradersSonGratitudeState?.accepted === true
+    ),
+  };
+}
+
+function getCheckoutPriceBreakdown(
+  item: ShopItem,
+  gameState: Parameters<typeof getShopCheckoutDiscountOptions>[1],
+): {
+  listCents: number | null;
+  betaDiscountCents: number;
+  additionalDiscountCents: number;
+  catalogCents: number;
+  finalCents: number;
+} {
+  const catalogCents = item.price;
+  const finalCents = getDiscountedShopPriceCents(
+    catalogCents,
+    getShopCheckoutDiscountOptions(item, gameState),
+  );
+  const listCents = shopCardStrikethroughListCents(item);
+  const betaDiscountCents =
+    listCents != null && listCents > catalogCents
+      ? listCents - catalogCents
+      : 0;
+  const additionalDiscountCents =
+    catalogCents > finalCents ? catalogCents - finalCents : 0;
+  return {
+    listCents,
+    betaDiscountCents,
+    additionalDiscountCents,
+    catalogCents,
+    finalCents,
+  };
 }
 
 // EU countries with Euro as main currency
@@ -264,10 +327,10 @@ function CheckoutForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-2">
       <PaymentElement />
 
-      <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
+      <div className="flex items-center justify-center gap-1 py-0.5 text-xs text-muted-foreground">
         <span>Powered by</span>
         <svg
           className="h-4"
@@ -282,7 +345,7 @@ function CheckoutForm({
         </svg>
       </div>
 
-      <div className="space-y-2 border-t pt-4 mt-4">
+      <div className="space-y-2 border-t pt-3 mt-2">
         <p className="text-[11px] text-muted-foreground">
           By purchasing, you consent to immediate delivery of digital content
           and waive your right of withdrawal. For more information, see our{" "}
@@ -949,6 +1012,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     return currency === "EUR" ? `${amount} €` : `$${amount}`;
   };
 
+  const checkoutPriceBreakdown =
+    clientSecret && selectedItem && SHOP_ITEMS[selectedItem]
+      ? getCheckoutPriceBreakdown(SHOP_ITEMS[selectedItem], gameState)
+      : null;
+
   const isPaymentMode = !!(clientSecret && selectedItem);
 
   const handleShopDialogOpenChange = (open: boolean) => {
@@ -1156,7 +1224,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
                           return true;
                         })
-                        .map((item) => (
+                        .map((item) => {
+                          const packageSavePct = shopPackageSavingsPercent(item);
+                          return (
                           <Card
                             key={item.id}
                             id={
@@ -1307,6 +1377,13 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   </TooltipWrapper>
                                 )}
                               </CardTitle>
+                              {packageSavePct != null && packageSavePct > 0 && (
+                                <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                                  <span className="inline-flex items-center rounded border border-red-500 bg-red-950/45 px-1.5 py-0.5 text-[0.75rem] font-semibold text-red-400">
+                                    Save {packageSavePct}%
+                                  </span>
+                                </div>
+                              )}
                               <CardDescription className="!m-0 text-bold flex flex-wrap items-center gap-1 pt-2">
                                 {(() => {
                                   const listCents =
@@ -1468,6 +1545,12 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   );
                                 })()}
                                 {(() => {
+                                  if (
+                                    packageSavePct != null &&
+                                    packageSavePct > 0
+                                  ) {
+                                    return null;
+                                  }
                                   const pct = shopListDiscountPercent(item);
                                   if (pct === null || pct <= 0) return null;
                                   const isBundle =
@@ -1551,7 +1634,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 ></div>
                               )}
                           </Card>
-                        ))}
+                          );
+                        })}
                     </div>
                   </ScrollAreaWithIndicator>
                 </TabsContent>
@@ -1726,11 +1810,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       {clientSecret && selectedItem && (
         <Dialog open={true} onOpenChange={handlePaymentDialogOpenChange}>
           <DialogContent
-            className="max-w-md max-h-[80vh] z-[80] [&>button]:hidden"
+            className="max-w-md max-h-[80vh] z-[80] gap-2 [&>button]:hidden"
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
-            <DialogHeader>
+            <DialogHeader className="space-y-1 pb-0">
               <DialogTitle>
                 Complete Purchase: {SHOP_ITEMS[selectedItem]?.name}
               </DialogTitle>
@@ -1738,42 +1822,55 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 Complete your payment for {SHOP_ITEMS[selectedItem]?.name}
               </DialogDescription>
             </DialogHeader>
-            <div className="max-h-[calc(85vh-120px)] overflow-y-auto px-6 pb-6 scrollbar-hide">
+            {checkoutPriceBreakdown && (
+              <div className="space-y-1.5 border-b border-border/70 pb-3 text-sm">
+                {checkoutPriceBreakdown.listCents != null &&
+                  checkoutPriceBreakdown.listCents > 0 && (
+                    <div className="flex justify-between gap-4 text-muted-foreground">
+                      <span>Original price</span>
+                      <span className="shrink-0 text-right line-through tabular-nums">
+                        {formatPrice(checkoutPriceBreakdown.listCents)}
+                      </span>
+                    </div>
+                  )}
+                {checkoutPriceBreakdown.betaDiscountCents > 0 && (
+                  <div className="flex justify-between gap-4 text-emerald-600 dark:text-emerald-500">
+                    <span>Beta discount</span>
+                    <span className="shrink-0 text-right tabular-nums">
+                      −{formatPrice(checkoutPriceBreakdown.betaDiscountCents)}
+                    </span>
+                  </div>
+                )}
+                {checkoutPriceBreakdown.additionalDiscountCents > 0 && (
+                  <div className="flex justify-between gap-4 text-emerald-600 dark:text-emerald-500">
+                    <span>Additional discount</span>
+                    <span className="shrink-0 text-right tabular-nums">
+                      −
+                      {formatPrice(
+                        checkoutPriceBreakdown.additionalDiscountCents,
+                      )}
+                    </span>
+                  </div>
+                )}
+                <div className="flex justify-between gap-4 border-t border-border/50 pt-2 font-semibold">
+                  <span>Total</span>
+                  <span className="shrink-0 tabular-nums">
+                    {formatPrice(checkoutPriceBreakdown.finalCents)}
+                  </span>
+                </div>
+              </div>
+            )}
+            <div className="max-h-[calc(85vh-120px)] overflow-y-auto pb-4 scrollbar-hide">
               {stripePromise ? (
                 <Elements stripe={stripePromise} options={{ clientSecret }}>
                   <CheckoutForm
-                    itemId={selectedItem}
+                    itemId={selectedItem!}
                     onSuccess={handlePurchaseSuccess}
                     currency={currency}
                     onCancel={handleCancelPayment}
-                    displayPriceCents={(() => {
-                      const item = SHOP_ITEMS[selectedItem];
-                      const tradersGratitudeActive =
-                        gameState.tradersGratitudeState?.accepted === true;
-                      const tradersSonGratitudeActive =
-                        gameState.tradersSonGratitudeState?.accepted === true;
-                      const playlightActive =
-                        gameState.story?.seen
-                          ?.playlightFirstPurchaseDiscountActive === true &&
-                        !gameState.hasMadeNonFreePurchase;
-                      return getDiscountedShopPriceCents(item?.price ?? 0, {
-                        playlightFirstPurchase: !!(
-                          item &&
-                          item.price > 0 &&
-                          playlightActive
-                        ),
-                        tradersGratitude: !!(
-                          item &&
-                          item.price > 0 &&
-                          tradersGratitudeActive
-                        ),
-                        tradersSonGratitude: !!(
-                          item &&
-                          item.price > 0 &&
-                          tradersSonGratitudeActive
-                        ),
-                      });
-                    })()}
+                    displayPriceCents={
+                      checkoutPriceBreakdown?.finalCents ?? 0
+                    }
                   />
                 </Elements>
               ) : (

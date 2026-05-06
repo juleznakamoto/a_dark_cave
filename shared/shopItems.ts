@@ -327,3 +327,60 @@ export function bundleComponentsListPriceSumCents(
     return total + (c?.originalPrice ?? c?.price ?? 0);
   }, 0);
 }
+
+const SMALLEST_GOLD_PACK_ID = "gold_250" as const;
+
+/**
+ * What this much gold would cost at list price if bought only via the smallest pack (`gold_250`).
+ */
+export function goldAmountBaselineListCents(
+  goldAmount: number,
+  catalog: Record<string, ShopItem> = SHOP_ITEMS,
+): number | null {
+  const small = catalog[SMALLEST_GOLD_PACK_ID];
+  const unitGold = small?.rewards.resources?.gold;
+  if (!small || unitGold == null || unitGold <= 0) return null;
+  const listPerPack = small.originalPrice ?? small.price;
+  if (listPerPack <= 0) return null;
+  return Math.round((goldAmount / unitGold) * listPerPack);
+}
+
+/** List-price total for three single Great Feasts (same activations as `great_feast_3`). */
+export function greatFeast3BaselineListCents(
+  catalog: Record<string, ShopItem> = SHOP_ITEMS,
+): number {
+  const one = catalog.great_feast_1;
+  const list = one.originalPrice ?? one.price;
+  return Math.round(3 * list);
+}
+
+/**
+ * "Save X %" for shop rows: catalog `price` vs buying the same value at list via smallest gold pack,
+ * 3× single feast, or summed bundle components (list prices).
+ */
+export function shopPackageSavingsPercent(
+  item: ShopItem,
+  catalog: Record<string, ShopItem> = SHOP_ITEMS,
+): number | null {
+  if (item.price <= 0) return null;
+
+  let baseline: number | null = null;
+
+  const gold = item.rewards.resources?.gold;
+  if (item.category === "resource" && gold != null && gold > 250) {
+    baseline = goldAmountBaselineListCents(gold, catalog);
+  } else if (item.id === "great_feast_3") {
+    baseline = greatFeast3BaselineListCents(catalog);
+  } else if (item.category === "bundle" && item.bundleComponents?.length) {
+    const sum = bundleComponentsListPriceSumCents(item.bundleComponents, catalog);
+    baseline = sum > 0 ? sum : null;
+  } else {
+    return null;
+  }
+
+  if (baseline == null || baseline <= 0 || item.price >= baseline) return null;
+  return Math.max(
+    0,
+    Math.min(100, Math.round((1 - item.price / baseline) * 100)),
+  );
+}
