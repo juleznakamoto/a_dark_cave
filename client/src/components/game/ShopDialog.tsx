@@ -1182,7 +1182,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         Bundles
                       </Button>
                     </div>
-                    <div className="grid grid-cols-2 md:grid-cols-3 md:gap-4 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-3 md:gap-4 gap-3">
                       {(selectedFilter === null
                         ? HIGHLIGHTS_ORDER.map((id) => SHOP_ITEMS[id]).filter(Boolean)
                         : Object.values(SHOP_ITEMS)
@@ -1545,12 +1545,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     );
                                   })()}
                                   {(() => {
-                                    if (
-                                      packageSavePct != null &&
-                                      packageSavePct > 0
-                                    ) {
-                                      return null;
-                                    }
                                     const pct = shopListDiscountPercent(item);
                                     if (pct === null || pct <= 0) return null;
                                     const isBundle =
