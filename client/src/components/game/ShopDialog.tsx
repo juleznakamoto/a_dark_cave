@@ -33,8 +33,7 @@ import {
   GREAT_FEAST_DURATION_MS,
   SHOP_ITEMS,
   HIGHLIGHTS_ORDER,
-  BUNDLES_TAB_ORDER,
-  bundleComponentsCatalogPriceSumCents,
+  bundleComponentsListPriceSumCents,
   shopPackageSavingsPercent,
   type ShopItem,
 } from "../../../../shared/shopItems";
@@ -104,44 +103,30 @@ function purchaseIdToItemId(purchaseId: string): string | null {
 }
 
 /**
- * Rounded % saved vs list price for the shop card (green badge).
- * Bundles: bundle `price` vs sum of each component's catalog `price` (Beta tier if bought separately — not MSRP sum).
+ * Rounded % saved vs list price for the shop card badge.
+ * Bundles: compare bundle `price` to the sum of each component's list price (so catalog/Beta savings on parts are included).
  * Other paid items: compare `price` to `originalPrice`.
  */
 function shopListDiscountPercent(item: ShopItem): number | null {
   if (item.price <= 0) return null;
   if (item.bundleComponents && item.bundleComponents.length > 0) {
-    const catalogSum = bundleComponentsCatalogPriceSumCents(
-      item.bundleComponents,
-    );
-    if (catalogSum <= 0 || item.price >= catalogSum) return null;
-    return Math.round(((catalogSum - item.price) / catalogSum) * 100);
+    const listSum = bundleComponentsListPriceSumCents(item.bundleComponents);
+    if (listSum <= 0 || item.price >= listSum) return null;
+    return Math.round(((listSum - item.price) / listSum) * 100);
   }
   const list = item.originalPrice;
   if (list === undefined || list <= 0 || item.price >= list) return null;
   return Math.round(((list - item.price) / list) * 100);
 }
 
-/** Strikethrough on the card: bundles = sum of components' catalog `price` (Beta stack); others = `originalPrice`. */
+/** Strikethrough list price on the card: bundles use summed component list prices; others use `originalPrice`. */
 function shopCardStrikethroughListCents(item: ShopItem): number | null {
   if (item.bundleComponents && item.bundleComponents.length > 0) {
-    const sum = bundleComponentsCatalogPriceSumCents(item.bundleComponents);
+    const sum = bundleComponentsListPriceSumCents(item.bundleComponents);
     return sum > 0 ? sum : null;
   }
   const o = item.originalPrice;
   return o !== undefined && o > 0 ? o : null;
-}
-
-/** Bundles tab: fixed order first, then any other bundle IDs (e.g. tests) sorted by id. */
-function shopBundlesInTabOrder(): ShopItem[] {
-  const tabOrderSet = new Set<string>(BUNDLES_TAB_ORDER as readonly string[]);
-  const primary = BUNDLES_TAB_ORDER.map((id) => SHOP_ITEMS[id]).filter(
-    (item): item is ShopItem => item?.category === "bundle",
-  );
-  const extras = Object.values(SHOP_ITEMS)
-    .filter((i) => i.category === "bundle" && !tabOrderSet.has(i.id))
-    .sort((a, b) => a.id.localeCompare(b.id));
-  return [...primary, ...extras];
 }
 
 type ShopCheckoutDiscountOpts = {
@@ -1200,9 +1185,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     <div className="grid grid-cols-1 md:grid-cols-3 md:gap-4 gap-3">
                       {(selectedFilter === null
                         ? HIGHLIGHTS_ORDER.map((id) => SHOP_ITEMS[id]).filter(Boolean)
-                        : selectedFilter === "bundles"
-                          ? shopBundlesInTabOrder()
-                          : Object.values(SHOP_ITEMS)
+                        : Object.values(SHOP_ITEMS)
                       )
                         .filter((item) => {
                           // Hide full_game item when BTP=0
