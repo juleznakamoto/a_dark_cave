@@ -12,7 +12,7 @@ export interface ShopItem {
   name: string;
   description: string;
   price: number; // in cents
-  /** List price for strikethrough (non-bundles). Bundles omit this; use `bundleComponentsListPriceSumCents`. */
+  /** Strikethrough anchor for non-bundles (`originalPrice`). Bundles use summed component catalog `price` in the client. */
   originalPrice?: number; // in cents
   rewards: ShopItemRewards;
   canPurchaseMultipleTimes: boolean;
@@ -365,8 +365,8 @@ export function greatFeast3BaselineCatalogCents(
 }
 
 /**
- * "Save X %" on shop cards: extra savings vs buying the same value at catalog (Beta) prices
- * (smallest-gold rate, 3× single feast, or summed component `price`). MSRP / beta-vs-list is excluded.
+ * "Save X %" / value callouts — gold & feast packs only. Bundles use the green
+ * badge (catalog component sum vs bundle price) to avoid duplicating the same %.
  */
 export function shopPackageSavingsPercent(
   item: ShopItem,
@@ -381,12 +381,6 @@ export function shopPackageSavingsPercent(
     baseline = goldAmountBaselineCatalogCents(gold, catalog);
   } else if (item.id === "great_feast_3") {
     baseline = greatFeast3BaselineCatalogCents(catalog);
-  } else if (item.category === "bundle" && item.bundleComponents?.length) {
-    const sum = bundleComponentsCatalogPriceSumCents(
-      item.bundleComponents,
-      catalog,
-    );
-    baseline = sum > 0 ? sum : null;
   } else {
     return null;
   }

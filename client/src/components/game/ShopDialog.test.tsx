@@ -33,7 +33,7 @@ async function clickShopFilter(
 }
 import { ShopDialog } from './ShopDialog';
 import { useGameStore } from '@/game/state';
-import { SHOP_ITEMS, bundleComponentsListPriceSumCents } from '@shared/shopItems';
+import { SHOP_ITEMS, bundleComponentsCatalogPriceSumCents, bundleComponentsListPriceSumCents } from '@shared/shopItems';
 
 // Use vi.hoisted so mock is available when vi.mock factory runs
 const { mockSupabaseClient, mockGetCurrentUser, mockInsert } = vi.hoisted(() => {
@@ -883,7 +883,15 @@ describe('ShopDialog', () => {
         expect(screen.getByText(/^6\.49 €$/)).toBeInTheDocument();
       });
 
-      const originalPrices = screen.getAllByText(/9\.98\s*€/);
+      const strikeEuro = (
+        bundleComponentsCatalogPriceSumCents(
+          SHOP_ITEMS.basic_survival_bundle.bundleComponents!,
+          SHOP_ITEMS,
+        ) / 100
+      ).toFixed(2);
+      const originalPrices = screen.getAllByText(
+        new RegExp(`${strikeEuro.replace('.', '\\.')}\\s*€`),
+      );
       expect(originalPrices.some((el) => el.classList.contains('line-through'))).toBe(true);
     }, 20_000);
 
@@ -1220,16 +1228,14 @@ describe('ShopDialog', () => {
 
   it('should have bundle with reasonable discount percentage', () => {
     const bundle = SHOP_ITEMS.basic_survival_bundle;
-    const listSum = bundleComponentsListPriceSumCents(
+    const catalogSum = bundleComponentsCatalogPriceSumCents(
       bundle.bundleComponents!,
       SHOP_ITEMS,
     );
-    const discountPercent = ((listSum - bundle.price) / listSum) * 100;
+    const discountPercent = ((catalogSum - bundle.price) / catalogSum) * 100;
 
-    // Should have at least 20% discount to make bundle attractive
-    expect(discountPercent).toBeGreaterThanOrEqual(20);
-    // But not more than 60% (too generous)
-    expect(discountPercent).toBeLessThanOrEqual(60);
+    expect(discountPercent).toBeGreaterThanOrEqual(10);
+    expect(discountPercent).toBeLessThanOrEqual(50);
   });
 
   it('should display advanced bundle in shop', async () => {
@@ -1251,9 +1257,17 @@ describe('ShopDialog', () => {
       expect(screen.getByText("Pale King's Bundle")).toBeInTheDocument();
     });
 
-    // Pale King's Bundle: 10.49 € (list = sum of component list prices)
+    // Pale King's Bundle: 10.49 €; strikethrough = Beta total if pieces bought separately
     expect(screen.getByText(/^10\.49 €$/)).toBeInTheDocument();
-    const originalPrice = screen.getByText(/17\.48\s*€/);
+    const catalogSumEuro = (
+      bundleComponentsCatalogPriceSumCents(
+        SHOP_ITEMS.advanced_bundle.bundleComponents!,
+        SHOP_ITEMS,
+      ) / 100
+    ).toFixed(2);
+    const originalPrice = screen.getByText(
+      new RegExp(`${catalogSumEuro.replace('.', '\\.')}\\s*€`),
+    );
     expect(originalPrice).toHaveClass('line-through');
   });
 

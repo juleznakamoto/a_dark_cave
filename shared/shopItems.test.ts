@@ -434,14 +434,7 @@ describe('Shop Items Configuration', () => {
     it('returns savings vs catalog baselines only (no MSRP / beta-off-list)', () => {
       expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_1000)).toBe(24);
       expect(shopPackageSavingsPercent(SHOP_ITEMS.great_feast_3)).toBe(33);
-      const bundle = SHOP_ITEMS.basic_survival_bundle;
-      const catalogSum = bundleComponentsCatalogPriceSumCents(
-        bundle.bundleComponents!,
-        SHOP_ITEMS,
-      );
-      expect(shopPackageSavingsPercent(bundle)).toBe(
-        Math.round((1 - bundle.price / catalogSum) * 100),
-      );
+      expect(shopPackageSavingsPercent(SHOP_ITEMS.basic_survival_bundle)).toBeNull();
     });
   });
 });

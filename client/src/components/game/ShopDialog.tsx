@@ -33,7 +33,7 @@ import {
   GREAT_FEAST_DURATION_MS,
   SHOP_ITEMS,
   HIGHLIGHTS_ORDER,
-  bundleComponentsListPriceSumCents,
+  bundleComponentsCatalogPriceSumCents,
   shopPackageSavingsPercent,
   type ShopItem,
 } from "../../../../shared/shopItems";
@@ -103,26 +103,28 @@ function purchaseIdToItemId(purchaseId: string): string | null {
 }
 
 /**
- * Rounded % saved vs list price for the shop card badge.
- * Bundles: compare bundle `price` to the sum of each component's list price (so catalog/Beta savings on parts are included).
- * Other paid items: compare `price` to `originalPrice`.
+ * Rounded % saved for the shop card (green badge).
+ * Bundles: bundle `price` vs sum of components' catalog `price` (Beta — if bought separately).
+ * Other paid items: `price` vs `originalPrice`.
  */
 function shopListDiscountPercent(item: ShopItem): number | null {
   if (item.price <= 0) return null;
   if (item.bundleComponents && item.bundleComponents.length > 0) {
-    const listSum = bundleComponentsListPriceSumCents(item.bundleComponents);
-    if (listSum <= 0 || item.price >= listSum) return null;
-    return Math.round(((listSum - item.price) / listSum) * 100);
+    const catalogSum = bundleComponentsCatalogPriceSumCents(
+      item.bundleComponents,
+    );
+    if (catalogSum <= 0 || item.price >= catalogSum) return null;
+    return Math.round(((catalogSum - item.price) / catalogSum) * 100);
   }
   const list = item.originalPrice;
   if (list === undefined || list <= 0 || item.price >= list) return null;
   return Math.round(((list - item.price) / list) * 100);
 }
 
-/** Strikethrough list price on the card: bundles use summed component list prices; others use `originalPrice`. */
+/** Strikethrough: bundles = sum of components' catalog `price` (Beta); others = `originalPrice`. */
 function shopCardStrikethroughListCents(item: ShopItem): number | null {
   if (item.bundleComponents && item.bundleComponents.length > 0) {
-    const sum = bundleComponentsListPriceSumCents(item.bundleComponents);
+    const sum = bundleComponentsCatalogPriceSumCents(item.bundleComponents);
     return sum > 0 ? sum : null;
   }
   const o = item.originalPrice;
