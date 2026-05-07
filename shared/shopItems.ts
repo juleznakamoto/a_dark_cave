@@ -12,7 +12,7 @@ export interface ShopItem {
   name: string;
   description: string;
   price: number; // in cents
-  /** List price for strikethrough (non-bundles). Bundles omit this; use `bundleComponentsListPriceSumCents`. */
+  /** List/strikethrough anchor for non-bundles (`originalPrice`). Bundles use summed component catalog `price` in the client. */
   originalPrice?: number; // in cents
   rewards: ShopItemRewards;
   canPurchaseMultipleTimes: boolean;
@@ -317,6 +317,14 @@ export const HIGHLIGHTS_ORDER = [
   "advanced_bundle", // Pale King's Bundle
 ] as const;
 
+/** Explicit order for the Bundles filter tab (not insertion order of `SHOP_ITEMS`). */
+export const BUNDLES_TAB_ORDER = [
+  "basic_survival_bundle",
+  "artifact_bundle",
+  "advanced_bundle",
+  "ashen_throne_bundle",
+] as const;
+
 /** Sum of each component's list price (`originalPrice`, else `price`). */
 export function bundleComponentsListPriceSumCents(
   componentIds: string[],
@@ -365,8 +373,8 @@ export function greatFeast3BaselineCatalogCents(
 }
 
 /**
- * "Save X %" on shop cards: extra savings vs buying the same value at catalog (Beta) prices
- * (smallest-gold rate, 3× single feast, or summed component `price`). MSRP / beta-vs-list is excluded.
+ * "Save X %" / value callouts for non-bundle packs only. Bundles use the green
+ * beta badge (catalog component sum vs bundle price) so this stays gold / feast only.
  */
 export function shopPackageSavingsPercent(
   item: ShopItem,
@@ -381,12 +389,6 @@ export function shopPackageSavingsPercent(
     baseline = goldAmountBaselineCatalogCents(gold, catalog);
   } else if (item.id === "great_feast_3") {
     baseline = greatFeast3BaselineCatalogCents(catalog);
-  } else if (item.category === "bundle" && item.bundleComponents?.length) {
-    const sum = bundleComponentsCatalogPriceSumCents(
-      item.bundleComponents,
-      catalog,
-    );
-    baseline = sum > 0 ? sum : null;
   } else {
     return null;
   }
