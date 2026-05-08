@@ -1242,32 +1242,29 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 : undefined
                             }
                             className={`border-neutral-500 flex flex-col relative ${item.category === "bundle"
-                                ? "border border-amber-600"
-                                : ""
+                              ? "border border-amber-600"
+                              : ""
                               }${item.id === "cruel_mode" && shopCruelModeHighlight
                                 ? " border border-red-600"
                                 : ""
                               }${item.id === "gold_100_free"
                                 ? " border border-sky-600"
                                 : ""
-                              }`}
+                              }${item.id === "gold_20000" ? " overflow-visible" : ""}`}
                           >
+                            {item.id === "gold_20000" && (
+                              <div
+                                className="pointer-events-none absolute left-0 top-0 z-30 flex h-[3.25rem] w-[3.25rem] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-red-500 bg-red-950/60 text-center shadow-sm"
+                              >
+                                <span className="px-1 text-[0.5625rem] font-bold leading-snug text-red-400 sm:text-[0.625rem]">
+                                  3x Value
+                                </span>
+                              </div>
+                            )}
                             <CardHeader className="leading-snug p-4 pb-2 relative text-lg ">
-                              {item.id === "gold_20000" && (
-                                <div
-                                  className="pointer-events-none absolute right-3 top-3 z-20 flex h-[3.25rem] w-[3.25rem] items-center justify-center rounded-full border-2 border-red-500 bg-red-950/60 text-center shadow-sm"
-                                >
-                                  <span className="px-1 text-[0.5625rem] font-bold leading-snug text-red-400 sm:text-[0.625rem]">
-                                    3x Value
-                                  </span>
-                                </div>
-                              )}
                               {item.symbol && (
                                 <span
-                                  className={`font-noto-symbols-2 leading-[0.9] text-right absolute top-4 ${item.id === "gold_20000"
-                                    ? "right-[5.75rem]"
-                                    : "right-4"
-                                    }`}
+                                  className="font-noto-symbols-2 leading-[0.9] text-right absolute top-4 right-4"
                                   style={{
                                     color: tailwindToHex(
                                       (item.symbolColor || "").replace(
