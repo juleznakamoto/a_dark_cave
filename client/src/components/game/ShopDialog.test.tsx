@@ -328,7 +328,7 @@ describe('ShopDialog', () => {
       await clickShopFilter(user, 'Gold');
 
       await waitFor(() => {
-        expect(screen.getByText('250 Gold')).toBeInTheDocument();
+        expect(screen.getByText('1\'000 Gold')).toBeInTheDocument();
       });
 
       const purchaseButtons = screen.getAllByRole('button', { name: /purchase/i });
@@ -354,7 +354,7 @@ describe('ShopDialog', () => {
       await clickShopFilter(user, 'Gold');
 
       await waitFor(() => {
-        expect(screen.getByText('250 Gold')).toBeInTheDocument();
+        expect(screen.getByText('1\'000 Gold')).toBeInTheDocument();
       });
 
       const purchaseButton = screen.getAllByRole('button', { name: /purchase/i })[0];
@@ -547,7 +547,7 @@ describe('ShopDialog', () => {
       await user.click(activateButton);
 
       await waitFor(() => {
-        expect(updateResource).toHaveBeenCalledWith('gold', 250);
+        expect(updateResource).toHaveBeenCalledWith('gold', 1000);
       });
     });
 
@@ -1648,8 +1648,7 @@ describe('ShopDialog', () => {
     await user.click(purchasesTab);
 
     await waitFor(() => {
-      expect(screen.getByText('250 Gold')).toBeInTheDocument();
-      expect(screen.getByText(SHOP_ITEMS.gold_1000.name)).toBeInTheDocument();
+      expect(screen.getAllByText(SHOP_ITEMS.gold_1000.name).length).toBe(2);
     });
 
     // Activate both components

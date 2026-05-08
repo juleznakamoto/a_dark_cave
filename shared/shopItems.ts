@@ -74,28 +74,13 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-red-500",
   },
 
+  /** Legacy `item_id` for stable purchase rows / Stripe metadata; mirrors `gold_1000`. Omitted from the Gold tab in the client. */
   gold_250: {
     id: "gold_250",
-    name: "250 Gold",
-    description: "A decent amount of gold",
-    originalPrice: 149,
-    price: 99, // 0.99 €
-    rewards: {
-      resources: { gold: 250 },
-    },
-    canPurchaseMultipleTimes: true,
-    category: "resource",
-    activationMessage: "250 Gold have been added to your inventory.",
-    symbol: "◉",
-    symbolColor: "text-yellow-600",
-  },
-
-  gold_1000: {
-    id: "gold_1000",
     name: "1'000 Gold",
     description: "A substantial treasure",
-    originalPrice: 399,
-    price: 299, // 2.99 €
+    originalPrice: 249,
+    price: 149, // 1.49 €
     rewards: {
       resources: { gold: 1000 },
     },
@@ -103,6 +88,38 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     category: "resource",
     activationMessage: "1000 Gold have been added to your inventory.",
     symbol: "◉◉",
+    symbolColor: "text-yellow-600",
+  },
+
+  gold_1000: {
+    id: "gold_1000",
+    name: "1'000 Gold",
+    description: "A substantial treasure",
+    originalPrice: 249,
+    price: 149, // 1.49 €
+    rewards: {
+      resources: { gold: 1000 },
+    },
+    canPurchaseMultipleTimes: true,
+    category: "resource",
+    activationMessage: "1000 Gold have been added to your inventory.",
+    symbol: "◉◉",
+    symbolColor: "text-yellow-600",
+  },
+
+  gold_2500: {
+    id: "gold_2500",
+    name: "2'500 Gold",
+    description: "A weighty coffer of coin",
+    originalPrice: 499,
+    price: 349, // 3.49 €
+    rewards: {
+      resources: { gold: 2500 },
+    },
+    canPurchaseMultipleTimes: true,
+    category: "resource",
+    activationMessage: "2500 Gold have been added to your inventory.",
+    symbol: "◉◉◉",
     symbolColor: "text-yellow-600",
   },
 
@@ -118,7 +135,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: "resource",
     activationMessage: "5000 Gold have been added to your inventory.",
-    symbol: "◉◉◉",
+    symbol: "◉◉◉◉",
     symbolColor: "text-yellow-600",
   },
 
@@ -134,7 +151,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: "resource",
     activationMessage: "20'000 Gold have been added to your inventory.",
-    symbol: "◉◉◉◉",
+    symbol: "◉◉◉◉◉",
     symbolColor: "text-yellow-600",
   },
 
@@ -339,7 +356,8 @@ export function bundleComponentsCatalogPriceSumCents(
   }, 0);
 }
 
-const SMALLEST_GOLD_PACK_ID = "gold_250" as const;
+/** Smallest paid gold pack: per-unit baseline for "more value" % and `goldAmountBaselineCatalogCents`. */
+export const SMALLEST_GOLD_PACK_ID = "gold_1000" as const;
 
 /**
  * What this much gold would cost at the current catalog (Beta) per-unit rate using the smallest pack.
@@ -377,7 +395,14 @@ export function shopPackageSavingsPercent(
   let baseline: number | null = null;
 
   const gold = item.rewards.resources?.gold;
-  if (item.category === "resource" && gold != null && gold > 250) {
+  const smallestPackGold =
+    catalog[SMALLEST_GOLD_PACK_ID]?.rewards.resources?.gold ?? 0;
+  if (
+    item.category === "resource" &&
+    gold != null &&
+    smallestPackGold > 0 &&
+    gold > smallestPackGold
+  ) {
     baseline = goldAmountBaselineCatalogCents(gold, catalog);
   } else if (item.id === "great_feast_3") {
     baseline = greatFeast3BaselineCatalogCents(catalog);

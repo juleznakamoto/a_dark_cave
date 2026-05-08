@@ -33,6 +33,7 @@ import {
   GREAT_FEAST_DURATION_MS,
   SHOP_ITEMS,
   HIGHLIGHTS_ORDER,
+  SMALLEST_GOLD_PACK_ID,
   bundleComponentsCatalogPriceSumCents,
   shopPackageSavingsPercent,
   type ShopItem,
@@ -1126,7 +1127,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     {" "}
                     <div className="pb-3 text-muted-foreground text-sm">
                       <p className="text-md font-medium">
-                        All items are currently ~25 % discounted
+                        All items are currently 25 % and more discounted
                         during Beta phase. Bundles offer additional discounts.
                         Purchases can be reused in every playthrough and also after Beta phase ends.
                       </p>
@@ -1197,9 +1198,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
                           // Apply filter based on selectedFilter
                           if (selectedFilter === "gold") {
-                            // Gold items are resources with gold rewards (free gift is Highlights-only)
+                            // Gold items are resources with gold rewards (free gift is Highlights-only).
+                            // Omit legacy `gold_250` — it mirrors `gold_1000` for old purchase rows only.
                             return (
                               item.id !== "gold_100_free" &&
+                              item.id !== "gold_250" &&
                               item.category === "resource" &&
                               item.rewards.resources?.gold !== undefined
                             );
@@ -1385,7 +1388,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                       {item.id === "great_feast_3" ||
                                         (item.category === "resource" &&
                                           (item.rewards.resources?.gold ?? 0) >
-                                          250)
+                                          (SHOP_ITEMS[SMALLEST_GOLD_PACK_ID]
+                                            ?.rewards.resources?.gold ?? 0))
                                         ? `${packageSavePct}% more value`
                                         : `Save ${packageSavePct}%`}
                                     </span>

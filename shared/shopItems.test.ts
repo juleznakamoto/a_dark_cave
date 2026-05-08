@@ -44,6 +44,7 @@ describe('Shop Items Configuration', () => {
     it('should allow multiple purchases of gold items', () => {
       expect(SHOP_ITEMS.gold_250.canPurchaseMultipleTimes).toBe(true);
       expect(SHOP_ITEMS.gold_1000.canPurchaseMultipleTimes).toBe(true);
+      expect(SHOP_ITEMS.gold_2500.canPurchaseMultipleTimes).toBe(true);
       expect(SHOP_ITEMS.gold_5000.canPurchaseMultipleTimes).toBe(true);
       expect(SHOP_ITEMS.gold_20000.canPurchaseMultipleTimes).toBe(true);
     });
@@ -64,6 +65,7 @@ describe('Shop Items Configuration', () => {
         SHOP_ITEMS.gold_100_free,
         SHOP_ITEMS.gold_250,
         SHOP_ITEMS.gold_1000,
+        SHOP_ITEMS.gold_2500,
         SHOP_ITEMS.gold_5000,
         SHOP_ITEMS.gold_20000,
       ];
@@ -418,8 +420,8 @@ describe('Shop Items Configuration', () => {
 
   describe('shopPackageSavingsPercent', () => {
     it('computes gold baseline from smallest pack catalog (Beta) price', () => {
-      expect(goldAmountBaselineCatalogCents(1000, SHOP_ITEMS)).toBe(396);
-      expect(goldAmountBaselineCatalogCents(250, SHOP_ITEMS)).toBe(99);
+      expect(goldAmountBaselineCatalogCents(1000, SHOP_ITEMS)).toBe(149);
+      expect(goldAmountBaselineCatalogCents(250, SHOP_ITEMS)).toBe(37);
     });
 
     it('uses 3x single Great Feast catalog price for the 3-pack', () => {
@@ -432,7 +434,8 @@ describe('Shop Items Configuration', () => {
     });
 
     it('returns savings vs catalog baselines only (no MSRP / beta-off-list)', () => {
-      expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_1000)).toBe(24);
+      expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_1000)).toBeNull();
+      expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_2500)).toBe(6);
       expect(shopPackageSavingsPercent(SHOP_ITEMS.great_feast_3)).toBe(33);
       const bundle = SHOP_ITEMS.basic_survival_bundle;
       const catalogSum = bundleComponentsCatalogPriceSumCents(
