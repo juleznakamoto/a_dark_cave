@@ -12,7 +12,7 @@ export interface ShopItem {
   name: string;
   description: string;
   price: number; // in cents
-  /** MSRP anchor for strikethrough; bundles equal summed component MSRP (`originalPrice` fallback `price` per piece). */
+  /** List / MSRP (strikethrough). Bundles: product list price; may differ from summed component MSRP. */
   originalPrice?: number; // in cents
   rewards: ShopItemRewards;
   canPurchaseMultipleTimes: boolean;
@@ -245,8 +245,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "basic_survival_bundle",
     name: "Fading Wanderer Bundle",
     description: "Basic Bundle with 5'000 Gold and 1 Great Feast",
-    originalPrice: 998, // MSRP gold_5000 + great_feast_1
-    price: 649, // 6.49 €
+    originalPrice: 849, // 8.49 € list
+    price: 649, // Beta / sale
     rewards: {
       resources: { gold: 5000 },
       feastActivations: 1,
@@ -264,8 +264,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "artifact_bundle",
     name: "Dark Artifacts Bundle",
     description: "Uncover dark forgotten truths with the Skull Lantern, Tarnished Compass, and Crow Harness",
-    originalPrice: 1197, // MSRP 3 artifact items
-    price: 749, // 7.49 €
+    originalPrice: 999, // 9.99 € list
+    price: 749, // Beta / sale
     rewards: {
       tools: ["skull_lantern", "crow_harness"],
       relics: ["tarnished_compass"],
@@ -282,8 +282,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "advanced_bundle",
     name: "Pale King's Bundle",
     description: "Powerful Bundle with 20'000 Gold and 3 Great Feasts",
-    originalPrice: 1748, // MSRP gold_20000 + great_feast_3
-    price: 1049, // 10.49 €
+    originalPrice: 1399, // 13.99 € list
+    price: 1049, // Beta / sale
     rewards: {
       resources: { gold: 20000 },
       feastActivations: 3,
@@ -302,8 +302,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Ashen Throne Bundle",
     description:
       "Ultimate Bundle with 20'000 Gold, 3 Great Feasts, Skull Lantern, Tarnished Compass, and Crow Harness",
-    originalPrice: 2945, // MSRP all five components
-    price: 1649, // $16.49
+    originalPrice: 2199, // 21.99 € list
+    price: 1649, // Beta / sale
     rewards: {
       resources: { gold: 20000 },
       feastActivations: 3,

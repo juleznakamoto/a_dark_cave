@@ -884,10 +884,7 @@ describe('ShopDialog', () => {
       });
 
       const strikeEuro = (
-        bundleComponentsListPriceSumCents(
-          SHOP_ITEMS.basic_survival_bundle.bundleComponents!,
-          SHOP_ITEMS,
-        ) / 100
+        SHOP_ITEMS.basic_survival_bundle.originalPrice! / 100
       ).toFixed(2);
       const originalPrices = screen.getAllByText(
         new RegExp(`${strikeEuro.replace('.', '\\.')}\\s*€`),
@@ -1226,13 +1223,10 @@ describe('ShopDialog', () => {
     });
   });
 
-  it('should have bundle with reasonable discount percentage', () => {
+  it('should have bundle with reasonable discount percentage vs list price', () => {
     const bundle = SHOP_ITEMS.basic_survival_bundle;
-    const catalogSum = bundleComponentsCatalogPriceSumCents(
-      bundle.bundleComponents!,
-      SHOP_ITEMS,
-    );
-    const discountPercent = ((catalogSum - bundle.price) / catalogSum) * 100;
+    const list = bundle.originalPrice!;
+    const discountPercent = ((list - bundle.price) / list) * 100;
 
     expect(discountPercent).toBeGreaterThanOrEqual(10);
     expect(discountPercent).toBeLessThanOrEqual(50);
@@ -1257,13 +1251,10 @@ describe('ShopDialog', () => {
       expect(screen.getByText("Pale King's Bundle")).toBeInTheDocument();
     });
 
-    // Pale King's Bundle: 10.49 € sale; strikethrough = summed component MSRP
+    // Pale King's Bundle: Beta sale vs explicit list MSRP on the bundle
     expect(screen.getByText(/^10\.49 €$/)).toBeInTheDocument();
     const listSumEuro = (
-      bundleComponentsListPriceSumCents(
-        SHOP_ITEMS.advanced_bundle.bundleComponents!,
-        SHOP_ITEMS,
-      ) / 100
+      SHOP_ITEMS.advanced_bundle.originalPrice! / 100
     ).toFixed(2);
     const originalPrice = screen.getByText(
       new RegExp(`${listSumEuro.replace('.', '\\.')}\\s*€`),

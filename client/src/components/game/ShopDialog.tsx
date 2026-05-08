@@ -103,13 +103,16 @@ function purchaseIdToItemId(purchaseId: string): string | null {
 
 /**
  * Rounded % saved for the shop card (green badge).
- * Bundles: bundle `price` vs sum of components’ MSRP (`originalPrice`, else piece `price`).
+ * Bundles: `price` vs bundle `originalPrice` (explicit list price), sum of pieces only if list missing.
  * Other paid items: `price` vs `originalPrice`.
  */
 function shopListDiscountPercent(item: ShopItem): number | null {
   if (item.price <= 0) return null;
   if (item.bundleComponents && item.bundleComponents.length > 0) {
-    const listSum = bundleComponentsListPriceSumCents(item.bundleComponents);
+    const listSum =
+      item.originalPrice != null && item.originalPrice > 0
+        ? item.originalPrice
+        : bundleComponentsListPriceSumCents(item.bundleComponents);
     if (listSum <= 0 || item.price >= listSum) return null;
     return Math.round(((listSum - item.price) / listSum) * 100);
   }
@@ -122,9 +125,12 @@ function shopListDiscountPercent(item: ShopItem): number | null {
 const SHOP_BETA_DISCOUNT_TAG_CLASS =
   "ml-1 px-1 py-[1px] leading-tight text-xs text-green-500 font-medium border border-green-500 rounded bg-green-800/40";
 
-/** Strikethrough MSRP; bundles = sum of each component MSRP (`originalPrice` fallback `price`). */
+/** Strikethrough list price; bundles prefer explicit `originalPrice`, else summed component MSRP. */
 function shopCardStrikethroughListCents(item: ShopItem): number | null {
   if (item.bundleComponents && item.bundleComponents.length > 0) {
+    if (item.originalPrice != null && item.originalPrice > 0) {
+      return item.originalPrice;
+    }
     const sum = bundleComponentsListPriceSumCents(item.bundleComponents);
     return sum > 0 ? sum : null;
   }

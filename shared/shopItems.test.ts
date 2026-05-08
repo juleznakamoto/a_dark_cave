@@ -31,17 +31,11 @@ describe('Shop Items Configuration', () => {
       });
     });
 
-    it('sets bundle originalPrice to summed component MSRP', () => {
-      Object.values(SHOP_ITEMS)
-        .filter((item) => item.category === 'bundle')
-        .forEach((bundle) => {
-          const sum = bundleComponentsListPriceSumCents(
-            bundle.bundleComponents!,
-            SHOP_ITEMS,
-          );
-          expect(bundle.originalPrice).toBe(sum);
-          expect(bundle.originalPrice).toBeGreaterThan(bundle.price);
-        });
+    it('sets bundle list (originalPrice) to product MSRP', () => {
+      expect(SHOP_ITEMS.basic_survival_bundle.originalPrice).toBe(849);
+      expect(SHOP_ITEMS.artifact_bundle.originalPrice).toBe(999);
+      expect(SHOP_ITEMS.advanced_bundle.originalPrice).toBe(1399);
+      expect(SHOP_ITEMS.ashen_throne_bundle.originalPrice).toBe(2199);
     });
   });
 
@@ -208,25 +202,15 @@ describe('Shop Items Configuration', () => {
       expect(bundle.description.toLowerCase()).toContain('feast');
     });
 
-    it('should validate bundle pricing formula', () => {
-      const bundle = SHOP_ITEMS.basic_survival_bundle;
-
-      // Bundle price should be less than sum of individual component prices
-      const gold5000 = SHOP_ITEMS.gold_5000;
-      const feast1 = SHOP_ITEMS.great_feast_1;
-
-      const individualPricesTotal = gold5000.price + feast1.price;
-
-      expect(bundle.price).toBeLessThan(individualPricesTotal);
+    it('should validate basic bundle sale and list prices', () => {
+      expect(SHOP_ITEMS.basic_survival_bundle.price).toBe(649);
+      expect(SHOP_ITEMS.basic_survival_bundle.originalPrice).toBe(849);
     });
 
-    it('should have bundle with reasonable discount percentage vs list sum', () => {
+    it('should have bundle with reasonable discount percentage vs list price', () => {
       const bundle = SHOP_ITEMS.basic_survival_bundle;
-      const listSum = bundleComponentsListPriceSumCents(
-        bundle.bundleComponents!,
-        SHOP_ITEMS,
-      );
-      const discountPercent = ((listSum - bundle.price) / listSum) * 100;
+      const list = bundle.originalPrice!;
+      const discountPercent = ((list - bundle.price) / list) * 100;
 
       expect(discountPercent).toBeGreaterThanOrEqual(10);
       expect(discountPercent).toBeLessThanOrEqual(50);
@@ -277,7 +261,8 @@ describe('Shop Items Configuration', () => {
 
     it('should have correct pricing for advanced bundle', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
-      expect(bundle.price).toBe(1049); // 10.49 €
+      expect(bundle.price).toBe(1049); // Beta
+      expect(bundle.originalPrice).toBe(1399); // List 13.99 €
       expect(bundleComponentsListPriceSumCents(bundle.bundleComponents!, SHOP_ITEMS)).toBe(
         SHOP_ITEMS.gold_20000.originalPrice! + SHOP_ITEMS.great_feast_3.originalPrice!,
       );
@@ -289,13 +274,10 @@ describe('Shop Items Configuration', () => {
       expect(bundle.rewards.feastActivations).toBe(3);
     });
 
-    it('should have reasonable discount for advanced bundle', () => {
+    it('should have reasonable discount for advanced bundle vs list price', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
-      const listSum = bundleComponentsListPriceSumCents(
-        bundle.bundleComponents!,
-        SHOP_ITEMS,
-      );
-      const discountPercent = ((listSum - bundle.price) / listSum) * 100;
+      const list = bundle.originalPrice!;
+      const discountPercent = ((list - bundle.price) / list) * 100;
 
       expect(discountPercent).toBeGreaterThanOrEqual(10);
       expect(discountPercent).toBeLessThanOrEqual(50);
@@ -322,7 +304,7 @@ describe('Shop Items Configuration', () => {
       });
     });
 
-    it('should have bundle price less than sum of individual components', () => {
+    it('should have bundle price less than sum of individual component sale prices', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
       const gold20000 = SHOP_ITEMS.gold_20000;
       const feast3 = SHOP_ITEMS.great_feast_3;
@@ -368,18 +350,15 @@ describe('Shop Items Configuration', () => {
     it('should have correct catalog pricing', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
       expect(bundle.price).toBe(1649);
-      expect(bundle.originalPrice).toBe(2945);
+      expect(bundle.originalPrice).toBe(2199);
       expect(bundleComponentsListPriceSumCents(bundle.bundleComponents!, SHOP_ITEMS)).toBe(
         2945,
       );
     });
 
-    it('should be cheaper than summed component prices and than the two bundles combined', () => {
+    it('should price below MSRP list and below Pale King + Dark Artifacts bundles combined', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
-      const componentsCost = bundle.bundleComponents!.reduce((total, id) => {
-        return total + SHOP_ITEMS[id].price;
-      }, 0);
-      expect(bundle.price).toBeLessThan(componentsCost);
+      expect(bundle.originalPrice).toBeGreaterThan(bundle.price);
       expect(bundle.price).toBeLessThan(
         SHOP_ITEMS.advanced_bundle.price + SHOP_ITEMS.artifact_bundle.price,
       );
@@ -399,13 +378,10 @@ describe('Shop Items Configuration', () => {
       );
     });
 
-    it('should have reasonable strikethrough discount', () => {
+    it('should have reasonable strikethrough discount vs bundle list price', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
-      const listSum = bundleComponentsListPriceSumCents(
-        bundle.bundleComponents!,
-        SHOP_ITEMS,
-      );
-      const discountPercent = ((listSum - bundle.price) / listSum) * 100;
+      const list = bundle.originalPrice!;
+      const discountPercent = ((list - bundle.price) / list) * 100;
       expect(discountPercent).toBeGreaterThanOrEqual(10);
       expect(discountPercent).toBeLessThanOrEqual(50);
     });
@@ -448,6 +424,7 @@ describe('Shop Items Configuration', () => {
         bundle.bundleComponents!,
         SHOP_ITEMS,
       );
+      expect(bundle.price).toBeLessThan(catalogSum);
       expect(shopPackageSavingsPercent(bundle)).toBe(
         Math.round((1 - bundle.price / catalogSum) * 100),
       );
