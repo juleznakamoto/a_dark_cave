@@ -1071,7 +1071,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       <Dialog open={isOpen} onOpenChange={handleShopDialogOpenChange}>
         {!isPaymentMode && (
           <DialogContent
-            className="w-[95vw] sm:max-w-4xl max-h-[80vh] z-[70] p-4 md:p-6"
+            className="w-[95vw] sm:max-w-4xl max-h-[80vh] z-[70] p-6"
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
@@ -1094,7 +1094,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   setAuthDialogOpen(true);
                   onClose();
                 }}
-                className="text-sm h-8 md:h-10 w-full border-0"
+                className="text-sm h-10 w-full border-0"
                 button_id="shop-sign-in-button"
               >
                 Sign in or create an account to purchase items
@@ -1186,7 +1186,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         Bundles
                       </Button>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 md:gap-4 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {(selectedFilter === null
                         ? HIGHLIGHTS_ORDER.map((id) => SHOP_ITEMS[id]).filter(Boolean)
                         : Object.values(SHOP_ITEMS)
@@ -1253,10 +1253,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   : ""
                                 }`}
                             >
-                              <CardHeader className="!md:leading-snug !leading-tight p-4 pb-2 relative md:text-lg text-md ">
+                              <CardHeader className="leading-snug p-4 pb-2 relative text-lg ">
                                 {item.symbol && (
                                   <span
-                                    className="font-noto-symbols-2 leading-[0.9] text-lg text-right absolute top-4 right-4"
+                                    className="font-noto-symbols-2 leading-[0.9] text-right absolute top-4 right-4"
                                     style={{
                                       color: tailwindToHex(
                                         (item.symbolColor || "").replace("text-", ""),
@@ -1574,7 +1574,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   })()}
                                 </CardDescription>
                               </CardHeader>
-                              <CardContent className="min-h-16 pl-4 pr-4 pb-3 md:pb-4 flex-1">
+                              <CardContent className="min-h-16 pl-4 pr-4 pb-4 flex-1">
                                 <p className="md:leading-snug leading-tight text-sm opacity-80">
                                   {item.description}
                                 </p>
@@ -1596,7 +1596,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           purchaseIdToItemId(pid) === item.id,
                                       ))
                                   }
-                                  className="h-8 md:h-10 w-full"
+                                  className="h-10 w-full"
                                   button_id={`shop-purchase-${item.id}`}
                                 >
                                   {item.id === "gold_100_free"
