@@ -123,6 +123,10 @@ function shopListDiscountPercent(item: ShopItem): number | null {
   return Math.round(((list - item.price) / list) * 100);
 }
 
+/** Pill for “-{pct} % Beta Discount” on cards; same visuals for bundles and non-bundles. */
+const SHOP_BETA_DISCOUNT_TAG_CLASS =
+  "ml-1 px-1 py-[1px] text-[0.65rem] leading-tight md:text-xs text-green-500 font-medium border border-green-500 rounded bg-green-800/40";
+
 /** Strikethrough: bundles = sum of components' catalog `price` (Beta); others = `originalPrice`. */
 function shopCardStrikethroughListCents(item: ShopItem): number | null {
   if (item.bundleComponents && item.bundleComponents.length > 0) {
@@ -1557,17 +1561,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   {(() => {
                                     const pct = shopListDiscountPercent(item);
                                     if (pct === null || pct <= 0) return null;
-                                    const isBundle =
-                                      item.category === "bundle" &&
-                                      !!item.bundleComponents?.length;
                                     return (
-                                      <span
-                                        className={
-                                          isBundle
-                                            ? "ml-1 px-1 py-[1px] text-[0.65rem] leading-tight md:text-xs text-green-500 font-medium border border-green-500 rounded bg-green-800/40"
-                                            : "ml-1 px-1 py-[1px] text-[0.65rem] leading-tight md:text-xs text-green-600 font-medium border border-green-600 rounded bg-green-950/40"
-                                        }
-                                      >
+                                      <span className={SHOP_BETA_DISCOUNT_TAG_CLASS}>
                                         -{pct} % Beta Discount
                                       </span>
                                     );
