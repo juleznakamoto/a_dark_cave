@@ -33,9 +33,11 @@ import {
   GREAT_FEAST_DURATION_MS,
   SHOP_ITEMS,
   HIGHLIGHTS_ORDER,
-  SMALLEST_GOLD_PACK_ID,
   bundleComponentsCatalogPriceSumCents,
   shopPackageSavingsPercent,
+  shopGoldValueMultiplier,
+  shopFeastValueMultiplier,
+  formatShopCategoryValueMultiplier,
   type ShopItem,
 } from "../../../../shared/shopItems";
 import { getDiscountedShopPriceCents } from "../../../../shared/shopCheckoutPrice";
@@ -1127,7 +1129,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     {" "}
                     <div className="pb-3 text-muted-foreground text-sm">
                       <p className="text-md font-medium">
-                        All items are currently 25 % and more discounted
+                        All items are currently up to 40 % discounted
                         during Beta phase. Bundles offer additional discounts.
                         Purchases can be reused in every playthrough and also after Beta phase ends.
                       </p>
@@ -1230,7 +1232,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           return true;
                         })
                         .map((item) => {
-                          const packageSavePct = shopPackageSavingsPercent(item);
+                          const bundleSavePct = shopPackageSavingsPercent(item);
+                          const categoryValueMult =
+                            shopGoldValueMultiplier(item) ??
+                            shopFeastValueMultiplier(item);
                           return (
                             <Card
                               key={item.id}
@@ -1382,19 +1387,23 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     </TooltipWrapper>
                                   )}
                                 </CardTitle>
-                                {packageSavePct != null && packageSavePct > 0 && (
-                                  <div className="mt-1.5 flex flex-wrap items-center gap-2">
-                                    <span className="inline-flex items-center rounded border border-red-500 bg-red-950/45 px-1.5 py-0.5 text-[0.75rem] font-semibold text-red-400">
-                                      {item.id === "great_feast_3" ||
-                                        (item.category === "resource" &&
-                                          (item.rewards.resources?.gold ?? 0) >
-                                          (SHOP_ITEMS[SMALLEST_GOLD_PACK_ID]
-                                            ?.rewards.resources?.gold ?? 0))
-                                        ? `${packageSavePct}% more value`
-                                        : `Save ${packageSavePct}%`}
-                                    </span>
-                                  </div>
-                                )}
+                                {(categoryValueMult != null ||
+                                  (bundleSavePct != null && bundleSavePct > 0)) && (
+                                    <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                                      {categoryValueMult != null && (
+                                        <span className="inline-flex items-center rounded border border-red-500 bg-red-950/45 px-1.5 py-0.5 text-[0.75rem] font-semibold text-red-400">
+                                          {formatShopCategoryValueMultiplier(
+                                            categoryValueMult,
+                                          )}
+                                        </span>
+                                      )}
+                                      {bundleSavePct != null && bundleSavePct > 0 && (
+                                        <span className="inline-flex items-center rounded border border-red-500 bg-red-950/45 px-1.5 py-0.5 text-[0.75rem] font-semibold text-red-400">
+                                          Save {bundleSavePct}%
+                                        </span>
+                                      )}
+                                    </div>
+                                  )}
                                 <CardDescription className="!m-0 text-bold flex flex-wrap items-center gap-1 pt-2">
                                   {(() => {
                                     const listCents =
