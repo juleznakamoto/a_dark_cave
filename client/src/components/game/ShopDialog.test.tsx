@@ -33,7 +33,7 @@ async function clickShopFilter(
 }
 import { ShopDialog } from './ShopDialog';
 import { useGameStore } from '@/game/state';
-import { SHOP_ITEMS, bundleComponentsCatalogPriceSumCents, bundleComponentsListPriceSumCents } from '@shared/shopItems';
+import { SHOP_ITEMS, bundleComponentsCatalogPriceSumCents } from '@shared/shopItems';
 
 // Use vi.hoisted so mock is available when vi.mock factory runs
 const { mockSupabaseClient, mockGetCurrentUser, mockInsert } = vi.hoisted(() => {

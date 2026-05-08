@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest';
 import {
   SHOP_ITEMS,
   bundleComponentsListPriceSumCents,
-  bundleComponentsCatalogPriceSumCents,
   shopPackageSavingsPercent,
   goldAmountBaselineCatalogCents,
   greatFeast3BaselineCatalogCents,
