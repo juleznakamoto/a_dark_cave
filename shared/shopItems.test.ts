@@ -261,7 +261,7 @@ describe('Shop Items Configuration', () => {
 
     it('should have correct pricing for advanced bundle', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
-      expect(bundle.price).toBe(1049); // Beta
+      expect(bundle.price).toBe(1099); // Beta
       expect(bundle.originalPrice).toBe(1399); // List 13.99 €
       expect(bundleComponentsListPriceSumCents(bundle.bundleComponents!, SHOP_ITEMS)).toBe(
         SHOP_ITEMS.gold_20000.originalPrice! + SHOP_ITEMS.great_feast_3.originalPrice!,

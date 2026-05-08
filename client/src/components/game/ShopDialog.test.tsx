@@ -1253,7 +1253,7 @@ describe('ShopDialog', () => {
     });
 
     // Pale King's Bundle: catalog price vs explicit list MSRP on the bundle
-    expect(screen.getByText(/^10\.49 €$/)).toBeInTheDocument();
+    expect(screen.getByText(/^10\.99 €$/)).toBeInTheDocument();
     const listSumEuro = (
       SHOP_ITEMS.advanced_bundle.originalPrice! / 100
     ).toFixed(2);
