@@ -109,9 +109,7 @@ function purchaseIdToItemId(purchaseId: string): string | null {
 function shopListDiscountPercent(item: ShopItem): number | null {
   if (item.price <= 0) return null;
   if (item.bundleComponents && item.bundleComponents.length > 0) {
-    const listSum = bundleComponentsListPriceSumCents(
-      item.bundleComponents,
-    );
+    const listSum = bundleComponentsListPriceSumCents(item.bundleComponents);
     if (listSum <= 0 || item.price >= listSum) return null;
     return Math.round(((listSum - item.price) / listSum) * 100);
   }
@@ -1132,7 +1130,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         All items are currently{" "}
                         <span className="font-bold">up to 40 % discounted</span>{" "}
                         during Beta phase. Bundles offer additional discounts.
-                        Purchases can be reused in every playthrough and also after Beta phase ends.
+                        Purchases can be reused in every playthrough and also
+                        after Beta phase ends.
                       </p>
                     </div>
                     {/* Filter Chips */}
@@ -1190,7 +1189,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {(selectedFilter === null
-                        ? HIGHLIGHTS_ORDER.map((id) => SHOP_ITEMS[id]).filter(Boolean)
+                        ? HIGHLIGHTS_ORDER.map((id) => SHOP_ITEMS[id]).filter(
+                          Boolean,
+                        )
                         : Object.values(SHOP_ITEMS)
                       )
                         .filter((item) => {
@@ -1241,8 +1242,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 : undefined
                             }
                             className={`border-neutral-500 flex flex-col relative ${item.category === "bundle"
-                              ? "border border-amber-600"
-                              : ""
+                                ? "border border-amber-600"
+                                : ""
                               }${item.id === "cruel_mode" && shopCruelModeHighlight
                                 ? " border border-red-600"
                                 : ""
@@ -1269,7 +1270,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     }`}
                                   style={{
                                     color: tailwindToHex(
-                                      (item.symbolColor || "").replace("text-", ""),
+                                      (item.symbolColor || "").replace(
+                                        "text-",
+                                        "",
+                                      ),
                                     ),
                                     maxWidth: "2.2em",
                                     wordBreak: "break-all",
@@ -1486,7 +1490,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   return (
                                     <>
                                       <span className={priceClassName}>
-                                        {item.price === 0 ? "Free" : formatPrice(displayPrice)}
+                                        {item.price === 0
+                                          ? "Free"
+                                          : formatPrice(displayPrice)}
                                       </span>
                                       {showTradersGratitudeInfo && (
                                         <TooltipWrapper
@@ -1499,7 +1505,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           tooltipId={`traders-gratitude-${item.id}`}
                                           disabled
                                           tooltipContentClassName="max-w-xs border border-amber-600"
-                                          className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse"
+                                          className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse"
                                         >
                                           <span
                                             className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
@@ -1520,7 +1526,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           tooltipId={`traders-son-gratitude-${item.id}`}
                                           disabled
                                           tooltipContentClassName="max-w-xs border border-amber-600"
-                                          className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse"
+                                          className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse"
                                         >
                                           <span
                                             className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
@@ -1542,7 +1548,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           tooltipId={`playlight-discount-${item.id}`}
                                           disabled
                                           tooltipContentClassName="max-w-xs border border-amber-600"
-                                          className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse"
+                                          className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse"
                                         >
                                           <span
                                             className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
@@ -1559,7 +1565,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   const pct = shopListDiscountPercent(item);
                                   if (pct === null || pct <= 0) return null;
                                   return (
-                                    <span className={SHOP_BETA_DISCOUNT_TAG_CLASS}>
+                                    <span
+                                      className={SHOP_BETA_DISCOUNT_TAG_CLASS}
+                                    >
                                       -{pct} % Beta Discount
                                     </span>
                                   );
@@ -1863,9 +1871,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     onSuccess={handlePurchaseSuccess}
                     currency={currency}
                     onCancel={handleCancelPayment}
-                    displayPriceCents={
-                      checkoutPriceBreakdown?.finalCents ?? 0
-                    }
+                    displayPriceCents={checkoutPriceBreakdown?.finalCents ?? 0}
                   />
                 </Elements>
               ) : (
