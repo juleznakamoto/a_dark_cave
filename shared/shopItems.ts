@@ -260,6 +260,24 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     bundleComponents: ["gold_5000", "great_feast_1"], // Component items
   },
 
+  artifact_bundle: {
+    id: "artifact_bundle",
+    name: "Dark Artifacts Bundle",
+    description: "Uncover dark forgotten truths with the Skull Lantern, Tarnished Compass, and Crow Harness",
+    originalPrice: 1197, // MSRP 3 artifact items
+    price: 749, // 7.49 €
+    rewards: {
+      tools: ["skull_lantern", "crow_harness"],
+      relics: ["tarnished_compass"],
+    },
+    canPurchaseMultipleTimes: false,
+    category: "bundle",
+    activationMessage: "Dark Artifacts Bundle components have been added to your purchases!",
+    symbol: "🜋",
+    symbolColor: "text-green-600/90",
+    bundleComponents: ["skull_lantern", "tarnished_compass", "crow_harness"],
+  },
+
   advanced_bundle: {
     id: "advanced_bundle",
     name: "Pale King's Bundle",
@@ -277,24 +295,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbol: "✣",
     symbolColor: "text-rose-600",
     bundleComponents: ["gold_20000", "great_feast_3"], // Component items
-  },
-
-  artifact_bundle: {
-    id: "artifact_bundle",
-    name: "Dark Artifacts Bundle",
-    description: "Uncover dark forgotten truths with the Skull Lantern, Tarnished Compass, and Crow Harness",
-    originalPrice: 1197, // MSRP 3 artifact items
-    price: 749, // 7.49 €
-    rewards: {
-      tools: ["skull_lantern", "crow_harness"],
-      relics: ["tarnished_compass"],
-    },
-    canPurchaseMultipleTimes: false,
-    category: "bundle",
-    activationMessage: "Dark Artifacts Bundle components have been added to your purchases!",
-    symbol: "🜋",
-    symbolColor: "text-green-600/90",
-    bundleComponents: ["skull_lantern", "tarnished_compass", "crow_harness"],
   },
 
   ashen_throne_bundle: {
