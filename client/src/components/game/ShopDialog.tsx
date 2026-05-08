@@ -1258,16 +1258,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 : ""
                               }`}
                           >
-                            {item.id === "gold_20000" && (
-                              <div
-                                className="pointer-events-none absolute left-3 top-3 z-30 flex size-10 min-h-10 min-w-10 items-center justify-center rounded-full bg-red-700 text-center shadow-sm ring-2 ring-background"
-                              >
-                                <span className="flex flex-col items-center gap-px px-0.5 text-[0.5rem] font-bold leading-none text-white sm:text-[0.54rem]">
-                                  <span>3x</span>
-                                  <span>Value</span>
-                                </span>
-                              </div>
-                            )}
                             <CardHeader className="leading-snug p-4 pb-2 relative text-lg ">
                               {item.symbol && (
                                 <span
@@ -1287,13 +1277,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   {item.symbol}
                                 </span>
                               )}
-                              <CardTitle
-                                className={
-                                  item.id === "gold_20000"
-                                    ? "!mb-0 ml-0 mr-0 mt-11 text-md items-center gap-1 pl-[2.5rem] pr-5"
-                                    : "!m-0 text-md items-center gap-1 pr-5"
-                                }
-                              >
+                              <CardTitle className="!m-0 text-md items-center gap-1 pr-5">
                                 {item.name}
                                 {item.id === "skull_lantern" && (
                                   <TooltipWrapper
@@ -1590,55 +1574,68 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                               </p>
                             </CardContent>
                             <CardFooter className="pl-4 pr-4 pb-4 flex-col gap-2">
-                              <Button
-                                onClick={() => handlePurchaseClick(item.id)}
-                                disabled={
-                                  !currentUser ||
-                                  (item.id === "gold_100_free" &&
-                                    (Date.now() -
+                              <div className="relative z-0 w-full overflow-visible pt-1">
+                                {item.id === "gold_20000" && (
+                                  <div
+                                    className="pointer-events-none absolute right-3 top-0 z-20 flex size-10 -translate-y-1/2 items-center justify-center rounded-full border-2 border-primary bg-red-950 shadow-md"
+                                    aria-hidden
+                                  >
+                                    <span className="flex flex-col items-center gap-px px-0.5 text-[0.5rem] font-bold leading-none text-white">
+                                      <span>3x</span>
+                                      <span>Value</span>
+                                    </span>
+                                  </div>
+                                )}
+                                <Button
+                                  onClick={() => handlePurchaseClick(item.id)}
+                                  disabled={
+                                    !currentUser ||
+                                    (item.id === "gold_100_free" &&
+                                      (Date.now() -
+                                        (gameState.lastFreeGoldClaim || 0)) /
+                                      (1000 * 60 * 60) <
+                                      24) ||
+                                    (item.id !== "gold_100_free" &&
+                                      !item.canPurchaseMultipleTimes &&
+                                      purchasedItems.some(
+                                        (pid) =>
+                                          purchaseIdToItemId(pid) === item.id,
+                                      ))
+                                  }
+                                  className="relative z-10 h-10 w-full"
+                                  button_id={`shop-purchase-${item.id}`}
+                                >
+                                  {item.id === "gold_100_free"
+                                    ? (Date.now() -
                                       (gameState.lastFreeGoldClaim || 0)) /
-                                    (1000 * 60 * 60) <
-                                    24) ||
-                                  (item.id !== "gold_100_free" &&
-                                    !item.canPurchaseMultipleTimes &&
-                                    purchasedItems.some(
-                                      (pid) =>
-                                        purchaseIdToItemId(pid) === item.id,
-                                    ))
-                                }
-                                className="h-10 w-full"
-                                button_id={`shop-purchase-${item.id}`}
-                              >
-                                {item.id === "gold_100_free"
-                                  ? (Date.now() -
-                                    (gameState.lastFreeGoldClaim || 0)) /
-                                    (1000 * 60 * 60) <
-                                    24
-                                    ? (() => {
-                                      const hoursRemaining = Math.ceil(
-                                        24 -
-                                        (Date.now() -
-                                          (gameState.lastFreeGoldClaim ||
-                                            0)) /
-                                        (1000 * 60 * 60),
-                                      );
-                                      return hoursRemaining === 1
-                                        ? "Available in 1 hour"
-                                        : `Available in ${hoursRemaining} hours`;
-                                    })()
-                                    : "Claim"
-                                  : !item.canPurchaseMultipleTimes &&
-                                    purchasedItems.some(
-                                      (pid) =>
-                                        purchaseIdToItemId(pid) === item.id,
-                                    )
-                                    ? item.price === 0
-                                      ? "Already Claimed"
-                                      : "Already Purchased"
-                                    : item.price === 0
-                                      ? "Claim"
-                                      : "Purchase"}
-                              </Button>
+                                      (1000 * 60 * 60) <
+                                      24
+                                      ? (() => {
+                                        const hoursRemaining = Math.ceil(
+                                          24 -
+                                          (Date.now() -
+                                            (gameState.lastFreeGoldClaim ||
+                                              0)) /
+                                          (1000 * 60 * 60),
+                                        );
+                                        return hoursRemaining === 1
+                                          ? "Available in 1 hour"
+                                          : `Available in ${hoursRemaining} hours`;
+                                      })()
+                                      : "Claim"
+                                    : !item.canPurchaseMultipleTimes &&
+                                      purchasedItems.some(
+                                        (pid) =>
+                                          purchaseIdToItemId(pid) === item.id,
+                                      )
+                                      ? item.price === 0
+                                        ? "Already Claimed"
+                                        : "Already Purchased"
+                                      : item.price === 0
+                                        ? "Claim"
+                                        : "Purchase"}
+                                </Button>
+                              </div>
                             </CardFooter>
                             {(item.category === "bundle" ||
                               (item.id === "cruel_mode" &&
