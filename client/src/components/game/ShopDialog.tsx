@@ -1250,11 +1250,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                               }${item.id === "gold_100_free"
                                 ? " border border-sky-600"
                                 : ""
-                              }${item.id === "gold_20000" ? " overflow-visible" : ""}`}
+                              }`}
                           >
                             {item.id === "gold_20000" && (
                               <div
-                                className="pointer-events-none absolute left-0 top-0 z-30 flex size-10 min-h-10 min-w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-red-600 text-center shadow-sm ring-2 ring-background"
+                                className="pointer-events-none absolute left-3 top-3 z-30 flex size-10 min-h-10 min-w-10 items-center justify-center rounded-full bg-red-700 text-center shadow-sm ring-2 ring-background"
                               >
                                 <span className="flex flex-col items-center gap-px px-0.5 text-[0.5rem] font-bold leading-none text-white sm:text-[0.54rem]">
                                   <span>3x</span>
@@ -1281,7 +1281,13 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   {item.symbol}
                                 </span>
                               )}
-                              <CardTitle className="!m-0 text-md items-center gap-1 pr-5">
+                              <CardTitle
+                                className={
+                                  item.id === "gold_20000"
+                                    ? "!mb-0 ml-0 mr-0 mt-11 text-md items-center gap-1 pl-[2.5rem] pr-5"
+                                    : "!m-0 text-md items-center gap-1 pr-5"
+                                }
+                              >
                                 {item.name}
                                 {item.id === "skull_lantern" && (
                                   <TooltipWrapper
