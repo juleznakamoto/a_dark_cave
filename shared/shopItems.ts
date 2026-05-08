@@ -365,8 +365,8 @@ export function greatFeast3BaselineCatalogCents(
 }
 
 /**
- * "Save X %" / value callouts — gold & feast packs only. Bundles use the green
- * badge (catalog component sum vs bundle price) to avoid duplicating the same %.
+ * Red badge: catalog (Beta) baseline vs bundle/catalog `price`.
+ * Gold: smallest-pack rate; great_feast_3: 3× single feast; bundles: summed component `price`.
  */
 export function shopPackageSavingsPercent(
   item: ShopItem,
@@ -381,6 +381,12 @@ export function shopPackageSavingsPercent(
     baseline = goldAmountBaselineCatalogCents(gold, catalog);
   } else if (item.id === "great_feast_3") {
     baseline = greatFeast3BaselineCatalogCents(catalog);
+  } else if (item.category === "bundle" && item.bundleComponents?.length) {
+    const sum = bundleComponentsCatalogPriceSumCents(
+      item.bundleComponents,
+      catalog,
+    );
+    baseline = sum > 0 ? sum : null;
   } else {
     return null;
   }

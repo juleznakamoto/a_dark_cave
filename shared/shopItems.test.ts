@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
   SHOP_ITEMS,
   bundleComponentsListPriceSumCents,
+  bundleComponentsCatalogPriceSumCents,
   shopPackageSavingsPercent,
   goldAmountBaselineCatalogCents,
   greatFeast3BaselineCatalogCents,
@@ -433,7 +434,14 @@ describe('Shop Items Configuration', () => {
     it('returns savings vs catalog baselines only (no MSRP / beta-off-list)', () => {
       expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_1000)).toBe(24);
       expect(shopPackageSavingsPercent(SHOP_ITEMS.great_feast_3)).toBe(33);
-      expect(shopPackageSavingsPercent(SHOP_ITEMS.basic_survival_bundle)).toBeNull();
+      const bundle = SHOP_ITEMS.basic_survival_bundle;
+      const catalogSum = bundleComponentsCatalogPriceSumCents(
+        bundle.bundleComponents!,
+        SHOP_ITEMS,
+      );
+      expect(shopPackageSavingsPercent(bundle)).toBe(
+        Math.round((1 - bundle.price / catalogSum) * 100),
+      );
     });
   });
 });
