@@ -34,7 +34,7 @@ describe('Shop Items Configuration', () => {
     it('sets bundle list (originalPrice) to product MSRP', () => {
       expect(SHOP_ITEMS.basic_survival_bundle.originalPrice).toBe(849);
       expect(SHOP_ITEMS.artifact_bundle.originalPrice).toBe(999);
-      expect(SHOP_ITEMS.advanced_bundle.originalPrice).toBe(1399);
+      expect(SHOP_ITEMS.advanced_bundle.originalPrice).toBe(1449);
       expect(SHOP_ITEMS.ashen_throne_bundle.originalPrice).toBe(2199);
     });
   });
@@ -262,7 +262,7 @@ describe('Shop Items Configuration', () => {
     it('should have correct pricing for advanced bundle', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
       expect(bundle.price).toBe(1099); // Beta
-      expect(bundle.originalPrice).toBe(1399); // List 13.99 €
+      expect(bundle.originalPrice).toBe(1449); // List 14.49 €
       expect(bundleComponentsListPriceSumCents(bundle.bundleComponents!, SHOP_ITEMS)).toBe(
         SHOP_ITEMS.gold_20000.originalPrice! + SHOP_ITEMS.great_feast_3.originalPrice!,
       );

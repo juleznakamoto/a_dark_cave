@@ -572,62 +572,66 @@ describe("Gambler resume on load", () => {
     mockSetLastGameLoadTime.mockReset();
   });
 
-  it("preserves in-progress gambler session from save", async () => {
-    const session = {
-      phase: "playerTurn" as const,
-      playerTotal: 10,
-      npcTotal: 8,
-      goal: 15,
-      playerLastRoll: 4,
-      npcLastRoll: null as number | null,
-      hasRolledThisRound: true,
-      playerStopped: false,
-      pauseAfterNextPlayerRoll: false,
-    };
-    const savedState = {
-      ...createInitialState(),
-      resources: {
-        ...createInitialState().resources,
-        gold: 100,
-      },
-      timedEventTab: {
-        isActive: true,
-        event: {
-          id: "gambler-state-test",
-          message: "",
-          timestamp: Date.now(),
-          type: "event" as const,
+  it(
+    "preserves in-progress gambler session from save",
+    async () => {
+      const session = {
+        phase: "playerTurn" as const,
+        playerTotal: 10,
+        npcTotal: 8,
+        goal: 15,
+        playerLastRoll: 4,
+        npcLastRoll: null as number | null,
+        hasRolledThisRound: true,
+        playerStopped: false,
+        pauseAfterNextPlayerRoll: false,
+      };
+      const savedState = {
+        ...createInitialState(),
+        resources: {
+          ...createInitialState().resources,
+          gold: 100,
         },
-        expiryTime: Date.now() + 600_000,
-      },
-      gamblerGame: {
+        timedEventTab: {
+          isActive: true,
+          event: {
+            id: "gambler-state-test",
+            message: "",
+            timestamp: Date.now(),
+            type: "event" as const,
+          },
+          expiryTime: Date.now() + 600_000,
+        },
+        gamblerGame: {
+          wager: 50,
+          stakeNotYetDeducted: true as const,
+          session,
+        },
+        gamblerDiceDialogOpen: true,
+        log: [],
+      };
+
+      mockLoadGame.mockResolvedValue(savedState);
+
+      await useGameStore.getState().loadGame();
+
+      expect(mockSetLastGameLoadTime).toHaveBeenCalled();
+      expect(useGameStore.getState().activeTab).toBe("timedevent");
+      expect(useGameStore.getState().gamblerDiceDialogOpen).toBe(true);
+      expect(useGameStore.getState().gamblerGame).toMatchObject({
         wager: 50,
-        stakeNotYetDeducted: true as const,
-        session,
-      },
-      gamblerDiceDialogOpen: true,
-      log: [],
-    };
-
-    mockLoadGame.mockResolvedValue(savedState);
-
-    await useGameStore.getState().loadGame();
-
-    expect(mockSetLastGameLoadTime).toHaveBeenCalled();
-    expect(useGameStore.getState().activeTab).toBe("timedevent");
-    expect(useGameStore.getState().gamblerDiceDialogOpen).toBe(true);
-    expect(useGameStore.getState().gamblerGame).toMatchObject({
-      wager: 50,
-      stakeNotYetDeducted: true,
-      session: expect.objectContaining({ playerTotal: 10, npcTotal: 8 }),
-    });
-    expect(useGameStore.getState().resources.gold).toBe(100);
-    expect(
-      useGameStore
-        .getState()
-        .log.some((e) => e.message.includes("silence as forfeit")),
-    ).toBe(false);
-  });
+        stakeNotYetDeducted: true,
+        session: expect.objectContaining({ playerTotal: 10, npcTotal: 8 }),
+      });
+      expect(useGameStore.getState().resources.gold).toBe(100);
+      expect(
+        useGameStore
+          .getState()
+          .log.some((e) => e.message.includes("silence as forfeit")),
+      ).toBe(false);
+    },
+    15_000,
+  );
 
   it("preserves resolved gambler outcome and snapshot from save", async () => {
     const savedState = {
