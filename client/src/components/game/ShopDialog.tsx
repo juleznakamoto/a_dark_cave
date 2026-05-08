@@ -34,7 +34,6 @@ import {
   SHOP_ITEMS,
   HIGHLIGHTS_ORDER,
   bundleComponentsCatalogPriceSumCents,
-  shopPackageSavingsPercent,
   shopGoldValueMultiplier,
   shopFeastValueMultiplier,
   formatShopCategoryValueMultiplier,
@@ -1232,7 +1231,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           return true;
                         })
                         .map((item) => {
-                          const bundleSavePct = shopPackageSavingsPercent(item);
                           const categoryValueMult =
                             shopGoldValueMultiplier(item) ??
                             shopFeastValueMultiplier(item);
@@ -1387,23 +1385,15 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     </TooltipWrapper>
                                   )}
                                 </CardTitle>
-                                {(categoryValueMult != null ||
-                                  (bundleSavePct != null && bundleSavePct > 0)) && (
-                                    <div className="mt-1.5 flex flex-wrap items-center gap-2">
-                                      {categoryValueMult != null && (
-                                        <span className="inline-flex items-center rounded border border-red-500 bg-red-950/45 px-1.5 py-0.5 text-[0.75rem] font-semibold text-red-400">
-                                          {formatShopCategoryValueMultiplier(
-                                            categoryValueMult,
-                                          )}
-                                        </span>
+                                {categoryValueMult != null && (
+                                  <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                                    <span className="inline-flex items-center rounded border border-red-500 bg-red-950/45 px-1.5 py-0.5 text-[0.75rem] font-semibold text-red-400">
+                                      {formatShopCategoryValueMultiplier(
+                                        categoryValueMult,
                                       )}
-                                      {bundleSavePct != null && bundleSavePct > 0 && (
-                                        <span className="inline-flex items-center rounded border border-red-500 bg-red-950/45 px-1.5 py-0.5 text-[0.75rem] font-semibold text-red-400">
-                                          Save {bundleSavePct}%
-                                        </span>
-                                      )}
-                                    </div>
-                                  )}
+                                    </span>
+                                  </div>
+                                )}
                                 <CardDescription className="!m-0 text-bold flex flex-wrap items-center gap-1 pt-2">
                                   {(() => {
                                     const listCents =

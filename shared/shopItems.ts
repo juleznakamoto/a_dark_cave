@@ -423,47 +423,9 @@ export function shopPackageSavingsPercent(
   );
 }
 
-function cheapestPaidGoldPack(
-  catalog: Record<string, ShopItem>,
-): ShopItem | null {
-  const candidates = Object.values(catalog).filter(
-    (i) =>
-      i.category === "resource" &&
-      i.price > 0 &&
-      i.id !== "gold_100_free" &&
-      typeof i.rewards.resources?.gold === "number" &&
-      i.rewards.resources.gold > 0,
-  );
-  if (candidates.length === 0) return null;
-  const minPrice = Math.min(...candidates.map((c) => c.price));
-  const atMin = candidates.filter((c) => c.price === minPrice);
-  const preferred =
-    atMin.find((c) => c.id === SMALLEST_GOLD_PACK_ID) ??
-    [...atMin].sort((a, b) => a.id.localeCompare(b.id))[0];
-  return preferred ?? null;
-}
-
-function cheapestPaidFeastPack(
-  catalog: Record<string, ShopItem>,
-): ShopItem | null {
-  const candidates = Object.values(catalog).filter(
-    (i) =>
-      i.category === "feast" &&
-      i.price > 0 &&
-      typeof i.rewards.feastActivations === "number" &&
-      i.rewards.feastActivations > 0,
-  );
-  if (candidates.length === 0) return null;
-  const minPrice = Math.min(...candidates.map((c) => c.price));
-  const atMin = candidates.filter((c) => c.price === minPrice);
-  const preferred =
-    atMin.find((c) => c.id === "great_feast_1") ??
-    [...atMin].sort((a, b) => a.id.localeCompare(b.id))[0];
-  return preferred ?? null;
-}
-
 /**
- * How many times better catalog “value density” is vs the cheapest paid gold pack at the same price tier (gold per cent).
+ * Value = resources ÷ catalog sale spend (Stripe `price` cents). Ratio vs the 1000‑gold tier
+ * compares identically whether you divide by euros or cents: (gold÷cents)/(refGold÷refCents).
  */
 export function shopGoldValueMultiplier(
   item: ShopItem,
@@ -479,20 +441,19 @@ export function shopGoldValueMultiplier(
   )
     return null;
 
-  const cheapest = cheapestPaidGoldPack(catalog);
-  if (!cheapest) return null;
-  const refGold = cheapest.rewards.resources?.gold ?? 0;
-  const refPrice = cheapest.price;
-  if (refGold <= 0 || refPrice <= 0) return null;
+  const baseline = catalog[SMALLEST_GOLD_PACK_ID];
+  const refGold = baseline?.rewards.resources?.gold ?? 0;
+  const refPrice = baseline?.price ?? 0;
+  if (!baseline || refGold <= 0 || refPrice <= 0) return null;
 
-  if (item.id === cheapest.id) return null;
+  if (item.id === SMALLEST_GOLD_PACK_ID) return null;
 
   const mult = gold / item.price / (refGold / refPrice);
   if (!Number.isFinite(mult) || mult <= 1.0005) return null;
   return mult;
 }
 
-/** Same idea for feast boosts: feast activations per cent vs cheapest paid feast. */
+/** Activations÷price vs single `great_feast_1` (same invariant as scaling by currency). */
 export function shopFeastValueMultiplier(
   item: ShopItem,
   catalog: Record<string, ShopItem> = SHOP_ITEMS,
@@ -501,11 +462,12 @@ export function shopFeastValueMultiplier(
   const acts = item.rewards.feastActivations;
   if (acts == null || acts <= 0) return null;
 
-  const cheapest = cheapestPaidFeastPack(catalog);
-  if (!cheapest || item.id === cheapest.id) return null;
-  const refActs = cheapest.rewards.feastActivations ?? 0;
-  const refPrice = cheapest.price;
-  if (refActs <= 0 || refPrice <= 0) return null;
+  const baseline = catalog.great_feast_1;
+  const refActs = baseline?.rewards.feastActivations ?? 0;
+  const refPrice = baseline?.price ?? 0;
+  if (!baseline || refActs <= 0 || refPrice <= 0) return null;
+
+  if (item.id === "great_feast_1") return null;
 
   const mult = acts / item.price / (refActs / refPrice);
   if (!Number.isFinite(mult) || mult <= 1.0005) return null;

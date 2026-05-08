@@ -452,7 +452,7 @@ describe('Shop Items Configuration', () => {
   });
 
   describe('shopGoldValueMultiplier / shopFeastValueMultiplier', () => {
-    it('anchors gold to the cheapest paid gold pack (sale price)', () => {
+    it('anchors gold to the catalog 1000-gold tier (SMALLEST_GOLD_PACK_ID)', () => {
       expect(shopGoldValueMultiplier(SHOP_ITEMS.gold_1000)).toBeNull();
       expect(shopGoldValueMultiplier(SHOP_ITEMS.gold_250)).toBeNull();
     });
@@ -468,7 +468,7 @@ describe('Shop Items Configuration', () => {
       expect(m20k).toBeCloseTo(2.983, 2);
     });
 
-    it('anchors feasts to cheapest paid feast tier', () => {
+    it('anchors feasts to great_feast_1', () => {
       expect(shopFeastValueMultiplier(SHOP_ITEMS.great_feast_1)).toBeNull();
       const m3 = shopFeastValueMultiplier(SHOP_ITEMS.great_feast_3);
       expect(m3).toBeCloseTo(447 / 299, 5);
