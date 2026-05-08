@@ -1561,11 +1561,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                       <span
                                         className={
                                           isBundle
-                                            ? "ml-1 px-1 py-[1px] text-xs text-green-500 font-medium border border-green-500 rounded bg-green-800/40"
-                                            : "ml-1 px-1 py-[1px] text-xs text-green-600 font-medium border border-green-600 rounded bg-green-950/40"
+                                            ? "ml-1 px-1 py-[1px] text-[0.65rem] leading-tight md:text-xs text-green-500 font-medium border border-green-500 rounded bg-green-800/40"
+                                            : "ml-1 px-1 py-[1px] text-[0.65rem] leading-tight md:text-xs text-green-600 font-medium border border-green-600 rounded bg-green-950/40"
                                         }
                                       >
-                                        -{pct}%
+                                        -{pct} % Beta Discount
                                       </span>
                                     );
                                   })()}
