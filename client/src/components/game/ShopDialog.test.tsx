@@ -33,7 +33,7 @@ async function clickShopFilter(
 }
 import { ShopDialog } from './ShopDialog';
 import { useGameStore } from '@/game/state';
-import { SHOP_ITEMS, bundleComponentsCatalogPriceSumCents } from '@shared/shopItems';
+import { SHOP_ITEMS, bundleComponentsCatalogPriceSumCents, bundleComponentsListPriceSumCents } from '@shared/shopItems';
 
 // Use vi.hoisted so mock is available when vi.mock factory runs
 const { mockSupabaseClient, mockGetCurrentUser, mockInsert } = vi.hoisted(() => {
@@ -884,7 +884,7 @@ describe('ShopDialog', () => {
       });
 
       const strikeEuro = (
-        bundleComponentsCatalogPriceSumCents(
+        bundleComponentsListPriceSumCents(
           SHOP_ITEMS.basic_survival_bundle.bundleComponents!,
           SHOP_ITEMS,
         ) / 100
@@ -1257,16 +1257,16 @@ describe('ShopDialog', () => {
       expect(screen.getByText("Pale King's Bundle")).toBeInTheDocument();
     });
 
-    // Pale King's Bundle: 10.49 €; strikethrough = Beta total if pieces bought separately
+    // Pale King's Bundle: 10.49 € sale; strikethrough = summed component MSRP
     expect(screen.getByText(/^10\.49 €$/)).toBeInTheDocument();
-    const catalogSumEuro = (
-      bundleComponentsCatalogPriceSumCents(
+    const listSumEuro = (
+      bundleComponentsListPriceSumCents(
         SHOP_ITEMS.advanced_bundle.bundleComponents!,
         SHOP_ITEMS,
       ) / 100
     ).toFixed(2);
     const originalPrice = screen.getByText(
-      new RegExp(`${catalogSumEuro.replace('.', '\\.')}\\s*€`),
+      new RegExp(`${listSumEuro.replace('.', '\\.')}\\s*€`),
     );
     expect(originalPrice).toHaveClass('line-through');
   });

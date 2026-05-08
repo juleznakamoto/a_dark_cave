@@ -12,7 +12,7 @@ export interface ShopItem {
   name: string;
   description: string;
   price: number; // in cents
-  /** Strikethrough anchor for non-bundles (`originalPrice`). Bundles use summed component catalog `price` in the client. */
+  /** MSRP anchor for strikethrough; bundles equal summed component MSRP (`originalPrice` fallback `price` per piece). */
   originalPrice?: number; // in cents
   rewards: ShopItemRewards;
   canPurchaseMultipleTimes: boolean;
@@ -245,6 +245,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "basic_survival_bundle",
     name: "Fading Wanderer Bundle",
     description: "Basic Bundle with 5'000 Gold and 1 Great Feast",
+    originalPrice: 998, // MSRP gold_5000 + great_feast_1
     price: 649, // 6.49 €
     rewards: {
       resources: { gold: 5000 },
@@ -263,6 +264,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "advanced_bundle",
     name: "Pale King's Bundle",
     description: "Powerful Bundle with 20'000 Gold and 3 Great Feasts",
+    originalPrice: 1748, // MSRP gold_20000 + great_feast_3
     price: 1049, // 10.49 €
     rewards: {
       resources: { gold: 20000 },
@@ -281,6 +283,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "artifact_bundle",
     name: "Dark Artifacts Bundle",
     description: "Uncover dark forgotten truths with the Skull Lantern, Tarnished Compass, and Crow Harness",
+    originalPrice: 1197, // MSRP 3 artifact items
     price: 749, // 7.49 €
     rewards: {
       tools: ["skull_lantern", "crow_harness"],
@@ -299,6 +302,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Ashen Throne Bundle",
     description:
       "Ultimate Bundle with 20'000 Gold, 3 Great Feasts, Skull Lantern, Tarnished Compass, and Crow Harness",
+    originalPrice: 2945, // MSRP all five components
     price: 1649, // $16.49
     rewards: {
       resources: { gold: 20000 },
@@ -421,61 +425,4 @@ export function shopPackageSavingsPercent(
     0,
     Math.min(100, Math.round((1 - item.price / baseline) * 100)),
   );
-}
-
-/**
- * Value = resources ÷ catalog sale spend (Stripe `price` cents). Ratio vs the 1000‑gold tier
- * compares identically whether you divide by euros or cents: (gold÷cents)/(refGold÷refCents).
- */
-export function shopGoldValueMultiplier(
-  item: ShopItem,
-  catalog: Record<string, ShopItem> = SHOP_ITEMS,
-): number | null {
-  const gold = item.rewards.resources?.gold;
-  if (
-    item.category !== "resource" ||
-    gold == null ||
-    gold <= 0 ||
-    item.price <= 0 ||
-    item.id === "gold_100_free"
-  )
-    return null;
-
-  const baseline = catalog[SMALLEST_GOLD_PACK_ID];
-  const refGold = baseline?.rewards.resources?.gold ?? 0;
-  const refPrice = baseline?.price ?? 0;
-  if (!baseline || refGold <= 0 || refPrice <= 0) return null;
-
-  if (item.id === SMALLEST_GOLD_PACK_ID) return null;
-
-  const mult = gold / item.price / (refGold / refPrice);
-  if (!Number.isFinite(mult) || mult <= 1.0005) return null;
-  return mult;
-}
-
-/** Activations÷price vs single `great_feast_1` (same invariant as scaling by currency). */
-export function shopFeastValueMultiplier(
-  item: ShopItem,
-  catalog: Record<string, ShopItem> = SHOP_ITEMS,
-): number | null {
-  if (item.category !== "feast" || item.price <= 0) return null;
-  const acts = item.rewards.feastActivations;
-  if (acts == null || acts <= 0) return null;
-
-  const baseline = catalog.great_feast_1;
-  const refActs = baseline?.rewards.feastActivations ?? 0;
-  const refPrice = baseline?.price ?? 0;
-  if (!baseline || refActs <= 0 || refPrice <= 0) return null;
-
-  if (item.id === "great_feast_1") return null;
-
-  const mult = acts / item.price / (refActs / refPrice);
-  if (!Number.isFinite(mult) || mult <= 1.0005) return null;
-  return mult;
-}
-
-/** One decimal, e.g. `1.5x Value`. */
-export function formatShopCategoryValueMultiplier(multiplier: number): string {
-  const m = Math.round(multiplier * 10) / 10;
-  return `${m.toFixed(1)}x Value`;
 }

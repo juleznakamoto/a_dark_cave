@@ -33,10 +33,7 @@ import {
   GREAT_FEAST_DURATION_MS,
   SHOP_ITEMS,
   HIGHLIGHTS_ORDER,
-  bundleComponentsCatalogPriceSumCents,
-  shopGoldValueMultiplier,
-  shopFeastValueMultiplier,
-  formatShopCategoryValueMultiplier,
+  bundleComponentsListPriceSumCents,
   type ShopItem,
 } from "../../../../shared/shopItems";
 import { getDiscountedShopPriceCents } from "../../../../shared/shopCheckoutPrice";
@@ -106,17 +103,17 @@ function purchaseIdToItemId(purchaseId: string): string | null {
 
 /**
  * Rounded % saved for the shop card (green badge).
- * Bundles: bundle `price` vs sum of components' catalog `price` (Beta — if bought separately).
+ * Bundles: bundle `price` vs sum of components’ MSRP (`originalPrice`, else piece `price`).
  * Other paid items: `price` vs `originalPrice`.
  */
 function shopListDiscountPercent(item: ShopItem): number | null {
   if (item.price <= 0) return null;
   if (item.bundleComponents && item.bundleComponents.length > 0) {
-    const catalogSum = bundleComponentsCatalogPriceSumCents(
+    const listSum = bundleComponentsListPriceSumCents(
       item.bundleComponents,
     );
-    if (catalogSum <= 0 || item.price >= catalogSum) return null;
-    return Math.round(((catalogSum - item.price) / catalogSum) * 100);
+    if (listSum <= 0 || item.price >= listSum) return null;
+    return Math.round(((listSum - item.price) / listSum) * 100);
   }
   const list = item.originalPrice;
   if (list === undefined || list <= 0 || item.price >= list) return null;
@@ -127,10 +124,10 @@ function shopListDiscountPercent(item: ShopItem): number | null {
 const SHOP_BETA_DISCOUNT_TAG_CLASS =
   "ml-1 px-1 py-[1px] text-[0.65rem] leading-tight md:text-xs text-green-500 font-medium border border-green-500 rounded bg-green-800/40";
 
-/** Strikethrough: bundles = sum of components' catalog `price` (Beta); others = `originalPrice`. */
+/** Strikethrough MSRP; bundles = sum of each component MSRP (`originalPrice` fallback `price`). */
 function shopCardStrikethroughListCents(item: ShopItem): number | null {
   if (item.bundleComponents && item.bundleComponents.length > 0) {
-    const sum = bundleComponentsCatalogPriceSumCents(item.bundleComponents);
+    const sum = bundleComponentsListPriceSumCents(item.bundleComponents);
     return sum > 0 ? sum : null;
   }
   const o = item.originalPrice;
@@ -1132,7 +1129,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     {" "}
                     <div className="pb-3 text-muted-foreground text-sm">
                       <p className="text-md font-medium">
-                        All items are currently up to 40 % discounted
+                        All items are currently{" "}
+                        <span className="font-bold">up to 40 % discounted</span>{" "}
                         during Beta phase. Bundles offer additional discounts.
                         Purchases can be reused in every playthrough and also after Beta phase ends.
                       </p>
@@ -1234,12 +1232,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
                           return true;
                         })
-                        .map((item) => {
-                          const categoryValueMult =
-                            shopGoldValueMultiplier(item) ??
-                            shopFeastValueMultiplier(item);
-                          return (
-                            <Card
+                        .map((item) => (
+                          <Card
                               key={item.id}
                               id={
                                 item.id === "cruel_mode"
@@ -1258,6 +1252,15 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 }`}
                             >
                               <CardHeader className="leading-snug p-4 pb-2 relative text-lg ">
+                                {item.id === "gold_20000" && (
+                                  <div
+                                    className="pointer-events-none absolute left-3 top-3 z-10 flex h-[3.25rem] w-[3.25rem] items-center justify-center rounded-full border-2 border-red-500 bg-red-950/60 text-center shadow-sm"
+                                  >
+                                    <span className="px-1 text-[0.5625rem] font-bold leading-snug text-red-400 sm:text-[0.625rem]">
+                                      3x Value
+                                    </span>
+                                  </div>
+                                )}
                                 {item.symbol && (
                                   <span
                                     className="font-noto-symbols-2 leading-[0.9] text-right absolute top-4 right-4"
@@ -1273,7 +1276,12 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     {item.symbol}
                                   </span>
                                 )}
-                                <CardTitle className="!m-0 text-md pr-5 items-center gap-1">
+                                <CardTitle
+                                  className={`!m-0 text-md items-center gap-1 pr-5 ${item.id === "gold_20000"
+                                    ? "pl-[4rem] sm:pl-[3.75rem]"
+                                    : ""
+                                    }`}
+                                >
                                   {item.name}
                                   {item.id === "skull_lantern" && (
                                     <TooltipWrapper
@@ -1389,15 +1397,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     </TooltipWrapper>
                                   )}
                                 </CardTitle>
-                                {categoryValueMult != null && (
-                                  <div className="mt-1.5 flex flex-wrap items-center gap-2">
-                                    <span className="inline-flex items-center rounded border border-red-500 bg-red-950/45 px-1.5 py-0.5 text-[0.75rem] font-semibold text-red-400">
-                                      {formatShopCategoryValueMultiplier(
-                                        categoryValueMult,
-                                      )}
-                                    </span>
-                                  </div>
-                                )}
                                 <CardDescription className="!m-0 text-bold flex flex-wrap items-center gap-1 pt-2">
                                   {(() => {
                                     const listCents =
@@ -1633,8 +1632,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   ></div>
                                 )}
                             </Card>
-                          );
-                        })}
+                        ))}
                     </div>
                   </ScrollAreaWithIndicator>
                 </TabsContent>

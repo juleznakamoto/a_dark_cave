@@ -6,9 +6,6 @@ import {
   shopPackageSavingsPercent,
   goldAmountBaselineCatalogCents,
   greatFeast3BaselineCatalogCents,
-  shopGoldValueMultiplier,
-  shopFeastValueMultiplier,
-  formatShopCategoryValueMultiplier,
 } from './shopItems';
 
 describe('Shop Items Configuration', () => {
@@ -34,12 +31,17 @@ describe('Shop Items Configuration', () => {
       });
     });
 
-    it('should not set originalPrice on bundles (derived from bundleComponents)', () => {
-      Object.values(SHOP_ITEMS).forEach((item) => {
-        if (item.category === 'bundle') {
-          expect(item.originalPrice).toBeUndefined();
-        }
-      });
+    it('sets bundle originalPrice to summed component MSRP', () => {
+      Object.values(SHOP_ITEMS)
+        .filter((item) => item.category === 'bundle')
+        .forEach((bundle) => {
+          const sum = bundleComponentsListPriceSumCents(
+            bundle.bundleComponents!,
+            SHOP_ITEMS,
+          );
+          expect(bundle.originalPrice).toBe(sum);
+          expect(bundle.originalPrice).toBeGreaterThan(bundle.price);
+        });
     });
   });
 
@@ -366,6 +368,7 @@ describe('Shop Items Configuration', () => {
     it('should have correct catalog pricing', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
       expect(bundle.price).toBe(1649);
+      expect(bundle.originalPrice).toBe(2945);
       expect(bundleComponentsListPriceSumCents(bundle.bundleComponents!, SHOP_ITEMS)).toBe(
         2945,
       );
@@ -448,35 +451,6 @@ describe('Shop Items Configuration', () => {
       expect(shopPackageSavingsPercent(bundle)).toBe(
         Math.round((1 - bundle.price / catalogSum) * 100),
       );
-    });
-  });
-
-  describe('shopGoldValueMultiplier / shopFeastValueMultiplier', () => {
-    it('anchors gold to the catalog 1000-gold tier (SMALLEST_GOLD_PACK_ID)', () => {
-      expect(shopGoldValueMultiplier(SHOP_ITEMS.gold_1000)).toBeNull();
-      expect(shopGoldValueMultiplier(SHOP_ITEMS.gold_250)).toBeNull();
-    });
-
-    it('returns higher multipliers for larger gold packs vs baseline', () => {
-      const m2500 = shopGoldValueMultiplier(SHOP_ITEMS.gold_2500);
-      const m5000 = shopGoldValueMultiplier(SHOP_ITEMS.gold_5000);
-      const m20k = shopGoldValueMultiplier(SHOP_ITEMS.gold_20000);
-      expect(m2500).toBeGreaterThan(1);
-      expect(m5000).toBeGreaterThan(m2500!);
-      expect(m20k).toBeGreaterThan(m5000!);
-      expect(m2500).toBeCloseTo(1.0673, 3);
-      expect(m20k).toBeCloseTo(2.983, 2);
-    });
-
-    it('anchors feasts to great_feast_1', () => {
-      expect(shopFeastValueMultiplier(SHOP_ITEMS.great_feast_1)).toBeNull();
-      const m3 = shopFeastValueMultiplier(SHOP_ITEMS.great_feast_3);
-      expect(m3).toBeCloseTo(447 / 299, 5);
-    });
-
-    it('formats one decimal for display', () => {
-      expect(formatShopCategoryValueMultiplier(1.4948)).toBe('1.5x Value');
-      expect(formatShopCategoryValueMultiplier(2.983)).toBe('3.0x Value');
     });
   });
 });
