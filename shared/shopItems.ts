@@ -78,7 +78,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   gold_250: {
     id: "gold_250",
     name: "1'000 Gold",
-    description: "A substantial treasure",
+    description: "A decent amound of Gold",
     originalPrice: 249,
     price: 149, // 1.49 €
     rewards: {
@@ -87,14 +87,14 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: "resource",
     activationMessage: "1000 Gold have been added to your inventory.",
-    symbol: "◉◉",
+    symbol: "◉",
     symbolColor: "text-yellow-600",
   },
 
   gold_1000: {
     id: "gold_1000",
     name: "1'000 Gold",
-    description: "A substantial treasure",
+    description: "A decent amound of Gold",
     originalPrice: 249,
     price: 149, // 1.49 €
     rewards: {
@@ -110,7 +110,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   gold_2500: {
     id: "gold_2500",
     name: "2'500 Gold",
-    description: "A weighty coffer of coin",
+    description: "A substantial treasure",
     originalPrice: 499,
     price: 349, // 3.49 €
     rewards: {
@@ -126,7 +126,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   gold_5000: {
     id: "gold_5000",
     name: "5'000 Gold",
-    description: "A fortune in gold",
+    description: "A fortune in Gold",
     originalPrice: 799,
     price: 599, // 5.99 €
     rewards: {
@@ -142,7 +142,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   gold_20000: {
     id: "gold_20000",
     name: "20'000 Gold",
-    description: "Unholy amounts of gold",
+    description: "Unholy amounts of Gold",
     originalPrice: 1349,
     price: 999, // 9.99 €
     rewards: {

@@ -1254,10 +1254,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           >
                             {item.id === "gold_20000" && (
                               <div
-                                className="pointer-events-none absolute left-0 top-0 z-30 flex h-[3.25rem] w-[3.25rem] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-red-500 bg-red-950/60 text-center shadow-sm"
+                                className="pointer-events-none absolute left-0 top-0 z-30 flex size-10 min-h-10 min-w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-red-600 text-center shadow-sm ring-2 ring-background"
                               >
-                                <span className="px-1 text-[0.5625rem] font-bold leading-snug text-red-400 sm:text-[0.625rem]">
-                                  3x Value
+                                <span className="flex flex-col items-center gap-px px-0.5 text-[0.5rem] font-bold leading-none text-white sm:text-[0.54rem]">
+                                  <span>3x</span>
+                                  <span>Value</span>
                                 </span>
                               </div>
                             )}
