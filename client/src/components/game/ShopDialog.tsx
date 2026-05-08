@@ -1575,7 +1575,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 </CardDescription>
                               </CardHeader>
                               <CardContent className="min-h-16 pl-4 pr-4 pb-4 flex-1">
-                                <p className="md:leading-snug leading-tight text-sm opacity-80">
+                                <p className="leading-snug text-sm opacity-80">
                                   {item.description}
                                 </p>
                               </CardContent>
