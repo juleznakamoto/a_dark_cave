@@ -1253,10 +1253,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   : ""
                                 }`}
                             >
-                              <CardHeader className="!md:leading-snug !leading-tight p-2 md:p-4 pb-1 md:pb-2 relative md:text-lg text-md ">
+                              <CardHeader className="!md:leading-snug !leading-tight p-4 pb-2 relative md:text-lg text-md ">
                                 {item.symbol && (
                                   <span
-                                    className="font-noto-symbols-2 md:leading-[0.9] leading-[0.9] text-md md:text-lg text-right absolute top-3 right-2 md:top-5 md:right-5"
+                                    className="font-noto-symbols-2 leading-[0.9] text-lg text-right absolute top-4 right-4"
                                     style={{
                                       color: tailwindToHex(
                                         (item.symbolColor || "").replace("text-", ""),
@@ -1574,12 +1574,12 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   })()}
                                 </CardDescription>
                               </CardHeader>
-                              <CardContent className="min-h-16 pl-3 pr-3 md:pl-4 md:pr-4 pb-3 md:pb-4 flex-1">
+                              <CardContent className="min-h-16 pl-4 pr-4 pb-3 md:pb-4 flex-1">
                                 <p className="md:leading-snug leading-tight text-sm opacity-80">
                                   {item.description}
                                 </p>
                               </CardContent>
-                              <CardFooter className="pl-3 pr-3 md:pl-4 md:pr-4 pb-4 md:pb-4 flex-col gap-2">
+                              <CardFooter className="pl-4 pr-4 pb-4 flex-col gap-2">
                                 <Button
                                   onClick={() => handlePurchaseClick(item.id)}
                                   disabled={
