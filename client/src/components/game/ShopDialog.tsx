@@ -122,7 +122,7 @@ function shopListDiscountPercent(item: ShopItem): number | null {
 
 /** Pill for “-{pct} % Beta Discount” on cards; same visuals for bundles and non-bundles. */
 const SHOP_BETA_DISCOUNT_TAG_CLASS =
-  "ml-1 px-1 py-[1px] text-[0.65rem] leading-tight md:text-xs text-green-500 font-medium border border-green-500 rounded bg-green-800/40";
+  "ml-1 px-1 py-[1px] leading-tight text-xs text-green-500 font-medium border border-green-500 rounded bg-green-800/40";
 
 /** Strikethrough MSRP; bundles = sum of each component MSRP (`originalPrice` fallback `price`). */
 function shopCardStrikethroughListCents(item: ShopItem): number | null {
