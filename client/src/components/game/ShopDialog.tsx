@@ -101,28 +101,8 @@ function purchaseIdToItemId(purchaseId: string): string | null {
   return parts.slice(0, -1).join("-") || null;
 }
 
-/**
- * Rounded % saved for the shop card (green badge).
- * Bundles: `price` vs bundle `originalPrice` (explicit list price), sum of pieces only if list missing.
- * Other paid items: `price` vs `originalPrice`.
- */
-function shopListDiscountPercent(item: ShopItem): number | null {
-  if (item.price <= 0) return null;
-  if (item.bundleComponents && item.bundleComponents.length > 0) {
-    const listSum =
-      item.originalPrice != null && item.originalPrice > 0
-        ? item.originalPrice
-        : bundleComponentsListPriceSumCents(item.bundleComponents);
-    if (listSum <= 0 || item.price >= listSum) return null;
-    return Math.round(((listSum - item.price) / listSum) * 100);
-  }
-  const list = item.originalPrice;
-  if (list === undefined || list <= 0 || item.price >= list) return null;
-  return Math.round(((list - item.price) / list) * 100);
-}
-
-/** Pill for “-{pct} % Beta Discount” on cards; same visuals for bundles and non-bundles. */
-const SHOP_BETA_DISCOUNT_TAG_CLASS =
+/** Small pill on shop cards (green border / tint); e.g. featured labels. */
+const SHOP_CARD_PROMO_TAG_CLASS =
   "ml-1 px-1 py-[1px] leading-tight text-xs text-green-500 font-medium border border-green-500 rounded bg-green-800/40";
 
 /** Strikethrough list price; bundles prefer explicit `originalPrice`, else summed component MSRP. */
@@ -321,7 +301,7 @@ function CheckoutForm({
           // Do NOT release discount reservation - user was charged; requires manual intervention.
           setErrorMessage(
             result.error ||
-              "Payment verification failed. Please contact support.",
+            "Payment verification failed. Please contact support.",
           );
         }
         setIsProcessing(false);
@@ -916,7 +896,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         message: isCurrentlyActivated
           ? "Cruel Mode deactivated. New games will use normal difficulty."
           : item.activationMessage ||
-            "Cruel Mode activated! Start a new game to experience the ultimate challenge.",
+          "Cruel Mode activated! Start a new game to experience the ultimate challenge.",
         timestamp: Date.now(),
         type: "system",
       });
@@ -1196,8 +1176,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {(selectedFilter === null
                         ? HIGHLIGHTS_ORDER.map((id) => SHOP_ITEMS[id]).filter(
-                            Boolean,
-                          )
+                          Boolean,
+                        )
                         : Object.values(SHOP_ITEMS)
                       )
                         .filter((item) => {
@@ -1247,19 +1227,16 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 ? "shop-card-cruel_mode"
                                 : undefined
                             }
-                            className={`border-neutral-500 flex flex-col relative ${
-                              item.category === "bundle"
+                            className={`border-neutral-500 flex flex-col relative ${item.category === "bundle"
                                 ? "border border-amber-600"
                                 : ""
-                            }${
-                              item.id === "cruel_mode" && shopCruelModeHighlight
+                              }${item.id === "cruel_mode" && shopCruelModeHighlight
                                 ? " border border-red-600"
                                 : ""
-                            }${
-                              item.id === "gold_100_free"
+                              }${item.id === "gold_100_free"
                                 ? " border border-sky-600"
                                 : ""
-                            }`}
+                              }`}
                           >
                             <CardHeader className="leading-snug p-4 pb-2 relative text-lg ">
                               {item.symbol && (
@@ -1422,47 +1399,47 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   const playlightFirstPurchaseActive =
                                     gameState.story?.seen
                                       ?.playlightFirstPurchaseDiscountActive ===
-                                      true && !gameState.hasMadeNonFreePurchase;
+                                    true && !gameState.hasMadeNonFreePurchase;
                                   const displayPrice =
                                     item.price > 0
                                       ? getDiscountedShopPriceCents(
-                                          item.price,
-                                          {
-                                            playlightFirstPurchase:
-                                              playlightFirstPurchaseActive,
-                                            tradersGratitude:
-                                              tradersGratitudeActive,
-                                            tradersSonGratitude:
-                                              tradersSonGratitudeActive,
-                                          },
-                                        )
+                                        item.price,
+                                        {
+                                          playlightFirstPurchase:
+                                            playlightFirstPurchaseActive,
+                                          tradersGratitude:
+                                            tradersGratitudeActive,
+                                          tradersSonGratitude:
+                                            tradersSonGratitudeActive,
+                                        },
+                                      )
                                       : item.price;
                                   const tradersOnlyCents =
                                     item.price > 0
                                       ? getDiscountedShopPriceCents(
-                                          item.price,
-                                          {
-                                            tradersGratitude: true,
-                                          },
-                                        )
+                                        item.price,
+                                        {
+                                          tradersGratitude: true,
+                                        },
+                                      )
                                       : item.price;
                                   const sonOnlyCents =
                                     item.price > 0
                                       ? getDiscountedShopPriceCents(
-                                          item.price,
-                                          {
-                                            tradersSonGratitude: true,
-                                          },
-                                        )
+                                        item.price,
+                                        {
+                                          tradersSonGratitude: true,
+                                        },
+                                      )
                                       : item.price;
                                   const playlightOnlyCents =
                                     item.price > 0
                                       ? getDiscountedShopPriceCents(
-                                          item.price,
-                                          {
-                                            playlightFirstPurchase: true,
-                                          },
-                                        )
+                                        item.price,
+                                        {
+                                          playlightFirstPurchase: true,
+                                        },
+                                      )
                                       : item.price;
                                   const discounted =
                                     item.price > 0 && displayPrice < item.price;
@@ -1558,17 +1535,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     </>
                                   );
                                 })()}
-                                {(() => {
-                                  const pct = shopListDiscountPercent(item);
-                                  if (pct === null || pct <= 0) return null;
-                                  return (
-                                    <span
-                                      className={SHOP_BETA_DISCOUNT_TAG_CLASS}
-                                    >
-                                      -{pct} % Beta Discount
-                                    </span>
-                                  );
-                                })()}
+                                {item.id === "advanced_bundle" && (
+                                  <span className={SHOP_CARD_PROMO_TAG_CLASS}>
+                                    Most popular
+                                  </span>
+                                )}
                               </CardDescription>
                             </CardHeader>
                             <CardContent className="min-h-16 pl-4 pr-4 pb-4 flex-1">
@@ -1598,8 +1569,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     (item.id === "gold_100_free" &&
                                       (Date.now() -
                                         (gameState.lastFreeGoldClaim || 0)) /
-                                        (1000 * 60 * 60) <
-                                        24) ||
+                                      (1000 * 60 * 60) <
+                                      24) ||
                                     (item.id !== "gold_100_free" &&
                                       !item.canPurchaseMultipleTimes &&
                                       purchasedItems.some(
@@ -1612,27 +1583,27 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 >
                                   {item.id === "gold_100_free"
                                     ? (Date.now() -
-                                        (gameState.lastFreeGoldClaim || 0)) /
-                                        (1000 * 60 * 60) <
+                                      (gameState.lastFreeGoldClaim || 0)) /
+                                      (1000 * 60 * 60) <
                                       24
                                       ? (() => {
-                                          const hoursRemaining = Math.ceil(
-                                            24 -
-                                              (Date.now() -
-                                                (gameState.lastFreeGoldClaim ||
-                                                  0)) /
-                                                (1000 * 60 * 60),
-                                          );
-                                          return hoursRemaining === 1
-                                            ? "Available in 1 hour"
-                                            : `Available in ${hoursRemaining} hours`;
-                                        })()
+                                        const hoursRemaining = Math.ceil(
+                                          24 -
+                                          (Date.now() -
+                                            (gameState.lastFreeGoldClaim ||
+                                              0)) /
+                                          (1000 * 60 * 60),
+                                        );
+                                        return hoursRemaining === 1
+                                          ? "Available in 1 hour"
+                                          : `Available in ${hoursRemaining} hours`;
+                                      })()
                                       : "Claim"
                                     : !item.canPurchaseMultipleTimes &&
-                                        purchasedItems.some(
-                                          (pid) =>
-                                            purchaseIdToItemId(pid) === item.id,
-                                        )
+                                      purchasedItems.some(
+                                        (pid) =>
+                                          purchaseIdToItemId(pid) === item.id,
+                                      )
                                       ? item.price === 0
                                         ? "Already Claimed"
                                         : "Already Purchased"
@@ -1645,10 +1616,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                             {(item.category === "bundle" ||
                               (item.id === "cruel_mode" &&
                                 shopCruelModeHighlight)) && (
-                              <div
-                                className={`absolute inset-0 -z-10 pointer-events-none rounded-lg ${item.category === "bundle" ? "bundle-card-glow" : "cruel-mode-card-glow"}`}
-                              ></div>
-                            )}
+                                <div
+                                  className={`absolute inset-0 -z-10 pointer-events-none rounded-lg ${item.category === "bundle" ? "bundle-card-glow" : "cruel-mode-card-glow"}`}
+                                ></div>
+                              )}
                           </Card>
                         ))}
                     </div>
@@ -1665,7 +1636,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     scrollAreaId="shop-purchases"
                   >
                     {purchasedItems.length === 0 &&
-                    Object.keys(gameState.feastActivations || {}).length ===
+                      Object.keys(gameState.feastActivations || {}).length ===
                       0 ? ( // Changed feastPurchases to feastActivations
                       <div className="text-center py-8 text-muted-foreground">
                         No purchases yet. Visit the For Sale tab to buy items.
@@ -1726,7 +1697,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     size="sm"
                                     variant={
                                       isGreatFeastActive ||
-                                      activationsRemaining <= 0
+                                        activationsRemaining <= 0
                                         ? "outline"
                                         : "default"
                                     }

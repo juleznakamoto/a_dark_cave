@@ -1241,6 +1241,7 @@ describe('ShopDialog', () => {
     });
 
     expect(screen.getByText(SHOP_ITEMS.advanced_bundle.description)).toBeInTheDocument();
+    expect(screen.getByText('Most popular')).toBeInTheDocument();
   });
 
   it('should show advanced bundle with correct pricing', async () => {
@@ -1251,7 +1252,7 @@ describe('ShopDialog', () => {
       expect(screen.getByText("Pale King's Bundle")).toBeInTheDocument();
     });
 
-    // Pale King's Bundle: Beta sale vs explicit list MSRP on the bundle
+    // Pale King's Bundle: catalog price vs explicit list MSRP on the bundle
     expect(screen.getByText(/^10\.49 €$/)).toBeInTheDocument();
     const listSumEuro = (
       SHOP_ITEMS.advanced_bundle.originalPrice! / 100
