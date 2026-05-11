@@ -10,8 +10,6 @@ export type FooterSocialPlatformId =
   | "wiki"
   | "contact";
 
-export const SITE_HOME_URL = "https://a-dark-cave.com/";
-
 /** Official subreddit URL (structured data, footer, start screen). */
 export const OFFICIAL_REDDIT_URL =
   "https://www.reddit.com/r/aDarkCave/" as const;

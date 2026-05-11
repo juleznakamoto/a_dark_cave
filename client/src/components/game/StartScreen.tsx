@@ -224,16 +224,10 @@ export default function StartScreen() {
         className={`absolute bottom-4 left-4 right-4 z-10 flex flex-wrap justify-end gap-x-3 gap-y-1.5 text-[10px] sm:text-xs text-muted-foreground ${boostMode ? "pr-8 sm:pr-10" : ""}`}
         aria-label="Site links"
       >
-        <a
-          href="/"
-          className="inline-flex items-center gap-1 hover:text-foreground transition-colors opacity-40 hover:opacity-100"
-        >
-          Play the Game
-        </a>
         {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
           const { href, title } = GAME_FOOTER_RIGHT_ICON_LINKS[platform];
           const linkClass =
-            "inline-flex items-center gap-1 hover:text-foreground transition-colors opacity-40 hover:opacity-100";
+            "inline-flex items-center gap-0 sm:gap-1 hover:text-foreground transition-colors opacity-40 hover:opacity-100";
           if (href.startsWith("http")) {
             return (
               <a
@@ -248,7 +242,7 @@ export default function StartScreen() {
                   platform={platform}
                   className="w-3.5 h-3.5 shrink-0"
                 />
-                <span>{title}</span>
+                <span className="sr-only sm:not-sr-only sm:inline">{title}</span>
               </a>
             );
           }
@@ -263,7 +257,7 @@ export default function StartScreen() {
                 platform={platform}
                 className="w-3.5 h-3.5 shrink-0"
               />
-              <span>{title}</span>
+              <span className="sr-only sm:not-sr-only sm:inline">{title}</span>
             </a>
           );
         })}
