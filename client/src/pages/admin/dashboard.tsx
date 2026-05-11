@@ -95,9 +95,6 @@ const getAdminEmails = (): string[] => {
     .filter(Boolean);
 };
 
-/** Min cumulative playtime for admin "per 100 sign-ups" charts (buyers + EUR gain). */
-const ADMIN_PER_HUNDRED_SIGNUPS_MIN_PLAYTIME_MS = 30 * 60 * 1000;
-
 // Helper function to clean button names by removing timestamp suffixes
 const cleanButtonName = (buttonId: string): string => {
   // Remove timestamp suffixes and random number suffixes from merchant trades
@@ -232,24 +229,6 @@ export default function AdminDashboard() {
   const kpiPaidBuyerCount =
     purchaseMetrics?.paidBuyerCount ?? purchaseTotalsFromRaw.paidBuyerCount;
 
-  /** Latest cumulative playtime per user (ms), from `game_saves.game_state.playTime`. */
-  const playtimeMsByUserId = useMemo(() => {
-    const m = new Map<string, number>();
-    for (const s of rawGameSaves) {
-      const ms = Number(s.game_state?.playTime) || 0;
-      const prev = m.get(s.user_id) ?? 0;
-      if (ms > prev) m.set(s.user_id, ms);
-    }
-    return m;
-  }, [rawGameSaves]);
-
-  const meetsPerHundredSignupsPlaytime = useCallback(
-    (userId: string) =>
-      (playtimeMsByUserId.get(userId) ?? 0) >=
-      ADMIN_PER_HUNDRED_SIGNUPS_MIN_PLAYTIME_MS,
-    [playtimeMsByUserId],
-  );
-
   /** Same series as "Buyers per 100 Sign-ups" chart; last point = rolling 30 days ending today. */
   const buyersPerHundredSignupsSeries = useMemo(() => {
     const data: Array<{ date: string; buyersPerHundred: number }> = [];
@@ -266,11 +245,7 @@ export default function AdminDashboard() {
         rawAuthSignups
           .filter((u) => {
             const createdDate = parseISO(u.created_at);
-            return (
-              createdDate >= windowStart &&
-              createdDate <= windowEnd &&
-              meetsPerHundredSignupsPlaytime(u.id)
-            );
+            return createdDate >= windowStart && createdDate <= windowEnd;
           })
           .map((u) => u.id),
       );
@@ -279,11 +254,7 @@ export default function AdminDashboard() {
         paidPurchases
           .filter((p) => {
             const purchaseDate = parseISO(p.purchased_at);
-            return (
-              purchaseDate >= windowStart &&
-              purchaseDate <= windowEnd &&
-              meetsPerHundredSignupsPlaytime(p.user_id)
-            );
+            return purchaseDate >= windowStart && purchaseDate <= windowEnd;
           })
           .map((p) => p.user_id),
       );
@@ -296,79 +267,11 @@ export default function AdminDashboard() {
       });
     }
     return data;
-  }, [
-    rawPurchases,
-    rawAuthSignups,
-    buyersPerHundredChartTimeRange,
-    meetsPerHundredSignupsPlaytime,
-  ]);
-
-  const gainPerHundredSignupsSeries = useMemo(() => {
-    const data: Array<{ date: string; gainPerHundredEur: number }> = [];
-    const now = new Date();
-    const days = ADMIN_OVERVIEW_CHART_DAYS[gainPerHundredChartTimeRange];
-    const paidPurchases = rawPurchases.filter(
-      (p) => p.price_paid > 0 && !p.bundle_id,
-    );
-
-    for (let i = days - 1; i >= 0; i--) {
-      const date = subDays(now, i);
-      const windowEnd = endOfDay(date);
-      const windowStart = startOfDay(subDays(date, 29));
-
-      const signUpUserIds = new Set(
-        rawAuthSignups
-          .filter((u) => {
-            const createdDate = parseISO(u.created_at);
-            return (
-              createdDate >= windowStart &&
-              createdDate <= windowEnd &&
-              meetsPerHundredSignupsPlaytime(u.id)
-            );
-          })
-          .map((u) => u.id),
-      );
-      const signUps = signUpUserIds.size;
-
-      const inWindow = paidPurchases.filter((p) => {
-        const purchaseDate = parseISO(p.purchased_at);
-        return (
-          purchaseDate >= windowStart &&
-          purchaseDate <= windowEnd &&
-          meetsPerHundredSignupsPlaytime(p.user_id)
-        );
-      });
-      let windowEur = 0;
-      for (const p of inWindow) {
-        windowEur += adminUnifiedRevenueEurCents(p);
-      }
-
-      const gainPerHundredEur =
-        signUps > 0 ? windowEur / 100 / (signUps / 100) : 0;
-
-      const dateFormat = days > 90 ? "MMM dd" : "MMM dd";
-      data.push({
-        date: format(date, dateFormat),
-        gainPerHundredEur: parseFloat(gainPerHundredEur.toFixed(2)),
-      });
-    }
-
-    return data;
-  }, [
-    rawPurchases,
-    rawAuthSignups,
-    gainPerHundredChartTimeRange,
-    meetsPerHundredSignupsPlaytime,
-  ]);
+  }, [rawPurchases, rawAuthSignups, buyersPerHundredChartTimeRange]);
 
   const getBuyersPerHundredOverTime = useCallback(
     () => buyersPerHundredSignupsSeries,
     [buyersPerHundredSignupsSeries],
-  );
-
-  const getGainPerHundredOverTime = useCallback(
-    () => gainPerHundredSignupsSeries,
-    [gainPerHundredSignupsSeries],
   );
 
   const getBuyersPerHundred = useCallback(() => {
@@ -1334,7 +1237,61 @@ export default function AdminDashboard() {
                     });
                   }}
                   getBuyersPerHundredOverTime={getBuyersPerHundredOverTime}
-                  getGainPerHundredOverTime={getGainPerHundredOverTime}
+                  getGainPerHundredOverTime={() => {
+                    const data: Array<{
+                      date: string;
+                      gainPerHundredEur: number;
+                    }> = [];
+                    const now = new Date();
+
+                    const days = ADMIN_OVERVIEW_CHART_DAYS[gainPerHundredChartTimeRange];
+
+                    const paidPurchases = rawPurchases.filter(
+                      (p) => p.price_paid > 0 && !p.bundle_id
+                    );
+
+                    // Rolling 30-day: unified EUR revenue (minor units) per 100 sign-ups.
+                    for (let i = days - 1; i >= 0; i--) {
+                      const date = subDays(now, i);
+                      const windowEnd = endOfDay(date);
+                      const windowStart = startOfDay(subDays(date, 29));
+
+                      // Sign-ups in last 30 days (auth account creation)
+                      const signUpUserIds = new Set(
+                        rawAuthSignups
+                          .filter((u) => {
+                            const createdDate = parseISO(u.created_at);
+                            return createdDate >= windowStart && createdDate <= windowEnd;
+                          })
+                          .map((u) => u.id)
+                      );
+                      const signUps = signUpUserIds.size;
+
+                      const inWindow = paidPurchases.filter((p) => {
+                        const purchaseDate = parseISO(p.purchased_at);
+                        return purchaseDate >= windowStart && purchaseDate <= windowEnd;
+                      });
+                      let windowEur = 0;
+                      for (const p of inWindow) {
+                        windowEur += adminUnifiedRevenueEurCents(p);
+                      }
+
+                      const gainPerHundredEur =
+                        signUps > 0
+                          ? (windowEur / 100) / (signUps / 100)
+                          : 0;
+
+                      const dateFormat = days > 90 ? "MMM dd" : "MMM dd";
+                      data.push({
+                        date: format(date, dateFormat),
+                        gainPerHundredEur: parseFloat(
+                          gainPerHundredEur.toFixed(2),
+                        ),
+                      });
+                    }
+
+                    return data;
+                  }}
                   marketingMetrics={marketingMetrics}
                   accountsDeletedAnonymized={accountsDeletedAnonymized}
                   showResendCsvExport={environment === "prod"}

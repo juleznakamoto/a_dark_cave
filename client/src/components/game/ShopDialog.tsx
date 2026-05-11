@@ -180,6 +180,153 @@ function getCheckoutPriceBreakdown(
   };
 }
 
+type ShopArtifactIdForTooltip =
+  | "skull_lantern"
+  | "tarnished_compass"
+  | "crow_harness";
+
+const SHOP_ARTIFACT_DISPLAY_NAME_REGEX =
+  /\b(Skull Lantern|Tarnished Compass|Crow Harness)\b/g;
+
+function displayArtifactNameToShopId(
+  name: string,
+): ShopArtifactIdForTooltip | null {
+  switch (name) {
+    case "Skull Lantern":
+      return "skull_lantern";
+    case "Tarnished Compass":
+      return "tarnished_compass";
+    case "Crow Harness":
+      return "crow_harness";
+    default:
+      return null;
+  }
+}
+
+function ArtifactShopTooltipIcon({
+  artifact,
+  tooltipId,
+  variant,
+}: {
+  artifact: ShopArtifactIdForTooltip;
+  tooltipId: string;
+  variant: "cardTitle" | "description";
+}) {
+  const triggerClass =
+    variant === "cardTitle"
+      ? "pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse"
+      : "ml-0.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse align-text-bottom translate-y-[0.08em]";
+
+  const icon = (
+    <span
+      className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
+      aria-hidden
+    >
+      🛈
+    </span>
+  );
+
+  if (artifact === "skull_lantern") {
+    return (
+      <TooltipWrapper
+        tooltip={
+          <div className="text-xs">
+            <div className="font-bold mb-1">Skull Lantern</div>
+            <div className="mt-1 space-y-0.5">
+              <div>Cave Explore: +200% Bonus</div>
+              <div>Cave Explore: -5s Cooldown</div>
+              <div>Mining: +200% Bonus</div>
+              <div>Mining: -5s Cooldown</div>
+            </div>
+          </div>
+        }
+        tooltipId={tooltipId}
+        disabled
+        tooltipContentClassName="max-w-xs border border-amber-600"
+        className={triggerClass}
+      >
+        {icon}
+      </TooltipWrapper>
+    );
+  }
+
+  if (artifact === "tarnished_compass") {
+    return (
+      <TooltipWrapper
+        tooltip={
+          <div className="text-xs">
+            <div className="font-bold mb-1">Tarnished Compass</div>
+            <div className="mt-1 space-y-0.5">
+              <div>10% chance to double actions gains</div>
+              <div>+5 Luck</div>
+            </div>
+          </div>
+        }
+        tooltipId={tooltipId}
+        disabled
+        tooltipContentClassName="max-w-[14rem] border border-amber-600"
+        className={triggerClass}
+      >
+        {icon}
+      </TooltipWrapper>
+    );
+  }
+
+  return (
+    <TooltipWrapper
+      tooltip={
+        <div className="text-xs">
+          <div className="font-bold mb-1">One-eyed Crow</div>
+          <div className="mt-1 space-y-0.5">
+            <div>
+              up to 15% chance to double action
+              gains
+            </div>
+          </div>
+        </div>
+      }
+      tooltipId={tooltipId}
+      disabled
+      tooltipContentClassName="max-w-xs border border-amber-600"
+      className={triggerClass}
+    >
+      {icon}
+    </TooltipWrapper>
+  );
+}
+
+/** Dark Artifacts / Ashen Throne bundle copy shares artifact names; append same info glyphs as standalone artifact cards */
+function ShopItemDescriptionParagraph({ item }: { item: ShopItem }) {
+  if (item.id !== "artifact_bundle" && item.id !== "ashen_throne_bundle") {
+    return item.description;
+  }
+
+  const parts = item.description.split(SHOP_ARTIFACT_DISPLAY_NAME_REGEX);
+
+  const nodes = parts.map((fragment, idx) => {
+    const artifact = displayArtifactNameToShopId(fragment);
+    if (artifact) {
+      return (
+        <span
+          key={`${artifact}-inline-${idx}`}
+          className="inline-flex flex-wrap items-baseline gap-x-0.5"
+        >
+          <span>{fragment}</span>
+          <ArtifactShopTooltipIcon
+            artifact={artifact}
+            tooltipId={`${artifact}-info-desc-${item.id}`}
+            variant="description"
+          />
+        </span>
+      );
+    }
+
+    return <React.Fragment key={`t-${idx}`}>{fragment}</React.Fragment>;
+  });
+
+  return <>{nodes}</>;
+}
+
 // EU countries with Euro as main currency
 const EU_EURO_COUNTRIES = [
   "AT",
@@ -1052,6 +1199,25 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   box-shadow: 0 0 0px 0px rgba(220, 38, 38, 0.55);
                 }
               }
+
+                .shop-3x-value-badge-pulse {
+                  animation: shop-3x-value-badge-shadow-pulse 4.75s ease-in-out infinite;
+                }
+
+              @keyframes shop-3x-value-badge-shadow-pulse {
+                0%, 100% {
+                  box-shadow:
+                    0 0 10px rgba(239, 68, 68, 0.55),
+                    0 0 22px rgba(239, 68, 68, 0.35),
+                    0 4px 12px rgba(0, 0, 0, 0.6);
+                }
+                50% {
+                  box-shadow:
+                    0 0 17px rgba(239, 68, 68, 0.88),
+                    0 0 34px rgba(239, 68, 68, 0.58),
+                    0 4px 13px rgba(0, 0, 0, 0.64);
+                }
+              }
               `}</style>
       <Dialog open={isOpen} onOpenChange={handleShopDialogOpenChange}>
         {!isPaymentMode && (
@@ -1111,7 +1277,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     scrollAreaId="shop-for-sale"
                   >
                     {" "}
-                    <div className="pb-3 text-muted-foreground text-sm">
+                    <div className="pb-3 text-sm text-foreground">
                       <p className="text-md font-medium">
                         All items are currently{" "}
                         <span className="font-bold">up to 40 % discounted</span>{" "}
@@ -1228,8 +1394,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 : undefined
                             }
                             className={`border-neutral-500 flex flex-col relative ${item.category === "bundle"
-                                ? "border border-amber-600"
-                                : ""
+                              ? "border border-amber-600"
+                              : ""
                               }${item.id === "cruel_mode" && shopCruelModeHighlight
                                 ? " border border-red-600"
                                 : ""
@@ -1260,88 +1426,25 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                               <CardTitle className="!m-0 text-md items-center gap-1 pr-5">
                                 {item.name}
                                 {item.id === "skull_lantern" && (
-                                  <TooltipWrapper
-                                    tooltip={
-                                      <div className="text-xs">
-                                        <div className="font-bold mb-1">
-                                          Skull Lantern
-                                        </div>
-                                        <div className="mt-1 space-y-0.5">
-                                          <div>Cave Explore: +200% Bonus</div>
-                                          <div>Cave Explore: -5s Cooldown</div>
-                                          <div>Mining: +200% Bonus</div>
-                                          <div>Mining: -5s Cooldown</div>
-                                        </div>
-                                      </div>
-                                    }
+                                  <ArtifactShopTooltipIcon
+                                    artifact="skull_lantern"
                                     tooltipId="skull-lantern-info"
-                                    disabled
-                                    tooltipContentClassName="max-w-xs border border-amber-600"
-                                    className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse"
-                                  >
-                                    <span
-                                      className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
-                                      aria-hidden
-                                    >
-                                      🛈
-                                    </span>
-                                  </TooltipWrapper>
+                                    variant="cardTitle"
+                                  />
                                 )}
                                 {item.id === "tarnished_compass" && (
-                                  <TooltipWrapper
-                                    tooltip={
-                                      <div className="text-xs">
-                                        <div className="font-bold mb-1">
-                                          Tarnished Compass
-                                        </div>
-                                        <div className="mt-1 space-y-0.5">
-                                          <div>
-                                            10% chance to double actions gains
-                                          </div>
-                                          <div>+5 Luck</div>
-                                        </div>
-                                      </div>
-                                    }
+                                  <ArtifactShopTooltipIcon
+                                    artifact="tarnished_compass"
                                     tooltipId="tarnished-compass-info"
-                                    disabled
-                                    tooltipContentClassName="max-w-[14rem] border border-amber-600"
-                                    className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse"
-                                  >
-                                    <span
-                                      className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
-                                      aria-hidden
-                                    >
-                                      🛈
-                                    </span>
-                                  </TooltipWrapper>
+                                    variant="cardTitle"
+                                  />
                                 )}
                                 {item.id === "crow_harness" && (
-                                  <TooltipWrapper
-                                    tooltip={
-                                      <div className="text-xs">
-                                        <div className="font-bold mb-1">
-                                          One-eyed Crow
-                                        </div>
-                                        <div className="mt-1 space-y-0.5">
-                                          <div>
-                                            up to 15% chance to double action
-                                            gains
-                                          </div>
-                                        </div>
-                                      </div>
-                                    }
+                                  <ArtifactShopTooltipIcon
+                                    artifact="crow_harness"
                                     tooltipId="crow-harness-info"
-                                    disabled
-                                    tooltipContentClassName="max-w-xs border border-amber-600"
-                                    className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse"
-                                  >
-                                    <span
-                                      className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
-                                      aria-hidden
-                                    >
-                                      🛈
-                                    </span>
-                                  </TooltipWrapper>
+                                    variant="cardTitle"
+                                  />
                                 )}
                                 {item.id === "cruel_mode" && (
                                   <TooltipWrapper
@@ -1543,15 +1646,15 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                               </CardDescription>
                             </CardHeader>
                             <CardContent className="min-h-16 pl-4 pr-4 pb-4 flex-1">
-                              <p className="leading-snug text-sm opacity-80">
-                                {item.description}
-                              </p>
+                              <div className="leading-snug text-sm opacity-80">
+                                <ShopItemDescriptionParagraph item={item} />
+                              </div>
                             </CardContent>
                             <CardFooter className="pl-4 pr-4 pb-4 flex-col gap-2">
                               <div className="relative z-0 w-full overflow-visible pt-1">
                                 {item.id === "gold_20000" && (
                                   <div
-                                    className="pointer-events-none absolute right-[-16px] top-[-16px] z-20 flex size-[32px] items-center justify-center rounded-full border border-red-600 bg-red-800 shadow-[0_0_12px_rgba(239,68,68,0.7),0_0_24px_rgba(239,68,68,0.45),0_4px_12px_rgba(0,0,0,0.6)]"
+                                    className="shop-3x-value-badge-pulse pointer-events-none absolute right-[-16px] top-[-16px] z-20 flex size-[32px] items-center justify-center rounded-full border border-red-600 bg-red-800"
                                     aria-hidden
                                   >
                                     <span className="flex flex-col items-center gap-px px-0.5 text-[8px] font-medium leading-none text-white">
