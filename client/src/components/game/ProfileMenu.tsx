@@ -616,9 +616,11 @@ export default function ProfileMenu() {
                   alt="Discovery"
                   className="w-full h-full object-contain rounded-md transition-all duration-300 invert opacity-60 group-hover:invert-0 group-hover:opacity-100"
                 />
-                {isPaused && (
-                  <span className="absolute -top-[4px] -right-[4px] w-2 h-2 bg-red-600 rounded-full notification-pulse" />
-                )}
+                {(isPaused ||
+                  sleepDialogOpen ||
+                  leaderboardDialogOpen) && (
+                    <span className="absolute -top-[4px] -right-[4px] w-2 h-2 bg-red-600 rounded-full notification-pulse" />
+                  )}
               </Button>
             </div>
           </div>

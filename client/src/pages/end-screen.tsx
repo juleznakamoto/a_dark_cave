@@ -1,6 +1,6 @@
-
 import { Helmet } from "react-helmet-async";
 import Hero from "@/components/ui/animated-shader-hero";
+import { initPlaylight, markPlaylightDiscoveryUserInitiated } from "@/lib/playlight";
 
 export default function EndScreenPage() {
   const handleMainMenu = async () => {
@@ -27,6 +27,24 @@ export default function EndScreenPage() {
 
   const handleFandomWiki = () => {
     window.open("https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki", "_blank", "noopener,noreferrer");
+  };
+
+  const handleMoreGames = async () => {
+    // Mirror ProfileMenu discovery: load Playlight SDK if needed, then open discovery.
+    let playlightSDK: { setDiscovery?: (open?: boolean) => void } | undefined =
+      (window as typeof window & { playlightSDK?: typeof playlightSDK }).playlightSDK;
+    if (!playlightSDK) {
+      try {
+        await initPlaylight();
+      } catch {
+        return;
+      }
+      playlightSDK = (window as typeof window & { playlightSDK?: typeof playlightSDK }).playlightSDK;
+    }
+    if (playlightSDK && typeof playlightSDK.setDiscovery === "function") {
+      markPlaylightDiscoveryUserInitiated();
+      playlightSDK.setDiscovery();
+    }
   };
 
   return (
@@ -61,6 +79,11 @@ export default function EndScreenPage() {
             text: "Continue Playing",
             onClick: handleMainMenu,
             buttonId: "end-screen-close",
+          },
+          secondaryTrailing: {
+            text: "More Games",
+            onClick: handleMoreGames,
+            buttonId: "end-screen-more-games",
           },
         }}
         socialButtons={{
