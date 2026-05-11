@@ -140,7 +140,78 @@
         "@type": "Organization",
         "name": "A Dark Cave",
         "url": "https://a-dark-cave.com",
-        "logo": "https://a-dark-cave.com/og-image.png"
+        "logo": "https://a-dark-cave.com/og-image.png",
+        "sameAs": [
+          "https://www.reddit.com/r/aDarkCave/",
+          "https://www.instagram.com/a_dark_cave/",
+          "https://www.incrementaldb.com/game/a-dark-cave",
+          "https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki"
+        ]
+      }
+    </script>
+
+  <!-- Site navigation (JSON-LD) — signals key entry points for crawlers -->
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "A Dark Cave site navigation",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@type": "SiteNavigationElement",
+              "name": "Play the Game",
+              "url": "https://a-dark-cave.com/"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "item": {
+              "@type": "SiteNavigationElement",
+              "name": "Reddit",
+              "url": "https://www.reddit.com/r/aDarkCave/"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "item": {
+              "@type": "SiteNavigationElement",
+              "name": "Instagram",
+              "url": "https://www.instagram.com/a_dark_cave/"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "item": {
+              "@type": "SiteNavigationElement",
+              "name": "Incremental DB",
+              "url": "https://www.incrementaldb.com/game/a-dark-cave"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 5,
+            "item": {
+              "@type": "SiteNavigationElement",
+              "name": "Wiki",
+              "url": "https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 6,
+            "item": {
+              "@type": "SiteNavigationElement",
+              "name": "Contact",
+              "url": "mailto:support@a-dark-cave.com"
+            }
+          }
+        ]
       }
     </script>
 
@@ -259,6 +330,29 @@
     <p>
       Enter the cave. Light the first fire. See how far you can survive.
     </p>
+
+    <nav aria-label="Site navigation">
+      <ul style="margin: 2em 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem;">
+        <li>
+          <a href="https://a-dark-cave.com/" style="color: #444444">Play the Game</a>
+        </li>
+        <li>
+          <a href="https://www.reddit.com/r/aDarkCave/" style="color: #444444">Reddit</a>
+        </li>
+        <li>
+          <a href="https://www.instagram.com/a_dark_cave/" style="color: #444444">Instagram</a>
+        </li>
+        <li>
+          <a href="https://www.incrementaldb.com/game/a-dark-cave" style="color: #444444">Incremental DB</a>
+        </li>
+        <li>
+          <a href="https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki" style="color: #444444">Wiki</a>
+        </li>
+        <li>
+          <a href="mailto:support@a-dark-cave.com" style="color: #444444">Contact</a>
+        </li>
+      </ul>
+    </nav>
   </main>
   <script type="module" src="/src/main.tsx"></script>
 </body>

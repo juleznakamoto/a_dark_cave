@@ -2,12 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import { ParticleButton } from "@/components/ui/particle-button";
 import { useGameStore } from "@/game/state";
 import CloudShader from "@/components/ui/cloud-shader";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
+import {
+  GAME_FOOTER_RIGHT_ICON_LINKS,
+  GAME_FOOTER_RIGHT_ICON_ORDER,
+} from "@/lib/gameFooterSocialLinks";
 export default function StartScreen() {
   const { executeAction, setBoostMode, boostMode, cruelMode } = useGameStore();
-  const isMobile = useIsMobile();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const executedRef = useRef(false);
   const isCruelMode = cruelMode;
@@ -217,7 +220,53 @@ export default function StartScreen() {
         </TooltipWrapper>
       )}
 
-      <div className="absolute bottom-4 right-4 z-10 flex gap-4 text-xs text-muted-foreground">
+      <nav
+        className={`absolute bottom-4 left-4 right-4 z-10 flex flex-wrap justify-end gap-x-3 gap-y-1.5 text-[10px] sm:text-xs text-muted-foreground ${boostMode ? "pr-8 sm:pr-10" : ""}`}
+        aria-label="Site links"
+      >
+        <a
+          href="/"
+          className="inline-flex items-center gap-1 hover:text-foreground transition-colors opacity-40 hover:opacity-100"
+        >
+          Play the Game
+        </a>
+        {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
+          const { href, title } = GAME_FOOTER_RIGHT_ICON_LINKS[platform];
+          const linkClass =
+            "inline-flex items-center gap-1 hover:text-foreground transition-colors opacity-40 hover:opacity-100";
+          if (href.startsWith("http")) {
+            return (
+              <a
+                key={platform}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer me"
+                className={linkClass}
+                title={title}
+              >
+                <FooterSocialIcon
+                  platform={platform}
+                  className="w-3.5 h-3.5 shrink-0"
+                />
+                <span>{title}</span>
+              </a>
+            );
+          }
+          return (
+            <a
+              key={platform}
+              href={href}
+              className={linkClass}
+              title={title}
+            >
+              <FooterSocialIcon
+                platform={platform}
+                className="w-3.5 h-3.5 shrink-0"
+              />
+              <span>{title}</span>
+            </a>
+          );
+        })}
         <a
           href="/privacy"
           className="hover:text-foreground transition-colors opacity-40 hover:opacity-100"
@@ -230,7 +279,7 @@ export default function StartScreen() {
         >
           Imprint
         </a>
-      </div>
+      </nav>
     </div>
   );
 }
