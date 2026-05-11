@@ -432,6 +432,23 @@ body {
   animation: notification-pulse .8s ease-in-out infinite;
 }
 
+/* Playlight discovery: cue next to flashlight when paused / after sleep dialog delay */
+@keyframes explore-fun-games-cue-pulse {
+
+  0%,
+  100% {
+    opacity: .55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.explore-fun-games-cue {
+  animation: explore-fun-games-cue-pulse 1.4s ease-in-out infinite;
+}
+
 /* Exclusive promo shortcut: green shockwave ~every 10s (same cadence idea as notification ripples) */
 @keyframes exclusive-promo-shockwave {
   0% {

@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { saveGame } from "@/game/save";
 import { buildGameState } from "@/game/stateHelpers";
 import { logger } from "@/lib/logger";
-import { formatSaveTimestamp } from "@/lib/utils";
+import { formatSaveTimestamp, cn } from "@/lib/utils";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { DropdownMenuItemWithTooltip } from "@/components/game/DropdownMenuItemWithTooltip";
 import {
@@ -52,6 +52,7 @@ export default function ProfileMenu() {
     social_media_rewards,
     leaderboardDialogOpen,
     setLeaderboardDialogOpen,
+    idleModeDialog,
     isPaused,
     hasWonAnyGame,
     restartGameDialogOpen, // Added from store
@@ -90,9 +91,28 @@ export default function ProfileMenu() {
   const showRewardsTasksShortcut =
     !exclusiveTrackTasksDone || clothing?.gifted_ring !== true;
 
+  const sleepDialogOpen = idleModeDialog?.isOpen === true;
+  /** After sleep dialog opens, show the Playlight cue only after this delay (pause shows immediately). */
+  const [sleepExploreCueVisible, setSleepExploreCueVisible] = useState(false);
+
   useEffect(() => {
     checkAuth();
   }, []);
+
+  useEffect(() => {
+    if (!sleepDialogOpen) {
+      setSleepExploreCueVisible(false);
+      return undefined;
+    }
+    const timerId = window.setTimeout(() => {
+      setSleepExploreCueVisible(true);
+    }, 5000);
+    return () => {
+      window.clearTimeout(timerId);
+    };
+  }, [sleepDialogOpen]);
+
+  const showExploreFunGamesCue = isPaused || sleepExploreCueVisible;
 
   useEffect(() => {
     if (!accountDropdownOpen || !currentUser) return;
@@ -538,7 +558,12 @@ export default function ProfileMenu() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="flex-wrap justify-end max-w-[140px] flex items-start gap-1">
+      <div
+        className={cn(
+          "flex-wrap justify-end flex items-start gap-1",
+          showExploreFunGamesCue ? "max-w-[min(calc(100vw-7rem),20rem)]" : "max-w-[140px]",
+        )}
+      >
         <div className="flex items-start gap-0.5 shrink-0">
           {showRewardsTasksShortcut && (
             <TooltipWrapper
@@ -574,21 +599,28 @@ export default function ProfileMenu() {
                 </span>
               </Button>
             )}
-            <Button
-              variant="ghost"
-              size="xs"
-              onClick={handleDiscovery}
-              className="relative p-0 w-7 h-7 bg-background/70 backdrop-blur-sm border border-border flex items-center justify-center group"
-            >
-              <img
-                src="/flashlight.png"
-                alt="Discovery"
-                className="w-full h-full object-contain rounded-md transition-all duration-300 invert opacity-60 group-hover:invert-0 group-hover:opacity-100"
-              />
-              {isPaused && (
-                <span className="absolute -top-[4px] -right-[4px] w-2 h-2 bg-red-600 rounded-full notification-pulse" />
+            <div className="flex items-center gap-2 justify-end w-full shrink-0">
+              {showExploreFunGamesCue && (
+                <span className="text-[11px] sm:text-xs font-bold text-white explore-fun-games-cue text-right leading-tight select-none whitespace-nowrap">
+                  Explore more fun games →
+                </span>
               )}
-            </Button>
+              <Button
+                variant="ghost"
+                size="xs"
+                onClick={handleDiscovery}
+                className="relative p-0 w-7 h-7 shrink-0 bg-background/70 backdrop-blur-sm border border-border flex items-center justify-center group"
+              >
+                <img
+                  src="/flashlight.png"
+                  alt="Discovery"
+                  className="w-full h-full object-contain rounded-md transition-all duration-300 invert opacity-60 group-hover:invert-0 group-hover:opacity-100"
+                />
+                {isPaused && (
+                  <span className="absolute -top-[4px] -right-[4px] w-2 h-2 bg-red-600 rounded-full notification-pulse" />
+                )}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
