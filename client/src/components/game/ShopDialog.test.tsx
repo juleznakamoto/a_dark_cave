@@ -723,8 +723,8 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        // gold_20000 on Highlights: list 13.49 € vs sale 9.99 €
-        const originalPrice = screen.getByText(/13\.49\s*€/);
+        // gold_20000 on Highlights: list 12.49 € vs sale 8.99 €
+        const originalPrice = screen.getByText(/12\.49\s*€/);
         expect(originalPrice).toHaveClass('line-through');
       });
     });
@@ -1253,11 +1253,20 @@ describe('ShopDialog', () => {
     });
 
     // Pale King's Bundle: catalog price vs explicit list MSRP on the bundle
-    expect(screen.getByText(/^10\.99 €$/)).toBeInTheDocument();
+    const titleEl = screen.getByText("Pale King's Bundle");
+    let bundleScope: HTMLElement | null = titleEl.parentElement;
+    while (bundleScope && !within(bundleScope).queryByText('Most popular')) {
+      bundleScope = bundleScope.parentElement;
+    }
+    expect(bundleScope).toBeTruthy();
+    const salePriceEls = within(bundleScope!).getAllByText(/^9\.99 €$/);
+    expect(
+      salePriceEls.some((el) => !el.className.includes('line-through')),
+    ).toBe(true);
     const listSumEuro = (
       SHOP_ITEMS.advanced_bundle.originalPrice! / 100
     ).toFixed(2);
-    const originalPrice = screen.getByText(
+    const originalPrice = within(bundleScope!).getByText(
       new RegExp(`${listSumEuro.replace('.', '\\.')}\\s*€`),
     );
     expect(originalPrice).toHaveClass('line-through');

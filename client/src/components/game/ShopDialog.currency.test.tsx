@@ -274,8 +274,8 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
 
       await waitFor(() => {
         // Highlights: gold_20000 sale + list (EUR)
-        expect(screen.getAllByText('9.99 €').length).toBeGreaterThan(0);
-        expect(screen.getAllByText('13.49 €').length).toBeGreaterThan(0);
+        expect(screen.getAllByText('8.99 €').length).toBeGreaterThan(0);
+        expect(screen.getAllByText('12.49 €').length).toBeGreaterThan(0);
       });
     });
 
@@ -294,8 +294,8 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
 
       await waitFor(() => {
         // Check various USD price formats (gold_20000 on Highlights)
-        expect(screen.getAllByText(/\$9\.99/).length).toBeGreaterThan(0);
-        expect(screen.getAllByText(/\$13\.49/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/\$8\.99/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/\$12\.49/).length).toBeGreaterThan(0);
       });
     });
 
@@ -314,8 +314,8 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
 
       await waitFor(() => {
         // gold_20000 on Highlights: sale vs list in EUR
-        expect(screen.getAllByText(/^9\.99 €$/).length).toBeGreaterThan(0);
-        const originalPrices = screen.getAllByText(/13\.49\s*€/);
+        expect(screen.getAllByText(/^8\.99 €$/).length).toBeGreaterThan(0);
+        const originalPrices = screen.getAllByText(/12\.49\s*€/);
         expect(originalPrices.some((el) => el.classList.contains('line-through'))).toBe(true);
       });
     });

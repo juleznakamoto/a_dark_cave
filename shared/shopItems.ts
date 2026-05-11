@@ -127,8 +127,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_5000",
     name: "5'000 Gold",
     description: "A fortune in Gold",
-    originalPrice: 799,
-    price: 599, // 5.99 €
+    originalPrice: 749,
+    price: 549, // 5.49 €
     rewards: {
       resources: { gold: 5000 },
     },
@@ -143,8 +143,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_20000",
     name: "20'000 Gold",
     description: "Unholy amounts of Gold",
-    originalPrice: 1349,
-    price: 999, // 9.99 €
+    originalPrice: 1249,
+    price: 899, // 8.99 €
     rewards: {
       resources: { gold: 20000 },
     },
@@ -282,8 +282,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "advanced_bundle",
     name: "Pale King's Bundle",
     description: "Powerful Bundle with 20'000 Gold and 3 Great Feasts",
-    originalPrice: 1449, // 14.49 € list
-    price: 1099, // Beta / sale
+    originalPrice: 1399, // 13.99 € list
+    price: 999, // 9.99 €
     rewards: {
       resources: { gold: 20000 },
       feastActivations: 3,
@@ -302,8 +302,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Ashen Throne Bundle",
     description:
       "Ultimate Bundle with 20'000 Gold, 3 Great Feasts, Skull Lantern, Tarnished Compass, and Crow Harness",
-    originalPrice: 2199, // 21.99 € list
-    price: 1649, // Beta / sale
+    originalPrice: 2099, // 20.99 € list
+    price: 1499, // 14.99 €
     rewards: {
       resources: { gold: 20000 },
       feastActivations: 3,
