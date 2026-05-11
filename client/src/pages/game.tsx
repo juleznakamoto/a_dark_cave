@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { lazy } from "react";
 import GameContainer from "@/components/game/GameContainer";
-import { useGameStore } from "@/game/state";
+import { StateManager, useGameStore } from "@/game/state";
 import { startGameLoop, stopGameLoop } from "@/game/loop";
 import { loadGame, saveGame } from "@/game/save"; // Import saveGame
 const EventDialog = lazy(() => import("@/components/game/EventDialog"));
@@ -12,6 +12,7 @@ import { getCurrentUser, flushPendingMarketingPreferences, applySignupWelcomeBon
 import { initSessionTracker } from "@/lib/sessionTracker";
 import { gamblerDiceResumeOnLoad } from "@/game/gamblerSession";
 import { processStripePaymentReturn } from "@/lib/stripePaymentReturn";
+import { isPlaylightReferralUrl } from "@/lib/playlight";
 import type { TimedEventTabState } from "@/game/types";
 
 export default function Game() {
@@ -152,6 +153,10 @@ export default function Game() {
           document.head.appendChild(link);
         }
 
+        // Snapshot in-memory store before await: executeAction("lightFire") may have applied
+        // Playlight bonuses, while loadGame() returns a stale disk/cloud envelope until the next save.
+        const preHydrationSnapshot = useGameStore.getState();
+
         // Load saved game or initialize with defaults
         const savedState = await loadGame();
         if (savedState) {
@@ -187,6 +192,30 @@ export default function Game() {
             },
           });
           logger.log("[GAME] Game loaded from save");
+
+          const staleDiskPredatesPlaylightWarmWelcome =
+            isPlaylightReferralUrl() &&
+            preHydrationSnapshot.story?.seen?.fireLit &&
+            preHydrationSnapshot.story?.seen?.playlightMemberGoldGranted === true &&
+            !savedState.story?.seen?.fireLit;
+
+          if (staleDiskPredatesPlaylightWarmWelcome) {
+            useGameStore.setState({
+              resources: preHydrationSnapshot.resources,
+              flags: {
+                ...useGameStore.getState().flags,
+                ...preHydrationSnapshot.flags,
+              },
+              story: {
+                ...(savedState.story ?? useGameStore.getState().story),
+                seen: {
+                  ...(savedState.story?.seen ?? {}),
+                  ...(preHydrationSnapshot.story?.seen ?? {}),
+                },
+              },
+            });
+            StateManager.scheduleEffectsUpdate(useGameStore.getState);
+          }
 
           void import("@/game/socialPromoExclusiveReward").then((m) =>
             m.syncSocialPromoExclusiveRewardPending(),
@@ -234,7 +263,9 @@ export default function Game() {
             useGameStore.setState({
               flags: { ...useGameStore.getState().flags, gameStarted: true, hasLitFire: preInitFlags.hasLitFire },
               story: preInitStory,
+              resources: preHydrationSnapshot.resources,
             });
+            StateManager.scheduleEffectsUpdate(useGameStore.getState);
           }
 
           // Track Google Ads source if present in URL
