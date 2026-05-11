@@ -24,11 +24,14 @@
       "type": "image/png"
     },
     {
-      "src": "/apple-touch-icon.png",
-      "sizes": "180x180",
+      "src": "/og-image.png",
+      "sizes": "500x500",
       "type": "image/png"
     }
   ],
-  "categories": ["games", "entertainment"],
+  "categories": [
+    "games",
+    "entertainment"
+  ],
   "lang": "en-US"
 }
