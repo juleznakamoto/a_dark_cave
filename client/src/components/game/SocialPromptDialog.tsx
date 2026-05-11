@@ -28,6 +28,7 @@ import {
   SOCIAL_PROMPT_REFERRAL_CAP,
   REFERRAL_REWARD_GOLD,
 } from "@/game/socialPromptAuto";
+import { SIGN_UP_WELCOME_GOLD } from "@shared/schema";
 import {
   getSocialPromoExclusiveProgress,
   syncSocialPromoExclusiveRewardPending,
@@ -317,7 +318,7 @@ export default function SocialPromptDialog({
                 <div className="flex items-center gap-2">
                   <User className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
                   <span className="font-medium text-sm">
-                    Sign up (+250 Gold)
+                    Sign up (+{SIGN_UP_WELCOME_GOLD} Gold)
                   </span>
                 </div>
                 <p className="text-xs text-muted-foreground leading-snug">

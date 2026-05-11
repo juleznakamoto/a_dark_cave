@@ -35,10 +35,10 @@ export const FELLOWSHIP_MEMBER_ORDER = Object.keys(fellowshipShape) as (keyof ty
  * Gold per successful referral (invitee via server + inviter when claiming in-game).
  * Social Prompt / Profile strings import via `@/game/socialPromptAuto`.
  */
-export const REFERRAL_REWARD_GOLD = 250;
+export const REFERRAL_REWARD_GOLD = 200;
 
 /** One-time welcome gold when creating an account (email or Google). */
-export const SIGN_UP_WELCOME_GOLD = 250;
+export const SIGN_UP_WELCOME_GOLD = 200;
 
 // Game state schema for A Dark Cave
 export const gameStateSchema = z.object({
