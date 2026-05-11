@@ -1,11 +1,12 @@
 import type { GameState } from "@shared/schema";
 import { MARKETING_EMAIL_REWARD_KEY } from "@/game/marketingEmailReward";
+import { PLAYLIGHT_DISCOVER_REWARD_KEY } from "@/game/playlightDiscoverReward";
 import { SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
 import { useGameStore } from "@/game/state";
 import { logger } from "@/lib/logger";
 
-/** Steps: signed in, email reward, Instagram, Reddit, at least one invite (exclusive item track). */
-export const SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL = 5;
+/** Steps: signed in, email reward, Instagram, Reddit, Playlight discover, at least one invite (exclusive item track). */
+export const SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL = 6;
 
 export type SocialPromoExclusiveSlice = {
   social_media_rewards?: GameState["social_media_rewards"];
@@ -49,6 +50,7 @@ export function socialPromoExclusiveStepsCompleted(
   for (const p of SOCIAL_PLATFORMS) {
     if (rewards[p.id]?.claimed) n++;
   }
+  if (!!rewards[PLAYLIGHT_DISCOVER_REWARD_KEY]?.claimed) n++;
   if (isExclusiveInviteStepDone(state)) n++;
   return n;
 }

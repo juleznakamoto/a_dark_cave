@@ -21,7 +21,7 @@ import { SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
 import { claimSocialFollowReward } from "@/game/claimSocialFollowReward";
 import { SocialPlatformGlyph } from "@/components/game/SocialPlatformGlyph";
 import { getCurrentUser } from "@/game/auth";
-import { Check, Circle, Mail, User, UserPlus } from "lucide-react";
+import { Check, Circle, Mail, Sparkles, User, UserPlus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
@@ -36,6 +36,11 @@ import {
   isSignUpRewardsStepDone,
   SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL,
 } from "@/game/socialPromoExclusiveReward";
+import {
+  PLAYLIGHT_DISCOVER_REWARD_KEY,
+  PLAYLIGHT_DISCOVER_REWARD_GOLD,
+  claimPlaylightDiscoverReward,
+} from "@/game/playlightDiscoverReward";
 
 interface SocialPromptDialogProps {
   isOpen: boolean;
@@ -114,6 +119,7 @@ export default function SocialPromptDialog({
 
   const [prefLoading, setPrefLoading] = useState(false);
   const [subscribeLoading, setSubscribeLoading] = useState(false);
+  const [discoverGamesLoading, setDiscoverGamesLoading] = useState(false);
   const [marketingOptIn, setMarketingOptIn] = useState(false);
 
   useEffect(() => {
@@ -258,6 +264,8 @@ export default function SocialPromptDialog({
   const referralsComplete = referralCount >= SOCIAL_PROMPT_REFERRAL_CAP;
   const emailRewardClaimed =
     !!social_media_rewards[MARKETING_EMAIL_REWARD_KEY]?.claimed;
+  const playlightDiscoverRewardClaimed =
+    !!social_media_rewards[PLAYLIGHT_DISCOVER_REWARD_KEY]?.claimed;
   const exclusiveInviteDone = isExclusiveInviteStepDone({
     referralCount,
     referrals,
@@ -405,6 +413,50 @@ export default function SocialPromptDialog({
               </div>
             );
           })}
+
+          {/* Playlight discover (after Reddit / social list) */}
+          <div
+            className={cn(
+              "rounded-md border border-border p-3 flex gap-3 items-center",
+              playlightDiscoverRewardClaimed &&
+              "border-green-500/40 bg-green-500/5",
+            )}
+          >
+            <div className="shrink-0">
+              <StatusIcon done={playlightDiscoverRewardClaimed} />
+            </div>
+            <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
+              <div className="min-w-0 flex-1 space-y-1">
+                <div className="flex items-center gap-2">
+                  <Sparkles
+                    className="h-4 w-4 shrink-0 opacity-90"
+                    aria-hidden
+                  />
+                  <span className="font-medium text-sm">
+                    Discover 1 game (+{PLAYLIGHT_DISCOVER_REWARD_GOLD} Gold)
+                  </span>
+                </div>
+              </div>
+              {!playlightDiscoverRewardClaimed && (
+                <LockedSocialButton
+                  locked={!isUserSignedIn}
+                  tooltipId="social-prompt-playlight-discover"
+                  size="xs"
+                  className="self-center"
+                  disabled={discoverGamesLoading}
+                  onClick={() => {
+                    if (discoverGamesLoading) return;
+                    setDiscoverGamesLoading(true);
+                    void claimPlaylightDiscoverReward().finally(() => {
+                      setDiscoverGamesLoading(false);
+                    });
+                  }}
+                >
+                  Discover games
+                </LockedSocialButton>
+              )}
+            </div>
+          </div>
 
           {/* Invite */}
           <div

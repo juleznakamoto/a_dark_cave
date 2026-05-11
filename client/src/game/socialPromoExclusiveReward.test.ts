@@ -5,6 +5,7 @@ import {
   isSocialPromoExclusiveRewardComplete,
   socialPromoExclusiveStepsCompleted,
 } from "@/game/socialPromoExclusiveReward";
+import { PLAYLIGHT_DISCOVER_REWARD_KEY } from "@/game/playlightDiscoverReward";
 
 describe("socialPromoExclusiveReward", () => {
   const empty = {
@@ -47,20 +48,21 @@ describe("socialPromoExclusiveReward", () => {
     ).toBe(true);
   });
 
-  it("complete when all five exclusive-track steps satisfied", () => {
+  it("complete when all six exclusive-track steps satisfied", () => {
     const full = {
       isUserSignedIn: true,
       social_media_rewards: {
         marketing_email: { claimed: true, timestamp: 1 },
         instagram: { claimed: true, timestamp: 1 },
         reddit: { claimed: true, timestamp: 1 },
+        [PLAYLIGHT_DISCOVER_REWARD_KEY]: { claimed: true, timestamp: 1 },
       },
       referralCount: 1,
       referrals: [] as { userId: string; claimed: boolean; timestamp: number }[],
     };
     expect(isSocialPromoExclusiveRewardComplete(full)).toBe(true);
     const p = getSocialPromoExclusiveProgress(full);
-    expect(p.completed).toBe(5);
+    expect(p.completed).toBe(6);
     expect(p.percent).toBe(100);
   });
 });

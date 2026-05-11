@@ -1,5 +1,6 @@
 import type { GameState } from "@shared/schema";
 import { MARKETING_EMAIL_REWARD_KEY } from "@/game/marketingEmailReward";
+import { PLAYLIGHT_DISCOVER_REWARD_KEY } from "@/game/playlightDiscoverReward";
 import { SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
 
 /** @deprecated Legacy signed-in scheduler; auto-open now uses {@link SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS}. */
@@ -46,6 +47,12 @@ function socialPlatformsRewardDone(
   return SOCIAL_PLATFORMS.every((p) => !!rewards[p.id]?.claimed);
 }
 
+function playlightDiscoverRewardDone(
+  rewards: GameState["social_media_rewards"],
+): boolean {
+  return !!rewards[PLAYLIGHT_DISCOVER_REWARD_KEY]?.claimed;
+}
+
 /**
  * Email counts as fulfilled if they ever claimed the one-time subscribe reward (persists if they unsubscribe later).
  */
@@ -62,7 +69,7 @@ export type SocialPromptRewardSlice = {
   isUserSignedIn?: boolean;
 };
 
-/** First wave: show if any of email, all platforms, or invite cap is still incomplete. */
+/** First wave: show if any of email, all platforms, Playlight discover, or invite cap is still incomplete. */
 export function isSocialPromptFirstWaveEligible(
   state: SocialPromptRewardSlice,
 ): boolean {
@@ -70,12 +77,13 @@ export function isSocialPromptFirstWaveEligible(
   const rewards = state.social_media_rewards ?? {};
   const platformsDone = socialPlatformsRewardDone(rewards);
   const emailDone = isMarketingEmailRewardClaimedForPrompt(rewards);
+  const discoverDone = playlightDiscoverRewardDone(rewards);
   const invitesDone =
     (state.referralCount ?? 0) >= SOCIAL_PROMPT_REFERRAL_CAP;
-  return !(platformsDone && emailDone && invitesDone);
+  return !(platformsDone && emailDone && discoverDone && invitesDone);
 }
 
-/** Repeat wave: only email + platform follows (invite cap ignored). */
+/** Repeat wave: email + platform follows + Playlight discover (invite cap ignored). */
 export function isSocialPromptRepeatWaveEligible(
   state: SocialPromptRewardSlice,
 ): boolean {
@@ -83,5 +91,6 @@ export function isSocialPromptRepeatWaveEligible(
   const rewards = state.social_media_rewards ?? {};
   const platformsDone = socialPlatformsRewardDone(rewards);
   const emailDone = isMarketingEmailRewardClaimedForPrompt(rewards);
-  return !(platformsDone && emailDone);
+  const discoverDone = playlightDiscoverRewardDone(rewards);
+  return !(platformsDone && emailDone && discoverDone);
 }

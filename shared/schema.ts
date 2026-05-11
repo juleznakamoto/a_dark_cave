@@ -589,7 +589,7 @@ export const gameStateSchema = z.object({
   /** Legacy scheduler phase (retained for save compatibility; unused for auto-open). */
   socialPromptAutoPhase: z.number().int().min(0).max(2).default(0),
   /**
-   * Set true once signed in + email reward + both social follows + ≥1 invite are satisfied; future event can grant exclusive item then clear or consume this flag.
+   * Set true once signed in + email reward + both social follows + Playlight discover task + ≥1 invite are satisfied; future event can grant exclusive item then clear or consume this flag.
    */
   socialPromoExclusiveRewardPending: z.boolean().default(false),
   /**

@@ -6,8 +6,13 @@ import {
   SOCIAL_PROMPT_REFERRAL_CAP,
   socialPromptMilestoneFloorFromPlayTime,
 } from "@/game/socialPromptAuto";
+import { PLAYLIGHT_DISCOVER_REWARD_KEY } from "@/game/playlightDiscoverReward";
 
 const MIN = 60 * 1000;
+
+const claimedPlaylightDiscover = {
+  [PLAYLIGHT_DISCOVER_REWARD_KEY]: { claimed: true as const, timestamp: 1 },
+};
 
 describe("socialPromptMilestoneFloorFromPlayTime", () => {
   it("counts thresholds strictly by active-play milestones", () => {
@@ -51,13 +56,14 @@ describe("socialPromptAuto eligibility", () => {
     ).toBe(true);
   });
 
-  it("first wave: not eligible when platforms, email reward, and referrals complete", () => {
+  it("first wave: not eligible when platforms, email, Playlight discover, and referrals complete", () => {
     expect(
       isSocialPromptFirstWaveEligible({
         social_media_rewards: {
           instagram: { claimed: true, timestamp: 1 },
           reddit: { claimed: true, timestamp: 1 },
           marketing_email: { claimed: true, timestamp: 1 },
+          ...claimedPlaylightDiscover,
         },
         referralCount: SOCIAL_PROMPT_REFERRAL_CAP,
         isUserSignedIn: true,
@@ -79,13 +85,14 @@ describe("socialPromptAuto eligibility", () => {
     ).toBe(true);
   });
 
-  it("repeat wave: ignores referrals — not eligible when platforms + email reward done", () => {
+  it("repeat wave: ignores referrals — not eligible when platforms + email + Playlight discover done", () => {
     expect(
       isSocialPromptRepeatWaveEligible({
         social_media_rewards: {
           instagram: { claimed: true, timestamp: 1 },
           reddit: { claimed: true, timestamp: 1 },
           marketing_email: { claimed: true, timestamp: 1 },
+          ...claimedPlaylightDiscover,
         },
         isUserSignedIn: true,
       }),
@@ -110,6 +117,34 @@ describe("socialPromptAuto eligibility", () => {
       isSocialPromptRepeatWaveEligible({
         social_media_rewards: {
           instagram: { claimed: true, timestamp: 1 },
+          marketing_email: { claimed: true, timestamp: 1 },
+          ...claimedPlaylightDiscover,
+        },
+        isUserSignedIn: true,
+      }),
+    ).toBe(true);
+  });
+
+  it("first wave: eligible when Playlight discover is missing but otherwise complete", () => {
+    expect(
+      isSocialPromptFirstWaveEligible({
+        social_media_rewards: {
+          instagram: { claimed: true, timestamp: 1 },
+          reddit: { claimed: true, timestamp: 1 },
+          marketing_email: { claimed: true, timestamp: 1 },
+        },
+        referralCount: SOCIAL_PROMPT_REFERRAL_CAP,
+        isUserSignedIn: true,
+      }),
+    ).toBe(true);
+  });
+
+  it("repeat wave: eligible when Playlight discover is missing", () => {
+    expect(
+      isSocialPromptRepeatWaveEligible({
+        social_media_rewards: {
+          instagram: { claimed: true, timestamp: 1 },
+          reddit: { claimed: true, timestamp: 1 },
           marketing_email: { claimed: true, timestamp: 1 },
         },
         isUserSignedIn: true,
