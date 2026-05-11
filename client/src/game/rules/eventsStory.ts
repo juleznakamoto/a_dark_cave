@@ -307,6 +307,38 @@ export const storyEvents: Record<string, GameEvent> = {
     }),
   },
 
+  /** After the final siege wave: announces safe passage beyond the blasted gate and unlocks the cave action `encounterBeyondPortal`. */
+  beyondGatePassagesClear: {
+    id: "beyondGatePassagesClear",
+    condition: (state: GameState) =>
+      Boolean(
+        state.story.seen.tenthWaveVictory &&
+        state.story.seen.portalBlasted &&
+        !state.story.seen.beyondGateVentureUnlocked,
+      ),
+    timeProbability: 0.01,
+    title: "Beyond the Gate",
+    message:
+      "The cave passages behind the gate seem clear at last. You seem to have slain the pale creatures. You can finally venture beyond the gate.",
+    priority: 5,
+    repeatable: false,
+    choices: [
+      {
+        id: "continue",
+        label: "Continue",
+        effect: (state: GameState) => ({
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              beyondGateVentureUnlocked: true,
+            },
+          },
+        }),
+      },
+    ],
+  },
+
   encounterBeyondPortal: {
     id: "encounterBeyondPortal",
     condition: (state: GameState) =>
@@ -434,8 +466,8 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       Boolean(
         state.story.seen.secondWaveVictory == true &&
-          state.fellowship.ashwraith_huntress &&
-          !state.story.seen.ashwraithCanyonTradeOfferSeen,
+        state.fellowship.ashwraith_huntress &&
+        !state.story.seen.ashwraithCanyonTradeOfferSeen,
       ),
     timeProbability: 20,
     title: "A Bridge for Trade",
