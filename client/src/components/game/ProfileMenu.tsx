@@ -65,7 +65,6 @@ export default function ProfileMenu() {
     isUserSignedIn,
     signupWelcomeGoldClaimed,
     clothing,
-    playlightSidebarSdkActive,
   } = useGameStore();
 
   const signupWelcomeGoldClaimedBool = signupWelcomeGoldClaimed === true;
@@ -114,8 +113,6 @@ export default function ProfileMenu() {
   }, [sleepDialogOpen]);
 
   const showExploreFunGamesCue = isPaused || sleepExploreCueVisible;
-  const showPlaylightDiscoveryShortcut =
-    !playlightSidebarSdkActive;
 
   useEffect(() => {
     if (!accountDropdownOpen || !currentUser) return;
@@ -564,9 +561,7 @@ export default function ProfileMenu() {
       <div
         className={cn(
           "flex-wrap justify-end flex items-start gap-1",
-          showExploreFunGamesCue && showPlaylightDiscoveryShortcut
-            ? "max-w-[min(calc(100vw-7rem),20rem)]"
-            : "max-w-[140px]",
+          showExploreFunGamesCue ? "max-w-[min(calc(100vw-7rem),20rem)]" : "max-w-[140px]",
         )}
       >
         <div className="flex items-start gap-0.5 shrink-0">
@@ -605,30 +600,28 @@ export default function ProfileMenu() {
               </Button>
             )}
             <div className="flex items-center gap-2 justify-end w-full shrink-0">
-              {showExploreFunGamesCue && showPlaylightDiscoveryShortcut && (
+              {showExploreFunGamesCue && (
                 <span className="text-[11px] sm:text-xs font-bold text-white explore-fun-games-cue text-right leading-tight select-none whitespace-nowrap">
                   Explore more fun games →
                 </span>
               )}
-              {showPlaylightDiscoveryShortcut && (
-                <Button
-                  variant="ghost"
-                  size="xs"
-                  onClick={handleDiscovery}
-                  className="relative p-0 w-7 h-7 shrink-0 bg-background/70 backdrop-blur-sm border border-border flex items-center justify-center group"
-                >
-                  <img
-                    src="/flashlight.png"
-                    alt="Discovery"
-                    className="w-full h-full object-contain rounded-md transition-all duration-300 invert opacity-60 group-hover:invert-0 group-hover:opacity-100"
-                  />
-                  {(isPaused ||
-                    sleepDialogOpen ||
-                    leaderboardDialogOpen) && (
-                      <span className="absolute -top-[4px] -right-[4px] w-2 h-2 bg-red-600 rounded-full notification-pulse" />
-                    )}
-                </Button>
-              )}
+              <Button
+                variant="ghost"
+                size="xs"
+                onClick={handleDiscovery}
+                className="relative p-0 w-7 h-7 shrink-0 bg-background/70 backdrop-blur-sm border border-border flex items-center justify-center group"
+              >
+                <img
+                  src="/flashlight.png"
+                  alt="Discovery"
+                  className="w-full h-full object-contain rounded-md transition-all duration-300 invert opacity-60 group-hover:invert-0 group-hover:opacity-100"
+                />
+                {(isPaused ||
+                  sleepDialogOpen ||
+                  leaderboardDialogOpen) && (
+                    <span className="absolute -top-[4px] -right-[4px] w-2 h-2 bg-red-600 rounded-full notification-pulse" />
+                  )}
+              </Button>
             </div>
           </div>
         </div>

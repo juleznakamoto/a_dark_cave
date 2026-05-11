@@ -342,14 +342,6 @@ export async function initPlaylight() {
           playlightCausedPause = false;
         }
       });
-
-      playlightSDK.onEvent("sidebarEnable", () => {
-        useGameStore.setState({ playlightSidebarSdkActive: true });
-      });
-
-      playlightSDK.onEvent("sidebarDisable", () => {
-        useGameStore.setState({ playlightSidebarSdkActive: false });
-      });
     } catch (error) {
       // Reset promise on error so retry is possible
       initPlaylightPromise = null;

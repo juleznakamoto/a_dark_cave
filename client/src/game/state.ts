@@ -123,8 +123,6 @@ interface GameStore extends GameState {
   restartGameDialogOpen: boolean;
   deleteAccountDialogOpen: boolean;
   playlightWelcomeDialogOpen: boolean;
-  /** True while Playlight SDK sidebar layout is active (`sidebarEnable`). UI-only. */
-  playlightSidebarSdkActive: boolean;
 
   // Notification state for shop
   shopNotificationSeen: boolean;
@@ -1194,7 +1192,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   restartGameDialogOpen: false,
   deleteAccountDialogOpen: false,
   playlightWelcomeDialogOpen: false,
-  playlightSidebarSdkActive: false,
   sleepUpgrades: {
     lengthLevel: 0,
     intensityLevel: 0,
@@ -1835,7 +1832,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       },
       gamblerDiceDialogOpen: false,
       investDialogOpen: false,
-      playlightSidebarSdkActive: false,
 
       // Recalculate derived state
       effects: calculateTotalEffects({ ...defaultGameState, ...preserved }),
@@ -2140,7 +2136,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         investmentHallState:
           savedState.investmentHallState ??
           defaultGameState.investmentHallState,
-        playlightSidebarSdkActive: false,
       };
 
       const savedExpeditionVillagers = savedState.expeditionVillagers || {};
@@ -2180,7 +2175,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         startTime: Date.now(), // Set start time for new game
         isNewGame: true, // Mark as new game to start tracking
         gameId: `game-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`, // Generate gameId for new game
-        playlightSidebarSdkActive: false,
       };
 
       set(newGameState);
