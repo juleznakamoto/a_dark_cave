@@ -19,7 +19,7 @@ const EXIT_INTENT_DISABLE_DEFER_MS = 2000;
 /** No mouse/keys/etc. (see `getMsSinceUserActivity` in `loop.ts`) for this long while eligible → show Discovery. */
 const DISCOVERY_INACTIVITY_MS = 30 * 1000;
 
-/** Active-play milestone for programmatic sidebar / Discovery open (game loop uses cumulative `playTime`). */
+/** Active-play milestone for showing the Playlight sidebar (`setConfig.sidebar.forceVisible`; game loop uses cumulative `playTime`). */
 export const PLAYLIGHT_AUTO_SIDEBAR_PLAY_MS = 30 * 60 * 1000;
 
 type ExitIntentGameSlice = {
@@ -75,7 +75,8 @@ export function markPlaylightDiscoveryUserInitiated() {
 }
 
 /**
- * Shows the Playlight sidebar for everyone and opens Discovery (see SDK sidebar `forceVisible` + `setDiscovery`).
+ * Shows the Playlight **sidebar** (not Discovery). Public SDK API only documents sidebar via
+ * `setConfig({ sidebar: { forceVisible: true } })`; `setDiscovery()` is a separate overlay.
  * Returns false if the SDK is not loaded yet — callers should retry on later ticks without persisting completion.
  */
 export function tryOpenPlaylightThirtyMinSidebar(): boolean {
@@ -86,12 +87,10 @@ export function tryOpenPlaylightThirtyMinSidebar(): boolean {
         ? (window as unknown as { playlightSDK?: typeof playlightSDKInstance })
           .playlightSDK
         : undefined);
-    if (!sdk?.setDiscovery || !sdk?.setConfig) return false;
+    if (!sdk?.setConfig) return false;
     sdk.setConfig({
       sidebar: { forceVisible: true },
     });
-    markPlaylightDiscoveryUserInitiated();
-    sdk.setDiscovery(true);
     return true;
   } catch (error) {
     logger.error("[PLAYLIGHT] Thirty-minute sidebar open failed:", error);
