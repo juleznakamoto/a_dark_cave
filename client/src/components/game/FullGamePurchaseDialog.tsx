@@ -414,7 +414,7 @@ export default function FullGamePurchaseDialog({
   return (
     <Dialog open={isOpen} onOpenChange={requiresPurchase ? undefined : onClose}>
       <DialogContent
-        className={`w-[95vw] sm:max-w-md ${requiresPurchase ? '[&>button]:hidden' : ''}`}
+        className={`[--adc-dialog-max-w:28rem] ${requiresPurchase ? '[&>button]:hidden' : ''}`}
         onEscapeKeyDown={(e) => requiresPurchase && e.preventDefault()}
         onPointerDownOutside={(e) => requiresPurchase && e.preventDefault()}
       >

@@ -262,7 +262,7 @@ export default function LeaderboardDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[95vw] sm:max-w-2xl max-h-[80vh] flex flex-col overflow-hidden z-[70]">
+      <DialogContent className="[--adc-dialog-max-w:42rem] max-h-[80vh] flex flex-col overflow-hidden z-[70]">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
             <span>Leaderboard</span>

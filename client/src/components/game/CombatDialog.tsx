@@ -609,7 +609,7 @@ export default function CombatDialog({
     <>
       <Dialog open={isOpen} onOpenChange={() => { }}>
         <DialogContent
-          className="z-[60] w-[95vw] sm:max-w-md [&>button]:hidden"
+          className="z-[60] [--adc-dialog-max-w:28rem] [&>button]:hidden"
           onPointerDownOutside={(e) => e.preventDefault()}
           onEscapeKeyDown={(e) => e.preventDefault()}
           hideOverlay={true}

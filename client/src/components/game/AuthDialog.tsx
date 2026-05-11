@@ -205,7 +205,7 @@ export default function AuthDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="w-[95vw] sm:max-w-md z-[70]">
+      <DialogContent className="[--adc-dialog-max-w:28rem] z-[70]">
         <DialogHeader>
           <DialogTitle>
             {signupSuccess

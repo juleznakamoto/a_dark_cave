@@ -26,7 +26,7 @@ export function DeleteAccountDialog({
       open={isOpen}
       onOpenChange={(open) => !open && !isDeleting && onClose()}
     >
-      <DialogContent className="w-[95vw] sm:max-w-md z-[70]">
+      <DialogContent className="[--adc-dialog-max-w:28rem] z-[70]">
         <DialogHeader>
           <DialogTitle className="leading-6">Delete account</DialogTitle>
           <DialogDescription className="py-2 space-y-2 text-left">

@@ -636,7 +636,7 @@ export default function IdleModeDialog() {
   return (
     <Dialog open={idleModeDialog.isOpen} onOpenChange={() => { }} modal={true}>
       <DialogContent
-        className="w-[95vw] sm:max-w-md z-[60]"
+        className="[--adc-dialog-max-w:28rem] z-[60]"
         hideClose={true}
         hideOverlay={true}
       >

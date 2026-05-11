@@ -1222,7 +1222,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       <Dialog open={isOpen} onOpenChange={handleShopDialogOpenChange}>
         {!isPaymentMode && (
           <DialogContent
-            className="w-[95vw] sm:max-w-4xl max-h-[80vh] z-[70] p-6"
+            className="[--adc-dialog-max-w:56rem] max-h-[80vh] z-[70] p-6"
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
@@ -1899,7 +1899,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       {clientSecret && selectedItem && (
         <Dialog open={true} onOpenChange={handlePaymentDialogOpenChange}>
           <DialogContent
-            className="max-w-md max-h-[80vh] z-[80] gap-2 [&>button]:hidden"
+            className="[--adc-dialog-max-w:28rem] max-h-[80vh] z-[80] gap-2 [&>button]:hidden"
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >

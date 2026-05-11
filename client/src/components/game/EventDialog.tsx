@@ -231,7 +231,7 @@ export default function EventDialog({
             // All closing should be handled explicitly through handleChoice
           }}
         >
-          <DialogContent className={`w-[95vw] sm:max-w-md [&>button]:hidden ${isMadnessEvent ? 'border-2 border-violet-600 shadow-2xl p-6  max-h-[19rem] flex flex-col overflow-visible z-[100]' : ''}`}>
+          <DialogContent className={`[--adc-dialog-max-w:28rem] [&>button]:hidden ${isMadnessEvent ? 'border-2 border-violet-600 shadow-2xl p-6  max-h-[19rem] flex flex-col overflow-visible z-[100]' : ''}`}>
             {isMadnessEvent && (
               <div className="absolute inset-0 -z-10 madness-dialog-glow pointer-events-none"></div>
             )}

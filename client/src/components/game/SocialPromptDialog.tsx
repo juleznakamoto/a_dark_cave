@@ -282,7 +282,7 @@ export default function SocialPromptDialog({
       open={isOpen}
       onOpenChange={(open) => !open && setSocialPromptDialogOpen(false)}
     >
-      <DialogContent className="w-[95vw] sm:max-w-lg z-[70] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="[--adc-dialog-max-w:32rem] z-[70] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Stay connected and earn Rewards</DialogTitle>
           <DialogDescription className="text-left pt-1 space-y-2">

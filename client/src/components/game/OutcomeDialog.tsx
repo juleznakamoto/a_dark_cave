@@ -79,7 +79,7 @@ export default function OutcomeDialog({
       `}</style>
       <Dialog open={isOpen} onOpenChange={() => { }}>
         <DialogContent
-          className={`w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden border-2 shadow-2xl ${border}`}
+          className={`[--adc-dialog-max-w:24rem] z-[70] [&>button]:hidden border-2 shadow-2xl ${border}`}
         >
           <div className={`absolute inset-0 -z-10 pointer-events-none ${glow}`} />
           <DialogHeader className="text-center sm:text-center">
