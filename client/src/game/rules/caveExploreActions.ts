@@ -271,35 +271,35 @@ function getInheritedItems(actionId: string) {
             : "";
         const itemCondition =
           "condition" in item &&
-            typeof (item as { condition?: string }).condition === "string"
+          typeof (item as { condition?: string }).condition === "string"
             ? (item as { condition: string }).condition
             : undefined;
         const baseCondition =
           itemCondition != null
             ? (state: GameState) => {
-              const cat = (state as Record<string, unknown>)[category];
-              if (
-                cat &&
-                typeof cat === "object" &&
-                (cat as Record<string, unknown>)[item.key]
-              )
-                return false;
-              if (
-                "eventId" in item &&
-                item.eventId &&
-                state.story?.seen?.[item.eventId]
-              )
-                return false;
-              const isNegated = itemCondition.startsWith("!");
-              const path = isNegated ? itemCondition.slice(1) : itemCondition;
-              const parts = path.split(".");
-              let cur: unknown = state;
-              for (const p of parts) {
-                cur = (cur as Record<string, unknown>)?.[p];
-                if (cur === undefined) return isNegated;
+                const cat = (state as Record<string, unknown>)[category];
+                if (
+                  cat &&
+                  typeof cat === "object" &&
+                  (cat as Record<string, unknown>)[item.key]
+                )
+                  return false;
+                if (
+                  "eventId" in item &&
+                  item.eventId &&
+                  state.story?.seen?.[item.eventId]
+                )
+                  return false;
+                const isNegated = itemCondition.startsWith("!");
+                const path = isNegated ? itemCondition.slice(1) : itemCondition;
+                const parts = path.split(".");
+                let cur: unknown = state;
+                for (const p of parts) {
+                  cur = (cur as Record<string, unknown>)?.[p];
+                  if (cur === undefined) return isNegated;
+                }
+                return isNegated ? !cur : !!cur;
               }
-              return isNegated ? !cur : !!cur;
-            }
             : basePath + eventPart;
         inheritedItems[`${category}.${item.key}`] = {
           probability: Math.min(adjustedProbability, 1.0),
@@ -671,7 +671,7 @@ export const caveExploreActions: Record<string, Action> = {
     effects: {
       "story.seen.encounteredBeyondPortal": true,
     },
-    executionTime: 60,
+    executionTime: 30,
     cooldown: 0,
   },
 };
@@ -1162,7 +1162,6 @@ export function handleEncounterBeyondPortal(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("encounterBeyondPortal", state);
-
 
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
