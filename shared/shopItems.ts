@@ -327,15 +327,15 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
 };
 
 /** Ordered list of items to show in the "Highlights" tab (replaces old "All" filter).
- * Order is deliberate for conversion optimization (free → hero bundle → big gold → mode → story bundles).
+ * Order is deliberate for conversion optimization.
  */
 export const HIGHLIGHTS_ORDER = [
   "gold_100_free", // Free Gift - shown first with special blue border
-  "ashen_throne_bundle",
-  "gold_20000",
   "cruel_mode",
-  "artifact_bundle",
+  "artifact_bundle", // Dark Artifacts Bundle
+  "gold_20000", // 20'000 Gold
   "advanced_bundle", // Pale King's Bundle
+  "ashen_throne_bundle",
 ] as const;
 
 /** Sum of each component's list price (`originalPrice`, else `price`). */
