@@ -1085,6 +1085,10 @@ export class StateManager {
  * When adding a new blocking dialog, add its flag here only (see workspace rule for `loop.ts`).
  * `inactivityDialogOpen` is included for the same pause semantics; the inactivity path also stops the rAF loop
  * separately to reduce idle CPU.
+ *
+ * `eventDialog.isOpen` already freezes sim for every normal timed/event choice shown in `EventDialog`
+ * (including story beats such as `beyondGatePassagesClear`); only add a new OR-term here when introducing
+ * a separate modal slice (new `*DialogOpen` flag), not for each `GameEvent` id.
  */
 function isNonRewardBlockingModalOpen(state: GameStore): boolean {
   return (
