@@ -40,6 +40,7 @@ import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { GAME_CONSTANTS } from "@/game/constants";
 import { socialPromptMilestoneFloorFromPlayTime } from "@/game/socialPromptAuto";
+import { PLAYLIGHT_AUTO_SIDEBAR_PLAY_MS } from "@/lib/playlight";
 import {
   ACTION_TO_UPGRADE_KEY,
   incrementButtonUsage,
@@ -1974,6 +1975,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const loadedPlayTime =
         savedState.playTime !== undefined ? savedState.playTime : 0;
 
+      /** Legacy saves omit this key; persist explicit boolean on load/next save. If absent and playTime already passed the milestone, treat as done so we do not open Playlight retroactively. */
+      const rawPlaylightThirtyMinSidebar = (
+        savedState as { playlightThirtyMinSidebarOpened?: boolean }
+      ).playlightThirtyMinSidebarOpened;
+      const playlightThirtyMinSidebarOpened =
+        rawPlaylightThirtyMinSidebar === true
+          ? true
+          : rawPlaylightThirtyMinSidebar === false
+            ? false
+            : loadedPlayTime >= PLAYLIGHT_AUTO_SIDEBAR_PLAY_MS;
+
       // Generate gameId if it doesn't exist in savedState or is undefined
       const gameId =
         savedState.gameId ??
@@ -2058,6 +2070,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             .socialPromptMilestoneIndex ?? 0,
           socialPromptMilestoneFloorFromPlayTime(loadedPlayTime),
         ),
+        playlightThirtyMinSidebarOpened,
         mysteriousNoteShopNotificationSeen:
           savedState.mysteriousNoteShopNotificationSeen !== undefined
             ? savedState.mysteriousNoteShopNotificationSeen
