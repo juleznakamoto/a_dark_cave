@@ -971,6 +971,7 @@ export const createInitialState = (): GameState => ({
   socialPromptMilestoneIndex: 0,
   socialPromptAutoPhase: 0,
   socialPromoExclusiveRewardPending: false,
+  playlightThirtyMinSidebarOpened: false,
 
   // Initialize mysterious note notification state
   mysteriousNoteShopNotificationSeen: false,
@@ -1213,6 +1214,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   socialPromptMilestoneIndex: 0,
   socialPromptAutoPhase: 0,
   socialPromoExclusiveRewardPending: false,
+  playlightThirtyMinSidebarOpened: false,
   // Initialize mysterious note notification state
   mysteriousNoteShopNotificationSeen: false,
   mysteriousNoteDonateNotificationSeen: false,

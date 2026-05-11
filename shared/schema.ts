@@ -592,6 +592,8 @@ export const gameStateSchema = z.object({
    * Set true once signed in + email reward + both social follows + ≥1 invite are satisfied; future event can grant exclusive item then clear or consume this flag.
    */
   socialPromoExclusiveRewardPending: z.boolean().default(false),
+  /** Once true, skip auto-opening Playlight Discovery/sidebar at the 30-minute active-play milestone. */
+  playlightThirtyMinSidebarOpened: z.boolean().default(false),
   mysteriousNoteShopNotificationSeen: z.boolean().default(false), // Track if mysterious note shop notification has been seen
   mysteriousNoteDonateNotificationSeen: z.boolean().default(false), // Track if mysterious note donate notification has been seen
   isUserSignedIn: z.boolean().default(false), // Track if user is currently signed in

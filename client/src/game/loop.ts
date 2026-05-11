@@ -36,6 +36,10 @@ import {
   SOCIAL_PROMPT_AUTO_OPEN_COUNT,
 } from "./socialPromptAuto";
 import { isSocialPromoExclusiveRewardComplete } from "@/game/socialPromoExclusiveReward";
+import {
+  PLAYLIGHT_AUTO_SIDEBAR_PLAY_MS,
+  tryOpenPlaylightThirtyMinSidebar,
+} from "@/lib/playlight";
 
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
@@ -475,6 +479,18 @@ export function startGameLoop() {
               socialPromptDialogOpen: true,
               socialPromptMilestoneIndex: idx + 1,
             });
+          }
+        }
+
+        const latestForPlaylight = useGameStore.getState();
+        if (
+          latestForPlaylight.flags.gameStarted &&
+          !latestForPlaylight.playlightThirtyMinSidebarOpened &&
+          (latestForPlaylight.playTime || 0) >= PLAYLIGHT_AUTO_SIDEBAR_PLAY_MS &&
+          !isModalDialogOpen(latestForPlaylight)
+        ) {
+          if (tryOpenPlaylightThirtyMinSidebar()) {
+            useGameStore.setState({ playlightThirtyMinSidebarOpened: true });
           }
         }
 
