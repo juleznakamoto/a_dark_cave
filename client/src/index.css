@@ -523,10 +523,8 @@ body {
 .pause-hotkey-hint-animated,
 .pause-hotkey-badge-animated {
   opacity: 0;
-  /* Same beat as footer pause (▶) .continue-pause-flash, after intro fade */
-  animation:
-    pause-hotkey-fade-in 4s ease-out forwards,
-    continue-pause-flash 2s ease-in-out 4s infinite;
+  /* One-time fade-in only; footer pause control may still use .continue-pause-flash */
+  animation: pause-hotkey-fade-in 4s ease-out forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
