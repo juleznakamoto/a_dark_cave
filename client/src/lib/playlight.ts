@@ -22,6 +22,18 @@ const DISCOVERY_INACTIVITY_MS = 30 * 1000;
 /** Active-play milestone for showing the Playlight sidebar (`setConfig.sidebar.forceVisible`; game loop uses cumulative `playTime`). */
 export const PLAYLIGHT_AUTO_SIDEBAR_PLAY_MS = 30 * 60 * 1000;
 
+/** Sidebar flags pushed on every `setConfig` so exit-intent-only updates do not drop `forceVisible`. */
+function playlightSidebarSliceFromGameState(state: {
+  playlightThirtyMinSidebarOpened?: boolean;
+}) {
+  const forceVisible =
+    isPlaylightReferralUrl() || !!state.playlightThirtyMinSidebarOpened;
+  return {
+    hasFrameworkRoot: true as const,
+    ...(forceVisible ? { forceVisible: true as const } : {}),
+  };
+}
+
 type ExitIntentGameSlice = {
   flags: { gameStarted?: boolean };
   isPaused: boolean;
@@ -89,7 +101,7 @@ export function tryOpenPlaylightThirtyMinSidebar(): boolean {
         : undefined);
     if (!sdk?.setConfig) return false;
     sdk.setConfig({
-      sidebar: { forceVisible: true },
+      sidebar: { hasFrameworkRoot: true, forceVisible: true },
     });
     return true;
   } catch (error) {
@@ -137,13 +149,16 @@ export async function initPlaylight() {
       const params = new URLSearchParams(window.location.search);
       const fromPlaylight = params.get("utm_source") === "playlight";
 
-      // Initialize SDK with exit intent disabled; force sidebar visible for Playlight traffic
+      // Initialize SDK with exit intent disabled; sidebar merged on every sync so it is not wiped.
       playlightSDK.init({
         exitIntent: {
           enabled: false,
           immediate: false,
         },
-        ...(fromPlaylight && { sidebar: { forceVisible: true } }),
+        sidebar: {
+          hasFrameworkRoot: true,
+          ...(fromPlaylight ? { forceVisible: true } : {}),
+        },
       });
 
       // Import game store + inactivity (store does not update on input)
@@ -235,6 +250,7 @@ export async function initPlaylight() {
             enabled: shouldEnableExitIntent,
             immediate: false,
           },
+          sidebar: playlightSidebarSliceFromGameState(state),
         });
       };
 
