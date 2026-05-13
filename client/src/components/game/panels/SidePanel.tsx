@@ -74,6 +74,27 @@ const resourceOrder = Object.keys(defaultGameState.resources);
 const buildingOrder = Object.keys(defaultGameState.buildings);
 const villagerOrder = Object.keys(defaultGameState.villagers);
 
+/** Fortress / Bastion side panel row order (`bastion_stats` object uses defense-first insertion order). */
+const BASTION_STAT_SIDE_PANEL_ORDER = ["attack", "defense", "integrity"] as const;
+
+const BASTION_STAT_SIDE_PANEL_ICONS: Record<
+  (typeof BASTION_STAT_SIDE_PANEL_ORDER)[number],
+  string
+> = {
+  attack: "⟐",
+  defense: "⧈",
+  integrity: "✚",
+};
+
+const BASTION_STAT_SIDE_PANEL_ICON_COLORS: Record<
+  (typeof BASTION_STAT_SIDE_PANEL_ORDER)[number],
+  string
+> = {
+  attack: "text-red-400/60",
+  defense: "text-blue-400/60",
+  integrity: "text-green-400/60",
+};
+
 export default function SidePanel() {
   const {
     resources,
@@ -782,69 +803,55 @@ export default function SidePanel() {
     })
     .filter((item) => item !== null); // Remove nulls from buildings not present
 
-  // Dynamically generate bastion stats items from state
-  const bastionStatsItems = Object.entries(bastion_stats || {})
-    .filter(
-      ([key]) =>
-        !["attackFromFortifications", "attackFromStrength"].includes(key),
-    ) // Exclude breakdown fields from display
-    .map(([key, value]) => {
-      let tooltip = undefined;
+  // Dynamically generate bastion stats items from state (fixed display order).
+  const bastionStatsItems =
+    bastion_stats == null
+      ? []
+      : BASTION_STAT_SIDE_PANEL_ORDER.map((key) => {
+          const value = bastion_stats[key] ?? 0;
+          let tooltip = undefined;
 
-      if (key === "defense") {
-        tooltip = (
-          <span className="text-gray-400">
-            Reduces incoming damage
-          </span>
-        );
-      }
+          if (key === "defense") {
+            tooltip = (
+              <span className="text-gray-400">
+                Reduces incoming damage
+              </span>
+            );
+          }
 
-      if (key === "integrity") {
-        tooltip = (
-          <span className="text-gray-400">
-            If integrity reaches 0, you lose the battle
-          </span>
-        );
-      }
+          if (key === "integrity") {
+            tooltip = (
+              <span className="text-gray-400">
+                If integrity reaches 0, you lose the battle
+              </span>
+            );
+          }
 
-      // Add detailed tooltip for attack showing breakdown
-      if (key === "attack" && bastion_stats) {
-        const fortAttack = bastion_stats.attackFromFortifications || 0;
-        const strengthAttack = bastion_stats.attackFromStrength || 0;
-        tooltip = (
-          <div>
-            <div className="mb-1 text-gray-400">
-              Damage you deal to enemies each combat round
-            </div>
-            <div>{fortAttack} from Fortifications</div>
-            <div>{strengthAttack} from Strength (50 %)</div>
-          </div>
-        );
-      }
+          if (key === "attack") {
+            const fortAttack = bastion_stats.attackFromFortifications || 0;
+            const strengthAttack = bastion_stats.attackFromStrength || 0;
+            tooltip = (
+              <div>
+                <div className="mb-1 text-gray-400">
+                  Damage you deal to enemies each combat round
+                </div>
+                <div>{fortAttack} from Fortifications</div>
+                <div>{strengthAttack} from Strength (50 %)</div>
+              </div>
+            );
+          }
 
-      const iconByStat: Record<string, string> = {
-        attack: "⟐",
-        defense: "⧈",
-        integrity: "✚",
-      };
-
-      const iconColorByStat: Record<string, string> = {
-        attack: "text-red-400/60",
-        defense: "text-blue-400/60",
-        integrity: "text-green-400/60",
-      };
-
-      return {
-        id: `bastion-${key}`,
-        label: capitalizeWords(key),
-        icon: iconByStat[key],
-        iconColor: iconColorByStat[key],
-        value: value ?? 0,
-        testId: `bastion-stat-${key}`,
-        visible: true,
-        tooltip,
-      };
-    });
+          return {
+            id: `bastion-${key}`,
+            label: capitalizeWords(key),
+            icon: BASTION_STAT_SIDE_PANEL_ICONS[key],
+            iconColor: BASTION_STAT_SIDE_PANEL_ICON_COLORS[key],
+            value,
+            testId: `bastion-stat-${key}`,
+            visible: true,
+            tooltip,
+          };
+        });
 
   // Use SSOT for bonus calculations
   const bonusItems = getAllActionBonuses(gameState).map((bonus) => ({
