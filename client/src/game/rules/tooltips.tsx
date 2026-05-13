@@ -10,8 +10,9 @@ import {
 import { gameActions } from "./index";
 import { getBoneTotemsCost } from "./forestSacrificeActions";
 import {
-  CRUSHING_STRIKE_UPGRADES,
   BLOODFLAME_SPHERE_UPGRADES,
+  BOMB_BASE_DAMAGE_BY_ID,
+  CRUSHING_STRIKE_UPGRADES,
   POISON_ARROWS_BASE_DAMAGE,
   POISON_ARROWS_DOT_FIGHT_ROUNDS,
   poisonArrowsDamagePerTick,
@@ -634,7 +635,7 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
   ember_bomb: {
     getContent: (state) => {
       const knowledge = getTotalKnowledge(state) || 0;
-      const baseDamage = 10;
+      const baseDamage = BOMB_BASE_DAMAGE_BY_ID.ember_bomb;
       const knowledgeBonus = Math.floor(knowledge / 5);
       return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus}\n5% chance to deal damage to yourself`;
     },
@@ -642,7 +643,7 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
   ashfire_bomb: {
     getContent: (state) => {
       const knowledge = getTotalKnowledge(state) || 0;
-      const baseDamage = 25;
+      const baseDamage = BOMB_BASE_DAMAGE_BY_ID.ashfire_bomb;
       const knowledgeBonus = Math.floor(knowledge / 5);
       return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus}\n5% chance to deal damage to yourself`;
     },
@@ -650,7 +651,7 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
   void_bomb: {
     getContent: (state) => {
       const knowledge = getTotalKnowledge(state) || 0;
-      const baseDamage = 40;
+      const baseDamage = BOMB_BASE_DAMAGE_BY_ID.void_bomb;
       const knowledgeBonus = Math.floor(knowledge / 5);
       return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus}\n5% chance to deal damage to yourself`;
     },

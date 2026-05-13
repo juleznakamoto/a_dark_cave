@@ -5,6 +5,37 @@ import type { BastionStats } from "@/game/types";
 // Re-export for convenience
 export type { BastionStats } from "@/game/types";
 
+/** Fortification buildings that contribute to Bastion / fortress stats (see `buildingHierarchy`). */
+export const FORTIFICATION_BUILDING_KEYS = [
+  "bastion",
+  "watchtower",
+  "palisades",
+  "fortifiedMoat",
+  "chitinPlating",
+] as const;
+
+export type FortificationBuildingKey =
+  (typeof FORTIFICATION_BUILDING_KEYS)[number];
+
+/**
+ * Per-building marginal Attack / Defense / Integrity from that building alone.
+ * Attack uses fortification-only attack (excludes the Strength-based portion).
+ */
+export function getFortificationMarginalStats(
+  state: GameState,
+  key: FortificationBuildingKey,
+): { defense: number; attack: number; integrity: number } | null {
+  if ((state.buildings[key] ?? 0) === 0) return null;
+  const full = calculateBastionStats(state);
+  const buildings = { ...state.buildings, [key]: 0 };
+  const without = calculateBastionStats({ ...state, buildings });
+  return {
+    defense: full.defense - without.defense,
+    attack: full.attackFromFortifications - without.attackFromFortifications,
+    integrity: full.integrity - without.integrity,
+  };
+}
+
 export function calculateBastionStats(state: GameState): BastionStats {
   let defense = 0;
   let attackFromFortifications = 0;
@@ -92,8 +123,9 @@ export function calculateBastionStats(state: GameState): BastionStats {
     defense += 10;
   }
 
-  // Add strength from stats to attack
-  const attackFromStrength = getTotalStrength(state);
+  // Half of total Strength contributes to bastion attack (matches UI tooltip)
+  const strengthTotal = getTotalStrength(state);
+  const attackFromStrength = Math.floor(strengthTotal / 2);
   const totalAttack = attackFromFortifications + attackFromStrength;
 
   // Integrity is always calculated from buildings and damage flags

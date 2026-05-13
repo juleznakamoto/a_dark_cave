@@ -7,7 +7,11 @@ import { logger } from "@/lib/logger";
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { capitalizeWords, formatSignedNumber } from "@/lib/utils";
 import React, { useState, useEffect, useRef } from "react";
-import { calculateBastionStats } from "@/game/bastionStats";
+import {
+  FORTIFICATION_BUILDING_KEYS,
+  getFortificationMarginalStats,
+  type FortificationBuildingKey,
+} from "@/game/bastionStats";
 import {
   getDisplayTools,
   getTotalLuck,
@@ -34,6 +38,36 @@ import {
 } from "@/game/buildingHierarchy";
 import { getTotalPopulationEffects } from "@/game/population";
 import { getMapFragmentCount } from "@/game/mapFragments";
+
+function getFortificationDisplayLabel(
+  key: FortificationBuildingKey,
+  buildings: GameState["buildings"],
+): string {
+  if (key === "bastion") return "Bastion";
+  if (key === "fortifiedMoat") return "Fortified Moat";
+  if (key === "chitinPlating") return "Chitin Plating";
+  if (key === "watchtower") {
+    const level = buildings.watchtower ?? 0;
+    const watchtowerLabels = [
+      "Watchtower",
+      "Guard Tower",
+      "Fortified Tower",
+      "Cannon Tower",
+    ];
+    return watchtowerLabels[level - 1] ?? "Watchtower";
+  }
+  if (key === "palisades") {
+    const level = buildings.palisades ?? 0;
+    const palisadesLabels = [
+      "Wooden Palisades",
+      "Fortified Palisades",
+      "Stone Wall",
+      "Reinforced Wall",
+    ];
+    return palisadesLabels[level - 1] ?? "Palisades";
+  }
+  return key;
+}
 
 // Extract property order from schema by parsing defaults
 const defaultGameState = gameStateSchema.parse({});
@@ -76,6 +110,7 @@ export default function SidePanel() {
 
   // Get game state once for the entire component (needed early for stat calculations)
   const gameState = useGameStore();
+  const gameStateTyped = gameState as unknown as GameState;
 
   // Calculate total stats including bonuses from relics/clothing
   const totalLuck = getTotalLuck(gameState);
@@ -589,7 +624,13 @@ export default function SidePanel() {
       let label = capitalizeWords(key);
       let tooltip: React.ReactNode = undefined;
 
-      // Map building keys to their contributions using bastion_stats
+      const fk = key as FortificationBuildingKey;
+      const margin = getFortificationMarginalStats(gameStateTyped, fk);
+      const defense = margin?.defense ?? 0;
+      const attack = margin?.attack ?? 0;
+      const integrity = margin?.integrity ?? 0;
+
+      // Map building keys to their contributions (marginal stats per fortification)
       if (key === "watchtower") {
         const level = value ?? 0;
         const watchtowerLabels = [
@@ -602,21 +643,6 @@ export default function SidePanel() {
 
         const isDamaged = story?.seen?.watchtowerDamaged;
 
-        const currentStats = calculateBastionStats({
-          ...useGameStore.getState(),
-          buildings: { ...buildings },
-        });
-
-        const statsWithoutWatchtower = calculateBastionStats({
-          ...useGameStore.getState(),
-          buildings: { ...buildings, watchtower: 0 },
-        });
-
-        const defense = currentStats.defense - statsWithoutWatchtower.defense;
-        const attack = currentStats.attack - statsWithoutWatchtower.attack;
-        const integrity =
-          currentStats.integrity - statsWithoutWatchtower.integrity;
-
         // Get the action definition to access the description
         const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
         const buildAction = villageBuildActions[actionId];
@@ -630,9 +656,9 @@ export default function SidePanel() {
               </div>
             )}
             <div className="text-foreground">
-              <div>+{attack} Attack</div>
-              <div>+{defense} Defense</div>
-              <div>+{integrity} Integrity</div>
+              {attack !== 0 && <div>+{attack} Attack</div>}
+              {defense !== 0 && <div>+{defense} Defense</div>}
+              {integrity !== 0 && <div>+{integrity} Integrity</div>}
             </div>
           </div>
         );
@@ -644,23 +670,6 @@ export default function SidePanel() {
       } else if (key === "bastion") {
         const isDamaged = story?.seen?.bastionDamaged;
 
-        const currentStats = calculateBastionStats({
-          ...useGameStore.getState(),
-          buildings: { ...buildings },
-        });
-
-        const statsWithoutBastion = calculateBastionStats({
-          ...useGameStore.getState(),
-          buildings: { ...buildings, bastion: 0 },
-        });
-
-        const defense = currentStats.defense - statsWithoutBastion.defense;
-        const attack =
-          currentStats.attackFromFortifications -
-          statsWithoutBastion.attackFromFortifications;
-        const integrity =
-          currentStats.integrity - statsWithoutBastion.integrity;
-
         // Get the action definition to access the description
         const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
         const buildAction = villageBuildActions[actionId];
@@ -674,9 +683,9 @@ export default function SidePanel() {
               </div>
             )}
             <div className="text-foreground">
-              <div>+{attack} Attack</div>
-              <div>+{defense} Defense</div>
-              <div>+{integrity} Integrity</div>
+              {attack !== 0 && <div>+{attack} Attack</div>}
+              {defense !== 0 && <div>+{defense} Defense</div>}
+              {integrity !== 0 && <div>+{integrity} Integrity</div>}
             </div>
           </div>
         );
@@ -697,20 +706,6 @@ export default function SidePanel() {
 
         const isDamaged = story?.seen?.palisadesDamaged;
 
-        const currentStats = calculateBastionStats({
-          ...useGameStore.getState(),
-          buildings: { ...buildings },
-        });
-
-        const statsWithoutPalisades = calculateBastionStats({
-          ...useGameStore.getState(),
-          buildings: { ...buildings, palisades: 0 },
-        });
-
-        const defense = currentStats.defense - statsWithoutPalisades.defense;
-        const integrity =
-          currentStats.integrity - statsWithoutPalisades.integrity;
-
         // Get the action definition to access the description
         const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
         const buildAction = villageBuildActions[actionId];
@@ -724,8 +719,9 @@ export default function SidePanel() {
               </div>
             )}
             <div className="text-foreground">
-              <div>+{defense} Defense</div>
-              <div>+{integrity} Integrity</div>
+              {attack !== 0 && <div>+{attack} Attack</div>}
+              {defense !== 0 && <div>+{defense} Defense</div>}
+              {integrity !== 0 && <div>+{integrity} Integrity</div>}
             </div>
           </div>
         );
@@ -750,7 +746,7 @@ export default function SidePanel() {
               </div>
             )}
             <div className="text-foreground">
-              <div>+5 Defense</div>
+              {defense !== 0 && <div>+{defense} Defense</div>}
             </div>
           </div>
         );
@@ -770,7 +766,7 @@ export default function SidePanel() {
               </div>
             )}
             <div className="text-foreground">
-              <div>+10 Defense</div>
+              {defense !== 0 && <div>+{defense} Defense</div>}
             </div>
           </div>
         );
@@ -797,15 +793,49 @@ export default function SidePanel() {
       let tooltip = undefined;
 
       if (key === "defense") {
-        tooltip = (
-          <span className="text-gray-400">
-            Reduces incoming damage
-          </span>
+        const totalDefense = bastion_stats?.defense ?? 0;
+        tooltip = bastion_stats ? (
+          <div>
+            <div className="mb-1 text-gray-400">Reduces incoming damage</div>
+            {FORTIFICATION_BUILDING_KEYS.map((bf) => {
+              const m = getFortificationMarginalStats(gameStateTyped, bf);
+              if (!m || m.defense === 0) return null;
+              return (
+                <div key={bf}>
+                  +{m.defense} {getFortificationDisplayLabel(bf, buildings)}
+                </div>
+              );
+            })}
+            <div className="mt-1 border-t border-gray-600 pt-1 font-medium">
+              Total: {totalDefense}
+            </div>
+          </div>
+        ) : (
+          <span className="text-gray-400">Reduces incoming damage</span>
         );
       }
 
       if (key === "integrity") {
-        tooltip = (
+        const totalIntegrity = bastion_stats?.integrity ?? 0;
+        tooltip = bastion_stats ? (
+          <div>
+            <div className="mb-1 text-gray-400">
+              If integrity reaches 0, you lose the battle
+            </div>
+            {FORTIFICATION_BUILDING_KEYS.map((bf) => {
+              const m = getFortificationMarginalStats(gameStateTyped, bf);
+              if (!m || m.integrity === 0) return null;
+              return (
+                <div key={bf}>
+                  +{m.integrity} {getFortificationDisplayLabel(bf, buildings)}
+                </div>
+              );
+            })}
+            <div className="mt-1 border-t border-gray-600 pt-1 font-medium">
+              Total: {totalIntegrity}
+            </div>
+          </div>
+        ) : (
           <span className="text-gray-400">
             If integrity reaches 0, you lose the battle
           </span>
@@ -821,8 +851,21 @@ export default function SidePanel() {
             <div className="mb-1 text-gray-400">
               Damage you deal to enemies each combat round
             </div>
-            <div>{fortAttack} from Fortifications</div>
-            <div>{strengthAttack} from Strength (50 %)</div>
+            {FORTIFICATION_BUILDING_KEYS.map((bf) => {
+              const m = getFortificationMarginalStats(gameStateTyped, bf);
+              if (!m || m.attack === 0) return null;
+              return (
+                <div key={bf}>
+                  +{m.attack} {getFortificationDisplayLabel(bf, buildings)}
+                </div>
+              );
+            })}
+            <div className="mt-1 border-t border-gray-600 pt-1">
+              <div className="font-medium">Fortifications: {fortAttack}</div>
+              <div>
+                {strengthAttack} from Strength (50% of {totalStrength})
+              </div>
+            </div>
           </div>
         );
       }

@@ -16,6 +16,7 @@ import {
 } from "@/game/rules/effectsStats";
 import {
   BLOODFLAME_SPHERE_UPGRADES,
+  BOMB_BASE_DAMAGE_BY_ID,
   CRUSHING_STRIKE_UPGRADES,
   POISON_ARROWS_BASE_DAMAGE,
   POISON_ARROWS_DOT_FIGHT_ROUNDS,
@@ -256,7 +257,7 @@ export default function CombatDialog({
     {
       id: "ember_bomb",
       name: "Ember Bomb",
-      damage: 15,
+      damage: BOMB_BASE_DAMAGE_BY_ID.ember_bomb,
       available:
         gameState.resources.ember_bomb > 0 &&
         emberBombsUsed < MAX_EMBER_BOMBS &&
@@ -265,7 +266,7 @@ export default function CombatDialog({
     {
       id: "ashfire_bomb",
       name: "Ashfire Bomb",
-      damage: 30,
+      damage: BOMB_BASE_DAMAGE_BY_ID.ashfire_bomb,
       available:
         gameState.resources.ashfire_bomb > 0 &&
         ashfireBombsUsed < MAX_CINDERFLAME_BOMBS &&
@@ -274,7 +275,7 @@ export default function CombatDialog({
     {
       id: "void_bomb",
       name: "Void Bomb",
-      damage: 50,
+      damage: BOMB_BASE_DAMAGE_BY_ID.void_bomb,
       available:
         gameState.resources.void_bomb > 0 &&
         voidBombsUsed < MAX_VOID_BOMBS &&

@@ -232,6 +232,7 @@ export interface BastionStats {
   defense: number;
   attack: number;
   attackFromFortifications: number;
+  /** Attack from Strength = half of total Strength (floored), in addition to fortifications */
   attackFromStrength: number;
   integrity: number;
 }
