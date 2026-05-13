@@ -1314,6 +1314,7 @@ export const villageBuildActions: Record<string, Action> = {
         "resources.steel": 2500,
         "resources.obsidian": 1000,
         "resources.adamant": 500,
+        "resources.black_powder": 500,
       },
     },
     effects: {
