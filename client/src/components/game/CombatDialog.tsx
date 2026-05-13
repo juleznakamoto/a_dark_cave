@@ -93,16 +93,15 @@ export default function CombatDialog({
   const [enemyBurnDamage, setEnemyBurnDamage] = useState(0);
   const [wasCriticalStrike, setWasCriticalStrike] = useState(false);
   const [playerStrikeFailed, setPlayerStrikeFailed] = useState(false);
-  const [combatSummary, setCombatSummary] = useState<CombatResultSummary | null>(
-    null,
-  );
+  const [combatSummary, setCombatSummary] =
+    useState<CombatResultSummary | null>(null);
   const consequencesAppliedRef = useRef(false);
-  const integrityDamageIndicatorTimeoutRef = useRef<
-    ReturnType<typeof setTimeout> | null
-  >(null);
-  const enemyDamageIndicatorTimeoutRef = useRef<
-    ReturnType<typeof setTimeout> | null
-  >(null);
+  const integrityDamageIndicatorTimeoutRef = useRef<ReturnType<
+    typeof setTimeout
+  > | null>(null);
+  const enemyDamageIndicatorTimeoutRef = useRef<ReturnType<
+    typeof setTimeout
+  > | null>(null);
 
   const showIntegrityDamage = (amount: number) => {
     if (integrityDamageIndicatorTimeoutRef.current) {
@@ -247,7 +246,7 @@ export default function CombatDialog({
     {
       id: "ember_bomb",
       name: "Ember Bomb",
-      damage: 10,
+      damage: 15,
       available:
         gameState.resources.ember_bomb > 0 &&
         emberBombsUsed < MAX_EMBER_BOMBS &&
@@ -256,7 +255,7 @@ export default function CombatDialog({
     {
       id: "ashfire_bomb",
       name: "Ashfire Bomb",
-      damage: 25,
+      damage: 30,
       available:
         gameState.resources.ashfire_bomb > 0 &&
         ashfireBombsUsed < MAX_CINDERFLAME_BOMBS &&
@@ -265,7 +264,7 @@ export default function CombatDialog({
     {
       id: "void_bomb",
       name: "Void Bomb",
-      damage: 40,
+      damage: 50,
       available:
         gameState.resources.void_bomb > 0 &&
         voidBombsUsed < MAX_VOID_BOMBS &&
@@ -508,9 +507,7 @@ export default function CombatDialog({
     currentEnemyHealth = newHealth;
 
     // Show damage indicator on enemy health bar
-    showEnemyDamage(
-      playerDamage + poisonDamageDealt + burnDamageDealt,
-    );
+    showEnemyDamage(playerDamage + poisonDamageDealt + burnDamageDealt);
 
     setCurrentEnemy((prev) =>
       prev ? { ...prev, currentHealth: newHealth } : null,
@@ -544,27 +541,27 @@ export default function CombatDialog({
   const defeatResultLines: { key: string; text: string; className: string }[] =
     combatSummary
       ? [
-        {
-          key: "casualties",
-          text:
-            (combatSummary.casualties ?? 0) === 0
-              ? "No Villagers died."
-              : combatSummary.casualties === 1
-                ? "1 Villager died."
-                : `${formatNumber(combatSummary.casualties!)} Villagers died.`,
-          className: "text-gray-400 text-sm",
-        },
-        ...(combatSummary.woundedFellows ?? []).map((f) => ({
-          key: `fellow-${f}`,
-          text: `${f} got injured.`,
-          className: "text-gray-400 text-sm",
-        })),
-        ...(combatSummary.damagedBuildings ?? []).map((b) => ({
-          key: `building-${b}`,
-          text: `${b} got damaged.`,
-          className: "text-gray-400 text-sm",
-        })),
-      ]
+          {
+            key: "casualties",
+            text:
+              (combatSummary.casualties ?? 0) === 0
+                ? "No Villagers died."
+                : combatSummary.casualties === 1
+                  ? "1 Villager died."
+                  : `${formatNumber(combatSummary.casualties!)} Villagers died.`,
+            className: "text-gray-400 text-sm",
+          },
+          ...(combatSummary.woundedFellows ?? []).map((f) => ({
+            key: `fellow-${f}`,
+            text: `${f} got injured.`,
+            className: "text-gray-400 text-sm",
+          })),
+          ...(combatSummary.damagedBuildings ?? []).map((b) => ({
+            key: `building-${b}`,
+            text: `${b} got damaged.`,
+            className: "text-gray-400 text-sm",
+          })),
+        ]
       : [];
   const defeatButtonDelay =
     DEFEAT_LINES_START +
@@ -577,27 +574,27 @@ export default function CombatDialog({
   const victoryResultLines: { key: string; text: string; className: string }[] =
     combatSummary
       ? [
-        ...(combatSummary.silverReward !== undefined &&
+          ...(combatSummary.silverReward !== undefined &&
           combatSummary.silverReward > 0
-          ? [
-            {
-              key: "silver",
-              text: `${formatNumber(combatSummary.silverReward)} Silver claimed.`,
-              className: "text-slate-300 text-sm",
-            },
-          ]
-          : []),
-        ...(combatSummary.goldReward !== undefined &&
+            ? [
+                {
+                  key: "silver",
+                  text: `${formatNumber(combatSummary.silverReward)} Silver claimed.`,
+                  className: "text-slate-300 text-sm",
+                },
+              ]
+            : []),
+          ...(combatSummary.goldReward !== undefined &&
           combatSummary.goldReward > 0
-          ? [
-            {
-              key: "gold",
-              text: `${formatNumber(combatSummary.goldReward)} Gold claimed.`,
-              className: "text-slate-300 text-sm",
-            },
-          ]
-          : []),
-      ]
+            ? [
+                {
+                  key: "gold",
+                  text: `${formatNumber(combatSummary.goldReward)} Gold claimed.`,
+                  className: "text-slate-300 text-sm",
+                },
+              ]
+            : []),
+        ]
       : [];
   const victoryButtonDelay =
     VICTORY_LINES_START +
@@ -607,7 +604,7 @@ export default function CombatDialog({
 
   return (
     <>
-      <Dialog open={isOpen} onOpenChange={() => { }}>
+      <Dialog open={isOpen} onOpenChange={() => {}}>
         <DialogContent
           className="z-[60] [--adc-dialog-max-w:28rem] [&>button]:hidden"
           onPointerDownOutside={(e) => e.preventDefault()}
@@ -716,7 +713,9 @@ export default function CombatDialog({
                   <div className="relative">
                     <div className="flex justify-between text-sm">
                       <div className="flex items-center gap-1">
-                        <span className="font-medium">{currentEnemy?.name}</span>
+                        <span className="font-medium">
+                          {currentEnemy?.name}
+                        </span>
                         {NIGHTSHADE_BOW_OWNED &&
                           usedItemsInCombat.includes("poison_arrows") && (
                             <span
@@ -802,9 +801,7 @@ export default function CombatDialog({
                         <span className="font-noto-symbols-2 inline-flex w-4 justify-center text-red-400/60">
                           ⟐
                         </span>
-                        <span>
-                          {formatNumber(currentEnemy?.attack ?? 0)}
-                        </span>
+                        <span>{formatNumber(currentEnemy?.attack ?? 0)}</span>
                       </div>
                     </TooltipWrapper>
                   </div>
@@ -866,9 +863,7 @@ export default function CombatDialog({
                         </div>
                       </TooltipWrapper>
                       <TooltipWrapper
-                        tooltip={
-                          <span className="text-gray-400">Defense</span>
-                        }
+                        tooltip={<span className="text-gray-400">Defense</span>}
                         tooltipId="combat-player-defense-symbol"
                         disabled
                         className="inline-block"
@@ -887,88 +882,90 @@ export default function CombatDialog({
                   {combatItems.some((item) =>
                     item.id === "ember_bomb" || item.id === "ashfire_bomb"
                       ? gameState.resources[
-                      item.id as keyof typeof gameState.resources
-                      ] > 0
+                          item.id as keyof typeof gameState.resources
+                        ] > 0
                       : item.id === "poison_arrows" && NIGHTSHADE_BOW_OWNED,
                   ) && (
-                      <div className="pt-3">
-                        <div className="text-sm font-medium mb-2">Items</div>
-                        <div className="grid grid-cols-2 gap-2">
-                          {combatItems
-                            .filter((item) => {
-                              if (item.id === "poison_arrows") {
-                                return NIGHTSHADE_BOW_OWNED;
-                              }
-                              return (
-                                gameState.resources[
+                    <div className="pt-3">
+                      <div className="text-sm font-medium mb-2">Items</div>
+                      <div className="grid grid-cols-2 gap-2">
+                        {combatItems
+                          .filter((item) => {
+                            if (item.id === "poison_arrows") {
+                              return NIGHTSHADE_BOW_OWNED;
+                            }
+                            return (
+                              gameState.resources[
                                 item.id as keyof typeof gameState.resources
-                                ] > 0
-                              );
-                            })
-                            .map((item) => {
-                              const tooltipConfig = combatItemTooltips[item.id];
-                              const tooltipContent = tooltipConfig
-                                ? tooltipConfig.getContent(gameState)
-                                : "";
-                              const availabilityText =
-                                item.id === "poison_arrows"
-                                  ? `Available: ${poisonArrowsUsedInCombat < 1 ? "1/1" : "0/1"}`
-                                  : item.id === "ember_bomb"
-                                    ? `Available: ${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
-                                    : item.id === "ashfire_bomb"
-                                      ? `Available: ${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`
-                                      : item.id === "void_bomb"
-                                        ? `Available: ${MAX_VOID_BOMBS - voidBombsUsed}/${MAX_VOID_BOMBS}`
-                                        : "";
+                              ] > 0
+                            );
+                          })
+                          .map((item) => {
+                            const tooltipConfig = combatItemTooltips[item.id];
+                            const tooltipContent = tooltipConfig
+                              ? tooltipConfig.getContent(gameState)
+                              : "";
+                            const availabilityText =
+                              item.id === "poison_arrows"
+                                ? `Available: ${poisonArrowsUsedInCombat < 1 ? "1/1" : "0/1"}`
+                                : item.id === "ember_bomb"
+                                  ? `Available: ${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
+                                  : item.id === "ashfire_bomb"
+                                    ? `Available: ${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`
+                                    : item.id === "void_bomb"
+                                      ? `Available: ${MAX_VOID_BOMBS - voidBombsUsed}/${MAX_VOID_BOMBS}`
+                                      : "";
 
-                              return (
-                                <TooltipWrapper
-                                  key={item.id}
-                                  tooltip={
-                                    <div className="text-xs whitespace-pre-line">
-                                      {tooltipContent}
-                                      {"\n"}
-                                      {availabilityText}
-                                    </div>
-                                  }
-                                  tooltipId={`combat-item-${item.id}`}
-                                  disabled={!item.available || isProcessingRound}
-                                  onClick={() => handleUseItem(item)}
-                                >
-                                  <div className="w-full">
-                                    <Button
-                                      onClick={() => handleUseItem(item)}
-                                      disabled={
-                                        !item.available || isProcessingRound
-                                      }
-                                      variant="outline"
-                                      size="sm"
-                                      className="text-xs w-full inline-flex items-center justify-center gap-1"
-                                      button_id={`combat-use-${item.id}`}
-                                    >
-                                      {item.id === "poison_arrows" && (
-                                        <span
-                                          className="font-noto-symbols-2 text-green-600"
-                                          role="img"
-                                          aria-label="poison-icon"
-                                        >
-                                          ▲
-                                        </span>
-                                      )}
-                                      {item.name}
-                                    </Button>
+                            return (
+                              <TooltipWrapper
+                                key={item.id}
+                                tooltip={
+                                  <div className="text-xs whitespace-pre-line">
+                                    {tooltipContent}
+                                    {"\n"}
+                                    {availabilityText}
                                   </div>
-                                </TooltipWrapper>
-                              );
-                            })}
-                        </div>
+                                }
+                                tooltipId={`combat-item-${item.id}`}
+                                disabled={!item.available || isProcessingRound}
+                                onClick={() => handleUseItem(item)}
+                              >
+                                <div className="w-full">
+                                  <Button
+                                    onClick={() => handleUseItem(item)}
+                                    disabled={
+                                      !item.available || isProcessingRound
+                                    }
+                                    variant="outline"
+                                    size="sm"
+                                    className="text-xs w-full inline-flex items-center justify-center gap-1"
+                                    button_id={`combat-use-${item.id}`}
+                                  >
+                                    {item.id === "poison_arrows" && (
+                                      <span
+                                        className="font-noto-symbols-2 text-green-600"
+                                        role="img"
+                                        aria-label="poison-icon"
+                                      >
+                                        ▲
+                                      </span>
+                                    )}
+                                    {item.name}
+                                  </Button>
+                                </div>
+                              </TooltipWrapper>
+                            );
+                          })}
                       </div>
-                    )}
+                    </div>
+                  )}
 
                   {/* Combat Skills Section - only show if any fellowship member is unlocked */}
                   {(HAS_RESTLESS_KNIGHT || HAS_ELDER_WIZARD) && (
                     <div className="pt-3">
-                      <div className="text-sm font-medium mb-2">Combat Skills</div>
+                      <div className="text-sm font-medium mb-2">
+                        Combat Skills
+                      </div>
                       <div className="grid grid-cols-2 gap-2">
                         {HAS_RESTLESS_KNIGHT && (
                           <TooltipWrapper
@@ -1026,9 +1023,9 @@ export default function CombatDialog({
                               usedBloodflameSphere ||
                               isProcessingRound ||
                               currentIntegrity <=
-                              BLOODFLAME_SPHERE_UPGRADES[
-                                bloodflameSphereLevel
-                              ].healthCost ||
+                                BLOODFLAME_SPHERE_UPGRADES[
+                                  bloodflameSphereLevel
+                                ].healthCost ||
                               isElderWizardWounded
                             }
                             onClick={handleUseBloodflameSphere}
@@ -1040,9 +1037,9 @@ export default function CombatDialog({
                                   usedBloodflameSphere ||
                                   isProcessingRound ||
                                   currentIntegrity <=
-                                  BLOODFLAME_SPHERE_UPGRADES[
-                                    bloodflameSphereLevel
-                                  ].healthCost ||
+                                    BLOODFLAME_SPHERE_UPGRADES[
+                                      bloodflameSphereLevel
+                                    ].healthCost ||
                                   isElderWizardWounded
                                 }
                                 variant="outline"
