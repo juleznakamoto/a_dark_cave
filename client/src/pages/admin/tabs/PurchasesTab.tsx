@@ -286,7 +286,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
             <div>
               <CardTitle>Daily Sales by Country</CardTitle>
               <CardDescription>
-                Stacked daily counts by country (top {TOP_N_COUNTRIES}, paid only) — band height shows share of each day&apos;s total
+                Stacked bars: daily counts by country (top {TOP_N_COUNTRIES}, paid only); segment height shows share of each day&apos;s total
               </CardDescription>
             </div>
             <ChartTimeRangeSelectTwelveMonth value={countryCountRange} onChange={setCountryCountRange} />
@@ -299,7 +299,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
             </p>
           ) : (
             <ChartContainer config={{}} className="h-[400px] w-full">
-              <AreaChart data={countryCountData}>
+              <BarChart data={countryCountData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   dataKey="day"
@@ -312,17 +312,15 @@ export default function PurchasesTab(props: PurchasesTabProps) {
                 <Tooltip />
                 <Legend />
                 {countryCountList.map((country, i) => (
-                  <Area
+                  <Bar
                     key={country}
-                    type="monotone"
                     dataKey={country}
                     stackId="countryCount"
-                    stroke={SERIES_COLORS[i % SERIES_COLORS.length]}
                     fill={SERIES_COLORS[i % SERIES_COLORS.length]}
-                    fillOpacity={0.65}
+                    fillOpacity={0.85}
                   />
                 ))}
-              </AreaChart>
+              </BarChart>
             </ChartContainer>
           )}
         </CardContent>
@@ -334,7 +332,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
             <div>
               <CardTitle>Daily revenue by country (EUR)</CardTitle>
               <CardDescription>
-                Stacked unified EUR per day by country (Stripe FX or {ADMIN_HISTORICAL_USD_PER_EUR}{" "}
+                Stacked bars: unified EUR per day by country (Stripe FX or {ADMIN_HISTORICAL_USD_PER_EUR}{" "}
                 USD/EUR), top {TOP_N_COUNTRIES} countries (paid only)
               </CardDescription>
             </div>
@@ -351,7 +349,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
             </p>
           ) : (
             <ChartContainer config={{}} className="h-[400px] w-full">
-              <AreaChart data={countryRevenueUnifiedData}>
+              <BarChart data={countryRevenueUnifiedData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   dataKey="day"
@@ -369,17 +367,15 @@ export default function PurchasesTab(props: PurchasesTabProps) {
                 />
                 <Legend />
                 {countryRevenueUnifiedList.map((country, i) => (
-                  <Area
+                  <Bar
                     key={country}
-                    type="monotone"
                     dataKey={country}
                     stackId="countryRevenue"
-                    stroke={SERIES_COLORS[i % SERIES_COLORS.length]}
                     fill={SERIES_COLORS[i % SERIES_COLORS.length]}
-                    fillOpacity={0.65}
+                    fillOpacity={0.85}
                   />
                 ))}
-              </AreaChart>
+              </BarChart>
             </ChartContainer>
           )}
         </CardContent>
@@ -391,8 +387,8 @@ export default function PurchasesTab(props: PurchasesTabProps) {
             <div>
               <CardTitle>Daily purchases by payment type</CardTitle>
               <CardDescription>
-                Stacked daily purchase counts by Stripe payment method (paid only); top {TOP_N_PAYMENT_TYPES}{" "}
-                types. Legacy rows without stored type count as Unknown.
+                Stacked bars: daily purchase counts by Stripe payment method (paid only); top{" "}
+                {TOP_N_PAYMENT_TYPES} types. Legacy rows without stored type count as Unknown.
               </CardDescription>
             </div>
             <ChartTimeRangeSelectTwelveMonth
@@ -408,7 +404,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
             </p>
           ) : (
             <ChartContainer config={{}} className="h-[400px] w-full">
-              <AreaChart data={paymentTypeCountData}>
+              <BarChart data={paymentTypeCountData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   dataKey="day"
@@ -427,17 +423,15 @@ export default function PurchasesTab(props: PurchasesTabProps) {
                 />
                 <Legend formatter={(value) => paymentTypeChartLabel(String(value))} />
                 {paymentTypeCountList.map((pt, i) => (
-                  <Area
+                  <Bar
                     key={pt}
-                    type="monotone"
                     dataKey={pt}
                     stackId="paymentTypeCount"
-                    stroke={SERIES_COLORS[i % SERIES_COLORS.length]}
                     fill={SERIES_COLORS[i % SERIES_COLORS.length]}
-                    fillOpacity={0.65}
+                    fillOpacity={0.85}
                   />
                 ))}
-              </AreaChart>
+              </BarChart>
             </ChartContainer>
           )}
         </CardContent>
@@ -449,7 +443,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
             <div>
               <CardTitle>Daily revenue by payment type (EUR)</CardTitle>
               <CardDescription>
-                Stacked unified EUR per day by payment method; top {TOP_N_PAYMENT_TYPES} types (paid only)
+                Stacked bars: unified EUR per day by payment method; top {TOP_N_PAYMENT_TYPES} types (paid only)
               </CardDescription>
             </div>
             <ChartTimeRangeSelectTwelveMonth
@@ -465,7 +459,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
             </p>
           ) : (
             <ChartContainer config={{}} className="h-[400px] w-full">
-              <AreaChart data={paymentTypeRevenueUnifiedData}>
+              <BarChart data={paymentTypeRevenueUnifiedData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   dataKey="day"
@@ -483,17 +477,15 @@ export default function PurchasesTab(props: PurchasesTabProps) {
                 />
                 <Legend formatter={(value) => paymentTypeChartLabel(String(value))} />
                 {paymentTypeRevenueUnifiedList.map((pt, i) => (
-                  <Area
+                  <Bar
                     key={pt}
-                    type="monotone"
                     dataKey={pt}
                     stackId="paymentTypeRevenue"
-                    stroke={SERIES_COLORS[i % SERIES_COLORS.length]}
                     fill={SERIES_COLORS[i % SERIES_COLORS.length]}
-                    fillOpacity={0.65}
+                    fillOpacity={0.85}
                   />
                 ))}
-              </AreaChart>
+              </BarChart>
             </ChartContainer>
           )}
         </CardContent>
