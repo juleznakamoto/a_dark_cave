@@ -1,13 +1,55 @@
-// Centralized skill upgrade configurations
+// Centralized skill upgrade configurations and combat tuning shared with combat UI.
 
 // Crushing Strike upgrade configurations (Combat skill from Restless Knight)
 export const CRUSHING_STRIKE_UPGRADES = [
-  { level: 0, damage: 10, stunRounds: 1, cost: 0, currency: null },
-  { level: 1, damage: 20, stunRounds: 1, cost: 250, currency: "gold" },
-  { level: 2, damage: 30, stunRounds: 1, cost: 500, currency: "gold" },
-  { level: 3, damage: 40, stunRounds: 2, cost: 750, currency: "gold" },
-  { level: 4, damage: 50, stunRounds: 2, cost: 1000, currency: "gold" },
-  { level: 5, damage: 60, stunRounds: 3, cost: 1500, currency: "gold" },
+  {
+    level: 0,
+    damage: 10,
+    stunRounds: 1,
+    successChance: 70,
+    cost: 0,
+    currency: null,
+  },
+  {
+    level: 1,
+    damage: 20,
+    stunRounds: 1,
+    successChance: 75,
+    cost: 250,
+    currency: "gold",
+  },
+  {
+    level: 2,
+    damage: 30,
+    stunRounds: 1,
+    successChance: 80,
+    cost: 500,
+    currency: "gold",
+  },
+  {
+    level: 3,
+    damage: 40,
+    stunRounds: 2,
+    successChance: 85,
+    cost: 750,
+    currency: "gold",
+  },
+  {
+    level: 4,
+    damage: 50,
+    stunRounds: 2,
+    successChance: 90,
+    cost: 1000,
+    currency: "gold",
+  },
+  {
+    level: 5,
+    damage: 60,
+    stunRounds: 3,
+    successChance: 95,
+    cost: 1500,
+    currency: "gold",
+  },
 ];
 
 // Bloodflame Sphere upgrade configurations (Combat skill from Elder Wizard)
@@ -23,46 +65,58 @@ export const BLOODFLAME_SPHERE_UPGRADES = [
   {
     level: 1,
     burnDamage: 15,
-    burnRounds: 1,
-    healthCost: 10,
+    burnRounds: 2,
+    healthCost: 15,
     cost: 250,
     currency: "gold",
   },
   {
     level: 2,
-    damage: 20,
-    burnDamage: 20,
-    burnRounds: 1,
-    healthCost: 10,
+    burnDamage: 25,
+    burnRounds: 2,
+    healthCost: 20,
     cost: 500,
     currency: "gold",
   },
   {
     level: 3,
-    burnDamage: 25,
-    burnRounds: 2,
-    healthCost: 20,
+    burnDamage: 30,
+    burnRounds: 3,
+    healthCost: 25,
     cost: 750,
     currency: "gold",
   },
   {
     level: 4,
-    damage: 30,
-    burnDamage: 30,
-    burnRounds: 2,
-    healthCost: 20,
+    burnDamage: 40,
+    burnRounds: 3,
+    healthCost: 30,
     cost: 1000,
     currency: "gold",
   },
   {
     level: 5,
-    burnDamage: 35,
-    burnRounds: 3,
-    healthCost: 20,
+    burnDamage: 45,
+    burnRounds: 4,
+    healthCost: 35,
     cost: 1500,
     currency: "gold",
   },
 ];
+
+// Poison Arrows (Nightshade Bow combat item — DoT ticks on Fight like Bloodflame)
+/** Base poison damage before knowledge bonus (same scaling as bombs: +1 per 5 knowledge). */
+export const POISON_ARROWS_BASE_DAMAGE = 15;
+
+/**
+ * Extra Fight-resolution ticks after Poison Arrows are applied on use (bloodflame-style DoT).
+ * Total poison hits per combat = 1 (on use) + this value.
+ */
+export const POISON_ARROWS_DOT_FIGHT_ROUNDS = 2;
+
+export function poisonArrowsDamagePerTick(totalKnowledge: number): number {
+  return POISON_ARROWS_BASE_DAMAGE + Math.floor(totalKnowledge / 5);
+}
 
 // Hunting Skill upgrade configurations (from Ashwraith Huntress)
 export const HUNTING_SKILL_UPGRADES = [

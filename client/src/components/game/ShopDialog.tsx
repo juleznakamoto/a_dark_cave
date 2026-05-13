@@ -122,18 +122,22 @@ type ShopCheckoutDiscountOpts = {
   playlightFirstPurchase?: boolean;
   tradersGratitude?: boolean;
   tradersSonGratitude?: boolean;
+  cruelModeJourneyComplete?: boolean;
 };
 
 function getShopCheckoutDiscountOptions(
   item: ShopItem | undefined,
   gameState: {
-    story?: { seen?: { playlightFirstPurchaseDiscountActive?: boolean } };
+    story?: { seen?: Record<string, boolean | number | undefined> };
     hasMadeNonFreePurchase?: boolean;
     tradersGratitudeState?: { accepted?: boolean };
     tradersSonGratitudeState?: { accepted?: boolean };
   },
 ): ShopCheckoutDiscountOpts {
   if (!item || item.price <= 0) return {};
+  const journeySeen = gameState.story?.seen?.cruelModeJourneyCompleteDiscount;
+  const journeyEligible =
+    item.id === "cruel_mode" && journeySeen === true;
   return {
     playlightFirstPurchase: !!(
       item.price > 0 &&
@@ -146,6 +150,7 @@ function getShopCheckoutDiscountOptions(
     tradersSonGratitude: !!(
       item.price > 0 && gameState.tradersSonGratitudeState?.accepted === true
     ),
+    cruelModeJourneyComplete: !!(item.price > 0 && journeyEligible),
   };
 }
 
@@ -163,6 +168,7 @@ function getCheckoutPriceBreakdown(
   const finalCents = getDiscountedShopPriceCents(
     catalogCents,
     getShopCheckoutDiscountOptions(item, gameState),
+    item.id,
   );
   const listCents = shopCardStrikethroughListCents(item);
   const betaDiscountCents =
@@ -867,6 +873,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     const playlightFirstPurchaseDiscount =
       gameState.story?.seen?.playlightFirstPurchaseDiscountActive === true &&
       !gameState.hasMadeNonFreePurchase;
+    const cruelModeJourneyCompleteDiscount =
+      itemId === "cruel_mode" &&
+      gameState.story?.seen?.cruelModeJourneyCompleteDiscount === true;
     const response = await fetch("/api/payment/create-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -879,6 +888,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         tradersSonGratitudeDiscount: tradersSonGratitudeDiscount || undefined,
         cruelMode: gameState.cruelMode ?? false,
         playlightFirstPurchaseDiscount: playlightFirstPurchaseDiscount
+          ? true
+          : undefined,
+        cruelModeJourneyCompleteDiscount: cruelModeJourneyCompleteDiscount
           ? true
           : undefined,
       }),
@@ -901,6 +913,18 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
   const handlePurchaseSuccess = async () => {
     const item = SHOP_ITEMS[selectedItem!];
+
+    if (selectedItem === "cruel_mode") {
+      useGameStore.setState((s) => ({
+        story: {
+          ...s.story,
+          seen: {
+            ...s.story.seen,
+            cruelModeJourneyCompleteDiscount: false,
+          },
+        },
+      }));
+    }
 
     // If Trader's Gratitude discount was used, clear it, mark as used, and end the event
     if (gameState.tradersGratitudeState?.accepted) {
@@ -1493,6 +1517,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   );
                                 })()}
                                 {(() => {
+                                  const cruelJourneyDiscountActive =
+                                    item.id === "cruel_mode" &&
+                                    gameState.story?.seen
+                                      ?.cruelModeJourneyCompleteDiscount === true;
                                   const tradersGratitudeActive =
                                     gameState.tradersGratitudeState
                                       ?.accepted === true;
@@ -1503,18 +1531,34 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     gameState.story?.seen
                                       ?.playlightFirstPurchaseDiscountActive ===
                                     true && !gameState.hasMadeNonFreePurchase;
+                                  const pctOpts = {
+                                    playlightFirstPurchase:
+                                      playlightFirstPurchaseActive,
+                                    tradersGratitude: tradersGratitudeActive,
+                                    tradersSonGratitude:
+                                      tradersSonGratitudeActive,
+                                  };
                                   const displayPrice =
                                     item.price > 0
                                       ? getDiscountedShopPriceCents(
                                         item.price,
                                         {
-                                          playlightFirstPurchase:
-                                            playlightFirstPurchaseActive,
-                                          tradersGratitude:
-                                            tradersGratitudeActive,
-                                          tradersSonGratitude:
-                                            tradersSonGratitudeActive,
+                                          ...pctOpts,
+                                          cruelModeJourneyComplete:
+                                            cruelJourneyDiscountActive,
                                         },
+                                        item.id,
+                                      )
+                                      : item.price;
+                                  const priceWithoutJourneyCents =
+                                    item.price > 0 && item.id === "cruel_mode"
+                                      ? getDiscountedShopPriceCents(
+                                        item.price,
+                                        {
+                                          ...pctOpts,
+                                          cruelModeJourneyComplete: false,
+                                        },
+                                        item.id,
                                       )
                                       : item.price;
                                   const tradersOnlyCents =
@@ -1524,6 +1568,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         {
                                           tradersGratitude: true,
                                         },
+                                        item.id,
                                       )
                                       : item.price;
                                   const sonOnlyCents =
@@ -1533,6 +1578,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         {
                                           tradersSonGratitude: true,
                                         },
+                                        item.id,
                                       )
                                       : item.price;
                                   const playlightOnlyCents =
@@ -1542,6 +1588,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         {
                                           playlightFirstPurchase: true,
                                         },
+                                        item.id,
                                       )
                                       : item.price;
                                   const discounted =
@@ -1564,6 +1611,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     playlightFirstPurchaseActive &&
                                     displayPrice === playlightOnlyCents &&
                                     displayPrice < item.price;
+                                  const showJourneyCompleteInfo =
+                                    item.price > 0 &&
+                                    cruelJourneyDiscountActive &&
+                                    displayPrice < priceWithoutJourneyCents;
                                   return (
                                     <>
                                       <span className={priceClassName}>
@@ -1623,6 +1674,28 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                             </div>
                                           }
                                           tooltipId={`playlight-discount-${item.id}`}
+                                          disabled
+                                          tooltipContentClassName="max-w-xs border border-amber-600"
+                                          className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse"
+                                        >
+                                          <span
+                                            className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
+                                            aria-hidden
+                                          >
+                                            🛈
+                                          </span>
+                                        </TooltipWrapper>
+                                      )}
+                                      {showJourneyCompleteInfo && (
+                                        <TooltipWrapper
+                                          tooltip={
+                                            <div className="text-xs">
+                                              Special discount for finishing the
+                                              game and opening Cruel Mode from
+                                              the journey-complete screen.
+                                            </div>
+                                          }
+                                          tooltipId={`journey-complete-cruel-${item.id}`}
                                           disabled
                                           tooltipContentClassName="max-w-xs border border-amber-600"
                                           className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse"

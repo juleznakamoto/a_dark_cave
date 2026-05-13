@@ -20,6 +20,8 @@ interface HeroProps {
       text: string;
       onClick?: () => void;
       buttonId?: string;
+      /** Small pill at the upper-right of the primary CTA (e.g. end screen promo). */
+      badge?: string;
     };
     secondary?: {
       text: string;
@@ -554,13 +556,20 @@ const Hero: React.FC<HeroProps> = ({
           {/* CTA Buttons with Animation */}
           {buttons && buttons.primary && (
             <div className="flex flex-wrap justify-center gap-4 mt-10 animate-fade-in-up animation-delay-3000">
-              <button
-                onClick={buttons.primary.onClick}
-                button_id={buttons.primary.buttonId}
-                className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-base sm:text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 whitespace-nowrap font-noto-symbols-2"
-              >
-                {buttons.primary.text}
-              </button>
+              <div className="relative inline-block">
+                {buttons.primary.badge && (
+                  <span className="pointer-events-none absolute -top-2.5 -right-2 z-10 max-w-[min(12rem,calc(100vw-4rem))] rounded border border-emerald-500/90 bg-emerald-950/95 px-2 py-0.5 text-center text-[10px] font-semibold uppercase leading-tight tracking-wide text-emerald-300 shadow-md sm:text-xs">
+                    {buttons.primary.badge}
+                  </span>
+                )}
+                <button
+                  onClick={buttons.primary.onClick}
+                  button_id={buttons.primary.buttonId}
+                  className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-base sm:text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 whitespace-nowrap font-noto-symbols-2"
+                >
+                  {buttons.primary.text}
+                </button>
+              </div>
             </div>
           )}
 

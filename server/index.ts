@@ -1274,6 +1274,7 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
         cruelMode,
         playlightFirstPurchaseDiscount,
         tradersSonGratitudeDiscount,
+        cruelModeJourneyCompleteDiscount,
       } = req.body;
       const { clientSecret, item } = await createPaymentIntent(
         itemId,
@@ -1284,7 +1285,8 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
         tradersGratitudeDiscount === true ? true : undefined,
         cruelMode === true ? true : cruelMode === false ? false : undefined,
         playlightFirstPurchaseDiscount === true ? true : undefined,
-        tradersSonGratitudeDiscount === true ? true : undefined
+        tradersSonGratitudeDiscount === true ? true : undefined,
+        cruelModeJourneyCompleteDiscount === true ? true : undefined,
       );
 
       res.json({ clientSecret, item });

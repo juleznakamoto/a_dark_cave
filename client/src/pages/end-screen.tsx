@@ -9,8 +9,9 @@ export default function EndScreenPage() {
   };
 
   const handleCruelMode = async () => {
-    // Navigate back to game with shop open
-    window.location.href = "/?game=true&openShop=true&cruelHighlight=true";
+    // Journey-complete promo: open shop with Cruel Mode highlighted + discounted checkout flag.
+    window.location.href =
+      "/?game=true&openShop=true&cruelHighlight=true&cruelCompletionDiscount=true";
   };
 
   const handleFeedback = () => {
@@ -62,13 +63,14 @@ export default function EndScreenPage() {
           line2: "Ends Here",
         }}
         subtitle1="At least for now..."
-        subtitle2="Try Cruel Mode for an even bigger challenge with extended gameplay."
+        subtitle2="Try Cruel Mode for an even bigger challenge with extended gameplay. Because you finished the game you receive a special discount."
         subtitle3=""
         buttons={{
           primary: {
             text: "⛤ Cruel Mode",
             onClick: handleCruelMode,
             buttonId: "end-screen-cruel-mode",
+            badge: "Special discount",
           },
           feedback: {
             text: "Feedback",
