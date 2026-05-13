@@ -46,6 +46,8 @@ import ResourcesTab from "./tabs/ResourcesTab";
 import UpgradesTab from "./tabs/UpgradesTab";
 import LookupTab from "./tabs/LookupTab";
 import SessionsTab from "./tabs/SessionsTab";
+import SocialPromptTab from "./tabs/SocialPromptTab";
+import { aggregateSocialPromptFromSaves } from "@shared/socialPromptAdminStats";
 
 interface ButtonClickData {
   user_id: string;
@@ -208,6 +210,11 @@ export default function AdminDashboard() {
   const clickData = rawClickData;
   const gameSaves = rawGameSaves;
   const purchases = rawPurchases;
+
+  const socialPromptAggregate = useMemo(
+    () => aggregateSocialPromptFromSaves(rawGameSaves),
+    [rawGameSaves],
+  );
 
   const purchaseTotalsFromRaw = useMemo(() => {
     const paid = rawPurchases.filter((p) => p.price_paid > 0 && !p.bundle_id);
@@ -875,13 +882,14 @@ export default function AdminDashboard() {
         setRegistrationMethodStats(data.registrationMethodStats);
       }
       if (data.marketingMetrics && typeof data.marketingMetrics === "object") {
+        const mm = data.marketingMetrics as Record<string, unknown>;
         setMarketingMetrics({
           marketingUsersPrompted:
-            Number(data.marketingMetrics.marketingUsersPrompted) || 0,
+            Number(mm.marketingUsersPrompted) || 0,
           marketingUsersOptedIn:
-            Number(data.marketingMetrics.marketingUsersOptedIn) || 0,
+            Number(mm.marketingUsersOptedIn) || 0,
           marketingOptInRate:
-            Number(data.marketingMetrics.marketingOptInRate) || 0,
+            Number(mm.marketingOptInRate) || 0,
         });
       }
       if (typeof data.accountsDeletedAnonymized === "number") {
@@ -1093,6 +1101,7 @@ export default function AdminDashboard() {
                   <TabsTrigger value="completion">Game Progress</TabsTrigger>
                   <TabsTrigger value="purchases">Purchases</TabsTrigger>
                   <TabsTrigger value="referrals">Referrals</TabsTrigger>
+                  <TabsTrigger value="socialPrompt">Social prompt</TabsTrigger>
                   <TabsTrigger value="churn">Churn</TabsTrigger>
                   <TabsTrigger value="sleep">Sleep Upgrades</TabsTrigger>
                   <TabsTrigger value="resources">Resources</TabsTrigger>
@@ -1418,6 +1427,10 @@ export default function AdminDashboard() {
                   referralsChartTimeRange={referralsChartTimeRange}
                   setReferralsChartTimeRange={setReferralsChartTimeRange}
                 />
+              </TabsContent>
+
+              <TabsContent value="socialPrompt">
+                <SocialPromptTab aggregate={socialPromptAggregate} />
               </TabsContent>
 
               <TabsContent value="churn">
