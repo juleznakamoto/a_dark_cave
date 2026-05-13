@@ -8,7 +8,6 @@ import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { capitalizeWords, formatSignedNumber } from "@/lib/utils";
 import React, { useState, useEffect, useRef } from "react";
 import {
-  FORTIFICATION_BUILDING_KEYS,
   getFortificationMarginalStats,
   type FortificationBuildingKey,
 } from "@/game/bastionStats";
@@ -793,49 +792,15 @@ export default function SidePanel() {
       let tooltip = undefined;
 
       if (key === "defense") {
-        const totalDefense = bastion_stats?.defense ?? 0;
-        tooltip = bastion_stats ? (
-          <div>
-            <div className="mb-1 text-gray-400">Reduces incoming damage</div>
-            {FORTIFICATION_BUILDING_KEYS.map((bf) => {
-              const m = getFortificationMarginalStats(gameStateTyped, bf);
-              if (!m || m.defense === 0) return null;
-              return (
-                <div key={bf}>
-                  +{m.defense} {getFortificationDisplayLabel(bf, buildings)}
-                </div>
-              );
-            })}
-            <div className="mt-1 border-t border-gray-600 pt-1 font-medium">
-              Total: {totalDefense}
-            </div>
-          </div>
-        ) : (
-          <span className="text-gray-400">Reduces incoming damage</span>
+        tooltip = (
+          <span className="text-gray-400">
+            Reduces incoming damage
+          </span>
         );
       }
 
       if (key === "integrity") {
-        const totalIntegrity = bastion_stats?.integrity ?? 0;
-        tooltip = bastion_stats ? (
-          <div>
-            <div className="mb-1 text-gray-400">
-              If integrity reaches 0, you lose the battle
-            </div>
-            {FORTIFICATION_BUILDING_KEYS.map((bf) => {
-              const m = getFortificationMarginalStats(gameStateTyped, bf);
-              if (!m || m.integrity === 0) return null;
-              return (
-                <div key={bf}>
-                  +{m.integrity} {getFortificationDisplayLabel(bf, buildings)}
-                </div>
-              );
-            })}
-            <div className="mt-1 border-t border-gray-600 pt-1 font-medium">
-              Total: {totalIntegrity}
-            </div>
-          </div>
-        ) : (
+        tooltip = (
           <span className="text-gray-400">
             If integrity reaches 0, you lose the battle
           </span>
@@ -851,21 +816,8 @@ export default function SidePanel() {
             <div className="mb-1 text-gray-400">
               Damage you deal to enemies each combat round
             </div>
-            {FORTIFICATION_BUILDING_KEYS.map((bf) => {
-              const m = getFortificationMarginalStats(gameStateTyped, bf);
-              if (!m || m.attack === 0) return null;
-              return (
-                <div key={bf}>
-                  +{m.attack} {getFortificationDisplayLabel(bf, buildings)}
-                </div>
-              );
-            })}
-            <div className="mt-1 border-t border-gray-600 pt-1">
-              <div className="font-medium">Fortifications: {fortAttack}</div>
-              <div>
-                {strengthAttack} from Strength (50% of {totalStrength})
-              </div>
-            </div>
+            <div>{fortAttack} from Fortifications</div>
+            <div>{strengthAttack} from Strength (50 %)</div>
           </div>
         );
       }

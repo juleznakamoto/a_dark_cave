@@ -17,25 +17,6 @@ export const FORTIFICATION_BUILDING_KEYS = [
 export type FortificationBuildingKey =
   (typeof FORTIFICATION_BUILDING_KEYS)[number];
 
-/**
- * Per-building marginal Attack / Defense / Integrity from that building alone.
- * Attack uses fortification-only attack (excludes the Strength-based portion).
- */
-export function getFortificationMarginalStats(
-  state: GameState,
-  key: FortificationBuildingKey,
-): { defense: number; attack: number; integrity: number } | null {
-  if ((state.buildings[key] ?? 0) === 0) return null;
-  const full = calculateBastionStats(state);
-  const buildings = { ...state.buildings, [key]: 0 };
-  const without = calculateBastionStats({ ...state, buildings });
-  return {
-    defense: full.defense - without.defense,
-    attack: full.attackFromFortifications - without.attackFromFortifications,
-    integrity: full.integrity - without.integrity,
-  };
-}
-
 export function calculateBastionStats(state: GameState): BastionStats {
   let defense = 0;
   let attackFromFortifications = 0;
@@ -136,6 +117,25 @@ export function calculateBastionStats(state: GameState): BastionStats {
     attackFromFortifications,
     attackFromStrength,
     integrity: baseIntegrity,
+  };
+}
+
+/**
+ * Per-building marginal Attack / Defense / Integrity from that building alone.
+ * Attack uses fortification-only attack (excludes the Strength-based portion).
+ */
+export function getFortificationMarginalStats(
+  state: GameState,
+  key: FortificationBuildingKey,
+): { defense: number; attack: number; integrity: number } | null {
+  if ((state.buildings[key] ?? 0) === 0) return null;
+  const full = calculateBastionStats(state);
+  const buildings = { ...state.buildings, [key]: 0 };
+  const without = calculateBastionStats({ ...state, buildings });
+  return {
+    defense: full.defense - without.defense,
+    attack: full.attackFromFortifications - without.attackFromFortifications,
+    integrity: full.integrity - without.integrity,
   };
 }
 
