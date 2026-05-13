@@ -100,7 +100,7 @@ export default function VillagePanel() {
     // Keep bubbles visible for animation duration
     setTimeout(() => {
       setBubbles((prev) => prev.filter((b) => b.id !== id));
-    }, 3000); // Match the 3-second duration used in button-test
+    }, 3000); // Match the bubbly-button animation duration
   };
 
   // Get progress from game loop state
