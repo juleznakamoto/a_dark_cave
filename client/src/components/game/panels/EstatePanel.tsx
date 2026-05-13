@@ -704,8 +704,11 @@ export default function EstatePanel() {
                     {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1]?.stunRounds > CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]?.stunRounds && (
                       <div>+{CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].stunRounds - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds} Stun Round</div>
                     )}
+                    {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1]?.successChance > CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]?.successChance && (
+                      <div>+{CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].successChance - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].successChance}% Success Chance</div>
+                    )}
                   </>}
-                  description={`${CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].damage} Damage, ${CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds} Round${CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds > 1 ? "s" : ""} Stun`}
+                  description={`${CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].damage} Damage, ${CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds} Round${CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds > 1 ? "s" : ""} Stun, ${CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].successChance}% success`}
                 />
               )}
 

@@ -17,6 +17,9 @@ import {
 import {
   BLOODFLAME_SPHERE_UPGRADES,
   CRUSHING_STRIKE_UPGRADES,
+  POISON_ARROWS_BASE_DAMAGE,
+  POISON_ARROWS_DOT_FIGHT_ROUNDS,
+  poisonArrowsDamagePerTick,
 } from "@/game/rules/skillUpgrades";
 import {
   Dialog,
@@ -91,8 +94,11 @@ export default function CombatDialog({
   const [enemyStunnedRounds, setEnemyStunnedRounds] = useState(0);
   const [enemyBurnRounds, setEnemyBurnRounds] = useState(0);
   const [enemyBurnDamage, setEnemyBurnDamage] = useState(0);
+  const [enemyPoisonRounds, setEnemyPoisonRounds] = useState(0);
+  const [enemyPoisonDamage, setEnemyPoisonDamage] = useState(0);
   const [wasCriticalStrike, setWasCriticalStrike] = useState(false);
   const [playerStrikeFailed, setPlayerStrikeFailed] = useState(false);
+  const [crushingStrikeFailed, setCrushingStrikeFailed] = useState(false);
   const [combatSummary, setCombatSummary] = useState<CombatResultSummary | null>(
     null,
   );
@@ -126,6 +132,7 @@ export default function CombatDialog({
       setEnemyDamageIndicator({ amount: 0, visible: false });
       setWasCriticalStrike(false);
       setPlayerStrikeFailed(false);
+      setCrushingStrikeFailed(false);
       enemyDamageIndicatorTimeoutRef.current = null;
     }, 3000);
   };
@@ -196,8 +203,11 @@ export default function CombatDialog({
       setEnemyStunnedRounds(0);
       setEnemyBurnRounds(0);
       setEnemyBurnDamage(0);
+      setEnemyPoisonRounds(0);
+      setEnemyPoisonDamage(0);
       setWasCriticalStrike(false);
       setPlayerStrikeFailed(false);
+      setCrushingStrikeFailed(false);
       setCombatSummary(null);
       consequencesAppliedRef.current = false;
       const maxIntegrity = bastionStats.integrity;
@@ -278,7 +288,7 @@ export default function CombatDialog({
     combatItems.push({
       id: "poison_arrows",
       name: "Poison Arrows",
-      damage: 15, // Base damage, will be applied per round
+      damage: POISON_ARROWS_BASE_DAMAGE,
       available:
         poisonArrowsUsedInCombat < 1 && !usedItemsInRound.has("poison_arrows"),
     });
@@ -293,6 +303,18 @@ export default function CombatDialog({
 
     const level = crushingStrikeLevel || 0;
     const config = CRUSHING_STRIKE_UPGRADES[level];
+    setUsedCrushingStrike(true);
+
+    const hit = Math.random() < config.successChance / 100;
+    if (!hit) {
+      setPlayerStrikeFailed(false);
+      setWasCriticalStrike(false);
+      setCrushingStrikeFailed(true);
+      showEnemyDamage(0);
+      return;
+    }
+
+    setCrushingStrikeFailed(false);
 
     // Deal damage immediately
     const newEnemyHealth = Math.max(
@@ -302,7 +324,6 @@ export default function CombatDialog({
 
     // Set stun duration based on level
     setEnemyStunnedRounds(config.stunRounds);
-    setUsedCrushingStrike(true);
 
     // Update combat state
     setCurrentEnemy((prev) =>
@@ -358,6 +379,7 @@ export default function CombatDialog({
 
     // Show damage indicator on enemy health bar
     setPlayerStrikeFailed(false);
+    setCrushingStrikeFailed(false);
     setWasCriticalStrike(false);
     showEnemyDamage(config.burnDamage);
 
@@ -381,9 +403,28 @@ export default function CombatDialog({
     setUsedItemsInCombat((prev) => [...prev, item.id]);
 
     if (item.id === "poison_arrows") {
-      // Poison Arrows apply damage over time and have a special effect
-      // For now, we just mark it as used and will handle damage application in handleFight
-      // The icon indication logic will also be in handleFight or a separate effect
+      const dmg = poisonArrowsDamagePerTick(getTotalKnowledge(gameState));
+      const newEnemyHealth = Math.max(
+        0,
+        (currentEnemy?.currentHealth || 0) - dmg,
+      );
+
+      setEnemyPoisonDamage(dmg);
+      setEnemyPoisonRounds(POISON_ARROWS_DOT_FIGHT_ROUNDS);
+
+      setCurrentEnemy((prev) =>
+        prev ? { ...prev, currentHealth: newEnemyHealth } : null,
+      );
+
+      setPlayerStrikeFailed(false);
+      setCrushingStrikeFailed(false);
+      setWasCriticalStrike(false);
+      showEnemyDamage(dmg);
+
+      if (newEnemyHealth <= 0) {
+        setCombatEnded(true);
+        setCombatResult("victory");
+      }
     } else {
       // For bombs, apply damage directly
       const newEnemyHealth = Math.max(
@@ -398,6 +439,7 @@ export default function CombatDialog({
 
       // Show damage indicator on enemy health bar
       setPlayerStrikeFailed(false);
+      setCrushingStrikeFailed(false);
       setWasCriticalStrike(false);
       showEnemyDamage(finalDamage);
 
@@ -460,17 +502,17 @@ export default function CombatDialog({
     if (attackFailed) {
       playerDamage = 0;
       setWasCriticalStrike(false);
+      setCrushingStrikeFailed(false);
       setPlayerStrikeFailed(true);
     } else {
       setPlayerStrikeFailed(false);
+      setCrushingStrikeFailed(false);
     }
 
-    // Apply poison damage if active (works for all rounds poison is active)
-    const poisonArrowsUsedThisRound = usedItemsInRound.has("poison_arrows");
-    if (NIGHTSHADE_BOW_OWNED && poisonArrowsUsedThisRound) {
-      const totalKnowledge = getTotalKnowledge(gameState);
-      const knowledgeBonus = Math.floor(totalKnowledge / 5);
-      poisonDamageDealt = 15 + knowledgeBonus; // Base 15 damage + knowledge bonus
+    // Apply poison damage if active (same tick pattern as burn)
+    if (enemyPoisonRounds > 0) {
+      poisonDamageDealt = enemyPoisonDamage;
+      setEnemyPoisonRounds((prev) => Math.max(0, prev - 1));
     }
 
     // Apply burn damage if active (works for all rounds burn is active)
@@ -774,14 +816,14 @@ export default function CombatDialog({
                       />
                       {enemyDamageIndicator.visible && (
                         <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-red-900 font-bold text-sm pointer-events-none">
-                          {playerStrikeFailed ? (
+                          {(playerStrikeFailed || crushingStrikeFailed) ? (
                             enemyDamageIndicator.amount > 0 ? (
                               <>
                                 -{formatNumber(enemyDamageIndicator.amount)}{" "}
-                                (Attack failed)
+                                ({playerStrikeFailed ? "Attack failed" : "Crushing Strike failed"})
                               </>
                             ) : (
-                              "Attack failed"
+                              playerStrikeFailed ? "Attack failed" : "Crushing Strike failed"
                             )
                           ) : (
                             <>

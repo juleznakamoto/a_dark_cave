@@ -12,6 +12,9 @@ import { getBoneTotemsCost } from "./forestSacrificeActions";
 import {
   CRUSHING_STRIKE_UPGRADES,
   BLOODFLAME_SPHERE_UPGRADES,
+  POISON_ARROWS_BASE_DAMAGE,
+  POISON_ARROWS_DOT_FIGHT_ROUNDS,
+  poisonArrowsDamagePerTick,
 } from "./skillUpgrades";
 import { formatNumber, formatSignedNumber } from "@/lib/utils";
 import type { TooltipConfig } from "@/game/types";
@@ -655,16 +658,17 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
   poison_arrows: {
     getContent: (state) => {
       const knowledge = getTotalKnowledge(state) || 0;
-      const baseDamage = 15;
       const knowledgeBonus = Math.floor(knowledge / 5);
-      return `Base Damage: ${baseDamage} per round for 3 rounds\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus} per round`;
+      const perHit = poisonArrowsDamagePerTick(knowledge);
+      const totalHits = 1 + POISON_ARROWS_DOT_FIGHT_ROUNDS;
+      return `Base Damage: ${POISON_ARROWS_BASE_DAMAGE}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Damage: ${perHit} on use and each Fight (${POISON_ARROWS_DOT_FIGHT_ROUNDS} more rounds)\n${totalHits} poison hits total`;
     },
   },
   crushing_strike: {
     getContent: (state) => {
       const level = state.combatSkills.crushingStrikeLevel ?? 0;
       const config = CRUSHING_STRIKE_UPGRADES[level];
-      return `Damage: ${config.damage}\nStun Duration: ${config.stunRounds} round${config.stunRounds > 1 ? "s" : ""}`;
+      return `Damage: ${config.damage}\nStun Duration: ${config.stunRounds} round${config.stunRounds > 1 ? "s" : ""}\nSuccess chance: ${config.successChance}%`;
     },
   },
   bloodflame_sphere: {
