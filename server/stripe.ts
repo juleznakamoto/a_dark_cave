@@ -55,7 +55,8 @@ export async function createPaymentIntent(
   tradersGratitudeDiscount?: boolean,
   cruelMode?: boolean,
   playlightFirstPurchaseDiscount?: boolean,
-  tradersSonGratitudeDiscount?: boolean
+  tradersSonGratitudeDiscount?: boolean,
+  cruelModeJourneyCompleteDiscount?: boolean,
 ) {
   const item = SHOP_ITEMS[itemId];
   if (!item) {
@@ -81,14 +82,25 @@ export async function createPaymentIntent(
     playlightFirstPurchaseDiscount === true;
   const sonRequested =
     allowShopDiscounts && item.price > 0 && tradersSonGratitudeDiscount === true;
-  const amount = getDiscountedShopPriceCents(item.price, {
-    playlightFirstPurchase: playlightRequested,
-    tradersGratitude: tradersRequested,
-    tradersSonGratitude: sonRequested,
-  });
+  const journeyCompleteRequested =
+    allowShopDiscounts &&
+    itemId === "cruel_mode" &&
+    item.price > 0 &&
+    cruelModeJourneyCompleteDiscount === true;
+  const amount = getDiscountedShopPriceCents(
+    item.price,
+    {
+      playlightFirstPurchase: playlightRequested,
+      tradersGratitude: tradersRequested,
+      tradersSonGratitude: sonRequested,
+      cruelModeJourneyComplete: journeyCompleteRequested,
+    },
+    itemId,
+  );
   const tradersApplied = tradersRequested;
   const playlightApplied = playlightRequested;
   const sonApplied = sonRequested;
+  const journeyCompleteApplied = journeyCompleteRequested;
 
   // Optional: Log if client sent a different price (potential attack attempt)
   if (clientPrice !== undefined && clientPrice !== item.price) {
@@ -111,6 +123,9 @@ export async function createPaymentIntent(
       }),
       ...(tradersApplied && { tradersGratitudeDiscountApplied: 'true' }),
       ...(sonApplied && { tradersSonGratitudeDiscountApplied: 'true' }),
+      ...(journeyCompleteApplied && {
+        cruelModeJourneyCompleteDiscountApplied: 'true',
+      }),
     },
   };
 
@@ -162,15 +177,22 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
     const itemId = paymentIntent.metadata.itemId;
     const item = SHOP_ITEMS[itemId];
     if (item) {
-      const expectedAmount = getDiscountedShopPriceCents(item.price, {
-        playlightFirstPurchase:
-          paymentIntent.metadata.playlightFirstPurchaseDiscountApplied ===
-          'true',
-        tradersGratitude:
-          paymentIntent.metadata.tradersGratitudeDiscountApplied === 'true',
-        tradersSonGratitude:
-          paymentIntent.metadata.tradersSonGratitudeDiscountApplied === 'true',
-      });
+      const expectedAmount = getDiscountedShopPriceCents(
+        item.price,
+        {
+          playlightFirstPurchase:
+            paymentIntent.metadata.playlightFirstPurchaseDiscountApplied ===
+            'true',
+          tradersGratitude:
+            paymentIntent.metadata.tradersGratitudeDiscountApplied === 'true',
+          tradersSonGratitude:
+            paymentIntent.metadata.tradersSonGratitudeDiscountApplied === 'true',
+          cruelModeJourneyComplete:
+            paymentIntent.metadata.cruelModeJourneyCompleteDiscountApplied ===
+            'true',
+        },
+        itemId,
+      );
       if (paymentIntent.amount !== expectedAmount) {
         logger.error(
           `Payment amount mismatch for item ${itemId}. Expected: ${expectedAmount}. Got: ${paymentIntent.amount}`

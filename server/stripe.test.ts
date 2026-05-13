@@ -320,6 +320,67 @@ describe('Stripe Shop Integration', () => {
       });
     });
 
+    describe("Journey-complete Cruel Mode discount", () => {
+      it("should cap cruel_mode checkout at $3.49 when flag is true", async () => {
+        mockPaymentIntents.create.mockResolvedValue({
+          client_secret: "test_secret",
+        } as any);
+
+        await createPaymentIntent(
+          "cruel_mode",
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          true,
+        );
+
+        expect(mockPaymentIntents.create).toHaveBeenCalledWith(
+          expect.objectContaining({
+            amount: 349,
+            metadata: expect.objectContaining({
+              itemId: "cruel_mode",
+              priceInCents: "349",
+              cruelModeJourneyCompleteDiscountApplied: "true",
+            }),
+          }),
+        );
+      });
+
+      it("should apply journey cap after Trader gratitude on cruel_mode", async () => {
+        mockPaymentIntents.create.mockResolvedValue({
+          client_secret: "test_secret",
+        } as any);
+
+        await createPaymentIntent(
+          "cruel_mode",
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          true,
+          undefined,
+          undefined,
+          undefined,
+          true,
+        );
+
+        expect(mockPaymentIntents.create).toHaveBeenCalledWith(
+          expect.objectContaining({
+            amount: 349,
+            metadata: expect.objectContaining({
+              tradersGratitudeDiscountApplied: "true",
+              cruelModeJourneyCompleteDiscountApplied: "true",
+            }),
+          }),
+        );
+      });
+    });
+
     describe("Full game (no shop discounts)", () => {
       it("should charge catalog price and ignore discount flags", async () => {
         mockPaymentIntents.create.mockResolvedValue({
