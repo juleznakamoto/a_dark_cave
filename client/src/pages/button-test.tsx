@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import {
   BubblyButton,
   BubblyButtonGlobalPortal,
@@ -129,53 +130,59 @@ function ExploreCaveButtons() {
 // ============================================================
 export default function ButtonTest() {
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-8 p-8">
-      <h1 className="text-2xl font-bold text-foreground mb-4">
-        Build Button Test - Bubbly Animations
-      </h1>
+    <>
+      <Helmet>
+        <title>Button Test - A Dark Cave</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-8 p-8">
+        <h1 className="text-2xl font-bold text-foreground mb-4">
+          Build Button Test - Bubbly Animations
+        </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl w-full">
-        <div className="border rounded-lg p-6 text-center space-y-4">
-          <h3 className="text-sm font-semibold">Non-Upgradeable Building</h3>
-          <p className="text-xs text-muted-foreground">
-            Button disappears after click, animation persists globally
-          </p>
-          <p className="text-xs text-muted-foreground italic">
-            (e.g., Stone Hut - no upgrades available)
-          </p>
-          <NonUpgradeableBuildButton />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl w-full">
+          <div className="border rounded-lg p-6 text-center space-y-4">
+            <h3 className="text-sm font-semibold">Non-Upgradeable Building</h3>
+            <p className="text-xs text-muted-foreground">
+              Button disappears after click, animation persists globally
+            </p>
+            <p className="text-xs text-muted-foreground italic">
+              (e.g., Stone Hut - no upgrades available)
+            </p>
+            <NonUpgradeableBuildButton />
+          </div>
+
+          <div className="border rounded-lg p-6 text-center space-y-4">
+            <h3 className="text-sm font-semibold">Upgradeable Building</h3>
+            <p className="text-xs text-muted-foreground">
+              Button stays visible for repeated interactions
+            </p>
+            <p className="text-xs text-muted-foreground italic">
+              (e.g., Wooden Hut - can be upgraded)
+            </p>
+            <UpgradeableBuildButton />
+          </div>
+
+          <div className="border rounded-lg p-6 text-center space-y-4">
+            <h3 className="text-sm font-semibold">Craft Action (Adapted)</h3>
+            <p className="text-xs text-muted-foreground">
+              Custom particleConfig: colors, duration, distance, size, count, glow, ease
+            </p>
+            <p className="text-xs text-muted-foreground italic">
+              (CRAFT_PARTICLE_CONFIG preset - snappier, shorter range)
+            </p>
+            <CraftButton />
+          </div>
         </div>
 
-        <div className="border rounded-lg p-6 text-center space-y-4">
-          <h3 className="text-sm font-semibold">Upgradeable Building</h3>
+        <div className="border rounded-lg p-6 w-full max-w-4xl space-y-4">
+          <h3 className="text-sm font-semibold">Explore Cave (All Levels)</h3>
           <p className="text-xs text-muted-foreground">
-            Button stays visible for repeated interactions
+            Per-level particle configs for testing and styling
           </p>
-          <p className="text-xs text-muted-foreground italic">
-            (e.g., Wooden Hut - can be upgraded)
-          </p>
-          <UpgradeableBuildButton />
-        </div>
-
-        <div className="border rounded-lg p-6 text-center space-y-4">
-          <h3 className="text-sm font-semibold">Craft Action (Adapted)</h3>
-          <p className="text-xs text-muted-foreground">
-            Custom particleConfig: colors, duration, distance, size, count, glow, ease
-          </p>
-          <p className="text-xs text-muted-foreground italic">
-            (CRAFT_PARTICLE_CONFIG preset - snappier, shorter range)
-          </p>
-          <CraftButton />
+          <ExploreCaveButtons />
         </div>
       </div>
-
-      <div className="border rounded-lg p-6 w-full max-w-4xl space-y-4">
-        <h3 className="text-sm font-semibold">Explore Cave (All Levels)</h3>
-        <p className="text-xs text-muted-foreground">
-          Per-level particle configs for testing and styling
-        </p>
-        <ExploreCaveButtons />
-      </div>
-    </div>
+    </>
   );
 }
