@@ -194,6 +194,8 @@ export const PRIOR_ELIGIBLE_ACTIONS = new Set<string>([
   "craftTorches",
   "craftBoneTotems",
   "craftLeatherTotems",
+  "boneTotems",
+  "leatherTotems",
   "craftEmberBomb",
   "craftAshfireBomb",
   "craftVoidBomb",
