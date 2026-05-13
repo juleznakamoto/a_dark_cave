@@ -1691,8 +1691,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           tooltip={
                                             <div className="text-xs">
                                               Special discount for finishing the
-                                              game and opening Cruel Mode from
-                                              the journey-complete screen.
+                                              game.
                                             </div>
                                           }
                                           tooltipId={`journey-complete-cruel-${item.id}`}
