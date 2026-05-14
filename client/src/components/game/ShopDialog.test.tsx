@@ -35,6 +35,11 @@ import { ShopDialog } from './ShopDialog';
 import { useGameStore } from '@/game/state';
 import { SHOP_ITEMS, bundleComponentsCatalogPriceSumCents, bundleComponentsListPriceSumCents } from '@shared/shopItems';
 
+/** Paid shop card CTA (checkout step still uses "Complete Purchase…"). */
+const SHOP_PAID_ITEM_CTA = /^(Continue|Purchase)$/i;
+/** Shop item action buttons including free Claim (e.g. unauthenticated cases). */
+const SHOP_ITEM_ACTION_CTA = /^(Continue|Purchase|Claim)$/i;
+
 // Use vi.hoisted so mock is available when vi.mock factory runs
 const { mockSupabaseClient, mockGetCurrentUser, mockInsert } = vi.hoisted(() => {
   const mockInsert = vi.fn(() => Promise.resolve({ data: null, error: null }));
@@ -331,7 +336,7 @@ describe('ShopDialog', () => {
         expect(screen.getByText('1\'000 Gold')).toBeInTheDocument();
       });
 
-      const purchaseButtons = screen.getAllByRole('button', { name: /purchase/i });
+      const purchaseButtons = screen.getAllByRole('button', { name: SHOP_PAID_ITEM_CTA });
       expect(purchaseButtons.length).toBeGreaterThan(0);
     });
 
@@ -357,7 +362,7 @@ describe('ShopDialog', () => {
         expect(screen.getByText('1\'000 Gold')).toBeInTheDocument();
       });
 
-      const purchaseButton = screen.getAllByRole('button', { name: /purchase/i })[0];
+      const purchaseButton = screen.getAllByRole('button', { name: SHOP_PAID_ITEM_CTA })[0];
       await user.click(purchaseButton);
 
       await waitFor(() => {
@@ -396,7 +401,7 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        const purchaseButtons = screen.getAllByRole('button', { name: /purchase/i });
+        const purchaseButtons = screen.getAllByRole('button', { name: SHOP_PAID_ITEM_CTA });
         // Should still show purchase button even with existing purchases
         expect(purchaseButtons.length).toBeGreaterThan(0);
       });
@@ -425,7 +430,7 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        const purchaseButtons = screen.getAllByRole('button', { name: /purchase/i });
+        const purchaseButtons = screen.getAllByRole('button', { name: SHOP_PAID_ITEM_CTA });
         expect(purchaseButtons.length).toBeGreaterThan(0);
       });
     });
@@ -487,7 +492,7 @@ describe('ShopDialog', () => {
 
       await waitFor(() => {
         if (import.meta.env.DEV) {
-          const purchaseButtons = screen.getAllByRole('button', { name: /purchase/i });
+          const purchaseButtons = screen.getAllByRole('button', { name: SHOP_PAID_ITEM_CTA });
           const cruelModeButton = purchaseButtons.find((b) => {
             let el: HTMLElement | null = b.parentElement;
             while (el) {
@@ -708,7 +713,7 @@ describe('ShopDialog', () => {
       await waitFor(() => {
         expect(screen.getByText(/sign in or create an account/i)).toBeInTheDocument();
         // Shop item buttons (exclude sign-in CTA) should be disabled
-        const purchaseButtons = screen.getAllByRole('button', { name: /purchase|claim/i })
+        const purchaseButtons = screen.getAllByRole('button', { name: SHOP_ITEM_ACTION_CTA })
           .filter(b => !b.textContent?.includes('Sign in'));
         purchaseButtons.forEach(button => {
           expect(button).toBeDisabled();
@@ -913,7 +918,7 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        const purchaseButtons = screen.getAllByRole('button', { name: /purchase/i });
+        const purchaseButtons = screen.getAllByRole('button', { name: SHOP_PAID_ITEM_CTA });
         expect(purchaseButtons.length).toBeGreaterThan(0);
       });
     });
@@ -1218,7 +1223,7 @@ describe('ShopDialog', () => {
       });
 
       // Bundle should still be purchasable (it's repeatable)
-      const purchaseButton = screen.getAllByRole('button', { name: /purchase/i });
+      const purchaseButton = screen.getAllByRole('button', { name: SHOP_PAID_ITEM_CTA });
       expect(purchaseButton.length).toBeGreaterThan(0);
     });
   });
@@ -1295,7 +1300,7 @@ describe('ShopDialog', () => {
     render(<ShopDialog isOpen={true} onClose={onClose} />);
 
     await waitFor(() => {
-      const purchaseButtons = screen.getAllByRole('button', { name: /purchase/i });
+      const purchaseButtons = screen.getAllByRole('button', { name: SHOP_PAID_ITEM_CTA });
       expect(purchaseButtons.length).toBeGreaterThan(0);
     });
   });

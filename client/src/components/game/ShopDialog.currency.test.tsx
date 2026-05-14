@@ -7,6 +7,8 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { ShopDialog } from './ShopDialog';
 import { useGameStore } from '@/game/state';
 
+const SHOP_PAID_ITEM_CTA = /^(Continue|Purchase)$/i;
+
 // Use vi.hoisted so mock is available when vi.mock factory runs
 const { mockSupabaseClient, mockGetCurrentUser } = vi.hoisted(() => {
   const from = vi.fn(() => ({
@@ -344,7 +346,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
         expect(screen.getByText("20'000 Gold")).toBeInTheDocument();
       });
 
-      const purchaseButton = screen.getAllByRole('button', { name: /purchase/i })[0];
+      const purchaseButton = screen.getAllByRole('button', { name: SHOP_PAID_ITEM_CTA })[0];
       fireEvent.click(purchaseButton);
 
       await waitFor(() => {
@@ -380,7 +382,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
         expect(screen.getByText("20'000 Gold")).toBeInTheDocument();
       });
 
-      const purchaseButton = screen.getAllByRole('button', { name: /purchase/i })[0];
+      const purchaseButton = screen.getAllByRole('button', { name: SHOP_PAID_ITEM_CTA })[0];
       fireEvent.click(purchaseButton);
 
       await waitFor(() => {
