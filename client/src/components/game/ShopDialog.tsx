@@ -1246,7 +1246,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
-            <DialogHeader className="shrink-0 pb-2">
+            <DialogHeader className="space-y-1.5 shrink-0">
               <DialogTitle>Trader</DialogTitle>
               <DialogDescription className="sr-only">
                 Shop for gold, artifacts, boosts, and bundles
@@ -1314,7 +1314,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   {activeTab === "purchases" && (
                     <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/5 px-3 py-2.5 text-sm text-foreground">
                       {purchasedItems.length === 0 &&
-                      Object.keys(gameState.feastActivations || {}).length ===
+                        Object.keys(gameState.feastActivations || {}).length ===
                         0 ? (
                         <>
                           <p className="text-md font-medium">
@@ -1336,65 +1336,68 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   )}
                 </div>
 
-                <ScrollAreaWithIndicator
-                  className="min-h-0 flex-1"
-                  scrollAreaId="shop-dialog"
+                <TabsContent
+                  value="shop"
+                  className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden outline-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden"
                 >
-                  <TabsContent value="shop" className="mt-0">
-                    {/* Filter Chips */}
-                    <div className="flex flex-wrap gap-1.5 mb-3">
-                      <Button
-                        variant={
-                          selectedFilter === null ? "default" : "outline"
-                        }
-                        size="xs"
-                        onClick={() => setSelectedFilter(null)}
-                        className="h-6 text-xs"
-                      >
-                        Highlights
-                      </Button>
-                      <Button
-                        variant={
-                          selectedFilter === "gold" ? "default" : "outline"
-                        }
-                        size="xs"
-                        onClick={() => setSelectedFilter("gold")}
-                        className="h-6 text-xs"
-                      >
-                        Gold
-                      </Button>
-                      <Button
-                        variant={
-                          selectedFilter === "artifacts" ? "default" : "outline"
-                        }
-                        size="xs"
-                        onClick={() => setSelectedFilter("artifacts")}
-                        className="h-6 text-xs"
-                      >
-                        Artifacts
-                      </Button>
-                      <Button
-                        variant={
-                          selectedFilter === "boosts" ? "default" : "outline"
-                        }
-                        size="xs"
-                        onClick={() => setSelectedFilter("boosts")}
-                        className="h-6 text-xs"
-                      >
-                        Boosts
-                      </Button>
-                      <Button
-                        variant={
-                          selectedFilter === "bundles" ? "default" : "outline"
-                        }
-                        size="xs"
-                        onClick={() => setSelectedFilter("bundles")}
-                        className="h-6 text-xs"
-                      >
-                        Bundles
-                      </Button>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* Pinned via flex split below TabsList + intro (sticky breaks under dialog transforms). */}
+                  <div className="flex shrink-0 flex-wrap gap-1.5 pb-3">
+                    <Button
+                      variant={selectedFilter === null ? "default" : "outline"}
+                      size="xs"
+                      onClick={() => setSelectedFilter(null)}
+                      className="h-6 text-xs"
+                    >
+                      Highlights
+                    </Button>
+                    <Button
+                      variant={
+                        selectedFilter === "gold" ? "default" : "outline"
+                      }
+                      size="xs"
+                      onClick={() => setSelectedFilter("gold")}
+                      className="h-6 text-xs"
+                    >
+                      Gold
+                    </Button>
+                    <Button
+                      variant={
+                        selectedFilter === "artifacts"
+                          ? "default"
+                          : "outline"
+                      }
+                      size="xs"
+                      onClick={() => setSelectedFilter("artifacts")}
+                      className="h-6 text-xs"
+                    >
+                      Artifacts
+                    </Button>
+                    <Button
+                      variant={
+                        selectedFilter === "boosts" ? "default" : "outline"
+                      }
+                      size="xs"
+                      onClick={() => setSelectedFilter("boosts")}
+                      className="h-6 text-xs"
+                    >
+                      Boosts
+                    </Button>
+                    <Button
+                      variant={
+                        selectedFilter === "bundles" ? "default" : "outline"
+                      }
+                      size="xs"
+                      onClick={() => setSelectedFilter("bundles")}
+                      className="h-6 text-xs"
+                    >
+                      Bundles
+                    </Button>
+                  </div>
+                  <ScrollAreaWithIndicator
+                    className="min-h-0 flex-1"
+                    scrollAreaId="shop-dialog-for-sale"
+                  >
+                    <div className="grid grid-cols-1 gap-4 pr-4 md:grid-cols-3">
                       {(selectedFilter === null
                         ? HIGHLIGHTS_ORDER.map((id) => SHOP_ITEMS[id]).filter(
                           Boolean,
@@ -1449,8 +1452,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 : undefined
                             }
                             className={`border-neutral-500 flex flex-col relative ${item.category === "bundle"
-                                ? "border border-amber-600"
-                                : ""
+                              ? "border border-amber-600"
+                              : ""
                               }${item.id === "cruel_mode" && shopCruelModeHighlight
                                 ? " border border-red-600"
                                 : ""
@@ -1829,153 +1832,157 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           </Card>
                         ))}
                     </div>
-                  </TabsContent>
+                  </ScrollAreaWithIndicator>
+                </TabsContent>
 
-                  <TabsContent value="purchases" className="mt-0">
-                    {!(
-                      purchasedItems.length === 0 &&
-                      Object.keys(gameState.feastActivations || {}).length === 0
-                    ) ? (
-                      <div className="pr-4">
-                        <div className="space-y-2">
-                          {Object.entries(gameState.feastActivations || {}).map(
-                            ([purchaseId, activationsRemaining]) => {
-                              const itemId = purchaseIdToItemId(purchaseId);
+                <TabsContent
+                  value="purchases"
+                  className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden outline-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden"
+                >
+                  {!(
+                    purchasedItems.length === 0 &&
+                    Object.keys(gameState.feastActivations || {}).length === 0
+                  ) ? (
+                    <ScrollAreaWithIndicator
+                      className="min-h-0 flex-1"
+                      scrollAreaId="shop-dialog-purchases"
+                    >
+                      <div className="space-y-2 pr-4">
+                        {Object.entries(gameState.feastActivations || {}).map(
+                          ([purchaseId, activationsRemaining]) => {
+                            const itemId = purchaseIdToItemId(purchaseId);
 
-                              const item = itemId ? SHOP_ITEMS[itemId] : null;
+                            const item = itemId ? SHOP_ITEMS[itemId] : null;
 
-                              if (!item) {
-                                return null;
-                              }
+                            if (!item) {
+                              return null;
+                            }
 
-                              // Skip bundles - only show bundle components
-                              if (item.bundleComponents) {
-                                return null;
-                              }
+                            // Skip bundles - only show bundle components
+                            if (item.bundleComponents) {
+                              return null;
+                            }
 
-                              const isGreatFeastActive =
-                                gameState.greatFeastState?.isActive &&
-                                gameState.greatFeastState.endTime > Date.now();
+                            const isGreatFeastActive =
+                              gameState.greatFeastState?.isActive &&
+                              gameState.greatFeastState.endTime > Date.now();
 
-                              return (
-                                <div
-                                  key={purchaseId}
-                                  className="flex items-center justify-between p-3 border rounded-lg"
-                                >
-                                  <div className="flex flex-col">
-                                    <span className="text-sm font-medium">
-                                      {item.name} ({activationsRemaining}/
-                                      {item.rewards.feastActivations!}{" "}
-                                      available){" "}
-                                      {/* Display remaining activations */}
-                                    </span>
-                                    <span className="text-xs text-muted-foreground">
-                                      {item.description}
-                                    </span>
-                                  </div>
-                                  <Button
-                                    onClick={() =>
-                                      handleActivatePurchase(
-                                        purchaseId,
-                                        item.id, // Use item.id for the itemId argument
-                                      )
-                                    }
-                                    disabled={
-                                      activationsRemaining <= 0 || // Check remaining activations
-                                      isGreatFeastActive
-                                    }
-                                    size="sm"
-                                    variant={
-                                      isGreatFeastActive ||
-                                        activationsRemaining <= 0
-                                        ? "outline"
-                                        : "default"
-                                    }
-                                    className={
-                                      isGreatFeastActive
-                                        ? "bg-green-900/50 text-white border-green-600"
-                                        : ""
-                                    }
-                                    button_id={`shop-activate-${item.id}`}
-                                  >
-                                    {isGreatFeastActive
-                                      ? "Active"
-                                      : activationsRemaining <= 0
-                                        ? "Activated"
-                                        : "Activate"}
-                                  </Button>
+                            return (
+                              <div
+                                key={purchaseId}
+                                className="flex items-center justify-between rounded-lg border p-3"
+                              >
+                                <div className="flex flex-col">
+                                  <span className="text-sm font-medium">
+                                    {item.name} ({activationsRemaining}/
+                                    {item.rewards.feastActivations!} available){" "}
+                                    {/* Display remaining activations */}
+                                  </span>
+                                  <span className="text-xs text-muted-foreground">
+                                    {item.description}
+                                  </span>
                                 </div>
-                              );
-                            },
-                          )}
-
-                          {/* Show non-feast, non-bundle purchases */}
-                          {purchasedItems
-                            .filter((purchaseId) => {
-                              const itemId = purchaseIdToItemId(purchaseId);
-                              const item = itemId ? SHOP_ITEMS[itemId] : null;
-                              return (
-                                item &&
-                                !item.rewards.feastActivations &&
-                                !item.bundleComponents
-                              );
-                            })
-                            .map((purchaseId) => {
-                              const itemId = purchaseIdToItemId(purchaseId);
-                              const item = itemId ? SHOP_ITEMS[itemId] : null;
-
-                              if (!item) return null;
-
-                              const isActivated =
-                                activatedPurchases[purchaseId] || false;
-                              const isCruelModeItem = itemId === "cruel_mode";
-
-                              return (
-                                <div
-                                  key={purchaseId}
-                                  className="flex items-center justify-between p-3 border rounded-lg"
+                                <Button
+                                  onClick={() =>
+                                    handleActivatePurchase(
+                                      purchaseId,
+                                      item.id, // Use item.id for the itemId argument
+                                    )
+                                  }
+                                  disabled={
+                                    activationsRemaining <= 0 || // Check remaining activations
+                                    isGreatFeastActive
+                                  }
+                                  size="sm"
+                                  variant={
+                                    isGreatFeastActive ||
+                                      activationsRemaining <= 0
+                                      ? "outline"
+                                      : "default"
+                                  }
+                                  className={
+                                    isGreatFeastActive
+                                      ? "border-green-600 bg-green-900/50 text-white"
+                                      : ""
+                                  }
+                                  button_id={`shop-activate-${item.id}`}
                                 >
-                                  <div className="flex flex-col">
-                                    <span className="text-sm font-medium">
-                                      {item.name}
-                                      {isCruelModeItem && (
-                                        <span className="text-md  font-medium ml-2">
-                                          (to play activate and start a new
-                                          game)
-                                        </span>
-                                      )}
-                                    </span>
-                                    <span className="text-xs text-muted-foreground">
-                                      {item.description}
-                                    </span>
-                                  </div>
-                                  <Button
-                                    onClick={() =>
-                                      handleActivatePurchase(purchaseId, itemId)
-                                    }
-                                    disabled={!isCruelModeItem && isActivated}
-                                    size="sm"
-                                    variant={
-                                      isActivated ? "outline" : "default"
-                                    }
-                                    button_id={`shop-activate-${itemId}`}
-                                  >
-                                    {isCruelModeItem
-                                      ? isActivated
-                                        ? "Deactivate"
-                                        : "Activate"
-                                      : isActivated
-                                        ? "Activated"
-                                        : "Activate"}
-                                  </Button>
+                                  {isGreatFeastActive
+                                    ? "Active"
+                                    : activationsRemaining <= 0
+                                      ? "Activated"
+                                      : "Activate"}
+                                </Button>
+                              </div>
+                            );
+                          },
+                        )}
+
+                        {/* Show non-feast, non-bundle purchases */}
+                        {purchasedItems
+                          .filter((purchaseId) => {
+                            const itemId = purchaseIdToItemId(purchaseId);
+                            const item = itemId ? SHOP_ITEMS[itemId] : null;
+                            return (
+                              item &&
+                              !item.rewards.feastActivations &&
+                              !item.bundleComponents
+                            );
+                          })
+                          .map((purchaseId) => {
+                            const itemId = purchaseIdToItemId(purchaseId);
+                            const item = itemId ? SHOP_ITEMS[itemId] : null;
+
+                            if (!item) return null;
+
+                            const isActivated =
+                              activatedPurchases[purchaseId] || false;
+                            const isCruelModeItem = item.id === "cruel_mode";
+
+                            return (
+                              <div
+                                key={purchaseId}
+                                className="flex items-center justify-between rounded-lg border p-3"
+                              >
+                                <div className="flex flex-col">
+                                  <span className="text-sm font-medium">
+                                    {item.name}
+                                    {isCruelModeItem && (
+                                      <span className="text-md ml-2 font-medium">
+                                        (to play activate and start a new game)
+                                      </span>
+                                    )}
+                                  </span>
+                                  <span className="text-xs text-muted-foreground">
+                                    {item.description}
+                                  </span>
                                 </div>
-                              );
-                            })}
-                        </div>
+                                <Button
+                                  onClick={() =>
+                                    handleActivatePurchase(purchaseId, item.id)
+                                  }
+                                  disabled={!isCruelModeItem && isActivated}
+                                  size="sm"
+                                  variant={
+                                    isActivated ? "outline" : "default"
+                                  }
+                                  button_id={`shop-activate-${item.id}`}
+                                >
+                                  {isCruelModeItem
+                                    ? isActivated
+                                      ? "Deactivate"
+                                      : "Activate"
+                                    : isActivated
+                                      ? "Activated"
+                                      : "Activate"}
+                                </Button>
+                              </div>
+                            );
+                          })}
                       </div>
-                    ) : null}
-                  </TabsContent>
-                </ScrollAreaWithIndicator>
+                    </ScrollAreaWithIndicator>
+                  ) : null}
+                </TabsContent>
               </Tabs>
             )}
           </DialogContent>
@@ -1999,7 +2006,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
               </DialogDescription>
             </DialogHeader>
             {checkoutPriceBreakdown && (
-              <div className="space-y-1.5 border-b border-border/70 pb-3 text-sm">
+              <div className="border-b border-border/70 pb-3 text-sm">
                 {checkoutPriceBreakdown.listCents != null &&
                   checkoutPriceBreakdown.listCents > 0 && (
                     <div className="flex justify-between gap-4 text-muted-foreground">
