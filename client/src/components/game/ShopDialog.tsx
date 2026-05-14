@@ -103,7 +103,7 @@ function purchaseIdToItemId(purchaseId: string): string | null {
 
 /** Small pill on shop cards (green border / tint); e.g. featured labels. */
 const SHOP_CARD_PROMO_TAG_CLASS =
-  "ml-1 px-1 py-[1px] leading-tight text-xs text-green-500 font-medium border border-green-500 rounded bg-green-800/40";
+  "ml-1 px-1 py-[1px] leading-tight text-xs text-green-500 font-medium border border-green-500/40 rounded bg-green-500/5";
 
 /** Strikethrough list price; bundles prefer explicit `originalPrice`, else summed component MSRP. */
 function shopCardStrikethroughListCents(item: ShopItem): number | null {
@@ -1242,7 +1242,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       <Dialog open={isOpen} onOpenChange={handleShopDialogOpenChange}>
         {!isPaymentMode && (
           <DialogContent
-            className="[--adc-dialog-max-w:56rem] max-h-[80vh] z-[70] p-6"
+            className="[--adc-dialog-max-w:56rem] flex max-h-[80vh] min-h-0 flex-col gap-4 overflow-hidden z-[70] p-6"
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
@@ -1265,7 +1265,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   setAuthDialogOpen(true);
                   onClose();
                 }}
-                className="shrink-0 text-sm h-10 w-full border-0"
+                className="h-10 w-full shrink-0 border-0 text-sm"
                 button_id="shop-sign-in-button"
               >
                 Sign in or create an account to purchase items
@@ -1278,70 +1278,68 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 onValueChange={(value) =>
                   setActiveTab(value as "shop" | "purchases")
                 }
-                className="w-full"
+                className="flex min-h-0 w-full flex-1 flex-col"
               >
+                {/* Header stays outside ScrollArea: DialogContent uses CSS transform for centering,
+                    which breaks position:sticky for descendants; pin tabs/copy via layout instead. */}
+                <div className="shrink-0 pb-2 pt-0.5">
+                  <TabsList className="grid w-full grid-cols-2 gap-0 rounded-md border-2 border-foreground/55 bg-muted p-1 shadow-sm dark:border-foreground/65">
+                    <TabsTrigger
+                      value="shop"
+                      className="rounded-sm border border-transparent data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
+                    >
+                      For Sale
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="purchases"
+                      disabled={!currentUser}
+                      className="rounded-sm border border-transparent data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
+                    >
+                      Purchases
+                    </TabsTrigger>
+                  </TabsList>
+                  {activeTab === "shop" && (
+                    <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/5 px-3 py-2.5 text-sm text-foreground">
+                      <p className="text-md font-medium">
+                        Beta discounts of up to{" "}
+                        <span className="font-bold">40% off</span> are
+                        currently active.
+                      </p>
+                      <p>
+                        All purchases remain available across future playthroughs
+                        and after full release.
+                      </p>
+                    </div>
+                  )}
+                  {activeTab === "purchases" && (
+                    <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/5 px-3 py-2.5 text-sm text-foreground">
+                      {purchasedItems.length === 0 &&
+                      Object.keys(gameState.feastActivations || {}).length ===
+                        0 ? (
+                        <>
+                          <p className="text-md font-medium">
+                            No purchases yet.
+                          </p>
+                          <p>Visit the For Sale tab to buy items.</p>
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-md font-medium">
+                            Activate your purchases to receive rewards.
+                          </p>
+                          <p>
+                            Each purchase can be activated once per playthrough.
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
+
                 <ScrollAreaWithIndicator
-                  className={
-                    !currentUser
-                      ? "h-[calc(80vh-200px)]"
-                      : "h-[calc(80vh-160px)]"
-                  }
+                  className="min-h-0 flex-1"
                   scrollAreaId="shop-dialog"
                 >
-                  <div className="sticky top-0 z-10 bg-background pb-2 pt-0.5">
-                    <TabsList className="grid w-full grid-cols-2 gap-0 rounded-md border-2 border-foreground/55 bg-muted p-1 shadow-sm dark:border-foreground/65">
-                      <TabsTrigger
-                        value="shop"
-                        className="rounded-sm border border-transparent data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
-                      >
-                        For Sale
-                      </TabsTrigger>
-                      <TabsTrigger
-                        value="purchases"
-                        disabled={!currentUser}
-                        className="rounded-sm border border-transparent data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
-                      >
-                        Purchases
-                      </TabsTrigger>
-                    </TabsList>
-                    {activeTab === "shop" && (
-                      <div className="mt-3 rounded-md border border-green-500 px-3 py-2.5 text-sm text-foreground">
-                        <p className="text-md font-medium">
-                          Beta discounts of up to{" "}
-                          <span className="font-bold">40% off</span> are
-                          currently active.
-                        </p>
-                        <p>
-                          All purchases remain available across future playthroughs
-                          and after full release.
-                        </p>
-                      </div>
-                    )}
-                    {activeTab === "purchases" && (
-                      <div className="mt-3 rounded-md border border-green-500 px-3 py-2.5 text-sm text-foreground">
-                        {purchasedItems.length === 0 &&
-                        Object.keys(gameState.feastActivations || {}).length ===
-                          0 ? (
-                          <>
-                            <p className="text-md font-medium">
-                              No purchases yet.
-                            </p>
-                            <p>Visit the For Sale tab to buy items.</p>
-                          </>
-                        ) : (
-                          <>
-                            <p className="text-md font-medium">
-                              Activate your purchases to receive rewards.
-                            </p>
-                            <p>
-                              Each purchase can be activated once per playthrough.
-                            </p>
-                          </>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
                   <TabsContent value="shop" className="mt-0">
                     {/* Filter Chips */}
                     <div className="flex flex-wrap gap-1.5 mb-3">
