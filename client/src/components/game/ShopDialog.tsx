@@ -1242,7 +1242,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       <Dialog open={isOpen} onOpenChange={handleShopDialogOpenChange}>
         {!isPaymentMode && (
           <DialogContent
-            className="[--adc-dialog-max-w:56rem] flex max-h-[80vh] min-h-0 flex-col gap-4 overflow-hidden z-[70] p-6"
+            className="[--adc-dialog-max-w:56rem] flex h-[80vh] min-h-0 flex-col gap-4 overflow-hidden z-[70] p-6"
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
@@ -1397,7 +1397,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     className="min-h-0 flex-1"
                     scrollAreaId="shop-dialog-for-sale"
                   >
-                    <div className="grid grid-cols-1 gap-4 pr-4 md:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                       {(selectedFilter === null
                         ? HIGHLIGHTS_ORDER.map((id) => SHOP_ITEMS[id]).filter(
                           Boolean,
@@ -1847,7 +1847,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       className="min-h-0 flex-1"
                       scrollAreaId="shop-dialog-purchases"
                     >
-                      <div className="space-y-2 pr-4">
+                      <div className="space-y-2">
                         {Object.entries(gameState.feastActivations || {}).map(
                           ([purchaseId, activationsRemaining]) => {
                             const itemId = purchaseIdToItemId(purchaseId);
