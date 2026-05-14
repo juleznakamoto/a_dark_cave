@@ -519,7 +519,7 @@ function CheckoutForm({
         >
           {isProcessing
             ? "Processing..."
-            : `Continue for ${displayPriceCents > 0 ? formatPrice(displayPriceCents) : ""}`}
+            : `Complete Purchase for ${displayPriceCents > 0 ? formatPrice(displayPriceCents) : ""}`}
         </Button>
         <Button
           variant="outline"
@@ -2016,10 +2016,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
           >
             <DialogHeader className="space-y-1 pb-0">
               <DialogTitle>
-                Continue: {SHOP_ITEMS[selectedItem]?.name}
+                Complete Purchase: {SHOP_ITEMS[selectedItem]?.name}
               </DialogTitle>
               <DialogDescription className="sr-only">
-                Continue to checkout for {SHOP_ITEMS[selectedItem]?.name}
+                Complete your payment for {SHOP_ITEMS[selectedItem]?.name}
               </DialogDescription>
             </DialogHeader>
             {checkoutPriceBreakdown && (
