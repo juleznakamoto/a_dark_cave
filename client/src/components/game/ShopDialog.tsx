@@ -519,7 +519,7 @@ function CheckoutForm({
         >
           {isProcessing
             ? "Processing..."
-            : `Complete Purchase for ${displayPriceCents > 0 ? formatPrice(displayPriceCents) : ""}`}
+            : `Continue for ${displayPriceCents > 0 ? formatPrice(displayPriceCents) : ""}`}
         </Button>
         <Button
           variant="outline"
@@ -1246,7 +1246,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
-            <DialogHeader>
+            <DialogHeader className="shrink-0 rounded-md border border-green-500 px-3 py-2.5">
               <DialogTitle>Trader</DialogTitle>
               <DialogDescription className="sr-only">
                 Shop for gold, artifacts, boosts, and bundles
@@ -1254,7 +1254,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             </DialogHeader>
 
             {isLoading && (
-              <div className="flex justify-center py-8">
+              <div className="flex shrink-0 justify-center py-8">
                 <div className="text-muted-foreground">Loading...</div>
               </div>
             )}
@@ -1265,7 +1265,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   setAuthDialogOpen(true);
                   onClose();
                 }}
-                className="text-sm h-10 w-full border-0"
+                className="shrink-0 text-sm h-10 w-full border-0"
                 button_id="shop-sign-in-button"
               >
                 Sign in or create an account to purchase items
@@ -1280,34 +1280,46 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 }
                 className="w-full"
               >
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="shop">For Sale</TabsTrigger>
-                  <TabsTrigger value="purchases" disabled={!currentUser}>
-                    Purchases
-                  </TabsTrigger>
-                </TabsList>
+                <div className="sticky top-0 z-10 bg-background pb-2 pt-0.5">
+                  <TabsList className="grid w-full grid-cols-2 gap-0 rounded-md border-2 border-foreground/55 bg-muted p-1 shadow-sm dark:border-foreground/65">
+                    <TabsTrigger
+                      value="shop"
+                      className="rounded-sm border border-transparent data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
+                    >
+                      For Sale
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="purchases"
+                      disabled={!currentUser}
+                      className="rounded-sm border border-transparent data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
+                    >
+                      Purchases
+                    </TabsTrigger>
+                  </TabsList>
+                  {activeTab === "shop" && (
+                    <div className="mt-3 text-sm text-foreground">
+                      <p className="text-md font-medium">
+                        Beta discounts of up to{" "}
+                        <span className="font-bold">40% off</span> are
+                        currently active.
+                      </p>
+                      <p>
+                        All purchases remain available across future playthroughs
+                        and after full release.
+                      </p>
+                    </div>
+                  )}
+                </div>
 
-                <TabsContent value="shop" className="mt-3">
+                <TabsContent value="shop" className="mt-0">
                   <ScrollAreaWithIndicator
                     className={
                       !currentUser
-                        ? "h-[calc(80vh-260px)]"
-                        : "h-[calc(80vh-180px)]"
+                        ? "h-[calc(80vh-330px)]"
+                        : "h-[calc(80vh-290px)]"
                     }
                     scrollAreaId="shop-for-sale"
                   >
-                    {" "}
-                    <div className="pb-3 text-sm text-foreground">
-                      <p className="text-md font-medium">
-                        Beta discounts of up to{" "}
-                        <span className="font-bold">40% off</span> are currently
-                        active.
-                      </p>
-                      <p>
-                        All purchases remain available across future
-                        playthroughs and after full release.
-                      </p>
-                    </div>
                     {/* Filter Chips */}
                     <div className="flex flex-wrap gap-1.5 mb-3">
                       <Button
@@ -1785,7 +1797,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         : "Already Purchased"
                                       : item.price === 0
                                         ? "Claim"
-                                        : "Purchase"}
+                                        : "Continue"}
                                 </Button>
                               </div>
                             </CardFooter>
@@ -1802,12 +1814,12 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   </ScrollAreaWithIndicator>
                 </TabsContent>
 
-                <TabsContent value="purchases" className="mt-4">
+                <TabsContent value="purchases" className="mt-0">
                   <ScrollAreaWithIndicator
                     className={
                       !currentUser
                         ? "h-[calc(80vh-250px)]"
-                        : "h-[calc(80vh-180px)]"
+                        : "h-[calc(80vh-210px)]"
                     }
                     scrollAreaId="shop-purchases"
                   >
@@ -1978,10 +1990,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
           >
             <DialogHeader className="space-y-1 pb-0">
               <DialogTitle>
-                Complete Purchase: {SHOP_ITEMS[selectedItem]?.name}
+                Continue: {SHOP_ITEMS[selectedItem]?.name}
               </DialogTitle>
               <DialogDescription className="sr-only">
-                Complete your payment for {SHOP_ITEMS[selectedItem]?.name}
+                Continue to checkout for {SHOP_ITEMS[selectedItem]?.name}
               </DialogDescription>
             </DialogHeader>
             {checkoutPriceBreakdown && (
