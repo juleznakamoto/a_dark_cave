@@ -450,7 +450,7 @@ function CheckoutForm({
           // Do NOT release discount reservation - user was charged; requires manual intervention.
           setErrorMessage(
             result.error ||
-              "Payment verification failed. Please contact support.",
+            "Payment verification failed. Please contact support.",
           );
         }
         setIsProcessing(false);
@@ -1063,7 +1063,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         message: isCurrentlyActivated
           ? "Cruel Mode deactivated. New games will use normal difficulty."
           : item.activationMessage ||
-            "Cruel Mode activated! Start a new game to experience the ultimate challenge.",
+          "Cruel Mode activated! Start a new game to experience the ultimate challenge.",
         timestamp: Date.now(),
         type: "system",
       });
@@ -1246,7 +1246,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
-            <DialogHeader className="shrink-0 rounded-md border border-green-500 px-3 py-2.5">
+            <DialogHeader className="shrink-0 pb-2">
               <DialogTitle>Trader</DialogTitle>
               <DialogDescription className="sr-only">
                 Shop for gold, artifacts, boosts, and bundles
@@ -1280,46 +1280,69 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 }
                 className="w-full"
               >
-                <div className="sticky top-0 z-10 bg-background pb-2 pt-0.5">
-                  <TabsList className="grid w-full grid-cols-2 gap-0 rounded-md border-2 border-foreground/55 bg-muted p-1 shadow-sm dark:border-foreground/65">
-                    <TabsTrigger
-                      value="shop"
-                      className="rounded-sm border border-transparent data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
-                    >
-                      For Sale
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="purchases"
-                      disabled={!currentUser}
-                      className="rounded-sm border border-transparent data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
-                    >
-                      Purchases
-                    </TabsTrigger>
-                  </TabsList>
-                  {activeTab === "shop" && (
-                    <div className="mt-3 text-sm text-foreground">
-                      <p className="text-md font-medium">
-                        Beta discounts of up to{" "}
-                        <span className="font-bold">40% off</span> are
-                        currently active.
-                      </p>
-                      <p>
-                        All purchases remain available across future playthroughs
-                        and after full release.
-                      </p>
-                    </div>
-                  )}
-                </div>
+                <ScrollAreaWithIndicator
+                  className={
+                    !currentUser
+                      ? "h-[calc(80vh-200px)]"
+                      : "h-[calc(80vh-160px)]"
+                  }
+                  scrollAreaId="shop-dialog"
+                >
+                  <div className="sticky top-0 z-10 bg-background pb-2 pt-0.5">
+                    <TabsList className="grid w-full grid-cols-2 gap-0 rounded-md border-2 border-foreground/55 bg-muted p-1 shadow-sm dark:border-foreground/65">
+                      <TabsTrigger
+                        value="shop"
+                        className="rounded-sm border border-transparent data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
+                      >
+                        For Sale
+                      </TabsTrigger>
+                      <TabsTrigger
+                        value="purchases"
+                        disabled={!currentUser}
+                        className="rounded-sm border border-transparent data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
+                      >
+                        Purchases
+                      </TabsTrigger>
+                    </TabsList>
+                    {activeTab === "shop" && (
+                      <div className="mt-3 rounded-md border border-green-500 px-3 py-2.5 text-sm text-foreground">
+                        <p className="text-md font-medium">
+                          Beta discounts of up to{" "}
+                          <span className="font-bold">40% off</span> are
+                          currently active.
+                        </p>
+                        <p>
+                          All purchases remain available across future playthroughs
+                          and after full release.
+                        </p>
+                      </div>
+                    )}
+                    {activeTab === "purchases" && (
+                      <div className="mt-3 rounded-md border border-green-500 px-3 py-2.5 text-sm text-foreground">
+                        {purchasedItems.length === 0 &&
+                        Object.keys(gameState.feastActivations || {}).length ===
+                          0 ? (
+                          <>
+                            <p className="text-md font-medium">
+                              No purchases yet.
+                            </p>
+                            <p>Visit the For Sale tab to buy items.</p>
+                          </>
+                        ) : (
+                          <>
+                            <p className="text-md font-medium">
+                              Activate your purchases to receive rewards.
+                            </p>
+                            <p>
+                              Each purchase can be activated once per playthrough.
+                            </p>
+                          </>
+                        )}
+                      </div>
+                    )}
+                  </div>
 
-                <TabsContent value="shop" className="mt-0">
-                  <ScrollAreaWithIndicator
-                    className={
-                      !currentUser
-                        ? "h-[calc(80vh-330px)]"
-                        : "h-[calc(80vh-290px)]"
-                    }
-                    scrollAreaId="shop-for-sale"
-                  >
+                  <TabsContent value="shop" className="mt-0">
                     {/* Filter Chips */}
                     <div className="flex flex-wrap gap-1.5 mb-3">
                       <Button
@@ -1376,8 +1399,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {(selectedFilter === null
                         ? HIGHLIGHTS_ORDER.map((id) => SHOP_ITEMS[id]).filter(
-                            Boolean,
-                          )
+                          Boolean,
+                        )
                         : Object.values(SHOP_ITEMS)
                       )
                         .filter((item) => {
@@ -1427,19 +1450,16 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 ? "shop-card-cruel_mode"
                                 : undefined
                             }
-                            className={`border-neutral-500 flex flex-col relative ${
-                              item.category === "bundle"
+                            className={`border-neutral-500 flex flex-col relative ${item.category === "bundle"
                                 ? "border border-amber-600"
                                 : ""
-                            }${
-                              item.id === "cruel_mode" && shopCruelModeHighlight
+                              }${item.id === "cruel_mode" && shopCruelModeHighlight
                                 ? " border border-red-600"
                                 : ""
-                            }${
-                              item.id === "gold_100_free"
+                              }${item.id === "gold_100_free"
                                 ? " border border-sky-600"
                                 : ""
-                            }`}
+                              }`}
                           >
                             <CardHeader className="leading-snug p-4 pb-2 relative text-lg ">
                               {item.symbol && (
@@ -1534,7 +1554,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     item.id === "cruel_mode" &&
                                     gameState.story?.seen
                                       ?.cruelModeJourneyCompleteDiscount ===
-                                      true;
+                                    true;
                                   const tradersGratitudeActive =
                                     gameState.tradersGratitudeState
                                       ?.accepted === true;
@@ -1544,7 +1564,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   const playlightFirstPurchaseActive =
                                     gameState.story?.seen
                                       ?.playlightFirstPurchaseDiscountActive ===
-                                      true && !gameState.hasMadeNonFreePurchase;
+                                    true && !gameState.hasMadeNonFreePurchase;
                                   const pctOpts = {
                                     playlightFirstPurchase:
                                       playlightFirstPurchaseActive,
@@ -1555,55 +1575,55 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   const displayPrice =
                                     item.price > 0
                                       ? getDiscountedShopPriceCents(
-                                          item.price,
-                                          {
-                                            ...pctOpts,
-                                            cruelModeJourneyComplete:
-                                              cruelJourneyDiscountActive,
-                                          },
-                                          item.id,
-                                        )
+                                        item.price,
+                                        {
+                                          ...pctOpts,
+                                          cruelModeJourneyComplete:
+                                            cruelJourneyDiscountActive,
+                                        },
+                                        item.id,
+                                      )
                                       : item.price;
                                   const priceWithoutJourneyCents =
                                     item.price > 0 && item.id === "cruel_mode"
                                       ? getDiscountedShopPriceCents(
-                                          item.price,
-                                          {
-                                            ...pctOpts,
-                                            cruelModeJourneyComplete: false,
-                                          },
-                                          item.id,
-                                        )
+                                        item.price,
+                                        {
+                                          ...pctOpts,
+                                          cruelModeJourneyComplete: false,
+                                        },
+                                        item.id,
+                                      )
                                       : item.price;
                                   const tradersOnlyCents =
                                     item.price > 0
                                       ? getDiscountedShopPriceCents(
-                                          item.price,
-                                          {
-                                            tradersGratitude: true,
-                                          },
-                                          item.id,
-                                        )
+                                        item.price,
+                                        {
+                                          tradersGratitude: true,
+                                        },
+                                        item.id,
+                                      )
                                       : item.price;
                                   const sonOnlyCents =
                                     item.price > 0
                                       ? getDiscountedShopPriceCents(
-                                          item.price,
-                                          {
-                                            tradersSonGratitude: true,
-                                          },
-                                          item.id,
-                                        )
+                                        item.price,
+                                        {
+                                          tradersSonGratitude: true,
+                                        },
+                                        item.id,
+                                      )
                                       : item.price;
                                   const playlightOnlyCents =
                                     item.price > 0
                                       ? getDiscountedShopPriceCents(
-                                          item.price,
-                                          {
-                                            playlightFirstPurchase: true,
-                                          },
-                                          item.id,
-                                        )
+                                        item.price,
+                                        {
+                                          playlightFirstPurchase: true,
+                                        },
+                                        item.id,
+                                      )
                                       : item.price;
                                   const discounted =
                                     item.price > 0 && displayPrice < item.price;
@@ -1757,8 +1777,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     (item.id === "gold_100_free" &&
                                       (Date.now() -
                                         (gameState.lastFreeGoldClaim || 0)) /
-                                        (1000 * 60 * 60) <
-                                        24) ||
+                                      (1000 * 60 * 60) <
+                                      24) ||
                                     (item.id !== "gold_100_free" &&
                                       !item.canPurchaseMultipleTimes &&
                                       purchasedItems.some(
@@ -1771,27 +1791,27 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 >
                                   {item.id === "gold_100_free"
                                     ? (Date.now() -
-                                        (gameState.lastFreeGoldClaim || 0)) /
-                                        (1000 * 60 * 60) <
+                                      (gameState.lastFreeGoldClaim || 0)) /
+                                      (1000 * 60 * 60) <
                                       24
                                       ? (() => {
-                                          const hoursRemaining = Math.ceil(
-                                            24 -
-                                              (Date.now() -
-                                                (gameState.lastFreeGoldClaim ||
-                                                  0)) /
-                                                (1000 * 60 * 60),
-                                          );
-                                          return hoursRemaining === 1
-                                            ? "Available in 1 hour"
-                                            : `Available in ${hoursRemaining} hours`;
-                                        })()
+                                        const hoursRemaining = Math.ceil(
+                                          24 -
+                                          (Date.now() -
+                                            (gameState.lastFreeGoldClaim ||
+                                              0)) /
+                                          (1000 * 60 * 60),
+                                        );
+                                        return hoursRemaining === 1
+                                          ? "Available in 1 hour"
+                                          : `Available in ${hoursRemaining} hours`;
+                                      })()
                                       : "Claim"
                                     : !item.canPurchaseMultipleTimes &&
-                                        purchasedItems.some(
-                                          (pid) =>
-                                            purchaseIdToItemId(pid) === item.id,
-                                        )
+                                      purchasedItems.some(
+                                        (pid) =>
+                                          purchaseIdToItemId(pid) === item.id,
+                                      )
                                       ? item.price === 0
                                         ? "Already Claimed"
                                         : "Already Purchased"
@@ -1804,37 +1824,21 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                             {(item.category === "bundle" ||
                               (item.id === "cruel_mode" &&
                                 shopCruelModeHighlight)) && (
-                              <div
-                                className={`absolute inset-0 -z-10 pointer-events-none rounded-lg ${item.category === "bundle" ? "bundle-card-glow" : "cruel-mode-card-glow"}`}
-                              ></div>
-                            )}
+                                <div
+                                  className={`absolute inset-0 -z-10 pointer-events-none rounded-lg ${item.category === "bundle" ? "bundle-card-glow" : "cruel-mode-card-glow"}`}
+                                ></div>
+                              )}
                           </Card>
                         ))}
                     </div>
-                  </ScrollAreaWithIndicator>
-                </TabsContent>
+                  </TabsContent>
 
-                <TabsContent value="purchases" className="mt-0">
-                  <ScrollAreaWithIndicator
-                    className={
-                      !currentUser
-                        ? "h-[calc(80vh-250px)]"
-                        : "h-[calc(80vh-210px)]"
-                    }
-                    scrollAreaId="shop-purchases"
-                  >
-                    {purchasedItems.length === 0 &&
-                    Object.keys(gameState.feastActivations || {}).length ===
-                      0 ? ( // Changed feastPurchases to feastActivations
-                      <div className="text-center py-8 text-muted-foreground">
-                        No purchases yet. Visit the For Sale tab to buy items.
-                      </div>
-                    ) : (
+                  <TabsContent value="purchases" className="mt-0">
+                    {!(
+                      purchasedItems.length === 0 &&
+                      Object.keys(gameState.feastActivations || {}).length === 0
+                    ) ? (
                       <div className="pr-4">
-                        <p className="text-sm text-muted-foreground mb-4">
-                          Activate your purchases to receive rewards. Each
-                          purchase can be activated once per game.
-                        </p>
                         <div className="space-y-2">
                           {Object.entries(gameState.feastActivations || {}).map(
                             ([purchaseId, activationsRemaining]) => {
@@ -1885,7 +1889,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     size="sm"
                                     variant={
                                       isGreatFeastActive ||
-                                      activationsRemaining <= 0
+                                        activationsRemaining <= 0
                                         ? "outline"
                                         : "default"
                                     }
@@ -1971,9 +1975,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                             })}
                         </div>
                       </div>
-                    )}
-                  </ScrollAreaWithIndicator>
-                </TabsContent>
+                    ) : null}
+                  </TabsContent>
+                </ScrollAreaWithIndicator>
               </Tabs>
             )}
           </DialogContent>
