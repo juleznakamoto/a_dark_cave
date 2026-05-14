@@ -1243,6 +1243,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         {!isPaymentMode && (
           <DialogContent
             className="[--adc-dialog-max-w:56rem] flex h-[80vh] min-h-0 flex-col gap-4 overflow-hidden z-[70] p-6"
+            style={{
+              height: "80vh",
+              maxHeight: "80vh",
+              minHeight: "80vh",
+            }}
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
@@ -2016,7 +2021,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
           >
             <DialogHeader className="space-y-1 pb-0">
               <DialogTitle>
-                Complete Purchase: {SHOP_ITEMS[selectedItem]?.name}
+                {SHOP_ITEMS[selectedItem]?.name}
               </DialogTitle>
               <DialogDescription className="sr-only">
                 Complete your payment for {SHOP_ITEMS[selectedItem]?.name}
