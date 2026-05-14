@@ -1690,8 +1690,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         <TooltipWrapper
                                           tooltip={
                                             <div className="text-xs">
-                                              Special discount for finishing the
-                                              game.
+                                              Special discount for finishing the game
                                             </div>
                                           }
                                           tooltipId={`journey-complete-cruel-${item.id}`}
