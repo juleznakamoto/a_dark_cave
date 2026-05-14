@@ -484,7 +484,7 @@ function CheckoutForm({
       </div>
 
       <div className="space-y-2 border-t pt-3 mt-2">
-        <p className="text-[11px] text-muted-foreground">
+        <p className="text-[11px] leading-tight text-muted-foreground">
           By purchasing, you consent to immediate delivery of digital content
           and waive your right of withdrawal. For more information, see our{" "}
           <a
