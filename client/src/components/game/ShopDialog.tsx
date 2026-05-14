@@ -1477,9 +1477,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                               }${item.id === "cruel_mode" && shopCruelModeHighlight
                                 ? " border border-red-600"
                                 : ""
-                              }${item.id === "gold_100_free"
-                                ? " border border-sky-600"
-                                : ""
                               }`}
                           >
                             <CardHeader className="leading-snug p-4 pb-2 relative text-lg ">
