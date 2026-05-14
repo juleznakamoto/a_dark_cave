@@ -1346,7 +1346,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       variant={selectedFilter === null ? "default" : "outline"}
                       size="xs"
                       onClick={() => setSelectedFilter(null)}
-                      className="h-6 border border-foreground/50 text-xs"
+                      className={
+                        selectedFilter === null
+                          ? "h-6 text-xs"
+                          : "h-6 border border-red-500/50 text-xs"
+                      }
                     >
                       Highlights
                     </Button>
@@ -1356,7 +1360,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       }
                       size="xs"
                       onClick={() => setSelectedFilter("gold")}
-                      className="h-6 border border-foreground/50 text-xs"
+                      className={
+                        selectedFilter === "gold"
+                          ? "h-6 text-xs"
+                          : "h-6 border border-red-500/50 text-xs"
+                      }
                     >
                       Gold
                     </Button>
@@ -1368,7 +1376,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       }
                       size="xs"
                       onClick={() => setSelectedFilter("artifacts")}
-                      className="h-6 border border-foreground/50 text-xs"
+                      className={
+                        selectedFilter === "artifacts"
+                          ? "h-6 text-xs"
+                          : "h-6 border border-red-500/50 text-xs"
+                      }
                     >
                       Artifacts
                     </Button>
@@ -1378,7 +1390,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       }
                       size="xs"
                       onClick={() => setSelectedFilter("boosts")}
-                      className="h-6 border border-foreground/50 text-xs"
+                      className={
+                        selectedFilter === "boosts"
+                          ? "h-6 text-xs"
+                          : "h-6 border border-red-500/50 text-xs"
+                      }
                     >
                       Boosts
                     </Button>
@@ -1388,7 +1404,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       }
                       size="xs"
                       onClick={() => setSelectedFilter("bundles")}
-                      className="h-6 border border-foreground/50 text-xs"
+                      className={
+                        selectedFilter === "bundles"
+                          ? "h-6 text-xs"
+                          : "h-6 border border-red-500/50 text-xs"
+                      }
                     >
                       Bundles
                     </Button>
