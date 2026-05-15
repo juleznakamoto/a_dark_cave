@@ -365,35 +365,62 @@ function ShopGlyphForItem({
 /** Above `DialogContent` z-[70] so particles match the coin effect but stay visible. */
 const SHOP_GOLD_GLYPH_HOVER_PARTICLE_Z = 90;
 
+/** Full-card hover for paid gold packs; burst origin stays on the corner glyph span. */
+function ShopPaidGoldPackParticleScope({
+  item,
+  children,
+}: {
+  item: ShopItem;
+  children: (ctx: {
+    hoverHandlers?: { onMouseEnter: () => void; onMouseLeave: () => void };
+    portal: React.ReactNode;
+    glyphOriginRef: React.RefObject<HTMLSpanElement | null>;
+  }) => React.ReactNode;
+}) {
+  const particleOriginRef = React.useRef<HTMLSpanElement | null>(null);
+  const enabled = isShopPaidGoldPackItem(item.id);
+  const { hoverHandlers, portal, glyphOriginRef } = useCoinHoverParticles(
+    "gold",
+    {
+      enabled,
+      zIndex: SHOP_GOLD_GLYPH_HOVER_PARTICLE_Z,
+      particleOriginRef,
+    },
+  );
+
+  return (
+    <>
+      {children({
+        hoverHandlers: enabled ? hoverHandlers : undefined,
+        portal: enabled ? portal : null,
+        glyphOriginRef,
+      })}
+    </>
+  );
+}
+
 function ShopCardCornerGlyph({
   item,
+  glyphOriginRef,
   glyphWrapperClassName,
   glyphWrapperStyle,
 }: {
   item: ShopItem;
+  glyphOriginRef?: React.RefObject<HTMLSpanElement | null>;
   glyphWrapperClassName: string;
   glyphWrapperStyle: React.CSSProperties;
 }) {
-  const goldCoinParticles = isShopPaidGoldPackItem(item.id);
-  const { targetRef, hoverHandlers, portal } = useCoinHoverParticles("gold", {
-    zIndex: SHOP_GOLD_GLYPH_HOVER_PARTICLE_Z,
-    enabled: goldCoinParticles,
-  });
+  const bindOrigin =
+    glyphOriginRef && isShopPaidGoldPackItem(item.id) ? glyphOriginRef : undefined;
 
   return (
-    <>
-      <span
-        className={`${glyphWrapperClassName}${
-          goldCoinParticles ? " cursor-default" : ""
-        }`}
-        style={glyphWrapperStyle}
-        ref={goldCoinParticles ? targetRef : undefined}
-        {...(goldCoinParticles ? hoverHandlers : {})}
-      >
-        <ShopGlyphForItem item={item} />
-      </span>
-      {goldCoinParticles ? portal : null}
-    </>
+    <span
+      ref={bindOrigin as React.Ref<HTMLSpanElement> | undefined}
+      className={glyphWrapperClassName}
+      style={glyphWrapperStyle}
+    >
+      <ShopGlyphForItem item={item} />
+    </span>
   );
 }
 
@@ -1573,41 +1600,53 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           return true;
                         })
                         .map((item) => (
-                          <Card
+                          <ShopPaidGoldPackParticleScope
                             key={item.id}
-                            id={
-                              item.id === "cruel_mode"
-                                ? "shop-card-cruel_mode"
-                                : undefined
-                            }
-                            className={`border-neutral-500 flex flex-col relative ${
-                              item.category === "bundle"
-                                ? "border border-amber-600"
-                                : ""
-                            }${
-                              item.id === "cruel_mode" && shopCruelModeHighlight
-                                ? " border border-red-600"
-                                : ""
-                            }`}
+                            item={item}
                           >
-                            <CardHeader className="leading-snug p-4 pb-1 relative text-lg ">
-                              {item.symbol && (
-                                <ShopCardCornerGlyph
-                                  item={item}
-                                  glyphWrapperClassName="leading-[0.9] text-right absolute top-4 right-4 inline-flex items-center justify-center"
-                                  glyphWrapperStyle={{
-                                    color: tailwindToHex(
-                                      (item.symbolColor || "").replace(
-                                        "text-",
-                                        "",
-                                      ),
-                                    ),
-                                    maxWidth: "2.55em",
-                                    wordBreak: "break-all",
-                                    overflowWrap: "anywhere",
-                                  }}
-                                />
-                              )}
+                            {({ hoverHandlers, portal, glyphOriginRef }) => (
+                              <>
+                                <Card
+                                  {...(hoverHandlers ?? {})}
+                                  id={
+                                    item.id === "cruel_mode"
+                                      ? "shop-card-cruel_mode"
+                                      : undefined
+                                  }
+                                  className={`border-neutral-500 flex flex-col relative ${
+                                    item.category === "bundle"
+                                      ? "border border-amber-600"
+                                      : ""
+                                  }${
+                                    item.id === "cruel_mode" &&
+                                    shopCruelModeHighlight
+                                      ? " border border-red-600"
+                                      : ""
+                                  }`}
+                                >
+                                  <CardHeader className="leading-snug p-4 pb-1 relative text-lg ">
+                                    {item.symbol && (
+                                      <ShopCardCornerGlyph
+                                        item={item}
+                                        glyphOriginRef={glyphOriginRef}
+                                        glyphWrapperClassName={`leading-[0.9] text-right absolute top-4 right-4 inline-flex items-center justify-center${
+                                          isShopPaidGoldPackItem(item.id)
+                                            ? " cursor-default"
+                                            : ""
+                                        }`}
+                                        glyphWrapperStyle={{
+                                          color: tailwindToHex(
+                                            (item.symbolColor || "").replace(
+                                              "text-",
+                                              "",
+                                            ),
+                                          ),
+                                          maxWidth: "2.55em",
+                                          wordBreak: "break-all",
+                                          overflowWrap: "anywhere",
+                                        }}
+                                      />
+                                    )}
                               <CardTitle className="!m-0 text-md items-center gap-1 pr-6">
                                 {item.name}
                                 {item.id === "skull_lantern" && (
@@ -1957,7 +1996,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 className={`absolute inset-0 -z-10 pointer-events-none rounded-lg ${item.category === "bundle" ? "bundle-card-glow" : "cruel-mode-card-glow"}`}
                               ></div>
                             )}
-                          </Card>
+                              </Card>
+                              {portal}
+                              </>
+                            )}
+                          </ShopPaidGoldPackParticleScope>
                         ))}
                     </div>
                   </ScrollAreaWithIndicator>

@@ -24,7 +24,17 @@ export type CoinHoverResource = "gold" | "silver";
 
 export function useCoinHoverParticles(
   resource: CoinHoverResource,
-  options?: { zIndex?: number; enabled?: boolean },
+  options?: {
+    zIndex?: number;
+    enabled?: boolean;
+    /**
+     * Burst origin: center of this element (viewport coords). When omitted, the hook
+     * uses an internal ref—`CoinHoverParticleSurface` attaches it to the hover target.
+     * When set, bind hover handlers elsewhere (e.g. the full card) while keeping this
+     * ref on the glyph only.
+     */
+    particleOriginRef?: React.RefObject<HTMLSpanElement | null>;
+  },
 ) {
   const zIndex = options?.zIndex ?? 50;
   const enabled = options?.enabled !== false;
@@ -32,12 +42,13 @@ export function useCoinHoverParticles(
   const [bubbles, setBubbles] = useState<BubbleWithParticles[]>([]);
   const bubbleIdCounter = useRef(0);
   const emitIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const targetRef = useRef<HTMLSpanElement | null>(null);
+  const internalOriginRef = useRef<HTMLSpanElement | null>(null);
+  const originRef = options?.particleOriginRef ?? internalOriginRef;
 
   const spawnParticles = useCallback(() => {
     if (!enabled) return;
 
-    const el = targetRef.current;
+    const el = originRef.current;
     if (!el) return;
 
     const rect = el.getBoundingClientRect();
@@ -55,7 +66,7 @@ export function useCoinHoverParticles(
     setTimeout(() => {
       setBubbles((prev) => prev.filter((b) => b.id !== id));
     }, COIN_HOVER_BUBBLE_REMOVE_DELAY_MS);
-  }, [enabled, resource]);
+  }, [enabled, resource, originRef]);
 
   const onMouseEnter = useCallback(() => {
     if (!enabled) return;
@@ -86,7 +97,8 @@ export function useCoinHoverParticles(
   );
 
   return {
-    targetRef,
+    /** Put this on the node whose geometric center should emit particles. */
+    glyphOriginRef: originRef,
     hoverHandlers: { onMouseEnter, onMouseLeave },
     portal,
   } as const;
@@ -108,15 +120,18 @@ export function CoinHoverParticleSurface({
   zIndex?: number;
   enabled?: boolean;
 }) {
-  const { targetRef, hoverHandlers, portal } = useCoinHoverParticles(resource, {
-    zIndex,
-    enabled,
-  });
+  const { glyphOriginRef, hoverHandlers, portal } = useCoinHoverParticles(
+    resource,
+    {
+      zIndex,
+      enabled,
+    },
+  );
 
   return (
     <>
       <span
-        ref={targetRef}
+        ref={glyphOriginRef as React.Ref<HTMLSpanElement>}
         className={className}
         style={style}
         {...hoverHandlers}
