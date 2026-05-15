@@ -87,7 +87,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: "resource",
     activationMessage: "1000 Gold have been added to your inventory.",
-    symbol: "◉",
+    symbol: "🟇",
     symbolColor: "text-yellow-600",
   },
 
@@ -103,7 +103,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: "resource",
     activationMessage: "1000 Gold have been added to your inventory.",
-    symbol: "◉",
+    symbol: "🟇",
     symbolColor: "text-yellow-600",
   },
 
@@ -119,7 +119,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: "resource",
     activationMessage: "2500 Gold have been added to your inventory.",
-    symbol: "◉◉",
+    symbol: "🟍",
     symbolColor: "text-yellow-600",
   },
 
@@ -135,7 +135,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: "resource",
     activationMessage: "5000 Gold have been added to your inventory.",
-    symbol: "◉◉◉",
+    symbol: "🟑",
     symbolColor: "text-yellow-600",
   },
 
@@ -151,7 +151,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: "resource",
     activationMessage: "20'000 Gold have been added to your inventory.",
-    symbol: "◉◉◉◉",
+    symbol: "🟔",
     symbolColor: "text-yellow-600",
   },
 
