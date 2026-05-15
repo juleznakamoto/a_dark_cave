@@ -866,9 +866,11 @@ describe('ShopDialog', () => {
         expect(screen.getByText("Fading Wanderer Bundle")).toBeInTheDocument();
       });
 
-      expect(
-        screen.getByText(SHOP_ITEMS.basic_survival_bundle.description),
-      ).toBeInTheDocument();
+      for (const id of SHOP_ITEMS.basic_survival_bundle.bundleComponents!) {
+        expect(
+          screen.getByText(SHOP_ITEMS[id].name),
+        ).toBeInTheDocument();
+      }
     });
 
     it('should show bundle with correct pricing', async () => {
@@ -1245,7 +1247,15 @@ describe('ShopDialog', () => {
       expect(screen.getByText("Pale King's Bundle")).toBeInTheDocument();
     });
 
-    expect(screen.getByText(SHOP_ITEMS.advanced_bundle.description)).toBeInTheDocument();
+    const titleEl = screen.getByText("Pale King's Bundle");
+    const bundleScope = titleEl.closest(".rounded-lg");
+    expect(bundleScope).not.toBeNull();
+
+    for (const id of SHOP_ITEMS.advanced_bundle.bundleComponents!) {
+      expect(
+        within(bundleScope as HTMLElement).getByText(SHOP_ITEMS[id].name),
+      ).toBeInTheDocument();
+    }
     expect(screen.getByText('Most popular')).toBeInTheDocument();
   });
 

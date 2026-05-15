@@ -190,22 +190,17 @@ type ShopArtifactIdForTooltip =
   | "tarnished_compass"
   | "crow_harness";
 
-const SHOP_ARTIFACT_DISPLAY_NAME_REGEX =
-  /\b(Skull Lantern|Tarnished Compass|Crow Harness)\b/g;
-
-function displayArtifactNameToShopId(
-  name: string,
+function shopArtifactIdFromShopItemId(
+  itemId: string,
 ): ShopArtifactIdForTooltip | null {
-  switch (name) {
-    case "Skull Lantern":
-      return "skull_lantern";
-    case "Tarnished Compass":
-      return "tarnished_compass";
-    case "Crow Harness":
-      return "crow_harness";
-    default:
-      return null;
+  if (
+    itemId === "skull_lantern" ||
+    itemId === "tarnished_compass" ||
+    itemId === "crow_harness"
+  ) {
+    return itemId;
   }
+  return null;
 }
 
 function ArtifactShopTooltipIcon({
@@ -297,36 +292,48 @@ function ArtifactShopTooltipIcon({
   );
 }
 
-/** Dark Artifacts / Ashen Throne bundle copy shares artifact names; append same info glyphs as standalone artifact cards */
+/** Bundles: one row per `bundleComponents` entry (colored symbol + name); artifact rows keep info glyphs. */
 function ShopItemDescriptionParagraph({ item }: { item: ShopItem }) {
-  if (item.id !== "artifact_bundle" && item.id !== "ashen_throne_bundle") {
-    return item.description;
+  if (item.category === "bundle" && item.bundleComponents?.length) {
+    return (
+      <div className="space-y-1.5">
+        {item.bundleComponents.map((componentId) => {
+          const c = SHOP_ITEMS[componentId];
+          if (!c) return null;
+          const artifact = shopArtifactIdFromShopItemId(componentId);
+          const hex =
+            c.symbol && c.symbolColor
+              ? tailwindToHex(c.symbolColor.replace("text-", ""))
+              : undefined;
+          return (
+            <div key={componentId} className="flex items-start gap-2">
+              {c.symbol ? (
+                <span
+                  className="font-noto-symbols-2 shrink-0 leading-snug"
+                  style={hex ? { color: hex } : undefined}
+                  aria-hidden
+                >
+                  {c.symbol}
+                </span>
+              ) : null}
+              <span className="inline-flex flex-wrap items-baseline gap-x-0.5 leading-snug">
+                {c.name}
+                {artifact ? (
+                  <ArtifactShopTooltipIcon
+                    artifact={artifact}
+                    tooltipId={`${artifact}-info-desc-${item.id}`}
+                    variant="description"
+                  />
+                ) : null}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    );
   }
 
-  const parts = item.description.split(SHOP_ARTIFACT_DISPLAY_NAME_REGEX);
-
-  const nodes = parts.map((fragment, idx) => {
-    const artifact = displayArtifactNameToShopId(fragment);
-    if (artifact) {
-      return (
-        <span
-          key={`${artifact}-inline-${idx}`}
-          className="inline-flex flex-wrap items-baseline gap-x-0.5"
-        >
-          <span>{fragment}</span>
-          <ArtifactShopTooltipIcon
-            artifact={artifact}
-            tooltipId={`${artifact}-info-desc-${item.id}`}
-            variant="description"
-          />
-        </span>
-      );
-    }
-
-    return <React.Fragment key={`t-${idx}`}>{fragment}</React.Fragment>;
-  });
-
-  return <>{nodes}</>;
+  return item.description;
 }
 
 // EU countries with Euro as main currency

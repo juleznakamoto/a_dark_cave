@@ -244,7 +244,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   basic_survival_bundle: {
     id: "basic_survival_bundle",
     name: "Fading Wanderer Bundle",
-    description: "Basic Bundle with 5'000 Gold and 1 Great Feast",
+    description: "",
     originalPrice: 849, // 8.49 € list
     price: 649, // Beta / sale
     rewards: {
@@ -263,7 +263,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   artifact_bundle: {
     id: "artifact_bundle",
     name: "Dark Artifacts Bundle",
-    description: "Uncover dark forgotten truths with the Skull Lantern, Tarnished Compass, and Crow Harness",
+    description: "",
     originalPrice: 999, // 9.99 € list
     price: 749, // Beta / sale
     rewards: {
@@ -281,7 +281,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   advanced_bundle: {
     id: "advanced_bundle",
     name: "Pale King's Bundle",
-    description: "Powerful Bundle with 20'000 Gold and 3 Great Feasts",
+    description: "",
     originalPrice: 1399, // 13.99 € list
     price: 999, // 9.99 €
     rewards: {
@@ -300,8 +300,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   ashen_throne_bundle: {
     id: "ashen_throne_bundle",
     name: "Ashen Throne Bundle",
-    description:
-      "Ultimate Bundle with 20'000 Gold, 3 Great Feasts, Skull Lantern, Tarnished Compass, and Crow Harness",
+    description: "",
     originalPrice: 2099, // 20.99 € list
     price: 1499, // 14.99 €
     rewards: {
@@ -325,6 +324,22 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     ],
   },
 };
+
+/** One line per component: optional symbol + space + catalog name (e.g. "◉◉◉ 5'000 Gold"). */
+function hydrateBundleDescriptions(catalog: Record<string, ShopItem>) {
+  for (const item of Object.values(catalog)) {
+    if (item.category !== "bundle" || !item.bundleComponents?.length) continue;
+    const lines = item.bundleComponents.map((id) => {
+      const c = catalog[id];
+      if (!c) return "";
+      const sym = c.symbol ?? "";
+      return sym ? `${sym} ${c.name}` : c.name;
+    }).filter((line) => line.length > 0);
+    item.description = lines.join("\n");
+  }
+}
+
+hydrateBundleDescriptions(SHOP_ITEMS);
 
 /** Ordered list of items to show in the "Highlights" tab (replaces old "All" filter).
  * Order is deliberate for conversion optimization.
