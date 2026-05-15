@@ -183,7 +183,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: "feast",
     activationMessage: "A Great Feast has begun!",
-    symbol: "✦✦✦",
+    /** Same glyph as `great_feast_1`, with combining enclosing circle (U+20DD). */
+    symbol: "✦\u20DD",
     symbolColor: "text-orange-600",
   },
 
