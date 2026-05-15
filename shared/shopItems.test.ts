@@ -79,6 +79,13 @@ describe('Shop Items Configuration', () => {
       expect(SHOP_ITEMS.great_feast_1.rewards.feastActivations).toBe(1);
       expect(SHOP_ITEMS.great_feast_3.rewards.feastActivations).toBe(3);
     });
+
+    it('should use the same star glyph for 1-pack and 3-pack feasts (3-pack drawn with a ring in shop UI)', () => {
+      expect(SHOP_ITEMS.great_feast_1.symbol).toBe('✦');
+      expect(SHOP_ITEMS.great_feast_3.symbol).toBe('✦');
+      expect(SHOP_ITEMS.great_feast_3.symbolEncircled).toBe(true);
+      expect(SHOP_ITEMS.great_feast_1.symbolEncircled).toBeUndefined();
+    });
   });
 
   describe('Free Items', () => {

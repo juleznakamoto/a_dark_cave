@@ -292,6 +292,49 @@ function ArtifactShopTooltipIcon({
   );
 }
 
+function ShopGlyphForItem({
+  item,
+  className = "",
+  style,
+  ariaHidden,
+}: {
+  item: Pick<ShopItem, "symbol" | "symbolEncircled">;
+  className?: string;
+  style?: React.CSSProperties;
+  ariaHidden?: boolean;
+}) {
+  const glyph = item.symbol;
+  if (!glyph) return null;
+
+  const fontClass = "font-noto-symbols-2";
+
+  if (!item.symbolEncircled) {
+    return (
+      <span
+        className={`${fontClass} ${className}`}
+        style={style}
+        aria-hidden={ariaHidden}
+      >
+        {glyph}
+      </span>
+    );
+  }
+
+  return (
+    <span
+      className={`${fontClass} relative inline-flex h-[1.05em] w-[1.05em] shrink-0 items-center justify-center leading-none ${className}`}
+      style={style}
+      aria-hidden={ariaHidden}
+    >
+      <span
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[1.38em] w-[1.38em] -translate-x-1/2 -translate-y-1/2 rounded-full border-[0.07em] border-current opacity-[0.92]"
+        aria-hidden
+      />
+      <span className="relative z-[1] leading-none">{glyph}</span>
+    </span>
+  );
+}
+
 /** Bundles: one row per `bundleComponents` entry (colored symbol + name); artifact rows keep info glyphs. */
 function ShopItemDescriptionParagraph({ item }: { item: ShopItem }) {
   if (item.category === "bundle" && item.bundleComponents?.length) {
@@ -309,13 +352,12 @@ function ShopItemDescriptionParagraph({ item }: { item: ShopItem }) {
             <div key={componentId} className="flex items-start gap-2">
               <div className="flex w-[2.2em] min-w-[2.2em] shrink-0 justify-end self-start">
                 {c.symbol ? (
-                  <span
-                    className="font-noto-symbols-2 inline-block leading-snug"
+                  <ShopGlyphForItem
+                    item={c}
+                    className="inline-block leading-snug"
                     style={hex ? { color: hex } : undefined}
-                    aria-hidden
-                  >
-                    {c.symbol}
-                  </span>
+                    ariaHidden
+                  />
                 ) : null}
               </div>
               <span className="inline-flex min-w-0 flex-1 flex-wrap items-baseline gap-x-0.5 leading-snug">
@@ -1496,7 +1538,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                             <CardHeader className="leading-snug p-4 pb-2 relative text-lg ">
                               {item.symbol && (
                                 <span
-                                  className="font-noto-symbols-2 leading-[0.9] text-right absolute top-4 right-4"
+                                  className="leading-[0.9] text-right absolute top-4 right-4"
                                   style={{
                                     color: tailwindToHex(
                                       (item.symbolColor || "").replace(
@@ -1504,12 +1546,14 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         "",
                                       ),
                                     ),
-                                    maxWidth: "2.2em",
+                                    maxWidth: item.symbolEncircled
+                                      ? "2.45em"
+                                      : "2.2em",
                                     wordBreak: "break-all",
                                     overflowWrap: "anywhere",
                                   }}
                                 >
-                                  {item.symbol}
+                                  <ShopGlyphForItem item={item} />
                                 </span>
                               )}
                               <CardTitle className="!m-0 text-md items-center gap-1 pr-5">
