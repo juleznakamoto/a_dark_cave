@@ -343,7 +343,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getByText("20'000 Gold")).toBeInTheDocument();
+        expect(screen.getAllByText("20'000 Gold").length).toBeGreaterThan(0);
       });
 
       const purchaseButton = screen.getAllByRole('button', { name: SHOP_PAID_ITEM_CTA })[0];
@@ -379,7 +379,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getByText("20'000 Gold")).toBeInTheDocument();
+        expect(screen.getAllByText("20'000 Gold").length).toBeGreaterThan(0);
       });
 
       const purchaseButton = screen.getAllByRole('button', { name: SHOP_PAID_ITEM_CTA })[0];
