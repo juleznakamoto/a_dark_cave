@@ -1288,17 +1288,17 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 {/* Header stays outside ScrollArea: DialogContent uses CSS transform for centering,
                     which breaks position:sticky for descendants; pin tabs/copy via layout instead. */}
                 <div className="shrink-0 pb-2 pt-0.5">
-                  <TabsList className="grid w-full grid-cols-2 gap-0 rounded-md border-2 border-foreground/55 bg-muted p-1 shadow-sm dark:border-foreground/65">
+                  <TabsList className="grid h-10 w-full grid-cols-2 items-stretch gap-0 overflow-hidden rounded-md border-2 border-foreground/55 bg-muted p-1 shadow-sm dark:border-foreground/65">
                     <TabsTrigger
                       value="shop"
-                      className="rounded-sm border border-transparent data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
+                      className="flex h-full min-h-0 min-w-0 w-full items-center justify-center rounded-sm border border-transparent py-0 data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
                     >
                       For Sale
                     </TabsTrigger>
                     <TabsTrigger
                       value="purchases"
                       disabled={!currentUser}
-                      className="rounded-sm border border-transparent data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
+                      className="flex h-full min-h-0 min-w-0 w-full items-center justify-center rounded-sm border border-transparent py-0 data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
                     >
                       Purchases
                     </TabsTrigger>

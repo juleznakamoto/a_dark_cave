@@ -78,7 +78,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   gold_250: {
     id: "gold_250",
     name: "1'000 Gold",
-    description: "A decent amound of Gold",
+    description: "A decent amount of Gold",
     originalPrice: 249,
     price: 149, // 1.49 €
     rewards: {
@@ -94,7 +94,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   gold_1000: {
     id: "gold_1000",
     name: "1'000 Gold",
-    description: "A decent amound of Gold",
+    description: "A decent amount of Gold",
     originalPrice: 249,
     price: 149, // 1.49 €
     rewards: {
