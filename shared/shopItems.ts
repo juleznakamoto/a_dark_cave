@@ -379,6 +379,22 @@ export function bundleComponentsCatalogPriceSumCents(
 export const SMALLEST_GOLD_PACK_ID = "gold_1000" as const;
 
 /**
+ * Paid gold currency SKUs (matches Gold-tab packs + legacy `gold_250`).
+ * Excludes daily gift `gold_100_free` and bundles that merely contain gold.
+ */
+export const SHOP_PAID_GOLD_PACK_IDS: ReadonlySet<string> = new Set([
+  "gold_250",
+  "gold_1000",
+  "gold_2500",
+  "gold_5000",
+  "gold_20000",
+]);
+
+export function isShopPaidGoldPackItem(id: string): boolean {
+  return SHOP_PAID_GOLD_PACK_IDS.has(id);
+}
+
+/**
  * What this much gold would cost at the current catalog (Beta) per-unit rate using the smallest pack.
  */
 export function goldAmountBaselineCatalogCents(

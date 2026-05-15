@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import {
   Dialog,
   DialogContent,
@@ -34,6 +35,7 @@ import {
   SHOP_ITEMS,
   HIGHLIGHTS_ORDER,
   bundleComponentsListPriceSumCents,
+  isShopPaidGoldPackItem,
   type ShopItem,
 } from "../../../../shared/shopItems";
 import { getDiscountedShopPriceCents } from "../../../../shared/shopCheckoutPrice";
@@ -116,6 +118,16 @@ function shopCardStrikethroughListCents(item: ShopItem): number | null {
   }
   const o = item.originalPrice;
   return o !== undefined && o > 0 ? o : null;
+}
+
+/** Gold tab listings: paid resource packs with gold (excludes free gift + legacy `gold_250`). */
+function shopItemMatchesGoldFilterTab(item: ShopItem): boolean {
+  return (
+    item.id !== "gold_100_free" &&
+    item.id !== "gold_250" &&
+    item.category === "resource" &&
+    item.rewards.resources?.gold !== undefined
+  );
 }
 
 type ShopCheckoutDiscountOpts = {
@@ -312,7 +324,7 @@ function ShopGlyphForItem({
   if (isSingleGlyph) {
     return (
       <span
-        className={`relative inline-flex h-[1.15em] w-[1.15em] shrink-0 items-center justify-center leading-none ${className}`}
+        className={`relative inline-flex h-[1.35em] w-[1.35em] shrink-0 items-center justify-center leading-none ${className}`}
         style={style}
         aria-hidden={ariaHidden}
       >
@@ -330,7 +342,7 @@ function ShopGlyphForItem({
             fill="currentColor"
             className={fontClass}
             fontFamily="Noto Sans Symbols 2"
-            fontSize="23"
+            fontSize="27"
           >
             {glyph}
           </text>
@@ -350,6 +362,41 @@ function ShopGlyphForItem({
   );
 }
 
+/** Above `DialogContent` z-[70] so particles match the coin effect but stay visible. */
+const SHOP_GOLD_GLYPH_HOVER_PARTICLE_Z = 90;
+
+function ShopCardCornerGlyph({
+  item,
+  glyphWrapperClassName,
+  glyphWrapperStyle,
+}: {
+  item: ShopItem;
+  glyphWrapperClassName: string;
+  glyphWrapperStyle: React.CSSProperties;
+}) {
+  const goldCoinParticles = isShopPaidGoldPackItem(item.id);
+  const { targetRef, hoverHandlers, portal } = useCoinHoverParticles("gold", {
+    zIndex: SHOP_GOLD_GLYPH_HOVER_PARTICLE_Z,
+    enabled: goldCoinParticles,
+  });
+
+  return (
+    <>
+      <span
+        className={`${glyphWrapperClassName}${
+          goldCoinParticles ? " cursor-default" : ""
+        }`}
+        style={glyphWrapperStyle}
+        ref={goldCoinParticles ? targetRef : undefined}
+        {...(goldCoinParticles ? hoverHandlers : {})}
+      >
+        <ShopGlyphForItem item={item} />
+      </span>
+      {goldCoinParticles ? portal : null}
+    </>
+  );
+}
+
 /** Bundles: one row per `bundleComponents` entry (colored symbol + name); artifact rows keep info glyphs. */
 function ShopItemDescriptionParagraph({ item }: { item: ShopItem }) {
   if (item.category === "bundle" && item.bundleComponents?.length) {
@@ -365,11 +412,11 @@ function ShopItemDescriptionParagraph({ item }: { item: ShopItem }) {
               : undefined;
           return (
             <div key={componentId} className="flex items-start gap-1">
-              <div className="flex w-[1em] min-w-[1em] shrink-0 items-center justify-center self-start">
+              <div className="flex w-[1.35em] min-w-[1.35em] shrink-0 items-center justify-center self-start">
                 {c.symbol ? (
                   <ShopGlyphForItem
                     item={c}
-                    className="inline-flex h-[1.15em] w-[1.15em] items-center justify-center text-center leading-none"
+                    className="inline-flex items-center justify-center text-center leading-none"
                     style={hex ? { color: hex } : undefined}
                     ariaHidden
                   />
@@ -1501,14 +1548,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
                           // Apply filter based on selectedFilter
                           if (selectedFilter === "gold") {
-                            // Gold items are resources with gold rewards (free gift is Highlights-only).
-                            // Omit legacy `gold_250` — it mirrors `gold_1000` for old purchase rows only.
-                            return (
-                              item.id !== "gold_100_free" &&
-                              item.id !== "gold_250" &&
-                              item.category === "resource" &&
-                              item.rewards.resources?.gold !== undefined
-                            );
+                            return shopItemMatchesGoldFilterTab(item);
                           }
                           if (selectedFilter === "artifacts") {
                             // Artifacts are tools, weapons, or relics
@@ -1552,24 +1592,23 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           >
                             <CardHeader className="leading-snug p-4 pb-1 relative text-lg ">
                               {item.symbol && (
-                                <span
-                                  className="leading-[0.9] text-right absolute top-4 right-4"
-                                  style={{
+                                <ShopCardCornerGlyph
+                                  item={item}
+                                  glyphWrapperClassName="leading-[0.9] text-right absolute top-4 right-4 inline-flex items-center justify-center"
+                                  glyphWrapperStyle={{
                                     color: tailwindToHex(
                                       (item.symbolColor || "").replace(
                                         "text-",
                                         "",
                                       ),
                                     ),
-                                    maxWidth: "2.2em",
+                                    maxWidth: "2.55em",
                                     wordBreak: "break-all",
                                     overflowWrap: "anywhere",
                                   }}
-                                >
-                                  <ShopGlyphForItem item={item} />
-                                </span>
+                                />
                               )}
-                              <CardTitle className="!m-0 text-md items-center gap-1 pr-5">
+                              <CardTitle className="!m-0 text-md items-center gap-1 pr-6">
                                 {item.name}
                                 {item.id === "skull_lantern" && (
                                   <ArtifactShopTooltipIcon

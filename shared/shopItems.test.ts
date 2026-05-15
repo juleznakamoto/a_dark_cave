@@ -6,6 +6,8 @@ import {
   shopPackageSavingsPercent,
   goldAmountBaselineCatalogCents,
   greatFeast3BaselineCatalogCents,
+  SHOP_PAID_GOLD_PACK_IDS,
+  isShopPaidGoldPackItem,
 } from './shopItems';
 
 describe('Shop Items Configuration', () => {
@@ -97,6 +99,17 @@ describe('Shop Items Configuration', () => {
       expect(SHOP_ITEMS.gold_250.category).toBe('resource');
       expect(SHOP_ITEMS.great_feast_1.category).toBe('feast');
       expect(SHOP_ITEMS.cruel_mode.category).toBe('blessing');
+    });
+  });
+
+  describe('Paid gold pack IDs', () => {
+    it('lists paid gold SKUs for hover FX / parity with packs', () => {
+      expect([...SHOP_PAID_GOLD_PACK_IDS].sort()).toEqual(
+        ['gold_1000', 'gold_20000', 'gold_250', 'gold_2500', 'gold_5000'].sort(),
+      );
+      expect(isShopPaidGoldPackItem('gold_100_free')).toBe(false);
+      expect(isShopPaidGoldPackItem('gold_1000')).toBe(true);
+      expect(isShopPaidGoldPackItem('gold_250')).toBe(true);
     });
   });
 
