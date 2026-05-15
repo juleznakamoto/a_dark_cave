@@ -298,7 +298,7 @@ function ShopGlyphForItem({
   style,
   ariaHidden,
 }: {
-  item: Pick<ShopItem, "symbol" | "symbolEncircled">;
+  item: Pick<ShopItem, "symbol">;
   className?: string;
   style?: React.CSSProperties;
   ariaHidden?: boolean;
@@ -309,81 +309,43 @@ function ShopGlyphForItem({
   const fontClass = "font-noto-symbols-2";
   const isSingleGlyph = Array.from(glyph).length === 1;
 
-  if (!item.symbolEncircled) {
-    if (isSingleGlyph) {
-      return (
-        <span
-          className={`relative inline-flex h-[1.15em] w-[1.15em] shrink-0 items-center justify-center leading-none ${className}`}
-          style={style}
-          aria-hidden={ariaHidden}
-        >
-          <svg
-            className="h-full w-full overflow-visible"
-            viewBox="0 0 32 32"
-            focusable="false"
-            aria-hidden
-          >
-            <text
-              x="16"
-              y="20"
-              textAnchor="middle"
-              dominantBaseline="middle"
-              fill="currentColor"
-              className={fontClass}
-              fontFamily="Noto Sans Symbols 2"
-              fontSize="23"
-            >
-              {glyph}
-            </text>
-          </svg>
-        </span>
-      );
-    }
-
+  if (isSingleGlyph) {
     return (
       <span
-        className={`${fontClass} ${className}`}
+        className={`relative inline-flex h-[1.15em] w-[1.15em] shrink-0 items-center justify-center leading-none ${className}`}
         style={style}
         aria-hidden={ariaHidden}
       >
-        {glyph}
+        <svg
+          className="h-full w-full overflow-visible"
+          viewBox="0 0 32 32"
+          focusable="false"
+          aria-hidden
+        >
+          <text
+            x="16"
+            y="16.8"
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fill="currentColor"
+            className={fontClass}
+            fontFamily="Noto Sans Symbols 2"
+            fontSize="23"
+          >
+            {glyph}
+          </text>
+        </svg>
       </span>
     );
   }
 
   return (
     <span
-      className={`relative inline-flex h-[1em] w-[1em] shrink-0 items-center justify-center leading-none ${className}`}
+      className={`${fontClass} ${className}`}
       style={style}
       aria-hidden={ariaHidden}
     >
-      <svg
-        className="h-full w-full overflow-visible"
-        viewBox="0 0 20 20"
-        focusable="false"
-        aria-hidden
-      >
-        <circle
-          cx="10"
-          cy="10"
-          r="8"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1"
-        />
-        <text
-          x="10"
-          y="11"
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fill="currentColor"
-          className={fontClass}
-          fontFamily="Noto Sans Symbols 2"
-          fontSize="14"
-        >
-          {glyph}
-        </text>
-      </svg>
+      {glyph}
     </span>
   );
 }
@@ -1599,9 +1561,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         "",
                                       ),
                                     ),
-                                    maxWidth: item.symbolEncircled
-                                      ? "2.45em"
-                                      : "2.2em",
+                                    maxWidth: "2.2em",
                                     wordBreak: "break-all",
                                     overflowWrap: "anywhere",
                                   }}

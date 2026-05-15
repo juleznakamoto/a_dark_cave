@@ -19,12 +19,6 @@ export interface ShopItem {
   category: "resource" | "weapon" | "tool" | "blessing" | "feast" | "bundle" | "relic";
   activationMessage?: string;
   symbol?: string;
-  /**
-   * When true, shop UI draws a circular ring around `symbol`.
-   * Prefer this over Unicode combining enclosing circle (e.g. U+20DD): Noto Sans Symbols 2
-   * typically does not position that mark as a stable ring around this font's glyphs.
-   */
-  symbolEncircled?: boolean;
   symbolColor?: string;
   bundleComponents?: string[]; // IDs of component items for bundles
 }
@@ -189,8 +183,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: "feast",
     activationMessage: "A Great Feast has begun!",
-    symbol: "✦",
-    symbolEncircled: true,
+    symbol: "✧",
     symbolColor: "text-orange-600",
   },
 
