@@ -307,16 +307,18 @@ function ShopItemDescriptionParagraph({ item }: { item: ShopItem }) {
               : undefined;
           return (
             <div key={componentId} className="flex items-start gap-2">
-              {c.symbol ? (
-                <span
-                  className="font-noto-symbols-2 shrink-0 leading-snug"
-                  style={hex ? { color: hex } : undefined}
-                  aria-hidden
-                >
-                  {c.symbol}
-                </span>
-              ) : null}
-              <span className="inline-flex flex-wrap items-baseline gap-x-0.5 leading-snug">
+              <div className="flex w-[2.2em] min-w-[2.2em] shrink-0 justify-end self-start">
+                {c.symbol ? (
+                  <span
+                    className="font-noto-symbols-2 inline-block leading-snug"
+                    style={hex ? { color: hex } : undefined}
+                    aria-hidden
+                  >
+                    {c.symbol}
+                  </span>
+                ) : null}
+              </div>
+              <span className="inline-flex min-w-0 flex-1 flex-wrap items-baseline gap-x-0.5 leading-snug">
                 {c.name}
                 {artifact ? (
                   <ArtifactShopTooltipIcon
