@@ -322,15 +322,37 @@ function ShopGlyphForItem({
 
   return (
     <span
-      className={`${fontClass} relative inline-flex h-[1.05em] w-[1.05em] shrink-0 items-center justify-center leading-none ${className}`}
+      className={`relative inline-flex h-[1.7em] w-[1.7em] shrink-0 items-center justify-center leading-none ${className}`}
       style={style}
       aria-hidden={ariaHidden}
     >
-      <span
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[1.38em] w-[1.38em] -translate-x-1/2 -translate-y-1/2 rounded-full border-[0.07em] border-current opacity-[0.92]"
+      <svg
+        className="h-full w-full overflow-visible"
+        viewBox="0 0 32 32"
+        focusable="false"
         aria-hidden
-      />
-      <span className="relative z-[1] leading-none">{glyph}</span>
+      >
+        <circle
+          cx="16"
+          cy="16"
+          r="14"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.4"
+        />
+        <text
+          x="16"
+          y="16.8"
+          textAnchor="middle"
+          dominantBaseline="middle"
+          fill="currentColor"
+          className={fontClass}
+          fontFamily="Noto Sans Symbols 2"
+          fontSize="17"
+        >
+          {glyph}
+        </text>
+      </svg>
     </span>
   );
 }
