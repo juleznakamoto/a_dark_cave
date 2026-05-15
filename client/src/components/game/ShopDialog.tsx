@@ -307,8 +307,39 @@ function ShopGlyphForItem({
   if (!glyph) return null;
 
   const fontClass = "font-noto-symbols-2";
+  const isSingleGlyph = Array.from(glyph).length === 1;
 
   if (!item.symbolEncircled) {
+    if (isSingleGlyph) {
+      return (
+        <span
+          className={`relative inline-flex h-[1.15em] w-[1.15em] shrink-0 items-center justify-center leading-none ${className}`}
+          style={style}
+          aria-hidden={ariaHidden}
+        >
+          <svg
+            className="h-full w-full overflow-visible"
+            viewBox="0 0 32 32"
+            focusable="false"
+            aria-hidden
+          >
+            <text
+              x="16"
+              y="16.8"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fill="currentColor"
+              className={fontClass}
+              fontFamily="Noto Sans Symbols 2"
+              fontSize="23"
+            >
+              {glyph}
+            </text>
+          </svg>
+        </span>
+      );
+    }
+
     return (
       <span
         className={`${fontClass} ${className}`}
@@ -372,11 +403,11 @@ function ShopItemDescriptionParagraph({ item }: { item: ShopItem }) {
               : undefined;
           return (
             <div key={componentId} className="flex items-start gap-2">
-              <div className="flex w-[2.2em] min-w-[2.2em] shrink-0 justify-end self-start">
+              <div className="flex w-[2.2em] min-w-[2.2em] shrink-0 items-center justify-center self-start">
                 {c.symbol ? (
                   <ShopGlyphForItem
                     item={c}
-                    className="inline-block leading-snug"
+                    className="inline-flex h-[1.15em] w-[1.15em] items-center justify-center text-center leading-none"
                     style={hex ? { color: hex } : undefined}
                     ariaHidden
                   />
