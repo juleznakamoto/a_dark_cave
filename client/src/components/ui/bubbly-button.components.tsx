@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useState, useRef, forwardRef, useImperativeHandle } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -218,7 +219,9 @@ export const BubblyButtonGlobalPortal = ({
   bubbles: BubbleWithParticles[];
   zIndex?: number;
 }) => {
-  return (
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
     <div className="fixed inset-0 pointer-events-none" style={{ zIndex }}>
       <AnimatePresence>
         {bubbles.map((bubble) => (
@@ -250,7 +253,8 @@ export const BubblyButtonGlobalPortal = ({
           </div>
         ))}
       </AnimatePresence>
-    </div>
+    </div>,
+    document.body,
   );
 };
 
