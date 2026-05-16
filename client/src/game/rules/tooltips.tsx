@@ -700,7 +700,7 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
       const knowledgeBonus = Math.floor(knowledge / 5);
       const perHit = poisonArrowsDamagePerTick(knowledge);
       const totalHits = 1 + POISON_ARROWS_DOT_FIGHT_ROUNDS;
-      return `Base Damage: ${POISON_ARROWS_BASE_DAMAGE}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${perHit} for round (${POISON_ARROWS_DOT_FIGHT_ROUNDS} rounds)`;
+      return `Base Damage: ${POISON_ARROWS_BASE_DAMAGE}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${perHit} for ${POISON_ARROWS_DOT_FIGHT_ROUNDS} rounds`;
     },
   },
   veinfire_elixir: {
