@@ -760,6 +760,7 @@ const toolTrades = [
     giveItem: "nightshade_bow_schematic",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 9 &&
+      state.buildings.bastion >= 1 &&
       !state.schematics.nightshade_bow_schematic,
     costs: [{ resource: "gold", amounts: [2500] }],
     message:

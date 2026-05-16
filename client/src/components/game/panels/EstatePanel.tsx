@@ -729,10 +729,17 @@ export default function EstatePanel() {
                     onUpgrade={handleBloodflameSphereUpgrade}
                     tooltipContent={<>
                       {nxt?.burnDamage > cur?.burnDamage && <div>+{nxt.burnDamage - cur.burnDamage} Burn Damage</div>}
-                      {nxt?.burnRounds > cur?.burnRounds && <div>+{nxt.burnRounds - cur.burnRounds} Burn Round</div>}
+                      {nxt?.burnRounds > cur?.burnRounds && (() => {
+                        const d = nxt.burnRounds - cur.burnRounds;
+                        return (
+                          <div>
+                            +{d} Burn Round{d !== 1 ? "s" : ""}
+                          </div>
+                        );
+                      })()}
                       {nxt?.healthCost > cur?.healthCost && <div>+{nxt.healthCost - cur.healthCost} Health Cost</div>}
                     </>}
-                    description={`${cur.burnDamage} damage for ${cur.burnRounds + 1} round${cur.burnRounds + 1 !== 1 ? "s" : ""}, ${cur.healthCost} Health Cost`}
+                    description={`${cur.burnDamage} damage for ${cur.burnRounds} round${cur.burnRounds !== 1 ? "s" : ""}, ${cur.healthCost} Health Cost`}
                   />
                 );
               })()}
@@ -770,7 +777,7 @@ export default function EstatePanel() {
                     : <div>+{bonusPercent}% Bonus on assigned actions</div>
                 ) : <div>Max level</div>;
                 const curBonusPercent = (cur.rewardMultiplier - 1) * 100;
-                const upkeepText = `Consumes ${DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE} Food per Action per Cycle`;
+                const upkeepText = `Costs ${DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE} Food per Action per Cycle`;
                 const description =
                   curBonusPercent > 0
                     ? `${cur.maxActions} Action${cur.maxActions > 1 ? "s" : ""}, +${curBonusPercent}% Bonus, ${upkeepText}`

@@ -52,12 +52,13 @@ export const CRUSHING_STRIKE_UPGRADES = [
   },
 ];
 
-// Bloodflame Sphere upgrade configurations (Combat skill from Elder Wizard)
+// Bloodflame Sphere upgrade configurations (Combat skill from Elder Wizard).
+/** `burnRounds`: total damage instances per cast (same `burnDamage` each): first on cast, then one per Fight while DoT remains. */
 export const BLOODFLAME_SPHERE_UPGRADES = [
   {
     level: 0,
     burnDamage: 10,
-    burnRounds: 1,
+    burnRounds: 2,
     healthCost: 10,
     cost: 0,
     currency: null,
@@ -65,7 +66,7 @@ export const BLOODFLAME_SPHERE_UPGRADES = [
   {
     level: 1,
     burnDamage: 15,
-    burnRounds: 2,
+    burnRounds: 3,
     healthCost: 15,
     cost: 250,
     currency: "gold",
@@ -73,7 +74,7 @@ export const BLOODFLAME_SPHERE_UPGRADES = [
   {
     level: 2,
     burnDamage: 25,
-    burnRounds: 2,
+    burnRounds: 3,
     healthCost: 20,
     cost: 500,
     currency: "gold",
@@ -81,7 +82,7 @@ export const BLOODFLAME_SPHERE_UPGRADES = [
   {
     level: 3,
     burnDamage: 30,
-    burnRounds: 3,
+    burnRounds: 4,
     healthCost: 25,
     cost: 750,
     currency: "gold",
@@ -89,7 +90,7 @@ export const BLOODFLAME_SPHERE_UPGRADES = [
   {
     level: 4,
     burnDamage: 40,
-    burnRounds: 3,
+    burnRounds: 4,
     healthCost: 30,
     cost: 1000,
     currency: "gold",
@@ -97,12 +98,17 @@ export const BLOODFLAME_SPHERE_UPGRADES = [
   {
     level: 5,
     burnDamage: 45,
-    burnRounds: 4,
+    burnRounds: 5,
     healthCost: 35,
     cost: 1500,
     currency: "gold",
   },
 ];
+
+/** Fight-phase ticks remaining after Bloodflame cast (cast applies hit 1 of `burnRounds`). */
+export function bloodflameSphereFightBurnTicksAfterCast(burnRounds: number): number {
+  return Math.max(0, burnRounds - 1);
+}
 
 // Poison Arrows (Nightshade Bow combat item — DoT ticks on Fight like Bloodflame)
 /** Base poison damage before knowledge bonus (same scaling as bombs: +1 per 5 knowledge). */

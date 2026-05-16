@@ -20,6 +20,7 @@ import {
   CRUSHING_STRIKE_UPGRADES,
   POISON_ARROWS_BASE_DAMAGE,
   POISON_ARROWS_DOT_FIGHT_ROUNDS,
+  bloodflameSphereFightBurnTicksAfterCast,
   poisonArrowsDamagePerTick,
 } from "@/game/rules/skillUpgrades";
 import {
@@ -422,8 +423,8 @@ export default function CombatDialog({
       (currentEnemy?.currentHealth || 0) - config.burnDamage,
     );
 
-    // Set burn effect for subsequent rounds
-    setEnemyBurnRounds(config.burnRounds);
+    // Remaining burn ticks on Fight (cast consumed first of `config.burnRounds` total hits)
+    setEnemyBurnRounds(bloodflameSphereFightBurnTicksAfterCast(config.burnRounds));
     setEnemyBurnDamage(config.burnDamage);
     setUsedBloodflameSphere(true);
 
