@@ -906,7 +906,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildChitinPlating",
     label: "Chitin Plating",
     description: "Fortifications are reinforced with impenetrable chitin plates",
-    tooltipEffects: ["+10 Defense"],
+    tooltipEffects: ["+10 Defense", "+20 Integrity"],
     building: true,
     show_when: {
       1: {

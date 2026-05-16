@@ -2,7 +2,7 @@ import React from "react";
 import OutcomeDialog, {
   OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS,
 } from "./OutcomeDialog";
-import { cn, formatNumber } from "@/lib/utils";
+import { formatNumber } from "@/lib/utils";
 import type {
   InvestmentOutcomeUiKind,
   InvestmentResultDialogPayload,
@@ -15,7 +15,7 @@ interface InvestmentResultDialogProps {
 }
 
 function OutcomeIcon({ kind }: { kind: InvestmentOutcomeUiKind }) {
-  const cls = cn(OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS, "inline-block");
+  const cls = OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS;
   switch (kind) {
     case "lucky_chance":
       return (

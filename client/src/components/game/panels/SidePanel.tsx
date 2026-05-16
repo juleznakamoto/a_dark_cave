@@ -808,6 +808,7 @@ export default function SidePanel() {
             )}
             <div className="text-foreground">
               {defense !== 0 && <div>+{defense} Defense</div>}
+              {integrity !== 0 && <div>+{integrity} Integrity</div>}
             </div>
           </div>
         );
