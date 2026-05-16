@@ -1,46 +1,7 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
-import { killVillagers } from "@/game/stateHelpers";
 
 export const noChoiceEvents: Record<string, GameEvent> = {
-  bloodDrainedVillagers: {
-    id: "bloodDrainedVillagers",
-    condition: (state: GameState) =>
-      state.buildings.stoneHut >= 7 && !state.story.seen.collapsedTowerExplored,
-
-    timeProbability: (state: GameState) =>
-      state.story.seen.bloodDrainedVillagersFirstTime ? 30 : 45,
-    title: "Drained Bodies",
-    message: (state: GameState) => {
-      const isFirstTime = !state.story.seen.bloodDrainedVillagersFirstTime;
-
-      if (isFirstTime) {
-        return `One morning, 6 villagers are found dead in their beds, pale and drained of all blood. Small punctures cover their skin. Some villagers suspect this could be connected to the collapsed tower in the forest where hunters heard strange sounds.`;
-      } else {
-        return `Again, 8 more villagers are discovered dead at dawn, their bodies drained of blood, covered in the same mysterious marks. The demands that something be done about what dwells in the collapsed tower grow louder.`;
-      }
-    },
-    priority: 4,
-    repeatable: true,
-    effect: (state: GameState) => {
-      const isFirstTime = !state.story.seen.bloodDrainedVillagersFirstTime;
-      const deaths = isFirstTime ? 6 : 8;
-      const result = killVillagers(state, deaths);
-
-      return {
-        ...result,
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            bloodDrainedVillagersFirstTime: true,
-            collapsedTowerUnlocked: true,
-          },
-        },
-      };
-    },
-  },
-
   villageBecomesCity: {
     id: "villageBecomesCity",
     condition: (state: GameState) =>
@@ -86,57 +47,6 @@ export const noChoiceEvents: Record<string, GameEvent> = {
         seen: { ...state.story.seen, bastionBecomesFortress: true },
       },
     }),
-  },
-
-  findElderScroll: {
-    id: "findElderScroll",
-    condition: (state: GameState) =>
-      state.buildings.woodenHut >= 6 && !state.relics.elder_scroll,
-
-    timeProbability: 45,
-    message:
-      "During the night as you pass a narrow path, something moves at the edge of your vision, like a shadow fleeing the firelight. You follow it, and there, upon the cold stones, lies an ancient scroll.",
-    priority: 5,
-    repeatable: false,
-    effect: (state: GameState) => ({
-      relics: {
-        ...state.relics,
-        elder_scroll: true,
-      },
-      events: {
-        ...state.events,
-        elder_scroll_found: true,
-      },
-    }),
-  },
-
-  veinrootIntroduction: {
-    id: "veinrootIntroduction",
-    condition: (state: GameState) =>
-      (state.buildings.alchemistHall ?? 0) >= 1 &&
-      Boolean(state.story.seen.firstWaveVictory) &&
-      !state.story.seen.veinrootDiscovered,
-    priority: 7,
-    repeatable: false,
-    title: "The Mysterious Root",
-    message:
-      "The alchemist approaches you. Villagers found a strangely looking root in the forest and brought it to him. He managed to create a powerful potion from it.",
-    effect: (state: GameState) => {
-      const current = state.resources.veinfire_elixir ?? 0;
-      return {
-        resources: {
-          ...state.resources,
-          veinfire_elixir: Math.min(current + 1, 5),
-        },
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            veinrootDiscovered: true,
-          },
-        },
-      };
-    },
   },
 
   blindDruidBlessing: {

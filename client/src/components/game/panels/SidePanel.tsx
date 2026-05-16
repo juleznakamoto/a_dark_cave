@@ -283,12 +283,7 @@ export default function SidePanel() {
     const label = labelMap[key] ?? capitalizeWords(key);
     return {
       id: key,
-      label: (
-        <>
-          {label}{" "}
-          <span className="text-muted-foreground">({value})</span>
-        </>
-      ),
+      label,
       value,
       testId: `combat-${key}`,
       visible: true,
