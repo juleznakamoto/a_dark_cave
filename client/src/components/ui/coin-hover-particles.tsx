@@ -47,6 +47,7 @@ export function useCoinHoverParticles(
   const emitIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const internalOriginRef = useRef<HTMLSpanElement | null>(null);
   const originRef = options?.particleOriginRef ?? internalOriginRef;
+  const particleConfig = options?.particleConfig;
 
   const spawnParticles = useCallback(() => {
     if (!enabled) return;
@@ -59,9 +60,10 @@ export function useCoinHoverParticles(
     const y = rect.top + rect.height / 2;
 
     const config =
-      resource === "gold"
+      particleConfig ??
+      (resource === "gold"
         ? GOLD_COIN_PARTICLE_CONFIG
-        : SILVER_COIN_PARTICLE_CONFIG;
+        : SILVER_COIN_PARTICLE_CONFIG);
     const id = `coin-bubble-${resource}-${bubbleIdCounter.current++}-${Date.now()}`;
     const particles = generateParticleData(config);
 
@@ -69,7 +71,7 @@ export function useCoinHoverParticles(
     setTimeout(() => {
       setBubbles((prev) => prev.filter((b) => b.id !== id));
     }, COIN_HOVER_BUBBLE_REMOVE_DELAY_MS);
-  }, [enabled, resource, originRef, options?.particleConfig]);
+  }, [enabled, resource, originRef, particleConfig]);
 
   const onMouseEnter = useCallback(() => {
     if (!enabled) return;
