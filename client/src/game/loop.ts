@@ -11,6 +11,7 @@ import {
   getCurrentPopulation,
   getPopulationProduction,
   getMaxPopulation,
+  getDisgracedPriorFoodUpkeepPerCycle,
 } from "./population";
 import {
   addFreeVillagersWithinCap,
@@ -29,7 +30,9 @@ import { formatSaveTimestamp } from "@/lib/utils";
 import { gameActions, canExecuteAction, shouldShowAction } from "./rules";
 import { getResourceLimit, isResourceLimited } from "./resourceLimits";
 import { getPriorActionSuccessor } from "./buttonUpgrades";
-import { DISGRACED_PRIOR_UPGRADES } from "./rules/skillUpgrades";
+import {
+  DISGRACED_PRIOR_UPGRADES,
+} from "./rules/skillUpgrades";
 import { CRUEL_MODE, cruelModeScale } from "./cruelMode";
 import {
   SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS,
@@ -57,6 +60,12 @@ const priorInFlightExecutions = new Set<string>();
  * - At least one output resource has room below the storage cap
  */
 function canPriorExecute(actionId: string, state: GameState): boolean {
+  // Require enough food for upkeep on every assigned action (matches handlePopulationSurvival once hunting has started).
+  if (state.story?.seen?.hasHunted) {
+    const upkeep = getDisgracedPriorFoodUpkeepPerCycle(state);
+    if (upkeep > 0 && (state.resources?.food ?? 0) < upkeep) return false;
+  }
+
   const now = Date.now();
   if (now - (priorLastCompleted.get(actionId) ?? 0) < PRIOR_EXECUTION_GAP_MS) return false;
   // Never re-trigger while this action is still executing.
@@ -946,12 +955,14 @@ function handlePopulationSurvival() {
 
   const totalPopulation = state.current_population;
 
-  if (totalPopulation === 0) return;
+  const priorFoodPerCycle = getDisgracedPriorFoodUpkeepPerCycle(state);
+
+  if (totalPopulation === 0 && priorFoodPerCycle === 0) return;
 
   if (!state.story.seen.hasHunted) return;
 
   // Handle food consumption (but not starvation - that's handled by events)
-  const foodNeeded = totalPopulation;
+  const foodNeeded = totalPopulation + priorFoodPerCycle;
   const availableFood = state.resources.food;
 
   if (availableFood >= foodNeeded) {
@@ -963,6 +974,8 @@ function handlePopulationSurvival() {
   }
 
   // Handle wood consumption (1 wood per villager for heating/shelter)
+  if (totalPopulation === 0) return;
+
   const woodNeeded = totalPopulation;
   const availableWood = state.resources.wood;
 

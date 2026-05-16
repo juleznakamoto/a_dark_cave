@@ -23,6 +23,7 @@ import {
   SLEEP_LENGTH_UPGRADES,
   SLEEP_INTENSITY_UPGRADES,
   CROWS_EYE_UPGRADES,
+  DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
   DISGRACED_PRIOR_UPGRADES,
 } from "@/game/rules/skillUpgrades";
 import { focusTooltip } from "@/game/rules/tooltips";
@@ -769,10 +770,11 @@ export default function EstatePanel() {
                     : <div>+{bonusPercent}% Bonus on assigned actions</div>
                 ) : <div>Max level</div>;
                 const curBonusPercent = (cur.rewardMultiplier - 1) * 100;
+                const upkeepText = `Consumes ${DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE} Food per Action per Cycle`;
                 const description =
                   curBonusPercent > 0
-                    ? `${cur.maxActions} Action${cur.maxActions > 1 ? "s" : ""}, +${curBonusPercent}% Bonus`
-                    : `${cur.maxActions} concurrent Action${cur.maxActions > 1 ? "s" : ""}`;
+                    ? `${cur.maxActions} Action${cur.maxActions > 1 ? "s" : ""}, +${curBonusPercent}% Bonus, ${upkeepText}`
+                    : `${cur.maxActions} concurrent Action${cur.maxActions > 1 ? "s" : ""}, ${upkeepText}`;
                 return (
                   <SkillUpgradeRow
                     title="Disgraced Prior"

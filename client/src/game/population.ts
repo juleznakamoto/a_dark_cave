@@ -1,6 +1,9 @@
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { GameState } from "@shared/schema"; // Assuming GameState is defined elsewhere
-import { HUNTING_SKILL_BONUSES } from "@/game/rules/skillUpgrades";
+import {
+  DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
+  HUNTING_SKILL_BONUSES,
+} from "@/game/rules/skillUpgrades";
 import { getTotalMadness } from "@/game/rules/effectsCalculation";
 import type { PopulationJobConfig } from "@/game/types";
 
@@ -139,7 +142,7 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
 };
 
 export interface GetPopulationProductionOptions {
-  /** When true, excludes temporary bonuses (feast, solstice gathering, curse, frostfall, fog, disgust, mining boost). Use for sleep check since no bonuses are active during sleep. */
+  /** When true, excludes temporary bonuses (feast, solstice gathering, curse, frostfall, fog, disgust, mining boost) and Disgraced Prior food upkeep. Use for sleep / idle eligibility: those effects are inactive while the sim is paused in sleep, and the Prior does not auto-execute. */
   excludeTemporaryBonuses?: boolean;
 }
 
@@ -435,6 +438,15 @@ export function getVillagersInVillage(
   );
 }
 
+/** Food consumed per 15s cycle for all Disgraced Prior assignments (0 if not applicable). */
+export function getDisgracedPriorFoodUpkeepPerCycle(
+  state: Pick<GameState, "fellowship" | "priorAssignedActions">,
+): number {
+  if (!state.fellowship?.disgraced_prior) return 0;
+  const n = state.priorAssignedActions?.length ?? 0;
+  return n * DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE;
+}
+
 export const getTotalPopulationEffects = (
   state: GameState,
   visibleJobIds: string[],
@@ -468,6 +480,17 @@ export const getTotalPopulationEffects = (
       });
     }
   });
+
+  // Disgraced Prior upkeep (see handlePopulationSurvival). Omitted when excludeTemporaryBonuses:
+  // during sleep the game loop skips production and the Prior does not run.
+  const excludeTemporaryBonuses = options?.excludeTemporaryBonuses ?? false;
+  if (!excludeTemporaryBonuses) {
+    const priorUpkeep = getDisgracedPriorFoodUpkeepPerCycle(state);
+    if (priorUpkeep > 0) {
+      totalEffects.food = (totalEffects.food || 0) - priorUpkeep;
+    }
+  }
+
   return totalEffects;
 };
 

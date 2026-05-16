@@ -6,6 +6,7 @@ import {
   getPopulationProduction,
   getTotalPopulationEffects,
 } from './population';
+import { DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE } from './rules/skillUpgrades';
 import { GameState } from '@shared/schema';
 
 // Helper to create a minimal test state
@@ -376,6 +377,50 @@ describe('Population Production Display Tests', () => {
       expect(displayedEffects.fur).toBe(4);
       expect(displayedEffects.bones).toBe(4);
       expect(displayedEffects.wood).toBe(-totalPop);
+    });
+  });
+
+  describe('Disgraced Prior upkeep', () => {
+    it('subtracts food upkeep per assigned action when projecting live village economy', () => {
+      const state = createTestState({
+        villagers: { ...createTestState().villagers, hunter: 1, free: 4 },
+        buildings: { ...createTestState().buildings, cabin: 1 },
+        fellowship: { disgraced_prior: true },
+        priorAssignedActions: ['chopWood', 'mineStone', 'mineIron'],
+      });
+      const baseline = getTotalPopulationEffects(state, ['hunter']);
+      const withoutAssignments = getTotalPopulationEffects(
+        {
+          ...state,
+          priorAssignedActions: [],
+        },
+        ['hunter'],
+      );
+      expect(baseline.food).toBe(
+        withoutAssignments.food -
+          3 * DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
+      );
+    });
+
+    it('does not subtract prior upkeep when excludeTemporaryBonuses (idle / sleep eligibility)', () => {
+      const state = createTestState({
+        villagers: { ...createTestState().villagers, hunter: 1, free: 4 },
+        buildings: { ...createTestState().buildings, cabin: 1 },
+        fellowship: { disgraced_prior: true },
+        priorAssignedActions: ['chopWood', 'mineStone', 'mineIron'],
+      });
+      const sleepProjection = getTotalPopulationEffects(state, ['hunter'], {
+        excludeTemporaryBonuses: true,
+      });
+      const baselineNoPriorAssignments = getTotalPopulationEffects(
+        {
+          ...state,
+          priorAssignedActions: [],
+        },
+        ['hunter'],
+        { excludeTemporaryBonuses: true },
+      );
+      expect(sleepProjection.food).toBe(baselineNoPriorAssignments.food);
     });
   });
 
