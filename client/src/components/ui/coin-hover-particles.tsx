@@ -14,6 +14,7 @@ import {
   GOLD_COIN_PARTICLE_CONFIG,
   SILVER_COIN_PARTICLE_CONFIG,
   type BubbleWithParticles,
+  type ParticleConfig,
 } from "@/components/ui/bubbly-button.particles";
 
 /** Match `ResourceCoinIcon` / side-panel coin hover cadence. */
@@ -34,6 +35,8 @@ export function useCoinHoverParticles(
      * ref on the glyph only.
      */
     particleOriginRef?: React.RefObject<HTMLSpanElement | null>;
+    /** Overrides gold/silver presets (e.g. shop glyph color). */
+    particleConfig?: Partial<ParticleConfig>;
   },
 ) {
   const zIndex = options?.zIndex ?? 50;
@@ -66,7 +69,7 @@ export function useCoinHoverParticles(
     setTimeout(() => {
       setBubbles((prev) => prev.filter((b) => b.id !== id));
     }, COIN_HOVER_BUBBLE_REMOVE_DELAY_MS);
-  }, [enabled, resource, originRef]);
+  }, [enabled, resource, originRef, options?.particleConfig]);
 
   const onMouseEnter = useCallback(() => {
     if (!enabled) return;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import {
   Dialog,
@@ -40,6 +40,7 @@ import {
 } from "../../../../shared/shopItems";
 import { getDiscountedShopPriceCents } from "../../../../shared/shopCheckoutPrice";
 import { tailwindToHex } from "@/lib/tailwindColors";
+import { getShopGlyphHoverParticleConfig } from "@/components/ui/bubbly-button.particles";
 import { getStripeReturnUrlForConfirm } from "@/lib/stripePaymentReturn";
 
 const stripePublishableKey = import.meta.env.PROD
@@ -365,8 +366,8 @@ function ShopGlyphForItem({
 /** Above `DialogContent` z-[70] so particles match the coin effect but stay visible. */
 const SHOP_GOLD_GLYPH_HOVER_PARTICLE_Z = 90;
 
-/** Full-card hover for paid gold packs; burst origin stays on the corner glyph span. */
-function ShopPaidGoldPackParticleScope({
+/** Full-card hover for shop items; burst origin stays on the corner glyph span; tint matches `symbolColor`. */
+function ShopItemGlyphParticleScope({
   item,
   children,
 }: {
@@ -378,13 +379,18 @@ function ShopPaidGoldPackParticleScope({
   }) => React.ReactNode;
 }) {
   const particleOriginRef = React.useRef<HTMLSpanElement | null>(null);
-  const enabled = isShopPaidGoldPackItem(item.id);
+  const enabled = Boolean(item.symbol);
+  const particleConfig = useMemo(
+    () => getShopGlyphHoverParticleConfig(item.symbolColor),
+    [item.symbolColor],
+  );
   const { hoverHandlers, portal, glyphOriginRef } = useCoinHoverParticles(
     "gold",
     {
       enabled,
       zIndex: SHOP_GOLD_GLYPH_HOVER_PARTICLE_Z,
       particleOriginRef,
+      particleConfig,
     },
   );
 
@@ -410,8 +416,7 @@ function ShopCardCornerGlyph({
   glyphWrapperClassName: string;
   glyphWrapperStyle: React.CSSProperties;
 }) {
-  const bindOrigin =
-    glyphOriginRef && isShopPaidGoldPackItem(item.id) ? glyphOriginRef : undefined;
+  const bindOrigin = glyphOriginRef ?? undefined;
 
   return (
     <span
@@ -428,7 +433,7 @@ function ShopCardCornerGlyph({
 function ShopItemDescriptionParagraph({ item }: { item: ShopItem }) {
   if (item.category === "bundle" && item.bundleComponents?.length) {
     return (
-      <div className="space-y-1.5">
+      <div className="space-y-1">
         {item.bundleComponents.map((componentId) => {
           const c = SHOP_ITEMS[componentId];
           if (!c) return null;
@@ -1444,7 +1449,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </TabsTrigger>
                   </TabsList>
                   {activeTab === "shop" && (
-                    <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/5 px-3 py-2.5 text-sm text-foreground">
+                    <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/5 px-3 py- text-sm text-foreground">
                       <p className="text-md font-medium">
                         Beta discounts of up to{" "}
                         <span className="font-bold">40% off</span> are currently
@@ -1457,7 +1462,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </div>
                   )}
                   {activeTab === "purchases" && (
-                    <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/5 px-3 py-2.5 text-sm text-foreground">
+                    <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/5 px-3 py-2 text-sm text-foreground">
                       {purchasedItems.length === 0 &&
                         Object.keys(gameState.feastActivations || {}).length ===
                         0 ? (
@@ -1600,7 +1605,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           return true;
                         })
                         .map((item) => (
-                          <ShopPaidGoldPackParticleScope
+                          <ShopItemGlyphParticleScope
                             key={item.id}
                             item={item}
                           >
@@ -1614,8 +1619,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                       : undefined
                                   }
                                   className={`border-neutral-500 flex flex-col relative ${item.category === "bundle"
-                                      ? "border border-amber-600"
-                                      : ""
+                                    ? "border border-amber-600"
+                                    : ""
                                     }${item.id === "cruel_mode" &&
                                       shopCruelModeHighlight
                                       ? " border border-red-600"
@@ -1628,8 +1633,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         item={item}
                                         glyphOriginRef={glyphOriginRef}
                                         glyphWrapperClassName={`leading-[0.9] text-right absolute top-4 right-4 inline-flex items-center justify-center${isShopPaidGoldPackItem(item.id)
-                                            ? " cursor-default"
-                                            : ""
+                                          ? " cursor-default"
+                                          : ""
                                           }`}
                                         glyphWrapperStyle={{
                                           color: tailwindToHex(
@@ -1997,7 +2002,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 {portal}
                               </>
                             )}
-                          </ShopPaidGoldPackParticleScope>
+                          </ShopItemGlyphParticleScope>
                         ))}
                     </div>
                   </ScrollAreaWithIndicator>

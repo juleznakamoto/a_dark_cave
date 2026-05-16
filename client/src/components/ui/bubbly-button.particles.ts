@@ -265,6 +265,52 @@ export const GOLD_COIN_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   sizeMax: 3,
 };
 
+function adjustHexBrightness(hex: string, factor: number): string {
+  const m = /^#([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!m) return hex;
+  const n = parseInt(m[1], 16);
+  let r = ((n >> 16) & 255) * factor;
+  let g = ((n >> 8) & 255) * factor;
+  let b = (n & 255) * factor;
+  r = Math.min(255, Math.max(0, Math.round(r)));
+  g = Math.min(255, Math.max(0, Math.round(g)));
+  b = Math.min(255, Math.max(0, Math.round(b)));
+  return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+}
+
+/** Palette for shop card glyph hover; mirrors catalog `symbolColor` (e.g. `text-emerald-600`). */
+export function shopGlyphHoverParticleColors(
+  symbolColorClass?: string,
+): string[] {
+  const key =
+    symbolColorClass?.replace(/^text-/, "").trim() || "yellow-500";
+  const primary = tailwindToHex(key);
+  if (primary.startsWith("#")) {
+    return [
+      adjustHexBrightness(primary, 1.18),
+      adjustHexBrightness(primary, 1.05),
+      primary,
+      adjustHexBrightness(primary, 0.78),
+    ];
+  }
+  if (primary.startsWith("rgba(")) {
+    return [primary, primary, primary, primary];
+  }
+  return (GOLD_COIN_PARTICLE_CONFIG.colors ?? []) as string[];
+}
+
+/** Same timing/size as coin hover; colors follow the shop item glyph (`symbolColor`). */
+export function getShopGlyphHoverParticleConfig(
+  symbolColorClass?: string,
+): Partial<ParticleConfig> {
+  return {
+    ...GOLD_COIN_PARTICLE_CONFIG,
+    colors: shopGlyphHoverParticleColors(symbolColorClass),
+    smallParticleOnlyColors: [],
+    smallParticleMaxSize: 2,
+  };
+}
+
 // Silver coin - slow gentle emission for hover
 export const SILVER_COIN_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   colors: [
