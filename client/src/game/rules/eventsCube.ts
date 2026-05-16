@@ -83,7 +83,7 @@ const CUBE_EVENT_TEXT: Record<string, { title: string; message: string }> = {
       "'One day, deep in the earth, they found a monolith of unknown ore. From it they forged an explosive to destroy the gate. But the bomb failed to breach the gate, instead unleashed an electro-magnetic pulse spanning the whole planet destroying all devices, ending civilization.'",
   },
   cube14c: {
-    title: "The Unknown Ore",
+    title: "The Ore's Effect",
     message:
       "'Shortly after the explosion, a man standing nearby began to dematerialize, his form flickering, half-transparent for seconds. Terrified and driven mad by what had happened, he took his own life moments later.'",
   },

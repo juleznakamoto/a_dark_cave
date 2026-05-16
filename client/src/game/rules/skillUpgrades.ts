@@ -120,9 +120,9 @@ export function poisonArrowsDamagePerTick(totalKnowledge: number): number {
 
 /** Per-bomb base damage before knowledge (+1 damage per 5 total knowledge); used when thrown in combat. */
 export const BOMB_BASE_DAMAGE_BY_ID = {
-  ember_bomb: 15,
-  ashfire_bomb: 30,
-  void_bomb: 50,
+  ember_bomb: 20,
+  ashfire_bomb: 40,
+  void_bomb: 60,
 } as const satisfies Record<string, number>;
 
 // Hunting Skill upgrade configurations (from Ashwraith Huntress)

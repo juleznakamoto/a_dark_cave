@@ -1449,7 +1449,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </TabsTrigger>
                   </TabsList>
                   {activeTab === "shop" && (
-                    <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/5 px-3 py-2 text-sm text-foreground">
+                    <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/5 px-2 py-2 text-sm text-foreground">
                       <p className="text-md font-medium">
                         Beta discounts of up to{" "}
                         <span className="font-bold">40% off</span> are currently
@@ -1462,7 +1462,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </div>
                   )}
                   {activeTab === "purchases" && (
-                    <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/5 px-3 py-2 text-sm text-foreground">
+                    <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/5 px-2 py-2 text-sm text-foreground">
                       {purchasedItems.length === 0 &&
                         Object.keys(gameState.feastActivations || {}).length ===
                         0 ? (

@@ -791,10 +791,10 @@ export default function EstatePanel() {
           )}
 
         {/* Cube Section */}
-        <div className="space-y-2 pt-1">
-          <h3 className="text-xs font-medium text-foreground">Cube</h3>
+        <div className="space-y-2 pt-1 pb-4 w-full md:max-w-96">
+          <h3 className="text-xs font-medium text-foreground">Cube Whispers</h3>
 
-          <div className="grid grid-cols-6 gap-5 w-40 h-12 gap-y-3">
+          <div className="grid grid-cols-6 place-items-center gap-x-2 gap-y-3 w-full">
             {completedCubeEvents.map((event) => {
               const openCubeEvent = () => {
                 useGameStore.getState().trackButtonClick(`cube-${event.id}`);
