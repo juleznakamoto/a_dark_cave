@@ -238,6 +238,14 @@ export default function CavePanel() {
     craftLeatherTotems: { singular: "Leather Totem", plural: "Leather Totems" },
   };
 
+  /** Bombs / Veinfire: cost & gain tooltip only; skip Book of Craftsmanship flavour text */
+  const CRAFT_NO_BOOK_DESCRIPTION = new Set([
+    "craftEmberBomb",
+    "craftAshfireBomb",
+    "craftVoidBomb",
+    "craftVeinfireElixir",
+  ]);
+
   const renderButton = (actionId: string, label: string) => {
     const action = gameActions[actionId];
     if (!action) return null;
@@ -351,7 +359,13 @@ export default function CavePanel() {
       }
 
       const craftingHint = (() => {
-        if (!state.books?.book_of_craftsmanship || !isCraftAction) return undefined;
+        if (
+          !state.books?.book_of_craftsmanship ||
+          !isCraftAction ||
+          CRAFT_NO_BOOK_DESCRIPTION.has(actionId)
+        ) {
+          return undefined;
+        }
         const itemKey = actionId.replace(/^craft/, '').replace(/([A-Z])/g, '_$1').toLowerCase().replace(/^_/, '');
         return (weaponEffects[itemKey] ?? toolEffects[itemKey] ?? clothingEffects[itemKey])?.description;
       })();
