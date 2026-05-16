@@ -8,7 +8,10 @@ import {
 import { combatItemTooltips } from "./tooltips";
 import {
   BOMB_RESOURCES,
+  COMBAT_ITEM_RESOURCES,
+  type CombatItemResourceKey,
   getMaxBombLimit,
+  getMaxVeinfireElixirLimit,
 } from "@/game/resourceLimits";
 import { getBuildingHierarchyTooltipLevel } from "../buildingHierarchy";
 import { villageBuildActions } from "./villageBuildActions";
@@ -149,17 +152,22 @@ export function renderItemTooltip(
     );
   }
 
-  // Bombs use combat tooltips (damage info) + name/description from effects
+  // Side panel Combat Items (+ combat dialog): bombs, Veinfire Elixir — merged combat line + weapon effect name/description
   if (
     itemType === "weapon" &&
-    BOMB_RESOURCES.includes(itemId as (typeof BOMB_RESOURCES)[number])
+    COMBAT_ITEM_RESOURCES.includes(itemId as CombatItemResourceKey)
   ) {
-    const tooltipConfig = combatItemTooltips[itemId];
+    const tooltipConfig =
+      combatItemTooltips[itemId as keyof typeof combatItemTooltips];
     const effect = weaponEffects[itemId];
     if (tooltipConfig?.getContent) {
       const gameState = useGameStore.getState();
-      const content = tooltipConfig.getContent(gameState);
-      const maxBombs = getMaxBombLimit(gameState);
+      const content = tooltipConfig.getContent(gameState as GameState);
+      const maxHeld = BOMB_RESOURCES.includes(
+        itemId as (typeof BOMB_RESOURCES)[number],
+      )
+        ? getMaxBombLimit(gameState)
+        : getMaxVeinfireElixirLimit();
       return (
         <div className="text-xs">
           <div className="font-bold">{effect?.name ?? itemId}</div>
@@ -169,7 +177,7 @@ export function renderItemTooltip(
           <pre className="whitespace-pre-wrap font-sans text-xs text-foreground">
             {content}
           </pre>
-          <div className="text-gray-400 mt-1">Max: {maxBombs}</div>
+          <div className="text-gray-400 mt-1">Max: {maxHeld}</div>
         </div>
       );
     }

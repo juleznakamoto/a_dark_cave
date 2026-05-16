@@ -110,6 +110,35 @@ export const noChoiceEvents: Record<string, GameEvent> = {
     }),
   },
 
+  veinrootIntroduction: {
+    id: "veinrootIntroduction",
+    condition: (state: GameState) =>
+      (state.buildings.alchemistHall ?? 0) >= 1 &&
+      Boolean(state.story.seen.firstWaveVictory) &&
+      !state.story.seen.veinrootDiscovered,
+    priority: 7,
+    repeatable: false,
+    title: "The Mysterious Root",
+    message:
+      "The alchemist approaches you. Villagers found a strangely looking root in the forest and brought it to him. He managed to create a powerful potion from it.",
+    effect: (state: GameState) => {
+      const current = state.resources.veinfire_elixir ?? 0;
+      return {
+        resources: {
+          ...state.resources,
+          veinfire_elixir: Math.min(current + 1, 5),
+        },
+        story: {
+          ...state.story,
+          seen: {
+            ...state.story.seen,
+            veinrootDiscovered: true,
+          },
+        },
+      };
+    },
+  },
+
   blindDruidBlessing: {
     id: "blindDruidBlessing",
     condition: (state: GameState) =>

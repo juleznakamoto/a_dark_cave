@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+﻿import { describe, it, expect, beforeEach } from 'vitest';
 import { GameState } from '@shared/schema';
 import {
   getResourceLimit,
@@ -7,6 +7,8 @@ import {
   getStorageLimitText,
   isResourceLimited,
   getStorageBuildingName,
+  getMaxVeinfireElixirLimit,
+  isVeinfireElixirAtLimit,
 } from './resourceLimits';
 import { updateResource } from './stateHelpers';
 import { gameActions } from './rules';
@@ -494,6 +496,27 @@ describe('Resource Limits - Integration with Game Components', () => {
       state.resources.stone = 1000;
       const updates = updateResource(state, 'stone', -200);
       expect(updates.resources?.stone).toBe(800);
+    });
+  });
+
+  describe('Veinroot and Veinfire Elixir caps', () => {
+    it('enforces fixed max Veinfire Elixir (5) before warehouse cap', () => {
+      state.buildings.supplyHut = 1;
+      expect(getMaxVeinfireElixirLimit()).toBe(5);
+      expect(capResourceToLimit('veinfire_elixir', 99, state)).toBe(5);
+      expect(capResourceToLimit('veinfire_elixir', 2, state)).toBe(2);
+    });
+
+    it('caps veinroot only by warehouse storage, not Veinfire cap', () => {
+      state.buildings.supplyHut = 1;
+      expect(capResourceToLimit('veinroot', 9999, state)).toBe(1000);
+    });
+
+    it('detects when Veinfire Elixir is at limit', () => {
+      state.resources = { ...state.resources, veinfire_elixir: 5 };
+      expect(isVeinfireElixirAtLimit(state)).toBe(true);
+      state.resources = { ...state.resources, veinfire_elixir: 4 };
+      expect(isVeinfireElixirAtLimit(state)).toBe(false);
     });
   });
 });

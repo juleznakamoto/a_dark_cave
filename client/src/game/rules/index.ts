@@ -9,7 +9,7 @@ import {
   getAnimalsCost,
   getHumansCost,
 } from "./forestSacrificeActions";
-import { isBombAtLimit } from "@/game/resourceLimits";
+import { isBombAtLimit, isVeinfireElixirAtLimit } from "@/game/resourceLimits";
 import { ACTION_TO_UPGRADE_KEY, getUpgradeLevel } from "@/game/buttonUpgrades";
 import { calculateAdjustedCost } from "./costCalculation";
 import { getActionBonuses } from "./effectsCalculation";
@@ -359,6 +359,9 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
   };
   const bombResource = BOMB_ACTIONS[actionId];
   if (bombResource && isBombAtLimit(bombResource, state)) {
+    return false;
+  }
+  if (actionId === "craftVeinfireElixir" && isVeinfireElixirAtLimit(state)) {
     return false;
   }
 

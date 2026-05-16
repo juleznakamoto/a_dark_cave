@@ -684,6 +684,13 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     description: "Terrifying bomb seeming to distort space around it",
     bonuses: { actionBonuses: {} },
   },
+  veinfire_elixir: {
+    id: "veinfire_elixir",
+    name: "Veinfire Elixir",
+    description:
+      "Alchemical healing elixir distilled from rare veinroot",
+    bonuses: { actionBonuses: {} },
+  },
 };
 
 // Relic effects

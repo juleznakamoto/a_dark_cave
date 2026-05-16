@@ -195,6 +195,7 @@ export default function CavePanel() {
             { id: "craftEmberBomb", label: "Ember Bomb" },
             { id: "craftAshfireBomb", label: "Ashfire Bomb" },
             { id: "craftVoidBomb", label: "Void Bomb" },
+            { id: "craftVeinfireElixir", label: "Veinfire Elixir" },
           ],
         },
         {

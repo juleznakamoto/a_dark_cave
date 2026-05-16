@@ -471,8 +471,15 @@ export class EventManager {
                 clarityElixirPurchases: currentPurchases + 1,
               },
             };
-            stateChanges._logMessage =
-              "As you drink the Elixir of Clarity, the darkness in your mind recedes a little.";
+          } else if (trade.buyItem === "veinfire_elixir") {
+            const next = Math.min(
+              (state.resources.veinfire_elixir ?? 0) + 1,
+              5,
+            );
+            stateChanges.resources = {
+              ...stateChanges.resources,
+              veinfire_elixir: next,
+            };
           } else if (trade.buyResource === "book") {
             stateChanges.books = {
               ...(state.books || {}),

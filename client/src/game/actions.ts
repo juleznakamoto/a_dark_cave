@@ -67,6 +67,7 @@ import {
   handleCraftEmberBomb,
   handleCraftAshfireBomb,
   handleCraftVoidBomb,
+  handleCraftVeinfireElixir,
 } from "@/game/rules/caveCraftResources";
 
 import {
@@ -390,6 +391,8 @@ export function executeGameAction(
       return handleCraftAshfireBomb(state, result);
     case "craftVoidBomb":
       return handleCraftVoidBomb(state, result);
+    case "craftVeinfireElixir":
+      return handleCraftVeinfireElixir(state, result);
     case "craftIronSword":
       return handleCraftIronSword(state, result);
     case "craftSteelSword":

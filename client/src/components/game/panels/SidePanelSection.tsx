@@ -584,6 +584,67 @@ export default function SidePanelSection({
       );
     }
 
+    // Combat Items: bombs + Veinfire Elixir — merged combat tooltip like weapon bombs in itemTooltips
+    if (title === "Combat Items") {
+      const combatItemTooltip = renderItemTooltip(item.id, "weapon");
+      if (combatItemTooltip) {
+        return (
+          <div
+            key={item.id}
+            data-testid={item.testId}
+            className={`mr-2 flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
+                ? "text-green-400"
+                : isDecreaseAnimated
+                  ? "text-red-400"
+                  : isMaxAnimated
+                    ? "text-yellow-400"
+                    : ""}`}
+          >
+            <TooltipWrapper
+              tooltip={combatItemTooltip}
+              tooltipId={item.id}
+              disabled
+              tooltipContentClassName="max-w-xs"
+              onMouseEnter={() => handleTooltipHover(item.id)}
+              onMouseLeave={() => handleTooltipLeave(item.id)}
+              className={
+                globalTooltip.isMobile ? "cursor-pointer inline-block" : "inline-block"
+              }
+            >
+              {labelContent}
+            </TooltipWrapper>
+            {![
+              "Relics",
+              "Tools",
+              "Weapons",
+              "Clothing",
+              "Buildings",
+              "Fortifications",
+              "Blessings",
+              "Schematics",
+              "Books",
+              "Fellowship",
+              "Stats",
+            ].includes(title) && (
+              <span
+                className={`font-mono ${isAnimated
+                    ? "text-green-800 font-bold"
+                    : isDecreaseAnimated
+                      ? "text-red-800 font-bold"
+                      : isMaxAnimated
+                        ? "text-yellow-800 font-bold"
+                        : isMadness
+                          ? madnessClasses
+                          : ""}`}
+              >
+                {displayValue}
+              </span>
+            )}
+          </div>
+        );
+      }
+    }
+
     // If this item has a tooltip, render with tooltip
     if (item.tooltip) {
       const tooltipContent =

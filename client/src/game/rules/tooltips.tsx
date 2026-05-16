@@ -19,7 +19,12 @@ import {
 } from "./skillUpgrades";
 import { formatNumber, formatSignedNumber } from "@/lib/utils";
 import type { TooltipConfig } from "@/game/types";
-import { getMaxBombLimit, isBombAtLimit } from "@/game/resourceLimits";
+import {
+  getMaxBombLimit,
+  getMaxVeinfireElixirLimit,
+  isBombAtLimit,
+  isVeinfireElixirAtLimit,
+} from "@/game/resourceLimits";
 const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
   "ventureDeeper",
@@ -299,8 +304,24 @@ export const getResourceGainTooltip = (
 
   const bombResource = BOMB_ACTIONS[actionId];
   const isBombAtMax = bombResource && isBombAtLimit(bombResource, state);
+  const isVeinfireCraftAtMax =
+    actionId === "craftVeinfireElixir" && isVeinfireElixirAtLimit(state);
 
-  if (gains.length === 0 && costs.length === 0 && !isBombAtMax) {
+  const veinrootPctLine =
+    (actionId === "chopWood" || actionId === "hunt") &&
+      Boolean(state.story?.seen?.veinrootDiscovered)
+      ? actionId === "chopWood"
+        ? "0.5 % Chance of Veinroot"
+        : "1 % Chance of Veinroot"
+      : null;
+
+  if (
+    gains.length === 0 &&
+    costs.length === 0 &&
+    !isBombAtMax &&
+    !isVeinfireCraftAtMax &&
+    !veinrootPctLine
+  ) {
     return null;
   }
 
@@ -314,6 +335,9 @@ export const getResourceGainTooltip = (
   const isCraftAction = actionId.startsWith("craft");
   const showExactGains = !!state.buildings.clerksHut || isCraftAction;
 
+  const headerBlockAboveVein =
+    gains.length > 0 || costs.length > 0 || isBombAtMax || isVeinfireCraftAtMax;
+
   return (
     <div className="text-xs">
       {isBombAtMax && (
@@ -321,9 +345,15 @@ export const getResourceGainTooltip = (
           Max bombs reached ({getMaxBombLimit(state)} per type)
         </div>
       )}
-      {isBombAtMax && (gains.length > 0 || costs.length > 0) && (
-        <div className="border-t border-border my-1" />
+      {isVeinfireCraftAtMax && (
+        <div className="text-muted-foreground mb-1">
+          Max Veinfire Elixir reached ({getMaxVeinfireElixirLimit()})
+        </div>
       )}
+      {(isBombAtMax || isVeinfireCraftAtMax) &&
+        (gains.length > 0 || costs.length > 0) && (
+          <div className="border-t border-border my-1" />
+        )}
       {gains.map((gain, index) => (
         <div key={`gain-${index}`}>
           {showExactGains
@@ -344,6 +374,14 @@ export const getResourceGainTooltip = (
           -{formatNumber(cost.amount)} {formatResourceName(cost.resource)}
         </div>
       ))}
+      {veinrootPctLine != null && (
+        <>
+          {headerBlockAboveVein && (
+            <div className="border-t border-border my-1" />
+          )}
+          <div>{veinrootPctLine}</div>
+        </>
+      )}
     </div>
   );
 };
@@ -663,6 +701,11 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
       const perHit = poisonArrowsDamagePerTick(knowledge);
       const totalHits = 1 + POISON_ARROWS_DOT_FIGHT_ROUNDS;
       return `Base Damage: ${POISON_ARROWS_BASE_DAMAGE}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Damage: ${perHit} on use and each Fight (${POISON_ARROWS_DOT_FIGHT_ROUNDS} more rounds)\n${totalHits} poison hits total`;
+    },
+  },
+  veinfire_elixir: {
+    getContent: () => {
+      return "Restore up to 50 Integrity";
     },
   },
   crushing_strike: {

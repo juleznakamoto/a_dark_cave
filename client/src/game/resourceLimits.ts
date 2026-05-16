@@ -1,8 +1,34 @@
 
 import { GameState } from "@shared/schema";
 
-// Bomb resource keys (stored in resources but displayed in weapons section)
+// Bomb resource keys (stored in resources but displayed in Combat Items section)
 export const BOMB_RESOURCES = ["ember_bomb", "ashfire_bomb", "void_bomb"] as const;
+
+/** Stored in resources, shown under Combat Items (side panel); not counted as normal stash resources */
+export const COMBAT_ITEM_RESOURCES = [
+  ...BOMB_RESOURCES,
+  "veinfire_elixir",
+] as const;
+
+export type CombatItemResourceKey = (typeof COMBAT_ITEM_RESOURCES)[number];
+
+export function isCombatItemResource(key: string): boolean {
+  return COMBAT_ITEM_RESOURCES.includes(key as CombatItemResourceKey);
+}
+
+/** Max Veinfire Elixir the player may hold */
+export function getMaxVeinfireElixirLimit(): number {
+  return 5;
+}
+
+export function isVeinfireElixirResource(key: string): boolean {
+  return key === "veinfire_elixir";
+}
+
+export function isVeinfireElixirAtLimit(state: GameState): boolean {
+  const current = state.resources.veinfire_elixir ?? 0;
+  return current >= getMaxVeinfireElixirLimit();
+}
 
 // Max bombs per type: 10 base, 20 with Grenadier's Bag (leather item for combat capacity)
 export function getMaxBombLimit(state: GameState): number {
@@ -66,6 +92,11 @@ export function capResourceToLimit(
 ): number {
   if (!isResourceLimited(resourceKey, state)) {
     return value;
+  }
+
+  // Veinfire Elixir hard cap applies before warehouse storage cap
+  if (isVeinfireElixirResource(resourceKey)) {
+    value = Math.min(value, getMaxVeinfireElixirLimit());
   }
 
   const limit = getResourceLimit(state);

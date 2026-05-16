@@ -29,7 +29,8 @@ import {
   getStorageLimitText,
   isResourceLimited,
   getResourceLimit,
-  BOMB_RESOURCES,
+  COMBAT_ITEM_RESOURCES,
+  type CombatItemResourceKey,
 } from "@/game/resourceLimits";
 import {
   shouldHideBuilding,
@@ -154,7 +155,7 @@ export default function SidePanel() {
     seenResourcesRef.current.has(key),
   );
 
-  // Separate gold and silver from other resources; exclude bombs (shown in weapons)
+  // Separate gold and silver from other resources; exclude bombs (Combat Items section)
   const goldSilverResources = seenResourceKeys.filter(
     (key) => key === "gold" || key === "silver",
   );
@@ -162,7 +163,7 @@ export default function SidePanel() {
     (key) =>
       key !== "gold" &&
       key !== "silver" &&
-      !BOMB_RESOURCES.includes(key as (typeof BOMB_RESOURCES)[number]),
+      !COMBAT_ITEM_RESOURCES.includes(key as CombatItemResourceKey),
   );
 
   // Order gold first, then silver
@@ -268,8 +269,8 @@ export default function SidePanel() {
       tooltip: true,
     }));
 
-  // Add bombs at the end of weapons section (amount in parentheses, like wooden hut)
-  const bombItems = BOMB_RESOURCES.filter(
+  // Combat Items section (bombs + consumables stored in resources)
+  const combatItemRows = COMBAT_ITEM_RESOURCES.filter(
     (key) => seenResourcesRef.current.has(key),
   ).map((key) => {
     const value = resources[key as keyof typeof resources] ?? 0;
@@ -277,6 +278,7 @@ export default function SidePanel() {
       ember_bomb: "Ember Bomb",
       ashfire_bomb: "Ashfire Bomb",
       void_bomb: "Void Bomb",
+      veinfire_elixir: "Veinfire Elixir",
     };
     const label = labelMap[key] ?? capitalizeWords(key);
     return {
@@ -288,13 +290,13 @@ export default function SidePanel() {
         </>
       ),
       value,
-      testId: `weapon-${key}`,
+      testId: `combat-${key}`,
       visible: true,
       tooltip: true,
     };
   });
 
-  const weaponItems = [...weaponItemsFromTools, ...bombItems];
+  const weaponItems = weaponItemsFromTools;
 
   // Check if any resource has hit the limit
   const limit = getResourceLimit(gameState);
@@ -914,6 +916,7 @@ export default function SidePanel() {
           "resources",
           "tools",
           "weapons",
+          "combatItems",
           "clothing",
           "schematics",
         ];
@@ -930,7 +933,9 @@ export default function SidePanel() {
           sectionName,
         );
       case "bastion":
-        return ["resources", "fortifications", "bastion"].includes(sectionName);
+        return ["resources", "bastion", "combatItems", "fortifications"].includes(
+          sectionName,
+        );
       case "achievements":
         return ["resources"].includes(sectionName);
       case "timedevent":
@@ -985,6 +990,22 @@ export default function SidePanel() {
           {weaponItems.length > 0 && shouldShowSection("weapons") && (
             <SidePanelSection title="Weapons" items={weaponItems} />
           )}
+          {bastionStatsItems.length > 0 && shouldShowSection("bastion") && (
+            <SidePanelSection
+              title={flags.hasFortress ? "Fortress" : "Bastion"}
+              items={bastionStatsItems}
+            />
+          )}
+          {combatItemRows.length > 0 && shouldShowSection("combatItems") && (
+            <SidePanelSection title="Combat Items" items={combatItemRows} />
+          )}
+          {fortificationItems.length > 0 &&
+            shouldShowSection("fortifications") && (
+              <SidePanelSection
+                title="Fortifications"
+                items={fortificationItems}
+              />
+            )}
           {clothingItems.length > 0 && shouldShowSection("clothing") && (
             <SidePanelSection title="Clothing" items={clothingItems} />
           )}
@@ -1016,19 +1037,6 @@ export default function SidePanel() {
           )}
           {anyPlayerStatPositive && shouldShowSection("stats") && (
             <SidePanelSection title="Stats" items={statsItems} />
-          )}
-          {fortificationItems.length > 0 &&
-            shouldShowSection("fortifications") && (
-              <SidePanelSection
-                title="Fortifications"
-                items={fortificationItems}
-              />
-            )}
-          {bastionStatsItems.length > 0 && shouldShowSection("bastion") && (
-            <SidePanelSection
-              title={flags.hasFortress ? "Fortress" : "Bastion"}
-              items={bastionStatsItems}
-            />
           )}
           {bonusItems.length > 0 && shouldShowSection("bonuses") && (
             <SidePanelSection title="Bonuses" items={bonusItems} />

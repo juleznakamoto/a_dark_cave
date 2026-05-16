@@ -63,6 +63,7 @@ export default function CombatDialog({
     (state) => state.combatSkills.bloodflameSphereLevel,
   );
   const hasFortress = useGameStore((state) => state.flags.hasFortress);
+  const combatResources = useGameStore((state) => state.resources);
 
   const [combatStarted, setCombatStarted] = useState(false);
   const [currentEnemy, setCurrentEnemy] = useState<Enemy | null>(null);
@@ -90,6 +91,10 @@ export default function CombatDialog({
     amount: number;
     visible: boolean;
   }>({ amount: 0, visible: false });
+  const [integrityHealIndicator, setIntegrityHealIndicator] = useState<{
+    amount: number;
+    visible: boolean;
+  }>({ amount: 0, visible: false });
   const [usedCrushingStrike, setUsedCrushingStrike] = useState(false);
   const [usedBloodflameSphere, setUsedBloodflameSphere] = useState(false);
   const [enemyStunnedRounds, setEnemyStunnedRounds] = useState(0);
@@ -110,7 +115,16 @@ export default function CombatDialog({
     typeof setTimeout
   > | null>(null);
 
+  const integrityHealIndicatorTimeoutRef = useRef<ReturnType<
+    typeof setTimeout
+  > | null>(null);
+
   const showIntegrityDamage = (amount: number) => {
+    if (integrityHealIndicatorTimeoutRef.current) {
+      clearTimeout(integrityHealIndicatorTimeoutRef.current);
+      integrityHealIndicatorTimeoutRef.current = null;
+    }
+    setIntegrityHealIndicator({ amount: 0, visible: false });
     if (integrityDamageIndicatorTimeoutRef.current) {
       clearTimeout(integrityDamageIndicatorTimeoutRef.current);
       integrityDamageIndicatorTimeoutRef.current = null;
@@ -119,6 +133,23 @@ export default function CombatDialog({
     integrityDamageIndicatorTimeoutRef.current = setTimeout(() => {
       setIntegrityDamageIndicator({ amount: 0, visible: false });
       integrityDamageIndicatorTimeoutRef.current = null;
+    }, 3000);
+  };
+
+  const showIntegrityHeal = (amount: number) => {
+    if (integrityDamageIndicatorTimeoutRef.current) {
+      clearTimeout(integrityDamageIndicatorTimeoutRef.current);
+      integrityDamageIndicatorTimeoutRef.current = null;
+    }
+    setIntegrityDamageIndicator({ amount: 0, visible: false });
+    if (integrityHealIndicatorTimeoutRef.current) {
+      clearTimeout(integrityHealIndicatorTimeoutRef.current);
+      integrityHealIndicatorTimeoutRef.current = null;
+    }
+    setIntegrityHealIndicator({ amount, visible: true });
+    integrityHealIndicatorTimeoutRef.current = setTimeout(() => {
+      setIntegrityHealIndicator({ amount: 0, visible: false });
+      integrityHealIndicatorTimeoutRef.current = null;
     }, 3000);
   };
 
@@ -169,6 +200,10 @@ export default function CombatDialog({
         clearTimeout(integrityDamageIndicatorTimeoutRef.current);
         integrityDamageIndicatorTimeoutRef.current = null;
       }
+      if (integrityHealIndicatorTimeoutRef.current) {
+        clearTimeout(integrityHealIndicatorTimeoutRef.current);
+        integrityHealIndicatorTimeoutRef.current = null;
+      }
       if (enemyDamageIndicatorTimeoutRef.current) {
         clearTimeout(enemyDamageIndicatorTimeoutRef.current);
         enemyDamageIndicatorTimeoutRef.current = null;
@@ -182,6 +217,10 @@ export default function CombatDialog({
       if (integrityDamageIndicatorTimeoutRef.current) {
         clearTimeout(integrityDamageIndicatorTimeoutRef.current);
         integrityDamageIndicatorTimeoutRef.current = null;
+      }
+      if (integrityHealIndicatorTimeoutRef.current) {
+        clearTimeout(integrityHealIndicatorTimeoutRef.current);
+        integrityHealIndicatorTimeoutRef.current = null;
       }
       if (enemyDamageIndicatorTimeoutRef.current) {
         clearTimeout(enemyDamageIndicatorTimeoutRef.current);
@@ -198,6 +237,7 @@ export default function CombatDialog({
       setEnemyDamageIndicator({ amount: 0, visible: false });
       setPlayerDamageIndicator({ amount: 0, visible: false });
       setIntegrityDamageIndicator({ amount: 0, visible: false });
+      setIntegrityHealIndicator({ amount: 0, visible: false });
       setUsedCrushingStrike(false);
       setUsedBloodflameSphere(false);
       setEnemyStunnedRounds(0);
@@ -253,13 +293,17 @@ export default function CombatDialog({
     (id) => id === "poison_arrows",
   ).length;
 
+  const veinfireUsedInCombat = usedItemsInCombat.filter(
+    (id) => id === "veinfire_elixir",
+  ).length;
+
   const combatItems: CombatItem[] = [
     {
       id: "ember_bomb",
       name: "Ember Bomb",
       damage: BOMB_BASE_DAMAGE_BY_ID.ember_bomb,
       available:
-        gameState.resources.ember_bomb > 0 &&
+        combatResources.ember_bomb > 0 &&
         emberBombsUsed < MAX_EMBER_BOMBS &&
         !usedItemsInRound.has("ember_bomb"),
     },
@@ -268,7 +312,7 @@ export default function CombatDialog({
       name: "Ashfire Bomb",
       damage: BOMB_BASE_DAMAGE_BY_ID.ashfire_bomb,
       available:
-        gameState.resources.ashfire_bomb > 0 &&
+        combatResources.ashfire_bomb > 0 &&
         ashfireBombsUsed < MAX_CINDERFLAME_BOMBS &&
         !usedItemsInRound.has("ashfire_bomb"),
     },
@@ -277,7 +321,7 @@ export default function CombatDialog({
       name: "Void Bomb",
       damage: BOMB_BASE_DAMAGE_BY_ID.void_bomb,
       available:
-        gameState.resources.void_bomb > 0 &&
+        combatResources.void_bomb > 0 &&
         voidBombsUsed < MAX_VOID_BOMBS &&
         !usedItemsInRound.has("void_bomb"),
     },
@@ -293,6 +337,17 @@ export default function CombatDialog({
         poisonArrowsUsedInCombat < 1 && !usedItemsInRound.has("poison_arrows"),
     });
   }
+
+  combatItems.push({
+    id: "veinfire_elixir",
+    name: "Veinfire Elixir",
+    damage: 0,
+    available:
+      combatResources.veinfire_elixir > 0 &&
+      veinfireUsedInCombat < 1 &&
+      currentIntegrity < maxIntegrityForCombat &&
+      !usedItemsInRound.has("veinfire_elixir"),
+  });
 
   const handleStartFight = () => {
     setCombatStarted(true);
@@ -393,14 +448,39 @@ export default function CombatDialog({
   const handleUseItem = (item: CombatItem) => {
     if (!currentEnemy || !item.available) return;
 
-    // Calculate final damage with knowledge bonus
+    if (item.id === "veinfire_elixir") {
+      const healAmount = Math.min(
+        50,
+        maxIntegrityForCombat - currentIntegrity,
+      );
+      // Only consume when healing applies (matches available: must be below max)
+      if (healAmount <= 0) return;
+
+      setUsedItemsInRound((prev) => {
+        const next = new Set(prev);
+        next.add(item.id);
+        return next;
+      });
+      setUsedItemsInCombat((prev) => [...prev, item.id]);
+
+      setCurrentIntegrity((prev) => prev + healAmount);
+      showIntegrityHeal(healAmount);
+      gameState.updateResource("veinfire_elixir", -1);
+      return;
+    }
+
+    // Use the item - track for this round and for entire combat
+    setUsedItemsInRound((prev) => {
+      const next = new Set(prev);
+      next.add(item.id);
+      return next;
+    });
+    setUsedItemsInCombat((prev) => [...prev, item.id]);
+
+    // Calculate final damage with knowledge bonus (bombs only)
     const totalKnowledge = getTotalKnowledge(gameState);
     const knowledgeBonus = Math.floor(totalKnowledge / 5);
     const finalDamage = item.damage + knowledgeBonus;
-
-    // Use the item - track for this round and for entire combat
-    setUsedItemsInRound((prev) => new Set([...prev, item.id]));
-    setUsedItemsInCombat((prev) => [...prev, item.id]);
 
     if (item.id === "poison_arrows") {
       const dmg = poisonArrowsDamagePerTick(getTotalKnowledge(gameState));
@@ -893,6 +973,11 @@ export default function CombatDialog({
                             -{formatNumber(integrityDamageIndicator.amount)}
                           </div>
                         )}
+                        {integrityHealIndicator.visible && (
+                          <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-green-400 font-bold text-sm pointer-events-none">
+                            +{formatNumber(integrityHealIndicator.amount)}
+                          </div>
+                        )}
                       </div>
                     </div>
 
@@ -928,26 +1013,23 @@ export default function CombatDialog({
 
                   {/* Combat Items */}
                   {combatItems.some((item) =>
-                    item.id === "ember_bomb" || item.id === "ashfire_bomb"
-                      ? gameState.resources[
-                          item.id as keyof typeof gameState.resources
-                        ] > 0
-                      : item.id === "poison_arrows" && NIGHTSHADE_BOW_OWNED,
+                    item.id === "poison_arrows"
+                      ? NIGHTSHADE_BOW_OWNED
+                      : (combatResources[
+                          item.id as keyof typeof combatResources
+                        ] ?? 0) > 0,
                   ) && (
                     <div className="pt-3">
                       <div className="text-sm font-medium mb-2">Items</div>
                       <div className="grid grid-cols-2 gap-2">
                         {combatItems
-                          .filter((item) => {
-                            if (item.id === "poison_arrows") {
-                              return NIGHTSHADE_BOW_OWNED;
-                            }
-                            return (
-                              gameState.resources[
-                                item.id as keyof typeof gameState.resources
-                              ] > 0
-                            );
-                          })
+                          .filter((item) =>
+                            item.id === "poison_arrows"
+                              ? NIGHTSHADE_BOW_OWNED
+                              : (combatResources[
+                                  item.id as keyof typeof combatResources
+                                ] ?? 0) > 0,
+                          )
                           .map((item) => {
                             const tooltipConfig = combatItemTooltips[item.id];
                             const tooltipContent = tooltipConfig
@@ -956,13 +1038,15 @@ export default function CombatDialog({
                             const availabilityText =
                               item.id === "poison_arrows"
                                 ? `Available: ${poisonArrowsUsedInCombat < 1 ? "1/1" : "0/1"}`
-                                : item.id === "ember_bomb"
-                                  ? `Available: ${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
-                                  : item.id === "ashfire_bomb"
-                                    ? `Available: ${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`
-                                    : item.id === "void_bomb"
-                                      ? `Available: ${MAX_VOID_BOMBS - voidBombsUsed}/${MAX_VOID_BOMBS}`
-                                      : "";
+                                : item.id === "veinfire_elixir"
+                                  ? `Available: ${veinfireUsedInCombat < 1 ? "1/1" : "0/1"}`
+                                  : item.id === "ember_bomb"
+                                    ? `Available: ${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
+                                    : item.id === "ashfire_bomb"
+                                      ? `Available: ${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`
+                                      : item.id === "void_bomb"
+                                        ? `Available: ${MAX_VOID_BOMBS - voidBombsUsed}/${MAX_VOID_BOMBS}`
+                                        : "";
 
                             return (
                               <TooltipWrapper

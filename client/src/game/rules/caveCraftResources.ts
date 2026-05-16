@@ -128,6 +128,26 @@ export const caveCraftResources: Record<string, Action> = {
     executionTime: 45,
     cooldown: 0,
   },
+
+  craftVeinfireElixir: {
+    id: "craftVeinfireElixir",
+    label: "Veinfire Elixir",
+    show_when: {
+      "story.seen.veinrootDiscovered": true,
+    },
+    cost: {
+      "resources.veinroot": 10,
+    },
+    effects: {
+      "resources.veinfire_elixir": 1,
+      "story.seen.veinfireElixirsCrafted": (state: GameState) => {
+        const current = Number(state.story?.seen?.veinfireElixirsCrafted) || 0;
+        return current + 1;
+      },
+    },
+    executionTime: 30,
+    cooldown: 0,
+  },
 };
 
 // Action handlers
@@ -188,6 +208,26 @@ export function handleCraftVoidBomb(state: GameState, result: ActionResult): Act
       message: "Combining ashfire dust with obsidian and black powder, you create a weapon of terrifying power. The void bomb seems to distort space around it, reality itself recoiling from its presence.",
       timestamp: Date.now(),
       type: 'system',
+    });
+  }
+
+  return result;
+}
+
+export function handleCraftVeinfireElixir(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftVeinfireElixir", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  if ((Number(state.story?.seen?.veinfireElixirsCrafted) || 0) === 0) {
+    result.logEntries!.push({
+      id: `veinfire-elixir-crafted-${Date.now()}`,
+      message:
+        "The alchemist distills glowing essence from veinroot fibers. You now hold a Veinfire Elixir — a potion rumored to bolster the bastion when all seems lost.",
+      timestamp: Date.now(),
+      type: "system",
     });
   }
 

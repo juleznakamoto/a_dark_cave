@@ -1,7 +1,9 @@
 import { GameState } from "@shared/schema";
 import {
   getMaxBombLimit,
+  getMaxVeinfireElixirLimit,
   isBombResource,
+  isVeinfireElixirResource,
   BOMB_RESOURCES,
 } from "@/game/resourceLimits";
 import {
@@ -644,9 +646,12 @@ export function applyActionEffects(
           let newValue =
             (state.resources[finalKey as keyof typeof state.resources] || 0) +
             adjustedEffect;
-          // Cap bombs to max (10 base, 20 with Grenadier's Bag)
+          // Cap bombs to max (10 base, 20 with Grenadier's Bag); veinfire elixir max 5
           if (isBombResource(finalKey)) {
             newValue = Math.min(newValue, getMaxBombLimit(state));
+          }
+          if (isVeinfireElixirResource(finalKey)) {
+            newValue = Math.min(newValue, getMaxVeinfireElixirLimit());
           }
           current[finalKey] = newValue;
         } else if (path === "madness") {
@@ -781,6 +786,13 @@ export function applyActionEffects(
       ) {
         updates.resources[bombKey] = maxBombs;
       }
+    }
+    const maxElixir = getMaxVeinfireElixirLimit();
+    if (
+      updates.resources.veinfire_elixir !== undefined &&
+      updates.resources.veinfire_elixir > maxElixir
+    ) {
+      updates.resources.veinfire_elixir = maxElixir;
     }
   }
 

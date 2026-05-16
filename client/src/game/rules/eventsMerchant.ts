@@ -848,6 +848,17 @@ const toolTrades = [
     costs: [{ resource: "gold", amounts: [200] }],
     message: "You drink the Elixir of Clarity. Your mind feels lighter.",
   },
+  {
+    id: "trade_veinfire_elixir",
+    label: "Veinfire Elixir",
+    give: "consumable",
+    giveItem: "veinfire_elixir",
+    condition: (state: GameState) =>
+      Boolean(state.story?.seen?.veinrootDiscovered) &&
+      (state.resources.veinfire_elixir ?? 0) < 5,
+    costs: [{ resource: "gold", amounts: [100] }],
+    message: "You purchase a bottled Veinfire Elixir.",
+  },
 ];
 
 // Helper function to select trades (used for both buy and sell)
