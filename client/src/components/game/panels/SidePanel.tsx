@@ -916,7 +916,6 @@ export default function SidePanel() {
           "resources",
           "tools",
           "weapons",
-          "combatItems",
           "clothing",
           "schematics",
         ];
@@ -996,9 +995,6 @@ export default function SidePanel() {
               items={bastionStatsItems}
             />
           )}
-          {combatItemRows.length > 0 && shouldShowSection("combatItems") && (
-            <SidePanelSection title="Combat Items" items={combatItemRows} />
-          )}
           {fortificationItems.length > 0 &&
             shouldShowSection("fortifications") && (
               <SidePanelSection
@@ -1006,6 +1002,9 @@ export default function SidePanel() {
                 items={fortificationItems}
               />
             )}
+          {combatItemRows.length > 0 && shouldShowSection("combatItems") && (
+            <SidePanelSection title="Combat Items" items={combatItemRows} />
+          )}
           {clothingItems.length > 0 && shouldShowSection("clothing") && (
             <SidePanelSection title="Clothing" items={clothingItems} />
           )}
