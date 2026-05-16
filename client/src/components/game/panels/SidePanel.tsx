@@ -666,7 +666,15 @@ export default function SidePanel() {
 
         tooltip = (
           <div>
-            <div className="font-bold">{label}</div>
+            <div>
+              <span className="font-bold">{label}</span>
+              {isDamaged && (
+                <span className="font-normal text-muted-foreground">
+                  {" "}
+                  (damaged)
+                </span>
+              )}
+            </div>
             {buildAction?.description && (
               <div className="text-gray-400 mb-1">
                 {buildAction.description}
@@ -693,7 +701,15 @@ export default function SidePanel() {
 
         tooltip = (
           <div>
-            <div className="font-bold">{label}</div>
+            <div>
+              <span className="font-bold">{label}</span>
+              {isDamaged && (
+                <span className="font-normal text-muted-foreground">
+                  {" "}
+                  (damaged)
+                </span>
+              )}
+            </div>
             {buildAction?.description && (
               <div className="text-gray-400 mb-1">
                 {buildAction.description}
@@ -729,7 +745,15 @@ export default function SidePanel() {
 
         tooltip = (
           <div>
-            <div className="font-bold">{label}</div>
+            <div>
+              <span className="font-bold">{label}</span>
+              {isDamaged && (
+                <span className="font-normal text-muted-foreground">
+                  {" "}
+                  (damaged)
+                </span>
+              )}
+            </div>
             {buildAction?.description && (
               <div className="text-gray-400 mb-1">
                 {buildAction.description}

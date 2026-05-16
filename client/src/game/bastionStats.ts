@@ -49,22 +49,22 @@ export function calculateBastionStats(state: GameState): BastionStats {
     // Level 1: Basic Watchtower
     defense += Math.floor(2 * watchtowerMultiplier);
     attackFromFortifications += Math.floor(5 * watchtowerMultiplier);
-    baseIntegrity += Math.floor(10 * watchtowerMultiplier);
+    baseIntegrity += Math.floor(20 * watchtowerMultiplier);
   } else if (watchtowerLevel === 2) {
     // Level 2: Guard Tower
     defense += Math.floor(5 * watchtowerMultiplier);
     attackFromFortifications += Math.floor(10 * watchtowerMultiplier);
-    baseIntegrity += Math.floor(20 * watchtowerMultiplier);
+    baseIntegrity += Math.floor(30 * watchtowerMultiplier);
   } else if (watchtowerLevel === 3) {
     // Level 3: Fortified Tower
     defense += Math.floor(10 * watchtowerMultiplier);
     attackFromFortifications += Math.floor(15 * watchtowerMultiplier);
-    baseIntegrity += Math.floor(30 * watchtowerMultiplier);
+    baseIntegrity += Math.floor(40 * watchtowerMultiplier);
   } else if (watchtowerLevel === 4) {
     // Level 4: Cannon Tower
     const defenseBonus = Math.floor(15 * watchtowerMultiplier);
     const attackBonus = Math.floor(25 * watchtowerMultiplier);
-    const integrityBonus = Math.floor(40 * watchtowerMultiplier);
+    const integrityBonus = Math.floor(60 * watchtowerMultiplier);
 
     defense += defenseBonus;
     attackFromFortifications += attackBonus;
@@ -76,19 +76,19 @@ export function calculateBastionStats(state: GameState): BastionStats {
   if (palisadesLevel === 1) {
     // Level 1: Wooden Palisades
     defense += Math.floor(5 * palisadesMultiplier);
-    baseIntegrity += Math.floor(10 * palisadesMultiplier);
+    baseIntegrity += Math.floor(15 * palisadesMultiplier);
   } else if (palisadesLevel === 2) {
     // Level 2: Fortified Palisades
     defense += Math.floor(10 * palisadesMultiplier);
-    baseIntegrity += Math.floor(25 * palisadesMultiplier);
+    baseIntegrity += Math.floor(30 * palisadesMultiplier);
   } else if (palisadesLevel === 3) {
     // Level 3: Stone Wall
     defense += Math.floor(15 * palisadesMultiplier);
-    baseIntegrity += Math.floor(40 * palisadesMultiplier);
+    baseIntegrity += Math.floor(45 * palisadesMultiplier);
   } else if (palisadesLevel === 4) {
     // Level 4: Reinforced Wall
     const defenseBonus = Math.floor(20 * palisadesMultiplier);
-    const integrityBonus = Math.floor(50 * palisadesMultiplier);
+    const integrityBonus = Math.floor(60 * palisadesMultiplier);
 
     defense += defenseBonus;
     baseIntegrity += integrityBonus;
@@ -102,7 +102,7 @@ export function calculateBastionStats(state: GameState): BastionStats {
   // Chitin Plating
   if (state.buildings.chitinPlating > 0) {
     defense += 10;
-    baseIntegrity += 10;
+    baseIntegrity += 20;
   }
 
   // Half of total Strength contributes to bastion attack (matches UI tooltip)

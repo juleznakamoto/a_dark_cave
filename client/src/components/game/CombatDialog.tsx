@@ -842,7 +842,7 @@ export default function CombatDialog({
                         {NIGHTSHADE_BOW_OWNED &&
                           usedItemsInCombat.includes("poison_arrows") && (
                             <span
-                              className="font-noto-symbols-2 text-green-600"
+                              className="font-noto-symbols-2 inline-flex translate-y-0.5 leading-none text-green-600"
                               role="img"
                               aria-label="poison-icon"
                             >
@@ -851,7 +851,7 @@ export default function CombatDialog({
                           )}
                         {enemyStunnedRounds > 0 && (
                           <span
-                            className="font-noto-symbols-2 text-yellow-600"
+                            className="font-noto-symbols-2 inline-flex translate-y-0.5 leading-none text-yellow-600"
                             role="img"
                             aria-label="stun-icon"
                           >
@@ -860,7 +860,7 @@ export default function CombatDialog({
                         )}
                         {enemyBurnRounds > 0 && (
                           <span
-                            className="font-noto-symbols-2 text-orange-600"
+                            className="font-noto-symbols-2 inline-flex translate-y-0.5 leading-none text-orange-600"
                             role="img"
                             aria-label="burn-icon"
                           >
@@ -877,7 +877,7 @@ export default function CombatDialog({
                         className="inline-block"
                       >
                         <span className="flex items-center gap-1">
-                          <span className="font-noto-symbols-2 inline-flex w-4 justify-center text-green-400/60">
+                          <span className="font-noto-symbols-2 inline-flex w-4 translate-y-0.5 justify-center text-green-400/60 leading-none">
                             ✚
                           </span>
                           <span>
@@ -951,7 +951,7 @@ export default function CombatDialog({
                           className="inline-block"
                         >
                           <span className="flex items-center gap-1">
-                            <span className="font-noto-symbols-2 inline-flex w-4 justify-center text-green-400/60">
+                            <span className="font-noto-symbols-2 inline-flex w-4 translate-y-0.5 justify-center text-green-400/60 leading-none">
                               ✚
                             </span>
                             <span>
@@ -1075,7 +1075,7 @@ export default function CombatDialog({
                                   >
                                     {item.id === "poison_arrows" && (
                                       <span
-                                        className="font-noto-symbols-2 text-green-600"
+                                        className="font-noto-symbols-2 inline-flex translate-y-0.5 leading-none text-green-600"
                                         role="img"
                                         aria-label="poison-icon"
                                       >
@@ -1130,7 +1130,7 @@ export default function CombatDialog({
                                 button_id="combat-use-crushing-strike"
                               >
                                 <span
-                                  className="font-noto-symbols-2 text-yellow-600"
+                                  className="font-noto-symbols-2 inline-flex translate-y-0.5 leading-none text-yellow-600"
                                   role="img"
                                   aria-label="stun-icon"
                                 >
@@ -1180,7 +1180,7 @@ export default function CombatDialog({
                                 button_id="combat-use-bloodflame-sphere"
                               >
                                 <span
-                                  className="font-noto-symbols-2 text-orange-600"
+                                  className="font-noto-symbols-2 inline-flex translate-y-0.5 leading-none text-orange-600"
                                   role="img"
                                   aria-label="burn-icon"
                                 >

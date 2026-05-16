@@ -700,7 +700,7 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
       const knowledgeBonus = Math.floor(knowledge / 5);
       const perHit = poisonArrowsDamagePerTick(knowledge);
       const totalHits = 1 + POISON_ARROWS_DOT_FIGHT_ROUNDS;
-      return `Base Damage: ${POISON_ARROWS_BASE_DAMAGE}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Damage: ${perHit} on use and each Fight (${POISON_ARROWS_DOT_FIGHT_ROUNDS} more rounds)\n${totalHits} poison hits total`;
+      return `Base Damage: ${POISON_ARROWS_BASE_DAMAGE}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${perHit} for round (${POISON_ARROWS_DOT_FIGHT_ROUNDS} rounds)`;
     },
   },
   veinfire_elixir: {
@@ -719,7 +719,8 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
     getContent: (state) => {
       const level = state.combatSkills.bloodflameSphereLevel ?? 0;
       const config = BLOODFLAME_SPHERE_UPGRADES[level];
-      return `Damage: ${config.burnDamage} on cast and each round for (${config.burnRounds} round${config.burnRounds > 1 ? "s" : ""})\nHealth Cost: ${config.healthCost}`;
+      const burnApplications = config.burnRounds + 1;
+      return `${config.burnDamage} damage for ${burnApplications} round${burnApplications !== 1 ? "s" : ""}\nHealth Cost: ${config.healthCost}`;
     },
   },
 };

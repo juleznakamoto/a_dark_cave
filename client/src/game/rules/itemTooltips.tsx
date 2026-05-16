@@ -142,7 +142,15 @@ export function renderItemTooltip(
     return (
       <div className="text-xs">
         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
-          <span className="font-bold">{buildAction.label}</span>
+          <span>
+            <span className="font-bold">{buildAction.label}</span>
+            {isDamaged && (
+              <span className="font-normal text-muted-foreground">
+                {" "}
+                (damaged)
+              </span>
+            )}
+          </span>
           {hierarchyLevel != null && (
             <span className="font-normal text-gray-400">Level {hierarchyLevel}</span>
           )}
@@ -398,6 +406,11 @@ export function renderItemTooltip(
             </div>
           ),
         )}
+      {itemType === "weapon" && itemId === "nightshade_bow" && (
+        <pre className="mt-2 whitespace-pre-wrap font-sans text-xs text-foreground">
+          {`${combatItemTooltips.poison_arrows.getContent(useGameStore.getState() as unknown as GameState)}\nAvailable: 1/1 per combat`}
+        </pre>
+      )}
     </div>
   );
 }
