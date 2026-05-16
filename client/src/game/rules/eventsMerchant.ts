@@ -845,7 +845,7 @@ const toolTrades = [
       if (purchases === 4) return state.buildings.stoneHut >= 8;
       return false;
     },
-    costs: [{ resource: "gold", amounts: [200] }],
+    costs: [{ resource: "gold", amounts: [250] }],
     message: "You drink the Elixir of Clarity. Your mind feels lighter.",
   },
   {
@@ -856,8 +856,8 @@ const toolTrades = [
     condition: (state: GameState) =>
       Boolean(state.story?.seen?.veinrootDiscovered) &&
       (state.resources.veinfire_elixir ?? 0) < 5,
-    costs: [{ resource: "gold", amounts: [100] }],
-    message: "You purchase a bottled Veinfire Elixir.",
+    costs: [{ resource: "gold", amounts: [150] }],
+    message: "You purchase a bottle of Veinfire Elixir.",
   },
 ];
 
