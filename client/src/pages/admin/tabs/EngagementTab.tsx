@@ -1,12 +1,47 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from "recharts";
+import {
+  BarChart,
+  Bar,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+
+interface GameSaveRow {
+  game_state?: {
+    events?: Record<string, unknown>;
+  };
+}
 
 interface EngagementTabProps {
   getSessionLengthDistribution: () => Array<{ range: string; count: number }>;
   getAveragePlaytime: () => number;
   getAveragePlaytimeToCompletion: () => number;
   formatTime: (minutes: number) => string;
+  gameSaves: GameSaveRow[];
+  totalUserCount: number;
+  gameCompletionStats: Array<{ name: string; value: number }>;
+  COLORS: string[];
+}
+
+function reachedEnding(save: GameSaveRow): boolean {
+  const e = save.game_state?.events;
+  return Boolean(
+    e?.cube15a ||
+      e?.cube15b ||
+      e?.cube13 ||
+      e?.cube14a ||
+      e?.cube14b ||
+      e?.cube14c ||
+      e?.cube14d,
+  );
 }
 
 export default function EngagementTab(props: EngagementTabProps) {
@@ -15,9 +50,14 @@ export default function EngagementTab(props: EngagementTabProps) {
     getAveragePlaytime,
     getAveragePlaytimeToCompletion,
     formatTime,
+    gameSaves,
+    totalUserCount,
+    gameCompletionStats,
+    COLORS,
   } = props;
 
   const sessionLengthDistribution = getSessionLengthDistribution();
+  const endingCount = gameSaves.filter(reachedEnding).length;
 
   return (
     <div className="space-y-4">
@@ -66,6 +106,61 @@ export default function EngagementTab(props: EngagementTabProps) {
           </CardContent>
         </Card>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Game Completion</CardTitle>
+          <CardDescription>Players who reached an ending ({totalUserCount} total registered users)</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-4xl font-bold">{endingCount}</p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Completion Rate</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-4xl font-bold">
+            {totalUserCount > 0
+              ? Math.round((endingCount / totalUserCount) * 100)
+              : 0}
+            %
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Game Completion Distribution</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={gameCompletionStats}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={({ name, value }) => `${name}: ${value}`}
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="value"
+              >
+                {gameCompletionStats.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
     </div>
   );
 }

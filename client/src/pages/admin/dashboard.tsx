@@ -37,7 +37,6 @@ import {
 import OverviewTab from "./tabs/OverviewTab";
 import EngagementTab from "./tabs/EngagementTab";
 import ClicksTab from "./tabs/ClicksTab";
-import CompletionTab from "./tabs/CompletionTab";
 import PurchasesTab from "./tabs/PurchasesTab";
 import ReferralsTab from "./tabs/ReferralsTab";
 import ChurnTab from "./tabs/ChurnTab";
@@ -1098,7 +1097,6 @@ export default function AdminDashboard() {
                   <TabsTrigger value="overview">Overview</TabsTrigger>
                   <TabsTrigger value="engagement">Engagement</TabsTrigger>
                   <TabsTrigger value="clicks">Button Clicks</TabsTrigger>
-                  <TabsTrigger value="completion">Game Progress</TabsTrigger>
                   <TabsTrigger value="purchases">Purchases</TabsTrigger>
                   <TabsTrigger value="referrals">Referrals</TabsTrigger>
                   <TabsTrigger value="socialPrompt">Social prompt</TabsTrigger>
@@ -1368,6 +1366,10 @@ export default function AdminDashboard() {
                     return Math.floor(totalPlayTime / completedSaves.length / 60000);
                   }}
                   formatTime={formatTime}
+                  gameSaves={gameSaves}
+                  totalUserCount={totalUserCount}
+                  gameCompletionStats={getGameCompletionStats()}
+                  COLORS={COLORS}
                 />
               </TabsContent>
 
@@ -1393,15 +1395,6 @@ export default function AdminDashboard() {
                   getClickTypesByTimestamp={getClickTypesByTimestamp}
                   getTotalClicksByButton={getTotalClicksByButton}
                   getAverageClicksByButton={getAverageClicksByButton}
-                  COLORS={COLORS}
-                />
-              </TabsContent>
-
-              <TabsContent value="completion">
-                <CompletionTab
-                  gameSaves={gameSaves}
-                  getGameCompletionStats={getGameCompletionStats()}
-                  totalUserCount={totalUserCount}
                   COLORS={COLORS}
                 />
               </TabsContent>
