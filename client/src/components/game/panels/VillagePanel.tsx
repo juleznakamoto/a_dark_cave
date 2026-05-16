@@ -1109,7 +1109,7 @@ export default function VillagePanel() {
                               className="text-green-800"
                             />
                             <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-green-800">
-                              ⥉
+                              ❢
                             </span>
                           </div>
                         </TooltipWrapper>

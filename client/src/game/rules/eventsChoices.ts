@@ -1116,7 +1116,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 45,
     title: "The Pale Cross at Dawn",
     message:
-      "One morning, villagers make a cruel discovery. A young man hangs crucified on the Pale Cross, his head bowed and his body swaying faintly in the cold morning wind",
+      "One morning, villagers make a cruel discovery. A young man hangs crucified on the Pale Cross, his head bowed and his body swaying faintly in the cold morning wind.",
     priority: 5,
     repeatable: false,
     showAsTimedTab: true,
