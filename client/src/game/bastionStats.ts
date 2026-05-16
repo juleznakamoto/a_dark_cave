@@ -47,22 +47,22 @@ export function calculateBastionStats(state: GameState): BastionStats {
   const watchtowerLevel = state.buildings.watchtower || 0;
   if (watchtowerLevel === 1) {
     // Level 1: Basic Watchtower
-    defense += Math.floor(1 * watchtowerMultiplier);
+    defense += Math.floor(2 * watchtowerMultiplier);
     attackFromFortifications += Math.floor(5 * watchtowerMultiplier);
     baseIntegrity += Math.floor(10 * watchtowerMultiplier);
   } else if (watchtowerLevel === 2) {
     // Level 2: Guard Tower
-    defense += Math.floor(3 * watchtowerMultiplier);
+    defense += Math.floor(5 * watchtowerMultiplier);
     attackFromFortifications += Math.floor(10 * watchtowerMultiplier);
     baseIntegrity += Math.floor(20 * watchtowerMultiplier);
   } else if (watchtowerLevel === 3) {
     // Level 3: Fortified Tower
-    defense += Math.floor(6 * watchtowerMultiplier);
+    defense += Math.floor(10 * watchtowerMultiplier);
     attackFromFortifications += Math.floor(15 * watchtowerMultiplier);
     baseIntegrity += Math.floor(30 * watchtowerMultiplier);
   } else if (watchtowerLevel === 4) {
     // Level 4: Cannon Tower
-    const defenseBonus = Math.floor(10 * watchtowerMultiplier);
+    const defenseBonus = Math.floor(15 * watchtowerMultiplier);
     const attackBonus = Math.floor(25 * watchtowerMultiplier);
     const integrityBonus = Math.floor(40 * watchtowerMultiplier);
 
@@ -75,20 +75,20 @@ export function calculateBastionStats(state: GameState): BastionStats {
   const palisadesLevel = state.buildings.palisades || 0;
   if (palisadesLevel === 1) {
     // Level 1: Wooden Palisades
-    defense += Math.floor(6 * palisadesMultiplier);
+    defense += Math.floor(5 * palisadesMultiplier);
     baseIntegrity += Math.floor(10 * palisadesMultiplier);
   } else if (palisadesLevel === 2) {
     // Level 2: Fortified Palisades
-    defense += Math.floor(8 * palisadesMultiplier);
-    baseIntegrity += Math.floor(20 * palisadesMultiplier);
+    defense += Math.floor(10 * palisadesMultiplier);
+    baseIntegrity += Math.floor(25 * palisadesMultiplier);
   } else if (palisadesLevel === 3) {
     // Level 3: Stone Wall
-    defense += Math.floor(11 * palisadesMultiplier);
-    baseIntegrity += Math.floor(30 * palisadesMultiplier);
+    defense += Math.floor(15 * palisadesMultiplier);
+    baseIntegrity += Math.floor(40 * palisadesMultiplier);
   } else if (palisadesLevel === 4) {
     // Level 4: Reinforced Wall
-    const defenseBonus = Math.floor(15 * palisadesMultiplier);
-    const integrityBonus = Math.floor(40 * palisadesMultiplier);
+    const defenseBonus = Math.floor(20 * palisadesMultiplier);
+    const integrityBonus = Math.floor(50 * palisadesMultiplier);
 
     defense += defenseBonus;
     baseIntegrity += integrityBonus;
