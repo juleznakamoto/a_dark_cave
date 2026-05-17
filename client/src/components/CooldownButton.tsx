@@ -60,6 +60,9 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
     const executionAbortEligible = useGameStore((s) => s.executionAbortEligible?.[actionIdFromProps]);
     const hasAbortSnapshot = useGameStore((s) => s.executionSpendSnapshots?.[actionIdFromProps] != null);
+    const priorAssignedActions = useGameStore((s) => s.priorAssignedActions);
+    const isPriorAssigned =
+      priorAssignedActions?.includes(actionIdFromProps) ?? false;
     const gold = useGameStore((s) => s.resources.gold ?? 0);
     const abortActionExecution = useGameStore((s) => s.abortActionExecution);
 
@@ -227,6 +230,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       hasAbortSnapshot;
     const canAffordAbort = gold >= GAME_CONSTANTS.ACTION_ABORT_GOLD_COST;
     const abortTooltip = `Abort for ${GAME_CONSTANTS.ACTION_ABORT_GOLD_COST} Gold`;
+    // Match ButtonPriorBadge bottom/right inset so abort sits on the same corner; z above prior's 20
+    const abortCornerPx = isPriorAssigned ? 3 : 4;
 
     return (
       <div className="relative inline-block">
@@ -241,28 +246,33 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           {buttonContent}
         </TooltipWrapper>
         {showAbortOverlay && (
-          <TooltipWrapper
-            tooltip={abortTooltip}
-            tooltipId={`${buttonId}-abort`}
-            className={`absolute left-1/2 -translate-x-1/2 -top-[7px] z-[25] pointer-events-auto ${!canAffordAbort ? "opacity-40" : ""}`}
+          <div
+            className={`absolute z-[30] pointer-events-auto ${!canAffordAbort ? "opacity-40" : ""}`}
+            style={{ bottom: -abortCornerPx, right: -abortCornerPx }}
           >
-            <button
-              type="button"
-              className="flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
-              data-testid={testId ? `${testId}-abort` : undefined}
-              aria-label={abortTooltip}
-              onPointerDown={(e) => e.stopPropagation()}
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                if (canAffordAbort) {
-                  abortActionExecution(actionIdFromProps);
-                }
-              }}
+            <TooltipWrapper
+              tooltip={abortTooltip}
+              tooltipId={`${buttonId}-abort`}
+              className="inline-flex"
             >
-              <X className="h-2.5 w-2.5 stroke-[3]" />
-            </button>
-          </TooltipWrapper>
+              <button
+                type="button"
+                className="flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
+                data-testid={testId ? `${testId}-abort` : undefined}
+                aria-label={abortTooltip}
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  if (canAffordAbort) {
+                    abortActionExecution(actionIdFromProps);
+                  }
+                }}
+              >
+                <X className="h-2.5 w-2.5 stroke-[3]" />
+              </button>
+            </TooltipWrapper>
+          </div>
         )}
       </div>
     );
