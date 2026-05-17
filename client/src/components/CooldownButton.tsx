@@ -242,7 +242,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         </TooltipWrapper>
         {showAbortOverlay && (
           <div
-            className={`absolute bottom-[-8px] right-[-7px] z-[30] pointer-events-auto ${!canAffordAbort ? "opacity-40" : ""}`}
+            className={`absolute bottom-[-10px] right-[-7px] z-[30] pointer-events-auto ${!canAffordAbort ? "opacity-40" : ""}`}
           >
             <TooltipWrapper
               tooltip={abortTooltip}
