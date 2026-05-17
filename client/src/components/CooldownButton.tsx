@@ -60,9 +60,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
     const executionAbortEligible = useGameStore((s) => s.executionAbortEligible?.[actionIdFromProps]);
     const hasAbortSnapshot = useGameStore((s) => s.executionSpendSnapshots?.[actionIdFromProps] != null);
-    const priorAssignedActions = useGameStore((s) => s.priorAssignedActions);
-    const isPriorAssigned =
-      priorAssignedActions?.includes(actionIdFromProps) ?? false;
     const gold = useGameStore((s) => s.resources.gold ?? 0);
     const abortActionExecution = useGameStore((s) => s.abortActionExecution);
 
@@ -230,8 +227,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       hasAbortSnapshot;
     const canAffordAbort = gold >= GAME_CONSTANTS.ACTION_ABORT_GOLD_COST;
     const abortTooltip = `Abort for ${GAME_CONSTANTS.ACTION_ABORT_GOLD_COST} Gold`;
-    // Match ButtonPriorBadge bottom/right inset so abort sits on the same corner; z above prior's 20
-    const abortCornerPx = isPriorAssigned ? 3 : 4;
 
     return (
       <div className="relative inline-block">
@@ -247,8 +242,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         </TooltipWrapper>
         {showAbortOverlay && (
           <div
-            className={`absolute z-[30] pointer-events-auto ${!canAffordAbort ? "opacity-40" : ""}`}
-            style={{ bottom: -abortCornerPx, right: -abortCornerPx }}
+            className={`absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 z-[30] pointer-events-auto ${!canAffordAbort ? "opacity-40" : ""}`}
           >
             <TooltipWrapper
               tooltip={abortTooltip}
