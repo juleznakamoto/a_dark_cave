@@ -4,7 +4,12 @@ import { GameState, gameStateSchema, Referral } from "@shared/schema";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
 import { EventManager, LogEntry } from "@/game/rules/events";
 import { checkMilestoneLogEntries } from "@/game/rules/eventLogEntries";
-import { executeGameAction, deductActionCosts } from "@/game/actions";
+import {
+  executeGameAction,
+  deductActionCosts,
+  buildExecutionSpendSnapshot,
+  type ExecutionSpendSnapshot,
+} from "@/game/actions";
 import type {
   GameTab,
   EventDialogState,
@@ -176,6 +181,10 @@ interface GameStore extends GameState {
   // Execution time (reverse cooldown - action takes time to complete)
   executionStartTimes: Record<string, number>;
   executionDurations: Record<string, number>;
+  /** True when the player started this execution (eligible for paid abort). Prior-started executions are false/absent. */
+  executionAbortEligible: Record<string, boolean>;
+  /** Spend deltas captured at execution start for abort refunds (player-started only). */
+  executionSpendSnapshots: Record<string, ExecutionSpendSnapshot>;
   _completingExecution?: string; // Internal: when set, executeAction skips execution-time check
 
   // Compass glow effect
@@ -252,7 +261,10 @@ interface GameStore extends GameState {
 
   // Actions
   getAndResetResourceAnalytics: () => Record<string, number> | null;
-  executeAction: (actionId: string) => void;
+  executeAction: (
+    actionId: string,
+    meta?: { executionSource?: "player" | "prior" },
+  ) => void;
   setActiveTab: (tab: GameTab) => void;
   setBoostMode: (enabled: boolean) => void;
   setMusicMuted: (muted: boolean) => void;
@@ -285,8 +297,12 @@ interface GameStore extends GameState {
   updatePopulation: () => void;
   setCooldown: (action: string, duration: number) => void;
   tickCooldowns: () => void;
-  startActionExecution: (actionId: string) => void;
+  startActionExecution: (
+    actionId: string,
+    meta?: { executionSource?: "player" | "prior" },
+  ) => void;
   completeActionExecution: (actionId: string) => void;
+  abortActionExecution: (actionId: string) => void;
   togglePriorAction: (actionId: string) => void;
   setCompassGlow: (actionId: string | null) => void;
   addLogEntry: (entry: LogEntry) => void;
@@ -993,6 +1009,8 @@ export const createInitialState = (): GameState => ({
   initialCooldowns: {},
   executionStartTimes: {},
   executionDurations: {},
+  executionAbortEligible: {},
+  executionSpendSnapshots: {},
   expeditionVillagers: {},
 
   // Initialize compass glow
@@ -1148,6 +1166,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   cooldowns: {},
   executionStartTimes: {},
   executionDurations: {},
+  executionAbortEligible: {},
+  executionSpendSnapshots: {},
   expeditionVillagers: {},
   log: [],
   eventDialog: {
@@ -1326,7 +1346,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     StateManager.scheduleEffectsUpdate(get);
   },
 
-  executeAction: (actionId: string) => {
+  executeAction: (actionId: string, meta?: { executionSource?: "player" | "prior" }) => {
     const state = get();
     const action = gameActions[actionId];
 
@@ -1338,7 +1358,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         // This prevents the Prior (or any caller) from draining resources for
         // an action whose show_when conditions are no longer satisfied.
         if (!shouldShowAction(actionId, state as any)) return;
-        get().startActionExecution(actionId);
+        get().startActionExecution(actionId, meta);
         return;
       }
     }
@@ -1641,12 +1661,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
 
-  startActionExecution: (actionId: string) => {
+  startActionExecution: (actionId: string, meta?: { executionSource?: "player" | "prior" }) => {
     const state = get();
     const action = gameActions[actionId];
     const duration = getExecutionTime(actionId, state);
     if (duration <= 0) return;
     const now = Date.now();
+
+    const isPlayerStarted = meta?.executionSource !== "prior";
 
     // Deduct costs immediately on click (resources are consumed when the action begins)
     const costUpdates = deductActionCosts(actionId, state);
@@ -1673,12 +1695,31 @@ export const useGameStore = create<GameStore>((set, get) => ({
       baseExpeditionVillagers[actionId] = expeditionRequired;
     }
 
+    const spendSnapshot = isPlayerStarted
+      ? buildExecutionSpendSnapshot(
+        state,
+        costUpdates,
+        baseVillagers,
+        hasExpeditionRequirement ? expeditionRequired : 0,
+      )
+      : undefined;
+
     set({
       ...costUpdates,
       villagers: baseVillagers,
       expeditionVillagers: baseExpeditionVillagers,
       executionStartTimes: { ...state.executionStartTimes, [actionId]: now },
       executionDurations: { ...state.executionDurations, [actionId]: duration },
+      executionAbortEligible: {
+        ...state.executionAbortEligible,
+        [actionId]: isPlayerStarted,
+      },
+      ...(spendSnapshot && {
+        executionSpendSnapshots: {
+          ...state.executionSpendSnapshots,
+          [actionId]: spendSnapshot,
+        },
+      }),
     });
   },
 
@@ -1691,6 +1732,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const newDurations = { ...executionDurations };
     delete newStartTimes[actionId];
     delete newDurations[actionId];
+    const newAbortEligible = { ...state.executionAbortEligible };
+    delete newAbortEligible[actionId];
+    const newSpendSnapshots = { ...state.executionSpendSnapshots };
+    delete newSpendSnapshots[actionId];
     const releasedVillagers = state.expeditionVillagers?.[actionId] ?? 0;
     const updatedExpeditionVillagers = { ...state.expeditionVillagers };
     if (releasedVillagers > 0) {
@@ -1700,6 +1745,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({
       executionStartTimes: newStartTimes,
       executionDurations: newDurations,
+      executionAbortEligible: newAbortEligible,
+      executionSpendSnapshots: newSpendSnapshots,
       villagers: {
         ...state.villagers,
         free: (state.villagers.free || 0) + releasedVillagers,
@@ -1711,6 +1758,61 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Execute the actual action (bypasses execution-time check via _completingExecution)
     get().executeAction(actionId);
     set({ _completingExecution: undefined });
+  },
+
+  abortActionExecution: (actionId: string) => {
+    const state = get();
+    if (!state.executionStartTimes?.[actionId] || !state.executionDurations?.[actionId]) {
+      return;
+    }
+    if (!state.executionAbortEligible?.[actionId]) {
+      return;
+    }
+    const snapshot = state.executionSpendSnapshots?.[actionId];
+    if (!snapshot) {
+      return;
+    }
+    if ((state.resources.gold ?? 0) < GAME_CONSTANTS.ACTION_ABORT_GOLD_COST) {
+      return;
+    }
+
+    get().updateResource("gold", -GAME_CONSTANTS.ACTION_ABORT_GOLD_COST);
+    for (const [key, amount] of Object.entries(snapshot.resourceRefund)) {
+      if (amount !== 0) {
+        get().updateResource(key as keyof GameState["resources"], amount);
+      }
+    }
+
+    set((s) => {
+      const v = { ...s.villagers };
+      for (const [k, amt] of Object.entries(snapshot.villagerRefund)) {
+        if (amt === 0) continue;
+        const job = k as keyof GameState["villagers"];
+        v[job] = (v[job] ?? 0) + amt;
+      }
+      const ev = { ...s.expeditionVillagers };
+      if (snapshot.expeditionLocked > 0) {
+        delete ev[actionId];
+      }
+      const est = { ...s.executionStartTimes };
+      const edur = { ...s.executionDurations };
+      const eab = { ...s.executionAbortEligible };
+      const esp = { ...s.executionSpendSnapshots };
+      delete est[actionId];
+      delete edur[actionId];
+      delete eab[actionId];
+      delete esp[actionId];
+      return {
+        villagers: v,
+        expeditionVillagers: ev,
+        executionStartTimes: est,
+        executionDurations: edur,
+        executionAbortEligible: eab,
+        executionSpendSnapshots: esp,
+      };
+    });
+
+    setTimeout(() => get().updatePopulation(), 0);
   },
 
   tickCooldowns: () => {

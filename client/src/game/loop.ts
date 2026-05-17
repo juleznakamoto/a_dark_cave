@@ -725,7 +725,7 @@ function processTick() {
       freshState = useGameStore.getState();
       const isReadyNow = (freshState.cooldowns[actionId] ?? 0) === 0;
       if (isReadyNow && canPriorExecute(actionId, freshState as unknown as GameState)) {
-        freshState.executeAction(actionId);
+        freshState.executeAction(actionId, { executionSource: "prior" });
         const afterExecution = useGameStore.getState();
         if (afterExecution.executionStartTimes?.[actionId]) {
           priorInFlightExecutions.add(actionId);

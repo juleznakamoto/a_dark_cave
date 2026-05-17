@@ -222,6 +222,61 @@ export function deductActionCosts(actionId: string, state: GameState): Partial<G
   return applyActionCostsOnly(actionId, state);
 }
 
+/** Captures spend from execution start so abort can refund resources/villagers and release expeditions. */
+export type ExecutionSpendSnapshot = {
+  resourceRefund: Partial<Record<keyof GameState["resources"], number>>;
+  villagerRefund: Partial<Record<keyof GameState["villagers"], number>>;
+  expeditionLocked: number;
+};
+
+/**
+ * Builds refund deltas: positive numbers are amounts lost at execution start (to add back on abort).
+ */
+export function buildExecutionSpendSnapshot(
+  stateBefore: GameState,
+  costUpdates: Partial<GameState>,
+  villagersAfterCostsAndExpedition: GameState["villagers"],
+  expeditionLocked: number,
+): ExecutionSpendSnapshot {
+  const prevRes = stateBefore.resources;
+  const mergedRes = costUpdates.resources ?? prevRes;
+  const resourceRefund: Partial<Record<keyof GameState["resources"], number>> = {};
+  for (const key of Array.from(
+    new Set([...Object.keys(prevRes), ...Object.keys(mergedRes)]),
+  )) {
+    const k = key as keyof GameState["resources"];
+    const before = prevRes[k] ?? 0;
+    const after = mergedRes[k] ?? before;
+    const lost = before - after;
+    if (lost !== 0) {
+      resourceRefund[k] = lost;
+    }
+  }
+
+  const prevVill = stateBefore.villagers;
+  const villagerRefund: Partial<Record<keyof GameState["villagers"], number>> = {};
+  for (const key of Array.from(
+    new Set([
+      ...Object.keys(prevVill),
+      ...Object.keys(villagersAfterCostsAndExpedition),
+    ]),
+  )) {
+    const k = key as keyof GameState["villagers"];
+    const before = prevVill[k] ?? 0;
+    const after = villagersAfterCostsAndExpedition[k] ?? 0;
+    const lost = before - after;
+    if (lost !== 0) {
+      villagerRefund[k] = lost;
+    }
+  }
+
+  return {
+    resourceRefund,
+    villagerRefund,
+    expeditionLocked,
+  };
+}
+
 export function executeGameAction(
   actionId: string,
   state: GameState,

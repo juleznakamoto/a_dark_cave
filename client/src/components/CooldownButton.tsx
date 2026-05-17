@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState, forwardRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { X } from "lucide-react";
+import { GAME_CONSTANTS } from "@/game/constants";
 
 interface CooldownButtonProps {
   children: React.ReactNode;
@@ -52,6 +54,11 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     const actionIdFromProps = props.actionId || props.button_id || testId
       ?.replace("button-", "")
       .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()) || "unknown";
+
+    const executionAbortEligible = useGameStore((s) => s.executionAbortEligible?.[actionIdFromProps]);
+    const hasAbortSnapshot = useGameStore((s) => s.executionSpendSnapshots?.[actionIdFromProps] != null);
+    const gold = useGameStore((s) => s.resources.gold ?? 0);
+    const abortActionExecution = useGameStore((s) => s.abortActionExecution);
 
     // Force re-renders during execution so progress bar updates
     const isExecutingCheck = !!(executionStartTimes && executionStartTimes[actionIdFromProps]);
@@ -190,7 +197,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     // TooltipWrapper's touch handlers call this when user taps (short press); without it,
     // mobile taps do nothing because we preventDefault/stopPropagation and the Button's
     // onClick never fires.
-    const executeAction = (e?: React.MouseEvent | React.TouchEvent) => {
+    const triggerPrimaryClick = (e?: React.MouseEvent | React.TouchEvent) => {
       if (isButtonDisabled) return;
       if (onAnimationTrigger) {
         let button: HTMLButtonElement | null = null;
@@ -207,17 +214,48 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       onClick();
     };
 
+    const showAbortOverlay =
+      isExecuting && executionAbortEligible === true && hasAbortSnapshot;
+    const canAffordAbort = gold >= GAME_CONSTANTS.ACTION_ABORT_GOLD_COST;
+    const abortTooltip = `Abort for ${GAME_CONSTANTS.ACTION_ABORT_GOLD_COST} Gold`;
+
     return (
-      <TooltipWrapper
-        tooltip={tooltip}
-        tooltipId={buttonId}
-        disabled={isButtonDisabled}
-        onClick={executeAction}
-        onMouseEnter={props.onMouseEnter}
-        onMouseLeave={props.onMouseLeave}
-      >
-        {buttonContent}
-      </TooltipWrapper>
+      <div className="relative inline-block">
+        <TooltipWrapper
+          tooltip={tooltip}
+          tooltipId={buttonId}
+          disabled={isButtonDisabled}
+          onClick={triggerPrimaryClick}
+          onMouseEnter={props.onMouseEnter}
+          onMouseLeave={props.onMouseLeave}
+        >
+          {buttonContent}
+        </TooltipWrapper>
+        {showAbortOverlay && (
+          <TooltipWrapper
+            tooltip={abortTooltip}
+            tooltipId={`${buttonId}-abort`}
+            className={`absolute -top-[7px] -left-[7px] z-[25] pointer-events-auto ${!canAffordAbort ? "opacity-40" : ""}`}
+          >
+            <button
+              type="button"
+              className="flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
+              data-testid={testId ? `${testId}-abort` : undefined}
+              aria-label={abortTooltip}
+              onPointerDown={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                if (canAffordAbort) {
+                  abortActionExecution(actionIdFromProps);
+                }
+              }}
+            >
+              <X className="h-2.5 w-2.5 stroke-[3]" />
+            </button>
+          </TooltipWrapper>
+        )}
+      </div>
     );
   }
 );
