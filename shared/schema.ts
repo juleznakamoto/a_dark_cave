@@ -594,12 +594,6 @@ export const gameStateSchema = z.object({
    * Set true once signed in + email reward + both social follows + Playlight discover task + ≥1 invite are satisfied; future event can grant exclusive item then clear or consume this flag.
    */
   socialPromoExclusiveRewardPending: z.boolean().default(false),
-  /**
-   * Consumption flag for the 30-minute Playlight sidebar milestone: once true, `tryOpen` is not
-   * called again. Sidebar visibility is kept via `setConfig.sidebar` on each sync while this is true
-   * or while `?utm_source=playlight` is present — do not use this field as “show sidebar” without playtime logic.
-   */
-  playlightThirtyMinSidebarOpened: z.boolean().default(false),
   mysteriousNoteShopNotificationSeen: z.boolean().default(false), // Track if mysterious note shop notification has been seen
   mysteriousNoteDonateNotificationSeen: z.boolean().default(false), // Track if mysterious note donate notification has been seen
   isUserSignedIn: z.boolean().default(false), // Track if user is currently signed in

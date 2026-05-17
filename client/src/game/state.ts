@@ -40,7 +40,6 @@ import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { GAME_CONSTANTS } from "@/game/constants";
 import { socialPromptMilestoneFloorFromPlayTime } from "@/game/socialPromptAuto";
-import { PLAYLIGHT_AUTO_SIDEBAR_PLAY_MS } from "@/lib/playlight";
 import {
   ACTION_TO_UPGRADE_KEY,
   incrementButtonUsage,
@@ -972,7 +971,6 @@ export const createInitialState = (): GameState => ({
   socialPromptMilestoneIndex: 0,
   socialPromptAutoPhase: 0,
   socialPromoExclusiveRewardPending: false,
-  playlightThirtyMinSidebarOpened: false,
 
   // Initialize mysterious note notification state
   mysteriousNoteShopNotificationSeen: false,
@@ -1219,7 +1217,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   socialPromptMilestoneIndex: 0,
   socialPromptAutoPhase: 0,
   socialPromoExclusiveRewardPending: false,
-  playlightThirtyMinSidebarOpened: false,
   // Initialize mysterious note notification state
   mysteriousNoteShopNotificationSeen: false,
   mysteriousNoteDonateNotificationSeen: false,
@@ -1979,16 +1976,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const loadedPlayTime =
         savedState.playTime !== undefined ? savedState.playTime : 0;
 
-      /** Legacy saves omit this key; persist explicit boolean on load/next save. If absent and playTime already passed the milestone, treat as done so we do not open Playlight retroactively. */
-      const rawPlaylightThirtyMinSidebar = (
-        savedState as { playlightThirtyMinSidebarOpened?: boolean }
-      ).playlightThirtyMinSidebarOpened;
-      const playlightThirtyMinSidebarOpened =
-        rawPlaylightThirtyMinSidebar === true
-          ? true
-          : rawPlaylightThirtyMinSidebar === false
-            ? false
-            : loadedPlayTime >= PLAYLIGHT_AUTO_SIDEBAR_PLAY_MS;
+      const {
+        playlightThirtyMinSidebarOpened: _legacyPlaylightSidebarOpened,
+        ...savedForHydration
+      } = savedState as typeof savedState & {
+        playlightThirtyMinSidebarOpened?: boolean;
+      };
+      void _legacyPlaylightSidebarOpened;
 
       // Generate gameId if it doesn't exist in savedState or is undefined
       const gameId =
@@ -2017,7 +2011,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       });
 
       const loadedState = {
-        ...savedState,
+        ...savedForHydration,
         activeTab,
         gamblerDiceDialogOpen,
         timedEventTab,
@@ -2074,7 +2068,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
             .socialPromptMilestoneIndex ?? 0,
           socialPromptMilestoneFloorFromPlayTime(loadedPlayTime),
         ),
-        playlightThirtyMinSidebarOpened,
         mysteriousNoteShopNotificationSeen:
           savedState.mysteriousNoteShopNotificationSeen !== undefined
             ? savedState.mysteriousNoteShopNotificationSeen

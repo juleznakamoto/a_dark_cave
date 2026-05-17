@@ -19,21 +19,6 @@ const EXIT_INTENT_DISABLE_DEFER_MS = 2000;
 /** No mouse/keys/etc. (see `getMsSinceUserActivity` in `loop.ts`) for this long while eligible → show Discovery. */
 const DISCOVERY_INACTIVITY_MS = 30 * 1000;
 
-/** Active-play milestone for showing the Playlight sidebar (`setConfig.sidebar.forceVisible`; game loop uses cumulative `playTime`). */
-export const PLAYLIGHT_AUTO_SIDEBAR_PLAY_MS = 30 * 60 * 1000;
-
-/** Sidebar flags pushed on every `setConfig` so exit-intent-only updates do not drop `forceVisible`. */
-function playlightSidebarSliceFromGameState(state: {
-  playlightThirtyMinSidebarOpened?: boolean;
-}) {
-  const forceVisible =
-    isPlaylightReferralUrl() || !!state.playlightThirtyMinSidebarOpened;
-  return {
-    hasFrameworkRoot: true as const,
-    ...(forceVisible ? { forceVisible: true as const } : {}),
-  };
-}
-
 type ExitIntentGameSlice = {
   flags: { gameStarted?: boolean };
   isPaused: boolean;
@@ -86,30 +71,6 @@ export function markPlaylightDiscoveryUserInitiated() {
   skipNextExitIntentQuota = true;
 }
 
-/**
- * Shows the Playlight **sidebar** (not Discovery). Public SDK API only documents sidebar via
- * `setConfig({ sidebar: { forceVisible: true } })`; `setDiscovery()` is a separate overlay.
- * Returns false if the SDK is not loaded yet — callers should retry on later ticks without persisting completion.
- */
-export function tryOpenPlaylightThirtyMinSidebar(): boolean {
-  try {
-    const sdk =
-      playlightSDKInstance ??
-      (typeof window !== "undefined"
-        ? (window as unknown as { playlightSDK?: typeof playlightSDKInstance })
-          .playlightSDK
-        : undefined);
-    if (!sdk?.setConfig) return false;
-    sdk.setConfig({
-      sidebar: { hasFrameworkRoot: true, forceVisible: true },
-    });
-    return true;
-  } catch (error) {
-    logger.error("[PLAYLIGHT] Thirty-minute sidebar open failed:", error);
-    return false;
-  }
-}
-
 // Track Playlight SDK initialization state to prevent duplicate subscriptions
 let playlightSDKInstance: any = null;
 let gameStoreUnsubscribe: (() => void) | null = null;
@@ -146,18 +107,11 @@ export async function initPlaylight() {
       const playlightSDK = module.default;
       playlightSDKInstance = playlightSDK;
 
-      const params = new URLSearchParams(window.location.search);
-      const fromPlaylight = params.get("utm_source") === "playlight";
-
-      // Initialize SDK with exit intent disabled; sidebar merged on every sync so it is not wiped.
+      // Initialize SDK with exit intent disabled; exit intent synced from game state below.
       playlightSDK.init({
         exitIntent: {
           enabled: false,
           immediate: false,
-        },
-        sidebar: {
-          hasFrameworkRoot: true,
-          ...(fromPlaylight ? { forceVisible: true } : {}),
         },
       });
 
@@ -250,7 +204,6 @@ export async function initPlaylight() {
             enabled: shouldEnableExitIntent,
             immediate: false,
           },
-          sidebar: playlightSidebarSliceFromGameState(state),
         });
       };
 
