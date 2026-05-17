@@ -1681,7 +1681,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       (fresh.cooldowns[actionId] ?? 0) === 0 &&
       fresh.priorAssignedActions?.includes(actionId)
     ) {
-      get().executeAction(actionId);
+      get().executeAction(actionId, { executionSource: "prior" });
     }
   },
 
