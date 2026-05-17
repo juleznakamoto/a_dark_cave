@@ -74,6 +74,13 @@ import {
 } from "@/game/rules/investmentHallTables";
 
 // Types
+type ResourceChangeEvent = {
+  id: string;
+  resource: string;
+  amount: number;
+  timestamp: number;
+};
+
 interface GameStore extends GameState {
   // UI state
   activeTab:
@@ -148,6 +155,8 @@ interface GameStore extends GameState {
 
   // Resource highlighting state
   highlightedResources: string[]; // Updated to array for serialization
+  /** Transient events used by the side panel when value diffing cannot observe a change. */
+  resourceChangeEvents: ResourceChangeEvent[];
 
   // Auth state
   isUserSignedIn: boolean;
@@ -280,6 +289,7 @@ interface GameStore extends GameState {
   setMysteriousNoteShopNotificationSeen: (seen: boolean) => void;
   setMysteriousNoteDonateNotificationSeen: (seen: boolean) => void;
   setHighlightedResources: (resources: string[]) => void;
+  emitResourceChange: (resource: string, amount: number) => void;
   setIsUserSignedIn: (signedIn: boolean) => void;
   setDetectedCurrency: (currency: "EUR" | "USD") => void;
   updateResource: (
@@ -1243,6 +1253,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   // Initialize resource highlighting
   highlightedResources: [], // Updated to array for serialization
+  resourceChangeEvents: [],
 
   // Initialize free gold claim tracking
   lastFreeGoldClaim: 0,
@@ -1298,6 +1309,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setHighlightedResources: (resources: string[]) => {
     // Updated type
     set({ highlightedResources: resources });
+  },
+  emitResourceChange: (resource: string, amount: number) => {
+    if (amount === 0) return;
+    set((state) => ({
+      resourceChangeEvents: [
+        ...(state.resourceChangeEvents ?? []),
+        {
+          id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+          resource,
+          amount,
+          timestamp: Date.now(),
+        },
+      ].slice(-50),
+    }));
   },
   setIsUserSignedIn: (signedIn: boolean) => set({ isUserSignedIn: signedIn }),
   setDetectedCurrency: (currency: "EUR" | "USD") =>
@@ -1776,10 +1801,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
       return;
     }
 
+    const resourceChangeAmounts = new Map<string, number>();
+    const addResourceChange = (resource: string, amount: number) => {
+      resourceChangeAmounts.set(
+        resource,
+        (resourceChangeAmounts.get(resource) ?? 0) + amount,
+      );
+    };
+
     get().updateResource("gold", -GAME_CONSTANTS.ACTION_ABORT_GOLD_COST);
+    addResourceChange("gold", -GAME_CONSTANTS.ACTION_ABORT_GOLD_COST);
     for (const [key, amount] of Object.entries(snapshot.resourceRefund)) {
       if (amount !== 0) {
         get().updateResource(key as keyof GameState["resources"], amount);
+        addResourceChange(key, amount);
       }
     }
 
@@ -1813,6 +1848,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
 
     setTimeout(() => get().updatePopulation(), 0);
+    resourceChangeAmounts.forEach((amount, resource) => {
+      get().emitResourceChange(resource, amount);
+    });
   },
 
   tickCooldowns: () => {
@@ -1935,6 +1973,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       },
       gamblerDiceDialogOpen: false,
       investDialogOpen: false,
+      resourceChangeEvents: [],
 
       // Recalculate derived state
       effects: calculateTotalEffects({ ...defaultGameState, ...preserved }),
@@ -2206,6 +2245,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             ? savedState.lastResourceSnapshotTime
             : 0, // Load lastResourceSnapshotTime
         highlightedResources: savedState.highlightedResources || [], // Load highlightedResources
+        resourceChangeEvents: [],
         curseState: savedState.curseState || defaultGameState.curseState, // Load curseState
         frostfallState:
           savedState.frostfallState || defaultGameState.frostfallState, // Load frostfallState

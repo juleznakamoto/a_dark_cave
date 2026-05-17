@@ -276,6 +276,7 @@ const UI_ONLY_PROPERTIES = [
   'playlightWelcomeDialogOpen',
   'socialPromptDialogOpen',
   'signUpPromptEligibleForGold',
+  'resourceChangeEvents',
   'current_population',
   'total_population',
 ] as const;

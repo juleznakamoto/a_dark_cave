@@ -114,6 +114,10 @@ export default function SidePanel() {
   const [resourceChanges, setResourceChanges] = useState<
     Array<{ resource: string; amount: number; timestamp: number }>
   >([]);
+  const resourceChangeEvents = useGameStore(
+    (state) => state.resourceChangeEvents ?? [],
+  );
+  const consumedResourceChangeEventIdsRef = useRef<Set<string>>(new Set());
 
   // Clean up old resource changes periodically
   useEffect(() => {
@@ -128,6 +132,29 @@ export default function SidePanel() {
 
     return () => clearTimeout(cleanupTimer);
   }, [resourceChanges]);
+
+  useEffect(() => {
+    const newEvents = resourceChangeEvents.filter((event) => {
+      if (consumedResourceChangeEventIdsRef.current.has(event.id)) {
+        return false;
+      }
+      consumedResourceChangeEventIdsRef.current.add(event.id);
+      return true;
+    });
+
+    if (newEvents.length === 0 || buildings.clerksHut <= 0) return;
+
+    setResourceChanges((prev) =>
+      [
+        ...prev,
+        ...newEvents.map(({ resource, amount, timestamp }) => ({
+          resource,
+          amount,
+          timestamp,
+        })),
+      ].slice(-50),
+    );
+  }, [resourceChangeEvents, buildings.clerksHut]);
 
   // Get game state once for the entire component (needed early for stat calculations)
   const gameState = useGameStore();

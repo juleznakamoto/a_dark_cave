@@ -42,6 +42,9 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       "data-testid": testId,
       tooltip,
       onAnimationTrigger,
+      onMouseEnter,
+      onMouseLeave,
+      style,
       ...props
     },
     ref
@@ -165,7 +168,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         data-testid={testId}
         button_id={props.button_id || actionIdFromProps}
         {...props}
-        style={{ opacity: 1, position: 'relative', zIndex: 10, ...props.style }}
+        style={{ opacity: 1, position: 'relative', zIndex: 10, ...style }}
       >
         {/* Button content */}
         <span className={`relative transition-opacity duration-200 ${isCoolingDown || isExecuting || disabled ? "opacity-60" : ""}`}>{children}</span>
@@ -214,8 +217,14 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       onClick();
     };
 
+    const isAbortActionType =
+      actionIdFromProps.startsWith("craft") ||
+      actionIdFromProps.startsWith("build");
     const showAbortOverlay =
-      isExecuting && executionAbortEligible === true && hasAbortSnapshot;
+      isAbortActionType &&
+      isExecuting &&
+      executionAbortEligible === true &&
+      hasAbortSnapshot;
     const canAffordAbort = gold >= GAME_CONSTANTS.ACTION_ABORT_GOLD_COST;
     const abortTooltip = `Abort for ${GAME_CONSTANTS.ACTION_ABORT_GOLD_COST} Gold`;
 
@@ -226,8 +235,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           tooltipId={buttonId}
           disabled={isButtonDisabled}
           onClick={triggerPrimaryClick}
-          onMouseEnter={props.onMouseEnter}
-          onMouseLeave={props.onMouseLeave}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
         >
           {buttonContent}
         </TooltipWrapper>
@@ -235,7 +244,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           <TooltipWrapper
             tooltip={abortTooltip}
             tooltipId={`${buttonId}-abort`}
-            className={`absolute -top-[7px] -left-[7px] z-[25] pointer-events-auto ${!canAffordAbort ? "opacity-40" : ""}`}
+            className={`absolute left-1/2 -translate-x-1/2 -top-[7px] z-[25] pointer-events-auto ${!canAffordAbort ? "opacity-40" : ""}`}
           >
             <button
               type="button"

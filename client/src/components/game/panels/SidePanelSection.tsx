@@ -130,6 +130,7 @@ export default function SidePanelSection({
 
   // Track resource changes from game loop to detect capped gains
   const lastResourceChanges = useRef<Map<string, number>>(new Map());
+  const processedResourceChangeKeys = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     const newAnimatedItems = new Set<string>();
@@ -253,6 +254,41 @@ export default function SidePanelSection({
   // Track resource changes to detect intended changes even when capped
   useEffect(() => {
     resourceChanges.forEach((change) => {
+      const changeKey = `${change.resource}-${change.timestamp}-${change.amount}`;
+      if (processedResourceChangeKeys.current.has(changeKey)) return;
+      processedResourceChangeKeys.current.add(changeKey);
+
+      const visibleItem = visibleItems.find((item) => item.id === change.resource);
+      if (visibleItem) {
+        if (change.amount > 0) {
+          setAnimatedItems((prev) => {
+            const newSet = new Set(prev);
+            newSet.add(change.resource);
+            return newSet;
+          });
+          setTimeout(() => {
+            setAnimatedItems((prev) => {
+              const newSet = new Set(prev);
+              newSet.delete(change.resource);
+              return newSet;
+            });
+          }, 2000);
+        } else if (change.amount < 0) {
+          setDecreaseAnimatedItems((prev) => {
+            const newSet = new Set(prev);
+            newSet.add(change.resource);
+            return newSet;
+          });
+          setTimeout(() => {
+            setDecreaseAnimatedItems((prev) => {
+              const newSet = new Set(prev);
+              newSet.delete(change.resource);
+              return newSet;
+            });
+          }, 2000);
+        }
+      }
+
       if (change.amount > 0) {
         lastResourceChanges.current.set(change.resource, change.amount);
 
@@ -262,7 +298,7 @@ export default function SidePanelSection({
         }, 100);
       }
     });
-  }, [resourceChanges]);
+  }, [resourceChanges, visibleItems]);
 
   if (visibleItems.length === 0) {
     return null;
