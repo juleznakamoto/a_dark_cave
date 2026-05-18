@@ -327,6 +327,11 @@ export async function saveGame(
     // Save locally first (most important)
     await putLocalSave(db, saveData);
 
+    // Guests: local IndexedDB only — no Supabase / edge-function / server calls.
+    if (!currentState.isUserSignedIn) {
+      return;
+    }
+
     // Try to save to cloud if user is authenticated
     try {
       const user = await getCurrentUser();

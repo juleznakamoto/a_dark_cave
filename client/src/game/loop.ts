@@ -121,7 +121,8 @@ function canPriorExecute(actionId: string, state: GameState): boolean {
   return true;
 }
 const TICK_INTERVAL = GAME_CONSTANTS.TICK_INTERVAL;
-const AUTO_SAVE_INTERVAL = 60 * 1000; // Auto-save every 1 minute
+const AUTO_SAVE_INTERVAL_SIGNED_IN = 60 * 1000; // Cloud autosave every 1 minute
+const AUTO_SAVE_INTERVAL_GUEST = 15 * 1000; // Local IndexedDB only — matches production tick
 const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 seconds
 const AUTH_NOTIFICATION_INITIAL_DELAY = 15 * 60 * 1000; // 15 minutes in milliseconds
 const AUTH_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milliseconds
@@ -396,8 +397,12 @@ export function startGameLoop() {
       const currentStateForSave = useGameStore.getState();
       const isInSleepMode = currentStateForSave.idleModeState?.isActive === true;
 
+      const autoSaveInterval = currentStateForSave.isUserSignedIn
+        ? AUTO_SAVE_INTERVAL_SIGNED_IN
+        : AUTO_SAVE_INTERVAL_GUEST;
+
       if (
-        timestamp - lastAutoSave >= AUTO_SAVE_INTERVAL &&
+        timestamp - lastAutoSave >= autoSaveInterval &&
         !isInactive &&
         !skipAutoSaveAfterLoad &&
         !isInSleepMode

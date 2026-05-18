@@ -1758,6 +1758,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (!state.executionAbortEligible?.[actionId]) {
       return;
     }
+    if ((state.buildings.clerksHut ?? 0) < 1) {
+      return;
+    }
     const snapshot = state.executionSpendSnapshots?.[actionId];
     if (!snapshot) {
       return;

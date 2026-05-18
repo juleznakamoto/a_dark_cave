@@ -408,32 +408,39 @@ export default function ProfileMenu() {
                   {currentUser.email}
                 </div>
                 <DropdownMenuSeparator />
-                <DropdownMenuItemWithTooltip
-                  tooltip={
-                    <div className="text-xs">
-                      <p>Game auto-saves every minute</p>
-                      {lastSaved && (
-                        <p className="mt-1">Last Save: {lastSaved}</p>
-                      )}
-                    </div>
-                  }
-                  tooltipId="manual-save-info"
-                  disabled={cooldowns["manualSave"] > 0}
-                  onTooltipAction={() => {
-                    handleManualSave();
-                    setAccountDropdownOpen(false);
-                  }}
-                  className={
-                    cooldowns["manualSave"] > 0
-                      ? "opacity-50 cursor-not-allowed"
-                      : ""
-                  }
-                >
-                  Save
-                </DropdownMenuItemWithTooltip>
-                <DropdownMenuSeparator />
               </>
             )}
+            <DropdownMenuItemWithTooltip
+              tooltip={
+                <div className="text-xs">
+                  <p>
+                    {currentUser
+                      ? "Game auto-saves every minute"
+                      : "Game auto-saves every 15 seconds"}
+                  </p>
+                  {!currentUser && (
+                    <p className="mt-1">Sign up to save game in the cloud</p>
+                  )}
+                  {lastSaved && (
+                    <p className="mt-1">Last Save: {lastSaved}</p>
+                  )}
+                </div>
+              }
+              tooltipId="manual-save-info"
+              disabled={cooldowns["manualSave"] > 0}
+              onTooltipAction={() => {
+                handleManualSave();
+                setAccountDropdownOpen(false);
+              }}
+              className={
+                cooldowns["manualSave"] > 0
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }
+            >
+              Save
+            </DropdownMenuItemWithTooltip>
+            <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleRestartGame}>
               New Game
             </DropdownMenuItem>

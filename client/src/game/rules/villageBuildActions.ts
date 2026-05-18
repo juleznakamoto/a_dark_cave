@@ -673,7 +673,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildClerksHut",
     label: "Clerk's Hut",
     description: "Hut where clerks track resources of the village",
-    tooltipEffects: ["+2 Knowledge", "Resource change hints"],
+    tooltipEffects: ["+2 Knowledge", "Resource change hints", "Abort actions"],
     building: true,
     show_when: {
       1: {
