@@ -2241,13 +2241,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         };
       }
 
-      logger.log('[MERCHANT TRADES] Loaded merchant trades from state:', {
-        hasChoices: !!savedState.merchantTrades?.choices?.length,
-        choicesCount: savedState.merchantTrades?.choices?.length || 0,
-        purchasedCount: savedState.merchantTrades?.purchasedIds?.length || 0,
-        purchasedIds: savedState.merchantTrades?.purchasedIds || [],
-      });
-
       set(loadedState);
       StateManager.scheduleEffectsUpdate(get);
     } else {

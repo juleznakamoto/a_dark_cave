@@ -147,18 +147,6 @@ export default function GameContainer() {
       (id) => !lastViewedUnclaimedAchievementIds.includes(id),
     );
 
-  // Debug: Log when full game dialog state changes
-  useEffect(() => {
-    if (!fullGamePurchaseDialogOpen) {
-      const state = useGameStore.getState();
-      logger.log("[GAME CONTAINER] Full game dialog closed, state:", {
-        BTP: state.BTP,
-        isPaused: state.isPaused,
-        isPausedPreviously: state.isPausedPreviously,
-      });
-    }
-  }, [fullGamePurchaseDialogOpen]);
-
   // Track unlocked tabs to trigger blink until clicked
   const traderUnlocked = buildings.tradePost >= 1;
   const achievementsUnlocked = !!relics?.survivors_notes || !!books?.book_of_trials;

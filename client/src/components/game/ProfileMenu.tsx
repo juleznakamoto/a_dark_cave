@@ -205,10 +205,11 @@ export default function ProfileMenu() {
 
   const handleManualSave = async () => {
     const actionId = "manualSave";
+    const signedIn = !!currentUser;
     const currentCooldown = cooldowns[actionId] || 0;
 
-    if (currentCooldown > 0) {
-      return; // Still on cooldown
+    if (signedIn && currentCooldown > 0) {
+      return; // Still on cooldown (signed-in only)
     }
 
     try {
@@ -218,12 +219,16 @@ export default function ProfileMenu() {
 
       const timestamp = formatSaveTimestamp();
 
-      // Set 15-second cooldown (in seconds, not milliseconds - game loop ticks down by 0.2 seconds)
+      // Signed-in: 15s cooldown between manual saves. Guests can save anytime (local only).
       useGameStore.setState((state) => ({
-        cooldowns: {
-          ...state.cooldowns,
-          [actionId]: 15,
-        },
+        ...(signedIn
+          ? {
+              cooldowns: {
+                ...state.cooldowns,
+                [actionId]: 15,
+              },
+            }
+          : {}),
         lastSaved: timestamp,
         isNewGame: false,
       }));
@@ -427,13 +432,13 @@ export default function ProfileMenu() {
                 </div>
               }
               tooltipId="manual-save-info"
-              disabled={cooldowns["manualSave"] > 0}
+              disabled={!!currentUser && cooldowns["manualSave"] > 0}
               onTooltipAction={() => {
                 handleManualSave();
                 setAccountDropdownOpen(false);
               }}
               className={
-                cooldowns["manualSave"] > 0
+                currentUser && cooldowns["manualSave"] > 0
                   ? "opacity-50 cursor-not-allowed"
                   : ""
               }
