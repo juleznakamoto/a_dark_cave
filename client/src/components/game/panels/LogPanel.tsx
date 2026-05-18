@@ -14,8 +14,6 @@ type ExtendedLogEntry =
     timestamp: number;
   };
 
-const LOG_ENTRY_PULSE_MS = 30000;
-
 function LogPanel() {
   const { log, timedEventTab } = useGameStore();
   const isBloodMoon =
@@ -23,8 +21,6 @@ function LogPanel() {
   const [readEntries, setReadEntries] = useState<Set<string>>(
     () => new Set(log.map((entry) => entry.id)),
   );
-  const [pulsingEntries, setPulsingEntries] = useState<Set<string>>(new Set());
-  const pulseTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const topRef = useRef<HTMLDivElement>(null);
   const prevLogLengthRef = useRef(log.length);
 
@@ -41,48 +37,6 @@ function LogPanel() {
     }
     prevLogLengthRef.current = log.length;
   }, [log.length]);
-
-  useEffect(() => {
-    const visibleEntryIds = new Set(recentEntries.map((entry) => entry.id));
-
-    // Only pulse the most recently added entry (first in reversed list = newest).
-    const newestEntry = recentEntries[0];
-    // Only add newest to pulse; do not stop previous pulses - let them finish.
-    if (newestEntry && !readEntries.has(newestEntry.id) && !pulseTimersRef.current.has(newestEntry.id)) {
-      setPulsingEntries((prev) => {
-        const next = new Set(prev);
-        next.add(newestEntry.id);
-        return next;
-      });
-
-      const timerId = setTimeout(() => {
-        setPulsingEntries((prev) => {
-          const next = new Set(prev);
-          next.delete(newestEntry.id);
-          return next;
-        });
-        pulseTimersRef.current.delete(newestEntry.id);
-      }, LOG_ENTRY_PULSE_MS);
-
-      pulseTimersRef.current.set(newestEntry.id, timerId);
-    }
-
-    // Clear timers for entries no longer visible.
-    pulseTimersRef.current.forEach((timerId, entryId) => {
-      if (!visibleEntryIds.has(entryId)) {
-        clearTimeout(timerId);
-        pulseTimersRef.current.delete(entryId);
-      }
-    });
-  }, [recentEntries, readEntries]);
-
-  // Cleanup timers on unmount.
-  useEffect(() => {
-    return () => {
-      pulseTimersRef.current.forEach((timerId) => clearTimeout(timerId));
-      pulseTimersRef.current.clear();
-    };
-  }, []);
 
   return (
     <div className="h-[18vh] min-h-[6rem] pt-2 overflow-hidden">
@@ -111,21 +65,10 @@ function LogPanel() {
 
               const isUnread = !readEntries.has(typedEntry.id);
               const showNewIndicator = isUnread;
-              const isPulsing = pulsingEntries.has(typedEntry.id);
-              const pulseClass = isPulsing ? "animate-pulse" : "";
+              const blinkClass = isUnread ? "animate-pulse" : "";
 
               const handleMouseEnter = () => {
                 if (isUnread) {
-                  const timerId = pulseTimersRef.current.get(typedEntry.id);
-                  if (timerId) {
-                    clearTimeout(timerId);
-                    pulseTimersRef.current.delete(typedEntry.id);
-                  }
-                  setPulsingEntries((prev) => {
-                    const next = new Set(prev);
-                    next.delete(typedEntry.id);
-                    return next;
-                  });
                   setReadEntries((prev) => new Set(prev).add(typedEntry.id));
                 }
               };
@@ -134,11 +77,11 @@ function LogPanel() {
                 <div
                   key={typedEntry.id}
                   onMouseEnter={handleMouseEnter}
-                  className={`flex items-start gap-2 text-foreground leading-relaxed py-0.5 ${opacity} ${pulseClass}`}
+                  className={`flex items-start gap-2 text-foreground leading-relaxed py-0.5 ${opacity} ${blinkClass}`}
                 >
                   {showNewIndicator ? (
                     <span
-                      className={`mt-2 h-1 w-1 shrink-0 rounded-full bg-white ${isPulsing ? "animate-pulse" : ""}`}
+                      className="mt-2 h-1 w-1 shrink-0 rounded-full bg-white"
                       aria-hidden={true}
                     />
                   ) : (
