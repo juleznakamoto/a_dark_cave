@@ -19,13 +19,7 @@ export default function GameFooter() {
     sfxMuted,
     setMusicMuted,
     setSfxMuted,
-    shopNotificationSeen,
-    setShopNotificationSeen,
-    shopNotificationVisible,
     cruelMode,
-    story,
-    mysteriousNoteShopNotificationSeen,
-    mysteriousNoteDonateNotificationSeen,
     idleModeDialog,
     playTime,
     devMode,
@@ -156,49 +150,19 @@ export default function GameFooter() {
               <Button
                 variant="ghost"
                 size="xs"
-                onClick={() => {
-                  setShopDialogOpen(true);
-                  setShopNotificationSeen(true);
-                  if (
-                    story.seen.mysteriousNoteReceived &&
-                    !mysteriousNoteShopNotificationSeen
-                  ) {
-                    useGameStore.setState({
-                      mysteriousNoteShopNotificationSeen: true,
-                    });
-                  }
-                }}
-                className={`px-1 py-1 text-xs hover relative text-neutral-300 ${isEarlyGameplay ? "opacity-50" : "opacity-100"} hover:!opacity-100`}
+                onClick={() => setShopDialogOpen(true)}
+                className={`px-1 py-1 text-xs hover text-neutral-300 ${isEarlyGameplay ? "opacity-50" : "opacity-100"} hover:!opacity-100`}
               >
                 Trader
-                {((shopNotificationVisible && !shopNotificationSeen) ||
-                  (story.seen.mysteriousNoteReceived &&
-                    !mysteriousNoteShopNotificationSeen)) && (
-                    <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full notification-pulse" />
-                  )}
               </Button>
             )}
             <Button
               variant="ghost"
               size="xs"
-              onClick={() => {
-                handleOfferTribute();
-                if (
-                  story.seen.mysteriousNoteReceived &&
-                  !mysteriousNoteDonateNotificationSeen
-                ) {
-                  useGameStore.setState({
-                    mysteriousNoteDonateNotificationSeen: true,
-                  });
-                }
-              }}
-              className={`px-1 py-1 text-xs hover relative text-neutral-300 ${isEarlyGameplay ? "opacity-50" : "opacity-100"} hover:!opacity-100`}
+              onClick={handleOfferTribute}
+              className={`px-1 py-1 text-xs hover text-neutral-300 ${isEarlyGameplay ? "opacity-50" : "opacity-100"} hover:!opacity-100`}
             >
               Donate
-              {story.seen.mysteriousNoteReceived &&
-                !mysteriousNoteDonateNotificationSeen && (
-                  <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full notification-pulse" />
-                )}
             </Button>
             {cruelMode && (
               <TooltipWrapper

@@ -577,7 +577,6 @@ export const gameStateSchema = z.object({
       isActive: false,
       endTime: 0,
     }),
-  shopNotificationSeen: z.boolean().default(false), // Added new field for shop notification
   authNotificationSeen: z.boolean().default(false), // Added new field for auth notification
   authNotificationVisible: z.boolean().default(false), // Added new field for auth notification visibility
   lastSignUpPromptPlayTime: z.number().default(0),
@@ -594,8 +593,6 @@ export const gameStateSchema = z.object({
    * Set true once signed in + email reward + both social follows + Playlight discover task + ≥1 invite are satisfied; future event can grant exclusive item then clear or consume this flag.
    */
   socialPromoExclusiveRewardPending: z.boolean().default(false),
-  mysteriousNoteShopNotificationSeen: z.boolean().default(false), // Track if mysterious note shop notification has been seen
-  mysteriousNoteDonateNotificationSeen: z.boolean().default(false), // Track if mysterious note donate notification has been seen
   isUserSignedIn: z.boolean().default(false), // Track if user is currently signed in
   /** One-time account-creation gold granted (persists across devices via cloud save). */
   signupWelcomeGoldClaimed: z.boolean().default(false),

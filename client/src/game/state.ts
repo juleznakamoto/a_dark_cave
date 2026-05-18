@@ -135,10 +135,6 @@ interface GameStore extends GameState {
   deleteAccountDialogOpen: boolean;
   playlightWelcomeDialogOpen: boolean;
 
-  // Notification state for shop
-  shopNotificationSeen: boolean;
-  shopNotificationVisible: boolean;
-
   // Notification state for auth
   authNotificationSeen: boolean;
   authNotificationVisible: boolean;
@@ -148,10 +144,6 @@ interface GameStore extends GameState {
 
   /** Social / email / invite / sign-up rewards prompt (guest + signed-in schedules in game loop). */
   socialPromptDialogOpen: boolean;
-
-  // Notification state for mysterious note
-  mysteriousNoteShopNotificationSeen: boolean;
-  mysteriousNoteDonateNotificationSeen: boolean;
 
   // Resource highlighting state
   highlightedResources: string[]; // Updated to array for serialization
@@ -278,16 +270,12 @@ interface GameStore extends GameState {
   setBoostMode: (enabled: boolean) => void;
   setMusicMuted: (muted: boolean) => void;
   setSfxMuted: (muted: boolean) => void;
-  setShopNotificationSeen: (seen: boolean) => void;
-  setShopNotificationVisible: (visible: boolean) => void;
   setAuthNotificationSeen: (seen: boolean) => void;
   setAuthNotificationVisible: (visible: boolean) => void;
   setSignUpPromptEligibleForGold: (eligible: boolean) => void;
   setLastSignUpPromptPlayTime: (playTime: number) => void;
   setSocialPromptDialogOpen: (isOpen: boolean) => void;
   setLastSocialPromptPlayTime: (playTime: number) => void;
-  setMysteriousNoteShopNotificationSeen: (seen: boolean) => void;
-  setMysteriousNoteDonateNotificationSeen: (seen: boolean) => void;
   setHighlightedResources: (resources: string[]) => void;
   emitResourceChange: (resource: string, amount: number) => void;
   setIsUserSignedIn: (signedIn: boolean) => void;
@@ -982,10 +970,6 @@ export const createInitialState = (): GameState => ({
   isPaused: false,
   musicMuted: false,
   sfxMuted: false,
-  // Initialize shop notification state
-  shopNotificationSeen: false,
-  shopNotificationVisible: false,
-
   // Initialize auth notification state
   authNotificationSeen: false,
   authNotificationVisible: false,
@@ -997,10 +981,6 @@ export const createInitialState = (): GameState => ({
   socialPromptMilestoneIndex: 0,
   socialPromptAutoPhase: 0,
   socialPromoExclusiveRewardPending: false,
-
-  // Initialize mysterious note notification state
-  mysteriousNoteShopNotificationSeen: false,
-  mysteriousNoteDonateNotificationSeen: false,
 
   // Initialize resource highlighting state (array for serialization)
   highlightedResources: [],
@@ -1234,9 +1214,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     points: 0,
   },
   totalFocusEarned: 0,
-  // Initialize shop notification state
-  shopNotificationSeen: false,
-  shopNotificationVisible: false,
   // Initialize auth notification state
   authNotificationSeen: false,
   authNotificationVisible: false,
@@ -1247,10 +1224,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   socialPromptMilestoneIndex: 0,
   socialPromptAutoPhase: 0,
   socialPromoExclusiveRewardPending: false,
-  // Initialize mysterious note notification state
-  mysteriousNoteShopNotificationSeen: false,
-  mysteriousNoteDonateNotificationSeen: false,
-
   // Initialize resource highlighting
   highlightedResources: [], // Updated to array for serialization
   resourceChangeEvents: [],
@@ -1286,10 +1259,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setBoostMode: (enabled: boolean) => set({ boostMode: enabled }),
   setMusicMuted: (muted: boolean) => set({ musicMuted: muted }),
   setSfxMuted: (muted: boolean) => set({ sfxMuted: muted }),
-  setShopNotificationSeen: (seen: boolean) =>
-    set({ shopNotificationSeen: seen }),
-  setShopNotificationVisible: (visible: boolean) =>
-    set({ shopNotificationVisible: visible }),
   setAuthNotificationSeen: (seen: boolean) =>
     set({ authNotificationSeen: seen }),
   setAuthNotificationVisible: (visible: boolean) =>
@@ -1302,10 +1271,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ socialPromptDialogOpen: isOpen }),
   setLastSocialPromptPlayTime: (playTime: number) =>
     set({ lastSocialPromptPlayTime: playTime }),
-  setMysteriousNoteShopNotificationSeen: (seen: boolean) =>
-    set({ mysteriousNoteShopNotificationSeen: seen }),
-  setMysteriousNoteDonateNotificationSeen: (seen: boolean) =>
-    set({ mysteriousNoteDonateNotificationSeen: seen }),
   setHighlightedResources: (resources: string[]) => {
     // Updated type
     set({ highlightedResources: resources });
@@ -2184,14 +2149,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
           savedState.isPaused !== undefined ? savedState.isPaused : false, // Ensure isPaused is loaded
         musicMuted: saved.musicMuted ?? false,
         sfxMuted: saved.sfxMuted ?? false,
-        shopNotificationSeen:
-          savedState.shopNotificationSeen !== undefined
-            ? savedState.shopNotificationSeen
-            : false,
-        shopNotificationVisible:
-          savedState.shopNotificationVisible !== undefined
-            ? savedState.shopNotificationVisible
-            : false,
         authNotificationSeen:
           savedState.authNotificationSeen !== undefined
             ? savedState.authNotificationSeen
@@ -2209,14 +2166,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
             .socialPromptMilestoneIndex ?? 0,
           socialPromptMilestoneFloorFromPlayTime(loadedPlayTime),
         ),
-        mysteriousNoteShopNotificationSeen:
-          savedState.mysteriousNoteShopNotificationSeen !== undefined
-            ? savedState.mysteriousNoteShopNotificationSeen
-            : false,
-        mystNoteDonateNotificationSeen:
-          savedState.mystNoteDonateNotificationSeen !== undefined
-            ? savedState.mystNoteDonateNotificationSeen
-            : false,
         playTime: loadedPlayTime, // CRITICAL: Use the extracted playTime value
         isNewGame: false, // Clear the new game flag when loading
         startTime:
