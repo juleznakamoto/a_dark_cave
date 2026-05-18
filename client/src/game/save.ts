@@ -9,17 +9,23 @@ import {
 } from "./auth";
 import { logger } from "@/lib/logger";
 import { getSupabaseClient } from "@/lib/supabase";
+import {
+  encodeLocalGameState,
+  encodeLocalSave,
+  decodeLocalGameState,
+  decodeLocalSave,
+} from "./saveCodec";
 
 const isDev = import.meta.env.DEV;
 
 interface GameDB extends DBSchema {
   saves: {
     key: string;
-    value: SaveData;
+    value: string | SaveData;
   };
   lastCloudState: {
     key: string;
-    value: GameState;
+    value: string | GameState;
   };
 }
 
@@ -79,6 +85,47 @@ function mergeSavePlayTimeIntoState(
   const merged = Math.max(top, emb);
   if (merged === emb) return state;
   return { ...state, playTime: merged };
+}
+
+async function putLocalSave(
+  db: Awaited<ReturnType<typeof getDB>>,
+  data: SaveData,
+): Promise<void> {
+  await db.put("saves", encodeLocalSave(data), SAVE_KEY);
+}
+
+async function getLocalSave(
+  db: Awaited<ReturnType<typeof getDB>>,
+): Promise<SaveData | undefined> {
+  const raw = await db.get("saves", SAVE_KEY);
+  return decodeLocalSave(raw) ?? undefined;
+}
+
+async function putLastCloudState(
+  db: Awaited<ReturnType<typeof getDB>>,
+  state: GameState,
+): Promise<void> {
+  await db.put("lastCloudState", encodeLocalGameState(state), LAST_CLOUD_STATE_KEY);
+}
+
+async function getLastCloudState(
+  db: Awaited<ReturnType<typeof getDB>>,
+): Promise<GameState | undefined> {
+  const raw = await db.get("lastCloudState", LAST_CLOUD_STATE_KEY);
+  return decodeLocalGameState(raw) ?? undefined;
+}
+
+/** Sync local IndexedDB after cloud referral refresh (avoids duplicating codec in auth). */
+export async function syncLocalSaveFromCloud(data: SaveData): Promise<void> {
+  const db = await getDB();
+  await putLocalSave(db, data);
+  await putLastCloudState(db, data.gameState);
+}
+
+/** Clear cloud diff baseline only (e.g. sign-out); local main save is kept. */
+export async function clearLastCloudState(): Promise<void> {
+  const db = await getDB();
+  await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
 }
 
 async function getDB() {
@@ -278,7 +325,7 @@ export async function saveGame(
     };
 
     // Save locally first (most important)
-    await db.put("saves", saveData, SAVE_KEY);
+    await putLocalSave(db, saveData);
 
     // Try to save to cloud if user is authenticated
     try {
@@ -344,10 +391,7 @@ export async function saveGame(
         }
 
         // Get last cloud state for diff calculation
-        const lastCloudState = await db.get(
-          "lastCloudState",
-          LAST_CLOUD_STATE_KEY,
-        );
+        const lastCloudState = await getLastCloudState(db);
         const stateDiff = calculateStateDiff(
           lastCloudState || null,
           sanitizedState,
@@ -407,7 +451,7 @@ export async function saveGame(
         logger.log('[SAVE CLOUD] Edge Function success:', data);
 
         // Update lastCloudState only after successful cloud save
-        await db.put("lastCloudState", sanitizedState, LAST_CLOUD_STATE_KEY);
+        await putLastCloudState(db, sanitizedState);
         logger.log("[SAVE] ✅ Updated lastCloudState after successful cloud save");
 
         // Clear the allowPlayTimeOverwrite flag after successful save
@@ -433,7 +477,7 @@ export async function loadGame(): Promise<GameState | null> {
     await processReferralAfterConfirmation();
 
     const db = await getDB();
-    const localSave = await db.get("saves", SAVE_KEY);
+    const localSave = await getLocalSave(db);
 
     if (isDev) {
       logger.log(`[LOAD] 💾 Local save retrieved:`, {
@@ -498,12 +542,12 @@ export async function loadGame(): Promise<GameState | null> {
             try {
               await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
               await saveGame(reconciled, false);
-              await db.put("lastCloudState", reconciled, LAST_CLOUD_STATE_KEY);
+              await putLastCloudState(db, reconciled);
               logger.log("[LOAD] ✅ Local progress synced to cloud");
             } catch (syncError: any) {
               if (syncError.message?.includes("OCC violation")) {
                 logger.log("[LOAD] 📊 Cloud already has this save state - skipping sync");
-                await db.put("lastCloudState", reconciled, LAST_CLOUD_STATE_KEY);
+                await putLastCloudState(db, reconciled);
               } else {
                 throw syncError;
               }
@@ -533,16 +577,12 @@ export async function loadGame(): Promise<GameState | null> {
             const stateToReturn = { ...processedState, playTime: cloudSave.playTime };
 
             // Save to IndexedDB to keep it in sync
-            await db.put(
-              "saves",
-              {
-                gameState: processedState,
-                timestamp: Date.now(),
-                playTime: cloudSave.playTime || 0,
-              },
-              SAVE_KEY,
-            );
-            await db.put("lastCloudState", processedState, LAST_CLOUD_STATE_KEY);
+            await putLocalSave(db, {
+              gameState: processedState,
+              timestamp: Date.now(),
+              playTime: cloudSave.playTime || 0,
+            });
+            await putLastCloudState(db, processedState);
 
             logger.log("[LOAD] ✅ Cloud save loaded and synced locally");
             return stateToReturn;
@@ -569,16 +609,12 @@ export async function loadGame(): Promise<GameState | null> {
 
           const stateToReturn = { ...processedState, playTime: cloudSave.playTime };
 
-          await db.put(
-            "saves",
-            {
-              gameState: processedState,
-              timestamp: Date.now(),
-              playTime: cloudSave.playTime || 0,
-            },
-            SAVE_KEY,
-          );
-          await db.put("lastCloudState", processedState, LAST_CLOUD_STATE_KEY);
+          await putLocalSave(db, {
+            gameState: processedState,
+            timestamp: Date.now(),
+            playTime: cloudSave.playTime || 0,
+          });
+          await putLastCloudState(db, processedState);
 
           logger.log("[LOAD] ✅ Cloud save loaded and synced locally");
           return stateToReturn;
@@ -599,13 +635,13 @@ export async function loadGame(): Promise<GameState | null> {
             await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
             // Do NOT use allowPlaytimeOverwrite here - this is not a new game
             await saveGame(reconciled, false);
-            await db.put("lastCloudState", reconciled, LAST_CLOUD_STATE_KEY);
+            await putLastCloudState(db, reconciled);
           } catch (syncError: any) {
             // If OCC violates due to equal playTimes, that's fine - cloud already has this state
             if (syncError.message?.includes("OCC violation")) {
               if (isDev)
                 logger.log("[LOAD] 📊 Cloud already has this save state - skipping sync");
-              await db.put("lastCloudState", reconciled, LAST_CLOUD_STATE_KEY);
+              await putLastCloudState(db, reconciled);
             } else {
               throw syncError;
             }

@@ -370,15 +370,12 @@ async function processReferralInBackground(): Promise<void> {
               loopProgress: currentState.loopProgress,
             });
 
-            // Also update local IndexedDB
-            const { openDB } = await import('idb');
-            const db = await openDB('ADarkCaveDB', 2);
-            await db.put('saves', {
-              gameState: freshStateData.gameState, // Use the extracted gameState
+            const { syncLocalSaveFromCloud } = await import('./save');
+            await syncLocalSaveFromCloud({
+              gameState: freshStateData.gameState,
               timestamp: freshStateData.timestamp,
               playTime: freshStateData.playTime || 0,
-            }, 'mainSave');
-            await db.put('lastCloudState', freshStateData.gameState, 'lastCloudState'); // Store only gameState in lastCloudState
+            });
           }
         } catch (error) {
           logger.error('Failed to update game state:', error);
@@ -486,9 +483,8 @@ export async function deleteAccount(): Promise<void> {
   }
 
   try {
-    const { openDB } = await import("idb");
-    const db = await openDB("ADarkCaveDB", 2);
-    await db.delete("lastCloudState", "lastCloudState");
+    const { clearLastCloudState } = await import("./save");
+    await clearLastCloudState();
   } catch {
     /* ignore */
   }
@@ -518,9 +514,8 @@ export async function signOut() {
 
   // PRESERVE local save - only clear lastCloudState to allow fresh sync on next login
   try {
-    const { openDB } = await import('idb');
-    const db = await openDB('ADarkCaveDB', 2);
-    await db.delete('lastCloudState', 'lastCloudState');
+    const { clearLastCloudState } = await import('./save');
+    await clearLastCloudState();
     logger.log('[AUTH] 🔄 Cleared cloud sync state (local save preserved)');
   } catch (clearError) {
     logger.error('[AUTH] ⚠️ Failed to clear cloud sync state:', clearError);

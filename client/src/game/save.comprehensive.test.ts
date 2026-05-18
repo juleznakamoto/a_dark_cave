@@ -1,8 +1,20 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { saveGame, loadGame, deleteSave } from './save';
-import { GameState } from '@shared/schema';
-import type { IDBPDatabase } from 'idb';
+import { GameState, SaveData } from '@shared/schema';
+import { decodeLocalSave, LOCAL_SAVE_PREFIX } from './saveCodec';
+
+function readMainSave(
+  stores: Record<string, Record<string, unknown>>,
+): SaveData | null {
+  const raw = stores.saves?.mainSave;
+  if (raw === undefined) return null;
+  return decodeLocalSave(raw);
+}
+
+function decodeMainSavePutArg(value: unknown): SaveData | null {
+  return decodeLocalSave(value);
+}
 
 // Use vi.hoisted to ensure mocks are created before module imports
 const { mockPut, mockGet, mockDelete, mockOpenDB } = vi.hoisted(() => ({
@@ -86,12 +98,8 @@ describe('Save Game System - Comprehensive Tests', () => {
     isPaused: false,
     musicMuted: false,
     sfxMuted: false,
-    shopNotificationSeen: false,
-    shopNotificationVisible: false,
     authNotificationSeen: false,
     authNotificationVisible: false,
-    mysteriousNoteShopNotificationSeen: false,
-    mysteriousNoteDonateNotificationSeen: false,
     playTime: 1000,
     isNewGame: false,
     startTime: Date.now() - 1000,
@@ -174,14 +182,15 @@ describe('Save Game System - Comprehensive Tests', () => {
       const gameState = createMockGameState();
       await saveGame(gameState, true);
 
-      expect(mockPut).toHaveBeenCalledWith(
-        'saves',
-        expect.objectContaining({
-          timestamp: expect.any(Number),
-          playTime: 1000,
-        }),
-        'mainSave'
+      const mainSaveCall = mockPut.mock.calls.find(
+        (call: unknown[]) => call[0] === 'saves' && call[2] === 'mainSave',
       );
+      expect(mainSaveCall).toBeDefined();
+      expect(typeof mainSaveCall![1]).toBe('string');
+      expect(String(mainSaveCall![1]).startsWith(LOCAL_SAVE_PREFIX)).toBe(true);
+      const decoded = decodeMainSavePutArg(mainSaveCall![1]);
+      expect(decoded?.playTime).toBe(1000);
+      expect(decoded?.timestamp).toEqual(expect.any(Number));
     });
 
     it('should handle multiple consecutive cloud save failures', async () => {
@@ -215,13 +224,13 @@ describe('Save Game System - Comprehensive Tests', () => {
 
       // First save (cloud may fail but local should succeed)
       await saveGame(createMockGameState(), true);
-      expect(mockStores.saves.mainSave).toBeDefined();
-      expect(mockStores.saves.mainSave.playTime).toBe(1000);
+      expect(readMainSave(mockStores)).toBeDefined();
+      expect(readMainSave(mockStores)!.playTime).toBe(1000);
 
       // Second save with updated state
       await saveGame(createMockGameState({ playTime: 2000 }), true);
       expect(mockStores.saves.mainSave).toBeDefined();
-      expect(mockStores.saves.mainSave.playTime).toBe(2000);
+      expect(readMainSave(mockStores)!.playTime).toBe(2000);
 
       // Verify both saves were written to local storage
       const localSaveCalls = mockPut.mock.calls.filter(
@@ -294,11 +303,10 @@ describe('Save Game System - Comprehensive Tests', () => {
       expect(loaded).toBeDefined();
       expect(loaded?.playTime).toBe(2000);
       // Verify it was saved locally
-      expect(mockPut).toHaveBeenCalledWith(
-        'saves',
-        expect.objectContaining({ playTime: 2000 }),
-        'mainSave'
+      const cloudSyncPut = mockPut.mock.calls.find(
+        (call: unknown[]) => call[0] === 'saves' && call[2] === 'mainSave',
       );
+      expect(decodeMainSavePutArg(cloudSyncPut?.[1])?.playTime).toBe(2000);
     });
 
     // Approach 4: Test with timestamp comparison
@@ -428,9 +436,9 @@ describe('Save Game System - Comprehensive Tests', () => {
 
       await saveGame(offlineState, true);
 
-      // Verify it's in mock stores
-      expect(mockStores.saves.mainSave).toBeDefined();
-      expect(mockStores.saves.mainSave.playTime).toBe(5000);
+      // Verify it's in mock stores (obfuscated string)
+      expect(readMainSave(mockStores)).toBeDefined();
+      expect(readMainSave(mockStores)!.playTime).toBe(5000);
 
       // Now login
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
@@ -514,7 +522,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       await saveGame(offlineState, true);
 
       // Verify store has the data
-      expect(mockStores.saves.mainSave?.playTime).toBe(3000);
+      expect(readMainSave(mockStores)?.playTime).toBe(3000);
 
       // New session
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
@@ -589,9 +597,9 @@ describe('Save Game System - Comprehensive Tests', () => {
       await saveGame(offlineState, true);
 
       // Check mock store directly
-      const savedData = mockStores.saves.mainSave;
+      const savedData = readMainSave(mockStores);
       expect(savedData).toBeDefined();
-      expect(savedData.playTime).toBe(3000);
+      expect(savedData!.playTime).toBe(3000);
 
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
 
@@ -736,7 +744,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       expect(loaded).not.toBeNull();
       // Should have saved to local IndexedDB with defaults applied
       expect(mockPut).toHaveBeenCalled();
-      const savedData = mockStores.saves.mainSave;
+      const savedData = readMainSave(mockStores);
       expect(savedData?.gameState?.cooldownDurations).toBeDefined();
     });
 
@@ -839,11 +847,8 @@ describe('Save Game System - Comprehensive Tests', () => {
 
       await saveGame(originalState, true);
 
-      const savedData = mockPut.mock.calls[0][1];
-      const serialized = JSON.stringify(savedData);
-      const deserialized = JSON.parse(serialized);
-
-      expect(deserialized.gameState.resources.wood).toBe(123.456);
+      const savedData = decodeMainSavePutArg(mockPut.mock.calls[0][1]);
+      expect(savedData?.gameState.resources.wood).toBe(123.456);
     });
   });
 
@@ -1075,7 +1080,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       await saveGame(gameState, true);
 
       // Verify it's in the store
-      expect(mockStores.saves.mainSave.playTime).toBe(12345);
+      expect(readMainSave(mockStores)!.playTime).toBe(12345);
 
       const loaded = await loadGame();
 
@@ -1120,12 +1125,11 @@ describe('Save Game System - Comprehensive Tests', () => {
 
       await saveGame(gameState, true);
 
-      expect(mockPut).toHaveBeenCalledWith(
-        'saves',
-        expect.objectContaining({
-          playTime: Number.MAX_SAFE_INTEGER - 1000,
-        }),
-        'mainSave'
+      const overflowPut = mockPut.mock.calls.find(
+        (call: unknown[]) => call[0] === 'saves' && call[2] === 'mainSave',
+      );
+      expect(decodeMainSavePutArg(overflowPut?.[1])?.playTime).toBe(
+        Number.MAX_SAFE_INTEGER - 1000,
       );
     });
 

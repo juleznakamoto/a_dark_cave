@@ -123,8 +123,6 @@ function canPriorExecute(actionId: string, state: GameState): boolean {
 const TICK_INTERVAL = GAME_CONSTANTS.TICK_INTERVAL;
 const AUTO_SAVE_INTERVAL = 60 * 1000; // Auto-save every 1 minute
 const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 seconds
-const SHOP_NOTIFICATION_INITIAL_DELAY = 45 * 60 * 1000; // 45 minutes in milliseconds
-const SHOP_NOTIFICATION_REPEAT_INTERVAL = 90 * 60 * 1000; // 90 minutes in milliseconds
 const AUTH_NOTIFICATION_INITIAL_DELAY = 15 * 60 * 1000; // 15 minutes in milliseconds
 const AUTH_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milliseconds
 const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minute in milliseconds
@@ -137,7 +135,6 @@ let lastAutoSave = 0;
 let lastProduction = 0;
 let productionPauseStartedAt: number | null = null;
 let gameStartTime = 0;
-let lastShopNotificationTime = 0;
 let lastAuthNotificationTime = 0;
 let loopProgressTimeoutId: NodeJS.Timeout | null = null;
 let lastRenderTime = 0;
@@ -409,37 +406,9 @@ export function startGameLoop() {
         handleAutoSave();
       }
 
-      // Shop notification logic (first after 30 minutes, then every 60 minutes)
       if (gameStartTime > 0) {
         const elapsedSinceStart = timestamp - gameStartTime;
         const state = useGameStore.getState();
-
-        // First notification after 30 minutes
-        if (
-          elapsedSinceStart >= SHOP_NOTIFICATION_INITIAL_DELAY &&
-          lastShopNotificationTime === 0
-        ) {
-          lastShopNotificationTime = timestamp;
-          if (state.shopNotificationSeen) {
-            useGameStore.setState({
-              shopNotificationSeen: false,
-              shopNotificationVisible: true,
-            });
-          } else if (!state.shopNotificationVisible) {
-            useGameStore.setState({ shopNotificationVisible: true });
-          }
-        }
-        // Subsequent notifications every 60 minutes after the last one
-        else if (
-          lastShopNotificationTime > 0 &&
-          timestamp - lastShopNotificationTime >=
-          SHOP_NOTIFICATION_REPEAT_INTERVAL
-        ) {
-          lastShopNotificationTime = timestamp;
-          if (state.shopNotificationSeen) {
-            useGameStore.setState({ authNotificationSeen: false });
-          }
-        }
 
         // Auth notification logic (first after 15 minutes, then every 60 minutes) - only if not signed in
         if (!state.isUserSignedIn) {
