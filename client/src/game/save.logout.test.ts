@@ -1,8 +1,17 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { saveGame, loadGame } from './save';
-import { GameState } from '@shared/schema';
+import { GameState, SaveData } from '@shared/schema';
+import { decodeLocalSave } from './saveCodec';
 import type { IDBPDatabase } from 'idb';
+
+function readMainSave(
+  stores: Record<string, Record<string, unknown>>,
+): SaveData | null {
+  const raw = stores.saves?.mainSave;
+  if (raw === undefined) return null;
+  return decodeLocalSave(raw);
+}
 
 // Use vi.hoisted to ensure mocks are created before module imports
 const { mockPut, mockGet, mockDelete, mockOpenDB } = vi.hoisted(() => ({
@@ -153,8 +162,8 @@ describe('Logout/Login Save Behavior Tests', () => {
 
       // Cloud save happens via RPC in saveGame, not via saveGameToSupabase
       // Verify local save was updated
-      expect(mockStores.saves.mainSave).toBeDefined();
-      expect(mockStores.saves.mainSave.playTime).toBe(5000);
+      expect(readMainSave(mockStores)).toBeDefined();
+      expect(readMainSave(mockStores)!.playTime).toBe(5000);
 
       // Step 2: User gets logged out (session expires, or they logout)
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
@@ -170,7 +179,7 @@ describe('Logout/Login Save Behavior Tests', () => {
       await saveGame(offlineProgress2, false);
 
       // Verify local save has the latest progress
-      const localData = mockStores.saves.mainSave;
+      const localData = readMainSave(mockStores)!;
       expect(localData.playTime).toBe(7000);
       expect(localData.gameState.resources.wood).toBe(200);
 
@@ -193,9 +202,9 @@ describe('Logout/Login Save Behavior Tests', () => {
       expect(loaded?.resources.wood).toBe(200); // Should use newer local resources
 
       // Verify local save contains the latest data
-      expect(mockStores.saves.mainSave).toBeDefined();
-      expect(mockStores.saves.mainSave.playTime).toBe(7000);
-      expect(mockStores.saves.mainSave.gameState.resources.wood).toBe(200);
+      expect(readMainSave(mockStores)).toBeDefined();
+      expect(readMainSave(mockStores)!.playTime).toBe(7000);
+      expect(readMainSave(mockStores)!.gameState.resources.wood).toBe(200);
     });
 
     it('should handle cloud being newer than local (different device scenario)', async () => {
@@ -321,10 +330,11 @@ describe('Logout/Login Save Behavior Tests', () => {
       const stateWithoutPlayTime: any = createMockGameState();
       delete stateWithoutPlayTime.playTime;
 
-      mockStores.saves.mainSave = {
+      const { encodeLocalSave } = await import('./saveCodec');
+      mockStores.saves.mainSave = encodeLocalSave({
         gameState: stateWithoutPlayTime,
         timestamp: Date.now(),
-      };
+      });
 
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
 
@@ -370,7 +380,7 @@ describe('Logout/Login Save Behavior Tests', () => {
       // Verify lastCloudState was cleared (cloud sync state reset)
       expect(mockStores.lastCloudState.lastCloudState).toBeUndefined();
       // Local save should still exist
-      expect(mockStores.saves.mainSave).toBeDefined();
+      expect(readMainSave(mockStores)).toBeDefined();
     });
   });
 });
