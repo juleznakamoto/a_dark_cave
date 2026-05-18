@@ -197,7 +197,7 @@ export default function StartScreen() {
           data-testid="button-light-fire"
           button_id="light-fire"
         >
-          Light Fire
+          Make Fire
         </ParticleButton>
       </main>
 

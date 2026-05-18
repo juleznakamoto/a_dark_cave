@@ -245,16 +245,43 @@ export default function ProfileMenu() {
     }
   };
 
-  const handleCopyInviteLink = () => {
+  const handleCopyInviteLink = async () => {
     if (!currentUser) return;
 
-    const inviteLink = `${window.location.origin}?ref=${currentUser.id}`;
-    navigator.clipboard.writeText(inviteLink);
-    toast({
-      title: "Invite link copied!",
-      description: `Share it with friends to earn ${REFERRAL_REWARD_GOLD} Gold each.`,
-    });
-    setAccountDropdownOpen(false);
+    try {
+      const supabase = await getSupabaseClient();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        throw new Error("Not signed in");
+      }
+
+      const res = await fetch(apiUrl("/api/referral/code"), {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+      if (!res.ok) {
+        throw new Error("Failed to load invite code");
+      }
+      const { referralCode } = (await res.json()) as { referralCode?: string };
+      if (!referralCode) {
+        throw new Error("Missing invite code");
+      }
+
+      const inviteLink = `${window.location.origin}?ref=${referralCode}`;
+      await navigator.clipboard.writeText(inviteLink);
+      toast({
+        title: "Invite link copied!",
+        description: `Share it with friends to earn ${REFERRAL_REWARD_GOLD} Gold each.`,
+      });
+      setAccountDropdownOpen(false);
+    } catch (error) {
+      logger.error("Failed to copy invite link:", error);
+      toast({
+        title: "Could not copy invite link",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleAuthSuccess = async () => {

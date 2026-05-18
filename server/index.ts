@@ -11,6 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 import { createPaymentIntent, verifyPayment } from "./stripe";
 import { processReferral } from "./referral";
+import { getOrCreateReferralCode } from "./referralCodes";
 import {
   loadResendContactRowsSplit,
   rowsToResendContactCsv,
@@ -1237,6 +1238,27 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
       return res.status(500).json({
         error: err?.message ?? "Account deletion failed",
       });
+    }
+  });
+
+  app.get("/api/referral/code", authLimiter, async (req, res) => {
+    try {
+      const user = await getSessionUserIdFromBearer(req);
+      if (!user) {
+        return res.status(401).json({ error: "Authorization required" });
+      }
+
+      const env = getMarketingAdminEnv();
+      const adminClient = getAdminClient(env);
+      const referralCode = await getOrCreateReferralCode(adminClient, user.id);
+
+      res.setHeader("Content-Type", "application/json");
+      res.json({ referralCode });
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : "Failed to get referral code";
+      log(`❌ GET /api/referral/code failed: ${message}`);
+      return res.status(500).json({ error: message });
     }
   });
 

@@ -1,7 +1,8 @@
 
 import { REFERRAL_REWARD_GOLD } from '@shared/schema';
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { processReferral } from './referral';
+import { resolveReferrerUserId } from './referralCodes';
 
 // Mock Supabase client
 const mockSupabaseClient = {
@@ -16,6 +17,11 @@ vi.mock('@supabase/supabase-js', () => ({
   createClient: vi.fn(() => mockSupabaseClient),
 }));
 
+vi.mock('./referralCodes', () => ({
+  resolveReferrerUserId: vi.fn(),
+  getOrCreateReferralCode: vi.fn(),
+}));
+
 describe('Referral E2E Flow', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -27,6 +33,9 @@ describe('Referral E2E Flow', () => {
   it('should handle complete referral flow: signup -> process -> claim', async () => {
     const referrerId = 'referrer-123';
     const newUserId = 'new-user-456';
+    const shortCode = 'AB3K9M';
+
+    vi.mocked(resolveReferrerUserId).mockResolvedValue({ userId: referrerId });
 
     // Mock successful referral processing
     let selectCallCount = 0;
@@ -63,7 +72,7 @@ describe('Referral E2E Flow', () => {
     }));
 
     // Step 1: Process referral
-    const result = await processReferral(newUserId, referrerId);
+    const result = await processReferral(newUserId, shortCode);
     expect(result.success).toBe(true);
 
     // Step 2: Verify referrer got the unclaimed referral
@@ -80,7 +89,11 @@ describe('Referral E2E Flow', () => {
 
   it('should prevent referral after user has already started playing', async () => {
     const newUserId = 'existing-user-123';
-    const referralCode = 'referrer-456';
+    const referralCode = 'XY2Z4W';
+
+    vi.mocked(resolveReferrerUserId).mockResolvedValue({
+      userId: 'referrer-456',
+    });
 
     mockSupabaseClient.from.mockReturnValue({
       select: vi.fn().mockReturnValue({

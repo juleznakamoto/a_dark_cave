@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { REFERRAL_REWARD_GOLD } from '@shared/schema';
+import { resolveReferrerUserId } from './referralCodes';
 
 type ReferralEntry = { userId: string; claimed?: boolean; timestamp?: number };
 
@@ -27,8 +28,22 @@ const getSupabaseAdmin = () => {
 export async function processReferral(newUserId: string, referralCode: string) {
   const adminClient = getSupabaseAdmin();
 
+  const resolved = await resolveReferrerUserId(adminClient, referralCode);
+  if ('error' in resolved) {
+    if (resolved.error === 'invalid_code') {
+      return { success: false, reason: 'invalid_referral_code' };
+    }
+    if (resolved.error === 'referrer_not_found') {
+      return { success: false, reason: 'referrer_no_save' };
+    }
+    return { success: false, reason: 'referrer_fetch_error' };
+  }
+
+  const referrerUserId = resolved.userId;
+  const storedReferralCode = referralCode.trim();
+
   // Prevent self-referral
-  if (newUserId === referralCode) {
+  if (newUserId === referrerUserId) {
     return { success: false, reason: 'self_referral' };
   }
 
@@ -47,7 +62,7 @@ export async function processReferral(newUserId: string, referralCode: string) {
   const { data: referrerSave, error: referrerError } = await adminClient
     .from('game_saves')
     .select('game_state')
-    .eq('user_id', referralCode)
+    .eq('user_id', referrerUserId)
     .maybeSingle();
 
   if (referrerError) {
@@ -91,7 +106,7 @@ export async function processReferral(newUserId: string, referralCode: string) {
       game_state: updatedReferrerState,
       updated_at: new Date().toISOString(),
     })
-    .eq('user_id', referralCode);
+    .eq('user_id', referrerUserId);
 
   if (referrerUpdateError) {
     return { success: false, reason: 'referrer_update_error' };
@@ -129,7 +144,7 @@ export async function processReferral(newUserId: string, referralCode: string) {
       ...initialGameState.resources,
       gold: newNewUserGold,
     },
-    referralCode: referralCode,
+    referralCode: storedReferralCode,
     referralProcessed: true,
     log: [
       ...(initialGameState.log || []),

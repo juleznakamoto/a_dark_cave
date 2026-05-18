@@ -3,6 +3,7 @@ import { apiUrl } from '@/lib/apiUrl';
 import { GameState, SaveData, SIGN_UP_WELCOME_GOLD } from '@shared/schema';
 import { logger } from '@/lib/logger';
 import type { AuthUser } from '@/game/types';
+import { parseRefParam } from '@shared/referralCode';
 
 // Re-export AuthUser for convenience
 export type { AuthUser } from '@/game/types';
@@ -10,7 +11,7 @@ export type { AuthUser } from '@/game/types';
 /** Session key: pending marketing choice from signup (email or Google) until first authenticated session. */
 export const PENDING_MARKETING_OPT_IN_KEY = 'adc_pending_marketing_opt_in';
 
-/** Pending referrer user id from `?ref=` for Google OAuth sign-up (metadata applied after redirect). */
+/** Pending referrer code from `?ref=` (6-char or legacy UUID) for Google OAuth sign-up. */
 export const PENDING_REFERRAL_CODE_KEY = 'adc_pending_referral_code';
 
 /** Set when starting Google OAuth from Create Account — welcome gold applied after load if the auth user is new. */
@@ -45,11 +46,12 @@ export function clearPendingReferralCode(): void {
 }
 
 function stashPendingReferralCodeForOAuth(referralCode: string | null | undefined): void {
-  const trimmed =
-    typeof referralCode === 'string' ? referralCode.trim() : '';
-  if (!trimmed) return;
+  const parsed = parseRefParam(
+    typeof referralCode === 'string' ? referralCode : null,
+  );
+  if (!parsed) return;
   try {
-    sessionStorage.setItem(PENDING_REFERRAL_CODE_KEY, trimmed);
+    sessionStorage.setItem(PENDING_REFERRAL_CODE_KEY, parsed);
   } catch {
     /* ignore */
   }

@@ -1,8 +1,17 @@
 
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeAll, vi } from 'vitest';
 import request from 'supertest';
 import express from 'express';
 import { processReferral } from './referral';
+import { getOrCreateReferralCode } from './referralCodes';
+
+vi.mock('./referralCodes', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('./referralCodes')>();
+  return {
+    ...actual,
+    getOrCreateReferralCode: vi.fn(),
+  };
+});
 
 describe('Referral API Integration', { timeout: 15_000 }, () => {
   let app: express.Application;
@@ -10,6 +19,11 @@ describe('Referral API Integration', { timeout: 15_000 }, () => {
   beforeAll(() => {
     app = express();
     app.use(express.json());
+
+    app.get('/api/referral/code', async (_req, res) => {
+      const code = await getOrCreateReferralCode({} as never, 'user-1');
+      res.json({ referralCode: code });
+    });
 
     app.post('/api/referral/process', async (req, res) => {
       try {
@@ -55,6 +69,13 @@ describe('Referral API Integration', { timeout: 15_000 }, () => {
       .send({ newUserId: 'test-user' });
 
     expect(response.status).toBe(400);
+  });
+
+  it('should return referral code JSON', async () => {
+    vi.mocked(getOrCreateReferralCode).mockResolvedValue('AB3K9M');
+    const response = await request(app).get('/api/referral/code');
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ referralCode: 'AB3K9M' });
   });
 
   it('should return JSON content-type', async () => {

@@ -25,6 +25,7 @@ import { useGameStore } from "@/game/state";
 import { logger } from "@/lib/logger";
 import { cn } from "@/lib/utils";
 import { SIGN_UP_WELCOME_GOLD } from "@shared/schema";
+import { parseRefParam } from "@shared/referralCode";
 
 interface AuthDialogProps {
   isOpen: boolean;
@@ -41,10 +42,9 @@ export default function AuthDialog({
     (state) => state.signUpPromptEligibleForGold
   );
 
-  // Get referral code from URL
   const getReferralCode = () => {
     const params = new URLSearchParams(window.location.search);
-    return params.get("ref");
+    return parseRefParam(params.get("ref"));
   };
 
   // Default to signup if there's a referral code or rewards sign-up task opened auth, otherwise signin
