@@ -32,7 +32,7 @@ import {
   applyMarketingSubscribeGoldReward,
   postMarketingPreference,
 } from "@/game/marketingEmailReward";
-import { isSocialPromoExclusiveRewardComplete } from "@/game/socialPromoExclusiveReward";
+import { isRewardsTasksShortcutVisible } from "@/game/socialPromoExclusiveReward";
 
 export default function ProfileMenu() {
   const {
@@ -79,16 +79,14 @@ export default function ProfileMenu() {
   const [deleteAccountInProgress, setDeleteAccountInProgress] = useState(false);
   const { toast } = useToast();
 
-  /** Rewards/tasks shortcut; visible until exclusive-track is complete *and* the ring reward event granted gifted_ring. */
-  const exclusiveTrackTasksDone = isSocialPromoExclusiveRewardComplete({
+  const showRewardsTasksShortcut = isRewardsTasksShortcutVisible({
     social_media_rewards,
     referralCount,
     referrals,
     isUserSignedIn,
     signupWelcomeGoldClaimed: signupWelcomeGoldClaimedBool,
+    clothing,
   });
-  const showRewardsTasksShortcut =
-    !exclusiveTrackTasksDone || clothing?.gifted_ring !== true;
 
   const sleepDialogOpen = idleModeDialog?.isOpen === true;
   /** After sleep dialog opens, show the Playlight cue only after this delay (pause shows immediately). */

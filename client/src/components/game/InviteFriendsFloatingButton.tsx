@@ -8,7 +8,7 @@ import {
   SOCIAL_PROMPT_REFERRAL_CAP,
   REFERRAL_REWARD_GOLD,
 } from "@/game/socialPromptAuto";
-import { isSocialPromoExclusiveRewardComplete } from "@/game/socialPromoExclusiveReward";
+import { isInviteFriendsFloatingButtonVisible } from "@/game/socialPromoExclusiveReward";
 
 export default function InviteFriendsFloatingButton() {
   const { toast } = useToast();
@@ -19,22 +19,14 @@ export default function InviteFriendsFloatingButton() {
   const signupWelcomeGoldClaimed = useGameStore(
     (s) => s.signupWelcomeGoldClaimed === true,
   );
-  const giftedRingGranted = useGameStore((s) => s.clothing?.gifted_ring === true);
 
-  const exclusiveTrackTasksDone = isSocialPromoExclusiveRewardComplete({
+  const showFloatingInvite = isInviteFriendsFloatingButtonVisible({
     social_media_rewards,
     referralCount,
     referrals,
     isUserSignedIn,
     signupWelcomeGoldClaimed,
   });
-  const rewardsTasksShortcutVisible =
-    !exclusiveTrackTasksDone || !giftedRingGranted;
-
-  const showFloatingInvite =
-    isUserSignedIn &&
-    !rewardsTasksShortcutVisible &&
-    referralCount < SOCIAL_PROMPT_REFERRAL_CAP;
 
   if (!showFloatingInvite) return null;
 
@@ -71,21 +63,23 @@ export default function InviteFriendsFloatingButton() {
           void handleCopyInviteLink();
         }}
       >
-        <button
-          type="button"
-          className="invite-friends-float-btn flex items-center gap-2 rounded-md border border-border border-red-800/50 bg-red-950/30 px-2.5 py-1.5 text-xs text-neutral-300 backdrop-blur-sm transition-[background-color,color] hover:bg-red-950/70 hover:text-foreground"
-        >
-          <div className="flex min-w-0 items-center gap-1.5">
-            <UserPlus
-              className="h-4 w-4 shrink-0 opacity-90"
-              aria-hidden
-            />
-            <span>Invite</span>
-          </div>
-          <span className="shrink-0 font-semibold">
-            +{REFERRAL_REWARD_GOLD} Gold
-          </span>
-        </button>
+        <div className="invite-friends-float-shell">
+          <button
+            type="button"
+            className="invite-friends-float-btn flex items-center gap-2 rounded-md border border-border border-red-800/50 bg-red-950/30 px-2.5 py-1.5 text-xs text-neutral-300 backdrop-blur-sm"
+          >
+            <div className="flex min-w-0 items-center gap-1.5">
+              <UserPlus
+                className="h-4 w-4 shrink-0 opacity-90"
+                aria-hidden
+              />
+              <span>Invite</span>
+            </div>
+            <span className="shrink-0 font-semibold">
+              +{REFERRAL_REWARD_GOLD} Gold
+            </span>
+          </button>
+        </div>
       </TooltipWrapper>
     </div>
   );

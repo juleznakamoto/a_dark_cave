@@ -2,6 +2,7 @@ import type { GameState } from "@shared/schema";
 import { MARKETING_EMAIL_REWARD_KEY } from "@/game/marketingEmailReward";
 import { PLAYLIGHT_DISCOVER_REWARD_KEY } from "@/game/playlightDiscoverReward";
 import { SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
+import { SOCIAL_PROMPT_REFERRAL_CAP } from "@/game/socialPromptAuto";
 import { useGameStore } from "@/game/state";
 import { logger } from "@/lib/logger";
 
@@ -17,6 +18,10 @@ export type SocialPromoExclusiveSlice = {
   isUserSignedIn?: boolean;
   /** Welcome gold granted once after creating an account (may be true before email confirm / before UI auth sync). */
   signupWelcomeGoldClaimed?: boolean;
+};
+
+export type RewardsTasksUiSlice = SocialPromoExclusiveSlice & {
+  clothing?: GameState["clothing"];
 };
 
 /** First rewards row: done when gameplay session is active or welcome bonus was already granted. */
@@ -70,6 +75,30 @@ export function isSocialPromoExclusiveRewardComplete(
   state: SocialPromoExclusiveSlice,
 ): boolean {
   return socialPromoExclusiveStepsCompleted(state) >= SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL;
+}
+
+/** Profile ⯫ shortcut: hidden only when all tasks are done and the ring event granted `gifted_ring`. */
+export function isRewardsTasksShortcutVisible(
+  state: RewardsTasksUiSlice,
+): boolean {
+  return (
+    !isSocialPromoExclusiveRewardComplete(state) ||
+    state.clothing?.gifted_ring !== true
+  );
+}
+
+/**
+ * Lower-right invite CTA: all exclusive-track tasks done (independent of ring event).
+ * `gifted_ring` is granted by `giftedRingDiscovery` in eventsSocialPromoExclusive.ts.
+ */
+export function isInviteFriendsFloatingButtonVisible(
+  state: SocialPromoExclusiveSlice,
+): boolean {
+  return (
+    state.isUserSignedIn === true &&
+    isSocialPromoExclusiveRewardComplete(state) &&
+    (state.referralCount ?? 0) < SOCIAL_PROMPT_REFERRAL_CAP
+  );
 }
 
 /**
