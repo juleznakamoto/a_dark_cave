@@ -31,6 +31,7 @@ import {
   assignVillagerToJob,
   unassignVillagerFromJob,
   mergeCombatVictoryState,
+  migrateTraderShopUnlockOnLoad,
 } from "@/game/stateHelpers";
 import { capResourceToLimit } from "@/game/resourceLimits";
 import {
@@ -2239,6 +2240,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
           free:
             (loadedState.villagers?.free || 0) + strandedExpeditionVillagers,
         };
+      }
+
+      const traderShopMigration = migrateTraderShopUnlockOnLoad(loadedState);
+      if (traderShopMigration?.story) {
+        loadedState.story = traderShopMigration.story;
       }
 
       set(loadedState);

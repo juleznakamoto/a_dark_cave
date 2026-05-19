@@ -187,6 +187,34 @@ export const storyEvents: Record<string, GameEvent> = {
     ],
   },
 
+  traderSettles: {
+    id: "traderSettles",
+    condition: (state: GameState) =>
+      (state.buildings.woodenHut ?? 0) >= 5 &&
+      !state.story.seen.traderSettled,
+    timeProbability: 5,
+    title: "The Trader",
+    message:
+      "A trader arrives in the village with his family. They look exhausted, their faces weathered by years on the road. They are finally ready to settle down.",
+    priority: 5,
+    repeatable: false,
+    choices: [
+      {
+        id: "continue",
+        label: "Continue",
+        effect: (state: GameState) => ({
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              traderSettled: true,
+            },
+          },
+        }),
+      },
+    ],
+  },
+
   mysteriousNote: {
     id: "mysteriousNote",
     condition: (state: GameState) =>

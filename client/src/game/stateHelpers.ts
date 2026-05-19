@@ -306,6 +306,49 @@ export function buildGameState(state: any): GameState {
   return cleaned as GameState;
 }
 
+const TRADER_SHOP_UNLOCK_V2_APPLIED_KEY = "traderShopUnlockV2Applied";
+
+/**
+ * One-time load migration: before `traderSettles`, the real-money Trader tab unlocked at
+ * `tradePost >= 1`. Grandfather those saves on first load after the story gate shipped.
+ * New games get `traderShopUnlockV2Applied` on first load while `tradePost` is still 0, so
+ * building a trade post later still requires the `traderSettles` event.
+ */
+export function migrateTraderShopUnlockOnLoad(
+  state: Pick<GameState, "buildings" | "story" | "traderDialogOpens">,
+): Partial<Pick<GameState, "story">> | null {
+  const seen = { ...(state.story?.seen ?? {}) };
+  if (seen[TRADER_SHOP_UNLOCK_V2_APPLIED_KEY]) return null;
+
+  const tradePost = state.buildings?.tradePost ?? 0;
+  const dialogOpens = state.traderDialogOpens ?? 0;
+  const shouldGrandfatherUnlock =
+    !seen.traderSettled && (tradePost >= 1 || dialogOpens > 0);
+
+  seen[TRADER_SHOP_UNLOCK_V2_APPLIED_KEY] = true;
+  if (shouldGrandfatherUnlock) {
+    seen.traderSettled = true;
+  }
+
+  return {
+    story: {
+      ...state.story,
+      seen,
+      merchantPurchases: state.story?.merchantPurchases ?? 0,
+    },
+  };
+}
+
+/** Real-money Trader tab/shop unlocks after `traderSettles` (or mid-session shop opens before that flag is saved). */
+export function isTraderShopUnlocked(state: {
+  story?: { seen?: Record<string, unknown> };
+  traderDialogOpens?: number;
+}): boolean {
+  if (state.story?.seen?.traderSettled) return true;
+  if ((state.traderDialogOpens ?? 0) > 0) return true;
+  return false;
+}
+
 // Cap resource to current storage limit
 function capResourceToLimit(resource: keyof GameState['resources'], amount: number, state: GameState): number {
   // Check if this resource should be limited

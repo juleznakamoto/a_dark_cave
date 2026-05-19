@@ -43,6 +43,7 @@ import {
   getVisibleHotkeyTabs,
   isEditableKeyboardTarget,
 } from "./tabHotkeys";
+import { isTraderShopUnlocked } from "@/game/stateHelpers";
 
 export default function GameContainer() {
   const {
@@ -90,6 +91,8 @@ export default function GameContainer() {
   );
   const madnessDialog = useGameStore((state) => state.madnessDialog);
   const setMadnessDialog = useGameStore((state) => state.setMadnessDialog);
+  const story = useGameStore((state) => state.story);
+  const traderDialogOpens = useGameStore((state) => state.traderDialogOpens);
 
   // Estate unlocks when Dark Estate is built
   const estateUnlocked = buildings.darkEstate >= 1;
@@ -148,7 +151,7 @@ export default function GameContainer() {
     );
 
   // Track unlocked tabs to trigger blink until clicked
-  const traderUnlocked = buildings.tradePost >= 1;
+  const traderUnlocked = isTraderShopUnlocked({ story, traderDialogOpens });
   const achievementsUnlocked = !!relics?.survivors_notes || !!books?.book_of_trials;
   const prevFlagsRef = useRef({
     villageUnlocked: flags.villageUnlocked,

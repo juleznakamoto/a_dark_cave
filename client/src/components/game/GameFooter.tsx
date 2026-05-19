@@ -9,6 +9,7 @@ import {
 } from "@/lib/gameFooterSocialLinks";
 import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
 import { useState, useEffect } from "react";
+import { isTraderShopUnlocked } from "@/game/stateHelpers";
 
 export default function GameFooter() {
   const {
@@ -27,6 +28,8 @@ export default function GameFooter() {
     fullGamePurchaseDialogOpen,
     BTP,
     leaderboardDialogOpen,
+    story,
+    traderDialogOpens,
   } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const [displayTime, setDisplayTime] = useState("");
@@ -77,6 +80,7 @@ export default function GameFooter() {
 
   // Check if gameplay time is less than 30 minutes
   const isEarlyGameplay = playTime < 30 * 60 * 1000; // 30 minutes in milliseconds
+  const traderShopUnlocked = isTraderShopUnlocked({ story, traderDialogOpens });
 
   const emphasizeFooterSocialIcons =
     isPaused || idleModeDialog.isOpen || leaderboardDialogOpen;
@@ -146,7 +150,7 @@ export default function GameFooter() {
               >
                 Full Game
               </Button>
-            ) : (
+            ) : traderShopUnlocked ? (
               <Button
                 variant="ghost"
                 size="xs"
@@ -155,7 +159,7 @@ export default function GameFooter() {
               >
                 Trader
               </Button>
-            )}
+            ) : null}
             <Button
               variant="ghost"
               size="xs"
