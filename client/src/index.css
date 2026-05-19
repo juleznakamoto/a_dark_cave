@@ -552,6 +552,14 @@ body {
   animation: focus-glow 3s ease-in-out infinite;
 }
 
+@media (prefers-reduced-motion: reduce) {
+
+  .playlight-discovery-btn,
+  .playlight-discovery-btn * {
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* Z-axis float: scale only (no shadow). */
 @keyframes invite-friends-float-scale {
 

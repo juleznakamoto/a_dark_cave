@@ -33,6 +33,7 @@ import {
   postMarketingPreference,
 } from "@/game/marketingEmailReward";
 import { isRewardsTasksShortcutVisible } from "@/game/socialPromoExclusiveReward";
+import PlaylightDiscoveryButton from "./PlaylightDiscoveryButton";
 
 export default function ProfileMenu() {
   const {
@@ -563,23 +564,12 @@ export default function ProfileMenu() {
                   Explore more fun games →
                 </span>
               )}
-              <Button
-                variant="ghost"
-                size="xs"
+              <PlaylightDiscoveryButton
                 onClick={handleDiscovery}
-                className="relative p-0 w-7 h-7 shrink-0 bg-background/70 backdrop-blur-sm border border-border flex items-center justify-center group"
-              >
-                <img
-                  src="/flashlight.png"
-                  alt="Discovery"
-                  className="w-full h-full object-contain rounded-md transition-all duration-300 invert opacity-60 group-hover:invert-0 group-hover:opacity-100"
-                />
-                {(isPaused ||
-                  sleepDialogOpen ||
-                  leaderboardDialogOpen) && (
-                    <span className="absolute -top-[4px] -right-[4px] w-2 h-2 bg-red-600 rounded-full notification-pulse" />
-                  )}
-              </Button>
+                showNotificationDot={
+                  isPaused || sleepDialogOpen || leaderboardDialogOpen
+                }
+              />
             </div>
           </div>
         </div>
