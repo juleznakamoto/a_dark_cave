@@ -55,39 +55,40 @@ export default function InviteFriendsFloatingButton() {
   };
 
   return (
-    <div
-      className="pointer-events-auto fixed z-30 right-3 sm:right-4"
-      style={{ bottom: "52px" }}
-    >
-      <TooltipWrapper
-        tooltip={
-          <p className="text-xs">
-            Invite your friends and both of you will receive {REFERRAL_REWARD_GOLD}{" "}
-            Gold. You can invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends. (
-            {referralCount}/{SOCIAL_PROMPT_REFERRAL_CAP} invited).
-          </p>
-        }
-        tooltipId="referral-floating-invite"
-        tooltipContentClassName="max-w-xs"
-        className="inline-flex"
-        onClick={() => {
-          void handleCopyInviteLink();
-        }}
-      >
-        <button
-          type="button"
-          className="flex items-center gap-2 rounded-md border border-border bg-background/90 px-2.5 py-1.5 text-xs text-neutral-300 backdrop-blur-sm transition-colors hover:bg-muted/50"
+    <div className="pointer-events-auto fixed z-30 right-4 bottom-[calc(45px+1rem)]">
+      <div className="invite-friends-float-motion">
+        <TooltipWrapper
+          tooltip={
+            <p className="text-xs">
+              Invite your friends and both of you will receive {REFERRAL_REWARD_GOLD}{" "}
+              Gold. You can invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends. (
+              {referralCount}/{SOCIAL_PROMPT_REFERRAL_CAP} invited).
+            </p>
+          }
+          tooltipId="referral-floating-invite"
+          tooltipContentClassName="max-w-xs"
+          className="inline-flex"
+          onClick={() => {
+            void handleCopyInviteLink();
+          }}
         >
-          <div className="flex min-w-0 items-center gap-1.5">
-            <UserPlus
-              className="h-4 w-4 shrink-0 opacity-90"
-              aria-hidden
-            />
-            <span>Invite</span>
-          </div>
-          <span className="shrink-0 font-semibold">+{REFERRAL_REWARD_GOLD} Gold</span>
-        </button>
-      </TooltipWrapper>
+          <button
+            type="button"
+            className="flex items-center gap-2 rounded-md border border-border border-red-800/50 bg-red-950/30 px-2.5 py-1.5 text-xs text-neutral-300 shadow-[0_10px_28px_rgba(0,0,0,0.55)] backdrop-blur-sm transition-colors hover:bg-red-950/70 hover:text-foreground"
+          >
+            <div className="flex min-w-0 items-center gap-1.5">
+              <UserPlus
+                className="h-4 w-4 shrink-0 opacity-90"
+                aria-hidden
+              />
+              <span>Invite</span>
+            </div>
+            <span className="shrink-0 font-semibold">
+              +{REFERRAL_REWARD_GOLD} Gold
+            </span>
+          </button>
+        </TooltipWrapper>
+      </div>
     </div>
   );
 }

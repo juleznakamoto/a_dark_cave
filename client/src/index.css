@@ -552,6 +552,32 @@ body {
   animation: focus-glow 3s ease-in-out infinite;
 }
 
+@keyframes invite-friends-float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.45));
+  }
+
+  50% {
+    transform: translateY(-10px);
+    filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.55));
+  }
+}
+
+.invite-friends-float-motion {
+  animation: invite-friends-float 4.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .invite-friends-float-motion {
+    animation: none;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
+  }
+}
+
 @keyframes timer-symbol-pulse {
   0% {
     opacity: 1;
