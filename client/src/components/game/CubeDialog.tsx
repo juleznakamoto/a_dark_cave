@@ -76,6 +76,16 @@ export default function CubeDialog({
         });
       }
 
+      useGameStore.setState((s) => ({
+        story: {
+          ...s.story,
+          seen: {
+            ...s.story.seen,
+            cruelModeJourneyCompleteDiscount: true,
+          },
+        },
+      }));
+
       // Save the game state before navigating
       const { saveGame } = await import('@/game/save');
       const state = useGameStore.getState();

@@ -83,8 +83,6 @@ export default function Game() {
         const openShop = urlParams.get("openShop") === "true";
         const cruelShopHighlight =
           openShop && urlParams.get("cruelHighlight") === "true";
-        const cruelCompletionShopDiscount =
-          openShop && urlParams.get("cruelCompletionDiscount") === "true";
 
         // Check for Google Ads source parameter (c)
         const googleAdsSource = urlParams.get("c");
@@ -298,12 +296,10 @@ export default function Game() {
           logger.log("[GAME] Removed Google Ads source parameter from URL");
         }
 
-        if (openShop || cruelShopHighlight || cruelCompletionShopDiscount) {
+        if (openShop || cruelShopHighlight) {
           const shopParams = new URLSearchParams(window.location.search);
           if (openShop) shopParams.delete("openShop");
           if (cruelShopHighlight) shopParams.delete("cruelHighlight");
-          if (cruelCompletionShopDiscount)
-            shopParams.delete("cruelCompletionDiscount");
           const newShopUrl =
             window.location.pathname +
             (shopParams.toString() ? `?${shopParams.toString()}` : "") +
@@ -340,17 +336,6 @@ export default function Game() {
           setTimeout(() => {
             if (cruelShopHighlight) {
               useGameStore.getState().setShopCruelModeHighlight(true);
-            }
-            if (cruelCompletionShopDiscount) {
-              useGameStore.setState((s) => ({
-                story: {
-                  ...s.story,
-                  seen: {
-                    ...s.story.seen,
-                    cruelModeJourneyCompleteDiscount: true,
-                  },
-                },
-              }));
             }
             setShopDialogOpen(true);
           }, 500);

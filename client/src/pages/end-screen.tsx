@@ -9,9 +9,7 @@ export default function EndScreenPage() {
   };
 
   const handleCruelMode = async () => {
-    // Journey-complete promo: open shop with Cruel Mode highlighted + discounted checkout flag.
-    window.location.href =
-      "/?game=true&openShop=true&cruelHighlight=true&cruelCompletionDiscount=true";
+    window.location.href = "/?game=true&openShop=true&cruelHighlight=true";
   };
 
   const handleFeedback = () => {
