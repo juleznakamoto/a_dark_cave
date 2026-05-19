@@ -25,14 +25,13 @@ import { RestartGameDialog } from "./RestartGameDialog";
 import { DeleteAccountDialog } from "./DeleteAccountDialog";
 import SocialPromptDialog from "./SocialPromptDialog";
 import { initPlaylight, markPlaylightDiscoveryUserInitiated } from "@/lib/playlight";
-import { Mail, UserPlus } from "lucide-react";
+import { Mail } from "lucide-react";
 import {
   MARKETING_EMAIL_REWARD_KEY,
   MARKETING_SUBSCRIBE_GOLD,
   applyMarketingSubscribeGoldReward,
   postMarketingPreference,
 } from "@/game/marketingEmailReward";
-import { SOCIAL_PROMPT_REFERRAL_CAP, REFERRAL_REWARD_GOLD } from "@/game/socialPromptAuto";
 import { isSocialPromoExclusiveRewardComplete } from "@/game/socialPromoExclusiveReward";
 
 export default function ProfileMenu() {
@@ -223,11 +222,11 @@ export default function ProfileMenu() {
       useGameStore.setState((state) => ({
         ...(signedIn
           ? {
-              cooldowns: {
-                ...state.cooldowns,
-                [actionId]: 15,
-              },
-            }
+            cooldowns: {
+              ...state.cooldowns,
+              [actionId]: 15,
+            },
+          }
           : {}),
         lastSaved: timestamp,
         isNewGame: false,
@@ -245,44 +244,6 @@ export default function ProfileMenu() {
     }
   };
 
-  const handleCopyInviteLink = async () => {
-    if (!currentUser) return;
-
-    try {
-      const supabase = await getSupabaseClient();
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (!session?.access_token) {
-        throw new Error("Not signed in");
-      }
-
-      const res = await fetch(apiUrl("/api/referral/code"), {
-        headers: { Authorization: `Bearer ${session.access_token}` },
-      });
-      if (!res.ok) {
-        throw new Error("Failed to load invite code");
-      }
-      const { referralCode } = (await res.json()) as { referralCode?: string };
-      if (!referralCode) {
-        throw new Error("Missing invite code");
-      }
-
-      const inviteLink = `${window.location.origin}?ref=${referralCode}`;
-      await navigator.clipboard.writeText(inviteLink);
-      toast({
-        title: "Invite link copied!",
-        description: `Share it with friends to earn ${REFERRAL_REWARD_GOLD} Gold each.`,
-      });
-      setAccountDropdownOpen(false);
-    } catch (error) {
-      logger.error("Failed to copy invite link:", error);
-      toast({
-        title: "Could not copy invite link",
-        variant: "destructive",
-      });
-    }
-  };
 
   const handleAuthSuccess = async () => {
     await checkAuth();
@@ -378,7 +339,7 @@ export default function ProfileMenu() {
   };
 
   return (
-    <div className="fixed top-2 right-2 z-50 pointer-events-auto flex flex-col items-end gap-2">
+    <div className="fixed top-2 right-2 z-50 pointer-events-auto flex flex-col items-end gap-1">
       <SocialPromptDialog isOpen={socialPromptDialogOpen} />
       <AuthDialog
         isOpen={authDialogOpen}
@@ -482,46 +443,6 @@ export default function ProfileMenu() {
                 <DropdownMenuItem onClick={handleSignOut}>
                   Sign Out
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItemWithTooltip
-                  tooltip={
-                    <p className="text-xs">
-                      Invite your friends and both of you will receive {REFERRAL_REWARD_GOLD} Gold.
-                      You can invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends. ({referralCount || 0}/{SOCIAL_PROMPT_REFERRAL_CAP}
-                      invited).
-                    </p>
-                  }
-                  tooltipId="referral-info"
-                  disabled={(referralCount || 0) >= SOCIAL_PROMPT_REFERRAL_CAP}
-                  onTooltipAction={() => {
-                    handleCopyInviteLink();
-                    setAccountDropdownOpen(false);
-                  }}
-                  tooltipContentClassName="max-w-xs"
-                  className={
-                    (referralCount || 0) >= SOCIAL_PROMPT_REFERRAL_CAP
-                      ? "opacity-50 cursor-not-allowed"
-                      : ""
-                  }
-                >
-                  <div className="flex items-center justify-between w-full gap-2">
-                    <div className="flex items-center gap-1.5 min-w-0">
-                      <UserPlus
-                        className="w-4 h-4 shrink-0 opacity-90"
-                        aria-hidden
-                      />
-                      <span>Invite</span>
-                    </div>
-                    <div className="flex items-center gap-2 shrink-0">
-                      <span className="font-semibold">+{REFERRAL_REWARD_GOLD} Gold</span>
-                      {(referralCount || 0) >= SOCIAL_PROMPT_REFERRAL_CAP && (
-                        <span className="text-xs text-muted-foreground">
-                          ✓
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </DropdownMenuItemWithTooltip>
               </>
             ) : (
               <DropdownMenuItem

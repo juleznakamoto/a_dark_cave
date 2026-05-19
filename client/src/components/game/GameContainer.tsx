@@ -34,6 +34,7 @@ import MadnessDialog from "./MadnessDialog";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark } from "lucide-react";
 import ProfileMenu from "./ProfileMenu";
+import InviteFriendsFloatingButton from "./InviteFriendsFloatingButton";
 import { startVersionCheck, stopVersionCheck } from "@/game/versionCheck";
 import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
@@ -1070,6 +1071,7 @@ export default function GameContainer() {
         onClose={() => setMadnessDialog(false)}
       />
 
+      <InviteFriendsFloatingButton />
       <ProfileMenu />
     </div>
   );
