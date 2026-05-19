@@ -47,7 +47,7 @@ export default function InviteFriendsFloatingButton() {
   };
 
   return (
-    <div className="invite-friends-float-anchor pointer-events-auto fixed right-4 bottom-[calc(45px+1rem)] z-20">
+    <div className="pointer-events-auto fixed right-4 bottom-[calc(45px+1rem)] z-20">
       <TooltipWrapper
         tooltip={
           <p className="text-xs">
@@ -63,23 +63,21 @@ export default function InviteFriendsFloatingButton() {
           void handleCopyInviteLink();
         }}
       >
-        <div className="invite-friends-float-shell">
-          <button
-            type="button"
-            className="invite-friends-float-btn flex items-center gap-2 rounded-md border border-border border-red-800/50 bg-red-950/30 px-2.5 py-1.5 text-xs text-neutral-300 backdrop-blur-sm"
-          >
-            <div className="flex min-w-0 items-center gap-1.5">
-              <UserPlus
-                className="h-4 w-4 shrink-0 opacity-90"
-                aria-hidden
-              />
-              <span>Invite</span>
-            </div>
-            <span className="shrink-0 font-semibold">
-              +{REFERRAL_REWARD_GOLD} Gold
-            </span>
-          </button>
-        </div>
+        <button
+          type="button"
+          className="invite-friends-float-btn flex items-center gap-2 rounded-md border border-border border-red-800/50 bg-red-950/30 px-2.5 py-1.5 text-xs text-neutral-300 backdrop-blur-sm"
+        >
+          <div className="flex min-w-0 items-center gap-1.5">
+            <UserPlus
+              className="h-4 w-4 shrink-0 opacity-90"
+              aria-hidden
+            />
+            <span>Invite</span>
+          </div>
+          <span className="shrink-0 font-semibold">
+            +{REFERRAL_REWARD_GOLD} Gold
+          </span>
+        </button>
       </TooltipWrapper>
     </div>
   );
