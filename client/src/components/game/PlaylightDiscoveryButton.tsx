@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 
-const TOGGLE_MS = 10_000;
+const TOGGLE_MS = 5 * 60 * 1000;
 
 type PlaylightDiscoveryButtonProps = {
   onClick: () => void;
