@@ -17,6 +17,7 @@ export default function PlaylightDiscoveryButton({
   forceShowTooltip = false,
 }: PlaylightDiscoveryButtonProps) {
   const [showDiscoveryTooltip, setShowDiscoveryTooltip] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     let hideTimeout: number | undefined;
@@ -43,10 +44,14 @@ export default function PlaylightDiscoveryButton({
     };
   }, []);
 
-  const tooltipVisible = forceShowTooltip || showDiscoveryTooltip;
+  const tooltipVisible = forceShowTooltip || showDiscoveryTooltip || isHovered;
 
   return (
-    <div className="relative inline-flex shrink-0 overflow-visible">
+    <div
+      className="relative inline-flex shrink-0 overflow-visible"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <button
         type="button"
         onClick={onClick}
