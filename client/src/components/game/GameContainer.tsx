@@ -691,7 +691,7 @@ export default function GameContainer() {
         transition: 'background-color 1s ease-in-out',
       }}
     >
-      {/* Pause Overlay - covers everything except footer and profile menu */}
+      {/* Pause Overlay - covers panels; tabs, footer, and profile menu stay above */}
       {isPaused && (
         <div
           className="fixed inset-0 bg-black/80 z-40 pointer-events-auto overlay-fade-in"
@@ -762,7 +762,9 @@ export default function GameContainer() {
         {/* Right Content Area with Horizontal Tabs and Actions - Below for mobile, right for desktop */}
         <section className="flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
           {/* Horizontal Game Tabs */}
-          <nav className="border-t border-border pl-2 md:pl-4 flex-shrink-0">
+          <nav
+            className={`border-t border-border pl-2 md:pl-4 flex-shrink-0${isPaused ? " relative z-[41] pointer-events-auto" : ""}`}
+          >
             {useLimelightNav ? (
               // Alternative LimelightNav design
               <LimelightNav
