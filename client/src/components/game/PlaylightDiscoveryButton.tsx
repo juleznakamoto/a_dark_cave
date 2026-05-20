@@ -7,11 +7,13 @@ const TOGGLE_MS = 10 * 1000;
 type PlaylightDiscoveryButtonProps = {
   onClick: () => void;
   showNotificationDot?: boolean;
+  forceShowTooltip?: boolean;
 };
 
 export default function PlaylightDiscoveryButton({
   onClick,
   showNotificationDot = false,
+  forceShowTooltip = false,
 }: PlaylightDiscoveryButtonProps) {
   const [showDiscoveryTooltip, setShowDiscoveryTooltip] = useState(true);
 
@@ -22,16 +24,18 @@ export default function PlaylightDiscoveryButton({
     return () => window.clearInterval(id);
   }, []);
 
+  const tooltipVisible = forceShowTooltip || showDiscoveryTooltip;
+
   return (
     <div className="relative inline-flex shrink-0 overflow-visible">
       <button
         type="button"
         onClick={onClick}
-        tabIndex={showDiscoveryTooltip ? 0 : -1}
-        aria-hidden={!showDiscoveryTooltip}
+        tabIndex={tooltipVisible ? 0 : -1}
+        aria-hidden={!tooltipVisible}
         className={cn(
           "absolute top-1/2 z-[1] flex -translate-y-1/2 -left-2 -translate-x-full rounded-md bg-primary px-2 py-1.5 text-[10px] font-semibold leading-none tracking-wide text-primary-foreground shadow-md transition-opacity duration-300 hover:bg-primary/90",
-          showDiscoveryTooltip
+          tooltipVisible
             ? "cursor-pointer opacity-100"
             : "pointer-events-none opacity-0",
         )}

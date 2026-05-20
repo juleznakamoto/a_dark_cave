@@ -90,27 +90,10 @@ export default function ProfileMenu() {
   });
 
   const sleepDialogOpen = idleModeDialog?.isOpen === true;
-  /** After sleep dialog opens, show the Playlight cue only after this delay (pause shows immediately). */
-  const [sleepExploreCueVisible, setSleepExploreCueVisible] = useState(false);
 
   useEffect(() => {
     checkAuth();
   }, []);
-
-  useEffect(() => {
-    if (!sleepDialogOpen) {
-      setSleepExploreCueVisible(false);
-      return undefined;
-    }
-    const timerId = window.setTimeout(() => {
-      setSleepExploreCueVisible(true);
-    }, 5000);
-    return () => {
-      window.clearTimeout(timerId);
-    };
-  }, [sleepDialogOpen]);
-
-  const showExploreFunGamesCue = isPaused || sleepExploreCueVisible;
 
   useEffect(() => {
     if (!accountDropdownOpen || !currentUser) return;
@@ -517,12 +500,7 @@ export default function ProfileMenu() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div
-        className={cn(
-          "flex-wrap justify-end flex items-start gap-1",
-          showExploreFunGamesCue ? "max-w-[min(calc(100vw-7rem),20rem)]" : "max-w-[140px]",
-        )}
-      >
+      <div className="flex flex-wrap justify-end items-start gap-1 max-w-[140px]">
         <div className="flex items-start gap-0.5 shrink-0">
           {showRewardsTasksShortcut && (
             <TooltipWrapper
@@ -559,13 +537,9 @@ export default function ProfileMenu() {
               </Button>
             )}
             <div className="flex items-center gap-2 justify-end w-full shrink-0">
-              {showExploreFunGamesCue && (
-                <span className="text-[11px] sm:text-xs font-bold text-white explore-fun-games-cue text-right leading-tight select-none whitespace-nowrap">
-                  Explore more fun games →
-                </span>
-              )}
               <PlaylightDiscoveryButton
                 onClick={handleDiscovery}
+                forceShowTooltip={isPaused}
                 showNotificationDot={
                   isPaused || sleepDialogOpen || leaderboardDialogOpen
                 }

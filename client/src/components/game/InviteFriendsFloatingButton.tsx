@@ -47,7 +47,7 @@ export default function InviteFriendsFloatingButton() {
   };
 
   return (
-    <div className="pointer-events-auto fixed right-4 bottom-[calc(45px+1rem)] z-20">
+    <div className="pointer-events-auto fixed right-4 bottom-[calc(45px+1rem)] z-[46]">
       <TooltipWrapper
         tooltip={
           <p className="text-xs">
