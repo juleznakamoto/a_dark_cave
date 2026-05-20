@@ -27,7 +27,7 @@ export default function PlaylightDiscoveryButton({
     <TooltipWrapper
       tooltip={
         <p className="text-xs">
-          {showMoreGames ? "Discover more fun games" : "Open game discovery"}
+          Discover more fun games
         </p>
       }
       tooltipId="playlight-discovery-toggle"
