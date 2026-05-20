@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const TOGGLE_MS = 10 * 1000;
+const CYCLE_MS = 5 * 60 * 1000;
+const SHOW_MS = 30 * 1000;
 
 type PlaylightDiscoveryButtonProps = {
   onClick: () => void;
@@ -15,13 +16,31 @@ export default function PlaylightDiscoveryButton({
   showNotificationDot = false,
   forceShowTooltip = false,
 }: PlaylightDiscoveryButtonProps) {
-  const [showDiscoveryTooltip, setShowDiscoveryTooltip] = useState(true);
+  const [showDiscoveryTooltip, setShowDiscoveryTooltip] = useState(false);
 
   useEffect(() => {
-    const id = window.setInterval(() => {
-      setShowDiscoveryTooltip((prev) => !prev);
-    }, TOGGLE_MS);
-    return () => window.clearInterval(id);
+    let hideTimeout: number | undefined;
+
+    const showTooltip = () => {
+      if (hideTimeout !== undefined) {
+        window.clearTimeout(hideTimeout);
+      }
+      setShowDiscoveryTooltip(true);
+      hideTimeout = window.setTimeout(() => {
+        setShowDiscoveryTooltip(false);
+        hideTimeout = undefined;
+      }, SHOW_MS);
+    };
+
+    showTooltip();
+    const intervalId = window.setInterval(showTooltip, CYCLE_MS);
+
+    return () => {
+      window.clearInterval(intervalId);
+      if (hideTimeout !== undefined) {
+        window.clearTimeout(hideTimeout);
+      }
+    };
   }, []);
 
   const tooltipVisible = forceShowTooltip || showDiscoveryTooltip;
