@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 
-const TOGGLE_MS = 5 * 60 * 1000;
+const TOGGLE_MS = 10 * 1000;
 
 type PlaylightDiscoveryButtonProps = {
   onClick: () => void;
@@ -14,71 +13,61 @@ export default function PlaylightDiscoveryButton({
   onClick,
   showNotificationDot = false,
 }: PlaylightDiscoveryButtonProps) {
-  const [showMoreGames, setShowMoreGames] = useState(false);
+  const [showDiscoveryTooltip, setShowDiscoveryTooltip] = useState(true);
 
   useEffect(() => {
     const id = window.setInterval(() => {
-      setShowMoreGames((prev) => !prev);
+      setShowDiscoveryTooltip((prev) => !prev);
     }, TOGGLE_MS);
     return () => window.clearInterval(id);
   }, []);
 
   return (
-    <TooltipWrapper
-      tooltip={
-        <p className="text-xs">
-          Discover more fun games
-        </p>
-      }
-      tooltipId="playlight-discovery-toggle"
-      className="inline-flex shrink-0"
-    >
+    <div className="relative inline-flex shrink-0 overflow-visible">
+      <button
+        type="button"
+        onClick={onClick}
+        tabIndex={showDiscoveryTooltip ? 0 : -1}
+        aria-hidden={!showDiscoveryTooltip}
+        className={cn(
+          "absolute top-1/2 z-[1] flex -translate-y-1/2 -left-2 -translate-x-full rounded-md bg-primary px-2 py-1.5 text-[10px] font-semibold leading-none tracking-wide text-primary-foreground shadow-md transition-opacity duration-300 hover:bg-primary/90",
+          showDiscoveryTooltip
+            ? "cursor-pointer opacity-100"
+            : "pointer-events-none opacity-0",
+        )}
+      >
+        <span className="whitespace-nowrap">Discover more fun games</span>
+        <div
+          className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 rotate-45 bg-inherit p-1"
+          aria-hidden
+        />
+      </button>
+
       <Button
         variant="ghost"
         size="xs"
         type="button"
         onClick={onClick}
-        aria-label={showMoreGames ? "More games" : "Discovery"}
-        className={cn(
-          "playlight-discovery-btn group relative h-7 shrink-0 overflow-hidden border border-border bg-background/70 backdrop-blur-sm transition-[width,padding,background-color,border-color] duration-500 ease-in-out",
-          showMoreGames
-            ? "min-w-[5.25rem] px-2"
-            : "w-7 p-0",
-        )}
+        aria-label="Discovery"
+        className="playlight-discovery-btn group relative h-7 w-7 shrink-0 overflow-visible border border-border bg-background/70 p-0 backdrop-blur-sm"
       >
         <span
-          className={cn(
-            "absolute inset-0 flex items-center justify-center transition-all duration-500 ease-in-out",
-            showMoreGames
-              ? "pointer-events-none scale-75 opacity-0"
-              : "scale-100 opacity-60 group-hover:opacity-100",
-          )}
-          aria-hidden={showMoreGames}
+          className="flex h-full w-full items-center justify-center opacity-60 transition-opacity duration-300 group-hover:opacity-100"
+          aria-hidden
         >
           <img
             src="/flashlight.png"
             alt=""
-            className="h-full w-full object-contain rounded-md transition-[filter] duration-300 invert group-hover:invert-0"
+            className="h-full w-full rounded-md object-contain invert transition-[filter] duration-300 group-hover:invert-0"
           />
-        </span>
-        <span
-          className={cn(
-            "relative z-[1] text-[10px] font-semibold leading-none tracking-wide transition-all duration-500 ease-in-out",
-            showMoreGames
-              ? "translate-y-0 opacity-100 text-primary"
-              : "pointer-events-none translate-y-1 opacity-0 text-neutral-400",
-          )}
-          aria-hidden={!showMoreGames}
-        >
-          More Games
         </span>
         {showNotificationDot && (
           <span
-            className="absolute -top-[4px] -right-[4px] z-[2] h-2 w-2 rounded-full bg-red-600 notification-pulse"
+            className="notification-pulse absolute -right-[4px] -top-[4px] z-[2] h-2 w-2 rounded-full bg-red-600"
             aria-hidden
           />
         )}
       </Button>
-    </TooltipWrapper>
+    </div>
   );
 }
