@@ -338,7 +338,91 @@ export default function SocialPromptDialog({
             </div>
           </div>
 
-          {/* Email */}
+          {/* Social (guests can complete) */}
+          {SOCIAL_PLATFORMS.map((platform) => {
+            const claimed = social_media_rewards[platform.id]?.claimed ?? false;
+            return (
+              <div
+                key={platform.id}
+                className={cn(
+                  "rounded-md border border-border p-3 flex gap-3 items-center",
+                  claimed && "border-green-500/40 bg-green-500/5",
+                )}
+              >
+                <div className="shrink-0">
+                  <StatusIcon done={claimed} />
+                </div>
+                <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <SocialPlatformGlyph platformId={platform.id} />
+                    <span className="font-medium text-sm truncate">
+                      {platform.name}
+                    </span>
+                  </div>
+                  {!claimed && (
+                    <Button
+                      size="xs"
+                      className="shrink-0 font-medium px-3"
+                      onClick={() =>
+                        claimSocialFollowReward(
+                          platform.id,
+                          platform.url,
+                          platform.reward,
+                          platform.name,
+                        )
+                      }
+                    >
+                      {platform.actionLabel}
+                    </Button>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+
+          {/* Playlight discover (guests can complete) */}
+          <div
+            className={cn(
+              "rounded-md border border-border p-3 flex gap-3 items-center",
+              playlightDiscoverRewardClaimed &&
+              "border-green-500/40 bg-green-500/5",
+            )}
+          >
+            <div className="shrink-0">
+              <StatusIcon done={playlightDiscoverRewardClaimed} />
+            </div>
+            <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
+              <div className="min-w-0 flex-1 space-y-1">
+                <div className="flex items-center gap-2">
+                  <Sparkles
+                    className="h-4 w-4 shrink-0 opacity-90"
+                    aria-hidden
+                  />
+                  <span className="font-medium text-sm">
+                    Discover 1 game (+{PLAYLIGHT_DISCOVER_REWARD_GOLD} Gold)
+                  </span>
+                </div>
+              </div>
+              {!playlightDiscoverRewardClaimed && (
+                <Button
+                  size="xs"
+                  className="shrink-0 font-medium px-3 self-center"
+                  disabled={discoverGamesLoading}
+                  onClick={() => {
+                    if (discoverGamesLoading) return;
+                    setDiscoverGamesLoading(true);
+                    void claimPlaylightDiscoverReward().finally(() => {
+                      setDiscoverGamesLoading(false);
+                    });
+                  }}
+                >
+                  Discover games
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {/* Email (requires sign-in) */}
           <div
             className={cn(
               "rounded-md border border-border p-3 flex gap-3 items-center",
@@ -367,93 +451,6 @@ export default function SocialPromptDialog({
                   onClick={() => void handleSubscribe()}
                 >
                   Subscribe
-                </LockedSocialButton>
-              )}
-            </div>
-          </div>
-
-          {/* Social */}
-          {SOCIAL_PLATFORMS.map((platform) => {
-            const claimed = social_media_rewards[platform.id]?.claimed ?? false;
-            return (
-              <div
-                key={platform.id}
-                className={cn(
-                  "rounded-md border border-border p-3 flex gap-3 items-center",
-                  claimed && "border-green-500/40 bg-green-500/5",
-                )}
-              >
-                <div className="shrink-0">
-                  <StatusIcon done={claimed} />
-                </div>
-                <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
-                  <div className="flex items-center gap-2 min-w-0">
-                    <SocialPlatformGlyph platformId={platform.id} />
-                    <span className="font-medium text-sm truncate">
-                      {platform.name}
-                    </span>
-                  </div>
-                  {!claimed && (
-                    <LockedSocialButton
-                      locked={!isUserSignedIn}
-                      tooltipId={`social-prompt-follow-${platform.id}`}
-                      size="xs"
-                      onClick={() =>
-                        claimSocialFollowReward(
-                          platform.id,
-                          platform.url,
-                          platform.reward,
-                          platform.name,
-                        )
-                      }
-                    >
-                      {platform.actionLabel}
-                    </LockedSocialButton>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-
-          {/* Playlight discover (after Reddit / social list) */}
-          <div
-            className={cn(
-              "rounded-md border border-border p-3 flex gap-3 items-center",
-              playlightDiscoverRewardClaimed &&
-              "border-green-500/40 bg-green-500/5",
-            )}
-          >
-            <div className="shrink-0">
-              <StatusIcon done={playlightDiscoverRewardClaimed} />
-            </div>
-            <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
-              <div className="min-w-0 flex-1 space-y-1">
-                <div className="flex items-center gap-2">
-                  <Sparkles
-                    className="h-4 w-4 shrink-0 opacity-90"
-                    aria-hidden
-                  />
-                  <span className="font-medium text-sm">
-                    Discover 1 game (+{PLAYLIGHT_DISCOVER_REWARD_GOLD} Gold)
-                  </span>
-                </div>
-              </div>
-              {!playlightDiscoverRewardClaimed && (
-                <LockedSocialButton
-                  locked={!isUserSignedIn}
-                  tooltipId="social-prompt-playlight-discover"
-                  size="xs"
-                  className="self-center"
-                  disabled={discoverGamesLoading}
-                  onClick={() => {
-                    if (discoverGamesLoading) return;
-                    setDiscoverGamesLoading(true);
-                    void claimPlaylightDiscoverReward().finally(() => {
-                      setDiscoverGamesLoading(false);
-                    });
-                  }}
-                >
-                  Discover games
                 </LockedSocialButton>
               )}
             </div>

@@ -221,7 +221,7 @@ export default function AuthDialog({
               ? mode === "signin"
                 ? "Sign in to sync your game across devices"
                 : mode === "signup"
-                  ? "Create an account to save your progress in the cloud"
+                  ? "Create an account to save your progress in the cloud. You will keep your current progress."
                   : "Enter your email to receive a password reset link"
               : ""}
           </DialogDescription>
