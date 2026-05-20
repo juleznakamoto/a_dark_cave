@@ -36,7 +36,7 @@ export default function PlaylightDiscoveryButton({
             : "pointer-events-none opacity-0",
         )}
       >
-        <span className="whitespace-nowrap">Discover more fun games</span>
+        <span className="whitespace-nowrap">More Games</span>
         <div
           className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 rotate-45 bg-inherit p-1"
           aria-hidden
