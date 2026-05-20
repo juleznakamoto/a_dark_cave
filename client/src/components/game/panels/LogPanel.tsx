@@ -81,7 +81,7 @@ function LogPanel() {
                 >
                   {showNewIndicator ? (
                     <span
-                      className="mt-2 h-1 w-1 shrink-0 rounded-full bg-white"
+                      className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary"
                       aria-hidden={true}
                     />
                   ) : (
