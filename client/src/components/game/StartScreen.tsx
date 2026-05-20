@@ -169,6 +169,20 @@ export default function StartScreen() {
           animation: fade-in-featured 3s ease-in 6s forwards;
           opacity: 0;
         }
+
+        @keyframes fire-glow-pulse {
+          0%, 100% {
+            filter: drop-shadow(0 0 0 transparent);
+          }
+          50% {
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.45))
+                    drop-shadow(0 0 14px rgba(255, 255, 255, 0.2));
+          }
+        }
+
+        .fire-glow-hint {
+          animation: fire-glow-pulse 2.5s ease-in-out 8.5s infinite;
+        }
       `}</style>
 
       <CloudShader />
@@ -189,16 +203,18 @@ export default function StartScreen() {
           </p>
         </div>
 
-        <ParticleButton
-          ref={buttonRef}
-          onClick={handleLightFire}
-          autoStart={showParticles}
-          className={`bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[10000] ${showParticles ? "fire-active" : "animate-fade-in-button"}`}
-          data-testid="button-light-fire"
-          button_id="light-fire"
-        >
-          Make Fire
-        </ParticleButton>
+        <div className={showParticles ? undefined : "fire-glow-hint"}>
+          <ParticleButton
+            ref={buttonRef}
+            onClick={handleLightFire}
+            autoStart={showParticles}
+            className={`bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[10000] ${showParticles ? "fire-active" : "animate-fade-in-button"}`}
+            data-testid="button-light-fire"
+            button_id="light-fire"
+          >
+            Make Fire
+          </ParticleButton>
+        </div>
       </main>
 
       {boostMode && (
