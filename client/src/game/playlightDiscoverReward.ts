@@ -11,7 +11,7 @@ export const PLAYLIGHT_DISCOVER_REWARD_KEY = "playlight_discover";
 export const PLAYLIGHT_DISCOVER_REWARD_GOLD = 100;
 
 /** After click: Discovery opens, then this delay before gold + task completion. */
-export const PLAYLIGHT_DISCOVER_REWARD_COMPLETE_DELAY_MS = 5000;
+export const PLAYLIGHT_DISCOVER_REWARD_COMPLETE_DELAY_MS = 10_000;
 
 let discoverRewardClaimInFlight = false;
 
