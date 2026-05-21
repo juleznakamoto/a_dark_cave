@@ -20,7 +20,10 @@ export const SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS = [
   15 * 60 * 1000,
   30 * 60 * 1000,
   60 * 60 * 1000,
+  90 * 60 * 1000,
   120 * 60 * 1000,
+  240 * 60 * 1000,
+  360 * 60 * 1000,
 ] as const;
 
 export const SOCIAL_PROMPT_AUTO_OPEN_COUNT = SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS.length;

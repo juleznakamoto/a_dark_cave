@@ -23,9 +23,15 @@ describe("socialPromptMilestoneFloorFromPlayTime", () => {
     expect(socialPromptMilestoneFloorFromPlayTime(30 * MIN)).toBe(2);
     expect(socialPromptMilestoneFloorFromPlayTime(59 * MIN)).toBe(2);
     expect(socialPromptMilestoneFloorFromPlayTime(60 * MIN)).toBe(3);
-    expect(socialPromptMilestoneFloorFromPlayTime(119 * MIN)).toBe(3);
-    expect(socialPromptMilestoneFloorFromPlayTime(120 * MIN)).toBe(4);
-    expect(socialPromptMilestoneFloorFromPlayTime(24 * 60 * MIN)).toBe(4);
+    expect(socialPromptMilestoneFloorFromPlayTime(89 * MIN)).toBe(3);
+    expect(socialPromptMilestoneFloorFromPlayTime(90 * MIN)).toBe(4);
+    expect(socialPromptMilestoneFloorFromPlayTime(119 * MIN)).toBe(4);
+    expect(socialPromptMilestoneFloorFromPlayTime(120 * MIN)).toBe(5);
+    expect(socialPromptMilestoneFloorFromPlayTime(239 * MIN)).toBe(5);
+    expect(socialPromptMilestoneFloorFromPlayTime(240 * MIN)).toBe(6);
+    expect(socialPromptMilestoneFloorFromPlayTime(359 * MIN)).toBe(6);
+    expect(socialPromptMilestoneFloorFromPlayTime(360 * MIN)).toBe(7);
+    expect(socialPromptMilestoneFloorFromPlayTime(24 * 60 * MIN)).toBe(7);
   });
 });
 
