@@ -12,9 +12,7 @@ export const exiledScholarEvents: Record<string, GameEvent> = {
     timeProbability: (state: GameState) => {
       // Return 20 if this is the first visit, 60 if the player hasn't paid yet
       return state.exiledScholarState?.hasPaid ? 60 : 20;
-    },
-    title: "The Exiled Scholar",
-    message: "A scholar of the dark arts approaches your estate. Upon seeing the three blood vials, he says, with a hint of restrained excitement, 'I can create a mixture that will grant you great power.'",
+    },
     priority: 10,
     repeatable: true,
     showAsTimedTab: true,
@@ -22,13 +20,12 @@ export const exiledScholarEvents: Record<string, GameEvent> = {
     skipEventLog: true,
     choices: [
       {
-        id: "payScholar",
-        label: "Pay 250 Gold",
+        id: "payScholar",
         cost: "250 Gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 250) {
             return {
-              _logMessage: "You don't have enough gold to pay the scholar.",
+              _logMessageKey: "outcome0",
             };
           }
 
@@ -50,29 +47,27 @@ export const exiledScholarEvents: Record<string, GameEvent> = {
             exiledScholarState: {
               hasPaid: true,
             },
-            _logMessage: "The scholar creates a shadowy red mixture and instructs you to bathe in it. As you emerge from the bath, you feel stronger but also tainted.",
+            _logMessageKey: "outcome1",
           };
         },
       },
       {
-        id: "sendAway",
-        label: "Send away",
+        id: "sendAway",
         effect: (state: GameState) => ({
           exiledScholarState: {
             hasPaid: false,
           },
-          _logMessage: "You send the scholar away. He departs with a disappointed sigh, but you sense he may return.",
+          _logMessageKey: "outcome2",
         }),
       },
     ],
     fallbackChoice: {
-      id: "sendAway",
-      label: "Send him away",
+      id: "sendAway",
       effect: (state: GameState) => ({
         exiledScholarState: {
           hasPaid: false,
         },
-        _logMessage: "The scholar departs, displeased by your indecision.",
+        _logMessageKey: "outcome3",
       }),
     },
   },

@@ -14,6 +14,7 @@ import { HUNT_BONUSES, DISGRACED_PRIOR_UPGRADES, CROWS_EYE_UPGRADES } from "./sk
 import { CRUEL_MODE } from "../cruelMode";
 import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
 import { BUILDING_HIERARCHIES } from "@/game/buildingHierarchy";
+import { getBonusSidebarLabel } from "@/i18n/resolveGameText";
 
 // Craft actions handle their own cost/gain scaling; exclude from generic upgrade multiplier
 const CRAFT_UPGRADE_ACTIONS = ["craftTorches", "craftBoneTotems", "craftLeatherTotems"];
@@ -490,21 +491,7 @@ export const getAllActionBonuses = (
     .filter(([actionId]) => actionId !== "steelForger" && actionId !== "hunter") // Exclude forge and hunter from bonus display
     .map(([actionId, bonus]) => {
       const percentBonus = Math.round((bonus.multiplier - 1) * 100);
-      const label =
-        actionId === "caveExplore"
-          ? "Cave Explore"
-          : actionId === "mining"
-            ? "Mine (All)"
-            : actionId === "craftBoneTotems"
-              ? "Bone Totems"
-              : actionId === "craftLeatherTotems"
-                ? "Leather Totems"
-                : actionId
-                  .replace(/([A-Z])/g, " $1")
-                  .trim()
-                  .split(" ")
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(" ");
+      const label = getBonusSidebarLabel(actionId);
 
       // Build value string (flat bonus not displayed - only boneTotems has one, and it's omitted)
       let valueStr = "";
@@ -524,23 +511,23 @@ export const getAllActionBonuses = (
 
   // Custom order for the Bonuses section in SidePanel (matches user's requested sequence)
   const BONUS_DISPLAY_ORDER: Record<string, number> = {
-    "Cave Explore": 0,
-    "Chop Wood": 1,
-    "Hunt": 2,
-    "Mine (All)": 3,
-    "Mine Stone": 4,
-    "Mine Iron": 5,
-    "Mine Coal": 6,
-    "Mine Sulfur": 7,
-    "Mine Obsidian": 8,
-    "Mine Adamant": 9,
-    "Bone Totems": 10,
-    "Leather Totems": 11,
+    caveExplore: 0,
+    chopWood: 1,
+    hunt: 2,
+    mining: 3,
+    mineStone: 4,
+    mineIron: 5,
+    mineCoal: 6,
+    mineSulfur: 7,
+    mineObsidian: 8,
+    mineAdamant: 9,
+    craftBoneTotems: 10,
+    craftLeatherTotems: 11,
   };
 
   actionBonuses.sort((a, b) => {
-    const orderA = BONUS_DISPLAY_ORDER[a.label] ?? 999;
-    const orderB = BONUS_DISPLAY_ORDER[b.label] ?? 999;
+    const orderA = BONUS_DISPLAY_ORDER[a.id] ?? 999;
+    const orderB = BONUS_DISPLAY_ORDER[b.id] ?? 999;
     return orderA - orderB;
   });
 
@@ -561,7 +548,7 @@ export const getAllActionBonuses = (
         // Add new hunt bonus
         actionBonuses.push({
           id: "hunt",
-          label: "Hunt",
+          label: getBonusSidebarLabel("hunt"),
           displayValue: `${huntBonus}%`,
           multiplier: 1 + huntBonus / 100,
           flatBonus: 0,

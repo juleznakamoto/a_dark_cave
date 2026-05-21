@@ -1,0 +1,532 @@
+{
+  "books": {
+    "book_of_ascension": {
+      "description": "Livre sur l'élévation de soi. Permet de progresser dans les tâches par la pratique.",
+      "name": "Livre de l'ascension"
+    },
+    "book_of_craftsmanship": {
+      "description": "Ancien tome d'un maître artisan. Révèle de subtils indices sur la fabrication d'objets et la construction de bâtiments.",
+      "name": "Livre de l'artisanat"
+    },
+    "book_of_trials": {
+      "description": "Livre sur la traversée des épreuves de la vie. Débloque des récompenses pour ceux qui font leurs preuves par les succès.",
+      "name": "Livre des épreuves"
+    },
+    "book_of_war": {
+      "description": "Livre contenant une sagesse sur le combat. Révèle les chances de réussite lors des batailles et des rencontres.",
+      "name": "Livre de la guerre"
+    }
+  },
+  "clothing": {
+    "alphas_hide": {
+      "description": "Peau du chef de meute, imprégnée de puissance primitive",
+      "name": "Peau de l'alpha"
+    },
+    "ancient_scrolls": {
+      "description": "Parchemins mystérieux écrits dans une langue inconnue, attendant d'être déchiffrés",
+      "name": "Parchemins anciens"
+    },
+    "arbalest_schematic": {
+      "description": "Plan pour fabriquer une puissante arbalète",
+      "name": "Arbalète"
+    },
+    "ashen_embrace": {
+      "description": "Votre aptitude à miner est améliorée",
+      "name": "Étreinte cendreuse"
+    },
+    "ashen_embrace_enhanced": {
+      "description": "Votre aptitude à miner est grandement améliorée",
+      "name": "Étreinte cendreuse profonde"
+    },
+    "bell_blessing": {
+      "description": "Une mystérieuse marque de cloche sur votre avant-bras. Double les points de concentration gagnés pendant le sommeil.",
+      "name": "Bénédiction de la cloche"
+    },
+    "black_bear_fur": {
+      "description": "Fourrure noire maudite provenant d'un ours géant d'un autre monde",
+      "name": "Fourrure d'ours noir"
+    },
+    "black_wood": {
+      "description": "Une dalle de bois dense qui boit la lumière, issue de l'arbre du sanctuaire.",
+      "name": "Bois noir"
+    },
+    "blackened_mirror": {
+      "description": "Grand miroir fendu, encadré de fer noir, qui irradie une aura glaciale",
+      "name": "Miroir noirci"
+    },
+    "blacksteel_armor": {
+      "description": "Armure lourde ornée de pointes mortelles",
+      "name": "Armure d'acier noir"
+    },
+    "blood_baptized": {
+      "description": "Reçu après s'être baigné dans le sang de puissantes créatures",
+      "name": "Baptisé dans le sang"
+    },
+    "bloodstained_belt": {
+      "description": "Ceinture de cuir tachée de vieux sang",
+      "name": "Ceinture ensanglantée"
+    },
+    "bloodstone": {
+      "description": "Gemme cramoisie palpitant d'énergie sombre",
+      "name": "Pierre de sang"
+    },
+    "bone_devourer_blood": {
+      "description": "Une fiole de sang pâle prélevé sur le Dévoreur d'os. Ses effets sont inconnus.",
+      "name": "Sang du Dévoreur"
+    },
+    "bone_dice": {
+      "description": "Dés taillés dans des os, polis jusqu'à une douceur troublante. Accorde une partie supplémentaire chez le joueur.",
+      "name": "Dés d'os"
+    },
+    "bone_necklace": {
+      "description": "Collier primitif fait d'os humains",
+      "name": "Collier d'os"
+    },
+    "chitin_plates": {
+      "description": "Puissantes plaques de chitine provenant de créatures géantes du marais. Peuvent servir à ajouter un blindage de chitine aux fortifications.",
+      "name": "Plaques de chitine"
+    },
+    "cracked_crown": {
+      "description": "Ancienne couronne d'or irradiant un pouvoir mystérieux",
+      "name": "Couronne fissurée"
+    },
+    "dagons_gift": {
+      "description": "Votre aptitude à chasser est améliorée",
+      "name": "Don de Dagon"
+    },
+    "dagons_gift_enhanced": {
+      "description": "Votre aptitude à chasser est grandement améliorée",
+      "name": "Grand don de Dagon"
+    },
+    "devourer_crown": {
+      "description": "Couronne du Dévoreur d'os, faite d'os",
+      "name": "Couronne du Dévoreur"
+    },
+    "ebon_grace": {
+      "description": "Bénédiction sombre reçue de l'arbre noir. Double le bonus de production du Feu du cœur.",
+      "name": "Grâce d'ébène"
+    },
+    "ebony_ring": {
+      "description": "Anneau sombre laissé en cadeau par les dieux de la forêt",
+      "name": "Anneau d'ébène"
+    },
+    "elder_scroll": {
+      "description": "Ancien parchemin contenant un savoir interdit",
+      "name": "Parchemin ancien"
+    },
+    "explorer_pack": {
+      "description": "Sac à dos de cuir bien ouvragé qui allège le poids sur les épaules",
+      "name": "Sac d'explorateur"
+    },
+    "feeding_ring": {
+      "description": "Anneau apparu un matin, apparemment soudé à votre doigt",
+      "name": "Anneau affamé"
+    },
+    "fishers_hand": {
+      "description": "Techniques anciennes des pêcheurs du rivage pour construire des pièges à poissons",
+      "name": "Main du pêcheur"
+    },
+    "flames_touch": {
+      "description": "Les compétences d'artisanat sont améliorées",
+      "name": "Toucher de flamme"
+    },
+    "flames_touch_enhanced": {
+      "description": "Les compétences d'artisanat sont grandement améliorées",
+      "name": "Puissant toucher de flamme"
+    },
+    "forests_grace": {
+      "description": "Les cerfs de la forêt semblent moins vous remarquer",
+      "name": "Grâce de la forêt"
+    },
+    "frostglass": {
+      "description": "Matériau cristallin irradiant le froid",
+      "name": "Verre-givre"
+    },
+    "gifted_ring": {
+      "description": "Anneau simple que quelqu'un vous a laissé trouver",
+      "name": "Anneau offert"
+    },
+    "grenadier_bag": {
+      "description": "Sac de cuir renforcé pour transporter davantage d'explosifs",
+      "name": "Sac de grenadier"
+    },
+    "highpriest_robe": {
+      "description": "Robe sacrée ornée de fil d'or",
+      "name": "Robe de grand prêtre"
+    },
+    "hollow_king_scepter": {
+      "description": "Sceptre du roi perdu, irradiant pouvoir et folie. Le minage rapporte 25 % de ressources en plus, et chaque action de minage a 5 % de chances de doubler tous les gains de cette action.",
+      "name": "Sceptre du Roi creux"
+    },
+    "hunter_cloak": {
+      "description": "Cape de cuir souple qui étouffe chaque mouvement",
+      "name": "Cape de chasseur"
+    },
+    "knights_burden": {
+      "description": "Savoir que le chevalier a partagé avec vous, pesant lourdement sur votre esprit",
+      "name": "Fardeau du chevalier"
+    },
+    "loggers_gloves": {
+      "description": "Solides gants de cuir qui aident à ramasser du bois",
+      "name": "Gants de bûcheron"
+    },
+    "lycan_blood": {
+      "description": "Une fiole de sang épais provenant d'un lycanthrope alpha. Ses effets sont inconnus.",
+      "name": "Sang de lycan"
+    },
+    "map_fragment": {
+      "description": "Fragments d'une carte menant vers un lieu inconnu.",
+      "name": "Fragment de carte"
+    },
+    "moon_bracelet": {
+      "description": "Bracelet fin et sans poids, fait d'une pierre blanche immuable",
+      "name": "Bracelet de lune"
+    },
+    "muttering_amulet": {
+      "description": "Amulette mystérieuse qui émet d'étranges sons",
+      "name": "Amulette murmurante"
+    },
+    "necromancer_blood": {
+      "description": "Une fiole de sang sombre prélevé sur un nécromancien. Ses effets sont inconnus.",
+      "name": "Sang de nécromancien"
+    },
+    "nightshade_bow_schematic": {
+      "description": "Plan pour fabriquer un arc empoisonné",
+      "name": "Arc de belladone"
+    },
+    "occultist_grimoire": {
+      "description": "Grimoire contenant le savoir impie d'un occultiste hérétique",
+      "name": "Grimoire occultiste"
+    },
+    "odd_trinket": {
+      "description": "Curieux bibelot trouvé au sol",
+      "name": "Étrange bibelot"
+    },
+    "ravenfeather_mantle": {
+      "description": "Manteau mystique tissé de plumes de corbeau chatoyantes",
+      "name": "Manteau de plumes de corbeau"
+    },
+    "ravens_mark": {
+      "description": "Les étrangers approchent le village plus souvent",
+      "name": "Marque du corbeau"
+    },
+    "ravens_mark_enhanced": {
+      "description": "Les étrangers approchent le village beaucoup plus souvent",
+      "name": "Grande marque du corbeau"
+    },
+    "ravens_orb": {
+      "description": "Orbe sombre béni par les corbeaux et chargé de savoir ancien",
+      "name": "Orbe du corbeau"
+    },
+    "red_mask": {
+      "description": "Masque répugnant façonné dans un cuir cramoisi profond",
+      "name": "Masque rouge"
+    },
+    "ring_of_clarity": {
+      "description": "Anneau taillé dans un cristal d'une grande pureté",
+      "name": "Anneau de clarté"
+    },
+    "ring_of_drowned": {
+      "description": "Anneau terni, toujours humide et froid",
+      "name": "Anneau du noyé"
+    },
+    "ring_of_obedience": {
+      "description": "Anneau avec un anneau plus petit attaché, offert par une femme heureuse",
+      "name": "Anneau d'obéissance"
+    },
+    "sacrificial_tunic": {
+      "description": "Vêtement sacré qui amplifie les offrandes aux anciens dieux",
+      "name": "Tunique sacrificielle"
+    },
+    "sealed_chest": {
+      "description": "Un coffre très solide que vous ne parvenez pas à ouvrir",
+      "name": "Coffre scellé"
+    },
+    "shadow_boots": {
+      "description": "Traversez tous les terrains aussi vite qu'une ombre",
+      "name": "Bottes d'ombre"
+    },
+    "shadow_flute": {
+      "description": "Flûte d'os qui fait bouger les ombres contre nature",
+      "name": "Flûte d'ombre"
+    },
+    "sharp_aim": {
+      "description": "La précision de vos chasseurs est améliorée",
+      "name": "Visée sûre"
+    },
+    "stonebinders_codex": {
+      "description": "Tome de la bibliothèque cachée révélant les secrets d'une construction efficace",
+      "name": "Codex du Lieur de pierre"
+    },
+    "stormglass_halberd_schematic": {
+      "description": "Plan pour fabriquer une hallebarde redoutable",
+      "name": "Hallebarde de verre-tempête"
+    },
+    "survivors_last_words": {
+      "description": "La bénédiction finale d'un étranger mourant",
+      "name": "Dernières paroles du survivant"
+    },
+    "survivors_notes": {
+      "description": "Parchemin usé par le temps, rempli de conseils pratiques laissés par quelqu'un qui vécut ici il y a longtemps. Débloque les succès de base.",
+      "name": "Notes du survivant"
+    },
+    "tarnished_amulet": {
+      "description": "Amulette usée par le temps qui porte chance",
+      "name": "Amulette ternie"
+    },
+    "tarnished_compass": {
+      "description": "Relique ancienne pour ceux qui cherchent une direction.",
+      "name": "Boussole ternie"
+    },
+    "unnamed_book": {
+      "description": "Livre relié de peau humaine, rempli de savoir interdit",
+      "name": "Livre sans nom"
+    },
+    "whisperers_mark": {
+      "description": "La marque du murmureur dans les ténèbres",
+      "name": "Marque du murmureur"
+    },
+    "whispering_cube": {
+      "description": "Cube de métal parfaitement poli, d'origine inconnue, murmurant des fragments de l'histoire de la civilisation disparue.",
+      "name": "Cube murmurant"
+    },
+    "wooden_figure": {
+      "description": "Figurine de bois sculptée représentant une créature troublante aux tentacules",
+      "name": "Figurine de bois"
+    }
+  },
+  "fellowship": {
+    "ashwraith_huntress": {
+      "description": "Chasseresse sauvage d'une tribu forestière liée par serment de sang. Débloque les améliorations de compétence de chasse et de production des chasseurs.",
+      "name": "Chasseresse spectre-cendre"
+    },
+    "disgraced_prior": {
+      "description": "Ancien prieur rejeté par son ordre. Il se rachète par un labeur sans fin. Peut être assigné à répéter automatiquement des actions.",
+      "name": "Prieur déchu"
+    },
+    "elder_wizard": {
+      "description": "Vieux mage dans ses derniers jours, qui maîtrisa jadis les arts du feu arcanique. Débloque la compétence de combat Sphère de sang-flamme.",
+      "name": "Vieux mage"
+    },
+    "one_eyed_crow": {
+      "description": "Corbeau mystique à l'œil unique et perçant, apprivoisé avec le harnais à corbeau. Débloque la compétence Œil du corbeau et l'envoi de messages.",
+      "name": "Corbeau borgne"
+    },
+    "restless_knight": {
+      "description": "Vétéran du combat qui a vu les vestiges de l'ancien monde. Débloque la compétence de combat Frappe écrasante.",
+      "name": "Chevalier tourmenté"
+    }
+  },
+  "tools": {
+    "adamant_axe": {
+      "description": "Hache incassable, forgée dans le métal le plus dur",
+      "name": "Hache d'adamant"
+    },
+    "adamant_lantern": {
+      "description": "Source de lumière ultime, illuminant chaque chemin",
+      "name": "Lanterne d'adamant"
+    },
+    "adamant_pickaxe": {
+      "description": "Sommet des outils de minage, inflexible et précise",
+      "name": "Pioche d'adamant"
+    },
+    "blacksmith_hammer": {
+      "description": "Marteau de forge légendaire ayant appartenu à un grand forgeron",
+      "name": "Marteau de forge"
+    },
+    "blacksteel_axe": {
+      "description": "Hache forgée dans un rare acier noir",
+      "name": "Hache d'acier noir"
+    },
+    "blacksteel_lantern": {
+      "description": "Lanterne forgée dans un rare acier noir",
+      "name": "Lanterne d'acier noir"
+    },
+    "blacksteel_pickaxe": {
+      "description": "Pioche forgée dans un rare acier noir",
+      "name": "Pioche d'acier noir"
+    },
+    "bone_saw": {
+      "description": "Outil du nécromancien, anormalement efficace pour dépecer",
+      "name": "Scie d'os"
+    },
+    "crow_harness": {
+      "description": "Harnais spécialement conçu pour capturer les corbeaux. Peut servir à capturer un corbeau dans le canyon de Blackreach.",
+      "name": "Harnais à corbeau"
+    },
+    "giant_trap": {
+      "description": "Piège massif capable de capturer des créatures forestières gigantesques",
+      "name": "Piège géant"
+    },
+    "hidden_library_map": {
+      "description": "Carte du monastère révélant l'emplacement d'une bibliothèque cachée au fond de la grotte",
+      "name": "Carte de la bibliothèque cachée"
+    },
+    "iron_axe": {
+      "description": "Hache affûtée pour les gros travaux de coupe",
+      "name": "Hache de fer"
+    },
+    "iron_lantern": {
+      "description": "Lanterne simple offrant une lumière fiable",
+      "name": "Lanterne de fer"
+    },
+    "iron_pickaxe": {
+      "description": "Pioche durable pour miner efficacement",
+      "name": "Pioche de fer"
+    },
+    "mastermason_chisel": {
+      "description": "Outil exquisément ouvragé d'un maître bâtisseur oublié depuis longtemps",
+      "name": "Ciseau de maître maçon"
+    },
+    "natharit_pickaxe": {
+      "description": "Pioche extrêmement robuste d'un matériau inconnu et d'une qualité exceptionnelle",
+      "name": "Pioche de natharit"
+    },
+    "obsidian_axe": {
+      "description": "Hache légendaire aux tranchants volcaniques rasoirs",
+      "name": "Hache d'obsidienne"
+    },
+    "obsidian_lantern": {
+      "description": "Lanterne puissante projetant une lumière forte et inébranlable",
+      "name": "Lanterne d'obsidienne"
+    },
+    "obsidian_pickaxe": {
+      "description": "Outil magistral de minage fait de verre volcanique",
+      "name": "Pioche d'obsidienne"
+    },
+    "occultist_map": {
+      "description": "Carte usée par le temps révélant la chambre d'un occultiste dans la grotte",
+      "name": "Carte de l'occultiste"
+    },
+    "reinforced_rope": {
+      "description": "Corde solide permettant d'accéder à des chambres plus profondes de la grotte",
+      "name": "Corde renforcée"
+    },
+    "skeleton_key": {
+      "description": "Clé mystérieuse censée ouvrir n'importe quelle serrure",
+      "name": "Passe-partout"
+    },
+    "skull_lantern": {
+      "description": "Forgée dans un os maudit, elle éclaire les profondeurs les plus noires",
+      "name": "Lanterne-crâne"
+    },
+    "steel_axe": {
+      "description": "Hache finement ouvragée, forgée dans l'acier trempé",
+      "name": "Hache d'acier"
+    },
+    "steel_lantern": {
+      "description": "Lanterne brillante éclairant les lieux les plus sombres",
+      "name": "Lanterne d'acier"
+    },
+    "steel_pickaxe": {
+      "description": "Outil de minage très robuste, façonné dans un acier résistant",
+      "name": "Pioche d'acier"
+    },
+    "stone_axe": {
+      "description": "Hache rudimentaire pour couper le bois",
+      "name": "Hache de pierre"
+    },
+    "stone_pickaxe": {
+      "description": "Pioche rudimentaire pour miner",
+      "name": "Pioche de pierre"
+    }
+  },
+  "weapons": {
+    "adamant_sword": {
+      "description": "Lame légendaire d'une force sans pareille",
+      "name": "Épée d'adamant"
+    },
+    "arbalest": {
+      "description": "Arbalète méticuleusement ouvragée, conçue par un ingénieur brillant",
+      "name": "Arbalète"
+    },
+    "ashen_dagger": {
+      "description": "Dague forgée de cendre volcanique, donnée par le Porte-cendre",
+      "name": "Dague cendreuse"
+    },
+    "ashen_greatshield": {
+      "description": "Immense bouclier forgé avec les os de la créature du lac souterrain",
+      "name": "Grand bouclier cendreux"
+    },
+    "ashfire_bomb": {
+      "description": "Bombe dévastatrice luisant d'un feu d'un autre monde",
+      "name": "Bombe feu-cendre"
+    },
+    "blacksteel_bow": {
+      "description": "Arc forgé dans un rare acier noir",
+      "name": "Arc d'acier noir"
+    },
+    "blacksteel_sword": {
+      "description": "Épée forgée dans un rare acier noir",
+      "name": "Épée d'acier noir"
+    },
+    "bloodstone_staff": {
+      "description": "Bâton couronné de pierre de sang, palpitant d'énergie sombre",
+      "name": "Bâton de pierre de sang"
+    },
+    "compound_bow": {
+      "description": "Arme de haute précision issue de la civilisation disparue",
+      "name": "Arc composite"
+    },
+    "crude_bow": {
+      "description": "Arc simple, fiable face à toute épreuve",
+      "name": "Arc grossier"
+    },
+    "ember_bomb": {
+      "description": "Bombe puissante au cœur incandescent dégageant une chaleur intense",
+      "name": "Bombe de braise"
+    },
+    "frostglass_sword": {
+      "description": "Lame forgée de verre-givre, irradiant une puissance glaciale",
+      "name": "Épée de verre-givre"
+    },
+    "huntsman_bow": {
+      "description": "Arc amélioré, finement équilibré et précis",
+      "name": "Arc de veneur"
+    },
+    "iron_sword": {
+      "description": "Solide lame de fer renforçant la maîtrise du combat",
+      "name": "Épée de fer"
+    },
+    "long_bow": {
+      "description": "Arc supérieur à portée et précision accrues",
+      "name": "Arc long"
+    },
+    "master_bow": {
+      "description": "Arc ultime, inégalé en puissance et en maîtrise",
+      "name": "Arc de maître"
+    },
+    "nightshade_bow": {
+      "description": "Arc façonné dans du bois sombre, dont les flèches portent du poison",
+      "name": "Arc de belladone"
+    },
+    "nordic_war_axe": {
+      "description": "Hache de guerre légendaire forgée par un maître forgeron viking",
+      "name": "Hache de guerre nordique"
+    },
+    "obsidian_sword": {
+      "description": "Lame rasoir forgée dans le verre volcanique",
+      "name": "Épée d'obsidienne"
+    },
+    "steel_sword": {
+      "description": "Lame d'acier finement ouvragée, à l'équilibre supérieur",
+      "name": "Épée d'acier"
+    },
+    "stormglass_halberd": {
+      "description": "Hallebarde suprême forgée dans un adamant magistralement raffiné",
+      "name": "Hallebarde de verre-tempête"
+    },
+    "veinfire_elixir": {
+      "description": "Élixir de soin alchimique distillé à partir de rare racine-veine",
+      "name": "Élixir feu-veine"
+    },
+    "void_bomb": {
+      "description": "Bombe terrifiante qui semble distordre l'espace autour d'elle",
+      "name": "Bombe du Vide"
+    },
+    "war_bow": {
+      "description": "Arc très puissant, conçu pour la force et la précision",
+      "name": "Arc de guerre"
+    }
+  }
+}

@@ -7,35 +7,15 @@ import {
 } from "@/game/rules";
 import AttackWavesChart from "./AttackWavesChart";
 import CooldownButton from "@/components/CooldownButton";
-
-// Helper to get building label based on level
-const getBuildingLabel = (
-  buildingType: "watchtower" | "palisades",
-  level: number,
-): string => {
-  if (buildingType === "watchtower") {
-    const labels = [
-      "Watchtower",
-      "Guard Tower",
-      "Fortified Tower",
-      "Cannon Tower",
-    ];
-    return labels[level - 1] || "Watchtower";
-  } else if (buildingType === "palisades") {
-    const labels = [
-      "Wooden Palisades",
-      "Fortified Palisades",
-      "Stone Wall",
-      "Reinforced Wall",
-    ];
-    return labels[level - 1] || "Wooden Palisades";
-  } else if (buildingType === "chitinPlating" as any) {
-    return "Chitin Plating";
-  }
-  return "";
-};
+import { useTranslation } from "react-i18next";
+import { getEffectName } from "@/i18n/resolveGameText";
+import {
+  getPalisadesTierLabel,
+  getWatchtowerTierLabel,
+} from "@/i18n/fortificationLabels";
 
 export default function BastionPanel() {
+  const { t } = useTranslation("ui");
   const { buildings, story, setHighlightedResources, executeAction } =
     useGameStore();
   const state = useGameStore.getState() as unknown as GameState;
@@ -49,13 +29,13 @@ export default function BastionPanel() {
 
   return (
     <div className="w-full md:max-w-96 space-y-4 mt-2 mb-2 pl-[3px] pr-[3px]">
-      {/* Attack Waves Chart */}
       <AttackWavesChart />
 
-      {/* Heal Section - only show if there are wounded fellowship members */}
       {(story?.seen?.restlessKnightWounded || story?.seen?.elderWizardWounded) && (
         <div className="space-y-2">
-          <h3 className="text-xs font-medium text-foreground">Heal</h3>
+          <h3 className="text-xs font-medium text-foreground">
+            {t("bastion.heal")}
+          </h3>
           <div className="flex flex-wrap gap-2">
             {story?.seen?.restlessKnightWounded && state.fellowship?.restless_knight && (
               <CooldownButton
@@ -94,7 +74,7 @@ export default function BastionPanel() {
                   setHighlightedResources([]);
                 }}
               >
-                Restless Knight
+                {getEffectName("fellowship", "restless_knight", "Restless Knight")}
               </CooldownButton>
             )}
 
@@ -135,17 +115,18 @@ export default function BastionPanel() {
                   setHighlightedResources([]);
                 }}
               >
-                Elder Wizard
+                {getEffectName("fellowship", "elder_wizard", "Elder Wizard")}
               </CooldownButton>
             )}
           </div>
         </div>
       )}
 
-      {/* Repair Section - only show if there are damaged buildings */}
       {hasDamagedBuildings && (
         <div className="space-y-2">
-          <h3 className="text-xs font-medium text-foreground">Repair</h3>
+          <h3 className="text-xs font-medium text-foreground">
+            {t("bastion.repair")}
+          </h3>
           <div className="flex flex-wrap gap-2">
             {bastionDamaged && buildings.bastion > 0 && (
               <CooldownButton
@@ -184,7 +165,7 @@ export default function BastionPanel() {
                   setHighlightedResources([]);
                 }}
               >
-                Bastion
+                {t("fortifications.bastion")}
               </CooldownButton>
             )}
 
@@ -225,10 +206,7 @@ export default function BastionPanel() {
                   setHighlightedResources([]);
                 }}
               >
-                {getBuildingLabel(
-                  "watchtower",
-                  buildings.watchtower || 0,
-                )}
+                {getWatchtowerTierLabel(buildings.watchtower || 0)}
               </CooldownButton>
             )}
 
@@ -269,10 +247,7 @@ export default function BastionPanel() {
                   setHighlightedResources([]);
                 }}
               >
-                {getBuildingLabel(
-                  "palisades",
-                  buildings.palisades || 0,
-                )}
+                {getPalisadesTierLabel(buildings.palisades || 0)}
               </CooldownButton>
             )}
           </div>

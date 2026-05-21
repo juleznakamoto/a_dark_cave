@@ -1,7 +1,67 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from '@/game/actions';
+import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "./actionEffects";
 import { calculateTotalEffects } from "./effectsCalculation";
+import { getActionLogMessage, getResourceName } from "@/i18n/resolveGameText";
+
+const NATHARIT_SILVER_VEIN_FALLBACK =
+  "The natharit pickaxe reveals a vein of silver! +50 Silver";
+
+type ActionLogMessageRef = {
+  actionId: string;
+  logKey: string;
+  vars?: Record<string, string | number>;
+};
+
+function appendMineLogMessages(
+  logMessages: Array<string | ActionLogMessageRef>,
+  result: ActionResult,
+): void {
+  logMessages.forEach((message) => {
+    if (typeof message === "string") {
+      result.logEntries!.push({
+        id: `probability-effect-${Date.now()}-${Math.random()}`,
+        message,
+        timestamp: Date.now(),
+        type: "system",
+      });
+      return;
+    }
+
+    const ref = message as ActionLogMessageRef;
+    const vars = {
+      ...ref.vars,
+      resource: getResourceName("silver", "Silver"),
+    };
+    result.logEntries!.push({
+      id: `probability-effect-${Date.now()}-${Math.random()}`,
+      message: getActionLogMessage(
+        ref.actionId,
+        ref.logKey,
+        NATHARIT_SILVER_VEIN_FALLBACK,
+        vars,
+      ),
+      timestamp: Date.now(),
+      type: "system",
+    });
+  });
+}
+
+function handleMineAction(
+  actionId: string,
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects(actionId, state);
+
+  if (effectUpdates.logMessages) {
+    appendMineLogMessages(effectUpdates.logMessages, result);
+    delete effectUpdates.logMessages;
+  }
+
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
 
 /** P(silver vein) from active items' mining probabilityBonus (e.g. Natharit pickaxe in toolEffects). */
 function miningBonusSilverProbability(state: GameState): number {
@@ -27,7 +87,8 @@ export const caveMineActions: Record<string, Action> = {
         "resources.silver": {
           probability: miningBonusSilverProbability,
           value: 50,
-          logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
+          logMessageKey: "natharitSilverVein",
+          logMessageVars: { amount: 50 },
         },
         "story.seen.hasMinedStone": true,
       };
@@ -54,7 +115,8 @@ export const caveMineActions: Record<string, Action> = {
         "resources.silver": {
           probability: miningBonusSilverProbability,
           value: 50,
-          logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
+          logMessageKey: "natharitSilverVein",
+          logMessageVars: { amount: 50 },
         },
         "story.seen.hasIron": true,
       };
@@ -81,7 +143,8 @@ export const caveMineActions: Record<string, Action> = {
         "resources.silver": {
           probability: miningBonusSilverProbability,
           value: 50,
-          logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
+          logMessageKey: "natharitSilverVein",
+          logMessageVars: { amount: 50 },
         },
         "story.seen.hasCoal": true,
       };
@@ -109,7 +172,8 @@ export const caveMineActions: Record<string, Action> = {
         "resources.silver": {
           probability: miningBonusSilverProbability,
           value: 50,
-          logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
+          logMessageKey: "natharitSilverVein",
+          logMessageVars: { amount: 50 },
         },
         "story.seen.hasSulfur": true,
       };
@@ -136,7 +200,8 @@ export const caveMineActions: Record<string, Action> = {
         "resources.silver": {
           probability: miningBonusSilverProbability,
           value: 50,
-          logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
+          logMessageKey: "natharitSilverVein",
+          logMessageVars: { amount: 50 },
         },
         "story.seen.hasObsidian": true,
       };
@@ -163,7 +228,8 @@ export const caveMineActions: Record<string, Action> = {
         "resources.silver": {
           probability: miningBonusSilverProbability,
           value: 50,
-          logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
+          logMessageKey: "natharitSilverVein",
+          logMessageVars: { amount: 50 },
         },
         "story.seen.hasAdamant": true,
       };
@@ -176,124 +242,25 @@ export const caveMineActions: Record<string, Action> = {
 
 // Action handlers
 export function handleMineStone(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('mineStone', state);
-
-  // Handle any log messages from probability effects
-  if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string) => {
-      result.logEntries!.push({
-        id: `probability-effect-${Date.now()}-${Math.random()}`,
-        message: message,
-        timestamp: Date.now(),
-        type: 'system',
-      });
-    });
-    // Remove logMessages from state updates as it's not part of the game state
-    delete effectUpdates.logMessages;
-  }
-
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
+  return handleMineAction("mineStone", state, result);
 }
 
 export function handleMineIron(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('mineIron', state);
-
-  // Handle any log messages from probability effects
-  if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string) => {
-      result.logEntries!.push({
-        id: `probability-effect-${Date.now()}-${Math.random()}`,
-        message: message,
-        timestamp: Date.now(),
-        type: 'system',
-      });
-    });
-    // Remove logMessages from state updates as it's not part of the game state
-    delete effectUpdates.logMessages;
-  }
-
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
+  return handleMineAction("mineIron", state, result);
 }
 
 export function handleMineCoal(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('mineCoal', state);
-
-  // Handle any log messages from probability effects
-  if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string) => {
-      result.logEntries!.push({
-        id: `probability-effect-${Date.now()}-${Math.random()}`,
-        message: message,
-        timestamp: Date.now(),
-        type: 'system',
-      });
-    });
-    // Remove logMessages from state updates as it's not part of the game state
-    delete effectUpdates.logMessages;
-  }
-
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
+  return handleMineAction("mineCoal", state, result);
 }
 
 export function handleMineSulfur(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('mineSulfur', state);
-
-  // Handle any log messages from probability effects
-  if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string) => {
-      result.logEntries!.push({
-        id: `probability-effect-${Date.now()}-${Math.random()}`,
-        message: message,
-        timestamp: Date.now(),
-        type: 'system',
-      });
-    });
-    delete effectUpdates.logMessages;
-  }
-
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
+  return handleMineAction("mineSulfur", state, result);
 }
 
 export function handleMineObsidian(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('mineObsidian', state);
-
-  // Handle any log messages from probability effects
-  if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string) => {
-      result.logEntries!.push({
-        id: `probability-effect-${Date.now()}-${Math.random()}`,
-        message: message,
-        timestamp: Date.now(),
-        type: 'system',
-      });
-    });
-    delete effectUpdates.logMessages;
-  }
-
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
+  return handleMineAction("mineObsidian", state, result);
 }
 
 export function handleMineAdamant(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('mineAdamant', state);
-
-  // Handle any log messages from probability effects
-  if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string) => {
-      result.logEntries!.push({
-        id: `probability-effect-${Date.now()}-${Math.random()}`,
-        message: message,
-        timestamp: Date.now(),
-        type: 'system',
-      });
-    });
-    delete effectUpdates.logMessages;
-  }
-
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
+  return handleMineAction("mineAdamant", state, result);
 }

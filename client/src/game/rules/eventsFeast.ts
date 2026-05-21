@@ -33,21 +33,21 @@ function createFeastEvent(config: FeastConfig): GameEvent {
     foodCost,
   } = config;
   const eventId = `feast${level}`;
+  const formattedFoodCost = formatNumber(foodCost);
 
   return {
     id: eventId,
+    i18nKey: "feast",
+    i18nVars: { foodCost: formattedFoodCost },
     condition: (state: GameState) => {
-      // Village feast can only happen after forest is unlocked
       if (!state.flags?.forestUnlocked) {
         return false;
       }
 
-      // No feast events can trigger while a feast is active
       if (state.feastState?.isActive && state.feastState.endTime > Date.now()) {
         return false;
       }
 
-      // No feast events can trigger while a Great Feast is active
       if (
         state.greatFeastState?.isActive &&
         state.greatFeastState.endTime > Date.now()
@@ -55,17 +55,14 @@ function createFeastEvent(config: FeastConfig): GameEvent {
         return false;
       }
 
-      // Check if previous feast was accepted (or if this is the first feast)
       if (state.feastState.lastAcceptedLevel < level - 1) {
         return false;
       }
 
-      // Check if this feast was already accepted (only block if accepted, not denied)
       if (state.feastState.lastAcceptedLevel >= level) {
         return false;
       }
 
-      // Check building requirements
       if (woodenHuts !== undefined) {
         return state.buildings.woodenHut >= woodenHuts;
       }
@@ -83,29 +80,22 @@ function createFeastEvent(config: FeastConfig): GameEvent {
     },
 
     timeProbability: 20,
-    title: "Village Feast",
-    message: `The villagers propose organizing a feast. A short comfort to ease their weariness and quiet their minds.`,
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 3 * 60 * 1000, // 3 minutes
+    timedTabDuration: 3 * 60 * 1000,
     choices: [
       {
         id: "makeFeast",
-        label: `Spend ${formatNumber(foodCost)} Food`,
-        cost: `${formatNumber(foodCost)} food`,
-        effect: (
-          state: GameState,
-        ): Partial<GameState> & { _logMessage?: string } => {
+        effect: (state: GameState) => {
           if (state.resources.food < foodCost) {
             return {
-              _logMessage: "You don't have enough food for the feast.",
+              _logMessageKey: "outcome0",
             };
           }
 
-          // Base duration is 10 minutes, +5 minutes if BTP mode is active
-          const baseDuration = 10 * 60 * 1000; // 10 minutes in milliseconds
-          const btpBonus = state.BTP === 1 ? 5 * 60 * 1000 : 0; // +5 minutes for BTP
+          const baseDuration = 10 * 60 * 1000;
+          const btpBonus = state.BTP === 1 ? 5 * 60 * 1000 : 0;
           const feastDuration = baseDuration + btpBonus;
           const endTime = Date.now() + feastDuration;
 
@@ -123,39 +113,26 @@ function createFeastEvent(config: FeastConfig): GameEvent {
               ...(state.triggeredEvents || {}),
               [eventId]: true,
             },
-            _logMessage: `The villagers gather for a feast! Weariness fades and spirits rise, if only briefly.`,
+            _logMessageKey: "outcome1",
           };
         },
       },
       {
         id: "noFeast",
-        label: "Refuse feast",
-        effect: (
-          state: GameState,
-        ): Partial<GameState> & { _logMessage?: string } => {
-          return {
-            _logMessage:
-              "You decline the feast proposal. The villagers accept your decision, though disappointed.",
-          };
-        },
+        effect: () => ({
+          _logMessageKey: "outcome2",
+        }),
       },
     ],
     fallbackChoice: {
       id: "doNothing",
-      label: "No Decision Made",
-      effect: (
-        state: GameState,
-      ): Partial<GameState> & { _logMessage?: string } => {
-        return {
-          _logMessage:
-            "Your indecision frustrates the villagers. They abandon the feast proposal and return to their duties, disappointed.",
-        };
-      },
+      effect: () => ({
+        _logMessageKey: "outcome3",
+      }),
     },
   };
 }
 
-// Generate all feast events
 export const feastEvents: Record<string, GameEvent> = {};
 feastConfigs.forEach((config) => {
   const event = createFeastEvent(config);

@@ -5,6 +5,7 @@ import { useGameStore, isModalDialogOpen } from "@/game/state";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 import { getVillagersInVillage } from "../population";
 import { ATTACK_WAVE_IDS, type AttackWaveId } from "./attackWaveOrder";
+import { resolveEventMessage, resolveEventTitle } from "@/i18n/eventText";
 
 // Helper function to calculate enemy stats
 function calculateEnemyStats(
@@ -70,10 +71,7 @@ type WaveRules = {
   victoryFlag: VictoryFlagName;
 };
 
-type AttackWaveDefinition = WaveParams & {
-  title: string;
-  message: string;
-};
+type AttackWaveDefinition = WaveParams;
 
 /** Combat UI label for every attack wave (shared across all waves). */
 const ATTACK_WAVE_ENEMY_NAME = "Pale Creatures";
@@ -103,90 +101,60 @@ function attackWaveScaledParams(waveNumber: number): Pick<
 /** Per-wave combat, timers, rewards, and event-dialog copy. */
 const ATTACK_WAVE_DEFINITIONS: Record<AttackWaveId, AttackWaveDefinition> = {
   firstWave: {
-    title: "The First Wave",
-    message:
-      "Pale figures emerge from the cave, finally freed, their ember eyes cutting through the dark as they march towards the city.",
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(1),
     attack: { options: [30], cruelBonus: 5 },
     health: { base: 300, cruelBonus: 50 },
   },
   secondWave: {
-    title: "The Second Wave",
-    message:
-      "The creatures return in greater numbers, with weapons of crude bone, glowing with foul light.",
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(2),
     attack: { options: [35], cruelBonus: 5 },
     health: { base: 350, cruelBonus: 50 },
   },
   thirdWave: {
-    title: "The Third Wave",
-    message:
-      "Hordes of pale creatures come from the cave; screams shake even the stones, their bone weapons cracking the ground.",
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(3),
     attack: { options: [40], cruelBonus: 10 },
     health: { base: 400, cruelBonus: 75 },
   },
   fourthWave: {
-    title: "The Fourth Wave",
-    message:
-      "The sky seems to darken as an uncountable mass of pale creatures surges from the cave, pressing towards the city.",
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(4),
     attack: { options: [45], cruelBonus: 10 },
     health: { base: 450, cruelBonus: 100 },
   },
   fifthWave: {
-    title: "The Fifth Wave",
-    message:
-      "From the cave emerge countless pale figures, their forms unspeakable as they advance on the city.",
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(5),
     attack: { options: [50], cruelBonus: 15 },
     health: { base: 500, cruelBonus: 125 },
   },
   sixthWave: {
-    title: "The Sixth Wave",
-    message:
-      "The cave mouth vomits forth another tide of pale bodies. Bone spears clatter like rain as they mass for another assault.",
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(6),
     attack: { options: [60], cruelBonus: 15 },
     health: { base: 550, cruelBonus: 150 },
   },
   seventhWave: {
-    title: "The Seventh Wave",
-    message:
-      "The creatures advance again, a writhing carpet of limbs and teeth scraping toward the city.",
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(7),
     attack: { options: [70], cruelBonus: 20 },
     health: { base: 600, cruelBonus: 175 },
   },
   eighthWave: {
-    title: "The Eighth Wave",
-    message:
-      "The ground shudders under the weight of their numbers, as a new wave of the pale horde tightens its ring around the city.",
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(8),
     attack: { options: [80], cruelBonus: 20 },
     health: { base: 700, cruelBonus: 200 },
   },
   ninthWave: {
-    title: "The Ninth Wave",
-    message:
-      "With unrelenting hunger, an even larger mass of pale creatures surges toward the city.",
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(9),
     attack: { options: [90], cruelBonus: 30 },
     health: { base: 800, cruelBonus: 225 },
   },
   tenthWave: {
-    title: "The Final Wave",
-    message:
-      "From the deepest reaches of the cave, an unimaginable mass of pale creatures erupts. They flood over the land like a living tide, as the city braces for annihilation.",
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(10),
     attack: { options: [100], cruelBonus: 50 },
@@ -480,8 +448,6 @@ function createAttackWaveEvent(waveId: AttackWaveId): GameEvent {
     },
 
     timeProbability: 0.25,
-    title: def.title,
-    message: def.message,
     priority: 5,
     repeatable: true,
     effect: (state: GameState) => {
@@ -506,8 +472,8 @@ function createAttackWaveEvent(waveId: AttackWaveId): GameEvent {
             name: ATTACK_WAVE_ENEMY_NAME,
             ...enemyStats,
           },
-          eventTitle: def.title,
-          eventMessage: def.message,
+          eventTitle: resolveEventTitle(waveId, state) ?? "",
+          eventMessage: resolveEventMessage(waveId, undefined, state),
           onVictory: () => ({
             resources: {
               gold: def.goldReward,

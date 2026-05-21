@@ -1,0 +1,88 @@
+{
+  "buttons": {
+    "close": "Close",
+    "continue": "Continue",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "refresh": "Refresh",
+    "dismiss": "Dismiss",
+    "fight": "Fight",
+    "retreat": "Retreat",
+    "refuse": "Refuse",
+    "accept": "Accept",
+    "back": "Back",
+    "claim": "Claim",
+    "activate": "Activate",
+    "deactivate": "Deactivate"
+  },
+  "status": {
+    "loading": "Loading...",
+    "processing": "Processing...",
+    "free": "Free",
+    "error": "Error",
+    "success": "Success!",
+    "active": "Active",
+    "activated": "Activated"
+  },
+  "tabs": {
+    "cave": "Cave",
+    "village": "Village",
+    "city": "City",
+    "forest": "Forest",
+    "estate": "Estate",
+    "bastion": "Bastion",
+    "fortress": "Fortress",
+    "trader": "Trader",
+    "achievements": "Achievements",
+    "timedEvent": "Timed Event"
+  },
+  "resources": {
+    "wood": "Wood",
+    "stone": "Stone",
+    "food": "Food",
+    "veinroot": "Veinroot",
+    "bones": "Bones",
+    "fur": "Fur",
+    "leather": "Leather",
+    "bone_totem": "Bone Totem",
+    "leather_totem": "Leather Totem",
+    "iron": "Iron",
+    "coal": "Coal",
+    "sulfur": "Sulfur",
+    "obsidian": "Obsidian",
+    "adamant": "Adamant",
+    "steel": "Steel",
+    "blacksteel": "Blacksteel",
+    "moonstone": "Moonstone",
+    "black_powder": "Black Powder",
+    "ember_bomb": "Ember Bomb",
+    "ashfire_dust": "Ashfire Dust",
+    "ashfire_bomb": "Ashfire Bomb",
+    "void_bomb": "Void Bomb",
+    "veinfire_elixir": "Veinfire Elixir",
+    "poison_arrows": "Poison Arrows",
+    "torch": "Torch",
+    "silver": "Silver",
+    "gold": "Gold"
+  },
+  "stats": {
+    "strength": "Strength",
+    "knowledge": "Knowledge",
+    "luck": "Luck",
+    "madness": "Madness"
+  },
+  "time": {
+    "never": "Never",
+    "hoursMinutes": "{{hours}}h {{minutes}}m",
+    "minutesSeconds": "{{minutes}}m {{seconds}}s"
+  },
+  "population": {
+    "villager_one": "{{count}} Villager",
+    "villager_other": "{{count}} Villagers",
+    "maxPopulation": "+{{count}} Max Population"
+  },
+  "currency": {
+    "goldAmount": "{{amount}} Gold"
+  }
+}

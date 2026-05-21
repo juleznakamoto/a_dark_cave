@@ -13,6 +13,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useTranslation } from "react-i18next";
 
 const BADGE_SIZE = 10;
 const BADGE_SIZE_ASSIGNED = 8;
@@ -23,6 +24,7 @@ interface ButtonPriorBadgeProps {
 }
 
 export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
+  const { t } = useTranslation("ui");
   const fellowship = useGameStore((s) => s.fellowship);
   const priorAssignedActions = useGameStore((s) => s.priorAssignedActions);
   const disgracedPriorSkills = useGameStore((s) => s.disgracedPriorSkills);
@@ -46,10 +48,10 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
   };
 
   const tooltipText = atCapacity
-    ? "Upgrade Disgraced Prior to assign more actions"
+    ? t("badges.priorUpgradeRequired")
     : isAssigned
-      ? "Click to remove Disgraced Prior"
-      : "Click to assign Disgraced Prior";
+      ? t("badges.priorRemove")
+      : t("badges.priorAssign");
 
   const { background, boxShadow } = getPriorDiscSurfaceColors({
     active: isAssigned,

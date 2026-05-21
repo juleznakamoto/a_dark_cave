@@ -1,0 +1,532 @@
+{
+  "books": {
+    "book_of_ascension": {
+      "description": "关于自我升华的书。使你能够通过练习提升各项行动能力。",
+      "name": "升华之书"
+    },
+    "book_of_craftsmanship": {
+      "description": "大师工匠留下的古老典籍。揭示制作物品与建造建筑的微妙诀窍。",
+      "name": "工艺之书"
+    },
+    "book_of_trials": {
+      "description": "讲述如何穿越人生试炼的书。为通过成就证明自己的人解锁奖励。",
+      "name": "试炼之书"
+    },
+    "book_of_war": {
+      "description": "蕴含战斗智慧的书。显示战斗与遭遇中的成功概率。",
+      "name": "战争之书"
+    }
+  },
+  "clothing": {
+    "alphas_hide": {
+      "description": "狼群首领的兽皮，浸透原始力量",
+      "name": "首领狼皮"
+    },
+    "ancient_scrolls": {
+      "description": "以未知语言写成的神秘卷轴，等待破译",
+      "name": "古代卷轴"
+    },
+    "arbalest_schematic": {
+      "description": "用于制作强力劲弩的蓝图",
+      "name": "劲弩"
+    },
+    "ashen_embrace": {
+      "description": "你的采矿能力提升",
+      "name": "灰烬之拥"
+    },
+    "ashen_embrace_enhanced": {
+      "description": "你的采矿能力大幅提升",
+      "name": "深灰之拥"
+    },
+    "bell_blessing": {
+      "description": "前臂上的神秘铃铛印记。睡眠时获得的专注点翻倍。",
+      "name": "铃之祝福"
+    },
+    "black_bear_fur": {
+      "description": "来自异界巨熊的受诅黑色皮毛",
+      "name": "黑熊皮毛"
+    },
+    "black_wood": {
+      "description": "取自圣所之树的致密木料，仿佛会吞噬光线。",
+      "name": "黑木"
+    },
+    "blackened_mirror": {
+      "description": "一面高大的裂镜，黑铁镶边，散发冰冷气息",
+      "name": "焦黑之镜"
+    },
+    "blacksteel_armor": {
+      "description": "饰有致命尖刺的重甲",
+      "name": "黑钢护甲"
+    },
+    "blood_baptized": {
+      "description": "沐浴强大生物之血后获得",
+      "name": "血洗之身"
+    },
+    "bloodstained_belt": {
+      "description": "染着陈旧血迹的皮带",
+      "name": "染血腰带"
+    },
+    "bloodstone": {
+      "description": "跳动着黑暗能量的猩红宝石",
+      "name": "血石"
+    },
+    "bone_devourer_blood": {
+      "description": "一小瓶从噬骨者身上取得的苍白血液。效果未知。",
+      "name": "噬骨者之血"
+    },
+    "bone_dice": {
+      "description": "以骨头雕成的骰子，被磨得柔滑而令人不安。在赌徒处额外获得一局游戏。",
+      "name": "骨骰"
+    },
+    "bone_necklace": {
+      "description": "由人骨制成的原始项链",
+      "name": "骨项链"
+    },
+    "chitin_plates": {
+      "description": "来自沼泽巨兽的坚硬甲壳板。可用于为防御工事添加甲壳护板。",
+      "name": "甲壳板"
+    },
+    "cracked_crown": {
+      "description": "散发神秘力量的古老金冠",
+      "name": "裂冠"
+    },
+    "dagons_gift": {
+      "description": "你的狩猎能力提升",
+      "name": "达贡的馈赠"
+    },
+    "dagons_gift_enhanced": {
+      "description": "你的狩猎能力大幅提升",
+      "name": "达贡的伟大馈赠"
+    },
+    "devourer_crown": {
+      "description": "噬骨者的王冠，由骨骸制成",
+      "name": "噬骨者王冠"
+    },
+    "ebon_grace": {
+      "description": "黑树赐予的黑暗祝福。心火提供的生产加成翻倍。",
+      "name": "乌木恩典"
+    },
+    "ebony_ring": {
+      "description": "森林诸神留下作为礼物的黑色戒指",
+      "name": "乌木戒指"
+    },
+    "elder_scroll": {
+      "description": "记载禁忌知识的古老卷轴",
+      "name": "古老卷轴"
+    },
+    "explorer_pack": {
+      "description": "制作精良的皮背包，减轻肩上的负担",
+      "name": "探索者背包"
+    },
+    "feeding_ring": {
+      "description": "某个清晨出现的戒指，似乎与你的手指融为一体",
+      "name": "饥饿之戒"
+    },
+    "fishers_hand": {
+      "description": "岸边渔民建造鱼陷阱的古老技艺",
+      "name": "渔夫之手"
+    },
+    "flames_touch": {
+      "description": "制作技能提升",
+      "name": "火焰之触"
+    },
+    "flames_touch_enhanced": {
+      "description": "制作技能大幅提升",
+      "name": "强烈火焰之触"
+    },
+    "forests_grace": {
+      "description": "森林中的鹿似乎更不容易注意到你",
+      "name": "森林恩典"
+    },
+    "frostglass": {
+      "description": "散发寒意的晶体材料",
+      "name": "霜晶"
+    },
+    "gifted_ring": {
+      "description": "某人留下、等你发现的朴素戒指",
+      "name": "赠予之戒"
+    },
+    "grenadier_bag": {
+      "description": "加固皮包，可携带更多爆炸物",
+      "name": "掷弹兵背包"
+    },
+    "highpriest_robe": {
+      "description": "饰有金线的神圣长袍",
+      "name": "大祭司长袍"
+    },
+    "hollow_king_scepter": {
+      "description": "失落之王的权杖，散发力量与疯癫。采矿获得的资源增加 25%，每次采矿有 5% 几率使该次收益翻倍。",
+      "name": "空洞王权杖"
+    },
+    "hunter_cloak": {
+      "description": "柔韧的皮斗篷，让每个动作都悄无声息",
+      "name": "猎人斗篷"
+    },
+    "knights_burden": {
+      "description": "骑士与你分享的知识，沉重地压在你的心头",
+      "name": "骑士的重负"
+    },
+    "loggers_gloves": {
+      "description": "结实的皮手套，有助于采集木材",
+      "name": "伐木手套"
+    },
+    "lycan_blood": {
+      "description": "一小瓶来自狼人首领的黏稠血液。效果未知。",
+      "name": "狼人之血"
+    },
+    "map_fragment": {
+      "description": "通往未知之地的地图碎片。",
+      "name": "地图碎片"
+    },
+    "moon_bracelet": {
+      "description": "由恒久白石制成的精致无重量手环",
+      "name": "月石手环"
+    },
+    "muttering_amulet": {
+      "description": "发出怪异声响的神秘护符",
+      "name": "低语护符"
+    },
+    "necromancer_blood": {
+      "description": "一小瓶从死灵法师身上取得的黑血。效果未知。",
+      "name": "死灵法师之血"
+    },
+    "nightshade_bow_schematic": {
+      "description": "用于制作毒弓的蓝图",
+      "name": "夜影弓"
+    },
+    "occultist_grimoire": {
+      "description": "记录异端秘术师亵渎知识的魔典",
+      "name": "秘术师魔典"
+    },
+    "odd_trinket": {
+      "description": "在地上发现的奇异小饰物",
+      "name": "奇异饰物"
+    },
+    "ravenfeather_mantle": {
+      "description": "由闪烁乌鸦羽毛织成的神秘披肩",
+      "name": "鸦羽披肩"
+    },
+    "ravens_mark": {
+      "description": "陌生人更常接近村庄",
+      "name": "渡鸦印记"
+    },
+    "ravens_mark_enhanced": {
+      "description": "陌生人更频繁地接近村庄",
+      "name": "渡鸦大印"
+    },
+    "ravens_orb": {
+      "description": "受渡鸦祝福、蕴含古老知识的黑暗宝珠",
+      "name": "渡鸦宝珠"
+    },
+    "red_mask": {
+      "description": "由深红皮革制成、令人厌恶的面具",
+      "name": "红面具"
+    },
+    "ring_of_clarity": {
+      "description": "由极其清澈的水晶雕成的戒指",
+      "name": "澄明之戒"
+    },
+    "ring_of_drowned": {
+      "description": "永远湿冷的晦暗戒指",
+      "name": "溺亡者之戒"
+    },
+    "ring_of_obedience": {
+      "description": "一名快乐女子赠予的戒指，上面连着一个更小的环",
+      "name": "顺从之戒"
+    },
+    "sacrificial_tunic": {
+      "description": "能强化献给旧神供品的神圣衣物",
+      "name": "献祭短袍"
+    },
+    "sealed_chest": {
+      "description": "一只非常坚固、你无法打开的箱子",
+      "name": "封印箱"
+    },
+    "shadow_boots": {
+      "description": "像影子一样迅速穿越所有地形",
+      "name": "暗影靴"
+    },
+    "shadow_flute": {
+      "description": "让影子以不自然方式移动的骨笛",
+      "name": "暗影骨笛"
+    },
+    "sharp_aim": {
+      "description": "你的猎人瞄准能力提升",
+      "name": "精准瞄准"
+    },
+    "stonebinders_codex": {
+      "description": "来自隐秘图书馆的典籍，揭示高效建造的秘密",
+      "name": "缚石者法典"
+    },
+    "stormglass_halberd_schematic": {
+      "description": "用于制作强大长戟的蓝图",
+      "name": "风暴晶戟"
+    },
+    "survivors_last_words": {
+      "description": "垂死陌生人留下的最后祝福",
+      "name": "幸存者遗言"
+    },
+    "survivors_notes": {
+      "description": "一卷陈旧卷轴，写满很久以前在此生活之人留下的实用建议。解锁基础成就。",
+      "name": "幸存者笔记"
+    },
+    "tarnished_amulet": {
+      "description": "带来好运的陈旧护符",
+      "name": "晦暗护符"
+    },
+    "tarnished_compass": {
+      "description": "为寻求指引者准备的古代遗物。",
+      "name": "晦暗罗盘"
+    },
+    "unnamed_book": {
+      "description": "以人皮装订、写满禁忌知识的书",
+      "name": "无名之书"
+    },
+    "whisperers_mark": {
+      "description": "黑暗中低语者的印记",
+      "name": "低语者印记"
+    },
+    "whispering_cube": {
+      "description": "来源不明、打磨得极其光滑的金属立方体，低声诉说消逝文明的历史碎片。",
+      "name": "低语立方"
+    },
+    "wooden_figure": {
+      "description": "雕刻着触手怪物的木像，令人不安",
+      "name": "木雕像"
+    }
+  },
+  "fellowship": {
+    "ashwraith_huntress": {
+      "description": "来自森林部族的野民女猎手，以血誓相系。解锁狩猎技能升级与猎人生产升级。",
+      "name": "灰怨女猎手"
+    },
+    "disgraced_prior": {
+      "description": "被教团逐出的前任修院长。以无尽劳作赎罪。可被指派自动重复行动。",
+      "name": "失宠修院长"
+    },
+    "elder_wizard": {
+      "description": "生命将尽的老巫师，很久以前便掌握了奥术之火。解锁战斗技能血焰球。",
+      "name": "老巫师"
+    },
+    "one_eyed_crow": {
+      "description": "只有一只锐利眼睛的神秘乌鸦，用乌鸦挽具驯服。解锁鸦眼技能与传信功能。",
+      "name": "独眼乌鸦"
+    },
+    "restless_knight": {
+      "description": "久经战斗的老兵，见过旧世界的残骸。解锁战斗技能粉碎打击。",
+      "name": "不眠骑士"
+    }
+  },
+  "tools": {
+    "adamant_axe": {
+      "description": "由最坚硬金属锻成的不可摧毁之斧",
+      "name": "精金斧"
+    },
+    "adamant_lantern": {
+      "description": "终极光源，照亮每一条道路",
+      "name": "精金灯笼"
+    },
+    "adamant_pickaxe": {
+      "description": "采矿工具的巅峰，坚不可摧且精准无比",
+      "name": "精金镐"
+    },
+    "blacksmith_hammer": {
+      "description": "曾属于一位伟大铁匠的传奇锻锤",
+      "name": "铁匠锤"
+    },
+    "blacksteel_axe": {
+      "description": "由稀有黑钢锻成的斧头",
+      "name": "黑钢斧"
+    },
+    "blacksteel_lantern": {
+      "description": "由稀有黑钢锻成的灯笼",
+      "name": "黑钢灯笼"
+    },
+    "blacksteel_pickaxe": {
+      "description": "由稀有黑钢锻成的镐子",
+      "name": "黑钢镐"
+    },
+    "bone_saw": {
+      "description": "死灵法师的工具，屠宰效率不自然地高",
+      "name": "骨锯"
+    },
+    "crow_harness": {
+      "description": "专为捕捉乌鸦制作的挽具。可用于在黑境峡谷捕捉乌鸦。",
+      "name": "乌鸦挽具"
+    },
+    "giant_trap": {
+      "description": "巨大的陷阱，能够捕捉森林巨兽",
+      "name": "巨型陷阱"
+    },
+    "hidden_library_map": {
+      "description": "来自修道院的地图，揭示洞穴深处隐秘图书馆的位置",
+      "name": "隐秘图书馆地图"
+    },
+    "iron_axe": {
+      "description": "适合重砍的锋利斧头",
+      "name": "铁斧"
+    },
+    "iron_lantern": {
+      "description": "提供可靠光源的简易灯笼",
+      "name": "铁灯笼"
+    },
+    "iron_pickaxe": {
+      "description": "耐用镐子，可高效采矿",
+      "name": "铁镐"
+    },
+    "mastermason_chisel": {
+      "description": "一位早已被遗忘的大师建造者留下的精巧工具",
+      "name": "石匠大师凿"
+    },
+    "natharit_pickaxe": {
+      "description": "由未知材料制成的极其坚固镐子，品质非凡",
+      "name": "纳萨里特镐"
+    },
+    "obsidian_axe": {
+      "description": "传奇斧头，拥有剃刀般锋利的火山刃口",
+      "name": "黑曜石斧"
+    },
+    "obsidian_lantern": {
+      "description": "强大的灯笼，投下明亮而稳定的光",
+      "name": "黑曜石灯笼"
+    },
+    "obsidian_pickaxe": {
+      "description": "由火山玻璃制成的精湛采矿工具",
+      "name": "黑曜石镐"
+    },
+    "occultist_map": {
+      "description": "陈旧地图，揭示洞穴中秘术师密室的位置",
+      "name": "秘术师地图"
+    },
+    "reinforced_rope": {
+      "description": "结实绳索，使你能够进入更深的洞穴腔室",
+      "name": "加固绳索"
+    },
+    "skeleton_key": {
+      "description": "传说能打开任何锁的神秘钥匙",
+      "name": "万能钥匙"
+    },
+    "skull_lantern": {
+      "description": "由受诅咒的骨头锻成，照亮最深的黑暗",
+      "name": "骷髅灯笼"
+    },
+    "steel_axe": {
+      "description": "由淬炼钢锻成的精制斧头",
+      "name": "钢斧"
+    },
+    "steel_lantern": {
+      "description": "明亮灯笼，照亮最黑暗的地方",
+      "name": "钢灯笼"
+    },
+    "steel_pickaxe": {
+      "description": "由坚韧钢材制成的非常结实的采矿工具",
+      "name": "钢镐"
+    },
+    "stone_axe": {
+      "description": "用于砍柴的基础斧头",
+      "name": "石斧"
+    },
+    "stone_pickaxe": {
+      "description": "用于采矿的粗糙镐子",
+      "name": "石镐"
+    }
+  },
+  "weapons": {
+    "adamant_sword": {
+      "description": "拥有无匹力量的传奇利刃",
+      "name": "精金剑"
+    },
+    "arbalest": {
+      "description": "由杰出工程师设计、精心制作的劲弩",
+      "name": "劲弩"
+    },
+    "ashen_dagger": {
+      "description": "灰烬使者赠予的匕首，由火山灰锻成",
+      "name": "灰烬匕首"
+    },
+    "ashen_greatshield": {
+      "description": "由地下湖怪物的骨骸锻成的巨大盾牌",
+      "name": "灰烬巨盾"
+    },
+    "ashfire_bomb": {
+      "description": "闪耀异界火光的毁灭性炸弹",
+      "name": "灰火炸弹"
+    },
+    "blacksteel_bow": {
+      "description": "由稀有黑钢锻成的弓",
+      "name": "黑钢弓"
+    },
+    "blacksteel_sword": {
+      "description": "由稀有黑钢锻成的剑",
+      "name": "黑钢剑"
+    },
+    "bloodstone_staff": {
+      "description": "顶端镶有血石的法杖，跳动着黑暗能量",
+      "name": "血石法杖"
+    },
+    "compound_bow": {
+      "description": "来自消逝文明的高精度武器",
+      "name": "复合弓"
+    },
+    "crude_bow": {
+      "description": "简易弓，足以应对任何挑战",
+      "name": "粗制弓"
+    },
+    "ember_bomb": {
+      "description": "强力炸弹，发光核心散发灼热",
+      "name": "余烬炸弹"
+    },
+    "frostglass_sword": {
+      "description": "由霜晶锻成的利刃，散发寒冷力量",
+      "name": "霜晶剑"
+    },
+    "huntsman_bow": {
+      "description": "改良弓，平衡精妙，精准可靠",
+      "name": "猎手弓"
+    },
+    "iron_sword": {
+      "description": "坚固铁刃，提升战斗能力",
+      "name": "铁剑"
+    },
+    "long_bow": {
+      "description": "优良长弓，射程更远，精度更高",
+      "name": "长弓"
+    },
+    "master_bow": {
+      "description": "终极之弓，威力与掌控无可匹敌",
+      "name": "大师弓"
+    },
+    "nightshade_bow": {
+      "description": "由暗木制成的弓，箭矢携带毒性",
+      "name": "夜影弓"
+    },
+    "nordic_war_axe": {
+      "description": "由维京铁匠大师锻造的传奇战斧",
+      "name": "北境战斧"
+    },
+    "obsidian_sword": {
+      "description": "由火山玻璃锻成、剃刀般锋利的利刃",
+      "name": "黑曜石剑"
+    },
+    "steel_sword": {
+      "description": "精制钢刃，平衡出众",
+      "name": "钢剑"
+    },
+    "stormglass_halberd": {
+      "description": "由大师级精炼精金锻成的至高长戟",
+      "name": "风暴晶戟"
+    },
+    "veinfire_elixir": {
+      "description": "由稀有脉络根蒸馏而成的炼金疗伤灵药",
+      "name": "脉火灵药"
+    },
+    "void_bomb": {
+      "description": "可怖炸弹，似乎会扭曲周围空间",
+      "name": "虚空炸弹"
+    },
+    "war_bow": {
+      "description": "非常强大的弓，为力量与精准而造",
+      "name": "战弓"
+    }
+  }
+}

@@ -1,3 +1,9 @@
+import {
+  getEffectName,
+  getResourceName,
+  tWithFallback,
+} from "@/i18n/resolveGameText";
+import { bookEffects, clothingEffects } from "./effects";
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { getTotalKnowledge, getTotalMadness } from "./effectsCalculation";
@@ -95,7 +101,6 @@ const createBuyTrade = (
   costResources: (keyof typeof PRICES)[],
 ) => ({
   id,
-  label: `${amount} ${resource.charAt(0).toUpperCase() + resource.slice(1).replace(/_/g, " ")}`,
   give: resource,
   giveAmount: amount,
   condition,
@@ -111,7 +116,6 @@ const createSellTrade = (
   rewardResources: (keyof typeof PRICES)[],
 ) => ({
   id,
-  label: `Sell ${amount} ${resource.charAt(0).toUpperCase() + resource.slice(1).replace(/_/g, " ")}`,
   take: resource,
   takeAmount: amount,
   condition,
@@ -637,32 +641,67 @@ const sellTrades = [
   ),
 ];
 
+function getToolTradeLabelFallback(trade: {
+  id: string;
+  label?: string;
+  give: string;
+  giveItem: string;
+}): string {
+  if (trade.label) return trade.label;
+  const item = trade.giveItem;
+  switch (trade.give) {
+    case "book":
+      return getEffectName(
+        "books",
+        item,
+        (bookEffects as Record<string, { name?: string }>)[item]?.name ?? item,
+      );
+    case "tool":
+      return getEffectName("tools", item, item);
+    case "schematic":
+      return getEffectName(
+        "clothing",
+        item,
+        (clothingEffects as Record<string, { name?: string }>)[item]?.name ??
+          item,
+      );
+    case "weapon":
+      return getEffectName("weapons", item, item);
+    case "relic":
+      return getEffectName("relics", item, item);
+    case "consumable":
+      return item
+        .replace(/_/g, " ")
+        .replace(/\b\w/g, (c) => c.toUpperCase());
+    default:
+      return item;
+  }
+}
+
 const toolTrades = [
   {
     id: "trade_book_of_trials",
-    label: "Book of Trials",
+    label: getEffectName("books", "book_of_trials", bookEffects.book_of_trials?.name ?? "Book of Trials"),
     give: "book",
     giveItem: "book_of_trials",
     condition: (state: GameState) =>
       state.buildings.darkEstate >= 1 && !state.books.book_of_trials,
     costs: [{ resource: "gold", amounts: [50] }],
-    message:
-      "You purchase the Book of Trials. The merchant smiles knowingly: 'A guide for those who seek to track their journey.'",
+
   },
   {
     id: "trade_book_of_craftsmanship",
-    label: "Book of Craftsmanship",
+    label: getEffectName("books", "book_of_craftsmanship", bookEffects.book_of_craftsmanship?.name ?? "Book of Craftsmanship"),
     give: "book",
     giveItem: "book_of_craftsmanship",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 3 && !state.books.book_of_craftsmanship,
     costs: [{ resource: "gold", amounts: [200] }],
-    message:
-      "You purchase the Book of Craftsmanship. The merchant nods approvingly: 'A craftsman's tome, worn but full of wisdom. It will whisper secrets to those who build.'",
+
   },
   {
     id: "trade_book_of_war",
-    label: "Book of War",
+    label: getEffectName("books", "book_of_war", bookEffects.book_of_war?.name ?? "Book of War"),
     give: "book",
     giveItem: "book_of_war",
     condition: (state: GameState) =>
@@ -671,91 +710,82 @@ const toolTrades = [
       state.buildings.darkEstate >= 1 &&
       !state.books.book_of_war,
     costs: [{ resource: "gold", amounts: [300] }],
-    message:
-      "You purchase the Book of War. The merchant nods gravely: 'Knowledge from a long gone kingdom in the far east. With this, you will better understand the outcomes of your choices.'",
+
   },
   {
     id: "trade_reinforced_rope",
-    label: "Reinforced Rope",
+    label: getEffectName("tools", "reinforced_rope", "Reinforced Rope"),
     give: "tool",
     giveItem: "reinforced_rope",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 5 && !state.tools.reinforced_rope,
     costs: [{ resource: "gold", amounts: [150] }],
-    message:
-      "You purchase the reinforced rope. This rope can withstand tremendous strain and reach places in the deepest cave chambers.",
+
   },
   {
     id: "trade_occultist_map",
-    label: "Occultists's Map",
+    label: getEffectName("tools", "occultist_map", "Occultist's Map"),
     give: "tool",
     giveItem: "occultist_map",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 6 && !state.tools.occultist_map,
     costs: [{ resource: "gold", amounts: [200] }],
-    message:
-      "As you buy the occultist's map the merchant whispers: 'An old occultist hid his secrets in a chamber deep in the cave. This map will guide you.'",
+
   },
   {
     id: "trade_giant_trap",
-    label: "Giant Trap",
+    label: getEffectName("tools", "giant_trap", "Giant Trap"),
     give: "tool",
     giveItem: "giant_trap",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 7 && !state.tools.giant_trap,
     costs: [{ resource: "gold", amounts: [250] }],
-    message:
-      "As you purchase the giant trap, the merchant grins: 'This can trap something gigantic in the woods. Use it wisely.'",
+
   },
   {
     id: "trade_arbalest_schematic",
-    label: "Arbalest Schematic",
+    label: getEffectName("clothing", "arbalest_schematic", clothingEffects.arbalest_schematic?.name ?? "Arbalest Schematic"),
     give: "schematic",
     giveItem: "arbalest_schematic",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 8 && !state.schematics.arbalest_schematic,
     costs: [{ resource: "gold", amounts: [500] }],
-    message:
-      "You purchase the arbalest schematic. The merchant unfurls an intricate blueprint: 'A design from a master engineer. With this, you can craft a powerful weapon.'",
+
   },
   {
     id: "trade_compound_bow",
-    label: "Compound Bow",
+    label: getEffectName("weapons", "compound_bow", "Compound Bow"),
     give: "weapon",
     giveItem: "compound_bow",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 2 && !state.weapons.compound_bow,
     costs: [{ resource: "gold", amounts: [1000] }],
-    message:
-      "You purchase the compound bow. The merchant nods approvingly: 'High precision weapon from the vanished civilization. It will serve you well.'",
+
   },
 
   {
     id: "trade_stormglass_halberd_schematic",
-    label: "Stormglass Halberd Schematic",
+    label: getEffectName("clothing", "stormglass_halberd_schematic", clothingEffects.stormglass_halberd_schematic?.name ?? "Stormglass Halberd Schematic"),
     give: "schematic",
     giveItem: "stormglass_halberd_schematic",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 6 &&
       !state.schematics.stormglass_halberd_schematic,
     costs: [{ resource: "gold", amounts: [1500] }],
-    message:
-      "You purchase the stormglass halberd schematic. The merchant reveals the faded plans: 'With this design, you can forge a halberd of tremendous power.'",
+
   },
   {
     id: "trade_natharit_pickaxe",
-    label: "Natharit Pickaxe",
+    label: getEffectName("tools", "natharit_pickaxe", "Natharit Pickaxe"),
     give: "tool",
     giveItem: "natharit_pickaxe",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 8 && !state.tools.natharit_pickaxe,
     costs: [{ resource: "gold", amounts: [2000] }],
-    message:
-      "You purchase the natharit pickaxe. The merchant hands you the sturdy tool: 'Extremely durable pickaxe of unknown material. Its quality is exceptional.'",
+
   },
   {
     id: "trade_nightshade_bow_schematic",
-    label: "Nightshade Bow Schematic",
     give: "schematic",
     giveItem: "nightshade_bow_schematic",
     condition: (state: GameState) =>
@@ -763,12 +793,10 @@ const toolTrades = [
       state.buildings.bastion >= 1 &&
       !state.schematics.nightshade_bow_schematic,
     costs: [{ resource: "gold", amounts: [2500] }],
-    message:
-      "You purchase the nightshade bow schematic. The merchant grins darkly: 'This bow's design is cruel. Its arrows will poison your enemies.'",
+
   },
   {
     id: "trade_skull_lantern",
-    label: "Skull Lantern",
     give: "tool",
     giveItem: "skull_lantern",
     condition: (state: GameState) =>
@@ -776,12 +804,10 @@ const toolTrades = [
       state.buildings.stoneHut >= 1 &&
       !state.tools.skull_lantern,
     costs: [{ resource: "gold", amounts: [1500] }],
-    message:
-      "You purchase the skull lantern. Forged from cursed bone, its eerie light will guide you through the deepest depths.",
+
   },
   {
     id: "trade_tarnished_compass",
-    label: "Tarnished Compass",
     give: "relic",
     giveItem: "tarnished_compass",
     condition: (state: GameState) =>
@@ -789,12 +815,10 @@ const toolTrades = [
       state.buildings.stoneHut >= 3 &&
       !state.relics.tarnished_compass,
     costs: [{ resource: "gold", amounts: [2000] }],
-    message:
-      "You purchase the tarnished compass. Artifact of the vanished civilization, its needle points to hidden places.",
+
   },
   {
     id: "trade_map_fragment_wooden",
-    label: "Map Fragment",
     give: "relic",
     giveItem: "map_fragment",
     condition: (state: GameState) =>
@@ -802,11 +826,10 @@ const toolTrades = [
       !state.story.seen.mapFragmentMerchantWoodenBought &&
       !state.story.seen.swampMapAssembled,
     costs: [{ resource: "gold", amounts: [1000] }],
-    message: "You purchase a tattered map fragment.",
+
   },
   {
     id: "trade_map_fragment_stone",
-    label: "Map Fragment",
     give: "relic",
     giveItem: "map_fragment",
     condition: (state: GameState) =>
@@ -814,11 +837,10 @@ const toolTrades = [
       !state.story.seen.mapFragmentMerchantStoneBought &&
       !state.story.seen.swampMapAssembled,
     costs: [{ resource: "gold", amounts: [2000] }],
-    message: "You purchase a tattered map fragment.",
+
   },
   {
     id: "trade_crow_harness",
-    label: "Crow Harness",
     give: "tool",
     giveItem: "crow_harness",
     condition: (state: GameState) =>
@@ -826,12 +848,10 @@ const toolTrades = [
       state.buildings.stoneHut >= 5 &&
       !state.tools.crow_harness,
     costs: [{ resource: "gold", amounts: [2500] }],
-    message:
-      "You purchase the crow harness. A specially crafted harness for messenger crows.",
+
   },
   {
     id: "trade_clarity_elixir",
-    label: "Elixir of Clarity",
     give: "consumable",
     giveItem: "clarity_elixir",
     condition: (state: GameState) => {
@@ -847,18 +867,17 @@ const toolTrades = [
       return false;
     },
     costs: [{ resource: "gold", amounts: [250] }],
-    message: "You drink the Elixir of Clarity. Your mind feels lighter.",
+
   },
   {
     id: "trade_veinfire_elixir",
-    label: "Veinfire Elixir",
     give: "consumable",
     giveItem: "veinfire_elixir",
     condition: (state: GameState) =>
       Boolean(state.story?.seen?.veinrootDiscovered) &&
       (state.resources.veinfire_elixir ?? 0) < 5,
     costs: [{ resource: "gold", amounts: [150] }],
-    message: "You purchase a bottle of Veinfire Elixir.",
+
   },
 ];
 
@@ -991,22 +1010,31 @@ function selectTrades(
     buyAmount = roundCost(buyAmount, "up");
     sellAmount = roundCost(sellAmount, "down");
 
-    // Format resource names for display
-    const formatResourceName = (res: string) =>
-      res
-        .replace(/_/g, " ")
-        .split(" ")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
+    const buyFallback = buyResource
+      .replace(/_/g, " ")
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+    const sellFallback = sellResource
+      .replace(/_/g, " ")
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+    const buyResourceName = getResourceName(buyResource, buyFallback);
+    const sellResourceName = getResourceName(sellResource, sellFallback);
 
-    const buyFormatted = formatResourceName(buyResource);
-    const sellFormatted = formatResourceName(sellResource);
-
-    // Create label and cost
-    // Buy trade: label = what you get (from trade.label), cost = what you pay
-    // Sell trade: label = what you get (buyAmount buyResource), cost = what you pay (sellAmount sellResource)
-    const label = `${buyAmount} ${buyFormatted}`;
-    const cost = `${sellAmount} ${sellFormatted}`;
+    const label = tWithFallback(
+      "events",
+      "merchant.tradeLabel",
+      `${buyAmount} ${buyResourceName}`,
+      { amount: buyAmount, resource: buyResourceName },
+    );
+    const cost = tWithFallback(
+      "events",
+      "merchant.tradeCost",
+      `${sellAmount} ${sellResourceName}`,
+      { amount: sellAmount, resource: sellResourceName },
+    );
 
     selected.push({
       id: trade.id,
@@ -1030,7 +1058,7 @@ export function isMerchantTradeCurrentlyAvailable(
   state: GameState,
 ): boolean {
   const trade = allMerchantTrades.find((candidate) => candidate.id === tradeId);
-  return trade ? trade.condition(state) : false;
+  return trade ? Boolean(trade.condition(state)) : false;
 }
 
 // Re-export for convenience
@@ -1117,10 +1145,21 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
     const goldCost = trade.costs[0].amounts[0];
     const discountedCost = Math.ceil(goldCost * (1 - discount));
 
+    const toolLabelFallback = getToolTradeLabelFallback(trade);
+    const goldName = getResourceName("gold", "Gold");
     availableToolTrades.push({
       id: trade.id,
-      label: trade.label,
-      cost: `${discountedCost} Gold`,
+      label: tWithFallback(
+        "events",
+        `merchant.toolTrades.${trade.id}.label`,
+        toolLabelFallback,
+      ),
+      cost: tWithFallback(
+        "events",
+        "merchant.tradeCost",
+        `${discountedCost} ${goldName}`,
+        { amount: discountedCost, resource: goldName },
+      ),
       buyResource: trade.give, // Category: "tool", "book", "schematic", "weapon", "relic", …
       buyAmount: 1,
       buyItem: trade.giveItem,
@@ -1160,20 +1199,17 @@ export const merchantEvents: Record<string, GameEvent> = {
       1 * (state.buildings.grandBazaar || 0) +
       1.5 * (state.buildings.merchantsGuild || 0) -
       3 * state.BTP,
-    title: "Traveling Merchant",
-    message:
-      "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",
+
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000, // 4 minutes
     fallbackChoice: {
       id: "say_goodbye",
-      label: "Say goodbye",
-      effect: () => ({
-        _logMessage:
-          "You bid the merchant farewell. He tips his hat and mutters about the road ahead.",
-      }),
+      effect: () =>
+        ({
+          _logMessageKey: "outcome0",
+        }) as any,
     },
     choices: [], // Choices will be generated dynamically in TimedEventPanel
   },

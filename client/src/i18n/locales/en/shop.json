@@ -1,0 +1,81 @@
+{
+  "advanced_bundle": {
+    "activationMessage": "Pale King's Bundle components have been added to your purchases!",
+    "name": "Pale King's Bundle"
+  },
+  "artifact_bundle": {
+    "activationMessage": "Dark Artifacts Bundle components have been added to your purchases!",
+    "name": "Dark Artifacts Bundle"
+  },
+  "ashen_throne_bundle": {
+    "activationMessage": "Ashen Throne Bundle components have been added to your purchases!",
+    "name": "Ashen Throne Bundle"
+  },
+  "basic_survival_bundle": {
+    "activationMessage": "Fading Wanderer Bundle components have been added to your purchases!",
+    "name": "Fading Wanderer Bundle"
+  },
+  "crow_harness": {
+    "activationMessage": "The Crow Harness has been added to your tools! Now you must seek out a crow to bind to the harness.",
+    "description": "Specially crafted harness for messenger crows. Unlocks Crow storyline. Adds Fellowship Member.",
+    "name": "Crow Harness"
+  },
+  "cruel_mode": {
+    "activationMessage": "Cruel Mode activated! Start a new game to experience the ultimate challenge.",
+    "description": "A more cruel world, expanded story, more items, deadlier foes. Endure, or vanish.",
+    "name": "Cruel Mode"
+  },
+  "full_game": {
+    "activationMessage": "Full Game unlocked and activated! The journey continues without restrictions.",
+    "description": "Unlock the full game and continue your journey.",
+    "name": "Full Game"
+  },
+  "gold_1000": {
+    "activationMessage": "1000 Gold have been added to your inventory.",
+    "description": "A decent amount of Gold",
+    "name": "1'000 Gold"
+  },
+  "gold_100_free": {
+    "activationMessage": "100 Gold have been added to your inventory as a gift!",
+    "description": "A small daily mercy in a cold world",
+    "name": "100 Gold Gift"
+  },
+  "gold_20000": {
+    "activationMessage": "20'000 Gold have been added to your inventory.",
+    "description": "Unholy amounts of Gold",
+    "name": "20'000 Gold"
+  },
+  "gold_250": {
+    "activationMessage": "1000 Gold have been added to your inventory.",
+    "description": "A decent amount of Gold",
+    "name": "1'000 Gold"
+  },
+  "gold_2500": {
+    "activationMessage": "2500 Gold have been added to your inventory.",
+    "description": "A substantial treasure",
+    "name": "2'500 Gold"
+  },
+  "gold_5000": {
+    "activationMessage": "5000 Gold have been added to your inventory.",
+    "description": "A fortune in Gold",
+    "name": "5'000 Gold"
+  },
+  "great_feast_1": {
+    "activationMessage": "A Great Feast has begun!",
+    "name": "1 Great Feast"
+  },
+  "great_feast_3": {
+    "activationMessage": "A Great Feast has begun!",
+    "name": "3 Great Feasts"
+  },
+  "skull_lantern": {
+    "activationMessage": "The Skull Lantern has been added to your tools! Its eerie light will guide you through the depths.",
+    "description": "Forged from cursed bone illuminating the deepest depths. Unlocks Skull Lantern storyline.",
+    "name": "Skull Lantern"
+  },
+  "tarnished_compass": {
+    "activationMessage": "The Tarnished Compass has been added to your inventory! Its ancient magic may grant fortune to your endeavors.",
+    "description": "Artifact of the vanished civilization, its needle points to hidden places. Unlocks Compass storyline.",
+    "name": "Tarnished Compass"
+  }
+}

@@ -17,7 +17,11 @@ import {
   applyMarketingSubscribeGoldReward,
   postMarketingPreference,
 } from "@/game/marketingEmailReward";
-import { SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
+import {
+  SOCIAL_PLATFORMS,
+  getSocialPlatformActionLabel,
+  getSocialPlatformTitle,
+} from "@/game/socialPlatforms";
 import { claimSocialFollowReward } from "@/game/claimSocialFollowReward";
 import { SocialPlatformGlyph } from "@/components/game/SocialPlatformGlyph";
 import { getCurrentUser } from "@/game/auth";
@@ -42,19 +46,23 @@ import {
   PLAYLIGHT_DISCOVER_REWARD_GOLD,
   claimPlaylightDiscoverReward,
 } from "@/game/playlightDiscoverReward";
+import { useTranslation } from "react-i18next";
 
 interface SocialPromptDialogProps {
   isOpen: boolean;
 }
 
-const TASK_REQUIRES_SIGNUP_TOOLTIP = "sign up to complete task";
-
 function LockedSocialButton({
   locked,
   tooltipId,
+  tooltipText,
   className,
   ...props
-}: ComponentProps<typeof Button> & { locked: boolean; tooltipId: string }) {
+}: ComponentProps<typeof Button> & {
+  locked: boolean;
+  tooltipId: string;
+  tooltipText: string;
+}) {
   const { disabled, ...rest } = props;
   const mergedDisabled = locked || disabled;
   const button = (
@@ -67,7 +75,7 @@ function LockedSocialButton({
   if (!locked) return button;
   return (
     <TooltipWrapper
-      tooltip={<p className="text-xs">{TASK_REQUIRES_SIGNUP_TOOLTIP}</p>}
+      tooltip={<p className="text-xs">{tooltipText}</p>}
       tooltipId={tooltipId}
       disabled
       className="inline-flex shrink-0"
@@ -97,6 +105,7 @@ function StatusIcon({ done }: { done: boolean }) {
 export default function SocialPromptDialog({
   isOpen,
 }: SocialPromptDialogProps) {
+  const { t } = useTranslation("ui");
   const { toast } = useToast();
   const setSocialPromptDialogOpen = useGameStore(
     (s) => s.setSocialPromptDialogOpen,
@@ -175,7 +184,6 @@ export default function SocialPromptDialog({
 
   useEffect(() => {
     if (!isOpen) return;
-    // Stay dismissible manually until gifted_ring (exclusive narrative reward).
     if (
       isSocialPromoExclusiveRewardComplete({
         social_media_rewards,
@@ -215,7 +223,7 @@ export default function SocialPromptDialog({
       } = await supabase.auth.getSession();
       if (!session?.access_token) {
         toast({
-          title: "Not signed in",
+          title: t("profile.notSignedIn"),
           variant: "destructive",
         });
         return;
@@ -231,13 +239,13 @@ export default function SocialPromptDialog({
       setMarketingOptIn(true);
 
       toast({
-        title: "You're subscribed",
-        description: "We'll send occasional updates and offers to your email.",
+        title: t("profile.subscribed"),
+        description: t("profile.subscribedDesc"),
       });
     } catch (e: unknown) {
       toast({
-        title: "Could not update preference",
-        description: e instanceof Error ? e.message : "Try again later.",
+        title: t("profile.preferenceUpdateFailed"),
+        description: e instanceof Error ? e.message : t("profile.tryAgainLater"),
         variant: "destructive",
       });
     } finally {
@@ -249,7 +257,7 @@ export default function SocialPromptDialog({
     const user = await getCurrentUser();
     if (!user) {
       toast({
-        title: "Not signed in",
+        title: t("profile.notSignedIn"),
         variant: "destructive",
       });
       return;
@@ -257,8 +265,8 @@ export default function SocialPromptDialog({
     const inviteLink = `${window.location.origin}?ref=${user.id}`;
     await navigator.clipboard.writeText(inviteLink);
     toast({
-      title: "Invite link copied!",
-      description: `Share it with friends to earn ${REFERRAL_REWARD_GOLD} Gold each.`,
+      title: t("invite.linkCopied"),
+      description: t("invite.linkCopiedDesc", { amount: REFERRAL_REWARD_GOLD }),
     });
   };
 
@@ -293,17 +301,13 @@ export default function SocialPromptDialog({
     >
       <DialogContent className="[--adc-dialog-max-w:32rem] z-[70] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Stay connected and earn Rewards</DialogTitle>
+          <DialogTitle>{t("socialPrompt.title")}</DialogTitle>
           <DialogDescription className="text-left pt-1 space-y-2">
-            <p>
-              Complete the tasks below to receive bonuses. Complete all tasks to
-              receive an exclusive item.
-            </p>
+            <p>{t("socialPrompt.description")}</p>
           </DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col gap-3">
-          {/* Sign up (first task) */}
           <div
             className={cn(
               "rounded-md border border-border p-3 flex gap-3 items-center",
@@ -318,12 +322,13 @@ export default function SocialPromptDialog({
                 <div className="flex items-center gap-2">
                   <User className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
                   <span className="font-medium text-sm">
-                    Sign up (+{SIGN_UP_WELCOME_GOLD} Gold)
+                    {t("socialPrompt.signUpTitle", {
+                      amount: SIGN_UP_WELCOME_GOLD,
+                    })}
                   </span>
                 </div>
                 <p className="text-xs text-muted-foreground leading-snug">
-                  Create a free account to save your game progress and sync
-                  across devices. Without an account, your progress may be lost.
+                  {t("socialPrompt.signUpDesc")}
                 </p>
               </div>
               {!signUpTaskDone && (
@@ -332,13 +337,12 @@ export default function SocialPromptDialog({
                   className="shrink-0 font-medium px-3 self-center"
                   onClick={handleSignUpTaskClick}
                 >
-                  Sign Up
+                  {t("socialPrompt.signUpButton")}
                 </Button>
               )}
             </div>
           </div>
 
-          {/* Social (guests can complete) */}
           {SOCIAL_PLATFORMS.map((platform) => {
             const claimed = social_media_rewards[platform.id]?.claimed ?? false;
             return (
@@ -356,7 +360,7 @@ export default function SocialPromptDialog({
                   <div className="flex items-center gap-2 min-w-0">
                     <SocialPlatformGlyph platformId={platform.id} />
                     <span className="font-medium text-sm truncate">
-                      {platform.name}
+                      {getSocialPlatformTitle(platform.id, platform.reward)}
                     </span>
                   </div>
                   {!claimed && (
@@ -368,11 +372,10 @@ export default function SocialPromptDialog({
                           platform.id,
                           platform.url,
                           platform.reward,
-                          platform.name,
                         )
                       }
                     >
-                      {platform.actionLabel}
+                      {getSocialPlatformActionLabel(platform.id)}
                     </Button>
                   )}
                 </div>
@@ -380,7 +383,6 @@ export default function SocialPromptDialog({
             );
           })}
 
-          {/* Playlight discover (guests can complete) */}
           <div
             className={cn(
               "rounded-md border border-border p-3 flex gap-3 items-center",
@@ -399,7 +401,9 @@ export default function SocialPromptDialog({
                     aria-hidden
                   />
                   <span className="font-medium text-sm">
-                    Discover 1 game (+{PLAYLIGHT_DISCOVER_REWARD_GOLD} Gold)
+                    {t("socialPrompt.playlightTitle", {
+                      amount: PLAYLIGHT_DISCOVER_REWARD_GOLD,
+                    })}
                   </span>
                 </div>
               </div>
@@ -416,13 +420,12 @@ export default function SocialPromptDialog({
                     });
                   }}
                 >
-                  Discover games
+                  {t("socialPrompt.discoverGames")}
                 </Button>
               )}
             </div>
           </div>
 
-          {/* Email (requires sign-in) */}
           <div
             className={cn(
               "rounded-md border border-border p-3 flex gap-3 items-center",
@@ -437,7 +440,9 @@ export default function SocialPromptDialog({
                 <div className="flex items-center gap-2">
                   <Mail className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
                   <span className="font-medium text-sm">
-                    Email updates (+{MARKETING_SUBSCRIBE_GOLD} Gold)
+                    {t("socialPrompt.emailUpdatesTitle", {
+                      amount: MARKETING_SUBSCRIBE_GOLD,
+                    })}
                   </span>
                 </div>
               </div>
@@ -445,18 +450,18 @@ export default function SocialPromptDialog({
                 <LockedSocialButton
                   locked={!isUserSignedIn}
                   tooltipId="social-prompt-subscribe"
+                  tooltipText={t("socialPrompt.signUpRequiresSignInTooltip")}
                   size="xs"
                   className="self-center"
                   disabled={prefLoading || subscribeLoading}
                   onClick={() => void handleSubscribe()}
                 >
-                  Subscribe
+                  {t("socialPrompt.subscribe")}
                 </LockedSocialButton>
               )}
             </div>
           </div>
 
-          {/* Invite */}
           <div
             className={cn(
               "rounded-md border border-border p-3 flex gap-3 items-center",
@@ -474,23 +479,29 @@ export default function SocialPromptDialog({
                     aria-hidden
                   />
                   <span className="font-medium text-sm">
-                    Invite 1 friend (+{REFERRAL_REWARD_GOLD} Gold each)
+                    {t("socialPrompt.inviteTitle", {
+                      amount: REFERRAL_REWARD_GOLD,
+                    })}
                   </span>
                 </div>
                 <p className="text-xs text-muted-foreground leading-snug">
-                  Invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends and each time both of you will receive {REFERRAL_REWARD_GOLD} Gold ({referralCount}/
-                  {SOCIAL_PROMPT_REFERRAL_CAP} invited).
+                  {t("socialPrompt.inviteDesc", {
+                    cap: SOCIAL_PROMPT_REFERRAL_CAP,
+                    amount: REFERRAL_REWARD_GOLD,
+                    count: referralCount,
+                  })}
                 </p>
               </div>
               {!referralsComplete && (
                 <LockedSocialButton
                   locked={!isUserSignedIn}
                   tooltipId="social-prompt-invite"
+                  tooltipText={t("socialPrompt.signUpRequiresSignInTooltip")}
                   size="xs"
                   className="self-center"
                   onClick={() => void handleCopyInvite()}
                 >
-                  Copy invite link
+                  {t("socialPrompt.copyInviteLink")}
                 </LockedSocialButton>
               )}
             </div>
@@ -509,8 +520,8 @@ export default function SocialPromptDialog({
               <div className="flex justify-between gap-2 text-sm font-medium text-foreground">
                 <span className="leading-snug">
                   {exclusiveRewardComplete
-                    ? "You have finished all tasks. You will soon receive your reward."
-                    : "Progress toward exclusive item"}
+                    ? t("socialPrompt.progressComplete")
+                    : t("socialPrompt.progressToward")}
                 </span>
                 <span className="shrink-0 tabular-nums">
                   {exclusiveProgress.completed}/{exclusiveProgress.total}
@@ -524,7 +535,7 @@ export default function SocialPromptDialog({
             aria-valuenow={exclusiveProgress.completed}
             aria-valuemin={0}
             aria-valuemax={exclusiveProgress.total}
-            aria-label="Exclusive item progress"
+            aria-label={t("socialPrompt.progressAriaLabel")}
           >
             <div
               className="h-full rounded-full bg-primary transition-all duration-300 ease-out"

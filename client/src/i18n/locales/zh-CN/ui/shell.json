@@ -1,0 +1,71 @@
+{
+  "languageSelector": {
+    "label": "语言",
+    "ariaLabel": "选择语言"
+  },
+  "startScreen": {
+    "titleNormal": "一处幽暗的洞穴。",
+    "titleCruel": "一处极其幽暗的洞穴。",
+    "airNormal": "空气又冷又潮。",
+    "airCruel": "空气冰冷刺骨，潮湿难耐。",
+    "seeNormal": "你几乎看不清周围的轮廓。",
+    "seeCruel": "你几乎什么都看不清。",
+    "makeFire": "生火",
+    "boostDeactivate": "点击关闭加速",
+    "recommendedBy": "推荐来源"
+  },
+  "footer": {
+    "fullGame": "完整版",
+    "trader": "商人",
+    "donate": "捐赠",
+    "privacy": "隐私",
+    "imprint": "法律信息",
+    "muteMusic": "静音音乐",
+    "unmuteMusic": "取消音乐静音",
+    "muteSfx": "静音音效",
+    "unmuteSfx": "取消音效静音",
+    "cruelModeActive": "残酷模式已启用"
+  },
+  "profile": {
+    "title": "个人资料",
+    "signInUp": "登录/注册",
+    "emailsOn": "邮件已开启",
+    "emailsOff": "邮件已关闭",
+    "marketingOnTooltip": "你正在接收更新、折扣与专属奖励邮件。点击关闭。",
+    "marketingOffTooltip": "你未接收更新邮件。点击开启。",
+    "rewardsTasks": "奖励任务",
+    "save": "保存",
+    "newGame": "新游戏",
+    "restart": "重新开始",
+    "signIn": "登录",
+    "signOut": "退出登录",
+    "leaderboard": "排行榜",
+    "rewards": "奖励",
+    "deleteAccount": "删除账户",
+    "marketingSubscribe": "订阅邮件",
+    "marketingUnsubscribe": "取消邮件订阅",
+    "autoSaveSignedIn": "游戏每分钟自动保存",
+    "autoSaveGuest": "游戏每 15 秒自动保存",
+    "signUpCloudSave": "注册以将游戏保存到云端",
+    "lastSave": "上次保存：{{time}}",
+    "signedOut": "已成功退出登录",
+    "signOutError": "退出登录时出错",
+    "gameSaved": "游戏已成功保存",
+    "saveFailed": "保存游戏失败",
+    "accountDeleted": "你的账户已删除",
+    "accountDeletedDesc": "你已退出登录，本设备的本地存档已清除。",
+    "deleteAccountFailed": "无法删除账户",
+    "tryAgainLater": "请稍后再试。",
+    "notSignedIn": "未登录",
+    "subscribed": "你已订阅",
+    "unsubscribed": "你已取消订阅",
+    "subscribedDesc": "我们会偶尔通过邮件向你发送更新和优惠。",
+    "unsubscribedDesc": "你将不会收到我们的营销邮件。",
+    "preferenceUpdateFailed": "无法更新偏好设置"
+  },
+  "pauseHotkey": {
+    "hintPrefix": "按 ",
+    "hintSuffix": " 暂停"
+  },
+  "never": "从未"
+}

@@ -1,0 +1,195 @@
+{
+  "event": {
+    "fallbackTitle": "Événement",
+    "choose": "Choisissez une option",
+    "timeRemaining": "Temps restant : {{seconds}} s",
+    "knowledgeTimeBonus": "+{{seconds}}s de temps de décision grâce au Savoir{{maxSuffix}}",
+    "knowledgeTimeBonusMax": " (max.)"
+  },
+  "reward": {
+    "title": "Récompense",
+    "loss": "Perte",
+    "actionReward": "Récompense d'action",
+    "claimRewards": "Récupérer les récompenses"
+  },
+  "madness": {
+    "title": "Événement de folie",
+    "change": "{{sign}} {{amount}} Folie"
+  },
+  "socialPrompt": {
+    "title": "Restez connecté et gagnez des récompenses",
+    "description": "Accomplissez les tâches ci-dessous pour recevoir des bonus. Accomplissez toutes les tâches pour recevoir un objet exclusif.",
+    "signUpRequiresSignInTooltip": "inscrivez-vous pour accomplir la tâche",
+    "signUpTitle": "S'inscrire (+{{amount}} or)",
+    "signUpDesc": "Créez un compte gratuit pour sauvegarder votre progression et la synchroniser entre vos appareils. Sans compte, votre progression peut être perdue.",
+    "signUpButton": "S'inscrire",
+    "emailUpdatesTitle": "Mises à jour par e-mail (+{{amount}} or)",
+    "subscribe": "S'abonner",
+    "playlightTitle": "Découvrir 1 jeu (+{{amount}} or)",
+    "discoverGames": "Découvrir des jeux",
+    "inviteTitle": "Inviter 1 ami (+{{amount}} or chacun)",
+    "inviteDesc": "Invitez jusqu'à {{cap}} amis — à chaque fois, vous recevrez tous les deux {{amount}} or ({{count}}/{{cap}} invités).",
+    "copyInviteLink": "Copier le lien d'invitation",
+    "progressComplete": "Vous avez terminé toutes les tâches. Vous recevrez bientôt votre récompense.",
+    "progressToward": "Progression vers l'objet exclusif",
+    "progressAriaLabel": "Progression vers l'objet exclusif",
+    "alreadyClaimedReward": "Vous avez déjà récupéré cette récompense !",
+    "followRewardLog": "Vous avez reçu {{amount}} or pour nous suivre sur {{platform}} !",
+    "platforms": {
+      "instagram": {
+        "title": "Instagram (+{{amount}} or)",
+        "actionFollow": "Suivre"
+      },
+      "reddit": {
+        "title": "Reddit (+{{amount}} or)",
+        "actionJoin": "Rejoindre"
+      }
+    },
+    "playlightDiscoverRewardLog": "Vous avez reçu {{amount}} pièces d'or pour avoir découvert des jeux !",
+    "marketingSubscribeLog": "Vous avez reçu {{amount}} pièces d'or pour vous être abonné aux mises à jour par e-mail !"
+  },
+  "referral": {
+    "invitedLog": "Vous avez invité quelqu'un de nouveau dans ce monde ! +{{amount}} pièces d'or"
+  },
+  "invite": {
+    "button": "Inviter",
+    "goldBonus": "+{{amount}} or",
+    "linkCopied": "Lien d'invitation copié !",
+    "linkCopiedDesc": "Partagez-le avec des amis pour gagner {{amount}} or chacun.",
+    "copyFailed": "Impossible de copier le lien d'invitation",
+    "tooltip": "Invitez vos amis — vous recevrez tous les deux {{amount}} or. Vous pouvez inviter jusqu'à {{cap}} amis. ({{count}}/{{cap}} invités)."
+  },
+  "invest": {
+    "title": "Investir",
+    "strategy": "Stratégie d'investissement",
+    "amount": "Montant de l'investissement",
+    "potentialProfit": "Profit potentiel :",
+    "startInvestment": "Lancer l'investissement",
+    "infoAriaLabel": "Expliquer les investissements et le tableau des stratégies",
+    "unlockTooltip": "Se débloque à un niveau de bâtiment plus élevé",
+    "minutes": "{{count}} min",
+    "luckBonus": "+{{pct}} % de chance de succès grâce à la Chance (inclus dans le tableau).",
+    "buildingLuckyBonus2": "+2 % de chance supplémentaire grâce au niveau du bâtiment (inclus dans le tableau).",
+    "buildingLuckyBonus1": "+1 % de chance supplémentaire grâce au niveau du bâtiment (inclus dans le tableau).",
+    "headers": {
+      "time": "Durée",
+      "success": "Succès",
+      "profit": "Profit",
+      "lucky": "Chance",
+      "loss": "Perte",
+      "wipeout": "Perte totale"
+    },
+    "tooltip": {
+      "time": "Durée de l'investissement.",
+      "success": "Probabilité d'un investissement réussi.",
+      "profit": "Le profit obtenu en cas de succès.",
+      "lucky": "Probabilité en cas de succès de multiplier votre profit par {{multiplier}}.",
+      "loss": "La part de votre investissement perdue en cas d'échec.",
+      "wipeout": "Probabilité de perdre la totalité de votre investissement en cas d'échec.",
+      "potentialProfit": "Profit maximal possible sur votre investissement. La seconde valeur s'applique si la chance supplémentaire se déclenche (profit × {{multiplier}})."
+    }
+  },
+  "gambler": {
+    "title": "Le joueur obsédé",
+    "srDescription": "Jeu de dés contre le joueur obsédé",
+    "rulesAriaLabel": "Règles du jeu de dés",
+    "rulesTurns": "Vous et le joueur lancez le dé à tour de rôle.",
+    "rulesTotals": "Les lancers de chaque joueur s'additionnent.",
+    "rulesGoal": "L'objectif est fixé à 15.",
+    "rulesWinLose": "Si un joueur atteint exactement l'objectif, il gagne. S'il le dépasse, il perd.",
+    "rulesStand": "Si le joueur actif a plus de points que l'adversaire, il peut choisir de ne pas lancer.",
+    "tutorialIntro": "Pour vous apprendre le jeu, le joueur propose de jouer {{count}} fois sans mise.",
+    "boneDiceIntro": "Placez votre mise. Posséder des Dés d'os vous permet de jouer deux fois contre le joueur.",
+    "placeBet": "Placez votre mise.",
+    "gamesRemaining": "{{remaining}} sur {{total}} parties restantes.",
+    "requiresLuck": "Nécessite {{luck}} Chance pour débloquer",
+    "bet": "Mise :",
+    "practiceBet": "Entraînement (0 or)",
+    "goal": "Objectif :",
+    "you": "Vous",
+    "gambler": "Joueur",
+    "roll": "Lancer",
+    "noRoll": "Ne pas lancer",
+    "youWin": "Vous gagnez",
+    "youLose": "Vous perdez",
+    "practiceOutcome": "Manche d'entraînement. Aucun or gagné ou perdu.",
+    "goldWon": "+{{amount}} or",
+    "goldLost": "-{{amount}} or",
+    "practiceWinRemaining": "Vous avez gagné la manche d'entraînement (sans mise d'or). {{remaining}} sur {{total}} parties d'entraînement restantes.",
+    "practiceLoseRemaining": "Vous avez perdu la manche d'entraînement (sans mise d'or). {{remaining}} sur {{total}} parties d'entraînement restantes.",
+    "practiceWinComplete": "Vous avez gagné la manche d'entraînement (sans mise d'or). Entraînement terminé — vous pouvez miser de l'or.",
+    "practiceLoseComplete": "Vous avez perdu la manche d'entraînement (sans mise d'or). Entraînement terminé — vous pouvez miser de l'or."
+  },
+  "fullGame": {
+    "titleTrial": "Le voyage continue",
+    "titleCheckout": "Finaliser votre achat",
+    "trialDesc": "Vous avez atteint la fin de la version d'essai. Le voyage complet vous attend au-delà de ce point.",
+    "oneTimePurchase": "Achat unique. Pas d'abonnement. Pas de microtransactions.",
+    "featureHours": "14+ heures de jeu",
+    "featureStructures": "100+ structures",
+    "featureItems": "250+ objets, compagnons, livres, bénédictions…",
+    "featureAchievements": "50+ succès",
+    "featureStory": "Histoire sombre et exigeante selon vos choix",
+    "signInRequired": "Veuillez vous connecter pour acheter le jeu complet.",
+    "continueJourney": "Poursuivre le voyage",
+    "progressSaved": "Votre progression est sauvegardée. Vous pouvez revenir à tout moment et reprendre où vous vous êtes arrêté.",
+    "loadingPayment": "Chargement du système de paiement…",
+    "purchaseSuccessful": "Achat réussi !",
+    "purchaseSuccessfulDesc": "Jeu complet débloqué et activé ! Vous pouvez poursuivre votre voyage sans restrictions.",
+    "poweredBy": "Propulsé par",
+    "legalConsent": "En achetant, vous acceptez la livraison immédiate de contenu numérique et renoncez à votre droit de rétractation. Pour plus d'informations, consultez nos",
+    "termsOfService": "Conditions d'utilisation",
+    "rightOfWithdrawal": "Droit de rétractation",
+    "completePurchaseFor": "Finaliser l'achat pour {{price}}",
+    "paymentFailed": "Paiement échoué",
+    "notAuthenticated": "Utilisateur non authentifié",
+    "unexpectedError": "Une erreur inattendue s'est produite"
+  },
+  "leaderboard": {
+    "title": "Classement",
+    "dev": "Dev",
+    "prod": "Prod",
+    "rank": "#",
+    "player": "Joueur",
+    "completionTime": "Temps de complétion",
+    "noEntries": "Aucune entrée pour l'instant",
+    "lastUpdated": "Dernière mise à jour : {{time}}",
+    "username": "Nom d'utilisateur :",
+    "notSet": "Non défini",
+    "currentPlaytime": "Temps de jeu actuel :",
+    "enterName": "Entrer un nom",
+    "normalMode": "Mode normal",
+    "cruelMode": "Mode cruel",
+    "loadFailed": "Échec du chargement du classement",
+    "invalidUsername": "Nom d'utilisateur invalide",
+    "usernameEmpty": "Le nom d'utilisateur ne peut pas être vide",
+    "usernameTooLong": "Le nom d'utilisateur doit contenir 20 caractères ou moins",
+    "mustSignIn": "Vous devez être connecté pour définir un nom d'utilisateur",
+    "usernameNotAllowed": "Nom d'utilisateur non autorisé",
+    "usernameInappropriate": "Ce nom d'utilisateur contient un langage inapproprié. Veuillez en choisir un autre.",
+    "usernameTaken": "Nom d'utilisateur pris",
+    "usernameTakenDesc": "Ce nom d'utilisateur est déjà utilisé. Veuillez en choisir un autre.",
+    "usernameSaved": "Nom d'utilisateur enregistré",
+    "usernameSavedDesc": "Votre nom d'utilisateur a été mis à jour",
+    "saveFailed": "Échec de l'enregistrement du nom d'utilisateur"
+  },
+  "investmentResult": {
+    "title": "Résultat de l'investissement"
+  },
+  "cube": {
+    "fallbackTitle": "Le cube murmurant",
+    "fallbackMessage": "Le cube murmure d'anciens secrets…",
+    "close": "Fermer",
+    "completionLog": "Vous avez terminé ce voyage. Restez ici ou commencez une nouvelle partie. Peut-être en Mode cruel, si vous osez."
+  },
+  "timedEvent": {
+    "buy": "Acheter",
+    "sell": "Vendre",
+    "sayGoodbye": "Dire au revoir",
+    "successChance": "Chance de succès : {{percent}}",
+    "discount": "{{percent}} % de réduction",
+    "discountFromKnowledge": "{{percent}} % grâce au Savoir{{max}}",
+    "knowledgeMax": " (max.)",
+    "discountFromRing": "5 % grâce à l'Anneau d'obéissance"
+  }
+}

@@ -1,6 +1,7 @@
 import { GameEvent, EventChoice } from "./events";
 import { GameState } from "@shared/schema";
 import { capitalizeWords } from "@/lib/utils";
+import { getEffectName } from "@/i18n/resolveGameText";
 
 const COLLECTOR_ITEMS = [
   "bloodstained_belt",
@@ -22,6 +23,7 @@ const COLLECTOR_REWARD = 100
 export const wanderingCollectorEvents: Record<string, GameEvent> = {
   wandering_collector: {
     id: "wandering_collector",
+    i18nVars: { reward: COLLECTOR_REWARD },
     condition: (state: GameState) => {
       const ownedItems = COLLECTOR_ITEMS.filter((itemId) => {
         if (state.clothing && (state.clothing as any)[itemId]) return true;
@@ -39,16 +41,10 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
 
       return ownedItems.length >= 3;
     },
-    title: "The Wandering Collector",
     message: (state: GameState) => {
       const visitCountValue = state.story?.seen?.collectorVisitCount;
       const visitCount = typeof visitCountValue === "number" ? visitCountValue : 0;
-      const messages = [
-        `A figure wrapped in tattered robes approaches. He seems intrigued by what you’ve gathered. 'I sense value among your possessions,' he murmurs. 'Allow me to take one, in exchange for ${COLLECTOR_REWARD} gold.'`,
-        `The robed figure returns, his steps soundless on the ground. 'More artifacts, more secrets', he whispers. 'Let me claim one again, and your purse will be ${COLLECTOR_REWARD} gold heavier.'`,
-        `The collector appears again, eyes glowing within the hood. 'Our dealings near their end,' he says softly. 'Sell me one more, and ${COLLECTOR_REWARD} gold shall be yours.'`,
-      ];
-      return messages[Math.min(visitCount, 2)];
+      return "visit" + Math.min(visitCount, 2);
     },
     timeProbability: 15,
     repeatable: true,
@@ -78,9 +74,18 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
         selectedItems.push(sortedItems[(startIndex + i) % sortedItems.length]);
       }
 
-      const choices: EventChoice[] = selectedItems.map((itemId) => ({
+      const choices: EventChoice[] = selectedItems.map((itemId) => {
+        const category =
+          state.clothing && (state.clothing as Record<string, boolean>)[itemId]
+            ? ("clothing" as const)
+            : ("relics" as const);
+        return {
         id: `sell_${itemId}`,
-        label: `${capitalizeWords(itemId)}`,
+        label: getEffectName(
+          category,
+          itemId,
+          capitalizeWords(itemId.replace(/_/g, " ")),
+        ),
         effect: (innerState: GameState) => {
           const vCountValue = innerState.story?.seen?.collectorVisitCount;
           const vCount = typeof vCountValue === "number" ? vCountValue : 0;
@@ -106,33 +111,22 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
             newState.relics = { ...innerState.relics, [itemId]: false } as any;
           }
 
-          const whispers = [
-            "The collector takes the item with a bony hand. 'On my travels I found many items of the ancient civilization. They were very advanced,' he whispers before vanishing.",
-            "He examines the item closely before taking it. 'The great explosion destroyed most of the artifacts of the ancient civilization. It is hard to find any,' he murmurs.",
-            "A thin finger traces the artifact. 'I learned a lot about the ancient civilization on my travels. Before the great explosion there was no magic in this world. It came with the explosion,' he whispers while leaving.",
-          ];
-
           return {
             ...newState,
-            _logMessage: whispers[Math.min(newVisitCount - 1, 2)],
+            _logMessageKey: `whisper${Math.min(newVisitCount - 1, 2)}`,
             timedEventTab: { isActive: false },
           } as any;
         },
-      }));
+      };
+      });
 
       // Fifth option: Keep items
       choices.push({
         id: "sell_nothing",
-        label: "Nothing",
         effect: (innerState: GameState) => {
           const vCountValue = innerState.story?.seen?.collectorVisitCount;
           const vCount = typeof vCountValue === "number" ? vCountValue : 0;
           const newVisitCount = vCount + 1;
-          const whispers = [
-            "The collector sighs and turns away. 'In my travels, I uncovered many relics of the ancient civilization. They were far more advanced than we ever were,' he whispers before fading into the dark.",
-            "A low hum seeps from beneath the hood. 'The great explosion destroyed most artifacts of the ancient civilization. What little remains is scattered and rare,' he murmurs.",
-            "A faint breath escapes the collector. 'I learned much of the ancient civilization on my journeys. Before the great explosion, there was no magic in this world. It was born in that moment,' he whispers as he departs.",
-          ];
           return {
             story: {
               ...innerState.story,
@@ -141,7 +135,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
                 collectorVisitCount: newVisitCount,
               },
             },
-            _logMessage: whispers[Math.min(newVisitCount - 1, 2)],
+            _logMessageKey: `whisper${Math.min(newVisitCount - 1, 2)}`,
             timedEventTab: { isActive: false },
           } as any;
         },

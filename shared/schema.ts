@@ -903,8 +903,31 @@ export const actionSchema = z.object({
   description: z.string().optional(),
   tooltipEffects: z
     .union([
-      z.array(z.string()),
-      z.function().args(z.any()).returns(z.array(z.string())),
+      z.array(
+        z.union([
+          z.string(),
+          z.object({
+            key: z.string(),
+            fallback: z.string(),
+            options: z.record(z.union([z.string(), z.number()])).optional(),
+          }),
+        ]),
+      ),
+      z
+        .function()
+        .args(z.any())
+        .returns(
+          z.array(
+            z.union([
+              z.string(),
+              z.object({
+                key: z.string(),
+                fallback: z.string(),
+                options: z.record(z.union([z.string(), z.number()])).optional(),
+              }),
+            ]),
+          ),
+        ),
     ])
     .optional(),
   building: z.boolean().optional(),

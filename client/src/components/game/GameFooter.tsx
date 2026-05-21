@@ -10,6 +10,8 @@ import {
 import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
 import { useState, useEffect } from "react";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
+import { useTranslation } from "react-i18next";
+import { formatDurationMs } from "@/lib/utils";
 
 export default function GameFooter() {
   const {
@@ -33,6 +35,7 @@ export default function GameFooter() {
   } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const [displayTime, setDisplayTime] = useState("");
+  const { t } = useTranslation("ui");
 
   // Trigger glow animation when pause state changes
   useEffect(() => {
@@ -45,13 +48,7 @@ export default function GameFooter() {
   useEffect(() => {
     if (!devMode) return;
 
-    const formatPlayTime = (ms: number) => {
-      const totalSeconds = Math.floor(ms / 1000);
-      const hours = Math.floor(totalSeconds / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
-      return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-    };
+    const formatPlayTime = (ms: number) => formatDurationMs(ms);
 
     setDisplayTime(formatPlayTime(playTime));
 
@@ -116,11 +113,11 @@ export default function GameFooter() {
               onClick={toggleMusic}
               data-testid="button-toggle-music"
               className="px-1 py-1 text-xs hover"
-              title={musicMuted ? "Unmute music" : "Mute music"}
+              title={musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")}
             >
               <img
                 src={musicMuted ? "/music_off.png" : "/music_on.png"}
-                alt={musicMuted ? "Unmute music" : "Mute music"}
+                alt={musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")}
                 className="w-4 h-4 opacity-60"
                 style={{ filter: "invert(1)" }}
               />
@@ -131,11 +128,11 @@ export default function GameFooter() {
               onClick={toggleSfx}
               data-testid="button-toggle-sfx"
               className="px-1 py-1 text-xs hover"
-              title={sfxMuted ? "Unmute sound effects" : "Mute sound effects"}
+              title={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
             >
               <img
                 src={sfxMuted ? "/sound_off.png" : "/sound_on.png"}
-                alt={sfxMuted ? "Unmute sound effects" : "Mute sound effects"}
+                alt={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
                 className="w-4 h-4 opacity-60"
                 style={{ filter: "invert(1)" }}
               />
@@ -148,7 +145,7 @@ export default function GameFooter() {
                 onClick={() => setFullGamePurchaseDialogOpen(true)}
                 className="px-1 py-1 text-xs hover"
               >
-                Full Game
+                {t("footer.fullGame")}
               </Button>
             ) : traderShopUnlocked ? (
               <Button
@@ -157,7 +154,7 @@ export default function GameFooter() {
                 onClick={() => setShopDialogOpen(true)}
                 className={`px-1 py-1 text-xs hover text-neutral-300 ${isEarlyGameplay ? "opacity-50" : "opacity-100"} hover:!opacity-100`}
               >
-                Trader
+                {t("footer.trader")}
               </Button>
             ) : null}
             <Button
@@ -166,13 +163,13 @@ export default function GameFooter() {
               onClick={handleOfferTribute}
               className={`px-1 py-1 text-xs hover text-neutral-300 ${isEarlyGameplay ? "opacity-50" : "opacity-100"} hover:!opacity-100`}
             >
-              Donate
+              {t("footer.donate")}
             </Button>
             {cruelMode && (
               <TooltipWrapper
                 tooltip={
                   <div className="text-xs whitespace-nowrap">
-                    Cruel Mode activated
+                    {t("footer.cruelModeActive")}
                   </div>
                 }
                 tooltipId="cruel-mode-indicator"
@@ -208,13 +205,13 @@ export default function GameFooter() {
               href="/privacy"
               className="hover:opacity-100 transition-opacity opacity-35 text-currentColor"
             >
-              Privacy
+              {t("footer.privacy")}
             </a>
             <a
               href="/imprint"
               className="hover:opacity-100 transition-opacity opacity-35 text-currentColor"
             >
-              Imprint
+              {t("footer.imprint")}
             </a>
           </div>
         </div>

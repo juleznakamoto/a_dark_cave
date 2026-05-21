@@ -7,6 +7,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 interface DeleteAccountDialogProps {
   isOpen: boolean;
@@ -21,6 +22,8 @@ export function DeleteAccountDialog({
   onConfirm,
   isDeleting = false,
 }: DeleteAccountDialogProps) {
+  const { t } = useTranslation("ui");
+
   return (
     <Dialog
       open={isOpen}
@@ -28,13 +31,11 @@ export function DeleteAccountDialog({
     >
       <DialogContent className="[--adc-dialog-max-w:28rem] z-[70]">
         <DialogHeader>
-          <DialogTitle className="leading-6">Delete account</DialogTitle>
+          <DialogTitle className="leading-6">
+            {t("deleteAccount.title")}
+          </DialogTitle>
           <DialogDescription className="py-2 space-y-2 text-left">
-            <p>
-              Deleting your account is permanent and cannot be undone. Your
-              account, including your login credentials, purchases, leaderboard
-              entries, and save games, will be deleted.
-            </p>
+            <p>{t("deleteAccount.description")}</p>
           </DialogDescription>
         </DialogHeader>
 
@@ -46,7 +47,7 @@ export function DeleteAccountDialog({
             disabled={isDeleting}
             button_id="delete-account-cancel"
           >
-            Cancel
+            {t("deleteAccount.cancel")}
           </Button>
           <Button
             onClick={onConfirm}
@@ -55,7 +56,9 @@ export function DeleteAccountDialog({
             disabled={isDeleting}
             button_id="delete-account-confirm"
           >
-            {isDeleting ? "Deleting…" : "Delete account"}
+            {isDeleting
+              ? t("deleteAccount.deleting")
+              : t("deleteAccount.confirm")}
           </Button>
         </DialogFooter>
       </DialogContent>

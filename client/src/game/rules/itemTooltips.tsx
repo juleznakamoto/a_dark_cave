@@ -16,6 +16,18 @@ import {
 import { getBuildingHierarchyTooltipLevel } from "../buildingHierarchy";
 import { villageBuildActions } from "./villageBuildActions";
 import { capitalizeWords } from "@/lib/utils";
+import {
+  getActionDescription,
+  getActionLabel,
+  getEffectDescription,
+  getEffectName,
+} from "@/i18n/resolveGameText";
+import {
+  formatTooltipResourceName,
+  formatTooltipStatName,
+  getUiTooltip,
+  resolveBuildingTooltipEffect,
+} from "@/i18n/tooltipLabels";
 import { useGameStore } from "../state";
 import { CRUEL_MODE } from "../cruelMode";
 import { getMapFragmentCount, MAP_FRAGMENT_TOTAL } from "../mapFragments";
@@ -63,10 +75,14 @@ export function renderItemTooltip(
     const tooltipParts: React.ReactNode[] = [];
 
     // Add description if available
-    if (buildAction.description) {
+    const buildDescription = getActionDescription(
+      actionId,
+      buildAction.description,
+    );
+    if (buildDescription) {
       tooltipParts.push(
         <div key="description" className="text-gray-400 mb-0.5">
-          {buildAction.description}
+          {buildDescription}
         </div>
       );
     }
@@ -84,7 +100,7 @@ export function renderItemTooltip(
       tooltipParts.push(
         <div key="effects" className="mt-1">
           {effectsArray.map((effect, idx) => (
-            <div key={idx}>{effect}</div>
+            <div key={idx}>{resolveBuildingTooltipEffect(effect)}</div>
           ))}
         </div>
       );
@@ -101,7 +117,11 @@ export function renderItemTooltip(
               : statValue;
 
             effectsList.push(
-              `${finalValue > 0 ? "+" : ""}${finalValue} ${capitalizeWords(stat)}`,
+              getUiTooltip("statBonus", "{{sign}}{{value}} {{stat}}", {
+                sign: finalValue > 0 ? "+" : "",
+                value: finalValue,
+                stat: formatTooltipStatName(stat),
+              }),
             );
           }
         );
@@ -118,7 +138,15 @@ export function renderItemTooltip(
           ([jobType, production]) => {
             Object.entries(production).forEach(([resource, amount]) => {
               effectsList.push(
-                `+${amount} ${capitalizeWords(resource)} (${capitalizeWords(jobType)})`,
+                getUiTooltip(
+                  "productionBonusLine",
+                  "+{{amount}} {{resource}} ({{job}})",
+                  {
+                    amount,
+                    resource: formatTooltipResourceName(resource),
+                    job: capitalizeWords(jobType),
+                  },
+                ),
               );
             });
           }
@@ -143,16 +171,22 @@ export function renderItemTooltip(
       <div className="text-xs">
         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
           <span>
-            <span className="font-bold">{buildAction.label}</span>
+            <span className="font-bold">
+              {getActionLabel(actionId, buildAction.label)}
+            </span>
             {isDamaged && (
               <span className="font-normal text-muted-foreground">
                 {" "}
-                (damaged)
+                {getUiTooltip("damaged", "(damaged)")}
               </span>
             )}
           </span>
           {hierarchyLevel != null && (
-            <span className="font-normal text-gray-400">Level {hierarchyLevel}</span>
+            <span className="font-normal text-gray-400">
+              {getUiTooltip("level", "Level {{level}}", {
+                level: hierarchyLevel,
+              })}
+            </span>
           )}
         </div>
         {tooltipParts}
@@ -178,14 +212,20 @@ export function renderItemTooltip(
         : getMaxVeinfireElixirLimit();
       return (
         <div className="text-xs">
-          <div className="font-bold">{effect?.name ?? itemId}</div>
+          <div className="font-bold">
+            {getEffectName("weapons", itemId, effect?.name ?? itemId)}
+          </div>
           {effect?.description && (
-            <div className="text-gray-400 mb-1">{effect.description}</div>
+            <div className="text-gray-400 mb-1">
+              {getEffectDescription("weapons", itemId, effect.description)}
+            </div>
           )}
           <pre className="whitespace-pre-wrap font-sans text-xs text-foreground">
             {content}
           </pre>
-          <div className="text-gray-400 mt-1">Max: {maxHeld}</div>
+          <div className="text-gray-400 mt-1">
+            {getUiTooltip("maxHeld", "Max: {{value}}", { value: maxHeld })}
+          </div>
         </div>
       );
     }
@@ -204,13 +244,30 @@ export function renderItemTooltip(
 
   if (!effect) return null;
 
+  const effectCategory =
+    itemType === "weapon"
+      ? "weapons"
+      : itemType === "tool"
+        ? "tools"
+        : itemType === "book"
+          ? "books"
+          : itemType === "fellowship"
+            ? "fellowship"
+            : "clothing";
+
   // For fellowship items, return simple name and description
   if (itemType === "fellowship") {
     return (
       <div className="text-xs">
-        {effect.name && <div className="font-bold">{effect.name}</div>}
+        {effect.name && (
+          <div className="font-bold">
+            {getEffectName(effectCategory, itemId, effect.name)}
+          </div>
+        )}
         {effect.description && (
-          <div className="text-gray-400">{effect.description}</div>
+          <div className="text-gray-400">
+            {getEffectDescription(effectCategory, itemId, effect.description)}
+          </div>
         )}
       </div>
     );
@@ -254,132 +311,208 @@ export function renderItemTooltip(
             </span>
           </div>
         ) : (
-          <div className="font-bold">{effect.name}</div>
+          <div className="font-bold">
+            {getEffectName(effectCategory, itemId, effect.name)}
+          </div>
         ))}
       {effect.description && (
-        <div className="text-gray-400 mb-1">{effect.description}</div>
+        <div className="text-gray-400 mb-1">
+          {getEffectDescription(effectCategory, itemId, effect.description)}
+        </div>
       )}
       {effect.bonuses?.generalBonuses && (
         <div>
           {effect.bonuses.generalBonuses.actionBonusChance != null &&
             effect.bonuses.generalBonuses.actionBonusChance > 0 && (
               <div>
-                {formatProbabilityPercent(
-                  effect.bonuses.generalBonuses.actionBonusChance,
+                {getUiTooltip(
+                  "doubleActionChance",
+                  "{{percent}}% chance to double action gains",
+                  {
+                    percent: formatProbabilityPercent(
+                      effect.bonuses.generalBonuses.actionBonusChance,
+                    ),
+                  },
                 )}
-                % chance to double actions gains
               </div>
             )}
           {effect.bonuses.generalBonuses.luck && (
-            <div>Luck: +{effect.bonuses.generalBonuses.luck}</div>
+            <div>
+              {getUiTooltip("luck", "Luck: +{{value}}", {
+                value: effect.bonuses.generalBonuses.luck,
+              })}
+            </div>
           )}
           {effect.bonuses.generalBonuses.strength && (
-            <div>Strength: +{effect.bonuses.generalBonuses.strength}</div>
+            <div>
+              {getUiTooltip("strength", "Strength: +{{value}}", {
+                value: effect.bonuses.generalBonuses.strength,
+              })}
+            </div>
           )}
           {effect.bonuses.generalBonuses.knowledge && (
-            <div>Knowledge: +{effect.bonuses.generalBonuses.knowledge}</div>
+            <div>
+              {getUiTooltip("knowledge", "Knowledge: +{{value}}", {
+                value: effect.bonuses.generalBonuses.knowledge,
+              })}
+            </div>
           )}
           {madnessValue && (
-            <div>Madness:
-              {madnessValue > 0 ? " +" : " "}
-              {madnessValue}
+            <div>
+              {getUiTooltip("madnessStat", "Madness:{{sign}}{{value}}", {
+                sign: madnessValue > 0 ? " +" : " ",
+                value: madnessValue,
+              })}
             </div>
           )}
           {effect.bonuses.generalBonuses.craftingCostReduction && (
             <div>
-              Craft Discount: -
-              {Math.floor(
-                effect.bonuses.generalBonuses.craftingCostReduction * 100,
-              )}
-              %
+              {getUiTooltip("craftDiscount", "Craft Discount: -{{percent}}%", {
+                percent: Math.floor(
+                  effect.bonuses.generalBonuses.craftingCostReduction * 100,
+                ),
+              })}
             </div>
           )}
           {effect.bonuses.generalBonuses.buildingCostReduction && (
             <div>
-              Build Discount: -
-              {Math.floor(
-                effect.bonuses.generalBonuses.buildingCostReduction * 100,
-              )}
-              %
+              {getUiTooltip("buildDiscount", "Build Discount: -{{percent}}%", {
+                percent: Math.floor(
+                  effect.bonuses.generalBonuses.buildingCostReduction * 100,
+                ),
+              })}
             </div>
           )}
           {effect.bonuses.generalBonuses.merchantDiscount && (
             <div>
-              Merchant Discount: +
-              {Math.floor(
-                effect.bonuses.generalBonuses.merchantDiscount * 100,
+              {getUiTooltip(
+                "merchantDiscount",
+                "Merchant Discount: +{{percent}}%",
+                {
+                  percent: Math.floor(
+                    effect.bonuses.generalBonuses.merchantDiscount * 100,
+                  ),
+                },
               )}
-              %
             </div>
           )}
           {effect.bonuses.generalBonuses.strangerApproachBonus != null &&
             effect.bonuses.generalBonuses.strangerApproachBonus > 0 && (
               <div>
-                New Villager Chance: +
-                {Math.round(
-                  effect.bonuses.generalBonuses.strangerApproachBonus * 100,
+                {getUiTooltip(
+                  "newVillagerChanceStat",
+                  "New Villager Chance: +{{percent}}%",
+                  {
+                    percent: Math.round(
+                      effect.bonuses.generalBonuses.strangerApproachBonus * 100,
+                    ),
+                  },
                 )}
-                %
               </div>
             )}
           {effect.bonuses.generalBonuses.criticalChance && (
             <div>
-              Critical Strike Chance: +
-              {effect.bonuses.generalBonuses.criticalChance}%
+              {getUiTooltip(
+                "criticalStrike",
+                "Critical Strike Chance: +{{percent}}%",
+                {
+                  percent: effect.bonuses.generalBonuses.criticalChance,
+                },
+              )}
             </div>
           )}
           {effect.bonuses.generalBonuses.eventDeathReduction && (
             <div>
-              Villager Deaths in Fights: -
-              {Math.floor(
-                effect.bonuses.generalBonuses.eventDeathReduction * 100,
+              {getUiTooltip(
+                "villagerDeathReduction",
+                "Villager Deaths in Fights: -{{percent}}%",
+                {
+                  percent: Math.floor(
+                    effect.bonuses.generalBonuses.eventDeathReduction * 100,
+                  ),
+                },
               )}
-              %
             </div>
           )}
           {effect.bonuses.generalBonuses.caveExploreMultiplier &&
             effect.bonuses.generalBonuses.caveExploreMultiplier !== 1 && (
               <div>
-                Cave Explore: +
-                {Math.round(
-                  (effect.bonuses.generalBonuses.caveExploreMultiplier - 1) *
-                  100,
+                {getUiTooltip(
+                  "caveExploreBonus",
+                  "Cave Explore: +{{percent}}% Bonus",
+                  {
+                    percent: Math.round(
+                      (effect.bonuses.generalBonuses.caveExploreMultiplier -
+                        1) *
+                        100,
+                    ),
+                  },
                 )}
-                % Bonus
               </div>
             )}
           {(effect.bonuses.generalBonuses.MAX_EMBER_BOMBS ||
             effect.bonuses.generalBonuses.MAX_CINDERFLAME_BOMBS ||
             effect.bonuses.generalBonuses.MAX_VOID_BOMBS) && (
-              <div>+1 Capacity for all bombs (combat)</div>
+              <div>
+                {getUiTooltip(
+                  "bombCapacityCombat",
+                  "+1 Capacity for all bombs (combat)",
+                )}
+              </div>
             )}
           {effect.bonuses.generalBonuses.MAX_BOMB_STORAGE && (
             <div>
-              Max {10 + effect.bonuses.generalBonuses.MAX_BOMB_STORAGE} bombs
-              per type
+              {getUiTooltip("maxBombsPerType", "Max {{count}} bombs per type", {
+                count: 10 + effect.bonuses.generalBonuses.MAX_BOMB_STORAGE,
+              })}
             </div>
           )}
         </div>
       )}
       {itemId === "bone_dice" && (
-        <div>Play two rounds against the gambler per visit</div>
+        <div>
+          {getUiTooltip(
+            "boneDiceGambler",
+            "Play two rounds against the gambler per visit",
+          )}
+        </div>
       )}
       {effect.bonuses?.actionBonuses &&
         Object.entries(effect.bonuses.actionBonuses).map(
-          ([actionId, bonus]) => (
+          ([actionId, bonus]) => {
+            const actionLabel = getActionLabel(
+              actionId,
+              capitalizeWords(actionId),
+            );
+            return (
             <div key={actionId}>
               {bonus.resourceMultiplier && bonus.resourceMultiplier !== 1 && (
                 <div>
-                  {capitalizeWords(actionId)}: +
-                  {Math.round((bonus.resourceMultiplier - 1) * 100)}% Bonus
+                  {getUiTooltip(
+                    "actionBonusPercent",
+                    "{{action}}: +{{percent}}% Bonus",
+                    {
+                      action: actionLabel,
+                      percent: Math.round(
+                        (bonus.resourceMultiplier - 1) * 100,
+                      ),
+                    },
+                  )}
                 </div>
               )}
               {bonus.resourceBonus &&
                 Object.entries(bonus.resourceBonus).map(
                   ([resource, amount]) => (
                     <div key={resource}>
-                      {capitalizeWords(actionId)}: +{amount}{" "}
-                      {capitalizeWords(resource)}
+                      {getUiTooltip(
+                        "actionResourceBonus",
+                        "{{action}}: +{{amount}} {{resource}}",
+                        {
+                          action: actionLabel,
+                          amount,
+                          resource: formatTooltipResourceName(resource),
+                        },
+                      )}
                     </div>
                   ),
                 )}
@@ -387,28 +520,49 @@ export function renderItemTooltip(
                 Object.entries(bonus.probabilityBonus).map(
                   ([resource, probability]) => (
                     <div key={resource}>
-                      {capitalizeWords(actionId)}: {formatProbabilityPercent(probability)}% chance for +50 {capitalizeWords(resource)}
+                      {getUiTooltip(
+                        "actionProbabilityBonus",
+                        "{{action}}: {{percent}}% chance for +50 {{resource}}",
+                        {
+                          action: actionLabel,
+                          percent: formatProbabilityPercent(probability),
+                          resource: formatTooltipResourceName(resource),
+                        },
+                      )}
                     </div>
                   ),
                 )}
               {bonus.cooldownReduction && bonus.cooldownReduction !== 0 && (
                 <div>
-                  {capitalizeWords(actionId)}: -{bonus.cooldownReduction}s
-                  Cooldown
+                  {getUiTooltip(
+                    "cooldownReduction",
+                    "{{action}}: -{{seconds}}s Cooldown",
+                    {
+                      action: actionLabel,
+                      seconds: bonus.cooldownReduction,
+                    },
+                  )}
                 </div>
               )}
               {bonus.executionTimeReduction && bonus.executionTimeReduction !== 0 && (
                 <div>
-                  {capitalizeWords(actionId)}: -{bonus.executionTimeReduction}s
-                  Duration
+                  {getUiTooltip(
+                    "durationReduction",
+                    "{{action}}: -{{seconds}}s Duration",
+                    {
+                      action: actionLabel,
+                      seconds: bonus.executionTimeReduction,
+                    },
+                  )}
                 </div>
               )}
             </div>
-          ),
+          );
+          },
         )}
       {itemType === "weapon" && itemId === "nightshade_bow" && (
         <pre className="mt-2 whitespace-pre-wrap font-sans text-xs text-foreground">
-          {`${combatItemTooltips.poison_arrows.getContent(useGameStore.getState() as unknown as GameState)}\nAvailable: 1/1 per combat`}
+          {`${combatItemTooltips.poison_arrows.getContent(useGameStore.getState() as unknown as GameState)}\n${getUiTooltip("poisonArrowsAvailable", "Available: 1/1 per combat")}`}
         </pre>
       )}
     </div>

@@ -1,3 +1,4 @@
+import { formatNumber } from "@/lib/utils";
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
@@ -51,6 +52,12 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
 
   return {
     id: eventId,
+    i18nKey: "woodcutter",
+    i18nVars: {
+      level,
+      foodCost: formatNumber(foodCost),
+      woodReward: formatNumber(woodReward),
+    },
     condition: (state: GameState) => {
       // Check if woodcutter event is currently active (timed tab is showing)
       if (
@@ -101,18 +108,6 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
     },
 
     timeProbability: 20,
-    title:
-      level === 1
-        ? "The Woodcutter"
-        : level === 2
-          ? "The Woodcutter Returns"
-          : level === 3
-            ? "The Woodcutter's Offer"
-            : level === 4
-              ? "The Woodcutter's Ambitious Plan"
-              : level === 5
-                ? "The Woodcutter's Grand Proposal"
-                : "The Woodcutter's Offer",
     effect: (state: GameState) => {
       return {
         woodcutterState: {
@@ -121,18 +116,7 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
         },
       };
     },
-    message:
-      level === 1
-        ? `A muscular man with a large axe approaches the village. He flexes his arms 'I can cut trees like no other,' he boasts. 'Give me ${foodCost} Food, and I'll bring ${woodReward} Wood.'`
-        : level === 2
-          ? `The woodcutter returns, his axe gleaming in the sun. 'Your village grows well,' he observes. 'I can bring you ${woodReward} Wood. You give me ${foodCost} Food. What do you say?'`
-          : level === 3
-            ? `The woodcutter approaches again 'I see your village continues to thrive,' he says with a grin. 'I can bring you ${woodReward} Wood if you pay ${foodCost} Food for it.'`
-            : level === 4
-              ? `The woodcutter arrives once more, 'Do you want to use my services once more? ${woodReward} Wood for ${foodCost} Food,' he asks.'`
-              : level === 5
-                ? `The woodcutter appears with a confident smile. 'How about we make one more deal? ${woodReward} Wood for ${foodCost} Food.'`
-                : `The woodcutter returns to the village, 'Do you want to use my services once more? I offer ${woodReward} Wood for ${foodCost} Food.' he says.`,
+    message: `level${level}`,
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
@@ -141,12 +125,10 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
     choices: [
       {
         id: "acceptServices",
-        label: `Pay ${foodCost} Food`,
-        cost: `${foodCost} food`,
         effect: (state: GameState) => {
           if (state.resources.food < foodCost) {
             return {
-              _logMessage: "You don't have enough Food for this deal.",
+              _logMessageKey: "outcome0",
             };
           }
 
@@ -168,11 +150,11 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
                     [`woodcutter${level}Accepted`]: true,
                   },
                 },
-                _logMessage: isLastEvent
-                  ? "You hand over the food. The woodcutter grins as he leaves towards the forest. You wait, but he never returns. It seems you got betrayed."
+                _logMessageKey: isLastEvent
+                  ? "betrayLast"
                   : level === 5
-                    ? "You hand over the food. The woodcutter promises to return the same day. But he never does. It seems you got betrayed."
-                    : "You hand over the food, but days pass with no sign of the woodcutter. It seems you got betrayed.",
+                    ? "betrayLevel5"
+                    : "betray",
               };
             }
           }
@@ -197,22 +179,12 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
                 [`woodcutter${level}Accepted`]: true,
               },
             },
-            _logMessage:
-              level === 1
-                ? "The woodcutter takes the food and heads into the forest. By evening, he returns with the promised wood stacked neatly at the village's edge."
-                : level === 2
-                  ? "The woodcutter takes the food and disappears into the forest. By nightfall, he returns with a large pile of wood."
-                  : level === 3
-                    ? "The woodcutter takes the food and ventures deep into the forest. He returns with an impressive haul of wood."
-                    : level === 4
-                      ? "The woodcutter takes the food and spends the afternoon in the forest. He returns with an enormous pile of wood."
-                      : "The woodcutter takes the food and within the same day he delivers a massive stockpile of wood to the village.",
+            _logMessageKey: `successLevel${level}`,
           };
         },
       },
       {
         id: "denyServices",
-        label: "Deny services",
         effect: (state: GameState) => {
           // Special handling for last event
           if (isLastEvent) {
@@ -224,8 +196,7 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
                   woodcutterEnded: true,
                 },
               },
-              _logMessage:
-                "Something about his demeanor makes you uneasy. You refuse the deal. The woodcutter's smile fades, and he leaves without a word.",
+              _logMessageKey: "denyLastUneasy",
             };
           }
 
@@ -234,23 +205,13 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
               isActive: false,
               endTime: 0,
             },
-            _logMessage:
-              level === 1
-                ? "You decline his offer. The woodcutter shrugs and walks away into the forest."
-                : level === 2
-                  ? "You decline his offer. The woodcutter nods and departs without complaint."
-                  : level === 3
-                    ? "You turn down his offer. He shrugs and walks back into the woods."
-                    : level === 4
-                      ? "You decline his ambitious offer. The woodcutter looks disappointed but accepts your decision."
-                      : "You refuse the deal. The woodcutter frowns but doesn't argue.",
+            _logMessageKey: `denyLevel${level}`,
           };
         },
       },
     ],
     fallbackChoice: {
-      id: "denyServices",
-      label: "Time Expired",
+      id: "timeExpired",
       effect: (state: GameState) => {
         // Special handling for last event
         if (isLastEvent) {
@@ -266,8 +227,7 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
                 woodcutterEnded: true,
               },
             },
-            _logMessage:
-              "Your indecision frustrates the woodcutter. He shakes his head and walks away into the forest.",
+            _logMessageKey: "timeoutLast",
           };
         }
 
@@ -276,16 +236,7 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
             isActive: false,
             endTime: 0,
           },
-          _logMessage:
-            level === 1
-              ? "Your indecision frustrates the woodcutter. He shrugs and walks away into the forest."
-              : level === 2
-                ? "Your indecision frustrates the woodcutter. He nods and departs without complaint."
-                : level === 3
-                  ? "Your indecision frustrates the woodcutter. He shrugs and walks back into the woods."
-                  : level === 4
-                    ? "Your indecision frustrates the woodcutter. He looks disappointed but accepts and leaves."
-                    : "Your indecision frustrates the woodcutter. He frowns and walks away.",
+          _logMessageKey: `timeoutLevel${level}`,
         };
       },
     },

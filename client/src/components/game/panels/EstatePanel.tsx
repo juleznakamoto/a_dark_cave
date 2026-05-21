@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useGameStore } from "@/game/state";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cubeEvents } from "@/game/rules/eventsCube";
-import { LogEntry } from "@/game/rules/events";
+import { resolveEventTitle } from "@/i18n/eventText";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { Button } from "@/components/ui/button";
 import { ImproveButton } from "@/components/ui/improve-button";
@@ -30,6 +30,9 @@ import { focusTooltip } from "@/game/rules/tooltips";
 import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
 import { formatNumber } from "@/lib/utils";
 import cn from "clsx";
+import { useTranslation } from "react-i18next";
+import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
+import { formatTooltipCostLine } from "@/i18n/tooltipLabels";
 
 const ESTATE_BAR_GROW_ANIMATION_MS = 500;
 
@@ -59,6 +62,7 @@ function SkillUpgradeRow({
   description,
 }: SkillUpgradeRowProps) {
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
+  const costLine = formatTooltipCostLine(upgradeCost, "gold");
   return (
     <div className="w-full md:max-w-96 space-y-1 pt-2">
       <div className="flex items-center justify-between">
@@ -70,7 +74,7 @@ function SkillUpgradeRow({
                 {tooltipContent}
                 <div className="border-t border-border my-1" />
                 <div className={canAfford ? "" : "text-muted-foreground"}>
-                  -{formatNumber(upgradeCost)} Gold
+                  {costLine}
                 </div>
               </div>
             }
@@ -106,6 +110,7 @@ const SLEEP_LENGTH_TOOLTIP_ID = "estate-sleep-length";
 const SLEEP_INTENSITY_TOOLTIP_ID = "estate-sleep-intensity";
 
 export default function EstatePanel() {
+  const { t } = useTranslation("ui");
   const {
     events,
     setEventDialog,
@@ -226,16 +231,11 @@ export default function EstatePanel() {
     }));
 
   const handleCubeClick = (event: (typeof completedCubeEvents)[0]) => {
-    // Create a log entry from the event data
-    const logEntry: LogEntry = {
-      id: event.id,
-      title: event.title,
-      message: event.message,
-      timestamp: Date.now(),
-      type: "event",
-      choices: event.choices,
-    };
-
+    const logEntry = buildLocalizedEventLogEntry(
+      event.id,
+      event,
+      useGameStore.getState(),
+    );
     setEventDialog(true, logEntry);
   };
 
@@ -384,7 +384,7 @@ export default function EstatePanel() {
         {/* Sleep Mode Section */}
         <div className="space-y-">
           <div className="flex items-center gap-2 pb-2">
-            <h3 className="text-xs font-medium text-foreground">Rest</h3>
+            <h3 className="text-xs font-medium text-foreground">{t("estate.rest")}</h3>
             {/* Focus Timer */}
             {focusState?.isActive && focusState.endTime > Date.now() && (
               <TooltipWrapper
@@ -416,9 +416,9 @@ export default function EstatePanel() {
             tooltip={
               <div className="text-xs whitespace-nowrap">
                 {canActivateIdle ? (
-                  <div>Let the world move on in your absence</div>
+                  <div>{t("estate.sleepTooltipReady")}</div>
                 ) : (
-                  <div>Requires positive wood and food production</div>
+                  <div>{t("estate.sleepTooltipBlocked")}</div>
                 )}
               </div>
             }
@@ -435,7 +435,7 @@ export default function EstatePanel() {
                 className="h-7 hover:bg-background hover:text-foreground"
                 button_id="activate-sleep-mode"
               >
-                Sleep
+                {t("estate.sleep")}
               </Button>
             </div>
           </TooltipWrapper>
@@ -464,11 +464,13 @@ export default function EstatePanel() {
                 disabled={!focusState?.points || focusState.points === 0 || focusState?.isActive}
                 tooltip={
                   <div className="text-xs whitespace-nowrap">
-                    Get 2x rewards on actions for {focusState?.points || 0} minute{(focusState?.points || 0) !== 1 ? "s" : ""}
+                    {t("estate.focusRewardTooltip", {
+                      count: focusState?.points || 0,
+                    })}
                   </div>
                 }
               >
-                Focus
+                {t("estate.focus")}
               </CooldownButton>
               {focusState && focusState.points > 0 && (
                 <TooltipProvider>
@@ -486,7 +488,7 @@ export default function EstatePanel() {
                       side="right"
                       className="max-w-xs bg-popover text-white border text-xs whitespace-nowrap"
                     >
-                      Earn 1 Focus Point per hour of sleep
+                      {t("estate.focusPointTooltip")}
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -503,7 +505,7 @@ export default function EstatePanel() {
               <TooltipWrapper
                 tooltip={
                   <div className="text-xs whitespace-nowrap">
-                    Max hours per sleep
+                    {t("estate.sleepLengthTooltip")}
                   </div>
                 }
                 tooltipId={SLEEP_LENGTH_TOOLTIP_ID}
@@ -515,7 +517,7 @@ export default function EstatePanel() {
                 onMouseEnter={() => handleTooltipHover(SLEEP_LENGTH_TOOLTIP_ID)}
                 onMouseLeave={() => handleTooltipLeave(SLEEP_LENGTH_TOOLTIP_ID)}
               >
-                <span>Sleep Length</span>
+                <span>{t("estate.sleepLength")}</span>
               </TooltipWrapper>
               {sleepUpgrades.lengthLevel < 5 ? (
                 <TooltipWrapper
@@ -576,7 +578,7 @@ export default function EstatePanel() {
               <TooltipWrapper
                 tooltip={
                   <div className="text-xs whitespace-nowrap">
-                    Village production % while sleeping
+                    {t("estate.sleepIntensityTooltip")}
                   </div>
                 }
                 tooltipId={SLEEP_INTENSITY_TOOLTIP_ID}
@@ -588,7 +590,7 @@ export default function EstatePanel() {
                 onMouseEnter={() => handleTooltipHover(SLEEP_INTENSITY_TOOLTIP_ID)}
                 onMouseLeave={() => handleTooltipLeave(SLEEP_INTENSITY_TOOLTIP_ID)}
               >
-                <span>Sleep Intensity</span>
+                <span>{t("estate.sleepIntensity")}</span>
               </TooltipWrapper>
               {sleepUpgrades.intensityLevel < 5 ? (
                 <TooltipWrapper
@@ -608,7 +610,7 @@ export default function EstatePanel() {
                             : "text-muted-foreground"
                         }
                       >
-                        -{formatNumber(nextIntensityUpgrade.cost)} Gold
+                        {formatTooltipCostLine(nextIntensityUpgrade.cost, "gold")}
                       </div>
                     </div>
                   }
@@ -653,12 +655,12 @@ export default function EstatePanel() {
           fellowship.one_eyed_crow ||
           fellowship.disgraced_prior) && (
             <div className="space-y-1 pt-2">
-              <h3 className="text-xs font-medium text-foreground">Skills</h3>
+              <h3 className="text-xs font-medium text-foreground">{t("estate.skills")}</h3>
 
               {/* Huntress Training */}
               {fellowship.ashwraith_huntress && (
                 <SkillUpgradeRow
-                  title="Huntress Training"
+                  title={t("estate.huntressTraining")}
                   level={huntingSkills.level}
                   upgradeCost={HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]?.cost ?? 0}
                   canAfford={resources.gold >= (HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]?.cost ?? Infinity)}
@@ -667,23 +669,23 @@ export default function EstatePanel() {
                   onUpgrade={handleHuntingSkillUpgrade}
                   tooltipContent={<>
                     {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]?.food > HUNTING_SKILL_UPGRADES[huntingSkills.level]?.food && (
-                      <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].food - HUNTING_SKILL_UPGRADES[huntingSkills.level].food} Food per Hunter</div>
+                      <div>{t("estate.skillFoodPerHunter", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].food - HUNTING_SKILL_UPGRADES[huntingSkills.level].food })}</div>
                     )}
                     {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]?.fur > HUNTING_SKILL_UPGRADES[huntingSkills.level]?.fur && (
-                      <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].fur - HUNTING_SKILL_UPGRADES[huntingSkills.level].fur} Fur per Hunter</div>
+                      <div>{t("estate.skillFurPerHunter", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].fur - HUNTING_SKILL_UPGRADES[huntingSkills.level].fur })}</div>
                     )}
                     {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]?.bones > HUNTING_SKILL_UPGRADES[huntingSkills.level]?.bones && (
-                      <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].bones - HUNTING_SKILL_UPGRADES[huntingSkills.level].bones} Bones per Hunter</div>
+                      <div>{t("estate.skillBonesPerHunter", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].bones - HUNTING_SKILL_UPGRADES[huntingSkills.level].bones })}</div>
                     )}
                     {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]?.huntBonus > HUNTING_SKILL_UPGRADES[huntingSkills.level]?.huntBonus && (
-                      <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].huntBonus - HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus}% Hunt Bonus</div>
+                      <div>{t("estate.skillHuntBonus", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].huntBonus - HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus })}</div>
                     )}
                   </>}
                   description={[
-                    `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus}% Hunt Bonus`,
-                    HUNTING_SKILL_UPGRADES[huntingSkills.level].food > 0 && `Hunter: +${HUNTING_SKILL_UPGRADES[huntingSkills.level].food} Food`,
-                    HUNTING_SKILL_UPGRADES[huntingSkills.level].fur > 0 && `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].fur} Fur`,
-                    HUNTING_SKILL_UPGRADES[huntingSkills.level].bones > 0 && `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].bones} Bones`,
+                    t("estate.skillHuntBonus", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus }),
+                    HUNTING_SKILL_UPGRADES[huntingSkills.level].food > 0 && t("estate.skillHunterFood", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].food }),
+                    HUNTING_SKILL_UPGRADES[huntingSkills.level].fur > 0 && t("estate.skillFurBonus", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].fur }),
+                    HUNTING_SKILL_UPGRADES[huntingSkills.level].bones > 0 && t("estate.skillBonesBonus", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].bones }),
                   ].filter(Boolean).join(", ")}
                 />
               )}
@@ -691,7 +693,7 @@ export default function EstatePanel() {
               {/* Crushing Strike */}
               {fellowship.restless_knight && (
                 <SkillUpgradeRow
-                  title="Crushing Strike"
+                  title={t("estate.crushingStrike")}
                   level={combatSkills.crushingStrikeLevel}
                   upgradeCost={CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1]?.cost ?? 0}
                   canAfford={resources.gold >= (CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1]?.cost ?? Infinity)}
@@ -700,16 +702,20 @@ export default function EstatePanel() {
                   onUpgrade={handleCrushingStrikeUpgrade}
                   tooltipContent={<>
                     {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1]?.damage > CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]?.damage && (
-                      <div>+{CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].damage - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].damage} Damage</div>
+                      <div>{t("estate.skillDamageBonus", { amount: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].damage - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].damage })}</div>
                     )}
                     {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1]?.stunRounds > CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]?.stunRounds && (
-                      <div>+{CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].stunRounds - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds} Stun Round</div>
+                      <div>{t("estate.skillStunRound", { count: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].stunRounds - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds, amount: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].stunRounds - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds })}</div>
                     )}
                     {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1]?.successChance > CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]?.successChance && (
-                      <div>+{CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].successChance - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].successChance}% Success Chance</div>
+                      <div>{t("estate.skillSuccessChanceBonus", { amount: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].successChance - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].successChance })}</div>
                     )}
                   </>}
-                  description={`${CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].damage} Damage, ${CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds} Round${CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds > 1 ? "s" : ""} Stun, ${CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].successChance}% success`}
+                  description={t("estate.crushingStrikeSummary", {
+                    damage: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].damage,
+                    rounds: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds,
+                    success: CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].successChance,
+                  })}
                 />
               )}
 
@@ -720,7 +726,7 @@ export default function EstatePanel() {
                 const nxt = BLOODFLAME_SPHERE_UPGRADES[lvl + 1];
                 return (
                   <SkillUpgradeRow
-                    title="Bloodflame Sphere"
+                    title={t("estate.bloodflameSphere")}
                     level={lvl}
                     upgradeCost={nxt?.cost ?? 0}
                     canAfford={resources.gold >= (nxt?.cost ?? Infinity)}
@@ -728,18 +734,22 @@ export default function EstatePanel() {
                     buttonId="upgrade-bloodflame-sphere"
                     onUpgrade={handleBloodflameSphereUpgrade}
                     tooltipContent={<>
-                      {nxt?.burnDamage > cur?.burnDamage && <div>+{nxt.burnDamage - cur.burnDamage} Burn Damage</div>}
+                      {nxt?.burnDamage > cur?.burnDamage && <div>{t("estate.skillBurnDamage", { amount: nxt.burnDamage - cur.burnDamage })}</div>}
                       {nxt?.burnRounds > cur?.burnRounds && (() => {
                         const d = nxt.burnRounds - cur.burnRounds;
                         return (
                           <div>
-                            +{d} Burn Round{d !== 1 ? "s" : ""}
+                            {t("estate.skillBurnRound", { count: d, amount: d })}
                           </div>
                         );
                       })()}
-                      {nxt?.healthCost > cur?.healthCost && <div>+{nxt.healthCost - cur.healthCost} Health Cost</div>}
+                      {nxt?.healthCost > cur?.healthCost && <div>{t("estate.skillHealthCost", { amount: nxt.healthCost - cur.healthCost })}</div>}
                     </>}
-                    description={`${cur.burnDamage} damage for ${cur.burnRounds} round${cur.burnRounds !== 1 ? "s" : ""}, ${cur.healthCost} Health Cost`}
+                    description={t(cur.burnRounds === 1 ? "estate.bloodflameSummary_one" : "estate.bloodflameSummary", {
+                      damage: cur.burnDamage,
+                      rounds: cur.burnRounds,
+                      health: cur.healthCost,
+                    })}
                   />
                 );
               })()}
@@ -751,15 +761,15 @@ export default function EstatePanel() {
                 const nxt = CROWS_EYE_UPGRADES[lvl + 1];
                 return (
                   <SkillUpgradeRow
-                    title="Crow's Eye"
+                    title={t("estate.crowsEye")}
                     level={lvl}
                     upgradeCost={nxt?.cost ?? 0}
                     canAfford={resources.gold >= (nxt?.cost ?? Infinity)}
                     tooltipId="upgrade-crows-eye-button"
                     buttonId="upgrade-crows-eye"
                     onUpgrade={handleCrowsEyeUpgrade}
-                    tooltipContent={<div>+{nxt?.doubleChance - cur?.doubleChance}% Double Gain chance</div>}
-                    description={`${cur.doubleChance}% chance to double actions gains`}
+                    tooltipContent={<div>{t("estate.skillDoubleGain", { amount: (nxt?.doubleChance ?? 0) - (cur?.doubleChance ?? 0) })}</div>}
+                    description={t("estate.crowsEyeSummary", { percent: cur.doubleChance })}
                   />
                 );
               })()}
@@ -773,18 +783,27 @@ export default function EstatePanel() {
                 const bonusPercent = nxt ? (nxt.rewardMultiplier - 1) * 100 : 0;
                 const tooltipContent = nxt ? (
                   actionDelta > 0
-                    ? <div>+{actionDelta} concurrent Action{actionDelta > 1 ? "s" : ""}</div>
-                    : <div>+{bonusPercent}% Bonus on assigned actions</div>
-                ) : <div>Max level</div>;
+                    ? <div>{t("estate.priorConcurrentAction", { count: actionDelta })}</div>
+                    : <div>{t("estate.priorActionBonus", { percent: bonusPercent })}</div>
+                ) : <div>{t("estate.maxLevel")}</div>;
                 const curBonusPercent = (cur.rewardMultiplier - 1) * 100;
-                const upkeepText = `Costs ${DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE} Food per Action per Cycle`;
+                const upkeepText = t("estate.priorUpkeepShort", {
+                  amount: DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
+                });
                 const description =
                   curBonusPercent > 0
-                    ? `${cur.maxActions} Action${cur.maxActions > 1 ? "s" : ""}, +${curBonusPercent}% Bonus, ${upkeepText}`
-                    : `${cur.maxActions} concurrent Action${cur.maxActions > 1 ? "s" : ""}, ${upkeepText}`;
+                    ? t("estate.priorSummaryBonus", {
+                        actions: cur.maxActions,
+                        bonus: curBonusPercent,
+                        upkeep: upkeepText,
+                      })
+                    : t("estate.priorSummaryNoBonus", {
+                        count: cur.maxActions,
+                        upkeep: upkeepText,
+                      });
                 return (
                   <SkillUpgradeRow
-                    title="Disgraced Prior"
+                    title={t("estate.disgracedPrior")}
                     level={lvl}
                     upgradeCost={nxt?.cost ?? 0}
                     canAfford={resources.gold >= (nxt?.cost ?? Infinity)}
@@ -801,7 +820,7 @@ export default function EstatePanel() {
 
         {/* Cube Section */}
         <div className="space-y-2 pt-1 pb-4 w-full md:max-w-96">
-          <h3 className="text-xs font-medium text-foreground">Cube Whispers</h3>
+          <h3 className="text-xs font-medium text-foreground">{t("estate.cubeWhispers")}</h3>
 
           <div className="grid grid-cols-6 place-items-center gap-x-2 gap-y-3 w-full">
             {completedCubeEvents.map((event) => {
@@ -809,12 +828,15 @@ export default function EstatePanel() {
                 useGameStore.getState().trackButtonClick(`cube-${event.id}`);
                 handleCubeClick(event);
               };
+              const cubeTitle =
+                resolveEventTitle(event.id, event.title, state) ??
+                (typeof event.title === "string" ? event.title : event.id);
 
               return (
                 <TooltipWrapper
                   key={event.id}
                   tooltip={
-                    <div className="text-xs">{event.title}</div>
+                    <div className="text-xs">{cubeTitle}</div>
                   }
                   tooltipId={`cube-${event.id}`}
                   onClick={openCubeEvent}

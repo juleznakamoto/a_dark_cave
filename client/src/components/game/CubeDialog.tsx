@@ -11,6 +11,12 @@ import { Button } from "@/components/ui/button";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { useGameStore } from "@/game/state"; // Import useGameStore
 import { logger } from "@/lib/logger";
+import {
+  getEventTitle,
+  getEventMessage,
+  getEventChoiceLabel,
+} from "@/i18n/resolveGameText";
+import { useTranslation } from "react-i18next";
 
 interface CubeDialogProps {
   isOpen: boolean;
@@ -25,6 +31,7 @@ export default function CubeDialog({
   onChoice,
   fallbackExecutedRef,
 }: CubeDialogProps) {
+  const { t } = useTranslation("ui");
   // Guard against null/undefined event
   if (!event) {
     return null;
@@ -59,8 +66,7 @@ export default function CubeDialog({
     // Check if this is one of the final cube events (cube15a or cube15b)
     if (event?.id?.includes('cube15a') || event?.id?.includes('cube15b')) {
       const completionLogId = "game-finished";
-      const completionMessage =
-        "You have finished this journey. Stay here or start a new game. Maybe in Cruel Mode, if you dare.";
+      const completionMessage = t("cube.completionLog");
 
       const currentState = useGameStore.getState();
       const hasCompletionLog = currentState.log.some(
@@ -103,16 +109,32 @@ export default function CubeDialog({
     }
   };
 
+  const eventId = event.id?.split("-")[0] ?? event.id ?? "cube";
+  const resolvedTitle =
+    getEventTitle(eventId, event.title) ??
+    event.title ??
+    t("cube.fallbackTitle");
+  const resolvedMessage =
+    getEventMessage(eventId, event.message ?? "") ||
+    event.message ||
+    t("cube.fallbackMessage");
+  const closeLabel =
+    getEventChoiceLabel(
+      eventId,
+      eventChoices[0]?.id ?? "close",
+      eventChoices[0]?.label ?? t("cube.close"),
+    ) || t("cube.close");
+
   return (
     <Dialog open={isOpen} onOpenChange={() => { }}>
       <DialogContent className="[&>button]:hidden border-2 border-gray-400 shadow-2xl p-6 [--adc-dialog-max-w:20rem] h-[19rem] max-h-[19rem] flex flex-col overflow-visible z-[100]">
         <div className="absolute inset-0 -z-10 cube-dialog-glow pointer-events-none"></div>
         <DialogHeader className="flex-shrink-0">
           <DialogTitle className="text-lg font-semibold">
-            {event.title || "The Whispering Cube"}
+            {resolvedTitle}
           </DialogTitle>
           <DialogDescription className="text-sm text-muted-foreground mt-2">
-            {event.message || "The cube whispers ancient secrets..."}
+            {resolvedMessage}
           </DialogDescription>
         </DialogHeader>
 
@@ -125,7 +147,7 @@ export default function CubeDialog({
             disabled={fallbackExecutedRef.current}
             button_id={`cube-close-${event?.id || 'unknown'}`}
           >
-            {eventChoices[0]?.label || "Close"}
+            {closeLabel}
           </Button>
         </div>
       </DialogContent>

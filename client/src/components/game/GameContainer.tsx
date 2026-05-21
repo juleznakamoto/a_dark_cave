@@ -45,8 +45,11 @@ import {
   isEditableKeyboardTarget,
 } from "./tabHotkeys";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
+import i18n from "@/i18n";
+import { useTranslation } from "react-i18next";
 
 export default function GameContainer() {
+  const { t } = useTranslation();
   const {
     activeTab,
     flags,
@@ -350,13 +353,12 @@ export default function GameContainer() {
         await saveGame(state, false);
         logger.log("[VERSION] Game saved before update notification");
         showUpdateToast({
-          title: "New Version Available",
-          description:
-            "A new version of the game is available. Your game has been saved. Please refresh to get the latest updates.",
+          title: i18n.t("versionUpdate.title", { ns: "ui" }),
+          description: i18n.t("versionUpdate.description", { ns: "ui" }),
           variant: "default",
           duration: 30000, // 30 seconds
           action: {
-            label: "Refresh",
+            label: i18n.t("versionUpdate.refresh", { ns: "ui" }),
             onClick: () => {
               logger.log("[VERSION] User clicked refresh button");
               window.location.reload();
@@ -714,11 +716,11 @@ export default function GameContainer() {
                 transform: "translateX(-50%)",
               }}
             >
-              <span>Use keys below or </span>
+              <span>{t("pauseHotkey.hintPrefix", { ns: "ui" })}</span>
               <span className="text-sm font-medium">←</span>
               <span> </span>
               <span className="text-sm font-medium">→</span>
-              <span> to switch between tabs</span>
+              <span>{t("pauseHotkey.hintSuffix", { ns: "ui" })}</span>
             </div>
           )}
           {pauseHotkeyBadges.map((b) => (
@@ -794,7 +796,7 @@ export default function GameContainer() {
                   onClick={() => setActiveTab("cave")}
                   data-testid="tab-cave"
                 >
-                  Cave
+                  {t("tabs.cave", { ns: "common" })}
                 </button>
 
                 {flags.villageUnlocked && (
@@ -822,7 +824,9 @@ export default function GameContainer() {
                     }}
                     data-testid="tab-village"
                   >
-                    {buildings.stoneHut >= 5 ? "City" : "Village"}
+                    {buildings.stoneHut >= 5
+                      ? t("tabs.city", { ns: "common" })
+                      : t("tabs.village", { ns: "common" })}
                   </button>
                 )}
 
@@ -852,7 +856,7 @@ export default function GameContainer() {
                     }}
                     data-testid="tab-estate"
                   >
-                    Estate
+                    {t("tabs.estate", { ns: "common" })}
                   </button>
                 )}
 
@@ -881,7 +885,7 @@ export default function GameContainer() {
                     }}
                     data-testid="tab-forest"
                   >
-                    Forest
+                    {t("tabs.forest", { ns: "common" })}
                   </button>
                 )}
 
@@ -910,7 +914,9 @@ export default function GameContainer() {
                     }}
                     data-testid="tab-bastion"
                   >
-                    {flags.hasFortress ? "Fortress" : "Bastion"}
+                    {flags.hasFortress
+                      ? t("tabs.fortress", { ns: "common" })
+                      : t("tabs.bastion", { ns: "common" })}
                   </button>
                 )}
 
@@ -938,7 +944,7 @@ export default function GameContainer() {
                     }}
                     data-testid="tab-trader"
                   >
-                    Trader
+                    {t("tabs.trader", { ns: "common" })}
                   </button>
                 )}
 

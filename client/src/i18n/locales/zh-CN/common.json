@@ -1,0 +1,88 @@
+{
+  "buttons": {
+    "close": "关闭",
+    "continue": "继续",
+    "confirm": "确认",
+    "cancel": "取消",
+    "save": "保存",
+    "refresh": "刷新",
+    "dismiss": "忽略",
+    "fight": "战斗",
+    "retreat": "撤退",
+    "refuse": "拒绝",
+    "accept": "接受",
+    "back": "返回",
+    "claim": "领取",
+    "activate": "激活",
+    "deactivate": "停用"
+  },
+  "status": {
+    "loading": "加载中...",
+    "processing": "处理中...",
+    "free": "免费",
+    "error": "错误",
+    "success": "成功！",
+    "active": "已启用",
+    "activated": "已激活"
+  },
+  "tabs": {
+    "cave": "洞穴",
+    "village": "村庄",
+    "city": "城市",
+    "forest": "森林",
+    "estate": "庄园",
+    "bastion": "堡垒",
+    "fortress": "要塞",
+    "trader": "商人",
+    "achievements": "成就",
+    "timedEvent": "限时活动"
+  },
+  "resources": {
+    "wood": "木材",
+    "stone": "石头",
+    "food": "食物",
+    "veinroot": "脉络根",
+    "bones": "骨头",
+    "fur": "毛皮",
+    "leather": "皮革",
+    "bone_totem": "骨图腾",
+    "leather_totem": "皮图腾",
+    "iron": "铁",
+    "coal": "煤炭",
+    "sulfur": "硫磺",
+    "obsidian": "黑曜石",
+    "adamant": "精金",
+    "steel": "钢",
+    "blacksteel": "黑钢",
+    "moonstone": "月石",
+    "black_powder": "黑火药",
+    "ember_bomb": "余烬炸弹",
+    "ashfire_dust": "灰火粉尘",
+    "ashfire_bomb": "灰火炸弹",
+    "void_bomb": "虚空炸弹",
+    "veinfire_elixir": "脉火灵药",
+    "poison_arrows": "毒箭",
+    "torch": "火把",
+    "silver": "白银",
+    "gold": "黄金"
+  },
+  "stats": {
+    "strength": "力量",
+    "knowledge": "知识",
+    "luck": "幸运",
+    "madness": "疯狂"
+  },
+  "time": {
+    "never": "从未",
+    "hoursMinutes": "{{hours}}小时{{minutes}}分钟",
+    "minutesSeconds": "{{minutes}}分钟{{seconds}}秒"
+  },
+  "population": {
+    "villager_one": "{{count}} 名村民",
+    "villager_other": "{{count}} 名村民",
+    "maxPopulation": "+{{count}} 人口上限"
+  },
+  "currency": {
+    "goldAmount": "{{amount}} 黄金"
+  }
+}

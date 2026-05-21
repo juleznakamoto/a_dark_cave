@@ -26,15 +26,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       !state.clothing.ravenfeather_mantle &&
       state.current_population >= 4,
     timeProbability: 35,
-    title: "The Pale Figure",
-    message:
-      "At dawn, villagers glimpse a tall, pale, slender figure at the woods’ edge. What do you do?",
     priority: 3,
     repeatable: true,
     choices: [
       {
         id: "investigate",
-        label: "Investigate",
         relevant_stats: ["luck", "strength"],
         success_chance: (state: GameState) => {
           return calculateSuccessChance(
@@ -59,14 +55,12 @@ export const choiceEvents: Record<string, GameEvent> = {
                 ...state.clothing,
                 ravenfeather_mantle: true,
               },
-              _logMessage:
-                "As the villagers near, the figure vanishes. In its place lies a raven-feather mantle, shimmering with otherworldly power.",
+              _logMessageKey: "outcome0",
             };
           } else if (rand < 0.6) {
             return {
               ...killVillagers(state, 1),
-              _logMessage:
-                "The investigation goes wrong. One of the villagers screams in the mist and is never seen again. The others flee in terror.",
+              _logMessageKey: "outcome1",
             };
           } else {
             let deaths;
@@ -80,14 +74,14 @@ export const choiceEvents: Record<string, GameEvent> = {
 
             return {
               ...deathResult,
-              _logMessage: `The pale figure moves with inhuman speed. ${actualDeaths} villagers vanish into the mist, their screams echoing through the trees.`,
+              _logMessageKey: "outcome2",
+              _logMessageVars: { actualDeaths },
             };
           }
         },
       },
       {
         id: "ignore",
-        label: "Ignore it",
         relevant_stats: ["luck"],
         success_chance: (state: GameState) => {
           return calculateSuccessChance(state, 0.4, {
@@ -104,15 +98,13 @@ export const choiceEvents: Record<string, GameEvent> = {
           if (rand < successChance) {
             // Nothing happens
             return {
-              _logMessage:
-                "The villagers stay close to the village. By evening, the figure is gone.",
+              _logMessageKey: "outcome3",
             };
           } else {
             // 1 man found dead
             return {
               ...killVillagers(state, 1),
-              _logMessage:
-                "At dawn, one of the villagers who claimed to have seen the figure is found dead in his bed, his face frozen in terror.",
+              _logMessageKey: "outcome4",
             };
           }
         },
@@ -125,33 +117,26 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 4 && !state.clothing.muttering_amulet,
     timeProbability: 25,
-    title: "Whispers Beneath the Hut",
-    message:
-      "At night, faint whispers seem to rise from under the floor of one of the huts. The villagers are uneasy. Do you investigate?",
     priority: 3,
     repeatable: false,
     choices: [
       {
         id: "investigateHut",
-        label: "Investigate",
         effect: (state: GameState) => {
           return {
             clothing: {
               ...state.clothing,
               muttering_amulet: true,
             },
-            _logMessage:
-              "You lift the floorboards and find a strange amulet, faintly whispering.",
+            _logMessageKey: "outcome0",
           };
         },
       },
       {
         id: "ignoreHut",
-        label: "Ignore",
         effect: (state: GameState) => {
           return {
-            _logMessage:
-              "You choose to leave the hut alone. The whispers fade by morning, but a chill remains in the air.",
+            _logMessageKey: "outcome1",
           };
         },
       },
@@ -165,9 +150,6 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.resources.iron >= 500 &&
       !state.relics.blackened_mirror,
     timeProbability: 35,
-    title: "The Blackened Mirror",
-    message:
-      "A wandering tradesman offers a tall, cracked mirror framed in black iron. It radiates a cold, unnatural aura. He claims it can give glimpses of the future.",
     priority: 3,
     repeatable: false,
     showAsTimedTab: true,
@@ -175,7 +157,6 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "buyMirror",
-        label: "Pay 500 Iron",
         cost: "500 iron",
         effect: (state: GameState) => {
           return {
@@ -187,18 +168,15 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.relics,
               blackened_mirror: true,
             },
-            _logMessage:
-              "You purchase the mirror. Its dark surface gives glimpses of your own future, nudging your sanity toward the edge.",
+            _logMessageKey: "outcome0",
           };
         },
       },
       {
         id: "refuseMirror",
-        label: "Refuse",
         effect: (state: GameState) => {
           return {
-            _logMessage:
-              "You decline the trader's offer. The mirror disappears into the night with him.",
+            _logMessageKey: "outcome1",
           };
         },
       },
@@ -212,15 +190,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       !state.relics.wooden_figure &&
       !state.story.seen.cthulhuFigureChoice,
     timeProbability: 45,
-    title: "A Strange Wooden Figure",
-    message:
-      "At the forest's edge a small wooden figure is found, carved with tentacled features. It emanates a strange aura. Do you keep it?",
     priority: 3,
     repeatable: false,
     choices: [
       {
         id: "keepFigure",
-        label: "Keep it",
         effect: (state: GameState) => {
           return {
             relics: {
@@ -234,14 +208,12 @@ export const choiceEvents: Record<string, GameEvent> = {
                 cthulhuFigureChoice: true,
               },
             },
-            _logMessage:
-              "You decide to keep the figure. Its strange aura makes the villagers uneasy.",
+            _logMessageKey: "outcome0",
           };
         },
       },
       {
         id: "discardFigure",
-        label: "Discard it",
         effect: (state: GameState) => {
           return {
             story: {
@@ -251,8 +223,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 cthulhuFigureChoice: true,
               },
             },
-            _logMessage:
-              "You discard the figure. The forest seems to watch silently as it disappears.",
+            _logMessageKey: "outcome1",
           };
         },
       },
@@ -266,9 +237,6 @@ export const choiceEvents: Record<string, GameEvent> = {
       !state.clothing.ebony_ring &&
       state.buildings.altar == 1,
     timeProbability: 35,
-    title: "Offer to the Forest Gods",
-    message:
-      "While hunting, villagers report unsettling figures in the forest. They are terrified. Village elders say the forest gods demand four villagers as sacrifice.",
     priority: 4,
     repeatable: false,
     isTimedChoice: true,
@@ -310,8 +278,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 ...state.clothing,
                 ebony_ring: true,
               },
-              _logMessage:
-                "The forest gods accept the sacrifice. The figures vanish, and an ebony ring is found on the altar where the villagers were offered. Peace returns to the woods.",
+              _logMessageKey: "outcome0",
             };
           } else {
             // Failure: additional suicides
@@ -340,14 +307,14 @@ export const choiceEvents: Record<string, GameEvent> = {
                 ...state.clothing,
                 ebony_ring: true,
               },
-              _logMessage: `The forest accepts the sacrifice. The figures vanish, and an ebony ring is found on the altar where the villagers were offered. But the horror of the sacrifice drives ${actualAdditionalDeaths} villagers to take their own lives.`,
+              _logMessageKey: "outcome1",
+              _logMessageVars: { actualAdditionalDeaths },
             };
           }
         },
       },
       {
         id: "refuse",
-        label: "Make no sacrifices",
         relevant_stats: ["luck"],
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(
@@ -369,14 +336,12 @@ export const choiceEvents: Record<string, GameEvent> = {
                 ...state.clothing,
                 ebony_ring: true,
               },
-              _logMessage:
-                "Your refusal to sacrifice innocent lives somehow pleases the forest gods. The appearances vanish, and you find an ebony ring left as a gift.",
+              _logMessageKey: "outcome2",
             };
           } else if (rand < successChance + nothingChance) {
             // Nothing happens, event remains active
             return {
-              _logMessage:
-                "You refuse the sacrifice. The forest remains silent for now. The threat lingers.",
+              _logMessageKey: "outcome3",
             };
           } else {
             // Villagers disappear
@@ -392,7 +357,9 @@ export const choiceEvents: Record<string, GameEvent> = {
 
             return {
               ...deathResult,
-              _logMessage: `You refuse the sacrifice. During the night, ${actualDisappearances} villager${actualDisappearances > 1 ? "s" : ""} wander${actualDisappearances === 1 ? "s" : ""} into the woods as if sleepwalking, drawn by a voice only they could hear. They are never seen again.`,
+              _logMessageKey:
+                actualDisappearances === 1 ? "outcome4_one" : "outcome4_other",
+              _logMessageVars: { actualDisappearances },
             };
           }
         },
@@ -400,7 +367,6 @@ export const choiceEvents: Record<string, GameEvent> = {
     ],
     fallbackChoice: {
       id: "noDecision",
-      label: "No Decision Made",
       effect: (state: GameState) => {
         const departures =
           Math.floor(
@@ -413,7 +379,8 @@ export const choiceEvents: Record<string, GameEvent> = {
 
         return {
           ...deathResult,
-          _logMessage: `Your indecision angers the villagers. ${actualDepartures} villagers, frustrated with your lack of leadership, pack their belongings and leave in disgust.`,
+          _logMessageKey: "outcome5",
+          _logMessageVars: { actualDepartures },
         };
       },
     },
@@ -426,29 +393,23 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.current_population > 12 &&
       !state.relics.unnamed_book,
     timeProbability: 35,
-    title: "The Mad Beduine",
-    message:
-      "In the evening, a robed figure approaches from the wilderness. His eyes burn with madness as he mutters in a foreign tongue, gestures sharp and unsettling. The villagers grow uneasy. Do you allow this Beduine to stay the night?",
     priority: 3,
     repeatable: false,
     choices: [
       {
         id: "allowStay",
-        label: "Allow to stay",
         effect: (state: GameState) => {
           return {
             relics: {
               ...state.relics,
               unnamed_book: true,
             },
-            _logMessage:
-              "You grant the stranger shelter. At dawn, he has vanished. Only his robes remain, and within them lies a book bound in human skin. Its pages whisper forbidden knowledge.",
+            _logMessageKey: "outcome0",
           };
         },
       },
       {
         id: "turnAway",
-        label: "Turn away",
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
           const villagerDeaths = Math.floor(
@@ -466,7 +427,8 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.relics,
               unnamed_book: true,
             },
-            _logMessage: `You refuse the stranger entry. He leaves screaming curses in an alien tongue. Before dawn, a barbarian tribe attacks as if summoned by his cries, killing ${actualDeaths} villagers. In the morning you find a book on the ground, bound in human skin.`,
+            _logMessageKey: "outcome1",
+            _logMessageVars: { actualDeaths },
           };
         },
       },
@@ -480,15 +442,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 4 &&
       !state.clothing.cracked_crown,
     timeProbability: 40,
-    title: "The Hidden Lake",
-    message:
-      "While gathering wood in the forest, the villagers discover a lake hidden among trees. One villager swears he saw a woman-like figure surface briefly, her gaze beautiful yet inhuman. What do you do?",
     priority: 3,
     repeatable: true,
     choices: [
       {
         id: "investigate",
-        label: "Investigate lake",
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
           return calculateSuccessChance(state, 0.2, {
@@ -517,13 +475,11 @@ export const choiceEvents: Record<string, GameEvent> = {
                 ...state.clothing,
                 cracked_crown: true,
               },
-              _logMessage:
-                "As the men approach the lake a creature emerges from the depths and strikes with fury, but the villagers' strength prevails. At the bottom of the lake they find countless human bones and a golden crown.",
+              _logMessageKey: "outcome0",
             };
           } else if (rand < successChance + fleeChance) {
             return {
-              _logMessage:
-                "The men wade into the waters, but the creature bursts forth with inhuman speed. Her beauty twists into rows of teeth and glowing eyes. Terrified, the villagers flee to save their lives.",
+              _logMessageKey: "outcome1",
             };
           } else {
             const drownedCount =
@@ -537,16 +493,14 @@ export const choiceEvents: Record<string, GameEvent> = {
 
             return {
               ...deathResult,
-              _logMessage: actualDrowned === 1
-                ? "The creature rises like a nightmare, beauty masking deadly intent. With unnatural strength, she drags a villager beneath the waters. Only ripples and faint screams remain as the rest flee in terror."
-                : "The creature rises like a nightmare, beauty masking deadly intent. With unnatural strength, she drags the villagers beneath the waters. Only ripples and faint screams remain as the rest flee in terror.",
+              _logMessageKey:
+                actualDrowned === 1 ? "lakeDrownOne" : "lakeDrownMany",
             };
           }
         },
       },
       {
         id: "avoidLake",
-        label: "Avoid lake",
         relevant_stats: ["luck"],
         success_chance: (state: GameState) => {
           return calculateSuccessChance(state, 0.4, {
@@ -563,16 +517,14 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           if (rand < successChance) {
             return {
-              _logMessage:
-                "You order the villagers to avoid the lake. Some grumble about lost opportunities, but they obey. Its secrets remain hidden beneath the water.",
+              _logMessageKey: "outcome2",
             };
           } else {
             const deathResult = killVillagers(state, 1);
 
             return {
               ...deathResult,
-              _logMessage:
-                "You forbid any approach, but the villager who claimed to have seen the creature cannot resist. One night he sneaks away, never to return. At dawn, only his clothes lie at the water's edge.",
+              _logMessageKey: "outcome3",
             };
           }
         },
@@ -585,15 +537,11 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.temple >= 1 && !state.story.seen.templeDedicated,
     timeProbability: 1,
-    title: "The Blind Druid returns",
-    message:
-      "Shortly after the temple is built, the blind druid appears. His milky eyes seem to see through your soul as he speaks: 'The temple must be dedicated to a god. Choose wisely.'",
     priority: 5,
     repeatable: false,
     choices: [
       {
         id: "church_of_dagon",
-        label: "Church of Dagon",
         effect: (state: GameState) => {
           return {
             blessings: {
@@ -607,14 +555,12 @@ export const choiceEvents: Record<string, GameEvent> = {
                 templeDedicated: true,
               },
             },
-            _logMessage:
-              "You dedicate the temple to Dagon, an ancient and mysterious god of the deep.",
+            _logMessageKey: "outcome0",
           };
         },
       },
       {
         id: "way_of_first_flame",
-        label: "Way of the First Flame",
         effect: (state: GameState) => {
           const { patch } = addFreeVillagersWithinCap(state, 4);
 
@@ -632,14 +578,12 @@ export const choiceEvents: Record<string, GameEvent> = {
                 templeDedicated: true,
               },
             },
-            _logMessage:
-              "You dedicate the temple to the Way of the First Flame, an ancient path of fire and rebirth.",
+            _logMessageKey: "outcome1",
           };
         },
       },
       {
         id: "cult_of_ravenborn",
-        label: "Cult of the Ravenborn",
         effect: (state: GameState) => {
           return {
             relics: {
@@ -657,14 +601,12 @@ export const choiceEvents: Record<string, GameEvent> = {
                 templeDedicated: true,
               },
             },
-            _logMessage:
-              "You dedicate the temple to the Cult of the Ravenborn, an enigmatic and shadowed order.",
+            _logMessageKey: "outcome2",
           };
         },
       },
       {
         id: "order_of_ashbringer",
-        label: "Order of the Ashbringer",
         effect: (state: GameState) => {
           return {
             weapons: {
@@ -682,8 +624,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 templeDedicated: true,
               },
             },
-            _logMessage:
-              "You dedicate the temple to the Order of the Ashbringer, a solemn and fire-bound brotherhood.",
+            _logMessageKey: "outcome3",
           };
         },
       },
@@ -695,9 +636,6 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 9 && !state.story.seen.vikingBuilderEvent,
     timeProbability: 15,
-    title: "The Viking Builder",
-    message:
-      "One day, a strong man wearing thick furs stands at the gates. He says he comes from the far north and is a skilled builder. For a little gold, he will teach you how to build big houses that can hold many villagers.",
     priority: 4,
     repeatable: true,
     showAsTimedTab: true,
@@ -705,22 +643,19 @@ export const choiceEvents: Record<string, GameEvent> = {
     skipEventLog: true,
     fallbackChoice: {
       id: "sendAway",
-      label: "Send away",
       effect: (state: GameState) => {
         return {
-          _logMessage:
-            "The builder waits for a while, but eventually shrugs and disappears into the wilderness, taking his knowledge with him.",
+          _logMessageKey: "outcome0",
         };
       },
     },
     choices: [
       {
         id: "acceptDeal",
-        label: "Pay 250 Gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 250) {
             return {
-              _logMessage: "You don't have enough gold for this deal.",
+              _logMessageKey: "outcome1",
             };
           }
 
@@ -737,14 +672,12 @@ export const choiceEvents: Record<string, GameEvent> = {
                 longhouseUnlocked: true,
               },
             },
-            _logMessage:
-              "You pay the builder. He teaches the villagers the ancient nordic techniques for constructing longhouses.",
+            _logMessageKey: "outcome2",
           };
         },
       },
       {
         id: "forceHim",
-        label: "Force him",
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
           return calculateSuccessChance(state, 0.2, {
@@ -770,8 +703,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                   longhouseUnlocked: true,
                 },
               },
-              _logMessage:
-                "Your men overpower the builder and force him to share his knowledge. Reluctantly, he teaches you the secrets of longhouse construction.",
+              _logMessageKey: "outcome3",
             };
           } else {
             // Failure: he escapes and villagers are killed
@@ -786,18 +718,17 @@ export const choiceEvents: Record<string, GameEvent> = {
 
             return {
               ...deathResult,
-              _logMessage: `The builder proves stronger than expected! He fights back fiercely, killing ${actualCasualties} men before escaping into the wilderness.`,
+              _logMessageKey: "outcome4",
+              _logMessageVars: { actualCasualties },
             };
           }
         },
       },
       {
         id: "sendAway",
-        label: "Send away",
         effect: (state: GameState) => {
           return {
-            _logMessage:
-              "You refuse the builder's offer and send him away. He shrugs and disappears into the wilderness, taking his knowledge with him.",
+            _logMessageKey: "outcome5",
           };
         },
       },
@@ -812,9 +743,6 @@ export const choiceEvents: Record<string, GameEvent> = {
       !state.weapons.nordic_war_axe &&
       !state.story.seen.nordicWarAxeEvent,
     timeProbability: 15,
-    title: "The Viking Returns",
-    message:
-      "The viking builder returns to your village, carrying a magnificent war axe. 'I forged this Nordic War Axe in my homeland. It shall be yours... for a price.'",
     priority: 5,
     repeatable: true,
     showAsTimedTab: true,
@@ -822,12 +750,8 @@ export const choiceEvents: Record<string, GameEvent> = {
     skipEventLog: true,
     fallbackChoice: {
       id: "decline",
-      label: "Decline",
       effect: (state: GameState) => {
         const wasForced = state.story.seen.vikingBuilderEventForced;
-        const message = wasForced
-          ? "You ignore the offer. The viking eventually spits on the ground and leaves with his war axe, muttering about your lack of respect."
-          : "You ignore the offer. The viking eventually nods and leaves with his war axe.";
 
         return {
           story: {
@@ -837,7 +761,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               nordicWarAxeEvent: true,
             },
           },
-          _logMessage: message,
+          _logMessageKey: wasForced ? "ignoreForced" : "ignoreNormal",
         };
       },
     },
@@ -857,14 +781,11 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           if (state.resources.gold < cost) {
             return {
-              _logMessage: "You don't have enough gold.",
+              _logMessageKey: "outcome0",
             };
           }
 
           const wasForced = state.story.seen.vikingBuilderEventForced;
-          const message = wasForced
-            ? `The viking takes the payment with a cold smile. 'Perhaps you should have been more generous before, instead of attacking me. You would have paid much less for the axe then.' he speaks before leaving.`
-            : `Happy with the trade the viking nods approvingly and departs.`;
 
           return {
             resources: {
@@ -882,18 +803,14 @@ export const choiceEvents: Record<string, GameEvent> = {
                 nordicWarAxeEvent: true,
               },
             },
-            _logMessage: message,
+            _logMessageKey: wasForced ? "buyForced" : "buyNormal",
           };
         },
       },
       {
         id: "decline",
-        label: "Decline",
         effect: (state: GameState) => {
           const wasForced = state.story.seen.vikingBuilderEventForced;
-          const message = wasForced
-            ? "You decline the offer. The viking spits on the ground, muttering curses as he leaves with his war axe. 'You should have paid me when you had the chance,' he growls."
-            : "You decline the offer. The viking nods respectfully and leaves with his war axe.";
 
           return {
             story: {
@@ -903,7 +820,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 nordicWarAxeEvent: true,
               },
             },
-            _logMessage: message,
+            _logMessageKey: wasForced ? "declineForced" : "declineNormal",
           };
         },
       },
@@ -917,16 +834,12 @@ export const choiceEvents: Record<string, GameEvent> = {
       !state.buildings.furTents &&
       !state.story.seen.furTentsUnlocked,
     timeProbability: 60,
-    title: "The Wandering Tribe",
-    message:
-      "A small tribe of nomads approaches the village. Their leader speaks: 'We have traveled far and seek a place to call home. Help us settle and we will teach your people how to raise fur tents.'",
     priority: 3,
     repeatable: true,
     skipEventLog: true,
     choices: [
       {
         id: "acceptTribe",
-        label: "Help them",
         effect: (state: GameState) => {
           return {
             story: {
@@ -936,18 +849,15 @@ export const choiceEvents: Record<string, GameEvent> = {
                 furTentsUnlocked: true,
               },
             },
-            _logMessage:
-              "You welcome the nomads and offer support. In return, they teach your people how to build fur tents.",
+            _logMessageKey: "outcome0",
           };
         },
       },
       {
         id: "refuseTribeChoice",
-        label: "Do not help",
         effect: (state: GameState) => {
           return {
-            _logMessage:
-              "You decline to help. The tribe leader nods respectfully and leads their people back into the wilderness.",
+            _logMessageKey: "outcome1",
           };
         },
       },
@@ -962,15 +872,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.story.seen.templeDedicated &&
       !state.story.seen.sanctumDedicated,
     timeProbability: 3,
-    title: "The Dedication of the Sanctum",
-    message:
-      "The blind druid emerges: 'The Sanctum stands complete,' he says, his voice carrying the weight of ancient wisdom. 'Now you must choose: deepen your devotion to the path you have chosen, or embrace all gods and their gifts. Choose wisely.'",
     priority: 5,
     repeatable: false,
     choices: [
       {
         id: "deepenDevotion",
-        label: "Deepen Devotion",
         effect: (state: GameState) => {
           const b = state.blessings;
           const active = b.dagons_gift
@@ -1018,13 +924,12 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             templeDedicatedTo: active || state.templeDedicatedTo,
-            _logMessage: msg,
+            _logMessageKey: active ? `dedicate_${active}` : "dedicate_unknown",
           };
         },
       },
       {
         id: "dedicateToAll",
-        label: "Dedicate to all",
         effect: (state: GameState) => {
           return {
             blessings: {
@@ -1050,8 +955,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             templeDedicatedTo: "all",
-            _logMessage:
-              "The Sanctum transforms into a nexus of divine power. All gods answer your call, their gifts are yours.",
+            _logMessageKey: "outcome0",
           };
         },
       },
@@ -1066,15 +970,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       !state.story.seen.paleCrossUnlocked &&
       !state.story.seen.paleCrossRefused,
     timeProbability: 5,
-    title: "The Pale Cross",
-    message:
-      "The blind druid returns, his milky eyes rest on the bone totems: 'You have offered the gods much. Raise them a symbol to prove your devotion.'",
     priority: 5,
     repeatable: false,
     choices: [
       {
         id: "acceptPaleCross",
-        label: "Accept proposal",
         effect: (state: GameState) => {
           return {
             story: {
@@ -1084,13 +984,12 @@ export const choiceEvents: Record<string, GameEvent> = {
                 paleCrossUnlocked: true,
               },
             },
-            _logMessage: "The druid bows his head. 'Then let it be raised.'",
+            _logMessageKey: "outcome0",
           };
         },
       },
       {
         id: "refusePaleCross",
-        label: "Deny proposal",
         effect: (state: GameState) => {
           return {
             story: {
@@ -1100,8 +999,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 paleCrossRefused: true,
               },
             },
-            _logMessage:
-              "'Perhaps this was wisdom. Perhaps it was fear,' the druid says before leaving into the forest.",
+            _logMessageKey: "outcome1",
           };
         },
       },
@@ -1114,16 +1012,12 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.paleCross >= 1 &&
       !state.story.seen.paleCrossCrucifixionEvent,
     timeProbability: 45,
-    title: "The Pale Cross at Dawn",
-    message:
-      "One morning, villagers make a cruel discovery. A young man hangs crucified on the Pale Cross, his head bowed and his body swaying faintly in the cold morning wind.",
     priority: 5,
     repeatable: false,
     showAsTimedTab: true,
     timedTabDuration: 5 * 60 * 1000, // 5 minutes
     fallbackChoice: {
       id: "doNothing",
-      label: "Do nothing",
       effect: (state: GameState) => {
         const duration = 10 * 60 * 1000;
         return {
@@ -1138,21 +1032,18 @@ export const choiceEvents: Record<string, GameEvent> = {
             isActive: true,
             endTime: Date.now() + duration,
           },
-          _logMessage:
-            "You give no order. Rumors spread, fear curdles into disgust, and village work falters.",
+          _logMessageKey: "outcome0",
         };
       },
     },
     choices: [
       {
         id: "holdFuneral",
-        label: "Hold funeral",
         cost: "1000 food",
         effect: (state: GameState) => {
           if ((state.resources.food || 0) < 1000) {
             return {
-              _logMessage:
-                "You don't have enough food to hold a proper funeral.",
+              _logMessageKey: "outcome1",
             };
           }
 
@@ -1172,14 +1063,12 @@ export const choiceEvents: Record<string, GameEvent> = {
                 paleCrossCrucifixionEvent: true,
               },
             },
-            _logMessage:
-              "You order funeral rites and feed the mourners. Grief remains, but the village steadies.",
+            _logMessageKey: "outcome2",
           };
         },
       },
       {
         id: "investigateKillers",
-        label: "Investigate",
         effect: (state: GameState) => {
           const executionResult = killVillagers(state, 3);
           return {
@@ -1196,14 +1085,12 @@ export const choiceEvents: Record<string, GameEvent> = {
                 paleCrossCrucifixionEvent: true,
               },
             },
-            _logMessage:
-              "You uncover a group of conspirators and order their execution. Justice is swift, and fear recedes.",
+            _logMessageKey: "outcome3",
           };
         },
       },
       {
         id: "consecrateToCross",
-        label: "Consecrate to cross",
         effect: (state: GameState) => {
           const duration = 10 * 60 * 1000;
           return {
@@ -1223,8 +1110,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               isActive: true,
               endTime: Date.now() + duration,
             },
-            _logMessage:
-              "You consecrate the body to the cross. The villagers recoil in disgust, but the power of the cross seems to have grown.",
+            _logMessageKey: "outcome4",
           };
         },
       },
@@ -1246,15 +1132,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       );
     },
     timeProbability: 25,
-    title: "The Slave Trader",
-    message:
-      "A man on a cart drawn by two horses approaches the village. An iron cage on the cart holds two miserable souls. The trader grins wickedly: 'I'll pay you 100 Steel for two of your villagers. What do you say?'",
     priority: 3,
     repeatable: true,
     choices: [
       {
         id: "sellVillagers",
-        label: "Sell 2 villagers",
         effect: (state: GameState) => {
           const currentPopulation = getCurrentPopulation(state);
 
@@ -1288,14 +1170,12 @@ export const choiceEvents: Record<string, GameEvent> = {
                 slaveTraderEvent: true,
               },
             },
-            _logMessage:
-              "You hand over two of the villagers. The trader tosses you a bag of steel and rides off with his new captives. When the remaining villagers see what you've done, they abandon the village in disgust.",
+            _logMessageKey: "outcome0",
           };
         },
       },
       {
         id: "freeSlaves",
-        label: "Try to free slaves",
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
           const strength = getTotalStrength(state);
@@ -1334,8 +1214,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                   slaveTraderEvent: true,
                 },
               },
-              _logMessage:
-                "Your men attack the slaver! The fight is brutal but victorious. You free the captives and claim the trader's steel. The freed souls join your village.",
+              _logMessageKey: "outcome1",
             };
           } else {
             // Failure: 1-2 villagers die
@@ -1365,14 +1244,15 @@ export const choiceEvents: Record<string, GameEvent> = {
                   slaveTraderEvent: true,
                 },
               },
-              _logMessage: `Your men attack the slaver, but he's prepared! He fights back viciously. ${actualDeaths} of the villagers ${actualDeaths === 1 ? "falls" : "fall"} in the struggle. The trader escapes with his captives, leaving only death behind.`,
+              _logMessageKey:
+                actualDeaths === 1 ? "outcome2_one" : "outcome2_other",
+              _logMessageVars: { actualDeaths },
             };
           }
         },
       },
       {
         id: "refuseTrader",
-        label: "Refuse the offer",
         effect: (state: GameState) => {
           return {
             story: {
@@ -1382,8 +1262,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 slaveTraderEvent: true,
               },
             },
-            _logMessage:
-              "You refuse the slaver's vile offer. He spits on the ground in disgust and rides away with his captives.",
+            _logMessageKey: "outcome3",
           };
         },
       },
@@ -1398,20 +1277,16 @@ export const choiceEvents: Record<string, GameEvent> = {
       !state.curseState?.isActive &&
       !state.story.seen.witchsCurseEvent,
     timeProbability: 45,
-    title: "The Witch's Curse",
-    message:
-      "A hunched old woman in tattered robes arrives at the gates. With malice in her voice she demands, 'Pay me 50 Gold, or I shall curse you with misfortune.'",
     priority: 4,
     repeatable: false,
     choices: [
       {
         id: "payGold",
-        label: "Pay 50 Gold",
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
             return {
-              _logMessage: "You don't have enough gold to pay her.",
+              _logMessageKey: "outcome0",
             };
           }
 
@@ -1427,14 +1302,12 @@ export const choiceEvents: Record<string, GameEvent> = {
                 witchsCurseEvent: true,
               },
             },
-            _logMessage:
-              "You hand over the gold. The witch cackles, pockets the coins, and disappears into the mist without another word.",
+            _logMessageKey: "outcome1",
           };
         },
       },
       {
         id: "doNotPay",
-        label: "Refuse to pay",
         relevant_stats: ["luck"],
         success_chance: (state: GameState) => {
           return calculateSuccessChance(state, 0.25, {
@@ -1457,8 +1330,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                   witchsCurseEvent: true,
                 },
               },
-              _logMessage:
-                "You refuse to pay. The witch spits and curses, but nothing happens. She hobbles away, muttering threats into the wind. It seems you got lucky.",
+              _logMessageKey: "outcome2",
             };
           } else {
             const curseDuration = curseLikeDurationMs(cruelModeScale(state));
@@ -1474,15 +1346,13 @@ export const choiceEvents: Record<string, GameEvent> = {
                   witchsCurseEvent: true,
                 },
               },
-              _logMessage:
-                "As you refuse to pay the witch raises her gnarled hands and speaks words in a forgotten tongue. When she leaves the villagers start to feel weak, as if their strength was sapped by an unseen force.",
+              _logMessageKey: "outcome3",
             };
           }
         },
       },
       {
         id: "attackHer",
-        label: "Attack witch",
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
           return calculateSuccessChance(state, 0.15, {
@@ -1505,8 +1375,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                   witchsCurseEvent: true,
                 },
               },
-              _logMessage:
-                "The villagers strike her down before she can finish her curse. Before the witch falls her body dissolves into black smoke, leaving only a foul stench.",
+              _logMessageKey: "outcome4",
             };
           } else {
             const curseDuration = curseLikeDurationMs(cruelModeScale(state));
@@ -1522,15 +1391,13 @@ export const choiceEvents: Record<string, GameEvent> = {
                   witchsCurseEvent: true,
                 },
               },
-              _logMessage:
-                "The men attack, but the witch is too quick. With a final cackle, she curses the village before vanishing into the woods. An intense weakness falls over your people, sapping their strength and will.",
+              _logMessageKey: "outcome5",
             };
           }
         },
       },
       {
         id: "threatenHer",
-        label: "Threaten witch",
         relevant_stats: ["knowledge"],
         success_chance: (state: GameState) => {
           return calculateSuccessChance(state, 0.2, {
@@ -1553,8 +1420,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                   witchsCurseEvent: true,
                 },
               },
-              _logMessage:
-                "You speak ancient words of power, learned from old texts. The witch recoils in fear and flees, her curse broken before it could take hold.",
+              _logMessageKey: "outcome6",
             };
           } else {
             const curseDuration = curseLikeDurationMs(cruelModeScale(state));
@@ -1570,8 +1436,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                   witchsCurseEvent: true,
                 },
               },
-              _logMessage:
-                "Your threats only anger the witch. She laughs and curses you with dark magic. When she leaves the villagers start to feel weak, as if their strength was sapped by an unseen force.",
+              _logMessageKey: "outcome7",
             };
           }
         },
@@ -1584,30 +1449,24 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 5 && !state.blessings.sharp_aim,
     timeProbability: 30,
-    title: "The Master Archer",
-    message:
-      "A man in a dark red leather coat arrives with a confident grin and sharp eyes. He offers to help your archers, saying he can sharpen their aim and improve their hunting skills. If you accept, he'll stay and get to work.",
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 3 * 60 * 1000, // 3 minutes
     fallbackChoice: {
       id: "doNothing",
-      label: "No Decision Made",
       effect: (state: GameState) => ({
-        _logMessage:
-          "Your indecision frustrates the archer. He shakes his head and leaves, taking his expertise elsewhere.",
+        _logMessageKey: "outcome0",
       }),
     },
     choices: [
       {
         id: "acceptArcherHelp",
-        label: "Give 5000 Food",
         cost: "5000 food",
         effect: (state: GameState) => {
           if (state.resources.food < 5000) {
             return {
-              _logMessage: "You don't have enough food for this offer.",
+              _logMessageKey: "outcome1",
             };
           }
 
@@ -1627,19 +1486,17 @@ export const choiceEvents: Record<string, GameEvent> = {
                 masterArcherEvent: true,
               },
             },
-            _logMessage:
-              "The master archer takes the payment and begins training your hunters immediately.",
+            _logMessageKey: "outcome2",
           };
         },
       },
       {
         id: "acceptArcherHelpGold",
-        label: "Pay 200 Gold",
         cost: "200 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 200) {
             return {
-              _logMessage: "You don't have enough gold for this offer.",
+              _logMessageKey: "outcome3",
             };
           }
 
@@ -1659,18 +1516,15 @@ export const choiceEvents: Record<string, GameEvent> = {
                 masterArcherEvent: true,
               },
             },
-            _logMessage:
-              "The master archer takes the gold with a nod and begins training your hunters immediately.",
+            _logMessageKey: "outcome4",
           };
         },
       },
       {
         id: "refuseArcherHelp",
-        label: "Refuse his offer",
         effect: (state: GameState) => {
           return {
-            _logMessage:
-              "The archer nods understandingly. 'I'll return in case you change your mind,' he says before disappearing into the forest.",
+            _logMessageKey: "outcome5",
           };
         },
       },
@@ -1688,19 +1542,14 @@ export const choiceEvents: Record<string, GameEvent> = {
       !state.story.seen.mysteriousWomanEvent,
     timeProbability: 5,
     // Character is opposite of player: female if player is m, male if player is f or fallback
-    title: (state: GameState) =>
-      state.g === "m" ? "The Mysterious Woman" : "The Mysterious Man",
-    message: (state: GameState) =>
-      state.g === "m"
-        ? "An attractive young woman in fine clothes arrives at the estate as the sun sets. She smiles warmly at you and asks, 'Might I have shelter in your hut for the night? I've traveled far and have nowhere else to go.'"
-        : "An attractive young man in fine clothes arrives at the estate as the sun sets. He smiles warmly at you and asks, 'Might I have shelter in your hut for the night? I've traveled far and have nowhere else to go.'",
+    title: (state: GameState) => (state.g === "m" ? "woman" : "man"),
+    message: (state: GameState) => (state.g === "m" ? "woman" : "man"),
     priority: 3,
     repeatable: false,
     choices: [
       {
         id: "allowStay",
-        label: (state: GameState) =>
-          state.g === "m" ? "Let her stay" : "Let him stay",
+        label: (state: GameState) => (state.g === "m" ? "woman" : "man"),
         effect: (state: GameState) => {
           const silverStolen =
             CRUEL_MODE.mysteriousWoman.silverMin.base +
@@ -1719,14 +1568,14 @@ export const choiceEvents: Record<string, GameEvent> = {
                 mysteriousWomanEvent: true,
               },
             },
-            _logMessage: `You grant ${obj} shelter for the night. By morning, ${subj} has vanished without a trace, leaving your bed still warm and ${silverStolen} Silver missing.`,
+            _logMessageKey: "outcome0",
+            _logMessageVars: { obj, subj, silverStolen },
           };
         },
       },
       {
         id: "refuseStay",
-        label: (state: GameState) =>
-          state.g === "m" ? "Refuse her" : "Refuse him",
+        label: (state: GameState) => (state.g === "m" ? "woman" : "man"),
         effect: (state: GameState) => {
           const poss = state.g === "m" ? "her" : "his";
           const cap = state.g === "m" ? "She" : "He";
@@ -1738,7 +1587,8 @@ export const choiceEvents: Record<string, GameEvent> = {
                 mysteriousWomanEvent: true,
               },
             },
-            _logMessage: `You politely refuse ${poss} request. ${cap} looks disappointed but nods in understanding, disappearing into the evening mist without another word.`,
+            _logMessageKey: "outcome1",
+            _logMessageVars: { poss, cap },
           };
         },
       },
@@ -1750,20 +1600,16 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.darkEstate >= 1 && state.resources.gold >= 50,
     timeProbability: 45,
-    title: "The Veiled Seer",
-    message:
-      "A hooded figureappears at dusk. His eyes gleam from beneath the veil. 'I have glimpsed what lies ahead,' he rasps. '50 Gold, and I shall tell you what awaits.'",
     priority: 3,
     repeatable: false,
     choices: [
       {
         id: "accept",
-        label: "Accept",
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
             return {
-              _logMessage: "You don't have enough gold.",
+              _logMessageKey: "outcome0",
             };
           }
           const name = state.fn ? `, ${state.fn}` : "";
@@ -1776,19 +1622,20 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.stats,
               madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
-            _logMessage: `The seer falls silent. His stare drifts beyond you. "Great challenges await you${name}," he says softly. "You believe this world is yours to shape. But you are shaped in turn. When the final truth surfaces, you will see the strings. And by then, it might be too late."`,
+            _logMessageKey: "outcome1",
+            _logMessageVars: { name },
           };
         },
       },
       {
         id: "decline",
-        label: "Decline",
         effect: (state: GameState) => {
           const farewell = state.fn
             ? `"Farewell then, ${state.fn}," he says, and disappears into the mist without another word.`
             : "'Farewell then,' he says, and disappears into the mist without another word.";
           return {
-            _logMessage: `The seer nods. ${farewell}`,
+            _logMessageKey: "outcome2",
+            _logMessageVars: { farewell },
           };
         },
       },
@@ -1802,9 +1649,6 @@ export const choiceEvents: Record<string, GameEvent> = {
       !state.miningBoostState?.isActive &&
       !state.story.seen.unnamedWandererAccepted,
     timeProbability: 60,
-    title: "The Unnamed Wanderer",
-    message:
-      "A man in torn clothes approaches the village, his hands marked from years of hard labor. 'I come from a mining colony,' he says in a rough voice. 'I can work for you to improve your mining yield.'",
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
@@ -1812,23 +1656,20 @@ export const choiceEvents: Record<string, GameEvent> = {
     skipEventLog: true,
     fallbackChoice: {
       id: "sendAway",
-      label: "Send away",
       effect: (state: GameState) => {
         return {
-          _logMessage:
-            "You decline the wanderer's offer. He shrugs, adjusts his worn pack, and disappears down the road.",
+          _logMessageKey: "outcome0",
         };
       },
     },
     choices: [
       {
         id: "offerFood",
-        label: "Offer 2500 Food",
         cost: "2500 food",
         effect: (state: GameState) => {
           if (state.resources.food < 2500) {
             return {
-              _logMessage: "You don't have enough food to offer.",
+              _logMessageKey: "outcome1",
             };
           }
 
@@ -1849,19 +1690,17 @@ export const choiceEvents: Record<string, GameEvent> = {
                 unnamedWandererAccepted: true,
               },
             },
-            _logMessage:
-              "The wanderer gives a brief nod and walks off to the mining pit to begin his labor.",
+            _logMessageKey: "outcome2",
           };
         },
       },
       {
         id: "offerGold",
-        label: "Offer 100 Gold",
         cost: "100 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 100) {
             return {
-              _logMessage: "You don't have enough gold to offer.",
+              _logMessageKey: "outcome3",
             };
           }
 
@@ -1882,8 +1721,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 unnamedWandererAccepted: true,
               },
             },
-            _logMessage:
-              "The wanderer gives a brief nod and walks off to the mining pit to begin his labor.",
+            _logMessageKey: "outcome4",
           };
         },
       },
@@ -1899,9 +1737,6 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.story.seen.alchemistArrives &&
       !state.story.seen.wanderingFirecrafterEvent,
     timeProbability: 20,
-    title: "The Wandering Firecrafter",
-    message:
-      "A hooded figure in stained robes arrives at your village. 'I am a firecrafter,' he says with an echoing voice. 'I can teach you to craft a bomb of extreme power, that tears reality itself. But knowledge has its price.'",
     priority: 4,
     repeatable: true,
     showAsTimedTab: true,
@@ -1909,7 +1744,6 @@ export const choiceEvents: Record<string, GameEvent> = {
     skipEventLog: true,
     fallbackChoice: {
       id: "sendAway",
-      label: "Send away",
       effect: (state: GameState) => {
         return {
           story: {
@@ -1919,20 +1753,18 @@ export const choiceEvents: Record<string, GameEvent> = {
               wanderingFirecrafterEvent: true,
             },
           },
-          _logMessage:
-            "The firecrafter eventually sighs, 'Perhaps you are not ready for such power yet,' and disappears into the night.",
+          _logMessageKey: "outcome0",
         };
       },
     },
     choices: [
       {
         id: "payGold",
-        label: "Pay 250 Gold",
         cost: "250 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 250) {
             return {
-              _logMessage: "You don't have enough gold.",
+              _logMessageKey: "outcome1",
             };
           }
 
@@ -1949,19 +1781,17 @@ export const choiceEvents: Record<string, GameEvent> = {
                 canCraftVoidBomb: true,
               },
             },
-            _logMessage:
-              "The firecrafter takes your gold and begins teaching you the dark art of void bomb creation. 'Use this power wisely,' he warns before vanishing into the shadows.",
+            _logMessageKey: "outcome2",
           };
         },
       },
       {
         id: "paySilver",
-        label: "Pay 1000 Silver",
         cost: "1000 silver",
         effect: (state: GameState) => {
           if (state.resources.silver < 1000) {
             return {
-              _logMessage: "You don't have enough silver.",
+              _logMessageKey: "outcome3",
             };
           }
 
@@ -1978,14 +1808,12 @@ export const choiceEvents: Record<string, GameEvent> = {
                 canCraftVoidBomb: true,
               },
             },
-            _logMessage:
-              "The firecrafter takes your silver and begins teaching you the dark art of void bomb creation. 'Use this power wisely,' he warns before vanishing into the shadows.",
+            _logMessageKey: "outcome4",
           };
         },
       },
       {
         id: "sendAway",
-        label: "Send away",
         effect: (state: GameState) => {
           return {
             story: {
@@ -1995,8 +1823,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 wanderingFirecrafterEvent: true,
               },
             },
-            _logMessage:
-              "You refuse the firecrafter's offer. He nods knowingly, 'Perhaps you are not ready for such power yet,' and disappears into the night.",
+            _logMessageKey: "outcome5",
           };
         },
       },
@@ -2011,15 +1838,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.blackMonolith >= 1 &&
       (state.buildings.boneTemple || 0) === 0,
     timeProbability: 1,
-    title: "The Elder's Demand",
-    message:
-      "An elder woman with clouded eyes approaches you, 'We must end the spillng of human blood,' she declares. 'The old gods demand a great monument in their honor. Only then will the gods grant us their continued favor.'",
     priority: 5,
     repeatable: false,
     choices: [
       {
         id: "acceptBoneTemple",
-        label: "Accept proposal",
         effect: (state: GameState) => {
           return {
             story: {
@@ -2030,8 +1853,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 boneTempleUnlocked: true,
               },
             },
-            _logMessage:
-              "You accept the elder's wisdom. The villagers nod in silent approval. The path to building the ultimate monument to the gods now lies open.",
+            _logMessageKey: "outcome0",
           };
         },
       },
@@ -2045,9 +1867,6 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.weapons.crude_bow &&
       state.buildings.woodenHut <= 4,
     timeProbability: 10,
-    title: "The Odd Trinket",
-    message:
-      "While chopping wood, you find a trinket with glowing amber liquid inside. The liquid swirls hypnotically. Do you drink it?",
     priority: 3,
     repeatable: false,
     isTimedChoice: true,
@@ -2055,36 +1874,30 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "drinkTrinket",
-        label: "Drink it",
         effect: (state: GameState) => {
           return {
             relics: {
               ...state.relics,
               odd_trinket: true,
             },
-            _logMessage:
-              "You drink the amber liquid. It burns as it goes down, but you feel stronger than before.",
+            _logMessageKey: "outcome0",
           };
         },
       },
       {
         id: "discardTrinket",
-        label: "Discard it",
         effect: (state: GameState) => {
           return {
-            _logMessage:
-              "You decide not to risk it and toss the trinket into the woods. It disappears into the undergrowth.",
+            _logMessageKey: "outcome1",
           };
         },
       },
     ],
     fallbackChoice: {
       id: "discardTrinket",
-      label: "Discard it",
       effect: (state: GameState) => {
         return {
-          _logMessage:
-            "Your hesitation costs you. The trinket slips from your fingers and shatters on a rock, the amber liquid seeping into the earth.",
+          _logMessageKey: "outcome2",
         };
       },
     },
@@ -2096,15 +1909,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       (state.story?.seen?.humansSacrificeLevel || 0) >= 5 &&
       !state.story?.seen?.youngWomanProtestEvent,
     timeProbability: 2,
-    title: "The Young Woman's Plea",
-    message:
-      "A young woman approaches you with tears streaming down her face. 'Both my parents were sacrificed to that cursed monolith,' she cries. 'This barbaric behavior has to stop!'",
     priority: 5,
     repeatable: false,
     choices: [
       {
         id: "banishHer",
-        label: "Banish her",
         effect: (state: GameState) => {
           const deathResult = killVillagers(
             state,
@@ -2126,13 +1935,13 @@ export const choiceEvents: Record<string, GameEvent> = {
                 youngWomanProtestEvent: true,
               },
             },
-            _logMessage: `You banish the young woman from the village. She convinces ${actualLeavers} sympathetic villagers to leave with her, abandoning your settlement forever.`,
+            _logMessageKey: "outcome0",
+            _logMessageVars: { actualLeavers },
           };
         },
       },
       {
         id: "sacrificeHer",
-        label: "Sacrifice her",
         effect: (state: GameState) => {
           const deathResult = killVillagers(
             state,
@@ -2154,13 +1963,13 @@ export const choiceEvents: Record<string, GameEvent> = {
                 youngWomanProtestEvent: true,
               },
             },
-            _logMessage: `Shortly after the sacrifice is carried out at the Black Monolith, ${actualLeavers} horrified villagers pack their belongings and leave in disgust.`,
+            _logMessageKey: "outcome1",
+            _logMessageVars: { actualLeavers },
           };
         },
       },
       {
         id: "stopSacrifices",
-        label: "Stop human sacrifices",
         effect: (state: GameState) => {
           return {
             flags: {
@@ -2179,8 +1988,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 pillarOfClarityUnlocked: true,
               },
             },
-            _logMessage:
-              "You agree to end the practice of human sacrifice. The woman proposes destroying the Black Monolith and building a pure white obelisk in its place cleansing the darkness from the people's minds.",
+            _logMessageKey: "outcome2",
           };
         },
       },
@@ -2198,16 +2006,12 @@ export const choiceEvents: Record<string, GameEvent> = {
       );
     },
     timeProbability: 60, // 1 hour
-    title: "Frostfall",
-    message:
-      "Icy winds howl through the village. The elders warn that a terrible blizzard is approaching. Preparations must be made, or the consequences will be dire.",
     priority: 4,
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 3 * 60 * 1000, // 3 minutes
     fallbackChoice: {
       id: "doNothing",
-      label: "Do nothing",
       effect: (state: GameState) => {
         const timesOccurred =
           (state.story?.seen?.frostfallCount as number) || 0;
@@ -2225,15 +2029,13 @@ export const choiceEvents: Record<string, GameEvent> = {
               frostfallCount: timesOccurred + 1,
             },
           },
-          _logMessage:
-            "The blizzard hits with brutal force. All production slows to a crawl as villagers struggle to survive the cold.",
+          _logMessageKey: "outcome0",
         };
       },
     },
     choices: [
       {
         id: "prepareFrostfall",
-        label: "Prepare",
         cost: (state: GameState) => {
           const timesOccurred =
             (state.story?.seen?.frostfallCount as number) || 0;
@@ -2252,7 +2054,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             state.resources.food < foodCost
           ) {
             return {
-              _logMessage: "You don't have enough resources to prepare.",
+              _logMessageKey: "outcome1",
             };
           }
 
@@ -2273,14 +2075,12 @@ export const choiceEvents: Record<string, GameEvent> = {
                 frostfallCount: timesOccurred + 1,
               },
             },
-            _logMessage:
-              "Thanks to the stockpiles of firewood and food, the villagers survive the blizzard unharmed.",
+            _logMessageKey: "outcome2",
           };
         },
       },
       {
         id: "doNothing",
-        label: "Do nothing",
         effect: (state: GameState) => {
           const timesOccurred =
             (state.story?.seen?.frostfallCount as number) || 0;
@@ -2298,8 +2098,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 frostfallCount: timesOccurred + 1,
               },
             },
-            _logMessage:
-              "The blizzard hits with brutal force. All production slows to a crawl as villagers struggle to survive the cold.",
+            _logMessageKey: "outcome3",
           };
         },
       },
@@ -2311,15 +2110,11 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 6 && !state.blessings.survivors_last_words,
     timeProbability: 15,
-    title: "The Last Survivor",
-    message:
-      "A stranger arrives at the village, barely clinging to life. He speaks of his settlement to the north, where food shortages drove villagers to kill each other in desperation. He asks to stay for a few nights to recover.",
     priority: 4,
     repeatable: false,
     choices: [
       {
         id: "letHimStay",
-        label: "Let him stay",
         effect: (state: GameState) => {
           return {
             stats: {
@@ -2337,14 +2132,12 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.blessings,
               survivors_last_words: true,
             },
-            _logMessage:
-              "The survivor is given shelter and care. That night, he calls you to his hut. Though dying, his eyes are clear. 'Thank you for your kindness, may fortune favor you always.' he whispers with his last breath.",
+            _logMessageKey: "outcome0",
           };
         },
       },
       {
         id: "sendHimAway",
-        label: "Send him away",
         effect: (state: GameState) => {
           const duration = disgustDurationMs(state.cruelMode);
           return {
@@ -2363,7 +2156,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               isActive: true,
               endTime: Date.now() + duration,
             },
-            _logMessage: `You turn the dying man away. He leaves and is found dead in the forest nearby the next day. The villagers are horrified and disgusted by your cruelty.`,
+            _logMessageKey: "outcome1",
           };
         },
       },
@@ -2378,20 +2171,16 @@ export const choiceEvents: Record<string, GameEvent> = {
       (Number(state.story?.seen?.leatherTotemsUsageCount) || 0) >= 20 &&
       !state.story.seen.leatherHarnessRequest,
     timeProbability: 5,
-    title: "A Village Woman",
-    message:
-      "A woman from the village approaches you, her cheeks faintly flushed. She hesitates before speaking, eyes cast down: 'I was wondering if you might spare some leather. I'd like to craft something... for my partner. A harness. To surprise him with.'",
     priority: 3,
     repeatable: false,
     choices: [
       {
         id: "helpWithLeather",
-        label: "Help her",
         cost: "100 leather",
         effect: (state: GameState) => {
           if ((state.resources.leather || 0) < 100) {
             return {
-              _logMessage: "You don't have enough leather to help her.",
+              _logMessageKey: "outcome0",
             };
           }
           return {
@@ -2411,14 +2200,12 @@ export const choiceEvents: Record<string, GameEvent> = {
                 leatherHarnessHelped: true,
               },
             },
-            _logMessage:
-              "You hand her the leather. She takes it with a grateful smile, her eyes brightening. 'Thank you. He'll be... very surprised.' She hurries off, clutching the hides to her chest.",
+            _logMessageKey: "outcome1",
           };
         },
       },
       {
         id: "refuseLeather",
-        label: "Do not help",
         effect: (state: GameState) => {
           return {
             story: {
@@ -2428,8 +2215,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 leatherHarnessRequest: true,
               },
             },
-            _logMessage:
-              "You decline. She nods, disappointment flickering across her face, and returns to the village without another word.",
+            _logMessageKey: "outcome2",
           };
         },
       },
@@ -2445,15 +2231,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       !state.story.seen.leatherHarnessGratefulReturn &&
       !state.clothing.ring_of_obedience,
     timeProbability: 30,
-    title: "A Grateful Return",
-    message:
-      "The woman from the village approaches you again, her face radiant with gratitude. 'I had to thank you properly,' she says, her voice warm. 'Things went... very well. I made this ring for you.' She hands you a ring with a smaller ring attached to it.",
     priority: 3,
     repeatable: false,
     choices: [
       {
         id: "acceptRing",
-        label: "Accept the ring",
         effect: (state: GameState) => {
           return {
             clothing: {
@@ -2467,8 +2249,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 leatherHarnessGratefulReturn: true,
               },
             },
-            _logMessage:
-              "You slip the ring onto your finger. It fits perfectly. The woman smiles and takes her leave, a lightness in her step.",
+            _logMessageKey: "outcome0",
           };
         },
       },
@@ -2478,15 +2259,11 @@ export const choiceEvents: Record<string, GameEvent> = {
   swampSanctuaryChoice: {
     id: "swampSanctuaryChoice",
     condition: () => false,
-    title: "Swamp Sanctuary",
-    message:
-      "Your expedition reaches the forgotten swamp sanctuary. Crumbling ruins encircle a massive tree of dark black timber. What do you do?",
     priority: 0,
     repeatable: false,
     choices: [
       {
         id: "chopBlackTree",
-        label: "Chop down tree",
         effect: (state: GameState) => ({
           relics: {
             ...state.relics,
@@ -2503,19 +2280,16 @@ export const choiceEvents: Record<string, GameEvent> = {
               swampSanctuaryChoiceMade: true,
             },
           },
-          _logMessage:
-            "The black timber resists, but your people bring it down. You claim the black cursed timber.",
+          _logMessageKey: "outcome0",
         }),
       },
       {
         id: "sacrificeAtTree",
-        label: "Sacrifice animals at tree",
         cost: "1000 Food",
         effect: (state: GameState) => {
           if ((state.resources.food || 0) < 1000) {
             return {
-              _logMessage:
-                "You have not enough food for a worthy offering. The tree waits.",
+              _logMessageKey: "outcome1",
             };
           }
           return {
@@ -2534,8 +2308,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 swampSanctuaryChoiceMade: true,
               },
             },
-            _logMessage:
-              "Blood and smoke rise from the offering. A chill grace settles on the village.",
+            _logMessageKey: "outcome2",
           };
         },
       },

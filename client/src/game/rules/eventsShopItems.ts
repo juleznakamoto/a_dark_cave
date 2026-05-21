@@ -8,16 +8,12 @@ export const shopItemEvents: Record<string, GameEvent> = {
     id: "compassTreasure",
     condition: (state: GameState) =>
       state.relics.tarnished_compass && !state.story.seen.compassTreasureFound,
-    timeProbability: 10,
-    title: "The Stirring Needle",
-    message:
-      "You wake in the night to a strange sound. The tarnished compass needle spins wildly in the darkness. When you grasp it, the needle stops, pointing firmly in one direction.",
+    timeProbability: 10,
     priority: 4,
     repeatable: false,
     choices: [
       {
-        id: "followCompass",
-        label: "Follow compass",
+        id: "followCompass",
         effect: (state: GameState) => {
           return {
             relics: {
@@ -31,8 +27,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
                 compassTreasureFound: true,
               },
             },
-            _logMessage:
-              "You follow the compass deap into the woods, where you unearth a small chest extraordinarily sturdy construction. You cannot open it, so you carry it back with you.",
+            _logMessageKey: "outcome0",
           };
         },
       },
@@ -49,28 +44,22 @@ export const shopItemEvents: Record<string, GameEvent> = {
     timeProbability: (state: GameState) => {
       const hasBeenSeen = state.triggeredEvents?.monasteryMonk;
       return hasBeenSeen ? 20 : 10;
-    },
-    title: "The Mountain Monk",
-    message:
-      "A monk from a mountain monastery arrives in the village. 'I hear you found a mysterious chest, he says softly. 'The monastery knows how to open it. Offer a tribute, and I will share the secret.'",
+    },
     priority: 4,
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 5 * 60 * 1000, // 5 minutes
     fallbackChoice: {
-      id: "sendAway",
-      label: "Send away",
+      id: "sendAway",
       effect: (state: GameState) => {
         return {
-          _logMessage:
-            "You decline the monk's offer. He bows respectfully and begins his journey back to the mountains.",
+          _logMessageKey: "outcome0",
         };
       },
     },
     choices: [
       {
-        id: "payTribute",
-        label: "Pay tribute",
+        id: "payTribute",
         cost: "5000 wood, 5000 stone, 5000 food, 500 leather, 500 steel",
         effect: (state: GameState) => {
           if (
@@ -81,7 +70,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
             state.resources.steel < 500
           ) {
             return {
-              _logMessage: "You don't have enough resources for the tribute.",
+              _logMessageKey: "outcome1",
             };
           }
 
@@ -105,19 +94,17 @@ export const shopItemEvents: Record<string, GameEvent> = {
                 monasteryMonkAccepted: true,
               },
             },
-            _logMessage:
-              "The monk accepts your tribute with a solemn nod and reveals detailed plans for a skeleton key. “This key is said to open any lock,” he says, before departing.",
+            _logMessageKey: "outcome2",
           };
         },
       },
       {
-        id: "offerGold",
-        label: "Offer 250 Gold",
+        id: "offerGold",
         cost: "250 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 250) {
             return {
-              _logMessage: "You don't have enough gold.",
+              _logMessageKey: "outcome3",
             };
           }
 
@@ -137,18 +124,15 @@ export const shopItemEvents: Record<string, GameEvent> = {
                 monasteryMonkAccepted: true,
               },
             },
-            _logMessage:
-              "The monk's eyes widen at the sight of gold. 'This will help the monastery greatly,' he says, drawing out detailed plans for a skeleton key. “This key is said to open any lock,” he says, before departing.",
+            _logMessageKey: "outcome4",
           };
         },
       },
       {
-        id: "sendAway",
-        label: "Send away",
+        id: "sendAway",
         effect: (state: GameState) => {
           return {
-            _logMessage:
-              "You decline the monk's offer. He bows respectfully and begins his journey back to the mountains.",
+            _logMessageKey: "outcome5",
           };
         },
       },
@@ -161,16 +145,12 @@ export const shopItemEvents: Record<string, GameEvent> = {
       state.tools.skeleton_key &&
       state.relics?.sealed_chest &&
       !state.story.seen.mysteriousChestOpened,
-    timeProbability: 0.5,
-    title: "The mysterious Bell",
-    message:
-      "You open the sealed chest with the skeleton key. Inside, resting on faded velvet, lies a golden bell covered in grotesque engravings and strange symbols written across its surface.",
+    timeProbability: 0.5,
     priority: 5,
     repeatable: false,
     choices: [
       {
-        id: "ringBell",
-        label: "Ring it",
+        id: "ringBell",
         effect: (state: GameState) => {
           return {
             relics: {
@@ -189,14 +169,12 @@ export const shopItemEvents: Record<string, GameEvent> = {
                 mysteriousChestOpened: true,
               },
             },
-            _logMessage:
-              "The moment you hear the first ring, darkness swallows you whole. You dream of a vast city of glass and steel, filled with strange lights and people who move with purpose you cannot understand. When you awake, the bell has vanished, but a bell-shaped mark burns on your forearm.",
+            _logMessageKey: "outcome0",
           };
         },
       },
       {
-        id: "doNotRing",
-        label: "Do not ring it",
+        id: "doNotRing",
         effect: (state: GameState) => {
           return {
             resources: {
@@ -215,8 +193,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
                 mysteriousChestOpened: true,
               },
             },
-            _logMessage:
-              "The risk is too great. That same day, a tradesman arrives and offers 500 Gold for the bell. You accept immediately, relieved to be rid of the cursed object. The tradesman departs with a knowing smile.",
+            _logMessageKey: "outcome1",
           };
         },
       },
@@ -232,16 +209,12 @@ export const shopItemEvents: Record<string, GameEvent> = {
       state.story.seen.descendedFurther &&
       !state.story.seen.undergroundLakeDiscovered,
 
-    timeProbability: 3,
-    title: "The Underground Lake",
-    message:
-      "After the last cave expedition, two men claim to have seen an underground lake. The darkness was too dense to see clearly. Perhaps the skull lantern could reveal those dark waters.",
+    timeProbability: 3,
     priority: 4,
     repeatable: false,
     choices: [
       {
-        id: "unlockLake",
-        label: "Prepare",
+        id: "unlockLake",
         effect: (state: GameState) => {
           return {
             story: {
@@ -251,8 +224,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
                 undergroundLakeDiscovered: true,
               },
             },
-            _logMessage:
-              "You agree to investigate, but first the necessary preparations must be made for the descent to the lake.",
+            _logMessageKey: "outcome0",
           };
         },
       },
@@ -264,16 +236,12 @@ export const shopItemEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.undergroundLakeExplored &&
       !state.story.seen.undergroundLakeCreatureDiscovered,
-    timeProbability: 4,
-    title: "Something Beneath",
-    message:
-      "While exploring the underground lake, you catch a huge shadow beneath the black waters, something vast and unseen. Perhaps a trap could lure it out of the waters.",
+    timeProbability: 4,
     priority: 4,
     repeatable: false,
     choices: [
       {
-        id: "acknowledgeLakeCreature",
-        label: "Prepare",
+        id: "acknowledgeLakeCreature",
         effect: (state: GameState) => {
           return {
             story: {
@@ -294,16 +262,12 @@ export const shopItemEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.lakeCreatureLured &&
       !state.story.seen.lakeCreatureFateDecided,
-    timeProbability: 0.2,
-    title: "The Creature's Fate",
-    message:
-      "The massive creature writhes in the trap, its tentacles thrashing against the steel bars. Its ancient eyes regard you with what might be intelligence. What will you do?",
+    timeProbability: 0.2,
     priority: 4,
     repeatable: false,
     choices: [
       {
-        id: "killCreature",
-        label: "Kill creature",
+        id: "killCreature",
         effect: (state: GameState) => {
           return {
             resources: {
@@ -319,14 +283,12 @@ export const shopItemEvents: Record<string, GameEvent> = {
                 ashenGreatshieldUnlocked: true,
               },
             },
-            _logMessage:
-              "The creature’s last violent thrashes shake the cavern as the men drive their spears into its writhing body. As the blacksmith eyes the creature's massive bones, he declares he can forge them into a mighty greatshield.",
+            _logMessageKey: "outcome0",
           };
         },
       },
       {
-        id: "spareCreature",
-        label: "Spare life",
+        id: "spareCreature",
         effect: (state: GameState) => {
           return {
             resources: {
@@ -341,8 +303,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
                 lakeCreatureSpared: true,
               },
             },
-            _logMessage:
-              "You open the trap and step back. The creature watches a moment, then dives deep, resurfacing to spit out a small rotten chest. Inside lie gleaming gold coins. It vanishes into the black depths, leaving only ripples.",
+            _logMessageKey: "outcome1",
           };
         },
       },
@@ -353,16 +314,12 @@ export const shopItemEvents: Record<string, GameEvent> = {
     id: "lakeCreatureDead",
     condition: (state: GameState) =>
       state.story.seen.lakeCreatureSpared && !state.story.seen.lakeCreatureDead,
-    timeProbability: 15,
-    title: "End of an Age",
-    message:
-      "Some men found the lake creature on the shore of the underground lake, dead of what seems to be old age. As the blacksmith observes the remains, he declares 'Its bones are like nothing I've ever seen. I can forge a mighty greatshield from them.'",
+    timeProbability: 15,
     priority: 4,
     repeatable: false,
     choices: [
       {
-        id: "forge",
-        label: "Continue",
+        id: "forge",
         effect: (state: GameState) => {
           return {
             resources: {

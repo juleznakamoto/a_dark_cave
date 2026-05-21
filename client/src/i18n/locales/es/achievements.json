@@ -1,0 +1,184 @@
+{
+  "action": {
+    "0-chopWood": {
+      "label": "Leñador"
+    },
+    "0-craftTorches": {
+      "label": "Artesano de antorchas"
+    },
+    "0-exploreCave": {
+      "label": "Explorador de cuevas"
+    },
+    "0-gamblerWins": {
+      "label": "Jugador experimentado"
+    },
+    "0-hunt": {
+      "label": "Cazador"
+    },
+    "1-mineAdamant": {
+      "label": "Minero de adamantita"
+    },
+    "1-mineCoal": {
+      "label": "Minero de carbón"
+    },
+    "1-mineIron": {
+      "label": "Minero de hierro"
+    },
+    "1-mineObsidian": {
+      "label": "Minero de obsidiana"
+    },
+    "1-mineStone": {
+      "label": "Cantero"
+    },
+    "1-mineSulfur": {
+      "label": "Minero de azufre"
+    },
+    "2-animals": {
+      "label": "Sacrificador de animales"
+    },
+    "2-boneTotems": {
+      "label": "Sacrificador de huesos"
+    },
+    "2-craftBoneTotems": {
+      "label": "Artesano de tótems de hueso"
+    },
+    "2-craftLeatherTotems": {
+      "label": "Artesano de tótems de cuero"
+    },
+    "2-leatherTotems": {
+      "label": "Sacrificador de cuero"
+    },
+    "3-ashfireBombs": {
+      "label": "Artesano de bombas de fuego ceniciento"
+    },
+    "3-emberBombs": {
+      "label": "Artesano de bombas de brasas"
+    },
+    "4-feedFire": {
+      "label": "Alimentador del fuego"
+    },
+    "4-merchantPurchases": {
+      "label": "Negociador"
+    },
+    "4-solsticeGatherings": {
+      "label": "Celebrante del solsticio"
+    },
+    "4-wellRested": {
+      "label": "Dormilón profundo"
+    }
+  },
+  "basic": {
+    "0-coalMiner": {
+      "label": "Reunir carbón"
+    },
+    "0-hunter": {
+      "label": "Cazador"
+    },
+    "0-ironMiner": {
+      "label": "Reunir hierro"
+    },
+    "0-stoneMiner": {
+      "label": "Reunir piedra"
+    },
+    "0-woodGatherer": {
+      "label": "Reunir madera"
+    },
+    "1-builder": {
+      "label": "Construir edificios"
+    },
+    "1-communityBuilder": {
+      "label": "Construir comunidad"
+    },
+    "1-explorer": {
+      "label": "Explorar la cueva"
+    },
+    "1-toolCrafter": {
+      "label": "Fabricar herramientas"
+    },
+    "1-torchCrafter": {
+      "label": "Fabricar antorchas"
+    }
+  },
+  "building": {
+    "0-0": {
+      "label": "Refugio básico"
+    },
+    "0-1": {
+      "label": "Refugio resistente"
+    },
+    "0-2": {
+      "label": "Refugio nórdico"
+    },
+    "0-3": {
+      "label": "Refugio nómada"
+    },
+    "1-0": {
+      "label": "Cazadores"
+    },
+    "1-1": {
+      "label": "Forjadores"
+    },
+    "1-2": {
+      "label": "Fundidores"
+    },
+    "1-3": {
+      "label": "Curtidores"
+    },
+    "2-0": {
+      "label": "Mineros"
+    },
+    "3-0": {
+      "label": "Comerciantes"
+    },
+    "3-1": {
+      "label": "Proveedores"
+    },
+    "3-2": {
+      "label": "Eruditos"
+    },
+    "3-3": {
+      "label": "Sacerdotes"
+    },
+    "4-0": {
+      "label": "Murallas del bastión"
+    },
+    "4-1": {
+      "label": "Vigía"
+    }
+  },
+  "item": {
+    "0-axes": {
+      "label": "Hachas"
+    },
+    "0-lanterns": {
+      "label": "Faroles"
+    },
+    "0-pickaxes": {
+      "label": "Picos"
+    },
+    "1-bows": {
+      "label": "Arcos"
+    },
+    "1-swords": {
+      "label": "Espadas"
+    },
+    "2-explorer_pack": {
+      "label": "Talabartería"
+    },
+    "2-schematic_weapons": {
+      "label": "Esquemas"
+    },
+    "3-ancient_books": {
+      "label": "Sabiduría antigua"
+    },
+    "3-fellowship": {
+      "label": "Buena compañía"
+    },
+    "4-blacksteel_equipment": {
+      "label": "Equipo bélico oscuro"
+    },
+    "4-blacksteel_tools": {
+      "label": "Herramientas oscuras"
+    }
+  }
+}

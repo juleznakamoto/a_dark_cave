@@ -4,6 +4,7 @@ import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { X } from "lucide-react";
 import { GAME_CONSTANTS } from "@/game/constants";
+import { tWithFallback } from "@/i18n/resolveGameText";
 
 interface CooldownButtonProps {
   children: React.ReactNode;
@@ -228,7 +229,12 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       executionAbortEligible === true &&
       hasAbortSnapshot;
     const canAffordAbort = gold >= GAME_CONSTANTS.ACTION_ABORT_GOLD_COST;
-    const abortTooltip = `Abort for ${GAME_CONSTANTS.ACTION_ABORT_GOLD_COST} Gold`;
+    const abortTooltip = tWithFallback(
+      "ui",
+      "cave.abortForGold",
+      `Abort for ${GAME_CONSTANTS.ACTION_ABORT_GOLD_COST} Gold`,
+      { amount: GAME_CONSTANTS.ACTION_ABORT_GOLD_COST },
+    );
 
     return (
       <div className="relative inline-block">

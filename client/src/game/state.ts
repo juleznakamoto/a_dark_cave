@@ -2,7 +2,7 @@
 import { create } from "zustand";
 import { GameState, gameStateSchema, Referral } from "@shared/schema";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
-import { EventManager, LogEntry } from "@/game/rules/events";
+import { EventManager, LogEntry, getEventCatalogIdByEventId, getEventI18nVars } from "@/game/rules/events";
 import { checkMilestoneLogEntries } from "@/game/rules/eventLogEntries";
 import {
   executeGameAction,
@@ -61,6 +61,10 @@ import { logger } from "@/lib/logger";
 import { madnessEvents } from "@/game/rules/eventsMadness";
 import { DISGRACED_PRIOR_UPGRADES } from "@/game/rules/skillUpgrades";
 import {
+  resolveEventMessage,
+  resolveEventTitle,
+} from "@/i18n/eventText";
+import {
   generateMerchantChoices,
   merchantEvents,
 } from "@/game/rules/eventsMerchant";
@@ -73,6 +77,12 @@ import {
   getInvestmentWaveGapMs,
   investmentHallLuckyChanceBonusPct,
 } from "@/game/rules/investmentHallTables";
+import {
+  getEventLogMessageByFallback,
+  getStartScreenNarrativeLogMessage,
+  resolveEventLogMessage,
+  tWithFallback,
+} from "@/i18n/resolveGameText";
 
 // Types
 type ResourceChangeEvent = {
@@ -1964,9 +1974,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     const initialLogEntry: LogEntry = {
       id: "initial-narrative",
-      message: preserved.cruelMode
-        ? "A very dark cave. The air is freezing and damp. You barely see anything around you."
-        : "A dark cave. The air is cold and damp. You barely see the shapes around you.",
+      message: getStartScreenNarrativeLogMessage(Boolean(preserved.cruelMode)),
       timestamp: Date.now(),
       type: "system",
     };
@@ -2271,9 +2279,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       const initialLogEntry: LogEntry = {
         id: "initial-narrative",
-        message: get().cruelMode
-          ? "A very dark cave. The air is freezing and damp. You barely see anything around you."
-          : "A dark cave. The air is cold and damp. You barely see the shapes around you.",
+        message: getStartScreenNarrativeLogMessage(get().cruelMode),
         timestamp: Date.now(),
         type: "system",
       };
@@ -2502,9 +2508,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
       delete updatedChanges._combatData;
     }
 
-    // Extract _logMessage if present
-    if (updatedChanges._logMessage) {
-      logMessage = updatedChanges._logMessage;
+    // Extract narrative log message if present
+    const catalogId = getEventCatalogIdByEventId(eventId);
+    const i18nVars = getEventI18nVars(eventId, state);
+    const logMessageVars = updatedChanges._logMessageVars as
+      | Record<string, string | number>
+      | undefined;
+    if (updatedChanges._logMessageKey) {
+      logMessage = resolveEventLogMessage(
+        catalogId,
+        updatedChanges._logMessageKey as string,
+        { ...i18nVars, ...logMessageVars },
+      );
+      delete updatedChanges._logMessageKey;
+      delete updatedChanges._logMessageVars;
+    } else if (updatedChanges._logMessage) {
+      // Legacy English fallback for events not yet migrated to _logMessageKey.
+      logMessage = getEventLogMessageByFallback(
+        eventId,
+        updatedChanges._logMessage as string,
+      );
       delete updatedChanges._logMessage;
     }
 
@@ -2544,7 +2567,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           variant: "success",
           title: logEntry?.title?.trim()
             ? logEntry.title
-            : "Event",
+            : tWithFallback("ui", "event.fallbackTitle", "Event"),
         };
         shouldShowRewardDialog = true;
       }
@@ -2870,13 +2893,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const merchantEvent = merchantEvents.merchant;
     const eventData: LogEntry = {
       id: "merchant",
-      message:
-        typeof merchantEvent.message === "string"
-          ? merchantEvent.message
-          : merchantEvent.message[0] ?? "",
+      message: resolveEventMessage("merchant", merchantEvent.message, state),
       timestamp: Date.now(),
       type: "event",
-      title: typeof merchantEvent.title === "string" ? merchantEvent.title : merchantEvent.title?.(state) ?? "Traveling Merchant",
+      title:
+        resolveEventTitle("merchant", merchantEvent.title, state) ??
+        "Traveling Merchant",
       choices,
     };
 

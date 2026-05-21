@@ -1,0 +1,616 @@
+{
+  "animals": {
+    "label": "Animaux"
+  },
+  "banditLair": {
+    "label": "Repaire de bandits"
+  },
+  "blackreachCanyon": {
+    "label": "Canyon de Blackreach"
+  },
+  "blastPortal": {
+    "label": "Porte de souffle"
+  },
+  "boneTotems": {
+    "label": "Totems d'os"
+  },
+  "buildAdvancedBlacksmith": {
+    "description": "Forge améliorée avec de meilleurs outils et techniques",
+    "label": "Forge avancée"
+  },
+  "buildAlchemistHall": {
+    "description": "Salle où l'alchimiste crée des poudres et des explosifs",
+    "label": "Salle de l'alchimiste"
+  },
+  "buildAltar": {
+    "description": "Lieu sacré de culte et de sacrifice",
+    "label": "Autel"
+  },
+  "buildBank": {
+    "description": "Bâtiment financier permettant de réaliser de plus gros investissements",
+    "label": "Banque"
+  },
+  "buildBastion": {
+    "description": "Fortification massive servant de dernière ligne de défense",
+    "label": "Bastion"
+  },
+  "buildBlackEstate": {
+    "description": "Domaine imposant de bois noir et de pierre, dominant la ville.",
+    "label": "Domaine noir"
+  },
+  "buildBlackMonolith": {
+    "description": "Sombre monument érigé pour les sacrifices vivants",
+    "label": "Monolithe noir"
+  },
+  "buildBlacksmith": {
+    "description": "Forge avec des outils de base pour l'artisanat",
+    "label": "Forge"
+  },
+  "buildBoneTemple": {
+    "description": "Structure monstrueuse bâtie en os, honorant les anciens dieux",
+    "label": "Temple d'os"
+  },
+  "buildBoneyard": {
+    "description": "Terrain où reposent les morts, apaisant le deuil des villageois.",
+    "label": "Cimetière"
+  },
+  "buildBottomlessPit": {
+    "description": "Fosse extrêmement profonde atteignant les matériaux les plus rares",
+    "label": "Fosse sans fond"
+  },
+  "buildCabin": {
+    "description": "Cabane de chasse rudimentaire avec des outils pour les chasseurs",
+    "label": "Cabane"
+  },
+  "buildChitinPlating": {
+    "description": "Les fortifications sont renforcées de plaques de chitine impénétrables",
+    "label": "Blindage de chitine"
+  },
+  "buildClerksHut": {
+    "description": "Hutte où les commis suivent les ressources du village",
+    "label": "Hutte des commis"
+  },
+  "buildCoinhouse": {
+    "description": "Modeste bâtiment financier permettant de réaliser de petits investissements",
+    "label": "Comptoir des monnaies"
+  },
+  "buildConsecratedPaleCross": {
+    "description": "Monument colossal d'os blanchis amplifiant grandement les sacrifices des totems d'os.",
+    "label": "Croix pâle consacrée"
+  },
+  "buildDarkEstate": {
+    "description": "Domaine isolé offrant un refuge contre le monde",
+    "label": "Domaine sombre"
+  },
+  "buildDeepPit": {
+    "description": "Fosse très profonde révélant de précieux filons minéraux",
+    "label": "Fosse profonde"
+  },
+  "buildDeepeningPit": {
+    "description": "Fosse plus profonde atteignant davantage de ressources souterraines",
+    "label": "Fosse approfondie"
+  },
+  "buildFortifiedMoat": {
+    "description": "Douves défensives ralentissant et affaiblissant les assaillants",
+    "label": "Douves fortifiées"
+  },
+  "buildFortifiedStorehouse": {
+    "description": "Bâtiment de stockage renforcé à capacité accrue",
+    "label": "Entrepôt fortifié"
+  },
+  "buildFoundry": {
+    "description": "Bâtiment spécialisé dans la production d'acier",
+    "label": "Fonderie"
+  },
+  "buildFurTents": {
+    "description": "Abri chaud en fourrure utilisé par la tribu errante",
+    "label": "Tente de fourrure"
+  },
+  "buildGrandBazaar": {
+    "description": "Vaste marché attirant davantage de marchands",
+    "label": "Grand bazar"
+  },
+  "buildGrandBlacksmith": {
+    "description": "Forge avancée capable de créer les meilleurs produits",
+    "label": "Grande forge"
+  },
+  "buildGrandHunterLodge": {
+    "description": "Pavillon de chasse suprême pour maîtres chasseurs",
+    "label": "Grand pavillon de chasse"
+  },
+  "buildGrandRepository": {
+    "description": "Immense dépôt à la capacité de stockage exceptionnelle",
+    "label": "Grand dépôt"
+  },
+  "buildGreatCabin": {
+    "description": "Pavillon de chasse agrandi augmentant la production des chasseurs",
+    "label": "Grande cabane"
+  },
+  "buildGreatVault": {
+    "description": "Coffre suprême capable de stocker d'immenses ressources",
+    "label": "Grand coffre"
+  },
+  "buildHeartfire": {
+    "description": "Feu sacré offrant réconfort et sentiment de protection",
+    "label": "Feu du cœur"
+  },
+  "buildHighTannery": {
+    "description": "Tannerie suprême pour artisans du cuir experts",
+    "label": "Haute tannerie"
+  },
+  "buildImprovedTraps": {
+    "description": "Pièges de périmètre améliorés, avec des mécanismes plus solides et une meilleure couverture",
+    "label": "Pièges améliorés"
+  },
+  "buildInkwardenAcademy": {
+    "description": "Grande académie d'érudits offrant un savoir suprême et un suivi des ressources",
+    "label": "Académie des Gardiens d'encre"
+  },
+  "buildLonghouse": {
+    "description": "Immense halle commune nordique abritant de nombreux villageois",
+    "label": "Maison longue"
+  },
+  "buildMasterTannery": {
+    "description": "Tannerie avancée améliorant la production de cuir",
+    "label": "Tannerie de maître"
+  },
+  "buildMasterworkFoundry": {
+    "description": "Fonderie à la production d'acier supérieure",
+    "label": "Fonderie de maître"
+  },
+  "buildMerchantsGuild": {
+    "description": "Puissante guilde attirant les meilleurs échanges et marchands",
+    "label": "Guilde des marchands"
+  },
+  "buildPaleCross": {
+    "description": "Monument colossal d'os blanchis amplifiant les sacrifices des totems d'os.",
+    "label": "Croix pâle"
+  },
+  "buildPalisades": {
+    "description": "Murs défensifs protégeant la colonie",
+    "label": "Palissades"
+  },
+  "buildPillarOfClarity": {
+    "description": "Obélisque d'un blanc pur qui purifie les esprits des ténèbres",
+    "label": "Pilier de clarté"
+  },
+  "buildPrimeFoundry": {
+    "description": "Fonderie avancée améliorant la production d'acier",
+    "label": "Fonderie majeure"
+  },
+  "buildQuarry": {
+    "description": "Carrière de pierre augmentant la production de pierre des récolteurs",
+    "label": "Carrière"
+  },
+  "buildSanctum": {
+    "description": "Sanctuaire divin offrant la plus grande protection contre les ténèbres",
+    "label": "Sanctuaire"
+  },
+  "buildScriptorium": {
+    "description": "Bibliothèque du savoir offrant un suivi détaillé des ressources",
+    "label": "Scriptorium"
+  },
+  "buildShallowPit": {
+    "description": "Petite fosse minière permettant l'extraction de minerais",
+    "label": "Fosse peu profonde"
+  },
+  "buildShrine": {
+    "description": "Saint sanctuaire offrant une meilleure protection contre la folie",
+    "label": "Sanctuaire"
+  },
+  "buildStoneHut": {
+    "description": "Habitation de pierre durable offrant un abri supérieur",
+    "label": "Hutte de pierre"
+  },
+  "buildStorehouse": {
+    "description": "Installation de stockage agrandie pour davantage de ressources",
+    "label": "Entrepôt"
+  },
+  "buildSupplyHut": {
+    "description": "Petite hutte pour stocker les ressources",
+    "label": "Hutte de ravitaillement"
+  },
+  "buildTannery": {
+    "description": "Atelier où les fourrures sont transformées en cuir",
+    "label": "Tannerie"
+  },
+  "buildTemple": {
+    "description": "Grand temple offrant une forte résistance à la folie",
+    "label": "Temple"
+  },
+  "buildTimberMill": {
+    "description": "Moulin aidant à traiter le bois plus efficacement",
+    "label": "Scierie"
+  },
+  "buildTradePost": {
+    "description": "Comptoir commercial attirant des marchands qui vendent des biens",
+    "label": "Comptoir commercial"
+  },
+  "buildTraps": {
+    "description": "Pièges autour du village affaiblissant tous les assaillants",
+    "label": "Pièges"
+  },
+  "buildTreasury": {
+    "description": "Grand bâtiment financier permettant de réaliser de très gros investissements",
+    "label": "Trésor"
+  },
+  "buildVillageWarehouse": {
+    "description": "Grand entrepôt capable de stocker de vastes quantités",
+    "label": "Entrepôt du village"
+  },
+  "buildWatchtower": {
+    "description": "Haute tour donnant l'alerte tôt en cas de menace",
+    "label": "Tour de guet"
+  },
+  "buildWizardTower": {
+    "description": "Tour mystique où le mage mène ses recherches arcaniques",
+    "label": "Tour du mage"
+  },
+  "buildWoodenHut": {
+    "description": "Simple hutte de bois offrant un abri rudimentaire",
+    "label": "Hutte de bois"
+  },
+  "canyonBridge": {
+    "label": "Pont du canyon"
+  },
+  "castleRuins": {
+    "label": "Ruines du château"
+  },
+  "chopWood": {
+    "label": "Ramasser du bois",
+    "log": {
+      "firstVisit": "Du bois gît éparpillé près de l'entrée de la grotte. Il pourrait s'avérer utile."
+    }
+  },
+  "collapsedTower": {
+    "label": "Tour effondrée"
+  },
+  "craftAdamantAxe": {
+    "label": "Hache d'adamant"
+  },
+  "craftAdamantLantern": {
+    "label": "Lanterne d'adamant"
+  },
+  "craftAdamantPickaxe": {
+    "label": "Pioche d'adamant"
+  },
+  "craftAdamantSword": {
+    "label": "Épée d'adamant"
+  },
+  "craftArbalest": {
+    "label": "Armbrust"
+  },
+  "craftAshenGreatshield": {
+    "label": "Grand bouclier cendreux"
+  },
+  "craftAshfireBomb": {
+    "label": "Bombe feu-cendre"
+  },
+  "craftBlacksteelArmor": {
+    "label": "Armure d'acier noir"
+  },
+  "craftBlacksteelAxe": {
+    "label": "Hache d'acier noir"
+  },
+  "craftBlacksteelBow": {
+    "label": "Arc d'acier noir"
+  },
+  "craftBlacksteelLantern": {
+    "label": "Lanterne d'acier noir"
+  },
+  "craftBlacksteelPickaxe": {
+    "label": "Pioche d'acier noir"
+  },
+  "craftBlacksteelSword": {
+    "label": "Épée d'acier noir"
+  },
+  "craftBloodstoneStaff": {
+    "label": "Bâton de pierre de sang"
+  },
+  "craftBoneTotems": {
+    "label": "Totems d'os"
+  },
+  "craftCrudeBow": {
+    "label": "Arc grossier"
+  },
+  "craftEmberBomb": {
+    "label": "Bombe de braise"
+  },
+  "craftExplorerPack": {
+    "label": "Sac d'explorateur"
+  },
+  "craftFrostglassSword": {
+    "label": "Épée de verre-givre"
+  },
+  "craftGrenadierBag": {
+    "label": "Sac de grenadier"
+  },
+  "craftHighpriestRobe": {
+    "label": "Robe de grand prêtre"
+  },
+  "craftHunterCloak": {
+    "label": "Cape de chasseur"
+  },
+  "craftHuntsmanBow": {
+    "label": "Arc de veneur"
+  },
+  "craftIronAxe": {
+    "label": "Hache de fer"
+  },
+  "craftIronLantern": {
+    "label": "Lanterne de fer"
+  },
+  "craftIronPickaxe": {
+    "label": "Pioche de fer"
+  },
+  "craftIronSword": {
+    "label": "Épée de fer"
+  },
+  "craftLeatherTotems": {
+    "label": "Totems de cuir"
+  },
+  "craftLoggersGloves": {
+    "label": "Gants de bûcheron"
+  },
+  "craftLongBow": {
+    "label": "Arc long"
+  },
+  "craftMasterBow": {
+    "label": "Arc de maître"
+  },
+  "craftNightshadeBow": {
+    "label": "Arc de belladone"
+  },
+  "craftObsidianAxe": {
+    "label": "Hache d'obsidienne"
+  },
+  "craftObsidianLantern": {
+    "label": "Lanterne d'obsidienne"
+  },
+  "craftObsidianPickaxe": {
+    "label": "Pioche d'obsidienne"
+  },
+  "craftObsidianSword": {
+    "label": "Épée d'obsidienne"
+  },
+  "craftSacrificialTunic": {
+    "label": "Tunique sacrificielle"
+  },
+  "craftShadowBoots": {
+    "label": "Bottes d'ombre"
+  },
+  "craftSkeletonKey": {
+    "label": "Passe-partout"
+  },
+  "craftSteelAxe": {
+    "label": "Hache d'acier"
+  },
+  "craftSteelLantern": {
+    "label": "Lanterne d'acier"
+  },
+  "craftSteelPickaxe": {
+    "label": "Pioche d'acier"
+  },
+  "craftSteelSword": {
+    "label": "Épée d'acier"
+  },
+  "craftStoneAxe": {
+    "label": "Hache de pierre"
+  },
+  "craftStonePickaxe": {
+    "label": "Pioche de pierre"
+  },
+  "craftStormglassHalberd": {
+    "label": "Hallebarde de verre-tempête"
+  },
+  "craftTorches": {
+    "label": "Torchees"
+  },
+  "craftVeinfireElixir": {
+    "label": "Élixir feu-veine"
+  },
+  "craftVoidBomb": {
+    "label": "Bombe du Vide"
+  },
+  "craftWarBow": {
+    "label": "Arc de guerre"
+  },
+  "descendFurther": {
+    "label": "Descendre davantage",
+    "log": {
+      "firstVisit": "La lanterne projette une lueur stable tandis que vous descendez encore plus bas. Soudain, vos pieds touchent des marches de pierre taillées par la main de l'homme, usées par le temps."
+    }
+  },
+  "encounterBeyondPortal": {
+    "label": "S'aventurer au-delà de la porte"
+  },
+  "exploreCave": {
+    "label": "Explorer la grotte",
+    "log": {
+      "debrisScroll": "Parmi les débris, vous découvrez un parchemin ancien contenant la sagesse pour survivre dans ce monde impitoyable.",
+      "torchBag": "Vous trouvez un vieux sac poussiéreux contenant 25 torches dans la grotte.",
+      "firstVisit": "La lumière de la torche éclaire les parois de la grotte. Dans la lueur vacillante, vous remarquez un chemin menant plus profondément dans les cavernes."
+    }
+  },
+  "exploreCitadel": {
+    "label": "Explorer la citadelle",
+    "log": {
+      "firstVisit": "Dans la partie la plus profonde de la ville, une citadelle massive s'élève devant vous. Sa taille suggère qu'elle abrite quelque chose de grande puissance, ou de grand danger."
+    }
+  },
+  "exploreRuins": {
+    "label": "Explorer les ruines",
+    "log": {
+      "firstVisit": "Au bas des escaliers, une vaste caverne s'ouvre devant vous. Dans l'obscurité gisent les ruines d'une cité perdue, les vestiges d'une civilisation depuis longtemps disparue."
+    }
+  },
+  "exploreTemple": {
+    "label": "Explorer le temple",
+    "log": {
+      "firstVisit": "En vous enfonçant plus profondément dans les ruines de la cité souterraine, un grand temple émerge du sol de la caverne, pour l'essentiel intact, son ombre s'étendant sur les vestiges oubliés de la ville."
+    }
+  },
+  "exploreUndergroundLake": {
+    "label": "Lac souterrain"
+  },
+  "forestCave": {
+    "label": "Grotte forestière"
+  },
+  "healElderWizard": {
+    "label": "Soigner le vieux mage"
+  },
+  "healRestlessKnight": {
+    "label": "Soigner le chevalier tourmenté"
+  },
+  "hiddenLibrary": {
+    "label": "Bibliothèque cachée"
+  },
+  "hillGrave": {
+    "label": "Tombe de la colline"
+  },
+  "humans": {
+    "label": "Humains"
+  },
+  "hunt": {
+    "label": "Chasser"
+  },
+  "layTrap": {
+    "label": "Poser un piège"
+  },
+  "leatherTotems": {
+    "label": "Totems de cuir"
+  },
+  "lightFire": {
+    "label": "Allumer le feu",
+    "log": {
+      "firstVisit": "Le feu crépite doucement, projetant des ombres dansantes sur les parois de la grotte. La chaleur est réconfortante.",
+      "firstVisitBoost": "Le feu crépite doucement, projetant des ombres dansantes sur les parois de la grotte. La chaleur est réconfortante. Quelqu'un vous a laissé un cadeau."
+    }
+  },
+  "lowChamber": {
+    "label": "Chambre basse"
+  },
+  "lureLakeCreature": {
+    "label": "Placer le piège"
+  },
+  "mineAdamant": {
+    "label": "Extraire de l'adamant",
+    "log": {
+      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
+    }
+  },
+  "mineCoal": {
+    "label": "Extraire du charbon",
+    "log": {
+      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
+    }
+  },
+  "mineIron": {
+    "label": "Extraire du fer",
+    "log": {
+      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
+    }
+  },
+  "mineObsidian": {
+    "label": "Extraire de l'obsidienne",
+    "log": {
+      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
+    }
+  },
+  "mineStone": {
+    "label": "Extraire de la pierre",
+    "log": {
+      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
+    }
+  },
+  "mineSulfur": {
+    "label": "Extraire du soufre",
+    "log": {
+      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
+    }
+  },
+  "occultistChamber": {
+    "label": "Chambre de l'occultiste"
+  },
+  "provokeAttackWave": {
+    "label": "Provoquer une vague d'attaque"
+  },
+  "repairBastion": {
+    "label": "Réparer le bastion"
+  },
+  "repairPalisades": {
+    "label": "Réparer les palissades"
+  },
+  "repairWatchtower": {
+    "label": "Réparer la tour de guet"
+  },
+  "risingSmoke": {
+    "label": "Fumée montante"
+  },
+  "sellBlacksteelBatch": {
+    "label": "Vendre l'acier noir"
+  },
+  "sellLeatherBatch": {
+    "label": "Vendre le cuir"
+  },
+  "sellSteelBatch": {
+    "label": "Vendre l'acier"
+  },
+  "steelDelivery": {
+    "label": "Livraison d'acier"
+  },
+  "sunkenTemple": {
+    "label": "Temple englouti"
+  },
+  "swampSanctuary": {
+    "label": "Sanctuaire du marais"
+  },
+  "tradeGoldForAdamant": {
+    "label": "Acheter de l'adamant"
+  },
+  "tradeGoldForAshfireBomb": {
+    "label": "Acheter une bombe feu-cendre"
+  },
+  "tradeGoldForBlacksteel": {
+    "label": "Acheter de l'acier noir"
+  },
+  "tradeGoldForEmberBomb": {
+    "label": "Acheter une bombe de braise"
+  },
+  "tradeGoldForFood": {
+    "label": "Acheter de la nourriture"
+  },
+  "tradeGoldForLeather": {
+    "label": "Acheter du cuir"
+  },
+  "tradeGoldForObsidian": {
+    "label": "Acheter de l'obsidienne"
+  },
+  "tradeGoldForSteel": {
+    "label": "Acheter de l'acier"
+  },
+  "tradeGoldForStone": {
+    "label": "Acheter de la pierre"
+  },
+  "tradeGoldForTorch": {
+    "label": "Acheter une torche"
+  },
+  "tradeGoldForVoidBomb": {
+    "label": "Acheter une bombe du Vide"
+  },
+  "tradeGoldForWood": {
+    "label": "Acheter du bois"
+  },
+  "tradeSilverForGold": {
+    "label": "Acheter de l'or"
+  },
+  "ventureDeeper": {
+    "label": "S'aventurer plus profond",
+    "log": {
+      "tarnishedAmulet": "Dans l'ombre de la grotte, quelque chose scintille. Vous trouvez un amulette ternie.",
+      "silverSack": "Vous trouvez un petit sac en cuir contenant 50 pièces d'argent.",
+      "mapFragment": "Sur le sol de la grotte, vous trouvez un fragment de carte déchiré.",
+      "firstVisit": "L'air devient plus froid à mesure que vous descendez plus profondément dans la grotte. Les parois semblent anormalement lisses, comme façonnées par quelqu'un."
+    }
+  }
+}

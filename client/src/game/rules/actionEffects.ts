@@ -213,17 +213,26 @@ function rollResourceGain(min: number, max: number): number {
 }
 
 // Main export: applyActionEffects
+type ActionEffectUpdates = Partial<GameState> & {
+  logMessages?: Array<
+    | string
+    | {
+        actionId: string;
+        logKey: string;
+        vars?: Record<string, string | number>;
+      }
+  >;
+  triggeredEvents?: string[];
+};
+
 export function applyActionEffects(
   actionId: string,
   state: GameState,
-): Partial<GameState> {
+): ActionEffectUpdates {
   const action = getGameActions()[actionId];
   if (!action) return {};
 
-  const updates: Partial<GameState> & {
-    logMessages?: string[];
-    triggeredEvents?: string[];
-  } = {};
+  const updates: ActionEffectUpdates = {};
 
   // Check for action bonus chance (compass + other `actionBonusChance` effects, plus Crow's Eye skill — see `getDoubleGainChance`)
   const BONUS_CHANCE_ELIGIBLE_ACTIONS = [
@@ -473,10 +482,14 @@ export function applyActionEffects(
             probability: number;
             value: number | string | boolean;
             logMessage?: string;
+            logMessageKey?: string;
+            logMessageVars?: Record<string, string | number>;
             isChoice?: boolean;
             eventId?: string;
           };
           logMessage?: string;
+          logMessageKey?: string;
+          logMessageVars?: Record<string, string | number>;
           condition?: string;
           triggerEvent?: string;
           isChoice?: boolean;
@@ -601,7 +614,14 @@ export function applyActionEffects(
           }
         }
 
-        if (shouldTrigger && probabilityEffect.logMessage) {
+        if (shouldTrigger && probabilityEffect.logMessageKey) {
+          if (!updates.logMessages) updates.logMessages = [];
+          updates.logMessages.push({
+            actionId,
+            logKey: probabilityEffect.logMessageKey,
+            vars: probabilityEffect.logMessageVars,
+          });
+        } else if (shouldTrigger && probabilityEffect.logMessage) {
           if (!updates.logMessages) updates.logMessages = [];
           updates.logMessages.push(probabilityEffect.logMessage);
         }

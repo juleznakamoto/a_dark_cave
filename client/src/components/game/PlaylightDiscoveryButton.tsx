@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const CYCLE_MS = 5 * 60 * 1000;
 const SHOW_MS = 30 * 1000;
@@ -16,6 +17,7 @@ export default function PlaylightDiscoveryButton({
   showNotificationDot = false,
   forceShowTooltip = false,
 }: PlaylightDiscoveryButtonProps) {
+  const { t } = useTranslation("ui");
   const [showDiscoveryTooltip, setShowDiscoveryTooltip] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -64,7 +66,7 @@ export default function PlaylightDiscoveryButton({
             : "pointer-events-none opacity-0",
         )}
       >
-        <span className="whitespace-nowrap">More Games</span>
+        <span className="whitespace-nowrap">{t("playlight.moreGames")}</span>
         <div
           className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 rotate-45 bg-inherit p-1"
           aria-hidden
@@ -76,7 +78,7 @@ export default function PlaylightDiscoveryButton({
         size="xs"
         type="button"
         onClick={onClick}
-        aria-label="Discovery"
+        aria-label={t("playlight.discoveryAria")}
         className="playlight-discovery-btn group relative h-7 w-7 shrink-0 overflow-visible border border-border bg-background/70 p-0 backdrop-blur-sm"
       >
         <span

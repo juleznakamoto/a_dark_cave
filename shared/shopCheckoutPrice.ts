@@ -15,6 +15,14 @@ const TRADERS_GRATITUDE_MULTIPLIER = 0.8;
 /** 15% off catalog `item.price` for Trader's Son gratitude. */
 const TRADERS_SON_GRATITUDE_MULTIPLIER = 0.85;
 
+/** Display percent for shop UI / i18n (derived from checkout multipliers). */
+export const TRADERS_GRATITUDE_DISCOUNT_PERCENT = Math.round(
+  (1 - TRADERS_GRATITUDE_MULTIPLIER) * 100,
+);
+export const TRADERS_SON_DISCOUNT_PERCENT = Math.round(
+  (1 - TRADERS_SON_GRATITUDE_MULTIPLIER) * 100,
+);
+
 /**
  * Checkout price for Cruel Mode when the journey-complete promo is active ($3.49).
  * Applied after %-discounts (Trader / Son / Playlight) as an extra cap for `cruel_mode` only.

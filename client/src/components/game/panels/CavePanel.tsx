@@ -34,9 +34,11 @@ import {
   type UpgradeKey,
 } from "@/game/buttonUpgrades";
 import { getCraftProduceAmount } from "@/game/craftUpgradeUtils";
-import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
+import { resolveActionLabel } from "@/i18n/actionLabels";
+import { useTranslation } from "react-i18next";
 
 export default function CavePanel() {
+  const { t } = useTranslation(["ui", "common"]);
   const {
     executeAction,
     setHighlightedResources,
@@ -141,7 +143,7 @@ export default function CavePanel() {
       ],
     },
     {
-      title: "Mine",
+      title: t("cave.sectionMine"),
       actions: [
         { id: "mineStone", label: "Stone" },
         { id: "mineIron", label: "Iron" },
@@ -152,7 +154,7 @@ export default function CavePanel() {
       ],
     },
     {
-      title: "Craft",
+      title: t("cave.sectionCraft"),
       subGroups: [
         {
           actions: [
@@ -232,10 +234,22 @@ export default function CavePanel() {
     },
   ];
 
-  const CRAFT_BUTTON_LABELS: Record<string, { singular: string; plural: string }> = {
-    craftTorches: { singular: "Torch", plural: "Torches" },
-    craftBoneTotems: { singular: "Bone Totem", plural: "Bone Totems" },
-    craftLeatherTotems: { singular: "Leather Totem", plural: "Leather Totems" },
+  const CRAFT_BUTTON_LABELS: Record<
+    string,
+    { singularKey: string; pluralKey: string }
+  > = {
+    craftTorches: {
+      singularKey: "cave.craftTorch_one",
+      pluralKey: "cave.craftTorch_other",
+    },
+    craftBoneTotems: {
+      singularKey: "cave.craftBoneTotem_one",
+      pluralKey: "cave.craftBoneTotem_other",
+    },
+    craftLeatherTotems: {
+      singularKey: "cave.craftLeatherTotem_one",
+      pluralKey: "cave.craftLeatherTotem_other",
+    },
   };
 
   /** Bombs / Veinfire: cost & gain tooltip only; skip Book of Craftsmanship flavour text */
@@ -251,11 +265,14 @@ export default function CavePanel() {
     if (!action) return null;
 
     // Use singular/plural for craft upgrade buttons based on produce amount
-    let displayLabel = label;
+    let displayLabel = resolveActionLabel(actionId, label);
     const craftLabels = CRAFT_BUTTON_LABELS[actionId];
     if (craftLabels) {
       const produceAmount = getCraftProduceAmount(actionId, state);
-      displayLabel = produceAmount === 1 ? craftLabels.singular : craftLabels.plural;
+      displayLabel =
+        produceAmount === 1
+          ? t(craftLabels.singularKey, { count: 1 })
+          : t(craftLabels.pluralKey, { count: produceAmount });
     }
 
     const canExecute = canExecuteAction(actionId, state);
@@ -318,7 +335,11 @@ export default function CavePanel() {
     if (showCost || resourceGainTooltip || hasExpeditionRequirement) {
       let tooltipContent;
       const villagerRequirementLine = hasExpeditionRequirement ? (
-        <div>Requires {expeditionVillagersRequired} free villagers</div>
+        <div>
+          {t("cave.requiresFreeVillagers", {
+            count: expeditionVillagersRequired,
+          })}
+        </div>
       ) : null;
 
       if (resourceGainTooltip) {
@@ -353,7 +374,11 @@ export default function CavePanel() {
                 {costItem.text}
               </div>
             ))}
-            {cooldownReduction > 0 && <div>-{cooldownReduction}s Cooldown</div>}
+            {cooldownReduction > 0 && (
+              <div>
+                {t("cave.cooldownReduction", { seconds: cooldownReduction })}
+              </div>
+            )}
           </div>
         );
       }

@@ -30,17 +30,13 @@ export const crowEvents: Record<string, GameEvent> = {
     },
     timeProbability: (state: GameState) => {
       return state.story.seen?.villageElderFirstTime ? 20 : 10;
-    },
-    title: "Establishing Trade",
+    },
     message: (state: GameState) => {
       const count =
         (state.story.seen?.crowSentToMonastery ? 1 : 0) +
         (state.story.seen?.crowSentToSwamp ? 1 : 0) +
         (state.story.seen?.crowSentToShore ? 1 : 0);
-      if (count > 0) {
-        return "The village elder approaches you once more. 'The crow has proven useful. Shall we send another message?'";
-      }
-      return "A village elder approaches you and recommends sending the crow out with a message to establish trade. Where to send a message first?";
+      return count > 0 ? "repeat" : "firstTime";
     },
     priority: 4,
     repeatable: true,
@@ -50,8 +46,7 @@ export const crowEvents: Record<string, GameEvent> = {
 
       if (!state.story.seen?.crowSentToMonastery) {
         choices.push({
-          id: "mountainMonastery",
-          label: "Mountain Monastery",
+          id: "mountainMonastery",
           effect: (state: GameState) => {
             return {
               story: {
@@ -62,8 +57,7 @@ export const crowEvents: Record<string, GameEvent> = {
                   crowSentToMonastery: true,
                 },
               },
-              _logMessage:
-                "You send the one-eyed crow with a message to the Mountain Monastery. You wait for it to return.",
+              _logMessageKey: "outcome0",
             };
           },
         });
@@ -71,8 +65,7 @@ export const crowEvents: Record<string, GameEvent> = {
 
       if (!state.story.seen?.crowSentToSwamp) {
         choices.push({
-          id: "swampTribe",
-          label: "Swamp Tribe",
+          id: "swampTribe",
           effect: (state: GameState) => {
             return {
               story: {
@@ -83,8 +76,7 @@ export const crowEvents: Record<string, GameEvent> = {
                   crowSentToSwamp: true,
                 },
               },
-              _logMessage:
-                "You send the one-eyed crow with a message to the Swamp Tribe. You wait for it to return.",
+              _logMessageKey: "outcome1",
             };
           },
         });
@@ -92,8 +84,7 @@ export const crowEvents: Record<string, GameEvent> = {
 
       if (!state.story.seen?.crowSentToShore) {
         choices.push({
-          id: "shoreFishermen",
-          label: "Shore Fishermen",
+          id: "shoreFishermen",
           effect: (state: GameState) => {
             return {
               story: {
@@ -104,8 +95,7 @@ export const crowEvents: Record<string, GameEvent> = {
                   crowSentToShore: true,
                 },
               },
-              _logMessage:
-                "You send the one-eyed crow with a message to the Shore Fishermen. You wait for it to return.",
+              _logMessageKey: "outcome2",
             };
           },
         });
@@ -120,17 +110,13 @@ export const crowEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen?.crowSentToMonastery === true &&
       !state.story.seen?.monasteryResponse,
-    timeProbability: 15,
-    title: "Message from the Mountain Monastery",
-    message:
-      "The one-eyed crow returns from the Mountain Monastery with a sealed scroll. The monks offer to sell you a map to a hidden library deep within the cave. They ask for 250 Gold.",
+    timeProbability: 15,
     priority: 5,
     showAsTimedTab: true,
     timedTabDuration: 5 * 60 * 1000,
     skipEventLog: true,
     fallbackChoice: {
-      id: "decline",
-      label: "Time Expired",
+      id: "decline",
       effect: (state: GameState) => {
         return {
           story: {
@@ -140,19 +126,18 @@ export const crowEvents: Record<string, GameEvent> = {
               monasteryResponse: true,
             },
           },
-          _logMessage: "You took too long to decide. The monks' offer expires.",
+          _logMessageKey: "outcome0",
         };
       },
     },
     choices: [
       {
-        id: "accept",
-        label: "Pay 250 Gold",
+        id: "accept",
         cost: "250 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 250) {
             return {
-              _logMessage: "You don't have enough gold.",
+              _logMessageKey: "outcome1",
             };
           }
           return {
@@ -171,14 +156,12 @@ export const crowEvents: Record<string, GameEvent> = {
                 monasteryResponse: true,
               },
             },
-            _logMessage:
-              "You pay the monks for their map. It reveals the location of the Hidden Library deep in the cave.",
+            _logMessageKey: "outcome2",
           };
         },
       },
       {
-        id: "decline",
-        label: "Decline",
+        id: "decline",
         effect: (state: GameState) => {
           return {
             story: {
@@ -188,8 +171,7 @@ export const crowEvents: Record<string, GameEvent> = {
                 monasteryResponse: true,
               },
             },
-            _logMessage:
-              "You decline the monks' offer. The opportunity is lost.",
+            _logMessageKey: "outcome3",
           };
         },
       },
@@ -202,16 +184,12 @@ export const crowEvents: Record<string, GameEvent> = {
       state.story.seen?.crowSentToSwamp === true &&
       !state.story.seen?.swampTribeResponse,
     timeProbability: 15,
-    repeatable: true,
-    title: "Message from the Swamp Tribe",
-    message:
-      "The one-eyed crow returns from the Swamp Tribe with a crumbling letter. The tribe offers powerful Chitin Plates in exchange for 1000 Steel delivered to their village.",
+    repeatable: true,
     priority: 5,
     skipEventLog: true,
     choices: [
       {
-        id: "accept",
-        label: "Accept",
+        id: "accept",
         effect: (state: GameState) => {
           return {
             story: {
@@ -222,14 +200,12 @@ export const crowEvents: Record<string, GameEvent> = {
                 steelDeliveryUnlocked: true,
               },
             },
-            _logMessage:
-              "You accept the Swamp Tribe's offer and prepare to send the steel delivery to the swamp.",
+            _logMessageKey: "outcome0",
           };
         },
       },
       {
-        id: "decline",
-        label: "Decline",
+        id: "decline",
         effect: (state: GameState) => {
           return {
             story: {
@@ -239,8 +215,7 @@ export const crowEvents: Record<string, GameEvent> = {
                 swampTribeResponse: true,
               },
             },
-            _logMessage:
-              "You decline the Swamp Tribe's offer. The opportunity is lost.",
+            _logMessageKey: "outcome1",
           };
         },
       },
@@ -252,17 +227,13 @@ export const crowEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen?.crowSentToShore === true &&
       !state.story.seen?.shoreFishermenResponse,
-    timeProbability: 15,
-    title: "Message from the Shore Fishermen",
-    message:
-      "The one-eyed crow returns from the Shore Fishermen with dried fish as a gift. The fishermen offer to teach you the secrets of building powerful fish traps for 250 Gold.",
+    timeProbability: 15,
     priority: 5,
     showAsTimedTab: true,
     timedTabDuration: 5 * 60 * 1000,
     skipEventLog: true,
     fallbackChoice: {
-      id: "decline",
-      label: "Time Expired",
+      id: "decline",
       effect: (state: GameState) => {
         return {
           story: {
@@ -272,20 +243,18 @@ export const crowEvents: Record<string, GameEvent> = {
               shoreFishermenResponse: true,
             },
           },
-          _logMessage:
-            "You took too long to decide. The fishermen's offer expires.",
+          _logMessageKey: "outcome0",
         };
       },
     },
     choices: [
       {
-        id: "accept",
-        label: "Pay 250 Gold",
+        id: "accept",
         cost: "250 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 250) {
             return {
-              _logMessage: "You don't have enough gold.",
+              _logMessageKey: "outcome1",
             };
           }
           return {
@@ -304,14 +273,12 @@ export const crowEvents: Record<string, GameEvent> = {
                 shoreFishermenResponse: true,
               },
             },
-            _logMessage:
-              "The fishermen share their elaborated techniques of building fish traps you.",
+            _logMessageKey: "outcome2",
           };
         },
       },
       {
-        id: "decline",
-        label: "Decline",
+        id: "decline",
         effect: (state: GameState) => {
           return {
             story: {
@@ -321,8 +288,7 @@ export const crowEvents: Record<string, GameEvent> = {
                 shoreFishermenResponse: true,
               },
             },
-            _logMessage:
-              "You decline the fishermen's offer. The opportunity is lost.",
+            _logMessageKey: "outcome3",
           };
         },
       },

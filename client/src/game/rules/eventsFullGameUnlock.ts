@@ -25,16 +25,12 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
       );
     },
     
-    timeProbability: 1,
-    title: "The Village Elder",
-    message:
-      "An older villager approaches you, his eyes heavy with knowledge. 'You have taken your first steps in this cruel world,' he says quietly. 'Soon, you will have to decide whether you are willing to face what lies ahead.'",
+    timeProbability: 1,
     priority: 5,
     repeatable: false,
     choices: [
       {
-        id: "nod",
-        label: "Continue",
+        id: "nod",
         effect: (state: GameState) => {
           return {
             story: {
@@ -62,16 +58,12 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
       );
     },
     
-    timeProbability: 2,
-    title: "The Elder's Notice",
-    message:
-      "A village elder approaches you. He speaks quietly. 'You stand at the beginning of a long path filled with trials. Very soon, you must choose whether you will continue this journey.'",
+    timeProbability: 2,
     priority: 5,
     repeatable: false,
     choices: [
       {
-        id: "nod",
-        label: "Continue",
+        id: "nod",
         effect: (state: GameState) => {
           return {
             story: {
@@ -100,16 +92,12 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
       );
     },
     
-    timeProbability: 3,
-    title: "The Time Has Come",
-    message:
-      "The village elder returns, his expression grave. 'The time has come,' he says. 'You have taken your first steps on a long and unforgiving path. What lies ahead is deeper, darker, and more demanding. Decide now whether you will continue this journey.'",
+    timeProbability: 3,
     priority: 5,
     repeatable: false,
     choices: [
       {
-        id: "nod",
-        label: "Continue",
+        id: "nod",
         effect: (state: GameState) => {
           // Open the full game purchase dialog
           setTimeout(() => {

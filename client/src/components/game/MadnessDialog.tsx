@@ -1,11 +1,12 @@
 import React from "react";
 import { GameState } from "@shared/schema";
-import { formatNumber } from "@/lib/utils";
+import { formatNumber, capitalizeWords } from "@/lib/utils";
 import {
-  clothingEffects,
-  bookEffects,
-  fellowshipEffects,
-} from "@/game/rules/effects";
+  getEffectName,
+  getResourceName,
+  getStatName,
+} from "@/i18n/resolveGameText";
+import { useTranslation } from "react-i18next";
 import OutcomeDialog from "./OutcomeDialog";
 
 interface MadnessDialogData {
@@ -31,23 +32,21 @@ interface MadnessDialogProps {
   onClose: () => void;
 }
 
-const formatName = (name: string) =>
-  name
-    .split("_")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-
 const effectDisplayName = (
   id: string,
   kind: "relic" | "clothing" | "blessing" | "book" | "schematic" | "fellowship",
 ) => {
-  if (kind === "book") return bookEffects[id]?.name ?? formatName(id);
-  if (kind === "fellowship")
-    return fellowshipEffects[id]?.name ?? formatName(id);
-  return clothingEffects[id]?.name ?? formatName(id);
+  const fallback = capitalizeWords(id);
+  if (kind === "book") return getEffectName("books", id, fallback);
+  if (kind === "fellowship") return getEffectName("fellowship", id, fallback);
+  if (kind === "relic") return getEffectName("relics", id, fallback);
+  if (kind === "blessing") return getEffectName("blessings", id, fallback);
+  if (kind === "schematic") return fallback;
+  return getEffectName("clothing", id, fallback);
 };
 
 export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogProps) {
+  const { t } = useTranslation(["ui", "common"]);
   if (!data || data.madnessChange === 0) return null;
 
   const { rewards, successLog, madnessChange } = data;
@@ -57,7 +56,7 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
     Object.entries(rewards.resources).forEach(([resource, amount]) => {
       rewardItems.push(
         <div key={`resource-${resource}`} className="text-sm text-foreground">
-          {formatNumber(amount)} {formatName(resource)}
+          {formatNumber(amount)} {getResourceName(resource, capitalizeWords(resource))}
         </div>
       );
     });
@@ -66,7 +65,7 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
     rewards.tools.forEach((tool) => {
       rewardItems.push(
         <div key={`tool-${tool}`} className="text-sm text-foreground">
-          {formatName(tool)}
+          {getEffectName("tools", tool, capitalizeWords(tool))}
         </div>
       );
     });
@@ -75,7 +74,7 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
     rewards.weapons.forEach((weapon) => {
       rewardItems.push(
         <div key={`weapon-${weapon}`} className="text-sm text-foreground">
-          {formatName(weapon)}
+          {getEffectName("weapons", weapon, capitalizeWords(weapon))}
         </div>
       );
     });
@@ -145,7 +144,7 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
       }
       rewardItems.push(
         <div key={`stat-${stat}`} className="text-sm text-foreground">
-          +{formatNumber(amount)} {formatName(stat)}
+          +{formatNumber(amount)} {getStatName(stat, capitalizeWords(stat))}
         </div>
       );
     });
@@ -157,7 +156,10 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
     <>
       {hasRewardItems && <div className="space-y-1">{rewardItems}</div>}
       <div className="text-sm text-center text-violet-300">
-        {madnessChange > 0 ? "+" : "-"} {formatNumber(Math.abs(madnessChange))} Madness
+        {t("ui:madness.change", {
+          sign: madnessChange > 0 ? "+" : "-",
+          amount: formatNumber(Math.abs(madnessChange)),
+        })}
       </div>
     </>
   );
@@ -168,9 +170,9 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
       onClose={onClose}
       icon={<span className="font-noto-symbols-2 text-4xl text-violet-300/90">✺</span>}
       successLog={successLog}
-      title="Madness Event"
+      title={t("ui:madness.title")}
       variant="madness"
-      buttonText="Continue"
+      buttonText={t("common:buttons.continue")}
       buttonId="madness-dialog-continue"
     >
       {content}

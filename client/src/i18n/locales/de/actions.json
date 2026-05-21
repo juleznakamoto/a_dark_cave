@@ -1,0 +1,616 @@
+{
+  "animals": {
+    "label": "Tiere"
+  },
+  "banditLair": {
+    "label": "Banditenlager"
+  },
+  "blackreachCanyon": {
+    "label": "Schwarzklamm"
+  },
+  "blastPortal": {
+    "label": "Sprengtor"
+  },
+  "boneTotems": {
+    "label": "Knochentotems"
+  },
+  "buildAdvancedBlacksmith": {
+    "description": "Verbesserte Schmiede mit besseren Werkzeugen und Techniken",
+    "label": "Fortgeschrittene Schmiede"
+  },
+  "buildAlchemistHall": {
+    "description": "Halle, in der der Alchemist Pulver und Sprengstoffe herstellt",
+    "label": "Alchemistenhalle"
+  },
+  "buildAltar": {
+    "description": "Heiliger Ort für Anbetung und Opfergaben",
+    "label": "Altar"
+  },
+  "buildBank": {
+    "description": "Finanzgebäude, das größere Investitionen ermöglicht",
+    "label": "Bank"
+  },
+  "buildBastion": {
+    "description": "Massive Befestigung als letzte Verteidigungslinie",
+    "label": "Bastion"
+  },
+  "buildBlackEstate": {
+    "description": "Hoch aufragendes Anwesen aus schwarzem Holz und Stein, das über die Stadt blickt.",
+    "label": "Schwarzes Anwesen"
+  },
+  "buildBlackMonolith": {
+    "description": "Dunkles Monument, errichtet für lebendige Opfer",
+    "label": "Schwarzer Monolith"
+  },
+  "buildBlacksmith": {
+    "description": "Schmiede mit einfachen Werkzeugen zur Herstellung",
+    "label": "Schmiede"
+  },
+  "buildBoneTemple": {
+    "description": "Monströser Bau aus Knochen zu Ehren der alten Götter",
+    "label": "Knochentempel"
+  },
+  "buildBoneyard": {
+    "description": "Ort, an dem die Toten zur Ruhe gebettet werden und die Trauer der Dorfbewohner nachlässt.",
+    "label": "Totenacker"
+  },
+  "buildBottomlessPit": {
+    "description": "Extrem tiefe Grube, die zu den seltensten Materialien führt",
+    "label": "Bodenlose Grube"
+  },
+  "buildCabin": {
+    "description": "Einfache Jagdhütte mit Werkzeugen für Jäger",
+    "label": "Hütte"
+  },
+  "buildChitinPlating": {
+    "description": "Befestigungen werden mit undurchdringlichen Chitinplatten verstärkt",
+    "label": "Chitinpanzerung"
+  },
+  "buildClerksHut": {
+    "description": "Hütte, in der Schreiber die Ressourcen des Dorfes erfassen",
+    "label": "Schreiberhütte"
+  },
+  "buildCoinhouse": {
+    "description": "Bescheidenes Finanzgebäude, das kleine Investitionen ermöglicht",
+    "label": "Münzhaus"
+  },
+  "buildConsecratedPaleCross": {
+    "description": "Hoch aufragendes Monument aus gebleichten Knochen, das Knochentotem-Opfer stark verstärkt.",
+    "label": "Geweihtes Bleiches Kreuz"
+  },
+  "buildDarkEstate": {
+    "description": "Abgelegenes Anwesen, das Zuflucht vor der Welt bietet",
+    "label": "Dunkles Anwesen"
+  },
+  "buildDeepPit": {
+    "description": "Sehr tiefe Grube, die wertvolle Erzadern freilegt",
+    "label": "Tiefe Grube"
+  },
+  "buildDeepeningPit": {
+    "description": "Tiefere Grube, die weitere Bodenschätze erreicht",
+    "label": "Vertiefte Grube"
+  },
+  "buildFortifiedMoat": {
+    "description": "Verteidigungsgraben, der Angreifer verlangsamt und schwächt",
+    "label": "Befestigter Graben"
+  },
+  "buildFortifiedStorehouse": {
+    "description": "Verstärktes Lagergebäude mit erhöhter Kapazität",
+    "label": "Befestigtes Lagerhaus"
+  },
+  "buildFoundry": {
+    "description": "Spezialgebäude für die Stahlproduktion",
+    "label": "Gießerei"
+  },
+  "buildFurTents": {
+    "description": "Warme Fellunterkunft des wandernden Stammes",
+    "label": "Fellzelt"
+  },
+  "buildGrandBazaar": {
+    "description": "Weitläufiger Marktplatz, der mehr Händler anzieht",
+    "label": "Großer Basar"
+  },
+  "buildGrandBlacksmith": {
+    "description": "Fortgeschrittene Schmiede, die die feinsten Erzeugnisse herstellen kann",
+    "label": "Großschmiede"
+  },
+  "buildGrandHunterLodge": {
+    "description": "Höchste Jagdhütte für Meisterjäger",
+    "label": "Große Jägerhütte"
+  },
+  "buildGrandRepository": {
+    "description": "Massives Depot mit außergewöhnlicher Lagerkapazität",
+    "label": "Großes Depot"
+  },
+  "buildGreatCabin": {
+    "description": "Erweiterte Jagdhütte, die den Ertrag der Jäger erhöht",
+    "label": "Große Hütte"
+  },
+  "buildGreatVault": {
+    "description": "Überragender Tresor, der gewaltige Ressourcenmengen fassen kann",
+    "label": "Großer Tresor"
+  },
+  "buildHeartfire": {
+    "description": "Heiliges Feuer, das Trost und ein Gefühl von Schutz spendet",
+    "label": "Herzfeuer"
+  },
+  "buildHighTannery": {
+    "description": "Überragende Gerberei für erfahrene Lederhandwerker",
+    "label": "Hohe Gerberei"
+  },
+  "buildImprovedTraps": {
+    "description": "Verbesserte Fallen am Rand des Dorfes mit stärkeren Mechanismen und besserer Abdeckung",
+    "label": "Verbesserte Fallen"
+  },
+  "buildInkwardenAcademy": {
+    "description": "Große Akademie der Gelehrten, die höchstes Wissen und Ressourcenerfassung bietet",
+    "label": "Akademie der Tintenwächter"
+  },
+  "buildLonghouse": {
+    "description": "Massive nordische Gemeinschaftshalle, die viele Dorfbewohner beherbergt",
+    "label": "Langhaus"
+  },
+  "buildMasterTannery": {
+    "description": "Fortgeschrittene Gerberei, die die Lederproduktion verbessert",
+    "label": "Meistergerberei"
+  },
+  "buildMasterworkFoundry": {
+    "description": "Gießerei mit überlegener Stahlproduktion",
+    "label": "Meistergießerei"
+  },
+  "buildMerchantsGuild": {
+    "description": "Mächtige Gilde, die die besten Geschäfte und Händler bringt",
+    "label": "Händlergilde"
+  },
+  "buildPaleCross": {
+    "description": "Hoch aufragendes Monument aus gebleichten Knochen, das Knochentotem-Opfer verstärkt.",
+    "label": "Bleiches Kreuz"
+  },
+  "buildPalisades": {
+    "description": "Verteidigungsmauern zum Schutz der Siedlung",
+    "label": "Palisaden"
+  },
+  "buildPillarOfClarity": {
+    "description": "Reinweißer Obelisk, der die Dunkelheit aus den Gedanken reinigt",
+    "label": "Säule der Klarheit"
+  },
+  "buildPrimeFoundry": {
+    "description": "Fortgeschrittene Gießerei mit verbesserter Stahlproduktion",
+    "label": "Hauptgießerei"
+  },
+  "buildQuarry": {
+    "description": "Steinbruch, der den Steinertrag der Sammler erhöht",
+    "label": "Steinbruch"
+  },
+  "buildSanctum": {
+    "description": "Göttliches Heiligtum, das den größten Schutz vor der Dunkelheit bietet",
+    "label": "Heiligtum"
+  },
+  "buildScriptorium": {
+    "description": "Bibliothek des Wissens, die genaue Ressourcenerfassung ermöglicht",
+    "label": "Skriptorium"
+  },
+  "buildShallowPit": {
+    "description": "Kleine Bergbaugrube zur Gewinnung von Mineralien",
+    "label": "Flache Grube"
+  },
+  "buildShrine": {
+    "description": "Heiliger Schrein, der besseren Schutz vor Wahnsinn bietet",
+    "label": "Schrein"
+  },
+  "buildStoneHut": {
+    "description": "Robuste Steinbehausung mit überlegener Unterkunft",
+    "label": "Steinhütte"
+  },
+  "buildStorehouse": {
+    "description": "Erweitertes Lagergebäude für mehr Ressourcen",
+    "label": "Lagerhaus"
+  },
+  "buildSupplyHut": {
+    "description": "Kleine Hütte zur Lagerung von Ressourcen",
+    "label": "Vorratshütte"
+  },
+  "buildTannery": {
+    "description": "Werkstatt, in der Felle zu Leder verarbeitet werden",
+    "label": "Gerberei"
+  },
+  "buildTemple": {
+    "description": "Großer Tempel, der starken Widerstand gegen Wahnsinn bietet",
+    "label": "Tempel"
+  },
+  "buildTimberMill": {
+    "description": "Mühle, die Holz effizienter verarbeitet",
+    "label": "Sägemühle"
+  },
+  "buildTradePost": {
+    "description": "Handelsposten, der Händler mit Waren anzieht",
+    "label": "Handelsposten"
+  },
+  "buildTraps": {
+    "description": "Fallen rund um das Dorf, die alle Angreifer schwächen",
+    "label": "Fallen"
+  },
+  "buildTreasury": {
+    "description": "Großes Finanzgebäude, das sehr große Investitionen ermöglicht",
+    "label": "Schatzkammer"
+  },
+  "buildVillageWarehouse": {
+    "description": "Großes Lagerhaus, das enorme Mengen aufnehmen kann",
+    "label": "Dorflagerhaus"
+  },
+  "buildWatchtower": {
+    "description": "Hoher Turm zur frühen Warnung vor Bedrohungen",
+    "label": "Wachturm"
+  },
+  "buildWizardTower": {
+    "description": "Mystischer Turm, in dem der Zauberer arkane Forschung betreibt",
+    "label": "Zaubererturm"
+  },
+  "buildWoodenHut": {
+    "description": "Einfache Holzhütte, die grundlegenden Schutz bietet",
+    "label": "Holzhütte"
+  },
+  "canyonBridge": {
+    "label": "Canyonbrücke"
+  },
+  "castleRuins": {
+    "label": "Burgruinen"
+  },
+  "chopWood": {
+    "label": "Holz sammeln",
+    "log": {
+      "firstVisit": "Vor dem Höhleneingang liegt verstreut etwas Holz. Es könnte nützlich sein."
+    }
+  },
+  "collapsedTower": {
+    "label": "Eingestürzter Turm"
+  },
+  "craftAdamantAxe": {
+    "label": "Adamantaxt"
+  },
+  "craftAdamantLantern": {
+    "label": "Adamantlaterne"
+  },
+  "craftAdamantPickaxe": {
+    "label": "Adamantspitzhacke"
+  },
+  "craftAdamantSword": {
+    "label": "Adamantschwert"
+  },
+  "craftArbalest": {
+    "label": "Armbrust"
+  },
+  "craftAshenGreatshield": {
+    "label": "Aschener Großschild"
+  },
+  "craftAshfireBomb": {
+    "label": "Aschenfeuerbombe"
+  },
+  "craftBlacksteelArmor": {
+    "label": "Schwarzstahlrüstung"
+  },
+  "craftBlacksteelAxe": {
+    "label": "Schwarzstahlaxt"
+  },
+  "craftBlacksteelBow": {
+    "label": "Schwarzstahlbogen"
+  },
+  "craftBlacksteelLantern": {
+    "label": "Schwarzstahllaterne"
+  },
+  "craftBlacksteelPickaxe": {
+    "label": "Schwarzstahlspitzhacke"
+  },
+  "craftBlacksteelSword": {
+    "label": "Schwarzstahlschwert"
+  },
+  "craftBloodstoneStaff": {
+    "label": "Blutsteinstab"
+  },
+  "craftBoneTotems": {
+    "label": "Knochentotems"
+  },
+  "craftCrudeBow": {
+    "label": "Einfacher Bogen"
+  },
+  "craftEmberBomb": {
+    "label": "Glutbombe"
+  },
+  "craftExplorerPack": {
+    "label": "Entdeckerpack"
+  },
+  "craftFrostglassSword": {
+    "label": "Frostglasschwert"
+  },
+  "craftGrenadierBag": {
+    "label": "Grenadierstasche"
+  },
+  "craftHighpriestRobe": {
+    "label": "Hohepriesterrobe"
+  },
+  "craftHunterCloak": {
+    "label": "Jägerumhang"
+  },
+  "craftHuntsmanBow": {
+    "label": "Jägerbogen"
+  },
+  "craftIronAxe": {
+    "label": "Eisenaxt"
+  },
+  "craftIronLantern": {
+    "label": "Eisenlaterne"
+  },
+  "craftIronPickaxe": {
+    "label": "Eisenspitzhacke"
+  },
+  "craftIronSword": {
+    "label": "Eisenschwert"
+  },
+  "craftLeatherTotems": {
+    "label": "Ledertotems"
+  },
+  "craftLoggersGloves": {
+    "label": "Holzfällerhandschuhe"
+  },
+  "craftLongBow": {
+    "label": "Langbogen"
+  },
+  "craftMasterBow": {
+    "label": "Meisterbogen"
+  },
+  "craftNightshadeBow": {
+    "label": "Nachtschattenbogen"
+  },
+  "craftObsidianAxe": {
+    "label": "Obsidianaxt"
+  },
+  "craftObsidianLantern": {
+    "label": "Obsidianlaterne"
+  },
+  "craftObsidianPickaxe": {
+    "label": "Obsidianspitzhacke"
+  },
+  "craftObsidianSword": {
+    "label": "Obsidianschwert"
+  },
+  "craftSacrificialTunic": {
+    "label": "Opfergewand"
+  },
+  "craftShadowBoots": {
+    "label": "Schattenstiefel"
+  },
+  "craftSkeletonKey": {
+    "label": "Skelettschlüssel"
+  },
+  "craftSteelAxe": {
+    "label": "Stahlaxt"
+  },
+  "craftSteelLantern": {
+    "label": "Stahllaterne"
+  },
+  "craftSteelPickaxe": {
+    "label": "Stahlspitzhacke"
+  },
+  "craftSteelSword": {
+    "label": "Stahlschwert"
+  },
+  "craftStoneAxe": {
+    "label": "Steinaxt"
+  },
+  "craftStonePickaxe": {
+    "label": "Steinspitzhacke"
+  },
+  "craftStormglassHalberd": {
+    "label": "Sturmglashalberd"
+  },
+  "craftTorches": {
+    "label": "Fackeln"
+  },
+  "craftVeinfireElixir": {
+    "label": "Aderfeuer-Elixier"
+  },
+  "craftVoidBomb": {
+    "label": "Leerenbombe"
+  },
+  "craftWarBow": {
+    "label": "Kriegsbogen"
+  },
+  "descendFurther": {
+    "label": "Tiefer hinabsteigen",
+    "log": {
+      "firstVisit": "Die Laterne wirft ein gleichmäßiges Licht, während du noch tiefer hinabsteigst. Plötzlich berühren deine Füße von Menschenhand gemeißelte Steinstufen, vom Alter abgenutzt."
+    }
+  },
+  "encounterBeyondPortal": {
+    "label": "Hinter das Tor wagen"
+  },
+  "exploreCave": {
+    "label": "Höhle erkunden",
+    "log": {
+      "debrisScroll": "Unter den Trümmern findest du eine verwitterte Schriftrolle mit Weisheit, um in dieser unbarmherzigen Welt zu überleben.",
+      "torchBag": "Du findest eine alte, staubige Tasche mit 25 Fackeln in der Höhle.",
+      "firstVisit": "Das Fackellicht erhellt die Höhlenwände. Im flackernden Schein entdeckst du einen Pfad, der tiefer in die Höhlen führt."
+    }
+  },
+  "exploreCitadel": {
+    "label": "Zitadelle erkunden",
+    "log": {
+      "firstVisit": "Im tiefsten Teil der Stadt erhebt sich vor dir eine gewaltige Zitadelle. Ihre Größe deutet darauf hin, dass darin etwas von großer Macht oder großer Gefahr wohnt."
+    }
+  },
+  "exploreRuins": {
+    "label": "Ruinen erkunden",
+    "log": {
+      "firstVisit": "Am Ende der Stufen öffnet sich eine weite Höhle. Im Dunkeln liegen die Ruinen einer verlorenen Stadt, Überreste einer längst vergangenen Zivilisation."
+    }
+  },
+  "exploreTemple": {
+    "label": "Tempel erkunden",
+    "log": {
+      "firstVisit": "Während du tiefer in die Ruinen der unterirdischen Stadt vordringst, erhebt sich aus dem Höhlenboden ein großer Tempel, größtenteils intakt, dessen Schatten sich über die vergessenen Überreste der Stadt erstreckt."
+    }
+  },
+  "exploreUndergroundLake": {
+    "label": "Unterirdischer See"
+  },
+  "forestCave": {
+    "label": "Waldhöhle"
+  },
+  "healElderWizard": {
+    "label": "Alten Zauberer heilen"
+  },
+  "healRestlessKnight": {
+    "label": "Rastlosen Ritter heilen"
+  },
+  "hiddenLibrary": {
+    "label": "Verborgene Bibliothek"
+  },
+  "hillGrave": {
+    "label": "Hügelgrab"
+  },
+  "humans": {
+    "label": "Menschen"
+  },
+  "hunt": {
+    "label": "Jagen"
+  },
+  "layTrap": {
+    "label": "Falle legen"
+  },
+  "leatherTotems": {
+    "label": "Ledertotems"
+  },
+  "lightFire": {
+    "label": "Feuer entzünden",
+    "log": {
+      "firstVisit": "Das Feuer knistert leise und wirft tanzende Schatten auf die Höhlenwände. Die Wärme ist tröstlich.",
+      "firstVisitBoost": "Das Feuer knistert leise und wirft tanzende Schatten auf die Höhlenwände. Die Wärme ist tröstlich. Jemand hat dir ein Geschenk hinterlassen."
+    }
+  },
+  "lowChamber": {
+    "label": "Niedrige Kammer"
+  },
+  "lureLakeCreature": {
+    "label": "Falle platzieren"
+  },
+  "mineAdamant": {
+    "label": "Adamant abbauen",
+    "log": {
+      "natharitSilverVein": "Die Natharit-Spitzhacke legt eine Silberader frei! +{{amount}} {{resource}}"
+    }
+  },
+  "mineCoal": {
+    "label": "Kohle abbauen",
+    "log": {
+      "natharitSilverVein": "Die Natharit-Spitzhacke legt eine Silberader frei! +{{amount}} {{resource}}"
+    }
+  },
+  "mineIron": {
+    "label": "Eisen abbauen",
+    "log": {
+      "natharitSilverVein": "Die Natharit-Spitzhacke legt eine Silberader frei! +{{amount}} {{resource}}"
+    }
+  },
+  "mineObsidian": {
+    "label": "Obsidian abbauen",
+    "log": {
+      "natharitSilverVein": "Die Natharit-Spitzhacke legt eine Silberader frei! +{{amount}} {{resource}}"
+    }
+  },
+  "mineStone": {
+    "label": "Stein abbauen",
+    "log": {
+      "natharitSilverVein": "Die Natharit-Spitzhacke legt eine Silberader frei! +{{amount}} {{resource}}"
+    }
+  },
+  "mineSulfur": {
+    "label": "Schwefel abbauen",
+    "log": {
+      "natharitSilverVein": "Die Natharit-Spitzhacke legt eine Silberader frei! +{{amount}} {{resource}}"
+    }
+  },
+  "occultistChamber": {
+    "label": "Okkultistenkammer"
+  },
+  "provokeAttackWave": {
+    "label": "Angriffswelle provozieren"
+  },
+  "repairBastion": {
+    "label": "Bastion reparieren"
+  },
+  "repairPalisades": {
+    "label": "Palisaden reparieren"
+  },
+  "repairWatchtower": {
+    "label": "Wachturm reparieren"
+  },
+  "risingSmoke": {
+    "label": "Aufsteigender Rauch"
+  },
+  "sellBlacksteelBatch": {
+    "label": "Schwarzstahl verkaufen"
+  },
+  "sellLeatherBatch": {
+    "label": "Leder verkaufen"
+  },
+  "sellSteelBatch": {
+    "label": "Stahl verkaufen"
+  },
+  "steelDelivery": {
+    "label": "Stahllieferung"
+  },
+  "sunkenTemple": {
+    "label": "Versunkener Tempel"
+  },
+  "swampSanctuary": {
+    "label": "Sumpfheiligtum"
+  },
+  "tradeGoldForAdamant": {
+    "label": "Adamant kaufen"
+  },
+  "tradeGoldForAshfireBomb": {
+    "label": "Aschenfeuerbombe kaufen"
+  },
+  "tradeGoldForBlacksteel": {
+    "label": "Schwarzstahl kaufen"
+  },
+  "tradeGoldForEmberBomb": {
+    "label": "Glutbombe kaufen"
+  },
+  "tradeGoldForFood": {
+    "label": "Nahrung kaufen"
+  },
+  "tradeGoldForLeather": {
+    "label": "Leder kaufen"
+  },
+  "tradeGoldForObsidian": {
+    "label": "Obsidian kaufen"
+  },
+  "tradeGoldForSteel": {
+    "label": "Stahl kaufen"
+  },
+  "tradeGoldForStone": {
+    "label": "Stein kaufen"
+  },
+  "tradeGoldForTorch": {
+    "label": "Fackel kaufen"
+  },
+  "tradeGoldForVoidBomb": {
+    "label": "Leerenbombe kaufen"
+  },
+  "tradeGoldForWood": {
+    "label": "Holz kaufen"
+  },
+  "tradeSilverForGold": {
+    "label": "Gold kaufen"
+  },
+  "ventureDeeper": {
+    "label": "Tiefer vordringen",
+    "log": {
+      "tarnishedAmulet": "In den Schatten der Höhle glitzert etwas. Du findest ein Angelaufenes Amulett.",
+      "silverSack": "Du findest einen kleinen Ledersack mit 50 Silber.",
+      "mapFragment": "Auf dem Höhlenboden findest du ein zerrissenes Kartenfragment.",
+      "firstVisit": "Die Luft wird kälter, während du den Pfad tiefer in die Höhle hinabsteigst. Die Wände wirken unnatürlich glatt, als hätte sie jemand geformt."
+    }
+  }
+}

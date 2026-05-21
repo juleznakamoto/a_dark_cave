@@ -17,6 +17,7 @@ import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import CubeDialog from "./CubeDialog";
 import { bloodMoonSacrificeAmount } from "@/game/cruelMode";
 import { getVillagersInVillage } from "@/game/population";
+import { useTranslation } from "react-i18next";
 
 interface EventDialogProps {
   isOpen: boolean;
@@ -38,6 +39,7 @@ export default function EventDialog({
   onClose,
   event,
 }: EventDialogProps) {
+  const { t } = useTranslation("ui");
   const { applyEventChoice } = useGameStore();
   const gameState = useGameStore();
   const hasScriptorium = gameState.buildings.scriptorium > 0;
@@ -238,14 +240,23 @@ export default function EventDialog({
             <DialogHeader>
               <div className="flex items-center justify-between gap-2">
                 <DialogTitle className="text-lg font-semibold">
-                  {event.title || "Event"}
+                  {event.title || t("event.fallbackTitle")}
                 </DialogTitle>
                 <div className="flex gap-2 items-center flex-shrink-0">
                   {hasScriptorium && event.isTimedChoice && getTotalKnowledge(gameState) > 0 && (
                     <TooltipWrapper
                       tooltip={
                         <div className="text-xs whitespace-nowrap">
-                          +{calculateKnowledgeTimeBonus(getTotalKnowledge(gameState))}s Decision Time due to Knowledge{isKnowledgeBonusMaxed(getTotalKnowledge(gameState)) ? " (max)" : ""}
+                          {t("event.knowledgeTimeBonus", {
+                            seconds: calculateKnowledgeTimeBonus(
+                              getTotalKnowledge(gameState),
+                            ),
+                            maxSuffix: isKnowledgeBonusMaxed(
+                              getTotalKnowledge(gameState),
+                            )
+                              ? t("event.knowledgeTimeBonusMax")
+                              : "",
+                          })}
                         </div>
                       }
                       tooltipId="event-time-bonus"

@@ -1,0 +1,184 @@
+{
+  "action": {
+    "0-chopWood": {
+      "label": "Wood Chopper"
+    },
+    "0-craftTorches": {
+      "label": "Torch Crafter"
+    },
+    "0-exploreCave": {
+      "label": "Cave Explorer"
+    },
+    "0-gamblerWins": {
+      "label": "Experienced Gambler"
+    },
+    "0-hunt": {
+      "label": "Hunter"
+    },
+    "1-mineAdamant": {
+      "label": "Adamant Miner"
+    },
+    "1-mineCoal": {
+      "label": "Coal Miner"
+    },
+    "1-mineIron": {
+      "label": "Iron Miner"
+    },
+    "1-mineObsidian": {
+      "label": "Obsidian Miner"
+    },
+    "1-mineStone": {
+      "label": "Stone Miner"
+    },
+    "1-mineSulfur": {
+      "label": "Sulfur Miner"
+    },
+    "2-animals": {
+      "label": "Animal Sacrificer"
+    },
+    "2-boneTotems": {
+      "label": "Bone Sacrificer"
+    },
+    "2-craftBoneTotems": {
+      "label": "Bone Totem Crafter"
+    },
+    "2-craftLeatherTotems": {
+      "label": "Leather Totem Crafter"
+    },
+    "2-leatherTotems": {
+      "label": "Leather Sacrificer"
+    },
+    "3-ashfireBombs": {
+      "label": "Ashfire Bombs Crafter"
+    },
+    "3-emberBombs": {
+      "label": "Ember Bombs Crafter"
+    },
+    "4-feedFire": {
+      "label": "Fire Feeder"
+    },
+    "4-merchantPurchases": {
+      "label": "Deal Maker"
+    },
+    "4-solsticeGatherings": {
+      "label": "Solstice Celebrant"
+    },
+    "4-wellRested": {
+      "label": "Heavy Sleeper"
+    }
+  },
+  "basic": {
+    "0-coalMiner": {
+      "label": "Gather Coal"
+    },
+    "0-hunter": {
+      "label": "Hunter"
+    },
+    "0-ironMiner": {
+      "label": "Gather Iron"
+    },
+    "0-stoneMiner": {
+      "label": "Gather Stone"
+    },
+    "0-woodGatherer": {
+      "label": "Gather Wood"
+    },
+    "1-builder": {
+      "label": "Construct Buildings"
+    },
+    "1-communityBuilder": {
+      "label": "Build Community"
+    },
+    "1-explorer": {
+      "label": "Explore Cave"
+    },
+    "1-toolCrafter": {
+      "label": "Craft Tools"
+    },
+    "1-torchCrafter": {
+      "label": "Craft Torches"
+    }
+  },
+  "building": {
+    "0-0": {
+      "label": "Basic Shelter"
+    },
+    "0-1": {
+      "label": "Sturdy Shelter"
+    },
+    "0-2": {
+      "label": "Nordic Shelter"
+    },
+    "0-3": {
+      "label": "Nomadic Shelter"
+    },
+    "1-0": {
+      "label": "Huntsmen"
+    },
+    "1-1": {
+      "label": "Forgers"
+    },
+    "1-2": {
+      "label": "Smelters"
+    },
+    "1-3": {
+      "label": "Hideworkers"
+    },
+    "2-0": {
+      "label": "Miners"
+    },
+    "3-0": {
+      "label": "Traders"
+    },
+    "3-1": {
+      "label": "Provisioners"
+    },
+    "3-2": {
+      "label": "Scholars"
+    },
+    "3-3": {
+      "label": "Priests"
+    },
+    "4-0": {
+      "label": "Keep Walls"
+    },
+    "4-1": {
+      "label": "Lookout"
+    }
+  },
+  "item": {
+    "0-axes": {
+      "label": "Axes"
+    },
+    "0-lanterns": {
+      "label": "Lanterns"
+    },
+    "0-pickaxes": {
+      "label": "Pickaxes"
+    },
+    "1-bows": {
+      "label": "Bows"
+    },
+    "1-swords": {
+      "label": "Swords"
+    },
+    "2-explorer_pack": {
+      "label": "Leatherworks"
+    },
+    "2-schematic_weapons": {
+      "label": "Schematics"
+    },
+    "3-ancient_books": {
+      "label": "Ancient Wisdom"
+    },
+    "3-fellowship": {
+      "label": "Good Company"
+    },
+    "4-blacksteel_equipment": {
+      "label": "Dark War Equipment"
+    },
+    "4-blacksteel_tools": {
+      "label": "Dark Tools"
+    }
+  }
+}

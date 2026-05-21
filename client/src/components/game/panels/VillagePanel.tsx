@@ -22,6 +22,13 @@ import {
   getTotalMadness,
   getStrangerApproachProbability,
 } from "@/game/rules/effectsCalculation";
+import { resolveActionLabel } from "@/i18n/actionLabels";
+import { useTranslation } from "react-i18next";
+import { formatTooltipCostLine } from "@/i18n/tooltipLabels";
+import {
+  getPalisadesTierLabel,
+  getWatchtowerTierLabel,
+} from "@/i18n/fortificationLabels";
 import CooldownButton from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
 import { getPopulationProduction } from "@/game/population";
@@ -55,6 +62,7 @@ import { isInvestmentWaveReadyForUi } from "@/game/rules/investmentHallTables";
 import { GREAT_FEAST_DURATION_MS } from "@shared/shopItems";
 
 export default function VillagePanel() {
+  const { t } = useTranslation("ui");
   const {
     villagers,
     buildings,
@@ -401,17 +409,21 @@ export default function VillagePanel() {
       const tooltipContent = !investReady ? (
         active ? (
           <div className="text-xs max-w-[220px]">
-            Investment complete in{" "}
-            {formatRemaining(Math.max(0, active.endPlayTime - currentPlayTime))}
+            {t("village.investCompleteIn", {
+              time: formatRemaining(
+                Math.max(0, active.endPlayTime - currentPlayTime),
+              ),
+            })}
           </div>
         ) : currentPlayTime < nextWave ? (
           <div className="text-xs whitespace-nowrap">
-            Investments available in{" "}
-            {formatRemaining(Math.max(0, nextWave - currentPlayTime))}
+            {t("village.investAvailableIn", {
+              time: formatRemaining(Math.max(0, nextWave - currentPlayTime)),
+            })}
           </div>
         ) : (
           <div className="text-xs whitespace-nowrap">
-            Preparing investment offers…
+            {t("village.investPreparing")}
           </div>
         )
       ) : undefined;
@@ -430,7 +442,9 @@ export default function VillagePanel() {
             tooltip={tooltipContent}
             style={{ pointerEvents: "auto" }}
           >
-            <span className="flex items-center gap-1">{label}</span>
+            <span className="flex items-center gap-1">
+              {resolveActionLabel("invest", label)}
+            </span>
           </CooldownButton>
           <InvestDialog
             open={investDialogOpen}
@@ -469,19 +483,19 @@ export default function VillagePanel() {
       };
 
       const tooltipContent = isOtherEventActive ? (
-        <div className="text-xs">
-          Merchant cannot be called while another event is active
-        </div>
+        <div className="text-xs">{t("village.merchantBlocked")}</div>
       ) : isOnCooldown ? (
         <div className="text-xs whitespace-nowrap">
-          Available in {formatRemaining(remainingMs)}
+          {t("village.merchantAvailableIn", {
+            time: formatRemaining(remainingMs),
+          })}
         </div>
       ) : (
         <div className="text-xs whitespace-nowrap">
           <div
             className={canAfford ? "text-foreground" : "text-muted-foreground"}
           >
-            -{formatNumber(price)} Gold
+            {formatTooltipCostLine(price, "gold")}
           </div>
         </div>
       );
@@ -501,7 +515,9 @@ export default function VillagePanel() {
           tooltip={tooltipContent}
           style={{ pointerEvents: "auto" }}
         >
-          <span className="flex items-center gap-1">{label}</span>
+          <span className="flex items-center gap-1">
+            {resolveActionLabel("callMerchant", label)}
+          </span>
         </CooldownButton>
       );
     }
@@ -554,7 +570,9 @@ export default function VillagePanel() {
           tooltip={tooltipContent}
           style={{ pointerEvents: "auto" }}
         >
-          <span className="flex items-center gap-1">{label}</span>
+          <span className="flex items-center gap-1">
+            {resolveActionLabel("feedFire", label)}
+          </span>
         </CooldownButton>
       );
 
@@ -573,28 +591,13 @@ export default function VillagePanel() {
     const costBreakdown = getActionCostBreakdown(actionId, state);
 
     // Dynamic label for watchtower based on current level
-    let displayLabel = label;
+    let displayLabel = resolveActionLabel(actionId, label);
     if (actionId === "buildWatchtower") {
-      const watchtowerLevel = buildings.watchtower || 0;
-      const watchtowerLabels = [
-        "Watchtower",
-        "Guard Tower",
-        "Fortified Tower",
-        "Cannon Tower",
-      ];
-      displayLabel = watchtowerLabels[watchtowerLevel] || "Watchtower";
+      displayLabel = getWatchtowerTierLabel(buildings.watchtower || 0);
     }
 
-    // Dynamic label for palisades based on current level
     if (actionId === "buildPalisades") {
-      const palisadesLevel = buildings.palisades || 0;
-      const palisadesLabels = [
-        "Wooden Palisades",
-        "Fortified Palisades",
-        "Stone Wall",
-        "Reinforced Wall",
-      ];
-      displayLabel = palisadesLabels[palisadesLevel] || "Wooden Palisades";
+      displayLabel = getPalisadesTierLabel(buildings.palisades || 0);
     }
 
     const buildingHint = state.books?.book_of_craftsmanship
@@ -859,7 +862,9 @@ export default function VillagePanel() {
               <div key={groupIndex} className="space-y-2">
                 {group.title && (
                   <h3 className="text-xs font-medium text-foreground ">
-                    {group.title}
+                    {group.title === "Build"
+                      ? t("village.sectionBuild")
+                      : group.title}
                   </h3>
                 )}
                 <div
@@ -880,7 +885,9 @@ export default function VillagePanel() {
           {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <h3 className="text-xs font-medium text-foreground">Produce</h3>
+                <h3 className="text-xs font-medium text-foreground">
+                  {t("village.sectionProduce")}
+                </h3>
                 {/* Production Cycle */}
                 <TooltipWrapper
                   tooltip={(() => {
@@ -896,36 +903,51 @@ export default function VillagePanel() {
                     const chancePct = Math.round(rawChance * 100);
                     return (
                       <div className="text-xs">
-                        <div className="font-semibold">Cycle</div>
+                        <div className="font-semibold">{t("village.cycle")}</div>
                         <div>
-                          Next cycle in {productionSecondsRemaining} seconds
+                          {t("village.nextCycleIn", {
+                            seconds: productionSecondsRemaining,
+                          })}
                         </div>
                         <div className="border-t border-gray-600 my-1" />
-                        <div>New Villager Chance: {chancePct}%</div>
+                        <div>
+                          {t("village.newVillagerChance", {
+                            percent: chancePct,
+                          })}
+                        </div>
                         {lowPopulationBonus > 0 && (
                           <div className="text-gray-400/70">
-                            {Math.round(lowPopulationBonus * 100)} % low
-                            population bonus
+                            {t("village.lowPopulationBonus", {
+                              percent: Math.round(lowPopulationBonus * 100),
+                            })}
                           </div>
                         )}
                         {fromBuildings > 0 && (
                           <div className="text-gray-400/70">
-                            {Math.round(fromBuildings * 100)} % from Buildings
+                            {t("village.fromBuildings", {
+                              percent: Math.round(fromBuildings * 100),
+                            })}
                           </div>
                         )}
                         {fromBlessings > 0 && (
                           <div className="text-gray-400/70">
-                            {Math.round(fromBlessings * 100)} % from Blessings
+                            {t("village.fromBlessings", {
+                              percent: Math.round(fromBlessings * 100),
+                            })}
                           </div>
                         )}
                         {fromEvents > 0 && (
                           <div className="text-gray-400/70">
-                            {Math.round(fromEvents * 100)} % from Events
+                            {t("village.fromEvents", {
+                              percent: Math.round(fromEvents * 100),
+                            })}
                           </div>
                         )}
                         {fromHeartfire > 0 && (
                           <div className="text-gray-400/70">
-                            {Math.round(fromHeartfire * 100)} % from Heartfire
+                            {t("village.fromHeartfire", {
+                              percent: Math.round(fromHeartfire * 100),
+                            })}
                           </div>
                         )}
                       </div>
@@ -1300,7 +1322,10 @@ export default function VillagePanel() {
               </div>
               <div className="space-y-1 leading-tight">
                 {visiblePopulationJobs.map((job) =>
-                  renderPopulationControl(job.id, job.label),
+                  renderPopulationControl(
+                    job.id,
+                    t(`village.jobs.${job.id}`, { defaultValue: job.label }),
+                  ),
                 )}
               </div>
             </div>

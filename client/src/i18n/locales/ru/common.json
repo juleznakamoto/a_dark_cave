@@ -1,0 +1,88 @@
+{
+  "buttons": {
+    "close": "Закрыть",
+    "continue": "Продолжить",
+    "confirm": "Подтвердить",
+    "cancel": "Отмена",
+    "save": "Сохранить",
+    "refresh": "Обновить",
+    "dismiss": "Скрыть",
+    "fight": "Сражаться",
+    "retreat": "Отступить",
+    "refuse": "Отказаться",
+    "accept": "Принять",
+    "back": "Назад",
+    "claim": "Забрать",
+    "activate": "Активировать",
+    "deactivate": "Деактивировать"
+  },
+  "status": {
+    "loading": "Загрузка...",
+    "processing": "Обработка...",
+    "free": "Бесплатно",
+    "error": "Ошибка",
+    "success": "Успех!",
+    "active": "Активно",
+    "activated": "Активировано"
+  },
+  "tabs": {
+    "cave": "Пещера",
+    "village": "Деревня",
+    "city": "Город",
+    "forest": "Лес",
+    "estate": "Поместье",
+    "bastion": "Бастион",
+    "fortress": "Крепость",
+    "trader": "Торговец",
+    "achievements": "Достижения",
+    "timedEvent": "Событие на время"
+  },
+  "resources": {
+    "wood": "Дерево",
+    "stone": "Камень",
+    "food": "Еда",
+    "veinroot": "Жилокорень",
+    "bones": "Кости",
+    "fur": "Мех",
+    "leather": "Кожа",
+    "bone_totem": "Костяной тотем",
+    "leather_totem": "Кожаный тотем",
+    "iron": "Железо",
+    "coal": "Уголь",
+    "sulfur": "Сера",
+    "obsidian": "Обсидиан",
+    "adamant": "Адамант",
+    "steel": "Сталь",
+    "blacksteel": "Черная сталь",
+    "moonstone": "Лунный камень",
+    "black_powder": "Черный порох",
+    "ember_bomb": "Угольная бомба",
+    "ashfire_dust": "Пепельная пыль",
+    "ashfire_bomb": "Пепельная бомба",
+    "void_bomb": "Бомба пустоты",
+    "veinfire_elixir": "Эликсир жилового огня",
+    "poison_arrows": "Отравленные стрелы",
+    "torch": "Факел",
+    "silver": "Серебро",
+    "gold": "Золото"
+  },
+  "stats": {
+    "strength": "Сила",
+    "knowledge": "Знание",
+    "luck": "Удача",
+    "madness": "Безумие"
+  },
+  "time": {
+    "never": "Никогда",
+    "hoursMinutes": "{{hours}} ч {{minutes}} мин",
+    "minutesSeconds": "{{minutes}} мин {{seconds}} с"
+  },
+  "population": {
+    "villager_one": "{{count}} житель",
+    "villager_other": "{{count}} жителей",
+    "maxPopulation": "+{{count}} к максимуму населения"
+  },
+  "currency": {
+    "goldAmount": "{{amount}} золота"
+  }
+}

@@ -20,6 +20,10 @@ import {
 import { formatNumber, formatSignedNumber } from "@/lib/utils";
 import type { TooltipConfig } from "@/game/types";
 import {
+  formatTooltipResourceName,
+  getUiTooltip,
+} from "@/i18n/tooltipLabels";
+import {
   getMaxBombLimit,
   getMaxVeinfireElixirLimit,
   isBombAtLimit,
@@ -311,8 +315,11 @@ export const getResourceGainTooltip = (
     (actionId === "chopWood" || actionId === "hunt") &&
       Boolean(state.story?.seen?.veinrootDiscovered)
       ? actionId === "chopWood"
-        ? "0.5 % Chance of Veinroot"
-        : "1 % Chance of Veinroot"
+        ? getUiTooltip(
+            "veinrootChanceChopWood",
+            "0.5% chance of Veinroot",
+          )
+        : getUiTooltip("veinrootChanceHunt", "1% chance of Veinroot")
       : null;
 
   if (
@@ -325,12 +332,7 @@ export const getResourceGainTooltip = (
     return null;
   }
 
-  const formatResourceName = (resource: string) => {
-    return resource
-      .split("_")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  };
+  const formatResourceName = formatTooltipResourceName;
 
   const isCraftAction = actionId.startsWith("craft");
   const showExactGains = !!state.buildings.clerksHut || isCraftAction;
@@ -342,12 +344,18 @@ export const getResourceGainTooltip = (
     <div className="text-xs">
       {isBombAtMax && (
         <div className="text-muted-foreground mb-1">
-          Max bombs reached ({getMaxBombLimit(state)} per type)
+          {getUiTooltip("maxBombsReached", "Max bombs reached ({{limit}} per type)", {
+            limit: getMaxBombLimit(state),
+          })}
         </div>
       )}
       {isVeinfireCraftAtMax && (
         <div className="text-muted-foreground mb-1">
-          Max Veinfire Elixir reached ({getMaxVeinfireElixirLimit()})
+          {getUiTooltip(
+            "maxVeinfireElixirReached",
+            "Max Veinfire Elixir reached ({{limit}})",
+            { limit: getMaxVeinfireElixirLimit() },
+          )}
         </div>
       )}
       {(isBombAtMax || isVeinfireCraftAtMax) &&
@@ -358,9 +366,18 @@ export const getResourceGainTooltip = (
         <div key={`gain-${index}`}>
           {showExactGains
             ? gain.min === gain.max
-              ? `+${formatNumber(gain.min)} ${formatResourceName(gain.resource)}`
-              : `+${formatNumber(gain.min)}-${formatNumber(gain.max)} ${formatResourceName(gain.resource)}`
-            : `+? ${formatResourceName(gain.resource)}`}
+              ? getUiTooltip("gainExact", "+{{amount}} {{resource}}", {
+                  amount: formatNumber(gain.min),
+                  resource: formatResourceName(gain.resource),
+                })
+              : getUiTooltip("gainRange", "+{{min}}-{{max}} {{resource}}", {
+                  min: formatNumber(gain.min),
+                  max: formatNumber(gain.max),
+                  resource: formatResourceName(gain.resource),
+                })
+            : getUiTooltip("gainUnknown", "+? {{resource}}", {
+                resource: formatResourceName(gain.resource),
+              })}
         </div>
       ))}
       {gains.length > 0 && costs.length > 0 && (
@@ -371,7 +388,10 @@ export const getResourceGainTooltip = (
           key={`cost-${index}`}
           className={cost.hasEnough ? "" : "text-muted-foreground"}
         >
-          -{formatNumber(cost.amount)} {formatResourceName(cost.resource)}
+          {getUiTooltip("costLine", "-{{amount}} {{resource}}", {
+            amount: formatNumber(cost.amount),
+            resource: formatResourceName(cost.resource),
+          })}
         </div>
       ))}
       {veinrootPctLine != null && (
@@ -393,14 +413,14 @@ export const buildingTooltips: Record<string, TooltipConfig> = {
       const level = state.buildings.watchtower || 0;
       const defense = 10 + level * 5;
       const range = 20 + level * 10;
-      return `Defense: ${defense}\nRange: ${range}`;
+      return `${getUiTooltip("defense", "Defense: {{value}}", { value: defense })}\n${getUiTooltip("range", "Range: {{value}}", { value: range })}`;
     },
   },
   palisades: {
     getContent: (state) => {
       const level = state.buildings.palisades || 0;
       const defense = 5 + level * 3;
-      return `Defense: ${defense}`;
+      return getUiTooltip("defense", "Defense: {{value}}", { value: defense });
     },
   },
 };
@@ -417,7 +437,7 @@ export const madnessTooltip: TooltipConfig = {
     ) {
       return "";
     }
-    return `${formatSignedNumber(fromItems)} from Items\n${formatSignedNumber(fromBuildings)} from Buildings\n${formatSignedNumber(fromEvents)} from Events`;
+    return `${getUiTooltip("madnessFromItems", "{{value}} from Items", { value: formatSignedNumber(fromItems) })}\n${getUiTooltip("madnessFromBuildings", "{{value}} from Buildings", { value: formatSignedNumber(fromBuildings) })}\n${getUiTooltip("madnessFromEvents", "{{value}} from Events", { value: formatSignedNumber(fromEvents) })}`;
   },
 };
 
@@ -440,9 +460,17 @@ export const madnessProductionTooltip: TooltipConfig = {
 
     return (
       <>
-        <div className="font-bold">Madness</div>
-        <div>Production Bonus: -{penalty}%</div>
-        <div>Madness: {totalMadness}</div>
+        <div className="font-bold">{getUiTooltip("madnessTitle", "Madness")}</div>
+        <div>
+          {getUiTooltip("productionBonus", "Production Bonus: {{value}}", {
+            value: `-${penalty}%`,
+          })}
+        </div>
+        <div>
+          {getUiTooltip("madnessLevel", "Madness: {{value}}", {
+            value: totalMadness,
+          })}
+        </div>
       </>
     );
   },
@@ -462,9 +490,19 @@ export const feastTooltip: TooltipConfig = {
       const remainingMinutes = Math.ceil(remainingMs / 60000);
       return (
         <>
-          <div className="font-bold">Great Village Feast</div>
-          <div>Production Bonus: 400%</div>
-          <div>{remainingMinutes} min remaining</div>
+          <div className="font-bold">
+            {getUiTooltip("greatVillageFeast", "Great Village Feast")}
+          </div>
+          <div>
+            {getUiTooltip("productionBonus", "Production Bonus: {{value}}", {
+              value: "400%",
+            })}
+          </div>
+          <div>
+            {getUiTooltip("minRemaining", "{{count}} min remaining", {
+              count: remainingMinutes,
+            })}
+          </div>
         </>
       );
     }
@@ -474,9 +512,19 @@ export const feastTooltip: TooltipConfig = {
       const remainingMinutes = Math.ceil(remainingMs / 60000);
       return (
         <>
-          <div className="font-bold">Village Feast</div>
-          <div>Production Bonus: 100%</div>
-          <div>{remainingMinutes} min remaining</div>
+          <div className="font-bold">
+            {getUiTooltip("villageFeast", "Village Feast")}
+          </div>
+          <div>
+            {getUiTooltip("productionBonus", "Production Bonus: {{value}}", {
+              value: "100%",
+            })}
+          </div>
+          <div>
+            {getUiTooltip("minRemaining", "{{count}} min remaining", {
+              count: remainingMinutes,
+            })}
+          </div>
         </>
       );
     }
@@ -496,10 +544,26 @@ export const solsticeTooltip: TooltipConfig = {
       const remainingMinutes = Math.ceil(remainingMs / 60000);
       return (
         <>
-          <div className="font-bold">Solstice Gathering</div>
-          <div>Production Bonus: +10%</div>
-          <div>New Villager Chance +50%</div>
-          <div>{remainingMinutes} min remaining</div>
+          <div className="font-bold">
+            {getUiTooltip("solsticeGathering", "Solstice Gathering")}
+          </div>
+          <div>
+            {getUiTooltip("productionBonus", "Production Bonus: {{value}}", {
+              value: "+10%",
+            })}
+          </div>
+          <div>
+            {getUiTooltip(
+              "newVillagerChanceBonus",
+              "New Villager Chance +{{percent}}%",
+              { percent: 50 },
+            )}
+          </div>
+          <div>
+            {getUiTooltip("minRemaining", "{{count}} min remaining", {
+              count: remainingMinutes,
+            })}
+          </div>
         </>
       );
     }
@@ -518,9 +582,19 @@ export const curseTooltip: TooltipConfig = {
       const remainingMinutes = Math.ceil(remainingMs / 60000);
       return (
         <>
-          <div className="font-bold">Witch&apos;s Curse</div>
-          <div>Production Bonus: -50%</div>
-          <div>{remainingMinutes} min remaining</div>
+          <div className="font-bold">
+            {getUiTooltip("witchsCurse", "Witch's Curse")}
+          </div>
+          <div>
+            {getUiTooltip("productionBonus", "Production Bonus: {{value}}", {
+              value: "-50%",
+            })}
+          </div>
+          <div>
+            {getUiTooltip("minRemaining", "{{count}} min remaining", {
+              count: remainingMinutes,
+            })}
+          </div>
         </>
       );
     }
@@ -540,9 +614,19 @@ export const disgustTooltip: TooltipConfig = {
       const remainingMinutes = Math.ceil(remainingMs / 60000);
       return (
         <>
-          <div className="font-bold">Villager Disgust</div>
-          <div>Production Bonus: -25%</div>
-          <div>{remainingMinutes} min remaining</div>
+          <div className="font-bold">
+            {getUiTooltip("villagerDisgust", "Villager Disgust")}
+          </div>
+          <div>
+            {getUiTooltip("productionBonus", "Production Bonus: {{value}}", {
+              value: "-25%",
+            })}
+          </div>
+          <div>
+            {getUiTooltip("minRemaining", "{{count}} min remaining", {
+              count: remainingMinutes,
+            })}
+          </div>
         </>
       );
     }
@@ -562,9 +646,19 @@ export const miningBoostTooltip: TooltipConfig = {
       const remainingMinutes = Math.ceil(remainingMs / 60000);
       return (
         <>
-          <div className="font-bold">Mining Boost</div>
-          <div>Mining Bonus: 100%</div>
-          <div>{remainingMinutes} min remaining</div>
+          <div className="font-bold">
+            {getUiTooltip("miningBoost", "Mining Boost")}
+          </div>
+          <div>
+            {getUiTooltip("miningBonus", "Mining Bonus: {{percent}}%", {
+              percent: 100,
+            })}
+          </div>
+          <div>
+            {getUiTooltip("minRemaining", "{{count}} min remaining", {
+              count: remainingMinutes,
+            })}
+          </div>
         </>
       );
     }
@@ -585,19 +679,33 @@ export const heartfireTooltip: TooltipConfig = {
     const remainingSecs = Math.ceil(remainingMs / 1000);
     const timeLabel =
       remainingSecs >= 60
-        ? `${Math.ceil(remainingSecs / 60)} min`
-        : `${remainingSecs} sec`;
+        ? getUiTooltip("minRemaining", "{{count}} min remaining", {
+            count: Math.ceil(remainingSecs / 60),
+          })
+        : getUiTooltip("secRemaining", "{{count}} sec remaining", {
+            count: remainingSecs,
+          });
 
     const villagerBonus = [0, 1, 2.5, 5, 7.5, 10][heartfireState.level] ?? 0;
     const prodPctPerLevel = state.blessings?.ebon_grace ? 10 : 5;
     return (
       <>
-        <div className="font-bold">Heartfire</div>
+        <div className="font-bold">{getUiTooltip("heartfire", "Heartfire")}</div>
         <div>
-          Production Bonus: +{heartfireState.level * prodPctPerLevel}%
+          {getUiTooltip("productionBonus", "Production Bonus: {{value}}", {
+            value: `+${heartfireState.level * prodPctPerLevel}%`,
+          })}
         </div>
-        <div>New Villager Chance: +{villagerBonus}%</div>
-        <div>{timeLabel} until level decrease</div>
+        <div>
+          {getUiTooltip("newVillagerChance", "New Villager Chance: +{{percent}}%", {
+            percent: villagerBonus,
+          })}
+        </div>
+        <div>
+          {getUiTooltip("minUntilDecrease", "{{time}} until level decrease", {
+            time: timeLabel,
+          })}
+        </div>
       </>
     );
   },
@@ -614,9 +722,17 @@ export const frostfallTooltip: TooltipConfig = {
       const remainingMinutes = Math.ceil(remainingMs / 60000);
       return (
         <>
-          <div className="font-bold">Frostfall</div>
-          <div>Production Bonus: -25%</div>
-          <div>{remainingMinutes} min remaining</div>
+          <div className="font-bold">{getUiTooltip("frostfall", "Frostfall")}</div>
+          <div>
+            {getUiTooltip("productionBonus", "Production Bonus: {{value}}", {
+              value: "-25%",
+            })}
+          </div>
+          <div>
+            {getUiTooltip("minRemaining", "{{count}} min remaining", {
+              count: remainingMinutes,
+            })}
+          </div>
         </>
       );
     }
@@ -635,9 +751,19 @@ export const fogTooltip: TooltipConfig = {
       const remainingMinutes = Math.ceil(remainingMs / 60000);
       return (
         <>
-          <div className="font-bold">Choking Fog</div>
-          <div>Production Bonus: -50%</div>
-          <div>{remainingMinutes} min remaining</div>
+          <div className="font-bold">
+            {getUiTooltip("chokingFog", "Choking Fog")}
+          </div>
+          <div>
+            {getUiTooltip("productionBonus", "Production Bonus: {{value}}", {
+              value: "-50%",
+            })}
+          </div>
+          <div>
+            {getUiTooltip("minRemaining", "{{count}} min remaining", {
+              count: remainingMinutes,
+            })}
+          </div>
         </>
       );
     }
@@ -657,9 +783,17 @@ export const focusTooltip: TooltipConfig = {
       const remainingMinutes = Math.ceil(remainingMs / 60000);
       return (
         <>
-          <div className="font-bold">Focus</div>
-          <div>Action Bonus: 2x</div>
-          <div>{remainingMinutes} min remaining</div>
+          <div className="font-bold">{getUiTooltip("focus", "Focus")}</div>
+          <div>
+            {getUiTooltip("actionBonus", "Action Bonus: {{multiplier}}x", {
+              multiplier: 2,
+            })}
+          </div>
+          <div>
+            {getUiTooltip("minRemaining", "{{count}} min remaining", {
+              count: remainingMinutes,
+            })}
+          </div>
         </>
       );
     }
@@ -668,51 +802,95 @@ export const focusTooltip: TooltipConfig = {
   },
 };
 
+function formatBombCombatTooltip(
+  state: GameState,
+  baseDamage: number,
+): string {
+  const knowledge = getTotalKnowledge(state) || 0;
+  const knowledgeBonus = Math.floor(knowledge / 5);
+  const total = baseDamage + knowledgeBonus;
+  const lines = [
+    getUiTooltip("baseDamage", "Base Damage: {{value}}", { value: baseDamage }),
+    ...(knowledge >= 5
+      ? [
+          getUiTooltip("knowledgeBonus", "Knowledge Bonus: +{{value}}", {
+            value: knowledgeBonus,
+          }),
+        ]
+      : []),
+    getUiTooltip("totalDamage", "Total Damage: {{value}}", { value: total }),
+    getUiTooltip(
+      "selfDamageChance",
+      "5% chance to deal damage to yourself",
+    ),
+  ];
+  return lines.join("\n");
+}
+
 // Combat item tooltips
 export const combatItemTooltips: Record<string, TooltipConfig> = {
   ember_bomb: {
-    getContent: (state) => {
-      const knowledge = getTotalKnowledge(state) || 0;
-      const baseDamage = BOMB_BASE_DAMAGE_BY_ID.ember_bomb;
-      const knowledgeBonus = Math.floor(knowledge / 5);
-      return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus}\n5% chance to deal damage to yourself`;
-    },
+    getContent: (state) =>
+      formatBombCombatTooltip(state, BOMB_BASE_DAMAGE_BY_ID.ember_bomb),
   },
   ashfire_bomb: {
-    getContent: (state) => {
-      const knowledge = getTotalKnowledge(state) || 0;
-      const baseDamage = BOMB_BASE_DAMAGE_BY_ID.ashfire_bomb;
-      const knowledgeBonus = Math.floor(knowledge / 5);
-      return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus}\n5% chance to deal damage to yourself`;
-    },
+    getContent: (state) =>
+      formatBombCombatTooltip(state, BOMB_BASE_DAMAGE_BY_ID.ashfire_bomb),
   },
   void_bomb: {
-    getContent: (state) => {
-      const knowledge = getTotalKnowledge(state) || 0;
-      const baseDamage = BOMB_BASE_DAMAGE_BY_ID.void_bomb;
-      const knowledgeBonus = Math.floor(knowledge / 5);
-      return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus}\n5% chance to deal damage to yourself`;
-    },
+    getContent: (state) =>
+      formatBombCombatTooltip(state, BOMB_BASE_DAMAGE_BY_ID.void_bomb),
   },
   poison_arrows: {
     getContent: (state) => {
       const knowledge = getTotalKnowledge(state) || 0;
       const knowledgeBonus = Math.floor(knowledge / 5);
       const perHit = poisonArrowsDamagePerTick(knowledge);
-      const totalHits = 1 + POISON_ARROWS_DOT_FIGHT_ROUNDS;
-      return `Base Damage: ${POISON_ARROWS_BASE_DAMAGE}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${perHit} for ${POISON_ARROWS_DOT_FIGHT_ROUNDS} rounds`;
+      const lines = [
+        getUiTooltip("baseDamage", "Base Damage: {{value}}", {
+          value: POISON_ARROWS_BASE_DAMAGE,
+        }),
+        ...(knowledge >= 5
+          ? [
+              getUiTooltip("knowledgeBonus", "Knowledge Bonus: +{{value}}", {
+                value: knowledgeBonus,
+              }),
+            ]
+          : []),
+        getUiTooltip(
+          "totalDamageForRounds",
+          "Total Damage: {{value}} for {{rounds}} rounds",
+          { value: perHit, rounds: POISON_ARROWS_DOT_FIGHT_ROUNDS },
+        ),
+      ];
+      return lines.join("\n");
     },
   },
   veinfire_elixir: {
-    getContent: () => {
-      return "Restore up to 50 Integrity";
-    },
+    getContent: () =>
+      getUiTooltip("restoreIntegrity", "Restore up to {{amount}} Integrity", {
+        amount: 50,
+      }),
   },
   crushing_strike: {
     getContent: (state) => {
       const level = state.combatSkills.crushingStrikeLevel ?? 0;
       const config = CRUSHING_STRIKE_UPGRADES[level];
-      return `Damage: ${config.damage}\nStun Duration: ${config.stunRounds} round${config.stunRounds > 1 ? "s" : ""}\nSuccess chance: ${config.successChance}%`;
+      const stunKey =
+        config.stunRounds === 1 ? "stunDuration_one" : "stunDuration_other";
+      return [
+        getUiTooltip("damage", "Damage: {{value}}", { value: config.damage }),
+        getUiTooltip(
+          stunKey,
+          config.stunRounds === 1
+            ? "Stun Duration: {{rounds}} round"
+            : "Stun Duration: {{rounds}} rounds",
+          { rounds: config.stunRounds },
+        ),
+        getUiTooltip("successChance", "Success chance: {{percent}}%", {
+          percent: config.successChance,
+        }),
+      ].join("\n");
     },
   },
   bloodflame_sphere: {
@@ -720,7 +898,19 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
       const level = state.combatSkills.bloodflameSphereLevel ?? 0;
       const config = BLOODFLAME_SPHERE_UPGRADES[level];
       const n = config.burnRounds;
-      return `${config.burnDamage} damage for ${n} round${n !== 1 ? "s" : ""}\nHealth Cost: ${config.healthCost}`;
+      const burnKey = n === 1 ? "burnDamage_one" : "burnDamage_other";
+      return [
+        getUiTooltip(
+          burnKey,
+          n === 1
+            ? "{{damage}} damage for {{rounds}} round"
+            : "{{damage}} damage for {{rounds}} rounds",
+          { damage: config.burnDamage, rounds: n },
+        ),
+        getUiTooltip("healthCost", "Health Cost: {{value}}", {
+          value: config.healthCost,
+        }),
+      ].join("\n");
     },
   },
 };
@@ -764,7 +954,7 @@ export const eventChoiceCostTooltip = {
           0;
         currentAmounts.push(
           <div key={`current-${index}`} className="flex justify-between gap-2">
-            <span>{capitalizeWords(resource)}:</span>
+            <span>{formatTooltipResourceName(resource)}:</span>
             <span>{formatNumber(currentAmount)}</span>
           </div>,
         );
@@ -787,7 +977,10 @@ export const eventChoiceCostTooltip = {
           key={`cost-${index}`}
           className={hasEnough ? "!text-foreground" : "!text-muted-foreground"}
         >
-          -{formatNumber(amount)} {capitalizeWords(resource)}
+          {getUiTooltip("costLine", "-{{amount}} {{resource}}", {
+            amount: formatNumber(amount),
+            resource: formatTooltipResourceName(resource),
+          })}
         </div>,
       );
     });
@@ -803,17 +996,6 @@ export const eventChoiceCostTooltip = {
     );
   },
 };
-
-// Helper function to capitalize the first letter of each word in a string
-// Assuming this function is defined elsewhere and available in scope.
-// If not, it would need to be added. For example:
-function capitalizeWords(str: string): string {
-  return str
-    .toLowerCase()
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
 
 // Helper function to extract resource name and amount from text
 function parseResourceText(
@@ -841,7 +1023,10 @@ export const getCurrentResourceAmount = {
     const currentAmount =
       gameState.resources[resource as keyof typeof gameState.resources] || 0;
 
-    return `Current: ${currentAmount} ${capitalizeWords(resource)}`;
+    return getUiTooltip("currentResource", "Current: {{amount}} {{resource}}", {
+      amount: currentAmount,
+      resource: formatTooltipResourceName(resource),
+    });
   },
 };
 
@@ -868,7 +1053,10 @@ export const merchantTooltip = {
     resources.forEach(({ resource, amount }, index) => {
       costLines.push(
         <div key={`cost-${index}`}>
-          -{formatNumber(amount)} {capitalizeWords(resource)}
+          {getUiTooltip("costLine", "-{{amount}} {{resource}}", {
+            amount: formatNumber(amount),
+            resource: formatTooltipResourceName(resource),
+          })}
         </div>,
       );
     });

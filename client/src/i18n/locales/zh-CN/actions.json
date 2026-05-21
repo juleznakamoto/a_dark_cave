@@ -1,0 +1,616 @@
+{
+  "animals": {
+    "label": "动物"
+  },
+  "banditLair": {
+    "label": "强盗巢穴"
+  },
+  "blackreachCanyon": {
+    "label": "黑境峡谷"
+  },
+  "blastPortal": {
+    "label": "炸开大门"
+  },
+  "boneTotems": {
+    "label": "骨图腾"
+  },
+  "buildAdvancedBlacksmith": {
+    "description": "配备更好工具与技艺的改良铁匠铺",
+    "label": "高级铁匠铺"
+  },
+  "buildAlchemistHall": {
+    "description": "炼金术士制造粉末与炸药的厅堂",
+    "label": "炼金大厅"
+  },
+  "buildAltar": {
+    "description": "用于崇拜与献祭的神圣之地",
+    "label": "祭坛"
+  },
+  "buildBank": {
+    "description": "可进行更大额投资的金融建筑",
+    "label": "银行"
+  },
+  "buildBastion": {
+    "description": "作为最后防线的巨大防御工事",
+    "label": "堡垒"
+  },
+  "buildBlackEstate": {
+    "description": "由黑木与石头筑成的高耸宅邸，俯视整座城市。",
+    "label": "黑木庄园"
+  },
+  "buildBlackMonolith": {
+    "description": "为活祭而建的黑暗纪念碑",
+    "label": "黑色方尖碑"
+  },
+  "buildBlacksmith": {
+    "description": "配有基础工具的锻造工坊",
+    "label": "铁匠铺"
+  },
+  "buildBoneTemple": {
+    "description": "以骨骸筑成的骇人建筑，用以敬奉旧神",
+    "label": "骨神殿"
+  },
+  "buildBoneyard": {
+    "description": "安葬死者的土地，抚慰村民的哀伤。",
+    "label": "埋骨地"
+  },
+  "buildBottomlessPit": {
+    "description": "极深的矿坑，可抵达最稀有的矿材",
+    "label": "无底矿坑"
+  },
+  "buildCabin": {
+    "description": "配有猎人工具的基础猎屋",
+    "label": "猎屋"
+  },
+  "buildChitinPlating": {
+    "description": "用难以穿透的甲壳板加固防御工事",
+    "label": "甲壳护板"
+  },
+  "buildClerksHut": {
+    "description": "书记员记录村庄资源的小屋",
+    "label": "书记员小屋"
+  },
+  "buildCoinhouse": {
+    "description": "可进行小额投资的简陋金融建筑",
+    "label": "钱币屋"
+  },
+  "buildConsecratedPaleCross": {
+    "description": "由漂白骨骸筑成的高耸圣碑，极大强化骨图腾献祭。",
+    "label": "圣化苍白十字"
+  },
+  "buildDarkEstate": {
+    "description": "远离尘世、提供避难之所的隐秘庄园",
+    "label": "暗影庄园"
+  },
+  "buildDeepPit": {
+    "description": "很深的矿坑，暴露出珍贵矿脉",
+    "label": "深矿坑"
+  },
+  "buildDeepeningPit": {
+    "description": "更深的矿坑，可触及更深层的地下资源",
+    "label": "加深矿坑"
+  },
+  "buildFortifiedMoat": {
+    "description": "拖慢并削弱攻击者的防御壕沟",
+    "label": "加固护城壕"
+  },
+  "buildFortifiedStorehouse": {
+    "description": "容量更大的加固仓储建筑",
+    "label": "加固仓库"
+  },
+  "buildFoundry": {
+    "description": "专门用于生产钢的建筑",
+    "label": "铸造厂"
+  },
+  "buildFurTents": {
+    "description": "游牧部族使用的温暖毛皮帐篷",
+    "label": "毛皮帐篷"
+  },
+  "buildGrandBazaar": {
+    "description": "庞大的集市，吸引更多商人前来",
+    "label": "大集市"
+  },
+  "buildGrandBlacksmith": {
+    "description": "能打造最精良制品的高级铁匠铺",
+    "label": "大铁匠铺"
+  },
+  "buildGrandHunterLodge": {
+    "description": "供大师级猎人使用的顶级猎人小屋",
+    "label": "大猎人屋"
+  },
+  "buildGrandRepository": {
+    "description": "容量惊人的巨大储藏所",
+    "label": "大储藏库"
+  },
+  "buildGreatCabin": {
+    "description": "扩建的猎屋，可提高猎人产出",
+    "label": "大猎屋"
+  },
+  "buildGreatVault": {
+    "description": "可储存海量资源的顶级金库",
+    "label": "大金库"
+  },
+  "buildHeartfire": {
+    "description": "带来慰藉与庇护感的神圣火焰",
+    "label": "心火"
+  },
+  "buildHighTannery": {
+    "description": "供专家皮匠使用的顶级制革坊",
+    "label": "高级制革坊"
+  },
+  "buildImprovedTraps": {
+    "description": "升级的外围陷阱，机关更强，覆盖更广",
+    "label": "改良陷阱"
+  },
+  "buildInkwardenAcademy": {
+    "description": "宏伟的学者学院，提供至高知识与资源记录",
+    "label": "墨卫学院"
+  },
+  "buildLonghouse": {
+    "description": "巨大的北境公共长屋，可容纳许多村民",
+    "label": "长屋"
+  },
+  "buildMasterTannery": {
+    "description": "提高皮革产量的高级制革坊",
+    "label": "大师制革坊"
+  },
+  "buildMasterworkFoundry": {
+    "description": "钢产量卓越的铸造厂",
+    "label": "杰作铸造厂"
+  },
+  "buildMerchantsGuild": {
+    "description": "强大的行会，带来最好的交易与商人",
+    "label": "商人行会"
+  },
+  "buildPaleCross": {
+    "description": "由漂白骨骸筑成的高耸纪念碑，强化骨图腾献祭。",
+    "label": "苍白十字"
+  },
+  "buildPalisades": {
+    "description": "保护定居点的防御木墙",
+    "label": "木栅墙"
+  },
+  "buildPillarOfClarity": {
+    "description": "纯白方尖碑，可清除心智中的黑暗",
+    "label": "澄明之柱"
+  },
+  "buildPrimeFoundry": {
+    "description": "钢产量提升的高级铸造厂",
+    "label": "上等铸造厂"
+  },
+  "buildQuarry": {
+    "description": "提高采集者石料产出的采石场",
+    "label": "采石场"
+  },
+  "buildSanctum": {
+    "description": "神圣圣所，提供对抗黑暗的最强庇护",
+    "label": "圣所"
+  },
+  "buildScriptorium": {
+    "description": "知识书库，可详细追踪资源",
+    "label": "抄经室"
+  },
+  "buildShallowPit": {
+    "description": "小型矿坑，可开采矿物",
+    "label": "浅矿坑"
+  },
+  "buildShrine": {
+    "description": "神圣祭坛，提供更强的抗疯癫庇护",
+    "label": "神龛"
+  },
+  "buildStoneHut": {
+    "description": "坚固的石屋，提供更好的庇护",
+    "label": "石屋"
+  },
+  "buildStorehouse": {
+    "description": "扩建的储藏设施，可存放更多资源",
+    "label": "仓库"
+  },
+  "buildSupplyHut": {
+    "description": "用于储存资源的小屋",
+    "label": "补给小屋"
+  },
+  "buildTannery": {
+    "description": "将毛皮加工成皮革的作坊",
+    "label": "制革坊"
+  },
+  "buildTemple": {
+    "description": "宏伟神殿，提供强大的疯癫抗性",
+    "label": "神殿"
+  },
+  "buildTimberMill": {
+    "description": "帮助更高效加工木材的磨坊",
+    "label": "木材厂"
+  },
+  "buildTradePost": {
+    "description": "吸引商人前来售卖货物的贸易站",
+    "label": "贸易站"
+  },
+  "buildTraps": {
+    "description": "村庄周围的陷阱，可削弱所有攻击者",
+    "label": "陷阱"
+  },
+  "buildTreasury": {
+    "description": "大型金融建筑，可进行巨额投资",
+    "label": "财库"
+  },
+  "buildVillageWarehouse": {
+    "description": "可存放大量物资的大型仓库",
+    "label": "村庄仓库"
+  },
+  "buildWatchtower": {
+    "description": "可提前预警威胁的高塔",
+    "label": "瞭望塔"
+  },
+  "buildWizardTower": {
+    "description": "巫师进行奥术研究的神秘高塔",
+    "label": "巫师塔"
+  },
+  "buildWoodenHut": {
+    "description": "提供基础庇护的简易木屋",
+    "label": "木屋"
+  },
+  "canyonBridge": {
+    "label": "峡谷桥"
+  },
+  "castleRuins": {
+    "label": "城堡废墟"
+  },
+  "chopWood": {
+    "label": "采集木材",
+    "log": {
+      "firstVisit": "洞口附近散落着一些木材，或许能派上用场。"
+    }
+  },
+  "collapsedTower": {
+    "label": "倒塌高塔"
+  },
+  "craftAdamantAxe": {
+    "label": "精金斧"
+  },
+  "craftAdamantLantern": {
+    "label": "精金灯笼"
+  },
+  "craftAdamantPickaxe": {
+    "label": "精金镐"
+  },
+  "craftAdamantSword": {
+    "label": "精金剑"
+  },
+  "craftArbalest": {
+    "label": "劲弩"
+  },
+  "craftAshenGreatshield": {
+    "label": "灰烬巨盾"
+  },
+  "craftAshfireBomb": {
+    "label": "灰火炸弹"
+  },
+  "craftBlacksteelArmor": {
+    "label": "黑钢护甲"
+  },
+  "craftBlacksteelAxe": {
+    "label": "黑钢斧"
+  },
+  "craftBlacksteelBow": {
+    "label": "黑钢弓"
+  },
+  "craftBlacksteelLantern": {
+    "label": "黑钢灯笼"
+  },
+  "craftBlacksteelPickaxe": {
+    "label": "黑钢镐"
+  },
+  "craftBlacksteelSword": {
+    "label": "黑钢剑"
+  },
+  "craftBloodstoneStaff": {
+    "label": "血石法杖"
+  },
+  "craftBoneTotems": {
+    "label": "骨图腾"
+  },
+  "craftCrudeBow": {
+    "label": "粗制弓"
+  },
+  "craftEmberBomb": {
+    "label": "余烬炸弹"
+  },
+  "craftExplorerPack": {
+    "label": "探索者背包"
+  },
+  "craftFrostglassSword": {
+    "label": "霜晶剑"
+  },
+  "craftGrenadierBag": {
+    "label": "掷弹兵背包"
+  },
+  "craftHighpriestRobe": {
+    "label": "大祭司长袍"
+  },
+  "craftHunterCloak": {
+    "label": "猎人斗篷"
+  },
+  "craftHuntsmanBow": {
+    "label": "猎手弓"
+  },
+  "craftIronAxe": {
+    "label": "铁斧"
+  },
+  "craftIronLantern": {
+    "label": "铁灯笼"
+  },
+  "craftIronPickaxe": {
+    "label": "铁镐"
+  },
+  "craftIronSword": {
+    "label": "铁剑"
+  },
+  "craftLeatherTotems": {
+    "label": "皮革图腾"
+  },
+  "craftLoggersGloves": {
+    "label": "伐木手套"
+  },
+  "craftLongBow": {
+    "label": "长弓"
+  },
+  "craftMasterBow": {
+    "label": "大师弓"
+  },
+  "craftNightshadeBow": {
+    "label": "夜影弓"
+  },
+  "craftObsidianAxe": {
+    "label": "黑曜石斧"
+  },
+  "craftObsidianLantern": {
+    "label": "黑曜石灯笼"
+  },
+  "craftObsidianPickaxe": {
+    "label": "黑曜石镐"
+  },
+  "craftObsidianSword": {
+    "label": "黑曜石剑"
+  },
+  "craftSacrificialTunic": {
+    "label": "献祭短袍"
+  },
+  "craftShadowBoots": {
+    "label": "暗影靴"
+  },
+  "craftSkeletonKey": {
+    "label": "万能钥匙"
+  },
+  "craftSteelAxe": {
+    "label": "钢斧"
+  },
+  "craftSteelLantern": {
+    "label": "钢灯笼"
+  },
+  "craftSteelPickaxe": {
+    "label": "钢镐"
+  },
+  "craftSteelSword": {
+    "label": "钢剑"
+  },
+  "craftStoneAxe": {
+    "label": "石斧"
+  },
+  "craftStonePickaxe": {
+    "label": "石镐"
+  },
+  "craftStormglassHalberd": {
+    "label": "风暴晶戟"
+  },
+  "craftTorches": {
+    "label": "火把"
+  },
+  "craftVeinfireElixir": {
+    "label": "脉火灵药"
+  },
+  "craftVoidBomb": {
+    "label": "虚空炸弹"
+  },
+  "craftWarBow": {
+    "label": "战弓"
+  },
+  "descendFurther": {
+    "label": "继续下行",
+    "log": {
+      "firstVisit": "灯笼投下稳定的光芒，你继续向下。忽然，双脚踩上了人工凿成的石阶，已被岁月磨平。"
+    }
+  },
+  "encounterBeyondPortal": {
+    "label": "越过大门"
+  },
+  "exploreCave": {
+    "label": "探索洞穴",
+    "log": {
+      "debrisScroll": "在瓦砾中，你发现一卷饱经风霜的卷轴，其中记载着在这残酷世界中生存的智慧。",
+      "torchBag": "你在洞穴中发现一个陈旧落灰的袋子，里面有 25 支火把。",
+      "firstVisit": "火把照亮了洞壁。在摇曳的光中，你注意到一条通往洞穴深处的小径。"
+    }
+  },
+  "exploreCitadel": {
+    "label": "探索城堡",
+    "log": {
+      "firstVisit": "在城市的最深处，一座巨大的城堡矗立眼前。其规模暗示其中藏着强大的力量，或巨大的危险。"
+    }
+  },
+  "exploreRuins": {
+    "label": "探索废墟",
+    "log": {
+      "firstVisit": "阶梯尽头，一个巨大的洞窟在眼前展开。黑暗中躺着失落城市的废墟，一座早已消逝文明的遗迹。"
+    }
+  },
+  "exploreTemple": {
+    "label": "探索神殿",
+    "log": {
+      "firstVisit": "随着你深入地下城市的废墟，一座宏伟的神殿从洞窟地面升起，大体完好，其阴影笼罩着城市被遗忘的残迹。"
+    }
+  },
+  "exploreUndergroundLake": {
+    "label": "地下湖"
+  },
+  "forestCave": {
+    "label": "森林洞穴"
+  },
+  "healElderWizard": {
+    "label": "治疗老巫师"
+  },
+  "healRestlessKnight": {
+    "label": "治疗不眠骑士"
+  },
+  "hiddenLibrary": {
+    "label": "隐秘图书馆"
+  },
+  "hillGrave": {
+    "label": "山丘坟墓"
+  },
+  "humans": {
+    "label": "人类"
+  },
+  "hunt": {
+    "label": "狩猎"
+  },
+  "layTrap": {
+    "label": "布设陷阱"
+  },
+  "leatherTotems": {
+    "label": "皮革图腾"
+  },
+  "lightFire": {
+    "label": "点燃火焰",
+    "log": {
+      "firstVisit": "火焰轻轻噼啪作响，在洞壁上投下跳动的影子。温暖令人安心。",
+      "firstVisitBoost": "火焰轻轻噼啪作响，在洞壁上投下跳动的影子。温暖令人安心。有人给你留下了一份礼物。"
+    }
+  },
+  "lowChamber": {
+    "label": "低矮洞室"
+  },
+  "lureLakeCreature": {
+    "label": "放置陷阱"
+  },
+  "mineAdamant": {
+    "label": "开采精金",
+    "log": {
+      "natharitSilverVein": "纳萨里特镐发现了银矿脉！+{{amount}} {{resource}}"
+    }
+  },
+  "mineCoal": {
+    "label": "开采煤炭",
+    "log": {
+      "natharitSilverVein": "纳萨里特镐发现了银矿脉！+{{amount}} {{resource}}"
+    }
+  },
+  "mineIron": {
+    "label": "开采铁矿",
+    "log": {
+      "natharitSilverVein": "纳萨里特镐发现了银矿脉！+{{amount}} {{resource}}"
+    }
+  },
+  "mineObsidian": {
+    "label": "开采黑曜石",
+    "log": {
+      "natharitSilverVein": "纳萨里特镐发现了银矿脉！+{{amount}} {{resource}}"
+    }
+  },
+  "mineStone": {
+    "label": "开采石料",
+    "log": {
+      "natharitSilverVein": "纳萨里特镐发现了银矿脉！+{{amount}} {{resource}}"
+    }
+  },
+  "mineSulfur": {
+    "label": "开采硫磺",
+    "log": {
+      "natharitSilverVein": "纳萨里特镐发现了银矿脉！+{{amount}} {{resource}}"
+    }
+  },
+  "occultistChamber": {
+    "label": "秘术师密室"
+  },
+  "provokeAttackWave": {
+    "label": "挑起袭击浪潮"
+  },
+  "repairBastion": {
+    "label": "修复堡垒"
+  },
+  "repairPalisades": {
+    "label": "修复木栅墙"
+  },
+  "repairWatchtower": {
+    "label": "修复瞭望塔"
+  },
+  "risingSmoke": {
+    "label": "升起的浓烟"
+  },
+  "sellBlacksteelBatch": {
+    "label": "出售黑钢"
+  },
+  "sellLeatherBatch": {
+    "label": "出售皮革"
+  },
+  "sellSteelBatch": {
+    "label": "出售钢"
+  },
+  "steelDelivery": {
+    "label": "运送钢材"
+  },
+  "sunkenTemple": {
+    "label": "沉没神殿"
+  },
+  "swampSanctuary": {
+    "label": "沼泽圣所"
+  },
+  "tradeGoldForAdamant": {
+    "label": "购买精金"
+  },
+  "tradeGoldForAshfireBomb": {
+    "label": "购买灰火炸弹"
+  },
+  "tradeGoldForBlacksteel": {
+    "label": "购买黑钢"
+  },
+  "tradeGoldForEmberBomb": {
+    "label": "购买余烬炸弹"
+  },
+  "tradeGoldForFood": {
+    "label": "购买食物"
+  },
+  "tradeGoldForLeather": {
+    "label": "购买皮革"
+  },
+  "tradeGoldForObsidian": {
+    "label": "购买黑曜石"
+  },
+  "tradeGoldForSteel": {
+    "label": "购买钢"
+  },
+  "tradeGoldForStone": {
+    "label": "购买石料"
+  },
+  "tradeGoldForTorch": {
+    "label": "购买火把"
+  },
+  "tradeGoldForVoidBomb": {
+    "label": "购买虚空炸弹"
+  },
+  "tradeGoldForWood": {
+    "label": "购买木材"
+  },
+  "tradeSilverForGold": {
+    "label": "购买黄金"
+  },
+  "ventureDeeper": {
+    "label": "深入前行",
+    "log": {
+      "tarnishedAmulet": "洞穴阴影中有什么在闪光。你找到一枚黯淡的护符。",
+      "silverSack": "你发现一个小皮袋，里面有 50 白银。",
+      "mapFragment": "在洞穴地上，你发现一块残破的地图片段。",
+      "firstVisit": "越往洞穴深处，空气越发寒冷。洞壁光滑得不自然，仿佛曾被人塑造。"
+    }
+  }
+}

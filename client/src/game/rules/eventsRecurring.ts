@@ -18,9 +18,7 @@ export const recurringEvents: Record<string, GameEvent> = {
       );
     },
     timeProbability: 120,
-    repeatable: true,
-    message:
-      "A fire sweeps through the village in the night, destroying one wooden hut and killing its occupants.",
+    repeatable: true,
     priority: 2,
     effect: (state: GameState) => {
       // Use the centralized killVillagers function

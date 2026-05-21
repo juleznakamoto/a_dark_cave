@@ -1,0 +1,184 @@
+{
+  "action": {
+    "0-chopWood": {
+      "label": "伐木能手"
+    },
+    "0-craftTorches": {
+      "label": "火把工匠"
+    },
+    "0-exploreCave": {
+      "label": "洞穴探索者"
+    },
+    "0-gamblerWins": {
+      "label": "老练赌徒"
+    },
+    "0-hunt": {
+      "label": "猎人"
+    },
+    "1-mineAdamant": {
+      "label": "精金矿工"
+    },
+    "1-mineCoal": {
+      "label": "煤矿工"
+    },
+    "1-mineIron": {
+      "label": "铁矿工"
+    },
+    "1-mineObsidian": {
+      "label": "黑曜石矿工"
+    },
+    "1-mineStone": {
+      "label": "采石工"
+    },
+    "1-mineSulfur": {
+      "label": "硫磺矿工"
+    },
+    "2-animals": {
+      "label": "牲祭执行者"
+    },
+    "2-boneTotems": {
+      "label": "骨祭执行者"
+    },
+    "2-craftBoneTotems": {
+      "label": "骨图腾工匠"
+    },
+    "2-craftLeatherTotems": {
+      "label": "皮革图腾工匠"
+    },
+    "2-leatherTotems": {
+      "label": "皮革献祭者"
+    },
+    "3-ashfireBombs": {
+      "label": "灰火炸弹工匠"
+    },
+    "3-emberBombs": {
+      "label": "余烬炸弹工匠"
+    },
+    "4-feedFire": {
+      "label": "添火者"
+    },
+    "4-merchantPurchases": {
+      "label": "交易好手"
+    },
+    "4-solsticeGatherings": {
+      "label": "至日庆祝者"
+    },
+    "4-wellRested": {
+      "label": "酣眠者"
+    }
+  },
+  "basic": {
+    "0-coalMiner": {
+      "label": "采集煤炭"
+    },
+    "0-hunter": {
+      "label": "猎人"
+    },
+    "0-ironMiner": {
+      "label": "采集铁矿"
+    },
+    "0-stoneMiner": {
+      "label": "采集石料"
+    },
+    "0-woodGatherer": {
+      "label": "采集木材"
+    },
+    "1-builder": {
+      "label": "建造建筑"
+    },
+    "1-communityBuilder": {
+      "label": "建设社群"
+    },
+    "1-explorer": {
+      "label": "探索洞穴"
+    },
+    "1-toolCrafter": {
+      "label": "制作工具"
+    },
+    "1-torchCrafter": {
+      "label": "制作火把"
+    }
+  },
+  "building": {
+    "0-0": {
+      "label": "简易庇护所"
+    },
+    "0-1": {
+      "label": "坚固庇护所"
+    },
+    "0-2": {
+      "label": "北境庇护所"
+    },
+    "0-3": {
+      "label": "游牧庇护所"
+    },
+    "1-0": {
+      "label": "猎户"
+    },
+    "1-1": {
+      "label": "锻造工"
+    },
+    "1-2": {
+      "label": "冶炼工"
+    },
+    "1-3": {
+      "label": "皮匠"
+    },
+    "2-0": {
+      "label": "矿工"
+    },
+    "3-0": {
+      "label": "商贩"
+    },
+    "3-1": {
+      "label": "补给员"
+    },
+    "3-2": {
+      "label": "学者"
+    },
+    "3-3": {
+      "label": "祭司"
+    },
+    "4-0": {
+      "label": "主堡城墙"
+    },
+    "4-1": {
+      "label": "瞭望哨"
+    }
+  },
+  "item": {
+    "0-axes": {
+      "label": "斧头"
+    },
+    "0-lanterns": {
+      "label": "灯笼"
+    },
+    "0-pickaxes": {
+      "label": "镐子"
+    },
+    "1-bows": {
+      "label": "弓"
+    },
+    "1-swords": {
+      "label": "剑"
+    },
+    "2-explorer_pack": {
+      "label": "皮革工艺"
+    },
+    "2-schematic_weapons": {
+      "label": "图纸"
+    },
+    "3-ancient_books": {
+      "label": "古老智慧"
+    },
+    "3-fellowship": {
+      "label": "可靠同伴"
+    },
+    "4-blacksteel_equipment": {
+      "label": "黑暗战具"
+    },
+    "4-blacksteel_tools": {
+      "label": "黑暗工具"
+    }
+  }
+}

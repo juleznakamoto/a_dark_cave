@@ -1,0 +1,71 @@
+{
+  "languageSelector": {
+    "label": "Idioma",
+    "ariaLabel": "Seleccionar idioma"
+  },
+  "startScreen": {
+    "titleNormal": "Una cueva oscura.",
+    "titleCruel": "Una cueva muy oscura.",
+    "airNormal": "El aire es frío y húmedo.",
+    "airCruel": "El aire es gélido y húmedo.",
+    "seeNormal": "Apenas distingues las formas a tu alrededor.",
+    "seeCruel": "Apenas ves nada a tu alrededor.",
+    "makeFire": "Encender fuego",
+    "boostDeactivate": "Haz clic para desactivar el impulso",
+    "recommendedBy": "Recomendado por"
+  },
+  "footer": {
+    "fullGame": "Juego completo",
+    "trader": "Mercader",
+    "donate": "Donar",
+    "privacy": "Privacidad",
+    "imprint": "Aviso legal",
+    "muteMusic": "Silenciar música",
+    "unmuteMusic": "Activar música",
+    "muteSfx": "Silenciar efectos",
+    "unmuteSfx": "Activar efectos",
+    "cruelModeActive": "Modo cruel activado"
+  },
+  "profile": {
+    "title": "Perfil",
+    "signInUp": "Iniciar sesión/Registrarse",
+    "emailsOn": "Correos activados",
+    "emailsOff": "Correos desactivados",
+    "marketingOnTooltip": "Actualmente recibes correos con actualizaciones, descuentos y recompensas exclusivas. Toca para desactivarlos.",
+    "marketingOffTooltip": "Actualmente no recibes correos con actualizaciones, descuentos y recompensas exclusivas. Toca para activarlos.",
+    "rewardsTasks": "Tareas de recompensas",
+    "save": "Guardar",
+    "newGame": "Nueva partida",
+    "restart": "Reiniciar",
+    "signIn": "Iniciar sesión",
+    "signOut": "Cerrar sesión",
+    "leaderboard": "Clasificación",
+    "rewards": "Recompensas",
+    "deleteAccount": "Eliminar cuenta",
+    "marketingSubscribe": "Suscribirse a correos",
+    "marketingUnsubscribe": "Cancelar suscripción",
+    "autoSaveSignedIn": "La partida se guarda cada minuto",
+    "autoSaveGuest": "La partida se guarda cada 15 segundos",
+    "signUpCloudSave": "Regístrate para guardar en la nube",
+    "lastSave": "Último guardado: {{time}}",
+    "signedOut": "Sesión cerrada correctamente",
+    "signOutError": "Error al cerrar sesión",
+    "gameSaved": "Partida guardada correctamente",
+    "saveFailed": "No se pudo guardar la partida",
+    "accountDeleted": "Tu cuenta fue eliminada",
+    "accountDeletedDesc": "Se cerró tu sesión y se borró el guardado local de este dispositivo.",
+    "deleteAccountFailed": "No se pudo eliminar la cuenta",
+    "tryAgainLater": "Inténtalo más tarde.",
+    "notSignedIn": "Sin sesión iniciada",
+    "subscribed": "Estás suscrito",
+    "unsubscribed": "No estás suscrito",
+    "subscribedDesc": "Te enviaremos actualizaciones y ofertas ocasionales por correo.",
+    "unsubscribedDesc": "No recibirás correos de marketing nuestros.",
+    "preferenceUpdateFailed": "No se pudo actualizar la preferencia"
+  },
+  "pauseHotkey": {
+    "hintPrefix": "Pulse ",
+    "hintSuffix": " para pausar"
+  },
+  "never": "Nunca"
+}

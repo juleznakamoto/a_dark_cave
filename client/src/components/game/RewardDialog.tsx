@@ -1,11 +1,12 @@
 import React from "react";
 import { GameState } from "@shared/schema";
-import { formatNumber } from "@/lib/utils";
+import { formatNumber, capitalizeWords } from "@/lib/utils";
 import {
-  clothingEffects,
-  bookEffects,
-  fellowshipEffects,
-} from "@/game/rules/effects";
+  getEffectName,
+  getResourceName,
+  getStatName,
+} from "@/i18n/resolveGameText";
+import { useTranslation } from "react-i18next";
 import OutcomeDialog, {
   OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS,
 } from "./OutcomeDialog";
@@ -55,20 +56,17 @@ interface RewardDialogProps {
   onClose: () => void;
 }
 
-const formatName = (name: string) =>
-  name
-    .split("_")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-
 const effectDisplayName = (
   id: string,
   kind: "relic" | "clothing" | "blessing" | "book" | "schematic" | "fellowship",
 ) => {
-  if (kind === "book") return bookEffects[id]?.name ?? formatName(id);
-  if (kind === "fellowship")
-    return fellowshipEffects[id]?.name ?? formatName(id);
-  return clothingEffects[id]?.name ?? formatName(id);
+  const fallback = capitalizeWords(id);
+  if (kind === "book") return getEffectName("books", id, fallback);
+  if (kind === "fellowship") return getEffectName("fellowship", id, fallback);
+  if (kind === "relic") return getEffectName("relics", id, fallback);
+  if (kind === "blessing") return getEffectName("blessings", id, fallback);
+  if (kind === "schematic") return fallback;
+  return getEffectName("clothing", id, fallback);
 };
 
 const sortResourceKeys = (keys: string[]) =>
@@ -85,6 +83,7 @@ export default function RewardDialog({
   data,
   onClose,
 }: RewardDialogProps) {
+  const { t } = useTranslation(["ui", "common"]);
   if (!data) return null;
 
   const { rewards, successLog, variant = "success", title } = data;
@@ -102,7 +101,7 @@ export default function RewardDialog({
       }
       rewardItems.push(
         <div key={`stat-${stat}`} className="text-sm text-foreground">
-          +{formatNumber(amount)} {formatName(stat)}
+          +{formatNumber(amount)} {getStatName(stat, capitalizeWords(stat))}
         </div>
       );
     });
@@ -110,8 +109,9 @@ export default function RewardDialog({
   if (typeof rewards.populationGained === "number" && rewards.populationGained > 0) {
     rewardItems.push(
       <div key="population-gained" className="text-sm text-foreground">
-        +{formatNumber(rewards.populationGained)}{" "}
-        {rewards.populationGained === 1 ? "Villager" : "Villagers"}
+        +{t("common:population.villager", {
+          count: rewards.populationGained,
+        })}
       </div>
     );
   }
@@ -128,7 +128,7 @@ export default function RewardDialog({
     rewards.tools.forEach((tool) => {
       rewardItems.push(
         <div key={`tool-${tool}`} className="text-sm text-foreground">
-          {formatName(tool)}
+          {getEffectName("tools", tool, capitalizeWords(tool))}
         </div>
       );
     });
@@ -137,7 +137,7 @@ export default function RewardDialog({
     rewards.weapons.forEach((weapon) => {
       rewardItems.push(
         <div key={`weapon-${weapon}`} className="text-sm text-foreground">
-          {formatName(weapon)}
+          {getEffectName("weapons", weapon, capitalizeWords(weapon))}
         </div>
       );
     });
@@ -192,7 +192,7 @@ export default function RewardDialog({
       const amount = rewards.resources![resource as keyof typeof rewards.resources];
       rewardItems.push(
         <div key={`resource-${resource}`} className="text-sm text-foreground">
-          {formatNumber(amount!)} {formatName(resource)}
+          {formatNumber(amount!)} {getResourceName(resource, capitalizeWords(resource))}
         </div>
       );
     });
@@ -202,8 +202,7 @@ export default function RewardDialog({
   if (typeof rewards.villagersLost === "number" && rewards.villagersLost > 0) {
     lossItems.push(
       <div key="villagers-lost" className="text-sm text-foreground">
-        -{formatNumber(rewards.villagersLost)}{" "}
-        {rewards.villagersLost === 1 ? "Villager" : "Villagers"}
+        -{t("common:population.villager", { count: rewards.villagersLost })}
       </div>
     );
   }
@@ -212,7 +211,7 @@ export default function RewardDialog({
       const amount = rewards.resourceLosses![resource as keyof typeof rewards.resourceLosses];
       lossItems.push(
         <div key={`resource-loss-${resource}`} className="text-sm text-foreground">
-          -{formatNumber(amount!)} {formatName(resource)}
+          -{formatNumber(amount!)} {getResourceName(resource, capitalizeWords(resource))}
         </div>
       );
     });
@@ -221,7 +220,7 @@ export default function RewardDialog({
     rewards.relicsLost.forEach((relic) => {
       lossItems.push(
         <div key={`relic-lost-${relic}`} className="text-sm text-foreground">
-          -{formatName(relic)}
+          -{getEffectName("relics", relic, capitalizeWords(relic))}
         </div>
       );
     });
@@ -230,7 +229,7 @@ export default function RewardDialog({
     rewards.clothingLost.forEach((clothing) => {
       lossItems.push(
         <div key={`clothing-lost-${clothing}`} className="text-sm text-foreground">
-          -{formatName(clothing)}
+          -{getEffectName("clothing", clothing, capitalizeWords(clothing))}
         </div>
       );
     });
@@ -263,9 +262,11 @@ export default function RewardDialog({
         )
       }
       successLog={successLog}
-      title={title?.trim() ? title : "Action Reward"}
+      title={title?.trim() ? title : t("ui:reward.actionReward")}
       variant={isLossVariant ? "loss" : "success"}
-      buttonText={isLossVariant ? "Continue" : "Claim Rewards"}
+      buttonText={
+        isLossVariant ? t("common:buttons.continue") : t("ui:reward.claimRewards")
+      }
       buttonId="reward-dialog-continue"
     >
       {content}

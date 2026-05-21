@@ -3,22 +3,23 @@ import { killVillagers } from "@/game/stateHelpers";
 import { calculateSuccessChance, GameEvent } from "./events";
 import { bloodMoonSacrificeAmount } from "../cruelMode";
 
+function bloodMoonI18nVars(state: GameState) {
+  return {
+    sacrificeAmount: bloodMoonSacrificeAmount(
+      state.cruelMode,
+      state.bloodMoonState?.occurrenceCount ?? 0,
+    ),
+  };
+}
+
 export const bloodMoonEvents: Record<string, GameEvent> = {
   bloodMoonAttack: {
     id: "bloodMoonAttack",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 8 && !state.bloodMoonState.hasWon,
     timeProbability: (state: GameState) =>
-      (state.bloodMoonState?.occurrenceCount ?? 0) === 0 ? 45 : 75,
-    title: "Blood Moon",
-    message: (state: GameState) => {
-      const sacrificeAmount = bloodMoonSacrificeAmount(
-        state.cruelMode,
-        state.bloodMoonState?.occurrenceCount ?? 0,
-      );
-
-      return `The moon at night turned blood red, village elders speak of lycanthropes. Ancient pacts demand a sacrifice of ${sacrificeAmount} villagers to appease the beasts. If you refuse, they will ensure their hunger is satisfied.`;
-    },
+      (state.bloodMoonState?.occurrenceCount ?? 0) === 0 ? 45 : 75,
+    i18nVars: bloodMoonI18nVars,
     priority: 5,
     repeatable: true,
     showAsTimedTab: true,
@@ -27,13 +28,6 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "sacrificeVillagers",
-        label: (state: GameState) => {
-          const sacrificeAmount = bloodMoonSacrificeAmount(
-            state.cruelMode,
-            state.bloodMoonState?.occurrenceCount ?? 0,
-          );
-          return `Sacrifice ${sacrificeAmount} villagers`;
-        },
         effect: (state: GameState) => {
           const sacrificeAmount = bloodMoonSacrificeAmount(
             state.cruelMode,
@@ -48,13 +42,12 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
               hasWon: false,
               occurrenceCount: (state.bloodMoonState?.occurrenceCount ?? 0) + 1,
             },
-            _logMessage: "The villagers are offered to the lycanthropes. With the blood moon fading, peace returns to the village. At least for now.",
+            _logMessageKey: "outcome0",
           };
         },
       },
       {
         id: "prepareForAttack",
-        label: "Prepare for attack",
         relevant_stats: ["strength", "knowledge"],
         success_chance: (state: GameState) => {
           const traps = state.buildings.traps;
@@ -109,8 +102,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
                 hasWon: true,
                 occurrenceCount: state.bloodMoonState?.occurrenceCount ?? 0,
               },
-              _logMessage:
-                "The lycanthropes attack, but your defenses hold. Their leader falls, and from its corpse you harvest Lycan Blood, still warm and seething with power.",
+              _logMessageKey: "outcome1",
             };
           }
 
@@ -134,14 +126,13 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
               hasWon: false,
               occurrenceCount: (state.bloodMoonState?.occurrenceCount ?? 0) + 1,
             },
-            _logMessage: "The lycanthropes overwhelm your defenses and overrun the settlement! The blood moon fades, but the threat remains.",
+            _logMessageKey: "outcome2",
           };
         },
       },
     ],
     fallbackChoice: {
       id: "prepareForAttack",
-      label: "Prepare for attack",
       effect: (state: GameState) => {
         // Same logic as prepareForAttack choice
         const traps = state.buildings.traps;
@@ -181,8 +172,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
               hasWon: true,
               occurrenceCount: state.bloodMoonState?.occurrenceCount ?? 0,
             },
-            _logMessage:
-              "The lycanthropes attack, but your defenses hold. Their leader falls, and from its corpse you harvest Lycan Blood, still warm and seething with power.",
+            _logMessageKey: "outcome3",
           };
         }
 
@@ -206,7 +196,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
             hasWon: false,
             occurrenceCount: (state.bloodMoonState?.occurrenceCount ?? 0) + 1,
           },
-          _logMessage: "The lycanthropes overwhelm your defenses and overrun the settlement! The blood moon fades, but the threat remains.",
+          _logMessageKey: "outcome4",
         };
       },
     },

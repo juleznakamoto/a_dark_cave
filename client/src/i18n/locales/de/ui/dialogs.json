@@ -1,0 +1,195 @@
+{
+  "event": {
+    "fallbackTitle": "Ereignis",
+    "choose": "Wähle eine Option",
+    "timeRemaining": "Verbleibende Zeit: {{seconds}}s",
+    "knowledgeTimeBonus": "+{{seconds}}s Entscheidungszeit durch Wissen{{maxSuffix}}",
+    "knowledgeTimeBonusMax": " (max.)"
+  },
+  "reward": {
+    "title": "Belohnung",
+    "loss": "Verlust",
+    "actionReward": "Aktionsbelohnung",
+    "claimRewards": "Belohnungen abholen"
+  },
+  "madness": {
+    "title": "Wahnsinnsereignis",
+    "change": "{{sign}} {{amount}} Wahnsinn"
+  },
+  "socialPrompt": {
+    "title": "Bleib in Verbindung und verdiene Belohnungen",
+    "description": "Schließe die Aufgaben unten ab, um Boni zu erhalten. Schließe alle Aufgaben ab, um einen exklusiven Gegenstand zu erhalten.",
+    "signUpRequiresSignInTooltip": "Registriere dich, um die Aufgabe abzuschließen",
+    "signUpTitle": "Registrieren (+{{amount}} Gold)",
+    "signUpDesc": "Erstelle ein kostenloses Konto, um deinen Spielfortschritt zu speichern und geräteübergreifend zu synchronisieren. Ohne Konto kann dein Fortschritt verloren gehen.",
+    "signUpButton": "Registrieren",
+    "emailUpdatesTitle": "E-Mail-Updates (+{{amount}} Gold)",
+    "subscribe": "Abonnieren",
+    "playlightTitle": "1 Spiel entdecken (+{{amount}} Gold)",
+    "discoverGames": "Spiele entdecken",
+    "inviteTitle": "1 Freund einladen (+{{amount}} Gold je Person)",
+    "inviteDesc": "Lade bis zu {{cap}} Freunde ein – jedes Mal erhalten ihr beide {{amount}} Gold ({{count}}/{{cap}} eingeladen).",
+    "copyInviteLink": "Einladungslink kopieren",
+    "progressComplete": "Du hast alle Aufgaben abgeschlossen. Du erhältst bald deine Belohnung.",
+    "progressToward": "Fortschritt zum exklusiven Gegenstand",
+    "progressAriaLabel": "Fortschritt exklusiver Gegenstand",
+    "alreadyClaimedReward": "Du hast diese Belohnung bereits abgeholt!",
+    "followRewardLog": "Du hast {{amount}} Gold erhalten, weil du uns auf {{platform}} folgst!",
+    "platforms": {
+      "instagram": {
+        "title": "Instagram (+{{amount}} Gold)",
+        "actionFollow": "Folgen"
+      },
+      "reddit": {
+        "title": "Reddit (+{{amount}} Gold)",
+        "actionJoin": "Beitreten"
+      }
+    },
+    "playlightDiscoverRewardLog": "Du hast {{amount}} Gold für das Entdecken von Spielen erhalten!",
+    "marketingSubscribeLog": "Du hast {{amount}} Gold für die Anmeldung zu E-Mail-Updates erhalten!"
+  },
+  "referral": {
+    "invitedLog": "Du hast jemand Neues in diese Welt eingeladen! +{{amount}} Gold"
+  },
+  "invite": {
+    "button": "Einladen",
+    "goldBonus": "+{{amount}} Gold",
+    "linkCopied": "Einladungslink kopiert!",
+    "linkCopiedDesc": "Teile ihn mit Freunden, um jeweils {{amount}} Gold zu verdienen.",
+    "copyFailed": "Einladungslink konnte nicht kopiert werden",
+    "tooltip": "Lade deine Freunde ein – ihr beide erhaltet {{amount}} Gold. Du kannst bis zu {{cap}} Freunde einladen. ({{count}}/{{cap}} eingeladen)."
+  },
+  "invest": {
+    "title": "Investieren",
+    "strategy": "Investitionsstrategie",
+    "amount": "Investitionsbetrag",
+    "potentialProfit": "Möglicher Gewinn:",
+    "startInvestment": "Investition starten",
+    "infoAriaLabel": "Investitionen und Strategietabelle erklären",
+    "unlockTooltip": "Wird bei höherer Gebäudestufe freigeschaltet",
+    "minutes": "{{count}} Min.",
+    "luckBonus": "+{{pct}} % Erfolgschance durch Glück (in Tabelle enthalten).",
+    "buildingLuckyBonus2": "+2 % Glückschance durch Gebäudestufe (in Tabelle enthalten).",
+    "buildingLuckyBonus1": "+1 % Glückschance durch Gebäudestufe (in Tabelle enthalten).",
+    "headers": {
+      "time": "Zeit",
+      "success": "Erfolg",
+      "profit": "Gewinn",
+      "lucky": "Glück",
+      "loss": "Verlust",
+      "wipeout": "Totalverlust"
+    },
+    "tooltip": {
+      "time": "Wie lange die Investition läuft.",
+      "success": "Chance auf eine erfolgreiche Investition.",
+      "profit": "Der Gewinn bei Erfolg.",
+      "lucky": "Chance bei Erfolg, den Gewinn mit {{multiplier}} zu multiplizieren.",
+      "loss": "Der Anteil deiner Investition, den du bei Misserfolg verlierst.",
+      "wipeout": "Chance, bei Misserfolg die gesamte Investition zu verlieren.",
+      "potentialProfit": "Maximaler Gewinn deiner Investition. Der zweite Wert gilt, wenn Glückschance eintritt (Gewinn × {{multiplier}})."
+    }
+  },
+  "gambler": {
+    "title": "Der besessene Spieler",
+    "srDescription": "Würfelspiel gegen den besessenen Spieler",
+    "rulesAriaLabel": "Würfelspielregeln",
+    "rulesTurns": "Du und der Spieler würfeln abwechselnd.",
+    "rulesTotals": "Die Würfe jedes Spielers werden addiert.",
+    "rulesGoal": "Das Ziel ist auf 15 gesetzt.",
+    "rulesWinLose": "Erreicht ein Spieler das Ziel genau, gewinnt er. Überschreitet er es, verliert er.",
+    "rulesStand": "Hat der Spieler am Zug mehr Punkte als der Gegner, kann er wählen, nicht zu würfeln.",
+    "tutorialIntro": "Um dir das Spiel beizubringen, bietet der Spieler an, {{count}} Mal ohne Einsatz zu spielen.",
+    "boneDiceIntro": "Setze deinen Einsatz. Mit Knochenwürfeln kannst du zweimal gegen den Spieler antreten.",
+    "placeBet": "Setze deinen Einsatz.",
+    "gamesRemaining": "Noch {{remaining}} von {{total}} Spielen.",
+    "requiresLuck": "Erfordert {{luck}} Glück zum Freischalten",
+    "bet": "Einsatz:",
+    "practiceBet": "Übung (0 Gold)",
+    "goal": "Ziel:",
+    "you": "Du",
+    "gambler": "Spieler",
+    "roll": "Würfeln",
+    "noRoll": "Nicht würfeln",
+    "youWin": "Du gewinnst",
+    "youLose": "Du verlierst",
+    "practiceOutcome": "Übungsrunde. Kein Gold gewonnen oder verloren.",
+    "goldWon": "+{{amount}} Gold",
+    "goldLost": "-{{amount}} Gold",
+    "practiceWinRemaining": "Du hast die Übungsrunde gewonnen (kein Gold im Einsatz). Noch {{remaining}} von {{total}} Übungsspielen.",
+    "practiceLoseRemaining": "Du hast die Übungsrunde verloren (kein Gold im Einsatz). Noch {{remaining}} von {{total}} Übungsspielen.",
+    "practiceWinComplete": "Du hast die Übungsrunde gewonnen (kein Gold im Einsatz). Übung abgeschlossen — du kannst Gold setzen.",
+    "practiceLoseComplete": "Du hast die Übungsrunde verloren (kein Gold im Einsatz). Übung abgeschlossen — du kannst Gold setzen."
+  },
+  "fullGame": {
+    "titleTrial": "Die Reise geht weiter",
+    "titleCheckout": "Kauf abschließen",
+    "trialDesc": "Du hast das Ende der Testversion erreicht. Die vollständige Reise wartet jenseits dieses Punkts.",
+    "oneTimePurchase": "Einmaliger Kauf. Keine Abos. Keine Mikrotransaktionen.",
+    "featureHours": "14+ Stunden Spielzeit",
+    "featureStructures": "100+ Gebäude",
+    "featureItems": "250+ Gegenstände, Gefährten, Bücher, Segen…",
+    "featureAchievements": "50+ Erfolge",
+    "featureStory": "Düstere und herausfordernde Geschichte basierend auf deinen Entscheidungen",
+    "signInRequired": "Bitte melde dich an, um die Vollversion zu kaufen.",
+    "continueJourney": "Reise fortsetzen",
+    "progressSaved": "Dein Fortschritt ist gespeichert. Du kannst jederzeit zurückkehren und dort weiterspielen, wo du aufgehört hast.",
+    "loadingPayment": "Zahlungssystem wird geladen…",
+    "purchaseSuccessful": "Kauf erfolgreich!",
+    "purchaseSuccessfulDesc": "Vollversion freigeschaltet und aktiviert! Du kannst deine Reise nun ohne Einschränkungen fortsetzen.",
+    "poweredBy": "Bereitgestellt von",
+    "legalConsent": "Mit dem Kauf stimmst du der sofortigen Lieferung digitaler Inhalte zu und verzichtest auf dein Widerrufsrecht. Weitere Informationen findest du in unseren",
+    "termsOfService": "Nutzungsbedingungen",
+    "rightOfWithdrawal": "Widerrufsrecht",
+    "completePurchaseFor": "Kauf abschließen für {{price}}",
+    "paymentFailed": "Zahlung fehlgeschlagen",
+    "notAuthenticated": "Benutzer nicht authentifiziert",
+    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten"
+  },
+  "leaderboard": {
+    "title": "Bestenliste",
+    "dev": "Entw.",
+    "prod": "Live",
+    "rank": "#",
+    "player": "Spieler",
+    "completionTime": "Abschlusszeit",
+    "noEntries": "Noch keine Einträge",
+    "lastUpdated": "Zuletzt aktualisiert: {{time}}",
+    "username": "Benutzername:",
+    "notSet": "Nicht festgelegt",
+    "currentPlaytime": "Aktuelle Spielzeit:",
+    "enterName": "Namen eingeben",
+    "normalMode": "Normaler Modus",
+    "cruelMode": "Grausamer Modus",
+    "loadFailed": "Bestenliste konnte nicht geladen werden",
+    "invalidUsername": "Ungültiger Benutzername",
+    "usernameEmpty": "Benutzername darf nicht leer sein",
+    "usernameTooLong": "Benutzername darf höchstens 20 Zeichen lang sein",
+    "mustSignIn": "Du musst angemeldet sein, um einen Benutzernamen festzulegen",
+    "usernameNotAllowed": "Benutzername nicht erlaubt",
+    "usernameInappropriate": "Dieser Benutzername enthält unangemessene Sprache. Bitte wähle einen anderen.",
+    "usernameTaken": "Benutzername vergeben",
+    "usernameTakenDesc": "Dieser Benutzername ist bereits vergeben. Bitte wähle einen anderen.",
+    "usernameSaved": "Benutzername gespeichert",
+    "usernameSavedDesc": "Dein Benutzername wurde aktualisiert",
+    "saveFailed": "Benutzername konnte nicht gespeichert werden"
+  },
+  "investmentResult": {
+    "title": "Investitionsergebnis"
+  },
+  "cube": {
+    "fallbackTitle": "Der flüsternde Würfel",
+    "fallbackMessage": "Der Würfel flüstert uralte Geheimnisse…",
+    "close": "Schließen",
+    "completionLog": "Du hast diese Reise abgeschlossen. Bleib hier oder starte ein neues Spiel. Vielleicht im Grausamen Modus, wenn du dich traust."
+  },
+  "timedEvent": {
+    "buy": "Kaufen",
+    "sell": "Verkaufen",
+    "sayGoodbye": "Abschied nehmen",
+    "successChance": "Erfolgschance: {{percent}}",
+    "discount": "{{percent}} % Rabatt",
+    "discountFromKnowledge": "{{percent}} % durch Wissen{{max}}",
+    "knowledgeMax": " (max.)",
+    "discountFromRing": "5 % durch Ring des Gehorsams"
+  }
+}

@@ -1,25 +1,27 @@
-import React from 'react';
+import React from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { useGameStore } from '@/game/state';
-import { logger } from '@/lib/logger';
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { useGameStore } from "@/game/state";
+import { logger } from "@/lib/logger";
+import { useTranslation } from "react-i18next";
 
 export default function InactivityDialog() {
   const { inactivityReason } = useGameStore();
+  const { t } = useTranslation("ui");
 
   const handleReload = () => {
-    logger.log('[INACTIVITY] User clicked reload button');
+    logger.log("[INACTIVITY] User clicked reload button");
     window.location.reload();
   };
 
-  const isMultiTab = inactivityReason === 'multitab';
-  const isTimeout = inactivityReason === 'timeout';
+  const isMultiTab = inactivityReason === "multitab";
+  const isTimeout = inactivityReason === "timeout";
 
   return (
     <Dialog open={true} onOpenChange={() => { }}>
@@ -27,34 +29,28 @@ export default function InactivityDialog() {
         className="[--adc-dialog-max-w:28rem] z-[210]"
         hideClose={true}
         hideOverlay={true}
-        customBackground={<div className="fixed inset-0 z-[200] bg-black/50 backdrop-blur-sm animate-fade-in" />}
+        customBackground={
+          <div className="fixed inset-0 z-[200] bg-black/50 backdrop-blur-sm animate-fade-in" />
+        }
       >
         <DialogHeader>
           <DialogTitle className="leading-6">
-            {isMultiTab && 'Another Login detected'}
-            {isTimeout && 'Game stopped due to inactivity'}
+            {isMultiTab && t("inactivity.multiTab")}
+            {isTimeout && t("inactivity.timeout")}
           </DialogTitle>
           <DialogDescription className="py-4 space-y-2">
-            {isMultiTab && (
-              <>
-                <p>Your account was logged in from another device or browser. To protect your save data, only one active session is allowed at a time.</p>
-                <p></p>
-              </>
-            )}
+            {isMultiTab && <p>{t("inactivity.multiTabDesc")}</p>}
             {isTimeout && (
               <>
-                <p>You have been inactive for 15 minutes. To prevent bad events from happening the game has been stopped. Your game has been saved.</p>
-                <p className="font-semibold">Please reload the page to continue playing.</p>
+                <p>{t("inactivity.timeoutDesc")}</p>
+                <p className="font-semibold">{t("inactivity.reloadHint")}</p>
               </>
             )}
           </DialogDescription>
         </DialogHeader>
-
-        <div className="flex justify-center">
-          <Button onClick={handleReload} className="w-full">
-            Reload Page
-          </Button>
-        </div>
+        <Button onClick={handleReload} className="w-full">
+          {t("inactivity.reload")}
+        </Button>
       </DialogContent>
     </Dialog>
   );

@@ -1,0 +1,71 @@
+{
+  "languageSelector": {
+    "label": "Sprache",
+    "ariaLabel": "Sprache auswählen"
+  },
+  "startScreen": {
+    "titleNormal": "Eine dunkle Höhle.",
+    "titleCruel": "Eine sehr dunkle Höhle.",
+    "airNormal": "Die Luft ist kalt und feucht.",
+    "airCruel": "Die Luft ist eiskalt und feucht.",
+    "seeNormal": "Du erkennst kaum die Umrisse um dich herum.",
+    "seeCruel": "Du erkennst kaum etwas um dich herum.",
+    "makeFire": "Feuer machen",
+    "boostDeactivate": "Klicken, um den Boost zu deaktivieren",
+    "recommendedBy": "Empfohlen von"
+  },
+  "footer": {
+    "fullGame": "Vollversion",
+    "trader": "Händler",
+    "donate": "Spenden",
+    "privacy": "Datenschutz",
+    "imprint": "Impressum",
+    "muteMusic": "Musik stummschalten",
+    "unmuteMusic": "Musik einschalten",
+    "muteSfx": "Soundeffekte stummschalten",
+    "unmuteSfx": "Soundeffekte einschalten",
+    "cruelModeActive": "Grausamer Modus aktiviert"
+  },
+  "profile": {
+    "title": "Profil",
+    "signInUp": "Anmelden/Up",
+    "emailsOn": "E-Mails an",
+    "emailsOff": "E-Mails aus",
+    "marketingOnTooltip": "Du erhältst derzeit E-Mails mit Updates, Rabatten und exklusiven Belohnungen. Tippe, um sie abzustellen.",
+    "marketingOffTooltip": "Du erhältst derzeit keine E-Mails mit Updates, Rabatten und exklusiven Belohnungen. Tippe, um sie einzuschalten.",
+    "rewardsTasks": "Belohnungsaufgaben",
+    "save": "Speichern",
+    "newGame": "Neues Spiel",
+    "restart": "Neu starten",
+    "signIn": "Anmelden",
+    "signOut": "Abmelden",
+    "leaderboard": "Bestenliste",
+    "rewards": "Belohnungen",
+    "deleteAccount": "Konto löschen",
+    "marketingSubscribe": "E-Mails abonnieren",
+    "marketingUnsubscribe": "E-Mails abbestellen",
+    "autoSaveSignedIn": "Spiel wird jede Minute automatisch gespeichert",
+    "autoSaveGuest": "Spiel wird alle 15 Sekunden automatisch gespeichert",
+    "signUpCloudSave": "Registriere dich, um in der Cloud zu speichern",
+    "lastSave": "Letzter Speicherstand: {{time}}",
+    "signedOut": "Erfolgreich abgemeldet",
+    "signOutError": "Fehler beim Abmelden",
+    "gameSaved": "Spiel erfolgreich gespeichert",
+    "saveFailed": "Speichern fehlgeschlagen",
+    "accountDeleted": "Dein Konto wurde gelöscht",
+    "accountDeletedDesc": "Du wurdest abgemeldet und der lokale Speicherstand auf diesem Gerät wurde gelöscht.",
+    "deleteAccountFailed": "Konto konnte nicht gelöscht werden",
+    "tryAgainLater": "Versuche es später erneut.",
+    "notSignedIn": "Nicht angemeldet",
+    "subscribed": "Du bist abonniert",
+    "unsubscribed": "Du bist abgemeldet",
+    "subscribedDesc": "Wir senden dir gelegentlich Updates und Angebote per E-Mail.",
+    "unsubscribedDesc": "Du erhältst keine Marketing-E-Mails von uns.",
+    "preferenceUpdateFailed": "Einstellung konnte nicht aktualisiert werden"
+  },
+  "pauseHotkey": {
+    "hintPrefix": "Drücke ",
+    "hintSuffix": " zum Pausieren"
+  },
+  "never": "Nie"
+}

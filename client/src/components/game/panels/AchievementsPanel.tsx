@@ -21,9 +21,10 @@ import {
 import type { AchievementRow } from "@/achievements/achievementHelpers";
 import type { AchievementChartConfig } from "@/achievements";
 import AchievementMiniRingChart from "@/achievements/AchievementMiniRingChart";
+import { useTranslation } from "react-i18next";
 
 class ChartErrorBoundary extends Component<
-  { children: ReactNode },
+  { children: ReactNode; unavailableLabel?: string },
   { hasError: boolean }
 > {
   constructor(props: { children: ReactNode }) {
@@ -39,7 +40,7 @@ class ChartErrorBoundary extends Component<
     if (this.state.hasError) {
       return (
         <div className="w-64 h-72 flex items-center justify-center text-xs text-neutral-500 text-center px-2">
-          Chart unavailable
+          {this.props.unavailableLabel ?? ""}
         </div>
       );
     }
@@ -58,6 +59,7 @@ function AchievementRowComponent({
   indicatorClassComplete: string;
   claimButtonClass: string;
 }) {
+  const { t } = useTranslation("ui");
   const canClaim = row.isFull && !row.isClaimed;
   const tooltipText = canClaim ? formatRewardsTooltip(row.rewards) : "";
 
@@ -89,7 +91,7 @@ function AchievementRowComponent({
               tooltip={tooltipText}
               tooltipId={`achievement-claim-${row.achievementId}`}
             >
-              Claim
+              {t("achievements.claim")}
             </GameButton>
           </div>
         )}
@@ -164,12 +166,14 @@ function TabTriggerWithTooltipWhenLocked({
   isActive,
   disabled,
   lockedTooltip,
+  chartUnavailable,
 }: {
   value: string;
   config: AchievementChartConfig;
   isActive: boolean;
   disabled: boolean;
   lockedTooltip: string;
+  chartUnavailable: string;
 }) {
   const trigger = (
     <TabsTrigger
@@ -181,7 +185,7 @@ function TabTriggerWithTooltipWhenLocked({
           : TAB_TRIGGER_CLASS
       }
     >
-      <ChartErrorBoundary>
+      <ChartErrorBoundary unavailableLabel={chartUnavailable}>
         <AchievementMiniRingChart config={config} isActive={isActive} hideProgress={disabled} />
       </ChartErrorBoundary>
     </TabsTrigger>
@@ -202,11 +206,14 @@ function TabTriggerWithTooltipWhenLocked({
 }
 
 export default function AchievementsPanel() {
+  const { t } = useTranslation("ui");
   const bookOfTrials = useGameStore((s) => s.books?.book_of_trials);
   const survivorsNotes = useGameStore((s) => s.relics?.survivors_notes);
   const hasBasicTab = !!survivorsNotes;
   const [activeTab, setActiveTab] = useState(hasBasicTab ? "basic" : "building");
   const effectiveTab = hasBasicTab ? activeTab : (activeTab === "basic" ? "building" : activeTab);
+  const lockedTooltip = t("achievements.notUnlocked");
+  const chartUnavailable = t("achievements.chartUnavailable");
   return (
     <div className="mt-0 flex h-full flex-col min-h-0 overflow-hidden w-full md:max-w-96">
       <Tabs
@@ -219,7 +226,7 @@ export default function AchievementsPanel() {
         >
           {hasBasicTab && (
             <TabsTrigger value="basic" className={TAB_TRIGGER_CLASS}>
-              <ChartErrorBoundary>
+              <ChartErrorBoundary unavailableLabel={chartUnavailable}>
                 <AchievementMiniRingChart config={basicChartConfig} isActive={effectiveTab === "basic"} />
               </ChartErrorBoundary>
             </TabsTrigger>
@@ -229,21 +236,24 @@ export default function AchievementsPanel() {
             config={buildingChartConfig}
             isActive={effectiveTab === "building"}
             disabled={!bookOfTrials}
-            lockedTooltip="Not yet unlocked."
+            lockedTooltip={lockedTooltip}
+            chartUnavailable={chartUnavailable}
           />
           <TabTriggerWithTooltipWhenLocked
             value="item"
             config={itemChartConfig}
             isActive={effectiveTab === "item"}
             disabled={!bookOfTrials}
-            lockedTooltip="Not yet unlocked."
+            lockedTooltip={lockedTooltip}
+            chartUnavailable={chartUnavailable}
           />
           <TabTriggerWithTooltipWhenLocked
             value="action"
             config={actionChartConfig}
             isActive={effectiveTab === "action"}
             disabled={!bookOfTrials}
-            lockedTooltip="Not yet unlocked."
+            lockedTooltip={lockedTooltip}
+            chartUnavailable={chartUnavailable}
           />
         </TabsList>
         {hasBasicTab && (

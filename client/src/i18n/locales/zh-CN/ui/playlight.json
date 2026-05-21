@@ -1,0 +1,9 @@
+{
+  "playlight": {
+    "welcomeTitle": "欢迎，Playlight 玩家",
+    "welcomeGift": "感谢使用 Playlight。{{reward}} 已作为欢迎礼物加入你的物品栏。",
+    "welcomeDiscount": "你在商店首次购买还可享受 {{percent}}% 折扣，折扣将自动生效。",
+    "moreGames": "更多游戏",
+    "discoveryAria": "发现"
+  }
+}

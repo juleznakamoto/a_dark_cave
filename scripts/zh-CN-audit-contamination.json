@@ -1,0 +1,7 @@
+[
+  {
+    "key": "ui/tooltips.json:ui.tooltips.buildings.buildDiscount",
+    "marker": "Discount",
+    "val": "{{percent}}% 建造 Discount"
+  }
+]

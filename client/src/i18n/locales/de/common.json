@@ -1,0 +1,88 @@
+{
+  "buttons": {
+    "close": "Schließen",
+    "continue": "Weiter",
+    "confirm": "Bestätigen",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "refresh": "Aktualisieren",
+    "dismiss": "Verwerfen",
+    "fight": "Kämpfen",
+    "retreat": "Zurückziehen",
+    "refuse": "Ablehnen",
+    "accept": "Annehmen",
+    "back": "Zurück",
+    "claim": "Abholen",
+    "activate": "Aktivieren",
+    "deactivate": "Deaktivieren"
+  },
+  "status": {
+    "loading": "Wird geladen...",
+    "processing": "Wird verarbeitet...",
+    "free": "Kostenlos",
+    "error": "Fehler",
+    "success": "Erfolg!",
+    "active": "Aktiv",
+    "activated": "Aktiviert"
+  },
+  "tabs": {
+    "cave": "Höhle",
+    "village": "Dorf",
+    "city": "Stadt",
+    "forest": "Wald",
+    "estate": "Anwesen",
+    "bastion": "Bastion",
+    "fortress": "Festung",
+    "trader": "Händler",
+    "achievements": "Erfolge",
+    "timedEvent": "Zeitereignis"
+  },
+  "resources": {
+    "wood": "Holz",
+    "stone": "Stein",
+    "food": "Nahrung",
+    "veinroot": "Aderwurzel",
+    "bones": "Knochen",
+    "fur": "Fell",
+    "leather": "Leder",
+    "bone_totem": "Knochentotem",
+    "leather_totem": "Ledertotem",
+    "iron": "Eisen",
+    "coal": "Kohle",
+    "sulfur": "Schwefel",
+    "obsidian": "Obsidian",
+    "adamant": "Adamant",
+    "steel": "Stahl",
+    "blacksteel": "Schwarzstahl",
+    "moonstone": "Mondstein",
+    "black_powder": "Schwarzpulver",
+    "ember_bomb": "Glutbombe",
+    "ashfire_dust": "Aschenfeuerstaub",
+    "ashfire_bomb": "Aschenfeuerbombe",
+    "void_bomb": "Leerenbombe",
+    "veinfire_elixir": "Aderfeuer-Elixier",
+    "poison_arrows": "Giftpfeile",
+    "torch": "Fackel",
+    "silver": "Silber",
+    "gold": "Gold"
+  },
+  "stats": {
+    "strength": "Stärke",
+    "knowledge": "Wissen",
+    "luck": "Glück",
+    "madness": "Wahnsinn"
+  },
+  "time": {
+    "never": "Nie",
+    "hoursMinutes": "{{hours}} Std. {{minutes}} Min.",
+    "minutesSeconds": "{{minutes}} Min. {{seconds}} Sek."
+  },
+  "population": {
+    "villager_one": "{{count}} Dorfbewohner",
+    "villager_other": "{{count}} Dorfbewohner",
+    "maxPopulation": "+{{count}} max. Bevölkerung"
+  },
+  "currency": {
+    "goldAmount": "{{amount}} Gold"
+  }
+}

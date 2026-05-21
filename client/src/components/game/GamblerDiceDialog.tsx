@@ -36,6 +36,7 @@ import {
   type GamblerDiceSession,
 } from "@/game/gamblerSession";
 import { formatNumber } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const DICE_FACES = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"] as const;
 const SPIN_FACES = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
@@ -114,20 +115,16 @@ function DiceFace({
 }
 
 function RulesInfoButton() {
+  const { t } = useTranslation(["ui", "common"]);
   return (
     <TooltipWrapper
       tooltip={
         <div className="text-xs space-y-1 max-w-[200px]">
-          <p>You and the Gambler take turns rolling a dice.</p>
-          <p>Each player's rolls are added up.</p>
-          <p>
-            The goal is set to 15.
-          </p>
-          <p>
-            If a player reaches the goal exactly, he wins. If he goes over, he loses.
-          </p>
-          <p>
-            If the player whose turn it is has more total points than the opponent, he may choose not to roll.          </p>
+          <p>{t("ui:gambler.rulesTurns")}</p>
+          <p>{t("ui:gambler.rulesTotals")}</p>
+          <p>{t("ui:gambler.rulesGoal")}</p>
+          <p>{t("ui:gambler.rulesWinLose")}</p>
+          <p>{t("ui:gambler.rulesStand")}</p>
         </div>
       }
       tooltipId="gambler-rules"
@@ -137,7 +134,7 @@ function RulesInfoButton() {
     >
       <span
         className="font-noto-symbols-2 inline-flex shrink-0 items-center justify-center text-sm font-normal leading-none"
-        aria-label="Dice game rules"
+        aria-label={t("ui:gambler.rulesAriaLabel")}
       >
         🛈
       </span>
@@ -153,6 +150,7 @@ export default function GamblerDiceDialog({
   playerLuck,
   onWagerSelected,
 }: GamblerDiceDialogProps) {
+  const { t } = useTranslation(["ui", "common"]);
   const hasBoneDice = useGameStore((s) => !!s.relics?.bone_dice);
   const gamblerRoundsRemaining = useGameStore((s) => {
     const gg = s.gamblerGame;
@@ -564,11 +562,11 @@ export default function GamblerDiceDialog({
       >
         <DialogHeader className="shrink-0 space-y-2 pb-3.5 mb-0.5">
           <DialogTitle className="text-sm flex items-center gap-2 leading-snug">
-            The Obsessed Gambler
+            {t("ui:gambler.title")}
             <RulesInfoButton />
           </DialogTitle>
           <DialogDescription className="sr-only">
-            Dice game against the obsessed gambler
+            {t("ui:gambler.srDescription")}
           </DialogDescription>
         </DialogHeader>
 
@@ -578,14 +576,18 @@ export default function GamblerDiceDialog({
               <div className="text-xs text-muted-foreground space-y-1">
                 <p>
                   {inGamblerTutorial
-                    ? `To help you learn the game, the Gambler offers to play ${GAMBLER_TUTORIAL_PLAYS} times without a bet.`
+                    ? t("ui:gambler.tutorialIntro", {
+                        count: GAMBLER_TUTORIAL_PLAYS,
+                      })
                     : hasBoneDice
-                      ? "Place your bet. Owning Bone Dice allows you to play two times against the Gambler."
-                      : "Place your bet."}
+                      ? t("ui:gambler.boneDiceIntro")
+                      : t("ui:gambler.placeBet")}
                 </p>
                 <p>
-                  {formatNumber(gamesRemainingDisplay)} of {formatNumber(totalGamesThisVisit)} games
-                  remaining.
+                  {t("ui:gambler.gamesRemaining", {
+                    remaining: formatNumber(gamesRemainingDisplay),
+                    total: formatNumber(totalGamesThisVisit),
+                  })}
                 </p>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -597,7 +599,7 @@ export default function GamblerDiceDialog({
                     className="text-xs"
                     button_id="gambler-wager-0"
                   >
-                    0 Gold
+                    {t("common:currency.goldAmount", { amount: 0 })}
                   </Button>
                 ) : (
                   WAGER_TIERS.map((tier) => {
@@ -616,7 +618,9 @@ export default function GamblerDiceDialog({
                         className={`text-xs ${!isUnlocked ? "opacity-40" : ""}`}
                         button_id={`gambler-wager-${tier}`}
                       >
-                        {formatNumber(tier)} Gold
+                        {t("common:currency.goldAmount", {
+                          amount: formatNumber(tier),
+                        })}
                       </Button>
                     );
 
@@ -626,7 +630,9 @@ export default function GamblerDiceDialog({
                           key={tier}
                           tooltip={
                             <div className="text-xs">
-                              Requires {requiredLuck} Luck to unlock
+                              {t("ui:gambler.requiresLuck", {
+                                luck: requiredLuck,
+                              })}
                             </div>
                           }
                           tooltipId={`gambler-wager-lock-${tier}`}
@@ -649,7 +655,7 @@ export default function GamblerDiceDialog({
                   className="text-xs font-medium text-foreground border-amber-900/50 hover:bg-amber-950/30 hover:text-foreground"
                   button_id="gambler-close-wager"
                 >
-                  Close
+                  {t("common:buttons.close")}
                 </Button>
               </div>
             </div>
@@ -659,15 +665,17 @@ export default function GamblerDiceDialog({
             <div className="space-y-3 flex flex-col flex-1 min-h-0">
               <div className="flex flex-col gap-1 text-xs text-muted-foreground shrink-0">
                 <span>
-                  Bet:{" "}
+                  {t("ui:gambler.bet")}{" "}
                   <span className="font-semibold text-foreground tabular-nums">
                     {wager === 0
-                      ? "Practice (0 Gold)"
-                      : `${formatNumber(wager)} Gold`}
+                      ? t("ui:gambler.practiceBet")
+                      : t("common:currency.goldAmount", {
+                          amount: formatNumber(wager),
+                        })}
                   </span>
                 </span>
                 <span>
-                  Goal:{" "}
+                  {t("ui:gambler.goal")}{" "}
                   <span className="font-semibold text-foreground tabular-nums">
                     {formatNumber(goal)}
                   </span>
@@ -680,7 +688,7 @@ export default function GamblerDiceDialog({
                     <div
                       className={`text-xs ${phase === "playerTurn" ? "font-semibold text-foreground" : "text-muted-foreground"}`}
                     >
-                      You
+                      {t("ui:gambler.you")}
                     </div>
                     <div
                       className="text-2xl font-bold tabular-nums"
@@ -696,7 +704,7 @@ export default function GamblerDiceDialog({
                     <div
                       className={`text-xs ${phase === "npcTurn" ? "font-semibold text-foreground" : "text-muted-foreground"}`}
                     >
-                      Gambler
+                      {t("ui:gambler.gambler")}
                     </div>
                     <div
                       className="text-2xl font-bold tabular-nums"
@@ -725,7 +733,7 @@ export default function GamblerDiceDialog({
                       className="text-xs"
                       button_id="gambler-roll"
                     >
-                      Roll
+                      {t("ui:gambler.roll")}
                     </Button>
                     <Button
                       variant="outline"
@@ -746,7 +754,7 @@ export default function GamblerDiceDialog({
                       className="text-xs"
                       button_id="gambler-stand"
                     >
-                      No Roll
+                      {t("ui:gambler.noRoll")}
                     </Button>
                   </div>
                 )}
@@ -759,15 +767,17 @@ export default function GamblerDiceDialog({
             <div className="space-y-4 flex flex-col flex-1 min-h-0">
               <div className="flex flex-col gap-1 text-xs text-muted-foreground">
                 <span>
-                  Bet:{" "}
+                  {t("ui:gambler.bet")}{" "}
                   <span className="font-semibold text-foreground tabular-nums">
                     {wager === 0
-                      ? "Practice (0 Gold)"
-                      : `${formatNumber(wager)} Gold`}
+                      ? t("ui:gambler.practiceBet")
+                      : t("common:currency.goldAmount", {
+                          amount: formatNumber(wager),
+                        })}
                   </span>
                 </span>
                 <span>
-                  Goal:{" "}
+                  {t("ui:gambler.goal")}{" "}
                   <span className="font-semibold text-foreground tabular-nums">
                     {formatNumber(goal)}
                   </span>
@@ -776,7 +786,7 @@ export default function GamblerDiceDialog({
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center space-y-1">
-                  <div className="text-xs text-muted-foreground">You</div>
+                  <div className="text-xs text-muted-foreground">{t("ui:gambler.you")}</div>
                   <div
                     className={`text-2xl font-bold ${playerTotal > goal ? "text-red-400" : ""}`}
                   >
@@ -784,7 +794,7 @@ export default function GamblerDiceDialog({
                   </div>
                 </div>
                 <div className="text-center space-y-1">
-                  <div className="text-xs text-muted-foreground">Gambler</div>
+                  <div className="text-xs text-muted-foreground">{t("ui:gambler.gambler")}</div>
                   <div
                     className={`text-2xl font-bold ${npcTotal > goal ? "text-red-400" : ""}`}
                   >
@@ -796,11 +806,11 @@ export default function GamblerDiceDialog({
               <div className="text-center">
                 {outcome === "win" ? (
                   <div className="text-sm font-semibold text-green-800 dark:text-green-400">
-                    You win
+                    {t("ui:gambler.youWin")}
                   </div>
                 ) : (
                   <div className="text-sm font-semibold text-red-900 dark:text-red-400">
-                    You lose
+                    {t("ui:gambler.youLose")}
                   </div>
                 )}
               </div>
@@ -809,10 +819,10 @@ export default function GamblerDiceDialog({
                 <div className="h-px w-full bg-white/10" />
                 <div className="text-center text-xs text-foreground pt-4">
                   {wager === 0
-                    ? "Practice round. No gold won or lost."
+                    ? t("ui:gambler.practiceOutcome")
                     : outcome === "win"
-                      ? `+${formatNumber(wager)} Gold`
-                      : `-${formatNumber(wager)} Gold`}
+                      ? t("ui:gambler.goldWon", { amount: formatNumber(wager) })
+                      : t("ui:gambler.goldLost", { amount: formatNumber(wager) })}
                 </div>
               </div>
 
@@ -824,7 +834,7 @@ export default function GamblerDiceDialog({
                   className="text-xs"
                   button_id="gambler-outcome-close"
                 >
-                  Close
+                  {t("common:buttons.close")}
                 </Button>
               </div>
             </div>

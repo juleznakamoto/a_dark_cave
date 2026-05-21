@@ -34,6 +34,8 @@ import {
 } from "@/game/marketingEmailReward";
 import { isRewardsTasksShortcutVisible } from "@/game/socialPromoExclusiveReward";
 import PlaylightDiscoveryButton from "./PlaylightDiscoveryButton";
+import LanguageSelector from "./LanguageSelector";
+import { useTranslation } from "react-i18next";
 
 export default function ProfileMenu() {
   const {
@@ -79,6 +81,7 @@ export default function ProfileMenu() {
   const [marketingPrefLoading, setMarketingPrefLoading] = useState(false);
   const [deleteAccountInProgress, setDeleteAccountInProgress] = useState(false);
   const { toast } = useToast();
+  const { t } = useTranslation("ui");
 
   const showRewardsTasksShortcut = isRewardsTasksShortcutVisible({
     social_media_rewards,
@@ -163,11 +166,11 @@ export default function ProfileMenu() {
       useGameStore.getState().initialize({} as any);
 
       toast({
-        title: "Signed out successfully",
+        title: t("profile.signedOut"),
       });
     } catch (error) {
       toast({
-        title: "Error signing out",
+        title: t("profile.signOutError"),
         variant: "destructive",
       });
     }
@@ -215,12 +218,12 @@ export default function ProfileMenu() {
       }));
 
       toast({
-        title: "Game saved successfully",
+        title: t("profile.gameSaved"),
       });
     } catch (error) {
       logger.error("Failed to manually save game:", error);
       toast({
-        title: "Failed to save game",
+        title: t("profile.saveFailed"),
         variant: "destructive",
       });
     }
@@ -260,14 +263,13 @@ export default function ProfileMenu() {
       setDeleteAccountDialogOpen(false);
       useGameStore.getState().initialize({} as any);
       toast({
-        title: "Your account was deleted",
-        description:
-          "You've been signed out and this device's local save was cleared.",
+        title: t("profile.accountDeleted"),
+        description: t("profile.accountDeletedDesc"),
       });
     } catch (e: unknown) {
       toast({
-        title: "Could not delete account",
-        description: e instanceof Error ? e.message : "Try again later.",
+        title: t("profile.deleteAccountFailed"),
+        description: e instanceof Error ? e.message : t("profile.tryAgainLater"),
         variant: "destructive",
       });
     } finally {
@@ -285,7 +287,7 @@ export default function ProfileMenu() {
       } = await supabase.auth.getSession();
       if (!session?.access_token) {
         toast({
-          title: "Not signed in",
+          title: t("profile.notSignedIn"),
           variant: "destructive",
         });
         return;
@@ -303,16 +305,16 @@ export default function ProfileMenu() {
       }
 
       toast({
-        title: next ? "You're subscribed" : "You're unsubscribed",
+        title: next ? t("profile.subscribed") : t("profile.unsubscribed"),
         description: next
-          ? "We'll send occasional updates and offers to your email."
-          : "You won't receive marketing emails from us.",
+          ? t("profile.subscribedDesc")
+          : t("profile.unsubscribedDesc"),
       });
       setAccountDropdownOpen(false);
     } catch (e: unknown) {
       toast({
-        title: "Could not update preference",
-        description: e instanceof Error ? e.message : "Try again later.",
+        title: t("profile.preferenceUpdateFailed"),
+        description: e instanceof Error ? e.message : t("profile.tryAgainLater"),
         variant: "destructive",
       });
     } finally {
@@ -347,6 +349,7 @@ export default function ProfileMenu() {
         isDeleting={deleteAccountInProgress}
       />
       <div className="flex flex-wrap items-center justify-end gap-2 max-w-[200px]">
+        <LanguageSelector />
         <DropdownMenu
           open={accountDropdownOpen}
           onOpenChange={(open) => {
@@ -363,7 +366,7 @@ export default function ProfileMenu() {
               size="xs"
               className="px-2 py-1 text-xs hover relative bg-background text-neutral-300 backdrop-blur-sm border border-border"
             >
-              Profile
+              {t("profile.title")}
               {authNotificationVisible &&
                 !authNotificationSeen &&
                 !currentUser && (
@@ -390,14 +393,16 @@ export default function ProfileMenu() {
                 <div className="text-xs">
                   <p>
                     {currentUser
-                      ? "Game auto-saves every minute"
-                      : "Game auto-saves every 15 seconds"}
+                      ? t("profile.autoSaveSignedIn")
+                      : t("profile.autoSaveGuest")}
                   </p>
                   {!currentUser && (
-                    <p className="mt-1">Sign up to save game in the cloud</p>
+                    <p className="mt-1">{t("profile.signUpCloudSave")}</p>
                   )}
                   {lastSaved && (
-                    <p className="mt-1">Last Save: {lastSaved}</p>
+                    <p className="mt-1">
+                      {t("profile.lastSave", { time: lastSaved })}
+                    </p>
                   )}
                 </div>
               }
@@ -413,17 +418,17 @@ export default function ProfileMenu() {
                   : ""
               }
             >
-              Save
+              {t("profile.save")}
             </DropdownMenuItemWithTooltip>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleRestartGame}>
-              New Game
+              {t("profile.newGame")}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             {currentUser ? (
               <>
                 <DropdownMenuItem onClick={handleSignOut}>
-                  Sign Out
+                  {t("profile.signOut")}
                 </DropdownMenuItem>
               </>
             ) : (
@@ -434,7 +439,7 @@ export default function ProfileMenu() {
                   setAuthNotificationSeen(true);
                 }}
               >
-                Sign In/Up
+                {t("profile.signInUp")}
               </DropdownMenuItem>
             )}
             {currentUser && (
@@ -444,8 +449,8 @@ export default function ProfileMenu() {
                   tooltip={
                     <p className="text-xs">
                       {marketingOptIn
-                        ? "You are currently receiving emails with updates, discounts, and exclusive rewards. Tap to turn off."
-                        : "You are currently not receiving emails with updates, discounts, and exclusive rewards. Tap to turn on."}
+                        ? t("profile.marketingOnTooltip")
+                        : t("profile.marketingOffTooltip")}
                     </p>
                   }
                   tooltipId="marketing-email-updates-info"
@@ -469,12 +474,17 @@ export default function ProfileMenu() {
                         aria-hidden
                       />
                       <span>
-                        {marketingOptIn ? "Emails On" : "Emails Off"}
+                        {marketingOptIn
+                          ? t("profile.emailsOn")
+                          : t("profile.emailsOff")}
                       </span>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
                       <span className="font-semibold">
-                        +{MARKETING_SUBSCRIBE_GOLD} Gold
+                        +
+                        {t("common:currency.goldAmount", {
+                          amount: MARKETING_SUBSCRIBE_GOLD,
+                        })}
                       </span>
                       {social_media_rewards[MARKETING_EMAIL_REWARD_KEY]
                         ?.claimed && (
@@ -493,7 +503,7 @@ export default function ProfileMenu() {
                     setDeleteAccountDialogOpen(true);
                   }}
                 >
-                  Delete account
+                  {t("profile.deleteAccount")}
                 </DropdownMenuItem>
               </>
             )}
@@ -504,7 +514,7 @@ export default function ProfileMenu() {
         <div className="flex items-start gap-0.5 shrink-0">
           {showRewardsTasksShortcut && (
             <TooltipWrapper
-              tooltip={<p className="text-xs">Rewards tasks</p>}
+              tooltip={<p className="text-xs">{t("profile.rewardsTasks")}</p>}
               tooltipId="exclusive-item-shortcut"
               className="relative p-0 w-7 h-7 rounded-md bg-transparent flex items-center justify-center cursor-pointer hover:bg-muted/30 transition-colors shrink-0 border-0 shadow-none overflow-visible"
               onClick={() => setSocialPromptDialogOpen(true)}

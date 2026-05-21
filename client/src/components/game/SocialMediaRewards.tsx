@@ -1,31 +1,17 @@
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useGameStore } from "@/game/state";
-import { LogEntry } from "@/game/rules/events";
-import { saveGame } from "@/game/save";
-import { buildGameState } from "@/game/stateHelpers";
-import { logger } from "@/lib/logger";
 import { getCurrentUser } from "@/game/auth";
 import { useState, useEffect } from "react";
-
-// Social media platform configurations
-const SOCIAL_PLATFORMS = [
-  {
-    id: 'instagram',
-    name: 'Instagram',
-    url: 'https://www.instagram.com/a_dark_cave/',
-    reward: 100,
-  },
-  {
-    id: 'reddit',
-    name: 'Reddit',
-    url: 'https://www.reddit.com/r/aDarkCave/',
-    reward: 100,
-  },
-];
+import {
+  SOCIAL_PLATFORMS,
+  getSocialPlatformActionLabel,
+  getSocialPlatformTitle,
+} from "@/game/socialPlatforms";
+import { claimSocialFollowReward } from "@/game/claimSocialFollowReward";
+import { useTranslation } from "react-i18next";
 
 export default function SocialMediaRewards() {
-  const updateResource = useGameStore((state) => state.updateResource);
-  const addLogEntry = useGameStore((state) => state.addLogEntry);
+  const { t } = useTranslation("common");
   const [currentUser, setCurrentUser] = useState<{
     id: string;
     email: string;
@@ -38,68 +24,6 @@ export default function SocialMediaRewards() {
     };
     checkAuth();
   }, []);
-
-  const handleSocialFollow = async (platformId: string, url: string, reward: number, platformName: string) => {
-    // Get fresh state to check claim status
-    const currentRewards = useGameStore.getState().social_media_rewards;
-
-    // Check if already claimed
-    if (currentRewards[platformId]?.claimed) {
-      const alreadyClaimedLog: LogEntry = {
-        id: `social-reward-already-claimed-${platformId}-${Date.now()}`,
-        message: "You've already claimed this reward!",
-        timestamp: Date.now(),
-        type: "system",
-      };
-      addLogEntry(alreadyClaimedLog);
-      return;
-    }
-
-    // Open the social media link
-    window.open(url, "_blank");
-
-    // Mark as claimed and persist in state - create completely new object reference
-    useGameStore.setState((state) => {
-      const newRewards = {
-        ...state.social_media_rewards,
-        [platformId]: {
-          claimed: true,
-          timestamp: Date.now(),
-        },
-      };
-      return {
-        social_media_rewards: newRewards,
-      };
-    });
-
-    // Award the gold
-    updateResource("gold", reward);
-
-    // Add reward message to event log
-    const rewardLog: LogEntry = {
-      id: `social-reward-claimed-${platformId}-${Date.now()}`,
-      message: `You received ${reward} Gold for (maybe) following us on ${platformName}!`,
-      timestamp: Date.now(),
-      type: "system",
-    };
-    addLogEntry(rewardLog);
-
-    // Immediately save the game state to persist the reward claim
-    try {
-      const currentState = useGameStore.getState();
-      const gameState = buildGameState(currentState);
-      const playTimeToSave = currentState.isNewGame ? 0 : currentState.playTime;
-
-      await saveGame(gameState, playTimeToSave);
-
-      useGameStore.setState({
-        lastSaved: new Date().toLocaleTimeString(),
-        isNewGame: false
-      });
-    } catch (error) {
-      logger.error("Failed to save social media reward claim:", error);
-    }
-  };
 
   return (
     <>
@@ -114,7 +38,11 @@ export default function SocialMediaRewards() {
           <DropdownMenuItem
             key={platform.id}
             onClick={() => {
-              handleSocialFollow(platform.id, platform.url, platform.reward, platform.name);
+              claimSocialFollowReward(
+                platform.id,
+                platform.url,
+                platform.reward,
+              );
             }}
             disabled={!isActive}
             className={!isActive ? "opacity-50 cursor-not-allowed" : ""}
@@ -122,7 +50,7 @@ export default function SocialMediaRewards() {
             <div className="flex items-center justify-between w-full">
               <div className="flex items-center gap-1">
                 <span>
-                  Follow&nbsp;
+                  {getSocialPlatformActionLabel(platform.id)}&nbsp;
                 </span>
                 {platform.id === 'instagram' ? (
                   <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
@@ -135,13 +63,16 @@ export default function SocialMediaRewards() {
                 ) : (
                   <img
                     src={platform.icon}
-                    alt={platform.name}
+                    alt={getSocialPlatformTitle(platform.id, platform.reward)}
                     className="w-3 h-3 opacity-90"
                   />
                 )}
               </div>
               <div className="flex items-center gap-2">
-                <span className="font-semibold">&nbsp;+{platform.reward} Gold</span>
+                <span className="font-semibold">
+                  &nbsp;+
+                  {t("currency.goldAmount", { amount: platform.reward })}
+                </span>
                 {isClaimed && <span className="text-xs text-muted-foreground">✓</span>}
 
               </div>

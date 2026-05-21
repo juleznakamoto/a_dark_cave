@@ -1,5 +1,6 @@
 import { useGameStore } from "@/game/state";
 import type { AchievementChartConfig } from "./achievementTypes";
+import { getAchievementLabel } from "@/i18n/resolveGameText";
 
 export interface AchievementRow {
   segmentId: string;
@@ -71,7 +72,7 @@ export function getAchievementRows(
       const rewards = computeAchievementRewards(seg, BTP);
       rows.push({
         segmentId: seg.segmentId,
-        label: seg.label,
+        label: getAchievementLabel(config.idPrefix, seg.segmentId, seg.label),
         currentCount,
         maxCount: seg.maxCount,
         achievementId,

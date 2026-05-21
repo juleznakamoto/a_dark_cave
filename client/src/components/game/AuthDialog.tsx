@@ -26,6 +26,7 @@ import { logger } from "@/lib/logger";
 import { cn } from "@/lib/utils";
 import { SIGN_UP_WELCOME_GOLD } from "@shared/schema";
 import { parseRefParam } from "@shared/referralCode";
+import { useTranslation } from "react-i18next";
 
 interface AuthDialogProps {
   isOpen: boolean;
@@ -38,6 +39,7 @@ export default function AuthDialog({
   onClose,
   onAuthSuccess,
 }: AuthDialogProps) {
+  const { t } = useTranslation("ui");
   const signUpPromptEligibleForGold = useGameStore(
     (state) => state.signUpPromptEligibleForGold
   );
@@ -47,19 +49,16 @@ export default function AuthDialog({
     return parseRefParam(params.get("ref"));
   };
 
-  // Default to signup if there's a referral code or rewards sign-up task opened auth, otherwise signin
   const [mode, setMode] = useState<"signin" | "signup" | "reset">(
     getReferralCode() || signUpPromptEligibleForGold ? "signup" : "signin",
   );
 
-  // When opening from rewards sign-up task, switch to signup mode
   useEffect(() => {
     if (isOpen && signUpPromptEligibleForGold) {
       setMode("signup");
     }
   }, [isOpen, signUpPromptEligibleForGold]);
 
-  /** Persist guest progress right before OAuth/email sign-up (reload-safe). */
   const flushBeforeSignUp = async () => {
     if (useGameStore.getState().isUserSignedIn) return;
     try {
@@ -93,9 +92,8 @@ export default function AuthDialog({
 
     if (mode === "signup" && !acceptedTerms) {
       toast({
-        title: "Terms required",
-        description:
-          "You must accept the Terms of Service and Privacy Policy to create an account.",
+        title: t("auth.termsRequired"),
+        description: t("auth.termsRequiredDesc"),
         variant: "destructive",
       });
       return;
@@ -107,11 +105,10 @@ export default function AuthDialog({
       if (mode === "signin") {
         await signIn(email, password);
         toast({
-          title: "Signed in successfully",
-          description: "Your game will now sync across devices.",
+          title: t("auth.signedInTitle"),
+          description: t("auth.signedInDesc"),
         });
 
-        // Reload game from Supabase after sign-in
         const { useGameStore } = await import("@/game/state");
         await useGameStore.getState().loadGame();
 
@@ -127,8 +124,10 @@ export default function AuthDialog({
         const granted = await grantSignupWelcomeBonusEmailSignup();
         if (granted) {
           toast({
-            title: "Welcome bonus!",
-            description: `You received ${SIGN_UP_WELCOME_GOLD} Gold for signing up.`,
+            title: t("auth.welcomeBonusTitle"),
+            description: t("auth.welcomeBonusDesc", {
+              amount: SIGN_UP_WELCOME_GOLD,
+            }),
           });
         }
         setSignupSuccess(true);
@@ -136,23 +135,23 @@ export default function AuthDialog({
         const { resetPassword } = await import("@/game/auth");
         await resetPassword(email);
         toast({
-          title: "Password reset email sent",
-          description:
-            "Check your email for a link to reset your password. Also look in spam folder.",
+          title: t("auth.resetSent"),
+          description: t("auth.resetSentDesc"),
         });
         setMode("signin");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as { message?: string };
       const isNetworkError =
         error instanceof TypeError &&
-        (error.message === "Failed to fetch" ||
-          error.message.toLowerCase().includes("networkerror") ||
-          error.message.toLowerCase().includes("failed to fetch"));
+        (err.message === "Failed to fetch" ||
+          err.message?.toLowerCase().includes("networkerror") ||
+          err.message?.toLowerCase().includes("failed to fetch"));
       toast({
-        title: "Error",
+        title: t("auth.errorTitle"),
         description: isNetworkError
-          ? "Could not reach the sign-in server. If you're using NoScript or a content blocker, you may need to allow connections from this site."
-          : error.message || "Authentication failed",
+          ? t("auth.networkErrorDesc")
+          : err.message || t("auth.authFailed"),
         variant: "destructive",
       });
     } finally {
@@ -163,9 +162,8 @@ export default function AuthDialog({
   const handleGoogleSignIn = async () => {
     if (mode === "signup" && !acceptedTerms) {
       toast({
-        title: "Terms required",
-        description:
-          "You must accept the Terms of Service and Privacy Policy to create an account.",
+        title: t("auth.termsRequired"),
+        description: t("auth.termsRequiredDesc"),
         variant: "destructive",
       });
       return;
@@ -179,60 +177,65 @@ export default function AuthDialog({
       await signInWithGoogle({
         signupFlow: mode === "signup",
         marketingOptIn,
-        referralCode:
-          mode === "signup" ? getReferralCode() : undefined,
+        referralCode: mode === "signup" ? getReferralCode() : undefined,
       });
-      // Supabase will redirect to Google and then back to your app
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as { message?: string };
       const isNetworkError =
         error instanceof TypeError &&
-        (error.message === "Failed to fetch" ||
-          error.message.toLowerCase().includes("networkerror") ||
-          error.message.toLowerCase().includes("failed to fetch"));
+        (err.message === "Failed to fetch" ||
+          err.message?.toLowerCase().includes("networkerror") ||
+          err.message?.toLowerCase().includes("failed to fetch"));
       toast({
-        title: "Error",
+        title: t("auth.errorTitle"),
         description: isNetworkError
-          ? "Could not reach the sign-in server. If you're using NoScript or a content blocker, you may need to allow connections from this site."
-          : error.message || "Google sign-in failed",
+          ? t("auth.networkErrorDesc")
+          : err.message || t("auth.googleSignInFailed"),
         variant: "destructive",
       });
       setLoading(false);
     }
   };
 
-  const signupNeedsTerms =
-    mode === "signup" && !acceptedTerms;
+  const signupNeedsTerms = mode === "signup" && !acceptedTerms;
+
+  const dialogTitle = signupSuccess
+    ? t("auth.accountCreatedTitle")
+    : mode === "signin"
+      ? t("auth.signInTitle")
+      : mode === "signup"
+        ? t("auth.signUpTitle")
+        : t("auth.resetPasswordTitle");
+
+  const dialogDescription = !signupSuccess
+    ? mode === "signin"
+      ? t("auth.signInDesc")
+      : mode === "signup"
+        ? t("auth.signUpDesc")
+        : t("auth.resetDesc")
+    : "";
+
+  const submitLabel = loading
+    ? t("auth.loading")
+    : mode === "signin"
+      ? t("auth.signIn")
+      : mode === "signup"
+        ? t("auth.signUpButton")
+        : t("auth.sendResetLink");
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="[--adc-dialog-max-w:28rem] z-[70]">
         <DialogHeader>
-          <DialogTitle>
-            {signupSuccess
-              ? "Account created successfully"
-              : mode === "signin"
-                ? "Sign In"
-                : mode === "signup"
-                  ? "Create Account"
-                  : "Reset Password"}
-          </DialogTitle>
-          <DialogDescription>
-            {!signupSuccess
-              ? mode === "signin"
-                ? "Sign in to sync your game across devices"
-                : mode === "signup"
-                  ? "Create an account to save your progress in the cloud. You will keep your current progress."
-                  : "Enter your email to receive a password reset link"
-              : ""}
-          </DialogDescription>
+          <DialogTitle>{dialogTitle}</DialogTitle>
+          <DialogDescription>{dialogDescription}</DialogDescription>
         </DialogHeader>
         {signupSuccess ? (
           <div className="space-y-6 py-2">
             <div className="text-center space-y-2">
               <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3">
                 <p className="text-md font-medium text-red-600">
-                  Please check your email to verify your account. Also check
-                  your spam folder.
+                  {t("auth.verifyEmailReminder")}
                 </p>
               </div>
             </div>
@@ -240,19 +243,19 @@ export default function AuthDialog({
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t("auth.email")}</Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                placeholder="your@email.com"
+                placeholder={t("auth.emailPlaceholder")}
               />
             </div>
             {mode !== "reset" && (
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t("auth.password")}</Label>
                 <Input
                   id="password"
                   type="password"
@@ -269,7 +272,7 @@ export default function AuthDialog({
                       onClick={() => setMode("reset")}
                       className="text-xs text-muted-foreground hover:text-foreground/70 underline-offset-2 hover:underline"
                     >
-                      Forgot password?
+                      {t("auth.forgotPassword")}
                     </button>
                   </div>
                 )}
@@ -288,23 +291,23 @@ export default function AuthDialog({
                   htmlFor="terms"
                   className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  I accept the{" "}
+                  {t("auth.acceptTermsPrefix")}{" "}
                   <a
                     href="/terms"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="underline"
                   >
-                    Terms of Service
+                    {t("auth.termsOfService")}
                   </a>{" "}
-                  and{" "}
+                  {t("auth.acceptTermsAnd")}{" "}
                   <a
                     href="/privacy"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="underline"
                   >
-                    Privacy Policy
+                    {t("auth.privacyPolicy")}
                   </a>
                 </label>
               </div>
@@ -322,8 +325,10 @@ export default function AuthDialog({
                   htmlFor="marketing"
                   className="flex items-center justify-between text-sm leading-snug peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  <span>Get updates, discounts & exclusive rewards</span>
-                  <span className="text-muted-foreground font-normal ml-1">(optional)</span>
+                  <span>{t("auth.marketingOptIn")}</span>
+                  <span className="text-muted-foreground font-normal ml-1">
+                    {t("auth.marketingOptional")}
+                  </span>
                 </label>
               </div>
             )}
@@ -337,13 +342,7 @@ export default function AuthDialog({
                 disabled={loading}
                 aria-disabled={signupNeedsTerms || undefined}
               >
-                {loading
-                  ? "Loading..."
-                  : mode === "signin"
-                    ? "Sign In"
-                    : mode === "signup"
-                      ? "Sign Up"
-                      : "Send Reset Link"}
+                {submitLabel}
               </Button>
               {mode !== "reset" && (
                 <>
@@ -353,7 +352,7 @@ export default function AuthDialog({
                     </div>
                     <div className="relative flex justify-center text-xs uppercase">
                       <span className="bg-background px-2 text-muted-foreground">
-                        or continue with
+                        {t("auth.orContinueWith")}
                       </span>
                     </div>
                   </div>
@@ -387,8 +386,8 @@ export default function AuthDialog({
                       />
                     </svg>
                     {mode === "signup"
-                      ? "Sign up with Google"
-                      : "Sign in with Google"}
+                      ? t("auth.signUpWithGoogle")
+                      : t("auth.signInWithGoogle")}
                   </Button>
                 </>
               )}
@@ -404,10 +403,10 @@ export default function AuthDialog({
                 }}
               >
                 {mode === "signin"
-                  ? "Don't have an account? Sign up"
+                  ? t("auth.noAccountSignUp")
                   : mode === "signup"
-                    ? "Already have an account? Sign in"
-                    : "Back to sign in"}
+                    ? t("auth.hasAccountSignIn")
+                    : t("auth.backToSignIn")}
               </Button>
             </div>
           </form>

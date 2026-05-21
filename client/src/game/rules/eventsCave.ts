@@ -6,9 +6,7 @@ export const caveEvents: Record<string, GameEvent> = {
   ringOfDrownedChoice: {
     id: "ringOfDrownedChoice",
     condition: (state: GameState) => false, // Only triggered by cave exploration
-    title: "Ring of Drowned",
-    message:
-      "Deep in the forgotten city, you find a strange ring that drips constantly with water. Do you keep it?",
+
     priority: 5,
     repeatable: false,
     isTimedChoice: true,
@@ -16,7 +14,6 @@ export const caveEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "keepRing",
-        label: "Keep it",
         effect: (state: GameState) => {
           return {
             clothing: {
@@ -30,14 +27,12 @@ export const caveEvents: Record<string, GameEvent> = {
                 ringOfDrownedChoice: true,
               },
             },
-            _logMessage:
-              "You slip the ring onto your finger. Water continues to drip from it continuously, never stopping.",
+            _logMessageKey: "outcome0",
           };
         },
       },
       {
         id: "leaveRing",
-        label: "Leave it",
         effect: (state: GameState) => {
           return {
             story: {
@@ -47,15 +42,13 @@ export const caveEvents: Record<string, GameEvent> = {
                 ringOfDrownedChoice: true,
               },
             },
-            _logMessage:
-              "You decide the risk is too great. As you turn away, you hear a faint splash behind you, as if something has fallen into deep water, though no water is nearby.",
+            _logMessageKey: "outcome1",
           };
         },
       },
     ],
     fallbackChoice: {
       id: "doNothing",
-      label: "Do nothing",
       effect: (state: GameState) => {
         const deathResult = killVillagers(state, 1);
         return {
@@ -67,8 +60,7 @@ export const caveEvents: Record<string, GameEvent> = {
               ringOfDrownedChoice: true,
             },
           },
-          _logMessage:
-            "Your hesitation proves fatal. One of your men, unable to resist the mysterious ring, picks it up. Immediately, water begins pouring from his mouth in an endless torrent. He drowns on dry land.",
+          _logMessageKey: "outcome2",
         };
       },
     },
@@ -77,9 +69,7 @@ export const caveEvents: Record<string, GameEvent> = {
   shadowFluteChoice: {
     id: "shadowFluteChoice",
     condition: (state: GameState) => false, // Only triggered by cave exploration
-    title: "The Shadow Flute",
-    message:
-      "Deep in the cave you discover a bone flute of disturbing craftsmanship. As you play it, the shadows around you begin to move in unnatural ways, as if dancing to a melody. Do you keep it?",
+
     priority: 5,
     repeatable: false,
     isTimedChoice: true,
@@ -87,7 +77,6 @@ export const caveEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "keepFlute",
-        label: "Keep it",
         effect: (state: GameState) => {
           return {
             relics: {
@@ -101,14 +90,12 @@ export const caveEvents: Record<string, GameEvent> = {
                 shadowFluteChoice: true,
               },
             },
-            _logMessage:
-              "You keep the bone flute. Its tunes are beautiful, yet there's a subtle dissonance that gnaws quietly at your mind.",
+            _logMessageKey: "outcome0",
           };
         },
       },
       {
         id: "leaveFlute",
-        label: "Leave it",
         effect: (state: GameState) => {
           return {
             story: {
@@ -118,15 +105,13 @@ export const caveEvents: Record<string, GameEvent> = {
                 shadowFluteChoice: true,
               },
             },
-            _logMessage:
-              "You set the flute back down carefully. The shadows return to their natural stillness, and the oppressive atmosphere lifts.",
+            _logMessageKey: "outcome1",
           };
         },
       },
     ],
     fallbackChoice: {
       id: "doNothing",
-      label: "Do nothing",
       relevant_stats: ["luck"],
       effect: (state: GameState) => {
         const luck = state.stats.luck || 0;
@@ -142,7 +127,8 @@ export const caveEvents: Record<string, GameEvent> = {
               shadowFluteChoice: true,
             },
           },
-          _logMessage: `Your hesitation proves costly. The shadows grow hungry and violent, writhing with unnatural life. They surge forward and devour ${actualDevoured} members of your fellowship. Their screams echo briefly before being swallowed by silence.`,
+          _logMessageKey: "outcome2",
+          _logMessageVars: { actualDevoured },
         };
       },
     },
@@ -151,9 +137,7 @@ export const caveEvents: Record<string, GameEvent> = {
   hollowKingScepterChoice: {
     id: "hollowKingScepterChoice",
     condition: (state: GameState) => false, // Only triggered by cave exploration
-    title: "The Hollow King Scepter",
-    message:
-      "In the throne room of the citadel, you find a magnificent scepter of obsidian. It must have belonged to the king of this lost city. Dark knowledge flows from it. Do you keep it?",
+
     priority: 5,
     repeatable: false,
     isTimedChoice: true,
@@ -161,7 +145,6 @@ export const caveEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "keepScepter",
-        label: "Keep it",
         effect: (state: GameState) => {
           return {
             relics: {
@@ -175,14 +158,12 @@ export const caveEvents: Record<string, GameEvent> = {
                 hollowKingScepterChoice: true,
               },
             },
-            _logMessage:
-              "You grasp the Hollow King Scepter, feeling immense power flow through you. Ancient knowledge floods your mind, along with the King memories of his final, maddening days.",
+            _logMessageKey: "outcome0",
           };
         },
       },
       {
         id: "leaveScepter",
-        label: "Leave it",
         effect: (state: GameState) => {
           return {
             story: {
@@ -192,15 +173,13 @@ export const caveEvents: Record<string, GameEvent> = {
                 hollowKingScepterChoice: true,
               },
             },
-            _logMessage:
-              "You decide to leave the dead King scepter where it belongs. As you turn away, you swear you hear a faint whisper of disappointment echoing through the empty throne room.",
+            _logMessageKey: "outcome1",
           };
         },
       },
     ],
     fallbackChoice: {
       id: "doNothing",
-      label: "Do nothing",
       effect: (state: GameState) => {
         const luck = state.stats.luck || 0;
         const deaths = Math.floor((1 - luck) * Math.random() * 6) + 3;
@@ -215,7 +194,8 @@ export const caveEvents: Record<string, GameEvent> = {
               hollowKingScepterChoice: true,
             },
           },
-          _logMessage: `As you stand frozen in indecision, the men grow impatient and greedy. One reaches for the scepter, then another. Soon they are fighting viciously. In the bloody melee ${actualDeaths} of your fellowship die, their blood mixing with the dust of ages.`,
+          _logMessageKey: "outcome2",
+          _logMessageVars: { actualDeaths },
         };
       },
     },
@@ -224,9 +204,7 @@ export const caveEvents: Record<string, GameEvent> = {
   bloodstainedBeltChoice: {
     id: "bloodstainedBeltChoice",
     condition: (state: GameState) => false, // Only triggered by cave exploration
-    title: "Bloodstained Belt",
-    message:
-      "Hanging from a rusted spike in the cave wall you find a thick leather belt, dark with old bloodstains. Do you take it?",
+
     priority: 5,
     repeatable: false,
     isTimedChoice: true,
@@ -234,7 +212,6 @@ export const caveEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "takeBelt",
-        label: "Take it",
         effect: (state: GameState) => {
           return {
             clothing: {
@@ -248,14 +225,12 @@ export const caveEvents: Record<string, GameEvent> = {
                 bloodstainedBeltChoice: true,
               },
             },
-            _logMessage:
-              "You buckle the belt around your waist. A faint whisper seems to curl at the edge of your thoughts.",
+            _logMessageKey: "outcome0",
           };
         },
       },
       {
         id: "leaveBelt",
-        label: "Leave it",
         effect: (state: GameState) => {
           return {
             story: {
@@ -265,15 +240,13 @@ export const caveEvents: Record<string, GameEvent> = {
                 bloodstainedBeltChoice: true,
               },
             },
-            _logMessage:
-              "You leave the belt where it hangs. Whatever blood soaked into it, you would rather not carry that history with you.",
+            _logMessageKey: "outcome1",
           };
         },
       },
     ],
     fallbackChoice: {
       id: "doNothing",
-      label: "Do nothing",
       effect: (state: GameState) => {
         const deathResult = killVillagers(state, 1);
         return {
@@ -285,8 +258,7 @@ export const caveEvents: Record<string, GameEvent> = {
               bloodstainedBeltChoice: true,
             },
           },
-          _logMessage:
-            "One of your men buckles it on before you can stop him. He laughs, then gasps as the belt tightens. His hands scrabble at the leather, but there's no give. By the time you reach him, it's too late.",
+          _logMessageKey: "outcome2",
         };
       },
     },
@@ -295,9 +267,7 @@ export const caveEvents: Record<string, GameEvent> = {
   boneDiceChoice: {
     id: "boneDiceChoice",
     condition: (state: GameState) => false, // Only triggered by cave exploration
-    title: "The Bone Dice",
-    message:
-      "As you descend further, you find a set of bone dice carved with ancient runes. These dice have seen much fortune and much tragedy. Do you keep them?",
+
     priority: 5,
     repeatable: false,
     isTimedChoice: true,
@@ -305,7 +275,6 @@ export const caveEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "keepDice",
-        label: "Keep them",
         effect: (state: GameState) => {
           return {
             relics: {
@@ -319,14 +288,12 @@ export const caveEvents: Record<string, GameEvent> = {
                 boneDiceChoice: true,
               },
             },
-            _logMessage:
-              "You pocket the bone dice. They feel warm in your hand.",
+            _logMessageKey: "outcome0",
           };
         },
       },
       {
         id: "leaveDice",
-        label: "Leave them",
         effect: (state: GameState) => {
           return {
             story: {
@@ -336,15 +303,13 @@ export const caveEvents: Record<string, GameEvent> = {
                 boneDiceChoice: true,
               },
             },
-            _logMessage:
-              "You decide to leave them on the cave floor. As you walk away, you hear them rattle once, as if rolling themselves in farewell.",
+            _logMessageKey: "outcome1",
           };
         },
       },
     ],
     fallbackChoice: {
       id: "doNothing",
-      label: "Do nothing",
       effect: (state: GameState) => {
         return {
           story: {
@@ -354,7 +319,7 @@ export const caveEvents: Record<string, GameEvent> = {
               boneDiceChoice: true,
             },
           },
-          _logMessage: `Your hesitation seems to anger the ancient magic within the dice. They roll from your hand into the darkness.`,
+          _logMessageKey: "outcome2",
         };
       },
     },

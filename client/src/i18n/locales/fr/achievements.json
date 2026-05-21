@@ -1,0 +1,184 @@
+{
+  "action": {
+    "0-chopWood": {
+      "label": "Bûcheron"
+    },
+    "0-craftTorches": {
+      "label": "Fabricant de torches"
+    },
+    "0-exploreCave": {
+      "label": "Explorateur de grottes"
+    },
+    "0-gamblerWins": {
+      "label": "Joueur aguerri"
+    },
+    "0-hunt": {
+      "label": "Chasseur"
+    },
+    "1-mineAdamant": {
+      "label": "Mineur d'adamant"
+    },
+    "1-mineCoal": {
+      "label": "Mineur de charbon"
+    },
+    "1-mineIron": {
+      "label": "Mineur de fer"
+    },
+    "1-mineObsidian": {
+      "label": "Mineur d'obsidienne"
+    },
+    "1-mineStone": {
+      "label": "Mineur de pierre"
+    },
+    "1-mineSulfur": {
+      "label": "Mineur de soufre"
+    },
+    "2-animals": {
+      "label": "Sacrificateur d'animaux"
+    },
+    "2-boneTotems": {
+      "label": "Sacrificateur d'os"
+    },
+    "2-craftBoneTotems": {
+      "label": "Artisan de totems d'os"
+    },
+    "2-craftLeatherTotems": {
+      "label": "Artisan de totems de cuir"
+    },
+    "2-leatherTotems": {
+      "label": "Sacrificateur de cuir"
+    },
+    "3-ashfireBombs": {
+      "label": "Artisan de bombes de feu cendré"
+    },
+    "3-emberBombs": {
+      "label": "Artisan de bombes de braise"
+    },
+    "4-feedFire": {
+      "label": "Gardien du feu"
+    },
+    "4-merchantPurchases": {
+      "label": "Marchandeur"
+    },
+    "4-solsticeGatherings": {
+      "label": "Célébrant du solstice"
+    },
+    "4-wellRested": {
+      "label": "Gros dormeur"
+    }
+  },
+  "basic": {
+    "0-coalMiner": {
+      "label": "Récolter du charbon"
+    },
+    "0-hunter": {
+      "label": "Chasseur"
+    },
+    "0-ironMiner": {
+      "label": "Récolter du fer"
+    },
+    "0-stoneMiner": {
+      "label": "Récolter de la pierre"
+    },
+    "0-woodGatherer": {
+      "label": "Récolter du bois"
+    },
+    "1-builder": {
+      "label": "Construire des bâtiments"
+    },
+    "1-communityBuilder": {
+      "label": "Bâtir une communauté"
+    },
+    "1-explorer": {
+      "label": "Explorer la grotte"
+    },
+    "1-toolCrafter": {
+      "label": "Fabriquer des outils"
+    },
+    "1-torchCrafter": {
+      "label": "Fabriquer des torches"
+    }
+  },
+  "building": {
+    "0-0": {
+      "label": "Abri simple"
+    },
+    "0-1": {
+      "label": "Abri solide"
+    },
+    "0-2": {
+      "label": "Abri nordique"
+    },
+    "0-3": {
+      "label": "Abri nomade"
+    },
+    "1-0": {
+      "label": "Chasseurs"
+    },
+    "1-1": {
+      "label": "Forgerons"
+    },
+    "1-2": {
+      "label": "Fondeurs"
+    },
+    "1-3": {
+      "label": "Tanneurs"
+    },
+    "2-0": {
+      "label": "Mineurs"
+    },
+    "3-0": {
+      "label": "Marchands"
+    },
+    "3-1": {
+      "label": "Pourvoyeurs"
+    },
+    "3-2": {
+      "label": "Érudits"
+    },
+    "3-3": {
+      "label": "Prêtres"
+    },
+    "4-0": {
+      "label": "Murs du fort"
+    },
+    "4-1": {
+      "label": "Poste de guet"
+    }
+  },
+  "item": {
+    "0-axes": {
+      "label": "Haches"
+    },
+    "0-lanterns": {
+      "label": "Lanternes"
+    },
+    "0-pickaxes": {
+      "label": "Pioches"
+    },
+    "1-bows": {
+      "label": "Arcs"
+    },
+    "1-swords": {
+      "label": "Épées"
+    },
+    "2-explorer_pack": {
+      "label": "Travail du cuir"
+    },
+    "2-schematic_weapons": {
+      "label": "Schémas"
+    },
+    "3-ancient_books": {
+      "label": "Sagesse ancienne"
+    },
+    "3-fellowship": {
+      "label": "Bonne compagnie"
+    },
+    "4-blacksteel_equipment": {
+      "label": "Équipement de guerre sombre"
+    },
+    "4-blacksteel_tools": {
+      "label": "Outils sombres"
+    }
+  }
+}

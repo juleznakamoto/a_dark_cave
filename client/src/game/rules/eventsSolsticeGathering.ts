@@ -2,7 +2,7 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
 const MAX_TIER = 20;
-const SOLSTICE_DURATION_MS = 10 * 60 * 1000; // 10 minutes
+const SOLSTICE_DURATION_MS = 10 * 60 * 1000;
 
 function getGoldCost(tier: number): number {
   return Math.min(25 * tier, 25 * MAX_TIER);
@@ -14,6 +14,13 @@ function getFoodCost(tier: number): number {
 
 export const solsticeGatheringEvent: GameEvent = {
   id: "solsticeGathering",
+  i18nVars: (state: GameState) => {
+    const tier = state.solsticeState?.tier ?? 1;
+    return {
+      goldCost: getGoldCost(tier),
+      foodCost: getFoodCost(tier),
+    };
+  },
   condition: (state: GameState) => {
     if (!state.flags?.forestUnlocked) {
       return false;
@@ -31,39 +38,27 @@ export const solsticeGatheringEvent: GameEvent = {
 
   timeProbability: 40,
   cooldownPercent: 0.65,
-  title: "Solstice Gathering",
-  message:
-    "The villagers propose a gathering to mark the longest night of the year. Fires will be lit, food prepared, and games held. Travelers may come, drawn by the light.",
   priority: 3,
   repeatable: true,
   showAsTimedTab: true,
-  timedTabDuration: 3 * 60 * 1000, // 3 minutes
+  timedTabDuration: 3 * 60 * 1000,
   choices: [
     {
       id: "hostSolstice",
-      label: "Host gathering",
-      cost: (state: GameState) => {
-        const tier = state.solsticeState?.tier ?? 1;
-        const goldCost = getGoldCost(tier);
-        const foodCost = getFoodCost(tier);
-        return `${goldCost} gold, ${foodCost} food`;
-      },
-      effect: (
-        state: GameState,
-      ): Partial<GameState> & { _logMessage?: string } => {
+      effect: (state: GameState) => {
         const tier = state.solsticeState?.tier ?? 1;
         const goldCost = getGoldCost(tier);
         const foodCost = getFoodCost(tier);
 
         if (state.resources.gold < goldCost) {
           return {
-            _logMessage: "You don't have enough gold for the gathering.",
+            _logMessageKey: "outcome0",
           };
         }
 
         if (state.resources.food < foodCost) {
           return {
-            _logMessage: "You don't have enough food for the gathering.",
+            _logMessageKey: "outcome1",
           };
         }
 
@@ -88,35 +83,22 @@ export const solsticeGatheringEvent: GameEvent = {
             ...(state.triggeredEvents || {}),
             solsticeGathering: true,
           },
-          _logMessage:
-            "The fires burn and laughter breaks the darkness for a time. By dawn, many visitors linger, considering staying.",
+          _logMessageKey: "outcome2",
         };
       },
     },
     {
       id: "refuseSolstice",
-      label: "Refuse",
-      effect: (
-        state: GameState,
-      ): Partial<GameState> & { _logMessage?: string } => {
-        return {
-          _logMessage:
-            "You decline. The night passes without cheer, warmth, or laughter.",
-        };
-      },
+      effect: () => ({
+        _logMessageKey: "outcome3",
+      }),
     },
   ],
   fallbackChoice: {
     id: "doNothing",
-    label: "No Decision Made",
-    effect: (
-      state: GameState,
-    ): Partial<GameState> & { _logMessage?: string } => {
-      return {
-        _logMessage:
-          "You decline. The night passes without cheer, warmth, or laughter.",
-      };
-    },
+    effect: () => ({
+      _logMessageKey: "outcome3",
+    }),
   },
 };
 

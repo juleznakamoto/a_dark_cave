@@ -1,0 +1,1926 @@
+[
+  {
+    "key": "common.resources.poison_arrows",
+    "en": "Poison Arrows"
+  },
+  {
+    "key": "ui.auth.accountCreatedTitle",
+    "en": "Account created successfully"
+  },
+  {
+    "key": "ui.auth.resetPasswordTitle",
+    "en": "Reset Password"
+  },
+  {
+    "key": "ui.auth.signInDesc",
+    "en": "Sign in to sync your game across devices"
+  },
+  {
+    "key": "ui.auth.signUpDesc",
+    "en": "Create an account to save your progress in the cloud. You will keep your current progress."
+  },
+  {
+    "key": "ui.auth.resetDesc",
+    "en": "Enter your email to receive a password reset link"
+  },
+  {
+    "key": "ui.auth.verifyEmailReminder",
+    "en": "Please check your email to verify your account. Also check your spam folder."
+  },
+  {
+    "key": "ui.auth.emailPlaceholder",
+    "en": "your@email.com"
+  },
+  {
+    "key": "ui.auth.loading",
+    "en": "Loading..."
+  },
+  {
+    "key": "ui.auth.signUpButton",
+    "en": "Sign Up"
+  },
+  {
+    "key": "ui.auth.orContinueWith",
+    "en": "or continue with"
+  },
+  {
+    "key": "ui.auth.signUpWithGoogle",
+    "en": "Sign up with Google"
+  },
+  {
+    "key": "ui.auth.signInWithGoogle",
+    "en": "Sign in with Google"
+  },
+  {
+    "key": "ui.auth.noAccountSignUp",
+    "en": "Don't have an account? Sign up"
+  },
+  {
+    "key": "ui.auth.hasAccountSignIn",
+    "en": "Already have an account? Sign in"
+  },
+  {
+    "key": "ui.auth.backToSignIn",
+    "en": "Back to sign in"
+  },
+  {
+    "key": "ui.auth.acceptTermsPrefix",
+    "en": "I accept the"
+  },
+  {
+    "key": "ui.auth.termsOfService",
+    "en": "Terms of Service"
+  },
+  {
+    "key": "ui.auth.acceptTermsAnd",
+    "en": "and"
+  },
+  {
+    "key": "ui.auth.privacyPolicy",
+    "en": "Privacy Policy"
+  },
+  {
+    "key": "ui.auth.marketingOptIn",
+    "en": "Get updates, discounts & exclusive rewards"
+  },
+  {
+    "key": "ui.auth.marketingOptional",
+    "en": "(optional)"
+  },
+  {
+    "key": "ui.auth.signedInTitle",
+    "en": "Signed in successfully"
+  },
+  {
+    "key": "ui.auth.signedInDesc",
+    "en": "Your game will now sync across devices."
+  },
+  {
+    "key": "ui.auth.welcomeBonusTitle",
+    "en": "Welcome bonus!"
+  },
+  {
+    "key": "ui.auth.errorTitle",
+    "en": "Error"
+  },
+  {
+    "key": "ui.auth.networkErrorDesc",
+    "en": "Could not reach the sign-in server. If you're using NoScript or a content blocker, you may need to allow connections from this site."
+  },
+  {
+    "key": "ui.auth.authFailed",
+    "en": "Authentication failed"
+  },
+  {
+    "key": "ui.auth.googleSignInFailed",
+    "en": "Google sign-in failed"
+  },
+  {
+    "key": "ui.emailConfirmed.title",
+    "en": "Email Confirmed"
+  },
+  {
+    "key": "ui.emailConfirmed.description",
+    "en": "Your email has been verified successfully. Your account is now active and your progress will be saved to the cloud."
+  },
+  {
+    "key": "ui.deleteAccount.deleting",
+    "en": "Deleting…"
+  },
+  {
+    "key": "ui.combat.roundTitle",
+    "en": "Combat - Round {{round}}"
+  },
+  {
+    "key": "ui.combat.youLost",
+    "en": "You lost"
+  },
+  {
+    "key": "ui.combat.youWin",
+    "en": "You win"
+  },
+  {
+    "key": "ui.combat.bastion",
+    "en": "Bastion"
+  },
+  {
+    "key": "ui.combat.fortress",
+    "en": "Fortress"
+  },
+  {
+    "key": "ui.combat.items",
+    "en": "Items"
+  },
+  {
+    "key": "ui.combat.integrity",
+    "en": "Integrity"
+  },
+  {
+    "key": "ui.combat.attack",
+    "en": "Attack"
+  },
+  {
+    "key": "ui.combat.defense",
+    "en": "Defense"
+  },
+  {
+    "key": "ui.combat.attackFailed",
+    "en": "Attack failed"
+  },
+  {
+    "key": "ui.combat.crushingStrikeFailed",
+    "en": "Crushing Strike failed"
+  },
+  {
+    "key": "ui.combat.critical",
+    "en": "critical"
+  },
+  {
+    "key": "ui.combat.criticalParen",
+    "en": "({{label}})"
+  },
+  {
+    "key": "ui.combat.available",
+    "en": "Available: {{current}}/{{max}}"
+  },
+  {
+    "key": "ui.combat.crushingStrike",
+    "en": "Crushing Strike"
+  },
+  {
+    "key": "ui.combat.bloodflameSphere",
+    "en": "Bloodflame Sphere"
+  },
+  {
+    "key": "ui.combat.poisonArrows",
+    "en": "Poison Arrows"
+  },
+  {
+    "key": "ui.combat.restlessKnightWounded",
+    "en": "Restless Knight is wounded and cannot fight"
+  },
+  {
+    "key": "ui.combat.elderWizardWounded",
+    "en": "Elder Wizard is wounded and cannot cast spells"
+  },
+  {
+    "key": "ui.combat.fellowInjured",
+    "en": "{{name}} got injured."
+  },
+  {
+    "key": "ui.combat.buildingDamaged",
+    "en": "{{name}} got damaged."
+  },
+  {
+    "key": "ui.attackWaves.soon",
+    "en": "soon"
+  },
+  {
+    "key": "ui.event.fallbackTitle",
+    "en": "Event"
+  },
+  {
+    "key": "ui.madness.title",
+    "en": "Madness Event"
+  },
+  {
+    "key": "ui.madness.change",
+    "en": "{{sign}} {{amount}} Madness"
+  },
+  {
+    "key": "ui.socialPrompt.title",
+    "en": "Stay connected and earn Rewards"
+  },
+  {
+    "key": "ui.socialPrompt.description",
+    "en": "Complete the tasks below to receive bonuses. Complete all tasks to receive an exclusive item."
+  },
+  {
+    "key": "ui.socialPrompt.signUpRequiresSignInTooltip",
+    "en": "sign up to complete task"
+  },
+  {
+    "key": "ui.socialPrompt.signUpDesc",
+    "en": "Create a free account to save your game progress and sync across devices. Without an account, your progress may be lost."
+  },
+  {
+    "key": "ui.socialPrompt.signUpButton",
+    "en": "Sign Up"
+  },
+  {
+    "key": "ui.socialPrompt.subscribe",
+    "en": "Subscribe"
+  },
+  {
+    "key": "ui.socialPrompt.discoverGames",
+    "en": "Discover games"
+  },
+  {
+    "key": "ui.socialPrompt.copyInviteLink",
+    "en": "Copy invite link"
+  },
+  {
+    "key": "ui.socialPrompt.progressComplete",
+    "en": "You have finished all tasks. You will soon receive your reward."
+  },
+  {
+    "key": "ui.socialPrompt.progressToward",
+    "en": "Progress toward exclusive item"
+  },
+  {
+    "key": "ui.socialPrompt.progressAriaLabel",
+    "en": "Exclusive item progress"
+  },
+  {
+    "key": "ui.socialPrompt.alreadyClaimedReward",
+    "en": "You've already claimed this reward!"
+  },
+  {
+    "key": "ui.socialPrompt.platforms.instagram.actionFollow",
+    "en": "Follow"
+  },
+  {
+    "key": "ui.socialPrompt.platforms.reddit.actionJoin",
+    "en": "Join"
+  },
+  {
+    "key": "ui.invite.button",
+    "en": "Invite"
+  },
+  {
+    "key": "ui.invite.linkCopied",
+    "en": "Invite link copied!"
+  },
+  {
+    "key": "ui.invite.copyFailed",
+    "en": "Could not copy invite link"
+  },
+  {
+    "key": "ui.invest.title",
+    "en": "Invest"
+  },
+  {
+    "key": "ui.invest.strategy",
+    "en": "Investment Strategy"
+  },
+  {
+    "key": "ui.invest.amount",
+    "en": "Investment Amount"
+  },
+  {
+    "key": "ui.invest.potentialProfit",
+    "en": "Potential Profit:"
+  },
+  {
+    "key": "ui.invest.startInvestment",
+    "en": "Start Investment"
+  },
+  {
+    "key": "ui.invest.infoAriaLabel",
+    "en": "Explain investments and the strategy table"
+  },
+  {
+    "key": "ui.invest.unlockTooltip",
+    "en": "Unlocks at higher building level"
+  },
+  {
+    "key": "ui.invest.minutes",
+    "en": "{{count}} min"
+  },
+  {
+    "key": "ui.invest.luckBonus",
+    "en": "+{{pct}} % Success Chance from Luck (included in table)."
+  },
+  {
+    "key": "ui.invest.buildingLuckyBonus2",
+    "en": "+2 % Lucky Chance from building level (included in table)."
+  },
+  {
+    "key": "ui.invest.buildingLuckyBonus1",
+    "en": "+1 % Lucky Chance from building level (included in table)."
+  },
+  {
+    "key": "ui.invest.headers.time",
+    "en": "Time"
+  },
+  {
+    "key": "ui.invest.headers.success",
+    "en": "Success"
+  },
+  {
+    "key": "ui.invest.headers.profit",
+    "en": "Profit"
+  },
+  {
+    "key": "ui.invest.headers.lucky",
+    "en": "Lucky"
+  },
+  {
+    "key": "ui.invest.headers.loss",
+    "en": "Loss"
+  },
+  {
+    "key": "ui.invest.headers.wipeout",
+    "en": "Wipeout"
+  },
+  {
+    "key": "ui.invest.tooltip.time",
+    "en": "How long the investment runs."
+  },
+  {
+    "key": "ui.invest.tooltip.success",
+    "en": "Chance of a successful investment."
+  },
+  {
+    "key": "ui.invest.tooltip.profit",
+    "en": "The profit you gain in case of success."
+  },
+  {
+    "key": "ui.invest.tooltip.lucky",
+    "en": "Chance on success to multiply your profit by {{multiplier}}."
+  },
+  {
+    "key": "ui.invest.tooltip.loss",
+    "en": "The portion of your investment you lose in case of failure."
+  },
+  {
+    "key": "ui.invest.tooltip.wipeout",
+    "en": "Chance to lose your entire investment in case of failure."
+  },
+  {
+    "key": "ui.invest.tooltip.potentialProfit",
+    "en": "Maximum profit you can gain on your investment. Second value is if Lucky Chance hits (profit × {{multiplier}})."
+  },
+  {
+    "key": "ui.gambler.title",
+    "en": "The Obsessed Gambler"
+  },
+  {
+    "key": "ui.gambler.srDescription",
+    "en": "Dice game against the obsessed gambler"
+  },
+  {
+    "key": "ui.gambler.rulesAriaLabel",
+    "en": "Dice game rules"
+  },
+  {
+    "key": "ui.gambler.rulesTurns",
+    "en": "You and the Gambler take turns rolling a dice."
+  },
+  {
+    "key": "ui.gambler.rulesTotals",
+    "en": "Each player's rolls are added up."
+  },
+  {
+    "key": "ui.gambler.rulesGoal",
+    "en": "The goal is set to 15."
+  },
+  {
+    "key": "ui.gambler.rulesWinLose",
+    "en": "If a player reaches the goal exactly, he wins. If he goes over, he loses."
+  },
+  {
+    "key": "ui.gambler.rulesStand",
+    "en": "If the player whose turn it is has more total points than the opponent, he may choose not to roll."
+  },
+  {
+    "key": "ui.gambler.tutorialIntro",
+    "en": "To help you learn the game, the Gambler offers to play {{count}} times without a bet."
+  },
+  {
+    "key": "ui.gambler.boneDiceIntro",
+    "en": "Place your bet. Owning Bone Dice allows you to play two times against the Gambler."
+  },
+  {
+    "key": "ui.gambler.placeBet",
+    "en": "Place your bet."
+  },
+  {
+    "key": "ui.gambler.gamesRemaining",
+    "en": "{{remaining}} of {{total}} games remaining."
+  },
+  {
+    "key": "ui.gambler.requiresLuck",
+    "en": "Requires {{luck}} Luck to unlock"
+  },
+  {
+    "key": "ui.gambler.bet",
+    "en": "Bet:"
+  },
+  {
+    "key": "ui.gambler.goal",
+    "en": "Goal:"
+  },
+  {
+    "key": "ui.gambler.you",
+    "en": "You"
+  },
+  {
+    "key": "ui.gambler.gambler",
+    "en": "Gambler"
+  },
+  {
+    "key": "ui.gambler.roll",
+    "en": "Roll"
+  },
+  {
+    "key": "ui.gambler.noRoll",
+    "en": "No Roll"
+  },
+  {
+    "key": "ui.gambler.youWin",
+    "en": "You win"
+  },
+  {
+    "key": "ui.gambler.youLose",
+    "en": "You lose"
+  },
+  {
+    "key": "ui.gambler.practiceOutcome",
+    "en": "Practice round. No gold won or lost."
+  },
+  {
+    "key": "ui.fullGame.titleCheckout",
+    "en": "Complete Your Purchase"
+  },
+  {
+    "key": "ui.fullGame.trialDesc",
+    "en": "You have reached the end of the trial. The full journey awaits beyond this point."
+  },
+  {
+    "key": "ui.fullGame.oneTimePurchase",
+    "en": "One time purchase. No subscriptions. No microtransactions."
+  },
+  {
+    "key": "ui.fullGame.featureHours",
+    "en": "14+ hours of gameplay"
+  },
+  {
+    "key": "ui.fullGame.featureStructures",
+    "en": "100+ structures"
+  },
+  {
+    "key": "ui.fullGame.featureItems",
+    "en": "250+ items, fellowship members, books, blessings..."
+  },
+  {
+    "key": "ui.fullGame.featureAchievements",
+    "en": "50+ achievements"
+  },
+  {
+    "key": "ui.fullGame.featureStory",
+    "en": "Dark and challenging story based on your choices"
+  },
+  {
+    "key": "ui.fullGame.signInRequired",
+    "en": "Please sign in to purchase the Full Game."
+  },
+  {
+    "key": "ui.fullGame.progressSaved",
+    "en": "Your progress is saved. You can return at any time and continue where you left off."
+  },
+  {
+    "key": "ui.fullGame.loadingPayment",
+    "en": "Loading payment system..."
+  },
+  {
+    "key": "ui.fullGame.purchaseSuccessful",
+    "en": "Purchase Successful!"
+  },
+  {
+    "key": "ui.fullGame.purchaseSuccessfulDesc",
+    "en": "Full Game unlocked and activated! You can now continue your journey without restrictions."
+  },
+  {
+    "key": "ui.fullGame.poweredBy",
+    "en": "Powered by"
+  },
+  {
+    "key": "ui.fullGame.legalConsent",
+    "en": "By purchasing, you consent to immediate delivery of digital content and waive your right of withdrawal. For more information, see our"
+  },
+  {
+    "key": "ui.fullGame.termsOfService",
+    "en": "Terms of Service"
+  },
+  {
+    "key": "ui.fullGame.rightOfWithdrawal",
+    "en": "Right of Withdrawal"
+  },
+  {
+    "key": "ui.fullGame.completePurchaseFor",
+    "en": "Complete Purchase for {{price}}"
+  },
+  {
+    "key": "ui.fullGame.paymentFailed",
+    "en": "Payment failed"
+  },
+  {
+    "key": "ui.fullGame.notAuthenticated",
+    "en": "User not authenticated"
+  },
+  {
+    "key": "ui.fullGame.unexpectedError",
+    "en": "An unexpected error occurred"
+  },
+  {
+    "key": "ui.leaderboard.title",
+    "en": "Leaderboard"
+  },
+  {
+    "key": "ui.leaderboard.dev",
+    "en": "Dev"
+  },
+  {
+    "key": "ui.leaderboard.prod",
+    "en": "Prod"
+  },
+  {
+    "key": "ui.leaderboard.player",
+    "en": "Player"
+  },
+  {
+    "key": "ui.leaderboard.completionTime",
+    "en": "Completion Time"
+  },
+  {
+    "key": "ui.leaderboard.noEntries",
+    "en": "No entries yet"
+  },
+  {
+    "key": "ui.leaderboard.lastUpdated",
+    "en": "Last updated: {{time}}"
+  },
+  {
+    "key": "ui.leaderboard.username",
+    "en": "Username:"
+  },
+  {
+    "key": "ui.leaderboard.notSet",
+    "en": "Not set"
+  },
+  {
+    "key": "ui.leaderboard.currentPlaytime",
+    "en": "Current Playtime:"
+  },
+  {
+    "key": "ui.leaderboard.enterName",
+    "en": "Enter name"
+  },
+  {
+    "key": "ui.leaderboard.normalMode",
+    "en": "Normal Mode"
+  },
+  {
+    "key": "ui.leaderboard.cruelMode",
+    "en": "Cruel Mode"
+  },
+  {
+    "key": "ui.leaderboard.loadFailed",
+    "en": "Failed to load leaderboard"
+  },
+  {
+    "key": "ui.leaderboard.invalidUsername",
+    "en": "Invalid username"
+  },
+  {
+    "key": "ui.leaderboard.usernameEmpty",
+    "en": "Username cannot be empty"
+  },
+  {
+    "key": "ui.leaderboard.usernameTooLong",
+    "en": "Username must be 20 characters or less"
+  },
+  {
+    "key": "ui.leaderboard.mustSignIn",
+    "en": "You must be signed in to set a username"
+  },
+  {
+    "key": "ui.leaderboard.usernameNotAllowed",
+    "en": "Username not allowed"
+  },
+  {
+    "key": "ui.leaderboard.usernameInappropriate",
+    "en": "This username contains inappropriate language. Please choose a different one."
+  },
+  {
+    "key": "ui.leaderboard.usernameTaken",
+    "en": "Username taken"
+  },
+  {
+    "key": "ui.leaderboard.usernameTakenDesc",
+    "en": "This username is already in use. Please choose another."
+  },
+  {
+    "key": "ui.leaderboard.usernameSaved",
+    "en": "Username saved"
+  },
+  {
+    "key": "ui.leaderboard.usernameSavedDesc",
+    "en": "Your username has been updated"
+  },
+  {
+    "key": "ui.leaderboard.saveFailed",
+    "en": "Failed to save username"
+  },
+  {
+    "key": "ui.investmentResult.title",
+    "en": "Investment Result"
+  },
+  {
+    "key": "ui.cube.fallbackTitle",
+    "en": "The Whispering Cube"
+  },
+  {
+    "key": "ui.cube.fallbackMessage",
+    "en": "The cube whispers ancient secrets..."
+  },
+  {
+    "key": "ui.cube.completionLog",
+    "en": "You have finished this journey. Stay here or start a new game. Maybe in Cruel Mode, if you dare."
+  },
+  {
+    "key": "ui.timedEvent.knowledgeMax",
+    "en": " (max)"
+  },
+  {
+    "key": "ui.endScreen.trustBadge",
+    "en": "Well Done!"
+  },
+  {
+    "key": "ui.endScreen.headline1",
+    "en": "Your Journey"
+  },
+  {
+    "key": "ui.endScreen.headline2",
+    "en": "Ends Here"
+  },
+  {
+    "key": "ui.endScreen.subtitle1",
+    "en": "At least for now..."
+  },
+  {
+    "key": "ui.endScreen.subtitle2",
+    "en": "Try Cruel Mode for an even bigger challenge with extended gameplay. Because you finished the game you receive a special discount."
+  },
+  {
+    "key": "ui.endScreen.cruelMode",
+    "en": "⛤ Cruel Mode"
+  },
+  {
+    "key": "ui.endScreen.cruelModeBadge",
+    "en": "Special discount"
+  },
+  {
+    "key": "ui.endScreen.feedback",
+    "en": "Feedback"
+  },
+  {
+    "key": "ui.endScreen.moreGames",
+    "en": "More Games"
+  },
+  {
+    "key": "ui.cave.sectionMine",
+    "en": "Mine"
+  },
+  {
+    "key": "ui.cave.sectionCraft",
+    "en": "Craft"
+  },
+  {
+    "key": "ui.cave.requiresFreeVillagers_one",
+    "en": "Requires {{count}} free villager"
+  },
+  {
+    "key": "ui.cave.cooldownReduction",
+    "en": "-{{seconds}}s Cooldown"
+  },
+  {
+    "key": "ui.cave.craftTorch_one",
+    "en": "Torch"
+  },
+  {
+    "key": "ui.cave.craftTorch_other",
+    "en": "Torches"
+  },
+  {
+    "key": "ui.cave.craftBoneTotem_one",
+    "en": "Bone Totem"
+  },
+  {
+    "key": "ui.cave.craftBoneTotem_other",
+    "en": "Bone Totems"
+  },
+  {
+    "key": "ui.cave.craftLeatherTotem_one",
+    "en": "Leather Totem"
+  },
+  {
+    "key": "ui.cave.craftLeatherTotem_other",
+    "en": "Leather Totems"
+  },
+  {
+    "key": "ui.village.cycle",
+    "en": "Cycle"
+  },
+  {
+    "key": "ui.village.nextCycleIn",
+    "en": "Next cycle in {{seconds}} seconds"
+  },
+  {
+    "key": "ui.village.lowPopulationBonus",
+    "en": "{{percent}}% low population bonus"
+  },
+  {
+    "key": "ui.village.fromBlessings",
+    "en": "{{percent}}% from Blessings"
+  },
+  {
+    "key": "ui.village.fromEvents",
+    "en": "{{percent}}% from Events"
+  },
+  {
+    "key": "ui.village.fromHeartfire",
+    "en": "{{percent}}% from Heartfire"
+  },
+  {
+    "key": "ui.village.merchantBlocked",
+    "en": "Merchant cannot be called while another event is active"
+  },
+  {
+    "key": "ui.village.merchantAvailableIn",
+    "en": "Available in {{time}}"
+  },
+  {
+    "key": "ui.village.investCompleteIn",
+    "en": "Investment complete in {{time}}"
+  },
+  {
+    "key": "ui.village.investAvailableIn",
+    "en": "Investments available in {{time}}"
+  },
+  {
+    "key": "ui.village.investPreparing",
+    "en": "Preparing investment offers…"
+  },
+  {
+    "key": "ui.village.jobs.hunter",
+    "en": "Hunter"
+  },
+  {
+    "key": "ui.village.jobs.steel_forger",
+    "en": "Steel Forger"
+  },
+  {
+    "key": "ui.village.jobs.blacksteel_forger",
+    "en": "Blacksteel Forger"
+  },
+  {
+    "key": "ui.village.jobs.sulfur_miner",
+    "en": "Sulfur Miner"
+  },
+  {
+    "key": "ui.village.jobs.obsidian_miner",
+    "en": "Obsidian Miner"
+  },
+  {
+    "key": "ui.village.jobs.adamant_miner",
+    "en": "Adamant Miner"
+  },
+  {
+    "key": "ui.village.jobs.moonstone_miner",
+    "en": "Moonstone Miner"
+  },
+  {
+    "key": "ui.village.jobs.powder_maker",
+    "en": "Powder Maker"
+  },
+  {
+    "key": "ui.village.jobs.tanner",
+    "en": "Tanner"
+  },
+  {
+    "key": "ui.estate.sleepTooltipReady",
+    "en": "Let the world move on in your absence"
+  },
+  {
+    "key": "ui.estate.sleepTooltipBlocked",
+    "en": "Requires positive wood and food production"
+  },
+  {
+    "key": "ui.estate.focusRewardTooltip_one",
+    "en": "Get 2x rewards on actions for {{count}} minute"
+  },
+  {
+    "key": "ui.estate.focusRewardTooltip_other",
+    "en": "Get 2x rewards on actions for {{count}} minutes"
+  },
+  {
+    "key": "ui.estate.sleepLengthTooltip",
+    "en": "Max hours per sleep"
+  },
+  {
+    "key": "ui.estate.cubeWhispers",
+    "en": "Cube Whispers"
+  },
+  {
+    "key": "ui.estate.huntressTraining",
+    "en": "Huntress Training"
+  },
+  {
+    "key": "ui.estate.crushingStrike",
+    "en": "Crushing Strike"
+  },
+  {
+    "key": "ui.estate.bloodflameSphere",
+    "en": "Bloodflame Sphere"
+  },
+  {
+    "key": "ui.estate.disgracedPrior",
+    "en": "Disgraced Prior"
+  },
+  {
+    "key": "ui.estate.crowsEye",
+    "en": "Crow's Eye"
+  },
+  {
+    "key": "ui.estate.maxLevel",
+    "en": "Max level"
+  },
+  {
+    "key": "ui.estate.skillFurPerHunter",
+    "en": "+{{amount}} Fur per Hunter"
+  },
+  {
+    "key": "ui.estate.skillBonesPerHunter",
+    "en": "+{{amount}} Bones per Hunter"
+  },
+  {
+    "key": "ui.estate.skillHuntBonus",
+    "en": "+{{amount}}% Hunt Bonus"
+  },
+  {
+    "key": "ui.estate.skillFurBonus",
+    "en": "+{{amount}} Fur"
+  },
+  {
+    "key": "ui.estate.skillBonesBonus",
+    "en": "+{{amount}} Bones"
+  },
+  {
+    "key": "ui.estate.skillDamageBonus",
+    "en": "+{{amount}} Damage"
+  },
+  {
+    "key": "ui.estate.skillStunRound_one",
+    "en": "+{{amount}} Stun Round"
+  },
+  {
+    "key": "ui.estate.skillStunRound_other",
+    "en": "+{{amount}} Stun Rounds"
+  },
+  {
+    "key": "ui.estate.skillSuccessChanceBonus",
+    "en": "+{{amount}}% Success Chance"
+  },
+  {
+    "key": "ui.estate.crushingStrikeSummary",
+    "en": "{{damage}} Damage, {{rounds}} Stun, {{success}}% success"
+  },
+  {
+    "key": "ui.estate.skillBurnDamage",
+    "en": "+{{amount}} Burn Damage"
+  },
+  {
+    "key": "ui.estate.skillBurnRound_one",
+    "en": "+{{amount}} Burn Round"
+  },
+  {
+    "key": "ui.estate.skillBurnRound_other",
+    "en": "+{{amount}} Burn Rounds"
+  },
+  {
+    "key": "ui.estate.skillDoubleGain",
+    "en": "+{{amount}}% Double Gain chance"
+  },
+  {
+    "key": "ui.estate.crowsEyeSummary",
+    "en": "{{percent}}% chance to double actions gains"
+  },
+  {
+    "key": "ui.estate.priorConcurrentAction_one",
+    "en": "+{{count}} concurrent Action"
+  },
+  {
+    "key": "ui.estate.priorConcurrentAction_other",
+    "en": "+{{count}} concurrent Actions"
+  },
+  {
+    "key": "ui.estate.priorActionBonus",
+    "en": "+{{percent}}% Bonus on assigned actions"
+  },
+  {
+    "key": "ui.estate.priorSummaryBonus",
+    "en": "{{actions}} Actions, +{{bonus}}% Bonus, {{upkeep}}"
+  },
+  {
+    "key": "ui.estate.priorSummaryNoBonus_one",
+    "en": "{{count}} concurrent Action, {{upkeep}}"
+  },
+  {
+    "key": "ui.estate.priorSummaryNoBonus_other",
+    "en": "{{count}} concurrent Actions, {{upkeep}}"
+  },
+  {
+    "key": "ui.bonuses.hunt",
+    "en": "Hunt"
+  },
+  {
+    "key": "ui.bonuses.mineAll",
+    "en": "Mine (All)"
+  },
+  {
+    "key": "ui.bonuses.mineSulfur",
+    "en": "Mine Sulfur"
+  },
+  {
+    "key": "ui.bonuses.mineObsidian",
+    "en": "Mine Obsidian"
+  },
+  {
+    "key": "ui.bonuses.mineAdamant",
+    "en": "Mine Adamant"
+  },
+  {
+    "key": "ui.bonuses.boneTotems",
+    "en": "Bone Totems"
+  },
+  {
+    "key": "ui.bonuses.leatherTotems",
+    "en": "Leather Totems"
+  },
+  {
+    "key": "ui.bonuses.craftDiscount",
+    "en": "Craft Discount"
+  },
+  {
+    "key": "ui.bonuses.doubleGainChance",
+    "en": "Double Gain Chance"
+  },
+  {
+    "key": "ui.badges.priorUpgradeRequired",
+    "en": "Upgrade Disgraced Prior to assign more actions"
+  },
+  {
+    "key": "ui.badges.priorRemove",
+    "en": "Click to remove Disgraced Prior"
+  },
+  {
+    "key": "ui.badges.priorAssign",
+    "en": "Click to assign Disgraced Prior"
+  },
+  {
+    "key": "ui.badges.bonus",
+    "en": "Bonus:"
+  },
+  {
+    "key": "ui.badges.nextBonus",
+    "en": "Next Bonus:"
+  },
+  {
+    "key": "ui.badges.craftMultiplier",
+    "en": "Craft x{{amount}}"
+  },
+  {
+    "key": "ui.badges.bonusPercent",
+    "en": "+{{percent}}%"
+  },
+  {
+    "key": "ui.badges.maxLevel",
+    "en": "max level"
+  },
+  {
+    "key": "ui.badges.executionTimeReduction",
+    "en": "-50% execution time"
+  },
+  {
+    "key": "ui.sidePanel.mapFragments",
+    "en": "Map Fragments"
+  },
+  {
+    "key": "ui.sidePanel.craftDiscount",
+    "en": "Craft Discount"
+  },
+  {
+    "key": "ui.sidePanel.doubleGainChance",
+    "en": "Double Gain Chance"
+  },
+  {
+    "key": "ui.sidePanel.statLuckTooltip",
+    "en": "Bends fate in your favor"
+  },
+  {
+    "key": "ui.sidePanel.statStrengthTooltip",
+    "en": "Helps where words reach their limit"
+  },
+  {
+    "key": "ui.sidePanel.statKnowledgeTooltip",
+    "en": "Influences things where cleverness helps"
+  },
+  {
+    "key": "ui.sidePanel.statMadnessTooltip",
+    "en": "Leads thoughts into dangerous paths"
+  },
+  {
+    "key": "ui.sidePanel.madnessFromItems",
+    "en": "{{value}} from Items"
+  },
+  {
+    "key": "ui.sidePanel.madnessFromEvents",
+    "en": "{{value}} from Events"
+  },
+  {
+    "key": "ui.sidePanel.bastionDefenseTooltip",
+    "en": "Reduces incoming damage"
+  },
+  {
+    "key": "ui.sidePanel.bastionIntegrityTooltip",
+    "en": "If integrity reaches 0, you lose the battle"
+  },
+  {
+    "key": "ui.sidePanel.bastionAttackTooltip",
+    "en": "Damage you deal to enemies each combat round"
+  },
+  {
+    "key": "ui.sidePanel.bastionAttackFromFortifications",
+    "en": "{{value}} from Fortifications"
+  },
+  {
+    "key": "ui.sidePanel.bastionAttackFromStrength",
+    "en": "{{value}} from Strength (50 %)"
+  },
+  {
+    "key": "ui.idleMode.wakingIn",
+    "en": "Waking up in: {{time}}"
+  },
+  {
+    "key": "ui.playlight.discoveryAria",
+    "en": "Discovery"
+  },
+  {
+    "key": "ui.profile.signInUp",
+    "en": "Sign In/Up"
+  },
+  {
+    "key": "ui.profile.emailsOn",
+    "en": "Emails On"
+  },
+  {
+    "key": "ui.profile.emailsOff",
+    "en": "Emails Off"
+  },
+  {
+    "key": "ui.profile.marketingOnTooltip",
+    "en": "You are currently receiving emails with updates, discounts, and exclusive rewards. Tap to turn off."
+  },
+  {
+    "key": "ui.profile.marketingOffTooltip",
+    "en": "You are currently not receiving emails with updates, discounts, and exclusive rewards. Tap to turn on."
+  },
+  {
+    "key": "ui.profile.rewardsTasks",
+    "en": "Rewards tasks"
+  },
+  {
+    "key": "ui.shop.srDescription",
+    "en": "Shop for gold, artifacts, boosts, and bundles"
+  },
+  {
+    "key": "ui.shop.betaDiscountTitle",
+    "en": "Beta discounts of up to {{percent}} off are currently active."
+  },
+  {
+    "key": "ui.shop.betaDiscountNote",
+    "en": "All purchases remain available across future playthroughs and after full release."
+  },
+  {
+    "key": "ui.shop.activatePurchasesTitle",
+    "en": "Activate your purchases to receive rewards."
+  },
+  {
+    "key": "ui.shop.activatePurchasesNote",
+    "en": "Each purchase can be activated once per playthrough."
+  },
+  {
+    "key": "ui.shop.highlights",
+    "en": "Highlights"
+  },
+  {
+    "key": "ui.shop.artifacts",
+    "en": "Artifacts"
+  },
+  {
+    "key": "ui.shop.boosts",
+    "en": "Boosts"
+  },
+  {
+    "key": "ui.shop.bundles",
+    "en": "Bundles"
+  },
+  {
+    "key": "ui.shop.mostPopular",
+    "en": "Most popular"
+  },
+  {
+    "key": "ui.shop.threeXValue",
+    "en": "Value"
+  },
+  {
+    "key": "ui.shop.availableInOneHour",
+    "en": "Available in 1 hour"
+  },
+  {
+    "key": "ui.shop.availableInHours",
+    "en": "Available in {{hours}} hours"
+  },
+  {
+    "key": "ui.shop.feastAvailable",
+    "en": "{{name}} ({{remaining}}/{{total}} available)"
+  },
+  {
+    "key": "ui.shop.cruelModeActivateHint",
+    "en": "(to play activate and start a new game)"
+  },
+  {
+    "key": "ui.shop.paymentSrDescription",
+    "en": "Complete your payment for {{name}}"
+  },
+  {
+    "key": "ui.shop.originalPrice",
+    "en": "Original price"
+  },
+  {
+    "key": "ui.shop.betaDiscount",
+    "en": "Beta discount"
+  },
+  {
+    "key": "ui.shop.additionalDiscount",
+    "en": "Additional discount"
+  },
+  {
+    "key": "ui.shop.total",
+    "en": "Total"
+  },
+  {
+    "key": "ui.shop.poweredBy",
+    "en": "Powered by"
+  },
+  {
+    "key": "ui.shop.legalConsent",
+    "en": "By purchasing, you consent to immediate delivery of digital content and waive your right of withdrawal. For more information, see our"
+  },
+  {
+    "key": "ui.shop.termsOfService",
+    "en": "Terms of Service"
+  },
+  {
+    "key": "ui.shop.rightOfWithdrawal",
+    "en": "Right of Withdrawal"
+  },
+  {
+    "key": "ui.shop.completePurchaseFor",
+    "en": "Complete Purchase for {{price}}"
+  },
+  {
+    "key": "ui.shop.paymentFailed",
+    "en": "Payment failed"
+  },
+  {
+    "key": "ui.shop.notAuthenticated",
+    "en": "User not authenticated"
+  },
+  {
+    "key": "ui.shop.verificationFailed",
+    "en": "Payment verification failed. Please contact support."
+  },
+  {
+    "key": "ui.shop.unexpectedError",
+    "en": "An unexpected error occurred"
+  },
+  {
+    "key": "ui.shop.purchaseSuccessful",
+    "en": "Purchase Successful!"
+  },
+  {
+    "key": "ui.shop.purchaseAddedSingle",
+    "en": "{{name}} has been added to your purchases. Check the Purchases tab to activate it."
+  },
+  {
+    "key": "ui.shop.purchaseAddedBundle",
+    "en": "{{name}} components have been added to your purchases. Check the Purchases tab to activate them."
+  },
+  {
+    "key": "ui.shop.freeItemAdded",
+    "en": "{{name}} has been added to your purchases. Check the Purchases tab to activate it."
+  },
+  {
+    "key": "ui.shop.journeyCompleteDiscount",
+    "en": "Special discount for finishing the game"
+  },
+  {
+    "key": "ui.shop.artifactSkullLantern.title",
+    "en": "Skull Lantern"
+  },
+  {
+    "key": "ui.shop.artifactSkullLantern.miningBonus",
+    "en": "Mining: +200% Bonus"
+  },
+  {
+    "key": "ui.shop.artifactSkullLantern.miningCooldown",
+    "en": "Mining: -5s Cooldown"
+  },
+  {
+    "key": "ui.shop.artifactTarnishedCompass.title",
+    "en": "Tarnished Compass"
+  },
+  {
+    "key": "ui.shop.artifactTarnishedCompass.doubleGain",
+    "en": "10% chance to double actions gains"
+  },
+  {
+    "key": "ui.shop.artifactTarnishedCompass.luck",
+    "en": "+5 Luck"
+  },
+  {
+    "key": "ui.shop.artifactCrowHarness.title",
+    "en": "One-eyed Crow"
+  },
+  {
+    "key": "ui.shop.artifactCrowHarness.doubleGain",
+    "en": "up to 15% chance to double action gains"
+  },
+  {
+    "key": "ui.shop.cruelMode.title",
+    "en": "Cruel Mode"
+  },
+  {
+    "key": "ui.shop.cruelMode.moreEvents",
+    "en": "More Events"
+  },
+  {
+    "key": "ui.shop.cruelMode.moreItems",
+    "en": "More Items"
+  },
+  {
+    "key": "ui.shop.cruelMode.strongerEnemies",
+    "en": "Stronger Enemies"
+  },
+  {
+    "key": "ui.shop.cruelMode.harderChallenges",
+    "en": "Harder Challenges"
+  },
+  {
+    "key": "ui.shop.cruelMode.reusePurchases",
+    "en": "Reuse existing Purchases"
+  },
+  {
+    "key": "ui.shop.alreadyClaimedItemLog",
+    "en": "You have already claimed {{name}}."
+  },
+  {
+    "key": "ui.shop.claimFailedLog",
+    "en": "Failed to claim {{name}}. Please try again."
+  },
+  {
+    "key": "ui.shop.activatedDefaultLog",
+    "en": "Activated {{name}}! Rewards have been added to your inventory."
+  },
+  {
+    "key": "ui.tooltips.secRemaining",
+    "en": "{{count}} sec remaining"
+  },
+  {
+    "key": "ui.tooltips.buildings.unlocksHunters",
+    "en": "Unlocks Hunters"
+  },
+  {
+    "key": "ui.tooltips.buildings.unlocksCrafting",
+    "en": "Unlocks Crafting"
+  },
+  {
+    "key": "ui.tooltips.buildings.unlocksSchematicCrafting",
+    "en": "Unlocks Schematic Crafting"
+  },
+  {
+    "key": "ui.tooltips.buildings.unlocksBlacksteelCrafting",
+    "en": "Unlocks Blacksteel Crafting"
+  },
+  {
+    "key": "ui.tooltips.buildings.unlocksBlacksteelForgers",
+    "en": "Unlocks Blacksteel Forgers"
+  },
+  {
+    "key": "ui.tooltips.buildings.unlocksSulfurMiners",
+    "en": "Unlocks Sulfur Miners"
+  },
+  {
+    "key": "ui.tooltips.buildings.unlocksObsidianMiners",
+    "en": "Unlocks Obsidian Miners"
+  },
+  {
+    "key": "ui.tooltips.buildings.unlocksAdamantMiners",
+    "en": "Unlocks Adamant Miners"
+  },
+  {
+    "key": "ui.tooltips.buildings.unlocksMoonstoneMiners",
+    "en": "Unlocks Moonstone Miners"
+  },
+  {
+    "key": "ui.tooltips.buildings.unlocksSteelForgers",
+    "en": "Unlocks Steel Forgers"
+  },
+  {
+    "key": "ui.tooltips.buildings.unlocksTanners",
+    "en": "Unlocks Tanners"
+  },
+  {
+    "key": "ui.tooltips.buildings.unlocksInvestments",
+    "en": "Unlocks Investments"
+  },
+  {
+    "key": "ui.tooltips.buildings.unlocksPowderMakers",
+    "en": "Unlocks Powder Makers"
+  },
+  {
+    "key": "ui.tooltips.buildings.unlocksCallMerchant",
+    "en": "Unlocks Call Merchant"
+  },
+  {
+    "key": "ui.tooltips.buildings.unlocksWizardStory",
+    "en": "Unlocks Wizard Story"
+  },
+  {
+    "key": "ui.tooltips.buildings.unlocksEstateTab",
+    "en": "Unlocks Estate Tab"
+  },
+  {
+    "key": "ui.tooltips.buildings.unlocksFeedFireAction",
+    "en": "Unlocks Feed Fire action"
+  },
+  {
+    "key": "ui.tooltips.buildings.craftDiscountSpaced",
+    "en": "2.5 % Craft Discount"
+  },
+  {
+    "key": "ui.tooltips.buildings.craftDiscountSpaced5",
+    "en": "5 % Craft Discount"
+  },
+  {
+    "key": "ui.tooltips.buildings.craftDiscount",
+    "en": "{{percent}}% Craft Discount"
+  },
+  {
+    "key": "ui.tooltips.buildings.hunterFur",
+    "en": "Hunter: +{{amount}} Fur"
+  },
+  {
+    "key": "ui.tooltips.buildings.hunterBones",
+    "en": "Hunter: +{{amount}} Bones"
+  },
+  {
+    "key": "ui.tooltips.buildings.knowledgeBonus",
+    "en": "+{{amount}} Knowledge"
+  },
+  {
+    "key": "ui.tooltips.buildings.resourceChangeHints",
+    "en": "Resource change hints"
+  },
+  {
+    "key": "ui.tooltips.buildings.improvedResourceChangeHints",
+    "en": "Improved resource change hints"
+  },
+  {
+    "key": "ui.tooltips.buildings.resourceHighlighting",
+    "en": "Resource highlighting"
+  },
+  {
+    "key": "ui.tooltips.buildings.abortActions",
+    "en": "Abort actions"
+  },
+  {
+    "key": "ui.tooltips.buildings.madnessReduction",
+    "en": "-{{amount}} Madness"
+  },
+  {
+    "key": "ui.tooltips.buildings.madnessIncrease",
+    "en": "+{{amount}} Madness"
+  },
+  {
+    "key": "ui.tooltips.buildings.defenseBonus",
+    "en": "+{{amount}} Defense"
+  },
+  {
+    "key": "ui.tooltips.buildings.attackBonus",
+    "en": "+{{amount}} Attack"
+  },
+  {
+    "key": "ui.tooltips.buildings.integrityBonus",
+    "en": "+{{amount}} Integrity"
+  },
+  {
+    "key": "ui.tooltips.buildings.luckyChance",
+    "en": "+{{percent}}% Lucky Chance"
+  },
+  {
+    "key": "ui.tooltips.buildings.higherTradeAmounts",
+    "en": "Higher Trade Amounts"
+  },
+  {
+    "key": "ui.tooltips.buildings.tradesAtMerchant_one",
+    "en": "+{{count}} Trade at Travelling Merchant"
+  },
+  {
+    "key": "ui.tooltips.buildings.tradesAtMerchant_other",
+    "en": "+{{count}} Trades at Travelling Merchant"
+  },
+  {
+    "key": "ui.tooltips.buildings.boneyardUpTo",
+    "en": "Up to -10 Madness"
+  },
+  {
+    "key": "ui.tooltips.buildings.boneyardCurrent",
+    "en": "Current: -{{amount}} Madness"
+  },
+  {
+    "key": "ui.tooltips.buildings.madnessFromAnimalSacrifices",
+    "en": "-{{amount}} Madness from Animal sacrifices"
+  },
+  {
+    "key": "ui.tooltips.buildings.madnessPerAnimalSacrifice",
+    "en": "-1 Madness per Animal sacrifice (max -10)"
+  },
+  {
+    "key": "ui.tooltips.buildings.madnessFromHumanSacrifices",
+    "en": "-{{amount}} Madness from Human sacrifices"
+  },
+  {
+    "key": "ui.tooltips.buildings.madnessPerHumanSacrifice",
+    "en": "-2 Madness per Human sacrifice (max -20)"
+  },
+  {
+    "key": "ui.tooltips.buildings.resourceLimit",
+    "en": "Resource Limit: {{limit}}"
+  },
+  {
+    "key": "ui.tooltips.buildings.maxPopulation",
+    "en": "+{{amount}} Max Population"
+  },
+  {
+    "key": "ui.tooltips.buildings.steelForgerSteel",
+    "en": "Steel Forger: +{{amount}} Steel"
+  },
+  {
+    "key": "ui.tooltips.buildings.tannerLeather",
+    "en": "Tanner: +{{amount}} Leather"
+  },
+  {
+    "key": "events.blackenedMirror.choices.buyMirror.cost",
+    "en": "500 iron"
+  },
+  {
+    "key": "events.cannibalRaid.log.defeat_oneDeath",
+    "en": "The cannibals overwhelm your defenses. One villager is abducted by the cannibals."
+  },
+  {
+    "key": "events.cannibalRaid.log.defeat_oneDeath_loot",
+    "en": "The cannibals overwhelm your defenses. One villager is abducted by the cannibals. The cannibals ransack your stores before retreating to the wilds."
+  },
+  {
+    "key": "events.doNothing.log.outcome0",
+    "en": "You decline. The night passes without cheer, warmth, or laughter."
+  },
+  {
+    "key": "events.leatherHarnessRequest.choices.helpWithLeather.cost",
+    "en": "100 leather"
+  },
+  {
+    "key": "events.masterArcher.choices.acceptArcherHelp.cost",
+    "en": "5000 food"
+  },
+  {
+    "key": "events.masterArcher.choices.acceptArcherHelpGold.cost",
+    "en": "200 gold"
+  },
+  {
+    "key": "events.mercenaryDemand.choices.payGold.cost",
+    "en": "100 gold"
+  },
+  {
+    "key": "events.mercenaryReturnDemand.choices.payGold.cost",
+    "en": "200 gold"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_nightshade_bow_schematic.label",
+    "en": "Nightshade Bow Schematic"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_nightshade_bow_schematic.message",
+    "en": "You purchase the nightshade bow schematic. The merchant grins darkly: 'This bow's design is cruel. Its arrows will poison your enemies.'"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_skull_lantern.label",
+    "en": "Skull Lantern"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_skull_lantern.message",
+    "en": "You purchase the skull lantern. Forged from cursed bone, its eerie light will guide you through the deepest depths."
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_tarnished_compass.label",
+    "en": "Tarnished Compass"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_tarnished_compass.message",
+    "en": "You purchase the tarnished compass. Artifact of the vanished civilization, its needle points to hidden places."
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_map_fragment_wooden.label",
+    "en": "Map Fragment"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_map_fragment_wooden.message",
+    "en": "You purchase a tattered map fragment."
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_map_fragment_stone.label",
+    "en": "Map Fragment"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_map_fragment_stone.message",
+    "en": "You purchase a tattered map fragment."
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_crow_harness.label",
+    "en": "Crow Harness"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_crow_harness.message",
+    "en": "You purchase the crow harness. A specially crafted harness for messenger crows."
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_clarity_elixir.label",
+    "en": "Elixir of Clarity"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_clarity_elixir.message",
+    "en": "You drink the Elixir of Clarity. Your mind feels lighter."
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_veinfire_elixir.label",
+    "en": "Veinfire Elixir"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_veinfire_elixir.message",
+    "en": "You purchase a bottle of Veinfire Elixir."
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_book_of_trials.message",
+    "en": "You purchase the Book of Trials. The merchant smiles knowingly: 'A guide for those who seek to track their journey.'"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_book_of_trials.label",
+    "en": "Book of Trials"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_book_of_craftsmanship.message",
+    "en": "You purchase the Book of Craftsmanship. The merchant nods approvingly: 'A craftsman's tome, worn but full of wisdom. It will whisper secrets to those who build.'"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_book_of_craftsmanship.label",
+    "en": "Book of Craftsmanship"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_book_of_war.message",
+    "en": "You purchase the Book of War. The merchant nods gravely: 'Knowledge from a long gone kingdom in the far east. With this, you will better understand the outcomes of your choices.'"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_book_of_war.label",
+    "en": "Book of War"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_reinforced_rope.message",
+    "en": "You purchase the reinforced rope. This rope can withstand tremendous strain and reach places in the deepest cave chambers."
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_reinforced_rope.label",
+    "en": "Reinforced Rope"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_occultist_map.message",
+    "en": "As you buy the occultist's map the merchant whispers: 'An old occultist hid his secrets in a chamber deep in the cave. This map will guide you.'"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_occultist_map.label",
+    "en": "Occultist's Map"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_giant_trap.message",
+    "en": "As you purchase the giant trap, the merchant grins: 'This can trap something gigantic in the woods. Use it wisely.'"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_giant_trap.label",
+    "en": "Giant Trap"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_arbalest_schematic.message",
+    "en": "You purchase the arbalest schematic. The merchant unfurls an intricate blueprint: 'A design from a master engineer. With this, you can craft a powerful weapon.'"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_arbalest_schematic.label",
+    "en": "Arbalest Schematic"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_compound_bow.message",
+    "en": "You purchase the compound bow. The merchant nods approvingly: 'High precision weapon from the vanished civilization. It will serve you well.'"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_compound_bow.label",
+    "en": "Compound Bow"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_stormglass_halberd_schematic.message",
+    "en": "You purchase the stormglass halberd schematic. The merchant reveals the faded plans: 'With this design, you can forge a halberd of tremendous power.'"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_stormglass_halberd_schematic.label",
+    "en": "Stormglass Halberd Schematic"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_natharit_pickaxe.message",
+    "en": "You purchase the natharit pickaxe. The merchant hands you the sturdy tool: 'Extremely durable pickaxe of unknown material. Its quality is exceptional.'"
+  },
+  {
+    "key": "events.merchant.toolTrades.trade_natharit_pickaxe.label",
+    "en": "Natharit Pickaxe"
+  },
+  {
+    "key": "events.merchant.tradeCost",
+    "en": "{{amount}} {{resource}}"
+  },
+  {
+    "key": "events.merchant.tradeLabel",
+    "en": "{{amount}} {{resource}}"
+  },
+  {
+    "key": "events.monasteryMonk.choices.offerGold.cost",
+    "en": "250 gold"
+  },
+  {
+    "key": "events.monasteryMonk.choices.payTribute.cost",
+    "en": "5000 wood, 5000 stone, 5000 food, 500 leather, 500 steel"
+  },
+  {
+    "key": "events.monasteryResponse.choices.accept.cost",
+    "en": "250 gold"
+  },
+  {
+    "key": "events.nordicWarAxe.log.ignoreForced",
+    "en": "You ignore the offer. The viking eventually spits on the ground and leaves with his war axe, muttering about your lack of respect."
+  },
+  {
+    "key": "events.nordicWarAxe.log.ignoreNormal",
+    "en": "You ignore the offer. The viking eventually nods and leaves with his war axe."
+  },
+  {
+    "key": "events.nordicWarAxe.log.buyForced",
+    "en": "The viking takes the payment with a cold smile. 'Perhaps you should have been more generous before, instead of attacking me. You would have paid much less for the axe then.' he speaks before leaving."
+  },
+  {
+    "key": "events.nordicWarAxe.log.buyNormal",
+    "en": "Happy with the trade the viking nods approvingly and departs."
+  },
+  {
+    "key": "events.nordicWarAxe.log.declineForced",
+    "en": "You decline the offer. The viking spits on the ground, muttering curses as he leaves with his war axe. 'You should have paid me when you had the chance,' he growls."
+  },
+  {
+    "key": "events.nordicWarAxe.log.declineNormal",
+    "en": "You decline the offer. The viking nods respectfully and leaves with his war axe."
+  },
+  {
+    "key": "events.paleCrossCrucifixion.choices.holdFuneral.cost",
+    "en": "1000 food"
+  },
+  {
+    "key": "events.restlessKnight.choices.payGold.cost",
+    "en": "50 gold"
+  },
+  {
+    "key": "events.restlessKnightCoast.choices.payFood.cost",
+    "en": "2500 food"
+  },
+  {
+    "key": "events.restlessKnightCoast.choices.payGold.cost",
+    "en": "50 gold"
+  },
+  {
+    "key": "events.restlessKnightDesert.choices.payGold.cost",
+    "en": "250 gold"
+  },
+  {
+    "key": "events.restlessKnightDesert.choices.paySilver.cost",
+    "en": "1000 silver"
+  },
+  {
+    "key": "events.restlessKnightMountains.choices.payFood.cost",
+    "en": "2500 food"
+  },
+  {
+    "key": "events.restlessKnightMountains.choices.payGold.cost",
+    "en": "50 gold"
+  },
+  {
+    "key": "events.sanctumDedication.log.dedicate_dagon",
+    "en": "Dagon's Blessing flows stronger than before."
+  },
+  {
+    "key": "events.sanctumDedication.log.dedicate_flame",
+    "en": "The First Flame burns brighter than before."
+  },
+  {
+    "key": "events.sanctumDedication.log.dedicate_raven",
+    "en": "The Raven's Mark grows stronger than before."
+  },
+  {
+    "key": "events.sanctumDedication.log.dedicate_ash",
+    "en": "The Ashen Embrace is stronger than before."
+  },
+  {
+    "key": "events.shoreFishermenResponse.choices.accept.cost",
+    "en": "250 gold"
+  },
+  {
+    "key": "events.traders_daughter.choices.send_search_party.cost",
+    "en": "500 food, 50 torch"
+  },
+  {
+    "key": "events.unnamedWanderer.choices.offerFood.cost",
+    "en": "2500 food"
+  },
+  {
+    "key": "events.unnamedWanderer.choices.offerGold.cost",
+    "en": "100 gold"
+  },
+  {
+    "key": "events.veiledSeer.choices.accept.cost",
+    "en": "50 gold"
+  },
+  {
+    "key": "events.wanderingFirecrafter.choices.payGold.cost",
+    "en": "250 gold"
+  },
+  {
+    "key": "events.wanderingFirecrafter.choices.paySilver.cost",
+    "en": "1000 silver"
+  },
+  {
+    "key": "events.wandering_collector.log.whisper0",
+    "en": "The collector sighs and turns away. 'In my travels, I uncovered many relics of the ancient civilization. They were far more advanced than we ever were,' he whispers before fading into the dark."
+  },
+  {
+    "key": "events.wandering_collector.log.whisper1",
+    "en": "A low hum seeps from beneath the hood. 'The great explosion destroyed most artifacts of the ancient civilization. What little remains is scattered and rare,' he murmurs."
+  },
+  {
+    "key": "events.wandering_collector.log.whisper2",
+    "en": "A faint breath escapes the collector. 'I learned much of the ancient civilization on my journeys. Before the great explosion, there was no magic in this world. It was born in that moment,' he whispers as he departs."
+  },
+  {
+    "key": "events.witchsCurse.choices.payGold.cost",
+    "en": "50 gold"
+  },
+  {
+    "key": "events.wizardOffer.choices.payGold.cost",
+    "en": "250 gold"
+  },
+  {
+    "key": "events.wizardOffer.message.firstVisit",
+    "en": "The old wizard approaches you, 'I have lived long and seen much,' he says with a weary voice. 'The threat you face is dire. For a fair price, I will join you in the fight against the foes that emerge from the depths.'"
+  },
+  {
+    "key": "events.wizardOffer.message.repeat",
+    "en": "The old wizard approaches you again, 'My offer to join you in the fight against the foes from the depths still stands. For a fair price, I will join you.'"
+  },
+  {
+    "key": "events.woodcutter.log.denyLastUneasy",
+    "en": "Something about his demeanor makes you uneasy. You refuse the deal. The woodcutter's smile fades, and he leaves without a word."
+  },
+  {
+    "key": "events.woodcutter.log.denyLevel1",
+    "en": "You decline his offer. The woodcutter shrugs and walks away into the forest."
+  },
+  {
+    "key": "events.woodcutter.log.denyLevel2",
+    "en": "You decline his offer. The woodcutter nods and departs without complaint."
+  },
+  {
+    "key": "events.woodcutter.log.denyLevel3",
+    "en": "You turn down his offer. He shrugs and walks back into the woods."
+  },
+  {
+    "key": "events.woodcutter.log.denyLevel4",
+    "en": "You decline his ambitious offer. The woodcutter looks disappointed but accepts your decision."
+  },
+  {
+    "key": "events.woodcutter.log.denyLevel5",
+    "en": "You refuse the deal. The woodcutter frowns but doesn't argue."
+  },
+  {
+    "key": "events.woodcutter.log.denyLevel6",
+    "en": "You refuse the deal. The woodcutter frowns but doesn't argue."
+  },
+  {
+    "key": "events.woodcutter.log.timeoutLast",
+    "en": "Your indecision frustrates the woodcutter. He shakes his head and walks away into the forest."
+  },
+  {
+    "key": "events.woodcutter.log.timeoutLevel1",
+    "en": "Your indecision frustrates the woodcutter. He shrugs and walks away into the forest."
+  },
+  {
+    "key": "events.woodcutter.log.timeoutLevel2",
+    "en": "Your indecision frustrates the woodcutter. He nods and departs without complaint."
+  },
+  {
+    "key": "events.woodcutter.log.timeoutLevel3",
+    "en": "Your indecision frustrates the woodcutter. He shrugs and walks back into the woods."
+  },
+  {
+    "key": "events.woodcutter.log.timeoutLevel4",
+    "en": "Your indecision frustrates the woodcutter. He looks disappointed but accepts and leaves."
+  },
+  {
+    "key": "events.woodcutter.log.timeoutLevel5",
+    "en": "Your indecision frustrates the woodcutter. He frowns and walks away."
+  },
+  {
+    "key": "events.woodcutter.log.timeoutLevel6",
+    "en": "Your indecision frustrates the woodcutter. He frowns and walks away."
+  },
+  {
+    "key": "actions.exploreCave.log.debrisScroll",
+    "en": "Among the debris you uncover a timeworn scroll containing wisdom for enduring this unforgiving world."
+  },
+  {
+    "key": "actions.exploreCave.log.torchBag",
+    "en": "You find an old, dusty bag with 25 Torches in the cave."
+  },
+  {
+    "key": "actions.ventureDeeper.log.tarnishedAmulet",
+    "en": "In the cave's shadows, something glints. You find a Tarnished Amulet."
+  },
+  {
+    "key": "actions.ventureDeeper.log.mapFragment",
+    "en": "On the cave floor you find a tattered fragment of a map."
+  }
+]

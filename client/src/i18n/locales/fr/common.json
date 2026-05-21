@@ -1,0 +1,88 @@
+{
+  "buttons": {
+    "close": "Fermer",
+    "continue": "Continuer",
+    "confirm": "Confirmer",
+    "cancel": "Annuler",
+    "save": "Sauvegarder",
+    "refresh": "Actualiser",
+    "dismiss": "Ignorer",
+    "fight": "Combattre",
+    "retreat": "Se replier",
+    "refuse": "Refuser",
+    "accept": "Accepter",
+    "back": "Retour",
+    "claim": "Récupérer",
+    "activate": "Activer",
+    "deactivate": "Désactiver"
+  },
+  "status": {
+    "loading": "Chargement...",
+    "processing": "Traitement...",
+    "free": "Gratuit",
+    "error": "Erreur",
+    "success": "Succès !",
+    "active": "Actif",
+    "activated": "Activé"
+  },
+  "tabs": {
+    "cave": "Grotte",
+    "village": "Village",
+    "city": "Ville",
+    "forest": "Forêt",
+    "estate": "Domaine",
+    "bastion": "Bastion",
+    "fortress": "Forteresse",
+    "trader": "Marchand",
+    "achievements": "Succès",
+    "timedEvent": "Événement chronométré"
+  },
+  "resources": {
+    "wood": "Bois",
+    "stone": "Pierre",
+    "food": "Nourriture",
+    "veinroot": "Racine-veine",
+    "bones": "Os",
+    "fur": "Fourrure",
+    "leather": "Cuir",
+    "bone_totem": "Totem d'os",
+    "leather_totem": "Totem de cuir",
+    "iron": "Fer",
+    "coal": "Charbon",
+    "sulfur": "Soufre",
+    "obsidian": "Obsidienne",
+    "adamant": "Adamant",
+    "steel": "Acier",
+    "blacksteel": "Acier noir",
+    "moonstone": "Pierre de lune",
+    "black_powder": "Poudre noire",
+    "ember_bomb": "Bombe de braise",
+    "ashfire_dust": "Poussière de feu cendré",
+    "ashfire_bomb": "Bombe de feu cendré",
+    "void_bomb": "Bombe du néant",
+    "veinfire_elixir": "Élixir de feu-veine",
+    "poison_arrows": "Flèches empoisonnées",
+    "torch": "Torche",
+    "silver": "Argent",
+    "gold": "Or"
+  },
+  "stats": {
+    "strength": "Force",
+    "knowledge": "Savoir",
+    "luck": "Chance",
+    "madness": "Folie"
+  },
+  "time": {
+    "never": "Jamais",
+    "hoursMinutes": "{{hours}} h {{minutes}} min",
+    "minutesSeconds": "{{minutes}} min {{seconds}} s"
+  },
+  "population": {
+    "villager_one": "{{count}} villageois",
+    "villager_other": "{{count}} villageois",
+    "maxPopulation": "+{{count}} population max."
+  },
+  "currency": {
+    "goldAmount": "{{amount}} or"
+  }
+}

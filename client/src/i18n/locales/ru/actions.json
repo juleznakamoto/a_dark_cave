@@ -1,0 +1,616 @@
+{
+  "animals": {
+    "label": "Животные"
+  },
+  "banditLair": {
+    "label": "Логово бандитов"
+  },
+  "blackreachCanyon": {
+    "label": "Каньон Черного Предела"
+  },
+  "blastPortal": {
+    "label": "Взорвать врата"
+  },
+  "boneTotems": {
+    "label": "Костяные тотемы"
+  },
+  "buildAdvancedBlacksmith": {
+    "description": "Улучшенная кузница с лучшими инструментами и приемами",
+    "label": "Улучшенная кузница"
+  },
+  "buildAlchemistHall": {
+    "description": "Зал, где алхимик создает порошки и взрывчатку",
+    "label": "Зал алхимика"
+  },
+  "buildAltar": {
+    "description": "Священное место для поклонения и жертвоприношений",
+    "label": "Алтарь"
+  },
+  "buildBank": {
+    "description": "Финансовое здание, позволяющее делать более крупные вложения",
+    "label": "Банк"
+  },
+  "buildBastion": {
+    "description": "Массивное укрепление, последняя линия обороны",
+    "label": "Бастион"
+  },
+  "buildBlackEstate": {
+    "description": "Высокое поместье из черного дерева и камня, нависающее над городом.",
+    "label": "Черное поместье"
+  },
+  "buildBlackMonolith": {
+    "description": "Темный монумент, возведенный для живых жертв",
+    "label": "Черный монолит"
+  },
+  "buildBlacksmith": {
+    "description": "Кузница с простыми инструментами для ремесла",
+    "label": "Кузница"
+  },
+  "buildBoneTemple": {
+    "description": "Чудовищное сооружение из костей в честь старых богов",
+    "label": "Костяной храм"
+  },
+  "buildBoneyard": {
+    "description": "Место, где хоронят мертвых, облегчая скорбь жителей.",
+    "label": "Кладбище"
+  },
+  "buildBottomlessPit": {
+    "description": "Крайне глубокая яма, достигающая редчайших материалов",
+    "label": "Бездонная яма"
+  },
+  "buildCabin": {
+    "description": "Простая охотничья хижина с инструментами для охотников",
+    "label": "Хижина"
+  },
+  "buildChitinPlating": {
+    "description": "Укрепления усилены непробиваемыми хитиновыми пластинами",
+    "label": "Хитиновая обшивка"
+  },
+  "buildClerksHut": {
+    "description": "Хижина, где писари ведут учет ресурсов деревни",
+    "label": "Хижина писаря"
+  },
+  "buildCoinhouse": {
+    "description": "Скромное финансовое здание для небольших вложений",
+    "label": "Монетный дом"
+  },
+  "buildConsecratedPaleCross": {
+    "description": "Высокий монумент из выбеленных костей, значительно усиливающий жертвы костяных тотемов.",
+    "label": "Освященный Бледный крест"
+  },
+  "buildDarkEstate": {
+    "description": "Уединенное поместье, дающее убежище от мира",
+    "label": "Темное поместье"
+  },
+  "buildDeepPit": {
+    "description": "Очень глубокая яма, вскрывающая ценные рудные жилы",
+    "label": "Глубокая яма"
+  },
+  "buildDeepeningPit": {
+    "description": "Более глубокая яма, уходящая к дальним богатствам земли",
+    "label": "Углубленная яма"
+  },
+  "buildFortifiedMoat": {
+    "description": "Оборонительный ров, замедляющий и ослабляющий нападающих",
+    "label": "Укрепленный ров"
+  },
+  "buildFortifiedStorehouse": {
+    "description": "Усиленное хранилище с повышенной вместимостью",
+    "label": "Укрепленный склад"
+  },
+  "buildFoundry": {
+    "description": "Специализированное здание для производства стали",
+    "label": "Литейная"
+  },
+  "buildFurTents": {
+    "description": "Теплое меховое укрытие кочевого племени",
+    "label": "Меховой шатер"
+  },
+  "buildGrandBazaar": {
+    "description": "Разросшийся рынок, привлекающий больше торговцев",
+    "label": "Большой базар"
+  },
+  "buildGrandBlacksmith": {
+    "description": "Передовая кузница, способная создавать лучшие изделия",
+    "label": "Большая кузница"
+  },
+  "buildGrandHunterLodge": {
+    "description": "Лучший охотничий дом для мастеров охоты",
+    "label": "Большой охотничий дом"
+  },
+  "buildGrandRepository": {
+    "description": "Огромное хранилище с исключительной вместимостью",
+    "label": "Большое хранилище"
+  },
+  "buildGreatCabin": {
+    "description": "Расширенный охотничий дом, повышающий добычу охотников",
+    "label": "Большая хижина"
+  },
+  "buildGreatVault": {
+    "description": "Великое хранилище, способное вместить несметные ресурсы",
+    "label": "Великий свод"
+  },
+  "buildHeartfire": {
+    "description": "Священный огонь, дарующий утешение и чувство защиты",
+    "label": "Сердечный огонь"
+  },
+  "buildHighTannery": {
+    "description": "Лучшая дубильня для искусных кожевников",
+    "label": "Высшая дубильня"
+  },
+  "buildImprovedTraps": {
+    "description": "Улучшенные ловушки по периметру с более прочными механизмами и большим охватом",
+    "label": "Улучшенные ловушки"
+  },
+  "buildInkwardenAcademy": {
+    "description": "Великая академия ученых, дающая высшее знание и учет ресурсов",
+    "label": "Академия хранителей чернил"
+  },
+  "buildLonghouse": {
+    "description": "Огромный северный общий зал, вмещающий множество жителей",
+    "label": "Длинный дом"
+  },
+  "buildMasterTannery": {
+    "description": "Улучшенная дубильня, повышающая производство кожи",
+    "label": "Мастерская дубильня"
+  },
+  "buildMasterworkFoundry": {
+    "description": "Литейная с превосходным производством стали",
+    "label": "Искусная литейная"
+  },
+  "buildMerchantsGuild": {
+    "description": "Могущественная гильдия, привлекающая лучшие сделки и торговцев",
+    "label": "Гильдия торговцев"
+  },
+  "buildPaleCross": {
+    "description": "Высокий монумент из выбеленных костей, усиливающий жертвы костяных тотемов.",
+    "label": "Бледный крест"
+  },
+  "buildPalisades": {
+    "description": "Оборонительные стены, защищающие поселение",
+    "label": "Частокол"
+  },
+  "buildPillarOfClarity": {
+    "description": "Чисто-белый обелиск, очищающий разум от тьмы",
+    "label": "Столп ясности"
+  },
+  "buildPrimeFoundry": {
+    "description": "Улучшенная литейная с повышенным производством стали",
+    "label": "Главная литейная"
+  },
+  "buildQuarry": {
+    "description": "Каменоломня, повышающая добычу камня у собирателей",
+    "label": "Каменоломня"
+  },
+  "buildSanctum": {
+    "description": "Божественное святилище, дающее величайшую защиту от тьмы",
+    "label": "Святилище"
+  },
+  "buildScriptorium": {
+    "description": "Библиотека знаний, дающая подробный учет ресурсов",
+    "label": "Скрипторий"
+  },
+  "buildShallowPit": {
+    "description": "Небольшая шахтная яма для добычи минералов",
+    "label": "Мелкая яма"
+  },
+  "buildShrine": {
+    "description": "Святая часовня, дающая большую защиту от безумия",
+    "label": "Часовня"
+  },
+  "buildStoneHut": {
+    "description": "Прочное каменное жилище с лучшей защитой",
+    "label": "Каменная хижина"
+  },
+  "buildStorehouse": {
+    "description": "Расширенное складское помещение для большего запаса ресурсов",
+    "label": "Склад"
+  },
+  "buildSupplyHut": {
+    "description": "Небольшая хижина для хранения припасов",
+    "label": "Хижина припасов"
+  },
+  "buildTannery": {
+    "description": "Мастерская, где меха превращают в кожу",
+    "label": "Дубильня"
+  },
+  "buildTemple": {
+    "description": "Великий храм, дающий сильное сопротивление безумию",
+    "label": "Храм"
+  },
+  "buildTimberMill": {
+    "description": "Лесопилка, помогающая обрабатывать дерево эффективнее",
+    "label": "Лесопилка"
+  },
+  "buildTradePost": {
+    "description": "Торговая застава, привлекающая купцов с товарами",
+    "label": "Торговая застава"
+  },
+  "buildTraps": {
+    "description": "Ловушки вокруг деревни, ослабляющие всех нападающих",
+    "label": "Ловушки"
+  },
+  "buildTreasury": {
+    "description": "Крупное финансовое здание для очень больших вложений",
+    "label": "Казна"
+  },
+  "buildVillageWarehouse": {
+    "description": "Большой склад, способный вместить огромные запасы",
+    "label": "Деревенский склад"
+  },
+  "buildWatchtower": {
+    "description": "Высокая башня, заранее предупреждающая об угрозах",
+    "label": "Дозорная башня"
+  },
+  "buildWizardTower": {
+    "description": "Мистическая башня, где волшебник ведет тайные исследования",
+    "label": "Башня волшебника"
+  },
+  "buildWoodenHut": {
+    "description": "Простая деревянная хижина, дающая базовое укрытие",
+    "label": "Деревянная хижина"
+  },
+  "canyonBridge": {
+    "label": "Мост через каньон"
+  },
+  "castleRuins": {
+    "label": "Руины замка"
+  },
+  "chopWood": {
+    "label": "Собрать дерево",
+    "log": {
+      "firstVisit": "У входа в пещеру разбросано немного дерева. Оно может пригодиться."
+    }
+  },
+  "collapsedTower": {
+    "label": "Обрушенная башня"
+  },
+  "craftAdamantAxe": {
+    "label": "Адамантовый топор"
+  },
+  "craftAdamantLantern": {
+    "label": "Адамантовый фонарь"
+  },
+  "craftAdamantPickaxe": {
+    "label": "Адамантовая кирка"
+  },
+  "craftAdamantSword": {
+    "label": "Адамантовый меч"
+  },
+  "craftArbalest": {
+    "label": "Арбалет"
+  },
+  "craftAshenGreatshield": {
+    "label": "Пепельный большой щит"
+  },
+  "craftAshfireBomb": {
+    "label": "Пепельная бомба"
+  },
+  "craftBlacksteelArmor": {
+    "label": "Доспех из черной стали"
+  },
+  "craftBlacksteelAxe": {
+    "label": "Топор из черной стали"
+  },
+  "craftBlacksteelBow": {
+    "label": "Лук из черной стали"
+  },
+  "craftBlacksteelLantern": {
+    "label": "Фонарь из черной стали"
+  },
+  "craftBlacksteelPickaxe": {
+    "label": "Кирка из черной стали"
+  },
+  "craftBlacksteelSword": {
+    "label": "Меч из черной стали"
+  },
+  "craftBloodstoneStaff": {
+    "label": "Посох с кровавиком"
+  },
+  "craftBoneTotems": {
+    "label": "Костяные тотемы"
+  },
+  "craftCrudeBow": {
+    "label": "Грубый лук"
+  },
+  "craftEmberBomb": {
+    "label": "Угольная бомба"
+  },
+  "craftExplorerPack": {
+    "label": "Рюкзак исследователя"
+  },
+  "craftFrostglassSword": {
+    "label": "Меч из морозного стекла"
+  },
+  "craftGrenadierBag": {
+    "label": "Сумка гренадера"
+  },
+  "craftHighpriestRobe": {
+    "label": "Роба верховного жреца"
+  },
+  "craftHunterCloak": {
+    "label": "Плащ охотника"
+  },
+  "craftHuntsmanBow": {
+    "label": "Охотничий лук"
+  },
+  "craftIronAxe": {
+    "label": "Железный топор"
+  },
+  "craftIronLantern": {
+    "label": "Железный фонарь"
+  },
+  "craftIronPickaxe": {
+    "label": "Железная кирка"
+  },
+  "craftIronSword": {
+    "label": "Железный меч"
+  },
+  "craftLeatherTotems": {
+    "label": "Кожаные тотемы"
+  },
+  "craftLoggersGloves": {
+    "label": "Перчатки лесоруба"
+  },
+  "craftLongBow": {
+    "label": "Длинный лук"
+  },
+  "craftMasterBow": {
+    "label": "Мастерский лук"
+  },
+  "craftNightshadeBow": {
+    "label": "Лук паслена"
+  },
+  "craftObsidianAxe": {
+    "label": "Обсидиановый топор"
+  },
+  "craftObsidianLantern": {
+    "label": "Обсидиановый фонарь"
+  },
+  "craftObsidianPickaxe": {
+    "label": "Обсидиановая кирка"
+  },
+  "craftObsidianSword": {
+    "label": "Обсидиановый меч"
+  },
+  "craftSacrificialTunic": {
+    "label": "Жертвенная туника"
+  },
+  "craftShadowBoots": {
+    "label": "Теневые сапоги"
+  },
+  "craftSkeletonKey": {
+    "label": "Отмычка-скелет"
+  },
+  "craftSteelAxe": {
+    "label": "Стальной топор"
+  },
+  "craftSteelLantern": {
+    "label": "Стальной фонарь"
+  },
+  "craftSteelPickaxe": {
+    "label": "Стальная кирка"
+  },
+  "craftSteelSword": {
+    "label": "Стальной меч"
+  },
+  "craftStoneAxe": {
+    "label": "Каменный топор"
+  },
+  "craftStonePickaxe": {
+    "label": "Каменная кирка"
+  },
+  "craftStormglassHalberd": {
+    "label": "Алебарда из грозового стекла"
+  },
+  "craftTorches": {
+    "label": "Факелы"
+  },
+  "craftVeinfireElixir": {
+    "label": "Эликсир жилового огня"
+  },
+  "craftVoidBomb": {
+    "label": "Бомба пустоты"
+  },
+  "craftWarBow": {
+    "label": "Боевой лук"
+  },
+  "descendFurther": {
+    "label": "Спуститься глубже",
+    "log": {
+      "firstVisit": "Фонарь отбрасывает ровный свет, пока вы спускаетесь ещё глубже. Внезапно ноги касаются высеченных вручную каменных ступеней, изношенных временем."
+    }
+  },
+  "encounterBeyondPortal": {
+    "label": "Шагнуть за врата"
+  },
+  "exploreCave": {
+    "label": "Исследовать пещеру",
+    "log": {
+      "debrisScroll": "Среди обломков вы находите потрёпанный свиток с мудростью для выживания в этом суровом мире.",
+      "torchBag": "В пещере вы находите старую пыльную сумку с 25 факелами.",
+      "firstVisit": "Свет факела освещает стены пещеры. В мерцающем свете вы замечаете тропу, ведущую глубже в пещеры."
+    }
+  },
+  "exploreCitadel": {
+    "label": "Исследовать цитадель",
+    "log": {
+      "firstVisit": "В самой глубокой части города перед вами возвышается массивная цитадель. Её размеры намекают, что внутри скрывается нечто великой силы или великой опасности."
+    }
+  },
+  "exploreRuins": {
+    "label": "Исследовать руины",
+    "log": {
+      "firstVisit": "В конце лестницы перед вами открывается огромная пещера. Во тьме лежат руины затерянного города — останки давно исчезнувшей цивилизации."
+    }
+  },
+  "exploreTemple": {
+    "label": "Исследовать храм",
+    "log": {
+      "firstVisit": "Продвигаясь глубже в руины подземного города, вы видите, как из пола пещеры поднимается величественный храм, в основном целый, его тень ложится на забытые останки города."
+    }
+  },
+  "exploreUndergroundLake": {
+    "label": "Подземное озеро"
+  },
+  "forestCave": {
+    "label": "Лесная пещера"
+  },
+  "healElderWizard": {
+    "label": "Исцелить старого волшебника"
+  },
+  "healRestlessKnight": {
+    "label": "Исцелить беспокойного рыцаря"
+  },
+  "hiddenLibrary": {
+    "label": "Скрытая библиотека"
+  },
+  "hillGrave": {
+    "label": "Могила на холме"
+  },
+  "humans": {
+    "label": "Люди"
+  },
+  "hunt": {
+    "label": "Охотиться"
+  },
+  "layTrap": {
+    "label": "Поставить ловушку"
+  },
+  "leatherTotems": {
+    "label": "Кожаные тотемы"
+  },
+  "lightFire": {
+    "label": "Разжечь огонь",
+    "log": {
+      "firstVisit": "Огонь тихо потрескивает, отбрасывая пляшущие тени на стены пещеры. Тепло утешительно.",
+      "firstVisitBoost": "Огонь тихо потрескивает, отбрасывая пляшущие тени на стены пещеры. Тепло утешительно. Кто-то оставил вам подарок."
+    }
+  },
+  "lowChamber": {
+    "label": "Низкая палата"
+  },
+  "lureLakeCreature": {
+    "label": "Поставить ловушку"
+  },
+  "mineAdamant": {
+    "label": "Добывать адамант",
+    "log": {
+      "natharitSilverVein": "Кирка из натарита обнажает жилу серебра! +{{amount}} {{resource}}"
+    }
+  },
+  "mineCoal": {
+    "label": "Добывать уголь",
+    "log": {
+      "natharitSilverVein": "Кирка из натарита обнажает жилу серебра! +{{amount}} {{resource}}"
+    }
+  },
+  "mineIron": {
+    "label": "Добывать железо",
+    "log": {
+      "natharitSilverVein": "Кирка из натарита обнажает жилу серебра! +{{amount}} {{resource}}"
+    }
+  },
+  "mineObsidian": {
+    "label": "Добывать обсидиан",
+    "log": {
+      "natharitSilverVein": "Кирка из натарита обнажает жилу серебра! +{{amount}} {{resource}}"
+    }
+  },
+  "mineStone": {
+    "label": "Добывать камень",
+    "log": {
+      "natharitSilverVein": "Кирка из натарита обнажает жилу серебра! +{{amount}} {{resource}}"
+    }
+  },
+  "mineSulfur": {
+    "label": "Добывать серу",
+    "log": {
+      "natharitSilverVein": "Кирка из натарита обнажает жилу серебра! +{{amount}} {{resource}}"
+    }
+  },
+  "occultistChamber": {
+    "label": "Палата оккультиста"
+  },
+  "provokeAttackWave": {
+    "label": "Спровоцировать волну атаки"
+  },
+  "repairBastion": {
+    "label": "Починить бастион"
+  },
+  "repairPalisades": {
+    "label": "Починить частокол"
+  },
+  "repairWatchtower": {
+    "label": "Починить дозорную башню"
+  },
+  "risingSmoke": {
+    "label": "Поднимающийся дым"
+  },
+  "sellBlacksteelBatch": {
+    "label": "Продать черную сталь"
+  },
+  "sellLeatherBatch": {
+    "label": "Продать кожу"
+  },
+  "sellSteelBatch": {
+    "label": "Продать сталь"
+  },
+  "steelDelivery": {
+    "label": "Доставка стали"
+  },
+  "sunkenTemple": {
+    "label": "Затонувший храм"
+  },
+  "swampSanctuary": {
+    "label": "Болотное святилище"
+  },
+  "tradeGoldForAdamant": {
+    "label": "Купить адамант"
+  },
+  "tradeGoldForAshfireBomb": {
+    "label": "Купить пепельную бомбу"
+  },
+  "tradeGoldForBlacksteel": {
+    "label": "Купить черную сталь"
+  },
+  "tradeGoldForEmberBomb": {
+    "label": "Купить угольную бомбу"
+  },
+  "tradeGoldForFood": {
+    "label": "Купить еду"
+  },
+  "tradeGoldForLeather": {
+    "label": "Купить кожу"
+  },
+  "tradeGoldForObsidian": {
+    "label": "Купить обсидиан"
+  },
+  "tradeGoldForSteel": {
+    "label": "Купить сталь"
+  },
+  "tradeGoldForStone": {
+    "label": "Купить камень"
+  },
+  "tradeGoldForTorch": {
+    "label": "Купить факел"
+  },
+  "tradeGoldForVoidBomb": {
+    "label": "Купить бомбу пустоты"
+  },
+  "tradeGoldForWood": {
+    "label": "Купить дерево"
+  },
+  "tradeSilverForGold": {
+    "label": "Купить золото"
+  },
+  "ventureDeeper": {
+    "label": "Идти глубже",
+    "log": {
+      "tarnishedAmulet": "В тени пещеры что-то блестит. Вы находите потускневший амулет.",
+      "silverSack": "Вы находите небольшой кожаный мешок с 50 серебра.",
+      "mapFragment": "На полу пещеры вы находите оборванный фрагмент карты.",
+      "firstVisit": "Воздух становится холоднее по мере спуска глубже в пещеру. Стены кажутся неестественно гладкими, словно обработанными чьей-то рукой."
+    }
+  }
+}

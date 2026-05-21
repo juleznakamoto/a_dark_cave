@@ -3,6 +3,7 @@ import OutcomeDialog, {
   OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS,
 } from "./OutcomeDialog";
 import { formatNumber } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 import type {
   InvestmentOutcomeUiKind,
   InvestmentResultDialogPayload,
@@ -49,6 +50,7 @@ export default function InvestmentResultDialog({
   data,
   onClose,
 }: InvestmentResultDialogProps) {
+  const { t } = useTranslation(["ui", "common"]);
   if (!data) return null;
 
   const { kind, goldDelta, briefText } = data;
@@ -57,7 +59,8 @@ export default function InvestmentResultDialog({
   const goldLine = (
     <div className="text-sm text-foreground tabular-nums">
       {goldDelta >= 0 ? "+" : "-"}
-      {formatNumber(Math.abs(goldDelta))} Gold
+      {formatNumber(Math.abs(goldDelta))}{" "}
+      {t("common:resources.gold")}
     </div>
   );
 
@@ -67,9 +70,9 @@ export default function InvestmentResultDialog({
       onClose={onClose}
       icon={<OutcomeIcon kind={kind} />}
       successLog={briefText}
-      title="Investment Result"
+      title={t("ui:investmentResult.title")}
       variant={isLoss ? "loss" : "success"}
-      buttonText="Continue"
+      buttonText={t("common:buttons.continue")}
       buttonId="investment-result-dialog-continue"
     >
       {goldLine}

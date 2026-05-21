@@ -10,11 +10,12 @@ import {
   getResourcesFromActionCost,
 } from "@/game/rules";
 import CooldownButton from "@/components/CooldownButton";
+import { useTranslation } from "react-i18next";
 
 const PROVOKE_ACTION_ID = "provokeAttackWave" as const;
 
 export default function AttackWavesChart() {
-  // Subscribe to slices that drive chart rows and timers; timer label ticks once per second.
+  const { t } = useTranslation("ui");
   const story = useGameStore((s) => s.story);
   const buildings = useGameStore((s) => s.buildings);
   const weapons = useGameStore((s) => s.weapons);
@@ -24,7 +25,7 @@ export default function AttackWavesChart() {
   const [, setTimerTick] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => setTimerTick((t) => t + 1), 1000);
+    const interval = setInterval(() => setTimerTick((tick) => tick + 1), 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -33,7 +34,7 @@ export default function AttackWavesChart() {
   const state = useGameStore.getState() as unknown as GameState;
 
   const formatTime = (ms: number): string => {
-    if (ms <= 0) return "soon";
+    if (ms <= 0) return t("attackWaves.soon");
     const minutes = Math.floor(ms / 60000);
     const seconds = Math.floor((ms % 60000) / 1000);
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
@@ -68,7 +69,7 @@ export default function AttackWavesChart() {
     <div className="space-y-3">
       <div className="flex items-center gap-2 flex-wrap">
         <span className="text-xs font-medium text-foreground">
-          Attack Waves
+          {t("attackWaves.title")}
         </span>
         <span className="text-xs text-muted-foreground">
           {completedWaves}/{totalWaves}
@@ -90,7 +91,7 @@ export default function AttackWavesChart() {
             <span className="text-xs text-muted-foreground">
               {attackWaveTimers?.[activeWave.id]
                 ? formatTime(getTimeRemaining(activeWave.id))
-                : "It is calm, for now..."}
+                : t("attackWaves.calm")}
             </span>
           </div>
           {attackWaveTimers?.[activeWave.id] && (
@@ -133,7 +134,7 @@ export default function AttackWavesChart() {
                 setHighlightedResources([]);
               }}
             >
-              Provoke
+              {t("attackWaves.provoke")}
             </CooldownButton>
           )}
         </div>
@@ -141,7 +142,7 @@ export default function AttackWavesChart() {
         !allWavesCompleted && (
           <div>
             <span className="text-xs italic text-muted-foreground">
-              It is calm, for now...
+              {t("attackWaves.calm")}
             </span>
           </div>
         )

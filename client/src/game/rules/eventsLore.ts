@@ -8,8 +8,7 @@ export const loreEvents: Record<string, GameEvent> = {
       state.buildings.stoneHut >= 4 && !state.story.seen.restlessKnightSuccess,
     timeProbability: (state: GameState) => {
       return state.story.seen.restlessKnightFailed ? 20 : 15;
-    },
-    title: "The Restless Knight",
+    },
     message: (state: GameState) =>
       state.story.seen.restlessKnightFailed
         ? "Again, the knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'"
@@ -19,8 +18,7 @@ export const loreEvents: Record<string, GameEvent> = {
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
     fallbackChoice: {
-      id: "refuse",
-      label: "Refuse",
+      id: "refuse",
       effect: (state: GameState) => {
         return {
           story: {
@@ -30,20 +28,18 @@ export const loreEvents: Record<string, GameEvent> = {
               restlessKnightFailed: true,
             },
           },
-          _logMessage:
-            "The knight waited but you did not respond. 'Perhaps another time,' he says before continuing his journey.",
+          _logMessageKey: "outcome0",
         };
       },
     },
     choices: [
       {
-        id: "payGold",
-        label: "Pay 50 Gold",
+        id: "payGold",
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
             return {
-              _logMessage: "You don't have enough gold.",
+              _logMessageKey: "outcome1",
             };
           }
 
@@ -63,14 +59,12 @@ export const loreEvents: Record<string, GameEvent> = {
               ...state.stats,
               madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
-            _logMessage:
-              "The knight speaks: 'Beyond the eastern mountains lies a dead city of giant stone towers, almost touching the clouds. Empty windows stare across the land like countless eyes. Nature has climbed every wall and filled the streets with roots. No one has lived there for ages.'",
+            _logMessageKey: "outcome2",
           };
         },
       },
       {
-        id: "convince",
-        label: "Convince him",
+        id: "convince",
         relevant_stats: ["knowledge"],
         success_chance: (state: GameState) => {
           return calculateSuccessChance(state, 0.2, {
@@ -97,8 +91,7 @@ export const loreEvents: Record<string, GameEvent> = {
                 ...state.stats,
                 madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
               },
-              _logMessage:
-                "Your words intrigue the knight, he speaks: 'Beyond the eastern mountains lies a dead city of giant stone towers, almost touching the clouds. Empty windows stare across the land like countless eyes. Nature has climbed every wall and filled the streets with roots. No one has lived there for ages.'",
+              _logMessageKey: "outcome3",
             };
           } else {
             return {
@@ -109,15 +102,13 @@ export const loreEvents: Record<string, GameEvent> = {
                   restlessKnightFailed: true,
                 },
               },
-              _logMessage:
-                "The knight listens to your words but shakes his head. 'Your words are earnest, but my knowledge has value. Perhaps our paths will cross again.' He departs without sharing his tale.",
+              _logMessageKey: "outcome4",
             };
           }
         },
       },
       {
-        id: "refuse",
-        label: "Do not pay",
+        id: "refuse",
         effect: (state: GameState) => {
           return {
             story: {
@@ -127,8 +118,7 @@ export const loreEvents: Record<string, GameEvent> = {
                 restlessKnightFailed: true,
               },
             },
-            _logMessage:
-              "You decline the knight's offer. He nods respectfully. 'Perhaps our paths will cross again,' he says before continuing his journey.",
+            _logMessageKey: "outcome5",
           };
         },
       },
@@ -142,17 +132,13 @@ export const loreEvents: Record<string, GameEvent> = {
       state.story.seen.restlessKnightSuccess &&
       !state.story.seen.restlessKnightMountains,
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightMountainsFailed ? 20 : 15,
-    title: "Return from the Mountains",
-    message:
-      "The knight returns, his armor scratched and battered. 'I found something extraordinary in the mountains,' he says. I will tell you about it, for a price'",
+      state.story.seen.restlessKnightMountainsFailed ? 20 : 15,
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
     fallbackChoice: {
-      id: "refuse",
-      label: "Refuse",
+      id: "refuse",
       effect: (state: GameState) => {
         return {
           story: {
@@ -162,20 +148,18 @@ export const loreEvents: Record<string, GameEvent> = {
               restlessKnightMountainsFailed: true,
             },
           },
-          _logMessage:
-            "The knight waited but you did not respond. 'Perhaps another time,' he says before continuing his journey.",
+          _logMessageKey: "outcome0",
         };
       },
     },
     choices: [
       {
-        id: "payGold",
-        label: "Pay 50 Gold",
+        id: "payGold",
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
             return {
-              _logMessage: "You don't have enough gold.",
+              _logMessageKey: "outcome1",
             };
           }
 
@@ -195,19 +179,17 @@ export const loreEvents: Record<string, GameEvent> = {
               ...state.stats,
               madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
-            _logMessage:
-              "The knight shares his discovery: 'High in the mountains lies a monastery carved into the cliffs. Scholars who gathered there to study the past tell of an advanced civilization far beyond our understanding. Yet something brought their world to ruin.'",
+            _logMessageKey: "outcome2",
           };
         },
       },
       {
-        id: "payFood",
-        label: "Pay 2500 Food",
+        id: "payFood",
         cost: "2500 food",
         effect: (state: GameState) => {
           if (state.resources.food < 2500) {
             return {
-              _logMessage: "You don't have enough food.",
+              _logMessageKey: "outcome3",
             };
           }
 
@@ -227,14 +209,12 @@ export const loreEvents: Record<string, GameEvent> = {
               ...state.stats,
               madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
-            _logMessage:
-              "Grateful for the meal, the knight shares his discovery: 'High in the mountains lies a monastery carved into the cliffs. The scholars there who study the past speak of a civilization far beyond our understanding. Their craft was so advanced it would seem like magic to us. Yet something brought their world to ruin.'",
+            _logMessageKey: "outcome4",
           };
         },
       },
       {
-        id: "refuse",
-        label: "Refuse",
+        id: "refuse",
         effect: (state: GameState) => {
           return {
             story: {
@@ -244,8 +224,7 @@ export const loreEvents: Record<string, GameEvent> = {
                 restlessKnightMountainsFailed: true,
               },
             },
-            _logMessage:
-              "You decline his offer. The knight nods understandingly. 'The knowledge will remain with me then,' he says before departing once more.",
+            _logMessageKey: "outcome5",
           };
         },
       },
@@ -259,17 +238,13 @@ export const loreEvents: Record<string, GameEvent> = {
       state.story.seen.restlessKnightMountains &&
       !state.story.seen.restlessKnightCoast,
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightCoastFailed ? 20 : 15,
-    title: "Tales from the Shore",
-    message:
-      "The knight appears once more, 'I have traveled to a city on the shore of an ocean,' he says. 'What I found there defies belief. I will share this knowledge, for a price.'",
+      state.story.seen.restlessKnightCoastFailed ? 20 : 15,
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
     fallbackChoice: {
-      id: "refuse",
-      label: "Refuse",
+      id: "refuse",
       effect: (state: GameState) => {
         return {
           story: {
@@ -279,20 +254,18 @@ export const loreEvents: Record<string, GameEvent> = {
               restlessKnightCoastFailed: true,
             },
           },
-          _logMessage:
-            "The knight waited but you did not respond. 'Perhaps another time,' he says before continuing his journey.",
+          _logMessageKey: "outcome0",
         };
       },
     },
     choices: [
       {
-        id: "payGold",
-        label: "Pay 50 Gold",
+        id: "payGold",
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
             return {
-              _logMessage: "You don't have enough gold.",
+              _logMessageKey: "outcome1",
             };
           }
 
@@ -312,19 +285,17 @@ export const loreEvents: Record<string, GameEvent> = {
               ...state.stats,
               madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
-            _logMessage:
-              "The knight shares: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.'",
+            _logMessageKey: "outcome2",
           };
         },
       },
       {
-        id: "payFood",
-        label: "Pay 2500 Food",
+        id: "payFood",
         cost: "2500 food",
         effect: (state: GameState) => {
           if (state.resources.food < 2500) {
             return {
-              _logMessage: "You don't have enough food.",
+              _logMessageKey: "outcome3",
             };
           }
 
@@ -344,14 +315,12 @@ export const loreEvents: Record<string, GameEvent> = {
               ...state.stats,
               madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
-            _logMessage:
-              "Content for the meal, the knight shares: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.'",
+            _logMessageKey: "outcome4",
           };
         },
       },
       {
-        id: "convince",
-        label: "Convince him",
+        id: "convince",
         relevant_stats: ["knowledge"],
         success_chance: (state: GameState) => {
           return calculateSuccessChance(state, 0.1, {
@@ -378,8 +347,7 @@ export const loreEvents: Record<string, GameEvent> = {
                 ...state.stats,
                 madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
               },
-              _logMessage:
-                "Your words move the knight. He speaks: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.'",
+              _logMessageKey: "outcome5",
             };
           } else {
             return {
@@ -390,15 +358,13 @@ export const loreEvents: Record<string, GameEvent> = {
                   restlessKnightCoastFailed: true,
                 },
               },
-              _logMessage:
-                "The knight listens but remains unmoved. 'Your words are sincere, but this knowledge is precious. Perhaps another time.' He departs without sharing his discovery.",
+              _logMessageKey: "outcome6",
             };
           }
         },
       },
       {
-        id: "refuse",
-        label: "Refuse",
+        id: "refuse",
         effect: (state: GameState) => {
           return {
             story: {
@@ -408,8 +374,7 @@ export const loreEvents: Record<string, GameEvent> = {
                 restlessKnightCoastFailed: true,
               },
             },
-            _logMessage:
-              "You decline his offer. The knight nods solemnly. 'Very well. The secrets of the shore shall remain with me for now,' he says before walking away.",
+            _logMessageKey: "outcome7",
           };
         },
       },
@@ -424,17 +389,13 @@ export const loreEvents: Record<string, GameEvent> = {
       state.story.seen.restlessKnightCoast &&
       !state.story.seen.restlessKnightDesert,
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightDesertFailed ? 20 : 10,
-    title: "The Knight's Final Journey",
-    message:
-      "The knight returns, 'I traveled far south to a vast desert. There, I met a man devoted to recovering lost technology of the ancients. He showed me devices once embedded in the skull, enhancing senses beyond natural limits. ' He pauses, 'I have traveled enough. You could use a veteran blade. I offer my service in combat, if you accept.'",
+      state.story.seen.restlessKnightDesertFailed ? 20 : 10,
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
     fallbackChoice: {
-      id: "refuse",
-      label: "Refuse",
+      id: "refuse",
       effect: (state: GameState) => {
         return {
           story: {
@@ -444,20 +405,18 @@ export const loreEvents: Record<string, GameEvent> = {
               restlessKnightDesertFailed: true,
             },
           },
-          _logMessage:
-            "The knight waited but you did not respond. 'Perhaps another time,' he says before continuing his journey.",
+          _logMessageKey: "outcome0",
         };
       },
     },
     choices: [
       {
-        id: "payGold",
-        label: "Pay 250 Gold",
+        id: "payGold",
         cost: "250 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 250) {
             return {
-              _logMessage: "You don't have enough gold.",
+              _logMessageKey: "outcome1",
             };
           }
 
@@ -481,19 +440,17 @@ export const loreEvents: Record<string, GameEvent> = {
               ...state.stats,
               madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
-            _logMessage:
-              "The knight nods with satisfaction. 'A fair price. I shall defend your people with my life.' He removes his weathered helm, revealing a scarred but determined face. The restless knight has joined your fellowship.",
+            _logMessageKey: "outcome2",
           };
         },
       },
       {
-        id: "paySilver",
-        label: "Pay 1000 Silver",
+        id: "paySilver",
         cost: "1000 silver",
         effect: (state: GameState) => {
           if (state.resources.silver < 1000) {
             return {
-              _logMessage: "You don't have enough silver.",
+              _logMessageKey: "outcome3",
             };
           }
 
@@ -517,14 +474,12 @@ export const loreEvents: Record<string, GameEvent> = {
               ...state.stats,
               madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
-            _logMessage:
-              "The knight accepts the silver with a solemn bow. 'I shall defend your people with my life.' He removes his weathered helm, revealing a scarred but determined face. The restless knight has joined your fellowship.",
+            _logMessageKey: "outcome4",
           };
         },
       },
       {
-        id: "convince",
-        label: "Convince him",
+        id: "convince",
         relevant_stats: ["knowledge"],
         success_chance: (state: GameState) => {
           return calculateSuccessChance(state, 0.05, {
@@ -555,8 +510,7 @@ export const loreEvents: Record<string, GameEvent> = {
                 ...state.stats,
                 madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
               },
-              _logMessage:
-                "'Your purpose seems noble, the knight’s eyes brighten. 'I would be honored to stand with you.' He removes his weathered helm, revealing a scarred but determined face. The restless knight has joined your fellowship.",
+              _logMessageKey: "outcome5",
             };
           } else {
             return {
@@ -567,15 +521,13 @@ export const loreEvents: Record<string, GameEvent> = {
                   restlessKnightDesertFailed: true,
                 },
               },
-              _logMessage:
-                "The knight listens but shakes his head. 'Words alone cannot sustain a warrior. I must continue my journey, then, for now.', he says, turning away and departing.",
+              _logMessageKey: "outcome6",
             };
           }
         },
       },
       {
-        id: "refuse",
-        label: "Refuse",
+        id: "refuse",
         effect: (state: GameState) => {
           return {
             story: {
@@ -585,8 +537,7 @@ export const loreEvents: Record<string, GameEvent> = {
                 restlessKnightDesertFailed: true,
               },
             },
-            _logMessage:
-              "You decline his offer. The knight nods with understanding. 'I respect your decision. I must continue my journey, then, for now.', he says, turning away and departing.",
+            _logMessageKey: "outcome7",
           };
         },
       },
@@ -598,48 +549,39 @@ export const loreEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.cruelMode === true && Boolean(state.fellowship?.restless_knight),
     timeProbability: 45,
-    repeatable: false,
-    title: "The unspeakable Burden",
-    message:
-      "The restless knight comes to you. 'There is one thing I never spoke of,' he says. 'I meant to spare everyone. But you might want to know it.'",
+    repeatable: false,
     priority: 3,
     showAsTimedTab: true,
     timedTabDuration: 5 * 60 * 1000,
     fallbackChoice: {
-      id: "decline",
-      label: "Decline",
+      id: "decline",
       effect: (state: GameState) => ({
         stats: {
           ...state.stats,
           madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
         },
-        _logMessage:
-          "You refuse. His face tightens, he gives a short nod and says nothing. The weight continues to stay on him alone.",
+        _logMessageKey: "outcome0",
       }),
     },
     choices: [
       {
-        id: "accept",
-        label: "Accept",
+        id: "accept",
         effect: (state: GameState) => ({
           blessings: {
             ...state.blessings,
             knights_burden: true,
           },
-          _logMessage:
-            "He speaks of the skull device collector in the desert. He captured humans to implant the devices, without mercy and without success. The knight found a trench filled with hundreds of dead.",
+          _logMessageKey: "outcome1",
         }),
       },
       {
-        id: "decline",
-        label: "Decline",
+        id: "decline",
         effect: (state: GameState) => ({
           stats: {
             ...state.stats,
             madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
           },
-          _logMessage:
-            "You refuse. His face tightens, he gives a short nod and says nothing. The weight continues to stay on him alone.",
+          _logMessageKey: "outcome2",
         }),
       },
     ],
@@ -652,16 +594,12 @@ export const loreEvents: Record<string, GameEvent> = {
       Boolean(state.flags.forestUnlocked) &&
       !Boolean(state.story.seen.risingSmokeUnlocked),
     timeProbability: 20,
-    repeatable: false,
-    title: "Rising smoke",
-    message:
-      "Villagers come to you. They saw a very dense pillar of smoke rising in the woods. Maybe it makes sense to investigate it.",
+    repeatable: false,
     priority: 3,
     skipEventLog: true,
     choices: [
       {
-        id: "continue",
-        label: "Continue",
+        id: "continue",
         effect: (state: GameState) => ({
           story: {
             ...state.story,

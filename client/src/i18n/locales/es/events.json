@@ -1,0 +1,2337 @@
+{
+  "alchemistArrives": {
+    "message": "El alquimista emerge de su salón: 'He estado realizando experimentos día y noche', dice, sosteniendo un vial de polvo resplandeciente. 'He creado algo extraordinario y terriblemente peligroso'.",
+    "title": "El descubrimiento del alquimista"
+  },
+  "ashwraithCanyonTradeOffer": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "La Cazadora Espectroceniza se acerca a ti. 'Mi pueblo desea comerciar', dice, 'pero entre nuestras tierras hay un cañón profundo. Necesitamos un puente para que crucen las caravanas. Constrúyelo y ambos pueblos prosperarán'.",
+    "title": "Un puente para comerciar"
+  },
+  "bastionBecomesFortress": {
+    "message": "Tu bastión se ha convertido en una poderosa fortaleza de piedra y acero."
+  },
+  "beyondGatePassagesClear": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Los pasadizos de la cueva tras la puerta parecen por fin despejados. Parece que has matado a las criaturas pálidas. Al fin puedes aventurarte más allá de la puerta.",
+    "title": "Más allá de la puerta"
+  },
+  "blackenedMirror": {
+    "choices": {
+      "buyMirror": {
+        "cost": "500 hierro",
+        "label": "pagar 500 hierro"
+      },
+      "refuseMirror": {
+        "label": "Rechazar"
+      }
+    },
+    "log": {
+      "outcome0": "Compras el espejo. Su superficie oscura te muestra destellos de tu propio futuro y empuja tu cordura hacia el borde.",
+      "outcome1": "Rechazas la oferta del mercader. El espejo desaparece con él en la noche."
+    },
+    "message": "Un comerciante errante ofrece un espejo alto y agrietado, enmarcado en hierro negro. Irradia un aura fría y antinatural. Afirma que puede mostrar destellos del futuro.",
+    "title": "El espejo ennegrecido"
+  },
+  "blacksmithHammerChoice": {
+    "choices": {
+      "leaveHammer": {
+        "label": "Dejarlo"
+      },
+      "takeHammer": {
+        "label": "Tomar el martillo"
+      }
+    },
+    "log": {
+      "outcome0": "Empuñas el martillo antiguo y sientes su peso y equilibrio. Pese a las eras transcurridas, sigue siendo una obra maestra de herrería.",
+      "outcome1": "Decides dejar el martillo donde yace, respetando el último descanso del gigante."
+    },
+    "message": "En lo profundo del bosque descubres las ruinas de un edificio de piedra con un horno enorme. Encuentras restos esqueléticos de lo que debió de ser un gigante y, junto a ellos, un magnífico martillo de herrero. ¿Lo tomas?",
+    "title": "La forja del gigante"
+  },
+  "blindDruidBlessing": {
+    "message": "Un druida ciego emerge del bosque. Se acerca al santuario y asiente con aprobación. 'Los dioses del bosque están complacidos con tu devoción; te conceden su bendición'.",
+    "title": "El druida ciego"
+  },
+  "bloodDrainedVillagers": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": {
+      "firstTime": "Una mañana, 6 aldeanos aparecen muertos en sus camas, pálidos y completamente drenados de sangre. Pequeñas punciones cubren su piel. Algunos sospechan que esto podría estar relacionado con la torre derrumbada en el bosque, donde los cazadores oyeron sonidos extraños.",
+      "repeat": "De nuevo, 8 aldeanos más son descubiertos muertos al amanecer, con el cuerpo drenado de sangre y cubierto con las mismas marcas misteriosas. Las exigencias de hacer algo contra lo que habita en la torre derrumbada se vuelven más fuertes."
+    },
+    "title": "Cuerpos drenados"
+  },
+  "bloodInWater": {
+    "message": "El agua de la aldea corre roja durante tres días. Los aldeanos no parecen notarlo y la beben como si nada hubiera cambiado. Tú saboreas cobre y hierro, pero ellos aseguran que sabe al agua de manantial más dulce."
+  },
+  "bloodMoonAttack": {
+    "choices": {
+      "prepareForAttack": {
+        "label": "Prepararse para el ataque"
+      },
+      "sacrificeVillagers": {
+        "label": "Prepararse para el ataque"
+      }
+    },
+    "log": {
+      "outcome0": "Los aldeanos son entregados a los licántropos. Cuando la luna de sangre se desvanece, la paz vuelve a la aldea. Al menos por ahora.",
+      "outcome1": "Los licántropos atacan, pero tus defensas resisten. Su líder cae y de su cadáver extraes sangre de licano, aún caliente y rebosante de poder.",
+      "outcome2": "¡Los licántropos arrollan tus defensas y arrasan el asentamiento! La luna de sangre se desvanece, pero la amenaza permanece.",
+      "outcome3": "Los licántropos atacan, pero tus defensas resisten. Su líder cae y de su cadáver extraes sangre de licano, aún caliente y rebosante de poder.",
+      "outcome4": "¡Los licántropos arrollan tus defensas y arrasan el asentamiento! La luna de sangre se desvanece, pero la amenaza permanece."
+    },
+    "message": {
+      "default": "Der Mond ist nachts blutrot geworden, die aldeaältesten sprechen von Lykanthropen. Uralte Pakte verlangen ein Opfer von {{sacrificeAmount}} aldeanosn, um die Bestien zu besänftigen. Weigerst du dich, werden sie dafür sorgen, dass ihr Hunger gestillt wird."
+    },
+    "title": "Luna de sangre"
+  },
+  "bloodiedAwakening": {
+    "choices": {
+      "investigateMurders": {
+        "label": "Investigar los asesinatos"
+      },
+      "severFinger": {
+        "label": "Cortar el dedo"
+      }
+    },
+    "log": {
+      "outcome0": "Sigues huellas embarradas por la aldea y te conducen a cada escena del crimen, una tras otra. Las marcas coinciden con tus propias botas. El horror se revela lentamente: fuiste tú, poseído por el hambre del anillo. Cuando los aldeanos descubren la verdad, dieciocho huyen, incapaces de permanecer cerca de una criatura tan maldita.",
+      "outcome1": "Con manos temblorosas, alzas el hacha. El anillo palpita cuando cae la hoja. La agonía te desgarra el brazo al quebrarse el hueso. Al levantar el dedo amputado, ves pequeños hilos negros, como tentáculos, hundidos profundamente en su carne."
+    },
+    "message": "Despiertas con el alba, la ropa empapada en sangre fresca. No es tuya. Un aldeano llega a la finca, pálido de horror. 'Ocho han muerto', susurra. 'Despedazados en la noche'. El anillo en tu dedo late con un dolor agónico.",
+    "title": "Despertar ensangrentado"
+  },
+  "bloodstainedBeltChoice": {
+    "choices": {
+      "doNothing": {
+        "label": "No hacer nada"
+      },
+      "leaveBelt": {
+        "label": "Dejarlo"
+      },
+      "takeBelt": {
+        "label": "Tomarlo"
+      }
+    },
+    "log": {
+      "outcome0": "Te abrochas el cinturón a la cintura. Un susurro tenue parece enroscarse en el borde de tus pensamientos.",
+      "outcome1": "Dejas el cinturón donde cuelga. Sea cual sea la sangre que lo empapó, prefieres no cargar con esa historia.",
+      "outcome2": "Uno de tus hombres se lo abrocha antes de que puedas detenerlo. Ríe y luego jadea cuando el cinturón se aprieta. Sus manos arañan el cuero, pero no cede. Para cuando llegas a él, ya es tarde."
+    },
+    "message": "Colgado de una púa oxidada en la pared de la cueva encuentras un grueso cinturón de cuero, oscuro por viejas manchas de sangre. ¿Lo tomas?",
+    "title": "Cinturón ensangrentado"
+  },
+  "boneArmyAttack": {
+    "choices": {
+      "defendAgainstBoneArmy": {
+        "label": "Defender la aldea"
+      },
+      "hideFromBoneArmy": {
+        "label": "Esconderse"
+      }
+    },
+    "log": {
+      "outcome0": "¡Los aldeanos derrotan al ejército de huesos! Hueso y silencio cubren el campo de batalla. Arrancas la Corona del Devorador de sus restos y llenas un vial con su sangre pálida y viscosa.",
+      "outcome1": "Los aldeanos se esconden aterrados mientras el ejército de huesos registra la aldea. Las criaturas esqueléticas acaban marchándose, con su propósito incumplido.",
+      "defend_noDeaths": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Los aldeanos überstehen den Ansturm.",
+      "defend_noDeaths_hut": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Los aldeanos überstehen den Ansturm. Die skelettierten Kreaturen reißen eine der Hütten auseinander y machen sie zu Schutt.",
+      "defend_noDeaths_steel": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Los aldeanos überstehen den Ansturm. Die ejército de huesos plündert die Vorräte, bevor sie abzieht.",
+      "defend_noDeaths_steel_hut": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Los aldeanos überstehen den Ansturm. Die ejército de huesos plündert die Vorräte, bevor sie abzieht. Die skelettierten Kreaturen reißen eine der Hütten auseinander y machen sie zu Schutt.",
+      "defend_oneDeath": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Ein aldeanos fällt den skelettierten Kriegern zum Opfer.",
+      "defend_oneDeath_hut": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Ein aldeanos fällt den skelettierten Kriegern zum Opfer. Die skelettierten Kreaturen reißen eine der Hütten auseinander y machen sie zu Schutt.",
+      "defend_oneDeath_steel": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Ein aldeanos fällt den skelettierten Kriegern zum Opfer. Die ejército de huesos plündert die Vorräte, bevor sie abzieht.",
+      "defend_oneDeath_steel_hut": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Ein aldeanos fällt den skelettierten Kriegern zum Opfer. Die ejército de huesos plündert die Vorräte, bevor sie abzieht. Die skelettierten Kreaturen reißen eine der Hütten auseinander y machen sie zu Schutt.",
+      "defend_manyDeaths": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Mehrere aldeanos fallen den skelettierten Kriegern zum Opfer.",
+      "defend_manyDeaths_hut": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Mehrere aldeanos fallen den skelettierten Kriegern zum Opfer. Die skelettierten Kreaturen reißen eine der Hütten auseinander y machen sie zu Schutt.",
+      "defend_manyDeaths_steel": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Mehrere aldeanos fallen den skelettierten Kriegern zum Opfer. Die ejército de huesos plündert die Vorräte, bevor sie abzieht.",
+      "defend_manyDeaths_steel_hut": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Mehrere aldeanos fallen den skelettierten Kriegern zum Opfer. Die ejército de huesos plündert die Vorräte, bevor sie abzieht. Die skelettierten Kreaturen reißen eine der Hütten auseinander y machen sie zu Schutt.",
+      "hide_noDeaths": "Los aldeanos verstecken sich voller Angst, während die ejército de huesos das aldea durchsucht. Bei Tagesanbruch ist die skelettierte Armee abgezogen y hat nur Knochenfragmente zurückgelassen.",
+      "hide_noDeaths_loot": "Los aldeanos verstecken sich voller Angst, während die ejército de huesos das aldea durchsucht. Bei Tagesanbruch ist die skelettierte Armee abgezogen y hat nur Knochenfragmente zurückgelassen. Die Armee plündert deine Vorräte, bevor sie in der Dunkelheit verschwindet.",
+      "hide_oneDeath": "Los aldeanos verstecken sich voller Angst, während die ejército de huesos das aldea durchsucht. Ein aldeanos, der zu fliehen versuchte, wird getötet.",
+      "hide_oneDeath_loot": "Los aldeanos verstecken sich voller Angst, während die ejército de huesos das aldea durchsucht. Ein aldeanos, der zu fliehen versuchte, wird getötet. Die Armee plündert deine Vorräte, bevor sie in der Dunkelheit verschwindet.",
+      "hide_manyDeaths": "Los aldeanos verstecken sich voller Angst, während die ejército de huesos das aldea durchsucht. Los aldeanos, die zu fliehen versuchten, werden von den Knochenkreaturen getötet.",
+      "hide_manyDeaths_loot": "Los aldeanos verstecken sich voller Angst, während die ejército de huesos das aldea durchsucht. Los aldeanos, die zu fliehen versuchten, werden von den Knochenkreaturen getötet. Die Armee plündert deine Vorräte, bevor sie in der Dunkelheit verschwindet."
+    },
+    "message": "La tierra tiembla cuando criaturas esqueléticas emergen del bosque. El Devorador de Huesos ha usado los huesos que intercambiaste para forjar una legión impía. Con ojos huecos y armas de hueso afilado, se acercan a la ciudad.",
+    "title": "El ejército de huesos"
+  },
+  "boneDiceChoice": {
+    "choices": {
+      "doNothing": {
+        "label": "No hacer nada"
+      },
+      "keepDice": {
+        "label": "Quedárselos"
+      },
+      "leaveDice": {
+        "label": "Dejarlos"
+      }
+    },
+    "log": {
+      "outcome0": "Guardas los dados de hueso en el bolsillo. Se sienten cálidos en tu mano.",
+      "outcome1": "Decides dejarlos en el suelo de la cueva. Al alejarte, los oyes traquetear una vez, como si rodaran solos en despedida.",
+      "outcome2": "Tu vacilación parece enfurecer la magia antigua de los dados. Ruedan de tu mano hacia la oscuridad."
+    },
+    "message": "Al descender más, encuentras un juego de dados de hueso tallados con runas antiguas. Estos dados han visto mucha fortuna y mucha tragedia. ¿Los conservas?",
+    "title": "Los dados de hueso"
+  },
+  "boneTempleProposal": {
+    "choices": {
+      "acceptBoneTemple": {
+        "label": "Aceptar la propuesta"
+      }
+    },
+    "log": {
+      "outcome0": "Aceptas la sabiduría de la anciana. Los aldeanos asienten en silenciosa aprobación. El camino para construir el monumento definitivo a los dioses queda abierto."
+    },
+    "message": "Una anciana de ojos nublados se acerca a ti. 'Debemos poner fin al derramamiento de sangre humana', declara. 'Los dioses antiguos exigen un gran monumento en su honor. Solo entonces nos concederán su favor continuo'.",
+    "title": "La exigencia de la anciana"
+  },
+  "boneyardPlea": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Una delegación de aldeanos te encuentra: 'Muchos de nosotros han muerto. Necesitamos un lugar adecuado para enterrar a nuestros muertos, para que al fin puedan descansar'.",
+    "title": "Enterrar a los muertos"
+  },
+  "cannibalRaid": {
+    "choices": {
+      "fightCannibals": {
+        "label": "Defender la aldea"
+      },
+      "hideFromCannibals": {
+        "label": "Esconderse"
+      }
+    },
+    "log": {
+      "outcome0": "Los aldeanos se esconden aterrados mientras los caníbales registran la aldea. Al amanecer, los caníbales se han marchado sin encontrar a nadie.",
+      "defeat_noDeaths": "Die caníbales überwältigen deine defensa. Los aldeanos überleben knapp.",
+      "defeat_noDeaths_loot": "Die caníbales überwältigen deine defensa. Los aldeanos überleben knapp. Die caníbales plündern deine Vorräte, bevor sie in die Wildnis zurückkehren.",
+      "defeat_oneDeath": "Die caníbales überwältigen deine defensa. Ein aldeanos wird von den caníbales entführt.",
+      "defeat_oneDeath_loot": "Die caníbales überwältigen deine defensa. Ein aldeanos wird von den caníbales entführt. Die caníbales plündern deine Vorräte, bevor sie in die Wildnis zurückkehren.",
+      "defeat_manyDeaths": "Die caníbales überwältigen deine defensa. Mehrere aldeanos werden von den caníbales getötet oder entführt.",
+      "defeat_manyDeaths_loot": "Die caníbales überwältigen deine defensa. Mehrere aldeanos werden von den caníbales getötet oder entführt. Die caníbales plündern deine Vorräte, bevor sie in die Wildnis zurückkehren.",
+      "hide_noDeaths": "Los aldeanos verstecken sich voller Angst, während die caníbales das aldea durchsuchen. Bei Tagesanbruch sind die caníbales abgezogen, ohne jemanden gefunden zu haben.",
+      "hide_noDeaths_loot": "Los aldeanos verstecken sich voller Angst, während die caníbales das aldea durchsuchen. Bei Tagesanbruch sind die caníbales abgezogen, ohne jemanden gefunden zu haben. Die caníbales plündern deine Vorräte ungestört, bevor sie davonschlüpfen.",
+      "hide_oneDeath": "Los aldeanos verstecken sich voller Angst, während die caníbales das aldea durchsuchen. Ein aldeanos wird entführt.",
+      "hide_oneDeath_loot": "Los aldeanos verstecken sich voller Angst, während die caníbales das aldea durchsuchen. Ein aldeanos wird entführt. Die caníbales plündern deine Vorräte ungestört, bevor sie davonschlüpfen.",
+      "hide_manyDeaths": "Los aldeanos verstecken sich voller Angst, während die caníbales das aldea durchsuchen. Mehrere aldeanos werden getötet oder entführt.",
+      "hide_manyDeaths_loot": "Los aldeanos verstecken sich voller Angst, während die caníbales das aldea durchsuchen. Mehrere aldeanos werden getötet oder entführt. Die caníbales plündern deine Vorräte ungestört, bevor sie davonschlüpfen.",
+      "victory_one": "Los aldeanos schlagen die caníbales zurück! Ein aldeanos fällt in der Schlacht, doch der Stamm zieht sich besiegt zurück. Unter den Leichen findest du eine primitive Halskette aus Menschenknochen.",
+      "victory_many": "Los aldeanos kämpfen tapfer y schlagen die caníbales zurück! Mehrere aldeanos fallen in der Schlacht, doch der Stamm wird zum Rückzug gezwungen. Unter den Leichen findest du eine primitive Halskette aus Menschenknochen."
+    },
+    "message": "Tambores de guerra resuenan en la noche cuando una tribu de caníbales emerge de la espesura. Avanzan sobre la aldea con armas rudimentarias e intenciones terribles.",
+    "title": "Incursión caníbal"
+  },
+  "compassTreasure": {
+    "choices": {
+      "followCompass": {
+        "label": "Seguir la brújula"
+      }
+    },
+    "log": {
+      "outcome0": "Sigues la brújula hacia lo profundo del bosque, donde desentierras un pequeño cofre de construcción extraordinariamente resistente. No puedes abrirlo, así que lo llevas contigo de regreso."
+    },
+    "message": "Despiertas de noche por un sonido extraño. La aguja de la brújula deslustrada gira salvajemente en la oscuridad. Cuando la sujetas, la aguja se detiene y apunta con firmeza en una dirección.",
+    "title": "La aguja inquieta"
+  },
+  "creatureInHut": {
+    "choices": {
+      "burn_hut": {
+        "label": "Quemar la choza"
+      },
+      "do_nothing": {
+        "label": "No hacer nada"
+      }
+    },
+    "log": {
+      "outcome0": "Prendes fuego a la choza. Las llamas consumen a la criatura. Al registrar las ruinas después, encuentras bajo las tablas del suelo un pequeño cofre oculto con 250 de oro.",
+      "outcome1": "Prendes fuego a la choza. Las llamas lo consumen todo, incluidos los dos aldeanos que dormían dentro. Por la mañana solo encuentras ceniza y el olor persistente de algo que nunca debió arder.",
+      "outcome2": "Te apartas e intentas olvidar lo que viste. Pero en tus sueños, la criatura te visita. Susurra tu nombre con una voz como piedra molida y te muestra visiones de lo que yace bajo la tierra."
+    },
+    "message": "A través de las grietas de una de tus chozas de madera vislumbras algo que no debería estar ahí. Una forma oscura se mueve en las sombras, demasiado alta y delgada para ser humana. Al volverse hacia ti, ves ojos que brillan como estrellas moribundas.",
+    "title": "Algo en la choza"
+  },
+  "cthulhuFigure": {
+    "choices": {
+      "discardFigure": {
+        "label": "Descartarlo"
+      },
+      "keepFigure": {
+        "label": "Quedárselo"
+      }
+    },
+    "log": {
+      "outcome0": "Decides conservar la figura. Su aura extraña inquieta a los aldeanos.",
+      "outcome1": "Desechas la figura. El bosque parece observar en silencio mientras desaparece."
+    },
+    "message": "En el lindero del bosque se encuentra una pequeña figura de madera tallada con rasgos tentaculares. Emana un aura extraña. ¿La conservas?",
+    "title": "Una extraña figura de madera"
+  },
+  "cube01": {
+    "choices": {
+      "close": {
+        "label": "Cerrar"
+      }
+    },
+    "message": "El cubo susurra secretos antiguos…",
+    "title": "El cubo susurrante"
+  },
+  "cube02": {
+    "choices": {
+      "close": {
+        "label": "Cerrar"
+      }
+    },
+    "message": "El cubo susurra secretos antiguos…",
+    "title": "El cubo susurrante"
+  },
+  "cube03": {
+    "choices": {
+      "close": {
+        "label": "Cerrar"
+      }
+    },
+    "message": "El cubo susurra secretos antiguos…",
+    "title": "El cubo susurrante"
+  },
+  "cube04": {
+    "choices": {
+      "close": {
+        "label": "Cerrar"
+      }
+    },
+    "message": "El cubo susurra secretos antiguos…",
+    "title": "El cubo susurrante"
+  },
+  "cube05": {
+    "choices": {
+      "close": {
+        "label": "Cerrar"
+      }
+    },
+    "message": "El cubo susurra secretos antiguos…",
+    "title": "El cubo susurrante"
+  },
+  "cube06": {
+    "choices": {
+      "close": {
+        "label": "Cerrar"
+      }
+    },
+    "message": "El cubo susurra secretos antiguos…",
+    "title": "El cubo susurrante"
+  },
+  "cube07": {
+    "choices": {
+      "close": {
+        "label": "Cerrar"
+      }
+    },
+    "message": "El cubo susurra secretos antiguos…",
+    "title": "El cubo susurrante"
+  },
+  "cube08": {
+    "choices": {
+      "close": {
+        "label": "Cerrar"
+      }
+    },
+    "message": "El cubo susurra secretos antiguos…",
+    "title": "El cubo susurrante"
+  },
+  "cube09": {
+    "choices": {
+      "close": {
+        "label": "Cerrar"
+      }
+    },
+    "message": "El cubo susurra secretos antiguos…",
+    "title": "El cubo susurrante"
+  },
+  "cube10": {
+    "choices": {
+      "close": {
+        "label": "Cerrar"
+      }
+    },
+    "message": "El cubo susurra secretos antiguos…",
+    "title": "El cubo susurrante"
+  },
+  "cube11": {
+    "choices": {
+      "close": {
+        "label": "Cerrar"
+      }
+    },
+    "message": "El cubo susurra secretos antiguos…",
+    "title": "El cubo susurrante"
+  },
+  "cube12": {
+    "choices": {
+      "close": {
+        "label": "Cerrar"
+      }
+    },
+    "message": "El cubo susurra secretos antiguos…",
+    "title": "El cubo susurrante"
+  },
+  "cube13": {
+    "choices": {
+      "close": {
+        "label": "Cerrar"
+      }
+    },
+    "message": "El cubo susurra secretos antiguos…",
+    "title": "El cubo susurrante"
+  },
+  "cube14a": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "El cubo susurra secretos antiguos…",
+    "title": "El cubo susurrante"
+  },
+  "cube14b": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "El cubo susurra secretos antiguos…",
+    "title": "El cubo susurrante"
+  },
+  "cube14c": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "El cubo susurra secretos antiguos…",
+    "title": "El cubo susurrante"
+  },
+  "cube14d": {
+    "choices": {
+      "close": {
+        "label": "Cerrar"
+      }
+    },
+    "message": "El cubo susurra secretos antiguos…",
+    "title": "El cubo susurrante"
+  },
+  "cube15a": {
+    "choices": {
+      "close": {
+        "label": "Cerrar"
+      }
+    },
+    "message": "El cubo susurra secretos antiguos…",
+    "title": "El cubo susurrante"
+  },
+  "cube15b": {
+    "choices": {
+      "close": {
+        "label": "Cerrar"
+      }
+    },
+    "message": "El cubo susurra secretos antiguos…",
+    "title": "El cubo susurrante"
+  },
+  "cubeDiscovery": {
+    "choices": {
+      "close": {
+        "label": "Cerrar"
+      }
+    },
+    "message": "El cubo susurra secretos antiguos…",
+    "title": "El cubo susurrante"
+  },
+  "cursedMercenaryMassacre": {
+    "choices": {
+      "nodSilently": {
+        "label": "Continuar"
+      }
+    },
+    "log": {
+      "outcome0": "El aldeano se apresura a marcharse, ajeno a la oscura verdad. El anillo se alimentó bien."
+    },
+    "message": "Un aldeano pálido corre hacia ti, sin aliento por el terror. 'El campamento mercenario... todos están muertos. Se mataron entre ellos durante la noche. Encontramos algo de plata entre los cadáveres'.",
+    "title": "La masacre"
+  },
+  "desperateAmputation": {
+    "choices": {
+      "severFinger": {
+        "label": "Cortar el dedo"
+      }
+    },
+    "log": {
+      "outcome0": "Con manos temblorosas, alzas el hacha. El anillo palpita cuando cae la hoja. La agonía te desgarra el brazo al quebrarse el hueso. Al levantar el dedo amputado, ves pequeños hilos negros, como tentáculos, hundidos profundamente en su carne."
+    },
+    "message": "Tras los sucesos horribles, intentas una vez más quitarte el anillo maldito. Pero el anillo no cede, como si se hubiera vuelto parte de ti. Ya solo queda una forma de librarte de él.",
+    "title": "Sin escape"
+  },
+  "disgracedPriorOffer": {
+    "choices": {
+      "offerShelter": {
+        "label": "Ofrecerle refugio"
+      }
+    },
+    "log": {
+      "outcome0": "Acepta tu oferta sin decir palabra y reanuda su labor. Sus ojos guardan el tormento silencioso de un hombre que ha visto derrumbarse su fe. Una vez predicó la virtud, hasta el día en que cometió un gran pecado. El Prior deshonrado se ha unido a tu compañía."
+    },
+    "message": "Tus aldeanos informan de un hombre demacrado con túnicas harapientas que repara en silencio los muros de las chozas de piedra. Trabaja sin hablar, sin descansar y sin pedir nada. Cuando se le acerca alguien, solo dice que tiene mucho que expiar.",
+    "title": "Un reparador silencioso"
+  },
+  "doNothing": {
+    "log": {
+      "outcome0": "Rechazas ab. Die Nacht vergeht ohne Frohsinn, Wärme oder Lachen."
+    }
+  },
+  "encounterBeyondPortal": {
+    "choices": {
+      "attempt_communication": {
+        "label": "Intentar comunicarse"
+      },
+      "slaughter_creatures": {
+        "label": "Sacrificarlos"
+      }
+    },
+    "log": {
+      "outcome0": "Los abates sin piedad. Sus gritos resuenan por las cavernas mientras caen.",
+      "outcome1": "Bajas las armas e intentas comprenderlos. Mediante gestos y palabras rotas, comparten fragmentos de su historia y te dejan sin habla."
+    },
+    "message": "En las profundidades más allá de la puerta destrozada encuentras criaturas que no atacan. Sus formas son vagamente humanas, retorcidas por generaciones en la oscuridad. Hacen gestos, intentando comunicarse con palabras y señales quebradas.",
+    "title": "Los moradores de abajo"
+  },
+  "establishTradeProposal": {
+    "log": {
+      "outcome0": "Envías el cuervo tuerto con un mensaje al Monasterio de la Montaña. Esperas su regreso.",
+      "outcome1": "Envías el cuervo tuerto con un mensaje a la Tribu del Pantano. Esperas su regreso.",
+      "outcome2": "Envías el cuervo tuerto con un mensaje a los Pescadores de la Costa. Esperas su regreso."
+    },
+    "title": "Establecer comercio",
+    "message": {
+      "firstTime": "Un anciano del pueblo se acerca y recomienda enviar al cuervo con un mensaje para establecer comercio. ¿A dónde enviar un mensaje primero?",
+      "repeat": "El anciano vuelve. «El cuervo ha demostrado ser útil. ¿Enviamos otro mensaje?»"
+    }
+  },
+  "exiledScholarVisit": {
+    "choices": {
+      "payScholar": {
+        "cost": "250 oro",
+        "label": "pagar 250 oro"
+      },
+      "sendAway": {
+        "label": "Enviarlo lejos"
+      }
+    },
+    "log": {
+      "outcome0": "No tienes suficiente oro para pagar al erudito.",
+      "outcome1": "El erudito crea una mezcla roja y sombría y te indica que te bañes en ella. Al salir del baño, te sientes más fuerte, pero también mancillado.",
+      "outcome2": "Despides al erudito. Se marcha con un suspiro decepcionado, pero presientes que puede volver.",
+      "outcome3": "El erudito se marcha, disgustado por tu indecisión."
+    },
+    "message": "Un estudioso de las artes oscuras se acerca a tu finca. Al ver los tres viales de sangre, dice con un destello de emoción contenida: 'Puedo crear una mezcla que te otorgará gran poder'.",
+    "title": "El erudito exiliado"
+  },
+  "facesInWalls": {
+    "choices": {
+      "examine": {
+        "label": "Examinar los rostros"
+      },
+      "ignore": {
+        "label": "Ignorarlos"
+      }
+    },
+    "log": {
+      "outcome0": "Al inspeccionarlo más de cerca, parece haber sido solo una ilusión óptica. Suspiras aliviado.",
+      "outcome1": "Te inclinas hacia uno de los rostros. Sus ojos se abren de golpe y susurra tu nombre. Reconoces la cara de alguien que murió hace mucho tiempo.",
+      "outcome2": "Intentas ignorar los rostros, pero se multiplican. Pronto toda superficie de madera de la aldea lleva la marca de almas torturadas. Una mañana todos desaparecen, como si nunca hubieran estado allí."
+    },
+    "message": "Los muros de madera de tus chozas han empezado a mostrar rostros: expresiones retorcidas y agónicas que parecen empujar desde el otro lado. Forman gritos silenciosos y súplicas con la boca. Los aldeanos los rodean como si siempre hubieran estado allí.",
+    "title": "Rostros en las paredes"
+  },
+  "feedingRing": {
+    "choices": {
+      "keepRing": {
+        "label": "Quedarse el anillo"
+      },
+      "removeRing": {
+        "label": "Quitarlo"
+      }
+    },
+    "log": {
+      "outcome0": "El dedo te duele suavemente, pero lo dejas estar por ahora. Casi se siente como un latido tenue contra la piel.",
+      "outcome1": "Por más que lo intentas, el anillo no sale. Casi parece fusionado con tu carne. El dedo te duele suavemente, pero lo dejas estar por ahora. Casi se siente como un latido tenue contra la piel."
+    },
+    "message": "Despiertas en plena noche, paralizado. Sientes una presencia junto a tu cama, silenciosa e inmóvil. Antes de que el terror pueda apoderarse de ti, el sueño te arrastra de vuelta al vacío. Al amanecer encuentras un anillo desconocido en uno de tus dedos.",
+    "title": "El terror nocturno"
+  },
+  "findElderScroll": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Durante la noche, al pasar por un sendero estrecho, algo se mueve en el borde de tu visión, como una sombra que huye de la luz del fuego. La sigues y allí, sobre las piedras frías, yace un pergamino antiguo."
+  },
+  "fireStorm": {
+    "message": "Un incendio recorre la aldea durante la noche, destruye una choza de madera y mata a sus ocupantes."
+  },
+  "firstElderWarning": {
+    "choices": {
+      "nod": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Un aldeano anciano se acerca a ti, los ojos cargados de conocimiento. 'Has dado tus primeros pasos en este mundo cruel', dice en voz baja. 'Pronto tendrás que decidir si estás dispuesto a enfrentar lo que viene'.",
+    "title": "El anciano de la aldea"
+  },
+  "forestTribeHelpRequest": {
+    "choices": {
+      "accept_help": {
+        "label": "Ofrecer ayuda"
+      }
+    },
+    "log": {
+      "outcome0": "Los ojos de la salvaje se iluminan de esperanza. 'Eres nuestra única oportunidad', dice. 'La cueva de las bestias está en lo profundo del bosque. Que los dioses te protejan'."
+    },
+    "message": "Una salvaje emerge del bosque, su cuerpo pálido cubierto de marcas tribales y cicatrices. 'Vengo de una tribu del bosque', dice con urgencia. 'Bestias brutales que viven en una cueva del bosque nos atacan sin descanso. Nos enfrentamos a la extinción. Por favor, ayúdanos a sobrevivir'.",
+    "title": "Una súplica desesperada"
+  },
+  "frostfall": {
+    "choices": {
+      "doNothing": {
+        "label": "No hacer nada"
+      },
+      "prepareFrostfall": {
+        "label": "Prepararse"
+      }
+    },
+    "log": {
+      "outcome0": "La ventisca golpea con fuerza brutal. Toda producción se ralentiza hasta casi detenerse mientras los aldeanos luchan por sobrevivir al frío.",
+      "outcome1": "No tienes suficientes recursos para prepararte.",
+      "outcome2": "Gracias a las reservas de leña y comida, los aldeanos sobreviven ilesos a la ventisca.",
+      "outcome3": "La ventisca golpea con fuerza brutal. Toda producción se ralentiza hasta casi detenerse mientras los aldeanos luchan por sobrevivir al frío."
+    },
+    "message": "Vientos helados aúllan por la aldea. Los ancianos advierten que se acerca una ventisca terrible. Hay que prepararse, o las consecuencias serán nefastas.",
+    "title": "Caída de escarcha"
+  },
+  "gambler": {
+    "choices": {
+      "accept": {
+        "label": "Aceptar"
+      },
+      "decline": {
+        "label": "Rechazar"
+      }
+    },
+    "leaveAfterGames": "El jugador guarda sus dados, esboza una última sonrisa torcida y desaparece en la oscuridad del bosque.",
+    "log": {
+      "outcome0": "El jugador se encoge de hombros, guarda sus dados y se desliza hacia la oscuridad sin otra palabra.",
+      "outcome1": "El jugador se encoge de hombros, guarda sus dados y se desliza hacia la oscuridad sin otra palabra."
+    },
+    "message": "El jugador está sentado con las piernas cruzadas junto al fuego, los ojos fijos en los dados. 'Haz tu apuesta', respira con una sonrisa torcida, 'y veamos quién resiste'.",
+    "title": "El jugador obsesionado"
+  },
+  "giftedRingDiscovery": {
+    "choices": {
+      "takeGiftedRing": {
+        "label": "Tomar el anillo"
+      }
+    },
+    "log": {
+      "outcome0": "Sostienes el anillo en la mano. Se siente suave, apenas cálido y acogedor."
+    },
+    "message": "Una mañana, sobre un tocón junto a la entrada de la cueva, encuentras un anillo, como si alguien lo hubiera dejado allí para ti.",
+    "title": "Un regalo esperado"
+  },
+  "hiddenLake": {
+    "choices": {
+      "avoidLake": {
+        "label": "Evitar el lago"
+      },
+      "investigate": {
+        "label": "Investigar el lago"
+      }
+    },
+    "log": {
+      "outcome0": "Cuando los hombres se acercan al lago, una criatura emerge de las profundidades y ataca con furia, pero la fuerza de los aldeanos prevalece. En el fondo del lago encuentran innumerables huesos humanos y una corona dorada.",
+      "outcome1": "Los hombres entran en el agua, pero la criatura irrumpe con velocidad inhumana. Su belleza se retuerce en filas de dientes y ojos brillantes. Aterrados, los aldeanos huyen para salvar la vida.",
+      "outcome2": "Ordenas a los aldeanos evitar el lago. Algunos refunfuñan por las oportunidades perdidas, pero obedecen. Sus secretos permanecen ocultos bajo el agua.",
+      "outcome3": "Prohíbes cualquier acercamiento, pero el aldeano que dijo haber visto a la criatura no puede resistirse. Una noche se escabulle y nunca vuelve. Al amanecer, solo su ropa yace en la orilla.",
+      "lakeDrownOne": "La criatura surge como una pesadilla, la belleza ocultando una intención mortal. Con fuerza antinatural, arrastra a un aldeano bajo las aguas. Solo quedan ondas y gritos apagados mientras el resto huye aterrorizado.",
+      "lakeDrownMany": "La criatura surge como una pesadilla, la belleza ocultando una intención mortal. Con fuerza antinatural, arrastra a los aldeanos bajo las aguas. Solo quedan ondas y gritos apagados mientras el resto huye aterrorizado."
+    },
+    "message": "Mientras reúnen madera en el bosque, los aldeanos descubren un lago oculto entre los árboles. Un aldeano jura haber visto emerger por un instante una figura parecida a una mujer, de mirada hermosa pero inhumana. ¿Qué haces?",
+    "title": "El lago oculto"
+  },
+  "hollowKingScepterChoice": {
+    "choices": {
+      "doNothing": {
+        "label": "No hacer nada"
+      },
+      "keepScepter": {
+        "label": "Quedárselo"
+      },
+      "leaveScepter": {
+        "label": "Dejarlo"
+      }
+    },
+    "log": {
+      "outcome0": "Aferras el Cetro del Rey Hueco y sientes un poder inmenso fluir por ti. El conocimiento antiguo inunda tu mente, junto con los recuerdos del rey de sus últimos días, enloquecidos.",
+      "outcome1": "Decides dejar el cetro del rey muerto donde pertenece. Al darte la vuelta, jurarías oír un leve susurro de decepción resonar por la sala del trono vacía.",
+      "outcome2": "Mientras permaneces paralizado por la indecisión, los hombres se impacientan y se vuelven codiciosos. Uno intenta tomar el cetro, luego otro. Pronto luchan con ferocidad. En la refriega sangrienta mueren {{actualDeaths}} miembros de tu compañía, su sangre mezclándose con el polvo de los siglos."
+    },
+    "message": "En la sala del trono de la ciudadela encuentras un magnífico cetro de obsidiana. Debió de pertenecer al rey de esta ciudad perdida. De él fluye conocimiento oscuro. ¿Lo conservas?",
+    "title": "El Cetro del Rey Hueco"
+  },
+  "humanSacrificeDemand": {
+    "message": "Los aldeanos se reúnen alrededor del monolito, con los ojos huecos. 'Los animales no bastan', susurran al unísono. 'La oscuridad exige más. Hambrea almas humanas'. Te miran, esperando tu orden para hacer el sacrificio definitivo.",
+    "title": "Hambre oscura"
+  },
+  "lakeCreatureDead": {
+    "choices": {
+      "forge": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Unos hombres encontraron a la criatura del lago en la orilla del lago subterráneo, muerta de lo que parece vejez. Al observar los restos, el herrero declara: 'Sus huesos no se parecen a nada que haya visto. Puedo forjar con ellos un gran escudo poderoso'.",
+    "title": "El fin de una era"
+  },
+  "lakeCreatureFate": {
+    "choices": {
+      "killCreature": {
+        "label": "Matar a la criatura"
+      },
+      "spareCreature": {
+        "label": "Perdonar la vida"
+      }
+    },
+    "log": {
+      "outcome0": "Los últimos espasmos violentos de la criatura sacuden la caverna mientras los hombres clavan sus lanzas en su cuerpo retorcido. Al contemplar los enormes huesos de la criatura, el herrero declara que puede forjarlos en un poderoso gran escudo.",
+      "outcome1": "Abres la trampa y das un paso atrás. La criatura observa un momento, luego se sumerge profundamente y vuelve a la superficie para escupir un pequeño cofre podrido. Dentro brillan monedas de oro. Desaparece en las negras profundidades, dejando solo ondas."
+    },
+    "message": "La criatura enorme se retuerce en la trampa, sus tentáculos golpeando los barrotes de acero. Sus ojos antiguos te miran con lo que podría ser inteligencia. ¿Qué harás?",
+    "title": "El destino de la criatura"
+  },
+  "lastSurvivor": {
+    "choices": {
+      "letHimStay": {
+        "label": "Dejar que se quede"
+      },
+      "sendHimAway": {
+        "label": "Enviarlo lejos"
+      }
+    },
+    "log": {
+      "outcome0": "Al superviviente se le da refugio y cuidados. Esa noche te llama a su choza. Aunque está muriendo, sus ojos están claros. 'Gracias por tu bondad; que la fortuna te favorezca siempre', susurra con su último aliento.",
+      "outcome1": "Rechazas al moribundo. Se marcha y al día siguiente lo encuentran muerto en el bosque cercano. Los aldeanos quedan horrorizados y asqueados por tu crueldad."
+    },
+    "message": "Un desconocido llega a la aldea, apenas aferrado a la vida. Habla de su asentamiento al norte, donde la escasez de comida llevó a los aldeanos a matarse entre sí por desesperación. Pide quedarse unas noches para recuperarse.",
+    "title": "El último superviviente"
+  },
+  "leatherHarnessGratefulReturn": {
+    "choices": {
+      "acceptRing": {
+        "label": "Aceptar el anillo"
+      }
+    },
+    "log": {
+      "outcome0": "Deslizas el anillo en tu dedo. Encaja perfectamente. La mujer sonríe y se marcha, ligera en sus pasos."
+    },
+    "message": "La mujer de la aldea vuelve a acercarse a ti, el rostro radiante de gratitud. 'Tenía que darte las gracias como corresponde', dice con voz cálida. 'Las cosas salieron... muy bien. Hice este anillo para ti'. Te entrega un anillo con otro más pequeño unido.",
+    "title": "Un regreso agradecido"
+  },
+  "leatherHarnessRequest": {
+    "choices": {
+      "helpWithLeather": {
+        "cost": "100 cuero",
+        "label": "Ayudarla"
+      },
+      "refuseLeather": {
+        "label": "No ayudar"
+      }
+    },
+    "log": {
+      "outcome0": "No tienes suficiente cuero para ayudarla.",
+      "outcome1": "Le entregas el cuero. Lo toma con una sonrisa agradecida, los ojos iluminándose. 'Gracias. Él estará... muy sorprendido'. Se marcha deprisa, apretando las pieles contra el pecho.",
+      "outcome2": "Rechazas. Ella asiente, con una sombra de decepción en el rostro, y vuelve a la aldea sin decir otra palabra."
+    },
+    "message": "Una mujer de la aldea se acerca a ti, las mejillas levemente sonrojadas. Vacila antes de hablar, con la mirada baja: 'Me preguntaba si podrías darme algo de cuero. Quisiera fabricar algo... para mi pareja. Un arnés. Para sorprenderlo'.",
+    "title": "Una mujer de la aldea"
+  },
+  "madBeduine": {
+    "choices": {
+      "allowStay": {
+        "label": "Permitir que se quede"
+      },
+      "turnAway": {
+        "label": "Apartarse"
+      }
+    },
+    "log": {
+      "outcome0": "Concedes refugio al desconocido. Al amanecer ha desaparecido. Solo quedan sus ropas, y dentro de ellas yace un libro encuadernado en piel humana. Sus páginas susurran conocimiento prohibido.",
+      "outcome1": "Rechazas la entrada al desconocido. Se marcha gritando maldiciones en una lengua ajena. Antes del amanecer, una tribu bárbara ataca como convocada por sus gritos y mata a {{actualDeaths}} aldeanos. Por la mañana encuentras un libro en el suelo, encuadernado en piel humana."
+    },
+    "message": "Al anochecer, una figura con túnica se acerca desde la espesura. Sus ojos arden de locura mientras murmura en una lengua extranjera, con gestos bruscos e inquietantes. Los aldeanos se ponen nerviosos. ¿Permites que este beduino pase la noche?",
+    "title": "El beduino loco"
+  },
+  "mapFragmentsAssembled": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Unes los fragmentos del mapa. Revelan el camino a un santuario olvidado en lo profundo del pantano.",
+    "title": "Un mapa revelado"
+  },
+  "masterArcher": {
+    "choices": {
+      "acceptArcherHelp": {
+        "cost": "5000 comida",
+        "label": "dar 5000 comida"
+      },
+      "acceptArcherHelpGold": {
+        "cost": "200 oro",
+        "label": "pagar 200 oro"
+      },
+      "doNothing": {
+        "label": "Sin decisión"
+      },
+      "refuseArcherHelp": {
+        "label": "Rechazar su oferta"
+      }
+    },
+    "log": {
+      "outcome0": "Tu indecisión frustra al arquero. Sacude la cabeza y se marcha, llevando su pericia a otra parte.",
+      "outcome1": "No tienes suficiente comida para esta oferta.",
+      "outcome2": "El maestro arquero toma el pago y comienza a entrenar a tus cazadores de inmediato.",
+      "outcome3": "No tienes suficiente oro para esta oferta.",
+      "outcome4": "El maestro arquero toma el oro con un gesto de asentimiento y comienza a entrenar a tus cazadores de inmediato.",
+      "outcome5": "El arquero asiente con comprensión. 'Volveré por si cambias de opinión', dice antes de desaparecer en el bosque."
+    },
+    "message": "Un hombre con abrigo de cuero rojo oscuro llega con una sonrisa confiada y ojos afilados. Ofrece ayudar a tus arqueros; dice que puede afinar su puntería y mejorar sus habilidades de caza. Si aceptas, se quedará y se pondrá manos a la obra.",
+    "title": "El maestro arquero"
+  },
+  "mercenaryDemand": {
+    "choices": {
+      "giveRing": {
+        "label": "Dar el anillo de alimentación"
+      },
+      "payGold": {
+        "cost": "100 oro",
+        "label": "pagar 100 oro"
+      },
+      "refuse": {
+        "label": "Negarse a pagar"
+      }
+    },
+    "log": {
+      "outcome0": "Entregas el oro. El mercenario lo cuenta despacio, con una sonrisa cruel en el rostro. 'Un placer hacer negocios', dice antes de desaparecer.",
+      "outcome1": "El mercenario ordena atacar a sus hombres. La batalla es feroz, pero tus aldeanos prevalecen. Los mercenarios huyen al bosque, dejando atrás armas y heridos.",
+      "outcome2": "El mercenario ordena atacar a sus hombres. Pese a tus esfuerzos, te superan. {{deaths}} aldeanos caen antes de que los mercenarios se retiren al fin, satisfechos con la carnicería.",
+      "outcome3": "Le ofreces el anillo hambriento que aún guardabas en un cofre cerrado. El mercenario lo examina con interés y se lo desliza en su propio dedo. 'Bonito anillo', dice, 'pero no basta. Volveré mañana a cobrar el oro'."
+    },
+    "message": "Un mercenario con cicatrices llega a la aldea, la mano apoyada en la espada. 'No vengo a causar problemas. Págame 100 de oro y mantendré la paz. Niégate, y mis hombres reducirán este lugar a cenizas'.",
+    "title": "El mercenario"
+  },
+  "mercenaryReturnDemand": {
+    "choices": {
+      "giveRing": {
+        "label": "Dar el anillo de alimentación"
+      },
+      "payGold": {
+        "cost": "200 oro",
+        "label": "pagar 200 oro"
+      },
+      "refuse": {
+        "label": "Negarse a pagar"
+      }
+    },
+    "log": {
+      "outcome0": "Pagas el oro, las manos temblándote de rabia. El mercenario ríe. 'Buena elección. No volveré a molestarte... probablemente'. Desaparece entre los árboles con sus hombres.",
+      "outcome1": "Te niegas. Los mercenarios atacan, pero esta vez estás preparado. Tras una lucha brutal, se dispersan hacia la espesura, dejando atrás a sus muertos.",
+      "outcome2": "Tu desafío te cuesta caro. Los mercenarios arrasan la aldea y matan a {{deaths}} antes de marcharse finalmente, riendo por la destrucción causada.",
+      "outcome3": "Le ofreces el anillo hambriento que aún guardabas en un cofre cerrado. El mercenario lo examina con interés y se lo desliza en su propio dedo. 'Bonito anillo', dice, 'pero no basta. Volveré mañana a cobrar el oro'."
+    },
+    "message": "El mercenario ha vuelto, y esta vez trae más hombres. 'Los tiempos son duros', dice con una sonrisa. 'El precio ha subido. 200 de oro, o las cosas se pondrán feas'.",
+    "title": "El mercenario regresa"
+  },
+  "merchant": {
+    "choices": {
+      "say_goodbye": {
+        "label": "Despedirse"
+      }
+    },
+    "log": {
+      "outcome0": "Despides al mercader. Inclina el sombrero y murmura algo sobre el camino que le espera."
+    },
+    "message": "Un mercader curtido llega con su carro rebosante de mercancías. Sus ojos brillan de codicia mientras murmura: 'Tengo objetos raros a la venta'.",
+    "title": "Mercader viajero",
+    "toolTrades": {
+      "trade_nightshade_bow_schematic": {
+        "label": "Esquema de arco sombrío",
+        "message": "Compras den Esquema de arco sombrío. Der comerciante grinst finster: „Das Design dieses Bogens ist grausam. Seine Pfeile werden deine Feinde vergiften.“"
+      },
+      "trade_skull_lantern": {
+        "label": "Linterna de cráneo",
+        "message": "Compras die Linterna de cráneo. Aus verfluchtem Knochen geschmiedet, wird ihr unheimliches Licht dich durch die tiefsten Tiefen führen."
+      },
+      "trade_tarnished_compass": {
+        "label": "Brújula deslustrada",
+        "message": "Compras den angelaufenen Kompass. Artefakt der verschwundenen Zivilisation – seine Nadel weist auf verborgene Orte."
+      },
+      "trade_map_fragment_wooden": {
+        "label": "Fragmento de mapa",
+        "message": "Compras ein zerrissenes Fragmento de mapa."
+      },
+      "trade_map_fragment_stone": {
+        "label": "Fragmento de mapa",
+        "message": "Compras ein zerrissenes Fragmento de mapa."
+      },
+      "trade_crow_harness": {
+        "label": "Arnés de cuervo",
+        "message": "Compras das Arnés de cuervo. Ein speziell gefertigtes Geschirr für Botenkrähen."
+      },
+      "trade_clarity_elixir": {
+        "label": "Elixir de claridad",
+        "message": "Bebes das Elixir de claridad. Dein Geist fühlt sich leichter an."
+      },
+      "trade_veinfire_elixir": {
+        "label": "Elixir de fuego venoso",
+        "message": "Compras eine Flasche Elixir de fuego venoso."
+      },
+      "trade_book_of_trials": {
+        "message": "Compras das Libro de pruebas. Der comerciante lächelt wissend: „Ein Leitfaden für diejenigen, die ihre Reise verfolgen wollen.“",
+        "label": "Libro de pruebas"
+      },
+      "trade_book_of_craftsmanship": {
+        "message": "Compras das Libro de artesanía. Der comerciante nickt anerkennend: „Ein Handwerkerbuch, abgenutzt, aber voller Weisheit. Es wird denen Geheimnisse zuflüstern, die bauen.“",
+        "label": "Libro de artesanía"
+      },
+      "trade_book_of_war": {
+        "message": "Compras das Libro de la guerra. Der comerciante nickt ernst: „conocimiento aus einem längst vergangenen Königreich im fernen Osten. Damit wirst du die Folgen deiner Entscheidungen besser verstehen.“",
+        "label": "Libro de la guerra"
+      },
+      "trade_reinforced_rope": {
+        "message": "Compras das verstärkte Seil. Dieses Seil hält enormer Belastung stand y erreicht Orte in den tiefsten cuevankammern.",
+        "label": "Cuerda reforzada"
+      },
+      "trade_occultist_map": {
+        "message": "Als du die Mapa del ocultista kaufst, flüstert der comerciante: „Ein alter Okkultist verbarg seine Geheimnisse in einer Kammer tief in der cueva. Diese Karte wird dich führen.“",
+        "label": "Mapa del ocultista"
+      },
+      "trade_giant_trap": {
+        "message": "Als du die Trampa gigante kaufst, grinst der comerciante: „Damit kann man im bosque etwas Gigantisches fangen. Setze sie weise ein.“",
+        "label": "Trampa gigante"
+      },
+      "trade_arbalest_schematic": {
+        "message": "Compras den Esquema de ballesta. Der comerciante entfaltet einen filigranen Entwurf: „Ein Design eines Meisteringenieurs. Damit kannst du eine mächtige Waffe herstellen.“",
+        "label": "Esquema de ballesta"
+      },
+      "trade_compound_bow": {
+        "message": "Compras den Arco compuesto. Der comerciante nickt anerkennend: „Präzisionswaffe der verschwundenen Zivilisation. Sie wird dir gute Dienste leisten.“",
+        "label": "Arco compuesto"
+      },
+      "trade_stormglass_halberd_schematic": {
+        "message": "Compras den Esquema de alabarda de vidrio tormenta. Der comerciante enthüllt die verblassten Pläne: „Mit diesem Entwurf kannst du eine Hellebarde von gewaltiger Kraft schmieden.“",
+        "label": "Esquema de alabarda de vidrio tormenta"
+      },
+      "trade_natharit_pickaxe": {
+        "message": "Compras die Pico de natharit. Der comerciante reicht dir das robuste Werkzeug: „Extrem haltbare Spitzhacke aus unbekanntem Material. Ihre Qualität ist außergewöhnlich.“",
+        "label": "Pico de natharit"
+      }
+    },
+    "tradeCost": "{{amount}} {{resource}}",
+    "tradeLabel": "{{amount}} {{resource}}"
+  },
+  "monasteryMonk": {
+    "choices": {
+      "offerGold": {
+        "cost": "250 oro",
+        "label": "ofrecer 250 oro"
+      },
+      "payTribute": {
+        "cost": "5000 madera, 5000 piedra, 5000 comida, 500 cuero, 500 acero",
+        "label": "Pagar tributo"
+      },
+      "sendAway": {
+        "label": "Enviar lejos"
+      }
+    },
+    "log": {
+      "outcome0": "Rechazas la oferta del monje. Hace una reverencia respetuosa y emprende el regreso a las montañas.",
+      "outcome1": "No tienes suficientes recursos para el tributo.",
+      "outcome2": "El monje acepta tu tributo con un gesto solemne y revela planos detallados para una llave maestra. “Se dice que esta llave abre cualquier cerradura”, dice antes de partir.",
+      "outcome3": "No tienes suficiente oro.",
+      "outcome4": "Los ojos del monje se abren al ver el oro. 'Esto ayudará mucho al monasterio', dice, sacando planos detallados para una llave maestra. “Se dice que esta llave abre cualquier cerradura”, dice antes de partir.",
+      "outcome5": "Rechazas la oferta del monje. Hace una reverencia respetuosa y emprende el regreso a las montañas."
+    },
+    "message": "Un monje de un monasterio de montaña llega a la aldea. 'He oído que encontraste un cofre misterioso', dice suavemente. 'El monasterio sabe cómo abrirlo. Ofrece un tributo y compartiré el secreto'.",
+    "title": "El monje de la montaña"
+  },
+  "monasteryResponse": {
+    "choices": {
+      "accept": {
+        "cost": "250 oro",
+        "label": "pagar 250 oro"
+      },
+      "decline": {
+        "label": "Tiempo agotado"
+      }
+    },
+    "log": {
+      "outcome0": "Tardaste demasiado en decidir. La oferta de los monjes expira.",
+      "outcome1": "No tienes suficiente oro.",
+      "outcome2": "Pagas a los monjes por su mapa. Revela la ubicación de la Biblioteca Oculta en las profundidades de la cueva.",
+      "outcome3": "Rechazas la oferta de los monjes. La oportunidad se pierde."
+    },
+    "message": "El cuervo tuerto regresa del Monasterio de la Montaña con un pergamino sellado. Los monjes ofrecen venderte un mapa hacia una biblioteca oculta en lo profundo de la cueva. Piden 250 de oro.",
+    "title": "Mensaje del Monasterio de la Montaña"
+  },
+  "monolithDemand": {
+    "message": "Los aldeanos exigen construir un monolito en el centro de la aldea, un monumento para apaciguar la oscuridad que se arrastra por sus mentes. Mediante el sacrificio de animales quieren hallar paz.",
+    "title": "Exigencia del monolito"
+  },
+  "mysteriousBell": {
+    "choices": {
+      "doNotRing": {
+        "label": "No hacer sonar"
+      },
+      "ringBell": {
+        "label": "Hacer sonar"
+      }
+    },
+    "log": {
+      "outcome0": "En el instante en que oyes el primer tañido, la oscuridad te traga entero. Sueñas con una vasta ciudad de vidrio y acero, llena de luces extrañas y personas que se mueven con un propósito que no comprendes. Al despertar, la campana ha desaparecido, pero una marca con forma de campana arde en tu antebrazo.",
+      "outcome1": "El riesgo es demasiado grande. Ese mismo día, un comerciante llega y ofrece 500 de oro por la campana. Aceptas de inmediato, aliviado de librarte del objeto maldito. El comerciante se marcha con una sonrisa cómplice."
+    },
+    "message": "Abres el cofre sellado con la llave maestra. Dentro, sobre terciopelo desvaído, yace una campana dorada cubierta de grabados grotescos y símbolos extraños escritos sobre su superficie.",
+    "title": "La campana misteriosa"
+  },
+  "mysteriousBook": {
+    "choices": {
+      "unpack_it": {
+        "label": "Desempaquetar"
+      }
+    },
+    "log": {
+      "outcome0": "Dentro hay un libro cuya edad no puedes adivinar. La cubierta hace tiempo que desapareció y las páginas están rasgadas, pero las letras perfectamente trazadas siguen siendo nítidas. Al pasar las páginas con cuidado, comprendes que enseña el lento moldeado del yo mediante la repetición."
+    },
+    "message": "Una noche tarde oyes un suave golpe en la puerta de la finca. Al abrir, no hay nadie; solo algo encuadernado en cuero marrón oscuro descansa en el umbral.",
+    "title": "Un golpe silencioso"
+  },
+  "mysteriousNote": {
+    "choices": {
+      "throw_away": {
+        "label": "Tirar"
+      }
+    },
+    "log": {
+      "outcome0": "Arrugas la nota y la dejas caer de tus dedos. Entiendes las palabras, pero no logras encontrarles sentido. Mientras el papel se aleja, percibes algo llevado por el viento, tenue y distante. Suena como un llanto suave y solitario que se desvanece en la noche."
+    },
+    "title": "Una nota misteriosa",
+    "message": "Al anochecer, encuentras un papel en la puerta de tu finca. Alguien dejó una nota con una letra cuidada y elegante:\n «Espero que estés disfrutando tu tiempo aquí. Si es así, considera apoyar el camino por delante, visitando la tienda o donando. Tu ayuda mantiene este mundo vivo y libre de disfrutar. ¡Gracias!»"
+  },
+  "mysteriousWoman": {
+    "log": {
+      "outcome0": "Concedes refugio a {{obj}} por la noche. Por la mañana, {{subj}} ha desaparecido sin dejar rastro; tu cama sigue tibia y faltan {{silverStolen}} de plata.",
+      "outcome1": "Rechazas cortésmente la petición de {{poss}}. {{cap}} parece decepcionada, pero asiente con comprensión y desaparece en la niebla del atardecer sin decir otra palabra."
+    },
+    "title": {
+      "woman": "La mujer misteriosa",
+      "man": "El hombre misterioso"
+    },
+    "message": {
+      "woman": "Una joven atractiva con ropas finas llega a la finca al atardecer. Te sonríe cálidamente y pregunta: «¿Podría refugiarme en tu choza esta noche? He viajado lejos y no tengo adónde ir.»",
+      "man": "Un joven atractivo con ropas finas llega a la finca al atardecer. Te sonríe cálidamente y pregunta: «¿Podría refugiarme en tu choza esta noche? He viajado lejos y no tengo adónde ir.»"
+    },
+    "choices": {
+      "allowStay": {
+        "label": {
+          "woman": "Dejarla quedarse",
+          "man": "Dejarlo quedarse"
+        }
+      },
+      "refuseStay": {
+        "label": {
+          "woman": "Rechazarla",
+          "man": "Rechazarlo"
+        }
+      }
+    }
+  },
+  "nordicWarAxe": {
+    "choices": {
+      "buyAxe": {
+        "label": "Rechazar"
+      },
+      "decline": {
+        "label": "Rechazar"
+      }
+    },
+    "log": {
+      "outcome0": "No tienes suficiente oro.",
+      "ignoreForced": "Ignoras das Angebot. Der vikingo spuckt schließlich auf den Boden y geht mit seiner hacha de guerra, murmelnd über deinen Mangel an Respekt.",
+      "ignoreNormal": "Ignoras das Angebot. Der vikingo nickt schließlich y geht mit seiner hacha de guerra.",
+      "buyForced": "Der vikingo nimmt die Zahlung mit kaltem Lächeln entgegen. „Vielleicht hättest du früher großzügiger sein sollen, statt mich anzugreifen. Die Axt hätte dich damals viel weniger gekostet“, sagt er, bevor er geht.",
+      "buyNormal": "Zufrieden mit dem Handel nickt der vikingo anerkennend y zieht weiter.",
+      "declineForced": "Rechazas das Angebot ab. Der vikingo spuckt auf den Boden y flucht, während er mit seiner hacha de guerra geht. „Du hättest zahlen sollen, als du die Chance hattest“, knurrt er.",
+      "declineNormal": "Rechazas das Angebot ab. Der vikingo nickt respektvoll y geht mit seiner hacha de guerra."
+    },
+    "message": "El constructor vikingo vuelve a tu aldea con una magnífica hacha de guerra. 'Forjé esta hacha de guerra nórdica en mi tierra. Será tuya... por un precio'.",
+    "title": "El vikingo regresa"
+  },
+  "oddTrinket": {
+    "choices": {
+      "discardTrinket": {
+        "label": "Descartarlo"
+      },
+      "drinkTrinket": {
+        "label": "Beberlo"
+      }
+    },
+    "log": {
+      "outcome0": "Bebes el líquido ámbar. Quema al bajar, pero te sientes más fuerte que antes.",
+      "outcome1": "Decides no arriesgarte y arrojas el abalorio al bosque. Desaparece entre la maleza.",
+      "outcome2": "Tu vacilación te cuesta caro. El abalorio se resbala de tus dedos y se rompe contra una roca; el líquido ámbar se filtra en la tierra."
+    },
+    "message": "Mientras cortas madera, encuentras un abalorio con un líquido ámbar brillante dentro. El líquido gira hipnóticamente. ¿Lo bebes?",
+    "title": "El abalorio extraño"
+  },
+  "offerToTheForestGods": {
+    "choices": {
+      "noDecision": {
+        "label": "Sin decisión"
+      },
+      "sacrifice": {
+        "label": "No hacer sacrificios"
+      }
+    },
+    "log": {
+      "outcome0": "Los dioses del bosque aceptan el sacrificio. Las figuras desaparecen y se encuentra un anillo de ébano en el altar donde fueron ofrecidos los aldeanos. La paz vuelve a los bosques.",
+      "outcome1": "El bosque acepta el sacrificio. Las figuras desaparecen y se encuentra un anillo de ébano en el altar donde fueron ofrecidos los aldeanos. Pero el horror del sacrificio lleva a {{actualAdditionalDeaths}} aldeanos a quitarse la vida.",
+      "outcome2": "Tu negativa a sacrificar vidas inocentes complace de algún modo a los dioses del bosque. Las apariciones desaparecen y encuentras un anillo de ébano dejado como regalo.",
+      "outcome3": "Rechazas el sacrificio. El bosque permanece en silencio por ahora. La amenaza persiste.",
+      "outcome5": "Tu indecisión enfurece a los aldeanos. {{actualDepartures}} aldeanos, frustrados por tu falta de liderazgo, recogen sus pertenencias y se marchan asqueados.",
+      "outcome4_one": "Rechazas el sacrificio. Durante la noche, {{actualDisappearances}} aldeano deambula hacia el bosque como sonámbulo, atraído por una voz que solo él pudo oír. Nunca vuelve a verse.",
+      "outcome4_other": "Rechazas el sacrificio. Durante la noche, {{actualDisappearances}} aldeanos deambulan hacia el bosque como sonámbulos, atraídos por una voz que solo ellos pudieron oír. Nunca vuelven a verse."
+    },
+    "message": "Mientras cazan, los aldeanos informan de figuras inquietantes en el bosque. Están aterrados. Los ancianos de la aldea dicen que los dioses del bosque exigen cuatro aldeanos como sacrificio.",
+    "title": "Ofrenda a los dioses del bosque"
+  },
+  "paleCrossCrucifixion": {
+    "choices": {
+      "consecrateToCross": {
+        "label": "Consagrar a la cruz"
+      },
+      "doNothing": {
+        "label": "No hacer nada"
+      },
+      "holdFuneral": {
+        "cost": "1000 comida",
+        "label": "Celebrar el funeral"
+      },
+      "investigateKillers": {
+        "label": "Investigar"
+      }
+    },
+    "log": {
+      "outcome0": "No das ninguna orden. Se extienden rumores, el miedo se cuaja en asco y el trabajo de la aldea flaquea.",
+      "outcome1": "No tienes suficiente comida para celebrar un funeral apropiado.",
+      "outcome2": "Ordenas ritos funerarios y alimentas a los dolientes. El duelo permanece, pero la aldea se estabiliza.",
+      "outcome3": "Descubres a un grupo de conspiradores y ordenas su ejecución. La justicia es rápida y el miedo retrocede.",
+      "outcome4": "Consagras el cuerpo a la cruz. Los aldeanos retroceden asqueados, pero el poder de la cruz parece haber crecido."
+    },
+    "message": "Una mañana, los aldeanos hacen un descubrimiento cruel. Un joven cuelga crucificado de la Cruz Pálida, con la cabeza inclinada y el cuerpo balanceándose apenas en el viento frío de la mañana.",
+    "title": "La Cruz Pálida al amanecer"
+  },
+  "paleCrossProposal": {
+    "choices": {
+      "acceptPaleCross": {
+        "label": "Aceptar la propuesta"
+      },
+      "refusePaleCross": {
+        "label": "Rechazar la propuesta"
+      }
+    },
+    "log": {
+      "outcome0": "El druida inclina la cabeza. 'Entonces que sea alzada'.",
+      "outcome1": "'Tal vez esto fue sabiduría. Tal vez fue miedo', dice el druida antes de internarse en el bosque."
+    },
+    "message": "El druida ciego regresa; sus ojos lechosos descansan sobre los tótems de hueso: 'Habéis ofrecido mucho a los dioses. Alzadles un símbolo para probar vuestra devoción'.",
+    "title": "La Cruz Pálida"
+  },
+  "paleFigure": {
+    "choices": {
+      "ignore": {
+        "label": "Ignorarlo"
+      },
+      "investigate": {
+        "label": "Investigar"
+      }
+    },
+    "log": {
+      "outcome0": "Cuando los aldeanos se acercan, la figura desaparece. En su lugar yace un manto de plumas de cuervo, reluciente con poder de otro mundo.",
+      "outcome1": "La investigación sale mal. Uno de los aldeanos grita en la niebla y nunca vuelve a ser visto. Los demás huyen aterrados.",
+      "outcome2": "La figura pálida se mueve con velocidad inhumana. {{actualDeaths}} aldeanos desaparecen en la niebla, sus gritos resonando entre los árboles.",
+      "outcome3": "Los aldeanos permanecen cerca de la aldea. Al caer la tarde, la figura se ha ido.",
+      "outcome4": "Al amanecer, uno de los aldeanos que dijo haber visto la figura aparece muerto en su cama, con el rostro congelado de terror."
+    },
+    "message": "Al amanecer, los aldeanos vislumbran una figura alta, pálida y esbelta en el borde del bosque. ¿Qué haces?",
+    "title": "La figura pálida"
+  },
+  "portalDiscovered": {
+    "message": "En las cámaras más bajas de la ciudadela encuentras una puerta colosal forjada con un metal desconocido e inflexible. Quizá las creaciones del alquimista puedan abrirla."
+  },
+  "redMaskChoice": {
+    "choices": {
+      "leaveMask": {
+        "label": "Dejarlo"
+      },
+      "takeMask": {
+        "label": "Tomar la máscara roja"
+      }
+    },
+    "log": {
+      "outcome0": "Recoges la máscara de cuero carmesí. Se siente cálida al tacto.",
+      "outcome1": "Decides que el regalo del cuervo encierra demasiado misterio. Al alejarte, oyes el graznido del cuervo resonar entre los árboles."
+    },
+    "message": "Mientras cazas, ves un cuervo negro extrañamente grande mirándote desde un árbol roto. Al acercarte, de pronto grazna, como si repitiera una palabra una y otra vez. Luego se va volando. Frente al árbol yace una máscara de cuero rojo intenso. ¿La tomas?",
+    "title": "El regalo del cuervo"
+  },
+  "restlessKnight": {
+    "choices": {
+      "convince": {
+        "label": "Convencerlo"
+      },
+      "payGold": {
+        "cost": "50 oro",
+        "label": "pagar 50 oro"
+      },
+      "refuse": {
+        "label": "Rechazar"
+      }
+    },
+    "log": {
+      "outcome0": "El caballero esperó, pero no respondiste. 'Quizá en otra ocasión', dice antes de continuar su viaje.",
+      "outcome1": "No tienes suficiente oro.",
+      "outcome2": "El caballero habla: 'Más allá de las montañas orientales yace una ciudad muerta de torres gigantes de piedra, casi tocando las nubes. Ventanas vacías miran la tierra como incontables ojos. La naturaleza ha trepado por cada muro y llenado las calles de raíces. Nadie ha vivido allí desde hace eras'.",
+      "outcome3": "Tus palabras intrigan al caballero, y habla: 'Más allá de las montañas orientales yace una ciudad muerta de torres gigantes de piedra, casi tocando las nubes. Ventanas vacías miran la tierra como incontables ojos. La naturaleza ha trepado por cada muro y llenado las calles de raíces. Nadie ha vivido allí desde hace eras'.",
+      "outcome4": "El caballero escucha tus palabras, pero sacude la cabeza. 'Tus palabras son sinceras, pero mi conocimiento tiene valor. Quizá nuestros caminos se crucen de nuevo'. Se marcha sin compartir su relato.",
+      "outcome5": "Rechazas la oferta del caballero. Asiente respetuosamente. 'Quizá nuestros caminos se crucen de nuevo', dice antes de continuar su viaje."
+    },
+    "title": "El caballero inquieto"
+  },
+  "restlessKnightBurden": {
+    "choices": {
+      "accept": {
+        "label": "Aceptar"
+      },
+      "decline": {
+        "label": "Rechazar"
+      }
+    },
+    "log": {
+      "outcome0": "Te niegas. Su rostro se tensa, hace una breve inclinación y no dice nada. El peso sigue quedándose solo con él.",
+      "outcome1": "Habla del recolector de dispositivos craneales en el desierto. Capturaba humanos para implantarles los dispositivos, sin piedad y sin éxito. El caballero encontró una zanja llena de cientos de muertos.",
+      "outcome2": "Te niegas. Su rostro se tensa, hace una breve inclinación y no dice nada. El peso sigue quedándose solo con él."
+    },
+    "message": "El caballero inquieto acude a ti. 'Hay algo de lo que nunca hablé', dice. 'Quise ahorrárselo a todos. Pero quizá quieras saberlo'.",
+    "title": "La carga innombrable"
+  },
+  "restlessKnightCoast": {
+    "choices": {
+      "convince": {
+        "label": "Convencerlo"
+      },
+      "payFood": {
+        "cost": "2500 comida",
+        "label": "pagar 2500 comida"
+      },
+      "payGold": {
+        "cost": "50 oro",
+        "label": "pagar 50 oro"
+      },
+      "refuse": {
+        "label": "Rechazar"
+      }
+    },
+    "log": {
+      "outcome0": "El caballero esperó, pero no respondiste. 'Quizá en otra ocasión', dice antes de continuar su viaje.",
+      "outcome1": "No tienes suficiente oro.",
+      "outcome2": "El caballero comparte: 'En la costa del océano encontré una ciudad muerta, medio reclamada por las olas. Entre sus ruinas yacen enormes vasijas de metal, sus cascos oxidados aún desafiando el tiempo. Los antiguos dominaron una vez los mares con esos gigantes, ahora varados y silenciosos sobre la arena'.",
+      "outcome3": "No tienes suficiente comida.",
+      "outcome4": "Satisfecho con la comida, el caballero comparte: 'En la costa del océano encontré una ciudad muerta, medio reclamada por las olas. Entre sus ruinas yacen enormes vasijas de metal, sus cascos oxidados aún desafiando el tiempo. Los antiguos dominaron una vez los mares con esos gigantes, ahora varados y silenciosos sobre la arena'.",
+      "outcome5": "Tus palabras conmueven al caballero. Habla: 'En la costa del océano encontré una ciudad muerta, medio reclamada por las olas. Entre sus ruinas yacen enormes vasijas de metal, sus cascos oxidados aún desafiando el tiempo. Los antiguos dominaron una vez los mares con esos gigantes, ahora varados y silenciosos sobre la arena'.",
+      "outcome6": "El caballero escucha, pero no se conmueve. 'Tus palabras son sinceras, pero este conocimiento es valioso. Quizá en otra ocasión'. Se marcha sin compartir su descubrimiento.",
+      "outcome7": "Rechazas su oferta. El caballero asiente con solemnidad. 'Muy bien. Los secretos de la costa permanecerán conmigo por ahora', dice antes de alejarse."
+    },
+    "message": "El caballero aparece una vez más. 'He viajado a una ciudad en la costa de un océano', dice. 'Lo que encontré allí desafía toda creencia. Compartiré este conocimiento, por un precio'.",
+    "title": "Relatos de la costa"
+  },
+  "restlessKnightDesert": {
+    "choices": {
+      "convince": {
+        "label": "Convencerlo"
+      },
+      "payGold": {
+        "cost": "250 oro",
+        "label": "pagar 250 oro"
+      },
+      "paySilver": {
+        "cost": "1000 plata",
+        "label": "pagar 1000 plata"
+      },
+      "refuse": {
+        "label": "Rechazar"
+      }
+    },
+    "log": {
+      "outcome0": "El caballero esperó, pero no respondiste. 'Quizá en otra ocasión', dice antes de continuar su viaje.",
+      "outcome1": "No tienes suficiente oro.",
+      "outcome2": "El caballero asiente satisfecho. 'Un precio justo. Defenderé a tu gente con mi vida'. Se quita el yelmo gastado, revelando un rostro marcado pero decidido. El caballero inquieto se ha unido a tu compañía.",
+      "outcome3": "No tienes suficiente plata.",
+      "outcome4": "El caballero acepta la plata con una reverencia solemne. 'Defenderé a tu gente con mi vida'. Se quita el yelmo gastado, revelando un rostro marcado pero decidido. El caballero inquieto se ha unido a tu compañía.",
+      "outcome5": "'Tu propósito parece noble', los ojos del caballero se iluminan. 'Sería un honor estar a tu lado'. Se quita el yelmo gastado, revelando un rostro marcado pero decidido. El caballero inquieto se ha unido a tu compañía.",
+      "outcome6": "El caballero escucha, pero sacude la cabeza. 'Las palabras por sí solas no sostienen a un guerrero. Debo continuar mi viaje, entonces, por ahora', dice, dándose la vuelta y marchándose.",
+      "outcome7": "Rechazas su oferta. El caballero asiente con comprensión. 'Respeto tu decisión. Debo continuar mi viaje, entonces, por ahora', dice, dándose la vuelta y marchándose."
+    },
+    "message": "El caballero regresa. 'Viajé muy al sur, a un vasto desierto. Allí conocí a un hombre dedicado a recuperar tecnología perdida de los antiguos. Me mostró dispositivos que una vez se implantaban en el cráneo para agudizar los sentidos más allá de lo natural'. Hace una pausa. 'He viajado bastante. Podrías usar una espada veterana. Ofrezco mis servicios en combate, si aceptas'.",
+    "title": "El viaje final del caballero"
+  },
+  "restlessKnightMountains": {
+    "choices": {
+      "payFood": {
+        "cost": "2500 comida",
+        "label": "pagar 2500 comida"
+      },
+      "payGold": {
+        "cost": "50 oro",
+        "label": "pagar 50 oro"
+      },
+      "refuse": {
+        "label": "Rechazar"
+      }
+    },
+    "log": {
+      "outcome0": "El caballero esperó, pero no respondiste. 'Quizá en otra ocasión', dice antes de continuar su viaje.",
+      "outcome1": "No tienes suficiente oro.",
+      "outcome2": "El caballero comparte su descubrimiento: 'En lo alto de las montañas hay un monasterio tallado en los riscos. Los eruditos que se reunían allí para estudiar el pasado hablan de una civilización avanzada, muy por encima de nuestra comprensión. Sin embargo, algo llevó su mundo a la ruina'.",
+      "outcome3": "No tienes suficiente comida.",
+      "outcome4": "Agradecido por la comida, el caballero comparte su descubrimiento: 'En lo alto de las montañas hay un monasterio tallado en los riscos. Los eruditos de allí, que estudian el pasado, hablan de una civilización muy por encima de nuestra comprensión. Su arte era tan avanzado que nos parecería magia. Sin embargo, algo llevó su mundo a la ruina'.",
+      "outcome5": "Rechazas su oferta. El caballero asiente con comprensión. 'Entonces el conocimiento permanecerá conmigo', dice antes de partir una vez más."
+    },
+    "message": "El caballero regresa, con la armadura arañada y maltratada. 'Encontré algo extraordinario en las montañas', dice. 'Te hablaré de ello, por un precio'.",
+    "title": "Regreso de las montañas"
+  },
+  "ringOfDrownedChoice": {
+    "choices": {
+      "doNothing": {
+        "label": "No hacer nada"
+      },
+      "keepRing": {
+        "label": "Quedárselo"
+      },
+      "leaveRing": {
+        "label": "Dejarlo"
+      }
+    },
+    "log": {
+      "outcome0": "Deslizas el anillo en tu dedo. El agua sigue goteando de él sin cesar, nunca se detiene.",
+      "outcome1": "Decides que el riesgo es demasiado grande. Al darte la vuelta, oyes un chapoteo tenue detrás de ti, como si algo hubiera caído en aguas profundas, aunque no hay agua cerca.",
+      "outcome2": "Tu vacilación resulta fatal. Uno de tus hombres, incapaz de resistir el misterioso anillo, lo recoge. De inmediato, agua empieza a brotar de su boca en un torrente interminable. Se ahoga en tierra seca."
+    },
+    "message": "En lo profundo de la ciudad olvidada encuentras un extraño anillo del que gotea agua constantemente. ¿Lo conservas?",
+    "title": "Anillo de los ahogados"
+  },
+  "risingSmokeRumor": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Unos aldeanos acuden a ti. Vieron una columna de humo muy densa alzándose en el bosque. Tal vez tenga sentido investigarla.",
+    "title": "Humo ascendente"
+  },
+  "sanctumDedication": {
+    "choices": {
+      "dedicateToAll": {
+        "label": "Dedicar a todos"
+      },
+      "deepenDevotion": {
+        "label": "Profundizar la devoción"
+      }
+    },
+    "log": {
+      "outcome0": "El Santuario se transforma en un nexo de poder divino. Todos los dioses responden a tu llamada; sus dones son tuyos.",
+      "dedicate_dagon": "Dagons bendición fließt stärker als zuvor.",
+      "dedicate_flame": "Die Primera Llama brennt heller als zuvor.",
+      "dedicate_raven": "Das Marca del cuervo wird stärker als zuvor.",
+      "dedicate_ash": "Die Abrazo ceniciento ist stärker als zuvor.",
+      "dedicate_unknown": ""
+    },
+    "message": "El druida ciego emerge: 'El Santuario está completo', dice, con una voz cargada de sabiduría antigua. 'Ahora debes elegir: profundizar tu devoción por el camino escogido o abrazar a todos los dioses y sus dones. Elige con sabiduría'.",
+    "title": "La dedicación del Santuario"
+  },
+  "shadowFluteChoice": {
+    "choices": {
+      "doNothing": {
+        "label": "No hacer nada"
+      },
+      "keepFlute": {
+        "label": "Quedárselo"
+      },
+      "leaveFlute": {
+        "label": "Dejarlo"
+      }
+    },
+    "log": {
+      "outcome0": "Conservas la flauta de hueso. Sus melodías son hermosas, pero hay una disonancia sutil que roe silenciosamente tu mente.",
+      "outcome1": "Dejas la flauta con cuidado donde estaba. Las sombras vuelven a su quietud natural y la atmósfera opresiva se disipa.",
+      "outcome2": "Tu vacilación resulta costosa. Las sombras se vuelven hambrientas y violentas, retorciéndose con vida antinatural. Avanzan en oleada y devoran a {{actualDevoured}} miembros de tu compañía. Sus gritos resuenan brevemente antes de ser tragados por el silencio."
+    },
+    "message": "En lo profundo de la cueva descubres una flauta de hueso de elaboración perturbadora. Al tocarla, las sombras a tu alrededor empiezan a moverse de formas antinaturales, como si bailaran al ritmo de una melodía. ¿La conservas?",
+    "title": "La flauta de sombra"
+  },
+  "shadowsMove": {
+    "message": "Las sombras de la aldea parecen moverse mal. Se alargan demasiado, se retuercen en ángulos imposibles y a veces parecen moverse independientemente de sus fuentes. Alcanzas a ver formas que no deberían estar allí."
+  },
+  "shoreFishermenResponse": {
+    "choices": {
+      "accept": {
+        "cost": "250 oro",
+        "label": "pagar 250 oro"
+      },
+      "decline": {
+        "label": "Tiempo agotado"
+      }
+    },
+    "log": {
+      "outcome0": "Tardaste demasiado en decidir. La oferta de los pescadores expira.",
+      "outcome1": "No tienes suficiente oro.",
+      "outcome2": "Los pescadores comparten contigo sus técnicas elaboradas para construir trampas de peces.",
+      "outcome3": "Rechazas la oferta de los pescadores. La oportunidad se pierde."
+    },
+    "message": "El cuervo tuerto regresa de los Pescadores de la Costa con pescado seco como regalo. Los pescadores ofrecen enseñarte los secretos para construir poderosas trampas de peces por 250 de oro.",
+    "title": "Mensaje de los Pescadores de la Costa"
+  },
+  "skinCrawling": {
+    "choices": {
+      "calm_down": {
+        "label": "Intentar calmar"
+      },
+      "keep_scratching": {
+        "label": "Seguir rascando"
+      }
+    },
+    "log": {
+      "outcome0": "Respiras hondo y te obligas a permanecer inmóvil. La sensación de movimiento bajo la piel se desvanece poco a poco, y tu piel vuelve a la normalidad. Has vencido este horror con pura fuerza de voluntad.",
+      "outcome1": "Intentas calmarte, pero la sensación se intensifica. La vista se te nubla y te desplomas. En tus sueños febriles, cosas antiguas susurran tu verdadero nombre. Cuando despiertas, el movimiento ha cesado, pero el recuerdo permanece.",
+      "outcome2": "Te arañas la piel frenéticamente, haciéndote sangre. Los aldeanos corren a detenerte y te sujetan los brazos. En tu furia enloquecida, arremetes violentamente y matas a {{killedVillagers}} aldeanos antes de desplomarte de agotamiento. Cuando despiertas, el movimiento ha cesado, pero la sangre mancha tus manos."
+    },
+    "message": "Tu piel empieza a moverse, literalmente. Ves formas desplazándose bajo la superficie, aparentemente creando patrones. Los aldeanos te observan abrir surcos sangrientos en tus brazos con expresiones de gran preocupación.",
+    "title": "Piel reptante"
+  },
+  "slaveTrader": {
+    "choices": {
+      "freeSlaves": {
+        "label": "Intentar liberar esclavos"
+      },
+      "refuseTrader": {
+        "label": "Rechazar la oferta"
+      },
+      "sellVillagers": {
+        "label": "Vender 2 aldeanos"
+      }
+    },
+    "log": {
+      "outcome0": "Entregas a dos de los aldeanos. El traficante te arroja un saco de acero y se marcha con sus nuevos cautivos. Cuando los aldeanos restantes ven lo que has hecho, abandonan la aldea asqueados.",
+      "outcome1": "¡Tus hombres atacan al esclavista! La lucha es brutal, pero victoriosa. Liberas a los cautivos y reclamas el acero del traficante. Las almas liberadas se unen a tu aldea.",
+      "outcome2": "Tus hombres greifen den traficante de esclavos an, doch er ist vorbereitet! Er wehrt sich erbittert. {{actualDeaths}} aldeanos fallen im combate. Der comerciante entkommt mit seinen Gefangenen y hinterlässt nur den Tod.",
+      "outcome3": "Rechazas la vil oferta del esclavista. Escupe al suelo con disgusto y se aleja con sus cautivos."
+    },
+    "message": "Un hombre en un carro tirado por dos caballos se acerca a la aldea. Una jaula de hierro en el carro contiene a dos almas miserables. El traficante sonríe con malicia: 'Te pagaré 100 de acero por dos de tus aldeanos. ¿Qué dices?'",
+    "title": "El traficante de esclavos"
+  },
+  "swampSanctuaryChoice": {
+    "choices": {
+      "chopBlackTree": {
+        "label": "Talar el árbol"
+      },
+      "sacrificeAtTree": {
+        "cost": "1000 Comida",
+        "label": "Sacrificar animales en el árbol"
+      }
+    },
+    "log": {
+      "outcome0": "La madera negra resiste, pero tu gente la derriba. Reclamas la madera negra maldita.",
+      "outcome1": "No tienes suficiente comida para una ofrenda digna. El árbol espera.",
+      "outcome2": "Sangre y humo se alzan de la ofrenda. Una gracia fría se posa sobre la aldea."
+    },
+    "message": "Tu expedición alcanza el santuario olvidado del pantano. Ruinas derruidas rodean un árbol enorme de oscura madera negra. ¿Qué haces?",
+    "title": "Santuario del pantano"
+  },
+  "swampTribeResponse": {
+    "choices": {
+      "accept": {
+        "label": "Aceptar"
+      },
+      "decline": {
+        "label": "Rechazar"
+      }
+    },
+    "log": {
+      "outcome0": "Aceptas la oferta de la Tribu del Pantano y te preparas para enviar la entrega de acero al pantano.",
+      "outcome1": "Rechazas la oferta de la Tribu del Pantano. La oportunidad se pierde."
+    },
+    "message": "El cuervo tuerto regresa de la Tribu del Pantano con una carta desmoronada. La tribu ofrece poderosas placas de quitina a cambio de 1000 de acero entregados en su aldea.",
+    "title": "Mensaje de la Tribu del Pantano"
+  },
+  "templeDedication": {
+    "choices": {
+      "church_of_dagon": {
+        "label": "Iglesia de Dagon"
+      },
+      "cult_of_ravenborn": {
+        "label": "Culto de los Cuervonatos"
+      },
+      "order_of_ashbringer": {
+        "label": "Orden del Portador de Cenizas"
+      },
+      "way_of_first_flame": {
+        "label": "Camino de la Primera Llama"
+      }
+    },
+    "log": {
+      "outcome0": "Dedicas el templo a Dagon, un dios antiguo y misterioso de las profundidades.",
+      "outcome1": "Dedicas el templo al Camino de la Primera Llama, una antigua senda de fuego y renacimiento.",
+      "outcome2": "Dedicas el templo al Culto de los Nacidos del Cuervo, una orden enigmática y sombría.",
+      "outcome3": "Dedicas el templo a la Orden del Portador de Ceniza, una hermandad solemne ligada al fuego."
+    },
+    "message": "Poco después de construir el templo, aparece el druida ciego. Sus ojos lechosos parecen ver a través de tu alma cuando habla: 'El templo debe dedicarse a un dios. Elige con sabiduría'.",
+    "title": "El druida ciego regresa"
+  },
+  "traderSettles": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Un comerciante llega a la aldea con su familia. Parecen agotados, sus rostros curtidos por años en el camino. Por fin están listos para establecerse.",
+    "title": "El comerciante"
+  },
+  "traders_daughter": {
+    "choices": {
+      "do_not_help": {
+        "label": "No ayudar"
+      },
+      "send_search_party": {
+        "cost": "500 comida, 50 antorcha",
+        "label": "Enviar grupo de búsqueda"
+      }
+    },
+    "log": {
+      "outcome0": "No tienes suficiente comida ni antorchas para el grupo de búsqueda.",
+      "outcome1": "El grupo de búsqueda encuentra a la niña ilesa. Había descubierto una pequeña cueva llena de abalorios y monedas de plata, y jugaba tranquilamente entre ellos.",
+      "outcome2": "Rechazas. El comerciante asiente con tristeza y se va a buscarla por su cuenta.",
+      "outcome3": "Rechazas. El comerciante asiente con tristeza y se va a buscarla por su cuenta."
+    },
+    "message": "Una tarde, el comerciante se acerca a ti angustiado. Su hija menor ha desaparecido cerca del lindero del bosque y te suplica ayuda.",
+    "title": "La hija del comerciante"
+  },
+  "traders_gratitude": {
+    "choices": {
+      "accept_traders_gratitude": {
+        "label": "Aceptar"
+      },
+      "decline_traders_gratitude": {
+        "label": "Rechazar la oferta"
+      }
+    },
+    "log": {
+      "outcome0": "Rechazas la oferta. El comerciante te agradece una vez más y se marcha en silencio.",
+      "outcome1": "Rechazas la oferta. El comerciante te agradece una vez más y se marcha en silencio."
+    },
+    "message": "El comerciante regresa, los ojos llenos de alivio y gratitud. Para pagarte tu bondad, promete un descuento generoso en tu próxima compra.",
+    "title": "La gratitud del comerciante"
+  },
+  "traders_son": {
+    "choices": {
+      "agree_recover_dagger": {
+        "label": "Ayudarlo"
+      },
+      "traders_son_refuse": {
+        "label": "Rechazar"
+      }
+    },
+    "message": "El hijo del comerciante de la aldea se acerca a ti. Llevaba la preciada daga de su padre para impresionar a una mujer, pero un bandido cercano lo asaltó. Te pide que la recuperes.",
+    "title": "El hijo del comerciante"
+  },
+  "traders_son_gratitude": {
+    "choices": {
+      "accept_traders_son_gratitude": {
+        "label": "Aceptar"
+      },
+      "decline_traders_son_gratitude": {
+        "label": "Rechazar la oferta"
+      }
+    },
+    "log": {
+      "outcome0": "Rechazas la oferta. El joven comerciante asiente, quizá aliviado de que no quede deuda alguna.",
+      "outcome1": "Rechazas la oferta. El joven comerciante asiente, quizá aliviado de que no quede deuda alguna."
+    },
+    "message": "El hijo del comerciante regresa con la daga de su padre. Está lleno de gratitud y te ofrece un gran descuento en tu próxima compra de las mercancías de su padre.",
+    "title": "La gratitud del hijo del comerciante"
+  },
+  "undergroundLakeCreature": {
+    "choices": {
+      "acknowledgeLakeCreature": {
+        "label": "Prepararse"
+      }
+    },
+    "message": "Mientras exploras el lago subterráneo, percibes una sombra enorme bajo las aguas negras, algo vasto e invisible. Quizá una trampa podría atraerlo fuera del agua.",
+    "title": "Algo debajo"
+  },
+  "undergroundLakeDiscovery": {
+    "choices": {
+      "unlockLake": {
+        "label": "Prepararse"
+      }
+    },
+    "log": {
+      "outcome0": "Aceptas investigar, pero primero deben hacerse los preparativos necesarios para descender al lago."
+    },
+    "message": "Tras la última expedición a la cueva, dos hombres afirman haber visto un lago subterráneo. La oscuridad era demasiado densa para verlo con claridad. Quizá el farol de cráneo pueda revelar esas aguas oscuras.",
+    "title": "El lago subterráneo"
+  },
+  "unnamedWanderer": {
+    "choices": {
+      "offerFood": {
+        "cost": "2500 comida",
+        "label": "ofrecer 2500 comida"
+      },
+      "offerGold": {
+        "cost": "100 oro",
+        "label": "ofrecer 100 oro"
+      },
+      "sendAway": {
+        "label": "Enviar lejos"
+      }
+    },
+    "log": {
+      "outcome0": "Rechazas la oferta del errante. Se encoge de hombros, ajusta su gastada mochila y desaparece por el camino.",
+      "outcome1": "No tienes suficiente comida para ofrecer.",
+      "outcome2": "El errante hace un breve gesto de asentimiento y camina hacia el pozo minero para comenzar su labor.",
+      "outcome3": "No tienes suficiente oro para ofrecer.",
+      "outcome4": "El errante hace un breve gesto de asentimiento y camina hacia el pozo minero para comenzar su labor."
+    },
+    "message": "Un hombre con ropas rasgadas se acerca a la aldea, las manos marcadas por años de trabajo duro. 'Vengo de una colonia minera', dice con voz áspera. 'Puedo trabajar para ti y mejorar tu producción minera'.",
+    "title": "El errante sin nombre"
+  },
+  "veiledSeer": {
+    "choices": {
+      "accept": {
+        "cost": "50 oro",
+        "label": "Aceptar"
+      },
+      "decline": {
+        "label": "Rechazar"
+      }
+    },
+    "log": {
+      "outcome0": "No tienes suficiente oro.",
+      "outcome1": "El vidente queda en silencio. Su mirada se pierde más allá de ti. \"Te esperan grandes desafíos{{name}}\", dice suavemente. \"Crees que este mundo es tuyo para moldearlo. Pero tú también eres moldeado. Cuando la verdad final salga a la superficie, verás los hilos. Y para entonces quizá sea demasiado tarde\".",
+      "outcome2": "El vidente asiente. {{farewell}}"
+    },
+    "message": "Una figura encapuchada aparece al anochecer. Sus ojos brillan bajo el velo. 'He vislumbrado lo que viene', raspa. '50 de oro, y te diré lo que te aguarda'.",
+    "title": "El vidente velado"
+  },
+  "veinrootIntroduction": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "El alquimista se acerca a ti. Los aldeanos encontraron una raíz de aspecto extraño en el bosque y se la llevaron. Él logró crear una poción poderosa con ella.",
+    "title": "La raíz misteriosa"
+  },
+  "vikingBuilder": {
+    "choices": {
+      "acceptDeal": {
+        "label": "pagar 250 oro"
+      },
+      "forceHim": {
+        "label": "Forzarlo"
+      },
+      "sendAway": {
+        "label": "Enviar lejos"
+      }
+    },
+    "log": {
+      "outcome0": "El constructor espera un rato, pero al final se encoge de hombros y desaparece en la espesura, llevándose su conocimiento.",
+      "outcome1": "No tienes suficiente oro para este trato.",
+      "outcome2": "Pagas al constructor. Enseña a los aldeanos las antiguas técnicas nórdicas para construir casas comunales.",
+      "outcome3": "Tus hombres dominan al constructor y lo obligan a compartir su conocimiento. A regañadientes, te enseña los secretos de la construcción de casas comunales.",
+      "outcome4": "¡El constructor resulta más fuerte de lo esperado! Contraataca con ferocidad y mata a {{actualCasualties}} hombres antes de escapar a la espesura.",
+      "outcome5": "Rechazas la oferta del constructor y lo despides. Se encoge de hombros y desaparece en la espesura, llevándose su conocimiento."
+    },
+    "message": "Un día, un hombre fuerte con gruesas pieles se planta ante las puertas. Dice venir del lejano norte y ser un constructor hábil. Por un poco de oro, enseñará a tu gente a construir casas grandes capaces de alojar a muchos aldeanos.",
+    "title": "El constructor vikingo"
+  },
+  "villageBecomesCity": {
+    "message": "La aldea se ha convertido en una ciudad. Lo que empezó como un pequeño asentamiento ahora se alza como un próspero centro de piedra y humo."
+  },
+  "villageElderDecision": {
+    "choices": {
+      "nod": {
+        "label": "Continuar"
+      }
+    },
+    "message": "El anciano de la aldea regresa con expresión grave. 'Ha llegado la hora', dice. 'Has dado tus primeros pasos en un camino largo e implacable. Lo que hay por delante es más profundo, más oscuro y más exigente. Decide ahora si continuarás este viaje'.",
+    "title": "Ha llegado la hora"
+  },
+  "villageElderNotice": {
+    "choices": {
+      "nod": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Un anciano de la aldea se acerca a ti. Habla en voz baja. 'Estás al comienzo de un largo camino lleno de pruebas. Muy pronto deberás elegir si continuarás este viaje'.",
+    "title": "El aviso del anciano"
+  },
+  "villagerStares": {
+    "choices": {
+      "avoid": {
+        "label": "Evitar al aldeano"
+      },
+      "confront": {
+        "label": "Confrontar al aldeano"
+      }
+    },
+    "log": {
+      "outcome0": "Confrontas al aldeano. Se vuelve hacia ti con esa sonrisa de ojos negros y susurra algo que te hace tambalear la mente. Las palabras resuenan en tu cabeza durante días.",
+      "outcome1": "Al acercarte, la sonrisa del aldeano se ensancha de forma imposible. Se desploma, con fluido negro brotando de sus ojos y boca. Comprendes que lleva horas muerto.",
+      "outcome2": "Evitas al aldeano, pero sientes su mirada hueca siguiéndote adondequiera que vas. Dormir se vuelve difícil. Tras unas noches, encuentran al aldeano muerto en su cama, con la ropa empapada de un limo negro y hediondo."
+    },
+    "message": "Uno de los aldeanos ha empezado a mirar la nada durante horas. Cuando te acercas, sus ojos son completamente negros. Sonríe al notar que lo observas.",
+    "title": "Miradas huecas"
+  },
+  "villagersStareAtSky": {
+    "choices": {
+      "look_up_too": {
+        "label": "Mirar al cielo"
+      },
+      "shake_them": {
+        "label": "Despertarlos"
+      }
+    },
+    "log": {
+      "outcome0": "Agarras al aldeano más cercano y lo sacudes. Parpadea una vez y vuelve a la normalidad, pero susurra 'Ya viene' antes de retomar su trabajo. Los demás lo siguen lentamente.",
+      "outcome1": "Cuando tocas a un aldeano, se desmorona en polvo. Los demás despiertan de su trance y gritan, señalando al cielo. Solo por un instante, tú también lo ves: algo vasto y hambriento observando desde arriba.",
+      "outcome2": "Alzas el cuello hacia el cielo y de pronto lo ves: algo inmenso e imposible que existe entre las nubes. Tu mente rechaza lo que presencia, pero la imagen queda grabada en tu memoria para siempre."
+    },
+    "message": "Todos los aldeanos han detenido su trabajo y permanecen inmóviles, mirando el cielo vacío. Siguen así durante horas, sin parpadear, mientras lágrimas de líquido negro recorren sus rostros. Cuando sigues su mirada, solo ves nubes ordinarias, pero algo se siente terriblemente mal.",
+    "title": "Mirada al cielo"
+  },
+  "wanderingFirecrafter": {
+    "choices": {
+      "payGold": {
+        "cost": "250 oro",
+        "label": "pagar 250 oro"
+      },
+      "paySilver": {
+        "cost": "1000 plata",
+        "label": "pagar 1000 plata"
+      },
+      "sendAway": {
+        "label": "Enviar lejos"
+      }
+    },
+    "log": {
+      "outcome0": "El artífice del fuego acaba suspirando: 'Quizá aún no estés preparado para tal poder', y desaparece en la noche.",
+      "outcome1": "No tienes suficiente oro.",
+      "outcome2": "El artífice del fuego toma tu oro y empieza a enseñarte el arte oscuro de crear bombas del vacío. 'Usa este poder con prudencia', advierte antes de desvanecerse entre las sombras.",
+      "outcome3": "No tienes suficiente plata.",
+      "outcome4": "El artífice del fuego toma tu plata y empieza a enseñarte el arte oscuro de crear bombas del vacío. 'Usa este poder con prudencia', advierte antes de desvanecerse entre las sombras.",
+      "outcome5": "Rechazas la oferta del artífice del fuego. Él asiente con conocimiento. 'Quizá aún no estés preparado para tal poder', y desaparece en la noche."
+    },
+    "message": "Una figura encapuchada con túnicas manchadas llega a tu aldea. 'Soy un artífice del fuego', dice con voz resonante. 'Puedo enseñarte a fabricar una bomba de poder extremo, capaz de desgarrar la realidad misma. Pero el conocimiento tiene su precio'.",
+    "title": "El artífice del fuego errante"
+  },
+  "wanderingTribe": {
+    "choices": {
+      "acceptTribe": {
+        "label": "Ayudarlos"
+      },
+      "refuseTribeChoice": {
+        "label": "No ayudar"
+      }
+    },
+    "log": {
+      "outcome0": "Das la bienvenida a los nómadas y les ofreces apoyo. A cambio, enseñan a tu gente a levantar tiendas de pieles.",
+      "outcome1": "Rechazas ayudarlos. El líder de la tribu asiente respetuosamente y guía a su gente de vuelta a la espesura."
+    },
+    "message": "Una pequeña tribu de nómadas se acerca a la aldea. Su líder habla: 'Hemos viajado lejos y buscamos un lugar al que llamar hogar. Ayúdanos a asentarnos y enseñaremos a tu gente a levantar tiendas de pieles'.",
+    "title": "La tribu errante"
+  },
+  "wandering_collector": {
+    "choices": {
+      "sell_nothing": {
+        "label": "Nada"
+      }
+    },
+    "log": {
+      "whisper0": "Der coleccionista seufzt y wendet sich ab. „Auf meinen Reisen habe ich viele Relikte der antigua civilización entdeckt. Sie waren weit fortgeschrittener als wir je waren“, flüstert er, bevor er in der Dunkelheit verschwindet.",
+      "whisper1": "Ein leises Summen dringt unter der Kapuze hervor. „Die große Explosion zerstörte die meisten Artefakte der antigua civilización. Was übrig blieb, ist verstreut y selten“, murmelt er.",
+      "whisper2": "Ein schwacher Atem entweicht dem coleccionista. „Ich habe auf meinen Reisen viel über die alte Zivilisation gelernt. Vor der gran explosión gab es keine Magie in dieser Welt. Sie wurde in jenem Moment geboren“, flüstert er, während er geht."
+    },
+    "title": "El coleccionista errante",
+    "message": {
+      "visit0": "Una figura envuelta en ropas harapientas se acerca. Parece intrigada por lo que has reunido. «Siento valor entre tus posesiones», murmura. «Permíteme llevarte una, a cambio de {{reward}} de oro.»",
+      "visit1": "La figura regresa, sus pasos silenciosos en el suelo. «Más artefactos, más secretos», susurra. «Déjame reclamar uno más, y tu bolsa será {{reward}} de oro más pesada.»",
+      "visit2": "El coleccionista aparece de nuevo, ojos brillando bajo la capucha. «Nuestros tratos casi terminan», dice suavemente. «Véndeme uno más, y {{reward}} de oro serán tuyos.»"
+    }
+  },
+  "whisperersReward": {
+    "choices": {
+      "accept": {
+        "label": "Aceptar el regalo"
+      }
+    },
+    "log": {
+      "outcome0": "Mientras la figura se desvanece en la oscuridad, una euforia tenue te recorre, silenciosa y fugaz, como el recuerdo a medias de un tiempo mejor."
+    },
+    "message": "La figura encapuchada aparece de nuevo. Sus susurros flotan por la noche fría una última vez antes de desvanecerse: 'Tu sabiduría ha sido pesada y hallada digna. Que las sombras guarden tu camino y la fortuna siga tu nombre'.",
+    "title": "El regalo del susurrador"
+  },
+  "whisperingVoices": {
+    "message": "Oyes susurros tenues en el viento, palabras en una lengua que no reconoces, pero que de algún modo entiendes. Hablan de cosas antiguas enterradas bajo la tierra. Las voces se vuelven más claras hasta que, al anochecer, desaparecen de pronto.",
+    "title": "Voces susurrantes"
+  },
+  "whispersBeneathHut": {
+    "choices": {
+      "ignoreHut": {
+        "label": "Ignorar"
+      },
+      "investigateHut": {
+        "label": "Investigar"
+      }
+    },
+    "log": {
+      "outcome0": "Levantas las tablas del suelo y encuentras un amuleto extraño que susurra débilmente.",
+      "outcome1": "Decides dejar la choza en paz. Los susurros se desvanecen al amanecer, pero un frío permanece en el aire."
+    },
+    "message": "Por la noche, susurros tenues parecen alzarse desde debajo del suelo de una de las chozas. Los aldeanos están inquietos. ¿Investigas?",
+    "title": "Susurros bajo la choza"
+  },
+  "wildlingBloodOath": {
+    "choices": {
+      "accept_oath": {
+        "label": "Aceptar el juramento"
+      }
+    },
+    "log": {
+      "outcome0": "Aceptas el juramento de sangre. La cazadora se corta la palma y la presiona contra la tuya, sellando el juramento con sangre. 'En mi tribu me llaman Cazadora Espectroceniza', dice. 'Enseñaré a tus cazadores los caminos de lo salvaje'. La Cazadora Espectroceniza se ha unido a tu compañía."
+    },
+    "message": "La cazadora salvaje regresa del bosque. 'Salvaste a mi tribu de la extinción', dice, trazando un corte en su palma con un cuchillo de hueso. La sangre gotea sobre la tierra. 'Por las viejas costumbres de mi pueblo, te ofrezco un juramento de sangre. Estaré en deuda contigo para siempre'.",
+    "title": "El juramento de sangre"
+  },
+  "witchsCurse": {
+    "choices": {
+      "attackHer": {
+        "label": "Atacar a la bruja"
+      },
+      "doNotPay": {
+        "label": "Negarse a pagar"
+      },
+      "payGold": {
+        "cost": "50 oro",
+        "label": "pagar 50 oro"
+      },
+      "threatenHer": {
+        "label": "Amenazar a la bruja"
+      }
+    },
+    "log": {
+      "outcome0": "No tienes suficiente oro para pagarle.",
+      "outcome1": "Entregas el oro. La bruja cacarea, se guarda las monedas y desaparece en la niebla sin decir otra palabra.",
+      "outcome2": "Te niegas a pagar. La bruja escupe y maldice, pero no ocurre nada. Se aleja cojeando, murmurando amenazas al viento. Parece que tuviste suerte.",
+      "outcome3": "Al negarte a pagar, la bruja alza sus manos nudosas y pronuncia palabras en una lengua olvidada. Cuando se marcha, los aldeanos empiezan a sentirse débiles, como si una fuerza invisible les hubiera drenado la fuerza.",
+      "outcome4": "Los aldeanos la derriban antes de que pueda terminar su maldición. Antes de caer, el cuerpo de la bruja se disuelve en humo negro, dejando solo un hedor repugnante.",
+      "outcome5": "Los hombres atacan, pero la bruja es demasiado rápida. Con una última carcajada, maldice la aldea antes de desvanecerse en el bosque. Una debilidad intensa cae sobre tu gente, agotando su fuerza y voluntad.",
+      "outcome6": "Pronuncias antiguas palabras de poder aprendidas en textos viejos. La bruja retrocede aterrada y huye, su maldición rota antes de poder prender.",
+      "outcome7": "Tus amenazas solo enfurecen a la bruja. Ríe y te maldice con magia oscura. Cuando se marcha, los aldeanos empiezan a sentirse débiles, como si una fuerza invisible les hubiera drenado la fuerza."
+    },
+    "message": "Una anciana encorvada con túnicas harapientas llega a las puertas. Con malicia en la voz exige: 'Págame 50 de oro, o te maldeciré con la desgracia'.",
+    "title": "La maldición de la bruja"
+  },
+  "wizardArrives": {
+    "message": "Un anciano pequeño, de larga barba gris y abrigo gris gastado, se acerca al asentamiento. Sus ojos brillan con sabiduría y poder antiguos. 'Soy un mago', declara con una voz que resuena con autoridad arcana. 'Construidme una torre y os ayudaré con poderes más allá del saber mortal'."
+  },
+  "wizardBloodstone": {
+    "message": "El mago regresa de un viaje al bosque. 'He consultado con un viejo amigo, un mago ermitaño que habita en lo profundo del bosque', dice con gravedad. 'Me habló de la piedra de sangre que necesitamos. Yace en el Templo Hundido, un antiguo santuario ahora medio ahogado en los pantanos del bosque'.",
+    "title": "El Templo Hundido"
+  },
+  "wizardBloodstoneStaff": {
+    "message": "El mago examina las gemas de piedra de sangre que recuperaste del Templo Hundido. 'Con estas piedras de sangre, ya tenemos todo lo necesario. Ahora podemos fabricar el Bastón de Piedra de Sangre. Junto con la Espada de Cristal de Escarcha, tendremos los medios para enfrentar la oscuridad que acecha abajo'.",
+    "title": "El Bastón de Piedra de Sangre"
+  },
+  "wizardDecryptsScrolls": {
+    "message": "El mago sale de su torre. 'He descifrado los pergaminos antiguos', dice. 'Las criaturas de abajo solo pueden morir con armas de gran poder: una espada de cristal de escarcha y un bastón coronado con piedra de sangre. En lo profundo del bosque yace la tumba de un rey antiguo, cuyos tesoros podrían contener el cristal de escarcha que necesitamos'.",
+    "title": "Conocimiento antiguo"
+  },
+  "wizardFrostglassSword": {
+    "message": "El mago examina el cristal de escarcha, mientras una luz fría danza sobre su superficie. 'Lo has encontrado. Ahora puede forjarse la Espada de Cristal de Escarcha'."
+  },
+  "wizardNecromancerCastle": {
+    "message": "El mago te llama a su torre: 'He sabido de un castillo en lo profundo de la espesura, antiguo dominio de un nigromante muerto hace mucho. Dentro de sus muros yacen pergaminos antiguos que hablan de cómo podemos derrotar lo que habita en las profundidades de la cueva'.",
+    "title": "El castillo del nigromante"
+  },
+  "wizardOffer": {
+    "choices": {
+      "payGold": {
+        "cost": "250 oro",
+        "label": "pagar 250 oro"
+      },
+      "refuse": {
+        "label": "Tiempo agotado"
+      }
+    },
+    "log": {
+      "outcome0": "Tu indecisión frustra al mago. Sacude la cabeza. 'Entonces permaneceré en mi torre. Quizá nuestros caminos se crucen de nuevo cuando la necesidad sea mayor', dice antes de partir.",
+      "outcome1": "No tienes suficiente oro.",
+      "outcome2": "El mago asiente satisfecho. 'Un precio justo por mis servicios. Defenderé a tu gente con fuego arcano'. Se quita la capucha gastada, revelando ojos antiguos que brillan con un poder menguante. El Mago anciano se ha unido a tu compañía.",
+      "outcome3": "Rechazas la oferta del mago. Asiente con comprensión. 'Entonces permaneceré en mi torre. Quizá nuestros caminos se crucen de nuevo cuando la necesidad sea mayor', dice antes de partir."
+    },
+    "message": {
+      "firstVisit": "Der alte mago tritt an dich heran: „Ich habe lange gelebt y vieles gesehen“, sagt er mit müder Stimme. „Die Bedrohung, der du gegenüberstehst, ist ernst. Für einen fairen Preis schließe ich mich dir im combate gegen die Feinde an, die aus den Tiefen kommen.“",
+      "repeat": "Der alte mago tritt erneut an dich heran: „Mein Angebot, mich dir im combate gegen die Feinde aus den Tiefen anzuschließen, gilt noch. Für einen fairen Preis schließe ich mich dir an.“"
+    },
+    "title": "La oferta del mago"
+  },
+  "wizardReadyForBattle": {
+    "message": "El mago se alza a la entrada de su torre. 'Las armas están forjadas. Ahora poseemos lo necesario para resistir a las criaturas de las profundidades de la cueva. La oscuridad de abajo pronto aprenderá que esta aldea no caerá sin luchar. Estamos listos'.",
+    "title": "La preparación final"
+  },
+  "wolfAttack": {
+    "choices": {
+      "defendVillage": {
+        "label": "Defender la aldea"
+      },
+      "hideAndWait": {
+        "label": "Esconderse"
+      }
+    },
+    "log": {
+      "outcome0": "¡Los aldeanos derrotan a la manada de lobos! Matas al lobo alfa y reclamas su piel como trofeo. Irradia poder primigenio.",
+      "outcome1": "Los aldeanos se apiñan en sus chozas mientras los lobos merodean afuera. Al amanecer, los lobos se han marchado sin encontrar a nadie, dejando solo arañazos y terror.",
+      "defend_noDeaths": "Los aldeanos kämpfen verzweifelt gegen die lobos. Los aldeanos überstehen den ataque.",
+      "defend_noDeaths_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Los aldeanos überstehen den ataque. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
+      "defend_noDeaths_hut": "Los aldeanos kämpfen verzweifelt gegen die lobos. Los aldeanos überstehen den ataque. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz.",
+      "defend_noDeaths_hut_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Los aldeanos überstehen den ataque. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
+      "defend_noDeaths_food": "Los aldeanos kämpfen verzweifelt gegen die lobos. Los aldeanos überstehen den ataque. Im Chaos verwüsten die lobos deine Vorräte.",
+      "defend_noDeaths_food_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Los aldeanos überstehen den ataque. Im Chaos verwüsten die lobos deine Vorräte. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
+      "defend_noDeaths_food_hut": "Los aldeanos kämpfen verzweifelt gegen die lobos. Los aldeanos überstehen den ataque. Im Chaos verwüsten die lobos deine Vorräte. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz.",
+      "defend_noDeaths_food_hut_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Los aldeanos überstehen den ataque. Im Chaos verwüsten die lobos deine Vorräte. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
+      "defend_oneDeath": "Los aldeanos kämpfen verzweifelt gegen die lobos. Ein aldeanos fällt der übernatürlichen Wut der lobos zum Opfer.",
+      "defend_oneDeath_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Ein aldeanos fällt der übernatürlichen Wut der lobos zum Opfer. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
+      "defend_oneDeath_hut": "Los aldeanos kämpfen verzweifelt gegen die lobos. Ein aldeanos fällt der übernatürlichen Wut der lobos zum Opfer. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz.",
+      "defend_oneDeath_hut_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Ein aldeanos fällt der übernatürlichen Wut der lobos zum Opfer. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
+      "defend_oneDeath_food": "Los aldeanos kämpfen verzweifelt gegen die lobos. Ein aldeanos fällt der übernatürlichen Wut der lobos zum Opfer. Im Chaos verwüsten die lobos deine Vorräte.",
+      "defend_oneDeath_food_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Ein aldeanos fällt der übernatürlichen Wut der lobos zum Opfer. Im Chaos verwüsten die lobos deine Vorräte. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
+      "defend_oneDeath_food_hut": "Los aldeanos kämpfen verzweifelt gegen die lobos. Ein aldeanos fällt der übernatürlichen Wut der lobos zum Opfer. Im Chaos verwüsten die lobos deine Vorräte. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz.",
+      "defend_oneDeath_food_hut_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Ein aldeanos fällt der übernatürlichen Wut der lobos zum Opfer. Im Chaos verwüsten die lobos deine Vorräte. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
+      "defend_manyDeaths": "Los aldeanos kämpfen verzweifelt gegen die lobos. Mehrere aldeanos fallen der übernatürlichen Wut der lobos zum Opfer.",
+      "defend_manyDeaths_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Mehrere aldeanos fallen der übernatürlichen Wut der lobos zum Opfer. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
+      "defend_manyDeaths_hut": "Los aldeanos kämpfen verzweifelt gegen die lobos. Mehrere aldeanos fallen der übernatürlichen Wut der lobos zum Opfer. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz.",
+      "defend_manyDeaths_hut_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Mehrere aldeanos fallen der übernatürlichen Wut der lobos zum Opfer. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
+      "defend_manyDeaths_food": "Los aldeanos kämpfen verzweifelt gegen die lobos. Mehrere aldeanos fallen der übernatürlichen Wut der lobos zum Opfer. Im Chaos verwüsten die lobos deine Vorräte.",
+      "defend_manyDeaths_food_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Mehrere aldeanos fallen der übernatürlichen Wut der lobos zum Opfer. Im Chaos verwüsten die lobos deine Vorräte. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
+      "defend_manyDeaths_food_hut": "Los aldeanos kämpfen verzweifelt gegen die lobos. Mehrere aldeanos fallen der übernatürlichen Wut der lobos zum Opfer. Im Chaos verwüsten die lobos deine Vorräte. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz.",
+      "defend_manyDeaths_food_hut_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Mehrere aldeanos fallen der übernatürlichen Wut der lobos zum Opfer. Im Chaos verwüsten die lobos deine Vorräte. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
+      "hide_noDeaths": "Los aldeanos kauern in ihren Hütten, während die lobos draußen umherstreifen. Bei Tagesanbruch sind die lobos abgezogen y haben nur Kratzer y Entsetzen zurückgelassen.",
+      "hide_noDeaths_food": "Los aldeanos kauern in ihren Hütten, während die lobos draußen umherstreifen. Bei Tagesanbruch sind die lobos abgezogen y haben nur Kratzer y Entsetzen zurückgelassen. Die lobos plündern deine Vorräte, bevor sie im Morgengrauen verschwinden.",
+      "hide_oneDeath": "Los aldeanos kauern in ihren Hütten, während die lobos draußen umherstreifen. Ein aldeanos, der hinausging, wird bei Sonnenaufgang zerrissen aufgefunden.",
+      "hide_oneDeath_food": "Los aldeanos kauern in ihren Hütten, während die lobos draußen umherstreifen. Ein aldeanos, der hinausging, wird bei Sonnenaufgang zerrissen aufgefunden. Die lobos plündern deine Vorräte, bevor sie im Morgengrauen verschwinden.",
+      "hide_manyDeaths": "Los aldeanos kauern in ihren Hütten, während die lobos draußen umherstreifen. Mehrere aldeanos werden aus ihren Hütten gezerrt, ihre Schreie hallen durch die Nacht.",
+      "hide_manyDeaths_food": "Los aldeanos kauern in ihren Hütten, während die lobos draußen umherstreifen. Mehrere aldeanos werden aus ihren Hütten gezerrt, ihre Schreie hallen durch die Nacht. Die lobos plündern deine Vorräte, bevor sie im Morgengrauen verschwinden."
+    },
+    "message": "Cerca de la medianoche, lobos emergen de la oscuridad, con los ojos brillando de hambre antinatural. Sus aullidos resuenan llenos de malicia mientras rodean la aldea.",
+    "title": "Ataque de lobos"
+  },
+  "woodcutter": {
+    "choices": {
+      "acceptServices": {
+        "label": "Pay {{foodCost}} Food"
+      },
+      "denyServices": {
+        "label": "Rechazar los servicios"
+      },
+      "timeExpired": {
+        "label": "Tiempo agotado"
+      }
+    },
+    "log": {
+      "denyLastUneasy": "Etwas an seinem Auftreten beunruhigt dich. Rechazas den Handel ab. Das Lächeln des maderafällers verblasst, y er geht ohne ein Wort.",
+      "denyLevel1": "Rechazas sein Angebot ab. Der maderafäller zuckt mit den Schultern y geht in den bosque.",
+      "denyLevel2": "Rechazas sein Angebot ab. Der maderafäller nickt y zieht ohne Beschwerde weiter.",
+      "denyLevel3": "Rechazas sein Angebot ab. Er zuckt mit den Schultern y geht zurück in den bosque.",
+      "denyLevel4": "Rechazas sein ehrgeiziges Angebot ab. Der maderafäller wirkt enttäuscht, akzeptiert aber deine Entscheidung.",
+      "denyLevel5": "Rechazas den Handel ab. Der maderafäller runzelt die Stirn, widerspricht aber nicht.",
+      "denyLevel6": "Rechazas den Handel ab. Der maderafäller runzelt die Stirn, widerspricht aber nicht.",
+      "timeoutLast": "Deine Unentschlossenheit frustriert den maderafäller. Er schüttelt den Kopf y geht in den bosque.",
+      "timeoutLevel1": "Deine Unentschlossenheit frustriert den maderafäller. Er zuckt mit den Schultern y geht in den bosque.",
+      "timeoutLevel2": "Deine Unentschlossenheit frustriert den maderafäller. Er nickt y zieht ohne Beschwerde weiter.",
+      "timeoutLevel3": "Deine Unentschlossenheit frustriert den maderafäller. Er zuckt mit den Schultern y geht zurück in den bosque.",
+      "timeoutLevel4": "Deine Unentschlossenheit frustriert den maderafäller. Er wirkt enttäuscht, akzeptiert aber y geht.",
+      "timeoutLevel5": "Deine Unentschlossenheit frustriert den maderafäller. Er runzelt die Stirn y geht.",
+      "timeoutLevel6": "Deine Unentschlossenheit frustriert den maderafäller. Er runzelt die Stirn y geht."
+    },
+    "title": {
+      "level1": "Der maderafäller",
+      "level2": "Der maderafäller kehrt zurück",
+      "level3": "Das Angebot des maderafällers",
+      "level4": "Der ehrgeizige Plan des maderafällers",
+      "level5": "Der große Vorschlag des maderafällers",
+      "level6": "Das Angebot des maderafällers"
+    }
+  },
+  "wrongReflections": {
+    "choices": {
+      "cover_well": {
+        "label": "Cubrir bien con tablones"
+      },
+      "investigate": {
+        "label": "Mirar más hondo en el pozo"
+      }
+    },
+    "log": {
+      "outcome0": "Al inspeccionarlo, no ves nada inusual en el pozo. Debió de ser un truco de la luz o de tu imaginación. La inquietud persiste, pero te sientes un poco mejor.",
+      "outcome1": "Te inclinas sobre el borde del pozo. Tu reflejo te devuelve una sonrisa con demasiados dientes y susurra secretos sobre lo que una vez se construyó donde ahora se alza la aldea. Te apartas, pero el conocimiento permanece, ardiendo en tu mente.",
+      "outcome2": "Tapias el pozo con tablones de madera, prohibiendo todo acceso al agua impía. Construir un pozo nuevo tarda demasiado, y {{thirstDeaths}} de los aldeanos mueren de sed."
+    },
+    "message": "La superficie del pozo de la aldea muestra reflejos que no coinciden con la realidad. Te ves a ti mismo, pero más viejo, con ojos huecos y una boca llena de oscuridad.",
+    "title": "Reflejos equivocados"
+  },
+  "wrongVillagers": {
+    "message": "Cuentas a los aldeanos y hay tres más de los que debería. Los sobrantes se parecen exactamente a aldeanos que murieron hace meses. Trabajan, comen y duermen con normalidad, pero sus ojos contienen profundidades de antigua malicia."
+  },
+  "youngWomanProtest": {
+    "choices": {
+      "banishHer": {
+        "label": "Desterrarla"
+      },
+      "sacrificeHer": {
+        "label": "Sacrificarla"
+      },
+      "stopSacrifices": {
+        "label": "Detener los sacrificios humanos"
+      }
+    },
+    "log": {
+      "outcome0": "Aceptas poner fin a la práctica del sacrificio humano. La mujer propone destruir el Monolito Negro y construir en su lugar un obelisco blanco puro que limpie la oscuridad de las mentes del pueblo.",
+      "outcome1": "Destierras a la joven de la aldea. Convence a {{actualLeavers}} aldeanos compasivos para marcharse con ella, abandonando tu asentamiento para siempre.",
+      "outcome2": "Poco después de realizarse el sacrificio en el Monolito Negro, {{actualLeavers}} aldeanos horrorizados recogen sus pertenencias y se marchan asqueados."
+    },
+    "message": "Una joven se acerca a ti con lágrimas corriendo por su rostro. 'Mis dos padres fueron sacrificados a ese monolito maldito', llora. '¡Este comportamiento bárbaro tiene que terminar!'",
+    "title": "La súplica de la joven"
+  },
+  "whispererInTheDark": {
+    "title": "Susurro en la oscuridad",
+    "message": {
+      "original": "Llaman a la puerta de la finca. Una figura completamente envuelta en ropas oscuras permanece en las sombras afuera. Susurra: «Sin voz grita, sin alas vuela, sin dientes muerde, sin boca murmura.»",
+      "variant": "Llaman a la puerta de la finca. Una figura completamente envuelta en ropas oscuras permanece en las sombras afuera. Susurra: «El deseo de una dama, nacido en la oscuridad, brillando con luz pálida.»"
+    },
+    "choices": {
+      "answerFire": {
+        "label": "Fuego"
+      },
+      "answerWaves": {
+        "label": "Olas"
+      },
+      "answerWind": {
+        "label": "Viento"
+      },
+      "answerDarkness": {
+        "label": "Oscuridad"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_first": "La figura asiente levemente antes de desvanecerse en la oscuridad. Por la mañana, una pequeña bolsa de oro reposa en el umbral de la finca."
+    }
+  },
+  "whispererInTheDark_variant": {
+    "title": "Susurro en la oscuridad",
+    "message": {
+      "original": "Llaman a la puerta de la finca. Una figura completamente envuelta en ropas oscuras permanece en las sombras afuera. Susurra: «Sin voz grita, sin alas vuela, sin dientes muerde, sin boca murmura.»",
+      "variant": "Llaman a la puerta de la finca. Una figura completamente envuelta en ropas oscuras permanece en las sombras afuera. Susurra: «El deseo de una dama, nacido en la oscuridad, brillando con luz pálida.»"
+    },
+    "choices": {
+      "answerSilver": {
+        "label": "Plata"
+      },
+      "answerPearl": {
+        "label": "Perla"
+      },
+      "answerGold": {
+        "label": "oro"
+      },
+      "answerDiamond": {
+        "label": "Diamante"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_first": "La figura asiente levemente antes de desvanecerse en la oscuridad. Por la mañana, una pequeña bolsa de oro reposa en el umbral de la finca."
+    }
+  },
+  "riddleOfAges": {
+    "title": "Voces en la oscuridad",
+    "message": {
+      "original": "La figura encapuchada regresa a la finca bajo la pálida luz de la luna. Su voz resuena: «Por la mañana va a cuatro patas, al mediodía a dos, y por la tarde a tres.»",
+      "variant": "La figura encapuchada regresa a la finca bajo la pálida luz de la luna. Su voz resuena: «No puede hacerte daño, pero te deja cicatrices.»"
+    },
+    "choices": {
+      "answerEarth": {
+        "label": "Tierra"
+      },
+      "answerWolf": {
+        "label": "Lobo"
+      },
+      "answerMan": {
+        "label": "Hombre"
+      },
+      "answerBird": {
+        "label": "Pájaro"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_second": "La figura asiente apenas y desaparece en la noche. Al amanecer, una bolsa de cuero desgastada llena de oro yace donde estuvo."
+    }
+  },
+  "riddleOfAges_variant": {
+    "title": "Voces en la oscuridad",
+    "message": {
+      "original": "La figura encapuchada regresa a la finca bajo la pálida luz de la luna. Su voz resuena: «Por la mañana va a cuatro patas, al mediodía a dos, y por la tarde a tres.»",
+      "variant": "La figura encapuchada regresa a la finca bajo la pálida luz de la luna. Su voz resuena: «No puede hacerte daño, pero te deja cicatrices.»"
+    },
+    "choices": {
+      "answerNightmares": {
+        "label": "Pesadillas"
+      },
+      "answerTime": {
+        "label": "Toque"
+      },
+      "answerLove": {
+        "label": "Cuchillo"
+      },
+      "answerDeath": {
+        "label": "Lujuria"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_second": "La figura asiente apenas y desaparece en la noche. Al amanecer, una bolsa de cuero desgastada llena de oro yace donde estuvo."
+    }
+  },
+  "riddleOfDevourer": {
+    "title": "Un visitante nocturno",
+    "message": {
+      "original": "Una vez más, la misteriosa figura aparece en la finca. Susurra con voz baja: «Lo devora todo, convierte los huesos en polvo, mata reyes, desgasta montañas, borra ciudades.»",
+      "variant": "Una vez más, la misteriosa figura aparece en la finca. Susurra con voz baja: «Tiene dedos, pero ni carne, ni plumas, ni escamas, ni hueso.»"
+    },
+    "choices": {
+      "answerMan": {
+        "label": "Hombre"
+      },
+      "answerWater": {
+        "label": "Agua"
+      },
+      "answerTime": {
+        "label": "Tiempo"
+      },
+      "answerFire": {
+        "label": "Fuego"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_third": "La figura inclina la cabeza en silencioso reconocimiento antes de retroceder hacia la penumbra. Al amanecer, una bolsa de monedas desgastada de oro aparece fuera de la puerta."
+    }
+  },
+  "riddleOfDevourer_variant": {
+    "title": "Un visitante nocturno",
+    "message": {
+      "original": "Una vez más, la misteriosa figura aparece en la finca. Susurra con voz baja: «Lo devora todo, convierte los huesos en polvo, mata reyes, desgasta montañas, borra ciudades.»",
+      "variant": "Una vez más, la misteriosa figura aparece en la finca. Susurra con voz baja: «Tiene dedos, pero ni carne, ni plumas, ni escamas, ni hueso.»"
+    },
+    "choices": {
+      "answerFin": {
+        "label": "Aleta"
+      },
+      "answerWing": {
+        "label": "Ala"
+      },
+      "answerGlove": {
+        "label": "Guante"
+      },
+      "answerHand": {
+        "label": "Mano"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_third": "La figura inclina la cabeza en silencioso reconocimiento antes de retroceder hacia la penumbra. Al amanecer, una bolsa de monedas desgastada de oro aparece fuera de la puerta."
+    }
+  },
+  "riddleOfTears": {
+    "title": "Un huésped encapuchado",
+    "message": {
+      "original": "La figura envuelta aparece una vez más en la finca. Susurra: «Vuela sin alas, llora sin ojos, la oscuridad lo sigue adondequiera que vaya.»",
+      "variant": "La figura envuelta aparece una vez más en la finca. Susurra: «Suave, delicado, sedoso, pero si estás envuelto en mí, gritas.»"
+    },
+    "choices": {
+      "answerNight": {
+        "label": "Noche"
+      },
+      "answerWind": {
+        "label": "Viento"
+      },
+      "answerClouds": {
+        "label": "Nubes"
+      },
+      "answerShadow": {
+        "label": "Sombra"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_fourth": "La figura baja su cabeza encapuchada un momento antes de disolverse en las sombras. Un pequeño saco de oro queda sobre el suelo frío."
+    }
+  },
+  "riddleOfTears_variant": {
+    "title": "Un huésped encapuchado",
+    "message": {
+      "original": "La figura envuelta aparece una vez más en la finca. Susurra: «Vuela sin alas, llora sin ojos, la oscuridad lo sigue adondequiera que vaya.»",
+      "variant": "La figura envuelta aparece una vez más en la finca. Susurra: «Suave, delicado, sedoso, pero si estás envuelto en mí, gritas.»"
+    },
+    "choices": {
+      "answerNightmares": {
+        "label": "Pesadillas"
+      },
+      "answerCobweb": {
+        "label": "Telaraña"
+      },
+      "answerSilk": {
+        "label": "Seda"
+      },
+      "answerDeath": {
+        "label": "Muerte"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_fourth": "La figura baja su cabeza encapuchada un momento antes de disolverse en las sombras. Un pequeño saco de oro queda sobre el suelo frío."
+    }
+  },
+  "riddleOfEternal": {
+    "title": "El huésped desconocido",
+    "message": {
+      "original": "La figura nocturna aparece una vez más en la finca. Su voz resuena en silencio a través de la noche: «Tus ojos están abiertos, estoy ahí; tus ojos están cerrados, también estoy ahí.»",
+      "variant": "La figura nocturna aparece una vez más en la finca. Su voz resuena en silencio a través de la noche: «Los pobres me tienen, los ricos me necesitan. Si me comes, mueres.»"
+    },
+    "choices": {
+      "answerLight": {
+        "label": "Luz"
+      },
+      "answerLife": {
+        "label": "Vida"
+      },
+      "answerDarkness": {
+        "label": "Oscuridad"
+      },
+      "answerDeath": {
+        "label": "Muerte"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_fifth": "La figura inclina la cabeza en reverencia silenciosa antes de desvanecerse por completo. Un gran saco de oro yace en el suelo donde estuvo."
+    }
+  },
+  "riddleOfEternal_variant": {
+    "title": "El huésped desconocido",
+    "message": {
+      "original": "La figura nocturna aparece una vez más en la finca. Su voz resuena en silencio a través de la noche: «Tus ojos están abiertos, estoy ahí; tus ojos están cerrados, también estoy ahí.»",
+      "variant": "La figura nocturna aparece una vez más en la finca. Su voz resuena en silencio a través de la noche: «Los pobres me tienen, los ricos me necesitan. Si me comes, mueres.»"
+    },
+    "choices": {
+      "answerPoison": {
+        "label": "Veneno"
+      },
+      "answerAir": {
+        "label": "oro"
+      },
+      "answerNothing": {
+        "label": "Nada"
+      },
+      "answerTime": {
+        "label": "Tiempo"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_fifth": "La figura inclina la cabeza en reverencia silenciosa antes de desvanecerse por completo. Un gran saco de oro yace en el suelo donde estuvo."
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "endScreen": {
+    "pageTitle": "Journey Complete - A Dark Пещера",
+    "trustBadge": "Отлично!",
+    "headline1": "Ваше путешествие",
+    "headline2": "Заканчивается здесь",
+    "subtitle1": "По крайней мере, пока…",
+    "subtitle2": "Попробуйте Жестокий режим — ещё больший вызов с расширенным геймплеем. За прохождение игры вы получите особую скидку.",
+    "cruelMode": "⛤ Жестокий режим",
+    "cruelModeBadge": "Особая скидка",
+    "feedback": "Отзыв",
+    "continuePlaying": "Продолжить Playing",
+    "moreGames": "Больше игр"
+  }
+}

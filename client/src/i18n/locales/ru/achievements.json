@@ -1,0 +1,184 @@
+{
+  "action": {
+    "0-chopWood": {
+      "label": "Дровосек"
+    },
+    "0-craftTorches": {
+      "label": "Факельщик"
+    },
+    "0-exploreCave": {
+      "label": "Исследователь пещер"
+    },
+    "0-gamblerWins": {
+      "label": "Бывалый игрок"
+    },
+    "0-hunt": {
+      "label": "Охотник"
+    },
+    "1-mineAdamant": {
+      "label": "Добытчик адаманта"
+    },
+    "1-mineCoal": {
+      "label": "Добытчик угля"
+    },
+    "1-mineIron": {
+      "label": "Добытчик железа"
+    },
+    "1-mineObsidian": {
+      "label": "Добытчик обсидиана"
+    },
+    "1-mineStone": {
+      "label": "Каменотес"
+    },
+    "1-mineSulfur": {
+      "label": "Добытчик серы"
+    },
+    "2-animals": {
+      "label": "Жертвователь животных"
+    },
+    "2-boneTotems": {
+      "label": "Жертвователь костей"
+    },
+    "2-craftBoneTotems": {
+      "label": "Мастер костяных тотемов"
+    },
+    "2-craftLeatherTotems": {
+      "label": "Мастер кожаных тотемов"
+    },
+    "2-leatherTotems": {
+      "label": "Жертвователь кожи"
+    },
+    "3-ashfireBombs": {
+      "label": "Мастер пепельных бомб"
+    },
+    "3-emberBombs": {
+      "label": "Мастер угольных бомб"
+    },
+    "4-feedFire": {
+      "label": "Хранитель огня"
+    },
+    "4-merchantPurchases": {
+      "label": "Умелый торговец"
+    },
+    "4-solsticeGatherings": {
+      "label": "Празднующий солнцестояние"
+    },
+    "4-wellRested": {
+      "label": "Крепко спящий"
+    }
+  },
+  "basic": {
+    "0-coalMiner": {
+      "label": "Собирать уголь"
+    },
+    "0-hunter": {
+      "label": "Охотник"
+    },
+    "0-ironMiner": {
+      "label": "Собирать железо"
+    },
+    "0-stoneMiner": {
+      "label": "Собирать камень"
+    },
+    "0-woodGatherer": {
+      "label": "Собирать дерево"
+    },
+    "1-builder": {
+      "label": "Строить здания"
+    },
+    "1-communityBuilder": {
+      "label": "Строить общину"
+    },
+    "1-explorer": {
+      "label": "Исследовать пещеру"
+    },
+    "1-toolCrafter": {
+      "label": "Создавать инструменты"
+    },
+    "1-torchCrafter": {
+      "label": "Делать факелы"
+    }
+  },
+  "building": {
+    "0-0": {
+      "label": "Простое убежище"
+    },
+    "0-1": {
+      "label": "Крепкое убежище"
+    },
+    "0-2": {
+      "label": "Северное убежище"
+    },
+    "0-3": {
+      "label": "Кочевое убежище"
+    },
+    "1-0": {
+      "label": "Ловчие"
+    },
+    "1-1": {
+      "label": "Кузнецы"
+    },
+    "1-2": {
+      "label": "Плавильщики"
+    },
+    "1-3": {
+      "label": "Кожевники"
+    },
+    "2-0": {
+      "label": "Шахтеры"
+    },
+    "3-0": {
+      "label": "Торговцы"
+    },
+    "3-1": {
+      "label": "Снабженцы"
+    },
+    "3-2": {
+      "label": "Ученые"
+    },
+    "3-3": {
+      "label": "Жрецы"
+    },
+    "4-0": {
+      "label": "Крепостные стены"
+    },
+    "4-1": {
+      "label": "Дозор"
+    }
+  },
+  "item": {
+    "0-axes": {
+      "label": "Топоры"
+    },
+    "0-lanterns": {
+      "label": "Фонари"
+    },
+    "0-pickaxes": {
+      "label": "Кирки"
+    },
+    "1-bows": {
+      "label": "Луки"
+    },
+    "1-swords": {
+      "label": "Мечи"
+    },
+    "2-explorer_pack": {
+      "label": "Кожевенное дело"
+    },
+    "2-schematic_weapons": {
+      "label": "Чертежи"
+    },
+    "3-ancient_books": {
+      "label": "Древняя мудрость"
+    },
+    "3-fellowship": {
+      "label": "Добрая компания"
+    },
+    "4-blacksteel_equipment": {
+      "label": "Темное боевое снаряжение"
+    },
+    "4-blacksteel_tools": {
+      "label": "Темные инструменты"
+    }
+  }
+}

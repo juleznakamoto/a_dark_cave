@@ -16,6 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { logger } from "@/lib/logger";
+import { useTranslation } from "react-i18next";
 
 const isDev = import.meta.env.DEV;
 
@@ -46,6 +47,7 @@ const formatTime = (ms: number) => {
 };
 
 function LeaderboardTab({ entries, loading, lastUpdated, tabId }: LeaderboardTabProps) {
+  const { t } = useTranslation(["ui", "common"]);
 
   const getCrown = (index: number) => {
     if (index === 0)
@@ -61,10 +63,10 @@ function LeaderboardTab({ entries, loading, lastUpdated, tabId }: LeaderboardTab
     <div className="flex-1 min-h-0 flex flex-col">
       <div className="flex items-center justify-between px-3 pb-2 border-b border-border bg-background">
         <div className="flex items-center gap-3">
-          <span className="font-semibold text-sm w-8 text-center">#</span>
-          <span className="font-semibold text-sm">Player</span>
+          <span className="font-semibold text-sm w-8 text-center">{t("ui:leaderboard.rank")}</span>
+          <span className="font-semibold text-sm">{t("ui:leaderboard.player")}</span>
         </div>
-        <span className="font-semibold text-sm">Completion Time</span>
+        <span className="font-semibold text-sm">{t("ui:leaderboard.completionTime")}</span>
       </div>
       <ScrollAreaWithIndicator
         className="h-[calc(80vh-240px)]"
@@ -72,10 +74,10 @@ function LeaderboardTab({ entries, loading, lastUpdated, tabId }: LeaderboardTab
       >
         <div className="space-y-2 pt-2 pr-4 pb-4">
           {loading ? (
-            <div className="text-center py-8 text-muted-foreground">Loading...</div>
+            <div className="text-center py-8 text-muted-foreground">{t("common:status.loading")}</div>
           ) : entries.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
-              No entries yet
+              {t("ui:leaderboard.noEntries")}
             </div>
           ) : (
             entries.map((entry, index) => {
@@ -104,7 +106,9 @@ function LeaderboardTab({ entries, loading, lastUpdated, tabId }: LeaderboardTab
       </ScrollAreaWithIndicator>
       {lastUpdated && (
         <div className="text-xs text-muted-foreground text-center pt-2 opacity-50">
-          Last updated: {new Date(lastUpdated).toLocaleString()}
+          {t("ui:leaderboard.lastUpdated", {
+            time: new Date(lastUpdated).toLocaleString(),
+          })}
         </div>
       )}
     </div>
@@ -115,6 +119,7 @@ export default function LeaderboardDialog({
   isOpen,
   onClose,
 }: LeaderboardDialogProps) {
+  const { t } = useTranslation(["ui", "common"]);
   const { username, setUsername } = useGameStore();
   const [normalLeaderboard, setNormalLeaderboard] = useState<
     LeaderboardEntry[]
@@ -166,8 +171,8 @@ export default function LeaderboardDialog({
     } catch (error) {
       logger.error("Failed to fetch leaderboard:", error);
       toast({
-        title: "Error",
-        description: "Failed to load leaderboard",
+        title: t("common:status.error"),
+        description: t("ui:leaderboard.loadFailed"),
         variant: "destructive",
       });
     } finally {
@@ -178,8 +183,8 @@ export default function LeaderboardDialog({
   const handleSaveUsername = async () => {
     if (!tempUsername.trim()) {
       toast({
-        title: "Invalid username",
-        description: "Username cannot be empty",
+        title: t("ui:leaderboard.invalidUsername"),
+        description: t("ui:leaderboard.usernameEmpty"),
         variant: "destructive",
       });
       return;
@@ -187,8 +192,8 @@ export default function LeaderboardDialog({
 
     if (tempUsername.length > 20) {
       toast({
-        title: "Invalid username",
-        description: "Username must be 20 characters or less",
+        title: t("ui:leaderboard.invalidUsername"),
+        description: t("ui:leaderboard.usernameTooLong"),
         variant: "destructive",
       });
       return;
@@ -198,8 +203,8 @@ export default function LeaderboardDialog({
       const user = await getCurrentUser();
       if (!user) {
         toast({
-          title: "Error",
-          description: "You must be signed in to set a username",
+          title: t("common:status.error"),
+          description: t("ui:leaderboard.mustSignIn"),
           variant: "destructive",
         });
         return;
@@ -222,18 +227,16 @@ export default function LeaderboardDialog({
         const errorData = await response.json();
         if (errorData.error === "Username contains inappropriate language") {
           toast({
-            title: "Username not allowed",
-            description:
-              "This username contains inappropriate language. Please choose a different one.",
+            title: t("ui:leaderboard.usernameNotAllowed"),
+            description: t("ui:leaderboard.usernameInappropriate"),
             variant: "destructive",
           });
           return;
         }
         if (response.status === 409) {
           toast({
-            title: "Username taken",
-            description:
-              "This username is already in use. Please choose another.",
+            title: t("ui:leaderboard.usernameTaken"),
+            description: t("ui:leaderboard.usernameTakenDesc"),
             variant: "destructive",
           });
           return;
@@ -245,16 +248,16 @@ export default function LeaderboardDialog({
       setEditingUsername(false);
 
       toast({
-        title: "Username saved",
-        description: "Your username has been updated",
+        title: t("ui:leaderboard.usernameSaved"),
+        description: t("ui:leaderboard.usernameSavedDesc"),
       });
 
       fetchLeaderboards();
     } catch (error) {
       logger.error("Failed to save username:", error);
       toast({
-        title: "Error",
-        description: "Failed to save username",
+        title: t("common:status.error"),
+        description: t("ui:leaderboard.saveFailed"),
         variant: "destructive",
       });
     }
@@ -265,11 +268,11 @@ export default function LeaderboardDialog({
       <DialogContent className="[--adc-dialog-max-w:42rem] max-h-[80vh] flex flex-col overflow-hidden z-[70]">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
-            <span>Leaderboard</span>
+            <span>{t("ui:leaderboard.title")}</span>
             {isDev && (
               <div className="flex items-center gap-2">
                 <Label htmlFor="env-switch" className="text-sm font-normal">
-                  {useDevStats ? "Dev" : "Prod"}
+                  {useDevStats ? t("ui:leaderboard.dev") : t("ui:leaderboard.prod")}
                 </Label>
                 <Switch
                   id="env-switch"
@@ -289,12 +292,12 @@ export default function LeaderboardDialog({
                   <Input
                     value={tempUsername}
                     onChange={(e) => setTempUsername(e.target.value)}
-                    placeholder="Enter name"
+                    placeholder={t("ui:leaderboard.enterName")}
                     maxLength={12}
                     className="h-9 w-32"
                   />
                   <Button onClick={handleSaveUsername} size="sm">
-                    Save
+                    {t("common:buttons.save")}
                   </Button>
                   <Button
                     onClick={() => {
@@ -304,16 +307,16 @@ export default function LeaderboardDialog({
                     variant="outline"
                     size="sm"
                   >
-                    Cancel
+                    {t("common:buttons.cancel")}
                   </Button>
                 </div>
               ) : (
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-muted-foreground">
-                      Username:
+                      {t("ui:leaderboard.username")}
                     </span>
-                    <span className="font-medium">{username || "Not set"}</span>
+                    <span className="font-medium">{username || t("ui:leaderboard.notSet")}</span>
                     <Button
                       onClick={() => setEditingUsername(true)}
                       variant="ghost"
@@ -338,7 +341,7 @@ export default function LeaderboardDialog({
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-muted-foreground">
-                      Current Playtime:
+                      {t("ui:leaderboard.currentPlaytime")}
                     </span>
                     <span className="font-mono">{formatTime(useGameStore.getState().playTime)}</span>
                   </div>
@@ -350,8 +353,8 @@ export default function LeaderboardDialog({
 
         <Tabs defaultValue="normal" className="flex-1 flex flex-col min-h-0 overflow-hidden">
           <TabsList className="grid w-full grid-cols-2 mb-1">
-            <TabsTrigger value="normal">Normal Mode</TabsTrigger>
-            <TabsTrigger value="cruel">Cruel Mode</TabsTrigger>
+            <TabsTrigger value="normal">{t("ui:leaderboard.normalMode")}</TabsTrigger>
+            <TabsTrigger value="cruel">{t("ui:leaderboard.cruelMode")}</TabsTrigger>
           </TabsList>
           <TabsContent value="normal" className="flex-1 min-h-0 flex flex-col overflow-hidden data-[state=inactive]:hidden">
             <LeaderboardTab

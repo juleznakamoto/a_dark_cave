@@ -1,0 +1,195 @@
+{
+  "event": {
+    "fallbackTitle": "事件",
+    "choose": "请选择一个选项",
+    "timeRemaining": "剩余时间：{{seconds}} 秒",
+    "knowledgeTimeBonus": "知识额外增加 {{seconds}} 秒决策时间{{maxSuffix}}",
+    "knowledgeTimeBonusMax": "（上限）"
+  },
+  "reward": {
+    "title": "奖励",
+    "loss": "损失",
+    "actionReward": "行动奖励",
+    "claimRewards": "领取奖励"
+  },
+  "madness": {
+    "title": "疯狂事件",
+    "change": "{{sign}} {{amount}} 疯狂"
+  },
+  "socialPrompt": {
+    "title": "保持联系，赢取奖励",
+    "description": "完成下方任务以获得奖励。全部完成可获得专属物品。",
+    "signUpRequiresSignInTooltip": "注册以完成任务",
+    "signUpTitle": "注册 (+{{amount}} 黄金)",
+    "signUpDesc": "创建免费账户以保存进度并跨设备同步。没有账户，进度可能丢失。",
+    "signUpButton": "注册",
+    "emailUpdatesTitle": "邮件订阅 (+{{amount}} 黄金)",
+    "subscribe": "订阅",
+    "playlightTitle": "发现 1 款游戏 (+{{amount}} 黄金)",
+    "discoverGames": "发现游戏",
+    "inviteTitle": "邀请 1 位好友 (各得 {{amount}} 黄金)",
+    "inviteDesc": "最多邀请 {{cap}} 位好友，每次双方各得 {{amount}} 黄金 ({{count}}/{{cap}} 已邀请)。",
+    "copyInviteLink": "复制邀请链接",
+    "progressComplete": "你已完成所有任务，奖励即将到来。",
+    "progressToward": "专属物品进度",
+    "progressAriaLabel": "专属物品进度",
+    "alreadyClaimedReward": "你已领取此奖励！",
+    "followRewardLog": "关注 {{platform}} 获得 {{amount}} 黄金！",
+    "platforms": {
+      "instagram": {
+        "title": "Instagram (+{{amount}} 黄金)",
+        "actionFollow": "关注"
+      },
+      "reddit": {
+        "title": "Reddit (+{{amount}} 黄金)",
+        "actionJoin": "加入"
+      }
+    },
+    "playlightDiscoverRewardLog": "发现游戏奖励：获得 {{amount}} 金币！",
+    "marketingSubscribeLog": "订阅邮件更新奖励：获得 {{amount}} 金币！"
+  },
+  "referral": {
+    "invitedLog": "你邀请了新朋友来到这个世界！+{{amount}} 金币"
+  },
+  "invite": {
+    "button": "邀请",
+    "goldBonus": "+{{amount}} 黄金",
+    "linkCopied": "邀请链接已复制！",
+    "linkCopiedDesc": "分享给好友，每人可获得 {{amount}} 黄金。",
+    "copyFailed": "无法复制邀请链接",
+    "tooltip": "邀请好友，双方各得 {{amount}} 黄金。最多邀请 {{cap}} 位。({{count}}/{{cap}} 已邀请)"
+  },
+  "invest": {
+    "title": "投资",
+    "strategy": "投资策略",
+    "amount": "投资金额",
+    "potentialProfit": "潜在利润：",
+    "startInvestment": "开始投资",
+    "infoAriaLabel": "说明投资与策略表",
+    "unlockTooltip": "更高建筑等级解锁",
+    "minutes": "{{count}} 分钟",
+    "luckBonus": "幸运 +{{pct}}% 成功率（已计入表格）。",
+    "buildingLuckyBonus2": "建筑等级 +2% 幸运（已计入表）。",
+    "buildingLuckyBonus1": "建筑等级 +1% 幸运（已计入表）。",
+    "headers": {
+      "time": "时间",
+      "success": "成功",
+      "profit": "利润",
+      "lucky": "幸运",
+      "loss": "损失",
+      "wipeout": "全损"
+    },
+    "tooltip": {
+      "time": "投资持续时间。",
+      "success": "投资成功几率。",
+      "profit": "成功时的利润。",
+      "lucky": "成功时利润乘以 {{multiplier}} 的几率。",
+      "loss": "失败时损失的投资比例。",
+      "wipeout": "失败时损失全部投资的几率。",
+      "potentialProfit": "最大利润。第二值为幸运触发（利润×{{multiplier}}）。"
+    }
+  },
+  "gambler": {
+    "title": "痴迷的赌徒",
+    "srDescription": "与痴迷赌徒的骰子游戏",
+    "rulesAriaLabel": "骰子游戏规则",
+    "rulesTurns": "你与赌徒轮流掷骰。",
+    "rulesTotals": "各玩家掷骰点数相加。",
+    "rulesGoal": "目标设为 15 点。",
+    "rulesWinLose": "恰好达到目标则胜，超过则负。",
+    "rulesStand": "若当前玩家点数领先，可选择不再掷骰。",
+    "tutorialIntro": "为教你规则，赌徒提议免费玩 {{count}} 局。",
+    "boneDiceIntro": "请下注。拥有骨骰可与赌徒对战两次。",
+    "placeBet": "请下注。",
+    "gamesRemaining": "剩余 {{remaining}}/{{total}} 局。",
+    "requiresLuck": "需要 {{luck}} 点幸运解锁",
+    "bet": "赌注：",
+    "practiceBet": "练习 (0 黄金)",
+    "goal": "目标：",
+    "you": "你",
+    "gambler": "赌徒",
+    "roll": "掷骰",
+    "noRoll": "不掷",
+    "youWin": "你赢了",
+    "youLose": "你输了",
+    "practiceOutcome": "练习局，不涉及金币输赢。",
+    "goldWon": "+{{amount}} 黄金",
+    "goldLost": "-{{amount}} 黄金",
+    "practiceWinRemaining": "你赢得了练习局（不涉及金币）。剩余 {{remaining}}/{{total}} 局练习。",
+    "practiceLoseRemaining": "你输掉了练习局（不涉及金币）。剩余 {{remaining}}/{{total}} 局练习。",
+    "practiceWinComplete": "你赢得了练习局（不涉及金币）。练习完成——现在可以下注金币。",
+    "practiceLoseComplete": "你输掉了练习局（不涉及金币）。练习完成——现在可以下注金币。"
+  },
+  "fullGame": {
+    "titleTrial": "旅程继续",
+    "titleCheckout": "完成购买",
+    "trialDesc": "你已到达试玩版终点，完整旅程在前方等待。",
+    "oneTimePurchase": "一次性购买，无订阅，无微交易。",
+    "featureHours": "14+ 小时游戏内容",
+    "featureStructures": "100+ 建筑",
+    "featureItems": "250+ 物品、同伴、书籍、祝福……",
+    "featureAchievements": "50+ 成就",
+    "featureStory": "基于你的选择的黑暗挑战故事",
+    "signInRequired": "请登录以购买完整版。",
+    "continueJourney": "继续旅程",
+    "progressSaved": "进度已保存，你可随时回来继续。",
+    "loadingPayment": "正在加载支付系统……",
+    "purchaseSuccessful": "购买成功！",
+    "purchaseSuccessfulDesc": "完整版已解锁并激活！你现在可以不受限制地继续旅程。",
+    "poweredBy": "技术支持",
+    "legalConsent": "购买即表示同意立即交付数字内容并放弃撤回权。详见",
+    "termsOfService": "服务条款",
+    "rightOfWithdrawal": "撤回权",
+    "completePurchaseFor": "完成购买 {{price}}",
+    "paymentFailed": "支付失败",
+    "notAuthenticated": "用户未认证",
+    "unexpectedError": "发生意外错误"
+  },
+  "leaderboard": {
+    "title": "排行榜",
+    "dev": "开发",
+    "prod": "正式",
+    "rank": "#",
+    "player": "玩家",
+    "completionTime": "完成时间",
+    "noEntries": "暂无条目",
+    "lastUpdated": "最后更新：{{time}}",
+    "username": "用户名：",
+    "notSet": "未设置",
+    "currentPlaytime": "当前游戏时长：",
+    "enterName": "输入名称",
+    "normalMode": "普通模式",
+    "cruelMode": "残酷模式",
+    "loadFailed": "加载排行榜失败",
+    "invalidUsername": "无效用户名",
+    "usernameEmpty": "用户名不能为空",
+    "usernameTooLong": "用户名不能超过 20 个字符",
+    "mustSignIn": "须登录后才能设置用户名",
+    "usernameNotAllowed": "用户名不允许",
+    "usernameInappropriate": "用户名含不当用语，请换一个。",
+    "usernameTaken": "用户名已被占用",
+    "usernameTakenDesc": "用户名已被占用，请换一个。",
+    "usernameSaved": "用户名已保存",
+    "usernameSavedDesc": "用户名已更新",
+    "saveFailed": "保存用户名失败"
+  },
+  "investmentResult": {
+    "title": "投资结果"
+  },
+  "cube": {
+    "fallbackTitle": "低语立方体",
+    "fallbackMessage": "立方体低语着古老的秘密……",
+    "close": "关闭",
+    "completionLog": "你已完成这段旅程。留在这里或开始新游戏——若 dare，试试残酷模式。"
+  },
+  "timedEvent": {
+    "buy": "购买",
+    "sell": "出售",
+    "sayGoodbye": "告别",
+    "successChance": "成功几率：{{percent}}",
+    "discount": "折扣 {{percent}}%",
+    "discountFromKnowledge": "知识 {{percent}}%{{max}}",
+    "knowledgeMax": "（上限）",
+    "discountFromRing": "顺从之戒 5%"
+  }
+}

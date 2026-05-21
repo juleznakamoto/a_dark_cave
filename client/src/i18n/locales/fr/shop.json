@@ -1,0 +1,81 @@
+{
+  "advanced_bundle": {
+    "activationMessage": "Les éléments du pack du Roi pâle ont été ajoutés à vos achats !",
+    "name": "Pack du Roi pâle"
+  },
+  "artifact_bundle": {
+    "activationMessage": "Les éléments du pack Artefacts sombres ont été ajoutés à vos achats !",
+    "name": "Pack Artefacts sombres"
+  },
+  "ashen_throne_bundle": {
+    "activationMessage": "Les éléments du pack Trône cendré ont été ajoutés à vos achats !",
+    "name": "Pack Trône cendré"
+  },
+  "basic_survival_bundle": {
+    "activationMessage": "Les éléments du pack Vagabond déclinant ont été ajoutés à vos achats !",
+    "name": "Pack Vagabond déclinant"
+  },
+  "crow_harness": {
+    "activationMessage": "Le harnais de corbeau a été ajouté à vos outils ! Trouvez maintenant un corbeau à y lier.",
+    "description": "Harnais conçu pour les corbeaux messagers. Débloque l'histoire du corbeau. Ajoute un compagnon.",
+    "name": "Harnais de corbeau"
+  },
+  "cruel_mode": {
+    "activationMessage": "Mode cruel activé ! Commencez une nouvelle partie pour affronter le défi ultime.",
+    "description": "Un monde plus cruel, une histoire étendue, plus d'objets et des ennemis plus mortels. Endurez, ou disparaissez.",
+    "name": "Mode cruel"
+  },
+  "full_game": {
+    "activationMessage": "Jeu complet débloqué et activé ! Le voyage continue sans restrictions.",
+    "description": "Débloquez le jeu complet et poursuivez votre voyage.",
+    "name": "Jeu complet"
+  },
+  "gold_1000": {
+    "activationMessage": "1000 or ont été ajoutés à votre inventaire.",
+    "description": "Une quantité correcte d'or",
+    "name": "1'000 or"
+  },
+  "gold_100_free": {
+    "activationMessage": "100 or ont été ajoutés à votre inventaire en cadeau !",
+    "description": "Une petite faveur quotidienne dans un monde froid",
+    "name": "Cadeau de 100 or"
+  },
+  "gold_20000": {
+    "activationMessage": "20'000 or ont été ajoutés à votre inventaire.",
+    "description": "Une quantité impie d'or",
+    "name": "20'000 or"
+  },
+  "gold_250": {
+    "activationMessage": "1000 or ont été ajoutés à votre inventaire.",
+    "description": "Une quantité correcte d'or",
+    "name": "250 or"
+  },
+  "gold_2500": {
+    "activationMessage": "2500 or ont été ajoutés à votre inventaire.",
+    "description": "Un trésor conséquent",
+    "name": "2'500 or"
+  },
+  "gold_5000": {
+    "activationMessage": "5000 or ont été ajoutés à votre inventaire.",
+    "description": "Une fortune en or",
+    "name": "5'000 or"
+  },
+  "great_feast_1": {
+    "activationMessage": "Un grand festin a commencé !",
+    "name": "1 grand festin"
+  },
+  "great_feast_3": {
+    "activationMessage": "Un grand festin a commencé !",
+    "name": "3 grands festins"
+  },
+  "skull_lantern": {
+    "activationMessage": "La lanterne-crâne a été ajoutée à vos outils ! Sa lueur sinistre vous guidera dans les profondeurs.",
+    "description": "Forgée dans un os maudit, elle éclaire les profondeurs les plus sombres. Débloque l'histoire de la lanterne-crâne.",
+    "name": "Lanterne-crâne"
+  },
+  "tarnished_compass": {
+    "activationMessage": "La boussole ternie a été ajoutée à votre inventaire ! Sa magie ancienne peut favoriser vos efforts.",
+    "description": "Artefact de la civilisation disparue, son aiguille pointe vers des lieux cachés. Débloque l'histoire de la boussole.",
+    "name": "Boussole ternie"
+  }
+}

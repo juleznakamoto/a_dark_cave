@@ -9,12 +9,14 @@ import {
   GAME_FOOTER_RIGHT_ICON_LINKS,
   GAME_FOOTER_RIGHT_ICON_ORDER,
 } from "@/lib/gameFooterSocialLinks";
+import { useTranslation } from "react-i18next";
 export default function StartScreen() {
   const { executeAction, setBoostMode, boostMode, cruelMode } = useGameStore();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const executedRef = useRef(false);
   const isCruelMode = cruelMode;
   const [showParticles, setShowParticles] = useState(false);
+  const { t } = useTranslation("ui");
 
   useEffect(() => {
     const isBoostPath = window.location.pathname.includes("/boost");
@@ -121,7 +123,7 @@ export default function StartScreen() {
       {/* Featured By Section */}
       <div className="absolute bottom-8 left-4 z-20 animate-fade-in-featured">
         <div className="bg-white/25 backdrop-blur-sm rounded-lg p-2 !pb-1 border border-white/25 flex flex-col items-start">
-          <p className="text-xs text-gray-300/80 font-medium">Recommended by</p>
+          <p className="text-xs text-gray-300/80 font-medium">{t("startScreen.recommendedBy")}</p>
           <img
             src="/the_hustle_logo.svg"
             alt="The Hustle"
@@ -190,16 +192,16 @@ export default function StartScreen() {
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center min-h-screen">
         <div className="text-center mb-4">
           <h1 className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed font-normal">
-            {isCruelMode ? "A very dark cave." : "A dark cave."}
+            {isCruelMode ? t("startScreen.titleCruel") : t("startScreen.titleNormal")}
           </h1>
           <p className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed">
             {isCruelMode
-              ? "The air is freezing and damp."
-              : "The air is cold and damp."}
+              ? t("startScreen.airCruel")
+              : t("startScreen.airNormal")}
             <br />
             {isCruelMode
-              ? "You barely see anything around you."
-              : "You barely see the shapes around you."}
+              ? t("startScreen.seeCruel")
+              : t("startScreen.seeNormal")}
           </p>
         </div>
 
@@ -212,7 +214,7 @@ export default function StartScreen() {
             data-testid="button-light-fire"
             button_id="light-fire"
           >
-            Make Fire
+            {t("startScreen.makeFire")}
           </ParticleButton>
         </div>
       </main>
@@ -221,7 +223,7 @@ export default function StartScreen() {
         <TooltipWrapper
           tooltip={
             <div className="text-xs whitespace-nowrap">
-              Click to deactivate boost
+              {t("startScreen.boostDeactivate")}
             </div>
           }
           tooltipId="boost-indicator"

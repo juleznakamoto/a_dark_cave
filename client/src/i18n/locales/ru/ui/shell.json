@@ -1,0 +1,71 @@
+{
+  "languageSelector": {
+    "label": "Язык",
+    "ariaLabel": "Выбрать язык"
+  },
+  "startScreen": {
+    "titleNormal": "Темная пещера.",
+    "titleCruel": "Очень темная пещера.",
+    "airNormal": "Воздух холодный и сырой.",
+    "airCruel": "Воздух ледяной и сырой.",
+    "seeNormal": "Вы едва различаете очертания вокруг.",
+    "seeCruel": "Вы почти ничего не видите вокруг.",
+    "makeFire": "Развести огонь",
+    "boostDeactivate": "Нажмите, чтобы отключить усиление",
+    "recommendedBy": "Рекомендует"
+  },
+  "footer": {
+    "fullGame": "Полная версия",
+    "trader": "Торговец",
+    "donate": "Пожертвовать",
+    "privacy": "Конфиденциальность",
+    "imprint": "Правовая информация",
+    "muteMusic": "Выключить музыку",
+    "unmuteMusic": "Включить музыку",
+    "muteSfx": "Выключить звуки",
+    "unmuteSfx": "Включить звуки",
+    "cruelModeActive": "Жестокий режим включен"
+  },
+  "profile": {
+    "title": "Профиль",
+    "signInUp": "Вход / регистрация",
+    "emailsOn": "Письма вкл.",
+    "emailsOff": "Письма выкл.",
+    "marketingOnTooltip": "Вы получаете письма с обновлениями, скидками и наградами. Нажмите, чтобы отключить.",
+    "marketingOffTooltip": "Вы не получаете письма с обновлениями. Нажмите, чтобы включить.",
+    "rewardsTasks": "Задачи с наградами",
+    "save": "Сохранить",
+    "newGame": "Новая игра",
+    "restart": "Начать заново",
+    "signIn": "Войти",
+    "signOut": "Выйти",
+    "leaderboard": "Таблица лидеров",
+    "rewards": "Награды",
+    "deleteAccount": "Удалить аккаунт",
+    "marketingSubscribe": "Подписаться на рассылку",
+    "marketingUnsubscribe": "Отписаться от рассылки",
+    "autoSaveSignedIn": "Игра автосохраняется каждую минуту",
+    "autoSaveGuest": "Игра автосохраняется каждые 15 секунд",
+    "signUpCloudSave": "Зарегистрируйтесь, чтобы сохранять игру в облаке",
+    "lastSave": "Последнее сохранение: {{time}}",
+    "signedOut": "Вы успешно вышли",
+    "signOutError": "Ошибка выхода",
+    "gameSaved": "Игра сохранена",
+    "saveFailed": "Не удалось сохранить игру",
+    "accountDeleted": "Ваш аккаунт удален",
+    "accountDeletedDesc": "Вы вышли из аккаунта, а локальное сохранение на этом устройстве очищено.",
+    "deleteAccountFailed": "Не удалось удалить аккаунт",
+    "tryAgainLater": "Попробуйте позже.",
+    "notSignedIn": "Вы не вошли",
+    "subscribed": "Вы подписаны",
+    "unsubscribed": "Вы отписались",
+    "subscribedDesc": "Мы будем иногда присылать обновления и предложения на вашу почту.",
+    "unsubscribedDesc": "Вы не будете получать от нас рекламные письма.",
+    "preferenceUpdateFailed": "Не удалось обновить настройку"
+  },
+  "pauseHotkey": {
+    "hintPrefix": "Нажмите ",
+    "hintSuffix": " для паузы"
+  },
+  "never": "Никогда"
+}

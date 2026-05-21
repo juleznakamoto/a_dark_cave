@@ -4,6 +4,7 @@ import { saveGame } from "@/game/save";
 import { buildGameState } from "@/game/stateHelpers";
 import { useGameStore } from "@/game/state";
 import type { LogEntry } from "@/game/rules/events";
+import { tWithFallback } from "@/i18n/resolveGameText";
 
 /** Persisted key under `social_media_rewards` (see profile menu). */
 export const MARKETING_EMAIL_REWARD_KEY = "marketing_email";
@@ -74,7 +75,12 @@ export function applyMarketingSubscribeGoldReward(): void {
 
   const rewardLog: LogEntry = {
     id: `marketing-email-reward-${Date.now()}`,
-    message: `You received ${MARKETING_SUBSCRIBE_GOLD} Gold for subscribing to email updates!`,
+    message: tWithFallback(
+      "ui",
+      "socialPrompt.marketingSubscribeLog",
+      `You received ${MARKETING_SUBSCRIBE_GOLD} Gold for subscribing to email updates!`,
+      { amount: MARKETING_SUBSCRIBE_GOLD },
+    ),
     timestamp: Date.now(),
     type: "system",
   };

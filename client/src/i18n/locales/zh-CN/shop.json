@@ -1,0 +1,81 @@
+{
+  "advanced_bundle": {
+    "activationMessage": "苍白之王礼包的内容已加入你的购买项目！",
+    "name": "苍白之王礼包"
+  },
+  "artifact_bundle": {
+    "activationMessage": "黑暗神器礼包的内容已加入你的购买项目！",
+    "name": "黑暗神器礼包"
+  },
+  "ashen_throne_bundle": {
+    "activationMessage": "灰烬王座礼包的内容已加入你的购买项目！",
+    "name": "灰烬王座礼包"
+  },
+  "basic_survival_bundle": {
+    "activationMessage": "消逝旅人礼包的内容已加入你的购买项目！",
+    "name": "消逝旅人礼包"
+  },
+  "crow_harness": {
+    "activationMessage": "乌鸦挽具已加入你的工具！现在你必须找到一只乌鸦，将它束入挽具。",
+    "description": "为信鸦特制的挽具。解锁乌鸦剧情线。增加同伴成员。",
+    "name": "乌鸦挽具"
+  },
+  "cruel_mode": {
+    "activationMessage": "残酷模式已启用！开始新游戏，迎接终极挑战。",
+    "description": "更残酷的世界，扩展的故事，更多物品，更致命的敌人。忍受下去，或彻底消失。",
+    "name": "残酷模式"
+  },
+  "full_game": {
+    "activationMessage": "完整版已解锁并启用！旅程将不再受限。",
+    "description": "解锁完整版，继续你的旅程。",
+    "name": "完整版"
+  },
+  "gold_1000": {
+    "activationMessage": "1000 黄金已加入你的库存。",
+    "description": "一笔可观的黄金",
+    "name": "1'000 黄金"
+  },
+  "gold_100_free": {
+    "activationMessage": "100 黄金已作为礼物加入你的库存！",
+    "description": "寒冷世界里每日的一点怜悯",
+    "name": "100 黄金赠礼"
+  },
+  "gold_20000": {
+    "activationMessage": "20'000 黄金已加入你的库存。",
+    "description": "近乎亵渎的巨量黄金",
+    "name": "20'000 黄金"
+  },
+  "gold_250": {
+    "activationMessage": "1000 黄金已加入你的库存。",
+    "description": "一笔可观的黄金",
+    "name": "1'000 黄金"
+  },
+  "gold_2500": {
+    "activationMessage": "2500 黄金已加入你的库存。",
+    "description": "一份丰厚的宝藏",
+    "name": "2'500 黄金"
+  },
+  "gold_5000": {
+    "activationMessage": "5000 黄金已加入你的库存。",
+    "description": "一大笔黄金财富",
+    "name": "5'000 黄金"
+  },
+  "great_feast_1": {
+    "activationMessage": "盛宴已经开始！",
+    "name": "1 场盛宴"
+  },
+  "great_feast_3": {
+    "activationMessage": "盛宴已经开始！",
+    "name": "3 场盛宴"
+  },
+  "skull_lantern": {
+    "activationMessage": "骷髅灯笼已加入你的工具！它阴森的光会指引你穿过深处。",
+    "description": "由受诅咒的骨头锻成，照亮最深的黑暗。解锁骷髅灯笼剧情线。",
+    "name": "骷髅灯笼"
+  },
+  "tarnished_compass": {
+    "activationMessage": "晦暗罗盘已加入你的库存！它古老的魔力或许会为你的行动带来好运。",
+    "description": "消逝文明的遗物，指针指向隐秘之地。解锁罗盘剧情线。",
+    "name": "晦暗罗盘"
+  }
+}

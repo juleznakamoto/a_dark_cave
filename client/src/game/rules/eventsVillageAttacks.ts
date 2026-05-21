@@ -5,6 +5,89 @@ import { getTotalStrength, getTotalLuck } from "./effectsCalculation";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 import { getCurrentPopulation, getVillagersInVillage } from "../population";
 
+function deathsKey(
+  count: number,
+  none: string,
+  one: string,
+  many: string,
+): string {
+  return count === 0 ? none : count === 1 ? one : many;
+}
+
+function boneArmyDefendLogKey(
+  deaths: number,
+  steelLoss: number,
+  hutDestroyed: boolean,
+): string {
+  const parts = [
+    "defend",
+    deathsKey(deaths, "noDeaths", "oneDeath", "manyDeaths"),
+  ];
+  if (steelLoss > 0) parts.push("steel");
+  if (hutDestroyed) parts.push("hut");
+  return parts.join("_");
+}
+
+function boneArmyHideLogKey(
+  deaths: number,
+  steelLoss: number,
+  ironLoss: number,
+): string {
+  const parts = [
+    "hide",
+    deathsKey(deaths, "noDeaths", "oneDeath", "manyDeaths"),
+  ];
+  if (steelLoss > 0 || ironLoss > 0) parts.push("loot");
+  return parts.join("_");
+}
+
+function wolfDefendLogKey(
+  deaths: number,
+  foodLoss: number,
+  hutDestroyed: boolean,
+  firstAttack: boolean,
+): string {
+  const parts = [
+    "defend",
+    deathsKey(deaths, "noDeaths", "oneDeath", "manyDeaths"),
+  ];
+  if (foodLoss > 0) parts.push("food");
+  if (hutDestroyed) parts.push("hut");
+  if (firstAttack) parts.push("first");
+  return parts.join("_");
+}
+
+function wolfHideLogKey(deaths: number, foodLoss: number): string {
+  const parts = [
+    "hide",
+    deathsKey(deaths, "noDeaths", "oneDeath", "manyDeaths"),
+  ];
+  if (foodLoss > 0) parts.push("food");
+  return parts.join("_");
+}
+
+function cannibalDefeatLogKey(deaths: number, hasLoot: boolean): string {
+  const parts = [
+    "defeat",
+    deathsKey(deaths, "noDeaths", "oneDeath", "manyDeaths"),
+  ];
+  if (hasLoot) parts.push("loot");
+  return parts.join("_");
+}
+
+function cannibalHideLogKey(
+  lost: number,
+  silverLoss: number,
+  foodLoss: number,
+): string {
+  const parts = [
+    "hide",
+    deathsKey(lost, "noDeaths", "oneDeath", "manyDeaths"),
+  ];
+  if (silverLoss > 0 || foodLoss > 0) parts.push("loot");
+  return parts.join("_");
+}
+
 export const villageAttackEvents: Record<string, GameEvent> = {
   boneArmyAttack: {
     id: "boneArmyAttack",
@@ -14,15 +97,12 @@ export const villageAttackEvents: Record<string, GameEvent> = {
       !state.relics.bone_devourer_blood &&
       getCurrentPopulation(state) > 10,
     timeProbability: 15,
-    title: "The Bone Army",
-    message:
-      "The earth trembles as skeletal creatures emerge from the forest. The Bone Devourer has used the bones you traded to forge an unholy legion. With hollow eyes and sharpened bone weapons, they approach the city.",
+
     priority: 4,
     repeatable: true,
     choices: [
       {
         id: "defendAgainstBoneArmy",
-        label: "Defend village",
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
           const traps = state.buildings.traps;
@@ -59,8 +139,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                 bones: state.resources.bones + 5000,
                 silver: state.resources.silver + 500,
               },
-              _logMessage:
-                "The villagers defeat the bone army! Bone and silence litter the battlefield. You tear the Devourer’s Crown from its remains and drain a vial of its pale, viscous blood.",
+              _logMessageKey: "outcome0",
             };
           }
 
@@ -104,27 +183,6 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           const deathResult = killVillagers(state, villagerDeaths);
           const actualDeaths = deathResult.villagersKilled || 0;
 
-          // Construct result message
-          let message =
-            "The villagers fight desperately against the bone army. ";
-
-          if (actualDeaths === 0) {
-            message += "The villagers survive the onslaught.";
-          } else if (actualDeaths === 1) {
-            message += "One villager falls to the skeletal warriors.";
-          } else {
-            message += "Several villagers fall to the skeletal warriors.";
-          }
-
-          if (steelLoss > 0) {
-            message += " The bone army ransacks the stores before leaving.";
-          }
-
-          if (hutDestroyed) {
-            message +=
-              " The skeletal creatures tear apart one of the huts, reducing it to rubble.";
-          }
-
           return {
             ...deathResult,
             resources: {
@@ -137,13 +195,16 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                 woodenHut: Math.max(0, state.buildings.woodenHut - 1),
               }
               : state.buildings,
-            _logMessage: message,
+            _logMessageKey: boneArmyDefendLogKey(
+              actualDeaths,
+              steelLoss,
+              hutDestroyed,
+            ),
           };
         },
       },
       {
         id: "hideFromBoneArmy",
-        label: "Hide",
         relevant_stats: ["luck"],
         success_chance: (state: GameState) => {
           const traps = state.buildings.traps;
@@ -168,8 +229,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           if (Math.random() < success_chance) {
             // Success - bone army passes without finding anyone
             return {
-              _logMessage:
-                "The villagers hide in terror as the bone army searches the village. The skeletal creatures eventually march away, their purpose unfulfilled.",
+              _logMessageKey: "outcome1",
             };
           } else {
             const luck = getTotalLuck(state);
@@ -211,23 +271,6 @@ export const villageAttackEvents: Record<string, GameEvent> = {
 
           const actualDeaths = deathResult.villagersKilled || 0;
 
-          // Construct result message
-          let message =
-            "The villagers hide in terror as the bone army searches the village. ";
-
-          if (actualDeaths === 0) {
-            message +=
-              "By morning, the skeletal army has departed, leaving only bone fragments behind.";
-          } else if (actualDeaths === 1) {
-            message += "One villager who tried to flee is killed.";
-          } else {
-            message += "The villagers who tried to flee are killed by the bone creatures.";
-          }
-
-          if (steelLoss > 0 || ironLoss > 0) {
-            message += " The army ransacks your supplies before disappearing into the dark.";
-          }
-
           return {
             ...deathResult,
             resources: {
@@ -235,7 +278,11 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               steel: Math.max(0, state.resources.steel - steelLoss),
               iron: Math.max(0, state.resources.iron - ironLoss),
             },
-            _logMessage: message,
+            _logMessageKey: boneArmyHideLogKey(
+              actualDeaths,
+              steelLoss,
+              ironLoss,
+            ),
           };
         },
       },
@@ -249,15 +296,12 @@ export const villageAttackEvents: Record<string, GameEvent> = {
       !state.clothing.alphas_hide &&
       getCurrentPopulation(state) > 10,
     timeProbability: 40,
-    title: "Wolf Attack",
-    message:
-      "Close to midnight, wolves emerge from the darkness, their eyes glowing with unnatural hunger. Their howls echo filled with malice as they circle the village.",
+
     priority: 4,
     repeatable: true,
     choices: [
       {
         id: "defendVillage",
-        label: "Defend village",
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
           const traps = state.buildings.traps;
@@ -299,8 +343,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                 fur: state.resources.fur + 500,
                 silver: state.resources.silver + 250,
               },
-              _logMessage:
-                "The villagers defeat the wolf pack! You slay the alpha wolf and claim its hide as a trophy. It radiates with primal power.",
+              _logMessageKey: "outcome0",
             };
           }
 
@@ -348,30 +391,6 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           const deathResult = killVillagers(state, villagerDeaths);
           const actualDeaths = deathResult.villagersKilled || 0;
 
-          // Construct result message
-          let message = "The villagers fight desperately against the wolves. ";
-
-          if (actualDeaths === 0) {
-            message += "The villagers survive the attack.";
-          } else if (actualDeaths === 1) {
-            message += "One villager falls to the wolves' supernatural fury.";
-          } else {
-            message += "THe villagers fall to the wolves' supernatural fury.";
-          }
-
-          if (foodLoss > 0) {
-            message += " In the chaos, the wolves ravage your stores.";
-          }
-
-          if (hutDestroyed) {
-            message +=
-              " In their rampage, the wolves destroy one of the huts, leaving only splintered wood.";
-          }
-
-          if (!state.story.seen.firstWolfAttack)
-            message +=
-              " Villagers suggest to lay traps around the village to protect better from wolfs and other foes.";
-
           return {
             ...deathResult,
             resources: {
@@ -391,13 +410,17 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                 firstWolfAttack: true,
               },
             },
-            _logMessage: message,
+            _logMessageKey: wolfDefendLogKey(
+              actualDeaths,
+              foodLoss,
+              hutDestroyed,
+              !state.story.seen.firstWolfAttack,
+            ),
           };
         },
       },
       {
         id: "hideAndWait",
-        label: "Hide",
         relevant_stats: ["luck"],
         success_chance: (state: GameState) => {
           const traps = state.buildings.traps * 0.1;
@@ -428,8 +451,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                   firstWolfAttack: true,
                 },
               },
-              _logMessage:
-                "The villagers huddle in their huts as the wolves prowl outside. By dawn, the wolves have departed without finding anyone, leaving only scratches and terror behind.",
+              _logMessageKey: "outcome1",
             };
           } else {
             const luck = getTotalLuck(state);
@@ -467,25 +489,6 @@ export const villageAttackEvents: Record<string, GameEvent> = {
 
           const actualDeaths = deathResult.villagersKilled || 0;
 
-          // Construct result message
-          let message =
-            "The villagers huddle in their huts as the wolves prowl outside. ";
-
-          if (actualDeaths === 0) {
-            message +=
-              "By dawn, the wolves have departed, leaving only scratches and terror behind.";
-          } else if (actualDeaths === 1) {
-            message +=
-              "One villager who ventured out is found torn apart at sunrise.";
-          } else {
-            message +=
-              "Several villagers are dragged from their huts, their screams echoing through the night.";
-          }
-
-          if (foodLoss > 0) {
-            message += " The wolves ransack your supplies before vanishing at dawn.";
-          }
-
           return {
             ...deathResult,
             resources: {
@@ -499,7 +502,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                 firstWolfAttack: true,
               },
             },
-            _logMessage: message,
+            _logMessageKey: wolfHideLogKey(actualDeaths, foodLoss),
           };
         },
       },
@@ -514,15 +517,12 @@ export const villageAttackEvents: Record<string, GameEvent> = {
       !state.story.seen.cannibalRaidVictory,
 
     timeProbability: 40,
-    title: "Cannibal Raid",
-    message:
-      "War drums echo through the night as tribe of cannibals emerges from the wilderness. They advance on the village with crude weapons and terrible intent.",
+
     priority: 4,
     repeatable: true,
     choices: [
       {
         id: "fightCannibals",
-        label: "Defend village",
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
           const traps = state.buildings.traps;
@@ -569,10 +569,8 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                   cannibalRaidVictory: true,
                 },
               },
-              _logMessage:
-                actualDeaths === 1
-                  ? "The villagers drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat. Among the bodies, you find a primitive necklace made of human bones."
-                  : "The villagers fight valiantly and repel the cannibals! Multiple illagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones.",
+              _logMessageKey:
+                actualDeaths === 1 ? "victory_one" : "victory_many",
             };
           }
 
@@ -620,21 +618,6 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           const deathResult = killVillagers(state, totalLost);
           const actualLost = deathResult.villagersKilled || 0;
 
-          // Construct result message
-          let message = "The cannibals overwhelm your defenses. ";
-
-          if (actualLost === 0) {
-            message += "The villagers manage to survive, though barely.";
-          } else if (actualLost === 1) {
-            message += "One villager is abducted by the cannibals.";
-          } else {
-            message += "Several villagers are killed or abducted by the cannibals.";
-          }
-
-          if (silverLoss > 0 || foodLoss > 0) {
-            message += " The cannibals ransack your stores before retreating to the wilds.";
-          }
-
           return {
             ...deathResult,
             resources: {
@@ -642,13 +625,15 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               silver: Math.max(0, state.resources.silver - silverLoss),
               food: Math.max(0, state.resources.food - foodLoss),
             },
-            _logMessage: message,
+            _logMessageKey: cannibalDefeatLogKey(
+              actualLost,
+              silverLoss > 0 || foodLoss > 0,
+            ),
           };
         },
       },
       {
         id: "hideFromCannibals",
-        label: "Hide",
         relevant_stats: ["luck"],
         success_chance: (state: GameState) => {
           const traps = state.buildings.traps;
@@ -673,8 +658,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           if (Math.random() < success_chance) {
             // Success - cannibals leave without causing major damage
             return {
-              _logMessage:
-                "The villagers hide in terror as the cannibals search the village. By dawn, the cannibals have left without finding anyone.",
+              _logMessageKey: "outcome0",
             };
           } else {
             const luck = getTotalLuck(state);
@@ -718,23 +702,6 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             deathResult = killVillagers(state, totalLost);
           }
 
-          // Construct result message
-          let message =
-            "The villagers hide in terror as the cannibals search the village. ";
-
-          if (totalLost === 0) {
-            message +=
-              "By dawn, the cannibals have left without finding anyone.";
-          } else if (totalLost === 1) {
-            message += "One villager gets abducted.";
-          } else {
-            message += "Several villagers are killed or abducted.";
-          }
-
-          if (silverLoss > 0 || foodLoss > 0) {
-            message += " The cannibals plunder your stores freely before slipping away.";
-          }
-
           return {
             ...deathResult,
             resources: {
@@ -742,7 +709,11 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               silver: Math.max(0, state.resources.silver - silverLoss),
               food: Math.max(0, state.resources.food - foodLoss),
             },
-            _logMessage: message,
+            _logMessageKey: cannibalHideLogKey(
+              totalLost,
+              silverLoss,
+              foodLoss,
+            ),
           };
         },
       },

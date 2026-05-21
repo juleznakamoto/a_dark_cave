@@ -86,12 +86,21 @@ import { disgracedPriorEvents } from "./eventsDisgracedPrior";
 import { socialPromoExclusiveEvents } from "./eventsSocialPromoExclusive";
 import { gamblerEvents } from "./eventsGambler";
 import { GAME_CONSTANTS } from "../constants";
+import {
+  getEventCatalogId,
+  localizeEventChoices,
+  localizeFallbackChoice,
+  resolveEventMessage,
+  resolveEventTitle,
+} from "@/i18n/eventText";
 
 export interface GameEvent {
   id: string;
   condition: (state: GameState) => boolean;
+  /** @deprecated Display text lives in i18n events catalog; optional for legacy/dynamic variants */
   title?: string | ((state: GameState) => string);
-  message: string | string[] | ((state: GameState) => string); // Support array of messages for random selection or function
+  /** Static string, variant key fn, or legacy string array — resolved via i18n */
+  message?: string | string[] | ((state: GameState) => string);
   choices?: EventChoice[] | ((state: GameState) => EventChoice[]);
   triggered?: boolean;
   repeatable?: boolean;
@@ -108,11 +117,26 @@ export interface GameEvent {
   showAsTimedTab?: boolean;
   timedTabDuration?: number; // Duration in milliseconds
   skipEventLog?: boolean; // Skip adding to visible event log
+  /** Shared i18n catalog id (e.g. feast1 → feast) */
+  i18nKey?: string;
+  /** Interpolation vars for catalog strings (e.g. foodCost); may depend on state */
+  i18nVars?:
+    | Record<string, string | number>
+    | ((state: GameState) => Record<string, string | number>);
 }
+
+/** Runtime fields returned from choice effects (stripped before state merge). */
+export type EventChoiceEffectResult = Partial<GameState> & {
+  _logMessage?: string;
+  _logMessageKey?: string;
+  _logMessageVars?: Record<string, string | number>;
+  _combatData?: unknown;
+};
 
 export interface EventChoice {
   id: string;
-  label: string | ((state: GameState) => string);
+  /** @deprecated Display text lives in i18n events catalog */
+  label?: string | ((state: GameState) => string);
   relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[];
   success_chance?: number | ((state: GameState) => number); // Success probability for this choice
   cost?: string | ((state: GameState) => string); // Optional cost information for hover display
@@ -138,7 +162,6 @@ export interface LogEntry {
   timedTabDuration?: number; // Duration in milliseconds
 }
 
-// Merge all events from separate files
 export const gameEvents: Record<string, GameEvent> = {
   ...storyEvents,
   ...choiceEvents,
@@ -169,6 +192,23 @@ export const gameEvents: Record<string, GameEvent> = {
   ...socialPromoExclusiveEvents,
   ...gamblerEvents,
 };
+
+export function getEventCatalogIdByEventId(eventId: string): string {
+  const event = gameEvents[eventId];
+  return event ? getEventCatalogId(event) : eventId;
+}
+
+export function getEventI18nVars(
+  eventId: string,
+  state?: GameState,
+): Record<string, string | number> | undefined {
+  const vars = gameEvents[eventId]?.i18nVars;
+  if (!vars) return undefined;
+  if (typeof vars === "function") {
+    return state ? vars(state) : undefined;
+  }
+  return vars;
+}
 
 export class EventManager {
   // Assuming `allEvents` is intended to be `gameEvents` based on context
@@ -254,28 +294,49 @@ export class EventManager {
           eventChoices = generateMerchantChoices(state);
         }
 
-        // Pre-evaluate dynamic properties of choices for persistence
+        // Select random message if message is an array, or evaluate if it's a function
+        const catalogId = getEventCatalogId(event);
+        const i18nVars =
+          typeof event.i18nVars === "function"
+            ? event.i18nVars(state)
+            : event.i18nVars;
+        let message = resolveEventMessage(
+          catalogId,
+          event.message,
+          state,
+          i18nVars,
+        );
+
+        const title = resolveEventTitle(
+          catalogId,
+          event.title,
+          state,
+          i18nVars,
+        );
+
+        // Localize choice labels, then pre-evaluate other dynamic choice fields
         if (Array.isArray(eventChoices)) {
-          eventChoices = eventChoices.map(c => ({
+          eventChoices = localizeEventChoices(
+            catalogId,
+            eventChoices,
+            state,
+            i18nVars,
+          )!;
+          eventChoices = eventChoices.map((c) => ({
             ...c,
-            label: typeof c.label === 'function' ? c.label(state) : c.label,
-            cost: typeof c.cost === 'function' ? c.cost(state) : c.cost,
-            success_chance: typeof c.success_chance === 'function' ? c.success_chance(state) : c.success_chance,
+            cost: typeof c.cost === "function" ? c.cost(state) : c.cost,
+            success_chance:
+              typeof c.success_chance === "function"
+                ? c.success_chance(state)
+                : c.success_chance,
           }));
         }
 
-        // Select random message if message is an array, or evaluate if it's a function
-        let message: string;
-        if (typeof event.message === 'function') {
-          message = event.message(state);
-        } else if (Array.isArray(event.message)) {
-          message = event.message[Math.floor(Math.random() * event.message.length)];
-        } else {
-          message = event.message;
-        }
-
-        // Resolve title if it's a function
-        const title = typeof event.title === 'function' ? event.title(state) : event.title;
+        const localizedFallback = localizeFallbackChoice(
+          catalogId,
+          event.fallbackChoice,
+          i18nVars,
+        );
 
         // Only create and add log entry if it's NOT a timed tab event
         if (!event.showAsTimedTab) {
@@ -288,7 +349,7 @@ export class EventManager {
             choices: eventChoices,
             isTimedChoice: event.isTimedChoice,
             baseDecisionTime: event.baseDecisionTime,
-            fallbackChoice: event.fallbackChoice,
+            fallbackChoice: localizedFallback,
             relevant_stats: event.relevant_stats,
             showAsTimedTab: event.showAsTimedTab,
             timedTabDuration: event.timedTabDuration,
@@ -304,7 +365,7 @@ export class EventManager {
             message: message,
             title,
             choices: eventChoices,
-            fallbackChoice: event.fallbackChoice,
+            fallbackChoice: localizedFallback,
             timedTabDuration: event.timedTabDuration,
             _playSound: true, // Signal to play sound
           };

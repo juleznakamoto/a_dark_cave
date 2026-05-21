@@ -19,6 +19,7 @@ import { SHOP_ITEMS } from "../../../../shared/shopItems";
 import { logger } from "@/lib/logger";
 import { useGameStore } from "@/game/state";
 import { getStripeReturnUrlForConfirm } from "@/lib/stripePaymentReturn";
+import { useTranslation } from "react-i18next";
 
 const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
@@ -90,6 +91,7 @@ function CheckoutForm({
   onCancel,
   chargeAmountCents,
 }: CheckoutFormProps) {
+  const { t } = useTranslation(["ui", "common"]);
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -121,12 +123,12 @@ function CheckoutForm({
       });
 
       if (error) {
-        setErrorMessage(error.message || "Payment failed");
+        setErrorMessage(error.message || t("ui:fullGame.paymentFailed"));
         setIsProcessing(false);
       } else if (paymentIntent && paymentIntent.status === "succeeded") {
         const user = await getCurrentUser();
         if (!user) {
-          setErrorMessage("User not authenticated");
+          setErrorMessage(t("ui:fullGame.notAuthenticated"));
           setIsProcessing(false);
           return;
         }
@@ -163,7 +165,7 @@ function CheckoutForm({
       // but here we catch actual exceptions.
       if (e.message?.indexOf("mounted") === -1) {
         setIsProcessing(false);
-        setErrorMessage(e.message || "An unexpected error occurred");
+        setErrorMessage(e.message || t("ui:fullGame.unexpectedError"));
       }
     }
   };
@@ -173,7 +175,7 @@ function CheckoutForm({
       <PaymentElement />
 
       <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
-        <span>Powered by</span>
+        <span>{t("ui:fullGame.poweredBy")}</span>
         <svg
           className="h-4"
           viewBox="0 0 60 25"
@@ -189,13 +191,13 @@ function CheckoutForm({
 
       <div className="space-y-2 border-t pt-4 mt-4">
         <p className="text-[11px] text-muted-foreground">
-          By purchasing, you consent to immediate delivery of digital content and waive your right of withdrawal. For more information, see our{" "}
+          {t("ui:fullGame.legalConsent")}{" "}
           <a
             href="/terms"
             target="_blank"
             className="underline hover:text-foreground"
           >
-            Terms of Service
+            {t("ui:fullGame.termsOfService")}
           </a>{" "}
           and{" "}
           <a
@@ -203,7 +205,7 @@ function CheckoutForm({
             target="_blank"
             className="underline hover:text-foreground"
           >
-            Right of Withdrawal
+            {t("ui:fullGame.rightOfWithdrawal")}
           </a>
           .
         </p>
@@ -221,8 +223,10 @@ function CheckoutForm({
           button_id="full-game-complete-purchase"
         >
           {isProcessing
-            ? "Processing..."
-            : `Complete Purchase for ${chargeAmountCents ? formatPrice(chargeAmountCents) : ""}`}
+            ? t("common:status.processing")
+            : t("ui:fullGame.completePurchaseFor", {
+                price: chargeAmountCents ? formatPrice(chargeAmountCents) : "",
+              })}
         </Button>
         <Button
           variant="outline"
@@ -232,7 +236,7 @@ function CheckoutForm({
           type="button"
           disabled={isProcessing}
         >
-          Back
+          {t("common:buttons.back")}
         </Button>
       </div>
     </form>
@@ -250,6 +254,7 @@ export default function FullGamePurchaseDialog({
   onClose,
   openedFromFooter = false,
 }: FullGamePurchaseDialogProps) {
+  const { t } = useTranslation(["ui", "common"]);
   const gameState = useGameStore();
   // Only require purchase if NOT opened from footer (i.e., opened due to BTP mode)
   const requiresPurchase = !openedFromFooter;
@@ -385,9 +390,8 @@ export default function FullGamePurchaseDialog({
     });
 
     toast({
-      title: "Purchase Successful!",
-      description:
-        "Full Game unlocked and activated! You can now continue your journey without restrictions.",
+      title: t("ui:fullGame.purchaseSuccessful"),
+      description: t("ui:fullGame.purchaseSuccessfulDesc"),
     });
 
     setClientSecret(null);
@@ -420,12 +424,13 @@ export default function FullGamePurchaseDialog({
       >
         <DialogHeader className="px-6 pt-6">
           <DialogTitle>
-            {!clientSecret ? "The Journey Continues" : "Complete Your Purchase"}
+            {!clientSecret
+              ? t("ui:fullGame.titleTrial")
+              : t("ui:fullGame.titleCheckout")}
           </DialogTitle>
           {!clientSecret && (
             <DialogDescription className="text-sm text-gray-400 mt-2">
-              You have reached the end of the trial. The full journey awaits
-              beyond this point.
+              {t("ui:fullGame.trialDesc")}
             </DialogDescription>
           )}
         </DialogHeader>
@@ -449,18 +454,16 @@ export default function FullGamePurchaseDialog({
                         {formatPrice(fullGameChargeCents)}
                       </div>
                       <p className="text-xs text-muted-foreground mt-1">
-                        One time purchase. No subscriptions. No microtransactions.
+                        {t("ui:fullGame.oneTimePurchase")}
                       </p>
                     </div>
                     <div className="text-sm text-muted-foreground border-t border-border pt-4">
                       <ul className="space-y-1">
-                        <li>• 14+ hours of gameplay</li>
-                        <li>• 100+ structures</li>
-                        <li>
-                          • 250+ items, fellowship members, books, blessings...
-                        </li>
-                        <li>• 50+ achievements</li>
-                        <li>• Dark and challenging story based on your choices</li>
+                        <li>• {t("ui:fullGame.featureHours")}</li>
+                        <li>• {t("ui:fullGame.featureStructures")}</li>
+                        <li>• {t("ui:fullGame.featureItems")}</li>
+                        <li>• {t("ui:fullGame.featureAchievements")}</li>
+                        <li>• {t("ui:fullGame.featureStory")}</li>
                       </ul>
                     </div>
                   </div>
@@ -468,7 +471,7 @@ export default function FullGamePurchaseDialog({
                 {!currentUser && (
                   <div className="bg-red-600/10 border border-red-600/50 rounded-lg p-3">
                     <p className="text-sm text-red-200">
-                      Please sign in to purchase the Full Game.
+                      {t("ui:fullGame.signInRequired")}
                     </p>
                   </div>
                 )}
@@ -480,14 +483,13 @@ export default function FullGamePurchaseDialog({
                     className="w-full"
                     button_id="full-game-purchase"
                   >
-                    Continue the Journey
+                    {t("ui:fullGame.continueJourney")}
                   </Button>
                 </div>
 
                 <div className="bg-gray-600/10 border border-gray-600/50 rounded-lg p-3">
                   <p className="text-sm text-gray-400">
-                    Your progress is saved. You can return at any time and continue
-                    where you left off.
+                    {t("ui:fullGame.progressSaved")}
                   </p>
                 </div>
               </div>
@@ -502,7 +504,7 @@ export default function FullGamePurchaseDialog({
               </Elements>
             ) : (
               <div className="flex justify-center py-8">
-                <div className="text-muted-foreground">Loading payment system...</div>
+                <div className="text-muted-foreground">{t("ui:fullGame.loadingPayment")}</div>
               </div>
             )}
           </div>

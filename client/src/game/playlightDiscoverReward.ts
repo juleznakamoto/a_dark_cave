@@ -4,14 +4,18 @@ import { saveGame } from "@/game/save";
 import { buildGameState } from "@/game/stateHelpers";
 import { logger } from "@/lib/logger";
 import type { LogEntry } from "@/game/rules/events";
+import { tWithFallback } from "@/i18n/resolveGameText";
+import {
+  PLAYLIGHT_DISCOVER_REWARD_COMPLETE_DELAY_MS,
+  PLAYLIGHT_DISCOVER_REWARD_GOLD,
+  PLAYLIGHT_DISCOVER_REWARD_KEY,
+} from "@/game/playlightRewards";
 
-/** Persisted key under `social_media_rewards`. */
-export const PLAYLIGHT_DISCOVER_REWARD_KEY = "playlight_discover";
-
-export const PLAYLIGHT_DISCOVER_REWARD_GOLD = 100;
-
-/** After click: Discovery opens, then this delay before gold + task completion. */
-export const PLAYLIGHT_DISCOVER_REWARD_COMPLETE_DELAY_MS = 10_000;
+export {
+  PLAYLIGHT_DISCOVER_REWARD_COMPLETE_DELAY_MS,
+  PLAYLIGHT_DISCOVER_REWARD_GOLD,
+  PLAYLIGHT_DISCOVER_REWARD_KEY,
+} from "@/game/playlightRewards";
 
 let discoverRewardClaimInFlight = false;
 
@@ -31,7 +35,11 @@ export async function claimPlaylightDiscoverReward(): Promise<boolean> {
   if (currentRewards[PLAYLIGHT_DISCOVER_REWARD_KEY]?.claimed) {
     const alreadyClaimedLog: LogEntry = {
       id: `playlight-discover-already-${Date.now()}`,
-      message: "You've already claimed this reward!",
+      message: tWithFallback(
+        "ui",
+        "socialPrompt.alreadyClaimedReward",
+        "You've already claimed this reward!",
+      ),
       timestamp: Date.now(),
       type: "system",
     };
@@ -81,7 +89,12 @@ export async function claimPlaylightDiscoverReward(): Promise<boolean> {
 
     const rewardLog: LogEntry = {
       id: `playlight-discover-claimed-${Date.now()}`,
-      message: `You received ${PLAYLIGHT_DISCOVER_REWARD_GOLD} Gold for discovering games!`,
+      message: tWithFallback(
+        "ui",
+        "socialPrompt.playlightDiscoverRewardLog",
+        `You received ${PLAYLIGHT_DISCOVER_REWARD_GOLD} Gold for discovering games!`,
+        { amount: PLAYLIGHT_DISCOVER_REWARD_GOLD },
+      ),
       timestamp: Date.now(),
       type: "system",
     };

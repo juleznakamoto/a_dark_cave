@@ -1,0 +1,81 @@
+{
+  "advanced_bundle": {
+    "activationMessage": "Die Bestandteile des Bundles des Bleichen Königs wurden deinen Käufen hinzugefügt!",
+    "name": "Bundle des Bleichen Königs"
+  },
+  "artifact_bundle": {
+    "activationMessage": "Die Bestandteile des Bundles Dunkler Artefakte wurden deinen Käufen hinzugefügt!",
+    "name": "Bundle Dunkler Artefakte"
+  },
+  "ashen_throne_bundle": {
+    "activationMessage": "Die Bestandteile des Aschenthron-Bundles wurden deinen Käufen hinzugefügt!",
+    "name": "Aschenthron-Bundle"
+  },
+  "basic_survival_bundle": {
+    "activationMessage": "Die Bestandteile des Bundles des Verblassenden Wanderers wurden deinen Käufen hinzugefügt!",
+    "name": "Bundle des Verblassenden Wanderers"
+  },
+  "crow_harness": {
+    "activationMessage": "Das Krähengeschirr wurde deinen Werkzeugen hinzugefügt! Nun musst du eine Krähe finden, um sie an das Geschirr zu binden.",
+    "description": "Speziell gefertigtes Geschirr für Botenkrähen. Schaltet die Krähenhandlung frei. Fügt einen Gefährten hinzu.",
+    "name": "Krähengeschirr"
+  },
+  "cruel_mode": {
+    "activationMessage": "Grausamer Modus aktiviert! Starte ein neues Spiel, um die ultimative Herausforderung zu erleben.",
+    "description": "Eine grausamere Welt, erweiterte Geschichte, mehr Gegenstände, tödlichere Feinde. Ertrage sie oder verschwinde.",
+    "name": "Grausamer Modus"
+  },
+  "full_game": {
+    "activationMessage": "Vollversion freigeschaltet und aktiviert! Die Reise geht ohne Einschränkungen weiter.",
+    "description": "Schalte die Vollversion frei und setze deine Reise fort.",
+    "name": "Vollversion"
+  },
+  "gold_1000": {
+    "activationMessage": "1000 Gold wurden deinem Inventar hinzugefügt.",
+    "description": "Eine ordentliche Menge Gold",
+    "name": "1'000 Gold"
+  },
+  "gold_100_free": {
+    "activationMessage": "100 Gold wurden deinem Inventar als Geschenk hinzugefügt!",
+    "description": "Eine kleine tägliche Gnade in einer kalten Welt",
+    "name": "100 Gold Geschenk"
+  },
+  "gold_20000": {
+    "activationMessage": "20'000 Gold wurden deinem Inventar hinzugefügt.",
+    "description": "Unheilige Mengen Gold",
+    "name": "20'000 Gold"
+  },
+  "gold_250": {
+    "activationMessage": "1000 Gold wurden deinem Inventar hinzugefügt.",
+    "description": "Eine ordentliche Menge Gold",
+    "name": "250 Gold"
+  },
+  "gold_2500": {
+    "activationMessage": "2500 Gold wurden deinem Inventar hinzugefügt.",
+    "description": "Ein beträchtlicher Schatz",
+    "name": "2'500 Gold"
+  },
+  "gold_5000": {
+    "activationMessage": "5000 Gold wurden deinem Inventar hinzugefügt.",
+    "description": "Ein Vermögen in Gold",
+    "name": "5'000 Gold"
+  },
+  "great_feast_1": {
+    "activationMessage": "Ein großes Fest hat begonnen!",
+    "name": "1 großes Fest"
+  },
+  "great_feast_3": {
+    "activationMessage": "Ein großes Fest hat begonnen!",
+    "name": "3 große Feste"
+  },
+  "skull_lantern": {
+    "activationMessage": "Die Schädellaterne wurde deinen Werkzeugen hinzugefügt! Ihr unheimliches Licht wird dich durch die Tiefen führen.",
+    "description": "Aus verfluchtem Knochen geschmiedet, erhellt sie die tiefsten Tiefen. Schaltet die Schädellaternenhandlung frei.",
+    "name": "Schädellaterne"
+  },
+  "tarnished_compass": {
+    "activationMessage": "Der angelaufene Kompass wurde deinem Inventar hinzugefügt! Seine alte Magie kann deinen Unternehmungen Glück bringen.",
+    "description": "Artefakt der verschwundenen Zivilisation; seine Nadel weist auf verborgene Orte. Schaltet die Kompasshandlung frei.",
+    "name": "Angelaufener Kompass"
+  }
+}

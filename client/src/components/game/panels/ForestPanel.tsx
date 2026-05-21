@@ -17,7 +17,9 @@ import {
   ACTION_TO_UPGRADE_KEY,
   PRIOR_ELIGIBLE_ACTIONS,
 } from "@/game/buttonUpgrades";
-import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
+import { resolveActionLabel } from "@/i18n/actionLabels";
+import { getResourceName } from "@/i18n/resolveGameText";
+import { useTranslation } from "react-i18next";
 import {
   BubblyButtonGlobalPortal,
 } from "@/components/ui/bubbly-button";
@@ -93,13 +95,13 @@ function formatForestPanelResourceRowLabel(
   if (!row) return null;
   const key = Object.keys(row).find((k) => k.startsWith("resources."));
   if (!key || typeof row[key] !== "number") return null;
-  const resourceName = key.split(".")[1];
-  const formattedName = resourceName
+  const resourceKey = key.split(".")[1];
+  const fallbackName = resourceKey
     .replace(/_/g, " ")
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
-  return `${formatNumber(row[key])} ${formattedName}`;
+  return `${formatNumber(row[key])} ${getResourceName(resourceKey, fallbackName)}`;
 }
 
 /** Tooltip line for resource gained (e.g. "+250 Food", "+125 Gold"). */
@@ -124,6 +126,7 @@ function resolveForestPanelTradeCost(
 }
 
 export default function ForestPanel() {
+  const { t } = useTranslation("ui");
   const { executeAction, setHighlightedResources } = useGameStore();
   const state = useGameStore();
 
@@ -278,7 +281,7 @@ export default function ForestPanel() {
     const shouldGlow = isFocusAffected && state.focusState?.isActive;
 
     // Get dynamic label: sell = amount + resource sold; buy = amount + resource received
-    let displayLabel = label;
+    let displayLabel = resolveActionLabel(actionId, label);
     if (isSellButton && action.cost) {
       const costRow = resolveForestPanelTradeCost(action, state);
       const sellText = formatForestPanelResourceRowLabel(costRow);
@@ -532,7 +535,13 @@ export default function ForestPanel() {
               <div key={groupIndex} className="space-y-2">
                 {group.title && (
                   <h3 className="text-xs font-medium text-foreground">
-                    {group.title}
+                    {group.title === "Sacrifice"
+                      ? t("forest.sectionSacrifice")
+                      : group.title === "Buy"
+                        ? t("forest.sectionBuy")
+                        : group.title === "Sell"
+                          ? t("forest.sectionSell")
+                          : group.title}
                   </h3>
                 )}
                 <div className="w-full md:max-w-96">

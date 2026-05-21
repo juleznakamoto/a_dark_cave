@@ -1,8 +1,10 @@
 import { Helmet } from "react-helmet-async";
 import Hero from "@/components/ui/animated-shader-hero";
 import { initPlaylight, markPlaylightDiscoveryUserInitiated } from "@/lib/playlight";
+import { useTranslation } from "react-i18next";
 
 export default function EndScreenPage() {
+  const { t } = useTranslation("ui");
   const handleMainMenu = async () => {
     // Navigate to main menu (or home page)
     window.location.href = "/";
@@ -49,39 +51,39 @@ export default function EndScreenPage() {
   return (
     <div className="fixed inset-0 z-[10000] overflow-x-hidden">
       <Helmet>
-        <title>Journey Complete - A Dark Cave</title>
+        <title>{t("endScreen.pageTitle")}</title>
         <meta name="robots" content="noindex" />
       </Helmet>
       <Hero
         trustBadge={{
-          text: "Well Done!",
+          text: t("endScreen.trustBadge"),
         }}
         headline={{
-          line1: "Your Journey",
-          line2: "Ends Here",
+          line1: t("endScreen.headline1"),
+          line2: t("endScreen.headline2"),
         }}
-        subtitle1="At least for now..."
-        subtitle2="Try Cruel Mode for an even bigger challenge with extended gameplay. Because you finished the game you receive a special discount."
+        subtitle1={t("endScreen.subtitle1")}
+        subtitle2={t("endScreen.subtitle2")}
         subtitle3=""
         buttons={{
           primary: {
-            text: "⛤ Cruel Mode",
+            text: t("endScreen.cruelMode"),
             onClick: handleCruelMode,
             buttonId: "end-screen-cruel-mode",
-            badge: "Special discount",
+            badge: t("endScreen.cruelModeBadge"),
           },
           feedback: {
-            text: "Feedback",
+            text: t("endScreen.feedback"),
             onClick: handleFeedback,
             buttonId: "end-screen-feedback",
           },
           secondary: {
-            text: "Continue Playing",
+            text: t("endScreen.continuePlaying"),
             onClick: handleMainMenu,
             buttonId: "end-screen-close",
           },
           secondaryTrailing: {
-            text: "More Games",
+            text: t("endScreen.moreGames"),
             onClick: handleMoreGames,
             buttonId: "end-screen-more-games",
           },

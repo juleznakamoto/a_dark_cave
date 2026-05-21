@@ -19,6 +19,7 @@ import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { resetProductionCycle } from "@/game/loop";
 import { BOMB_RESOURCES, capResourceToLimit } from "@/game/resourceLimits";
 import type { GameState } from "@shared/schema";
+import { useTranslation } from "react-i18next";
 
 /** Match live play: limited resources cannot exceed storage cap during sleep simulation. */
 function clampSimulatedResourcesToStorage(
@@ -212,6 +213,7 @@ function getProductionPerInterval(
 }
 
 export default function IdleModeDialog() {
+  const { t } = useTranslation("ui");
   const {
     idleModeDialog,
     setIdleModeDialog,
@@ -641,12 +643,14 @@ export default function IdleModeDialog() {
         hideOverlay={true}
       >
         <DialogHeader>
-          <DialogTitle>Sleeping</DialogTitle>
+          <DialogTitle>{t("idleMode.sleeping")}</DialogTitle>
           <DialogDescription className="py-1">
             {isTimeUp ? (
-              <span className="pt-2">You are awake!</span>
+              <span className="pt-2">{t("idleMode.awake")}</span>
             ) : (
-              <span>Waking up in: {formatTime(remainingTime)}</span>
+              <span>
+                {t("idleMode.wakingIn", { time: formatTime(remainingTime) })}
+              </span>
             )}
           </DialogDescription>
         </DialogHeader>
@@ -714,7 +718,7 @@ export default function IdleModeDialog() {
             variant="outline"
             className="text-xs h-8"
           >
-            {isTimeUp ? "Get Up" : "Wake Up"}
+            {isTimeUp ? t("idleMode.getUp") : t("idleMode.wake")}
           </Button>
         </div>
       </DialogContent>

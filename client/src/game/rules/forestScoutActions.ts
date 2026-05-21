@@ -6,6 +6,7 @@ import { calculateSuccessChance, gameEvents, LogEntry } from "./events";
 import { logger } from "@/lib/logger";
 import { ActionEffectUpdates } from "@/game/types";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
+import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
 
 // Helper function to process triggered events from action effects
 function processTriggeredEvents(
@@ -43,27 +44,11 @@ function processTriggeredEvents(
           effectUpdates.triggeredEventsState = {};
         effectUpdates.triggeredEventsState[eventId] = true;
 
-        // Create a log entry for the event
-        const eventChoices =
-          typeof eventDef.choices === "function" ? undefined : eventDef.choices;
-        const logEntry: LogEntry = {
-          id: `${eventId}-${Date.now()}`,
-          message:
-            typeof eventDef.message === "string"
-              ? eventDef.message
-              : Array.isArray(eventDef.message)
-                ? eventDef.message[0]
-                : "",
-          timestamp: Date.now(),
-          type: "event",
-          title: eventDef.title,
-          choices: eventChoices,
-          isTimedChoice: eventDef.isTimedChoice,
-          baseDecisionTime: eventDef.baseDecisionTime,
-          fallbackChoice: eventDef.fallbackChoice,
-          relevant_stats: eventDef.relevant_stats,
-          skipEventLog: eventChoices && eventChoices.length > 0, // Don't log events with choices - only show in dialog
-        };
+        const logEntry: LogEntry = buildLocalizedEventLogEntry(
+          eventId,
+          eventDef,
+          state,
+        );
 
         result.logEntries!.push(logEntry);
       } else {

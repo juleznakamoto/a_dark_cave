@@ -1,0 +1,71 @@
+{
+  "languageSelector": {
+    "label": "Language",
+    "ariaLabel": "Select language"
+  },
+  "startScreen": {
+    "titleNormal": "A dark cave.",
+    "titleCruel": "A very dark cave.",
+    "airNormal": "The air is cold and damp.",
+    "airCruel": "The air is freezing and damp.",
+    "seeNormal": "You barely see the shapes around you.",
+    "seeCruel": "You barely see anything around you.",
+    "makeFire": "Make Fire",
+    "boostDeactivate": "Click to deactivate boost",
+    "recommendedBy": "Recommended by"
+  },
+  "footer": {
+    "fullGame": "Full Game",
+    "trader": "Trader",
+    "donate": "Donate",
+    "privacy": "Privacy",
+    "imprint": "Imprint",
+    "muteMusic": "Mute music",
+    "unmuteMusic": "Unmute music",
+    "muteSfx": "Mute sound effects",
+    "unmuteSfx": "Mute sound effects",
+    "cruelModeActive": "Cruel Mode activated"
+  },
+  "profile": {
+    "title": "Profile",
+    "signInUp": "Sign In/Up",
+    "emailsOn": "Emails On",
+    "emailsOff": "Emails Off",
+    "marketingOnTooltip": "You are currently receiving emails with updates, discounts, and exclusive rewards. Tap to turn off.",
+    "marketingOffTooltip": "You are currently not receiving emails with updates, discounts, and exclusive rewards. Tap to turn on.",
+    "rewardsTasks": "Rewards tasks",
+    "save": "Save",
+    "newGame": "New Game",
+    "restart": "Restart",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "leaderboard": "Leaderboard",
+    "rewards": "Rewards",
+    "deleteAccount": "Delete Account",
+    "marketingSubscribe": "Subscribe to emails",
+    "marketingUnsubscribe": "Unsubscribe from emails",
+    "autoSaveSignedIn": "Game auto-saves every minute",
+    "autoSaveGuest": "Game auto-saves every 15 seconds",
+    "signUpCloudSave": "Sign up to save game in the cloud",
+    "lastSave": "Last Save: {{time}}",
+    "signedOut": "Signed out successfully",
+    "signOutError": "Error signing out",
+    "gameSaved": "Game saved successfully",
+    "saveFailed": "Failed to save game",
+    "accountDeleted": "Your account was deleted",
+    "accountDeletedDesc": "You've been signed out and this device's local save was cleared.",
+    "deleteAccountFailed": "Could not delete account",
+    "tryAgainLater": "Try again later.",
+    "notSignedIn": "Not signed in",
+    "subscribed": "You're subscribed",
+    "unsubscribed": "You're unsubscribed",
+    "subscribedDesc": "We'll send occasional updates and offers to your email.",
+    "unsubscribedDesc": "You won't receive marketing emails from us.",
+    "preferenceUpdateFailed": "Could not update preference"
+  },
+  "pauseHotkey": {
+    "hintPrefix": "Use keys below or ",
+    "hintSuffix": " to switch between tabs"
+  },
+  "never": "Never"
+}

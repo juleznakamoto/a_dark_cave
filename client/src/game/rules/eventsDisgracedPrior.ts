@@ -13,16 +13,12 @@ export const disgracedPriorEvents: Record<string, GameEvent> = {
         !state.story?.seen?.disgracedPriorJoined
       );
     },
-    timeProbability: 10,
-    title: "A Silent Repairman",
-    message:
-      "Your villagers report a gaunt man in tattered robes quietly repairing the walls of stone huts. He works without speaking, without rest, asking for nothing. When approached, he only says he has much to make amends for.",
+    timeProbability: 10,
     priority: 10,
     repeatable: false,
     choices: [
       {
-        id: "offerShelter",
-        label: "Offer him shelter",
+        id: "offerShelter",
         effect: (state: GameState) => ({
           fellowship: {
             ...state.fellowship,
@@ -37,8 +33,7 @@ export const disgracedPriorEvents: Record<string, GameEvent> = {
               disgracedPriorJoined: true,
             },
           },
-          _logMessage:
-            "He accepts your offer without a word and resumes his toil. His eyes hold the quiet torment of a man who has seen his faith crumble. Once he preached of virtue, until the day he committed a great sin. The Disgraced Prior has joined your fellowship.",
+          _logMessageKey: "outcome0",
         }),
       },
     ],

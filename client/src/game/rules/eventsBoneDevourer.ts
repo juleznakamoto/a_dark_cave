@@ -26,18 +26,17 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
 
   return {
     id: eventId,
+    i18nKey: "boneDevourer",
+    i18nVars: { boneCost: formattedBoneCost, silverReward },
     condition: (state: GameState) => {
-      // Check if previous level was accepted (or if this is the first level)
       if (state.boneDevourerState.lastAcceptedLevel < level - 1) {
         return false;
       }
 
-      // Check if this level was already accepted
       if (state.boneDevourerState.lastAcceptedLevel >= level) {
         return false;
       }
 
-      // Check building requirements
       if (woodenHuts !== undefined) {
         return state.buildings.woodenHut >= woodenHuts;
       }
@@ -49,30 +48,20 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
     },
 
     timeProbability: 35,
-    title: "The Bone Devourer",
-    message: (state: GameState) => {
-      const hasBeenTriggered = state.triggeredEvents?.[eventId];
-      if (hasBeenTriggered) {
-        return `The creature returns to the gates, its hunched form still covered in pale, stretched skin. It speaks in its familiar rasping voice: 'I seek bones. I pay ${silverReward} Silver.'`;
-      }
-      return `A deformed creature shuffles to the gates, its hunched form covered in pale, stretched skin. It speaks in a rasping voice: 'I seek bones. I pay ${silverReward} Silver.'`;
-    },
+    message: (state: GameState) =>
+      state.triggeredEvents?.[eventId] ? "repeat" : "firstTime",
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 3 * 60 * 1000, // 3 minutes
-    skipEventLog: true, // Don't add to event log, only show in timed tab
+    timedTabDuration: 3 * 60 * 1000,
+    skipEventLog: true,
     choices: [
       {
         id: "sellBones",
-        label: `Sell ${formattedBoneCost} Bones`,
-        cost: `${boneCost} bones`,
-        effect: (
-          state: GameState,
-        ): Partial<GameState> & { _logMessage?: string } => {
+        effect: (state: GameState) => {
           if (state.resources.bones < boneCost) {
             return {
-              _logMessage: "You don't have enough bones for the trade.",
+              _logMessageKey: "outcome0",
             };
           }
 
@@ -90,47 +79,34 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
               [eventId]: true,
               [`${eventId}_seen`]: true,
             },
-            _logMessage: "The creature takes the bones with its gnarled hands, as if attempting to count them. It places a pouch of silver at your feet and disappears into the darkness.",
+            _logMessageKey: "outcome1",
           };
         },
       },
       {
         id: "refuse",
-        label: "Refuse trade",
-        effect: (
-          state: GameState,
-        ): Partial<GameState> & { _logMessage?: string } => {
-          return {
-            triggeredEvents: {
-              ...(state.triggeredEvents || {}),
-              [`${eventId}_seen`]: true,
-            },
-            _logMessage:
-              "You refuse the creature's offer. It hisses in displeasure and retreats into the shadows. You sense it will return.",
-          };
-        },
-      },
-    ],
-    fallbackChoice: {
-      id: "refuse",
-      label: "Time Expired",
-      effect: (
-        state: GameState,
-      ): Partial<GameState> & { _logMessage?: string } => {
-        return {
+        effect: (state: GameState) => ({
           triggeredEvents: {
             ...(state.triggeredEvents || {}),
             [`${eventId}_seen`]: true,
           },
-          _logMessage:
-            "Your indecision frustrates the creature. It hisses in displeasure and retreats into the shadows.",
-        };
+          _logMessageKey: "outcome2",
+        }),
       },
+    ],
+    fallbackChoice: {
+      id: "refuse",
+      effect: (state: GameState) => ({
+        triggeredEvents: {
+          ...(state.triggeredEvents || {}),
+          [`${eventId}_seen`]: true,
+        },
+        _logMessageKey: "outcome3",
+      }),
     },
   };
 }
 
-// Generate all bone devourer events
 export const boneDevourerEvents: Record<string, GameEvent> = {};
 boneDevourerConfigs.forEach((config) => {
   const event = createBoneDevourerEvent(config);

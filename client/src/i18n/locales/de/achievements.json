@@ -1,0 +1,184 @@
+{
+  "action": {
+    "0-chopWood": {
+      "label": "Holzfäller"
+    },
+    "0-craftTorches": {
+      "label": "Fackelmacher"
+    },
+    "0-exploreCave": {
+      "label": "Höhlenforscher"
+    },
+    "0-gamblerWins": {
+      "label": "Erfahrener Spieler"
+    },
+    "0-hunt": {
+      "label": "Jäger"
+    },
+    "1-mineAdamant": {
+      "label": "Adamantschürfer"
+    },
+    "1-mineCoal": {
+      "label": "Kohleschürfer"
+    },
+    "1-mineIron": {
+      "label": "Eisenschürfer"
+    },
+    "1-mineObsidian": {
+      "label": "Obsidianschürfer"
+    },
+    "1-mineStone": {
+      "label": "Steinbrecher"
+    },
+    "1-mineSulfur": {
+      "label": "Schwefelschürfer"
+    },
+    "2-animals": {
+      "label": "Tieropferer"
+    },
+    "2-boneTotems": {
+      "label": "Knochenopferer"
+    },
+    "2-craftBoneTotems": {
+      "label": "Knochentotem-Schnitzer"
+    },
+    "2-craftLeatherTotems": {
+      "label": "Ledertotem-Macher"
+    },
+    "2-leatherTotems": {
+      "label": "Lederopferer"
+    },
+    "3-ashfireBombs": {
+      "label": "Aschenfeuerbomben-Macher"
+    },
+    "3-emberBombs": {
+      "label": "Glutbomben-Macher"
+    },
+    "4-feedFire": {
+      "label": "Feuerschürer"
+    },
+    "4-merchantPurchases": {
+      "label": "Handelspartner"
+    },
+    "4-solsticeGatherings": {
+      "label": "Sonnenwendfeierer"
+    },
+    "4-wellRested": {
+      "label": "Tiefschläfer"
+    }
+  },
+  "basic": {
+    "0-coalMiner": {
+      "label": "Kohle sammeln"
+    },
+    "0-hunter": {
+      "label": "Jäger"
+    },
+    "0-ironMiner": {
+      "label": "Eisen sammeln"
+    },
+    "0-stoneMiner": {
+      "label": "Stein sammeln"
+    },
+    "0-woodGatherer": {
+      "label": "Holz sammeln"
+    },
+    "1-builder": {
+      "label": "Gebäude errichten"
+    },
+    "1-communityBuilder": {
+      "label": "Gemeinschaft aufbauen"
+    },
+    "1-explorer": {
+      "label": "Höhle erkunden"
+    },
+    "1-toolCrafter": {
+      "label": "Werkzeuge herstellen"
+    },
+    "1-torchCrafter": {
+      "label": "Fackeln herstellen"
+    }
+  },
+  "building": {
+    "0-0": {
+      "label": "Einfache Unterkunft"
+    },
+    "0-1": {
+      "label": "Stabile Unterkunft"
+    },
+    "0-2": {
+      "label": "Nordische Unterkunft"
+    },
+    "0-3": {
+      "label": "Nomadenunterkunft"
+    },
+    "1-0": {
+      "label": "Jäger"
+    },
+    "1-1": {
+      "label": "Schmiede"
+    },
+    "1-2": {
+      "label": "Schmelzer"
+    },
+    "1-3": {
+      "label": "Gerber"
+    },
+    "2-0": {
+      "label": "Bergleute"
+    },
+    "3-0": {
+      "label": "Händler"
+    },
+    "3-1": {
+      "label": "Versorger"
+    },
+    "3-2": {
+      "label": "Gelehrte"
+    },
+    "3-3": {
+      "label": "Priester"
+    },
+    "4-0": {
+      "label": "Burgmauern"
+    },
+    "4-1": {
+      "label": "Ausguck"
+    }
+  },
+  "item": {
+    "0-axes": {
+      "label": "Äxte"
+    },
+    "0-lanterns": {
+      "label": "Laternen"
+    },
+    "0-pickaxes": {
+      "label": "Spitzhacken"
+    },
+    "1-bows": {
+      "label": "Bögen"
+    },
+    "1-swords": {
+      "label": "Schwerter"
+    },
+    "2-explorer_pack": {
+      "label": "Lederarbeiten"
+    },
+    "2-schematic_weapons": {
+      "label": "Baupläne"
+    },
+    "3-ancient_books": {
+      "label": "Altes Wissen"
+    },
+    "3-fellowship": {
+      "label": "Gute Gesellschaft"
+    },
+    "4-blacksteel_equipment": {
+      "label": "Dunkle Kriegsausrüstung"
+    },
+    "4-blacksteel_tools": {
+      "label": "Dunkle Werkzeuge"
+    }
+  }
+}

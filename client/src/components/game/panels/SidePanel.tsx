@@ -6,7 +6,13 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { logger } from "@/lib/logger";
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { capitalizeWords, formatSignedNumber } from "@/lib/utils";
+import {
+  getEffectName,
+  getResourceName,
+  getStatName,
+} from "@/i18n/resolveGameText";
 import React, { useState, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import {
   getFortificationMarginalStats,
   type FortificationBuildingKey,
@@ -42,29 +48,30 @@ import { getMapFragmentCount } from "@/game/mapFragments";
 function getFortificationDisplayLabel(
   key: FortificationBuildingKey,
   buildings: GameState["buildings"],
+  t: (key: string, options?: Record<string, unknown>) => string,
 ): string {
-  if (key === "bastion") return "Bastion";
-  if (key === "fortifiedMoat") return "Fortified Moat";
-  if (key === "chitinPlating") return "Chitin Plating";
+  if (key === "bastion") return t("fortifications.bastion");
+  if (key === "fortifiedMoat") return t("fortifications.fortifiedMoat");
+  if (key === "chitinPlating") return t("fortifications.chitinPlating");
   if (key === "watchtower") {
     const level = buildings.watchtower ?? 0;
-    const watchtowerLabels = [
-      "Watchtower",
-      "Guard Tower",
-      "Fortified Tower",
-      "Cannon Tower",
-    ];
-    return watchtowerLabels[level - 1] ?? "Watchtower";
+    const levelKeys = [
+      "fortifications.watchtower1",
+      "fortifications.watchtower2",
+      "fortifications.watchtower3",
+      "fortifications.watchtower4",
+    ] as const;
+    return t(levelKeys[level - 1] ?? "fortifications.watchtowerFallback");
   }
   if (key === "palisades") {
     const level = buildings.palisades ?? 0;
-    const palisadesLabels = [
-      "Wooden Palisades",
-      "Fortified Palisades",
-      "Stone Wall",
-      "Reinforced Wall",
-    ];
-    return palisadesLabels[level - 1] ?? "Palisades";
+    const levelKeys = [
+      "fortifications.palisades1",
+      "fortifications.palisades2",
+      "fortifications.palisades3",
+      "fortifications.palisades4",
+    ] as const;
+    return t(levelKeys[level - 1] ?? "fortifications.palisadesFallback");
   }
   return key;
 }
@@ -97,6 +104,7 @@ const BASTION_STAT_SIDE_PANEL_ICON_COLORS: Record<
 };
 
 export default function SidePanel() {
+  const { t } = useTranslation("ui");
   const {
     resources,
     buildings,
@@ -222,7 +230,7 @@ export default function SidePanel() {
                 : "text-gray-400"
             }
           />
-          <span>{capitalizeWords(key)}</span>
+          <span>{getResourceName(key, capitalizeWords(key))}</span>
         </span>
       ),
       value: resources[key as keyof typeof resources] ?? 0,
@@ -236,7 +244,7 @@ export default function SidePanel() {
     // Other resources
     ...otherResources.map((key) => ({
       id: key,
-      label: capitalizeWords(key),
+      label: getResourceName(key, capitalizeWords(key)),
       value: resources[key as keyof typeof resources] ?? 0,
       productionDelta: productionDeltas[key] ?? undefined,
       testId: `resource-${key}`,
@@ -277,7 +285,7 @@ export default function SidePanel() {
     })
     .map(([key, value]) => ({
       id: key,
-      label: capitalizeWords(key),
+      label: getEffectName("tools", key, capitalizeWords(key)),
       value: 1,
       testId: `tool-${key}`,
       visible: true,
@@ -289,7 +297,7 @@ export default function SidePanel() {
     .filter(([key, value]) => Object.keys(gameState.weapons).includes(key))
     .map(([key, value]) => ({
       id: key,
-      label: capitalizeWords(key),
+      label: getEffectName("weapons", key, capitalizeWords(key)),
       value: 1,
       testId: `weapon-${key}`,
       visible: true,
@@ -301,13 +309,7 @@ export default function SidePanel() {
     (key) => seenResourcesRef.current.has(key),
   ).map((key) => {
     const value = resources[key as keyof typeof resources] ?? 0;
-    const labelMap: Record<string, string> = {
-      ember_bomb: "Ember Bomb",
-      ashfire_bomb: "Ashfire Bomb",
-      void_bomb: "Void Bomb",
-      veinfire_elixir: "Veinfire Elixir",
-    };
-    const label = labelMap[key] ?? capitalizeWords(key);
+    const label = getResourceName(key, capitalizeWords(key));
     return {
       id: key,
       label,
@@ -346,7 +348,11 @@ export default function SidePanel() {
     .filter(([key, value]) => value === true)
     .map(([key, value]) => ({
       id: key,
-      label: clothingEffects[key]?.name || capitalizeWords(key),
+      label: getEffectName(
+        "clothing",
+        key,
+        clothingEffects[key]?.name || capitalizeWords(key),
+      ),
       value: 1,
       testId: `clothing-${key}`,
       visible: true,
@@ -362,7 +368,11 @@ export default function SidePanel() {
     .filter(([key, value]) => value === true)
     .map(([key, value]) => ({
       id: key,
-      label: clothingEffects[key]?.name || capitalizeWords(key),
+      label: getEffectName(
+        "clothing",
+        key,
+        clothingEffects[key]?.name || capitalizeWords(key),
+      ),
       value: 1,
       testId: `relic-${key}`,
       visible: true,
@@ -377,7 +387,7 @@ export default function SidePanel() {
   if (showMapFragmentRow) {
     const mapRow = {
       id: "map_fragment",
-      label: "Map Fragments",
+      label: t("sidePanel.mapFragments"),
       value: mapFragmentCount,
       testId: "relic-map_fragment",
       visible: true,
@@ -392,7 +402,11 @@ export default function SidePanel() {
     .filter(([key, value]) => value === true)
     .map(([key, value]) => ({
       id: key,
-      label: bookEffects[key]?.name || capitalizeWords(key),
+      label: getEffectName(
+        "books",
+        key,
+        bookEffects[key]?.name || capitalizeWords(key),
+      ),
       value: 1,
       testId: `book-${key}`,
       visible: true,
@@ -409,7 +423,11 @@ export default function SidePanel() {
     })
     .map(([key]) => ({
       id: key,
-      label: fellowshipEffects[key]?.name || capitalizeWords(key),
+      label: getEffectName(
+        "fellowship",
+        key,
+        fellowshipEffects[key]?.name || capitalizeWords(key),
+      ),
       value: 1,
       testId: `fellowship-${key}`,
       visible: true,
@@ -536,7 +554,7 @@ export default function SidePanel() {
     .filter((key) => (villagers[key as keyof typeof villagers] ?? 0) > 0)
     .map((key) => ({
       id: key,
-      label: capitalizeWords(key),
+      label: getResourceName(key, capitalizeWords(key)),
       value: villagers[key as keyof typeof villagers] ?? 0,
       testId: `population-${key}`,
       visible: true,
@@ -549,7 +567,7 @@ export default function SidePanel() {
   if (onExpeditionCount > 0) {
     const expeditionItem = {
       id: "on_expedition",
-      label: "On Expedition",
+      label: t("sidePanel.onExpedition"),
       value: onExpeditionCount,
       testId: "population-on-expedition",
       visible: true,
@@ -570,44 +588,40 @@ export default function SidePanel() {
 
   statsItems.push({
     id: "luck",
-    label: "Luck",
+    label: getStatName("luck", "Luck"),
     value: totalLuck,
     testId: "stat-luck",
     visible: true,
     icon: hasScriptorium ? "☆" : undefined,
     iconColor: hasScriptorium ? "text-green-300/80" : undefined,
     tooltip: hasClerksHut ? (
-      <span className="text-gray-400">Bends fate in your favor</span>
+      <span className="text-gray-400">{t("sidePanel.statLuckTooltip")}</span>
     ) : undefined,
   });
 
   statsItems.push({
     id: "strength",
-    label: "Strength",
+    label: getStatName("strength", "Strength"),
     value: totalStrength,
     testId: "stat-strength",
     visible: true,
     icon: hasScriptorium ? "⬡" : undefined,
     iconColor: hasScriptorium ? "text-red-300/80" : undefined,
     tooltip: hasClerksHut ? (
-      <span className="text-gray-400">
-        Helps where words reach their limit
-      </span>
+      <span className="text-gray-400">{t("sidePanel.statStrengthTooltip")}</span>
     ) : undefined,
   });
 
   statsItems.push({
     id: "knowledge",
-    label: "Knowledge",
+    label: getStatName("knowledge", "Knowledge"),
     value: totalKnowledge,
     testId: "stat-knowledge",
     visible: true,
     icon: hasScriptorium ? "✧" : undefined,
     iconColor: hasScriptorium ? "text-blue-300/80" : undefined,
     tooltip: hasClerksHut ? (
-      <span className="text-gray-400">
-        Influences things where cleverness helps
-      </span>
+      <span className="text-gray-400">{t("sidePanel.statKnowledgeTooltip")}</span>
     ) : undefined,
   });
 
@@ -622,12 +636,24 @@ export default function SidePanel() {
       fromEvents !== 0;
     madnessTooltipContent = (
       <>
-        <div className="text-gray-400">Leads thoughts into dangerous paths</div>
+        <div className="text-gray-400">{t("sidePanel.statMadnessTooltip")}</div>
         {showMadnessBreakdown && (
           <div>
-            <div>{formatSignedNumber(fromItems)} from Items</div>
-            <div>{formatSignedNumber(fromBuildings)} from Buildings</div>
-            <div>{formatSignedNumber(fromEvents)} from Events</div>
+            <div>
+              {t("sidePanel.madnessFromItems", {
+                value: formatSignedNumber(fromItems),
+              })}
+            </div>
+            <div>
+              {t("sidePanel.madnessFromBuildings", {
+                value: formatSignedNumber(fromBuildings),
+              })}
+            </div>
+            <div>
+              {t("sidePanel.madnessFromEvents", {
+                value: formatSignedNumber(fromEvents),
+              })}
+            </div>
           </div>
         )}
       </>
@@ -638,7 +664,7 @@ export default function SidePanel() {
 
   statsItems.push({
     id: "madness",
-    label: "Madness",
+    label: getStatName("madness", "Madness"),
     value: totalMadness,
     testId: "stat-madness",
     visible: true,
@@ -665,180 +691,55 @@ export default function SidePanel() {
 
       if ((value ?? 0) === 0) return null;
 
-      let label = capitalizeWords(key);
+      const fk = key as FortificationBuildingKey;
+      let label = getFortificationDisplayLabel(fk, buildings, t);
       let tooltip: React.ReactNode = undefined;
 
-      const fk = key as FortificationBuildingKey;
       const margin = getFortificationMarginalStats(gameStateTyped, fk);
       const defense = margin?.defense ?? 0;
       const attack = margin?.attack ?? 0;
       const integrity = margin?.integrity ?? 0;
 
-      // Map building keys to their contributions (marginal stats per fortification)
-      if (key === "watchtower") {
-        const level = value ?? 0;
-        const watchtowerLabels = [
-          "Watchtower",
-          "Guard Tower",
-          "Fortified Tower",
-          "Cannon Tower",
-        ];
-        label = watchtowerLabels[level - 1] || "Watchtower";
+      const isDamaged =
+        (key === "watchtower" && story?.seen?.watchtowerDamaged) ||
+        (key === "bastion" && story?.seen?.bastionDamaged) ||
+        (key === "palisades" && story?.seen?.palisadesDamaged);
 
-        const isDamaged = story?.seen?.watchtowerDamaged;
+      const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
+      const buildAction = villageBuildActions[actionId];
 
-        // Get the action definition to access the description
-        const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
-        const buildAction = villageBuildActions[actionId];
-
-        tooltip = (
+      tooltip = (
+        <div>
           <div>
-            <div>
-              <span className="font-bold">{label}</span>
-              {isDamaged && (
-                <span className="font-normal text-muted-foreground">
-                  {" "}
-                  (damaged)
-                </span>
-              )}
-            </div>
-            {buildAction?.description && (
-              <div className="text-gray-400 mb-1">
-                {buildAction.description}
-              </div>
+            <span className="font-bold">{label}</span>
+            {isDamaged && (
+              <span className="font-normal text-muted-foreground">
+                {" "}
+                {t("fortifications.damaged")}
+              </span>
             )}
-            <div className="text-foreground">
-              {attack !== 0 && <div>+{attack} Attack</div>}
-              {defense !== 0 && <div>+{defense} Defense</div>}
-              {integrity !== 0 && <div>+{integrity} Integrity</div>}
-            </div>
           </div>
-        );
-
-        // Add red down arrow if damaged
-        if (isDamaged) {
-          label += " ↓";
-        }
-      } else if (key === "bastion") {
-        const isDamaged = story?.seen?.bastionDamaged;
-
-        // Get the action definition to access the description
-        const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
-        const buildAction = villageBuildActions[actionId];
-
-        tooltip = (
-          <div>
-            <div>
-              <span className="font-bold">{label}</span>
-              {isDamaged && (
-                <span className="font-normal text-muted-foreground">
-                  {" "}
-                  (damaged)
-                </span>
-              )}
+          {buildAction?.description && (
+            <div className="text-gray-400 mb-1">
+              {buildAction.description}
             </div>
-            {buildAction?.description && (
-              <div className="text-gray-400 mb-1">
-                {buildAction.description}
-              </div>
+          )}
+          <div className="text-foreground">
+            {attack !== 0 && (
+              <div>{t("fortifications.attack", { value: attack })}</div>
             )}
-            <div className="text-foreground">
-              {attack !== 0 && <div>+{attack} Attack</div>}
-              {defense !== 0 && <div>+{defense} Defense</div>}
-              {integrity !== 0 && <div>+{integrity} Integrity</div>}
-            </div>
-          </div>
-        );
-
-        // Add red down arrow if damaged
-        if (isDamaged) {
-          label += " ↓";
-        }
-      } else if (key === "palisades") {
-        const palisadesLevel = value ?? 0;
-        const palisadesLabels = [
-          "Wooden Palisades",
-          "Fortified Palisades",
-          "Stone Wall",
-          "Reinforced Wall",
-        ];
-        label = palisadesLabels[palisadesLevel - 1] || "Wooden Palisades";
-
-        const isDamaged = story?.seen?.palisadesDamaged;
-
-        // Get the action definition to access the description
-        const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
-        const buildAction = villageBuildActions[actionId];
-
-        tooltip = (
-          <div>
-            <div>
-              <span className="font-bold">{label}</span>
-              {isDamaged && (
-                <span className="font-normal text-muted-foreground">
-                  {" "}
-                  (damaged)
-                </span>
-              )}
-            </div>
-            {buildAction?.description && (
-              <div className="text-gray-400 mb-1">
-                {buildAction.description}
-              </div>
+            {defense !== 0 && (
+              <div>{t("fortifications.defense", { value: defense })}</div>
             )}
-            <div className="text-foreground">
-              {attack !== 0 && <div>+{attack} Attack</div>}
-              {defense !== 0 && <div>+{defense} Defense</div>}
-              {integrity !== 0 && <div>+{integrity} Integrity</div>}
-            </div>
-          </div>
-        );
-
-        // Add red down arrow if damaged
-        if (isDamaged) {
-          label += " ↓";
-        }
-      } else if (key === "fortifiedMoat") {
-        label = "Fortified Moat";
-
-        // Get the action definition to access the description
-        const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
-        const buildAction = villageBuildActions[actionId];
-
-        tooltip = (
-          <div>
-            <div className="font-bold">{label}</div>
-            {buildAction?.description && (
-              <div className="text-gray-400 mb-1">
-                {buildAction.description}
-              </div>
+            {integrity !== 0 && (
+              <div>{t("fortifications.integrity", { value: integrity })}</div>
             )}
-            <div className="text-foreground">
-              {defense !== 0 && <div>+{defense} Defense</div>}
-            </div>
           </div>
-        );
-      } else if (key === "chitinPlating") {
-        label = "Chitin Plating";
+        </div>
+      );
 
-        // Get the action definition to access the description
-        const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
-        const buildAction = villageBuildActions[actionId];
-
-        tooltip = (
-          <div>
-            <div className="font-bold">{label}</div>
-            {buildAction?.description && (
-              <div className="text-gray-400 mb-1">
-                {buildAction.description}
-              </div>
-            )}
-            <div className="text-foreground">
-              {defense !== 0 && <div>+{defense} Defense</div>}
-              {integrity !== 0 && <div>+{integrity} Integrity</div>}
-            </div>
-          </div>
-        );
+      if (isDamaged) {
+        label += " ↓";
       }
 
       return {
@@ -857,50 +758,58 @@ export default function SidePanel() {
     bastion_stats == null
       ? []
       : BASTION_STAT_SIDE_PANEL_ORDER.map((key) => {
-          const value = bastion_stats[key] ?? 0;
-          let tooltip = undefined;
+        const value = bastion_stats[key] ?? 0;
+        let tooltip = undefined;
 
-          if (key === "defense") {
-            tooltip = (
-              <span className="text-gray-400">
-                Reduces incoming damage
-              </span>
-            );
-          }
+        if (key === "defense") {
+          tooltip = (
+            <span className="text-gray-400">
+              {t("sidePanel.bastionDefenseTooltip")}
+            </span>
+          );
+        }
 
-          if (key === "integrity") {
-            tooltip = (
-              <span className="text-gray-400">
-                If integrity reaches 0, you lose the battle
-              </span>
-            );
-          }
+        if (key === "integrity") {
+          tooltip = (
+            <span className="text-gray-400">
+              {t("sidePanel.bastionIntegrityTooltip")}
+            </span>
+          );
+        }
 
-          if (key === "attack") {
-            const fortAttack = bastion_stats.attackFromFortifications || 0;
-            const strengthAttack = bastion_stats.attackFromStrength || 0;
-            tooltip = (
-              <div>
-                <div className="mb-1 text-gray-400">
-                  Damage you deal to enemies each combat round
-                </div>
-                <div>{fortAttack} from Fortifications</div>
-                <div>{strengthAttack} from Strength (50 %)</div>
+        if (key === "attack") {
+          const fortAttack = bastion_stats.attackFromFortifications || 0;
+          const strengthAttack = bastion_stats.attackFromStrength || 0;
+          tooltip = (
+            <div>
+              <div className="mb-1 text-gray-400">
+                {t("sidePanel.bastionAttackTooltip")}
               </div>
-            );
-          }
+              <div>
+                {t("sidePanel.bastionAttackFromFortifications", {
+                  value: fortAttack,
+                })}
+              </div>
+              <div>
+                {t("sidePanel.bastionAttackFromStrength", {
+                  value: strengthAttack,
+                })}
+              </div>
+            </div>
+          );
+        }
 
-          return {
-            id: `bastion-${key}`,
-            label: capitalizeWords(key),
-            icon: BASTION_STAT_SIDE_PANEL_ICONS[key],
-            iconColor: BASTION_STAT_SIDE_PANEL_ICON_COLORS[key],
-            value,
-            testId: `bastion-stat-${key}`,
-            visible: true,
-            tooltip,
-          };
-        });
+        return {
+          id: `bastion-${key}`,
+          label: capitalizeWords(key),
+          icon: BASTION_STAT_SIDE_PANEL_ICONS[key],
+          iconColor: BASTION_STAT_SIDE_PANEL_ICON_COLORS[key],
+          value,
+          testId: `bastion-stat-${key}`,
+          visible: true,
+          tooltip,
+        };
+      });
 
   // Use SSOT for bonus calculations
   const bonusItems = getAllActionBonuses(gameState).map((bonus) => ({
@@ -916,7 +825,7 @@ export default function SidePanel() {
   if (craftingCostReduction > 0) {
     bonusItems.push({
       id: "craftingCostReduction",
-      label: "Craft Discount",
+      label: t("sidePanel.craftDiscount"),
       value: `${Number((craftingCostReduction * 100).toFixed(1))}%`,
       testId: "bonus-crafting-cost-reduction",
       visible: true,
@@ -928,7 +837,7 @@ export default function SidePanel() {
   if (buildingCostReduction > 0) {
     bonusItems.push({
       id: "buildingCostReduction",
-      label: "Build Discount",
+      label: t("sidePanel.buildDiscount"),
       value: `${Number((buildingCostReduction * 100).toFixed(1))}%`,
       testId: "bonus-building-cost-reduction",
       visible: true,
@@ -939,7 +848,7 @@ export default function SidePanel() {
   if (doubleGainChance > 0) {
     bonusItems.push({
       id: "doubleGainChance",
-      label: "Double Gain Chance",
+      label: t("sidePanel.doubleGainChance"),
       value: `${Number((doubleGainChance * 100).toFixed(1))}%`,
       testId: "bonus-double-gain-chance",
       visible: true,
@@ -999,11 +908,13 @@ export default function SidePanel() {
           {resourceItems.length > 0 && shouldShowSection("resources") && (
             <SidePanelSection
               className="pt-0"
-              title="Resources"
+              title={t("sidePanel.resources")}
               activeTab={activeTab}
               titleTooltip={
                 showResourceLimit
-                  ? `Max ${resourceLimitText} (no limit for Silver and Gold)`
+                  ? t("sidePanel.resourceLimitTooltip", {
+                      limit: resourceLimitText,
+                    })
                   : undefined
               }
               items={resourceItems}
@@ -1031,67 +942,71 @@ export default function SidePanel() {
         {/* Second column - Everything else */}
         <div className="flex-1">
           {toolItems.length > 0 && shouldShowSection("tools") && (
-            <SidePanelSection className="pt-0" title="Tools" items={toolItems} />
+            <SidePanelSection className="pt-0" title={t("sidePanel.tools")} items={toolItems} />
           )}
           {weaponItems.length > 0 && shouldShowSection("weapons") && (
-            <SidePanelSection title="Weapons" items={weaponItems} />
+            <SidePanelSection title={t("sidePanel.weapons")} items={weaponItems} />
           )}
           {bastionStatsItems.length > 0 && shouldShowSection("bastion") && (
             <SidePanelSection
-              title={flags.hasFortress ? "Fortress" : "Bastion"}
+              title={
+                flags.hasFortress
+                  ? t("sidePanel.fortress")
+                  : t("sidePanel.bastion")
+              }
               items={bastionStatsItems}
             />
           )}
           {fortificationItems.length > 0 &&
             shouldShowSection("fortifications") && (
               <SidePanelSection
-                title="Fortifications"
+                title={t("sidePanel.fortifications")}
                 items={fortificationItems}
               />
             )}
           {combatItemRows.length > 0 && shouldShowSection("combatItems") && (
-            <SidePanelSection title="Combat Items" items={combatItemRows} />
+            <SidePanelSection title={t("sidePanel.combatItems")} items={combatItemRows} />
           )}
           {clothingItems.length > 0 && shouldShowSection("clothing") && (
-            <SidePanelSection title="Clothing" items={clothingItems} />
+            <SidePanelSection title={t("sidePanel.clothing")} items={clothingItems} />
           )}
           {relicItems.length > 0 && shouldShowSection("relics") && (
-            <SidePanelSection title="Relics" items={relicItems} />
+            <SidePanelSection title={t("sidePanel.relics")} items={relicItems} />
           )}
           {schematicItems.length > 0 && shouldShowSection("schematics") && (
-            <SidePanelSection title="Schematics" items={schematicItems} />
+            <SidePanelSection title={t("sidePanel.schematics")} items={schematicItems} />
           )}
           {blessingItems.length > 0 && shouldShowSection("blessings") && (
-            <SidePanelSection title="Blessings" items={blessingItems} />
+            <SidePanelSection title={t("sidePanel.blessings")} items={blessingItems} />
           )}
           {buildingItems.length > 0 && shouldShowSection("buildings") && (
-            <SidePanelSection title="Buildings" items={buildingItems} />
+            <SidePanelSection title={t("sidePanel.buildings")} items={buildingItems} />
           )}
           {populationItems.length > 0 && shouldShowSection("population") && (
             <SidePanelSection
               title={
                 <>
-                  Population{" "}
+                  {t("sidePanel.population")}{" "}
                   <span className="text-muted-foreground font-normal">
                     {current_population}/{total_population}
                   </span>
                 </>
               }
               items={populationItems}
-              titleTooltip="Each villager consumes 1 Food and 1 Wood"
+              titleTooltip={t("sidePanel.populationTooltip")}
             />
           )}
           {anyPlayerStatPositive && shouldShowSection("stats") && (
-            <SidePanelSection title="Stats" items={statsItems} />
+            <SidePanelSection title={t("sidePanel.stats")} items={statsItems} />
           )}
           {bonusItems.length > 0 && shouldShowSection("bonuses") && (
-            <SidePanelSection title="Bonuses" items={bonusItems} />
+            <SidePanelSection title={t("sidePanel.bonuses")} items={bonusItems} />
           )}
           {bookItems.length > 0 && shouldShowSection("books") && (
-            <SidePanelSection title="Books" items={bookItems} />
+            <SidePanelSection title={t("sidePanel.books")} items={bookItems} />
           )}
           {fellowshipItems.length > 0 && shouldShowSection("fellowship") && (
-            <SidePanelSection title="Fellowship" items={fellowshipItems} />
+            <SidePanelSection title={t("sidePanel.fellowship")} items={fellowshipItems} />
           )}
         </div>
       </div>

@@ -1,0 +1,532 @@
+{
+  "books": {
+    "book_of_ascension": {
+      "description": "Buch über die Erhebung des Selbst. Ermöglicht, durch Übung besser in Aufgaben zu werden.",
+      "name": "Buch des Aufstiegs"
+    },
+    "book_of_craftsmanship": {
+      "description": "Alter Foliant eines Meisterhandwerkers. Offenbart feine Hinweise zum Herstellen von Gegenständen und Errichten von Gebäuden.",
+      "name": "Buch der Handwerkskunst"
+    },
+    "book_of_trials": {
+      "description": "Buch über das Bestehen der Prüfungen des Lebens. Schaltet Belohnungen für jene frei, die sich durch Erfolge beweisen.",
+      "name": "Buch der Prüfungen"
+    },
+    "book_of_war": {
+      "description": "Buch mit Weisheit über den Kampf. Offenbart die Erfolgschancen in Kämpfen und Begegnungen.",
+      "name": "Buch des Krieges"
+    }
+  },
+  "clothing": {
+    "alphas_hide": {
+      "description": "Fell des Leitwolfs, erfüllt von urtümlicher Macht",
+      "name": "Fell des Alphas"
+    },
+    "ancient_scrolls": {
+      "description": "Rätselhafte Schriftrollen in einer unbekannten Sprache, die darauf warten, entschlüsselt zu werden",
+      "name": "Alte Schriftrollen"
+    },
+    "arbalest_schematic": {
+      "description": "Bauplan zur Herstellung einer mächtigen Armbrust",
+      "name": "Armbrust-Bauplan"
+    },
+    "ashen_embrace": {
+      "description": "Deine Bergbaufähigkeit ist verbessert",
+      "name": "Aschene Umarmung"
+    },
+    "ashen_embrace_enhanced": {
+      "description": "Deine Bergbaufähigkeit ist stark verbessert",
+      "name": "Tiefe aschene Umarmung"
+    },
+    "bell_blessing": {
+      "description": "Ein rätselhaftes Glockenzeichen auf deinem Unterarm. Verdoppelt im Schlaf erhaltene Fokuspunkte.",
+      "name": "Glockensegen"
+    },
+    "black_bear_fur": {
+      "description": "Verfluchtes schwarzes Fell eines riesigen Bären aus einer anderen Welt",
+      "name": "Schwarzbärenfell"
+    },
+    "black_wood": {
+      "description": "Eine Platte aus dichtem, lichtschluckendem Holz vom Baum des Heiligtums.",
+      "name": "Schwarzes Holz"
+    },
+    "blackened_mirror": {
+      "description": "Hoher, gesprungener Spiegel in schwarzem Eisenrahmen, der eine kalte Aura ausstrahlt",
+      "name": "Geschwärzter Spiegel"
+    },
+    "blacksteel_armor": {
+      "description": "Schwere Rüstung, mit tödlichen Stacheln besetzt",
+      "name": "Schwarzstahlrüstung"
+    },
+    "blood_baptized": {
+      "description": "Erhalten nach einem Bad im Blut mächtiger Kreaturen",
+      "name": "Blutgetauft"
+    },
+    "bloodstained_belt": {
+      "description": "Ledergürtel, befleckt mit altem Blut",
+      "name": "Blutbefleckter Gürtel"
+    },
+    "bloodstone": {
+      "description": "Karmesinroter Edelstein, der vor dunkler Energie pulsiert",
+      "name": "Blutstein"
+    },
+    "bone_devourer_blood": {
+      "description": "Eine Phiole blassen Blutes, gewonnen vom Knochenverschlinger. Seine Wirkung ist unbekannt.",
+      "name": "Verschlingerblut"
+    },
+    "bone_dice": {
+      "description": "Aus Knochen geschnitzte Würfel, weich und beunruhigend glatt poliert. Gewährt ein zusätzliches Spiel beim Spieler.",
+      "name": "Knochenwürfel"
+    },
+    "bone_necklace": {
+      "description": "Primitive Halskette aus Menschenknochen",
+      "name": "Knochenkette"
+    },
+    "chitin_plates": {
+      "description": "Mächtige Chitinplatten von riesigen Sumpfkreaturen. Können genutzt werden, um Befestigungen mit Chitinpanzerung zu versehen.",
+      "name": "Chitinplatten"
+    },
+    "cracked_crown": {
+      "description": "Alte goldene Krone, die rätselhafte Macht ausstrahlt",
+      "name": "Geborstene Krone"
+    },
+    "dagons_gift": {
+      "description": "Deine Jagdfähigkeit ist verbessert",
+      "name": "Dagons Gabe"
+    },
+    "dagons_gift_enhanced": {
+      "description": "Deine Jagdfähigkeit ist stark verbessert",
+      "name": "Dagons große Gabe"
+    },
+    "devourer_crown": {
+      "description": "Krone des Knochenverschlingers, gefertigt aus Knochen",
+      "name": "Verschlingerkrone"
+    },
+    "ebon_grace": {
+      "description": "Dunkler Segen, empfangen durch den schwarzen Baum. Verdoppelt den Produktionsbonus des Herzfeuers.",
+      "name": "Ebenholzgnade"
+    },
+    "ebony_ring": {
+      "description": "Dunkler Ring, als Gabe der Waldgötter zurückgelassen",
+      "name": "Ebenholzring"
+    },
+    "elder_scroll": {
+      "description": "Alte Schriftrolle mit verbotenem Wissen",
+      "name": "Alte Schriftrolle"
+    },
+    "explorer_pack": {
+      "description": "Gut gefertigter Lederrucksack, der die Last auf den Schultern erleichtert",
+      "name": "Entdeckerrucksack"
+    },
+    "feeding_ring": {
+      "description": "Ring, der eines Morgens erschien und scheinbar mit deinem Finger verwachsen ist",
+      "name": "Fütternder Ring"
+    },
+    "fishers_hand": {
+      "description": "Alte Techniken der Küstenfischer zum Bau von Fischfallen",
+      "name": "Hand des Fischers"
+    },
+    "flames_touch": {
+      "description": "Herstellungsfähigkeiten sind verbessert",
+      "name": "Berührung der Flamme"
+    },
+    "flames_touch_enhanced": {
+      "description": "Herstellungsfähigkeiten sind stark verbessert",
+      "name": "Starke Berührung der Flamme"
+    },
+    "forests_grace": {
+      "description": "Die Hirsche des Waldes scheinen dich weniger zu bemerken",
+      "name": "Gnade des Waldes"
+    },
+    "frostglass": {
+      "description": "Kristallines Material, das Kälte ausstrahlt",
+      "name": "Frostglas"
+    },
+    "gifted_ring": {
+      "description": "Schlichter Ring, den jemand für dich zurückgelassen hat",
+      "name": "Geschenkter Ring"
+    },
+    "grenadier_bag": {
+      "description": "Verstärkte Ledertasche zum Tragen weiterer Sprengstoffe",
+      "name": "Grenadierstasche"
+    },
+    "highpriest_robe": {
+      "description": "Heilige Robe, mit Goldfaden verziert",
+      "name": "Hohepriesterrobe"
+    },
+    "hollow_king_scepter": {
+      "description": "Zepter des verlorenen Königs, strahlend vor Macht und Wahnsinn. Bergbau bringt 25% mehr Ressourcen, und jede Bergbauaktion hat eine Chance von 5%, alle Erträge dieser Aktion zu verdoppeln.",
+      "name": "Zepter des Hohlen Königs"
+    },
+    "hunter_cloak": {
+      "description": "Geschmeidiger Lederumhang, der jede Bewegung dämpft",
+      "name": "Jägerumhang"
+    },
+    "knights_burden": {
+      "description": "Wissen, das der Ritter mit dir teilte und das schwer auf deinem Geist lastet",
+      "name": "Bürde des Ritters"
+    },
+    "loggers_gloves": {
+      "description": "Robuste Lederhandschuhe, die beim Holzsammeln helfen",
+      "name": "Holzfällerhandschuhe"
+    },
+    "lycan_blood": {
+      "description": "Eine Phiole dicken Blutes von einem Lykanthropen-Alpha. Seine Wirkung ist unbekannt.",
+      "name": "Lykanerblut"
+    },
+    "map_fragment": {
+      "description": "Bruchstücke einer Karte, die an einen unbekannten Ort führen.",
+      "name": "Kartenfragment"
+    },
+    "moon_bracelet": {
+      "description": "Feines, schwereloses Armband aus beständigem weißem Stein",
+      "name": "Mondarmband"
+    },
+    "muttering_amulet": {
+      "description": "Rätselhaftes Amulett, das seltsame Laute von sich gibt",
+      "name": "Murmelndes Amulett"
+    },
+    "necromancer_blood": {
+      "description": "Eine Phiole dunklen Blutes, gewonnen von einem Nekromanten. Seine Wirkung ist unbekannt.",
+      "name": "Nekromantenblut"
+    },
+    "nightshade_bow_schematic": {
+      "description": "Bauplan zur Herstellung eines giftigen Bogens",
+      "name": "Nachtschattenbogen"
+    },
+    "occultist_grimoire": {
+      "description": "Grimoire mit dem unheiligen Wissen eines ketzerischen Okkultisten",
+      "name": "Okkultistengrimoire"
+    },
+    "odd_trinket": {
+      "description": "Seltsam aussehendes Schmuckstück, auf dem Boden gefunden",
+      "name": "Seltsames Schmuckstück"
+    },
+    "ravenfeather_mantle": {
+      "description": "Mystischer Mantel, aus schimmernden Rabenfedern gewoben",
+      "name": "Rabenfedermantel"
+    },
+    "ravens_mark": {
+      "description": "Fremde nähern sich dem Dorf häufiger",
+      "name": "Mal des Raben"
+    },
+    "ravens_mark_enhanced": {
+      "description": "Fremde nähern sich dem Dorf sehr viel häufiger",
+      "name": "Großes Mal des Raben"
+    },
+    "ravens_orb": {
+      "description": "Dunkle Kugel, von Raben mit uraltem Wissen gesegnet",
+      "name": "Rabenkugel"
+    },
+    "red_mask": {
+      "description": "Abstoßende Maske aus tief karmesinrotem Leder",
+      "name": "Rote Maske"
+    },
+    "ring_of_clarity": {
+      "description": "Ring aus vollkommen klarem Kristall",
+      "name": "Ring der Klarheit"
+    },
+    "ring_of_drowned": {
+      "description": "Angelaufener Ring, der immer nass und kalt ist",
+      "name": "Ring der Ertrunkenen"
+    },
+    "ring_of_obedience": {
+      "description": "Ring mit einem kleineren Ring daran, geschenkt von einer glücklichen Frau",
+      "name": "Ring des Gehorsams"
+    },
+    "sacrificial_tunic": {
+      "description": "Heiliges Gewand, das Opfergaben an die alten Götter verstärkt",
+      "name": "Opfergewand"
+    },
+    "sealed_chest": {
+      "description": "Eine sehr robuste Truhe, die du nicht öffnen kannst",
+      "name": "Versiegelte Truhe"
+    },
+    "shadow_boots": {
+      "description": "Bewege dich über jedes Gelände so schnell wie ein Schatten",
+      "name": "Schattenstiefel"
+    },
+    "shadow_flute": {
+      "description": "Knochenflöte, die Schatten unnatürlich bewegen lässt",
+      "name": "Schattenflöte"
+    },
+    "sharp_aim": {
+      "description": "Die Treffsicherheit deiner Jäger ist verbessert",
+      "name": "Scharfes Ziel"
+    },
+    "stonebinders_codex": {
+      "description": "Foliant aus der verborgenen Bibliothek, der Geheimnisse effizienten Bauens offenbart",
+      "name": "Kodex des Steinbinders"
+    },
+    "stormglass_halberd_schematic": {
+      "description": "Bauplan zur Herstellung einer furchteinflößenden Hellebarde",
+      "name": "Sturmglashalberd"
+    },
+    "survivors_last_words": {
+      "description": "Der letzte Segen eines sterbenden Fremden",
+      "name": "Letzte Worte des Überlebenden"
+    },
+    "survivors_notes": {
+      "description": "Altersschwache Schriftrolle voller praktischer Ratschläge, hinterlassen von jemandem, der vor langer Zeit hier lebte. Schaltet einfache Erfolge frei.",
+      "name": "Notizen des Überlebenden"
+    },
+    "tarnished_amulet": {
+      "description": "Altersschwaches Amulett, das Glück bringt",
+      "name": "Angelaufenes Amulett"
+    },
+    "tarnished_compass": {
+      "description": "Altes Relikt für jene, die Führung suchen.",
+      "name": "Angelaufener Kompass"
+    },
+    "unnamed_book": {
+      "description": "In Menschenhaut gebundenes Buch voller verbotenem Wissen",
+      "name": "Namenloses Buch"
+    },
+    "whisperers_mark": {
+      "description": "Das Mal des Flüsterers in der Dunkelheit",
+      "name": "Mal des Flüsterers"
+    },
+    "whispering_cube": {
+      "description": "Perfekt polierter Metallwürfel unbekannter Herkunft, der Fragmente der Geschichte der verschwundenen Zivilisation flüstert.",
+      "name": "Flüsternder Würfel"
+    },
+    "wooden_figure": {
+      "description": "Geschnitzte Holzfigur einer beunruhigenden Kreatur mit Tentakeln",
+      "name": "Holzfigur"
+    }
+  },
+  "fellowship": {
+    "ashwraith_huntress": {
+      "description": "Wilde Jägerin eines Waldstammes, durch Blutschwur gebunden. Schaltet Verbesserungen der Jagdfähigkeit und der Jägerproduktion frei.",
+      "name": "Aschengeist-Jägerin"
+    },
+    "disgraced_prior": {
+      "description": "Ehemaliger Prior, aus seinem Orden verstoßen. Sühnt durch endlose Arbeit. Kann zugewiesen werden, um Aktionen automatisch zu wiederholen.",
+      "name": "Gefallener Prior"
+    },
+    "elder_wizard": {
+      "description": "Alter Zauberer in seinen letzten Tagen, der vor langer Zeit die Künste des arkanen Feuers meisterte. Schaltet die Kampffähigkeit Blutflammenkugel frei.",
+      "name": "Alter Zauberer"
+    },
+    "one_eyed_crow": {
+      "description": "Mystische Krähe mit einem einzigen durchdringenden Auge, mit dem Krähengeschirr gezähmt. Schaltet Krähenauge und das Senden von Nachrichten frei.",
+      "name": "Einäugige Krähe"
+    },
+    "restless_knight": {
+      "description": "Kampferprobter Veteran, der die Überreste der alten Welt gesehen hat. Schaltet die Kampffähigkeit Schmetterschlag frei.",
+      "name": "Rastloser Ritter"
+    }
+  },
+  "tools": {
+    "adamant_axe": {
+      "description": "Unzerbrechliche Axt, aus dem härtesten Metall geschmiedet",
+      "name": "Adamantaxt"
+    },
+    "adamant_lantern": {
+      "description": "Ultimative Lichtquelle, die jeden Pfad erhellt",
+      "name": "Adamantlaterne"
+    },
+    "adamant_pickaxe": {
+      "description": "Gipfel der Bergbauwerkzeuge, unbeugsam und präzise",
+      "name": "Adamantspitzhacke"
+    },
+    "blacksmith_hammer": {
+      "description": "Legendärer Schmiedehammer, einst im Besitz eines großen Schmieds",
+      "name": "Schmiedehammer"
+    },
+    "blacksteel_axe": {
+      "description": "Axt aus seltenem Schwarzstahl",
+      "name": "Schwarzstahlaxt"
+    },
+    "blacksteel_lantern": {
+      "description": "Laterne aus seltenem Schwarzstahl",
+      "name": "Schwarzstahllaterne"
+    },
+    "blacksteel_pickaxe": {
+      "description": "Spitzhacke aus seltenem Schwarzstahl",
+      "name": "Schwarzstahlspitzhacke"
+    },
+    "bone_saw": {
+      "description": "Werkzeug des Nekromanten, unnatürlich effizient beim Zerlegen",
+      "name": "Knochensäge"
+    },
+    "crow_harness": {
+      "description": "Ein eigens gefertigtes Geschirr zum Fangen von Krähen. Kann genutzt werden, um eine Krähe in der Schwarzklamm zu fangen.",
+      "name": "Krähengeschirr"
+    },
+    "giant_trap": {
+      "description": "Massive Falle, die riesige Waldkreaturen fangen kann",
+      "name": "Riesenfalle"
+    },
+    "hidden_library_map": {
+      "description": "Karte aus dem Kloster, die den Ort einer verborgenen Bibliothek tief in der Höhle zeigt",
+      "name": "Karte der verborgenen Bibliothek"
+    },
+    "iron_axe": {
+      "description": "Scharfe Axt für schweres Hacken",
+      "name": "Eisenaxt"
+    },
+    "iron_lantern": {
+      "description": "Einfache Laterne, die verlässliches Licht spendet",
+      "name": "Eisenlaterne"
+    },
+    "iron_pickaxe": {
+      "description": "Robuste Spitzhacke für effizienten Bergbau",
+      "name": "Eisenspitzhacke"
+    },
+    "mastermason_chisel": {
+      "description": "Erlesen gefertigtes Werkzeug eines längst vergessenen Baumeisters",
+      "name": "Meistermaurermeißel"
+    },
+    "natharit_pickaxe": {
+      "description": "Extrem robuste Spitzhacke aus unbekanntem Material von außergewöhnlicher Qualität",
+      "name": "Natharit-Spitzhacke"
+    },
+    "obsidian_axe": {
+      "description": "Legendäre Axt mit messerscharfen vulkanischen Schneiden",
+      "name": "Obsidianaxt"
+    },
+    "obsidian_lantern": {
+      "description": "Mächtige Laterne, die starkes, unerschütterliches Licht wirft",
+      "name": "Obsidianlaterne"
+    },
+    "obsidian_pickaxe": {
+      "description": "Meisterhaftes Bergbauwerkzeug aus Vulkanglas",
+      "name": "Obsidianspitzhacke"
+    },
+    "occultist_map": {
+      "description": "Altersschwache Karte, die die Kammer eines Okkultisten in der Höhle offenbart",
+      "name": "Okkultistenkarte"
+    },
+    "reinforced_rope": {
+      "description": "Starkes Seil, das Zugang zu tieferen Höhlenkammern ermöglicht",
+      "name": "Verstärktes Seil"
+    },
+    "skeleton_key": {
+      "description": "Ein rätselhafter Schlüssel, von dem es heißt, er öffne jedes Schloss",
+      "name": "Skelettschlüssel"
+    },
+    "skull_lantern": {
+      "description": "Aus verfluchtem Knochen geschmiedet, erhellt sie die tiefsten Tiefen",
+      "name": "Schädellaterne"
+    },
+    "steel_axe": {
+      "description": "Fein gearbeitete Axt aus gehärtetem Stahl",
+      "name": "Stahlaxt"
+    },
+    "steel_lantern": {
+      "description": "Helle Laterne, die die dunkelsten Orte erleuchtet",
+      "name": "Stahllaterne"
+    },
+    "steel_pickaxe": {
+      "description": "Sehr robustes Bergbauwerkzeug aus widerstandsfähigem Stahl",
+      "name": "Stahlspitzhacke"
+    },
+    "stone_axe": {
+      "description": "Einfache Axt zum Holzhacken",
+      "name": "Steinaxt"
+    },
+    "stone_pickaxe": {
+      "description": "Primitive Spitzhacke für den Bergbau",
+      "name": "Steinspitzhacke"
+    }
+  },
+  "weapons": {
+    "adamant_sword": {
+      "description": "Legendäre Klinge von unvergleichlicher Stärke",
+      "name": "Adamantschwert"
+    },
+    "arbalest": {
+      "description": "Sorgfältig gefertigte Armbrust, entworfen von einem brillanten Ingenieur",
+      "name": "Armbrust"
+    },
+    "ashen_dagger": {
+      "description": "Dolch aus Vulkanasche, übergeben vom Aschenbringer",
+      "name": "Aschener Dolch"
+    },
+    "ashen_greatshield": {
+      "description": "Massiver Schild, geschmiedet aus den Knochen der Kreatur des unterirdischen Sees",
+      "name": "Aschener Großschild"
+    },
+    "ashfire_bomb": {
+      "description": "Verheerende Bombe, die mit jenseitigem Feuer glüht",
+      "name": "Aschenfeuerbombe"
+    },
+    "blacksteel_bow": {
+      "description": "Bogen aus seltenem Schwarzstahl",
+      "name": "Schwarzstahlbogen"
+    },
+    "blacksteel_sword": {
+      "description": "Schwert aus seltenem Schwarzstahl",
+      "name": "Schwarzstahlschwert"
+    },
+    "bloodstone_staff": {
+      "description": "Stab, gekrönt mit Blutstein, pulsierend vor dunkler Energie",
+      "name": "Blutsteinstab"
+    },
+    "compound_bow": {
+      "description": "Hochpräzise Waffe der verschwundenen Zivilisation",
+      "name": "Kompositbogen"
+    },
+    "crude_bow": {
+      "description": "Einfacher Bogen, verlässlich in jeder Prüfung",
+      "name": "Einfacher Bogen"
+    },
+    "ember_bomb": {
+      "description": "Mächtige Bombe mit glühendem Kern, die intensive Hitze erzeugt",
+      "name": "Glutbombe"
+    },
+    "frostglass_sword": {
+      "description": "Klinge aus Frostglas, die kalte Macht ausstrahlt",
+      "name": "Frostglasschwert"
+    },
+    "huntsman_bow": {
+      "description": "Verbesserter Bogen, fein ausbalanciert und präzise",
+      "name": "Jägerbogen"
+    },
+    "iron_sword": {
+      "description": "Robuste Eisenklinge, die die Kampfkraft steigert",
+      "name": "Eisenschwert"
+    },
+    "long_bow": {
+      "description": "Überlegener Bogen mit größerer Reichweite und Genauigkeit",
+      "name": "Langbogen"
+    },
+    "master_bow": {
+      "description": "Ultimativer Bogen, unerreicht in Kraft und Kontrolle",
+      "name": "Meisterbogen"
+    },
+    "nightshade_bow": {
+      "description": "Bogen aus dunklem Holz, dessen Pfeile Gift tragen",
+      "name": "Nachtschattenbogen"
+    },
+    "nordic_war_axe": {
+      "description": "Legendäre Kriegsaxt, geschmiedet von einem Wikinger-Meisterschmied",
+      "name": "Nordische Kriegsaxt"
+    },
+    "obsidian_sword": {
+      "description": "Messerscharfe Klinge aus Vulkanglas",
+      "name": "Obsidianschwert"
+    },
+    "steel_sword": {
+      "description": "Fein geschmiedete Stahlklinge mit überlegener Balance",
+      "name": "Stahlschwert"
+    },
+    "stormglass_halberd": {
+      "description": "Überragende Hellebarde aus meisterhaft veredeltem Adamant",
+      "name": "Sturmglashalberd"
+    },
+    "veinfire_elixir": {
+      "description": "Alchemistisches Heilelixier, destilliert aus seltener Aderwurzel",
+      "name": "Aderfeuer-Elixier"
+    },
+    "void_bomb": {
+      "description": "Furchteinflößende Bombe, die den Raum um sich zu verzerren scheint",
+      "name": "Leerenbombe"
+    },
+    "war_bow": {
+      "description": "Sehr mächtiger Bogen, gefertigt für Stärke und Präzision",
+      "name": "Kriegsbogen"
+    }
+  }
+}

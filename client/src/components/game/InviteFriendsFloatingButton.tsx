@@ -9,8 +9,10 @@ import {
   REFERRAL_REWARD_GOLD,
 } from "@/game/socialPromptAuto";
 import { isInviteFriendsFloatingButtonVisible } from "@/game/socialPromoExclusiveReward";
+import { useTranslation } from "react-i18next";
 
 export default function InviteFriendsFloatingButton() {
+  const { t } = useTranslation("ui");
   const { toast } = useToast();
   const referralCount = useGameStore((s) => s.referralCount ?? 0);
   const referrals = useGameStore((s) => s.referrals ?? []);
@@ -34,13 +36,13 @@ export default function InviteFriendsFloatingButton() {
     try {
       await copyInviteLinkToClipboard();
       toast({
-        title: "Invite link copied!",
-        description: `Share it with friends to earn ${REFERRAL_REWARD_GOLD} Gold each.`,
+        title: t("invite.linkCopied"),
+        description: t("invite.linkCopiedDesc", { amount: REFERRAL_REWARD_GOLD }),
       });
     } catch (error) {
       logger.error("Failed to copy invite link:", error);
       toast({
-        title: "Could not copy invite link",
+        title: t("invite.copyFailed"),
         variant: "destructive",
       });
     }
@@ -51,9 +53,11 @@ export default function InviteFriendsFloatingButton() {
       <TooltipWrapper
         tooltip={
           <p className="text-xs">
-            Invite your friends and both of you will receive {REFERRAL_REWARD_GOLD}{" "}
-            Gold. You can invite up to {SOCIAL_PROMPT_REFERRAL_CAP} friends. (
-            {referralCount}/{SOCIAL_PROMPT_REFERRAL_CAP} invited).
+            {t("invite.tooltip", {
+              amount: REFERRAL_REWARD_GOLD,
+              cap: SOCIAL_PROMPT_REFERRAL_CAP,
+              count: referralCount,
+            })}
           </p>
         }
         tooltipId="referral-floating-invite"
@@ -72,10 +76,10 @@ export default function InviteFriendsFloatingButton() {
               className="h-4 w-4 shrink-0 opacity-90"
               aria-hidden
             />
-            <span>Invite</span>
+            <span>{t("invite.button")}</span>
           </div>
           <span className="shrink-0 font-semibold">
-            +{REFERRAL_REWARD_GOLD} Gold
+            {t("invite.goldBonus", { amount: REFERRAL_REWARD_GOLD })}
           </span>
         </button>
       </TooltipWrapper>

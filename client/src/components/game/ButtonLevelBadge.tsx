@@ -9,6 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { CircularProgress } from "@/components/ui/circular-progress";
+import { useTranslation } from "react-i18next";
 
 interface ButtonLevelBadgeProps {
   upgradeKey: UpgradeKey;
@@ -17,6 +18,7 @@ interface ButtonLevelBadgeProps {
 const CRAFT_UPGRADE_KEYS: UpgradeKey[] = ["craftTorches", "craftBoneTotems", "craftLeatherTotems"];
 
 export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
+  const { t } = useTranslation("ui");
   const state = useGameStore((s) => s);
   const buttonUpgrade = useGameStore(
     (state) => state.buttonUpgrades[upgradeKey],
@@ -83,19 +85,29 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
                     </div>
                     <div className="flex flex-col gap-0.5">
                       <div className="text-xs">
-                        Bonus:{" "}
+                        {t("badges.bonus")}{" "}
                         <span className="font-medium">
                           {isCraftUpgrade && produceAmount !== undefined
-                            ? `Craft x${produceAmount}`
-                            : `+${info.bonus}%`}
+                            ? t("badges.craftMultiplier", {
+                                amount: produceAmount,
+                              })
+                            : t("badges.bonusPercent", {
+                                percent: info.bonus,
+                              })}
                         </span>
                       </div>
                       <div className="text-xs">
-                        Next Bonus:{" "}
+                        {t("badges.nextBonus")}{" "}
                         <span className="font-medium">
                           {isCraftUpgrade && produceAmount !== undefined && info.nextLevel
-                            ? `Craft x${Math.floor(1 * (1 + (info.nextLevel.bonus || 0) / 100))}`
-                            : `+${info.nextLevel.bonus}%`}
+                            ? t("badges.craftMultiplier", {
+                                amount: Math.floor(
+                                  1 * (1 + (info.nextLevel.bonus || 0) / 100),
+                                ),
+                              })
+                            : t("badges.bonusPercent", {
+                                percent: info.nextLevel.bonus,
+                              })}
                         </span>
                       </div>
                     </div>
@@ -104,22 +116,22 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
               ) : (
                 <div className="flex flex-col gap-0.5">
                   <div className="flex justify-between gap-1">
-                    <span>Bonus:</span>
+                    <span>{t("badges.bonus")}</span>
                     <span>
                       {isCraftUpgrade && produceAmount !== undefined
-                        ? `Craft x${produceAmount}`
-                        : `+${info.bonus}%`}
+                        ? t("badges.craftMultiplier", { amount: produceAmount })
+                        : t("badges.bonusPercent", { percent: info.bonus })}
                     </span>
                   </div>
                   {isCraftUpgrade && info.isMaxLevel && (
                     <div className="text-xs text-muted-foreground">
-                      -50% execution time
+                      {t("badges.executionTimeReduction")}
                     </div>
                   )}
                 </div>
               )}
               {info.isMaxLevel && (
-                <div className="mt-1 pt-1 border-t">max level</div>
+                <div className="mt-1 pt-1 border-t">{t("badges.maxLevel")}</div>
               )}
             </div>
           </div>

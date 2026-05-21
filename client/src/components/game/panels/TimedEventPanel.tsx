@@ -24,7 +24,7 @@ import {
 } from "@/game/rules/effectsStats";
 import { bloodMoonSacrificeAmount } from "@/game/cruelMode";
 import { getVillagersInVillage } from "@/game/population";
-import { GAMBLER_LEAVE_AFTER_GAMES_MESSAGE } from "@/game/rules/eventsGambler";
+import { getGamblerLeaveAfterGamesMessage } from "@/game/rules/eventsGambler";
 import GamblerDiceDialog from "@/components/game/GamblerDiceDialog";
 import { getTotalLuck } from "@/game/rules/effectsCalculation";
 import {
@@ -33,6 +33,7 @@ import {
   GAMBLER_TUTORIAL_PLAYS,
   GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY,
 } from "@/game/gamblerSession";
+import { useTranslation } from "react-i18next";
 
 // Stat icon mapping
 const statIcons: Record<string, { icon: string; color: string }> = {
@@ -42,6 +43,7 @@ const statIcons: Record<string, { icon: string; color: string }> = {
 };
 
 export default function TimedEventPanel() {
+  const { t } = useTranslation(["ui", "common"]);
   const {
     timedEventTab,
     applyEventChoice,
@@ -390,7 +392,7 @@ export default function TimedEventPanel() {
       <div className="space-y-2 pt-1">
         {(isMerchantEvent || isCollectorEvent) && (
           <h3 className="text-xs font-medium flex items-center">
-            <span>{isMerchantEvent ? "Buy" : "Sell"}</span>
+            <span>{isMerchantEvent ? t("ui:timedEvent.buy") : t("ui:timedEvent.sell")}</span>
             {isMerchantEvent &&
               (() => {
                 const knowledge = gameState.stats?.knowledge || 0;
@@ -404,24 +406,27 @@ export default function TimedEventPanel() {
                     <TooltipWrapper
                       tooltip={
                         <div className="text-xs whitespace-nowrap">
-                          {Math.round(totalDiscount * 100)}% discount
+                          {t("ui:timedEvent.discount", {
+                            percent: Math.round(totalDiscount * 100),
+                          })}
                           {(knowledgeDiscount > 0 || hasRingOfObedience) && (
                             <>
                               <br />
                               {knowledgeDiscount > 0 && (
                                 <span className="text-gray-400/70">
-                                  {Math.round(knowledgeDiscount * 100)}% from
-                                  Knowledge
-                                  {isKnowledgeBonusMaxed(knowledge)
-                                    ? " (max)"
-                                    : ""}
+                                  {t("ui:timedEvent.discountFromKnowledge", {
+                                    percent: Math.round(knowledgeDiscount * 100),
+                                    max: isKnowledgeBonusMaxed(knowledge)
+                                      ? t("ui:timedEvent.knowledgeMax")
+                                      : "",
+                                  })}
                                 </span>
                               )}
                               {knowledgeDiscount > 0 &&
                                 hasRingOfObedience && <br />}
                               {hasRingOfObedience && (
                                 <span className="text-gray-400/70">
-                                  5% from Ring of Obedience
+                                  {t("ui:timedEvent.discountFromRing")}
                                 </span>
                               )}
                             </>
@@ -605,7 +610,7 @@ export default function TimedEventPanel() {
                         <div className="border-t border-border my-1" />
                       )}
                       {successPercentage && (
-                        <div>Success Chance: {successPercentage}</div>
+                        <div>{t("ui:timedEvent.successChance", { percent: successPercentage })}</div>
                       )}
                     </div>
                   }
@@ -677,7 +682,7 @@ export default function TimedEventPanel() {
             disabled={timeRemaining <= 0 || safetyTimeRemaining > 0}
             button_id="timedevent-say_goodbye"
           >
-            Say Goodbye
+            {t("ui:timedEvent.sayGoodbye")}
           </Button>
         )}
       </div>
@@ -826,10 +831,18 @@ export default function TimedEventPanel() {
 
               if (practiceRound) {
                 const outcome = gg.outcome;
-                const msg =
+                const msgKey =
                   next > 0
-                    ? `${outcome === "win" ? "You won" : "You lost"} the practice round (no gold at stake). ${next} of ${GAMBLER_TUTORIAL_PLAYS} practice games remaining.`
-                    : `${outcome === "win" ? "You won" : "You lost"} the practice round (no gold at stake). Practice complete — you may place a gold wager.`;
+                    ? outcome === "win"
+                      ? "gambler.practiceWinRemaining"
+                      : "gambler.practiceLoseRemaining"
+                    : outcome === "win"
+                      ? "gambler.practiceWinComplete"
+                      : "gambler.practiceLoseComplete";
+                const msg = t(msgKey, {
+                  remaining: next,
+                  total: GAMBLER_TUTORIAL_PLAYS,
+                });
                 useGameStore.setState((s) => ({
                   log: [
                     ...s.log,
@@ -920,7 +933,7 @@ export default function TimedEventPanel() {
             );
             if (resolved && isGamblerEvent) {
               const gamblerEventTitle =
-                st.timedEventTab.event?.title ?? "The Obsessed Gambler";
+                st.timedEventTab.event?.title ?? t("gambler.title");
               setHighlightedResources([]);
               setTimedEventTab(false);
               if (showGamblerDepartureDialog) {
@@ -928,14 +941,14 @@ export default function TimedEventPanel() {
                 setTimeout(() => {
                   const departureEntry: LogEntry = {
                     id: `gambler-depart-${Date.now()}`,
-                    message: GAMBLER_LEAVE_AFTER_GAMES_MESSAGE,
+                    message: getGamblerLeaveAfterGamesMessage(),
                     timestamp: Date.now(),
                     type: "event",
                     title: gamblerEventTitle,
                     choices: [
                       {
                         id: "acknowledge",
-                        label: "Continue",
+                        label: t("common:buttons.continue"),
                         effect: () => ({}),
                       },
                     ],

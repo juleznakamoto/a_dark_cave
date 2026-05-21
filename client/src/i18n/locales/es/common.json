@@ -1,0 +1,88 @@
+{
+  "buttons": {
+    "close": "Cerrar",
+    "continue": "Continuar",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "refresh": "Actualizar",
+    "dismiss": "Descartar",
+    "fight": "Luchar",
+    "retreat": "Retirarse",
+    "refuse": "Rechazar",
+    "accept": "Aceptar",
+    "back": "Volver",
+    "claim": "Reclamar",
+    "activate": "Activar",
+    "deactivate": "Desactivar"
+  },
+  "status": {
+    "loading": "Cargando...",
+    "processing": "Procesando...",
+    "free": "Gratis",
+    "error": "Error",
+    "success": "¡Éxito!",
+    "active": "Activo",
+    "activated": "Activado"
+  },
+  "tabs": {
+    "cave": "Cueva",
+    "village": "Aldea",
+    "city": "Ciudad",
+    "forest": "Bosque",
+    "estate": "Finca",
+    "bastion": "Bastión",
+    "fortress": "Fortaleza",
+    "trader": "Mercader",
+    "achievements": "Logros",
+    "timedEvent": "Evento cronometrado"
+  },
+  "resources": {
+    "wood": "Madera",
+    "stone": "Piedra",
+    "food": "Comida",
+    "veinroot": "Raíz de vena",
+    "bones": "Huesos",
+    "fur": "Pieles",
+    "leather": "Cuero",
+    "bone_totem": "Tótem de hueso",
+    "leather_totem": "Tótem de cuero",
+    "iron": "Hierro",
+    "coal": "Carbón",
+    "sulfur": "Azufre",
+    "obsidian": "Obsidiana",
+    "adamant": "Adamantita",
+    "steel": "Acero",
+    "blacksteel": "Acero negro",
+    "moonstone": "Piedra lunar",
+    "black_powder": "Pólvora negra",
+    "ember_bomb": "Bomba de brasas",
+    "ashfire_dust": "Polvo de fuego ceniciento",
+    "ashfire_bomb": "Bomba de fuego ceniciento",
+    "void_bomb": "Bomba del vacío",
+    "veinfire_elixir": "Elixir de fuego venal",
+    "poison_arrows": "Flechas envenenadas",
+    "torch": "Antorcha",
+    "silver": "Plata",
+    "gold": "Oro"
+  },
+  "stats": {
+    "strength": "Fuerza",
+    "knowledge": "Conocimiento",
+    "luck": "Suerte",
+    "madness": "Locura"
+  },
+  "time": {
+    "never": "Nunca",
+    "hoursMinutes": "{{hours}} h {{minutes}} min",
+    "minutesSeconds": "{{minutes}} min {{seconds}} s"
+  },
+  "population": {
+    "villager_one": "{{count}} aldeano",
+    "villager_other": "{{count}} aldeanos",
+    "maxPopulation": "+{{count}} población máxima"
+  },
+  "currency": {
+    "goldAmount": "{{amount}} de oro"
+  }
+}

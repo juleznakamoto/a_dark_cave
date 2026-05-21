@@ -16,6 +16,12 @@ import { getActionBonuses } from "./effectsCalculation";
 import { formatNumber } from "@/lib/utils";
 import { getVillagersInVillage } from "@/game/population";
 import { clothingEffects } from "./effects";
+import i18n from "i18next";
+import {
+  formatTooltipCostLine,
+  formatTooltipResourceName,
+  getUiTooltip,
+} from "@/i18n/tooltipLabels";
 
 // Import action modules
 import { caveCraftResources } from "./caveCraftResources";
@@ -527,9 +533,16 @@ export function getActionCostBreakdown(
   // Handle dynamic totem costs
   if (actionId === "boneTotems") {
     const dynamicCost = getBoneTotemsCost(state);
+    const resource = i18n.t("cave.craftBoneTotem", {
+      count: dynamicCost,
+      ns: "ui",
+    });
     return [
       {
-        text: `-${formatNumber(dynamicCost)} Bone Totem${dynamicCost !== 1 ? "s" : ""}`,
+        text: getUiTooltip("costLine", "-{{amount}} {{resource}}", {
+          amount: formatNumber(dynamicCost),
+          resource,
+        }),
         satisfied: (state.resources.bone_totem || 0) >= dynamicCost,
       },
     ];
@@ -538,9 +551,16 @@ export function getActionCostBreakdown(
   // Handle dynamic cost for leather totems
   if (actionId === "leatherTotems") {
     const dynamicCost = getLeatherTotemsCost(state);
+    const resource = i18n.t("cave.craftLeatherTotem", {
+      count: dynamicCost,
+      ns: "ui",
+    });
     return [
       {
-        text: `-${formatNumber(dynamicCost)} Leather Totem${dynamicCost !== 1 ? "s" : ""}`,
+        text: getUiTooltip("costLine", "-{{amount}} {{resource}}", {
+          amount: formatNumber(dynamicCost),
+          resource,
+        }),
         satisfied: (state.resources.leather_totem || 0) >= dynamicCost,
       },
     ];
@@ -563,7 +583,7 @@ export function getActionCostBreakdown(
     const dynamicCost = getAnimalsCost(state);
     return [
       {
-        text: `-${formatNumber(dynamicCost)} Food`,
+        text: formatTooltipCostLine(dynamicCost, "food"),
         satisfied: (state.resources.food || 0) >= dynamicCost,
       },
     ];
@@ -646,10 +666,7 @@ export function getActionCostBreakdown(
     const resourceNameFormatted =
       resource.startsWith("relics.") && clothingEffects[resourceName]?.name
         ? clothingEffects[resourceName].name
-        : resourceName
-            .split("_")
-            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(" ");
+        : formatTooltipResourceName(resourceName);
 
     // Handle boolean true values as -1
     const displayCost = adjustedAmount === true ? 1 : adjustedAmount;
@@ -668,7 +685,10 @@ export function getActionCostBreakdown(
     }
 
     breakdown.push({
-      text: `-${formatNumber(displayCost)} ${resourceNameFormatted}`,
+      text: getUiTooltip("costLine", "-{{amount}} {{resource}}", {
+        amount: formatNumber(displayCost),
+        resource: resourceNameFormatted,
+      }),
       satisfied,
     });
   });
@@ -704,17 +724,17 @@ export function getEventChoiceCostBreakdown(
       const resourceNameFormatted =
         resource.startsWith("relics.") && clothingEffects[resourceName]?.name
           ? clothingEffects[resourceName].name
-          : resourceName
-              .split("_")
-              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-              .join(" ");
+          : formatTooltipResourceName(resourceName);
 
       const displayCost = amount as number;
       const satisfied =
         (resources[resourceName as keyof typeof resources] || 0) >= displayCost;
 
       breakdown.push({
-        text: `-${formatNumber(displayCost)} ${resourceNameFormatted}`,
+        text: getUiTooltip("costLine", "-{{amount}} {{resource}}", {
+          amount: formatNumber(displayCost),
+          resource: resourceNameFormatted,
+        }),
         satisfied,
       });
     });
@@ -732,17 +752,16 @@ export function getEventChoiceCostBreakdown(
         const amount = parseInt(match[1].replace(/'/g, ""), 10);
         const resource = match[2].trim().toLowerCase().replace(/\s+/g, '_');
 
-        // Replace underscores with spaces and capitalize each word
-        const resourceNameFormatted = resource
-          .split("_")
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(" ");
+        const resourceNameFormatted = formatTooltipResourceName(resource);
 
         const satisfied =
           (resources[resource as keyof typeof resources] || 0) >= amount;
 
         breakdown.push({
-          text: `-${formatNumber(amount)} ${resourceNameFormatted}`,
+          text: getUiTooltip("costLine", "-{{amount}} {{resource}}", {
+            amount: formatNumber(amount),
+            resource: resourceNameFormatted,
+          }),
           satisfied,
         });
       }

@@ -1,0 +1,616 @@
+{
+  "animals": {
+    "label": "Animals"
+  },
+  "banditLair": {
+    "label": "Bandit Lair"
+  },
+  "blackreachCanyon": {
+    "label": "Blackreach Canyon"
+  },
+  "blastPortal": {
+    "label": "Blast Gate"
+  },
+  "boneTotems": {
+    "label": "Bone Totems"
+  },
+  "buildAdvancedBlacksmith": {
+    "description": "Improved blacksmith with better tools and techniques",
+    "label": "Advanced Blacksmith"
+  },
+  "buildAlchemistHall": {
+    "description": "Hall where the alchemist creates powders and explosives",
+    "label": "Alchemist's Hall"
+  },
+  "buildAltar": {
+    "description": "Sacred place of worship and sacrificing",
+    "label": "Altar"
+  },
+  "buildBank": {
+    "description": "Financial building allowing to make larger investments",
+    "label": "Bank"
+  },
+  "buildBastion": {
+    "description": "Massive fortification serving as the last line of defense",
+    "label": "Bastion"
+  },
+  "buildBlackEstate": {
+    "description": "Towering estate of black timber and stone, overlooking the city.",
+    "label": "Black Estate"
+  },
+  "buildBlackMonolith": {
+    "description": "Dark monument built for living sacrifices",
+    "label": "Black Monolith"
+  },
+  "buildBlacksmith": {
+    "description": "Blacksmith with basic tools for crafting",
+    "label": "Blacksmith"
+  },
+  "buildBoneTemple": {
+    "description": "Monstrous structure built of bones, honoring the old gods",
+    "label": "Bone Temple"
+  },
+  "buildBoneyard": {
+    "description": "Ground where the dead are laid to rest, easing the villager's grief.",
+    "label": "Boneyard"
+  },
+  "buildBottomlessPit": {
+    "description": "Extremely deep pit reaching the rarest materials",
+    "label": "Bottomless Pit"
+  },
+  "buildCabin": {
+    "description": "Basic hunting cabin with tools for hunters",
+    "label": "Cabin"
+  },
+  "buildChitinPlating": {
+    "description": "Fortifications are reinforced with impenetrable chitin plates",
+    "label": "Chitin Plating"
+  },
+  "buildClerksHut": {
+    "description": "Hut where clerks track resources of the village",
+    "label": "Clerk's Hut"
+  },
+  "buildCoinhouse": {
+    "description": "Modest financial building allowing to make small investments",
+    "label": "Coinhouse"
+  },
+  "buildConsecratedPaleCross": {
+    "description": "Towering monument of bleached bones geatly amplifying bone totem sacrifices.",
+    "label": "Consecrated Pale Cross"
+  },
+  "buildDarkEstate": {
+    "description": "Secluded estate providing refuge from the world",
+    "label": "Dark Estate"
+  },
+  "buildDeepPit": {
+    "description": "Very deep pit exposing valuable mineral veins",
+    "label": "Deep Pit"
+  },
+  "buildDeepeningPit": {
+    "description": "Deeper pit reaching further earth resources",
+    "label": "Deepening Pit"
+  },
+  "buildFortifiedMoat": {
+    "description": "Defensive moat slowing and weakening attackers",
+    "label": "Fortified Moat"
+  },
+  "buildFortifiedStorehouse": {
+    "description": "Reinforced storage building with enhanced capacity",
+    "label": "Fortified Storehouse"
+  },
+  "buildFoundry": {
+    "description": "Specialized building for steel production",
+    "label": "Foundry"
+  },
+  "buildFurTents": {
+    "description": "Warm fur shelter used by the wandering tribe",
+    "label": "Fur Tent"
+  },
+  "buildGrandBazaar": {
+    "description": "Sprawling marketplace attracting more merchants",
+    "label": "Grand Bazaar"
+  },
+  "buildGrandBlacksmith": {
+    "description": "Advanced blacksmith capable of creating the finest products",
+    "label": "Grand Blacksmith"
+  },
+  "buildGrandHunterLodge": {
+    "description": "Supreme hunting lodge for master hunters",
+    "label": "Grand Hunter Lodge"
+  },
+  "buildGrandRepository": {
+    "description": "Massive repository with exceptional storage capacity",
+    "label": "Grand Repository"
+  },
+  "buildGreatCabin": {
+    "description": "Expanded hunting lodge increasing hunter output",
+    "label": "Great Cabin"
+  },
+  "buildGreatVault": {
+    "description": "Supreme vault capable of storing immense resources",
+    "label": "Great Vault"
+  },
+  "buildHeartfire": {
+    "description": "Sacred fire offering comfort and a sense of protection",
+    "label": "Heartfire"
+  },
+  "buildHighTannery": {
+    "description": "Supreme tannery for expert leather craftsmen",
+    "label": "High Tannery"
+  },
+  "buildImprovedTraps": {
+    "description": "Upgraded perimeter traps with stronger mechanisms and better coverage",
+    "label": "Improved Traps"
+  },
+  "buildInkwardenAcademy": {
+    "description": "Grand academy of scholars providing supreme knowledge and resource tracking",
+    "label": "Inkwarden Academy"
+  },
+  "buildLonghouse": {
+    "description": "Massive nordic communal hall housing many villagers",
+    "label": "Longhouse"
+  },
+  "buildMasterTannery": {
+    "description": "Advanced tannery improving leather production",
+    "label": "Master Tannery"
+  },
+  "buildMasterworkFoundry": {
+    "description": "Foundry with superior steel production",
+    "label": "Masterwork Foundry"
+  },
+  "buildMerchantsGuild": {
+    "description": "Powerful guild bringing the best trades and merchants",
+    "label": "Merchants Guild"
+  },
+  "buildPaleCross": {
+    "description": "Towering monument of bleached bones amplifying bone totem sacrifices.",
+    "label": "Pale Cross"
+  },
+  "buildPalisades": {
+    "description": "Defensive walls protecting the settlement",
+    "label": "Palisades"
+  },
+  "buildPillarOfClarity": {
+    "description": "Pure white obelisk that cleanses darkness from minds",
+    "label": "Pillar of Clarity"
+  },
+  "buildPrimeFoundry": {
+    "description": "Advanced foundry with improved steel production",
+    "label": "Prime Foundry"
+  },
+  "buildQuarry": {
+    "description": "Stone quarry increasing gatherer stone output",
+    "label": "Quarry"
+  },
+  "buildSanctum": {
+    "description": "Divine sanctum providing the greatest protection against the darkness",
+    "label": "Sanctum"
+  },
+  "buildScriptorium": {
+    "description": "Library of knowledge providing detailed tracking of resources",
+    "label": "Scriptorium"
+  },
+  "buildShallowPit": {
+    "description": "Small mining pit allowing extraction of minerals",
+    "label": "Shallow Pit"
+  },
+  "buildShrine": {
+    "description": "Holy shrine providing greater protection against madness",
+    "label": "Shrine"
+  },
+  "buildStoneHut": {
+    "description": "Durable stone dwelling providing superior shelter",
+    "label": "Stone Hut"
+  },
+  "buildStorehouse": {
+    "description": "Expanded storage facility for more resources",
+    "label": "Storehouse"
+  },
+  "buildSupplyHut": {
+    "description": "Small hut for storing resources",
+    "label": "Supply Hut"
+  },
+  "buildTannery": {
+    "description": "Workshop where furs are processed into leather",
+    "label": "Tannery"
+  },
+  "buildTemple": {
+    "description": "Grand temple offering strong resistance to madness",
+    "label": "Temple"
+  },
+  "buildTimberMill": {
+    "description": "Mill helping processes wood more efficiently",
+    "label": "Timber Mill"
+  },
+  "buildTradePost": {
+    "description": "Trading post attracting merchants selling goods",
+    "label": "Trade Post"
+  },
+  "buildTraps": {
+    "description": "Traps around the village weakening all attackers",
+    "label": "Traps"
+  },
+  "buildTreasury": {
+    "description": "Big financial building allowing to make very large investments",
+    "label": "Treasury"
+  },
+  "buildVillageWarehouse": {
+    "description": "Large warehouse capable of storing vast quantities",
+    "label": "Village Warehouse"
+  },
+  "buildWatchtower": {
+    "description": "Tall tower providing early warning of threats",
+    "label": "Watchtower"
+  },
+  "buildWizardTower": {
+    "description": "Mystical tower where the wizard conducts arcane research",
+    "label": "Wizard Tower"
+  },
+  "buildWoodenHut": {
+    "description": "Simple wooden hut providing basic shelter",
+    "label": "Wooden Hut"
+  },
+  "canyonBridge": {
+    "label": "Canyon Bridge"
+  },
+  "castleRuins": {
+    "label": "Castle Ruins"
+  },
+  "chopWood": {
+    "label": "Gather Wood",
+    "log": {
+      "firstVisit": "Some wood lies scattered near the cave's entrance. It might prove useful."
+    }
+  },
+  "collapsedTower": {
+    "label": "Collapsed Tower"
+  },
+  "craftAdamantAxe": {
+    "label": "Adamant Axe"
+  },
+  "craftAdamantLantern": {
+    "label": "Adamant Lantern"
+  },
+  "craftAdamantPickaxe": {
+    "label": "Adamant Pickaxe"
+  },
+  "craftAdamantSword": {
+    "label": "Adamant Sword"
+  },
+  "craftArbalest": {
+    "label": "Arbalest"
+  },
+  "craftAshenGreatshield": {
+    "label": "Ashen Greatshield"
+  },
+  "craftAshfireBomb": {
+    "label": "Ashfire Bomb"
+  },
+  "craftBlacksteelArmor": {
+    "label": "Blacksteel Armor"
+  },
+  "craftBlacksteelAxe": {
+    "label": "Blacksteel Axe"
+  },
+  "craftBlacksteelBow": {
+    "label": "Blacksteel Bow"
+  },
+  "craftBlacksteelLantern": {
+    "label": "Blacksteel Lantern"
+  },
+  "craftBlacksteelPickaxe": {
+    "label": "Blacksteel Pickaxe"
+  },
+  "craftBlacksteelSword": {
+    "label": "Blacksteel Sword"
+  },
+  "craftBloodstoneStaff": {
+    "label": "Bloodstone Staff"
+  },
+  "craftBoneTotems": {
+    "label": "Bone Totems"
+  },
+  "craftCrudeBow": {
+    "label": "Crude Bow"
+  },
+  "craftEmberBomb": {
+    "label": "Ember Bomb"
+  },
+  "craftExplorerPack": {
+    "label": "Explorer's Pack"
+  },
+  "craftFrostglassSword": {
+    "label": "Frostglass Sword"
+  },
+  "craftGrenadierBag": {
+    "label": "Grenadier's Bag"
+  },
+  "craftHighpriestRobe": {
+    "label": "Highpriest Robe"
+  },
+  "craftHunterCloak": {
+    "label": "Hunter Cloak"
+  },
+  "craftHuntsmanBow": {
+    "label": "Huntsman Bow"
+  },
+  "craftIronAxe": {
+    "label": "Iron Axe"
+  },
+  "craftIronLantern": {
+    "label": "Iron Lantern"
+  },
+  "craftIronPickaxe": {
+    "label": "Iron Pickaxe"
+  },
+  "craftIronSword": {
+    "label": "Iron Sword"
+  },
+  "craftLeatherTotems": {
+    "label": "Leather Totems"
+  },
+  "craftLoggersGloves": {
+    "label": "Logger's Gloves"
+  },
+  "craftLongBow": {
+    "label": "Long Bow"
+  },
+  "craftMasterBow": {
+    "label": "Master Bow"
+  },
+  "craftNightshadeBow": {
+    "label": "Nightshade Bow"
+  },
+  "craftObsidianAxe": {
+    "label": "Obsidian Axe"
+  },
+  "craftObsidianLantern": {
+    "label": "Obsidian Lantern"
+  },
+  "craftObsidianPickaxe": {
+    "label": "Obsidian Pickaxe"
+  },
+  "craftObsidianSword": {
+    "label": "Obsidian Sword"
+  },
+  "craftSacrificialTunic": {
+    "label": "Sacrificial Tunic"
+  },
+  "craftShadowBoots": {
+    "label": "Shadow Boots"
+  },
+  "craftSkeletonKey": {
+    "label": "Skeleton Key"
+  },
+  "craftSteelAxe": {
+    "label": "Steel Axe"
+  },
+  "craftSteelLantern": {
+    "label": "Steel Lantern"
+  },
+  "craftSteelPickaxe": {
+    "label": "Steel Pickaxe"
+  },
+  "craftSteelSword": {
+    "label": "Steel Sword"
+  },
+  "craftStoneAxe": {
+    "label": "StoneAxe"
+  },
+  "craftStonePickaxe": {
+    "label": "Stone Pickaxe"
+  },
+  "craftStormglassHalberd": {
+    "label": "Stormglass Halberd"
+  },
+  "craftTorches": {
+    "label": "Torches"
+  },
+  "craftVeinfireElixir": {
+    "label": "Veinfire Elixir"
+  },
+  "craftVoidBomb": {
+    "label": "Void Bomb"
+  },
+  "craftWarBow": {
+    "label": "War Bow"
+  },
+  "descendFurther": {
+    "label": "Descend Further",
+    "log": {
+      "firstVisit": "With the lantern casting a steady glow, you descend even deeper. Suddenly your feet touch manmade stone steps, worn by time."
+    }
+  },
+  "encounterBeyondPortal": {
+    "label": "Venture beyond Gate"
+  },
+  "exploreCave": {
+    "label": "Explore Cave",
+    "log": {
+      "debrisScroll": "Among the debris you uncover a timeworn scroll containing wisdom for enduring this unforgiving world.",
+      "torchBag": "You find an old, dusty bag with 25 Torches in the cave.",
+      "firstVisit": "The torchlight illuminates the cave walls. In the flickering light, you notice a path leading deeper into the caves."
+    }
+  },
+  "exploreCitadel": {
+    "label": "Explore Citadel",
+    "log": {
+      "firstVisit": "At the deepest part of the city, a massive citadel rises before you. Its size suggests it houses something of great power, or something of great danger."
+    }
+  },
+  "exploreRuins": {
+    "label": "Explore Ruins",
+    "log": {
+      "firstVisit": "At the end of the stairs, a vast cavern opens before you. In the dark lie the ruins of a lost city, the remains of a civilization long gone."
+    }
+  },
+  "exploreTemple": {
+    "label": "Explore Temple",
+    "log": {
+      "firstVisit": "As you delve deeper into the ruins of the underground city, a grand temple emerges from the cavern floor, mostly intact, its shadow stretching over the forgotten remnants of the city."
+    }
+  },
+  "exploreUndergroundLake": {
+    "label": "Underground Lake"
+  },
+  "forestCave": {
+    "label": "Forest Cave"
+  },
+  "healElderWizard": {
+    "label": "Heal Elder Wizard"
+  },
+  "healRestlessKnight": {
+    "label": "Heal Restless Knight"
+  },
+  "hiddenLibrary": {
+    "label": "Hidden Library"
+  },
+  "hillGrave": {
+    "label": "Hill Grave"
+  },
+  "humans": {
+    "label": "Humans"
+  },
+  "hunt": {
+    "label": "Hunt"
+  },
+  "layTrap": {
+    "label": "Lay Trap"
+  },
+  "leatherTotems": {
+    "label": "Leather Totems"
+  },
+  "lightFire": {
+    "label": "Light Fire",
+    "log": {
+      "firstVisit": "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.",
+      "firstVisitBoost": "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting. Someone left you a gift."
+    }
+  },
+  "lowChamber": {
+    "label": "Low Chamber"
+  },
+  "lureLakeCreature": {
+    "label": "Place Trap"
+  },
+  "mineAdamant": {
+    "label": "Mine Adamant",
+    "log": {
+      "natharitSilverVein": "The natharit pickaxe reveals a vein of silver! +{{amount}} {{resource}}"
+    }
+  },
+  "mineCoal": {
+    "label": "Mine Coal",
+    "log": {
+      "natharitSilverVein": "The natharit pickaxe reveals a vein of silver! +{{amount}} {{resource}}"
+    }
+  },
+  "mineIron": {
+    "label": "Mine Iron",
+    "log": {
+      "natharitSilverVein": "The natharit pickaxe reveals a vein of silver! +{{amount}} {{resource}}"
+    }
+  },
+  "mineObsidian": {
+    "label": "Mine Obsidian",
+    "log": {
+      "natharitSilverVein": "The natharit pickaxe reveals a vein of silver! +{{amount}} {{resource}}"
+    }
+  },
+  "mineStone": {
+    "label": "Mine Stone",
+    "log": {
+      "natharitSilverVein": "The natharit pickaxe reveals a vein of silver! +{{amount}} {{resource}}"
+    }
+  },
+  "mineSulfur": {
+    "label": "Mine Sulfur",
+    "log": {
+      "natharitSilverVein": "The natharit pickaxe reveals a vein of silver! +{{amount}} {{resource}}"
+    }
+  },
+  "occultistChamber": {
+    "label": "Occultist Chamber"
+  },
+  "provokeAttackWave": {
+    "label": "Provoke attack wave"
+  },
+  "repairBastion": {
+    "label": "Repair Bastion"
+  },
+  "repairPalisades": {
+    "label": "Repair Palisades"
+  },
+  "repairWatchtower": {
+    "label": "Repair Watchtower"
+  },
+  "risingSmoke": {
+    "label": "Rising smoke"
+  },
+  "sellBlacksteelBatch": {
+    "label": "Sell Blacksteel"
+  },
+  "sellLeatherBatch": {
+    "label": "Sell Leather"
+  },
+  "sellSteelBatch": {
+    "label": "Sell Steel"
+  },
+  "steelDelivery": {
+    "label": "Steel Delivery"
+  },
+  "sunkenTemple": {
+    "label": "Sunken Temple"
+  },
+  "swampSanctuary": {
+    "label": "Swamp Sanctuary"
+  },
+  "tradeGoldForAdamant": {
+    "label": "Buy Adamant"
+  },
+  "tradeGoldForAshfireBomb": {
+    "label": "Buy Ashfire Bomb"
+  },
+  "tradeGoldForBlacksteel": {
+    "label": "Buy Blacksteel"
+  },
+  "tradeGoldForEmberBomb": {
+    "label": "Buy Ember Bomb"
+  },
+  "tradeGoldForFood": {
+    "label": "Buy Food"
+  },
+  "tradeGoldForLeather": {
+    "label": "Buy Leather"
+  },
+  "tradeGoldForObsidian": {
+    "label": "Buy Obsidian"
+  },
+  "tradeGoldForSteel": {
+    "label": "Buy Steel"
+  },
+  "tradeGoldForStone": {
+    "label": "Buy Stone"
+  },
+  "tradeGoldForTorch": {
+    "label": "Buy Torch"
+  },
+  "tradeGoldForVoidBomb": {
+    "label": "Buy Void Bomb"
+  },
+  "tradeGoldForWood": {
+    "label": "Buy Wood"
+  },
+  "tradeSilverForGold": {
+    "label": "Buy Gold"
+  },
+  "ventureDeeper": {
+    "label": "Venture Deeper",
+    "log": {
+      "tarnishedAmulet": "In the cave's shadows, something glints. You find a Tarnished Amulet.",
+      "silverSack": "You find a small leather sack containing 50 Silver.",
+      "mapFragment": "On the cave floor you find a tattered fragment of a map.",
+      "firstVisit": "The air grows colder as you descend the path deeper into the cave. The walls around you seem unnaturally smooth, as if shaped by someone."
+    }
+  }
+}

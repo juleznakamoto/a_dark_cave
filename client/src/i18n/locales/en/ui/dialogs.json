@@ -1,0 +1,195 @@
+{
+  "event": {
+    "fallbackTitle": "Event",
+    "choose": "Choose an option",
+    "timeRemaining": "Time remaining: {{seconds}}s",
+    "knowledgeTimeBonus": "+{{seconds}}s Decision Time due to Knowledge{{maxSuffix}}",
+    "knowledgeTimeBonusMax": " (max)"
+  },
+  "reward": {
+    "title": "Reward",
+    "loss": "Loss",
+    "actionReward": "Action Reward",
+    "claimRewards": "Claim Rewards"
+  },
+  "madness": {
+    "title": "Madness Event",
+    "change": "{{sign}} {{amount}} Madness"
+  },
+  "socialPrompt": {
+    "title": "Stay connected and earn Rewards",
+    "description": "Complete the tasks below to receive bonuses. Complete all tasks to receive an exclusive item.",
+    "signUpRequiresSignInTooltip": "sign up to complete task",
+    "signUpTitle": "Sign up (+{{amount}} Gold)",
+    "signUpDesc": "Create a free account to save your game progress and sync across devices. Without an account, your progress may be lost.",
+    "signUpButton": "Sign Up",
+    "emailUpdatesTitle": "Email updates (+{{amount}} Gold)",
+    "subscribe": "Subscribe",
+    "playlightTitle": "Discover 1 game (+{{amount}} Gold)",
+    "discoverGames": "Discover games",
+    "inviteTitle": "Invite 1 friend (+{{amount}} Gold each)",
+    "inviteDesc": "Invite up to {{cap}} friends and each time both of you will receive {{amount}} Gold ({{count}}/{{cap}} invited).",
+    "copyInviteLink": "Copy invite link",
+    "progressComplete": "You have finished all tasks. You will soon receive your reward.",
+    "progressToward": "Progress toward exclusive item",
+    "progressAriaLabel": "Exclusive item progress",
+    "alreadyClaimedReward": "You've already claimed this reward!",
+    "playlightDiscoverRewardLog": "You received {{amount}} Gold for discovering games!",
+    "marketingSubscribeLog": "You received {{amount}} Gold for subscribing to email updates!",
+    "followRewardLog": "You received {{amount}} Gold for following us on {{platform}}!",
+    "platforms": {
+      "instagram": {
+        "title": "Instagram (+{{amount}} Gold)",
+        "actionFollow": "Follow"
+      },
+      "reddit": {
+        "title": "Reddit (+{{amount}} Gold)",
+        "actionJoin": "Join"
+      }
+    }
+  },
+  "referral": {
+    "invitedLog": "You invited someone new to this world! +{{amount}} Gold"
+  },
+  "invite": {
+    "button": "Invite",
+    "goldBonus": "+{{amount}} Gold",
+    "linkCopied": "Invite link copied!",
+    "linkCopiedDesc": "Share it with friends to earn {{amount}} Gold each.",
+    "copyFailed": "Could not copy invite link",
+    "tooltip": "Invite your friends and both of you will receive {{amount}} Gold. You can invite up to {{cap}} friends. ({{count}}/{{cap}} invited)."
+  },
+  "invest": {
+    "title": "Invest",
+    "strategy": "Investment Strategy",
+    "amount": "Investment Amount",
+    "potentialProfit": "Potential Profit:",
+    "startInvestment": "Start Investment",
+    "infoAriaLabel": "Explain investments and the strategy table",
+    "unlockTooltip": "Unlocks at higher building level",
+    "minutes": "{{count}} min",
+    "luckBonus": "+{{pct}} % Success Chance from Luck (included in table).",
+    "buildingLuckyBonus2": "+2 % Lucky Chance from building level (included in table).",
+    "buildingLuckyBonus1": "+1 % Lucky Chance from building level (included in table).",
+    "headers": {
+      "time": "Time",
+      "success": "Success",
+      "profit": "Profit",
+      "lucky": "Lucky",
+      "loss": "Loss",
+      "wipeout": "Wipeout"
+    },
+    "tooltip": {
+      "time": "How long the investment runs.",
+      "success": "Chance of a successful investment.",
+      "profit": "The profit you gain in case of success.",
+      "lucky": "Chance on success to multiply your profit by {{multiplier}}.",
+      "loss": "The portion of your investment you lose in case of failure.",
+      "wipeout": "Chance to lose your entire investment in case of failure.",
+      "potentialProfit": "Maximum profit you can gain on your investment. Second value is if Lucky Chance hits (profit × {{multiplier}})."
+    }
+  },
+  "gambler": {
+    "title": "The Obsessed Gambler",
+    "srDescription": "Dice game against the obsessed gambler",
+    "rulesAriaLabel": "Dice game rules",
+    "rulesTurns": "You and the Gambler take turns rolling a dice.",
+    "rulesTotals": "Each player's rolls are added up.",
+    "rulesGoal": "The goal is set to 15.",
+    "rulesWinLose": "If a player reaches the goal exactly, he wins. If he goes over, he loses.",
+    "rulesStand": "If the player whose turn it is has more total points than the opponent, he may choose not to roll.",
+    "tutorialIntro": "To help you learn the game, the Gambler offers to play {{count}} times without a bet.",
+    "boneDiceIntro": "Place your bet. Owning Bone Dice allows you to play two times against the Gambler.",
+    "placeBet": "Place your bet.",
+    "gamesRemaining": "{{remaining}} of {{total}} games remaining.",
+    "requiresLuck": "Requires {{luck}} Luck to unlock",
+    "bet": "Bet:",
+    "practiceBet": "Practice (0 Gold)",
+    "goal": "Goal:",
+    "you": "You",
+    "gambler": "Gambler",
+    "roll": "Roll",
+    "noRoll": "No Roll",
+    "youWin": "You win",
+    "youLose": "You lose",
+    "practiceOutcome": "Practice round. No gold won or lost.",
+    "goldWon": "+{{amount}} Gold",
+    "goldLost": "-{{amount}} Gold",
+    "practiceWinRemaining": "You won the practice round (no gold at stake). {{remaining}} of {{total}} practice games remaining.",
+    "practiceLoseRemaining": "You lost the practice round (no gold at stake). {{remaining}} of {{total}} practice games remaining.",
+    "practiceWinComplete": "You won the practice round (no gold at stake). Practice complete — you may place a gold wager.",
+    "practiceLoseComplete": "You lost the practice round (no gold at stake). Practice complete — you may place a gold wager."
+  },
+  "fullGame": {
+    "titleTrial": "The Journey Continues",
+    "titleCheckout": "Complete Your Purchase",
+    "trialDesc": "You have reached the end of the trial. The full journey awaits beyond this point.",
+    "oneTimePurchase": "One time purchase. No subscriptions. No microtransactions.",
+    "featureHours": "14+ hours of gameplay",
+    "featureStructures": "100+ structures",
+    "featureItems": "250+ items, fellowship members, books, blessings...",
+    "featureAchievements": "50+ achievements",
+    "featureStory": "Dark and challenging story based on your choices",
+    "signInRequired": "Please sign in to purchase the Full Game.",
+    "continueJourney": "Continue the Journey",
+    "progressSaved": "Your progress is saved. You can return at any time and continue where you left off.",
+    "loadingPayment": "Loading payment system...",
+    "purchaseSuccessful": "Purchase Successful!",
+    "purchaseSuccessfulDesc": "Full Game unlocked and activated! You can now continue your journey without restrictions.",
+    "poweredBy": "Powered by",
+    "legalConsent": "By purchasing, you consent to immediate delivery of digital content and waive your right of withdrawal. For more information, see our",
+    "termsOfService": "Terms of Service",
+    "rightOfWithdrawal": "Right of Withdrawal",
+    "completePurchaseFor": "Complete Purchase for {{price}}",
+    "paymentFailed": "Payment failed",
+    "notAuthenticated": "User not authenticated",
+    "unexpectedError": "An unexpected error occurred"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "dev": "Dev",
+    "prod": "Prod",
+    "rank": "#",
+    "player": "Player",
+    "completionTime": "Completion Time",
+    "noEntries": "No entries yet",
+    "lastUpdated": "Last updated: {{time}}",
+    "username": "Username:",
+    "notSet": "Not set",
+    "currentPlaytime": "Current Playtime:",
+    "enterName": "Enter name",
+    "normalMode": "Normal Mode",
+    "cruelMode": "Cruel Mode",
+    "loadFailed": "Failed to load leaderboard",
+    "invalidUsername": "Invalid username",
+    "usernameEmpty": "Username cannot be empty",
+    "usernameTooLong": "Username must be 20 characters or less",
+    "mustSignIn": "You must be signed in to set a username",
+    "usernameNotAllowed": "Username not allowed",
+    "usernameInappropriate": "This username contains inappropriate language. Please choose a different one.",
+    "usernameTaken": "Username taken",
+    "usernameTakenDesc": "This username is already in use. Please choose another.",
+    "usernameSaved": "Username saved",
+    "usernameSavedDesc": "Your username has been updated",
+    "saveFailed": "Failed to save username"
+  },
+  "investmentResult": {
+    "title": "Investment Result"
+  },
+  "cube": {
+    "fallbackTitle": "The Whispering Cube",
+    "fallbackMessage": "The cube whispers ancient secrets...",
+    "close": "Close",
+    "completionLog": "You have finished this journey. Stay here or start a new game. Maybe in Cruel Mode, if you dare."
+  },
+  "timedEvent": {
+    "buy": "Buy",
+    "sell": "Sell",
+    "sayGoodbye": "Say Goodbye",
+    "successChance": "Success Chance: {{percent}}",
+    "discount": "{{percent}}% discount",
+    "discountFromKnowledge": "{{percent}}% from Knowledge{{max}}",
+    "knowledgeMax": " (max)",
+    "discountFromRing": "5% from Ring of Obedience"
+  }
+}

@@ -41,6 +41,8 @@ export type { GameEvent, EventChoice, LogEntry } from "./rules/events";
 export interface ActionResult {
   stateUpdates: Partial<GameState> & {
     _logMessage?: string;
+    _logMessageKey?: string;
+    _logMessageVars?: Record<string, string | number>;
   };
   logEntries?: LogEntry[];
   delayedEffects?: Array<() => void>;

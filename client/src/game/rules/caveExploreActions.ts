@@ -4,6 +4,124 @@ import { applyActionEffects } from "./actionEffects";
 import { gameEvents, LogEntry } from "./events";
 import { logger } from "../../lib/logger";
 import { isPlaylightReferralUrl } from "@/lib/playlight";
+import { PLAYLIGHT_WELCOME_GOLD } from "@/game/playlightRewards";
+import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
+import { getActionLogMessage } from "@/i18n/resolveGameText";
+
+const CAVE_FIRST_VISIT_LOG_FALLBACKS: Record<string, Record<string, string>> = {
+  lightFire: {
+    firstVisit:
+      "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.",
+    firstVisitBoost:
+      "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting. Someone left you a gift.",
+  },
+  chopWood: {
+    firstVisit:
+      "Some wood lies scattered near the cave's entrance. It might prove useful.",
+  },
+  exploreCave: {
+    firstVisit:
+      "The torchlight illuminates the cave walls. In the flickering light, you notice a path leading deeper into the caves.",
+  },
+  ventureDeeper: {
+    firstVisit:
+      "The air grows colder as you descend the path deeper into the cave. The walls around you seem unnaturally smooth, as if shaped by someone.",
+  },
+  descendFurther: {
+    firstVisit:
+      "With the lantern casting a steady glow, you descend even deeper. Suddenly your feet touch manmade stone steps, worn by time.",
+  },
+  exploreRuins: {
+    firstVisit:
+      "At the end of the stairs, a vast cavern opens before you. In the dark lie the ruins of a lost city, the remains of a civilization long gone.",
+  },
+  exploreTemple: {
+    firstVisit:
+      "As you delve deeper into the ruins of the underground city, a grand temple emerges from the cavern floor, mostly intact, its shadow stretching over the forgotten remnants of the city.",
+  },
+  exploreCitadel: {
+    firstVisit:
+      "At the deepest part of the city, a massive citadel rises before you. Its size suggests it houses something of great power, or something of great danger.",
+  },
+};
+
+function pushFirstVisitLog(
+  result: ActionResult,
+  actionId: string,
+  logKey: string,
+  idPrefix: string,
+): void {
+  const fallback =
+    CAVE_FIRST_VISIT_LOG_FALLBACKS[actionId]?.[logKey] ?? "";
+  result.logEntries!.push({
+    id: `${idPrefix}-${Date.now()}`,
+    message: getActionLogMessage(actionId, logKey, fallback),
+    timestamp: Date.now(),
+    type: "system",
+  });
+}
+
+const CAVE_LOOT_LOG_FALLBACKS: Record<string, Record<string, string>> = {
+  exploreCave: {
+    debrisScroll:
+      "Among the debris you uncover a timeworn scroll containing wisdom for enduring this unforgiving world.",
+    torchBag: "You find an old, dusty bag with 25 Torches in the cave.",
+  },
+  ventureDeeper: {
+    tarnishedAmulet:
+      "In the cave's shadows, something glints. You find a Tarnished Amulet.",
+    silverSack: "You find a small leather sack containing 50 Silver.",
+    mapFragment: "On the cave floor you find a tattered fragment of a map.",
+  },
+};
+
+type ActionLogMessageRef = {
+  actionId: string;
+  logKey: string;
+  vars?: Record<string, string | number>;
+};
+
+function appendActionLogMessages(
+  logMessages: Array<string | ActionLogMessageRef | LogEntry>,
+  result: ActionResult,
+): void {
+  logMessages.forEach((message) => {
+    if (typeof message === "string") {
+      result.logEntries!.push({
+        id: `probability-effect-${Date.now()}-${Math.random()}`,
+        message,
+        timestamp: Date.now(),
+        type: "system",
+      });
+    } else if (
+      message &&
+      typeof message === "object" &&
+      "logKey" in message &&
+      "actionId" in message
+    ) {
+      const ref = message as ActionLogMessageRef;
+      const fallback =
+        CAVE_LOOT_LOG_FALLBACKS[ref.actionId]?.[ref.logKey] ?? "";
+      result.logEntries!.push({
+        id: `probability-effect-${Date.now()}-${Math.random()}`,
+        message: getActionLogMessage(
+          ref.actionId,
+          ref.logKey,
+          fallback,
+          ref.vars,
+        ),
+        timestamp: Date.now(),
+        type: "system",
+      });
+    } else if (
+      message &&
+      typeof message === "object" &&
+      (message as LogEntry).type === "event"
+    ) {
+      result.logEntries!.push(message as LogEntry);
+    }
+  });
+}
 
 // Helper function to process triggered events from action effects
 function processTriggeredEvents(
@@ -41,29 +159,11 @@ function processTriggeredEvents(
           effectUpdates.triggeredEventsState = {};
         effectUpdates.triggeredEventsState[eventId] = true;
 
-        // Create a log entry for the event
-        const eventChoices =
-          typeof eventDef.choices === "function" ? undefined : eventDef.choices;
-        const logEntry: LogEntry = {
-          id: `${eventId}-${Date.now()}`,
-          message:
-            typeof eventDef.message === "string"
-              ? eventDef.message
-              : Array.isArray(eventDef.message)
-                ? eventDef.message[0]
-                : "",
-          timestamp: Date.now(),
-          type: "event",
-          title: eventDef.title,
-          choices: eventChoices,
-          isTimedChoice: eventDef.isTimedChoice,
-          baseDecisionTime: eventDef.baseDecisionTime,
-          fallbackChoice: eventDef.fallbackChoice,
-          relevant_stats: eventDef.relevant_stats,
-          skipEventLog:
-            eventDef.skipEventLog ||
-            (!!eventChoices && eventChoices.length > 0),
-        };
+        const logEntry: LogEntry = buildLocalizedEventLogEntry(
+          eventId,
+          eventDef,
+          state,
+        );
 
         result.logEntries!.push(logEntry);
       } else {
@@ -90,8 +190,7 @@ const caveItems = {
     {
       key: "survivors_notes",
       probability: 0.2,
-      logMessage:
-        "Among the debris you uncover a timeworn scroll containing wisdom for enduring this unforgiving world.",
+      logMessageKey: "debrisScroll",
       category: "relics",
       condition: "!books.book_of_trials",
     },
@@ -110,8 +209,7 @@ const caveItems = {
     {
       key: "tarnished_amulet",
       probability: 0.0075,
-      logMessage:
-        "In the cave's shadows, something glints. You find a Tarnished Amulet.",
+      logMessageKey: "tarnishedAmulet",
       category: "clothing",
     },
     {
@@ -125,7 +223,7 @@ const caveItems = {
       key: "silver",
       probability: 0.25,
       value: 50,
-      logMessage: "You find a small leather sack containing 50 Silver.",
+      logMessageKey: "silverSack",
       category: "resources",
       condition: "!story.seen.silverSackFound",
       alsoSet: { "story.seen.silverSackFound": true },
@@ -137,7 +235,7 @@ const caveItems = {
       category: "story",
       condition:
         "!story.seen.mapFragmentCaveFound && !story.seen.swampMapAssembled",
-      logMessage: "On the cave floor you find a tattered fragment of a map.",
+      logMessageKey: "mapFragment",
     },
   ],
   descendFurther: [
@@ -259,8 +357,9 @@ function getInheritedItems(actionId: string) {
           ...(isExploreCaveStage
             ? { condition: requireCaveExplored(baseCondition) }
             : baseCondition && { condition: baseCondition }),
-          ...("logMessage" in item &&
-            item.logMessage && { logMessage: item.logMessage }),
+          ...((item as { logMessageKey?: string }).logMessageKey && {
+            logMessageKey: (item as { logMessageKey: string }).logMessageKey,
+          }),
         };
       } else {
         // Clothing/relic: boolean item
@@ -310,8 +409,9 @@ function getInheritedItems(actionId: string) {
           ...("isChoice" in item &&
             item.isChoice && { isChoice: item.isChoice }),
           ...("eventId" in item && item.eventId && { eventId: item.eventId }),
-          ...("logMessage" in item &&
-            item.logMessage && { logMessage: item.logMessage }),
+          ...((item as { logMessageKey?: string }).logMessageKey && {
+            logMessageKey: (item as { logMessageKey: string }).logMessageKey,
+          }),
         };
       }
     });
@@ -721,7 +821,7 @@ export function handleLightFire(
 
     result.stateUpdates.resources = {
       ...mergedRes,
-      gold: (mergedRes.gold ?? 0) + 100,
+      gold: (mergedRes.gold ?? 0) + PLAYLIGHT_WELCOME_GOLD,
     };
 
     const seenExtra: Record<string, boolean | number> = {
@@ -746,14 +846,12 @@ export function handleLightFire(
     });
   }
 
-  result.logEntries!.push({
-    id: `fire-lit-${Date.now()}`,
-    message: state.boostMode
-      ? "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting. Someone left you a gift."
-      : "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.",
-    timestamp: Date.now(),
-    type: "system",
-  });
+  pushFirstVisitLog(
+    result,
+    "lightFire",
+    state.boostMode ? "firstVisitBoost" : "firstVisit",
+    "fire-lit",
+  );
 
   return result;
 }
@@ -766,30 +864,13 @@ export function handleChopWood(
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string | any) => {
-      if (typeof message === "string") {
-        result.logEntries!.push({
-          id: `probability-effect-${Date.now()}-${Math.random()}`,
-          message: message,
-          timestamp: Date.now(),
-          type: "system",
-        });
-      } else if (message.type === "event") {
-        result.logEntries!.push(message);
-      }
-    });
+    appendActionLogMessages(effectUpdates.logMessages, result);
     delete effectUpdates.logMessages;
   }
 
   // Add message for first time gathering wood
   if (!state.story.seen.firstWoodGathered) {
-    result.logEntries!.push({
-      id: `first-wood-gather-${Date.now()}`,
-      message:
-        "Some wood lies scattered near the cave's entrance. It might prove useful.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushFirstVisitLog(result, "chopWood", "firstVisit", "first-wood-gather");
   }
 
   Object.assign(result.stateUpdates, effectUpdates);
@@ -804,18 +885,7 @@ export function handleExploreCave(
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string | any) => {
-      if (typeof message === "string") {
-        result.logEntries!.push({
-          id: `probability-effect-${Date.now()}-${Math.random()}`,
-          message: message,
-          timestamp: Date.now(),
-          type: "system",
-        });
-      } else if (message.type === "event") {
-        result.logEntries!.push(message);
-      }
-    });
+    appendActionLogMessages(effectUpdates.logMessages, result);
     delete effectUpdates.logMessages;
   }
 
@@ -824,13 +894,7 @@ export function handleExploreCave(
 
   // Add a special log message for first time exploring the cave
   if (!state.story.seen.caveExplored) {
-    result.logEntries!.push({
-      id: `explore-cave-${Date.now()}`,
-      message:
-        "The torchlight illuminates the cave walls. In the flickering light, you notice a path leading deeper into the caves.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushFirstVisitLog(result, "exploreCave", "firstVisit", "explore-cave");
   }
 
   // Increment cave explore count for basic achievements
@@ -856,18 +920,7 @@ export function handleVentureDeeper(
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string | any) => {
-      if (typeof message === "string") {
-        result.logEntries!.push({
-          id: `probability-effect-${Date.now()}-${Math.random()}`,
-          message: message,
-          timestamp: Date.now(),
-          type: "system",
-        });
-      } else if (message.type === "event") {
-        result.logEntries!.push(message);
-      }
-    });
+    appendActionLogMessages(effectUpdates.logMessages, result);
     delete effectUpdates.logMessages;
   }
 
@@ -876,13 +929,7 @@ export function handleVentureDeeper(
 
   // Add a special log message for venturing deeper
   if (!state.story.seen.venturedDeeper) {
-    result.logEntries!.push({
-      id: `venture-deeper-${Date.now()}`,
-      message:
-        "The air grows colder as you descend the path deeper into the cave. The walls around you seem unnaturally smooth, as if shaped by someone.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushFirstVisitLog(result, "ventureDeeper", "firstVisit", "venture-deeper");
   }
 
   // Increment cave explore count for basic achievements
@@ -908,18 +955,7 @@ export function handleDescendFurther(
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string | any) => {
-      if (typeof message === "string") {
-        result.logEntries!.push({
-          id: `probability-effect-${Date.now()}-${Math.random()}`,
-          message: message,
-          timestamp: Date.now(),
-          type: "system",
-        });
-      } else if (message.type === "event") {
-        result.logEntries!.push(message);
-      }
-    });
+    appendActionLogMessages(effectUpdates.logMessages, result);
     delete effectUpdates.logMessages;
   }
 
@@ -928,13 +964,7 @@ export function handleDescendFurther(
 
   // Add a special log message for descending further
   if (!state.story.seen.descendedFurther) {
-    result.logEntries!.push({
-      id: `descend-further-${Date.now()}`,
-      message:
-        "With the lantern casting a steady glow, you descend even deeper. Suddenly your feet touch manmade stone steps, worn by time.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushFirstVisitLog(result, "descendFurther", "firstVisit", "descend-further");
   }
 
   // Increment cave explore count for basic achievements
@@ -960,18 +990,7 @@ export function handleExploreRuins(
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string | any) => {
-      if (typeof message === "string") {
-        result.logEntries!.push({
-          id: `probability-effect-${Date.now()}-${Math.random()}`,
-          message: message,
-          timestamp: Date.now(),
-          type: "system",
-        });
-      } else if (message.type === "event") {
-        result.logEntries!.push(message);
-      }
-    });
+    appendActionLogMessages(effectUpdates.logMessages, result);
     delete effectUpdates.logMessages;
   }
 
@@ -980,13 +999,7 @@ export function handleExploreRuins(
 
   // Add a special log message for exploring ruins
   if (!state.story.seen.exploredRuins) {
-    result.logEntries!.push({
-      id: `explore-ruins-${Date.now()}`,
-      message:
-        "At the end of the stairs, a vast cavern opens before you. In the dark lie the ruins of a lost city, the remains of a civilization long gone.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushFirstVisitLog(result, "exploreRuins", "firstVisit", "explore-ruins");
   }
 
   // Increment cave explore count for basic achievements
@@ -1012,18 +1025,7 @@ export function handleExploreTemple(
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string | any) => {
-      if (typeof message === "string") {
-        result.logEntries!.push({
-          id: `probability-effect-${Date.now()}-${Math.random()}`,
-          message: message,
-          timestamp: Date.now(),
-          type: "system",
-        });
-      } else if (message.type === "event") {
-        result.logEntries!.push(message);
-      }
-    });
+    appendActionLogMessages(effectUpdates.logMessages, result);
     delete effectUpdates.logMessages;
   }
 
@@ -1032,13 +1034,7 @@ export function handleExploreTemple(
 
   // Add a special log message for exploring temple
   if (!state.story.seen.exploredTemple) {
-    result.logEntries!.push({
-      id: `explore-temple-${Date.now()}`,
-      message:
-        "As you delve deeper into the ruins of the underground city, a grand temple emerges from the cavern floor, mostly intact, its shadow stretching over the forgotten remnants of the city.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushFirstVisitLog(result, "exploreTemple", "firstVisit", "explore-temple");
   }
 
   // Increment cave explore count for basic achievements
@@ -1064,18 +1060,7 @@ export function handleExploreCitadel(
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string | any) => {
-      if (typeof message === "string") {
-        result.logEntries!.push({
-          id: `probability-effect-${Date.now()}-${Math.random()}`,
-          message: message,
-          timestamp: Date.now(),
-          type: "system",
-        });
-      } else if (message.type === "event") {
-        result.logEntries!.push(message);
-      }
-    });
+    appendActionLogMessages(effectUpdates.logMessages, result);
     delete effectUpdates.logMessages;
   }
 
@@ -1084,13 +1069,7 @@ export function handleExploreCitadel(
 
   // Add a special log message for exploring citadel
   if (!state.story.seen.exploredCitadel) {
-    result.logEntries!.push({
-      id: `explore-citadel-${Date.now()}`,
-      message:
-        "At the deepest part of the city, a massive citadel rises before you. Its size suggests it houses something of great power, or something of great danger.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushFirstVisitLog(result, "exploreCitadel", "firstVisit", "explore-citadel");
   }
 
   // Increment cave explore count for basic achievements

@@ -1,0 +1,81 @@
+{
+  "advanced_bundle": {
+    "activationMessage": "¡Los componentes del Lote del Rey Pálido se han añadido a tus compras!",
+    "name": "Lote del Rey Pálido"
+  },
+  "artifact_bundle": {
+    "activationMessage": "¡Los componentes del Lote de artefactos oscuros se han añadido a tus compras!",
+    "name": "Lote de artefactos oscuros"
+  },
+  "ashen_throne_bundle": {
+    "activationMessage": "¡Los componentes del Lote del Trono Ceniciento se han añadido a tus compras!",
+    "name": "Lote del Trono Ceniciento"
+  },
+  "basic_survival_bundle": {
+    "activationMessage": "¡Los componentes del Lote del Errante Marchito se han añadido a tus compras!",
+    "name": "Lote del Errante Marchito"
+  },
+  "crow_harness": {
+    "activationMessage": "¡El arnés para cuervos se ha añadido a tus herramientas! Ahora debes buscar un cuervo para sujetarlo al arnés.",
+    "description": "Arnés especialmente fabricado para cuervos mensajeros. Desbloquea la historia del cuervo. Añade un miembro a la compañía.",
+    "name": "Arnés para cuervos"
+  },
+  "cruel_mode": {
+    "activationMessage": "¡Modo cruel activado! Empieza una partida nueva para vivir el desafío definitivo.",
+    "description": "Un mundo más cruel, historia ampliada, más objetos y enemigos más letales. Resiste o desaparece.",
+    "name": "Modo cruel"
+  },
+  "full_game": {
+    "activationMessage": "¡Juego completo desbloqueado y activado! El viaje continúa sin restricciones.",
+    "description": "Desbloquea el juego completo y continúa tu viaje.",
+    "name": "Juego completo"
+  },
+  "gold_1000": {
+    "activationMessage": "Se han añadido 1000 de oro a tu inventario.",
+    "description": "Una cantidad decente de oro",
+    "name": "1'000 de oro"
+  },
+  "gold_100_free": {
+    "activationMessage": "¡Se han añadido 100 de oro a tu inventario como regalo!",
+    "description": "Una pequeña misericordia diaria en un mundo frío",
+    "name": "Regalo de 100 de oro"
+  },
+  "gold_20000": {
+    "activationMessage": "Se han añadido 20'000 de oro a tu inventario.",
+    "description": "Una cantidad impía de oro",
+    "name": "20'000 de oro"
+  },
+  "gold_250": {
+    "activationMessage": "Se han añadido 1000 de oro a tu inventario.",
+    "description": "Una cantidad decente de oro",
+    "name": "250 oro"
+  },
+  "gold_2500": {
+    "activationMessage": "Se han añadido 2500 de oro a tu inventario.",
+    "description": "Un tesoro considerable",
+    "name": "2'500 de oro"
+  },
+  "gold_5000": {
+    "activationMessage": "Se han añadido 5000 de oro a tu inventario.",
+    "description": "Una fortuna en oro",
+    "name": "5'000 de oro"
+  },
+  "great_feast_1": {
+    "activationMessage": "¡Ha comenzado un gran festín!",
+    "name": "1 gran festín"
+  },
+  "great_feast_3": {
+    "activationMessage": "¡Ha comenzado un gran festín!",
+    "name": "3 grandes festines"
+  },
+  "skull_lantern": {
+    "activationMessage": "¡El farol de cráneo se ha añadido a tus herramientas! Su luz inquietante te guiará por las profundidades.",
+    "description": "Forjado con hueso maldito, ilumina las mayores profundidades. Desbloquea la historia del farol de cráneo.",
+    "name": "Farol de cráneo"
+  },
+  "tarnished_compass": {
+    "activationMessage": "¡La brújula deslustrada se ha añadido a tu inventario! Su magia antigua puede traer fortuna a tus empeños.",
+    "description": "Artefacto de la civilización desaparecida; su aguja señala lugares ocultos. Desbloquea la historia de la brújula.",
+    "name": "Brújula deslustrada"
+  }
+}

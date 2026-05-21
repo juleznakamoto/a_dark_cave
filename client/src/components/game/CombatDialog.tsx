@@ -36,6 +36,8 @@ import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { Enemy, CombatItem, CombatResultSummary } from "@/game/types";
 import { ProceduralGroundBackground } from "@/components/ui/procedural-ground-background";
 import { formatNumber } from "@/lib/utils";
+import { getResourceName } from "@/i18n/resolveGameText";
+import { useTranslation } from "react-i18next";
 
 interface CombatDialogProps {
   isOpen: boolean;
@@ -56,6 +58,7 @@ export default function CombatDialog({
   onVictory,
   onDefeat,
 }: CombatDialogProps) {
+  const { t } = useTranslation(["ui", "common"]);
   const gameState = useGameStore.getState();
   const crushingStrikeLevel = useGameStore(
     (state) => state.combatSkills.crushingStrikeLevel,
@@ -298,10 +301,13 @@ export default function CombatDialog({
     (id) => id === "veinfire_elixir",
   ).length;
 
+  const combatItemName = (id: string, fallback: string) =>
+    getResourceName(id, fallback);
+
   const combatItems: CombatItem[] = [
     {
       id: "ember_bomb",
-      name: "Ember Bomb",
+      name: combatItemName("ember_bomb", "Ember Bomb"),
       damage: BOMB_BASE_DAMAGE_BY_ID.ember_bomb,
       available:
         combatResources.ember_bomb > 0 &&
@@ -310,7 +316,7 @@ export default function CombatDialog({
     },
     {
       id: "ashfire_bomb",
-      name: "Ashfire Bomb",
+      name: combatItemName("ashfire_bomb", "Ashfire Bomb"),
       damage: BOMB_BASE_DAMAGE_BY_ID.ashfire_bomb,
       available:
         combatResources.ashfire_bomb > 0 &&
@@ -319,7 +325,7 @@ export default function CombatDialog({
     },
     {
       id: "void_bomb",
-      name: "Void Bomb",
+      name: combatItemName("void_bomb", "Void Bomb"),
       damage: BOMB_BASE_DAMAGE_BY_ID.void_bomb,
       available:
         combatResources.void_bomb > 0 &&
@@ -332,7 +338,7 @@ export default function CombatDialog({
   if (NIGHTSHADE_BOW_OWNED) {
     combatItems.push({
       id: "poison_arrows",
-      name: "Poison Arrows",
+      name: combatItemName("poison_arrows", "Poison Arrows"),
       damage: POISON_ARROWS_BASE_DAMAGE,
       available:
         poisonArrowsUsedInCombat < 1 && !usedItemsInRound.has("poison_arrows"),
@@ -341,7 +347,7 @@ export default function CombatDialog({
 
   combatItems.push({
     id: "veinfire_elixir",
-    name: "Veinfire Elixir",
+    name: combatItemName("veinfire_elixir", "Veinfire Elixir"),
     damage: 0,
     available:
       combatResources.veinfire_elixir > 0 &&
@@ -669,20 +675,22 @@ export default function CombatDialog({
             key: "casualties",
             text:
               (combatSummary.casualties ?? 0) === 0
-                ? "No Villagers died."
+                ? t("ui:combat.noCasualties")
                 : combatSummary.casualties === 1
-                  ? "1 Villager died."
-                  : `${formatNumber(combatSummary.casualties!)} Villagers died.`,
+                  ? t("ui:combat.oneCasualty")
+                  : t("ui:combat.manyCasualties", {
+                      count: formatNumber(combatSummary.casualties!),
+                    }),
             className: "text-gray-400 text-sm",
           },
           ...(combatSummary.woundedFellows ?? []).map((f) => ({
             key: `fellow-${f}`,
-            text: `${f} got injured.`,
+            text: t("ui:combat.fellowInjured", { name: f }),
             className: "text-gray-400 text-sm",
           })),
           ...(combatSummary.damagedBuildings ?? []).map((b) => ({
             key: `building-${b}`,
-            text: `${b} got damaged.`,
+            text: t("ui:combat.buildingDamaged", { name: b }),
             className: "text-gray-400 text-sm",
           })),
         ]
@@ -703,7 +711,9 @@ export default function CombatDialog({
             ? [
                 {
                   key: "silver",
-                  text: `${formatNumber(combatSummary.silverReward)} Silver claimed.`,
+                  text: t("ui:combat.silverClaimed", {
+                    amount: formatNumber(combatSummary.silverReward),
+                  }),
                   className: "text-slate-300 text-sm",
                 },
               ]
@@ -713,7 +723,9 @@ export default function CombatDialog({
             ? [
                 {
                   key: "gold",
-                  text: `${formatNumber(combatSummary.goldReward)} Gold claimed.`,
+                  text: t("ui:combat.goldClaimed", {
+                    amount: formatNumber(combatSummary.goldReward),
+                  }),
                   className: "text-slate-300 text-sm",
                 },
               ]
@@ -755,7 +767,7 @@ export default function CombatDialog({
                   variant="outline"
                   button_id="combat-start-fight"
                 >
-                  Start Fight
+                  {t("ui:combat.startFight")}
                 </Button>
               </div>
             </>
@@ -766,7 +778,7 @@ export default function CombatDialog({
                 <DialogHeader>
                   <div className="flex items-start justify-between">
                     <DialogTitle className="text-lg font-semibold">
-                      Combat - Round {round}
+                      {t("ui:combat.roundTitle", { round })}
                     </DialogTitle>
                     {(() => {
                       const luckCrit = calculateCriticalStrikeChance(
@@ -822,7 +834,7 @@ export default function CombatDialog({
                         >
                           <span
                             className="font-noto-symbols-2 inline-flex shrink-0 items-center justify-center text-sm font-normal leading-none"
-                            aria-label="Combat attack details"
+                            aria-label={t("combat.attackDetailsAria")}
                           >
                             🛈
                           </span>
@@ -871,7 +883,9 @@ export default function CombatDialog({
                       </div>
                       <TooltipWrapper
                         tooltip={
-                          <span className="text-gray-400">Integrity</span>
+                          <span className="text-gray-400">
+                            {t("ui:combat.integrity")}
+                          </span>
                         }
                         tooltipId="combat-enemy-integrity-symbol"
                         disabled
@@ -902,26 +916,31 @@ export default function CombatDialog({
                               <>
                                 -{formatNumber(enemyDamageIndicator.amount)} (
                                 {playerStrikeFailed
-                                  ? "Attack failed"
-                                  : "Crushing Strike failed"}
+                                  ? t("ui:combat.attackFailed")
+                                  : t("ui:combat.crushingStrikeFailed")}
                                 )
                               </>
                             ) : playerStrikeFailed ? (
-                              "Attack failed"
+                              t("ui:combat.attackFailed")
                             ) : (
-                              "Crushing Strike failed"
+                              t("ui:combat.crushingStrikeFailed")
                             )
                           ) : (
                             <>
                               -{formatNumber(enemyDamageIndicator.amount)}
-                              {wasCriticalStrike && " (critical)"}
+                              {wasCriticalStrike &&
+                                ` (${t("ui:combat.critical")})`}
                             </>
                           )}
                         </div>
                       )}
                     </div>
                     <TooltipWrapper
-                      tooltip={<span className="text-gray-400">Attack</span>}
+                      tooltip={
+                        <span className="text-gray-400">
+                          {t("ui:combat.attack")}
+                        </span>
+                      }
                       tooltipId="combat-enemy-attack-symbol"
                       disabled
                       className="inline-block"
@@ -941,11 +960,15 @@ export default function CombatDialog({
                     <div className="relative">
                       <div className="flex justify-between text-sm">
                         <span className="font-medium">
-                          {hasFortress ? "Fortress" : "Bastion"}
+                          {hasFortress
+                            ? t("ui:combat.fortress")
+                            : t("ui:combat.bastion")}
                         </span>
                         <TooltipWrapper
                           tooltip={
-                            <span className="text-gray-400">Integrity</span>
+                            <span className="text-gray-400">
+                              {t("ui:combat.integrity")}
+                            </span>
                           }
                           tooltipId="combat-player-integrity-symbol"
                           disabled
@@ -984,7 +1007,11 @@ export default function CombatDialog({
 
                     <div className="text-xs mt-2 flex items-center gap-3">
                       <TooltipWrapper
-                        tooltip={<span className="text-gray-400">Attack</span>}
+                        tooltip={
+                          <span className="text-gray-400">
+                            {t("ui:combat.attack")}
+                          </span>
+                        }
                         tooltipId="combat-player-attack-symbol"
                         disabled
                         className="inline-block"
@@ -997,7 +1024,11 @@ export default function CombatDialog({
                         </div>
                       </TooltipWrapper>
                       <TooltipWrapper
-                        tooltip={<span className="text-gray-400">Defense</span>}
+                        tooltip={
+                          <span className="text-gray-400">
+                            {t("ui:combat.defense")}
+                          </span>
+                        }
                         tooltipId="combat-player-defense-symbol"
                         disabled
                         className="inline-block"
@@ -1021,7 +1052,9 @@ export default function CombatDialog({
                         ] ?? 0) > 0,
                   ) && (
                     <div className="pt-3">
-                      <div className="text-sm font-medium mb-2">Items</div>
+                      <div className="text-sm font-medium mb-2">
+                        {t("ui:combat.items")}
+                      </div>
                       <div className="grid grid-cols-2 gap-2">
                         {combatItems
                           .filter((item) =>
@@ -1036,17 +1069,35 @@ export default function CombatDialog({
                             const tooltipContent = tooltipConfig
                               ? tooltipConfig.getContent(gameState)
                               : "";
+                            const formatAvailable = (current: number, max: number) =>
+                              t("ui:combat.available", { current, max });
                             const availabilityText =
                               item.id === "poison_arrows"
-                                ? `Available: ${poisonArrowsUsedInCombat < 1 ? "1/1" : "0/1"}`
+                                ? formatAvailable(
+                                    poisonArrowsUsedInCombat < 1 ? 1 : 0,
+                                    1,
+                                  )
                                 : item.id === "veinfire_elixir"
-                                  ? `Available: ${veinfireUsedInCombat < 1 ? "1/1" : "0/1"}`
+                                  ? formatAvailable(
+                                      veinfireUsedInCombat < 1 ? 1 : 0,
+                                      1,
+                                    )
                                   : item.id === "ember_bomb"
-                                    ? `Available: ${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
+                                    ? formatAvailable(
+                                        MAX_EMBER_BOMBS - emberBombsUsed,
+                                        MAX_EMBER_BOMBS,
+                                      )
                                     : item.id === "ashfire_bomb"
-                                      ? `Available: ${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`
+                                      ? formatAvailable(
+                                          MAX_CINDERFLAME_BOMBS -
+                                            ashfireBombsUsed,
+                                          MAX_CINDERFLAME_BOMBS,
+                                        )
                                       : item.id === "void_bomb"
-                                        ? `Available: ${MAX_VOID_BOMBS - voidBombsUsed}/${MAX_VOID_BOMBS}`
+                                        ? formatAvailable(
+                                            MAX_VOID_BOMBS - voidBombsUsed,
+                                            MAX_VOID_BOMBS,
+                                          )
                                         : "";
 
                             return (
@@ -1097,7 +1148,7 @@ export default function CombatDialog({
                   {(HAS_RESTLESS_KNIGHT || HAS_ELDER_WIZARD) && (
                     <div className="pt-3">
                       <div className="text-sm font-medium mb-2">
-                        Combat Skills
+                        {t("ui:combat.title")}
                       </div>
                       <div className="grid grid-cols-2 gap-2">
                         {HAS_RESTLESS_KNIGHT && (
@@ -1105,8 +1156,11 @@ export default function CombatDialog({
                             tooltip={
                               <div className="text-xs whitespace-pre-line">
                                 {gameState.story?.seen?.restlessKnightWounded
-                                  ? "Restless Knight is wounded and cannot fight"
-                                  : `${combatItemTooltips.crushing_strike.getContent(gameState)}\nAvailable: ${usedCrushingStrike ? "0/1" : "1/1"}`}
+                                  ? t("ui:combat.restlessKnightWounded")
+                                  : `${combatItemTooltips.crushing_strike.getContent(gameState)}\n${t("ui:combat.available", {
+                                      current: usedCrushingStrike ? 0 : 1,
+                                      max: 1,
+                                    })}`}
                               </div>
                             }
                             tooltipId="combat-crushing-strike"
@@ -1137,7 +1191,7 @@ export default function CombatDialog({
                                 >
                                   ◈
                                 </span>
-                                Crushing Strike
+                                {t("ui:combat.crushingStrike")}
                               </Button>
                             </div>
                           </TooltipWrapper>
@@ -1147,8 +1201,11 @@ export default function CombatDialog({
                             tooltip={
                               <div className="text-xs whitespace-pre-line">
                                 {gameState.story?.seen?.elderWizardWounded
-                                  ? "Elder Wizard is wounded and cannot cast spells"
-                                  : `${combatItemTooltips.bloodflame_sphere.getContent(gameState)}\nAvailable: ${usedBloodflameSphere ? "0/1" : "1/1"}`}
+                                  ? t("ui:combat.elderWizardWounded")
+                                  : `${combatItemTooltips.bloodflame_sphere.getContent(gameState)}\n${t("ui:combat.available", {
+                                      current: usedBloodflameSphere ? 0 : 1,
+                                      max: 1,
+                                    })}`}
                               </div>
                             }
                             tooltipId="combat-bloodflame-sphere"
@@ -1187,7 +1244,7 @@ export default function CombatDialog({
                                 >
                                   ✵
                                 </span>
-                                Bloodflame Sphere
+                                {t("ui:combat.bloodflameSphere")}
                               </Button>
                             </div>
                           </TooltipWrapper>
@@ -1210,7 +1267,9 @@ export default function CombatDialog({
                       variant="outline"
                       button_id="combat-fight"
                     >
-                      {isProcessingRound ? "Fighting..." : "Fight"}
+                      {isProcessingRound
+                        ? t("ui:combat.fighting")
+                        : t("ui:combat.fight")}
                     </Button>
                   ) : null}
                 </div>
@@ -1234,7 +1293,7 @@ export default function CombatDialog({
                             ease: "easeInOut",
                           }}
                         >
-                          You lost
+                          {t("ui:combat.youLost")}
                         </motion.span>
 
                         <div className="mt-5 flex flex-col items-center gap-1 text-center">
@@ -1271,7 +1330,7 @@ export default function CombatDialog({
                           variant="outline"
                           button_id="combat-end-fight"
                         >
-                          Continue
+                          {t("common:buttons.continue")}
                         </Button>
                       </motion.div>
                     </motion.div>
@@ -1297,7 +1356,7 @@ export default function CombatDialog({
                             ease: "easeInOut",
                           }}
                         >
-                          You win
+                          {t("ui:combat.youWin")}
                         </motion.span>
 
                         <div className="mt-5 flex flex-col items-center gap-1 text-center">
@@ -1335,7 +1394,7 @@ export default function CombatDialog({
                           variant="outline"
                           button_id="combat-end-fight"
                         >
-                          Continue
+                          {t("common:buttons.continue")}
                         </Button>
                       </motion.div>
                     </motion.div>

@@ -38,10 +38,21 @@ import {
   isShopPaidGoldPackItem,
   type ShopItem,
 } from "../../../../shared/shopItems";
-import { getDiscountedShopPriceCents } from "../../../../shared/shopCheckoutPrice";
+import {
+  getDiscountedShopPriceCents,
+  TRADERS_GRATITUDE_DISCOUNT_PERCENT,
+  TRADERS_SON_DISCOUNT_PERCENT,
+} from "../../../../shared/shopCheckoutPrice";
+import { PLAYLIGHT_FIRST_PURCHASE_DISCOUNT_PERCENT } from "@/game/playlightRewards";
 import { tailwindToHex } from "@/lib/tailwindColors";
 import { getShopGlyphHoverParticleConfig } from "@/components/ui/bubbly-button.particles";
 import { getStripeReturnUrlForConfirm } from "@/lib/stripePaymentReturn";
+import {
+  resolveShopItemName,
+  resolveShopItemDescription,
+  resolveShopActivationMessage,
+} from "@/i18n/shopLabels";
+import { useTranslation } from "react-i18next";
 
 const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
@@ -225,6 +236,7 @@ function ArtifactShopTooltipIcon({
   tooltipId: string;
   variant: "cardTitle" | "description";
 }) {
+  const { t } = useTranslation("ui");
   const triggerClass =
     variant === "cardTitle"
       ? "pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse"
@@ -244,12 +256,12 @@ function ArtifactShopTooltipIcon({
       <TooltipWrapper
         tooltip={
           <div className="text-xs">
-            <div className="font-bold mb-1">Skull Lantern</div>
+            <div className="font-bold mb-1">{t("shop.artifactSkullLantern.title")}</div>
             <div className="mt-1 space-y-0.5">
-              <div>Cave Explore: +200% Bonus</div>
-              <div>Cave Explore: -5s Cooldown</div>
-              <div>Mining: +200% Bonus</div>
-              <div>Mining: -5s Cooldown</div>
+              <div>{t("shop.artifactSkullLantern.caveExploreBonus")}</div>
+              <div>{t("shop.artifactSkullLantern.caveExploreCooldown")}</div>
+              <div>{t("shop.artifactSkullLantern.miningBonus")}</div>
+              <div>{t("shop.artifactSkullLantern.miningCooldown")}</div>
             </div>
           </div>
         }
@@ -268,10 +280,10 @@ function ArtifactShopTooltipIcon({
       <TooltipWrapper
         tooltip={
           <div className="text-xs">
-            <div className="font-bold mb-1">Tarnished Compass</div>
+            <div className="font-bold mb-1">{t("shop.artifactTarnishedCompass.title")}</div>
             <div className="mt-1 space-y-0.5">
-              <div>10% chance to double actions gains</div>
-              <div>+5 Luck</div>
+              <div>{t("shop.artifactTarnishedCompass.doubleGain")}</div>
+              <div>{t("shop.artifactTarnishedCompass.luck")}</div>
             </div>
           </div>
         }
@@ -289,9 +301,9 @@ function ArtifactShopTooltipIcon({
     <TooltipWrapper
       tooltip={
         <div className="text-xs">
-          <div className="font-bold mb-1">One-eyed Crow</div>
+          <div className="font-bold mb-1">{t("shop.artifactCrowHarness.title")}</div>
           <div className="mt-1 space-y-0.5">
-            <div>up to 15% chance to double action gains</div>
+            <div>{t("shop.artifactCrowHarness.doubleGain")}</div>
           </div>
         </div>
       }
@@ -455,7 +467,7 @@ function ShopItemDescriptionParagraph({ item }: { item: ShopItem }) {
                 ) : null}
               </div>
               <span className="inline-flex min-w-0 flex-1 flex-wrap items-baseline gap-x-0.5 leading-tight">
-                {c.name}
+                {resolveShopItemName(c)}
                 {artifact ? (
                   <ArtifactShopTooltipIcon
                     artifact={artifact}
@@ -471,7 +483,7 @@ function ShopItemDescriptionParagraph({ item }: { item: ShopItem }) {
     );
   }
 
-  return item.description;
+  return resolveShopItemDescription(item);
 }
 
 // EU countries with Euro as main currency
@@ -530,6 +542,7 @@ function CheckoutForm({
   onCancel,
   displayPriceCents,
 }: CheckoutFormProps) {
+  const { t } = useTranslation(["ui", "common"]);
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -560,13 +573,13 @@ function CheckoutForm({
       });
 
       if (error) {
-        setErrorMessage(error.message || "Payment failed");
+        setErrorMessage(error.message || t("ui:shop.paymentFailed"));
         setIsProcessing(false);
       } else if (paymentIntent && paymentIntent.status === "succeeded") {
         // Verify payment on backend - server creates all purchases
         const user = await getCurrentUser();
         if (!user) {
-          setErrorMessage("User not authenticated");
+          setErrorMessage(t("ui:shop.notAuthenticated"));
           setIsProcessing(false);
           return;
         }
@@ -595,7 +608,7 @@ function CheckoutForm({
           // Do NOT release discount reservation - user was charged; requires manual intervention.
           setErrorMessage(
             result.error ||
-            "Payment verification failed. Please contact support.",
+            t("ui:shop.verificationFailed"),
           );
         }
         setIsProcessing(false);
@@ -604,7 +617,7 @@ function CheckoutForm({
       logger.error("Payment submission error:", e);
       if (e.message?.indexOf("mounted") === -1) {
         setIsProcessing(false);
-        setErrorMessage(e.message || "An unexpected error occurred");
+        setErrorMessage(e.message || t("ui:shop.unexpectedError"));
       }
     }
   };
@@ -614,7 +627,7 @@ function CheckoutForm({
       <PaymentElement />
 
       <div className="flex items-center justify-center gap-1 py-0.5 text-xs text-muted-foreground">
-        <span>Powered by</span>
+        <span>{t("ui:shop.poweredBy")}</span>
         <svg
           className="h-4"
           viewBox="0 0 60 25"
@@ -630,14 +643,13 @@ function CheckoutForm({
 
       <div className="space-y-2 border-t pt-3 mt-2">
         <p className="text-[11px] leading-tight text-muted-foreground">
-          By purchasing, you consent to immediate delivery of digital content
-          and waive your right of withdrawal. For more information, see our{" "}
+          {t("ui:shop.legalConsent")}{" "}
           <a
             href="/terms"
             target="_blank"
             className="underline hover:text-foreground"
           >
-            Terms of Service
+            {t("ui:shop.termsOfService")}
           </a>{" "}
           and{" "}
           <a
@@ -645,7 +657,7 @@ function CheckoutForm({
             target="_blank"
             className="underline hover:text-foreground"
           >
-            Right of Withdrawal
+            {t("ui:shop.rightOfWithdrawal")}
           </a>
           .
         </p>
@@ -663,8 +675,11 @@ function CheckoutForm({
           button_id="shop-complete-purchase"
         >
           {isProcessing
-            ? "Processing..."
-            : `Complete Purchase for ${displayPriceCents > 0 ? formatPrice(displayPriceCents) : ""}`}
+            ? t("common:status.processing")
+            : t("ui:shop.completePurchaseFor", {
+                price:
+                  displayPriceCents > 0 ? formatPrice(displayPriceCents) : "",
+              })}
         </Button>
         <Button
           variant="outline"
@@ -673,7 +688,7 @@ function CheckoutForm({
           button_id="shop-cancel-payment"
           type="button"
         >
-          Cancel
+          {t("common:buttons.cancel")}
         </Button>
       </div>
     </form>
@@ -687,6 +702,7 @@ interface ShopDialogProps {
 }
 
 export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
+  const { t } = useTranslation(["ui", "common"]);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [purchasedItems, setPurchasedItems] = useState<string[]>([]);
@@ -850,7 +866,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             const hoursRemaining = Math.ceil(24 - hoursSinceLastClaim);
             gameState.addLogEntry({
               id: `free-gold-cooldown-${Date.now()}`,
-              message: `You can claim free gold again in ${hoursRemaining} hour${hoursRemaining !== 1 ? "s" : ""}.`,
+              message: t("ui:shop.freeGoldCooldownLog", {
+                hours: hoursRemaining,
+                count: hoursRemaining,
+              }),
               timestamp: Date.now(),
               type: "system",
             });
@@ -870,16 +889,18 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
           useGameStore.setState({ lastFreeGoldClaim: Date.now() });
 
           // Show success message
+          const freeGoldAmount =
+            item.rewards.resources?.gold ?? SHOP_ITEMS.gold_100_free.rewards.resources?.gold ?? 0;
           gameState.addLogEntry({
             id: `free-gold-claimed-${Date.now()}`,
-            message: `You claimed 100 Gold. Come back tomorrow if you endure the night.`,
+            message: t("ui:shop.freeGoldClaimedLog", { amount: freeGoldAmount }),
             timestamp: Date.now(),
             type: "system",
           });
 
           toast({
-            title: "Success!",
-            description: `100 Gold has been added to your resources!`,
+            title: t("common:status.success"),
+            description: t("ui:shop.freeGoldAdded", { amount: freeGoldAmount }),
           });
 
           // Return early - don't save to database
@@ -895,7 +916,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
           if (alreadyPurchased) {
             gameState.addLogEntry({
               id: `already-claimed-${Date.now()}`,
-              message: `You have already claimed ${item.name}.`,
+              message: t("ui:shop.alreadyClaimedItemLog", {
+                name: resolveShopItemName(item),
+              }),
               timestamp: Date.now(),
               type: "system",
             });
@@ -982,22 +1005,25 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         }
 
         // Show success message
+        const resolvedItemName = resolveShopItemName(item);
         gameState.addLogEntry({
           id: `free-gift-${Date.now()}`,
-          message: `${item.name} has been added to your purchases! You can activate it from the Purchases section.`,
+          message: t("ui:shop.freeItemAdded", { name: resolvedItemName }),
           timestamp: Date.now(),
           type: "system",
         });
 
         toast({
-          title: "Success!",
-          description: `${item.name} has been added to your purchases. Check the Purchases tab to activate it.`,
+          title: t("common:status.success"),
+          description: t("ui:shop.freeItemAdded", { name: resolvedItemName }),
         });
       } catch (error) {
         logger.error("Error claiming free item:", error);
         gameState.addLogEntry({
           id: `free-gift-error-${Date.now()}`,
-          message: `Failed to claim ${item.name}. Please try again.`,
+          message: t("ui:shop.claimFailedLog", {
+            name: resolveShopItemName(item),
+          }),
           timestamp: Date.now(),
           type: "system",
         });
@@ -1165,21 +1191,22 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       });
     }
 
+    const resolvedPurchaseName = resolveShopItemName(item);
     gameState.addLogEntry({
       id: `purchase-${Date.now()}`,
       message: item.bundleComponents
-        ? `Purchase successful! ${item.name} components have been added to your purchases. You can activate them from the Purchases section.`
-        : `Purchase successful! ${item.name} has been added to your purchases. You can activate it from the Purchases section.`,
+        ? t("ui:shop.purchaseAddedBundle", { name: resolvedPurchaseName })
+        : t("ui:shop.purchaseAddedSingle", { name: resolvedPurchaseName }),
       timestamp: Date.now(),
       type: "system",
     });
 
     // Show success message
     toast({
-      title: "Purchase Successful!",
+      title: t("ui:shop.purchaseSuccessful"),
       description: item.bundleComponents
-        ? `${item.name} components have been added to your purchases. Check the Purchases tab to activate them.`
-        : `${item.name} has been added to your purchases. Check the Purchases tab to activate it.`,
+        ? t("ui:shop.purchaseAddedBundle", { name: resolvedPurchaseName })
+        : t("ui:shop.purchaseAddedSingle", { name: resolvedPurchaseName }),
     });
 
     setClientSecret(null);
@@ -1246,7 +1273,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       gameState.addLogEntry({
         id: `great-feast-${Date.now()}`,
         message:
-          item.activationMessage ||
+          resolveShopActivationMessage(item) ||
           `A Great Feast has begun! For a while, the villagers manage to set aside the darkness of their minds and celebrate.`,
         timestamp: Date.now(),
         type: "system",
@@ -1292,8 +1319,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     gameState.addLogEntry({
       id: `activate-${Date.now()}`,
       message:
-        item.activationMessage ||
-        `Activated ${item.name}! Rewards have been added to your inventory.`,
+        resolveShopActivationMessage(item) ||
+        t("ui:shop.activatedDefaultLog", {
+          name: resolveShopItemName(item),
+        }),
       timestamp: Date.now(),
       type: "system",
     });
@@ -1397,15 +1426,15 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             onInteractOutside={(e) => e.preventDefault()}
           >
             <DialogHeader className="space-y-1.5 shrink-0">
-              <DialogTitle>Trader</DialogTitle>
+              <DialogTitle>{t("ui:shop.title")}</DialogTitle>
               <DialogDescription className="sr-only">
-                Shop for gold, artifacts, boosts, and bundles
+                {t("ui:shop.srDescription")}
               </DialogDescription>
             </DialogHeader>
 
             {isLoading && (
               <div className="flex shrink-0 justify-center py-8">
-                <div className="text-muted-foreground">Loading...</div>
+                <div className="text-muted-foreground">{t("common:status.loading")}</div>
               </div>
             )}
 
@@ -1418,7 +1447,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 className="h-10 w-full shrink-0 border-0 text-sm"
                 button_id="shop-sign-in-button"
               >
-                Sign in or create an account to purchase items
+                {t("ui:shop.signInPrompt")}
               </Button>
             )}
 
@@ -1438,27 +1467,22 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       value="shop"
                       className="flex h-full min-h-0 min-w-0 w-full items-center justify-center rounded-sm border border-transparent py-0 data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
                     >
-                      For Sale
+                      {t("ui:shop.forSale")}
                     </TabsTrigger>
                     <TabsTrigger
                       value="purchases"
                       disabled={!currentUser}
                       className="flex h-full min-h-0 min-w-0 w-full items-center justify-center rounded-sm border border-transparent py-0 data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
                     >
-                      Purchases
+                      {t("ui:shop.purchases")}
                     </TabsTrigger>
                   </TabsList>
                   {activeTab === "shop" && (
                     <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/5 px-2 py-2 text-sm text-foreground">
                       <p className="text-md font-medium">
-                        Beta discounts of up to{" "}
-                        <span className="font-bold">40% off</span> are currently
-                        active.
+                        {t("ui:shop.betaDiscountTitle", { percent: "40%" })}
                       </p>
-                      <p>
-                        All purchases remain available across future
-                        playthroughs and after full release.
-                      </p>
+                      <p>{t("ui:shop.betaDiscountNote")}</p>
                     </div>
                   )}
                   {activeTab === "purchases" && (
@@ -1468,18 +1492,16 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         0 ? (
                         <>
                           <p className="text-md font-medium">
-                            No purchases yet.
+                            {t("ui:shop.noPurchasesTitle")}
                           </p>
-                          <p>Visit the For Sale tab to buy items.</p>
+                          <p>{t("ui:shop.noPurchasesHint")}</p>
                         </>
                       ) : (
                         <>
                           <p className="text-md font-medium">
-                            Activate your purchases to receive rewards.
+                            {t("ui:shop.activatePurchasesTitle")}
                           </p>
-                          <p>
-                            Each purchase can be activated once per playthrough.
-                          </p>
+                          <p>{t("ui:shop.activatePurchasesNote")}</p>
                         </>
                       )}
                     </div>
@@ -1502,7 +1524,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           : "h-6 border border-red-500/50 text-xs"
                       }
                     >
-                      Highlights
+                      {t("ui:shop.highlights")}
                     </Button>
                     <Button
                       variant={
@@ -1516,7 +1538,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           : "h-6 border border-red-500/50 text-xs"
                       }
                     >
-                      Gold
+                      {t("ui:shop.gold")}
                     </Button>
                     <Button
                       variant={
@@ -1530,7 +1552,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           : "h-6 border border-red-500/50 text-xs"
                       }
                     >
-                      Artifacts
+                      {t("ui:shop.artifacts")}
                     </Button>
                     <Button
                       variant={
@@ -1544,7 +1566,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           : "h-6 border border-red-500/50 text-xs"
                       }
                     >
-                      Boosts
+                      {t("ui:shop.boosts")}
                     </Button>
                     <Button
                       variant={
@@ -1558,7 +1580,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           : "h-6 border border-red-500/50 text-xs"
                       }
                     >
-                      Bundles
+                      {t("ui:shop.bundles")}
                     </Button>
                   </div>
                   <ScrollAreaWithIndicator
@@ -1650,7 +1672,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                       />
                                     )}
                                     <CardTitle className="!m-0 text-md items-center gap-1 pr-6">
-                                      {item.name}
+                                      {resolveShopItemName(item)}
                                       {item.id === "skull_lantern" && (
                                         <ArtifactShopTooltipIcon
                                           artifact="skull_lantern"
@@ -1677,14 +1699,27 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           tooltip={
                                             <div className="text-xs">
                                               <div className="font-bold mb-1">
-                                                Cruel Mode
+                                                {t("ui:shop.cruelMode.title")}
                                               </div>
                                               <div className="mt-1 space-y-0.5">
-                                                <div>• More Events</div>
-                                                <div>• More Items</div>
-                                                <div>• Stronger Enemies</div>
-                                                <div>• Harder Challenges</div>
-                                                <div>• Reuse existing Purchases</div>
+                                                <div>
+                                                  • {t("ui:shop.cruelMode.moreEvents")}
+                                                </div>
+                                                <div>
+                                                  • {t("ui:shop.cruelMode.moreItems")}
+                                                </div>
+                                                <div>
+                                                  •{" "}
+                                                  {t("ui:shop.cruelMode.strongerEnemies")}
+                                                </div>
+                                                <div>
+                                                  •{" "}
+                                                  {t("ui:shop.cruelMode.harderChallenges")}
+                                                </div>
+                                                <div>
+                                                  •{" "}
+                                                  {t("ui:shop.cruelMode.reusePurchases")}
+                                                </div>
                                               </div>
                                             </div>
                                           }
@@ -1822,15 +1857,16 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           <>
                                             <span className={priceClassName}>
                                               {item.price === 0
-                                                ? "Free"
+                                                ? t("common:status.free")
                                                 : formatPrice(displayPrice)}
                                             </span>
                                             {showTradersGratitudeInfo && (
                                               <TooltipWrapper
                                                 tooltip={
                                                   <div className="text-xs">
-                                                    20% additional Discount due to
-                                                    Trader&apos;s Gratitude Event
+                                                    {t("ui:shop.tradersGratitudeDiscount", {
+                                                      percent: TRADERS_GRATITUDE_DISCOUNT_PERCENT,
+                                                    })}
                                                   </div>
                                                 }
                                                 tooltipId={`traders-gratitude-${item.id}`}
@@ -1850,8 +1886,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                               <TooltipWrapper
                                                 tooltip={
                                                   <div className="text-xs">
-                                                    15% additional discount from the
-                                                    Trader&apos;s Son event.
+                                                    {t("ui:shop.tradersSonDiscount", {
+                                                      percent: TRADERS_SON_DISCOUNT_PERCENT,
+                                                    })}
                                                   </div>
                                                 }
                                                 tooltipId={`traders-son-gratitude-${item.id}`}
@@ -1871,9 +1908,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                               <TooltipWrapper
                                                 tooltip={
                                                   <div className="text-xs">
-                                                    10% additional discount for your
-                                                    first real-money purchase as a
-                                                    Playlight player.
+                                                    {t("ui:shop.playlightDiscount", {
+                                                      percent:
+                                                        PLAYLIGHT_FIRST_PURCHASE_DISCOUNT_PERCENT,
+                                                    })}
                                                   </div>
                                                 }
                                                 tooltipId={`playlight-discount-${item.id}`}
@@ -1893,8 +1931,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                               <TooltipWrapper
                                                 tooltip={
                                                   <div className="text-xs">
-                                                    Special discount for finishing the
-                                                    game
+                                                    {t("ui:shop.journeyCompleteDiscount")}
                                                   </div>
                                                 }
                                                 tooltipId={`journey-complete-cruel-${item.id}`}
@@ -1915,7 +1952,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                       })()}
                                       {item.id === "advanced_bundle" && (
                                         <span className={SHOP_CARD_PROMO_TAG_CLASS}>
-                                          Most popular
+                                          {t("ui:shop.mostPopular")}
                                         </span>
                                       )}
                                     </CardDescription>
@@ -1936,7 +1973,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                             <span className="text-[10px] font-semibold">
                                               3x
                                             </span>
-                                            <span>Value</span>
+                                            <span>{t("ui:shop.threeXValue")}</span>
                                           </span>
                                         </div>
                                       )}
@@ -1973,21 +2010,23 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                                 (1000 * 60 * 60),
                                               );
                                               return hoursRemaining === 1
-                                                ? "Available in 1 hour"
-                                                : `Available in ${hoursRemaining} hours`;
+                                                ? t("ui:shop.availableInOneHour")
+                                                : t("ui:shop.availableInHours", {
+                                                    hours: hoursRemaining,
+                                                  });
                                             })()
-                                            : "Claim"
+                                            : t("common:buttons.claim")
                                           : !item.canPurchaseMultipleTimes &&
                                             purchasedItems.some(
                                               (pid) =>
                                                 purchaseIdToItemId(pid) === item.id,
                                             )
                                             ? item.price === 0
-                                              ? "Already Claimed"
-                                              : "Already Purchased"
+                                              ? t("ui:shop.alreadyClaimed")
+                                              : t("ui:shop.alreadyPurchased")
                                             : item.price === 0
-                                              ? "Claim"
-                                              : "Continue"}
+                                              ? t("common:buttons.claim")
+                                              : t("ui:shop.continueCheckout")}
                                       </Button>
                                     </div>
                                   </CardFooter>
@@ -2047,12 +2086,15 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                               >
                                 <div className="flex flex-col">
                                   <span className="text-sm font-medium">
-                                    {item.name} ({activationsRemaining}/
-                                    {item.rewards.feastActivations!} available){" "}
+                                    {t("ui:shop.feastAvailable", {
+                                      name: resolveShopItemName(item),
+                                      remaining: activationsRemaining,
+                                      total: item.rewards.feastActivations!,
+                                    })}{" "}
                                     {/* Display remaining activations */}
                                   </span>
                                   <span className="text-xs text-muted-foreground">
-                                    {item.description}
+                                    {resolveShopItemDescription(item)}
                                   </span>
                                 </div>
                                 <Button
@@ -2081,10 +2123,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   button_id={`shop-activate-${item.id}`}
                                 >
                                   {isGreatFeastActive
-                                    ? "Active"
+                                    ? t("common:status.active")
                                     : activationsRemaining <= 0
-                                      ? "Activated"
-                                      : "Activate"}
+                                      ? t("common:status.activated")
+                                      : t("common:buttons.activate")}
                                 </Button>
                               </div>
                             );
@@ -2119,15 +2161,15 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                               >
                                 <div className="flex flex-col">
                                   <span className="text-sm font-medium">
-                                    {item.name}
+                                    {resolveShopItemName(item)}
                                     {isCruelModeItem && (
                                       <span className="text-md ml-2 font-medium">
-                                        (to play activate and start a new game)
+                                        {t("ui:shop.cruelModeActivateHint")}
                                       </span>
                                     )}
                                   </span>
                                   <span className="text-xs text-muted-foreground">
-                                    {item.description}
+                                    {resolveShopItemDescription(item)}
                                   </span>
                                 </div>
                                 <Button
@@ -2141,11 +2183,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 >
                                   {isCruelModeItem
                                     ? isActivated
-                                      ? "Deactivate"
-                                      : "Activate"
+                                      ? t("common:buttons.deactivate")
+                                      : t("common:buttons.activate")
                                     : isActivated
-                                      ? "Activated"
-                                      : "Activate"}
+                                      ? t("common:status.activated")
+                                      : t("common:buttons.activate")}
                                 </Button>
                               </div>
                             );
@@ -2169,9 +2211,17 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             onInteractOutside={(e) => e.preventDefault()}
           >
             <DialogHeader className="space-y-1 pb-0">
-              <DialogTitle>{SHOP_ITEMS[selectedItem]?.name}</DialogTitle>
+              <DialogTitle>
+                {SHOP_ITEMS[selectedItem]
+                  ? resolveShopItemName(SHOP_ITEMS[selectedItem])
+                  : ""}
+              </DialogTitle>
               <DialogDescription className="sr-only">
-                Complete your payment for {SHOP_ITEMS[selectedItem]?.name}
+                {t("ui:shop.paymentSrDescription", {
+                  name: SHOP_ITEMS[selectedItem]
+                    ? resolveShopItemName(SHOP_ITEMS[selectedItem])
+                    : "",
+                })}
               </DialogDescription>
             </DialogHeader>
             {checkoutPriceBreakdown && (
@@ -2179,7 +2229,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 {checkoutPriceBreakdown.listCents != null &&
                   checkoutPriceBreakdown.listCents > 0 && (
                     <div className="flex justify-between gap-4 text-muted-foreground">
-                      <span>Original price</span>
+                      <span>{t("ui:shop.originalPrice")}</span>
                       <span className="shrink-0 text-right line-through tabular-nums">
                         {formatPrice(checkoutPriceBreakdown.listCents)}
                       </span>
@@ -2187,7 +2237,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   )}
                 {checkoutPriceBreakdown.betaDiscountCents > 0 && (
                   <div className="flex justify-between gap-4 text-emerald-600 dark:text-emerald-500">
-                    <span>Beta discount</span>
+                    <span>{t("ui:shop.betaDiscount")}</span>
                     <span className="shrink-0 text-right tabular-nums">
                       −{formatPrice(checkoutPriceBreakdown.betaDiscountCents)}
                     </span>
@@ -2195,7 +2245,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 )}
                 {checkoutPriceBreakdown.additionalDiscountCents > 0 && (
                   <div className="flex justify-between gap-4 text-emerald-600 dark:text-emerald-500">
-                    <span>Additional discount</span>
+                    <span>{t("ui:shop.additionalDiscount")}</span>
                     <span className="shrink-0 text-right tabular-nums">
                       −
                       {formatPrice(
@@ -2205,7 +2255,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   </div>
                 )}
                 <div className="flex justify-between gap-4 border-t border-border/50 pt-2 font-semibold">
-                  <span>Total</span>
+                  <span>{t("ui:shop.total")}</span>
                   <span className="shrink-0 tabular-nums">
                     {formatPrice(checkoutPriceBreakdown.finalCents)}
                   </span>

@@ -1,0 +1,9 @@
+{
+  "ui.tooltips.gainExact": "+{{amount}} {{resource}}",
+  "ui.tooltips.gainRange": "+{{min}}-{{max}} {{resource}}",
+  "ui.tooltips.gainUnknown": "+? {{resource}}",
+  "ui.tooltips.costLine": "-{{amount}} {{resource}}",
+  "ui.tooltips.actionResourceBonus": "{{action}}: +{{amount}} {{resource}}",
+  "ui.tooltips.statBonus": "{{sign}}{{value}} {{stat}}",
+  "ui.tooltips.productionBonusLine": "+{{amount}} {{resource}} ({{job}})"
+}

@@ -1,0 +1,532 @@
+{
+  "books": {
+    "book_of_ascension": {
+      "description": "Book on ascending the self. Grants the ability to improve at tasks through practice.",
+      "name": "Book of Ascension"
+    },
+    "book_of_craftsmanship": {
+      "description": "Ancient tome of a master craftsman. Reveals subtle hints about crafting items and constructing buildings.",
+      "name": "Book of Craftsmanship"
+    },
+    "book_of_trials": {
+      "description": "Book about navigating life’s challenges. Unlocks rewards for those who prove themselves through achievements.",
+      "name": "Book of Trials"
+    },
+    "book_of_war": {
+      "description": "Book containing wisdom about combat. Reveals the likelihood of success in battles and encounters.",
+      "name": "Book of War"
+    }
+  },
+  "clothing": {
+    "alphas_hide": {
+      "description": "Hide of the wolf pack leader, imbued with primal power",
+      "name": "Alpha's Hide"
+    },
+    "ancient_scrolls": {
+      "description": "Mysterious scrolls written in an unknown language, waiting to be decrypted",
+      "name": "Ancient Scrolls"
+    },
+    "arbalest_schematic": {
+      "description": "Blueprint for crafting a powerful crossbow",
+      "name": "Arbalest"
+    },
+    "ashen_embrace": {
+      "description": "Your ability to mine is improved",
+      "name": "Ashen Embrace"
+    },
+    "ashen_embrace_enhanced": {
+      "description": "Your ability to mine is greatly improved",
+      "name": "Deep Ashen Embrace"
+    },
+    "bell_blessing": {
+      "description": "A mysterious bell mark on your forearm. Doubles Focus Points gained during Sleep.",
+      "name": "Bell Blessing"
+    },
+    "black_bear_fur": {
+      "description": "Cursed black fur from an otherworldy giant bear",
+      "name": "Black Bear Fur"
+    },
+    "black_wood": {
+      "description": "A slab of dense, light-drinking timber from the sanctuary tree.",
+      "name": "Black Timber"
+    },
+    "blackened_mirror": {
+      "description": "Tall cracked mirror framed in black iron that radiates cold aura",
+      "name": "Blackened Mirror"
+    },
+    "blacksteel_armor": {
+      "description": "Heavy armor adorned with deadly spikes",
+      "name": "Blacksteel Armor"
+    },
+    "blood_baptized": {
+      "description": "Received after bathing in the blood of powerful creatures",
+      "name": "Blood Baptized"
+    },
+    "bloodstained_belt": {
+      "description": "Leather belt stained with old blood",
+      "name": "Bloodstained Belt"
+    },
+    "bloodstone": {
+      "description": "Crimson gem pulsing with dark energy",
+      "name": "Bloodstone"
+    },
+    "bone_devourer_blood": {
+      "description": "A vial of pale blood harvested from the Bone Devourer. Its effects are unknown.",
+      "name": "Devourer Blood"
+    },
+    "bone_dice": {
+      "description": "Dice carved from bones, polished to a soft, unsettling smoothness. Grants one extra game at the Gambler.",
+      "name": "Bone Dice"
+    },
+    "bone_necklace": {
+      "description": "Primitive necklace made out of human bones",
+      "name": "Bone Necklace"
+    },
+    "chitin_plates": {
+      "description": "Powerful chitin plates from giant swamp creatures. Can be used to add Chitin Plating to fortifications.",
+      "name": "Chitin Plates"
+    },
+    "cracked_crown": {
+      "description": "Ancient golden crown radiating with mysterious power",
+      "name": "Cracked Crown"
+    },
+    "dagons_gift": {
+      "description": "Your ability to hunt is improved",
+      "name": "Dagon's Gift"
+    },
+    "dagons_gift_enhanced": {
+      "description": "Your ability to hunt is greatly improved",
+      "name": "Dagon's Great Gift"
+    },
+    "devourer_crown": {
+      "description": "Crown of the Bone Devourer, made from bones",
+      "name": "Devourer Crown"
+    },
+    "ebon_grace": {
+      "description": "Dark blessing received by the black tree. Doubling production bonus from Heartfire.",
+      "name": "Ebon Grace"
+    },
+    "ebony_ring": {
+      "description": "Dark ring left as a gift by the forest gods",
+      "name": "Ebony Ring"
+    },
+    "elder_scroll": {
+      "description": "Ancient scroll containing forbidden knowledge",
+      "name": "Elder Scroll"
+    },
+    "explorer_pack": {
+      "description": "Well-crafted leather backpack easing the weight upon the shoulders",
+      "name": "Explorer Backpack"
+    },
+    "feeding_ring": {
+      "description": "Ring that appeared one morning, seemingly fused to your finger",
+      "name": "Feeding Ring"
+    },
+    "fishers_hand": {
+      "description": "Ancient techniques of the shore fishermen to build fish traps",
+      "name": "Fisher's Hand"
+    },
+    "flames_touch": {
+      "description": "Crafting Skills are improved",
+      "name": "Flame's Touch"
+    },
+    "flames_touch_enhanced": {
+      "description": "Crafting Skills are greatly improved",
+      "name": "Strong Flame's Touch"
+    },
+    "forests_grace": {
+      "description": "The deers of the forest seem to notice you less",
+      "name": "Forest's Grace"
+    },
+    "frostglass": {
+      "description": "Crystalline material radiating cold",
+      "name": "Frostglass"
+    },
+    "gifted_ring": {
+      "description": "Plain ring someone left for you to find",
+      "name": "Gifted Ring"
+    },
+    "grenadier_bag": {
+      "description": "Reinforced leather bag for carrying more explosives",
+      "name": "Grenadier's Bag"
+    },
+    "highpriest_robe": {
+      "description": "Sacred robe adorned with gold thread",
+      "name": "Highpriest Robe"
+    },
+    "hollow_king_scepter": {
+      "description": "Scepter of the lost king, radiating power and madness. Mining yields 25% more resources, and each mine action has a 5% chance to double all gains from that action.",
+      "name": "Hollow King Scepter"
+    },
+    "hunter_cloak": {
+      "description": "Supple leather cloak that silences every movement",
+      "name": "Hunter Cloak"
+    },
+    "knights_burden": {
+      "description": "Knowledge the knight shared with you, weighing heavily on your mind",
+      "name": "Knight's Burden"
+    },
+    "loggers_gloves": {
+      "description": "Sturdy leather gloves that help with wood gathering",
+      "name": "Logger's Gloves"
+    },
+    "lycan_blood": {
+      "description": "A vial of thick blood from a Lycanthrope alpha. Its effects are unknown.",
+      "name": "Lycan Blood"
+    },
+    "map_fragment": {
+      "description": "Fragments of a map leading to an unknown place.",
+      "name": "Map Fragment"
+    },
+    "moon_bracelet": {
+      "description": "Fine weightless bracelet of enduring white stone",
+      "name": "Moon Bracelet"
+    },
+    "muttering_amulet": {
+      "description": "Mysterious amulet making strange sounds",
+      "name": "Muttering Amulet"
+    },
+    "necromancer_blood": {
+      "description": "A vial of dark blood harvested from a Necromancer. Its effects are unknown.",
+      "name": "Necromancer Blood"
+    },
+    "nightshade_bow_schematic": {
+      "description": "Blueprint for crafting a poisonous bow",
+      "name": "Nightshade Bow"
+    },
+    "occultist_grimoire": {
+      "description": "Grimoire containing the unholy knowledge of a heretic occultist",
+      "name": "Occultist Grimoire"
+    },
+    "odd_trinket": {
+      "description": "Oddly looking trinket found on the floor",
+      "name": "Odd Trinket"
+    },
+    "ravenfeather_mantle": {
+      "description": "Mystical mantle woven from shimmering raven feathers",
+      "name": "Ravenfeather Mantle"
+    },
+    "ravens_mark": {
+      "description": "Strangers approach the village more often",
+      "name": "Raven's Mark"
+    },
+    "ravens_mark_enhanced": {
+      "description": "Strangers approach the village much more often",
+      "name": "Raven's Great Mark"
+    },
+    "ravens_orb": {
+      "description": "Dark orb blessed by ravens with ancient knowledge",
+      "name": "Raven's Orb"
+    },
+    "red_mask": {
+      "description": "Repulsive mask crafted from deep crimson leather",
+      "name": "Red Mask"
+    },
+    "ring_of_clarity": {
+      "description": "Ring carved out of very clear crystal",
+      "name": "Ring of Clarity"
+    },
+    "ring_of_drowned": {
+      "description": "Tarnished ring that is always wet and cold",
+      "name": "Ring of Drowned"
+    },
+    "ring_of_obedience": {
+      "description": "Ring with a smaller ring attached gifted by a happy woman",
+      "name": "Ring of Obedience"
+    },
+    "sacrificial_tunic": {
+      "description": "Sacred garment that amplifies offerings to the old gods",
+      "name": "Sacrificial Tunic"
+    },
+    "sealed_chest": {
+      "description": "A very sturdy chest you are not able to open",
+      "name": "Sealed Chest"
+    },
+    "shadow_boots": {
+      "description": "Move across all terrain as quick as a shadow",
+      "name": "Shadow Boots"
+    },
+    "shadow_flute": {
+      "description": "Bone flute that makes shadows move unnaturally",
+      "name": "Shadow Flute"
+    },
+    "sharp_aim": {
+      "description": "Your hunters' aim is improved",
+      "name": "Sharp Aim"
+    },
+    "stonebinders_codex": {
+      "description": "Tome from the hidden library revealing secrets of efficient construction",
+      "name": "Stonebinder's Codex"
+    },
+    "stormglass_halberd_schematic": {
+      "description": "Blueprint for crafting a formidable halberd",
+      "name": "Stormglass Halberd"
+    },
+    "survivors_last_words": {
+      "description": "The final blessing from a dying stranger",
+      "name": "Survivor's Last Words"
+    },
+    "survivors_notes": {
+      "description": "Timeworn scroll filled with practical advice left by one who had lived here long ago. Unlocks basic achievements.",
+      "name": "Survivor's Notes"
+    },
+    "tarnished_amulet": {
+      "description": "Timeworn amulet bringing good fortune",
+      "name": "Tarnished Amulet"
+    },
+    "tarnished_compass": {
+      "description": "Ancient relic for those seeking guidance.",
+      "name": "Tarnished Compass"
+    },
+    "unnamed_book": {
+      "description": "Book bound in human skin filled with forbidden knowledge",
+      "name": "Unnamed Book"
+    },
+    "whisperers_mark": {
+      "description": "The mark of the whisperer in the dark",
+      "name": "Whisperer's Mark"
+    },
+    "whispering_cube": {
+      "description": "Perfectly polished metal cube of unknown origin, whispering fragments of the history of the vanished civilization.",
+      "name": "Whispering Cube"
+    },
+    "wooden_figure": {
+      "description": "Carved wooden figure of an unsettling creature with tentacles",
+      "name": "Wooden Figure"
+    }
+  },
+  "fellowship": {
+    "ashwraith_huntress": {
+      "description": "Wildling huntress from a forest tribe bound by blood oath. Unlocks hunting skill upgrades and hunter production upgrades.",
+      "name": "Ashwraith Huntress"
+    },
+    "disgraced_prior": {
+      "description": "Former prior cast out of his order. Redeems himself through endless labor. Can be assigned to automatically repeat actions.",
+      "name": "Disgraced Prior"
+    },
+    "elder_wizard": {
+      "description": "Old wizard in his final days who long ago mastered the arts of arcane fire. Unlocks combat skill Bloodflame Sphere.",
+      "name": "Elder Wizard"
+    },
+    "one_eyed_crow": {
+      "description": "Mystical crow with a single piercing eye, tamed using the crow harness. Unlocks Crow's Eye skill and sending messages.",
+      "name": "One-eyed Crow"
+    },
+    "restless_knight": {
+      "description": "Veteran of combat who has seen the remnants of the old world. Unlocks combat skill Crushing Strike.",
+      "name": "Restless Knight"
+    }
+  },
+  "tools": {
+    "adamant_axe": {
+      "description": "Unbreakable axe, forged from the hardest metal",
+      "name": "Adamant Axe"
+    },
+    "adamant_lantern": {
+      "description": "Ultimate light source, illuminating every path",
+      "name": "Adamant Lantern"
+    },
+    "adamant_pickaxe": {
+      "description": "Pinnacle of mining tools, unyielding and precise",
+      "name": "Adamant Pickaxe"
+    },
+    "blacksmith_hammer": {
+      "description": "Legendary blacksmith hammer once owned by a great blacksmith",
+      "name": "Blacksmith Hammer"
+    },
+    "blacksteel_axe": {
+      "description": "Axe forged from rare blacksteel",
+      "name": "Blacksteel Axe"
+    },
+    "blacksteel_lantern": {
+      "description": "Lantern forged from rare blacksteel",
+      "name": "Blacksteel Lantern"
+    },
+    "blacksteel_pickaxe": {
+      "description": "Pickaxe forged from rare blacksteel",
+      "name": "Blacksteel Pickaxe"
+    },
+    "bone_saw": {
+      "description": "The necromancer's tool, unnaturally efficient at butchering",
+      "name": "Bone Saw"
+    },
+    "crow_harness": {
+      "description": "A specially crafted harness for catching crows. Can be used to catch a crow in Blackreach Canyon.",
+      "name": "Crow Harness"
+    },
+    "giant_trap": {
+      "description": "Massive trap capable of catching gigantic forest creatures",
+      "name": "Giant Trap"
+    },
+    "hidden_library_map": {
+      "description": "Map from the monastery revealing the location of a hidden library deep in the cave",
+      "name": "Hidden Library Map"
+    },
+    "iron_axe": {
+      "description": "Sharp axe for heavy chopping",
+      "name": "Iron Axe"
+    },
+    "iron_lantern": {
+      "description": "Simple lantern providing reliable light",
+      "name": "Iron Lantern"
+    },
+    "iron_pickaxe": {
+      "description": "Durable pickaxe for mining efficiently",
+      "name": "Iron Pickaxe"
+    },
+    "mastermason_chisel": {
+      "description": "Exquisitely crafted tool of a long-forgotten master builder",
+      "name": "Mastermason Chisel"
+    },
+    "natharit_pickaxe": {
+      "description": "Extremely sturdy pickaxe of unknown material with exceptional quality",
+      "name": "Natharit Pickaxe"
+    },
+    "obsidian_axe": {
+      "description": "Legendary axe with razor-sharp volcanic edges",
+      "name": "Obsidian Axe"
+    },
+    "obsidian_lantern": {
+      "description": "Powerful lantern that casts a strong, unwavering light",
+      "name": "Obsidian Lantern"
+    },
+    "obsidian_pickaxe": {
+      "description": "Masterful tool for mining made of volcanic glass",
+      "name": "Obsidian Pickaxe"
+    },
+    "occultist_map": {
+      "description": "Time-worn map revealing the chamber of an occultist in the cave",
+      "name": "Occultist Map"
+    },
+    "reinforced_rope": {
+      "description": "Strong rope that enables access to deeper cave chambers",
+      "name": "Reinforced Rope"
+    },
+    "skeleton_key": {
+      "description": "A mysterious key said to open any lock",
+      "name": "Skeleton Key"
+    },
+    "skull_lantern": {
+      "description": "Forged from cursed bone illuminating the deepest depths",
+      "name": "Skull Lantern"
+    },
+    "steel_axe": {
+      "description": "Finely crafted axe forged from tempered steel",
+      "name": "Steel Axe"
+    },
+    "steel_lantern": {
+      "description": "Bright lantern illuminating the darkest places",
+      "name": "Steel Lantern"
+    },
+    "steel_pickaxe": {
+      "description": "Very sturdy mining tool crafted from resilient steel",
+      "name": "Steel Pickaxe"
+    },
+    "stone_axe": {
+      "description": "Basic axe for chopping wood",
+      "name": "Stone Axe"
+    },
+    "stone_pickaxe": {
+      "description": "Rudimentary pickaxe for mining",
+      "name": "Stone Pickaxe"
+    }
+  },
+  "weapons": {
+    "adamant_sword": {
+      "description": "Legendary blade of unparalleled strength",
+      "name": "Adamant Sword"
+    },
+    "arbalest": {
+      "description": "Meticulously crafted arbalest designed by a briliant engineer",
+      "name": "Arbalest"
+    },
+    "ashen_dagger": {
+      "description": "Dagger forged of volcanic ash given by the Ashbringer",
+      "name": "Ashen Dagger"
+    },
+    "ashen_greatshield": {
+      "description": "Massive shield forged from bones of the underground lake creature",
+      "name": "Ashen Greatshield"
+    },
+    "ashfire_bomb": {
+      "description": "Devastating bomb glowing with otherworldly fire",
+      "name": "Ashfire Bomb"
+    },
+    "blacksteel_bow": {
+      "description": "Bow forged from rare blacksteel",
+      "name": "Blacksteel Bow"
+    },
+    "blacksteel_sword": {
+      "description": "Sword forged from rare blacksteel",
+      "name": "Blacksteel Sword"
+    },
+    "bloodstone_staff": {
+      "description": "Staff crowned with bloodstone, pulsing with dark energy",
+      "name": "Bloodstone Staff"
+    },
+    "compound_bow": {
+      "description": "High precision weapon from the vanished civilization",
+      "name": "Compound Bow"
+    },
+    "crude_bow": {
+      "description": "Simple bow, reliable for any challenge",
+      "name": "Crude Bow"
+    },
+    "ember_bomb": {
+      "description": "Powerful bomb with a glowing core creating intense heat",
+      "name": "Ember Bomb"
+    },
+    "frostglass_sword": {
+      "description": "Blade forged from frostglass, radiating cold power",
+      "name": "Frostglass Sword"
+    },
+    "huntsman_bow": {
+      "description": "Improved bow, finely balanced and precise",
+      "name": "Huntsman Bow"
+    },
+    "iron_sword": {
+      "description": "Sturdy iron blade enhancing combat prowess",
+      "name": "Iron Sword"
+    },
+    "long_bow": {
+      "description": "Superior bow with extended reach and accuracy",
+      "name": "Long Bow"
+    },
+    "master_bow": {
+      "description": "Ultimate bow, unmatched in power and control",
+      "name": "Master Bow"
+    },
+    "nightshade_bow": {
+      "description": "Bow crafted from dark wood, its arrows carry poison",
+      "name": "Nightshade Bow"
+    },
+    "nordic_war_axe": {
+      "description": "Legendary war axe forged by a viking master blacksmith",
+      "name": "Nordic War Axe"
+    },
+    "obsidian_sword": {
+      "description": "Razor-sharp blade forged from volcanic glass",
+      "name": "Obsidian Sword"
+    },
+    "steel_sword": {
+      "description": "Finely crafted steel blade with superior balance",
+      "name": "Steel Sword"
+    },
+    "stormglass_halberd": {
+      "description": "Supreme halberd forged from masterfully refined adamant",
+      "name": "Stormglass Halberd"
+    },
+    "veinfire_elixir": {
+      "description": "Alchemical healing elixir distilled from rare veinroot",
+      "name": "Veinfire Elixir"
+    },
+    "void_bomb": {
+      "description": "Terrifying bomb seeming to distort space around it",
+      "name": "Void Bomb"
+    },
+    "war_bow": {
+      "description": "Very powerful bow, crafted for strength and precision",
+      "name": "War Bow"
+    }
+  }
+}

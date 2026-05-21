@@ -15,6 +15,7 @@ import {
   decodeLocalGameState,
   decodeLocalSave,
 } from "./saveCodec";
+import { tWithFallback } from "@/i18n/resolveGameText";
 
 const isDev = import.meta.env.DEV;
 
@@ -206,7 +207,12 @@ async function processUnclaimedReferralsImpl(
       logEntriesAdded.push({
         id: `referral-claimed-${referral.userId}-${Date.now()}`,
         timestamp: Date.now(),
-        message: `You invited someone new to this world! +${REFERRAL_REWARD_GOLD} Gold`,
+        message: tWithFallback(
+          "ui",
+          "referral.invitedLog",
+          `You invited someone new to this world! +${REFERRAL_REWARD_GOLD} Gold`,
+          { amount: REFERRAL_REWARD_GOLD },
+        ),
         type: "system",
       });
 

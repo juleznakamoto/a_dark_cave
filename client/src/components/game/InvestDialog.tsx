@@ -26,26 +26,34 @@ import {
 } from "@/game/rules/investmentHallTables";
 import type { InvestmentDurationMin } from "@/game/rules/investmentHallTables";
 import { formatNumber, cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 
 const INVEST_RADIO_INDICATOR_PX = 8;
 
-function termMinutesLabel(durationMin: InvestmentDurationMin): string {
-  return `${durationMin} min`;
+function termMinutesLabel(
+  durationMin: InvestmentDurationMin,
+  t: TFunction<"ui">,
+): string {
+  return t("invest.minutes", { count: durationMin });
 }
 
-function formatLuckSuccessLine(luck: number): string {
+function formatLuckSuccessLine(luck: number, t: TFunction<"ui">): string {
   const bonus = getLuckWinChanceBonus(luck);
   const pct = Number.isInteger(bonus) ? String(bonus) : bonus.toFixed(1);
-  return `+${pct} % Success Chance from Luck (included in table).`;
+  return t("invest.luckBonus", { pct });
 }
 
 /** Matches `investmentHallLuckyChanceBonusPct`: Treasury → 2, Bank → 1; coinhouse-only → null (no line). */
-function formatInvestmentHallLuckyLine(bonusPct: number): string | null {
+function formatInvestmentHallLuckyLine(
+  bonusPct: number,
+  t: TFunction<"ui">,
+): string | null {
   if (bonusPct >= 2) {
-    return "+2 % Lucky Chance from building level (included in table).";
+    return t("invest.buildingLuckyBonus2");
   }
   if (bonusPct >= 1) {
-    return "+1 % Lucky Chance from building level (included in table).";
+    return t("invest.buildingLuckyBonus1");
   }
   return null;
 }
@@ -64,10 +72,6 @@ type Props = {
   onOpenChange: (open: boolean) => void;
 };
 
-const AMOUNT_UNLOCK_TOOLTIP = (
-  <span className="text-xs">Unlocks at higher building level</span>
-);
-
 /** Narrow column: disc is 8px; keeps Time column close without clipping the ring. */
 const INVEST_RADIO_COLUMN_CLASS = "w-6 min-w-6 shrink-0";
 
@@ -78,6 +82,7 @@ const INVEST_SECTION_INSET = "pl-1 pr-0";
 const INVEST_TABLE_LINE = "border-muted-foreground/25";
 
 export default function InvestDialog({ open, onOpenChange }: Props) {
+  const { t } = useTranslation(["ui", "common"]);
   const playTime = useGameStore((s) => s.playTime);
   const luck = useGameStore((s) => s.stats.luck);
   const cruelMode = useGameStore((s) => s.cruelMode);
@@ -144,7 +149,10 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
     }
   }, [open, canInvestUi, onOpenChange]);
 
-  const investmentHallLuckyTooltipLine = formatInvestmentHallLuckyLine(luckyBonusPct);
+  const investmentHallLuckyTooltipLine = formatInvestmentHallLuckyLine(
+    luckyBonusPct,
+    t,
+  );
 
   const handleCommit = () => {
     const idx = Number(strategy);
@@ -157,36 +165,60 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
   const strategyTableInfoTooltip = (
     <div className="text-xs space-y-2 max-w-[280px]">
       <div className="space-y-1.5 border-b border-border pb-2 mb-0.5">
-        <p className="font-medium text-foreground">{formatLuckSuccessLine(luck)}</p>
+        <p className="font-medium text-foreground">
+          {formatLuckSuccessLine(luck, t)}
+        </p>
         {investmentHallLuckyTooltipLine ? (
           <p className="font-medium text-foreground">{investmentHallLuckyTooltipLine}</p>
         ) : null}
       </div>
       <ul className="space-y-1.5 pl-0 list-none text-muted-foreground">
         <li>
-          <span className="text-foreground font-medium">Time</span>: How long the investment runs.
+          <span className="text-foreground font-medium">
+            {t("invest.headers.time")}
+          </span>
+          : {t("invest.tooltip.time")}
         </li>
         <li>
-          <span className="text-foreground font-medium">Success</span>: Chance of a
-          successful investment.
+          <span className="text-foreground font-medium">
+            {t("invest.headers.success")}
+          </span>
+          : {t("invest.tooltip.success")}
         </li>
         <li>
-          <span className="text-foreground font-medium">Profit</span>: The profit you gain in case of success.
+          <span className="text-foreground font-medium">
+            {t("invest.headers.profit")}
+          </span>
+          : {t("invest.tooltip.profit")}
         </li>
         <li>
-          <span className="text-foreground font-medium">Lucky</span>: Chance
-          on success to multiply your profit by {LUCKY_CHANCE_WIN_MULTIPLIER}.
+          <span className="text-foreground font-medium">
+            {t("invest.headers.lucky")}
+          </span>
+          :{" "}
+          {t("invest.tooltip.lucky", {
+            multiplier: LUCKY_CHANCE_WIN_MULTIPLIER,
+          })}
         </li>
         <li>
-          <span className="text-foreground font-medium">Loss</span>: The portion of your investment you lose in case of failure.
+          <span className="text-foreground font-medium">
+            {t("invest.headers.loss")}
+          </span>
+          : {t("invest.tooltip.loss")}
         </li>
         <li>
-          <span className="text-foreground font-medium">Wipeout %</span>: Chance to lose your entire
-          investment in case of failure.
+          <span className="text-foreground font-medium">
+            {t("invest.headers.wipeout")}
+          </span>
+          : {t("invest.tooltip.wipeout")}
         </li>
         <li>
-          <span className="text-foreground font-medium">Potential Profit</span>: Maximum profit you can gain on your investment. Second value is if Lucky Chance hits (profit ×{" "}
-          {LUCKY_CHANCE_WIN_MULTIPLIER}).
+          <span className="text-foreground font-medium">
+            {t("invest.potentialProfit")}
+          </span>{" "}
+          {t("invest.tooltip.potentialProfit", {
+            multiplier: LUCKY_CHANCE_WIN_MULTIPLIER,
+          })}
         </li>
       </ul>
     </div>
@@ -201,7 +233,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
         <DialogHeader className="min-w-0">
           <div className="flex items-center gap-1 pr-10">
             <DialogTitle className="m-0 leading-none">
-              Invest
+              {t("invest.title")}
             </DialogTitle>
             <TooltipWrapper
               tooltip={strategyTableInfoTooltip}
@@ -214,7 +246,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
               <button
                 type="button"
                 className="flex h-full w-full items-center justify-center rounded-full border-0 bg-transparent p-0 cursor-pointer"
-                aria-label="Explain investments and the strategy table"
+                aria-label={t("invest.infoAriaLabel")}
               >
                 <Info
                   className="h-[15px] w-[15px] shrink-0 text-current"
@@ -229,7 +261,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
         {canInvestUi ? (
           <div className="min-w-0 w-full max-w-full space-y-4">
             <div className="min-w-0 space-y-2">
-              <p className="text-sm font-medium">Investment Strategy</p>
+              <p className="text-sm font-medium">{t("invest.strategy")}</p>
               <RadioGroup
                 value={strategy}
                 onChange={setStrategy}
@@ -258,7 +290,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             INVEST_TABLE_LINE,
                           )}
                         >
-                          Time
+                          {t("invest.headers.time")}
                         </th>
                         <th
                           className={cn(
@@ -266,7 +298,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             INVEST_TABLE_LINE,
                           )}
                         >
-                          Success
+                          {t("invest.headers.success")}
                         </th>
                         <th
                           className={cn(
@@ -274,7 +306,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             INVEST_TABLE_LINE,
                           )}
                         >
-                          Profit
+                          {t("invest.headers.profit")}
                         </th>
                         <th
                           className={cn(
@@ -282,7 +314,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             INVEST_TABLE_LINE,
                           )}
                         >
-                          Lucky
+                          {t("invest.headers.lucky")}
                         </th>
                         <th
                           className={cn(
@@ -290,7 +322,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             INVEST_TABLE_LINE,
                           )}
                         >
-                          Loss
+                          {t("invest.headers.loss")}
                         </th>
                         <th
                           className={cn(
@@ -298,7 +330,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             INVEST_TABLE_LINE,
                           )}
                         >
-                          Wipeout
+                          {t("invest.headers.wipeout")}
                         </th>
                       </tr>
                     </thead>
@@ -341,7 +373,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             >
                               <RadioGroup.Item value={String(i)}>
                                 <span className="sr-only">
-                                  {termMinutesLabel(offer.durationMin)}
+                                  {termMinutesLabel(offer.durationMin, t)}
                                 </span>
                               </RadioGroup.Item>
                             </td>
@@ -352,7 +384,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                                 INVEST_TABLE_LINE,
                               )}
                             >
-                              {termMinutesLabel(offer.durationMin)}
+                              {termMinutesLabel(offer.durationMin, t)}
                             </td>
                             <td
                               className={cn(
@@ -409,7 +441,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
             </div>
 
             <div className="space-y-2">
-              <p className="text-sm font-medium">Investment Amount</p>
+              <p className="text-sm font-medium">{t("invest.amount")}</p>
               <RadioGroup
                 value={amountStr}
                 onChange={setAmountStr}
@@ -430,7 +462,11 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                       <div key={a} className="shrink-0">
                         {disabled ? (
                           <TooltipWrapper
-                            tooltip={AMOUNT_UNLOCK_TOOLTIP}
+                            tooltip={
+                              <span className="text-xs">
+                                {t("invest.unlockTooltip")}
+                              </span>
+                            }
                             tooltipId={`invest-amount-${a}`}
                             disabled
                             className="inline-flex shrink-0"
@@ -443,14 +479,18 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                               disabledCursor="default"
                             >
                               <span className={labelClass}>
-                                {formatNumber(a)} Gold
+                                {t("common:currency.goldAmount", {
+                                  amount: formatNumber(a),
+                                })}
                               </span>
                             </RadioGroup.Item>
                           </TooltipWrapper>
                         ) : (
                           <RadioGroup.Item value={String(a)}>
                             <span className={labelClass}>
-                              {formatNumber(a)} Gold
+                              {t("common:currency.goldAmount", {
+                                amount: formatNumber(a),
+                              })}
                             </span>
                           </RadioGroup.Item>
                         )}
@@ -463,13 +503,17 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
 
             <div className="flex flex-col items-center gap-4 pt-1">
               <p className="text-center text-xs text-muted-foreground tabular-nums">
-                Potential Profit:{" "}
+                {t("invest.potentialProfit")}{" "}
                 <span className="text-foreground font-medium">
-                  {formatNumber(potentialProfitGold.normal)} Gold
+                  {t("common:currency.goldAmount", {
+                    amount: formatNumber(potentialProfitGold.normal),
+                  })}
                 </span>
                 {" / "}
                 <span className="text-foreground font-medium">
-                  {formatNumber(potentialProfitGold.luckyChance)} Gold
+                  {t("common:currency.goldAmount", {
+                    amount: formatNumber(potentialProfitGold.luckyChance),
+                  })}
                 </span>
               </p>
               <Button
@@ -483,7 +527,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                 }
                 button_id="invest-commit"
               >
-                Start Investment
+                {t("invest.startInvestment")}
               </Button>
             </div>
           </div>

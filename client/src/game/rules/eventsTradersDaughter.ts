@@ -8,25 +8,21 @@ export const tradersDaughterEvents: Record<string, GameEvent> = {
       (state.resources.food ?? 0) > 500 &&
       (state.buildings.tradePost ?? 0) >= 1 &&
       !state.triggeredEvents.traders_daughter_helped,
-    timeProbability: 30,
-    title: "The Trader's Daughter",
-    message:
-      "One evening, the trader approaches you in distress. His youngest daughter has gone missing near the forest’s edge, and he begs for your help.",
+    timeProbability: 30,
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 6 * 60 * 1000, // 6 minutes
     choices: [
       {
-        id: "send_search_party",
-        label: "Send search party",
+        id: "send_search_party",
         cost: "500 food, 50 torch",
         effect: (state: GameState) => {
           const food = state.resources.food ?? 0;
           const torch = state.resources.torch ?? 0;
           if (food < 500 || torch < 50) {
             return {
-              _logMessage: "You don't have enough food and torches for the search party.",
+              _logMessageKey: "outcome0",
             };
           }
           return {
@@ -40,24 +36,21 @@ export const tradersDaughterEvents: Record<string, GameEvent> = {
               ...(state.triggeredEvents || {}),
               traders_daughter_helped: true,
             },
-            _logMessage:
-              "The search party finds the girl unharmed. She had discovered a small cave strewn with silver trinkets and coins, and was quietly playing among them.",
+            _logMessageKey: "outcome1",
           };
         },
       },
       {
-        id: "do_not_help",
-        label: "Do not help",
+        id: "do_not_help",
         effect: (_state: GameState) => ({
-          _logMessage: "You decline. The trader nods sadly and leaves to search on his own.",
+          _logMessageKey: "outcome2",
         }),
       },
     ],
     fallbackChoice: {
-      id: "do_not_help",
-      label: "Do not help",
+      id: "do_not_help",
       effect: (_state: GameState) => ({
-        _logMessage: "You decline. The trader nods sadly and leaves to search on his own.",
+        _logMessageKey: "outcome3",
       }),
     },
   },
@@ -67,18 +60,14 @@ export const tradersDaughterEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.triggeredEvents?.traders_daughter_helped === true &&
       state.triggeredEvents?.traders_gratitude_used !== true,
-    timeProbability: 2,
-    title: "The Trader's Gratitude",
-    message:
-      "The trader returns, eyes filled with relief and gratitude. To repay your kindness, he promises a generous discount on your next purchase.",
+    timeProbability: 2,
     priority: 3,
     repeatable: false,
     showAsTimedTab: true,
     timedTabDuration: 10 * 60 * 1000, // 10 minutes
     choices: [
       {
-        id: "accept_traders_gratitude",
-        label: "Accept",
+        id: "accept_traders_gratitude",
         effect: (state: GameState) => ({
           tradersGratitudeState: {
             accepted: true,
@@ -86,28 +75,26 @@ export const tradersDaughterEvents: Record<string, GameEvent> = {
         }),
       },
       {
-        id: "decline_traders_gratitude",
-        label: "Decline offer",
+        id: "decline_traders_gratitude",
         effect: (state: GameState) => ({
           tradersGratitudeState: { accepted: false },
           triggeredEvents: {
             ...(state.triggeredEvents || {}),
             traders_gratitude_used: true,
           },
-          _logMessage: "You decline the offer. The trader thanks you once more and departs quietly.",
+          _logMessageKey: "outcome0",
         }),
       },
     ],
     fallbackChoice: {
-      id: "decline_traders_gratitude",
-      label: "Decline offer",
+      id: "decline_traders_gratitude",
       effect: (state: GameState) => ({
         tradersGratitudeState: { accepted: false },
         triggeredEvents: {
           ...(state.triggeredEvents || {}),
           traders_gratitude_used: true,
         },
-        _logMessage: "You decline the offer. The trader thanks you once more and departs quietly.",
+        _logMessageKey: "outcome1",
       }),
     },
   },

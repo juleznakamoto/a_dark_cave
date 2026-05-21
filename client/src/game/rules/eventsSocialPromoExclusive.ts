@@ -10,22 +10,17 @@ export const socialPromoExclusiveEvents: Record<string, GameEvent> = {
       !state.clothing.gifted_ring,
     timeProbability: 0.5,
     priority: 10,
-    repeatable: true,
-    title: "An Expected Gift",
-    message:
-      "One morning, on a tree stump beside the cave entrance, you find a ring, as though someone left it there for you.",
+    repeatable: true,
     choices: [
       {
-        id: "takeGiftedRing",
-        label: "Take ring",
+        id: "takeGiftedRing",
         effect: (state: GameState) => ({
           clothing: {
             ...state.clothing,
             gifted_ring: true,
           },
           socialPromoExclusiveRewardPending: false,
-          _logMessage:
-            "You hold the ring in your hand. It feels soft, faintly warm and welcoming.",
+          _logMessageKey: "outcome0",
         }),
       },
     ],

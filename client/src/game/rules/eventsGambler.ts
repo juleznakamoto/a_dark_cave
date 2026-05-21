@@ -1,10 +1,23 @@
+import { tWithFallback } from "@/i18n/resolveGameText";
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { CRUEL_MODE } from "../cruelMode";
 
-/** Shown in EventDialog when the player finishes all dice games this visit (bone dice: 2, else 1). */
-export const GAMBLER_LEAVE_AFTER_GAMES_MESSAGE =
+const GAMBLER_LEAVE_AFTER_GAMES_FALLBACK =
   "The gambler pockets his dice, gives a last crooked smile, and disappears into the darkness of the woods.";
+
+/** Shown in EventDialog when the player finishes all dice games this visit (bone dice: 2, else 1). */
+export function getGamblerLeaveAfterGamesMessage(): string {
+  return tWithFallback(
+    "events",
+    "gambler.leaveAfterGames",
+    GAMBLER_LEAVE_AFTER_GAMES_FALLBACK,
+  );
+}
+
+/** @deprecated Prefer getGamblerLeaveAfterGamesMessage() for locale-aware text. */
+export const GAMBLER_LEAVE_AFTER_GAMES_MESSAGE =
+  GAMBLER_LEAVE_AFTER_GAMES_FALLBACK;
 
 export const gamblerEvents: Record<string, GameEvent> = {
   gambler: {
@@ -14,9 +27,7 @@ export const gamblerEvents: Record<string, GameEvent> = {
       state.cruelMode
         ? CRUEL_MODE.gambler.timeProbabilityMinutes.cruel
         : CRUEL_MODE.gambler.timeProbabilityMinutes.normal,
-    cooldownPercent: 0.5,
-    title: "The Obsessed Gambler",
-    message: "The gambler sits cross-legged by the fire, eyes fixed on the dice. 'Place your bet,' he breathes with a crooked grin, 'and let's find out who endures.'",
+    cooldownPercent: 0.5,
 
     priority: 2,
     repeatable: true,
@@ -24,26 +35,21 @@ export const gamblerEvents: Record<string, GameEvent> = {
     timedTabDuration: 4 * 60 * 1000,
     fallbackChoice: {
       id: "decline",
-      label: "Decline",
       effect: () =>
         ({
-          _logMessage:
-            "The gambler shrugs, pockets his dice, and slips into the dark without another word.",
+          _logMessageKey: "outcome0",
         }) as any,
     },
     choices: [
       {
         id: "accept",
-        label: "Accept",
         effect: () => ({}),
       },
       {
         id: "decline",
-        label: "Decline",
         effect: () =>
           ({
-            _logMessage:
-              "The gambler shrugs, pockets his dice, and slips into the dark without another word.",
+            _logMessageKey: "outcome1",
           }) as any,
       },
     ],

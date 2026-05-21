@@ -2,29 +2,50 @@ import {
   OFFICIAL_REDDIT_URL,
   OFFICIAL_INSTAGRAM_URL,
 } from "@/lib/gameFooterSocialLinks";
+import { tWithFallback } from "@/i18n/resolveGameText";
 
 export type SocialPlatformConfig = {
-  id: string;
-  name: string;
+  id: "instagram" | "reddit";
   url: string;
   reward: number;
-  /** Profile-style verb (Follow / Join). */
-  actionLabel: string;
 };
 
 export const SOCIAL_PLATFORMS: readonly SocialPlatformConfig[] = [
   {
     id: "instagram",
-    name: "Instagram (+100 Gold)",
     url: OFFICIAL_INSTAGRAM_URL,
     reward: 100,
-    actionLabel: "Follow",
   },
   {
     id: "reddit",
-    name: "Reddit (+100 Gold)",
     url: OFFICIAL_REDDIT_URL,
     reward: 100,
-    actionLabel: "Join",
   },
 ];
+
+export function getSocialPlatformTitle(
+  platformId: SocialPlatformConfig["id"],
+  reward: number,
+): string {
+  const fallback =
+    platformId === "reddit"
+      ? `Reddit (+${reward} Gold)`
+      : `Instagram (+${reward} Gold)`;
+  return tWithFallback(
+    "ui",
+    `socialPrompt.platforms.${platformId}.title`,
+    fallback,
+    { amount: reward },
+  );
+}
+
+export function getSocialPlatformActionLabel(
+  platformId: SocialPlatformConfig["id"],
+): string {
+  const key =
+    platformId === "reddit"
+      ? `socialPrompt.platforms.${platformId}.actionJoin`
+      : `socialPrompt.platforms.${platformId}.actionFollow`;
+  const fallback = platformId === "reddit" ? "Join" : "Follow";
+  return tWithFallback("ui", key, fallback);
+}
