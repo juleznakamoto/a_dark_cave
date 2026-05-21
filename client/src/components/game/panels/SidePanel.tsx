@@ -7,9 +7,11 @@ import { logger } from "@/lib/logger";
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { capitalizeWords, formatSignedNumber } from "@/lib/utils";
 import {
+  getActionLabel,
   getEffectName,
   getResourceName,
   getStatName,
+  getVillagerJobName,
 } from "@/i18n/resolveGameText";
 import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
@@ -521,7 +523,10 @@ export default function SidePanel() {
       const buildAction = villageBuildActions[actionId];
 
       // Use the label from villageBuildActions, with special handling for multiple huts
-      let label = buildAction?.label || capitalizeWords(key);
+      let label = getActionLabel(
+        actionId,
+        buildAction?.label || capitalizeWords(key),
+      );
       const showCount =
         key === "woodenHut" || key === "stoneHut" || key === "longhouse";
 
@@ -554,7 +559,7 @@ export default function SidePanel() {
     .filter((key) => (villagers[key as keyof typeof villagers] ?? 0) > 0)
     .map((key) => ({
       id: key,
-      label: getResourceName(key, capitalizeWords(key)),
+      label: getVillagerJobName(key, capitalizeWords(key)),
       value: villagers[key as keyof typeof villagers] ?? 0,
       testId: `population-${key}`,
       visible: true,
@@ -801,7 +806,7 @@ export default function SidePanel() {
 
         return {
           id: `bastion-${key}`,
-          label: capitalizeWords(key),
+          label: getStatName(key, capitalizeWords(key)),
           icon: BASTION_STAT_SIDE_PANEL_ICONS[key],
           iconColor: BASTION_STAT_SIDE_PANEL_ICON_COLORS[key],
           value,
@@ -908,13 +913,14 @@ export default function SidePanel() {
           {resourceItems.length > 0 && shouldShowSection("resources") && (
             <SidePanelSection
               className="pt-0"
+              sectionId="resources"
               title={t("sidePanel.resources")}
               activeTab={activeTab}
               titleTooltip={
                 showResourceLimit
                   ? t("sidePanel.resourceLimitTooltip", {
-                      limit: resourceLimitText,
-                    })
+                    limit: resourceLimitText,
+                  })
                   : undefined
               }
               items={resourceItems}
@@ -942,13 +948,14 @@ export default function SidePanel() {
         {/* Second column - Everything else */}
         <div className="flex-1">
           {toolItems.length > 0 && shouldShowSection("tools") && (
-            <SidePanelSection className="pt-0" title={t("sidePanel.tools")} items={toolItems} />
+            <SidePanelSection className="pt-0" sectionId="tools" title={t("sidePanel.tools")} items={toolItems} />
           )}
           {weaponItems.length > 0 && shouldShowSection("weapons") && (
-            <SidePanelSection title={t("sidePanel.weapons")} items={weaponItems} />
+            <SidePanelSection sectionId="weapons" title={t("sidePanel.weapons")} items={weaponItems} />
           )}
           {bastionStatsItems.length > 0 && shouldShowSection("bastion") && (
             <SidePanelSection
+              sectionId="bastion"
               title={
                 flags.hasFortress
                   ? t("sidePanel.fortress")
@@ -960,30 +967,32 @@ export default function SidePanel() {
           {fortificationItems.length > 0 &&
             shouldShowSection("fortifications") && (
               <SidePanelSection
+                sectionId="fortifications"
                 title={t("sidePanel.fortifications")}
                 items={fortificationItems}
               />
             )}
           {combatItemRows.length > 0 && shouldShowSection("combatItems") && (
-            <SidePanelSection title={t("sidePanel.combatItems")} items={combatItemRows} />
+            <SidePanelSection sectionId="combatItems" title={t("sidePanel.combatItems")} items={combatItemRows} />
           )}
           {clothingItems.length > 0 && shouldShowSection("clothing") && (
-            <SidePanelSection title={t("sidePanel.clothing")} items={clothingItems} />
+            <SidePanelSection sectionId="clothing" title={t("sidePanel.clothing")} items={clothingItems} />
           )}
           {relicItems.length > 0 && shouldShowSection("relics") && (
-            <SidePanelSection title={t("sidePanel.relics")} items={relicItems} />
+            <SidePanelSection sectionId="relics" title={t("sidePanel.relics")} items={relicItems} />
           )}
           {schematicItems.length > 0 && shouldShowSection("schematics") && (
-            <SidePanelSection title={t("sidePanel.schematics")} items={schematicItems} />
+            <SidePanelSection sectionId="schematics" title={t("sidePanel.schematics")} items={schematicItems} />
           )}
           {blessingItems.length > 0 && shouldShowSection("blessings") && (
-            <SidePanelSection title={t("sidePanel.blessings")} items={blessingItems} />
+            <SidePanelSection sectionId="blessings" title={t("sidePanel.blessings")} items={blessingItems} />
           )}
           {buildingItems.length > 0 && shouldShowSection("buildings") && (
-            <SidePanelSection title={t("sidePanel.buildings")} items={buildingItems} />
+            <SidePanelSection sectionId="buildings" title={t("sidePanel.buildings")} items={buildingItems} />
           )}
           {populationItems.length > 0 && shouldShowSection("population") && (
             <SidePanelSection
+              sectionId="population"
               title={
                 <>
                   {t("sidePanel.population")}{" "}
@@ -997,16 +1006,16 @@ export default function SidePanel() {
             />
           )}
           {anyPlayerStatPositive && shouldShowSection("stats") && (
-            <SidePanelSection title={t("sidePanel.stats")} items={statsItems} />
+            <SidePanelSection sectionId="stats" title={t("sidePanel.stats")} items={statsItems} />
           )}
           {bonusItems.length > 0 && shouldShowSection("bonuses") && (
-            <SidePanelSection title={t("sidePanel.bonuses")} items={bonusItems} />
+            <SidePanelSection sectionId="bonuses" title={t("sidePanel.bonuses")} items={bonusItems} />
           )}
           {bookItems.length > 0 && shouldShowSection("books") && (
-            <SidePanelSection title={t("sidePanel.books")} items={bookItems} />
+            <SidePanelSection sectionId="books" title={t("sidePanel.books")} items={bookItems} />
           )}
           {fellowshipItems.length > 0 && shouldShowSection("fellowship") && (
-            <SidePanelSection title={t("sidePanel.fellowship")} items={fellowshipItems} />
+            <SidePanelSection sectionId="fellowship" title={t("sidePanel.fellowship")} items={fellowshipItems} />
           )}
         </div>
       </div>

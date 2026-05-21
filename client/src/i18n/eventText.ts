@@ -119,6 +119,35 @@ export function resolveEventLogMessage(
   return tEvent(catalogId, `log.${logKey}`, options);
 }
 
+function resolveLocalizedEventChoiceLabel(
+  catalogId: string,
+  choiceId: string,
+  labelDef: EventChoice["label"],
+  state?: GameState,
+  vars?: TranslateOptions,
+): string {
+  if (typeof labelDef === "function") {
+    if (!state) {
+      return resolveEventChoiceLabel(catalogId, choiceId, vars);
+    }
+    const variant = labelDef(state);
+    if (typeof variant !== "string") return "";
+    const variantLabel = tEvent(
+      catalogId,
+      `choices.${choiceId}.label.${variant}`,
+      vars,
+    );
+    if (variantLabel) return variantLabel;
+    const baseLabel = resolveEventChoiceLabel(catalogId, choiceId, vars);
+    if (baseLabel) return baseLabel;
+    return variant;
+  }
+
+  const localized = resolveEventChoiceLabel(catalogId, choiceId, vars);
+  if (localized) return localized;
+  return typeof labelDef === "string" ? labelDef : "";
+}
+
 /** Localize choice labels/costs on a choice list (mutates copies). */
 export function localizeEventChoices(
   catalogId: string,
@@ -129,22 +158,13 @@ export function localizeEventChoices(
   if (!choices) return choices;
   return choices.map((c) => ({
     ...c,
-    label:
-      typeof c.label === "function" && state
-        ? (() => {
-            const variant = c.label(state);
-            if (typeof variant !== "string") return "";
-            const variantLabel = tEvent(
-              catalogId,
-              `choices.${c.id}.label.${variant}`,
-              vars,
-            );
-            if (variantLabel) return variantLabel;
-            return (
-              resolveEventChoiceLabel(catalogId, c.id, vars) || variant
-            );
-          })()
-        : resolveEventChoiceLabel(catalogId, c.id, vars) || c.label,
+    label: resolveLocalizedEventChoiceLabel(
+      catalogId,
+      c.id,
+      c.label,
+      state,
+      vars,
+    ),
     cost:
       typeof c.cost === "function"
         ? c.cost
@@ -157,12 +177,18 @@ export function localizeEventChoices(
 export function localizeFallbackChoice(
   catalogId: string,
   fallback: EventChoice | undefined,
+  state?: GameState,
   vars?: TranslateOptions,
 ): EventChoice | undefined {
   if (!fallback) return fallback;
   return {
     ...fallback,
-    label:
-      resolveEventChoiceLabel(catalogId, fallback.id, vars) || fallback.label,
+    label: resolveLocalizedEventChoiceLabel(
+      catalogId,
+      fallback.id,
+      fallback.label,
+      state,
+      vars,
+    ),
   };
 }

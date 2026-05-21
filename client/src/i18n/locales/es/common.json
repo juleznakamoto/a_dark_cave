@@ -70,7 +70,10 @@
     "strength": "Fuerza",
     "knowledge": "Conocimiento",
     "luck": "Suerte",
-    "madness": "Locura"
+    "madness": "Locura",
+    "attack": "Ataque",
+    "defense": "Defensa",
+    "integrity": "Integridad"
   },
   "time": {
     "never": "Nunca",

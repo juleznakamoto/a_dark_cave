@@ -35,7 +35,7 @@
     "investAvailableIn": "Investitionen verfügbar in {{time}}",
     "investPreparing": "Investitionsangebote werden vorbereitet…",
     "jobs": {
-      "gatherer": "Sammleer",
+      "gatherer": "Sammler",
       "hunter": "Jäger",
       "iron_miner": "Eisenbergmann",
       "coal_miner": "Kohlebergmann",
@@ -132,6 +132,7 @@
     "bastion": "Bastion",
     "fortress": "Festung",
     "population": "Bevölkerung",
+    "freeVillagers": "Frei",
     "onExpedition": "Auf Expedition",
     "resources": "Ressourcen",
     "tools": "Werkzeuge",

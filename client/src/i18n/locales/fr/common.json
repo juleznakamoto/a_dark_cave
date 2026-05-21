@@ -70,7 +70,10 @@
     "strength": "Force",
     "knowledge": "Savoir",
     "luck": "Chance",
-    "madness": "Folie"
+    "madness": "Folie",
+    "attack": "Attaque",
+    "defense": "Défense",
+    "integrity": "Intégrité"
   },
   "time": {
     "never": "Jamais",

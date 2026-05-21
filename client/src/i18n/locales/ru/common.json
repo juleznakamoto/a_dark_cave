@@ -70,7 +70,10 @@
     "strength": "Сила",
     "knowledge": "Знание",
     "luck": "Удача",
-    "madness": "Безумие"
+    "madness": "Безумие",
+    "attack": "Атака",
+    "defense": "Защита",
+    "integrity": "Целостность"
   },
   "time": {
     "never": "Никогда",

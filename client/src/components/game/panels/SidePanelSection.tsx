@@ -34,8 +34,49 @@ interface ResourceChange {
   timestamp: number;
 }
 
+export type SidePanelSectionId =
+  | "resources"
+  | "tools"
+  | "weapons"
+  | "bastion"
+  | "fortifications"
+  | "combatItems"
+  | "clothing"
+  | "relics"
+  | "schematics"
+  | "blessings"
+  | "buildings"
+  | "population"
+  | "stats"
+  | "bonuses"
+  | "books"
+  | "fellowship";
+
+const SECTIONS_WITHOUT_ITEM_VALUES = new Set<SidePanelSectionId>([
+  "relics",
+  "tools",
+  "weapons",
+  "clothing",
+  "buildings",
+  "fortifications",
+  "blessings",
+  "schematics",
+  "fellowship",
+  "books",
+]);
+
+const EFFECT_TOOLTIP_SECTIONS = new Set<SidePanelSectionId>([
+  "relics",
+  "tools",
+  "weapons",
+  "clothing",
+  "schematics",
+  "blessings",
+]);
+
 interface SidePanelSectionProps {
   title: string | React.ReactNode;
+  sectionId?: SidePanelSectionId;
   items: SidePanelItem[];
   className?: string;
   onValueChange?: (itemId: string, oldValue: number, newValue: number) => void;
@@ -51,6 +92,7 @@ import { formatNumber } from "@/lib/utils";
 
 export default function SidePanelSection({
   title,
+  sectionId,
   items,
   className = "",
   resourceChanges = [],
@@ -326,8 +368,8 @@ export default function SidePanelSection({
     const isMaxAnimated = maxAnimatedItems.has(item.id);
     const displayValue =
       item.id === "madness" &&
-      typeof item.value === "number" &&
-      item.value < 0
+        typeof item.value === "number" &&
+        item.value < 0
         ? `0 (-${formatNumber(Math.abs(item.value))})`
         : formatValue(item.value);
     const isLimited = isResourceLimited(item.id, gameState);
@@ -391,13 +433,10 @@ export default function SidePanelSection({
     // Only apply pulse to items that have tooltips (effects or item.tooltip)
     const shouldPulse =
       (hasEffect &&
-        (title === "Relics" ||
-          title === "Tools" ||
-          title === "Weapons" ||
-          title === "Clothing" ||
-          title === "Schematics" ||
-          title === "Blessings")) ||
-      (hasTooltip && (title === "Fortifications" || title === "Buildings")) ||
+        sectionId !== undefined &&
+        EFFECT_TOOLTIP_SECTIONS.has(sectionId)) ||
+      (hasTooltip &&
+        (sectionId === "fortifications" || sectionId === "buildings")) ||
       item.tooltip;
 
     const newItemPulseClass =
@@ -418,9 +457,7 @@ export default function SidePanelSection({
           <span
             className={cn(
               "mr-1 font-noto-symbols-2",
-              (title === "Stats" ||
-                title === "Bastion" ||
-                title === "Fortress") &&
+              (sectionId === "stats" || sectionId === "bastion") &&
               "mr-1 inline-flex w-3 items-center justify-center",
               item.iconColor,
             )}
@@ -439,28 +476,36 @@ export default function SidePanelSection({
       </span>
     );
 
-    const showValue = ![
-      "Relics",
-      "Tools",
-      "Weapons",
-      "Clothing",
-      "Buildings",
-      "Fortifications",
-      "Blessings",
-      "Schematics",
-      "Fellowship",
-    ].includes(title);
+    const showValue =
+      sectionId === undefined
+        ? typeof title === "string" &&
+        ![
+          "Relics",
+          "Tools",
+          "Weapons",
+          "Clothing",
+          "Buildings",
+          "Fortifications",
+          "Blessings",
+          "Schematics",
+          "Fellowship",
+          "Books",
+        ].includes(title)
+        : !SECTIONS_WITHOUT_ITEM_VALUES.has(sectionId);
+    // Stats always show numeric values (legacy English-title fallback).
+    const showItemValue =
+      showValue || (sectionId === undefined && title === "Stats");
 
-    const isResourcesSection = title === "Resources";
+    const isResourcesSection = sectionId === "resources";
     const showProductionDelta =
       isResourcesSection &&
       item.productionDelta !== undefined &&
       item.productionDelta !== 0;
 
     const rightContent =
-      showValue ? (
+      showItemValue ? (
         <span className="flex items-center gap-2 font-mono text-gray-300">
-          {showValue && (
+          {showItemValue && (
             <span
               className={cn(
                 isResourcesSection && "min-w-[4rem] text-right",
@@ -492,7 +537,7 @@ export default function SidePanelSection({
             </span>
           ) : (
             isResourcesSection &&
-            showValue && <span className="min-w-[2rem]" aria-hidden />
+            showItemValue && <span className="min-w-[2rem]" aria-hidden />
           )}
         </span>
       ) : null;
@@ -501,12 +546,12 @@ export default function SidePanelSection({
       <div
         data-testid={item.testId}
         className={`mr-2 flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-            ? "text-green-400"
-            : isDecreaseAnimated
-              ? "text-red-400"
-              : isMaxAnimated
-                ? "text-yellow-400"
-                : ""
+          ? "text-green-400"
+          : isDecreaseAnimated
+            ? "text-red-400"
+            : isMaxAnimated
+              ? "text-yellow-400"
+              : ""
           }`}
       >
         {labelContent}
@@ -515,36 +560,28 @@ export default function SidePanelSection({
     );
 
     // If this item has effects, wrap it in a tooltip with item effects
-    if (
-      hasEffect &&
-      (title === "Relics" ||
-        title === "Tools" ||
-        title === "Weapons" ||
-        title === "Clothing" ||
-        title === "Schematics" ||
-        title === "Blessings")
-    ) {
+    if (hasEffect && sectionId !== undefined && EFFECT_TOOLTIP_SECTIONS.has(sectionId)) {
       return (
         <div
           key={item.id}
           data-testid={item.testId}
           className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isAtMax
-                  ? "text-yellow-400"
-                  : ""}`}
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isAtMax
+                ? "text-yellow-400"
+                : ""}`}
         >
           <TooltipWrapper
             tooltip={renderItemTooltip(
               item.id,
-              title === "Weapons"
+              sectionId === "weapons"
                 ? "weapon"
-                : title === "Blessings" ||
-                  title === "Clothing" ||
-                  title === "Relics" ||
-                  title === "Schematics"
+                : sectionId === "blessings" ||
+                  sectionId === "clothing" ||
+                  sectionId === "relics" ||
+                  sectionId === "schematics"
                   ? "blessing"
                   : "tool",
             )}
@@ -562,19 +599,22 @@ export default function SidePanelSection({
     }
 
     // If this item is a fellowship member or book with a tooltip, use renderItemTooltip
-    if (item.tooltip && (title === "Fellowship" || title === "Books")) {
-      const itemType = title === "Fellowship" ? "fellowship" : "book";
+    if (
+      item.tooltip &&
+      (sectionId === "fellowship" || sectionId === "books")
+    ) {
+      const itemType = sectionId === "fellowship" ? "fellowship" : "book";
       return (
         <div
           key={item.id}
           data-testid={item.testId}
           className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isMaxAnimated
-                  ? "text-yellow-400"
-                  : ""}`}
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""}`}
         >
           <TooltipWrapper
             tooltip={renderItemTooltip(item.id, itemType)}
@@ -592,18 +632,18 @@ export default function SidePanelSection({
     }
 
     // If this item is a building (not fortification) with a tooltip, use renderItemTooltip
-    if (item.tooltip && title === "Buildings") {
+    if (item.tooltip && sectionId === "buildings") {
       return (
         <div
           key={item.id}
           data-testid={item.testId}
           className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isMaxAnimated
-                  ? "text-yellow-400"
-                  : ""}`}
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""}`}
         >
           <TooltipWrapper
             tooltip={renderItemTooltip(item.id, "building")}
@@ -621,7 +661,7 @@ export default function SidePanelSection({
     }
 
     // Combat Items: bombs + Veinfire Elixir — merged combat tooltip like weapon bombs in itemTooltips
-    if (title === "Combat Items") {
+    if (sectionId === "combatItems") {
       const combatItemTooltip = renderItemTooltip(item.id, "weapon");
       if (combatItemTooltip) {
         return (
@@ -629,12 +669,12 @@ export default function SidePanelSection({
             key={item.id}
             data-testid={item.testId}
             className={`mr-2 flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-                ? "text-green-400"
-                : isDecreaseAnimated
-                  ? "text-red-400"
-                  : isMaxAnimated
-                    ? "text-yellow-400"
-                    : ""}`}
+              ? "text-green-400"
+              : isDecreaseAnimated
+                ? "text-red-400"
+                : isMaxAnimated
+                  ? "text-yellow-400"
+                  : ""}`}
           >
             <TooltipWrapper
               tooltip={combatItemTooltip}
@@ -649,29 +689,17 @@ export default function SidePanelSection({
             >
               {labelContent}
             </TooltipWrapper>
-            {![
-              "Relics",
-              "Tools",
-              "Weapons",
-              "Clothing",
-              "Buildings",
-              "Fortifications",
-              "Blessings",
-              "Schematics",
-              "Books",
-              "Fellowship",
-              "Stats",
-            ].includes(title) && (
+            {showItemValue && (
               <span
                 className={`font-mono ${isAnimated
-                    ? "text-green-800 font-bold"
-                    : isDecreaseAnimated
-                      ? "text-red-800 font-bold"
-                      : isMaxAnimated
-                        ? "text-yellow-800 font-bold"
-                        : isMadness
-                          ? madnessClasses
-                          : ""}`}
+                  ? "text-green-800 font-bold"
+                  : isDecreaseAnimated
+                    ? "text-red-800 font-bold"
+                    : isMaxAnimated
+                      ? "text-yellow-800 font-bold"
+                      : isMadness
+                        ? madnessClasses
+                        : ""}`}
               >
                 {displayValue}
               </span>
@@ -699,12 +727,12 @@ export default function SidePanelSection({
           key={item.id}
           data-testid={item.testId}
           className={`mr-2 flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isMaxAnimated
-                  ? "text-yellow-400"
-                  : ""}`}
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""}`}
         >
           <TooltipWrapper
             tooltip={tooltipContent}
@@ -717,44 +745,17 @@ export default function SidePanelSection({
           >
             {labelContent}
           </TooltipWrapper>
-          {![
-            "Relics",
-            "Tools",
-            "Weapons",
-            "Clothing",
-            "Buildings",
-            "Fortifications",
-            "Blessings",
-            "Schematics",
-            "Books",
-            "Fellowship",
-            "Stats",
-          ].includes(title) && (
+          {showItemValue && (
             <span
               className={`font-mono ${isAnimated
-                  ? "text-green-800 font-bold"
-                  : isDecreaseAnimated
-                    ? "text-red-800 font-bold"
-                    : isMaxAnimated
-                      ? "text-yellow-800 font-bold"
-                      : isMadness
-                        ? madnessClasses
-                        : ""}`}
-            >
-              {displayValue}
-            </span>
-          )}
-          {title === "Stats" && (
-            <span
-              className={`font-mono ${isAnimated
-                  ? "text-green-800 font-bold"
-                  : isDecreaseAnimated
-                    ? "text-red-800 font-bold"
-                    : isMaxAnimated
-                      ? "text-yellow-800 font-bold"
-                      : isMadness
-                        ? madnessClasses
-                        : ""}`}
+                ? "text-green-800 font-bold"
+                : isDecreaseAnimated
+                  ? "text-red-800 font-bold"
+                  : isMaxAnimated
+                    ? "text-yellow-800 font-bold"
+                    : isMadness
+                      ? madnessClasses
+                      : ""}`}
             >
               {displayValue}
             </span>

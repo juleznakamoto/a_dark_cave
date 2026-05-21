@@ -33,6 +33,7 @@ export function buildLocalizedEventLogEntry(
   const fallbackChoice = localizeFallbackChoice(
     catalogId,
     eventDef.fallbackChoice,
+    state,
     i18nVars,
   );
 

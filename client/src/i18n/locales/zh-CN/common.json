@@ -70,7 +70,10 @@
     "strength": "力量",
     "knowledge": "知识",
     "luck": "幸运",
-    "madness": "疯狂"
+    "madness": "疯狂",
+    "attack": "攻击",
+    "defense": "防御",
+    "integrity": "完整度"
   },
   "time": {
     "never": "从未",

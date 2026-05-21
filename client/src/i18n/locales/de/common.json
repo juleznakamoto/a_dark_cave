@@ -70,7 +70,10 @@
     "strength": "Stärke",
     "knowledge": "Wissen",
     "luck": "Glück",
-    "madness": "Wahnsinn"
+    "madness": "Wahnsinn",
+    "attack": "Angriff",
+    "defense": "Verteidigung",
+    "integrity": "Integrität"
   },
   "time": {
     "never": "Nie",

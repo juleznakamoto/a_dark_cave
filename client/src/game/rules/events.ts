@@ -121,8 +121,8 @@ export interface GameEvent {
   i18nKey?: string;
   /** Interpolation vars for catalog strings (e.g. foodCost); may depend on state */
   i18nVars?:
-    | Record<string, string | number>
-    | ((state: GameState) => Record<string, string | number>);
+  | Record<string, string | number>
+  | ((state: GameState) => Record<string, string | number>);
 }
 
 /** Runtime fields returned from choice effects (stripped before state merge). */
@@ -335,6 +335,7 @@ export class EventManager {
         const localizedFallback = localizeFallbackChoice(
           catalogId,
           event.fallbackChoice,
+          state,
           i18nVars,
         );
 

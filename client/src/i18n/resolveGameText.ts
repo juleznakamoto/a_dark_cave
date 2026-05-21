@@ -212,6 +212,14 @@ export function getStatName(statKey: string, fallback: string): string {
   return tWithFallback("common", `stats.${statKey}`, fallback);
 }
 
+/** Side-panel population row (ui.village.jobs.* or sidePanel.freeVillagers). */
+export function getVillagerJobName(jobKey: string, fallback: string): string {
+  if (jobKey === "free") {
+    return tWithFallback("ui", "sidePanel.freeVillagers", fallback);
+  }
+  return tWithFallback("ui", `village.jobs.${jobKey}`, fallback);
+}
+
 const BONUS_SIDEBAR_LABEL_KEYS: Record<string, string> = {
   caveExplore: "bonuses.caveExplore",
   chopWood: "bonuses.chopWood",

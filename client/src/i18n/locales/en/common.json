@@ -70,7 +70,10 @@
     "strength": "Strength",
     "knowledge": "Knowledge",
     "luck": "Luck",
-    "madness": "Madness"
+    "madness": "Madness",
+    "attack": "Attack",
+    "defense": "Defense",
+    "integrity": "Integrity"
   },
   "time": {
     "never": "Never",
