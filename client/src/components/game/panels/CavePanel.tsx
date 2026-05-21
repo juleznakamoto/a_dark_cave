@@ -34,6 +34,7 @@ import {
   type UpgradeKey,
 } from "@/game/buttonUpgrades";
 import { getCraftProduceAmount } from "@/game/craftUpgradeUtils";
+import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
 import { resolveActionLabel } from "@/i18n/actionLabels";
 import { useTranslation } from "react-i18next";
 

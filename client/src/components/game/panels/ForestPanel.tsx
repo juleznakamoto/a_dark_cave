@@ -8,6 +8,7 @@ import {
   getResourcesFromActionCost,
 } from "@/game/rules";
 import { getResourceGainTooltip } from "@/game/rules/tooltips";
+import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
 import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
 import CooldownButton from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
