@@ -101,7 +101,7 @@
     "priorSummaryNoBonus_other": "{{count}} gleichzeitige Aktionen, {{upkeep}}"
   },
   "bonuses": {
-    "caveExplore": "Höhlenerkundung",
+    "caveExplore": "Höhle erkunden",
     "chopWood": "Holz hacken",
     "hunt": "Jagd",
     "mineAll": "Abbau (Alle)",

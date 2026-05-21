@@ -494,37 +494,37 @@
     "label": "Placer le piège"
   },
   "mineAdamant": {
-    "label": "Extraire de l'adamant",
+    "label": "Adamant",
     "log": {
       "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
     }
   },
   "mineCoal": {
-    "label": "Extraire du charbon",
+    "label": "Charbon",
     "log": {
       "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
     }
   },
   "mineIron": {
-    "label": "Extraire du fer",
+    "label": "Fer",
     "log": {
       "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
     }
   },
   "mineObsidian": {
-    "label": "Extraire de l'obsidienne",
+    "label": "Obsidienne",
     "log": {
       "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
     }
   },
   "mineStone": {
-    "label": "Extraire de la pierre",
+    "label": "Pierre",
     "log": {
       "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
     }
   },
   "mineSulfur": {
-    "label": "Extraire du soufre",
+    "label": "Soufre",
     "log": {
       "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
     }

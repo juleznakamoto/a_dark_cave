@@ -24,6 +24,17 @@ function tEvent(
   return "";
 }
 
+/** Catalog messages may be a string (`message`) or nested (`message.default`). */
+function resolveCatalogMessage(
+  catalogId: string,
+  vars?: TranslateOptions,
+): string {
+  if (i18n.exists(eventKey(catalogId, "message.default"))) {
+    return tEvent(catalogId, "message.default", vars);
+  }
+  return tEvent(catalogId, "message", vars);
+}
+
 /** Resolve event title from catalog (empty string if missing). */
 export function resolveEventTitle(
   catalogId: string,
@@ -71,7 +82,7 @@ export function resolveEventMessage(
   vars?: TranslateOptions,
 ): string {
   if (messageDef === undefined) {
-    return tEvent(catalogId, "message", vars);
+    return resolveCatalogMessage(catalogId, vars);
   }
 
   if (typeof messageDef === "function") {
@@ -79,7 +90,7 @@ export function resolveEventMessage(
     if (typeof variant !== "string") return "";
     const variantText = tEvent(catalogId, `message.${variant}`, vars);
     if (variantText) return variantText;
-    return tEvent(catalogId, "message", vars);
+    return resolveCatalogMessage(catalogId, vars);
   }
 
   if (Array.isArray(messageDef)) {
@@ -87,10 +98,10 @@ export function resolveEventMessage(
     const variantKey = `message.${idx}`;
     const variantText = tEvent(catalogId, variantKey, vars);
     if (variantText) return variantText;
-    return tEvent(catalogId, "message", vars);
+    return resolveCatalogMessage(catalogId, vars);
   }
 
-  return tEvent(catalogId, "message", vars);
+  return resolveCatalogMessage(catalogId, vars);
 }
 
 export function resolveEventChoiceLabel(

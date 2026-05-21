@@ -125,12 +125,12 @@ describe('Resource Limits - Core Functionality', () => {
 
     it('should return formatted number for storage level 3', () => {
       state.buildings.fortifiedStorehouse = 1;
-      expect(getStorageLimitText(state)).toBe((5000).toLocaleString());
+      expect(getStorageLimitText(state)).toBe("5'000");
     });
 
     it('should return formatted number for storage level 6', () => {
       state.buildings.greatVault = 1;
-      expect(getStorageLimitText(state)).toBe((50000).toLocaleString());
+      expect(getStorageLimitText(state)).toBe("50'000");
     });
   });
 

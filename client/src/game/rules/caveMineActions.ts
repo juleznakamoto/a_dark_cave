@@ -72,7 +72,7 @@ function miningBonusSilverProbability(state: GameState): number {
 export const caveMineActions: Record<string, Action> = {
   mineStone: {
     id: "mineStone",
-    label: "Mine Stone",
+    label: "Stone",
     show_when: {
       "tools.stone_pickaxe": true,
     },
@@ -100,7 +100,7 @@ export const caveMineActions: Record<string, Action> = {
 
   mineIron: {
     id: "mineIron",
-    label: "Mine Iron",
+    label: "Iron",
     show_when: {
       "tools.stone_pickaxe": true,
     },
@@ -128,7 +128,7 @@ export const caveMineActions: Record<string, Action> = {
 
   mineCoal: {
     id: "mineCoal",
-    label: "Mine Coal",
+    label: "Coal",
     show_when: {
       "tools.iron_pickaxe": true,
     },
@@ -156,7 +156,7 @@ export const caveMineActions: Record<string, Action> = {
 
   mineSulfur: {
     id: "mineSulfur",
-    label: "Mine Sulfur",
+    label: "Sulfur",
     show_when: {
       "tools.steel_pickaxe": true,
       "buildings.foundry": 1,
@@ -185,7 +185,7 @@ export const caveMineActions: Record<string, Action> = {
 
   mineObsidian: {
     id: "mineObsidian",
-    label: "Mine Obsidian",
+    label: "Obsidian",
     show_when: {
       "tools.steel_pickaxe": true,
     },
@@ -213,7 +213,7 @@ export const caveMineActions: Record<string, Action> = {
 
   mineAdamant: {
     id: "mineAdamant",
-    label: "Mine Adamant",
+    label: "Adamant",
     show_when: {
       "tools.obsidian_pickaxe": true,
     },

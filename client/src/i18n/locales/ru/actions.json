@@ -494,37 +494,37 @@
     "label": "Поставить ловушку"
   },
   "mineAdamant": {
-    "label": "Добывать адамант",
+    "label": "Адамант",
     "log": {
       "natharitSilverVein": "Кирка из натарита обнажает жилу серебра! +{{amount}} {{resource}}"
     }
   },
   "mineCoal": {
-    "label": "Добывать уголь",
+    "label": "Уголь",
     "log": {
       "natharitSilverVein": "Кирка из натарита обнажает жилу серебра! +{{amount}} {{resource}}"
     }
   },
   "mineIron": {
-    "label": "Добывать железо",
+    "label": "Железо",
     "log": {
       "natharitSilverVein": "Кирка из натарита обнажает жилу серебра! +{{amount}} {{resource}}"
     }
   },
   "mineObsidian": {
-    "label": "Добывать обсидиан",
+    "label": "Обсидиан",
     "log": {
       "natharitSilverVein": "Кирка из натарита обнажает жилу серебра! +{{amount}} {{resource}}"
     }
   },
   "mineStone": {
-    "label": "Добывать камень",
+    "label": "Камень",
     "log": {
       "natharitSilverVein": "Кирка из натарита обнажает жилу серебра! +{{amount}} {{resource}}"
     }
   },
   "mineSulfur": {
-    "label": "Добывать серу",
+    "label": "Сера",
     "log": {
       "natharitSilverVein": "Кирка из натарита обнажает жилу серебра! +{{amount}} {{resource}}"
     }

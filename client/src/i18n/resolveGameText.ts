@@ -101,7 +101,21 @@ export function getEventLogMessageByFallback(
   return fallback;
 }
 
+/** Cave mine buttons show the resource name only (section title is "Mine"). */
+const MINE_ACTION_RESOURCE_KEY: Record<string, string> = {
+  mineStone: "stone",
+  mineIron: "iron",
+  mineCoal: "coal",
+  mineSulfur: "sulfur",
+  mineObsidian: "obsidian",
+  mineAdamant: "adamant",
+};
+
 export function getActionLabel(actionId: string, fallback: string): string {
+  const resourceKey = MINE_ACTION_RESOURCE_KEY[actionId];
+  if (resourceKey) {
+    return tWithFallback("common", `resources.${resourceKey}`, fallback);
+  }
   return tWithFallback("actions", `${actionId}.label`, fallback);
 }
 

@@ -494,37 +494,37 @@
     "label": "放置陷阱"
   },
   "mineAdamant": {
-    "label": "开采精金",
+    "label": "精金",
     "log": {
       "natharitSilverVein": "纳萨里特镐发现了银矿脉！+{{amount}} {{resource}}"
     }
   },
   "mineCoal": {
-    "label": "开采煤炭",
+    "label": "煤炭",
     "log": {
       "natharitSilverVein": "纳萨里特镐发现了银矿脉！+{{amount}} {{resource}}"
     }
   },
   "mineIron": {
-    "label": "开采铁矿",
+    "label": "铁",
     "log": {
       "natharitSilverVein": "纳萨里特镐发现了银矿脉！+{{amount}} {{resource}}"
     }
   },
   "mineObsidian": {
-    "label": "开采黑曜石",
+    "label": "黑曜石",
     "log": {
       "natharitSilverVein": "纳萨里特镐发现了银矿脉！+{{amount}} {{resource}}"
     }
   },
   "mineStone": {
-    "label": "开采石料",
+    "label": "石头",
     "log": {
       "natharitSilverVein": "纳萨里特镐发现了银矿脉！+{{amount}} {{resource}}"
     }
   },
   "mineSulfur": {
-    "label": "开采硫磺",
+    "label": "硫磺",
     "log": {
       "natharitSilverVein": "纳萨里特镐发现了银矿脉！+{{amount}} {{resource}}"
     }

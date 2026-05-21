@@ -1,5 +1,6 @@
 
 import { GameState } from "@shared/schema";
+import { formatNumber } from "@/lib/utils";
 
 // Bomb resource keys (stored in resources but displayed in Combat Items section)
 export const BOMB_RESOURCES = ["ember_bomb", "ashfire_bomb", "void_bomb"] as const;
@@ -58,7 +59,7 @@ const UNLIMITED_RESOURCES = ['silver', 'gold'];
 export function getResourceLimit(state: GameState): number {
   // Determine storage level based on highest storage building
   let storageLevel = 0;
-  
+
   if (state.buildings.greatVault > 0) storageLevel = 6;
   else if (state.buildings.grandRepository > 0) storageLevel = 5;
   else if (state.buildings.villageWarehouse > 0) storageLevel = 4;
@@ -112,7 +113,7 @@ export function getStorageLimitText(state: GameState): string {
     return "Unlimited";
   }
 
-  return limit.toLocaleString();
+  return formatNumber(limit);
 }
 
 // Get storage building name based on state

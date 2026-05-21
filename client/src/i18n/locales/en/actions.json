@@ -494,37 +494,37 @@
     "label": "Place Trap"
   },
   "mineAdamant": {
-    "label": "Mine Adamant",
+    "label": "Adamant",
     "log": {
       "natharitSilverVein": "The natharit pickaxe reveals a vein of silver! +{{amount}} {{resource}}"
     }
   },
   "mineCoal": {
-    "label": "Mine Coal",
+    "label": "Coal",
     "log": {
       "natharitSilverVein": "The natharit pickaxe reveals a vein of silver! +{{amount}} {{resource}}"
     }
   },
   "mineIron": {
-    "label": "Mine Iron",
+    "label": "Iron",
     "log": {
       "natharitSilverVein": "The natharit pickaxe reveals a vein of silver! +{{amount}} {{resource}}"
     }
   },
   "mineObsidian": {
-    "label": "Mine Obsidian",
+    "label": "Obsidian",
     "log": {
       "natharitSilverVein": "The natharit pickaxe reveals a vein of silver! +{{amount}} {{resource}}"
     }
   },
   "mineStone": {
-    "label": "Mine Stone",
+    "label": "Stone",
     "log": {
       "natharitSilverVein": "The natharit pickaxe reveals a vein of silver! +{{amount}} {{resource}}"
     }
   },
   "mineSulfur": {
-    "label": "Mine Sulfur",
+    "label": "Sulfur",
     "log": {
       "natharitSilverVein": "The natharit pickaxe reveals a vein of silver! +{{amount}} {{resource}}"
     }

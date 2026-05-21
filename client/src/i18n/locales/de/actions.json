@@ -494,37 +494,37 @@
     "label": "Falle platzieren"
   },
   "mineAdamant": {
-    "label": "Adamant abbauen",
+    "label": "Adamant",
     "log": {
       "natharitSilverVein": "Die Natharit-Spitzhacke legt eine Silberader frei! +{{amount}} {{resource}}"
     }
   },
   "mineCoal": {
-    "label": "Kohle abbauen",
+    "label": "Kohle",
     "log": {
       "natharitSilverVein": "Die Natharit-Spitzhacke legt eine Silberader frei! +{{amount}} {{resource}}"
     }
   },
   "mineIron": {
-    "label": "Eisen abbauen",
+    "label": "Eisen",
     "log": {
       "natharitSilverVein": "Die Natharit-Spitzhacke legt eine Silberader frei! +{{amount}} {{resource}}"
     }
   },
   "mineObsidian": {
-    "label": "Obsidian abbauen",
+    "label": "Obsidian",
     "log": {
       "natharitSilverVein": "Die Natharit-Spitzhacke legt eine Silberader frei! +{{amount}} {{resource}}"
     }
   },
   "mineStone": {
-    "label": "Stein abbauen",
+    "label": "Stein",
     "log": {
       "natharitSilverVein": "Die Natharit-Spitzhacke legt eine Silberader frei! +{{amount}} {{resource}}"
     }
   },
   "mineSulfur": {
-    "label": "Schwefel abbauen",
+    "label": "Schwefel",
     "log": {
       "natharitSilverVein": "Die Natharit-Spitzhacke legt eine Silberader frei! +{{amount}} {{resource}}"
     }

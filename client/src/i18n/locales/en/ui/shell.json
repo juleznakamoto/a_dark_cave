@@ -64,8 +64,8 @@
     "preferenceUpdateFailed": "Could not update preference"
   },
   "pauseHotkey": {
-    "hintPrefix": "Use keys below or ",
-    "hintSuffix": " to switch between tabs"
+    "hintPrefix": "Press ",
+    "hintSuffix": " to pause"
   },
   "never": "Never"
 }

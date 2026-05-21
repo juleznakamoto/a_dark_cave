@@ -18,6 +18,11 @@ import CubeDialog from "./CubeDialog";
 import { bloodMoonSacrificeAmount } from "@/game/cruelMode";
 import { getVillagersInVillage } from "@/game/population";
 import { useTranslation } from "react-i18next";
+import {
+  getEventRulesCatalogId,
+  resolveEventDisplayMessage,
+  resolveEventDisplayTitle,
+} from "@/i18n/eventDisplay";
 
 interface EventDialogProps {
   isOpen: boolean;
@@ -216,6 +221,16 @@ export default function EventDialog({
   ];
   const isMadnessEvent = event?.id && madnessEventIds.some(id => event.id.startsWith(id));
 
+  const catalogId = getEventRulesCatalogId(event.id);
+  const displayTitle =
+    resolveEventDisplayTitle(catalogId, event.title, gameState) ||
+    t("event.fallbackTitle");
+  const displayMessage = resolveEventDisplayMessage(
+    catalogId,
+    event.message,
+    gameState,
+  );
+
   return (
     <>
       {isCubeEvent ? (
@@ -233,14 +248,14 @@ export default function EventDialog({
             // All closing should be handled explicitly through handleChoice
           }}
         >
-          <DialogContent className={`[--adc-dialog-max-w:28rem] [&>button]:hidden ${isMadnessEvent ? 'border-2 border-violet-600 shadow-2xl p-6  max-h-[19rem] flex flex-col overflow-visible z-[100]' : ''}`}>
+          <DialogContent className={`z-[60] [--adc-dialog-max-w:28rem] [&>button]:hidden ${isMadnessEvent ? 'border-2 border-violet-600 shadow-2xl p-6  max-h-[19rem] flex flex-col overflow-visible' : ''}`}>
             {isMadnessEvent && (
               <div className="absolute inset-0 -z-10 madness-dialog-glow pointer-events-none"></div>
             )}
             <DialogHeader>
               <div className="flex items-center justify-between gap-2">
                 <DialogTitle className="text-lg font-semibold">
-                  {event.title || t("event.fallbackTitle")}
+                  {displayTitle}
                 </DialogTitle>
                 <div className="flex gap-2 items-center flex-shrink-0">
                   {hasScriptorium && event.isTimedChoice && getTotalKnowledge(gameState) > 0 && (
@@ -287,7 +302,7 @@ export default function EventDialog({
                 </div>
               </div>
               <DialogDescription className="text-sm text-gray-400 mt-2">
-                {event.message}
+                {displayMessage}
               </DialogDescription>
             </DialogHeader>
 

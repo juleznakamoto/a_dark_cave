@@ -34,6 +34,11 @@ import {
   GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY,
 } from "@/game/gamblerSession";
 import { useTranslation } from "react-i18next";
+import {
+  getEventRulesCatalogId,
+  resolveEventDisplayMessage,
+  resolveEventDisplayTitle,
+} from "@/i18n/eventDisplay";
 
 // Stat icon mapping
 const statIcons: Record<string, { icon: string; color: string }> = {
@@ -280,7 +285,13 @@ export default function TimedEventPanel() {
   }
 
   const event = timedEventTab.event;
-  const eventId = event.eventId || event.id.split("-")[0];
+  const eventId = event.eventId || getEventRulesCatalogId(event.id);
+  const displayTitle = resolveEventDisplayTitle(eventId, event.title, gameState);
+  const displayMessage = resolveEventDisplayMessage(
+    eventId,
+    event.message,
+    gameState,
+  );
 
   const formatTime = (ms: number) => {
     const totalSeconds = Math.ceil(ms / 1000);
@@ -375,10 +386,10 @@ export default function TimedEventPanel() {
   return (
     <div className="w-full md:max-w-96 space-y-1 mt-2 mb-2 pl-[3px] pr-[3px]">
       {/* Event Title */}
-      {event.title && (
+      {displayTitle && (
         <h2 className="text-xs flex items-center justify-between">
           <div>
-            <span className="font-semibold">{event.title} </span>
+            <span className="font-semibold">{displayTitle} </span>
             <span className="text-muted-foreground">
               &nbsp;{formatTime(timeRemaining)}
             </span>
@@ -386,7 +397,9 @@ export default function TimedEventPanel() {
         </h2>
       )}
       {/* Event Message */}
-      <div className="text-xs text-muted-foreground">{event.message}</div>
+      {displayMessage && (
+        <div className="text-xs text-muted-foreground">{displayMessage}</div>
+      )}
 
       {/* Choices */}
       <div className="space-y-2 pt-1">

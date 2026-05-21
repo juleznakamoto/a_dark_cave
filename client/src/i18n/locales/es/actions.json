@@ -494,37 +494,37 @@
     "label": "Colocar trampa"
   },
   "mineAdamant": {
-    "label": "Extraer adamantita",
+    "label": "Adamantita",
     "log": {
       "natharitSilverVein": "El pico de natharit revela una veta de plata. +{{amount}} {{resource}}"
     }
   },
   "mineCoal": {
-    "label": "Extraer carbón",
+    "label": "Carbón",
     "log": {
       "natharitSilverVein": "El pico de natharit revela una veta de plata. +{{amount}} {{resource}}"
     }
   },
   "mineIron": {
-    "label": "Extraer hierro",
+    "label": "Hierro",
     "log": {
       "natharitSilverVein": "El pico de natharit revela una veta de plata. +{{amount}} {{resource}}"
     }
   },
   "mineObsidian": {
-    "label": "Extraer obsidiana",
+    "label": "Obsidiana",
     "log": {
       "natharitSilverVein": "El pico de natharit revela una veta de plata. +{{amount}} {{resource}}"
     }
   },
   "mineStone": {
-    "label": "Extraer piedra",
+    "label": "Piedra",
     "log": {
       "natharitSilverVein": "El pico de natharit revela una veta de plata. +{{amount}} {{resource}}"
     }
   },
   "mineSulfur": {
-    "label": "Extraer azufre",
+    "label": "Azufre",
     "log": {
       "natharitSilverVein": "El pico de natharit revela una veta de plata. +{{amount}} {{resource}}"
     }

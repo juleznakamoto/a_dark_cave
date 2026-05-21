@@ -24,13 +24,23 @@ export function capitalizeWords(str: string): string {
     .join(' ');
 }
 
-// Utility function to format numbers with thousands separator (locale-aware)
+const THOUSANDS_SEPARATOR = "'";
+
+/** Group integer digits with `'` (same in every UI language). */
+function groupIntegerDigits(digits: string): string {
+  return digits.replace(/\B(?=(\d{3})+(?!\d))/g, THOUSANDS_SEPARATOR);
+}
+
+/** Format numbers with `'` as thousands separator (all UI locales). */
 export function formatNumber(value: number): string {
-  try {
-    return new Intl.NumberFormat(getIntlLocale()).format(value);
-  } catch {
-    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
-  }
+  if (!Number.isFinite(value)) return String(value);
+
+  const negative = value < 0;
+  const abs = Math.abs(value);
+  const sign = negative ? "-" : "";
+  const [intPart, decPart] = abs.toString().split(".");
+  const grouped = groupIntegerDigits(intPart);
+  return decPart != null ? `${sign}${grouped}.${decPart}` : `${sign}${grouped}`;
 }
 
 export function formatSignedNumber(value: number): string {
@@ -52,17 +62,9 @@ export function formatSaveTimestamp(): string {
 /** Format price in cents for display (currency separate from UI locale). */
 export function formatPrice(cents: number, currency: "EUR" | "USD"): string {
   const amount = cents / 100;
-  try {
-    return new Intl.NumberFormat(getIntlLocale(), {
-      style: "currency",
-      currency,
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(amount);
-  } catch {
-    const formatted = amount.toFixed(2);
-    return currency === "EUR" ? `${formatted} €` : `$${formatted}`;
-  }
+  const [intPart, decPart] = amount.toFixed(2).split(".");
+  const numeric = `${groupIntegerDigits(intPart)}.${decPart}`;
+  return currency === "EUR" ? `${numeric} €` : `$${numeric}`;
 }
 
 /** Format duration in milliseconds as HH:MM:SS */

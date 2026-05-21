@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import i18n from "./index";
 import { getActionLabel, getEventMessage } from "./resolveGameText";
+import { resolveEventMessage } from "./eventText";
+import { gameStateSchema } from "@shared/schema";
 
 describe("i18n runtime", () => {
   beforeEach(async () => {
@@ -24,6 +26,16 @@ describe("i18n runtime", () => {
       "Wooden Hut",
     );
     expect(label).not.toBe("Wooden Hut");
+  });
+
+  it("resolves blood moon message from message.default catalog key", async () => {
+    await i18n.changeLanguage("de");
+    const state = gameStateSchema.parse({});
+    const msg = resolveEventMessage("bloodMoonAttack", undefined, state, {
+      sacrificeAmount: 5,
+    });
+    expect(msg.length).toBeGreaterThan(20);
+    expect(msg).toContain("Lykanthropen");
   });
 
   it("translates event messages when catalog key exists", async () => {
