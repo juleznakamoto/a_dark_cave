@@ -23,6 +23,16 @@ export const LOCALE_LABELS: Record<SupportedLocale, string> = {
   ru: "Русский",
 };
 
+/** Open Graph locale tags (underscore form). */
+export const OG_LOCALE_TAGS: Record<SupportedLocale, string> = {
+  en: "en_US",
+  de: "de_DE",
+  fr: "fr_FR",
+  es: "es_ES",
+  "zh-CN": "zh_CN",
+  ru: "ru_RU",
+};
+
 export const I18N_NAMESPACES = [
   "common",
   "ui",
@@ -58,6 +68,33 @@ export function getStoredLocale(): SupportedLocale {
   } catch {
     return DEFAULT_LOCALE;
   }
+}
+
+/** Browser language on first visit; falls back to stored preference when set. */
+export function detectBrowserLocale(): SupportedLocale {
+  if (typeof navigator === "undefined") return DEFAULT_LOCALE;
+  const candidates = navigator.languages?.length
+    ? [...navigator.languages]
+    : navigator.language
+      ? [navigator.language]
+      : [];
+  for (const candidate of candidates) {
+    const normalized = normalizeLocale(candidate);
+    if (normalized !== DEFAULT_LOCALE) return normalized;
+    if (candidate.toLowerCase().startsWith("en")) return DEFAULT_LOCALE;
+  }
+  return DEFAULT_LOCALE;
+}
+
+export function getInitialLocale(): SupportedLocale {
+  if (typeof window === "undefined") return DEFAULT_LOCALE;
+  try {
+    const stored = localStorage.getItem(LOCALE_STORAGE_KEY);
+    if (stored !== null) return normalizeLocale(stored);
+  } catch {
+    /* ignore quota / private mode */
+  }
+  return detectBrowserLocale();
 }
 
 export function setStoredLocale(locale: SupportedLocale): void {

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { ParticleButton } from "@/components/ui/particle-button";
 import { useGameStore } from "@/game/state";
 import CloudShader from "@/components/ui/cloud-shader";
@@ -11,6 +12,8 @@ import {
   GAME_FOOTER_RIGHT_ICON_ORDER,
 } from "@/lib/gameFooterSocialLinks";
 import { useTranslation } from "react-i18next";
+import { useLocale } from "@/i18n/useLocale";
+import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
 
 const START_FOOTER_LINK =
   "inline-flex items-center gap-0 sm:gap-1 hover:text-foreground transition-colors opacity-40 hover:opacity-100";
@@ -25,6 +28,7 @@ export default function StartScreen() {
   const isCruelMode = cruelMode;
   const [showParticles, setShowParticles] = useState(false);
   const { t } = useTranslation("ui");
+  const { locale } = useLocale();
 
   useEffect(() => {
     const isBoostPath = window.location.pathname.includes("/boost");
@@ -128,6 +132,21 @@ export default function StartScreen() {
 
   return (
     <div className="fixed inset-0 bg-black text-white overflow-hidden">
+      <Helmet>
+        <title>{t("seo.title")}</title>
+        <meta name="description" content={t("seo.description")} />
+        <meta property="og:title" content={t("seo.title")} />
+        <meta property="og:description" content={t("seo.description")} />
+        <meta property="og:locale" content={OG_LOCALE_TAGS[locale]} />
+        {SUPPORTED_LOCALES.filter((code) => code !== locale).map((code) => (
+          <meta
+            key={code}
+            property="og:locale:alternate"
+            content={OG_LOCALE_TAGS[code]}
+          />
+        ))}
+        <link rel="canonical" href="https://a-dark-cave.com/" />
+      </Helmet>
       {/* Featured By Section */}
       <div className="absolute bottom-12 right-4 z-20 animate-fade-in-featured">
         <div className="bg-white/25 backdrop-blur-sm rounded-lg px-2 pt-2 pb-2.5 border border-white/25 flex flex-col items-end">

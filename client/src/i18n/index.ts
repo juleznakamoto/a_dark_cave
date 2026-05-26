@@ -3,7 +3,7 @@ import { initReactI18next } from "react-i18next";
 import {
   DEFAULT_LOCALE,
   I18N_NAMESPACES,
-  getStoredLocale,
+  getInitialLocale,
   type SupportedLocale,
 } from "./locales";
 
@@ -44,7 +44,7 @@ const resources = buildResources();
 
 void i18n.use(initReactI18next).init({
   resources,
-  lng: getStoredLocale(),
+  lng: getInitialLocale(),
   fallbackLng: DEFAULT_LOCALE,
   ns: [...I18N_NAMESPACES],
   defaultNS: "ui",
@@ -61,6 +61,6 @@ export function applyDocumentLocale(locale: SupportedLocale): void {
   }
 }
 
-applyDocumentLocale(getStoredLocale());
+applyDocumentLocale(getInitialLocale());
 
 export default i18n;
