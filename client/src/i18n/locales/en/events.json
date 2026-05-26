@@ -216,7 +216,7 @@
       }
     },
     "log": {
-      "outcome0": "You drink the Elixir of Clarity. Your mind feels lighter."
+      "outcome0": "You find an Elixir of Clarity in the cave. As you drink it, your mind feels lighter."
     },
     "message": "You find an Elixir of Clarity in the cave. As you drink it, your mind feels lighter.",
     "title": "Elixir of Clarity"

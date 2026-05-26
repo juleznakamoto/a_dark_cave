@@ -86,11 +86,17 @@ import {
 } from "@/game/rules/investmentHallTables";
 import {
   getEventLogMessageByFallback,
+  getEventsCatalogText,
   getStartScreenNarrativeLogMessage,
   resolveEventLogMessage,
   tWithFallback,
 } from "@/i18n/resolveGameText";
 import { hasLogEntryText } from "@/i18n/logDisplay";
+
+function getClarityElixirCaveEventId(entry: LogEntry): string | null {
+  const eventId = entry.eventId || entry.id.split("-")[0];
+  return eventId.startsWith("clarityElixirCaveFound") ? eventId : null;
+}
 
 // Types
 type ResourceChangeEvent = {
@@ -324,7 +330,7 @@ interface GameStore extends GameState {
   setCompassGlow: (actionId: string | null) => void;
   addLogEntry: (entry: LogEntry) => void;
   checkEvents: () => void;
-  applyEventChoice: (choiceId: string, eventId: string) => void;
+  applyEventChoice: (choiceId: string, eventId: string, currentLogEntry?: LogEntry) => void;
   assignVillager: (job: keyof GameState["villagers"]) => void;
   unassignVillager: (job: keyof GameState["villagers"]) => void;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
@@ -1664,9 +1670,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Handle event dialogs
     if (result.logEntries) {
       result.logEntries.forEach((entry) => {
-        if (entry.choices && entry.choices.length > 0) {
-          setTimeout(() => get().setEventDialog(true, entry), 100);
+        if (!entry.choices?.length) return;
+
+        const clarityElixirEventId = getClarityElixirCaveEventId(entry);
+        if (clarityElixirEventId) {
+          // Same outcome UI as merchant clarity elixir — MadnessDialog, not EventDialog.
+          setTimeout(() => {
+            get().applyEventChoice("drinkElixir", clarityElixirEventId, entry);
+          }, 100);
+          return;
         }
+
+        setTimeout(() => get().setEventDialog(true, entry), 100);
       });
     }
 
@@ -2567,6 +2582,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
       );
       delete updatedChanges._logMessageKey;
       delete updatedChanges._logMessageVars;
+    } else if (updatedChanges._logMessageI18nKey) {
+      logMessage = getEventsCatalogText(
+        updatedChanges._logMessageI18nKey as string,
+        { ...i18nVars, ...logMessageVars },
+      );
+      delete updatedChanges._logMessageI18nKey;
     } else if (updatedChanges._logMessage) {
       // Legacy English fallback for events not yet migrated to _logMessageKey.
       logMessage = getEventLogMessageByFallback(
@@ -2576,22 +2597,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       delete updatedChanges._logMessage;
     }
 
-    if (
-      !logMessage &&
-      choiceId === "trade_clarity_elixir" &&
-      eventId === "merchant"
-    ) {
-      logMessage = tWithFallback(
-        "events",
-        "merchant.toolTrades.trade_clarity_elixir.message",
-        "You drink the Elixir of Clarity. Your mind feels lighter.",
-      );
-    }
-
-    const isClarityElixirCaveEvent = eventId.startsWith("clarityElixirCaveFound");
-
-    // Prepare outcome dialogs BEFORE applying state updates, so success logs can be
-    // displayed in dialogs without duplicating them in the event log.
     const madnessChange = detectMadnessChange(updatedChanges, state);
     let shouldShowRewardDialog = false;
     let rewardDialogData: {
@@ -2638,7 +2643,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         shouldShowRewardDialog = true;
       }
 
-      if (madnessChange !== 0 && !isClarityElixirCaveEvent) {
+      if (madnessChange !== 0) {
         madnessDialogData = {
           rewards: hasRewards ? rewards : undefined,
           successLog,

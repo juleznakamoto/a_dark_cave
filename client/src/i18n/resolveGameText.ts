@@ -96,6 +96,19 @@ export function resolveEventLogMessage(
   return "";
 }
 
+/** Resolve any `events.json` key (e.g. `merchant.toolTrades.trade_clarity_elixir.message`). */
+export function getEventsCatalogText(
+  relativeKey: string,
+  options?: TranslateOptions,
+): string {
+  const fullKey = nsKey("events", relativeKey);
+  if (!i18n.exists(fullKey)) {
+    return "";
+  }
+  const translated = i18n.t(fullKey, options as Record<string, unknown>);
+  return typeof translated === "string" ? translated : "";
+}
+
 /**
  * Match a runtime log string to an extracted catalog entry by comparing English source text.
  */

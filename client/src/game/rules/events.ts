@@ -539,6 +539,8 @@ export class EventManager {
                 clarityElixirPurchases: currentPurchases + 1,
               },
             };
+            stateChanges._logMessageI18nKey =
+              "merchant.toolTrades.trade_clarity_elixir.message";
           } else if (trade.buyItem === "veinfire_elixir") {
             const next = Math.min(
               (state.resources.veinfire_elixir ?? 0) + 1,

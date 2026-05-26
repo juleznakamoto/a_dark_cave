@@ -17,7 +17,6 @@ import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import CubeDialog from "./CubeDialog";
 import { bloodMoonSacrificeAmount } from "@/game/cruelMode";
 import { getVillagersInVillage } from "@/game/population";
-import { formatNumber } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import {
   getEventRulesCatalogId,
@@ -253,8 +252,6 @@ export default function EventDialog({
     gameState,
     ruleEventId,
   );
-  const isClarityElixirCaveFound = catalogId === "clarityElixirCaveFound";
-  const clarityElixirMadnessReduction = 2;
 
   return (
     <>
@@ -329,17 +326,6 @@ export default function EventDialog({
               <DialogDescription className="text-sm text-gray-400 mt-2">
                 {displayMessage}
               </DialogDescription>
-              {isClarityElixirCaveFound && (
-                <>
-                  <div className="my-2 h-px w-full bg-white/10" />
-                  <div className="text-sm text-center text-violet-300">
-                    {t("madness.change", {
-                      sign: "-",
-                      amount: formatNumber(clarityElixirMadnessReduction),
-                    })}
-                  </div>
-                </>
-              )}
             </DialogHeader>
 
             <div className="grid grid-cols-2 gap-3 mt-4">

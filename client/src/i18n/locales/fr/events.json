@@ -216,7 +216,7 @@
       }
     },
     "log": {
-      "outcome0": "Vous buvez l'élixir de clarté. Votre esprit semble plus léger."
+      "outcome0": "Vous trouvez un élixir de clarté dans la grotte. En le buvant, votre esprit semble plus léger."
     },
     "message": "Vous trouvez un élixir de clarté dans la grotte. En le buvant, votre esprit semble plus léger.",
     "title": "Élixir de clarté"
