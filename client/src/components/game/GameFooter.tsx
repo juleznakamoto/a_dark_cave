@@ -16,11 +16,11 @@ import {
 import { useTranslation } from "react-i18next";
 
 const FOOTER_CONTROL_BTN =
-  "group px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-600";
+  "group shrink-0 px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-600";
 const FOOTER_CONTROL_BTN_FADE =
   "opacity-60 transition-opacity group-hover:opacity-100";
 const FOOTER_CONTROL_ICON_HOVER =
-  "w-4 h-4 opacity-60 transition-[filter,opacity] group-hover:opacity-100 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]";
+  "w-4 h-4 shrink-0 object-contain opacity-60 transition-[filter,opacity] group-hover:opacity-100 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]";
 const FOOTER_CONTROL_SVG_ICON_HOVER =
   "w-4 h-4 text-neutral-300 opacity-60 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
 const FOOTER_CONTROL_TEXT =
@@ -102,7 +102,7 @@ export default function GameFooter() {
       />
       <footer className="border-t border-border px-2 py-2 text-xs text-muted-foreground pointer-events-auto z-50">
         <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-0 flex-1">
+          <div className="flex items-center gap-0.5 shrink-0">
             <Button
               variant="ghost"
               size="xs"
