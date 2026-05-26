@@ -117,8 +117,8 @@ export default function SidePanelSection({
     highlightedResourcesRaw instanceof Set
       ? highlightedResourcesRaw
       : new Set(
-        Array.isArray(highlightedResourcesRaw) ? highlightedResourcesRaw : [],
-      );
+          Array.isArray(highlightedResourcesRaw) ? highlightedResourcesRaw : [],
+        );
   const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const globalTooltip = useGlobalTooltip();
 
@@ -300,7 +300,9 @@ export default function SidePanelSection({
       if (processedResourceChangeKeys.current.has(changeKey)) return;
       processedResourceChangeKeys.current.add(changeKey);
 
-      const visibleItem = visibleItems.find((item) => item.id === change.resource);
+      const visibleItem = visibleItems.find(
+        (item) => item.id === change.resource,
+      );
       if (visibleItem) {
         if (change.amount > 0) {
           setAnimatedItems((prev) => {
@@ -367,9 +369,7 @@ export default function SidePanelSection({
     const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
     const isMaxAnimated = maxAnimatedItems.has(item.id);
     const displayValue =
-      item.id === "madness" &&
-        typeof item.value === "number" &&
-        item.value < 0
+      item.id === "madness" && typeof item.value === "number" && item.value < 0
         ? `0 (-${formatNumber(Math.abs(item.value))})`
         : formatValue(item.value);
     const isLimited = isResourceLimited(item.id, gameState);
@@ -428,9 +428,7 @@ export default function SidePanelSection({
 
     const isMadness = item.id === "madness";
     const madnessForStyle =
-      isMadness && typeof item.value === "number"
-        ? Math.max(0, item.value)
-        : 0;
+      isMadness && typeof item.value === "number" ? Math.max(0, item.value) : 0;
     const madnessClasses = isMadness ? getMadnessClasses(madnessForStyle) : "";
 
     // Only apply pulse to items that have tooltips (effects or item.tooltip)
@@ -461,7 +459,7 @@ export default function SidePanelSection({
             className={cn(
               "mr-1 font-noto-symbols-2",
               (sectionId === "stats" || sectionId === "bastion") &&
-              "mr-1 inline-flex w-3 items-center justify-center",
+                "mr-1 inline-flex w-3 items-center justify-center",
               item.iconColor,
             )}
           >
@@ -482,18 +480,18 @@ export default function SidePanelSection({
     const showValue =
       sectionId === undefined
         ? typeof title === "string" &&
-        ![
-          "Relics",
-          "Tools",
-          "Weapons",
-          "Clothing",
-          "Buildings",
-          "Fortifications",
-          "Blessings",
-          "Schematics",
-          "Fellowship",
-          "Books",
-        ].includes(title)
+          ![
+            "Relics",
+            "Tools",
+            "Weapons",
+            "Clothing",
+            "Buildings",
+            "Fortifications",
+            "Blessings",
+            "Schematics",
+            "Fellowship",
+            "Books",
+          ].includes(title)
         : !SECTIONS_WITHOUT_ITEM_VALUES.has(sectionId);
     // Stats always show numeric values (legacy English-title fallback).
     const showItemValue =
@@ -505,57 +503,57 @@ export default function SidePanelSection({
       item.productionDelta !== undefined &&
       item.productionDelta !== 0;
 
-    const rightContent =
-      showItemValue ? (
-        <span className="flex items-center gap-2 font-mono text-gray-300">
-          {showItemValue && (
-            <span
-              className={cn(
-                isResourcesSection && "min-w-[4rem] text-right",
-                isAnimated && "text-green-800 font-bold",
-                isDecreaseAnimated && "text-red-800 font-bold",
-                isMaxAnimated && "text-yellow-800 font-bold",
-                isMadness && madnessClasses,
-                isHighlighted && "font-bold !text-gray-100",
-              )}
-            >
-              {displayValue}
-            </span>
-          )}
-          {showProductionDelta ? (
-            <span
-              className={cn(
-                "min-w-[2rem] text-right",
-                activeTab !== "village" && "text-muted-foreground",
-                activeTab === "village" &&
+    const rightContent = showItemValue ? (
+      <span className="flex items-center gap-1 font-mono text-gray-300">
+        {showItemValue && (
+          <span
+            className={cn(
+              isResourcesSection && "min-w-[3rem] text-right",
+              isAnimated && "text-green-800 font-bold",
+              isDecreaseAnimated && "text-red-800 font-bold",
+              isMaxAnimated && "text-yellow-800 font-bold",
+              isMadness && madnessClasses,
+              isHighlighted && "font-bold !text-gray-100",
+            )}
+          >
+            {displayValue}
+          </span>
+        )}
+        {showProductionDelta ? (
+          <span
+            className={cn(
+              "min-w-[2rem] text-right",
+              activeTab !== "village" && "text-muted-foreground",
+              activeTab === "village" &&
                 (item.productionDelta ?? 0) > 0 &&
                 "text-green-600",
-                activeTab === "village" &&
+              activeTab === "village" &&
                 (item.productionDelta ?? 0) < 0 &&
                 "text-red-600",
-              )}
-            >
-              {(item.productionDelta ?? 0) > 0 ? "+" : ""}
-              {item.productionDelta}
-            </span>
-          ) : (
-            isResourcesSection &&
-            showItemValue && <span className="min-w-[2rem]" aria-hidden />
-          )}
-        </span>
-      ) : null;
+            )}
+          >
+            {(item.productionDelta ?? 0) > 0 ? "+" : ""}
+            {item.productionDelta}
+          </span>
+        ) : (
+          isResourcesSection &&
+          showItemValue && <span className="min-w-[2rem]" aria-hidden />
+        )}
+      </span>
+    ) : null;
 
     const itemContent = (
       <div
         data-testid={item.testId}
-        className={`mr-2 flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-          ? "text-green-400"
-          : isDecreaseAnimated
-            ? "text-red-400"
-            : isMaxAnimated
-              ? "text-yellow-400"
-              : ""
-          }`}
+        className={`mr-1 flex leading-tight justify-between items-center transition-all duration-300 ${
+          isAnimated
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""
+        }`}
       >
         {labelContent}
         {rightContent}
@@ -563,18 +561,24 @@ export default function SidePanelSection({
     );
 
     // If this item has effects, wrap it in a tooltip with item effects
-    if (hasEffect && sectionId !== undefined && EFFECT_TOOLTIP_SECTIONS.has(sectionId)) {
+    if (
+      hasEffect &&
+      sectionId !== undefined &&
+      EFFECT_TOOLTIP_SECTIONS.has(sectionId)
+    ) {
       return (
         <div
           key={item.id}
           data-testid={item.testId}
-          className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-            ? "text-green-400"
-            : isDecreaseAnimated
-              ? "text-red-400"
-              : isAtMax
-                ? "text-yellow-400"
-                : ""}`}
+          className={`flex leading-tight justify-between items-center transition-all duration-300 ${
+            isAnimated
+              ? "text-green-400"
+              : isDecreaseAnimated
+                ? "text-red-400"
+                : isAtMax
+                  ? "text-yellow-400"
+                  : ""
+          }`}
         >
           <TooltipWrapper
             tooltip={renderItemTooltip(
@@ -582,9 +586,9 @@ export default function SidePanelSection({
               sectionId === "weapons"
                 ? "weapon"
                 : sectionId === "blessings" ||
-                  sectionId === "clothing" ||
-                  sectionId === "relics" ||
-                  sectionId === "schematics"
+                    sectionId === "clothing" ||
+                    sectionId === "relics" ||
+                    sectionId === "schematics"
                   ? "blessing"
                   : "tool",
             )}
@@ -593,7 +597,11 @@ export default function SidePanelSection({
             tooltipContentClassName="max-w-xs"
             onMouseEnter={() => handleTooltipHover(item.id)}
             onMouseLeave={() => handleTooltipLeave(item.id)}
-            className={globalTooltip.isMobile ? "cursor-pointer inline-block" : "inline-block"}
+            className={
+              globalTooltip.isMobile
+                ? "cursor-pointer inline-block"
+                : "inline-block"
+            }
           >
             {labelContent}
           </TooltipWrapper>
@@ -602,22 +610,21 @@ export default function SidePanelSection({
     }
 
     // If this item is a fellowship member or book with a tooltip, use renderItemTooltip
-    if (
-      item.tooltip &&
-      (sectionId === "fellowship" || sectionId === "books")
-    ) {
+    if (item.tooltip && (sectionId === "fellowship" || sectionId === "books")) {
       const itemType = sectionId === "fellowship" ? "fellowship" : "book";
       return (
         <div
           key={item.id}
           data-testid={item.testId}
-          className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-            ? "text-green-400"
-            : isDecreaseAnimated
-              ? "text-red-400"
-              : isMaxAnimated
-                ? "text-yellow-400"
-                : ""}`}
+          className={`flex leading-tight justify-between items-center transition-all duration-300 ${
+            isAnimated
+              ? "text-green-400"
+              : isDecreaseAnimated
+                ? "text-red-400"
+                : isMaxAnimated
+                  ? "text-yellow-400"
+                  : ""
+          }`}
         >
           <TooltipWrapper
             tooltip={renderItemTooltip(item.id, itemType)}
@@ -626,7 +633,11 @@ export default function SidePanelSection({
             tooltipContentClassName="max-w-xs"
             onMouseEnter={() => handleTooltipHover(item.id)}
             onMouseLeave={() => handleTooltipLeave(item.id)}
-            className={globalTooltip.isMobile ? "cursor-pointer inline-block" : "inline-block"}
+            className={
+              globalTooltip.isMobile
+                ? "cursor-pointer inline-block"
+                : "inline-block"
+            }
           >
             {labelContent}
           </TooltipWrapper>
@@ -640,13 +651,15 @@ export default function SidePanelSection({
         <div
           key={item.id}
           data-testid={item.testId}
-          className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-            ? "text-green-400"
-            : isDecreaseAnimated
-              ? "text-red-400"
-              : isMaxAnimated
-                ? "text-yellow-400"
-                : ""}`}
+          className={`flex leading-tight justify-between items-center transition-all duration-300 ${
+            isAnimated
+              ? "text-green-400"
+              : isDecreaseAnimated
+                ? "text-red-400"
+                : isMaxAnimated
+                  ? "text-yellow-400"
+                  : ""
+          }`}
         >
           <TooltipWrapper
             tooltip={renderItemTooltip(item.id, "building")}
@@ -655,7 +668,11 @@ export default function SidePanelSection({
             tooltipContentClassName="max-w-xs"
             onMouseEnter={() => handleTooltipHover(item.id)}
             onMouseLeave={() => handleTooltipLeave(item.id)}
-            className={globalTooltip.isMobile ? "cursor-pointer inline-block" : "inline-block"}
+            className={
+              globalTooltip.isMobile
+                ? "cursor-pointer inline-block"
+                : "inline-block"
+            }
           >
             {labelContent}
           </TooltipWrapper>
@@ -671,13 +688,15 @@ export default function SidePanelSection({
           <div
             key={item.id}
             data-testid={item.testId}
-            className={`mr-2 flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isMaxAnimated
-                  ? "text-yellow-400"
-                  : ""}`}
+            className={`mr-1 flex leading-tight justify-between items-center transition-all duration-300 ${
+              isAnimated
+                ? "text-green-400"
+                : isDecreaseAnimated
+                  ? "text-red-400"
+                  : isMaxAnimated
+                    ? "text-yellow-400"
+                    : ""
+            }`}
           >
             <TooltipWrapper
               tooltip={combatItemTooltip}
@@ -687,22 +706,26 @@ export default function SidePanelSection({
               onMouseEnter={() => handleTooltipHover(item.id)}
               onMouseLeave={() => handleTooltipLeave(item.id)}
               className={
-                globalTooltip.isMobile ? "cursor-pointer inline-block" : "inline-block"
+                globalTooltip.isMobile
+                  ? "cursor-pointer inline-block"
+                  : "inline-block"
               }
             >
               {labelContent}
             </TooltipWrapper>
             {showItemValue && (
               <span
-                className={`font-mono ${isAnimated
-                  ? "text-green-800 font-bold"
-                  : isDecreaseAnimated
-                    ? "text-red-800 font-bold"
-                    : isMaxAnimated
-                      ? "text-yellow-800 font-bold"
-                      : isMadness
-                        ? madnessClasses
-                        : ""}`}
+                className={`font-mono ${
+                  isAnimated
+                    ? "text-green-800 font-bold"
+                    : isDecreaseAnimated
+                      ? "text-red-800 font-bold"
+                      : isMaxAnimated
+                        ? "text-yellow-800 font-bold"
+                        : isMadness
+                          ? madnessClasses
+                          : ""
+                }`}
               >
                 {displayValue}
               </span>
@@ -729,13 +752,15 @@ export default function SidePanelSection({
         <div
           key={item.id}
           data-testid={item.testId}
-          className={`mr-2 flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-            ? "text-green-400"
-            : isDecreaseAnimated
-              ? "text-red-400"
-              : isMaxAnimated
-                ? "text-yellow-400"
-                : ""}`}
+          className={`mr-1 flex leading-tight justify-between items-center transition-all duration-300 ${
+            isAnimated
+              ? "text-green-400"
+              : isDecreaseAnimated
+                ? "text-red-400"
+                : isMaxAnimated
+                  ? "text-yellow-400"
+                  : ""
+          }`}
         >
           <TooltipWrapper
             tooltip={tooltipContent}
@@ -744,21 +769,27 @@ export default function SidePanelSection({
             tooltipContentClassName="max-w-xs"
             onMouseEnter={() => handleTooltipHover(item.id)}
             onMouseLeave={() => handleTooltipLeave(item.id)}
-            className={globalTooltip.isMobile ? "cursor-pointer inline-block" : "inline-block"}
+            className={
+              globalTooltip.isMobile
+                ? "cursor-pointer inline-block"
+                : "inline-block"
+            }
           >
             {labelContent}
           </TooltipWrapper>
           {showItemValue && (
             <span
-              className={`font-mono ${isAnimated
-                ? "text-green-800 font-bold"
-                : isDecreaseAnimated
-                  ? "text-red-800 font-bold"
-                  : isMaxAnimated
-                    ? "text-yellow-800 font-bold"
-                    : isMadness
-                      ? madnessClasses
-                      : ""}`}
+              className={`font-mono ${
+                isAnimated
+                  ? "text-green-800 font-bold"
+                  : isDecreaseAnimated
+                    ? "text-red-800 font-bold"
+                    : isMaxAnimated
+                      ? "text-yellow-800 font-bold"
+                      : isMadness
+                        ? madnessClasses
+                        : ""
+              }`}
             >
               {displayValue}
             </span>
