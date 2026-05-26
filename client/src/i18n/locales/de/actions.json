@@ -60,7 +60,7 @@
   },
   "buildCabin": {
     "description": "Einfache Jagdhütte mit Werkzeugen für Jäger",
-    "label": "Hütte"
+    "label": "Jagdhütte"
   },
   "buildChitinPlating": {
     "description": "Befestigungen werden mit undurchdringlichen Chitinplatten verstärkt",

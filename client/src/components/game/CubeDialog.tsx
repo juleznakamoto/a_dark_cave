@@ -133,12 +133,16 @@ export default function CubeDialog({
           <DialogTitle className="text-lg font-semibold">
             {resolvedTitle}
           </DialogTitle>
-          <DialogDescription className="text-sm text-muted-foreground mt-2">
+          <DialogDescription className="sr-only">
             {resolvedMessage}
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex-1 flex items-end justify-center">
+        <div className="flex-1 min-h-0 overflow-y-auto text-sm text-muted-foreground leading-relaxed py-2">
+          {resolvedMessage}
+        </div>
+
+        <div className="flex-shrink-0 flex justify-center pt-2">
           <Button
             onClick={handleClose}
             variant="outline"

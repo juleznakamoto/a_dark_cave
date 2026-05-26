@@ -288,8 +288,8 @@
         "label": "Fermer"
       }
     },
-    "message": "Le cube murmure d'anciens secrets…",
-    "title": "Le cube murmurant"
+    "message": "You wake in the night. The cube hums softly. Suddenly a gentle, melodic voice emerges from it: 'Long ago, a great civilization thrived upon this world, but it crumbled, its knowledge lost to the ages.'",
+    "title": "The Cube Awakens"
   },
   "cube02": {
     "choices": {
@@ -297,8 +297,8 @@
         "label": "Fermer"
       }
     },
-    "message": "Le cube murmure d'anciens secrets…",
-    "title": "Le cube murmurant"
+    "message": "'In the distant past, a tribe of fierce warriors was chosen to live deep in the caves. Their purpose was to guard something of great importance.'",
+    "title": "The Warrior Tribe"
   },
   "cube03": {
     "choices": {
@@ -306,8 +306,8 @@
         "label": "Fermer"
       }
     },
-    "message": "Le cube murmure d'anciens secrets…",
-    "title": "Le cube murmurant"
+    "message": "'The warrior tribe grew into a vast underground city, safe from the world above, still protecting what they were sent to protect lifetimes ago.'",
+    "title": "The Underground City"
   },
   "cube04": {
     "choices": {
@@ -315,8 +315,8 @@
         "label": "Fermer"
       }
     },
-    "message": "Le cube murmure d'anciens secrets…",
-    "title": "Le cube murmurant"
+    "message": "'Though memory of what they protected has faded into legend, their vigilance endured. For generations the warriors have kept their sacred oath, watching over what lies at the city's deepest point.'",
+    "title": "The Sacred Oath"
   },
   "cube05": {
     "choices": {
@@ -324,8 +324,8 @@
         "label": "Fermer"
       }
     },
-    "message": "Le cube murmure d'anciens secrets…",
-    "title": "Le cube murmurant"
+    "message": "'Long after the inhabitants of the underground city perished, the object of their devotion remained: a colossal, impenetrable gate, crafted with long-forgotten technology, hidden deep within the city's lowest chambers'",
+    "title": "The Sealed Gate"
   },
   "cube06": {
     "choices": {
@@ -333,8 +333,8 @@
         "label": "Fermer"
       }
     },
-    "message": "Le cube murmure d'anciens secrets…",
-    "title": "Le cube murmurant"
+    "message": "As the gate is shatters, the cube trembles in your hands, growing warm. A soft, but urgent whisper escapes it: 'I have gained new insights.'",
+    "title": "The Gate Opens"
   },
   "cube07": {
     "choices": {
@@ -342,8 +342,8 @@
         "label": "Fermer"
       }
     },
-    "message": "Le cube murmure d'anciens secrets…",
-    "title": "Le cube murmurant"
+    "message": "'The ancient civilization that forged the gate possessed knowledge and technology far beyond the current age. They even crafted devices designed to be implanted within their skulls, enhancing both mind and body'",
+    "title": "Ancient Technology"
   },
   "cube08": {
     "choices": {
@@ -351,8 +351,8 @@
         "label": "Fermer"
       }
     },
-    "message": "Le cube murmure d'anciens secrets…",
-    "title": "Le cube murmurant"
+    "message": "'The leaders ruled that every citizen must bear a device in their head. A small faction began to voice their concerns, forming a resistance as they recognized the dangers hidden within the technology.'",
+    "title": "The Resistance"
   },
   "cube09": {
     "choices": {
@@ -360,8 +360,8 @@
         "label": "Fermer"
       }
     },
-    "message": "Le cube murmure d'anciens secrets…",
-    "title": "Le cube murmurant"
+    "message": "'With the aid of the devices, the civilization thrived. An era of unprecedented peace and progress began, their knowledge and skill reaching heights that would never be seen again.'",
+    "title": "The Golden Age"
   },
   "cube10": {
     "choices": {
@@ -369,8 +369,8 @@
         "label": "Fermer"
       }
     },
-    "message": "Le cube murmure d'anciens secrets…",
-    "title": "Le cube murmurant"
+    "message": "'Knowledge flowed instantly, and society thrived. Behind the progress, the skull devices orchestrated humanity's thoughts, connecting minds in a quiet, inescapable web.''",
+    "title": "The Great Collapse"
   },
   "cube11": {
     "choices": {
@@ -378,8 +378,8 @@
         "label": "Fermer"
       }
     },
-    "message": "Le cube murmure d'anciens secrets…",
-    "title": "Le cube murmurant"
+    "message": "'One day, without warning, an unimaginable magneto-electric pulse swept across the globe. Every device of the civilization, including those embedded within the skulls, was obliterated.'",
+    "title": "The Hive Mind"
   },
   "cube12": {
     "choices": {
@@ -387,8 +387,8 @@
         "label": "Fermer"
       }
     },
-    "message": "Le cube murmure d'anciens secrets…",
-    "title": "Le cube murmurant"
+    "message": "'The few survivors could not survive without the devices. Most died. Civilization regressed. Knowledge slipped into oblivion. Nature reclaimed the lands, leaving only buried ruins where greatness once stood.'",
+    "title": "End of Civilization"
   },
   "cube13": {
     "choices": {
@@ -396,8 +396,8 @@
         "label": "Fermer"
       }
     },
-    "message": "Le cube murmure d'anciens secrets…",
-    "title": "Le cube murmurant"
+    "message": "The cube pulses with energy as you approach the slain creatures. It seems to extract information from somewhere. The cube grows warm, processing the recovered knowledge.",
+    "title": "Recovered Data"
   },
   "cube14a": {
     "choices": {
@@ -405,8 +405,8 @@
         "label": "Continuer"
       }
     },
-    "message": "Le cube murmure d'anciens secrets…",
-    "title": "Le cube murmurant"
+    "message": "'When the resistance opposed the skull devices, they were exiled into the mountain's depths, sealed away behind the gate. With no path back, they dug ever deeper. In isolation and darkness, their minds eroded and they descended into madness and degeneration.'",
+    "title": "The Resistance"
   },
   "cube14b": {
     "choices": {
@@ -414,8 +414,8 @@
         "label": "Continuer"
       }
     },
-    "message": "Le cube murmure d'anciens secrets…",
-    "title": "Le cube murmurant"
+    "message": "'One day, deep in the earth, they found a monolith of unknown ore. From it they forged an explosive to destroy the gate. But the bomb failed to breach the gate, instead unleashed an electro-magnetic pulse spanning the whole planet destroying all devices, ending civilization.'",
+    "title": "The Unknown Ore"
   },
   "cube14c": {
     "choices": {
@@ -423,8 +423,8 @@
         "label": "Continuer"
       }
     },
-    "message": "Le cube murmure d'anciens secrets…",
-    "title": "Le cube murmurant"
+    "message": "'Shortly after the explosion, a man standing nearby began to dematerialize, his form flickering, half-transparent for seconds. Terrified and driven mad by what had happened, he took his own life moments later.'",
+    "title": "The Unknown Ore"
   },
   "cube14d": {
     "choices": {
@@ -432,8 +432,8 @@
         "label": "Fermer"
       }
     },
-    "message": "Le cube murmure d'anciens secrets…",
-    "title": "Le cube murmurant"
+    "message": "'Desperate, the survivors theorized the ore could help them pass through the gate. With its last fragments, they built a smaller bomb and positioned their sanest man with it before the gate. Right after the blast, he turned ghostly, translucent, and then vanished through the gate.'",
+    "title": "Through the Gate"
   },
   "cube15a": {
     "choices": {
@@ -441,8 +441,8 @@
         "label": "Fermer"
       }
     },
-    "message": "Le cube murmure d'anciens secrets…",
-    "title": "Le cube murmurant"
+    "message": "That was when you recognize that the creatures did not attack as they recognized you as one of their own. You are the man who vanished through the gate.",
+    "title": "Recognition"
   },
   "cube15b": {
     "choices": {
@@ -450,8 +450,8 @@
         "label": "Fermer"
       }
     },
-    "message": "Le cube murmure d'anciens secrets…",
-    "title": "Le cube murmurant"
+    "message": "After finishing their story one of the survivors steps forward, pointing at you: 'You are the man who vanished through the gate. You are one of us.",
+    "title": "Recognition"
   },
   "cubeDiscovery": {
     "choices": {
@@ -459,8 +459,8 @@
         "label": "Fermer"
       }
     },
-    "message": "Le cube murmure d'anciens secrets…",
-    "title": "Le cube murmurant"
+    "message": "Near the cave's entrance, you discover a perfectly polished metal cube. At first it seems still, but then you feel a faint vibration like a slow, rhythmic pulse, almost like a heartbeat.",
+    "title": "The Whispering Cube"
   },
   "cursedMercenaryMassacre": {
     "choices": {
@@ -2074,6 +2074,14 @@
       "level4": "Der ehrgeizige Plan des boisfällers",
       "level5": "Der große Vorschlag des boisfällers",
       "level6": "Das Angebot des boisfällers"
+    },
+    "message": {
+      "level1": "A muscular man with a large axe approaches the village. He flexes his arms. \"I can cut trees like no other,\" he boasts. \"Give me {{foodCost}} Food, and I'll bring {{woodReward}} Wood.\"",
+      "level2": "The woodcutter returns, his axe gleaming in the sun. \"Your village grows well,\" he observes. \"I can bring you {{woodReward}} Wood. You give me {{foodCost}} Food. What do you say?\"",
+      "level3": "The woodcutter approaches again. \"I see your village continues to thrive,\" he says with a grin. \"I can bring you {{woodReward}} Wood if you pay {{foodCost}} Food for it.\"",
+      "level4": "The woodcutter arrives once more. \"Do you want to use my services once more? {{woodReward}} Wood for {{foodCost}} Food,\" he asks.",
+      "level5": "The woodcutter appears with a confident smile. \"How about we make one more deal? {{woodReward}} Wood for {{foodCost}} Food.\"",
+      "level6": "The woodcutter returns to the village. \"Do you want to use my services once more? I offer {{woodReward}} Wood for {{foodCost}} Food,\" he says."
     }
   },
   "wrongReflections": {
@@ -2395,5 +2403,27 @@
       "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
       "success_fifth": "La silhouette incline la tête en révérence silencieuse avant de disparaître complètement. Un grand sac d'or gît là où elle se tenait."
     }
+  },
+  "feast": {
+    "choices": {
+      "makeFeast": {
+        "cost": "{{foodCost}} food",
+        "label": "Spend {{foodCost}} Food"
+      },
+      "noFeast": {
+        "label": "Refuse feast"
+      },
+      "doNothing": {
+        "label": "No Decision Made"
+      }
+    },
+    "log": {
+      "outcome0": "You don't have enough food for the feast.",
+      "outcome1": "The villagers gather for a feast! Weariness fades and spirits rise, if only briefly.",
+      "outcome2": "You decline the feast proposal. The villagers accept your decision, though disappointed.",
+      "outcome3": "Time passes and the opportunity for a feast fades away."
+    },
+    "message": "The villagers propose organizing a feast. A short comfort to ease their weariness and quiet their minds.",
+    "title": "Village Feast"
   }
 }

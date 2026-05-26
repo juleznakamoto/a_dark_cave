@@ -288,8 +288,8 @@
         "label": "Schließen"
       }
     },
-    "message": "Der Würfel flüstert uralte Geheimnisse …",
-    "title": "Der flüsternde Würfel"
+    "message": "Du wachst in der Nacht auf. Der Würfel summt leise. Plötzlich erhebt sich eine sanfte, melodische Stimme aus ihm: „Vor langer Zeit blühte eine große Zivilisation auf dieser Welt, doch sie zerfiel und ihr Wissen ging in den Stürmen der Zeit verloren.“",
+    "title": "Der Würfel erwacht"
   },
   "cube02": {
     "choices": {
@@ -297,8 +297,8 @@
         "label": "Schließen"
       }
     },
-    "message": "Der Würfel flüstert uralte Geheimnisse …",
-    "title": "Der flüsternde Würfel"
+    "message": "„In ferner Vergangenheit wurde ein Stamm wilder Krieger auserwählt, tief in den Höhlen zu leben. Ihre Bestimmung war es, etwas von großer Bedeutung zu bewachen.“",
+    "title": "Der Kriegerstamm"
   },
   "cube03": {
     "choices": {
@@ -306,8 +306,8 @@
         "label": "Schließen"
       }
     },
-    "message": "Der Würfel flüstert uralte Geheimnisse …",
-    "title": "Der flüsternde Würfel"
+    "message": "„Der Kriegerstamm wuchs zu einer weiten unterirdischen Stadt heran, sicher vor der Welt darüber, und beschützte noch immer, wofür sie einst ausersehen worden waren.“",
+    "title": "Die unterirdische Stadt"
   },
   "cube04": {
     "choices": {
@@ -315,8 +315,8 @@
         "label": "Schließen"
       }
     },
-    "message": "Der Würfel flüstert uralte Geheimnisse …",
-    "title": "Der flüsternde Würfel"
+    "message": "„Obwohl die Erinnerung an das Bewachte in Legenden verblas, hielt ihre Wachsamkeit an. Generationen lang hielten die Krieger ihren heiligen Eid und wachten über das, was am tiefsten Punkt der Stadt lag.“",
+    "title": "Der heilige Eid"
   },
   "cube05": {
     "choices": {
@@ -324,8 +324,8 @@
         "label": "Schließen"
       }
     },
-    "message": "Der Würfel flüstert uralte Geheimnisse …",
-    "title": "Der flüsternde Würfel"
+    "message": "„Lange nachdem die Bewohner der unterirdischen Stadt starben, blieb der Gegenstand ihrer Hingabe: ein kolossales, undurchdringliches Tor, geschmiedet mit vergessener Technologie, verborgen in den tiefsten Kammern der Stadt.“",
+    "title": "Das versiegelte Tor"
   },
   "cube06": {
     "choices": {
@@ -333,8 +333,8 @@
         "label": "Schließen"
       }
     },
-    "message": "Der Würfel flüstert uralte Geheimnisse …",
-    "title": "Der flüsternde Würfel"
+    "message": "Als das Tor zerbricht, bebt der Würfel in deinen Händen und wird warm. Ein leises, aber dringliches Flüstern entweicht ihm: „Ich habe neue Erkenntnisse gewonnen.“",
+    "title": "Das Tor öffnet sich"
   },
   "cube07": {
     "choices": {
@@ -342,8 +342,8 @@
         "label": "Schließen"
       }
     },
-    "message": "Der Würfel flüstert uralte Geheimnisse …",
-    "title": "Der flüsternde Würfel"
+    "message": "„Die alte Zivilisation, die das Tor schuf, besaß Wissen und Technik, die weit über dieses Zeitalter hinausreichen. Sie fertigten sogar Geräte, die in ihre Schädel implantiert wurden und Geist und Körper stärkten.“",
+    "title": "Uralte Technologie"
   },
   "cube08": {
     "choices": {
@@ -351,8 +351,8 @@
         "label": "Schließen"
       }
     },
-    "message": "Der Würfel flüstert uralte Geheimnisse …",
-    "title": "Der flüsternde Würfel"
+    "message": "„Die Herrscher befahlen, dass jeder Bürger ein Gerät im Kopf tragen müsse. Eine kleine Gruppe begann, ihre Bedenken laut zu äußern, und bildete einen Widerstand, als sie die Gefahren in der Technologie erkannten.“",
+    "title": "Der Widerstand"
   },
   "cube09": {
     "choices": {
@@ -360,8 +360,8 @@
         "label": "Schließen"
       }
     },
-    "message": "Der Würfel flüstert uralte Geheimnisse …",
-    "title": "Der flüsternde Würfel"
+    "message": "„Mit Hilfe der Geräte gedieh die Zivilisation. Eine Ära beispiellosen Friedens und Fortschritts begann; ihr Wissen und Können erreichte Höhen, die nie wieder erreicht wurden.“",
+    "title": "Das goldene Zeitalter"
   },
   "cube10": {
     "choices": {
@@ -369,8 +369,8 @@
         "label": "Schließen"
       }
     },
-    "message": "Der Würfel flüstert uralte Geheimnisse …",
-    "title": "Der flüsternde Würfel"
+    "message": "„Wissen floss augenblicklich, und die Gesellschaft gedieh. Hinter dem Fortschritt lenkten die Schädelgeräte die Gedanken der Menschheit und verbanden Geister in einem stillen, unentrinnbaren Netz.“",
+    "title": "Der große Zusammenbruch"
   },
   "cube11": {
     "choices": {
@@ -378,8 +378,8 @@
         "label": "Schließen"
       }
     },
-    "message": "Der Würfel flüstert uralte Geheimnisse …",
-    "title": "Der flüsternde Würfel"
+    "message": "„Eines Tages, ohne Vorwarnung, fegte ein unvorstellbarer magnetoelektrischer Impuls über den Globus. Jedes Gerät der Zivilisation, auch die in den Schädeln, wurde vernichtet.“",
+    "title": "Der Schwarmgeist"
   },
   "cube12": {
     "choices": {
@@ -387,8 +387,8 @@
         "label": "Schließen"
       }
     },
-    "message": "Der Würfel flüstert uralte Geheimnisse …",
-    "title": "Der flüsternde Würfel"
+    "message": "„Die wenigen Überlebenden konnten ohne die Geräte nicht leben. Die meisten starben. Die Zivilisation fiel zurück. Wissen versank in der Vergessenheit. Die Natur eroberte die Lande zurück und ließ nur begrabene Ruinen zurück, wo einst Größe stand.“",
+    "title": "Ende der Zivilisation"
   },
   "cube13": {
     "choices": {
@@ -396,8 +396,8 @@
         "label": "Schließen"
       }
     },
-    "message": "Der Würfel flüstert uralte Geheimnisse …",
-    "title": "Der flüsternde Würfel"
+    "message": "Der Würfel pulsiert vor Energie, als du dich den erschlagenen Kreaturen näherst. Er scheint Informationen von irgendwoher zu extrahieren. Der Würfel wird warm und verarbeitet das wiedergewonnene Wissen.",
+    "title": "Wiedergewonnene Daten"
   },
   "cube14a": {
     "choices": {
@@ -405,8 +405,8 @@
         "label": "Weiter"
       }
     },
-    "message": "Der Würfel flüstert uralte Geheimnisse …",
-    "title": "Der flüsternde Würfel"
+    "message": "„Als der Widerstand sich den Schädelgeräten widersetzte, wurden sie in die Tiefen des Berges verbannt, hinter dem Tor eingeschlossen. Ohne Rückweg gruben sie immer tiefer. In Isolation und Finsternis zerfielen ihre Geister, und sie verfielen in Wahnsinn und Entartung.“",
+    "title": "Der Widerstand"
   },
   "cube14b": {
     "choices": {
@@ -414,8 +414,8 @@
         "label": "Weiter"
       }
     },
-    "message": "Der Würfel flüstert uralte Geheimnisse …",
-    "title": "Der flüsternde Würfel"
+    "message": "„Eines Tages fanden sie tief in der Erde einen Monolithen aus unbekanntem Erz. Daraus schmiedeten sie einen Sprengstoff, um das Tor zu zerstören. Doch die Bombe durchbrach das Tor nicht, sondern entfesselte einen elektromagnetischen Impuls über den ganzen Planeten, der alle Geräte vernichtete und die Zivilisation beendete.“",
+    "title": "Das unbekannte Erz"
   },
   "cube14c": {
     "choices": {
@@ -423,8 +423,8 @@
         "label": "Weiter"
       }
     },
-    "message": "Der Würfel flüstert uralte Geheimnisse …",
-    "title": "Der flüsternde Würfel"
+    "message": "„Kurz nach der Explosion begann ein Mann in der Nähe zu dematerialisieren; seine Gestalt flackerte, halb durchsichtig für Sekunden. Vor Entsetzen und wahnsinnig vor dem Geschehen nahm er sich Momente später das Leben.“",
+    "title": "Das unbekannte Erz"
   },
   "cube14d": {
     "choices": {
@@ -432,8 +432,8 @@
         "label": "Schließen"
       }
     },
-    "message": "Der Würfel flüstert uralte Geheimnisse …",
-    "title": "Der flüsternde Würfel"
+    "message": "„In ihrer Verzweiflung vermuteten die Überlebenden, das Erz könnte ihnen helfen, durch das Tor zu gelangen. Mit den letzten Fragmenten bauten sie eine kleinere Bombe und stellten ihren gesündesten Mann damit vor das Tor. Gleich nach der Detonation wurde er gespenstisch, durchscheinend und verschwand durch das Tor.“",
+    "title": "Durch das Tor"
   },
   "cube15a": {
     "choices": {
@@ -441,8 +441,8 @@
         "label": "Schließen"
       }
     },
-    "message": "Der Würfel flüstert uralte Geheimnisse …",
-    "title": "Der flüsternde Würfel"
+    "message": "Da erkennst du, dass die Kreaturen nicht angriffen, weil sie dich als einen der ihren erkannten. Du bist der Mann, der durch das Tor verschwand.",
+    "title": "Erkenntnis"
   },
   "cube15b": {
     "choices": {
@@ -450,8 +450,8 @@
         "label": "Schließen"
       }
     },
-    "message": "Der Würfel flüstert uralte Geheimnisse …",
-    "title": "Der flüsternde Würfel"
+    "message": "Als ihre Geschichte endet, tritt einer der Überlebenden vor und zeigt auf dich: „Du bist der Mann, der durch das Tor verschwand. Du bist einer von uns.“",
+    "title": "Erkenntnis"
   },
   "cubeDiscovery": {
     "choices": {
@@ -459,7 +459,7 @@
         "label": "Schließen"
       }
     },
-    "message": "Der Würfel flüstert uralte Geheimnisse …",
+    "message": "Nahe dem Höhleneingang entdeckst du einen perfekt polierten Metallwürfel. Zuerst scheint er still, doch dann spürst du ein leichtes Vibrieren wie einen langsamen, rhythmischen Puls, fast wie ein Herzschlag.",
     "title": "Der flüsternde Würfel"
   },
   "cursedMercenaryMassacre": {
@@ -2064,7 +2064,7 @@
   "woodcutter": {
     "choices": {
       "acceptServices": {
-        "label": "Pay {{foodCost}} Food"
+        "label": "{{foodCost}} Nahrung zahlen"
       },
       "denyServices": {
         "label": "Dienste verweigern"
@@ -2088,6 +2088,14 @@
       "timeoutLevel4": "Deine Unentschlossenheit frustriert den Holzfäller. Er wirkt enttäuscht, akzeptiert aber und geht.",
       "timeoutLevel5": "Deine Unentschlossenheit frustriert den Holzfäller. Er runzelt die Stirn und geht.",
       "timeoutLevel6": "Deine Unentschlossenheit frustriert den Holzfäller. Er runzelt die Stirn und geht."
+    },
+    "message": {
+      "level1": "Ein muskulöser Mann mit einer großen Axt nähert sich dem Dorf. Er spannt die Arme an. „Keiner fällt Bäume wie ich“, prahlt er. „Gib mir {{foodCost}} Nahrung, und ich bringe {{woodReward}} Holz.“",
+      "level2": "Der Holzfäller kehrt zurück, seine Axt glänzt in der Sonne. „Euer Dorf wächst gut“, bemerkt er. „Ich kann euch {{woodReward}} Holz bringen. Ihr gebt mir {{foodCost}} Nahrung. Was sagt ihr?“",
+      "level3": "Der Holzfäller kommt erneut. „Ich sehe, euer Dorf gedeiht weiter“, sagt er mit einem Grinsen. „Ich bringe euch {{woodReward}} Holz, wenn ihr {{foodCost}} Nahrung dafür bezahlt.“",
+      "level4": "Der Holzfäller erscheint wieder. „Wollt ihr meine Dienste noch einmal nutzen? {{woodReward}} Holz für {{foodCost}} Nahrung“, fragt er.",
+      "level5": "Der Holzfäller erscheint mit selbstbewusstem Lächeln. „Wie wäre es mit einem weiteren Handel? {{woodReward}} Holz für {{foodCost}} Nahrung.“",
+      "level6": "Der Holzfäller kehrt ins Dorf zurück. „Wollt ihr meine Dienste noch einmal nutzen? Ich biete {{woodReward}} Holz für {{foodCost}} Nahrung“, sagt er."
     },
     "title": {
       "level1": "Der Holzfäller",

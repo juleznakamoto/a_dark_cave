@@ -146,6 +146,8 @@ export interface EventChoice {
 
 export interface LogEntry {
   id: string;
+  /** Rules event id when `id` is synthetic (e.g. `log-message-*`). */
+  eventId?: string;
   message: string;
   /** ui:log.* key for display-time localization (English kept in `message` for saves). */
   logKey?: string;

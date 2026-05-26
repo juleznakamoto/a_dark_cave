@@ -19,9 +19,19 @@ function tEvent(
 ): string {
   const key = eventKey(catalogId, suffix);
   if (i18n.exists(key)) {
-    return i18n.t(key, options as Record<string, unknown>);
+    const result = i18n.t(key, options as Record<string, unknown>);
+    return typeof result === "string" ? result : "";
   }
   return "";
+}
+
+function hasNestedCatalogKey(catalogId: string, prefix: string): boolean {
+  return i18n.exists(eventKey(catalogId, `${prefix}.level1`));
+}
+
+/** True when i18next fell back to its "object instead of string" dev message. */
+export function isI18nReturnedObjectError(text: string): boolean {
+  return text.includes("returned an object instead of string");
 }
 
 /** Catalog messages may be a string (`message`) or nested (`message.default`). */
@@ -53,6 +63,10 @@ export function resolveEventTitle(
     titleDef = titleDefOrState;
     state = stateOrVars as GameState | undefined;
     v = vars;
+  } else if (vars !== undefined) {
+    // (catalogId, undefined, state, i18nVars) — no title def on the event
+    state = stateOrVars as GameState | undefined;
+    v = vars;
   } else {
     state = titleDefOrState as GameState | undefined;
     v = stateOrVars as TranslateOptions | undefined;
@@ -70,8 +84,11 @@ export function resolveEventTitle(
     const levelTitle = tEvent(catalogId, `title.level${v.level}`, v);
     if (levelTitle) return levelTitle;
   }
-  const title = tEvent(catalogId, "title", v);
-  return title || undefined;
+  if (!hasNestedCatalogKey(catalogId, "title")) {
+    const title = tEvent(catalogId, "title", v);
+    if (title) return title;
+  }
+  return undefined;
 }
 
 /** Resolve static, variant, or array message from catalog. */
@@ -97,6 +114,12 @@ export function resolveEventMessage(
     const idx = Math.floor(Math.random() * messageDef.length);
     const variantKey = `message.${idx}`;
     const variantText = tEvent(catalogId, variantKey, vars);
+    if (variantText) return variantText;
+    return resolveCatalogMessage(catalogId, vars);
+  }
+
+  if (typeof messageDef === "string") {
+    const variantText = tEvent(catalogId, `message.${messageDef}`, vars);
     if (variantText) return variantText;
     return resolveCatalogMessage(catalogId, vars);
   }

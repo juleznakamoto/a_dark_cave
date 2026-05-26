@@ -1,6 +1,7 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "./actionEffects";
+import { pushSystemLog } from "./systemLog";
 
 export const caveCraftWeapons: Record<string, Action> = {
   craftIronSword: {
@@ -387,13 +388,12 @@ export function handleCraftCrudeBow(
     effectUpdates.flags.forestUnlocked &&
     !state.flags.forestUnlocked
   ) {
-    result.logEntries!.push({
-      id: `forest-unlocked-${Date.now()}`,
-      message:
-        "The village is encircled by a dense, dark forest. Danger lingers in the air, though it may also be a good place to chop wood and hunt.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      result,
+      "forest-unlocked",
+      "gameplay.forestUnlocked",
+      "The village is encircled by a dense, dark forest. Danger lingers in the air, though it may also be a good place to chop wood and hunt.",
+    );
   }
 
   return result;

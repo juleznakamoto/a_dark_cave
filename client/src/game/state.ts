@@ -61,6 +61,7 @@ import { logger } from "@/lib/logger";
 import { madnessEvents } from "@/game/rules/eventsMadness";
 import { DISGRACED_PRIOR_UPGRADES } from "@/game/rules/skillUpgrades";
 import {
+  isI18nReturnedObjectError,
   resolveEventMessage,
   resolveEventTitle,
 } from "@/i18n/eventText";
@@ -2637,16 +2638,28 @@ export const useGameStore = create<GameStore>((set, get) => ({
     ) {
       get().setEventDialog(false);
       setTimeout(() => {
+        const storedTitle =
+          logEntry?.title && !isI18nReturnedObjectError(logEntry.title)
+            ? logEntry.title
+            : undefined;
+        const outcomeTitle =
+          resolveEventTitle(catalogId, undefined, state, {
+            ...i18nVars,
+            ...logMessageVars,
+          }) ||
+          storedTitle ||
+          tWithFallback("ui", "event.fallbackTitle", "Event");
         const messageEntry: LogEntry = {
           id: `log-message-${Date.now()}`,
+          eventId,
           message: logMessage,
           timestamp: Date.now(),
           type: "event",
-          title: logEntry?.title, // Use the merged logEntry's title
+          title: outcomeTitle,
           choices: [
             {
               id: "acknowledge",
-              label: "Continue",
+              label: tWithFallback("common", "buttons.continue", "Continue"),
               effect: () => ({}),
             },
           ],

@@ -28,6 +28,13 @@
       "multiple0": "{{count}} extraños se unen a la aldea.",
       "multiple1": "{{count}} viajeros llegan y deciden quedarse.",
       "multiple2": "{{count}} caminantes llegan y se unen a la comunidad."
+    },
+    "building": {
+      "darkEstate": "The Dark Estate stands has been built on a small hill near the village, offering solitude and refuge.",
+      "blacksmith": "The blacksmith's forge comes alive. The heart of industry now beats in the village."
+    },
+    "gameplay": {
+      "forestUnlocked": "The village is encircled by a dense, dark forest. Danger lingers in the air, though it may also be a good place to chop wood and hunt."
     }
   }
 }

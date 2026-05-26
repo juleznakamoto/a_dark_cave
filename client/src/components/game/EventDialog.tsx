@@ -222,7 +222,7 @@ export default function EventDialog({
   ];
   const isMadnessEvent = event?.id && madnessEventIds.some(id => event.id.startsWith(id));
 
-  const ruleEventId = getEventRulesCatalogId(event.id);
+  const ruleEventId = event.eventId || getEventRulesCatalogId(event.id);
   const catalogId = resolveTimedEventCatalogId(ruleEventId);
   const displayTitle =
     resolveEventDisplayTitle(catalogId, event.title, gameState, ruleEventId) ||

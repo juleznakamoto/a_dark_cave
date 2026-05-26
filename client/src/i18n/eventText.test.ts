@@ -1,6 +1,11 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import i18n from "./index";
-import { localizeEventChoices } from "./eventText";
+import {
+  localizeEventChoices,
+  resolveEventMessage,
+  resolveEventTitle,
+} from "./eventText";
+import { resolveEventDisplayTitle } from "./eventDisplay";
 import type { EventChoice } from "@/game/rules/events";
 import type { GameState } from "@shared/schema";
 
@@ -95,5 +100,42 @@ describe("localizeEventChoices", () => {
     expect(localized![0].label).toBe("Fest ausrichten");
     expect(localized![0].cost).toBe("25 Gold, 250 Nahrung");
     expect(localized![1].label).toBe("Ablehnen");
+  });
+
+  it("resolves woodcutter level title and message in German", async () => {
+    await i18n.changeLanguage("de");
+    const state = {} as GameState;
+    const vars = { level: 1, foodCost: "25", woodReward: "200" };
+
+    expect(
+      resolveEventTitle("woodcutter", undefined, state, vars),
+    ).toBe("Der Holzfäller");
+
+    expect(
+      resolveEventMessage("woodcutter", "level1", {} as GameState, vars),
+    ).toContain("25");
+
+    const choices: EventChoice[] = [
+      { id: "acceptServices", effect: () => ({}) },
+      { id: "denyServices", effect: () => ({}) },
+    ];
+    const localized = localizeEventChoices(
+      "woodcutter",
+      choices,
+      {} as GameState,
+      vars,
+    );
+    expect(localized![0].label).toBe("25 Nahrung zahlen");
+  });
+
+  it("ignores stored i18n object-error titles and re-resolves woodcutter level title", async () => {
+    await i18n.changeLanguage("de");
+    const state = {} as GameState;
+    const badTitle =
+      "key 'woodcutter.title (de)' returned an object instead of string.";
+
+    expect(
+      resolveEventDisplayTitle("woodcutter", badTitle, state, "woodcutter1"),
+    ).toBe("Der Holzfäller");
   });
 });

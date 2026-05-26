@@ -2,6 +2,7 @@ import type { GameState } from "@shared/schema";
 import { gameEvents } from "@/game/rules/events";
 import {
   getEventCatalogId,
+  isI18nReturnedObjectError,
   resolveEventMessage,
   resolveEventTitle,
 } from "./eventText";
@@ -37,7 +38,9 @@ export function resolveEventDisplayTitle(
   state: GameState,
   ruleEventId?: string,
 ): string | undefined {
-  if (storedTitle) return storedTitle;
+  if (storedTitle && !isI18nReturnedObjectError(storedTitle)) {
+    return storedTitle;
+  }
   const ruleId = ruleEventId ?? catalogId;
   const def = gameEvents[ruleId] ?? gameEvents[catalogId];
   const vars = getEventI18nVars(catalogId, state, ruleId);

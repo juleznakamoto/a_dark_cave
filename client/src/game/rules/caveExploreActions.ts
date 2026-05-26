@@ -198,7 +198,7 @@ const caveItems = {
       key: "torch",
       probability: 0.35,
       value: 25,
-      logMessage: "You find an old, dusty bag with 25 Torches in the cave.",
+      logMessageKey: "torchBag",
       category: "resources",
       stageOnly: true, // Only on Explore Cave, not inherited to later stages
       condition: "!story.seen.torchBagFound",

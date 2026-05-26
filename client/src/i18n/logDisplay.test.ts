@@ -28,7 +28,7 @@ describe("resolveLogPanelMessage", () => {
         logKey: "freezingDeath.one",
       }),
     );
-    expect(text).toBe("Ein Dorfbewohner erfriert vor Kälte.");
+    expect(text).toBe("Ein Dorfbewohner erfriert in der Kälte.");
   });
 
   it("matches legacy English investment logs in German saves", async () => {
@@ -61,6 +61,31 @@ describe("resolveLogPanelMessage", () => {
       systemEntry("A newcomer arrives and makes themselves at home."),
     );
     expect(text).toBe("Ein Neuankömmling trifft ein und richtet sich ein.");
+  });
+
+  it("matches legacy English dark estate build log in German saves", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "The Dark Estate stands has been built on a small hill near the village, offering solitude and refuge.",
+      ),
+    );
+    expect(text).toBe(
+      "Das Dunkle Anwesen steht auf einem kleinen Hügel nahe dem Dorf und bietet Einsamkeit und Zuflucht.",
+    );
+  });
+
+  it("translates dark estate build log via logKey in German", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "The Dark Estate stands has been built on a small hill near the village, offering solitude and refuge.",
+        { logKey: "building.darkEstate" },
+      ),
+    );
+    expect(text).toBe(
+      "Das Dunkle Anwesen steht auf einem kleinen Hügel nahe dem Dorf und bietet Einsamkeit und Zuflucht.",
+    );
   });
 
   it("returns stored message when no catalog match exists", () => {

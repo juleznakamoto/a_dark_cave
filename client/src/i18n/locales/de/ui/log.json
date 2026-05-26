@@ -28,6 +28,13 @@
       "multiple0": "{{count}} Fremde treten dem Dorf bei.",
       "multiple1": "{{count}} Reisende kommen an und beschließen zu bleiben.",
       "multiple2": "{{count}} Wanderer kommen an und schließen sich der Gemeinschaft an."
+    },
+    "building": {
+      "darkEstate": "Das Dunkle Anwesen steht auf einem kleinen Hügel nahe dem Dorf und bietet Einsamkeit und Zuflucht.",
+      "blacksmith": "Die Schmiede des Dorfs erwacht zum Leben. Das Herz der Industrie schlägt nun im Dorf."
+    },
+    "gameplay": {
+      "forestUnlocked": "Das Dorf ist von einem dichten, dunklen Wald umgeben. Gefahr liegt in der Luft, doch es ist auch ein guter Ort zum Holzhacken und Jagen."
     }
   }
 }

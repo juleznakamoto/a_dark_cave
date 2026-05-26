@@ -1,5 +1,5 @@
 import type { LogEntry } from "@/game/rules/events";
-import { tWithFallback } from "@/i18n/resolveGameText";
+import { getActionLogMessage, tWithFallback } from "@/i18n/resolveGameText";
 
 type LogVars = Record<string, string | number>;
 
@@ -132,9 +132,28 @@ const LEGACY_SYSTEM_LOG_MATCHERS: PatternMatcher[] = [
       vars: { count: Number(count) },
     }),
   },
+  {
+    pattern:
+      /^The Dark Estate stands has been built on a small hill near the village, offering solitude and refuge\.$/,
+    resolve: () => ({ logKey: "building.darkEstate", vars: {} }),
+  },
+  {
+    pattern:
+      /^The blacksmith's forge comes alive\. The heart of industry now beats in the village\.$/,
+    resolve: () => ({ logKey: "building.blacksmith", vars: {} }),
+  },
+  {
+    pattern:
+      /^The village is encircled by a dense, dark forest\. Danger lingers in the air, though it may also be a good place to chop wood and hunt\.$/,
+    resolve: () => ({ logKey: "gameplay.forestUnlocked", vars: {} }),
+  },
 ];
 
 function resolveLegacySystemLog(message: string): string | null {
+  if (message === "You find an old, dusty bag with 25 Torches in the cave.") {
+    return getActionLogMessage("exploreCave", "torchBag", message);
+  }
+
   for (const { pattern, resolve } of LEGACY_SYSTEM_LOG_MATCHERS) {
     const match = message.match(pattern);
     if (match) {

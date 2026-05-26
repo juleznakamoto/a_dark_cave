@@ -3,6 +3,7 @@ import { ActionResult } from "@/game/actions";
 import { logger } from "@/lib/logger";
 import { villageBuildActions } from "./villageBuildActions";
 import { getAdjustedCost } from "./index";
+import { pushSystemLog } from "./systemLog";
 
 // Utility function to handle building construction
 function handleBuildingConstruction(
@@ -222,13 +223,12 @@ export function handleBuildBlacksmith(
 
   // Add blacksmith completion message
   if (state.buildings.blacksmith === 0) {
-    blacksmithResult.logEntries!.push({
-      id: `blacksmith-built-${Date.now()}`,
-      message:
-        "The blacksmith's forge comes alive. The heart of industry now beats in the village.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      blacksmithResult,
+      "blacksmith-built",
+      "building.blacksmith",
+      "The blacksmith's forge comes alive. The heart of industry now beats in the village.",
+    );
   }
 
   return blacksmithResult;
@@ -1113,13 +1113,12 @@ export function handleBuildDarkEstate(
 
   // Add dark estate completion message
   if (state.buildings.darkEstate === 0) {
-    estateResult.logEntries!.push({
-      id: `dark-estate-built-${Date.now()}`,
-      message:
-        "The Dark Estate stands has been built on a small hill near the village, offering solitude and refuge.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      estateResult,
+      "dark-estate-built",
+      "building.darkEstate",
+      "The Dark Estate stands has been built on a small hill near the village, offering solitude and refuge.",
+    );
   }
 
   return estateResult;

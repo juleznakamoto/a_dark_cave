@@ -28,6 +28,13 @@
       "multiple0": "{{count}} незнакомцев присоединяются к деревне.",
       "multiple1": "{{count}} путников прибывают и решают остаться.",
       "multiple2": "{{count}} странников прибывают и присоединяются к общине."
+    },
+    "building": {
+      "darkEstate": "The Dark Estate stands has been built on a small hill near the village, offering solitude and refuge.",
+      "blacksmith": "The blacksmith's forge comes alive. The heart of industry now beats in the village."
+    },
+    "gameplay": {
+      "forestUnlocked": "The village is encircled by a dense, dark forest. Danger lingers in the air, though it may also be a good place to chop wood and hunt."
     }
   }
 }

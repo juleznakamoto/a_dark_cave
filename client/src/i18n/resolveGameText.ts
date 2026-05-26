@@ -119,6 +119,15 @@ export function getActionLabel(actionId: string, fallback: string): string {
   return tWithFallback("actions", `${actionId}.label`, fallback);
 }
 
+/** Resolve localized system log line (ui:log.* catalog). */
+export function getUiLogMessage(
+  logKey: string,
+  fallback: string,
+  options?: TranslateOptions,
+): string {
+  return tWithFallback("ui", `log.${logKey}`, fallback, options);
+}
+
 /** Resolve localized action log line (e.g. cave explore loot messages). */
 export function getActionLogMessage(
   actionId: string,
