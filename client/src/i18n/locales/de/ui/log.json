@@ -69,6 +69,11 @@
     "gameplay": {
       "forestUnlocked": "Das Dorf ist von einem dichten, dunklen Wald umgeben. Gefahr liegt in der Luft, doch es ist auch ein guter Ort zum Holzhacken und Jagen.",
       "villageBegins": "Ein kleines Dorf nimmt Gestalt an. Die Dorfbewohner brauchen Nahrung und Holz zum Überleben."
+    },
+    "gambler": {
+      "win": "Du hast {{amount}} Gold vom besessenen Spieler gewonnen.",
+      "lose": "Du hast {{amount}} Gold an den besessenen Spieler verloren.",
+      "forfeit": "Der besessene Spieler wertete dein Schweigen als Aufgabe."
     }
   }
 }

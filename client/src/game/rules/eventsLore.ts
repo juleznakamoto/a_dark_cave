@@ -8,17 +8,15 @@ export const loreEvents: Record<string, GameEvent> = {
       state.buildings.stoneHut >= 4 && !state.story.seen.restlessKnightSuccess,
     timeProbability: (state: GameState) => {
       return state.story.seen.restlessKnightFailed ? 20 : 15;
-    },
+    },
     message: (state: GameState) =>
-      state.story.seen.restlessKnightFailed
-        ? "Again, the knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'"
-        : "A knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'",
+      state.story.seen.restlessKnightFailed ? "repeat" : "firstTime",
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
     fallbackChoice: {
-      id: "refuse",
+      id: "refuse",
       effect: (state: GameState) => {
         return {
           story: {
@@ -34,7 +32,7 @@ export const loreEvents: Record<string, GameEvent> = {
     },
     choices: [
       {
-        id: "payGold",
+        id: "payGold",
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
@@ -64,7 +62,7 @@ export const loreEvents: Record<string, GameEvent> = {
         },
       },
       {
-        id: "convince",
+        id: "convince",
         relevant_stats: ["knowledge"],
         success_chance: (state: GameState) => {
           return calculateSuccessChance(state, 0.2, {
@@ -108,7 +106,7 @@ export const loreEvents: Record<string, GameEvent> = {
         },
       },
       {
-        id: "refuse",
+        id: "refuse",
         effect: (state: GameState) => {
           return {
             story: {
@@ -132,13 +130,13 @@ export const loreEvents: Record<string, GameEvent> = {
       state.story.seen.restlessKnightSuccess &&
       !state.story.seen.restlessKnightMountains,
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightMountainsFailed ? 20 : 15,
+      state.story.seen.restlessKnightMountainsFailed ? 20 : 15,
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
     fallbackChoice: {
-      id: "refuse",
+      id: "refuse",
       effect: (state: GameState) => {
         return {
           story: {
@@ -154,7 +152,7 @@ export const loreEvents: Record<string, GameEvent> = {
     },
     choices: [
       {
-        id: "payGold",
+        id: "payGold",
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
@@ -184,7 +182,7 @@ export const loreEvents: Record<string, GameEvent> = {
         },
       },
       {
-        id: "payFood",
+        id: "payFood",
         cost: "2500 food",
         effect: (state: GameState) => {
           if (state.resources.food < 2500) {
@@ -214,7 +212,7 @@ export const loreEvents: Record<string, GameEvent> = {
         },
       },
       {
-        id: "refuse",
+        id: "refuse",
         effect: (state: GameState) => {
           return {
             story: {
@@ -238,13 +236,13 @@ export const loreEvents: Record<string, GameEvent> = {
       state.story.seen.restlessKnightMountains &&
       !state.story.seen.restlessKnightCoast,
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightCoastFailed ? 20 : 15,
+      state.story.seen.restlessKnightCoastFailed ? 20 : 15,
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
     fallbackChoice: {
-      id: "refuse",
+      id: "refuse",
       effect: (state: GameState) => {
         return {
           story: {
@@ -260,7 +258,7 @@ export const loreEvents: Record<string, GameEvent> = {
     },
     choices: [
       {
-        id: "payGold",
+        id: "payGold",
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
@@ -290,7 +288,7 @@ export const loreEvents: Record<string, GameEvent> = {
         },
       },
       {
-        id: "payFood",
+        id: "payFood",
         cost: "2500 food",
         effect: (state: GameState) => {
           if (state.resources.food < 2500) {
@@ -320,7 +318,7 @@ export const loreEvents: Record<string, GameEvent> = {
         },
       },
       {
-        id: "convince",
+        id: "convince",
         relevant_stats: ["knowledge"],
         success_chance: (state: GameState) => {
           return calculateSuccessChance(state, 0.1, {
@@ -364,7 +362,7 @@ export const loreEvents: Record<string, GameEvent> = {
         },
       },
       {
-        id: "refuse",
+        id: "refuse",
         effect: (state: GameState) => {
           return {
             story: {
@@ -389,13 +387,13 @@ export const loreEvents: Record<string, GameEvent> = {
       state.story.seen.restlessKnightCoast &&
       !state.story.seen.restlessKnightDesert,
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightDesertFailed ? 20 : 10,
+      state.story.seen.restlessKnightDesertFailed ? 20 : 10,
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
     fallbackChoice: {
-      id: "refuse",
+      id: "refuse",
       effect: (state: GameState) => {
         return {
           story: {
@@ -411,7 +409,7 @@ export const loreEvents: Record<string, GameEvent> = {
     },
     choices: [
       {
-        id: "payGold",
+        id: "payGold",
         cost: "250 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 250) {
@@ -445,7 +443,7 @@ export const loreEvents: Record<string, GameEvent> = {
         },
       },
       {
-        id: "paySilver",
+        id: "paySilver",
         cost: "1000 silver",
         effect: (state: GameState) => {
           if (state.resources.silver < 1000) {
@@ -479,7 +477,7 @@ export const loreEvents: Record<string, GameEvent> = {
         },
       },
       {
-        id: "convince",
+        id: "convince",
         relevant_stats: ["knowledge"],
         success_chance: (state: GameState) => {
           return calculateSuccessChance(state, 0.05, {
@@ -527,7 +525,7 @@ export const loreEvents: Record<string, GameEvent> = {
         },
       },
       {
-        id: "refuse",
+        id: "refuse",
         effect: (state: GameState) => {
           return {
             story: {
@@ -549,12 +547,12 @@ export const loreEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.cruelMode === true && Boolean(state.fellowship?.restless_knight),
     timeProbability: 45,
-    repeatable: false,
+    repeatable: false,
     priority: 3,
     showAsTimedTab: true,
     timedTabDuration: 5 * 60 * 1000,
     fallbackChoice: {
-      id: "decline",
+      id: "decline",
       effect: (state: GameState) => ({
         stats: {
           ...state.stats,
@@ -565,7 +563,7 @@ export const loreEvents: Record<string, GameEvent> = {
     },
     choices: [
       {
-        id: "accept",
+        id: "accept",
         effect: (state: GameState) => ({
           blessings: {
             ...state.blessings,
@@ -575,7 +573,7 @@ export const loreEvents: Record<string, GameEvent> = {
         }),
       },
       {
-        id: "decline",
+        id: "decline",
         effect: (state: GameState) => ({
           stats: {
             ...state.stats,
@@ -594,12 +592,12 @@ export const loreEvents: Record<string, GameEvent> = {
       Boolean(state.flags.forestUnlocked) &&
       !Boolean(state.story.seen.risingSmokeUnlocked),
     timeProbability: 20,
-    repeatable: false,
+    repeatable: false,
     priority: 3,
     skipEventLog: true,
     choices: [
       {
-        id: "continue",
+        id: "continue",
         effect: (state: GameState) => ({
           story: {
             ...state.story,

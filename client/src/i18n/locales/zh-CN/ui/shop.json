@@ -49,7 +49,7 @@
     "freeItemAdded": "{{name}} 已加入购买项，请在购买页激活。",
     "tradersGratitudeDiscount": "商人感激事件额外 {{percent}}% 折扣",
     "tradersSonDiscount": "商人之子事件额外 {{percent}}% 折扣。",
-    "playlightDiscount": "Playlight 玩家首次真实货币购买额外 {{percent}}% 折扣。",
+    "playlightDiscount": "普莱莱特玩家首次真实货币购买额外 {{percent}}% 折扣。",
     "journeyCompleteDiscount": "通关特别折扣",
     "artifactSkullLantern": {
       "title": "颅骨灯笼",

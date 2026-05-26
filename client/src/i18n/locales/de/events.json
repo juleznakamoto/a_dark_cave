@@ -1302,7 +1302,11 @@
       "outcome4": "Der Ritter hört deine Worte, schüttelt jedoch den Kopf. 'Deine Worte sind aufrichtig, doch mein Wissen hat Wert. Vielleicht kreuzen sich unsere Wege erneut.' Er geht, ohne seine Geschichte zu teilen.",
       "outcome5": "Du lehnst das Angebot des Ritters ab. Er nickt respektvoll. 'Vielleicht kreuzen sich unsere Wege erneut', sagt er, bevor er seine Reise fortsetzt."
     },
-    "title": "Der rastlose Ritter"
+    "title": "Der rastlose Ritter",
+    "message": {
+      "firstTime": "Ein Ritter in abgetragener Rüstung erreicht das Dorf. ‚Ich habe viel von der Welt gesehen,‘ sagt er mit hohler Stimme. ‚Für etwas Gold teile ich, was ich auf meinen Reisen gesehen habe.‘",
+      "repeat": "Erneut erreicht der Ritter in abgetragener Rüstung das Dorf. ‚Ich habe viel von der Welt gesehen,‘ sagt er mit hohler Stimme. ‚Für etwas Gold teile ich, was ich auf meinen Reisen gesehen habe.‘"
+    }
   },
   "restlessKnightBurden": {
     "choices": {
@@ -2366,7 +2370,8 @@
   "woodcutter": {
     "choices": {
       "acceptServices": {
-        "label": "{{foodCost}} Nahrung zahlen"
+        "label": "{{foodCost}} Nahrung zahlen",
+        "cost": "{{foodCost}} Nahrung"
       },
       "denyServices": {
         "label": "Dienste verweigern"

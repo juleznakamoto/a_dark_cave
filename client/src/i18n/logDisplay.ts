@@ -177,6 +177,24 @@ const LEGACY_SYSTEM_LOG_MATCHERS: PatternMatcher[] = [
       /^The village is encircled by a dense, dark forest\. Danger lingers in the air, though it may also be a good place to chop wood and hunt\.$/,
     resolve: () => ({ logKey: "gameplay.forestUnlocked", vars: {} }),
   },
+  {
+    pattern: /^You won (\d+) gold from the obsessed gambler\.$/,
+    resolve: ([, amount]) => ({
+      logKey: "gambler.win",
+      vars: { amount: Number(amount) },
+    }),
+  },
+  {
+    pattern: /^You lost (\d+) gold to the obsessed gambler\.$/,
+    resolve: ([, amount]) => ({
+      logKey: "gambler.lose",
+      vars: { amount: Number(amount) },
+    }),
+  },
+  {
+    pattern: /^The obsessed gambler took your silence as forfeit\.$/,
+    resolve: () => ({ logKey: "gambler.forfeit", vars: {} }),
+  },
 ];
 
 function resolveLegacySystemLog(message: string): string | null {

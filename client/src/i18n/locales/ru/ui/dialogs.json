@@ -23,7 +23,7 @@
     "signUpTitle": "Регистрация (+{{amount}} золота)",
     "signUpDesc": "Создайте бесплатный аккаунт, чтобы синхронизировать прогресс между устройствами. Без аккаунта прогресс сохраняется только локально и может быть потерян.",
     "signUpButton": "Регистрация",
-    "emailUpdatesTitle": "Email-рассылка (+{{amount}} золота)",
+    "emailUpdatesTitle": "Рассылка по электронной почте (+{{amount}} золота)",
     "subscribe": "Подписаться",
     "playlightTitle": "Открыть 1 игру (+{{amount}} золота)",
     "discoverGames": "Открыть игры",
@@ -37,23 +37,23 @@
     "followRewardLog": "Вы получили {{amount}} золота за подписку на нас в {{platform}}!",
     "platforms": {
       "instagram": {
-        "title": "Instagram (+{{amount}} Золото)",
+        "title": "Instagram (+{{amount}} золота)",
         "actionFollow": "Подписаться"
       },
       "reddit": {
-        "title": "Reddit (+{{amount}} Золото)",
+        "title": "Reddit (+{{amount}} золота)",
         "actionJoin": "Вступить"
       }
     },
     "playlightDiscoverRewardLog": "Вы получили {{amount}} золота за открытие игр!",
-    "marketingSubscribeLog": "Вы получили {{amount}} золота за подписку на email-рассылку!"
+    "marketingSubscribeLog": "Вы получили {{amount}} золота за подписку на рассылку по электронной почте!"
   },
   "referral": {
     "invitedLog": "Вы пригласили нового жителя в этот мир! +{{amount}} золота"
   },
   "invite": {
     "button": "Пригласить",
-    "goldBonus": "+{{amount}} Золото",
+    "goldBonus": "+{{amount}} золота",
     "linkCopied": "Ссылка-приглашение скопирована!",
     "linkCopiedDesc": "Поделитесь ссылкой с друзьями — каждый получит {{amount}} золота.",
     "copyFailed": "Не удалось скопировать ссылку",
@@ -113,8 +113,8 @@
     "youWin": "Вы победили",
     "youLose": "Вы проиграли",
     "practiceOutcome": "Тренировочный раунд. Золото не выиграно и не проиграно.",
-    "goldWon": "+{{amount}} Золото",
-    "goldLost": "-{{amount}} Золото",
+    "goldWon": "+{{amount}} золота",
+    "goldLost": "-{{amount}} золота",
     "practiceWinRemaining": "Вы выиграли тренировочный раунд (золото не ставится). Осталось {{remaining}} из {{total}} тренировочных игр.",
     "practiceLoseRemaining": "Вы проиграли тренировочный раунд (золото не ставится). Осталось {{remaining}} из {{total}} тренировочных игр.",
     "practiceWinComplete": "Вы выиграли тренировочный раунд (золото не ставится). Тренировка завершена — можно ставить золото.",
@@ -124,7 +124,7 @@
     "titleTrial": "Путешествие продолжается",
     "titleCheckout": "Завершите покупку",
     "trialDesc": "Вы дошли до конца пробной версии. Полное путешествие ждёт дальше.",
-    "oneTimePurchase": "Разовая покупка. Без подписок и микротransactions.",
+    "oneTimePurchase": "Разовая покупка. Без подписок и микротранзакций.",
     "featureHours": "14+ часов игры",
     "featureStructures": "100+ построек",
     "featureItems": "250+ предметов, спутников, книг, благословений…",
@@ -175,10 +175,10 @@
   },
   "investmentResult": {
     "title": "Результат инвестиции",
-    "success": "Ваша инвестиция в {{amount}} Gold удалась.",
-    "luckyChance": "Удача! Прибыль с вашей инвестиции в {{amount}} Gold умножается на {{multiplier}}.",
-    "wipeout": "Полная потеря. Вы потеряли всю инвестицию в {{amount}} Gold.",
-    "partialLoss": "Ваша инвестиция в {{amount}} Gold провалилась."
+    "success": "Ваша инвестиция в {{amount}} золота удалась.",
+    "luckyChance": "Удача! Прибыль с вашей инвестиции в {{amount}} золота умножается на {{multiplier}}.",
+    "wipeout": "Полная потеря. Вы потеряли всю инвестицию в {{amount}} золота.",
+    "partialLoss": "Ваша инвестиция в {{amount}} золота провалилась."
   },
   "cube": {
     "fallbackTitle": "Шепчущий куб",

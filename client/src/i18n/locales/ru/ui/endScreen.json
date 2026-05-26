@@ -1,6 +1,6 @@
 {
   "endScreen": {
-    "pageTitle": "Journey Complete - A Dark Пещера",
+    "pageTitle": "Путешествие завершено — Тёмная пещера",
     "trustBadge": "Отлично!",
     "headline1": "Ваше путешествие",
     "headline2": "Заканчивается здесь",
@@ -9,7 +9,7 @@
     "cruelMode": "⛤ Жестокий режим",
     "cruelModeBadge": "Особая скидка",
     "feedback": "Отзыв",
-    "continuePlaying": "Продолжить Playing",
+    "continuePlaying": "Продолжить игру",
     "moreGames": "Больше игр"
   }
 }

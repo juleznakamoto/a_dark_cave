@@ -31,7 +31,7 @@
     "frostfall": "Мороз",
     "chokingFog": "Удушающий туман",
     "focus": "Фокус",
-    "actionBonus": "Бонус действия: {{multiplier}}x",
+    "actionBonus": "Бонус действия: ×{{multiplier}}",
     "baseDamage": "Базовый урон: {{value}}",
     "knowledgeBonus": "Бонус знаний: +{{value}}",
     "totalDamage": "Общий урон: {{value}}",

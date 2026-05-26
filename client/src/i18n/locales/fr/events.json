@@ -1302,7 +1302,11 @@
       "outcome4": "Le chevalier écoute vos paroles, mais secoue la tête. 'Vos mots sont sincères, mais mon savoir a de la valeur. Peut-être nos chemins se croiseront-ils encore.' Il repart sans partager son récit.",
       "outcome5": "Vous déclinez l'offre du chevalier. Il hoche la tête avec respect. 'Peut-être nos chemins se croiseront-ils encore,' dit-il avant de poursuivre sa route."
     },
-    "title": "Le Chevalier errant"
+    "title": "Le Chevalier errant",
+    "message": {
+      "firstTime": "A knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'",
+      "repeat": "Again, the knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'"
+    }
   },
   "restlessKnightBurden": {
     "choices": {
@@ -2366,7 +2370,8 @@
   "woodcutter": {
     "choices": {
       "acceptServices": {
-        "label": "Payer {{foodCost}} nourriture"
+        "label": "Payer {{foodCost}} nourriture",
+        "cost": "{{foodCost}} food"
       },
       "denyServices": {
         "label": "Refuser les services"

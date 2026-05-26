@@ -1302,7 +1302,11 @@
       "outcome4": "El caballero escucha tus palabras, pero sacude la cabeza. 'Tus palabras son sinceras, pero mi conocimiento tiene valor. Quizá nuestros caminos se crucen de nuevo'. Se marcha sin compartir su relato.",
       "outcome5": "Rechazas la oferta del caballero. Asiente respetuosamente. 'Quizá nuestros caminos se crucen de nuevo', dice antes de continuar su viaje."
     },
-    "title": "El caballero inquieto"
+    "title": "El caballero inquieto",
+    "message": {
+      "firstTime": "A knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'",
+      "repeat": "Again, the knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'"
+    }
   },
   "restlessKnightBurden": {
     "choices": {
@@ -2366,7 +2370,8 @@
   "woodcutter": {
     "choices": {
       "acceptServices": {
-        "label": "Pagar {{foodCost}} comida"
+        "label": "Pagar {{foodCost}} comida",
+        "cost": "{{foodCost}} food"
       },
       "denyServices": {
         "label": "Rechazar los servicios"

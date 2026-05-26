@@ -26,6 +26,10 @@ const FOOTER_CONTROL_SVG_ICON_HOVER =
   "w-4 h-4 text-neutral-300 opacity-60 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
 const FOOTER_CONTROL_TEXT =
   `${FOOTER_CONTROL_BTN_FADE} transition-[opacity,color] group-hover:!text-red-600`;
+const FOOTER_SOCIAL_ICON =
+  "w-4 h-4 text-neutral-300 opacity-80 transition-opacity group-hover:opacity-100";
+const FOOTER_LEGAL_LINK =
+  "text-neutral-300 opacity-40 hover:opacity-100 transition-opacity";
 
 export default function GameFooter() {
   const {
@@ -42,7 +46,6 @@ export default function GameFooter() {
     setFullGamePurchaseDialogOpen,
     fullGamePurchaseDialogOpen,
     BTP,
-    leaderboardDialogOpen,
     story,
     traderDialogOpens,
     hasMadeNonFreePurchase,
@@ -88,10 +91,8 @@ export default function GameFooter() {
     hasAnyShopPurchase({ hasMadeNonFreePurchase, activatedPurchases }) ||
     !isEarlyGameplay;
 
-  const emphasizeFooterSocialIcons =
-    isPaused || idleModeDialog.isOpen || leaderboardDialogOpen;
-  const socialLinkClass = `group ${FOOTER_CONTROL_BTN} flex items-center justify-center transition-opacity duration-[2000ms] ease-in-out`;
-  const socialIconClass = `${FOOTER_CONTROL_ICON_HOVER}${emphasizeFooterSocialIcons ? " !opacity-90" : ""}`;
+  const socialLinkClass = `group ${FOOTER_CONTROL_BTN} flex items-center justify-center`;
+  const socialIconClass = `${FOOTER_SOCIAL_ICON}${isPaused ? " !opacity-100" : ""}`;
 
   return (
     <>
@@ -217,16 +218,10 @@ export default function GameFooter() {
                 </a>
               );
             })}
-            <a
-              href="/privacy"
-              className="hover:opacity-100 transition-opacity opacity-35 text-currentColor"
-            >
+            <a href="/privacy" className={FOOTER_LEGAL_LINK}>
               {t("footer.privacy")}
             </a>
-            <a
-              href="/imprint"
-              className="hover:opacity-100 transition-opacity opacity-35 text-currentColor"
-            >
+            <a href="/imprint" className={FOOTER_LEGAL_LINK}>
               {t("footer.imprint")}
             </a>
           </div>

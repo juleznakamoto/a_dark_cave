@@ -168,25 +168,25 @@
     "title": "白骨军团"
   },
   "boneDevourer": {
-    "title": "The Bone Devourer",
+    "title": "噬骨者",
     "message": {
-      "firstTime": "A deformed creature shuffles to the gates, its hunched form covered in pale, stretched skin. It speaks in a rasping voice: 'I seek bones. I pay {{silverReward}} Silver.'",
-      "repeat": "The creature returns to the gates, its hunched form still covered in pale, stretched skin. It speaks in its familiar rasping voice: 'I seek bones. I pay {{silverReward}} Silver.'"
+      "firstTime": "一个畸形生物拖着脚步来到门前，佝偻的身躯覆着苍白而绷紧的皮肤。它用沙哑的声音说道：「我要骨头。我付 {{silverReward}} 白银。」",
+      "repeat": "那个生物又回到门前，佝偻的身躯依旧覆着苍白而绷紧的皮肤。它用熟悉的沙哑声音说道：「我要骨头。我付 {{silverReward}} 白银。」"
     },
     "choices": {
       "sellBones": {
-        "label": "Sell {{boneCost}} Bones",
-        "cost": "{{boneCost}} bones"
+        "label": "出售 {{boneCost}} 根骨头",
+        "cost": "{{boneCost}} 根骨头"
       },
       "refuse": {
-        "label": "Refuse trade"
+        "label": "拒绝交易"
       }
     },
     "log": {
-      "outcome0": "You don't have enough bones for the trade.",
-      "outcome1": "The creature takes the bones with its gnarled hands, as if attempting to count them. It places a pouch of silver at your feet and disappears into the darkness.",
-      "outcome2": "You refuse the creature's offer. It hisses in displeasure and retreats into the shadows. You sense it will return.",
-      "outcome3": "Your indecision frustrates the creature. It hisses in displeasure and retreats into the shadows."
+      "outcome0": "你的骨头不足，无法完成交易。",
+      "outcome1": "那生物用扭曲的手接过骨头，仿佛试图数清它们。它把一袋白银放在你脚边，随后消失在黑暗中。",
+      "outcome2": "你拒绝了那生物的提议。它不悦地嘶嘶作声，退入阴影。你感觉它还会回来。",
+      "outcome3": "你的犹豫激怒了那生物。它不悦地嘶嘶作声，退入阴影。"
     }
   },
   "boneDiceChoice": {
@@ -596,24 +596,24 @@
   "feast": {
     "choices": {
       "makeFeast": {
-        "cost": "{{foodCost}} food",
-        "label": "Spend {{foodCost}} Food"
+        "cost": "{{foodCost}} 食物",
+        "label": "花费 {{foodCost}} 食物"
       },
       "noFeast": {
-        "label": "Refuse feast"
+        "label": "拒绝宴会"
       },
       "doNothing": {
-        "label": "No Decision Made"
+        "label": "未作决定"
       }
     },
     "log": {
-      "outcome0": "You don't have enough food for the feast.",
-      "outcome1": "The villagers gather for a feast! Weariness fades and spirits rise, if only briefly.",
-      "outcome2": "You decline the feast proposal. The villagers accept your decision, though disappointed.",
-      "outcome3": "Time passes and the opportunity for a feast fades away."
+      "outcome0": "你的食物不足，无法举办宴会。",
+      "outcome1": "村民聚在一起享用宴会！疲惫消退，士气振作，哪怕只是短暂片刻。",
+      "outcome2": "你拒绝了宴会提议。村民接受了你的决定，虽然难掩失望。",
+      "outcome3": "时间流逝，举办宴会的机会也随之消失。"
     },
-    "message": "The villagers propose organizing a feast. A short comfort to ease their weariness and quiet their minds.",
-    "title": "Village Feast"
+    "message": "村民提议举办一场宴会。短暂的慰藉能缓解他们的疲惫，安抚他们的心神。",
+    "title": "村庄宴会"
   },
   "feedingRing": {
     "choices": {
@@ -956,7 +956,7 @@
       },
       "trade_tarnished_compass": {
         "label": "黯淡指南针",
-        "message": "你买下了黯淡指南针。vanished 文明的遗物，指针指向隐藏之处。"
+        "message": "你买下了黯淡指南针。失落文明的遗物，指针指向隐秘之处。"
       },
       "trade_map_fragment_wooden": {
         "label": "地图碎片",
@@ -1007,7 +1007,7 @@
         "label": "弩蓝图"
       },
       "trade_compound_bow": {
-        "message": "你买下了复合弓。商人赞许地点头：「vanished 文明的高精度武器，会很好地服侍你。」",
+        "message": "你买下了复合弓。商人赞许地点头：「失落文明的高精度武器，会很好地服侍你。」",
         "label": "复合弓"
       },
       "trade_stormglass_halberd_schematic": {
@@ -1302,7 +1302,11 @@
       "outcome4": "骑士听完你的话，却摇了摇头。“你的话很诚恳，但我的知识有价值。也许我们的路还会再交汇。”他没有分享故事，便离开了。",
       "outcome5": "你拒绝了骑士的提议。他恭敬地点头。“也许我们的路还会再交汇。”他说完继续旅程。"
     },
-    "title": "不眠骑士"
+    "title": "不眠骑士",
+    "message": {
+      "firstTime": "A knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'",
+      "repeat": "Again, the knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'"
+    }
   },
   "restlessKnightBurden": {
     "choices": {
@@ -1765,7 +1769,7 @@
     "log": {
       "outcome0": "你交出两名村民。商人扔给你一袋钢，带着新的俘虏离开。剩下的村民看见你的所作所为后，厌恶地抛弃了村庄。",
       "outcome1": "你的人攻击了奴隶贩子！战斗残酷但取得胜利。你释放了俘虏，并拿走商人的钢。获救的人加入了你的村庄。",
-      "outcome2": "你的人袭击奴隶贩子，但他早有准备！他凶狠反击。${actualDeaths} 名村民在冲突中${actualDeaths === 1 ? \"丧命\" : \"丧命\"}。贩子带着俘虏逃走，只留下死亡。",
+      "outcome2": "你的人袭击奴隶贩子，但他早有准备！他凶狠反击。{{actualDeaths}} 名村民在冲突中丧命。贩子带着俘虏逃走，只留下死亡。",
       "outcome3": "你拒绝了奴隶贩子卑劣的交易。他厌恶地朝地上吐口水，带着俘虏离开了。"
     },
     "message": "一名男子驾着由两匹马拉的车来到村庄。车上的铁笼里关着两个凄惨的人。商人邪恶地咧嘴笑道：“我用 100 钢换你两个村民。你说呢？”",
@@ -2366,7 +2370,8 @@
   "woodcutter": {
     "choices": {
       "acceptServices": {
-        "label": "Pay {{foodCost}} Food"
+        "label": "支付 {{foodCost}} 食物",
+        "cost": "{{foodCost}} food"
       },
       "denyServices": {
         "label": "拒绝效劳"
@@ -2400,12 +2405,12 @@
       "level6": "樵夫的提议"
     },
     "message": {
-      "level1": "A muscular man with a large axe approaches the village. He flexes his arms. \"I can cut trees like no other,\" he boasts. \"Give me {{foodCost}} Food, and I'll bring {{woodReward}} Wood.\"",
-      "level2": "The woodcutter returns, his axe gleaming in the sun. \"Your village grows well,\" he observes. \"I can bring you {{woodReward}} Wood. You give me {{foodCost}} Food. What do you say?\"",
-      "level3": "The woodcutter approaches again. \"I see your village continues to thrive,\" he says with a grin. \"I can bring you {{woodReward}} Wood if you pay {{foodCost}} Food for it.\"",
-      "level4": "The woodcutter arrives once more. \"Do you want to use my services once more? {{woodReward}} Wood for {{foodCost}} Food,\" he asks.",
-      "level5": "The woodcutter appears with a confident smile. \"How about we make one more deal? {{woodReward}} Wood for {{foodCost}} Food.\"",
-      "level6": "The woodcutter returns to the village. \"Do you want to use my services once more? I offer {{woodReward}} Wood for {{foodCost}} Food,\" he says."
+      "level1": "一个肌肉结实、扛着大斧的男人来到村庄。他弯起手臂炫耀道：「没人比我更会砍树。给我 {{foodCost}} 食物，我就带来 {{woodReward}} 木材。」",
+      "level2": "樵夫回来了，斧头在阳光下闪闪发亮。「你的村庄发展得不错，」他打量着说道，「我能带来 {{woodReward}} 木材。你给我 {{foodCost}} 食物。怎么样？」",
+      "level3": "樵夫再次走近。「我看你的村庄仍在兴旺，」他咧嘴笑道，「只要你支付 {{foodCost}} 食物，我就能带来 {{woodReward}} 木材。」",
+      "level4": "樵夫又一次到来。「还想再用一次我的服务吗？{{woodReward}} 木材换 {{foodCost}} 食物，」他问道。",
+      "level5": "樵夫带着自信的笑容出现。「再做一笔交易怎么样？{{woodReward}} 木材换 {{foodCost}} 食物。」",
+      "level6": "樵夫回到村庄。「还想再用一次我的服务吗？我提供 {{woodReward}} 木材，换 {{foodCost}} 食物，」他说。"
     }
   },
   "wrongReflections": {

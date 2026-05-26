@@ -7,6 +7,24 @@ function nsKey(namespace: string, key: string): string {
   return `${namespace}:${key}`;
 }
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/** Interpolate `{key}` and i18next-style `{{key}}` placeholders in fallback strings. */
+function interpolateFallback(
+  fallback: string,
+  options: TranslateOptions,
+): string {
+  return Object.entries(options).reduce((text, [k, v]) => {
+    const value = String(v ?? "");
+    const key = escapeRegExp(k);
+    return text
+      .replace(new RegExp(`\\{\\{${key}\\}\\}`, "g"), value)
+      .replace(new RegExp(`\\{${key}\\}`, "g"), value);
+  }, fallback);
+}
+
 /** Translate with fallback when catalog key is missing (migration-friendly). */
 export function tWithFallback(
   namespace: string,
@@ -22,10 +40,7 @@ export function tWithFallback(
     }
   }
   if (!options || Object.keys(options).length === 0) return fallback;
-  return Object.entries(options).reduce(
-    (text, [k, v]) => text.replace(new RegExp(`\\{${k}\\}`, "g"), String(v ?? "")),
-    fallback,
-  );
+  return interpolateFallback(fallback, options);
 }
 
 export function getEventTitle(

@@ -7,10 +7,10 @@
     "cooldownReduction": "-{{seconds}}с перезарядки",
     "craftTorch_one": "Факел",
     "craftTorch_other": "Факелы",
-    "craftBoneTotem_one": "Костяной тотem",
-    "craftBoneTotem_other": "Костяные тотemы",
-    "craftLeatherTotem_one": "Кожа Totem",
-    "craftLeatherTotem_other": "Кожаные тотemы",
+    "craftBoneTotem_one": "Костяной тотем",
+    "craftBoneTotem_other": "Костяные тотемы",
+    "craftLeatherTotem_one": "Кожаный тотем",
+    "craftLeatherTotem_other": "Кожаные тотемы",
     "abortForGold": "Прервать за {{amount}} золота"
   },
   "forest": {
@@ -32,7 +32,7 @@
     "merchantBlocked": "Нельзя вызвать торговца, пока активно другое событие",
     "merchantAvailableIn": "Доступно через {{time}}",
     "investCompleteIn": "Инвестиция завершится через {{time}}",
-    "investAvailableIn": "Ивестиции доступны через {{time}}",
+    "investAvailableIn": "Инвестиции доступны через {{time}}",
     "investPreparing": "Подготовка инвестиционных предложений…",
     "jobs": {
       "gatherer": "Собиратель",
@@ -42,7 +42,7 @@
       "steel_forger": "Стальщик",
       "blacksteel_forger": "Кузнец чёрной стали",
       "sulfur_miner": "Серосжигатель",
-      "obsidian_miner": "Обсidian-шахтёр",
+      "obsidian_miner": "Обсидиановый шахтёр",
       "adamant_miner": "Адамант-шахтёр",
       "moonstone_miner": "Лунокаменный шахтёр",
       "powder_maker": "Пороховник",
@@ -111,8 +111,8 @@
     "mineSulfur": "Добыча серы",
     "mineObsidian": "Добыча обсидиана",
     "mineAdamant": "Добыча адаманта",
-    "boneTotems": "Костяные тотemы",
-    "leatherTotems": "Кожаные тотemы",
+    "boneTotems": "Костяные тотемы",
+    "leatherTotems": "Кожаные тотемы",
     "craftDiscount": "Скидка на создание",
     "buildDiscount": "Скидка на строительство",
     "doubleGainChance": "Шанс двойного урожая"
@@ -180,6 +180,8 @@
     "awake": "Вы проснулись!",
     "wakingIn": "Пробуждение через: {{time}}",
     "wake": "Проснуться",
-    "getUp": "Встать"
+    "getUp": "Встать",
+    "focusGainedLog": "Вы получили {{count}} фокуса за отдых.",
+    "villagersProducedLog": "Жители произвели: {{resources}}"
   }
 }

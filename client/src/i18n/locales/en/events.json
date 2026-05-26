@@ -1302,7 +1302,11 @@
       "outcome4": "The knight listens to your words but shakes his head. 'Your words are earnest, but my knowledge has value. Perhaps our paths will cross again.' He departs without sharing his tale.",
       "outcome5": "You decline the knight's offer. He nods respectfully. 'Perhaps our paths will cross again,' he says before continuing his journey."
     },
-    "title": "The Restless Knight"
+    "title": "The Restless Knight",
+    "message": {
+      "firstTime": "A knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'",
+      "repeat": "Again, the knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'"
+    }
   },
   "restlessKnightBurden": {
     "choices": {
@@ -2366,7 +2370,8 @@
   "woodcutter": {
     "choices": {
       "acceptServices": {
-        "label": "Pay {{foodCost}} Food"
+        "label": "Pay {{foodCost}} Food",
+        "cost": "{{foodCost}} food"
       },
       "denyServices": {
         "label": "Deny services"

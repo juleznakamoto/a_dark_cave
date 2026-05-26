@@ -69,6 +69,11 @@
     "gameplay": {
       "forestUnlocked": "The village is encircled by a dense, dark forest. Danger lingers in the air, though it may also be a good place to chop wood and hunt.",
       "villageBegins": "A small village begins to take shape. Villagers need food and wood to survive."
+    },
+    "gambler": {
+      "win": "You won {{amount}} gold from the obsessed gambler.",
+      "lose": "You lost {{amount}} gold to the obsessed gambler.",
+      "forfeit": "The obsessed gambler took your silence as forfeit."
     }
   }
 }

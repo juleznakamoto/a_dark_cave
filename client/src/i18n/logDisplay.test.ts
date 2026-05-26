@@ -126,6 +126,29 @@ describe("resolveLogPanelMessage", () => {
     );
   });
 
+  it("translates gambler loss log via logKey in German", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry("You lost 10 gold to the obsessed gambler.", {
+        logKey: "gambler.lose",
+        logVars: { amount: 10 },
+      }),
+    );
+    expect(text).toBe(
+      "Du hast 10 Gold an den besessenen Spieler verloren.",
+    );
+  });
+
+  it("matches legacy English gambler loss logs in German saves", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry("You lost 10 gold to the obsessed gambler."),
+    );
+    expect(text).toBe(
+      "Du hast 10 Gold an den besessenen Spieler verloren.",
+    );
+  });
+
   it("returns stored message when no catalog match exists", () => {
     const message = "Some unknown custom log line.";
     expect(resolveLogPanelMessage(systemEntry(message))).toBe(message);

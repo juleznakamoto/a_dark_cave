@@ -9,7 +9,7 @@
     "craftTorch_other": "火把",
     "craftBoneTotem_one": "骨图腾",
     "craftBoneTotem_other": "骨图腾",
-    "craftLeatherTotem_one": "皮革 Totem",
+    "craftLeatherTotem_one": "皮图腾",
     "craftLeatherTotem_other": "皮图腾",
     "abortForGold": "花费 {{amount}} 金币中止"
   },
@@ -180,6 +180,8 @@
     "awake": "你已醒来！",
     "wakingIn": "醒来倒计时：{{time}}",
     "wake": "醒来",
-    "getUp": "起床"
+    "getUp": "起床",
+    "focusGainedLog": "你通过休息获得了 {{count}} 点专注。",
+    "villagersProducedLog": "村民生产了：{{resources}}"
   }
 }

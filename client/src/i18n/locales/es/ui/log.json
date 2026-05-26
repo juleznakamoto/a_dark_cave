@@ -69,6 +69,11 @@
     "gameplay": {
       "forestUnlocked": "La aldea est? rodeada por un bosque denso y oscuro. El peligro flota en el aire, aunque tambi?n puede ser un buen lugar para cortar madera y cazar.",
       "villageBegins": "Una peque?a aldea empieza a tomar forma. Los aldeanos necesitan comida y madera para sobrevivir."
+    },
+    "gambler": {
+      "win": "Ganaste {{amount}} oro del jugador obsesionado.",
+      "lose": "Perdiste {{amount}} oro ante el jugador obsesionado.",
+      "forfeit": "El jugador obsesionado interpret? tu silencio como rendici?n."
     }
   }
 }

@@ -221,6 +221,7 @@ export default function TimedEventPanel() {
                 {
                   id: `gambler-forfeit-${Date.now()}`,
                   message: "The obsessed gambler took your silence as forfeit.",
+                  logKey: "gambler.forfeit",
                   timestamp: Date.now(),
                   type: "system" as const,
                 },
@@ -747,6 +748,8 @@ export default function TimedEventPanel() {
                 const logEntry = {
                   id: `gambler-win-${Date.now()}`,
                   message: `You won ${wager} gold from the obsessed gambler.`,
+                  logKey: "gambler.win",
+                  logVars: { amount: wager },
                   timestamp: Date.now(),
                   type: "system" as const,
                 };
@@ -802,6 +805,8 @@ export default function TimedEventPanel() {
                         {
                           id: `gambler-lose-${Date.now()}`,
                           message: `You lost ${wager} gold to the obsessed gambler.`,
+                          logKey: "gambler.lose",
+                          logVars: { amount: wager },
                           timestamp: Date.now(),
                           type: "system" as const,
                         },

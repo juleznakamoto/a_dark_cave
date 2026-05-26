@@ -37,11 +37,11 @@
     "followRewardLog": "关注 {{platform}} 获得 {{amount}} 黄金！",
     "platforms": {
       "instagram": {
-        "title": "Instagram (+{{amount}} 黄金)",
+        "title": "照片墙（+{{amount}} 黄金）",
         "actionFollow": "关注"
       },
       "reddit": {
-        "title": "Reddit (+{{amount}} 黄金)",
+        "title": "红迪（+{{amount}} 黄金）",
         "actionJoin": "加入"
       }
     },
@@ -175,16 +175,16 @@
   },
   "investmentResult": {
     "title": "投资结果",
-    "success": "你投入的 {{amount}} Gold 投资成功了。",
-    "luckyChance": "幸运一击！你 {{amount}} Gold 投资的收益乘以 {{multiplier}}。",
-    "wipeout": "血本无归。你失去了全部 {{amount}} Gold 投资。",
-    "partialLoss": "你投入的 {{amount}} Gold 投资失败了。"
+    "success": "你投入的 {{amount}} 黄金投资成功了。",
+    "luckyChance": "幸运一击！你投入的 {{amount}} 黄金收益乘以 {{multiplier}}。",
+    "wipeout": "血本无归。你失去了全部 {{amount}} 黄金投资。",
+    "partialLoss": "你投入的 {{amount}} 黄金投资失败了。"
   },
   "cube": {
     "fallbackTitle": "低语立方体",
     "fallbackMessage": "立方体低语着古老的秘密……",
     "close": "关闭",
-    "completionLog": "你已完成这段旅程。留在这里或开始新游戏——若 dare，试试残酷模式。"
+    "completionLog": "你已完成这段旅程。留在这里，或开始新游戏。如果你敢，就试试残酷模式。"
   },
   "timedEvent": {
     "buy": "购买",

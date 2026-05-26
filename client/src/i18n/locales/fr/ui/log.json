@@ -69,6 +69,11 @@
     "gameplay": {
       "forestUnlocked": "Le village est encerclé par une forêt dense et sombre. Le danger flotte dans l'air, même si c'est aussi un bon endroit pour couper du bois et chasser.",
       "villageBegins": "Un petit village commence à prendre forme. Les villageois ont besoin de nourriture et de bois pour survivre."
+    },
+    "gambler": {
+      "win": "Vous avez gagné {{amount}} or au joueur obsédé.",
+      "lose": "Vous avez perdu {{amount}} or face au joueur obsédé.",
+      "forfeit": "Le joueur obsédé a interprété votre silence comme une reddition."
     }
   }
 }
