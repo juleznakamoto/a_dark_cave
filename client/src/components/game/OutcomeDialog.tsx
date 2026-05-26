@@ -83,7 +83,7 @@ export default function OutcomeDialog({
         >
           <div className={`absolute inset-0 -z-10 pointer-events-none ${glow}`} />
           <DialogHeader>
-            <div className="relative z-[1] flex justify-start">
+            <div className="relative z-[1] flex justify-center">
               <div
                 className={cn(
                   "flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2",
@@ -94,7 +94,7 @@ export default function OutcomeDialog({
                 {icon}
               </div>
             </div>
-            <DialogTitle className="text-lg font-semibold text-foreground tracking-tight">
+            <DialogTitle className="text-center text-lg font-semibold text-foreground tracking-tight">
               {title}
             </DialogTitle>
             {successLog && (
