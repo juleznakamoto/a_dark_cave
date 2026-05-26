@@ -129,8 +129,8 @@ export default function StartScreen() {
   return (
     <div className="fixed inset-0 bg-black text-white overflow-hidden">
       {/* Featured By Section */}
-      <div className="absolute bottom-8 right-4 z-20 animate-fade-in-featured">
-        <div className="bg-white/25 backdrop-blur-sm rounded-lg p-2 !pb-1 border border-white/25 flex flex-col items-end">
+      <div className="absolute bottom-12 right-4 z-20 animate-fade-in-featured">
+        <div className="bg-white/25 backdrop-blur-sm rounded-lg px-2 pt-2 pb-2.5 border border-white/25 flex flex-col items-end">
           <p className="text-xs text-gray-300/80 font-medium">{t("startScreen.recommendedBy")}</p>
           <img
             src="/the_hustle_logo.svg"
