@@ -1,0 +1,410 @@
+{
+  "fr": {
+    "cubeDiscovery": {
+      "title": "Le cube murmurant",
+      "message": "Près de l'entrée de la grotte, vous découvrez un cube de métal parfaitement poli. Il semble d'abord immobile, puis vous sentez une légère vibration, comme un pouls lent et régulier, presque un battement de cœur.",
+      "choices": { "close": { "label": "Fermer" } }
+    },
+    "cube01": {
+      "title": "Le cube s'éveille",
+      "message": "Vous vous réveillez dans la nuit. Le cube bourdonne doucement. Soudain, une voix douce et mélodieuse en sort : « Il y a bien longtemps, une grande civilisation prospérait sur ce monde, mais elle s'effondra et son savoir fut perdu dans les âges. »",
+      "choices": { "close": { "label": "Fermer" } }
+    },
+    "cube02": {
+      "title": "La tribu des guerriers",
+      "message": "« Dans un passé lointain, une tribu de guerriers féroces fut choisie pour vivre au plus profond des grottes. Sa mission était de garder quelque chose d'une importance capitale. »",
+      "choices": { "close": { "label": "Fermer" } }
+    },
+    "cube03": {
+      "title": "La cité souterraine",
+      "message": "« La tribu des guerriers devint une vaste cité souterraine, à l'abri du monde d'en haut, protégeant encore ce pour quoi elle avait été envoyée des vies plus tôt. »",
+      "choices": { "close": { "label": "Fermer" } }
+    },
+    "cube04": {
+      "title": "Le serment sacré",
+      "message": "« Bien que le souvenir de ce qu'ils gardaient se soit effacé en légende, leur vigilance demeura. De génération en génération, les guerriers tinrent leur serment sacré, veillant sur ce qui se trouvait au plus profond de la cité. »",
+      "choices": { "close": { "label": "Fermer" } }
+    },
+    "cube05": {
+      "title": "La porte scellée",
+      "message": "« Longtemps après la mort des habitants de la cité souterraine, l'objet de leur dévotion demeurait : une porte colossale et impénétrable, forgée avec une technologie oubliée, cachée dans les chambres les plus basses de la cité. »",
+      "choices": { "close": { "label": "Fermer" } }
+    },
+    "cube06": {
+      "title": "La porte s'ouvre",
+      "message": "Lorsque la porte se brise, le cube tremble dans vos mains et devient chaud. Un murmure doux mais urgent s'en échappe : « J'ai acquis de nouvelles connaissances. »",
+      "choices": { "close": { "label": "Fermer" } }
+    },
+    "cube07": {
+      "title": "Technologie antique",
+      "message": "« La civilisation antique qui forgea la porte possédait un savoir et une technologie bien au-delà de l'ère actuelle. Elle fabriqua même des dispositifs conçus pour être implantés dans le crâne, renforçant l'esprit et le corps. »",
+      "choices": { "close": { "label": "Fermer" } }
+    },
+    "cube08": {
+      "title": "La résistance",
+      "message": "« Les dirigeants ordonnèrent que chaque citoyen porte un dispositif dans la tête. Une petite faction commença à exprimer ses inquiétudes et forma une résistance, comprenant les dangers cachés dans cette technologie. »",
+      "choices": { "close": { "label": "Fermer" } }
+    },
+    "cube09": {
+      "title": "L'âge d'or",
+      "message": "« Grâce aux dispositifs, la civilisation prospéra. Une ère de paix et de progrès sans précédent commença ; leur savoir et leur art atteignirent des sommets qu'on ne reverrait plus jamais. »",
+      "choices": { "close": { "label": "Fermer" } }
+    },
+    "cube10": {
+      "title": "La grande effondrement",
+      "message": "« Le savoir circulait instantanément et la société prospérait. Derrière le progrès, les dispositifs crâniens orchestrèrent les pensées de l'humanité, reliant les esprits dans un réseau silencieux et inévitable. »",
+      "choices": { "close": { "label": "Fermer" } }
+    },
+    "cube11": {
+      "title": "L'esprit collectif",
+      "message": "« Un jour, sans avertissement, une impulsion magnétoélectrique inimaginable balaya la planète. Chaque dispositif de la civilisation, y compris ceux implantés dans les crânes, fut anéanti. »",
+      "choices": { "close": { "label": "Fermer" } }
+    },
+    "cube12": {
+      "title": "Fin de la civilisation",
+      "message": "« Les rares survivants ne purent vivre sans les dispositifs. La plupart moururent. La civilisation régressa. Le savoir sombra dans l'oubli. La nature reprit les terres, ne laissant que des ruines enfouies là où la grandeur avait trôné. »",
+      "choices": { "close": { "label": "Fermer" } }
+    },
+    "cube13": {
+      "title": "Données récupérées",
+      "message": "Le cube pulse d'énergie lorsque vous approchez des créatures abattues. Il semble extraire des informations de quelque part. Le cube devient chaud, traitant le savoir récupéré.",
+      "choices": { "close": { "label": "Fermer" } }
+    },
+    "cube14a": {
+      "title": "La résistance",
+      "message": "« Lorsque la résistance s'opposa aux dispositifs crâniens, elle fut exilée dans les profondeurs de la montagne, scellée derrière la porte. Sans issue, ils creusèrent toujours plus profond. Dans l'isolement et l'obscurité, leurs esprits s'érodèrent et ils sombrèrent dans la folie et la dégénérescence. »",
+      "choices": { "continue": { "label": "Continuer" } }
+    },
+    "cube14b": {
+      "title": "Le minerai inconnu",
+      "message": "« Un jour, au fond de la terre, ils trouvèrent un monolithe d'un minerai inconnu. Ils en forgèrent un explosif pour détruire la porte. Mais la bombe ne perça pas la porte ; elle déclencha une impulsion électromagnétique à l'échelle de la planète, détruisant tous les dispositifs et mettant fin à la civilisation. »",
+      "choices": { "continue": { "label": "Continuer" } }
+    },
+    "cube14c": {
+      "title": "Le minerai inconnu",
+      "message": "« Peu après l'explosion, un homme proche commença à se dématérialiser ; sa forme vacillait, demi-transparente pendant quelques secondes. Terrifié et rendu fou par ce qui s'était passé, il se donna la mort quelques instants plus tard. »",
+      "choices": { "continue": { "label": "Continuer" } }
+    },
+    "cube14d": {
+      "title": "À travers la porte",
+      "message": "« Dépérés, les survivants supposèrent que le minerai pourrait les aider à passer la porte. Avec ses derniers fragments, ils construisirent une bombe plus petite et placèrent leur homme le plus sain devant la porte. Dès l'explosion, il devint spectral, translucide, puis disparut de l'autre côté. »",
+      "choices": { "close": { "label": "Fermer" } }
+    },
+    "cube15a": {
+      "title": "La reconnaissance",
+      "message": "C'est alors que vous comprenez que les créatures n'ont pas attaqué parce qu'elles vous ont reconnue comme l'un des leurs. Vous êtes l'homme qui a disparu à travers la porte.",
+      "choices": { "close": { "label": "Fermer" } }
+    },
+    "cube15b": {
+      "title": "La reconnaissance",
+      "message": "Quand leur récit prend fin, l'un des survivants s'avance et vous désigne : « Tu es l'homme qui a disparu à travers la porte. Tu es l'un des nôtres. »",
+      "choices": { "close": { "label": "Fermer" } }
+    }
+  },
+  "es": {
+    "cubeDiscovery": {
+      "title": "El cubo susurrante",
+      "message": "Cerca de la entrada de la cueva descubres un cubo de metal perfectamente pulido. Al principio parece inmóvil, pero luego sientes una leve vibración, como un pulso lento y rítmico, casi un latido.",
+      "choices": { "close": { "label": "Cerrar" } }
+    },
+    "cube01": {
+      "title": "El cubo despierta",
+      "message": "Te despiertas en la noche. El cubo zumba suavemente. De repente surge de él una voz suave y melódica: «Hace mucho tiempo, una gran civilización prosperó en este mundo, pero se derrumbó y su conocimiento se perdió en el tiempo.»",
+      "choices": { "close": { "label": "Cerrar" } }
+    },
+    "cube02": {
+      "title": "La tribu guerrera",
+      "message": "«En un pasado lejano, una tribu de feroces guerreros fue elegida para vivir en lo profundo de las cuevas. Su propósito era custodiar algo de gran importancia.»",
+      "choices": { "close": { "label": "Cerrar" } }
+    },
+    "cube03": {
+      "title": "La ciudad subterránea",
+      "message": "«La tribu guerrera creció hasta convertirse en una vasta ciudad subterránea, a salvo del mundo de arriba, protegiendo aún aquello por lo que habían sido enviados hace vidas.»",
+      "choices": { "close": { "label": "Cerrar" } }
+    },
+    "cube04": {
+      "title": "El juramento sagrado",
+      "message": "«Aunque el recuerdo de lo que custodiaban se desvaneció en leyenda, su vigilia perduró. Durante generaciones los guerreros mantuvieron su juramento sagrado, vigilando lo que yacía en el punto más profundo de la ciudad.»",
+      "choices": { "close": { "label": "Cerrar" } }
+    },
+    "cube05": {
+      "title": "La puerta sellada",
+      "message": "«Mucho después de que perecieran los habitantes de la ciudad subterránea, permaneció el objeto de su devoción: una puerta colosal e impenetrable, forjada con tecnología olvidada, oculta en las cámaras más bajas de la ciudad.»",
+      "choices": { "close": { "label": "Cerrar" } }
+    },
+    "cube06": {
+      "title": "La puerta se abre",
+      "message": "Cuando la puerta se hace añicos, el cubo tiembla en tus manos y se calienta. De él escapa un susurro suave pero urgente: «He adquirido nuevos conocimientos.»",
+      "choices": { "close": { "label": "Cerrar" } }
+    },
+    "cube07": {
+      "title": "Tecnología antigua",
+      "message": "«La civilización antigua que forjó la puerta poseía un conocimiento y una tecnología muy por encima de la era actual. Incluso fabricaron dispositivos diseñados para implantarse en el cráneo, mejorando mente y cuerpo.»",
+      "choices": { "close": { "label": "Cerrar" } }
+    },
+    "cube08": {
+      "title": "La resistencia",
+      "message": "«Los líderes ordenaron que todo ciudadano llevara un dispositivo en la cabeza. Una pequeña facción empezó a expresar sus inquietudes y formó una resistencia al reconocer los peligros ocultos en la tecnología.»",
+      "choices": { "close": { "label": "Cerrar" } }
+    },
+    "cube09": {
+      "title": "La edad de oro",
+      "message": "«Con la ayuda de los dispositivos, la civilización prosperó. Comenzó una era de paz y progreso sin precedentes; su conocimiento y habilidad alcanzaron alturas que nunca volverían a verse.»",
+      "choices": { "close": { "label": "Cerrar" } }
+    },
+    "cube10": {
+      "title": "El gran colapso",
+      "message": "«El conocimiento fluía al instante y la sociedad prosperaba. Tras el progreso, los dispositivos craneales orquestaban los pensamientos de la humanidad, conectando mentes en una red silenciosa e inescapable.»",
+      "choices": { "close": { "label": "Cerrar" } }
+    },
+    "cube11": {
+      "title": "La mente colmena",
+      "message": "«Un día, sin previo aviso, un impulso magnetoeléctrico inconcebible barrió el planeta. Cada dispositivo de la civilización, incluidos los implantados en los cráneos, fue aniquilado.»",
+      "choices": { "close": { "label": "Cerrar" } }
+    },
+    "cube12": {
+      "title": "Fin de la civilización",
+      "message": "«Los pocos supervivientes no pudieron vivir sin los dispositivos. La mayoría murió. La civilización retrocedió. El conocimiento cayó en el olvido. La naturaleza reclamó las tierras, dejando solo ruinas enterradas donde antes hubo grandeza.»",
+      "choices": { "close": { "label": "Cerrar" } }
+    },
+    "cube13": {
+      "title": "Datos recuperados",
+      "message": "El cubo pulsa con energía al acercarte a las criaturas abatidas. Parece extraer información de algún lugar. El cubo se calienta, procesando el conocimiento recuperado.",
+      "choices": { "close": { "label": "Cerrar" } }
+    },
+    "cube14a": {
+      "title": "La resistencia",
+      "message": "«Cuando la resistencia se opuso a los dispositivos craneales, fue exiliada a las profundidades de la montaña, sellada tras la puerta. Sin camino de vuelta, cavaron cada vez más hondo. En el aislamiento y la oscuridad, sus mentes se erosionaron y cayeron en la locura y la degeneración.»",
+      "choices": { "continue": { "label": "Continuar" } }
+    },
+    "cube14b": {
+      "title": "El mineral desconocido",
+      "message": "«Un día, en lo profundo de la tierra, encontraron un monolito de mineral desconocido. De él forjaron un explosivo para destruir la puerta. Pero la bomba no abrió la puerta; desató un pulso electromagnético que barrió el planeta, destruyendo todos los dispositivos y acabando con la civilización.»",
+      "choices": { "continue": { "label": "Continuar" } }
+    },
+    "cube14c": {
+      "title": "El mineral desconocido",
+      "message": "«Poco después de la explosión, un hombre cercano empezó a desmaterializarse; su forma parpadeaba, semitransparente durante segundos. Aterrado y enloquecido por lo ocurrido, se quitó la vida momentos después.»",
+      "choices": { "continue": { "label": "Continuar" } }
+    },
+    "cube14d": {
+      "title": "A través de la puerta",
+      "message": "«Desesperados, los supervivientes supusieron que el mineral podría ayudarles a atravesar la puerta. Con sus últimos fragmentos construyeron una bomba menor y colocaron a su hombre más cuerdo ante la puerta. Tras la explosión, se volvió espectral, translúcido, y desapareció al otro lado.»",
+      "choices": { "close": { "label": "Cerrar" } }
+    },
+    "cube15a": {
+      "title": "El reconocimiento",
+      "message": "Entonces comprendes que las criaturas no atacaron porque te reconocieron como uno de los suyos. Eres el hombre que desapareció a través de la puerta.",
+      "choices": { "close": { "label": "Cerrar" } }
+    },
+    "cube15b": {
+      "title": "El reconocimiento",
+      "message": "Al terminar su relato, uno de los supervivientes se adelanta y te señala: «Eres el hombre que desapareció a través de la puerta. Eres uno de los nuestros.»",
+      "choices": { "close": { "label": "Cerrar" } }
+    }
+  },
+  "zh-CN": {
+    "cubeDiscovery": {
+      "title": "低语立方体",
+      "message": "在洞口附近，你发现了一个抛光完美的金属立方体。起初它似乎静止不动，随后你感到一阵轻微的震动，如同缓慢而有节奏的脉动，几乎像心跳一般。",
+      "choices": { "close": { "label": "关闭" } }
+    },
+    "cube01": {
+      "title": "立方体苏醒",
+      "message": "你在夜里醒来。立方体轻轻嗡鸣。忽然，一个柔和而悦耳的声音从中传出：「很久以前，一个伟大的文明曾在这世界上繁荣昌盛，但它崩溃了，其知识湮没在岁月之中。」",
+      "choices": { "close": { "label": "关闭" } }
+    },
+    "cube02": {
+      "title": "战士部落",
+      "message": "「在遥远的过去，一个凶猛战士的部落被选中，深居于洞穴之中。他们的使命是守护某样极为重要的东西。」",
+      "choices": { "close": { "label": "关闭" } }
+    },
+    "cube03": {
+      "title": "地下之城",
+      "message": "「战士部落发展成了一座庞大的地下城市，与世隔绝，仍守护着多年前被托付守护之物。」",
+      "choices": { "close": { "label": "关闭" } }
+    },
+    "cube04": {
+      "title": "神圣誓言",
+      "message": "「尽管他们所守护之物的记忆已化为传说，他们的警觉却从未松懈。世代以来，战士们恪守神圣誓言，守望城市最深处的一切。」",
+      "choices": { "close": { "label": "关闭" } }
+    },
+    "cube05": {
+      "title": "封印之门",
+      "message": "「地下城的居民死去很久之后，他们虔诚守护的对象依然存在：一扇以失传技艺锻造、坚不可摧的巨门，隐藏在城市最底层的密室中。」",
+      "choices": { "close": { "label": "关闭" } }
+    },
+    "cube06": {
+      "title": "大门开启",
+      "message": "大门碎裂之时，你手中的立方体颤抖起来，渐渐发热。一声轻柔而急切的低语逸出：「我获得了新的洞见。」",
+      "choices": { "close": { "label": "关闭" } }
+    },
+    "cube07": {
+      "title": "远古科技",
+      "message": "「铸造大门的古老文明拥有远超当今时代的知识与技术。他们甚至制造了可植入颅内的装置，用以强化身心。」",
+      "choices": { "close": { "label": "关闭" } }
+    },
+    "cube08": {
+      "title": "抵抗者",
+      "message": "「统治者下令，每位公民都必须在脑中植入装置。一小撮人开始表达忧虑，并在认清技术中潜藏的危险后组成了抵抗组织。」",
+      "choices": { "close": { "label": "关闭" } }
+    },
+    "cube09": {
+      "title": "黄金时代",
+      "message": "「借助这些装置，文明蓬勃发展。一个前所未有的和平与进步时代开始了；他们的知识与技艺达到了此后再也无法企及的高度。」",
+      "choices": { "close": { "label": "关闭" } }
+    },
+    "cube10": {
+      "title": "大崩溃",
+      "message": "「知识瞬间流通，社会欣欣向荣。在进步的背后，颅骨装置操纵着人类的思维，将心智联结进一张寂静而无法逃脱的网。」",
+      "choices": { "close": { "label": "关闭" } }
+    },
+    "cube11": {
+      "title": "蜂巢意识",
+      "message": "「某日，毫无预警，一道难以想象的磁电脉冲席卷全球。文明的一切装置，包括植入颅内的那些，尽数毁灭。」",
+      "choices": { "close": { "label": "关闭" } }
+    },
+    "cube12": {
+      "title": "文明终结",
+      "message": "「少数幸存者无法在没有装置的情况下生存。大多数人死去。文明倒退。知识沉入遗忘。自然夺回大地，只留下曾辉煌一时的埋骨废墟。」",
+      "choices": { "close": { "label": "关闭" } }
+    },
+    "cube13": {
+      "title": "回收的数据",
+      "message": "当你靠近那些被击杀的生物时，立方体脉动着能量。它似乎从某处抽取信息。立方体发热，处理着回收的知识。",
+      "choices": { "close": { "label": "关闭" } }
+    },
+    "cube14a": {
+      "title": "抵抗者",
+      "message": "「当抵抗者反对颅骨装置时，他们被放逐到山峦深处，封死在大门之后。无路可返，他们越挖越深。在孤寂与黑暗中，心智崩坏，他们堕入疯狂与退化。」",
+      "choices": { "continue": { "label": "继续" } }
+    },
+    "cube14b": {
+      "title": "未知矿石",
+      "message": "「某日，在地下深处，他们发现了一块未知矿石的巨石。他们用它锻造炸药以摧毁大门。但炸弹未能击穿大门，反而释放出席卷全球的电磁脉冲，摧毁一切装置，终结了文明。」",
+      "choices": { "continue": { "label": "继续" } }
+    },
+    "cube14c": {
+      "title": "未知矿石",
+      "message": "「爆炸后不久，附近一名男子开始非物质化，身形闪烁，数秒间半透明。他被发生的事吓得发疯，片刻之后自尽身亡。」",
+      "choices": { "continue": { "label": "继续" } }
+    },
+    "cube14d": {
+      "title": "穿越大门",
+      "message": "「绝望之中，幸存者推测矿石或许能帮他们穿过大门。他们用最后几块碎片造了一枚较小的炸弹，将神志最清醒者安置于门前。爆炸刚起，他便变得如鬼魅般半透明，随即穿门而去，消失不见。」",
+      "choices": { "close": { "label": "关闭" } }
+    },
+    "cube15a": {
+      "title": "认出",
+      "message": "这时你明白，那些生物没有攻击，是因为它们把你认作同类。你就是穿门而去的那个人。",
+      "choices": { "close": { "label": "关闭" } }
+    },
+    "cube15b": {
+      "title": "认出",
+      "message": "故事讲完，一名幸存者走上前来，指向你：「你就是穿门而去的人。你是我们中的一员。」",
+      "choices": { "close": { "label": "关闭" } }
+    }
+  },
+  "ru": {
+    "cubeDiscovery": {
+      "title": "Шепчущий куб",
+      "message": "У входа в пещеру вы находите идеально отполированный металлический куб. Сначала он кажется неподвижным, но затем вы чувствуете слабую вибрацию — медленный ритмичный пульс, почти как биение сердца.",
+      "choices": { "close": { "label": "Закрыть" } }
+    },
+    "cube01": {
+      "title": "Куб пробуждается",
+      "message": "Вы просыпаетесь ночью. Куб тихо гудит. Внезапно из него доносится мягкий мелодичный голос: «Давным-давно на этом мире процветала великая цивилизация, но она рухнула, и её знания были утрачены в веках.»",
+      "choices": { "close": { "label": "Закрыть" } }
+    },
+    "cube02": {
+      "title": "Племя воинов",
+      "message": "«В далёком прошлом племя свирепых воинов было избрано жить глубоко в пещерах. Их предназначение — охранять нечто великой важности.»",
+      "choices": { "close": { "label": "Закрыть" } }
+    },
+    "cube03": {
+      "title": "Подземный город",
+      "message": "«Племя воинов выросло в обширный подземный город, в безопасности от мира наверху, всё ещё защищая то, ради чего их когда-то послали.»",
+      "choices": { "close": { "label": "Закрыть" } }
+    },
+    "cube04": {
+      "title": "Священная клятва",
+      "message": "«Хотя память о том, что они охраняли, стёрлась в легенду, их бдительность не ослабевала. Поколение за поколением воины держали священную клятву, неся вахту у самого глубокого места города.»",
+      "choices": { "close": { "label": "Закрыть" } }
+    },
+    "cube05": {
+      "title": "Запечатанные врата",
+      "message": "«Спустя долгое время после гибели жителей подземного города предмет их поклонения оставался: колоссальные неприступные врата, созданные забытой технологией, скрытые в самых нижних залах.»",
+      "choices": { "close": { "label": "Закрыть" } }
+    },
+    "cube06": {
+      "title": "Врата открываются",
+      "message": "Когда врата разрушаются, куб дрожит в ваших руках и нагревается. Из него вырывается тихий, но настойчивый шёпот: «Я обрёл новые знания.»",
+      "choices": { "close": { "label": "Закрыть" } }
+    },
+    "cube07": {
+      "title": "Древняя технология",
+      "message": "«Древняя цивилизация, создавшая врата, обладала знаниями и технологиями, далеко превосходящими нынешнюю эпоху. Они даже изготовили устройства для имплантации в череп, усиливающие разум и тело.»",
+      "choices": { "close": { "label": "Закрыть" } }
+    },
+    "cube08": {
+      "title": "Сопротивление",
+      "message": "«Правители повелели, чтобы каждый гражданин носил устройство в голове. Небольшая группа начала выражать опасения и образовала сопротивление, осознав скрытую в технологии угрозу.»",
+      "choices": { "close": { "label": "Закрыть" } }
+    },
+    "cube09": {
+      "title": "Золотой век",
+      "message": "«С помощью устройств цивилизация процветала. Началась эпоха беспрецедентного мира и прогресса; их знания и мастерство достигли высот, которым уже никогда не суждено было повториться.»",
+      "choices": { "close": { "label": "Закрыть" } }
+    },
+    "cube10": {
+      "title": "Великий крах",
+      "message": "«Знания передавались мгновенно, общество процветало. За прогрессом черепные устройства управляли мыслями человечества, связывая разумы в тихую, неотвратимую сеть.»",
+      "choices": { "close": { "label": "Закрыть" } }
+    },
+    "cube11": {
+      "title": "Коллективный разум",
+      "message": "«Однажды без предупреждения по планете прокатилась невообразимая магнитоэлектрическая волна. Каждое устройство цивилизации, включая вживлённые в черепа, было уничтожено.»",
+      "choices": { "close": { "label": "Закрыть" } }
+    },
+    "cube12": {
+      "title": "Конец цивилизации",
+      "message": "«Немногие выжившие не могли жить без устройств. Большинство погибло. Цивилизация откатилась назад. Знания ушли в забвение. Природа вернула земли, оставив лишь погребённые руины там, где когда-то величие стояло высоко.»",
+      "choices": { "close": { "label": "Закрыть" } }
+    },
+    "cube13": {
+      "title": "Восстановленные данные",
+      "message": "Когда вы приближаетесь к убитым существам, куб пульсирует энергией. Кажется, он извлекает информацию откуда-то извне. Куб нагревается, обрабатывая восстановленные знания.",
+      "choices": { "close": { "label": "Закрыть" } }
+    },
+    "cube14a": {
+      "title": "Сопротивление",
+      "message": "«Когда сопротивление выступило против черепных устройств, их изгнали в глубины горы и запечатали за вратами. Без пути назад они рыли всё глубже. В изоляции и тьме их разумы истлели, и они пали в безумие и вырождение.»",
+      "choices": { "continue": { "label": "Продолжить" } }
+    },
+    "cube14b": {
+      "title": "Неизвестная руда",
+      "message": "«Однажды глубоко под землёй они нашли монолит из неизвестной руды. Из неё выковали взрывчатку, чтобы разрушить врата. Но бомба не пробила врата — она вызвала электромагнитный импульс по всей планете, уничтожив все устройства и положив конец цивилизации.»",
+      "choices": { "continue": { "label": "Продолжить" } }
+    },
+    "cube14c": {
+      "title": "Неизвестная руда",
+      "message": "«Вскоре после взрыва мужчина неподалёку начал дематериализоваться; его фигура мерцала, на секунды становясь полупрозрачной. В ужасе и безумии от случившегося он через мгновения покончил с собой.»",
+      "choices": { "continue": { "label": "Продолжить" } }
+    },
+    "cube14d": {
+      "title": "Сквозь врата",
+      "message": "«В отчаянии выжившие предположили, что руда поможет им пройти сквозь врата. Из последних осколков они собрали меньшую бомбу и поставили самого здравомыслящего перед вратами. Сразу после взрыва он стал призрачным, полупрозрачным — и исчез за вратами.»",
+      "choices": { "close": { "label": "Закрыть" } }
+    },
+    "cube15a": {
+      "title": "Узнавание",
+      "message": "Тогда вы понимаете: существа не напали, потому что приняли вас за своего. Вы — тот, кто исчез сквозь врата.",
+      "choices": { "close": { "label": "Закрыть" } }
+    },
+    "cube15b": {
+      "title": "Узнавание",
+      "message": "Когда их рассказ заканчивается, один из выживших выходит вперёд и указывает на вас: «Ты — тот, кто исчез сквозь врата. Ты один из нас.»",
+      "choices": { "close": { "label": "Закрыть" } }
+    }
+  }
+}

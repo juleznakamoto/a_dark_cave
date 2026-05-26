@@ -283,184 +283,184 @@
     "title": "奇怪的木像"
   },
   "cube01": {
+    "title": "立方体苏醒",
+    "message": "你在夜里醒来。立方体轻轻嗡鸣。忽然，一个柔和而悦耳的声音从中传出：「很久以前，一个伟大的文明曾在这世界上繁荣昌盛，但它崩溃了，其知识湮没在岁月之中。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    },
-    "message": "You wake in the night. The cube hums softly. Suddenly a gentle, melodic voice emerges from it: 'Long ago, a great civilization thrived upon this world, but it crumbled, its knowledge lost to the ages.'",
-    "title": "The Cube Awakens"
+    }
   },
   "cube02": {
+    "title": "战士部落",
+    "message": "「在遥远的过去，一个凶猛战士的部落被选中，深居于洞穴之中。他们的使命是守护某样极为重要的东西。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    },
-    "message": "'In the distant past, a tribe of fierce warriors was chosen to live deep in the caves. Their purpose was to guard something of great importance.'",
-    "title": "The Warrior Tribe"
+    }
   },
   "cube03": {
+    "title": "地下之城",
+    "message": "「战士部落发展成了一座庞大的地下城市，与世隔绝，仍守护着多年前被托付守护之物。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    },
-    "message": "'The warrior tribe grew into a vast underground city, safe from the world above, still protecting what they were sent to protect lifetimes ago.'",
-    "title": "The Underground City"
+    }
   },
   "cube04": {
+    "title": "神圣誓言",
+    "message": "「尽管他们所守护之物的记忆已化为传说，他们的警觉却从未松懈。世代以来，战士们恪守神圣誓言，守望城市最深处的一切。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    },
-    "message": "'Though memory of what they protected has faded into legend, their vigilance endured. For generations the warriors have kept their sacred oath, watching over what lies at the city's deepest point.'",
-    "title": "The Sacred Oath"
+    }
   },
   "cube05": {
+    "title": "封印之门",
+    "message": "「地下城的居民死去很久之后，他们虔诚守护的对象依然存在：一扇以失传技艺锻造、坚不可摧的巨门，隐藏在城市最底层的密室中。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    },
-    "message": "'Long after the inhabitants of the underground city perished, the object of their devotion remained: a colossal, impenetrable gate, crafted with long-forgotten technology, hidden deep within the city's lowest chambers'",
-    "title": "The Sealed Gate"
+    }
   },
   "cube06": {
+    "title": "大门开启",
+    "message": "大门碎裂之时，你手中的立方体颤抖起来，渐渐发热。一声轻柔而急切的低语逸出：「我获得了新的洞见。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    },
-    "message": "As the gate is shatters, the cube trembles in your hands, growing warm. A soft, but urgent whisper escapes it: 'I have gained new insights.'",
-    "title": "The Gate Opens"
+    }
   },
   "cube07": {
+    "title": "远古科技",
+    "message": "「铸造大门的古老文明拥有远超当今时代的知识与技术。他们甚至制造了可植入颅内的装置，用以强化身心。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    },
-    "message": "'The ancient civilization that forged the gate possessed knowledge and technology far beyond the current age. They even crafted devices designed to be implanted within their skulls, enhancing both mind and body'",
-    "title": "Ancient Technology"
+    }
   },
   "cube08": {
+    "title": "抵抗者",
+    "message": "「统治者下令，每位公民都必须在脑中植入装置。一小撮人开始表达忧虑，并在认清技术中潜藏的危险后组成了抵抗组织。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    },
-    "message": "'The leaders ruled that every citizen must bear a device in their head. A small faction began to voice their concerns, forming a resistance as they recognized the dangers hidden within the technology.'",
-    "title": "The Resistance"
+    }
   },
   "cube09": {
+    "title": "黄金时代",
+    "message": "「借助这些装置，文明蓬勃发展。一个前所未有的和平与进步时代开始了；他们的知识与技艺达到了此后再也无法企及的高度。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    },
-    "message": "'With the aid of the devices, the civilization thrived. An era of unprecedented peace and progress began, their knowledge and skill reaching heights that would never be seen again.'",
-    "title": "The Golden Age"
+    }
   },
   "cube10": {
+    "title": "大崩溃",
+    "message": "「知识瞬间流通，社会欣欣向荣。在进步的背后，颅骨装置操纵着人类的思维，将心智联结进一张寂静而无法逃脱的网。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    },
-    "message": "'Knowledge flowed instantly, and society thrived. Behind the progress, the skull devices orchestrated humanity's thoughts, connecting minds in a quiet, inescapable web.''",
-    "title": "The Great Collapse"
+    }
   },
   "cube11": {
+    "title": "蜂巢意识",
+    "message": "「某日，毫无预警，一道难以想象的磁电脉冲席卷全球。文明的一切装置，包括植入颅内的那些，尽数毁灭。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    },
-    "message": "'One day, without warning, an unimaginable magneto-electric pulse swept across the globe. Every device of the civilization, including those embedded within the skulls, was obliterated.'",
-    "title": "The Hive Mind"
+    }
   },
   "cube12": {
+    "title": "文明终结",
+    "message": "「少数幸存者无法在没有装置的情况下生存。大多数人死去。文明倒退。知识沉入遗忘。自然夺回大地，只留下曾辉煌一时的埋骨废墟。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    },
-    "message": "'The few survivors could not survive without the devices. Most died. Civilization regressed. Knowledge slipped into oblivion. Nature reclaimed the lands, leaving only buried ruins where greatness once stood.'",
-    "title": "End of Civilization"
+    }
   },
   "cube13": {
+    "title": "回收的数据",
+    "message": "当你靠近那些被击杀的生物时，立方体脉动着能量。它似乎从某处抽取信息。立方体发热，处理着回收的知识。",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    },
-    "message": "The cube pulses with energy as you approach the slain creatures. It seems to extract information from somewhere. The cube grows warm, processing the recovered knowledge.",
-    "title": "Recovered Data"
+    }
   },
   "cube14a": {
+    "title": "抵抗者",
+    "message": "「当抵抗者反对颅骨装置时，他们被放逐到山峦深处，封死在大门之后。无路可返，他们越挖越深。在孤寂与黑暗中，心智崩坏，他们堕入疯狂与退化。」",
     "choices": {
       "continue": {
         "label": "继续"
       }
-    },
-    "message": "'When the resistance opposed the skull devices, they were exiled into the mountain's depths, sealed away behind the gate. With no path back, they dug ever deeper. In isolation and darkness, their minds eroded and they descended into madness and degeneration.'",
-    "title": "The Resistance"
+    }
   },
   "cube14b": {
+    "title": "未知矿石",
+    "message": "「某日，在地下深处，他们发现了一块未知矿石的巨石。他们用它锻造炸药以摧毁大门。但炸弹未能击穿大门，反而释放出席卷全球的电磁脉冲，摧毁一切装置，终结了文明。」",
     "choices": {
       "continue": {
         "label": "继续"
       }
-    },
-    "message": "'One day, deep in the earth, they found a monolith of unknown ore. From it they forged an explosive to destroy the gate. But the bomb failed to breach the gate, instead unleashed an electro-magnetic pulse spanning the whole planet destroying all devices, ending civilization.'",
-    "title": "The Unknown Ore"
+    }
   },
   "cube14c": {
+    "title": "未知矿石",
+    "message": "「爆炸后不久，附近一名男子开始非物质化，身形闪烁，数秒间半透明。他被发生的事吓得发疯，片刻之后自尽身亡。」",
     "choices": {
       "continue": {
         "label": "继续"
       }
-    },
-    "message": "'Shortly after the explosion, a man standing nearby began to dematerialize, his form flickering, half-transparent for seconds. Terrified and driven mad by what had happened, he took his own life moments later.'",
-    "title": "The Unknown Ore"
+    }
   },
   "cube14d": {
+    "title": "穿越大门",
+    "message": "「绝望之中，幸存者推测矿石或许能帮他们穿过大门。他们用最后几块碎片造了一枚较小的炸弹，将神志最清醒者安置于门前。爆炸刚起，他便变得如鬼魅般半透明，随即穿门而去，消失不见。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    },
-    "message": "'Desperate, the survivors theorized the ore could help them pass through the gate. With its last fragments, they built a smaller bomb and positioned their sanest man with it before the gate. Right after the blast, he turned ghostly, translucent, and then vanished through the gate.'",
-    "title": "Through the Gate"
+    }
   },
   "cube15a": {
+    "title": "认出",
+    "message": "这时你明白，那些生物没有攻击，是因为它们把你认作同类。你就是穿门而去的那个人。",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    },
-    "message": "That was when you recognize that the creatures did not attack as they recognized you as one of their own. You are the man who vanished through the gate.",
-    "title": "Recognition"
+    }
   },
   "cube15b": {
+    "title": "认出",
+    "message": "故事讲完，一名幸存者走上前来，指向你：「你就是穿门而去的人。你是我们中的一员。」",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    },
-    "message": "After finishing their story one of the survivors steps forward, pointing at you: 'You are the man who vanished through the gate. You are one of us.",
-    "title": "Recognition"
+    }
   },
   "cubeDiscovery": {
+    "title": "低语立方体",
+    "message": "在洞口附近，你发现了一个抛光完美的金属立方体。起初它似乎静止不动，随后你感到一阵轻微的震动，如同缓慢而有节奏的脉动，几乎像心跳一般。",
     "choices": {
       "close": {
         "label": "关闭"
       }
-    },
-    "message": "Near the cave's entrance, you discover a perfectly polished metal cube. At first it seems still, but then you feel a faint vibration like a slow, rhythmic pulse, almost like a heartbeat.",
-    "title": "The Whispering Cube"
+    }
   },
   "cursedMercenaryMassacre": {
     "choices": {

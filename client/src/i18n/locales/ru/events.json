@@ -283,184 +283,184 @@
     "title": "Странная деревянная фигурка"
   },
   "cube01": {
+    "title": "Куб пробуждается",
+    "message": "Вы просыпаетесь ночью. Куб тихо гудит. Внезапно из него доносится мягкий мелодичный голос: «Давным-давно на этом мире процветала великая цивилизация, но она рухнула, и её знания были утрачены в веках.»",
     "choices": {
       "close": {
         "label": "Закрыть"
       }
-    },
-    "message": "You wake in the night. The cube hums softly. Suddenly a gentle, melodic voice emerges from it: 'Long ago, a great civilization thrived upon this world, but it crumbled, its knowledge lost to the ages.'",
-    "title": "The Cube Awakens"
+    }
   },
   "cube02": {
+    "title": "Племя воинов",
+    "message": "«В далёком прошлом племя свирепых воинов было избрано жить глубоко в пещерах. Их предназначение — охранять нечто великой важности.»",
     "choices": {
       "close": {
         "label": "Закрыть"
       }
-    },
-    "message": "'In the distant past, a tribe of fierce warriors was chosen to live deep in the caves. Their purpose was to guard something of great importance.'",
-    "title": "The Warrior Tribe"
+    }
   },
   "cube03": {
+    "title": "Подземный город",
+    "message": "«Племя воинов выросло в обширный подземный город, в безопасности от мира наверху, всё ещё защищая то, ради чего их когда-то послали.»",
     "choices": {
       "close": {
         "label": "Закрыть"
       }
-    },
-    "message": "'The warrior tribe grew into a vast underground city, safe from the world above, still protecting what they were sent to protect lifetimes ago.'",
-    "title": "The Underground City"
+    }
   },
   "cube04": {
+    "title": "Священная клятва",
+    "message": "«Хотя память о том, что они охраняли, стёрлась в легенду, их бдительность не ослабевала. Поколение за поколением воины держали священную клятву, неся вахту у самого глубокого места города.»",
     "choices": {
       "close": {
         "label": "Закрыть"
       }
-    },
-    "message": "'Though memory of what they protected has faded into legend, their vigilance endured. For generations the warriors have kept their sacred oath, watching over what lies at the city's deepest point.'",
-    "title": "The Sacred Oath"
+    }
   },
   "cube05": {
+    "title": "Запечатанные врата",
+    "message": "«Спустя долгое время после гибели жителей подземного города предмет их поклонения оставался: колоссальные неприступные врата, созданные забытой технологией, скрытые в самых нижних залах.»",
     "choices": {
       "close": {
         "label": "Закрыть"
       }
-    },
-    "message": "'Long after the inhabitants of the underground city perished, the object of their devotion remained: a colossal, impenetrable gate, crafted with long-forgotten technology, hidden deep within the city's lowest chambers'",
-    "title": "The Sealed Gate"
+    }
   },
   "cube06": {
+    "title": "Врата открываются",
+    "message": "Когда врата разрушаются, куб дрожит в ваших руках и нагревается. Из него вырывается тихий, но настойчивый шёпот: «Я обрёл новые знания.»",
     "choices": {
       "close": {
         "label": "Закрыть"
       }
-    },
-    "message": "As the gate is shatters, the cube trembles in your hands, growing warm. A soft, but urgent whisper escapes it: 'I have gained new insights.'",
-    "title": "The Gate Opens"
+    }
   },
   "cube07": {
+    "title": "Древняя технология",
+    "message": "«Древняя цивилизация, создавшая врата, обладала знаниями и технологиями, далеко превосходящими нынешнюю эпоху. Они даже изготовили устройства для имплантации в череп, усиливающие разум и тело.»",
     "choices": {
       "close": {
         "label": "Закрыть"
       }
-    },
-    "message": "'The ancient civilization that forged the gate possessed knowledge and technology far beyond the current age. They even crafted devices designed to be implanted within their skulls, enhancing both mind and body'",
-    "title": "Ancient Technology"
+    }
   },
   "cube08": {
+    "title": "Сопротивление",
+    "message": "«Правители повелели, чтобы каждый гражданин носил устройство в голове. Небольшая группа начала выражать опасения и образовала сопротивление, осознав скрытую в технологии угрозу.»",
     "choices": {
       "close": {
         "label": "Закрыть"
       }
-    },
-    "message": "'The leaders ruled that every citizen must bear a device in their head. A small faction began to voice their concerns, forming a resistance as they recognized the dangers hidden within the technology.'",
-    "title": "The Resistance"
+    }
   },
   "cube09": {
+    "title": "Золотой век",
+    "message": "«С помощью устройств цивилизация процветала. Началась эпоха беспрецедентного мира и прогресса; их знания и мастерство достигли высот, которым уже никогда не суждено было повториться.»",
     "choices": {
       "close": {
         "label": "Закрыть"
       }
-    },
-    "message": "'With the aid of the devices, the civilization thrived. An era of unprecedented peace and progress began, their knowledge and skill reaching heights that would never be seen again.'",
-    "title": "The Golden Age"
+    }
   },
   "cube10": {
+    "title": "Великий крах",
+    "message": "«Знания передавались мгновенно, общество процветало. За прогрессом черепные устройства управляли мыслями человечества, связывая разумы в тихую, неотвратимую сеть.»",
     "choices": {
       "close": {
         "label": "Закрыть"
       }
-    },
-    "message": "'Knowledge flowed instantly, and society thrived. Behind the progress, the skull devices orchestrated humanity's thoughts, connecting minds in a quiet, inescapable web.''",
-    "title": "The Great Collapse"
+    }
   },
   "cube11": {
+    "title": "Коллективный разум",
+    "message": "«Однажды без предупреждения по планете прокатилась невообразимая магнитоэлектрическая волна. Каждое устройство цивилизации, включая вживлённые в черепа, было уничтожено.»",
     "choices": {
       "close": {
         "label": "Закрыть"
       }
-    },
-    "message": "'One day, without warning, an unimaginable magneto-electric pulse swept across the globe. Every device of the civilization, including those embedded within the skulls, was obliterated.'",
-    "title": "The Hive Mind"
+    }
   },
   "cube12": {
+    "title": "Конец цивилизации",
+    "message": "«Немногие выжившие не могли жить без устройств. Большинство погибло. Цивилизация откатилась назад. Знания ушли в забвение. Природа вернула земли, оставив лишь погребённые руины там, где когда-то величие стояло высоко.»",
     "choices": {
       "close": {
         "label": "Закрыть"
       }
-    },
-    "message": "'The few survivors could not survive without the devices. Most died. Civilization regressed. Knowledge slipped into oblivion. Nature reclaimed the lands, leaving only buried ruins where greatness once stood.'",
-    "title": "End of Civilization"
+    }
   },
   "cube13": {
+    "title": "Восстановленные данные",
+    "message": "Когда вы приближаетесь к убитым существам, куб пульсирует энергией. Кажется, он извлекает информацию откуда-то извне. Куб нагревается, обрабатывая восстановленные знания.",
     "choices": {
       "close": {
         "label": "Закрыть"
       }
-    },
-    "message": "The cube pulses with energy as you approach the slain creatures. It seems to extract information from somewhere. The cube grows warm, processing the recovered knowledge.",
-    "title": "Recovered Data"
+    }
   },
   "cube14a": {
+    "title": "Сопротивление",
+    "message": "«Когда сопротивление выступило против черепных устройств, их изгнали в глубины горы и запечатали за вратами. Без пути назад они рыли всё глубже. В изоляции и тьме их разумы истлели, и они пали в безумие и вырождение.»",
     "choices": {
       "continue": {
         "label": "Продолжить"
       }
-    },
-    "message": "'When the resistance opposed the skull devices, they were exiled into the mountain's depths, sealed away behind the gate. With no path back, they dug ever deeper. In isolation and darkness, their minds eroded and they descended into madness and degeneration.'",
-    "title": "The Resistance"
+    }
   },
   "cube14b": {
+    "title": "Неизвестная руда",
+    "message": "«Однажды глубоко под землёй они нашли монолит из неизвестной руды. Из неё выковали взрывчатку, чтобы разрушить врата. Но бомба не пробила врата — она вызвала электромагнитный импульс по всей планете, уничтожив все устройства и положив конец цивилизации.»",
     "choices": {
       "continue": {
         "label": "Продолжить"
       }
-    },
-    "message": "'One day, deep in the earth, they found a monolith of unknown ore. From it they forged an explosive to destroy the gate. But the bomb failed to breach the gate, instead unleashed an electro-magnetic pulse spanning the whole planet destroying all devices, ending civilization.'",
-    "title": "The Unknown Ore"
+    }
   },
   "cube14c": {
+    "title": "Неизвестная руда",
+    "message": "«Вскоре после взрыва мужчина неподалёку начал дематериализоваться; его фигура мерцала, на секунды становясь полупрозрачной. В ужасе и безумии от случившегося он через мгновения покончил с собой.»",
     "choices": {
       "continue": {
         "label": "Продолжить"
       }
-    },
-    "message": "'Shortly after the explosion, a man standing nearby began to dematerialize, his form flickering, half-transparent for seconds. Terrified and driven mad by what had happened, he took his own life moments later.'",
-    "title": "The Unknown Ore"
+    }
   },
   "cube14d": {
+    "title": "Сквозь врата",
+    "message": "«В отчаянии выжившие предположили, что руда поможет им пройти сквозь врата. Из последних осколков они собрали меньшую бомбу и поставили самого здравомыслящего перед вратами. Сразу после взрыва он стал призрачным, полупрозрачным — и исчез за вратами.»",
     "choices": {
       "close": {
         "label": "Закрыть"
       }
-    },
-    "message": "'Desperate, the survivors theorized the ore could help them pass through the gate. With its last fragments, they built a smaller bomb and positioned their sanest man with it before the gate. Right after the blast, he turned ghostly, translucent, and then vanished through the gate.'",
-    "title": "Through the Gate"
+    }
   },
   "cube15a": {
+    "title": "Узнавание",
+    "message": "Тогда вы понимаете: существа не напали, потому что приняли вас за своего. Вы — тот, кто исчез сквозь врата.",
     "choices": {
       "close": {
         "label": "Закрыть"
       }
-    },
-    "message": "That was when you recognize that the creatures did not attack as they recognized you as one of their own. You are the man who vanished through the gate.",
-    "title": "Recognition"
+    }
   },
   "cube15b": {
+    "title": "Узнавание",
+    "message": "Когда их рассказ заканчивается, один из выживших выходит вперёд и указывает на вас: «Ты — тот, кто исчез сквозь врата. Ты один из нас.»",
     "choices": {
       "close": {
         "label": "Закрыть"
       }
-    },
-    "message": "After finishing their story one of the survivors steps forward, pointing at you: 'You are the man who vanished through the gate. You are one of us.",
-    "title": "Recognition"
+    }
   },
   "cubeDiscovery": {
+    "title": "Шепчущий куб",
+    "message": "У входа в пещеру вы находите идеально отполированный металлический куб. Сначала он кажется неподвижным, но затем вы чувствуете слабую вибрацию — медленный ритмичный пульс, почти как биение сердца.",
     "choices": {
       "close": {
         "label": "Закрыть"
       }
-    },
-    "message": "Near the cave's entrance, you discover a perfectly polished metal cube. At first it seems still, but then you feel a faint vibration like a slow, rhythmic pulse, almost like a heartbeat.",
-    "title": "The Whispering Cube"
+    }
   },
   "cursedMercenaryMassacre": {
     "choices": {

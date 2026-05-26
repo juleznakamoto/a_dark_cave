@@ -283,184 +283,184 @@
     "title": "Una extraña figura de madera"
   },
   "cube01": {
+    "title": "El cubo despierta",
+    "message": "Te despiertas en la noche. El cubo zumba suavemente. De repente surge de él una voz suave y melódica: «Hace mucho tiempo, una gran civilización prosperó en este mundo, pero se derrumbó y su conocimiento se perdió en el tiempo.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    },
-    "message": "You wake in the night. The cube hums softly. Suddenly a gentle, melodic voice emerges from it: 'Long ago, a great civilization thrived upon this world, but it crumbled, its knowledge lost to the ages.'",
-    "title": "The Cube Awakens"
+    }
   },
   "cube02": {
+    "title": "La tribu guerrera",
+    "message": "«En un pasado lejano, una tribu de feroces guerreros fue elegida para vivir en lo profundo de las cuevas. Su propósito era custodiar algo de gran importancia.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    },
-    "message": "'In the distant past, a tribe of fierce warriors was chosen to live deep in the caves. Their purpose was to guard something of great importance.'",
-    "title": "The Warrior Tribe"
+    }
   },
   "cube03": {
+    "title": "La ciudad subterránea",
+    "message": "«La tribu guerrera creció hasta convertirse en una vasta ciudad subterránea, a salvo del mundo de arriba, protegiendo aún aquello por lo que habían sido enviados hace vidas.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    },
-    "message": "'The warrior tribe grew into a vast underground city, safe from the world above, still protecting what they were sent to protect lifetimes ago.'",
-    "title": "The Underground City"
+    }
   },
   "cube04": {
+    "title": "El juramento sagrado",
+    "message": "«Aunque el recuerdo de lo que custodiaban se desvaneció en leyenda, su vigilia perduró. Durante generaciones los guerreros mantuvieron su juramento sagrado, vigilando lo que yacía en el punto más profundo de la ciudad.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    },
-    "message": "'Though memory of what they protected has faded into legend, their vigilance endured. For generations the warriors have kept their sacred oath, watching over what lies at the city's deepest point.'",
-    "title": "The Sacred Oath"
+    }
   },
   "cube05": {
+    "title": "La puerta sellada",
+    "message": "«Mucho después de que perecieran los habitantes de la ciudad subterránea, permaneció el objeto de su devoción: una puerta colosal e impenetrable, forjada con tecnología olvidada, oculta en las cámaras más bajas de la ciudad.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    },
-    "message": "'Long after the inhabitants of the underground city perished, the object of their devotion remained: a colossal, impenetrable gate, crafted with long-forgotten technology, hidden deep within the city's lowest chambers'",
-    "title": "The Sealed Gate"
+    }
   },
   "cube06": {
+    "title": "La puerta se abre",
+    "message": "Cuando la puerta se hace añicos, el cubo tiembla en tus manos y se calienta. De él escapa un susurro suave pero urgente: «He adquirido nuevos conocimientos.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    },
-    "message": "As the gate is shatters, the cube trembles in your hands, growing warm. A soft, but urgent whisper escapes it: 'I have gained new insights.'",
-    "title": "The Gate Opens"
+    }
   },
   "cube07": {
+    "title": "Tecnología antigua",
+    "message": "«La civilización antigua que forjó la puerta poseía un conocimiento y una tecnología muy por encima de la era actual. Incluso fabricaron dispositivos diseñados para implantarse en el cráneo, mejorando mente y cuerpo.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    },
-    "message": "'The ancient civilization that forged the gate possessed knowledge and technology far beyond the current age. They even crafted devices designed to be implanted within their skulls, enhancing both mind and body'",
-    "title": "Ancient Technology"
+    }
   },
   "cube08": {
+    "title": "La resistencia",
+    "message": "«Los líderes ordenaron que todo ciudadano llevara un dispositivo en la cabeza. Una pequeña facción empezó a expresar sus inquietudes y formó una resistencia al reconocer los peligros ocultos en la tecnología.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    },
-    "message": "'The leaders ruled that every citizen must bear a device in their head. A small faction began to voice their concerns, forming a resistance as they recognized the dangers hidden within the technology.'",
-    "title": "The Resistance"
+    }
   },
   "cube09": {
+    "title": "La edad de oro",
+    "message": "«Con la ayuda de los dispositivos, la civilización prosperó. Comenzó una era de paz y progreso sin precedentes; su conocimiento y habilidad alcanzaron alturas que nunca volverían a verse.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    },
-    "message": "'With the aid of the devices, the civilization thrived. An era of unprecedented peace and progress began, their knowledge and skill reaching heights that would never be seen again.'",
-    "title": "The Golden Age"
+    }
   },
   "cube10": {
+    "title": "El gran colapso",
+    "message": "«El conocimiento fluía al instante y la sociedad prosperaba. Tras el progreso, los dispositivos craneales orquestaban los pensamientos de la humanidad, conectando mentes en una red silenciosa e inescapable.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    },
-    "message": "'Knowledge flowed instantly, and society thrived. Behind the progress, the skull devices orchestrated humanity's thoughts, connecting minds in a quiet, inescapable web.''",
-    "title": "The Great Collapse"
+    }
   },
   "cube11": {
+    "title": "La mente colmena",
+    "message": "«Un día, sin previo aviso, un impulso magnetoeléctrico inconcebible barrió el planeta. Cada dispositivo de la civilización, incluidos los implantados en los cráneos, fue aniquilado.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    },
-    "message": "'One day, without warning, an unimaginable magneto-electric pulse swept across the globe. Every device of the civilization, including those embedded within the skulls, was obliterated.'",
-    "title": "The Hive Mind"
+    }
   },
   "cube12": {
+    "title": "Fin de la civilización",
+    "message": "«Los pocos supervivientes no pudieron vivir sin los dispositivos. La mayoría murió. La civilización retrocedió. El conocimiento cayó en el olvido. La naturaleza reclamó las tierras, dejando solo ruinas enterradas donde antes hubo grandeza.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    },
-    "message": "'The few survivors could not survive without the devices. Most died. Civilization regressed. Knowledge slipped into oblivion. Nature reclaimed the lands, leaving only buried ruins where greatness once stood.'",
-    "title": "End of Civilization"
+    }
   },
   "cube13": {
+    "title": "Datos recuperados",
+    "message": "El cubo pulsa con energía al acercarte a las criaturas abatidas. Parece extraer información de algún lugar. El cubo se calienta, procesando el conocimiento recuperado.",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    },
-    "message": "The cube pulses with energy as you approach the slain creatures. It seems to extract information from somewhere. The cube grows warm, processing the recovered knowledge.",
-    "title": "Recovered Data"
+    }
   },
   "cube14a": {
+    "title": "La resistencia",
+    "message": "«Cuando la resistencia se opuso a los dispositivos craneales, fue exiliada a las profundidades de la montaña, sellada tras la puerta. Sin camino de vuelta, cavaron cada vez más hondo. En el aislamiento y la oscuridad, sus mentes se erosionaron y cayeron en la locura y la degeneración.»",
     "choices": {
       "continue": {
         "label": "Continuar"
       }
-    },
-    "message": "'When the resistance opposed the skull devices, they were exiled into the mountain's depths, sealed away behind the gate. With no path back, they dug ever deeper. In isolation and darkness, their minds eroded and they descended into madness and degeneration.'",
-    "title": "The Resistance"
+    }
   },
   "cube14b": {
+    "title": "El mineral desconocido",
+    "message": "«Un día, en lo profundo de la tierra, encontraron un monolito de mineral desconocido. De él forjaron un explosivo para destruir la puerta. Pero la bomba no abrió la puerta; desató un pulso electromagnético que barrió el planeta, destruyendo todos los dispositivos y acabando con la civilización.»",
     "choices": {
       "continue": {
         "label": "Continuar"
       }
-    },
-    "message": "'One day, deep in the earth, they found a monolith of unknown ore. From it they forged an explosive to destroy the gate. But the bomb failed to breach the gate, instead unleashed an electro-magnetic pulse spanning the whole planet destroying all devices, ending civilization.'",
-    "title": "The Unknown Ore"
+    }
   },
   "cube14c": {
+    "title": "El mineral desconocido",
+    "message": "«Poco después de la explosión, un hombre cercano empezó a desmaterializarse; su forma parpadeaba, semitransparente durante segundos. Aterrado y enloquecido por lo ocurrido, se quitó la vida momentos después.»",
     "choices": {
       "continue": {
         "label": "Continuar"
       }
-    },
-    "message": "'Shortly after the explosion, a man standing nearby began to dematerialize, his form flickering, half-transparent for seconds. Terrified and driven mad by what had happened, he took his own life moments later.'",
-    "title": "The Unknown Ore"
+    }
   },
   "cube14d": {
+    "title": "A través de la puerta",
+    "message": "«Desesperados, los supervivientes supusieron que el mineral podría ayudarles a atravesar la puerta. Con sus últimos fragmentos construyeron una bomba menor y colocaron a su hombre más cuerdo ante la puerta. Tras la explosión, se volvió espectral, translúcido, y desapareció al otro lado.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    },
-    "message": "'Desperate, the survivors theorized the ore could help them pass through the gate. With its last fragments, they built a smaller bomb and positioned their sanest man with it before the gate. Right after the blast, he turned ghostly, translucent, and then vanished through the gate.'",
-    "title": "Through the Gate"
+    }
   },
   "cube15a": {
+    "title": "El reconocimiento",
+    "message": "Entonces comprendes que las criaturas no atacaron porque te reconocieron como uno de los suyos. Eres el hombre que desapareció a través de la puerta.",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    },
-    "message": "That was when you recognize that the creatures did not attack as they recognized you as one of their own. You are the man who vanished through the gate.",
-    "title": "Recognition"
+    }
   },
   "cube15b": {
+    "title": "El reconocimiento",
+    "message": "Al terminar su relato, uno de los supervivientes se adelanta y te señala: «Eres el hombre que desapareció a través de la puerta. Eres uno de los nuestros.»",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    },
-    "message": "After finishing their story one of the survivors steps forward, pointing at you: 'You are the man who vanished through the gate. You are one of us.",
-    "title": "Recognition"
+    }
   },
   "cubeDiscovery": {
+    "title": "El cubo susurrante",
+    "message": "Cerca de la entrada de la cueva descubres un cubo de metal perfectamente pulido. Al principio parece inmóvil, pero luego sientes una leve vibración, como un pulso lento y rítmico, casi un latido.",
     "choices": {
       "close": {
         "label": "Cerrar"
       }
-    },
-    "message": "Near the cave's entrance, you discover a perfectly polished metal cube. At first it seems still, but then you feel a faint vibration like a slow, rhythmic pulse, almost like a heartbeat.",
-    "title": "The Whispering Cube"
+    }
   },
   "cursedMercenaryMassacre": {
     "choices": {
