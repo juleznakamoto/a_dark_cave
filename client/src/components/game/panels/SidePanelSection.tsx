@@ -74,7 +74,7 @@ const EFFECT_TOOLTIP_SECTIONS = new Set<SidePanelSectionId>([
   "blessings",
 ]);
 
-/** Shared layout for resource name + amount (+ production delta column). */
+/** Shared layout for resource name + amount + production delta. */
 const RESOURCE_ROW_GRID_CLASS =
   "grid grid-cols-[minmax(0,1fr)_6rem_4rem] items-start gap-x-2";
 
