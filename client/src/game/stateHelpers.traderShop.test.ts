@@ -15,6 +15,16 @@ describe("isTraderShopUnlocked", () => {
     ).toBe(false);
   });
 
+  it("is true in cruel mode before traderSettled", () => {
+    expect(
+      isTraderShopUnlocked({
+        story: { seen: {} },
+        traderDialogOpens: 0,
+        cruelMode: true,
+      }),
+    ).toBe(true);
+  });
+
   it("is true after traderSettled", () => {
     expect(
       isTraderShopUnlocked({

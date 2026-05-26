@@ -339,11 +339,13 @@ export function migrateTraderShopUnlockOnLoad(
   };
 }
 
-/** Real-money Trader tab/shop unlocks after `traderSettles` (or mid-session shop opens before that flag is saved). */
+/** Real-money Trader tab/shop unlocks after `traderSettles` (or mid-session shop opens before that flag is saved). Cruel mode skips the story gate. */
 export function isTraderShopUnlocked(state: {
   story?: { seen?: Record<string, unknown> };
   traderDialogOpens?: number;
+  cruelMode?: boolean;
 }): boolean {
+  if (state.cruelMode) return true;
   if (state.story?.seen?.traderSettled) return true;
   if ((state.traderDialogOpens ?? 0) > 0) return true;
   return false;

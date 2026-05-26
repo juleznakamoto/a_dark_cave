@@ -68,7 +68,11 @@ export default function GameFooter() {
 
   // Check if gameplay time is less than 30 minutes
   const isEarlyGameplay = playTime < 30 * 60 * 1000; // 30 minutes in milliseconds
-  const traderShopUnlocked = isTraderShopUnlocked({ story, traderDialogOpens });
+  const traderShopUnlocked = isTraderShopUnlocked({
+    story,
+    traderDialogOpens,
+    cruelMode,
+  });
 
   const emphasizeFooterSocialIcons =
     isPaused || idleModeDialog.isOpen || leaderboardDialogOpen;
@@ -145,7 +149,7 @@ export default function GameFooter() {
                 variant="ghost"
                 size="xs"
                 onClick={() => setShopDialogOpen(true)}
-                className={`px-1 py-1 text-xs hover text-neutral-300 ${isEarlyGameplay ? "opacity-50" : "opacity-100"} hover:!opacity-100`}
+                className={`px-1 py-1 text-xs hover text-neutral-300 ${!cruelMode && isEarlyGameplay ? "opacity-50" : "opacity-100"} hover:!opacity-100`}
               >
                 {t("footer.trader")}
               </Button>
