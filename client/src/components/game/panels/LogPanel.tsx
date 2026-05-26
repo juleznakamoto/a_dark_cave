@@ -10,11 +10,11 @@ import { resolveLogPanelMessage } from "@/i18n/logDisplay";
 type ExtendedLogEntry =
   | LogEntry
   | {
-    message: string;
-    type: "production";
-    id: string;
-    timestamp: number;
-  };
+      message: string;
+      type: "production";
+      id: string;
+      timestamp: number;
+    };
 
 function LogPanel() {
   const { i18n } = useTranslation("ui");
@@ -48,7 +48,7 @@ function LogPanel() {
         showIndicatorWhen={recentEntries.length >= 8}
         scrollAreaId="event-log"
       >
-        <div className="px-3 relative ">
+        <div className="pl-2 px-3 relative ">
           <div ref={topRef} />
           <div className="space-y-1 text-xs pb-1">
             {recentEntries.map((entry: any, index: number) => {
