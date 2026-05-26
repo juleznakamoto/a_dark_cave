@@ -1,0 +1,33 @@
+{
+  "log": {
+    "freezingDeath": {
+      "one": "Un villageois meurt de froid.",
+      "other": "{{count}} villageois meurent de froid."
+    },
+    "madnessDeath": {
+      "one": "Un villageois succombe à la folie et se donne la mort.",
+      "other": "{{count}} villageois succombent à la folie et se donnent la mort."
+    },
+    "starvationDeath": {
+      "one": "Un villageois succombe à la famine.",
+      "other": "{{count}} villageois meurent de faim."
+    },
+    "investmentComplete": {
+      "success": "Investissement de {{amount}} d'or terminé : Succès. Vous avez gagné {{payout}} d'or.",
+      "successLucky": "Investissement de {{amount}} d'or terminé : Coup de chance ! Vous avez gagné {{payout}} d'or.",
+      "wipeout": "Investissement de {{amount}} d'or terminé : Ruine totale. Vous avez perdu l'intégralité de votre investissement de {{amount}} d'or.",
+      "failure": "Investissement de {{amount}} d'or terminé : Échec. Vous avez perdu {{loss}} d'or."
+    },
+    "stranger": {
+      "variant0": "Un étranger s'approche et rejoint le village.",
+      "variant1": "Un voyageur arrive et décide de rester.",
+      "variant2": "Un vagabond apparaît et rejoint la communauté.",
+      "variant3": "Quelqu'un s'approche du village et s'installe.",
+      "variant4": "Un étranger rejoint la communauté.",
+      "variant5": "Un nouvel arrivant se présente et s'installe.",
+      "multiple0": "{{count}} étrangers rejoignent le village.",
+      "multiple1": "{{count}} voyageurs arrivent et décident de rester.",
+      "multiple2": "{{count}} vagabonds arrivent et rejoignent la communauté."
+    }
+  }
+}

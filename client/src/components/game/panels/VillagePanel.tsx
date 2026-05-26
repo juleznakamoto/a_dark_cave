@@ -1314,7 +1314,7 @@ export default function VillagePanel() {
                                 strokeWidth={2}
                                 className="text-violet-600"
                               />
-                              <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-normal text-[12px] -mt-[0px] text-violet-600">
+                              <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[12px] leading-none mt-[1px] text-violet-600">
                                 ✺
                               </span>
                             </div>

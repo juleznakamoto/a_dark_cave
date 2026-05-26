@@ -1,0 +1,33 @@
+{
+  "log": {
+    "freezingDeath": {
+      "one": "Ein Dorfbewohner erfriert in der Kälte.",
+      "other": "{{count}} Dorfbewohner erfrieren in der Kälte."
+    },
+    "madnessDeath": {
+      "one": "Ein Dorfbewohner erliegt dem Wahnsinn und nimmt sich das Leben.",
+      "other": "{{count}} Dorfbewohner erliegen dem Wahnsinn und nehmen sich das Leben."
+    },
+    "starvationDeath": {
+      "one": "Ein Dorfbewohner erliegt dem Hunger.",
+      "other": "{{count}} Dorfbewohner verhungern."
+    },
+    "investmentComplete": {
+      "success": "{{amount}} Gold-Investition abgeschlossen: Erfolg. Du hast {{payout}} Gold erhalten.",
+      "successLucky": "{{amount}} Gold-Investition abgeschlossen: Glückstreffer! Du hast {{payout}} Gold erhalten.",
+      "wipeout": "{{amount}} Gold-Investition abgeschlossen: Totalverlust. Du hast deine gesamte Investition von {{amount}} Gold verloren.",
+      "failure": "{{amount}} Gold-Investition abgeschlossen: Fehlschlag. Du hast {{loss}} Gold verloren."
+    },
+    "stranger": {
+      "variant0": "Ein Fremder nähert sich und tritt dem Dorf bei.",
+      "variant1": "Ein Reisender kommt an und beschließt zu bleiben.",
+      "variant2": "Ein Wanderer erscheint und wird Teil der Gemeinschaft.",
+      "variant3": "Jemand nähert sich dem Dorf und lässt sich nieder.",
+      "variant4": "Ein Fremder schließt sich der Gemeinschaft an.",
+      "variant5": "Ein Neuankömmling trifft ein und richtet sich ein.",
+      "multiple0": "{{count}} Fremde treten dem Dorf bei.",
+      "multiple1": "{{count}} Reisende kommen an und beschließen zu bleiben.",
+      "multiple2": "{{count}} Wanderer kommen an und schließen sich der Gemeinschaft an."
+    }
+  }
+}

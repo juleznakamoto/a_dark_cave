@@ -1,0 +1,33 @@
+{
+  "log": {
+    "freezingDeath": {
+      "one": "Un aldeano muere congelado en el frío.",
+      "other": "{{count}} aldeanos mueren congelados en el frío."
+    },
+    "madnessDeath": {
+      "one": "Un aldeano sucumbe a la locura y se quita la vida.",
+      "other": "{{count}} aldeanos sucumben a la locura y se quitan la vida."
+    },
+    "starvationDeath": {
+      "one": "Un aldeano sucumbe al hambre.",
+      "other": "{{count}} aldeanos mueren de hambre."
+    },
+    "investmentComplete": {
+      "success": "Inversión de {{amount}} de oro completada: Éxito. Has ganado {{payout}} de oro.",
+      "successLucky": "Inversión de {{amount}} de oro completada: ¡Suerte! Has ganado {{payout}} de oro.",
+      "wipeout": "Inversión de {{amount}} de oro completada: Pérdida total. Perdiste toda tu inversión de {{amount}} de oro.",
+      "failure": "Inversión de {{amount}} de oro completada: Fracaso. Perdiste {{loss}} de oro."
+    },
+    "stranger": {
+      "variant0": "Un extraño se acerca y se une a la aldea.",
+      "variant1": "Un viajero llega y decide quedarse.",
+      "variant2": "Un caminante aparece y pasa a formar parte de la comunidad.",
+      "variant3": "Alguien se acerca a la aldea y se establece.",
+      "variant4": "Un extraño se une a la comunidad.",
+      "variant5": "Un recién llegado aparece y se instala.",
+      "multiple0": "{{count}} extraños se unen a la aldea.",
+      "multiple1": "{{count}} viajeros llegan y deciden quedarse.",
+      "multiple2": "{{count}} caminantes llegan y se unen a la comunidad."
+    }
+  }
+}

@@ -147,6 +147,9 @@ export interface EventChoice {
 export interface LogEntry {
   id: string;
   message: string;
+  /** ui:log.* key for display-time localization (English kept in `message` for saves). */
+  logKey?: string;
+  logVars?: Record<string, string | number>;
   timestamp: number;
   type: "event" | "action" | "system";
   title?: string;

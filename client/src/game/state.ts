@@ -71,7 +71,7 @@ import {
 import {
   buildInvestmentResultDialogPayload,
   commitInvestmentRolls,
-  formatInvestmentCompletionLog,
+  getInvestmentCompletionLogMeta,
   generateInvestmentOffers,
   getMaxInvestmentStake,
   getInvestmentWaveGapMs,
@@ -2922,14 +2922,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   tickInvestmentHall: () => {
-    let logMessage: string | null = null;
+    let logEntry: LogEntry | null = null;
     set((state) => {
       if (!state.buildings.coinhouse) return {};
       const ih = state.investmentHallState;
       const active = ih.active;
       if (active && state.playTime >= active.endPlayTime) {
         const payout = active.payoutGold;
-        logMessage = formatInvestmentCompletionLog(active);
+        const { message, logKey, logVars } =
+          getInvestmentCompletionLogMeta(active);
+        logEntry = {
+          id: `investment-${Date.now()}`,
+          message,
+          logKey,
+          logVars,
+          timestamp: Date.now(),
+          type: "system",
+        };
         return {
           resources: {
             ...state.resources,
@@ -2961,13 +2970,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
       return {};
     });
-    if (logMessage) {
-      get().addLogEntry({
-        id: `investment-${Date.now()}`,
-        message: logMessage,
-        timestamp: Date.now(),
-        type: "system",
-      });
+    if (logEntry) {
+      get().addLogEntry(logEntry);
     }
   },
 

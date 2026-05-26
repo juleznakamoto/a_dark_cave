@@ -1,0 +1,33 @@
+{
+  "log": {
+    "freezingDeath": {
+      "one": "One villager freezes to death in the cold.",
+      "other": "{{count}} villagers freeze to death in the cold."
+    },
+    "madnessDeath": {
+      "one": "One villager succumbs to madness and takes his own life.",
+      "other": "{{count}} villagers succumb to madness and take their own lives."
+    },
+    "starvationDeath": {
+      "one": "One villager succumbs to starvation.",
+      "other": "{{count}} villagers starve to death."
+    },
+    "investmentComplete": {
+      "success": "{{amount}} Gold investment complete: Success. You gained {{payout}} Gold.",
+      "successLucky": "{{amount}} Gold investment complete: Lucky Chance! You gained {{payout}} Gold.",
+      "wipeout": "{{amount}} Gold investment complete: Wipeout. You lost your full investment of {{amount}} Gold.",
+      "failure": "{{amount}} Gold investment complete: Failure. You lost {{loss}} Gold."
+    },
+    "stranger": {
+      "variant0": "A stranger approaches and joins the village.",
+      "variant1": "A traveler arrives and decides to stay.",
+      "variant2": "A wanderer appears and becomes part of the community.",
+      "variant3": "Someone approaches the village and settles in.",
+      "variant4": "A stranger joins the community.",
+      "variant5": "A newcomer arrives and makes themselves at home.",
+      "multiple0": "{{count}} strangers join the village.",
+      "multiple1": "{{count}} travelers arrive and decide to stay.",
+      "multiple2": "{{count}} wanderers arrive and join the community."
+    }
+  }
+}

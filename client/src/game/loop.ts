@@ -986,7 +986,13 @@ function handleStarvationCheck() {
 
       state.addLogEntry({
         id: `starvation-${Date.now()}`,
-        message: message,
+        message,
+        logKey:
+          starvationDeaths === 1
+            ? "starvationDeath.one"
+            : "starvationDeath.other",
+        logVars:
+          starvationDeaths === 1 ? undefined : { count: starvationDeaths },
         timestamp: Date.now(),
         type: "system",
       });
@@ -1033,7 +1039,10 @@ function handleFreezingCheck() {
 
       state.addLogEntry({
         id: `freezing-${Date.now()}`,
-        message: message,
+        message,
+        logKey:
+          freezingDeaths === 1 ? "freezingDeath.one" : "freezingDeath.other",
+        logVars: freezingDeaths === 1 ? undefined : { count: freezingDeaths },
         timestamp: Date.now(),
         type: "system",
       });
@@ -1109,7 +1118,10 @@ function handleMadnessCheck() {
 
       state.addLogEntry({
         id: `madness-death-${Date.now()}`,
-        message: message,
+        message,
+        logKey:
+          madnessDeaths === 1 ? "madnessDeath.one" : "madnessDeath.other",
+        logVars: madnessDeaths === 1 ? undefined : { count: madnessDeaths },
         timestamp: Date.now(),
         type: "system",
       });
@@ -1213,25 +1225,49 @@ function handleStrangerApproach() {
       }
     }
 
-    const messages = [
+    const STRANGER_SINGLE_LOG_KEYS = [
+      "stranger.variant0",
+      "stranger.variant1",
+      "stranger.variant2",
+      "stranger.variant3",
+      "stranger.variant4",
+      "stranger.variant5",
+    ] as const;
+
+    const STRANGER_SINGLE_MESSAGES = [
       "A stranger approaches and joins the village.",
       "A traveler arrives and decides to stay.",
       "A wanderer appears and becomes part of the community.",
       "Someone approaches the village and settles in.",
       "A stranger joins the community.",
       "A newcomer arrives and makes themselves at home.",
-    ];
+    ] as const;
 
-    // Adjust message if multiple strangers arrive
-    if (strangersCount > 1) {
-      messages.push(
-        `${strangersCount} strangers join the village.`,
-      );
-      messages.push(`${strangersCount} travelers arrive and decide to stay.`);
-      messages.push(
-        `${strangersCount} wanderers arrive and join the community.`,
-      );
-    }
+    const STRANGER_MULTI_LOG_KEYS = [
+      "stranger.multiple0",
+      "stranger.multiple1",
+      "stranger.multiple2",
+    ] as const;
+
+    const STRANGER_MULTI_MESSAGES = [
+      (count: number) => `${count} strangers join the village.`,
+      (count: number) => `${count} travelers arrive and decide to stay.`,
+      (count: number) => `${count} wanderers arrive and join the community.`,
+    ] as const;
+
+    const useMultiStrangerMessages = strangersCount > 1;
+    const variantIndex = Math.floor(
+      Math.random() *
+        (useMultiStrangerMessages
+          ? STRANGER_MULTI_LOG_KEYS.length
+          : STRANGER_SINGLE_LOG_KEYS.length),
+    );
+    const logKey = useMultiStrangerMessages
+      ? STRANGER_MULTI_LOG_KEYS[variantIndex]
+      : STRANGER_SINGLE_LOG_KEYS[variantIndex];
+    const selectedMessage = useMultiStrangerMessages
+      ? STRANGER_MULTI_MESSAGES[variantIndex](strangersCount)
+      : STRANGER_SINGLE_MESSAGES[variantIndex];
 
     const gameStateForCap = buildGameState(state);
     const { added, patch } = addFreeVillagersWithinCap(
@@ -1254,10 +1290,11 @@ function handleStrangerApproach() {
     });
 
     // Add log entry for stranger approach
-    const selectedMessage = messages[Math.floor(Math.random() * messages.length)];
     state.addLogEntry({
       id: `stranger-approaches-${Date.now()}`,
       message: selectedMessage,
+      logKey,
+      logVars: useMultiStrangerMessages ? { count: strangersCount } : undefined,
       timestamp: Date.now(),
       type: "system",
     });

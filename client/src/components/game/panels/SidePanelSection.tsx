@@ -401,7 +401,10 @@ export default function SidePanelSection({
         effect.description);
 
     // Check if this item has a tooltip (for buildings with stats)
-    const hasTooltip = item.tooltip && item.tooltip.length > 0;
+    const hasTooltip =
+      item.tooltip !== undefined &&
+      item.tooltip !== false &&
+      (typeof item.tooltip !== "string" || item.tooltip.length > 0);
 
     // Determine madness intensity classes
     const getMadnessClasses = (value: number) => {

@@ -242,15 +242,39 @@ export type CommitInvestmentInput = {
 export type CommitInvestmentResult = { ok: true; active: InvestmentActive };
 
 export function formatInvestmentCompletionLog(active: InvestmentActive): string {
+  return getInvestmentCompletionLogMeta(active).message;
+}
+
+export function getInvestmentCompletionLogMeta(active: InvestmentActive): {
+  message: string;
+  logKey: string;
+  logVars: Record<string, string | number>;
+} {
+  const { amountGold, payoutGold } = active;
   if (active.success) {
+    const logKey = active.luckyChanceHit
+      ? "investmentComplete.successLucky"
+      : "investmentComplete.success";
     const outcomeNote = active.luckyChanceHit ? " Lucky Chance!" : "Success.";
-    return `${active.amountGold} Gold investment complete: ${outcomeNote} You gained ${active.payoutGold} Gold.`;
+    return {
+      message: `${amountGold} Gold investment complete: ${outcomeNote} You gained ${payoutGold} Gold.`,
+      logKey,
+      logVars: { amount: amountGold, payout: payoutGold },
+    };
   }
   if (active.totalLoss) {
-    return `${active.amountGold} Gold investment complete: Wipeout. You lost your full investment of ${active.amountGold} Gold.`;
+    return {
+      message: `${amountGold} Gold investment complete: Wipeout. You lost your full investment of ${amountGold} Gold.`,
+      logKey: "investmentComplete.wipeout",
+      logVars: { amount: amountGold },
+    };
   }
-  const lp = active.lossPercentInt ?? 0;
-  return `${active.amountGold} Gold investment complete: Failure. You lost ${active.amountGold - active.payoutGold} Gold.`;
+  const loss = amountGold - payoutGold;
+  return {
+    message: `${amountGold} Gold investment complete: Failure. You lost ${loss} Gold.`,
+    logKey: "investmentComplete.failure",
+    logVars: { amount: amountGold, loss },
+  };
 }
 
 /** UI outcome for the post-maturity result dialog (maps to ⇧ / ⇮ / rotated ⇮ / ⇩). */

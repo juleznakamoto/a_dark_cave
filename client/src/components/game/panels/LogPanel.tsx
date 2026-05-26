@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
 import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
 import { GAME_CONSTANTS } from "@/game/constants";
+import { resolveLogPanelMessage } from "@/i18n/logDisplay";
 
 // Extended log entry type to support "production" type if it exists in the data
 type ExtendedLogEntry =
@@ -15,6 +17,7 @@ type ExtendedLogEntry =
   };
 
 function LogPanel() {
+  const { i18n } = useTranslation("ui");
   const { log, timedEventTab } = useGameStore();
   const isBloodMoon =
     timedEventTab?.isActive && timedEventTab?.event?.title === "Blood Moon";
@@ -27,7 +30,7 @@ function LogPanel() {
   // Get only the last entries and reverse them so latest is at top
   const recentEntries = useMemo(
     () => log.slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES).reverse(),
-    [log],
+    [log, i18n.language],
   );
 
   // Auto-scroll to top when new entries are added
@@ -88,9 +91,7 @@ function LogPanel() {
                     <span className="w-1 shrink-0" aria-hidden={true} />
                   )}
                   <span className="flex-1 min-w-0">
-                    {typeof typedEntry.message === "string"
-                      ? typedEntry.message
-                      : JSON.stringify(typedEntry.message)}
+                    {resolveLogPanelMessage(typedEntry as LogEntry)}
                   </span>
                 </div>
               );

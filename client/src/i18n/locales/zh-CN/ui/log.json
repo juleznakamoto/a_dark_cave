@@ -1,0 +1,33 @@
+{
+  "log": {
+    "freezingDeath": {
+      "one": "一名村民在严寒中冻死。",
+      "other": "{{count}} 名村民在严寒中冻死。"
+    },
+    "madnessDeath": {
+      "one": "一名村民陷入疯狂并结束了自己的生命。",
+      "other": "{{count}} 名村民陷入疯狂并结束了自己的生命。"
+    },
+    "starvationDeath": {
+      "one": "一名村民因饥饿而死亡。",
+      "other": "{{count}} 名村民因饥饿而死亡。"
+    },
+    "investmentComplete": {
+      "success": "{{amount}} 金币投资完成：成功。你获得了 {{payout}} 金币。",
+      "successLucky": "{{amount}} 金币投资完成：幸运！你获得了 {{payout}} 金币。",
+      "wipeout": "{{amount}} 金币投资完成：血本无归。你失去了全部 {{amount}} 金币的投资。",
+      "failure": "{{amount}} 金币投资完成：失败。你失去了 {{loss}} 金币。"
+    },
+    "stranger": {
+      "variant0": "一名陌生人走近并加入了村庄。",
+      "variant1": "一名旅者到来并决定留下。",
+      "variant2": "一名流浪者出现并成为社区的一员。",
+      "variant3": "有人走近村庄并定居下来。",
+      "variant4": "一名陌生人加入了社区。",
+      "variant5": "一名新来者到来并安顿下来。",
+      "multiple0": "{{count}} 名陌生人加入了村庄。",
+      "multiple1": "{{count}} 名旅者到来并决定留下。",
+      "multiple2": "{{count}} 名流浪者到来并加入社区。"
+    }
+  }
+}
