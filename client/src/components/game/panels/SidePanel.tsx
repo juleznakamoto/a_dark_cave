@@ -12,6 +12,7 @@ import {
   getResourceName,
   getStatName,
   getVillagerJobName,
+  tWithFallback,
 } from "@/i18n/resolveGameText";
 import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
@@ -878,6 +879,19 @@ export default function SidePanel() {
     totalKnowledge > 0 ||
     totalMadness > 0;
 
+  const statsHeaderTooltipFallback =
+    "Stats influence the outcome of events and later on are relevant in combat.";
+  const statsHeaderTooltipRaw = tWithFallback(
+    "ui",
+    "sidePanel.statsTooltip",
+    statsHeaderTooltipFallback,
+  );
+  const statsHeaderTooltip =
+    statsHeaderTooltipRaw === "sidePanel.statsTooltip" ||
+      statsHeaderTooltipRaw === "ui:sidePanel.statsTooltip"
+      ? statsHeaderTooltipFallback
+      : statsHeaderTooltipRaw;
+
   // Determine which sections to show based on active tab
   const shouldShowSection = (sectionName: string): boolean => {
     switch (activeTab) {
@@ -1018,6 +1032,7 @@ export default function SidePanel() {
             <SidePanelSection
               sectionId="stats"
               title={t("sidePanel.stats")}
+              titleTooltip={statsHeaderTooltip}
               items={statsItems}
             />
           )}

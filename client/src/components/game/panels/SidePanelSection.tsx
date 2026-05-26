@@ -11,7 +11,6 @@ import ResourceChangeNotification from "./ResourceChangeNotification";
 import { useGameStore } from "@/game/state";
 import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
 import { cn } from "@/lib/utils";
-import { useTranslation } from "react-i18next";
 import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
 
 interface SidePanelItem {
@@ -105,7 +104,6 @@ export default function SidePanelSection({
   titleTooltip,
   activeTab,
 }: SidePanelSectionProps) {
-  const { t } = useTranslation("ui");
   const visibleItems = (items || []).filter((item) => item.visible !== false);
   const [animatedItems, setAnimatedItems] = useState<Set<string>>(new Set());
   const [decreaseAnimatedItems, setDecreaseAnimatedItems] = useState<
@@ -786,20 +784,11 @@ export default function SidePanelSection({
   const baseTitleForKey = titleString.split(" ")[0];
   const tooltipKey = `section-title-${baseTitleForKey}`;
 
-  const resolvedTitleTooltip = (() => {
-    if (titleTooltip?.startsWith("sidePanel.")) {
-      return t(titleTooltip);
-    }
-    if (titleTooltip) return titleTooltip;
-    if (sectionId === "stats") return t("sidePanel.statsTooltip");
-    return undefined;
-  })();
-
   return (
     <div className={`py-1.5 border-border ${className}`}>
-      {resolvedTitleTooltip ? (
+      {titleTooltip ? (
         <TooltipWrapper
-          tooltip={<div className="text-xs">{resolvedTitleTooltip}</div>}
+          tooltip={<div className="text-xs">{titleTooltip}</div>}
           tooltipId={tooltipKey}
           disabled
           onMouseEnter={() => {
