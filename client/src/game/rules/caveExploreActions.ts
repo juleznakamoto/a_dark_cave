@@ -273,9 +273,8 @@ const caveItems = {
     },
     {
       key: "clarity_elixir",
-      probability: 0.01,
+      probability: 0.9901,
       category: "consumable",
-      stageOnly: true,
       isChoice: true,
       eventId: "clarityElixirCaveFoundVentureDeeper",
       seenKey: "clarityElixirFoundVentureDeeper",
@@ -294,7 +293,6 @@ const caveItems = {
       key: "clarity_elixir",
       probability: 0.01,
       category: "consumable",
-      stageOnly: true,
       isChoice: true,
       eventId: "clarityElixirCaveFoundDescendFurther",
       seenKey: "clarityElixirFoundDescendFurther",
