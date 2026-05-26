@@ -360,7 +360,134 @@ const LEGACY_ACTION_LOG_MESSAGES: Array<{
       message:
         "You venture deep into Blackreach Canyon. There, perched on a stone pillar, sits a magnificent one-eyed crow. Using the harness, your carefully approach and bond with the creature. The One-eyed Crow has joined your fellowship.",
     },
+    {
+      actionId: "castleRuins",
+      logKey: "success",
+      message:
+        "The expedition to the dead necromancer's castle ruins proves successful! Deep within them you find the ancient scrolls wrapped in dark silk, revealing cryptic knowledge about how to defeat what was locked deep in the cave.",
+    },
+    {
+      actionId: "castleRuins",
+      logKey: "success",
+      message:
+        "The expedition to the dead necromancer's castle ruins proves successful! Deep within the you find the ancient scrolls wrapped in dark silk, revealing cryptic knowledge about how to defeat what was locked deep in the cave.",
+    },
+    {
+      actionId: "castleRuins",
+      logKey: "minorFailure",
+      message:
+        "Your expedition is ambushed by grotesque undead experiments left behind by the necromancer. {{count}} villagers fall to the undead before the survivors manage to retreat.",
+    },
+    {
+      actionId: "castleRuins",
+      logKey: "majorFailure",
+      message:
+        "Shortly after your expedition enters the cursed castle ruins dozens of undead creatures pour from hidden chambers. In the desperate battle that follows, {{count}} villagers are overwhelmed by the supernatural horde. The survivors flee in terror.",
+    },
+    {
+      actionId: "banditLair",
+      logKey: "success",
+      message:
+        "Your party tracks the bandit to a ramshackle lair. You overwhelm him, recover the trader's dagger, and find 250 silver stashed among his plunder.",
+    },
+    {
+      actionId: "banditLair",
+      logKey: "failure",
+      message:
+        "Your villagers search the hills but cannot corner the bandit. The trail goes cold, and the dagger is still in his hands.",
+    },
+    {
+      actionId: "canyonBridge",
+      logKey: "complete",
+      message:
+        "The canyon bridge stands complete. Ashwraith traders can now reach your settlement—and you can sell goods to them at agreed rates.",
+    },
+    {
+      actionId: "collapsedTower",
+      logKey: "success",
+      message:
+        "Inside the tower you find a necromancer and his followers, surrounded by vials of liquids and crude syringes. He was harvesting the villagers' blood for dark experiments. Your men put an end to his vile work and take a vial of his blood. Among his tools, you find his powerful bone saw.",
+    },
+    {
+      actionId: "hillGrave",
+      logKey: "success",
+      message:
+        "Your expedition carefully navigates the treacherous traps of the hill grave. Your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king's treasures, you discover pure frostglass, cold as the void itself.",
+    },
+    {
+      actionId: "hunt",
+      logKey: "mapFragmentHunt",
+      message:
+        "While hunting, something catches your eye in the mud. A water-stained scrap, perhaps part of a map.",
+    },
+    {
+      actionId: "layTrap",
+      logKey: "trapSuccessNoDeaths",
+      message:
+        "The giant trap works perfectly! A massive black bear with glowing red eyes is caught. Your villagers slay the supernatural beast and claim its cursed black fur as a trophy.",
+    },
+    {
+      actionId: "layTrap",
+      logKey: "trapFailed",
+      message:
+        "The giant trap is set, but when checked only giant claw marks are found next to it. Whatever prowls these forests is too cunning for your trap... this time.",
+    },
+    {
+      actionId: "risingSmoke",
+      logKey: "success",
+      message:
+        "Your expedition finds an outlaw camp. The fight is brutal, but you win. In a chest you find 500 Gold.",
+    },
+    {
+      actionId: "steelDelivery",
+      logKey: "success",
+      message:
+        "Your caravan delivers the steel to the Swamp Tribe as promised. In return, the tribe presents you with Chitin Plates harvested from swamp creatures. These can be used to construct powerful fortifications.",
+    },
+    {
+      actionId: "sunkenTemple",
+      logKey: "success",
+      message:
+        "Your expedition wades through the swamp waters to reach the ancient half-sunken temple. Despite the dangers lurking in the dark waters, the villagers navigate carefully through the submerged halls and find the bloodstone gems in the temple's inner sanctum.",
+    },
   ];
+
+function resolveLegacyRisingSmokeSuccess(message: string): string | null {
+  const base =
+    "Your expedition finds an outlaw camp. The fight is brutal, but you win. In a chest you find 500 Gold.";
+  if (!message.startsWith(base)) return null;
+
+  let text = getActionLogMessage("risingSmoke", "success", base);
+  const remainder = message.slice(base.length);
+
+  const keySuffix =
+    " With your skeleton key you open a hidden compartment and find another 250 Gold.";
+  let rest = remainder;
+  if (rest.startsWith(keySuffix)) {
+    text += getActionLogMessage("risingSmoke", "successKeyBonus", keySuffix);
+    rest = rest.slice(keySuffix.length);
+  }
+
+  const captiveOneSuffix =
+    " 1 captive from the camp chooses to join the village.";
+  const captiveOtherMatch = rest.match(
+    /^ (\d+) captives from the camp choose to join the village\.$/,
+  );
+  if (rest === captiveOneSuffix) {
+    text += getActionLogMessage("risingSmoke", "captiveOne", captiveOneSuffix);
+  } else if (captiveOtherMatch) {
+    text += getActionLogMessage(
+      "risingSmoke",
+      "captivesOther",
+      " {{count}} captives from the camp choose to join the village.",
+      { count: Number(captiveOtherMatch[1]) },
+    );
+  } else if (rest !== "") {
+    return null;
+  }
+
+  return text;
+}
 
 function resolveLegacySystemLog(message: string): string | null {
   if (message === "You find an old, dusty bag with 25 Torches in the cave.") {
@@ -382,6 +509,105 @@ function resolveLegacySystemLog(message: string): string | null {
       "failure",
       "As the expedition enters the cave it is overwhelmed by a pack of brutal hounds. {{count}} villagers are torn apart by savage jaws before the survivors manage to retreat.",
       { count: Number(forestCaveFailure[1]) },
+    );
+  }
+
+  const castleRuinsMinorFailure = message.match(
+    /^Your expedition is ambushed by grotesque undead experiments left behind by the necromancer\. (\d+) villagers? falls? to the undead before the survivors manage to retreat\.$/,
+  );
+  if (castleRuinsMinorFailure) {
+    return getActionLogMessage(
+      "castleRuins",
+      "minorFailure",
+      "Your expedition is ambushed by grotesque undead experiments left behind by the necromancer. {{count}} villagers fall to the undead before the survivors manage to retreat.",
+      { count: Number(castleRuinsMinorFailure[1]) },
+    );
+  }
+
+  const castleRuinsMajorFailure = message.match(
+    /^Shortly after your expedition enters the cursed castle ruins dozens of undead creatures pour from hidden chambers\. In the desperate battle that follows, (\d+) villagers are overwhelmed by the supernatural horde\. The survivors flee in terror\.$/,
+  );
+  if (castleRuinsMajorFailure) {
+    return getActionLogMessage(
+      "castleRuins",
+      "majorFailure",
+      "Shortly after your expedition enters the cursed castle ruins dozens of undead creatures pour from hidden chambers. In the desperate battle that follows, {{count}} villagers are overwhelmed by the supernatural horde. The survivors flee in terror.",
+      { count: Number(castleRuinsMajorFailure[1]) },
+    );
+  }
+
+  const risingSmokeSuccess = resolveLegacyRisingSmokeSuccess(message);
+  if (risingSmokeSuccess) return risingSmokeSuccess;
+
+  const hillGraveFailure = message.match(
+    /^Your expedition enters the hill grave but lacks the skill to navigate its deadly traps\. (\d+) villagers fall to the king's final defenses before the survivors retreat in horror, leaving their companions' bodies in the cursed tomb\.$/,
+  );
+  if (hillGraveFailure) {
+    return getActionLogMessage(
+      "hillGrave",
+      "failure",
+      "Your expedition enters the hill grave but lacks the skill to navigate its deadly traps. {{count}} villagers fall to the king's final defenses before the survivors retreat in horror, leaving their companions' bodies in the cursed tomb.",
+      { count: Number(hillGraveFailure[1]) },
+    );
+  }
+
+  const sunkenTempleFailure = message.match(
+    /^Your expedition ventures into the swamp, seeking the sunken temple\. The murky waters hide unspeakable horrors\. Abominable creatures born of ancient magic rise from the depths and drag (\d+) villagers beneath the surface before the survivors flee\.$/,
+  );
+  if (sunkenTempleFailure) {
+    return getActionLogMessage(
+      "sunkenTemple",
+      "failure",
+      "Your expedition ventures into the swamp, seeking the sunken temple. The murky waters hide unspeakable horrors. Abominable creatures born of ancient magic rise from the depths and drag {{count}} villagers beneath the surface before the survivors flee.",
+      { count: Number(sunkenTempleFailure[1]) },
+    );
+  }
+
+  const collapsedTowerFailure = message.match(
+    /^Your expedition reaches the Collapsed Tower, but you are attacked by hooded figures outside\. A tall man in a dark robe stands among them, commanding an aura of menace\. (\d+) villagers fall before the rest flee to safety\.$/,
+  );
+  if (collapsedTowerFailure) {
+    return getActionLogMessage(
+      "collapsedTower",
+      "failure",
+      "Your expedition reaches the Collapsed Tower, but you are attacked by hooded figures outside. A tall man in a dark robe stands among them, commanding an aura of menace. {{count}} villagers fall before the rest flee to safety.",
+      { count: Number(collapsedTowerFailure[1]) },
+    );
+  }
+
+  const layTrapWithDeaths = message.match(
+    /^The giant trap snares a colossal black bear with burning red eyes! (\d+) (?:brave )?villagers? falls? to its supernatural claws before the beast is finally slain\. You claim its cursed black fur as a hard-won trophy\.$/,
+  );
+  if (layTrapWithDeaths) {
+    return getActionLogMessage(
+      "layTrap",
+      "trapSuccessWithDeaths",
+      "The giant trap snares a colossal black bear with burning red eyes! {{count}} villagers fall to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy.",
+      { count: Number(layTrapWithDeaths[1]) },
+    );
+  }
+
+  const layTrapHeavy = message.match(
+    /^The giant trap snares a colossal black bear with eyes like burning coals\. (\d+) villagers fall to its supernatural fury before the beast is finally overwhelmed\. You claim its cursed black fur\.$/,
+  );
+  if (layTrapHeavy) {
+    return getActionLogMessage(
+      "layTrap",
+      "trapSuccessHeavy",
+      "The giant trap snares a colossal black bear with eyes like burning coals. {{count}} villagers fall to its supernatural fury before the beast is finally overwhelmed. You claim its cursed black fur.",
+      { count: Number(layTrapHeavy[1]) },
+    );
+  }
+
+  const risingSmokeFailure = message.match(
+    /^Your expedition reaches an outlaw camp, but the fight goes terribly wrong\. (\d+) villagers? falls? before the survivors flee back to the village\.$/,
+  );
+  if (risingSmokeFailure) {
+    return getActionLogMessage(
+      "risingSmoke",
+      "failure",
+      "Your expedition reaches an outlaw camp, but the fight goes terribly wrong. {{count}} villagers fall before the survivors flee back to the village.",
+      { count: Number(risingSmokeFailure[1]) },
     );
   }
 
@@ -467,6 +693,19 @@ function resolveEventLogPanelMessage(entry: LogEntry): string | null {
   }
 
   return null;
+}
+
+/** Re-localize reward/outcome dialog narrative stored as English or a prior locale. */
+export function resolveOutcomeLogMessage(
+  message: string | undefined,
+): string | undefined {
+  if (!message?.trim()) return undefined;
+  return resolveLogPanelMessage({
+    id: "outcome",
+    message,
+    timestamp: 0,
+    type: "system",
+  });
 }
 
 /** Display text for a log panel row (re-localizes system lines from keys or English fallbacks). */

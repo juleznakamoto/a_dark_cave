@@ -848,7 +848,7 @@ export default function CombatDialog({
                         >
                           <span
                             className="font-noto-symbols-2 inline-flex shrink-0 items-center justify-center text-sm font-normal leading-none"
-                            aria-label={t("combat.attackDetailsAria")}
+                            aria-label={t("ui:combat.attackDetailsAria")}
                           >
                             🛈
                           </span>

@@ -3,7 +3,11 @@
     "label": "Animals"
   },
   "banditLair": {
-    "label": "Bandit Lair"
+    "label": "Bandit Lair",
+    "log": {
+      "success": "Your party tracks the bandit to a ramshackle lair. You overwhelm him, recover the trader's dagger, and find 250 silver stashed among his plunder.",
+      "failure": "Your villagers search the hills but cannot corner the bandit. The trail goes cold, and the dagger is still in his hands."
+    }
   },
   "blackreachCanyon": {
     "label": "Blackreach Canyon",
@@ -257,10 +261,18 @@
     "label": "Wooden Hut"
   },
   "canyonBridge": {
-    "label": "Canyon Bridge"
+    "label": "Canyon Bridge",
+    "log": {
+      "complete": "The canyon bridge stands complete. Ashwraith traders can now reach your settlement—and you can sell goods to them at agreed rates."
+    }
   },
   "castleRuins": {
-    "label": "Castle Ruins"
+    "label": "Castle Ruins",
+    "log": {
+      "success": "The expedition to the dead necromancer's castle ruins proves successful! Deep within them you find the ancient scrolls wrapped in dark silk, revealing cryptic knowledge about how to defeat what was locked deep in the cave.",
+      "minorFailure": "Your expedition is ambushed by grotesque undead experiments left behind by the necromancer. {{count}} villagers fall to the undead before the survivors manage to retreat.",
+      "majorFailure": "Shortly after your expedition enters the cursed castle ruins dozens of undead creatures pour from hidden chambers. In the desperate battle that follows, {{count}} villagers are overwhelmed by the supernatural horde. The survivors flee in terror."
+    }
   },
   "chopWood": {
     "label": "Gather Wood",
@@ -272,7 +284,11 @@
     "label": "Call Merchant"
   },
   "collapsedTower": {
-    "label": "Collapsed Tower"
+    "label": "Collapsed Tower",
+    "log": {
+      "success": "Inside the tower you find a necromancer and his followers, surrounded by vials of liquids and crude syringes. He was harvesting the villagers' blood for dark experiments. Your men put an end to his vile work and take a vial of his blood. Among his tools, you find his powerful bone saw.",
+      "failure": "Your expedition reaches the Collapsed Tower, but you are attacked by hooded figures outside. A tall man in a dark robe stands among them, commanding an aura of menace. {{count}} villagers fall before the rest flee to safety."
+    }
   },
   "craftAdamantAxe": {
     "label": "Adamant Axe"
@@ -488,19 +504,32 @@
     }
   },
   "hillGrave": {
-    "label": "Hill Grave"
+    "label": "Hill Grave",
+    "log": {
+      "success": "Your expedition carefully navigates the treacherous traps of the hill grave. Your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king's treasures, you discover pure frostglass, cold as the void itself.",
+      "failure": "Your expedition enters the hill grave but lacks the skill to navigate its deadly traps. {{count}} villagers fall to the king's final defenses before the survivors retreat in horror, leaving their companions' bodies in the cursed tomb."
+    }
   },
   "humans": {
     "label": "Humans"
   },
   "hunt": {
-    "label": "Hunt"
+    "label": "Hunt",
+    "log": {
+      "mapFragmentHunt": "While hunting, something catches your eye in the mud. A water-stained scrap, perhaps part of a map."
+    }
   },
   "invest": {
     "label": "Invest"
   },
   "layTrap": {
-    "label": "Lay Trap"
+    "label": "Lay Trap",
+    "log": {
+      "trapSuccessNoDeaths": "The giant trap works perfectly! A massive black bear with glowing red eyes is caught. Your villagers slay the supernatural beast and claim its cursed black fur as a trophy.",
+      "trapSuccessWithDeaths": "The giant trap snares a colossal black bear with burning red eyes! {{count}} villagers fall to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy.",
+      "trapSuccessHeavy": "The giant trap snares a colossal black bear with eyes like burning coals. {{count}} villagers fall to its supernatural fury before the beast is finally overwhelmed. You claim its cursed black fur.",
+      "trapFailed": "The giant trap is set, but when checked only giant claw marks are found next to it. Whatever prowls these forests is too cunning for your trap... this time."
+    }
   },
   "leatherTotems": {
     "label": "Leather Totems"
@@ -579,7 +608,14 @@
     "label": "Repair Watchtower"
   },
   "risingSmoke": {
-    "label": "Rising smoke"
+    "label": "Rising smoke",
+    "log": {
+      "success": "Your expedition finds an outlaw camp. The fight is brutal, but you win. In a chest you find 500 Gold.",
+      "successKeyBonus": " With your skeleton key you open a hidden compartment and find another 250 Gold.",
+      "captiveOne": " 1 captive from the camp chooses to join the village.",
+      "captivesOther": " {{count}} captives from the camp choose to join the village.",
+      "failure": "Your expedition reaches an outlaw camp, but the fight goes terribly wrong. {{count}} villagers fall before the survivors flee back to the village."
+    }
   },
   "sellBlacksteelBatch": {
     "label": "Sell Blacksteel"
@@ -591,10 +627,17 @@
     "label": "Sell Steel"
   },
   "steelDelivery": {
-    "label": "Steel Delivery"
+    "label": "Steel Delivery",
+    "log": {
+      "success": "Your caravan delivers the steel to the Swamp Tribe as promised. In return, the tribe presents you with Chitin Plates harvested from swamp creatures. These can be used to construct powerful fortifications."
+    }
   },
   "sunkenTemple": {
-    "label": "Sunken Temple"
+    "label": "Sunken Temple",
+    "log": {
+      "success": "Your expedition wades through the swamp waters to reach the ancient half-sunken temple. Despite the dangers lurking in the dark waters, the villagers navigate carefully through the submerged halls and find the bloodstone gems in the temple's inner sanctum.",
+      "failure": "Your expedition ventures into the swamp, seeking the sunken temple. The murky waters hide unspeakable horrors. Abominable creatures born of ancient magic rise from the depths and drag {{count}} villagers beneath the surface before the survivors flee."
+    }
   },
   "swampSanctuary": {
     "label": "Swamp Sanctuary"

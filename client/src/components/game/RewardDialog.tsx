@@ -8,6 +8,7 @@ import {
   getStatName,
 } from "@/i18n/resolveGameText";
 import { useTranslation } from "react-i18next";
+import { resolveOutcomeLogMessage } from "@/i18n/logDisplay";
 import OutcomeDialog, {
   OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS,
 } from "./OutcomeDialog";
@@ -283,7 +284,7 @@ export default function RewardDialog({
           </span>
         )
       }
-      successLog={successLog}
+      successLog={resolveOutcomeLogMessage(successLog)}
       title={title?.trim() ? title : t("ui:reward.actionReward")}
       variant={isLossVariant ? "loss" : "success"}
       buttonText={

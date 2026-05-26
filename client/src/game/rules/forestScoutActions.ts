@@ -134,8 +134,7 @@ export const forestScoutActions: Record<string, Action> = {
           value: true,
           condition:
             "!story.seen.mapFragmentHuntFound && !story.seen.swampMapAssembled",
-          logMessage:
-            "While hunting, something catches your eye in the mud. A water-stained scrap, perhaps part of a map.",
+          logMessageKey: "mapFragmentHunt",
         },
         "resources.veinroot": {
           probability: 0.01,
@@ -460,9 +459,29 @@ export function handleHunt(
   if (effectUpdates.logMessages) {
     effectUpdates.logMessages.forEach((message: string | any) => {
       if (typeof message === "string") {
+        if (!message.trim()) return;
         result.logEntries!.push({
           id: `probability-effect-${Date.now()}-${Math.random()}`,
-          message: message,
+          message,
+          timestamp: Date.now(),
+          type: "system",
+        });
+      } else if (
+        message &&
+        typeof message === "object" &&
+        "logKey" in message &&
+        "actionId" in message
+      ) {
+        result.logEntries!.push({
+          id: `probability-effect-${Date.now()}-${Math.random()}`,
+          message: getActionLogMessage(
+            message.actionId,
+            message.logKey,
+            message.actionId === "hunt" && message.logKey === "mapFragmentHunt"
+              ? "While hunting, something catches your eye in the mud. A water-stained scrap, perhaps part of a map."
+              : "",
+            message.vars,
+          ),
           timestamp: Date.now(),
           type: "system",
         });
@@ -535,22 +554,35 @@ export function handleLayTrap(
     if (actualDeaths === 0) {
       result.logEntries!.push({
         id: `giant-bear-trapped-success-${Date.now()}`,
-        message:
+        message: getActionLogMessage(
+          "layTrap",
+          "trapSuccessNoDeaths",
           "The giant trap works perfectly! A massive black bear with glowing red eyes is caught. Your villagers slay the supernatural beast and claim its cursed black fur as a trophy.",
+        ),
         timestamp: Date.now(),
         type: "system",
       });
     } else if (actualDeaths <= 2) {
       result.logEntries!.push({
         id: `giant-bear-trapped-victory-${Date.now()}`,
-        message: `The giant trap snares a colossal black bear with burning red eyes! ${actualDeaths} brave villager${actualDeaths > 1 ? "s" : ""} fall${actualDeaths === 1 ? "s" : ""} to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy.`,
+        message: getActionLogMessage(
+          "layTrap",
+          "trapSuccessWithDeaths",
+          "The giant trap snares a colossal black bear with burning red eyes! {{count}} villagers fall to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy.",
+          { count: actualDeaths },
+        ),
         timestamp: Date.now(),
         type: "system",
       });
     } else {
       result.logEntries!.push({
         id: `giant-bear-trapped-defeat-${Date.now()}`,
-        message: `The giant trap snares a colossal black bear with eyes like burning coals. ${actualDeaths} villagers fall to its supernatural fury before the beast is finally overwhelmed. You claim its cursed black fur.`,
+        message: getActionLogMessage(
+          "layTrap",
+          "trapSuccessHeavy",
+          "The giant trap snares a colossal black bear with eyes like burning coals. {{count}} villagers fall to its supernatural fury before the beast is finally overwhelmed. You claim its cursed black fur.",
+          { count: actualDeaths },
+        ),
         timestamp: Date.now(),
         type: "system",
       });
@@ -559,8 +591,11 @@ export function handleLayTrap(
     // Failure: Nothing caught
     result.logEntries!.push({
       id: `giant-trap-failed-${Date.now()}`,
-      message:
+      message: getActionLogMessage(
+        "layTrap",
+        "trapFailed",
         "The giant trap is set, but when checked only giant claw marks are found next to it. Whatever prowls these forests is too cunning for your trap... this time.",
+      ),
       timestamp: Date.now(),
       type: "system",
     });
@@ -612,8 +647,11 @@ export function handleCastleRuins(
 
     result.logEntries!.push({
       id: `castle-ruins-success-${Date.now()}`,
-      message:
-        "The expedition to the dead necromancer's castle ruins proves successful! Deep within the you find the ancient scrolls wrapped in dark silk, revealing cryptic knowledge about how to defeat what was locked deep in the cave.",
+      message: getActionLogMessage(
+        "castleRuins",
+        "success",
+        "The expedition to the dead necromancer's castle ruins proves successful! Deep within them you find the ancient scrolls wrapped in dark silk, revealing cryptic knowledge about how to defeat what was locked deep in the cave.",
+      ),
       timestamp: Date.now(),
       type: "system",
     });
@@ -639,7 +677,12 @@ export function handleCastleRuins(
 
       result.logEntries!.push({
         id: `castle-ruins-minor-attack-${Date.now()}`,
-        message: `Your expedition is ambushed by grotesque undead experiments left behind by the necromancer. ${actualDeaths} villager${actualDeaths > 1 ? "s" : ""} fall${actualDeaths === 1 ? "s" : ""} to the undead before the survivors manage to retreat.`,
+        message: getActionLogMessage(
+          "castleRuins",
+          "minorFailure",
+          "Your expedition is ambushed by grotesque undead experiments left behind by the necromancer. {{count}} villagers fall to the undead before the survivors manage to retreat.",
+          { count: actualDeaths },
+        ),
         timestamp: Date.now(),
         type: "system",
       });
@@ -656,7 +699,12 @@ export function handleCastleRuins(
 
       result.logEntries!.push({
         id: `castle-ruins-major-attack-${Date.now()}`,
-        message: `Shortly after your expedition enters the cursed castle ruins dozens of undead creatures pour from hidden chambers. In the desperate battle that follows, ${actualDeaths} villagers are overwhelmed by the supernatural horde. The survivors flee in terror.`,
+        message: getActionLogMessage(
+          "castleRuins",
+          "majorFailure",
+          "Shortly after your expedition enters the cursed castle ruins dozens of undead creatures pour from hidden chambers. In the desperate battle that follows, {{count}} villagers are overwhelmed by the supernatural horde. The survivors flee in terror.",
+          { count: actualDeaths },
+        ),
         timestamp: Date.now(),
         type: "system",
       });
@@ -710,8 +758,11 @@ export function handleHillGrave(
 
     result.logEntries!.push({
       id: `hill-grave-success-${Date.now()}`,
-      message:
+      message: getActionLogMessage(
+        "hillGrave",
+        "success",
         "Your expedition carefully navigates the treacherous traps of the hill grave. Your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king's treasures, you discover pure frostglass, cold as the void itself.",
+      ),
       timestamp: Date.now(),
       type: "system",
     });
@@ -729,7 +780,12 @@ export function handleHillGrave(
 
     result.logEntries!.push({
       id: `hill-grave-failure-${Date.now()}`,
-      message: `Your expedition enters the hill grave but lacks the skill to navigate its deadly traps. ${actualDeaths} villagers fall to the king's final defenses before the survivors retreat in horror, leaving their companions' bodies in the cursed tomb.`,
+      message: getActionLogMessage(
+        "hillGrave",
+        "failure",
+        "Your expedition enters the hill grave but lacks the skill to navigate its deadly traps. {{count}} villagers fall to the king's final defenses before the survivors retreat in horror, leaving their companions' bodies in the cursed tomb.",
+        { count: actualDeaths },
+      ),
       timestamp: Date.now(),
       type: "system",
     });
@@ -783,8 +839,11 @@ export function handleSunkenTemple(
 
     result.logEntries!.push({
       id: `sunken-temple-success-${Date.now()}`,
-      message:
+      message: getActionLogMessage(
+        "sunkenTemple",
+        "success",
         "Your expedition wades through the swamp waters to reach the ancient half-sunken temple. Despite the dangers lurking in the dark waters, the villagers navigate carefully through the submerged halls and find the bloodstone gems in the temple's inner sanctum.",
+      ),
       timestamp: Date.now(),
       type: "system",
     });
@@ -802,7 +861,12 @@ export function handleSunkenTemple(
 
     result.logEntries!.push({
       id: `sunken-temple-failure-${Date.now()}`,
-      message: `Your expedition ventures into the swamp, seeking the sunken temple. The murky waters hide unspeakable horrors. Abominable creatures born of ancient magic rise from the depths and drag ${actualDeaths} villagers beneath the surface before the survivors flee.`,
+      message: getActionLogMessage(
+        "sunkenTemple",
+        "failure",
+        "Your expedition ventures into the swamp, seeking the sunken temple. The murky waters hide unspeakable horrors. Abominable creatures born of ancient magic rise from the depths and drag {{count}} villagers beneath the surface before the survivors flee.",
+        { count: actualDeaths },
+      ),
       timestamp: Date.now(),
       type: "system",
     });
@@ -912,8 +976,11 @@ export function handlecollapsedTower(
 
     result.logEntries!.push({
       id: `collapsed-tower-success-${Date.now()}`,
-      message:
+      message: getActionLogMessage(
+        "collapsedTower",
+        "success",
         "Inside the tower you find a necromancer and his followers, surrounded by vials of liquids and crude syringes. He was harvesting the villagers' blood for dark experiments. Your men put an end to his vile work and take a vial of his blood. Among his tools, you find his powerful bone saw.",
+      ),
       timestamp: Date.now(),
       type: "system",
     });
@@ -931,7 +998,12 @@ export function handlecollapsedTower(
 
     result.logEntries!.push({
       id: `collapsed-tower-minor-failure-${Date.now()}`,
-      message: `Your expedition reaches the Collapsed Tower, but you are attacked by hooded figures outside. A tall man in a dark robe stands among them, commanding an aura of menace. ${actualDeaths} villagers fall before the rest flee to safety.`,
+      message: getActionLogMessage(
+        "collapsedTower",
+        "failure",
+        "Your expedition reaches the Collapsed Tower, but you are attacked by hooded figures outside. A tall man in a dark robe stands among them, commanding an aura of menace. {{count}} villagers fall before the rest flee to safety.",
+        { count: actualDeaths },
+      ),
       timestamp: Date.now(),
       type: "system",
     });
@@ -1092,8 +1164,11 @@ export function handleSteelDelivery(
 
   result.logEntries!.push({
     id: `steel-delivery-success-${Date.now()}`,
-    message:
+    message: getActionLogMessage(
+      "steelDelivery",
+      "success",
       "Your caravan delivers the steel to the Swamp Tribe as promised. In return, the tribe presents you with Chitin Plates harvested from swamp creatures. These can be used to construct powerful fortifications.",
+    ),
     timestamp: Date.now(),
     type: "system",
   });
@@ -1142,19 +1217,36 @@ export function handleRisingSmoke(
       },
     };
 
-    const keyPart = state.tools.skeleton_key
-      ? " With your skeleton key you open a hidden compartment and find another 250 Gold."
-      : "";
-    const captivePart =
-      added > 0
-        ? added === 1
-          ? " 1 captive from the camp chooses to join the village."
-          : ` ${added} captives from the camp choose to join the village.`
-        : "";
+    let successMessage = getActionLogMessage(
+      "risingSmoke",
+      "success",
+      "Your expedition finds an outlaw camp. The fight is brutal, but you win. In a chest you find 500 Gold.",
+    );
+    if (state.tools.skeleton_key) {
+      successMessage += getActionLogMessage(
+        "risingSmoke",
+        "successKeyBonus",
+        " With your skeleton key you open a hidden compartment and find another 250 Gold.",
+      );
+    }
+    if (added === 1) {
+      successMessage += getActionLogMessage(
+        "risingSmoke",
+        "captiveOne",
+        " 1 captive from the camp chooses to join the village.",
+      );
+    } else if (added > 1) {
+      successMessage += getActionLogMessage(
+        "risingSmoke",
+        "captivesOther",
+        " {{count}} captives from the camp choose to join the village.",
+        { count: added },
+      );
+    }
 
     result.logEntries!.push({
       id: `rising-smoke-success-${Date.now()}`,
-      message: `Your expedition finds an outlaw camp. The fight is brutal, but you win. In a chest you find 500 Gold.${keyPart}${captivePart}`,
+      message: successMessage,
       timestamp: Date.now(),
       type: "system",
     });
@@ -1172,7 +1264,12 @@ export function handleRisingSmoke(
 
     result.logEntries!.push({
       id: `rising-smoke-failure-${Date.now()}`,
-      message: `Your expedition reaches an outlaw camp, but the fight goes terribly wrong. ${actualDeaths} villager${actualDeaths === 1 ? "" : "s"} fall${actualDeaths === 1 ? "s" : ""} before the survivors flee back to the village.`,
+      message: getActionLogMessage(
+        "risingSmoke",
+        "failure",
+        "Your expedition reaches an outlaw camp, but the fight goes terribly wrong. {{count}} villagers fall before the survivors flee back to the village.",
+        { count: actualDeaths },
+      ),
       timestamp: Date.now(),
       type: "system",
     });
@@ -1216,16 +1313,22 @@ export function handleBanditLair(
 
     result.logEntries!.push({
       id: `bandit-lair-success-${Date.now()}`,
-      message:
+      message: getActionLogMessage(
+        "banditLair",
+        "success",
         "Your party tracks the bandit to a ramshackle lair. You overwhelm him, recover the trader's dagger, and find 250 silver stashed among his plunder.",
+      ),
       timestamp: Date.now(),
       type: "system",
     });
   } else {
     result.logEntries!.push({
       id: `bandit-lair-failure-${Date.now()}`,
-      message:
+      message: getActionLogMessage(
+        "banditLair",
+        "failure",
         "Your villagers search the hills but cannot corner the bandit. The trail goes cold, and the dagger is still in his hands.",
+      ),
       timestamp: Date.now(),
       type: "system",
     });
@@ -1251,8 +1354,11 @@ export function handleCanyonBridge(
 
   result.logEntries!.push({
     id: `canyon-bridge-complete-${Date.now()}`,
-    message:
+    message: getActionLogMessage(
+      "canyonBridge",
+      "complete",
       "The canyon bridge stands complete. Ashwraith traders can now reach your settlement—and you can sell goods to them at agreed rates.",
+    ),
     timestamp: Date.now(),
     type: "system",
   });

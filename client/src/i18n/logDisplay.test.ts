@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import i18n from "./index";
-import { hasLogEntryText, resolveLogPanelMessage } from "./logDisplay";
+import { hasLogEntryText, resolveLogPanelMessage, resolveOutcomeLogMessage } from "./logDisplay";
 import { resolveInheritedActionLogMessage } from "./resolveGameText";
 import type { LogEntry } from "@/game/rules/events";
 
@@ -244,6 +244,30 @@ describe("resolveLogPanelMessage", () => {
     );
   });
 
+  it("matches legacy English castle ruins major failure log in German saves", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "Shortly after your expedition enters the cursed castle ruins dozens of undead creatures pour from hidden chambers. In the desperate battle that follows, 8 villagers are overwhelmed by the supernatural horde. The survivors flee in terror.",
+      ),
+    );
+    expect(text).toBe(
+      "Kurz nachdem eure Expedition die verfluchten Burgruinen betritt, strömen Dutzende Untote aus verborgenen Kammern. In der verzweifelten Schlacht, die folgt, werden 8 Dorfbewohner von der übernatürlichen Horde überwältigt. Die Überlebenden fliehen in Panik.",
+    );
+  });
+
+  it("matches legacy English castle ruins minor failure log in German saves", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "Your expedition is ambushed by grotesque undead experiments left behind by the necromancer. 3 villagers fall to the undead before the survivors manage to retreat.",
+      ),
+    );
+    expect(text).toBe(
+      "Eure Expedition wird von grotesken Untoten-Experimenten überfallen, die der Nekromant zurückgelassen hat. 3 Dorfbewohner fallen den Untoten zum Opfer, bevor es den Überlebenden gelingt, sich zurückzuziehen.",
+    );
+  });
+
   it("matches legacy English wizard necromancer castle event log in German saves", async () => {
     await i18n.changeLanguage("de");
     const text = resolveLogPanelMessage({
@@ -255,6 +279,130 @@ describe("resolveLogPanelMessage", () => {
     });
     expect(text).toBe(
       "Der Zauberer ruft dich in seinen Turm: 'Ich habe von einer Burg tief in der Wildnis erfahren, dem einstigen Reich eines lange toten Nekromanten. In ihren Mauern liegen alte Schriftrollen, die davon sprechen, wie wir besiegen können, was in den Tiefen der Höhle haust.'",
+    );
+  });
+
+  it("matches legacy English hill grave failure log in German saves", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "Your expedition enters the hill grave but lacks the skill to navigate its deadly traps. 2 villagers fall to the king's final defenses before the survivors retreat in horror, leaving their companions' bodies in the cursed tomb.",
+      ),
+    );
+    expect(text).toBe(
+      "Eure Expedition betritt das Hügelgrab, verfügt aber nicht über das Geschick, seine tödlichen Fallen zu überwinden. 2 Dorfbewohner fallen den letzten Verteidigungen des Königs zum Opfer, bevor die Überlebenden voller Entsetzen fliehen und die Körper ihrer Gefährten im verfluchten Grab zurücklassen.",
+    );
+  });
+
+  it("matches legacy English hill grave success log in German saves", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "Your expedition carefully navigates the treacherous traps of the hill grave. Your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king's treasures, you discover pure frostglass, cold as the void itself.",
+      ),
+    );
+    expect(text).toBe(
+      "Eure Expedition navigiert geschickt durch die tückischen Fallen des Hügelgrabs. Eure Dorfbewohner entschärfen die alten Mechanismen und erreichen die Grabkammer. Unter den Schätzen des Königs entdeckt ihr reines Frostglas, kalt wie die Leere selbst.",
+    );
+  });
+
+  it("re-localizes hill grave success in reward dialog (German UI)", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveOutcomeLogMessage(
+      "Your expedition carefully navigates the treacherous traps of the hill grave. Your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king's treasures, you discover pure frostglass, cold as the void itself.",
+    );
+    expect(text).toBe(
+      "Eure Expedition navigiert geschickt durch die tückischen Fallen des Hügelgrabs. Eure Dorfbewohner entschärfen die alten Mechanismen und erreichen die Grabkammer. Unter den Schätzen des Königs entdeckt ihr reines Frostglas, kalt wie die Leere selbst.",
+    );
+  });
+
+  it("matches legacy English castle ruins success log in German saves", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "The expedition to the dead necromancer's castle ruins proves successful! Deep within the you find the ancient scrolls wrapped in dark silk, revealing cryptic knowledge about how to defeat what was locked deep in the cave.",
+      ),
+    );
+    expect(text).toBe(
+      "Die Expedition zu den Burgruinen des toten Nekromanten ist erfolgreich! Tief im Inneren findet ihr die in dunkle Seide gewickelten alten Schriftrollen, die kryptisches Wissen darüber offenbaren, wie man besiegen kann, was tief in der Höhle eingesperrt wurde.",
+    );
+  });
+
+  it("matches legacy English collapsed tower success log in German saves", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "Inside the tower you find a necromancer and his followers, surrounded by vials of liquids and crude syringes. He was harvesting the villagers' blood for dark experiments. Your men put an end to his vile work and take a vial of his blood. Among his tools, you find his powerful bone saw.",
+      ),
+    );
+    expect(text).toBe(
+      "Im Turm findet ihr einen Nekromanten und seine Anhänger, umgeben von Fläschchen mit Flüssigkeiten und groben Spritzen. Er sammelte das Blut der Dorfbewohner für finstere Experimente. Eure Männer setzen seinem abscheulichen Werk ein Ende und nehmen eine Phiole seines Blutes. Unter seinen Werkzeugen findet ihr seine mächtige Knochensäge.",
+    );
+  });
+
+  it("matches legacy English collapsed tower failure log in German saves", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "Your expedition reaches the Collapsed Tower, but you are attacked by hooded figures outside. A tall man in a dark robe stands among them, commanding an aura of menace. 4 villagers fall before the rest flee to safety.",
+      ),
+    );
+    expect(text).toBe(
+      "Eure Expedition erreicht den eingestürzten Turm, doch draußen werdet ihr von vermummten Gestalten angegriffen. Ein großer Mann in dunkler Robe steht unter ihnen und strahlt Bedrohung aus. 4 Dorfbewohner fallen, bevor die anderen in Sicherheit fliehen.",
+    );
+  });
+
+  it("re-localizes collapsed tower success in reward dialog (German UI)", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveOutcomeLogMessage(
+      "Inside the tower you find a necromancer and his followers, surrounded by vials of liquids and crude syringes. He was harvesting the villagers' blood for dark experiments. Your men put an end to his vile work and take a vial of his blood. Among his tools, you find his powerful bone saw.",
+    );
+    expect(text).toBe(
+      "Im Turm findet ihr einen Nekromanten und seine Anhänger, umgeben von Fläschchen mit Flüssigkeiten und groben Spritzen. Er sammelte das Blut der Dorfbewohner für finstere Experimente. Eure Männer setzen seinem abscheulichen Werk ein Ende und nehmen eine Phiole seines Blutes. Unter seinen Werkzeugen findet ihr seine mächtige Knochensäge.",
+    );
+  });
+
+  it("matches legacy English bandit lair success log in German saves", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "Your party tracks the bandit to a ramshackle lair. You overwhelm him, recover the trader's dagger, and find 250 silver stashed among his plunder.",
+      ),
+    );
+    expect(text).toBe(
+      "Eure Gruppe verfolgt den Banditen zu einem wackeligen Unterschlupf. Ihr überwältigt ihn, bergt den Dolch des Händlers und findet 250 Silber unter seiner Beute.",
+    );
+  });
+
+  it("matches legacy English bandit lair failure log in German saves", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "Your villagers search the hills but cannot corner the bandit. The trail goes cold, and the dagger is still in his hands.",
+      ),
+    );
+    expect(text).toBe(
+      "Eure Dorfbewohner durchsuchen die Hügel, können den Banditen aber nicht stellen. Die Spur verliert sich, und der Dolch ist noch immer in seinen Händen.",
+    );
+  });
+
+  it("re-localizes reward dialog narrative via resolveOutcomeLogMessage", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveOutcomeLogMessage(
+      "Your party tracks the bandit to a ramshackle lair. You overwhelm him, recover the trader's dagger, and find 250 silver stashed among his plunder.",
+    );
+    expect(text).toBe(
+      "Eure Gruppe verfolgt den Banditen zu einem wackeligen Unterschlupf. Ihr überwältigt ihn, bergt den Dolch des Händlers und findet 250 Silber unter seiner Beute.",
+    );
+  });
+
+  it("re-localizes castle ruins success in reward dialog (German UI)", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveOutcomeLogMessage(
+      "The expedition to the dead necromancer's castle ruins proves successful! Deep within the you find the ancient scrolls wrapped in dark silk, revealing cryptic knowledge about how to defeat what was locked deep in the cave.",
+    );
+    expect(text).toBe(
+      "Die Expedition zu den Burgruinen des toten Nekromanten ist erfolgreich! Tief im Inneren findet ihr die in dunkle Seide gewickelten alten Schriftrollen, die kryptisches Wissen darüber offenbaren, wie man besiegen kann, was tief in der Höhle eingesperrt wurde.",
     );
   });
 

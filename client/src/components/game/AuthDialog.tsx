@@ -38,7 +38,6 @@ function isFetchNetworkError(error: unknown, message?: string): boolean {
   if (!(error instanceof TypeError)) return false;
   const normalized = message?.toLowerCase() ?? "";
   return (
-    message === "Failed to fetch" ||
     normalized.includes("networkerror") ||
     normalized.includes("failed to fetch")
   );

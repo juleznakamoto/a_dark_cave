@@ -3,7 +3,11 @@
     "label": "Tiere"
   },
   "banditLair": {
-    "label": "Banditenlager"
+    "label": "Banditenlager",
+    "log": {
+      "success": "Eure Gruppe verfolgt den Banditen zu einem wackeligen Unterschlupf. Ihr überwältigt ihn, bergt den Dolch des Händlers und findet 250 Silber unter seiner Beute.",
+      "failure": "Eure Dorfbewohner durchsuchen die Hügel, können den Banditen aber nicht stellen. Die Spur verliert sich, und der Dolch ist noch immer in seinen Händen."
+    }
   },
   "blackreachCanyon": {
     "label": "Schwarzklamm",
@@ -257,10 +261,18 @@
     "label": "Holzhütte"
   },
   "canyonBridge": {
-    "label": "Canyonbrücke"
+    "label": "Canyonbrücke",
+    "log": {
+      "complete": "Die Canyonbrücke steht fertig. Ashwraith-Händler können eure Siedlung nun erreichen – und ihr könnt ihnen Waren zu vereinbarten Preisen verkaufen."
+    }
   },
   "castleRuins": {
-    "label": "Burgruinen"
+    "label": "Burgruinen",
+    "log": {
+      "success": "Die Expedition zu den Burgruinen des toten Nekromanten ist erfolgreich! Tief im Inneren findet ihr die in dunkle Seide gewickelten alten Schriftrollen, die kryptisches Wissen darüber offenbaren, wie man besiegen kann, was tief in der Höhle eingesperrt wurde.",
+      "minorFailure": "Eure Expedition wird von grotesken Untoten-Experimenten überfallen, die der Nekromant zurückgelassen hat. {{count}} Dorfbewohner fallen den Untoten zum Opfer, bevor es den Überlebenden gelingt, sich zurückzuziehen.",
+      "majorFailure": "Kurz nachdem eure Expedition die verfluchten Burgruinen betritt, strömen Dutzende Untote aus verborgenen Kammern. In der verzweifelten Schlacht, die folgt, werden {{count}} Dorfbewohner von der übernatürlichen Horde überwältigt. Die Überlebenden fliehen in Panik."
+    }
   },
   "chopWood": {
     "label": "Holz sammeln",
@@ -272,7 +284,11 @@
     "label": "Händler rufen"
   },
   "collapsedTower": {
-    "label": "Eingestürzter Turm"
+    "label": "Eingestürzter Turm",
+    "log": {
+      "success": "Im Turm findet ihr einen Nekromanten und seine Anhänger, umgeben von Fläschchen mit Flüssigkeiten und groben Spritzen. Er sammelte das Blut der Dorfbewohner für finstere Experimente. Eure Männer setzen seinem abscheulichen Werk ein Ende und nehmen eine Phiole seines Blutes. Unter seinen Werkzeugen findet ihr seine mächtige Knochensäge.",
+      "failure": "Eure Expedition erreicht den eingestürzten Turm, doch draußen werdet ihr von vermummten Gestalten angegriffen. Ein großer Mann in dunkler Robe steht unter ihnen und strahlt Bedrohung aus. {{count}} Dorfbewohner fallen, bevor die anderen in Sicherheit fliehen."
+    }
   },
   "craftAdamantAxe": {
     "label": "Adamantaxt"
@@ -488,19 +504,32 @@
     }
   },
   "hillGrave": {
-    "label": "Hügelgrab"
+    "label": "Hügelgrab",
+    "log": {
+      "success": "Eure Expedition navigiert geschickt durch die tückischen Fallen des Hügelgrabs. Eure Dorfbewohner entschärfen die alten Mechanismen und erreichen die Grabkammer. Unter den Schätzen des Königs entdeckt ihr reines Frostglas, kalt wie die Leere selbst.",
+      "failure": "Eure Expedition betritt das Hügelgrab, verfügt aber nicht über das Geschick, seine tödlichen Fallen zu überwinden. {{count}} Dorfbewohner fallen den letzten Verteidigungen des Königs zum Opfer, bevor die Überlebenden voller Entsetzen fliehen und die Körper ihrer Gefährten im verfluchten Grab zurücklassen."
+    }
   },
   "humans": {
     "label": "Menschen"
   },
   "hunt": {
-    "label": "Jagen"
+    "label": "Jagen",
+    "log": {
+      "mapFragmentHunt": "Beim Jagen fällt dir im Schlamm etwas auf. Ein wasserbeflecktes Stück Papier, vielleicht Teil einer Karte."
+    }
   },
   "invest": {
     "label": "Investieren"
   },
   "layTrap": {
-    "label": "Falle legen"
+    "label": "Falle legen",
+    "log": {
+      "trapSuccessNoDeaths": "Die Riesenfalle funktioniert perfekt! Ein massiver Schwarzbär mit glühend roten Augen ist gefangen. Eure Dorfbewohner erschlagen das übernatürliche Biest und beanspruchen sein verfluchtes schwarzes Fell als Trophäe.",
+      "trapSuccessWithDeaths": "Die Riesenfalle schnappt einen kolossalen Schwarzbären mit brennend roten Augen! {{count}} Dorfbewohner fallen seinen übernatürlichen Klauen zum Opfer, bevor das Biest endlich erlegt wird. Ihr beansprucht sein verfluchtes schwarzes Fell als hart erkämpfte Trophäe.",
+      "trapSuccessHeavy": "Die Riesenfalle schnappt einen kolossalen Schwarzbären mit Augen wie glühende Kohlen. {{count}} Dorfbewohner fallen seiner übernatürlichen Wut zum Opfer, bevor das Biest endlich überwältigt wird. Ihr beansprucht sein verfluchtes schwarzes Fell.",
+      "trapFailed": "Die Riesenfalle ist aufgestellt, doch als ihr nachseht, findet ihr nur riesige Klauenspuren daneben. Was auch immer in diesen Wäldern umherstreift, ist zu listig für eure Falle … diesmal."
+    }
   },
   "leatherTotems": {
     "label": "Ledertotems"
@@ -579,7 +608,14 @@
     "label": "Wachturm reparieren"
   },
   "risingSmoke": {
-    "label": "Aufsteigender Rauch"
+    "label": "Aufsteigender Rauch",
+    "log": {
+      "success": "Eure Expedition findet ein Gesetzlosenlager. Der Kampf ist brutal, aber ihr siegt. In einer Truhe findet ihr 500 Gold.",
+      "successKeyBonus": " Mit eurem Skelettschlüssel öffnet ihr ein verborgenes Fach und findet weitere 250 Gold.",
+      "captiveOne": " 1 Gefangener aus dem Lager schließt sich dem Dorf an.",
+      "captivesOther": " {{count}} Gefangene aus dem Lager schließen sich dem Dorf an.",
+      "failure": "Eure Expedition erreicht ein Gesetzlosenlager, doch der Kampf verläuft schrecklich schief. {{count}} Dorfbewohner fallen, bevor die Überlebenden zurück ins Dorf fliehen."
+    }
   },
   "sellBlacksteelBatch": {
     "label": "Schwarzstahl verkaufen"
@@ -591,10 +627,17 @@
     "label": "Stahl verkaufen"
   },
   "steelDelivery": {
-    "label": "Stahllieferung"
+    "label": "Stahllieferung",
+    "log": {
+      "success": "Eure Karawane liefert den Stahl wie versprochen an den Sumpfstamm. Im Gegenzug überreicht euch der Stamm Chitinplatten, die von Sumpfkreaturen gewonnen wurden. Diese können für mächtige Befestigungen genutzt werden."
+    }
   },
   "sunkenTemple": {
-    "label": "Versunkener Tempel"
+    "label": "Versunkener Tempel",
+    "log": {
+      "success": "Eure Expedition watet durch die Sumpfgewässer zum uralten halb versunkenen Tempel. Trotz der Gefahren in den dunklen Wassern navigieren die Dorfbewohner vorsichtig durch die überfluteten Hallen und finden die Blutsteine im inneren Heiligtum des Tempels.",
+      "failure": "Eure Expedition wagt sich in den Sumpf auf der Suche nach dem versunkenen Tempel. Die trüben Gewässer bergen unaussprechliche Schrecken. Abscheuliche Kreaturen aus uralter Magie steigen aus der Tiefe empor und ziehen {{count}} Dorfbewohner unter die Oberfläche, bevor die Überlebenden fliehen."
+    }
   },
   "swampSanctuary": {
     "label": "Sumpfheiligtum"

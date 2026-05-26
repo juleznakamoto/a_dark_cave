@@ -3,7 +3,11 @@
     "label": "Animales"
   },
   "banditLair": {
-    "label": "Guarida de bandidos"
+    "label": "Guarida de bandidos",
+    "log": {
+      "success": "Tu grupo sigue al bandido hasta una guarida destartalada. Lo abrumas, recuperas la daga del mercader y encuentras 250 plata escondida entre su botín.",
+      "failure": "Tus aldeanos buscan en las colinas pero no logran acorralar al bandido. El rastro se enfría y la daga sigue en sus manos."
+    }
   },
   "blackreachCanyon": {
     "label": "Cañón de Blackreach",
@@ -257,10 +261,18 @@
     "label": "Choza de madera"
   },
   "canyonBridge": {
-    "label": "Puente del cañón"
+    "label": "Puente del cañón",
+    "log": {
+      "complete": "El puente del cañón está terminado. Los comerciantes Ashwraith ya pueden llegar a tu asentamiento, y tú puedes venderles mercancías a precios acordados."
+    }
   },
   "castleRuins": {
-    "label": "Ruinas del castillo"
+    "label": "Ruinas del castillo",
+    "log": {
+      "success": "¡La expedición a las ruinas del castillo del difunto nigromante resulta exitosa! En lo profundo encuentras los antiguos pergaminos envueltos en seda oscura, que revelan conocimiento críptico sobre cómo derrotar a lo que fue encerrado en las profundidades de la cueva.",
+      "minorFailure": "Tu expedición es emboscada por grotescos experimentos no muertos dejados por el nigromante. {{count}} aldeanos caen ante los no muertos antes de que los supervivientes logren retirarse.",
+      "majorFailure": "Poco después de que tu expedición entre en las malditas ruinas del castillo, decenas de criaturas no muertas brotan de cámaras ocultas. En la desesperada batalla que sigue, {{count}} aldeanos son arrasados por la horda sobrenatural. Los supervivientes huyen aterrorizados."
+    }
   },
   "chopWood": {
     "label": "Reunir madera",
@@ -272,7 +284,11 @@
     "label": "Llamar al mercader"
   },
   "collapsedTower": {
-    "label": "Torre derrumbada"
+    "label": "Torre derrumbada",
+    "log": {
+      "success": "Dentro de la torre encuentras a un nigromante y sus seguidores, rodeados de frascos de líquidos y jeringas toscas. Estaba recolectando la sangre de los aldeanos para oscuros experimentos. Tus hombres ponen fin a su vil obra y toman un frasco de su sangre. Entre sus herramientas, encuentras su poderosa sierra ósea.",
+      "failure": "Tu expedición llega a la Torre derrumbada, pero te atacan figuras encapuchadas en el exterior. Un hombre alto con una túnica oscura se alza entre ellos, emanando una aura de amenaza. {{count}} aldeanos caen antes de que el resto huya a salvo."
+    }
   },
   "craftAdamantAxe": {
     "label": "Hacha de adamantita"
@@ -488,19 +504,32 @@
     }
   },
   "hillGrave": {
-    "label": "Tumba de la colina"
+    "label": "Tumba de la colina",
+    "log": {
+      "success": "Tu expedición navega con cuidado las traicioneras trampas de la tumba de la colina. Tus aldeanos desactivan los antiguos mecanismos y llegan a la cámara funeraria. Entre los tesoros del rey, descubres frostglass puro, frío como el vacío mismo.",
+      "failure": "Tu expedición entra en la tumba de la colina pero carece de la habilidad para sortear sus trampas mortales. {{count}} aldeanos caen ante las últimas defensas del rey antes de que los supervivientes huyan horrorizados, dejando los cuerpos de sus compañeros en la tumba maldita."
+    }
   },
   "humans": {
     "label": "Humanos"
   },
   "hunt": {
-    "label": "Cazar"
+    "label": "Cazar",
+    "log": {
+      "mapFragmentHunt": "Mientras cazas, algo llama tu atención en el barro. Un trozo manchado de agua, quizá parte de un mapa."
+    }
   },
   "invest": {
     "label": "Invertir"
   },
   "layTrap": {
-    "label": "Colocar trampa"
+    "label": "Colocar trampa",
+    "log": {
+      "trapSuccessNoDeaths": "¡La trampa gigante funciona a la perfección! Un enorme oso negro con ojos rojos brillantes queda atrapado. Tus aldeanos abatten a la bestia sobrenatural y reclaman su maldita piel negra como trofeo.",
+      "trapSuccessWithDeaths": "¡La trampa gigante atrapa a un colosal oso negro con ojos rojos ardientes! {{count}} aldeanos caen ante sus garras sobrenaturales antes de que la bestia sea finalmente abatida. Reclamas su maldita piel negra como un trofeo duramente ganado.",
+      "trapSuccessHeavy": "La trampa gigante atrapa a un colosal oso negro con ojos como brasas ardientes. {{count}} aldeanos caen ante su furia sobrenatural antes de que la bestia sea finalmente abatida. Reclamas su maldita piel negra.",
+      "trapFailed": "La trampa gigante está tendida, pero al revisarla solo encuentras marcas de garras gigantes junto a ella. Lo que acecha en estos bosques es demasiado astuto para tu trampa... esta vez."
+    }
   },
   "leatherTotems": {
     "label": "Tótems de cuero"
@@ -579,7 +608,14 @@
     "label": "Reparar torre de vigilancia"
   },
   "risingSmoke": {
-    "label": "Humo ascendente"
+    "label": "Humo ascendente",
+    "log": {
+      "success": "Tu expedición encuentra un campamento de forajidos. La lucha es brutal, pero ganas. En un cofre encuentras 500 oro.",
+      "successKeyBonus": " Con tu llave esqueleto abres un compartimento oculto y encuentras otros 250 oro.",
+      "captiveOne": " 1 cautivo del campamento decide unirse a la aldea.",
+      "captivesOther": " {{count}} cautivos del campamento deciden unirse a la aldea.",
+      "failure": "Tu expedición llega a un campamento de forajidos, pero la lucha sale terriblemente mal. {{count}} aldeanos caen antes de que los supervivientes huyan de vuelta a la aldea."
+    }
   },
   "sellBlacksteelBatch": {
     "label": "Vender acero negro"
@@ -591,10 +627,17 @@
     "label": "Vender acero"
   },
   "steelDelivery": {
-    "label": "Entrega de acero"
+    "label": "Entrega de acero",
+    "log": {
+      "success": "Tu caravana entrega el acero a la Tribu del Pantano como prometiste. A cambio, la tribu te presenta Placas de Quitina obtenidas de criaturas del pantano. Pueden usarse para construir poderosas fortificaciones."
+    }
   },
   "sunkenTemple": {
-    "label": "Templo hundido"
+    "label": "Templo hundido",
+    "log": {
+      "success": "Tu expedición vadea las aguas del pantano para llegar al antiguo templo semihundido. A pesar de los peligros que acechan en las aguas oscuras, los aldeanos navegan con cuidado por los salones sumergidos y encuentran las gemas de bloodstone en el sanctum interior del templo.",
+      "failure": "Tu expedición se adentra en el pantano en busca del templo hundido. Las aguas turbias ocultan horrores indescriptibles. Criaturas abominables nacidas de magia antigua surgen de las profundidades y arrastran a {{count}} aldeanos bajo la superficie antes de que los supervivientes huyan."
+    }
   },
   "swampSanctuary": {
     "label": "Santuario del pantano"

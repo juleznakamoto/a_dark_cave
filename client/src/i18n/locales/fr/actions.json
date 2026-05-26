@@ -3,7 +3,11 @@
     "label": "Animaux"
   },
   "banditLair": {
-    "label": "Repaire de bandits"
+    "label": "Repaire de bandits",
+    "log": {
+      "success": "Votre groupe traque le bandit jusqu'à un repaire délabré. Vous l'accablez, récupérez la dague du marchand et trouvez 250 argent cachés dans son butin.",
+      "failure": "Vos villageois fouillent les collines mais ne parviennent pas à acculer le bandit. La piste se refroidit, et la dague est toujours entre ses mains."
+    }
   },
   "blackreachCanyon": {
     "label": "Canyon de Blackreach",
@@ -257,10 +261,18 @@
     "label": "Hutte de bois"
   },
   "canyonBridge": {
-    "label": "Pont du canyon"
+    "label": "Pont du canyon",
+    "log": {
+      "complete": "Le pont du canyon est achevé. Les marchands Ashwraith peuvent désormais atteindre votre colonie — et vous pouvez leur vendre des marchandises à des tarifs convenus."
+    }
   },
   "castleRuins": {
-    "label": "Ruines du château"
+    "label": "Ruines du château",
+    "log": {
+      "success": "L'expédition vers les ruines du château du nécromancien défunt est couronnée de succès ! Au plus profond, vous trouvez d'anciens parchemins enveloppés de soie noire, révélant des connaissances cryptiques sur la façon de vaincre ce qui fut enfermé au fond de la grotte.",
+      "minorFailure": "Votre expédition est prise en embuscade par d'atroces expériences de morts-vivants laissées par le nécromancien. {{count}} villageois tombent face aux morts-vivants avant que les survivants ne parviennent à se replier.",
+      "majorFailure": "Peu après l'entrée de votre expédition dans les ruines maudites du château, des dizaines de créatures mortes-vivantes jaillissent de chambres cachées. Dans la bataille désespérée qui s'ensuit, {{count}} villageois sont submergés par la horde surnaturelle. Les survivants fuient terrifiés."
+    }
   },
   "chopWood": {
     "label": "Ramasser du bois",
@@ -272,7 +284,11 @@
     "label": "Appeler le marchand"
   },
   "collapsedTower": {
-    "label": "Tour effondrée"
+    "label": "Tour effondrée",
+    "log": {
+      "success": "Dans la tour, vous trouvez un nécromancien et ses disciples, entourés de fioles de liquides et de seringues grossières. Il collectait le sang des villageois pour de sombres expériences. Vos hommes mettent fin à son œuvre infâme et prennent une fiole de son sang. Parmi ses outils, vous trouvez sa puissante scie à os.",
+      "failure": "Votre expédition atteint la Tour effondrée, mais vous êtes attaqués par des figures encapuchonnées à l'extérieur. Un grand homme en robe sombre se tient parmi eux, dégageant une aura de menace. {{count}} villageois tombent avant que les autres ne fuient en sécurité."
+    }
   },
   "craftAdamantAxe": {
     "label": "Hache d'adamant"
@@ -488,19 +504,32 @@
     }
   },
   "hillGrave": {
-    "label": "Tombe de la colline"
+    "label": "Tombe de la colline",
+    "log": {
+      "success": "Votre expédition traverse habilement les pièges traîtres de la tombe de la colline. Vos villageois désactivent les anciens mécanismes et atteignent la chambre funéraire. Parmi les trésors du roi, vous découvrez du frostglass pur, froid comme le vide lui-même.",
+      "failure": "Votre expédition entre dans la tombe de la colline mais manque de l'habileté pour naviguer dans ses pièges mortels. {{count}} villageois succombent aux dernières défenses du roi avant que les survivants ne battent en retraite, horrifiés, laissant les corps de leurs compagnons dans la tombe maudite."
+    }
   },
   "humans": {
     "label": "Humains"
   },
   "hunt": {
-    "label": "Chasser"
+    "label": "Chasser",
+    "log": {
+      "mapFragmentHunt": "En chassant, quelque chose attire votre regard dans la boue. Un morceau taché d'eau, peut-être une partie d'une carte."
+    }
   },
   "invest": {
     "label": "Investir"
   },
   "layTrap": {
-    "label": "Poser un piège"
+    "label": "Poser un piège",
+    "log": {
+      "trapSuccessNoDeaths": "Le piège géant fonctionne à la perfection ! Un énorme ours noir aux yeux rouges brillants est pris. Vos villageois abattent la bête surnaturelle et revendiquent sa fourrure noire maudite comme trophée.",
+      "trapSuccessWithDeaths": "Le piège géant capture un colossal ours noir aux yeux rouges ardents ! {{count}} villageois tombent sous ses griffes surnaturelles avant que la bête ne soit enfin abattue. Vous revendiquez sa fourrure noire maudite comme un trophée durement gagné.",
+      "trapSuccessHeavy": "Le piège géant capture un colossal ours noir aux yeux comme des braises ardentes. {{count}} villageois tombent sous sa fureur surnaturelle avant que la bête ne soit enfin maîtrisée. Vous revendiquez sa fourrure noire maudite.",
+      "trapFailed": "Le piège géant est posé, mais lorsque vous le vérifiez, seules d'énormes marques de griffes se trouvent à côté. Ce qui rôde dans ces forêts est trop rusé pour votre piège... cette fois."
+    }
   },
   "leatherTotems": {
     "label": "Totems de cuir"
@@ -579,7 +608,14 @@
     "label": "Réparer la tour de guet"
   },
   "risingSmoke": {
-    "label": "Fumée montante"
+    "label": "Fumée montante",
+    "log": {
+      "success": "Votre expédition trouve un camp de hors-la-loi. Le combat est brutal, mais vous l'emportez. Dans un coffre, vous trouvez 500 or.",
+      "successKeyBonus": " Avec votre clé squelette, vous ouvrez un compartiment caché et trouvez 250 or supplémentaires.",
+      "captiveOne": " 1 captif du camp choisit de rejoindre le village.",
+      "captivesOther": " {{count}} captifs du camp choisissent de rejoindre le village.",
+      "failure": "Votre expédition atteint un camp de hors-la-loi, mais le combat tourne terriblement mal. {{count}} villageois tombent avant que les survivants ne fuient vers le village."
+    }
   },
   "sellBlacksteelBatch": {
     "label": "Vendre l'acier noir"
@@ -591,10 +627,17 @@
     "label": "Vendre l'acier"
   },
   "steelDelivery": {
-    "label": "Livraison d'acier"
+    "label": "Livraison d'acier",
+    "log": {
+      "success": "Votre caravane livre l'acier à la Tribu des Marais comme promis. En retour, la tribu vous offre des Plaques de Chitine récoltées sur les créatures des marais. Elles peuvent servir à construire de puissantes fortifications."
+    }
   },
   "sunkenTemple": {
-    "label": "Temple englouti"
+    "label": "Temple englouti",
+    "log": {
+      "success": "Votre expédition traverse les eaux marécageuses pour atteindre l'ancien temple à moitié englouti. Malgré les dangers qui rôdent dans les eaux sombres, les villageois naviguent prudemment dans les salles submergées et trouvent les gemmes de bloodstone dans le sanctuaire intérieur du temple.",
+      "failure": "Votre expédition s'aventure dans le marais à la recherche du temple englouti. Les eaux troubles cachent des horreurs indicibles. D'abominables créatures nées de la magie ancienne surgissent des profondeurs et entraînent {{count}} villageois sous la surface avant que les survivants ne fuient."
+    }
   },
   "swampSanctuary": {
     "label": "Sanctuaire du marais"
