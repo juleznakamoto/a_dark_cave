@@ -123,7 +123,7 @@ export default function SidePanelSection({
   const globalTooltip = useGlobalTooltip();
 
   const sidePanelTooltipTriggerClass = cn(
-    "block min-w-0 max-w-full",
+    "min-w-0 flex-1 break-words",
     globalTooltip.isMobile && "cursor-pointer",
   );
 
@@ -453,15 +453,11 @@ export default function SidePanelSection({
 
     const isResourcesSection = sectionId === "resources";
 
-    const sidePanelLabelTextClass =
-      "min-w-0 break-words [overflow-wrap:anywhere]";
-
     const labelContent = (
       <span
         className={cn(
           "text-xs text-gray-400",
-          sidePanelLabelTextClass,
-          item.icon !== undefined && "flex items-start gap-1",
+          item.icon !== undefined && "inline-flex items-start gap-1",
           newItemPulseClass,
           isHighlighted && "!text-gray-100",
         )}
@@ -522,23 +518,8 @@ export default function SidePanelSection({
           ? "text-yellow-400"
           : "";
 
-    const itemRowClassName = cn(
-      "mr-1 grid min-w-0 leading-tight transition-all duration-300",
-      showItemValue ? "items-start" : "items-center",
-      isResourcesSection && showItemValue
-        ? "grid-cols-[minmax(0,1fr)_5.5rem_3rem] gap-x-1.5"
-        : showItemValue
-          ? "grid-cols-[minmax(0,1fr)_auto] gap-x-1"
-          : "grid-cols-1",
-      itemAnimationClass,
-    );
-
-    const labelCell = (
-      <div className={sidePanelLabelTextClass}>{labelContent}</div>
-    );
-
     const valueCellClassName = cn(
-      "min-w-0 shrink-0 overflow-hidden text-right font-mono tabular-nums text-gray-300",
+      "w-[5.5rem] shrink-0 overflow-hidden text-right font-mono tabular-nums text-gray-300",
       isAnimated && "text-green-800 font-bold",
       isDecreaseAnimated && "text-red-800 font-bold",
       isMaxAnimated && "text-yellow-800 font-bold",
@@ -547,7 +528,7 @@ export default function SidePanelSection({
     );
 
     const productionDeltaCellClassName = cn(
-      "shrink-0 text-right font-mono tabular-nums",
+      "w-[3rem] shrink-0 text-right font-mono tabular-nums",
       activeTab !== "village" && "text-muted-foreground",
       activeTab === "village" &&
       (item.productionDelta ?? 0) > 0 &&
@@ -557,27 +538,31 @@ export default function SidePanelSection({
       "text-red-600",
     );
 
-    const valueCell = showItemValue ? (
-      <span className={valueCellClassName}>{displayValue}</span>
+    const rightContent = showItemValue ? (
+      <span className="flex shrink-0 items-start gap-1.5 font-mono tabular-nums text-gray-300">
+        <span className={valueCellClassName}>{displayValue}</span>
+        {isResourcesSection &&
+          (showProductionDelta ? (
+            <span className={productionDeltaCellClassName}>
+              {(item.productionDelta ?? 0) > 0 ? "+" : ""}
+              {formatNumber(item.productionDelta ?? 0)}
+            </span>
+          ) : (
+            <span className="w-[3rem] shrink-0" aria-hidden="true" />
+          ))}
+      </span>
     ) : null;
 
-    const productionDeltaCell =
-      isResourcesSection && showItemValue ? (
-        showProductionDelta ? (
-          <span className={productionDeltaCellClassName}>
-            {(item.productionDelta ?? 0) > 0 ? "+" : ""}
-            {formatNumber(item.productionDelta ?? 0)}
-          </span>
-        ) : (
-          <span aria-hidden="true" />
-        )
-      ) : null;
-
     const itemContent = (
-      <div data-testid={item.testId} className={itemRowClassName}>
-        {labelCell}
-        {valueCell}
-        {productionDeltaCell}
+      <div
+        data-testid={item.testId}
+        className={cn(
+          "mr-1 flex min-w-0 items-start gap-1.5 leading-tight justify-between transition-all duration-300",
+          itemAnimationClass,
+        )}
+      >
+        <div className="min-w-0 flex-1 break-words">{labelContent}</div>
+        {rightContent}
       </div>
     );
 
@@ -591,7 +576,7 @@ export default function SidePanelSection({
         <div
           key={item.id}
           data-testid={item.testId}
-          className={`flex min-w-0 leading-tight justify-between items-start gap-x-1 transition-all duration-300 ${isAnimated
+          className={`flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
             ? "text-green-400"
             : isDecreaseAnimated
               ? "text-red-400"
@@ -632,7 +617,7 @@ export default function SidePanelSection({
         <div
           key={item.id}
           data-testid={item.testId}
-          className={`flex min-w-0 leading-tight justify-between items-start gap-x-1 transition-all duration-300 ${isAnimated
+          className={`flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
             ? "text-green-400"
             : isDecreaseAnimated
               ? "text-red-400"
@@ -662,7 +647,7 @@ export default function SidePanelSection({
         <div
           key={item.id}
           data-testid={item.testId}
-          className={`flex min-w-0 leading-tight justify-between items-start gap-x-1 transition-all duration-300 ${isAnimated
+          className={`flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
             ? "text-green-400"
             : isDecreaseAnimated
               ? "text-red-400"
@@ -694,7 +679,7 @@ export default function SidePanelSection({
           <div
             key={item.id}
             data-testid={item.testId}
-            className={`mr-1 flex min-w-0 leading-tight justify-between items-start gap-x-1 transition-all duration-300 ${isAnimated
+            className={`mr-1 flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
               ? "text-green-400"
               : isDecreaseAnimated
                 ? "text-red-400"
@@ -752,7 +737,7 @@ export default function SidePanelSection({
         <div
           key={item.id}
           data-testid={item.testId}
-          className={`mr-1 flex min-w-0 leading-tight justify-between items-start gap-x-1 transition-all duration-300 ${isAnimated
+          className={`mr-1 flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
             ? "text-green-400"
             : isDecreaseAnimated
               ? "text-red-400"

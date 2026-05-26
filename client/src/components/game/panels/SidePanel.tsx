@@ -223,7 +223,7 @@ export default function SidePanel() {
     ...orderedGoldSilver.map((key, index) => ({
       id: key,
       label: (
-        <span className="flex min-w-0 items-start gap-1">
+        <span className="inline-flex items-center gap-1">
           <ResourceCoinIcon
             resource={key as "gold" | "silver"}
             className={cn(
@@ -233,9 +233,7 @@ export default function SidePanel() {
                 : "text-gray-400",
             )}
           />
-          <span className="min-w-0 break-words [overflow-wrap:anywhere]">
-            {getResourceName(key, capitalizeWords(key))}
-          </span>
+          <span>{getResourceName(key, capitalizeWords(key))}</span>
         </span>
       ),
       value: resources[key as keyof typeof resources] ?? 0,
@@ -920,7 +918,7 @@ export default function SidePanel() {
     <ScrollArea className="h-full max-h-[36vh] md:max-h-full px-3 pt-2 pb-1.5 pl-1 pr-2">
       <div className="pb-1 flex gap-12 items-start min-w-0">
         {/* First column - Resources */}
-        <div className="min-w-0 flex-[0.9] overflow-hidden">
+        <div className="min-w-0 flex-[0.9]">
           {resourceItems.length > 0 && shouldShowSection("resources") && (
             <SidePanelSection
               className="pt-0"
