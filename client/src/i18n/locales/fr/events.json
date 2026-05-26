@@ -546,6 +546,17 @@
     "title": "Les Habitants d'en bas"
   },
   "establishTradeProposal": {
+    "choices": {
+      "mountainMonastery": {
+        "label": "Monastère de la Montagne"
+      },
+      "swampTribe": {
+        "label": "Tribu du Marais"
+      },
+      "shoreFishermen": {
+        "label": "Pêcheurs du Rivage"
+      }
+    },
     "log": {
       "outcome0": "Vous envoyez le corbeau borgne porter un message au Monastère de la Montagne. Vous attendez son retour.",
       "outcome1": "Vous envoyez le corbeau borgne porter un message à la Tribu du Marais. Vous attendez son retour.",

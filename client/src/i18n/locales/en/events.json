@@ -546,6 +546,17 @@
     "title": "The Dwellers Below"
   },
   "establishTradeProposal": {
+    "choices": {
+      "mountainMonastery": {
+        "label": "Mountain Monastery"
+      },
+      "swampTribe": {
+        "label": "Swamp Tribe"
+      },
+      "shoreFishermen": {
+        "label": "Shore Fishermen"
+      }
+    },
     "log": {
       "outcome0": "You send the one-eyed crow with a message to the Mountain Monastery. You wait for it to return.",
       "outcome1": "You send the one-eyed crow with a message to the Swamp Tribe. You wait for it to return.",

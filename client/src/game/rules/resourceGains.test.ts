@@ -262,10 +262,10 @@ const createTestState = (overrides?: Partial<GameState>): GameState => {
     focusState: { ...base.focusState, ...overrides.focusState },
     story: overrides.story
       ? {
-          ...base.story,
-          ...overrides.story,
-          seen: { ...base.story.seen, ...overrides.story.seen },
-        }
+        ...base.story,
+        ...overrides.story,
+        seen: { ...base.story.seen, ...overrides.story.seen },
+      }
       : base.story,
   } as GameState;
 };
@@ -1573,6 +1573,18 @@ describe('Resource Gain Tests', () => {
 
       // Tier 3 gives 1000 stone
       expect(effectUpdates.resources?.stone).toBe(state.resources.stone + 1000);
+      // Costs 60 gold
+      expect(effectUpdates.resources?.gold).toBe(state.resources.gold - 60);
+    });
+
+    it('tradeGoldForIron (tier 3) produces correct amount', () => {
+      const state = createTestState({
+        buildings: { merchantsGuild: 1 },
+      });
+      const effectUpdates = applyActionEffects('tradeGoldForIron', state);
+
+      // Tier 3 gives 1000 iron
+      expect(effectUpdates.resources?.iron).toBe(state.resources.iron + 1000);
       // Costs 60 gold
       expect(effectUpdates.resources?.gold).toBe(state.resources.gold - 60);
     });

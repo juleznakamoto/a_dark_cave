@@ -23,6 +23,10 @@ import { getResourceName } from "@/i18n/resolveGameText";
 import { resolveActionTooltipEffects } from "@/i18n/tooltipLabels";
 import { useTranslation } from "react-i18next";
 import {
+  SuccessChanceTooltipContent,
+  hasSuccessChanceTooltip,
+} from "@/components/game/EventChoiceSuccessTooltip";
+import {
   BubblyButtonGlobalPortal,
 } from "@/components/ui/bubbly-button";
 import {
@@ -196,6 +200,7 @@ export default function ForestPanel() {
         { id: "tradeGoldForFood", label: "Food" },
         { id: "tradeGoldForWood", label: "Wood" },
         { id: "tradeGoldForStone", label: "Stone" },
+        { id: "tradeGoldForIron", label: "Iron" },
         { id: "tradeGoldForLeather", label: "Leather" },
         { id: "tradeGoldForSteel", label: "Steel" },
         { id: "tradeGoldForObsidian", label: "Obsidian" },
@@ -251,9 +256,7 @@ export default function ForestPanel() {
     }
 
     // Check if action has success chance (for forest scout actions)
-    const successPercentage = action.success_chance && state.books?.book_of_war
-      ? `${Math.round(Math.min(1, Math.max(0, action.success_chance(state))) * 100)}%`
-      : null;
+    const showSuccessTooltip = hasSuccessChanceTooltip(action.success_chance);
 
     // Expedition actions require free villagers during execution
     const expeditionVillagersRequired = action.expeditionVillagersRequired
@@ -306,7 +309,7 @@ export default function ForestPanel() {
       resourceGainTooltip ||
       isAnimalsSacrifice ||
       isHumansSacrifice ||
-      successPercentage ||
+      showSuccessTooltip ||
       hasExpeditionRequirement
     ) {
       let tooltipContent;
@@ -362,7 +365,7 @@ export default function ForestPanel() {
         tooltipContent = (
           <div className="text-xs whitespace-nowrap">
             {villagerMessage}
-            {villagerMessage && (costBreakdown.length > 0 || successPercentage) && (
+            {villagerMessage && (costBreakdown.length > 0 || showSuccessTooltip) && (
               <div className="border-t border-border my-1" />
             )}
             {costBreakdown.map((costItem, index) => (
@@ -381,28 +384,18 @@ export default function ForestPanel() {
                 <div>{forestTradeGainLine}</div>
               </>
             )}
-            {successPercentage && (
+            {showSuccessTooltip && (
               <>
-                {(costBreakdown.length > 0 || forestTradeGainLine != null) && (
-                  <div className="border-t border-border my-1" />
-                )}
-                <div className="flex items-center gap-1">
-                  <span>{successPercentage}</span>
-                  {action.relevant_stats && (
-                    <div className="flex gap-1">
-                      {action.relevant_stats.map((stat) => {
-                        if (stat === "strength") {
-                          return <span key={stat} className="font-noto-symbols-2 text-red-300/80">⬡</span>;
-                        } else if (stat === "knowledge") {
-                          return <span key={stat} className="font-noto-symbols-2 text-blue-300/80">✧</span>;
-                        } else if (stat === "luck") {
-                          return <span key={stat} className="font-noto-symbols-2 text-green-300/80">☆</span>;
-                        }
-                        return null;
-                      })}
-                    </div>
+                {(villagerMessage ||
+                  costBreakdown.length > 0 ||
+                  forestTradeGainLine != null) && (
+                    <div className="border-t border-border my-1" />
                   )}
-                </div>
+                <SuccessChanceTooltipContent
+                  gameState={state}
+                  successChance={action.success_chance}
+                  relevantStats={action.relevant_stats}
+                />
               </>
             )}
           </div>

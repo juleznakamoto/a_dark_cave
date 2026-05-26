@@ -128,6 +128,46 @@ export const forestTradeActions: Record<string, Action> = {
     },
   },
 
+  tradeGoldForIron: {
+    id: "tradeGoldForIron",
+    label: "Buy Iron",
+    show_when: {
+      1: {
+        "buildings.tradePost": 1,
+        "buildings.merchantsGuild": 0,
+      },
+      2: {
+        "buildings.grandBazaar": 1,
+        "buildings.merchantsGuild": 0,
+      },
+      3: {
+        "buildings.merchantsGuild": 1,
+      },
+    },
+    cost: {
+      1: {
+        "resources.gold": 15,
+      },
+      2: {
+        "resources.gold": 30,
+      },
+      3: {
+        "resources.gold": 60,
+      },
+    },
+    effects: {
+      1: {
+        "resources.iron": 250,
+      },
+      2: {
+        "resources.iron": 500,
+      },
+      3: {
+        "resources.iron": 1000,
+      },
+    },
+  },
+
   tradeGoldForLeather: {
     id: "tradeGoldForLeather",
     label: "Buy Leather",

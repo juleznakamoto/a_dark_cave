@@ -6,13 +6,13 @@
     "knowledgeTimeBonus": "+{{seconds}}s Entscheidungszeit durch Wissen{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (max.)",
     "successChance": "Erfolgschance: {{percent}}%",
-    "successChanceLocked": "Erfolgschance: ??% (noch nicht freigeschaltet)",
+    "successChanceLocked": "Erfolgschance: ??%",
     "influencedBy": "Beeinflusst durch:"
   },
   "reward": {
     "title": "Belohnung",
     "loss": "Verlust",
-    "actionReward": "Aktionsbelohnung",
+    "actionReward": "Belohnung",
     "claimRewards": "Belohnungen nehmen"
   },
   "madness": {

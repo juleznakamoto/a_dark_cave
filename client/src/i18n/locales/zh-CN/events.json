@@ -546,6 +546,17 @@
     "title": "地下居民"
   },
   "establishTradeProposal": {
+    "choices": {
+      "mountainMonastery": {
+        "label": "山中修道院"
+      },
+      "swampTribe": {
+        "label": "沼泽部族"
+      },
+      "shoreFishermen": {
+        "label": "岸边渔民"
+      }
+    },
     "log": {
       "outcome0": "你让独眼乌鸦带信前往山中修道院。你等待它归来。",
       "outcome1": "你让独眼乌鸦带信前往沼泽部族。你等待它归来。",

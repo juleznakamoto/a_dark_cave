@@ -657,6 +657,9 @@
   "tradeGoldForFood": {
     "label": "购买食物"
   },
+  "tradeGoldForIron": {
+    "label": "购买铁"
+  },
   "tradeGoldForLeather": {
     "label": "购买皮革"
   },

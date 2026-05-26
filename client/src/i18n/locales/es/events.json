@@ -546,6 +546,17 @@
     "title": "Los moradores de abajo"
   },
   "establishTradeProposal": {
+    "choices": {
+      "mountainMonastery": {
+        "label": "Monasterio de la Montaña"
+      },
+      "swampTribe": {
+        "label": "Tribu del Pantano"
+      },
+      "shoreFishermen": {
+        "label": "Pescadores de la Costa"
+      }
+    },
     "log": {
       "outcome0": "Envías el cuervo tuerto con un mensaje al Monasterio de la Montaña. Esperas su regreso.",
       "outcome1": "Envías el cuervo tuerto con un mensaje a la Tribu del Pantano. Esperas su regreso.",

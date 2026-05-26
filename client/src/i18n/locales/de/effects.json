@@ -264,14 +264,14 @@
     },
     "survivors_last_words": {
       "description": "Der letzte Segen eines sterbenden Fremden",
-      "name": "Letzte Worte des Überlebenden"
+      "name": "Worte des Überlebenden"
     },
     "survivors_notes": {
-      "description": "Altersschwache Schriftrolle voller praktischer Ratschläge, hinterlassen von jemandem, der vor langer Zeit hier lebte. Schaltet einfache Erfolge frei.",
+      "description": "Alte Schriftrolle voller praktischer Ratschläge, hinterlassen von jemandem, der vor langer Zeit hier lebte. Schaltet einfache Erfolge frei.",
       "name": "Notizen des Überlebenden"
     },
     "tarnished_amulet": {
-      "description": "Altersschwaches Amulett, das Glück bringt",
+      "description": "Altes Amulett, das Glück bringt",
       "name": "Angelaufenes Amulett"
     },
     "tarnished_compass": {
@@ -395,7 +395,7 @@
       "name": "Obsidianspitzhacke"
     },
     "occultist_map": {
-      "description": "Altersschwache Karte, die die Kammer eines Okkultisten in der Höhle offenbart",
+      "description": "Alte Karte, die die Kammer eines Okkultisten in der Höhle offenbart",
       "name": "Okkultistenkarte"
     },
     "reinforced_rope": {

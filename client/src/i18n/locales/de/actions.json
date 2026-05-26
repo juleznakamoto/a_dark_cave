@@ -657,6 +657,9 @@
   "tradeGoldForFood": {
     "label": "Nahrung kaufen"
   },
+  "tradeGoldForIron": {
+    "label": "Eisen kaufen"
+  },
   "tradeGoldForLeather": {
     "label": "Leder kaufen"
   },

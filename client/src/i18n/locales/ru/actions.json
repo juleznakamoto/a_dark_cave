@@ -657,6 +657,9 @@
   "tradeGoldForFood": {
     "label": "Купить еду"
   },
+  "tradeGoldForIron": {
+    "label": "Купить железо"
+  },
   "tradeGoldForLeather": {
     "label": "Купить кожу"
   },

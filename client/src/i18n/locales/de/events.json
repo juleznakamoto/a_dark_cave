@@ -546,6 +546,17 @@
     "title": "Die Bewohner der Tiefe"
   },
   "establishTradeProposal": {
+    "choices": {
+      "mountainMonastery": {
+        "label": "Bergkloster"
+      },
+      "swampTribe": {
+        "label": "Sumpfstamm"
+      },
+      "shoreFishermen": {
+        "label": "Küstenfischer"
+      }
+    },
     "log": {
       "outcome0": "Du sendest die einäugige Krähe mit einer Nachricht zum Bergkloster. Du wartest auf ihre Rückkehr.",
       "outcome1": "Du sendest die einäugige Krähe mit einer Nachricht zum Sumpfstamm. Du wartest auf ihre Rückkehr.",

@@ -661,6 +661,7 @@ export function executeGameAction(
     case "tradeGoldForFood":
     case "tradeGoldForWood":
     case "tradeGoldForStone":
+    case "tradeGoldForIron":
     case "tradeGoldForLeather":
     case "tradeGoldForSteel":
     case "tradeGoldForObsidian":
