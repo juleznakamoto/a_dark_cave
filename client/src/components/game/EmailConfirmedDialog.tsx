@@ -18,7 +18,7 @@ export default function EmailConfirmedDialog({
   isOpen,
   onClose,
 }: EmailConfirmedDialogProps) {
-  const { t } = useTranslation("ui");
+  const { t } = useTranslation(["ui", "common"]);
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>

@@ -9,13 +9,15 @@ import {
 } from "./state";
 import { GameState } from "@shared/schema";
 
-const { mockLoadGame, mockSetLastGameLoadTime } = vi.hoisted(() => ({
+const { mockLoadGame, mockSetLastGameLoadTime, mockSaveGame } = vi.hoisted(() => ({
   mockLoadGame: vi.fn(),
   mockSetLastGameLoadTime: vi.fn(),
+  mockSaveGame: vi.fn().mockResolvedValue(undefined),
 }));
 
 vi.mock("@/game/save", () => ({
   loadGame: (...args: unknown[]) => mockLoadGame(...args),
+  saveGame: (...args: unknown[]) => mockSaveGame(...args),
 }));
 
 vi.mock("@/game/loop", () => ({
@@ -678,5 +680,66 @@ describe("Gambler resume on load", () => {
         .getState()
         .log.some((e) => e.message.includes("silence as forfeit")),
     ).toBe(false);
+  });
+});
+
+describe("Timed event tab cleanup on new game", () => {
+  const activeTimedTab = {
+    isActive: true,
+    event: {
+      id: "merchant-test",
+      message: "A merchant arrives",
+      timestamp: Date.now(),
+      type: "event" as const,
+    },
+    expiryTime: Date.now() + 60_000,
+    startTime: Date.now(),
+  };
+
+  beforeEach(() => {
+    useGameStore.getState().initialize();
+  });
+
+  it("initialize clears an active timed event tab", () => {
+    useGameStore.setState({
+      activeTab: "timedevent",
+      timedEventTab: activeTimedTab,
+      gamblerGame: { wager: 10, stakeNotYetDeducted: true },
+      gamblerDiceDialogOpen: true,
+      merchantTrades: { choices: [{ id: "trade-1" }], purchasedIds: [] },
+    });
+
+    useGameStore.getState().initialize();
+
+    const state = useGameStore.getState();
+    expect(state.timedEventTab.isActive).toBe(false);
+    expect(state.timedEventTab.event).toBeNull();
+    expect(state.gamblerGame).toBeNull();
+    expect(state.gamblerDiceDialogOpen).toBe(false);
+    expect(state.merchantTrades.choices).toEqual([]);
+    expect(state.activeTab).toBe("cave");
+  });
+
+  it("restartGame clears an active timed event tab", async () => {
+    mockSaveGame.mockClear();
+
+    useGameStore.setState({
+      activeTab: "timedevent",
+      timedEventTab: activeTimedTab,
+      gamblerGame: { wager: 25, stakeNotYetDeducted: true },
+      gamblerDiceDialogOpen: true,
+      merchantTrades: { choices: [{ id: "trade-1" }], purchasedIds: ["trade-0"] },
+      flags: { ...useGameStore.getState().flags, gameStarted: true },
+    });
+
+    await useGameStore.getState().restartGame();
+
+    const state = useGameStore.getState();
+    expect(state.timedEventTab.isActive).toBe(false);
+    expect(state.timedEventTab.event).toBeNull();
+    expect(state.gamblerGame).toBeNull();
+    expect(state.gamblerDiceDialogOpen).toBe(false);
+    expect(state.merchantTrades.choices).toEqual([]);
+    expect(state.activeTab).toBe("cave");
   });
 });

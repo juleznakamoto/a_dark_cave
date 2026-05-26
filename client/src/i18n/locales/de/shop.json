@@ -1,18 +1,18 @@
 {
   "advanced_bundle": {
-    "activationMessage": "Die Bestandteile des Bundles des Bleichen Königs wurden deinen Käufen hinzugefügt!",
+    "activationMessage": "Die Bestandteile des Bundles wurden deinen Käufen hinzugefügt!",
     "name": "Bleicher König Bundle"
   },
   "artifact_bundle": {
-    "activationMessage": "Die Bestandteile des Bundles Dunkler Artefakte wurden deinen Käufen hinzugefügt!",
+    "activationMessage": "Die Bestandteile des Bundles wurden deinen Käufen hinzugefügt!",
     "name": "Dunkle Artefakte Bundle"
   },
   "ashen_throne_bundle": {
-    "activationMessage": "Die Bestandteile des Aschenthron-Bundles wurden deinen Käufen hinzugefügt!",
+    "activationMessage": "Die Bestandteile des Bundles wurden deinen Käufen hinzugefügt!",
     "name": "Aschener Thron Bundle"
   },
   "basic_survival_bundle": {
-    "activationMessage": "Die Bestandteile des Bundles des Verblassenden Wanderers wurden deinen Käufen hinzugefügt!",
+    "activationMessage": "Die Bestandteile des Bundles wurden deinen Käufen hinzugefügt!",
     "name": "Verblassender Wanderer Bundle"
   },
   "crow_harness": {

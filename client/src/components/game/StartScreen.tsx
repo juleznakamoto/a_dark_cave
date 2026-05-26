@@ -5,11 +5,17 @@ import CloudShader from "@/components/ui/cloud-shader";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
+import LanguageSelector from "@/components/game/LanguageSelector";
 import {
   GAME_FOOTER_RIGHT_ICON_LINKS,
   GAME_FOOTER_RIGHT_ICON_ORDER,
 } from "@/lib/gameFooterSocialLinks";
 import { useTranslation } from "react-i18next";
+
+const START_FOOTER_LINK =
+  "inline-flex items-center gap-0 sm:gap-1 hover:text-foreground transition-colors opacity-40 hover:opacity-100";
+const START_FOOTER_LANGUAGE_BTN =
+  "inline-flex items-center p-0 h-auto min-h-0 hover:text-foreground transition-colors opacity-40 hover:opacity-100";
 export default function StartScreen() {
   const { executeAction, setBoostMode, boostMode, cruelMode } = useGameStore();
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -239,21 +245,40 @@ export default function StartScreen() {
       )}
 
       <nav
-        className={`absolute bottom-4 left-4 right-4 z-10 flex flex-wrap justify-end gap-x-3 gap-y-1.5 text-[10px] sm:text-xs text-muted-foreground ${boostMode ? "pr-8 sm:pr-10" : ""}`}
+        className={`absolute bottom-4 left-4 right-4 z-10 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 text-[10px] sm:text-xs text-muted-foreground ${boostMode ? "pr-8 sm:pr-10" : ""}`}
         aria-label="Site links"
       >
-        {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
-          const { href, title } = GAME_FOOTER_RIGHT_ICON_LINKS[platform];
-          const linkClass =
-            "inline-flex items-center gap-0 sm:gap-1 hover:text-foreground transition-colors opacity-40 hover:opacity-100";
-          if (href.startsWith("http")) {
+        <LanguageSelector
+          buttonClassName={START_FOOTER_LANGUAGE_BTN}
+          iconClassName="w-3.5 h-3.5 shrink-0"
+          menuAlign="start"
+        />
+        <div className="flex flex-wrap justify-end items-center gap-x-3 gap-y-1.5">
+          {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
+            const { href, title } = GAME_FOOTER_RIGHT_ICON_LINKS[platform];
+            if (href.startsWith("http")) {
+              return (
+                <a
+                  key={platform}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer me"
+                  className={START_FOOTER_LINK}
+                  title={title}
+                >
+                  <FooterSocialIcon
+                    platform={platform}
+                    className="w-3.5 h-3.5 shrink-0"
+                  />
+                  <span className="sr-only sm:not-sr-only sm:inline">{title}</span>
+                </a>
+              );
+            }
             return (
               <a
                 key={platform}
                 href={href}
-                target="_blank"
-                rel="noopener noreferrer me"
-                className={linkClass}
+                className={START_FOOTER_LINK}
                 title={title}
               >
                 <FooterSocialIcon
@@ -263,34 +288,14 @@ export default function StartScreen() {
                 <span className="sr-only sm:not-sr-only sm:inline">{title}</span>
               </a>
             );
-          }
-          return (
-            <a
-              key={platform}
-              href={href}
-              className={linkClass}
-              title={title}
-            >
-              <FooterSocialIcon
-                platform={platform}
-                className="w-3.5 h-3.5 shrink-0"
-              />
-              <span className="sr-only sm:not-sr-only sm:inline">{title}</span>
-            </a>
-          );
-        })}
-        <a
-          href="/privacy"
-          className="hover:text-foreground transition-colors opacity-40 hover:opacity-100"
-        >
-          Privacy
-        </a>
-        <a
-          href="/imprint"
-          className="hover:text-foreground transition-colors opacity-40 hover:opacity-100"
-        >
-          Imprint
-        </a>
+          })}
+          <a href="/privacy" className={START_FOOTER_LINK}>
+            {t("footer.privacy")}
+          </a>
+          <a href="/imprint" className={START_FOOTER_LINK}>
+            {t("footer.imprint")}
+          </a>
+        </div>
       </nav>
     </div>
   );

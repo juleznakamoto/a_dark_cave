@@ -6,7 +6,6 @@
 export type FooterSocialPlatformId =
   | "reddit"
   | "instagram"
-  | "incrementalDb"
   | "contact";
 
 /** Official subreddit URL (structured data, footer, start screen). */
@@ -31,10 +30,6 @@ export const GAME_FOOTER_RIGHT_ICON_LINKS: Readonly<
     href: OFFICIAL_INSTAGRAM_URL,
     title: "Instagram",
   },
-  incrementalDb: {
-    href: "https://www.incrementaldb.com/game/a-dark-cave",
-    title: "Incremental DB",
-  },
   contact: {
     href: "mailto:support@a-dark-cave.com",
     title: "Contact",
@@ -45,6 +40,5 @@ export const GAME_FOOTER_RIGHT_ICON_LINKS: Readonly<
 export const GAME_FOOTER_RIGHT_ICON_ORDER: readonly FooterSocialPlatformId[] = [
   "reddit",
   "instagram",
-  "incrementalDb",
   "contact",
 ] as const;

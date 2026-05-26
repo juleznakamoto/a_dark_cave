@@ -1167,6 +1167,29 @@ function scheduleRewardDialogWhenClear(
   }, initialDelayMs);
 }
 
+/** Cleared timed-event tab slice — use when starting a new game so no visit survives reset. */
+export const INACTIVE_TIMED_EVENT_TAB: GameStore["timedEventTab"] = {
+  isActive: false,
+  event: null,
+  expiryTime: 0,
+  startTime: undefined,
+  pauseAccumMs: 0,
+  pauseStartedAt: 0,
+};
+
+/** Store patch that ends any active timed-tab visit (merchant, gambler, etc.). */
+export function getTimedEventTabCleanupPatch(
+  activeTab: GameTab,
+): Partial<GameStore> {
+  return {
+    timedEventTab: INACTIVE_TIMED_EVENT_TAB,
+    gamblerGame: null,
+    gamblerDiceDialogOpen: false,
+    merchantTrades: { choices: [], purchasedIds: [] },
+    ...(activeTab === "timedevent" ? { activeTab: "cave" as const } : {}),
+  };
+}
+
 // Main store
 export const useGameStore = create<GameStore>((set, get) => ({
   ...defaultGameState,
@@ -1353,7 +1376,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ? { ...defaultGameState, ...initialState }
       : defaultGameState;
 
-    set(stateToSet);
+    set((state) => ({
+      ...stateToSet,
+      ...getTimedEventTabCleanupPatch(state.activeTab),
+    }));
     StateManager.scheduleEffectsUpdate(get);
   },
 
@@ -1959,12 +1985,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       activeTab: "cave",
       devMode: import.meta.env.DEV,
       idleModeDialog: { isOpen: false }, // Explicitly ensure idle mode dialog is closed
-      timedEventTab: {
-        isActive: false,
-        event: null,
-        expiryTime: 0,
-      },
-      gamblerDiceDialogOpen: false,
+      ...getTimedEventTabCleanupPatch(get().activeTab),
       investDialogOpen: false,
       resourceChangeEvents: [],
 
@@ -2287,6 +2308,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         startTime: Date.now(), // Set start time for new game
         isNewGame: true, // Mark as new game to start tracking
         gameId: `game-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`, // Generate gameId for new game
+        ...getTimedEventTabCleanupPatch(get().activeTab),
       };
 
       set(newGameState);

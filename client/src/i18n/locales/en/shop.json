@@ -1,18 +1,18 @@
 {
   "advanced_bundle": {
-    "activationMessage": "Pale King's Bundle components have been added to your purchases!",
+    "activationMessage": "The bundle's components have been added to your purchases!",
     "name": "Pale King's Bundle"
   },
   "artifact_bundle": {
-    "activationMessage": "Dark Artifacts Bundle components have been added to your purchases!",
+    "activationMessage": "The bundle's components have been added to your purchases!",
     "name": "Dark Artifacts Bundle"
   },
   "ashen_throne_bundle": {
-    "activationMessage": "Ashen Throne Bundle components have been added to your purchases!",
+    "activationMessage": "The bundle's components have been added to your purchases!",
     "name": "Ashen Throne Bundle"
   },
   "basic_survival_bundle": {
-    "activationMessage": "Fading Wanderer Bundle components have been added to your purchases!",
+    "activationMessage": "The bundle's components have been added to your purchases!",
     "name": "Fading Wanderer Bundle"
   },
   "crow_harness": {

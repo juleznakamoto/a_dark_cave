@@ -35,7 +35,7 @@
     "fortress": "Festung",
     "trader": "Händler",
     "achievements": "Erfolge",
-    "timedEvent": "Zeitereignis"
+    "timedEvent": "Ereignis"
   },
   "resources": {
     "wood": "Holz",
@@ -57,8 +57,8 @@
     "moonstone": "Mondstein",
     "black_powder": "Schwarzpulver",
     "ember_bomb": "Glutbombe",
-    "ashfire_dust": "Aschenfeuerstaub",
-    "ashfire_bomb": "Aschenfeuerbombe",
+    "ashfire_dust": "Aschfeuerstaub",
+    "ashfire_bomb": "Aschfeuerbombe",
     "void_bomb": "Leerenbombe",
     "veinfire_elixir": "Aderfeuer-Elixier",
     "poison_arrows": "Giftpfeile",

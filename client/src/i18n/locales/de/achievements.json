@@ -37,7 +37,7 @@
       "label": "Tieropferer"
     },
     "2-boneTotems": {
-      "label": "Knochenopferer"
+      "label": "Knochentotem-Opferer"
     },
     "2-craftBoneTotems": {
       "label": "Knochentotem-Schnitzer"
@@ -46,10 +46,10 @@
       "label": "Ledertotem-Macher"
     },
     "2-leatherTotems": {
-      "label": "Lederopferer"
+      "label": "Ledertotem-Opferer"
     },
     "3-ashfireBombs": {
-      "label": "Aschenfeuerbomben-Macher"
+      "label": "Aschfeuerbomben-Macher"
     },
     "3-emberBombs": {
       "label": "Glutbomben-Macher"
@@ -72,7 +72,7 @@
       "label": "Kohle sammeln"
     },
     "0-hunter": {
-      "label": "Jäger"
+      "label": "Jagen"
     },
     "0-ironMiner": {
       "label": "Eisen sammeln"

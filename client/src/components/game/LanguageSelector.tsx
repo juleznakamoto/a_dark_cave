@@ -14,9 +14,11 @@ import cn from "clsx";
 export default function LanguageSelector({
   buttonClassName = "group px-1 py-1 text-xs text-neutral-300 hover hover:text-red-500",
   iconClassName = "w-4 h-4 opacity-60 transition-[opacity,color] group-hover:opacity-100",
+  menuAlign = "end",
 }: {
   buttonClassName?: string;
   iconClassName?: string;
+  menuAlign?: "start" | "end";
 } = {}) {
   const { locale, setLocale, locales, localeLabels } = useLocale();
   const { t } = useTranslation("ui");
@@ -34,7 +36,7 @@ export default function LanguageSelector({
           <Globe className={iconClassName} aria-hidden />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-max min-w-0 text-xs">
+      <DropdownMenuContent align={menuAlign} className="w-max min-w-0 text-xs">
         {locales.map((code) => (
           <DropdownMenuItem
             key={code}
