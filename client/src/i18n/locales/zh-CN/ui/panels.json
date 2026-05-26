@@ -155,6 +155,7 @@
     "doubleGainChance": "双倍收获几率",
     "populationTooltip": "每位村民消耗 1 食物和 1 木材",
     "resourceLimitTooltip": "上限 {{limit}}（白银和黄金无上限）",
+    "statsTooltip": "属性会影响事件的结果，之后在战斗中也会起作用。",
     "statLuckTooltip": "让命运偏向你",
     "statStrengthTooltip": "在言语无力之处提供帮助",
     "statKnowledgeTooltip": "在需要智慧之处产生影响",

@@ -1014,7 +1014,12 @@ export default function SidePanel() {
             />
           )}
           {anyPlayerStatPositive && shouldShowSection("stats") && (
-            <SidePanelSection sectionId="stats" title={t("sidePanel.stats")} items={statsItems} />
+            <SidePanelSection
+              sectionId="stats"
+              title={t("sidePanel.stats")}
+              titleTooltip={t("sidePanel.statsTooltip")}
+              items={statsItems}
+            />
           )}
           {bonusItems.length > 0 && shouldShowSection("bonuses") && (
             <SidePanelSection sectionId="bonuses" title={t("sidePanel.bonuses")} items={bonusItems} />
