@@ -5,6 +5,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { Globe } from "lucide-react";
 import { useLocale } from "@/i18n/useLocale";
 import { useTranslation } from "react-i18next";
 import type { SupportedLocale } from "@/i18n/locales";
@@ -23,9 +24,11 @@ export default function LanguageSelector() {
           title={t("languageSelector.ariaLabel")}
           aria-label={t("languageSelector.ariaLabel")}
         >
-          <span className="text-sm leading-none opacity-60" aria-hidden>
-            🌐
-          </span>
+          <Globe
+            className="w-4 h-4 opacity-60"
+            style={{ filter: "invert(1)" }}
+            aria-hidden
+          />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="text-xs">
