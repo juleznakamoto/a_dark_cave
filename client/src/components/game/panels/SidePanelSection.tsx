@@ -10,7 +10,7 @@ import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import ResourceChangeNotification from "./ResourceChangeNotification";
 import { useGameStore } from "@/game/state";
 import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
-import cn from "clsx";
+import { cn } from "@/lib/utils";
 import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
 
 interface SidePanelItem {
@@ -561,7 +561,7 @@ export default function SidePanelSection({
           itemAnimationClass,
         )}
       >
-        <div className="min-w-0 flex-1 break-words">{labelContent}</div>
+        <div className="min-w-0 flex-1">{labelContent}</div>
         {rightContent}
       </div>
     );
