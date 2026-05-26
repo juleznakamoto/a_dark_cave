@@ -692,6 +692,8 @@ export default function GameContainer() {
   const tabActiveTextClass = isPaused
     ? "opacity-100 text-foreground"
     : "opacity-100";
+  const tabButtonClass =
+    "inline-flex h-10 items-center justify-center bg-transparent text-sm font-normal leading-none";
 
   return (
     <div
@@ -794,10 +796,10 @@ export default function GameContainer() {
               // Standard button design
               <div
                 ref={tabButtonRowRef}
-                className="inline-flex max-w-full flex-wrap items-baseline gap-x-2 md:gap-x-3 pl-[3px]"
+                className="inline-flex max-w-full flex-nowrap items-center gap-x-2 overflow-x-auto pl-[3px] scrollbar-hide md:gap-x-3"
               >
                 <button
-                  className={`py-2 text-sm bg-transparent font-normal ${activeTab === "cave"
+                  className={`${tabButtonClass} ${activeTab === "cave"
                     ? tabActiveTextClass
                     : tabInactiveTextClass
                     } `}
@@ -809,7 +811,7 @@ export default function GameContainer() {
 
                 {flags.villageUnlocked && (
                   <button
-                    className={`py-2 text-sm bg-transparent font-normal ${animatingTabs.has("village")
+                    className={`${tabButtonClass} ${animatingTabs.has("village")
                       ? fadePhaseTabs.has("village")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -841,7 +843,7 @@ export default function GameContainer() {
                 {/* Estate Tab Button */}
                 {(estateUnlocked || buildings.darkEstate >= 1) && (
                   <button
-                    className={`py-2 text-sm bg-transparent font-normal ${animatingTabs.has("estate")
+                    className={`${tabButtonClass} ${animatingTabs.has("estate")
                       ? fadePhaseTabs.has("estate")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -870,7 +872,7 @@ export default function GameContainer() {
 
                 {flags.forestUnlocked && (
                   <button
-                    className={`py-2 text-sm bg-transparent font-normal ${animatingTabs.has("forest")
+                    className={`${tabButtonClass} ${animatingTabs.has("forest")
                       ? fadePhaseTabs.has("forest")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -899,7 +901,7 @@ export default function GameContainer() {
 
                 {flags.bastionUnlocked && (
                   <button
-                    className={`py-2 text-sm bg-transparent font-normal ${animatingTabs.has("bastion")
+                    className={`${tabButtonClass} ${animatingTabs.has("bastion")
                       ? fadePhaseTabs.has("bastion")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -931,7 +933,7 @@ export default function GameContainer() {
                 {/* Trader Tab Button */}
                 {traderUnlocked && (
                   <button
-                    className={`py-2 text-sm bg-transparent font-normal ${animatingTabs.has("trader")
+                    className={`${tabButtonClass} ${animatingTabs.has("trader")
                       ? fadePhaseTabs.has("trader")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -959,7 +961,7 @@ export default function GameContainer() {
                 {/* Achievements Tab Button ⚜︎ */}
                 {(relics?.survivors_notes || books?.book_of_trials) && (
                   <button
-                    className={`py-2 text-sm bg-transparent font-normal ${animatingTabs.has("achievements")
+                    className={`${tabButtonClass} ${animatingTabs.has("achievements")
                       ? fadePhaseTabs.has("achievements")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -992,7 +994,7 @@ export default function GameContainer() {
                 {/* Timed Event Tab Button */}
                 {timedEventTab.isActive && (
                   <button
-                    className={`py-2 text-sm bg-transparent font-normal inline-flex items-center gap-1 ${activeTab === "timedevent"
+                    className={`${tabButtonClass} gap-1 ${activeTab === "timedevent"
                       ? tabActiveTextClass
                       : tabInactiveTextClass
                       }`}
