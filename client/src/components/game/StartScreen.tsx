@@ -14,6 +14,8 @@ import { useTranslation } from "react-i18next";
 
 const START_FOOTER_LINK =
   "inline-flex items-center gap-0 sm:gap-1 hover:text-foreground transition-colors opacity-40 hover:opacity-100";
+const START_FOOTER_LEGAL_LINK =
+  `${START_FOOTER_LINK} text-[9px] sm:text-[10px]`;
 const START_FOOTER_LANGUAGE_BTN =
   "inline-flex items-center p-0 h-auto min-h-0 hover:text-foreground transition-colors opacity-40 hover:opacity-100";
 export default function StartScreen() {
@@ -127,8 +129,8 @@ export default function StartScreen() {
   return (
     <div className="fixed inset-0 bg-black text-white overflow-hidden">
       {/* Featured By Section */}
-      <div className="absolute bottom-8 left-4 z-20 animate-fade-in-featured">
-        <div className="bg-white/25 backdrop-blur-sm rounded-lg p-2 !pb-1 border border-white/25 flex flex-col items-start">
+      <div className="absolute bottom-8 right-4 z-20 animate-fade-in-featured">
+        <div className="bg-white/25 backdrop-blur-sm rounded-lg p-2 !pb-1 border border-white/25 flex flex-col items-end">
           <p className="text-xs text-gray-300/80 font-medium">{t("startScreen.recommendedBy")}</p>
           <img
             src="/the_hustle_logo.svg"
@@ -256,6 +258,8 @@ export default function StartScreen() {
         <div className="flex flex-wrap justify-end items-center gap-x-3 gap-y-1.5">
           {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
             const { href, title } = GAME_FOOTER_RIGHT_ICON_LINKS[platform];
+            const linkLabel =
+              platform === "contact" ? t("footer.contact") : title;
             if (href.startsWith("http")) {
               return (
                 <a
@@ -264,13 +268,15 @@ export default function StartScreen() {
                   target="_blank"
                   rel="noopener noreferrer me"
                   className={START_FOOTER_LINK}
-                  title={title}
+                  title={linkLabel}
                 >
                   <FooterSocialIcon
                     platform={platform}
                     className="w-3.5 h-3.5 shrink-0"
                   />
-                  <span className="sr-only sm:not-sr-only sm:inline">{title}</span>
+                  <span className="sr-only sm:not-sr-only sm:inline">
+                    {linkLabel}
+                  </span>
                 </a>
               );
             }
@@ -279,20 +285,22 @@ export default function StartScreen() {
                 key={platform}
                 href={href}
                 className={START_FOOTER_LINK}
-                title={title}
+                title={linkLabel}
               >
                 <FooterSocialIcon
                   platform={platform}
                   className="w-3.5 h-3.5 shrink-0"
                 />
-                <span className="sr-only sm:not-sr-only sm:inline">{title}</span>
+                <span className="sr-only sm:not-sr-only sm:inline">
+                  {linkLabel}
+                </span>
               </a>
             );
           })}
-          <a href="/privacy" className={START_FOOTER_LINK}>
+          <a href="/privacy" className={START_FOOTER_LEGAL_LINK}>
             {t("footer.privacy")}
           </a>
-          <a href="/imprint" className={START_FOOTER_LINK}>
+          <a href="/imprint" className={START_FOOTER_LEGAL_LINK}>
             {t("footer.imprint")}
           </a>
         </div>

@@ -29,7 +29,7 @@ const FOOTER_CONTROL_TEXT =
 const FOOTER_SOCIAL_ICON =
   "w-4 h-4 text-neutral-300 opacity-80 transition-opacity group-hover:opacity-100";
 const FOOTER_LEGAL_LINK =
-  "text-neutral-300 opacity-40 hover:opacity-100 transition-opacity";
+  "text-[10px] text-neutral-300 opacity-40 hover:opacity-100 transition-opacity";
 
 export default function GameFooter() {
   const {
@@ -198,6 +198,8 @@ export default function GameFooter() {
             {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
               const { href, title } =
                 GAME_FOOTER_RIGHT_ICON_LINKS[platform];
+              const linkLabel =
+                platform === "contact" ? t("footer.contact") : title;
               return (
                 <a
                   key={platform}
@@ -209,7 +211,7 @@ export default function GameFooter() {
                     }
                     : {})}
                   className={socialLinkClass}
-                  title={title}
+                  title={linkLabel}
                 >
                   <FooterSocialIcon
                     platform={platform}
