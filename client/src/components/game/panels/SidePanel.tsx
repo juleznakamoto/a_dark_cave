@@ -1018,7 +1018,6 @@ export default function SidePanel() {
             <SidePanelSection
               sectionId="stats"
               title={t("sidePanel.stats")}
-              titleTooltip={t("sidePanel.statsTooltip")}
               items={statsItems}
             />
           )}

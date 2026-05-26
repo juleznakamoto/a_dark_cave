@@ -1,6 +1,11 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import i18n from "./index";
-import { getActionLabel, getEffectName, getEventMessage } from "./resolveGameText";
+import {
+  getActionLabel,
+  getEffectName,
+  getEventMessage,
+  tWithFallback,
+} from "./resolveGameText";
 import { resolveEventMessage, resolveEventTitle } from "./eventText";
 import { gameStateSchema } from "@shared/schema";
 
@@ -11,6 +16,9 @@ describe("i18n runtime", () => {
 
   it("loads English UI strings", () => {
     expect(i18n.t("profile.save", { ns: "ui" })).toBe("Save");
+    expect(i18n.t("estate.improve", { ns: "ui" })).toBe("Improve");
+    expect(i18n.t("estate.sleepLength", { ns: "ui" })).toBe("Sleep Length");
+    expect(tWithFallback("ui", "estate.improve", "Improve")).toBe("Improve");
   });
 
   it("falls back to inline English for missing keys", () => {

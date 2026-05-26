@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useTranslation } from "react-i18next";
+import { tWithFallback } from "@/i18n/resolveGameText";
 import { Button } from "./button";
 
 // Improve button with a rewarding red pulse wave on click
@@ -14,8 +14,10 @@ export function ImproveButton({
   button_id: string;
   variant?: "ring" | "flash";
 }) {
-  const { t } = useTranslation("ui");
   const [isPulsing, setIsPulsing] = React.useState(false);
+  const improveLabelRaw = tWithFallback("ui", "estate.improve", "Improve");
+  const improveLabel =
+    improveLabelRaw === "estate.improve" ? "Improve" : improveLabelRaw;
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent event bubbling
@@ -36,7 +38,7 @@ export function ImproveButton({
           button_id={button_id}
           onAnimationEnd={() => setIsPulsing(false)}
         >
-          {t("estate.improve")}
+          {improveLabel}
         </Button>
         {isPulsing && variant === "ring" && (
           <>
