@@ -76,7 +76,7 @@ const EFFECT_TOOLTIP_SECTIONS = new Set<SidePanelSectionId>([
 
 /** Shared layout for resource name + amount + production delta. */
 const RESOURCE_ROW_GRID_CLASS =
-  "grid grid-cols-[minmax(0,1fr)_6.25rem_3.25rem] items-start gap-x-1.5";
+  "grid grid-cols-[minmax(0,1fr)_6.25rem_3rem] items-start gap-x-1.5";
 
 interface SidePanelSectionProps {
   title: string | React.ReactNode;
@@ -536,15 +536,14 @@ export default function SidePanelSection({
     );
 
     const productionDeltaCellClassName = cn(
-      "text-right font-mono tabular-nums whitespace-nowrap",
+      "text-right font-mono tabular-nums whitespace-nowrap font-normal",
       tabForProductionColors !== "village" && "text-muted-foreground",
-      tabForProductionColors === "village" && "font-semibold",
       tabForProductionColors === "village" &&
       (item.productionDelta ?? 0) > 0 &&
-      "text-green-600",
+      "text-green-600/80",
       tabForProductionColors === "village" &&
       (item.productionDelta ?? 0) < 0 &&
-      "text-red-600",
+      "text-red-600/80",
     );
 
     const resourceRowClassName = cn(

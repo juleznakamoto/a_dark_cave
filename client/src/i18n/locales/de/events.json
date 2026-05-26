@@ -2461,10 +2461,10 @@
   "wrongReflections": {
     "choices": {
       "cover_well": {
-        "label": "Gut mit Brettern abdecken"
+        "label": "Mit Brettern abdecken"
       },
       "investigate": {
-        "label": "Tiefer in den Brunnen schauen"
+        "label": "Tiefer in Brunnen schauen"
       }
     },
     "log": {
