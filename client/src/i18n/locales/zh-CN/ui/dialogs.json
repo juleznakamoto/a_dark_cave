@@ -4,7 +4,10 @@
     "choose": "请选择一个选项",
     "timeRemaining": "剩余时间：{{seconds}} 秒",
     "knowledgeTimeBonus": "知识额外增加 {{seconds}} 秒决策时间{{maxSuffix}}",
-    "knowledgeTimeBonusMax": "（上限）"
+    "knowledgeTimeBonusMax": "（上限）",
+    "successChance": "成功几率：{{percent}}%",
+    "successChanceLocked": "成功几率：??%",
+    "influencedBy": "受以下影响："
   },
   "reward": {
     "title": "奖励",

@@ -4,7 +4,10 @@
     "choose": "Выберите вариант",
     "timeRemaining": "Осталось времени: {{seconds}} с",
     "knowledgeTimeBonus": "+{{seconds}}с к времени решения благодаря Знанию{{maxSuffix}}",
-    "knowledgeTimeBonusMax": " (макс.)"
+    "knowledgeTimeBonusMax": " (макс.)",
+    "successChance": "Шанс успеха: {{percent}}%",
+    "successChanceLocked": "Шанс успеха: ??%",
+    "influencedBy": "Зависит от:"
   },
   "reward": {
     "title": "Награда",

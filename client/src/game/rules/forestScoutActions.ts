@@ -892,35 +892,13 @@ export function handleSwampSanctuary(
   };
 
   const eventDef = gameEvents.swampSanctuaryChoice;
-  const eventChoices =
-    typeof eventDef.choices === "function"
-      ? eventDef.choices(state)
-      : eventDef.choices;
-  const messageRaw =
-    typeof eventDef.message === "function"
-      ? eventDef.message(state)
-      : Array.isArray(eventDef.message)
-        ? eventDef.message[0]
-        : eventDef.message;
-  const message =
-    typeof messageRaw === "string" ? messageRaw : String(messageRaw ?? "");
-  const titleRaw =
-    typeof eventDef.title === "function"
-      ? eventDef.title(state)
-      : eventDef.title;
-  const title = typeof titleRaw === "string" ? titleRaw : undefined;
-
   // id prefix must match `gameEvents` key so EventDialog's `event.id.split("-")[0]` resolves
   // the correct definition (e.g. "swamp-sanctuary-…" would wrongly yield eventId "swamp").
-  result.logEntries!.push({
-    id: `swampSanctuaryChoice-${Date.now()}`,
-    message,
-    timestamp: Date.now(),
-    type: "event",
-    title,
-    choices: eventChoices ?? [],
-    skipEventLog: true,
-  });
+  result.logEntries!.push(
+    buildLocalizedEventLogEntry("swampSanctuaryChoice", eventDef, state, {
+      skipEventLog: true,
+    }),
+  );
 
   return result;
 }

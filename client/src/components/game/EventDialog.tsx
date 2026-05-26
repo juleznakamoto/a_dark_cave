@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
 import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
@@ -25,6 +25,7 @@ import {
   resolveEventDisplayTitle,
   resolveTimedEventCatalogId,
 } from "@/i18n/eventDisplay";
+import { localizeEventChoices } from "@/i18n/eventText";
 import { getEventChoiceAffordance } from "@/i18n/eventAffordance";
 import type { MerchantTradeData } from "@/game/types";
 import {
@@ -65,10 +66,22 @@ export default function EventDialog({
   const pauseStartRef = useRef<number>(0);
   const totalPausedMsRef = useRef<number>(0);
 
-  // Derive eventChoices directly from event prop instead of using state
-  const eventChoices = typeof event?.choices === 'function'
-    ? event.choices(gameState)
-    : event?.choices || [];
+  const ruleEventId =
+    event?.eventId || (event?.id ? getEventRulesCatalogId(event.id) : "");
+  const catalogId = event ? resolveTimedEventCatalogId(ruleEventId) : "";
+  const eventI18nVars = event
+    ? getEventI18nVars(catalogId, gameState, ruleEventId)
+    : undefined;
+
+  const eventChoices = useMemo(() => {
+    if (!event) return [];
+    const raw =
+      typeof event.choices === "function"
+        ? event.choices(gameState)
+        : event.choices || [];
+    if (!raw.length) return [];
+    return localizeEventChoices(catalogId, raw, gameState, eventI18nVars) ?? raw;
+  }, [event, catalogId, gameState, eventI18nVars]);
 
   // Reset purchased items when dialog opens
   useEffect(() => {
@@ -230,8 +243,6 @@ export default function EventDialog({
   ];
   const isMadnessEvent = event?.id && madnessEventIds.some(id => event.id.startsWith(id));
 
-  const ruleEventId = event.eventId || getEventRulesCatalogId(event.id);
-  const catalogId = resolveTimedEventCatalogId(ruleEventId);
   const displayTitle =
     resolveEventDisplayTitle(catalogId, event.title, gameState, ruleEventId) ||
     t("event.fallbackTitle");
@@ -241,7 +252,6 @@ export default function EventDialog({
     gameState,
     ruleEventId,
   );
-  const eventI18nVars = getEventI18nVars(catalogId, gameState, ruleEventId);
 
   return (
     <>

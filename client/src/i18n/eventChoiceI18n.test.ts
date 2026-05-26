@@ -8,6 +8,7 @@ import {
   localizeFallbackChoice,
 } from "./eventText";
 import { getEventI18nVars } from "./eventDisplay";
+import { SUPPORTED_LOCALES } from "./locales";
 
 function getChoices(
   def: GameEvent,
@@ -71,22 +72,35 @@ describe("event choice i18n", () => {
     await i18n.changeLanguage("en");
   });
 
-  it("localizes choice labels for every event with choices (en)", () => {
-    const failures = collectMissingChoiceLabels("en");
-    expect(
-      failures,
-      `Missing choice labels: ${failures.join(", ")}`,
-    ).toEqual([]);
-  });
+  for (const lang of SUPPORTED_LOCALES) {
+    it(`localizes choice labels for every event with choices (${lang})`, async () => {
+      await i18n.changeLanguage(lang);
+      const failures = collectMissingChoiceLabels(lang);
+      expect(
+        failures,
+        `Missing choice labels: ${failures.join(", ")}`,
+      ).toEqual([]);
+    });
+  }
 
-  it("localizes choice labels for every event with choices (de)", async () => {
-    await i18n.changeLanguage("de");
-    const failures = collectMissingChoiceLabels("de");
-    expect(
-      failures,
-      `Missing choice labels: ${failures.join(", ")}`,
-    ).toEqual([]);
-  });
+  for (const lang of SUPPORTED_LOCALES) {
+    it(`localizes swampSanctuaryChoice button labels (${lang})`, async () => {
+      await i18n.changeLanguage(lang);
+      const def = gameEvents.swampSanctuaryChoice;
+      const catalogId = getEventCatalogId(def);
+      const state = gameStateSchema.parse({ cruelMode: false });
+      const rawChoices = getChoices(def, state);
+      const choices = localizeEventChoices(catalogId, rawChoices, state);
+
+      for (const choiceId of ["chopBlackTree", "sacrificeAtTree"]) {
+        const label = choices?.find((c) => c.id === choiceId)?.label;
+        expect(label, `${lang}:${choiceId}`).toBeTruthy();
+        expect(String(label).trim().length, `${lang}:${choiceId}`).toBeGreaterThan(
+          0,
+        );
+      }
+    });
+  }
 
   it("resolves offerToTheForestGods sacrifice and refuse labels", async () => {
     const def = gameEvents.offerToTheForestGods;
