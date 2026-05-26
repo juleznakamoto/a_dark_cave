@@ -18,7 +18,9 @@ export function checkMilestoneLogEntries(state: GameState): Partial<GameState> {
     // Add the milestone log entry
     const milestoneEntry: LogEntry = {
       id: "village-4-villagers-milestone",
-      message: "A small village begins to take shape. Villagers need food and wood to survive.",
+      message:
+        "A small village begins to take shape. Villagers need food and wood to survive.",
+      logKey: "gameplay.villageBegins",
       timestamp: Date.now(),
       type: "system",
     };

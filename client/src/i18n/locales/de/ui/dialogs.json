@@ -55,7 +55,7 @@
     "button": "Einladen",
     "goldBonus": "+{{amount}} Gold",
     "linkCopied": "Einladungslink kopiert!",
-    "linkCopiedDesc": "Teile ihn mit Freunden, um jeweils {{amount}} Gold zu verdienen.",
+    "linkCopiedDesc": "Teile ihn mit Freunden, um beide {{amount}} Gold zu verdienen.",
     "copyFailed": "Einladungslink konnte nicht kopiert werden",
     "tooltip": "Lade deine Freunde ein – ihr beide erhaltet {{amount}} Gold. Du kannst bis zu {{cap}} Freunde einladen. ({{count}}/{{cap}} eingeladen)."
   },

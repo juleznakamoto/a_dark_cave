@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import i18n from "./index";
-import { resolveLogPanelMessage } from "./logDisplay";
+import { hasLogEntryText, resolveLogPanelMessage } from "./logDisplay";
+import { resolveInheritedActionLogMessage } from "./resolveGameText";
 import type { LogEntry } from "@/game/rules/events";
 
 function systemEntry(
@@ -88,8 +89,70 @@ describe("resolveLogPanelMessage", () => {
     );
   });
 
+  it("matches legacy English clerk hut build log in German saves", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "A clerks hut is erected, its occupant ready to track the flow of resources with meticulous care.",
+      ),
+    );
+    expect(text).toBe(
+      "Eine Schreibstube wird errichtet, ihr Bewohner bereit, den Ressourcenfluss sorgfältig zu verfolgen.",
+    );
+  });
+
+  it("translates foundry build log via logKey in German", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "The foundry roars to life as fire and heat fuse raw materials.",
+        { logKey: "building.foundry" },
+      ),
+    );
+    expect(text).toBe(
+      "Die Gießerei erwacht zum Leben, während Feuer und Hitze Rohmaterialien verschmelzen.",
+    );
+  });
+
+  it("matches legacy English village begins milestone in German saves", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "A small village begins to take shape. Villagers need food and wood to survive.",
+      ),
+    );
+    expect(text).toBe(
+      "Ein kleines Dorf nimmt Gestalt an. Die Dorfbewohner brauchen Nahrung und Holz zum Überleben.",
+    );
+  });
+
   it("returns stored message when no catalog match exists", () => {
     const message = "Some unknown custom log line.";
     expect(resolveLogPanelMessage(systemEntry(message))).toBe(message);
+  });
+
+  it("hasLogEntryText rejects blank messages without logKey", () => {
+    expect(hasLogEntryText(systemEntry("   "))).toBe(false);
+    expect(hasLogEntryText(systemEntry("Hello"))).toBe(true);
+    expect(
+      hasLogEntryText(systemEntry("", { logKey: "freezingDeath.one" })),
+    ).toBe(true);
+  });
+
+  it("resolves inherited cave loot log keys from earlier action catalogs", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveInheritedActionLogMessage(
+      "ventureDeeper",
+      "debrisScroll",
+      {
+        exploreCave: {
+          debrisScroll:
+            "Among the debris you uncover a timeworn scroll containing wisdom for enduring this unforgiving world.",
+        },
+      },
+    );
+    expect(text).toBe(
+      "Unter den Trümmern findest du eine verwitterte Schriftrolle mit Weisheit, um in dieser unbarmherzigen Welt zu überleben.",
+    );
   });
 });

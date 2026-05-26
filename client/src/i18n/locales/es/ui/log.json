@@ -31,10 +31,44 @@
     },
     "building": {
       "darkEstate": "The Dark Estate stands has been built on a small hill near the village, offering solitude and refuge.",
-      "blacksmith": "The blacksmith's forge comes alive. The heart of industry now beats in the village."
+      "blacksmith": "The blacksmith's forge comes alive. The heart of industry now beats in the village.",
+      "firstWoodenHut": "The first wooden hut stands complete, this could be the start of something great.",
+      "villageGrowthSuggestion": "The village grows quickly. Perhaps stone houses could shelter more villagers.",
+      "cityGrowthMilestone": "The city has grown into a bustling metropolis, alive with trade, industry, and the promise of brighter days.",
+      "moonstoneDiscovered": "In the depth of the pit, the workers discover something extraordinary. They uncover veins of moonstone - a luminescent mineral containing immense energy.",
+      "foundry": "The foundry roars to life as fire and heat fuse raw materials.",
+      "masterworkFoundry": "The Masterwork Foundry stands complete, a monument to supreme metallurgical mastery. Within its fires, blacksteel can be forged, nearly unbreakable, but very difficult to produce.",
+      "altar": "An altar rises at the forest's edge, raised to appease what dwells within.",
+      "grandHunterLodge": "The Grand Hunter Lodge is complete, a magnificent structure where master hunters gather.",
+      "clerksHut": "A clerks hut is erected, its occupant ready to track the flow of resources with meticulous care.",
+      "scriptorium": "The Scriptorium stands complete. Every detail of village life now gets tracked with meticulous precision.",
+      "inkwardenAcademy": "The Inkwarden Academy rises as a monument to knowledge. Its halls filled with the wisdom of ages, and every resource is now tracked with unparalleled precision.",
+      "tannery": "The Tannery is complete. The smell of curing leather fills the air as craftsmen begin their work.",
+      "highTannery": "The High Tannery is built, a grand workshop where expert craftsmen transform hides into the finest leather.",
+      "longhouse": "The first longhouse rises, a massive wooden hall with thick timbers and lots of space.",
+      "furTents": "The first fur tents are raised at the village edge, giving more people warm shelter.",
+      "shrine": "A sacred shrine rises beside the altar, its presence bringing peace and focus to troubled minds.",
+      "temple": "A grand temple stands complete, its sacred halls echoing with whispered prayers that calm the tormented soul.",
+      "sanctum": "The sanctum rises as a beacon of divine protection, its blessed aura driving away the darkest thoughts and fears.",
+      "alchemistHall": "The Alchemist's Halls stand tall, their chambers filled with bubbling crucibles and gleaming instruments of forgotten craft.",
+      "tradePost": "A trade post is built near the forest attracting tradesman who look to sell their goods for gold.",
+      "grandBazaar": "The Grand Bazaar rises, a sprawling marketplace where merchants from distant lands gather to trade goods.",
+      "merchantsGuild": "The Merchants Guild stands complete, a powerful organization that controls all trade routes and brings unprecedented wealth to your settlement.",
+      "bastion": "The bastion rises like a mountain of stone, its walls thick and unyielding. A promise of protection against whatever stirs in the depths below.",
+      "wizardTower": "The Wizard Tower spirals into the sky, crackling with arcane energy. The wizard moves in with his collection of ancient tomes and mysterious artifacts.",
+      "fortifiedMoat": "A deep moat now surrounds the settlement, its waters dark and treacherous. No enemy will cross it easily.",
+      "traps": "Traps have been laid around the village perimeter. Hidden pits, snares, and sharpened stakes await any who dare attack.",
+      "improvedTraps": "The village perimeter is reinforced with covered pits, spring snares, and steel mechanisms. Attackers face a far deadlier welcome.",
+      "blackMonolith": "The Black Monolith rises from the village center, a towering monument of dark adamant. Its surface seems to drink in the light, and the villagers gather around it with reverence and fear.",
+      "blackEstate": "The Black Estate rises from the hill, encircled by a veil of mist.",
+      "chitinPlating": "The fortifications are now reinforced with chitin plating. The village's defense is significantly increased.",
+      "pillarOfClarity": "The Pillar of Clarity rises, a shimmering obelisk that seems to hum with ancient power. Its presence brings a sense of calm and focus to those nearby.",
+      "boneTemple": "The Bone Temple rises from thousands of carefully arranged bones, a monument to the old gods. Its presence emanates dark power, and the villagers approach it with reverence and fear.",
+      "heartfire": "The Heartfire is lit. Its warmth and light bring a new sense of purpose to the village."
     },
     "gameplay": {
-      "forestUnlocked": "The village is encircled by a dense, dark forest. Danger lingers in the air, though it may also be a good place to chop wood and hunt."
+      "forestUnlocked": "The village is encircled by a dense, dark forest. Danger lingers in the air, though it may also be a good place to chop wood and hunt.",
+      "villageBegins": "A small village begins to take shape. Villagers need food and wood to survive."
     }
   }
 }

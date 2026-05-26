@@ -310,7 +310,7 @@
   "ui.socialPrompt.platforms.reddit.actionJoin": "Beitreten",
   "ui.invite.button": "Einladen",
   "ui.invite.linkCopied": "Einladungslink kopiert!",
-  "ui.invite.linkCopiedDesc": "Teile ihn mit Freunden, um jeweils {{amount}} oro zu verdienen.",
+  "ui.invite.linkCopiedDesc": "Teile ihn mit Freunden, um beide {{amount}} oro zu verdienen.",
   "ui.invite.copyFailed": "Einladungslink konnte nicht kopiert werden",
   "ui.invite.tooltip": "Lade deine Freunde ein – ihr beide erhaltet {{amount}} oro. Puedes bis zu {{cap}} Freunde einladen. ({{count}}/{{cap}} eingeladen).",
   "ui.gambler.title": "Der besessene jugador",

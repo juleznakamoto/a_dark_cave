@@ -20,9 +20,10 @@ const FOOTER_CONTROL_BTN =
   "group px-1 py-1 text-xs text-neutral-300 hover hover:text-red-500";
 const FOOTER_CONTROL_BTN_FADE =
   "opacity-60 transition-opacity group-hover:opacity-100";
-const FOOTER_CONTROL_IMG =
+const FOOTER_CONTROL_ICON_HOVER =
   "w-4 h-4 opacity-60 transition-[filter,opacity] group-hover:opacity-100 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]";
-const FOOTER_CONTROL_ICON = `w-4 h-4 ${FOOTER_CONTROL_BTN_FADE} transition-[opacity,color]`;
+const FOOTER_CONTROL_TEXT =
+  `${FOOTER_CONTROL_BTN_FADE} transition-[opacity,color] group-hover:text-red-500`;
 
 export default function GameFooter() {
   const {
@@ -87,8 +88,8 @@ export default function GameFooter() {
 
   const emphasizeFooterSocialIcons =
     isPaused || idleModeDialog.isOpen || leaderboardDialogOpen;
-  const socialIconClass = `hover:opacity-100 transition-opacity duration-[2000ms] ease-in-out flex items-center justify-center w-4 h-4 text-neutral-300 ${emphasizeFooterSocialIcons ? "opacity-90" : "opacity-60"
-    }`;
+  const socialLinkClass = `group ${FOOTER_CONTROL_BTN} flex items-center justify-center transition-opacity duration-[2000ms] ease-in-out`;
+  const socialIconClass = `${FOOTER_CONTROL_ICON_HOVER}${emphasizeFooterSocialIcons ? " !opacity-90" : ""}`;
 
   return (
     <>
@@ -106,12 +107,14 @@ export default function GameFooter() {
               onClick={togglePause}
               data-testid="button-pause-game"
               disabled={idleModeDialog.isOpen}
-              className={`${FOOTER_CONTROL_BTN} ${FOOTER_CONTROL_BTN_FADE} ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "!text-red-600 !opacity-100" : ""} ${isPaused && !idleModeDialog.isOpen ? "continue-pause-flash" : ""}`}
+              className={`${FOOTER_CONTROL_BTN} ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "!text-red-600 !opacity-100" : ""} ${isPaused && !idleModeDialog.isOpen ? "continue-pause-flash" : ""}`}
               title={
                 isPaused ? t("footer.resumeGame") : t("footer.pauseGame")
               }
             >
-              {isPaused ? "▶" : "❚❚"}
+              <span className={isPaused ? undefined : FOOTER_CONTROL_TEXT}>
+                {isPaused ? "▶" : "❚❚"}
+              </span>
             </Button>
             <Button
               variant="ghost"
@@ -124,7 +127,7 @@ export default function GameFooter() {
               <img
                 src={musicMuted ? "/music_off.png" : "/music_on.png"}
                 alt={musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")}
-                className={FOOTER_CONTROL_IMG}
+                className={FOOTER_CONTROL_ICON_HOVER}
               />
             </Button>
             <Button
@@ -138,12 +141,12 @@ export default function GameFooter() {
               <img
                 src={sfxMuted ? "/sound_off.png" : "/sound_on.png"}
                 alt={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
-                className={FOOTER_CONTROL_IMG}
+                className={FOOTER_CONTROL_ICON_HOVER}
               />
             </Button>
             <LanguageSelector
               buttonClassName={FOOTER_CONTROL_BTN}
-              iconClassName={FOOTER_CONTROL_ICON}
+              iconClassName={FOOTER_CONTROL_ICON_HOVER}
             />
 
             {BTP === 1 ? (
@@ -151,7 +154,7 @@ export default function GameFooter() {
                 variant="ghost"
                 size="xs"
                 onClick={() => setFullGamePurchaseDialogOpen(true)}
-                className="px-1 py-1 text-xs hover"
+                className={`${FOOTER_CONTROL_BTN} ${FOOTER_CONTROL_BTN_FADE}`}
               >
                 {t("footer.fullGame")}
               </Button>
@@ -160,7 +163,7 @@ export default function GameFooter() {
                 variant="ghost"
                 size="xs"
                 onClick={() => setShopDialogOpen(true)}
-                className={`px-1 py-1 text-xs hover text-neutral-300 ${traderFooterFullOpacity ? "opacity-100" : "opacity-50"} hover:!opacity-100`}
+                className={`${FOOTER_CONTROL_BTN} ${traderFooterFullOpacity ? "opacity-100" : "opacity-60"} hover:!opacity-100`}
               >
                 {t("footer.trader")}
               </Button>
@@ -169,7 +172,7 @@ export default function GameFooter() {
               variant="ghost"
               size="xs"
               onClick={handleOfferTribute}
-              className={`px-1 py-1 text-xs hover text-neutral-300 ${isEarlyGameplay ? "opacity-50" : "opacity-100"} hover:!opacity-100`}
+              className={`${FOOTER_CONTROL_BTN} ${isEarlyGameplay ? "opacity-60" : "opacity-100"} hover:!opacity-100`}
             >
               {t("footer.donate")}
             </Button>
@@ -202,10 +205,13 @@ export default function GameFooter() {
                       rel: "noopener noreferrer me",
                     }
                     : {})}
-                  className={socialIconClass}
+                  className={socialLinkClass}
                   title={title}
                 >
-                  <FooterSocialIcon platform={platform} />
+                  <FooterSocialIcon
+                    platform={platform}
+                    className={socialIconClass}
+                  />
                 </a>
               );
             })}

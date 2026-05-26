@@ -6,7 +6,10 @@ import { logger } from "../../lib/logger";
 import { isPlaylightReferralUrl } from "@/lib/playlight";
 import { PLAYLIGHT_WELCOME_GOLD } from "@/game/playlightRewards";
 import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
-import { getActionLogMessage } from "@/i18n/resolveGameText";
+import {
+  getActionLogMessage,
+  resolveInheritedActionLogMessage,
+} from "@/i18n/resolveGameText";
 
 const CAVE_FIRST_VISIT_LOG_FALLBACKS: Record<string, Record<string, string>> = {
   lightFire: {
@@ -87,6 +90,7 @@ function appendActionLogMessages(
 ): void {
   logMessages.forEach((message) => {
     if (typeof message === "string") {
+      if (!message.trim()) return;
       result.logEntries!.push({
         id: `probability-effect-${Date.now()}-${Math.random()}`,
         message,
@@ -100,16 +104,16 @@ function appendActionLogMessages(
       "actionId" in message
     ) {
       const ref = message as ActionLogMessageRef;
-      const fallback =
-        CAVE_LOOT_LOG_FALLBACKS[ref.actionId]?.[ref.logKey] ?? "";
+      const resolved = resolveInheritedActionLogMessage(
+        ref.actionId,
+        ref.logKey,
+        CAVE_LOOT_LOG_FALLBACKS,
+        ref.vars,
+      );
+      if (!resolved.trim()) return;
       result.logEntries!.push({
         id: `probability-effect-${Date.now()}-${Math.random()}`,
-        message: getActionLogMessage(
-          ref.actionId,
-          ref.logKey,
-          fallback,
-          ref.vars,
-        ),
+        message: resolved,
         timestamp: Date.now(),
         type: "system",
       });

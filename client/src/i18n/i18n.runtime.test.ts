@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import i18n from "./index";
-import { getActionLabel, getEventMessage } from "./resolveGameText";
+import { getActionLabel, getEffectName, getEventMessage } from "./resolveGameText";
 import { resolveEventMessage, resolveEventTitle } from "./eventText";
 import { gameStateSchema } from "@shared/schema";
 
@@ -55,6 +55,16 @@ describe("i18n runtime", () => {
     );
     expect(typeof msg).toBe("string");
     expect(msg.length).toBeGreaterThan(0);
+  });
+
+  it("translates relic names via clothing catalog in German", async () => {
+    await i18n.changeLanguage("de");
+    expect(getEffectName("clothing", "wooden_figure", "Wooden Figure")).toBe(
+      "Holzfigur",
+    );
+    expect(getEffectName("relics", "wooden_figure", "Wooden Figure")).toBe(
+      "Wooden Figure",
+    );
   });
 
   it("resolves solsticeGathering title and message from catalog", async () => {

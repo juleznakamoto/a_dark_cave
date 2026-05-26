@@ -1,19 +1,19 @@
 {
   "advanced_bundle": {
     "activationMessage": "Die Bestandteile des Bundles des Bleichen Königs wurden deinen Käufen hinzugefügt!",
-    "name": "Bundle des Bleichen Königs"
+    "name": "Bleicher König Bundle"
   },
   "artifact_bundle": {
     "activationMessage": "Die Bestandteile des Bundles Dunkler Artefakte wurden deinen Käufen hinzugefügt!",
-    "name": "Bundle Dunkler Artefakte"
+    "name": "Dunkle Artefakte Bundle"
   },
   "ashen_throne_bundle": {
     "activationMessage": "Die Bestandteile des Aschenthron-Bundles wurden deinen Käufen hinzugefügt!",
-    "name": "Aschenthron-Bundle"
+    "name": "Aschener Thron Bundle"
   },
   "basic_survival_bundle": {
     "activationMessage": "Die Bestandteile des Bundles des Verblassenden Wanderers wurden deinen Käufen hinzugefügt!",
-    "name": "Bundle des Verblassenden Wanderers"
+    "name": "Verblassender Wanderer Bundle"
   },
   "crow_harness": {
     "activationMessage": "Das Krähengeschirr wurde deinen Werkzeugen hinzugefügt! Nun musst du eine Krähe finden, um sie an das Geschirr zu binden.",

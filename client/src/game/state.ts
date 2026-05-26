@@ -84,6 +84,7 @@ import {
   resolveEventLogMessage,
   tWithFallback,
 } from "@/i18n/resolveGameText";
+import { hasLogEntryText } from "@/i18n/logDisplay";
 
 // Types
 type ResourceChangeEvent = {
@@ -1535,7 +1536,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       // Filter out entries marked to skip event log (they should only appear in dialogs)
       const logEntriesToAdd = result.logEntries
-        ? result.logEntries.filter(entry => !entry.skipEventLog)
+        ? result.logEntries.filter(
+            (entry) => !entry.skipEventLog && hasLogEntryText(entry),
+          )
         : [];
 
       return {
@@ -2302,6 +2305,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   addLogEntry: (entry: LogEntry) => {
+    if (!hasLogEntryText(entry)) return;
+
     if (entry.type === "event") {
       audioManager.playSound("event", SOUND_VOLUME.eventUi);
     }
@@ -2440,7 +2445,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             if (!hasActiveMerchantDialog || !isMerchantEvent) {
               get().setEventDialog(true, entry);
             }
-          } else {
+          } else if (hasLogEntryText(entry)) {
             // Only add to log if it's not a choice event
             set((prevState) => ({
               log: [...prevState.log, entry].slice(-10),

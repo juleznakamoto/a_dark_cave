@@ -31,10 +31,44 @@
     },
     "building": {
       "darkEstate": "Das Dunkle Anwesen steht auf einem kleinen Hügel nahe dem Dorf und bietet Einsamkeit und Zuflucht.",
-      "blacksmith": "Die Schmiede des Dorfs erwacht zum Leben. Das Herz der Industrie schlägt nun im Dorf."
+      "blacksmith": "Die Schmiede des Dorfs erwacht zum Leben. Das Herz der Industrie schlägt nun im Dorf.",
+      "firstWoodenHut": "Die erste Holzhütte steht fertig – vielleicht der Anfang von etwas Großem.",
+      "villageGrowthSuggestion": "Das Dorf wächst schnell. Vielleicht könnten Steinhäuser mehr Dorfbewohner beherbergen.",
+      "cityGrowthMilestone": "Die Stadt ist zu einer pulsierenden Metropole gewachsen, erfüllt von Handel, Industrie und der Hoffnung auf bessere Tage.",
+      "moonstoneDiscovered": "In der Tiefe der Grube entdecken die Arbeiter etwas Außergewöhnliches. Sie stoßen auf Mondsteinvorkommen – ein leuchtendes Mineral von immenser Energie.",
+      "foundry": "Die Gießerei erwacht zum Leben, während Feuer und Hitze Rohmaterialien verschmelzen.",
+      "masterworkFoundry": "Die Meistergießerei steht fertig, ein Denkmal höchster metallurgischer Kunst. In ihren Flammen kann Schwarzstahl geschmiedet werden – nahezu unzerstörbar, aber sehr schwer herzustellen.",
+      "altar": "Am Waldrand erhebt sich ein Altar, errichtet, um zu besänftigen, was darin wohnt.",
+      "grandHunterLodge": "Die Große Jägerhütte steht fertig, ein prächtiges Bauwerk, in dem sich Meisterjäger versammeln.",
+      "clerksHut": "Eine Schreibstube wird errichtet, ihr Bewohner bereit, den Ressourcenfluss sorgfältig zu verfolgen.",
+      "scriptorium": "Das Skriptorium steht fertig. Jedes Detail des Dorflebens wird nun mit akribischer Präzision erfasst.",
+      "inkwardenAcademy": "Die Tintwächter-Akademie erhebt sich als Denkmal des Wissens. Ihre Hallen sind erfüllt von der Weisheit der Zeiten, und jede Ressource wird nun mit beispielloser Präzision erfasst.",
+      "tannery": "Die Gerberei ist fertig. Der Geruch gegerbten Leders liegt in der Luft, während Handwerker ihre Arbeit beginnen.",
+      "highTannery": "Die Hohe Gerberei steht, eine große Werkstatt, in der erfahrene Handwerker Häute zum feinsten Leder verarbeiten.",
+      "longhouse": "Das erste Langhaus erhebt sich, eine riesige Holzhalle mit dicken Balken und viel Platz.",
+      "furTents": "Die ersten Pelzzelte werden am Dorfrand errichtet und geben mehr Menschen warmes Obdach.",
+      "shrine": "Neben dem Altar erhebt sich ein heiliger Schrein, dessen Präsenz ruhelose Geister beruhigt.",
+      "temple": "Ein prächtiger Tempel steht fertig, seine heiligen Hallen erfüllt von leisen Gebeten, die gequälte Seelen beruhigen.",
+      "sanctum": "Das Heiligtum erhebt sich als Leuchtfeuer göttlichen Schutzes, dessen gesegnete Aura die dunkelsten Gedanken und Ängste vertreibt.",
+      "alchemistHall": "Die Hallen des Alchemisten ragen empor, ihre Kammern gefüllt mit brodelnden Tiegeln und funkelnden Instrumenten vergessener Handwerkskunst.",
+      "tradePost": "Nahe dem Wald entsteht ein Handelsposten, der Händler anzieht, die ihre Waren gegen Gold verkaufen wollen.",
+      "grandBazaar": "Der Große Basar erhebt sich, ein weitläufiger Marktplatz, an dem Händler aus fernen Ländern ihre Waren tauschen.",
+      "merchantsGuild": "Die Kaufmannsgilde steht fertig, eine mächtige Organisation, die alle Handelsrouten kontrolliert und beispiellosen Reichtum in die Siedlung bringt.",
+      "bastion": "Die Bastion erhebt sich wie ein Berg aus Stein, ihre Mauern dick und unnachgiebig. Ein Versprechen des Schutzes gegen alles, was in den Tiefen unten lauert.",
+      "wizardTower": "Der Zauberturm spiralt in den Himmel, knisternd vor arkaner Energie. Der Zauberer zieht mit seiner Sammlung uralter Folianten und mysteriöser Artefakte ein.",
+      "fortifiedMoat": "Ein tiefer Graben umgibt nun die Siedlung, sein Wasser dunkel und tückisch. Kein Feind wird ihn leicht überschreiten.",
+      "traps": "Um das Dorf herum wurden Fallen gelegt. Versteckte Gruben, Schlingen und spitze Pfähle warten auf jeden, der es wagt anzugreifen.",
+      "improvedTraps": "Der Dorfrand ist mit überdachten Gruben, Federschlingen und Stahlmechanismen verstärkt. Angreifer erwartet eine weitaus tödlichere Begrüßung.",
+      "blackMonolith": "Der Schwarze Monolith erhebt sich im Dorfzentrum, ein hoch aufragendes Denkmal aus dunklem Adamant. Seine Oberfläche scheint das Licht zu verschlingen, und die Dorfbewohner versammeln sich ehrfürchtig und furchtsam um ihn.",
+      "blackEstate": "Das Schwarze Anwesen erhebt sich vom Hügel, umhüllt von einem Schleier aus Nebel.",
+      "chitinPlating": "Die Befestigungen sind nun mit Chitinpanzerung verstärkt. Die Verteidigung des Dorfs ist deutlich gestiegen.",
+      "pillarOfClarity": "Die Säule der Klarheit erhebt sich, ein schimmernder Obelisk, der mit uralter Macht zu vibrieren scheint. Ihre Präsenz spendet denen in der Nähe Ruhe und Fokus.",
+      "boneTemple": "Der Knochentempel erhebt sich aus sorgfältig angeordneten Knochen, ein Monument der alten Götter. Seine Präsenz strahlt dunkle Macht aus, und die Dorfbewohner nähern sich ihm mit Ehrfurcht und Furcht.",
+      "heartfire": "Das Herdfeuer wird entzündet. Seine Wärme und sein Licht bringen dem Dorf einen neuen Sinn."
     },
     "gameplay": {
-      "forestUnlocked": "Das Dorf ist von einem dichten, dunklen Wald umgeben. Gefahr liegt in der Luft, doch es ist auch ein guter Ort zum Holzhacken und Jagen."
+      "forestUnlocked": "Das Dorf ist von einem dichten, dunklen Wald umgeben. Gefahr liegt in der Luft, doch es ist auch ein guter Ort zum Holzhacken und Jagen.",
+      "villageBegins": "Ein kleines Dorf nimmt Gestalt an. Die Dorfbewohner brauchen Nahrung und Holz zum Überleben."
     }
   }
 }

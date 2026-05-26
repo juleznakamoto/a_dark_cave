@@ -139,24 +139,22 @@ export function handleBuildWoodenHut(
 
   // Add completion message for first wooden hut
   if (state.buildings.woodenHut === 0) {
-    result.logEntries!.push({
-      id: `first-hut-built-${Date.now()}`,
-      message:
-        "The first wooden hut stands complete, this could be the start of something great.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      result,
+      "first-hut-built",
+      "building.firstWoodenHut",
+      "The first wooden hut stands complete, this could be the start of something great.",
+    );
   }
 
   // Add village growth message when 10th wooden hut is built
   if (state.buildings.woodenHut === 9 && state.buildings.stoneHut === 0) {
-    result.logEntries!.push({
-      id: `village-growth-${Date.now()}`,
-      message:
-        "The village grows quickly. Perhaps stone houses could shelter more villagers.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      result,
+      "village-growth",
+      "building.villageGrowthSuggestion",
+      "The village grows quickly. Perhaps stone houses could shelter more villagers.",
+    );
 
     result.stateUpdates.story = {
       ...result.stateUpdates.story,
@@ -179,13 +177,12 @@ export function handleBuildWoodenHut(
     longhouseCount >= 5 &&
     !state.story.seen.cityGrowthMilestone
   ) {
-    result.logEntries!.push({
-      id: `city-growth-milestone-${Date.now()}`,
-      message:
-        "The city has grown into a bustling metropolis, alive with trade, industry, and the promise of brighter days.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      result,
+      "city-growth-milestone",
+      "building.cityGrowthMilestone",
+      "The city has grown into a bustling metropolis, alive with trade, industry, and the promise of brighter days.",
+    );
 
     // Mark milestone as seen
     if (!result.stateUpdates.story) {
@@ -278,13 +275,12 @@ export function handleBuildBottomlessPit(
 
   // Add moonstone discovery message
   if (state.buildings.bottomlessPit === 0) {
-    bottomlessPitResult.logEntries!.push({
-      id: `moonstone-discovered-${Date.now()}`,
-      message:
-        "In the depth of the pit, the workers discover something extraordinary. They uncover veins of moonstone - a luminescent mineral containing immense energy.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      bottomlessPitResult,
+      "moonstone-discovered",
+      "building.moonstoneDiscovered",
+      "In the depth of the pit, the workers discover something extraordinary. They uncover veins of moonstone - a luminescent mineral containing immense energy.",
+    );
   }
 
   return bottomlessPitResult;
@@ -303,12 +299,12 @@ export function handleBuildFoundry(
 
   // Add completion message for first foundry
   if (state.buildings.foundry === 0) {
-    foundryResult.logEntries!.push({
-      id: `foundry-complete-${Date.now()}`,
-      message: "The foundry roars to life as fire and heat fuse raw materials.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      foundryResult,
+      "foundry-complete",
+      "building.foundry",
+      "The foundry roars to life as fire and heat fuse raw materials.",
+    );
   }
 
   return foundryResult;
@@ -340,13 +336,12 @@ export function handleBuildMasterworkFoundry(
 
   // Add masterwork foundry completion message
   if (state.buildings.masterworkFoundry === 0) {
-    masterworkFoundryResult.logEntries!.push({
-      id: `masterwork-foundry-built-${Date.now()}`,
-      message:
-        "The Masterwork Foundry stands complete, a monument to supreme metallurgical mastery. Within its fires, blacksteel can be forged, nearly unbreakable, but very difficult to produce.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      masterworkFoundryResult,
+      "masterwork-foundry-built",
+      "building.masterworkFoundry",
+      "The Masterwork Foundry stands complete, a monument to supreme metallurgical mastery. Within its fires, blacksteel can be forged, nearly unbreakable, but very difficult to produce.",
+    );
   }
 
   return masterworkFoundryResult;
@@ -365,13 +360,12 @@ export function handleBuildAltar(
 
   // Add altar completion message
   if (state.buildings.altar === 0) {
-    altarResult.logEntries!.push({
-      id: `altar-built-${Date.now()}`,
-      message:
-        "An altar rises at the forest's edge, raised to appease what dwells within.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      altarResult,
+      "altar-built",
+      "building.altar",
+      "An altar rises at the forest's edge, raised to appease what dwells within.",
+    );
   }
 
   return altarResult;
@@ -402,13 +396,12 @@ export function handleBuildGrandHunterLodge(
 
   // Add grand hunter lodge completion message
   if (state.buildings.grandHunterLodge === 0) {
-    grandHunterLodgeResult.logEntries!.push({
-      id: `grand-hunter-lodge-built-${Date.now()}`,
-      message:
-        "The Grand Hunter Lodge is complete, a magnificent structure where master hunters gather.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      grandHunterLodgeResult,
+      "grand-hunter-lodge-built",
+      "building.grandHunterLodge",
+      "The Grand Hunter Lodge is complete, a magnificent structure where master hunters gather.",
+    );
   }
 
   return grandHunterLodgeResult;
@@ -446,13 +439,12 @@ export function handleBuildClerksHut(
 
   // Add clerk's hut completion message
   if (state.buildings.clerksHut === 0) {
-    clerksHutResult.logEntries!.push({
-      id: `clerks-hut-built-${Date.now()}`,
-      message:
-        "A clerks hut is erected, its occupant ready to track the flow of  resources with meticulous care.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      clerksHutResult,
+      "clerks-hut-built",
+      "building.clerksHut",
+      "A clerks hut is erected, its occupant ready to track the flow of resources with meticulous care.",
+    );
   }
 
   return clerksHutResult;
@@ -471,13 +463,12 @@ export function handleBuildScriptorium(
 
   // Add scriptorium completion message
   if (state.buildings.scriptorium === 0) {
-    scriptoriumResult.logEntries!.push({
-      id: `scriptorium-built-${Date.now()}`,
-      message:
-        "The Scriptorium stands complete. Every detail of village life now gets tracked with meticulous precision.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      scriptoriumResult,
+      "scriptorium-built",
+      "building.scriptorium",
+      "The Scriptorium stands complete. Every detail of village life now gets tracked with meticulous precision.",
+    );
   }
 
   return scriptoriumResult;
@@ -496,13 +487,12 @@ export function handleBuildInkwardenAcademy(
 
   // Add Inkwarden Academy completion message
   if (state.buildings.inkwardenAcademy === 0) {
-    inkwardenAcademyResult.logEntries!.push({
-      id: `inkwarden-academy-built-${Date.now()}`,
-      message:
-        "The Inkwarden Academy rises as a monument to knowledge. Its halls filled with the wisdom of ages, and every resource is now tracked with unparalleled precision.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      inkwardenAcademyResult,
+      "inkwarden-academy-built",
+      "building.inkwardenAcademy",
+      "The Inkwarden Academy rises as a monument to knowledge. Its halls filled with the wisdom of ages, and every resource is now tracked with unparalleled precision.",
+    );
   }
 
   return inkwardenAcademyResult;
@@ -521,13 +511,12 @@ export function handleBuildTannery(
 
   // Add tannery completion message
   if (state.buildings.tannery === 0) {
-    tanneryResult.logEntries!.push({
-      id: `tannery-built-${Date.now()}`,
-      message:
-        "The Tannery is complete. The smell of curing leather fills the air as craftsmen begin their work.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      tanneryResult,
+      "tannery-built",
+      "building.tannery",
+      "The Tannery is complete. The smell of curing leather fills the air as craftsmen begin their work.",
+    );
   }
 
   return tanneryResult;
@@ -560,13 +549,12 @@ export function handleBuildHighTannery(
 
   // Add high tannery completion message
   if (state.buildings.highTannery === 0) {
-    highTanneryResult.logEntries!.push({
-      id: `high-tannery-built-${Date.now()}`,
-      message:
-        "The High Tannery is built, a grand workshop where expert craftsmen transform hides into the finest leather.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      highTanneryResult,
+      "high-tannery-built",
+      "building.highTannery",
+      "The High Tannery is built, a grand workshop where expert craftsmen transform hides into the finest leather.",
+    );
   }
 
   return highTanneryResult;
@@ -595,13 +583,12 @@ export function handleBuildStoneHut(
     longhouseCount >= 5 &&
     !state.story.seen.cityGrowthMilestone
   ) {
-    stoneHutResult.logEntries!.push({
-      id: `city-growth-milestone-${Date.now()}`,
-      message:
-        "The city has grown into a bustling metropolis, alive with trade, industry, and the promise of brighter days.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      stoneHutResult,
+      "city-growth-milestone",
+      "building.cityGrowthMilestone",
+      "The city has grown into a bustling metropolis, alive with trade, industry, and the promise of brighter days.",
+    );
 
     // Mark milestone as seen
     if (!stoneHutResult.stateUpdates.story) {
@@ -632,13 +619,12 @@ export function handleBuildLonghouse(
 
   // Add longhouse completion message only for the first one
   if (state.buildings.longhouse === 0) {
-    longhouseResult.logEntries!.push({
-      id: `longhouse-built-${Date.now()}`,
-      message:
-        "The first longhouse rises, a massive wooden hall with thick timbers and lots of space.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      longhouseResult,
+      "longhouse-built",
+      "building.longhouse",
+      "The first longhouse rises, a massive wooden hall with thick timbers and lots of space.",
+    );
   }
 
   // Check for city growth milestone after building
@@ -653,13 +639,12 @@ export function handleBuildLonghouse(
     stoneHutCount >= 10 &&
     !state.story.seen.cityGrowthMilestone
   ) {
-    longhouseResult.logEntries!.push({
-      id: `city-growth-milestone-${Date.now()}`,
-      message:
-        "The city has grown into a bustling metropolis, alive with trade, industry, and the promise of brighter days.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      longhouseResult,
+      "city-growth-milestone",
+      "building.cityGrowthMilestone",
+      "The city has grown into a bustling metropolis, alive with trade, industry, and the promise of brighter days.",
+    );
 
     // Mark milestone as seen
     if (!longhouseResult.stateUpdates.story) {
@@ -689,13 +674,12 @@ export function handleBuildFurTents(
   );
 
   if (state.buildings.furTents === 0) {
-    furTentResult.logEntries!.push({
-      id: `fur-tents-built-${Date.now()}`,
-      message:
-        "The first fur tents are raised at the village edge, giving more people warm shelter.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      furTentResult,
+      "fur-tents-built",
+      "building.furTents",
+      "The first fur tents are raised at the village edge, giving more people warm shelter.",
+    );
   }
 
   return furTentResult;
@@ -714,13 +698,12 @@ export function handleBuildShrine(
 
   // Add shrine completion message
   if (state.buildings.shrine === 0) {
-    shrineResult.logEntries!.push({
-      id: `shrine-built-${Date.now()}`,
-      message:
-        "A sacred shrine rises beside the altar, its presence bringing peace and focus to troubled minds.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      shrineResult,
+      "shrine-built",
+      "building.shrine",
+      "A sacred shrine rises beside the altar, its presence bringing peace and focus to troubled minds.",
+    );
   }
 
   return shrineResult;
@@ -739,13 +722,12 @@ export function handleBuildTemple(
 
   // Add temple completion message
   if (state.buildings.temple === 0) {
-    templeResult.logEntries!.push({
-      id: `temple-built-${Date.now()}`,
-      message:
-        "A grand temple stands complete, its sacred halls echoing with whispered prayers that calm the tormented soul.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      templeResult,
+      "temple-built",
+      "building.temple",
+      "A grand temple stands complete, its sacred halls echoing with whispered prayers that calm the tormented soul.",
+    );
   }
 
   return templeResult;
@@ -764,13 +746,12 @@ export function handleBuildSanctum(
 
   // Add sanctum completion message
   if (state.buildings.sanctum === 0) {
-    sanctumResult.logEntries!.push({
-      id: `sanctum-built-${Date.now()}`,
-      message:
-        "The sanctum rises as a beacon of divine protection, its blessed aura driving away the darkest thoughts and fears.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      sanctumResult,
+      "sanctum-built",
+      "building.sanctum",
+      "The sanctum rises as a beacon of divine protection, its blessed aura driving away the darkest thoughts and fears.",
+    );
   }
 
   return sanctumResult;
@@ -789,13 +770,12 @@ export function handleBuildAlchemistHall(
 
   // Add alchemist hall completion message
   if (state.buildings.alchemistHall === 0) {
-    alchemistHallResult.logEntries!.push({
-      id: `alchemist-hall-built-${Date.now()}`,
-      message:
-        "The Alchemist's Halls stand tall, their chambers filled with bubbling crucibles and gleaming instruments of forgotten craft.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      alchemistHallResult,
+      "alchemist-hall-built",
+      "building.alchemistHall",
+      "The Alchemist's Halls stand tall, their chambers filled with bubbling crucibles and gleaming instruments of forgotten craft.",
+    );
   }
 
   return alchemistHallResult;
@@ -814,13 +794,12 @@ export function handleBuildTradePost(
 
   // Add trade post completion message and enable Call Merchant button
   if (state.buildings.tradePost === 0) {
-    tradePostResult.logEntries!.push({
-      id: `trade-post-built-${Date.now()}`,
-      message:
-        "A trade post is built near the forest attracting tradesman who look to sell their goods for gold.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      tradePostResult,
+      "trade-post-built",
+      "building.tradePost",
+      "A trade post is built near the forest attracting tradesman who look to sell their goods for gold.",
+    );
     // Enable Call Merchant button (negative timestamp = cooldown already expired)
     if (!tradePostResult.stateUpdates.story) {
       tradePostResult.stateUpdates.story = {
@@ -853,13 +832,12 @@ export function handleBuildGrandBazaar(
 
   // Add grand bazaar completion message
   if (state.buildings.grandBazaar === 0) {
-    grandBazaarResult.logEntries!.push({
-      id: `grand-bazaar-built-${Date.now()}`,
-      message:
-        "The Grand Bazaar rises, a sprawling marketplace where merchants from distant lands gather to trade goods.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      grandBazaarResult,
+      "grand-bazaar-built",
+      "building.grandBazaar",
+      "The Grand Bazaar rises, a sprawling marketplace where merchants from distant lands gather to trade goods.",
+    );
   }
 
   return grandBazaarResult;
@@ -878,13 +856,12 @@ export function handleBuildMerchantsGuild(
 
   // Add merchants guild completion message
   if (state.buildings.merchantsGuild === 0) {
-    merchantsGuildResult.logEntries!.push({
-      id: `merchants-guild-built-${Date.now()}`,
-      message:
-        "The Merchants Guild stands complete, a powerful organization that controls all trade routes and brings unprecedented wealth to your settlement.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      merchantsGuildResult,
+      "merchants-guild-built",
+      "building.merchantsGuild",
+      "The Merchants Guild stands complete, a powerful organization that controls all trade routes and brings unprecedented wealth to your settlement.",
+    );
   }
 
   return merchantsGuildResult;
@@ -903,13 +880,12 @@ export function handleBuildBastion(
 
   // Add bastion completion message
   if (state.buildings.bastion === 0) {
-    bastionResult.logEntries!.push({
-      id: `bastion-built-${Date.now()}`,
-      message:
-        "The bastion rises like a mountain of stone, its walls thick and unyielding. A promise of protection against whatever stirs in the depths below.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      bastionResult,
+      "bastion-built",
+      "building.bastion",
+      "The bastion rises like a mountain of stone, its walls thick and unyielding. A promise of protection against whatever stirs in the depths below.",
+    );
     // Set the bastion unlocked flag and story flag
     bastionResult.stateUpdates.flags = {
       ...bastionResult.stateUpdates.flags,
@@ -961,13 +937,12 @@ export function handleBuildWizardTower(
 
   // Add wizard tower completion message
   if (state.buildings.wizardTower === 0) {
-    wizardTowerResult.logEntries!.push({
-      id: `wizard-tower-built-${Date.now()}`,
-      message:
-        "The Wizard Tower spirals into the sky, crackling with arcane energy. The wizard moves in with his collection of ancient tomes and mysterious artifacts.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      wizardTowerResult,
+      "wizard-tower-built",
+      "building.wizardTower",
+      "The Wizard Tower spirals into the sky, crackling with arcane energy. The wizard moves in with his collection of ancient tomes and mysterious artifacts.",
+    );
   }
 
   return wizardTowerResult;
@@ -1014,13 +989,12 @@ export function handleBuildFortifiedMoat(
 
   // Add fortified moat completion message
   if (state.buildings.fortifiedMoat === 0) {
-    fortifiedMoatResult.logEntries!.push({
-      id: `fortified-moat-built-${Date.now()}`,
-      message:
-        "A deep moat now surrounds the settlement, its waters dark and treacherous. No enemy will cross it easily.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      fortifiedMoatResult,
+      "fortified-moat-built",
+      "building.fortifiedMoat",
+      "A deep moat now surrounds the settlement, its waters dark and treacherous. No enemy will cross it easily.",
+    );
   }
 
   return fortifiedMoatResult;
@@ -1039,13 +1013,12 @@ export function handleBuildTraps(
 
   // Add traps completion message
   if (state.buildings.traps === 0) {
-    trapsResult.logEntries!.push({
-      id: `traps-built-${Date.now()}`,
-      message:
-        "Traps have been laid around the village perimeter. Hidden pits, snares, and sharpened stakes await any who dare attack.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      trapsResult,
+      "traps-built",
+      "building.traps",
+      "Traps have been laid around the village perimeter. Hidden pits, snares, and sharpened stakes await any who dare attack.",
+    );
   }
 
   return trapsResult;
@@ -1063,13 +1036,12 @@ export function handleBuildImprovedTraps(
   );
 
   if (state.buildings.improvedTraps === 0) {
-    improvedResult.logEntries!.push({
-      id: `improved-traps-built-${Date.now()}`,
-      message:
-        "The village perimeter is reinforced with covered pits, spring snares, and steel mechanisms. Attackers face a far deadlier welcome.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      improvedResult,
+      "improved-traps-built",
+      "building.improvedTraps",
+      "The village perimeter is reinforced with covered pits, spring snares, and steel mechanisms. Attackers face a far deadlier welcome.",
+    );
   }
 
   return improvedResult;
@@ -1088,13 +1060,12 @@ export function handleBuildBlackMonolith(
 
   // Add monolith completion message
   if (state.buildings.blackMonolith === 0) {
-    monolithResult.logEntries!.push({
-      id: `black-monolith-built-${Date.now()}`,
-      message:
-        "The Black Monolith rises from the village center, a towering monument of dark adamant. Its surface seems to drink in the light, and the villagers gather around it with reverence and fear.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      monolithResult,
+      "black-monolith-built",
+      "building.blackMonolith",
+      "The Black Monolith rises from the village center, a towering monument of dark adamant. Its surface seems to drink in the light, and the villagers gather around it with reverence and fear.",
+    );
   }
 
   return monolithResult;
@@ -1146,13 +1117,12 @@ export function handleBuildBlackEstate(
   };
 
   if (state.buildings.blackEstate === 0) {
-    constructionResult.logEntries!.push({
-      id: `black-estate-built-${Date.now()}`,
-      message:
-        "The Black Estate rises from the hill, encircled by a veil of mist.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      constructionResult,
+      "black-estate-built",
+      "building.blackEstate",
+      "The Black Estate rises from the hill, encircled by a veil of mist.",
+    );
   }
 
   return constructionResult;
@@ -1181,13 +1151,12 @@ export function handleBuildChitinPlating(
   };
 
   // Add completion message
-  constructionResult.logEntries!.push({
-    id: `chitin-plating-built-${Date.now()}`,
-    message:
-      "The fortifications are now reinforced with chitin plating. The village's defense is significantly increased.",
-    timestamp: Date.now(),
-    type: "system",
-  });
+  pushSystemLog(
+    constructionResult,
+    "chitin-plating-built",
+    "building.chitinPlating",
+    "The fortifications are now reinforced with chitin plating. The village's defense is significantly increased.",
+  );
 
   return constructionResult;
 }
@@ -1205,13 +1174,12 @@ export function handleBuildPillarOfClarity(
 
   // Add pillar of clarity completion message
   if (state.buildings.pillarOfClarity === 0) {
-    pillarOfClarityResult.logEntries!.push({
-      id: `pillar-of-clarity-built-${Date.now()}`,
-      message:
-        "The Pillar of Clarity rises, a shimmering obelisk that seems to hum with ancient power. Its presence brings a sense of calm and focus to those nearby.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      pillarOfClarityResult,
+      "pillar-of-clarity-built",
+      "building.pillarOfClarity",
+      "The Pillar of Clarity rises, a shimmering obelisk that seems to hum with ancient power. Its presence brings a sense of calm and focus to those nearby.",
+    );
   }
 
   return pillarOfClarityResult;
@@ -1242,13 +1210,12 @@ export function handleBuildBoneTemple(
 
   // Add bone temple completion message
   if (state.buildings.boneTemple === 0) {
-    boneTempleResult.logEntries!.push({
-      id: `bone-temple-built-${Date.now()}`,
-      message:
-        "The Bone Temple rises from thousands of carefully arranged bones, a monument to the old gods. Its presence emanates dark power, and the villagers approach it with reverence and fear.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      boneTempleResult,
+      "bone-temple-built",
+      "building.boneTemple",
+      "The Bone Temple rises from thousands of carefully arranged bones, a monument to the old gods. Its presence emanates dark power, and the villagers approach it with reverence and fear.",
+    );
   }
 
   return boneTempleResult;
@@ -1365,13 +1332,12 @@ export function handleBuildHeartfire(
 
   // Add Heartfire completion message
   if (state.buildings.heartfire === 0) {
-    heartfireResult.logEntries!.push({
-      id: `heartfire-built-${Date.now()}`,
-      message:
-        "The Heartfire is lit. Its warmth and light bring a new sense of purpose to the village.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      heartfireResult,
+      "heartfire-built",
+      "building.heartfire",
+      "The Heartfire is lit. Its warmth and light bring a new sense of purpose to the village.",
+    );
   }
 
   return heartfireResult;

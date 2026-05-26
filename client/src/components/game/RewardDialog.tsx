@@ -1,6 +1,7 @@
 import React from "react";
 import { GameState } from "@shared/schema";
 import { formatNumber, capitalizeWords } from "@/lib/utils";
+import { clothingEffects } from "@/game/rules/effects";
 import {
   getEffectName,
   getResourceName,
@@ -63,10 +64,27 @@ const effectDisplayName = (
   const fallback = capitalizeWords(id);
   if (kind === "book") return getEffectName("books", id, fallback);
   if (kind === "fellowship") return getEffectName("fellowship", id, fallback);
-  if (kind === "relic") return getEffectName("relics", id, fallback);
-  if (kind === "blessing") return getEffectName("blessings", id, fallback);
+  // Relic/blessing names live in effects.clothing (see SidePanel, itemTooltips).
+  if (kind === "relic") {
+    return getEffectName(
+      "clothing",
+      id,
+      clothingEffects[id]?.name || fallback,
+    );
+  }
+  if (kind === "blessing") {
+    return getEffectName(
+      "clothing",
+      id,
+      clothingEffects[id]?.name || fallback,
+    );
+  }
   if (kind === "schematic") return fallback;
-  return getEffectName("clothing", id, fallback);
+  return getEffectName(
+    "clothing",
+    id,
+    clothingEffects[id]?.name || fallback,
+  );
 };
 
 const sortResourceKeys = (keys: string[]) =>
@@ -220,7 +238,11 @@ export default function RewardDialog({
     rewards.relicsLost.forEach((relic) => {
       lossItems.push(
         <div key={`relic-lost-${relic}`} className="text-sm text-foreground">
-          -{getEffectName("relics", relic, capitalizeWords(relic))}
+          -{getEffectName(
+            "clothing",
+            relic,
+            clothingEffects[relic]?.name || capitalizeWords(relic),
+          )}
         </div>
       );
     });

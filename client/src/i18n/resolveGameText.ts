@@ -16,7 +16,10 @@ export function tWithFallback(
 ): string {
   const fullKey = nsKey(namespace, key);
   if (i18n.exists(fullKey)) {
-    return i18n.t(fullKey, options as Record<string, unknown>);
+    const translated = i18n.t(fullKey, options as Record<string, unknown>);
+    if (typeof translated === "string" && translated.trim()) {
+      return translated;
+    }
   }
   if (!options || Object.keys(options).length === 0) return fallback;
   return Object.entries(options).reduce(
@@ -141,6 +144,31 @@ export function getActionLogMessage(
     fallback,
     options,
   );
+}
+
+/**
+ * Resolve an action log line when loot keys are defined on an earlier stage
+ * (e.g. exploreCave debrisScroll proccing during ventureDeeper).
+ */
+export function resolveInheritedActionLogMessage(
+  actionId: string,
+  logKey: string,
+  fallbackCatalog: Record<string, Record<string, string>>,
+  options?: TranslateOptions,
+): string {
+  const directFallback = fallbackCatalog[actionId]?.[logKey] ?? "";
+  let message = getActionLogMessage(actionId, logKey, directFallback, options);
+  if (message.trim()) return message;
+
+  for (const [catalogActionId, keys] of Object.entries(fallbackCatalog)) {
+    if (catalogActionId === actionId) continue;
+    const fallback = keys[logKey];
+    if (!fallback) continue;
+    message = getActionLogMessage(catalogActionId, logKey, fallback, options);
+    if (message.trim()) return message;
+  }
+
+  return message;
 }
 
 export function getActionDescription(

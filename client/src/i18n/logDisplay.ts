@@ -1,5 +1,6 @@
 import type { LogEntry } from "@/game/rules/events";
 import { getActionLogMessage, tWithFallback } from "@/i18n/resolveGameText";
+import enLog from "@/i18n/locales/en/ui/log.json";
 
 type LogVars = Record<string, string | number>;
 
@@ -12,13 +13,42 @@ function translateLogKey(
   fallback: string,
   vars?: LogVars,
 ): string {
-  return tWithFallback("ui", uiLogKey(logKey), fallback, vars);
+  const translated = tWithFallback("ui", uiLogKey(logKey), fallback, vars);
+  return translated.trim() ? translated : fallback;
+}
+
+/** True when a log row has resolvable text (logKey and/or non-blank message). */
+export function hasLogEntryText(entry: LogEntry): boolean {
+  if (entry.logKey?.trim()) return true;
+  return Boolean(entry.message?.trim());
 }
 
 type PatternMatcher = {
   pattern: RegExp;
   resolve: (match: RegExpMatchArray) => { logKey: string; vars: LogVars };
 };
+
+/** Exact English fallbacks from ui/log.json for saves written before logKey migration. */
+function buildExactLegacySystemLogMap(): Record<string, string> {
+  const map: Record<string, string> = {};
+  for (const [key, value] of Object.entries(enLog.log.building)) {
+    if (typeof value === "string") {
+      map[value] = `building.${key}`;
+    }
+  }
+  for (const [key, value] of Object.entries(enLog.log.gameplay)) {
+    if (typeof value === "string") {
+      map[value] = `gameplay.${key}`;
+    }
+  }
+  // Older saves may contain a typo with a double space before "resources".
+  map[
+    "A clerks hut is erected, its occupant ready to track the flow of  resources with meticulous care."
+  ] = "building.clerksHut";
+  return map;
+}
+
+const LEGACY_EXACT_SYSTEM_LOG = buildExactLegacySystemLogMap();
 
 /** Match legacy English system log lines stored in saves (no logKey). */
 const LEGACY_SYSTEM_LOG_MATCHERS: PatternMatcher[] = [
@@ -152,6 +182,11 @@ const LEGACY_SYSTEM_LOG_MATCHERS: PatternMatcher[] = [
 function resolveLegacySystemLog(message: string): string | null {
   if (message === "You find an old, dusty bag with 25 Torches in the cave.") {
     return getActionLogMessage("exploreCave", "torchBag", message);
+  }
+
+  const exactKey = LEGACY_EXACT_SYSTEM_LOG[message];
+  if (exactKey) {
+    return translateLogKey(exactKey, message);
   }
 
   for (const { pattern, resolve } of LEGACY_SYSTEM_LOG_MATCHERS) {
