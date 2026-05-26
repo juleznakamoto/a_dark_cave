@@ -27,6 +27,11 @@ import {
 } from "@/i18n/eventDisplay";
 import { getEventChoiceAffordance } from "@/i18n/eventAffordance";
 import type { MerchantTradeData } from "@/game/types";
+import {
+  EventChoiceSuccessTooltipContent,
+  getEventChoiceSuccessPercent,
+  hasEventChoiceSuccessTooltip,
+} from "@/components/game/EventChoiceSuccessTooltip";
 
 interface EventDialogProps {
   isOpen: boolean;
@@ -350,12 +355,13 @@ export default function EventDialog({
                 // Calculate success percentage if available and book_of_war is owned
                 let successPercentage: string | null = null;
                 if (choice.success_chance !== undefined && gameState.books?.book_of_war) {
-                  const rawChance = typeof choice.success_chance === 'function'
-                    ? choice.success_chance(gameState)
-                    : choice.success_chance;
-                  const successChance = Math.min(1, Math.max(0, rawChance));
-                  successPercentage = `${Math.round(successChance * 100)}%`;
+                  const percent = getEventChoiceSuccessPercent(choice, gameState);
+                  if (percent !== null) {
+                    successPercentage = `${percent}%`;
+                  }
                 }
+
+                const showSuccessTooltip = hasEventChoiceSuccessTooltip(choice);
 
                 const selectChoice = () => handleChoice(choice.id);
                 const buttonContent = (
@@ -382,7 +388,6 @@ export default function EventDialog({
                               <span
                                 key={stat}
                                 className={`font-noto-symbols-2 text-xs ${statInfo.color}`}
-                                title={stat}
                               >
                                 {statInfo.icon}
                               </span>
@@ -394,7 +399,6 @@ export default function EventDialog({
                   </Button>
                 );
 
-                // Get cost breakdown with individual satisfaction status for each resource
                 const costBreakdown = getEventChoiceCostBreakdown(cost, gameState, {
                   catalogId,
                   choiceId: choice.id,
@@ -402,22 +406,43 @@ export default function EventDialog({
                   sellResource: tradeChoice.sellResource,
                   sellAmount: tradeChoice.sellAmount,
                 });
-                return costBreakdown.length > 0 ? (
+
+                const tooltipContent =
+                  costBreakdown.length > 0 || showSuccessTooltip ? (
+                    <div className="text-xs whitespace-nowrap">
+                      {costBreakdown.length > 0 && (
+                        <>
+                          {costBreakdown.map((costItem, index) => (
+                            <div
+                              key={index}
+                              className={
+                                costItem.satisfied
+                                  ? "text-foreground"
+                                  : "text-muted-foreground"
+                              }
+                            >
+                              {costItem.text}
+                            </div>
+                          ))}
+                        </>
+                      )}
+                      {costBreakdown.length > 0 && showSuccessTooltip && (
+                        <div className="border-t border-border my-1" />
+                      )}
+                      {showSuccessTooltip && (
+                        <EventChoiceSuccessTooltipContent
+                          choice={choice}
+                          gameState={gameState}
+                        />
+                      )}
+                    </div>
+                  ) : undefined;
+
+                return tooltipContent ? (
                   <TooltipWrapper
                     key={choice.id}
                     className="relative block w-full"
-                    tooltip={
-                      <div className="text-xs whitespace-nowrap">
-                        {costBreakdown.map((costItem, index) => (
-                          <div
-                            key={index}
-                            className={costItem.satisfied ? "text-foreground" : "text-muted-foreground"}
-                          >
-                            {costItem.text}
-                          </div>
-                        ))}
-                      </div>
-                    }
+                    tooltip={tooltipContent}
                     tooltipId={choice.id}
                     disabled={isDisabled}
                     onClick={isDisabled ? undefined : selectChoice}

@@ -4,7 +4,10 @@
     "choose": "Choose an option",
     "timeRemaining": "Time remaining: {{seconds}}s",
     "knowledgeTimeBonus": "+{{seconds}}s Decision Time due to Knowledge{{maxSuffix}}",
-    "knowledgeTimeBonusMax": " (max)"
+    "knowledgeTimeBonusMax": " (max)",
+    "successChance": "Success Chance: {{percent}}%",
+    "successChanceLocked": "Success Chance: ??% (if not yet unlocked)",
+    "influencedBy": "Influenced by:"
   },
   "reward": {
     "title": "Reward",

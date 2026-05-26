@@ -44,6 +44,11 @@ import { localizeEventChoices } from "@/i18n/eventText";
 import { getEventChoiceAffordance } from "@/i18n/eventAffordance";
 import { getEventChoiceCostBreakdown } from "@/game/rules/index";
 import type { MerchantTradeData } from "@/game/types";
+import {
+  EventChoiceSuccessTooltipContent,
+  getEventChoiceSuccessPercent,
+  hasEventChoiceSuccessTooltip,
+} from "@/components/game/EventChoiceSuccessTooltip";
 
 // Stat icon mapping
 const statIcons: Record<string, { icon: string; color: string }> = {
@@ -522,15 +527,11 @@ export default function TimedEventPanel() {
 
               // Calculate success percentage if available
               let successPercentage: string | null = null;
-              if (
-                choice.success_chance &&
-                typeof choice.success_chance === "function"
-              ) {
-                const chance = Math.min(1, Math.max(0, choice.success_chance(gameState)));
-                successPercentage = `${Math.round(chance * 100)}%`;
-              } else if (typeof choice.success_chance === "number") {
-                successPercentage = `${Math.round(Math.min(1, Math.max(0, choice.success_chance)) * 100)}%`;
+              const successPercent = getEventChoiceSuccessPercent(choice, gameState);
+              if (successPercent !== null && gameState.books?.book_of_war) {
+                successPercentage = `${successPercent}%`;
               }
+              const showSuccessTooltip = hasEventChoiceSuccessTooltip(choice);
 
               // Check if we have a Scriptorium to show stat icons
               const hasScriptorium = gameState.buildings.scriptorium >= 1;
@@ -564,7 +565,6 @@ export default function TimedEventPanel() {
                               <span
                                 key={stat}
                                 className={`font-noto-symbols-2 text-xs ${statInfo.color}`}
-                                title={stat}
                               >
                                 {statInfo.icon}
                               </span>
@@ -579,88 +579,72 @@ export default function TimedEventPanel() {
                 </Button>
               );
 
-              return costText ? (
+              const tooltipContent =
+                costText || showSuccessTooltip ? (
+                  <div className="text-xs whitespace-nowrap">
+                    {costText && (
+                      <>
+                        {costBreakdown.length > 0 ? (
+                          <div>
+                            {costBreakdown.map((costItem, index) => (
+                              <div
+                                key={index}
+                                className={
+                                  costItem.satisfied
+                                    ? "text-foreground"
+                                    : "text-muted-foreground"
+                                }
+                              >
+                                {costItem.text}
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          costText
+                        )}
+                      </>
+                    )}
+                    {costText && showSuccessTooltip && (
+                      <div className="border-t border-border my-1" />
+                    )}
+                    {showSuccessTooltip && (
+                      <EventChoiceSuccessTooltipContent
+                        choice={choice}
+                        gameState={gameState}
+                      />
+                    )}
+                  </div>
+                ) : undefined;
+
+              const highlightCostResources = () => {
+                const costResources = affordance.costs.map(({ resource }) => resource);
+                if (costResources.length > 0) {
+                  if (isMerchantEvent) {
+                    const buyResource = extractBuyResourceFromLabel(labelText);
+                    const highlightResources = buyResource
+                      ? [...costResources, buyResource]
+                      : costResources;
+                    setHighlightedResources(highlightResources);
+                  } else {
+                    setHighlightedResources(costResources);
+                  }
+                }
+              };
+
+              return tooltipContent ? (
                 <TooltipWrapper
                   key={choice.id}
-                  tooltip={
-                    <div
-                      className="text-xs whitespace-nowrap"
-                    >
-                      {costBreakdown.length > 0 ? (
-                        <div>
-                          {costBreakdown.map((costItem, index) => (
-                            <div
-                              key={index}
-                              className={
-                                costItem.satisfied
-                                  ? "text-foreground"
-                                  : "text-muted-foreground"
-                              }
-                            >
-                              {costItem.text}
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        costText
-                      )}
-                      {costText && successPercentage && (
-                        <div className="border-t border-border my-1" />
-                      )}
-                      {successPercentage && (
-                        <div>{t("ui:timedEvent.successChance", { percent: successPercentage })}</div>
-                      )}
-                    </div>
-                  }
+                  tooltip={tooltipContent}
                   tooltipId={`timedevent-${choice.id}`}
                   disabled={isDisabled}
                   onClick={() => handleChoice(choice.id)}
-                  onMouseEnter={() => {
-                    const costResources = affordance.costs.map(({ resource }) => resource);
-
-                    if (costResources.length > 0) {
-                      if (isMerchantEvent) {
-                        const buyResource =
-                          extractBuyResourceFromLabel(labelText);
-                        const highlightResources = buyResource
-                          ? [...costResources, buyResource]
-                          : costResources;
-                        setHighlightedResources(highlightResources);
-                      } else {
-                        setHighlightedResources(costResources);
-                      }
-                    }
-                  }}
-                  onMouseLeave={() => {
-                    setHighlightedResources([]);
-                  }}
+                  onMouseEnter={costText ? highlightCostResources : undefined}
+                  onMouseLeave={costText ? () => setHighlightedResources([]) : undefined}
                 >
                   {buttonContent}
                 </TooltipWrapper>
               ) : (
-                <div
-                  key={choice.id}
-                  onMouseEnter={() => {
-                    const costResources = affordance.costs.map(({ resource }) => resource);
-                    if (costResources.length > 0) {
-                      if (isMerchantEvent) {
-                        const buyResource =
-                          extractBuyResourceFromLabel(labelText);
-                        const highlightResources = buyResource
-                          ? [...costResources, buyResource]
-                          : costResources;
-                        setHighlightedResources(highlightResources);
-                      } else {
-                        setHighlightedResources(costResources);
-                      }
-                    }
-                  }}
-                  onMouseLeave={() => {
-                    setHighlightedResources([]);
-                  }}
-                >
-                  {buttonContent}
-                </div>
+                <div key={choice.id}>{buttonContent}</div>
               );
             })}
         </div>
