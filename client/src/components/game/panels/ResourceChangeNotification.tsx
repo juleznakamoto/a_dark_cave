@@ -125,10 +125,11 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
   }
 
   return (
-    <div className="pointer-events-none absolute inset-y-0 right-0 flex w-[3rem] items-center justify-end">
+    <div className="pointer-events-none absolute inset-y-0 right-0 w-[3rem]">
       <div
         className={`
-          rounded-sm bg-background px-1 text-xs font-mono font-bold
+          flex h-full w-full items-center justify-end rounded-sm bg-background px-1
+          text-right text-xs font-mono font-bold tabular-nums
           animate-in fade-in-0 slide-in-from-left-2 duration-300
           ${visibleChange.amount > 0
             ? "text-green-600"

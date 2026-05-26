@@ -260,7 +260,7 @@
     },
     "stormglass_halberd_schematic": {
       "description": "Bauplan zur Herstellung einer furchteinflößenden Hellebarde",
-      "name": "Sturmglashalberd"
+      "name": "Sturmglas-Hellebarde"
     },
     "survivors_last_words": {
       "description": "Der letzte Segen eines sterbenden Fremden",
@@ -514,7 +514,7 @@
     },
     "stormglass_halberd": {
       "description": "Überragende Hellebarde aus meisterhaft veredeltem Adamant",
-      "name": "Sturmglashalberd"
+      "name": "Sturmglas-Hellebarde"
     },
     "veinfire_elixir": {
       "description": "Alchemistisches Heilelixier, destilliert aus seltener Aderwurzel",

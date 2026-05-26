@@ -12,6 +12,7 @@ import {
   GAME_FOOTER_RIGHT_ICON_ORDER,
 } from "@/lib/gameFooterSocialLinks";
 import { useTranslation } from "react-i18next";
+import { tWithFallback } from "@/i18n/resolveGameText";
 import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
 
@@ -278,7 +279,9 @@ export default function StartScreen() {
           {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
             const { href, title } = GAME_FOOTER_RIGHT_ICON_LINKS[platform];
             const linkLabel =
-              platform === "contact" ? t("footer.contact") : title;
+              platform === "contact"
+                ? tWithFallback("ui", "footer.contact", title)
+                : title;
             if (href.startsWith("http")) {
               return (
                 <a

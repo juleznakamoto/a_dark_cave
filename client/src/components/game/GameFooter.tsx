@@ -14,6 +14,7 @@ import {
   isTraderFooterShopVisible,
 } from "@/game/stateHelpers";
 import { useTranslation } from "react-i18next";
+import { tWithFallback } from "@/i18n/resolveGameText";
 
 const FOOTER_CONTROL_BTN =
   "group shrink-0 px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-600";
@@ -184,7 +185,9 @@ export default function GameFooter() {
               const { href, title } =
                 GAME_FOOTER_RIGHT_ICON_LINKS[platform];
               const linkLabel =
-                platform === "contact" ? t("footer.contact") : title;
+                platform === "contact"
+                  ? tWithFallback("ui", "footer.contact", title)
+                  : title;
               return (
                 <a
                   key={platform}
