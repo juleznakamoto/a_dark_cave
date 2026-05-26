@@ -66,6 +66,7 @@ export default function ProfileMenu() {
     isUserSignedIn,
     signupWelcomeGoldClaimed,
     clothing,
+    cruelMode,
   } = useGameStore();
 
   const signupWelcomeGoldClaimedBool = signupWelcomeGoldClaimed === true;
@@ -347,7 +348,23 @@ export default function ProfileMenu() {
         onConfirm={handleConfirmDeleteAccount}
         isDeleting={deleteAccountInProgress}
       />
-      <div className="flex items-center justify-end">
+      <div className="flex items-center justify-end gap-1">
+        {cruelMode && (
+          <TooltipWrapper
+            tooltip={
+              <div className="text-xs whitespace-nowrap">
+                {t("footer.cruelModeActive")}
+              </div>
+            }
+            tooltipId="cruel-mode-indicator"
+            disabled
+            className="px-2 py-1 cursor-pointer opacity-60 hover:opacity-100 transition-opacity flex items-center bg-background backdrop-blur-sm border border-border rounded-md"
+          >
+            <span className="font-noto-symbols-2 text-red-600 text-xs font-bold">
+              ⛤
+            </span>
+          </TooltipWrapper>
+        )}
         <DropdownMenu
           open={accountDropdownOpen}
           onOpenChange={(open) => {

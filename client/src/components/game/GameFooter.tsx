@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { audioManager } from "@/lib/audio";
-import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
 import {
   GAME_FOOTER_RIGHT_ICON_LINKS,
@@ -179,20 +178,6 @@ export default function GameFooter() {
             >
               {t("footer.donate")}
             </Button>
-            {cruelMode && (
-              <TooltipWrapper
-                tooltip={
-                  <div className="text-xs whitespace-nowrap">
-                    {t("footer.cruelModeActive")}
-                  </div>
-                }
-                tooltipId="cruel-mode-indicator"
-                disabled
-                className="px-1 py-1 cursor-pointer opacity-60 hover:opacity-100 transition-opacity flex items-center"
-              >
-                <span className="font-noto-symbols-2 text-red-600 text-xs font-bold">⛤</span>
-              </TooltipWrapper>
-            )}
           </div>
           <div className="flex-1 flex justify-end gap-1 items-center">
             {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
