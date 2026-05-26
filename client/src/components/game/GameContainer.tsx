@@ -68,7 +68,6 @@ export default function GameContainer() {
     restartGameDialogOpen,
     setRestartGameDialogOpen,
     restartGame,
-    cruelMode,
   } = useGameStore();
 
   // State selectors for dialogs - must be at top before any conditional returns
@@ -155,11 +154,7 @@ export default function GameContainer() {
     );
 
   // Track unlocked tabs to trigger blink until clicked
-  const traderUnlocked = isTraderShopUnlocked({
-    story,
-    traderDialogOpens,
-    cruelMode,
-  });
+  const traderUnlocked = isTraderShopUnlocked({ story, traderDialogOpens });
   const achievementsUnlocked = !!relics?.survivors_notes || !!books?.book_of_trials;
   const prevFlagsRef = useRef({
     villageUnlocked: flags.villageUnlocked,

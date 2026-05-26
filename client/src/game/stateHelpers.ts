@@ -339,16 +339,36 @@ export function migrateTraderShopUnlockOnLoad(
   };
 }
 
-/** Real-money Trader tab/shop unlocks after `traderSettles` (or mid-session shop opens before that flag is saved). Cruel mode skips the story gate. */
+/** Any completed real-money shop purchase (paid checkout or activated owned item). */
+export function hasAnyShopPurchase(state: {
+  hasMadeNonFreePurchase?: boolean;
+  activatedPurchases?: Record<string, boolean>;
+}): boolean {
+  if (state.hasMadeNonFreePurchase) return true;
+  return Object.values(state.activatedPurchases ?? {}).some(Boolean);
+}
+
+/** Real-money Trader tab unlocks after `traderSettles` (or mid-session shop opens before that flag is saved). */
 export function isTraderShopUnlocked(state: {
   story?: { seen?: Record<string, unknown> };
   traderDialogOpens?: number;
-  cruelMode?: boolean;
 }): boolean {
-  if (state.cruelMode) return true;
   if (state.story?.seen?.traderSettled) return true;
   if ((state.traderDialogOpens ?? 0) > 0) return true;
   return false;
+}
+
+/** Footer Trader button: normal tab unlock, or cruel mode, or any prior shop purchase. */
+export function isTraderFooterShopVisible(state: {
+  story?: { seen?: Record<string, unknown> };
+  traderDialogOpens?: number;
+  cruelMode?: boolean;
+  hasMadeNonFreePurchase?: boolean;
+  activatedPurchases?: Record<string, boolean>;
+}): boolean {
+  if (state.cruelMode) return true;
+  if (hasAnyShopPurchase(state)) return true;
+  return isTraderShopUnlocked(state);
 }
 
 // Cap resource to current storage limit

@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import type { GameState } from "@shared/schema";
 import {
+  hasAnyShopPurchase,
+  isTraderFooterShopVisible,
   isTraderShopUnlocked,
   migrateTraderShopUnlockOnLoad,
 } from "./stateHelpers";
@@ -13,16 +15,6 @@ describe("isTraderShopUnlocked", () => {
         traderDialogOpens: 0,
       }),
     ).toBe(false);
-  });
-
-  it("is true in cruel mode before traderSettled", () => {
-    expect(
-      isTraderShopUnlocked({
-        story: { seen: {} },
-        traderDialogOpens: 0,
-        cruelMode: true,
-      }),
-    ).toBe(true);
   });
 
   it("is true after traderSettled", () => {
@@ -41,6 +33,69 @@ describe("isTraderShopUnlocked", () => {
         traderDialogOpens: 1,
       }),
     ).toBe(true);
+  });
+});
+
+describe("isTraderFooterShopVisible", () => {
+  it("is true in cruel mode before traderSettled (tabs stay locked)", () => {
+    expect(
+      isTraderFooterShopVisible({
+        story: { seen: {} },
+        traderDialogOpens: 0,
+        cruelMode: true,
+      }),
+    ).toBe(true);
+    expect(
+      isTraderShopUnlocked({
+        story: { seen: {} },
+        traderDialogOpens: 0,
+      }),
+    ).toBe(false);
+  });
+
+  it("is true after any non-free shop purchase (tabs stay locked)", () => {
+    expect(
+      isTraderFooterShopVisible({
+        story: { seen: {} },
+        traderDialogOpens: 0,
+        hasMadeNonFreePurchase: true,
+      }),
+    ).toBe(true);
+    expect(
+      isTraderShopUnlocked({
+        story: { seen: {} },
+        traderDialogOpens: 0,
+      }),
+    ).toBe(false);
+  });
+
+  it("is true when an owned purchase has been activated", () => {
+    expect(
+      isTraderFooterShopVisible({
+        story: { seen: {} },
+        traderDialogOpens: 0,
+        activatedPurchases: { "purchase-gold_500-1": true },
+      }),
+    ).toBe(true);
+  });
+
+  it("follows tab unlock after traderSettled", () => {
+    expect(
+      isTraderFooterShopVisible({
+        story: { seen: { traderSettled: true } },
+        traderDialogOpens: 0,
+      }),
+    ).toBe(true);
+  });
+});
+
+describe("hasAnyShopPurchase", () => {
+  it("is false with no purchase history", () => {
+    expect(hasAnyShopPurchase({})).toBe(false);
+  });
+
+  it("is true for hasMadeNonFreePurchase", () => {
+    expect(hasAnyShopPurchase({ hasMadeNonFreePurchase: true })).toBe(true);
   });
 });
 

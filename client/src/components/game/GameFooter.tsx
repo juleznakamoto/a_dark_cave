@@ -10,7 +10,10 @@ import {
 import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
 import LanguageSelector from "./LanguageSelector";
 import { useState, useEffect } from "react";
-import { isTraderShopUnlocked } from "@/game/stateHelpers";
+import {
+  hasAnyShopPurchase,
+  isTraderFooterShopVisible,
+} from "@/game/stateHelpers";
 import { useTranslation } from "react-i18next";
 
 const FOOTER_CONTROL_BTN =
@@ -39,6 +42,8 @@ export default function GameFooter() {
     leaderboardDialogOpen,
     story,
     traderDialogOpens,
+    hasMadeNonFreePurchase,
+    activatedPurchases,
   } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const { t } = useTranslation("ui");
@@ -68,11 +73,17 @@ export default function GameFooter() {
 
   // Check if gameplay time is less than 30 minutes
   const isEarlyGameplay = playTime < 30 * 60 * 1000; // 30 minutes in milliseconds
-  const traderShopUnlocked = isTraderShopUnlocked({
+  const traderShopUnlocked = isTraderFooterShopVisible({
     story,
     traderDialogOpens,
     cruelMode,
+    hasMadeNonFreePurchase,
+    activatedPurchases,
   });
+  const traderFooterFullOpacity =
+    cruelMode ||
+    hasAnyShopPurchase({ hasMadeNonFreePurchase, activatedPurchases }) ||
+    !isEarlyGameplay;
 
   const emphasizeFooterSocialIcons =
     isPaused || idleModeDialog.isOpen || leaderboardDialogOpen;
@@ -149,7 +160,7 @@ export default function GameFooter() {
                 variant="ghost"
                 size="xs"
                 onClick={() => setShopDialogOpen(true)}
-                className={`px-1 py-1 text-xs hover text-neutral-300 ${!cruelMode && isEarlyGameplay ? "opacity-50" : "opacity-100"} hover:!opacity-100`}
+                className={`px-1 py-1 text-xs hover text-neutral-300 ${traderFooterFullOpacity ? "opacity-100" : "opacity-50"} hover:!opacity-100`}
               >
                 {t("footer.trader")}
               </Button>
