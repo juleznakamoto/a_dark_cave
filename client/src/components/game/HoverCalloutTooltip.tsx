@@ -7,7 +7,7 @@ export type HoverCalloutSide = "top" | "left" | "right" | "bottom";
 export type HoverCalloutArrowAlign = "start" | "center" | "end";
 
 const CALLOUT_BASE =
-  "pointer-events-none absolute z-[1] flex rounded-md bg-primary px-2 py-1.5 text-[10px] font-semibold leading-none tracking-wide text-primary-foreground shadow-md transition-opacity duration-300";
+  "absolute z-[1] flex rounded-md bg-primary px-2 py-1.5 text-[10px] font-semibold leading-none tracking-wide text-primary-foreground shadow-md transition-opacity duration-300";
 
 const SIDE_LAYOUT: Record<
   HoverCalloutSide,
@@ -121,15 +121,15 @@ export function HoverCalloutTooltip({
         <button
           type="button"
           onClick={onCalloutClick}
+          onMouseEnter={() => setIsHovered(true)}
           tabIndex={visible ? 0 : -1}
           aria-hidden={!visible}
           className={cn(
             CALLOUT_BASE,
             layout.callout,
             visible
-              ? "cursor-pointer opacity-100 hover:bg-primary/90"
-              : "opacity-0",
-            !visible && "pointer-events-none",
+              ? "pointer-events-auto cursor-pointer opacity-100 hover:bg-primary/90"
+              : "pointer-events-none opacity-0",
           )}
         >
           {callout}
@@ -140,6 +140,7 @@ export function HoverCalloutTooltip({
             CALLOUT_BASE,
             layout.callout,
             visible ? "opacity-100" : "opacity-0",
+            "pointer-events-none",
           )}
           aria-hidden={!visible}
         >
