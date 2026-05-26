@@ -34,6 +34,16 @@ interface AuthDialogProps {
   onAuthSuccess: () => void;
 }
 
+function isFetchNetworkError(error: unknown, message?: string): boolean {
+  if (!(error instanceof TypeError)) return false;
+  const normalized = message?.toLowerCase() ?? "";
+  return (
+    message === "Failed to fetch" ||
+    normalized.includes("networkerror") ||
+    normalized.includes("failed to fetch")
+  );
+}
+
 export default function AuthDialog({
   isOpen,
   onClose,
@@ -142,14 +152,9 @@ export default function AuthDialog({
       }
     } catch (error: unknown) {
       const err = error as { message?: string };
-      const isNetworkError =
-        error instanceof TypeError &&
-        (err.message === "Failed to fetch" ||
-          err.message?.toLowerCase().includes("networkerror") ||
-          err.message?.toLowerCase().includes("failed to fetch"));
       toast({
         title: t("auth.errorTitle"),
-        description: isNetworkError
+        description: isFetchNetworkError(error, err.message)
           ? t("auth.networkErrorDesc")
           : err.message || t("auth.authFailed"),
         variant: "destructive",
@@ -181,14 +186,9 @@ export default function AuthDialog({
       });
     } catch (error: unknown) {
       const err = error as { message?: string };
-      const isNetworkError =
-        error instanceof TypeError &&
-        (err.message === "Failed to fetch" ||
-          err.message?.toLowerCase().includes("networkerror") ||
-          err.message?.toLowerCase().includes("failed to fetch"));
       toast({
         title: t("auth.errorTitle"),
-        description: isNetworkError
+        description: isFetchNetworkError(error, err.message)
           ? t("auth.networkErrorDesc")
           : err.message || t("auth.googleSignInFailed"),
         variant: "destructive",

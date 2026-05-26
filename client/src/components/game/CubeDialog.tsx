@@ -109,7 +109,7 @@ export default function CubeDialog({
     }
   };
 
-  const eventId = event.id?.split("-")[0] ?? event.id ?? "cube";
+  const eventId = event.id?.split("-")?.[0] ?? event.id ?? "cube";
   const resolvedTitle =
     getEventTitle(eventId, event.title) ??
     event.title ??
