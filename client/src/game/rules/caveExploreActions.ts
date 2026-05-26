@@ -84,8 +84,7 @@ function pushFirstVisitLog(
   logKey: string,
   idPrefix: string,
 ): void {
-  const fallback =
-    CAVE_FIRST_VISIT_LOG_FALLBACKS[actionId]?.[logKey] ?? "";
+  const fallback = CAVE_FIRST_VISIT_LOG_FALLBACKS[actionId]?.[logKey] ?? "";
   result.logEntries!.push({
     id: `${idPrefix}-${Date.now()}`,
     message: getActionLogMessage(actionId, logKey, fallback),
@@ -273,7 +272,7 @@ const caveItems = {
     },
     {
       key: "clarity_elixir",
-      probability: 0.9901,
+      probability: 0.01,
       category: "consumable",
       isChoice: true,
       eventId: "clarityElixirCaveFoundVentureDeeper",
@@ -430,7 +429,8 @@ function getInheritedItems(actionId: string) {
             eventId: (item as { eventId: string }).eventId,
           }),
           ...(!isChoiceItem && {
-            madnessDelta: (item as { madnessDelta?: number }).madnessDelta ?? -2,
+            madnessDelta:
+              (item as { madnessDelta?: number }).madnessDelta ?? -2,
             ...(seenKey && {
               alsoSet: { [`story.seen.${seenKey}`]: true },
             }),
@@ -448,35 +448,35 @@ function getInheritedItems(actionId: string) {
             : "";
         const itemCondition =
           "condition" in item &&
-            typeof (item as { condition?: string }).condition === "string"
+          typeof (item as { condition?: string }).condition === "string"
             ? (item as { condition: string }).condition
             : undefined;
         const baseCondition =
           itemCondition != null
             ? (state: GameState) => {
-              const cat = (state as Record<string, unknown>)[category];
-              if (
-                cat &&
-                typeof cat === "object" &&
-                (cat as Record<string, unknown>)[item.key]
-              )
-                return false;
-              if (
-                "eventId" in item &&
-                item.eventId &&
-                state.story?.seen?.[item.eventId]
-              )
-                return false;
-              const isNegated = itemCondition.startsWith("!");
-              const path = isNegated ? itemCondition.slice(1) : itemCondition;
-              const parts = path.split(".");
-              let cur: unknown = state;
-              for (const p of parts) {
-                cur = (cur as Record<string, unknown>)?.[p];
-                if (cur === undefined) return isNegated;
+                const cat = (state as Record<string, unknown>)[category];
+                if (
+                  cat &&
+                  typeof cat === "object" &&
+                  (cat as Record<string, unknown>)[item.key]
+                )
+                  return false;
+                if (
+                  "eventId" in item &&
+                  item.eventId &&
+                  state.story?.seen?.[item.eventId]
+                )
+                  return false;
+                const isNegated = itemCondition.startsWith("!");
+                const path = isNegated ? itemCondition.slice(1) : itemCondition;
+                const parts = path.split(".");
+                let cur: unknown = state;
+                for (const p of parts) {
+                  cur = (cur as Record<string, unknown>)?.[p];
+                  if (cur === undefined) return isNegated;
+                }
+                return isNegated ? !cur : !!cur;
               }
-              return isNegated ? !cur : !!cur;
-            }
             : basePath + eventPart;
         inheritedItems[`${category}.${item.key}`] = {
           probability: Math.min(adjustedProbability, 1.0),
@@ -525,7 +525,7 @@ export const caveExploreActions: Record<string, Action> = {
         "resources.veinroot": {
           probability: 0.005,
           condition: "story.seen.veinrootDiscovered",
-          value: 1
+          value: 1,
         },
       };
     },
@@ -1042,7 +1042,12 @@ export function handleDescendFurther(
 
   // Add a special log message for descending further
   if (!state.story.seen.descendedFurther) {
-    pushFirstVisitLog(result, "descendFurther", "firstVisit", "descend-further");
+    pushFirstVisitLog(
+      result,
+      "descendFurther",
+      "firstVisit",
+      "descend-further",
+    );
   }
 
   // Increment cave explore count for basic achievements
@@ -1147,7 +1152,12 @@ export function handleExploreCitadel(
 
   // Add a special log message for exploring citadel
   if (!state.story.seen.exploredCitadel) {
-    pushFirstVisitLog(result, "exploreCitadel", "firstVisit", "explore-citadel");
+    pushFirstVisitLog(
+      result,
+      "exploreCitadel",
+      "firstVisit",
+      "explore-citadel",
+    );
   }
 
   // Increment cave explore count for basic achievements
