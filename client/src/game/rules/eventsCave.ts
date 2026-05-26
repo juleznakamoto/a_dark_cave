@@ -18,10 +18,7 @@ function createClarityElixirCaveFoundEvent(
         effect: (state: GameState) => ({
           stats: {
             ...state.stats,
-            madnessFromEvents: Math.max(
-              0,
-              (state.stats.madnessFromEvents || 0) - 2,
-            ),
+            madnessFromEvents: (state.stats.madnessFromEvents || 0) - 2,
           },
           story: {
             ...state.story,

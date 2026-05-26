@@ -2576,6 +2576,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
       delete updatedChanges._logMessage;
     }
 
+    if (
+      !logMessage &&
+      choiceId === "trade_clarity_elixir" &&
+      eventId === "merchant"
+    ) {
+      logMessage = tWithFallback(
+        "events",
+        "merchant.toolTrades.trade_clarity_elixir.message",
+        "You drink the Elixir of Clarity. Your mind feels lighter.",
+      );
+    }
+
+    const isClarityElixirCaveEvent = eventId.startsWith("clarityElixirCaveFound");
+
     // Prepare outcome dialogs BEFORE applying state updates, so success logs can be
     // displayed in dialogs without duplicating them in the event log.
     const madnessChange = detectMadnessChange(updatedChanges, state);
@@ -2624,7 +2638,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         shouldShowRewardDialog = true;
       }
 
-      if (madnessChange !== 0) {
+      if (madnessChange !== 0 && !isClarityElixirCaveEvent) {
         madnessDialogData = {
           rewards: hasRewards ? rewards : undefined,
           successLog,
