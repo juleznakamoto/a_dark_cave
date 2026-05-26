@@ -78,11 +78,6 @@ const EFFECT_TOOLTIP_SECTIONS = new Set<SidePanelSectionId>([
 const RESOURCE_ROW_GRID_CLASS =
   "grid grid-cols-[minmax(0,1fr)_6rem_4rem] items-start gap-x-2";
 
-const RESOURCE_ROW_SECTIONS = new Set<SidePanelSectionId>([
-  "resources",
-  "combatItems",
-]);
-
 interface SidePanelSectionProps {
   title: string | React.ReactNode;
   sectionId?: SidePanelSectionId;
@@ -516,10 +511,7 @@ export default function SidePanelSection({
     const showItemValue =
       showValue || (sectionId === undefined && title === "Stats");
 
-    const usesResourceRowLayout =
-      sectionId !== undefined &&
-      RESOURCE_ROW_SECTIONS.has(sectionId) &&
-      showItemValue;
+    const usesResourceRowLayout = isResourcesSection && showItemValue;
 
     const showProductionDelta =
       isResourcesSection &&
@@ -562,11 +554,6 @@ export default function SidePanelSection({
       itemAnimationClass,
     );
 
-    const resourceTooltipTriggerClass = cn(
-      "min-w-0 block",
-      globalTooltip.isMobile && "cursor-pointer",
-    );
-
     const productionDeltaCell = showProductionDelta ? (
       <span className={productionDeltaCellClassName}>
         {(item.productionDelta ?? 0) > 0 ? "+" : ""}
@@ -582,7 +569,7 @@ export default function SidePanelSection({
         {usesResourceRowLayout ? (
           <>
             <span className={valueCellClassName}>{displayValue}</span>
-            {isResourcesSection ? productionDeltaCell : <span aria-hidden="true" />}
+            {productionDeltaCell}
           </>
         ) : showItemValue ? (
           <span className={cn(valueCellClassName, "shrink-0")}>
@@ -702,7 +689,14 @@ export default function SidePanelSection({
       const combatItemTooltip = renderItemTooltip(item.id, "weapon");
       if (combatItemTooltip) {
         return (
-          <div key={item.id} data-testid={item.testId} className={resourceRowClassName}>
+          <div
+            key={item.id}
+            data-testid={item.testId}
+            className={cn(
+              "mr-1 flex min-w-0 items-center justify-between gap-x-1 leading-tight transition-all duration-300",
+              itemAnimationClass,
+            )}
+          >
             <TooltipWrapper
               tooltip={combatItemTooltip}
               tooltipId={item.id}
@@ -710,12 +704,15 @@ export default function SidePanelSection({
               tooltipContentClassName="max-w-xs"
               onMouseEnter={() => handleTooltipHover(item.id)}
               onMouseLeave={() => handleTooltipLeave(item.id)}
-              className={resourceTooltipTriggerClass}
+              className={sidePanelTooltipTriggerClass}
             >
               {labelContent}
             </TooltipWrapper>
-            <span className={valueCellClassName}>{displayValue}</span>
-            <span aria-hidden="true" />
+            {showItemValue && (
+              <span className={cn(valueCellClassName, "shrink-0")}>
+                {displayValue}
+              </span>
+            )}
           </div>
         );
       }
