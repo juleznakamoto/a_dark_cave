@@ -30,7 +30,6 @@ export default function LanguageSelector({
           variant="ghost"
           size="xs"
           className={buttonClassName}
-          title={t("languageSelector.ariaLabel")}
           aria-label={t("languageSelector.ariaLabel")}
         >
           <Globe className={iconClassName} aria-hidden />

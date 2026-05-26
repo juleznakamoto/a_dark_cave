@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { useTranslation } from "react-i18next";
 
 const CYCLE_MS = 5 * 60 * 1000;
@@ -19,7 +19,6 @@ export default function PlaylightDiscoveryButton({
 }: PlaylightDiscoveryButtonProps) {
   const { t } = useTranslation("ui");
   const [showDiscoveryTooltip, setShowDiscoveryTooltip] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     let hideTimeout: number | undefined;
@@ -46,33 +45,13 @@ export default function PlaylightDiscoveryButton({
     };
   }, []);
 
-  const tooltipVisible = forceShowTooltip || showDiscoveryTooltip || isHovered;
-
   return (
-    <div
-      className="relative inline-flex shrink-0 overflow-visible"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+    <HoverCalloutTooltip
+      label={t("playlight.moreGames")}
+      side="left"
+      forceVisible={forceShowTooltip || showDiscoveryTooltip}
+      onCalloutClick={onClick}
     >
-      <button
-        type="button"
-        onClick={onClick}
-        tabIndex={tooltipVisible ? 0 : -1}
-        aria-hidden={!tooltipVisible}
-        className={cn(
-          "absolute top-1/2 z-[1] flex -translate-y-1/2 -left-2 -translate-x-full rounded-md bg-primary px-2 py-1.5 text-[10px] font-semibold leading-none tracking-wide text-primary-foreground shadow-md transition-opacity duration-300 hover:bg-primary/90",
-          tooltipVisible
-            ? "cursor-pointer opacity-100"
-            : "pointer-events-none opacity-0",
-        )}
-      >
-        <span className="whitespace-nowrap">{t("playlight.moreGames")}</span>
-        <div
-          className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 rotate-45 bg-inherit p-1"
-          aria-hidden
-        />
-      </button>
-
       <Button
         variant="ghost"
         size="xs"
@@ -98,6 +77,6 @@ export default function PlaylightDiscoveryButton({
           />
         )}
       </Button>
-    </div>
+    </HoverCalloutTooltip>
   );
 }

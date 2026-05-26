@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { audioManager } from "@/lib/audio";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
+import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import {
   GAME_FOOTER_RIGHT_ICON_LINKS,
   GAME_FOOTER_RIGHT_ICON_ORDER,
@@ -101,56 +102,84 @@ export default function GameFooter() {
         onClose={() => setFullGamePurchaseDialogOpen(false)}
         openedFromFooter={true}
       />
-      <footer className="border-t border-border px-2 py-2 text-xs text-muted-foreground pointer-events-auto z-50">
+      <footer className="border-t border-border px-2 py-2 text-xs text-muted-foreground pointer-events-auto z-50 overflow-visible">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-0.5 shrink-0">
-            <Button
-              variant="ghost"
-              size="xs"
-              onClick={togglePause}
-              data-testid="button-pause-game"
-              disabled={idleModeDialog.isOpen}
-              className={`${FOOTER_CONTROL_BTN} ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "!text-red-600 !opacity-100" : ""} ${isPaused && !idleModeDialog.isOpen ? "continue-pause-flash" : ""}`}
-              title={
+            <HoverCalloutTooltip
+              label={
                 isPaused ? t("footer.resumeGame") : t("footer.pauseGame")
               }
+              side="top"
             >
-              <span className={isPaused ? undefined : FOOTER_CONTROL_TEXT}>
-                {isPaused ? "▶" : "❚❚"}
-              </span>
-            </Button>
-            <Button
-              variant="ghost"
-              size="xs"
-              onClick={toggleMusic}
-              data-testid="button-toggle-music"
-              className={FOOTER_CONTROL_BTN}
-              title={musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")}
+              <Button
+                variant="ghost"
+                size="xs"
+                onClick={togglePause}
+                data-testid="button-pause-game"
+                disabled={idleModeDialog.isOpen}
+                aria-label={
+                  isPaused ? t("footer.resumeGame") : t("footer.pauseGame")
+                }
+                className={`${FOOTER_CONTROL_BTN} ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "!text-red-600 !opacity-100" : ""} ${isPaused && !idleModeDialog.isOpen ? "continue-pause-flash" : ""}`}
+              >
+                <span className={isPaused ? undefined : FOOTER_CONTROL_TEXT}>
+                  {isPaused ? "▶" : "❚❚"}
+                </span>
+              </Button>
+            </HoverCalloutTooltip>
+            <HoverCalloutTooltip
+              label={
+                musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")
+              }
+              side="top"
             >
-              <img
-                src={musicMuted ? "/music_off.png" : "/music_on.png"}
-                alt={musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")}
-                className={FOOTER_CONTROL_ICON_HOVER}
+              <Button
+                variant="ghost"
+                size="xs"
+                onClick={toggleMusic}
+                data-testid="button-toggle-music"
+                className={FOOTER_CONTROL_BTN}
+                aria-label={
+                  musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")
+                }
+              >
+                <img
+                  src={musicMuted ? "/music_off.png" : "/music_on.png"}
+                  alt=""
+                  className={FOOTER_CONTROL_ICON_HOVER}
+                />
+              </Button>
+            </HoverCalloutTooltip>
+            <HoverCalloutTooltip
+              label={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
+              side="top"
+            >
+              <Button
+                variant="ghost"
+                size="xs"
+                onClick={toggleSfx}
+                data-testid="button-toggle-sfx"
+                className={FOOTER_CONTROL_BTN}
+                aria-label={
+                  sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")
+                }
+              >
+                <img
+                  src={sfxMuted ? "/sound_off.png" : "/sound_on.png"}
+                  alt=""
+                  className={FOOTER_CONTROL_ICON_HOVER}
+                />
+              </Button>
+            </HoverCalloutTooltip>
+            <HoverCalloutTooltip
+              label={t("languageSelector.ariaLabel")}
+              side="top"
+            >
+              <LanguageSelector
+                buttonClassName={FOOTER_CONTROL_BTN}
+                iconClassName={FOOTER_CONTROL_SVG_ICON_HOVER}
               />
-            </Button>
-            <Button
-              variant="ghost"
-              size="xs"
-              onClick={toggleSfx}
-              data-testid="button-toggle-sfx"
-              className={FOOTER_CONTROL_BTN}
-              title={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
-            >
-              <img
-                src={sfxMuted ? "/sound_off.png" : "/sound_on.png"}
-                alt={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
-                className={FOOTER_CONTROL_ICON_HOVER}
-              />
-            </Button>
-            <LanguageSelector
-              buttonClassName={FOOTER_CONTROL_BTN}
-              iconClassName={FOOTER_CONTROL_SVG_ICON_HOVER}
-            />
+            </HoverCalloutTooltip>
 
             {BTP === 1 ? (
               <Button
@@ -189,23 +218,28 @@ export default function GameFooter() {
                   ? tWithFallback("ui", "footer.contact", title)
                   : title;
               return (
-                <a
+                <HoverCalloutTooltip
                   key={platform}
-                  href={href}
-                  {...(href.startsWith("http")
-                    ? {
-                      target: "_blank",
-                      rel: "noopener noreferrer me",
-                    }
-                    : {})}
-                  className={socialLinkClass}
-                  title={linkLabel}
+                  label={linkLabel}
+                  side="top"
                 >
-                  <FooterSocialIcon
-                    platform={platform}
-                    className={socialIconClass}
-                  />
-                </a>
+                  <a
+                    href={href}
+                    {...(href.startsWith("http")
+                      ? {
+                        target: "_blank",
+                        rel: "noopener noreferrer me",
+                      }
+                      : {})}
+                    className={socialLinkClass}
+                    aria-label={linkLabel}
+                  >
+                    <FooterSocialIcon
+                      platform={platform}
+                      className={socialIconClass}
+                    />
+                  </a>
+                </HoverCalloutTooltip>
               );
             })}
             <div className="flex flex-col items-end leading-tight sm:flex-row sm:items-center sm:gap-1">

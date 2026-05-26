@@ -6,6 +6,7 @@ import CloudShader from "@/components/ui/cloud-shader";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
+import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import LanguageSelector from "@/components/game/LanguageSelector";
 import {
   GAME_FOOTER_RIGHT_ICON_LINKS,
@@ -270,11 +271,16 @@ export default function StartScreen() {
         className={`absolute bottom-4 left-4 right-4 z-10 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 text-[10px] sm:text-xs text-muted-foreground ${boostMode ? "pr-8 sm:pr-10" : ""}`}
         aria-label="Site links"
       >
-        <LanguageSelector
-          buttonClassName={START_FOOTER_LANGUAGE_BTN}
-          iconClassName="w-3.5 h-3.5 shrink-0"
-          menuAlign="start"
-        />
+        <HoverCalloutTooltip
+          label={t("languageSelector.ariaLabel")}
+          side="top"
+        >
+          <LanguageSelector
+            buttonClassName={START_FOOTER_LANGUAGE_BTN}
+            iconClassName="w-3.5 h-3.5 shrink-0"
+            menuAlign="start"
+          />
+        </HoverCalloutTooltip>
         <div className="flex flex-wrap justify-end items-center gap-x-3 gap-y-1.5">
           {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
             const { href, title } = GAME_FOOTER_RIGHT_ICON_LINKS[platform];
@@ -282,33 +288,8 @@ export default function StartScreen() {
               platform === "contact"
                 ? tWithFallback("ui", "footer.contact", title)
                 : title;
-            if (href.startsWith("http")) {
-              return (
-                <a
-                  key={platform}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer me"
-                  className={START_FOOTER_LINK}
-                  title={linkLabel}
-                >
-                  <FooterSocialIcon
-                    platform={platform}
-                    className="w-3.5 h-3.5 shrink-0"
-                  />
-                  <span className="sr-only sm:not-sr-only sm:inline">
-                    {linkLabel}
-                  </span>
-                </a>
-              );
-            }
-            return (
-              <a
-                key={platform}
-                href={href}
-                className={START_FOOTER_LINK}
-                title={linkLabel}
-              >
+            const linkContent = (
+              <>
                 <FooterSocialIcon
                   platform={platform}
                   className="w-3.5 h-3.5 shrink-0"
@@ -316,7 +297,34 @@ export default function StartScreen() {
                 <span className="sr-only sm:not-sr-only sm:inline">
                   {linkLabel}
                 </span>
-              </a>
+              </>
+            );
+            return (
+              <HoverCalloutTooltip
+                key={platform}
+                label={linkLabel}
+                side="top"
+              >
+                {href.startsWith("http") ? (
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer me"
+                    className={START_FOOTER_LINK}
+                    aria-label={linkLabel}
+                  >
+                    {linkContent}
+                  </a>
+                ) : (
+                  <a
+                    href={href}
+                    className={START_FOOTER_LINK}
+                    aria-label={linkLabel}
+                  >
+                    {linkContent}
+                  </a>
+                )}
+              </HoverCalloutTooltip>
             );
           })}
           <div className="flex flex-col items-end leading-tight sm:flex-row sm:items-center sm:gap-x-3">
