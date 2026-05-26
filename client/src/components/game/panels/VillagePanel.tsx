@@ -1032,7 +1032,7 @@ export default function VillagePanel() {
                               }
                             />
                             <span
-                              className={`font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold ${isGreatFeast ? "text-[12px] -mt-[0px] text-orange-600" : "text-[12px] -mt-[1px] text-yellow-600"}`}
+                              className={`font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold ${isGreatFeast ? "text-[12px] mt-[3px] text-orange-600" : "text-[12px] mt-[3px] text-yellow-600"}`}
                             >
                               {isGreatFeast ? "✦" : "⟡"}
                             </span>
