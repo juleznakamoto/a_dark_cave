@@ -5,7 +5,7 @@ import { clothingEffects } from "@/game/rules/effects";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { logger } from "@/lib/logger";
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
-import { capitalizeWords, formatSignedNumber } from "@/lib/utils";
+import { capitalizeWords, cn, formatSignedNumber } from "@/lib/utils";
 import {
   getActionLabel,
   getEffectName,
@@ -223,16 +223,19 @@ export default function SidePanel() {
     ...orderedGoldSilver.map((key, index) => ({
       id: key,
       label: (
-        <span className="flex items-center gap-1">
+        <span className="flex min-w-0 items-start gap-1">
           <ResourceCoinIcon
             resource={key as "gold" | "silver"}
-            className={
+            className={cn(
+              "shrink-0",
               key === "gold"
                 ? "text-yellow-600"
-                : "text-gray-400"
-            }
+                : "text-gray-400",
+            )}
           />
-          <span>{getResourceName(key, capitalizeWords(key))}</span>
+          <span className="min-w-0 break-words [overflow-wrap:anywhere]">
+            {getResourceName(key, capitalizeWords(key))}
+          </span>
         </span>
       ),
       value: resources[key as keyof typeof resources] ?? 0,
@@ -915,9 +918,9 @@ export default function SidePanel() {
 
   return (
     <ScrollArea className="h-full max-h-[36vh] md:max-h-full px-3 pt-2 pb-1.5 pl-1 pr-2">
-      <div className="pb-1 flex gap-4 md:gap-12 items-start min-w-0">
+      <div className="pb-1 flex gap-12 items-start min-w-0">
         {/* First column - Resources */}
-        <div className="min-w-0 flex-[0.9]">
+        <div className="min-w-0 flex-[0.9] overflow-hidden">
           {resourceItems.length > 0 && shouldShowSection("resources") && (
             <SidePanelSection
               className="pt-0"

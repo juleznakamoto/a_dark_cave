@@ -122,6 +122,11 @@ export default function SidePanelSection({
   const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const globalTooltip = useGlobalTooltip();
 
+  const sidePanelTooltipTriggerClass = cn(
+    "block min-w-0 max-w-full",
+    globalTooltip.isMobile && "cursor-pointer",
+  );
+
   const handleTooltipHover = (itemId: string) => {
     if (globalTooltip.isMobile) return;
 
@@ -446,10 +451,17 @@ export default function SidePanelSection({
     // Check if this resource is highlighted
     const isHighlighted = highlightedResources.has(item.id);
 
+    const isResourcesSection = sectionId === "resources";
+
+    const sidePanelLabelTextClass =
+      "min-w-0 break-words [overflow-wrap:anywhere]";
+
     const labelContent = (
       <span
         className={cn(
-          "text-xs text-gray-400 flex items-center gap-1 whitespace-nowrap",
+          "text-xs text-gray-400",
+          sidePanelLabelTextClass,
+          item.icon !== undefined && "flex items-start gap-1",
           newItemPulseClass,
           isHighlighted && "!text-gray-100",
         )}
@@ -497,7 +509,6 @@ export default function SidePanelSection({
     const showItemValue =
       showValue || (sectionId === undefined && title === "Stats");
 
-    const isResourcesSection = sectionId === "resources";
     const showProductionDelta =
       isResourcesSection &&
       item.productionDelta !== undefined &&
@@ -512,17 +523,22 @@ export default function SidePanelSection({
           : "";
 
     const itemRowClassName = cn(
-      "mr-1 grid leading-tight items-center transition-all duration-300",
+      "mr-1 grid min-w-0 leading-tight transition-all duration-300",
+      showItemValue ? "items-start" : "items-center",
       isResourcesSection && showItemValue
-        ? "grid-cols-[minmax(0,1fr)_4.5rem_2.75rem] gap-x-1"
+        ? "grid-cols-[minmax(0,1fr)_5.5rem_3rem] gap-x-1.5"
         : showItemValue
           ? "grid-cols-[minmax(0,1fr)_auto] gap-x-1"
           : "grid-cols-1",
       itemAnimationClass,
     );
 
+    const labelCell = (
+      <div className={sidePanelLabelTextClass}>{labelContent}</div>
+    );
+
     const valueCellClassName = cn(
-      "shrink-0 text-right font-mono tabular-nums text-gray-300",
+      "min-w-0 shrink-0 overflow-hidden text-right font-mono tabular-nums text-gray-300",
       isAnimated && "text-green-800 font-bold",
       isDecreaseAnimated && "text-red-800 font-bold",
       isMaxAnimated && "text-yellow-800 font-bold",
@@ -559,7 +575,7 @@ export default function SidePanelSection({
 
     const itemContent = (
       <div data-testid={item.testId} className={itemRowClassName}>
-        {labelContent}
+        {labelCell}
         {valueCell}
         {productionDeltaCell}
       </div>
@@ -575,13 +591,13 @@ export default function SidePanelSection({
         <div
           key={item.id}
           data-testid={item.testId}
-          className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isAtMax
-                  ? "text-yellow-400"
-                  : ""
+          className={`flex min-w-0 leading-tight justify-between items-start gap-x-1 transition-all duration-300 ${isAnimated
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isAtMax
+                ? "text-yellow-400"
+                : ""
             }`}
         >
           <TooltipWrapper
@@ -601,11 +617,7 @@ export default function SidePanelSection({
             tooltipContentClassName="max-w-xs"
             onMouseEnter={() => handleTooltipHover(item.id)}
             onMouseLeave={() => handleTooltipLeave(item.id)}
-            className={
-              globalTooltip.isMobile
-                ? "cursor-pointer inline-block"
-                : "inline-block"
-            }
+            className={sidePanelTooltipTriggerClass}
           >
             {labelContent}
           </TooltipWrapper>
@@ -620,13 +632,13 @@ export default function SidePanelSection({
         <div
           key={item.id}
           data-testid={item.testId}
-          className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isMaxAnimated
-                  ? "text-yellow-400"
-                  : ""
+          className={`flex min-w-0 leading-tight justify-between items-start gap-x-1 transition-all duration-300 ${isAnimated
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""
             }`}
         >
           <TooltipWrapper
@@ -636,11 +648,7 @@ export default function SidePanelSection({
             tooltipContentClassName="max-w-xs"
             onMouseEnter={() => handleTooltipHover(item.id)}
             onMouseLeave={() => handleTooltipLeave(item.id)}
-            className={
-              globalTooltip.isMobile
-                ? "cursor-pointer inline-block"
-                : "inline-block"
-            }
+            className={sidePanelTooltipTriggerClass}
           >
             {labelContent}
           </TooltipWrapper>
@@ -654,13 +662,13 @@ export default function SidePanelSection({
         <div
           key={item.id}
           data-testid={item.testId}
-          className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isMaxAnimated
-                  ? "text-yellow-400"
-                  : ""
+          className={`flex min-w-0 leading-tight justify-between items-start gap-x-1 transition-all duration-300 ${isAnimated
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""
             }`}
         >
           <TooltipWrapper
@@ -670,11 +678,7 @@ export default function SidePanelSection({
             tooltipContentClassName="max-w-xs"
             onMouseEnter={() => handleTooltipHover(item.id)}
             onMouseLeave={() => handleTooltipLeave(item.id)}
-            className={
-              globalTooltip.isMobile
-                ? "cursor-pointer inline-block"
-                : "inline-block"
-            }
+            className={sidePanelTooltipTriggerClass}
           >
             {labelContent}
           </TooltipWrapper>
@@ -690,13 +694,13 @@ export default function SidePanelSection({
           <div
             key={item.id}
             data-testid={item.testId}
-            className={`mr-1 flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-                ? "text-green-400"
-                : isDecreaseAnimated
-                  ? "text-red-400"
-                  : isMaxAnimated
-                    ? "text-yellow-400"
-                    : ""
+            className={`mr-1 flex min-w-0 leading-tight justify-between items-start gap-x-1 transition-all duration-300 ${isAnimated
+              ? "text-green-400"
+              : isDecreaseAnimated
+                ? "text-red-400"
+                : isMaxAnimated
+                  ? "text-yellow-400"
+                  : ""
               }`}
           >
             <TooltipWrapper
@@ -706,25 +710,21 @@ export default function SidePanelSection({
               tooltipContentClassName="max-w-xs"
               onMouseEnter={() => handleTooltipHover(item.id)}
               onMouseLeave={() => handleTooltipLeave(item.id)}
-              className={
-                globalTooltip.isMobile
-                  ? "cursor-pointer inline-block"
-                  : "inline-block"
-              }
+              className={sidePanelTooltipTriggerClass}
             >
               {labelContent}
             </TooltipWrapper>
             {showItemValue && (
               <span
                 className={`font-mono ${isAnimated
-                    ? "text-green-800 font-bold"
-                    : isDecreaseAnimated
-                      ? "text-red-800 font-bold"
-                      : isMaxAnimated
-                        ? "text-yellow-800 font-bold"
-                        : isMadness
-                          ? madnessClasses
-                          : ""
+                  ? "text-green-800 font-bold"
+                  : isDecreaseAnimated
+                    ? "text-red-800 font-bold"
+                    : isMaxAnimated
+                      ? "text-yellow-800 font-bold"
+                      : isMadness
+                        ? madnessClasses
+                        : ""
                   }`}
               >
                 {displayValue}
@@ -752,13 +752,13 @@ export default function SidePanelSection({
         <div
           key={item.id}
           data-testid={item.testId}
-          className={`mr-1 flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isMaxAnimated
-                  ? "text-yellow-400"
-                  : ""
+          className={`mr-1 flex min-w-0 leading-tight justify-between items-start gap-x-1 transition-all duration-300 ${isAnimated
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""
             }`}
         >
           <TooltipWrapper
@@ -768,25 +768,21 @@ export default function SidePanelSection({
             tooltipContentClassName="max-w-xs"
             onMouseEnter={() => handleTooltipHover(item.id)}
             onMouseLeave={() => handleTooltipLeave(item.id)}
-            className={
-              globalTooltip.isMobile
-                ? "cursor-pointer inline-block"
-                : "inline-block"
-            }
+            className={sidePanelTooltipTriggerClass}
           >
             {labelContent}
           </TooltipWrapper>
           {showItemValue && (
             <span
               className={`font-mono ${isAnimated
-                  ? "text-green-800 font-bold"
-                  : isDecreaseAnimated
-                    ? "text-red-800 font-bold"
-                    : isMaxAnimated
-                      ? "text-yellow-800 font-bold"
-                      : isMadness
-                        ? madnessClasses
-                        : ""
+                ? "text-green-800 font-bold"
+                : isDecreaseAnimated
+                  ? "text-red-800 font-bold"
+                  : isMaxAnimated
+                    ? "text-yellow-800 font-bold"
+                    : isMadness
+                      ? madnessClasses
+                      : ""
                 }`}
             >
               {displayValue}
@@ -828,7 +824,7 @@ export default function SidePanelSection({
       ) : (
         <h3 className="text-xs font-medium tracking-wide mb-0.5">{title}</h3>
       )}
-      <div className="text-xs">
+      <div className="min-w-0 text-xs">
         {visibleItems.map((item) => (
           <div
             key={item.id}

@@ -11,7 +11,7 @@ interface ResourceChange {
 const abbreviateNumber = (num: number): string => {
   const absNum = Math.abs(num);
   const sign = num < 0 ? '-' : '';
-  
+
   if (absNum >= 1000000000) {
     return sign + (absNum / 1000000000).toFixed(1).replace(/\.0$/, '').replace(".", "'") + 'B';
   }
@@ -39,7 +39,7 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
     // Find the latest change overall (not just for this resource)
     const latestChangeOverall = changes
       .sort((a, b) => b.timestamp - a.timestamp)[0];
-    
+
     // Find the latest change for this specific resource
     const latestChangeForResource = changes
       .filter(change => change.resource === resource)
@@ -56,7 +56,7 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
         clearTimeout(microDelayTimerRef.current);
         microDelayTimerRef.current = null;
       }
-      
+
       // Immediately clear the old change
       setVisibleChange(null);
       lastChangeTimestampRef.current = 0; // Reset to allow new change to show
@@ -76,7 +76,7 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
 
       // Immediately clear the old change before showing the new one
       setVisibleChange(null);
-      
+
       // Use a micro-delay to ensure the DOM updates and the animation can restart
       microDelayTimerRef.current = setTimeout(() => {
         setVisibleChange(latestChangeForResource);
@@ -87,7 +87,7 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
           setVisibleChange(null);
           timerRef.current = null;
         }, 2000);
-        
+
         microDelayTimerRef.current = null;
       }, 10);
     }
@@ -125,13 +125,13 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
   }
 
   return (
-    <div className="absolute left-full top-1/2 -translate-y-1/2 ml-1 z-50 pointer-events-none">
+    <div className="absolute right-0 top-1/2 -translate-y-1/2 z-50 pointer-events-none">
       <div
         className={`
           text-xs font-mono
           animate-in fade-in-0 slide-in-from-left-2 duration-300
-          ${visibleChange.amount > 0 
-            ? 'text-green-800' 
+          ${visibleChange.amount > 0
+            ? 'text-green-800'
             : 'text-red-800'
           }
         `}
