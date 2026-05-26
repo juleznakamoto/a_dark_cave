@@ -915,9 +915,9 @@ export default function SidePanel() {
 
   return (
     <ScrollArea className="h-full max-h-[36vh] md:max-h-full px-3 pt-2 pb-1.5 pl-1 pr-2">
-      <div className="pb-1 flex gap-12 items-start">
+      <div className="pb-1 flex gap-4 md:gap-12 items-start min-w-0">
         {/* First column - Resources */}
-        <div className="flex-[0.9]">
+        <div className="min-w-0 flex-[0.9]">
           {resourceItems.length > 0 && shouldShowSection("resources") && (
             <SidePanelSection
               className="pt-0"
@@ -954,7 +954,7 @@ export default function SidePanel() {
         </div>
 
         {/* Second column - Everything else */}
-        <div className="flex-1">
+        <div className="min-w-0 flex-1">
           {toolItems.length > 0 && shouldShowSection("tools") && (
             <SidePanelSection className="pt-0" sectionId="tools" title={t("sidePanel.tools")} items={toolItems} />
           )}
