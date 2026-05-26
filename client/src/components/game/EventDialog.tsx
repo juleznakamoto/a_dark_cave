@@ -22,6 +22,7 @@ import {
   getEventRulesCatalogId,
   resolveEventDisplayMessage,
   resolveEventDisplayTitle,
+  resolveTimedEventCatalogId,
 } from "@/i18n/eventDisplay";
 
 interface EventDialogProps {
@@ -221,14 +222,16 @@ export default function EventDialog({
   ];
   const isMadnessEvent = event?.id && madnessEventIds.some(id => event.id.startsWith(id));
 
-  const catalogId = getEventRulesCatalogId(event.id);
+  const ruleEventId = getEventRulesCatalogId(event.id);
+  const catalogId = resolveTimedEventCatalogId(ruleEventId);
   const displayTitle =
-    resolveEventDisplayTitle(catalogId, event.title, gameState) ||
+    resolveEventDisplayTitle(catalogId, event.title, gameState, ruleEventId) ||
     t("event.fallbackTitle");
   const displayMessage = resolveEventDisplayMessage(
     catalogId,
     event.message,
     gameState,
+    ruleEventId,
   );
 
   return (

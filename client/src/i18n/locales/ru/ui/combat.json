@@ -23,6 +23,14 @@
     "bloodflameSphere": "Сфера кровавого пламени",
     "poisonArrows": "Отравленные стрелы",
     "attackDetailsAria": "Подробности боевой атаки",
+    "critChance": "{{percent}} % шанс критического удара",
+    "critFromLuck": "{{percent}} % от {{stat}}{{maxSuffix}}",
+    "critFromLuckMaxSuffix": " (макс.)",
+    "critFromItems": "{{percent}} % от предметов",
+    "missChance": "{{percent}} % шанс промаха (из‑за {{stat}})",
+    "enemies": {
+      "paleCreatures": "Бледные твари"
+    },
     "restlessKnightWounded": "Беспокойный рыцарь ранен и не может сражаться",
     "elderWizardWounded": "Старший маг ранен и не может колдовать",
     "noCasualties": "Жители не погибли.",
@@ -41,7 +49,19 @@
     "title": "Волны атак",
     "calm": "Пока что спокойно…",
     "soon": "скоро",
-    "provoke": "Спровоцировать"
+    "provoke": "Спровоцировать",
+    "waves": {
+      "firstWave": "Первая волна",
+      "secondWave": "Вторая волна",
+      "thirdWave": "Третья волна",
+      "fourthWave": "Четвёртая волна",
+      "fifthWave": "Пятая волна",
+      "sixthWave": "Шестая волна",
+      "seventhWave": "Седьмая волна",
+      "eighthWave": "Восьмая волна",
+      "ninthWave": "Девятая волна",
+      "tenthWave": "Десятая волна"
+    }
   },
   "fortifications": {
     "bastion": "Бастион",

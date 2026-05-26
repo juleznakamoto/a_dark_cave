@@ -3,6 +3,7 @@ import { useGameStore } from "@/game/state";
 import {
   canExecuteAction,
   getActionCostBreakdown,
+  getBastionRepairTooltipRows,
   getResourcesFromActionCost,
 } from "@/game/rules";
 import AttackWavesChart from "./AttackWavesChart";
@@ -26,6 +27,23 @@ export default function BastionPanel() {
 
   const hasDamagedBuildings =
     bastionDamaged || watchtowerDamaged || palisadesDamaged;
+
+  const renderRepairTooltip = (repairActionId: string) => {
+    const rows = getBastionRepairTooltipRows(repairActionId, state);
+    if (rows.length === 0) return undefined;
+    return (
+      <div className="text-xs whitespace-nowrap">
+        {rows.map((cost, index) => (
+          <div
+            key={index}
+            className={cost.satisfied ? "" : "text-muted-foreground"}
+          >
+            {cost.text}
+          </div>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <div className="w-full md:max-w-96 space-y-4 mt-2 mb-2 pl-[3px] pr-[3px]">
@@ -140,22 +158,7 @@ export default function BastionPanel() {
                 variant="outline"
                 size="xs"
                 className="hover:bg-background hover:text-foreground"
-                tooltip={
-                  <div className="text-xs whitespace-nowrap">
-                    {getActionCostBreakdown("repairBastion", state).map(
-                      (cost, index) => (
-                        <div
-                          key={index}
-                          className={
-                            cost.satisfied ? "" : "text-muted-foreground"
-                          }
-                        >
-                          {cost.text}
-                        </div>
-                      ),
-                    )}
-                  </div>
-                }
+                tooltip={renderRepairTooltip("repairBastion")}
                 onMouseEnter={() => {
                   setHighlightedResources(
                     getResourcesFromActionCost("repairBastion", state),
@@ -181,22 +184,7 @@ export default function BastionPanel() {
                 variant="outline"
                 size="xs"
                 className="hover:bg-background hover:text-foreground"
-                tooltip={
-                  <div className="text-xs whitespace-nowrap">
-                    {getActionCostBreakdown("repairWatchtower", state).map(
-                      (cost, index) => (
-                        <div
-                          key={index}
-                          className={
-                            cost.satisfied ? "" : "text-muted-foreground"
-                          }
-                        >
-                          {cost.text}
-                        </div>
-                      ),
-                    )}
-                  </div>
-                }
+                tooltip={renderRepairTooltip("repairWatchtower")}
                 onMouseEnter={() => {
                   setHighlightedResources(
                     getResourcesFromActionCost("repairWatchtower", state),
@@ -222,22 +210,7 @@ export default function BastionPanel() {
                 variant="outline"
                 size="xs"
                 className="hover:bg-background hover:text-foreground"
-                tooltip={
-                  <div className="text-xs whitespace-nowrap">
-                    {getActionCostBreakdown("repairPalisades", state).map(
-                      (cost, index) => (
-                        <div
-                          key={index}
-                          className={
-                            cost.satisfied ? "" : "text-muted-foreground"
-                          }
-                        >
-                          {cost.text}
-                        </div>
-                      ),
-                    )}
-                  </div>
-                }
+                tooltip={renderRepairTooltip("repairPalisades")}
                 onMouseEnter={() => {
                   setHighlightedResources(
                     getResourcesFromActionCost("repairPalisades", state),

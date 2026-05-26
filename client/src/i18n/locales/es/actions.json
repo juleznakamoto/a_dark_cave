@@ -262,6 +262,9 @@
       "firstVisit": "Hay madera esparcida cerca de la entrada de la cueva. Podría resultar útil."
     }
   },
+  "callMerchant": {
+    "label": "Llamar al mercader"
+  },
   "collapsedTower": {
     "label": "Torre derrumbada"
   },
@@ -453,6 +456,9 @@
   "exploreUndergroundLake": {
     "label": "Lago subterráneo"
   },
+  "feedFire": {
+    "label": "Alimentar el fuego"
+  },
   "forestCave": {
     "label": "Cueva del bosque"
   },
@@ -473,6 +479,9 @@
   },
   "hunt": {
     "label": "Cazar"
+  },
+  "invest": {
+    "label": "Invertir"
   },
   "layTrap": {
     "label": "Colocar trampa"

@@ -262,6 +262,9 @@
       "firstVisit": "Some wood lies scattered near the cave's entrance. It might prove useful."
     }
   },
+  "callMerchant": {
+    "label": "Call Merchant"
+  },
   "collapsedTower": {
     "label": "Collapsed Tower"
   },
@@ -453,6 +456,9 @@
   "exploreUndergroundLake": {
     "label": "Underground Lake"
   },
+  "feedFire": {
+    "label": "Feed Fire"
+  },
   "forestCave": {
     "label": "Forest Cave"
   },
@@ -473,6 +479,9 @@
   },
   "hunt": {
     "label": "Hunt"
+  },
+  "invest": {
+    "label": "Invest"
   },
   "layTrap": {
     "label": "Lay Trap"

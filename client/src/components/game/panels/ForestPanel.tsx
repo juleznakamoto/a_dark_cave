@@ -288,18 +288,10 @@ export default function ForestPanel() {
       const sellText = formatForestPanelResourceRowLabel(costRow);
       if (sellText) displayLabel = sellText;
     } else if (isTradeButton && action.effects) {
-      const effects = resolveForestPanelTradeEffects(action, state);
-      if (effects) {
-        const resourceKey = Object.keys(effects)[0];
-        const amount = effects[resourceKey];
-        const resourceName = resourceKey.split(".")[1];
-        const formattedName = resourceName
-          .replace(/_/g, ' ')
-          .split(' ')
-          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(' ');
-        displayLabel = `${formatNumber(amount)} ${formattedName}`;
-      }
+      const buyText = formatForestPanelResourceRowLabel(
+        resolveForestPanelTradeEffects(action, state),
+      );
+      if (buyText) displayLabel = buyText;
     }
 
     // Check if this action has upgrade tracking

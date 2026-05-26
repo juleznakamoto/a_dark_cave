@@ -4,7 +4,7 @@
     "fight": "Kämpfen",
     "fighting": "Kämpft...",
     "retreat": "Zurückziehen",
-    "startFight": "Start Kämpfen",
+    "startFight": "Kampf starten",
     "roundTitle": "Kampf – Runde {{round}}",
     "youLost": "Du hast verloren",
     "youWin": "Du gewinnst",
@@ -23,6 +23,14 @@
     "bloodflameSphere": "Blutflammensphäre",
     "poisonArrows": "Giftpfeile",
     "attackDetailsAria": "Details zum Kampfangriff",
+    "critChance": "{{percent}} % kritische Trefferchance",
+    "critFromLuck": "{{percent}} % durch {{stat}}{{maxSuffix}}",
+    "critFromLuckMaxSuffix": " (max.)",
+    "critFromItems": "{{percent}} % durch Gegenstände",
+    "missChance": "{{percent}} % Fehlschlag-Chance (basierend auf {{stat}})",
+    "enemies": {
+      "paleCreatures": "Bleiche Kreaturen"
+    },
     "restlessKnightWounded": "Der Ruhelose Ritter ist verwundet und kann nicht kämpfen",
     "elderWizardWounded": "Der Erzmagier ist verwundet und kann keine Zauber wirken",
     "noCasualties": "Kein Dorfbewohner starb.",
@@ -41,7 +49,19 @@
     "title": "Angriffswellen",
     "calm": "Es ist ruhig, vorerst…",
     "soon": "bald",
-    "provoke": "Provozieren"
+    "provoke": "Provozieren",
+    "waves": {
+      "firstWave": "Erste Welle",
+      "secondWave": "Zweite Welle",
+      "thirdWave": "Dritte Welle",
+      "fourthWave": "Vierte Welle",
+      "fifthWave": "Fünfte Welle",
+      "sixthWave": "Sechste Welle",
+      "seventhWave": "Siebte Welle",
+      "eighthWave": "Achte Welle",
+      "ninthWave": "Neunte Welle",
+      "tenthWave": "Zehnte Welle"
+    }
   },
   "fortifications": {
     "bastion": "Bastion",

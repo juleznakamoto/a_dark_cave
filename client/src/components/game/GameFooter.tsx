@@ -84,6 +84,9 @@ export default function GameFooter() {
               data-testid="button-pause-game"
               disabled={idleModeDialog.isOpen}
               className={`px-1 py-1 text-xs hover ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "text-red-600 hover:text-red-500" : ""} ${isPaused && !idleModeDialog.isOpen ? "continue-pause-flash" : ""}`}
+              title={
+                isPaused ? t("footer.resumeGame") : t("footer.pauseGame")
+              }
             >
               {isPaused ? "▶" : "❚❚"}
             </Button>

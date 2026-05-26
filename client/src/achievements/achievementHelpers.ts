@@ -1,6 +1,7 @@
 import { useGameStore } from "@/game/state";
 import type { AchievementChartConfig } from "./achievementTypes";
 import { getAchievementLabel } from "@/i18n/resolveGameText";
+import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
 
 export interface AchievementRow {
   segmentId: string;
@@ -44,14 +45,12 @@ export function computeAchievementRewards(
   return silver > 0 ? { silver } : {};
 }
 
-/** Formats rewards for tooltip display, e.g. "+250 Silver, +10 Gold". */
+/** Formats rewards for tooltip display, e.g. "+250 Silber, +10 Gold". */
 export function formatRewardsTooltip(rewards: Record<string, number>): string {
   const entries = Object.entries(rewards).filter(([, amount]) => amount > 0);
   if (entries.length === 0) return "";
-  const formatResourceName = (key: string) =>
-    key.split("_").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
   return entries
-    .map(([key, amount]) => `+${amount} ${formatResourceName(key)}`)
+    .map(([key, amount]) => `+${amount} ${formatTooltipResourceName(key)}`)
     .join(", ");
 }
 

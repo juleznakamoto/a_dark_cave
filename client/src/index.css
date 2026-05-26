@@ -246,13 +246,13 @@ body {
 
   0%,
   100% {
+    opacity: 0.7;
     text-shadow: 0 0 1px rgba(255, 255, 255, .2), 0 0 2px rgba(255, 255, 255, .1);
-    color: none;
   }
 
   50% {
+    opacity: 1;
     text-shadow: 0 0 4px rgba(255, 255, 255, .4), 0 0 6px rgba(255, 255, 255, .2);
-    color: white;
   }
 }
 

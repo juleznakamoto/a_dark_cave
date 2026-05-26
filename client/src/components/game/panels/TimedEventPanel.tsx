@@ -35,10 +35,13 @@ import {
 } from "@/game/gamblerSession";
 import { useTranslation } from "react-i18next";
 import {
+  getEventI18nVars,
   getEventRulesCatalogId,
   resolveEventDisplayMessage,
   resolveEventDisplayTitle,
+  resolveTimedEventCatalogId,
 } from "@/i18n/eventDisplay";
+import { localizeEventChoices } from "@/i18n/eventText";
 
 // Stat icon mapping
 const statIcons: Record<string, { icon: string; color: string }> = {
@@ -125,10 +128,15 @@ export default function TimedEventPanel() {
         : [];
     }
 
-    // Choices are pre-computed when the event triggers, so they're always an array
-    const choices = Array.isArray(timedEventTab.event.choices)
+    const stored = Array.isArray(timedEventTab.event.choices)
       ? timedEventTab.event.choices
       : [];
+    const ruleEventId =
+      timedEventTab.event.eventId || getEventRulesCatalogId(timedEventTab.event.id);
+    const catalogId = resolveTimedEventCatalogId(ruleEventId);
+    const vars = getEventI18nVars(catalogId, gameState, ruleEventId);
+    const choices =
+      localizeEventChoices(catalogId, stored, gameState, vars) ?? stored;
 
     if (shouldLog) {
       logger.log("[TIMED EVENT PANEL] Non-merchant event, using event choices:", {
@@ -143,6 +151,7 @@ export default function TimedEventPanel() {
     isMerchantEvent,
     timedEventTab.event,
     gameState.merchantTrades,
+    gameState,
   ]);
 
   useEffect(() => {
@@ -285,12 +294,20 @@ export default function TimedEventPanel() {
   }
 
   const event = timedEventTab.event;
-  const eventId = event.eventId || getEventRulesCatalogId(event.id);
-  const displayTitle = resolveEventDisplayTitle(eventId, event.title, gameState);
+  const ruleEventId = event.eventId || getEventRulesCatalogId(event.id);
+  const catalogId = resolveTimedEventCatalogId(ruleEventId);
+  const eventId = ruleEventId;
+  const displayTitle = resolveEventDisplayTitle(
+    catalogId,
+    event.title,
+    gameState,
+    ruleEventId,
+  );
   const displayMessage = resolveEventDisplayMessage(
-    eventId,
+    catalogId,
     event.message,
     gameState,
+    ruleEventId,
   );
 
   const formatTime = (ms: number) => {

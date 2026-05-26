@@ -259,7 +259,7 @@ app.get("/api/version", (_req, res) => {
 });
 
 // Server-side Supabase admin client (bypasses RLS)
-import { createClient } from "@supabase/supabase-js";
+import { createServerSupabaseClient } from "./supabaseServerClient";
 import {
   MARKETING_CONSENT_TEXT_VERSION,
   MARKETING_PROMPT_VERSION,
@@ -282,6 +282,16 @@ function maskEmail(email: string | null): string {
   }
 
   return `${local.substring(0, 2)}***${local.substring(local.length - 2)}`;
+}
+
+/** Rebuild `leaderboard` from `game_saves.game_stats` (cron also runs this periodically). */
+async function refreshLeaderboardFromGameStats(
+  adminClient: ReturnType<typeof getAdminClient>,
+): Promise<void> {
+  const { error } = await adminClient.rpc("refresh_leaderboard");
+  if (error) {
+    throw error;
+  }
 }
 
 function summarizeResponseBody(body: unknown): string {
@@ -327,11 +337,7 @@ const getAdminClient = (env: "dev" | "prod" = "dev") => {
     );
   }
 
-  const client = createClient(supabaseUrl, supabaseServiceKey, {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
+  const client = createServerSupabaseClient(supabaseUrl, supabaseServiceKey, {
     global: {
       headers: {
         'x-connection-pool': 'true'
@@ -355,9 +361,10 @@ async function getSessionUserFromBearer(
   if (!config.supabaseUrl || !config.supabaseAnonKey) {
     return null;
   }
-  const anonClient = createClient(config.supabaseUrl, config.supabaseAnonKey, {
-    auth: { autoRefreshToken: false, persistSession: false },
-  });
+  const anonClient = createServerSupabaseClient(
+    config.supabaseUrl,
+    config.supabaseAnonKey,
+  );
   const {
     data: { user },
     error,
@@ -397,9 +404,10 @@ async function getSessionUserIdFromBearer(
   if (!config.supabaseUrl || !config.supabaseAnonKey) {
     return null;
   }
-  const anonClient = createClient(config.supabaseUrl, config.supabaseAnonKey, {
-    auth: { autoRefreshToken: false, persistSession: false },
-  });
+  const anonClient = createServerSupabaseClient(
+    config.supabaseUrl,
+    config.supabaseAnonKey,
+  );
   const {
     data: { user },
     error,
@@ -435,9 +443,10 @@ app.post("/api/gender", async (req, res) => {
       return res.status(500).json({ error: "Supabase not configured" });
     }
 
-    const anonClient = createClient(config.supabaseUrl, config.supabaseAnonKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
-    });
+    const anonClient = createServerSupabaseClient(
+      config.supabaseUrl,
+      config.supabaseAnonKey,
+    );
     const { data: { user }, error: authError } = await anonClient.auth.getUser(jwt);
     if (authError || !user?.email_confirmed_at) {
       return res.status(401).json({ error: "Invalid or unconfirmed session" });
@@ -869,6 +878,16 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
 
     log(`📊 Fetching ${mode} leaderboard for ${env} environment`);
 
+    try {
+      await refreshLeaderboardFromGameStats(adminClient);
+      log(`📊 Leaderboard refreshed from game_stats (${env})`);
+    } catch (refreshError: any) {
+      log(
+        "⚠️ Leaderboard refresh before fetch failed (using existing rows):",
+        refreshError?.message ?? refreshError,
+      );
+    }
+
     const { data, error } = await adminClient
       .from("leaderboard")
       .select("id, username, email, play_time, completed_at")
@@ -883,7 +902,7 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
     );
 
     // Mask emails server-side
-    const maskedData = data.map((entry: any) => ({
+    const maskedData = (data ?? []).map((entry: any) => ({
       id: entry.id,
       username: entry.username,
       displayName: entry.username || maskEmail(entry.email),
@@ -891,9 +910,9 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
       completed_at: entry.completed_at,
     }));
 
-    // Cache appropriately based on environment
-    if (env === "prod") {
-      res.set("Cache-Control", "public, max-age=600"); // 10 minutes in production
+    // Do not cache empty lists (avoids sticky "no entries" after first load)
+    if (env === "prod" && maskedData.length > 0) {
+      res.set("Cache-Control", "public, max-age=300");
     } else {
       res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
     }

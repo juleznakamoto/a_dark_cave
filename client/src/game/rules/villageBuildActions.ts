@@ -574,6 +574,192 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 0,
   },
 
+  buildBastion: {
+    id: "buildBastion",
+    label: "Bastion",
+    description: "Massive fortification serving as the last line of defense",
+    tooltipEffects: [
+      bt("defenseBonus", "+{{amount}} Defense", { amount: 10 }),
+      bt("attackBonus", "+{{amount}} Attack", { amount: 10 }),
+      bt("integrityBonus", "+{{amount}} Integrity", { amount: 50 }),
+    ],
+    building: true,
+    show_when: {
+      1: {
+        "story.seen.portalBlasted": true,
+        "buildings.bastion": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 2500,
+        "resources.stone": 5000,
+        "resources.steel": 2500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.bastion": 1,
+      },
+    },
+    executionTime: 90,
+    cooldown: 0,
+  },
+
+  buildWatchtower: {
+    id: "buildWatchtower",
+    label: "Watchtower",
+    description: "Tall tower providing early warning of threats",
+    tooltipEffects: (state: GameState) => {
+      const nextLevel = (state.buildings.watchtower || 0) + 1;
+      const statsByLevel: Record<
+        number,
+        { defense: number; attack: number; integrity: number }
+      > = {
+        1: { defense: 2, attack: 5, integrity: 20 },
+        2: { defense: 5, attack: 10, integrity: 30 },
+        3: { defense: 10, attack: 15, integrity: 40 },
+        4: { defense: 15, attack: 25, integrity: 60 },
+      };
+      const stats = statsByLevel[nextLevel] ?? statsByLevel[4];
+      return [
+        bt("defenseBonus", "+{{amount}} Defense", { amount: stats.defense }),
+        bt("attackBonus", "+{{amount}} Attack", { amount: stats.attack }),
+        bt("integrityBonus", "+{{amount}} Integrity", { amount: stats.integrity }),
+      ];
+    },
+    building: true,
+    show_when: {
+      1: {
+        "buildings.bastion": 1,
+        "buildings.watchtower": 0,
+      },
+      2: {
+        "buildings.watchtower": 1,
+      },
+      3: {
+        "buildings.watchtower": 2,
+      },
+      4: {
+        "buildings.watchtower": 3,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 5000,
+        "resources.stone": 2500,
+        "resources.iron": 1000,
+      },
+      2: {
+        "resources.wood": 7500,
+        "resources.stone": 5000,
+        "resources.steel": 1000,
+        "resources.iron": 2500,
+      },
+      3: {
+        "resources.wood": 10000,
+        "resources.stone": 7500,
+        "resources.steel": 1500,
+        "resources.obsidian": 500,
+      },
+      4: {
+        "resources.wood": 15000,
+        "resources.stone": 10000,
+        "resources.steel": 2500,
+        "resources.obsidian": 1000,
+        "resources.adamant": 500,
+        "resources.black_powder": 500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.watchtower": 1,
+      },
+      2: {
+        "buildings.watchtower": 1,
+      },
+      3: {
+        "buildings.watchtower": 1,
+      },
+      4: {
+        "buildings.watchtower": 1,
+      },
+    },
+    executionTime: 60,
+    cooldown: 0,
+  },
+
+  buildPalisades: {
+    id: "buildPalisades",
+    label: "Palisades",
+    description: "Defensive walls protecting the settlement",
+    tooltipEffects: (state: GameState) => {
+      const nextLevel = (state.buildings.palisades || 0) + 1;
+      const statsByLevel: Record<number, { defense: number; integrity: number }> =
+        {
+          1: { defense: 5, integrity: 15 },
+          2: { defense: 10, integrity: 30 },
+          3: { defense: 15, integrity: 45 },
+          4: { defense: 20, integrity: 60 },
+        };
+      const stats = statsByLevel[nextLevel] ?? statsByLevel[4];
+      return [
+        bt("defenseBonus", "+{{amount}} Defense", { amount: stats.defense }),
+        bt("integrityBonus", "+{{amount}} Integrity", { amount: stats.integrity }),
+      ];
+    },
+    building: true,
+    show_when: {
+      1: {
+        "story.seen.portalBlasted": true,
+        "buildings.bastion": 1,
+        "buildings.palisades": 0,
+      },
+      2: {
+        "buildings.palisades": 1,
+      },
+      3: {
+        "buildings.palisades": 2,
+      },
+      4: {
+        "buildings.palisades": 3,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 10000,
+      },
+      2: {
+        "resources.wood": 7500,
+        "resources.iron": 2500,
+      },
+      3: {
+        "resources.stone": 7500,
+        "resources.iron": 2500,
+      },
+      4: {
+        "resources.stone": 7500,
+        "resources.steel": 2500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.palisades": 1,
+      },
+      2: {
+        "buildings.palisades": 1,
+      },
+      3: {
+        "buildings.palisades": 1,
+      },
+      4: {
+        "buildings.palisades": 1,
+      },
+    },
+    executionTime: 60,
+    cooldown: 0,
+  },
+
   buildFortifiedMoat: {
     id: "buildFortifiedMoat",
     label: "Fortified Moat",

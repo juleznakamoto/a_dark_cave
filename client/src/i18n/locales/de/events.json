@@ -914,10 +914,32 @@
     "message": "Der Söldner ist zurück, und diesmal bringt er mehr Männer mit. 'Harte Zeiten', sagt er grinsend. 'Der Preis ist gestiegen. 200 Gold, oder es wird hässlich.'",
     "title": "Der Söldner kehrt zurück"
   },
+  "feast": {
+    "choices": {
+      "makeFeast": {
+        "cost": "{{foodCost}} Nahrung",
+        "label": "{{foodCost}} Nahrung ausgeben"
+      },
+      "noFeast": {
+        "label": "Fest ablehnen"
+      },
+      "doNothing": {
+        "label": "Keine Entscheidung"
+      }
+    },
+    "log": {
+      "outcome0": "Du hast nicht genug Nahrung für das Fest.",
+      "outcome1": "Die Dorfbewohner versammeln sich zum Fest! Müdigkeit weicht und die Stimmung hebt sich, wenn auch nur kurz.",
+      "outcome2": "Du lehnst den Festvorschlag ab. Die Dorfbewohner akzeptieren deine Entscheidung, wenn auch enttäuscht.",
+      "outcome3": "Die Zeit vergeht und die Gelegenheit für ein Fest verblasst."
+    },
+    "message": "Die Dorfbewohner schlagen ein Fest vor. Ein kurzer Trost, um ihre Müdigkeit zu lindern und ihre Gedanken zu beruhigen.",
+    "title": "Dorffest"
+  },
   "merchant": {
     "choices": {
       "say_goodbye": {
-        "label": "Abschied nehmen"
+        "label": "Verabschieden"
       }
     },
     "log": {

@@ -262,6 +262,9 @@
       "firstVisit": "洞口附近散落着一些木材，或许能派上用场。"
     }
   },
+  "callMerchant": {
+    "label": "召唤商人"
+  },
   "collapsedTower": {
     "label": "倒塌高塔"
   },
@@ -453,6 +456,9 @@
   "exploreUndergroundLake": {
     "label": "地下湖"
   },
+  "feedFire": {
+    "label": "添柴"
+  },
   "forestCave": {
     "label": "森林洞穴"
   },
@@ -473,6 +479,9 @@
   },
   "hunt": {
     "label": "狩猎"
+  },
+  "invest": {
+    "label": "投资"
   },
   "layTrap": {
     "label": "布设陷阱"

@@ -4,6 +4,29 @@ import { CRUEL_MODE } from "@/game/cruelMode";
 import { getTotalBuildingCostReduction } from "./effectsCalculation";
 import { getAttackWavesChartRows } from "./eventsAttackWaves";
 import { applyActionEffects } from "./actionEffects";
+import {
+  getFortificationMarginalStats,
+  type FortificationBuildingKey,
+} from "@/game/bastionStats";
+import { getUiTooltip } from "@/i18n/tooltipLabels";
+
+const REPAIR_ACTION_BUILDING: Record<string, FortificationBuildingKey> = {
+  repairBastion: "bastion",
+  repairWatchtower: "watchtower",
+  repairPalisades: "palisades",
+};
+
+/** Integrity restored when repair clears the 50% damage penalty on that fortification. */
+export function getBastionRepairIntegrityRestore(
+  repairActionId: string,
+  state: GameState,
+): number {
+  const buildingKey = REPAIR_ACTION_BUILDING[repairActionId];
+  if (!buildingKey) return 0;
+  const margin = getFortificationMarginalStats(state, buildingKey);
+  if (!margin?.integrity) return 0;
+  return Math.floor(margin.integrity * 0.5);
+}
 
 /** Repair resource paths and amounts (same formula as former Bastion panel helpers). */
 export function getBastionRepairCostPaths(

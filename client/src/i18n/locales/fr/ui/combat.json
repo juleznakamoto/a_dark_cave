@@ -23,6 +23,14 @@
     "bloodflameSphere": "Sphère de flamme sanglante",
     "poisonArrows": "Flèches empoisonnées",
     "attackDetailsAria": "Détails de l'attaque au combat",
+    "critChance": "{{percent}} % de chance de coup critique",
+    "critFromLuck": "{{percent}} % grâce à {{stat}}{{maxSuffix}}",
+    "critFromLuckMaxSuffix": " (max.)",
+    "critFromItems": "{{percent}} % grâce aux objets",
+    "missChance": "{{percent}} % de chance d'échec (selon {{stat}})",
+    "enemies": {
+      "paleCreatures": "Créatures pâles"
+    },
     "restlessKnightWounded": "Le Chevalier sans repos est blessé et ne peut pas combattre",
     "elderWizardWounded": "Le mage ancien est blessé et ne peut pas lancer de sorts",
     "noCasualties": "Aucun villageois n'est mort.",
@@ -41,7 +49,19 @@
     "title": "Vagues d'attaque",
     "calm": "C'est calme, pour l'instant…",
     "soon": "bientôt",
-    "provoke": "Provocation"
+    "provoke": "Provocation",
+    "waves": {
+      "firstWave": "Première vague",
+      "secondWave": "Deuxième vague",
+      "thirdWave": "Troisième vague",
+      "fourthWave": "Quatrième vague",
+      "fifthWave": "Cinquième vague",
+      "sixthWave": "Sixième vague",
+      "seventhWave": "Septième vague",
+      "eighthWave": "Huitième vague",
+      "ninthWave": "Neuvième vague",
+      "tenthWave": "Dixième vague"
+    }
   },
   "fortifications": {
     "bastion": "Bastion",

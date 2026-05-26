@@ -23,6 +23,14 @@
     "bloodflameSphere": "Esfera de llama sangrienta",
     "poisonArrows": "Flechas envenenadas",
     "attackDetailsAria": "Detalles del ataque en combate",
+    "critChance": "{{percent}} % de probabilidad de golpe crítico",
+    "critFromLuck": "{{percent}} % por {{stat}}{{maxSuffix}}",
+    "critFromLuckMaxSuffix": " (máx.)",
+    "critFromItems": "{{percent}} % por objetos",
+    "missChance": "{{percent}} % de probabilidad de fallo (según {{stat}})",
+    "enemies": {
+      "paleCreatures": "Criaturas pálidas"
+    },
     "restlessKnightWounded": "El Caballero inquieto está herido y no puede luchar",
     "elderWizardWounded": "El mago anciano está herido y no puede lanzar hechizos",
     "noCasualties": "Ningún aldeano murió.",
@@ -41,7 +49,19 @@
     "title": "Oleadas de ataque",
     "calm": "Por ahora reina la calma…",
     "soon": "pronto",
-    "provoke": "Provocar"
+    "provoke": "Provocar",
+    "waves": {
+      "firstWave": "Primera oleada",
+      "secondWave": "Segunda oleada",
+      "thirdWave": "Tercera oleada",
+      "fourthWave": "Cuarta oleada",
+      "fifthWave": "Quinta oleada",
+      "sixthWave": "Sexta oleada",
+      "seventhWave": "Séptima oleada",
+      "eighthWave": "Octava oleada",
+      "ninthWave": "Novena oleada",
+      "tenthWave": "Décima oleada"
+    }
   },
   "fortifications": {
     "bastion": "Bastión",

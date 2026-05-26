@@ -20,6 +20,8 @@
     "donate": "Donate",
     "privacy": "Privacy",
     "imprint": "Imprint",
+    "pauseGame": "Pause game",
+    "resumeGame": "Resume game",
     "muteMusic": "Mute music",
     "unmuteMusic": "Unmute music",
     "muteSfx": "Mute sound effects",

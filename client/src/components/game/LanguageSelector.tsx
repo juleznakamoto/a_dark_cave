@@ -9,6 +9,7 @@ import { Globe } from "lucide-react";
 import { useLocale } from "@/i18n/useLocale";
 import { useTranslation } from "react-i18next";
 import type { SupportedLocale } from "@/i18n/locales";
+import cn from "clsx";
 
 export default function LanguageSelector() {
   const { locale, setLocale, locales, localeLabels } = useLocale();
@@ -36,9 +37,18 @@ export default function LanguageSelector() {
           <DropdownMenuItem
             key={code}
             onClick={() => void setLocale(code as SupportedLocale)}
-            className={locale === code ? "font-semibold" : undefined}
+            className={cn(
+              "flex items-center justify-between gap-3",
+              locale === code && "font-semibold",
+            )}
           >
-            {localeLabels[code as SupportedLocale]}
+            <span>{localeLabels[code as SupportedLocale]}</span>
+            {locale === code && (
+              <span
+                className="h-1.5 w-1.5 shrink-0 rounded-full bg-red-600"
+                aria-hidden
+              />
+            )}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

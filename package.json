@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "type": "module",
   "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "NODE_ENV=development NODE_OPTIONS='--max-old-space-size=4096' tsx server/index.ts",
     "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist && node scripts/write-build-meta.mjs",
@@ -67,6 +70,7 @@
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "wouter": "^3.3.5",
+    "ws": "^8.21.0",
     "zod": "^3.24.2",
     "zustand": "^5.0.8"
   },
@@ -78,9 +82,10 @@
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/express": "4.17.21",
-    "@types/node": "20.16.11",
+    "@types/node": "^22.10.0",
     "@types/react": "^18.3.24",
     "@types/react-dom": "^18.3.7",
+    "@types/ws": "^8.18.1",
     "@vitejs/plugin-react": "^4.3.2",
     "@vitest/ui": "^4.0.14",
     "drizzle-kit": "^0.30.4",

@@ -262,6 +262,9 @@
       "firstVisit": "Vor dem Höhleneingang liegt verstreut etwas Holz. Es könnte nützlich sein."
     }
   },
+  "callMerchant": {
+    "label": "Händler rufen"
+  },
   "collapsedTower": {
     "label": "Eingestürzter Turm"
   },
@@ -453,6 +456,9 @@
   "exploreUndergroundLake": {
     "label": "Unterirdischer See"
   },
+  "feedFire": {
+    "label": "Feuer schüren"
+  },
   "forestCave": {
     "label": "Waldhöhle"
   },
@@ -473,6 +479,9 @@
   },
   "hunt": {
     "label": "Jagen"
+  },
+  "invest": {
+    "label": "Investieren"
   },
   "layTrap": {
     "label": "Falle legen"

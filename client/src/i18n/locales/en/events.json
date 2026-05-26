@@ -914,6 +914,28 @@
     "message": "The mercenary is back, and this time he brings more men. 'Times are tough,' he says with a grin. 'The price has gone up. 200 Gold, or things get messy.'",
     "title": "The Mercenary Returns"
   },
+  "feast": {
+    "choices": {
+      "makeFeast": {
+        "cost": "{{foodCost}} food",
+        "label": "Spend {{foodCost}} Food"
+      },
+      "noFeast": {
+        "label": "Refuse feast"
+      },
+      "doNothing": {
+        "label": "No Decision Made"
+      }
+    },
+    "log": {
+      "outcome0": "You don't have enough food for the feast.",
+      "outcome1": "The villagers gather for a feast! Weariness fades and spirits rise, if only briefly.",
+      "outcome2": "You decline the feast proposal. The villagers accept your decision, though disappointed.",
+      "outcome3": "Time passes and the opportunity for a feast fades away."
+    },
+    "message": "The villagers propose organizing a feast. A short comfort to ease their weariness and quiet their minds.",
+    "title": "Village Feast"
+  },
   "merchant": {
     "choices": {
       "say_goodbye": {

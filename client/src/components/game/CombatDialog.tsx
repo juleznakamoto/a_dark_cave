@@ -36,7 +36,8 @@ import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { Enemy, CombatItem, CombatResultSummary } from "@/game/types";
 import { ProceduralGroundBackground } from "@/components/ui/procedural-ground-background";
 import { formatNumber } from "@/lib/utils";
-import { getResourceName } from "@/i18n/resolveGameText";
+import { getResourceName, getStatName } from "@/i18n/resolveGameText";
+import { getCombatEnemyDisplayName } from "@/i18n/combatLabels";
 import { useTranslation } from "react-i18next";
 
 interface CombatDialogProps {
@@ -796,18 +797,28 @@ export default function CombatDialog({
                             <div className="text-xs space-y-2 max-w-[220px]">
                               {totalCrit > 0 && (
                                 <div className="space-y-1">
-                                  <div>{totalCrit}% critical strike chance</div>
+                                  <div>
+                                    {t("ui:combat.critChance", {
+                                      percent: totalCrit,
+                                    })}
+                                  </div>
                                   {luckCrit > 0 && (
                                     <div className="text-gray-400/70">
-                                      {luckCrit}% from Luck
-                                      {getTotalLuck(gameState) >= 50
-                                        ? " (max)"
-                                        : ""}
+                                      {t("ui:combat.critFromLuck", {
+                                        percent: luckCrit,
+                                        stat: getStatName("luck", "Luck"),
+                                        maxSuffix:
+                                          getTotalLuck(gameState) >= 50
+                                            ? t("ui:combat.critFromLuckMaxSuffix")
+                                            : "",
+                                      })}
                                     </div>
                                   )}
                                   {itemCrit > 0 && (
                                     <div className="text-gray-400/70">
-                                      {itemCrit}% from Items
+                                      {t("ui:combat.critFromItems", {
+                                        percent: itemCrit,
+                                      })}
                                     </div>
                                   )}
                                 </div>
@@ -821,7 +832,10 @@ export default function CombatDialog({
                                   }
                                 >
                                   <div className="text-gray-300">
-                                    {failPct}% miss chance (based on Madness)
+                                    {t("ui:combat.missChance", {
+                                      percent: failPct,
+                                      stat: getStatName("madness", "Madness"),
+                                    })}
                                   </div>
                                 </div>
                               )}
@@ -850,7 +864,9 @@ export default function CombatDialog({
                     <div className="flex justify-between text-sm">
                       <div className="flex items-center gap-1">
                         <span className="font-medium">
-                          {currentEnemy?.name}
+                          {currentEnemy?.name
+                            ? getCombatEnemyDisplayName(currentEnemy.name)
+                            : null}
                         </span>
                         {NIGHTSHADE_BOW_OWNED &&
                           usedItemsInCombat.includes("poison_arrows") && (

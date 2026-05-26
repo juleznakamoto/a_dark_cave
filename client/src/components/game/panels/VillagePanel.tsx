@@ -22,9 +22,15 @@ import {
   getTotalMadness,
   getStrangerApproachProbability,
 } from "@/game/rules/effectsCalculation";
-import { resolveActionLabel } from "@/i18n/actionLabels";
+import {
+  resolveActionDescription,
+  resolveActionLabel,
+} from "@/i18n/actionLabels";
 import { useTranslation } from "react-i18next";
-import { formatTooltipCostLine } from "@/i18n/tooltipLabels";
+import {
+  formatTooltipCostLine,
+  formatTooltipResourceName,
+} from "@/i18n/tooltipLabels";
 import {
   getPalisadesTierLabel,
   getWatchtowerTierLabel,
@@ -33,7 +39,6 @@ import CooldownButton from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
 import { getPopulationProduction } from "@/game/population";
 import { CircularProgress } from "@/components/ui/circular-progress";
-import { capitalizeWords, formatNumber } from "@/lib/utils";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
@@ -541,7 +546,7 @@ export default function VillagePanel() {
                   : "text-muted-foreground"
               }
             >
-              -{formatNumber(woodCost)} Wood
+              {formatTooltipCostLine(woodCost, "wood")}
             </div>
           </div>
         ) : undefined;
@@ -601,7 +606,7 @@ export default function VillagePanel() {
     }
 
     const buildingHint = state.books?.book_of_craftsmanship
-      ? action.description
+      ? resolveActionDescription(actionId, action.description)
       : undefined;
     const buildingKey = actionId.startsWith("build")
       ? actionId.slice(5, 6).toLowerCase() + actionId.slice(6)
@@ -818,7 +823,7 @@ export default function VillagePanel() {
                   {prod.totalAmount > 0 ? "+" : ""}
                   {prod.totalAmount}
                 </span>{" "}
-                {capitalizeWords(prod.resource)}
+                {formatTooltipResourceName(prod.resource)}
               </React.Fragment>
             ))}
           </span>

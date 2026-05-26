@@ -146,27 +146,40 @@ export default function LeaderboardDialog({
       const env = useDevStats ? "dev" : "prod";
       logger.log(`Fetching ${env} leaderboard data...`);
 
+      const fetchOpts: RequestInit = { cache: "no-store" };
       const [normalRes, cruelRes, metaRes] = await Promise.all([
-        fetch(`/api/leaderboard/normal?env=${env}`),
-        fetch(`/api/leaderboard/cruel?env=${env}`),
-        fetch(`/api/leaderboard/metadata?env=${env}`),
+        fetch(`/api/leaderboard/normal?env=${env}`, fetchOpts),
+        fetch(`/api/leaderboard/cruel?env=${env}`, fetchOpts),
+        fetch(`/api/leaderboard/metadata?env=${env}`, fetchOpts),
       ]);
 
       if (normalRes.ok) {
         const data = await normalRes.json();
         logger.log(`${env} Normal leaderboard:`, data);
-        setNormalLeaderboard(data);
+        setNormalLeaderboard(Array.isArray(data) ? data : []);
+      } else {
+        logger.error(`${env} Normal leaderboard failed:`, normalRes.status);
       }
 
       if (cruelRes.ok) {
         const data = await cruelRes.json();
         logger.log(`${env} Cruel leaderboard:`, data);
-        setCruelLeaderboard(data);
+        setCruelLeaderboard(Array.isArray(data) ? data : []);
+      } else {
+        logger.error(`${env} Cruel leaderboard failed:`, cruelRes.status);
       }
 
       if (metaRes.ok) {
         const data = await metaRes.json();
         setLastUpdated(data.lastUpdated);
+      }
+
+      if (!normalRes.ok && !cruelRes.ok) {
+        toast({
+          title: t("common:status.error"),
+          description: t("ui:leaderboard.loadFailed"),
+          variant: "destructive",
+        });
       }
     } catch (error) {
       logger.error("Failed to fetch leaderboard:", error);

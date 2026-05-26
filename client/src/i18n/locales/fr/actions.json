@@ -262,6 +262,9 @@
       "firstVisit": "Du bois gît éparpillé près de l'entrée de la grotte. Il pourrait s'avérer utile."
     }
   },
+  "callMerchant": {
+    "label": "Appeler le marchand"
+  },
   "collapsedTower": {
     "label": "Tour effondrée"
   },
@@ -453,6 +456,9 @@
   "exploreUndergroundLake": {
     "label": "Lac souterrain"
   },
+  "feedFire": {
+    "label": "Alimenter le feu"
+  },
   "forestCave": {
     "label": "Grotte forestière"
   },
@@ -473,6 +479,9 @@
   },
   "hunt": {
     "label": "Chasser"
+  },
+  "invest": {
+    "label": "Investir"
   },
   "layTrap": {
     "label": "Poser un piège"

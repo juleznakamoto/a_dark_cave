@@ -185,7 +185,7 @@
   "timedEvent": {
     "buy": "Kaufen",
     "sell": "Verkaufen",
-    "sayGoodbye": "Abschied nehmen",
+    "sayGoodbye": "Verabschieden",
     "successChance": "Erfolgschance: {{percent}}",
     "discount": "{{percent}} % Rabatt",
     "discountFromKnowledge": "{{percent}} % durch Wissen{{max}}",

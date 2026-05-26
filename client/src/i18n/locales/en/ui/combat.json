@@ -23,6 +23,14 @@
     "bloodflameSphere": "Bloodflame Sphere",
     "poisonArrows": "Poison Arrows",
     "attackDetailsAria": "Combat attack details",
+    "critChance": "{{percent}}% critical strike chance",
+    "critFromLuck": "{{percent}}% from {{stat}}{{maxSuffix}}",
+    "critFromLuckMaxSuffix": " (max)",
+    "critFromItems": "{{percent}}% from Items",
+    "missChance": "{{percent}}% miss chance (based on {{stat}})",
+    "enemies": {
+      "paleCreatures": "Pale Creatures"
+    },
     "restlessKnightWounded": "Restless Knight is wounded and cannot fight",
     "elderWizardWounded": "Elder Wizard is wounded and cannot cast spells",
     "noCasualties": "No Villagers died.",
@@ -41,7 +49,19 @@
     "title": "Attack Waves",
     "calm": "It is calm, for now...",
     "soon": "soon",
-    "provoke": "Provoke"
+    "provoke": "Provoke",
+    "waves": {
+      "firstWave": "First Wave",
+      "secondWave": "Second Wave",
+      "thirdWave": "Third Wave",
+      "fourthWave": "Fourth Wave",
+      "fifthWave": "Fifth Wave",
+      "sixthWave": "Sixth Wave",
+      "seventhWave": "Seventh Wave",
+      "eighthWave": "Eighth Wave",
+      "ninthWave": "Ninth Wave",
+      "tenthWave": "Tenth Wave"
+    }
   },
   "fortifications": {
     "bastion": "Bastion",

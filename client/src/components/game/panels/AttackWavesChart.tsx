@@ -11,6 +11,7 @@ import {
 } from "@/game/rules";
 import CooldownButton from "@/components/CooldownButton";
 import { useTranslation } from "react-i18next";
+import { getAttackWaveDisplayName } from "@/i18n/attackWaveLabels";
 
 const PROVOKE_ACTION_ID = "provokeAttackWave" as const;
 
@@ -86,7 +87,7 @@ export default function AttackWavesChart() {
         <div className="space-y-2 pt-2">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-xs font-medium text-foreground">
-              {activeWave.name}
+              {getAttackWaveDisplayName(activeWave.id)}
             </span>
             <span className="text-xs text-muted-foreground">
               {attackWaveTimers?.[activeWave.id]

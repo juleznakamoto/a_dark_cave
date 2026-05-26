@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createServerSupabaseClient } from './supabaseServerClient';
 import { REFERRAL_REWARD_GOLD } from '@shared/schema';
 import { resolveReferrerUserId } from './referralCodes';
 
@@ -17,12 +17,7 @@ const getSupabaseAdmin = () => {
     throw new Error('Supabase admin config not available');
   }
 
-  return createClient(supabaseUrl, supabaseServiceKey, {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    }
-  });
+  return createServerSupabaseClient(supabaseUrl, supabaseServiceKey);
 };
 
 export async function processReferral(newUserId: string, referralCode: string) {

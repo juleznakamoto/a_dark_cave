@@ -97,7 +97,6 @@ export default function GameContainer() {
   const setMadnessDialog = useGameStore((state) => state.setMadnessDialog);
   const story = useGameStore((state) => state.story);
   const traderDialogOpens = useGameStore((state) => state.traderDialogOpens);
-
   // Estate unlocks when Dark Estate is built
   const estateUnlocked = buildings.darkEstate >= 1;
 
@@ -440,12 +439,16 @@ export default function GameContainer() {
 
     // Add Timed Event tab if active
     if (timedEventTab.isActive) {
-      const symbol = "⊚";
-      const title = timedEventTab.event?.title || "Event";
       tabs.push({
         id: "timedevent",
-        icon: <span>{symbol}</span>,
-        label: `${symbol} ${title}`,
+        icon: (
+          <span className="timer-symbol text-sm leading-none font-noto-symbols-2">
+            ⊚
+          </span>
+        ),
+        label:
+          timedEventTab.event?.title ??
+          t("tabs.timedEvent", { ns: "common", defaultValue: "Timed Event" }),
         onClick: () => setActiveTab("timedevent"),
       });
     }
@@ -461,7 +464,8 @@ export default function GameContainer() {
     relics?.survivors_notes,
     books?.book_of_trials,
     timedEventTab.isActive,
-    timedEventTab.event?.title,
+    timedEventTab.event,
+    t,
   ]);
 
   const visibleHotkeyTabs = useMemo(
@@ -786,7 +790,7 @@ export default function GameContainer() {
               // Standard button design
               <div
                 ref={tabButtonRowRef}
-                className="inline-flex max-w-full flex-wrap items-baseline gap-x-3 pl-[3px]"
+                className="inline-flex max-w-full flex-wrap items-baseline gap-x-2 md:gap-x-3 pl-[3px]"
               >
                 <button
                   className={`py-2 text-sm bg-transparent font-normal ${activeTab === "cave"
@@ -975,21 +979,25 @@ export default function GameContainer() {
                     }}
                     data-testid="tab-achievements"
                   >
-                    {"\u269C\uFE0E"}
+                    <span className="text-[11px] leading-none font-noto-symbols-2">
+                      ⚜
+                    </span>
                   </button>
                 )}
 
                 {/* Timed Event Tab Button */}
                 {timedEventTab.isActive && (
                   <button
-                    className={`py-2 text-sm bg-transparent font-normal ${activeTab === "timedevent"
+                    className={`py-2 text-sm bg-transparent font-normal inline-flex items-center gap-1 ${activeTab === "timedevent"
                       ? tabActiveTextClass
                       : tabInactiveTextClass
                       }`}
                     onClick={() => setActiveTab("timedevent")}
                     data-testid="tab-timedevent"
                   >
-                    <span className="timer-symbol">⊚</span>
+                    <span className="timer-symbol text-[11px] leading-none font-noto-symbols-2">
+                      ⊚
+                    </span>
                   </button>
                 )}
               </div>
