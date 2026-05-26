@@ -125,7 +125,7 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
   }
 
   return (
-    <div className="absolute right-0 top-1/2 -translate-y-1/2 z-50 pointer-events-none">
+    <div className="pointer-events-none absolute inset-y-0 right-0 flex w-[4rem] items-center justify-end">
       <div
         className={`
           text-xs font-mono

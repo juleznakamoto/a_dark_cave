@@ -74,6 +74,15 @@ const EFFECT_TOOLTIP_SECTIONS = new Set<SidePanelSectionId>([
   "blessings",
 ]);
 
+/** Shared layout for resource name + amount (+ production delta column). */
+const RESOURCE_ROW_GRID_CLASS =
+  "grid grid-cols-[minmax(0,1fr)_6rem_4rem] items-start gap-x-2";
+
+const RESOURCE_ROW_SECTIONS = new Set<SidePanelSectionId>([
+  "resources",
+  "combatItems",
+]);
+
 interface SidePanelSectionProps {
   title: string | React.ReactNode;
   sectionId?: SidePanelSectionId;
@@ -108,6 +117,7 @@ export default function SidePanelSection({
   const prevValuesRef = useRef<Map<string, number>>(new Map());
   const isInitialRender = useRef(true);
   const gameState = useGameStore((state) => state);
+  const storeActiveTab = useGameStore((state) => state.activeTab);
   const hoveredTooltips = useGameStore((state) => state.hoveredTooltips || {});
   const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
   const highlightedResourcesRaw = useGameStore(
@@ -452,6 +462,7 @@ export default function SidePanelSection({
     const isHighlighted = highlightedResources.has(item.id);
 
     const isResourcesSection = sectionId === "resources";
+    const tabForProductionColors = activeTab ?? storeActiveTab;
 
     const labelContent = (
       <span
@@ -505,6 +516,11 @@ export default function SidePanelSection({
     const showItemValue =
       showValue || (sectionId === undefined && title === "Stats");
 
+    const usesResourceRowLayout =
+      sectionId !== undefined &&
+      RESOURCE_ROW_SECTIONS.has(sectionId) &&
+      showItemValue;
+
     const showProductionDelta =
       isResourcesSection &&
       item.productionDelta !== undefined &&
@@ -519,7 +535,7 @@ export default function SidePanelSection({
           : "";
 
     const valueCellClassName = cn(
-      "w-[5.5rem] shrink-0 overflow-hidden text-right font-mono tabular-nums text-gray-300",
+      "text-right font-mono tabular-nums whitespace-nowrap text-gray-300",
       isAnimated && "text-green-800 font-bold",
       isDecreaseAnimated && "text-red-800 font-bold",
       isMaxAnimated && "text-yellow-800 font-bold",
@@ -528,41 +544,51 @@ export default function SidePanelSection({
     );
 
     const productionDeltaCellClassName = cn(
-      "w-[3rem] shrink-0 text-right font-mono tabular-nums",
-      activeTab !== "village" && "text-muted-foreground",
-      activeTab === "village" &&
+      "text-right font-mono tabular-nums whitespace-nowrap",
+      tabForProductionColors !== "village" && "text-muted-foreground",
+      tabForProductionColors === "village" &&
       (item.productionDelta ?? 0) > 0 &&
       "text-green-600",
-      activeTab === "village" &&
+      tabForProductionColors === "village" &&
       (item.productionDelta ?? 0) < 0 &&
       "text-red-600",
     );
 
-    const rightContent = showItemValue ? (
-      <span className="flex shrink-0 items-start gap-1.5 font-mono tabular-nums text-gray-300">
-        <span className={valueCellClassName}>{displayValue}</span>
-        {isResourcesSection &&
-          (showProductionDelta ? (
-            <span className={productionDeltaCellClassName}>
-              {(item.productionDelta ?? 0) > 0 ? "+" : ""}
-              {formatNumber(item.productionDelta ?? 0)}
-            </span>
-          ) : (
-            <span className="w-[3rem] shrink-0" aria-hidden="true" />
-          ))}
+    const resourceRowClassName = cn(
+      "mr-1 min-w-0 leading-tight transition-all duration-300",
+      usesResourceRowLayout
+        ? RESOURCE_ROW_GRID_CLASS
+        : "flex items-start gap-1.5 justify-between",
+      itemAnimationClass,
+    );
+
+    const resourceTooltipTriggerClass = cn(
+      "min-w-0 block",
+      globalTooltip.isMobile && "cursor-pointer",
+    );
+
+    const productionDeltaCell = showProductionDelta ? (
+      <span className={productionDeltaCellClassName}>
+        {(item.productionDelta ?? 0) > 0 ? "+" : ""}
+        {formatNumber(item.productionDelta ?? 0)}
       </span>
-    ) : null;
+    ) : (
+      <span aria-hidden="true" />
+    );
 
     const itemContent = (
-      <div
-        data-testid={item.testId}
-        className={cn(
-          "mr-1 flex min-w-0 items-start gap-1.5 leading-tight justify-between transition-all duration-300",
-          itemAnimationClass,
-        )}
-      >
-        <div className="min-w-0 flex-1">{labelContent}</div>
-        {rightContent}
+      <div data-testid={item.testId} className={resourceRowClassName}>
+        <div className="min-w-0">{labelContent}</div>
+        {usesResourceRowLayout ? (
+          <>
+            <span className={valueCellClassName}>{displayValue}</span>
+            {isResourcesSection ? productionDeltaCell : <span aria-hidden="true" />}
+          </>
+        ) : showItemValue ? (
+          <span className={cn(valueCellClassName, "shrink-0")}>
+            {displayValue}
+          </span>
+        ) : null}
       </div>
     );
 
@@ -676,18 +702,7 @@ export default function SidePanelSection({
       const combatItemTooltip = renderItemTooltip(item.id, "weapon");
       if (combatItemTooltip) {
         return (
-          <div
-            key={item.id}
-            data-testid={item.testId}
-            className={`mr-1 flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isMaxAnimated
-                  ? "text-yellow-400"
-                  : ""
-              }`}
-          >
+          <div key={item.id} data-testid={item.testId} className={resourceRowClassName}>
             <TooltipWrapper
               tooltip={combatItemTooltip}
               tooltipId={item.id}
@@ -695,26 +710,12 @@ export default function SidePanelSection({
               tooltipContentClassName="max-w-xs"
               onMouseEnter={() => handleTooltipHover(item.id)}
               onMouseLeave={() => handleTooltipLeave(item.id)}
-              className={sidePanelTooltipTriggerClass}
+              className={resourceTooltipTriggerClass}
             >
               {labelContent}
             </TooltipWrapper>
-            {showItemValue && (
-              <span
-                className={`font-mono ${isAnimated
-                  ? "text-green-800 font-bold"
-                  : isDecreaseAnimated
-                    ? "text-red-800 font-bold"
-                    : isMaxAnimated
-                      ? "text-yellow-800 font-bold"
-                      : isMadness
-                        ? madnessClasses
-                        : ""
-                  }`}
-              >
-                {displayValue}
-              </span>
-            )}
+            <span className={valueCellClassName}>{displayValue}</span>
+            <span aria-hidden="true" />
           </div>
         );
       }
