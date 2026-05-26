@@ -256,7 +256,10 @@ export default function ForestPanel() {
     }
 
     // Check if action has success chance (for forest scout actions)
-    const showSuccessTooltip = hasSuccessChanceTooltip(action.success_chance);
+    const showSuccessTooltip = hasSuccessChanceTooltip(
+      action.success_chance,
+      action.relevant_stats,
+    );
 
     // Expedition actions require free villagers during execution
     const expeditionVillagersRequired = action.expeditionVillagersRequired

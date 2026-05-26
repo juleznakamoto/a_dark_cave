@@ -32,8 +32,13 @@ export function getSuccessPercent(
 
 export function hasSuccessChanceTooltip(
   successChance: SuccessChanceValue | undefined,
+  relevantStats?: RelevantStat[],
 ): boolean {
-  return successChance !== undefined;
+  return (
+    successChance !== undefined &&
+    successChance !== null &&
+    (relevantStats?.length ?? 0) > 0
+  );
 }
 
 interface SuccessChanceTooltipContentProps {
@@ -48,6 +53,11 @@ export function SuccessChanceTooltipContent({
   relevantStats = [],
 }: SuccessChanceTooltipContentProps) {
   const { t } = useTranslation(["ui", "common"]);
+
+  if (!hasSuccessChanceTooltip(successChance, relevantStats)) {
+    return null;
+  }
+
   const hasBookOfWar = !!gameState.books?.book_of_war;
   const percent = getSuccessPercent(successChance, gameState);
 
@@ -89,7 +99,7 @@ export function getEventChoiceSuccessPercent(
 }
 
 export function hasEventChoiceSuccessTooltip(choice: EventChoice): boolean {
-  return hasSuccessChanceTooltip(choice.success_chance);
+  return hasSuccessChanceTooltip(choice.success_chance, choice.relevant_stats);
 }
 
 interface EventChoiceSuccessTooltipContentProps {
