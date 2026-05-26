@@ -71,6 +71,7 @@
     "disgracedPrior": "Disgraced Prior",
     "crowsEye": "Crow's Eye",
     "maxLevel": "Max level",
+    "improve": "Improve",
     "upkeepPerCycle": "{{amount}} Food upkeep per assigned action per cycle",
     "skillFoodPerHunter": "+{{amount}} Food per Hunter",
     "skillFurPerHunter": "+{{amount}} Fur per Hunter",

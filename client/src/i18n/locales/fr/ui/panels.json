@@ -71,6 +71,7 @@
     "disgracedPrior": "Prieur déchu",
     "crowsEye": "Œil du corbeau",
     "maxLevel": "Niveau max.",
+    "improve": "Améliorer",
     "upkeepPerCycle": "{{amount}} nourriture d'entretien par action assignée par cycle",
     "skillFoodPerHunter": "+{{amount}} nourriture par chasseur",
     "skillFurPerHunter": "+{{amount}} fourrure par chasseur",

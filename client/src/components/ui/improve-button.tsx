@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "./button";
 
 // Improve button with a rewarding red pulse wave on click
@@ -13,6 +14,7 @@ export function ImproveButton({
   button_id: string;
   variant?: "ring" | "flash";
 }) {
+  const { t } = useTranslation("ui");
   const [isPulsing, setIsPulsing] = React.useState(false);
 
   const handleClick = (e: React.MouseEvent) => {
@@ -34,7 +36,7 @@ export function ImproveButton({
           button_id={button_id}
           onAnimationEnd={() => setIsPulsing(false)}
         >
-          Improve
+          {t("estate.improve")}
         </Button>
         {isPulsing && variant === "ring" && (
           <>

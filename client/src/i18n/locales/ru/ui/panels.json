@@ -71,6 +71,7 @@
     "disgracedPrior": "Падший приор",
     "crowsEye": "Глаз ворона",
     "maxLevel": "Макс. уровень",
+    "improve": "Улучшить",
     "upkeepPerCycle": "{{amount}} еды на содержание за назначенное действие за цикл",
     "skillFoodPerHunter": "+{{amount}} еды за охотника",
     "skillFurPerHunter": "+{{amount}} меха за охотника",
