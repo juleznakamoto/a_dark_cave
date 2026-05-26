@@ -131,8 +131,8 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
           rounded-sm bg-background px-1 text-xs font-mono font-bold
           animate-in fade-in-0 slide-in-from-left-2 duration-300
           ${visibleChange.amount > 0
-            ? "text-green-800/100"
-            : "text-red-800/100"
+            ? "text-green-400"
+            : "text-red-400"
           }
         `}
       >
