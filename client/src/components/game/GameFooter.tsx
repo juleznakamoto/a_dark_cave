@@ -110,6 +110,7 @@ export default function GameFooter() {
                 isPaused ? t("footer.resumeGame") : t("footer.pauseGame")
               }
               side="top"
+              arrowAlign="start"
             >
               <Button
                 variant="ghost"

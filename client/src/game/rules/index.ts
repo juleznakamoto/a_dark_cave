@@ -35,10 +35,7 @@ import { forestSacrificeActions } from "./forestSacrificeActions";
 import { forestTradeActions } from "./forestTradeActions";
 import { caveExploreActions } from "./caveExploreActions";
 import { forestScoutActions } from "./forestScoutActions";
-import {
-  bastionActions,
-  getBastionRepairIntegrityRestore,
-} from "./bastionActions";
+import { bastionActions } from "./bastionActions";
 
 // Import event modules
 import { caveEvents } from "./eventsCave";
@@ -701,22 +698,12 @@ export function getActionCostBreakdown(
   return breakdown;
 }
 
-/** Cost rows plus integrity-restore line for Fortress repair buttons. */
+/** Cost rows for Fortress repair buttons. */
 export function getBastionRepairTooltipRows(
   repairActionId: string,
   state: GameState,
 ): Array<{ text: string; satisfied: boolean }> {
-  const rows = getActionCostBreakdown(repairActionId, state);
-  const integrityRestore = getBastionRepairIntegrityRestore(repairActionId, state);
-  if (integrityRestore > 0) {
-    rows.push({
-      text: getUiTooltip("restoreIntegrity", "Restore up to {{amount}} Integrity", {
-        amount: integrityRestore,
-      }),
-      satisfied: true,
-    });
-  }
-  return rows;
+  return getActionCostBreakdown(repairActionId, state);
 }
 
 type EventChoiceCostBreakdownOptions = {
