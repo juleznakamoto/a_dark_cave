@@ -133,6 +133,7 @@ export const storyEvents: Record<string, GameEvent> = {
             ...state.events,
             elder_scroll_found: true,
           },
+          _logMessageKey: "outcome0",
         }),
       },
     ],

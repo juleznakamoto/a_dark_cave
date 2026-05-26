@@ -641,7 +641,11 @@
         "label": "Continuar"
       }
     },
-    "message": "Durante la noche, al pasar por un sendero estrecho, algo se mueve en el borde de tu visión, como una sombra que huye de la luz del fuego. La sigues y allí, sobre las piedras frías, yace un pergamino antiguo."
+    "log": {
+      "outcome0": "Recoges el pergamino antiguo de las piedras frías. Un conocimiento prohibido cubre su pergamino quebradizo."
+    },
+    "message": "Durante la noche, al pasar por un sendero estrecho, algo se mueve en el borde de tu visión, como una sombra que huye de la luz del fuego. La sigues y allí, sobre las piedras frías, yace un pergamino antiguo.",
+    "title": "El pergamino antiguo"
   },
   "fireStorm": {
     "message": "Un incendio recorre la aldea durante la noche, destruye una choza de madera y mata a sus ocupantes."

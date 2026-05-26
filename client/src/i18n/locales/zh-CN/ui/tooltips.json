@@ -8,6 +8,7 @@
     "gainRange": "+{{min}}-{{max}} {{resource}}",
     "gainUnknown": "+? {{resource}}",
     "costLine": "-{{amount}} {{resource}}",
+    "mapFragmentProgress": "地图碎片 {{count}}/{{total}}",
     "defense": "防御：{{value}}",
     "range": "范围：{{value}}",
     "madnessFromItems": "物品 {{value}}",

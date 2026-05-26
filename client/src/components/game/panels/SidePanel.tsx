@@ -457,7 +457,11 @@ export default function SidePanel() {
     })
     .map(([key, value]) => ({
       id: key,
-      label: clothingEffects[key]?.name || capitalizeWords(key.replace("_schematic", "")),
+      label: getEffectName(
+        "clothing",
+        key,
+        clothingEffects[key]?.name || capitalizeWords(key.replace("_schematic", "")),
+      ),
       value: 1,
       testId: `schematic-${key}`,
       visible: true,
@@ -495,11 +499,15 @@ export default function SidePanel() {
     })
     .map(([key, value]) => ({
       id: key,
-      label: clothingEffects[key]?.name || capitalizeWords(key),
+      label: getEffectName(
+        "clothing",
+        key,
+        clothingEffects[key]?.name || capitalizeWords(key),
+      ),
       value: 1,
       testId: `blessing-${key}`,
       visible: true,
-      tooltip: clothingEffects[key]?.description,
+      tooltip: true,
     }));
 
   // Dynamically generate building items from state (in schema order)

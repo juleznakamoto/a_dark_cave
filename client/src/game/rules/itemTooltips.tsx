@@ -301,11 +301,17 @@ export function renderItemTooltip(
       {effect.name &&
         (itemId === "map_fragment" ? (
           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
-            <span className="font-bold">{effect.name}</span>
+            <span className="font-bold">
+              {getEffectName(effectCategory, itemId, effect.name)}
+            </span>
             <span
               className={`font-noto-symbols-2 font-normal tabular-nums tracking-wide select-none ${mapFragmentCount > 0 ? "text-foreground" : "text-gray-500"
                 }`}
-              aria-label={`${mapFragmentCount} of ${MAP_FRAGMENT_TOTAL} map fragments`}
+              aria-label={getUiTooltip(
+                "mapFragmentProgress",
+                `${mapFragmentCount} of ${MAP_FRAGMENT_TOTAL} map fragments`,
+                { count: mapFragmentCount, total: MAP_FRAGMENT_TOTAL },
+              )}
             >
               {mapFragmentMoonGlyph}
             </span>
@@ -444,7 +450,7 @@ export function renderItemTooltip(
                     percent: Math.round(
                       (effect.bonuses.generalBonuses.caveExploreMultiplier -
                         1) *
-                        100,
+                      100,
                     ),
                   },
                 )}
@@ -485,79 +491,79 @@ export function renderItemTooltip(
               capitalizeWords(actionId),
             );
             return (
-            <div key={actionId}>
-              {bonus.resourceMultiplier && bonus.resourceMultiplier !== 1 && (
-                <div>
-                  {getUiTooltip(
-                    "actionBonusPercent",
-                    "{{action}}: +{{percent}}% Bonus",
-                    {
-                      action: actionLabel,
-                      percent: Math.round(
-                        (bonus.resourceMultiplier - 1) * 100,
-                      ),
-                    },
-                  )}
-                </div>
-              )}
-              {bonus.resourceBonus &&
-                Object.entries(bonus.resourceBonus).map(
-                  ([resource, amount]) => (
-                    <div key={resource}>
-                      {getUiTooltip(
-                        "actionResourceBonus",
-                        "{{action}}: +{{amount}} {{resource}}",
-                        {
-                          action: actionLabel,
-                          amount,
-                          resource: formatTooltipResourceName(resource),
-                        },
-                      )}
-                    </div>
-                  ),
+              <div key={actionId}>
+                {bonus.resourceMultiplier && bonus.resourceMultiplier !== 1 && (
+                  <div>
+                    {getUiTooltip(
+                      "actionBonusPercent",
+                      "{{action}}: +{{percent}}% Bonus",
+                      {
+                        action: actionLabel,
+                        percent: Math.round(
+                          (bonus.resourceMultiplier - 1) * 100,
+                        ),
+                      },
+                    )}
+                  </div>
                 )}
-              {bonus.probabilityBonus &&
-                Object.entries(bonus.probabilityBonus).map(
-                  ([resource, probability]) => (
-                    <div key={resource}>
-                      {getUiTooltip(
-                        "actionProbabilityBonus",
-                        "{{action}}: {{percent}}% chance for +50 {{resource}}",
-                        {
-                          action: actionLabel,
-                          percent: formatProbabilityPercent(probability),
-                          resource: formatTooltipResourceName(resource),
-                        },
-                      )}
-                    </div>
-                  ),
+                {bonus.resourceBonus &&
+                  Object.entries(bonus.resourceBonus).map(
+                    ([resource, amount]) => (
+                      <div key={resource}>
+                        {getUiTooltip(
+                          "actionResourceBonus",
+                          "{{action}}: +{{amount}} {{resource}}",
+                          {
+                            action: actionLabel,
+                            amount,
+                            resource: formatTooltipResourceName(resource),
+                          },
+                        )}
+                      </div>
+                    ),
+                  )}
+                {bonus.probabilityBonus &&
+                  Object.entries(bonus.probabilityBonus).map(
+                    ([resource, probability]) => (
+                      <div key={resource}>
+                        {getUiTooltip(
+                          "actionProbabilityBonus",
+                          "{{action}}: {{percent}}% chance for +50 {{resource}}",
+                          {
+                            action: actionLabel,
+                            percent: formatProbabilityPercent(probability),
+                            resource: formatTooltipResourceName(resource),
+                          },
+                        )}
+                      </div>
+                    ),
+                  )}
+                {bonus.cooldownReduction && bonus.cooldownReduction !== 0 && (
+                  <div>
+                    {getUiTooltip(
+                      "cooldownReduction",
+                      "{{action}}: -{{seconds}}s Cooldown",
+                      {
+                        action: actionLabel,
+                        seconds: bonus.cooldownReduction,
+                      },
+                    )}
+                  </div>
                 )}
-              {bonus.cooldownReduction && bonus.cooldownReduction !== 0 && (
-                <div>
-                  {getUiTooltip(
-                    "cooldownReduction",
-                    "{{action}}: -{{seconds}}s Cooldown",
-                    {
-                      action: actionLabel,
-                      seconds: bonus.cooldownReduction,
-                    },
-                  )}
-                </div>
-              )}
-              {bonus.executionTimeReduction && bonus.executionTimeReduction !== 0 && (
-                <div>
-                  {getUiTooltip(
-                    "durationReduction",
-                    "{{action}}: -{{seconds}}s Duration",
-                    {
-                      action: actionLabel,
-                      seconds: bonus.executionTimeReduction,
-                    },
-                  )}
-                </div>
-              )}
-            </div>
-          );
+                {bonus.executionTimeReduction && bonus.executionTimeReduction !== 0 && (
+                  <div>
+                    {getUiTooltip(
+                      "durationReduction",
+                      "{{action}}: -{{seconds}}s Duration",
+                      {
+                        action: actionLabel,
+                        seconds: bonus.executionTimeReduction,
+                      },
+                    )}
+                  </div>
+                )}
+              </div>
+            );
           },
         )}
       {itemType === "weapon" && itemId === "nightshade_bow" && (

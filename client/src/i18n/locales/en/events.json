@@ -641,7 +641,11 @@
         "label": "Continue"
       }
     },
-    "message": "During the night as you pass a narrow path, something moves at the edge of your vision, like a shadow fleeing the firelight. You follow it, and there, upon the cold stones, lies an ancient scroll."
+    "log": {
+      "outcome0": "You take the ancient scroll from the cold stones. Forbidden knowledge is written across its brittle parchment."
+    },
+    "message": "During the night as you pass a narrow path, something moves at the edge of your vision, like a shadow fleeing the firelight. You follow it, and there, upon the cold stones, lies an ancient scroll.",
+    "title": "The Ancient Scroll"
   },
   "fireStorm": {
     "message": "A fire sweeps through the village in the night, destroying one wooden hut and killing its occupants."

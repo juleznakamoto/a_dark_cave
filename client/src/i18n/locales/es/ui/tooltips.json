@@ -8,6 +8,7 @@
     "gainRange": "+{{min}}-{{max}} {{resource}}",
     "gainUnknown": "+? {{resource}}",
     "costLine": "-{{amount}} {{resource}}",
+    "mapFragmentProgress": "{{count}} de {{total}} fragmentos de mapa",
     "defense": "Defensa: {{value}}",
     "range": "Alcance: {{value}}",
     "madnessFromItems": "{{value}} de objetos",

@@ -641,7 +641,11 @@
         "label": "Continuer"
       }
     },
-    "message": "Pendant la nuit, alors que vous empruntez un sentier étroit, quelque chose bouge au bord de votre vision, comme une ombre fuyant la lueur du feu. Vous la suivez, et là, sur les pierres froides, repose un ancien parchemin."
+    "log": {
+      "outcome0": "Vous prenez l'ancien parchemin sur les pierres froides. Un savoir interdit couvre son parchemin fragilisé par l'âge."
+    },
+    "message": "Pendant la nuit, alors que vous empruntez un sentier étroit, quelque chose bouge au bord de votre vision, comme une ombre fuyant la lueur du feu. Vous la suivez, et là, sur les pierres froides, repose un ancien parchemin.",
+    "title": "L'ancien parchemin"
   },
   "fireStorm": {
     "message": "Un incendie traverse le village pendant la nuit, détruisant une hutte de bois et tuant ses occupants."

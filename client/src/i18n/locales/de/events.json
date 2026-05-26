@@ -641,7 +641,11 @@
         "label": "Weiter"
       }
     },
-    "message": "In der Nacht, als du einen schmalen Pfad entlanggehst, bewegt sich etwas am Rand deines Blickfelds, wie ein Schatten, der vor dem Feuerschein flieht. Du folgst ihm, und dort, auf kalten Steinen, liegt eine alte Schriftrolle."
+    "log": {
+      "outcome0": "Du hebst die alte Schriftrolle von den kalten Steinen auf. Verbotenes Wissen liegt in ihren vergilbten Zeilen."
+    },
+    "message": "In der Nacht, als du einen schmalen Pfad entlanggehst, bewegt sich etwas am Rand deines Blickfelds, wie ein Schatten, der vor dem Feuerschein flieht. Du folgst ihm, und dort, auf kalten Steinen, liegt eine alte Schriftrolle.",
+    "title": "Die alte Schriftrolle"
   },
   "fireStorm": {
     "message": "In der Nacht fegt ein Feuer durch das Dorf, zerstört eine Holzhütte und tötet ihre Bewohner."
