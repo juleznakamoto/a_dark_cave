@@ -309,7 +309,9 @@ export default function ForestPanel() {
 
       const villagerMessage = hasExpeditionRequirement ? (
         <div className={villagerRequirementNotMet ? "text-muted-foreground" : ""}>
-          Requires {expeditionVillagersRequired} free villagers
+          {t("cave.requiresFreeVillagers", {
+            count: expeditionVillagersRequired,
+          })}
         </div>
       ) : null;
 
