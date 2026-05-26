@@ -17,13 +17,15 @@ import {
 import { useTranslation } from "react-i18next";
 
 const FOOTER_CONTROL_BTN =
-  "group px-1 py-1 text-xs text-neutral-300 hover hover:text-red-500";
+  "group px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-600";
 const FOOTER_CONTROL_BTN_FADE =
   "opacity-60 transition-opacity group-hover:opacity-100";
 const FOOTER_CONTROL_ICON_HOVER =
   "w-4 h-4 opacity-60 transition-[filter,opacity] group-hover:opacity-100 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]";
+const FOOTER_CONTROL_SVG_ICON_HOVER =
+  "w-4 h-4 text-neutral-300 opacity-60 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
 const FOOTER_CONTROL_TEXT =
-  `${FOOTER_CONTROL_BTN_FADE} transition-[opacity,color] group-hover:text-red-500`;
+  `${FOOTER_CONTROL_BTN_FADE} transition-[opacity,color] group-hover:!text-red-600`;
 
 export default function GameFooter() {
   const {
@@ -146,7 +148,7 @@ export default function GameFooter() {
             </Button>
             <LanguageSelector
               buttonClassName={FOOTER_CONTROL_BTN}
-              iconClassName={FOOTER_CONTROL_ICON_HOVER}
+              iconClassName={FOOTER_CONTROL_SVG_ICON_HOVER}
             />
 
             {BTP === 1 ? (
