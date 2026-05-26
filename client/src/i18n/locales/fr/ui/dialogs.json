@@ -21,7 +21,7 @@
     "description": "Accomplissez les tâches ci-dessous pour recevoir des bonus. Accomplissez toutes les tâches pour recevoir un objet exclusif.",
     "signUpRequiresSignInTooltip": "inscrivez-vous pour accomplir la tâche",
     "signUpTitle": "S'inscrire (+{{amount}} or)",
-    "signUpDesc": "Créez un compte gratuit pour sauvegarder votre progression et la synchroniser entre vos appareils. Sans compte, votre progression peut être perdue.",
+    "signUpDesc": "Créez un compte gratuit pour synchroniser votre progression entre vos appareils. Sans compte, votre progression n'est enregistrée que localement et peut être perdue.",
     "signUpButton": "S'inscrire",
     "emailUpdatesTitle": "Mises à jour par e-mail (+{{amount}} or)",
     "subscribe": "S'abonner",

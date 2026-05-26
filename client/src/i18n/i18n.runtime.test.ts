@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import i18n from "./index";
 import { getActionLabel, getEventMessage } from "./resolveGameText";
-import { resolveEventMessage } from "./eventText";
+import { resolveEventMessage, resolveEventTitle } from "./eventText";
 import { gameStateSchema } from "@shared/schema";
 
 describe("i18n runtime", () => {
@@ -26,6 +26,15 @@ describe("i18n runtime", () => {
       "Wooden Hut",
     );
     expect(label).not.toBe("Wooden Hut");
+  });
+
+  it("resolves first attack wave combat intro text", async () => {
+    await i18n.changeLanguage("de");
+    const state = gameStateSchema.parse({});
+    expect(resolveEventTitle("firstWave", state)).toContain("Welle");
+    const msg = resolveEventMessage("firstWave", undefined, state);
+    expect(msg.length).toBeGreaterThan(20);
+    expect(msg).toContain("Höhle");
   });
 
   it("resolves blood moon message from message.default catalog key", async () => {

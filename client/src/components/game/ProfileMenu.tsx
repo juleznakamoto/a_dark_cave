@@ -34,7 +34,6 @@ import {
 } from "@/game/marketingEmailReward";
 import { isRewardsTasksShortcutVisible } from "@/game/socialPromoExclusiveReward";
 import PlaylightDiscoveryButton from "./PlaylightDiscoveryButton";
-import LanguageSelector from "./LanguageSelector";
 import { useTranslation } from "react-i18next";
 
 export default function ProfileMenu() {
@@ -348,8 +347,7 @@ export default function ProfileMenu() {
         onConfirm={handleConfirmDeleteAccount}
         isDeleting={deleteAccountInProgress}
       />
-      <div className="flex flex-wrap items-center justify-end gap-2 max-w-[200px]">
-        <LanguageSelector />
+      <div className="flex items-center justify-end">
         <DropdownMenu
           open={accountDropdownOpen}
           onOpenChange={(open) => {

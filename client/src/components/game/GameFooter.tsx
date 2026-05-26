@@ -8,10 +8,10 @@ import {
   GAME_FOOTER_RIGHT_ICON_ORDER,
 } from "@/lib/gameFooterSocialLinks";
 import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
+import LanguageSelector from "./LanguageSelector";
 import { useState, useEffect } from "react";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
 import { useTranslation } from "react-i18next";
-import { formatDurationMs } from "@/lib/utils";
 
 export default function GameFooter() {
   const {
@@ -25,7 +25,6 @@ export default function GameFooter() {
     cruelMode,
     idleModeDialog,
     playTime,
-    devMode,
     setFullGamePurchaseDialogOpen,
     fullGamePurchaseDialogOpen,
     BTP,
@@ -34,7 +33,6 @@ export default function GameFooter() {
     traderDialogOpens,
   } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
-  const [displayTime, setDisplayTime] = useState("");
   const { t } = useTranslation("ui");
 
   // Trigger glow animation when pause state changes
@@ -43,21 +41,6 @@ export default function GameFooter() {
     const timer = setTimeout(() => setGlowingButton(null), 500);
     return () => clearTimeout(timer);
   }, [isPaused]);
-
-  // Update display time every second in dev mode
-  useEffect(() => {
-    if (!devMode) return;
-
-    const formatPlayTime = (ms: number) => formatDurationMs(ms);
-
-    setDisplayTime(formatPlayTime(playTime));
-
-    const interval = setInterval(() => {
-      setDisplayTime(formatPlayTime(useGameStore.getState().playTime));
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [devMode, playTime]);
 
   const handleOfferTribute = () => {
     window.open("https://www.buymeacoffee.com/julez.b", "_blank");
@@ -94,9 +77,6 @@ export default function GameFooter() {
       <footer className="border-t border-border px-2 py-2 text-xs text-muted-foreground pointer-events-auto z-50">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-0 flex-1">
-            {devMode && (
-              <div className="px-1 py-1 text-xs font-mono">{displayTime}</div>
-            )}
             <Button
               variant="ghost"
               size="xs"
@@ -137,6 +117,7 @@ export default function GameFooter() {
                 style={{ filter: "invert(1)" }}
               />
             </Button>
+            <LanguageSelector />
 
             {BTP === 1 ? (
               <Button

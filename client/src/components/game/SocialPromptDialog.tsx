@@ -308,41 +308,6 @@ export default function SocialPromptDialog({
         </DialogHeader>
 
         <div className="flex flex-col gap-3">
-          <div
-            className={cn(
-              "rounded-md border border-border p-3 flex gap-3 items-center",
-              signUpTaskDone && "border-green-500/40 bg-green-500/5",
-            )}
-          >
-            <div className="shrink-0">
-              <StatusIcon done={signUpTaskDone} />
-            </div>
-            <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
-              <div className="min-w-0 flex-1 space-y-1">
-                <div className="flex items-center gap-2">
-                  <User className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
-                  <span className="font-medium text-sm">
-                    {t("socialPrompt.signUpTitle", {
-                      amount: SIGN_UP_WELCOME_GOLD,
-                    })}
-                  </span>
-                </div>
-                <p className="text-xs text-muted-foreground leading-snug">
-                  {t("socialPrompt.signUpDesc")}
-                </p>
-              </div>
-              {!signUpTaskDone && (
-                <Button
-                  size="xs"
-                  className="shrink-0 font-medium px-3 self-center"
-                  onClick={handleSignUpTaskClick}
-                >
-                  {t("socialPrompt.signUpButton")}
-                </Button>
-              )}
-            </div>
-          </div>
-
           {SOCIAL_PLATFORMS.map((platform) => {
             const claimed = social_media_rewards[platform.id]?.claimed ?? false;
             return (
@@ -421,6 +386,41 @@ export default function SocialPromptDialog({
                   }}
                 >
                   {t("socialPrompt.discoverGames")}
+                </Button>
+              )}
+            </div>
+          </div>
+
+          <div
+            className={cn(
+              "rounded-md border border-border p-3 flex gap-3 items-center",
+              signUpTaskDone && "border-green-500/40 bg-green-500/5",
+            )}
+          >
+            <div className="shrink-0">
+              <StatusIcon done={signUpTaskDone} />
+            </div>
+            <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
+              <div className="min-w-0 flex-1 space-y-1">
+                <div className="flex items-center gap-2">
+                  <User className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
+                  <span className="font-medium text-sm">
+                    {t("socialPrompt.signUpTitle", {
+                      amount: SIGN_UP_WELCOME_GOLD,
+                    })}
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground leading-snug">
+                  {t("socialPrompt.signUpDesc")}
+                </p>
+              </div>
+              {!signUpTaskDone && (
+                <Button
+                  size="xs"
+                  className="shrink-0 font-medium px-3 self-center"
+                  onClick={handleSignUpTaskClick}
+                >
+                  {t("socialPrompt.signUpButton")}
                 </Button>
               )}
             </div>

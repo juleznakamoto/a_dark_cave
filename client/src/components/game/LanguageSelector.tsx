@@ -19,10 +19,13 @@ export default function LanguageSelector() {
         <Button
           variant="ghost"
           size="xs"
-          className="px-2 py-1 text-xs hover bg-background text-neutral-300 backdrop-blur-sm border border-border"
+          className="px-1 py-1 text-xs hover"
+          title={t("languageSelector.ariaLabel")}
           aria-label={t("languageSelector.ariaLabel")}
         >
-          {t("languageSelector.label")}
+          <span className="text-sm leading-none opacity-60" aria-hidden>
+            🌐
+          </span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="text-xs">

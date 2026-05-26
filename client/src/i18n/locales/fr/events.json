@@ -603,6 +603,46 @@
     "message": "Un villageois âgé s'approche de vous, les yeux lourds de savoir. 'Vous avez fait vos premiers pas dans ce monde cruel,' dit-il doucement. 'Bientôt, vous devrez décider si vous êtes prêt à affronter ce qui vous attend.'",
     "title": "L'Ancien du village"
   },
+  "eighthWave": {
+    "message": "Le sol tremble sous le poids de leur nombre, tandis qu'une nouvelle vague de la horde pâle resserre son étau autour de la cité.",
+    "title": "La huitième vague"
+  },
+  "fifthWave": {
+    "message": "D'innombrables figures pâles émergent de la grotte, leurs formes indicibles, avançant sur la cité.",
+    "title": "La cinquième vague"
+  },
+  "firstWave": {
+    "message": "Des figures pâles émergent de la grotte, enfin libérées ; leurs yeux de braise percent l'obscurité tandis qu'elles marchent vers la cité.",
+    "title": "La première vague"
+  },
+  "fourthWave": {
+    "message": "Le ciel semble s'assombrir alors qu'une masse innombrable de créatures pâles jaillit de la grotte et se presse vers la cité.",
+    "title": "La quatrième vague"
+  },
+  "ninthWave": {
+    "message": "D'une faim implacable, une masse encore plus vaste de créatures pâles se rue vers la cité.",
+    "title": "La neuvième vague"
+  },
+  "secondWave": {
+    "message": "Les créatures reviennent en plus grand nombre, armées d'armes d'os brut, luisant d'une lumière impure.",
+    "title": "La deuxième vague"
+  },
+  "seventhWave": {
+    "message": "Les créatures avancent de nouveau, un tapis grouillant de membres et de dents qui grattent vers la cité.",
+    "title": "La septième vague"
+  },
+  "sixthWave": {
+    "message": "L'entrée de la grotte vomit une autre marée de corps pâles. Les lances d'os claquent comme la pluie tandis qu'ils se massent pour un nouvel assaut.",
+    "title": "La sixième vague"
+  },
+  "tenthWave": {
+    "message": "Des profondeurs les plus reculées de la grotte, une masse inimaginable de créatures pâles jaillit. Elles inondent la terre comme une marée vivante, tandis que la cité se prépare à l'anéantissement.",
+    "title": "La dernière vague"
+  },
+  "thirdWave": {
+    "message": "Des hordes de créatures pâles sortent de la grotte ; les cris ébranlent même la pierre, leurs armes d'os fendent le sol.",
+    "title": "La troisième vague"
+  },
   "forestTribeHelpRequest": {
     "choices": {
       "accept_help": {

@@ -21,7 +21,7 @@
     "description": "Schließe die Aufgaben unten ab, um Boni zu erhalten. Schließe alle Aufgaben ab, um einen exklusiven Gegenstand zu erhalten.",
     "signUpRequiresSignInTooltip": "Registriere dich, um die Aufgabe abzuschließen",
     "signUpTitle": "Registrieren (+{{amount}} Gold)",
-    "signUpDesc": "Erstelle ein kostenloses Konto, um deinen Spielfortschritt zu speichern und geräteübergreifend zu synchronisieren. Ohne Konto kann dein Fortschritt verloren gehen.",
+    "signUpDesc": "Erstelle ein kostenloses Konto, um deinen Spielfortschritt geräteübergreifend zu synchronisieren. Ohne Konto wird dein Fortschritt nur lokal gespeichert und kann verloren gehen.",
     "signUpButton": "Registrieren",
     "emailUpdatesTitle": "E-Mail-Updates (+{{amount}} Gold)",
     "subscribe": "Abonnieren",

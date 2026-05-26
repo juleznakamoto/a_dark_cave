@@ -21,7 +21,7 @@
     "description": "Complete the tasks below to receive bonuses. Complete all tasks to receive an exclusive item.",
     "signUpRequiresSignInTooltip": "sign up to complete task",
     "signUpTitle": "Sign up (+{{amount}} Gold)",
-    "signUpDesc": "Create a free account to save your game progress and sync across devices. Without an account, your progress may be lost.",
+    "signUpDesc": "Create a free account to sync your game progress across devices. Without an account, your progress is only saved locally and may be lost.",
     "signUpButton": "Sign Up",
     "emailUpdatesTitle": "Email updates (+{{amount}} Gold)",
     "subscribe": "Subscribe",

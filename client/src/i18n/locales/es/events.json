@@ -603,6 +603,46 @@
     "message": "Un aldeano anciano se acerca a ti, los ojos cargados de conocimiento. 'Has dado tus primeros pasos en este mundo cruel', dice en voz baja. 'Pronto tendrás que decidir si estás dispuesto a enfrentar lo que viene'.",
     "title": "El anciano de la aldea"
   },
+  "eighthWave": {
+    "message": "El suelo tiembla bajo el peso de su número, mientras una nueva oleada de la horda pálida cierra su anillo alrededor de la ciudad.",
+    "title": "La octava oleada"
+  },
+  "fifthWave": {
+    "message": "De la cueva emergen innumerables figuras pálidas, de formas indescriptibles, avanzando hacia la ciudad.",
+    "title": "La quinta oleada"
+  },
+  "firstWave": {
+    "message": "Figuras pálidas emergen de la cueva, por fin libres; sus ojos de brasa cortan la oscuridad mientras marchan hacia la ciudad.",
+    "title": "La primera oleada"
+  },
+  "fourthWave": {
+    "message": "El cielo parece oscurecerse mientras una masa incontable de criaturas pálidas surge de la cueva y avanza hacia la ciudad.",
+    "title": "La cuarta oleada"
+  },
+  "ninthWave": {
+    "message": "Con un hambre implacable, una masa aún mayor de criaturas pálidas se precipita hacia la ciudad.",
+    "title": "La novena oleada"
+  },
+  "secondWave": {
+    "message": "Las criaturas regresan en mayor número, con armas de hueso tosco que brillan con luz impura.",
+    "title": "La segunda oleada"
+  },
+  "seventhWave": {
+    "message": "Las criaturas avanzan de nuevo, una alfombra retorcida de extremidades y dientes que se arrastra hacia la ciudad.",
+    "title": "La séptima oleada"
+  },
+  "sixthWave": {
+    "message": "La boca de la cueva vomita otra marea de cuerpos pálidos. Las lanzas de hueso repiquetean como lluvia mientras se agrupan para otro asalto.",
+    "title": "La sexta oleada"
+  },
+  "tenthWave": {
+    "message": "Desde los confines más profundos de la cueva estalla una masa inimaginable de criaturas pálidas. Inundan la tierra como una marea viva, mientras la ciudad se prepara para la aniquilación.",
+    "title": "La oleada final"
+  },
+  "thirdWave": {
+    "message": "Hordas de criaturas pálidas salen de la cueva; los gritos sacuden incluso las piedras, sus armas de hueso resquebrajan el suelo.",
+    "title": "La tercera oleada"
+  },
   "forestTribeHelpRequest": {
     "choices": {
       "accept_help": {

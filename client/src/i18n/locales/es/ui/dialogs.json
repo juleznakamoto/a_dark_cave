@@ -21,7 +21,7 @@
     "description": "Completa las tareas siguientes para recibir bonificaciones. Completa todas las tareas para recibir un objeto exclusivo.",
     "signUpRequiresSignInTooltip": "regístrate para completar la tarea",
     "signUpTitle": "Registrarse (+{{amount}} oro)",
-    "signUpDesc": "Crea una cuenta gratuita para guardar tu progreso y sincronizarlo entre dispositivos. Sin cuenta, tu progreso puede perderse.",
+    "signUpDesc": "Crea una cuenta gratuita para sincronizar tu progreso entre dispositivos. Sin cuenta, tu progreso solo se guarda localmente y puede perderse.",
     "signUpButton": "Registrarse",
     "emailUpdatesTitle": "Actualizaciones por correo (+{{amount}} oro)",
     "subscribe": "Suscribirse",

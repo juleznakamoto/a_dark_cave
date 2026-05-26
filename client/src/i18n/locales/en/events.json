@@ -603,6 +603,46 @@
     "message": "An older villager approaches you, his eyes heavy with knowledge. 'You have taken your first steps in this cruel world,' he says quietly. 'Soon, you will have to decide whether you are willing to face what lies ahead.'",
     "title": "The Village Elder"
   },
+  "eighthWave": {
+    "message": "The ground shudders under the weight of their numbers, as a new wave of the pale horde tightens its ring around the city.",
+    "title": "The Eighth Wave"
+  },
+  "fifthWave": {
+    "message": "From the cave emerge countless pale figures, their forms unspeakable as they advance on the city.",
+    "title": "The Fifth Wave"
+  },
+  "firstWave": {
+    "message": "Pale figures emerge from the cave, finally freed, their ember eyes cutting through the dark as they march towards the city.",
+    "title": "The First Wave"
+  },
+  "fourthWave": {
+    "message": "The sky seems to darken as an uncountable mass of pale creatures surges from the cave, pressing towards the city.",
+    "title": "The Fourth Wave"
+  },
+  "ninthWave": {
+    "message": "With unrelenting hunger, an even larger mass of pale creatures surges toward the city.",
+    "title": "The Ninth Wave"
+  },
+  "secondWave": {
+    "message": "The creatures return in greater numbers, with weapons of crude bone, glowing with foul light.",
+    "title": "The Second Wave"
+  },
+  "seventhWave": {
+    "message": "The creatures advance again, a writhing carpet of limbs and teeth scraping toward the city.",
+    "title": "The Seventh Wave"
+  },
+  "sixthWave": {
+    "message": "The cave mouth vomits forth another tide of pale bodies. Bone spears clatter like rain as they mass for another assault.",
+    "title": "The Sixth Wave"
+  },
+  "tenthWave": {
+    "message": "From the deepest reaches of the cave, an unimaginable mass of pale creatures erupts. They flood over the land like a living tide, as the city braces for annihilation.",
+    "title": "The Final Wave"
+  },
+  "thirdWave": {
+    "message": "Hordes of pale creatures come from the cave; screams shake even the stones, their bone weapons cracking the ground.",
+    "title": "The Third Wave"
+  },
   "forestTribeHelpRequest": {
     "choices": {
       "accept_help": {

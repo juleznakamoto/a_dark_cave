@@ -603,6 +603,46 @@
     "message": "Ein älterer Dorfbewohner tritt an dich heran, seine Augen schwer von Wissen. 'Du hast deine ersten Schritte in dieser grausamen Welt getan', sagt er leise. 'Bald wirst du entscheiden müssen, ob du bereit bist, dem zu begegnen, was vor dir liegt.'",
     "title": "Der Dorfälteste"
   },
+  "eighthWave": {
+    "message": "Der Boden bebt unter dem Gewicht ihrer Zahl, während eine neue Welle der bleichen Horde ihren Ring um die Stadt schließt.",
+    "title": "Die achte Welle"
+  },
+  "fifthWave": {
+    "message": "Aus der Höhle tauchen unzählige bleiche Gestalten auf, ihre Formen unaussprechlich, während sie auf die Stadt vorrücken.",
+    "title": "Die fünfte Welle"
+  },
+  "firstWave": {
+    "message": "Bleiche Gestalten tauchen aus der Höhle auf, endlich befreit; ihre glühenden Augen schneiden durch die Dunkelheit, während sie auf die Stadt zumarschieren.",
+    "title": "Die erste Welle"
+  },
+  "fourthWave": {
+    "message": "Der Himmel scheint sich zu verdunkeln, als eine unzählbare Masse bleicher Kreaturen aus der Höhle strömt und auf die Stadt vorrückt.",
+    "title": "Die vierte Welle"
+  },
+  "ninthWave": {
+    "message": "Mit unerbittlichem Hunger strömt eine noch größere Masse bleicher Kreaturen auf die Stadt zu.",
+    "title": "Die neunte Welle"
+  },
+  "secondWave": {
+    "message": "Die Kreaturen kehren in noch größerer Zahl zurück, mit Waffen aus rohem Knochen, die von üblem Licht erfüllt sind.",
+    "title": "Die zweite Welle"
+  },
+  "seventhWave": {
+    "message": "Die Kreaturen rücken erneut vor, ein wogender Teppich aus Gliedmaßen und Zähnen, der auf die Stadt zukriecht.",
+    "title": "Die siebte Welle"
+  },
+  "sixthWave": {
+    "message": "Der Höhleneingang speit eine weitere Flut bleicher Körper hervor. Knochenspeere klappern wie Regen, während sie sich für einen weiteren Angriff sammeln.",
+    "title": "Die sechste Welle"
+  },
+  "tenthWave": {
+    "message": "Aus den tiefsten Tiefen der Höhle bricht eine unvorstellbare Masse bleicher Kreaturen hervor. Sie fluten das Land wie eine lebende Flut, während die Stadt sich auf die Vernichtung vorbereitet.",
+    "title": "Die letzte Welle"
+  },
+  "thirdWave": {
+    "message": "Horden bleicher Kreaturen strömen aus der Höhle; Schreie erschüttern selbst die Steine, ihre Knochenwaffen zerschlagen den Boden.",
+    "title": "Die dritte Welle"
+  },
   "forestTribeHelpRequest": {
     "choices": {
       "accept_help": {

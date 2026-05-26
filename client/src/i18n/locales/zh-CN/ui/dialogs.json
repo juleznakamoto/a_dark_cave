@@ -21,7 +21,7 @@
     "description": "完成下方任务以获得奖励。全部完成可获得专属物品。",
     "signUpRequiresSignInTooltip": "注册以完成任务",
     "signUpTitle": "注册 (+{{amount}} 黄金)",
-    "signUpDesc": "创建免费账户以保存进度并跨设备同步。没有账户，进度可能丢失。",
+    "signUpDesc": "创建免费账户以跨设备同步游戏进度。没有账户时，进度仅保存在本地，可能会丢失。",
     "signUpButton": "注册",
     "emailUpdatesTitle": "邮件订阅 (+{{amount}} 黄金)",
     "subscribe": "订阅",
