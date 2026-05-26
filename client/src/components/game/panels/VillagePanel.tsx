@@ -1059,7 +1059,7 @@ export default function VillagePanel() {
                               strokeWidth={2}
                               className="text-orange-500"
                             />
-                            <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[10px] -mt-[0px] text-orange-500">
+                            <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[10px] mt-[3px] text-orange-500">
                               ☼
                             </span>
                           </div>
