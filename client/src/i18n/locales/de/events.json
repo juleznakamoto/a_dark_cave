@@ -1757,8 +1757,8 @@
       "outcome1": "Du versuchst, dich zu beruhigen, doch das Gefühl wird stärker. Deine Sicht verschwimmt, und du brichst zusammen. In deinen fiebrigen Träumen flüstern alte Dinge deinen wahren Namen. Als du erwachst, hat das Kriechen aufgehört, doch die Erinnerung bleibt.",
       "outcome2": "Du kratzt rasend an deiner Haut und ziehst Blut. Die Dorfbewohner stürzen herbei, um dich aufzuhalten, und packen deine Arme. In deinem wahnsinnigen Zorn schlägst du wild um dich und tötest {{killedVillagers}} Dorfbewohner, bevor du vor Erschöpfung zusammenbrichst. Als du erwachst, hat das Kriechen aufgehört, doch Blut befleckt deine Hände."
     },
-    "message": "Deine Haut beginnt zu kriechen - buchstäblich. Du kannst Formen unter der Oberfläche sehen, die scheinbar Muster bilden. Die Dorfbewohner sehen zu, wie du blutige Furchen in deine Arme kratzt, ihre Gesichter voller Sorge.",
-    "title": "Kriechende Haut"
+    "message": "Unter deiner Haut beginnt es zu kriechen - buchstäblich. Du kannst Formen unter der Oberfläche sehen, die scheinbar Muster bilden. Die Dorfbewohner sehen zu, wie du blutige Furchen in deine Arme kratzt, ihre Gesichter voller Sorge.",
+    "title": "Kriechen unter der Haut"
   },
   "slaveTrader": {
     "choices": {

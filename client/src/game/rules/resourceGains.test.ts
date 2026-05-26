@@ -38,22 +38,22 @@ const executeAction = (actionId: string, state: GameState) => {
 
 // Helper to create a minimal test state
 const createTestState = (overrides?: Partial<GameState>): GameState => {
-  return {
+  const base = {
     resources: {
-      wood: 1000,
-      stone: 1000,
-      food: 1000,
-      iron: 1000,
-      coal: 1000,
-      steel: 1000,
-      sulfur: 1000,
-      obsidian: 1000,
-      adamant: 1000,
+      wood: 0,
+      stone: 0,
+      food: 0,
+      iron: 0,
+      coal: 0,
+      steel: 0,
+      sulfur: 0,
+      obsidian: 0,
+      adamant: 0,
       silver: 1000,
       gold: 1000,
-      fur: 1000,
-      bones: 1000,
-      leather: 1000,
+      fur: 0,
+      bones: 0,
+      leather: 0,
       torch: 100,
       bone_totem: 100,
       leather_totem: 100,
@@ -82,6 +82,7 @@ const createTestState = (overrides?: Partial<GameState>): GameState => {
       timberMill: 0,
       quarry: 0,
       clerksHut: 1, // Enable tooltips
+      supplyHut: 1, // Storage for resource gain tests
       tannery: 0,
       masterTannery: 0,
       shrine: 0,
@@ -241,7 +242,31 @@ const createTestState = (overrides?: Partial<GameState>): GameState => {
     activeEffects: {},
     madness: 0,
     focusState: { isActive: false, endTime: 0 },
+  } as GameState;
+
+  if (!overrides) {
+    return base;
+  }
+
+  return {
+    ...base,
     ...overrides,
+    resources: { ...base.resources, ...overrides.resources },
+    buildings: { ...base.buildings, ...overrides.buildings },
+    tools: { ...base.tools, ...overrides.tools },
+    weapons: { ...base.weapons, ...overrides.weapons },
+    clothing: { ...base.clothing, ...overrides.clothing },
+    relics: { ...base.relics, ...overrides.relics },
+    flags: { ...base.flags, ...overrides.flags },
+    villagers: { ...base.villagers, ...overrides.villagers },
+    focusState: { ...base.focusState, ...overrides.focusState },
+    story: overrides.story
+      ? {
+          ...base.story,
+          ...overrides.story,
+          seen: { ...base.story.seen, ...overrides.story.seen },
+        }
+      : base.story,
   } as GameState;
 };
 

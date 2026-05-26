@@ -1741,7 +1741,7 @@ describe('ShopDialog', () => {
 
       // Should render without crashing
       await waitFor(() => {
-        expect(screen.getByText('Trader')).toBeInTheDocument();
+        expect(screen.getByText("Trader's Shop")).toBeInTheDocument();
       });
     });
 
