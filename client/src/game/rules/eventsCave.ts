@@ -2,6 +2,41 @@ import { GameEvent } from "./rules/events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 
+function createClarityElixirCaveFoundEvent(
+  id: string,
+  seenKey: string,
+): GameEvent {
+  return {
+    id,
+    i18nKey: "clarityElixirCaveFound",
+    condition: () => false, // Only triggered by cave exploration
+    priority: 5,
+    repeatable: false,
+    choices: [
+      {
+        id: "drinkElixir",
+        effect: (state: GameState) => ({
+          stats: {
+            ...state.stats,
+            madnessFromEvents: Math.max(
+              0,
+              (state.stats.madnessFromEvents || 0) - 2,
+            ),
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              [seenKey]: true,
+            },
+          },
+          _logMessageKey: "outcome0",
+        }),
+      },
+    ],
+  };
+}
+
 export const caveEvents: Record<string, GameEvent> = {
   ringOfDrownedChoice: {
     id: "ringOfDrownedChoice",
@@ -324,4 +359,14 @@ export const caveEvents: Record<string, GameEvent> = {
       },
     },
   },
+
+  clarityElixirCaveFoundVentureDeeper: createClarityElixirCaveFoundEvent(
+    "clarityElixirCaveFoundVentureDeeper",
+    "clarityElixirFoundVentureDeeper",
+  ),
+
+  clarityElixirCaveFoundDescendFurther: createClarityElixirCaveFoundEvent(
+    "clarityElixirCaveFoundDescendFurther",
+    "clarityElixirFoundDescendFurther",
+  ),
 };

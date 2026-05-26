@@ -10,6 +10,7 @@ import {
   getActionLogMessage,
   resolveInheritedActionLogMessage,
 } from "@/i18n/resolveGameText";
+import { getTotalMadness } from "./effectsCalculation";
 
 const CAVE_FIRST_VISIT_LOG_FALLBACKS: Record<string, Record<string, string>> = {
   lightFire: {
@@ -270,6 +271,16 @@ const caveItems = {
         "!story.seen.mapFragmentCaveFound && !story.seen.swampMapAssembled",
       logMessageKey: "mapFragment",
     },
+    {
+      key: "clarity_elixir",
+      probability: 0.01,
+      category: "consumable",
+      stageOnly: true,
+      isChoice: true,
+      eventId: "clarityElixirCaveFoundVentureDeeper",
+      seenKey: "clarityElixirFoundVentureDeeper",
+      minMadness: 2,
+    },
   ],
   descendFurther: [
     {
@@ -278,6 +289,16 @@ const caveItems = {
       isChoice: true,
       eventId: "boneDiceChoice",
       category: "relics",
+    },
+    {
+      key: "clarity_elixir",
+      probability: 0.01,
+      category: "consumable",
+      stageOnly: true,
+      isChoice: true,
+      eventId: "clarityElixirCaveFoundDescendFurther",
+      seenKey: "clarityElixirFoundDescendFurther",
+      minMadness: 2,
     },
   ],
   exploreRuins: [
@@ -392,6 +413,32 @@ function getInheritedItems(actionId: string) {
             : baseCondition && { condition: baseCondition }),
           ...((item as { logMessageKey?: string }).logMessageKey && {
             logMessageKey: (item as { logMessageKey: string }).logMessageKey,
+          }),
+        };
+      } else if (category === "consumable") {
+        const seenKey = (item as { seenKey?: string }).seenKey;
+        const minMadness = (item as { minMadness?: number }).minMadness ?? 0;
+        const isChoiceItem = "isChoice" in item && item.isChoice;
+        inheritedItems[`_consumable_${item.key}_${stageId}`] = {
+          probability: Math.min(adjustedProbability, 1.0),
+          value: true,
+          condition: (s: GameState) => {
+            if (minMadness > 0 && getTotalMadness(s) < minMadness) return false;
+            if (seenKey && s.story?.seen?.[seenKey]) return false;
+            return true;
+          },
+          ...(isChoiceItem && {
+            isChoice: true,
+            eventId: (item as { eventId: string }).eventId,
+          }),
+          ...(!isChoiceItem && {
+            madnessDelta: (item as { madnessDelta?: number }).madnessDelta ?? -2,
+            ...(seenKey && {
+              alsoSet: { [`story.seen.${seenKey}`]: true },
+            }),
+            ...((item as { logMessageKey?: string }).logMessageKey && {
+              logMessageKey: (item as { logMessageKey: string }).logMessageKey,
+            }),
           }),
         };
       } else {

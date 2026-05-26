@@ -209,6 +209,18 @@
     "message": "Als du tiefer hinabsteigst, findest du ein Set Knochenwürfel, in das alte Runen geschnitzt sind. Diese Würfel haben viel Glück und viel Tragödie gesehen. Behältst du sie?",
     "title": "Die Knochenwürfel"
   },
+  "clarityElixirCaveFound": {
+    "choices": {
+      "drinkElixir": {
+        "label": "Weiter"
+      }
+    },
+    "log": {
+      "outcome0": "Du trinkst das Elixier der Klarheit. Dein Geist fühlt sich leichter an."
+    },
+    "message": "In der Höhle findest du ein Elixier der Klarheit. Als du es trinkst, fühlt sich dein Geist leichter an.",
+    "title": "Elixier der Klarheit"
+  },
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {
@@ -1202,8 +1214,14 @@
       "noDecision": {
         "label": "Keine Entscheidung"
       },
-      "sacrifice": {
+      "refuse": {
         "label": "Keine Opfer bringen"
+      },
+      "sacrifice": {
+        "label": {
+          "Sacrifice 4 villagers": "4 Dorfbewohner opfern",
+          "Sacrifice 8 villagers": "8 Dorfbewohner opfern"
+        }
       }
     },
     "log": {
@@ -1825,7 +1843,7 @@
       }
     },
     "log": {
-      "outcome0": "Das schwarze Holz widersetzt sich, doch dein Volk bringt den Baum zu Fall. Du beanspruchst das schwarze, verfluchte Holz.",
+      "outcome0": "Das schwarze Holz widersetzt sich, doch die Dorfbewohner bringt den Baum zu Fall. Du beanspruchst das schwarze, verfluchte Holz.",
       "outcome1": "Du hast nicht genug Nahrung für eine würdige Opfergabe. Der Baum wartet.",
       "outcome2": "Blut und Rauch steigen aus der Opfergabe auf. Eine kalte Gnade legt sich über das Dorf."
     },

@@ -209,6 +209,18 @@
     "message": "As you descend further, you find a set of bone dice carved with ancient runes. These dice have seen much fortune and much tragedy. Do you keep them?",
     "title": "The Bone Dice"
   },
+  "clarityElixirCaveFound": {
+    "choices": {
+      "drinkElixir": {
+        "label": "Continue"
+      }
+    },
+    "log": {
+      "outcome0": "You drink the Elixir of Clarity. Your mind feels lighter."
+    },
+    "message": "You find an Elixir of Clarity in the cave. As you drink it, your mind feels lighter.",
+    "title": "Elixir of Clarity"
+  },
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {
@@ -1202,8 +1214,14 @@
       "noDecision": {
         "label": "No Decision Made"
       },
-      "sacrifice": {
+      "refuse": {
         "label": "Make no sacrifices"
+      },
+      "sacrifice": {
+        "label": {
+          "Sacrifice 4 villagers": "Sacrifice 4 villagers",
+          "Sacrifice 8 villagers": "Sacrifice 8 villagers"
+        }
       }
     },
     "log": {

@@ -498,6 +498,7 @@ export function applyActionEffects(
           eventId?: string;
           alsoSet?: Record<string, boolean | number>;
           addTo?: string;
+          madnessDelta?: number;
         };
 
         let conditionMet = true;
@@ -527,15 +528,23 @@ export function applyActionEffects(
           conditionMet && Math.random() < adjustedProbability;
 
         if (shouldTrigger) {
-          if (probabilityEffect.isChoice && probabilityEffect.eventId) {
+          if (typeof probabilityEffect.madnessDelta === "number") {
+            if (!updates.stats) updates.stats = { ...state.stats };
+            const currentMadness =
+              updates.stats.madnessFromEvents ??
+              state.stats?.madnessFromEvents ??
+              0;
+            updates.stats.madnessFromEvents = Math.max(
+              0,
+              currentMadness + probabilityEffect.madnessDelta,
+            );
+          } else if (probabilityEffect.isChoice && probabilityEffect.eventId) {
             // Add the event to triggeredEvents so the UI can display the choice
             if (!updates.triggeredEvents) updates.triggeredEvents = [];
             updates.triggeredEvents.push(probabilityEffect.eventId);
             // Skip applying the item value - will be handled when player makes the choice
             continue;
-          }
-
-          if (
+          } else if (
             typeof probabilityEffect.value === "string" &&
             probabilityEffect.value.startsWith("random(")
           ) {

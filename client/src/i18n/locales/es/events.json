@@ -209,6 +209,18 @@
     "message": "Al descender más, encuentras un juego de dados de hueso tallados con runas antiguas. Estos dados han visto mucha fortuna y mucha tragedia. ¿Los conservas?",
     "title": "Los dados de hueso"
   },
+  "clarityElixirCaveFound": {
+    "choices": {
+      "drinkElixir": {
+        "label": "Continuar"
+      }
+    },
+    "log": {
+      "outcome0": "Bebes el Elixir de claridad. Tu mente se siente más ligera."
+    },
+    "message": "Encuentras un Elixir de claridad en la cueva. Al beberlo, tu mente se siente más ligera.",
+    "title": "Elixir de claridad"
+  },
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {
@@ -1202,8 +1214,14 @@
       "noDecision": {
         "label": "Sin decisión"
       },
-      "sacrifice": {
+      "refuse": {
         "label": "No hacer sacrificios"
+      },
+      "sacrifice": {
+        "label": {
+          "Sacrifice 4 villagers": "Sacrificar a 4 aldeanos",
+          "Sacrifice 8 villagers": "Sacrificar a 8 aldeanos"
+        }
       }
     },
     "log": {

@@ -209,6 +209,18 @@
     "message": "你继续下行时，发现一副刻有古老符文的骨骰。这些骰子见过许多好运，也见过许多悲剧。你要留下它们吗？",
     "title": "骨骰"
   },
+  "clarityElixirCaveFound": {
+    "choices": {
+      "drinkElixir": {
+        "label": "继续"
+      }
+    },
+    "log": {
+      "outcome0": "你饮下清晰灵药，心智变得轻盈。"
+    },
+    "message": "你在洞穴中发现一瓶清晰灵药。饮下后，心智变得轻盈。",
+    "title": "清晰灵药"
+  },
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {
@@ -1202,8 +1214,14 @@
       "noDecision": {
         "label": "未作决定"
       },
-      "sacrifice": {
+      "refuse": {
         "label": "不做献祭"
+      },
+      "sacrifice": {
+        "label": {
+          "Sacrifice 4 villagers": "献祭 4 名村民",
+          "Sacrifice 8 villagers": "献祭 8 名村民"
+        }
       }
     },
     "log": {

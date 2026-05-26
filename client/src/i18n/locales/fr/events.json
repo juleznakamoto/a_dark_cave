@@ -209,6 +209,18 @@
     "message": "En descendant plus loin, vous trouvez un jeu de dés d'os gravés de runes anciennes. Ces dés ont connu beaucoup de fortune et beaucoup de tragédie. Les gardez-vous ?",
     "title": "Les Dés d'os"
   },
+  "clarityElixirCaveFound": {
+    "choices": {
+      "drinkElixir": {
+        "label": "Continuer"
+      }
+    },
+    "log": {
+      "outcome0": "Vous buvez l'élixir de clarté. Votre esprit semble plus léger."
+    },
+    "message": "Vous trouvez un élixir de clarté dans la grotte. En le buvant, votre esprit semble plus léger.",
+    "title": "Élixir de clarté"
+  },
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {
@@ -1202,8 +1214,14 @@
       "noDecision": {
         "label": "Aucune décision"
       },
-      "sacrifice": {
+      "refuse": {
         "label": "Ne faire aucun sacrifice"
+      },
+      "sacrifice": {
+        "label": {
+          "Sacrifice 4 villagers": "Sacrifier 4 villageois",
+          "Sacrifice 8 villagers": "Sacrifier 8 villageois"
+        }
       }
     },
     "log": {
