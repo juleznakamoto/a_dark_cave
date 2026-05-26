@@ -1,6 +1,10 @@
 import { GameState } from "@shared/schema";
 import { getCurrentPopulation, getMaxPopulation } from "./population";
-import { isResourceLimited, getResourceLimit } from "./resourceLimits";
+import {
+  isResourceLimited,
+  getResourceLimit,
+  capResourceToLimit,
+} from "./resourceLimits";
 import { getTotalEventDeathReduction } from "./rules/effectsCalculation";
 
 /**

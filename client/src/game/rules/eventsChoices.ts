@@ -14,6 +14,18 @@ import {
   cruelModeScale,
 } from "../cruelMode";
 
+/** Death outcomes only draw from unassigned villagers at the forest edge. */
+function paleFigureFreeVillagers(state: GameState): number {
+  return state.villagers?.free ?? 0;
+}
+
+function paleFigureDeathsWithinFree(
+  state: GameState,
+  requestedDeaths: number,
+): number {
+  return Math.min(requestedDeaths, paleFigureFreeVillagers(state));
+}
+
 export const choiceEvents: Record<string, GameEvent> = {
   ...woodcutterEvents,
   ...loreEvents,
@@ -24,7 +36,8 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 2 &&
       !state.clothing.ravenfeather_mantle &&
-      state.current_population >= 4,
+      state.current_population >= 4 &&
+      paleFigureFreeVillagers(state) >= 1,
     timeProbability: 35,
     priority: 3,
     repeatable: true,
@@ -58,19 +71,31 @@ export const choiceEvents: Record<string, GameEvent> = {
               _logMessageKey: "outcome0",
             };
           } else if (rand < 0.6) {
+            const deaths = paleFigureDeathsWithinFree(state, 1);
+            if (deaths <= 0) {
+              return { _logMessageKey: "outcome3" };
+            }
             return {
-              ...killVillagers(state, 1),
+              ...killVillagers(state, deaths),
               _logMessageKey: "outcome1",
             };
           } else {
-            let deaths;
-            deaths =
+            const deaths = paleFigureDeathsWithinFree(
+              state,
               2 +
               Math.floor(Math.random() * state.buildings.woodenHut * 0.5) +
-              cruelModeScale(state) * CRUEL_MODE.paleFigure.failureDeathScaleWhenCruel;
+              cruelModeScale(state) *
+              CRUEL_MODE.paleFigure.failureDeathScaleWhenCruel,
+            );
+            if (deaths <= 0) {
+              return { _logMessageKey: "outcome3" };
+            }
 
             const deathResult = killVillagers(state, deaths);
             const actualDeaths = deathResult.villagersKilled || 0;
+            if (actualDeaths <= 0) {
+              return { _logMessageKey: "outcome3" };
+            }
 
             return {
               ...deathResult,
@@ -101,9 +126,12 @@ export const choiceEvents: Record<string, GameEvent> = {
               _logMessageKey: "outcome3",
             };
           } else {
-            // 1 man found dead
+            const deaths = paleFigureDeathsWithinFree(state, 1);
+            if (deaths <= 0) {
+              return { _logMessageKey: "outcome3" };
+            }
             return {
-              ...killVillagers(state, 1),
+              ...killVillagers(state, deaths),
               _logMessageKey: "outcome4",
             };
           }

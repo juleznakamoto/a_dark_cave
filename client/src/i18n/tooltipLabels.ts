@@ -1,5 +1,6 @@
 import { tWithFallback, getResourceName, getStatName } from "./resolveGameText";
 import type { BuildingTooltipEffect } from "@/game/rules/buildingTooltipEffects";
+import type { GameState } from "@shared/schema";
 import { formatNumber } from "@/lib/utils";
 
 type TranslateOptions = Record<string, string | number | boolean | undefined>;
@@ -25,6 +26,20 @@ export function resolveBuildingTooltipEffect(
     effect.fallback,
     effect.options,
   );
+}
+
+type ActionTooltipEffects =
+  | Array<string | BuildingTooltipEffect>
+  | ((state: GameState) => Array<string | BuildingTooltipEffect>);
+
+/** Resolve action tooltip effect entries (static array or state function). */
+export function resolveActionTooltipEffects(
+  effects: ActionTooltipEffects | undefined,
+  state: GameState,
+): string[] {
+  if (!effects) return [];
+  const list = typeof effects === "function" ? effects(state) : effects;
+  return list.map((effect) => resolveBuildingTooltipEffect(effect));
 }
 
 /** Player-facing cost line for tooltips (e.g. "-50 Gold"). */

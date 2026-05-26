@@ -4,6 +4,7 @@ import { applyActionEffects } from "./actionEffects";
 import { killVillagers } from "../stateHelpers";
 import { getVillagersInVillage } from "../population";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
+import { bt } from "./buildingTooltipEffects";
 
 // Helper function to get dynamic cost for bone totems
 export function getBoneTotemsCost(state: GameState): number {
@@ -38,7 +39,7 @@ export const forestSacrificeActions: Record<string, Action> = {
   boneTotems: {
     id: "boneTotems",
     label: "Bone Totems",
-    tooltipEffects: ["10-25 Silver"],
+    tooltipEffects: [bt("totemSilverGain", "10-25 Silver")],
     show_when: {
       "buildings.altar": 1,
     },
@@ -56,7 +57,7 @@ export const forestSacrificeActions: Record<string, Action> = {
   leatherTotems: {
     id: "leatherTotems",
     label: "Leather Totems",
-    tooltipEffects: ["10-25 Gold"],
+    tooltipEffects: [bt("totemGoldGain", "10-25 Gold")],
     show_when: {
       "buildings.temple": 1,
     },
@@ -74,7 +75,7 @@ export const forestSacrificeActions: Record<string, Action> = {
   animals: {
     id: "animals",
     label: "Animals",
-    tooltipEffects: ["-1 Madness"],
+    tooltipEffects: [bt("madnessReduction", "-{{amount}} Madness", { amount: 1 })],
     show_when: {
       "buildings.blackMonolith": 1,
       "buildings.pillarOfClarity": 0,
@@ -96,7 +97,7 @@ export const forestSacrificeActions: Record<string, Action> = {
   humans: {
     id: "humans",
     label: "Humans",
-    tooltipEffects: ["-2 Madness"],
+    tooltipEffects: [bt("madnessReduction", "-{{amount}} Madness", { amount: 2 })],
     show_when: {
       "flags.humanSacrificeUnlocked": true,
       "buildings.pillarOfClarity": 0,

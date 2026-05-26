@@ -463,20 +463,20 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                         {disabled ? (
                           <TooltipWrapper
                             tooltip={
-                              <span className="text-xs">
+                              <div className="text-xs">
                                 {t("invest.unlockTooltip")}
-                              </span>
+                              </div>
                             }
                             tooltipId={`invest-amount-${a}`}
                             disabled
                             className="inline-flex shrink-0"
-                            tooltipTriggerAsChild
+                            tooltipTriggerClassName="inline-flex shrink-0 cursor-help"
                             tooltipContentClassName="max-w-xs"
                           >
                             <RadioGroup.Item
                               value={String(a)}
                               disabled
-                              disabledCursor="default"
+                              disabledCursor="help"
                             >
                               <span className={labelClass}>
                                 {t("common:currency.goldAmount", {

@@ -20,6 +20,7 @@ import {
 } from "@/game/buttonUpgrades";
 import { resolveActionLabel } from "@/i18n/actionLabels";
 import { getResourceName } from "@/i18n/resolveGameText";
+import { resolveActionTooltipEffects } from "@/i18n/tooltipLabels";
 import { useTranslation } from "react-i18next";
 import {
   BubblyButtonGlobalPortal,
@@ -227,20 +228,23 @@ export default function ForestPanel() {
       actionId.startsWith("trade") || actionId.startsWith("sell");
     const isSellButton = actionId.startsWith("sell");
 
-    // For trade buttons, check if there's enough space for the resource being bought
-    if (isTradeButton && canExecute && action.effects) {
+    // Buy buttons: only disable when the target resource is already at cap.
+    // Partial purchases are allowed — execution caps gains at the storage limit.
+    if (isTradeButton && !isSellButton && canExecute && action.effects) {
       const effects = resolveForestPanelTradeEffects(action, state);
       if (effects) {
-        const resourceKey = Object.keys(effects)[0];
-        const amount = effects[resourceKey];
-        const resourceName = resourceKey.split(".")[1];
-
-        // Check if resource is limited and if there's space
-        if (isResourceLimited(resourceName, state)) {
-          const currentAmount = state.resources[resourceName as keyof typeof state.resources] || 0;
-          const limit = getResourceLimit(state);
-          if (currentAmount + amount > limit) {
-            canExecute = false;
+        const resourceKey = Object.keys(effects).find((k) =>
+          k.startsWith("resources."),
+        );
+        if (resourceKey) {
+          const resourceName = resourceKey.split(".")[1];
+          if (isResourceLimited(resourceName, state)) {
+            const currentAmount =
+              state.resources[resourceName as keyof typeof state.resources] || 0;
+            const limit = getResourceLimit(state);
+            if (currentAmount >= limit) {
+              canExecute = false;
+            }
           }
         }
       }
@@ -324,9 +328,13 @@ export default function ForestPanel() {
       ) {
         // Animals/Humans sacrifice: show madness effect
         const costBreakdown = getActionCostBreakdown(actionId, state);
+        const effectLines = resolveActionTooltipEffects(
+          action.tooltipEffects,
+          state,
+        );
         tooltipContent = (
           <div className="text-xs whitespace-nowrap">
-            {action.tooltipEffects.map((effect, index) => (
+            {effectLines.map((effect, index) => (
               <div key={`effect-${index}`}>{effect}</div>
             ))}
             {costBreakdown.length > 0 && (

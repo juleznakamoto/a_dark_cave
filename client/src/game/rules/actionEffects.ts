@@ -4,6 +4,8 @@ import {
   getMaxVeinfireElixirLimit,
   isBombResource,
   isVeinfireElixirResource,
+  isResourceLimited,
+  capResourceToLimit,
   BOMB_RESOURCES,
 } from "@/game/resourceLimits";
 import {
@@ -217,10 +219,10 @@ type ActionEffectUpdates = Partial<GameState> & {
   logMessages?: Array<
     | string
     | {
-        actionId: string;
-        logKey: string;
-        vars?: Record<string, string | number>;
-      }
+      actionId: string;
+      logKey: string;
+      vars?: Record<string, string | number>;
+    }
   >;
   triggeredEvents?: string[];
 };
@@ -813,6 +815,15 @@ export function applyActionEffects(
       updates.resources.veinfire_elixir > maxElixir
     ) {
       updates.resources.veinfire_elixir = maxElixir;
+    }
+
+    for (const [resourceKey, value] of Object.entries(updates.resources)) {
+      if (typeof value !== "number" || !isResourceLimited(resourceKey, state)) {
+        continue;
+      }
+      if (isBombResource(resourceKey)) continue;
+      updates.resources[resourceKey as keyof typeof updates.resources] =
+        capResourceToLimit(resourceKey, value, state);
     }
   }
 
