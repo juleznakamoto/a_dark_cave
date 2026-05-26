@@ -701,6 +701,14 @@ const mergeStateUpdates = (
     buildings: { ...prevState.buildings, ...stateUpdates.buildings },
     flags: { ...prevState.flags, ...stateUpdates.flags },
     villagers: { ...prevState.villagers, ...stateUpdates.villagers },
+    current_population:
+      stateUpdates.current_population !== undefined
+        ? stateUpdates.current_population
+        : prevState.current_population,
+    total_population:
+      stateUpdates.total_population !== undefined
+        ? stateUpdates.total_population
+        : prevState.total_population,
     expeditionVillagers: {
       ...prevState.expeditionVillagers,
       ...stateUpdates.expeditionVillagers,
@@ -2607,19 +2615,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
       StateManager.schedulePopulationUpdate(get);
     }
 
-    // Show madness dialog first when madness changed in this outcome.
+    // Show reward/outcome dialog before madness-only popup so narrative + gains are visible.
+    if (shouldShowRewardDialog && rewardDialogData) {
+      get().setEventDialog(false);
+      scheduleRewardDialogWhenClear(get, rewardDialogData, 200);
+      return;
+    }
+
     if (shouldShowMadnessDialog && madnessDialogData) {
       get().setEventDialog(false);
       setTimeout(() => {
         get().setMadnessDialog(true, madnessDialogData);
       }, 200);
-      return;
-    }
-
-    // Show reward dialog when the choice included positive gains
-    if (shouldShowRewardDialog && rewardDialogData) {
-      get().setEventDialog(false);
-      scheduleRewardDialogWhenClear(get, rewardDialogData, 200);
       return;
     }
 

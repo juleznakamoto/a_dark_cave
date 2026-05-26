@@ -127,22 +127,18 @@ export default function CubeDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={() => { }}>
-      <DialogContent className="[&>button]:hidden border-2 border-gray-400 shadow-2xl p-6 [--adc-dialog-max-w:20rem] h-[19rem] max-h-[19rem] flex flex-col overflow-visible z-[100]">
+      <DialogContent className="[&>button]:hidden border-2 border-gray-400 shadow-2xl p-6 [--adc-dialog-max-w:20rem] min-h-[19rem] flex flex-col overflow-visible z-[100]">
         <div className="absolute inset-0 -z-10 cube-dialog-glow pointer-events-none"></div>
         <DialogHeader className="flex-shrink-0">
           <DialogTitle className="text-lg font-semibold">
             {resolvedTitle}
           </DialogTitle>
-          <DialogDescription className="sr-only">
+          <DialogDescription className="text-sm text-muted-foreground mt-2 leading-relaxed">
             {resolvedMessage}
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex-1 min-h-0 overflow-y-auto text-sm text-muted-foreground leading-relaxed py-2">
-          {resolvedMessage}
-        </div>
-
-        <div className="flex-shrink-0 flex justify-center pt-2">
+        <div className="flex-1 flex items-end justify-center pt-4">
           <Button
             onClick={handleClose}
             variant="outline"

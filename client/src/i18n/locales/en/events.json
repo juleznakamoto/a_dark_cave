@@ -1527,7 +1527,7 @@
     "log": {
       "outcome0": "You hand over two of the villagers. The trader tosses you a bag of steel and rides off with his new captives. When the remaining villagers see what you've done, they abandon the village in disgust.",
       "outcome1": "Your men attack the slaver! The fight is brutal but victorious. You free the captives and claim the trader's steel. The freed souls join your village.",
-      "outcome2": "Your men attack the slaver, but he's prepared! He fights back viciously. ${actualDeaths} of the villagers ${actualDeaths === 1 ? \"falls\" : \"fall\"} in the struggle. The trader escapes with his captives, leaving only death behind.",
+      "outcome2": "Your men attack the slaver, but he's prepared! He fights back viciously. {{actualDeaths}} villagers fall in the struggle. The trader escapes with his captives, leaving only death behind.",
       "outcome3": "You refuse the slaver's vile offer. He spits on the ground in disgust and rides away with his captives."
     },
     "message": "A man on a cart drawn by two horses approaches the village. An iron cage on the cart holds two miserable souls. The trader grins wickedly: 'I'll pay you 100 Steel for two of your villagers. What do you say?'",

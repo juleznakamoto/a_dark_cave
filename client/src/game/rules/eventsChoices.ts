@@ -1177,78 +1177,33 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "freeSlaves",
         relevant_stats: ["strength"],
-        success_chance: (state: GameState) => {
-          const strength = getTotalStrength(state);
-          return (
-            CRUEL_MODE.slaveTrader.freeSlavesSuccess.base +
-            CRUEL_MODE.slaveTrader.freeSlavesSuccess.perStrength * strength -
-            cruelModeScale(state) * CRUEL_MODE.slaveTrader.freeSlavesSuccess.whenCruel
-          );
-        },
+        success_chance: () => 1,
         effect: (state: GameState) => {
-          const strength = getTotalStrength(state);
-          const successChance =
-            CRUEL_MODE.slaveTrader.freeSlavesSuccess.base +
-            strength * CRUEL_MODE.slaveTrader.freeSlavesSuccess.perStrength -
-            cruelModeScale(state) * CRUEL_MODE.slaveTrader.freeSlavesSuccess.whenCruel;
+          const { patch } = addFreeVillagersWithinCap(state, 2);
 
-          if (Math.random() < successChance) {
-            // Success: free the captives and take the steel
-            const { patch } = addFreeVillagersWithinCap(state, 2);
-
-            return {
-              ...patch,
-              resources: {
-                ...state.resources,
-                steel: state.resources.steel + 100,
+          return {
+            ...patch,
+            resources: {
+              ...state.resources,
+              steel: state.resources.steel + 100,
+            },
+            stats: {
+              ...state.stats,
+              madnessFromEvents: Math.max(
+                0,
+                (state.stats.madnessFromEvents || 0) - 1,
+              ),
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                ...(patch.story?.seen),
+                slaveTraderEvent: true,
               },
-              stats: {
-                ...state.stats,
-                madness: Math.max(0, state.stats.madness - 1),
-              },
-              story: {
-                ...state.story,
-                seen: {
-                  ...state.story.seen,
-                  ...(patch.story?.seen),
-                  slaveTraderEvent: true,
-                },
-              },
-              _logMessageKey: "outcome1",
-            };
-          } else {
-            // Failure: 1-2 villagers die
-            const deaths =
-              Math.floor(
-                Math.random() * CRUEL_MODE.slaveTrader.failDeaths.randMax,
-              ) +
-              CRUEL_MODE.slaveTrader.failDeaths.base +
-              cruelModeScale(state) * CRUEL_MODE.slaveTrader.failDeaths.whenCruel;
-            const deathResult = killVillagers(state, deaths);
-            const actualDeaths = deathResult.villagersKilled || 0;
-
-            return {
-              ...deathResult,
-              stats: {
-                ...state.stats,
-                ...(deathResult.stats || {}),
-                madness: Math.max(
-                  0,
-                  (deathResult.stats?.madness ?? state.stats.madness) - 1,
-                ),
-              },
-              story: {
-                ...state.story,
-                seen: {
-                  ...state.story.seen,
-                  slaveTraderEvent: true,
-                },
-              },
-              _logMessageKey:
-                actualDeaths === 1 ? "outcome2_one" : "outcome2_other",
-              _logMessageVars: { actualDeaths },
-            };
-          }
+            },
+            _logMessageKey: "outcome1",
+          };
         },
       },
       {
