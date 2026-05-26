@@ -26,7 +26,11 @@ function tEvent(
 }
 
 function hasNestedCatalogKey(catalogId: string, prefix: string): boolean {
-  return i18n.exists(eventKey(catalogId, `${prefix}.level1`));
+  return (
+    i18n.exists(eventKey(catalogId, `${prefix}.level1`)) ||
+    i18n.exists(eventKey(catalogId, `${prefix}.woman`)) ||
+    i18n.exists(eventKey(catalogId, `${prefix}.man`))
+  );
 }
 
 /** True when i18next fell back to its "object instead of string" dev message. */
@@ -203,11 +207,11 @@ export function localizeEventChoices(
       typeof c.cost === "function"
         ? c.cost
         : resolveEventChoiceCost(
-            catalogId,
-            c.id,
-            typeof c.cost === "string" ? c.cost : undefined,
-            vars,
-          ),
+          catalogId,
+          c.id,
+          typeof c.cost === "string" ? c.cost : undefined,
+          vars,
+        ),
   }));
 }
 

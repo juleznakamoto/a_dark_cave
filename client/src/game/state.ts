@@ -2,7 +2,13 @@
 import { create } from "zustand";
 import { GameState, gameStateSchema, Referral } from "@shared/schema";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
-import { EventManager, LogEntry, getEventCatalogIdByEventId, getEventI18nVars } from "@/game/rules/events";
+import {
+  EventManager,
+  LogEntry,
+  gameEvents,
+  getEventCatalogIdByEventId,
+  getEventI18nVars,
+} from "@/game/rules/events";
 import { checkMilestoneLogEntries } from "@/game/rules/eventLogEntries";
 import {
   executeGameAction,
@@ -2548,6 +2554,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Extract narrative log message if present
     const catalogId = getEventCatalogIdByEventId(eventId);
+    const eventDef = gameEvents[eventId];
     const i18nVars = getEventI18nVars(eventId, state);
     const logMessageVars = updatedChanges._logMessageVars as
       | Record<string, string | number>
@@ -2600,7 +2607,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       if (hasRewards && !isMerchantEvent && !isCubeDiscoveryEvent && !isFeastEvent) {
         const rewardTitle =
-          resolveEventTitle(catalogId, undefined, state as any, {
+          resolveEventTitle(catalogId, eventDef?.title, state as any, {
             ...i18nVars,
             ...logMessageVars,
           }) ||
@@ -2686,7 +2693,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             ? logEntry.title
             : undefined;
         const outcomeTitle =
-          resolveEventTitle(catalogId, undefined, state, {
+          resolveEventTitle(catalogId, eventDef?.title, state, {
             ...i18nVars,
             ...logMessageVars,
           }) ||

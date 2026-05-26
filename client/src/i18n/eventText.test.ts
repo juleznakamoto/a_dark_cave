@@ -138,4 +138,29 @@ describe("localizeEventChoices", () => {
       resolveEventDisplayTitle("woodcutter", badTitle, state, "woodcutter1"),
     ).toBe("Der Holzfäller");
   });
+
+  it("resolves mysteriousWoman variant title without event title def (nested title guard)", async () => {
+    await i18n.changeLanguage("de");
+    const state = { g: "m" } as GameState;
+
+    expect(
+      resolveEventTitle("mysteriousWoman", undefined, state),
+    ).toBeUndefined();
+
+    expect(
+      resolveEventTitle(
+        "mysteriousWoman",
+        (s: GameState) => (s.g === "m" ? "woman" : "man"),
+        state,
+      ),
+    ).toBe("Die geheimnisvolle Frau");
+
+    expect(
+      resolveEventTitle(
+        "mysteriousWoman",
+        (s: GameState) => (s.g === "m" ? "woman" : "man"),
+        { g: "f" } as GameState,
+      ),
+    ).toBe("Der geheimnisvolle Mann");
+  });
 });

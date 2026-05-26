@@ -116,7 +116,7 @@
   },
   "buildGrandHunterLodge": {
     "description": "Höchste Jagdhütte für Meisterjäger",
-    "label": "Große Jägerhütte"
+    "label": "Meisterjägerhütte"
   },
   "buildGrandRepository": {
     "description": "Massives Depot mit außergewöhnlicher Lagerkapazität",
@@ -124,7 +124,7 @@
   },
   "buildGreatCabin": {
     "description": "Erweiterte Jagdhütte, die den Ertrag der Jäger erhöht",
-    "label": "Große Hütte"
+    "label": "Große Jägerhütte"
   },
   "buildGreatVault": {
     "description": "Überragender Tresor, der gewaltige Ressourcenmengen fassen kann",

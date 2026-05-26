@@ -1116,8 +1116,10 @@
   },
   "mysteriousWoman": {
     "log": {
-      "outcome0": "Du gewährst {{obj}} Unterkunft für die Nacht. Am Morgen ist {{subj}} spurlos verschwunden, dein Bett noch warm und {{silverStolen}} Silber fehlen.",
-      "outcome1": "Du lehnst {{poss}} Bitte höflich ab. {{cap}} sieht enttäuscht aus, nickt aber verständnisvoll und verschwindet wortlos im Abendnebel."
+      "outcome0_woman": "Du gewährst ihr Unterkunft für die Nacht. Am Morgen ist sie spurlos verschwunden, dein Bett noch warm und {{silverStolen}} Silber fehlen.",
+      "outcome0_man": "Du gewährst ihm Unterkunft für die Nacht. Am Morgen ist er spurlos verschwunden, dein Bett noch warm und {{silverStolen}} Silber fehlen.",
+      "outcome1_woman": "Du lehnst ihre Bitte höflich ab. Sie sieht enttäuscht aus, nickt aber verständnisvoll und verschwindet wortlos im Abendnebel.",
+      "outcome1_man": "Du lehnst seine Bitte höflich ab. Er sieht enttäuscht aus, nickt aber verständnisvoll und verschwindet wortlos im Abendnebel."
     },
     "title": {
       "woman": "Die geheimnisvolle Frau",

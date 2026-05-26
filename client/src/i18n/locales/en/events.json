@@ -1116,8 +1116,10 @@
   },
   "mysteriousWoman": {
     "log": {
-      "outcome0": "You grant ${obj} shelter for the night. By morning, ${subj} has vanished without a trace, leaving your bed still warm and ${silverStolen} Silver missing.",
-      "outcome1": "You politely refuse ${poss} request. ${cap} looks disappointed but nods in understanding, disappearing into the evening mist without another word."
+      "outcome0_woman": "You grant her shelter for the night. By morning, she has vanished without a trace, leaving your bed still warm and {{silverStolen}} Silver missing.",
+      "outcome0_man": "You grant him shelter for the night. By morning, he has vanished without a trace, leaving your bed still warm and {{silverStolen}} Silver missing.",
+      "outcome1_woman": "You politely refuse her request. She looks disappointed but nods in understanding, disappearing into the evening mist without another word.",
+      "outcome1_man": "You politely refuse his request. He looks disappointed but nods in understanding, disappearing into the evening mist without another word."
     },
     "title": {
       "woman": "The Mysterious Woman",

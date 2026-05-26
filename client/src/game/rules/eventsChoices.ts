@@ -1537,8 +1537,6 @@ export const choiceEvents: Record<string, GameEvent> = {
           const silverStolen =
             CRUEL_MODE.mysteriousWoman.silverMin.base +
             cruelModeScale(state) * CRUEL_MODE.mysteriousWoman.silverMin.whenCruel;
-          const obj = state.g === "m" ? "her" : "him";
-          const subj = state.g === "m" ? "she" : "he";
           return {
             resources: {
               ...state.resources,
@@ -1551,8 +1549,8 @@ export const choiceEvents: Record<string, GameEvent> = {
                 mysteriousWomanEvent: true,
               },
             },
-            _logMessageKey: "outcome0",
-            _logMessageVars: { obj, subj, silverStolen },
+            _logMessageKey: state.g === "m" ? "outcome0_woman" : "outcome0_man",
+            _logMessageVars: { silverStolen },
           };
         },
       },
@@ -1560,8 +1558,6 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "refuseStay",
         label: (state: GameState) => (state.g === "m" ? "woman" : "man"),
         effect: (state: GameState) => {
-          const poss = state.g === "m" ? "her" : "his";
-          const cap = state.g === "m" ? "She" : "He";
           return {
             story: {
               ...state.story,
@@ -1570,8 +1566,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 mysteriousWomanEvent: true,
               },
             },
-            _logMessageKey: "outcome1",
-            _logMessageVars: { poss, cap },
+            _logMessageKey: state.g === "m" ? "outcome1_woman" : "outcome1_man",
           };
         },
       },
