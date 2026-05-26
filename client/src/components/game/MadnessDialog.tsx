@@ -156,7 +156,7 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
   const content = (
     <>
       {hasRewardItems && <div className="space-y-1">{rewardItems}</div>}
-      <div className="text-sm text-center text-violet-300">
+      <div className="text-sm text-violet-300">
         {t("ui:madness.change", {
           sign: madnessChange > 0 ? "+" : "-",
           amount: formatNumber(Math.abs(madnessChange)),

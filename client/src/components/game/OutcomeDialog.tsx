@@ -82,8 +82,8 @@ export default function OutcomeDialog({
           className={`[--adc-dialog-max-w:24rem] z-[70] [&>button]:hidden border-2 shadow-2xl ${border}`}
         >
           <div className={`absolute inset-0 -z-10 pointer-events-none ${glow}`} />
-          <DialogHeader className="text-center sm:text-center">
-            <div className="relative z-[1] flex justify-center">
+          <DialogHeader>
+            <div className="relative z-[1] flex justify-start">
               <div
                 className={cn(
                   "flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2",
@@ -94,18 +94,18 @@ export default function OutcomeDialog({
                 {icon}
               </div>
             </div>
-            <DialogTitle className="text-center text-lg font-semibold text-foreground tracking-tight">
+            <DialogTitle className="text-lg font-semibold text-foreground tracking-tight">
               {title}
             </DialogTitle>
             {successLog && (
-              <div className="text-sm text-foreground text-center px-2 pb-2 pt-0">
+              <div className="text-sm text-muted-foreground leading-relaxed mt-2 pb-2">
                 {successLog}
               </div>
             )}
             <div className="my-2 h-px w-full bg-white/10" />
           </DialogHeader>
 
-          <div className="text-sm pb-2 space-y-1">{children}</div>
+          <div className="text-sm pb-2 space-y-1 text-left">{children}</div>
 
           <div className="flex justify-center">
             <Button
