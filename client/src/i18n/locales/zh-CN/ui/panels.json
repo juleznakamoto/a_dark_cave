@@ -171,7 +171,8 @@
     "title": "幸存者笔记",
     "notUnlocked": "尚未解锁。",
     "chartUnavailable": "图表不可用",
-    "claim": "领取"
+    "claim": "领取",
+    "completeLog": "成就完成：{{name}}：{{rewards}}"
   },
   "idleMode": {
     "title": "睡眠模式",

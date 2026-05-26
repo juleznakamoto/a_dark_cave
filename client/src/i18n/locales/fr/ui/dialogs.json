@@ -175,10 +175,10 @@
   },
   "investmentResult": {
     "title": "Résultat de l'investissement",
-    "success": "Votre investissement de {{amount}} Gold a réussi.",
-    "luckyChance": "Chance. Les gains de votre investissement de {{amount}} Gold sont multipliés par {{multiplier}}.",
-    "wipeout": "Perte totale. Vous avez perdu la totalité de votre investissement de {{amount}} Gold.",
-    "partialLoss": "Votre investissement de {{amount}} Gold a échoué."
+    "success": "Votre investissement de {{amount}} or a réussi.",
+    "luckyChance": "Chance. Les gains de votre investissement de {{amount}} or sont multipliés par {{multiplier}}.",
+    "wipeout": "Perte totale. Vous avez perdu la totalité de votre investissement de {{amount}} or.",
+    "partialLoss": "Votre investissement de {{amount}} or a échoué."
   },
   "cube": {
     "fallbackTitle": "Le cube murmurant",

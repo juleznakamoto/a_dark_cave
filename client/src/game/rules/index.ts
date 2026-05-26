@@ -22,6 +22,8 @@ import {
   formatTooltipResourceName,
   getUiTooltip,
 } from "@/i18n/tooltipLabels";
+import { getEventChoiceAffordance } from "@/i18n/eventAffordance";
+import { getResourceName } from "@/i18n/resolveGameText";
 
 // Import action modules
 import { caveCraftResources } from "./caveCraftResources";
@@ -717,27 +719,60 @@ export function getBastionRepairTooltipRows(
   return rows;
 }
 
+type EventChoiceCostBreakdownOptions = {
+  catalogId?: string;
+  choiceId?: string;
+  vars?: Record<string, string | number | boolean | undefined>;
+  sellResource?: string;
+  sellAmount?: number;
+};
+
 /**
- * Converts an event choice cost (string or function) into the same breakdown format
- * used by getActionCostBreakdown, so we can reuse the same tooltip rendering logic.
+ * Converts an event choice cost into tooltip rows with per-resource satisfaction.
+ * Uses i18n catalog templates and structured trade data when available.
  */
 export function getEventChoiceCostBreakdown(
   cost: string | ((state: GameState) => string) | Record<string, number> | undefined,
   state: GameState,
+  options?: EventChoiceCostBreakdownOptions,
 ): Array<{ text: string; satisfied: boolean }> {
+  if (options?.choiceId) {
+    const affordance = getEventChoiceAffordance(
+      {
+        id: options.choiceId,
+        effect: () => ({}),
+        cost,
+        sellResource: options.sellResource,
+        sellAmount: options.sellAmount,
+      },
+      state,
+      {
+        catalogId: options.catalogId,
+        vars: options.vars,
+      },
+    );
+
+    if (affordance.costs.length > 0) {
+      return affordance.costs.map(({ resource, amount }) => ({
+        text: getUiTooltip("costLine", "-{{amount}} {{resource}}", {
+          amount: formatNumber(amount),
+          resource: getResourceName(resource, formatTooltipResourceName(resource)),
+        }),
+        satisfied: affordance.individualAffordance[resource] !== false,
+      }));
+    }
+  }
+
   if (!cost) return [];
 
-  // Evaluate cost if it's a function
-  const costText = typeof cost === 'function' ? cost(state) : cost;
+  const costText = typeof cost === "function" ? cost(state) : cost;
   if (!costText) return [];
 
   const breakdown: Array<{ text: string; satisfied: boolean }> = [];
   const { resources } = state;
 
-  // Handle object-based costs (like { "resources.wood": 100 })
-  if (typeof costText === 'object' && !Array.isArray(costText)) {
+  if (typeof costText === "object" && !Array.isArray(costText)) {
     Object.entries(costText).forEach(([resource, amount]) => {
-      // Extract the clean resource name from paths like "resources.wood"
       const resourceName = resource.includes(".")
         ? resource.split(".").pop()!
         : resource;
@@ -762,30 +797,20 @@ export function getEventChoiceCostBreakdown(
     return breakdown;
   }
 
-  // Handle string-based costs like "1000 wood, 500 food"
-  if (typeof costText === 'string') {
-    const costParts = costText.split(',').map(part => part.trim());
+  if (typeof costText === "string") {
+    const affordance = getEventChoiceAffordance(
+      { id: options?.choiceId ?? "choice", effect: () => ({}), cost: costText },
+      state,
+    );
 
-    for (const part of costParts) {
-      // Match patterns like "250 gold", "+10 Food", "-5 wood"
-      const match = part.match(/[+-]?\s*([\d']+)\s+([a-zA-Z_\s]+)/);
-      if (match) {
-        const amount = parseInt(match[1].replace(/'/g, ""), 10);
-        const resource = match[2].trim().toLowerCase().replace(/\s+/g, '_');
-
-        const resourceNameFormatted = formatTooltipResourceName(resource);
-
-        const satisfied =
-          (resources[resource as keyof typeof resources] || 0) >= amount;
-
-        breakdown.push({
-          text: getUiTooltip("costLine", "-{{amount}} {{resource}}", {
-            amount: formatNumber(amount),
-            resource: resourceNameFormatted,
-          }),
-          satisfied,
-        });
-      }
+    if (affordance.costs.length > 0) {
+      return affordance.costs.map(({ resource, amount }) => ({
+        text: getUiTooltip("costLine", "-{{amount}} {{resource}}", {
+          amount: formatNumber(amount),
+          resource: getResourceName(resource, formatTooltipResourceName(resource)),
+        }),
+        satisfied: affordance.individualAffordance[resource] !== false,
+      }));
     }
   }
 

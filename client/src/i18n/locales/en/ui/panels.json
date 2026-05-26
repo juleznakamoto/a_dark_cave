@@ -171,7 +171,8 @@
     "title": "Survivor's Notes",
     "notUnlocked": "Not yet unlocked.",
     "chartUnavailable": "Chart unavailable",
-    "claim": "Claim"
+    "claim": "Claim",
+    "completeLog": "{{name}} Achievement complete: {{rewards}}"
   },
   "idleMode": {
     "title": "Sleep Mode",
@@ -179,6 +180,8 @@
     "awake": "You are awake!",
     "wakingIn": "Waking up in: {{time}}",
     "wake": "Wake Up",
-    "getUp": "Get Up"
+    "getUp": "Get Up",
+    "focusGainedLog": "You gained {{count}} Focus from your rest.",
+    "villagersProducedLog": "Villagers produced: {{resources}}"
   }
 }

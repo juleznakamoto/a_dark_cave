@@ -1537,8 +1537,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Filter out entries marked to skip event log (they should only appear in dialogs)
       const logEntriesToAdd = result.logEntries
         ? result.logEntries.filter(
-            (entry) => !entry.skipEventLog && hasLogEntryText(entry),
-          )
+          (entry) => !entry.skipEventLog && hasLogEntryText(entry),
+        )
         : [];
 
       return {
@@ -2575,13 +2575,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const isFeastEvent = eventId?.startsWith?.("feast");
 
       if (hasRewards && !isMerchantEvent && !isCubeDiscoveryEvent && !isFeastEvent) {
+        const rewardTitle =
+          resolveEventTitle(catalogId, undefined, state as any, {
+            ...i18nVars,
+            ...logMessageVars,
+          }) ||
+          (logEntry?.title && !isI18nReturnedObjectError(logEntry.title)
+            ? logEntry.title
+            : undefined) ||
+          tWithFallback("ui", "event.fallbackTitle", "Event");
         rewardDialogData = {
           rewards,
           successLog,
           variant: "success",
-          title: logEntry?.title?.trim()
-            ? logEntry.title
-            : tWithFallback("ui", "event.fallbackTitle", "Event"),
+          title: rewardTitle,
         };
         shouldShowRewardDialog = true;
       }

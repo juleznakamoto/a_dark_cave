@@ -73,6 +73,22 @@
     },
     "title": "Ausgezehrte Körper"
   },
+  "bloodiedAwakening": {
+    "choices": {
+      "investigateMurders": {
+        "label": "Morde untersuchen"
+      },
+      "severFinger": {
+        "label": "Finger abtrennen"
+      }
+    },
+    "log": {
+      "outcome0": "Als du den schlammigen Fußspuren durch das Dorf folgst, führen sie dich zu einem Mordort nach dem anderen. Die Abdrücke passen zu deinen eigenen Stiefeln. Das Grauen dämmert langsam - du warst es, besessen vom Hunger des Rings. Als die Dorfbewohner die Wahrheit erfahren, fliehen achtzehn von ihnen, unfähig, in der Nähe eines so verfluchten Wesens zu bleiben.",
+      "outcome1": "Mit zitternden Händen hebst du deine Axt. Der Ring pulsiert, als die Klinge fällt. Qual reißt durch deinen Arm, als Knochen splittert. Als du den abgetrennten Finger hochhebst, siehst du kleine schwarze Fäden wie Tentakel, tief in sein Fleisch gebohrt."
+    },
+    "message": "Du erwachst im ersten Licht des Morgens, deine Kleidung von frischem Blut durchnässt. Es ist nicht deins. Ein Dorfbewohner kommt zum Anwesen, das Gesicht bleich vor Entsetzen. 'Acht sind tot', flüstert er. 'In der Nacht zerfetzt.' Der Ring an deinem Finger pocht vor quälendem Schmerz.",
+    "title": "Blutiges Erwachen"
+  },
   "bloodInWater": {
     "message": "Drei Tage lang läuft das Wasser des Dorfes rot. Die Dorfbewohner scheinen es nicht zu bemerken und trinken, als hätte sich nichts verändert. Du schmeckst Kupfer und Eisen, doch sie behaupten, es schmecke wie das süßeste Quellwasser."
   },
@@ -96,22 +112,6 @@
       "default": "Der Mond ist nachts blutrot geworden, die Dorfältesten sprechen von Lykanthropen. Uralte Pakte verlangen ein Opfer von {{sacrificeAmount}} Dorfbewohnern, um die Bestien zu besänftigen. Weigerst du dich, werden sie dafür sorgen, dass ihr Hunger gestillt wird."
     },
     "title": "Blutmond"
-  },
-  "bloodiedAwakening": {
-    "choices": {
-      "investigateMurders": {
-        "label": "Morde untersuchen"
-      },
-      "severFinger": {
-        "label": "Finger abtrennen"
-      }
-    },
-    "log": {
-      "outcome0": "Als du den schlammigen Fußspuren durch das Dorf folgst, führen sie dich zu einem Mordort nach dem anderen. Die Abdrücke passen zu deinen eigenen Stiefeln. Das Grauen dämmert langsam - du warst es, besessen vom Hunger des Rings. Als die Dorfbewohner die Wahrheit erfahren, fliehen achtzehn von ihnen, unfähig, in der Nähe eines so verfluchten Wesens zu bleiben.",
-      "outcome1": "Mit zitternden Händen hebst du deine Axt. Der Ring pulsiert, als die Klinge fällt. Qual reißt durch deinen Arm, als Knochen splittert. Als du den abgetrennten Finger hochhebst, siehst du kleine schwarze Fäden wie Tentakel, tief in sein Fleisch gebohrt."
-    },
-    "message": "Du erwachst im ersten Licht des Morgens, deine Kleidung von frischem Blut durchnässt. Es ist nicht deins. Ein Dorfbewohner kommt zum Anwesen, das Gesicht bleich vor Entsetzen. 'Acht sind tot', flüstert er. 'In der Nacht zerfetzt.' Der Ring an deinem Finger pocht vor quälendem Schmerz.",
-    "title": "Blutiges Erwachen"
   },
   "bloodstainedBeltChoice": {
     "choices": {
@@ -166,6 +166,28 @@
     },
     "message": "Die Erde bebt, als skelettierte Kreaturen aus dem Wald treten. Der Knochenverschlinger hat die Knochen, die du ihm gehandelt hast, zu einer unheiligen Legion geformt. Mit hohlen Augen und geschärften Knochenwaffen nähern sie sich der Stadt.",
     "title": "Die Knochenarmee"
+  },
+  "boneDevourer": {
+    "title": "Der Knochenverschlinger",
+    "message": {
+      "firstTime": "Eine deformierte Kreatur schlurft zum Tor, ihre gebeugte Gestalt von blasser, gespannter Haut bedeckt. In kratziger Stimme spricht sie: ‚Ich suche Knochen. Ich zahle {{silverReward}} Silber.‘",
+      "repeat": "Die Kreatur kehrt zum Tor zurück, ihre gebeugte Gestalt noch immer von blasser, gespannter Haut bedeckt. In vertraut kratziger Stimme spricht sie: ‚Ich suche Knochen. Ich zahle {{silverReward}} Silber.‘"
+    },
+    "choices": {
+      "sellBones": {
+        "label": "{{boneCost}} Knochen verkaufen",
+        "cost": "{{boneCost}} Knochen"
+      },
+      "refuse": {
+        "label": "Handel ablehnen"
+      }
+    },
+    "log": {
+      "outcome0": "Du hast nicht genug Knochen für den Handel.",
+      "outcome1": "Die Kreatur nimmt die Knochen mit knorrigen Händen, als wolle sie sie zählen. Sie legt einen Beutel Silber zu deinen Füßen und verschwindet in der Dunkelheit.",
+      "outcome2": "Du lehnst das Angebot der Kreatur ab. Sie zischt missbilligend und zieht sich in die Schatten zurück. Du spürst, dass sie zurückkehren wird.",
+      "outcome3": "Deine Unentschlossenheit verärgert die Kreatur. Sie zischt missbilligend und zieht sich in die Schatten zurück."
+    }
   },
   "boneDiceChoice": {
     "choices": {
@@ -503,6 +525,10 @@
       "outcome0": "Du lehnst ab. Die Nacht vergeht ohne Frohsinn, Wärme oder Lachen."
     }
   },
+  "eighthWave": {
+    "message": "Der Boden bebt unter dem Gewicht ihrer Zahl, während eine neue Welle der bleichen Horde ihren Ring um die Stadt schließt.",
+    "title": "Die achte Welle"
+  },
   "encounterBeyondPortal": {
     "choices": {
       "attempt_communication": {
@@ -567,6 +593,28 @@
     "message": "Auf den Holzwänden deiner Hütten erscheinen Gesichter - verzerrte, gequälte Mienen, die von der anderen Seite hindurchzudrücken scheinen. Sie formen stumme Schreie und Bitten. Die Dorfbewohner gehen um sie herum, als seien sie schon immer dort gewesen.",
     "title": "Gesichter in den Wänden"
   },
+  "feast": {
+    "choices": {
+      "makeFeast": {
+        "cost": "{{foodCost}} Nahrung",
+        "label": "{{foodCost}} Nahrung ausgeben"
+      },
+      "noFeast": {
+        "label": "Fest ablehnen"
+      },
+      "doNothing": {
+        "label": "Keine Entscheidung"
+      }
+    },
+    "log": {
+      "outcome0": "Du hast nicht genug Nahrung für das Fest.",
+      "outcome1": "Die Dorfbewohner versammeln sich zum Fest! Müdigkeit weicht und die Stimmung hebt sich, wenn auch nur kurz.",
+      "outcome2": "Du lehnst den Festvorschlag ab. Die Dorfbewohner akzeptieren deine Entscheidung, wenn auch enttäuscht.",
+      "outcome3": "Die Zeit vergeht und die Gelegenheit für ein Fest verblasst."
+    },
+    "message": "Die Dorfbewohner schlagen ein Fest vor. Ein kurzer Trost, um ihre Müdigkeit zu lindern und ihre Gedanken zu beruhigen.",
+    "title": "Dorffest"
+  },
   "feedingRing": {
     "choices": {
       "keepRing": {
@@ -582,6 +630,10 @@
     },
     "message": "Du erwachst mitten in der Nacht, gelähmt. Du spürst eine Präsenz neben deinem Bett, lautlos und reglos. Bevor die Angst dich packen kann, zieht dich der Schlaf zurück in die Leere. Im Morgengrauen findest du einen unbekannten Ring an einem deiner Finger.",
     "title": "Der Nachtschrecken"
+  },
+  "fifthWave": {
+    "message": "Aus der Höhle tauchen unzählige bleiche Gestalten auf, ihre Formen unaussprechlich, während sie auf die Stadt vorrücken.",
+    "title": "Die fünfte Welle"
   },
   "findElderScroll": {
     "choices": {
@@ -603,45 +655,9 @@
     "message": "Ein älterer Dorfbewohner tritt an dich heran, seine Augen schwer von Wissen. 'Du hast deine ersten Schritte in dieser grausamen Welt getan', sagt er leise. 'Bald wirst du entscheiden müssen, ob du bereit bist, dem zu begegnen, was vor dir liegt.'",
     "title": "Der Dorfälteste"
   },
-  "eighthWave": {
-    "message": "Der Boden bebt unter dem Gewicht ihrer Zahl, während eine neue Welle der bleichen Horde ihren Ring um die Stadt schließt.",
-    "title": "Die achte Welle"
-  },
-  "fifthWave": {
-    "message": "Aus der Höhle tauchen unzählige bleiche Gestalten auf, ihre Formen unaussprechlich, während sie auf die Stadt vorrücken.",
-    "title": "Die fünfte Welle"
-  },
   "firstWave": {
     "message": "Bleiche Gestalten tauchen aus der Höhle auf, endlich befreit; ihre glühenden Augen schneiden durch die Dunkelheit, während sie auf die Stadt zumarschieren.",
     "title": "Die erste Welle"
-  },
-  "fourthWave": {
-    "message": "Der Himmel scheint sich zu verdunkeln, als eine unzählbare Masse bleicher Kreaturen aus der Höhle strömt und auf die Stadt vorrückt.",
-    "title": "Die vierte Welle"
-  },
-  "ninthWave": {
-    "message": "Mit unerbittlichem Hunger strömt eine noch größere Masse bleicher Kreaturen auf die Stadt zu.",
-    "title": "Die neunte Welle"
-  },
-  "secondWave": {
-    "message": "Die Kreaturen kehren in noch größerer Zahl zurück, mit Waffen aus rohem Knochen, die von üblem Licht erfüllt sind.",
-    "title": "Die zweite Welle"
-  },
-  "seventhWave": {
-    "message": "Die Kreaturen rücken erneut vor, ein wogender Teppich aus Gliedmaßen und Zähnen, der auf die Stadt zukriecht.",
-    "title": "Die siebte Welle"
-  },
-  "sixthWave": {
-    "message": "Der Höhleneingang speit eine weitere Flut bleicher Körper hervor. Knochenspeere klappern wie Regen, während sie sich für einen weiteren Angriff sammeln.",
-    "title": "Die sechste Welle"
-  },
-  "tenthWave": {
-    "message": "Aus den tiefsten Tiefen der Höhle bricht eine unvorstellbare Masse bleicher Kreaturen hervor. Sie fluten das Land wie eine lebende Flut, während die Stadt sich auf die Vernichtung vorbereitet.",
-    "title": "Die letzte Welle"
-  },
-  "thirdWave": {
-    "message": "Horden bleicher Kreaturen strömen aus der Höhle; Schreie erschüttern selbst die Steine, ihre Knochenwaffen zerschlagen den Boden.",
-    "title": "Die dritte Welle"
   },
   "forestTribeHelpRequest": {
     "choices": {
@@ -654,6 +670,10 @@
     },
     "message": "Eine Wilde tritt aus dem Wald, ihr bleicher Körper bedeckt mit Stammeszeichen und Narben. 'Ich komme von einem Stamm aus den Wäldern', sagt sie eindringlich. 'Brutale Bestien, die in einer Höhle im Wald leben, greifen uns unerbittlich an. Wir stehen vor der Auslöschung. Bitte hilf uns zu überleben.'",
     "title": "Eine verzweifelte Bitte"
+  },
+  "fourthWave": {
+    "message": "Der Himmel scheint sich zu verdunkeln, als eine unzählbare Masse bleicher Kreaturen aus der Höhle strömt und auf die Stadt vorrückt.",
+    "title": "Die vierte Welle"
   },
   "frostfall": {
     "choices": {
@@ -914,28 +934,6 @@
     "message": "Der Söldner ist zurück, und diesmal bringt er mehr Männer mit. 'Harte Zeiten', sagt er grinsend. 'Der Preis ist gestiegen. 200 Gold, oder es wird hässlich.'",
     "title": "Der Söldner kehrt zurück"
   },
-  "feast": {
-    "choices": {
-      "makeFeast": {
-        "cost": "{{foodCost}} Nahrung",
-        "label": "{{foodCost}} Nahrung ausgeben"
-      },
-      "noFeast": {
-        "label": "Fest ablehnen"
-      },
-      "doNothing": {
-        "label": "Keine Entscheidung"
-      }
-    },
-    "log": {
-      "outcome0": "Du hast nicht genug Nahrung für das Fest.",
-      "outcome1": "Die Dorfbewohner versammeln sich zum Fest! Müdigkeit weicht und die Stimmung hebt sich, wenn auch nur kurz.",
-      "outcome2": "Du lehnst den Festvorschlag ab. Die Dorfbewohner akzeptieren deine Entscheidung, wenn auch enttäuscht.",
-      "outcome3": "Die Zeit vergeht und die Gelegenheit für ein Fest verblasst."
-    },
-    "message": "Die Dorfbewohner schlagen ein Fest vor. Ein kurzer Trost, um ihre Müdigkeit zu lindern und ihre Gedanken zu beruhigen.",
-    "title": "Dorffest"
-  },
   "merchant": {
     "choices": {
       "say_goodbye": {
@@ -1139,6 +1137,10 @@
         }
       }
     }
+  },
+  "ninthWave": {
+    "message": "Mit unerbittlichem Hunger strömt eine noch größere Masse bleicher Kreaturen auf die Stadt zu.",
+    "title": "Die neunte Welle"
   },
   "nordicWarAxe": {
     "choices": {
@@ -1404,6 +1406,230 @@
     "message": "Der Ritter kehrt zurück, seine Rüstung zerkratzt und zerschunden. 'Ich fand etwas Außergewöhnliches in den Bergen', sagt er. 'Ich werde dir davon erzählen, für einen Preis.'",
     "title": "Rückkehr aus den Bergen"
   },
+  "riddleOfAges": {
+    "title": "Stimmen in der Dunkelheit",
+    "message": {
+      "original": "Die verhüllte Gestalt kehrt im blassen Mondlicht zum Anwesen zurück. Ihre Stimme hallt wider: 'Am Morgen geht es auf vier Füßen, am Mittag auf zwei, am Abend auf drei.'",
+      "variant": "Die verhüllte Gestalt kehrt im blassen Mondlicht zum Anwesen zurück. Ihre Stimme hallt wider: 'Kann dir nichts tun, hinterlässt aber Narben.'"
+    },
+    "choices": {
+      "answerEarth": {
+        "label": "Erde"
+      },
+      "answerWolf": {
+        "label": "Wolf"
+      },
+      "answerMan": {
+        "label": "Mensch"
+      },
+      "answerBird": {
+        "label": "Vogel"
+      },
+      "timeout": {
+        "label": "Keine Antwort gegeben"
+      }
+    },
+    "log": {
+      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
+      "success_second": "Die Gestalt nickt kaum merklich und verschwindet in der Nacht. Im Morgengrauen liegt ein verwitterter Lederbeutel mit Gold dort, wo sie stand."
+    }
+  },
+  "riddleOfAges_variant": {
+    "title": "Stimmen in der Dunkelheit",
+    "message": {
+      "original": "Die verhüllte Gestalt kehrt im blassen Mondlicht zum Anwesen zurück. Ihre Stimme hallt wider: 'Am Morgen geht es auf vier Füßen, am Mittag auf zwei, am Abend auf drei.'",
+      "variant": "Die verhüllte Gestalt kehrt im blassen Mondlicht zum Anwesen zurück. Ihre Stimme hallt wider: 'Kann dir nichts tun, hinterlässt aber Narben.'"
+    },
+    "choices": {
+      "answerNightmares": {
+        "label": "Alpträume"
+      },
+      "answerTime": {
+        "label": "Berührung"
+      },
+      "answerLove": {
+        "label": "Messer"
+      },
+      "answerDeath": {
+        "label": "Begierde"
+      },
+      "timeout": {
+        "label": "Keine Antwort gegeben"
+      }
+    },
+    "log": {
+      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
+      "success_second": "Die Gestalt nickt kaum merklich und verschwindet in der Nacht. Im Morgengrauen liegt ein verwitterter Lederbeutel mit Gold dort, wo sie stand."
+    }
+  },
+  "riddleOfDevourer": {
+    "title": "Ein nächtlicher Besucher",
+    "message": {
+      "original": "Erneut erscheint die geheimnisvolle Gestalt am Anwesen. Sie flüstert mit tiefer Stimme: 'Es verschlingt alles, macht Knochen zu Staub, tötet Könige, zermürbt Berge, tilgt Städte aus.'",
+      "variant": "Erneut erscheint die geheimnisvolle Gestalt am Anwesen. Sie flüstert mit tiefer Stimme: 'Hat Finger, aber kein Fleisch, keine Federn, keine Schuppen, keinen Knochen.'"
+    },
+    "choices": {
+      "answerMan": {
+        "label": "Mensch"
+      },
+      "answerWater": {
+        "label": "Wasser"
+      },
+      "answerTime": {
+        "label": "Zeit"
+      },
+      "answerFire": {
+        "label": "Feuer"
+      },
+      "timeout": {
+        "label": "Keine Antwort gegeben"
+      }
+    },
+    "log": {
+      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
+      "success_third": "Die Gestalt neigt den Kopf in stiller Anerkennung und tritt zurück ins Dämmerlicht. Mit dem Morgen liegt ein abgenutzter Goldbeutel vor der Tür."
+    }
+  },
+  "riddleOfDevourer_variant": {
+    "title": "Ein nächtlicher Besucher",
+    "message": {
+      "original": "Erneut erscheint die geheimnisvolle Gestalt am Anwesen. Sie flüstert mit tiefer Stimme: 'Es verschlingt alles, macht Knochen zu Staub, tötet Könige, zermürbt Berge, tilgt Städte aus.'",
+      "variant": "Erneut erscheint die geheimnisvolle Gestalt am Anwesen. Sie flüstert mit tiefer Stimme: 'Hat Finger, aber kein Fleisch, keine Federn, keine Schuppen, keinen Knochen.'"
+    },
+    "choices": {
+      "answerFin": {
+        "label": "Flosse"
+      },
+      "answerWing": {
+        "label": "Flügel"
+      },
+      "answerGlove": {
+        "label": "Handschuh"
+      },
+      "answerHand": {
+        "label": "Hand"
+      },
+      "timeout": {
+        "label": "Keine Antwort gegeben"
+      }
+    },
+    "log": {
+      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
+      "success_third": "Die Gestalt neigt den Kopf in stiller Anerkennung und tritt zurück ins Dämmerlicht. Mit dem Morgen liegt ein abgenutzter Goldbeutel vor der Tür."
+    }
+  },
+  "riddleOfEternal": {
+    "title": "Der unbekannte Gast",
+    "message": {
+      "original": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme hallt lautlos durch die Nacht: 'Deine Augen sind offen, ich bin da; deine Augen sind geschlossen, ich bin auch da.'",
+      "variant": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme hallt lautlos durch die Nacht: 'Arme haben mich, Reiche brauchen mich. Isst du mich, stirbst du.'"
+    },
+    "choices": {
+      "answerLight": {
+        "label": "Licht"
+      },
+      "answerLife": {
+        "label": "Leben"
+      },
+      "answerDarkness": {
+        "label": "Dunkelheit"
+      },
+      "answerDeath": {
+        "label": "Tod"
+      },
+      "timeout": {
+        "label": "Keine Antwort gegeben"
+      }
+    },
+    "log": {
+      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
+      "success_fifth": "Die Gestalt verbeugt sich in stillem Respekt und verblasst vollständig. Ein großer Goldsack liegt dort auf dem Boden, wo sie stand."
+    }
+  },
+  "riddleOfEternal_variant": {
+    "title": "Der unbekannte Gast",
+    "message": {
+      "original": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme hallt lautlos durch die Nacht: 'Deine Augen sind offen, ich bin da; deine Augen sind geschlossen, ich bin auch da.'",
+      "variant": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme hallt lautlos durch die Nacht: 'Arme haben mich, Reiche brauchen mich. Isst du mich, stirbst du.'"
+    },
+    "choices": {
+      "answerPoison": {
+        "label": "Gift"
+      },
+      "answerAir": {
+        "label": "Gold"
+      },
+      "answerNothing": {
+        "label": "Nichts"
+      },
+      "answerTime": {
+        "label": "Zeit"
+      },
+      "timeout": {
+        "label": "Keine Antwort gegeben"
+      }
+    },
+    "log": {
+      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
+      "success_fifth": "Die Gestalt verbeugt sich in stillem Respekt und verblasst vollständig. Ein großer Goldsack liegt dort auf dem Boden, wo sie stand."
+    }
+  },
+  "riddleOfTears": {
+    "title": "Ein vermummter Gast",
+    "message": {
+      "original": "Die gehüllte Gestalt erscheint erneut am Anwesen. Sie flüstert: 'Fliegt ohne Flügel, weint ohne Augen, Finsternis folgt ihm, wohin es geht.'",
+      "variant": "Die gehüllte Gestalt erscheint erneut am Anwesen. Sie flüstert: 'Weich, zart, seidig, aber wenn du in mich gehüllt bist, schreist du.'"
+    },
+    "choices": {
+      "answerNight": {
+        "label": "Nacht"
+      },
+      "answerWind": {
+        "label": "Wind"
+      },
+      "answerClouds": {
+        "label": "Wolken"
+      },
+      "answerShadow": {
+        "label": "Schatten"
+      },
+      "timeout": {
+        "label": "Keine Antwort gegeben"
+      }
+    },
+    "log": {
+      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
+      "success_fourth": "Die Gestalt senkt kurz den verhüllten Kopf, bevor sie sich in den Schatten auflöst. Ein kleiner Goldsack bleibt auf dem kalten Boden zurück."
+    }
+  },
+  "riddleOfTears_variant": {
+    "title": "Ein vermummter Gast",
+    "message": {
+      "original": "Die gehüllte Gestalt erscheint erneut am Anwesen. Sie flüstert: 'Fliegt ohne Flügel, weint ohne Augen, Finsternis folgt ihm, wohin es geht.'",
+      "variant": "Die gehüllte Gestalt erscheint erneut am Anwesen. Sie flüstert: 'Weich, zart, seidig, aber wenn du in mich gehüllt bist, schreist du.'"
+    },
+    "choices": {
+      "answerNightmares": {
+        "label": "Alpträume"
+      },
+      "answerCobweb": {
+        "label": "Spinnennetz"
+      },
+      "answerSilk": {
+        "label": "Seide"
+      },
+      "answerDeath": {
+        "label": "Tod"
+      },
+      "timeout": {
+        "label": "Keine Antwort gegeben"
+      }
+    },
+    "log": {
+      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
+      "success_fourth": "Die Gestalt senkt kurz den verhüllten Kopf, bevor sie sich in den Schatten auflöst. Ein kleiner Goldsack bleibt auf dem kalten Boden zurück."
+    }
+  },
   "ringOfDrownedChoice": {
     "choices": {
       "doNothing": {
@@ -1453,6 +1679,14 @@
     "message": "Der blinde Druide tritt hervor: 'Das Heiligtum ist vollendet', sagt er, seine Stimme trägt das Gewicht alter Weisheit. 'Nun musst du wählen: Vertiefe deine Hingabe an den Pfad, den du gewählt hast, oder umarme alle Götter und ihre Gaben. Wähle weise.'",
     "title": "Die Weihe des Heiligtums"
   },
+  "secondWave": {
+    "message": "Die Kreaturen kehren in noch größerer Zahl zurück, mit Waffen aus rohem Knochen, die von üblem Licht erfüllt sind.",
+    "title": "Die zweite Welle"
+  },
+  "seventhWave": {
+    "message": "Die Kreaturen rücken erneut vor, ein wogender Teppich aus Gliedmaßen und Zähnen, der auf die Stadt zukriecht.",
+    "title": "Die siebte Welle"
+  },
   "shadowFluteChoice": {
     "choices": {
       "doNothing": {
@@ -1494,6 +1728,10 @@
     },
     "message": "Die einäugige Krähe kehrt von den Küstenfischern mit getrocknetem Fisch als Geschenk zurück. Die Fischer bieten an, dir die Geheimnisse mächtiger Fischfallen für 250 Gold beizubringen.",
     "title": "Nachricht von den Küstenfischern"
+  },
+  "sixthWave": {
+    "message": "Der Höhleneingang speit eine weitere Flut bleicher Körper hervor. Knochenspeere klappern wie Regen, während sie sich für einen weiteren Angriff sammeln.",
+    "title": "Die sechste Welle"
   },
   "skinCrawling": {
     "choices": {
@@ -1613,14 +1851,13 @@
     "message": "Kurz nachdem der Tempel gebaut wurde, erscheint der blinde Druide. Seine milchigen Augen scheinen durch deine Seele zu blicken, als er spricht: 'Der Tempel muss einem Gott geweiht werden. Wähle weise.'",
     "title": "Der blinde Druide kehrt zurück"
   },
-  "traderSettles": {
-    "choices": {
-      "continue": {
-        "label": "Weiter"
-      }
-    },
-    "message": "Ein Händler kommt mit seiner Familie ins Dorf. Sie sehen erschöpft aus, ihre Gesichter gezeichnet von Jahren auf der Straße. Endlich sind sie bereit, sesshaft zu werden.",
-    "title": "Der Händler"
+  "tenthWave": {
+    "message": "Aus den tiefsten Tiefen der Höhle bricht eine unvorstellbare Masse bleicher Kreaturen hervor. Sie fluten das Land wie eine lebende Flut, während die Stadt sich auf die Vernichtung vorbereitet.",
+    "title": "Die letzte Welle"
+  },
+  "thirdWave": {
+    "message": "Horden bleicher Kreaturen strömen aus der Höhle; Schreie erschüttern selbst die Steine, ihre Knochenwaffen zerschlagen den Boden.",
+    "title": "Die dritte Welle"
   },
   "traders_daughter": {
     "choices": {
@@ -1684,6 +1921,15 @@
     },
     "message": "Der Sohn des Händlers kehrt mit dem Dolch seines Vaters zurück. Er ist voller Dankbarkeit und bietet dir einen großen Rabatt auf deinen nächsten Kauf der Waren seines Vaters an.",
     "title": "Die Dankbarkeit des Händler-Sohns"
+  },
+  "traderSettles": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "message": "Ein Händler kommt mit seiner Familie ins Dorf. Sie sehen erschöpft aus, ihre Gesichter gezeichnet von Jahren auf der Straße. Endlich sind sie bereit, sesshaft zu werden.",
+    "title": "Der Händler"
   },
   "undergroundLakeCreature": {
     "choices": {
@@ -1801,6 +2047,23 @@
     "message": "Ein Dorfältester tritt an dich heran. Er spricht leise. 'Du stehst am Beginn eines langen Pfades voller Prüfungen. Sehr bald musst du wählen, ob du diese Reise fortsetzen willst.'",
     "title": "Die Warnung des Ältesten"
   },
+  "villagersStareAtSky": {
+    "choices": {
+      "look_up_too": {
+        "label": "In den Himmel starren"
+      },
+      "shake_them": {
+        "label": "Sie wecken"
+      }
+    },
+    "log": {
+      "outcome0": "Du packst den nächsten Dorfbewohner und schüttelst ihn. Er blinzelt einmal und wird wieder normal, flüstert jedoch 'Es kommt', bevor er seine Arbeit fortsetzt. Die anderen folgen langsam.",
+      "outcome1": "Als du einen Dorfbewohner berührst, zerfällt er zu Staub. Die anderen erwachen aus ihrer Trance und schreien, während sie zum Himmel zeigen. Für einen Augenblick siehst auch du es: etwas Gewaltiges und Hungriges, das von oben herab beobachtet.",
+      "outcome2": "Du reckst den Hals zum Himmel und siehst es plötzlich: etwas Unermessliches und Unmögliches, das zwischen den Wolken existiert. Dein Geist weist zurück, was er bezeugt, doch das Bild brennt sich für immer in dein Gedächtnis."
+    },
+    "message": "Alle Dorfbewohner haben ihre Arbeit eingestellt und stehen reglos da, den leeren Himmel anstarrend. Stundenlang bleiben sie so, ohne zu blinzeln, während Tränen aus schwarzer Flüssigkeit über ihre Gesichter laufen. Wenn du ihrem Blick folgst, siehst du nur gewöhnliche Wolken, doch etwas fühlt sich furchtbar falsch an.",
+    "title": "Blick zum Himmel"
+  },
   "villagerStares": {
     "choices": {
       "avoid": {
@@ -1818,22 +2081,23 @@
     "message": "Einer der Dorfbewohner hat begonnen, stundenlang ins Nichts zu starren. Wenn du dich näherst, sind seine Augen vollkommen schwarz. Er lächelt, sobald er bemerkt, dass du ihn beobachtest.",
     "title": "Hohle Blicke"
   },
-  "villagersStareAtSky": {
+  "wandering_collector": {
     "choices": {
-      "look_up_too": {
-        "label": "In den Himmel starren"
-      },
-      "shake_them": {
-        "label": "Sie wecken"
+      "sell_nothing": {
+        "label": "Nichts"
       }
     },
     "log": {
-      "outcome0": "Du packst den nächsten Dorfbewohner und schüttelst ihn. Er blinzelt einmal und wird wieder normal, flüstert jedoch 'Es kommt', bevor er seine Arbeit fortsetzt. Die anderen folgen langsam.",
-      "outcome1": "Als du einen Dorfbewohner berührst, zerfällt er zu Staub. Die anderen erwachen aus ihrer Trance und schreien, während sie zum Himmel zeigen. Für einen Augenblick siehst auch du es: etwas Gewaltiges und Hungriges, das von oben herab beobachtet.",
-      "outcome2": "Du reckst den Hals zum Himmel und siehst es plötzlich: etwas Unermessliches und Unmögliches, das zwischen den Wolken existiert. Dein Geist weist zurück, was er bezeugt, doch das Bild brennt sich für immer in dein Gedächtnis."
+      "whisper0": "Der Sammler seufzt und wendet sich ab. „Auf meinen Reisen habe ich viele Relikte der alten Zivilisation entdeckt. Sie waren weit fortgeschrittener als wir je waren“, flüstert er, bevor er in der Dunkelheit verschwindet.",
+      "whisper1": "Ein leises Summen dringt unter der Kapuze hervor. „Die große Explosion zerstörte die meisten Artefakte der alten Zivilisation. Was übrig blieb, ist verstreut und selten“, murmelt er.",
+      "whisper2": "Ein schwacher Atem entweicht dem Sammler. „Ich habe auf meinen Reisen viel über die alte Zivilisation gelernt. Vor der großen Explosion gab es keine Magie in dieser Welt. Sie wurde in jenem Moment geboren“, flüstert er, während er geht."
     },
-    "message": "Alle Dorfbewohner haben ihre Arbeit eingestellt und stehen reglos da, den leeren Himmel anstarrend. Stundenlang bleiben sie so, ohne zu blinzeln, während Tränen aus schwarzer Flüssigkeit über ihre Gesichter laufen. Wenn du ihrem Blick folgst, siehst du nur gewöhnliche Wolken, doch etwas fühlt sich furchtbar falsch an.",
-    "title": "Blick zum Himmel"
+    "title": "Der wandernde Sammler",
+    "message": {
+      "visit0": "Eine Gestalt in zerrissenen Roben nähert sich. Sie scheint fasziniert von dem, was du gesammelt hast. \"Ich spüre Wert unter deinen Besitztümern\", murmelt sie. \"Erlaube mir, eines mitzunehmen — im Tausch gegen {{reward}} Gold.\"",
+      "visit1": "Die verhüllte Gestalt kehrt zurück, ihre Schritte lautlos auf dem Boden. \"Mehr Artefakte, mehr Geheimnisse\", flüstert sie. \"Lass mich wieder eines nehmen, und dein Beutel wird um {{reward}} Gold schwerer.\"",
+      "visit2": "Der Sammler erscheint erneut, Augen glühend unter der Kapuze. \"Unsere Geschäfte neigen sich dem Ende zu\", sagt sie leise. \"Verkaufe mir noch eines, und {{reward}} Gold soll dein sein.\""
+    }
   },
   "wanderingFirecrafter": {
     "choices": {
@@ -1876,22 +2140,60 @@
     "message": "Ein kleiner Nomadenstamm nähert sich dem Dorf. Ihr Anführer spricht: 'Wir sind weit gereist und suchen einen Ort, den wir Heimat nennen können. Hilf uns, sesshaft zu werden, und wir lehren dein Volk, Fellzelte aufzurichten.'",
     "title": "Der wandernde Stamm"
   },
-  "wandering_collector": {
+  "whispererInTheDark": {
+    "title": "Flüsterer in der Dunkelheit",
+    "message": {
+      "original": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: 'Stimmlos schreit es, flügellos flattert es, zahnlos beißt es, mundlos murmelt es.'",
+      "variant": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: 'Der Wunsch einer Dame, gewachsen in der Finsternis, leuchtend mit blasslichem Licht.'"
+    },
     "choices": {
-      "sell_nothing": {
-        "label": "Nichts"
+      "answerFire": {
+        "label": "Feuer"
+      },
+      "answerWaves": {
+        "label": "Wellen"
+      },
+      "answerWind": {
+        "label": "Wind"
+      },
+      "answerDarkness": {
+        "label": "Dunkelheit"
+      },
+      "timeout": {
+        "label": "Keine Antwort gegeben"
       }
     },
     "log": {
-      "whisper0": "Der Sammler seufzt und wendet sich ab. „Auf meinen Reisen habe ich viele Relikte der alten Zivilisation entdeckt. Sie waren weit fortgeschrittener als wir je waren“, flüstert er, bevor er in der Dunkelheit verschwindet.",
-      "whisper1": "Ein leises Summen dringt unter der Kapuze hervor. „Die große Explosion zerstörte die meisten Artefakte der alten Zivilisation. Was übrig blieb, ist verstreut und selten“, murmelt er.",
-      "whisper2": "Ein schwacher Atem entweicht dem Sammler. „Ich habe auf meinen Reisen viel über die alte Zivilisation gelernt. Vor der großen Explosion gab es keine Magie in dieser Welt. Sie wurde in jenem Moment geboren“, flüstert er, während er geht."
-    },
-    "title": "Der wandernde Sammler",
+      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
+      "success_first": "Die Gestalt nickt leicht und verblasst in der Dunkelheit. Am Morgen liegt ein kleiner Beutel Gold auf der Schwelle des Anwesens."
+    }
+  },
+  "whispererInTheDark_variant": {
+    "title": "Flüsterer in der Dunkelheit",
     "message": {
-      "visit0": "Eine Gestalt in zerrissenen Roben nähert sich. Sie scheint fasziniert von dem, was du gesammelt hast. \"Ich spüre Wert unter deinen Besitztümern\", murmelt sie. \"Erlaube mir, eines mitzunehmen — im Tausch gegen {{reward}} Gold.\"",
-      "visit1": "Die verhüllte Gestalt kehrt zurück, ihre Schritte lautlos auf dem Boden. \"Mehr Artefakte, mehr Geheimnisse\", flüstert sie. \"Lass mich wieder eines nehmen, und dein Beutel wird um {{reward}} Gold schwerer.\"",
-      "visit2": "Der Sammler erscheint erneut, Augen glühend unter der Kapuze. \"Unsere Geschäfte neigen sich dem Ende zu\", sagt sie leise. \"Verkaufe mir noch eines, und {{reward}} Gold soll dein sein.\""
+      "original": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: 'Stimmlos schreit es, flügellos flattert es, zahnlos beißt es, mundlos murmelt es.'",
+      "variant": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: 'Der Wunsch einer Dame, gewachsen in der Finsternis, leuchtend mit blasslichem Licht.'"
+    },
+    "choices": {
+      "answerSilver": {
+        "label": "Silber"
+      },
+      "answerPearl": {
+        "label": "Perle"
+      },
+      "answerGold": {
+        "label": "Gold"
+      },
+      "answerDiamond": {
+        "label": "Diamant"
+      },
+      "timeout": {
+        "label": "Keine Antwort gegeben"
+      }
+    },
+    "log": {
+      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
+      "success_first": "Die Gestalt nickt leicht und verblasst in der Dunkelheit. Am Morgen liegt ein kleiner Beutel Gold auf der Schwelle des Anwesens."
     }
   },
   "whisperersReward": {
@@ -2145,285 +2447,5 @@
     },
     "message": "Eine junge Frau tritt an dich heran, Tränen strömen über ihr Gesicht. 'Meine beiden Eltern wurden diesem verfluchten Monolithen geopfert', ruft sie. 'Dieses barbarische Verhalten muss aufhören!'",
     "title": "Die Bitte der jungen Frau"
-  },
-  "whispererInTheDark": {
-    "title": "Flüsterer in der Dunkelheit",
-    "message": {
-      "original": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: 'Stimmlos schreit es, flügellos flattert es, zahnlos beißt es, mundlos murmelt es.'",
-      "variant": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: 'Der Wunsch einer Dame, gewachsen in der Finsternis, leuchtend mit blasslichem Licht.'"
-    },
-    "choices": {
-      "answerFire": {
-        "label": "Feuer"
-      },
-      "answerWaves": {
-        "label": "Wellen"
-      },
-      "answerWind": {
-        "label": "Wind"
-      },
-      "answerDarkness": {
-        "label": "Dunkelheit"
-      },
-      "timeout": {
-        "label": "Keine Antwort gegeben"
-      }
-    },
-    "log": {
-      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
-      "success_first": "Die Gestalt nickt leicht und verblasst in der Dunkelheit. Am Morgen liegt ein kleiner Beutel Gold auf der Schwelle des Anwesens."
-    }
-  },
-  "whispererInTheDark_variant": {
-    "title": "Flüsterer in der Dunkelheit",
-    "message": {
-      "original": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: 'Stimmlos schreit es, flügellos flattert es, zahnlos beißt es, mundlos murmelt es.'",
-      "variant": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: 'Der Wunsch einer Dame, gewachsen in der Finsternis, leuchtend mit blasslichem Licht.'"
-    },
-    "choices": {
-      "answerSilver": {
-        "label": "Silber"
-      },
-      "answerPearl": {
-        "label": "Perle"
-      },
-      "answerGold": {
-        "label": "Gold"
-      },
-      "answerDiamond": {
-        "label": "Diamant"
-      },
-      "timeout": {
-        "label": "Keine Antwort gegeben"
-      }
-    },
-    "log": {
-      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
-      "success_first": "Die Gestalt nickt leicht und verblasst in der Dunkelheit. Am Morgen liegt ein kleiner Beutel Gold auf der Schwelle des Anwesens."
-    }
-  },
-  "riddleOfAges": {
-    "title": "Stimmen in der Dunkelheit",
-    "message": {
-      "original": "Die verhüllte Gestalt kehrt im blassen Mondlicht zum Anwesen zurück. Ihre Stimme hallt wider: 'Am Morgen geht es auf vier Füßen, am Mittag auf zwei, am Abend auf drei.'",
-      "variant": "Die verhüllte Gestalt kehrt im blassen Mondlicht zum Anwesen zurück. Ihre Stimme hallt wider: 'Kann dir nichts tun, hinterlässt aber Narben.'"
-    },
-    "choices": {
-      "answerEarth": {
-        "label": "Erde"
-      },
-      "answerWolf": {
-        "label": "Wolf"
-      },
-      "answerMan": {
-        "label": "Mensch"
-      },
-      "answerBird": {
-        "label": "Vogel"
-      },
-      "timeout": {
-        "label": "Keine Antwort gegeben"
-      }
-    },
-    "log": {
-      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
-      "success_second": "Die Gestalt nickt kaum merklich und verschwindet in der Nacht. Im Morgengrauen liegt ein verwitterter Lederbeutel mit Gold dort, wo sie stand."
-    }
-  },
-  "riddleOfAges_variant": {
-    "title": "Stimmen in der Dunkelheit",
-    "message": {
-      "original": "Die verhüllte Gestalt kehrt im blassen Mondlicht zum Anwesen zurück. Ihre Stimme hallt wider: 'Am Morgen geht es auf vier Füßen, am Mittag auf zwei, am Abend auf drei.'",
-      "variant": "Die verhüllte Gestalt kehrt im blassen Mondlicht zum Anwesen zurück. Ihre Stimme hallt wider: 'Kann dir nichts tun, hinterlässt aber Narben.'"
-    },
-    "choices": {
-      "answerNightmares": {
-        "label": "Alpträume"
-      },
-      "answerTime": {
-        "label": "Berührung"
-      },
-      "answerLove": {
-        "label": "Messer"
-      },
-      "answerDeath": {
-        "label": "Begierde"
-      },
-      "timeout": {
-        "label": "Keine Antwort gegeben"
-      }
-    },
-    "log": {
-      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
-      "success_second": "Die Gestalt nickt kaum merklich und verschwindet in der Nacht. Im Morgengrauen liegt ein verwitterter Lederbeutel mit Gold dort, wo sie stand."
-    }
-  },
-  "riddleOfDevourer": {
-    "title": "Ein nächtlicher Besucher",
-    "message": {
-      "original": "Erneut erscheint die geheimnisvolle Gestalt am Anwesen. Sie flüstert mit tiefer Stimme: 'Es verschlingt alles, macht Knochen zu Staub, tötet Könige, zermürbt Berge, tilgt Städte aus.'",
-      "variant": "Erneut erscheint die geheimnisvolle Gestalt am Anwesen. Sie flüstert mit tiefer Stimme: 'Hat Finger, aber kein Fleisch, keine Federn, keine Schuppen, keinen Knochen.'"
-    },
-    "choices": {
-      "answerMan": {
-        "label": "Mensch"
-      },
-      "answerWater": {
-        "label": "Wasser"
-      },
-      "answerTime": {
-        "label": "Zeit"
-      },
-      "answerFire": {
-        "label": "Feuer"
-      },
-      "timeout": {
-        "label": "Keine Antwort gegeben"
-      }
-    },
-    "log": {
-      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
-      "success_third": "Die Gestalt neigt den Kopf in stiller Anerkennung und tritt zurück ins Dämmerlicht. Mit dem Morgen liegt ein abgenutzter Goldbeutel vor der Tür."
-    }
-  },
-  "riddleOfDevourer_variant": {
-    "title": "Ein nächtlicher Besucher",
-    "message": {
-      "original": "Erneut erscheint die geheimnisvolle Gestalt am Anwesen. Sie flüstert mit tiefer Stimme: 'Es verschlingt alles, macht Knochen zu Staub, tötet Könige, zermürbt Berge, tilgt Städte aus.'",
-      "variant": "Erneut erscheint die geheimnisvolle Gestalt am Anwesen. Sie flüstert mit tiefer Stimme: 'Hat Finger, aber kein Fleisch, keine Federn, keine Schuppen, keinen Knochen.'"
-    },
-    "choices": {
-      "answerFin": {
-        "label": "Flosse"
-      },
-      "answerWing": {
-        "label": "Flügel"
-      },
-      "answerGlove": {
-        "label": "Handschuh"
-      },
-      "answerHand": {
-        "label": "Hand"
-      },
-      "timeout": {
-        "label": "Keine Antwort gegeben"
-      }
-    },
-    "log": {
-      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
-      "success_third": "Die Gestalt neigt den Kopf in stiller Anerkennung und tritt zurück ins Dämmerlicht. Mit dem Morgen liegt ein abgenutzter Goldbeutel vor der Tür."
-    }
-  },
-  "riddleOfTears": {
-    "title": "Ein vermummter Gast",
-    "message": {
-      "original": "Die gehüllte Gestalt erscheint erneut am Anwesen. Sie flüstert: 'Fliegt ohne Flügel, weint ohne Augen, Finsternis folgt ihm, wohin es geht.'",
-      "variant": "Die gehüllte Gestalt erscheint erneut am Anwesen. Sie flüstert: 'Weich, zart, seidig, aber wenn du in mich gehüllt bist, schreist du.'"
-    },
-    "choices": {
-      "answerNight": {
-        "label": "Nacht"
-      },
-      "answerWind": {
-        "label": "Wind"
-      },
-      "answerClouds": {
-        "label": "Wolken"
-      },
-      "answerShadow": {
-        "label": "Schatten"
-      },
-      "timeout": {
-        "label": "Keine Antwort gegeben"
-      }
-    },
-    "log": {
-      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
-      "success_fourth": "Die Gestalt senkt kurz den verhüllten Kopf, bevor sie sich in den Schatten auflöst. Ein kleiner Goldsack bleibt auf dem kalten Boden zurück."
-    }
-  },
-  "riddleOfTears_variant": {
-    "title": "Ein vermummter Gast",
-    "message": {
-      "original": "Die gehüllte Gestalt erscheint erneut am Anwesen. Sie flüstert: 'Fliegt ohne Flügel, weint ohne Augen, Finsternis folgt ihm, wohin es geht.'",
-      "variant": "Die gehüllte Gestalt erscheint erneut am Anwesen. Sie flüstert: 'Weich, zart, seidig, aber wenn du in mich gehüllt bist, schreist du.'"
-    },
-    "choices": {
-      "answerNightmares": {
-        "label": "Alpträume"
-      },
-      "answerCobweb": {
-        "label": "Spinnennetz"
-      },
-      "answerSilk": {
-        "label": "Seide"
-      },
-      "answerDeath": {
-        "label": "Tod"
-      },
-      "timeout": {
-        "label": "Keine Antwort gegeben"
-      }
-    },
-    "log": {
-      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
-      "success_fourth": "Die Gestalt senkt kurz den verhüllten Kopf, bevor sie sich in den Schatten auflöst. Ein kleiner Goldsack bleibt auf dem kalten Boden zurück."
-    }
-  },
-  "riddleOfEternal": {
-    "title": "Der unbekannte Gast",
-    "message": {
-      "original": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme hallt lautlos durch die Nacht: 'Deine Augen sind offen, ich bin da; deine Augen sind geschlossen, ich bin auch da.'",
-      "variant": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme hallt lautlos durch die Nacht: 'Arme haben mich, Reiche brauchen mich. Isst du mich, stirbst du.'"
-    },
-    "choices": {
-      "answerLight": {
-        "label": "Licht"
-      },
-      "answerLife": {
-        "label": "Leben"
-      },
-      "answerDarkness": {
-        "label": "Dunkelheit"
-      },
-      "answerDeath": {
-        "label": "Tod"
-      },
-      "timeout": {
-        "label": "Keine Antwort gegeben"
-      }
-    },
-    "log": {
-      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
-      "success_fifth": "Die Gestalt verbeugt sich in stillem Respekt und verblasst vollständig. Ein großer Goldsack liegt dort auf dem Boden, wo sie stand."
-    }
-  },
-  "riddleOfEternal_variant": {
-    "title": "Der unbekannte Gast",
-    "message": {
-      "original": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme hallt lautlos durch die Nacht: 'Deine Augen sind offen, ich bin da; deine Augen sind geschlossen, ich bin auch da.'",
-      "variant": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme hallt lautlos durch die Nacht: 'Arme haben mich, Reiche brauchen mich. Isst du mich, stirbst du.'"
-    },
-    "choices": {
-      "answerPoison": {
-        "label": "Gift"
-      },
-      "answerAir": {
-        "label": "Gold"
-      },
-      "answerNothing": {
-        "label": "Nichts"
-      },
-      "answerTime": {
-        "label": "Zeit"
-      },
-      "timeout": {
-        "label": "Keine Antwort gegeben"
-      }
-    },
-    "log": {
-      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
-      "success_fifth": "Die Gestalt verbeugt sich in stillem Respekt und verblasst vollständig. Ein großer Goldsack liegt dort auf dem Boden, wo sie stand."
-    }
   }
 }

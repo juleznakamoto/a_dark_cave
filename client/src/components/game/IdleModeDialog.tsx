@@ -20,6 +20,7 @@ import { resetProductionCycle } from "@/game/loop";
 import { BOMB_RESOURCES, capResourceToLimit } from "@/game/resourceLimits";
 import type { GameState } from "@shared/schema";
 import { useTranslation } from "react-i18next";
+import { getResourceName } from "@/i18n/resolveGameText";
 
 /** Match live play: limited resources cannot exceed storage cap during sleep simulation. */
 function clampSimulatedResourcesToStorage(
@@ -552,17 +553,19 @@ export default function IdleModeDialog() {
         .filter(([_, amount]) => Math.floor(amount) !== 0)
         .map(
           ([resource, amount]) =>
-            `${capitalizeWords(resource)}: ${Math.floor(amount) > 0 ? "+" : ""}${Math.floor(amount)}`,
+            `${getResourceName(resource, capitalizeWords(resource))}: ${Math.floor(amount) > 0 ? "+" : ""}${Math.floor(amount)}`,
         )
         .join(", ");
 
       if (resourcesList) {
-        let restMsg =
+        const restMsg =
           hoursSlept > 0
-            ? `You gained ${focusToAdd} Focus from your rest. `
+            ? `${t("idleMode.focusGainedLog", { count: focusToAdd })} `
             : "";
 
-        logMessages.push(`${restMsg}Villagers produced: ${resourcesList}`);
+        logMessages.push(
+          `${restMsg}${t("idleMode.villagersProducedLog", { resources: resourcesList })}`,
+        );
       }
     }
 
@@ -658,6 +661,9 @@ export default function IdleModeDialog() {
         <div className="py-1.5 border-border text-xs space-y-0.5">
           {displayResources.map((resource) => {
             const isFocus = resource === "Focus";
+            const resourceLabel = isFocus
+              ? t("estate.focus")
+              : getResourceName(resource, capitalizeWords(resource));
             const currentAmount = isFocus
               ? focusPoints
               : Math.floor(
@@ -683,7 +689,7 @@ export default function IdleModeDialog() {
                 }}
               >
                 <div className="text-gray-400 truncate">
-                  {capitalizeWords(resource)}
+                  {resourceLabel}
                 </div>
                 <div className="text-right font-mono text-gray-300 tabular-nums flex justify-end">
                   {currentAmount < 0 && "-"}

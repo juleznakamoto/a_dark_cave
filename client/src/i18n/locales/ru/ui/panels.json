@@ -171,7 +171,8 @@
     "title": "Записки выжившего",
     "notUnlocked": "Еще не открыто.",
     "chartUnavailable": "График недоступен",
-    "claim": "Забрать"
+    "claim": "Забрать",
+    "completeLog": "Достижение завершено: {{name}}: {{rewards}}"
   },
   "idleMode": {
     "title": "Режим сна",

@@ -73,6 +73,22 @@
     },
     "title": "Drained Bodies"
   },
+  "bloodiedAwakening": {
+    "choices": {
+      "investigateMurders": {
+        "label": "Investigate Murders"
+      },
+      "severFinger": {
+        "label": "Sever finger"
+      }
+    },
+    "log": {
+      "outcome0": "As you follow muddy footprints through the village, they lead to each murder scene, one after another. The prints match your own boots. The horror dawns slowly - it was you, possessed by the ring's hunger. When the villagers discover the truth, eighteen flee, unwilling to remain near such a cursed creature.",
+      "outcome1": "With trembling hands, you raise your axe. The ring pulses as the blade falls. Agony tears through your arm as bone shatters. Lifting the severed finger, you see small black threads, like tentacles, sunk deep into its flesh."
+    },
+    "message": "You wake as dawn breaks, your clothes soaked in fresh blood. It is not yours. A villager arrives at the estate, face pale with horror. 'Eight are dead,' he whispers. 'Torn apart in the night.' The ring on your finger throbs with agonizing pain.",
+    "title": "Bloodied Awakening"
+  },
   "bloodInWater": {
     "message": "The village water runs red for three days. The villagers don't seem to notice, drinking it as if nothing has changed. You taste copper and iron, but they claim it tastes like the sweetest spring water."
   },
@@ -96,22 +112,6 @@
       "default": "The moon at night turned blood red, village elders speak of lycanthropes. Ancient pacts demand a sacrifice of {{sacrificeAmount}} villagers to appease the beasts. If you refuse, they will ensure their hunger is satisfied."
     },
     "title": "Blood Moon"
-  },
-  "bloodiedAwakening": {
-    "choices": {
-      "investigateMurders": {
-        "label": "Investigate Murders"
-      },
-      "severFinger": {
-        "label": "Sever finger"
-      }
-    },
-    "log": {
-      "outcome0": "As you follow muddy footprints through the village, they lead to each murder scene, one after another. The prints match your own boots. The horror dawns slowly - it was you, possessed by the ring's hunger. When the villagers discover the truth, eighteen flee, unwilling to remain near such a cursed creature.",
-      "outcome1": "With trembling hands, you raise your axe. The ring pulses as the blade falls. Agony tears through your arm as bone shatters. Lifting the severed finger, you see small black threads, like tentacles, sunk deep into its flesh."
-    },
-    "message": "You wake as dawn breaks, your clothes soaked in fresh blood. It is not yours. A villager arrives at the estate, face pale with horror. 'Eight are dead,' he whispers. 'Torn apart in the night.' The ring on your finger throbs with agonizing pain.",
-    "title": "Bloodied Awakening"
   },
   "bloodstainedBeltChoice": {
     "choices": {
@@ -166,6 +166,28 @@
     },
     "message": "The earth trembles as skeletal creatures emerge from the forest. The Bone Devourer has used the bones you traded to forge an unholy legion. With hollow eyes and sharpened bone weapons, they approach the city.",
     "title": "The Bone Army"
+  },
+  "boneDevourer": {
+    "title": "The Bone Devourer",
+    "message": {
+      "firstTime": "A deformed creature shuffles to the gates, its hunched form covered in pale, stretched skin. It speaks in a rasping voice: 'I seek bones. I pay {{silverReward}} Silver.'",
+      "repeat": "The creature returns to the gates, its hunched form still covered in pale, stretched skin. It speaks in its familiar rasping voice: 'I seek bones. I pay {{silverReward}} Silver.'"
+    },
+    "choices": {
+      "sellBones": {
+        "label": "Sell {{boneCost}} Bones",
+        "cost": "{{boneCost}} bones"
+      },
+      "refuse": {
+        "label": "Refuse trade"
+      }
+    },
+    "log": {
+      "outcome0": "You don't have enough bones for the trade.",
+      "outcome1": "The creature takes the bones with its gnarled hands, as if attempting to count them. It places a pouch of silver at your feet and disappears into the darkness.",
+      "outcome2": "You refuse the creature's offer. It hisses in displeasure and retreats into the shadows. You sense it will return.",
+      "outcome3": "Your indecision frustrates the creature. It hisses in displeasure and retreats into the shadows."
+    }
   },
   "boneDiceChoice": {
     "choices": {
@@ -503,6 +525,10 @@
       "outcome0": "You decline. The night passes without cheer, warmth, or laughter."
     }
   },
+  "eighthWave": {
+    "message": "The ground shudders under the weight of their numbers, as a new wave of the pale horde tightens its ring around the city.",
+    "title": "The Eighth Wave"
+  },
   "encounterBeyondPortal": {
     "choices": {
       "attempt_communication": {
@@ -567,6 +593,28 @@
     "message": "The wooden walls of your huts have begun showing faces - twisted, agonized expressions that seem to push through from the other side. They mouth silent screams and pleas. The villagers step around them as if they've always been there.",
     "title": "Faces in the Walls"
   },
+  "feast": {
+    "choices": {
+      "makeFeast": {
+        "cost": "{{foodCost}} food",
+        "label": "Spend {{foodCost}} Food"
+      },
+      "noFeast": {
+        "label": "Refuse feast"
+      },
+      "doNothing": {
+        "label": "No Decision Made"
+      }
+    },
+    "log": {
+      "outcome0": "You don't have enough food for the feast.",
+      "outcome1": "The villagers gather for a feast! Weariness fades and spirits rise, if only briefly.",
+      "outcome2": "You decline the feast proposal. The villagers accept your decision, though disappointed.",
+      "outcome3": "Time passes and the opportunity for a feast fades away."
+    },
+    "message": "The villagers propose organizing a feast. A short comfort to ease their weariness and quiet their minds.",
+    "title": "Village Feast"
+  },
   "feedingRing": {
     "choices": {
       "keepRing": {
@@ -582,6 +630,10 @@
     },
     "message": "You awaken in the dead of night, paralyzed. You sense a presence looming beside your bed, silent and unmoving. Before terror can take hold, sleep drags you back into the void. At dawn, you find an unfamiliar ring on one of your fingers.",
     "title": "The Night Terror"
+  },
+  "fifthWave": {
+    "message": "From the cave emerge countless pale figures, their forms unspeakable as they advance on the city.",
+    "title": "The Fifth Wave"
   },
   "findElderScroll": {
     "choices": {
@@ -603,45 +655,9 @@
     "message": "An older villager approaches you, his eyes heavy with knowledge. 'You have taken your first steps in this cruel world,' he says quietly. 'Soon, you will have to decide whether you are willing to face what lies ahead.'",
     "title": "The Village Elder"
   },
-  "eighthWave": {
-    "message": "The ground shudders under the weight of their numbers, as a new wave of the pale horde tightens its ring around the city.",
-    "title": "The Eighth Wave"
-  },
-  "fifthWave": {
-    "message": "From the cave emerge countless pale figures, their forms unspeakable as they advance on the city.",
-    "title": "The Fifth Wave"
-  },
   "firstWave": {
     "message": "Pale figures emerge from the cave, finally freed, their ember eyes cutting through the dark as they march towards the city.",
     "title": "The First Wave"
-  },
-  "fourthWave": {
-    "message": "The sky seems to darken as an uncountable mass of pale creatures surges from the cave, pressing towards the city.",
-    "title": "The Fourth Wave"
-  },
-  "ninthWave": {
-    "message": "With unrelenting hunger, an even larger mass of pale creatures surges toward the city.",
-    "title": "The Ninth Wave"
-  },
-  "secondWave": {
-    "message": "The creatures return in greater numbers, with weapons of crude bone, glowing with foul light.",
-    "title": "The Second Wave"
-  },
-  "seventhWave": {
-    "message": "The creatures advance again, a writhing carpet of limbs and teeth scraping toward the city.",
-    "title": "The Seventh Wave"
-  },
-  "sixthWave": {
-    "message": "The cave mouth vomits forth another tide of pale bodies. Bone spears clatter like rain as they mass for another assault.",
-    "title": "The Sixth Wave"
-  },
-  "tenthWave": {
-    "message": "From the deepest reaches of the cave, an unimaginable mass of pale creatures erupts. They flood over the land like a living tide, as the city braces for annihilation.",
-    "title": "The Final Wave"
-  },
-  "thirdWave": {
-    "message": "Hordes of pale creatures come from the cave; screams shake even the stones, their bone weapons cracking the ground.",
-    "title": "The Third Wave"
   },
   "forestTribeHelpRequest": {
     "choices": {
@@ -654,6 +670,10 @@
     },
     "message": "A wildling emerges from the forest, her pale body covered in tribal markings and scars. 'I come from a tribe in the woods,' she says urgently. 'Brutal beasts living in a cave in the woods attack us relentlessly. We face extinction. Please, help us survive.'",
     "title": "A Desperate Plea"
+  },
+  "fourthWave": {
+    "message": "The sky seems to darken as an uncountable mass of pale creatures surges from the cave, pressing towards the city.",
+    "title": "The Fourth Wave"
   },
   "frostfall": {
     "choices": {
@@ -914,28 +934,6 @@
     "message": "The mercenary is back, and this time he brings more men. 'Times are tough,' he says with a grin. 'The price has gone up. 200 Gold, or things get messy.'",
     "title": "The Mercenary Returns"
   },
-  "feast": {
-    "choices": {
-      "makeFeast": {
-        "cost": "{{foodCost}} food",
-        "label": "Spend {{foodCost}} Food"
-      },
-      "noFeast": {
-        "label": "Refuse feast"
-      },
-      "doNothing": {
-        "label": "No Decision Made"
-      }
-    },
-    "log": {
-      "outcome0": "You don't have enough food for the feast.",
-      "outcome1": "The villagers gather for a feast! Weariness fades and spirits rise, if only briefly.",
-      "outcome2": "You decline the feast proposal. The villagers accept your decision, though disappointed.",
-      "outcome3": "Time passes and the opportunity for a feast fades away."
-    },
-    "message": "The villagers propose organizing a feast. A short comfort to ease their weariness and quiet their minds.",
-    "title": "Village Feast"
-  },
   "merchant": {
     "choices": {
       "say_goodbye": {
@@ -1139,6 +1137,10 @@
         }
       }
     }
+  },
+  "ninthWave": {
+    "message": "With unrelenting hunger, an even larger mass of pale creatures surges toward the city.",
+    "title": "The Ninth Wave"
   },
   "nordicWarAxe": {
     "choices": {
@@ -1404,6 +1406,230 @@
     "message": "The knight returns, his armor scratched and battered. 'I found something extraordinary in the mountains,' he says. I will tell you about it, for a price'",
     "title": "Return from the Mountains"
   },
+  "riddleOfAges": {
+    "title": "Voices in the Dark",
+    "message": {
+      "original": "The cloaked figure returns to the estate under the pale moonlight. Its voice echoes: 'Goes on four feet in the morning, two feet at noon, and three feet in the evening.'",
+      "variant": "The cloaked figure returns to the estate under the pale moonlight. Its voice echoes: 'Can't hurt you, but leaves you with scars.'"
+    },
+    "choices": {
+      "answerEarth": {
+        "label": "Earth"
+      },
+      "answerWolf": {
+        "label": "Wolf"
+      },
+      "answerMan": {
+        "label": "Man"
+      },
+      "answerBird": {
+        "label": "Bird"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_second": "The figure gives a faint nod and vanishes into the night. At dawn, a weathered leather pouch of gold lies where it stood."
+    }
+  },
+  "riddleOfAges_variant": {
+    "title": "Voices in the Dark",
+    "message": {
+      "original": "The cloaked figure returns to the estate under the pale moonlight. Its voice echoes: 'Goes on four feet in the morning, two feet at noon, and three feet in the evening.'",
+      "variant": "The cloaked figure returns to the estate under the pale moonlight. Its voice echoes: 'Can't hurt you, but leaves you with scars.'"
+    },
+    "choices": {
+      "answerNightmares": {
+        "label": "Nightmares"
+      },
+      "answerTime": {
+        "label": "Touch"
+      },
+      "answerLove": {
+        "label": "Knife"
+      },
+      "answerDeath": {
+        "label": "Lust"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_second": "The figure gives a faint nod and vanishes into the night. At dawn, a weathered leather pouch of gold lies where it stood."
+    }
+  },
+  "riddleOfDevourer": {
+    "title": "A nightly Visitor",
+    "message": {
+      "original": "Once again, the mysterious figure appears at the estate. It whispers with a low voice: 'All things it devours, turns bones to dust, slays kings, wears mountains down, erases towns.'",
+      "variant": "Once again, the mysterious figure appears at the estate. It whispers with a low voice: 'Has fingers yet no flesh, no feathers, no scales, no bone.'"
+    },
+    "choices": {
+      "answerMan": {
+        "label": "Man"
+      },
+      "answerWater": {
+        "label": "Water"
+      },
+      "answerTime": {
+        "label": "Time"
+      },
+      "answerFire": {
+        "label": "Fire"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_third": "The figure tilts its head in quiet acknowledgment before stepping back into the dim. When morning comes, a worn coin purse of gold is found outside the door."
+    }
+  },
+  "riddleOfDevourer_variant": {
+    "title": "A nightly Visitor",
+    "message": {
+      "original": "Once again, the mysterious figure appears at the estate. It whispers with a low voice: 'All things it devours, turns bones to dust, slays kings, wears mountains down, erases towns.'",
+      "variant": "Once again, the mysterious figure appears at the estate. It whispers with a low voice: 'Has fingers yet no flesh, no feathers, no scales, no bone.'"
+    },
+    "choices": {
+      "answerFin": {
+        "label": "Fin"
+      },
+      "answerWing": {
+        "label": "Wing"
+      },
+      "answerGlove": {
+        "label": "Glove"
+      },
+      "answerHand": {
+        "label": "Hand"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_third": "The figure tilts its head in quiet acknowledgment before stepping back into the dim. When morning comes, a worn coin purse of gold is found outside the door."
+    }
+  },
+  "riddleOfEternal": {
+    "title": "The unknown Guest",
+    "message": {
+      "original": "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Your eyes are open, I am there, your eyes are closed, I am there too.'",
+      "variant": "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Poor have me, rich need me. Eat me, you die.'"
+    },
+    "choices": {
+      "answerLight": {
+        "label": "Light"
+      },
+      "answerLife": {
+        "label": "Life"
+      },
+      "answerDarkness": {
+        "label": "Darkness"
+      },
+      "answerDeath": {
+        "label": "Death"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_fifth": "The figure bows its head in silent reverence before fading completely. A big sack of gold lays on the ground where it stood."
+    }
+  },
+  "riddleOfEternal_variant": {
+    "title": "The unknown Guest",
+    "message": {
+      "original": "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Your eyes are open, I am there, your eyes are closed, I am there too.'",
+      "variant": "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Poor have me, rich need me. Eat me, you die.'"
+    },
+    "choices": {
+      "answerPoison": {
+        "label": "Poison"
+      },
+      "answerAir": {
+        "label": "Gold"
+      },
+      "answerNothing": {
+        "label": "Nothing"
+      },
+      "answerTime": {
+        "label": "Time"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_fifth": "The figure bows its head in silent reverence before fading completely. A big sack of gold lays on the ground where it stood."
+    }
+  },
+  "riddleOfTears": {
+    "title": "A hooded Guest",
+    "message": {
+      "original": "The hulled figure appears once more at the estate. It whispers: 'Flies without wings, cries without eyes, darkness follows wherever it goes.'",
+      "variant": "The hulled figure appears once more at the estate. It whispers: 'Soft, delicate, silky, but if you're wrapped in me, you scream.'"
+    },
+    "choices": {
+      "answerNight": {
+        "label": "Night"
+      },
+      "answerWind": {
+        "label": "Wind"
+      },
+      "answerClouds": {
+        "label": "Clouds"
+      },
+      "answerShadow": {
+        "label": "Shadow"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_fourth": "The figure lowers its hooded head for a moment before dissolving into the shadows. A small sack of gold remains behind on the cold ground."
+    }
+  },
+  "riddleOfTears_variant": {
+    "title": "A hooded Guest",
+    "message": {
+      "original": "The hulled figure appears once more at the estate. It whispers: 'Flies without wings, cries without eyes, darkness follows wherever it goes.'",
+      "variant": "The hulled figure appears once more at the estate. It whispers: 'Soft, delicate, silky, but if you're wrapped in me, you scream.'"
+    },
+    "choices": {
+      "answerNightmares": {
+        "label": "Nightmares"
+      },
+      "answerCobweb": {
+        "label": "Cobweb"
+      },
+      "answerSilk": {
+        "label": "Silk"
+      },
+      "answerDeath": {
+        "label": "Death"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_fourth": "The figure lowers its hooded head for a moment before dissolving into the shadows. A small sack of gold remains behind on the cold ground."
+    }
+  },
   "ringOfDrownedChoice": {
     "choices": {
       "doNothing": {
@@ -1453,6 +1679,14 @@
     "message": "The blind druid emerges: 'The Sanctum stands complete,' he says, his voice carrying the weight of ancient wisdom. 'Now you must choose: deepen your devotion to the path you have chosen, or embrace all gods and their gifts. Choose wisely.'",
     "title": "The Dedication of the Sanctum"
   },
+  "secondWave": {
+    "message": "The creatures return in greater numbers, with weapons of crude bone, glowing with foul light.",
+    "title": "The Second Wave"
+  },
+  "seventhWave": {
+    "message": "The creatures advance again, a writhing carpet of limbs and teeth scraping toward the city.",
+    "title": "The Seventh Wave"
+  },
   "shadowFluteChoice": {
     "choices": {
       "doNothing": {
@@ -1494,6 +1728,10 @@
     },
     "message": "The one-eyed crow returns from the Shore Fishermen with dried fish as a gift. The fishermen offer to teach you the secrets of building powerful fish traps for 250 Gold.",
     "title": "Message from the Shore Fishermen"
+  },
+  "sixthWave": {
+    "message": "The cave mouth vomits forth another tide of pale bodies. Bone spears clatter like rain as they mass for another assault.",
+    "title": "The Sixth Wave"
   },
   "skinCrawling": {
     "choices": {
@@ -1613,14 +1851,13 @@
     "message": "Shortly after the temple is built, the blind druid appears. His milky eyes seem to see through your soul as he speaks: 'The temple must be dedicated to a god. Choose wisely.'",
     "title": "The Blind Druid returns"
   },
-  "traderSettles": {
-    "choices": {
-      "continue": {
-        "label": "Continue"
-      }
-    },
-    "message": "A trader arrives in the village with his family. They look exhausted, their faces weathered by years on the road. They are finally ready to settle down.",
-    "title": "The Trader"
+  "tenthWave": {
+    "message": "From the deepest reaches of the cave, an unimaginable mass of pale creatures erupts. They flood over the land like a living tide, as the city braces for annihilation.",
+    "title": "The Final Wave"
+  },
+  "thirdWave": {
+    "message": "Hordes of pale creatures come from the cave; screams shake even the stones, their bone weapons cracking the ground.",
+    "title": "The Third Wave"
   },
   "traders_daughter": {
     "choices": {
@@ -1684,6 +1921,15 @@
     },
     "message": "The trader's son returns, holding his father's dagger. He is full of gratitude and offers you a great discount on your next purchase of his father's goods.",
     "title": "The Trader's Son's Gratitude"
+  },
+  "traderSettles": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "message": "A trader arrives in the village with his family. They look exhausted, their faces weathered by years on the road. They are finally ready to settle down.",
+    "title": "The Trader"
   },
   "undergroundLakeCreature": {
     "choices": {
@@ -1801,6 +2047,23 @@
     "message": "A village elder approaches you. He speaks quietly. 'You stand at the beginning of a long path filled with trials. Very soon, you must choose whether you will continue this journey.'",
     "title": "The Elder's Notice"
   },
+  "villagersStareAtSky": {
+    "choices": {
+      "look_up_too": {
+        "label": "Stare at sky"
+      },
+      "shake_them": {
+        "label": "Wake them"
+      }
+    },
+    "log": {
+      "outcome0": "You grab the nearest villager and shake them. They blink once and return to normal, but whisper 'It's coming' before resuming their work. The others slowly follow suit.",
+      "outcome1": "When you touch one villager, they crumble to dust. The others snap out of their trance and scream, pointing at the sky. For just a moment, you see it too, something vast and hungry watching from above.",
+      "outcome2": "You crane your neck skyward and suddenly see it, something immense and impossible that exists between the clouds. Your mind rejects what it witnesses, but the image burns itself into your memory forever."
+    },
+    "message": "All the villagers have stopped their work and stand motionless, staring at the empty sky. They remain like this for hours, unblinking, while tears of black liquid stream down their faces. When you follow their gaze, you see only ordinary clouds, but something feels terribly wrong.",
+    "title": "Skyward Gaze"
+  },
   "villagerStares": {
     "choices": {
       "avoid": {
@@ -1818,22 +2081,23 @@
     "message": "One of the villagers has begun staring at nothing for hours. When you approach, their eyes are completely black. They smile when they notice you watching.",
     "title": "Hollow Stares"
   },
-  "villagersStareAtSky": {
+  "wandering_collector": {
     "choices": {
-      "look_up_too": {
-        "label": "Stare at sky"
-      },
-      "shake_them": {
-        "label": "Wake them"
+      "sell_nothing": {
+        "label": "Nothing"
       }
     },
     "log": {
-      "outcome0": "You grab the nearest villager and shake them. They blink once and return to normal, but whisper 'It's coming' before resuming their work. The others slowly follow suit.",
-      "outcome1": "When you touch one villager, they crumble to dust. The others snap out of their trance and scream, pointing at the sky. For just a moment, you see it too, something vast and hungry watching from above.",
-      "outcome2": "You crane your neck skyward and suddenly see it, something immense and impossible that exists between the clouds. Your mind rejects what it witnesses, but the image burns itself into your memory forever."
+      "whisper0": "The collector sighs and turns away. 'In my travels, I uncovered many relics of the ancient civilization. They were far more advanced than we ever were,' he whispers before fading into the dark.",
+      "whisper1": "A low hum seeps from beneath the hood. 'The great explosion destroyed most artifacts of the ancient civilization. What little remains is scattered and rare,' he murmurs.",
+      "whisper2": "A faint breath escapes the collector. 'I learned much of the ancient civilization on my journeys. Before the great explosion, there was no magic in this world. It was born in that moment,' he whispers as he departs."
     },
-    "message": "All the villagers have stopped their work and stand motionless, staring at the empty sky. They remain like this for hours, unblinking, while tears of black liquid stream down their faces. When you follow their gaze, you see only ordinary clouds, but something feels terribly wrong.",
-    "title": "Skyward Gaze"
+    "title": "The Wandering Collector",
+    "message": {
+      "visit0": "A figure wrapped in tattered robes approaches. He seems intrigued by what you've gathered. 'I sense value among your possessions,' he murmurs. 'Allow me to take one, in exchange for {{reward}} gold.'",
+      "visit1": "The robed figure returns, his steps soundless on the ground. 'More artifacts, more secrets', he whispers. 'Let me claim one again, and your purse will be {{reward}} gold heavier.'",
+      "visit2": "The collector appears again, eyes glowing within the hood. 'Our dealings near their end,' he says softly. 'Sell me one more, and {{reward}} gold shall be yours.'"
+    }
   },
   "wanderingFirecrafter": {
     "choices": {
@@ -1876,22 +2140,60 @@
     "message": "A small tribe of nomads approaches the village. Their leader speaks: 'We have traveled far and seek a place to call home. Help us settle and we will teach your people how to raise fur tents.'",
     "title": "The Wandering Tribe"
   },
-  "wandering_collector": {
+  "whispererInTheDark": {
+    "title": "Whisperer in the Dark",
+    "message": {
+      "original": "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'Voiceless it cries, wingless flutters, toothless bites, mouthless mutters.'",
+      "variant": "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'A lady's desire, grown in darkness, shining with pale light.'"
+    },
     "choices": {
-      "sell_nothing": {
-        "label": "Nothing"
+      "answerFire": {
+        "label": "Fire"
+      },
+      "answerWaves": {
+        "label": "Waves"
+      },
+      "answerWind": {
+        "label": "Wind"
+      },
+      "answerDarkness": {
+        "label": "Darkness"
+      },
+      "timeout": {
+        "label": "No answer given"
       }
     },
     "log": {
-      "whisper0": "The collector sighs and turns away. 'In my travels, I uncovered many relics of the ancient civilization. They were far more advanced than we ever were,' he whispers before fading into the dark.",
-      "whisper1": "A low hum seeps from beneath the hood. 'The great explosion destroyed most artifacts of the ancient civilization. What little remains is scattered and rare,' he murmurs.",
-      "whisper2": "A faint breath escapes the collector. 'I learned much of the ancient civilization on my journeys. Before the great explosion, there was no magic in this world. It was born in that moment,' he whispers as he departs."
-    },
-    "title": "The Wandering Collector",
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_first": "The figure nods its head slightly before fading into the darkness. By morning, a small bag of gold rests upon the estate's doorstep."
+    }
+  },
+  "whispererInTheDark_variant": {
+    "title": "Whisperer in the Dark",
     "message": {
-      "visit0": "A figure wrapped in tattered robes approaches. He seems intrigued by what you've gathered. 'I sense value among your possessions,' he murmurs. 'Allow me to take one, in exchange for {{reward}} gold.'",
-      "visit1": "The robed figure returns, his steps soundless on the ground. 'More artifacts, more secrets', he whispers. 'Let me claim one again, and your purse will be {{reward}} gold heavier.'",
-      "visit2": "The collector appears again, eyes glowing within the hood. 'Our dealings near their end,' he says softly. 'Sell me one more, and {{reward}} gold shall be yours.'"
+      "original": "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'Voiceless it cries, wingless flutters, toothless bites, mouthless mutters.'",
+      "variant": "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'A lady's desire, grown in darkness, shining with pale light.'"
+    },
+    "choices": {
+      "answerSilver": {
+        "label": "Silver"
+      },
+      "answerPearl": {
+        "label": "Pearl"
+      },
+      "answerGold": {
+        "label": "Gold"
+      },
+      "answerDiamond": {
+        "label": "Diamond"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_first": "The figure nods its head slightly before fading into the darkness. By morning, a small bag of gold rests upon the estate's doorstep."
     }
   },
   "whisperersReward": {
@@ -2145,285 +2447,5 @@
     },
     "message": "A young woman approaches you with tears streaming down her face. 'Both my parents were sacrificed to that cursed monolith,' she cries. 'This barbaric behavior has to stop!'",
     "title": "The Young Woman's Plea"
-  },
-  "whispererInTheDark": {
-    "title": "Whisperer in the Dark",
-    "message": {
-      "original": "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'Voiceless it cries, wingless flutters, toothless bites, mouthless mutters.'",
-      "variant": "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'A lady's desire, grown in darkness, shining with pale light.'"
-    },
-    "choices": {
-      "answerFire": {
-        "label": "Fire"
-      },
-      "answerWaves": {
-        "label": "Waves"
-      },
-      "answerWind": {
-        "label": "Wind"
-      },
-      "answerDarkness": {
-        "label": "Darkness"
-      },
-      "timeout": {
-        "label": "No answer given"
-      }
-    },
-    "log": {
-      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
-      "success_first": "The figure nods its head slightly before fading into the darkness. By morning, a small bag of gold rests upon the estate's doorstep."
-    }
-  },
-  "whispererInTheDark_variant": {
-    "title": "Whisperer in the Dark",
-    "message": {
-      "original": "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'Voiceless it cries, wingless flutters, toothless bites, mouthless mutters.'",
-      "variant": "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'A lady's desire, grown in darkness, shining with pale light.'"
-    },
-    "choices": {
-      "answerSilver": {
-        "label": "Silver"
-      },
-      "answerPearl": {
-        "label": "Pearl"
-      },
-      "answerGold": {
-        "label": "Gold"
-      },
-      "answerDiamond": {
-        "label": "Diamond"
-      },
-      "timeout": {
-        "label": "No answer given"
-      }
-    },
-    "log": {
-      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
-      "success_first": "The figure nods its head slightly before fading into the darkness. By morning, a small bag of gold rests upon the estate's doorstep."
-    }
-  },
-  "riddleOfAges": {
-    "title": "Voices in the Dark",
-    "message": {
-      "original": "The cloaked figure returns to the estate under the pale moonlight. Its voice echoes: 'Goes on four feet in the morning, two feet at noon, and three feet in the evening.'",
-      "variant": "The cloaked figure returns to the estate under the pale moonlight. Its voice echoes: 'Can't hurt you, but leaves you with scars.'"
-    },
-    "choices": {
-      "answerEarth": {
-        "label": "Earth"
-      },
-      "answerWolf": {
-        "label": "Wolf"
-      },
-      "answerMan": {
-        "label": "Man"
-      },
-      "answerBird": {
-        "label": "Bird"
-      },
-      "timeout": {
-        "label": "No answer given"
-      }
-    },
-    "log": {
-      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
-      "success_second": "The figure gives a faint nod and vanishes into the night. At dawn, a weathered leather pouch of gold lies where it stood."
-    }
-  },
-  "riddleOfAges_variant": {
-    "title": "Voices in the Dark",
-    "message": {
-      "original": "The cloaked figure returns to the estate under the pale moonlight. Its voice echoes: 'Goes on four feet in the morning, two feet at noon, and three feet in the evening.'",
-      "variant": "The cloaked figure returns to the estate under the pale moonlight. Its voice echoes: 'Can't hurt you, but leaves you with scars.'"
-    },
-    "choices": {
-      "answerNightmares": {
-        "label": "Nightmares"
-      },
-      "answerTime": {
-        "label": "Touch"
-      },
-      "answerLove": {
-        "label": "Knife"
-      },
-      "answerDeath": {
-        "label": "Lust"
-      },
-      "timeout": {
-        "label": "No answer given"
-      }
-    },
-    "log": {
-      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
-      "success_second": "The figure gives a faint nod and vanishes into the night. At dawn, a weathered leather pouch of gold lies where it stood."
-    }
-  },
-  "riddleOfDevourer": {
-    "title": "A nightly Visitor",
-    "message": {
-      "original": "Once again, the mysterious figure appears at the estate. It whispers with a low voice: 'All things it devours, turns bones to dust, slays kings, wears mountains down, erases towns.'",
-      "variant": "Once again, the mysterious figure appears at the estate. It whispers with a low voice: 'Has fingers yet no flesh, no feathers, no scales, no bone.'"
-    },
-    "choices": {
-      "answerMan": {
-        "label": "Man"
-      },
-      "answerWater": {
-        "label": "Water"
-      },
-      "answerTime": {
-        "label": "Time"
-      },
-      "answerFire": {
-        "label": "Fire"
-      },
-      "timeout": {
-        "label": "No answer given"
-      }
-    },
-    "log": {
-      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
-      "success_third": "The figure tilts its head in quiet acknowledgment before stepping back into the dim. When morning comes, a worn coin purse of gold is found outside the door."
-    }
-  },
-  "riddleOfDevourer_variant": {
-    "title": "A nightly Visitor",
-    "message": {
-      "original": "Once again, the mysterious figure appears at the estate. It whispers with a low voice: 'All things it devours, turns bones to dust, slays kings, wears mountains down, erases towns.'",
-      "variant": "Once again, the mysterious figure appears at the estate. It whispers with a low voice: 'Has fingers yet no flesh, no feathers, no scales, no bone.'"
-    },
-    "choices": {
-      "answerFin": {
-        "label": "Fin"
-      },
-      "answerWing": {
-        "label": "Wing"
-      },
-      "answerGlove": {
-        "label": "Glove"
-      },
-      "answerHand": {
-        "label": "Hand"
-      },
-      "timeout": {
-        "label": "No answer given"
-      }
-    },
-    "log": {
-      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
-      "success_third": "The figure tilts its head in quiet acknowledgment before stepping back into the dim. When morning comes, a worn coin purse of gold is found outside the door."
-    }
-  },
-  "riddleOfTears": {
-    "title": "A hooded Guest",
-    "message": {
-      "original": "The hulled figure appears once more at the estate. It whispers: 'Flies without wings, cries without eyes, darkness follows wherever it goes.'",
-      "variant": "The hulled figure appears once more at the estate. It whispers: 'Soft, delicate, silky, but if you're wrapped in me, you scream.'"
-    },
-    "choices": {
-      "answerNight": {
-        "label": "Night"
-      },
-      "answerWind": {
-        "label": "Wind"
-      },
-      "answerClouds": {
-        "label": "Clouds"
-      },
-      "answerShadow": {
-        "label": "Shadow"
-      },
-      "timeout": {
-        "label": "No answer given"
-      }
-    },
-    "log": {
-      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
-      "success_fourth": "The figure lowers its hooded head for a moment before dissolving into the shadows. A small sack of gold remains behind on the cold ground."
-    }
-  },
-  "riddleOfTears_variant": {
-    "title": "A hooded Guest",
-    "message": {
-      "original": "The hulled figure appears once more at the estate. It whispers: 'Flies without wings, cries without eyes, darkness follows wherever it goes.'",
-      "variant": "The hulled figure appears once more at the estate. It whispers: 'Soft, delicate, silky, but if you're wrapped in me, you scream.'"
-    },
-    "choices": {
-      "answerNightmares": {
-        "label": "Nightmares"
-      },
-      "answerCobweb": {
-        "label": "Cobweb"
-      },
-      "answerSilk": {
-        "label": "Silk"
-      },
-      "answerDeath": {
-        "label": "Death"
-      },
-      "timeout": {
-        "label": "No answer given"
-      }
-    },
-    "log": {
-      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
-      "success_fourth": "The figure lowers its hooded head for a moment before dissolving into the shadows. A small sack of gold remains behind on the cold ground."
-    }
-  },
-  "riddleOfEternal": {
-    "title": "The unknown Guest",
-    "message": {
-      "original": "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Your eyes are open, I am there, your eyes are closed, I am there too.'",
-      "variant": "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Poor have me, rich need me. Eat me, you die.'"
-    },
-    "choices": {
-      "answerLight": {
-        "label": "Light"
-      },
-      "answerLife": {
-        "label": "Life"
-      },
-      "answerDarkness": {
-        "label": "Darkness"
-      },
-      "answerDeath": {
-        "label": "Death"
-      },
-      "timeout": {
-        "label": "No answer given"
-      }
-    },
-    "log": {
-      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
-      "success_fifth": "The figure bows its head in silent reverence before fading completely. A big sack of gold lays on the ground where it stood."
-    }
-  },
-  "riddleOfEternal_variant": {
-    "title": "The unknown Guest",
-    "message": {
-      "original": "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Your eyes are open, I am there, your eyes are closed, I am there too.'",
-      "variant": "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Poor have me, rich need me. Eat me, you die.'"
-    },
-    "choices": {
-      "answerPoison": {
-        "label": "Poison"
-      },
-      "answerAir": {
-        "label": "Gold"
-      },
-      "answerNothing": {
-        "label": "Nothing"
-      },
-      "answerTime": {
-        "label": "Time"
-      },
-      "timeout": {
-        "label": "No answer given"
-      }
-    },
-    "log": {
-      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
-      "success_fifth": "The figure bows its head in silent reverence before fading completely. A big sack of gold lays on the ground where it stood."
-    }
   }
 }

@@ -171,7 +171,8 @@
     "title": "Notas del superviviente",
     "notUnlocked": "Aún no desbloqueado.",
     "chartUnavailable": "Gráfico no disponible",
-    "claim": "Reclamar"
+    "claim": "Reclamar",
+    "completeLog": "Logro completado: {{name}}: {{rewards}}"
   },
   "idleMode": {
     "title": "Modo sueño",
@@ -179,6 +180,8 @@
     "awake": "¡Estás despierto!",
     "wakingIn": "Despertar en: {{time}}",
     "wake": "Despertar",
-    "getUp": "Levantarse"
+    "getUp": "Levantarse",
+    "focusGainedLog": "Has ganado {{count}} de concentración con tu descanso.",
+    "villagersProducedLog": "Los aldeanos produjeron: {{resources}}"
   }
 }

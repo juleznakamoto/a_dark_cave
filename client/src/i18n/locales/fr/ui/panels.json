@@ -171,7 +171,8 @@
     "title": "Notes du survivant",
     "notUnlocked": "Pas encore débloqué.",
     "chartUnavailable": "Graphique indisponible",
-    "claim": "Récupérer"
+    "claim": "Récupérer",
+    "completeLog": "Succès terminé : {{name}} : {{rewards}}"
   },
   "idleMode": {
     "title": "Mode sommeil",
@@ -179,6 +180,8 @@
     "awake": "Vous êtes réveillé !",
     "wakingIn": "Réveil dans : {{time}}",
     "wake": "Se réveiller",
-    "getUp": "Se lever"
+    "getUp": "Se lever",
+    "focusGainedLog": "Vous avez gagné {{count}} de concentration grâce à votre repos.",
+    "villagersProducedLog": "Les villageois ont produit : {{resources}}"
   }
 }

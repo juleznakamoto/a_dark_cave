@@ -73,6 +73,22 @@
     },
     "title": "Cuerpos drenados"
   },
+  "bloodiedAwakening": {
+    "choices": {
+      "investigateMurders": {
+        "label": "Investigar los asesinatos"
+      },
+      "severFinger": {
+        "label": "Cortar el dedo"
+      }
+    },
+    "log": {
+      "outcome0": "Sigues huellas embarradas por la aldea y te conducen a cada escena del crimen, una tras otra. Las marcas coinciden con tus propias botas. El horror se revela lentamente: fuiste tú, poseído por el hambre del anillo. Cuando los aldeanos descubren la verdad, dieciocho huyen, incapaces de permanecer cerca de una criatura tan maldita.",
+      "outcome1": "Con manos temblorosas, alzas el hacha. El anillo palpita cuando cae la hoja. La agonía te desgarra el brazo al quebrarse el hueso. Al levantar el dedo amputado, ves pequeños hilos negros, como tentáculos, hundidos profundamente en su carne."
+    },
+    "message": "Despiertas con el alba, la ropa empapada en sangre fresca. No es tuya. Un aldeano llega a la finca, pálido de horror. 'Ocho han muerto', susurra. 'Despedazados en la noche'. El anillo en tu dedo late con un dolor agónico.",
+    "title": "Despertar ensangrentado"
+  },
   "bloodInWater": {
     "message": "El agua de la aldea corre roja durante tres días. Los aldeanos no parecen notarlo y la beben como si nada hubiera cambiado. Tú saboreas cobre y hierro, pero ellos aseguran que sabe al agua de manantial más dulce."
   },
@@ -93,25 +109,9 @@
       "outcome4": "¡Los licántropos arrollan tus defensas y arrasan el asentamiento! La luna de sangre se desvanece, pero la amenaza permanece."
     },
     "message": {
-      "default": "Der Mond ist nachts blutrot geworden, die aldeaältesten sprechen von Lykanthropen. Uralte Pakte verlangen ein Opfer von {{sacrificeAmount}} aldeanosn, um die Bestien zu besänftigen. Weigerst du dich, werden sie dafür sorgen, dass ihr Hunger gestillt wird."
+      "default": "La luna se ha vuelto roja como la sangre durante la noche; los ancianos de la aldea hablan de lic?ntropos. Pactos antiguos exigen el sacrificio de {{sacrificeAmount}} aldeanos para apaciguar a las bestias. Si te niegas, ellas se asegurar?n de saciar su hambre."
     },
     "title": "Luna de sangre"
-  },
-  "bloodiedAwakening": {
-    "choices": {
-      "investigateMurders": {
-        "label": "Investigar los asesinatos"
-      },
-      "severFinger": {
-        "label": "Cortar el dedo"
-      }
-    },
-    "log": {
-      "outcome0": "Sigues huellas embarradas por la aldea y te conducen a cada escena del crimen, una tras otra. Las marcas coinciden con tus propias botas. El horror se revela lentamente: fuiste tú, poseído por el hambre del anillo. Cuando los aldeanos descubren la verdad, dieciocho huyen, incapaces de permanecer cerca de una criatura tan maldita.",
-      "outcome1": "Con manos temblorosas, alzas el hacha. El anillo palpita cuando cae la hoja. La agonía te desgarra el brazo al quebrarse el hueso. Al levantar el dedo amputado, ves pequeños hilos negros, como tentáculos, hundidos profundamente en su carne."
-    },
-    "message": "Despiertas con el alba, la ropa empapada en sangre fresca. No es tuya. Un aldeano llega a la finca, pálido de horror. 'Ocho han muerto', susurra. 'Despedazados en la noche'. El anillo en tu dedo late con un dolor agónico.",
-    "title": "Despertar ensangrentado"
   },
   "bloodstainedBeltChoice": {
     "choices": {
@@ -145,27 +145,49 @@
     "log": {
       "outcome0": "¡Los aldeanos derrotan al ejército de huesos! Hueso y silencio cubren el campo de batalla. Arrancas la Corona del Devorador de sus restos y llenas un vial con su sangre pálida y viscosa.",
       "outcome1": "Los aldeanos se esconden aterrados mientras el ejército de huesos registra la aldea. Las criaturas esqueléticas acaban marchándose, con su propósito incumplido.",
-      "defend_noDeaths": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Los aldeanos überstehen den Ansturm.",
-      "defend_noDeaths_hut": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Los aldeanos überstehen den Ansturm. Die skelettierten Kreaturen reißen eine der Hütten auseinander y machen sie zu Schutt.",
-      "defend_noDeaths_steel": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Los aldeanos überstehen den Ansturm. Die ejército de huesos plündert die Vorräte, bevor sie abzieht.",
-      "defend_noDeaths_steel_hut": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Los aldeanos überstehen den Ansturm. Die ejército de huesos plündert die Vorräte, bevor sie abzieht. Die skelettierten Kreaturen reißen eine der Hütten auseinander y machen sie zu Schutt.",
-      "defend_oneDeath": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Ein aldeanos fällt den skelettierten Kriegern zum Opfer.",
-      "defend_oneDeath_hut": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Ein aldeanos fällt den skelettierten Kriegern zum Opfer. Die skelettierten Kreaturen reißen eine der Hütten auseinander y machen sie zu Schutt.",
-      "defend_oneDeath_steel": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Ein aldeanos fällt den skelettierten Kriegern zum Opfer. Die ejército de huesos plündert die Vorräte, bevor sie abzieht.",
-      "defend_oneDeath_steel_hut": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Ein aldeanos fällt den skelettierten Kriegern zum Opfer. Die ejército de huesos plündert die Vorräte, bevor sie abzieht. Die skelettierten Kreaturen reißen eine der Hütten auseinander y machen sie zu Schutt.",
-      "defend_manyDeaths": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Mehrere aldeanos fallen den skelettierten Kriegern zum Opfer.",
-      "defend_manyDeaths_hut": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Mehrere aldeanos fallen den skelettierten Kriegern zum Opfer. Die skelettierten Kreaturen reißen eine der Hütten auseinander y machen sie zu Schutt.",
-      "defend_manyDeaths_steel": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Mehrere aldeanos fallen den skelettierten Kriegern zum Opfer. Die ejército de huesos plündert die Vorräte, bevor sie abzieht.",
-      "defend_manyDeaths_steel_hut": "Los aldeanos kämpfen verzweifelt gegen die ejército de huesos. Mehrere aldeanos fallen den skelettierten Kriegern zum Opfer. Die ejército de huesos plündert die Vorräte, bevor sie abzieht. Die skelettierten Kreaturen reißen eine der Hütten auseinander y machen sie zu Schutt.",
-      "hide_noDeaths": "Los aldeanos verstecken sich voller Angst, während die ejército de huesos das aldea durchsucht. Bei Tagesanbruch ist die skelettierte Armee abgezogen y hat nur Knochenfragmente zurückgelassen.",
-      "hide_noDeaths_loot": "Los aldeanos verstecken sich voller Angst, während die ejército de huesos das aldea durchsucht. Bei Tagesanbruch ist die skelettierte Armee abgezogen y hat nur Knochenfragmente zurückgelassen. Die Armee plündert deine Vorräte, bevor sie in der Dunkelheit verschwindet.",
-      "hide_oneDeath": "Los aldeanos verstecken sich voller Angst, während die ejército de huesos das aldea durchsucht. Ein aldeanos, der zu fliehen versuchte, wird getötet.",
-      "hide_oneDeath_loot": "Los aldeanos verstecken sich voller Angst, während die ejército de huesos das aldea durchsucht. Ein aldeanos, der zu fliehen versuchte, wird getötet. Die Armee plündert deine Vorräte, bevor sie in der Dunkelheit verschwindet.",
-      "hide_manyDeaths": "Los aldeanos verstecken sich voller Angst, während die ejército de huesos das aldea durchsucht. Los aldeanos, die zu fliehen versuchten, werden von den Knochenkreaturen getötet.",
-      "hide_manyDeaths_loot": "Los aldeanos verstecken sich voller Angst, während die ejército de huesos das aldea durchsucht. Los aldeanos, die zu fliehen versuchten, werden von den Knochenkreaturen getötet. Die Armee plündert deine Vorräte, bevor sie in der Dunkelheit verschwindet."
+      "defend_noDeaths": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Los aldeanos sobreviven al asalto.",
+      "defend_noDeaths_hut": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Los aldeanos sobreviven al asalto. Las criaturas esquel?ticas destrozan una de las chozas y la reducen a escombros.",
+      "defend_noDeaths_steel": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Los aldeanos sobreviven al asalto. El ej?rcito de huesos saquea los almacenes antes de marcharse.",
+      "defend_noDeaths_steel_hut": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Los aldeanos sobreviven al asalto. El ej?rcito de huesos saquea los almacenes antes de marcharse. Las criaturas esquel?ticas destrozan una de las chozas y la reducen a escombros.",
+      "defend_oneDeath": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Un aldeano cae ante los guerreros esquel?ticos.",
+      "defend_oneDeath_hut": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Un aldeano cae ante los guerreros esquel?ticos. Las criaturas esquel?ticas destrozan una de las chozas y la reducen a escombros.",
+      "defend_oneDeath_steel": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Un aldeano cae ante los guerreros esquel?ticos. El ej?rcito de huesos saquea los almacenes antes de marcharse.",
+      "defend_oneDeath_steel_hut": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Un aldeano cae ante los guerreros esquel?ticos. El ej?rcito de huesos saquea los almacenes antes de marcharse. Las criaturas esquel?ticas destrozan una de las chozas y la reducen a escombros.",
+      "defend_manyDeaths": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Varios aldeanos caen ante los guerreros esquel?ticos.",
+      "defend_manyDeaths_hut": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Varios aldeanos caen ante los guerreros esquel?ticos. Las criaturas esquel?ticas destrozan una de las chozas y la reducen a escombros.",
+      "defend_manyDeaths_steel": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Varios aldeanos caen ante los guerreros esquel?ticos. El ej?rcito de huesos saquea los almacenes antes de marcharse.",
+      "defend_manyDeaths_steel_hut": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Varios aldeanos caen ante los guerreros esquel?ticos. El ej?rcito de huesos saquea los almacenes antes de marcharse. Las criaturas esquel?ticas destrozan una de las chozas y la reducen a escombros.",
+      "hide_noDeaths": "Los aldeanos se esconden aterrados mientras el ej?rcito de huesos registra la aldea. Al amanecer, el ej?rcito esquel?tico se ha marchado y solo deja fragmentos de hueso.",
+      "hide_noDeaths_loot": "Los aldeanos se esconden aterrados mientras el ej?rcito de huesos registra la aldea. Al amanecer, el ej?rcito esquel?tico se ha marchado y solo deja fragmentos de hueso. El ej?rcito saquea tus provisiones antes de desaparecer en la oscuridad.",
+      "hide_oneDeath": "Los aldeanos se esconden aterrados mientras el ej?rcito de huesos registra la aldea. Un aldeano que intent? huir muere.",
+      "hide_oneDeath_loot": "Los aldeanos se esconden aterrados mientras el ej?rcito de huesos registra la aldea. Un aldeano que intent? huir muere. El ej?rcito saquea tus provisiones antes de desaparecer en la oscuridad.",
+      "hide_manyDeaths": "Los aldeanos se esconden aterrados mientras el ej?rcito de huesos registra la aldea. Los aldeanos que intentaron huir mueren a manos de las criaturas de hueso.",
+      "hide_manyDeaths_loot": "Los aldeanos se esconden aterrados mientras el ej?rcito de huesos registra la aldea. Los aldeanos que intentaron huir mueren a manos de las criaturas de hueso. El ej?rcito saquea tus provisiones antes de desaparecer en la oscuridad."
     },
     "message": "La tierra tiembla cuando criaturas esqueléticas emergen del bosque. El Devorador de Huesos ha usado los huesos que intercambiaste para forjar una legión impía. Con ojos huecos y armas de hueso afilado, se acercan a la ciudad.",
     "title": "El ejército de huesos"
+  },
+  "boneDevourer": {
+    "title": "El Devorador de Huesos",
+    "message": {
+      "firstTime": "Una criatura deforme se arrastra hasta las puertas, con la espalda encorvada cubierta de piel p?lida y tirante. Habla con voz ?spera: ?Busco huesos. Pago {{silverReward}} de plata.?",
+      "repeat": "La criatura vuelve a las puertas, su figura encorvada a?n cubierta de piel p?lida y tirante. Habla con su voz ?spera ya familiar: ?Busco huesos. Pago {{silverReward}} de plata.?"
+    },
+    "choices": {
+      "sellBones": {
+        "label": "Vender {{boneCost}} huesos",
+        "cost": "{{boneCost}} huesos"
+      },
+      "refuse": {
+        "label": "Rechazar el trato"
+      }
+    },
+    "log": {
+      "outcome0": "No tienes suficientes huesos para el trato.",
+      "outcome1": "La criatura toma los huesos con sus manos nudosas, como si intentara contarlos. Deja una bolsa de plata a tus pies y desaparece en la oscuridad.",
+      "outcome2": "Rechazas la oferta de la criatura. Sisea con disgusto y se retira a las sombras. Presientes que volver?.",
+      "outcome3": "Tu indecisi?n frustra a la criatura. Sisea con disgusto y se retira a las sombras."
+    }
   },
   "boneDiceChoice": {
     "choices": {
@@ -219,20 +241,20 @@
     },
     "log": {
       "outcome0": "Los aldeanos se esconden aterrados mientras los caníbales registran la aldea. Al amanecer, los caníbales se han marchado sin encontrar a nadie.",
-      "defeat_noDeaths": "Die caníbales überwältigen deine defensa. Los aldeanos überleben knapp.",
-      "defeat_noDeaths_loot": "Die caníbales überwältigen deine defensa. Los aldeanos überleben knapp. Die caníbales plündern deine Vorräte, bevor sie in die Wildnis zurückkehren.",
-      "defeat_oneDeath": "Die caníbales überwältigen deine defensa. Ein aldeanos wird von den caníbales entführt.",
-      "defeat_oneDeath_loot": "Die caníbales überwältigen deine defensa. Ein aldeanos wird von den caníbales entführt. Die caníbales plündern deine Vorräte, bevor sie in die Wildnis zurückkehren.",
-      "defeat_manyDeaths": "Die caníbales überwältigen deine defensa. Mehrere aldeanos werden von den caníbales getötet oder entführt.",
-      "defeat_manyDeaths_loot": "Die caníbales überwältigen deine defensa. Mehrere aldeanos werden von den caníbales getötet oder entführt. Die caníbales plündern deine Vorräte, bevor sie in die Wildnis zurückkehren.",
-      "hide_noDeaths": "Los aldeanos verstecken sich voller Angst, während die caníbales das aldea durchsuchen. Bei Tagesanbruch sind die caníbales abgezogen, ohne jemanden gefunden zu haben.",
-      "hide_noDeaths_loot": "Los aldeanos verstecken sich voller Angst, während die caníbales das aldea durchsuchen. Bei Tagesanbruch sind die caníbales abgezogen, ohne jemanden gefunden zu haben. Die caníbales plündern deine Vorräte ungestört, bevor sie davonschlüpfen.",
-      "hide_oneDeath": "Los aldeanos verstecken sich voller Angst, während die caníbales das aldea durchsuchen. Ein aldeanos wird entführt.",
-      "hide_oneDeath_loot": "Los aldeanos verstecken sich voller Angst, während die caníbales das aldea durchsuchen. Ein aldeanos wird entführt. Die caníbales plündern deine Vorräte ungestört, bevor sie davonschlüpfen.",
-      "hide_manyDeaths": "Los aldeanos verstecken sich voller Angst, während die caníbales das aldea durchsuchen. Mehrere aldeanos werden getötet oder entführt.",
-      "hide_manyDeaths_loot": "Los aldeanos verstecken sich voller Angst, während die caníbales das aldea durchsuchen. Mehrere aldeanos werden getötet oder entführt. Die caníbales plündern deine Vorräte ungestört, bevor sie davonschlüpfen.",
-      "victory_one": "Los aldeanos schlagen die caníbales zurück! Ein aldeanos fällt in der Schlacht, doch der Stamm zieht sich besiegt zurück. Unter den Leichen findest du eine primitive Halskette aus Menschenknochen.",
-      "victory_many": "Los aldeanos kämpfen tapfer y schlagen die caníbales zurück! Mehrere aldeanos fallen in der Schlacht, doch der Stamm wird zum Rückzug gezwungen. Unter den Leichen findest du eine primitive Halskette aus Menschenknochen."
+      "defeat_noDeaths": "Los can?bales arrollan tus defensas. Los aldeanos logran sobrevivir, aunque por poco.",
+      "defeat_noDeaths_loot": "Los can?bales arrollan tus defensas. Los aldeanos logran sobrevivir, aunque por poco. Los can?bales saquean tus provisiones antes de retirarse a la espesura.",
+      "defeat_oneDeath": "Los can?bales arrollan tus defensas. Un aldeano es secuestrado por los can?bales.",
+      "defeat_oneDeath_loot": "Los can?bales arrollan tus defensas. Un aldeano es secuestrado por los can?bales. Los can?bales saquean tus provisiones antes de retirarse a la espesura.",
+      "defeat_manyDeaths": "Los can?bales arrollan tus defensas. Varios aldeanos mueren o son secuestrados por los can?bales.",
+      "defeat_manyDeaths_loot": "Los can?bales arrollan tus defensas. Varios aldeanos mueren o son secuestrados por los can?bales. Los can?bales saquean tus provisiones antes de retirarse a la espesura.",
+      "hide_noDeaths": "Los aldeanos se esconden aterrados mientras los can?bales registran la aldea. Al amanecer, los can?bales se han marchado sin encontrar a nadie.",
+      "hide_noDeaths_loot": "Los aldeanos se esconden aterrados mientras los can?bales registran la aldea. Al amanecer, los can?bales se han marchado sin encontrar a nadie. Los can?bales saquean tus provisiones sin oposici?n antes de escabullirse.",
+      "hide_oneDeath": "Los aldeanos se esconden aterrados mientras los can?bales registran la aldea. Un aldeano es secuestrado.",
+      "hide_oneDeath_loot": "Los aldeanos se esconden aterrados mientras los can?bales registran la aldea. Un aldeano es secuestrado. Los can?bales saquean tus provisiones sin oposici?n antes de escabullirse.",
+      "hide_manyDeaths": "Los aldeanos se esconden aterrados mientras los can?bales registran la aldea. Varios aldeanos mueren o son secuestrados.",
+      "hide_manyDeaths_loot": "Los aldeanos se esconden aterrados mientras los can?bales registran la aldea. Varios aldeanos mueren o son secuestrados. Los can?bales saquean tus provisiones sin oposici?n antes de escabullirse.",
+      "victory_one": "?Los aldeanos hacen retroceder a los can?bales! Un aldeano cae en la batalla, pero la tribu se retira derrotada. Entre los cad?veres encuentras un collar primitivo hecho de huesos humanos.",
+      "victory_many": "?Los aldeanos luchan con valent?a y rechazan a los can?bales! Varios aldeanos caen en la batalla, pero la tribu se ve obligada a retirarse. Entre los cad?veres encuentras un collar primitivo hecho de huesos humanos."
     },
     "message": "Tambores de guerra resuenan en la noche cuando una tribu de caníbales emerge de la espesura. Avanzan sobre la aldea con armas rudimentarias e intenciones terribles.",
     "title": "Incursión caníbal"
@@ -500,8 +522,12 @@
   },
   "doNothing": {
     "log": {
-      "outcome0": "Rechazas ab. Die Nacht vergeht ohne Frohsinn, Wärme oder Lachen."
+      "outcome0": "Rechazas la propuesta. La noche pasa sin alegr?a, calor ni risas."
     }
+  },
+  "eighthWave": {
+    "message": "El suelo tiembla bajo el peso de su número, mientras una nueva oleada de la horda pálida cierra su anillo alrededor de la ciudad.",
+    "title": "La octava oleada"
   },
   "encounterBeyondPortal": {
     "choices": {
@@ -567,6 +593,28 @@
     "message": "Los muros de madera de tus chozas han empezado a mostrar rostros: expresiones retorcidas y agónicas que parecen empujar desde el otro lado. Forman gritos silenciosos y súplicas con la boca. Los aldeanos los rodean como si siempre hubieran estado allí.",
     "title": "Rostros en las paredes"
   },
+  "feast": {
+    "choices": {
+      "makeFeast": {
+        "cost": "{{foodCost}} comida",
+        "label": "Gastar {{foodCost}} comida"
+      },
+      "noFeast": {
+        "label": "Rechazar el banquete"
+      },
+      "doNothing": {
+        "label": "Sin decisi?n"
+      }
+    },
+    "log": {
+      "outcome0": "No tienes suficiente comida para el banquete.",
+      "outcome1": "?Los aldeanos se re?nen para un banquete! El cansancio se desvanece y los ?nimos se elevan, aunque solo sea por un momento.",
+      "outcome2": "Rechazas la propuesta del banquete. Los aldeanos aceptan tu decisi?n, aunque decepcionados.",
+      "outcome3": "El tiempo pasa y la oportunidad de celebrar un banquete se desvanece."
+    },
+    "message": "Los aldeanos proponen organizar un banquete. Un breve consuelo para aliviar su cansancio y calmar sus mentes.",
+    "title": "Banquete de la aldea"
+  },
   "feedingRing": {
     "choices": {
       "keepRing": {
@@ -582,6 +630,10 @@
     },
     "message": "Despiertas en plena noche, paralizado. Sientes una presencia junto a tu cama, silenciosa e inmóvil. Antes de que el terror pueda apoderarse de ti, el sueño te arrastra de vuelta al vacío. Al amanecer encuentras un anillo desconocido en uno de tus dedos.",
     "title": "El terror nocturno"
+  },
+  "fifthWave": {
+    "message": "De la cueva emergen innumerables figuras pálidas, de formas indescriptibles, avanzando hacia la ciudad.",
+    "title": "La quinta oleada"
   },
   "findElderScroll": {
     "choices": {
@@ -603,45 +655,9 @@
     "message": "Un aldeano anciano se acerca a ti, los ojos cargados de conocimiento. 'Has dado tus primeros pasos en este mundo cruel', dice en voz baja. 'Pronto tendrás que decidir si estás dispuesto a enfrentar lo que viene'.",
     "title": "El anciano de la aldea"
   },
-  "eighthWave": {
-    "message": "El suelo tiembla bajo el peso de su número, mientras una nueva oleada de la horda pálida cierra su anillo alrededor de la ciudad.",
-    "title": "La octava oleada"
-  },
-  "fifthWave": {
-    "message": "De la cueva emergen innumerables figuras pálidas, de formas indescriptibles, avanzando hacia la ciudad.",
-    "title": "La quinta oleada"
-  },
   "firstWave": {
     "message": "Figuras pálidas emergen de la cueva, por fin libres; sus ojos de brasa cortan la oscuridad mientras marchan hacia la ciudad.",
     "title": "La primera oleada"
-  },
-  "fourthWave": {
-    "message": "El cielo parece oscurecerse mientras una masa incontable de criaturas pálidas surge de la cueva y avanza hacia la ciudad.",
-    "title": "La cuarta oleada"
-  },
-  "ninthWave": {
-    "message": "Con un hambre implacable, una masa aún mayor de criaturas pálidas se precipita hacia la ciudad.",
-    "title": "La novena oleada"
-  },
-  "secondWave": {
-    "message": "Las criaturas regresan en mayor número, con armas de hueso tosco que brillan con luz impura.",
-    "title": "La segunda oleada"
-  },
-  "seventhWave": {
-    "message": "Las criaturas avanzan de nuevo, una alfombra retorcida de extremidades y dientes que se arrastra hacia la ciudad.",
-    "title": "La séptima oleada"
-  },
-  "sixthWave": {
-    "message": "La boca de la cueva vomita otra marea de cuerpos pálidos. Las lanzas de hueso repiquetean como lluvia mientras se agrupan para otro asalto.",
-    "title": "La sexta oleada"
-  },
-  "tenthWave": {
-    "message": "Desde los confines más profundos de la cueva estalla una masa inimaginable de criaturas pálidas. Inundan la tierra como una marea viva, mientras la ciudad se prepara para la aniquilación.",
-    "title": "La oleada final"
-  },
-  "thirdWave": {
-    "message": "Hordas de criaturas pálidas salen de la cueva; los gritos sacuden incluso las piedras, sus armas de hueso resquebrajan el suelo.",
-    "title": "La tercera oleada"
   },
   "forestTribeHelpRequest": {
     "choices": {
@@ -654,6 +670,10 @@
     },
     "message": "Una salvaje emerge del bosque, su cuerpo pálido cubierto de marcas tribales y cicatrices. 'Vengo de una tribu del bosque', dice con urgencia. 'Bestias brutales que viven en una cueva del bosque nos atacan sin descanso. Nos enfrentamos a la extinción. Por favor, ayúdanos a sobrevivir'.",
     "title": "Una súplica desesperada"
+  },
+  "fourthWave": {
+    "message": "El cielo parece oscurecerse mientras una masa incontable de criaturas pálidas surge de la cueva y avanza hacia la ciudad.",
+    "title": "La cuarta oleada"
   },
   "frostfall": {
     "choices": {
@@ -928,74 +948,74 @@
     "toolTrades": {
       "trade_nightshade_bow_schematic": {
         "label": "Esquema de arco sombrío",
-        "message": "Compras den Esquema de arco sombrío. Der comerciante grinst finster: „Das Design dieses Bogens ist grausam. Seine Pfeile werden deine Feinde vergiften.“"
+        "message": "Compras el esquema del arco sombr?o. El mercader sonr?e con oscuridad: ?El dise?o de este arco es cruel. Sus flechas envenenar?n a tus enemigos.?"
       },
       "trade_skull_lantern": {
         "label": "Linterna de cráneo",
-        "message": "Compras die Linterna de cráneo. Aus verfluchtem Knochen geschmiedet, wird ihr unheimliches Licht dich durch die tiefsten Tiefen führen."
+        "message": "Compras la linterna de cr?neo. Forjada con hueso maldito, su luz inquietante te guiar? por las profundidades m?s hondas."
       },
       "trade_tarnished_compass": {
         "label": "Brújula deslustrada",
-        "message": "Compras den angelaufenen Kompass. Artefakt der verschwundenen Zivilisation – seine Nadel weist auf verborgene Orte."
+        "message": "Compras la br?jula deslustrada. Artefacto de la civilizaci?n desaparecida, su aguja se?ala lugares ocultos."
       },
       "trade_map_fragment_wooden": {
         "label": "Fragmento de mapa",
-        "message": "Compras ein zerrissenes Fragmento de mapa."
+        "message": "Compras un fragmento de mapa hecho jirones."
       },
       "trade_map_fragment_stone": {
         "label": "Fragmento de mapa",
-        "message": "Compras ein zerrissenes Fragmento de mapa."
+        "message": "Compras un fragmento de mapa hecho jirones."
       },
       "trade_crow_harness": {
         "label": "Arnés de cuervo",
-        "message": "Compras das Arnés de cuervo. Ein speziell gefertigtes Geschirr für Botenkrähen."
+        "message": "Compras el arn?s de cuervo. Un arn?s especialmente fabricado para cuervos mensajeros."
       },
       "trade_clarity_elixir": {
         "label": "Elixir de claridad",
-        "message": "Bebes das Elixir de claridad. Dein Geist fühlt sich leichter an."
+        "message": "Bebes el Elixir de claridad. Tu mente se siente m?s ligera."
       },
       "trade_veinfire_elixir": {
         "label": "Elixir de fuego venoso",
-        "message": "Compras eine Flasche Elixir de fuego venoso."
+        "message": "Compras una botella de Elixir de fuego venoso."
       },
       "trade_book_of_trials": {
-        "message": "Compras das Libro de pruebas. Der comerciante lächelt wissend: „Ein Leitfaden für diejenigen, die ihre Reise verfolgen wollen.“",
+        "message": "Compras el Libro de pruebas. El mercader sonr?e con aire de saber: ?Una gu?a para quienes buscan seguir el rastro de su viaje.?",
         "label": "Libro de pruebas"
       },
       "trade_book_of_craftsmanship": {
-        "message": "Compras das Libro de artesanía. Der comerciante nickt anerkennend: „Ein Handwerkerbuch, abgenutzt, aber voller Weisheit. Es wird denen Geheimnisse zuflüstern, die bauen.“",
+        "message": "Compras el Libro de artesan?a. El mercader asiente con aprobaci?n: ?Un tomo de artesano, gastado pero lleno de sabidur?a. Susurrar? secretos a quienes construyen.?",
         "label": "Libro de artesanía"
       },
       "trade_book_of_war": {
-        "message": "Compras das Libro de la guerra. Der comerciante nickt ernst: „conocimiento aus einem längst vergangenen Königreich im fernen Osten. Damit wirst du die Folgen deiner Entscheidungen besser verstehen.“",
+        "message": "Compras el Libro de la guerra. El mercader asiente con gravedad: ?Conocimiento de un reino desaparecido hace mucho en el lejano oriente. Con esto entender?s mejor las consecuencias de tus decisiones.?",
         "label": "Libro de la guerra"
       },
       "trade_reinforced_rope": {
-        "message": "Compras das verstärkte Seil. Dieses Seil hält enormer Belastung stand y erreicht Orte in den tiefsten cuevankammern.",
+        "message": "Compras la cuerda reforzada. Esta cuerda soporta una tensi?n enorme y alcanza lugares en las c?maras m?s profundas de la cueva.",
         "label": "Cuerda reforzada"
       },
       "trade_occultist_map": {
-        "message": "Als du die Mapa del ocultista kaufst, flüstert der comerciante: „Ein alter Okkultist verbarg seine Geheimnisse in einer Kammer tief in der cueva. Diese Karte wird dich führen.“",
+        "message": "Al comprar el Mapa del ocultista, el mercader susurra: ?Un viejo ocultista ocult? sus secretos en una c?mara profunda de la cueva. Este mapa te guiar?.?",
         "label": "Mapa del ocultista"
       },
       "trade_giant_trap": {
-        "message": "Als du die Trampa gigante kaufst, grinst der comerciante: „Damit kann man im bosque etwas Gigantisches fangen. Setze sie weise ein.“",
+        "message": "Al comprar la trampa gigante, el mercader sonr?e: ?Con esto puedes atrapar algo gigantesco en el bosque. ?sala con sabidur?a.?",
         "label": "Trampa gigante"
       },
       "trade_arbalest_schematic": {
-        "message": "Compras den Esquema de ballesta. Der comerciante entfaltet einen filigranen Entwurf: „Ein Design eines Meisteringenieurs. Damit kannst du eine mächtige Waffe herstellen.“",
+        "message": "Compras el esquema de ballesta. El mercader despliega un plano intrincado: ?Un dise?o de un ingeniero maestro. Con esto puedes fabricar un arma poderosa.?",
         "label": "Esquema de ballesta"
       },
       "trade_compound_bow": {
-        "message": "Compras den Arco compuesto. Der comerciante nickt anerkennend: „Präzisionswaffe der verschwundenen Zivilisation. Sie wird dir gute Dienste leisten.“",
+        "message": "Compras el arco compuesto. El mercader asiente con aprobaci?n: ?Arma de alta precisi?n de la civilizaci?n desaparecida. Te servir? bien.?",
         "label": "Arco compuesto"
       },
       "trade_stormglass_halberd_schematic": {
-        "message": "Compras den Esquema de alabarda de vidrio tormenta. Der comerciante enthüllt die verblassten Pläne: „Mit diesem Entwurf kannst du eine Hellebarde von gewaltiger Kraft schmieden.“",
-        "label": "Esquema de alabarda de vidrio tormenta"
+        "message": "Compras el esquema de alabarda de cristal de tormenta. El mercader muestra los planos desva?dos: ?Con este dise?o puedes forjar una alabarda de poder tremendo.?",
+        "label": "Esquema de alabarda de cristal de tormenta"
       },
       "trade_natharit_pickaxe": {
-        "message": "Compras die Pico de natharit. Der comerciante reicht dir das robuste Werkzeug: „Extrem haltbare Spitzhacke aus unbekanntem Material. Ihre Qualität ist außergewöhnlich.“",
+        "message": "Compras el pico de natharit. El mercader te entrega la herramienta robusta: ?Un pico extremadamente duradero de material desconocido. Su calidad es excepcional.?",
         "label": "Pico de natharit"
       }
     },
@@ -1118,6 +1138,10 @@
       }
     }
   },
+  "ninthWave": {
+    "message": "Con un hambre implacable, una masa aún mayor de criaturas pálidas se precipita hacia la ciudad.",
+    "title": "La novena oleada"
+  },
   "nordicWarAxe": {
     "choices": {
       "buyAxe": {
@@ -1129,12 +1153,12 @@
     },
     "log": {
       "outcome0": "No tienes suficiente oro.",
-      "ignoreForced": "Ignoras das Angebot. Der vikingo spuckt schließlich auf den Boden y geht mit seiner hacha de guerra, murmelnd über deinen Mangel an Respekt.",
-      "ignoreNormal": "Ignoras das Angebot. Der vikingo nickt schließlich y geht mit seiner hacha de guerra.",
-      "buyForced": "Der vikingo nimmt die Zahlung mit kaltem Lächeln entgegen. „Vielleicht hättest du früher großzügiger sein sollen, statt mich anzugreifen. Die Axt hätte dich damals viel weniger gekostet“, sagt er, bevor er geht.",
-      "buyNormal": "Zufrieden mit dem Handel nickt der vikingo anerkennend y zieht weiter.",
-      "declineForced": "Rechazas das Angebot ab. Der vikingo spuckt auf den Boden y flucht, während er mit seiner hacha de guerra geht. „Du hättest zahlen sollen, als du die Chance hattest“, knurrt er.",
-      "declineNormal": "Rechazas das Angebot ab. Der vikingo nickt respektvoll y geht mit seiner hacha de guerra."
+      "ignoreForced": "Ignoras la oferta. El vikingo acaba escupiendo al suelo y se marcha con su hacha de guerra, murmurando sobre tu falta de respeto.",
+      "ignoreNormal": "Ignoras la oferta. El vikingo acaba asintiendo y se marcha con su hacha de guerra.",
+      "buyForced": "El vikingo acepta el pago con una sonrisa fr?a. ?Quiz? debiste ser m?s generoso antes, en vez de atacarme. Entonces habr?as pagado mucho menos por el hacha?, dice antes de marcharse.",
+      "buyNormal": "Satisfecho con el trato, el vikingo asiente con aprobaci?n y parte.",
+      "declineForced": "Rechazas la oferta. El vikingo escupe al suelo y maldice mientras se marcha con su hacha de guerra. ?Debiste pagar cuando tuviste la oportunidad?, gru?e.",
+      "declineNormal": "Rechazas la oferta. El vikingo asiente con respeto y se marcha con su hacha de guerra."
     },
     "message": "El constructor vikingo vuelve a tu aldea con una magnífica hacha de guerra. 'Forjé esta hacha de guerra nórdica en mi tierra. Será tuya... por un precio'.",
     "title": "El vikingo regresa"
@@ -1382,6 +1406,230 @@
     "message": "El caballero regresa, con la armadura arañada y maltratada. 'Encontré algo extraordinario en las montañas', dice. 'Te hablaré de ello, por un precio'.",
     "title": "Regreso de las montañas"
   },
+  "riddleOfAges": {
+    "title": "Voces en la oscuridad",
+    "message": {
+      "original": "La figura encapuchada regresa a la finca bajo la pálida luz de la luna. Su voz resuena: «Por la mañana va a cuatro patas, al mediodía a dos, y por la tarde a tres.»",
+      "variant": "La figura encapuchada regresa a la finca bajo la pálida luz de la luna. Su voz resuena: «No puede hacerte daño, pero te deja cicatrices.»"
+    },
+    "choices": {
+      "answerEarth": {
+        "label": "Tierra"
+      },
+      "answerWolf": {
+        "label": "Lobo"
+      },
+      "answerMan": {
+        "label": "Hombre"
+      },
+      "answerBird": {
+        "label": "Pájaro"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_second": "La figura asiente apenas y desaparece en la noche. Al amanecer, una bolsa de cuero desgastada llena de oro yace donde estuvo."
+    }
+  },
+  "riddleOfAges_variant": {
+    "title": "Voces en la oscuridad",
+    "message": {
+      "original": "La figura encapuchada regresa a la finca bajo la pálida luz de la luna. Su voz resuena: «Por la mañana va a cuatro patas, al mediodía a dos, y por la tarde a tres.»",
+      "variant": "La figura encapuchada regresa a la finca bajo la pálida luz de la luna. Su voz resuena: «No puede hacerte daño, pero te deja cicatrices.»"
+    },
+    "choices": {
+      "answerNightmares": {
+        "label": "Pesadillas"
+      },
+      "answerTime": {
+        "label": "Toque"
+      },
+      "answerLove": {
+        "label": "Cuchillo"
+      },
+      "answerDeath": {
+        "label": "Lujuria"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_second": "La figura asiente apenas y desaparece en la noche. Al amanecer, una bolsa de cuero desgastada llena de oro yace donde estuvo."
+    }
+  },
+  "riddleOfDevourer": {
+    "title": "Un visitante nocturno",
+    "message": {
+      "original": "Una vez más, la misteriosa figura aparece en la finca. Susurra con voz baja: «Lo devora todo, convierte los huesos en polvo, mata reyes, desgasta montañas, borra ciudades.»",
+      "variant": "Una vez más, la misteriosa figura aparece en la finca. Susurra con voz baja: «Tiene dedos, pero ni carne, ni plumas, ni escamas, ni hueso.»"
+    },
+    "choices": {
+      "answerMan": {
+        "label": "Hombre"
+      },
+      "answerWater": {
+        "label": "Agua"
+      },
+      "answerTime": {
+        "label": "Tiempo"
+      },
+      "answerFire": {
+        "label": "Fuego"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_third": "La figura inclina la cabeza en silencioso reconocimiento antes de retroceder hacia la penumbra. Al amanecer, una bolsa de monedas desgastada de oro aparece fuera de la puerta."
+    }
+  },
+  "riddleOfDevourer_variant": {
+    "title": "Un visitante nocturno",
+    "message": {
+      "original": "Una vez más, la misteriosa figura aparece en la finca. Susurra con voz baja: «Lo devora todo, convierte los huesos en polvo, mata reyes, desgasta montañas, borra ciudades.»",
+      "variant": "Una vez más, la misteriosa figura aparece en la finca. Susurra con voz baja: «Tiene dedos, pero ni carne, ni plumas, ni escamas, ni hueso.»"
+    },
+    "choices": {
+      "answerFin": {
+        "label": "Aleta"
+      },
+      "answerWing": {
+        "label": "Ala"
+      },
+      "answerGlove": {
+        "label": "Guante"
+      },
+      "answerHand": {
+        "label": "Mano"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_third": "La figura inclina la cabeza en silencioso reconocimiento antes de retroceder hacia la penumbra. Al amanecer, una bolsa de monedas desgastada de oro aparece fuera de la puerta."
+    }
+  },
+  "riddleOfEternal": {
+    "title": "El huésped desconocido",
+    "message": {
+      "original": "La figura nocturna aparece una vez más en la finca. Su voz resuena en silencio a través de la noche: «Tus ojos están abiertos, estoy ahí; tus ojos están cerrados, también estoy ahí.»",
+      "variant": "La figura nocturna aparece una vez más en la finca. Su voz resuena en silencio a través de la noche: «Los pobres me tienen, los ricos me necesitan. Si me comes, mueres.»"
+    },
+    "choices": {
+      "answerLight": {
+        "label": "Luz"
+      },
+      "answerLife": {
+        "label": "Vida"
+      },
+      "answerDarkness": {
+        "label": "Oscuridad"
+      },
+      "answerDeath": {
+        "label": "Muerte"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_fifth": "La figura inclina la cabeza en reverencia silenciosa antes de desvanecerse por completo. Un gran saco de oro yace en el suelo donde estuvo."
+    }
+  },
+  "riddleOfEternal_variant": {
+    "title": "El huésped desconocido",
+    "message": {
+      "original": "La figura nocturna aparece una vez más en la finca. Su voz resuena en silencio a través de la noche: «Tus ojos están abiertos, estoy ahí; tus ojos están cerrados, también estoy ahí.»",
+      "variant": "La figura nocturna aparece una vez más en la finca. Su voz resuena en silencio a través de la noche: «Los pobres me tienen, los ricos me necesitan. Si me comes, mueres.»"
+    },
+    "choices": {
+      "answerPoison": {
+        "label": "Veneno"
+      },
+      "answerAir": {
+        "label": "Aire"
+      },
+      "answerNothing": {
+        "label": "Nada"
+      },
+      "answerTime": {
+        "label": "Tiempo"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_fifth": "La figura inclina la cabeza en reverencia silenciosa antes de desvanecerse por completo. Un gran saco de oro yace en el suelo donde estuvo."
+    }
+  },
+  "riddleOfTears": {
+    "title": "Un huésped encapuchado",
+    "message": {
+      "original": "La figura envuelta aparece una vez más en la finca. Susurra: «Vuela sin alas, llora sin ojos, la oscuridad lo sigue adondequiera que vaya.»",
+      "variant": "La figura envuelta aparece una vez más en la finca. Susurra: «Suave, delicado, sedoso, pero si estás envuelto en mí, gritas.»"
+    },
+    "choices": {
+      "answerNight": {
+        "label": "Noche"
+      },
+      "answerWind": {
+        "label": "Viento"
+      },
+      "answerClouds": {
+        "label": "Nubes"
+      },
+      "answerShadow": {
+        "label": "Sombra"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_fourth": "La figura baja su cabeza encapuchada un momento antes de disolverse en las sombras. Un pequeño saco de oro queda sobre el suelo frío."
+    }
+  },
+  "riddleOfTears_variant": {
+    "title": "Un huésped encapuchado",
+    "message": {
+      "original": "La figura envuelta aparece una vez más en la finca. Susurra: «Vuela sin alas, llora sin ojos, la oscuridad lo sigue adondequiera que vaya.»",
+      "variant": "La figura envuelta aparece una vez más en la finca. Susurra: «Suave, delicado, sedoso, pero si estás envuelto en mí, gritas.»"
+    },
+    "choices": {
+      "answerNightmares": {
+        "label": "Pesadillas"
+      },
+      "answerCobweb": {
+        "label": "Telaraña"
+      },
+      "answerSilk": {
+        "label": "Seda"
+      },
+      "answerDeath": {
+        "label": "Muerte"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_fourth": "La figura baja su cabeza encapuchada un momento antes de disolverse en las sombras. Un pequeño saco de oro queda sobre el suelo frío."
+    }
+  },
   "ringOfDrownedChoice": {
     "choices": {
       "doNothing": {
@@ -1422,14 +1670,22 @@
     },
     "log": {
       "outcome0": "El Santuario se transforma en un nexo de poder divino. Todos los dioses responden a tu llamada; sus dones son tuyos.",
-      "dedicate_dagon": "Dagons bendición fließt stärker als zuvor.",
-      "dedicate_flame": "Die Primera Llama brennt heller als zuvor.",
-      "dedicate_raven": "Das Marca del cuervo wird stärker als zuvor.",
-      "dedicate_ash": "Die Abrazo ceniciento ist stärker als zuvor.",
+      "dedicate_dagon": "La bendici?n de Dagon fluye con m?s fuerza que antes.",
+      "dedicate_flame": "La Primera Llama arde m?s brillante que antes.",
+      "dedicate_raven": "La Marca del cuervo se fortalece m?s que antes.",
+      "dedicate_ash": "El Abrazo ceniciento es m?s fuerte que antes.",
       "dedicate_unknown": ""
     },
     "message": "El druida ciego emerge: 'El Santuario está completo', dice, con una voz cargada de sabiduría antigua. 'Ahora debes elegir: profundizar tu devoción por el camino escogido o abrazar a todos los dioses y sus dones. Elige con sabiduría'.",
     "title": "La dedicación del Santuario"
+  },
+  "secondWave": {
+    "message": "Las criaturas regresan en mayor número, con armas de hueso tosco que brillan con luz impura.",
+    "title": "La segunda oleada"
+  },
+  "seventhWave": {
+    "message": "Las criaturas avanzan de nuevo, una alfombra retorcida de extremidades y dientes que se arrastra hacia la ciudad.",
+    "title": "La séptima oleada"
   },
   "shadowFluteChoice": {
     "choices": {
@@ -1473,6 +1729,10 @@
     "message": "El cuervo tuerto regresa de los Pescadores de la Costa con pescado seco como regalo. Los pescadores ofrecen enseñarte los secretos para construir poderosas trampas de peces por 250 de oro.",
     "title": "Mensaje de los Pescadores de la Costa"
   },
+  "sixthWave": {
+    "message": "La boca de la cueva vomita otra marea de cuerpos pálidos. Las lanzas de hueso repiquetean como lluvia mientras se agrupan para otro asalto.",
+    "title": "La sexta oleada"
+  },
   "skinCrawling": {
     "choices": {
       "calm_down": {
@@ -1505,7 +1765,7 @@
     "log": {
       "outcome0": "Entregas a dos de los aldeanos. El traficante te arroja un saco de acero y se marcha con sus nuevos cautivos. Cuando los aldeanos restantes ven lo que has hecho, abandonan la aldea asqueados.",
       "outcome1": "¡Tus hombres atacan al esclavista! La lucha es brutal, pero victoriosa. Liberas a los cautivos y reclamas el acero del traficante. Las almas liberadas se unen a tu aldea.",
-      "outcome2": "Tus hombres greifen den traficante de esclavos an, doch er ist vorbereitet! Er wehrt sich erbittert. {{actualDeaths}} aldeanos fallen im combate. Der comerciante entkommt mit seinen Gefangenen y hinterlässt nur den Tod.",
+      "outcome2": "Tus hombres atacan al traficante de esclavos, pero est? preparado. Se defiende con ferocidad. {{actualDeaths}} aldeanos caen en el combate. El comerciante escapa con sus cautivos y deja solo muerte tras de s?.",
       "outcome3": "Rechazas la vil oferta del esclavista. Escupe al suelo con disgusto y se aleja con sus cautivos."
     },
     "message": "Un hombre en un carro tirado por dos caballos se acerca a la aldea. Una jaula de hierro en el carro contiene a dos almas miserables. El traficante sonríe con malicia: 'Te pagaré 100 de acero por dos de tus aldeanos. ¿Qué dices?'",
@@ -1591,14 +1851,13 @@
     "message": "Poco después de construir el templo, aparece el druida ciego. Sus ojos lechosos parecen ver a través de tu alma cuando habla: 'El templo debe dedicarse a un dios. Elige con sabiduría'.",
     "title": "El druida ciego regresa"
   },
-  "traderSettles": {
-    "choices": {
-      "continue": {
-        "label": "Continuar"
-      }
-    },
-    "message": "Un comerciante llega a la aldea con su familia. Parecen agotados, sus rostros curtidos por años en el camino. Por fin están listos para establecerse.",
-    "title": "El comerciante"
+  "tenthWave": {
+    "message": "Desde los confines más profundos de la cueva estalla una masa inimaginable de criaturas pálidas. Inundan la tierra como una marea viva, mientras la ciudad se prepara para la aniquilación.",
+    "title": "La oleada final"
+  },
+  "thirdWave": {
+    "message": "Hordas de criaturas pálidas salen de la cueva; los gritos sacuden incluso las piedras, sus armas de hueso resquebrajan el suelo.",
+    "title": "La tercera oleada"
   },
   "traders_daughter": {
     "choices": {
@@ -1662,6 +1921,15 @@
     },
     "message": "El hijo del comerciante regresa con la daga de su padre. Está lleno de gratitud y te ofrece un gran descuento en tu próxima compra de las mercancías de su padre.",
     "title": "La gratitud del hijo del comerciante"
+  },
+  "traderSettles": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Un comerciante llega a la aldea con su familia. Parecen agotados, sus rostros curtidos por años en el camino. Por fin están listos para establecerse.",
+    "title": "El comerciante"
   },
   "undergroundLakeCreature": {
     "choices": {
@@ -1779,6 +2047,23 @@
     "message": "Un anciano de la aldea se acerca a ti. Habla en voz baja. 'Estás al comienzo de un largo camino lleno de pruebas. Muy pronto deberás elegir si continuarás este viaje'.",
     "title": "El aviso del anciano"
   },
+  "villagersStareAtSky": {
+    "choices": {
+      "look_up_too": {
+        "label": "Mirar al cielo"
+      },
+      "shake_them": {
+        "label": "Despertarlos"
+      }
+    },
+    "log": {
+      "outcome0": "Agarras al aldeano más cercano y lo sacudes. Parpadea una vez y vuelve a la normalidad, pero susurra 'Ya viene' antes de retomar su trabajo. Los demás lo siguen lentamente.",
+      "outcome1": "Cuando tocas a un aldeano, se desmorona en polvo. Los demás despiertan de su trance y gritan, señalando al cielo. Solo por un instante, tú también lo ves: algo vasto y hambriento observando desde arriba.",
+      "outcome2": "Alzas el cuello hacia el cielo y de pronto lo ves: algo inmenso e imposible que existe entre las nubes. Tu mente rechaza lo que presencia, pero la imagen queda grabada en tu memoria para siempre."
+    },
+    "message": "Todos los aldeanos han detenido su trabajo y permanecen inmóviles, mirando el cielo vacío. Siguen así durante horas, sin parpadear, mientras lágrimas de líquido negro recorren sus rostros. Cuando sigues su mirada, solo ves nubes ordinarias, pero algo se siente terriblemente mal.",
+    "title": "Mirada al cielo"
+  },
   "villagerStares": {
     "choices": {
       "avoid": {
@@ -1796,22 +2081,23 @@
     "message": "Uno de los aldeanos ha empezado a mirar la nada durante horas. Cuando te acercas, sus ojos son completamente negros. Sonríe al notar que lo observas.",
     "title": "Miradas huecas"
   },
-  "villagersStareAtSky": {
+  "wandering_collector": {
     "choices": {
-      "look_up_too": {
-        "label": "Mirar al cielo"
-      },
-      "shake_them": {
-        "label": "Despertarlos"
+      "sell_nothing": {
+        "label": "Nada"
       }
     },
     "log": {
-      "outcome0": "Agarras al aldeano más cercano y lo sacudes. Parpadea una vez y vuelve a la normalidad, pero susurra 'Ya viene' antes de retomar su trabajo. Los demás lo siguen lentamente.",
-      "outcome1": "Cuando tocas a un aldeano, se desmorona en polvo. Los demás despiertan de su trance y gritan, señalando al cielo. Solo por un instante, tú también lo ves: algo vasto y hambriento observando desde arriba.",
-      "outcome2": "Alzas el cuello hacia el cielo y de pronto lo ves: algo inmenso e imposible que existe entre las nubes. Tu mente rechaza lo que presencia, pero la imagen queda grabada en tu memoria para siempre."
+      "whisper0": "El coleccionista suspira y se aparta. ?En mis viajes descubr? muchas reliquias de la civilizaci?n antigua. Estaban mucho m?s avanzados que nosotros?, susurra antes de desvanecerse en la oscuridad.",
+      "whisper1": "Un zumbido bajo se filtra desde debajo de la capucha. ?La gran explosi?n destruy? la mayor?a de los artefactos de la civilizaci?n antigua. Lo poco que queda est? disperso y es raro?, murmura.",
+      "whisper2": "Un aliento d?bil escapa del coleccionista. ?Aprend? mucho sobre la civilizaci?n antigua en mis viajes. Antes de la gran explosi?n no hab?a magia en este mundo. Naci? en aquel momento?, susurra mientras se marcha."
     },
-    "message": "Todos los aldeanos han detenido su trabajo y permanecen inmóviles, mirando el cielo vacío. Siguen así durante horas, sin parpadear, mientras lágrimas de líquido negro recorren sus rostros. Cuando sigues su mirada, solo ves nubes ordinarias, pero algo se siente terriblemente mal.",
-    "title": "Mirada al cielo"
+    "title": "El coleccionista errante",
+    "message": {
+      "visit0": "Una figura envuelta en ropas harapientas se acerca. Parece intrigada por lo que has reunido. «Siento valor entre tus posesiones», murmura. «Permíteme llevarte una, a cambio de {{reward}} de oro.»",
+      "visit1": "La figura regresa, sus pasos silenciosos en el suelo. «Más artefactos, más secretos», susurra. «Déjame reclamar uno más, y tu bolsa será {{reward}} de oro más pesada.»",
+      "visit2": "El coleccionista aparece de nuevo, ojos brillando bajo la capucha. «Nuestros tratos casi terminan», dice suavemente. «Véndeme uno más, y {{reward}} de oro serán tuyos.»"
+    }
   },
   "wanderingFirecrafter": {
     "choices": {
@@ -1848,28 +2134,66 @@
       }
     },
     "log": {
-      "outcome0": "Das la bienvenida a los nómadas y les ofreces apoyo. A cambio, enseñan a tu gente a levantar tiendas de pieles.",
+      "outcome0": "Recibes a los n?madas y les ofreces apoyo. A cambio, ense?an a tu gente a levantar tiendas de pieles.",
       "outcome1": "Rechazas ayudarlos. El líder de la tribu asiente respetuosamente y guía a su gente de vuelta a la espesura."
     },
     "message": "Una pequeña tribu de nómadas se acerca a la aldea. Su líder habla: 'Hemos viajado lejos y buscamos un lugar al que llamar hogar. Ayúdanos a asentarnos y enseñaremos a tu gente a levantar tiendas de pieles'.",
     "title": "La tribu errante"
   },
-  "wandering_collector": {
+  "whispererInTheDark": {
+    "title": "Susurro en la oscuridad",
+    "message": {
+      "original": "Llaman a la puerta de la finca. Una figura completamente envuelta en ropas oscuras permanece en las sombras afuera. Susurra: «Sin voz grita, sin alas vuela, sin dientes muerde, sin boca murmura.»",
+      "variant": "Llaman a la puerta de la finca. Una figura completamente envuelta en ropas oscuras permanece en las sombras afuera. Susurra: «El deseo de una dama, nacido en la oscuridad, brillando con luz pálida.»"
+    },
     "choices": {
-      "sell_nothing": {
-        "label": "Nada"
+      "answerFire": {
+        "label": "Fuego"
+      },
+      "answerWaves": {
+        "label": "Olas"
+      },
+      "answerWind": {
+        "label": "Viento"
+      },
+      "answerDarkness": {
+        "label": "Oscuridad"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
       }
     },
     "log": {
-      "whisper0": "Der coleccionista seufzt y wendet sich ab. „Auf meinen Reisen habe ich viele Relikte der antigua civilización entdeckt. Sie waren weit fortgeschrittener als wir je waren“, flüstert er, bevor er in der Dunkelheit verschwindet.",
-      "whisper1": "Ein leises Summen dringt unter der Kapuze hervor. „Die große Explosion zerstörte die meisten Artefakte der antigua civilización. Was übrig blieb, ist verstreut y selten“, murmelt er.",
-      "whisper2": "Ein schwacher Atem entweicht dem coleccionista. „Ich habe auf meinen Reisen viel über die alte Zivilisation gelernt. Vor der gran explosión gab es keine Magie in dieser Welt. Sie wurde in jenem Moment geboren“, flüstert er, während er geht."
-    },
-    "title": "El coleccionista errante",
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_first": "La figura asiente levemente antes de desvanecerse en la oscuridad. Por la mañana, una pequeña bolsa de oro reposa en el umbral de la finca."
+    }
+  },
+  "whispererInTheDark_variant": {
+    "title": "Susurro en la oscuridad",
     "message": {
-      "visit0": "Una figura envuelta en ropas harapientas se acerca. Parece intrigada por lo que has reunido. «Siento valor entre tus posesiones», murmura. «Permíteme llevarte una, a cambio de {{reward}} de oro.»",
-      "visit1": "La figura regresa, sus pasos silenciosos en el suelo. «Más artefactos, más secretos», susurra. «Déjame reclamar uno más, y tu bolsa será {{reward}} de oro más pesada.»",
-      "visit2": "El coleccionista aparece de nuevo, ojos brillando bajo la capucha. «Nuestros tratos casi terminan», dice suavemente. «Véndeme uno más, y {{reward}} de oro serán tuyos.»"
+      "original": "Llaman a la puerta de la finca. Una figura completamente envuelta en ropas oscuras permanece en las sombras afuera. Susurra: «Sin voz grita, sin alas vuela, sin dientes muerde, sin boca murmura.»",
+      "variant": "Llaman a la puerta de la finca. Una figura completamente envuelta en ropas oscuras permanece en las sombras afuera. Susurra: «El deseo de una dama, nacido en la oscuridad, brillando con luz pálida.»"
+    },
+    "choices": {
+      "answerSilver": {
+        "label": "Plata"
+      },
+      "answerPearl": {
+        "label": "Perla"
+      },
+      "answerGold": {
+        "label": "Oro"
+      },
+      "answerDiamond": {
+        "label": "Diamante"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_first": "La figura asiente levemente antes de desvanecerse en la oscuridad. Por la mañana, una pequeña bolsa de oro reposa en el umbral de la finca."
     }
   },
   "whisperersReward": {
@@ -1984,8 +2308,8 @@
       "outcome3": "Rechazas la oferta del mago. Asiente con comprensión. 'Entonces permaneceré en mi torre. Quizá nuestros caminos se crucen de nuevo cuando la necesidad sea mayor', dice antes de partir."
     },
     "message": {
-      "firstVisit": "Der alte mago tritt an dich heran: „Ich habe lange gelebt y vieles gesehen“, sagt er mit müder Stimme. „Die Bedrohung, der du gegenüberstehst, ist ernst. Für einen fairen Preis schließe ich mich dir im combate gegen die Feinde an, die aus den Tiefen kommen.“",
-      "repeat": "Der alte mago tritt erneut an dich heran: „Mein Angebot, mich dir im combate gegen die Feinde aus den Tiefen anzuschließen, gilt noch. Für einen fairen Preis schließe ich mich dir an.“"
+      "firstVisit": "El viejo mago se acerca a ti. ?He vivido mucho y he visto mucho?, dice con voz cansada. ?La amenaza a la que te enfrentas es grave. Por un precio justo, me unir? a ti en la lucha contra los enemigos que emergen de las profundidades.?",
+      "repeat": "El viejo mago se acerca de nuevo. ?Mi oferta de unirme a ti en la lucha contra los enemigos de las profundidades sigue en pie. Por un precio justo, me unir? a ti.?"
     },
     "title": "La oferta del mago"
   },
@@ -2005,36 +2329,36 @@
     "log": {
       "outcome0": "¡Los aldeanos derrotan a la manada de lobos! Matas al lobo alfa y reclamas su piel como trofeo. Irradia poder primigenio.",
       "outcome1": "Los aldeanos se apiñan en sus chozas mientras los lobos merodean afuera. Al amanecer, los lobos se han marchado sin encontrar a nadie, dejando solo arañazos y terror.",
-      "defend_noDeaths": "Los aldeanos kämpfen verzweifelt gegen die lobos. Los aldeanos überstehen den ataque.",
-      "defend_noDeaths_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Los aldeanos überstehen den ataque. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
-      "defend_noDeaths_hut": "Los aldeanos kämpfen verzweifelt gegen die lobos. Los aldeanos überstehen den ataque. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz.",
-      "defend_noDeaths_hut_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Los aldeanos überstehen den ataque. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
-      "defend_noDeaths_food": "Los aldeanos kämpfen verzweifelt gegen die lobos. Los aldeanos überstehen den ataque. Im Chaos verwüsten die lobos deine Vorräte.",
-      "defend_noDeaths_food_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Los aldeanos überstehen den ataque. Im Chaos verwüsten die lobos deine Vorräte. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
-      "defend_noDeaths_food_hut": "Los aldeanos kämpfen verzweifelt gegen die lobos. Los aldeanos überstehen den ataque. Im Chaos verwüsten die lobos deine Vorräte. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz.",
-      "defend_noDeaths_food_hut_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Los aldeanos überstehen den ataque. Im Chaos verwüsten die lobos deine Vorräte. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
-      "defend_oneDeath": "Los aldeanos kämpfen verzweifelt gegen die lobos. Ein aldeanos fällt der übernatürlichen Wut der lobos zum Opfer.",
-      "defend_oneDeath_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Ein aldeanos fällt der übernatürlichen Wut der lobos zum Opfer. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
-      "defend_oneDeath_hut": "Los aldeanos kämpfen verzweifelt gegen die lobos. Ein aldeanos fällt der übernatürlichen Wut der lobos zum Opfer. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz.",
-      "defend_oneDeath_hut_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Ein aldeanos fällt der übernatürlichen Wut der lobos zum Opfer. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
-      "defend_oneDeath_food": "Los aldeanos kämpfen verzweifelt gegen die lobos. Ein aldeanos fällt der übernatürlichen Wut der lobos zum Opfer. Im Chaos verwüsten die lobos deine Vorräte.",
-      "defend_oneDeath_food_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Ein aldeanos fällt der übernatürlichen Wut der lobos zum Opfer. Im Chaos verwüsten die lobos deine Vorräte. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
-      "defend_oneDeath_food_hut": "Los aldeanos kämpfen verzweifelt gegen die lobos. Ein aldeanos fällt der übernatürlichen Wut der lobos zum Opfer. Im Chaos verwüsten die lobos deine Vorräte. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz.",
-      "defend_oneDeath_food_hut_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Ein aldeanos fällt der übernatürlichen Wut der lobos zum Opfer. Im Chaos verwüsten die lobos deine Vorräte. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
-      "defend_manyDeaths": "Los aldeanos kämpfen verzweifelt gegen die lobos. Mehrere aldeanos fallen der übernatürlichen Wut der lobos zum Opfer.",
-      "defend_manyDeaths_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Mehrere aldeanos fallen der übernatürlichen Wut der lobos zum Opfer. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
-      "defend_manyDeaths_hut": "Los aldeanos kämpfen verzweifelt gegen die lobos. Mehrere aldeanos fallen der übernatürlichen Wut der lobos zum Opfer. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz.",
-      "defend_manyDeaths_hut_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Mehrere aldeanos fallen der übernatürlichen Wut der lobos zum Opfer. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
-      "defend_manyDeaths_food": "Los aldeanos kämpfen verzweifelt gegen die lobos. Mehrere aldeanos fallen der übernatürlichen Wut der lobos zum Opfer. Im Chaos verwüsten die lobos deine Vorräte.",
-      "defend_manyDeaths_food_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Mehrere aldeanos fallen der übernatürlichen Wut der lobos zum Opfer. Im Chaos verwüsten die lobos deine Vorräte. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
-      "defend_manyDeaths_food_hut": "Los aldeanos kämpfen verzweifelt gegen die lobos. Mehrere aldeanos fallen der übernatürlichen Wut der lobos zum Opfer. Im Chaos verwüsten die lobos deine Vorräte. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz.",
-      "defend_manyDeaths_food_hut_first": "Los aldeanos kämpfen verzweifelt gegen die lobos. Mehrere aldeanos fallen der übernatürlichen Wut der lobos zum Opfer. Im Chaos verwüsten die lobos deine Vorräte. In ihrer Raserei zerstören die lobos eine der Hütten y hinterlassen nur Splitterholz. Los aldeanos schlagen vor, Fallen um das aldea zu legen, um sich besser vor lobosn y anderen Feinden zu schützen.",
-      "hide_noDeaths": "Los aldeanos kauern in ihren Hütten, während die lobos draußen umherstreifen. Bei Tagesanbruch sind die lobos abgezogen y haben nur Kratzer y Entsetzen zurückgelassen.",
-      "hide_noDeaths_food": "Los aldeanos kauern in ihren Hütten, während die lobos draußen umherstreifen. Bei Tagesanbruch sind die lobos abgezogen y haben nur Kratzer y Entsetzen zurückgelassen. Die lobos plündern deine Vorräte, bevor sie im Morgengrauen verschwinden.",
-      "hide_oneDeath": "Los aldeanos kauern in ihren Hütten, während die lobos draußen umherstreifen. Ein aldeanos, der hinausging, wird bei Sonnenaufgang zerrissen aufgefunden.",
-      "hide_oneDeath_food": "Los aldeanos kauern in ihren Hütten, während die lobos draußen umherstreifen. Ein aldeanos, der hinausging, wird bei Sonnenaufgang zerrissen aufgefunden. Die lobos plündern deine Vorräte, bevor sie im Morgengrauen verschwinden.",
-      "hide_manyDeaths": "Los aldeanos kauern in ihren Hütten, während die lobos draußen umherstreifen. Mehrere aldeanos werden aus ihren Hütten gezerrt, ihre Schreie hallen durch die Nacht.",
-      "hide_manyDeaths_food": "Los aldeanos kauern in ihren Hütten, während die lobos draußen umherstreifen. Mehrere aldeanos werden aus ihren Hütten gezerrt, ihre Schreie hallen durch die Nacht. Die lobos plündern deine Vorräte, bevor sie im Morgengrauen verschwinden."
+      "defend_noDeaths": "Los aldeanos luchan desesperadamente contra los lobos. Los aldeanos sobreviven al ataque.",
+      "defend_noDeaths_first": "Los aldeanos luchan desesperadamente contra los lobos. Los aldeanos sobreviven al ataque. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
+      "defend_noDeaths_hut": "Los aldeanos luchan desesperadamente contra los lobos. Los aldeanos sobreviven al ataque. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada.",
+      "defend_noDeaths_hut_first": "Los aldeanos luchan desesperadamente contra los lobos. Los aldeanos sobreviven al ataque. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
+      "defend_noDeaths_food": "Los aldeanos luchan desesperadamente contra los lobos. Los aldeanos sobreviven al ataque. En el caos, los lobos arrasan tus provisiones.",
+      "defend_noDeaths_food_first": "Los aldeanos luchan desesperadamente contra los lobos. Los aldeanos sobreviven al ataque. En el caos, los lobos arrasan tus provisiones. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
+      "defend_noDeaths_food_hut": "Los aldeanos luchan desesperadamente contra los lobos. Los aldeanos sobreviven al ataque. En el caos, los lobos arrasan tus provisiones. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada.",
+      "defend_noDeaths_food_hut_first": "Los aldeanos luchan desesperadamente contra los lobos. Los aldeanos sobreviven al ataque. En el caos, los lobos arrasan tus provisiones. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
+      "defend_oneDeath": "Los aldeanos luchan desesperadamente contra los lobos. Un aldeano cae ante la furia sobrenatural de los lobos.",
+      "defend_oneDeath_first": "Los aldeanos luchan desesperadamente contra los lobos. Un aldeano cae ante la furia sobrenatural de los lobos. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
+      "defend_oneDeath_hut": "Los aldeanos luchan desesperadamente contra los lobos. Un aldeano cae ante la furia sobrenatural de los lobos. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada.",
+      "defend_oneDeath_hut_first": "Los aldeanos luchan desesperadamente contra los lobos. Un aldeano cae ante la furia sobrenatural de los lobos. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
+      "defend_oneDeath_food": "Los aldeanos luchan desesperadamente contra los lobos. Un aldeano cae ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones.",
+      "defend_oneDeath_food_first": "Los aldeanos luchan desesperadamente contra los lobos. Un aldeano cae ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
+      "defend_oneDeath_food_hut": "Los aldeanos luchan desesperadamente contra los lobos. Un aldeano cae ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada.",
+      "defend_oneDeath_food_hut_first": "Los aldeanos luchan desesperadamente contra los lobos. Un aldeano cae ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
+      "defend_manyDeaths": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos.",
+      "defend_manyDeaths_first": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
+      "defend_manyDeaths_hut": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada.",
+      "defend_manyDeaths_hut_first": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
+      "defend_manyDeaths_food": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones.",
+      "defend_manyDeaths_food_first": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
+      "defend_manyDeaths_food_hut": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada.",
+      "defend_manyDeaths_food_hut_first": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
+      "hide_noDeaths": "Los aldeanos se api?an en sus chozas mientras los lobos merodean afuera. Al amanecer, los lobos se han marchado y solo dejan ara?azos y terror.",
+      "hide_noDeaths_food": "Los aldeanos se api?an en sus chozas mientras los lobos merodean afuera. Al amanecer, los lobos se han marchado y solo dejan ara?azos y terror. Los lobos saquean tus provisiones antes de desaparecer al amanecer.",
+      "hide_oneDeath": "Los aldeanos se api?an en sus chozas mientras los lobos merodean afuera. Un aldeano que se aventur? afuera aparece despedazado al amanecer.",
+      "hide_oneDeath_food": "Los aldeanos se api?an en sus chozas mientras los lobos merodean afuera. Un aldeano que se aventur? afuera aparece despedazado al amanecer. Los lobos saquean tus provisiones antes de desaparecer al amanecer.",
+      "hide_manyDeaths": "Los aldeanos se api?an en sus chozas mientras los lobos merodean afuera. Varios aldeanos son arrastrados fuera de sus chozas; sus gritos resuenan durante la noche.",
+      "hide_manyDeaths_food": "Los aldeanos se api?an en sus chozas mientras los lobos merodean afuera. Varios aldeanos son arrastrados fuera de sus chozas; sus gritos resuenan durante la noche. Los lobos saquean tus provisiones antes de desaparecer al amanecer."
     },
     "message": "Cerca de la medianoche, lobos emergen de la oscuridad, con los ojos brillando de hambre antinatural. Sus aullidos resuenan llenos de malicia mientras rodean la aldea.",
     "title": "Ataque de lobos"
@@ -2042,7 +2366,7 @@
   "woodcutter": {
     "choices": {
       "acceptServices": {
-        "label": "Pay {{foodCost}} Food"
+        "label": "Pagar {{foodCost}} comida"
       },
       "denyServices": {
         "label": "Rechazar los servicios"
@@ -2052,36 +2376,36 @@
       }
     },
     "log": {
-      "denyLastUneasy": "Etwas an seinem Auftreten beunruhigt dich. Rechazas den Handel ab. Das Lächeln des maderafällers verblasst, y er geht ohne ein Wort.",
-      "denyLevel1": "Rechazas sein Angebot ab. Der maderafäller zuckt mit den Schultern y geht in den bosque.",
-      "denyLevel2": "Rechazas sein Angebot ab. Der maderafäller nickt y zieht ohne Beschwerde weiter.",
-      "denyLevel3": "Rechazas sein Angebot ab. Er zuckt mit den Schultern y geht zurück in den bosque.",
-      "denyLevel4": "Rechazas sein ehrgeiziges Angebot ab. Der maderafäller wirkt enttäuscht, akzeptiert aber deine Entscheidung.",
-      "denyLevel5": "Rechazas den Handel ab. Der maderafäller runzelt die Stirn, widerspricht aber nicht.",
-      "denyLevel6": "Rechazas den Handel ab. Der maderafäller runzelt die Stirn, widerspricht aber nicht.",
-      "timeoutLast": "Deine Unentschlossenheit frustriert den maderafäller. Er schüttelt den Kopf y geht in den bosque.",
-      "timeoutLevel1": "Deine Unentschlossenheit frustriert den maderafäller. Er zuckt mit den Schultern y geht in den bosque.",
-      "timeoutLevel2": "Deine Unentschlossenheit frustriert den maderafäller. Er nickt y zieht ohne Beschwerde weiter.",
-      "timeoutLevel3": "Deine Unentschlossenheit frustriert den maderafäller. Er zuckt mit den Schultern y geht zurück in den bosque.",
-      "timeoutLevel4": "Deine Unentschlossenheit frustriert den maderafäller. Er wirkt enttäuscht, akzeptiert aber y geht.",
-      "timeoutLevel5": "Deine Unentschlossenheit frustriert den maderafäller. Er runzelt die Stirn y geht.",
-      "timeoutLevel6": "Deine Unentschlossenheit frustriert den maderafäller. Er runzelt die Stirn y geht."
+      "denyLastUneasy": "Algo en su actitud te inquieta. Rechazas el trato. La sonrisa del le?ador se desvanece y se marcha sin decir palabra.",
+      "denyLevel1": "Rechazas su oferta. El le?ador se encoge de hombros y se interna en el bosque.",
+      "denyLevel2": "Rechazas su oferta. El le?ador asiente y se marcha sin quejarse.",
+      "denyLevel3": "Rechazas su oferta. Se encoge de hombros y vuelve al bosque.",
+      "denyLevel4": "Rechazas su ambiciosa oferta. El le?ador parece decepcionado, pero acepta tu decisi?n.",
+      "denyLevel5": "Rechazas el trato. El le?ador frunce el ce?o, pero no discute.",
+      "denyLevel6": "Rechazas el trato. El le?ador frunce el ce?o, pero no discute.",
+      "timeoutLast": "Tu indecisi?n frustra al le?ador. Sacude la cabeza y se interna en el bosque.",
+      "timeoutLevel1": "Tu indecisi?n frustra al le?ador. Se encoge de hombros y se interna en el bosque.",
+      "timeoutLevel2": "Tu indecisi?n frustra al le?ador. Asiente y se marcha sin quejarse.",
+      "timeoutLevel3": "Tu indecisi?n frustra al le?ador. Se encoge de hombros y vuelve al bosque.",
+      "timeoutLevel4": "Tu indecisi?n frustra al le?ador. Parece decepcionado, pero acepta y se marcha.",
+      "timeoutLevel5": "Tu indecisi?n frustra al le?ador. Frunce el ce?o y se marcha.",
+      "timeoutLevel6": "Tu indecisi?n frustra al le?ador. Frunce el ce?o y se marcha."
     },
     "title": {
-      "level1": "Der maderafäller",
-      "level2": "Der maderafäller kehrt zurück",
-      "level3": "Das Angebot des maderafällers",
-      "level4": "Der ehrgeizige Plan des maderafällers",
-      "level5": "Der große Vorschlag des maderafällers",
-      "level6": "Das Angebot des maderafällers"
+      "level1": "El le?ador",
+      "level2": "El le?ador regresa",
+      "level3": "La oferta del le?ador",
+      "level4": "El plan ambicioso del le?ador",
+      "level5": "La gran propuesta del le?ador",
+      "level6": "La oferta del le?ador"
     },
     "message": {
-      "level1": "A muscular man with a large axe approaches the village. He flexes his arms. \"I can cut trees like no other,\" he boasts. \"Give me {{foodCost}} Food, and I'll bring {{woodReward}} Wood.\"",
-      "level2": "The woodcutter returns, his axe gleaming in the sun. \"Your village grows well,\" he observes. \"I can bring you {{woodReward}} Wood. You give me {{foodCost}} Food. What do you say?\"",
-      "level3": "The woodcutter approaches again. \"I see your village continues to thrive,\" he says with a grin. \"I can bring you {{woodReward}} Wood if you pay {{foodCost}} Food for it.\"",
-      "level4": "The woodcutter arrives once more. \"Do you want to use my services once more? {{woodReward}} Wood for {{foodCost}} Food,\" he asks.",
-      "level5": "The woodcutter appears with a confident smile. \"How about we make one more deal? {{woodReward}} Wood for {{foodCost}} Food.\"",
-      "level6": "The woodcutter returns to the village. \"Do you want to use my services once more? I offer {{woodReward}} Wood for {{foodCost}} Food,\" he says."
+      "level1": "Un hombre musculoso con una gran hacha se acerca a la aldea. Flexiona los brazos. ?Puedo talar ?rboles como nadie?, presume. ?Dame {{foodCost}} de comida y traer? {{woodReward}} de madera.?",
+      "level2": "El le?ador regresa, con el hacha reluciendo al sol. ?Tu aldea crece bien?, observa. ?Puedo traerte {{woodReward}} de madera. T? me das {{foodCost}} de comida. ?Qu? dices??",
+      "level3": "El le?ador se acerca de nuevo. ?Veo que tu aldea sigue prosperando?, dice con una sonrisa. ?Puedo traerte {{woodReward}} de madera si pagas {{foodCost}} de comida.?",
+      "level4": "El le?ador llega una vez m?s. ??Quieres usar mis servicios otra vez? {{woodReward}} de madera por {{foodCost}} de comida?, pregunta.",
+      "level5": "El le?ador aparece con una sonrisa confiada. ??Qu? tal si hacemos un trato m?s? {{woodReward}} de madera por {{foodCost}} de comida.?",
+      "level6": "El le?ador regresa a la aldea. ??Quieres usar mis servicios otra vez? Ofrezco {{woodReward}} de madera por {{foodCost}} de comida?, dice."
     }
   },
   "wrongReflections": {
@@ -2123,307 +2447,5 @@
     },
     "message": "Una joven se acerca a ti con lágrimas corriendo por su rostro. 'Mis dos padres fueron sacrificados a ese monolito maldito', llora. '¡Este comportamiento bárbaro tiene que terminar!'",
     "title": "La súplica de la joven"
-  },
-  "whispererInTheDark": {
-    "title": "Susurro en la oscuridad",
-    "message": {
-      "original": "Llaman a la puerta de la finca. Una figura completamente envuelta en ropas oscuras permanece en las sombras afuera. Susurra: «Sin voz grita, sin alas vuela, sin dientes muerde, sin boca murmura.»",
-      "variant": "Llaman a la puerta de la finca. Una figura completamente envuelta en ropas oscuras permanece en las sombras afuera. Susurra: «El deseo de una dama, nacido en la oscuridad, brillando con luz pálida.»"
-    },
-    "choices": {
-      "answerFire": {
-        "label": "Fuego"
-      },
-      "answerWaves": {
-        "label": "Olas"
-      },
-      "answerWind": {
-        "label": "Viento"
-      },
-      "answerDarkness": {
-        "label": "Oscuridad"
-      },
-      "timeout": {
-        "label": "Sin respuesta"
-      }
-    },
-    "log": {
-      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
-      "success_first": "La figura asiente levemente antes de desvanecerse en la oscuridad. Por la mañana, una pequeña bolsa de oro reposa en el umbral de la finca."
-    }
-  },
-  "whispererInTheDark_variant": {
-    "title": "Susurro en la oscuridad",
-    "message": {
-      "original": "Llaman a la puerta de la finca. Una figura completamente envuelta en ropas oscuras permanece en las sombras afuera. Susurra: «Sin voz grita, sin alas vuela, sin dientes muerde, sin boca murmura.»",
-      "variant": "Llaman a la puerta de la finca. Una figura completamente envuelta en ropas oscuras permanece en las sombras afuera. Susurra: «El deseo de una dama, nacido en la oscuridad, brillando con luz pálida.»"
-    },
-    "choices": {
-      "answerSilver": {
-        "label": "Plata"
-      },
-      "answerPearl": {
-        "label": "Perla"
-      },
-      "answerGold": {
-        "label": "oro"
-      },
-      "answerDiamond": {
-        "label": "Diamante"
-      },
-      "timeout": {
-        "label": "Sin respuesta"
-      }
-    },
-    "log": {
-      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
-      "success_first": "La figura asiente levemente antes de desvanecerse en la oscuridad. Por la mañana, una pequeña bolsa de oro reposa en el umbral de la finca."
-    }
-  },
-  "riddleOfAges": {
-    "title": "Voces en la oscuridad",
-    "message": {
-      "original": "La figura encapuchada regresa a la finca bajo la pálida luz de la luna. Su voz resuena: «Por la mañana va a cuatro patas, al mediodía a dos, y por la tarde a tres.»",
-      "variant": "La figura encapuchada regresa a la finca bajo la pálida luz de la luna. Su voz resuena: «No puede hacerte daño, pero te deja cicatrices.»"
-    },
-    "choices": {
-      "answerEarth": {
-        "label": "Tierra"
-      },
-      "answerWolf": {
-        "label": "Lobo"
-      },
-      "answerMan": {
-        "label": "Hombre"
-      },
-      "answerBird": {
-        "label": "Pájaro"
-      },
-      "timeout": {
-        "label": "Sin respuesta"
-      }
-    },
-    "log": {
-      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
-      "success_second": "La figura asiente apenas y desaparece en la noche. Al amanecer, una bolsa de cuero desgastada llena de oro yace donde estuvo."
-    }
-  },
-  "riddleOfAges_variant": {
-    "title": "Voces en la oscuridad",
-    "message": {
-      "original": "La figura encapuchada regresa a la finca bajo la pálida luz de la luna. Su voz resuena: «Por la mañana va a cuatro patas, al mediodía a dos, y por la tarde a tres.»",
-      "variant": "La figura encapuchada regresa a la finca bajo la pálida luz de la luna. Su voz resuena: «No puede hacerte daño, pero te deja cicatrices.»"
-    },
-    "choices": {
-      "answerNightmares": {
-        "label": "Pesadillas"
-      },
-      "answerTime": {
-        "label": "Toque"
-      },
-      "answerLove": {
-        "label": "Cuchillo"
-      },
-      "answerDeath": {
-        "label": "Lujuria"
-      },
-      "timeout": {
-        "label": "Sin respuesta"
-      }
-    },
-    "log": {
-      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
-      "success_second": "La figura asiente apenas y desaparece en la noche. Al amanecer, una bolsa de cuero desgastada llena de oro yace donde estuvo."
-    }
-  },
-  "riddleOfDevourer": {
-    "title": "Un visitante nocturno",
-    "message": {
-      "original": "Una vez más, la misteriosa figura aparece en la finca. Susurra con voz baja: «Lo devora todo, convierte los huesos en polvo, mata reyes, desgasta montañas, borra ciudades.»",
-      "variant": "Una vez más, la misteriosa figura aparece en la finca. Susurra con voz baja: «Tiene dedos, pero ni carne, ni plumas, ni escamas, ni hueso.»"
-    },
-    "choices": {
-      "answerMan": {
-        "label": "Hombre"
-      },
-      "answerWater": {
-        "label": "Agua"
-      },
-      "answerTime": {
-        "label": "Tiempo"
-      },
-      "answerFire": {
-        "label": "Fuego"
-      },
-      "timeout": {
-        "label": "Sin respuesta"
-      }
-    },
-    "log": {
-      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
-      "success_third": "La figura inclina la cabeza en silencioso reconocimiento antes de retroceder hacia la penumbra. Al amanecer, una bolsa de monedas desgastada de oro aparece fuera de la puerta."
-    }
-  },
-  "riddleOfDevourer_variant": {
-    "title": "Un visitante nocturno",
-    "message": {
-      "original": "Una vez más, la misteriosa figura aparece en la finca. Susurra con voz baja: «Lo devora todo, convierte los huesos en polvo, mata reyes, desgasta montañas, borra ciudades.»",
-      "variant": "Una vez más, la misteriosa figura aparece en la finca. Susurra con voz baja: «Tiene dedos, pero ni carne, ni plumas, ni escamas, ni hueso.»"
-    },
-    "choices": {
-      "answerFin": {
-        "label": "Aleta"
-      },
-      "answerWing": {
-        "label": "Ala"
-      },
-      "answerGlove": {
-        "label": "Guante"
-      },
-      "answerHand": {
-        "label": "Mano"
-      },
-      "timeout": {
-        "label": "Sin respuesta"
-      }
-    },
-    "log": {
-      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
-      "success_third": "La figura inclina la cabeza en silencioso reconocimiento antes de retroceder hacia la penumbra. Al amanecer, una bolsa de monedas desgastada de oro aparece fuera de la puerta."
-    }
-  },
-  "riddleOfTears": {
-    "title": "Un huésped encapuchado",
-    "message": {
-      "original": "La figura envuelta aparece una vez más en la finca. Susurra: «Vuela sin alas, llora sin ojos, la oscuridad lo sigue adondequiera que vaya.»",
-      "variant": "La figura envuelta aparece una vez más en la finca. Susurra: «Suave, delicado, sedoso, pero si estás envuelto en mí, gritas.»"
-    },
-    "choices": {
-      "answerNight": {
-        "label": "Noche"
-      },
-      "answerWind": {
-        "label": "Viento"
-      },
-      "answerClouds": {
-        "label": "Nubes"
-      },
-      "answerShadow": {
-        "label": "Sombra"
-      },
-      "timeout": {
-        "label": "Sin respuesta"
-      }
-    },
-    "log": {
-      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
-      "success_fourth": "La figura baja su cabeza encapuchada un momento antes de disolverse en las sombras. Un pequeño saco de oro queda sobre el suelo frío."
-    }
-  },
-  "riddleOfTears_variant": {
-    "title": "Un huésped encapuchado",
-    "message": {
-      "original": "La figura envuelta aparece una vez más en la finca. Susurra: «Vuela sin alas, llora sin ojos, la oscuridad lo sigue adondequiera que vaya.»",
-      "variant": "La figura envuelta aparece una vez más en la finca. Susurra: «Suave, delicado, sedoso, pero si estás envuelto en mí, gritas.»"
-    },
-    "choices": {
-      "answerNightmares": {
-        "label": "Pesadillas"
-      },
-      "answerCobweb": {
-        "label": "Telaraña"
-      },
-      "answerSilk": {
-        "label": "Seda"
-      },
-      "answerDeath": {
-        "label": "Muerte"
-      },
-      "timeout": {
-        "label": "Sin respuesta"
-      }
-    },
-    "log": {
-      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
-      "success_fourth": "La figura baja su cabeza encapuchada un momento antes de disolverse en las sombras. Un pequeño saco de oro queda sobre el suelo frío."
-    }
-  },
-  "riddleOfEternal": {
-    "title": "El huésped desconocido",
-    "message": {
-      "original": "La figura nocturna aparece una vez más en la finca. Su voz resuena en silencio a través de la noche: «Tus ojos están abiertos, estoy ahí; tus ojos están cerrados, también estoy ahí.»",
-      "variant": "La figura nocturna aparece una vez más en la finca. Su voz resuena en silencio a través de la noche: «Los pobres me tienen, los ricos me necesitan. Si me comes, mueres.»"
-    },
-    "choices": {
-      "answerLight": {
-        "label": "Luz"
-      },
-      "answerLife": {
-        "label": "Vida"
-      },
-      "answerDarkness": {
-        "label": "Oscuridad"
-      },
-      "answerDeath": {
-        "label": "Muerte"
-      },
-      "timeout": {
-        "label": "Sin respuesta"
-      }
-    },
-    "log": {
-      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
-      "success_fifth": "La figura inclina la cabeza en reverencia silenciosa antes de desvanecerse por completo. Un gran saco de oro yace en el suelo donde estuvo."
-    }
-  },
-  "riddleOfEternal_variant": {
-    "title": "El huésped desconocido",
-    "message": {
-      "original": "La figura nocturna aparece una vez más en la finca. Su voz resuena en silencio a través de la noche: «Tus ojos están abiertos, estoy ahí; tus ojos están cerrados, también estoy ahí.»",
-      "variant": "La figura nocturna aparece una vez más en la finca. Su voz resuena en silencio a través de la noche: «Los pobres me tienen, los ricos me necesitan. Si me comes, mueres.»"
-    },
-    "choices": {
-      "answerPoison": {
-        "label": "Veneno"
-      },
-      "answerAir": {
-        "label": "oro"
-      },
-      "answerNothing": {
-        "label": "Nada"
-      },
-      "answerTime": {
-        "label": "Tiempo"
-      },
-      "timeout": {
-        "label": "Sin respuesta"
-      }
-    },
-    "log": {
-      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
-      "success_fifth": "La figura inclina la cabeza en reverencia silenciosa antes de desvanecerse por completo. Un gran saco de oro yace en el suelo donde estuvo."
-    }
-  },
-  "feast": {
-    "choices": {
-      "makeFeast": {
-        "cost": "{{foodCost}} food",
-        "label": "Spend {{foodCost}} Food"
-      },
-      "noFeast": {
-        "label": "Refuse feast"
-      },
-      "doNothing": {
-        "label": "No Decision Made"
-      }
-    },
-    "log": {
-      "outcome0": "You don't have enough food for the feast.",
-      "outcome1": "The villagers gather for a feast! Weariness fades and spirits rise, if only briefly.",
-      "outcome2": "You decline the feast proposal. The villagers accept your decision, though disappointed.",
-      "outcome3": "Time passes and the opportunity for a feast fades away."
-    },
-    "message": "The villagers propose organizing a feast. A short comfort to ease their weariness and quiet their minds.",
-    "title": "Village Feast"
   }
 }

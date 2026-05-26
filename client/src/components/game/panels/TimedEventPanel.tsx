@@ -16,7 +16,6 @@ import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { merchantTooltip } from "@/game/rules/tooltips";
 import { EventChoice, type LogEntry } from "@/game/rules/events";
 import { logger } from "@/lib/logger";
-import { formatNumber } from "@/lib/utils";
 import {
   calculateMerchantDiscount,
   getTotalMerchantDiscount,
@@ -42,6 +41,9 @@ import {
   resolveTimedEventCatalogId,
 } from "@/i18n/eventDisplay";
 import { localizeEventChoices } from "@/i18n/eventText";
+import { getEventChoiceAffordance } from "@/i18n/eventAffordance";
+import { getEventChoiceCostBreakdown } from "@/game/rules/index";
+import type { MerchantTradeData } from "@/game/types";
 
 // Stat icon mapping
 const statIcons: Record<string, { icon: string; color: string }> = {
@@ -310,6 +312,8 @@ export default function TimedEventPanel() {
     ruleEventId,
   );
 
+  const eventI18nVars = getEventI18nVars(catalogId, gameState, ruleEventId);
+
   const formatTime = (ms: number) => {
     const totalSeconds = Math.ceil(ms / 1000);
     const minutes = Math.floor(totalSeconds / 60);
@@ -374,20 +378,6 @@ export default function TimedEventPanel() {
       // Non-merchant timed events close after any choice
       setTimedEventTab(false);
     }
-  };
-
-  // Helper function to extract resource names from cost text
-  const extractResourcesFromCost = (costText: string): string[] => {
-    const resources: string[] = [];
-    // Match patterns like "25 food", "100 wood", etc.
-    const matches = costText.matchAll(/([\d']+)\s+([a-zA-Z_]+)/g);
-
-    for (const match of matches) {
-      const resourceName = match[2].toLowerCase();
-      resources.push(resourceName);
-    }
-
-    return resources;
   };
 
   // Helper function to extract buy resource from label text
@@ -479,35 +469,24 @@ export default function TimedEventPanel() {
         <div className="flex flex-wrap gap-2 mt-2">
           {Array.isArray(eventChoices) &&
             eventChoices.map((choice) => {
+              const tradeChoice = choice as EventChoice & Partial<MerchantTradeData>;
               const cost = choice.cost;
               // Evaluate cost if it's a function
               const costText =
                 typeof cost === "function" ? cost(gameState) : cost;
 
-              // Check if player can afford the cost (for all timed tab events)
-              let canAfford = true;
-              let individualAffordance: Record<string, boolean> = {};
-
-              if (costText) {
-                // Extract all resource requirements from cost string
-                const costMatches = costText.matchAll(/([\d']+)\s+([a-zA-Z_]+)/g);
-                for (const match of costMatches) {
-                  const costAmount = parseInt(match[1].replace(/'/g, ""), 10);
-                  const resourceName = match[2].toLowerCase();
-
-                  // Check if this resource exists in gameState.resources
-                  const resourceKey =
-                    resourceName as keyof typeof gameState.resources;
-                  const currentAmount = gameState.resources[resourceKey] ?? 0;
-                  const hasEnough = currentAmount >= costAmount;
-
-                  individualAffordance[resourceName] = hasEnough;
-
-                  if (!hasEnough) {
-                    canAfford = false;
-                  }
-                }
-              }
+              const affordance = getEventChoiceAffordance(choice, gameState, {
+                catalogId,
+                vars: eventI18nVars,
+              });
+              const canAfford = affordance.canAfford;
+              const costBreakdown = getEventChoiceCostBreakdown(cost, gameState, {
+                catalogId,
+                choiceId: choice.id,
+                vars: eventI18nVars,
+                sellResource: tradeChoice.sellResource,
+                sellAmount: tradeChoice.sellAmount,
+              });
 
               // Evaluate label if it's a function
               let labelText =
@@ -606,35 +585,23 @@ export default function TimedEventPanel() {
                     <div
                       className="text-xs whitespace-nowrap"
                     >
-                      {costText && (
+                      {costBreakdown.length > 0 ? (
                         <div>
-                          {/* Parse cost segments and apply individual coloring */}
-                          {costText.split(",").map((part, i) => {
-                            const trimmedPart = part.trim();
-                            const match = trimmedPart.match(/([\d']+)\s+([a-zA-Z_]+)/);
-                            if (match) {
-                              const amount = parseInt(match[1].replace(/'/g, ""), 10);
-                              const resName = match[2].toLowerCase();
-                              const formattedResourceName = resName
-                                .split("_")
-                                .map(
-                                  (word) =>
-                                    word.charAt(0).toUpperCase() + word.slice(1),
-                                )
-                                .join(" ");
-                              const hasEnough = individualAffordance[resName] !== false;
-                              return (
-                                <div
-                                  key={i}
-                                  className={hasEnough ? "text-foreground" : "text-muted-foreground"}
-                                >
-                                  -{formatNumber(amount)} {formattedResourceName}
-                                </div>
-                              );
-                            }
-                            return <div key={i}>-{trimmedPart}</div>;
-                          })}
+                          {costBreakdown.map((costItem, index) => (
+                            <div
+                              key={index}
+                              className={
+                                costItem.satisfied
+                                  ? "text-foreground"
+                                  : "text-muted-foreground"
+                              }
+                            >
+                              {costItem.text}
+                            </div>
+                          ))}
                         </div>
+                      ) : (
+                        costText
                       )}
                       {costText && successPercentage && (
                         <div className="border-t border-border my-1" />
@@ -648,10 +615,9 @@ export default function TimedEventPanel() {
                   disabled={isDisabled}
                   onClick={() => handleChoice(choice.id)}
                   onMouseEnter={() => {
-                    if (costText) {
-                      const costResources = extractResourcesFromCost(costText);
+                    const costResources = affordance.costs.map(({ resource }) => resource);
 
-                      // For merchant trades, always highlight both buy and sell resources
+                    if (costResources.length > 0) {
                       if (isMerchantEvent) {
                         const buyResource =
                           extractBuyResourceFromLabel(labelText);
@@ -660,7 +626,6 @@ export default function TimedEventPanel() {
                           : costResources;
                         setHighlightedResources(highlightResources);
                       } else {
-                        // Standard: only highlight cost resources
                         setHighlightedResources(costResources);
                       }
                     }
@@ -675,8 +640,8 @@ export default function TimedEventPanel() {
                 <div
                   key={choice.id}
                   onMouseEnter={() => {
-                    if (costText) {
-                      const costResources = extractResourcesFromCost(costText);
+                    const costResources = affordance.costs.map(({ resource }) => resource);
+                    if (costResources.length > 0) {
                       if (isMerchantEvent) {
                         const buyResource =
                           extractBuyResourceFromLabel(labelText);

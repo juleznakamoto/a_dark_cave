@@ -1,6 +1,6 @@
 import { useGameStore } from "@/game/state";
 import type { AchievementChartConfig } from "./achievementTypes";
-import { getAchievementLabel } from "@/i18n/resolveGameText";
+import { getAchievementLabel, tWithFallback } from "@/i18n/resolveGameText";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
 
 export interface AchievementRow {
@@ -107,7 +107,12 @@ export function claimAchievement(
       ...s.log,
       {
         id: `achievement-${achievementId}-${Date.now()}`,
-        message: `${segment.name} Achievement complete: ${rewardText}`,
+        message: tWithFallback(
+          "ui",
+          "achievements.completeLog",
+          "{{name}} Achievement complete: {{rewards}}",
+          { name: segment.name, rewards: rewardText },
+        ),
         timestamp: Date.now(),
         type: "event" as const,
       },

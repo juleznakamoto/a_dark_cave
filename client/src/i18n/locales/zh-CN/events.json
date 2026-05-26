@@ -73,6 +73,22 @@
     },
     "title": "被吸干的尸体"
   },
+  "bloodiedAwakening": {
+    "choices": {
+      "investigateMurders": {
+        "label": "调查谋杀"
+      },
+      "severFinger": {
+        "label": "切断手指"
+      }
+    },
+    "log": {
+      "outcome0": "你沿着泥泞脚印穿过村庄，它们接连通向每一处凶案现场。脚印与你自己的靴子吻合。恐惧缓缓浮现：是你，被戒指的饥饿所占据。当村民发现真相，十八人逃离了这里，不愿留在这样受诅之物身边。",
+      "outcome1": "你双手颤抖着举起斧头。戒指在斧刃落下时搏动。骨头碎裂，剧痛撕穿你的手臂。你举起断指，看见细小的黑线像触手一样深深扎进血肉。"
+    },
+    "message": "黎明破晓时你醒来，衣服被新鲜血液浸透。那不是你的血。一名村民来到庄园，脸色因恐惧而惨白。“死了八个，”他低声说，“夜里被撕碎了。”你手指上的戒指传来撕心裂肺的搏痛。",
+    "title": "血污醒来"
+  },
   "bloodInWater": {
     "message": "村里的水连续三天呈现血红。村民似乎毫无察觉，照常饮用。你尝到铜与铁的味道，可他们却说那像最甘甜的泉水。"
   },
@@ -96,22 +112,6 @@
       "default": "今夜血月当空，村中长者谈及狼人。古老契约要求献祭 {{sacrificeAmount}} 名村民以安抚野兽。若你拒绝，它们会自行满足饥渴。"
     },
     "title": "血月"
-  },
-  "bloodiedAwakening": {
-    "choices": {
-      "investigateMurders": {
-        "label": "调查谋杀"
-      },
-      "severFinger": {
-        "label": "切断手指"
-      }
-    },
-    "log": {
-      "outcome0": "你沿着泥泞脚印穿过村庄，它们接连通向每一处凶案现场。脚印与你自己的靴子吻合。恐惧缓缓浮现：是你，被戒指的饥饿所占据。当村民发现真相，十八人逃离了这里，不愿留在这样受诅之物身边。",
-      "outcome1": "你双手颤抖着举起斧头。戒指在斧刃落下时搏动。骨头碎裂，剧痛撕穿你的手臂。你举起断指，看见细小的黑线像触手一样深深扎进血肉。"
-    },
-    "message": "黎明破晓时你醒来，衣服被新鲜血液浸透。那不是你的血。一名村民来到庄园，脸色因恐惧而惨白。“死了八个，”他低声说，“夜里被撕碎了。”你手指上的戒指传来撕心裂肺的搏痛。",
-    "title": "血污醒来"
   },
   "bloodstainedBeltChoice": {
     "choices": {
@@ -166,6 +166,28 @@
     },
     "message": "大地震颤，骷髅生物从森林中涌出。噬骨者用你交易给它的骨头铸成了一支亵渎军团。它们眼窝空洞，手持锋利骨兵，向城市逼近。",
     "title": "白骨军团"
+  },
+  "boneDevourer": {
+    "title": "The Bone Devourer",
+    "message": {
+      "firstTime": "A deformed creature shuffles to the gates, its hunched form covered in pale, stretched skin. It speaks in a rasping voice: 'I seek bones. I pay {{silverReward}} Silver.'",
+      "repeat": "The creature returns to the gates, its hunched form still covered in pale, stretched skin. It speaks in its familiar rasping voice: 'I seek bones. I pay {{silverReward}} Silver.'"
+    },
+    "choices": {
+      "sellBones": {
+        "label": "Sell {{boneCost}} Bones",
+        "cost": "{{boneCost}} bones"
+      },
+      "refuse": {
+        "label": "Refuse trade"
+      }
+    },
+    "log": {
+      "outcome0": "You don't have enough bones for the trade.",
+      "outcome1": "The creature takes the bones with its gnarled hands, as if attempting to count them. It places a pouch of silver at your feet and disappears into the darkness.",
+      "outcome2": "You refuse the creature's offer. It hisses in displeasure and retreats into the shadows. You sense it will return.",
+      "outcome3": "Your indecision frustrates the creature. It hisses in displeasure and retreats into the shadows."
+    }
   },
   "boneDiceChoice": {
     "choices": {
@@ -503,6 +525,10 @@
       "outcome0": "你拒绝了。夜晚在没有欢乐、温暖或笑声中过去。"
     }
   },
+  "eighthWave": {
+    "message": "大地在它们的数量下震颤，苍白大军的新一波攻势收紧了对城市的包围。",
+    "title": "第八波攻势"
+  },
   "encounterBeyondPortal": {
     "choices": {
       "attempt_communication": {
@@ -567,6 +593,28 @@
     "message": "你的小屋木墙上开始浮现人脸，扭曲而痛苦的表情仿佛从另一侧挤出。它们无声地尖叫、乞求。村民绕开它们走，仿佛它们一直都在那里。",
     "title": "墙中之脸"
   },
+  "feast": {
+    "choices": {
+      "makeFeast": {
+        "cost": "{{foodCost}} food",
+        "label": "Spend {{foodCost}} Food"
+      },
+      "noFeast": {
+        "label": "Refuse feast"
+      },
+      "doNothing": {
+        "label": "No Decision Made"
+      }
+    },
+    "log": {
+      "outcome0": "You don't have enough food for the feast.",
+      "outcome1": "The villagers gather for a feast! Weariness fades and spirits rise, if only briefly.",
+      "outcome2": "You decline the feast proposal. The villagers accept your decision, though disappointed.",
+      "outcome3": "Time passes and the opportunity for a feast fades away."
+    },
+    "message": "The villagers propose organizing a feast. A short comfort to ease their weariness and quiet their minds.",
+    "title": "Village Feast"
+  },
   "feedingRing": {
     "choices": {
       "keepRing": {
@@ -582,6 +630,10 @@
     },
     "message": "你在深夜醒来，浑身无法动弹。你感觉有什么存在伫立在床边，沉默而静止。恐惧还未来得及攫住你，睡意便将你拖回虚无。黎明时，你发现一枚陌生戒指套在你的手指上。",
     "title": "夜惊"
+  },
+  "fifthWave": {
+    "message": "洞穴中涌出无数苍白身影，形态难以名状，向城市推进。",
+    "title": "第五波攻势"
   },
   "findElderScroll": {
     "choices": {
@@ -603,45 +655,9 @@
     "message": "一名年长村民走近你，眼中压着沉重的见识。“你已经在这个残酷世界迈出了第一步，”他低声说，“很快，你必须决定是否愿意面对前方的一切。”",
     "title": "村中长者"
   },
-  "eighthWave": {
-    "message": "大地在它们的数量下震颤，苍白大军的新一波攻势收紧了对城市的包围。",
-    "title": "第八波攻势"
-  },
-  "fifthWave": {
-    "message": "洞穴中涌出无数苍白身影，形态难以名状，向城市推进。",
-    "title": "第五波攻势"
-  },
   "firstWave": {
     "message": "苍白身影终于从洞穴中涌出，余烬般的双眼划破黑暗，向城市进发。",
     "title": "第一波攻势"
-  },
-  "fourthWave": {
-    "message": "天空仿佛暗了下来，数不清的苍白生物从洞穴涌出，压向城市。",
-    "title": "第四波攻势"
-  },
-  "ninthWave": {
-    "message": "带着永不满足的饥渴，更大规模的苍白生物涌向城市。",
-    "title": "第九波攻势"
-  },
-  "secondWave": {
-    "message": "怪物以更大的数量归来，手持粗骨制成的武器，散发着邪光。",
-    "title": "第二波攻势"
-  },
-  "seventhWave": {
-    "message": "怪物再次推进，肢体与牙齿织成的蠕动地毯向城市刮来。",
-    "title": "第七波攻势"
-  },
-  "sixthWave": {
-    "message": "洞口又吐出一股苍白尸潮。骨矛如雨作响，它们集结准备再次进攻。",
-    "title": "第六波攻势"
-  },
-  "tenthWave": {
-    "message": "洞穴最深处喷发出难以想象的苍白生物洪流。它们如活潮漫过大地，城市准备迎接毁灭。",
-    "title": "最终波攻势"
-  },
-  "thirdWave": {
-    "message": "苍白生物大军从洞穴涌出；尖叫震得连石头都在颤，骨制武器劈裂地面。",
-    "title": "第三波攻势"
   },
   "forestTribeHelpRequest": {
     "choices": {
@@ -654,6 +670,10 @@
     },
     "message": "一名野民从森林中走出，苍白的身体布满部族纹记与伤疤。“我来自林中的部族，”她急切地说，“树林洞穴里的残暴野兽不断袭击我们。我们正面临灭绝。求你，帮我们活下去。”",
     "title": "绝望的恳求"
+  },
+  "fourthWave": {
+    "message": "天空仿佛暗了下来，数不清的苍白生物从洞穴涌出，压向城市。",
+    "title": "第四波攻势"
   },
   "frostfall": {
     "choices": {
@@ -1118,6 +1138,10 @@
       }
     }
   },
+  "ninthWave": {
+    "message": "带着永不满足的饥渴，更大规模的苍白生物涌向城市。",
+    "title": "第九波攻势"
+  },
   "nordicWarAxe": {
     "choices": {
       "buyAxe": {
@@ -1382,6 +1406,230 @@
     "message": "骑士回来了，护甲满是刮痕与凹陷。“我在山里发现了非凡之物，”他说，“我可以告诉你，但需要代价。”",
     "title": "自山中归来"
   },
+  "riddleOfAges": {
+    "title": "黑暗中的声音",
+    "message": {
+      "original": "披着斗篷的身影在苍白月光下回到庄园。它的声音回荡：「早晨用四足行走，中午用两足，傍晚用三足。」",
+      "variant": "披着斗篷的身影在苍白月光下回到庄园。它的声音回荡：「不能伤害你，却会给你留下伤疤。」"
+    },
+    "choices": {
+      "answerEarth": {
+        "label": "大地"
+      },
+      "answerWolf": {
+        "label": "狼"
+      },
+      "answerMan": {
+        "label": "人"
+      },
+      "answerBird": {
+        "label": "鸟"
+      },
+      "timeout": {
+        "label": "未作答"
+      }
+    },
+    "log": {
+      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
+      "success_second": "那身影微微点头，消失在夜色中。黎明时分，一个磨损的皮革钱袋躺在它曾站立之处。"
+    }
+  },
+  "riddleOfAges_variant": {
+    "title": "黑暗中的声音",
+    "message": {
+      "original": "披着斗篷的身影在苍白月光下回到庄园。它的声音回荡：「早晨用四足行走，中午用两足，傍晚用三足。」",
+      "variant": "披着斗篷的身影在苍白月光下回到庄园。它的声音回荡：「不能伤害你，却会给你留下伤疤。」"
+    },
+    "choices": {
+      "answerNightmares": {
+        "label": "噩梦"
+      },
+      "answerTime": {
+        "label": "触摸"
+      },
+      "answerLove": {
+        "label": "刀"
+      },
+      "answerDeath": {
+        "label": "欲望"
+      },
+      "timeout": {
+        "label": "未作答"
+      }
+    },
+    "log": {
+      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
+      "success_second": "那身影微微点头，消失在夜色中。黎明时分，一个磨损的皮革钱袋躺在它曾站立之处。"
+    }
+  },
+  "riddleOfDevourer": {
+    "title": "夜间的访客",
+    "message": {
+      "original": "神秘的身影再次出现在庄园。它低声呢喃：「吞噬万物，将骨化为尘，弑王灭国，磨平山峦，抹去城镇。」",
+      "variant": "神秘的身影再次出现在庄园。它低声呢喃：「有指无肉，无羽无鳞，亦无骨。」"
+    },
+    "choices": {
+      "answerMan": {
+        "label": "人"
+      },
+      "answerWater": {
+        "label": "水"
+      },
+      "answerTime": {
+        "label": "时间"
+      },
+      "answerFire": {
+        "label": "火"
+      },
+      "timeout": {
+        "label": "未作答"
+      }
+    },
+    "log": {
+      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
+      "success_third": "那身影静静点头，退入昏暗之中。天亮时，门外发现一个磨损的金币袋。"
+    }
+  },
+  "riddleOfDevourer_variant": {
+    "title": "夜间的访客",
+    "message": {
+      "original": "神秘的身影再次出现在庄园。它低声呢喃：「吞噬万物，将骨化为尘，弑王灭国，磨平山峦，抹去城镇。」",
+      "variant": "神秘的身影再次出现在庄园。它低声呢喃：「有指无肉，无羽无鳞，亦无骨。」"
+    },
+    "choices": {
+      "answerFin": {
+        "label": "鳍"
+      },
+      "answerWing": {
+        "label": "翼"
+      },
+      "answerGlove": {
+        "label": "手套"
+      },
+      "answerHand": {
+        "label": "手"
+      },
+      "timeout": {
+        "label": "未作答"
+      }
+    },
+    "log": {
+      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
+      "success_third": "那身影静静点头，退入昏暗之中。天亮时，门外发现一个磨损的金币袋。"
+    }
+  },
+  "riddleOfEternal": {
+    "title": "未知的客人",
+    "message": {
+      "original": "夜间的身影最后一次出现在庄园。它的声音在夜色中无声回荡：「你睁眼，我在；你闭眼，我亦在。」",
+      "variant": "夜间的身影最后一次出现在庄园。它的声音在夜色中无声回荡：「穷人有我，富人为需。食我则死。」"
+    },
+    "choices": {
+      "answerLight": {
+        "label": "光"
+      },
+      "answerLife": {
+        "label": "生命"
+      },
+      "answerDarkness": {
+        "label": "黑暗"
+      },
+      "answerDeath": {
+        "label": "死亡"
+      },
+      "timeout": {
+        "label": "未作答"
+      }
+    },
+    "log": {
+      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
+      "success_fifth": "那身影无声地低头致意，随即完全消失。一大袋金子留在它曾站立的地上。"
+    }
+  },
+  "riddleOfEternal_variant": {
+    "title": "未知的客人",
+    "message": {
+      "original": "夜间的身影最后一次出现在庄园。它的声音在夜色中无声回荡：「你睁眼，我在；你闭眼，我亦在。」",
+      "variant": "夜间的身影最后一次出现在庄园。它的声音在夜色中无声回荡：「穷人有我，富人为需。食我则死。」"
+    },
+    "choices": {
+      "answerPoison": {
+        "label": "毒"
+      },
+      "answerAir": {
+        "label": "金"
+      },
+      "answerNothing": {
+        "label": "无"
+      },
+      "answerTime": {
+        "label": "时间"
+      },
+      "timeout": {
+        "label": "未作答"
+      }
+    },
+    "log": {
+      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
+      "success_fifth": "那身影无声地低头致意，随即完全消失。一大袋金子留在它曾站立的地上。"
+    }
+  },
+  "riddleOfTears": {
+    "title": "蒙面的客人",
+    "message": {
+      "original": "裹在袍中的身影再次出现在庄园。它低语：「无翼而飞，无眼而泣，黑暗随它而至。」",
+      "variant": "裹在袍中的身影再次出现在庄园。它低语：「柔软、纤细、如丝，但若被它包裹，你会尖叫。」"
+    },
+    "choices": {
+      "answerNight": {
+        "label": "夜"
+      },
+      "answerWind": {
+        "label": "风"
+      },
+      "answerClouds": {
+        "label": "云"
+      },
+      "answerShadow": {
+        "label": "影"
+      },
+      "timeout": {
+        "label": "未作答"
+      }
+    },
+    "log": {
+      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
+      "success_fourth": "那身影短暂低下兜帽，随即溶入阴影。冰冷的地面上留下一小袋金子。"
+    }
+  },
+  "riddleOfTears_variant": {
+    "title": "蒙面的客人",
+    "message": {
+      "original": "裹在袍中的身影再次出现在庄园。它低语：「无翼而飞，无眼而泣，黑暗随它而至。」",
+      "variant": "裹在袍中的身影再次出现在庄园。它低语：「柔软、纤细、如丝，但若被它包裹，你会尖叫。」"
+    },
+    "choices": {
+      "answerNightmares": {
+        "label": "噩梦"
+      },
+      "answerCobweb": {
+        "label": "蛛网"
+      },
+      "answerSilk": {
+        "label": "丝绸"
+      },
+      "answerDeath": {
+        "label": "死亡"
+      },
+      "timeout": {
+        "label": "未作答"
+      }
+    },
+    "log": {
+      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
+      "success_fourth": "那身影短暂低下兜帽，随即溶入阴影。冰冷的地面上留下一小袋金子。"
+    }
+  },
   "ringOfDrownedChoice": {
     "choices": {
       "doNothing": {
@@ -1431,6 +1679,14 @@
     "message": "盲眼德鲁伊现身：“圣所已经完工，”他说，声音承载着古老智慧的重量，“现在你必须选择：加深对所选道路的虔诚，或拥抱所有神祇与祂们的馈赠。谨慎选择。”",
     "title": "圣所奉献"
   },
+  "secondWave": {
+    "message": "怪物以更大的数量归来，手持粗骨制成的武器，散发着邪光。",
+    "title": "第二波攻势"
+  },
+  "seventhWave": {
+    "message": "怪物再次推进，肢体与牙齿织成的蠕动地毯向城市刮来。",
+    "title": "第七波攻势"
+  },
   "shadowFluteChoice": {
     "choices": {
       "doNothing": {
@@ -1472,6 +1728,10 @@
     },
     "message": "独眼乌鸦从岸边渔民那里回来，带着干鱼作为礼物。渔民愿意以 250 黄金的价格教你建造强力鱼陷阱的秘密。",
     "title": "来自岸边渔民的消息"
+  },
+  "sixthWave": {
+    "message": "洞口又吐出一股苍白尸潮。骨矛如雨作响，它们集结准备再次进攻。",
+    "title": "第六波攻势"
   },
   "skinCrawling": {
     "choices": {
@@ -1591,14 +1851,13 @@
     "message": "神殿建成不久，盲眼德鲁伊便出现了。他乳白色的眼睛仿佛看穿你的灵魂：“神殿必须奉献给一位神。谨慎选择。”",
     "title": "盲眼德鲁伊归来"
   },
-  "traderSettles": {
-    "choices": {
-      "continue": {
-        "label": "继续"
-      }
-    },
-    "message": "一名商人带着家人来到村庄。他们看上去疲惫不堪，面容被多年旅途磨得沧桑。他们终于准备定居下来。",
-    "title": "商人"
+  "tenthWave": {
+    "message": "洞穴最深处喷发出难以想象的苍白生物洪流。它们如活潮漫过大地，城市准备迎接毁灭。",
+    "title": "最终波攻势"
+  },
+  "thirdWave": {
+    "message": "苍白生物大军从洞穴涌出；尖叫震得连石头都在颤，骨制武器劈裂地面。",
+    "title": "第三波攻势"
   },
   "traders_daughter": {
     "choices": {
@@ -1662,6 +1921,15 @@
     },
     "message": "商人的儿子回来了，手里拿着父亲的匕首。他满怀感激，愿意在你下次购买他父亲的货物时给予很大折扣。",
     "title": "商人儿子的感激"
+  },
+  "traderSettles": {
+    "choices": {
+      "continue": {
+        "label": "继续"
+      }
+    },
+    "message": "一名商人带着家人来到村庄。他们看上去疲惫不堪，面容被多年旅途磨得沧桑。他们终于准备定居下来。",
+    "title": "商人"
   },
   "undergroundLakeCreature": {
     "choices": {
@@ -1779,6 +2047,23 @@
     "message": "一名村中长者走近你。他低声说道：“你站在一条充满试炼的漫长道路起点。很快，你必须选择是否继续这段旅程。”",
     "title": "长者的提醒"
   },
+  "villagersStareAtSky": {
+    "choices": {
+      "look_up_too": {
+        "label": "仰望天空"
+      },
+      "shake_them": {
+        "label": "唤醒他们"
+      }
+    },
+    "log": {
+      "outcome0": "你抓住最近的村民摇晃。他眨了一次眼，恢复正常，却在继续工作前低语：“它要来了。”其他人也慢慢恢复。",
+      "outcome1": "当你触碰一名村民时，他碎成尘土。其他人猛然脱离恍惚，尖叫着指向天空。就在一瞬间，你也看见了它，一个庞大而饥饿的东西正从上方注视。",
+      "outcome2": "你仰头望向天空，突然看见了它，某种巨大而不可能的存在栖身云层之间。你的心智拒绝所见之物，但那影像永远烙进你的记忆。"
+    },
+    "message": "所有村民都停下工作，一动不动地站着，凝视空荡天空。他们数小时不眨眼，黑色液体的泪水沿脸流下。当你顺着他们的目光望去，只看见普通云朵，但某种东西错得可怕。",
+    "title": "仰望天空"
+  },
   "villagerStares": {
     "choices": {
       "avoid": {
@@ -1796,22 +2081,23 @@
     "message": "一名村民开始连续数小时凝视虚无。当你靠近时，他的眼睛漆黑一片。他注意到你在看，便露出微笑。",
     "title": "空洞凝视"
   },
-  "villagersStareAtSky": {
+  "wandering_collector": {
     "choices": {
-      "look_up_too": {
-        "label": "仰望天空"
-      },
-      "shake_them": {
-        "label": "唤醒他们"
+      "sell_nothing": {
+        "label": "无"
       }
     },
     "log": {
-      "outcome0": "你抓住最近的村民摇晃。他眨了一次眼，恢复正常，却在继续工作前低语：“它要来了。”其他人也慢慢恢复。",
-      "outcome1": "当你触碰一名村民时，他碎成尘土。其他人猛然脱离恍惚，尖叫着指向天空。就在一瞬间，你也看见了它，一个庞大而饥饿的东西正从上方注视。",
-      "outcome2": "你仰头望向天空，突然看见了它，某种巨大而不可能的存在栖身云层之间。你的心智拒绝所见之物，但那影像永远烙进你的记忆。"
+      "whisper0": "收藏家叹息着转身。「我游历中发现许多古代文明遗物，他们远比我们先进，」他低语着消失在黑暗中。",
+      "whisper1": "兜帽下渗出低鸣。「大爆炸摧毁了古代文明的大部分遗物，残存者稀少而分散，」他呢喃。",
+      "whisper2": "收藏家轻轻吐息。「我在旅途中学到许多古代文明之事。大爆炸前世上没有魔法，它在那一刻诞生，」他离去时低语。"
     },
-    "message": "所有村民都停下工作，一动不动地站着，凝视空荡天空。他们数小时不眨眼，黑色液体的泪水沿脸流下。当你顺着他们的目光望去，只看见普通云朵，但某种东西错得可怕。",
-    "title": "仰望天空"
+    "title": "流浪收藏家",
+    "message": {
+      "visit0": "一个裹着破袍的人影走近。他似乎对你收集的东西很感兴趣。「我感觉到你的财物中有价值之物，」他低语，「让我带走一件，换 {{reward}} 金币。」",
+      "visit1": "黑袍人影再度归来，脚步无声。「更多遗物，更多秘密，」他低语，「再让我取走一件，你的钱袋将多出 {{reward}} 金币。」",
+      "visit2": "收藏家再次出现，兜帽下双眼发光。「我们的交易快结束了，」他轻声说，「再卖我一件，{{reward}} 金币归你。」"
+    }
   },
   "wanderingFirecrafter": {
     "choices": {
@@ -1854,22 +2140,60 @@
     "message": "一小支游牧部族来到村庄。他们的首领说道：“我们跋涉很远，寻找一个能称为家的地方。帮助我们定居，我们就教你的人搭建毛皮帐篷。”",
     "title": "流浪部族"
   },
-  "wandering_collector": {
+  "whispererInTheDark": {
+    "title": "黑暗中的低语者",
+    "message": {
+      "original": "庄园的门被敲响。一个完全被黑袍包裹的身影站在门外的阴影中。它低语道：「无声则哭，无翼则飞，无牙则咬，无口则语。」",
+      "variant": "庄园的门被敲响。一个完全被黑袍包裹的身影站在门外的阴影中。它低语道：「一位女士的渴望，生于黑暗，以苍白之光闪耀。」"
+    },
     "choices": {
-      "sell_nothing": {
-        "label": "无"
+      "answerFire": {
+        "label": "火"
+      },
+      "answerWaves": {
+        "label": "波浪"
+      },
+      "answerWind": {
+        "label": "风"
+      },
+      "answerDarkness": {
+        "label": "黑暗"
+      },
+      "timeout": {
+        "label": "未作答"
       }
     },
     "log": {
-      "whisper0": "收藏家叹息着转身。「我游历中发现许多古代文明遗物，他们远比我们先进，」他低语着消失在黑暗中。",
-      "whisper1": "兜帽下渗出低鸣。「大爆炸摧毁了古代文明的大部分遗物，残存者稀少而分散，」他呢喃。",
-      "whisper2": "收藏家轻轻吐息。「我在旅途中学到许多古代文明之事。大爆炸前世上没有魔法，它在那一刻诞生，」他离去时低语。"
-    },
-    "title": "流浪收藏家",
+      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
+      "success_first": "那身影微微点头，随即没入黑暗。到了早晨，一小袋金子放在庄园门口。"
+    }
+  },
+  "whispererInTheDark_variant": {
+    "title": "黑暗中的低语者",
     "message": {
-      "visit0": "一个裹着破袍的人影走近。他似乎对你收集的东西很感兴趣。「我感觉到你的财物中有价值之物，」他低语，「让我带走一件，换 {{reward}} 金币。」",
-      "visit1": "黑袍人影再度归来，脚步无声。「更多遗物，更多秘密，」他低语，「再让我取走一件，你的钱袋将多出 {{reward}} 金币。」",
-      "visit2": "收藏家再次出现，兜帽下双眼发光。「我们的交易快结束了，」他轻声说，「再卖我一件，{{reward}} 金币归你。」"
+      "original": "庄园的门被敲响。一个完全被黑袍包裹的身影站在门外的阴影中。它低语道：「无声则哭，无翼则飞，无牙则咬，无口则语。」",
+      "variant": "庄园的门被敲响。一个完全被黑袍包裹的身影站在门外的阴影中。它低语道：「一位女士的渴望，生于黑暗，以苍白之光闪耀。」"
+    },
+    "choices": {
+      "answerSilver": {
+        "label": "银"
+      },
+      "answerPearl": {
+        "label": "珍珠"
+      },
+      "answerGold": {
+        "label": "金"
+      },
+      "answerDiamond": {
+        "label": "钻石"
+      },
+      "timeout": {
+        "label": "未作答"
+      }
+    },
+    "log": {
+      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
+      "success_first": "那身影微微点头，随即没入黑暗。到了早晨，一小袋金子放在庄园门口。"
     }
   },
   "whisperersReward": {
@@ -2123,307 +2447,5 @@
     },
     "message": "一名年轻女人走近你，泪水顺着脸颊流下。“我的父母都被献给了那座受诅的方尖碑，”她哭喊，“这种野蛮行为必须停止！”",
     "title": "年轻女人的恳求"
-  },
-  "whispererInTheDark": {
-    "title": "黑暗中的低语者",
-    "message": {
-      "original": "庄园的门被敲响。一个完全被黑袍包裹的身影站在门外的阴影中。它低语道：「无声则哭，无翼则飞，无牙则咬，无口则语。」",
-      "variant": "庄园的门被敲响。一个完全被黑袍包裹的身影站在门外的阴影中。它低语道：「一位女士的渴望，生于黑暗，以苍白之光闪耀。」"
-    },
-    "choices": {
-      "answerFire": {
-        "label": "火"
-      },
-      "answerWaves": {
-        "label": "波浪"
-      },
-      "answerWind": {
-        "label": "风"
-      },
-      "answerDarkness": {
-        "label": "黑暗"
-      },
-      "timeout": {
-        "label": "未作答"
-      }
-    },
-    "log": {
-      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
-      "success_first": "那身影微微点头，随即没入黑暗。到了早晨，一小袋金子放在庄园门口。"
-    }
-  },
-  "whispererInTheDark_variant": {
-    "title": "黑暗中的低语者",
-    "message": {
-      "original": "庄园的门被敲响。一个完全被黑袍包裹的身影站在门外的阴影中。它低语道：「无声则哭，无翼则飞，无牙则咬，无口则语。」",
-      "variant": "庄园的门被敲响。一个完全被黑袍包裹的身影站在门外的阴影中。它低语道：「一位女士的渴望，生于黑暗，以苍白之光闪耀。」"
-    },
-    "choices": {
-      "answerSilver": {
-        "label": "银"
-      },
-      "answerPearl": {
-        "label": "珍珠"
-      },
-      "answerGold": {
-        "label": "金"
-      },
-      "answerDiamond": {
-        "label": "钻石"
-      },
-      "timeout": {
-        "label": "未作答"
-      }
-    },
-    "log": {
-      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
-      "success_first": "那身影微微点头，随即没入黑暗。到了早晨，一小袋金子放在庄园门口。"
-    }
-  },
-  "riddleOfAges": {
-    "title": "黑暗中的声音",
-    "message": {
-      "original": "披着斗篷的身影在苍白月光下回到庄园。它的声音回荡：「早晨用四足行走，中午用两足，傍晚用三足。」",
-      "variant": "披着斗篷的身影在苍白月光下回到庄园。它的声音回荡：「不能伤害你，却会给你留下伤疤。」"
-    },
-    "choices": {
-      "answerEarth": {
-        "label": "大地"
-      },
-      "answerWolf": {
-        "label": "狼"
-      },
-      "answerMan": {
-        "label": "人"
-      },
-      "answerBird": {
-        "label": "鸟"
-      },
-      "timeout": {
-        "label": "未作答"
-      }
-    },
-    "log": {
-      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
-      "success_second": "那身影微微点头，消失在夜色中。黎明时分，一个磨损的皮革钱袋躺在它曾站立之处。"
-    }
-  },
-  "riddleOfAges_variant": {
-    "title": "黑暗中的声音",
-    "message": {
-      "original": "披着斗篷的身影在苍白月光下回到庄园。它的声音回荡：「早晨用四足行走，中午用两足，傍晚用三足。」",
-      "variant": "披着斗篷的身影在苍白月光下回到庄园。它的声音回荡：「不能伤害你，却会给你留下伤疤。」"
-    },
-    "choices": {
-      "answerNightmares": {
-        "label": "噩梦"
-      },
-      "answerTime": {
-        "label": "触摸"
-      },
-      "answerLove": {
-        "label": "刀"
-      },
-      "answerDeath": {
-        "label": "欲望"
-      },
-      "timeout": {
-        "label": "未作答"
-      }
-    },
-    "log": {
-      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
-      "success_second": "那身影微微点头，消失在夜色中。黎明时分，一个磨损的皮革钱袋躺在它曾站立之处。"
-    }
-  },
-  "riddleOfDevourer": {
-    "title": "夜间的访客",
-    "message": {
-      "original": "神秘的身影再次出现在庄园。它低声呢喃：「吞噬万物，将骨化为尘，弑王灭国，磨平山峦，抹去城镇。」",
-      "variant": "神秘的身影再次出现在庄园。它低声呢喃：「有指无肉，无羽无鳞，亦无骨。」"
-    },
-    "choices": {
-      "answerMan": {
-        "label": "人"
-      },
-      "answerWater": {
-        "label": "水"
-      },
-      "answerTime": {
-        "label": "时间"
-      },
-      "answerFire": {
-        "label": "火"
-      },
-      "timeout": {
-        "label": "未作答"
-      }
-    },
-    "log": {
-      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
-      "success_third": "那身影静静点头，退入昏暗之中。天亮时，门外发现一个磨损的金币袋。"
-    }
-  },
-  "riddleOfDevourer_variant": {
-    "title": "夜间的访客",
-    "message": {
-      "original": "神秘的身影再次出现在庄园。它低声呢喃：「吞噬万物，将骨化为尘，弑王灭国，磨平山峦，抹去城镇。」",
-      "variant": "神秘的身影再次出现在庄园。它低声呢喃：「有指无肉，无羽无鳞，亦无骨。」"
-    },
-    "choices": {
-      "answerFin": {
-        "label": "鳍"
-      },
-      "answerWing": {
-        "label": "翼"
-      },
-      "answerGlove": {
-        "label": "手套"
-      },
-      "answerHand": {
-        "label": "手"
-      },
-      "timeout": {
-        "label": "未作答"
-      }
-    },
-    "log": {
-      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
-      "success_third": "那身影静静点头，退入昏暗之中。天亮时，门外发现一个磨损的金币袋。"
-    }
-  },
-  "riddleOfTears": {
-    "title": "蒙面的客人",
-    "message": {
-      "original": "裹在袍中的身影再次出现在庄园。它低语：「无翼而飞，无眼而泣，黑暗随它而至。」",
-      "variant": "裹在袍中的身影再次出现在庄园。它低语：「柔软、纤细、如丝，但若被它包裹，你会尖叫。」"
-    },
-    "choices": {
-      "answerNight": {
-        "label": "夜"
-      },
-      "answerWind": {
-        "label": "风"
-      },
-      "answerClouds": {
-        "label": "云"
-      },
-      "answerShadow": {
-        "label": "影"
-      },
-      "timeout": {
-        "label": "未作答"
-      }
-    },
-    "log": {
-      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
-      "success_fourth": "那身影短暂低下兜帽，随即溶入阴影。冰冷的地面上留下一小袋金子。"
-    }
-  },
-  "riddleOfTears_variant": {
-    "title": "蒙面的客人",
-    "message": {
-      "original": "裹在袍中的身影再次出现在庄园。它低语：「无翼而飞，无眼而泣，黑暗随它而至。」",
-      "variant": "裹在袍中的身影再次出现在庄园。它低语：「柔软、纤细、如丝，但若被它包裹，你会尖叫。」"
-    },
-    "choices": {
-      "answerNightmares": {
-        "label": "噩梦"
-      },
-      "answerCobweb": {
-        "label": "蛛网"
-      },
-      "answerSilk": {
-        "label": "丝绸"
-      },
-      "answerDeath": {
-        "label": "死亡"
-      },
-      "timeout": {
-        "label": "未作答"
-      }
-    },
-    "log": {
-      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
-      "success_fourth": "那身影短暂低下兜帽，随即溶入阴影。冰冷的地面上留下一小袋金子。"
-    }
-  },
-  "riddleOfEternal": {
-    "title": "未知的客人",
-    "message": {
-      "original": "夜间的身影最后一次出现在庄园。它的声音在夜色中无声回荡：「你睁眼，我在；你闭眼，我亦在。」",
-      "variant": "夜间的身影最后一次出现在庄园。它的声音在夜色中无声回荡：「穷人有我，富人为需。食我则死。」"
-    },
-    "choices": {
-      "answerLight": {
-        "label": "光"
-      },
-      "answerLife": {
-        "label": "生命"
-      },
-      "answerDarkness": {
-        "label": "黑暗"
-      },
-      "answerDeath": {
-        "label": "死亡"
-      },
-      "timeout": {
-        "label": "未作答"
-      }
-    },
-    "log": {
-      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
-      "success_fifth": "那身影无声地低头致意，随即完全消失。一大袋金子留在它曾站立的地上。"
-    }
-  },
-  "riddleOfEternal_variant": {
-    "title": "未知的客人",
-    "message": {
-      "original": "夜间的身影最后一次出现在庄园。它的声音在夜色中无声回荡：「你睁眼，我在；你闭眼，我亦在。」",
-      "variant": "夜间的身影最后一次出现在庄园。它的声音在夜色中无声回荡：「穷人有我，富人为需。食我则死。」"
-    },
-    "choices": {
-      "answerPoison": {
-        "label": "毒"
-      },
-      "answerAir": {
-        "label": "金"
-      },
-      "answerNothing": {
-        "label": "无"
-      },
-      "answerTime": {
-        "label": "时间"
-      },
-      "timeout": {
-        "label": "未作答"
-      }
-    },
-    "log": {
-      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
-      "success_fifth": "那身影无声地低头致意，随即完全消失。一大袋金子留在它曾站立的地上。"
-    }
-  },
-  "feast": {
-    "choices": {
-      "makeFeast": {
-        "cost": "{{foodCost}} food",
-        "label": "Spend {{foodCost}} Food"
-      },
-      "noFeast": {
-        "label": "Refuse feast"
-      },
-      "doNothing": {
-        "label": "No Decision Made"
-      }
-    },
-    "log": {
-      "outcome0": "You don't have enough food for the feast.",
-      "outcome1": "The villagers gather for a feast! Weariness fades and spirits rise, if only briefly.",
-      "outcome2": "You decline the feast proposal. The villagers accept your decision, though disappointed.",
-      "outcome3": "Time passes and the opportunity for a feast fades away."
-    },
-    "message": "The villagers propose organizing a feast. A short comfort to ease their weariness and quiet their minds.",
-    "title": "Village Feast"
   }
 }

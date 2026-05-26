@@ -147,8 +147,8 @@
   },
   "leaderboard": {
     "title": "Clasificación",
-    "dev": "Dev",
-    "prod": "Prod",
+    "dev": "Des.",
+    "prod": "Prod.",
     "rank": "#",
     "player": "Jugador",
     "completionTime": "Tiempo de finalización",
@@ -175,10 +175,10 @@
   },
   "investmentResult": {
     "title": "Resultado de la inversión",
-    "success": "Tu inversión de {{amount}} Gold fue exitosa.",
-    "luckyChance": "¡Suerte! Las ganancias de tu inversión de {{amount}} Gold se multiplican por {{multiplier}}.",
-    "wipeout": "Pérdida total. Perdiste toda tu inversión de {{amount}} Gold.",
-    "partialLoss": "Tu inversión de {{amount}} Gold falló."
+    "success": "Tu inversión de {{amount}} oro fue exitosa.",
+    "luckyChance": "¡Suerte! Las ganancias de tu inversión de {{amount}} oro se multiplican por {{multiplier}}.",
+    "wipeout": "Pérdida total. Perdiste toda tu inversión de {{amount}} oro.",
+    "partialLoss": "Tu inversión de {{amount}} oro falló."
   },
   "cube": {
     "fallbackTitle": "El cubo susurrante",

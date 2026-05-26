@@ -73,6 +73,22 @@
     },
     "title": "Corps vidés"
   },
+  "bloodiedAwakening": {
+    "choices": {
+      "investigateMurders": {
+        "label": "Enquêter sur les meurtres"
+      },
+      "severFinger": {
+        "label": "Couper le doigt"
+      }
+    },
+    "log": {
+      "outcome0": "En suivant des empreintes boueuses à travers le village, vous les voyez mener à chaque scène de meurtre, l'une après l'autre. Les traces correspondent à vos propres bottes. L'horreur se révèle lentement - c'était vous, possédé par la faim de l'anneau. Quand les villageois découvrent la vérité, dix-huit fuient, refusant de rester près d'une créature aussi maudite.",
+      "outcome1": "Les mains tremblantes, vous levez votre hache. L'anneau palpite quand la lame s'abat. Une agonie vous déchire le bras tandis que l'os éclate. En soulevant le doigt tranché, vous voyez de petits filaments noirs, semblables à des tentacules, enfoncés profondément dans sa chair."
+    },
+    "message": "Vous vous réveillez à l'aube, vos vêtements imbibés de sang frais. Ce n'est pas le vôtre. Un villageois arrive au domaine, le visage blême d'horreur. 'Huit sont morts,' murmure-t-il. 'Déchiquetés dans la nuit.' L'anneau à votre doigt bat d'une douleur atroce.",
+    "title": "Réveil ensanglanté"
+  },
   "bloodInWater": {
     "message": "L'eau du village coule rouge pendant trois jours. Les villageois ne semblent pas le remarquer, la buvant comme si rien n'avait changé. Vous y sentez le cuivre et le fer, mais ils affirment qu'elle a le goût de la plus douce des eaux de source."
   },
@@ -93,25 +109,9 @@
       "outcome4": "Les lycanthropes submergent vos défenses et envahissent la colonie ! La lune de sang pâlit, mais la menace demeure."
     },
     "message": {
-      "default": "Der Mond ist nachts blutrot geworden, die villageältesten sprechen von Lykanthropen. Uralte Pakte verlangen ein Opfer von {{sacrificeAmount}} villageoisn, um die Bestien zu besänftigen. Weigerst du dich, werden sie dafür sorgen, dass ihr Hunger gestillt wird."
+      "default": "La nuit, la lune est devenue rouge sang, et les anciens du village parlent de lycanthropes. D'anciens pactes exigent le sacrifice de {{sacrificeAmount}} villageois pour apaiser les bêtes. Si vous refusez, elles veilleront à satisfaire leur faim."
     },
     "title": "Lune de sang"
-  },
-  "bloodiedAwakening": {
-    "choices": {
-      "investigateMurders": {
-        "label": "Enquêter sur les meurtres"
-      },
-      "severFinger": {
-        "label": "Couper le doigt"
-      }
-    },
-    "log": {
-      "outcome0": "En suivant des empreintes boueuses à travers le village, vous les voyez mener à chaque scène de meurtre, l'une après l'autre. Les traces correspondent à vos propres bottes. L'horreur se révèle lentement - c'était vous, possédé par la faim de l'anneau. Quand les villageois découvrent la vérité, dix-huit fuient, refusant de rester près d'une créature aussi maudite.",
-      "outcome1": "Les mains tremblantes, vous levez votre hache. L'anneau palpite quand la lame s'abat. Une agonie vous déchire le bras tandis que l'os éclate. En soulevant le doigt tranché, vous voyez de petits filaments noirs, semblables à des tentacules, enfoncés profondément dans sa chair."
-    },
-    "message": "Vous vous réveillez à l'aube, vos vêtements imbibés de sang frais. Ce n'est pas le vôtre. Un villageois arrive au domaine, le visage blême d'horreur. 'Huit sont morts,' murmure-t-il. 'Déchiquetés dans la nuit.' L'anneau à votre doigt bat d'une douleur atroce.",
-    "title": "Réveil ensanglanté"
   },
   "bloodstainedBeltChoice": {
     "choices": {
@@ -145,27 +145,49 @@
     "log": {
       "outcome0": "Les villageois vainquent l'armée d'os ! Les os et le silence jonchent le champ de bataille. Vous arrachez la Couronne du Dévoreur à ses restes et remplissez une fiole de son sang pâle et visqueux.",
       "outcome1": "Les villageois se cachent, terrorisés, tandis que l'armée d'os fouille le village. Les créatures squelettiques finissent par repartir, leur but inaccompli.",
-      "defend_noDeaths": "Les villageois kämpfen verzweifelt gegen die armée d'os. Les villageois überstehen den Ansturm.",
-      "defend_noDeaths_hut": "Les villageois kämpfen verzweifelt gegen die armée d'os. Les villageois überstehen den Ansturm. Die skelettierten Kreaturen reißen eine der Hütten auseinander et machen sie zu Schutt.",
-      "defend_noDeaths_steel": "Les villageois kämpfen verzweifelt gegen die armée d'os. Les villageois überstehen den Ansturm. Die armée d'os plündert die Vorräte, bevor sie abzieht.",
-      "defend_noDeaths_steel_hut": "Les villageois kämpfen verzweifelt gegen die armée d'os. Les villageois überstehen den Ansturm. Die armée d'os plündert die Vorräte, bevor sie abzieht. Die skelettierten Kreaturen reißen eine der Hütten auseinander et machen sie zu Schutt.",
-      "defend_oneDeath": "Les villageois kämpfen verzweifelt gegen die armée d'os. Ein villageois fällt den skelettierten Kriegern zum Opfer.",
-      "defend_oneDeath_hut": "Les villageois kämpfen verzweifelt gegen die armée d'os. Ein villageois fällt den skelettierten Kriegern zum Opfer. Die skelettierten Kreaturen reißen eine der Hütten auseinander et machen sie zu Schutt.",
-      "defend_oneDeath_steel": "Les villageois kämpfen verzweifelt gegen die armée d'os. Ein villageois fällt den skelettierten Kriegern zum Opfer. Die armée d'os plündert die Vorräte, bevor sie abzieht.",
-      "defend_oneDeath_steel_hut": "Les villageois kämpfen verzweifelt gegen die armée d'os. Ein villageois fällt den skelettierten Kriegern zum Opfer. Die armée d'os plündert die Vorräte, bevor sie abzieht. Die skelettierten Kreaturen reißen eine der Hütten auseinander et machen sie zu Schutt.",
-      "defend_manyDeaths": "Les villageois kämpfen verzweifelt gegen die armée d'os. Mehrere villageois fallen den skelettierten Kriegern zum Opfer.",
-      "defend_manyDeaths_hut": "Les villageois kämpfen verzweifelt gegen die armée d'os. Mehrere villageois fallen den skelettierten Kriegern zum Opfer. Die skelettierten Kreaturen reißen eine der Hütten auseinander et machen sie zu Schutt.",
-      "defend_manyDeaths_steel": "Les villageois kämpfen verzweifelt gegen die armée d'os. Mehrere villageois fallen den skelettierten Kriegern zum Opfer. Die armée d'os plündert die Vorräte, bevor sie abzieht.",
-      "defend_manyDeaths_steel_hut": "Les villageois kämpfen verzweifelt gegen die armée d'os. Mehrere villageois fallen den skelettierten Kriegern zum Opfer. Die armée d'os plündert die Vorräte, bevor sie abzieht. Die skelettierten Kreaturen reißen eine der Hütten auseinander et machen sie zu Schutt.",
-      "hide_noDeaths": "Les villageois verstecken sich voller Angst, während die armée d'os das village durchsucht. Bei Tagesanbruch ist die skelettierte Armee abgezogen et hat nur Knochenfragmente zurückgelassen.",
-      "hide_noDeaths_loot": "Les villageois verstecken sich voller Angst, während die armée d'os das village durchsucht. Bei Tagesanbruch ist die skelettierte Armee abgezogen et hat nur Knochenfragmente zurückgelassen. Die Armee plündert deine Vorräte, bevor sie in der Dunkelheit verschwindet.",
-      "hide_oneDeath": "Les villageois verstecken sich voller Angst, während die armée d'os das village durchsucht. Ein villageois, der zu fliehen versuchte, wird getötet.",
-      "hide_oneDeath_loot": "Les villageois verstecken sich voller Angst, während die armée d'os das village durchsucht. Ein villageois, der zu fliehen versuchte, wird getötet. Die Armee plündert deine Vorräte, bevor sie in der Dunkelheit verschwindet.",
-      "hide_manyDeaths": "Les villageois verstecken sich voller Angst, während die armée d'os das village durchsucht. Les villageois, die zu fliehen versuchten, werden von den Knochenkreaturen getötet.",
-      "hide_manyDeaths_loot": "Les villageois verstecken sich voller Angst, während die armée d'os das village durchsucht. Les villageois, die zu fliehen versuchten, werden von den Knochenkreaturen getötet. Die Armee plündert deine Vorräte, bevor sie in der Dunkelheit verschwindet."
+      "defend_noDeaths": "Les villageois combattent désespérément l'armée d'os. Les villageois survivent à l'assaut.",
+      "defend_noDeaths_hut": "Les villageois combattent désespérément l'armée d'os. Les villageois survivent à l'assaut. Les créatures squelettiques déchirent l'une des huttes et la réduisent en gravats.",
+      "defend_noDeaths_steel": "Les villageois combattent désespérément l'armée d'os. Les villageois survivent à l'assaut. L'armée d'os pille les réserves avant de repartir.",
+      "defend_noDeaths_steel_hut": "Les villageois combattent désespérément l'armée d'os. Les villageois survivent à l'assaut. L'armée d'os pille les réserves avant de repartir. Les créatures squelettiques déchirent l'une des huttes et la réduisent en gravats.",
+      "defend_oneDeath": "Les villageois combattent désespérément l'armée d'os. Un villageois tombe sous les coups des guerriers squelettiques.",
+      "defend_oneDeath_hut": "Les villageois combattent désespérément l'armée d'os. Un villageois tombe sous les coups des guerriers squelettiques. Les créatures squelettiques déchirent l'une des huttes et la réduisent en gravats.",
+      "defend_oneDeath_steel": "Les villageois combattent désespérément l'armée d'os. Un villageois tombe sous les coups des guerriers squelettiques. L'armée d'os pille les réserves avant de repartir.",
+      "defend_oneDeath_steel_hut": "Les villageois combattent désespérément l'armée d'os. Un villageois tombe sous les coups des guerriers squelettiques. L'armée d'os pille les réserves avant de repartir. Les créatures squelettiques déchirent l'une des huttes et la réduisent en gravats.",
+      "defend_manyDeaths": "Les villageois combattent désespérément l'armée d'os. Plusieurs villageois tombent sous les coups des guerriers squelettiques.",
+      "defend_manyDeaths_hut": "Les villageois combattent désespérément l'armée d'os. Plusieurs villageois tombent sous les coups des guerriers squelettiques. Les créatures squelettiques déchirent l'une des huttes et la réduisent en gravats.",
+      "defend_manyDeaths_steel": "Les villageois combattent désespérément l'armée d'os. Plusieurs villageois tombent sous les coups des guerriers squelettiques. L'armée d'os pille les réserves avant de repartir.",
+      "defend_manyDeaths_steel_hut": "Les villageois combattent désespérément l'armée d'os. Plusieurs villageois tombent sous les coups des guerriers squelettiques. L'armée d'os pille les réserves avant de repartir. Les créatures squelettiques déchirent l'une des huttes et la réduisent en gravats.",
+      "hide_noDeaths": "Les villageois se cachent, terrifiés, tandis que l'armée d'os fouille le village. Au matin, l'armée squelettique est partie, ne laissant derrière elle que des fragments d'os.",
+      "hide_noDeaths_loot": "Les villageois se cachent, terrifiés, tandis que l'armée d'os fouille le village. Au matin, l'armée squelettique est partie, ne laissant derrière elle que des fragments d'os. L'armée pille vos provisions avant de disparaître dans l'obscurité.",
+      "hide_oneDeath": "Les villageois se cachent, terrifiés, tandis que l'armée d'os fouille le village. Un villageois qui a tenté de fuir est tué.",
+      "hide_oneDeath_loot": "Les villageois se cachent, terrifiés, tandis que l'armée d'os fouille le village. Un villageois qui a tenté de fuir est tué. L'armée pille vos provisions avant de disparaître dans l'obscurité.",
+      "hide_manyDeaths": "Les villageois se cachent, terrifiés, tandis que l'armée d'os fouille le village. Les villageois qui ont tenté de fuir sont tués par les créatures d'os.",
+      "hide_manyDeaths_loot": "Les villageois se cachent, terrifiés, tandis que l'armée d'os fouille le village. Les villageois qui ont tenté de fuir sont tués par les créatures d'os. L'armée pille vos provisions avant de disparaître dans l'obscurité."
     },
     "message": "La terre tremble lorsque des créatures squelettiques émergent de la forêt. Le Dévoreur d'Os a utilisé les os que vous avez échangés pour forger une légion impie. Les orbites creuses et des armes d'os aiguisées à la main, ils approchent de la cité.",
     "title": "L'Armée d'os"
+  },
+  "boneDevourer": {
+    "title": "The Bone Devourer",
+    "message": {
+      "firstTime": "A deformed creature shuffles to the gates, its hunched form covered in pale, stretched skin. It speaks in a rasping voice: 'I seek bones. I pay {{silverReward}} Silver.'",
+      "repeat": "The creature returns to the gates, its hunched form still covered in pale, stretched skin. It speaks in its familiar rasping voice: 'I seek bones. I pay {{silverReward}} Silver.'"
+    },
+    "choices": {
+      "sellBones": {
+        "label": "Sell {{boneCost}} Bones",
+        "cost": "{{boneCost}} bones"
+      },
+      "refuse": {
+        "label": "Refuse trade"
+      }
+    },
+    "log": {
+      "outcome0": "You don't have enough bones for the trade.",
+      "outcome1": "The creature takes the bones with its gnarled hands, as if attempting to count them. It places a pouch of silver at your feet and disappears into the darkness.",
+      "outcome2": "You refuse the creature's offer. It hisses in displeasure and retreats into the shadows. You sense it will return.",
+      "outcome3": "Your indecision frustrates the creature. It hisses in displeasure and retreats into the shadows."
+    }
   },
   "boneDiceChoice": {
     "choices": {
@@ -219,20 +241,20 @@
     },
     "log": {
       "outcome0": "Les villageois se cachent, terrorisés, tandis que les cannibales fouillent le village. À l'aube, les cannibales sont partis sans trouver personne.",
-      "defeat_noDeaths": "Die cannibales überwältigen deine défense. Les villageois überleben knapp.",
-      "defeat_noDeaths_loot": "Die cannibales überwältigen deine défense. Les villageois überleben knapp. Die cannibales plündern deine Vorräte, bevor sie in die Wildnis zurückkehren.",
-      "defeat_oneDeath": "Die cannibales überwältigen deine défense. Ein villageois wird von den cannibales entführt.",
-      "defeat_oneDeath_loot": "Die cannibales überwältigen deine défense. Ein villageois wird von den cannibales entführt. Die cannibales plündern deine Vorräte, bevor sie in die Wildnis zurückkehren.",
-      "defeat_manyDeaths": "Die cannibales überwältigen deine défense. Mehrere villageois werden von den cannibales getötet oder entführt.",
-      "defeat_manyDeaths_loot": "Die cannibales überwältigen deine défense. Mehrere villageois werden von den cannibales getötet oder entführt. Die cannibales plündern deine Vorräte, bevor sie in die Wildnis zurückkehren.",
-      "hide_noDeaths": "Les villageois verstecken sich voller Angst, während die cannibales das village durchsuchen. Bei Tagesanbruch sind die cannibales abgezogen, ohne jemanden gefunden zu haben.",
-      "hide_noDeaths_loot": "Les villageois verstecken sich voller Angst, während die cannibales das village durchsuchen. Bei Tagesanbruch sind die cannibales abgezogen, ohne jemanden gefunden zu haben. Die cannibales plündern deine Vorräte ungestört, bevor sie davonschlüpfen.",
-      "hide_oneDeath": "Les villageois verstecken sich voller Angst, während die cannibales das village durchsuchen. Ein villageois wird entführt.",
-      "hide_oneDeath_loot": "Les villageois verstecken sich voller Angst, während die cannibales das village durchsuchen. Ein villageois wird entführt. Die cannibales plündern deine Vorräte ungestört, bevor sie davonschlüpfen.",
-      "hide_manyDeaths": "Les villageois verstecken sich voller Angst, während die cannibales das village durchsuchen. Mehrere villageois werden getötet oder entführt.",
-      "hide_manyDeaths_loot": "Les villageois verstecken sich voller Angst, während die cannibales das village durchsuchen. Mehrere villageois werden getötet oder entführt. Die cannibales plündern deine Vorräte ungestört, bevor sie davonschlüpfen.",
-      "victory_one": "Les villageois schlagen die cannibales zurück! Ein villageois fällt in der Schlacht, doch der Stamm zieht sich besiegt zurück. Unter den Leichen findest du eine primitive Halskette aus Menschenknochen.",
-      "victory_many": "Les villageois kämpfen tapfer et schlagen die cannibales zurück! Mehrere villageois fallen in der Schlacht, doch der Stamm wird zum Rückzug gezwungen. Unter den Leichen findest du eine primitive Halskette aus Menschenknochen."
+      "defeat_noDeaths": "Les cannibales submergent vos défenses. Les villageois parviennent à survivre, mais de justesse.",
+      "defeat_noDeaths_loot": "Les cannibales submergent vos défenses. Les villageois parviennent à survivre, mais de justesse. Les cannibales pillent vos réserves avant de se retirer dans les terres sauvages.",
+      "defeat_oneDeath": "Les cannibales submergent vos défenses. Un villageois est enlevé par les cannibales.",
+      "defeat_oneDeath_loot": "Les cannibales submergent vos défenses. Un villageois est enlevé par les cannibales. Les cannibales pillent vos réserves avant de se retirer dans les terres sauvages.",
+      "defeat_manyDeaths": "Les cannibales submergent vos défenses. Plusieurs villageois sont tués ou enlevés par les cannibales.",
+      "defeat_manyDeaths_loot": "Les cannibales submergent vos défenses. Plusieurs villageois sont tués ou enlevés par les cannibales. Les cannibales pillent vos réserves avant de se retirer dans les terres sauvages.",
+      "hide_noDeaths": "Les villageois se cachent, terrifiés, tandis que les cannibales fouillent le village. À l'aube, les cannibales sont partis sans trouver personne.",
+      "hide_noDeaths_loot": "Les villageois se cachent, terrifiés, tandis que les cannibales fouillent le village. À l'aube, les cannibales sont partis sans trouver personne. Les cannibales pillent librement vos réserves avant de s'éclipser.",
+      "hide_oneDeath": "Les villageois se cachent, terrifiés, tandis que les cannibales fouillent le village. Un villageois est enlevé.",
+      "hide_oneDeath_loot": "Les villageois se cachent, terrifiés, tandis que les cannibales fouillent le village. Un villageois est enlevé. Les cannibales pillent librement vos réserves avant de s'éclipser.",
+      "hide_manyDeaths": "Les villageois se cachent, terrifiés, tandis que les cannibales fouillent le village. Plusieurs villageois sont tués ou enlevés.",
+      "hide_manyDeaths_loot": "Les villageois se cachent, terrifiés, tandis que les cannibales fouillent le village. Plusieurs villageois sont tués ou enlevés. Les cannibales pillent librement vos réserves avant de s'éclipser.",
+      "victory_one": "Les villageois repoussent les cannibales ! Un villageois tombe au combat, mais la tribu bat en retraite, vaincue. Parmi les corps, vous trouvez un collier primitif fait d'os humains.",
+      "victory_many": "Les villageois combattent vaillamment et repoussent les cannibales ! Plusieurs villageois tombent au combat, mais la tribu est forcée de battre en retraite. Parmi les corps, vous trouvez un collier primitif fait d'os humains."
     },
     "message": "Des tambours de guerre résonnent dans la nuit alors qu'une tribu de cannibales surgit des terres sauvages. Ils avancent vers le village avec des armes grossières et de terribles intentions.",
     "title": "Raid cannibale"
@@ -500,8 +522,12 @@
   },
   "doNothing": {
     "log": {
-      "outcome0": "Vous refusez ab. Die Nacht vergeht ohne Frohsinn, Wärme oder Lachen."
+      "outcome0": "Vous refusez. La nuit passe sans joie, sans chaleur ni rire."
     }
+  },
+  "eighthWave": {
+    "message": "Le sol tremble sous le poids de leur nombre, tandis qu'une nouvelle vague de la horde pâle resserre son étau autour de la cité.",
+    "title": "La huitième vague"
   },
   "encounterBeyondPortal": {
     "choices": {
@@ -567,6 +593,28 @@
     "message": "Les murs de bois de vos huttes ont commencé à montrer des visages - des expressions tordues et agonisantes qui semblent pousser depuis l'autre côté. Ils articulent des cris silencieux et des supplications. Les villageois les contournent comme s'ils avaient toujours été là.",
     "title": "Visages dans les murs"
   },
+  "feast": {
+    "choices": {
+      "makeFeast": {
+        "cost": "{{foodCost}} nourriture",
+        "label": "Dépenser {{foodCost}} nourriture"
+      },
+      "noFeast": {
+        "label": "Refuser le festin"
+      },
+      "doNothing": {
+        "label": "Aucune décision prise"
+      }
+    },
+    "log": {
+      "outcome0": "Vous n'avez pas assez de nourriture pour le festin.",
+      "outcome1": "Les villageois se rassemblent pour un festin ! La lassitude s'efface et les esprits se relèvent, ne serait-ce qu'un instant.",
+      "outcome2": "Vous déclinez la proposition de festin. Les villageois acceptent votre décision, bien que déçus.",
+      "outcome3": "Le temps passe et l'occasion d'organiser un festin disparaît."
+    },
+    "message": "Les villageois proposent d'organiser un festin. Un bref réconfort pour apaiser leur lassitude et calmer leurs esprits.",
+    "title": "Festin du village"
+  },
   "feedingRing": {
     "choices": {
       "keepRing": {
@@ -582,6 +630,10 @@
     },
     "message": "Vous vous éveillez au cœur de la nuit, paralysé. Vous sentez une présence dressée près de votre lit, silencieuse et immobile. Avant que la terreur ne vous saisisse, le sommeil vous arrache de nouveau au vide. À l'aube, vous trouvez un anneau inconnu à l'un de vos doigts.",
     "title": "La Terreur nocturne"
+  },
+  "fifthWave": {
+    "message": "D'innombrables figures pâles émergent de la grotte, leurs formes indicibles, avançant sur la cité.",
+    "title": "La cinquième vague"
   },
   "findElderScroll": {
     "choices": {
@@ -603,45 +655,9 @@
     "message": "Un villageois âgé s'approche de vous, les yeux lourds de savoir. 'Vous avez fait vos premiers pas dans ce monde cruel,' dit-il doucement. 'Bientôt, vous devrez décider si vous êtes prêt à affronter ce qui vous attend.'",
     "title": "L'Ancien du village"
   },
-  "eighthWave": {
-    "message": "Le sol tremble sous le poids de leur nombre, tandis qu'une nouvelle vague de la horde pâle resserre son étau autour de la cité.",
-    "title": "La huitième vague"
-  },
-  "fifthWave": {
-    "message": "D'innombrables figures pâles émergent de la grotte, leurs formes indicibles, avançant sur la cité.",
-    "title": "La cinquième vague"
-  },
   "firstWave": {
     "message": "Des figures pâles émergent de la grotte, enfin libérées ; leurs yeux de braise percent l'obscurité tandis qu'elles marchent vers la cité.",
     "title": "La première vague"
-  },
-  "fourthWave": {
-    "message": "Le ciel semble s'assombrir alors qu'une masse innombrable de créatures pâles jaillit de la grotte et se presse vers la cité.",
-    "title": "La quatrième vague"
-  },
-  "ninthWave": {
-    "message": "D'une faim implacable, une masse encore plus vaste de créatures pâles se rue vers la cité.",
-    "title": "La neuvième vague"
-  },
-  "secondWave": {
-    "message": "Les créatures reviennent en plus grand nombre, armées d'armes d'os brut, luisant d'une lumière impure.",
-    "title": "La deuxième vague"
-  },
-  "seventhWave": {
-    "message": "Les créatures avancent de nouveau, un tapis grouillant de membres et de dents qui grattent vers la cité.",
-    "title": "La septième vague"
-  },
-  "sixthWave": {
-    "message": "L'entrée de la grotte vomit une autre marée de corps pâles. Les lances d'os claquent comme la pluie tandis qu'ils se massent pour un nouvel assaut.",
-    "title": "La sixième vague"
-  },
-  "tenthWave": {
-    "message": "Des profondeurs les plus reculées de la grotte, une masse inimaginable de créatures pâles jaillit. Elles inondent la terre comme une marée vivante, tandis que la cité se prépare à l'anéantissement.",
-    "title": "La dernière vague"
-  },
-  "thirdWave": {
-    "message": "Des hordes de créatures pâles sortent de la grotte ; les cris ébranlent même la pierre, leurs armes d'os fendent le sol.",
-    "title": "La troisième vague"
   },
   "forestTribeHelpRequest": {
     "choices": {
@@ -654,6 +670,10 @@
     },
     "message": "Une sauvageonne émerge de la forêt, son corps pâle couvert de marques tribales et de cicatrices. 'Je viens d'une tribu des bois,' dit-elle avec urgence. 'Des bêtes brutales vivant dans une grotte de la forêt nous attaquent sans relâche. Nous faisons face à l'extinction. Je vous en prie, aidez-nous à survivre.'",
     "title": "Une supplication désespérée"
+  },
+  "fourthWave": {
+    "message": "Le ciel semble s'assombrir alors qu'une masse innombrable de créatures pâles jaillit de la grotte et se presse vers la cité.",
+    "title": "La quatrième vague"
   },
   "frostfall": {
     "choices": {
@@ -928,74 +948,74 @@
     "toolTrades": {
       "trade_nightshade_bow_schematic": {
         "label": "Schéma d'arc de belladone",
-        "message": "Vous achetez den Schéma d'arc de belladone. Der marchand grinst finster: „Das Design dieses Bogens ist grausam. Seine Pfeile werden deine Feinde vergiften.“"
+        "message": "Vous achetez le schéma d'arc de belladone. Le marchand affiche un sourire sombre : « La conception de cet arc est cruelle. Ses flèches empoisonneront vos ennemis. »"
       },
       "trade_skull_lantern": {
         "label": "Lanterne crânienne",
-        "message": "Vous achetez die Lanterne crânienne. Aus verfluchtem Knochen geschmiedet, wird ihr unheimliches Licht dich durch die tiefsten Tiefen führen."
+        "message": "Vous achetez la lanterne crânienne. Forgée dans de l'os maudit, sa lueur inquiétante vous guidera dans les profondeurs les plus reculées."
       },
       "trade_tarnished_compass": {
         "label": "Boussole ternie",
-        "message": "Vous achetez den angelaufenen Kompass. Artefakt der verschwundenen Zivilisation – seine Nadel weist auf verborgene Orte."
+        "message": "Vous achetez la boussole ternie. Artefact de la civilisation disparue, son aiguille pointe vers des lieux cachés."
       },
       "trade_map_fragment_wooden": {
         "label": "Fragment de carte",
-        "message": "Vous achetez ein zerrissenes Fragment de carte."
+        "message": "Vous achetez un fragment de carte déchiré."
       },
       "trade_map_fragment_stone": {
         "label": "Fragment de carte",
-        "message": "Vous achetez ein zerrissenes Fragment de carte."
+        "message": "Vous achetez un fragment de carte déchiré."
       },
       "trade_crow_harness": {
         "label": "Harnais de corbeau",
-        "message": "Vous achetez das Harnais de corbeau. Ein speziell gefertigtes Geschirr für Botenkrähen."
+        "message": "Vous achetez le harnais de corbeau. Un harnais spécialement conçu pour les corbeaux messagers."
       },
       "trade_clarity_elixir": {
         "label": "Élixir de clarté",
-        "message": "Vous buvez das Élixir de clarté. Dein Geist fühlt sich leichter an."
+        "message": "Vous buvez l'élixir de clarté. Votre esprit semble plus léger."
       },
       "trade_veinfire_elixir": {
         "label": "Élixir de feu veineux",
-        "message": "Vous achetez eine Flasche Élixir de feu veineux."
+        "message": "Vous achetez une fiole d'élixir de feu veineux."
       },
       "trade_book_of_trials": {
-        "message": "Vous achetez das Livre des épreuves. Der marchand lächelt wissend: „Ein Leitfaden für diejenigen, die ihre Reise verfolgen wollen.“",
+        "message": "Vous achetez le Livre des épreuves. Le marchand sourit d'un air entendu : « Un guide pour ceux qui cherchent à suivre leur voyage. »",
         "label": "Livre des épreuves"
       },
       "trade_book_of_craftsmanship": {
-        "message": "Vous achetez das Livre de l'artisanat. Der marchand nickt anerkennend: „Ein Handwerkerbuch, abgenutzt, aber voller Weisheit. Es wird denen Geheimnisse zuflüstern, die bauen.“",
+        "message": "Vous achetez le Livre de l'artisanat. Le marchand hoche la tête avec approbation : « Un tome d'artisan, usé mais rempli de sagesse. Il murmurera ses secrets à ceux qui bâtissent. »",
         "label": "Livre de l'artisanat"
       },
       "trade_book_of_war": {
-        "message": "Vous achetez das Livre de la guerre. Der marchand nickt ernst: „savoir aus einem längst vergangenen Königreich im fernen Osten. Damit wirst du die Folgen deiner Entscheidungen besser verstehen.“",
+        "message": "Vous achetez le Livre de la guerre. Le marchand hoche gravement la tête : « Un savoir venu d'un royaume depuis longtemps disparu, loin à l'est. Avec ceci, vous comprendrez mieux les conséquences de vos choix. »",
         "label": "Livre de la guerre"
       },
       "trade_reinforced_rope": {
-        "message": "Vous achetez das verstärkte Seil. Dieses Seil hält enormer Belastung stand et erreicht Orte in den tiefsten grottenkammern.",
+        "message": "Vous achetez la corde renforcée. Cette corde résiste à une tension immense et peut atteindre des lieux dans les chambres les plus profondes de la grotte.",
         "label": "Corde renforcée"
       },
       "trade_occultist_map": {
-        "message": "Als du die Carte de l'occultiste kaufst, flüstert der marchand: „Ein alter Okkultist verbarg seine Geheimnisse in einer Kammer tief in der grotte. Diese Karte wird dich führen.“",
+        "message": "Alors que vous achetez la carte de l'occultiste, le marchand murmure : « Un vieil occultiste a caché ses secrets dans une chambre au plus profond de la grotte. Cette carte vous guidera. »",
         "label": "Carte de l'occultiste"
       },
       "trade_giant_trap": {
-        "message": "Als du die Piège géant kaufst, grinst der marchand: „Damit kann man im forêt etwas Gigantisches fangen. Setze sie weise ein.“",
+        "message": "Alors que vous achetez le piège géant, le marchand sourit : « Ceci peut piéger quelque chose de gigantesque dans les bois. Utilisez-le avec sagesse. »",
         "label": "Piège géant"
       },
       "trade_arbalest_schematic": {
-        "message": "Vous achetez den Schéma d'arbalète. Der marchand entfaltet einen filigranen Entwurf: „Ein Design eines Meisteringenieurs. Damit kannst du eine mächtige Waffe herstellen.“",
+        "message": "Vous achetez le schéma d'arbalète. Le marchand déploie un plan complexe : « Une conception de maître ingénieur. Avec ceci, vous pourrez fabriquer une arme puissante. »",
         "label": "Schéma d'arbalète"
       },
       "trade_compound_bow": {
-        "message": "Vous achetez den Arc composite. Der marchand nickt anerkennend: „Präzisionswaffe der verschwundenen Zivilisation. Sie wird dir gute Dienste leisten.“",
+        "message": "Vous achetez l'arc composite. Le marchand hoche la tête avec approbation : « Une arme de haute précision venue de la civilisation disparue. Elle vous servira bien. »",
         "label": "Arc composite"
       },
       "trade_stormglass_halberd_schematic": {
-        "message": "Vous achetez den Schéma de hallebarde de verre-tempête. Der marchand enthüllt die verblassten Pläne: „Mit diesem Entwurf kannst du eine Hellebarde von gewaltiger Kraft schmieden.“",
+        "message": "Vous achetez le schéma de hallebarde de verre-tempête. Le marchand révèle les plans délavés : « Avec cette conception, vous pourrez forger une hallebarde d'une puissance formidable. »",
         "label": "Schéma de hallebarde de verre-tempête"
       },
       "trade_natharit_pickaxe": {
-        "message": "Vous achetez die Pioche de natharit. Der marchand reicht dir das robuste Werkzeug: „Extrem haltbare Spitzhacke aus unbekanntem Material. Ihre Qualität ist außergewöhnlich.“",
+        "message": "Vous achetez la pioche de natharit. Le marchand vous tend l'outil robuste : « Une pioche extrêmement durable, faite d'un matériau inconnu. Sa qualité est exceptionnelle. »",
         "label": "Pioche de natharit"
       }
     },
@@ -1118,6 +1138,10 @@
       }
     }
   },
+  "ninthWave": {
+    "message": "D'une faim implacable, une masse encore plus vaste de créatures pâles se rue vers la cité.",
+    "title": "La neuvième vague"
+  },
   "nordicWarAxe": {
     "choices": {
       "buyAxe": {
@@ -1129,12 +1153,12 @@
     },
     "log": {
       "outcome0": "Vous n'avez pas assez d'or.",
-      "ignoreForced": "Vous ignorez das Angebot. Der viking spuckt schließlich auf den Boden et geht mit seiner hache de guerre, murmelnd über deinen Mangel an Respekt.",
-      "ignoreNormal": "Vous ignorez das Angebot. Der viking nickt schließlich et geht mit seiner hache de guerre.",
-      "buyForced": "Der viking nimmt die Zahlung mit kaltem Lächeln entgegen. „Vielleicht hättest du früher großzügiger sein sollen, statt mich anzugreifen. Die Axt hätte dich damals viel weniger gekostet“, sagt er, bevor er geht.",
-      "buyNormal": "Zufrieden mit dem Handel nickt der viking anerkennend et zieht weiter.",
-      "declineForced": "Vous refusez das Angebot ab. Der viking spuckt auf den Boden et flucht, während er mit seiner hache de guerre geht. „Du hättest zahlen sollen, als du die Chance hattest“, knurrt er.",
-      "declineNormal": "Vous refusez das Angebot ab. Der viking nickt respektvoll et geht mit seiner hache de guerre."
+      "ignoreForced": "Vous ignorez l'offre. Le Viking finit par cracher au sol et s'en va avec sa hache de guerre, marmonnant au sujet de votre manque de respect.",
+      "ignoreNormal": "Vous ignorez l'offre. Le Viking finit par hocher la tête et s'en va avec sa hache de guerre.",
+      "buyForced": "Le Viking prend le paiement avec un sourire froid. « Peut-être auriez-vous dû être plus généreux plus tôt, au lieu de m'attaquer. La hache vous aurait alors coûté bien moins cher », dit-il avant de partir.",
+      "buyNormal": "Satisfait de l'échange, le Viking hoche la tête avec approbation et s'en va.",
+      "declineForced": "Vous refusez l'offre. Le Viking crache au sol et marmonne des malédictions en partant avec sa hache de guerre. « Vous auriez dû me payer quand vous en aviez l'occasion », grogne-t-il.",
+      "declineNormal": "Vous refusez l'offre. Le Viking hoche la tête avec respect et s'en va avec sa hache de guerre."
     },
     "message": "Le bâtisseur viking revient dans votre village, portant une magnifique hache de guerre. 'J'ai forgé cette Hache de guerre nordique dans ma patrie. Elle sera vôtre... pour un prix.'",
     "title": "Le Retour du Viking"
@@ -1382,6 +1406,230 @@
     "message": "Le chevalier revient, son armure éraflée et cabossée. 'J'ai trouvé quelque chose d'extraordinaire dans les montagnes,' dit-il. 'Je vous en parlerai, pour un prix.'",
     "title": "Retour des montagnes"
   },
+  "riddleOfAges": {
+    "title": "Voix dans l'obscurité",
+    "message": {
+      "original": "La silhouette voilée revient au domaine sous la pâle clarté de la lune. Sa voix résonne : « Le matin, il marche à quatre pattes ; à midi, sur deux ; le soir, sur trois. »",
+      "variant": "La silhouette voilée revient au domaine sous la pâle clarté de la lune. Sa voix résonne : « Il ne peut te blesser, mais te laisse des cicatrices. »"
+    },
+    "choices": {
+      "answerEarth": {
+        "label": "Terre"
+      },
+      "answerWolf": {
+        "label": "Loup"
+      },
+      "answerMan": {
+        "label": "Homme"
+      },
+      "answerBird": {
+        "label": "Oiseau"
+      },
+      "timeout": {
+        "label": "Aucune réponse"
+      }
+    },
+    "log": {
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "success_second": "La silhouette hoche à peine la tête et disparaît dans la nuit. À l'aube, une bourse de cuir usée remplie d'or gît là où elle se tenait."
+    }
+  },
+  "riddleOfAges_variant": {
+    "title": "Voix dans l'obscurité",
+    "message": {
+      "original": "La silhouette voilée revient au domaine sous la pâle clarté de la lune. Sa voix résonne : « Le matin, il marche à quatre pattes ; à midi, sur deux ; le soir, sur trois. »",
+      "variant": "La silhouette voilée revient au domaine sous la pâle clarté de la lune. Sa voix résonne : « Il ne peut te blesser, mais te laisse des cicatrices. »"
+    },
+    "choices": {
+      "answerNightmares": {
+        "label": "Cauchemars"
+      },
+      "answerTime": {
+        "label": "Toucher"
+      },
+      "answerLove": {
+        "label": "Couteau"
+      },
+      "answerDeath": {
+        "label": "Désir"
+      },
+      "timeout": {
+        "label": "Aucune réponse"
+      }
+    },
+    "log": {
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "success_second": "La silhouette hoche à peine la tête et disparaît dans la nuit. À l'aube, une bourse de cuir usée remplie d'or gît là où elle se tenait."
+    }
+  },
+  "riddleOfDevourer": {
+    "title": "Un visiteur nocturne",
+    "message": {
+      "original": "Une fois encore, la silhouette mystérieuse apparaît au domaine. Elle murmure d'une voix basse : « Il dévore toute chose, réduit les os en poussière, tue les rois, use les montagnes, efface les villes. »",
+      "variant": "Une fois encore, la silhouette mystérieuse apparaît au domaine. Elle murmure d'une voix basse : « Il a des doigts, mais ni chair, ni plumes, ni écailles, ni os. »"
+    },
+    "choices": {
+      "answerMan": {
+        "label": "Homme"
+      },
+      "answerWater": {
+        "label": "Eau"
+      },
+      "answerTime": {
+        "label": "Temps"
+      },
+      "answerFire": {
+        "label": "Feu"
+      },
+      "timeout": {
+        "label": "Aucune réponse"
+      }
+    },
+    "log": {
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "success_third": "La silhouette incline la tête en signe de reconnaissance silencieuse avant de reculer dans la pénombre. Au matin, une bourse usée d'or est trouvée devant la porte."
+    }
+  },
+  "riddleOfDevourer_variant": {
+    "title": "Un visiteur nocturne",
+    "message": {
+      "original": "Une fois encore, la silhouette mystérieuse apparaît au domaine. Elle murmure d'une voix basse : « Il dévore toute chose, réduit les os en poussière, tue les rois, use les montagnes, efface les villes. »",
+      "variant": "Une fois encore, la silhouette mystérieuse apparaît au domaine. Elle murmure d'une voix basse : « Il a des doigts, mais ni chair, ni plumes, ni écailles, ni os. »"
+    },
+    "choices": {
+      "answerFin": {
+        "label": "Nageoire"
+      },
+      "answerWing": {
+        "label": "Aile"
+      },
+      "answerGlove": {
+        "label": "Gant"
+      },
+      "answerHand": {
+        "label": "Main"
+      },
+      "timeout": {
+        "label": "Aucune réponse"
+      }
+    },
+    "log": {
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "success_third": "La silhouette incline la tête en signe de reconnaissance silencieuse avant de reculer dans la pénombre. Au matin, une bourse usée d'or est trouvée devant la porte."
+    }
+  },
+  "riddleOfEternal": {
+    "title": "L'hôte inconnu",
+    "message": {
+      "original": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix résonne en silence dans la nuit : « Tes yeux sont ouverts, je suis là ; tes yeux sont fermés, je suis là aussi. »",
+      "variant": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix résonne en silence dans la nuit : « Les pauvres m'ont, les riches en ont besoin. Si tu me manges, tu meurs. »"
+    },
+    "choices": {
+      "answerLight": {
+        "label": "Lumière"
+      },
+      "answerLife": {
+        "label": "Vie"
+      },
+      "answerDarkness": {
+        "label": "Ténèbres"
+      },
+      "answerDeath": {
+        "label": "Mort"
+      },
+      "timeout": {
+        "label": "Aucune réponse"
+      }
+    },
+    "log": {
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "success_fifth": "La silhouette incline la tête en révérence silencieuse avant de disparaître complètement. Un grand sac d'or gît là où elle se tenait."
+    }
+  },
+  "riddleOfEternal_variant": {
+    "title": "L'hôte inconnu",
+    "message": {
+      "original": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix résonne en silence dans la nuit : « Tes yeux sont ouverts, je suis là ; tes yeux sont fermés, je suis là aussi. »",
+      "variant": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix résonne en silence dans la nuit : « Les pauvres m'ont, les riches en ont besoin. Si tu me manges, tu meurs. »"
+    },
+    "choices": {
+      "answerPoison": {
+        "label": "Poison"
+      },
+      "answerAir": {
+        "label": "or"
+      },
+      "answerNothing": {
+        "label": "Rien"
+      },
+      "answerTime": {
+        "label": "Temps"
+      },
+      "timeout": {
+        "label": "Aucune réponse"
+      }
+    },
+    "log": {
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "success_fifth": "La silhouette incline la tête en révérence silencieuse avant de disparaître complètement. Un grand sac d'or gît là où elle se tenait."
+    }
+  },
+  "riddleOfTears": {
+    "title": "Un hôte encapuchonné",
+    "message": {
+      "original": "La silhouette voilée réapparaît une fois de plus au domaine. Elle murmure : « Il vole sans ailes, pleure sans yeux, les ténèbres le suivent partout. »",
+      "variant": "La silhouette voilée réapparaît une fois de plus au domaine. Elle murmure : « Doux, délicat, soyeux, mais si tu es enveloppé en moi, tu cries. »"
+    },
+    "choices": {
+      "answerNight": {
+        "label": "Nuit"
+      },
+      "answerWind": {
+        "label": "Vent"
+      },
+      "answerClouds": {
+        "label": "Nuages"
+      },
+      "answerShadow": {
+        "label": "Ombre"
+      },
+      "timeout": {
+        "label": "Aucune réponse"
+      }
+    },
+    "log": {
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "success_fourth": "La silhouette baisse un instant sa tête encapuchonnée avant de se dissoudre dans les ombres. Un petit sac d'or reste sur le sol froid."
+    }
+  },
+  "riddleOfTears_variant": {
+    "title": "Un hôte encapuchonné",
+    "message": {
+      "original": "La silhouette voilée réapparaît une fois de plus au domaine. Elle murmure : « Il vole sans ailes, pleure sans yeux, les ténèbres le suivent partout. »",
+      "variant": "La silhouette voilée réapparaît une fois de plus au domaine. Elle murmure : « Doux, délicat, soyeux, mais si tu es enveloppé en moi, tu cries. »"
+    },
+    "choices": {
+      "answerNightmares": {
+        "label": "Cauchemars"
+      },
+      "answerCobweb": {
+        "label": "Toile d'araignée"
+      },
+      "answerSilk": {
+        "label": "Soie"
+      },
+      "answerDeath": {
+        "label": "Mort"
+      },
+      "timeout": {
+        "label": "Aucune réponse"
+      }
+    },
+    "log": {
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "success_fourth": "La silhouette baisse un instant sa tête encapuchonnée avant de se dissoudre dans les ombres. Un petit sac d'or reste sur le sol froid."
+    }
+  },
   "ringOfDrownedChoice": {
     "choices": {
       "doNothing": {
@@ -1422,14 +1670,22 @@
     },
     "log": {
       "outcome0": "Le Sanctum se transforme en nexus de puissance divine. Tous les dieux répondent à votre appel, leurs dons sont vôtres.",
-      "dedicate_dagon": "Dagons bénédiction fließt stärker als zuvor.",
-      "dedicate_flame": "Die Première Flamme brennt heller als zuvor.",
-      "dedicate_raven": "Das Marque du corbeau wird stärker als zuvor.",
-      "dedicate_ash": "Die Étreinte cendrée ist stärker als zuvor.",
+      "dedicate_dagon": "La bénédiction de Dagon coule plus puissamment qu'avant.",
+      "dedicate_flame": "La Première Flamme brûle plus vivement qu'avant.",
+      "dedicate_raven": "La Marque du corbeau se renforce.",
+      "dedicate_ash": "L'Étreinte cendrée est plus forte qu'avant.",
       "dedicate_unknown": ""
     },
     "message": "Le druide aveugle émerge : 'Le Sanctum est achevé,' dit-il, sa voix portant le poids d'une sagesse ancienne. 'Vous devez maintenant choisir : approfondir votre dévotion à la voie que vous avez choisie, ou embrasser tous les dieux et leurs dons. Choisissez avec sagesse.'",
     "title": "La Dédicace du Sanctum"
+  },
+  "secondWave": {
+    "message": "Les créatures reviennent en plus grand nombre, armées d'armes d'os brut, luisant d'une lumière impure.",
+    "title": "La deuxième vague"
+  },
+  "seventhWave": {
+    "message": "Les créatures avancent de nouveau, un tapis grouillant de membres et de dents qui grattent vers la cité.",
+    "title": "La septième vague"
   },
   "shadowFluteChoice": {
     "choices": {
@@ -1473,6 +1729,10 @@
     "message": "Le corbeau borgne revient des Pêcheurs du Rivage avec du poisson séché en cadeau. Les pêcheurs proposent de vous enseigner les secrets de la construction de puissants pièges à poissons pour 250 pièces d'or.",
     "title": "Message des Pêcheurs du Rivage"
   },
+  "sixthWave": {
+    "message": "L'entrée de la grotte vomit une autre marée de corps pâles. Les lances d'os claquent comme la pluie tandis qu'ils se massent pour un nouvel assaut.",
+    "title": "La sixième vague"
+  },
   "skinCrawling": {
     "choices": {
       "calm_down": {
@@ -1505,7 +1765,7 @@
     "log": {
       "outcome0": "Vous livrez deux des villageois. Le trafiquant vous lance un sac d'acier et repart avec ses nouveaux captifs. Quand les villageois restants voient ce que vous avez fait, ils abandonnent le village avec dégoût.",
       "outcome1": "Vos hommes attaquent l'esclavagiste ! Le combat est brutal, mais victorieux. Vous libérez les captifs et revendiquez l'acier du trafiquant. Les âmes libérées rejoignent votre village.",
-      "outcome2": "Vos hommes greifen den trafiquant d'esclaves an, doch er ist vorbereitet! Er wehrt sich erbittert. {{actualDeaths}} villageois fallen im combat. Der marchand entkommt mit seinen Gefangenen et hinterlässt nur den Tod.",
+      "outcome2": "Vos hommes attaquent le trafiquant d'esclaves, mais il est prêt ! Il riposte avec férocité. {{actualDeaths}} villageois tombent dans la lutte. Le marchand s'échappe avec ses captifs, ne laissant que la mort derrière lui.",
       "outcome3": "Vous refusez l'offre vile de l'esclavagiste. Il crache par terre avec dégoût et repart avec ses captifs."
     },
     "message": "Un homme sur une charrette tirée par deux chevaux approche du village. Une cage de fer sur la charrette retient deux âmes misérables. Le trafiquant sourit avec cruauté : 'Je vous paierai 100 unités d'acier pour deux de vos villageois. Qu'en dites-vous ?'",
@@ -1591,14 +1851,13 @@
     "message": "Peu après la construction du temple, le druide aveugle apparaît. Ses yeux laiteux semblent voir à travers votre âme lorsqu'il parle : 'Le temple doit être dédié à un dieu. Choisissez avec sagesse.'",
     "title": "Le Druide aveugle revient"
   },
-  "traderSettles": {
-    "choices": {
-      "continue": {
-        "label": "Continuer"
-      }
-    },
-    "message": "Un marchand arrive au village avec sa famille. Ils ont l'air épuisés, leurs visages burinés par des années sur les routes. Ils sont enfin prêts à s'établir.",
-    "title": "Le Marchand"
+  "tenthWave": {
+    "message": "Des profondeurs les plus reculées de la grotte, une masse inimaginable de créatures pâles jaillit. Elles inondent la terre comme une marée vivante, tandis que la cité se prépare à l'anéantissement.",
+    "title": "La dernière vague"
+  },
+  "thirdWave": {
+    "message": "Des hordes de créatures pâles sortent de la grotte ; les cris ébranlent même la pierre, leurs armes d'os fendent le sol.",
+    "title": "La troisième vague"
   },
   "traders_daughter": {
     "choices": {
@@ -1662,6 +1921,15 @@
     },
     "message": "Le fils du marchand revient, tenant la dague de son père. Il déborde de gratitude et vous offre une grande réduction sur votre prochain achat des marchandises de son père.",
     "title": "La Gratitude du fils du marchand"
+  },
+  "traderSettles": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "message": "Un marchand arrive au village avec sa famille. Ils ont l'air épuisés, leurs visages burinés par des années sur les routes. Ils sont enfin prêts à s'établir.",
+    "title": "Le Marchand"
   },
   "undergroundLakeCreature": {
     "choices": {
@@ -1779,6 +2047,23 @@
     "message": "Un ancien du village s'approche de vous. Il parle doucement. 'Vous vous tenez au début d'un long chemin rempli d'épreuves. Très bientôt, vous devrez choisir si vous poursuivrez ce voyage.'",
     "title": "L'Avis de l'ancien"
   },
+  "villagersStareAtSky": {
+    "choices": {
+      "look_up_too": {
+        "label": "Regarder le ciel"
+      },
+      "shake_them": {
+        "label": "Les réveiller"
+      }
+    },
+    "log": {
+      "outcome0": "Vous saisissez le villageois le plus proche et le secouez. Il cligne une fois des yeux et redevient normal, mais murmure 'Ça vient' avant de reprendre son travail. Les autres suivent lentement.",
+      "outcome1": "Quand vous touchez un villageois, il tombe en poussière. Les autres sortent de leur transe et hurlent, pointant le ciel. L'espace d'un instant, vous le voyez aussi : quelque chose de vaste et d'affamé qui observe d'en haut.",
+      "outcome2": "Vous levez le cou vers le ciel et soudain vous le voyez : quelque chose d'immense et d'impossible qui existe entre les nuages. Votre esprit rejette ce dont il est témoin, mais l'image se grave à jamais dans votre mémoire."
+    },
+    "message": "Tous les villageois ont cessé leur travail et se tiennent immobiles, fixant le ciel vide. Ils restent ainsi pendant des heures, sans cligner des yeux, tandis que des larmes de liquide noir coulent sur leurs visages. Quand vous suivez leur regard, vous ne voyez que des nuages ordinaires, mais quelque chose semble terriblement faux.",
+    "title": "Regard vers le ciel"
+  },
   "villagerStares": {
     "choices": {
       "avoid": {
@@ -1796,22 +2081,23 @@
     "message": "L'un des villageois a commencé à fixer le vide pendant des heures. Quand vous vous approchez, ses yeux sont entièrement noirs. Il sourit quand il remarque que vous l'observez.",
     "title": "Regards creux"
   },
-  "villagersStareAtSky": {
+  "wandering_collector": {
     "choices": {
-      "look_up_too": {
-        "label": "Regarder le ciel"
-      },
-      "shake_them": {
-        "label": "Les réveiller"
+      "sell_nothing": {
+        "label": "Rien"
       }
     },
     "log": {
-      "outcome0": "Vous saisissez le villageois le plus proche et le secouez. Il cligne une fois des yeux et redevient normal, mais murmure 'Ça vient' avant de reprendre son travail. Les autres suivent lentement.",
-      "outcome1": "Quand vous touchez un villageois, il tombe en poussière. Les autres sortent de leur transe et hurlent, pointant le ciel. L'espace d'un instant, vous le voyez aussi : quelque chose de vaste et d'affamé qui observe d'en haut.",
-      "outcome2": "Vous levez le cou vers le ciel et soudain vous le voyez : quelque chose d'immense et d'impossible qui existe entre les nuages. Votre esprit rejette ce dont il est témoin, mais l'image se grave à jamais dans votre mémoire."
+      "whisper0": "Le collectionneur soupire et se détourne. « Au cours de mes voyages, j'ai découvert de nombreuses reliques de la civilisation ancienne. Elle était bien plus avancée que nous ne l'avons jamais été », murmure-t-il avant de se fondre dans l'obscurité.",
+      "whisper1": "Un faible bourdonnement s'échappe de sous sa capuche. « La grande explosion a détruit la plupart des artefacts de la civilisation ancienne. Ce qui reste est dispersé et rare », murmure-t-il.",
+      "whisper2": "Un souffle ténu échappe au collectionneur. « J'ai beaucoup appris sur la civilisation ancienne au cours de mes voyages. Avant la grande explosion, il n'y avait pas de magie dans ce monde. Elle est née à cet instant », murmure-t-il en partant."
     },
-    "message": "Tous les villageois ont cessé leur travail et se tiennent immobiles, fixant le ciel vide. Ils restent ainsi pendant des heures, sans cligner des yeux, tandis que des larmes de liquide noir coulent sur leurs visages. Quand vous suivez leur regard, vous ne voyez que des nuages ordinaires, mais quelque chose semble terriblement faux.",
-    "title": "Regard vers le ciel"
+    "title": "Le Collectionneur errant",
+    "message": {
+      "visit0": "Une silhouette enveloppée de robes en lambeaux s'approche. Elle semble intriguée par ce que vous avez amassé. « Je sens de la valeur parmi vos possessions », murmure-t-elle. « Laissez-moi en prendre une, en échange de {{reward}} pièces d'or. »",
+      "visit1": "La silhouette revient, ses pas silencieux sur le sol. « Plus d'artefacts, plus de secrets », chuchote-t-elle. « Laissez-moi en reprendre un, et votre bourse sera plus lourde de {{reward}} pièces d'or. »",
+      "visit2": "Le collectionneur réapparaît, les yeux brillant sous sa capuche. « Nos échanges touchent à leur fin », dit-elle doucement. « Vendez-m'en un de plus, et {{reward}} pièces d'or seront vôtres. »"
+    }
   },
   "wanderingFirecrafter": {
     "choices": {
@@ -1854,22 +2140,60 @@
     "message": "Une petite tribu de nomades approche du village. Leur chef parle : 'Nous avons voyagé loin et cherchons un endroit à appeler foyer. Aidez-nous à nous établir, et nous apprendrons à votre peuple comment dresser des tentes de fourrure.'",
     "title": "La Tribu errante"
   },
-  "wandering_collector": {
+  "whispererInTheDark": {
+    "title": "Murmure dans l'obscurité",
+    "message": {
+      "original": "Un coup frappe à la porte du domaine. Une silhouette entièrement enveloppée de robes sombres se tient dans l'ombre dehors. Elle murmure : « Sans voix, il crie ; sans ailes, il vole ; sans dents, il mord ; sans bouche, il murmure. »",
+      "variant": "Un coup frappe à la porte du domaine. Une silhouette entièrement enveloppée de robes sombres se tient dans l'ombre dehors. Elle murmure : « Le désir d'une dame, né dans les ténèbres, brillant d'une lumière pâle. »"
+    },
     "choices": {
-      "sell_nothing": {
-        "label": "Rien"
+      "answerFire": {
+        "label": "Feu"
+      },
+      "answerWaves": {
+        "label": "Vagues"
+      },
+      "answerWind": {
+        "label": "Vent"
+      },
+      "answerDarkness": {
+        "label": "Ténèbres"
+      },
+      "timeout": {
+        "label": "Aucune réponse"
       }
     },
     "log": {
-      "whisper0": "Der collectionneur seufzt et wendet sich ab. „Auf meinen Reisen habe ich viele Relikte der ancienne civilisation entdeckt. Sie waren weit fortgeschrittener als wir je waren“, flüstert er, bevor er in der Dunkelheit verschwindet.",
-      "whisper1": "Ein leises Summen dringt unter der Kapuze hervor. „Die große Explosion zerstörte die meisten Artefakte der ancienne civilisation. Was übrig blieb, ist verstreut et selten“, murmelt er.",
-      "whisper2": "Ein schwacher Atem entweicht dem collectionneur. „Ich habe auf meinen Reisen viel über die alte Zivilisation gelernt. Vor der grande explosion gab es keine Magie in dieser Welt. Sie wurde in jenem Moment geboren“, flüstert er, während er geht."
-    },
-    "title": "Le Collectionneur errant",
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "success_first": "La silhouette incline légèrement la tête avant de s'estomper dans l'obscurité. Au matin, un petit sac d'or repose sur le seuil du domaine."
+    }
+  },
+  "whispererInTheDark_variant": {
+    "title": "Murmure dans l'obscurité",
     "message": {
-      "visit0": "Une silhouette enveloppée de robes en lambeaux s'approche. Elle semble intriguée par ce que vous avez amassé. « Je sens de la valeur parmi vos possessions », murmure-t-elle. « Laissez-moi en prendre une, en échange de {{reward}} pièces d'or. »",
-      "visit1": "La silhouette revient, ses pas silencieux sur le sol. « Plus d'artefacts, plus de secrets », chuchote-t-elle. « Laissez-moi en reprendre un, et votre bourse sera plus lourde de {{reward}} pièces d'or. »",
-      "visit2": "Le collectionneur réapparaît, les yeux brillant sous sa capuche. « Nos échanges touchent à leur fin », dit-elle doucement. « Vendez-m'en un de plus, et {{reward}} pièces d'or seront vôtres. »"
+      "original": "Un coup frappe à la porte du domaine. Une silhouette entièrement enveloppée de robes sombres se tient dans l'ombre dehors. Elle murmure : « Sans voix, il crie ; sans ailes, il vole ; sans dents, il mord ; sans bouche, il murmure. »",
+      "variant": "Un coup frappe à la porte du domaine. Une silhouette entièrement enveloppée de robes sombres se tient dans l'ombre dehors. Elle murmure : « Le désir d'une dame, né dans les ténèbres, brillant d'une lumière pâle. »"
+    },
+    "choices": {
+      "answerSilver": {
+        "label": "Argent"
+      },
+      "answerPearl": {
+        "label": "Perle"
+      },
+      "answerGold": {
+        "label": "or"
+      },
+      "answerDiamond": {
+        "label": "Diamant"
+      },
+      "timeout": {
+        "label": "Aucune réponse"
+      }
+    },
+    "log": {
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "success_first": "La silhouette incline légèrement la tête avant de s'estomper dans l'obscurité. Au matin, un petit sac d'or repose sur le seuil du domaine."
     }
   },
   "whisperersReward": {
@@ -1984,8 +2308,8 @@
       "outcome3": "Vous déclinez l'offre du sorcier. Il hoche la tête avec compréhension. 'Je resterai donc dans ma tour. Peut-être nos chemins se croiseront-ils encore quand le besoin sera plus grand,' dit-il avant de partir."
     },
     "message": {
-      "firstVisit": "Der alte mage tritt an dich heran: „Ich habe lange gelebt et vieles gesehen“, sagt er mit müder Stimme. „Die Bedrohung, der du gegenüberstehst, ist ernst. Für einen fairen Preis schließe ich mich dir im combat gegen die Feinde an, die aus den Tiefen kommen.“",
-      "repeat": "Der alte mage tritt erneut an dich heran: „Mein Angebot, mich dir im combat gegen die Feinde aus den Tiefen anzuschließen, gilt noch. Für einen fairen Preis schließe ich mich dir an.“"
+      "firstVisit": "Le vieux mage s'approche de vous. « J'ai vécu longtemps et vu bien des choses », dit-il d'une voix lasse. « La menace à laquelle vous faites face est terrible. Pour un prix équitable, je me joindrai à vous dans le combat contre les ennemis qui émergent des profondeurs. »",
+      "repeat": "Le vieux mage s'approche de vous à nouveau. « Mon offre de me joindre à vous dans le combat contre les ennemis des profondeurs tient toujours. Pour un prix équitable, je me joindrai à vous. »"
     },
     "title": "L'Offre du sorcier"
   },
@@ -2005,36 +2329,36 @@
     "log": {
       "outcome0": "Les villageois vainquent la meute de loups ! Vous tuez le loup alpha et revendiquez sa peau comme trophée. Elle irradie une puissance primordiale.",
       "outcome1": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. À l'aube, les loups sont repartis sans trouver personne, ne laissant derrière eux que griffures et terreur.",
-      "defend_noDeaths": "Les villageois kämpfen verzweifelt gegen die loups. Les villageois überstehen den attaque.",
-      "defend_noDeaths_first": "Les villageois kämpfen verzweifelt gegen die loups. Les villageois überstehen den attaque. Les villageois schlagen vor, Fallen um das village zu legen, um sich besser vor loupsn et anderen Feinden zu schützen.",
-      "defend_noDeaths_hut": "Les villageois kämpfen verzweifelt gegen die loups. Les villageois überstehen den attaque. In ihrer Raserei zerstören die loups eine der Hütten et hinterlassen nur Splitterholz.",
-      "defend_noDeaths_hut_first": "Les villageois kämpfen verzweifelt gegen die loups. Les villageois überstehen den attaque. In ihrer Raserei zerstören die loups eine der Hütten et hinterlassen nur Splitterholz. Les villageois schlagen vor, Fallen um das village zu legen, um sich besser vor loupsn et anderen Feinden zu schützen.",
-      "defend_noDeaths_food": "Les villageois kämpfen verzweifelt gegen die loups. Les villageois überstehen den attaque. Im Chaos verwüsten die loups deine Vorräte.",
-      "defend_noDeaths_food_first": "Les villageois kämpfen verzweifelt gegen die loups. Les villageois überstehen den attaque. Im Chaos verwüsten die loups deine Vorräte. Les villageois schlagen vor, Fallen um das village zu legen, um sich besser vor loupsn et anderen Feinden zu schützen.",
-      "defend_noDeaths_food_hut": "Les villageois kämpfen verzweifelt gegen die loups. Les villageois überstehen den attaque. Im Chaos verwüsten die loups deine Vorräte. In ihrer Raserei zerstören die loups eine der Hütten et hinterlassen nur Splitterholz.",
-      "defend_noDeaths_food_hut_first": "Les villageois kämpfen verzweifelt gegen die loups. Les villageois überstehen den attaque. Im Chaos verwüsten die loups deine Vorräte. In ihrer Raserei zerstören die loups eine der Hütten et hinterlassen nur Splitterholz. Les villageois schlagen vor, Fallen um das village zu legen, um sich besser vor loupsn et anderen Feinden zu schützen.",
-      "defend_oneDeath": "Les villageois kämpfen verzweifelt gegen die loups. Ein villageois fällt der übernatürlichen Wut der loups zum Opfer.",
-      "defend_oneDeath_first": "Les villageois kämpfen verzweifelt gegen die loups. Ein villageois fällt der übernatürlichen Wut der loups zum Opfer. Les villageois schlagen vor, Fallen um das village zu legen, um sich besser vor loupsn et anderen Feinden zu schützen.",
-      "defend_oneDeath_hut": "Les villageois kämpfen verzweifelt gegen die loups. Ein villageois fällt der übernatürlichen Wut der loups zum Opfer. In ihrer Raserei zerstören die loups eine der Hütten et hinterlassen nur Splitterholz.",
-      "defend_oneDeath_hut_first": "Les villageois kämpfen verzweifelt gegen die loups. Ein villageois fällt der übernatürlichen Wut der loups zum Opfer. In ihrer Raserei zerstören die loups eine der Hütten et hinterlassen nur Splitterholz. Les villageois schlagen vor, Fallen um das village zu legen, um sich besser vor loupsn et anderen Feinden zu schützen.",
-      "defend_oneDeath_food": "Les villageois kämpfen verzweifelt gegen die loups. Ein villageois fällt der übernatürlichen Wut der loups zum Opfer. Im Chaos verwüsten die loups deine Vorräte.",
-      "defend_oneDeath_food_first": "Les villageois kämpfen verzweifelt gegen die loups. Ein villageois fällt der übernatürlichen Wut der loups zum Opfer. Im Chaos verwüsten die loups deine Vorräte. Les villageois schlagen vor, Fallen um das village zu legen, um sich besser vor loupsn et anderen Feinden zu schützen.",
-      "defend_oneDeath_food_hut": "Les villageois kämpfen verzweifelt gegen die loups. Ein villageois fällt der übernatürlichen Wut der loups zum Opfer. Im Chaos verwüsten die loups deine Vorräte. In ihrer Raserei zerstören die loups eine der Hütten et hinterlassen nur Splitterholz.",
-      "defend_oneDeath_food_hut_first": "Les villageois kämpfen verzweifelt gegen die loups. Ein villageois fällt der übernatürlichen Wut der loups zum Opfer. Im Chaos verwüsten die loups deine Vorräte. In ihrer Raserei zerstören die loups eine der Hütten et hinterlassen nur Splitterholz. Les villageois schlagen vor, Fallen um das village zu legen, um sich besser vor loupsn et anderen Feinden zu schützen.",
-      "defend_manyDeaths": "Les villageois kämpfen verzweifelt gegen die loups. Mehrere villageois fallen der übernatürlichen Wut der loups zum Opfer.",
-      "defend_manyDeaths_first": "Les villageois kämpfen verzweifelt gegen die loups. Mehrere villageois fallen der übernatürlichen Wut der loups zum Opfer. Les villageois schlagen vor, Fallen um das village zu legen, um sich besser vor loupsn et anderen Feinden zu schützen.",
-      "defend_manyDeaths_hut": "Les villageois kämpfen verzweifelt gegen die loups. Mehrere villageois fallen der übernatürlichen Wut der loups zum Opfer. In ihrer Raserei zerstören die loups eine der Hütten et hinterlassen nur Splitterholz.",
-      "defend_manyDeaths_hut_first": "Les villageois kämpfen verzweifelt gegen die loups. Mehrere villageois fallen der übernatürlichen Wut der loups zum Opfer. In ihrer Raserei zerstören die loups eine der Hütten et hinterlassen nur Splitterholz. Les villageois schlagen vor, Fallen um das village zu legen, um sich besser vor loupsn et anderen Feinden zu schützen.",
-      "defend_manyDeaths_food": "Les villageois kämpfen verzweifelt gegen die loups. Mehrere villageois fallen der übernatürlichen Wut der loups zum Opfer. Im Chaos verwüsten die loups deine Vorräte.",
-      "defend_manyDeaths_food_first": "Les villageois kämpfen verzweifelt gegen die loups. Mehrere villageois fallen der übernatürlichen Wut der loups zum Opfer. Im Chaos verwüsten die loups deine Vorräte. Les villageois schlagen vor, Fallen um das village zu legen, um sich besser vor loupsn et anderen Feinden zu schützen.",
-      "defend_manyDeaths_food_hut": "Les villageois kämpfen verzweifelt gegen die loups. Mehrere villageois fallen der übernatürlichen Wut der loups zum Opfer. Im Chaos verwüsten die loups deine Vorräte. In ihrer Raserei zerstören die loups eine der Hütten et hinterlassen nur Splitterholz.",
-      "defend_manyDeaths_food_hut_first": "Les villageois kämpfen verzweifelt gegen die loups. Mehrere villageois fallen der übernatürlichen Wut der loups zum Opfer. Im Chaos verwüsten die loups deine Vorräte. In ihrer Raserei zerstören die loups eine der Hütten et hinterlassen nur Splitterholz. Les villageois schlagen vor, Fallen um das village zu legen, um sich besser vor loupsn et anderen Feinden zu schützen.",
-      "hide_noDeaths": "Les villageois kauern in ihren Hütten, während die loups draußen umherstreifen. Bei Tagesanbruch sind die loups abgezogen et haben nur Kratzer et Entsetzen zurückgelassen.",
-      "hide_noDeaths_food": "Les villageois kauern in ihren Hütten, während die loups draußen umherstreifen. Bei Tagesanbruch sind die loups abgezogen et haben nur Kratzer et Entsetzen zurückgelassen. Die loups plündern deine Vorräte, bevor sie im Morgengrauen verschwinden.",
-      "hide_oneDeath": "Les villageois kauern in ihren Hütten, während die loups draußen umherstreifen. Ein villageois, der hinausging, wird bei Sonnenaufgang zerrissen aufgefunden.",
-      "hide_oneDeath_food": "Les villageois kauern in ihren Hütten, während die loups draußen umherstreifen. Ein villageois, der hinausging, wird bei Sonnenaufgang zerrissen aufgefunden. Die loups plündern deine Vorräte, bevor sie im Morgengrauen verschwinden.",
-      "hide_manyDeaths": "Les villageois kauern in ihren Hütten, während die loups draußen umherstreifen. Mehrere villageois werden aus ihren Hütten gezerrt, ihre Schreie hallen durch die Nacht.",
-      "hide_manyDeaths_food": "Les villageois kauern in ihren Hütten, während die loups draußen umherstreifen. Mehrere villageois werden aus ihren Hütten gezerrt, ihre Schreie hallen durch die Nacht. Die loups plündern deine Vorräte, bevor sie im Morgengrauen verschwinden."
+      "defend_noDeaths": "Les villageois combattent désespérément les loups. Les villageois survivent à l'attaque.",
+      "defend_noDeaths_first": "Les villageois combattent désespérément les loups. Les villageois survivent à l'attaque. Les villageois suggèrent de poser des pièges autour du village pour mieux se protéger des loups et des autres ennemis.",
+      "defend_noDeaths_hut": "Les villageois combattent désespérément les loups. Les villageois survivent à l'attaque. Dans leur frénésie, les loups détruisent l'une des huttes, ne laissant que du bois éclaté.",
+      "defend_noDeaths_hut_first": "Les villageois combattent désespérément les loups. Les villageois survivent à l'attaque. Dans leur frénésie, les loups détruisent l'une des huttes, ne laissant que du bois éclaté. Les villageois suggèrent de poser des pièges autour du village pour mieux se protéger des loups et des autres ennemis.",
+      "defend_noDeaths_food": "Les villageois combattent désespérément les loups. Les villageois survivent à l'attaque. Dans le chaos, les loups ravagent vos réserves.",
+      "defend_noDeaths_food_first": "Les villageois combattent désespérément les loups. Les villageois survivent à l'attaque. Dans le chaos, les loups ravagent vos réserves. Les villageois suggèrent de poser des pièges autour du village pour mieux se protéger des loups et des autres ennemis.",
+      "defend_noDeaths_food_hut": "Les villageois combattent désespérément les loups. Les villageois survivent à l'attaque. Dans le chaos, les loups ravagent vos réserves. Dans leur frénésie, les loups détruisent l'une des huttes, ne laissant que du bois éclaté.",
+      "defend_noDeaths_food_hut_first": "Les villageois combattent désespérément les loups. Les villageois survivent à l'attaque. Dans le chaos, les loups ravagent vos réserves. Dans leur frénésie, les loups détruisent l'une des huttes, ne laissant que du bois éclaté. Les villageois suggèrent de poser des pièges autour du village pour mieux se protéger des loups et des autres ennemis.",
+      "defend_oneDeath": "Les villageois combattent désespérément les loups. Un villageois succombe à la fureur surnaturelle des loups.",
+      "defend_oneDeath_first": "Les villageois combattent désespérément les loups. Un villageois succombe à la fureur surnaturelle des loups. Les villageois suggèrent de poser des pièges autour du village pour mieux se protéger des loups et des autres ennemis.",
+      "defend_oneDeath_hut": "Les villageois combattent désespérément les loups. Un villageois succombe à la fureur surnaturelle des loups. Dans leur frénésie, les loups détruisent l'une des huttes, ne laissant que du bois éclaté.",
+      "defend_oneDeath_hut_first": "Les villageois combattent désespérément les loups. Un villageois succombe à la fureur surnaturelle des loups. Dans leur frénésie, les loups détruisent l'une des huttes, ne laissant que du bois éclaté. Les villageois suggèrent de poser des pièges autour du village pour mieux se protéger des loups et des autres ennemis.",
+      "defend_oneDeath_food": "Les villageois combattent désespérément les loups. Un villageois succombe à la fureur surnaturelle des loups. Dans le chaos, les loups ravagent vos réserves.",
+      "defend_oneDeath_food_first": "Les villageois combattent désespérément les loups. Un villageois succombe à la fureur surnaturelle des loups. Dans le chaos, les loups ravagent vos réserves. Les villageois suggèrent de poser des pièges autour du village pour mieux se protéger des loups et des autres ennemis.",
+      "defend_oneDeath_food_hut": "Les villageois combattent désespérément les loups. Un villageois succombe à la fureur surnaturelle des loups. Dans le chaos, les loups ravagent vos réserves. Dans leur frénésie, les loups détruisent l'une des huttes, ne laissant que du bois éclaté.",
+      "defend_oneDeath_food_hut_first": "Les villageois combattent désespérément les loups. Un villageois succombe à la fureur surnaturelle des loups. Dans le chaos, les loups ravagent vos réserves. Dans leur frénésie, les loups détruisent l'une des huttes, ne laissant que du bois éclaté. Les villageois suggèrent de poser des pièges autour du village pour mieux se protéger des loups et des autres ennemis.",
+      "defend_manyDeaths": "Les villageois combattent désespérément les loups. Plusieurs villageois succombent à la fureur surnaturelle des loups.",
+      "defend_manyDeaths_first": "Les villageois combattent désespérément les loups. Plusieurs villageois succombent à la fureur surnaturelle des loups. Les villageois suggèrent de poser des pièges autour du village pour mieux se protéger des loups et des autres ennemis.",
+      "defend_manyDeaths_hut": "Les villageois combattent désespérément les loups. Plusieurs villageois succombent à la fureur surnaturelle des loups. Dans leur frénésie, les loups détruisent l'une des huttes, ne laissant que du bois éclaté.",
+      "defend_manyDeaths_hut_first": "Les villageois combattent désespérément les loups. Plusieurs villageois succombent à la fureur surnaturelle des loups. Dans leur frénésie, les loups détruisent l'une des huttes, ne laissant que du bois éclaté. Les villageois suggèrent de poser des pièges autour du village pour mieux se protéger des loups et des autres ennemis.",
+      "defend_manyDeaths_food": "Les villageois combattent désespérément les loups. Plusieurs villageois succombent à la fureur surnaturelle des loups. Dans le chaos, les loups ravagent vos réserves.",
+      "defend_manyDeaths_food_first": "Les villageois combattent désespérément les loups. Plusieurs villageois succombent à la fureur surnaturelle des loups. Dans le chaos, les loups ravagent vos réserves. Les villageois suggèrent de poser des pièges autour du village pour mieux se protéger des loups et des autres ennemis.",
+      "defend_manyDeaths_food_hut": "Les villageois combattent désespérément les loups. Plusieurs villageois succombent à la fureur surnaturelle des loups. Dans le chaos, les loups ravagent vos réserves. Dans leur frénésie, les loups détruisent l'une des huttes, ne laissant que du bois éclaté.",
+      "defend_manyDeaths_food_hut_first": "Les villageois combattent désespérément les loups. Plusieurs villageois succombent à la fureur surnaturelle des loups. Dans le chaos, les loups ravagent vos réserves. Dans leur frénésie, les loups détruisent l'une des huttes, ne laissant que du bois éclaté. Les villageois suggèrent de poser des pièges autour du village pour mieux se protéger des loups et des autres ennemis.",
+      "hide_noDeaths": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. À l'aube, les loups sont partis, ne laissant derrière eux que des griffures et de la terreur.",
+      "hide_noDeaths_food": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. À l'aube, les loups sont partis, ne laissant derrière eux que des griffures et de la terreur. Les loups pillent vos provisions avant de disparaître à l'aube.",
+      "hide_oneDeath": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Un villageois qui s'était aventuré dehors est retrouvé déchiqueté au lever du soleil.",
+      "hide_oneDeath_food": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Un villageois qui s'était aventuré dehors est retrouvé déchiqueté au lever du soleil. Les loups pillent vos provisions avant de disparaître à l'aube.",
+      "hide_manyDeaths": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Plusieurs villageois sont arrachés de leurs huttes, leurs cris résonnant dans la nuit.",
+      "hide_manyDeaths_food": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Plusieurs villageois sont arrachés de leurs huttes, leurs cris résonnant dans la nuit. Les loups pillent vos provisions avant de disparaître à l'aube."
     },
     "message": "Peu avant minuit, des loups émergent des ténèbres, leurs yeux brillant d'une faim contre nature. Leurs hurlements résonnent, chargés de malice, tandis qu'ils encerclent le village.",
     "title": "Attaque de loups"
@@ -2042,7 +2366,7 @@
   "woodcutter": {
     "choices": {
       "acceptServices": {
-        "label": "Pay {{foodCost}} Food"
+        "label": "Payer {{foodCost}} nourriture"
       },
       "denyServices": {
         "label": "Refuser les services"
@@ -2052,36 +2376,36 @@
       }
     },
     "log": {
-      "denyLastUneasy": "Etwas an seinem Auftreten beunruhigt dich. Vous refusez den Handel ab. Das Lächeln des boisfällers verblasst, et er geht ohne ein Wort.",
-      "denyLevel1": "Vous refusez sein Angebot ab. Der boisfäller zuckt mit den Schultern et geht in den forêt.",
-      "denyLevel2": "Vous refusez sein Angebot ab. Der boisfäller nickt et zieht ohne Beschwerde weiter.",
-      "denyLevel3": "Vous refusez sein Angebot ab. Er zuckt mit den Schultern et geht zurück in den forêt.",
-      "denyLevel4": "Vous refusez sein ehrgeiziges Angebot ab. Der boisfäller wirkt enttäuscht, akzeptiert aber deine Entscheidung.",
-      "denyLevel5": "Vous refusez den Handel ab. Der boisfäller runzelt die Stirn, widerspricht aber nicht.",
-      "denyLevel6": "Vous refusez den Handel ab. Der boisfäller runzelt die Stirn, widerspricht aber nicht.",
-      "timeoutLast": "Deine Unentschlossenheit frustriert den boisfäller. Er schüttelt den Kopf et geht in den forêt.",
-      "timeoutLevel1": "Deine Unentschlossenheit frustriert den boisfäller. Er zuckt mit den Schultern et geht in den forêt.",
-      "timeoutLevel2": "Deine Unentschlossenheit frustriert den boisfäller. Er nickt et zieht ohne Beschwerde weiter.",
-      "timeoutLevel3": "Deine Unentschlossenheit frustriert den boisfäller. Er zuckt mit den Schultern et geht zurück in den forêt.",
-      "timeoutLevel4": "Deine Unentschlossenheit frustriert den boisfäller. Er wirkt enttäuscht, akzeptiert aber et geht.",
-      "timeoutLevel5": "Deine Unentschlossenheit frustriert den boisfäller. Er runzelt die Stirn et geht.",
-      "timeoutLevel6": "Deine Unentschlossenheit frustriert den boisfäller. Er runzelt die Stirn et geht."
+      "denyLastUneasy": "Quelque chose dans son attitude vous met mal à l'aise. Vous refusez l'affaire. Le sourire du bûcheron s'efface, et il part sans un mot.",
+      "denyLevel1": "Vous refusez son offre. Le bûcheron hausse les épaules et s'enfonce dans la forêt.",
+      "denyLevel2": "Vous refusez son offre. Le bûcheron hoche la tête et repart sans se plaindre.",
+      "denyLevel3": "Vous déclinez son offre. Il hausse les épaules et retourne dans les bois.",
+      "denyLevel4": "Vous refusez son offre ambitieuse. Le bûcheron semble déçu, mais accepte votre décision.",
+      "denyLevel5": "Vous refusez l'affaire. Le bûcheron fronce les sourcils, mais ne discute pas.",
+      "denyLevel6": "Vous refusez l'affaire. Le bûcheron fronce les sourcils, mais ne discute pas.",
+      "timeoutLast": "Votre indécision frustre le bûcheron. Il secoue la tête et s'enfonce dans la forêt.",
+      "timeoutLevel1": "Votre indécision frustre le bûcheron. Il hausse les épaules et s'enfonce dans la forêt.",
+      "timeoutLevel2": "Votre indécision frustre le bûcheron. Il hoche la tête et repart sans se plaindre.",
+      "timeoutLevel3": "Votre indécision frustre le bûcheron. Il hausse les épaules et retourne dans les bois.",
+      "timeoutLevel4": "Votre indécision frustre le bûcheron. Il semble déçu, mais accepte et part.",
+      "timeoutLevel5": "Votre indécision frustre le bûcheron. Il fronce les sourcils et s'en va.",
+      "timeoutLevel6": "Votre indécision frustre le bûcheron. Il fronce les sourcils et s'en va."
     },
     "title": {
-      "level1": "Der boisfäller",
-      "level2": "Der boisfäller kehrt zurück",
-      "level3": "Das Angebot des boisfällers",
-      "level4": "Der ehrgeizige Plan des boisfällers",
-      "level5": "Der große Vorschlag des boisfällers",
-      "level6": "Das Angebot des boisfällers"
+      "level1": "Le bûcheron",
+      "level2": "Le retour du bûcheron",
+      "level3": "L'offre du bûcheron",
+      "level4": "Le plan ambitieux du bûcheron",
+      "level5": "La grande proposition du bûcheron",
+      "level6": "L'offre du bûcheron"
     },
     "message": {
-      "level1": "A muscular man with a large axe approaches the village. He flexes his arms. \"I can cut trees like no other,\" he boasts. \"Give me {{foodCost}} Food, and I'll bring {{woodReward}} Wood.\"",
-      "level2": "The woodcutter returns, his axe gleaming in the sun. \"Your village grows well,\" he observes. \"I can bring you {{woodReward}} Wood. You give me {{foodCost}} Food. What do you say?\"",
-      "level3": "The woodcutter approaches again. \"I see your village continues to thrive,\" he says with a grin. \"I can bring you {{woodReward}} Wood if you pay {{foodCost}} Food for it.\"",
-      "level4": "The woodcutter arrives once more. \"Do you want to use my services once more? {{woodReward}} Wood for {{foodCost}} Food,\" he asks.",
-      "level5": "The woodcutter appears with a confident smile. \"How about we make one more deal? {{woodReward}} Wood for {{foodCost}} Food.\"",
-      "level6": "The woodcutter returns to the village. \"Do you want to use my services once more? I offer {{woodReward}} Wood for {{foodCost}} Food,\" he says."
+      "level1": "Un homme musclé portant une grande hache s'approche du village. Il contracte les bras. « Je coupe les arbres comme personne », se vante-t-il. « Donnez-moi {{foodCost}} nourriture, et je vous rapporterai {{woodReward}} bois. »",
+      "level2": "Le bûcheron revient, sa hache brillant au soleil. « Votre village prospère », observe-t-il. « Je peux vous apporter {{woodReward}} bois. Vous me donnez {{foodCost}} nourriture. Qu'en dites-vous ? »",
+      "level3": "Le bûcheron s'approche à nouveau. « Je vois que votre village continue de prospérer », dit-il avec un sourire. « Je peux vous apporter {{woodReward}} bois si vous payez {{foodCost}} nourriture. »",
+      "level4": "Le bûcheron arrive une fois de plus. « Voulez-vous encore utiliser mes services ? {{woodReward}} bois contre {{foodCost}} nourriture », demande-t-il.",
+      "level5": "Le bûcheron apparaît avec un sourire confiant. « Et si nous concluions une affaire de plus ? {{woodReward}} bois contre {{foodCost}} nourriture. »",
+      "level6": "Le bûcheron revient au village. « Voulez-vous encore utiliser mes services ? J'offre {{woodReward}} bois contre {{foodCost}} nourriture », dit-il."
     }
   },
   "wrongReflections": {
@@ -2123,307 +2447,5 @@
     },
     "message": "Une jeune femme s'approche de vous, les larmes ruisselant sur son visage. 'Mes deux parents ont été sacrifiés à ce monolithe maudit,' crie-t-elle. 'Ce comportement barbare doit cesser !'",
     "title": "La Supplication de la jeune femme"
-  },
-  "whispererInTheDark": {
-    "title": "Murmure dans l'obscurité",
-    "message": {
-      "original": "Un coup frappe à la porte du domaine. Une silhouette entièrement enveloppée de robes sombres se tient dans l'ombre dehors. Elle murmure : « Sans voix, il crie ; sans ailes, il vole ; sans dents, il mord ; sans bouche, il murmure. »",
-      "variant": "Un coup frappe à la porte du domaine. Une silhouette entièrement enveloppée de robes sombres se tient dans l'ombre dehors. Elle murmure : « Le désir d'une dame, né dans les ténèbres, brillant d'une lumière pâle. »"
-    },
-    "choices": {
-      "answerFire": {
-        "label": "Feu"
-      },
-      "answerWaves": {
-        "label": "Vagues"
-      },
-      "answerWind": {
-        "label": "Vent"
-      },
-      "answerDarkness": {
-        "label": "Ténèbres"
-      },
-      "timeout": {
-        "label": "Aucune réponse"
-      }
-    },
-    "log": {
-      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
-      "success_first": "La silhouette incline légèrement la tête avant de s'estomper dans l'obscurité. Au matin, un petit sac d'or repose sur le seuil du domaine."
-    }
-  },
-  "whispererInTheDark_variant": {
-    "title": "Murmure dans l'obscurité",
-    "message": {
-      "original": "Un coup frappe à la porte du domaine. Une silhouette entièrement enveloppée de robes sombres se tient dans l'ombre dehors. Elle murmure : « Sans voix, il crie ; sans ailes, il vole ; sans dents, il mord ; sans bouche, il murmure. »",
-      "variant": "Un coup frappe à la porte du domaine. Une silhouette entièrement enveloppée de robes sombres se tient dans l'ombre dehors. Elle murmure : « Le désir d'une dame, né dans les ténèbres, brillant d'une lumière pâle. »"
-    },
-    "choices": {
-      "answerSilver": {
-        "label": "Argent"
-      },
-      "answerPearl": {
-        "label": "Perle"
-      },
-      "answerGold": {
-        "label": "or"
-      },
-      "answerDiamond": {
-        "label": "Diamant"
-      },
-      "timeout": {
-        "label": "Aucune réponse"
-      }
-    },
-    "log": {
-      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
-      "success_first": "La silhouette incline légèrement la tête avant de s'estomper dans l'obscurité. Au matin, un petit sac d'or repose sur le seuil du domaine."
-    }
-  },
-  "riddleOfAges": {
-    "title": "Voix dans l'obscurité",
-    "message": {
-      "original": "La silhouette voilée revient au domaine sous la pâle clarté de la lune. Sa voix résonne : « Le matin, il marche à quatre pattes ; à midi, sur deux ; le soir, sur trois. »",
-      "variant": "La silhouette voilée revient au domaine sous la pâle clarté de la lune. Sa voix résonne : « Il ne peut te blesser, mais te laisse des cicatrices. »"
-    },
-    "choices": {
-      "answerEarth": {
-        "label": "Terre"
-      },
-      "answerWolf": {
-        "label": "Loup"
-      },
-      "answerMan": {
-        "label": "Homme"
-      },
-      "answerBird": {
-        "label": "Oiseau"
-      },
-      "timeout": {
-        "label": "Aucune réponse"
-      }
-    },
-    "log": {
-      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
-      "success_second": "La silhouette hoche à peine la tête et disparaît dans la nuit. À l'aube, une bourse de cuir usée remplie d'or gît là où elle se tenait."
-    }
-  },
-  "riddleOfAges_variant": {
-    "title": "Voix dans l'obscurité",
-    "message": {
-      "original": "La silhouette voilée revient au domaine sous la pâle clarté de la lune. Sa voix résonne : « Le matin, il marche à quatre pattes ; à midi, sur deux ; le soir, sur trois. »",
-      "variant": "La silhouette voilée revient au domaine sous la pâle clarté de la lune. Sa voix résonne : « Il ne peut te blesser, mais te laisse des cicatrices. »"
-    },
-    "choices": {
-      "answerNightmares": {
-        "label": "Cauchemars"
-      },
-      "answerTime": {
-        "label": "Toucher"
-      },
-      "answerLove": {
-        "label": "Couteau"
-      },
-      "answerDeath": {
-        "label": "Désir"
-      },
-      "timeout": {
-        "label": "Aucune réponse"
-      }
-    },
-    "log": {
-      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
-      "success_second": "La silhouette hoche à peine la tête et disparaît dans la nuit. À l'aube, une bourse de cuir usée remplie d'or gît là où elle se tenait."
-    }
-  },
-  "riddleOfDevourer": {
-    "title": "Un visiteur nocturne",
-    "message": {
-      "original": "Une fois encore, la silhouette mystérieuse apparaît au domaine. Elle murmure d'une voix basse : « Il dévore toute chose, réduit les os en poussière, tue les rois, use les montagnes, efface les villes. »",
-      "variant": "Une fois encore, la silhouette mystérieuse apparaît au domaine. Elle murmure d'une voix basse : « Il a des doigts, mais ni chair, ni plumes, ni écailles, ni os. »"
-    },
-    "choices": {
-      "answerMan": {
-        "label": "Homme"
-      },
-      "answerWater": {
-        "label": "Eau"
-      },
-      "answerTime": {
-        "label": "Temps"
-      },
-      "answerFire": {
-        "label": "Feu"
-      },
-      "timeout": {
-        "label": "Aucune réponse"
-      }
-    },
-    "log": {
-      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
-      "success_third": "La silhouette incline la tête en signe de reconnaissance silencieuse avant de reculer dans la pénombre. Au matin, une bourse usée d'or est trouvée devant la porte."
-    }
-  },
-  "riddleOfDevourer_variant": {
-    "title": "Un visiteur nocturne",
-    "message": {
-      "original": "Une fois encore, la silhouette mystérieuse apparaît au domaine. Elle murmure d'une voix basse : « Il dévore toute chose, réduit les os en poussière, tue les rois, use les montagnes, efface les villes. »",
-      "variant": "Une fois encore, la silhouette mystérieuse apparaît au domaine. Elle murmure d'une voix basse : « Il a des doigts, mais ni chair, ni plumes, ni écailles, ni os. »"
-    },
-    "choices": {
-      "answerFin": {
-        "label": "Nageoire"
-      },
-      "answerWing": {
-        "label": "Aile"
-      },
-      "answerGlove": {
-        "label": "Gant"
-      },
-      "answerHand": {
-        "label": "Main"
-      },
-      "timeout": {
-        "label": "Aucune réponse"
-      }
-    },
-    "log": {
-      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
-      "success_third": "La silhouette incline la tête en signe de reconnaissance silencieuse avant de reculer dans la pénombre. Au matin, une bourse usée d'or est trouvée devant la porte."
-    }
-  },
-  "riddleOfTears": {
-    "title": "Un hôte encapuchonné",
-    "message": {
-      "original": "La silhouette voilée réapparaît une fois de plus au domaine. Elle murmure : « Il vole sans ailes, pleure sans yeux, les ténèbres le suivent partout. »",
-      "variant": "La silhouette voilée réapparaît une fois de plus au domaine. Elle murmure : « Doux, délicat, soyeux, mais si tu es enveloppé en moi, tu cries. »"
-    },
-    "choices": {
-      "answerNight": {
-        "label": "Nuit"
-      },
-      "answerWind": {
-        "label": "Vent"
-      },
-      "answerClouds": {
-        "label": "Nuages"
-      },
-      "answerShadow": {
-        "label": "Ombre"
-      },
-      "timeout": {
-        "label": "Aucune réponse"
-      }
-    },
-    "log": {
-      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
-      "success_fourth": "La silhouette baisse un instant sa tête encapuchonnée avant de se dissoudre dans les ombres. Un petit sac d'or reste sur le sol froid."
-    }
-  },
-  "riddleOfTears_variant": {
-    "title": "Un hôte encapuchonné",
-    "message": {
-      "original": "La silhouette voilée réapparaît une fois de plus au domaine. Elle murmure : « Il vole sans ailes, pleure sans yeux, les ténèbres le suivent partout. »",
-      "variant": "La silhouette voilée réapparaît une fois de plus au domaine. Elle murmure : « Doux, délicat, soyeux, mais si tu es enveloppé en moi, tu cries. »"
-    },
-    "choices": {
-      "answerNightmares": {
-        "label": "Cauchemars"
-      },
-      "answerCobweb": {
-        "label": "Toile d'araignée"
-      },
-      "answerSilk": {
-        "label": "Soie"
-      },
-      "answerDeath": {
-        "label": "Mort"
-      },
-      "timeout": {
-        "label": "Aucune réponse"
-      }
-    },
-    "log": {
-      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
-      "success_fourth": "La silhouette baisse un instant sa tête encapuchonnée avant de se dissoudre dans les ombres. Un petit sac d'or reste sur le sol froid."
-    }
-  },
-  "riddleOfEternal": {
-    "title": "L'hôte inconnu",
-    "message": {
-      "original": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix résonne en silence dans la nuit : « Tes yeux sont ouverts, je suis là ; tes yeux sont fermés, je suis là aussi. »",
-      "variant": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix résonne en silence dans la nuit : « Les pauvres m'ont, les riches en ont besoin. Si tu me manges, tu meurs. »"
-    },
-    "choices": {
-      "answerLight": {
-        "label": "Lumière"
-      },
-      "answerLife": {
-        "label": "Vie"
-      },
-      "answerDarkness": {
-        "label": "Ténèbres"
-      },
-      "answerDeath": {
-        "label": "Mort"
-      },
-      "timeout": {
-        "label": "Aucune réponse"
-      }
-    },
-    "log": {
-      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
-      "success_fifth": "La silhouette incline la tête en révérence silencieuse avant de disparaître complètement. Un grand sac d'or gît là où elle se tenait."
-    }
-  },
-  "riddleOfEternal_variant": {
-    "title": "L'hôte inconnu",
-    "message": {
-      "original": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix résonne en silence dans la nuit : « Tes yeux sont ouverts, je suis là ; tes yeux sont fermés, je suis là aussi. »",
-      "variant": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix résonne en silence dans la nuit : « Les pauvres m'ont, les riches en ont besoin. Si tu me manges, tu meurs. »"
-    },
-    "choices": {
-      "answerPoison": {
-        "label": "Poison"
-      },
-      "answerAir": {
-        "label": "or"
-      },
-      "answerNothing": {
-        "label": "Rien"
-      },
-      "answerTime": {
-        "label": "Temps"
-      },
-      "timeout": {
-        "label": "Aucune réponse"
-      }
-    },
-    "log": {
-      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
-      "success_fifth": "La silhouette incline la tête en révérence silencieuse avant de disparaître complètement. Un grand sac d'or gît là où elle se tenait."
-    }
-  },
-  "feast": {
-    "choices": {
-      "makeFeast": {
-        "cost": "{{foodCost}} food",
-        "label": "Spend {{foodCost}} Food"
-      },
-      "noFeast": {
-        "label": "Refuse feast"
-      },
-      "doNothing": {
-        "label": "No Decision Made"
-      }
-    },
-    "log": {
-      "outcome0": "You don't have enough food for the feast.",
-      "outcome1": "The villagers gather for a feast! Weariness fades and spirits rise, if only briefly.",
-      "outcome2": "You decline the feast proposal. The villagers accept your decision, though disappointed.",
-      "outcome3": "Time passes and the opportunity for a feast fades away."
-    },
-    "message": "The villagers propose organizing a feast. A short comfort to ease their weariness and quiet their minds.",
-    "title": "Village Feast"
   }
 }

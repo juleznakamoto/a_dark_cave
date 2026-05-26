@@ -20,10 +20,13 @@ import { getVillagersInVillage } from "@/game/population";
 import { useTranslation } from "react-i18next";
 import {
   getEventRulesCatalogId,
+  getEventI18nVars,
   resolveEventDisplayMessage,
   resolveEventDisplayTitle,
   resolveTimedEventCatalogId,
 } from "@/i18n/eventDisplay";
+import { getEventChoiceAffordance } from "@/i18n/eventAffordance";
+import type { MerchantTradeData } from "@/game/types";
 
 interface EventDialogProps {
   isOpen: boolean;
@@ -233,6 +236,7 @@ export default function EventDialog({
     gameState,
     ruleEventId,
   );
+  const eventI18nVars = getEventI18nVars(catalogId, gameState, ruleEventId);
 
   return (
     <>
@@ -311,6 +315,7 @@ export default function EventDialog({
 
             <div className="grid grid-cols-2 gap-3 mt-4">
               {eventChoices.map((choice) => {
+                const tradeChoice = choice as typeof choice & Partial<MerchantTradeData>;
                 const cost = choice.cost;
                 let isDisabled = (timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current;
 
@@ -329,25 +334,12 @@ export default function EventDialog({
                 // Evaluate cost if it's a function
                 const costText = typeof cost === 'function' ? cost(gameState) : cost;
 
-                // Check if player can afford the cost
-                let canAfford = true;
-                if (costText) {
-                  const resourceKeys = Object.keys(gameState.resources) as Array<keyof typeof gameState.resources>;
-                  for (const resourceKey of resourceKeys) {
-                    if (costText.includes(resourceKey)) {
-                      const match = costText.match(
-                        new RegExp(`([\\d']+)\\s*${resourceKey}`),
-                      );
-                      if (match) {
-                        const cost = parseInt(match[1].replace(/'/g, ""), 10);
-                        if (gameState.resources[resourceKey] < cost) {
-                          canAfford = false;
-                          isDisabled = true;
-                          break;
-                        }
-                      }
-                    }
-                  }
+                const affordance = getEventChoiceAffordance(choice, gameState, {
+                  catalogId,
+                  vars: eventI18nVars,
+                });
+                if (!affordance.canAfford) {
+                  isDisabled = true;
                 }
 
                 // Evaluate label if it's a function
@@ -403,7 +395,13 @@ export default function EventDialog({
                 );
 
                 // Get cost breakdown with individual satisfaction status for each resource
-                const costBreakdown = getEventChoiceCostBreakdown(cost, gameState);
+                const costBreakdown = getEventChoiceCostBreakdown(cost, gameState, {
+                  catalogId,
+                  choiceId: choice.id,
+                  vars: eventI18nVars,
+                  sellResource: tradeChoice.sellResource,
+                  sellAmount: tradeChoice.sellAmount,
+                });
                 return costBreakdown.length > 0 ? (
                   <TooltipWrapper
                     key={choice.id}

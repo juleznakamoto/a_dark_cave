@@ -171,14 +171,17 @@
     "title": "Notizen des Überlebenden",
     "notUnlocked": "Noch nicht freigeschaltet.",
     "chartUnavailable": "Diagramm nicht verfügbar",
-    "claim": "Einfordern"
+    "claim": "Einfordern",
+    "completeLog": "Erfolg abgeschlossen: {{name}}: {{rewards}}"
   },
   "idleMode": {
     "title": "Schlafmodus",
-    "sleeping": "Schläft",
+    "sleeping": "Schlafen",
     "awake": "Du bist wach!",
     "wakingIn": "Erwachen in: {{time}}",
     "wake": "Aufwachen",
-    "getUp": "Aufstehen"
+    "getUp": "Aufstehen",
+    "focusGainedLog": "Du hast durch deine Ruhe {{count}} Fokus erhalten.",
+    "villagersProducedLog": "Dorfbewohner haben produziert: {{resources}}"
   }
 }
