@@ -13,6 +13,11 @@ import { useState, useEffect } from "react";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
 import { useTranslation } from "react-i18next";
 
+const FOOTER_CONTROL_BTN =
+  "group px-1 py-1 text-xs hover hover:text-red-500";
+const FOOTER_CONTROL_IMG =
+  "w-4 h-4 opacity-60 transition-[filter,opacity] group-hover:opacity-100 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]";
+
 export default function GameFooter() {
   const {
     setShopDialogOpen,
@@ -83,7 +88,7 @@ export default function GameFooter() {
               onClick={togglePause}
               data-testid="button-pause-game"
               disabled={idleModeDialog.isOpen}
-              className={`px-1 py-1 text-xs hover ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "text-red-600 hover:text-red-500" : ""} ${isPaused && !idleModeDialog.isOpen ? "continue-pause-flash" : ""}`}
+              className={`${FOOTER_CONTROL_BTN} ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "text-red-600" : ""} ${isPaused && !idleModeDialog.isOpen ? "continue-pause-flash" : ""}`}
               title={
                 isPaused ? t("footer.resumeGame") : t("footer.pauseGame")
               }
@@ -95,14 +100,13 @@ export default function GameFooter() {
               size="xs"
               onClick={toggleMusic}
               data-testid="button-toggle-music"
-              className="px-1 py-1 text-xs hover"
+              className={FOOTER_CONTROL_BTN}
               title={musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")}
             >
               <img
                 src={musicMuted ? "/music_off.png" : "/music_on.png"}
                 alt={musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")}
-                className="w-4 h-4 opacity-60"
-                style={{ filter: "invert(1)" }}
+                className={FOOTER_CONTROL_IMG}
               />
             </Button>
             <Button
@@ -110,17 +114,16 @@ export default function GameFooter() {
               size="xs"
               onClick={toggleSfx}
               data-testid="button-toggle-sfx"
-              className="px-1 py-1 text-xs hover"
+              className={FOOTER_CONTROL_BTN}
               title={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
             >
               <img
                 src={sfxMuted ? "/sound_off.png" : "/sound_on.png"}
                 alt={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
-                className="w-4 h-4 opacity-60"
-                style={{ filter: "invert(1)" }}
+                className={FOOTER_CONTROL_IMG}
               />
             </Button>
-            <LanguageSelector />
+            <LanguageSelector buttonClassName={FOOTER_CONTROL_BTN} />
 
             {BTP === 1 ? (
               <Button

@@ -11,7 +11,11 @@ import { useTranslation } from "react-i18next";
 import type { SupportedLocale } from "@/i18n/locales";
 import cn from "clsx";
 
-export default function LanguageSelector() {
+export default function LanguageSelector({
+  buttonClassName = "group px-1 py-1 text-xs hover hover:text-red-500",
+}: {
+  buttonClassName?: string;
+} = {}) {
   const { locale, setLocale, locales, localeLabels } = useLocale();
   const { t } = useTranslation("ui");
 
@@ -21,34 +25,32 @@ export default function LanguageSelector() {
         <Button
           variant="ghost"
           size="xs"
-          className="px-1 py-1 text-xs hover"
+          className={buttonClassName}
           title={t("languageSelector.ariaLabel")}
           aria-label={t("languageSelector.ariaLabel")}
         >
           <Globe
-            className="w-4 h-4 opacity-60"
-            style={{ filter: "invert(1)" }}
+            className="w-4 h-4 opacity-60 transition-opacity group-hover:opacity-100"
             aria-hidden
           />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="text-xs">
+      <DropdownMenuContent align="end" className="w-max min-w-0 text-xs">
         {locales.map((code) => (
           <DropdownMenuItem
             key={code}
             onClick={() => void setLocale(code as SupportedLocale)}
-            className={cn(
-              "flex items-center justify-between gap-3",
-              locale === code && "font-semibold",
-            )}
+            className={cn(locale === code && "font-semibold")}
           >
-            <span>{localeLabels[code as SupportedLocale]}</span>
-            {locale === code && (
-              <span
-                className="h-1.5 w-1.5 shrink-0 rounded-full bg-red-600"
-                aria-hidden
-              />
-            )}
+            <span className="inline-flex items-center gap-1.5">
+              <span>{localeLabels[code as SupportedLocale]}</span>
+              {locale === code && (
+                <span
+                  className="h-1.5 w-1.5 shrink-0 rounded-full bg-red-600"
+                  aria-hidden
+                />
+              )}
+            </span>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

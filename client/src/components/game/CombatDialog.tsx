@@ -1164,7 +1164,7 @@ export default function CombatDialog({
                   {(HAS_RESTLESS_KNIGHT || HAS_ELDER_WIZARD) && (
                     <div className="pt-3">
                       <div className="text-sm font-medium mb-2">
-                        {t("ui:combat.title")}
+                        {t("ui:combat.skillsTitle")}
                       </div>
                       <div className="grid grid-cols-2 gap-2">
                         {HAS_RESTLESS_KNIGHT && (

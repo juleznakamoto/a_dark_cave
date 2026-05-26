@@ -1,6 +1,7 @@
 {
   "combat": {
-    "title": "Compétences de combat",
+    "title": "Combat",
+    "skillsTitle": "Compétences de combat",
     "fight": "Combattre",
     "fighting": "Combat en cours…",
     "retreat": "Battre en retraite",

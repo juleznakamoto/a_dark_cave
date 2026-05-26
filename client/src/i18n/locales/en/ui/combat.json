@@ -1,6 +1,7 @@
 {
   "combat": {
-    "title": "Combat Skills",
+    "title": "Combat",
+    "skillsTitle": "Combat Skills",
     "fight": "Fight",
     "fighting": "Fighting...",
     "retreat": "Retreat",
