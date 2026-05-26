@@ -1,4 +1,5 @@
 import type { LogEntry } from "@/game/rules/events";
+import { UPGRADE_LABELS, type UpgradeKey } from "@/game/buttonUpgrades";
 import { getActionLogMessage, tWithFallback } from "@/i18n/resolveGameText";
 import enLog from "@/i18n/locales/en/ui/log.json";
 
@@ -15,6 +16,75 @@ function translateLogKey(
 ): string {
   const translated = tWithFallback("ui", uiLogKey(logKey), fallback, vars);
   return translated.trim() ? translated : fallback;
+}
+
+function translateLogEntry(
+  logKey: string,
+  fallback: string,
+  vars?: LogVars,
+): string {
+  return translateLogKey(logKey, fallback, expandLogVars(logKey, vars, fallback));
+}
+
+function resolveUiCatalogLog(
+  catalogKey: string,
+  fallback: string,
+  vars?: LogVars,
+): string {
+  if (catalogKey.startsWith("auth.")) {
+    const translated = tWithFallback("ui", catalogKey, fallback, vars);
+    return translated.trim() ? translated : fallback;
+  }
+  return translateLogEntry(catalogKey, fallback, vars);
+}
+
+function resolveSkillName(skillKey: string): string {
+  let canonicalKey = skillKey;
+  const skillCatalog = enLog.log.buttonUpgrade?.skills;
+  if (skillCatalog && !(canonicalKey in skillCatalog)) {
+    const label = UPGRADE_LABELS[skillKey as UpgradeKey];
+    if (label) {
+      const matchedKey = Object.keys(skillCatalog).find(
+        (key) => UPGRADE_LABELS[key as UpgradeKey] === label,
+      );
+      if (matchedKey) {
+        canonicalKey = matchedKey;
+      }
+    }
+  }
+
+  const fallback =
+    UPGRADE_LABELS[canonicalKey as UpgradeKey] ??
+    UPGRADE_LABELS[skillKey as UpgradeKey] ??
+    skillKey;
+  return translateLogKey(`buttonUpgrade.skills.${canonicalKey}`, fallback);
+}
+
+function expandLogVars(
+  logKey: string,
+  vars: LogVars | undefined,
+  fallbackMessage: string,
+): LogVars | undefined {
+  if (logKey === "buttonUpgrade.deepens") {
+    if (vars?.skillKey) {
+      return { skill: resolveSkillName(String(vars.skillKey)) };
+    }
+    if (vars?.skill) {
+      return vars;
+    }
+    const match = fallbackMessage.match(/^Your mastery of (.+) deepens\.$/);
+    if (match?.[1]) {
+      const skillName = match[1];
+      const skillKey = Object.entries(UPGRADE_LABELS).find(
+        ([, label]) => label === skillName,
+      )?.[0];
+      if (skillKey) {
+        return { skill: resolveSkillName(skillKey) };
+      }
+      return { skill: skillName };
+    }
+  }
+  return vars;
 }
 
 /** True when a log row has resolvable text (logKey and/or non-blank message). */
@@ -195,6 +265,26 @@ const LEGACY_SYSTEM_LOG_MATCHERS: PatternMatcher[] = [
     pattern: /^The obsessed gambler took your silence as forfeit\.$/,
     resolve: () => ({ logKey: "gambler.forfeit", vars: {} }),
   },
+  {
+    pattern:
+      /^You received (\d+) Gold as a welcome bonus for creating an account!$/,
+    resolve: ([, amount]) => ({
+      logKey: "auth.signupWelcomeLog",
+      vars: { amount: Number(amount) },
+    }),
+  },
+  {
+    pattern: /^Your mastery of (.+) deepens\.$/,
+    resolve: ([, skillName]) => {
+      const skillKey = Object.entries(UPGRADE_LABELS).find(
+        ([, label]) => label === skillName,
+      )?.[0];
+      return {
+        logKey: "buttonUpgrade.deepens",
+        vars: skillKey ? { skillKey } : { skill: skillName },
+      };
+    },
+  },
 ];
 
 function resolveLegacySystemLog(message: string): string | null {
@@ -211,7 +301,7 @@ function resolveLegacySystemLog(message: string): string | null {
     const match = message.match(pattern);
     if (match) {
       const { logKey, vars } = resolve(match);
-      return translateLogKey(logKey, message, vars);
+      return resolveUiCatalogLog(logKey, message, vars);
     }
   }
   return null;
@@ -220,7 +310,7 @@ function resolveLegacySystemLog(message: string): string | null {
 /** Display text for a log panel row (re-localizes system lines from keys or English fallbacks). */
 export function resolveLogPanelMessage(entry: LogEntry): string {
   if (entry.logKey) {
-    return translateLogKey(entry.logKey, entry.message, entry.logVars);
+    return resolveUiCatalogLog(entry.logKey, entry.message, entry.logVars);
   }
 
   if (entry.type === "system") {

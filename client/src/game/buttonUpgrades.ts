@@ -348,12 +348,18 @@ export function checkLevelUp(
  * Increment button usage and check for level up
  * Returns updated upgrade state and level up message if applicable
  */
+export type ButtonUpgradeLevelUpLog = {
+  logKey: "buttonUpgrade.deepens";
+  logVars: { skillKey: UpgradeKey };
+  message: string;
+};
+
 export function incrementButtonUsage(
   key: UpgradeKey,
   state: GameState
 ): {
   updatedUpgrade: { clicks: number; level: number };
-  levelUpMessage?: string;
+  levelUpLog?: ButtonUpgradeLevelUpLog;
 } {
   const current = state.buttonUpgrades[key] || { clicks: 0, level: 0 };
   const newClicks = current.clicks + 1;
@@ -361,11 +367,14 @@ export function incrementButtonUsage(
 
   if (newLevel !== null) {
     const upgradeName = UPGRADE_LABELS[key];
-    const message = `Your mastery of ${upgradeName} deepens.`;
 
     return {
       updatedUpgrade: { clicks: newClicks, level: newLevel },
-      levelUpMessage: message,
+      levelUpLog: {
+        logKey: "buttonUpgrade.deepens",
+        logVars: { skillKey: key },
+        message: `Your mastery of ${upgradeName} deepens.`,
+      },
     };
   }
 

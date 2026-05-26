@@ -1,10 +1,12 @@
-
 import { createRoot } from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
 import App from "./App";
 import "./index.css";
+import { installSuppressReplitFragmentWarnings } from "./lib/suppressReplitFragmentWarnings";
+
+installSuppressReplitFragmentWarnings();
 
 // Workaround for Google Translate (and similar) mutating text nodes, which
 // leaves React reconciliation pointing at nodes whose real parent has changed.

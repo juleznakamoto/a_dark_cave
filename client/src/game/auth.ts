@@ -4,7 +4,19 @@ import { GameState, SaveData, SIGN_UP_WELCOME_GOLD } from '@shared/schema';
 import { logger } from '@/lib/logger';
 import type { AuthUser } from '@/game/types';
 import { parseRefParam } from '@shared/referralCode';
-import { tWithFallback } from '@/i18n/resolveGameText';
+import type { LogEntry } from '@/game/rules/events';
+
+function buildSignupWelcomeLogEntry(): LogEntry {
+  const fallback = `You received ${SIGN_UP_WELCOME_GOLD} Gold as a welcome bonus for creating an account!`;
+  return {
+    id: `signup-welcome-gold-${Date.now()}`,
+    timestamp: Date.now(),
+    message: fallback,
+    logKey: 'auth.signupWelcomeLog',
+    logVars: { amount: SIGN_UP_WELCOME_GOLD },
+    type: 'system',
+  };
+}
 
 // Re-export AuthUser for convenience
 export type { AuthUser } from '@/game/types';
@@ -110,12 +122,7 @@ export async function grantSignupWelcomeBonusEmailSignup(): Promise<boolean> {
   if (s.signupWelcomeGoldClaimed) return false;
 
   s.updateResource('gold', SIGN_UP_WELCOME_GOLD);
-  s.addLogEntry({
-    id: `signup-welcome-gold-${Date.now()}`,
-    timestamp: Date.now(),
-    message: `You received ${SIGN_UP_WELCOME_GOLD} Gold as a welcome bonus for creating an account!`,
-    type: 'system',
-  });
+  s.addLogEntry(buildSignupWelcomeLogEntry());
   useGameStore.setState({ signupWelcomeGoldClaimed: true });
 
   try {
@@ -169,17 +176,7 @@ export async function applySignupWelcomeBonusAfterOAuthLoad(): Promise<void> {
   clearPendingSignupWelcome();
 
   s.updateResource('gold', SIGN_UP_WELCOME_GOLD);
-  s.addLogEntry({
-    id: `signup-welcome-gold-${Date.now()}`,
-    timestamp: Date.now(),
-    message: tWithFallback(
-      'ui',
-      'auth.signupWelcomeLog',
-      `You received ${SIGN_UP_WELCOME_GOLD} Gold as a welcome bonus for creating an account!`,
-      { amount: SIGN_UP_WELCOME_GOLD },
-    ),
-    type: 'system',
-  });
+  s.addLogEntry(buildSignupWelcomeLogEntry());
   useGameStore.setState({ signupWelcomeGoldClaimed: true });
 
   try {

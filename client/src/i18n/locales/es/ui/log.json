@@ -74,6 +74,23 @@
       "win": "Ganaste {{amount}} oro del jugador obsesionado.",
       "lose": "Perdiste {{amount}} oro ante el jugador obsesionado.",
       "forfeit": "El jugador obsesionado interpret? tu silencio como rendici?n."
+    },
+    "buttonUpgrade": {
+      "deepens": "Tu dominio de {{skill}} se profundiza.",
+      "skills": {
+        "caveExplore": "exploraci?n de cuevas",
+        "mineStone": "extracci?n de piedra",
+        "mineIron": "extracci?n de hierro",
+        "mineCoal": "extracci?n de carb?n",
+        "mineSulfur": "extracci?n de azufre",
+        "mineObsidian": "extracci?n de obsidiana",
+        "mineAdamant": "extracci?n de adamantio",
+        "hunt": "caza",
+        "chopWood": "tala de madera",
+        "craftTorches": "fabricaci?n de antorchas",
+        "craftBoneTotems": "fabricaci?n de t?temes de hueso",
+        "craftLeatherTotems": "fabricaci?n de t?temes de cuero"
+      }
     }
   }
 }

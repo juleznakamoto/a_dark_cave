@@ -2385,6 +2385,9 @@
       }
     },
     "log": {
+      "betray": "Du übergibst die Nahrung, doch Tage vergehen ohne Spur des Holzfällers. Offenbar wurdest du betrogen.",
+      "betrayLast": "Du übergibst die Nahrung. Der Holzfäller grinst und zieht in den Wald. Du wartest, aber er kehrt nie zurück. Offenbar wurdest du betrogen.",
+      "betrayLevel5": "Du übergibst die Nahrung. Der Holzfäller verspricht, noch am selben Tag zurückzukehren. Doch er tut es nicht. Offenbar wurdest du betrogen.",
       "denyLastUneasy": "Etwas an seinem Auftreten beunruhigt dich. Du lehnst den Handel ab. Das Lächeln des Holzfällers verblasst, und er geht ohne ein Wort.",
       "denyLevel1": "Du lehnst sein Angebot ab. Der Holzfäller zuckt mit den Schultern und geht in den Wald.",
       "denyLevel2": "Du lehnst sein Angebot ab. Der Holzfäller nickt und zieht ohne Beschwerde weiter.",
@@ -2398,7 +2401,14 @@
       "timeoutLevel3": "Deine Unentschlossenheit frustriert den Holzfäller. Er zuckt mit den Schultern und geht zurück in den Wald.",
       "timeoutLevel4": "Deine Unentschlossenheit frustriert den Holzfäller. Er wirkt enttäuscht, akzeptiert aber und geht.",
       "timeoutLevel5": "Deine Unentschlossenheit frustriert den Holzfäller. Er runzelt die Stirn und geht.",
-      "timeoutLevel6": "Deine Unentschlossenheit frustriert den Holzfäller. Er runzelt die Stirn und geht."
+      "timeoutLevel6": "Deine Unentschlossenheit frustriert den Holzfäller. Er runzelt die Stirn und geht.",
+      "outcome0": "Du hast nicht genug Nahrung für diesen Handel.",
+      "successLevel1": "Der Holzfäller nimmt die Nahrung und geht in den Wald. Am Abend kehrt er mit dem versprochenen Holz zurück und stapelt es ordentlich am Dorfrand.",
+      "successLevel2": "Der Holzfäller nimmt die Nahrung und verschwindet im Wald. Bei Einbruch der Dunkelheit kehrt er mit einem großen Holzstoß zurück.",
+      "successLevel3": "Der Holzfäller nimmt die Nahrung und wagt sich tief in den Wald. Er kehrt mit einer beeindruckenden Holzmenge zurück.",
+      "successLevel4": "Der Holzfäller nimmt die Nahrung und verbringt den Nachmittag im Wald. Er kehrt mit einem enormen Holzstoß zurück.",
+      "successLevel5": "Der Holzfäller nimmt die Nahrung und liefert noch am selben Tag einen gewaltigen Holzvorrat ans Dorf.",
+      "successLevel6": "Der Holzfäller nimmt die Nahrung und liefert noch am selben Tag einen gewaltigen Holzvorrat ans Dorf."
     },
     "message": {
       "level1": "Ein muskulöser Mann mit einer großen Axt nähert sich dem Dorf. Er spannt die Arme an. „Keiner fällt Bäume wie ich“, prahlt er. „Gib mir {{foodCost}} Nahrung, und ich bringe {{woodReward}} Holz.“",

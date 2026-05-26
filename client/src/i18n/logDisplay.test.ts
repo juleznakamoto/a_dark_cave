@@ -149,6 +149,53 @@ describe("resolveLogPanelMessage", () => {
     );
   });
 
+  it("translates button upgrade logs via logKey in German", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry("Your mastery of Cave Exploring deepens.", {
+        logKey: "buttonUpgrade.deepens",
+        logVars: { skillKey: "caveExplore" },
+      }),
+    );
+    expect(text).toBe("Deine Meisterschaft in Höhlenforschung vertieft sich.");
+  });
+
+  it("matches legacy English button upgrade logs in German saves", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry("Your mastery of Cave Exploring deepens."),
+    );
+    expect(text).toBe("Deine Meisterschaft in Höhlenforschung vertieft sich.");
+  });
+
+  it("translates signup welcome gold log via logKey in German", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "You received 200 Gold as a welcome bonus for creating an account!",
+        {
+          logKey: "auth.signupWelcomeLog",
+          logVars: { amount: 200 },
+        },
+      ),
+    );
+    expect(text).toBe(
+      "Du hast 200 Gold als Willkommensbonus für die Kontoerstellung erhalten!",
+    );
+  });
+
+  it("matches legacy English signup welcome gold logs in German saves", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "You received 200 Gold as a welcome bonus for creating an account!",
+      ),
+    );
+    expect(text).toBe(
+      "Du hast 200 Gold als Willkommensbonus für die Kontoerstellung erhalten!",
+    );
+  });
+
   it("returns stored message when no catalog match exists", () => {
     const message = "Some unknown custom log line.";
     expect(resolveLogPanelMessage(systemEntry(message))).toBe(message);

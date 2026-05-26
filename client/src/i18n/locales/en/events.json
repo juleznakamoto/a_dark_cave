@@ -2385,6 +2385,9 @@
       }
     },
     "log": {
+      "betray": "You hand over the food, but days pass with no sign of the woodcutter. It seems you got betrayed.",
+      "betrayLast": "You hand over the food. The woodcutter grins as he leaves towards the forest. You wait, but he never returns. It seems you got betrayed.",
+      "betrayLevel5": "You hand over the food. The woodcutter promises to return the same day. But he never does. It seems you got betrayed.",
       "denyLastUneasy": "Something about his demeanor makes you uneasy. You refuse the deal. The woodcutter's smile fades, and he leaves without a word.",
       "denyLevel1": "You decline his offer. The woodcutter shrugs and walks away into the forest.",
       "denyLevel2": "You decline his offer. The woodcutter nods and departs without complaint.",
@@ -2398,7 +2401,14 @@
       "timeoutLevel3": "Your indecision frustrates the woodcutter. He shrugs and walks back into the woods.",
       "timeoutLevel4": "Your indecision frustrates the woodcutter. He looks disappointed but accepts and leaves.",
       "timeoutLevel5": "Your indecision frustrates the woodcutter. He frowns and walks away.",
-      "timeoutLevel6": "Your indecision frustrates the woodcutter. He frowns and walks away."
+      "timeoutLevel6": "Your indecision frustrates the woodcutter. He frowns and walks away.",
+      "outcome0": "You don't have enough Food for this deal.",
+      "successLevel1": "The woodcutter takes the food and heads into the forest. By evening, he returns with the promised wood stacked neatly at the village's edge.",
+      "successLevel2": "The woodcutter takes the food and disappears into the forest. By nightfall, he returns with a large pile of wood.",
+      "successLevel3": "The woodcutter takes the food and ventures deep into the forest. He returns with an impressive haul of wood.",
+      "successLevel4": "The woodcutter takes the food and spends the afternoon in the forest. He returns with an enormous pile of wood.",
+      "successLevel5": "The woodcutter takes the food and within the same day he delivers a massive stockpile of wood to the village.",
+      "successLevel6": "The woodcutter takes the food and within the same day he delivers a massive stockpile of wood to the village."
     },
     "message": {
       "level1": "A muscular man with a large axe approaches the village. He flexes his arms. \"I can cut trees like no other,\" he boasts. \"Give me {{foodCost}} Food, and I'll bring {{woodReward}} Wood.\"",

@@ -2385,6 +2385,9 @@
       }
     },
     "log": {
+      "betray": "Vous remettez la nourriture, mais des jours passent sans signe du bûcheron. Il semble que vous ayez été trahi.",
+      "betrayLast": "Vous remettez la nourriture. Le bûcheron sourit en s'enfonçant dans la forêt. Vous attendez, mais il ne revient jamais. Il semble que vous ayez été trahi.",
+      "betrayLevel5": "Vous remettez la nourriture. Le bûcheron promet de revenir le jour même. Mais il ne le fait pas. Il semble que vous ayez été trahi.",
       "denyLastUneasy": "Quelque chose dans son attitude vous met mal à l'aise. Vous refusez l'affaire. Le sourire du bûcheron s'efface, et il part sans un mot.",
       "denyLevel1": "Vous refusez son offre. Le bûcheron hausse les épaules et s'enfonce dans la forêt.",
       "denyLevel2": "Vous refusez son offre. Le bûcheron hoche la tête et repart sans se plaindre.",
@@ -2398,7 +2401,14 @@
       "timeoutLevel3": "Votre indécision frustre le bûcheron. Il hausse les épaules et retourne dans les bois.",
       "timeoutLevel4": "Votre indécision frustre le bûcheron. Il semble déçu, mais accepte et part.",
       "timeoutLevel5": "Votre indécision frustre le bûcheron. Il fronce les sourcils et s'en va.",
-      "timeoutLevel6": "Votre indécision frustre le bûcheron. Il fronce les sourcils et s'en va."
+      "timeoutLevel6": "Votre indécision frustre le bûcheron. Il fronce les sourcils et s'en va.",
+      "outcome0": "Vous n'avez pas assez de nourriture pour cette affaire.",
+      "successLevel1": "Le bûcheron prend la nourriture et s'enfonce dans la forêt. Le soir venu, il revient avec le bois promis empilé proprement au bord du village.",
+      "successLevel2": "Le bûcheron prend la nourriture et disparaît dans la forêt. À la tombée de la nuit, il revient avec une grande pile de bois.",
+      "successLevel3": "Le bûcheron prend la nourriture et s'aventure au cœur de la forêt. Il revient avec une récolte impressionnante de bois.",
+      "successLevel4": "Le bûcheron prend la nourriture et passe l'après-midi dans la forêt. Il revient avec une énorme pile de bois.",
+      "successLevel5": "Le bûcheron prend la nourriture et livre le jour même un énorme stock de bois au village.",
+      "successLevel6": "Le bûcheron prend la nourriture et livre le jour même un énorme stock de bois au village."
     },
     "title": {
       "level1": "Le bûcheron",

@@ -74,6 +74,23 @@
       "win": "Du hast {{amount}} Gold vom besessenen Spieler gewonnen.",
       "lose": "Du hast {{amount}} Gold an den besessenen Spieler verloren.",
       "forfeit": "Der besessene Spieler wertete dein Schweigen als Aufgabe."
+    },
+    "buttonUpgrade": {
+      "deepens": "Deine Meisterschaft in {{skill}} vertieft sich.",
+      "skills": {
+        "caveExplore": "Höhlenforschung",
+        "mineStone": "Steinabbau",
+        "mineIron": "Eisenabbau",
+        "mineCoal": "Kohleabbau",
+        "mineSulfur": "Schwefelabbau",
+        "mineObsidian": "Obsidianabbau",
+        "mineAdamant": "Adamantabbau",
+        "hunt": "Jagen",
+        "chopWood": "Holzschlag",
+        "craftTorches": "Fackelherstellung",
+        "craftBoneTotems": "Knochentotem-Herstellung",
+        "craftLeatherTotems": "Ledertotem-Herstellung"
+      }
     }
   }
 }

@@ -74,6 +74,23 @@
       "win": "你从痴迷赌徒那里赢得了 {{amount}} 黄金。",
       "lose": "你输给了痴迷赌徒 {{amount}} 黄金。",
       "forfeit": "痴迷赌徒将你的沉默视为认输。"
+    },
+    "buttonUpgrade": {
+      "deepens": "你对{{skill}}的掌握更加精深。",
+      "skills": {
+        "caveExplore": "洞穴探索",
+        "mineStone": "采石",
+        "mineIron": "采矿（铁）",
+        "mineCoal": "采煤",
+        "mineSulfur": "采硫",
+        "mineObsidian": "采黑曜石",
+        "mineAdamant": "采精金",
+        "hunt": "狩猎",
+        "chopWood": "伐木",
+        "craftTorches": "火把制作",
+        "craftBoneTotems": "骨图腾制作",
+        "craftLeatherTotems": "皮图腾制作"
+      }
     }
   }
 }

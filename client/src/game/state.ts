@@ -1422,10 +1422,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
         upgradeResult.updatedUpgrade;
 
       // Add level up log entry if applicable
-      if (upgradeResult.levelUpMessage) {
+      if (upgradeResult.levelUpLog) {
         const levelUpLog: LogEntry = {
           id: `levelup_${upgradeKey}_${Date.now()}`,
-          message: upgradeResult.levelUpMessage,
+          message: upgradeResult.levelUpLog.message,
+          logKey: upgradeResult.levelUpLog.logKey,
+          logVars: upgradeResult.levelUpLog.logVars,
           timestamp: Date.now(),
           type: "system",
         };

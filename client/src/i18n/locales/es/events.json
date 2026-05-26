@@ -2385,6 +2385,9 @@
       }
     },
     "log": {
+      "betray": "Entregas la comida, pero pasan d?as sin se?ales del le?ador. Parece que te han traicionado.",
+      "betrayLast": "Entregas la comida. El le?ador sonr?e mientras se adentra en el bosque. Esperas, pero nunca regresa. Parece que te han traicionado.",
+      "betrayLevel5": "Entregas la comida. El le?ador promete volver el mismo d?a. Pero no lo hace. Parece que te han traicionado.",
       "denyLastUneasy": "Algo en su actitud te inquieta. Rechazas el trato. La sonrisa del le?ador se desvanece y se marcha sin decir palabra.",
       "denyLevel1": "Rechazas su oferta. El le?ador se encoge de hombros y se interna en el bosque.",
       "denyLevel2": "Rechazas su oferta. El le?ador asiente y se marcha sin quejarse.",
@@ -2398,7 +2401,14 @@
       "timeoutLevel3": "Tu indecisi?n frustra al le?ador. Se encoge de hombros y vuelve al bosque.",
       "timeoutLevel4": "Tu indecisi?n frustra al le?ador. Parece decepcionado, pero acepta y se marcha.",
       "timeoutLevel5": "Tu indecisi?n frustra al le?ador. Frunce el ce?o y se marcha.",
-      "timeoutLevel6": "Tu indecisi?n frustra al le?ador. Frunce el ce?o y se marcha."
+      "timeoutLevel6": "Tu indecisi?n frustra al le?ador. Frunce el ce?o y se marcha.",
+      "outcome0": "No tienes suficiente comida para este trato.",
+      "successLevel1": "El le?ador toma la comida y se adentra en el bosque. Al anochecer, regresa con la madera prometida apilada ordenadamente al borde de la aldea.",
+      "successLevel2": "El le?ador toma la comida y desaparece en el bosque. Al caer la noche, regresa con un gran mont?n de madera.",
+      "successLevel3": "El le?ador toma la comida y se adentra profundamente en el bosque. Regresa con una impresionante carga de madera.",
+      "successLevel4": "El le?ador toma la comida y pasa la tarde en el bosque. Regresa con un enorme mont?n de madera.",
+      "successLevel5": "El le?ador toma la comida y el mismo d?a entrega un enorme almac?n de madera a la aldea.",
+      "successLevel6": "El le?ador toma la comida y el mismo d?a entrega un enorme almac?n de madera a la aldea."
     },
     "title": {
       "level1": "El le?ador",

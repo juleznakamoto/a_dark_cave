@@ -194,7 +194,7 @@ export default function GameFooter() {
               </TooltipWrapper>
             )}
           </div>
-          <div className="flex-1 flex justify-end gap-2 items-center">
+          <div className="flex-1 flex justify-end gap-1 items-center">
             {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
               const { href, title } =
                 GAME_FOOTER_RIGHT_ICON_LINKS[platform];

@@ -74,6 +74,23 @@
       "win": "You won {{amount}} gold from the obsessed gambler.",
       "lose": "You lost {{amount}} gold to the obsessed gambler.",
       "forfeit": "The obsessed gambler took your silence as forfeit."
+    },
+    "buttonUpgrade": {
+      "deepens": "Your mastery of {{skill}} deepens.",
+      "skills": {
+        "caveExplore": "Cave Exploring",
+        "mineStone": "Stone Mining",
+        "mineIron": "Iron Mining",
+        "mineCoal": "Coal Mining",
+        "mineSulfur": "Sulfur Mining",
+        "mineObsidian": "Obsidian Mining",
+        "mineAdamant": "Adamant Mining",
+        "hunt": "Hunting",
+        "chopWood": "Woodcutting",
+        "craftTorches": "Torch Crafting",
+        "craftBoneTotems": "Bone Totem Crafting",
+        "craftLeatherTotems": "Leather Totem Crafting"
+      }
     }
   }
 }

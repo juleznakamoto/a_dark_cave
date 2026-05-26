@@ -74,6 +74,23 @@
       "win": "Vous avez gagné {{amount}} or au joueur obsédé.",
       "lose": "Vous avez perdu {{amount}} or face au joueur obsédé.",
       "forfeit": "Le joueur obsédé a interprété votre silence comme une reddition."
+    },
+    "buttonUpgrade": {
+      "deepens": "Votre maîtrise de {{skill}} s'approfondit.",
+      "skills": {
+        "caveExplore": "l'exploration des cavernes",
+        "mineStone": "l'extraction de pierre",
+        "mineIron": "l'extraction de fer",
+        "mineCoal": "l'extraction de charbon",
+        "mineSulfur": "l'extraction de soufre",
+        "mineObsidian": "l'extraction d'obsidienne",
+        "mineAdamant": "l'extraction d'adamant",
+        "hunt": "la chasse",
+        "chopWood": "l'abattage de bois",
+        "craftTorches": "la fabrication de torches",
+        "craftBoneTotems": "la fabrication de totems d'os",
+        "craftLeatherTotems": "la fabrication de totems de cuir"
+      }
     }
   }
 }
