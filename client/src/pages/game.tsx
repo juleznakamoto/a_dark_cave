@@ -11,6 +11,7 @@ import { logger } from "@/lib/logger";
 import { getCurrentUser, flushPendingMarketingPreferences, applySignupWelcomeBonusAfterOAuthLoad } from "@/game/auth";
 import { initSessionTracker } from "@/lib/sessionTracker";
 import { gamblerDiceResumeOnLoad } from "@/game/gamblerSession";
+import { syncSocialPromoExclusiveRewardPending } from "@/game/socialPromoExclusiveReward";
 import { processStripePaymentReturn } from "@/lib/stripePaymentReturn";
 import { isPlaylightReferralUrl } from "@/lib/playlight";
 import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
@@ -198,9 +199,7 @@ export default function Game() {
             StateManager.scheduleEffectsUpdate(useGameStore.getState);
           }
 
-          void import("@/game/socialPromoExclusiveReward").then((m) =>
-            m.syncSocialPromoExclusiveRewardPending(),
-          );
+          syncSocialPromoExclusiveRewardPending();
 
           // Save Google Ads source if it was set
           if (stateUpdates.googleAdsSource) {

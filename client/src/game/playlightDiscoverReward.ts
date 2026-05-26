@@ -10,6 +10,7 @@ import {
   PLAYLIGHT_DISCOVER_REWARD_GOLD,
   PLAYLIGHT_DISCOVER_REWARD_KEY,
 } from "@/game/playlightRewards";
+import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
 
 export {
   PLAYLIGHT_DISCOVER_REWARD_COMPLETE_DELAY_MS,
@@ -111,9 +112,6 @@ export async function claimPlaylightDiscoverReward(): Promise<boolean> {
     } catch (error) {
       logger.error("Failed to save Playlight discover reward claim:", error);
     }
-    const { syncSocialPromoExclusiveRewardPending } = await import(
-      "./socialPromoExclusiveReward"
-    );
     syncSocialPromoExclusiveRewardPending();
 
     return true;

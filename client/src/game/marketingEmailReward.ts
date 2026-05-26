@@ -5,6 +5,7 @@ import { buildGameState } from "@/game/stateHelpers";
 import { useGameStore } from "@/game/state";
 import type { LogEntry } from "@/game/rules/events";
 import { tWithFallback } from "@/i18n/resolveGameText";
+import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
 
 /** Persisted key under `social_media_rewards` (see profile menu). */
 export const MARKETING_EMAIL_REWARD_KEY = "marketing_email";
@@ -48,9 +49,7 @@ export async function postMarketingPreference(params: {
 /** One-time gold + log + save when turning marketing emails on (same rules as Profile). */
 export function applyMarketingSubscribeGoldReward(): void {
   const scheduleExclusiveRewardSync = () => {
-    void import("./socialPromoExclusiveReward").then((m) =>
-      m.syncSocialPromoExclusiveRewardPending(),
-    );
+    syncSocialPromoExclusiveRewardPending();
   };
 
   if (

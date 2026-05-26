@@ -16,6 +16,7 @@ import {
   decodeLocalSave,
 } from "./saveCodec";
 import { tWithFallback } from "@/i18n/resolveGameText";
+import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
 
 const isDev = import.meta.env.DEV;
 
@@ -271,9 +272,7 @@ async function processUnclaimedReferralsImpl(
       referrals: updatedReferrals,
     });
 
-    void import("./socialPromoExclusiveReward").then((m) =>
-      m.syncSocialPromoExclusiveRewardPending(),
-    );
+    syncSocialPromoExclusiveRewardPending();
 
     return updatedGameState;
   } catch (error) {

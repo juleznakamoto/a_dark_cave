@@ -8,6 +8,7 @@ import {
   getSocialPlatformTitle,
   type SocialPlatformConfig,
 } from "@/game/socialPlatforms";
+import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
 
 /** Same behavior as Profile → social rows: open link, grant gold once, save. Returns whether a new claim was made. */
 export function claimSocialFollowReward(
@@ -73,9 +74,6 @@ export function claimSocialFollowReward(
     } catch (error) {
       logger.error("Failed to save social media reward claim:", error);
     }
-    const { syncSocialPromoExclusiveRewardPending } = await import(
-      "./socialPromoExclusiveReward"
-    );
     syncSocialPromoExclusiveRewardPending();
   })();
 
