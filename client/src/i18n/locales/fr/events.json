@@ -1116,8 +1116,10 @@
   },
   "mysteriousWoman": {
     "log": {
-      "outcome0": "Vous accordez à {{obj}} l'abri pour la nuit. Au matin, {{subj}} a disparu sans laisser de trace, laissant votre lit encore chaud et {{silverStolen}} pièces d'argent manquantes.",
-      "outcome1": "Vous refusez poliment la demande de {{poss}}. {{cap}} semble déçu, mais hoche la tête avec compréhension, disparaissant dans la brume du soir sans un mot de plus."
+      "outcome0_woman": "Vous lui accordez l'abri pour la nuit. Au matin, elle a disparu sans laisser de trace, laissant votre lit encore chaud et {{silverStolen}} pièces d'argent manquantes.",
+      "outcome0_man": "Vous lui accordez l'abri pour la nuit. Au matin, il a disparu sans laisser de trace, laissant votre lit encore chaud et {{silverStolen}} pièces d'argent manquantes.",
+      "outcome1_woman": "Vous refusez poliment sa demande. Elle semble déçue, mais hoche la tête avec compréhension et disparaît dans la brume du soir sans un mot de plus.",
+      "outcome1_man": "Vous refusez poliment sa demande. Il semble déçu, mais hoche la tête avec compréhension et disparaît dans la brume du soir sans un mot de plus."
     },
     "title": {
       "woman": "La femme mystérieuse",

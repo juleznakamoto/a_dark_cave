@@ -6,10 +6,16 @@
     "label": "Banditenlager"
   },
   "blackreachCanyon": {
-    "label": "Schwarzklamm"
+    "label": "Schwarzklamm",
+    "log": {
+      "success": "Du wagst dich tief in die Schwarzklamm vor. Dort, auf einer Steinsäule sitzend, thront eine prächtige einäugige Krähe. Mit dem Geschirr näherst du dich vorsichtig und schließt eine Bindung mit dem Wesen. Die Einäugige Krähe ist deiner Gemeinschaft beigetreten."
+    }
   },
   "blastPortal": {
-    "label": "Tor sprengen"
+    "label": "Tor sprengen",
+    "log": {
+      "complete": "Die Glutbomben detonieren in einem hellen Feuerblitz. Das alte Tor bricht und bröckelt. Was auch immer darin eingeschlossen war, ist frei. Die Stadt sollte sich auf das vorbereiten, was hervorkommt."
+    }
   },
   "boneTotems": {
     "label": "Knochentotems"
@@ -454,13 +460,20 @@
     }
   },
   "exploreUndergroundLake": {
-    "label": "Unterirdischer See"
+    "label": "Unterirdischer See",
+    "log": {
+      "complete": "Im grimmigen Schein der Schädellaterne steigst du zum unterirdischen See hinab und baust ein kleines Boot. Auf einer winzigen Insel mitten im dunklen See liegen vergessene Schätze im Schatten, seit Ewigkeiten unberührt."
+    }
   },
   "feedFire": {
     "label": "Feuer schüren"
   },
   "forestCave": {
-    "label": "Waldhöhle"
+    "label": "Waldhöhle",
+    "log": {
+      "success": "Als die Dorfbewohner in die Höhle hinabsteigen, brechen wilde Hunde in unerbittlichen Rudeln aus der Dunkelheit hervor. Schreie hallen wider, während Krallen reißen und Zähne schnappen. Als die letzte Kreatur fällt, überleben alle Dorfbewohner – aber erschüttert von dem, was sie erlebt haben.",
+      "failure": "Als die Expedition die Höhle betritt, wird sie von einem Rudel brutaler Hunde überwältigt. {{count}} Dorfbewohner werden von wütenden Kiefern zerrissen, bevor die Überlebenden sich zurückziehen können."
+    }
   },
   "healElderWizard": {
     "label": "Alten Zauberer heilen"
@@ -469,7 +482,10 @@
     "label": "Rastlosen Ritter heilen"
   },
   "hiddenLibrary": {
-    "label": "Verborgene Bibliothek"
+    "label": "Verborgene Bibliothek",
+    "log": {
+      "complete": "Die Karte des Klosters führt dich tief in die Höhle zur verborgenen Bibliothek, wo du einen Kodex findest."
+    }
   },
   "hillGrave": {
     "label": "Hügelgrab"
@@ -497,10 +513,16 @@
     }
   },
   "lowChamber": {
-    "label": "Niedrige Kammer"
+    "label": "Niedrige Kammer",
+    "log": {
+      "complete": "Mit dem verstärkten Seil steigst du in die niedrige Kammer hinab. Unter den Schätzen findest du einen Meistersteinmetz-Meißel, ein Werkzeug legendärer Handwerkskunst."
+    }
   },
   "lureLakeCreature": {
-    "label": "Falle platzieren"
+    "label": "Falle platzieren",
+    "log": {
+      "complete": "Du stellst am Rand des unterirdischen Sees eine gewaltige Falle auf, mit Bergen von Fleisch als Köder. Stunden vergehen, bis die schwarzen Wasser explodieren und ein titanisches tentakelbehaartes Ungeheuer aus den Tiefen steigt und in die Falle kriecht."
+    }
   },
   "mineAdamant": {
     "label": "Adamant",
@@ -539,7 +561,10 @@
     }
   },
   "occultistChamber": {
-    "label": "Okkultistenkammer"
+    "label": "Okkultistenkammer",
+    "log": {
+      "complete": "Der Karte des Okkultisten folgend, findest du die Kammer mit seinen Schätzen. Darunter befindet sich sein Grimoire, gefüllt mit verbotenem Wissen und arkanen Geheimnissen."
+    }
   },
   "provokeAttackWave": {
     "label": "Angriffswelle provozieren"

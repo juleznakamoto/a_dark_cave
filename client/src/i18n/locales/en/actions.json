@@ -6,10 +6,16 @@
     "label": "Bandit Lair"
   },
   "blackreachCanyon": {
-    "label": "Blackreach Canyon"
+    "label": "Blackreach Canyon",
+    "log": {
+      "success": "You venture deep into Blackreach Canyon. There, perched on a stone pillar, sits a magnificent one-eyed crow. Using the harness, your carefully approach and bond with the creature. The One-eyed Crow has joined your fellowship."
+    }
   },
   "blastPortal": {
-    "label": "Blast Gate"
+    "label": "Blast Gate",
+    "log": {
+      "complete": "The ember bombs detonate in a bright flash of fire and light. The ancient gate cracks and crumbles. Whatever could have been sealed within has been released. The city should get ready for whatever comes out of there."
+    }
   },
   "boneTotems": {
     "label": "Bone Totems"
@@ -454,13 +460,20 @@
     }
   },
   "exploreUndergroundLake": {
-    "label": "Underground Lake"
+    "label": "Underground Lake",
+    "log": {
+      "complete": "Using the skull lantern's grim glow, you descend to the underground lake and build a small boat. On a tiny island in the middle of the dark lake, forgotten treasures lie in shadow, untouched for ages."
+    }
   },
   "feedFire": {
     "label": "Feed Fire"
   },
   "forestCave": {
-    "label": "Forest Cave"
+    "label": "Forest Cave",
+    "log": {
+      "success": "As the villagers descend the cave, savage hounds erupt from darkness in relentless packs. Screams echo as claws tear and teeth snap. When the last creature falls, all villagers survive, but hollowed by what they've endured.",
+      "failure": "As the expedition enters the cave it is overwhelmed by a pack of brutal hounds. {{count}} villagers are torn apart by savage jaws before the survivors manage to retreat."
+    }
   },
   "healElderWizard": {
     "label": "Heal Elder Wizard"
@@ -469,7 +482,10 @@
     "label": "Heal Restless Knight"
   },
   "hiddenLibrary": {
-    "label": "Hidden Library"
+    "label": "Hidden Library",
+    "log": {
+      "complete": "The monastery's map leads you deep into the cave to the hidden library where you find a codex."
+    }
   },
   "hillGrave": {
     "label": "Hill Grave"
@@ -497,10 +513,16 @@
     }
   },
   "lowChamber": {
-    "label": "Low Chamber"
+    "label": "Low Chamber",
+    "log": {
+      "complete": "Using the reinforced rope, you descend into the low chamber. Amongst the treasures you find a mastermason's chisel, a tool of legendary craftsmanship."
+    }
   },
   "lureLakeCreature": {
-    "label": "Place Trap"
+    "label": "Place Trap",
+    "log": {
+      "complete": "You set a massive trap at the edge of the underground lake, baited with piles of meat. Hours pass before the black waters erupt, and a titanic, tentacled horror rises from the depths and crawls into the trap."
+    }
   },
   "mineAdamant": {
     "label": "Adamant",
@@ -539,7 +561,10 @@
     }
   },
   "occultistChamber": {
-    "label": "Occultist Chamber"
+    "label": "Occultist Chamber",
+    "log": {
+      "complete": "Following the occultist's map, you find the chamber containing his treasures. Amongst them is his grimoire, filled with forbidden knowledge and arcane secrets."
+    }
   },
   "provokeAttackWave": {
     "label": "Provoke attack wave"

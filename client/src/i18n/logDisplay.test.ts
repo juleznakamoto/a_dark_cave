@@ -196,6 +196,68 @@ describe("resolveLogPanelMessage", () => {
     );
   });
 
+  it("matches legacy English blast portal log in German saves", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "The ember bombs detonate in a bright flash of fire and light. The ancient gate cracks and crumbles. Whatever could have been sealed within has been released. The city should get ready for whatever comes out of there.",
+      ),
+    );
+    expect(text).toBe(
+      "Die Glutbomben detonieren in einem hellen Feuerblitz. Das alte Tor bricht und bröckelt. Was auch immer darin eingeschlossen war, ist frei. Die Stadt sollte sich auf das vorbereiten, was hervorkommt.",
+    );
+  });
+
+  it("matches legacy English forest cave success log in German saves", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "As the villagers descend the cave, savage hounds erupt from darkness in relentless packs. Screams echo as claws tear and teeth snap. When the last creature falls, all villagers survive, but hollowed by what they\u2019ve endured.",
+      ),
+    );
+    expect(text).toBe(
+      "Als die Dorfbewohner in die Höhle hinabsteigen, brechen wilde Hunde in unerbittlichen Rudeln aus der Dunkelheit hervor. Schreie hallen wider, während Krallen reißen und Zähne schnappen. Als die letzte Kreatur fällt, überleben alle Dorfbewohner – aber erschüttert von dem, was sie erlebt haben.",
+    );
+  });
+
+  it("matches legacy English forest cave failure log in German saves", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "As the expedition enters the cave it is overwhelmed by a pack of brutal hounds. 3 villagers are torn apart by savage jaws before the survivors manage to retreat.",
+      ),
+    );
+    expect(text).toBe(
+      "Als die Expedition die Höhle betritt, wird sie von einem Rudel brutaler Hunde überwältigt. 3 Dorfbewohner werden von wütenden Kiefern zerrissen, bevor die Überlebenden sich zurückziehen können.",
+    );
+  });
+
+  it("matches legacy English blackreach canyon success log in German saves", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "You venture deep into Blackreach Canyon. There, perched on a stone pillar, sits a magnificent one-eyed crow. Using the harness, your carefully approach and bond with the creature. The One-eyed Crow has joined your fellowship.",
+      ),
+    );
+    expect(text).toBe(
+      "Du wagst dich tief in die Schwarzklamm vor. Dort, auf einer Steinsäule sitzend, thront eine prächtige einäugige Krähe. Mit dem Geschirr näherst du dich vorsichtig und schließt eine Bindung mit dem Wesen. Die Einäugige Krähe ist deiner Gemeinschaft beigetreten.",
+    );
+  });
+
+  it("matches legacy English wizard necromancer castle event log in German saves", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage({
+      id: `wizardNecromancerCastle-${Date.now()}`,
+      message:
+        "The wizard calls you to his tower: 'I have learned of a castle deep in the wilderness, the former domain of a long-dead necromancer. Within its walls lie ancient scrolls that speak of how we can defeat what dwells in the depths of the cave.'",
+      timestamp: 0,
+      type: "event",
+    });
+    expect(text).toBe(
+      "Der Zauberer ruft dich in seinen Turm: 'Ich habe von einer Burg tief in der Wildnis erfahren, dem einstigen Reich eines lange toten Nekromanten. In ihren Mauern liegen alte Schriftrollen, die davon sprechen, wie wir besiegen können, was in den Tiefen der Höhle haust.'",
+    );
+  });
+
   it("returns stored message when no catalog match exists", () => {
     const message = "Some unknown custom log line.";
     expect(resolveLogPanelMessage(systemEntry(message))).toBe(message);

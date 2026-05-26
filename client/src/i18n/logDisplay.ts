@@ -1,7 +1,15 @@
 import type { LogEntry } from "@/game/rules/events";
+import {
+  gameEvents,
+  getEventCatalogIdByEventId,
+} from "@/game/rules/events";
 import { UPGRADE_LABELS, type UpgradeKey } from "@/game/buttonUpgrades";
 import { getActionLogMessage, tWithFallback } from "@/i18n/resolveGameText";
+import { resolveEventMessage } from "@/i18n/eventText";
+import enEvents from "@/i18n/locales/en/events.json";
 import enLog from "@/i18n/locales/en/ui/log.json";
+import i18n from "./index";
+import type { GameState } from "@shared/schema";
 
 type LogVars = Record<string, string | number>;
 
@@ -287,9 +295,94 @@ const LEGACY_SYSTEM_LOG_MATCHERS: PatternMatcher[] = [
   },
 ];
 
+const LEGACY_ACTION_LOG_MESSAGES: Array<{
+  actionId: string;
+  logKey: string;
+  message: string;
+}> = [
+    {
+      actionId: "blastPortal",
+      logKey: "complete",
+      message:
+        "The ember bombs detonate in a bright flash of fire and light. The ancient gate cracks and crumbles. Whatever could have been sealed within has been released. The city should get ready for whatever comes out of there.",
+    },
+    {
+      actionId: "lowChamber",
+      logKey: "complete",
+      message:
+        "Using the reinforced rope, you descend into the low chamber. Amongst the treasures you find a mastermason's chisel, a tool of legendary craftsmanship.",
+    },
+    {
+      actionId: "occultistChamber",
+      logKey: "complete",
+      message:
+        "Following the occultist's map, you find the chamber containing his treasures. Amongst them is his grimoire, filled with forbidden knowledge and arcane secrets.",
+    },
+    {
+      actionId: "exploreUndergroundLake",
+      logKey: "complete",
+      message:
+        "Using the skull lantern's grim glow, you descend to the underground lake and build a small boat. On a tiny island in the middle of the dark lake, forgotten treasures lie in shadow, untouched for ages.",
+    },
+    {
+      actionId: "lureLakeCreature",
+      logKey: "complete",
+      message:
+        "You set a massive trap at the edge of the underground lake, baited with piles of meat. Hours pass before the black waters erupt, and a titanic, tentacled horror rises from the depths and crawls into the trap.",
+    },
+    {
+      actionId: "hiddenLibrary",
+      logKey: "complete",
+      message:
+        "The monastery's map leads you deep into the cave to the hidden library where you find a codex.",
+    },
+    {
+      actionId: "forestCave",
+      logKey: "success",
+      message:
+        "As the villagers descend the cave, savage hounds erupt from darkness in relentless packs. Screams echo as claws tear and teeth snap. When the last creature falls, all villagers survive, but hollowed by what they've endured.",
+    },
+    {
+      actionId: "forestCave",
+      logKey: "success",
+      message:
+        "As the villagers descend the cave, savage hounds erupt from darkness in relentless packs. Screams echo as claws tear and teeth snap. When the last creature falls, all villagers survive, but hollowed by what they\u2019ve endured.",
+    },
+    {
+      actionId: "forestCave",
+      logKey: "failure",
+      message:
+        "As the expedition enters the cave it is overwhelmed by a pack of brutal hounds. {{count}} villagers are torn apart by savage jaws before the survivors manage to retreat.",
+    },
+    {
+      actionId: "blackreachCanyon",
+      logKey: "success",
+      message:
+        "You venture deep into Blackreach Canyon. There, perched on a stone pillar, sits a magnificent one-eyed crow. Using the harness, your carefully approach and bond with the creature. The One-eyed Crow has joined your fellowship.",
+    },
+  ];
+
 function resolveLegacySystemLog(message: string): string | null {
   if (message === "You find an old, dusty bag with 25 Torches in the cave.") {
     return getActionLogMessage("exploreCave", "torchBag", message);
+  }
+
+  for (const entry of LEGACY_ACTION_LOG_MESSAGES) {
+    if (message === entry.message) {
+      return getActionLogMessage(entry.actionId, entry.logKey, entry.message);
+    }
+  }
+
+  const forestCaveFailure = message.match(
+    /^As the expedition enters the cave it is overwhelmed by a pack of brutal hounds\. (\d+) villagers are torn apart by savage jaws before the survivors manage to retreat\.$/,
+  );
+  if (forestCaveFailure) {
+    return getActionLogMessage(
+      "forestCave",
+      "failure",
+      "As the expedition enters the cave it is overwhelmed by a pack of brutal hounds. {{count}} villagers are torn apart by savage jaws before the survivors manage to retreat.",
+      { count: Number(forestCaveFailure[1]) },
+    );
   }
 
   const exactKey = LEGACY_EXACT_SYSTEM_LOG[message];
@@ -307,6 +400,75 @@ function resolveLegacySystemLog(message: string): string | null {
   return null;
 }
 
+/** English event messages from saves written before display-time event localization. */
+function buildLegacyEnglishEventMessageMap(): Record<string, string> {
+  const map: Record<string, string> = {};
+  for (const [eventId, def] of Object.entries(enEvents)) {
+    if (
+      def &&
+      typeof def === "object" &&
+      "message" in def &&
+      typeof def.message === "string"
+    ) {
+      map[def.message] = eventId;
+    }
+  }
+  return map;
+}
+
+const LEGACY_EN_EVENT_MESSAGES = buildLegacyEnglishEventMessageMap();
+
+function parseEventIdFromLogEntryId(id: string): string | undefined {
+  const match = id.match(/^(.+)-(\d{10,})$/);
+  if (!match) return undefined;
+  const candidate = match[1];
+  return gameEvents[candidate] ? candidate : undefined;
+}
+
+function getEnglishEventCatalogMessage(catalogId: string): string {
+  if (i18n.exists(`events:${catalogId}.message.default`)) {
+    return i18n.t(`events:${catalogId}.message.default`, { lng: "en" });
+  }
+  if (i18n.exists(`events:${catalogId}.message`)) {
+    return i18n.t(`events:${catalogId}.message`, { lng: "en" });
+  }
+  return "";
+}
+
+function resolveEventLogPanelMessage(entry: LogEntry): string | null {
+  const eventId =
+    entry.eventId ??
+    parseEventIdFromLogEntryId(entry.id) ??
+    LEGACY_EN_EVENT_MESSAGES[entry.message];
+  if (!eventId) return null;
+
+  const eventDef = gameEvents[eventId];
+  if (!eventDef) return null;
+
+  const catalogId = getEventCatalogIdByEventId(eventId);
+
+  if (eventDef.message === undefined) {
+    const localized = resolveEventMessage(
+      catalogId,
+      undefined,
+      {} as GameState,
+    );
+    return localized.trim() ? localized : null;
+  }
+
+  const enMessage = getEnglishEventCatalogMessage(catalogId);
+  if (enMessage && entry.message === enMessage) {
+    const localized = resolveEventMessage(
+      catalogId,
+      eventDef.message,
+      {} as GameState,
+    );
+    return localized.trim() ? localized : null;
+  }
+
+  return null;
+}
+
 /** Display text for a log panel row (re-localizes system lines from keys or English fallbacks). */
 export function resolveLogPanelMessage(entry: LogEntry): string {
   if (entry.logKey) {
@@ -316,6 +478,11 @@ export function resolveLogPanelMessage(entry: LogEntry): string {
   if (entry.type === "system") {
     const legacy = resolveLegacySystemLog(entry.message);
     if (legacy) return legacy;
+  }
+
+  if (entry.type === "event") {
+    const eventLog = resolveEventLogPanelMessage(entry);
+    if (eventLog) return eventLog;
   }
 
   return entry.message;

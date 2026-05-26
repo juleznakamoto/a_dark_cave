@@ -1116,8 +1116,10 @@
   },
   "mysteriousWoman": {
     "log": {
-      "outcome0": "Concedes refugio a {{obj}} por la noche. Por la mañana, {{subj}} ha desaparecido sin dejar rastro; tu cama sigue tibia y faltan {{silverStolen}} de plata.",
-      "outcome1": "Rechazas cortésmente la petición de {{poss}}. {{cap}} parece decepcionada, pero asiente con comprensión y desaparece en la niebla del atardecer sin decir otra palabra."
+      "outcome0_woman": "Le concedes refugio por la noche. Por la mañana, ha desaparecido sin dejar rastro; tu cama sigue tibia y faltan {{silverStolen}} de plata.",
+      "outcome0_man": "Le concedes refugio por la noche. Por la mañana, ha desaparecido sin dejar rastro; tu cama sigue tibia y faltan {{silverStolen}} de plata.",
+      "outcome1_woman": "Rechazas cortésmente su petición. Parece decepcionada, pero asiente con comprensión y desaparece en la niebla del atardecer sin decir otra palabra.",
+      "outcome1_man": "Rechazas cortésmente su petición. Parece decepcionado, pero asiente con comprensión y desaparece en la niebla del atardecer sin decir otra palabra."
     },
     "title": {
       "woman": "La mujer misteriosa",

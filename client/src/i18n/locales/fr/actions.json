@@ -6,10 +6,16 @@
     "label": "Repaire de bandits"
   },
   "blackreachCanyon": {
-    "label": "Canyon de Blackreach"
+    "label": "Canyon de Blackreach",
+    "log": {
+      "success": "Vous vous aventurez au fond du Canyon de Blackreach. Là, perché sur un pilier de pierre, se tient un magnifique corbeau borgne. À l'aide du harnais, vous vous approchez prudemment et vous liez à la créature. Le Corbeau borgne a rejoint votre communauté."
+    }
   },
   "blastPortal": {
-    "label": "Porte de souffle"
+    "label": "Porte de souffle",
+    "log": {
+      "complete": "Les bombes braise explosent dans un éclat de feu et de lumière. L'ancienne porte se fissure et s'effondre. Quoi qu'il y avait là-dedans a été libéré. La cité devrait se préparer à ce qui en sortira."
+    }
   },
   "boneTotems": {
     "label": "Totems d'os"
@@ -454,13 +460,20 @@
     }
   },
   "exploreUndergroundLake": {
-    "label": "Lac souterrain"
+    "label": "Lac souterrain",
+    "log": {
+      "complete": "À la lueur sinistre de la lanterne crânienne, vous descendez vers le lac souterrain et construisez une petite barque. Sur une minuscule île au milieu du lac sombre, des trésors oubliés gisent dans l'ombre, intacts depuis des âges."
+    }
   },
   "feedFire": {
     "label": "Alimenter le feu"
   },
   "forestCave": {
-    "label": "Grotte forestière"
+    "label": "Grotte forestière",
+    "log": {
+      "success": "Alors que les villageois descendent dans la grotte, des chiens sauvages jaillissent des ténèbres en meutes implacables. Les cris résonnent tandis que griffes déchirent et dents claquent. Quand la dernière créature tombe, tous les villageois survivent, mais marqués par ce qu'ils ont enduré.",
+      "failure": "Lorsque l'expédition entre dans la grotte, elle est submergée par une meute de chiens brutaux. {{count}} villageois sont déchiquetés par des mâchoires sauvages avant que les survivants ne parviennent à se replier."
+    }
   },
   "healElderWizard": {
     "label": "Soigner le vieux mage"
@@ -469,7 +482,10 @@
     "label": "Soigner le chevalier tourmenté"
   },
   "hiddenLibrary": {
-    "label": "Bibliothèque cachée"
+    "label": "Bibliothèque cachée",
+    "log": {
+      "complete": "La carte du monastère vous mène au fond de la grotte, jusqu'à la bibliothèque cachée où vous trouvez un codex."
+    }
   },
   "hillGrave": {
     "label": "Tombe de la colline"
@@ -497,10 +513,16 @@
     }
   },
   "lowChamber": {
-    "label": "Chambre basse"
+    "label": "Chambre basse",
+    "log": {
+      "complete": "À l'aide de la corde renforcée, vous descendez dans la chambre basse. Parmi les trésors, vous trouvez un ciseau de maître maçon, un outil d'un artisanat légendaire."
+    }
   },
   "lureLakeCreature": {
-    "label": "Placer le piège"
+    "label": "Placer le piège",
+    "log": {
+      "complete": "Vous installez un piège immense au bord du lac souterrain, appâté avec des montagnes de viande. Des heures passent avant que les eaux noires n'explosent et qu'un titansque horreur tentaculaire ne surgisse des profondeurs pour y tomber."
+    }
   },
   "mineAdamant": {
     "label": "Adamant",
@@ -539,7 +561,10 @@
     }
   },
   "occultistChamber": {
-    "label": "Chambre de l'occultiste"
+    "label": "Chambre de l'occultiste",
+    "log": {
+      "complete": "En suivant la carte de l'occultiste, vous trouvez la chambre qui contient ses trésors. Parmi eux se trouve son grimoire, rempli de savoir interdit et de secrets arcanes."
+    }
   },
   "provokeAttackWave": {
     "label": "Provoquer une vague d'attaque"

@@ -348,6 +348,7 @@ export class EventManager {
         if (!event.showAsTimedTab) {
           const logEntry: LogEntry = {
             id: `${event.id}-${Date.now()}`,
+            eventId: event.id,
             message: message,
             timestamp: Date.now(),
             type: "event",

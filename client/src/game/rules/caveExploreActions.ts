@@ -48,6 +48,35 @@ const CAVE_FIRST_VISIT_LOG_FALLBACKS: Record<string, Record<string, string>> = {
   },
 };
 
+const CAVE_EXPLORE_LOG_FALLBACKS: Record<string, string> = {
+  blastPortal:
+    "The ember bombs detonate in a bright flash of fire and light. The ancient gate cracks and crumbles. Whatever could have been sealed within has been released. The city should get ready for whatever comes out of there.",
+  lowChamber:
+    "Using the reinforced rope, you descend into the low chamber. Amongst the treasures you find a mastermason's chisel, a tool of legendary craftsmanship.",
+  occultistChamber:
+    "Following the occultist's map, you find the chamber containing his treasures. Amongst them is his grimoire, filled with forbidden knowledge and arcane secrets.",
+  exploreUndergroundLake:
+    "Using the skull lantern's grim glow, you descend to the underground lake and build a small boat. On a tiny island in the middle of the dark lake, forgotten treasures lie in shadow, untouched for ages.",
+  lureLakeCreature:
+    "You set a massive trap at the edge of the underground lake, baited with piles of meat. Hours pass before the black waters erupt, and a titanic, tentacled horror rises from the depths and crawls into the trap.",
+  hiddenLibrary:
+    "The monastery's map leads you deep into the cave to the hidden library where you find a codex.",
+};
+
+function pushCaveExploreLog(
+  result: ActionResult,
+  actionId: string,
+  idPrefix: string,
+): void {
+  const fallback = CAVE_EXPLORE_LOG_FALLBACKS[actionId] ?? "";
+  result.logEntries!.push({
+    id: `${idPrefix}-${Date.now()}`,
+    message: getActionLogMessage(actionId, "complete", fallback),
+    timestamp: Date.now(),
+    type: "system",
+  });
+}
+
 function pushFirstVisitLog(
   result: ActionResult,
   actionId: string,
@@ -1097,13 +1126,7 @@ export function handleLowChamber(
 ): ActionResult {
   const effectUpdates = applyActionEffects("lowChamber", state);
 
-  result.logEntries!.push({
-    id: `low-chamber-explored-${Date.now()}`,
-    message:
-      "Using the reinforced rope, you descend into the low chamber. Amongst the treasures you find a mastermason's chisel, a tool of legendary craftsmanship.",
-    timestamp: Date.now(),
-    type: "system",
-  });
+  pushCaveExploreLog(result, "lowChamber", "low-chamber-explored");
 
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
@@ -1115,13 +1138,7 @@ export function handleoccultistChamber(
 ): ActionResult {
   const effectUpdates = applyActionEffects("occultistChamber", state);
 
-  result.logEntries!.push({
-    id: `occultist-chamber-explored-${Date.now()}`,
-    message:
-      "Following the occultist's map, you find the chamber containing his treasures. Amongst them is his grimoire, filled with forbidden knowledge and arcane secrets.",
-    timestamp: Date.now(),
-    type: "system",
-  });
+  pushCaveExploreLog(result, "occultistChamber", "occultist-chamber-explored");
 
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
@@ -1133,13 +1150,7 @@ export function handleBlastPortal(
 ): ActionResult {
   const effectUpdates = applyActionEffects("blastPortal", state);
 
-  result.logEntries!.push({
-    id: `portal-blasted-${Date.now()}`,
-    message:
-      "The ember bombs detonate in a bright flash of fire and light. The ancient gate cracks and crumbles. Whatever could have been sealed within has been released. The city should get ready for whatever comes out of there.",
-    timestamp: Date.now(),
-    type: "system",
-  });
+  pushCaveExploreLog(result, "blastPortal", "portal-blasted");
 
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
@@ -1161,13 +1172,11 @@ export function handleExploreUndergroundLake(
 ): ActionResult {
   const effectUpdates = applyActionEffects("exploreUndergroundLake", state);
 
-  result.logEntries!.push({
-    id: `underground-lake-explored-${Date.now()}`,
-    message:
-      "Using the skull lantern's grim glow, you descend to the underground lake and build a small boat. On a tiny island in the middle of the dark lake, forgotten treasures lie in shadow, untouched for ages.",
-    timestamp: Date.now(),
-    type: "system",
-  });
+  pushCaveExploreLog(
+    result,
+    "exploreUndergroundLake",
+    "underground-lake-explored",
+  );
 
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
@@ -1179,13 +1188,7 @@ export function handleLureLakeCreature(
 ): ActionResult {
   const effectUpdates = applyActionEffects("lureLakeCreature", state);
 
-  result.logEntries!.push({
-    id: `lake-creature-lured-${Date.now()}`,
-    message:
-      "You set a massive trap at the edge of the underground lake, baited with piles of meat. Hours pass before the black waters erupt, and a titanic, tentacled horror rises from the depths and crawls into the trap.",
-    timestamp: Date.now(),
-    type: "system",
-  });
+  pushCaveExploreLog(result, "lureLakeCreature", "lake-creature-lured");
 
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
@@ -1197,13 +1200,7 @@ export function handleHiddenLibrary(
 ): ActionResult {
   const effectUpdates = applyActionEffects("hiddenLibrary", state);
 
-  result.logEntries!.push({
-    id: `hidden-library-explored-${Date.now()}`,
-    message:
-      "The monastery's map leads you deep into the cave to the hidden library where you find a codex.",
-    timestamp: Date.now(),
-    type: "system",
-  });
+  pushCaveExploreLog(result, "hiddenLibrary", "hidden-library-explored");
 
   Object.assign(result.stateUpdates, effectUpdates);
   return result;

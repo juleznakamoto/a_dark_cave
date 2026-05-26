@@ -155,7 +155,7 @@
       "name": "Hohepriesterrobe"
     },
     "hollow_king_scepter": {
-      "description": "Zepter des verlorenen Königs, strahlend vor Macht und Wahnsinn. Bergbau bringt 25% mehr Ressourcen, und jede Bergbauaktion hat eine Chance von 5%, alle Erträge dieser Aktion zu verdoppeln.",
+      "description": "Zepter des verlorenen Königs, strahlend vor Macht und Wahnsinn. Bergbauaktionen haben eine Chance von 5 %, die Belohnungen zu verdoppeln.",
       "name": "Zepter des Hohlen Königs"
     },
     "hunter_cloak": {

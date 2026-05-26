@@ -930,7 +930,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "hollow_king_scepter",
     name: "Hollow King Scepter",
     description:
-      "Scepter of the lost king, radiating power and madness. Mining yields 25% more resources, and each mine action has a 5% chance to double all gains from that action.",
+      "Scepter of the lost king, radiating power and madness. Mine action have a 5% chance to double rewards.",
     bonuses: {
       actionBonuses: {
         mining: {

@@ -6,10 +6,16 @@
     "label": "Guarida de bandidos"
   },
   "blackreachCanyon": {
-    "label": "Cañón de Blackreach"
+    "label": "Cañón de Blackreach",
+    "log": {
+      "success": "Te adentras en lo profundo del Cañón de Blackreach. Allí, posado sobre un pilar de piedra, se encuentra un magnífico cuervo tuerto. Con el arnés, te acercas con cuidado y creas un vínculo con la criatura. El Cuervo tuerto se ha unido a tu comunidad."
+    }
   },
   "blastPortal": {
-    "label": "Puerta de estallido"
+    "label": "Puerta de estallido",
+    "log": {
+      "complete": "Las bombas de brasa detonan en un brillante destello de fuego y luz. La antigua puerta se resquebraja y se desmorona. Lo que fuera que estuviera sellado en su interior ha sido liberado. La ciudad debería prepararse para lo que salga de allí."
+    }
   },
   "boneTotems": {
     "label": "Tótems de hueso"
@@ -454,13 +460,20 @@
     }
   },
   "exploreUndergroundLake": {
-    "label": "Lago subterráneo"
+    "label": "Lago subterráneo",
+    "log": {
+      "complete": "Con el sombrío resplandor de la linterna de cráneo, desciendes al lago subterráneo y construyes una pequeña barca. En una diminuta isla en medio del lago oscuro yacen tesoros olvidados en la sombra, intactos desde hace eras."
+    }
   },
   "feedFire": {
     "label": "Alimentar el fuego"
   },
   "forestCave": {
-    "label": "Cueva del bosque"
+    "label": "Cueva del bosque",
+    "log": {
+      "success": "Cuando los aldeanos descienden a la cueva, feroces sabuesos irrumpen de la oscuridad en manadas implacables. Los gritos resuenan mientras las garras desgarran y los dientes muerden. Cuando cae la última criatura, todos los aldeanos sobreviven, pero vaciados por lo que han padecido.",
+      "failure": "Cuando la expedición entra en la cueva, es abrumada por una manada de brutales sabuesos. {{count}} aldeanos son destrozados por mandíbulas salvajes antes de que los supervivientes logren retirarse."
+    }
   },
   "healElderWizard": {
     "label": "Curar al mago anciano"
@@ -469,7 +482,10 @@
     "label": "Curar al caballero inquieto"
   },
   "hiddenLibrary": {
-    "label": "Biblioteca oculta"
+    "label": "Biblioteca oculta",
+    "log": {
+      "complete": "Siguiendo el mapa del monasterio, te adentras en la cueva hasta la biblioteca oculta, donde encuentras un códice."
+    }
   },
   "hillGrave": {
     "label": "Tumba de la colina"
@@ -497,10 +513,16 @@
     }
   },
   "lowChamber": {
-    "label": "Cámara baja"
+    "label": "Cámara baja",
+    "log": {
+      "complete": "Con la cuerda reforzada, desciendes a la cámara baja. Entre los tesoros encuentras un cincel de maestro cantero, una herramienta de artesanía legendaria."
+    }
   },
   "lureLakeCreature": {
-    "label": "Colocar trampa"
+    "label": "Colocar trampa",
+    "log": {
+      "complete": "Colocas una trampa enorme al borde del lago subterráneo, cebo de montones de carne. Pasan horas antes de que las aguas negras estallen y un titánico horror tentacular surja de las profundidades y caiga en la trampa."
+    }
   },
   "mineAdamant": {
     "label": "Adamantita",
@@ -539,7 +561,10 @@
     }
   },
   "occultistChamber": {
-    "label": "Cámara del ocultista"
+    "label": "Cámara del ocultista",
+    "log": {
+      "complete": "Siguiendo el mapa del ocultista, encuentras la cámara que contiene sus tesoros. Entre ellos está su grimorio, lleno de conocimiento prohibido y secretos arcanos."
+    }
   },
   "provokeAttackWave": {
     "label": "Provocar oleada de ataque"

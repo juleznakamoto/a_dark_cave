@@ -8,7 +8,7 @@ import {
 } from "@/game/rules";
 import { getActionBonuses } from "@/game/rules/effectsCalculation";
 import { getResourceGainTooltip } from "@/game/rules/tooltips";
-import { weaponEffects, toolEffects, clothingEffects } from "@/game/rules/effects";
+import { getCraftItemDescription } from "@/game/rules/craftItemDescription";
 import CooldownButton from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useExplosionEffect } from "@/components/ui/explosion-effect";
@@ -384,17 +384,12 @@ export default function CavePanel() {
         );
       }
 
-      const craftingHint = (() => {
-        if (
-          !state.books?.book_of_craftsmanship ||
-          !isCraftAction ||
-          CRAFT_NO_BOOK_DESCRIPTION.has(actionId)
-        ) {
-          return undefined;
-        }
-        const itemKey = actionId.replace(/^craft/, '').replace(/([A-Z])/g, '_$1').toLowerCase().replace(/^_/, '');
-        return (weaponEffects[itemKey] ?? toolEffects[itemKey] ?? clothingEffects[itemKey])?.description;
-      })();
+      const craftingHint =
+        state.books?.book_of_craftsmanship &&
+          isCraftAction &&
+          !CRAFT_NO_BOOK_DESCRIPTION.has(actionId)
+          ? getCraftItemDescription(actionId)
+          : undefined;
       if (craftingHint && tooltipContent) {
         tooltipContent = (
           <div className="text-xs whitespace-nowrap" style={{ width: '12rem' }}>

@@ -155,7 +155,7 @@
       "name": "Robe de grand prêtre"
     },
     "hollow_king_scepter": {
-      "description": "Sceptre du roi perdu, irradiant pouvoir et folie. Le minage rapporte 25 % de ressources en plus, et chaque action de minage a 5 % de chances de doubler tous les gains de cette action.",
+      "description": "Sceptre du roi perdu, irradiant pouvoir et folie. Les actions de minage ont 5 % de chances de doubler les récompenses.",
       "name": "Sceptre du Roi creux"
     },
     "hunter_cloak": {

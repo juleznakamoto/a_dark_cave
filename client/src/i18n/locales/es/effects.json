@@ -155,7 +155,7 @@
       "name": "Túnica de sumo sacerdote"
     },
     "hollow_king_scepter": {
-      "description": "Cetro del rey perdido, irradiando poder y locura. La minería produce un 25% más de recursos, y cada acción de minería tiene un 5% de probabilidad de duplicar todas sus ganancias.",
+      "description": "Cetro del rey perdido, irradiando poder y locura. Las acciones de minería tienen un 5% de probabilidad de duplicar las recompensas.",
       "name": "Cetro del Rey Hueco"
     },
     "hunter_cloak": {

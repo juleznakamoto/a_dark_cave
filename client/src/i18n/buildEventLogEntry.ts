@@ -39,6 +39,7 @@ export function buildLocalizedEventLogEntry(
 
   return {
     id: `${eventId}-${Date.now()}`,
+    eventId,
     message: resolveEventMessage(catalogId, eventDef.message, state, i18nVars),
     timestamp: Date.now(),
     type: "event",

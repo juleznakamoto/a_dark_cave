@@ -7,6 +7,7 @@ import { logger } from "@/lib/logger";
 import { ActionEffectUpdates } from "@/game/types";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
+import { getActionLogMessage } from "@/i18n/resolveGameText";
 
 // Helper function to process triggered events from action effects
 function processTriggeredEvents(
@@ -978,8 +979,11 @@ export function handleForestCave(
 
     result.logEntries!.push({
       id: `forest-cave-success-${Date.now()}`,
-      message:
-        "As the villagers descend the cave, savage hounds erupt from darkness in relentless packs. Screams echo as claws tear and teeth snap. When the last creature falls, all villagers survive, but hollowed by what they’ve endured.",
+      message: getActionLogMessage(
+        "forestCave",
+        "success",
+        "As the villagers descend the cave, savage hounds erupt from darkness in relentless packs. Screams echo as claws tear and teeth snap. When the last creature falls, all villagers survive, but hollowed by what they've endured.",
+      ),
       timestamp: Date.now(),
       type: "system",
     });
@@ -997,7 +1001,12 @@ export function handleForestCave(
 
     result.logEntries!.push({
       id: `forest-cave-failure-${Date.now()}`,
-      message: `As the expedition enters the cave it is overwhelmed by a pack of brutal hounds. ${actualDeaths} villagers are torn apart by savage jaws before the survivors manage to retreat.`,
+      message: getActionLogMessage(
+        "forestCave",
+        "failure",
+        "As the expedition enters the cave it is overwhelmed by a pack of brutal hounds. {{count}} villagers are torn apart by savage jaws before the survivors manage to retreat.",
+        { count: actualDeaths },
+      ),
       timestamp: Date.now(),
       type: "system",
     });
@@ -1037,8 +1046,11 @@ export function handleBlackreachCanyon(
 
   result.logEntries!.push({
     id: `blackreach-canyon-success-${Date.now()}`,
-    message:
+    message: getActionLogMessage(
+      "blackreachCanyon",
+      "success",
       "You venture deep into Blackreach Canyon. There, perched on a stone pillar, sits a magnificent one-eyed crow. Using the harness, your carefully approach and bond with the creature. The One-eyed Crow has joined your fellowship.",
+    ),
     timestamp: Date.now(),
     type: "system",
   });
