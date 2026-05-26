@@ -493,7 +493,7 @@
       }
     },
     "log": {
-      "outcome0": "Er nimmt dein Angebot wortlos an und setzt seine Mühsal fort. In seinen Augen liegt die stille Qual eines Mannes, der seinen Glauben zerbrechen sah. Einst predigte er von Tugend, bis zu dem Tag, an dem er eine große Sünde beging. Der gefallene Prior hat sich deinen Gefährten angeschlossen."
+      "outcome0": "Er nimmt dein Angebot wortlos an und setzt seine Mühsal fort. In seinen Augen liegt die stille Qual eines Mannes, der seinen Glauben zerbrechen sah. Einst predigte er von Tugend, bis zu dem Tag, an dem er eine große Sünde beging. Gefallener Prior hat sich deinen Gefährten angeschlossen."
     },
     "message": "Deine Dorfbewohner berichten von einem ausgezehrten Mann in zerlumpten Roben, der still die Mauern der Steinhütten ausbessert. Er arbeitet ohne ein Wort, ohne Rast und verlangt nichts. Wenn man ihn anspricht, sagt er nur, dass er viel wiedergutzumachen habe.",
     "title": "Ein stiller Reparateur"
@@ -1532,6 +1532,28 @@
     },
     "message": "Ein Mann auf einem von zwei Pferden gezogenen Karren nähert sich dem Dorf. Auf dem Karren steht ein Eisenkäfig mit zwei elenden Seelen. Der Händler grinst böse: 'Ich zahle dir 100 Stahl für zwei deiner Dorfbewohner. Was sagst du?'",
     "title": "Der Sklavenhändler"
+  },
+  "solsticeGathering": {
+    "choices": {
+      "hostSolstice": {
+        "cost": "{{goldCost}} Gold, {{foodCost}} Nahrung",
+        "label": "Fest ausrichten"
+      },
+      "refuseSolstice": {
+        "label": "Ablehnen"
+      },
+      "doNothing": {
+        "label": "Keine Entscheidung"
+      }
+    },
+    "log": {
+      "outcome0": "Du hast nicht genug Gold für das Fest.",
+      "outcome1": "Du hast nicht genug Nahrung für das Fest.",
+      "outcome2": "Die Feuer brennen und Lachen durchbricht eine Zeit lang die Dunkelheit. Bei Tagesanbruch verweilen viele Besucher und erwägen zu bleiben.",
+      "outcome3": "Du lehnst ab. Die Nacht vergeht ohne Freude, Wärme oder Lachen."
+    },
+    "message": "Die Dorfbewohner schlagen ein Fest vor, um die längste Nacht des Jahres zu begehen. Feuer werden entzündet, Speisen zubereitet und Spiele veranstaltet. Reisende könnten vom Licht angezogen kommen.",
+    "title": "Sonnenwend-Fest"
   },
   "swampSanctuaryChoice": {
     "choices": {

@@ -57,4 +57,43 @@ describe("localizeEventChoices", () => {
 
     expect(localized![0].label).toBe("Legacy label");
   });
+
+  it("resolves solsticeGathering choice labels and costs from catalog", () => {
+    const choices: EventChoice[] = [
+      { id: "hostSolstice", effect: () => ({}) },
+      { id: "refuseSolstice", effect: () => ({}) },
+    ];
+    const vars = { goldCost: 25, foodCost: 250 };
+
+    const localized = localizeEventChoices(
+      "solsticeGathering",
+      choices,
+      {} as GameState,
+      vars,
+    );
+
+    expect(localized![0].label).toBe("Host gathering");
+    expect(localized![0].cost).toBe("25 gold, 250 food");
+    expect(localized![1].label).toBe("Refuse");
+  });
+
+  it("resolves solsticeGathering labels in German", async () => {
+    await i18n.changeLanguage("de");
+    const choices: EventChoice[] = [
+      { id: "hostSolstice", effect: () => ({}) },
+      { id: "refuseSolstice", effect: () => ({}) },
+    ];
+    const vars = { goldCost: 25, foodCost: 250 };
+
+    const localized = localizeEventChoices(
+      "solsticeGathering",
+      choices,
+      {} as GameState,
+      vars,
+    );
+
+    expect(localized![0].label).toBe("Fest ausrichten");
+    expect(localized![0].cost).toBe("25 Gold, 250 Nahrung");
+    expect(localized![1].label).toBe("Ablehnen");
+  });
 });

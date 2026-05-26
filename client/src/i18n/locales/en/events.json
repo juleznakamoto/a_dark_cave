@@ -1533,6 +1533,28 @@
     "message": "A man on a cart drawn by two horses approaches the village. An iron cage on the cart holds two miserable souls. The trader grins wickedly: 'I'll pay you 100 Steel for two of your villagers. What do you say?'",
     "title": "The Slave Trader"
   },
+  "solsticeGathering": {
+    "choices": {
+      "hostSolstice": {
+        "cost": "{{goldCost}} gold, {{foodCost}} food",
+        "label": "Host gathering"
+      },
+      "refuseSolstice": {
+        "label": "Refuse"
+      },
+      "doNothing": {
+        "label": "No Decision Made"
+      }
+    },
+    "log": {
+      "outcome0": "You don't have enough gold for the gathering.",
+      "outcome1": "You don't have enough food for the gathering.",
+      "outcome2": "The fires burn and laughter breaks the darkness for a time. By dawn, many visitors linger, considering staying.",
+      "outcome3": "You decline. The night passes without cheer, warmth, or laughter."
+    },
+    "message": "The villagers propose a gathering to mark the longest night of the year. Fires will be lit, food prepared, and games held. Travelers may come, drawn by the light.",
+    "title": "Solstice Gathering"
+  },
   "swampSanctuaryChoice": {
     "choices": {
       "chopBlackTree": {

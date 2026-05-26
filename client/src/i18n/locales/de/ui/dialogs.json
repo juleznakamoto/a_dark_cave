@@ -174,7 +174,11 @@
     "saveFailed": "Benutzername konnte nicht gespeichert werden"
   },
   "investmentResult": {
-    "title": "Investitionsergebnis"
+    "title": "Investitionsergebnis",
+    "success": "Deine {{amount}} Gold-Investition war erfolgreich.",
+    "luckyChance": "Glückstreffer. Der Gewinn deiner {{amount}} Gold-Investition wird mit {{multiplier}} multipliziert.",
+    "wipeout": "Totalverlust. Du hast deine gesamte {{amount}} Gold-Investition verloren.",
+    "partialLoss": "Deine {{amount}} Gold-Investition ist fehlgeschlagen."
   },
   "cube": {
     "fallbackTitle": "Der flüsternde Würfel",

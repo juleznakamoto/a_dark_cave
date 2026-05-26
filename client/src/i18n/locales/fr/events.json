@@ -493,7 +493,7 @@
       }
     },
     "log": {
-      "outcome0": "Il accepte votre offre sans un mot et reprend son labeur. Ses yeux portent le tourment silencieux d'un homme qui a vu sa foi s'effondrer. Autrefois il prêchait la vertu, jusqu'au jour où il commit un grand péché. Le Prieur disgracié a rejoint votre compagnie."
+      "outcome0": "Il accepte votre offre sans un mot et reprend son labeur. Ses yeux portent le tourment silencieux d'un homme qui a vu sa foi s'effondrer. Autrefois il prêchait la vertu, jusqu'au jour où il commit un grand péché. Le Prieur déchu a rejoint votre compagnie."
     },
     "message": "Vos villageois signalent un homme émacié en robes déchirées qui répare en silence les murs des huttes de pierre. Il travaille sans parler, sans repos, sans rien demander. Quand on l'aborde, il dit seulement qu'il a beaucoup à expier.",
     "title": "Un réparateur silencieux"
@@ -1510,6 +1510,28 @@
     },
     "message": "Un homme sur une charrette tirée par deux chevaux approche du village. Une cage de fer sur la charrette retient deux âmes misérables. Le trafiquant sourit avec cruauté : 'Je vous paierai 100 unités d'acier pour deux de vos villageois. Qu'en dites-vous ?'",
     "title": "Le Trafiquant d'esclaves"
+  },
+  "solsticeGathering": {
+    "choices": {
+      "hostSolstice": {
+        "cost": "{{goldCost}} or, {{foodCost}} nourriture",
+        "label": "Organiser la fête"
+      },
+      "refuseSolstice": {
+        "label": "Refuser"
+      },
+      "doNothing": {
+        "label": "Aucune décision"
+      }
+    },
+    "log": {
+      "outcome0": "Vous n'avez pas assez d'or pour la fête.",
+      "outcome1": "Vous n'avez pas assez de nourriture pour la fête.",
+      "outcome2": "Les feux brûlent et les rires percent l'obscurité un moment. À l'aube, de nombreux visiteurs s'attardent, songeant à rester.",
+      "outcome3": "Vous refusez. La nuit passe sans joie, chaleur ni rires."
+    },
+    "message": "Les villageois proposent une fête pour marquer la plus longue nuit de l'année. Des feux seront allumés, de la nourriture préparée et des jeux organisés. Des voyageurs pourraient venir, attirés par la lumière.",
+    "title": "Fête du solstice"
   },
   "swampSanctuaryChoice": {
     "choices": {

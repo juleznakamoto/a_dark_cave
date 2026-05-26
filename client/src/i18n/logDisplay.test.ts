@@ -28,7 +28,7 @@ describe("resolveLogPanelMessage", () => {
         logKey: "freezingDeath.one",
       }),
     );
-    expect(text).toBe("Ein Dorfbewohner erfriert in der Kälte.");
+    expect(text).toBe("Ein Dorfbewohner erfriert vor Kälte.");
   });
 
   it("matches legacy English investment logs in German saves", async () => {

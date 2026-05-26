@@ -1511,6 +1511,28 @@
     "message": "Un hombre en un carro tirado por dos caballos se acerca a la aldea. Una jaula de hierro en el carro contiene a dos almas miserables. El traficante sonríe con malicia: 'Te pagaré 100 de acero por dos de tus aldeanos. ¿Qué dices?'",
     "title": "El traficante de esclavos"
   },
+  "solsticeGathering": {
+    "choices": {
+      "hostSolstice": {
+        "cost": "{{goldCost}} oro, {{foodCost}} comida",
+        "label": "Organizar la celebración"
+      },
+      "refuseSolstice": {
+        "label": "Rechazar"
+      },
+      "doNothing": {
+        "label": "Sin decisión"
+      }
+    },
+    "log": {
+      "outcome0": "No tienes suficiente oro para la celebración.",
+      "outcome1": "No tienes suficiente comida para la celebración.",
+      "outcome2": "Los fuegos arden y la risa rompe la oscuridad por un tiempo. Al amanecer, muchos visitantes permanecen, considerando quedarse.",
+      "outcome3": "Rechazas. La noche pasa sin alegría, calor ni risas."
+    },
+    "message": "Los aldeanos proponen una celebración para marcar la noche más larga del año. Se encenderán fuegos, se preparará comida y se celebrarán juegos. Puede que lleguen viajeros, atraídos por la luz.",
+    "title": "Celebración del solsticio"
+  },
   "swampSanctuaryChoice": {
     "choices": {
       "chopBlackTree": {

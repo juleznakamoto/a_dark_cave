@@ -174,7 +174,11 @@
     "saveFailed": "Failed to save username"
   },
   "investmentResult": {
-    "title": "Investment Result"
+    "title": "Investment Result",
+    "success": "Your {{amount}} Gold investment was successful.",
+    "luckyChance": "Lucky Chance. The gains on your {{amount}} Gold investment are multiplied by {{multiplier}}.",
+    "wipeout": "Wipeout. You lost your full {{amount}} Gold investment.",
+    "partialLoss": "Your {{amount}} Gold investment failed."
   },
   "cube": {
     "fallbackTitle": "The Whispering Cube",

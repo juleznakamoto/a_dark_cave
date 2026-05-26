@@ -174,7 +174,11 @@
     "saveFailed": "Не удалось сохранить имя"
   },
   "investmentResult": {
-    "title": "Результат инвестиции"
+    "title": "Результат инвестиции",
+    "success": "Ваша инвестиция в {{amount}} Gold удалась.",
+    "luckyChance": "Удача! Прибыль с вашей инвестиции в {{amount}} Gold умножается на {{multiplier}}.",
+    "wipeout": "Полная потеря. Вы потеряли всю инвестицию в {{amount}} Gold.",
+    "partialLoss": "Ваша инвестиция в {{amount}} Gold провалилась."
   },
   "cube": {
     "fallbackTitle": "Шепчущий куб",

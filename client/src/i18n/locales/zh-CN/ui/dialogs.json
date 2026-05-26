@@ -174,7 +174,11 @@
     "saveFailed": "保存用户名失败"
   },
   "investmentResult": {
-    "title": "投资结果"
+    "title": "投资结果",
+    "success": "你投入的 {{amount}} Gold 投资成功了。",
+    "luckyChance": "幸运一击！你 {{amount}} Gold 投资的收益乘以 {{multiplier}}。",
+    "wipeout": "血本无归。你失去了全部 {{amount}} Gold 投资。",
+    "partialLoss": "你投入的 {{amount}} Gold 投资失败了。"
   },
   "cube": {
     "fallbackTitle": "低语立方体",

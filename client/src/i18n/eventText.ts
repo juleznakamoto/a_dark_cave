@@ -179,9 +179,12 @@ export function localizeEventChoices(
     cost:
       typeof c.cost === "function"
         ? c.cost
-        : typeof c.cost === "string"
-          ? resolveEventChoiceCost(catalogId, c.id, c.cost, vars) ?? c.cost
-          : c.cost,
+        : resolveEventChoiceCost(
+            catalogId,
+            c.id,
+            typeof c.cost === "string" ? c.cost : undefined,
+            vars,
+          ),
   }));
 }
 

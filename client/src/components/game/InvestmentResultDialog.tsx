@@ -4,9 +4,10 @@ import OutcomeDialog, {
 } from "./OutcomeDialog";
 import { formatNumber } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
-import type {
-  InvestmentOutcomeUiKind,
-  InvestmentResultDialogPayload,
+import {
+  getInvestmentResultDialogBodyMeta,
+  type InvestmentOutcomeUiKind,
+  type InvestmentResultDialogPayload,
 } from "@/game/rules/investmentHallTables";
 
 interface InvestmentResultDialogProps {
@@ -53,8 +54,10 @@ export default function InvestmentResultDialog({
   const { t } = useTranslation(["ui", "common"]);
   if (!data) return null;
 
-  const { kind, goldDelta, briefText } = data;
+  const { kind, goldDelta } = data;
   const isLoss = kind === "partial_loss" || kind === "wipeout";
+  const { bodyKey, bodyVars } = getInvestmentResultDialogBodyMeta(data);
+  const bodyText = t(`ui:${bodyKey}`, bodyVars);
 
   const goldLine = (
     <div className="text-sm text-foreground tabular-nums">
@@ -69,7 +72,7 @@ export default function InvestmentResultDialog({
       isOpen={isOpen}
       onClose={onClose}
       icon={<OutcomeIcon kind={kind} />}
-      successLog={briefText}
+      successLog={bodyText}
       title={t("ui:investmentResult.title")}
       variant={isLoss ? "loss" : "success"}
       buttonText={t("common:buttons.continue")}

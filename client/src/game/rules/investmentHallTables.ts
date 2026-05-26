@@ -288,39 +288,65 @@ export type InvestmentResultDialogPayload = {
   kind: InvestmentOutcomeUiKind;
   /** Net vs stake: profit when successful, negative when not. */
   goldDelta: number;
-  briefText: string;
+  amountGold: number;
 };
+
+const INVESTMENT_RESULT_BODY_KEYS: Record<InvestmentOutcomeUiKind, string> = {
+  success: "investmentResult.success",
+  lucky_chance: "investmentResult.luckyChance",
+  partial_loss: "investmentResult.partialLoss",
+  wipeout: "investmentResult.wipeout",
+};
+
+export function getInvestmentResultDialogBodyMeta(
+  payload: InvestmentResultDialogPayload,
+): {
+  bodyKey: string;
+  bodyVars: Record<string, string | number>;
+} {
+  const bodyVars: Record<string, string | number> = {
+    amount: payload.amountGold,
+  };
+  if (payload.kind === "lucky_chance") {
+    bodyVars.multiplier = LUCKY_CHANCE_WIN_MULTIPLIER;
+  }
+  return {
+    bodyKey: INVESTMENT_RESULT_BODY_KEYS[payload.kind],
+    bodyVars,
+  };
+}
 
 export function buildInvestmentResultDialogPayload(
   active: InvestmentActive,
 ): InvestmentResultDialogPayload {
+  const { amountGold } = active;
   if (active.success) {
-    const profit = active.payoutGold - active.amountGold;
+    const profit = active.payoutGold - amountGold;
     if (active.luckyChanceHit) {
       return {
         kind: "lucky_chance",
         goldDelta: profit,
-        briefText: `Lucky Chance. The gains on your ${active.amountGold} Gold investment are multiplied by ${LUCKY_CHANCE_WIN_MULTIPLIER}.`,
+        amountGold,
       };
     }
     return {
       kind: "success",
       goldDelta: profit,
-      briefText: `Your ${active.amountGold} Gold investment was successful.`,
+      amountGold,
     };
   }
   if (active.totalLoss) {
     return {
       kind: "wipeout",
-      goldDelta: -active.amountGold,
-      briefText: `Wipeout. You lost your full ${active.amountGold} Gold investment.`,
+      goldDelta: -amountGold,
+      amountGold,
     };
   }
-  const lost = active.amountGold - active.payoutGold;
+  const lost = amountGold - active.payoutGold;
   return {
     kind: "partial_loss",
     goldDelta: -lost,
-    briefText: `Your ${active.amountGold} Gold investment failed.`,
+    amountGold,
   };
 }
 

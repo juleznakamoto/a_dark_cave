@@ -68,7 +68,7 @@
     "huntressTraining": "Jägerinausbildung",
     "crushingStrike": "Zerschmetternder Schlag",
     "bloodflameSphere": "Blutflammensphäre",
-    "disgracedPrior": "Entehrter Prior",
+    "disgracedPrior": "Gefallener Prior",
     "crowsEye": "Krähenauge",
     "maxLevel": "Max. Stufe",
     "upkeepPerCycle": "{{amount}} Nahrung Unterhalt pro zugewiesener Aktion pro Zyklus",
@@ -118,9 +118,9 @@
     "doubleGainChance": "Doppelgewinn-Chance"
   },
   "badges": {
-    "priorUpgradeRequired": "Verbessere den Entehrten Prior, um mehr Aktionen zuzuweisen",
-    "priorRemove": "Klicken, um den Entehrten Prior zu entfernen",
-    "priorAssign": "Klicken, um den Entehrten Prior zuzuweisen",
+    "priorUpgradeRequired": "Verbessere den Gefallenen Prior, um mehr Aktionen zuzuweisen",
+    "priorRemove": "Klicken, um den Gefallenen Prior zu entfernen",
+    "priorAssign": "Klicken, um den Gefallenen Prior zuzuweisen",
     "bonus": "Bonus:",
     "nextBonus": "Nächster Bonus:",
     "craftMultiplier": "Herstellung x{{amount}}",

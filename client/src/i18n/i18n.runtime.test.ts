@@ -56,4 +56,20 @@ describe("i18n runtime", () => {
     expect(typeof msg).toBe("string");
     expect(msg.length).toBeGreaterThan(0);
   });
+
+  it("resolves solsticeGathering title and message from catalog", async () => {
+    const state = gameStateSchema.parse({});
+    expect(resolveEventTitle("solsticeGathering", undefined, state)).toBe(
+      "Solstice Gathering",
+    );
+    const msg = resolveEventMessage("solsticeGathering", undefined, state);
+    expect(msg).toContain("longest night");
+
+    await i18n.changeLanguage("de");
+    expect(resolveEventTitle("solsticeGathering", undefined, state)).toBe(
+      "Sonnenwend-Fest",
+    );
+    const deMsg = resolveEventMessage("solsticeGathering", undefined, state);
+    expect(deMsg).toContain("längste Nacht");
+  });
 });

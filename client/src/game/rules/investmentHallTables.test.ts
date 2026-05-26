@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { gameStateSchema } from "@shared/schema";
 import {
   buildInvestmentResultDialogPayload,
+  getInvestmentResultDialogBodyMeta,
   clampSuccessChance,
   commitInvestmentRolls,
   formatInvestmentCompletionLog,
@@ -268,6 +269,42 @@ describe("buildInvestmentResultDialogPayload", () => {
         payoutGold: 0,
       }),
     ).toMatchObject({ kind: "wipeout", goldDelta: -100 });
+  });
+
+  it("maps body keys for all outcome kinds", () => {
+    const success = buildInvestmentResultDialogPayload({
+      startPlayTime: 0,
+      endPlayTime: 1,
+      amountGold: 100,
+      durationMin: 5,
+      tier: "A",
+      success: true,
+      winPercentInt: 5,
+      luckyChanceHit: false,
+      effectiveWinPercent: 5,
+      payoutGold: 105,
+    });
+    expect(getInvestmentResultDialogBodyMeta(success)).toEqual({
+      bodyKey: "investmentResult.success",
+      bodyVars: { amount: 100 },
+    });
+
+    const lucky = buildInvestmentResultDialogPayload({
+      startPlayTime: 0,
+      endPlayTime: 1,
+      amountGold: 100,
+      durationMin: 5,
+      tier: "A",
+      success: true,
+      winPercentInt: 5,
+      luckyChanceHit: true,
+      effectiveWinPercent: 20,
+      payoutGold: 120,
+    });
+    expect(getInvestmentResultDialogBodyMeta(lucky)).toEqual({
+      bodyKey: "investmentResult.luckyChance",
+      bodyVars: { amount: 100, multiplier: 4 },
+    });
   });
 });
 
