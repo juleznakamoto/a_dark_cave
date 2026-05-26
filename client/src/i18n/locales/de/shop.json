@@ -62,10 +62,12 @@
   },
   "great_feast_1": {
     "activationMessage": "Ein großes Fest hat begonnen!",
+    "description": "Steigert die Produktion der Dorfbewohner 30 Minuten lang um das 5-Fache.",
     "name": "1 großes Fest"
   },
   "great_feast_3": {
     "activationMessage": "Ein großes Fest hat begonnen!",
+    "description": "Steigert die Produktion der Dorfbewohner 30 Minuten lang um das 5-Fache (3-mal).",
     "name": "3 große Feste"
   },
   "skull_lantern": {

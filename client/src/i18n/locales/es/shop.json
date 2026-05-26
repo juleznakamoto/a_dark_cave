@@ -62,10 +62,12 @@
   },
   "great_feast_1": {
     "activationMessage": "¡Ha comenzado un gran festín!",
+    "description": "Multiplica por 5 la producción de los aldeanos durante 30 minutos.",
     "name": "1 gran festín"
   },
   "great_feast_3": {
     "activationMessage": "¡Ha comenzado un gran festín!",
+    "description": "Multiplica por 5 la producción de los aldeanos durante 30 minutos (3 veces).",
     "name": "3 grandes festines"
   },
   "skull_lantern": {

@@ -12,9 +12,11 @@ import type { SupportedLocale } from "@/i18n/locales";
 import cn from "clsx";
 
 export default function LanguageSelector({
-  buttonClassName = "group px-1 py-1 text-xs hover hover:text-red-500",
+  buttonClassName = "group px-1 py-1 text-xs text-neutral-300 hover hover:text-red-500",
+  iconClassName = "w-4 h-4 opacity-60 transition-[opacity,color] group-hover:opacity-100",
 }: {
   buttonClassName?: string;
+  iconClassName?: string;
 } = {}) {
   const { locale, setLocale, locales, localeLabels } = useLocale();
   const { t } = useTranslation("ui");
@@ -29,10 +31,7 @@ export default function LanguageSelector({
           title={t("languageSelector.ariaLabel")}
           aria-label={t("languageSelector.ariaLabel")}
         >
-          <Globe
-            className="w-4 h-4 opacity-60 transition-opacity group-hover:opacity-100"
-            aria-hidden
-          />
+          <Globe className={iconClassName} aria-hidden />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-max min-w-0 text-xs">

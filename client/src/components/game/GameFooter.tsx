@@ -14,9 +14,12 @@ import { isTraderShopUnlocked } from "@/game/stateHelpers";
 import { useTranslation } from "react-i18next";
 
 const FOOTER_CONTROL_BTN =
-  "group px-1 py-1 text-xs hover hover:text-red-500";
+  "group px-1 py-1 text-xs text-neutral-300 hover hover:text-red-500";
+const FOOTER_CONTROL_BTN_FADE =
+  "opacity-60 transition-opacity group-hover:opacity-100";
 const FOOTER_CONTROL_IMG =
   "w-4 h-4 opacity-60 transition-[filter,opacity] group-hover:opacity-100 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]";
+const FOOTER_CONTROL_ICON = `w-4 h-4 ${FOOTER_CONTROL_BTN_FADE} transition-[opacity,color]`;
 
 export default function GameFooter() {
   const {
@@ -88,7 +91,7 @@ export default function GameFooter() {
               onClick={togglePause}
               data-testid="button-pause-game"
               disabled={idleModeDialog.isOpen}
-              className={`${FOOTER_CONTROL_BTN} ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "text-red-600" : ""} ${isPaused && !idleModeDialog.isOpen ? "continue-pause-flash" : ""}`}
+              className={`${FOOTER_CONTROL_BTN} ${FOOTER_CONTROL_BTN_FADE} ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "!text-red-600 !opacity-100" : ""} ${isPaused && !idleModeDialog.isOpen ? "continue-pause-flash" : ""}`}
               title={
                 isPaused ? t("footer.resumeGame") : t("footer.pauseGame")
               }
@@ -123,7 +126,10 @@ export default function GameFooter() {
                 className={FOOTER_CONTROL_IMG}
               />
             </Button>
-            <LanguageSelector buttonClassName={FOOTER_CONTROL_BTN} />
+            <LanguageSelector
+              buttonClassName={FOOTER_CONTROL_BTN}
+              iconClassName={FOOTER_CONTROL_ICON}
+            />
 
             {BTP === 1 ? (
               <Button
