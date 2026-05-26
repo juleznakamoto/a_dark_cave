@@ -366,4 +366,9 @@ export const caveEvents: Record<string, GameEvent> = {
     "clarityElixirCaveFoundDescendFurther",
     "clarityElixirFoundDescendFurther",
   ),
+
+  clarityElixirCaveFoundExploreRuins: createClarityElixirCaveFoundEvent(
+    "clarityElixirCaveFoundExploreRuins",
+    "clarityElixirFoundExploreRuins",
+  ),
 };

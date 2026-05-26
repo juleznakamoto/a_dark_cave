@@ -306,6 +306,15 @@ const caveItems = {
       eventId: "ringOfDrownedChoice",
       category: "clothing",
     },
+    {
+      key: "clarity_elixir",
+      probability: 0.01,
+      category: "consumable",
+      isChoice: true,
+      eventId: "clarityElixirCaveFoundExploreRuins",
+      seenKey: "clarityElixirFoundExploreRuins",
+      minMadness: 2,
+    },
   ],
   exploreTemple: [
     {
@@ -448,35 +457,35 @@ function getInheritedItems(actionId: string) {
             : "";
         const itemCondition =
           "condition" in item &&
-          typeof (item as { condition?: string }).condition === "string"
+            typeof (item as { condition?: string }).condition === "string"
             ? (item as { condition: string }).condition
             : undefined;
         const baseCondition =
           itemCondition != null
             ? (state: GameState) => {
-                const cat = (state as Record<string, unknown>)[category];
-                if (
-                  cat &&
-                  typeof cat === "object" &&
-                  (cat as Record<string, unknown>)[item.key]
-                )
-                  return false;
-                if (
-                  "eventId" in item &&
-                  item.eventId &&
-                  state.story?.seen?.[item.eventId]
-                )
-                  return false;
-                const isNegated = itemCondition.startsWith("!");
-                const path = isNegated ? itemCondition.slice(1) : itemCondition;
-                const parts = path.split(".");
-                let cur: unknown = state;
-                for (const p of parts) {
-                  cur = (cur as Record<string, unknown>)?.[p];
-                  if (cur === undefined) return isNegated;
-                }
-                return isNegated ? !cur : !!cur;
+              const cat = (state as Record<string, unknown>)[category];
+              if (
+                cat &&
+                typeof cat === "object" &&
+                (cat as Record<string, unknown>)[item.key]
+              )
+                return false;
+              if (
+                "eventId" in item &&
+                item.eventId &&
+                state.story?.seen?.[item.eventId]
+              )
+                return false;
+              const isNegated = itemCondition.startsWith("!");
+              const path = isNegated ? itemCondition.slice(1) : itemCondition;
+              const parts = path.split(".");
+              let cur: unknown = state;
+              for (const p of parts) {
+                cur = (cur as Record<string, unknown>)?.[p];
+                if (cur === undefined) return isNegated;
               }
+              return isNegated ? !cur : !!cur;
+            }
             : basePath + eventPart;
         inheritedItems[`${category}.${item.key}`] = {
           probability: Math.min(adjustedProbability, 1.0),
