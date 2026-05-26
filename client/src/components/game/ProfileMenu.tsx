@@ -358,7 +358,7 @@ export default function ProfileMenu() {
             }
             tooltipId="cruel-mode-indicator"
             disabled
-            className="px-2 py-1 cursor-pointer opacity-60 hover:opacity-100 transition-opacity flex items-center bg-background backdrop-blur-sm border border-border rounded-md"
+            className="px-1 py-1 cursor-pointer opacity-60 hover:opacity-100 transition-opacity flex items-center"
           >
             <span className="font-noto-symbols-2 text-red-600 text-xs font-bold">
               ⛤
