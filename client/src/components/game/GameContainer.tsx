@@ -431,7 +431,11 @@ export default function GameContainer() {
     if (relics?.survivors_notes || books?.book_of_trials) {
       tabs.push({
         id: "achievements",
-        icon: <Castle />,
+        icon: (
+          <span className="text-sm leading-none font-noto-symbols-2">
+            ⚜
+          </span>
+        ),
         label: "Achievements",
         onClick: () => setActiveTab("achievements"),
       });

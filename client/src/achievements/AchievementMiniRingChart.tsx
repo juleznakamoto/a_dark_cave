@@ -139,7 +139,7 @@ export default function AchievementMiniRingChart({
         </PieChart>
       </ResponsiveContainer>
       <span
-        className="absolute inset-0 flex items-center justify-center text-foreground text-[10px] font-medium"
+        className="absolute inset-0 flex items-center justify-center font-noto-symbols-2 text-foreground text-[10px] font-medium"
         style={{ opacity: isActive ? 1 : 0.5 }}
       >
         {config.centerSymbol}
