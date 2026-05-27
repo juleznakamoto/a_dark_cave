@@ -2522,7 +2522,21 @@
     "title": "Falsche Spiegelungen"
   },
   "wrongVillagers": {
-    "message": "Du zählst die Dorfbewohner, und es sind drei mehr, als es sein sollten. Die zusätzlichen sehen genauso aus wie Dorfbewohner, die vor Monaten gestorben sind. Sie arbeiten, essen und schlafen ganz normal, doch in ihren Augen liegen Tiefen alter Bosheit."
+    "choices": {
+      "avoid_them": {
+        "label": "Sie meiden"
+      },
+      "talk_to_them": {
+        "label": "Mit ihnen sprechen"
+      }
+    },
+    "log": {
+      "outcome0": "Du sprichst mit den Fremden. Sie gestehen, Wanderer zu sein, die zu sehr Angst hatten, um um Unterkunft zu bitten, und deshalb einfach in eine leere Hütte gezogen sind. Du erlaubst ihnen, im Dorf zu bleiben und zu arbeiten.",
+      "outcome1": "Als du sie zur Rede stellst, lachen sie und gestehen, Diebe zu sein, die das Dorf ausrauben wollten. Sie überwältigen dich und machen sich mit 250 Silber in den Wald davon.",
+      "outcome2": "Du hältst Abstand und beobachtest sie aus der Ferne. Nach einigen Tagen sind sie einfach verschwunden, als wären sie nie dagewesen. Du hast keine Ahnung, wer sie waren."
+    },
+    "message": "Du zählst die Dorfbewohner und stellst fest, dass drei mehr da sind als sein sollten. Fremde sind unter deinem Volk aufgetaucht, arbeiten und essen, als gehörten sie zu deiner Gemeinschaft.",
+    "title": "Falsche Dorfbewohner"
   },
   "youngWomanProtest": {
     "choices": {

@@ -348,23 +348,72 @@ export const madnessEvents: Record<string, GameEvent> = {
     timeProbability: 30,
     priority: 2,
     repeatable: false,
-    effect: (state: GameState) => {
-      const { patch } = addFreeVillagersWithinCap(state, 3);
+    isTimedChoice: true,
+    baseDecisionTime: 15,
+    choices: [
+      {
+        id: "talk_to_them",
+        relevant_stats: ["knowledge"],
+        success_chance: (state: GameState) => {
+          return calculateSuccessChance(state, 0.0, {
+            type: "knowledge",
+            multiplier: 0.0075,
+          });
+        },
+        effect: (state: GameState) => {
+          const successChance = calculateSuccessChance(state, 0.0, {
+            type: "knowledge",
+            multiplier: 0.0075,
+          });
 
-      return {
-        ...patch,
-        events: {
-          ...state.events,
-          wrongVillagers: true,
+          if (Math.random() < successChance) {
+            const { patch } = addFreeVillagersWithinCap(state, 3);
+            return {
+              ...patch,
+              events: {
+                ...state.events,
+                wrongVillagers: true,
+              },
+              _logMessageKey: "outcome0",
+            };
+          }
+
+          return {
+            events: {
+              ...state.events,
+              wrongVillagers: true,
+            },
+            resources: {
+              ...state.resources,
+              silver: Math.max(0, (state.resources.silver || 0) - 250),
+            },
+            stats: {
+              ...state.stats,
+              madnessFromEvents:
+                (state.stats.madnessFromEvents || 0) +
+                withCruelMadnessBonus(state, 1),
+            },
+            _logMessageKey: "outcome1",
+          };
         },
-        stats: {
-          ...state.stats,
-          madnessFromEvents:
-            (state.stats.madnessFromEvents || 0) +
-            withCruelMadnessBonus(state, 2),
-        },
-      };
-    },
+      },
+      {
+        id: "avoid_them",
+        effect: (state: GameState) => ({
+          events: {
+            ...state.events,
+            wrongVillagers: true,
+          },
+          stats: {
+            ...state.stats,
+            madnessFromEvents:
+              (state.stats.madnessFromEvents || 0) +
+              withCruelMadnessBonus(state, 2),
+          },
+          _logMessageKey: "outcome2",
+        }),
+      },
+    ],
   },
 
   skinCrawling: {

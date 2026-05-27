@@ -2522,7 +2522,21 @@
     "title": "Wrong Reflections"
   },
   "wrongVillagers": {
-    "message": "You count the villagers and there are three more than there should be. The extra ones look exactly like villagers who died months ago. They work, eat, and sleep normally, but their eyes hold depths of ancient malice."
+    "choices": {
+      "avoid_them": {
+        "label": "Avoid them"
+      },
+      "talk_to_them": {
+        "label": "Talk to them"
+      }
+    },
+    "log": {
+      "outcome0": "You speak to the strangers. They admit they are wanderers who were too afraid to ask for shelter, so they simply moved into an empty hut. You allow them to stay and work in the village.",
+      "outcome1": "As you confront them, they laugh and confess they are thieves who came to rob the village. They overpower you and make off with 250 Silver before vanishing into the woods.",
+      "outcome2": "You keep your distance and watch them from afar. After several days they are simply gone, as if they were never there. You have no idea who they were."
+    },
+    "message": "You count the villagers and find three more than there should be. Strangers have appeared among your people, working and eating as if they belong to your commmunity.",
+    "title": "Wrong Villagers"
   },
   "youngWomanProtest": {
     "choices": {

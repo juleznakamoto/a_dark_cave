@@ -2522,7 +2522,21 @@
     "title": "Reflets erronés"
   },
   "wrongVillagers": {
-    "message": "Vous comptez les villageois, et il y en a trois de plus qu'il ne devrait. Les intrus ressemblent exactement à des villageois morts il y a des mois. Ils travaillent, mangent et dorment normalement, mais leurs yeux recèlent des profondeurs d'antique malice."
+    "choices": {
+      "avoid_them": {
+        "label": "Les éviter"
+      },
+      "talk_to_them": {
+        "label": "Leur parler"
+      }
+    },
+    "log": {
+      "outcome0": "Vous parlez aux étrangers. Ils avouent être des vagabonds trop effrayés pour demander asile, et qu'ils se sont simplement installés dans une hutte vide. Vous leur permettez de rester et de travailler au village.",
+      "outcome1": "Lorsque vous les affrontez, ils rient et avouent être des voleurs venus piller le village. Ils vous maîtrisent et s'enfuient avec 250 argent dans les bois.",
+      "outcome2": "Vous gardez vos distances et les observez de loin. Au bout de plusieurs jours, ils ont disparu, comme s'ils n'avaient jamais existé. Vous ignorez qui ils étaient."
+    },
+    "message": "Vous comptez les villageois et en trouvez trois de plus qu'il ne devrait y en avoir. Des étrangers sont apparus parmi votre peuple, travaillant et mangeant comme s'ils appartenaient à votre communauté.",
+    "title": "Les mauvais villageois"
   },
   "youngWomanProtest": {
     "choices": {

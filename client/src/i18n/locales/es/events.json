@@ -2522,7 +2522,21 @@
     "title": "Reflejos equivocados"
   },
   "wrongVillagers": {
-    "message": "Cuentas a los aldeanos y hay tres más de los que debería. Los sobrantes se parecen exactamente a aldeanos que murieron hace meses. Trabajan, comen y duermen con normalidad, pero sus ojos contienen profundidades de antigua malicia."
+    "choices": {
+      "avoid_them": {
+        "label": "Evitarlos"
+      },
+      "talk_to_them": {
+        "label": "Hablar con ellos"
+      }
+    },
+    "log": {
+      "outcome0": "Hablas con los forasteros. Admiten ser vagabundos que tuvieron demasiado miedo de pedir refugio, así que simplemente ocuparon una cabaña vacía. Les permites quedarse y trabajar en la aldea.",
+      "outcome1": "Al confrontarlos, se ríen y confiesan ser ladrones que vinieron a robar la aldea. Te someten y se llevan 250 de plata antes de desaparecer en el bosque.",
+      "outcome2": "Mantienes la distancia y los observas desde lejos. Tras varios días simplemente desaparecen, como si nunca hubieran estado allí. No tienes idea de quiénes eran."
+    },
+    "message": "Cuentas a los aldeanos y hay tres más de los que debería haber. Forasteros han aparecido entre tu gente, trabajando y comiendo como si pertenecieran a tu comunidad.",
+    "title": "Aldeanos equivocados"
   },
   "youngWomanProtest": {
     "choices": {
