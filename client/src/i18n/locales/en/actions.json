@@ -678,6 +678,9 @@
   "tradeGoldForVoidBomb": {
     "label": "Buy Void Bomb"
   },
+  "tradeGoldForVeinfireElixir": {
+    "label": "Buy Veinfire Elixir"
+  },
   "tradeGoldForWood": {
     "label": "Buy Wood"
   },

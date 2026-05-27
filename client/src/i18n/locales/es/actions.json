@@ -692,5 +692,8 @@
       "mapFragment": "En el suelo de la cueva encuentras un fragmento de mapa hecho jirones.",
       "firstVisit": "El aire se vuelve más frío a medida que desciendes más profundo en la cueva. Las paredes parecen antinaturalmente lisas, como si alguien las hubiera moldeado."
     }
+  },
+  "tradeGoldForVeinfireElixir": {
+    "label": "Buy Veinfire Elixir"
   }
 }

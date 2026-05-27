@@ -210,6 +210,7 @@ export default function ForestPanel() {
         { id: "tradeGoldForEmberBomb", label: "Ember Bomb" },
         { id: "tradeGoldForAshfireBomb", label: "Ashfire Bomb" },
         { id: "tradeGoldForVoidBomb", label: "Void Bomb" },
+        { id: "tradeGoldForVeinfireElixir", label: "Veinfire Elixir" },
         { id: "tradeSilverForGold", label: "Gold" },
       ],
     },
@@ -282,8 +283,14 @@ export default function ForestPanel() {
       "tradeGoldForAshfireBomb",
       "tradeGoldForVoidBomb",
     ].includes(actionId);
+    const isVeinfireElixirTradeAction =
+      actionId === "tradeGoldForVeinfireElixir";
     const resourceGainTooltip =
-      isChopWood || isHunt || isSacrificeAction || isBombTradeAction
+      isChopWood ||
+        isHunt ||
+        isSacrificeAction ||
+        isBombTradeAction ||
+        isVeinfireElixirTradeAction
         ? getResourceGainTooltip(actionId, state)
         : null;
 

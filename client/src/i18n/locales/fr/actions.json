@@ -692,5 +692,8 @@
       "mapFragment": "Sur le sol de la grotte, vous trouvez un fragment de carte déchiré.",
       "firstVisit": "L'air devient plus froid à mesure que vous descendez plus profondément dans la grotte. Les parois semblent anormalement lisses, comme façonnées par quelqu'un."
     }
+  },
+  "tradeGoldForVeinfireElixir": {
+    "label": "Buy Veinfire Elixir"
   }
 }

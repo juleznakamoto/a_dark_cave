@@ -692,5 +692,8 @@
       "mapFragment": "在洞穴地上，你发现一块残破的地图片段。",
       "firstVisit": "越往洞穴深处，空气越发寒冷。洞壁光滑得不自然，仿佛曾被人塑造。"
     }
+  },
+  "tradeGoldForVeinfireElixir": {
+    "label": "Buy Veinfire Elixir"
   }
 }

@@ -985,7 +985,7 @@ export default function GameContainer() {
                     }}
                     data-testid="tab-achievements"
                   >
-                    <span className="text-[11px] leading-none font-noto-symbols-2">
+                    <span className="text-[14px] leading-none font-noto-symbols-2">
                       ⚜
                     </span>
                   </button>
@@ -1001,7 +1001,7 @@ export default function GameContainer() {
                     onClick={() => setActiveTab("timedevent")}
                     data-testid="tab-timedevent"
                   >
-                    <span className="timer-symbol text-[11px] leading-none font-noto-symbols-2">
+                    <span className="timer-symbol text-[14px] leading-none font-noto-symbols-2">
                       ⊚
                     </span>
                   </button>

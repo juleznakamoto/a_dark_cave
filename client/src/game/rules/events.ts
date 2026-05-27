@@ -541,15 +541,6 @@ export class EventManager {
             };
             stateChanges._logMessageI18nKey =
               "merchant.toolTrades.trade_clarity_elixir.message";
-          } else if (trade.buyItem === "veinfire_elixir") {
-            const next = Math.min(
-              (state.resources.veinfire_elixir ?? 0) + 1,
-              5,
-            );
-            stateChanges.resources = {
-              ...stateChanges.resources,
-              veinfire_elixir: next,
-            };
           } else if (trade.buyResource === "book") {
             stateChanges.books = {
               ...(state.books || {}),

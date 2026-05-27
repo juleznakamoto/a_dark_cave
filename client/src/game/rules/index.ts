@@ -369,7 +369,11 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
   if (bombResource && isBombAtLimit(bombResource, state)) {
     return false;
   }
-  if (actionId === "craftVeinfireElixir" && isVeinfireElixirAtLimit(state)) {
+  if (
+    (actionId === "craftVeinfireElixir" ||
+      actionId === "tradeGoldForVeinfireElixir") &&
+    isVeinfireElixirAtLimit(state)
+  ) {
     return false;
   }
 

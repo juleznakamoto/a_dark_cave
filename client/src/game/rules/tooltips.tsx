@@ -308,17 +308,19 @@ export const getResourceGainTooltip = (
 
   const bombResource = BOMB_ACTIONS[actionId];
   const isBombAtMax = bombResource && isBombAtLimit(bombResource, state);
-  const isVeinfireCraftAtMax =
-    actionId === "craftVeinfireElixir" && isVeinfireElixirAtLimit(state);
+  const isVeinfireElixirAtMax =
+    (actionId === "craftVeinfireElixir" ||
+      actionId === "tradeGoldForVeinfireElixir") &&
+    isVeinfireElixirAtLimit(state);
 
   const veinrootPctLine =
     (actionId === "chopWood" || actionId === "hunt") &&
       Boolean(state.story?.seen?.veinrootDiscovered)
       ? actionId === "chopWood"
         ? getUiTooltip(
-            "veinrootChanceChopWood",
-            "0.5% chance of Veinroot",
-          )
+          "veinrootChanceChopWood",
+          "0.5% chance of Veinroot",
+        )
         : getUiTooltip("veinrootChanceHunt", "1% chance of Veinroot")
       : null;
 
@@ -326,7 +328,7 @@ export const getResourceGainTooltip = (
     gains.length === 0 &&
     costs.length === 0 &&
     !isBombAtMax &&
-    !isVeinfireCraftAtMax &&
+    !isVeinfireElixirAtMax &&
     !veinrootPctLine
   ) {
     return null;
@@ -338,7 +340,7 @@ export const getResourceGainTooltip = (
   const showExactGains = !!state.buildings.clerksHut || isCraftAction;
 
   const headerBlockAboveVein =
-    gains.length > 0 || costs.length > 0 || isBombAtMax || isVeinfireCraftAtMax;
+    gains.length > 0 || costs.length > 0 || isBombAtMax || isVeinfireElixirAtMax;
 
   return (
     <div className="text-xs">
@@ -349,7 +351,7 @@ export const getResourceGainTooltip = (
           })}
         </div>
       )}
-      {isVeinfireCraftAtMax && (
+      {isVeinfireElixirAtMax && (
         <div className="text-muted-foreground mb-1">
           {getUiTooltip(
             "maxVeinfireElixirReached",
@@ -358,7 +360,7 @@ export const getResourceGainTooltip = (
           )}
         </div>
       )}
-      {(isBombAtMax || isVeinfireCraftAtMax) &&
+      {(isBombAtMax || isVeinfireElixirAtMax) &&
         (gains.length > 0 || costs.length > 0) && (
           <div className="border-t border-border my-1" />
         )}
@@ -367,17 +369,17 @@ export const getResourceGainTooltip = (
           {showExactGains
             ? gain.min === gain.max
               ? getUiTooltip("gainExact", "+{{amount}} {{resource}}", {
-                  amount: formatNumber(gain.min),
-                  resource: formatResourceName(gain.resource),
-                })
-              : getUiTooltip("gainRange", "+{{min}}-{{max}} {{resource}}", {
-                  min: formatNumber(gain.min),
-                  max: formatNumber(gain.max),
-                  resource: formatResourceName(gain.resource),
-                })
-            : getUiTooltip("gainUnknown", "+? {{resource}}", {
+                amount: formatNumber(gain.min),
                 resource: formatResourceName(gain.resource),
-              })}
+              })
+              : getUiTooltip("gainRange", "+{{min}}-{{max}} {{resource}}", {
+                min: formatNumber(gain.min),
+                max: formatNumber(gain.max),
+                resource: formatResourceName(gain.resource),
+              })
+            : getUiTooltip("gainUnknown", "+? {{resource}}", {
+              resource: formatResourceName(gain.resource),
+            })}
         </div>
       ))}
       {gains.length > 0 && costs.length > 0 && (
@@ -680,11 +682,11 @@ export const heartfireTooltip: TooltipConfig = {
     const timeLabel =
       remainingSecs >= 60
         ? getUiTooltip("minRemaining", "{{count}} min remaining", {
-            count: Math.ceil(remainingSecs / 60),
-          })
+          count: Math.ceil(remainingSecs / 60),
+        })
         : getUiTooltip("secRemaining", "{{count}} sec remaining", {
-            count: remainingSecs,
-          });
+          count: remainingSecs,
+        });
 
     const villagerBonus = [0, 1, 2.5, 5, 7.5, 10][heartfireState.level] ?? 0;
     const prodPctPerLevel = state.blessings?.ebon_grace ? 10 : 5;
@@ -813,10 +815,10 @@ function formatBombCombatTooltip(
     getUiTooltip("baseDamage", "Base Damage: {{value}}", { value: baseDamage }),
     ...(knowledge >= 5
       ? [
-          getUiTooltip("knowledgeBonus", "Knowledge Bonus: +{{value}}", {
-            value: knowledgeBonus,
-          }),
-        ]
+        getUiTooltip("knowledgeBonus", "Knowledge Bonus: +{{value}}", {
+          value: knowledgeBonus,
+        }),
+      ]
       : []),
     getUiTooltip("totalDamage", "Total Damage: {{value}}", { value: total }),
     getUiTooltip(
@@ -852,10 +854,10 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
         }),
         ...(knowledge >= 5
           ? [
-              getUiTooltip("knowledgeBonus", "Knowledge Bonus: +{{value}}", {
-                value: knowledgeBonus,
-              }),
-            ]
+            getUiTooltip("knowledgeBonus", "Knowledge Bonus: +{{value}}", {
+              value: knowledgeBonus,
+            }),
+          ]
           : []),
         getUiTooltip(
           "totalDamageForRounds",

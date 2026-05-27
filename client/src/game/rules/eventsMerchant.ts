@@ -663,7 +663,7 @@ function getToolTradeLabelFallback(trade: {
         "clothing",
         item,
         (clothingEffects as Record<string, { name?: string }>)[item]?.name ??
-          item,
+        item,
       );
     case "weapon":
       return getEffectName("weapons", item, item);
@@ -860,23 +860,13 @@ const toolTrades = [
         (state.story?.seen?.clarityElixirPurchases as number) ?? 0;
       if (purchases >= 5) return false;
       if (purchases === 0) return state.buildings.woodenHut >= 3;
-      if (purchases === 1) return state.buildings.woodenHut >= 7;
-      if (purchases === 2) return state.buildings.woodenHut >= 10;
-      if (purchases === 3) return state.buildings.stoneHut >= 4;
-      if (purchases === 4) return state.buildings.stoneHut >= 8;
+      if (purchases === 1) return state.buildings.woodenHut >= 6;
+      if (purchases === 2) return state.buildings.woodenHut >= 9;
+      if (purchases === 3) return state.buildings.stoneHut >= 2;
+      if (purchases === 4) return state.buildings.stoneHut >= 6;
       return false;
     },
     costs: [{ resource: "gold", amounts: [250] }],
-
-  },
-  {
-    id: "trade_veinfire_elixir",
-    give: "consumable",
-    giveItem: "veinfire_elixir",
-    condition: (state: GameState) =>
-      Boolean(state.story?.seen?.veinrootDiscovered) &&
-      (state.resources.veinfire_elixir ?? 0) < 5,
-    costs: [{ resource: "gold", amounts: [150] }],
 
   },
 ];

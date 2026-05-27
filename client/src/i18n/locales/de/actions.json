@@ -692,5 +692,8 @@
       "mapFragment": "Auf dem Höhlenboden findest du ein zerrissenes Kartenfragment.",
       "firstVisit": "Die Luft wird kälter, während du den Pfad tiefer in die Höhle hinabsteigst. Die Wände wirken unnatürlich glatt, als hätte sie jemand geformt."
     }
+  },
+  "tradeGoldForVeinfireElixir": {
+    "label": "Buy Veinfire Elixir"
   }
 }

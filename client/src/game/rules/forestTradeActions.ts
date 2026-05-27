@@ -563,6 +563,27 @@ export const forestTradeActions: Record<string, Action> = {
       },
     },
   },
+
+  tradeGoldForVeinfireElixir: {
+    id: "tradeGoldForVeinfireElixir",
+    label: "Buy Veinfire Elixir",
+    show_when: {
+      1: {
+        "buildings.tradePost": 1,
+        "story.seen.veinrootDiscovered": true,
+      },
+    },
+    cost: {
+      1: {
+        "resources.gold": 150,
+      },
+    },
+    effects: {
+      1: {
+        "resources.veinfire_elixir": 1,
+      },
+    },
+  },
 };
 
 // Generic handler for all trade actions with knowledge-based cooldown reduction
