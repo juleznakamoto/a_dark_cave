@@ -21,6 +21,19 @@ describe("i18n runtime", () => {
     expect(tWithFallback("ui", "estate.improve", "Improve")).toBe("Improve");
   });
 
+  it("resolves villagerCost plural tooltip in English and German", async () => {
+    expect(i18n.t("ui:tooltips.villagerCost", { count: 1 })).toBe(
+      "-1 Villager",
+    );
+    expect(i18n.t("ui:tooltips.villagerCost", { count: 3 })).toBe(
+      "-3 Villagers",
+    );
+    await i18n.changeLanguage("de");
+    expect(i18n.t("ui:tooltips.villagerCost", { count: 1 })).toBe(
+      "-1 Dorfbewohner",
+    );
+  });
+
   it("falls back to inline English for missing keys", () => {
     expect(getActionLabel("unknownAction", "Fallback Label")).toBe(
       "Fallback Label",

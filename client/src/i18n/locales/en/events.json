@@ -1081,7 +1081,7 @@
         "label": "Pay 250 Gold"
       },
       "decline": {
-        "label": "Time Expired"
+        "label": "Decline"
       }
     },
     "log": {
@@ -1756,7 +1756,7 @@
         "label": "Pay 250 Gold"
       },
       "decline": {
-        "label": "Time Expired"
+        "label": "Decline"
       }
     },
     "log": {

@@ -1081,7 +1081,7 @@
         "label": "250 Gold zahlen"
       },
       "decline": {
-        "label": "Zeit abgelaufen"
+        "label": "Ablehnen"
       }
     },
     "log": {
@@ -1756,7 +1756,7 @@
         "label": "250 Gold zahlen"
       },
       "decline": {
-        "label": "Zeit abgelaufen"
+        "label": "Ablehnen"
       }
     },
     "log": {
