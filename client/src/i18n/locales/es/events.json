@@ -1894,6 +1894,24 @@
     "message": "Desde los confines más profundos de la cueva estalla una masa inimaginable de criaturas pálidas. Inundan la tierra como una marea viva, mientras la ciudad se prepara para la aniquilación.",
     "title": "La oleada final"
   },
+  "theDamned": {
+    "choices": {
+      "turnThemAway": {
+        "label": "No"
+      },
+      "welcomeThem": {
+        "label": "Sí"
+      }
+    },
+    "log": {
+      "outcome0": "{{added}} supervivientes se unen a tu aldea, agradecidos pero atormentados por lo que padecieron en el bosque.",
+      "outcome1": "Los rechazas. Una amarga inquietud se cierne sobre la aldea: los aldeanos no están contentos con tu decisión.",
+      "outcome2": "Los rechazas. Una amarga inquietud se cierne sobre la aldea: los aldeanos no están contentos con tu decisión.",
+      "outcome3": "Los acoges, pero no hay lugar en la aldea para más aldeanos."
+    },
+    "message": "Un grupo de jóvenes hombres y mujeres sale tambaleándose del bosque, medio muertos de frío y hambre. Fueron abandonados en el bosque como sacrificio a los dioses del bosque, pero de algún modo sobrevivieron. ¿Los acoges en la aldea?",
+    "title": "Los malditos"
+  },
   "thirdWave": {
     "message": "Hordas de criaturas pálidas salen de la cueva; los gritos sacuden incluso las piedras, sus armas de hueso resquebrajan el suelo.",
     "title": "La tercera oleada"

@@ -85,6 +85,7 @@ import { tradersSonEvents } from "./eventsTradersSon";
 import { disgracedPriorEvents } from "./eventsDisgracedPrior";
 import { socialPromoExclusiveEvents } from "./eventsSocialPromoExclusive";
 import { gamblerEvents } from "./eventsGambler";
+import { theDamnedEvents } from "./eventsTheDamned";
 import { GAME_CONSTANTS } from "../constants";
 import {
   getEventCatalogId,
@@ -196,6 +197,7 @@ export const gameEvents: Record<string, GameEvent> = {
   ...disgracedPriorEvents,
   ...socialPromoExclusiveEvents,
   ...gamblerEvents,
+  ...theDamnedEvents,
 };
 
 export function getEventCatalogIdByEventId(eventId: string): string {

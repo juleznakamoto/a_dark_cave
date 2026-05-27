@@ -1894,6 +1894,24 @@
     "message": "Des profondeurs les plus reculées de la grotte, une masse inimaginable de créatures pâles jaillit. Elles inondent la terre comme une marée vivante, tandis que la cité se prépare à l'anéantissement.",
     "title": "La dernière vague"
   },
+  "theDamned": {
+    "choices": {
+      "turnThemAway": {
+        "label": "Non"
+      },
+      "welcomeThem": {
+        "label": "Oui"
+      }
+    },
+    "log": {
+      "outcome0": "{{added}} survivants rejoignent votre village, reconnaissants mais hantés par ce qu'ils ont enduré dans les bois.",
+      "outcome1": "Vous les repoussez. Une amère inquiétude s'installe dans le village, car les villageois ne sont pas d'accord avec votre décision.",
+      "outcome2": "Vous les repoussez. Une amère inquiétude s'installe dans le village, car les villageois ne sont pas d'accord avec votre décision.",
+      "outcome3": "Vous les accueillez, mais il n'y a plus de place dans le village pour d'autres habitants."
+    },
+    "message": "Un groupe de jeunes hommes et femmes sort en chancelant de la forêt, à demi morts de froid et de faim. Ils avaient été laissés dans les bois en sacrifice aux dieux de la forêt, et ont pourtant survécu. Les accueillez-vous dans le village ?",
+    "title": "Les damnés"
+  },
   "thirdWave": {
     "message": "Des hordes de créatures pâles sortent de la grotte ; les cris ébranlent même la pierre, leurs armes d'os fendent le sol.",
     "title": "La troisième vague"

@@ -1894,6 +1894,24 @@
     "message": "Aus den tiefsten Tiefen der Höhle bricht eine unvorstellbare Masse bleicher Kreaturen hervor. Sie fluten das Land wie eine lebende Flut, während die Stadt sich auf die Vernichtung vorbereitet.",
     "title": "Die letzte Welle"
   },
+  "theDamned": {
+    "choices": {
+      "turnThemAway": {
+        "label": "Nein"
+      },
+      "welcomeThem": {
+        "label": "Ja"
+      }
+    },
+    "log": {
+      "outcome0": "{{added}} Überlebende schließen sich deinem Dorf an — dankbar, doch gezeichnet von dem, was sie im Wald erduldet haben.",
+      "outcome1": "Du weist sie ab. Eine bittere Unruhe legt sich über das Dorf, denn die Dorfbewohner sind mit deiner Entscheidung nicht einverstanden.",
+      "outcome2": "Du weist sie ab. Eine bittere Unruhe legt sich über das Dorf, denn die Dorfbewohner sind mit deiner Entscheidung nicht einverstanden.",
+      "outcome3": "Du nimmst sie auf, aber im Dorf ist kein Platz für weitere Bewohner."
+    },
+    "message": "Eine Gruppe junger Männer und Frauen taumelt aus dem Wald, halbtot vor Kälte und Hunger. Sie wurden als Opfer für die Waldgötter im Wald zurückgelassen und haben dennoch irgendwie überlebt. Nimmst du sie im Dorf auf?",
+    "title": "Die Verdammten"
+  },
   "thirdWave": {
     "message": "Horden bleicher Kreaturen strömen aus der Höhle; Schreie erschüttern selbst die Steine, ihre Knochenwaffen zerschlagen den Boden.",
     "title": "Die dritte Welle"

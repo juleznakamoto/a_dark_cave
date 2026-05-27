@@ -1894,6 +1894,24 @@
     "message": "From the deepest reaches of the cave, an unimaginable mass of pale creatures erupts. They flood over the land like a living tide, as the city braces for annihilation.",
     "title": "The Final Wave"
   },
+  "theDamned": {
+    "choices": {
+      "turnThemAway": {
+        "label": "No"
+      },
+      "welcomeThem": {
+        "label": "Yes"
+      }
+    },
+    "log": {
+      "outcome0": "{{added}} survivors join your village, grateful yet haunted by what they endured in the woods.",
+      "outcome1": "You turn them away. A bitter unease settles over the village as the villagers are not happy with your decision.",
+      "outcome2": "You turn them away. A bitter unease settles over the village as the villagers are not happy with your decision.",
+      "outcome3": "You welcome them, but there is no room in the village for more villagers."
+    },
+    "message": "A group of young men and women stumbles from the forest, half dead from cold and hunger. They were left in the woods as a sacrifice to the forest gods, yet somehow survived. Do you welcome them in the village?",
+    "title": "The Damned"
+  },
   "thirdWave": {
     "message": "Hordes of pale creatures come from the cave; screams shake even the stones, their bone weapons cracking the ground.",
     "title": "The Third Wave"
