@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { useGameStore } from "./state";
+import { useGameStore, isModalDialogOpen } from "./state";
 import { clearExpiredTimedEventTab } from "./loop";
 
 describe('Game Loop Production', () => {
@@ -56,6 +56,55 @@ describe('Game Loop Production', () => {
     const updatedState = useGameStore.getState();
     expect(updatedState.eventDialog.isOpen).toBe(true);
     expect(updatedState.isPaused || updatedState.eventDialog.isOpen).toBe(true);
+  });
+
+  it("pauses simulation while a timed event tab is active", () => {
+    useGameStore.setState({
+      timedEventTab: {
+        isActive: true,
+        event: {
+          id: "theDamned-test",
+          message: "Test",
+          timestamp: Date.now(),
+          type: "event" as const,
+        },
+        expiryTime: Date.now() + 60_000,
+        startTime: Date.now(),
+      },
+    });
+
+    expect(isModalDialogOpen(useGameStore.getState())).toBe(true);
+  });
+
+  it("clears expired timed events via clearExpiredTimedEventTab", () => {
+    const mockEvent = {
+      id: "test-event",
+      eventId: "test-event",
+      message: "Test event",
+      title: "Test Event",
+      type: "event" as const,
+      choices: [{ id: "choice1", label: "Choice 1", effect: () => ({}) }],
+      fallbackChoice: { id: "choice1", label: "Choice 1", effect: () => ({}) },
+    };
+
+    useGameStore.setState({
+      eventDialog: { isOpen: false, currentEvent: null },
+      timedEventTab: {
+        isActive: true,
+        event: mockEvent,
+        expiryTime: Date.now() - 1000,
+        startTime: Date.now() - 2000,
+        pauseAccumMs: 0,
+        pauseStartedAt: 0,
+      },
+    });
+
+    clearExpiredTimedEventTab();
+
+    const finalState = useGameStore.getState();
+    expect(finalState.timedEventTab.isActive).toBe(false);
+    expect(finalState.timedEventTab.event).toBe(null);
+    expect(finalState.timedEventTab.expiryTime).toBe(0);
   });
 
   it('should clear expired timed events', () => {

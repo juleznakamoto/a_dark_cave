@@ -192,19 +192,31 @@ export function resolveInheritedActionLogMessage(
   fallbackCatalog: Record<string, Record<string, string>>,
   options?: TranslateOptions,
 ): string {
+  const actionLogKey = (catalogActionId: string) =>
+    nsKey("actions", `${catalogActionId}.log.${logKey}`);
+
   const directFallback = fallbackCatalog[actionId]?.[logKey] ?? "";
-  let message = getActionLogMessage(actionId, logKey, directFallback, options);
-  if (message.trim()) return message;
+  if (i18n.exists(actionLogKey(actionId))) {
+    return getActionLogMessage(actionId, logKey, directFallback, options);
+  }
 
   for (const [catalogActionId, keys] of Object.entries(fallbackCatalog)) {
     if (catalogActionId === actionId) continue;
     const fallback = keys[logKey];
     if (!fallback) continue;
-    message = getActionLogMessage(catalogActionId, logKey, fallback, options);
-    if (message.trim()) return message;
+    if (i18n.exists(actionLogKey(catalogActionId))) {
+      return getActionLogMessage(catalogActionId, logKey, fallback, options);
+    }
   }
 
-  return message;
+  for (const [catalogActionId, keys] of Object.entries(fallbackCatalog)) {
+    const fallback = keys[logKey];
+    if (fallback) {
+      return getActionLogMessage(catalogActionId, logKey, fallback, options);
+    }
+  }
+
+  return directFallback;
 }
 
 export function getActionDescription(

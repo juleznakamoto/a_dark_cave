@@ -90,7 +90,21 @@
     "title": "Despertar ensangrentado"
   },
   "bloodInWater": {
-    "message": "El agua de la aldea corre roja durante tres días. Los aldeanos no parecen notarlo y la beben como si nada hubiera cambiado. Tú saboreas cobre y hierro, pero ellos aseguran que sabe al agua de manantial más dulce."
+    "choices": {
+      "drink_water": {
+        "label": "Beber agua"
+      },
+      "ignore": {
+        "label": "Ignorarlo"
+      }
+    },
+    "log": {
+      "outcome0": "Bebes del pozo a pesar del tinte rojo. El agua está fría e insípida, y al cabo de unos momentos parece volverse clara de repente. Tu mente parece haberte engañado.",
+      "outcome1": "Bebes profundamente. El sabor a cobre inunda tu boca, espeso y cálido. Esa noche sueñas con ahogarte en agua roja y despiertas con el sabor aún en la lengua.",
+      "outcome2": "Te niegas a beber, pero los aldeanos siguen llenando sus copas. Sus labios se tiñen de rojo mientras te sonríen, como si nada estuviera mal."
+    },
+    "message": "El agua de la aldea corre roja durante tres días. Los aldeanos no parecen notarlo y la beben como si nada hubiera cambiado. Hueles cobre y hierro, pero ellos aseguran que sabe a agua de manantial pura.",
+    "title": "Sangre en el agua"
   },
   "bloodMoonAttack": {
     "choices": {
@@ -1747,7 +1761,21 @@
     "title": "La flauta de sombra"
   },
   "shadowsMove": {
-    "message": "Las sombras de la aldea parecen moverse mal. Se alargan demasiado, se retuercen en ángulos imposibles y a veces parecen moverse independientemente de sus fuentes. Alcanzas a ver formas que no deberían estar allí."
+    "choices": {
+      "ignore": {
+        "label": "Ignorarlas"
+      },
+      "stare_at_shadows": {
+        "label": "Mirar las sombras"
+      }
+    },
+    "log": {
+      "outcome0": "Fijas la mirada en las sombras cambiantes hasta que se quedan quietas. Quizá no fue nada. Eso te dices, al menos.",
+      "outcome1": "Las sombras se inclinan hacia ti. Formas se condensan al borde de la vista, y algo susurra tu nombre con voz de hojas secas.",
+      "outcome2": "Desvías la mirada, pero la inquietud te sigue. De reojo, las sombras siguen moviéndose mucho después de que dejaste de mirar."
+    },
+    "message": "Las sombras de la aldea parecen moverse mal. Se alargan demasiado, se retuercen en ángulos imposibles y a veces parecen moverse independientemente de sus fuentes.",
+    "title": "Sombras en movimiento"
   },
   "shoreFishermenResponse": {
     "choices": {

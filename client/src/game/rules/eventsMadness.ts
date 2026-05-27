@@ -39,18 +39,66 @@ export const madnessEvents: Record<string, GameEvent> = {
     timeProbability: 30,
     priority: 1,
     repeatable: false,
-    effect: (state: GameState) => ({
-      events: {
-        ...state.events,
-        shadowsMove: true,
+    isTimedChoice: true,
+    baseDecisionTime: 15,
+    choices: [
+      {
+        id: "stare_at_shadows",
+        relevant_stats: ["knowledge"],
+        success_chance: (state: GameState) => {
+          return calculateSuccessChance(state, 0.0, {
+            type: "knowledge",
+            multiplier: 0.015,
+          });
+        },
+        effect: (state: GameState) => {
+          const successChance = calculateSuccessChance(state, 0.0, {
+            type: "knowledge",
+            multiplier: 0.015,
+          });
+
+          if (Math.random() < successChance) {
+            return {
+              events: {
+                ...state.events,
+                shadowsMove: true,
+              },
+              _logMessageKey: "outcome0",
+            };
+          }
+
+          return {
+            events: {
+              ...state.events,
+              shadowsMove: true,
+            },
+            stats: {
+              ...state.stats,
+              madnessFromEvents:
+                (state.stats.madnessFromEvents || 0) +
+                withCruelMadnessBonus(state, 2),
+            },
+            _logMessageKey: "outcome1",
+          };
+        },
       },
-      stats: {
-        ...state.stats,
-        madnessFromEvents:
-          (state.stats.madnessFromEvents || 0) +
-          withCruelMadnessBonus(state, 2),
+      {
+        id: "ignore",
+        effect: (state: GameState) => ({
+          events: {
+            ...state.events,
+            shadowsMove: true,
+          },
+          stats: {
+            ...state.stats,
+            madnessFromEvents:
+              (state.stats.madnessFromEvents || 0) +
+              withCruelMadnessBonus(state, 1),
+          },
+          _logMessageKey: "outcome2",
+        }),
       },
-    }),
+    ],
   },
 
   villagerStares: {
@@ -91,7 +139,7 @@ export const madnessEvents: Record<string, GameEvent> = {
                 ...state.stats,
                 madnessFromEvents:
                   (state.stats.madnessFromEvents || 0) +
-                  withCruelMadnessBonus(state, 2),
+                  withCruelMadnessBonus(state, 1),
               },
               _logMessageKey: "outcome0",
             };
@@ -146,27 +194,73 @@ export const madnessEvents: Record<string, GameEvent> = {
     timeProbability: 30,
     priority: 2,
     repeatable: false,
-    effect: (state: GameState) => ({
-      events: {
-        ...state.events,
-        bloodInWater: true,
+    isTimedChoice: true,
+    baseDecisionTime: 15,
+    choices: [
+      {
+        id: "drink_water",
+        relevant_stats: ["knowledge"],
+        success_chance: (state: GameState) => {
+          return calculateSuccessChance(state, 0.0, {
+            type: "knowledge",
+            multiplier: 0.1,
+          });
+        },
+        effect: (state: GameState) => {
+          const successChance = calculateSuccessChance(state, 0.0, {
+            type: "knowledge",
+            multiplier: 0.1,
+          });
+
+          if (Math.random() < successChance) {
+            return {
+              events: {
+                ...state.events,
+                bloodInWater: true,
+              },
+              _logMessageKey: "outcome0",
+            };
+          }
+
+          return {
+            events: {
+              ...state.events,
+              bloodInWater: true,
+            },
+            stats: {
+              ...state.stats,
+              madnessFromEvents:
+                (state.stats.madnessFromEvents || 0) +
+                withCruelMadnessBonus(state, 3),
+            },
+            _logMessageKey: "outcome1",
+          };
+        },
       },
-      stats: {
-        ...state.stats,
-        madnessFromEvents:
-          (state.stats.madnessFromEvents || 0) +
-          withCruelMadnessBonus(state, 2),
+      {
+        id: "ignore",
+        effect: (state: GameState) => ({
+          events: {
+            ...state.events,
+            bloodInWater: true,
+          },
+          stats: {
+            ...state.stats,
+            madnessFromEvents:
+              (state.stats.madnessFromEvents || 0) +
+              withCruelMadnessBonus(state, 2),
+          },
+          _logMessageKey: "outcome2",
+        }),
       },
-    }),
+    ],
   },
 
   facesInWalls: {
     id: "facesInWalls",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 27 && !state.events.facesInWalls,
-
     timeProbability: 30,
-
     priority: 3,
     repeatable: false,
     isTimedChoice: true,
@@ -350,7 +444,7 @@ export const madnessEvents: Record<string, GameEvent> = {
               ...(deathResult.stats || {}),
               madnessFromEvents:
                 (state.stats.madnessFromEvents || 0) +
-                withCruelMadnessBonus(state, 2),
+                withCruelMadnessBonus(state, 1),
             },
             _logMessageKey: "outcome2",
             _logMessageVars: { killedVillagers: killedCount },

@@ -43,6 +43,32 @@ export function paymentTypeSummaryFromCharge(
   return type;
 }
 
+/**
+ * ISO 3166-1 alpha-2 country for purchase analytics.
+ * Billing address is preferred; PayPal exposes buyer country on payment_method_details instead.
+ */
+export function purchaseCountryFromCharge(charge: Stripe.Charge): string | null {
+  const billing = charge.billing_details?.address?.country;
+  if (typeof billing === "string" && billing.trim()) {
+    return billing.trim();
+  }
+
+  const pmd = charge.payment_method_details;
+  if (!pmd || typeof pmd !== "object" || !("type" in pmd)) {
+    return null;
+  }
+  const type = (pmd as { type?: string }).type;
+  if (type === "paypal") {
+    const paypalCountry = (pmd as { paypal?: { country?: string | null } })
+      .paypal?.country;
+    if (typeof paypalCountry === "string" && paypalCountry.trim()) {
+      return paypalCountry.trim();
+    }
+  }
+
+  return null;
+}
+
 export { SHOP_ITEMS };
 export type { ShopItem };
 
@@ -213,8 +239,7 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
       throw new Error('Missing charge on succeeded PaymentIntent');
     }
 
-    const billingCountry =
-      charge.billing_details?.address?.country ?? null;
+    const billingCountry = purchaseCountryFromCharge(charge);
     const paymentType = paymentTypeSummaryFromCharge(charge);
     const cruelMode =
       paymentIntent.metadata.cruelMode === 'true'

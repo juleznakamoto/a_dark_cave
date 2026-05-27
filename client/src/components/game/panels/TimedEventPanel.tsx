@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import {
   useGameStore,
-  isModalDialogOpen,
+  shouldFreezeTimedEventTabCountdown,
   syncTimedEventTabPauseTracking,
   getTimedEventTabEffectiveRemainingMs,
 } from "@/game/state";
@@ -181,7 +181,7 @@ export default function TimedEventPanel() {
     const updateTimer = () => {
       syncTimedEventTabPauseTracking();
       const st = useGameStore.getState();
-      const isPaused = st.isPaused || isModalDialogOpen(st);
+      const isPaused = shouldFreezeTimedEventTabCountdown(st);
       if (isPaused) {
         return;
       }

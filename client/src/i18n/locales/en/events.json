@@ -90,7 +90,21 @@
     "title": "Bloodied Awakening"
   },
   "bloodInWater": {
-    "message": "The village water runs red for three days. The villagers don't seem to notice, drinking it as if nothing has changed. You taste copper and iron, but they claim it tastes like the sweetest spring water."
+    "choices": {
+      "drink_water": {
+        "label": "Drink water"
+      },
+      "ignore": {
+        "label": "Ignore it"
+      }
+    },
+    "log": {
+      "outcome0": "You drink from the well despite the red tint. The water is cold, tasteless and after a few moments it suddenly looks clear again. Your mind seems to have tricked you.",
+      "outcome1": "You drink deeply. The copper taste floods your mouth, thick and warm. That night you dream of drowning in red water, and wake with the taste still on your tongue.",
+      "outcome2": "You refuse to drink, but the villagers keep filling their cups. Their lips stain red as they smile at you, as if nothing is wrong."
+    },
+    "message": "The village water runs red for three days. The villagers don't seem to notice, drinking it as if nothing has changed. You smell copper and iron, but they claim it tastes like pure spring water.",
+    "title": "Blood in the Water"
   },
   "bloodMoonAttack": {
     "choices": {
@@ -1747,7 +1761,21 @@
     "title": "The Shadow Flute"
   },
   "shadowsMove": {
-    "message": "The shadows in the village seem to move wrong. They stretch too long, twist at impossible angles, and sometimes seem to move independently of their sources. You catch glimpses of shapes that shouldn't be there."
+    "choices": {
+      "ignore": {
+        "label": "Ignore them"
+      },
+      "stare_at_shadows": {
+        "label": "Stare at shadows"
+      }
+    },
+    "log": {
+      "outcome0": "You fix your gaze on the shifting shadows until they become still. Perhaps it was nothing. Or so you tell yourself.",
+      "outcome1": "The shadows lean toward you. Shapes coalesce at the edge of sight, and something whispers your name in a voice like dry leaves.",
+      "outcome2": "You look away, but the wrongness follows. Out of the corner of your eye, the shadows keep moving long after you stop watching."
+    },
+    "message": "The shadows in the village seem to move wrong. They stretch too long, twist at impossible angles, and sometimes seem to move independently of their sources.",
+    "title": "Moving Shadows"
   },
   "shoreFishermenResponse": {
     "choices": {

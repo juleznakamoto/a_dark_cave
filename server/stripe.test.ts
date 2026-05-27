@@ -17,7 +17,12 @@ vi.mock('stripe', () => {
 });
 
 // Import after mocking
-import { createPaymentIntent, verifyPayment, paymentTypeSummaryFromCharge } from './stripe';
+import {
+  createPaymentIntent,
+  verifyPayment,
+  paymentTypeSummaryFromCharge,
+  purchaseCountryFromCharge,
+} from './stripe';
 import { createSupabaseMockForStripeVerify } from './stripeVerifyTestSupabase';
 
 // Get reference to the mocked methods for test assertions
@@ -42,6 +47,32 @@ function chargeWithCard(brand: string): Stripe.Charge {
     },
   } as Stripe.Charge;
 }
+
+describe('purchaseCountryFromCharge', () => {
+  it('returns billing address country when present', () => {
+    const ch = {
+      billing_details: { address: { country: 'DE' } },
+      payment_method_details: { type: 'paypal', paypal: { country: 'US' } },
+    } as Stripe.Charge;
+    expect(purchaseCountryFromCharge(ch)).toBe('DE');
+  });
+
+  it('falls back to PayPal buyer country when billing address is missing', () => {
+    const ch = {
+      billing_details: { address: { country: null } },
+      payment_method_details: { type: 'paypal', paypal: { country: 'US' } },
+    } as Stripe.Charge;
+    expect(purchaseCountryFromCharge(ch)).toBe('US');
+  });
+
+  it('returns null when neither billing nor PayPal country is available', () => {
+    const ch = {
+      billing_details: { address: { country: null } },
+      payment_method_details: { type: 'paypal', paypal: {} },
+    } as Stripe.Charge;
+    expect(purchaseCountryFromCharge(ch)).toBeNull();
+  });
+});
 
 describe('paymentTypeSummaryFromCharge', () => {
   it('returns card:brand for card payments', () => {
@@ -455,6 +486,39 @@ describe('Stripe Shop Integration', () => {
       );
       expect(mainInsert?.[0]).toMatchObject({
         payment_type: 'card:visa',
+      });
+    });
+
+    it('stores PayPal buyer country when billing address is missing', async () => {
+      const mockIntent: Stripe.PaymentIntent = {
+        id: 'pi_test',
+        amount: 149,
+        status: 'succeeded',
+        currency: 'usd',
+        metadata: { itemId: 'gold_250' },
+        latest_charge: {
+          billing_details: { address: { country: null } },
+          payment_method_details: {
+            type: 'paypal',
+            paypal: { country: 'GB' },
+          },
+        },
+      } as Stripe.PaymentIntent;
+
+      mockPaymentIntents.retrieve.mockResolvedValue(mockIntent);
+
+      const result = await verifyPayment('pi_test', 'user123', mockSupabase);
+      expect(result.success).toBe(true);
+
+      const mainInsert = mockSupabase.insertSpy.mock.calls.find(
+        (call) =>
+          (call[0] as { item_id?: string; price_paid?: number })?.item_id ===
+          'gold_250' &&
+          Number((call[0] as { price_paid?: number }).price_paid) > 0,
+      );
+      expect(mainInsert?.[0]).toMatchObject({
+        country: 'GB',
+        payment_type: 'paypal',
       });
     });
 

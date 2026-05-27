@@ -33,13 +33,6 @@ export const theDamnedEvents: Record<string, GameEvent> = {
 
           return {
             ...patch,
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                ...(patch.story?.seen),
-              },
-            },
             _logMessageKey: added > 0 ? "outcome0" : "outcome3",
             _logMessageVars: added > 0 ? { added } : undefined,
           };

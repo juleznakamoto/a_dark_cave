@@ -20,8 +20,8 @@ const COUNTRY_COLORS = [
   "#83a6ed", "#8dd1e1", "#f794a4", "#ffb347", "#d0ed57",
 ];
 
-const TOP_N_COUNTRIES = 8;
-const TOP_N_PAYMENT_TYPES = 8;
+const TOP_N_COUNTRIES = 10;
+const TOP_N_PAYMENT_TYPES = 10;
 
 const SERIES_COLORS = COUNTRY_COLORS;
 

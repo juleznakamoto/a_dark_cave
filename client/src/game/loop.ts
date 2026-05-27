@@ -2,6 +2,7 @@ import {
   useGameStore,
   StateManager,
   isModalDialogOpen,
+  shouldFreezeTimedEventTabCountdown,
   syncTimedEventTabPauseTracking,
   getTimedEventTabEffectiveRemainingMs,
 } from "./state";
@@ -514,7 +515,7 @@ export function clearExpiredTimedEventTab() {
   syncTimedEventTabPauseTracking();
   const state = useGameStore.getState();
   if (!state.timedEventTab.isActive || !state.timedEventTab.expiryTime) return;
-  if (state.isPaused || isModalDialogOpen(state)) return;
+  if (state.isPaused || shouldFreezeTimedEventTabCountdown(state)) return;
 
   const remaining = getTimedEventTabEffectiveRemainingMs(state);
   if (remaining == null || remaining > 0) return;
@@ -1258,9 +1259,9 @@ function handleStrangerApproach() {
     const useMultiStrangerMessages = strangersCount > 1;
     const variantIndex = Math.floor(
       Math.random() *
-        (useMultiStrangerMessages
-          ? STRANGER_MULTI_LOG_KEYS.length
-          : STRANGER_SINGLE_LOG_KEYS.length),
+      (useMultiStrangerMessages
+        ? STRANGER_MULTI_LOG_KEYS.length
+        : STRANGER_SINGLE_LOG_KEYS.length),
     );
     const logKey = useMultiStrangerMessages
       ? STRANGER_MULTI_LOG_KEYS[variantIndex]

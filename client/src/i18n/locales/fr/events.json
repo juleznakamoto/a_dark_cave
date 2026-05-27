@@ -90,7 +90,21 @@
     "title": "Réveil ensanglanté"
   },
   "bloodInWater": {
-    "message": "L'eau du village coule rouge pendant trois jours. Les villageois ne semblent pas le remarquer, la buvant comme si rien n'avait changé. Vous y sentez le cuivre et le fer, mais ils affirment qu'elle a le goût de la plus douce des eaux de source."
+    "choices": {
+      "drink_water": {
+        "label": "Boire l'eau"
+      },
+      "ignore": {
+        "label": "L'ignorer"
+      }
+    },
+    "log": {
+      "outcome0": "Vous buvez au puits malgré la teinte rouge. L'eau est froide et insipide, et au bout de quelques instants elle paraît soudain redevenir claire. Votre esprit semble vous avoir trompé.",
+      "outcome1": "Vous buvez longuement. Le goût de cuivre envahit votre bouche, épais et chaud. Cette nuit, vous rêvez de vous noyer dans une eau rouge et vous vous réveillez encore avec ce goût sur la langue.",
+      "outcome2": "Vous refusez de boire, mais les villageois continuent de remplir leurs coupes. Leurs lèvres se teintent de rouge tandis qu'ils vous sourient, comme si rien n'allait."
+    },
+    "message": "L'eau du village coule rouge pendant trois jours. Les villageois ne semblent pas le remarquer, la buvant comme si rien n'avait changé. Vous sentez le cuivre et le fer, mais ils affirment qu'elle a le goût d'une eau de source pure.",
+    "title": "Du sang dans l'eau"
   },
   "bloodMoonAttack": {
     "choices": {
@@ -1747,7 +1761,21 @@
     "title": "La Flûte des ombres"
   },
   "shadowsMove": {
-    "message": "Les ombres du village semblent bouger de travers. Elles s'étirent trop longtemps, se tordent à des angles impossibles, et parfois semblent se mouvoir indépendamment de leurs sources. Vous apercevez des formes qui ne devraient pas être là."
+    "choices": {
+      "ignore": {
+        "label": "Les ignorer"
+      },
+      "stare_at_shadows": {
+        "label": "Fixer les ombres"
+      }
+    },
+    "log": {
+      "outcome0": "Vous fixez les ombres mouvantes jusqu'à ce qu'elles s'immobilisent. Peut-être n'était-ce rien. Du moins, c'est ce que vous vous dites.",
+      "outcome1": "Les ombres se penchent vers vous. Des formes se condensent en bordure de votre vision, et quelque chose murmure votre nom d'une voix semblable à des feuilles sèches.",
+      "outcome2": "Vous détournez le regard, mais le malaise vous suit. Du coin de l'œil, les ombres continuent de bouger longtemps après que vous avez cessé de les observer."
+    },
+    "message": "Les ombres du village semblent bouger de travers. Elles s'étirent trop longtemps, se tordent à des angles impossibles, et parfois semblent se mouvoir indépendamment de leurs sources.",
+    "title": "Ombres mouvantes"
   },
   "shoreFishermenResponse": {
     "choices": {

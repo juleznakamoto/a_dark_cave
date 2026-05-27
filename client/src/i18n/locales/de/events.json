@@ -90,7 +90,21 @@
     "title": "Blutiges Erwachen"
   },
   "bloodInWater": {
-    "message": "Drei Tage lang läuft das Wasser des Dorfes rot. Die Dorfbewohner scheinen es nicht zu bemerken und trinken, als hätte sich nichts verändert. Du schmeckst Kupfer und Eisen, doch sie behaupten, es schmecke wie das süßeste Quellwasser."
+    "choices": {
+      "drink_water": {
+        "label": "Wasser trinken"
+      },
+      "ignore": {
+        "label": "Nicht trinken"
+      }
+    },
+    "log": {
+      "outcome0": "Du trinkst aus dem Brunnen trotz des roten Schimmers. Das Wasser ist kalt und geschmacklos, und nach wenigen Augenblicken wirkt es plötzlich wieder klar. Dein Verstand scheint dich getäuscht zu haben.",
+      "outcome1": "Du trinkst tief. Der Kupfergeschmack überflutet deinen Mund, dick und warm. In dieser Nacht träumst du davon, in rotem Wasser zu ertrinken, und wachst mit dem Geschmack noch auf der Zunge auf.",
+      "outcome2": "Du weigerst dich zu trinken, doch die Dorfbewohner füllen weiter ihre Becher. Ihre Lippen färben sich rot, während sie dich anlächeln, als wäre nichts geschehen."
+    },
+    "message": "Drei Tage lang läuft das Wasser des Dorfes rot. Die Dorfbewohner scheinen es nicht zu bemerken und trinken, als hätte sich nichts verändert. Du riechst Kupfer und Eisen, doch sie behaupten, es schmecke wie reines Quellwasser.",
+    "title": "Blut im Wasser"
   },
   "bloodMoonAttack": {
     "choices": {
@@ -1747,7 +1761,21 @@
     "title": "Die Schattenflöte"
   },
   "shadowsMove": {
-    "message": "Die Schatten im Dorf scheinen sich falsch zu bewegen. Sie strecken sich zu lang, verdrehen sich in unmöglichen Winkeln und scheinen sich manchmal unabhängig von ihren Quellen zu regen. Du erhaschst Blicke auf Formen, die nicht dort sein sollten."
+    "choices": {
+      "ignore": {
+        "label": "Sie ignorieren"
+      },
+      "stare_at_shadows": {
+        "label": "Schatten anstarren"
+      }
+    },
+    "log": {
+      "outcome0": "Du richtest deinen Blick auf die sich verschiebenden Schatten, bis sie still werden. Vielleicht war es nichts. So sagst du dir zumindest.",
+      "outcome1": "Die Schatten neigen sich dir zu. Formen verdichten sich am Rand deines Blicks, und etwas flüstert deinen Namen in einer Stimme wie trockene Blätter.",
+      "outcome2": "Du wendest den Blick ab, doch das Unheil folgt dir. Aus dem Augenwinkel bewegen sich die Schatten noch lange, nachdem du aufgehört hast hinzusehen."
+    },
+    "message": "Die Schatten im Dorf scheinen sich falsch zu bewegen. Sie strecken sich zu lang, verdrehen sich in unmöglichen Winkeln und scheinen sich manchmal unabhängig von ihren Quellen zu regen.",
+    "title": "Bewegende Schatten"
   },
   "shoreFishermenResponse": {
     "choices": {

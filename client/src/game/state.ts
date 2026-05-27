@@ -1119,8 +1119,7 @@ export class StateManager {
 }
 
 /**
- * True when any blocking modal except the reward dialog is open. Single place to OR new blocking flags;
- * `isModalDialogOpen` adds `rewardDialog` on top.
+ * Dialog/modals that block simulation and freeze the timed-event-tab countdown.
  * When adding a new blocking dialog, add its flag here only (see workspace rule for `loop.ts`).
  * `inactivityDialogOpen` is included for the same pause semantics; the inactivity path also stops the rAF loop
  * separately to reduce idle CPU.
@@ -1129,7 +1128,7 @@ export class StateManager {
  * (including story beats such as `beyondGatePassagesClear`); only add a new OR-term here when introducing
  * a separate modal slice (new `*DialogOpen` flag), not for each `GameEvent` id.
  */
-function isNonRewardBlockingModalOpen(state: GameStore): boolean {
+function isBlockingDialogOpen(state: GameStore): boolean {
   return (
     state.eventDialog.isOpen ||
     state.combatDialog.isOpen ||
@@ -1150,9 +1149,25 @@ function isNonRewardBlockingModalOpen(state: GameStore): boolean {
   );
 }
 
-/** True while any blocking modal is open — simulation should freeze (loop, attack-wave timers, timed-event tab countdown, etc.). */
+/**
+ * True when any blocking modal except the reward dialog is open, or a timed-event tab visit is active.
+ * Single place to OR new blocking flags; `isModalDialogOpen` adds `rewardDialog` on top.
+ */
+function isNonRewardBlockingModalOpen(state: GameStore): boolean {
+  return isBlockingDialogOpen(state) || state.timedEventTab.isActive;
+}
+
+/** True while simulation should freeze (loop, attack-wave timers, random events, etc.). */
 export function isModalDialogOpen(state: GameStore): boolean {
   return state.rewardDialog.isOpen || isNonRewardBlockingModalOpen(state);
+}
+
+/**
+ * True when the timed-event tab countdown should stop (manual pause, reward dialog, or another blocking dialog).
+ * Excludes the active timed tab itself so the player's decision timer can still tick.
+ */
+export function shouldFreezeTimedEventTabCountdown(state: GameStore): boolean {
+  return state.isPaused || state.rewardDialog.isOpen || isBlockingDialogOpen(state);
 }
 
 const REWARD_DIALOG_DEFER_RETRY_MS = 200;
@@ -3310,7 +3325,7 @@ export function syncTimedEventTabPauseTracking(): void {
   const tab = state.timedEventTab;
   if (!tab.isActive || !tab.expiryTime) return;
 
-  const frozen = state.isPaused || isModalDialogOpen(state);
+  const frozen = shouldFreezeTimedEventTabCountdown(state);
   const pauseAccumMs = tab.pauseAccumMs ?? 0;
   const pauseStartedAt = tab.pauseStartedAt ?? 0;
   const now = Date.now();
