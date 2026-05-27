@@ -128,22 +128,22 @@ export default function OverviewTab(props: OverviewTabProps) {
   // conversion = signups / (sessions - (DAU - signups))
   //            = signups / (sessions - DAU + signups)
   // Denominator represents estimated "new / anonymous" sessions.
+  // Session tracking (session_visits) only exists from deployment onward; mixing it with
+  // full-history signups/DAU yields impossible >100% rates when sessions were under-counted.
   const conversionChartData = useMemo(() => {
     const days = ADMIN_TWELVE_MONTH_CHART_DAYS[conversionRange];
     const now = new Date();
 
     const signupsLookup = new Map<string, number>();
     for (const entry of dailySignupsData) {
-      signupsLookup.set(entry.day, entry.signups);
+      signupsLookup.set(String(entry.day).slice(0, 10), entry.signups);
     }
 
-    // Build DAU lookup by YYYY-MM-DD
     const dauLookup = new Map<string, number>();
     for (const entry of dailyActiveUsersData) {
       dauLookup.set(entry.date.slice(0, 10), entry.active_user_count);
     }
 
-    // Build sessions lookup by YYYY-MM-DD
     const sessionsLookup = new Map<string, number>();
     for (const entry of sessionData) {
       sessionsLookup.set(entry.visit_date.slice(0, 10), entry.total);
@@ -165,15 +165,23 @@ export default function OverviewTab(props: OverviewTabProps) {
       const dau = dauLookup.get(key) ?? 0;
       const sessions = sessionsLookup.get(key) ?? 0;
 
-      // denominator = sessions - DAU + signups
       const denom = sessions - dau + signups;
-      const conversion = denom > 0 ? parseFloat(((signups / denom) * 100).toFixed(1)) : null;
+      let conversion: number | null = null;
+      // Only plot when session pings exist and the estimate is internally consistent.
+      if (sessions > 0 && denom > 0) {
+        const rate = (signups / denom) * 100;
+        if (rate <= 100) {
+          conversion = parseFloat(rate.toFixed(1));
+        }
+      }
 
       result.push({ date: label, conversion, signups, dau, sessions });
     }
 
     return result;
   }, [conversionRange, dailyActiveUsersData, sessionData, dailySignupsData]);
+
+  const conversionChartHasReliableData = conversionChartData.some((d) => d.conversion != null);
 
   // Filter and format DAU data based on this chart's range only
   const getFormattedDailyActiveUsers = () => {
@@ -560,7 +568,8 @@ export default function OverviewTab(props: OverviewTabProps) {
             <div>
               <CardTitle>Customer Conversion Rate</CardTitle>
               <CardDescription>
-                Sign-ups ÷ (sessions − returning users) — what % of new-visitor sessions convert to a registration
+                Sign-ups ÷ (sessions − returning users) — what % of new-visitor sessions convert to a registration.
+                Days without session tracking or with inconsistent inputs are omitted.
               </CardDescription>
             </div>
             <ChartTimeRangeSelectTwelveMonth value={conversionRange} onChange={setConversionRange} />
@@ -579,13 +588,24 @@ export default function OverviewTab(props: OverviewTabProps) {
               />
               <YAxis
                 tickFormatter={(v) => `${v}%`}
-                domain={[0, "auto"]}
+                domain={[0, 100]}
               />
               <Tooltip
-                formatter={(value: number | null) =>
-                  value == null ? ["—", "Conversion"] : [`${value}%`, "Conversion"]
-                }
-                labelFormatter={(label) => label}
+                formatter={(value: number | null, _name, item) => {
+                  const row = item?.payload as (typeof conversionChartData)[number] | undefined;
+                  if (value == null) {
+                    if (row && row.sessions === 0) {
+                      return ["No session data", "Conversion"];
+                    }
+                    return ["Unreliable estimate", "Conversion"];
+                  }
+                  return [`${value}%`, "Conversion"];
+                }}
+                labelFormatter={(label, payload) => {
+                  const row = payload?.[0]?.payload as (typeof conversionChartData)[number] | undefined;
+                  if (!row) return label;
+                  return `${label} — ${row.signups} sign-ups, ${row.sessions} sessions, ${row.dau} DAU`;
+                }}
               />
               <Line
                 type="monotone"
@@ -600,6 +620,11 @@ export default function OverviewTab(props: OverviewTabProps) {
           {sessionData.length === 0 && (
             <p className="text-xs text-muted-foreground mt-2">
               Session data not yet loaded — make sure the sessions endpoint is reachable.
+            </p>
+          )}
+          {sessionData.length > 0 && !conversionChartHasReliableData && (
+            <p className="text-xs text-muted-foreground mt-2">
+              No reliable conversion points in this range — session tracking may not cover these dates yet.
             </p>
           )}
         </CardContent>
