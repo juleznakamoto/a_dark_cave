@@ -693,6 +693,8 @@ export default function GameContainer() {
     ? "opacity-100 text-foreground"
     : "opacity-100";
   const tabButtonClass =
+    "inline-flex h-10 items-center justify-center bg-transparent text-sm font-normal leading-none";
+  const tabIconButtonClass =
     "inline-flex h-10 items-end justify-center bg-transparent pb-2 text-sm font-normal leading-none";
 
   return (
@@ -796,7 +798,7 @@ export default function GameContainer() {
               // Standard button design
               <div
                 ref={tabButtonRowRef}
-                className="inline-flex max-w-full flex-nowrap items-end gap-x-2 overflow-x-auto pl-[3px] scrollbar-hide md:gap-x-3"
+                className="inline-flex max-w-full flex-nowrap items-center gap-x-2 overflow-x-auto pl-[3px] scrollbar-hide md:gap-x-3"
               >
                 <button
                   className={`${tabButtonClass} ${activeTab === "cave"
@@ -961,7 +963,7 @@ export default function GameContainer() {
                 {/* Achievements Tab Button ⚜︎ */}
                 {(relics?.survivors_notes || books?.book_of_trials) && (
                   <button
-                    className={`${tabButtonClass} ${animatingTabs.has("achievements")
+                    className={`${tabIconButtonClass} ${animatingTabs.has("achievements")
                       ? fadePhaseTabs.has("achievements")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -985,7 +987,7 @@ export default function GameContainer() {
                     }}
                     data-testid="tab-achievements"
                   >
-                    <span className="block text-sm leading-none font-noto-symbols-2">
+                    <span className="text-[14px] leading-none font-noto-symbols-2">
                       ⚜
                     </span>
                   </button>
@@ -994,14 +996,14 @@ export default function GameContainer() {
                 {/* Timed Event Tab Button */}
                 {timedEventTab.isActive && (
                   <button
-                    className={`${tabButtonClass} gap-1 ${activeTab === "timedevent"
+                    className={`${tabIconButtonClass} gap-1 ${activeTab === "timedevent"
                       ? tabActiveTextClass
                       : tabInactiveTextClass
                       }`}
                     onClick={() => setActiveTab("timedevent")}
                     data-testid="tab-timedevent"
                   >
-                    <span className="timer-symbol block text-sm leading-none font-noto-symbols-2">
+                    <span className="timer-symbol text-[14px] leading-none font-noto-symbols-2">
                       ⊚
                     </span>
                   </button>
