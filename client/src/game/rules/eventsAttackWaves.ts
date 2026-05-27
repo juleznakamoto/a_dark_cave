@@ -327,7 +327,7 @@ function handleDefeat(
     chance(fellowshipChance)
   ) {
     fellowshipWounded = { ...fellowshipWounded, restlessKnightWounded: true };
-    woundedFellows.push("Restless Knight");
+    woundedFellows.push("restless_knight");
   }
 
   if (
@@ -336,7 +336,7 @@ function handleDefeat(
     chance(fellowshipChance)
   ) {
     fellowshipWounded = { ...fellowshipWounded, elderWizardWounded: true };
-    woundedFellows.push("Elder Wizard");
+    woundedFellows.push("elder_wizard");
   }
 
   if (

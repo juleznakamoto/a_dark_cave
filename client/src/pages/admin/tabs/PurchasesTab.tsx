@@ -37,6 +37,18 @@ interface PurchasesTabProps {
 
 type CountryChartMode = "count" | "revenue_unified_eur";
 
+const countryDisplayNames = new Intl.DisplayNames(["en"], { type: "region" });
+
+/** Readable legend label for stored ISO country codes. */
+function countryChartLabel(stored: string): string {
+  if (stored === "Unknown") return "Unknown";
+  try {
+    return countryDisplayNames.of(stored.toUpperCase()) ?? stored;
+  } catch {
+    return stored;
+  }
+}
+
 /** Readable legend label for stored payment_type keys. */
 function paymentTypeChartLabel(stored: string): string {
   if (stored === "Unknown") return "Unknown";
@@ -309,8 +321,13 @@ export default function PurchasesTab(props: PurchasesTabProps) {
                   tick={{ fontSize: 11 }}
                 />
                 <YAxis allowDecimals={false} />
-                <Tooltip />
-                <Legend />
+                <Tooltip
+                  formatter={(value: number, name: string) => [
+                    value,
+                    countryChartLabel(name),
+                  ]}
+                />
+                <Legend formatter={(value) => countryChartLabel(String(value))} />
                 {countryCountList.map((country, i) => (
                   <Bar
                     key={country}
@@ -362,10 +379,10 @@ export default function PurchasesTab(props: PurchasesTabProps) {
                 <Tooltip
                   formatter={(value: number, name: string) => [
                     `€${(value / 100).toFixed(2)}`,
-                    name,
+                    countryChartLabel(name),
                   ]}
                 />
-                <Legend />
+                <Legend formatter={(value) => countryChartLabel(String(value))} />
                 {countryRevenueUnifiedList.map((country, i) => (
                   <Bar
                     key={country}
