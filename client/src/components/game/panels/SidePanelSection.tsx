@@ -785,7 +785,7 @@ export default function SidePanelSection({
   const tooltipKey = `section-title-${baseTitleForKey}`;
 
   return (
-    <div className={`py-1.5 border-border ${className}`}>
+    <div className={`py-1.5 border-border pt-0 ${className}`}>
       {titleTooltip ? (
         <TooltipWrapper
           tooltip={<div className="text-xs">{titleTooltip}</div>}
