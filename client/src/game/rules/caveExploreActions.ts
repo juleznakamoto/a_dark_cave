@@ -241,13 +241,13 @@ const caveItems = {
   ventureDeeper: [
     {
       key: "tarnished_amulet",
-      probability: 0.0075,
+      probability: 0.005,
       logMessageKey: "tarnishedAmulet",
       category: "clothing",
     },
     {
       key: "bloodstained_belt",
-      probability: 0.0125,
+      probability: 0.01,
       isChoice: true,
       eventId: "bloodstainedBeltChoice",
       category: "clothing",
@@ -283,7 +283,7 @@ const caveItems = {
   descendFurther: [
     {
       key: "bone_dice",
-      probability: 0.0175,
+      probability: 0.015,
       isChoice: true,
       eventId: "boneDiceChoice",
       category: "relics",
@@ -301,7 +301,7 @@ const caveItems = {
   exploreRuins: [
     {
       key: "ring_of_drowned",
-      probability: 0.0225,
+      probability: 0.02,
       isChoice: true,
       eventId: "ringOfDrownedChoice",
       category: "clothing",
@@ -319,7 +319,7 @@ const caveItems = {
   exploreTemple: [
     {
       key: "shadow_flute",
-      probability: 0.0275,
+      probability: 0.025,
       isChoice: true,
       eventId: "shadowFluteChoice",
       category: "relics",
@@ -328,7 +328,7 @@ const caveItems = {
   exploreCitadel: [
     {
       key: "hollow_king_scepter",
-      probability: 0.0325,
+      probability: 0.03,
       isChoice: true,
       eventId: "hollowKingScepterChoice",
       category: "relics",
