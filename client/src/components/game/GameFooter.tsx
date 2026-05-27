@@ -133,6 +133,7 @@ export default function GameFooter() {
                 musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")
               }
               side="top"
+              arrowAlign="start"
             >
               <Button
                 variant="ghost"
