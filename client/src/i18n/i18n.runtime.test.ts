@@ -6,8 +6,10 @@ import {
   getEventMessage,
   tWithFallback,
 } from "./resolveGameText";
+import { getUiTooltip } from "./tooltipLabels";
 import { resolveEventMessage, resolveEventTitle } from "./eventText";
 import { gameStateSchema } from "@shared/schema";
+import { getActionCostBreakdown } from "@/game/rules/index";
 
 describe("i18n runtime", () => {
   beforeEach(async () => {
@@ -22,16 +24,30 @@ describe("i18n runtime", () => {
   });
 
   it("resolves villagerCost plural tooltip in English and German", async () => {
-    expect(i18n.t("ui:tooltips.villagerCost", { count: 1 })).toBe(
+    expect(getUiTooltip("villagerCost", "-{{count}} Villager", { count: 1 })).toBe(
       "-1 Villager",
     );
-    expect(i18n.t("ui:tooltips.villagerCost", { count: 3 })).toBe(
+    expect(getUiTooltip("villagerCost", "-{{count}} Villagers", { count: 3 })).toBe(
       "-3 Villagers",
     );
     await i18n.changeLanguage("de");
-    expect(i18n.t("ui:tooltips.villagerCost", { count: 1 })).toBe(
+    expect(getUiTooltip("villagerCost", "-{{count}} Villager", { count: 1 })).toBe(
       "-1 Dorfbewohner",
     );
+  });
+
+  it("getActionCostBreakdown humans sacrifice shows translated villager cost", async () => {
+    await i18n.changeLanguage("en");
+    const state = gameStateSchema.parse({
+      flags: { humanSacrificeUnlocked: true },
+      buildings: { blackMonolith: 1 },
+      story: { seen: { humansSacrificeLevel: 0 } },
+      villagers: { free: 10, total: 10 },
+    });
+    const breakdown = getActionCostBreakdown("humans", state);
+    expect(breakdown).toHaveLength(1);
+    expect(breakdown[0].text).toBe("-1 Villager");
+    expect(breakdown[0].text).not.toContain("tooltips.");
   });
 
   it("falls back to inline English for missing keys", () => {

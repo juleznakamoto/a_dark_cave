@@ -40,4 +40,19 @@ describe("tWithFallback", () => {
 
     expect(result).toBe("Erfolg abgeschlossen: Holzfäller: +250 Silber");
   });
+
+  it("resolves plural catalog keys when exists() is false", async () => {
+    expect(i18n.exists("ui:tooltips.villagerCost")).toBe(false);
+    expect(
+      tWithFallback("ui", "tooltips.villagerCost", "-{{count}} Villager", {
+        count: 1,
+      }),
+    ).toBe("-1 Villager");
+    await i18n.changeLanguage("de");
+    expect(
+      tWithFallback("ui", "tooltips.villagerCost", "-{{count}} Villager", {
+        count: 1,
+      }),
+    ).toBe("-1 Dorfbewohner");
+  });
 });

@@ -574,7 +574,13 @@ export function getActionCostBreakdown(
     const totalVillagers = getVillagersInVillage(state);
     return [
       {
-        text: i18n.t("ui:tooltips.villagerCost", { count: dynamicCost }),
+        text: getUiTooltip(
+          "villagerCost",
+          dynamicCost === 1
+            ? "-{{count}} Villager"
+            : "-{{count}} Villagers",
+          { count: dynamicCost },
+        ),
         satisfied: totalVillagers >= dynamicCost,
       },
     ];

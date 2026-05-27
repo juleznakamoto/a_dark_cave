@@ -33,14 +33,22 @@ export function tWithFallback(
   options?: TranslateOptions,
 ): string {
   const fullKey = nsKey(namespace, key);
-  if (i18n.exists(fullKey)) {
-    const translated = i18n.t(fullKey, options as Record<string, unknown>);
-    if (typeof translated === "string" && translated.trim()) {
-      return translated;
-    }
+  const defaultValue =
+    !options || Object.keys(options).length === 0
+      ? fallback
+      : interpolateFallback(fallback, options);
+
+  // Always call t (not exists): plural keys like villagerCost_one/_other
+  // resolve via count but exists("…villagerCost") is false.
+  const translated = i18n.t(fullKey, {
+    ...(options as Record<string, unknown>),
+    defaultValue,
+  });
+
+  if (typeof translated === "string" && translated.trim()) {
+    return translated;
   }
-  if (!options || Object.keys(options).length === 0) return fallback;
-  return interpolateFallback(fallback, options);
+  return defaultValue;
 }
 
 export function getEventTitle(
