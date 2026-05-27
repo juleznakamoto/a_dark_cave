@@ -193,23 +193,35 @@ export default function GameFooter() {
                 {t("footer.fullGame")}
               </Button>
             ) : traderShopUnlocked ? (
+              <HoverCalloutTooltip
+                label={t("footer.openShop")}
+                side="top"
+              >
+                <Button
+                  variant="ghost"
+                  size="xs"
+                  onClick={() => setShopDialogOpen(true)}
+                  aria-label={t("footer.openShop")}
+                  className={`${FOOTER_CONTROL_BTN} ${traderFooterFullOpacity ? "opacity-100" : "opacity-60"} hover:!opacity-100`}
+                >
+                  {t("footer.trader")}
+                </Button>
+              </HoverCalloutTooltip>
+            ) : null}
+            <HoverCalloutTooltip
+              label={t("footer.supportGame")}
+              side="top"
+            >
               <Button
                 variant="ghost"
                 size="xs"
-                onClick={() => setShopDialogOpen(true)}
-                className={`${FOOTER_CONTROL_BTN} ${traderFooterFullOpacity ? "opacity-100" : "opacity-60"} hover:!opacity-100`}
+                onClick={handleOfferTribute}
+                aria-label={t("footer.supportGame")}
+                className={`${FOOTER_CONTROL_BTN} ${isEarlyGameplay ? "opacity-60" : "opacity-100"} hover:!opacity-100`}
               >
-                {t("footer.trader")}
+                {t("footer.donate")}
               </Button>
-            ) : null}
-            <Button
-              variant="ghost"
-              size="xs"
-              onClick={handleOfferTribute}
-              className={`${FOOTER_CONTROL_BTN} ${isEarlyGameplay ? "opacity-60" : "opacity-100"} hover:!opacity-100`}
-            >
-              {t("footer.donate")}
-            </Button>
+            </HoverCalloutTooltip>
           </div>
           <div className="flex-1 flex justify-end gap-1 items-center">
             {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
