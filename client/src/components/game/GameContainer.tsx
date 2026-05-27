@@ -695,7 +695,7 @@ export default function GameContainer() {
   const tabButtonClass =
     "inline-flex h-10 items-center justify-center bg-transparent text-sm font-normal leading-none";
   const tabIconButtonClass =
-    "inline-flex h-10 items-end justify-center bg-transparent pb-2 text-sm font-normal leading-none";
+    "inline-flex h-10 items-end justify-center bg-transparent pb-3 text-sm font-normal leading-none";
 
   return (
     <div

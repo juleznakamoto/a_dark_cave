@@ -8,7 +8,9 @@ import {
 } from "@/i18n/resolveGameText";
 import { useTranslation } from "react-i18next";
 import { resolveOutcomeLogMessage } from "@/i18n/logDisplay";
-import OutcomeDialog from "./OutcomeDialog";
+import OutcomeDialog, {
+  OUTCOME_DIALOG_MADNESS_ICON_CLASS,
+} from "./OutcomeDialog";
 
 interface MadnessDialogData {
   rewards?: {
@@ -169,7 +171,7 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
     <OutcomeDialog
       isOpen={isOpen}
       onClose={onClose}
-      icon={<span className="font-noto-symbols-2 text-4xl text-violet-300/90">✺</span>}
+      icon={<span className={OUTCOME_DIALOG_MADNESS_ICON_CLASS}>✺</span>}
       successLog={resolveOutcomeLogMessage(successLog)}
       title={t("ui:madness.title")}
       variant="madness"

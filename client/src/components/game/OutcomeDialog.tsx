@@ -7,6 +7,10 @@ import { cn } from "@/lib/utils";
 export const OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS =
   "font-noto-symbols-2 inline-flex items-center justify-center text-4xl text-white leading-none translate-y-0.5" as const;
 
+/** Madness ✺ in its ring — bottom-aligned via the ring container, not vertical translate. */
+export const OUTCOME_DIALOG_MADNESS_ICON_CLASS =
+  "font-noto-symbols-2 inline-flex text-4xl text-violet-300/90 leading-none" as const;
+
 export type OutcomeDialogVariant = "success" | "loss" | "madness";
 
 interface OutcomeDialogProps {
@@ -86,7 +90,8 @@ export default function OutcomeDialog({
             <div className="relative z-[1] flex justify-center">
               <div
                 className={cn(
-                  "flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2",
+                  "flex h-14 w-14 shrink-0 justify-center rounded-full border-2",
+                  variant === "madness" ? "items-end pb-1.5" : "items-center",
                   iconRing,
                   variant !== "madness" && "text-white",
                 )}
