@@ -481,7 +481,7 @@ export function startGameLoop() {
           }
         }
 
-        // One-time feedback / contact dialog at 1 hour of play.
+        // One-time feedback / contact dialog at 2 hours of play.
         const feedbackState = useGameStore.getState();
         if (
           !feedbackState.feedbackPromptShown &&

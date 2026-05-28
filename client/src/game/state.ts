@@ -160,7 +160,7 @@ interface GameStore extends GameState {
   deleteAccountDialogOpen: boolean;
   playlightWelcomeDialogOpen: boolean;
   feedbackDialogOpen: boolean;
-  /** Persisted: one-time feedback dialog at 1h play time has been shown or skipped. */
+  /** Persisted: one-time feedback dialog at 2h play time has been shown or skipped. */
   feedbackPromptShown: boolean;
 
   // Notification state for auth
