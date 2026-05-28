@@ -508,10 +508,20 @@ export default function SocialPromptDialog({
           </div>
         </div>
 
-        <div className="mt-1 space-y-3 pt-3 pb-3">
+        <div
+          className={cn(
+            "mt-1 space-y-3 rounded-md border px-3 py-3",
+            exclusiveRewardComplete
+              ? "border-green-500/40 bg-green-500/5"
+              : "border-lime-500/40 bg-lime-500/[0.07]",
+          )}
+        >
           <div className="flex gap-2.5 items-start">
             <span
-              className="shrink-0 text-[17px] leading-none select-none text-lime-500 pt-0.5"
+              className={cn(
+                "shrink-0 text-[17px] leading-none select-none pt-0.5",
+                exclusiveRewardComplete ? "text-green-500" : "text-lime-400",
+              )}
               aria-hidden
             >
               ⯫
@@ -523,14 +533,19 @@ export default function SocialPromptDialog({
                     ? t("socialPrompt.progressComplete")
                     : t("socialPrompt.progressToward")}
                 </span>
-                <span className="shrink-0 tabular-nums">
+                <span
+                  className={cn(
+                    "shrink-0 tabular-nums",
+                    exclusiveRewardComplete ? "text-green-500" : "text-lime-400",
+                  )}
+                >
                   {exclusiveProgress.completed}/{exclusiveProgress.total}
                 </span>
               </div>
             </div>
           </div>
           <div
-            className="relative h-2.5 w-full overflow-hidden rounded-full bg-muted"
+            className="relative h-3 w-full overflow-hidden rounded-full border border-border/60 bg-neutral-800/80"
             role="progressbar"
             aria-valuenow={exclusiveProgress.completed}
             aria-valuemin={0}
@@ -538,7 +553,12 @@ export default function SocialPromptDialog({
             aria-label={t("socialPrompt.progressAriaLabel")}
           >
             <div
-              className="h-full rounded-full bg-primary transition-all duration-300 ease-out"
+              className={cn(
+                "h-full rounded-full transition-all duration-300 ease-out",
+                exclusiveRewardComplete
+                  ? "bg-green-500"
+                  : "bg-gradient-to-r from-lime-600 to-lime-400",
+              )}
               style={{ width: `${exclusiveProgress.percent}%` }}
             />
             {Array.from(
@@ -547,7 +567,7 @@ export default function SocialPromptDialog({
             ).map((step) => (
               <div
                 key={step}
-                className="pointer-events-none absolute inset-y-0 z-[1] w-px bg-background"
+                className="pointer-events-none absolute inset-y-0 z-[1] w-px bg-neutral-950/50"
                 style={{
                   left: `${(step / SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL) * 100}%`,
                   transform: "translateX(-50%)",
