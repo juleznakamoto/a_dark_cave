@@ -365,6 +365,27 @@ export default function ProfileMenu() {
             </span>
           </TooltipWrapper>
         )}
+        {showRewardsTasksShortcut && (
+          <TooltipWrapper
+            tooltip={<p className="text-xs">{t("profile.rewardsTasks")}</p>}
+            tooltipId="exclusive-item-shortcut"
+            className="relative p-0 w-7 h-7 rounded-md bg-transparent flex items-center justify-center cursor-pointer hover:bg-muted/30 transition-colors shrink-0 border-0 shadow-none overflow-visible"
+            onClick={() => setSocialPromptDialogOpen(true)}
+          >
+            <div className="relative flex h-full w-full items-center justify-center overflow-visible">
+              <span
+                className="exclusive-promo-shockwave-ring"
+                aria-hidden
+              />
+              <span
+                className="relative z-[1] text-[15px] leading-none select-none text-lime-500"
+                aria-hidden
+              >
+                ⯫
+              </span>
+            </div>
+          </TooltipWrapper>
+        )}
         <DropdownMenu
           open={accountDropdownOpen}
           onOpenChange={(open) => {
@@ -527,27 +548,6 @@ export default function ProfileMenu() {
       </div>
       <div className="flex flex-wrap justify-end items-start gap-1 max-w-[140px]">
         <div className="flex items-start gap-0.5 shrink-0">
-          {showRewardsTasksShortcut && (
-            <TooltipWrapper
-              tooltip={<p className="text-xs">{t("profile.rewardsTasks")}</p>}
-              tooltipId="exclusive-item-shortcut"
-              className="relative p-0 w-7 h-7 rounded-md bg-transparent flex items-center justify-center cursor-pointer hover:bg-muted/30 transition-colors shrink-0 border-0 shadow-none overflow-visible"
-              onClick={() => setSocialPromptDialogOpen(true)}
-            >
-              <div className="relative flex h-full w-full items-center justify-center overflow-visible">
-                <span
-                  className="exclusive-promo-shockwave-ring"
-                  aria-hidden
-                />
-                <span
-                  className="relative z-[1] text-[15px] leading-none select-none text-lime-500"
-                  aria-hidden
-                >
-                  ⯫
-                </span>
-              </div>
-            </TooltipWrapper>
-          )}
           <div className="flex flex-col gap-1 items-end shrink-0">
             {(hasWonAnyGame || devMode) && (
               <Button
