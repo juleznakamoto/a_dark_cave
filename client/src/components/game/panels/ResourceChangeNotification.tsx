@@ -125,7 +125,7 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
   }
 
   return (
-    <div className="pointer-events-none absolute inset-y-0 right-0 w-[3rem]">
+    <div className="pointer-events-none absolute inset-0">
       <div
         className={`
           flex h-full w-full items-center justify-end rounded-sm bg-background px-1
