@@ -11,7 +11,7 @@
     "betaDiscountTitle": "Сейчас действуют бета-скидки до {{percent}}%.",
     "betaDiscountNote": "Все покупки сохраняются в будущих прохождениях и после релиза.",
     "noPurchasesTitle": "Покупок пока нет.",
-    "noPurchasesHint": "Откройте вкладку «В продаже», чтобы купить предметы.",
+    "noPurchasesHint": "Откройте вкладку «В продаже», чтобы купить предметы.",  //1.4X
     "activatePurchasesTitle": "Активируйте покупки, чтобы получить награды.",
     "activatePurchasesNote": "Каждую покупку можно активировать один раз за прохождение.",
     "highlights": "Избранное",
@@ -33,13 +33,12 @@
     "betaDiscount": "Бета-скидка",
     "additionalDiscount": "Дополнительная скидка",
     "total": "Итого",
-    "poweredBy": "Работает на",
     "legalConsent": "Покупая, вы соглашаетесь на немедленную доставку цифрового контента и отказываетесь от права на отказ. Подробнее см.",
     "termsOfService": "Условия использования",
     "rightOfWithdrawal": "Право на отказ",
     "completePurchaseFor": "Завершить покупку за {{price}}",
     "paymentFailed": "Ошибка оплаты",
-    "notAuthenticated": "Пользователь не авторизован",
+    "notAuthenticated": "Пользователь не авторизован",  //1.2X
     "verificationFailed": "Ошибка проверки платежа. Свяжитесь с поддержкой.",
     "unexpectedError": "Произошла непредвиденная ошибка",
     "purchaseSuccessful": "Покупка успешна!",
@@ -52,9 +51,9 @@
     "playlightDiscount": "Дополнительная скидка {{percent}}% на первую покупку за реальные деньги как игрок Playlight.",
     "journeyCompleteDiscount": "Особая скидка за прохождение игры",
     "artifactSkullLantern": {
-      "title": "Фонарь из черепа",
-      "caveExploreBonus": "Исследование пещеры: +200% бонус",
-      "caveExploreCooldown": "Исследование пещеры: -5 с перезарядки",
+      "title": "Фонарь из черепа",  //1.2X
+      "caveExploreBonus": "Исследование пещеры: +200% бонус",  //1.3X
+      "caveExploreCooldown": "Исследование пещеры: -5 с перезарядки",  //1.4X
       "miningBonus": "Добыча: +200% бонус",
       "miningCooldown": "Добыча: -5с перезарядки"
     },
@@ -64,16 +63,16 @@
       "luck": "+5 удачи"
     },
     "artifactCrowHarness": {
-      "title": "Одноглазая ворона",
+      "title": "Одноглазая ворона",  //1.3X
       "doubleGain": "до 15% шанс удвоить награды за действия"
     },
     "cruelMode": {
-      "title": "Жестокий режим",
-      "moreEvents": "Больше событий",
-      "moreItems": "Больше предметов",
+      "title": "Жестокий режим",  //1.4X
+      "moreEvents": "Больше событий",  //1.3X
+      "moreItems": "Больше предметов",  //1.6X
       "strongerEnemies": "Сильнее враги",
       "harderChallenges": "Сложнее испытания",
-      "reusePurchases": "Повторное использование покупок"
+      "reusePurchases": "Повторное использование покупок"  //1.3X
     },
     "alreadyClaimedItemLog": "Вы уже получили {{name}}.",
     "claimFailedLog": "Не удалось получить {{name}}. Попробуйте снова.",
@@ -83,3 +82,4 @@
     "freeGoldCooldownLog_other": "Бесплатное золото снова через {{hours}} ч."
   }
 }
+

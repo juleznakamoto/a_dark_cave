@@ -12,7 +12,6 @@
     "villagerCost_other": "-{{count}} 村民",
     "mapFragmentProgress": "地图碎片 {{count}}/{{total}}",
     "defense": "防御：{{value}}",
-    "range": "范围：{{value}}",
     "madnessFromItems": "物品 {{value}}",
     "madnessFromBuildings": "建筑 {{value}}",
     "madnessFromEvents": "事件 {{value}}",

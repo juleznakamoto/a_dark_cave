@@ -1,6 +1,6 @@
 {
   "shop": {
-    "title": "Tienda del mercader",
+    "title": "Tienda del mercader",  //1.5X
     "purchase": "Comprar",
     "owned": "Adquirido",
     "notEnoughGold": "No tienes suficiente oro.",
@@ -11,7 +11,7 @@
     "betaDiscountTitle": "Descuentos beta de hasta {{percent}} % activos actualmente.",
     "betaDiscountNote": "Todas las compras siguen disponibles en futuras partidas y tras el lanzamiento completo.",
     "noPurchasesTitle": "Aún no hay compras.",
-    "noPurchasesHint": "Visita la pestaña «En venta» para comprar artículos.",
+    "noPurchasesHint": "Visita la pestaña «En venta» para comprar artículos.",  //1.4X
     "activatePurchasesTitle": "Activa tus compras para recibir recompensas.",
     "activatePurchasesNote": "Cada compra puede activarse una vez por partida.",
     "highlights": "Destacados",
@@ -33,10 +33,9 @@
     "betaDiscount": "Descuento beta",
     "additionalDiscount": "Descuento adicional",
     "total": "Total",
-    "poweredBy": "Desarrollado por",
     "legalConsent": "Al comprar, aceptas la entrega inmediata de contenido digital y renuncias a tu derecho de desistimiento. Para más información, consulta nuestros",
     "termsOfService": "Condiciones del servicio",
-    "rightOfWithdrawal": "Derecho de desistimiento",
+    "rightOfWithdrawal": "Derecho de desistimiento",  //1.3X
     "completePurchaseFor": "Completar compra por {{price}}",
     "paymentFailed": "Pago fallido",
     "notAuthenticated": "Usuario no autenticado",
@@ -55,28 +54,28 @@
     "playlightDiscount": "{{percent}} % de descuento adicional en tu primera compra con dinero real como jugador de Playlight.",
     "journeyCompleteDiscount": "Descuento especial por completar el juego",
     "artifactSkullLantern": {
-      "title": "Linterna de cráneo",
-      "caveExploreBonus": "Exploración de cueva: +200 % de bonificación",
-      "caveExploreCooldown": "Exploración de cueva: -5 s de recarga",
-      "miningBonus": "Extracción: +200 % de bonificación",
-      "miningCooldown": "Extracción: -5 s de recarga"
+      "title": "Linterna de cráneo",  //1.4X
+      "caveExploreBonus": "Exploración de cueva: +200 % de bonificación",  //1.8X
+      "caveExploreCooldown": "Exploración de cueva: -5 s de recarga",  //1.4X
+      "miningBonus": "Extracción: +200 % de bonificación",  //1.8X
+      "miningCooldown": "Extracción: -5 s de recarga"  //1.4X
     },
     "artifactTarnishedCompass": {
       "title": "Brújula deslustrada",
-      "doubleGain": "10 % de probabilidad de duplicar las ganancias de acciones",
+      "doubleGain": "10 % de probabilidad de duplicar las ganancias de acciones",  //1.7X
       "luck": "+5 Suerte"
     },
     "artifactCrowHarness": {
       "title": "Cuervo tuerto",
-      "doubleGain": "Hasta un 15 % de probabilidad de duplicar las ganancias de acciones"
+      "doubleGain": "Hasta un 15 % de probabilidad de duplicar las ganancias de acciones"  //1.7X
     },
     "cruelMode": {
       "title": "Modo cruel",
       "moreEvents": "Más eventos",
       "moreItems": "Más objetos",
-      "strongerEnemies": "Enemigos más fuertes",
-      "harderChallenges": "Desafíos más difíciles",
-      "reusePurchases": "Reutilizar compras existentes"
+      "strongerEnemies": "Enemigos más fuertes",  //1.3X
+      "harderChallenges": "Desafíos más difíciles",  //1.3X
+      "reusePurchases": "Reutilizar compras existentes"  //1.2X
     },
     "alreadyClaimedItemLog": "Ya has reclamado {{name}}.",
     "claimFailedLog": "No se pudo reclamar {{name}}. Inténtalo de nuevo.",

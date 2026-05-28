@@ -4,7 +4,6 @@
     "skillsTitle": "Habilidades de combate",
     "fight": "Luchar",
     "fighting": "Luchando…",
-    "retreat": "Retirarse",
     "startFight": "Iniciar combate",
     "roundTitle": "Combate – Ronda {{round}}",
     "youLost": "Has perdido",
@@ -21,9 +20,9 @@
     "criticalParen": "({{label}})",
     "available": "Disponible: {{current}}/{{max}}",
     "crushingStrike": "Golpe aplastante",
-    "bloodflameSphere": "Esfera de llama sangrienta",
-    "poisonArrows": "Flechas envenenadas",
-    "attackDetailsAria": "Detalles del ataque en combate",
+    "bloodflameSphere": "Esfera de llama sangrienta",  //1.5X
+    "poisonArrows": "Flechas envenenadas",  //1.5X
+    "attackDetailsAria": "Detalles del ataque en combate",  //1.4X
     "critChance": "{{percent}} % de probabilidad de golpe crítico",
     "critFromLuck": "{{percent}} % por {{stat}}{{maxSuffix}}",
     "critFromLuckMaxSuffix": " (máx.)",
@@ -52,8 +51,8 @@
     "soon": "pronto",
     "provoke": "Provocar",
     "waves": {
-      "firstWave": "Primera oleada",
-      "secondWave": "Segunda oleada",
+      "firstWave": "Primera oleada",  //1.4X
+      "secondWave": "Segunda oleada",  //1.3X
       "thirdWave": "Tercera oleada",
       "fourthWave": "Cuarta oleada",
       "fifthWave": "Quinta oleada",
@@ -67,17 +66,17 @@
   "fortifications": {
     "bastion": "Bastión",
     "fortifiedMoat": "Foso fortificado",
-    "chitinPlating": "Blindaje de quitina",
+    "chitinPlating": "Blindaje de quitina",  //1.4X
     "watchtower1": "Torre de vigilancia",
-    "watchtower2": "Torre de guardia",
+    "watchtower2": "Torre de guardia",  //1.5X
     "watchtower3": "Torre fortificada",
-    "watchtower4": "Torre de cañones",
-    "palisades1": "Empalizadas de madera",
-    "palisades2": "Empalizadas fortificadas",
-    "palisades3": "Muro de piedra",
+    "watchtower4": "Torre de cañones",  //1.3X
+    "palisades1": "Empalizadas de madera",  //1.3X
+    "palisades2": "Empalizadas fortificadas",  //1.3X
+    "palisades3": "Muro de piedra",  //1.4X
     "palisades4": "Muro reforzado",
-    "palisadesFallback": "Empalizadas",
-    "watchtowerFallback": "Torre de vigilancia",
+    "palisadesFallback": "Empalizadas",  //1.2X
+    "watchtowerFallback": "Torre de vigilancia",  //1.9X
     "damaged": "(dañado)",
     "attack": "+{{value}} Ataque",
     "defense": "+{{value}} Defensa",

@@ -2383,7 +2383,7 @@
         "label": "Pay 250 Gold"
       },
       "refuse": {
-        "label": "Time Expired"
+        "label": "Decline"
       }
     },
     "log": {

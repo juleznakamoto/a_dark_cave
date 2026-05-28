@@ -78,7 +78,7 @@
     "buttonUpgrade": {
       "deepens": "Ваше мастерство в {{skill}} углубляется.",
       "skills": {
-        "caveExplore": "исследовании пещер",
+        "caveExplore": "исследовании пещер",  //1.3X
         "mineStone": "добыче камня",
         "mineIron": "добыче железа",
         "mineCoal": "добыче угля",
@@ -89,8 +89,14 @@
         "chopWood": "рубке дерева",
         "craftTorches": "изготовлении факелов",
         "craftBoneTotems": "изготовлении костяных тотемов",
-        "craftLeatherTotems": "изготовлении кожаных тотемов"
+        "craftLeatherTotems": "изготовлении кожаных тотемов"  //1.3X
       }
     }
   }
 }
+
+
+
+
+
+

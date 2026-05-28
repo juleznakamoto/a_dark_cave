@@ -1,7 +1,7 @@
 {
   "tooltips": {
-    "veinrootChanceChopWood": "0,5 % de chance d'obtenir une racine de veine",
-    "veinrootChanceHunt": "1 % de chance d'obtenir une racine de veine",
+    "veinrootChanceChopWood": "0,5 % de chance d'obtenir une racine de veine",  //2.0X
+    "veinrootChanceHunt": "1 % de chance d'obtenir une racine de veine",  //2.0X
     "maxBombsReached": "Maximum de bombes atteint ({{limit}} par type)",
     "maxVeinfireElixirReached": "Maximum d'élixir de veinefeu atteint ({{limit}})",
     "gainExact": "+{{amount}} {{resource}}",
@@ -12,7 +12,6 @@
     "villagerCost_other": "-{{count}} villageois",
     "mapFragmentProgress": "{{count}} sur {{total}} fragments de carte",
     "defense": "Défense : {{value}}",
-    "range": "Portée : {{value}}",
     "madnessFromItems": "{{value}} des objets",
     "madnessFromBuildings": "{{value}} des bâtiments",
     "madnessFromEvents": "{{value}} des événements",
@@ -21,19 +20,19 @@
     "madnessLevel": "Folie : {{value}}",
     "minRemaining": "{{count}} min restantes",
     "minUntilDecrease": "{{time}} avant la baisse de niveau",
-    "greatVillageFeast": "Grand festin du village",
-    "villageFeast": "Festin du village",
-    "solsticeGathering": "Rassemblement du solstice",
+    "greatVillageFeast": "Grand festin du village",  //1.2X
+    "villageFeast": "Festin du village",  //1.3X
+    "solsticeGathering": "Rassemblement du solstice",  //1.4X
     "newVillagerChanceBonus": "Chance de nouveau villageois +{{percent}} %",
-    "witchsCurse": "Malédiction de la sorcière",
+    "witchsCurse": "Malédiction de la sorcière",  //2.0X
     "villagerDisgust": "Dégoût des villageois",
     "miningBoost": "Boost minier",
     "miningBonus": "Bonus minier : {{percent}} %",
-    "heartfire": "Feu du cœur",
+    "heartfire": "Feu du cœur",  //1.2X
     "newVillagerChance": "Chance de nouveau villageois : +{{percent}} %",
-    "frostfall": "Chute de givre",
+    "frostfall": "Chute de givre",  //1.6X
     "chokingFog": "Brouillard étouffant",
-    "focus": "Concentration",
+    "focus": "Concentration",  //2.6X
     "actionBonus": "Bonus d'action : {{multiplier}}x",
     "baseDamage": "Dégâts de base : {{value}}",
     "knowledgeBonus": "Bonus de savoir : +{{value}}",
@@ -58,12 +57,12 @@
     "knowledge": "Savoir : +{{value}}",
     "madnessStat": "Folie :{{sign}}{{value}}",
     "craftDiscount": "Réduction artisanale : -{{percent}} %",
-    "buildDiscount": "Réduction de construction : -{{percent}} %",
+    "buildDiscount": "Réduction de construction : -{{percent}} %",  //1.4X
     "merchantDiscount": "Réduction marchande : +{{percent}} %",
     "newVillagerChanceStat": "Chance de nouveau villageois : +{{percent}} %",
     "criticalStrike": "Chance de coup critique : +{{percent}} %",
     "villagerDeathReduction": "Morts de villageois au combat : -{{percent}} %",
-    "caveExploreBonus": "Exploration de grotte : +{{percent}} % de bonus",
+    "caveExploreBonus": "Exploration de grotte : +{{percent}} % de bonus",  //1.4X
     "bombCapacityCombat": "+1 capacité pour toutes les bombes (combat)",
     "maxBombsPerType": "Max {{count}} bombes par type",
     "boneDiceGambler": "Jouez deux manches contre le joueur par visite",
@@ -98,26 +97,26 @@
       "unlocksFeedFireAction": "Débloque l'action nourrir le feu",
       "craftDiscountSpaced": "2,5 % de réduction d'artisanat",
       "craftDiscountSpaced5": "5 % de réduction d'artisanat",
-      "craftDiscount": "{{percent}} % de réduction d'artisanat",
-      "buildDiscount": "{{percent}} % de réduction de construction",
+      "craftDiscount": "{{percent}} % de réduction d'artisanat",  //1.4X
+      "buildDiscount": "{{percent}} % de réduction de construction",  //1.6X
       "gathererWood": "Collecteur : +{{amount}} bois",
       "gathererStone": "Collecteur : +{{amount}} pierre",
-      "hunterFood": "Chasseur : +{{amount}} nourriture",
-      "hunterFur": "Chasseur : +{{amount}} fourrure",
+      "hunterFood": "Chasseur : +{{amount}} nourriture",  //1.4X
+      "hunterFur": "Chasseur : +{{amount}} fourrure",  //1.3X
       "hunterBones": "Chasseur : +{{amount}} os",
       "knowledgeBonus": "+{{amount}} savoir",
       "resourceChangeHints": "Indications de changement de ressources",
-      "improvedResourceChangeHints": "Indications améliorées de changement de ressources",
-      "resourceHighlighting": "Mise en évidence des ressources",
+      "improvedResourceChangeHints": "Indications améliorées de changement de ressources",  //1.7X
+      "resourceHighlighting": "Mise en évidence des ressources",  //1.5X
       "abortActions": "Interrompre les actions",
       "madnessReduction": "-{{amount}} folie",
       "madnessIncrease": "+{{amount}} folie",
       "defenseBonus": "+{{amount}} défense",
       "attackBonus": "+{{amount}} attaque",
       "integrityBonus": "+{{amount}} intégrité",
-      "luckyChance": "+{{percent}} % de chance supplémentaire",
+      "luckyChance": "+{{percent}} % de chance supplémentaire",  //1.5X
       "investUpToGold": "Investir jusqu'à {{amount}} or",
-      "higherTradeAmounts": "Montants d'échange plus élevés",
+      "higherTradeAmounts": "Montants d'échange plus élevés",  //1.5X
       "tradesAtMerchant_one": "+{{count}} échange chez le marchand itinérant",
       "tradesAtMerchant_other": "+{{count}} échanges chez le marchand itinérant",
       "trapWinChance10": "+10 % de chance de victoire contre les ennemis attaquants et moins de villageois tués",
@@ -138,7 +137,7 @@
       "maxVillagers": "+{{amount}} villageois max.",
       "resourceLimit": "Limite de ressources : {{limit}}",
       "maxPopulation": "+{{amount}} population max.",
-      "newVillagerChancePercent": "+{{percent}} % de chance de nouveau villageois",
+      "newVillagerChancePercent": "+{{percent}} % de chance de nouveau villageois",  //1.4X
       "steelForgerSteel": "Forgeron d'acier : +{{amount}} acier",
       "tannerLeather": "Tanneur : +{{amount}} cuir"
     }

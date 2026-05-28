@@ -8,7 +8,6 @@
     "refresh": "Actualizar",
     "dismiss": "Descartar",
     "fight": "Luchar",
-    "retreat": "Retirarse",
     "refuse": "Rechazar",
     "accept": "Aceptar",
     "back": "Volver",
@@ -35,13 +34,13 @@
     "fortress": "Fortaleza",
     "trader": "Mercader",
     "achievements": "Logros",
-    "timedEvent": "Evento cronometrado"
+    "timedEvent": "Evento cronometrado"  //1.7X
   },
   "resources": {
     "wood": "Madera",
     "stone": "Piedra",
     "food": "Comida",
-    "veinroot": "Raíz de vena",
+    "veinroot": "Raíz de vena",  //1.5X
     "bones": "Huesos",
     "fur": "Pieles",
     "leather": "Cuero",
@@ -54,21 +53,21 @@
     "adamant": "Adamantita",
     "steel": "Acero",
     "blacksteel": "Acero negro",
-    "moonstone": "Piedra lunar",
+    "moonstone": "Piedra lunar",  //1.3X
     "black_powder": "Pólvora negra",
-    "ember_bomb": "Bomba de brasas",
-    "ashfire_dust": "Polvo de fuego ceniciento",
-    "ashfire_bomb": "Bomba de fuego ceniciento",
+    "ember_bomb": "Bomba de brasas",  //1.5X
+    "ashfire_dust": "Polvo de fuego ceniciento",  //2.1X
+    "ashfire_bomb": "Bomba de fuego ceniciento",  //2.1X
     "void_bomb": "Bomba del vacío",
-    "veinfire_elixir": "Elixir de fuego venal",
-    "poison_arrows": "Flechas envenenadas",
+    "veinfire_elixir": "Elixir de fuego venal",  //1.4X
+    "poison_arrows": "Flechas envenenadas",  //1.5X
     "torch": "Antorcha",
     "silver": "Plata",
     "gold": "Oro"
   },
   "stats": {
     "strength": "Fuerza",
-    "knowledge": "Conocimiento",
+    "knowledge": "Conocimiento",  //1.3X
     "luck": "Suerte",
     "madness": "Locura",
     "attack": "Ataque",

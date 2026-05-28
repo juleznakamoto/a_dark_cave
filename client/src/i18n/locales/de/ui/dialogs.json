@@ -7,35 +7,35 @@
     "knowledgeTimeBonusMax": " (max.)",
     "successChance": "Erfolgschance: {{percent}}%",
     "successChanceLocked": "Erfolgschance: ??%",
-    "influencedBy": "Beeinflusst durch:"
+    "influencedBy": "Beeinflusst durch:" //ok
   },
   "reward": {
     "title": "Belohnung",
     "loss": "Verlust",
     "actionReward": "Belohnung",
-    "claimRewards": "Belohnungen nehmen"
+    "claimRewards": "Belohnungen nehmen" //ok
   },
   "madness": {
-    "title": "Wahnsinnsereignis",
+    "title": "Wahnsinnsereignis", //ok
     "change": "{{sign}} {{amount}} Wahnsinn"
   },
   "socialPrompt": {
-    "title": "Bleib in Verbindung und verdiene Belohnungen",
+    "title": "Bleib in Verbindung und verdiene Belohnungen", //ok
     "description": "Schließe die Aufgaben unten ab, um Boni zu erhalten. Schließe alle Aufgaben ab, um einen exklusiven Gegenstand zu erhalten.",
-    "signUpRequiresSignInTooltip": "Registriere dich, um die Aufgabe abzuschließen",
-    "signUpTitle": "Registrieren (+{{amount}} Gold)",
+    "signUpRequiresSignInTooltip": "Registriere dich, um die Aufgabe abzuschließen",  //1.9X
+    "signUpTitle": "Registrieren (+{{amount}} Gold)", //ok
     "signUpDesc": "Erstelle ein kostenloses Konto, um deinen Spielfortschritt geräteübergreifend zu synchronisieren. Ohne Konto wird dein Fortschritt nur lokal gespeichert und kann verloren gehen.",
-    "signUpButton": "Registrieren",
+    "signUpButton": "Registrieren", //ok
     "emailUpdatesTitle": "E-Mail-Updates (+{{amount}} Gold)",
     "subscribe": "Abonnieren",
     "playlightTitle": "1 Spiel entdecken (+{{amount}} Gold)",
     "discoverGames": "Spiele entdecken",
     "inviteTitle": "1 Freund einladen (+{{amount}} Gold je Person)",
     "inviteDesc": "Lade bis zu {{cap}} Freunde ein – jedes Mal erhalten ihr beide {{amount}} Gold ({{count}}/{{cap}} eingeladen).",
-    "copyInviteLink": "Einladungslink kopieren",
+    "copyInviteLink": "Link kopieren", //ok
     "progressComplete": "Du hast alle Aufgaben abgeschlossen. Du erhältst bald deine Belohnung.",
-    "progressToward": "Fortschritt zum exklusiven Gegenstand",
-    "progressAriaLabel": "Fortschritt exklusiver Gegenstand",
+    "progressToward": "Fortschritt zum exklusiven Gegenstand", //ok
+    "progressAriaLabel": "Fortschritt exklusiver Gegenstand", //ok
     "alreadyClaimedReward": "Du hast diese Belohnung bereits abgeholt!",
     "followRewardLog": "Du hast {{amount}} Gold erhalten, weil du uns auf {{platform}} folgst!",
     "platforms": {
@@ -57,19 +57,19 @@
   "invite": {
     "button": "Einladen",
     "goldBonus": "+{{amount}} Gold",
-    "linkCopied": "Einladungslink kopiert!",
+    "linkCopied": "Einladungslink kopiert!", //ok
     "linkCopiedDesc": "Teile ihn mit Freunden, um beide {{amount}} Gold zu verdienen.",
-    "copyFailed": "Einladungslink konnte nicht kopiert werden",
+    "copyFailed": "Einladungslink konnte nicht kopiert werden", //ok
     "tooltip": "Lade deine Freunde ein – ihr beide erhaltet {{amount}} Gold. Du kannst bis zu {{cap}} Freunde einladen. ({{count}}/{{cap}} eingeladen)."
   },
   "invest": {
-    "title": "Investieren",
+    "title": "Investieren", //ok
     "strategy": "Investitionsstrategie",
     "amount": "Investitionsbetrag",
     "potentialProfit": "Möglicher Gewinn:",
-    "startInvestment": "Investition starten",
+    "startInvestment": "Investition starten", //ok
     "infoAriaLabel": "Investitionen und Strategietabelle erklären",
-    "unlockTooltip": "Wird bei höherer Gebäudestufe freigeschaltet",
+    "unlockTooltip": "Wird bei höherer Gebäudestufe freigeschaltet", //ok
     "minutes": "{{count}} Min.",
     "luckBonus": "+{{pct}} % Erfolgschance durch Glück (in Tabelle enthalten).",
     "buildingLuckyBonus2": "+2 % Glückschance durch Gebäudestufe (in Tabelle enthalten).",
@@ -80,7 +80,7 @@
       "profit": "Gewinn",
       "lucky": "Glück",
       "loss": "Verlust",
-      "wipeout": "Totalverlust"
+      "wipeout": "Totalverlust" //ok
     },
     "tooltip": {
       "time": "Wie lange die Investition läuft.",
@@ -103,7 +103,7 @@
     "rulesStand": "Hat der Spieler am Zug mehr Punkte als der Gegner, kann er wählen, nicht zu würfeln.",
     "tutorialIntro": "Um dir das Spiel beizubringen, bietet der Spieler an, {{count}} Mal ohne Einsatz zu spielen.",
     "boneDiceIntro": "Setze deinen Einsatz. Mit Knochenwürfeln kannst du zweimal gegen den Spieler antreten.",
-    "placeBet": "Setze deinen Einsatz.",
+    "placeBet": "Setze deinen Einsatz.", //ok
     "gamesRemaining": "Noch {{remaining}} von {{total}} Spielen.",
     "requiresLuck": "Erfordert {{luck}} Glück zum Freischalten",
     "bet": "Einsatz:",
@@ -112,9 +112,9 @@
     "you": "Du",
     "gambler": "Spieler",
     "roll": "Würfeln",
-    "noRoll": "Nicht würfeln",
-    "youWin": "Du gewinnst",
-    "youLose": "Du verlierst",
+    "noRoll": "Nicht würfeln", //ok
+    "youWin": "Du gewinnst", //ok
+    "youLose": "Du verlierst", //ok
     "practiceOutcome": "Übungsrunde. Kein Gold gewonnen oder verloren.",
     "goldWon": "+{{amount}} Gold",
     "goldLost": "-{{amount}} Gold",
@@ -132,21 +132,20 @@
     "featureStructures": "100+ Gebäude",
     "featureItems": "250+ Gegenstände, Gefährten, Bücher, Segen…",
     "featureAchievements": "50+ Erfolge",
-    "featureStory": "Düstere und herausfordernde Geschichte basierend auf deinen Entscheidungen",
+    "featureStory": "Düstere und herausfordernde Geschichte basierend auf deinen Entscheidungen", //ok
     "signInRequired": "Bitte melde dich an, um die Vollversion zu kaufen.",
     "continueJourney": "Reise fortsetzen",
-    "progressSaved": "Dein Fortschritt ist gespeichert. Du kannst jederzeit zurückkehren und dort weiterspielen, wo du aufgehört hast.",
+    "progressSaved": "Dein Fortschritt ist gespeichert. Du kannst jederzeit zurückkehren und dort weiterspielen, wo du aufgehört hast.", //ok
     "loadingPayment": "Zahlungssystem wird geladen…",
     "purchaseSuccessful": "Kauf erfolgreich!",
     "purchaseSuccessfulDesc": "Vollversion freigeschaltet und aktiviert! Du kannst deine Reise nun ohne Einschränkungen fortsetzen.",
-    "poweredBy": "Bereitgestellt von",
     "legalConsent": "Mit dem Kauf stimmst du der sofortigen Lieferung digitaler Inhalte zu und verzichtest auf dein Widerrufsrecht. Weitere Informationen findest du in unseren",
-    "termsOfService": "Nutzungsbedingungen",
+    "termsOfService": "Nutzungsbedingungen", //ok
     "rightOfWithdrawal": "Widerrufsrecht",
     "completePurchaseFor": "Kauf abschließen für {{price}}",
-    "paymentFailed": "Zahlung fehlgeschlagen",
-    "notAuthenticated": "Benutzer nicht authentifiziert",
-    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten"
+    "paymentFailed": "Zahlung fehlgeschlagen", //ok
+    "notAuthenticated": "Benutzer nicht authentifiziert", //ok
+    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten" //ok
   },
   "leaderboard": {
     "title": "Bestenliste",
@@ -155,44 +154,44 @@
     "rank": "#",
     "player": "Spieler",
     "completionTime": "Abschlusszeit",
-    "noEntries": "Noch keine Einträge",
-    "lastUpdated": "Zuletzt aktualisiert: {{time}}",
-    "username": "Benutzername:",
-    "notSet": "Nicht festgelegt",
+    "noEntries": "Noch keine Einträge", //ok
+    "lastUpdated": "Zuletzt aktualisiert: {{time}}", //ok
+    "username": "Benutzername:", //ok
+    "notSet": "Nicht festgelegt", //ok
     "currentPlaytime": "Aktuelle Spielzeit:",
-    "enterName": "Namen eingeben",
-    "normalMode": "Normaler Modus",
-    "cruelMode": "Grausamer Modus",
-    "loadFailed": "Bestenliste konnte nicht geladen werden",
-    "invalidUsername": "Ungültiger Benutzername",
-    "usernameEmpty": "Benutzername darf nicht leer sein",
+    "enterName": "Namen eingeben", //ok
+    "normalMode": "Normaler Modus", //ok
+    "cruelMode": "Grausamer Modus", //ok
+    "loadFailed": "Bestenliste konnte nicht geladen werden", //ok
+    "invalidUsername": "Ungültiger Benutzername", //ok
+    "usernameEmpty": "Benutzername darf nicht leer sein", //ok
     "usernameTooLong": "Benutzername darf höchstens 20 Zeichen lang sein",
-    "mustSignIn": "Du musst angemeldet sein, um einen Benutzernamen festzulegen",
-    "usernameNotAllowed": "Benutzername nicht erlaubt",
+    "mustSignIn": "Du musst angemeldet sein, um einen Benutzernamen festzulegen", //ok
+    "usernameNotAllowed": "Benutzername nicht erlaubt", //ok
     "usernameInappropriate": "Dieser Benutzername enthält unangemessene Sprache. Bitte wähle einen anderen.",
-    "usernameTaken": "Benutzername vergeben",
+    "usernameTaken": "Benutzername vergeben", //ok
     "usernameTakenDesc": "Dieser Benutzername ist bereits vergeben. Bitte wähle einen anderen.",
-    "usernameSaved": "Benutzername gespeichert",
-    "usernameSavedDesc": "Dein Benutzername wurde aktualisiert",
-    "saveFailed": "Benutzername konnte nicht gespeichert werden"
+    "usernameSaved": "Benutzername gespeichert", //ok
+    "usernameSavedDesc": "Dein Benutzername wurde aktualisiert", //ok
+    "saveFailed": "Benutzername konnte nicht gespeichert werden" //ok
   },
   "investmentResult": {
-    "title": "Investitionsergebnis",
+    "title": "Investitionsergebnis", //ok
     "success": "Deine {{amount}} Gold-Investition war erfolgreich.",
     "luckyChance": "Glückstreffer. Der Gewinn deiner {{amount}} Gold-Investition wird mit {{multiplier}} multipliziert.",
-    "wipeout": "Totalverlust. Du hast deine gesamte {{amount}} Gold-Investition verloren.",
-    "partialLoss": "Deine {{amount}} Gold-Investition ist fehlgeschlagen."
+    "wipeout": "Totalverlust. Du hast deine gesamte {{amount}} Gold-Investition verloren.", //ok
+    "partialLoss": "Deine {{amount}} Gold-Investition ist fehlgeschlagen." //ok
   },
   "cube": {
     "fallbackTitle": "Der flüsternde Würfel",
     "fallbackMessage": "Der Würfel flüstert uralte Geheimnisse…",
     "close": "Schließen",
-    "completionLog": "Du hast diese Reise abgeschlossen. Bleib hier oder starte ein neues Spiel. Vielleicht im Grausamen Modus, wenn du dich traust."
+    "completionLog": "Du hast diese Reise abgeschlossen. Fahre hier fort oder starte ein neues Spiel. Vielleicht im Grausamen Modus, wenn du dich traust." //ok
   },
   "timedEvent": {
     "buy": "Kaufen",
     "sell": "Verkaufen",
-    "sayGoodbye": "Verabschieden",
+    "sayGoodbye": "Verabschieden", //ok
     "successChance": "Erfolgschance: {{percent}}",
     "discount": "{{percent}} % Rabatt",
     "discountFromKnowledge": "{{percent}} % durch Wissen{{max}}",

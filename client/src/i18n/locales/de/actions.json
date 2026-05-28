@@ -26,7 +26,7 @@
   },
   "buildAdvancedBlacksmith": {
     "description": "Verbesserte Schmiede mit besseren Werkzeugen und Techniken",
-    "label": "Fortgeschrittene Schmiede"
+    "label": "Fortgeschrittene Schmiede" //ok
   },
   "buildAlchemistHall": {
     "description": "Halle, in der der Alchemist Pulver und Sprengstoffe herstellt",
@@ -154,14 +154,14 @@
   },
   "buildInkwardenAcademy": {
     "description": "Große Akademie der Gelehrten, die höchstes Wissen und Ressourcenerfassung bietet",
-    "label": "Akademie der Tintenwächter"
+    "label": "Akademie der Tintenwächter" //ok
   },
   "buildLonghouse": {
-    "description": "Massive nordische Gemeinschaftshalle, die viele Dorfbewohner beherbergt",
+    "description": "Massive nordische Hütte, die viele Dorfbewohner beherbergt", //ok
     "label": "Langhaus"
   },
   "buildMasterTannery": {
-    "description": "Fortgeschrittene Gerberei, die die Lederproduktion verbessert",
+    "description": "Fortgeschrittene Gerberei, die die Lederproduktion verbessert", //ok
     "label": "Meistergerberei"
   },
   "buildMasterworkFoundry": {
@@ -443,7 +443,7 @@
   "descendFurther": {
     "label": "Tiefer hinabsteigen",
     "log": {
-      "firstVisit": "Die Laterne wirft ein gleichmäßiges Licht, während du noch tiefer hinabsteigst. Plötzlich berühren deine Füße von Menschenhand gemeißelte Steinstufen, vom Alter abgenutzt."
+      "firstVisit": "Die Laterne wirft ein gleichmäßiges Licht, während du noch tiefer hinabsteigst. Plötzlich berühren deine Füße von Menschenhand gemeißelte Steinstufen, vom Alter abgenutzt." //ok
     }
   },
   "encounterBeyondPortal": {
@@ -596,7 +596,7 @@
     }
   },
   "provokeAttackWave": {
-    "label": "Angriffswelle provozieren"
+    "label": "Angriffswelle provozieren"  //ok
   },
   "repairBastion": {
     "label": "Bastion reparieren"
@@ -646,7 +646,7 @@
     "label": "Adamant kaufen"
   },
   "tradeGoldForAshfireBomb": {
-    "label": "Aschenfeuerbombe kaufen"
+    "label": "Aschfeuerbombe kaufen" //ok
   },
   "tradeGoldForBlacksteel": {
     "label": "Schwarzstahl kaufen"
@@ -694,6 +694,6 @@
     }
   },
   "tradeGoldForVeinfireElixir": {
-    "label": "Buy Veinfire Elixir"
+    "label": "Aderfeuer-Elixier kaufen"  //ok
   }
 }

@@ -4,73 +4,73 @@
     "ariaLabel": "Sprache auswählen"
   },
   "startScreen": {
-    "titleNormal": "Eine dunkle Höhle.",
-    "titleCruel": "Eine sehr dunkle Höhle.",
+    "titleNormal": "Eine dunkle Höhle.", //ok
+    "titleCruel": "Eine sehr dunkle Höhle.", //ok
     "airNormal": "Die Luft ist kalt und feucht.",
     "airCruel": "Die Luft ist eiskalt und feucht.",
     "seeNormal": "Du erkennst kaum die Umrisse um dich herum.",
     "seeCruel": "Du erkennst kaum etwas um dich herum.",
-    "makeFire": "Feuer machen",
-    "boostDeactivate": "Klicken, um den Boost zu deaktivieren",
+    "makeFire": "Feuer machen", //ok
+    "boostDeactivate": "Klicken, um den Boost zu deaktivieren", //ok
     "recommendedBy": "Empfohlen von"
   },
   "footer": {
-    "fullGame": "Vollversion",
+    "fullGame": "Vollversion", //ok
     "trader": "Händler",
-    "openShop": "Shop öffnen",
+    "openShop": "Shop öffnen", //ok
     "donate": "Spende",
-    "supportGame": "Spiel unterstützen",
-    "privacy": "Datenschutz",
+    "supportGame": "Spiel unterstützen", //ok
+    "privacy": "Datenschutz", //ok
     "imprint": "Impressum",
     "contact": "Kontakt",
-    "pauseGame": "Spiel pausieren",
-    "resumeGame": "Spiel fortsetzen",
-    "muteMusic": "Musik stummschalten",
-    "unmuteMusic": "Musik einschalten",
-    "muteSfx": "Soundeffekte stummschalten",
-    "unmuteSfx": "Soundeffekte einschalten",
-    "cruelModeActive": "Grausamer Modus aktiviert"
+    "pauseGame": "Spiel pausieren", //ok
+    "resumeGame": "Spiel fortsetzen", //ok
+    "muteMusic": "Musik ausschalten", //ok
+    "unmuteMusic": "Musik einschalten", //ok
+    "muteSfx": "Soundeffekte ausschalten", //ok
+    "unmuteSfx": "Soundeffekte einschalten", //ok
+    "cruelModeActive": "Grausamer Modus aktiviert" //ok
   },
   "profile": {
     "title": "Profil",
-    "signInUp": "Anmelden/Registrieren",
+    "signInUp": "Anmelden/Registrieren", //ok
     "emailsOn": "E-Mails an",
     "emailsOff": "E-Mails aus",
     "marketingOnTooltip": "Du erhältst derzeit E-Mails mit Updates, Rabatten und exklusiven Belohnungen. Tippe, um sie abzustellen.",
     "marketingOffTooltip": "Du erhältst derzeit keine E-Mails mit Updates, Rabatten und exklusiven Belohnungen. Tippe, um sie einzuschalten.",
-    "rewardsTasks": "Belohnungsaufgaben",
+    "rewardsTasks": "Belohnungen verdienen", //ok
     "save": "Speichern",
     "newGame": "Neues Spiel",
-    "restart": "Neu starten",
+    "restart": "Neu starten", //ok
     "signIn": "Anmelden",
     "signOut": "Abmelden",
     "leaderboard": "Bestenliste",
-    "rewards": "Belohnungen",
+    "rewards": "Belohnungen", //ok
     "deleteAccount": "Konto löschen",
     "marketingSubscribe": "E-Mails abonnieren",
     "marketingUnsubscribe": "E-Mails abbestellen",
-    "autoSaveSignedIn": "Spiel wird jede Minute automatisch gespeichert",
-    "autoSaveGuest": "Spiel wird alle 15 Sekunden automatisch gespeichert",
-    "signUpCloudSave": "Registriere dich, um in der Cloud zu speichern",
-    "lastSave": "Letzter Speicherstand: {{time}}",
+    "autoSaveSignedIn": "Spiel wird jede Minute automatisch gespeichert", //ok
+    "autoSaveGuest": "Spiel wird alle 15 Sekunden automatisch gespeichert", //ok
+    "signUpCloudSave": "Registriere dich, um in der Cloud zu speichern", //ok
+    "lastSave": "Letztes Speichern: {{time}}", //ok
     "signedOut": "Erfolgreich abgemeldet",
-    "signOutError": "Fehler beim Abmelden",
-    "gameSaved": "Spiel erfolgreich gespeichert",
-    "saveFailed": "Speichern fehlgeschlagen",
+    "signOutError": "Fehler beim Abmelden", //ok
+    "gameSaved": "Spiel erfolgreich gespeichert", //ok
+    "saveFailed": "Speichern fehlgeschlagen", //ok
     "accountDeleted": "Dein Konto wurde gelöscht",
     "accountDeletedDesc": "Du wurdest abgemeldet und der lokale Speicherstand auf diesem Gerät wurde gelöscht.",
-    "deleteAccountFailed": "Konto konnte nicht gelöscht werden",
-    "tryAgainLater": "Versuche es später erneut.",
-    "notSignedIn": "Nicht angemeldet",
+    "deleteAccountFailed": "Konto konnte nicht gelöscht werden", //ok
+    "tryAgainLater": "Versuche es später erneut.", //ok
+    "notSignedIn": "Nicht angemeldet", //ok
     "subscribed": "Du bist abonniert",
     "unsubscribed": "Du bist abgemeldet",
     "subscribedDesc": "Wir senden dir gelegentlich Updates und Angebote per E-Mail.",
     "unsubscribedDesc": "Du erhältst keine Marketing-E-Mails von uns.",
-    "preferenceUpdateFailed": "Einstellung konnte nicht aktualisiert werden"
+    "preferenceUpdateFailed": "Einstellung konnte nicht aktualisiert werden"  //1.6X
   },
   "pauseHotkey": {
     "hintPrefix": "Drücke ",
-    "hintSuffix": " zum Pausieren"
+    "hintSuffix": " zum Pausieren" //ok
   },
   "never": "Nie"
 }

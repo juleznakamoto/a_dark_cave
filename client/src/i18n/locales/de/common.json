@@ -5,20 +5,19 @@
     "confirm": "Bestätigen",
     "cancel": "Abbrechen",
     "save": "Speichern",
-    "refresh": "Aktualisieren",
+    "refresh": "Aktualisieren", //ok
     "dismiss": "Verwerfen",
     "fight": "Kämpfen",
-    "retreat": "Zurückziehen",
     "refuse": "Ablehnen",
     "accept": "Annehmen",
     "back": "Zurück",
     "claim": "Abholen",
     "activate": "Aktivieren",
-    "deactivate": "Deaktivieren"
+    "deactivate": "Deaktivieren" //ok
   },
   "status": {
-    "loading": "Wird geladen...",
-    "processing": "Wird verarbeitet...",
+    "loading": "Wird geladen...", //ok
+    "processing": "Wird verarbeitet...", //ok
     "free": "Kostenlos",
     "error": "Fehler",
     "success": "Erfolg!",
@@ -45,7 +44,7 @@
     "bones": "Knochen",
     "fur": "Fell",
     "leather": "Leder",
-    "bone_totem": "Knochentotem",
+    "bone_totem": "Knochentotem", //ok
     "leather_totem": "Ledertotem",
     "iron": "Eisen",
     "coal": "Kohle",
@@ -53,13 +52,13 @@
     "obsidian": "Obsidian",
     "adamant": "Adamant",
     "steel": "Stahl",
-    "blacksteel": "Schwarzstahl",
+    "blacksteel": "Schwarzstahl", //ok
     "moonstone": "Mondstein",
     "black_powder": "Schwarzpulver",
     "ember_bomb": "Glutbombe",
     "ashfire_dust": "Aschfeuerstaub",
     "ashfire_bomb": "Aschfeuerbombe",
-    "void_bomb": "Leerenbombe",
+    "void_bomb": "Leerenbombe", //ok
     "veinfire_elixir": "Aderfeuer-Elixier",
     "poison_arrows": "Giftpfeile",
     "torch": "Fackel",
@@ -72,16 +71,16 @@
     "luck": "Glück",
     "madness": "Wahnsinn",
     "attack": "Angriff",
-    "defense": "Verteidigung",
+    "defense": "Verteidigung", //ok
     "integrity": "Integrität"
   },
   "time": {
     "never": "Nie",
-    "hoursMinutes": "{{hours}} Std. {{minutes}} Min.",
-    "minutesSeconds": "{{minutes}} Min. {{seconds}} Sek."
+    "hoursMinutes": "{{hours}} Std. {{minutes}} Min.", //ok
+    "minutesSeconds": "{{minutes}} Min. {{seconds}} Sek." //ok
   },
   "population": {
-    "villager_one": "{{count}} Dorfbewohner",
+    "villager_one": "{{count}} Dorfbewohner", //ok
     "villager_other": "{{count}} Dorfbewohner",
     "maxPopulation": "+{{count}} max. Bevölkerung"
   },

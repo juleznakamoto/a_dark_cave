@@ -408,25 +408,6 @@ export const getResourceGainTooltip = (
   );
 };
 
-// Building tooltips
-export const buildingTooltips: Record<string, TooltipConfig> = {
-  watchtower: {
-    getContent: (state) => {
-      const level = state.buildings.watchtower || 0;
-      const defense = 10 + level * 5;
-      const range = 20 + level * 10;
-      return `${getUiTooltip("defense", "Defense: {{value}}", { value: defense })}\n${getUiTooltip("range", "Range: {{value}}", { value: range })}`;
-    },
-  },
-  palisades: {
-    getContent: (state) => {
-      const level = state.buildings.palisades || 0;
-      const defense = 5 + level * 3;
-      return getUiTooltip("defense", "Defense: {{value}}", { value: defense });
-    },
-  },
-};
-
 // Madness tooltip
 export const madnessTooltip: TooltipConfig = {
   getContent: (state) => {

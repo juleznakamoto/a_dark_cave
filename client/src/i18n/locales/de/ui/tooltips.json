@@ -8,12 +8,11 @@
     "gainRange": "+{{min}}-{{max}} {{resource}}",
     "gainUnknown": "+? {{resource}}",
     "costLine": "-{{amount}} {{resource}}",
-    "villagerCost_one": "-{{count}} Dorfbewohner",
+    "villagerCost_one": "-{{count}} Dorfbewohner", //ok
     "villagerCost_other": "-{{count}} Dorfbewohner",
     "mapFragmentProgress": "{{count}} von {{total}} Kartenfragmenten",
-    "defense": "Verteidigung: {{value}}",
-    "range": "Reichweite: {{value}}",
-    "madnessFromItems": "{{value}} von Gegenständen",
+    "defense": "Verteidigung: {{value}}", //ok
+    "madnessFromItems": "{{value}} von Gegenständen", //ok
     "madnessFromBuildings": "{{value}} von Gebäuden",
     "madnessFromEvents": "{{value}} von Ereignissen",
     "madnessTitle": "Wahnsinn",
@@ -26,13 +25,13 @@
     "solsticeGathering": "Sonnenwendversammlung",
     "newVillagerChanceBonus": "Chance auf neue Dorfbewohner +{{percent}} %",
     "witchsCurse": "Hexenfluch",
-    "villagerDisgust": "Ekel der Dorfbewohner",
+    "villagerDisgust": "Ekel der Dorfbewohner", //ok
     "miningBoost": "Abbau-Boost",
     "miningBonus": "Abbau-Bonus: {{percent}} %",
     "heartfire": "Herzfeuer",
     "newVillagerChance": "Chance auf neue Dorfbewohner: +{{percent}} %",
-    "frostfall": "Froststurz: -{{percent}} % Produktion",
-    "chokingFog": "Erstickender Nebel",
+    "frostfall": "Froststurz",
+    "chokingFog": "Erstickender Nebel", //ok
     "focus": "Fokus",
     "actionBonus": "Aktionsbonus: {{multiplier}}x",
     "baseDamage": "Grundschaden: {{value}}",
@@ -40,7 +39,7 @@
     "totalDamage": "Gesamtschaden: {{value}}",
     "totalDamageForRounds": "Gesamtschaden: {{value}} für {{rounds}} Runden",
     "selfDamageChance": "5 % Chance, dir selbst Schaden zuzufügen",
-    "restoreIntegrity": "Stellt bis zu {{amount}} Integrität wieder her",
+    "restoreIntegrity": "Stellt bis zu {{amount}} Integrität wieder her", //ok
     "damage": "Schaden: {{value}}",
     "stunDuration_one": "Betäubungsdauer: {{rounds}} Runde",
     "stunDuration_other": "Betäubungsdauer: {{rounds}} Runden",
@@ -49,7 +48,7 @@
     "burnDamage_other": "{{damage}} Schaden für {{rounds}} Runden",
     "healthCost": "Lebenskosten: {{value}}",
     "currentResource": "Aktuell: {{amount}} {{resource}}",
-    "damaged": "(beschädigt)",
+    "damaged": "(beschädigt)", //ok
     "level": "Stufe {{level}}",
     "maxHeld": "Max.: {{value}}",
     "doubleActionChance": "{{percent}} % Chance, Aktionsgewinne zu verdoppeln",
@@ -77,27 +76,27 @@
     "productionBonusLine": "+{{percent}} % Produktion",
     "secRemaining": "Noch {{count}} Sek.",
     "buildings": {
-      "unlocksHunters": "Schaltet Jäger frei",
-      "unlocksCrafting": "Schaltet Herstellung frei",
-      "unlocksSchematicCrafting": "Schaltet Bauplan-Herstellung frei",
-      "unlocksBlacksteelCrafting": "Schaltet Schwarzstahl-Herstellung frei",
-      "unlocksBlacksteelForgers": "Schaltet Schwarzstahlschmiede frei",
-      "unlocksIronMiners": "Schaltet Eisenbergleute frei",
-      "unlocksCoalMiners": "Schaltet Kohlebergleute frei",
-      "unlocksSulfurMiners": "Schaltet Schwefelbergleute frei",
-      "unlocksObsidianMiners": "Schaltet Obsidianbergleute frei",
-      "unlocksAdamantMiners": "Schaltet Adamantbergleute frei",
-      "unlocksMoonstoneMiners": "Schaltet Mondsteinbergleute frei",
-      "unlocksSteelForgers": "Schaltet Stahlschmiede frei",
-      "unlocksTanners": "Schaltet Gerber frei",
-      "unlocksInvestments": "Schaltet Investitionen frei",
-      "unlocksPowderMakers": "Schaltet Pulvermacher frei",
-      "unlocksCallMerchant": "Schaltet Händler rufen frei",
-      "unlocksWizardStory": "Schaltet Magier-Geschichte frei",
-      "unlocksEstateTab": "Schaltet Anwesen-Tab frei",
+      "unlocksHunters": "Schaltet Jäger frei", //ok
+      "unlocksCrafting": "Schaltet Herstellung frei", //ok
+      "unlocksSchematicCrafting": "Schaltet Bauplanherstellung frei", //ok
+      "unlocksBlacksteelCrafting": "Schaltet Schwarzstahlherstellung frei", //ok
+      "unlocksBlacksteelForgers": "Schaltet Schwarzstahlschmiede frei", //ok
+      "unlocksIronMiners": "Schaltet Eisenbergleute frei", //ok
+      "unlocksCoalMiners": "Schaltet Kohlebergleute frei", //ok
+      "unlocksSulfurMiners": "Schaltet Schwefelbergleute frei", //ok
+      "unlocksObsidianMiners": "Schaltet Obsidianbergleute frei", //ok
+      "unlocksAdamantMiners": "Schaltet Adamantbergleute frei", //ok
+      "unlocksMoonstoneMiners": "Schaltet Mondsteinbergleute frei", //ok
+      "unlocksSteelForgers": "Schaltet Stahlschmiede frei", //ok
+      "unlocksTanners": "Schaltet Gerber frei", //ok
+      "unlocksInvestments": "Schaltet Investitionen frei", //ok
+      "unlocksPowderMakers": "Schaltet Pulvermacher frei", //ok
+      "unlocksCallMerchant": "Schaltet Händler rufen frei", //ok
+      "unlocksWizardStory": "Schaltet Magier Storyline frei", //ok
+      "unlocksEstateTab": "Schaltet Anwesen-Tab frei", //ok
       "unlocksFeedFireAction": "Schaltet Feuer schüren frei",
-      "craftDiscountSpaced": "2,5 % Herstellungsrabatt",
-      "craftDiscountSpaced5": "5 % Herstellungsrabatt",
+      "craftDiscountSpaced": "2,5 % Herstellungsrabatt", //ok
+      "craftDiscountSpaced5": "5 % Herstellungsrabatt", //ok
       "craftDiscount": "{{percent}} % Herstellungsrabatt",
       "buildDiscount": "{{percent}} % Baurabatt",
       "gathererWood": "Sammler: +{{amount}} Holz",
@@ -106,13 +105,13 @@
       "hunterFur": "Jäger: +{{amount}} Fell",
       "hunterBones": "Jäger: +{{amount}} Knochen",
       "knowledgeBonus": "+{{amount}} Wissen",
-      "resourceChangeHints": "Hinweise zu Ressourcenänderungen",
-      "improvedResourceChangeHints": "Verbesserte Hinweise zu Ressourcenänderungen",
+      "resourceChangeHints": "Hinweise zu Ressourcenänderungen", //ok
+      "improvedResourceChangeHints": "Verbesserte Hinweise zu Ressourcenänderungen",  //1.5X
       "resourceHighlighting": "Ressourcen-Hervorhebung",
-      "abortActions": "Aktionen abbrechen",
+      "abortActions": "Aktionen abbrechen", //ok
       "madnessReduction": "-{{amount}} Wahnsinn",
       "madnessIncrease": "+{{amount}} Wahnsinn",
-      "defenseBonus": "+{{amount}} Verteidigung",
+      "defenseBonus": "+{{amount}} Verteidigung", //ok
       "attackBonus": "+{{amount}} Angriff",
       "integrityBonus": "+{{amount}} Integrität",
       "luckyChance": "+{{percent}} % Glückschance",
@@ -131,7 +130,7 @@
       "madnessPerHumanSacrifice": "-2 Wahnsinn pro Menschenopfer (max. -20)",
       "totemSilverGain": "10-25 Silber",
       "totemGoldGain": "10-25 Gold",
-      "boneTotemSacrificeBonus": "Knochentotem-Opferbonus: 50–100 Gold",
+      "boneTotemSacrificeBonus": "Knochentotem-Opferbonus: 50-100 Gold",
       "totemSacrificesBonus": "Totemopfer: +25 % Bonus",
       "sleepLengthHours": "Schlafdauer +{{hours}} Stunden",
       "sleepIntensityPercent": "Schlafintensität +{{percent}} %",

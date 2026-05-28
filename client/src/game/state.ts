@@ -1163,6 +1163,17 @@ export function isModalDialogOpen(state: GameStore): boolean {
 }
 
 /**
+ * Timed-event tab is active but no hard-blocking modal (event/combat/shop/etc.).
+ * Production and random events stay frozen; action cooldowns and executions still advance.
+ */
+export function isTimedEventTabOnlyPause(state: GameStore): boolean {
+  if (!state.timedEventTab.isActive) return false;
+  if (state.isPaused || state.idleModeState?.isActive) return false;
+  if (state.rewardDialog.isOpen || isBlockingDialogOpen(state)) return false;
+  return true;
+}
+
+/**
  * True when the timed-event tab countdown should stop (manual pause, reward dialog, or another blocking dialog).
  * Excludes the active timed tab itself so the player's decision timer can still tick.
  */

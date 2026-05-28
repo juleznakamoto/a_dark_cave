@@ -3,6 +3,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import { readLocaleJson } from "./parse-locale-json.mjs";
 
 export function listUiShards(localeDir) {
   const uiDir = path.join(localeDir, "ui");
@@ -16,9 +17,7 @@ export function listUiShards(localeDir) {
 export function loadUiMerged(localeDir) {
   const merged = {};
   for (const file of listUiShards(localeDir)) {
-    const data = JSON.parse(
-      fs.readFileSync(path.join(localeDir, "ui", file), "utf8"),
-    );
+    const data = readLocaleJson(path.join(localeDir, "ui", file), fs);
     Object.assign(merged, data);
   }
   return merged;
@@ -48,7 +47,7 @@ export function setDeep(obj, keyPath, value) {
 export function findUiShardForKey(localeDir, topKey) {
   const uiDir = path.join(localeDir, "ui");
   for (const file of listUiShards(localeDir)) {
-    const data = JSON.parse(fs.readFileSync(path.join(uiDir, file), "utf8"));
+    const data = readLocaleJson(path.join(uiDir, file), fs);
     if (Object.prototype.hasOwnProperty.call(data, topKey)) return file;
   }
   return null;
@@ -62,13 +61,11 @@ export function loadNamespace(localeDir, ns) {
     }
     const monolith = path.join(localeDir, "ui.json");
     if (fs.existsSync(monolith)) {
-      return JSON.parse(fs.readFileSync(monolith, "utf8"));
+      return readLocaleJson(monolith, fs);
     }
     return {};
   }
-  return JSON.parse(
-    fs.readFileSync(path.join(localeDir, `${ns}.json`), "utf8"),
-  );
+  return readLocaleJson(path.join(localeDir, `${ns}.json`), fs);
 }
 
 export function writeUiKey(localeDir, keyPath, value) {
@@ -78,7 +75,7 @@ export function writeUiKey(localeDir, keyPath, value) {
     throw new Error(`No ui shard owns top-level key "${topKey}" for ${keyPath}`);
   }
   const shardPath = path.join(localeDir, "ui", shard);
-  const data = JSON.parse(fs.readFileSync(shardPath, "utf8"));
+  const data = readLocaleJson(shardPath, fs);
   setDeep(data, keyPath, value);
   fs.writeFileSync(shardPath, JSON.stringify(data, null, 2) + "\n");
 }
@@ -100,7 +97,7 @@ export function writeNamespace(localeDir, ns, data) {
         `${path.sep}en${path.sep}`,
       );
       const enShard = fs.existsSync(enShardPath)
-        ? JSON.parse(fs.readFileSync(enShardPath, "utf8"))
+        ? readLocaleJson(enShardPath, fs)
         : {};
       const out = {};
       for (const topKey of Object.keys(enShard)) {

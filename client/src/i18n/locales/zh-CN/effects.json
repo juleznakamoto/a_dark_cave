@@ -127,11 +127,11 @@
       "name": "渔夫之手"
     },
     "flames_touch": {
-      "description": "制作技能提升",
+      "description": "制作成本降低",
       "name": "火焰之触"
     },
     "flames_touch_enhanced": {
-      "description": "制作技能大幅提升",
+      "description": "制作成本大幅降低",
       "name": "强烈火焰之触"
     },
     "forests_grace": {

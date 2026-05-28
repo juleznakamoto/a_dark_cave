@@ -1,9 +1,9 @@
 {
   "tooltips": {
     "veinrootChanceChopWood": "0,5 % шанс получить Корень жилы",
-    "veinrootChanceHunt": "1 % шанс получить Корень жилы",
+    "veinrootChanceHunt": "1 % шанс получить Корень жилы",  //1.4X
     "maxBombsReached": "Достигнут максимум бомб ({{limit}} каждого типа)",
-    "maxVeinfireElixirReached": "Достигнут максимум эликсира жилового огня ({{limit}})",
+    "maxVeinfireElixirReached": "Достигнут максимум эликсира жилового огня ({{limit}})",  //1.4X
     "gainExact": "+{{amount}} {{resource}}",
     "gainRange": "+{{min}}-{{max}} {{resource}}",
     "gainUnknown": "+? {{resource}}",
@@ -12,7 +12,6 @@
     "villagerCost_other": "-{{count}} жителей",
     "mapFragmentProgress": "{{count}} из {{total}} фрагментов карты",
     "defense": "Защита: {{value}}",
-    "range": "Дальность: {{value}}",
     "madnessFromItems": "{{value}} от предметов",
     "madnessFromBuildings": "{{value}} от зданий",
     "madnessFromEvents": "{{value}} от событий",
@@ -21,15 +20,15 @@
     "madnessLevel": "Безумие: {{value}}",
     "minRemaining": "Осталось {{count}} мин",
     "minUntilDecrease": "{{time}} до снижения уровня",
-    "greatVillageFeast": "Большой праздник деревни",
-    "villageFeast": "Праздник деревни",
-    "solsticeGathering": "Собрание солнцестояния",
+    "greatVillageFeast": "Большой праздник деревни",  //1.3X
+    "villageFeast": "Праздник деревни",  //1.2X
+    "solsticeGathering": "Собрание солнцестояния",  //1.2X
     "newVillagerChanceBonus": "Шанс нового жителя +{{percent}} %",
-    "witchsCurse": "Проклятие ведьмы",
+    "witchsCurse": "Проклятие ведьмы",  //1.2X
     "villagerDisgust": "Отвращение жителей",
     "miningBoost": "Бонус добычи",
     "miningBonus": "Бонус добычи: {{percent}} %",
-    "heartfire": "Сердечный огонь",
+    "heartfire": "Сердечный огонь",  //1.7X
     "newVillagerChance": "Шанс нового жителя: +{{percent}} %",
     "frostfall": "Мороз",
     "chokingFog": "Удушающий туман",
@@ -47,7 +46,7 @@
     "successChance": "Шанс успеха: {{percent}} %",
     "burnDamage_one": "{{damage}} урона в течение {{rounds}} раунда",
     "burnDamage_other": "{{damage}} урона в течение {{rounds}} раундов",
-    "healthCost": "Стоимость здоровья: {{value}}",
+    "healthCost": "Стоимость здоровья: {{value}}",  //1.3X
     "currentResource": "Сейчас: {{amount}} {{resource}}",
     "damaged": "(повреждено)",
     "level": "Уровень {{level}}",
@@ -95,11 +94,11 @@
       "unlocksCallMerchant": "Разблокирует вызов торговца",
       "unlocksWizardStory": "Разблокирует историю волшебника",
       "unlocksEstateTab": "Разблокирует вкладку поместья",
-      "unlocksFeedFireAction": "Разблокирует действие «Подкинуть дров в огонь»",
+      "unlocksFeedFireAction": "Разблокирует действие «Подкинуть дров в огонь»",  //1.9X
       "craftDiscountSpaced": "2,5 % скидка на создание",
       "craftDiscountSpaced5": "5 % скидка на создание",
       "craftDiscount": "{{percent}} % скидка на создание",
-      "buildDiscount": "{{percent}} % скидка на строительство",
+      "buildDiscount": "{{percent}} % скидка на строительство",  //1.4X
       "gathererWood": "Сборщик: +{{amount}} древесины",
       "gathererStone": "Сборщик: +{{amount}} камня",
       "hunterFood": "Охотник: +{{amount}} еды",
@@ -107,7 +106,7 @@
       "hunterBones": "Охотник: +{{amount}} костей",
       "knowledgeBonus": "+{{amount}} знаний",
       "resourceChangeHints": "Подсказки об изменении ресурсов",
-      "improvedResourceChangeHints": "Улучшенные подсказки об изменении ресурсов",
+      "improvedResourceChangeHints": "Улучшенные подсказки об изменении ресурсов",  //1.4X
       "resourceHighlighting": "Подсветка ресурсов",
       "abortActions": "Прерывание действий",
       "madnessReduction": "-{{amount}} безумия",
@@ -116,22 +115,22 @@
       "attackBonus": "+{{amount}} атаки",
       "integrityBonus": "+{{amount}} целостности",
       "luckyChance": "+{{percent}} % к шансу удачи",
-      "investUpToGold": "Инвестировать до {{amount}} золота",
+      "investUpToGold": "Инвестировать до {{amount}} золота",  //1.2X
       "higherTradeAmounts": "Большие объёмы торговли",
       "tradesAtMerchant_one": "+{{count}} сделка у странствующего торговца",
       "tradesAtMerchant_other": "+{{count}} сделок у странствующего торговца",
       "trapWinChance10": "+10 % шанс победы против атакующих врагов и меньше погибших жителей",
       "trapWinChance20": "+20 % шанс победы против атакующих врагов и меньше погибших жителей",
       "boneyardUpTo": "До -10 безумия",
-      "boneyardPerDeath": "-1 безумие за каждые 50 жителей, погибших с момента постройки",
+      "boneyardPerDeath": "-1 безумие за каждые 50 жителей, погибших с момента постройки",  //1.4X
       "boneyardCurrent": "Сейчас: -{{amount}} безумия",
       "madnessFromAnimalSacrifices": "-{{amount}} безумия от жертвоприношений животных",
       "madnessPerAnimalSacrifice": "-1 безумие за жертвоприношение животного (макс. -10)",
       "madnessFromHumanSacrifices": "-{{amount}} безумия от человеческих жертвоприношений",
-      "madnessPerHumanSacrifice": "-2 безумия за человеческое жертвоприношение (макс. -20)",
+      "madnessPerHumanSacrifice": "-2 безумия за человеческое жертвоприношение (макс. -20)",  //1.4X
       "totemSilverGain": "10-25 серебра",
-      "totemGoldGain": "10-25 золота",
-      "boneTotemSacrificeBonus": "Бонус жертвоприношения костяному тотему: 50–100 золота",
+      "totemGoldGain": "10-25 золота",  //1.2X
+      "boneTotemSacrificeBonus": "Бонус жертвоприношения костяному тотему: 50–100 золота",  //1.4X
       "totemSacrificesBonus": "Жертвоприношения тотемам: +25 % бонус",
       "sleepLengthHours": "Длительность сна +{{hours}} ч.",
       "sleepIntensityPercent": "Интенсивность сна +{{percent}} %",

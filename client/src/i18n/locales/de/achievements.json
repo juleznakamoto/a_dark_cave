@@ -19,10 +19,10 @@
       "label": "Adamantschürfer"
     },
     "1-mineCoal": {
-      "label": "Kohleschürfer"
+      "label": "Kohleschürfer" //ok
     },
     "1-mineIron": {
-      "label": "Eisenschürfer"
+      "label": "Eisenschürfer" //ok
     },
     "1-mineObsidian": {
       "label": "Obsidianschürfer"
@@ -31,34 +31,34 @@
       "label": "Steinbrecher"
     },
     "1-mineSulfur": {
-      "label": "Schwefelschürfer"
+      "label": "Schwefelschürfer" //ok
     },
     "2-animals": {
       "label": "Tieropferer"
     },
     "2-boneTotems": {
-      "label": "Knochentotem-Opferer"
+      "label": "Knochentotemopferer" //ok
     },
     "2-craftBoneTotems": {
-      "label": "Knochentotem-Schnitzer"
+      "label": "Knochentotemschnitzer" //ok
     },
     "2-craftLeatherTotems": {
-      "label": "Ledertotem-Macher"
+      "label": "Ledertotemmacher"
     },
     "2-leatherTotems": {
-      "label": "Ledertotem-Opferer"
+      "label": "Ledertotemopferer"
     },
     "3-ashfireBombs": {
-      "label": "Aschfeuerbomben-Macher"
+      "label": "Aschfeuerbombenmacher"
     },
     "3-emberBombs": {
-      "label": "Glutbomben-Macher"
+      "label": "Glutbombenmacher"
     },
     "4-feedFire": {
       "label": "Feuerschürer"
     },
     "4-merchantPurchases": {
-      "label": "Handelspartner"
+      "label": "Handelspartner" //ok
     },
     "4-solsticeGatherings": {
       "label": "Sonnenwendfeierer"
@@ -87,27 +87,27 @@
       "label": "Gebäude errichten"
     },
     "1-communityBuilder": {
-      "label": "Gemeinschaft aufbauen"
+      "label": "Gemeinschaft aufbauen" //ok
     },
     "1-explorer": {
       "label": "Höhle erkunden"
     },
     "1-toolCrafter": {
-      "label": "Werkzeuge herstellen"
+      "label": "Werkzeuge herstellen" //ok
     },
     "1-torchCrafter": {
-      "label": "Fackeln herstellen"
+      "label": "Fackeln herstellen" //ok
     }
   },
   "building": {
     "0-0": {
-      "label": "Einfache Unterkunft"
+      "label": "Einfache Unterkunft" //ok
     },
     "0-1": {
-      "label": "Stabile Unterkunft"
+      "label": "Stabile Unterkunft" //ok
     },
     "0-2": {
-      "label": "Nordische Unterkunft"
+      "label": "Nordische Unterkunft" //ok
     },
     "0-3": {
       "label": "Nomadenunterkunft"
@@ -172,13 +172,13 @@
       "label": "Altes Wissen"
     },
     "3-fellowship": {
-      "label": "Gute Gesellschaft"
+      "label": "Gute Gesellschaft" //ok
     },
     "4-blacksteel_equipment": {
-      "label": "Dunkle Kriegsausrüstung"
+      "label": "Dunkle Kriegsausrüstung" //ok
     },
     "4-blacksteel_tools": {
-      "label": "Dunkle Werkzeuge"
+      "label": "Dunkle Werkzeuge" //ok
     }
   }
 }

@@ -6,6 +6,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { listCatalogPaths } from "./locale-catalog.mjs";
+import { readLocaleJson } from "./parse-locale-json.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -215,7 +216,7 @@ for (const locale of TARGETS) {
   for (const rel of catalogPaths) {
     const en = JSON.parse(fs.readFileSync(path.join(EN_DIR, rel), "utf8"));
     const locPath = path.join(ROOT, "client/src/i18n/locales", locale, rel);
-    const loc = JSON.parse(fs.readFileSync(locPath, "utf8"));
+    const loc = readLocaleJson(locPath, fs);
     const before = JSON.stringify(loc);
     const filled = fillIdentical(en, loc, locale);
     const after = JSON.stringify(filled);

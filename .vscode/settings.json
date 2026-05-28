@@ -1,0 +1,9 @@
+{
+  "files.associations": {
+    "client/src/i18n/locales/de/**/*.json": "jsonc",
+    "client/src/i18n/locales/fr/**/*.json": "jsonc",
+    "client/src/i18n/locales/es/**/*.json": "jsonc",
+    "client/src/i18n/locales/ru/**/*.json": "jsonc",
+    "client/src/i18n/locales/zh-CN/**/*.json": "jsonc"
+  }
+}

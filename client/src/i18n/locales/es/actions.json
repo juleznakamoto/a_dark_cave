@@ -65,7 +65,7 @@
     "label": "Osario"
   },
   "buildBottomlessPit": {
-    "description": "Pozo extremadamente profundo que alcanza los materiales más raros",
+    "description": "Pozo extremadamente profundo que alcanza los materiales más raros",  //1.4X
     "label": "Pozo sin fondo"
   },
   "buildCabin": {
@@ -74,7 +74,7 @@
   },
   "buildChitinPlating": {
     "description": "Las fortificaciones se refuerzan con placas de quitina impenetrables",
-    "label": "Revestimiento de quitina"
+    "label": "Revestimiento de quitina"  //1.7X
   },
   "buildClerksHut": {
     "description": "Choza donde los escribientes registran los recursos de la aldea",
@@ -133,7 +133,7 @@
     "label": "Gran depósito"
   },
   "buildGreatCabin": {
-    "description": "Cabaña de caza ampliada que aumenta la producción de los cazadores",
+    "description": "Cabaña de caza ampliada que aumenta la producción de los cazadores",  //1.4X
     "label": "Gran cabaña"
   },
   "buildGreatVault": {
@@ -189,7 +189,7 @@
     "label": "Fundición principal"
   },
   "buildQuarry": {
-    "description": "Cantera de piedra que aumenta la producción de piedra de los recolectores",
+    "description": "Cantera de piedra que aumenta la producción de piedra de los recolectores",  //1.6X
     "label": "Cantera"
   },
   "buildSanctum": {
@@ -237,7 +237,7 @@
     "label": "Puesto comercial"
   },
   "buildTraps": {
-    "description": "Trampas alrededor de la aldea que debilitan a todos los atacantes",
+    "description": "Trampas alrededor de la aldea que debilitan a todos los atacantes",  //1.4X
     "label": "Trampas"
   },
   "buildTreasury": {
@@ -309,10 +309,10 @@
     "label": "Gran escudo ceniciento"
   },
   "craftAshfireBomb": {
-    "label": "Bomba de fuego ceniciento"
+    "label": "Bomba de fuego ceniciento"  //2.1X
   },
   "craftBlacksteelArmor": {
-    "label": "Armadura de acero negro"
+    "label": "Armadura de acero negro"  //1.4X
   },
   "craftBlacksteelAxe": {
     "label": "Hacha de acero negro"
@@ -330,7 +330,7 @@
     "label": "Espada de acero negro"
   },
   "craftBloodstoneStaff": {
-    "label": "Bastón de piedra de sangre"
+    "label": "Bastón de piedra de sangre"  //1.6X
   },
   "craftBoneTotems": {
     "label": "Tótems de hueso"
@@ -345,13 +345,13 @@
     "label": "Mochila de explorador"
   },
   "craftFrostglassSword": {
-    "label": "Espada de cristal de escarcha"
+    "label": "Espada de cristal de escarcha"  //1.8X
   },
   "craftGrenadierBag": {
     "label": "Bolsa de granadero"
   },
   "craftHighpriestRobe": {
-    "label": "Túnica de sumo sacerdote"
+    "label": "Túnica de sumo sacerdote"  //1.6X
   },
   "craftHunterCloak": {
     "label": "Capa de cazador"
@@ -426,7 +426,7 @@
     "label": "Pico de piedra"
   },
   "craftStormglassHalberd": {
-    "label": "Alabarda de cristal de tormenta"
+    "label": "Alabarda de cristal de tormenta"  //1.7X
   },
   "craftTorches": {
     "label": "Antorchas"
@@ -447,7 +447,7 @@
     }
   },
   "encounterBeyondPortal": {
-    "label": "Aventurarse más allá de la puerta"
+    "label": "Aventurarse más allá de la puerta"  //1.7X
   },
   "exploreCave": {
     "label": "Explorar la cueva",
@@ -495,7 +495,7 @@
     "label": "Curar al mago anciano"
   },
   "healRestlessKnight": {
-    "label": "Curar al caballero inquieto"
+    "label": "Curar al caballero inquieto"  //1.4X
   },
   "hiddenLibrary": {
     "label": "Biblioteca oculta",
@@ -605,7 +605,7 @@
     "label": "Reparar empalizadas"
   },
   "repairWatchtower": {
-    "label": "Reparar torre de vigilancia"
+    "label": "Reparar torre de vigilancia"  //1.6X
   },
   "risingSmoke": {
     "label": "Humo ascendente",
@@ -652,7 +652,7 @@
     "label": "Comprar acero negro"
   },
   "tradeGoldForEmberBomb": {
-    "label": "Comprar bomba de brasas"
+    "label": "Comprar bomba de brasas"  //1.6X
   },
   "tradeGoldForFood": {
     "label": "Comprar comida"
@@ -676,7 +676,7 @@
     "label": "Comprar antorcha"
   },
   "tradeGoldForVoidBomb": {
-    "label": "Comprar bomba del vacío"
+    "label": "Comprar bomba del vacío"  //1.8X
   },
   "tradeGoldForWood": {
     "label": "Comprar madera"
@@ -694,6 +694,15 @@
     }
   },
   "tradeGoldForVeinfireElixir": {
-    "label": "Buy Veinfire Elixir"
+    "label": "Comprar elixir de fuego venal"
   }
 }
+
+
+
+
+
+
+
+
+

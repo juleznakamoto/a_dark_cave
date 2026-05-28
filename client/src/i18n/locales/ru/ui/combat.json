@@ -4,7 +4,6 @@
     "skillsTitle": "Боевые навыки",
     "fight": "Сражаться",
     "fighting": "Сражение...",
-    "retreat": "Отступить",
     "startFight": "Начать бой",
     "roundTitle": "Бой — раунд {{round}}",
     "youLost": "Вы проиграли",
@@ -12,7 +11,7 @@
     "bastion": "Бастион",
     "fortress": "Крепость",
     "items": "Предметы",
-    "integrity": "Целостность",
+    "integrity": "Целостность",  //1.2X
     "attack": "Атака",
     "defense": "Защита",
     "attackFailed": "Атака не удалась",
@@ -21,8 +20,8 @@
     "criticalParen": "({{label}})",
     "available": "Доступно: {{current}}/{{max}}",
     "crushingStrike": "Сокрушающий удар",
-    "bloodflameSphere": "Сфера кровавого пламени",
-    "poisonArrows": "Отравленные стрелы",
+    "bloodflameSphere": "Сфера кровавого пламени",  //1.4X
+    "poisonArrows": "Отравленные стрелы",  //1.4X
     "attackDetailsAria": "Подробности боевой атаки",
     "critChance": "{{percent}} % шанс критического удара",
     "critFromLuck": "{{percent}} % от {{stat}}{{maxSuffix}}",
@@ -52,10 +51,10 @@
     "soon": "скоро",
     "provoke": "Спровоцировать",
     "waves": {
-      "firstWave": "Первая волна",
+      "firstWave": "Первая волна",  //1.2X
       "secondWave": "Вторая волна",
       "thirdWave": "Третья волна",
-      "fourthWave": "Четвёртая волна",
+      "fourthWave": "Четвёртая волна",  //1.4X
       "fifthWave": "Пятая волна",
       "sixthWave": "Шестая волна",
       "seventhWave": "Седьмая волна",
@@ -67,20 +66,20 @@
   "fortifications": {
     "bastion": "Бастион",
     "fortifiedMoat": "Укреплённый ров",
-    "chitinPlating": "Хитиновая обшивка",
+    "chitinPlating": "Хитиновая обшивка",  //1.2X
     "watchtower1": "Сторожевая башня",
-    "watchtower2": "Караульная башня",
+    "watchtower2": "Караульная башня",  //1.5X
     "watchtower3": "Укреплённая башня",
     "watchtower4": "Пушечная башня",
-    "palisades1": "Деревянные частоколы",
+    "palisades1": "Деревянные частоколы",  //1.3X
     "palisades2": "Укреплённые частоколы",
-    "palisades3": "Каменная стена",
+    "palisades3": "Каменная стена",  //1.4X
     "palisades4": "Укреплённая стена",
     "palisadesFallback": "Частокол",
-    "watchtowerFallback": "Сторожевая башня",
+    "watchtowerFallback": "Сторожевая башня",  //1.6X
     "damaged": "(повреждено)",
     "attack": "+{{value}} к атаке",
     "defense": "+{{value}} к защите",
-    "integrity": "+{{value}} к целостности"
+    "integrity": "+{{value}} к целостности"  //1.2X
   }
 }

@@ -14,12 +14,12 @@
     "noPurchasesHint": "Besuche den Tab „Kaufen“, um Artikel zu kaufen.",
     "activatePurchasesTitle": "Aktiviere deine Käufe, um Belohnungen zu erhalten.",
     "activatePurchasesNote": "Jeder Kauf kann einmal pro Durchlauf aktiviert werden.",
-    "highlights": "Empfehlungen",
+    "highlights": "Highlights", //ok
     "gold": "Gold",
     "artifacts": "Artefakte",
-    "boosts": "Verstärkungen",
-    "bundles": "Pakete",
-    "mostPopular": "Am beliebtesten",
+    "boosts": "Boosts", //ok
+    "bundles": "Bundles",
+    "mostPopular": "Am beliebtesten", //ok
     "threeXValue": "Wert",
     "availableInOneHour": "Verfügbar in 1 Stunde",
     "availableInHours": "Verfügbar in {{hours}} Stunden",
@@ -33,15 +33,14 @@
     "betaDiscount": "Beta-Rabatt",
     "additionalDiscount": "Zusätzlicher Rabatt",
     "total": "Gesamt",
-    "poweredBy": "Bereitgestellt von",
     "legalConsent": "Mit dem Kauf stimmst du der sofortigen Lieferung digitaler Inhalte zu und verzichtest auf dein Widerrufsrecht. Weitere Informationen findest du in unseren",
-    "termsOfService": "Nutzungsbedingungen",
+    "termsOfService": "Nutzungsbedingungen", //ok
     "rightOfWithdrawal": "Widerrufsrecht",
     "completePurchaseFor": "Kauf abschließen für {{price}}",
-    "paymentFailed": "Zahlung fehlgeschlagen",
-    "notAuthenticated": "Benutzer nicht authentifiziert",
+    "paymentFailed": "Zahlung fehlgeschlagen",  //1.6X
+    "notAuthenticated": "Benutzer nicht authentifiziert",  //1.4X
     "verificationFailed": "Zahlungsüberprüfung fehlgeschlagen. Bitte kontaktiere den Support.",
-    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten",
+    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten",  //1.4X
     "purchaseSuccessful": "Kauf erfolgreich!",
     "purchaseAddedSingle": "{{name}} wurde deinen Käufen hinzugefügt. Prüfe den Tab „Käufe“, um es zu aktivieren.",
     "purchaseAddedBundle": "Die Bestandteile von {{name}} wurden deinen Käufen hinzugefügt. Prüfe den Tab „Käufe“, um sie zu aktivieren.",
@@ -54,7 +53,7 @@
     "artifactSkullLantern": {
       "title": "Schädellaterne",
       "caveExploreBonus": "Höhlenerkundung: +200 % Bonus",
-      "caveExploreCooldown": "Höhlenerkundung: -5 s Abklingzeit",
+      "caveExploreCooldown": "Höhlenerkundung: -5 s Abklingzeit",  //1.3X
       "miningBonus": "Abbau: +200 % Bonus",
       "miningCooldown": "Abbau: -5s Abklingzeit"
     },
@@ -68,18 +67,19 @@
       "doubleGain": "bis zu 15 % Chance, Aktionsgewinne zu verdoppeln"
     },
     "cruelMode": {
-      "title": "Grausamer Modus",
-      "moreEvents": "Mehr Ereignisse",
-      "moreItems": "Mehr Gegenstände",
+      "title": "Grausamer Modus",  //1.5X
+      "moreEvents": "Mehr Ereignisse",  //1.4X
+      "moreItems": "Mehr Gegenstände",  //1.6X
       "strongerEnemies": "Stärkere Feinde",
-      "harderChallenges": "Härtere Herausforderungen",
-      "reusePurchases": "Bestehende Käufe wiederverwenden"
+      "harderChallenges": "Härtere Herausforderungen",  //1.5X
+      "reusePurchases": "Bestehende Käufe wiederverwenden"  //1.3X
     },
     "alreadyClaimedItemLog": "Du hast {{name}} bereits abgeholt.",
-    "claimFailedLog": "{{name}} konnte nicht abgeholt werden. Bitte versuche es erneut.",
+    "claimFailedLog": "{{name}} konnte nicht abgeholt werden. Bitte versuche es erneut.",  //1.5X
     "activatedDefaultLog": "{{name}} aktiviert! Belohnungen wurden deinem Inventar hinzugefügt.",
     "freeGoldClaimedLog": "Du hast {{amount}} Gold abgeholt. Komm morgen wieder, wenn du die Nacht überstehst.",
     "freeGoldCooldownLog_one": "Du kannst in {{hours}} Stunde wieder kostenloses Gold abholen.",
     "freeGoldCooldownLog_other": "Du kannst in {{hours}} Stunden wieder kostenloses Gold abholen."
   }
 }
+

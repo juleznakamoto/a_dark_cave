@@ -36,11 +36,11 @@
     },
     "ashen_embrace_enhanced": {
       "description": "Votre aptitude à miner est grandement améliorée",
-      "name": "Étreinte cendreuse profonde"
+      "name": "Étreinte cendreuse profonde"  //1.5X
     },
     "bell_blessing": {
       "description": "Une mystérieuse marque de cloche sur votre avant-bras. Double les points de concentration gagnés pendant le sommeil.",
-      "name": "Bénédiction de la cloche"
+      "name": "Bénédiction de la cloche"  //1.8X
     },
     "black_bear_fur": {
       "description": "Fourrure noire maudite provenant d'un ours géant d'un autre monde",
@@ -127,11 +127,11 @@
       "name": "Main du pêcheur"
     },
     "flames_touch": {
-      "description": "Les compétences d'artisanat sont améliorées",
+      "description": "Les coûts d'artisanat sont réduits",
       "name": "Toucher de flamme"
     },
     "flames_touch_enhanced": {
-      "description": "Les compétences d'artisanat sont grandement améliorées",
+      "description": "Les coûts d'artisanat sont fortement réduits",
       "name": "Puissant toucher de flamme"
     },
     "forests_grace": {
@@ -204,7 +204,7 @@
     },
     "ravenfeather_mantle": {
       "description": "Manteau mystique tissé de plumes de corbeau chatoyantes",
-      "name": "Manteau de plumes de corbeau"
+      "name": "Manteau de plumes de corbeau"  //1.5X
     },
     "ravens_mark": {
       "description": "Les étrangers approchent le village plus souvent",
@@ -212,7 +212,7 @@
     },
     "ravens_mark_enhanced": {
       "description": "Les étrangers approchent le village beaucoup plus souvent",
-      "name": "Grande marque du corbeau"
+      "name": "Grande marque du corbeau"  //1.3X
     },
     "ravens_orb": {
       "description": "Orbe sombre béni par les corbeaux et chargé de savoir ancien",
@@ -260,11 +260,11 @@
     },
     "stormglass_halberd_schematic": {
       "description": "Plan pour fabriquer une hallebarde redoutable",
-      "name": "Hallebarde de verre-tempête"
+      "name": "Hallebarde de verre-tempête"  //1.5X
     },
     "survivors_last_words": {
       "description": "La bénédiction finale d'un étranger mourant",
-      "name": "Dernières paroles du survivant"
+      "name": "Dernières paroles du survivant"  //1.4X
     },
     "survivors_notes": {
       "description": "Parchemin usé par le temps, rempli de conseils pratiques laissés par quelqu'un qui vécut ici il y a longtemps. Débloque les succès de base.",
@@ -298,7 +298,7 @@
   "fellowship": {
     "ashwraith_huntress": {
       "description": "Chasseresse sauvage d'une tribu forestière liée par serment de sang. Débloque les améliorations de compétence de chasse et de production des chasseurs.",
-      "name": "Chasseresse spectre-cendre"
+      "name": "Chasseresse spectre-cendre"  //1.4X
     },
     "disgraced_prior": {
       "description": "Ancien prieur rejeté par son ordre. Il se rachète par un labeur sans fin. Peut être assigné à répéter automatiquement des actions.",
@@ -446,7 +446,7 @@
     },
     "ashen_greatshield": {
       "description": "Immense bouclier forgé avec les os de la créature du lac souterrain",
-      "name": "Grand bouclier cendreux"
+      "name": "Grand bouclier cendreux"  //1.4X
     },
     "ashfire_bomb": {
       "description": "Bombe dévastatrice luisant d'un feu d'un autre monde",
@@ -462,7 +462,7 @@
     },
     "bloodstone_staff": {
       "description": "Bâton couronné de pierre de sang, palpitant d'énergie sombre",
-      "name": "Bâton de pierre de sang"
+      "name": "Bâton de pierre de sang"  //1.4X
     },
     "compound_bow": {
       "description": "Arme de haute précision issue de la civilisation disparue",
@@ -502,7 +502,7 @@
     },
     "nordic_war_axe": {
       "description": "Hache de guerre légendaire forgée par un maître forgeron viking",
-      "name": "Hache de guerre nordique"
+      "name": "Hache de guerre nordique"  //1.7X
     },
     "obsidian_sword": {
       "description": "Lame rasoir forgée dans le verre volcanique",
@@ -514,7 +514,7 @@
     },
     "stormglass_halberd": {
       "description": "Hallebarde suprême forgée dans un adamant magistralement raffiné",
-      "name": "Hallebarde de verre-tempête"
+      "name": "Hallebarde de verre-tempête"  //1.5X
     },
     "veinfire_elixir": {
       "description": "Élixir de soin alchimique distillé à partir de rare racine-veine",

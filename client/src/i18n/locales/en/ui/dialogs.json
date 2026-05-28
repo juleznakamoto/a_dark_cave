@@ -139,7 +139,6 @@
     "loadingPayment": "Loading payment system...",
     "purchaseSuccessful": "Purchase Successful!",
     "purchaseSuccessfulDesc": "Full Game unlocked and activated! You can now continue your journey without restrictions.",
-    "poweredBy": "Powered by",
     "legalConsent": "By purchasing, you consent to immediate delivery of digital content and waive your right of withdrawal. For more information, see our",
     "termsOfService": "Terms of Service",
     "rightOfWithdrawal": "Right of Withdrawal",
@@ -187,7 +186,7 @@
     "fallbackTitle": "The Whispering Cube",
     "fallbackMessage": "The cube whispers ancient secrets...",
     "close": "Close",
-    "completionLog": "You have finished this journey. Stay here or start a new game. Maybe in Cruel Mode, if you dare."
+    "completionLog": "You have finished this journey. Continue here or start a new game. Maybe in Cruel Mode, if you dare."
   },
   "timedEvent": {
     "buy": "Buy",

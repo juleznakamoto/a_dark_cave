@@ -2,6 +2,7 @@ import {
   useGameStore,
   StateManager,
   isModalDialogOpen,
+  isTimedEventTabOnlyPause,
   shouldFreezeTimedEventTabCountdown,
   syncTimedEventTabPauseTracking,
   getTimedEventTabEffectiveRemainingMs,
@@ -304,6 +305,24 @@ export function startGameLoop() {
 
     // Blocking modals: `isModalDialogOpen` in state.ts (add new dialogs there only).
     const IsDialogOpen = isModalDialogOpen(state);
+
+    const timedEventTabOnlyPause =
+      isTimedEventTabOnlyPause(state) && !requiresFullGamePurchase;
+
+    if (timedEventTabOnlyPause) {
+      // Freeze production / random events, but keep action cooldowns and executions advancing
+      // so forest trade buttons (etc.) still recover while a timed-tab visit is open.
+      if (productionPauseStartedAt === null) {
+        productionPauseStartedAt = timestamp;
+      }
+      tickAccumulator += deltaTime;
+      while (tickAccumulator >= TICK_INTERVAL) {
+        tickAccumulator -= TICK_INTERVAL;
+        processActionTicks();
+      }
+      gameLoopId = requestAnimationFrame(tick);
+      return;
+    }
 
     const isPaused =
       state.isPaused ||
@@ -643,7 +662,8 @@ export function stopGameLoop() {
   StateManager.clearUpdateTimer();
 }
 
-function processTick() {
+/** Cooldowns, executions, prior automation, and timed buff expiry — no random events. */
+export function processActionTicks() {
   const state = useGameStore.getState();
 
   // Tick down cooldowns
@@ -802,6 +822,12 @@ function processTick() {
       },
     });
   }
+}
+
+function processTick() {
+  processActionTicks();
+
+  const state = useGameStore.getState();
 
   // Check for random events
   const prevEvents = { ...state.events };

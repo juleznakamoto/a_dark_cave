@@ -1,17 +1,17 @@
 {
   "cave": {
-    "sectionMine": "Abbau",
-    "sectionCraft": "Herstellung",
-    "requiresFreeVillagers_one": "Erfordert {{count}} freien Dorfbewohner",
-    "requiresFreeVillagers_other": "Erfordert {{count}} freie Dorfbewohner",
+    "sectionMine": "Abbauen", //ok
+    "sectionCraft": "Herstellen", //ok
+    "requiresFreeVillagers_one": "Erfordert {{count}} freien Dorfbewohner", //ok
+    "requiresFreeVillagers_other": "Erfordert {{count}} freie Dorfbewohner", //ok
     "cooldownReduction": "-{{seconds}}s Abklingzeit",
     "craftTorch_one": "Fackel",
     "craftTorch_other": "Fackeln",
-    "craftBoneTotem_one": "Knochentotem",
-    "craftBoneTotem_other": "Knochentotems",
+    "craftBoneTotem_one": "Knochentotem", //ok
+    "craftBoneTotem_other": "Knochentotems", //ok
     "craftLeatherTotem_one": "Ledertotem",
     "craftLeatherTotem_other": "Ledertotems",
-    "abortForGold": "Abbrechen für {{amount}} Gold"
+    "abortForGold": "Abbrechen für {{amount}} Gold" //ok
   },
   "forest": {
     "sectionSacrifice": "Opfer",
@@ -20,30 +20,30 @@
   },
   "village": {
     "sectionBuild": "Bauen",
-    "sectionProduce": "Produzieren",
+    "sectionProduce": "Produzieren", //ok
     "cycle": "Zyklus",
     "nextCycleIn": "Nächster Zyklus in {{seconds}} Sekunden",
-    "newVillagerChance": "Chance auf neue Dorfbewohner: {{percent}} %",
-    "lowPopulationBonus": "{{percent}} % Bonus bei geringer Bevölkerung",
+    "newVillagerChance": "Chance auf neue Dorfbewohner: {{percent}} %", //ok
+    "lowPopulationBonus": "{{percent}} % Bonus bei geringer Bevölkerung", //ok
     "fromBuildings": "{{percent}} % durch Gebäude",
     "fromBlessings": "{{percent}} % durch Segen",
-    "fromEvents": "{{percent}} % durch Ereignisse",
+    "fromEvents": "{{percent}} % durch Ereignisse", //ok
     "fromHeartfire": "{{percent}} % durch Herdfeuer",
-    "merchantBlocked": "Der Händler kann nicht gerufen werden, solange ein anderes Ereignis aktiv ist",
+    "merchantBlocked": "Der Händler kann nicht gerufen werden, solange ein anderes Ereignis aktiv ist", //ok
     "merchantAvailableIn": "Verfügbar in {{time}}",
-    "investCompleteIn": "Investition abgeschlossen in {{time}}",
+    "investCompleteIn": "Investition abgeschlossen in {{time}}", //ok
     "investAvailableIn": "Investitionen verfügbar in {{time}}",
-    "investPreparing": "Investitionsangebote werden vorbereitet…",
+    "investPreparing": "Investitionsangebote werden vorbereitet…", //ok
     "jobs": {
       "gatherer": "Sammler",
       "hunter": "Jäger",
-      "iron_miner": "Eisenbergmann",
-      "coal_miner": "Kohlebergmann",
+      "iron_miner": "Eisenbergmann", //ok
+      "coal_miner": "Kohlebergmann", //ok
       "steel_forger": "Stahlschmied",
       "blacksteel_forger": "Schwarzstahlschmied",
-      "sulfur_miner": "Schwefelbergmann",
+      "sulfur_miner": "Schwefelbergmann", //ok
       "obsidian_miner": "Obsidianbergmann",
-      "adamant_miner": "Adamantbergmann",
+      "adamant_miner": "Adamantbergmann", //ok
       "moonstone_miner": "Mondsteinbergmann",
       "powder_maker": "Pulvermacher",
       "ashfire_dust_maker": "Aschfeuerstaubmacher",
@@ -60,13 +60,13 @@
     "focusRewardTooltip_other": "Erhalte 2x Belohnungen bei Aktionen für {{count}} Minuten",
     "focusPointTooltip": "Verdiene 1 Fokuspunkt pro Stunde Schlaf",
     "sleepLength": "Schlaflänge",
-    "sleepLengthTooltip": "Max. Stunden pro Schlaf",
+    "sleepLengthTooltip": "Max. Stunden pro Schlaf", //ok
     "sleepIntensity": "Schlafintensität",
     "sleepIntensityTooltip": "Dorfproduktion in % während des Schlafs",
-    "skills": "Fähigkeiten",
-    "cubeWhispers": "Flüsternder Würfel",
+    "skills": "Fähigkeiten", //ok
+    "cubeWhispers": "Flüsternder Würfel", //ok
     "huntressTraining": "Jägerinausbildung",
-    "crushingStrike": "Zerschmetternder Schlag",
+    "crushingStrike": "Schmetterschlag", //ok
     "bloodflameSphere": "Blutflammensphäre",
     "disgracedPrior": "Gefallener Prior",
     "crowsEye": "Krähenauge",
@@ -81,14 +81,14 @@
     "skillFurBonus": "+{{amount}} Fell",
     "skillBonesBonus": "+{{amount}} Knochen",
     "skillDamageBonus": "+{{amount}} Schaden",
-    "skillStunRound_one": "+{{amount}} Betäubungsrunde",
-    "skillStunRound_other": "+{{amount}} Betäubungsrunden",
+    "skillStunRound_one": "+{{amount}} Betäubungsrunde", //ok
+    "skillStunRound_other": "+{{amount}} Betäubungsrunden", //ok
     "skillSuccessChanceBonus": "+{{amount}} % Erfolgschance",
     "crushingStrikeSummary": "{{damage}} Schaden, {{rounds}} Betäubung, {{success}} % Erfolg",
     "skillBurnDamage": "+{{amount}} Brandschaden",
     "skillBurnRound_one": "+{{amount}} Brandrunde",
     "skillBurnRound_other": "+{{amount}} Brandrunden",
-    "skillHealthCost": "+{{amount}} Gesundheitskosten",
+    "skillHealthCost": "+{{amount}} Gesundheitskosten", //ok
     "bloodflameSummary": "{{damage}} Schaden für {{rounds}} Runden, {{health}} Gesundheitskosten",
     "bloodflameSummary_one": "{{damage}} Schaden für {{rounds}} Runde, {{health}} Gesundheitskosten",
     "skillDoubleGain": "+{{amount}} % Doppelgewinn-Chance",
@@ -102,29 +102,29 @@
     "priorSummaryNoBonus_other": "{{count}} gleichzeitige Aktionen, {{upkeep}}"
   },
   "bonuses": {
-    "caveExplore": "Höhle erkunden",
-    "chopWood": "Holz hacken",
+    "caveExplore": "Höhle erkunden", //ok
+    "chopWood": "Holz hacken", //ok
     "hunt": "Jagd",
-    "mineAll": "Abbau (Alle)",
-    "mineStone": "Stein abbauen",
-    "mineIron": "Eisen abbauen",
-    "mineCoal": "Kohle abbauen",
-    "mineSulfur": "Schwefel abbauen",
-    "mineObsidian": "Obsidian abbauen",
-    "mineAdamant": "Adamant abbauen",
-    "boneTotems": "Knochentotems",
+    "mineAll": "Abbauen (Alle)", //ok
+    "mineStone": "Stein abbauen", //ok
+    "mineIron": "Eisen abbauen", //ok
+    "mineCoal": "Kohle abbauen", //ok
+    "mineSulfur": "Schwefel abbauen", //ok
+    "mineObsidian": "Obsidian abbauen", //ok
+    "mineAdamant": "Adamant abbauen", //ok
+    "boneTotems": "Knochentotems", //ok
     "leatherTotems": "Ledertotems",
-    "craftDiscount": "Herstellungsrabatt",
+    "craftDiscount": "Herstellungsrabatt", //ok
     "buildDiscount": "Baurabatt",
     "doubleGainChance": "Doppelgewinn-Chance"
   },
   "badges": {
-    "priorUpgradeRequired": "Verbessere den Gefallenen Prior, um mehr Aktionen zuzuweisen",
-    "priorRemove": "Klicken, um den Gefallenen Prior zu entfernen",
-    "priorAssign": "Klicken, um den Gefallenen Prior zuzuweisen",
+    "priorUpgradeRequired": "Verbessere den Gefallenen Prior, um mehr Aktionen zuzuweisen", //ok
+    "priorRemove": "Klicken, um den Gefallenen Prior zu entfernen", //ok
+    "priorAssign": "Klicken, um den Gefallenen Prior zuzuweisen", //ok
     "bonus": "Bonus:",
-    "nextBonus": "Nächster Bonus:",
-    "craftMultiplier": "Herstellung x{{amount}}",
+    "nextBonus": "Nächster Bonus:", //ok
+    "craftMultiplier": "Herstellung x{{amount}}", //ok
     "bonusPercent": "+{{percent}}%",
     "maxLevel": "max. Stufe",
     "executionTimeReduction": "-50 % Ausführungszeit"
@@ -148,31 +148,31 @@
     "stats": "Werte",
     "bonuses": "Boni",
     "fortifications": "Befestigungen",
-    "combatItems": "Kampfgegenstände",
-    "mapFragments": "Kartenfragmente",
-    "craftDiscount": "Herstellungsrabatt",
+    "combatItems": "Kampfgegenstände", //ok
+    "mapFragments": "Kartenfragmente", //ok
+    "craftDiscount": "Herstellungsrabatt", //ok
     "buildDiscount": "Baurabatt",
     "doubleGainChance": "Doppelgewinn-Chance",
     "populationTooltip": "Jeder Dorfbewohner verbraucht 1 Nahrung und 1 Holz",
     "resourceLimitTooltip": "Max. {{limit}} (kein Limit für Silber und Gold)",
     "statsTooltip": "Werte beeinflussen den Ausgang von Ereignissen und werden später im Kampf relevant.",
-    "statLuckTooltip": "Beugt das Schicksal zu deinen Gunsten",
+    "statLuckTooltip": "Beugt das Schicksal zu deinen Gunsten", //ok
     "statStrengthTooltip": "Hilft dort, wo Worte an ihre Grenzen stoßen",
     "statKnowledgeTooltip": "Beeinflusst Dinge, bei denen Klugheit hilft",
     "statMadnessTooltip": "Führt Gedanken auf gefährliche Pfade",
-    "madnessFromItems": "{{value}} durch Gegenstände",
+    "madnessFromItems": "{{value}} durch Gegenstände", //ok
     "madnessFromBuildings": "{{value}} durch Gebäude",
-    "madnessFromEvents": "{{value}} durch Ereignisse",
-    "bastionDefenseTooltip": "Verringert eingehenden Schaden",
+    "madnessFromEvents": "{{value}} durch Ereignisse", //ok
+    "bastionDefenseTooltip": "Verringert eingehenden Schaden", //ok
     "bastionIntegrityTooltip": "Erreicht die Integrität 0, verlierst du die Schlacht",
     "bastionAttackTooltip": "Schaden, den du Feinden in jeder Kampfrunde zufügst",
     "bastionAttackFromFortifications": "{{value}} durch Befestigungen",
     "bastionAttackFromStrength": "{{value}} durch Stärke (50 %)"
   },
   "achievements": {
-    "title": "Notizen des Überlebenden",
-    "notUnlocked": "Noch nicht freigeschaltet.",
-    "chartUnavailable": "Diagramm nicht verfügbar",
+    "title": "Notizen des Überlebenden", //ok
+    "notUnlocked": "Noch nicht freigeschaltet.", //ok
+    "chartUnavailable": "Diagramm nicht verfügbar", //ok
     "claim": "Einfordern",
     "completeLog": "Erfolg abgeschlossen: {{name}}: {{rewards}}"
   },
@@ -184,6 +184,6 @@
     "wake": "Aufwachen",
     "getUp": "Aufstehen",
     "focusGainedLog": "Du hast durch deine Ruhe {{count}} Fokus erhalten.",
-    "villagersProducedLog": "Dorfbewohner haben produziert: {{resources}}"
+    "villagersProducedLog": "Dorfbewohner haben produziert: {{resources}}" //ok
   }
 }

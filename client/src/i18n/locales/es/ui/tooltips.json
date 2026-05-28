@@ -1,9 +1,9 @@
 {
   "tooltips": {
-    "veinrootChanceChopWood": "0,5 % de probabilidad de Raíz de vena",
-    "veinrootChanceHunt": "1 % de probabilidad de Raíz de vena",
+    "veinrootChanceChopWood": "0,5 % de probabilidad de Raíz de vena",  //1.6X
+    "veinrootChanceHunt": "1 % de probabilidad de Raíz de vena",  //1.7X
     "maxBombsReached": "Máximo de bombas alcanzado ({{limit}} por tipo)",
-    "maxVeinfireElixirReached": "Máximo de elixir de fuego de vena alcanzado ({{limit}})",
+    "maxVeinfireElixirReached": "Máximo de elixir de fuego de vena alcanzado ({{limit}})",  //1.4X
     "gainExact": "+{{amount}} {{resource}}",
     "gainRange": "+{{min}}-{{max}} {{resource}}",
     "gainUnknown": "+? {{resource}}",
@@ -12,31 +12,30 @@
     "villagerCost_other": "-{{count}} aldeanos",
     "mapFragmentProgress": "{{count}} de {{total}} fragmentos de mapa",
     "defense": "Defensa: {{value}}",
-    "range": "Alcance: {{value}}",
     "madnessFromItems": "{{value}} de objetos",
     "madnessFromBuildings": "{{value}} de edificios",
     "madnessFromEvents": "{{value}} de eventos",
     "madnessTitle": "Locura",
-    "productionBonus": "Bonificación de producción: {{value}}",
+    "productionBonus": "Bonificación de producción: {{value}}",  //1.4X
     "madnessLevel": "Locura: {{value}}",
     "minRemaining": "{{count}} min restantes",
     "minUntilDecrease": "{{time}} hasta bajar de nivel",
     "greatVillageFeast": "Gran festín del pueblo",
-    "villageFeast": "Festín del pueblo",
+    "villageFeast": "Festín del pueblo",  //1.3X
     "solsticeGathering": "Reunión del solsticio",
     "newVillagerChanceBonus": "Probabilidad de nuevo aldeano +{{percent}} %",
-    "witchsCurse": "Maldición de la bruja",
+    "witchsCurse": "Maldición de la bruja",  //1.6X
     "villagerDisgust": "Asco de los aldeanos",
     "miningBoost": "Impulso minero",
-    "miningBonus": "Bonificación minera: {{percent}} %",
-    "heartfire": "Fuego del corazón",
+    "miningBonus": "Bonificación minera: {{percent}} %",  //1.3X
+    "heartfire": "Fuego del corazón",  //1.9X
     "newVillagerChance": "Probabilidad de nuevo aldeano: +{{percent}} %",
-    "frostfall": "Caída de escarcha",
+    "frostfall": "Caída de escarcha",  //1.9X
     "chokingFog": "Niebla asfixiante",
-    "focus": "Concentración",
-    "actionBonus": "Bonificación de acción: {{multiplier}}x",
+    "focus": "Concentración",  //2.6X
+    "actionBonus": "Bonificación de acción: {{multiplier}}x",  //1.3X
     "baseDamage": "Daño base: {{value}}",
-    "knowledgeBonus": "Bonificación de conocimiento: +{{value}}",
+    "knowledgeBonus": "Bonificación de conocimiento: +{{value}}",  //1.5X
     "totalDamage": "Daño total: {{value}}",
     "totalDamageForRounds": "Daño total: {{value}} durante {{rounds}} rondas",
     "selfDamageChance": "5 % de probabilidad de dañarte",
@@ -52,25 +51,25 @@
     "damaged": "(dañado)",
     "level": "Nivel {{level}}",
     "maxHeld": "Máx.: {{value}}",
-    "doubleActionChance": "{{percent}} % de probabilidad de duplicar ganancias de acción",
+    "doubleActionChance": "{{percent}} % de probabilidad de duplicar ganancias de acción",  //1.5X
     "luck": "Suerte: +{{value}}",
     "strength": "Fuerza: +{{value}}",
     "knowledge": "Conocimiento: +{{value}}",
     "madnessStat": "Locura:{{sign}}{{value}}",
     "craftDiscount": "Descuento de artesanía: -{{percent}} %",
-    "buildDiscount": "Descuento de construcción: -{{percent}} %",
+    "buildDiscount": "Descuento de construcción: -{{percent}} %",  //1.4X
     "merchantDiscount": "Descuento mercante: +{{percent}} %",
     "newVillagerChanceStat": "Probabilidad de nuevo aldeano: +{{percent}} %",
     "criticalStrike": "Probabilidad de golpe crítico: +{{percent}} %",
     "villagerDeathReduction": "Muertes de aldeanos en combates: -{{percent}} %",
-    "caveExploreBonus": "Exploración de cueva: +{{percent}} % de bonificación",
+    "caveExploreBonus": "Exploración de cueva: +{{percent}} % de bonificación",  //1.6X
     "bombCapacityCombat": "+1 capacidad para todas las bombas (combate)",
     "maxBombsPerType": "Máx. {{count}} bombas por tipo",
     "boneDiceGambler": "Juega dos rondas contra el jugador por visita",
-    "actionBonusPercent": "{{action}}: +{{percent}} % de bonificación",
+    "actionBonusPercent": "{{action}}: +{{percent}} % de bonificación",  //1.4X
     "actionResourceBonus": "{{action}}: +{{amount}} {{resource}}",
     "actionProbabilityBonus": "{{action}}: {{percent}} % de probabilidad de +50 {{resource}}",
-    "cooldownReduction": "{{action}}: -{{seconds}}s de enfriamiento",
+    "cooldownReduction": "{{action}}: -{{seconds}}s de enfriamiento",  //1.2X
     "durationReduction": "{{action}}: -{{seconds}}s de duración",
     "poisonArrowsAvailable": "Disponible: 1/1 por combate",
     "statBonus": "{{sign}}{{value}} {{stat}}",
@@ -95,11 +94,11 @@
       "unlocksCallMerchant": "Desbloquea llamar al mercader",
       "unlocksWizardStory": "Desbloquea historia del mago",
       "unlocksEstateTab": "Desbloquea pestaña de la finca",
-      "unlocksFeedFireAction": "Desbloquea acción alimentar el fuego",
+      "unlocksFeedFireAction": "Desbloquea acción alimentar el fuego",  //1.5X
       "craftDiscountSpaced": "2,5 % de descuento de artesanía",
       "craftDiscountSpaced5": "5 % de descuento de artesanía",
-      "craftDiscount": "{{percent}} % de descuento de artesanía",
-      "buildDiscount": "{{percent}} % de descuento de construcción",
+      "craftDiscount": "{{percent}} % de descuento de artesanía",  //1.4X
+      "buildDiscount": "{{percent}} % de descuento de construcción",  //1.6X
       "gathererWood": "Recolector: +{{amount}} madera",
       "gathererStone": "Recolector: +{{amount}} piedra",
       "hunterFood": "Cazador: +{{amount}} comida",
@@ -107,7 +106,7 @@
       "hunterBones": "Cazador: +{{amount}} huesos",
       "knowledgeBonus": "+{{amount}} conocimiento",
       "resourceChangeHints": "Indicaciones de cambio de recursos",
-      "improvedResourceChangeHints": "Indicaciones mejoradas de cambio de recursos",
+      "improvedResourceChangeHints": "Indicaciones mejoradas de cambio de recursos",  //1.5X
       "resourceHighlighting": "Resaltado de recursos",
       "abortActions": "Cancelar acciones",
       "madnessReduction": "-{{amount}} locura",
@@ -115,15 +114,15 @@
       "defenseBonus": "+{{amount}} defensa",
       "attackBonus": "+{{amount}} ataque",
       "integrityBonus": "+{{amount}} integridad",
-      "luckyChance": "+{{percent}} % de probabilidad de suerte",
+      "luckyChance": "+{{percent}} % de probabilidad de suerte",  //1.5X
       "investUpToGold": "Invertir hasta {{amount}} oro",
-      "higherTradeAmounts": "Montos de comercio más altos",
+      "higherTradeAmounts": "Montos de comercio más altos",  //1.4X
       "tradesAtMerchant_one": "+{{count}} intercambio con el mercader ambulante",
       "tradesAtMerchant_other": "+{{count}} intercambios con el mercader ambulante",
       "trapWinChance10": "+10 % de probabilidad de victoria contra enemigos atacantes y menos aldeanos muertos",
       "trapWinChance20": "+20 % de probabilidad de victoria contra enemigos atacantes y menos aldeanos muertos",
       "boneyardUpTo": "Hasta -10 de locura",
-      "boneyardPerDeath": "-1 locura por cada 50 aldeanos perdidos desde su construcción",
+      "boneyardPerDeath": "-1 locura por cada 50 aldeanos perdidos desde su construcción",  //1.4X
       "boneyardCurrent": "Actual: -{{amount}} locura",
       "madnessFromAnimalSacrifices": "-{{amount}} locura de sacrificios de animales",
       "madnessPerAnimalSacrifice": "-1 locura por sacrificio de animal (máx. -10)",
@@ -131,14 +130,14 @@
       "madnessPerHumanSacrifice": "-2 locura por sacrificio humano (máx. -20)",
       "totemSilverGain": "10-25 plata",
       "totemGoldGain": "10-25 oro",
-      "boneTotemSacrificeBonus": "Bonificación de sacrificio de tótem de hueso: 50–100 oro",
-      "totemSacrificesBonus": "Sacrificios de tótem: +25 % de bonificación",
+      "boneTotemSacrificeBonus": "Bonificación de sacrificio de tótem de hueso: 50–100 oro",  //1.4X
+      "totemSacrificesBonus": "Sacrificios de tótem: +25 % de bonificación",  //1.5X
       "sleepLengthHours": "Duración del sueño +{{hours}} horas",
       "sleepIntensityPercent": "Intensidad del sueño +{{percent}} %",
       "maxVillagers": "+{{amount}} aldeanos máx.",
       "resourceLimit": "Límite de recursos: {{limit}}",
       "maxPopulation": "+{{amount}} población máx.",
-      "newVillagerChancePercent": "+{{percent}} % de probabilidad de nuevo aldeano",
+      "newVillagerChancePercent": "+{{percent}} % de probabilidad de nuevo aldeano",  //1.4X
       "steelForgerSteel": "Forjador de acero: +{{amount}} acero",
       "tannerLeather": "Curtidor: +{{amount}} cuero"
     }

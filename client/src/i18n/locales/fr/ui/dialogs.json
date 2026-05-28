@@ -1,7 +1,7 @@
 {
   "event": {
     "fallbackTitle": "Événement",
-    "choose": "Choisissez une option",
+    "choose": "Choisissez une option",  //1.3X
     "timeRemaining": "Temps restant : {{seconds}} s",
     "knowledgeTimeBonus": "+{{seconds}}s de temps de décision grâce au Savoir{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (max.)",
@@ -12,7 +12,7 @@
   "reward": {
     "title": "Récompense",
     "loss": "Perte",
-    "actionReward": "Récompense d'action",
+    "actionReward": "Récompense d'action",  //1.5X
     "claimRewards": "Récupérer les récompenses"
   },
   "madness": {
@@ -22,14 +22,14 @@
   "socialPrompt": {
     "title": "Restez connecté et gagnez des récompenses",
     "description": "Accomplissez les tâches ci-dessous pour recevoir des bonus. Accomplissez toutes les tâches pour recevoir un objet exclusif.",
-    "signUpRequiresSignInTooltip": "inscrivez-vous pour accomplir la tâche",
+    "signUpRequiresSignInTooltip": "inscrivez-vous pour accomplir la tâche",  //1.6X
     "signUpTitle": "S'inscrire (+{{amount}} or)",
     "signUpDesc": "Créez un compte gratuit pour synchroniser votre progression entre vos appareils. Sans compte, votre progression n'est enregistrée que localement et peut être perdue.",
     "signUpButton": "S'inscrire",
     "emailUpdatesTitle": "Mises à jour par e-mail (+{{amount}} or)",
     "subscribe": "S'abonner",
     "playlightTitle": "Découvrir 1 jeu (+{{amount}} or)",
-    "discoverGames": "Découvrir des jeux",
+    "discoverGames": "Découvrir des jeux",  //1.3X
     "inviteTitle": "Inviter 1 ami (+{{amount}} or chacun)",
     "inviteDesc": "Invitez jusqu'à {{cap}} amis — à chaque fois, vous recevrez tous les deux {{amount}} or ({{count}}/{{cap}} invités).",
     "copyInviteLink": "Copier le lien d'invitation",
@@ -48,11 +48,11 @@
         "actionJoin": "Rejoindre"
       }
     },
-    "playlightDiscoverRewardLog": "Vous avez reçu {{amount}} pièces d'or pour avoir découvert des jeux !",
-    "marketingSubscribeLog": "Vous avez reçu {{amount}} pièces d'or pour vous être abonné aux mises à jour par e-mail !"
+    "playlightDiscoverRewardLog": "Vous avez reçu {{amount}} pièces d'or pour avoir découvert des jeux !",  //1.4X
+    "marketingSubscribeLog": "Vous avez reçu {{amount}} pièces d'or pour vous être abonné aux mises à jour par e-mail !"  //1.4X
   },
   "referral": {
-    "invitedLog": "Vous avez invité quelqu'un de nouveau dans ce monde ! +{{amount}} pièces d'or"
+    "invitedLog": "Vous avez invité quelqu'un de nouveau dans ce monde ! +{{amount}} pièces d'or"  //1.4X
   },
   "invite": {
     "button": "Inviter",
@@ -64,16 +64,16 @@
   },
   "invest": {
     "title": "Investir",
-    "strategy": "Stratégie d'investissement",
-    "amount": "Montant de l'investissement",
+    "strategy": "Stratégie d'investissement",  //1.4X
+    "amount": "Montant de l'investissement",  //1.6X
     "potentialProfit": "Profit potentiel :",
     "startInvestment": "Lancer l'investissement",
-    "infoAriaLabel": "Expliquer les investissements et le tableau des stratégies",
+    "infoAriaLabel": "Expliquer les investissements et le tableau des stratégies",  //1.4X
     "unlockTooltip": "Se débloque à un niveau de bâtiment plus élevé",
     "minutes": "{{count}} min",
     "luckBonus": "+{{pct}} % de chance de succès grâce à la Chance (inclus dans le tableau).",
-    "buildingLuckyBonus2": "+2 % de chance supplémentaire grâce au niveau du bâtiment (inclus dans le tableau).",
-    "buildingLuckyBonus1": "+1 % de chance supplémentaire grâce au niveau du bâtiment (inclus dans le tableau).",
+    "buildingLuckyBonus2": "+2 % de chance supplémentaire grâce au niveau du bâtiment (inclus dans le tableau).",  //1.4X
+    "buildingLuckyBonus1": "+1 % de chance supplémentaire grâce au niveau du bâtiment (inclus dans le tableau).",  //1.4X
     "headers": {
       "time": "Durée",
       "success": "Succès",
@@ -136,10 +136,9 @@
     "signInRequired": "Veuillez vous connecter pour acheter le jeu complet.",
     "continueJourney": "Poursuivre le voyage",
     "progressSaved": "Votre progression est sauvegardée. Vous pouvez revenir à tout moment et reprendre où vous vous êtes arrêté.",
-    "loadingPayment": "Chargement du système de paiement…",
+    "loadingPayment": "Chargement du système de paiement…",  //1.4X
     "purchaseSuccessful": "Achat réussi !",
     "purchaseSuccessfulDesc": "Jeu complet débloqué et activé ! Vous pouvez poursuivre votre voyage sans restrictions.",
-    "poweredBy": "Propulsé par",
     "legalConsent": "En achetant, vous acceptez la livraison immédiate de contenu numérique et renoncez à votre droit de rétractation. Pour plus d'informations, consultez nos",
     "termsOfService": "Conditions d'utilisation",
     "rightOfWithdrawal": "Droit de rétractation",
@@ -154,7 +153,7 @@
     "prod": "Prod",
     "rank": "#",
     "player": "Joueur",
-    "completionTime": "Temps de complétion",
+    "completionTime": "Temps de complétion",  //1.3X
     "noEntries": "Aucune entrée pour l'instant",
     "lastUpdated": "Dernière mise à jour : {{time}}",
     "username": "Nom d'utilisateur :",
@@ -166,7 +165,7 @@
     "loadFailed": "Échec du chargement du classement",
     "invalidUsername": "Nom d'utilisateur invalide",
     "usernameEmpty": "Le nom d'utilisateur ne peut pas être vide",
-    "usernameTooLong": "Le nom d'utilisateur doit contenir 20 caractères ou moins",
+    "usernameTooLong": "Le nom d'utilisateur doit contenir 20 caractères ou moins",  //1.5X
     "mustSignIn": "Vous devez être connecté pour définir un nom d'utilisateur",
     "usernameNotAllowed": "Nom d'utilisateur non autorisé",
     "usernameInappropriate": "Ce nom d'utilisateur contient un langage inapproprié. Veuillez en choisir un autre.",
@@ -194,9 +193,10 @@
     "sell": "Vendre",
     "sayGoodbye": "Dire au revoir",
     "successChance": "Chance de succès : {{percent}}",
-    "discount": "{{percent}} % de réduction",
+    "discount": "{{percent}} % de réduction",  //1.2X
     "discountFromKnowledge": "{{percent}} % grâce au Savoir{{max}}",
     "knowledgeMax": " (max.)",
     "discountFromRing": "5 % grâce à l'Anneau d'obéissance"
   }
 }
+

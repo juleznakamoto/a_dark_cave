@@ -12,7 +12,6 @@
     "villagerCost_other": "-{{count}} Villagers",
     "mapFragmentProgress": "{{count}} of {{total}} map fragments",
     "defense": "Defense: {{value}}",
-    "range": "Range: {{value}}",
     "madnessFromItems": "{{value}} from Items",
     "madnessFromBuildings": "{{value}} from Buildings",
     "madnessFromEvents": "{{value}} from Events",

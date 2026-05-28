@@ -2,18 +2,17 @@
   "buttons": {
     "close": "Закрыть",
     "continue": "Продолжить",
-    "confirm": "Подтвердить",
+    "confirm": "Подтвердить",  //1.6X
     "cancel": "Отмена",
     "save": "Сохранить",
     "refresh": "Обновить",
     "dismiss": "Скрыть",
     "fight": "Сражаться",
-    "retreat": "Отступить",
     "refuse": "Отказаться",
     "accept": "Принять",
     "back": "Назад",
     "claim": "Забрать",
-    "activate": "Активировать",
+    "activate": "Активировать",  //1.5X
     "deactivate": "Деактивировать"
   },
   "status": {
@@ -23,7 +22,7 @@
     "error": "Ошибка",
     "success": "Успех!",
     "active": "Активно",
-    "activated": "Активировано"
+    "activated": "Активировано"  //1.3X
   },
   "tabs": {
     "cave": "Пещера",
@@ -35,7 +34,7 @@
     "fortress": "Крепость",
     "trader": "Торговец",
     "achievements": "Достижения",
-    "timedEvent": "Событие на время"
+    "timedEvent": "Событие на время"  //1.5X
   },
   "resources": {
     "wood": "Дерево",
@@ -54,14 +53,14 @@
     "adamant": "Адамант",
     "steel": "Сталь",
     "blacksteel": "Черная сталь",
-    "moonstone": "Лунный камень",
+    "moonstone": "Лунный камень",  //1.4X
     "black_powder": "Черный порох",
-    "ember_bomb": "Угольная бомба",
+    "ember_bomb": "Угольная бомба",  //1.4X
     "ashfire_dust": "Пепельная пыль",
-    "ashfire_bomb": "Пепельная бомба",
+    "ashfire_bomb": "Пепельная бомба",  //1.3X
     "void_bomb": "Бомба пустоты",
-    "veinfire_elixir": "Эликсир жилового огня",
-    "poison_arrows": "Отравленные стрелы",
+    "veinfire_elixir": "Эликсир жилового огня",  //1.4X
+    "poison_arrows": "Отравленные стрелы",  //1.4X
     "torch": "Факел",
     "silver": "Серебро",
     "gold": "Золото"
@@ -73,7 +72,7 @@
     "madness": "Безумие",
     "attack": "Атака",
     "defense": "Защита",
-    "integrity": "Целостность"
+    "integrity": "Целостность"  //1.2X
   },
   "time": {
     "never": "Никогда",
@@ -83,7 +82,7 @@
   "population": {
     "villager_one": "{{count}} житель",
     "villager_other": "{{count}} жителей",
-    "maxPopulation": "+{{count}} к максимуму населения"
+    "maxPopulation": "+{{count}} к максимуму населения"  //1.3X
   },
   "currency": {
     "goldAmount": "{{amount}} золота"

@@ -1,6 +1,6 @@
 {
   "shop": {
-    "title": "Boutique du marchand",
+    "title": "Boutique du marchand",  //1.5X
     "purchase": "Acheter",
     "owned": "Possédé",
     "notEnoughGold": "Vous n'avez pas assez d'or.",
@@ -10,8 +10,8 @@
     "srDescription": "Boutique d'or, d'artefacts, de boosts et de packs",
     "betaDiscountTitle": "Des remises bêta jusqu'à {{percent}} % sont actuellement actives.",
     "betaDiscountNote": "Tous les achats restent disponibles lors des prochaines parties et après la sortie complète.",
-    "noPurchasesTitle": "Aucun achat pour l'instant.",
-    "noPurchasesHint": "Consultez l'onglet « À vendre » pour acheter des objets.",
+    "noPurchasesTitle": "Aucun achat pour l'instant.",  //1.6X
+    "noPurchasesHint": "Consultez l'onglet « À vendre » pour acheter des objets.",  //1.6X
     "activatePurchasesTitle": "Activez vos achats pour recevoir des récompenses.",
     "activatePurchasesNote": "Chaque achat peut être activé une fois par partie.",
     "highlights": "À la une",
@@ -21,7 +21,7 @@
     "bundles": "Packs",
     "mostPopular": "Le plus populaire",
     "threeXValue": "Valeur",
-    "availableInOneHour": "Disponible dans 1 heure",
+    "availableInOneHour": "Disponible dans 1 heure",  //1.2X
     "availableInHours": "Disponible dans {{hours}} heures",
     "alreadyClaimed": "Déjà récupéré",
     "alreadyPurchased": "Déjà acheté",
@@ -33,13 +33,12 @@
     "betaDiscount": "Remise bêta",
     "additionalDiscount": "Remise supplémentaire",
     "total": "Total",
-    "poweredBy": "Propulsé par",
     "legalConsent": "En achetant, vous acceptez la livraison immédiate de contenu numérique et renoncez à votre droit de rétractation. Pour plus d'informations, consultez nos",
     "termsOfService": "Conditions d'utilisation",
     "rightOfWithdrawal": "Droit de rétractation",
     "completePurchaseFor": "Finaliser l'achat pour {{price}}",
     "paymentFailed": "Paiement échoué",
-    "notAuthenticated": "Utilisateur non authentifié",
+    "notAuthenticated": "Utilisateur non authentifié",  //1.2X
     "verificationFailed": "La vérification du paiement a échoué. Veuillez contacter le support.",
     "unexpectedError": "Une erreur inattendue s'est produite",
     "purchaseSuccessful": "Achat réussi !",
@@ -55,11 +54,11 @@
     "playlightDiscount": "{{percent}} % de remise supplémentaire sur votre premier achat en argent réel en tant que joueur Playlight.",
     "journeyCompleteDiscount": "Réduction spéciale pour avoir terminé le jeu",
     "artifactSkullLantern": {
-      "title": "Lanterne crânienne",
-      "caveExploreBonus": "Exploration de grotte : +200 % de bonus",
-      "caveExploreCooldown": "Exploration de grotte : -5 s de recharge",
-      "miningBonus": "Extraction : +200 % de bonus",
-      "miningCooldown": "Extraction : -5 s de recharge"
+      "title": "Lanterne crânienne",  //1.4X
+      "caveExploreBonus": "Exploration de grotte : +200 % de bonus",  //1.6X
+      "caveExploreCooldown": "Exploration de grotte : -5 s de recharge",  //1.5X
+      "miningBonus": "Extraction : +200 % de bonus",  //1.5X
+      "miningCooldown": "Extraction : -5 s de recharge"  //1.5X
     },
     "artifactTarnishedCompass": {
       "title": "Boussole ternie",
@@ -68,18 +67,19 @@
     },
     "artifactCrowHarness": {
       "title": "Corbeau borgne",
-      "doubleGain": "Jusqu'à 15 % de chance de doubler les gains d'actions"
+      "doubleGain": "Jusqu'à 15 % de chance de doubler les gains d'actions"  //1.4X
     },
     "cruelMode": {
       "title": "Mode cruel",
-      "moreEvents": "Plus d'événements",
-      "moreItems": "Plus d'objets",
-      "strongerEnemies": "Ennemis plus puissants",
-      "harderChallenges": "Défis plus difficiles",
-      "reusePurchases": "Réutiliser les achats existants"
+      "moreEvents": "Plus d'événements",  //1.5X
+      "moreItems": "Plus d'objets",  //1.3X
+      "strongerEnemies": "Ennemis plus puissants",  //1.4X
+      "harderChallenges": "Défis plus difficiles",  //1.2X
+      "reusePurchases": "Réutiliser les achats existants"  //1.3X
     },
     "alreadyClaimedItemLog": "Vous avez déjà récupéré {{name}}.",
     "claimFailedLog": "Impossible de récupérer {{name}}. Veuillez réessayer.",
     "activatedDefaultLog": "{{name}} activé ! Les récompenses ont été ajoutées à votre inventaire."
   }
 }
+

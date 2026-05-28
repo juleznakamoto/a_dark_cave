@@ -127,11 +127,11 @@
       "name": "Fisher's Hand"
     },
     "flames_touch": {
-      "description": "Crafting Skills are improved",
+      "description": "Crafting costs are reduced",
       "name": "Flame's Touch"
     },
     "flames_touch_enhanced": {
-      "description": "Crafting Skills are greatly improved",
+      "description": "Crafting costs are greatly reduced",
       "name": "Strong Flame's Touch"
     },
     "forests_grace": {

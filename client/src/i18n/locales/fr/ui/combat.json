@@ -3,8 +3,7 @@
     "title": "Combat",
     "skillsTitle": "Compétences de combat",
     "fight": "Combattre",
-    "fighting": "Combat en cours…",
-    "retreat": "Battre en retraite",
+    "fighting": "Combat en cours…",  //1.5X
     "startFight": "Lancer le combat",
     "roundTitle": "Combat – Manche {{round}}",
     "youLost": "Vous avez perdu",
@@ -21,9 +20,9 @@
     "criticalParen": "({{label}})",
     "available": "Disponible : {{current}}/{{max}}",
     "crushingStrike": "Frappe écrasante",
-    "bloodflameSphere": "Sphère de flamme sanglante",
-    "poisonArrows": "Flèches empoisonnées",
-    "attackDetailsAria": "Détails de l'attaque au combat",
+    "bloodflameSphere": "Sphère de flamme sanglante",  //1.5X
+    "poisonArrows": "Flèches empoisonnées",  //1.5X
+    "attackDetailsAria": "Détails de l'attaque au combat",  //1.4X
     "critChance": "{{percent}} % de chance de coup critique",
     "critFromLuck": "{{percent}} % grâce à {{stat}}{{maxSuffix}}",
     "critFromLuckMaxSuffix": " (max.)",
@@ -48,18 +47,18 @@
   },
   "attackWaves": {
     "title": "Vagues d'attaque",
-    "calm": "C'est calme, pour l'instant…",
+    "calm": "C'est calme, pour l'instant…",  //1.3X
     "soon": "bientôt",
     "provoke": "Provocation",
     "waves": {
-      "firstWave": "Première vague",
-      "secondWave": "Deuxième vague",
+      "firstWave": "Première vague",  //1.4X
+      "secondWave": "Deuxième vague",  //1.3X
       "thirdWave": "Troisième vague",
-      "fourthWave": "Quatrième vague",
+      "fourthWave": "Quatrième vague",  //1.4X
       "fifthWave": "Cinquième vague",
       "sixthWave": "Sixième vague",
       "seventhWave": "Septième vague",
-      "eighthWave": "Huitième vague",
+      "eighthWave": "Huitième vague",  //1.3X
       "ninthWave": "Neuvième vague",
       "tenthWave": "Dixième vague"
     }
@@ -67,17 +66,17 @@
   "fortifications": {
     "bastion": "Bastion",
     "fortifiedMoat": "Douves fortifiées",
-    "chitinPlating": "Blindage de chitine",
+    "chitinPlating": "Blindage de chitine",  //1.4X
     "watchtower1": "Tour de guet",
     "watchtower2": "Tour de garde",
     "watchtower3": "Tour fortifiée",
     "watchtower4": "Tour à canon",
     "palisades1": "Palissades en bois",
     "palisades2": "Palissades fortifiées",
-    "palisades3": "Mur de pierre",
+    "palisades3": "Mur de pierre",  //1.3X
     "palisades4": "Mur renforcé",
     "palisadesFallback": "Palissades",
-    "watchtowerFallback": "Tour de guet",
+    "watchtowerFallback": "Tour de guet",  //1.2X
     "damaged": "(endommagé)",
     "attack": "+{{value}} Attaque",
     "defense": "+{{value}} Défense",

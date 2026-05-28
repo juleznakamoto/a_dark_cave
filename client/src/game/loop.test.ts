@@ -1,6 +1,10 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { useGameStore, isModalDialogOpen } from "./state";
-import { clearExpiredTimedEventTab } from "./loop";
+import {
+  useGameStore,
+  isModalDialogOpen,
+  isTimedEventTabOnlyPause,
+} from "./state";
+import { clearExpiredTimedEventTab, processActionTicks } from "./loop";
 
 describe('Game Loop Production', () => {
   beforeEach(() => {
@@ -74,6 +78,31 @@ describe('Game Loop Production', () => {
     });
 
     expect(isModalDialogOpen(useGameStore.getState())).toBe(true);
+  });
+
+  it("still advances action cooldowns during timed-event-tab-only pause", () => {
+    useGameStore.setState({
+      eventDialog: { isOpen: false, currentEvent: null },
+      timedEventTab: {
+        isActive: true,
+        event: {
+          id: "merchant-test",
+          message: "Test",
+          timestamp: Date.now(),
+          type: "event" as const,
+        },
+        expiryTime: Date.now() + 60_000,
+        startTime: Date.now(),
+      },
+      cooldowns: { tradeGoldForFood: 10 },
+      initialCooldowns: { tradeGoldForFood: 10 },
+    });
+
+    expect(isTimedEventTabOnlyPause(useGameStore.getState())).toBe(true);
+
+    processActionTicks();
+
+    expect(useGameStore.getState().cooldowns.tradeGoldForFood).toBe(9.75);
   });
 
   it("clears expired timed events via clearExpiredTimedEventTab", () => {

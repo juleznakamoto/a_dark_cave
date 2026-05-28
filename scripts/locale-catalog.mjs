@@ -3,6 +3,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import { readLocaleJson } from "./parse-locale-json.mjs";
 
 /** Normalize catalog rel paths to forward slashes (ui/shell.json). */
 export function normalizeCatalogRel(rel) {
@@ -40,14 +41,9 @@ export function loadMergedNamespace(localeDir, ns) {
     const uiDir = path.join(localeDir, "ui");
     const merged = {};
     for (const f of fs.readdirSync(uiDir).filter((x) => x.endsWith(".json"))) {
-      Object.assign(
-        merged,
-        JSON.parse(fs.readFileSync(path.join(uiDir, f), "utf8")),
-      );
+      Object.assign(merged, readLocaleJson(path.join(uiDir, f), fs));
     }
     return merged;
   }
-  return JSON.parse(
-    fs.readFileSync(path.join(localeDir, `${ns}.json`), "utf8"),
-  );
+  return readLocaleJson(path.join(localeDir, `${ns}.json`), fs);
 }

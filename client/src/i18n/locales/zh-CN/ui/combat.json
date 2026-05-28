@@ -4,7 +4,6 @@
     "skillsTitle": "战斗技能",
     "fight": "战斗",
     "fighting": "战斗中...",
-    "retreat": "撤退",
     "startFight": "开始战斗",
     "roundTitle": "战斗 — 第 {{round}} 回合",
     "youLost": "你输了",

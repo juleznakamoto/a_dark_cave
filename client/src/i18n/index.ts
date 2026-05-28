@@ -6,10 +6,11 @@ import {
   getInitialLocale,
   type SupportedLocale,
 } from "./locales";
+import { parseLocaleJson } from "./parseLocaleJson";
 
-const localeModules = import.meta.glob<{ default: Record<string, unknown> }>(
+const localeModules = import.meta.glob<string>(
   ["./locales/*/*.json", "./locales/*/ui/*.json"],
-  { eager: true },
+  { eager: true, query: "?raw", import: "default" },
 );
 
 function buildResources(): Record<
@@ -18,13 +19,14 @@ function buildResources(): Record<
 > {
   const resources: Record<string, Record<string, Record<string, unknown>>> = {};
 
-  for (const [path, mod] of Object.entries(localeModules)) {
+  for (const [path, raw] of Object.entries(localeModules)) {
+    const parsed = parseLocaleJson(raw);
     const uiShard = path.match(/\.\/locales\/([^/]+)\/ui\/([^/]+)\.json$/);
     if (uiShard) {
       const [, locale] = uiShard;
       resources[locale] ??= {};
       resources[locale].ui ??= {};
-      Object.assign(resources[locale].ui, mod.default);
+      Object.assign(resources[locale].ui, parsed);
       continue;
     }
 
@@ -34,7 +36,7 @@ function buildResources(): Record<
     // ui namespace is loaded from ui/*.json shards only (no monolithic ui.json).
     if (namespace === "ui") continue;
     resources[locale] ??= {};
-    resources[locale][namespace] = mod.default;
+    resources[locale][namespace] = parsed;
   }
 
   return resources;

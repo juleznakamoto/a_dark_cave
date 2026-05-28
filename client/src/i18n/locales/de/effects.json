@@ -43,7 +43,7 @@
       "name": "Glockensegen"
     },
     "black_bear_fur": {
-      "description": "Verfluchtes schwarzes Fell eines riesigen Bären aus einer anderen Welt",
+      "description": "Verfluchtes schwarzes Fell eines riesigen Bären aus einer anderen Welt", //ok
       "name": "Schwarzbärenfell"
     },
     "black_wood": {
@@ -67,7 +67,7 @@
       "name": "Blutbefleckter Gürtel"
     },
     "bloodstone": {
-      "description": "Karmesinroter Edelstein, der vor dunkler Energie pulsiert",
+      "description": "Karmesinroter Edelstein, der vor dunkler Energie pulsiert", //ok
       "name": "Blutstein"
     },
     "bone_devourer_blood": {
@@ -127,12 +127,12 @@
       "name": "Hand des Fischers"
     },
     "flames_touch": {
-      "description": "Herstellungsfähigkeiten sind verbessert",
+      "description": "Herstellungskosten sind reduziert", //ok
       "name": "Berührung der Flamme"
     },
     "flames_touch_enhanced": {
-      "description": "Herstellungsfähigkeiten sind stark verbessert",
-      "name": "Starke Berührung der Flamme"
+      "description": "Herstellungskosten sind stark reduziert",
+      "name": "Starke Berührung der Flamme" //ok
     },
     "forests_grace": {
       "description": "Die Hirsche des Waldes scheinen dich weniger zu bemerken",
@@ -143,7 +143,7 @@
       "name": "Frostglas"
     },
     "gifted_ring": {
-      "description": "Schlichter Ring, den jemand für dich zurückgelassen hat",
+      "description": "Schlichter Ring, den jemand für dich zurückgelassen hat", //ok
       "name": "Geschenkter Ring"
     },
     "grenadier_bag": {
@@ -156,7 +156,7 @@
     },
     "hollow_king_scepter": {
       "description": "Zepter des verlorenen Königs, strahlend vor Macht und Wahnsinn. Bergbauaktionen haben eine Chance von 5 %, die Belohnungen zu verdoppeln.",
-      "name": "Zepter des Hohlen Königs"
+      "name": "Zepter des Hohlen Königs" //ok
     },
     "hunter_cloak": {
       "description": "Geschmeidiger Lederumhang, der jede Bewegung dämpft",
@@ -183,7 +183,7 @@
       "name": "Mondarmband"
     },
     "muttering_amulet": {
-      "description": "Rätselhaftes Amulett, das seltsame Laute von sich gibt",
+      "description": "Rätselhaftes Amulett, das seltsame Laute von sich gibt", //ok
       "name": "Murmelndes Amulett"
     },
     "necromancer_blood": {
@@ -199,7 +199,7 @@
       "name": "Okkultistengrimoire"
     },
     "odd_trinket": {
-      "description": "Seltsam aussehendes Schmuckstück, auf dem Boden gefunden",
+      "description": "Seltsam aussehendes Schmuckstück, auf dem Boden gefunden", //ok
       "name": "Seltsames Schmuckstück"
     },
     "ravenfeather_mantle": {
@@ -251,7 +251,7 @@
       "name": "Schattenflöte"
     },
     "sharp_aim": {
-      "description": "Die Treffsicherheit deiner Jäger ist verbessert",
+      "description": "Die Treffsicherheit deiner Jäger ist verbessert", //ok
       "name": "Scharfes Ziel"
     },
     "stonebinders_codex": {
@@ -259,7 +259,7 @@
       "name": "Kodex des Steinbinders"
     },
     "stormglass_halberd_schematic": {
-      "description": "Bauplan zur Herstellung einer furchteinflößenden Hellebarde",
+      "description": "Bauplan zur Herstellung einer furchteinflößenden Hellebarde", //ok
       "name": "Sturmglas-Hellebarde"
     },
     "survivors_last_words": {
@@ -268,7 +268,7 @@
     },
     "survivors_notes": {
       "description": "Alte Schriftrolle voller praktischer Ratschläge, hinterlassen von jemandem, der vor langer Zeit hier lebte. Schaltet einfache Erfolge frei.",
-      "name": "Notizen des Überlebenden"
+      "name": "Notizen des Überlebenden" //ok
     },
     "tarnished_amulet": {
       "description": "Altes Amulett, das Glück bringt",
@@ -360,7 +360,7 @@
     },
     "hidden_library_map": {
       "description": "Karte aus dem Kloster, die den Ort einer verborgenen Bibliothek tief in der Höhle zeigt",
-      "name": "Karte der verborgenen Bibliothek"
+      "name": "Karte der verborgenen Bibliothek" //ok
     },
     "iron_axe": {
       "description": "Scharfe Axt für schweres Hacken",
@@ -403,7 +403,7 @@
       "name": "Verstärktes Seil"
     },
     "skeleton_key": {
-      "description": "Ein rätselhafter Schlüssel, von dem es heißt, er öffne jedes Schloss",
+      "description": "Ein rätselhafter Schlüssel, von dem es heißt, er öffne jedes Schloss", //ok
       "name": "Skelettschlüssel"
     },
     "skull_lantern": {

@@ -23,11 +23,11 @@
       "variant1": "Ein Reisender kommt an und beschließt zu bleiben.",
       "variant2": "Ein Wanderer erscheint und wird Teil der Gemeinschaft.",
       "variant3": "Jemand nähert sich dem Dorf und lässt sich nieder.",
-      "variant4": "Ein Fremder schließt sich der Gemeinschaft an.",
+      "variant4": "Ein Fremder schließt sich der Gemeinschaft an.", //ok
       "variant5": "Ein Neuankömmling trifft ein und richtet sich ein.",
       "multiple0": "{{count}} Fremde treten dem Dorf bei.",
       "multiple1": "{{count}} Reisende kommen an und beschließen zu bleiben.",
-      "multiple2": "{{count}} Wanderer kommen an und schließen sich der Gemeinschaft an."
+      "multiple2": "{{count}} Wanderer kommen an und lassen sich nieder." //ok
     },
     "building": {
       "darkEstate": "Das Dunkle Anwesen steht auf einem kleinen Hügel nahe dem Dorf und bietet Einsamkeit und Zuflucht.",
@@ -36,13 +36,13 @@
       "villageGrowthSuggestion": "Das Dorf wächst schnell. Vielleicht könnten Steinhäuser mehr Dorfbewohner beherbergen.",
       "cityGrowthMilestone": "Die Stadt ist zu einer pulsierenden Metropole gewachsen, erfüllt von Handel, Industrie und der Hoffnung auf bessere Tage.",
       "moonstoneDiscovered": "In der Tiefe der Grube entdecken die Arbeiter etwas Außergewöhnliches. Sie stoßen auf Mondsteinvorkommen – ein leuchtendes Mineral von immenser Energie.",
-      "foundry": "Die Gießerei erwacht zum Leben, während Feuer und Hitze Rohmaterialien verschmelzen.",
+      "foundry": "Die Gießerei erwacht zum Leben, um mithilfe von Feuer und Hitze Erze zu verschmelzen.", //ok
       "masterworkFoundry": "Die Meistergießerei is fertiggestellt, ein Denkmal höchster metallurgischer Kunst. In ihren Flammen kann Schwarzstahl geschmiedet werden – nahezu unzerstörbar, aber sehr schwer herzustellen.",
       "altar": "Am Waldrand erhebt sich ein Altar, errichtet, um zu besänftigen, was darin wohnt.",
       "grandHunterLodge": "Die Große Jägerhütte is fertiggestellt, ein prächtiges Bauwerk, in dem sich Meisterjäger versammeln.",
       "clerksHut": "Eine Schreibstube wird errichtet, ihr Bewohner bereit, den Ressourcenfluss sorgfältig zu verfolgen.",
       "scriptorium": "Das Skriptorium is fertiggestellt. Jedes Detail des Dorflebens wird nun mit akribischer Präzision erfasst.",
-      "inkwardenAcademy": "Die Tintwächter-Akademie erhebt sich als Denkmal des Wissens. Ihre Hallen sind erfüllt von der Weisheit der Zeiten, und jede Ressource wird nun mit beispielloser Präzision erfasst.",
+      "inkwardenAcademy": "Die Tintenwächter-Akademie erhebt sich als Denkmal des Wissens. Ihre Hallen sind erfüllt von der Weisheit der Zeiten, und jede Ressource wird nun mit beispielloser Präzision erfasst.",
       "tannery": "Die Gerberei ist fertig. Der Geruch gegerbten Leders liegt in der Luft, während Handwerker ihre Arbeit beginnen.",
       "highTannery": "Die Hohe Gerberei steht, eine große Werkstatt, in der erfahrene Handwerker Häute zum feinsten Leder verarbeiten.",
       "longhouse": "Das erste Langhaus erhebt sich, eine riesige Holzhalle mit dicken Balken und viel Platz.",
@@ -76,7 +76,7 @@
       "forfeit": "Der besessene Spieler wertete dein Schweigen als Aufgabe."
     },
     "buttonUpgrade": {
-      "deepens": "Deine Meisterschaft in {{skill}} vertieft sich.",
+      "deepens": "Deine Meisterschaft in {{skill}} vertieft sich.", //ok
       "skills": {
         "caveExplore": "Höhlenforschung",
         "mineStone": "Steinabbau",
@@ -87,9 +87,9 @@
         "mineAdamant": "Adamantabbau",
         "hunt": "Jagen",
         "chopWood": "Holzschlag",
-        "craftTorches": "Fackelherstellung",
-        "craftBoneTotems": "Knochentotem-Herstellung",
-        "craftLeatherTotems": "Ledertotem-Herstellung"
+        "craftTorches": "Fackelherstellung", //ok
+        "craftBoneTotems": "Knochentotemherstellung", //ok
+        "craftLeatherTotems": "Ledertotemherstellung"
       }
     }
   }

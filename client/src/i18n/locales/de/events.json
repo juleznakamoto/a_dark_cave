@@ -1,7 +1,7 @@
 {
   "alchemistArrives": {
     "message": "Der Alchemist tritt aus seiner Halle: 'Ich habe Tag und Nacht Experimente durchgeführt', sagt er und hält eine Phiole mit schimmerndem Staub hoch. 'Ich habe etwas Außergewöhnliches und furchtbar Gefährliches erschaffen.'",
-    "title": "Die Entdeckung des Alchemisten"
+    "title": "Die Entdeckung des Alchemisten"  //1.2X
   },
   "ashwraithCanyonTradeOffer": {
     "choices": {
@@ -109,7 +109,7 @@
   "bloodMoonAttack": {
     "choices": {
       "prepareForAttack": {
-        "label": "Auf Angriff vorbereiten"
+        "label": "Auf Angriff vorbereiten"  //1.3X
       },
       "sacrificeVillagers": {
         "label": "Dorfbewohner opfern"
@@ -173,7 +173,7 @@
       "defend_manyDeaths_steel_hut": "Die Dorfbewohner kämpfen verzweifelt gegen die Knochenarmee. Mehrere Dorfbewohner fallen den skelettierten Kriegern zum Opfer. Die Knochenarmee plündert die Vorräte, bevor sie abzieht. Die skelettierten Kreaturen reißen eine der Hütten auseinander und machen sie zu Schutt.",
       "hide_noDeaths": "Die Dorfbewohner verstecken sich voller Angst, während die Knochenarmee das Dorf durchsucht. Bei Tagesanbruch ist die skelettierte Armee abgezogen und hat nur Knochenfragmente zurückgelassen.",
       "hide_noDeaths_loot": "Die Dorfbewohner verstecken sich voller Angst, während die Knochenarmee das Dorf durchsucht. Bei Tagesanbruch ist die skelettierte Armee abgezogen und hat nur Knochenfragmente zurückgelassen. Die Armee plündert deine Vorräte, bevor sie in der Dunkelheit verschwindet.",
-      "hide_oneDeath": "Die Dorfbewohner verstecken sich voller Angst, während die Knochenarmee das Dorf durchsucht. Ein Dorfbewohner, der zu fliehen versuchte, wird getötet.",
+      "hide_oneDeath": "Die Dorfbewohner verstecken sich voller Angst, während die Knochenarmee das Dorf durchsucht. Ein Dorfbewohner, der zu fliehen versuchte, wird getötet.",  //1.4X
       "hide_oneDeath_loot": "Die Dorfbewohner verstecken sich voller Angst, während die Knochenarmee das Dorf durchsucht. Ein Dorfbewohner, der zu fliehen versuchte, wird getötet. Die Armee plündert deine Vorräte, bevor sie in der Dunkelheit verschwindet.",
       "hide_manyDeaths": "Die Dorfbewohner verstecken sich voller Angst, während die Knochenarmee das Dorf durchsucht. Die Dorfbewohner, die zu fliehen versuchten, werden von den Knochenkreaturen getötet.",
       "hide_manyDeaths_loot": "Die Dorfbewohner verstecken sich voller Angst, während die Knochenarmee das Dorf durchsucht. Die Dorfbewohner, die zu fliehen versuchten, werden von den Knochenkreaturen getötet. Die Armee plündert deine Vorräte, bevor sie in der Dunkelheit verschwindet."
@@ -189,7 +189,7 @@
     },
     "choices": {
       "sellBones": {
-        "label": "{{boneCost}} Knochen verkaufen",
+        "label": "{{boneCost}} Knochen verkaufen",  //1.3X
         "cost": "{{boneCost}} Knochen"
       },
       "refuse": {
@@ -253,7 +253,7 @@
         "label": "Weiter"
       }
     },
-    "message": "Eine Abordnung von Dorfbewohnern sucht dich auf: 'Viele von uns sind gestorben. Wir brauchen einen würdigen Ort, um unsere Toten zu begraben, damit sie endlich ruhen können.'",
+    "message": "Eine Abordnung von Dorfbewohnern sucht dich auf: 'Viele von uns sind gestorben. Wir brauchen einen würdigen Ort, um unsere Toten zu begraben, damit sie endlich ruhen können.'",  //1.4X
     "title": "Die Toten begraben"
   },
   "cannibalRaid": {
@@ -266,14 +266,14 @@
       }
     },
     "log": {
-      "outcome0": "Die Dorfbewohner verstecken sich voller Angst, während die Kannibalen das Dorf durchsuchen. Bei Tagesanbruch sind die Kannibalen verschwunden, ohne jemanden gefunden zu haben.",
+      "outcome0": "Die Dorfbewohner verstecken sich voller Angst, während die Kannibalen das Dorf durchsuchen. Bei Tagesanbruch sind die Kannibalen verschwunden, ohne jemanden gefunden zu haben.",  //1.4X
       "defeat_noDeaths": "Die Kannibalen überwältigen deine Verteidigung. Die Dorfbewohner überleben knapp.",
       "defeat_noDeaths_loot": "Die Kannibalen überwältigen deine Verteidigung. Die Dorfbewohner überleben knapp. Die Kannibalen plündern deine Vorräte, bevor sie in die Wildnis zurückkehren.",
       "defeat_oneDeath": "Die Kannibalen überwältigen deine Verteidigung. Ein Dorfbewohner wird von den Kannibalen entführt.",
       "defeat_oneDeath_loot": "Die Kannibalen überwältigen deine Verteidigung. Ein Dorfbewohner wird von den Kannibalen entführt. Die Kannibalen plündern deine Vorräte, bevor sie in die Wildnis zurückkehren.",
       "defeat_manyDeaths": "Die Kannibalen überwältigen deine Verteidigung. Mehrere Dorfbewohner werden von den Kannibalen getötet oder entführt.",
       "defeat_manyDeaths_loot": "Die Kannibalen überwältigen deine Verteidigung. Mehrere Dorfbewohner werden von den Kannibalen getötet oder entführt. Die Kannibalen plündern deine Vorräte, bevor sie in die Wildnis zurückkehren.",
-      "hide_noDeaths": "Die Dorfbewohner verstecken sich voller Angst, während die Kannibalen das Dorf durchsuchen. Bei Tagesanbruch sind die Kannibalen abgezogen, ohne jemanden gefunden zu haben.",
+      "hide_noDeaths": "Die Dorfbewohner verstecken sich voller Angst, während die Kannibalen das Dorf durchsuchen. Bei Tagesanbruch sind die Kannibalen abgezogen, ohne jemanden gefunden zu haben.",  //1.4X
       "hide_noDeaths_loot": "Die Dorfbewohner verstecken sich voller Angst, während die Kannibalen das Dorf durchsuchen. Bei Tagesanbruch sind die Kannibalen abgezogen, ohne jemanden gefunden zu haben. Die Kannibalen plündern deine Vorräte ungestört, bevor sie davonschlüpfen.",
       "hide_oneDeath": "Die Dorfbewohner verstecken sich voller Angst, während die Kannibalen das Dorf durchsuchen. Ein Dorfbewohner wird entführt.",
       "hide_oneDeath_loot": "Die Dorfbewohner verstecken sich voller Angst, während die Kannibalen das Dorf durchsuchen. Ein Dorfbewohner wird entführt. Die Kannibalen plündern deine Vorräte ungestört, bevor sie davonschlüpfen.",
@@ -537,7 +537,7 @@
   "disgracedPriorOffer": {
     "choices": {
       "offerShelter": {
-        "label": "Ihm Unterschlupf bieten"
+        "label": "Ihm Unterschlupf bieten"  //1.4X
       }
     },
     "log": {
@@ -558,7 +558,7 @@
   "encounterBeyondPortal": {
     "choices": {
       "attempt_communication": {
-        "label": "Kommunizieren versuchen"
+        "label": "Kommunizieren versuchen"  //1.3X
       },
       "slaughter_creatures": {
         "label": "Sie schlachten"
@@ -634,7 +634,7 @@
     "choices": {
       "makeFeast": {
         "cost": "{{foodCost}} Nahrung",
-        "label": "{{foodCost}} Nahrung ausgeben"
+        "label": "{{foodCost}} Nahrung ausgeben"  //1.3X
       },
       "noFeast": {
         "label": "Fest ablehnen"
@@ -726,10 +726,10 @@
       }
     },
     "log": {
-      "outcome0": "Der Schneesturm trifft mit brutaler Wucht. Alle Produktion verlangsamt sich auf ein Kriechen, während die Dorfbewohner ums Überleben in der Kälte kämpfen.",
+      "outcome0": "Der Schneesturm trifft mit brutaler Wucht. Alle Produktion verlangsamt sich auf ein Kriechen, während die Dorfbewohner ums Überleben in der Kälte kämpfen.",  //1.4X
       "outcome1": "Du hast nicht genug Ressourcen, um Vorbereitungen zu treffen.",
       "outcome2": "Dank der Vorräte an Brennholz und Nahrung überstehen die Dorfbewohner den Schneesturm unversehrt.",
-      "outcome3": "Der Schneesturm trifft mit brutaler Wucht. Alle Produktion verlangsamt sich auf ein Kriechen, während die Dorfbewohner ums Überleben in der Kälte kämpfen."
+      "outcome3": "Der Schneesturm trifft mit brutaler Wucht. Alle Produktion verlangsamt sich auf ein Kriechen, während die Dorfbewohner ums Überleben in der Kälte kämpfen."  //1.4X
     },
     "message": "Eisige Winde heulen durch das Dorf. Die Ältesten warnen vor einem furchtbaren Schneesturm. Vorbereitungen müssen getroffen werden, sonst werden die Folgen düster sein.",
     "title": "Froststurz"
@@ -1021,7 +1021,7 @@
       },
       "trade_book_of_trials": {
         "message": "Du kaufst das Buch der Prüfungen. Der Händler lächelt wissend: „Ein Leitfaden für diejenigen, die ihre Reise verfolgen wollen.“",
-        "label": "Buch der Prüfungen"
+        "label": "Buch der Prüfungen"  //1.3X
       },
       "trade_book_of_craftsmanship": {
         "message": "Du kaufst das Buch der Handwerkskunst. Der Händler nickt anerkennend: „Ein Handwerkerbuch, abgenutzt, aber voller Weisheit. Es wird denen Geheimnisse zuflüstern, die bauen.“",
@@ -1029,7 +1029,7 @@
       },
       "trade_book_of_war": {
         "message": "Du kaufst das Buch des Krieges. Der Händler nickt ernst: „Wissen aus einem längst vergangenen Königreich im fernen Osten. Damit wirst du die Folgen deiner Entscheidungen besser verstehen.“",
-        "label": "Buch des Krieges"
+        "label": "Buch des Krieges"  //1.5X
       },
       "trade_reinforced_rope": {
         "message": "Du kaufst das verstärkte Seil. Dieses Seil hält enormer Belastung stand und erreicht Orte in den tiefsten Höhlenkammern.",
@@ -1037,7 +1037,7 @@
       },
       "trade_occultist_map": {
         "message": "Als du die Karte des Okkultisten kaufst, flüstert der Händler: „Ein alter Okkultist verbarg seine Geheimnisse in einer Kammer tief in der Höhle. Diese Karte wird dich führen.“",
-        "label": "Karte des Okkultisten"
+        "label": "Karte des Okkultisten"  //1.4X
       },
       "trade_giant_trap": {
         "message": "Als du die Riesenfalle kaufst, grinst der Händler: „Damit kann man im Wald etwas Gigantisches fangen. Setze sie weise ein.“",
@@ -1109,7 +1109,7 @@
   },
   "monolithDemand": {
     "message": "Die Dorfbewohner fordern, im Zentrum des Dorfes einen Monolithen zu errichten, ein Monument, um die Dunkelheit zu besänftigen, die in ihre Gedanken kriecht. Durch das Opfer von Tieren wollen sie Frieden finden.",
-    "title": "Forderung nach dem Monolithen"
+    "title": "Forderung nach dem Monolithen"  //1.3X
   },
   "mysteriousBell": {
     "choices": {
@@ -1160,7 +1160,7 @@
     },
     "title": {
       "woman": "Die geheimnisvolle Frau",
-      "man": "Der geheimnisvolle Mann"
+      "man": "Der geheimnisvolle Mann"  //1.3X
     },
     "message": {
       "woman": "Eine attraktive junge Frau in feiner Kleidung trifft bei Sonnenuntergang am Anwesen ein. Sie lächelt dich warm an und fragt: \"Darf ich für die Nacht Unterschlupf in deiner Hütte finden? Ich bin weit gereist und habe sonst nirgends hin.\"",
@@ -1169,14 +1169,14 @@
     "choices": {
       "allowStay": {
         "label": {
-          "woman": "Sie bleiben lassen",
-          "man": "Ihn bleiben lassen"
+          "woman": "Sie bleiben lassen",  //1.5X
+          "man": "Ihn bleiben lassen"  //1.5X
         }
       },
       "refuseStay": {
         "label": {
-          "woman": "Sie abweisen",
-          "man": "Ihn abweisen"
+          "woman": "Sie abweisen",  //1.2X
+          "man": "Ihn abweisen"  //1.2X
         }
       }
     }
@@ -1274,7 +1274,7 @@
       "outcome4": "Du weihst den Körper dem Kreuz. Die Dorfbewohner schrecken angewidert zurück, doch die Macht des Kreuzes scheint gewachsen zu sein."
     },
     "message": "Eines Morgens machen Dorfbewohner eine grausame Entdeckung. Ein junger Mann hängt gekreuzigt am Bleichen Kreuz, den Kopf gesenkt, sein Körper wiegt sich schwach im kalten Morgenwind.",
-    "title": "Das Bleiche Kreuz im Morgengrauen"
+    "title": "Das Bleiche Kreuz im Morgengrauen"  //1.5X
   },
   "paleCrossProposal": {
     "choices": {
@@ -1820,13 +1820,13 @@
   "slaveTrader": {
     "choices": {
       "freeSlaves": {
-        "label": "Sklaven befreien versuchen"
+        "label": "Sklaven befreien versuchen"  //1.4X
       },
       "refuseTrader": {
         "label": "Angebot ablehnen"
       },
       "sellVillagers": {
-        "label": "2 Dorfbewohner verkaufen"
+        "label": "2 Dorfbewohner verkaufen"  //1.5X
       }
     },
     "log": {
@@ -2052,7 +2052,7 @@
       }
     },
     "log": {
-      "outcome0": "Du lehnst das Angebot des Wanderers ab. Er zuckt mit den Schultern, rückt seinen abgetragenen Rucksack zurecht und verschwindet die Straße hinunter.",
+      "outcome0": "Du lehnst das Angebot des Wanderers ab. Er zuckt mit den Schultern, rückt seinen abgetragenen Rucksack zurecht und verschwindet die Straße hinunter.",  //1.5X
       "outcome1": "Du hast nicht genug Nahrung anzubieten.",
       "outcome2": "Der Wanderer nickt knapp und geht zur Bergbaugrube, um seine Arbeit aufzunehmen.",
       "outcome3": "Du hast nicht genug Gold anzubieten.",
@@ -2155,7 +2155,7 @@
         "label": "Dorfbewohner meiden"
       },
       "confront": {
-        "label": "Dorfbewohner konfrontieren"
+        "label": "Dorfbewohner konfrontieren"  //1.5X
       }
     },
     "log": {
@@ -2383,7 +2383,7 @@
         "label": "250 Gold zahlen"
       },
       "refuse": {
-        "label": "Zeit abgelaufen"
+        "label": "Ablehnen"
       }
     },
     "log": {
@@ -2451,7 +2451,7 @@
   "woodcutter": {
     "choices": {
       "acceptServices": {
-        "label": "{{foodCost}} Nahrung zahlen",
+        "label": "{{foodCost}} Nahrung zahlen",  //1.3X
         "cost": "{{foodCost}} Nahrung"
       },
       "denyServices": {
@@ -2470,8 +2470,8 @@
       "denyLevel2": "Du lehnst sein Angebot ab. Der Holzfäller nickt und zieht ohne Beschwerde weiter.",
       "denyLevel3": "Du lehnst sein Angebot ab. Er zuckt mit den Schultern und geht zurück in den Wald.",
       "denyLevel4": "Du lehnst sein ehrgeiziges Angebot ab. Der Holzfäller wirkt enttäuscht, akzeptiert aber deine Entscheidung.",
-      "denyLevel5": "Du lehnst den Handel ab. Der Holzfäller runzelt die Stirn, widerspricht aber nicht.",
-      "denyLevel6": "Du lehnst den Handel ab. Der Holzfäller runzelt die Stirn, widerspricht aber nicht.",
+      "denyLevel5": "Du lehnst den Handel ab. Der Holzfäller runzelt die Stirn, widerspricht aber nicht.",  //1.4X
+      "denyLevel6": "Du lehnst den Handel ab. Der Holzfäller runzelt die Stirn, widerspricht aber nicht.",  //1.4X
       "timeoutLast": "Deine Unentschlossenheit frustriert den Holzfäller. Er schüttelt den Kopf und geht in den Wald.",
       "timeoutLevel1": "Deine Unentschlossenheit frustriert den Holzfäller. Er zuckt mit den Schultern und geht in den Wald.",
       "timeoutLevel2": "Deine Unentschlossenheit frustriert den Holzfäller. Er nickt und zieht ohne Beschwerde weiter.",
@@ -2497,11 +2497,11 @@
     },
     "title": {
       "level1": "Der Holzfäller",
-      "level2": "Der Holzfäller kehrt zurück",
-      "level3": "Das Angebot des Holzfällers",
+      "level2": "Der Holzfäller kehrt zurück",  //1.2X
+      "level3": "Das Angebot des Holzfällers",  //1.2X
       "level4": "Der ehrgeizige Plan des Holzfällers",
       "level5": "Der große Vorschlag des Holzfällers",
-      "level6": "Das Angebot des Holzfällers"
+      "level6": "Das Angebot des Holzfällers"  //1.2X
     }
   },
   "wrongReflections": {
@@ -2551,7 +2551,7 @@
       }
     },
     "log": {
-      "outcome0": "Du stimmst zu, die Praxis der Menschenopfer zu beenden. Die Frau schlägt vor, den Schwarzen Monolithen zu zerstören und an seiner Stelle einen reinweißen Obelisken zu errichten, der die Dunkelheit aus den Gedanken des Volkes reinigt.",
+      "outcome0": "Du stimmst zu, die Praxis der Menschenopfer zu beenden. Die Frau schlägt vor, den Schwarzen Monolithen zu zerstören und an seiner Stelle einen reinweißen Obelisken zu errichten, der die Dunkelheit aus den Gedanken des Volkes reinigt.",  //1.5X
       "outcome1": "Du verbannst die junge Frau aus dem Dorf. Sie überzeugt {{actualLeavers}} mitfühlende Dorfbewohner, mit ihr zu gehen und deine Siedlung für immer zu verlassen.",
       "outcome2": "Kurz nachdem das Opfer am Schwarzen Monolithen vollzogen wurde, packen {{actualLeavers}} entsetzte Dorfbewohner ihre Habseligkeiten und gehen angewidert fort."
     },
@@ -2559,3 +2559,10 @@
     "title": "Die Bitte der jungen Frau"
   }
 }
+
+
+
+
+
+
+

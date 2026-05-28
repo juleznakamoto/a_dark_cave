@@ -1,44 +1,43 @@
 {
   "combat": {
     "title": "Kampf",
-    "skillsTitle": "Kampffähigkeiten",
+    "skillsTitle": "Kampffähigkeiten", //ok
     "fight": "Kämpfen",
     "fighting": "Kämpft...",
-    "retreat": "Zurückziehen",
-    "startFight": "Kampf starten",
+    "startFight": "Kampf starten", //ok
     "roundTitle": "Kampf – Runde {{round}}",
-    "youLost": "Du hast verloren",
-    "youWin": "Du gewinnst",
+    "youLost": "Du hast verloren", //ok
+    "youWin": "Du gewinnst", //ok
     "bastion": "Bastion",
     "fortress": "Festung",
-    "items": "Gegenstände",
+    "items": "Gegenstände", //ok
     "integrity": "Integrität",
     "attack": "Angriff",
-    "defense": "Verteidigung",
-    "attackFailed": "Angriff gescheitert",
+    "defense": "Verteidigung", //ok
+    "attackFailed": "Angriff gescheitert", //ok
     "crushingStrikeFailed": "Fähigkeit gescheitert",
     "critical": "kritisch",
     "criticalParen": "({{label}})",
     "available": "Verfügbar: {{current}}/{{max}}",
-    "crushingStrike": "Zerschmetternder Schlag",
+    "crushingStrike": "Schmetterschlag",
     "bloodflameSphere": "Blutflammensphäre",
     "poisonArrows": "Giftpfeile",
     "attackDetailsAria": "Details zum Kampfangriff",
     "critChance": "{{percent}} % kritische Trefferchance",
     "critFromLuck": "{{percent}} % durch {{stat}}{{maxSuffix}}",
     "critFromLuckMaxSuffix": " (max.)",
-    "critFromItems": "{{percent}} % durch Gegenstände",
+    "critFromItems": "{{percent}} % durch Gegenstände", //ok
     "missChance": "{{percent}} % Fehlschlag-Chance (basierend auf {{stat}})",
     "enemies": {
-      "paleCreatures": "Bleiche Kreaturen"
+      "paleCreatures": "Bleiche Kreaturen" //ok
     },
-    "restlessKnightWounded": "Der Ruhelose Ritter ist verwundet und kann nicht kämpfen",
-    "elderWizardWounded": "Der Erzmagier ist verwundet und kann keine Zauber wirken",
-    "noCasualties": "Kein Dorfbewohner starb.",
-    "oneCasualty": "1 Dorfbewohner starb.",
-    "manyCasualties": "{{count}} Dorfbewohner starben.",
+    "restlessKnightWounded": "Der Ruhelose Ritter ist verwundet und kann nicht kämpfen", //ok
+    "elderWizardWounded": "Der Erzmagier ist verwundet und kann keine Zauber wirken", //ok
+    "noCasualties": "Kein Dorfbewohner starb.", //ok
+    "oneCasualty": "1 Dorfbewohner starb.", //ok
+    "manyCasualties": "{{count}} Dorfbewohner starben.", //ok
     "fellowInjured": "{{name}} wurde verletzt.",
-    "buildingDamaged": "{{name}} wurde beschädigt.",
+    "buildingDamaged": "{{name}} wurde beschädigt.", //ok
     "silverClaimed": "{{amount}} Silber erhalten.",
     "goldClaimed": "{{amount}} Gold erhalten."
   },
@@ -47,28 +46,28 @@
     "repair": "Reparieren"
   },
   "attackWaves": {
-    "title": "Angriffswellen",
+    "title": "Angriffswellen", //ok
     "calm": "Es ist ruhig, vorerst…",
     "soon": "bald",
-    "provoke": "Provozieren",
+    "provoke": "Provozieren", //ok
     "waves": {
       "firstWave": "Erste Welle",
       "secondWave": "Zweite Welle",
-      "thirdWave": "Dritte Welle",
+      "thirdWave": "Dritte Welle", //ok
       "fourthWave": "Vierte Welle",
-      "fifthWave": "Fünfte Welle",
-      "sixthWave": "Sechste Welle",
+      "fifthWave": "Fünfte Welle", //ok
+      "sixthWave": "Sechste Welle", //ok
       "seventhWave": "Siebte Welle",
       "eighthWave": "Achte Welle",
-      "ninthWave": "Neunte Welle",
-      "tenthWave": "Zehnte Welle"
+      "ninthWave": "Neunte Welle", //ok
+      "tenthWave": "Zehnte Welle" //ok
     }
   },
   "fortifications": {
     "bastion": "Bastion",
-    "fortifiedMoat": "Befestigter Graben",
+    "fortifiedMoat": "Befestigter Graben", //ok
     "chitinPlating": "Chitinpanzerung",
-    "watchtower1": "Aussichtsturm",
+    "watchtower1": "Aussichtsturm", //ok
     "watchtower2": "Wachturm",
     "watchtower3": "Befestigter Turm",
     "watchtower4": "Kanonenturm",
@@ -78,9 +77,9 @@
     "palisades4": "Verstärkte Mauer",
     "palisadesFallback": "Palisaden",
     "watchtowerFallback": "Wachturm",
-    "damaged": "(beschädigt)",
+    "damaged": "(beschädigt)", //ok
     "attack": "+{{value}} Angriff",
-    "defense": "+{{value}} Verteidigung",
+    "defense": "+{{value}} Verteidigung", //ok
     "integrity": "+{{value}} Integrität"
   }
 }

@@ -1302,7 +1302,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   flames_touch: {
     id: "flames_touch",
     name: "Flame's Touch",
-    description: "Crafting Skills are improved",
+    description: "Crafting costs are reduced",
     bonuses: {
       generalBonuses: {
         craftingCostReduction: 0.05,
@@ -1460,7 +1460,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   flames_touch_enhanced: {
     id: "flames_touch_enhanced",
     name: "Strong Flame's Touch",
-    description: "Crafting Skills are greatly improved",
+    description: "Crafting costs are greatly reduced",
     bonuses: {
       generalBonuses: {
         craftingCostReduction: 0.15,

@@ -13,6 +13,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { listCatalogPaths, normalizeCatalogRel } from "./locale-catalog.mjs";
+import { readLocaleJson } from "./parse-locale-json.mjs";
 
 
 
@@ -277,7 +278,7 @@ for (const rel of listCatalogPaths(EN_DIR)) {
 
   if (!fs.existsSync(locPath)) continue;
 
-  const loc = JSON.parse(fs.readFileSync(locPath, "utf8"));
+  const loc = readLocaleJson(locPath, fs);
 
   const enMap = Object.fromEntries(flatten(en));
 

@@ -4,10 +4,10 @@
       "label": "Leñador"
     },
     "0-craftTorches": {
-      "label": "Artesano de antorchas"
+      "label": "Artesano de antorchas"  //1.6X
     },
     "0-exploreCave": {
-      "label": "Explorador de cuevas"
+      "label": "Explorador de cuevas"  //1.5X
     },
     "0-gamblerWins": {
       "label": "Jugador experimentado"
@@ -16,7 +16,7 @@
       "label": "Cazador"
     },
     "1-mineAdamant": {
-      "label": "Minero de adamantita"
+      "label": "Minero de adamantita"  //1.5X
     },
     "1-mineCoal": {
       "label": "Minero de carbón"
@@ -25,7 +25,7 @@
       "label": "Minero de hierro"
     },
     "1-mineObsidian": {
-      "label": "Minero de obsidiana"
+      "label": "Minero de obsidiana"  //1.4X
     },
     "1-mineStone": {
       "label": "Cantero"
@@ -34,7 +34,7 @@
       "label": "Minero de azufre"
     },
     "2-animals": {
-      "label": "Sacrificador de animales"
+      "label": "Sacrificador de animales"  //1.4X
     },
     "2-boneTotems": {
       "label": "Sacrificador de huesos"
@@ -49,22 +49,22 @@
       "label": "Sacrificador de cuero"
     },
     "3-ashfireBombs": {
-      "label": "Artesano de bombas de fuego ceniciento"
+      "label": "Artesano de bombas de fuego ceniciento"  //1.8X
     },
     "3-emberBombs": {
-      "label": "Artesano de bombas de brasas"
+      "label": "Artesano de bombas de brasas"  //1.5X
     },
     "4-feedFire": {
-      "label": "Alimentador del fuego"
+      "label": "Alimentador del fuego"  //1.9X
     },
     "4-merchantPurchases": {
       "label": "Negociador"
     },
     "4-solsticeGatherings": {
-      "label": "Celebrante del solsticio"
+      "label": "Celebrante del solsticio"  //1.3X
     },
     "4-wellRested": {
-      "label": "Dormilón profundo"
+      "label": "Dormilón profundo"  //1.3X
     }
   },
   "basic": {
@@ -90,7 +90,7 @@
       "label": "Construir comunidad"
     },
     "1-explorer": {
-      "label": "Explorar la cueva"
+      "label": "Explorar la cueva"  //1.4X
     },
     "1-toolCrafter": {
       "label": "Fabricar herramientas"
@@ -128,7 +128,7 @@
       "label": "Mineros"
     },
     "3-0": {
-      "label": "Comerciantes"
+      "label": "Comerciantes"  //1.7X
     },
     "3-1": {
       "label": "Proveedores"
@@ -140,7 +140,7 @@
       "label": "Sacerdotes"
     },
     "4-0": {
-      "label": "Murallas del bastión"
+      "label": "Murallas del bastión"  //2.0X
     },
     "4-1": {
       "label": "Vigía"
@@ -169,7 +169,7 @@
       "label": "Esquemas"
     },
     "3-ancient_books": {
-      "label": "Sabiduría antigua"
+      "label": "Sabiduría antigua"  //1.2X
     },
     "3-fellowship": {
       "label": "Buena compañía"
@@ -182,3 +182,9 @@
     }
   }
 }
+
+
+
+
+
+
