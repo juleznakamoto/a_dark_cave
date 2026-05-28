@@ -110,7 +110,7 @@ describe("resolveLogPanelMessage", () => {
       ),
     );
     expect(text).toBe(
-      "Die Gießerei erwacht zum Leben, während Feuer und Hitze Rohmaterialien verschmelzen.",
+      "Die Gießerei erwacht zum Leben, um mithilfe von Feuer und Hitze Erze zu verschmelzen.",
     );
   });
 
