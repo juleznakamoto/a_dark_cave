@@ -123,7 +123,7 @@
       "outcome4": "¡Los licántropos arrollan tus defensas y arrasan el asentamiento! La luna de sangre se desvanece, pero la amenaza permanece."
     },
     "message": {
-      "default": "La luna se ha vuelto roja como la sangre durante la noche; los ancianos de la aldea hablan de licántropos. Pactos antiguos exigen el sacrificio de {{sacrificeAmount}} aldeanos para apaciguar a las bestias. Si te niegas, ellas se asegurarón de saciar su hambre."
+      "default": "La luna se ha vuelto roja como la sangre durante la noche; los ancianos de la aldea hablan de licántropos. Pactos antiguos exigen el sacrificio de {{sacrificeAmount}} aldeanos para apaciguar a las bestias. Si te niegas, ellas se asegurarán de saciar su hambre."
     },
     "title": "Luna de sangre"
   },
@@ -2438,12 +2438,12 @@
       "defend_manyDeaths_food_first": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
       "defend_manyDeaths_food_hut": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones. En su frenesí, los lobos destruyen una de las chozas y no dejan más que madera astillada.",
       "defend_manyDeaths_food_hut_first": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones. En su frenesí, los lobos destruyen una de las chozas y no dejan más que madera astillada. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
-      "hide_noDeaths": "Los aldeanos se apiían en sus chozas mientras los lobos merodean afuera. Al amanecer, los lobos se han marchado y solo dejan araíazos y terror.",
-      "hide_noDeaths_food": "Los aldeanos se apiían en sus chozas mientras los lobos merodean afuera. Al amanecer, los lobos se han marchado y solo dejan araíazos y terror. Los lobos saquean tus provisiones antes de desaparecer al amanecer.",
-      "hide_oneDeath": "Los aldeanos se apiían en sus chozas mientras los lobos merodean afuera. Un aldeano que se aventuró afuera aparece despedazado al amanecer.",
-      "hide_oneDeath_food": "Los aldeanos se apiían en sus chozas mientras los lobos merodean afuera. Un aldeano que se aventuró afuera aparece despedazado al amanecer. Los lobos saquean tus provisiones antes de desaparecer al amanecer.",
-      "hide_manyDeaths": "Los aldeanos se apiían en sus chozas mientras los lobos merodean afuera. Varios aldeanos son arrastrados fuera de sus chozas; sus gritos resuenan durante la noche.",
-      "hide_manyDeaths_food": "Los aldeanos se apiían en sus chozas mientras los lobos merodean afuera. Varios aldeanos son arrastrados fuera de sus chozas; sus gritos resuenan durante la noche. Los lobos saquean tus provisiones antes de desaparecer al amanecer."
+      "hide_noDeaths": "Los aldeanos se apiñan en sus chozas mientras los lobos merodean afuera. Al amanecer, los lobos se han marchado y solo dejan arañazos y terror.",
+      "hide_noDeaths_food": "Los aldeanos se apiñan en sus chozas mientras los lobos merodean afuera. Al amanecer, los lobos se han marchado y solo dejan arañazos y terror. Los lobos saquean tus provisiones antes de desaparecer al amanecer.",
+      "hide_oneDeath": "Los aldeanos se apiñan en sus chozas mientras los lobos merodean afuera. Un aldeano que se aventuró afuera aparece despedazado al amanecer.",
+      "hide_oneDeath_food": "Los aldeanos se apiñan en sus chozas mientras los lobos merodean afuera. Un aldeano que se aventuró afuera aparece despedazado al amanecer. Los lobos saquean tus provisiones antes de desaparecer al amanecer.",
+      "hide_manyDeaths": "Los aldeanos se apiñan en sus chozas mientras los lobos merodean afuera. Varios aldeanos son arrastrados fuera de sus chozas; sus gritos resuenan durante la noche.",
+      "hide_manyDeaths_food": "Los aldeanos se apiñan en sus chozas mientras los lobos merodean afuera. Varios aldeanos son arrastrados fuera de sus chozas; sus gritos resuenan durante la noche. Los lobos saquean tus provisiones antes de desaparecer al amanecer."
     },
     "message": "Cerca de la medianoche, lobos emergen de la oscuridad, con los ojos brillando de hambre antinatural. Sus aullidos resuenan llenos de malicia mientras rodean la aldea.",
     "title": "Ataque de lobos"
@@ -2470,22 +2470,22 @@
       "denyLevel2": "Rechazas su oferta. El leñador asiente y se marcha sin quejarse.",
       "denyLevel3": "Rechazas su oferta. Se encoge de hombros y vuelve al bosque.",
       "denyLevel4": "Rechazas su ambiciosa oferta. El leñador parece decepcionado, pero acepta tu decisión.",
-      "denyLevel5": "Rechazas el trato. El leñador frunce el ceó, pero no discute.",
-      "denyLevel6": "Rechazas el trato. El leñador frunce el ceó, pero no discute.",
+      "denyLevel5": "Rechazas el trato. El leñador frunce el ceño, pero no discute.",
+      "denyLevel6": "Rechazas el trato. El leñador frunce el ceño, pero no discute.",
       "timeoutLast": "Tu indecisión frustra al leñador. Sacude la cabeza y se interna en el bosque.",
       "timeoutLevel1": "Tu indecisión frustra al leñador. Se encoge de hombros y se interna en el bosque.",
       "timeoutLevel2": "Tu indecisión frustra al leñador. Asiente y se marcha sin quejarse.",
       "timeoutLevel3": "Tu indecisión frustra al leñador. Se encoge de hombros y vuelve al bosque.",
       "timeoutLevel4": "Tu indecisión frustra al leñador. Parece decepcionado, pero acepta y se marcha.",
-      "timeoutLevel5": "Tu indecisión frustra al leñador. Frunce el ceó y se marcha.",
-      "timeoutLevel6": "Tu indecisión frustra al leñador. Frunce el ceó y se marcha.",
+      "timeoutLevel5": "Tu indecisión frustra al leñador. Frunce el ceño y se marcha.",
+      "timeoutLevel6": "Tu indecisión frustra al leñador. Frunce el ceño y se marcha.",
       "outcome0": "No tienes suficiente comida para este trato.",
       "successLevel1": "El leñador toma la comida y se adentra en el bosque. Al anochecer, regresa con la madera prometida apilada ordenadamente al borde de la aldea.",
       "successLevel2": "El leñador toma la comida y desaparece en el bosque. Al caer la noche, regresa con un gran montón de madera.",
       "successLevel3": "El leñador toma la comida y se adentra profundamente en el bosque. Regresa con una impresionante carga de madera.",
       "successLevel4": "El leñador toma la comida y pasa la tarde en el bosque. Regresa con un enorme montón de madera.",
-      "successLevel5": "El leñador toma la comida y el mismo día entrega un enorme almacón de madera a la aldea.",
-      "successLevel6": "El leñador toma la comida y el mismo día entrega un enorme almacón de madera a la aldea."
+      "successLevel5": "El leñador toma la comida y el mismo día entrega un enorme almacén de madera a la aldea.",
+      "successLevel6": "El leñador toma la comida y el mismo día entrega un enorme almacén de madera a la aldea."
     },
     "title": {
       "level1": "El leñador",

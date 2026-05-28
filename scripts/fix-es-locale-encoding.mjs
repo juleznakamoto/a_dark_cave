@@ -26,7 +26,19 @@ const CHECK = process.argv.includes("--check");
 
 const REPLACEMENTS = [
 
-  // Undo over-aggressive prior fixes
+  // Undo over-aggressive prior fixes (bad regex: letter + accent + letter)
+
+  ["apiían", "apiñan"],
+
+  ["araíazos", "arañazos"],
+
+  ["asegurarón", "asegurarán"],
+
+  ["almacón", "almacén"],
+
+  ["frunce el ceó", "frunce el ceño"],
+
+  ["Frunce el ceó", "Frunce el ceño"],
 
   ["diseó", "diseño"],
 
@@ -172,6 +184,28 @@ const REPLACEMENTS = [
 
   ["asegurar? ", "asegurará "],
 
+  ["asegurar?n", "asegurarán"],
+
+  ["almac?n", "almacén"],
+
+  ["api?an", "apiñan"],
+
+  ["ap?an", "apiñan"],
+
+  ["ara?azos", "arañazos"],
+
+  ["ce?o", "ceño"],
+
+  ["ense?an", "enseñan"],
+
+  ["se?al", "señal"],
+
+  ["le?ador", "leñador"],
+
+  ["le?ad", "leñad"],
+
+  ["dise?o", "diseño"],
+
   ["cruzar? ", "cruzará "],
 
   ["intent? ", "intentó "],
@@ -238,6 +272,64 @@ const REPLACEMENTS = [
 
 
 
+const VOWELS = new Set(["a", "e", "i", "o", "u", "á", "é", "í", "ó", "ú"]);
+
+
+
+/** Mid-word accent holes: letter?letter where ? was a lost accented vowel. */
+
+const ACCENT_PAIRS = {
+
+  n: { m: "ó", c: "á", t: "ó", d: "í", g: "ó" },
+
+  e: { t: "é", s: "é", q: "é" },
+
+  i: { h: "í" },
+
+  o: { n: "ó" },
+
+  u: { j: "ú" },
+
+  a: { d: "á", v: "á" },
+
+  r: { j: "ú", n: "á" },
+
+  l: { t: "í" },
+
+  d: { v: "í", b: "é" },
+
+  c: { n: "é" },
+
+};
+
+
+
+function applyMidWordAccent(a, accent, b) {
+
+  const accented =
+
+    a === a.toUpperCase()
+
+      ? accent.charAt(0).toUpperCase() + accent.slice(1)
+
+      : accent;
+
+  if (VOWELS.has(a.toLowerCase())) {
+
+    // Vowel before ?: the ? was the accent on that vowel (e.g. o?n -> ón).
+
+    return accented + b;
+
+  }
+
+  // Consonant before ?: insert accented vowel (e.g. r?n -> rán, c?n -> cén).
+
+  return a + accented + b;
+
+}
+
+
+
 function walkJson(dir, out = []) {
 
   for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -300,59 +392,11 @@ function fixText(text) {
 
     (_, a, b) => {
 
-      const pairs = {
-
-        n: { m: "ó", c: "á", t: "ó", d: "í", g: "ó" },
-
-        e: { t: "é", s: "é", q: "é" },
-
-        i: { h: "í" },
-
-        o: { n: "ó" },
-
-        u: { j: "ú" },
-
-        a: { d: "á", v: "á" },
-
-        r: { j: "ú" },
-
-        l: { t: "í" },
-
-        d: { v: "í", b: "é" },
-
-      };
-
-      const low = a.toLowerCase();
-
-      const repl = pairs[low]?.[b.toLowerCase()];
+      const repl = ACCENT_PAIRS[a.toLowerCase()]?.[b.toLowerCase()];
 
       if (!repl) return `${a}?${b}`;
 
-      const accent =
-
-        repl === "ó"
-
-          ? "ó"
-
-          : repl === "é"
-
-            ? "é"
-
-            : repl === "í"
-
-              ? "í"
-
-              : repl === "ú"
-
-                ? "ú"
-
-                : repl === "á"
-
-                  ? "á"
-
-                  : repl;
-
-      return a + accent + b;
+      return applyMidWordAccent(a, repl, b);
 
     },
 
@@ -372,7 +416,7 @@ function hasCorruption(text) {
 
   if (/(^|[^¿])\?([A-ZÁÉÍÓÚÑ])/m.test(text)) return true;
 
-  if (/diseó|sonré|enseían|seíala|leíador|ónimos/.test(text)) return true;
+  if (/diseó|sonré|enseían|seíala|leíador|ónimos|apiían|araíazos|asegurarón|almacón|(?:[Ff]runce el ceó)/.test(text)) return true;
 
   return false;
 
