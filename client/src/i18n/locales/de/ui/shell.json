@@ -66,11 +66,11 @@
     "unsubscribed": "Du bist abgemeldet",
     "subscribedDesc": "Wir senden dir gelegentlich Updates und Angebote per E-Mail.",
     "unsubscribedDesc": "Du erhältst keine Marketing-E-Mails von uns.",
-    "preferenceUpdateFailed": "Einstellung konnte nicht aktualisiert werden"  //x1.6
+    "preferenceUpdateFailed": "Einstellung konnte nicht aktualisiert werden" //x1.6
   },
   "pauseHotkey": {
-    "hintPrefix": "Drücke ",
-    "hintSuffix": " zum Pausieren" //ok
+    "hintPrefix": "Nutze ",
+    "hintSuffix": " zum Wechseln zwischen Tabs"
   },
   "never": "Nie"
 }

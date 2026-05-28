@@ -69,8 +69,8 @@
     "preferenceUpdateFailed": "无法更新偏好设置"
   },
   "pauseHotkey": {
-    "hintPrefix": "按 ",
-    "hintSuffix": " 暂停"
+    "hintPrefix": "使用 ",
+    "hintSuffix": " 切换标签页"
   },
   "never": "从未"
 }

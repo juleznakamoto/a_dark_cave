@@ -102,7 +102,7 @@ export default function GameFooter() {
         onClose={() => setFullGamePurchaseDialogOpen(false)}
         openedFromFooter={true}
       />
-      <footer className="border-t border-border px-2 py-2 text-xs text-muted-foreground pointer-events-auto z-50 overflow-visible">
+      <footer className="relative border-t border-border px-2 py-2 text-xs text-muted-foreground pointer-events-auto overflow-visible">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-0.5 shrink-0">
             <HoverCalloutTooltip

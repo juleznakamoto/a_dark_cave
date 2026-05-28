@@ -1030,8 +1030,8 @@ export default function GameContainer() {
         </section>
       </main>
 
-      {/* Footer - Fixed at Bottom */}
-      <div className="flex-shrink-0">
+      {/* Footer - above pause overlay (z-40) so hover tooltips stay visible when paused */}
+      <div className="relative z-50 flex-shrink-0 pointer-events-auto">
         <GameFooter />
       </div>
 

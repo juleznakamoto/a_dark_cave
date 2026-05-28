@@ -1,8 +1,6 @@
 import { GameEvent, EventChoice } from "./events";
 import { GameState } from "@shared/schema";
-import { capitalizeWords } from "@/lib/utils";
-import { getEffectName } from "@/i18n/resolveGameText";
-import { clothingEffects } from "./effects";
+import { getClothingOrRelicEffectName } from "@/i18n/resolveGameText";
 
 const COLLECTOR_ITEMS = [
   "bloodstained_belt",
@@ -77,11 +75,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
 
       const choices: EventChoice[] = selectedItems.map((itemId) => ({
         id: `sell_${itemId}`,
-        label: getEffectName(
-          "clothing",
-          itemId,
-          clothingEffects[itemId]?.name || capitalizeWords(itemId),
-        ),
+        label: getClothingOrRelicEffectName(itemId),
         effect: (innerState: GameState) => {
           const vCountValue = innerState.story?.seen?.collectorVisitCount;
           const vCount = typeof vCountValue === "number" ? vCountValue : 0;

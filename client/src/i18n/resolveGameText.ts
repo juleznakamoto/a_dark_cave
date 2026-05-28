@@ -1,5 +1,7 @@
 import i18n from "i18next";
 import type { GameState } from "@shared/schema";
+import { clothingEffects } from "@/game/rules/effects";
+import { capitalizeWords } from "@/lib/utils";
 
 type TranslateOptions = Record<string, string | number | boolean | undefined>;
 
@@ -247,6 +249,18 @@ export function getEffectName(
   fallback: string,
 ): string {
   return tWithFallback("effects", `${category}.${effectId}.name`, fallback);
+}
+
+/**
+ * Display name for items owned in `clothing` or `relics` game state.
+ * i18n catalogs use `effects.clothing.*` for both (no separate relics namespace).
+ */
+export function getClothingOrRelicEffectName(effectId: string): string {
+  return getEffectName(
+    "clothing",
+    effectId,
+    clothingEffects[effectId]?.name ?? capitalizeWords(effectId),
+  );
 }
 
 export function getEffectDescription(
