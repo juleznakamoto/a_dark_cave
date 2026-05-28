@@ -481,11 +481,12 @@ export function startGameLoop() {
           }
         }
 
-        // One-time feedback / contact dialog at 1 hour of play (defer if another modal is open).
+        // One-time feedback / contact dialog at 1 hour of play.
+        const feedbackState = useGameStore.getState();
         if (
-          !state.feedbackPromptShown &&
-          (state.playTime || 0) >= FEEDBACK_PROMPT_PLAY_MS &&
-          !isModalDialogOpen(state)
+          !feedbackState.feedbackPromptShown &&
+          (feedbackState.playTime || 0) >= FEEDBACK_PROMPT_PLAY_MS &&
+          !isModalDialogOpen(feedbackState)
         ) {
           useGameStore.setState({
             feedbackDialogOpen: true,

@@ -51,7 +51,6 @@ import { calculateBastionStats } from "@/game/bastionStats";
 import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { GAME_CONSTANTS } from "@/game/constants";
-import { feedbackPromptAlreadyDueFromPlayTime } from "@/game/feedbackPromptAuto";
 import { socialPromptMilestoneFloorFromPlayTime } from "@/game/socialPromptAuto";
 import {
   ACTION_TO_UPGRADE_KEY,
@@ -2271,7 +2270,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ),
         feedbackPromptShown:
           (savedState as { feedbackPromptShown?: boolean }).feedbackPromptShown ===
-          true || feedbackPromptAlreadyDueFromPlayTime(loadedPlayTime),
+          true,
         playTime: loadedPlayTime, // CRITICAL: Use the extracted playTime value
         isNewGame: false, // Clear the new game flag when loading
         startTime:
