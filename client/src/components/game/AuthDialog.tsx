@@ -322,12 +322,9 @@ export default function AuthDialog({
                 />
                 <label
                   htmlFor="marketing"
-                  className="flex items-center justify-between text-sm leading-snug peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="text-sm leading-snug peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  <span>{t("auth.marketingOptIn")}</span>
-                  <span className="text-muted-foreground font-normal ml-1">
-                    {t("auth.marketingOptional")}
-                  </span>
+                  {t("auth.marketingOptIn")}
                 </label>
               </div>
             )}
