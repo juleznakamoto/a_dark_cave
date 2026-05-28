@@ -2,6 +2,7 @@ import { GameEvent, EventChoice } from "./events";
 import { GameState } from "@shared/schema";
 import { capitalizeWords } from "@/lib/utils";
 import { getEffectName } from "@/i18n/resolveGameText";
+import { clothingEffects } from "./effects";
 
 const COLLECTOR_ITEMS = [
   "bloodstained_belt",
@@ -74,17 +75,12 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
         selectedItems.push(sortedItems[(startIndex + i) % sortedItems.length]);
       }
 
-      const choices: EventChoice[] = selectedItems.map((itemId) => {
-        const category =
-          state.clothing && (state.clothing as Record<string, boolean>)[itemId]
-            ? ("clothing" as const)
-            : ("relics" as const);
-        return {
+      const choices: EventChoice[] = selectedItems.map((itemId) => ({
         id: `sell_${itemId}`,
         label: getEffectName(
-          category,
+          "clothing",
           itemId,
-          capitalizeWords(itemId.replace(/_/g, " ")),
+          clothingEffects[itemId]?.name || capitalizeWords(itemId),
         ),
         effect: (innerState: GameState) => {
           const vCountValue = innerState.story?.seen?.collectorVisitCount;
@@ -117,8 +113,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
             timedEventTab: { isActive: false },
           } as any;
         },
-      };
-      });
+      }));
 
       // Fifth option: Keep items
       choices.push({

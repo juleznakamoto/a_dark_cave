@@ -345,7 +345,7 @@ function handleDefeat(
     chance(baseChance)
   ) {
     buildingDamage = { ...buildingDamage, bastionDamaged: true };
-    damagedBuildings.push("Bastion");
+    damagedBuildings.push("bastion");
   }
 
   if (
@@ -354,7 +354,7 @@ function handleDefeat(
     chance(baseChance)
   ) {
     buildingDamage = { ...buildingDamage, watchtowerDamaged: true };
-    damagedBuildings.push("Watchtower");
+    damagedBuildings.push(`watchtower/${state.buildings.watchtower}`);
   }
 
   if (
@@ -363,7 +363,7 @@ function handleDefeat(
     chance(baseChance)
   ) {
     buildingDamage = { ...buildingDamage, palisadesDamaged: true };
-    damagedBuildings.push("Palisades");
+    damagedBuildings.push(`palisades/${state.buildings.palisades}`);
   }
 
   return {

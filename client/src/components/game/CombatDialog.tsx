@@ -39,6 +39,7 @@ import { formatNumber } from "@/lib/utils";
 import { getResourceName, getStatName } from "@/i18n/resolveGameText";
 import {
   getCombatEnemyDisplayName,
+  getDamagedBuildingDisplayName,
   getFellowshipDisplayName,
 } from "@/i18n/combatLabels";
 import { useTranslation } from "react-i18next";
@@ -696,7 +697,9 @@ export default function CombatDialog({
         })),
         ...(combatSummary.damagedBuildings ?? []).map((b) => ({
           key: `building-${b}`,
-          text: t("ui:combat.buildingDamaged", { name: b }),
+          text: t("ui:combat.buildingDamaged", {
+            name: getDamagedBuildingDisplayName(b),
+          }),
           className: "text-gray-400 text-sm",
         })),
       ]

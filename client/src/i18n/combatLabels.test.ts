@@ -1,6 +1,9 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import i18n from "./index";
-import { getFellowshipDisplayName } from "./combatLabels";
+import {
+  getDamagedBuildingDisplayName,
+  getFellowshipDisplayName,
+} from "./combatLabels";
 
 describe("getFellowshipDisplayName", () => {
   beforeEach(async () => {
@@ -22,5 +25,34 @@ describe("getFellowshipDisplayName", () => {
 
   it("falls back to fellowshipEffects name for unknown ids", () => {
     expect(getFellowshipDisplayName("unknown_fellow")).toBe("Unknown Fellow");
+  });
+});
+
+describe("getDamagedBuildingDisplayName", () => {
+  beforeEach(async () => {
+    await i18n.changeLanguage("en");
+  });
+
+  it("resolves watchtower by id in English", () => {
+    expect(getDamagedBuildingDisplayName("watchtower/1")).toBe("Watchtower");
+  });
+
+  it("resolves legacy English watchtower label in Spanish", async () => {
+    await i18n.changeLanguage("es");
+    expect(getDamagedBuildingDisplayName("Watchtower")).toBe(
+      "Torre de vigilancia",
+    );
+  });
+
+  it("resolves watchtower tier by id in Spanish", async () => {
+    await i18n.changeLanguage("es");
+    expect(getDamagedBuildingDisplayName("watchtower/1")).toBe(
+      "Torre de vigilancia",
+    );
+  });
+
+  it("resolves bastion by id in Spanish", async () => {
+    await i18n.changeLanguage("es");
+    expect(getDamagedBuildingDisplayName("bastion")).toBe("Bastión");
   });
 });
