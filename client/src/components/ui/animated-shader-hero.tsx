@@ -604,6 +604,26 @@ const Hero: React.FC<HeroProps> = ({
               <button
                 onClick={() =>
                   window.open(
+                    "https://a-dark-cave.itch.io/a-dark-cave",
+                    "_blank",
+                    "noopener,noreferrer",
+                  )
+                }
+                className="px-3 sm:px-4 py-2 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-1.5 sm:gap-2 min-w-0"
+              >
+                <svg
+                  className="h-5 w-5 flex-shrink-0"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden
+                >
+                  <path d="M.034 12.004a11.993 11.993 0 1 0 23.932 0 11.993 11.993 0 0 0-23.932 0zm6.93-6.717 5.284 3.1v6.116l-5.284 3.1-5.158-3.029V8.387l5.158-3.084z" />
+                </svg>
+                <span>itch.io</span>
+              </button>
+              <button
+                onClick={() =>
+                  window.open(
                     "https://www.incrementaldb.com/game/a-dark-cave",
                     "_blank",
                     "noopener,noreferrer",
