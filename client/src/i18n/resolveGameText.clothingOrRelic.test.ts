@@ -25,4 +25,26 @@ describe("getClothingOrRelicEffectName", () => {
       "Unknown Item Id",
     );
   });
+
+  it("falls back to title-cased id when effect name is empty", async () => {
+    const { clothingEffects } = await import("@/game/rules/effects");
+    const original = clothingEffects.test_empty_name?.name;
+    clothingEffects.test_empty_name = {
+      id: "test_empty_name",
+      name: "",
+      description: "",
+      bonuses: {},
+    };
+    try {
+      expect(getClothingOrRelicEffectName("test_empty_name")).toBe(
+        "Test Empty Name",
+      );
+    } finally {
+      if (original === undefined) {
+        delete clothingEffects.test_empty_name;
+      } else {
+        clothingEffects.test_empty_name!.name = original;
+      }
+    }
+  });
 });

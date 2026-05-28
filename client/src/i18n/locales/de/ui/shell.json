@@ -70,7 +70,7 @@
   },
   "pauseHotkey": {
     "hintPrefix": "Nutze ",
-    "hintSuffix": " zum Wechseln zwischen Tabs"
+    "hintSuffix": " oder die Tasten unten zum Wechseln zwischen Tabs"
   },
   "never": "Nie"
 }

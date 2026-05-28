@@ -70,7 +70,7 @@
   },
   "pauseHotkey": {
     "hintPrefix": "Utilisez ",
-    "hintSuffix": " pour changer d'onglet"
+    "hintSuffix": " ou les touches ci-dessous pour changer d'onglet"
   },
   "never": "Jamais"
 }
