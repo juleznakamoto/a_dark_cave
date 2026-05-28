@@ -51,6 +51,7 @@ import { calculateBastionStats } from "@/game/bastionStats";
 import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { GAME_CONSTANTS } from "@/game/constants";
+import { feedbackPromptAlreadyDueFromPlayTime } from "@/game/feedbackPromptAuto";
 import { socialPromptMilestoneFloorFromPlayTime } from "@/game/socialPromptAuto";
 import {
   ACTION_TO_UPGRADE_KEY,
@@ -159,6 +160,9 @@ interface GameStore extends GameState {
   restartGameDialogOpen: boolean;
   deleteAccountDialogOpen: boolean;
   playlightWelcomeDialogOpen: boolean;
+  feedbackDialogOpen: boolean;
+  /** Persisted: one-time feedback dialog at 1h play time has been shown or skipped. */
+  feedbackPromptShown: boolean;
 
   // Notification state for auth
   authNotificationSeen: boolean;
@@ -1014,6 +1018,8 @@ export const createInitialState = (): GameState => ({
   socialPromptMilestoneIndex: 0,
   socialPromptAutoPhase: 0,
   socialPromoExclusiveRewardPending: false,
+  feedbackDialogOpen: false,
+  feedbackPromptShown: false,
 
   // Initialize resource highlighting state (array for serialization)
   highlightedResources: [],
@@ -1145,6 +1151,7 @@ function isBlockingDialogOpen(state: GameStore): boolean {
     state.madnessDialog.isOpen ||
     state.socialPromptDialogOpen ||
     state.playlightWelcomeDialogOpen ||
+    state.feedbackDialogOpen ||
     state.investDialogOpen
   );
 }
@@ -1286,6 +1293,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   restartGameDialogOpen: false,
   deleteAccountDialogOpen: false,
   playlightWelcomeDialogOpen: false,
+  feedbackDialogOpen: false,
+  feedbackPromptShown: false,
   sleepUpgrades: {
     lengthLevel: 0,
     intensityLevel: 0,
@@ -2260,6 +2269,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
             .socialPromptMilestoneIndex ?? 0,
           socialPromptMilestoneFloorFromPlayTime(loadedPlayTime),
         ),
+        feedbackPromptShown:
+          (savedState as { feedbackPromptShown?: boolean }).feedbackPromptShown ===
+          true || feedbackPromptAlreadyDueFromPlayTime(loadedPlayTime),
         playTime: loadedPlayTime, // CRITICAL: Use the extracted playTime value
         isNewGame: false, // Clear the new game flag when loading
         startTime:

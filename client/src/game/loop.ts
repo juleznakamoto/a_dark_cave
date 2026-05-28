@@ -40,6 +40,7 @@ import {
   SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS,
   SOCIAL_PROMPT_AUTO_OPEN_COUNT,
 } from "./socialPromptAuto";
+import { FEEDBACK_PROMPT_PLAY_MS } from "./feedbackPromptAuto";
 import { isSocialPromoExclusiveRewardComplete } from "@/game/socialPromoExclusiveReward";
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
@@ -478,6 +479,18 @@ export function startGameLoop() {
               socialPromptMilestoneIndex: idx + 1,
             });
           }
+        }
+
+        // One-time feedback / contact dialog at 1 hour of play (defer if another modal is open).
+        if (
+          !state.feedbackPromptShown &&
+          (state.playTime || 0) >= FEEDBACK_PROMPT_PLAY_MS &&
+          !isModalDialogOpen(state)
+        ) {
+          useGameStore.setState({
+            feedbackDialogOpen: true,
+            feedbackPromptShown: true,
+          });
         }
 
       }

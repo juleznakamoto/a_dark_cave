@@ -197,5 +197,13 @@
     "discountFromKnowledge": "知识 {{percent}}%{{max}}",
     "knowledgeMax": "（上限）",
     "discountFromRing": "顺从之戒 5%"
+  },
+  "feedback": {
+    "title": "反馈",
+    "message": "如果你遇到错误、发现翻译问题，或有想法和建议，我很乐意听取你的意见。",
+    "contactVia": "你可以通过以下方式联系我：",
+    "reddit": "Reddit",
+    "instagram": "Instagram",
+    "email": "E-Mail"
   }
 }

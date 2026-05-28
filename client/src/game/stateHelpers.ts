@@ -278,6 +278,7 @@ const UI_ONLY_PROPERTIES = [
   'restartGameDialogOpen',
   'deleteAccountDialogOpen',
   'playlightWelcomeDialogOpen',
+  'feedbackDialogOpen',
   'socialPromptDialogOpen',
   'signUpPromptEligibleForGold',
   'resourceChangeEvents',

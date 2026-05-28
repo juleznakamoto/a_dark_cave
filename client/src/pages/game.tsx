@@ -7,6 +7,7 @@ import { loadGame, saveGame } from "@/game/save"; // Import saveGame
 const EventDialog = lazy(() => import("@/components/game/EventDialog"));
 const EmailConfirmedDialog = lazy(() => import("@/components/game/EmailConfirmedDialog"));
 const PlaylightWelcomeDialog = lazy(() => import("@/components/game/PlaylightWelcomeDialog"));
+const FeedbackDialog = lazy(() => import("@/components/game/FeedbackDialog"));
 import { logger } from "@/lib/logger";
 import { getCurrentUser, flushPendingMarketingPreferences, applySignupWelcomeBonusAfterOAuthLoad } from "@/game/auth";
 import { initSessionTracker } from "@/lib/sessionTracker";
@@ -379,6 +380,8 @@ export default function Game() {
       />
 
       <PlaylightWelcomeDialog />
+
+      <FeedbackDialog />
     </div>
   );
 }

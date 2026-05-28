@@ -259,7 +259,7 @@ export function getClothingOrRelicEffectName(effectId: string): string {
   return getEffectName(
     "clothing",
     effectId,
-    clothingEffects[effectId]?.name ?? capitalizeWords(effectId),
+    clothingEffects[effectId]?.name || capitalizeWords(effectId),
   );
 }
 

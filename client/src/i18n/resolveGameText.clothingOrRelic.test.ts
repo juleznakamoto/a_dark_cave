@@ -28,7 +28,7 @@ describe("getClothingOrRelicEffectName", () => {
 
   it("falls back to title-cased id when effect name is empty", async () => {
     const { clothingEffects } = await import("@/game/rules/effects");
-    const original = clothingEffects.test_empty_name?.name;
+    const original = clothingEffects.test_empty_name;
     clothingEffects.test_empty_name = {
       id: "test_empty_name",
       name: "",
@@ -43,7 +43,7 @@ describe("getClothingOrRelicEffectName", () => {
       if (original === undefined) {
         delete clothingEffects.test_empty_name;
       } else {
-        clothingEffects.test_empty_name!.name = original;
+        clothingEffects.test_empty_name = original;
       }
     }
   });
