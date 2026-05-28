@@ -36,12 +36,11 @@ import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { Enemy, CombatItem, CombatResultSummary } from "@/game/types";
 import { ProceduralGroundBackground } from "@/components/ui/procedural-ground-background";
 import { formatNumber } from "@/lib/utils";
+import { getResourceName, getStatName } from "@/i18n/resolveGameText";
 import {
-  getEffectName,
-  getResourceName,
-  getStatName,
-} from "@/i18n/resolveGameText";
-import { getCombatEnemyDisplayName } from "@/i18n/combatLabels";
+  getCombatEnemyDisplayName,
+  getFellowshipDisplayName,
+} from "@/i18n/combatLabels";
 import { useTranslation } from "react-i18next";
 
 interface CombatDialogProps {
@@ -53,11 +52,6 @@ interface CombatDialogProps {
   onVictory: () => CombatResultSummary;
   onDefeat: () => CombatResultSummary;
 }
-
-const WOUNDED_FELLOW_FALLBACK_NAMES: Record<string, string> = {
-  restless_knight: "Restless Knight",
-  elder_wizard: "Elder Wizard",
-};
 
 export default function CombatDialog({
   isOpen,
@@ -696,11 +690,7 @@ export default function CombatDialog({
         ...(combatSummary.woundedFellows ?? []).map((f) => ({
           key: `fellow-${f}`,
           text: t("ui:combat.fellowInjured", {
-            name: getEffectName(
-              "fellowship",
-              f,
-              WOUNDED_FELLOW_FALLBACK_NAMES[f] ?? f,
-            ),
+            name: getFellowshipDisplayName(f),
           }),
           className: "text-gray-400 text-sm",
         })),

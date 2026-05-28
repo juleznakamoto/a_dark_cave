@@ -68,7 +68,7 @@
     "maxBombsPerType": "Max. {{count}} Bomben pro Typ",
     "boneDiceGambler": "Spiele zwei Runden gegen den Spieler pro Besuch",
     "actionBonusPercent": "{{action}}: +{{percent}} % Bonus",
-    "actionResourceBonus": "+{{percent}} % {{resource}} durch diese Aktion",
+    "actionResourceBonus": "{{action}}: +{{amount}} {{resource}}",
     "actionProbabilityBonus": "{{action}}: {{percent}} % Chance auf +50 {{resource}}",
     "cooldownReduction": "{{action}}: -{{seconds}}s Abklingzeit",
     "durationReduction": "{{action}}: -{{seconds}}s Dauer",

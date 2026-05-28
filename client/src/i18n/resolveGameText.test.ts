@@ -55,4 +55,14 @@ describe("tWithFallback", () => {
       }),
     ).toBe("-1 Dorfbewohner");
   });
+
+  it("interpolates veiledSeer accept log with player name", async () => {
+    await i18n.changeLanguage("en");
+    const { resolveEventLogMessage } = await import("./resolveGameText");
+    const msg = resolveEventLogMessage("veiledSeer", "outcome1", {
+      name: ", Aldric",
+    });
+    expect(msg).toContain("Aldric");
+    expect(msg).not.toMatch(/\{name\}|\$\{name\}/);
+  });
 });
