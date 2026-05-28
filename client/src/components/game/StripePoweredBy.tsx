@@ -1,3 +1,5 @@
+import React from "react";
+
 /** Stripe branding — always English per Stripe partner guidelines. */
 export function StripePoweredBy({ className = "" }: { className?: string }) {
   return (
