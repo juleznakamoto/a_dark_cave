@@ -554,26 +554,13 @@ export default function SidePanelSection({
       itemAnimationClass,
     );
 
-    const productionDeltaCell = (
-      <span
-        className={cn(
-          "relative block",
-          showProductionDelta && productionDeltaCellClassName,
-        )}
-      >
-        {showProductionDelta && (
-          <>
-            {(item.productionDelta ?? 0) > 0 ? "+" : ""}
-            {formatNumber(item.productionDelta ?? 0)}
-          </>
-        )}
-        {onResourceChange && usesResourceRowLayout && (
-          <ResourceChangeNotification
-            resource={item.id}
-            changes={resourceChanges}
-          />
-        )}
+    const productionDeltaCell = showProductionDelta ? (
+      <span className={productionDeltaCellClassName}>
+        {(item.productionDelta ?? 0) > 0 ? "+" : ""}
+        {formatNumber(item.productionDelta ?? 0)}
       </span>
+    ) : (
+      <span aria-hidden="true" />
     );
 
     const itemContent = (
@@ -822,8 +809,17 @@ export default function SidePanelSection({
       )}
       <div className="min-w-0 text-xs">
         {visibleItems.map((item) => (
-          <div key={item.id} className={item.hasSpacingAfter ? "mb-1" : ""}>
+          <div
+            key={item.id}
+            className={`relative ${item.hasSpacingAfter ? "mb-1" : ""}`}
+          >
             {renderItemWithTooltip(item)}
+            {onResourceChange && (
+              <ResourceChangeNotification
+                resource={item.id}
+                changes={resourceChanges}
+              />
+            )}
           </div>
         ))}
       </div>

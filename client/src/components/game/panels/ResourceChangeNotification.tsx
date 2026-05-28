@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef } from 'react';
 
 interface ResourceChange {
@@ -125,7 +124,7 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
   }
 
   return (
-    <div className="pointer-events-none absolute inset-0">
+    <div className="pointer-events-none absolute right-0 top-0 h-[1.25rem] w-[3rem]">
       <div
         className={`
           flex h-full w-full items-center justify-end rounded-sm bg-background px-1
