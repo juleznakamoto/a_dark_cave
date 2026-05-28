@@ -25,9 +25,23 @@ export function stripTrailingLineComment(line: string): string {
   return line;
 }
 
+/** Split file content into lines; drop trailing empties from a final newline. */
+export function splitLocaleFileLines(content: string): string[] {
+  const lines = content.split("\n");
+  while (lines.length > 0 && lines[lines.length - 1] === "") {
+    lines.pop();
+  }
+  return lines;
+}
+
+/** Join lines with exactly one trailing newline (POSIX text file). */
+export function joinLocaleFileLines(lines: string[]): string {
+  if (lines.length === 0) return "\n";
+  return `${lines.join("\n")}\n`;
+}
+
 export function stripJsonComments(text: string): string {
-  return text
-    .split("\n")
+  return splitLocaleFileLines(text)
     .map((line) => stripTrailingLineComment(line))
     .join("\n");
 }

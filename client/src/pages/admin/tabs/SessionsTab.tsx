@@ -24,6 +24,13 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { format, parseISO } from "date-fns";
+import {
+  ADMIN_OVERVIEW_CHART_DAYS,
+  adminChartXAxisIntervalForDays,
+  adminOverviewChartTitleSuffix,
+  ChartTimeRangeSelectOverview,
+  type AdminOverviewChartRange,
+} from "../adminChartTimeRange";
 
 interface SessionStats {
   visit_date: string;
@@ -70,6 +77,8 @@ const BUCKETS = [
 export default function SessionsTab({ environment }: SessionsTabProps) {
   const [data, setData] = useState<SessionStats[]>([]);
   const [loading, setLoading] = useState(true);
+  const [chartTimeRange, setChartTimeRange] =
+    useState<AdminOverviewChartRange>("1m");
 
   useEffect(() => {
     setLoading(true);
@@ -80,9 +89,18 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
       .finally(() => setLoading(false));
   }, [environment]);
 
+  const chartDays = ADMIN_OVERVIEW_CHART_DAYS[chartTimeRange];
+
+  const filteredData = useMemo(() => {
+    const now = new Date();
+    const cutoffDate = new Date(now);
+    cutoffDate.setDate(cutoffDate.getDate() - chartDays);
+    return data.filter((d) => parseISO(d.visit_date) >= cutoffDate);
+  }, [data, chartDays]);
+
   const chartData = useMemo(
     () =>
-      data.map((d) => ({
+      filteredData.map((d) => ({
         date: format(parseISO(d.visit_date), "MMM dd"),
         "0–1m": d.b_0_1m,
         "1–5m": d.b_1_5m,
@@ -94,12 +112,12 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
         "3–4h": d.b_3h_4h,
         "4h+": d.b_4h_plus,
       })),
-    [data],
+    [filteredData],
   );
 
   const percentageChartData = useMemo(
     () =>
-      data.map((d) => ({
+      filteredData.map((d) => ({
         date: format(parseISO(d.visit_date), "MMM dd"),
         "0–1m": d.total > 0 ? (d.b_0_1m / d.total) * 100 : 0,
         "1–5m": d.total > 0 ? (d.b_1_5m / d.total) * 100 : 0,
@@ -111,7 +129,7 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
         "3–4h": d.total > 0 ? (d.b_3h_4h / d.total) * 100 : 0,
         "4h+": d.total > 0 ? (d.b_4h_plus / d.total) * 100 : 0,
       })),
-    [data],
+    [filteredData],
   );
 
   const totals = useMemo(() => {
@@ -241,14 +259,28 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
       {/* Stacked bar chart */}
       <Card>
         <CardHeader>
-          <CardTitle>Session Duration Distribution</CardTitle>
-          <CardDescription>Daily breakdown by duration</CardDescription>
+          <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-start">
+            <div>
+              <CardTitle>
+                Session Duration Distribution ({adminOverviewChartTitleSuffix(chartTimeRange)})
+              </CardTitle>
+              <CardDescription>Daily breakdown by duration</CardDescription>
+            </div>
+            <ChartTimeRangeSelectOverview
+              value={chartTimeRange}
+              onChange={setChartTimeRange}
+            />
+          </div>
         </CardHeader>
         <CardContent>
           <ChartContainer config={{}}>
             <BarChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
+              <XAxis
+                dataKey="date"
+                interval={adminChartXAxisIntervalForDays(chartDays)}
+                tick={{ fontSize: 11 }}
+              />
               <YAxis />
               <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
@@ -263,13 +295,23 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
       {/* Daily total line chart */}
       <Card>
         <CardHeader>
-          <CardTitle>Daily Sessions</CardTitle>
-          <CardDescription>Total sessions per day</CardDescription>
+          <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-start">
+            <div>
+              <CardTitle>
+                Daily Sessions ({adminOverviewChartTitleSuffix(chartTimeRange)})
+              </CardTitle>
+              <CardDescription>Total sessions per day</CardDescription>
+            </div>
+            <ChartTimeRangeSelectOverview
+              value={chartTimeRange}
+              onChange={setChartTimeRange}
+            />
+          </div>
         </CardHeader>
         <CardContent>
           <ChartContainer config={{}}>
             <LineChart
-              data={data.map((d) => ({
+              data={filteredData.map((d) => ({
                 date: format(parseISO(d.visit_date), "MMM dd"),
                 total: d.total,
                 "< 1m": d.b_0_1m,
@@ -279,7 +321,11 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
               }))}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
+              <XAxis
+                dataKey="date"
+                interval={adminChartXAxisIntervalForDays(chartDays)}
+                tick={{ fontSize: 11 }}
+              />
               <YAxis />
               <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
@@ -296,16 +342,30 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
       {/* Added stacked percentage chart */}
       <Card>
         <CardHeader>
-          <CardTitle>Session Duration Mix Over Time</CardTitle>
-          <CardDescription>
-            Daily percentage split by duration bucket (100% stacked filled lines)
-          </CardDescription>
+          <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-start">
+            <div>
+              <CardTitle>
+                Session Duration Mix Over Time ({adminOverviewChartTitleSuffix(chartTimeRange)})
+              </CardTitle>
+              <CardDescription>
+                Daily percentage split by duration bucket (100% stacked filled lines)
+              </CardDescription>
+            </div>
+            <ChartTimeRangeSelectOverview
+              value={chartTimeRange}
+              onChange={setChartTimeRange}
+            />
+          </div>
         </CardHeader>
         <CardContent>
           <ChartContainer config={{}}>
             <AreaChart data={percentageChartData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
+              <XAxis
+                dataKey="date"
+                interval={adminChartXAxisIntervalForDays(chartDays)}
+                tick={{ fontSize: 11 }}
+              />
               <YAxis
                 domain={[0, 100]}
                 tickFormatter={(value) => `${value}%`}

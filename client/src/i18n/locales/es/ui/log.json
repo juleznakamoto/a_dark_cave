@@ -30,72 +30,67 @@
       "multiple2": "{{count}} caminantes llegan y se unen a la comunidad."
     },
     "building": {
-      "darkEstate": "La Finca oscura se ha construido en una peque?a colina cerca de la aldea, ofreciendo soledad y refugio.",
-      "blacksmith": "La fragua del herrero cobra vida. El coraz?n de la industria late ahora en la aldea.",
-      "firstWoodenHut": "La primera choza de madera est? terminada; esto podr?a ser el comienzo de algo grande.",
-      "villageGrowthSuggestion": "La aldea crece r?pido. Quiz? las casas de piedra puedan alojar a m?s aldeanos.",
-      "cityGrowthMilestone": "La ciudad se ha convertido en una metr?polis bulliciosa, llena de comercio, industria y promesas de d?as mejores.",
-      "moonstoneDiscovered": "En las profundidades del pozo, los trabajadores descubren algo extraordinario. Hallan vetas de piedra lunar, un mineral luminiscente que contiene una energ?a inmensa.",
-      "foundry": "La fundici?n ruge al cobrar vida mientras el fuego y el calor fusionan las materias primas.",
-      "masterworkFoundry": "La Fundici?n magistral est? terminada, un monumento al dominio supremo de la metalurgia. En sus fuegos puede forjarse acero negro, casi irrompible, pero muy dif?cil de producir.",
+      "darkEstate": "La Finca oscura se ha construido en una pequeña colina cerca de la aldea, ofreciendo soledad y refugio.",
+      "blacksmith": "La fragua del herrero cobra vida. El corazón de la industria late ahora en la aldea.",
+      "firstWoodenHut": "La primera choza de madera está terminada; esto podría ser el comienzo de algo grande.",
+      "villageGrowthSuggestion": "La aldea crece rápido. Quizá las casas de piedra puedan alojar a más aldeanos.",
+      "cityGrowthMilestone": "La ciudad se ha convertido en una metrópolis bulliciosa, llena de comercio, industria y promesas de días mejores.",
+      "moonstoneDiscovered": "En las profundidades del pozo, los trabajadores descubren algo extraordinario. Hallan vetas de piedra lunar, un mineral luminiscente que contiene una energía inmensa.",
+      "foundry": "La fundición ruge al cobrar vida mientras el fuego y el calor fusionan las materias primas.",
+      "masterworkFoundry": "La Fundición magistral está terminada, un monumento al dominio supremo de la metalurgia. En sus fuegos puede forjarse acero negro, casi irrompible, pero muy difícil de producir.",
       "altar": "Un altar se alza en el lindero del bosque, erigido para apaciguar a lo que habita dentro.",
-      "grandHunterLodge": "El Gran pabell?n de caza est? terminado, una estructura magn?fica donde se re?nen cazadores maestros.",
+      "grandHunterLodge": "El Gran pabellón de caza está terminado, una estructura magnífica donde se reúnen cazadores maestros.",
       "clerksHut": "Se levanta una choza de escribientes, con su ocupante listo para seguir el flujo de recursos con cuidado meticuloso.",
-      "scriptorium": "El Scriptorium est? terminado. Cada detalle de la vida de la aldea se registra ahora con precisi?n meticulosa.",
-      "inkwardenAcademy": "La Academia de los guardianes de tinta se alza como un monumento al conocimiento. Sus salones est?n llenos de la sabidur?a de las eras, y cada recurso se registra ahora con precisi?n incomparable.",
-      "tannery": "La curtidur?a est? terminada. El olor del cuero en curado llena el aire mientras los artesanos empiezan su labor.",
-      "highTannery": "La Alta curtidur?a est? construida, un gran taller donde artesanos expertos transforman pieles en el cuero m?s fino.",
+      "scriptorium": "El Scriptorium está terminado. Cada detalle de la vida de la aldea se registra ahora con precisión meticulosa.",
+      "inkwardenAcademy": "La Academia de los guardianes de tinta se alza como un monumento al conocimiento. Sus salones estón llenos de la sabiduría de las eras, y cada recurso se registra ahora con precisión incomparable.",
+      "tannery": "La curtiduría está terminada. El olor del cuero en curado llena el aire mientras los artesanos empiezan su labor.",
+      "highTannery": "La Alta curtiduría está construida, un gran taller donde artesanos expertos transforman pieles en el cuero más fino.",
       "longhouse": "La primera casa comunal se alza, una enorme sala de madera con vigas gruesas y mucho espacio.",
-      "furTents": "Las primeras tiendas de pieles se levantan en el borde de la aldea, dando refugio c?lido a m?s personas.",
+      "furTents": "Las primeras tiendas de pieles se levantan en el borde de la aldea, dando refugio cálido a más personas.",
       "shrine": "Un santuario sagrado se alza junto al altar; su presencia trae paz y enfoque a las mentes turbadas.",
-      "temple": "Un gran templo est? terminado; sus salones sagrados resuenan con plegarias susurradas que calman el alma atormentada.",
-      "sanctum": "El santuario se alza como un faro de protecci?n divina; su aura bendita aleja los pensamientos y temores m?s oscuros.",
-      "alchemistHall": "Los salones del alquimista se alzan imponentes, con c?maras llenas de crisoles burbujeantes e instrumentos relucientes de un oficio olvidado.",
+      "temple": "Un gran templo está terminado; sus salones sagrados resuenan con plegarias susurradas que calman el alma atormentada.",
+      "sanctum": "El santuario se alza como un faro de protección divina; su aura bendita aleja los pensamientos y temores más oscuros.",
+      "alchemistHall": "Los salones del alquimista se alzan imponentes, con cámaras llenas de crisoles burbujeantes e instrumentos relucientes de un oficio olvidado.",
       "tradePost": "Se construye un puesto comercial cerca del bosque, atrayendo comerciantes que buscan vender sus bienes por oro.",
-      "grandBazaar": "El Gran bazar se alza, un mercado extenso donde mercaderes de tierras lejanas se re?nen para comerciar.",
-      "merchantsGuild": "El Gremio de mercaderes est? terminado, una organizaci?n poderosa que controla todas las rutas comerciales y trae una riqueza sin precedentes a tu asentamiento.",
-      "bastion": "El basti?n se alza como una monta?a de piedra, con muros gruesos e inflexibles. Una promesa de protecci?n contra lo que se agita en las profundidades.",
-      "wizardTower": "La Torre del mago se eleva en espiral hacia el cielo, crepitando con energ?a arcana. El mago se instala con su colecci?n de tomos antiguos y artefactos misteriosos.",
-      "fortifiedMoat": "Un foso profundo rodea ahora el asentamiento, con aguas oscuras y traicioneras. Ning?n enemigo lo cruzar? con facilidad.",
-      "traps": "Se han colocado trampas alrededor del per?metro de la aldea. Pozos ocultos, lazos y estacas afiladas esperan a cualquiera que se atreva a atacar.",
-      "improvedTraps": "El per?metro de la aldea se refuerza con fosos cubiertos, lazos de resorte y mecanismos de acero. Los atacantes reciben una bienvenida mucho m?s letal.",
-      "blackMonolith": "El Monolito negro se alza en el centro de la aldea, un monumento elevado de adamantita oscura. Su superficie parece beber la luz, y los aldeanos se re?nen a su alrededor con reverencia y temor.",
+      "grandBazaar": "El Gran bazar se alza, un mercado extenso donde mercaderes de tierras lejanas se reúnen para comerciar.",
+      "merchantsGuild": "El Gremio de mercaderes está terminado, una organización poderosa que controla todas las rutas comerciales y trae una riqueza sin precedentes a tu asentamiento.",
+      "bastion": "El bastión se alza como una montaña de piedra, con muros gruesos e inflexibles. Una promesa de protección contra lo que se agita en las profundidades.",
+      "wizardTower": "La Torre del mago se eleva en espiral hacia el cielo, crepitando con energía arcana. El mago se instala con su colección de tomos antiguos y artefactos misteriosos.",
+      "fortifiedMoat": "Un foso profundo rodea ahora el asentamiento, con aguas oscuras y traicioneras. Ningún enemigo lo cruzará con facilidad.",
+      "traps": "Se han colocado trampas alrededor del perímetro de la aldea. Pozos ocultos, lazos y estacas afiladas esperan a cualquiera que se atreva a atacar.",
+      "improvedTraps": "El perímetro de la aldea se refuerza con fosos cubiertos, lazos de resorte y mecanismos de acero. Los atacantes reciben una bienvenida mucho más letal.",
+      "blackMonolith": "El Monolito negro se alza en el centro de la aldea, un monumento elevado de adamantita oscura. Su superficie parece beber la luz, y los aldeanos se reúnen a su alrededor con reverencia y temor.",
       "blackEstate": "La Finca negra se alza desde la colina, rodeada por un velo de niebla.",
-      "chitinPlating": "Las fortificaciones est?n ahora reforzadas con blindaje de quitina. La defensa de la aldea aumenta notablemente.",
-      "pillarOfClarity": "El Pilar de claridad se alza, un obelisco reluciente que parece vibrar con poder antiguo. Su presencia aporta calma y enfoque a quienes est?n cerca.",
-      "boneTemple": "El Templo de hueso se alza a partir de miles de huesos cuidadosamente dispuestos, un monumento a los dioses antiguos. Su presencia emana poder oscuro, y los aldeanos se acercan a ?l con reverencia y miedo.",
-      "heartfire": "El Fuego del coraz?n est? encendido. Su calor y su luz dan a la aldea un nuevo sentido de prop?sito."
+      "chitinPlating": "Las fortificaciones estón ahora reforzadas con blindaje de quitina. La defensa de la aldea aumenta notablemente.",
+      "pillarOfClarity": "El Pilar de claridad se alza, un obelisco reluciente que parece vibrar con poder antiguo. Su presencia aporta calma y enfoque a quienes estón cerca.",
+      "boneTemple": "El Templo de hueso se alza a partir de miles de huesos cuidadosamente dispuestos, un monumento a los dioses antiguos. Su presencia emana poder oscuro, y los aldeanos se acercan a él con reverencia y miedo.",
+      "heartfire": "El Fuego del corazón está encendido. Su calor y su luz dan a la aldea un nuevo sentido de propósito."
     },
     "gameplay": {
-      "forestUnlocked": "La aldea est? rodeada por un bosque denso y oscuro. El peligro flota en el aire, aunque tambi?n puede ser un buen lugar para cortar madera y cazar.",
-      "villageBegins": "Una peque?a aldea empieza a tomar forma. Los aldeanos necesitan comida y madera para sobrevivir."
+      "forestUnlocked": "La aldea está rodeada por un bosque denso y oscuro. El peligro flota en el aire, aunque también puede ser un buen lugar para cortar madera y cazar.",
+      "villageBegins": "Una pequeña aldea empieza a tomar forma. Los aldeanos necesitan comida y madera para sobrevivir."
     },
     "gambler": {
       "win": "Ganaste {{amount}} oro del jugador obsesionado.",
       "lose": "Perdiste {{amount}} oro ante el jugador obsesionado.",
-      "forfeit": "El jugador obsesionado interpret? tu silencio como rendici?n."
+      "forfeit": "El jugador obsesionado interpretó tu silencio como rendición."
     },
     "buttonUpgrade": {
       "deepens": "Tu dominio de {{skill}} se profundiza.",
       "skills": {
-        "caveExplore": "exploraci?n de cuevas",  //1.5X
-        "mineStone": "extracci?n de piedra",  //1.7X
-        "mineIron": "extracci?n de hierro",  //1.8X
-        "mineCoal": "extracci?n de carb?n",  //1.8X
-        "mineSulfur": "extracci?n de azufre",  //1.5X
-        "mineObsidian": "extracci?n de obsidiana",  //1.5X
-        "mineAdamant": "extracci?n de adamantio",  //1.6X
+        "caveExplore": "exploración de cuevas",  //x1.5
+        "mineStone": "extracción de piedra",  //x1.7
+        "mineIron": "extracción de hierro",  //x1.8
+        "mineCoal": "extracción de carbón",  //x1.8
+        "mineSulfur": "extracción de azufre",  //x1.5
+        "mineObsidian": "extracción de obsidiana",  //x1.5
+        "mineAdamant": "extracción de adamantio",  //x1.6
         "hunt": "caza",
-        "chopWood": "tala de madera",  //1.3X
-        "craftTorches": "fabricaci?n de antorchas",
-        "craftBoneTotems": "fabricaci?n de t?temes de hueso",
-        "craftLeatherTotems": "fabricaci?n de t?temes de cuero"  //1.4X
+        "chopWood": "tala de madera",  //x1.3
+        "craftTorches": "fabricación de antorchas",
+        "craftBoneTotems": "fabricación de tótems de hueso",
+        "craftLeatherTotems": "fabricación de tótems de cuero"  //x1.4
       }
     }
   }
 }
-
-
-
-
-

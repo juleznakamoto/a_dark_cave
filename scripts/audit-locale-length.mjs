@@ -1,7 +1,7 @@
 /**
  * Audit locale strings that are much longer than English and maintain trailing
  * line comments in locale JSON files, e.g.:
- *   "key": "Long translation",  //1.6X
+ *   "key": "Long translation",  //x1.6
  *
  * Non-English locale files use JSONC-style trailing comments. VS Code/Cursor
  * treats them as jsonc via .vscode/settings.json (files.associations).
@@ -33,7 +33,9 @@ import {
   isLengthComment,
   isOkComment,
   parseLengthCommentRatio,
+  joinLocaleFileLines,
   parseLocaleJson,
+  splitLocaleFileLines,
   stripTrailingLineComment,
 } from "./parse-locale-json.mjs";
 
@@ -148,7 +150,7 @@ function qualifies(locVal, enVal, rel, fullKey) {
 
 /** Walk nested JSON source and collect string entries with line metadata. */
 function scanStringLines(content) {
-  const lines = content.split("\n");
+  const lines = splitLocaleFileLines(content);
   const stack = [];
   const entries = [];
 
@@ -294,8 +296,14 @@ function processLocaleFile(rel, locale, enFlat, okKeys) {
     const expectedComment = formatLengthComment(ratio);
 
     if (mode === "check") {
+      const expectedBody = expectedComment.slice(2);
       const actualRatio = parseLengthCommentRatio(entry.comment ?? "");
-      if (!isLengthComment(entry.comment ?? "") || actualRatio !== ratio) {
+      const commentBody = (entry.comment ?? "").trim();
+      if (
+        !isLengthComment(entry.comment ?? "") ||
+        actualRatio !== ratio ||
+        commentBody !== expectedBody
+      ) {
         issues.push({
           locale,
           file: rel,
@@ -323,7 +331,7 @@ function processLocaleFile(rel, locale, enFlat, okKeys) {
   }
 
   if (mode === "write" && changed) {
-    fs.writeFileSync(locPath, `${lines.join("\n")}\n`);
+    fs.writeFileSync(locPath, joinLocaleFileLines(lines));
   }
 
   return { updated: changed, issues };

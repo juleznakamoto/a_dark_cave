@@ -2,7 +2,8 @@
  * Parse locale JSON files that may contain trailing // line comments.
  */
 
-const LENGTH_COMMENT_RE = /^[\d.]+X(?: the length of English Version\.)?$/i;
+const LENGTH_COMMENT_RE = /^x[\d.]+$/i;
+const LENGTH_COMMENT_LEGACY_RE = /^[\d.]+X(?: the length of English Version\.)?$/i;
 /** Strip trailing // comment outside JSON string literals. */
 export function stripTrailingLineComment(line) {
   let inString = false;
@@ -59,22 +60,38 @@ export function isOkComment(comment) {
 }
 
 export function isLengthComment(comment) {
-  return LENGTH_COMMENT_RE.test(comment.trim());
+  const t = comment.trim();
+  return LENGTH_COMMENT_RE.test(t) || LENGTH_COMMENT_LEGACY_RE.test(t);
 }
 
 export function formatLengthComment(ratio) {
-  return `//${ratio.toFixed(1)}X`;
+  return `//x${ratio.toFixed(1)}`;
 }
 
 export function parseLengthCommentRatio(comment) {
-  const m = comment
-    .trim()
-    .match(/^([\d.]+)X(?: the length of English Version\.)?$/i);
+  const t = comment.trim();
+  let m = t.match(/^x([\d.]+)$/i);
+  if (m) return parseFloat(m[1]);
+  m = t.match(/^([\d.]+)X(?: the length of English Version\.)?$/i);
   return m ? parseFloat(m[1]) : null;
 }
+/** Split file content into lines; drop trailing empties from a final newline. */
+export function splitLocaleFileLines(content) {
+  const lines = content.split("\n");
+  while (lines.length > 0 && lines[lines.length - 1] === "") {
+    lines.pop();
+  }
+  return lines;
+}
+
+/** Join lines with exactly one trailing newline (POSIX text file). */
+export function joinLocaleFileLines(lines) {
+  if (lines.length === 0) return "\n";
+  return `${lines.join("\n")}\n`;
+}
+
 export function stripJsonComments(text) {
-  return text
-    .split("\n")
+  return splitLocaleFileLines(text)
     .map((line) => stripTrailingLineComment(line))
     .join("\n");
 }

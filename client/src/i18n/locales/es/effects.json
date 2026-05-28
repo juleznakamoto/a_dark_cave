@@ -36,11 +36,11 @@
     },
     "ashen_embrace_enhanced": {
       "description": "Tu capacidad para minar mejora enormemente",
-      "name": "Abrazo ceniciento profundo"  //1.4X
+      "name": "Abrazo ceniciento profundo"  //x1.4
     },
     "bell_blessing": {
       "description": "Una misteriosa marca de campana en tu antebrazo. Duplica los puntos de concentración obtenidos durante el sueño.",
-      "name": "Bendición de la campana"  //1.8X
+      "name": "Bendición de la campana"  //x1.8
     },
     "black_bear_fur": {
       "description": "Piel negra maldita de un oso gigante de otro mundo",
@@ -56,7 +56,7 @@
     },
     "blacksteel_armor": {
       "description": "Armadura pesada adornada con púas letales",
-      "name": "Armadura de acero negro"  //1.4X
+      "name": "Armadura de acero negro"  //x1.4
     },
     "blood_baptized": {
       "description": "Recibido tras bañarse en la sangre de criaturas poderosas",
@@ -152,7 +152,7 @@
     },
     "highpriest_robe": {
       "description": "Túnica sagrada adornada con hilo de oro",
-      "name": "Túnica de sumo sacerdote"  //1.6X
+      "name": "Túnica de sumo sacerdote"  //x1.6
     },
     "hollow_king_scepter": {
       "description": "Cetro del rey perdido, irradiando poder y locura. Las acciones de minería tienen un 5% de probabilidad de duplicar las recompensas.",
@@ -260,11 +260,11 @@
     },
     "stormglass_halberd_schematic": {
       "description": "Plano para fabricar una alabarda formidable",
-      "name": "Alabarda de cristal de tormenta"  //1.7X
+      "name": "Alabarda de cristal de tormenta"  //x1.7
     },
     "survivors_last_words": {
       "description": "La última bendición de un desconocido moribundo",
-      "name": "Últimas palabras del superviviente"  //1.6X
+      "name": "Últimas palabras del superviviente"  //x1.6
     },
     "survivors_notes": {
       "description": "Pergamino gastado por el tiempo lleno de consejos prácticos dejados por alguien que vivió aquí hace mucho. Desbloquea logros básicos.",
@@ -298,7 +298,7 @@
   "fellowship": {
     "ashwraith_huntress": {
       "description": "Cazadora salvaje de una tribu del bosque, ligada por juramento de sangre. Desbloquea mejoras de habilidad de caza y de producción de cazadores.",
-      "name": "Cazadora espectroceniza"  //1.3X
+      "name": "Cazadora espectroceniza"  //x1.3
     },
     "disgraced_prior": {
       "description": "Antiguo prior expulsado de su orden. Se redime mediante un trabajo interminable. Puede asignarse para repetir acciones automáticamente.",
@@ -376,7 +376,7 @@
     },
     "mastermason_chisel": {
       "description": "Herramienta exquisitamente elaborada de un maestro constructor olvidado hace mucho",
-      "name": "Cincel de maestro cantero"  //1.4X
+      "name": "Cincel de maestro cantero"  //x1.4
     },
     "natharit_pickaxe": {
       "description": "Pico extremadamente resistente de material desconocido y calidad excepcional",
@@ -450,7 +450,7 @@
     },
     "ashfire_bomb": {
       "description": "Bomba devastadora que brilla con fuego de otro mundo",
-      "name": "Bomba de fuego ceniciento"  //2.1X
+      "name": "Bomba de fuego ceniciento"  //x2.1
     },
     "blacksteel_bow": {
       "description": "Arco forjado con raro acero negro",
@@ -462,7 +462,7 @@
     },
     "bloodstone_staff": {
       "description": "Bastón coronado con piedra de sangre, palpitante de energía oscura",
-      "name": "Bastón de piedra de sangre"  //1.6X
+      "name": "Bastón de piedra de sangre"  //x1.6
     },
     "compound_bow": {
       "description": "Arma de alta precisión de la civilización desaparecida",
@@ -478,7 +478,7 @@
     },
     "frostglass_sword": {
       "description": "Hoja forjada con cristal de escarcha, que irradia poder frío",
-      "name": "Espada de cristal de escarcha"  //1.8X
+      "name": "Espada de cristal de escarcha"  //x1.8
     },
     "huntsman_bow": {
       "description": "Arco mejorado, finamente equilibrado y preciso",
@@ -502,7 +502,7 @@
     },
     "nordic_war_axe": {
       "description": "Hacha de guerra legendaria forjada por un maestro herrero vikingo",
-      "name": "Hacha de guerra nórdica"  //1.6X
+      "name": "Hacha de guerra nórdica"  //x1.6
     },
     "obsidian_sword": {
       "description": "Hoja afiladísima forjada con vidrio volcánico",
@@ -514,7 +514,7 @@
     },
     "stormglass_halberd": {
       "description": "Alabarda suprema forjada con adamantita magistralmente refinada",
-      "name": "Alabarda de cristal de tormenta"  //1.7X
+      "name": "Alabarda de cristal de tormenta"  //x1.7
     },
     "veinfire_elixir": {
       "description": "Elixir alquímico curativo destilado de rara raíz de vena",

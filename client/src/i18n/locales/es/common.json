@@ -34,13 +34,13 @@
     "fortress": "Fortaleza",
     "trader": "Mercader",
     "achievements": "Logros",
-    "timedEvent": "Evento cronometrado"  //1.7X
+    "timedEvent": "Evento cronometrado"  //x1.7
   },
   "resources": {
     "wood": "Madera",
     "stone": "Piedra",
     "food": "Comida",
-    "veinroot": "Raíz de vena",  //1.5X
+    "veinroot": "Raíz de vena",  //x1.5
     "bones": "Huesos",
     "fur": "Pieles",
     "leather": "Cuero",
@@ -53,21 +53,21 @@
     "adamant": "Adamantita",
     "steel": "Acero",
     "blacksteel": "Acero negro",
-    "moonstone": "Piedra lunar",  //1.3X
+    "moonstone": "Piedra lunar",  //x1.3
     "black_powder": "Pólvora negra",
-    "ember_bomb": "Bomba de brasas",  //1.5X
-    "ashfire_dust": "Polvo de fuego ceniciento",  //2.1X
-    "ashfire_bomb": "Bomba de fuego ceniciento",  //2.1X
+    "ember_bomb": "Bomba de brasas",  //x1.5
+    "ashfire_dust": "Polvo de fuego ceniciento",  //x2.1
+    "ashfire_bomb": "Bomba de fuego ceniciento",  //x2.1
     "void_bomb": "Bomba del vacío",
-    "veinfire_elixir": "Elixir de fuego venal",  //1.4X
-    "poison_arrows": "Flechas envenenadas",  //1.5X
+    "veinfire_elixir": "Elixir de fuego venal",  //x1.4
+    "poison_arrows": "Flechas envenenadas",  //x1.5
     "torch": "Antorcha",
     "silver": "Plata",
     "gold": "Oro"
   },
   "stats": {
     "strength": "Fuerza",
-    "knowledge": "Conocimiento",  //1.3X
+    "knowledge": "Conocimiento",  //x1.3
     "luck": "Suerte",
     "madness": "Locura",
     "attack": "Ataque",

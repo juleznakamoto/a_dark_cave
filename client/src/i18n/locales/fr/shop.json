@@ -22,7 +22,7 @@
   },
   "cruel_mode": {
     "activationMessage": "Mode cruel activé ! Commencez une nouvelle partie pour affronter le défi ultime.",
-    "description": "Un monde plus cruel, une histoire étendue, plus d'objets et des ennemis plus mortels. Endurez, ou disparaissez.",  //1.4X
+    "description": "Un monde plus cruel, une histoire étendue, plus d'objets et des ennemis plus mortels. Endurez, ou disparaissez.",  //x1.4
     "name": "Mode cruel"
   },
   "full_game": {
@@ -81,7 +81,3 @@
     "name": "Boussole ternie"
   }
 }
-
-
-
-

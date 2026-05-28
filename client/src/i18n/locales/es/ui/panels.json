@@ -39,14 +39,14 @@
       "hunter": "Cazador",
       "iron_miner": "Minero de hierro",
       "coal_miner": "Minero de carbón",
-      "steel_forger": "Forjador de acero",  //1.4X
-      "blacksteel_forger": "Forjador de acero negro",  //1.4X
+      "steel_forger": "Forjador de acero", //x1.4
+      "blacksteel_forger": "Forjador de acero negro", //x1.4
       "sulfur_miner": "Minero de azufre",
-      "obsidian_miner": "Minero de obsidiana",  //1.4X
+      "obsidian_miner": "Minero de obsidiana", //x1.4
       "adamant_miner": "Minero de adamantio",
-      "moonstone_miner": "Minero de piedra lunar",  //1.5X
-      "powder_maker": "Fabricante de pólvora",  //1.8X
-      "ashfire_dust_maker": "Fabricante de polvo de fuego cenizo",  //1.9X
+      "moonstone_miner": "Minero de piedra lunar", //x1.5
+      "powder_maker": "Fabricante de pólvora", //x1.8
+      "ashfire_dust_maker": "Fabricante de polvo de fuego cenizo", //x1.9
       "tanner": "Curtidor"
     }
   },
@@ -59,40 +59,40 @@
     "focusRewardTooltip_one": "Obtén recompensas x2 en acciones durante {{count}} minuto",
     "focusRewardTooltip_other": "Obtén recompensas x2 en acciones durante {{count}} minutos",
     "focusPointTooltip": "Gana 1 punto de enfoque por hora de sueño",
-    "sleepLength": "Duración del sueño",  //1.5X
+    "sleepLength": "Duración del sueño", //ok
     "sleepLengthTooltip": "Horas máx. por sueño",
-    "sleepIntensity": "Intensidad del sueño",  //1.3X
+    "sleepIntensity": "Intensidad del sueño", //ok
     "sleepIntensityTooltip": "Producción de la aldea en % mientras duermes",
     "skills": "Habilidades",
     "cubeWhispers": "Susurros del cubo",
-    "huntressTraining": "Entrenamiento de cazadora",  //1.5X
+    "huntressTraining": "Entrenamiento de cazadora", //ok
     "crushingStrike": "Golpe aplastante",
-    "bloodflameSphere": "Esfera de llama sangrienta",  //1.5X
+    "bloodflameSphere": "Esfera de llama sangrienta", //ok
     "disgracedPrior": "Prior deshonrado",
-    "crowsEye": "Ojo del cuervo",  //1.4X
+    "crowsEye": "Ojo del cuervo", //ok
     "maxLevel": "Nivel máx.",
     "improve": "Mejorar",
     "upkeepPerCycle": "{{amount}} comida de mantenimiento por acción asignada por ciclo",
     "skillFoodPerHunter": "+{{amount}} comida por cazador",
     "skillFurPerHunter": "+{{amount}} piel por cazador",
     "skillBonesPerHunter": "+{{amount}} huesos por cazador",
-    "skillHuntBonus": "+{{amount}} % de bonificación de caza",  //1.6X
+    "skillHuntBonus": "+{{amount}} % de bonificación de caza", //ok
     "skillHunterFood": "Cazador: +{{amount}} comida",
     "skillFurBonus": "+{{amount}} piel",
     "skillBonesBonus": "+{{amount}} huesos",
     "skillDamageBonus": "+{{amount}} daño",
     "skillStunRound_one": "+{{amount}} ronda de aturdimiento",
     "skillStunRound_other": "+{{amount}} rondas de aturdimiento",
-    "skillSuccessChanceBonus": "+{{amount}} % de probabilidad de éxito",  //1.4X
+    "skillSuccessChanceBonus": "+{{amount}} % de probabilidad de éxito", //ok
     "crushingStrikeSummary": "{{damage}} daño, {{rounds}} aturdimiento, {{success}} % de éxito",
-    "skillBurnDamage": "+{{amount}} daño por quemadura",  //1.3X
-    "skillBurnRound_one": "+{{amount}} ronda de quemadura",  //1.4X
-    "skillBurnRound_other": "+{{amount}} rondas de quemadura",  //1.3X
+    "skillBurnDamage": "+{{amount}} daño por quemadura", //ok
+    "skillBurnRound_one": "+{{amount}} ronda de quemadura", //ok
+    "skillBurnRound_other": "+{{amount}} rondas de quemadura", //ok
     "skillHealthCost": "+{{amount}} coste de salud",
     "bloodflameSummary": "{{damage}} de daño durante {{rounds}} rondas, {{health}} coste de salud",
     "bloodflameSummary_one": "{{damage}} de daño durante {{rounds}} ronda, {{health}} coste de salud",
-    "skillDoubleGain": "+{{amount}} % de probabilidad de ganancia doble",  //1.5X
-    "crowsEyeSummary": "{{percent}} % de probabilidad de duplicar las ganancias de acciones",  //1.6X
+    "skillDoubleGain": "+{{amount}} % de probabilidad de ganancia doble", //ok
+    "crowsEyeSummary": "{{percent}} % de probabilidad de duplicar las ganancias de acciones", //ok
     "priorConcurrentAction_one": "+{{count}} acción simultánea",
     "priorConcurrentAction_other": "+{{count}} acciones simultáneas",
     "priorActionBonus": "+{{percent}} % de bonificación en acciones asignadas",
@@ -115,19 +115,19 @@
     "boneTotems": "Tótems de hueso",
     "leatherTotems": "Tótems de cuero",
     "craftDiscount": "Descuento de artesanía",
-    "buildDiscount": "Descuento de construcción",  //1.8X
-    "doubleGainChance": "Probabilidad de ganancia doble"  //1.7X
+    "buildDiscount": "Descuento de construcción", //x1.8
+    "doubleGainChance": "Probabilidad de ganancia doble" //x1.7
   },
   "badges": {
     "priorUpgradeRequired": "Mejora al Prior deshonrado para asignar más acciones",
     "priorRemove": "Haz clic para quitar al Prior deshonrado",
     "priorAssign": "Haz clic para asignar al Prior deshonrado",
-    "bonus": "Bonificación:",  //2.2X
+    "bonus": "Bonificación:", //x2.2
     "nextBonus": "Próxima bonificación:",
     "craftMultiplier": "Artesanía x{{amount}}",
     "bonusPercent": "+{{percent}} %",
     "maxLevel": "nivel máx.",
-    "executionTimeReduction": "-50 % de tiempo de ejecución"  //1.5X
+    "executionTimeReduction": "-50 % de tiempo de ejecución" //x1.5
   },
   "sidePanel": {
     "bastion": "Bastión",
@@ -136,23 +136,23 @@
     "freeVillagers": "Libres",
     "onExpedition": "En expedición",
     "resources": "Recursos",
-    "tools": "Herramientas",  //2.4X
+    "tools": "Herramientas", //x2.4
     "weapons": "Armas",
     "clothing": "Ropa",
     "relics": "Reliquias",
     "schematics": "Esquemas",
-    "blessings": "Bendiciones",  //1.2X
+    "blessings": "Bendiciones", //x1.2
     "buildings": "Edificios",
     "books": "Libros",
     "fellowship": "Compañía",
-    "stats": "Estadísticas",  //2.4X
-    "bonuses": "Bonificaciones",  //2.0X
+    "stats": "Estadísticas", //x2.4
+    "bonuses": "Bonificaciones", //x2.0
     "fortifications": "Fortificaciones",
     "combatItems": "Objetos de combate",
     "mapFragments": "Fragmentos de mapa",
     "craftDiscount": "Descuento de artesanía",
-    "buildDiscount": "Descuento de construcción",  //1.8X
-    "doubleGainChance": "Probabilidad de ganancia doble",  //1.7X
+    "buildDiscount": "Descuento de construcción", //x1.8
+    "doubleGainChance": "Probabilidad de ganancia doble", //x1.7
     "populationTooltip": "Cada aldeano consume 1 comida y 1 madera",
     "resourceLimitTooltip": "Máx. {{limit}} (sin límite para plata y oro)",
     "statsTooltip": "Las estadísticas influyen en el resultado de los eventos y más adelante son relevantes en combate.",
@@ -179,7 +179,7 @@
   "idleMode": {
     "title": "Modo sueño",
     "sleeping": "Durmiendo",
-    "awake": "¡Estás despierto!",  //1.2X
+    "awake": "¡Estás despierto!", //x1.2
     "wakingIn": "Despertar en: {{time}}",
     "wake": "Despertar",
     "getUp": "Levantarse",
@@ -187,9 +187,3 @@
     "villagersProducedLog": "Los aldeanos produjeron: {{resources}}"
   }
 }
-
-
-
-
-
-

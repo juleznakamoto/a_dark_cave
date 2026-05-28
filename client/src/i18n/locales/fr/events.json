@@ -76,7 +76,7 @@
   "bloodiedAwakening": {
     "choices": {
       "investigateMurders": {
-        "label": "Enquêter sur les meurtres"  //1.3X
+        "label": "Enquêter sur les meurtres"  //x1.3
       },
       "severFinger": {
         "label": "Couper le doigt"
@@ -109,10 +109,10 @@
   "bloodMoonAttack": {
     "choices": {
       "prepareForAttack": {
-        "label": "Se préparer à l'attaque"  //1.3X
+        "label": "Se préparer à l'attaque"
       },
       "sacrificeVillagers": {
-        "label": "Se préparer à l'attaque"  //1.2X
+        "label": "Se préparer à l'attaque"  //x1.2
       }
     },
     "log": {
@@ -238,11 +238,11 @@
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {
-        "label": "Accepter la proposition"  //1.5X
+        "label": "Accepter la proposition"  //x1.5
       }
     },
     "log": {
-      "outcome0": "Vous acceptez la sagesse de l'ancienne. Les villageois hochent la tête dans une approbation silencieuse. La voie vers la construction de l'ultime monument aux dieux est désormais ouverte."  //1.4X
+      "outcome0": "Vous acceptez la sagesse de l'ancienne. Les villageois hochent la tête dans une approbation silencieuse. La voie vers la construction de l'ultime monument aux dieux est désormais ouverte."  //x1.4
     },
     "message": "Une vieille femme aux yeux voilés s'approche de vous. 'Nous devons mettre fin à l'effusion de sang humain,' déclare-t-elle. 'Les anciens dieux exigent un grand monument en leur honneur. Alors seulement ils nous accorderont leur faveur durable.'",
     "title": "L'Exigence de l'ancienne"
@@ -574,7 +574,7 @@
   "establishTradeProposal": {
     "choices": {
       "mountainMonastery": {
-        "label": "Monastère de la Montagne"  //1.3X
+        "label": "Monastère de la Montagne"  //x1.3
       },
       "swampTribe": {
         "label": "Tribu du Marais"
@@ -634,7 +634,7 @@
     "choices": {
       "makeFeast": {
         "cost": "{{foodCost}} nourriture",
-        "label": "Dépenser {{foodCost}} nourriture"  //1.4X
+        "label": "Dépenser {{foodCost}} nourriture"
       },
       "noFeast": {
         "label": "Refuser le festin"
@@ -934,7 +934,7 @@
   "mercenaryDemand": {
     "choices": {
       "giveRing": {
-        "label": "Donner l'anneau nourricier"  //1.5X
+        "label": "Donner l'anneau nourricier"  //x1.5
       },
       "payGold": {
         "cost": "100 or",
@@ -956,7 +956,7 @@
   "mercenaryReturnDemand": {
     "choices": {
       "giveRing": {
-        "label": "Donner l'anneau nourricier"  //1.5X
+        "label": "Donner l'anneau nourricier"  //x1.5
       },
       "payGold": {
         "cost": "200 or",
@@ -992,7 +992,7 @@
         "message": "Vous achetez le schéma d'arc de belladone. Le marchand affiche un sourire sombre : « La conception de cet arc est cruelle. Ses flèches empoisonneront vos ennemis. »"
       },
       "trade_skull_lantern": {
-        "label": "Lanterne crânienne",  //1.4X
+        "label": "Lanterne crânienne",  //x1.4
         "message": "Vous achetez la lanterne crânienne. Forgée dans de l'os maudit, sa lueur inquiétante vous guidera dans les profondeurs les plus reculées."
       },
       "trade_tarnished_compass": {
@@ -1000,15 +1000,15 @@
         "message": "Vous achetez la boussole ternie. Artefact de la civilisation disparue, son aiguille pointe vers des lieux cachés."
       },
       "trade_map_fragment_wooden": {
-        "label": "Fragment de carte",  //1.4X
+        "label": "Fragment de carte",  //x1.4
         "message": "Vous achetez un fragment de carte déchiré."
       },
       "trade_map_fragment_stone": {
-        "label": "Fragment de carte",  //1.4X
+        "label": "Fragment de carte",  //x1.4
         "message": "Vous achetez un fragment de carte déchiré."
       },
       "trade_crow_harness": {
-        "label": "Harnais de corbeau",  //1.5X
+        "label": "Harnais de corbeau",  //x1.5
         "message": "Vous achetez le harnais de corbeau. Un harnais spécialement conçu pour les corbeaux messagers."
       },
       "trade_clarity_elixir": {
@@ -1016,12 +1016,12 @@
         "message": "Vous buvez l'élixir de clarté. Votre esprit semble plus léger."
       },
       "trade_veinfire_elixir": {
-        "label": "Élixir de feu veineux",  //1.4X
+        "label": "Élixir de feu veineux",  //x1.4
         "message": "Vous achetez une fiole d'élixir de feu veineux."
       },
       "trade_book_of_trials": {
         "message": "Vous achetez le Livre des épreuves. Le marchand sourit d'un air entendu : « Un guide pour ceux qui cherchent à suivre leur voyage. »",
-        "label": "Livre des épreuves"  //1.3X
+        "label": "Livre des épreuves"
       },
       "trade_book_of_craftsmanship": {
         "message": "Vous achetez le Livre de l'artisanat. Le marchand hoche la tête avec approbation : « Un tome d'artisan, usé mais rempli de sagesse. Il murmurera ses secrets à ceux qui bâtissent. »",
@@ -1029,7 +1029,7 @@
       },
       "trade_book_of_war": {
         "message": "Vous achetez le Livre de la guerre. Le marchand hoche gravement la tête : « Un savoir venu d'un royaume depuis longtemps disparu, loin à l'est. Avec ceci, vous comprendrez mieux les conséquences de vos choix. »",
-        "label": "Livre de la guerre"  //1.6X
+        "label": "Livre de la guerre"
       },
       "trade_reinforced_rope": {
         "message": "Vous achetez la corde renforcée. Cette corde résiste à une tension immense et peut atteindre des lieux dans les chambres les plus profondes de la grotte.",
@@ -1037,7 +1037,7 @@
       },
       "trade_occultist_map": {
         "message": "Alors que vous achetez la carte de l'occultiste, le marchand murmure : « Un vieil occultiste a caché ses secrets dans une chambre au plus profond de la grotte. Cette carte vous guidera. »",
-        "label": "Carte de l'occultiste"  //1.4X
+        "label": "Carte de l'occultiste"
       },
       "trade_giant_trap": {
         "message": "Alors que vous achetez le piège géant, le marchand sourit : « Ceci peut piéger quelque chose de gigantesque dans les bois. Utilisez-le avec sagesse. »",
@@ -1169,8 +1169,8 @@
     "choices": {
       "allowStay": {
         "label": {
-          "woman": "La laisser rester",  //1.4X
-          "man": "Le laisser rester"  //1.4X
+          "woman": "La laisser rester",
+          "man": "Le laisser rester"
         }
       },
       "refuseStay": {
@@ -1229,7 +1229,7 @@
         "label": "Aucune décision"
       },
       "refuse": {
-        "label": "Ne faire aucun sacrifice"  //1.3X
+        "label": "Ne faire aucun sacrifice"  //x1.3
       },
       "sacrifice": {
         "label": {
@@ -1260,7 +1260,7 @@
       },
       "holdFuneral": {
         "cost": "1000 nourriture",
-        "label": "Organiser des funérailles"  //2.1X
+        "label": "Organiser des funérailles"  //x2.1
       },
       "investigateKillers": {
         "label": "Enquêter"
@@ -1279,7 +1279,7 @@
   "paleCrossProposal": {
     "choices": {
       "acceptPaleCross": {
-        "label": "Accepter la proposition"  //1.5X
+        "label": "Accepter la proposition"  //x1.5
       },
       "refusePaleCross": {
         "label": "Refuser la proposition"
@@ -1320,7 +1320,7 @@
         "label": "Le laisser"
       },
       "takeMask": {
-        "label": "Prendre le masque rouge"  //1.8X
+        "label": "Prendre le masque rouge"  //x1.8
       }
     },
     "log": {
@@ -1718,7 +1718,7 @@
         "label": "Dédier à tous"
       },
       "deepenDevotion": {
-        "label": "Approfondir la dévotion"  //1.5X
+        "label": "Approfondir la dévotion"  //x1.5
       }
     },
     "log": {
@@ -1820,7 +1820,7 @@
   "slaveTrader": {
     "choices": {
       "freeSlaves": {
-        "label": "Essayer de libérer les esclaves"  //1.7X
+        "label": "Essayer de libérer les esclaves"
       },
       "refuseTrader": {
         "label": "Refuser l'offre"
@@ -1951,7 +1951,7 @@
       },
       "send_search_party": {
         "cost": "500 nourriture, 50 torche",
-        "label": "Envoyer une équipe de recherche"  //1.8X
+        "label": "Envoyer une équipe de recherche"  //x1.8
       }
     },
     "log": {
@@ -2155,7 +2155,7 @@
         "label": "Éviter le villageois"
       },
       "confront": {
-        "label": "Confronter le villageois"  //1.4X
+        "label": "Confronter le villageois"
       }
     },
     "log": {
@@ -2352,7 +2352,7 @@
       "outcome7": "Vos menaces ne font qu'irriter la sorcière. Elle rit et vous maudit avec une magie noire. Quand elle s'en va, les villageois commencent à se sentir faibles, comme si leur force était drainée par une puissance invisible."
     },
     "message": "Une vieille femme voûtée en robes déchirées arrive aux portes. La voix pleine de malice, elle exige : 'Payez-moi 50 pièces d'or, ou je vous maudirai de malheur.'",
-    "title": "La Malédiction de la sorcière"  //1.7X
+    "title": "La Malédiction de la sorcière"  //x1.7
   },
   "wizardArrives": {
     "message": "Un petit vieil homme à la longue barbe grise, vêtu d'un manteau gris usé, approche de la colonie. Ses yeux brillent d'une sagesse et d'une puissance anciennes. 'Je suis un sorcier,' déclare-t-il d'une voix résonnant d'autorité arcanique. 'Bâtissez-moi une tour, et je vous aiderai avec des pouvoirs au-delà de l'entendement des mortels.'"
@@ -2440,7 +2440,7 @@
       "defend_manyDeaths_food_hut_first": "Les villageois combattent désespérément les loups. Plusieurs villageois succombent à la fureur surnaturelle des loups. Dans le chaos, les loups ravagent vos réserves. Dans leur frénésie, les loups détruisent l'une des huttes, ne laissant que du bois éclaté. Les villageois suggèrent de poser des pièges autour du village pour mieux se protéger des loups et des autres ennemis.",
       "hide_noDeaths": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. À l'aube, les loups sont partis, ne laissant derrière eux que des griffures et de la terreur.",
       "hide_noDeaths_food": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. À l'aube, les loups sont partis, ne laissant derrière eux que des griffures et de la terreur. Les loups pillent vos provisions avant de disparaître à l'aube.",
-      "hide_oneDeath": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Un villageois qui s'était aventuré dehors est retrouvé déchiqueté au lever du soleil.",  //1.4X
+      "hide_oneDeath": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Un villageois qui s'était aventuré dehors est retrouvé déchiqueté au lever du soleil.",  //x1.4
       "hide_oneDeath_food": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Un villageois qui s'était aventuré dehors est retrouvé déchiqueté au lever du soleil. Les loups pillent vos provisions avant de disparaître à l'aube.",
       "hide_manyDeaths": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Plusieurs villageois sont arrachés de leurs huttes, leurs cris résonnant dans la nuit.",
       "hide_manyDeaths_food": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Plusieurs villageois sont arrachés de leurs huttes, leurs cris résonnant dans la nuit. Les loups pillent vos provisions avant de disparaître à l'aube."
@@ -2451,7 +2451,7 @@
   "woodcutter": {
     "choices": {
       "acceptServices": {
-        "label": "Payer {{foodCost}} nourriture",  //1.4X
+        "label": "Payer {{foodCost}} nourriture",
         "cost": "{{foodCost}} food"
       },
       "denyServices": {
@@ -2510,7 +2510,7 @@
         "label": "Bien couvrir de planches"
       },
       "investigate": {
-        "label": "Regarder plus profondément dans le puits"  //1.9X
+        "label": "Regarder plus profondément dans le puits"  //x1.9
       }
     },
     "log": {
@@ -2547,22 +2547,15 @@
         "label": "La sacrifier"
       },
       "stopSacrifices": {
-        "label": "Arrêter les sacrifices humains"  //1.4X
+        "label": "Arrêter les sacrifices humains"  //x1.4
       }
     },
     "log": {
-      "outcome0": "Vous acceptez de mettre fin à la pratique du sacrifice humain. La femme propose de détruire le Monolithe Noir et de bâtir à sa place un obélisque d'un blanc pur, afin de purifier les ténèbres des esprits du peuple.",  //1.4X
+      "outcome0": "Vous acceptez de mettre fin à la pratique du sacrifice humain. La femme propose de détruire le Monolithe Noir et de bâtir à sa place un obélisque d'un blanc pur, afin de purifier les ténèbres des esprits du peuple.",
       "outcome1": "Vous bannissez la jeune femme du village. Elle convainc {{actualLeavers}} villageois sympathisants de partir avec elle, abandonnant votre colonie pour toujours.",
       "outcome2": "Peu après que le sacrifice a été accompli au Monolithe Noir, {{actualLeavers}} villageois horrifiés rassemblent leurs affaires et partent avec dégoût."
     },
     "message": "Une jeune femme s'approche de vous, les larmes ruisselant sur son visage. 'Mes deux parents ont été sacrifiés à ce monolithe maudit,' crie-t-elle. 'Ce comportement barbare doit cesser !'",
-    "title": "La Supplication de la jeune femme"  //1.5X
+    "title": "La Supplication de la jeune femme"  //x1.5
   }
 }
-
-
-
-
-
-
-

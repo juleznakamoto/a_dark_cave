@@ -1,7 +1,7 @@
 {
   "languageSelector": {
     "label": "Idioma",
-    "ariaLabel": "Seleccionar idioma"  //1.2X
+    "ariaLabel": "Seleccionar idioma"  //x1.2
   },
   "startScreen": {
     "titleNormal": "Una cueva oscura.",
@@ -21,7 +21,7 @@
     "donate": "Donar",
     "supportGame": "Apoyar el juego",
     "privacy": "Privacidad",
-    "imprint": "Aviso legal",  //1.6X
+    "imprint": "Aviso legal",  //x1.6
     "contact": "Contacto",
     "pauseGame": "Pausar juego",
     "resumeGame": "Reanudar juego",
@@ -34,16 +34,16 @@
   "profile": {
     "title": "Perfil",
     "signInUp": "Iniciar sesión/Registrarse",
-    "emailsOn": "Correos activados",  //1.9X
-    "emailsOff": "Correos desactivados",  //2.0X
+    "emailsOn": "Correos activados",  //x1.9
+    "emailsOff": "Correos desactivados",  //x2.0
     "marketingOnTooltip": "Actualmente recibes correos con actualizaciones, descuentos y recompensas exclusivas. Toca para desactivarlos.",
     "marketingOffTooltip": "Actualmente no recibes correos con actualizaciones, descuentos y recompensas exclusivas. Toca para activarlos.",
     "rewardsTasks": "Tareas de recompensas",
     "save": "Guardar",
-    "newGame": "Nueva partida",  //1.6X
+    "newGame": "Nueva partida",  //x1.6
     "restart": "Reiniciar",
-    "signIn": "Iniciar sesión",  //2.0X
-    "signOut": "Cerrar sesión",  //1.6X
+    "signIn": "Iniciar sesión",  //x2.0
+    "signOut": "Cerrar sesión",  //x1.6
     "leaderboard": "Clasificación",
     "rewards": "Recompensas",
     "deleteAccount": "Eliminar cuenta",
@@ -53,7 +53,7 @@
     "autoSaveGuest": "La partida se guarda cada 15 segundos",
     "signUpCloudSave": "Regístrate para guardar en la nube",
     "lastSave": "Último guardado: {{time}}",
-    "signedOut": "Sesión cerrada correctamente",  //1.2X
+    "signedOut": "Sesión cerrada correctamente",  //x1.2
     "signOutError": "Error al cerrar sesión",
     "gameSaved": "Partida guardada correctamente",
     "saveFailed": "No se pudo guardar la partida",
@@ -74,7 +74,3 @@
   },
   "never": "Nunca"
 }
-
-
-
-

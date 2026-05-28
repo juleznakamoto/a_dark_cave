@@ -22,7 +22,7 @@
   "socialPrompt": {
     "title": "Bleib in Verbindung und verdiene Belohnungen", //ok
     "description": "Schließe die Aufgaben unten ab, um Boni zu erhalten. Schließe alle Aufgaben ab, um einen exklusiven Gegenstand zu erhalten.",
-    "signUpRequiresSignInTooltip": "Registriere dich, um die Aufgabe abzuschließen",  //1.9X
+    "signUpRequiresSignInTooltip": "Registriere dich, um die Aufgabe abzuschließen",  //x1.9
     "signUpTitle": "Registrieren (+{{amount}} Gold)", //ok
     "signUpDesc": "Erstelle ein kostenloses Konto, um deinen Spielfortschritt geräteübergreifend zu synchronisieren. Ohne Konto wird dein Fortschritt nur lokal gespeichert und kann verloren gehen.",
     "signUpButton": "Registrieren", //ok

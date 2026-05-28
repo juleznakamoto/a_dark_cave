@@ -11,7 +11,7 @@
     "bastion": "Бастион",
     "fortress": "Крепость",
     "items": "Предметы",
-    "integrity": "Целостность",  //1.2X
+    "integrity": "Целостность",  //x1.2
     "attack": "Атака",
     "defense": "Защита",
     "attackFailed": "Атака не удалась",
@@ -20,8 +20,8 @@
     "criticalParen": "({{label}})",
     "available": "Доступно: {{current}}/{{max}}",
     "crushingStrike": "Сокрушающий удар",
-    "bloodflameSphere": "Сфера кровавого пламени",  //1.4X
-    "poisonArrows": "Отравленные стрелы",  //1.4X
+    "bloodflameSphere": "Сфера кровавого пламени",  //x1.4
+    "poisonArrows": "Отравленные стрелы",  //x1.4
     "attackDetailsAria": "Подробности боевой атаки",
     "critChance": "{{percent}} % шанс критического удара",
     "critFromLuck": "{{percent}} % от {{stat}}{{maxSuffix}}",
@@ -51,10 +51,10 @@
     "soon": "скоро",
     "provoke": "Спровоцировать",
     "waves": {
-      "firstWave": "Первая волна",  //1.2X
+      "firstWave": "Первая волна",
       "secondWave": "Вторая волна",
       "thirdWave": "Третья волна",
-      "fourthWave": "Четвёртая волна",  //1.4X
+      "fourthWave": "Четвёртая волна",  //x1.4
       "fifthWave": "Пятая волна",
       "sixthWave": "Шестая волна",
       "seventhWave": "Седьмая волна",
@@ -66,20 +66,20 @@
   "fortifications": {
     "bastion": "Бастион",
     "fortifiedMoat": "Укреплённый ров",
-    "chitinPlating": "Хитиновая обшивка",  //1.2X
+    "chitinPlating": "Хитиновая обшивка",
     "watchtower1": "Сторожевая башня",
-    "watchtower2": "Караульная башня",  //1.5X
+    "watchtower2": "Караульная башня",
     "watchtower3": "Укреплённая башня",
     "watchtower4": "Пушечная башня",
-    "palisades1": "Деревянные частоколы",  //1.3X
+    "palisades1": "Деревянные частоколы",
     "palisades2": "Укреплённые частоколы",
-    "palisades3": "Каменная стена",  //1.4X
+    "palisades3": "Каменная стена",
     "palisades4": "Укреплённая стена",
     "palisadesFallback": "Частокол",
-    "watchtowerFallback": "Сторожевая башня",  //1.6X
+    "watchtowerFallback": "Сторожевая башня",
     "damaged": "(повреждено)",
     "attack": "+{{value}} к атаке",
     "defense": "+{{value}} к защите",
-    "integrity": "+{{value}} к целостности"  //1.2X
+    "integrity": "+{{value}} к целостности"  //x1.2
   }
 }

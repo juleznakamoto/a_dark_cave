@@ -5,11 +5,11 @@
   },
   "artifact_bundle": {
     "activationMessage": "¡Los componentes del Lote de artefactos oscuros se han añadido a tus compras!",
-    "name": "Lote de artefactos oscuros"  //1.2X
+    "name": "Lote de artefactos oscuros"  //x1.2
   },
   "ashen_throne_bundle": {
     "activationMessage": "¡Los componentes del Lote del Trono Ceniciento se han añadido a tus compras!",
-    "name": "Lote del Trono Ceniciento"  //1.3X
+    "name": "Lote del Trono Ceniciento"  //x1.3
   },
   "basic_survival_bundle": {
     "activationMessage": "¡Los componentes del Lote del Errante Marchito se han añadido a tus compras!",
@@ -33,7 +33,7 @@
   "gold_1000": {
     "activationMessage": "Se han añadido 1000 de oro a tu inventario.",
     "description": "Una cantidad decente de oro",
-    "name": "1'000 de oro"  //1.2X
+    "name": "1'000 de oro"  //x1.2
   },
   "gold_100_free": {
     "activationMessage": "¡Se han añadido 100 de oro a tu inventario como regalo!",
@@ -53,12 +53,12 @@
   "gold_2500": {
     "activationMessage": "Se han añadido 2500 de oro a tu inventario.",
     "description": "Un tesoro considerable",
-    "name": "2'500 de oro"  //1.2X
+    "name": "2'500 de oro"  //x1.2
   },
   "gold_5000": {
     "activationMessage": "Se han añadido 5000 de oro a tu inventario.",
     "description": "Una fortuna en oro",
-    "name": "5'000 de oro"  //1.2X
+    "name": "5'000 de oro"  //x1.2
   },
   "great_feast_1": {
     "activationMessage": "¡Ha comenzado un gran festín!",
@@ -68,7 +68,7 @@
   "great_feast_3": {
     "activationMessage": "¡Ha comenzado un gran festín!",
     "description": "Multiplica por 5 la producción de los aldeanos durante 30 minutos (3 veces).",
-    "name": "3 grandes festines"  //1.3X
+    "name": "3 grandes festines"  //x1.3
   },
   "skull_lantern": {
     "activationMessage": "¡El farol de cráneo se ha añadido a tus herramientas! Su luz inquietante te guiará por las profundidades.",
@@ -81,8 +81,3 @@
     "name": "Brújula deslustrada"
   }
 }
-
-
-
-
-

@@ -1,6 +1,6 @@
 {
   "shop": {
-    "title": "Boutique du marchand",  //1.5X
+    "title": "Boutique du marchand",  //x1.5
     "purchase": "Acheter",
     "owned": "Possédé",
     "notEnoughGold": "Vous n'avez pas assez d'or.",
@@ -10,8 +10,8 @@
     "srDescription": "Boutique d'or, d'artefacts, de boosts et de packs",
     "betaDiscountTitle": "Des remises bêta jusqu'à {{percent}} % sont actuellement actives.",
     "betaDiscountNote": "Tous les achats restent disponibles lors des prochaines parties et après la sortie complète.",
-    "noPurchasesTitle": "Aucun achat pour l'instant.",  //1.6X
-    "noPurchasesHint": "Consultez l'onglet « À vendre » pour acheter des objets.",  //1.6X
+    "noPurchasesTitle": "Aucun achat pour l'instant.",  //x1.6
+    "noPurchasesHint": "Consultez l'onglet « À vendre » pour acheter des objets.",  //x1.6
     "activatePurchasesTitle": "Activez vos achats pour recevoir des récompenses.",
     "activatePurchasesNote": "Chaque achat peut être activé une fois par partie.",
     "highlights": "À la une",
@@ -21,7 +21,7 @@
     "bundles": "Packs",
     "mostPopular": "Le plus populaire",
     "threeXValue": "Valeur",
-    "availableInOneHour": "Disponible dans 1 heure",  //1.2X
+    "availableInOneHour": "Disponible dans 1 heure",  //x1.2
     "availableInHours": "Disponible dans {{hours}} heures",
     "alreadyClaimed": "Déjà récupéré",
     "alreadyPurchased": "Déjà acheté",
@@ -38,7 +38,7 @@
     "rightOfWithdrawal": "Droit de rétractation",
     "completePurchaseFor": "Finaliser l'achat pour {{price}}",
     "paymentFailed": "Paiement échoué",
-    "notAuthenticated": "Utilisateur non authentifié",  //1.2X
+    "notAuthenticated": "Utilisateur non authentifié",  //x1.2
     "verificationFailed": "La vérification du paiement a échoué. Veuillez contacter le support.",
     "unexpectedError": "Une erreur inattendue s'est produite",
     "purchaseSuccessful": "Achat réussi !",
@@ -54,11 +54,11 @@
     "playlightDiscount": "{{percent}} % de remise supplémentaire sur votre premier achat en argent réel en tant que joueur Playlight.",
     "journeyCompleteDiscount": "Réduction spéciale pour avoir terminé le jeu",
     "artifactSkullLantern": {
-      "title": "Lanterne crânienne",  //1.4X
-      "caveExploreBonus": "Exploration de grotte : +200 % de bonus",  //1.6X
-      "caveExploreCooldown": "Exploration de grotte : -5 s de recharge",  //1.5X
-      "miningBonus": "Extraction : +200 % de bonus",  //1.5X
-      "miningCooldown": "Extraction : -5 s de recharge"  //1.5X
+      "title": "Lanterne crânienne",  //x1.4
+      "caveExploreBonus": "Exploration de grotte : +200 % de bonus",  //x1.6
+      "caveExploreCooldown": "Exploration de grotte : -5 s de recharge",  //x1.5
+      "miningBonus": "Extraction : +200 % de bonus",  //x1.5
+      "miningCooldown": "Extraction : -5 s de recharge"  //x1.5
     },
     "artifactTarnishedCompass": {
       "title": "Boussole ternie",
@@ -67,19 +67,18 @@
     },
     "artifactCrowHarness": {
       "title": "Corbeau borgne",
-      "doubleGain": "Jusqu'à 15 % de chance de doubler les gains d'actions"  //1.4X
+      "doubleGain": "Jusqu'à 15 % de chance de doubler les gains d'actions"  //x1.4
     },
     "cruelMode": {
       "title": "Mode cruel",
-      "moreEvents": "Plus d'événements",  //1.5X
-      "moreItems": "Plus d'objets",  //1.3X
-      "strongerEnemies": "Ennemis plus puissants",  //1.4X
-      "harderChallenges": "Défis plus difficiles",  //1.2X
-      "reusePurchases": "Réutiliser les achats existants"  //1.3X
+      "moreEvents": "Plus d'événements",  //x1.5
+      "moreItems": "Plus d'objets",  //x1.3
+      "strongerEnemies": "Ennemis plus puissants",  //x1.4
+      "harderChallenges": "Défis plus difficiles",  //x1.2
+      "reusePurchases": "Réutiliser les achats existants"  //x1.3
     },
     "alreadyClaimedItemLog": "Vous avez déjà récupéré {{name}}.",
     "claimFailedLog": "Impossible de récupérer {{name}}. Veuillez réessayer.",
     "activatedDefaultLog": "{{name}} activé ! Les récompenses ont été ajoutées à votre inventaire."
   }
 }
-

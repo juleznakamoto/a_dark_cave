@@ -4,10 +4,10 @@
       "label": "Bûcheron"
     },
     "0-craftTorches": {
-      "label": "Fabricant de torches"  //1.5X
+      "label": "Fabricant de torches"  //x1.5
     },
     "0-exploreCave": {
-      "label": "Explorateur de grottes"  //1.7X
+      "label": "Explorateur de grottes"  //x1.7
     },
     "0-gamblerWins": {
       "label": "Joueur aguerri"
@@ -16,7 +16,7 @@
       "label": "Chasseur"
     },
     "1-mineAdamant": {
-      "label": "Mineur d'adamant"  //1.2X
+      "label": "Mineur d'adamant"  //x1.2
     },
     "1-mineCoal": {
       "label": "Mineur de charbon"
@@ -25,16 +25,16 @@
       "label": "Mineur de fer"
     },
     "1-mineObsidian": {
-      "label": "Mineur d'obsidienne"  //1.4X
+      "label": "Mineur d'obsidienne"  //x1.4
     },
     "1-mineStone": {
-      "label": "Mineur de pierre"  //1.5X
+      "label": "Mineur de pierre"  //x1.5
     },
     "1-mineSulfur": {
       "label": "Mineur de soufre"
     },
     "2-animals": {
-      "label": "Sacrificateur d'animaux"  //1.4X
+      "label": "Sacrificateur d'animaux"  //x1.4
     },
     "2-boneTotems": {
       "label": "Sacrificateur d'os"
@@ -49,13 +49,13 @@
       "label": "Sacrificateur de cuir"
     },
     "3-ashfireBombs": {
-      "label": "Artisan de bombes de feu cendré"  //1.5X
+      "label": "Artisan de bombes de feu cendré"  //x1.5
     },
     "3-emberBombs": {
-      "label": "Artisan de bombes de braise"  //1.4X
+      "label": "Artisan de bombes de braise"  //x1.4
     },
     "4-feedFire": {
-      "label": "Gardien du feu"  //1.3X
+      "label": "Gardien du feu"  //x1.3
     },
     "4-merchantPurchases": {
       "label": "Marchandeur"
@@ -69,28 +69,28 @@
   },
   "basic": {
     "0-coalMiner": {
-      "label": "Récolter du charbon"  //1.7X
+      "label": "Récolter du charbon"  //x1.7
     },
     "0-hunter": {
       "label": "Chasseur"
     },
     "0-ironMiner": {
-      "label": "Récolter du fer"  //1.4X
+      "label": "Récolter du fer"  //x1.4
     },
     "0-stoneMiner": {
-      "label": "Récolter de la pierre"  //1.8X
+      "label": "Récolter de la pierre"  //x1.8
     },
     "0-woodGatherer": {
-      "label": "Récolter du bois"  //1.5X
+      "label": "Récolter du bois"  //x1.5
     },
     "1-builder": {
-      "label": "Construire des bâtiments"  //1.3X
+      "label": "Construire des bâtiments"  //x1.3
     },
     "1-communityBuilder": {
       "label": "Bâtir une communauté"
     },
     "1-explorer": {
-      "label": "Explorer la grotte"  //1.5X
+      "label": "Explorer la grotte"  //x1.5
     },
     "1-toolCrafter": {
       "label": "Fabriquer des outils"
@@ -140,10 +140,10 @@
       "label": "Prêtres"
     },
     "4-0": {
-      "label": "Murs du fort"  //1.2X
+      "label": "Murs du fort"  //x1.2
     },
     "4-1": {
-      "label": "Poste de guet"  //1.9X
+      "label": "Poste de guet"  //x1.9
     }
   },
   "item": {
@@ -163,7 +163,7 @@
       "label": "Épées"
     },
     "2-explorer_pack": {
-      "label": "Travail du cuir"  //1.3X
+      "label": "Travail du cuir"  //x1.3
     },
     "2-schematic_weapons": {
       "label": "Schémas"
@@ -182,9 +182,3 @@
     }
   }
 }
-
-
-
-
-
-

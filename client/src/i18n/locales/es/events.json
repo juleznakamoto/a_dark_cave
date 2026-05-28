@@ -1,7 +1,7 @@
 {
   "alchemistArrives": {
     "message": "El alquimista emerge de su salón: 'He estado realizando experimentos día y noche', dice, sosteniendo un vial de polvo resplandeciente. 'He creado algo extraordinario y terriblemente peligroso'.",
-    "title": "El descubrimiento del alquimista"  //1.3X
+    "title": "El descubrimiento del alquimista"
   },
   "ashwraithCanyonTradeOffer": {
     "choices": {
@@ -76,7 +76,7 @@
   "bloodiedAwakening": {
     "choices": {
       "investigateMurders": {
-        "label": "Investigar los asesinatos"  //1.3X
+        "label": "Investigar los asesinatos" //x1.3
       },
       "severFinger": {
         "label": "Cortar el dedo"
@@ -109,10 +109,10 @@
   "bloodMoonAttack": {
     "choices": {
       "prepareForAttack": {
-        "label": "Prepararse para el ataque"  //1.4X
+        "label": "Prepararse para el ataque"
       },
       "sacrificeVillagers": {
-        "label": "Prepararse para el ataque"  //1.3X
+        "label": "Prepararse para el ataque" //x1.3
       }
     },
     "log": {
@@ -123,7 +123,7 @@
       "outcome4": "¡Los licántropos arrollan tus defensas y arrasan el asentamiento! La luna de sangre se desvanece, pero la amenaza permanece."
     },
     "message": {
-      "default": "La luna se ha vuelto roja como la sangre durante la noche; los ancianos de la aldea hablan de lic?ntropos. Pactos antiguos exigen el sacrificio de {{sacrificeAmount}} aldeanos para apaciguar a las bestias. Si te niegas, ellas se asegurar?n de saciar su hambre."
+      "default": "La luna se ha vuelto roja como la sangre durante la noche; los ancianos de la aldea hablan de licántropos. Pactos antiguos exigen el sacrificio de {{sacrificeAmount}} aldeanos para apaciguar a las bestias. Si te niegas, ellas se asegurarón de saciar su hambre."
     },
     "title": "Luna de sangre"
   },
@@ -159,24 +159,24 @@
     "log": {
       "outcome0": "¡Los aldeanos derrotan al ejército de huesos! Hueso y silencio cubren el campo de batalla. Arrancas la Corona del Devorador de sus restos y llenas un vial con su sangre pálida y viscosa.",
       "outcome1": "Los aldeanos se esconden aterrados mientras el ejército de huesos registra la aldea. Las criaturas esqueléticas acaban marchándose, con su propósito incumplido.",
-      "defend_noDeaths": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Los aldeanos sobreviven al asalto.",
-      "defend_noDeaths_hut": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Los aldeanos sobreviven al asalto. Las criaturas esquel?ticas destrozan una de las chozas y la reducen a escombros.",
-      "defend_noDeaths_steel": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Los aldeanos sobreviven al asalto. El ej?rcito de huesos saquea los almacenes antes de marcharse.",
-      "defend_noDeaths_steel_hut": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Los aldeanos sobreviven al asalto. El ej?rcito de huesos saquea los almacenes antes de marcharse. Las criaturas esquel?ticas destrozan una de las chozas y la reducen a escombros.",
-      "defend_oneDeath": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Un aldeano cae ante los guerreros esquel?ticos.",
-      "defend_oneDeath_hut": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Un aldeano cae ante los guerreros esquel?ticos. Las criaturas esquel?ticas destrozan una de las chozas y la reducen a escombros.",
-      "defend_oneDeath_steel": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Un aldeano cae ante los guerreros esquel?ticos. El ej?rcito de huesos saquea los almacenes antes de marcharse.",
-      "defend_oneDeath_steel_hut": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Un aldeano cae ante los guerreros esquel?ticos. El ej?rcito de huesos saquea los almacenes antes de marcharse. Las criaturas esquel?ticas destrozan una de las chozas y la reducen a escombros.",
-      "defend_manyDeaths": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Varios aldeanos caen ante los guerreros esquel?ticos.",
-      "defend_manyDeaths_hut": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Varios aldeanos caen ante los guerreros esquel?ticos. Las criaturas esquel?ticas destrozan una de las chozas y la reducen a escombros.",
-      "defend_manyDeaths_steel": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Varios aldeanos caen ante los guerreros esquel?ticos. El ej?rcito de huesos saquea los almacenes antes de marcharse.",
-      "defend_manyDeaths_steel_hut": "Los aldeanos luchan desesperadamente contra el ej?rcito de huesos. Varios aldeanos caen ante los guerreros esquel?ticos. El ej?rcito de huesos saquea los almacenes antes de marcharse. Las criaturas esquel?ticas destrozan una de las chozas y la reducen a escombros.",
-      "hide_noDeaths": "Los aldeanos se esconden aterrados mientras el ej?rcito de huesos registra la aldea. Al amanecer, el ej?rcito esquel?tico se ha marchado y solo deja fragmentos de hueso.",
-      "hide_noDeaths_loot": "Los aldeanos se esconden aterrados mientras el ej?rcito de huesos registra la aldea. Al amanecer, el ej?rcito esquel?tico se ha marchado y solo deja fragmentos de hueso. El ej?rcito saquea tus provisiones antes de desaparecer en la oscuridad.",
-      "hide_oneDeath": "Los aldeanos se esconden aterrados mientras el ej?rcito de huesos registra la aldea. Un aldeano que intent? huir muere.",
-      "hide_oneDeath_loot": "Los aldeanos se esconden aterrados mientras el ej?rcito de huesos registra la aldea. Un aldeano que intent? huir muere. El ej?rcito saquea tus provisiones antes de desaparecer en la oscuridad.",
-      "hide_manyDeaths": "Los aldeanos se esconden aterrados mientras el ej?rcito de huesos registra la aldea. Los aldeanos que intentaron huir mueren a manos de las criaturas de hueso.",
-      "hide_manyDeaths_loot": "Los aldeanos se esconden aterrados mientras el ej?rcito de huesos registra la aldea. Los aldeanos que intentaron huir mueren a manos de las criaturas de hueso. El ej?rcito saquea tus provisiones antes de desaparecer en la oscuridad."
+      "defend_noDeaths": "Los aldeanos luchan desesperadamente contra el ejército de huesos. Los aldeanos sobreviven al asalto.",
+      "defend_noDeaths_hut": "Los aldeanos luchan desesperadamente contra el ejército de huesos. Los aldeanos sobreviven al asalto. Las criaturas esqueléticas destrozan una de las chozas y la reducen a escombros.",
+      "defend_noDeaths_steel": "Los aldeanos luchan desesperadamente contra el ejército de huesos. Los aldeanos sobreviven al asalto. El ejército de huesos saquea los almacenes antes de marcharse.",
+      "defend_noDeaths_steel_hut": "Los aldeanos luchan desesperadamente contra el ejército de huesos. Los aldeanos sobreviven al asalto. El ejército de huesos saquea los almacenes antes de marcharse. Las criaturas esqueléticas destrozan una de las chozas y la reducen a escombros.",
+      "defend_oneDeath": "Los aldeanos luchan desesperadamente contra el ejército de huesos. Un aldeano cae ante los guerreros esqueléticos.",
+      "defend_oneDeath_hut": "Los aldeanos luchan desesperadamente contra el ejército de huesos. Un aldeano cae ante los guerreros esqueléticos. Las criaturas esqueléticas destrozan una de las chozas y la reducen a escombros.",
+      "defend_oneDeath_steel": "Los aldeanos luchan desesperadamente contra el ejército de huesos. Un aldeano cae ante los guerreros esqueléticos. El ejército de huesos saquea los almacenes antes de marcharse.",
+      "defend_oneDeath_steel_hut": "Los aldeanos luchan desesperadamente contra el ejército de huesos. Un aldeano cae ante los guerreros esqueléticos. El ejército de huesos saquea los almacenes antes de marcharse. Las criaturas esqueléticas destrozan una de las chozas y la reducen a escombros.",
+      "defend_manyDeaths": "Los aldeanos luchan desesperadamente contra el ejército de huesos. Varios aldeanos caen ante los guerreros esqueléticos.",
+      "defend_manyDeaths_hut": "Los aldeanos luchan desesperadamente contra el ejército de huesos. Varios aldeanos caen ante los guerreros esqueléticos. Las criaturas esqueléticas destrozan una de las chozas y la reducen a escombros.",
+      "defend_manyDeaths_steel": "Los aldeanos luchan desesperadamente contra el ejército de huesos. Varios aldeanos caen ante los guerreros esqueléticos. El ejército de huesos saquea los almacenes antes de marcharse.",
+      "defend_manyDeaths_steel_hut": "Los aldeanos luchan desesperadamente contra el ejército de huesos. Varios aldeanos caen ante los guerreros esqueléticos. El ejército de huesos saquea los almacenes antes de marcharse. Las criaturas esqueléticas destrozan una de las chozas y la reducen a escombros.",
+      "hide_noDeaths": "Los aldeanos se esconden aterrados mientras el ejército de huesos registra la aldea. Al amanecer, el ejército esquelético se ha marchado y solo deja fragmentos de hueso.",
+      "hide_noDeaths_loot": "Los aldeanos se esconden aterrados mientras el ejército de huesos registra la aldea. Al amanecer, el ejército esquelético se ha marchado y solo deja fragmentos de hueso. El ejército saquea tus provisiones antes de desaparecer en la oscuridad.",
+      "hide_oneDeath": "Los aldeanos se esconden aterrados mientras el ejército de huesos registra la aldea. Un aldeano que intentó huir muere.",
+      "hide_oneDeath_loot": "Los aldeanos se esconden aterrados mientras el ejército de huesos registra la aldea. Un aldeano que intentó huir muere. El ejército saquea tus provisiones antes de desaparecer en la oscuridad.",
+      "hide_manyDeaths": "Los aldeanos se esconden aterrados mientras el ejército de huesos registra la aldea. Los aldeanos que intentaron huir mueren a manos de las criaturas de hueso.",
+      "hide_manyDeaths_loot": "Los aldeanos se esconden aterrados mientras el ejército de huesos registra la aldea. Los aldeanos que intentaron huir mueren a manos de las criaturas de hueso. El ejército saquea tus provisiones antes de desaparecer en la oscuridad."
     },
     "message": "La tierra tiembla cuando criaturas esqueléticas emergen del bosque. El Devorador de Huesos ha usado los huesos que intercambiaste para forjar una legión impía. Con ojos huecos y armas de hueso afilado, se acercan a la ciudad.",
     "title": "El ejército de huesos"
@@ -184,8 +184,8 @@
   "boneDevourer": {
     "title": "El Devorador de Huesos",
     "message": {
-      "firstTime": "Una criatura deforme se arrastra hasta las puertas, con la espalda encorvada cubierta de piel p?lida y tirante. Habla con voz ?spera: ?Busco huesos. Pago {{silverReward}} de plata.?",
-      "repeat": "La criatura vuelve a las puertas, su figura encorvada a?n cubierta de piel p?lida y tirante. Habla con su voz ?spera ya familiar: ?Busco huesos. Pago {{silverReward}} de plata.?"
+      "firstTime": "Una criatura deforme se arrastra hasta las puertas, con la espalda encorvada cubierta de piel pálida y tirante. Habla con voz áspera: «Busco huesos. Pago {{silverReward}} de plata.»",
+      "repeat": "La criatura vuelve a las puertas, su figura encorvada aún cubierta de piel pálida y tirante. Habla con su voz áspera ya familiar: «Busco huesos. Pago {{silverReward}} de plata.»"
     },
     "choices": {
       "sellBones": {
@@ -199,8 +199,8 @@
     "log": {
       "outcome0": "No tienes suficientes huesos para el trato.",
       "outcome1": "La criatura toma los huesos con sus manos nudosas, como si intentara contarlos. Deja una bolsa de plata a tus pies y desaparece en la oscuridad.",
-      "outcome2": "Rechazas la oferta de la criatura. Sisea con disgusto y se retira a las sombras. Presientes que volver?.",
-      "outcome3": "Tu indecisi?n frustra a la criatura. Sisea con disgusto y se retira a las sombras."
+      "outcome2": "Rechazas la oferta de la criatura. Sisea con disgusto y se retira a las sombras. Presientes que volverá.",
+      "outcome3": "Tu indecisión frustra a la criatura. Sisea con disgusto y se retira a las sombras."
     }
   },
   "boneDiceChoice": {
@@ -267,20 +267,20 @@
     },
     "log": {
       "outcome0": "Los aldeanos se esconden aterrados mientras los caníbales registran la aldea. Al amanecer, los caníbales se han marchado sin encontrar a nadie.",
-      "defeat_noDeaths": "Los can?bales arrollan tus defensas. Los aldeanos logran sobrevivir, aunque por poco.",
-      "defeat_noDeaths_loot": "Los can?bales arrollan tus defensas. Los aldeanos logran sobrevivir, aunque por poco. Los can?bales saquean tus provisiones antes de retirarse a la espesura.",
-      "defeat_oneDeath": "Los can?bales arrollan tus defensas. Un aldeano es secuestrado por los can?bales.",
-      "defeat_oneDeath_loot": "Los can?bales arrollan tus defensas. Un aldeano es secuestrado por los can?bales. Los can?bales saquean tus provisiones antes de retirarse a la espesura.",
-      "defeat_manyDeaths": "Los can?bales arrollan tus defensas. Varios aldeanos mueren o son secuestrados por los can?bales.",
-      "defeat_manyDeaths_loot": "Los can?bales arrollan tus defensas. Varios aldeanos mueren o son secuestrados por los can?bales. Los can?bales saquean tus provisiones antes de retirarse a la espesura.",
-      "hide_noDeaths": "Los aldeanos se esconden aterrados mientras los can?bales registran la aldea. Al amanecer, los can?bales se han marchado sin encontrar a nadie.",
-      "hide_noDeaths_loot": "Los aldeanos se esconden aterrados mientras los can?bales registran la aldea. Al amanecer, los can?bales se han marchado sin encontrar a nadie. Los can?bales saquean tus provisiones sin oposici?n antes de escabullirse.",
-      "hide_oneDeath": "Los aldeanos se esconden aterrados mientras los can?bales registran la aldea. Un aldeano es secuestrado.",
-      "hide_oneDeath_loot": "Los aldeanos se esconden aterrados mientras los can?bales registran la aldea. Un aldeano es secuestrado. Los can?bales saquean tus provisiones sin oposici?n antes de escabullirse.",
-      "hide_manyDeaths": "Los aldeanos se esconden aterrados mientras los can?bales registran la aldea. Varios aldeanos mueren o son secuestrados.",
-      "hide_manyDeaths_loot": "Los aldeanos se esconden aterrados mientras los can?bales registran la aldea. Varios aldeanos mueren o son secuestrados. Los can?bales saquean tus provisiones sin oposici?n antes de escabullirse.",
-      "victory_one": "?Los aldeanos hacen retroceder a los can?bales! Un aldeano cae en la batalla, pero la tribu se retira derrotada. Entre los cad?veres encuentras un collar primitivo hecho de huesos humanos.",
-      "victory_many": "?Los aldeanos luchan con valent?a y rechazan a los can?bales! Varios aldeanos caen en la batalla, pero la tribu se ve obligada a retirarse. Entre los cad?veres encuentras un collar primitivo hecho de huesos humanos."
+      "defeat_noDeaths": "Los caníbales arrollan tus defensas. Los aldeanos logran sobrevivir, aunque por poco.",
+      "defeat_noDeaths_loot": "Los caníbales arrollan tus defensas. Los aldeanos logran sobrevivir, aunque por poco. Los caníbales saquean tus provisiones antes de retirarse a la espesura.",
+      "defeat_oneDeath": "Los caníbales arrollan tus defensas. Un aldeano es secuestrado por los caníbales.",
+      "defeat_oneDeath_loot": "Los caníbales arrollan tus defensas. Un aldeano es secuestrado por los caníbales. Los caníbales saquean tus provisiones antes de retirarse a la espesura.",
+      "defeat_manyDeaths": "Los caníbales arrollan tus defensas. Varios aldeanos mueren o son secuestrados por los caníbales.",
+      "defeat_manyDeaths_loot": "Los caníbales arrollan tus defensas. Varios aldeanos mueren o son secuestrados por los caníbales. Los caníbales saquean tus provisiones antes de retirarse a la espesura.",
+      "hide_noDeaths": "Los aldeanos se esconden aterrados mientras los caníbales registran la aldea. Al amanecer, los caníbales se han marchado sin encontrar a nadie.",
+      "hide_noDeaths_loot": "Los aldeanos se esconden aterrados mientras los caníbales registran la aldea. Al amanecer, los caníbales se han marchado sin encontrar a nadie. Los caníbales saquean tus provisiones sin oposición antes de escabullirse.",
+      "hide_oneDeath": "Los aldeanos se esconden aterrados mientras los caníbales registran la aldea. Un aldeano es secuestrado.",
+      "hide_oneDeath_loot": "Los aldeanos se esconden aterrados mientras los caníbales registran la aldea. Un aldeano es secuestrado. Los caníbales saquean tus provisiones sin oposición antes de escabullirse.",
+      "hide_manyDeaths": "Los aldeanos se esconden aterrados mientras los caníbales registran la aldea. Varios aldeanos mueren o son secuestrados.",
+      "hide_manyDeaths_loot": "Los aldeanos se esconden aterrados mientras los caníbales registran la aldea. Varios aldeanos mueren o son secuestrados. Los caníbales saquean tus provisiones sin oposición antes de escabullirse.",
+      "victory_one": "¡Los aldeanos hacen retroceder a los caníbales! Un aldeano cae en la batalla, pero la tribu se retira derrotada. Entre los cadáveres encuentras un collar primitivo hecho de huesos humanos.",
+      "victory_many": "¡Los aldeanos luchan con valentía y rechazan a los caníbales! Varios aldeanos caen en la batalla, pero la tribu se ve obligada a retirarse. Entre los cadáveres encuentras un collar primitivo hecho de huesos humanos."
     },
     "message": "Tambores de guerra resuenan en la noche cuando una tribu de caníbales emerge de la espesura. Avanzan sobre la aldea con armas rudimentarias e intenciones terribles.",
     "title": "Incursión caníbal"
@@ -548,7 +548,7 @@
   },
   "doNothing": {
     "log": {
-      "outcome0": "Rechazas la propuesta. La noche pasa sin alegr?a, calor ni risas."
+      "outcome0": "Rechazas la propuesta. La noche pasa sin alegría, calor ni risas."
     }
   },
   "eighthWave": {
@@ -574,7 +574,7 @@
   "establishTradeProposal": {
     "choices": {
       "mountainMonastery": {
-        "label": "Monasterio de la Montaña"  //1.3X
+        "label": "Monasterio de la Montaña" //x1.3
       },
       "swampTribe": {
         "label": "Tribu del Pantano"
@@ -640,13 +640,13 @@
         "label": "Rechazar el banquete"
       },
       "doNothing": {
-        "label": "Sin decisi?n"
+        "label": "Sin decisión"
       }
     },
     "log": {
       "outcome0": "No tienes suficiente comida para el banquete.",
-      "outcome1": "?Los aldeanos se re?nen para un banquete! El cansancio se desvanece y los ?nimos se elevan, aunque solo sea por un momento.",
-      "outcome2": "Rechazas la propuesta del banquete. Los aldeanos aceptan tu decisi?n, aunque decepcionados.",
+      "outcome1": "¡Los aldeanos se reúnen para un banquete! El cansancio se desvanece y los ánimos se elevan, aunque solo sea por un momento.",
+      "outcome2": "Rechazas la propuesta del banquete. Los aldeanos aceptan tu decisión, aunque decepcionados.",
       "outcome3": "El tiempo pasa y la oportunidad de celebrar un banquete se desvanece."
     },
     "message": "Los aldeanos proponen organizar un banquete. Un breve consuelo para aliviar su cansancio y calmar sus mentes.",
@@ -934,7 +934,7 @@
   "mercenaryDemand": {
     "choices": {
       "giveRing": {
-        "label": "Dar el anillo de alimentación"  //1.7X
+        "label": "Dar el anillo de alimentación" //x1.7
       },
       "payGold": {
         "cost": "100 oro",
@@ -956,7 +956,7 @@
   "mercenaryReturnDemand": {
     "choices": {
       "giveRing": {
-        "label": "Dar el anillo de alimentación"  //1.7X
+        "label": "Dar el anillo de alimentación" //x1.7
       },
       "payGold": {
         "cost": "200 oro",
@@ -989,74 +989,74 @@
     "toolTrades": {
       "trade_nightshade_bow_schematic": {
         "label": "Esquema de arco sombrío",
-        "message": "Compras el esquema del arco sombr?o. El mercader sonr?e con oscuridad: ?El dise?o de este arco es cruel. Sus flechas envenenar?n a tus enemigos.?"
+        "message": "Compras el esquema del arco sombrío. El mercader sonríe con oscuridad: «El diseño de este arco es cruel. Sus flechas envenenarán a tus enemigos.»"
       },
       "trade_skull_lantern": {
-        "label": "Linterna de cráneo",  //1.4X
-        "message": "Compras la linterna de cr?neo. Forjada con hueso maldito, su luz inquietante te guiar? por las profundidades m?s hondas."
+        "label": "Linterna de cráneo", //x1.4
+        "message": "Compras la linterna de cráneo. Forjada con hueso maldito, su luz inquietante te guiará por las profundidades más hondas."
       },
       "trade_tarnished_compass": {
         "label": "Brújula deslustrada",
-        "message": "Compras la br?jula deslustrada. Artefacto de la civilizaci?n desaparecida, su aguja se?ala lugares ocultos."
+        "message": "Compras la brújula deslustrada. Artefacto de la civilización desaparecida, su aguja señala lugares ocultos."
       },
       "trade_map_fragment_wooden": {
-        "label": "Fragmento de mapa",  //1.4X
+        "label": "Fragmento de mapa", //x1.4
         "message": "Compras un fragmento de mapa hecho jirones."
       },
       "trade_map_fragment_stone": {
-        "label": "Fragmento de mapa",  //1.4X
+        "label": "Fragmento de mapa", //x1.4
         "message": "Compras un fragmento de mapa hecho jirones."
       },
       "trade_crow_harness": {
-        "label": "Arnés de cuervo",  //1.3X
-        "message": "Compras el arn?s de cuervo. Un arn?s especialmente fabricado para cuervos mensajeros."
+        "label": "Arnés de cuervo", //x1.3
+        "message": "Compras el arnés de cuervo. Un arnés especialmente fabricado para cuervos mensajeros."
       },
       "trade_clarity_elixir": {
         "label": "Elixir de claridad",
-        "message": "Bebes el Elixir de claridad. Tu mente se siente m?s ligera."
+        "message": "Bebes el Elixir de claridad. Tu mente se siente más ligera."
       },
       "trade_veinfire_elixir": {
-        "label": "Elixir de fuego venoso",  //1.5X
+        "label": "Elixir de fuego venoso", //x1.5
         "message": "Compras una botella de Elixir de fuego venoso."
       },
       "trade_book_of_trials": {
-        "message": "Compras el Libro de pruebas. El mercader sonr?e con aire de saber: ?Una gu?a para quienes buscan seguir el rastro de su viaje.?",
+        "message": "Compras el Libro de pruebas. El mercader sonríe con aire de saber: «Una guía para quienes buscan seguir el rastro de su viaje.»",
         "label": "Libro de pruebas"
       },
       "trade_book_of_craftsmanship": {
-        "message": "Compras el Libro de artesan?a. El mercader asiente con aprobaci?n: ?Un tomo de artesano, gastado pero lleno de sabidur?a. Susurrar? secretos a quienes construyen.?",
+        "message": "Compras el Libro de artesanía. El mercader asiente con aprobación: «Un tomo de artesano, gastado pero lleno de sabiduría. Susurrará secretos a quienes construyen.»",
         "label": "Libro de artesanía"
       },
       "trade_book_of_war": {
-        "message": "Compras el Libro de la guerra. El mercader asiente con gravedad: ?Conocimiento de un reino desaparecido hace mucho en el lejano oriente. Con esto entender?s mejor las consecuencias de tus decisiones.?",
-        "label": "Libro de la guerra"  //1.6X
+        "message": "Compras el Libro de la guerra. El mercader asiente con gravedad: «Conocimiento de un reino desaparecido hace mucho en el lejano oriente. Con esto entenderás mejor las consecuencias de tus decisiones.»",
+        "label": "Libro de la guerra"
       },
       "trade_reinforced_rope": {
-        "message": "Compras la cuerda reforzada. Esta cuerda soporta una tensi?n enorme y alcanza lugares en las c?maras m?s profundas de la cueva.",
+        "message": "Compras la cuerda reforzada. Esta cuerda soporta una tensión enorme y alcanza lugares en las cámaras más profundas de la cueva.",
         "label": "Cuerda reforzada"
       },
       "trade_occultist_map": {
-        "message": "Al comprar el Mapa del ocultista, el mercader susurra: ?Un viejo ocultista ocult? sus secretos en una c?mara profunda de la cueva. Este mapa te guiar?.?",
-        "label": "Mapa del ocultista"  //1.2X
+        "message": "Al comprar el Mapa del ocultista, el mercader susurra: «Un viejo ocultista ocultó sus secretos en una cámara profunda de la cueva. Este mapa te guiará.»",
+        "label": "Mapa del ocultista"
       },
       "trade_giant_trap": {
-        "message": "Al comprar la trampa gigante, el mercader sonr?e: ?Con esto puedes atrapar algo gigantesco en el bosque. ?sala con sabidur?a.?",
-        "label": "Trampa gigante"  //1.4X
+        "message": "Al comprar la trampa gigante, el mercader sonríe: «Con esto puedes atrapar algo gigantesco en el bosque. Úsala con sabiduría.»",
+        "label": "Trampa gigante" //x1.4
       },
       "trade_arbalest_schematic": {
-        "message": "Compras el esquema de ballesta. El mercader despliega un plano intrincado: ?Un dise?o de un ingeniero maestro. Con esto puedes fabricar un arma poderosa.?",
+        "message": "Compras el esquema de ballesta. El mercader despliega un plano intrincado: «Un diseño de un ingeniero maestro. Con esto puedes fabricar un arma poderosa.»",
         "label": "Esquema de ballesta"
       },
       "trade_compound_bow": {
-        "message": "Compras el arco compuesto. El mercader asiente con aprobaci?n: ?Arma de alta precisi?n de la civilizaci?n desaparecida. Te servir? bien.?",
+        "message": "Compras el arco compuesto. El mercader asiente con aprobación: «Arma de alta precisión de la civilización desaparecida. Te servirá bien.»",
         "label": "Arco compuesto"
       },
       "trade_stormglass_halberd_schematic": {
-        "message": "Compras el esquema de alabarda de cristal de tormenta. El mercader muestra los planos desva?dos: ?Con este dise?o puedes forjar una alabarda de poder tremendo.?",
-        "label": "Esquema de alabarda de cristal de tormenta"  //1.5X
+        "message": "Compras el esquema de alabarda de cristal de tormenta. El mercader muestra los planos desvaídos: «Con este diseño puedes forjar una alabarda de poder tremendo.»",
+        "label": "Esquema de alabarda de cristal de tormenta" //x1.5
       },
       "trade_natharit_pickaxe": {
-        "message": "Compras el pico de natharit. El mercader te entrega la herramienta robusta: ?Un pico extremadamente duradero de material desconocido. Su calidad es excepcional.?",
+        "message": "Compras el pico de natharit. El mercader te entrega la herramienta robusta: «Un pico extremadamente duradero de material desconocido. Su calidad es excepcional.»",
         "label": "Pico de natharit"
       }
     },
@@ -1169,8 +1169,8 @@
     "choices": {
       "allowStay": {
         "label": {
-          "woman": "Dejarla quedarse",  //1.3X
-          "man": "Dejarlo quedarse"  //1.3X
+          "woman": "Dejarla quedarse",
+          "man": "Dejarlo quedarse"
         }
       },
       "refuseStay": {
@@ -1198,9 +1198,9 @@
       "outcome0": "No tienes suficiente oro.",
       "ignoreForced": "Ignoras la oferta. El vikingo acaba escupiendo al suelo y se marcha con su hacha de guerra, murmurando sobre tu falta de respeto.",
       "ignoreNormal": "Ignoras la oferta. El vikingo acaba asintiendo y se marcha con su hacha de guerra.",
-      "buyForced": "El vikingo acepta el pago con una sonrisa fr?a. ?Quiz? debiste ser m?s generoso antes, en vez de atacarme. Entonces habr?as pagado mucho menos por el hacha?, dice antes de marcharse.",
-      "buyNormal": "Satisfecho con el trato, el vikingo asiente con aprobaci?n y parte.",
-      "declineForced": "Rechazas la oferta. El vikingo escupe al suelo y maldice mientras se marcha con su hacha de guerra. ?Debiste pagar cuando tuviste la oportunidad?, gru?e.",
+      "buyForced": "El vikingo acepta el pago con una sonrisa fría. «Quizá debiste ser más generoso antes, en vez de atacarme. Entonces habrías pagado mucho menos por el hacha», dice antes de marcharse.",
+      "buyNormal": "Satisfecho con el trato, el vikingo asiente con aprobación y parte.",
+      "declineForced": "Rechazas la oferta. El vikingo escupe al suelo y maldice mientras se marcha con su hacha de guerra. «Debiste pagar cuando tuviste la oportunidad», gruñe.",
       "declineNormal": "Rechazas la oferta. El vikingo asiente con respeto y se marcha con su hacha de guerra."
     },
     "message": "El constructor vikingo vuelve a tu aldea con una magnífica hacha de guerra. 'Forjé esta hacha de guerra nórdica en mi tierra. Será tuya... por un precio'.",
@@ -1718,15 +1718,15 @@
         "label": "Dedicar a todos"
       },
       "deepenDevotion": {
-        "label": "Profundizar la devoción"  //1.5X
+        "label": "Profundizar la devoción" //x1.5
       }
     },
     "log": {
       "outcome0": "El Santuario se transforma en un nexo de poder divino. Todos los dioses responden a tu llamada; sus dones son tuyos.",
-      "dedicate_dagon": "La bendici?n de Dagon fluye con m?s fuerza que antes.",
-      "dedicate_flame": "La Primera Llama arde m?s brillante que antes.",
-      "dedicate_raven": "La Marca del cuervo se fortalece m?s que antes.",
-      "dedicate_ash": "El Abrazo ceniciento es m?s fuerte que antes.",
+      "dedicate_dagon": "La bendición de Dagon fluye con más fuerza que antes.",
+      "dedicate_flame": "La Primera Llama arde más brillante que antes.",
+      "dedicate_raven": "La Marca del cuervo se fortalece más que antes.",
+      "dedicate_ash": "El Abrazo ceniciento es más fuerte que antes.",
       "dedicate_unknown": ""
     },
     "message": "El druida ciego emerge: 'El Santuario está completo', dice, con una voz cargada de sabiduría antigua. 'Ahora debes elegir: profundizar tu devoción por el camino escogido o abrazar a todos los dioses y sus dones. Elige con sabiduría'.",
@@ -1820,7 +1820,7 @@
   "slaveTrader": {
     "choices": {
       "freeSlaves": {
-        "label": "Intentar liberar esclavos"  //1.4X
+        "label": "Intentar liberar esclavos"
       },
       "refuseTrader": {
         "label": "Rechazar la oferta"
@@ -1832,7 +1832,7 @@
     "log": {
       "outcome0": "Entregas a dos de los aldeanos. El traficante te arroja un saco de acero y se marcha con sus nuevos cautivos. Cuando los aldeanos restantes ven lo que has hecho, abandonan la aldea asqueados.",
       "outcome1": "¡Tus hombres atacan al esclavista! La lucha es brutal, pero victoriosa. Liberas a los cautivos y reclamas el acero del traficante. Las almas liberadas se unen a tu aldea.",
-      "outcome2": "Tus hombres atacan al traficante de esclavos, pero est? preparado. Se defiende con ferocidad. {{actualDeaths}} aldeanos caen en el combate. El comerciante escapa con sus cautivos y deja solo muerte tras de s?.",
+      "outcome2": "Tus hombres atacan al traficante de esclavos, pero está preparado. Se defiende con ferocidad. {{actualDeaths}} aldeanos caen en el combate. El comerciante escapa con sus cautivos y deja solo muerte tras de sí.",
       "outcome3": "Rechazas la vil oferta del esclavista. Escupe al suelo con disgusto y se aleja con sus cautivos."
     },
     "message": "Un hombre en un carro tirado por dos caballos se acerca a la aldea. Una jaula de hierro en el carro contiene a dos almas miserables. El traficante sonríe con malicia: 'Te pagaré 100 de acero por dos de tus aldeanos. ¿Qué dices?'",
@@ -1842,7 +1842,7 @@
     "choices": {
       "hostSolstice": {
         "cost": "{{goldCost}} oro, {{foodCost}} comida",
-        "label": "Organizar la celebración"  //1.7X
+        "label": "Organizar la celebración" //x1.7
       },
       "refuseSolstice": {
         "label": "Rechazar"
@@ -1951,7 +1951,7 @@
       },
       "send_search_party": {
         "cost": "500 comida, 50 antorcha",
-        "label": "Enviar grupo de búsqueda"  //1.4X
+        "label": "Enviar grupo de búsqueda" //x1.4
       }
     },
     "log": {
@@ -2173,9 +2173,9 @@
       }
     },
     "log": {
-      "whisper0": "El coleccionista suspira y se aparta. ?En mis viajes descubr? muchas reliquias de la civilizaci?n antigua. Estaban mucho m?s avanzados que nosotros?, susurra antes de desvanecerse en la oscuridad.",
-      "whisper1": "Un zumbido bajo se filtra desde debajo de la capucha. ?La gran explosi?n destruy? la mayor?a de los artefactos de la civilizaci?n antigua. Lo poco que queda est? disperso y es raro?, murmura.",
-      "whisper2": "Un aliento d?bil escapa del coleccionista. ?Aprend? mucho sobre la civilizaci?n antigua en mis viajes. Antes de la gran explosi?n no hab?a magia en este mundo. Naci? en aquel momento?, susurra mientras se marcha."
+      "whisper0": "El coleccionista suspira y se aparta. «En mis viajes descubrí muchas reliquias de la civilización antigua. Estaban mucho más avanzados que nosotros», susurra antes de desvanecerse en la oscuridad.",
+      "whisper1": "Un zumbido bajo se filtra desde debajo de la capucha. «La gran explosión destruyó la mayoría de los artefactos de la civilización antigua. Lo poco que queda está disperso y es raro», murmura.",
+      "whisper2": "Un aliento débil escapa del coleccionista. «Aprendí mucho sobre la civilización antigua en mis viajes. Antes de la gran explosión no había magia en este mundo. Nació en aquel momento», susurra mientras se marcha."
     },
     "title": "El coleccionista errante",
     "message": {
@@ -2219,7 +2219,7 @@
       }
     },
     "log": {
-      "outcome0": "Recibes a los n?madas y les ofreces apoyo. A cambio, ense?an a tu gente a levantar tiendas de pieles.",
+      "outcome0": "Recibes a los nómadas y les ofreces apoyo. A cambio, enseñan a tu gente a levantar tiendas de pieles.",
       "outcome1": "Rechazas ayudarlos. El líder de la tribu asiente respetuosamente y guía a su gente de vuelta a la espesura."
     },
     "message": "Una pequeña tribu de nómadas se acerca a la aldea. Su líder habla: 'Hemos viajado lejos y buscamos un lugar al que llamar hogar. Ayúdanos a asentarnos y enseñaremos a tu gente a levantar tiendas de pieles'.",
@@ -2363,7 +2363,7 @@
   },
   "wizardBloodstoneStaff": {
     "message": "El mago examina las gemas de piedra de sangre que recuperaste del Templo Hundido. 'Con estas piedras de sangre, ya tenemos todo lo necesario. Ahora podemos fabricar el Bastón de Piedra de Sangre. Junto con la Espada de Cristal de Escarcha, tendremos los medios para enfrentar la oscuridad que acecha abajo'.",
-    "title": "El Bastón de Piedra de Sangre"  //1.5X
+    "title": "El Bastón de Piedra de Sangre" //x1.5
   },
   "wizardDecryptsScrolls": {
     "message": "El mago sale de su torre. 'He descifrado los pergaminos antiguos', dice. 'Las criaturas de abajo solo pueden morir con armas de gran poder: una espada de cristal de escarcha y un bastón coronado con piedra de sangre. En lo profundo del bosque yace la tumba de un rey antiguo, cuyos tesoros podrían contener el cristal de escarcha que necesitamos'.",
@@ -2393,8 +2393,8 @@
       "outcome3": "Rechazas la oferta del mago. Asiente con comprensión. 'Entonces permaneceré en mi torre. Quizá nuestros caminos se crucen de nuevo cuando la necesidad sea mayor', dice antes de partir."
     },
     "message": {
-      "firstVisit": "El viejo mago se acerca a ti. ?He vivido mucho y he visto mucho?, dice con voz cansada. ?La amenaza a la que te enfrentas es grave. Por un precio justo, me unir? a ti en la lucha contra los enemigos que emergen de las profundidades.?",
-      "repeat": "El viejo mago se acerca de nuevo. ?Mi oferta de unirme a ti en la lucha contra los enemigos de las profundidades sigue en pie. Por un precio justo, me unir? a ti.?"
+      "firstVisit": "El viejo mago se acerca a ti. «He vivido mucho y he visto mucho», dice con voz cansada. «La amenaza a la que te enfrentas es grave. Por un precio justo, me uniré a ti en la lucha contra los enemigos que emergen de las profundidades.»",
+      "repeat": "El viejo mago se acerca de nuevo. «Mi oferta de unirme a ti en la lucha contra los enemigos de las profundidades sigue en pie. Por un precio justo, me uniré a ti.»"
     },
     "title": "La oferta del mago"
   },
@@ -2416,34 +2416,34 @@
       "outcome1": "Los aldeanos se apiñan en sus chozas mientras los lobos merodean afuera. Al amanecer, los lobos se han marchado sin encontrar a nadie, dejando solo arañazos y terror.",
       "defend_noDeaths": "Los aldeanos luchan desesperadamente contra los lobos. Los aldeanos sobreviven al ataque.",
       "defend_noDeaths_first": "Los aldeanos luchan desesperadamente contra los lobos. Los aldeanos sobreviven al ataque. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
-      "defend_noDeaths_hut": "Los aldeanos luchan desesperadamente contra los lobos. Los aldeanos sobreviven al ataque. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada.",
-      "defend_noDeaths_hut_first": "Los aldeanos luchan desesperadamente contra los lobos. Los aldeanos sobreviven al ataque. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
+      "defend_noDeaths_hut": "Los aldeanos luchan desesperadamente contra los lobos. Los aldeanos sobreviven al ataque. En su frenesí, los lobos destruyen una de las chozas y no dejan más que madera astillada.",
+      "defend_noDeaths_hut_first": "Los aldeanos luchan desesperadamente contra los lobos. Los aldeanos sobreviven al ataque. En su frenesí, los lobos destruyen una de las chozas y no dejan más que madera astillada. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
       "defend_noDeaths_food": "Los aldeanos luchan desesperadamente contra los lobos. Los aldeanos sobreviven al ataque. En el caos, los lobos arrasan tus provisiones.",
       "defend_noDeaths_food_first": "Los aldeanos luchan desesperadamente contra los lobos. Los aldeanos sobreviven al ataque. En el caos, los lobos arrasan tus provisiones. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
-      "defend_noDeaths_food_hut": "Los aldeanos luchan desesperadamente contra los lobos. Los aldeanos sobreviven al ataque. En el caos, los lobos arrasan tus provisiones. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada.",
-      "defend_noDeaths_food_hut_first": "Los aldeanos luchan desesperadamente contra los lobos. Los aldeanos sobreviven al ataque. En el caos, los lobos arrasan tus provisiones. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
+      "defend_noDeaths_food_hut": "Los aldeanos luchan desesperadamente contra los lobos. Los aldeanos sobreviven al ataque. En el caos, los lobos arrasan tus provisiones. En su frenesí, los lobos destruyen una de las chozas y no dejan más que madera astillada.",
+      "defend_noDeaths_food_hut_first": "Los aldeanos luchan desesperadamente contra los lobos. Los aldeanos sobreviven al ataque. En el caos, los lobos arrasan tus provisiones. En su frenesí, los lobos destruyen una de las chozas y no dejan más que madera astillada. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
       "defend_oneDeath": "Los aldeanos luchan desesperadamente contra los lobos. Un aldeano cae ante la furia sobrenatural de los lobos.",
       "defend_oneDeath_first": "Los aldeanos luchan desesperadamente contra los lobos. Un aldeano cae ante la furia sobrenatural de los lobos. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
-      "defend_oneDeath_hut": "Los aldeanos luchan desesperadamente contra los lobos. Un aldeano cae ante la furia sobrenatural de los lobos. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada.",
-      "defend_oneDeath_hut_first": "Los aldeanos luchan desesperadamente contra los lobos. Un aldeano cae ante la furia sobrenatural de los lobos. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
+      "defend_oneDeath_hut": "Los aldeanos luchan desesperadamente contra los lobos. Un aldeano cae ante la furia sobrenatural de los lobos. En su frenesí, los lobos destruyen una de las chozas y no dejan más que madera astillada.",
+      "defend_oneDeath_hut_first": "Los aldeanos luchan desesperadamente contra los lobos. Un aldeano cae ante la furia sobrenatural de los lobos. En su frenesí, los lobos destruyen una de las chozas y no dejan más que madera astillada. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
       "defend_oneDeath_food": "Los aldeanos luchan desesperadamente contra los lobos. Un aldeano cae ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones.",
       "defend_oneDeath_food_first": "Los aldeanos luchan desesperadamente contra los lobos. Un aldeano cae ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
-      "defend_oneDeath_food_hut": "Los aldeanos luchan desesperadamente contra los lobos. Un aldeano cae ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada.",
-      "defend_oneDeath_food_hut_first": "Los aldeanos luchan desesperadamente contra los lobos. Un aldeano cae ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
+      "defend_oneDeath_food_hut": "Los aldeanos luchan desesperadamente contra los lobos. Un aldeano cae ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones. En su frenesí, los lobos destruyen una de las chozas y no dejan más que madera astillada.",
+      "defend_oneDeath_food_hut_first": "Los aldeanos luchan desesperadamente contra los lobos. Un aldeano cae ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones. En su frenesí, los lobos destruyen una de las chozas y no dejan más que madera astillada. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
       "defend_manyDeaths": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos.",
       "defend_manyDeaths_first": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
-      "defend_manyDeaths_hut": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada.",
-      "defend_manyDeaths_hut_first": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
+      "defend_manyDeaths_hut": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. En su frenesí, los lobos destruyen una de las chozas y no dejan más que madera astillada.",
+      "defend_manyDeaths_hut_first": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. En su frenesí, los lobos destruyen una de las chozas y no dejan más que madera astillada. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
       "defend_manyDeaths_food": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones.",
       "defend_manyDeaths_food_first": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
-      "defend_manyDeaths_food_hut": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada.",
-      "defend_manyDeaths_food_hut_first": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones. En su frenes?, los lobos destruyen una de las chozas y no dejan m?s que madera astillada. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
-      "hide_noDeaths": "Los aldeanos se api?an en sus chozas mientras los lobos merodean afuera. Al amanecer, los lobos se han marchado y solo dejan ara?azos y terror.",
-      "hide_noDeaths_food": "Los aldeanos se api?an en sus chozas mientras los lobos merodean afuera. Al amanecer, los lobos se han marchado y solo dejan ara?azos y terror. Los lobos saquean tus provisiones antes de desaparecer al amanecer.",
-      "hide_oneDeath": "Los aldeanos se api?an en sus chozas mientras los lobos merodean afuera. Un aldeano que se aventur? afuera aparece despedazado al amanecer.",
-      "hide_oneDeath_food": "Los aldeanos se api?an en sus chozas mientras los lobos merodean afuera. Un aldeano que se aventur? afuera aparece despedazado al amanecer. Los lobos saquean tus provisiones antes de desaparecer al amanecer.",
-      "hide_manyDeaths": "Los aldeanos se api?an en sus chozas mientras los lobos merodean afuera. Varios aldeanos son arrastrados fuera de sus chozas; sus gritos resuenan durante la noche.",
-      "hide_manyDeaths_food": "Los aldeanos se api?an en sus chozas mientras los lobos merodean afuera. Varios aldeanos son arrastrados fuera de sus chozas; sus gritos resuenan durante la noche. Los lobos saquean tus provisiones antes de desaparecer al amanecer."
+      "defend_manyDeaths_food_hut": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones. En su frenesí, los lobos destruyen una de las chozas y no dejan más que madera astillada.",
+      "defend_manyDeaths_food_hut_first": "Los aldeanos luchan desesperadamente contra los lobos. Varios aldeanos caen ante la furia sobrenatural de los lobos. En el caos, los lobos arrasan tus provisiones. En su frenesí, los lobos destruyen una de las chozas y no dejan más que madera astillada. Los aldeanos sugieren colocar trampas alrededor de la aldea para protegerse mejor de los lobos y otros enemigos.",
+      "hide_noDeaths": "Los aldeanos se apiían en sus chozas mientras los lobos merodean afuera. Al amanecer, los lobos se han marchado y solo dejan araíazos y terror.",
+      "hide_noDeaths_food": "Los aldeanos se apiían en sus chozas mientras los lobos merodean afuera. Al amanecer, los lobos se han marchado y solo dejan araíazos y terror. Los lobos saquean tus provisiones antes de desaparecer al amanecer.",
+      "hide_oneDeath": "Los aldeanos se apiían en sus chozas mientras los lobos merodean afuera. Un aldeano que se aventuró afuera aparece despedazado al amanecer.",
+      "hide_oneDeath_food": "Los aldeanos se apiían en sus chozas mientras los lobos merodean afuera. Un aldeano que se aventuró afuera aparece despedazado al amanecer. Los lobos saquean tus provisiones antes de desaparecer al amanecer.",
+      "hide_manyDeaths": "Los aldeanos se apiían en sus chozas mientras los lobos merodean afuera. Varios aldeanos son arrastrados fuera de sus chozas; sus gritos resuenan durante la noche.",
+      "hide_manyDeaths_food": "Los aldeanos se apiían en sus chozas mientras los lobos merodean afuera. Varios aldeanos son arrastrados fuera de sus chozas; sus gritos resuenan durante la noche. Los lobos saquean tus provisiones antes de desaparecer al amanecer."
     },
     "message": "Cerca de la medianoche, lobos emergen de la oscuridad, con los ojos brillando de hambre antinatural. Sus aullidos resuenan llenos de malicia mientras rodean la aldea.",
     "title": "Ataque de lobos"
@@ -2462,46 +2462,46 @@
       }
     },
     "log": {
-      "betray": "Entregas la comida, pero pasan d?as sin se?ales del le?ador. Parece que te han traicionado.",
-      "betrayLast": "Entregas la comida. El le?ador sonr?e mientras se adentra en el bosque. Esperas, pero nunca regresa. Parece que te han traicionado.",
-      "betrayLevel5": "Entregas la comida. El le?ador promete volver el mismo d?a. Pero no lo hace. Parece que te han traicionado.",
-      "denyLastUneasy": "Algo en su actitud te inquieta. Rechazas el trato. La sonrisa del le?ador se desvanece y se marcha sin decir palabra.",
-      "denyLevel1": "Rechazas su oferta. El le?ador se encoge de hombros y se interna en el bosque.",
-      "denyLevel2": "Rechazas su oferta. El le?ador asiente y se marcha sin quejarse.",
+      "betray": "Entregas la comida, pero pasan días sin seíales del leñador. Parece que te han traicionado.",
+      "betrayLast": "Entregas la comida. El leñador sonríe mientras se adentra en el bosque. Esperas, pero nunca regresa. Parece que te han traicionado.",
+      "betrayLevel5": "Entregas la comida. El leñador promete volver el mismo día. Pero no lo hace. Parece que te han traicionado.",
+      "denyLastUneasy": "Algo en su actitud te inquieta. Rechazas el trato. La sonrisa del leñador se desvanece y se marcha sin decir palabra.",
+      "denyLevel1": "Rechazas su oferta. El leñador se encoge de hombros y se interna en el bosque.",
+      "denyLevel2": "Rechazas su oferta. El leñador asiente y se marcha sin quejarse.",
       "denyLevel3": "Rechazas su oferta. Se encoge de hombros y vuelve al bosque.",
-      "denyLevel4": "Rechazas su ambiciosa oferta. El le?ador parece decepcionado, pero acepta tu decisi?n.",
-      "denyLevel5": "Rechazas el trato. El le?ador frunce el ce?o, pero no discute.",
-      "denyLevel6": "Rechazas el trato. El le?ador frunce el ce?o, pero no discute.",
-      "timeoutLast": "Tu indecisi?n frustra al le?ador. Sacude la cabeza y se interna en el bosque.",
-      "timeoutLevel1": "Tu indecisi?n frustra al le?ador. Se encoge de hombros y se interna en el bosque.",
-      "timeoutLevel2": "Tu indecisi?n frustra al le?ador. Asiente y se marcha sin quejarse.",
-      "timeoutLevel3": "Tu indecisi?n frustra al le?ador. Se encoge de hombros y vuelve al bosque.",
-      "timeoutLevel4": "Tu indecisi?n frustra al le?ador. Parece decepcionado, pero acepta y se marcha.",
-      "timeoutLevel5": "Tu indecisi?n frustra al le?ador. Frunce el ce?o y se marcha.",
-      "timeoutLevel6": "Tu indecisi?n frustra al le?ador. Frunce el ce?o y se marcha.",
+      "denyLevel4": "Rechazas su ambiciosa oferta. El leñador parece decepcionado, pero acepta tu decisión.",
+      "denyLevel5": "Rechazas el trato. El leñador frunce el ceó, pero no discute.",
+      "denyLevel6": "Rechazas el trato. El leñador frunce el ceó, pero no discute.",
+      "timeoutLast": "Tu indecisión frustra al leñador. Sacude la cabeza y se interna en el bosque.",
+      "timeoutLevel1": "Tu indecisión frustra al leñador. Se encoge de hombros y se interna en el bosque.",
+      "timeoutLevel2": "Tu indecisión frustra al leñador. Asiente y se marcha sin quejarse.",
+      "timeoutLevel3": "Tu indecisión frustra al leñador. Se encoge de hombros y vuelve al bosque.",
+      "timeoutLevel4": "Tu indecisión frustra al leñador. Parece decepcionado, pero acepta y se marcha.",
+      "timeoutLevel5": "Tu indecisión frustra al leñador. Frunce el ceó y se marcha.",
+      "timeoutLevel6": "Tu indecisión frustra al leñador. Frunce el ceó y se marcha.",
       "outcome0": "No tienes suficiente comida para este trato.",
-      "successLevel1": "El le?ador toma la comida y se adentra en el bosque. Al anochecer, regresa con la madera prometida apilada ordenadamente al borde de la aldea.",
-      "successLevel2": "El le?ador toma la comida y desaparece en el bosque. Al caer la noche, regresa con un gran mont?n de madera.",
-      "successLevel3": "El le?ador toma la comida y se adentra profundamente en el bosque. Regresa con una impresionante carga de madera.",
-      "successLevel4": "El le?ador toma la comida y pasa la tarde en el bosque. Regresa con un enorme mont?n de madera.",
-      "successLevel5": "El le?ador toma la comida y el mismo d?a entrega un enorme almac?n de madera a la aldea.",
-      "successLevel6": "El le?ador toma la comida y el mismo d?a entrega un enorme almac?n de madera a la aldea."
+      "successLevel1": "El leñador toma la comida y se adentra en el bosque. Al anochecer, regresa con la madera prometida apilada ordenadamente al borde de la aldea.",
+      "successLevel2": "El leñador toma la comida y desaparece en el bosque. Al caer la noche, regresa con un gran montón de madera.",
+      "successLevel3": "El leñador toma la comida y se adentra profundamente en el bosque. Regresa con una impresionante carga de madera.",
+      "successLevel4": "El leñador toma la comida y pasa la tarde en el bosque. Regresa con un enorme montón de madera.",
+      "successLevel5": "El leñador toma la comida y el mismo día entrega un enorme almacón de madera a la aldea.",
+      "successLevel6": "El leñador toma la comida y el mismo día entrega un enorme almacón de madera a la aldea."
     },
     "title": {
-      "level1": "El le?ador",
-      "level2": "El le?ador regresa",
-      "level3": "La oferta del le?ador",
-      "level4": "El plan ambicioso del le?ador",
-      "level5": "La gran propuesta del le?ador",
-      "level6": "La oferta del le?ador"
+      "level1": "El leñador",
+      "level2": "El leñador regresa",
+      "level3": "La oferta del leñador",
+      "level4": "El plan ambicioso del leñador",
+      "level5": "La gran propuesta del leñador",
+      "level6": "La oferta del leñador"
     },
     "message": {
-      "level1": "Un hombre musculoso con una gran hacha se acerca a la aldea. Flexiona los brazos. ?Puedo talar ?rboles como nadie?, presume. ?Dame {{foodCost}} de comida y traer? {{woodReward}} de madera.?",
-      "level2": "El le?ador regresa, con el hacha reluciendo al sol. ?Tu aldea crece bien?, observa. ?Puedo traerte {{woodReward}} de madera. T? me das {{foodCost}} de comida. ?Qu? dices??",
-      "level3": "El le?ador se acerca de nuevo. ?Veo que tu aldea sigue prosperando?, dice con una sonrisa. ?Puedo traerte {{woodReward}} de madera si pagas {{foodCost}} de comida.?",
-      "level4": "El le?ador llega una vez m?s. ??Quieres usar mis servicios otra vez? {{woodReward}} de madera por {{foodCost}} de comida?, pregunta.",
-      "level5": "El le?ador aparece con una sonrisa confiada. ??Qu? tal si hacemos un trato m?s? {{woodReward}} de madera por {{foodCost}} de comida.?",
-      "level6": "El le?ador regresa a la aldea. ??Quieres usar mis servicios otra vez? Ofrezco {{woodReward}} de madera por {{foodCost}} de comida?, dice."
+      "level1": "Un hombre musculoso con una gran hacha se acerca a la aldea. Flexiona los brazos. «Puedo talar árboles como nadie», presume. «Dame {{foodCost}} de comida y traeré {{woodReward}} de madera.»",
+      "level2": "El leñador regresa, con el hacha reluciendo al sol. «Tu aldea crece bien», observa. «Puedo traerte {{woodReward}} de madera. Tú me das {{foodCost}} de comida. ¿Qué dices?»",
+      "level3": "El leñador se acerca de nuevo. «Veo que tu aldea sigue prosperando», dice con una sonrisa. «Puedo traerte {{woodReward}} de madera si pagas {{foodCost}} de comida.»",
+      "level4": "El leñador llega una vez más. «¿Quieres usar mis servicios otra vez? {{woodReward}} de madera por {{foodCost}} de comida», pregunta.",
+      "level5": "El leñador aparece con una sonrisa confiada. «¿Qué tal si hacemos un trato más? {{woodReward}} de madera por {{foodCost}} de comida.»",
+      "level6": "El leñador regresa a la aldea. «¿Quieres usar mis servicios otra vez? Ofrezco {{woodReward}} de madera por {{foodCost}} de comida», dice."
     }
   },
   "wrongReflections": {
@@ -2547,7 +2547,7 @@
         "label": "Sacrificarla"
       },
       "stopSacrifices": {
-        "label": "Detener los sacrificios humanos"  //1.5X
+        "label": "Detener los sacrificios humanos" //x1.5
       }
     },
     "log": {
@@ -2559,10 +2559,3 @@
     "title": "La súplica de la joven"
   }
 }
-
-
-
-
-
-
-
