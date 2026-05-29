@@ -193,23 +193,21 @@ export default function GameContainer() {
   const villageHotkeyTutorialShown = useGameStore(
     (state) => state.villageHotkeyTutorialShown,
   );
-  const devMode = useGameStore((state) => state.devMode);
   const villageHotkeyTutorialCheckedRef = useRef(false);
 
-  // Show on load for existing saves (or every reload in dev mode until dismissed).
+  // Show on load for existing saves that haven't seen the tutorial yet.
   useEffect(() => {
     if (!flags.gameStarted) return;
     if (villageHotkeyTutorialCheckedRef.current) return;
     villageHotkeyTutorialCheckedRef.current = true;
 
     if (!flags.villageUnlocked) return;
-    if (devMode || !villageHotkeyTutorialShown) {
+    if (!villageHotkeyTutorialShown) {
       setVillageHotkeyTutorialOpen(true);
     }
   }, [
     flags.gameStarted,
     flags.villageUnlocked,
-    devMode,
     villageHotkeyTutorialShown,
   ]);
 
@@ -320,9 +318,7 @@ export default function GameContainer() {
 
     if (!prev.villageUnlocked && flags.villageUnlocked) {
       newAnimations.add("village");
-      const { devMode: isDev, villageHotkeyTutorialShown: shown } =
-        useGameStore.getState();
-      if (isDev || !shown) {
+      if (!useGameStore.getState().villageHotkeyTutorialShown) {
         setVillageHotkeyTutorialOpen(true);
       }
     }
@@ -586,9 +582,7 @@ export default function GameContainer() {
 
   const closeVillageHotkeyTutorial = useCallback(() => {
     setVillageHotkeyTutorialOpen(false);
-    if (!useGameStore.getState().devMode) {
-      useGameStore.setState({ villageHotkeyTutorialShown: true });
-    }
+    useGameStore.setState({ villageHotkeyTutorialShown: true });
   }, []);
 
   useEffect(() => {
@@ -868,8 +862,8 @@ export default function GameContainer() {
             <div
               data-testid={showVillageHotkeyBox ? "village-hotkey-hint" : undefined}
               className={`pause-hotkey-hint-animated absolute z-[1] px-2 text-center text-xs leading-snug text-foreground drop-shadow ${showVillageHotkeyBox
-                  ? "whitespace-nowrap"
-                  : "max-w-[min(100vw-1rem,28rem)]"
+                ? "whitespace-nowrap"
+                : "max-w-[min(100vw-1rem,28rem)]"
                 }`}
               style={{
                 top: pauseHotkeyHint.top,
