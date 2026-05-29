@@ -941,7 +941,7 @@ export default function SidePanel() {
                 showResourceLimit ? (
                   <>
                     <span className="font-medium">{t("sidePanel.resources")}</span>
-                    <span className="font-normal">
+                    <span className="font-normal text-[10px] text-muted-foreground">
                       {" "}
                       {t("sidePanel.resourceLimitMax", {
                         limit: resourceLimitText,
