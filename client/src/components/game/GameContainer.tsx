@@ -114,12 +114,6 @@ export default function GameContainer() {
   >([]);
   const [villageHotkeyTutorialOpen, setVillageHotkeyTutorialOpen] =
     useState(false);
-  const [hotkeyOverlayBox, setHotkeyOverlayBox] = useState<{
-    top: number;
-    left: number;
-    width: number;
-    height: number;
-  } | null>(null);
 
   // Compute unclaimed achievements for tab blink.
   // Subscribe to the specific slices that affect achievement progress so the memo re-runs.
@@ -192,7 +186,25 @@ export default function GameContainer() {
   const villageHotkeyTutorialShown = useGameStore(
     (state) => state.villageHotkeyTutorialShown,
   );
+  const devMode = useGameStore((state) => state.devMode);
   const villageHotkeyTutorialCheckedRef = useRef(false);
+
+  // Show on load for existing saves (or every reload in dev mode until dismissed).
+  useEffect(() => {
+    if (!flags.gameStarted) return;
+    if (villageHotkeyTutorialCheckedRef.current) return;
+    villageHotkeyTutorialCheckedRef.current = true;
+
+    if (!flags.villageUnlocked) return;
+    if (devMode || !villageHotkeyTutorialShown) {
+      setVillageHotkeyTutorialOpen(true);
+    }
+  }, [
+    flags.gameStarted,
+    flags.villageUnlocked,
+    devMode,
+    villageHotkeyTutorialShown,
+  ]);
 
   // Auto-switch to timed event tab when a new event becomes active
   useEffect(() => {
@@ -301,7 +313,9 @@ export default function GameContainer() {
 
     if (!prev.villageUnlocked && flags.villageUnlocked) {
       newAnimations.add("village");
-      if (!useGameStore.getState().villageHotkeyTutorialShown) {
+      const { devMode: isDev, villageHotkeyTutorialShown: shown } =
+        useGameStore.getState();
+      if (isDev || !shown) {
         setVillageHotkeyTutorialOpen(true);
       }
     }
@@ -565,7 +579,9 @@ export default function GameContainer() {
 
   const closeVillageHotkeyTutorial = useCallback(() => {
     setVillageHotkeyTutorialOpen(false);
-    useGameStore.setState({ villageHotkeyTutorialShown: true });
+    if (!useGameStore.getState().devMode) {
+      useGameStore.setState({ villageHotkeyTutorialShown: true });
+    }
   }, []);
 
   useEffect(() => {
@@ -582,7 +598,6 @@ export default function GameContainer() {
     if (!showTabHotkeyOverlay) {
       setPauseHotkeyHint(null);
       setPauseHotkeyBadges([]);
-      setHotkeyOverlayBox(null);
       return;
     }
     // Match Tailwind `md:` — do not show hotkey hint/badges on small viewports
@@ -592,14 +607,12 @@ export default function GameContainer() {
     ) {
       setPauseHotkeyHint(null);
       setPauseHotkeyBadges([]);
-      setHotkeyOverlayBox(null);
       return;
     }
     const row = tabButtonRowRef.current;
     if (!row) {
       setPauseHotkeyHint(null);
       setPauseHotkeyBadges([]);
-      setHotkeyOverlayBox(null);
       return;
     }
     const rowRect = row.getBoundingClientRect();
@@ -638,41 +651,7 @@ export default function GameContainer() {
       }
     }
     setPauseHotkeyBadges(next);
-
-    if (showVillageHotkeyBox) {
-      const hintTop = Math.max(4, navRect.top - 42);
-      const hintLeft = rowRect.left + rowRect.width / 2;
-      let minLeft = rowRect.left;
-      let maxRight = rowRect.right;
-      let minTop = hintTop - 18;
-      const maxBottom = rowRect.bottom;
-      next.forEach((b) => {
-        minLeft = Math.min(minLeft, b.left - 24);
-        maxRight = Math.max(maxRight, b.left + 24);
-        minTop = Math.min(minTop, b.top - 16);
-      });
-      const hintHalfWidth = 160;
-      minLeft = Math.min(minLeft, hintLeft - hintHalfWidth);
-      maxRight = Math.max(maxRight, hintLeft + hintHalfWidth);
-      const padX = 10;
-      const padTop = 22;
-      const padBottom = 8;
-      setHotkeyOverlayBox({
-        top: minTop - padTop,
-        left: minLeft - padX,
-        width: maxRight - minLeft + padX * 2,
-        height: maxBottom - minTop + padTop + padBottom,
-      });
-    } else {
-      setHotkeyOverlayBox(null);
-    }
-  }, [
-    showTabHotkeyOverlay,
-    showVillageHotkeyBox,
-    useLimelightNav,
-    visibleHotkeyTabs,
-    traderUnlocked,
-  ]);
+  }, [showTabHotkeyOverlay, useLimelightNav, visibleHotkeyTabs, traderUnlocked]);
 
   useLayoutEffect(() => {
     if (!showTabHotkeyOverlay) {
@@ -789,32 +768,44 @@ export default function GameContainer() {
           style={{ top: 0, bottom: "45px" }}
           aria-hidden={!showVillageHotkeyBox}
         >
-          {showVillageHotkeyBox && hotkeyOverlayBox != null && (
+          {pauseHotkeyHint != null && showVillageHotkeyBox && (
             <div
-              className="absolute bg-black/75 pointer-events-auto"
+              className="absolute z-[1] pointer-events-auto"
               style={{
-                top: hotkeyOverlayBox.top,
-                left: hotkeyOverlayBox.left,
-                width: hotkeyOverlayBox.width,
-                height: hotkeyOverlayBox.height,
+                top: pauseHotkeyHint.top,
+                left: pauseHotkeyHint.left,
+                transform: "translateX(-50%)",
               }}
               data-testid="village-hotkey-tutorial-box"
             >
-              <button
-                type="button"
-                className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
-                aria-label={t("villageHotkeyTutorial.dismiss", {
-                  ns: "ui",
-                  defaultValue: "Dismiss",
-                })}
-                data-testid="village-hotkey-tutorial-dismiss"
-                onClick={closeVillageHotkeyTutorial}
-              >
-                <X className="h-2.5 w-2.5 stroke-[3]" />
-              </button>
+              <div className="relative bg-black/75 max-w-[min(100vw-1rem,28rem)] px-3 py-2">
+                <button
+                  type="button"
+                  className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
+                  aria-label={t("villageHotkeyTutorial.dismiss", {
+                    ns: "ui",
+                    defaultValue: "Dismiss",
+                  })}
+                  data-testid="village-hotkey-tutorial-dismiss"
+                  onClick={closeVillageHotkeyTutorial}
+                >
+                  <X className="h-2.5 w-2.5 stroke-[3]" />
+                </button>
+                <div className="pause-hotkey-hint-animated pr-4 text-center text-xs leading-snug text-foreground drop-shadow">
+                  <span>{t("pauseHotkey.hintPrefix", { ns: "ui" })}</span>
+                  <span className="text-sm font-medium">←</span>
+                  <span> </span>
+                  <span className="text-sm font-medium">→</span>
+                  <span> or </span>
+                  <span className="text-sm font-medium">A</span>
+                  <span> </span>
+                  <span className="text-sm font-medium">D</span>
+                  <span>{t("pauseHotkey.hintSuffix", { ns: "ui" })}</span>
+                </div>
+              </div>
             </div>
           )}
-          {pauseHotkeyHint != null && (
+          {pauseHotkeyHint != null && !showVillageHotkeyBox && (
             <div
               className="pause-hotkey-hint-animated absolute z-[1] max-w-[min(100vw-1rem,28rem)] px-2 text-center text-xs leading-snug text-foreground drop-shadow"
               style={{
