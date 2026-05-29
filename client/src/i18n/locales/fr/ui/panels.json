@@ -22,6 +22,7 @@
     "sectionBuild": "Construire",
     "sectionProduce": "Produire",
     "cycle": "Cycle",
+    "cycleDescription": "À chaque cycle, vos villageois produisent des ressources et il y a une chance que de nouveaux villageois arrivent.",
     "nextCycleIn": "Prochain cycle dans {{seconds}} secondes",
     "newVillagerChance": "Chance de nouveau villageois : {{percent}} %",
     "lowPopulationBonus": "{{percent}} % de bonus population faible",

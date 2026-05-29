@@ -22,6 +22,7 @@
     "sectionBuild": "Строить",
     "sectionProduce": "Производство",
     "cycle": "Цикл",
+    "cycleDescription": "Каждый цикл ваши жители производят ресурсы, и есть шанс прибытия новых жителей.",
     "nextCycleIn": "Следующий цикл через {{seconds}} сек",
     "newVillagerChance": "Шанс нового жителя: {{percent}}%",
     "lowPopulationBonus": "{{percent}}% бонус при малом населении",

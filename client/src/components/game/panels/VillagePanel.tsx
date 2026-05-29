@@ -911,6 +911,7 @@ export default function VillagePanel() {
                         <div className="font-semibold">
                           {t("village.cycle")}
                         </div>
+                        <div>{t("village.cycleDescription")}</div>
                         <div>
                           {t("village.nextCycleIn", {
                             seconds: productionSecondsRemaining,

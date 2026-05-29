@@ -22,6 +22,7 @@
     "sectionBuild": "建造",
     "sectionProduce": "生产",
     "cycle": "周期",
+    "cycleDescription": "每个周期，村民都会生产资源，并且有可能迎来新村民。",
     "nextCycleIn": "下一周期 {{seconds}} 秒后",
     "newVillagerChance": "新村民几率：{{percent}}%",
     "lowPopulationBonus": "{{percent}}% 低人口加成",
