@@ -61,36 +61,47 @@ export default function UnsubscribePage() {
     };
   }, []);
 
+  const description =
+    status === "loading"
+      ? "Processing your request…"
+      : status === "ok"
+        ? "You're all set"
+        : "Unsubscribe";
+
   return (
     <>
       <Helmet>
         <title>Unsubscribe — A Dark Cave</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
-      <div className="min-h-screen bg-background text-foreground flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
+      <div className="min-h-screen bg-black text-gray-300 flex flex-col items-center justify-center p-4">
+        <Card className="w-full max-w-md bg-gray-900 border-gray-800">
           <CardHeader>
-            <CardTitle>Email preferences</CardTitle>
-            <CardDescription>
-              {status === "loading"
-                ? "Processing your request…"
-                : status === "ok"
-                  ? "You're all set"
-                  : "Unsubscribe"}
+            <CardTitle className="text-2xl font-light text-gray-100">
+              Email preferences
+            </CardTitle>
+            <CardDescription className="text-gray-400">
+              {description}
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-6">
             {status === "loading" ? (
-              <p className="text-sm text-muted-foreground">Please wait…</p>
+              <p className="text-sm text-gray-500">Please wait…</p>
             ) : (
               <p
                 className={
-                  status === "ok" ? "text-sm" : "text-sm text-muted-foreground"
+                  status === "ok" ? "text-sm text-gray-300" : "text-sm text-gray-400"
                 }
               >
                 {message}
               </p>
             )}
+            <a
+              href="/"
+              className="inline-block text-sm text-gray-400 hover:text-gray-200 transition-colors underline underline-offset-4"
+            >
+              Return to the cave
+            </a>
           </CardContent>
         </Card>
       </div>
