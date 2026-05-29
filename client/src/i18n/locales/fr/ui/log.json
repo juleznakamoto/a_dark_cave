@@ -15,7 +15,7 @@
     "investmentComplete": {
       "success": "Investissement de {{amount}} d'or terminé : Succès. Vous avez gagné {{payout}} d'or.",
       "successLucky": "Investissement de {{amount}} d'or terminé : Coup de chance ! Vous avez gagné {{payout}} d'or.",
-      "wipeout": "Investissement de {{amount}} d'or terminé : Ruine totale. Vous avez perdu l'intégralité de votre investissement de {{amount}} d'or.",  //x1.4
+      "wipeout": "Investissement de {{amount}} d'or terminé : Ruine totale. Vous avez perdu l'intégralité de votre investissement de {{amount}} d'or.", //x1.4
       "failure": "Investissement de {{amount}} d'or terminé : Échec. Vous avez perdu {{loss}} d'or."
     },
     "stranger": {
@@ -33,7 +33,7 @@
       "darkEstate": "Le Domaine sombre a été bâti sur une petite colline près du village, offrant solitude et refuge.",
       "blacksmith": "La forge du forgeron s'anime. Le cœur de l'industrie bat désormais dans le village.",
       "firstWoodenHut": "La première hutte de bois est achevée ; cela pourrait être le début de quelque chose de grand.",
-      "villageGrowthSuggestion": "Le village grandit rapidement. Peut-être des maisons de pierre pourraient-elles abriter davantage de villageois.",  //x1.5
+      "villageGrowthSuggestion": "Le village grandit rapidement. Peut-être des maisons de pierre pourraient-elles abriter davantage de villageois.", //x1.5
       "cityGrowthMilestone": "La ville est devenue une métropole animée, pleine de commerce, d'industrie et de promesses de jours meilleurs.",
       "moonstoneDiscovered": "Dans les profondeurs de la fosse, les ouvriers découvrent quelque chose d'extraordinaire. Ils mettent au jour des veines de pierre de lune, un minéral luminescent chargé d'une énergie immense.",
       "foundry": "La fonderie rugit et prend vie tandis que le feu et la chaleur fusionnent les matières brutes.",
@@ -42,11 +42,11 @@
       "grandHunterLodge": "Le grand pavillon des chasseurs est achevé, une structure magnifique où se réunissent les maîtres chasseurs.",
       "clerksHut": "Une hutte de greffier est érigée, son occupant prêt à suivre le flux des ressources avec un soin méticuleux.",
       "scriptorium": "Le scriptorium est achevé. Chaque détail de la vie du village est désormais consigné avec une précision méticuleuse.",
-      "inkwardenAcademy": "L'académie des gardiens d'encre s'élève comme un monument au savoir. Ses salles sont remplies de la sagesse des âges, et chaque ressource est désormais suivie avec une précision sans pareille.",
+      "inkwardenAcademy": "L'académie des gardiens des écrits s'élève comme un monument au savoir. Ses salles sont remplies de la sagesse des âges, et chaque ressource est désormais suivie avec une précision sans pareille.",
       "tannery": "La tannerie est achevée. L'odeur du cuir en cours de tannage emplit l'air tandis que les artisans commencent leur travail.",
       "highTannery": "La haute tannerie est bâtie, un grand atelier où des artisans experts transforment les peaux en cuir d'une qualité exceptionnelle.",
       "longhouse": "La première maison longue s'élève, une vaste halle de bois aux poutres épaisses et à l'espace généreux.",
-      "furTents": "Les premières tentes de fourrure sont dressées à la lisière du village, offrant un abri chaud à davantage de personnes.",  //x1.4
+      "furTents": "Les premières tentes de fourrure sont dressées à la lisière du village, offrant un abri chaud à davantage de personnes.", //x1.4
       "shrine": "Un sanctuaire sacré s'élève près de l'autel ; sa présence apporte paix et concentration aux esprits troublés.",
       "temple": "Un grand temple est achevé, ses salles sacrées résonnant de prières murmurées qui apaisent les âmes tourmentées.",
       "sanctum": "Le sanctuaire s'élève comme un phare de protection divine, son aura bénie chassant les pensées et les peurs les plus sombres.",
@@ -68,7 +68,7 @@
     },
     "gameplay": {
       "forestUnlocked": "Le village est encerclé par une forêt dense et sombre. Le danger flotte dans l'air, même si c'est aussi un bon endroit pour couper du bois et chasser.",
-      "villageBegins": "Un petit village commence à prendre forme. Les villageois ont besoin de nourriture et de bois pour survivre."  //x1.4
+      "villageBegins": "Un petit village commence à prendre forme. Les villageois ont besoin de nourriture et de bois pour survivre." //x1.4
     },
     "gambler": {
       "win": "Vous avez gagné {{amount}} or au joueur obsédé.",
@@ -78,18 +78,18 @@
     "buttonUpgrade": {
       "deepens": "Votre maîtrise de {{skill}} s'approfondit.",
       "skills": {
-        "caveExplore": "l'exploration des cavernes",  //x1.9
-        "mineStone": "l'extraction de pierre",  //x1.8
-        "mineIron": "l'extraction de fer",  //x1.7
-        "mineCoal": "l'extraction de charbon",  //x2.1
-        "mineSulfur": "l'extraction de soufre",  //x1.7
-        "mineObsidian": "l'extraction d'obsidienne",  //x1.7
-        "mineAdamant": "l'extraction d'adamant",  //x1.6
+        "caveExplore": "l'exploration des cavernes", //x1.9
+        "mineStone": "l'extraction de pierre", //x1.8
+        "mineIron": "l'extraction de fer", //x1.7
+        "mineCoal": "l'extraction de charbon", //x2.1
+        "mineSulfur": "l'extraction de soufre", //x1.7
+        "mineObsidian": "l'extraction d'obsidienne", //x1.7
+        "mineAdamant": "l'extraction d'adamant", //x1.6
         "hunt": "la chasse",
-        "chopWood": "l'abattage de bois",  //x1.6
+        "chopWood": "l'abattage de bois", //x1.6
         "craftTorches": "la fabrication de torches",
         "craftBoneTotems": "la fabrication de totems d'os",
-        "craftLeatherTotems": "la fabrication de totems de cuir"  //x1.5
+        "craftLeatherTotems": "la fabrication de totems de cuir" //x1.5
       }
     }
   }

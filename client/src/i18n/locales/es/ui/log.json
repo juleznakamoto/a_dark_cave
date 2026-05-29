@@ -42,7 +42,7 @@
       "grandHunterLodge": "El Gran pabellón de caza está terminado, una estructura magnífica donde se reúnen cazadores maestros.",
       "clerksHut": "Se levanta una choza de escribientes, con su ocupante listo para seguir el flujo de recursos con cuidado meticuloso.",
       "scriptorium": "El Scriptorium está terminado. Cada detalle de la vida de la aldea se registra ahora con precisión meticulosa.",
-      "inkwardenAcademy": "La Academia de los guardianes de tinta se alza como un monumento al conocimiento. Sus salones estón llenos de la sabiduría de las eras, y cada recurso se registra ahora con precisión incomparable.",
+      "inkwardenAcademy": "La Academia de los guardianes del tomo se alza como un monumento al conocimiento. Sus salones están llenos de la sabiduría de las eras, y cada recurso se registra ahora con precisión incomparable.",
       "tannery": "La curtiduría está terminada. El olor del cuero en curado llena el aire mientras los artesanos empiezan su labor.",
       "highTannery": "La Alta curtiduría está construida, un gran taller donde artesanos expertos transforman pieles en el cuero más fino.",
       "longhouse": "La primera casa comunal se alza, una enorme sala de madera con vigas gruesas y mucho espacio.",
@@ -78,18 +78,18 @@
     "buttonUpgrade": {
       "deepens": "Tu dominio de {{skill}} se profundiza.",
       "skills": {
-        "caveExplore": "exploración de cuevas",  //x1.5
-        "mineStone": "extracción de piedra",  //x1.7
-        "mineIron": "extracción de hierro",  //x1.8
-        "mineCoal": "extracción de carbón",  //x1.8
-        "mineSulfur": "extracción de azufre",  //x1.5
-        "mineObsidian": "extracción de obsidiana",  //x1.5
-        "mineAdamant": "extracción de adamantio",  //x1.6
+        "caveExplore": "exploración de cuevas", //x1.5
+        "mineStone": "extracción de piedra", //x1.7
+        "mineIron": "extracción de hierro", //x1.8
+        "mineCoal": "extracción de carbón", //x1.8
+        "mineSulfur": "extracción de azufre", //x1.5
+        "mineObsidian": "extracción de obsidiana", //x1.5
+        "mineAdamant": "extracción de adamantio", //x1.6
         "hunt": "caza",
-        "chopWood": "tala de madera",  //x1.3
+        "chopWood": "tala de madera", //x1.3
         "craftTorches": "fabricación de antorchas",
         "craftBoneTotems": "fabricación de tótems de hueso",
-        "craftLeatherTotems": "fabricación de tótems de cuero"  //x1.4
+        "craftLeatherTotems": "fabricación de tótems de cuero" //x1.4
       }
     }
   }

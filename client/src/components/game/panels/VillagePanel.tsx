@@ -233,7 +233,7 @@ export default function VillagePanel() {
         { id: "buildQuarry", label: "Quarry" },
         { id: "buildClerksHut", label: "Clerk's Hut" },
         { id: "buildScriptorium", label: "Scriptorium" },
-        { id: "buildInkwardenAcademy", label: "Inkwarden Academy" },
+        { id: "buildInkwardenAcademy", label: "Tomewarden Academy" },
         { id: "buildTannery", label: "Tannery" },
         { id: "buildMasterTannery", label: "Master Tannery" },
         { id: "buildHighTannery", label: "High Tannery" },
@@ -656,7 +656,7 @@ export default function VillagePanel() {
         tooltip={tooltipContent}
         onAnimationTrigger={handleAnimationTrigger}
         onMouseEnter={() => {
-          // Only highlight resources if Inkwarden Academy is built
+          // Only highlight resources if Tomewarden Academy is built
           if (buildings.inkwardenAcademy > 0) {
             setHighlightedResources(
               getResourcesFromActionCost(actionId, state),

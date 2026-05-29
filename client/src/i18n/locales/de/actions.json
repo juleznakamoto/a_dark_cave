@@ -154,7 +154,7 @@
   },
   "buildInkwardenAcademy": {
     "description": "Große Akademie der Gelehrten, die höchstes Wissen und Ressourcenerfassung bietet",
-    "label": "Akademie der Tintenwächter" //ok
+    "label": "Akademie der Schriftenwächter" //ok
   },
   "buildLonghouse": {
     "description": "Massive nordische Hütte, die viele Dorfbewohner beherbergt", //ok
@@ -596,7 +596,7 @@
     }
   },
   "provokeAttackWave": {
-    "label": "Angriffswelle provozieren"  //ok
+    "label": "Angriffswelle provozieren" //ok
   },
   "repairBastion": {
     "label": "Bastion reparieren"
@@ -694,6 +694,6 @@
     }
   },
   "tradeGoldForVeinfireElixir": {
-    "label": "Aderfeuer-Elixier kaufen"  //ok
+    "label": "Aderfeuer-Elixier kaufen" //ok
   }
 }

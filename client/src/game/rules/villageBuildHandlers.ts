@@ -485,13 +485,13 @@ export function handleBuildInkwardenAcademy(
     "inkwardenAcademy",
   );
 
-  // Add Inkwarden Academy completion message
+  // Add Tomewarden Academy completion message
   if (state.buildings.inkwardenAcademy === 0) {
     pushSystemLog(
       inkwardenAcademyResult,
       "inkwarden-academy-built",
       "building.inkwardenAcademy",
-      "The Inkwarden Academy rises as a monument to knowledge. Its halls filled with the wisdom of ages, and every resource is now tracked with unparalleled precision.",
+      "The Tomewarden Academy rises as a monument to knowledge. Its halls filled with the wisdom of ages, and every resource is now tracked with unparalleled precision.",
     );
   }
 

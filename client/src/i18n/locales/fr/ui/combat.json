@@ -20,8 +20,8 @@
     "criticalParen": "({{label}})",
     "available": "Disponible : {{current}}/{{max}}",
     "crushingStrike": "Frappe écrasante",
-    "bloodflameSphere": "Sphère de flamme sanglante",  //x1.5
-    "poisonArrows": "Flèches empoisonnées",  //x1.5
+    "bloodflameSphere": "Sphère de flamme sanglante",
+    "poisonArrows": "Flèches empoisonnées",
     "attackDetailsAria": "Détails de l'attaque au combat",
     "critChance": "{{percent}} % de chance de coup critique",
     "critFromLuck": "{{percent}} % grâce à {{stat}}{{maxSuffix}}",

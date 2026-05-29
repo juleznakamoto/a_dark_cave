@@ -1721,7 +1721,7 @@ export const villageBuildActions: Record<string, Action> = {
 
   buildInkwardenAcademy: {
     id: "buildInkwardenAcademy",
-    label: "Inkwarden Academy",
+    label: "Tomewarden Academy",
     description:
       "Grand academy of scholars providing supreme knowledge and resource tracking",
     tooltipEffects: [

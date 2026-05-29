@@ -20,8 +20,8 @@
     "criticalParen": "({{label}})",
     "available": "Доступно: {{current}}/{{max}}",
     "crushingStrike": "Сокрушающий удар",
-    "bloodflameSphere": "Сфера кровавого пламени",  //x1.4
-    "poisonArrows": "Отравленные стрелы",  //x1.4
+    "bloodflameSphere": "Сфера кровавого пламени",
+    "poisonArrows": "Отравленные стрелы",
     "attackDetailsAria": "Подробности боевой атаки",
     "critChance": "{{percent}} % шанс критического удара",
     "critFromLuck": "{{percent}} % от {{stat}}{{maxSuffix}}",
