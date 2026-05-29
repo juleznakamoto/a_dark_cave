@@ -600,6 +600,8 @@ export const gameStateSchema = z.object({
   googleAdsSource: z.string().nullable().default(null), // Google Ads source tracking (persists across game restarts)
   playTime: z.number().default(0), // Track total play time in milliseconds
   lastResourceSnapshotTime: z.number().default(0).optional(),
+  /** Resource keys that have appeared in the side panel (persisted once amount > 0). */
+  seenResources: z.array(z.string()).default([]),
   isNewGame: z.boolean().default(false), // Track if this is a newly started game
   startTime: z.number().default(0), // Timestamp when the current game was started
   allowPlayTimeOverwrite: z.boolean().default(false), // Allow overwriting higher playTime on next save (used for game restarts)

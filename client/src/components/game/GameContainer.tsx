@@ -189,6 +189,10 @@ export default function GameContainer() {
 
   // Track previous timed event state to detect when a new event starts
   const prevTimedEventActiveRef = useRef(timedEventTab.isActive);
+  const villageHotkeyTutorialShown = useGameStore(
+    (state) => state.villageHotkeyTutorialShown,
+  );
+  const villageHotkeyTutorialCheckedRef = useRef(false);
 
   // Auto-switch to timed event tab when a new event becomes active
   useEffect(() => {
@@ -297,7 +301,9 @@ export default function GameContainer() {
 
     if (!prev.villageUnlocked && flags.villageUnlocked) {
       newAnimations.add("village");
-      setVillageHotkeyTutorialOpen(true);
+      if (!useGameStore.getState().villageHotkeyTutorialShown) {
+        setVillageHotkeyTutorialOpen(true);
+      }
     }
     if (!prev.forestUnlocked && flags.forestUnlocked) {
       newAnimations.add("forest");
@@ -559,6 +565,7 @@ export default function GameContainer() {
 
   const closeVillageHotkeyTutorial = useCallback(() => {
     setVillageHotkeyTutorialOpen(false);
+    useGameStore.setState({ villageHotkeyTutorialShown: true });
   }, []);
 
   useEffect(() => {

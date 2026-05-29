@@ -47,6 +47,7 @@ import {
 } from "@/game/buildingHierarchy";
 import { getTotalPopulationEffects } from "@/game/population";
 import { getMapFragmentCount } from "@/game/mapFragments";
+import { getSeenResourceKeys } from "@/game/stateHelpers";
 
 function getFortificationDisplayLabel(
   key: FortificationBuildingKey,
@@ -177,20 +178,10 @@ export default function SidePanel() {
   const totalKnowledge = getTotalKnowledge(gameState);
   const totalMadness = getTotalMadness(gameState);
 
-  // Track which resources have ever been seen (using a ref to persist across renders)
-  const seenResourcesRef = useRef<Set<string>>(new Set());
-
-  // Update seen resources
-  resourceOrder.forEach((key) => {
-    if ((resources[key as keyof typeof resources] ?? 0) > 0) {
-      seenResourcesRef.current.add(key);
-    }
-  });
-
-  // Dynamically generate resource items from state (gold and silver first, then others)
-  // Show resource if it has ever been > 0, even if currently 0
+  // Show resource if it has ever been > 0, even if currently 0 (persisted in game state)
+  const seenResourceKeySet = new Set(getSeenResourceKeys(gameStateTyped));
   const seenResourceKeys = resourceOrder.filter((key) =>
-    seenResourcesRef.current.has(key),
+    seenResourceKeySet.has(key),
   );
 
   // Separate gold and silver from other resources; exclude bombs (Combat Items section)
@@ -309,8 +300,8 @@ export default function SidePanel() {
     }));
 
   // Combat Items section (bombs + consumables stored in resources)
-  const combatItemRows = COMBAT_ITEM_RESOURCES.filter(
-    (key) => seenResourcesRef.current.has(key),
+  const combatItemRows = COMBAT_ITEM_RESOURCES.filter((key) =>
+    seenResourceKeySet.has(key),
   ).map((key) => {
     const value = resources[key as keyof typeof resources] ?? 0;
     const label = getResourceName(key, capitalizeWords(key));

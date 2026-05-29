@@ -20,15 +20,36 @@ export function mergeCombatVictoryState(
   if (vr === undefined) {
     return { ...prevState, ...victoryResult };
   }
+  const resources = {
+    ...prevState.resources,
+    silver: (prevState.resources.silver ?? 0) + (vr.silver ?? 0),
+    gold: (prevState.resources.gold ?? 0) + (vr.gold ?? 0),
+  };
   return {
     ...prevState,
     ...rest,
-    resources: {
-      ...prevState.resources,
-      silver: (prevState.resources.silver ?? 0) + (vr.silver ?? 0),
-      gold: (prevState.resources.gold ?? 0) + (vr.gold ?? 0),
-    },
+    resources,
+    seenResources: markSeenResources(prevState.seenResources, resources),
   };
+}
+
+/** Merge resource keys into persisted side-panel visibility once amount > 0. */
+export function markSeenResources(
+  existing: string[] | undefined,
+  resources: Partial<Record<string, number>>,
+): string[] {
+  const seen = new Set(existing ?? []);
+  for (const [key, amount] of Object.entries(resources)) {
+    if (typeof amount === "number" && amount > 0) {
+      seen.add(key);
+    }
+  }
+  return Array.from(seen);
+}
+
+/** Effective side-panel resource keys: persisted seen + any currently held. */
+export function getSeenResourceKeys(state: GameState): string[] {
+  return markSeenResources(state.seenResources, state.resources);
 }
 
 export function updateResource(
@@ -53,6 +74,9 @@ export function updateResource(
       ...state.resources,
       [resource]: cappedAmount,
     },
+    seenResources: markSeenResources(state.seenResources, {
+      [resource]: cappedAmount,
+    }),
     ...(reachedLimit && {
       flags: {
         ...state.flags,

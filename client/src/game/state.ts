@@ -38,6 +38,7 @@ import {
   unassignVillagerFromJob,
   mergeCombatVictoryState,
   migrateTraderShopUnlockOnLoad,
+  markSeenResources,
 } from "@/game/stateHelpers";
 import { capResourceToLimit } from "@/game/resourceLimits";
 import {
@@ -162,6 +163,8 @@ interface GameStore extends GameState {
   feedbackDialogOpen: boolean;
   /** Persisted: one-time feedback dialog at 2h play time has been shown or skipped. */
   feedbackPromptShown: boolean;
+  /** Persisted: village tab hotkey tutorial (boxed overlay) was dismissed or timed out. */
+  villageHotkeyTutorialShown: boolean;
 
   // Notification state for auth
   authNotificationSeen: boolean;
@@ -710,8 +713,14 @@ const mergeStateUpdates = (
     }
   });
 
+  const seenResources = markSeenResources(
+    stateUpdates.seenResources ?? prevState.seenResources,
+    mergedResources,
+  );
+
   const merged = {
     resources: mergedResources,
+    seenResources,
     weapons: { ...prevState.weapons, ...stateUpdates.weapons },
     tools: { ...prevState.tools, ...stateUpdates.tools },
     buildings: { ...prevState.buildings, ...stateUpdates.buildings },
@@ -1019,6 +1028,7 @@ export const createInitialState = (): GameState => ({
   socialPromoExclusiveRewardPending: false,
   feedbackDialogOpen: false,
   feedbackPromptShown: false,
+  villageHotkeyTutorialShown: false,
 
   // Initialize resource highlighting state (array for serialization)
   highlightedResources: [],
@@ -1303,6 +1313,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   playlightWelcomeDialogOpen: false,
   feedbackDialogOpen: false,
   feedbackPromptShown: false,
+  villageHotkeyTutorialShown: false,
   sleepUpgrades: {
     lengthLevel: 0,
     intensityLevel: 0,
@@ -2280,6 +2291,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         feedbackPromptShown:
           (savedState as { feedbackPromptShown?: boolean }).feedbackPromptShown ===
           true,
+        villageHotkeyTutorialShown:
+          (savedState as { villageHotkeyTutorialShown?: boolean })
+            .villageHotkeyTutorialShown === true,
         playTime: loadedPlayTime, // CRITICAL: Use the extracted playTime value
         isNewGame: false, // Clear the new game flag when loading
         startTime:
@@ -2308,6 +2322,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
             ? savedState.lastResourceSnapshotTime
             : 0, // Load lastResourceSnapshotTime
         highlightedResources: savedState.highlightedResources || [], // Load highlightedResources
+        seenResources: markSeenResources(
+          savedState.seenResources,
+          savedState.resources,
+        ),
         resourceChangeEvents: [],
         curseState: savedState.curseState || defaultGameState.curseState, // Load curseState
         frostfallState:
