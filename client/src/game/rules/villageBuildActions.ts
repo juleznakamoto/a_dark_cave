@@ -1,6 +1,15 @@
 import { Action, GameState } from "@shared/schema";
+import { formatNumber } from "@/lib/utils";
 import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
 import { bt, type BuildingTooltipEffect } from "./buildingTooltipEffects";
+
+function storageResourceLimitTooltip(limit: number): BuildingTooltipEffect {
+  return bt(
+    "resourceLimit",
+    "Resource Limit: {{limit}} (no limit on Silver & Gold)",
+    { limit: formatNumber(limit) },
+  );
+}
 
 /**
  * Stranger-approach bonus per completed building level, by `GameState.buildings` key.
@@ -621,12 +630,12 @@ export const villageBuildActions: Record<string, Action> = {
     tooltipEffects: (state: GameState) => {
       const nextLevel = (state.buildings.palisades || 0) + 1;
       const statsByLevel: Record<number, { defense: number; integrity: number }> =
-        {
-          1: { defense: 5, integrity: 15 },
-          2: { defense: 10, integrity: 30 },
-          3: { defense: 15, integrity: 45 },
-          4: { defense: 20, integrity: 60 },
-        };
+      {
+        1: { defense: 5, integrity: 15 },
+        2: { defense: 10, integrity: 30 },
+        3: { defense: 15, integrity: 45 },
+        4: { defense: 20, integrity: 60 },
+      };
       const stats = statsByLevel[nextLevel] ?? statsByLevel[4];
       return [
         bt("defenseBonus", "+{{amount}} Defense", { amount: stats.defense }),
@@ -1267,7 +1276,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildSupplyHut",
     label: "Supply Hut",
     description: "Small hut for storing resources",
-    tooltipEffects: [bt("resourceLimit", "Resource Limit: {{limit}}", { limit: "1.000" })],
+    tooltipEffects: [storageResourceLimitTooltip(1000)],
     building: true,
     show_when: {
       1: {
@@ -1293,7 +1302,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildStorehouse",
     label: "Storehouse",
     description: "Expanded storage facility for more resources",
-    tooltipEffects: [bt("resourceLimit", "Resource Limit: {{limit}}", { limit: "2.500" })],
+    tooltipEffects: [storageResourceLimitTooltip(2500)],
     building: true,
     show_when: {
       1: {
@@ -1321,7 +1330,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildFortifiedStorehouse",
     label: "Fortified Storehouse",
     description: "Reinforced storage building with enhanced capacity",
-    tooltipEffects: [bt("resourceLimit", "Resource Limit: {{limit}}", { limit: "5,000" }), bt("craftDiscount", "2.5% Craft Discount", { percent: "2.5" })],
+    tooltipEffects: [storageResourceLimitTooltip(5000), bt("craftDiscount", "2.5% Craft Discount", { percent: "2.5" })],
     building: true,
     show_when: {
       1: {
@@ -1351,7 +1360,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Village Warehouse",
     description: "Large warehouse capable of storing vast quantities",
     tooltipEffects: [
-      bt("resourceLimit", "Resource Limit: {{limit}}", { limit: "10.000" }),
+      storageResourceLimitTooltip(10000),
       bt("craftDiscount", "2.5% Craft Discount", { percent: "2.5" }),
       bt("buildDiscount", "2.5% Build Discount", { percent: "2.5" }),
     ],
@@ -1386,7 +1395,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Grand Repository",
     description: "Massive repository with exceptional storage capacity",
     tooltipEffects: [
-      bt("resourceLimit", "Resource Limit: {{limit}}", { limit: "25.000" }),
+      storageResourceLimitTooltip(25000),
       bt("craftDiscount", "5% Craft Discount", { percent: "5" }),
       bt("buildDiscount", "2.5% Build Discount", { percent: "2.5" }),
     ],
@@ -1421,7 +1430,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Great Vault",
     description: "Supreme vault capable of storing immense resources",
     tooltipEffects: [
-      bt("resourceLimit", "Resource Limit: {{limit}}", { limit: "50.000" }),
+      storageResourceLimitTooltip(50000),
       bt("craftDiscount", "5% Craft Discount", { percent: "5" }),
       bt("buildDiscount", "5% Build Discount", { percent: "5" }),
     ],

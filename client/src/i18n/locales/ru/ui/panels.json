@@ -42,11 +42,11 @@
       "steel_forger": "Стальщик",
       "blacksteel_forger": "Кузнец чёрной стали",
       "sulfur_miner": "Серосжигатель",
-      "obsidian_miner": "Обсидиановый шахтёр",  //x1.4
+      "obsidian_miner": "Обсидиановый шахтёр", //x1.4
       "adamant_miner": "Адамант-шахтёр",
-      "moonstone_miner": "Лунокаменный шахтёр",  //x1.3
+      "moonstone_miner": "Лунокаменный шахтёр", //x1.3
       "powder_maker": "Пороховник",
-      "ashfire_dust_maker": "Изготовитель пепельной пыли",  //x1.5
+      "ashfire_dust_maker": "Изготовитель пепельной пыли", //x1.5
       "tanner": "Дубильщик"
     }
   },
@@ -59,7 +59,7 @@
     "focusRewardTooltip_one": "Удвоенные награды за действия на {{count}} мин",
     "focusRewardTooltip_other": "Удвоенные награды за действия на {{count}} мин",
     "focusPointTooltip": "Получайте 1 очко фокуса за каждый час сна",
-    "sleepLength": "Длительность сна",  //x1.3
+    "sleepLength": "Длительность сна", //x1.3
     "sleepLengthTooltip": "Макс. часов за сон",
     "sleepIntensity": "Интенсивность сна",
     "sleepIntensityTooltip": "Производство деревни в % во время сна",
@@ -67,10 +67,10 @@
     "cubeWhispers": "Шёпот куба",
     "huntressTraining": "Обучение охотницы",
     "crushingStrike": "Сокрушающий удар",
-    "bloodflameSphere": "Сфера кровавого пламени",  //x1.4
+    "bloodflameSphere": "Сфера кровавого пламени", //x1.4
     "disgracedPrior": "Падший приор",
     "crowsEye": "Глаз ворона",
-    "maxLevel": "Макс. уровень",  //x1.4
+    "maxLevel": "Макс. уровень", //x1.4
     "improve": "Улучшить",
     "upkeepPerCycle": "{{amount}} еды на содержание за назначенное действие за цикл",
     "skillFoodPerHunter": "+{{amount}} еды за охотника",
@@ -85,7 +85,7 @@
     "skillStunRound_other": "+{{amount}} раундов оглушения",
     "skillSuccessChanceBonus": "+{{amount}}% шанс успеха",
     "crushingStrikeSummary": "{{damage}} урона, {{rounds}} оглушение, {{success}}% успеха",
-    "skillBurnDamage": "+{{amount}} урона от горения",  //x1.2
+    "skillBurnDamage": "+{{amount}} урона от горения", //x1.2
     "skillBurnRound_one": "+{{amount}} раунд горения",
     "skillBurnRound_other": "+{{amount}} раундов горения",
     "skillHealthCost": "+{{amount}} стоимости здоровья",
@@ -115,7 +115,7 @@
     "boneTotems": "Костяные тотемы",
     "leatherTotems": "Кожаные тотемы",
     "craftDiscount": "Скидка на создание",
-    "buildDiscount": "Скидка на строительство",  //x1.6
+    "buildDiscount": "Скидка на строительство", //x1.6
     "doubleGainChance": "Шанс двойного урожая"
   },
   "badges": {
@@ -126,8 +126,8 @@
     "nextBonus": "Следующий бонус:",
     "craftMultiplier": "Создание ×{{amount}}",
     "bonusPercent": "+{{percent}}%",
-    "maxLevel": "макс. уровень",  //x1.4
-    "executionTimeReduction": "-50% времени выполнения"  //x1.2
+    "maxLevel": "макс. уровень", //x1.4
+    "executionTimeReduction": "-50% времени выполнения" //x1.2
   },
   "sidePanel": {
     "bastion": "Бастион",
@@ -136,25 +136,26 @@
     "freeVillagers": "Свободные",
     "onExpedition": "В экспедиции",
     "resources": "Ресурсы",
-    "tools": "Инструменты",  //x2.2
+    "tools": "Инструменты", //x2.2
     "weapons": "Оружие",
     "clothing": "Одежда",
     "relics": "Реликвии",
     "schematics": "Чертежи",
-    "blessings": "Благословения",  //x1.4
+    "blessings": "Благословения", //x1.4
     "buildings": "Здания",
     "books": "Книги",
     "fellowship": "Спутники",
-    "stats": "Характеристики",  //x2.8
+    "stats": "Характеристики", //x2.8
     "bonuses": "Бонусы",
     "fortifications": "Укрепления",
     "combatItems": "Боевые предметы",
     "mapFragments": "Фрагменты карты",
     "craftDiscount": "Скидка на создание",
-    "buildDiscount": "Скидка на строительство",  //x1.6
+    "buildDiscount": "Скидка на строительство", //x1.6
     "doubleGainChance": "Шанс двойного урожая",
     "populationTooltip": "Каждый житель потребляет 1 еду и 1 древесину",
-    "resourceLimitTooltip": "Макс. {{limit}} (без лимита для серебра и золота)",
+    "resourceLimitMax": "макс. {{limit}}",
+    "resourceLimitTooltip": "без лимита для серебра и золота",
     "statsTooltip": "Характеристики влияют на исход событий и позже становятся важны в бою.",
     "statLuckTooltip": "Склоняет судьбу в вашу пользу",
     "statStrengthTooltip": "Помогает там, где слова бессильны",
@@ -180,7 +181,7 @@
     "title": "Режим сна",
     "sleeping": "Спит",
     "awake": "Вы проснулись!",
-    "wakingIn": "Пробуждение через: {{time}}",  //x1.2
+    "wakingIn": "Пробуждение через: {{time}}", //x1.2
     "wake": "Проснуться",
     "getUp": "Встать",
     "focusGainedLog": "Вы получили {{count}} фокуса за отдых.",

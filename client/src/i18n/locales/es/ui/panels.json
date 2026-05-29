@@ -154,7 +154,8 @@
     "buildDiscount": "Descuento de construcción", //x1.8
     "doubleGainChance": "Probabilidad de ganancia doble", //x1.7
     "populationTooltip": "Cada aldeano consume 1 comida y 1 madera",
-    "resourceLimitTooltip": "Máx. {{limit}} (sin límite para plata y oro)",
+    "resourceLimitMax": "máx. {{limit}}",
+    "resourceLimitTooltip": "sin límite para plata y oro",
     "statsTooltip": "Las estadísticas influyen en el resultado de los eventos y más adelante son relevantes en combate.",
     "statLuckTooltip": "Inclina el destino a tu favor",
     "statStrengthTooltip": "Ayuda donde las palabras llegan a su límite",

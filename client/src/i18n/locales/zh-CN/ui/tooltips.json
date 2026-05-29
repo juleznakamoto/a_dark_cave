@@ -135,7 +135,7 @@
       "sleepLengthHours": "睡眠时长 +{{hours}} 小时",
       "sleepIntensityPercent": "睡眠强度 +{{percent}}%",
       "maxVillagers": "村民上限 +{{amount}}",
-      "resourceLimit": "资源上限：{{limit}}",
+      "resourceLimit": "资源上限：{{limit}}（白银和黄金无上限）",
       "maxPopulation": "+{{amount}} 人口上限",
       "newVillagerChancePercent": "新村民概率 +{{percent}}%",
       "steelForgerSteel": "炼钢工：+{{amount}} 钢",

@@ -937,13 +937,25 @@ export default function SidePanel() {
             <SidePanelSection
               className="pt-0"
               sectionId="resources"
-              title={t("sidePanel.resources")}
+              title={
+                showResourceLimit ? (
+                  <>
+                    <span className="font-medium">{t("sidePanel.resources")}</span>
+                    <span className="font-normal">
+                      {" "}
+                      {t("sidePanel.resourceLimitMax", {
+                        limit: resourceLimitText,
+                      })}
+                    </span>
+                  </>
+                ) : (
+                  t("sidePanel.resources")
+                )
+              }
               activeTab={activeTab}
               titleTooltip={
                 showResourceLimit
-                  ? t("sidePanel.resourceLimitTooltip", {
-                    limit: resourceLimitText,
-                  })
+                  ? t("sidePanel.resourceLimitTooltip")
                   : undefined
               }
               items={resourceItems}

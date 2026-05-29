@@ -154,7 +154,8 @@
     "buildDiscount": "Baurabatt",
     "doubleGainChance": "Doppelgewinn-Chance",
     "populationTooltip": "Jeder Dorfbewohner verbraucht 1 Nahrung und 1 Holz",
-    "resourceLimitTooltip": "Max. {{limit}} (kein Limit für Silber und Gold)",
+    "resourceLimitMax": "max. {{limit}}",
+    "resourceLimitTooltip": "kein Limit für Silber und Gold",
     "statsTooltip": "Werte beeinflussen den Ausgang von Ereignissen und werden später im Kampf relevant.",
     "statLuckTooltip": "Beugt das Schicksal zu deinen Gunsten", //ok
     "statStrengthTooltip": "Hilft dort, wo Worte an ihre Grenzen stoßen",

@@ -106,7 +106,7 @@
       "hunterBones": "Jäger: +{{amount}} Knochen",
       "knowledgeBonus": "+{{amount}} Wissen",
       "resourceChangeHints": "Hinweise zu Ressourcenänderungen", //ok
-      "improvedResourceChangeHints": "Verbesserte Hinweise zu Ressourcenänderungen",  //x1.5
+      "improvedResourceChangeHints": "Verbesserte Hinweise zu Ressourcenänderungen", //x1.5
       "resourceHighlighting": "Ressourcen-Hervorhebung",
       "abortActions": "Aktionen abbrechen", //ok
       "madnessReduction": "-{{amount}} Wahnsinn",
@@ -135,7 +135,7 @@
       "sleepLengthHours": "Schlafdauer +{{hours}} Stunden",
       "sleepIntensityPercent": "Schlafintensität +{{percent}} %",
       "maxVillagers": "+{{amount}} max. Dorfbewohner",
-      "resourceLimit": "Ressourcenlimit: {{limit}}",
+      "resourceLimit": "Ressourcenlimit: {{limit}} (kein Limit für Silber und Gold)",
       "maxPopulation": "+{{amount}} max. Bevölkerung",
       "newVillagerChancePercent": "+{{percent}} % Chance auf neue Dorfbewohner",
       "steelForgerSteel": "Stahlschmied: +{{amount}} Stahl",
