@@ -173,15 +173,10 @@ export default function GameFooter() {
                 />
               </Button>
             </HoverCalloutTooltip>
-            <HoverCalloutTooltip
-              label={t("languageSelector.ariaLabel")}
-              side="top"
-            >
-              <LanguageSelector
-                buttonClassName={FOOTER_CONTROL_BTN}
-                iconClassName={FOOTER_CONTROL_SVG_ICON_HOVER}
-              />
-            </HoverCalloutTooltip>
+            <LanguageSelector
+              buttonClassName={FOOTER_CONTROL_BTN}
+              iconClassName={FOOTER_CONTROL_SVG_ICON_HOVER}
+            />
 
             {BTP === 1 ? (
               <Button

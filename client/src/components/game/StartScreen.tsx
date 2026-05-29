@@ -271,16 +271,11 @@ export default function StartScreen() {
         className={`absolute bottom-4 left-4 right-4 z-10 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 text-[10px] sm:text-xs text-muted-foreground ${boostMode ? "pr-8 sm:pr-10" : ""}`}
         aria-label="Site links"
       >
-        <HoverCalloutTooltip
-          label={t("languageSelector.ariaLabel")}
-          side="top"
-        >
-          <LanguageSelector
-            buttonClassName={START_FOOTER_LANGUAGE_BTN}
-            iconClassName="w-3.5 h-3.5 shrink-0"
-            menuAlign="start"
-          />
-        </HoverCalloutTooltip>
+        <LanguageSelector
+          buttonClassName={START_FOOTER_LANGUAGE_BTN}
+          iconClassName="w-3.5 h-3.5 shrink-0"
+          menuAlign="start"
+        />
         <div className="flex flex-wrap justify-end items-center gap-x-3 gap-y-1.5">
           {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
             const { href, title } = GAME_FOOTER_RIGHT_ICON_LINKS[platform];

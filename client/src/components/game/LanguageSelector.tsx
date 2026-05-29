@@ -5,6 +5,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { Globe } from "lucide-react";
 import { useLocale } from "@/i18n/useLocale";
 import { useTranslation } from "react-i18next";
@@ -25,16 +26,18 @@ export default function LanguageSelector({
 
   return (
     <DropdownMenu modal={false}>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="xs"
-          className={buttonClassName}
-          aria-label={t("languageSelector.ariaLabel")}
-        >
-          <Globe className={iconClassName} aria-hidden />
-        </Button>
-      </DropdownMenuTrigger>
+      <HoverCalloutTooltip label={t("languageSelector.ariaLabel")} side="top">
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            size="xs"
+            className={buttonClassName}
+            aria-label={t("languageSelector.ariaLabel")}
+          >
+            <Globe className={iconClassName} aria-hidden />
+          </Button>
+        </DropdownMenuTrigger>
+      </HoverCalloutTooltip>
       <DropdownMenuContent align={menuAlign} className="w-max min-w-0 text-xs">
         {locales.map((code) => (
           <DropdownMenuItem
