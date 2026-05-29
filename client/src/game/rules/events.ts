@@ -162,6 +162,8 @@ export interface LogEntry {
   fallbackChoice?: EventChoice;
   skipSound?: boolean; // Skip playing sound for this event
   skipEventLog?: boolean; // Skip adding to visible event log
+  /** Event log panel: white unread dot instead of red. */
+  newVillagers?: boolean;
   relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[]; // Stats relevant to event odds
   // Timed tab properties
   showAsTimedTab?: boolean;

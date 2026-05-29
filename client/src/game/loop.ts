@@ -1338,6 +1338,7 @@ function handleStrangerApproach() {
       logVars: useMultiStrangerMessages ? { count: strangersCount } : undefined,
       timestamp: Date.now(),
       type: "system",
+      newVillagers: true,
     });
 
     // Play new villager sound

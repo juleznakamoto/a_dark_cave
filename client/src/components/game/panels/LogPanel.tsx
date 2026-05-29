@@ -4,17 +4,20 @@ import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
 import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
 import { GAME_CONSTANTS } from "@/game/constants";
-import { resolveLogPanelMessage } from "@/i18n/logDisplay";
+import {
+  isNewVillagerLogEntry,
+  resolveLogPanelMessage,
+} from "@/i18n/logDisplay";
 
 // Extended log entry type to support "production" type if it exists in the data
 type ExtendedLogEntry =
   | LogEntry
   | {
-      message: string;
-      type: "production";
-      id: string;
-      timestamp: number;
-    };
+    message: string;
+    type: "production";
+    id: string;
+    timestamp: number;
+  };
 
 function LogPanel() {
   const { i18n } = useTranslation("ui");
@@ -68,6 +71,7 @@ function LogPanel() {
 
               const isUnread = !readEntries.has(typedEntry.id);
               const showNewIndicator = isUnread;
+              const isNewVillager = isNewVillagerLogEntry(typedEntry as LogEntry);
               const blinkClass = isUnread ? "animate-pulse" : "";
 
               const handleMouseEnter = () => {
@@ -84,7 +88,8 @@ function LogPanel() {
                 >
                   {showNewIndicator ? (
                     <span
-                      className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary"
+                      className={`mt-2 h-1 w-1 shrink-0 rounded-full ${isNewVillager ? "bg-white" : "bg-primary"
+                        }`}
                       aria-hidden={true}
                     />
                   ) : (

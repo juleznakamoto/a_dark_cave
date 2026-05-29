@@ -1227,6 +1227,7 @@ export function handleRisingSmoke(
       message: successMessage,
       timestamp: Date.now(),
       type: "system",
+      ...(added > 0 && { newVillagers: true }),
     });
   } else {
     const rs = CRUEL_MODE.forestScout.risingSmoke.failureDeaths;

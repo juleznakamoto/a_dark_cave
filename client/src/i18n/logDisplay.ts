@@ -295,6 +295,31 @@ const LEGACY_SYSTEM_LOG_MATCHERS: PatternMatcher[] = [
   },
 ];
 
+function isStrangerLogKey(logKey: string): boolean {
+  return logKey.startsWith("stranger.");
+}
+
+/** English fallbacks / combined action lines where population increased. */
+function messageIndicatesNewVillagers(message: string): boolean {
+  for (const { pattern, resolve } of LEGACY_SYSTEM_LOG_MATCHERS) {
+    const match = message.match(pattern);
+    if (!match) continue;
+    const { logKey } = resolve(match);
+    if (isStrangerLogKey(logKey)) return true;
+  }
+  return /captives? from the camp choose? to join the village\.?$/.test(message);
+}
+
+/** True when a log row describes new villagers joining (white dot in event log). */
+export function isNewVillagerLogEntry(entry: LogEntry): boolean {
+  if (entry.newVillagers) return true;
+  if (entry.logKey && isStrangerLogKey(entry.logKey)) return true;
+  if (entry.id.startsWith("stranger-approaches-")) return true;
+  const message = entry.message?.trim();
+  if (message && messageIndicatesNewVillagers(message)) return true;
+  return false;
+}
+
 const LEGACY_ACTION_LOG_MESSAGES: Array<{
   actionId: string;
   logKey: string;
