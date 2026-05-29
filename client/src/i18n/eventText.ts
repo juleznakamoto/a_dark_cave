@@ -20,7 +20,10 @@ function tEvent(
   const key = eventKey(catalogId, suffix);
   if (i18n.exists(key)) {
     const result = i18n.t(key, options as Record<string, unknown>);
-    return typeof result === "string" ? result : "";
+    if (typeof result !== "string" || isI18nReturnedObjectError(result)) {
+      return "";
+    }
+    return result;
   }
   return "";
 }
@@ -136,7 +139,11 @@ export function resolveEventChoiceLabel(
   choiceId: string,
   vars?: TranslateOptions,
 ): string {
-  return tEvent(catalogId, `choices.${choiceId}.label`, vars);
+  const prefix = `choices.${choiceId}.label`;
+  if (hasNestedCatalogKey(catalogId, prefix)) {
+    return "";
+  }
+  return tEvent(catalogId, prefix, vars);
 }
 
 export function resolveEventChoiceCost(
@@ -179,6 +186,10 @@ function resolveLocalizedEventChoiceLabel(
     const baseLabel = resolveEventChoiceLabel(catalogId, choiceId, vars);
     if (baseLabel) return baseLabel;
     return variant;
+  }
+
+  if (typeof labelDef === "string" && labelDef && !isI18nReturnedObjectError(labelDef)) {
+    return labelDef;
   }
 
   const localized = resolveEventChoiceLabel(catalogId, choiceId, vars);

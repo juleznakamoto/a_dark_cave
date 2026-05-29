@@ -495,10 +495,8 @@ export default function TimedEventPanel() {
               });
 
               // Evaluate label if it's a function
-              let labelText =
-                typeof choice.label === "function"
-                  ? choice.label(gameState)
-                  : choice.label;
+              const labelText =
+                typeof choice.label === "string" ? choice.label : "";
 
               const isPurchased =
                 isMerchantEvent &&

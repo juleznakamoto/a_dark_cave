@@ -357,10 +357,8 @@ export default function EventDialog({
                   isDisabled = true;
                 }
 
-                // Evaluate label if it's a function
-                const labelText = typeof choice.label === 'function'
-                  ? choice.label(gameState)
-                  : choice.label;
+                const labelText =
+                  typeof choice.label === "string" ? choice.label : "";
 
                 // Calculate success percentage if available and book_of_war is owned
                 let successPercentage: string | null = null;

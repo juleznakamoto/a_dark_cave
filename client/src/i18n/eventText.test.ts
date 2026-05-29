@@ -163,4 +163,65 @@ describe("localizeEventChoices", () => {
       ),
     ).toBe("Der geheimnisvolle Mann");
   });
+
+  it("resolves mysteriousWoman choice labels from gender variant catalog keys", () => {
+    const choices: EventChoice[] = [
+      {
+        id: "allowStay",
+        label: (s: GameState) => (s.g === "m" ? "woman" : "man"),
+        effect: () => ({}),
+      },
+      {
+        id: "refuseStay",
+        label: (s: GameState) => (s.g === "m" ? "woman" : "man"),
+        effect: () => ({}),
+      },
+    ];
+    const state = { g: "m" } as GameState;
+
+    const localized = localizeEventChoices(
+      "mysteriousWoman",
+      choices,
+      state,
+    );
+
+    expect(localized![0].label).toBe("Let her stay");
+    expect(localized![1].label).toBe("Refuse her");
+  });
+
+  it("preserves already-localized mysteriousWoman labels on second pass", () => {
+    const alreadyLocalized: EventChoice[] = [
+      { id: "allowStay", label: "Let her stay", effect: () => ({}) },
+      { id: "refuseStay", label: "Refuse her", effect: () => ({}) },
+    ];
+
+    const relocalized = localizeEventChoices(
+      "mysteriousWoman",
+      alreadyLocalized,
+      { g: "m" } as GameState,
+    );
+
+    expect(relocalized![0].label).toBe("Let her stay");
+    expect(relocalized![1].label).toBe("Refuse her");
+    expect(String(relocalized![0].label)).not.toContain("returned an object");
+  });
+
+  it("preserves offerToTheForestGods sacrifice label on second pass", () => {
+    const alreadyLocalized: EventChoice[] = [
+      {
+        id: "sacrifice",
+        label: "Sacrifice 4 villagers",
+        effect: () => ({}),
+      },
+    ];
+
+    const relocalized = localizeEventChoices(
+      "offerToTheForestGods",
+      alreadyLocalized,
+      { cruelMode: false } as GameState,
+    );
+
+    expect(relocalized![0].label).toBe("Sacrifice 4 villagers");
+    expect(String(relocalized![0].label)).not.toContain("returned an object");
+  });
 });
