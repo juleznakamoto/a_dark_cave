@@ -72,5 +72,8 @@
     "hintPrefix": "Utilisez ",
     "hintSuffix": " ou les touches ci-dessous pour changer d'onglet"
   },
+  "villageHotkeyTutorial": {
+    "dismiss": "Fermer"
+  },
   "never": "Jamais"
 }

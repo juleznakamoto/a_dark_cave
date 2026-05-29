@@ -72,5 +72,8 @@
     "hintPrefix": "Use ",
     "hintSuffix": " or keys below to switch between tabs"
   },
+  "villageHotkeyTutorial": {
+    "dismiss": "Dismiss"
+  },
   "never": "Never"
 }

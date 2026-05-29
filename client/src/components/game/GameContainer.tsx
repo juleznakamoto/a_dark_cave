@@ -32,7 +32,7 @@ import RewardDialog from "./RewardDialog";
 import InvestmentResultDialog from "./InvestmentResultDialog";
 import MadnessDialog from "./MadnessDialog";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
-import { Mountain, Trees, Castle, Landmark } from "lucide-react";
+import { Mountain, Trees, Castle, Landmark, X } from "lucide-react";
 import ProfileMenu from "./ProfileMenu";
 import InviteFriendsFloatingButton from "./InviteFriendsFloatingButton";
 import { startVersionCheck, stopVersionCheck } from "@/game/versionCheck";
@@ -112,6 +112,14 @@ export default function GameContainer() {
   const [pauseHotkeyBadges, setPauseHotkeyBadges] = useState<
     { key: string; left: number; top: number; label: string }[]
   >([]);
+  const [villageHotkeyTutorialOpen, setVillageHotkeyTutorialOpen] =
+    useState(false);
+  const [hotkeyOverlayBox, setHotkeyOverlayBox] = useState<{
+    top: number;
+    left: number;
+    width: number;
+    height: number;
+  } | null>(null);
 
   // Compute unclaimed achievements for tab blink.
   // Subscribe to the specific slices that affect achievement progress so the memo re-runs.
@@ -289,6 +297,7 @@ export default function GameContainer() {
 
     if (!prev.villageUnlocked && flags.villageUnlocked) {
       newAnimations.add("village");
+      setVillageHotkeyTutorialOpen(true);
     }
     if (!prev.forestUnlocked && flags.forestUnlocked) {
       newAnimations.add("forest");
@@ -548,10 +557,25 @@ export default function GameContainer() {
     setShopDialogOpen(true);
   }, [clearTabAnimation, setShopDialogOpen]);
 
-  const measurePauseHotkeyOverlay = useCallback(() => {
-    if (!isPaused || useLimelightNav) {
+  const closeVillageHotkeyTutorial = useCallback(() => {
+    setVillageHotkeyTutorialOpen(false);
+  }, []);
+
+  useEffect(() => {
+    if (!villageHotkeyTutorialOpen) return;
+    const id = window.setTimeout(closeVillageHotkeyTutorial, 60_000);
+    return () => window.clearTimeout(id);
+  }, [villageHotkeyTutorialOpen, closeVillageHotkeyTutorial]);
+
+  const showTabHotkeyOverlay =
+    (isPaused || villageHotkeyTutorialOpen) && !useLimelightNav;
+  const showVillageHotkeyBox = villageHotkeyTutorialOpen && !isPaused;
+
+  const measureTabHotkeyOverlay = useCallback(() => {
+    if (!showTabHotkeyOverlay) {
       setPauseHotkeyHint(null);
       setPauseHotkeyBadges([]);
+      setHotkeyOverlayBox(null);
       return;
     }
     // Match Tailwind `md:` — do not show hotkey hint/badges on small viewports
@@ -561,12 +585,14 @@ export default function GameContainer() {
     ) {
       setPauseHotkeyHint(null);
       setPauseHotkeyBadges([]);
+      setHotkeyOverlayBox(null);
       return;
     }
     const row = tabButtonRowRef.current;
     if (!row) {
       setPauseHotkeyHint(null);
       setPauseHotkeyBadges([]);
+      setHotkeyOverlayBox(null);
       return;
     }
     const rowRect = row.getBoundingClientRect();
@@ -605,27 +631,61 @@ export default function GameContainer() {
       }
     }
     setPauseHotkeyBadges(next);
-  }, [isPaused, useLimelightNav, visibleHotkeyTabs, traderUnlocked]);
+
+    if (showVillageHotkeyBox) {
+      const hintTop = Math.max(4, navRect.top - 42);
+      const hintLeft = rowRect.left + rowRect.width / 2;
+      let minLeft = rowRect.left;
+      let maxRight = rowRect.right;
+      let minTop = hintTop - 18;
+      const maxBottom = rowRect.bottom;
+      next.forEach((b) => {
+        minLeft = Math.min(minLeft, b.left - 24);
+        maxRight = Math.max(maxRight, b.left + 24);
+        minTop = Math.min(minTop, b.top - 16);
+      });
+      const hintHalfWidth = 160;
+      minLeft = Math.min(minLeft, hintLeft - hintHalfWidth);
+      maxRight = Math.max(maxRight, hintLeft + hintHalfWidth);
+      const padX = 10;
+      const padTop = 22;
+      const padBottom = 8;
+      setHotkeyOverlayBox({
+        top: minTop - padTop,
+        left: minLeft - padX,
+        width: maxRight - minLeft + padX * 2,
+        height: maxBottom - minTop + padTop + padBottom,
+      });
+    } else {
+      setHotkeyOverlayBox(null);
+    }
+  }, [
+    showTabHotkeyOverlay,
+    showVillageHotkeyBox,
+    useLimelightNav,
+    visibleHotkeyTabs,
+    traderUnlocked,
+  ]);
 
   useLayoutEffect(() => {
-    if (!isPaused) {
-      measurePauseHotkeyOverlay();
+    if (!showTabHotkeyOverlay) {
+      measureTabHotkeyOverlay();
       return;
     }
     const id = requestAnimationFrame(() => {
-      measurePauseHotkeyOverlay();
+      measureTabHotkeyOverlay();
     });
     return () => cancelAnimationFrame(id);
-  }, [isPaused, measurePauseHotkeyOverlay]);
+  }, [showTabHotkeyOverlay, measureTabHotkeyOverlay]);
 
   useEffect(() => {
-    if (!isPaused) return;
+    if (!showTabHotkeyOverlay) return;
     const onResize = () => {
-      measurePauseHotkeyOverlay();
+      measureTabHotkeyOverlay();
     };
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
-  }, [isPaused, measurePauseHotkeyOverlay]);
+  }, [showTabHotkeyOverlay, measureTabHotkeyOverlay]);
 
   useEffect(() => {
     if (!flags.gameStarted) return;
@@ -716,15 +776,40 @@ export default function GameContainer() {
         />
       )}
 
-      {isPaused && !useLimelightNav && (
+      {showTabHotkeyOverlay && (
         <div
           className="pointer-events-none fixed inset-x-0 z-[45] hidden md:block"
           style={{ top: 0, bottom: "45px" }}
-          aria-hidden
+          aria-hidden={!showVillageHotkeyBox}
         >
+          {showVillageHotkeyBox && hotkeyOverlayBox != null && (
+            <div
+              className="absolute bg-black/75 pointer-events-auto"
+              style={{
+                top: hotkeyOverlayBox.top,
+                left: hotkeyOverlayBox.left,
+                width: hotkeyOverlayBox.width,
+                height: hotkeyOverlayBox.height,
+              }}
+              data-testid="village-hotkey-tutorial-box"
+            >
+              <button
+                type="button"
+                className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
+                aria-label={t("villageHotkeyTutorial.dismiss", {
+                  ns: "ui",
+                  defaultValue: "Dismiss",
+                })}
+                data-testid="village-hotkey-tutorial-dismiss"
+                onClick={closeVillageHotkeyTutorial}
+              >
+                <X className="h-2.5 w-2.5 stroke-[3]" />
+              </button>
+            </div>
+          )}
           {pauseHotkeyHint != null && (
             <div
-              className="pause-hotkey-hint-animated absolute whitespace-nowrap px-2 text-center text-xs leading-snug text-foreground drop-shadow"
+              className="pause-hotkey-hint-animated absolute z-[1] max-w-[min(100vw-1rem,28rem)] px-2 text-center text-xs leading-snug text-foreground drop-shadow"
               style={{
                 top: pauseHotkeyHint.top,
                 left: pauseHotkeyHint.left,
@@ -745,7 +830,7 @@ export default function GameContainer() {
           {pauseHotkeyBadges.map((b) => (
             <span
               key={b.key}
-              className="pause-hotkey-badge-animated absolute text-xs font-semibold text-foreground drop-shadow"
+              className="pause-hotkey-badge-animated absolute z-[1] text-xs font-semibold text-foreground drop-shadow"
               style={{
                 left: b.left,
                 top: b.top,

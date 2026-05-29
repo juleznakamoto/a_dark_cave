@@ -72,5 +72,8 @@
     "hintPrefix": "Nutze ",
     "hintSuffix": " oder die Tasten unten zum Wechseln zwischen Tabs"
   },
+  "villageHotkeyTutorial": {
+    "dismiss": "Schließen"
+  },
   "never": "Nie"
 }

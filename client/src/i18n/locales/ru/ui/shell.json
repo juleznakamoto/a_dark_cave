@@ -72,5 +72,8 @@
     "hintPrefix": "Используйте ",  //x3.0
     "hintSuffix": " или клавиши ниже для переключения между вкладками"  //x1.4
   },
+  "villageHotkeyTutorial": {
+    "dismiss": "Закрыть"
+  },
   "never": "Никогда"
 }

@@ -72,5 +72,8 @@
     "hintPrefix": "Usa ",
     "hintSuffix": " o las teclas de abajo para cambiar entre pestañas"  //x1.4
   },
+  "villageHotkeyTutorial": {
+    "dismiss": "Cerrar"
+  },
   "never": "Nunca"
 }

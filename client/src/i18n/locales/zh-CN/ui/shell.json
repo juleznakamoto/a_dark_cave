@@ -72,5 +72,8 @@
     "hintPrefix": "使用 ",
     "hintSuffix": " 或下方按键切换标签页"
   },
+  "villageHotkeyTutorial": {
+    "dismiss": "关闭"
+  },
   "never": "从未"
 }
