@@ -551,7 +551,7 @@ export const caveExploreActions: Record<string, Action> = {
       "buildings.blacksmith": 0,
     },
     cost: {
-      "resources.torch": 3,
+      "resources.torch": 2,
     },
     effects: {
       "resources.wood": "random(5,10)",
