@@ -114,6 +114,13 @@ export default function GameContainer() {
   >([]);
   const [villageHotkeyTutorialOpen, setVillageHotkeyTutorialOpen] =
     useState(false);
+  const [villageHotkeyBoxLayout, setVillageHotkeyBoxLayout] = useState<{
+    top: number;
+    left: number;
+    width: number;
+    height: number;
+    badges: { key: string; left: number; label: string }[];
+  } | null>(null);
 
   // Compute unclaimed achievements for tab blink.
   // Subscribe to the specific slices that affect achievement progress so the memo re-runs.
@@ -598,6 +605,7 @@ export default function GameContainer() {
     if (!showTabHotkeyOverlay) {
       setPauseHotkeyHint(null);
       setPauseHotkeyBadges([]);
+      setVillageHotkeyBoxLayout(null);
       return;
     }
     // Match Tailwind `md:` — do not show hotkey hint/badges on small viewports
@@ -607,12 +615,14 @@ export default function GameContainer() {
     ) {
       setPauseHotkeyHint(null);
       setPauseHotkeyBadges([]);
+      setVillageHotkeyBoxLayout(null);
       return;
     }
     const row = tabButtonRowRef.current;
     if (!row) {
       setPauseHotkeyHint(null);
       setPauseHotkeyBadges([]);
+      setVillageHotkeyBoxLayout(null);
       return;
     }
     const rowRect = row.getBoundingClientRect();
@@ -651,7 +661,42 @@ export default function GameContainer() {
       }
     }
     setPauseHotkeyBadges(next);
-  }, [showTabHotkeyOverlay, useLimelightNav, visibleHotkeyTabs, traderUnlocked]);
+
+    if (showVillageHotkeyBox && next.length > 0) {
+      const hintTop = Math.max(4, navRect.top - 42);
+      let minLeft = rowRect.left;
+      let maxRight = rowRect.right;
+      next.forEach((b) => {
+        minLeft = Math.min(minLeft, b.left - 20);
+        maxRight = Math.max(maxRight, b.left + 20);
+      });
+      const padX = 10;
+      const boxLeft = minLeft - padX;
+      const boxWidth = maxRight - minLeft + padX * 2;
+      const boxTop = hintTop - 6;
+      const boxBottom = rowRect.top - 2;
+      const boxHeight = Math.max(0, boxBottom - boxTop);
+      setVillageHotkeyBoxLayout({
+        top: boxTop,
+        left: boxLeft,
+        width: boxWidth,
+        height: boxHeight,
+        badges: next.map((b) => ({
+          key: b.key,
+          label: b.label,
+          left: b.left - boxLeft,
+        })),
+      });
+    } else {
+      setVillageHotkeyBoxLayout(null);
+    }
+  }, [
+    showTabHotkeyOverlay,
+    showVillageHotkeyBox,
+    useLimelightNav,
+    visibleHotkeyTabs,
+    traderUnlocked,
+  ]);
 
   useLayoutEffect(() => {
     if (!showTabHotkeyOverlay) {
@@ -746,6 +791,20 @@ export default function GameContainer() {
   const tabIconButtonClass =
     "inline-flex h-10 items-end justify-center bg-transparent pb-3 text-sm font-normal leading-none";
 
+  const pauseHotkeyHintContent = (
+    <>
+      <span>{t("pauseHotkey.hintPrefix", { ns: "ui" })}</span>
+      <span className="text-sm font-medium">←</span>
+      <span> </span>
+      <span className="text-sm font-medium">→</span>
+      <span> or </span>
+      <span className="text-sm font-medium">A</span>
+      <span> </span>
+      <span className="text-sm font-medium">D</span>
+      <span>{t("pauseHotkey.hintSuffix", { ns: "ui" })}</span>
+    </>
+  );
+
   return (
     <div
       className="fixed inset-0 bg-background text-foreground flex flex-col"
@@ -768,41 +827,45 @@ export default function GameContainer() {
           style={{ top: 0, bottom: "45px" }}
           aria-hidden={!showVillageHotkeyBox}
         >
-          {pauseHotkeyHint != null && showVillageHotkeyBox && (
+          {showVillageHotkeyBox && villageHotkeyBoxLayout != null && (
             <div
-              className="absolute z-[1] pointer-events-auto"
+              className="absolute z-[1] pointer-events-auto bg-black/60"
               style={{
-                top: pauseHotkeyHint.top,
-                left: pauseHotkeyHint.left,
-                transform: "translateX(-50%)",
+                top: villageHotkeyBoxLayout.top,
+                left: villageHotkeyBoxLayout.left,
+                width: villageHotkeyBoxLayout.width,
+                height: villageHotkeyBoxLayout.height,
               }}
               data-testid="village-hotkey-tutorial-box"
             >
-              <div className="relative bg-black/75 max-w-[min(100vw-1rem,28rem)] px-3 py-2">
-                <button
-                  type="button"
-                  className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
-                  aria-label={t("villageHotkeyTutorial.dismiss", {
-                    ns: "ui",
-                    defaultValue: "Dismiss",
-                  })}
-                  data-testid="village-hotkey-tutorial-dismiss"
-                  onClick={closeVillageHotkeyTutorial}
-                >
-                  <X className="h-2.5 w-2.5 stroke-[3]" />
-                </button>
-                <div className="pause-hotkey-hint-animated pr-4 text-center text-xs leading-snug text-foreground drop-shadow">
-                  <span>{t("pauseHotkey.hintPrefix", { ns: "ui" })}</span>
-                  <span className="text-sm font-medium">←</span>
-                  <span> </span>
-                  <span className="text-sm font-medium">→</span>
-                  <span> or </span>
-                  <span className="text-sm font-medium">A</span>
-                  <span> </span>
-                  <span className="text-sm font-medium">D</span>
-                  <span>{t("pauseHotkey.hintSuffix", { ns: "ui" })}</span>
-                </div>
+              <button
+                type="button"
+                className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
+                aria-label={t("villageHotkeyTutorial.dismiss", {
+                  ns: "ui",
+                  defaultValue: "Dismiss",
+                })}
+                data-testid="village-hotkey-tutorial-dismiss"
+                onClick={closeVillageHotkeyTutorial}
+              >
+                <X className="h-2.5 w-2.5 stroke-[3]" />
+              </button>
+              <div className="pause-hotkey-hint-animated whitespace-nowrap px-2 text-center text-xs leading-snug text-foreground drop-shadow">
+                {pauseHotkeyHintContent}
               </div>
+              {villageHotkeyBoxLayout.badges.map((b) => (
+                <span
+                  key={b.key}
+                  className="pause-hotkey-badge-animated absolute text-xs font-semibold text-foreground drop-shadow"
+                  style={{
+                    left: b.left,
+                    bottom: 2,
+                    transform: "translate(-50%, -100%)",
+                  }}
+                >
+                  {b.label}
+                </span>
+              ))}
             </div>
           )}
           {pauseHotkeyHint != null && !showVillageHotkeyBox && (
@@ -814,30 +877,23 @@ export default function GameContainer() {
                 transform: "translateX(-50%)",
               }}
             >
-              <span>{t("pauseHotkey.hintPrefix", { ns: "ui" })}</span>
-              <span className="text-sm font-medium">←</span>
-              <span> </span>
-              <span className="text-sm font-medium">→</span>
-              <span> or </span>
-              <span className="text-sm font-medium">A</span>
-              <span> </span>
-              <span className="text-sm font-medium">D</span>
-              <span>{t("pauseHotkey.hintSuffix", { ns: "ui" })}</span>
+              {pauseHotkeyHintContent}
             </div>
           )}
-          {pauseHotkeyBadges.map((b) => (
-            <span
-              key={b.key}
-              className="pause-hotkey-badge-animated absolute z-[1] text-xs font-semibold text-foreground drop-shadow"
-              style={{
-                left: b.left,
-                top: b.top,
-                transform: "translate(-50%, -100%)",
-              }}
-            >
-              {b.label}
-            </span>
-          ))}
+          {!showVillageHotkeyBox &&
+            pauseHotkeyBadges.map((b) => (
+              <span
+                key={b.key}
+                className="pause-hotkey-badge-animated absolute z-[1] text-xs font-semibold text-foreground drop-shadow"
+                style={{
+                  left: b.left,
+                  top: b.top,
+                  transform: "translate(-50%, -100%)",
+                }}
+              >
+                {b.label}
+              </span>
+            ))}
         </div>
       )}
 
