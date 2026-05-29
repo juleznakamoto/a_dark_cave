@@ -33,33 +33,33 @@
     "merchantBlocked": "Le marchand ne peut pas être appelé tant qu'un autre événement est actif",
     "merchantAvailableIn": "Disponible dans {{time}}",
     "investCompleteIn": "Investissement terminé dans {{time}}",
-    "investAvailableIn": "Investissements disponibles dans {{time}}",  //x1.2
+    "investAvailableIn": "Investissements disponibles dans {{time}}", //x1.2
     "investPreparing": "Préparation des offres d'investissement…",
     "jobs": {
       "gatherer": "Collecteur",
       "hunter": "Chasseur",
       "iron_miner": "Mineur de fer",
       "coal_miner": "Mineur de charbon",
-      "steel_forger": "Forgeron d'acier",  //x1.3
-      "blacksteel_forger": "Forgeron d'acier noir",  //x1.2
+      "steel_forger": "Forgeron d'acier", //x1.3
+      "blacksteel_forger": "Forgeron d'acier noir", //x1.2
       "sulfur_miner": "Mineur de soufre",
-      "obsidian_miner": "Mineur d'obsidienne",  //x1.4
+      "obsidian_miner": "Mineur d'obsidienne", //x1.4
       "adamant_miner": "Mineur d'adamantine",
-      "moonstone_miner": "Mineur de pierre de lune",  //x1.6
-      "powder_maker": "Fabricant de poudre",  //x1.6
-      "ashfire_dust_maker": "Fabricant de poussière de feu cendré",  //x2.0
+      "moonstone_miner": "Mineur de pierre de lune", //x1.6
+      "powder_maker": "Fabricant de poudre", //x1.6
+      "ashfire_dust_maker": "Fabricant de poussière de feu cendré", //x2.0
       "tanner": "Tanneur"
     }
   },
   "estate": {
     "rest": "Repos",
     "sleep": "Dormir",
-    "focus": "Concentration",  //x2.6
+    "focus": "Concentration", //x2.6
     "sleepTooltipReady": "Laissez le monde avancer en votre absence",
-    "sleepTooltipBlocked": "Nécessite une production positive de bois et de nourriture",  //x1.4
-    "focusRewardTooltip_one": "Obtenez des récompenses x2 sur les actions pendant {{count}} minute",  //x1.5
-    "focusRewardTooltip_other": "Obtenez des récompenses x2 sur les actions pendant {{count}} minutes",  //x1.4
-    "focusPointTooltip": "Gagnez 1 point de concentration par heure de sommeil",  //x1.4
+    "sleepTooltipBlocked": "Nécessite une production positive de bois et de nourriture", //x1.4
+    "focusRewardTooltip_one": "Obtenez des récompenses x2 sur les actions pendant {{count}} minute", //x1.5
+    "focusRewardTooltip_other": "Obtenez des récompenses x2 sur les actions pendant {{count}} minutes", //x1.4
+    "focusPointTooltip": "Gagnez 1 point de concentration par heure de sommeil", //x1.4
     "sleepLength": "Durée du sommeil",
     "sleepLengthTooltip": "Heures max. par sommeil",
     "sleepIntensity": "Intensité du sommeil",
@@ -71,15 +71,15 @@
     "bloodflameSphere": "Sphère de flamme sanglante",
     "disgracedPrior": "Prieur déchu",
     "crowsEye": "Œil du corbeau",
-    "maxLevel": "Niveau max.",  //x1.2
+    "maxLevel": "Niveau max.", //x1.2
     "improve": "Améliorer",
     "upkeepPerCycle": "{{amount}} nourriture d'entretien par action assignée par cycle",
-    "skillFoodPerHunter": "+{{amount}} nourriture par chasseur",  //x1.3
-    "skillFurPerHunter": "+{{amount}} fourrure par chasseur",  //x1.3
+    "skillFoodPerHunter": "+{{amount}} nourriture par chasseur", //x1.3
+    "skillFurPerHunter": "+{{amount}} fourrure par chasseur", //x1.3
     "skillBonesPerHunter": "+{{amount}} os par chasseur",
     "skillHuntBonus": "+{{amount}} % de bonus de chasse",
-    "skillHunterFood": "Chasseur : +{{amount}} nourriture",  //x1.4
-    "skillFurBonus": "+{{amount}} fourrure",  //x1.3
+    "skillHunterFood": "Chasseur : +{{amount}} nourriture", //x1.4
+    "skillFurBonus": "+{{amount}} fourrure", //x1.3
     "skillBonesBonus": "+{{amount}} os",
     "skillDamageBonus": "+{{amount}} dégâts",
     "skillStunRound_one": "+{{amount}} tour d'étourdissement",
@@ -116,7 +116,7 @@
     "boneTotems": "Totems d'os",
     "leatherTotems": "Totems de cuir",
     "craftDiscount": "Réduction d'artisanat",
-    "buildDiscount": "Réduction de construction",  //x1.8
+    "buildDiscount": "Réduction de construction", //x1.8
     "doubleGainChance": "Chance de gain double"
   },
   "badges": {
@@ -127,8 +127,8 @@
     "nextBonus": "Prochain bonus :",
     "craftMultiplier": "Artisanat x{{amount}}",
     "bonusPercent": "+{{percent}} %",
-    "maxLevel": "niveau max.",  //x1.2
-    "executionTimeReduction": "-50 % de temps d'exécution"  //x1.4
+    "maxLevel": "niveau max.", //x1.2
+    "executionTimeReduction": "-50 % de temps d'exécution" //x1.4
   },
   "sidePanel": {
     "bastion": "Bastion",
@@ -142,21 +142,21 @@
     "clothing": "Vêtements",
     "relics": "Reliques",
     "schematics": "Schémas",
-    "blessings": "Bénédictions",  //x1.3
+    "blessings": "Bénédictions", //x1.3
     "buildings": "Bâtiments",
     "books": "Livres",
     "fellowship": "Compagnie",
-    "stats": "Statistiques",  //x2.4
+    "stats": "Statistiques", //x2.4
     "bonuses": "Bonus",
     "fortifications": "Fortifications",
     "combatItems": "Objets de combat",
     "mapFragments": "Fragments de carte",
     "craftDiscount": "Réduction d'artisanat",
-    "buildDiscount": "Réduction de construction",  //x1.8
+    "buildDiscount": "Réduction de construction", //x1.8
     "doubleGainChance": "Chance de gain double",
     "populationTooltip": "Chaque villageois consomme 1 nourriture et 1 bois",
     "resourceLimitMax": "max. {{limit}}",
-    "resourceLimitTooltip": "pas de limite pour l'argent et l'or",  //x1.4
+    "resourceLimitTooltip": "pas de limite pour l'argent et l'or", //x1.4
     "statsTooltip": "Les statistiques influencent l'issue des événements et deviennent ensuite importantes au combat.",
     "statLuckTooltip": "Incline la fortune en votre faveur",
     "statStrengthTooltip": "Aide là où les mots atteignent leurs limites",
@@ -165,7 +165,7 @@
     "madnessFromItems": "{{value}} des objets",
     "madnessFromBuildings": "{{value}} des bâtiments",
     "madnessFromEvents": "{{value}} des événements",
-    "bastionDefenseTooltip": "Réduit les dégâts entrants",
+    "bastionDefenseTooltip": "Réduit les dégâts entrants pendant le combat",
     "bastionIntegrityTooltip": "Si l'intégrité atteint 0, vous perdez le combat",
     "bastionAttackTooltip": "Dégâts infligés aux ennemis à chaque tour de combat",
     "bastionAttackFromFortifications": "{{value}} des fortifications",
@@ -179,13 +179,13 @@
     "completeLog": "Succès terminé : {{name}} : {{rewards}}"
   },
   "idleMode": {
-    "title": "Mode sommeil",  //x1.2
-    "sleeping": "En train de dormir",  //x2.3
-    "awake": "Vous êtes réveillé !",  //x1.4
+    "title": "Mode sommeil", //x1.2
+    "sleeping": "En train de dormir", //x2.3
+    "awake": "Vous êtes réveillé !", //x1.4
     "wakingIn": "Réveil dans : {{time}}",
-    "wake": "Se réveiller",  //x1.7
+    "wake": "Se réveiller", //x1.7
     "getUp": "Se lever",
-    "focusGainedLog": "Vous avez gagné {{count}} de concentration grâce à votre repos.",  //x1.5
+    "focusGainedLog": "Vous avez gagné {{count}} de concentration grâce à votre repos.", //x1.5
     "villagersProducedLog": "Les villageois ont produit : {{resources}}"
   }
 }

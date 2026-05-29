@@ -6855,9 +6855,9 @@
     "ru": "{{value}} от событий",
     "zh": "{{value}} 来自事件"
   },
-  "Reduces incoming damage": {
-    "ru": "Снижает входящий урон",
-    "zh": "减少受到的伤害"
+  "Reduces incoming damage during combat": {
+    "ru": "Снижает входящий урон в бою",
+    "zh": "战斗时减少受到的伤害"
   },
   "If integrity reaches 0, you lose the battle": {
     "ru": "При нулевой целостности вы проиграете бой",

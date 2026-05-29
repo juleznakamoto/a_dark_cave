@@ -165,7 +165,7 @@
     "madnessFromItems": "{{value}} from Items",
     "madnessFromBuildings": "{{value}} from Buildings",
     "madnessFromEvents": "{{value}} from Events",
-    "bastionDefenseTooltip": "Reduces incoming damage",
+    "bastionDefenseTooltip": "Reduces incoming damage during combat",
     "bastionIntegrityTooltip": "If integrity reaches 0, you lose the battle",
     "bastionAttackTooltip": "Damage you deal to enemies each combat round",
     "bastionAttackFromFortifications": "{{value}} from Fortifications",

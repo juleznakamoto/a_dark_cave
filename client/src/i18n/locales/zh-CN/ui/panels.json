@@ -165,7 +165,7 @@
     "madnessFromItems": "物品 {{value}}",
     "madnessFromBuildings": "建筑 {{value}}",
     "madnessFromEvents": "事件 {{value}}",
-    "bastionDefenseTooltip": "减少受到的伤害",
+    "bastionDefenseTooltip": "战斗时减少受到的伤害",
     "bastionIntegrityTooltip": "完整度归零则战败",
     "bastionAttackTooltip": "每回合对敌人造成的伤害",
     "bastionAttackFromFortifications": "{{value}} 来自防御工事",

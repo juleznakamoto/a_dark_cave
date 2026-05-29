@@ -5,7 +5,7 @@ import { logger } from "@/lib/logger";
 import type { LogEntry } from "@/game/rules/events";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import {
-  getSocialPlatformTitle,
+  getSocialPlatformName,
   type SocialPlatformConfig,
 } from "@/game/socialPlatforms";
 import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
@@ -48,14 +48,14 @@ export function claimSocialFollowReward(
 
   useGameStore.getState().updateResource("gold", reward);
 
-  const platformTitle = getSocialPlatformTitle(platformId, reward);
+  const platformName = getSocialPlatformName(platformId);
   const rewardLog: LogEntry = {
     id: `social-reward-claimed-${platformId}-${Date.now()}`,
     message: tWithFallback(
       "ui",
       "socialPrompt.followRewardLog",
-      `You received ${reward} Gold for following us on ${platformTitle}!`,
-      { amount: reward, platform: platformTitle },
+      `You received ${reward} Gold for following us on ${platformName}!`,
+      { amount: reward, platform: platformName },
     ),
     timestamp: Date.now(),
     type: "system",

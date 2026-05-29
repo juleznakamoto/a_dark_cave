@@ -43,11 +43,11 @@
       "steel_forger": "Стальщик",
       "blacksteel_forger": "Кузнец чёрной стали",
       "sulfur_miner": "Серосжигатель",
-      "obsidian_miner": "Обсидиановый шахтёр",  //x1.4
+      "obsidian_miner": "Обсидиановый шахтёр", //x1.4
       "adamant_miner": "Адамант-шахтёр",
-      "moonstone_miner": "Лунокаменный шахтёр",  //x1.3
+      "moonstone_miner": "Лунокаменный шахтёр", //x1.3
       "powder_maker": "Пороховник",
-      "ashfire_dust_maker": "Изготовитель пепельной пыли",  //x1.5
+      "ashfire_dust_maker": "Изготовитель пепельной пыли", //x1.5
       "tanner": "Дубильщик"
     }
   },
@@ -71,7 +71,7 @@
     "bloodflameSphere": "Сфера кровавого пламени",
     "disgracedPrior": "Падший приор",
     "crowsEye": "Глаз ворона",
-    "maxLevel": "Макс. уровень",  //x1.4
+    "maxLevel": "Макс. уровень", //x1.4
     "improve": "Улучшить",
     "upkeepPerCycle": "{{amount}} еды на содержание за назначенное действие за цикл",
     "skillFoodPerHunter": "+{{amount}} еды за охотника",
@@ -116,7 +116,7 @@
     "boneTotems": "Костяные тотемы",
     "leatherTotems": "Кожаные тотемы",
     "craftDiscount": "Скидка на создание",
-    "buildDiscount": "Скидка на строительство",  //x1.6
+    "buildDiscount": "Скидка на строительство", //x1.6
     "doubleGainChance": "Шанс двойного урожая"
   },
   "badges": {
@@ -127,8 +127,8 @@
     "nextBonus": "Следующий бонус:",
     "craftMultiplier": "Создание ×{{amount}}",
     "bonusPercent": "+{{percent}}%",
-    "maxLevel": "макс. уровень",  //x1.4
-    "executionTimeReduction": "-50% времени выполнения"  //x1.2
+    "maxLevel": "макс. уровень", //x1.4
+    "executionTimeReduction": "-50% времени выполнения" //x1.2
   },
   "sidePanel": {
     "bastion": "Бастион",
@@ -137,22 +137,22 @@
     "freeVillagers": "Свободные",
     "onExpedition": "В экспедиции",
     "resources": "Ресурсы",
-    "tools": "Инструменты",  //x2.2
+    "tools": "Инструменты", //x2.2
     "weapons": "Оружие",
     "clothing": "Одежда",
     "relics": "Реликвии",
     "schematics": "Чертежи",
-    "blessings": "Благословения",  //x1.4
+    "blessings": "Благословения", //x1.4
     "buildings": "Здания",
     "books": "Книги",
     "fellowship": "Спутники",
-    "stats": "Характеристики",  //x2.8
+    "stats": "Характеристики", //x2.8
     "bonuses": "Бонусы",
     "fortifications": "Укрепления",
     "combatItems": "Боевые предметы",
     "mapFragments": "Фрагменты карты",
     "craftDiscount": "Скидка на создание",
-    "buildDiscount": "Скидка на строительство",  //x1.6
+    "buildDiscount": "Скидка на строительство", //x1.6
     "doubleGainChance": "Шанс двойного урожая",
     "populationTooltip": "Каждый житель потребляет 1 еду и 1 древесину",
     "resourceLimitMax": "макс. {{limit}}",
@@ -165,7 +165,7 @@
     "madnessFromItems": "{{value}} от предметов",
     "madnessFromBuildings": "{{value}} от зданий",
     "madnessFromEvents": "{{value}} от событий",
-    "bastionDefenseTooltip": "Снижает входящий урон",
+    "bastionDefenseTooltip": "Снижает входящий урон в бою",
     "bastionIntegrityTooltip": "При нулевой целостности вы проиграете бой",
     "bastionAttackTooltip": "Урон врагам каждый боевой раунд",
     "bastionAttackFromFortifications": "{{value}} от укреплений",
@@ -182,7 +182,7 @@
     "title": "Режим сна",
     "sleeping": "Спит",
     "awake": "Вы проснулись!",
-    "wakingIn": "Пробуждение через: {{time}}",  //x1.2
+    "wakingIn": "Пробуждение через: {{time}}", //x1.2
     "wake": "Проснуться",
     "getUp": "Встать",
     "focusGainedLog": "Вы получили {{count}} фокуса за отдых.",

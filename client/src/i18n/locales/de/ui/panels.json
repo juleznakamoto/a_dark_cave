@@ -165,7 +165,7 @@
     "madnessFromItems": "{{value}} durch Gegenstände", //ok
     "madnessFromBuildings": "{{value}} durch Gebäude",
     "madnessFromEvents": "{{value}} durch Ereignisse", //ok
-    "bastionDefenseTooltip": "Verringert eingehenden Schaden", //ok
+    "bastionDefenseTooltip": "Verringert eingehenden Schaden im Kampf",
     "bastionIntegrityTooltip": "Erreicht die Integrität 0, verlierst du die Schlacht",
     "bastionAttackTooltip": "Schaden, den du Feinden in jeder Kampfrunde zufügst",
     "bastionAttackFromFortifications": "{{value}} durch Befestigungen",

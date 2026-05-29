@@ -39,6 +39,13 @@ export function getSocialPlatformTitle(
   );
 }
 
+export function getSocialPlatformName(
+  platformId: SocialPlatformConfig["id"],
+): string {
+  const fallback = platformId === "reddit" ? "Reddit" : "Instagram";
+  return tWithFallback("ui", `feedback.${platformId}`, fallback);
+}
+
 export function getSocialPlatformActionLabel(
   platformId: SocialPlatformConfig["id"],
 ): string {

@@ -197,7 +197,7 @@
   "ui.sidePanel.statMadnessTooltip": "Führt Gedanken auf gefährliche Pfade",
   "ui.sidePanel.madnessFromItems": "{{value}} durch Gegenstände",
   "ui.sidePanel.madnessFromEvents": "{{value}} durch Ereignisse",
-  "ui.sidePanel.bastionDefenseTooltip": "Verringert eingehenden Schaden",
+  "ui.sidePanel.bastionDefenseTooltip": "Verringert eingehenden Schaden im Kampf",
   "ui.sidePanel.bastionIntegrityTooltip": "Erreicht die Integrität 0, verlierst du die Schlacht",
   "ui.sidePanel.bastionAttackTooltip": "Schaden, den du Feinden in jeder Kampfrunde zufügst",
   "ui.sidePanel.bastionAttackFromFortifications": "{{value}} durch Befestigungen",
