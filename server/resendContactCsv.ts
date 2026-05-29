@@ -1,9 +1,14 @@
 /**
  * Build Resend Audience CSV strings from Supabase auth + marketing_preferences.
  * Used by the admin download endpoint and the optional CLI export script.
+ *
+ * Marketing CSV includes a per-contact `unsubscribe_url` (Supabase one-time token).
+ * In Resend: create a string Contact Property `unsubscribe_url`, map the CSV column,
+ * and use `{{{unsubscribe_url}}}` in broadcast HTML — not `{{{RESEND_UNSUBSCRIBE_URL}}}`.
  */
 
 import type { SupabaseClient, User } from "@supabase/supabase-js";
+import { createMarketingUnsubscribeUrl } from "./marketing";
 
 export type AdminClient = SupabaseClient;
 
@@ -11,6 +16,9 @@ const PAGE_SIZE = 1000;
 
 export const RESEND_MARKETING_CSV_FILENAME = "resend-marketing-opt-in.csv";
 export const RESEND_NO_MARKETING_CSV_FILENAME = "resend-no-marketing.csv";
+
+/** Resend Contact Property key for Supabase unsubscribe links in broadcast HTML. */
+export const RESEND_UNSUBSCRIBE_URL_PROPERTY = "unsubscribe_url";
 
 function namesFromMetadata(
   meta: User["user_metadata"] | undefined,
@@ -47,12 +55,60 @@ function csvCell(value: string): string {
 
 export type ResendContactRow = { email: string; first_name: string; last_name: string };
 
+export type ResendMarketingContactRow = ResendContactRow & {
+  user_id: string;
+  unsubscribe_url?: string;
+};
+
 export function rowsToResendContactCsv(rows: ResendContactRow[]): string {
   const header = ["email", "first_name", "last_name", "unsubscribed"].join(",");
   const lines = rows.map((r) =>
     [r.email, r.first_name, r.last_name, "false"].map(csvCell).join(","),
   );
   return `${header}\n${lines.join("\n")}\n`;
+}
+
+export function rowsToResendMarketingContactCsv(
+  rows: ResendMarketingContactRow[],
+): string {
+  const header = [
+    "email",
+    "first_name",
+    "last_name",
+    "unsubscribed",
+    RESEND_UNSUBSCRIBE_URL_PROPERTY,
+  ].join(",");
+  const lines = rows.map((r) => {
+    if (!r.unsubscribe_url?.trim()) {
+      throw new Error(
+        `Missing unsubscribe_url for marketing contact ${r.email}`,
+      );
+    }
+    return [r.email, r.first_name, r.last_name, "false", r.unsubscribe_url]
+      .map(csvCell)
+      .join(",");
+  });
+  return `${header}\n${lines.join("\n")}\n`;
+}
+
+const UNSUBSCRIBE_URL_BATCH_SIZE = 25;
+
+/** One-time Supabase unsubscribe token per marketing row (for Resend broadcast merge). */
+export async function attachUnsubscribeUrlsToMarketingRows(
+  admin: AdminClient,
+  rows: ResendMarketingContactRow[],
+): Promise<void> {
+  for (let i = 0; i < rows.length; i += UNSUBSCRIBE_URL_BATCH_SIZE) {
+    const chunk = rows.slice(i, i + UNSUBSCRIBE_URL_BATCH_SIZE);
+    await Promise.all(
+      chunk.map(async (row) => {
+        row.unsubscribe_url = await createMarketingUnsubscribeUrl(
+          admin,
+          row.user_id,
+        );
+      }),
+    );
+  }
 }
 
 async function fetchMarketingMap(admin: AdminClient): Promise<Map<string, boolean>> {
@@ -94,8 +150,8 @@ async function fetchAllAuthUsers(admin: AdminClient): Promise<User[]> {
 export function buildResendContactRows(
   users: User[],
   marketingByUserId: Map<string, boolean>,
-): { marketing: ResendContactRow[]; noMarketing: ResendContactRow[] } {
-  const marketing: ResendContactRow[] = [];
+): { marketing: ResendMarketingContactRow[]; noMarketing: ResendContactRow[] } {
+  const marketing: ResendMarketingContactRow[] = [];
   const noMarketing: ResendContactRow[] = [];
   const seenMarketing = new Set<string>();
   const seenNo = new Set<string>();
@@ -106,23 +162,27 @@ export function buildResendContactRows(
     const emailKey = emailRaw.toLowerCase();
     const optedIn = marketingByUserId.get(u.id) === true;
     const { first_name, last_name } = namesFromMetadata(u.user_metadata);
-    const row: ResendContactRow = {
-      email: emailRaw,
-      first_name,
-      last_name,
-    };
     if (optedIn) {
       if (seenMarketing.has(emailKey)) continue;
       seenMarketing.add(emailKey);
-      marketing.push(row);
+      marketing.push({
+        user_id: u.id,
+        email: emailRaw,
+        first_name,
+        last_name,
+      });
     } else {
       if (seenNo.has(emailKey)) continue;
       seenNo.add(emailKey);
-      noMarketing.push(row);
+      noMarketing.push({
+        email: emailRaw,
+        first_name,
+        last_name,
+      });
     }
   }
 
-  const byEmail = (a: ResendContactRow, b: ResendContactRow) =>
+  const byEmail = (a: { email: string }, b: { email: string }) =>
     a.email.localeCompare(b.email);
   marketing.sort(byEmail);
   noMarketing.sort(byEmail);
@@ -130,7 +190,7 @@ export function buildResendContactRows(
 }
 
 export async function loadResendContactRowsSplit(admin: AdminClient): Promise<{
-  marketing: ResendContactRow[];
+  marketing: ResendMarketingContactRow[];
   noMarketing: ResendContactRow[];
 }> {
   const marketingByUserId = await fetchMarketingMap(admin);
@@ -145,8 +205,9 @@ export async function buildResendContactCsvExports(admin: AdminClient): Promise<
   noMarketingCount: number;
 }> {
   const { marketing, noMarketing } = await loadResendContactRowsSplit(admin);
+  await attachUnsubscribeUrlsToMarketingRows(admin, marketing);
   return {
-    marketingCsv: rowsToResendContactCsv(marketing),
+    marketingCsv: rowsToResendMarketingContactCsv(marketing),
     noMarketingCsv: rowsToResendContactCsv(noMarketing),
     marketingCount: marketing.length,
     noMarketingCount: noMarketing.length,

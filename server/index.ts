@@ -15,6 +15,8 @@ import { getOrCreateReferralCode } from "./referralCodes";
 import {
   loadResendContactRowsSplit,
   rowsToResendContactCsv,
+  rowsToResendMarketingContactCsv,
+  attachUnsubscribeUrlsToMarketingRows,
   RESEND_MARKETING_CSV_FILENAME,
   RESEND_NO_MARKETING_CSV_FILENAME,
 } from "./resendContactCsv";
@@ -1489,15 +1491,19 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
       const adminClient = getAdminClient("prod");
       const { marketing, noMarketing } =
         await loadResendContactRowsSplit(adminClient);
-      const body =
-        file === "marketing"
-          ? rowsToResendContactCsv(marketing)
-          : rowsToResendContactCsv(noMarketing);
-      const rowCount = file === "marketing" ? marketing.length : noMarketing.length;
-      const filename =
-        file === "marketing"
-          ? RESEND_MARKETING_CSV_FILENAME
-          : RESEND_NO_MARKETING_CSV_FILENAME;
+      let body: string;
+      let rowCount: number;
+      let filename: string;
+      if (file === "marketing") {
+        await attachUnsubscribeUrlsToMarketingRows(adminClient, marketing);
+        body = rowsToResendMarketingContactCsv(marketing);
+        rowCount = marketing.length;
+        filename = RESEND_MARKETING_CSV_FILENAME;
+      } else {
+        body = rowsToResendContactCsv(noMarketing);
+        rowCount = noMarketing.length;
+        filename = RESEND_NO_MARKETING_CSV_FILENAME;
+      }
 
       res.setHeader("Cache-Control", "no-store");
       res.setHeader("Content-Type", "text/csv; charset=utf-8");

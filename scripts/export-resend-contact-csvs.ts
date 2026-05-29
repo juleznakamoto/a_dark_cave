@@ -10,9 +10,11 @@
  * Prefer the admin dashboard (production) for downloads so CSVs never touch the repo.
  *
  * Resend (manual after export):
- * 1. Create two Segments: https://resend.com/docs/dashboard/segments/introduction
- * 2. Audience → Add Contacts → Import CSV: https://resend.com/docs/dashboard/audiences/contacts
- *    Map columns to email, first_name, last_name, unsubscribed; assign each file to the matching Segment.
+ * 1. Audiences → Contact Properties → create string property `unsubscribe_url`
+ * 2. Create a Segment for marketing opt-in contacts
+ * 3. Audience → Add Contacts → Import CSV — map `unsubscribe_url` to that property
+ * 4. In broadcast HTML use `{{{unsubscribe_url}}}` (not `{{{RESEND_UNSUBSCRIBE_URL}}}`)
+ *    Unsubscribe hits https://a-dark-cave.com/unsubscribe and updates Supabase.
  */
 
 import { mkdirSync, writeFileSync } from "node:fs";
