@@ -119,8 +119,8 @@ export default function GameContainer() {
     left: number;
     width: number;
     height: number;
-    badges: { key: string; left: number; label: string }[];
   } | null>(null);
+  const rafIdsRef = useRef<number[]>([]);
 
   // Compute unclaimed achievements for tab blink.
   // Subscribe to the specific slices that affect achievement progress so the memo re-runs.
@@ -670,7 +670,16 @@ export default function GameContainer() {
         minLeft = Math.min(minLeft, b.left - 20);
         maxRight = Math.max(maxRight, b.left + 20);
       });
-      const padX = 10;
+      // Ensure the box also covers the (single-line) hint text width.
+      const hintEl = document.querySelector<HTMLElement>(
+        '[data-testid="village-hotkey-hint"]',
+      );
+      if (hintEl) {
+        const hr = hintEl.getBoundingClientRect();
+        minLeft = Math.min(minLeft, hr.left);
+        maxRight = Math.max(maxRight, hr.right);
+      }
+      const padX = 12;
       const boxLeft = minLeft - padX;
       const boxWidth = maxRight - minLeft + padX * 2;
       const boxTop = hintTop - 6;
@@ -681,11 +690,6 @@ export default function GameContainer() {
         left: boxLeft,
         width: boxWidth,
         height: boxHeight,
-        badges: next.map((b) => ({
-          key: b.key,
-          label: b.label,
-          left: b.left - boxLeft,
-        })),
       });
     } else {
       setVillageHotkeyBoxLayout(null);
@@ -703,10 +707,18 @@ export default function GameContainer() {
       measureTabHotkeyOverlay();
       return;
     }
-    const id = requestAnimationFrame(() => {
+    // Two passes: the first renders the hint so the second can measure its width for the box.
+    const id1 = requestAnimationFrame(() => {
       measureTabHotkeyOverlay();
+      const id2 = requestAnimationFrame(() => measureTabHotkeyOverlay());
+      rafIdsRef.current.push(id2);
     });
-    return () => cancelAnimationFrame(id);
+    rafIdsRef.current.push(id1);
+    const ids = rafIdsRef.current;
+    return () => {
+      ids.forEach((id) => cancelAnimationFrame(id));
+      rafIdsRef.current = [];
+    };
   }, [showTabHotkeyOverlay, measureTabHotkeyOverlay]);
 
   useEffect(() => {
@@ -829,7 +841,7 @@ export default function GameContainer() {
         >
           {showVillageHotkeyBox && villageHotkeyBoxLayout != null && (
             <div
-              className="absolute z-[1] pointer-events-auto bg-black/60"
+              className="absolute pointer-events-auto bg-black/60"
               style={{
                 top: villageHotkeyBoxLayout.top,
                 left: villageHotkeyBoxLayout.left,
@@ -850,27 +862,15 @@ export default function GameContainer() {
               >
                 <X className="h-2.5 w-2.5 stroke-[3]" />
               </button>
-              <div className="pause-hotkey-hint-animated whitespace-nowrap px-2 text-center text-xs leading-snug text-foreground drop-shadow">
-                {pauseHotkeyHintContent}
-              </div>
-              {villageHotkeyBoxLayout.badges.map((b) => (
-                <span
-                  key={b.key}
-                  className="pause-hotkey-badge-animated absolute text-xs font-semibold text-foreground drop-shadow"
-                  style={{
-                    left: b.left,
-                    bottom: 2,
-                    transform: "translate(-50%, -100%)",
-                  }}
-                >
-                  {b.label}
-                </span>
-              ))}
             </div>
           )}
-          {pauseHotkeyHint != null && !showVillageHotkeyBox && (
+          {pauseHotkeyHint != null && (
             <div
-              className="pause-hotkey-hint-animated absolute z-[1] max-w-[min(100vw-1rem,28rem)] px-2 text-center text-xs leading-snug text-foreground drop-shadow"
+              data-testid={showVillageHotkeyBox ? "village-hotkey-hint" : undefined}
+              className={`pause-hotkey-hint-animated absolute z-[1] px-2 text-center text-xs leading-snug text-foreground drop-shadow ${showVillageHotkeyBox
+                  ? "whitespace-nowrap"
+                  : "max-w-[min(100vw-1rem,28rem)]"
+                }`}
               style={{
                 top: pauseHotkeyHint.top,
                 left: pauseHotkeyHint.left,
@@ -880,20 +880,19 @@ export default function GameContainer() {
               {pauseHotkeyHintContent}
             </div>
           )}
-          {!showVillageHotkeyBox &&
-            pauseHotkeyBadges.map((b) => (
-              <span
-                key={b.key}
-                className="pause-hotkey-badge-animated absolute z-[1] text-xs font-semibold text-foreground drop-shadow"
-                style={{
-                  left: b.left,
-                  top: b.top,
-                  transform: "translate(-50%, -100%)",
-                }}
-              >
-                {b.label}
-              </span>
-            ))}
+          {pauseHotkeyBadges.map((b) => (
+            <span
+              key={b.key}
+              className="pause-hotkey-badge-animated absolute z-[1] text-xs font-semibold text-foreground drop-shadow"
+              style={{
+                left: b.left,
+                top: b.top,
+                transform: "translate(-50%, -100%)",
+              }}
+            >
+              {b.label}
+            </span>
+          ))}
         </div>
       )}
 
