@@ -106,7 +106,7 @@
       "hunterBones": "Jäger: +{{amount}} Knochen",
       "knowledgeBonus": "+{{amount}} Wissen",
       "resourceChangeHints": "Hinweise zu Ressourcenänderungen", //ok
-      "improvedResourceChangeHints": "Verbesserte Hinweise zu Ressourcenänderungen",  //x1.5
+      "improvedResourceChangeHints": "Verbesserte Hinweise zu Ressourcenänderungen", //x1.5
       "resourceHighlighting": "Ressourcen-Hervorhebung",
       "abortActions": "Aktionen abbrechen", //ok
       "madnessReduction": "-{{amount}} Wahnsinn",
@@ -122,7 +122,7 @@
       "trapWinChance10": "+10 % Siegchance gegen angreifende Feinde und weniger getötete Dorfbewohner",
       "trapWinChance20": "+20 % Siegchance gegen angreifende Feinde und weniger getötete Dorfbewohner",
       "boneyardUpTo": "Bis zu -10 Wahnsinn",
-      "boneyardPerDeath": "-1 Wahnsinn pro 50 verlorene Dorfbewohner seit dem Bau",
+      "boneyardPerDeath": "-1 Wahnsinn pro 50 gestorbener Dorfbewohner seit dem Bau",
       "boneyardCurrent": "Aktuell: -{{amount}} Wahnsinn",
       "madnessFromAnimalSacrifices": "-{{amount}} Wahnsinn durch Tieropfer",
       "madnessPerAnimalSacrifice": "-1 Wahnsinn pro Tieropfer (max. -10)",

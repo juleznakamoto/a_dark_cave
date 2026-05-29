@@ -20,7 +20,7 @@ export type VisibleHotkeyTabsParams = {
 };
 
 /**
- * Tabs that receive 1–9 and arrow navigation, in on-screen order.
+ * Tabs that receive 1–9, arrow / A–D navigation, in on-screen order.
  * Trader is excluded (opened with `t` only).
  */
 export function getVisibleHotkeyTabs(p: VisibleHotkeyTabsParams): GameTab[] {

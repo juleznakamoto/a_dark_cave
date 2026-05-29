@@ -653,15 +653,18 @@ export default function GameContainer() {
         return;
       }
 
-      if (key === "ArrowLeft" || key === "ArrowRight") {
+      const isTabLeft =
+        key === "ArrowLeft" || key === "a" || key === "A";
+      const isTabRight =
+        key === "ArrowRight" || key === "d" || key === "D";
+      if (isTabLeft || isTabRight) {
         if (visibleHotkeyTabs.length === 0) return;
         const { activeTab: current } = useGameStore.getState();
         let idx = visibleHotkeyTabs.findIndex((t) => t === current);
         if (idx < 0) idx = 0;
-        const nextIdx =
-          key === "ArrowRight"
-            ? (idx + 1) % visibleHotkeyTabs.length
-            : (idx - 1 + visibleHotkeyTabs.length) % visibleHotkeyTabs.length;
+        const nextIdx = isTabRight
+          ? (idx + 1) % visibleHotkeyTabs.length
+          : (idx - 1 + visibleHotkeyTabs.length) % visibleHotkeyTabs.length;
         e.preventDefault();
         applyHotkeyTab(visibleHotkeyTabs[nextIdx]!);
       }
@@ -732,6 +735,10 @@ export default function GameContainer() {
               <span className="text-sm font-medium">←</span>
               <span> </span>
               <span className="text-sm font-medium">→</span>
+              <span> or </span>
+              <span className="text-sm font-medium">A</span>
+              <span> </span>
+              <span className="text-sm font-medium">D</span>
               <span>{t("pauseHotkey.hintSuffix", { ns: "ui" })}</span>
             </div>
           )}

@@ -78,6 +78,9 @@ const EFFECT_TOOLTIP_SECTIONS = new Set<SidePanelSectionId>([
 const RESOURCE_ROW_GRID_CLASS =
   "grid grid-cols-[minmax(0,1fr)_6.25rem_3rem] items-start gap-x-1.5";
 
+/** Food/wood at zero while villagers remain — blink red in the resources panel. */
+const CRITICAL_ZERO_RESOURCES = new Set(["food", "wood"]);
+
 interface SidePanelSectionProps {
   title: string | React.ReactNode;
   sectionId?: SidePanelSectionId;
@@ -458,6 +461,12 @@ export default function SidePanelSection({
 
     const isResourcesSection = sectionId === "resources";
     const tabForProductionColors = activeTab ?? storeActiveTab;
+    const isCriticalZeroResource =
+      isResourcesSection &&
+      CRITICAL_ZERO_RESOURCES.has(item.id) &&
+      typeof item.value === "number" &&
+      item.value === 0 &&
+      (gameState.current_population ?? 0) > 0;
 
     const labelContent = (
       <span
@@ -466,6 +475,7 @@ export default function SidePanelSection({
           item.icon !== undefined && "inline-flex items-start gap-1",
           newItemPulseClass,
           isHighlighted && "!text-gray-100",
+          isCriticalZeroResource && "resource-critical-blink",
         )}
       >
         {item.icon !== undefined && (
@@ -528,11 +538,12 @@ export default function SidePanelSection({
 
     const valueCellClassName = cn(
       "text-right font-mono tabular-nums whitespace-nowrap text-gray-300",
-      isAnimated && "text-green-800 font-bold",
-      isDecreaseAnimated && "text-red-800 font-bold",
-      isMaxAnimated && "text-yellow-800 font-bold",
+      isAnimated && !isCriticalZeroResource && "text-green-800 font-bold",
+      isDecreaseAnimated && !isCriticalZeroResource && "text-red-800 font-bold",
+      isMaxAnimated && !isCriticalZeroResource && "text-yellow-800 font-bold",
       isMadness && madnessClasses,
-      isHighlighted && "font-bold !text-gray-100",
+      isHighlighted && !isCriticalZeroResource && "font-bold !text-gray-100",
+      isCriticalZeroResource && "resource-critical-blink font-bold",
     );
 
     const productionDeltaCellClassName = cn(
