@@ -17,7 +17,7 @@ import AchievementsPanel from "./panels/AchievementsPanel";
 import TimedEventPanel from "./panels/TimedEventPanel";
 import LogPanel from "./panels/LogPanel";
 import StartScreen from "./StartScreen";
-import { useGameStore, isModalDialogOpen } from "@/game/state";
+import { useGameStore, shouldBlockGameHotkeys } from "@/game/state";
 import type { GameTab } from "@/game/types";
 import EventDialog from "./EventDialog";
 import CombatDialog from "./CombatDialog";
@@ -634,7 +634,7 @@ export default function GameContainer() {
       if (e.defaultPrevented) return;
       if (e.ctrlKey || e.metaKey || e.altKey) return;
       if (isEditableKeyboardTarget(e.target)) return;
-      if (isModalDialogOpen(useGameStore.getState())) return;
+      if (shouldBlockGameHotkeys(useGameStore.getState())) return;
 
       const key = e.key;
 
@@ -724,7 +724,7 @@ export default function GameContainer() {
         >
           {pauseHotkeyHint != null && (
             <div
-              className="pause-hotkey-hint-animated absolute max-w-[min(100vw-1rem,28rem)] px-2 text-center text-xs leading-snug text-foreground drop-shadow"
+              className="pause-hotkey-hint-animated absolute whitespace-nowrap px-2 text-center text-xs leading-snug text-foreground drop-shadow"
               style={{
                 top: pauseHotkeyHint.top,
                 left: pauseHotkeyHint.left,

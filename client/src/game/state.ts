@@ -1169,6 +1169,15 @@ export function isModalDialogOpen(state: GameStore): boolean {
 }
 
 /**
+ * True when tab/trader keyboard shortcuts should be ignored.
+ * Unlike `isModalDialogOpen`, an active timed-event tab alone does not block hotkeys —
+ * players should still switch tabs with 1–9 / arrows while a visit is open.
+ */
+export function shouldBlockGameHotkeys(state: GameStore): boolean {
+  return state.rewardDialog.isOpen || isBlockingDialogOpen(state);
+}
+
+/**
  * Timed-event tab is active but no hard-blocking modal (event/combat/shop/etc.).
  * Production and random events stay frozen; action cooldowns and executions still advance.
  */
@@ -2329,6 +2338,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
         investmentHallState:
           savedState.investmentHallState ??
           defaultGameState.investmentHallState,
+        // Never restore transient dialog UI from older saves that persisted these fields.
+        rewardDialog: { isOpen: false, data: null },
+        leaderboardDialogOpen: false,
+        fullGamePurchaseDialogOpen: false,
+        madnessDialog: { isOpen: false, data: null },
+        investmentResultDialog: { isOpen: false, data: null },
       };
 
       const savedExpeditionVillagers = savedState.expeditionVillagers || {};

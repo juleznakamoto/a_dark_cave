@@ -284,6 +284,12 @@ const UI_ONLY_PROPERTIES = [
   'resourceChangeEvents',
   'current_population',
   'total_population',
+  'gamblerDiceDialogOpen',
+  'rewardDialog',
+  'leaderboardDialogOpen',
+  'fullGamePurchaseDialogOpen',
+  'madnessDialog',
+  'versionCheckDialogOpen',
 ] as const;
 
 /**
