@@ -12,7 +12,7 @@ export const obsidianOrbEvents: Record<string, GameEvent> = {
       state.story?.seen?.hasObsidian === true &&
       state.buildings.advancedBlacksmith >= 1 &&
       state.buildings.darkEstate >= 1 &&
-      getCurrentPopulation(state) > 30 &&
+      getCurrentPopulation(state) > 300000000 &&
       !state.schematics.obsidian_orb_schematic &&
       !state.relics.obsidian_orb,
     timeProbability: 45,
