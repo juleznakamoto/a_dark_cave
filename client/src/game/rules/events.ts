@@ -205,6 +205,11 @@ export const gameEvents: Record<string, GameEvent> = {
   ...theDamnedEvents,
 };
 
+/** Game state plus UI-only timed-tab flag (from GameStore, not on persisted GameState). */
+export type EventRollState = GameState & {
+  timedEventTab?: { isActive: boolean };
+};
+
 export function getEventCatalogIdByEventId(eventId: string): string {
   const event = gameEvents[eventId];
   return event ? getEventCatalogId(event) : eventId;
@@ -226,7 +231,7 @@ export class EventManager {
   // Assuming `allEvents` is intended to be `gameEvents` based on context
   private static allEvents: Record<string, GameEvent> = gameEvents;
 
-  static checkEvents(state: GameState): {
+  static checkEvents(state: EventRollState): {
     newLogEntries: LogEntry[];
     stateChanges: Partial<GameState>;
   } {
@@ -240,9 +245,7 @@ export class EventManager {
     const eventCooldowns = state.eventCooldowns || {};
     const currentTime = Date.now();
 
-    if (state.timedEventTab?.isActive) {
-      return { newLogEntries: [], stateChanges: {} };
-    }
+    const isTimedTabActive = state.timedEventTab?.isActive || false;
 
     for (const event of sortedEvents) {
       // Skip if already triggered and not repeatable
@@ -250,6 +253,9 @@ export class EventManager {
 
       // Skip if event was already triggered this session (for non-repeatable events)
       if (state.triggeredEvents?.[event.id] && !event.repeatable) continue;
+
+      // Active forest visit: only block another timed-tab spawn, not random/log events.
+      if (event.showAsTimedTab && isTimedTabActive) continue;
 
       // Check if event is on cooldown (cooldownPercent of its time probability must pass)
       if (event.timeProbability && eventCooldowns[event.id]) {

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { EventManager } from './events';
+import { EventManager, type EventRollState } from './events';
 import { GameState } from '@shared/schema';
 import { createInitialState } from '../state';
 
@@ -36,7 +36,7 @@ describe('Event System', () => {
     expect(Array.isArray(newLogEntries)).toBe(true);
   });
 
-  it('does not trigger any events while a timed event tab is active', () => {
+  it('does not spawn another timed-tab event while one is active', () => {
     mockState.timedEventTab = {
       isActive: true,
       event: null,
@@ -44,11 +44,10 @@ describe('Event System', () => {
       startTime: Date.now(),
     };
 
-    const { newLogEntries, stateChanges } = EventManager.checkEvents(
-      mockState as GameState,
+    const { stateChanges } = EventManager.checkEvents(
+      mockState as EventRollState,
     );
 
-    expect(newLogEntries).toHaveLength(0);
     expect(stateChanges._timedTabEvent).toBeUndefined();
   });
 
