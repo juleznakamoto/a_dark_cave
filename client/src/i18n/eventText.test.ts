@@ -189,6 +189,30 @@ describe("localizeEventChoices", () => {
     expect(localized![1].label).toBe("Refuse her");
   });
 
+  it("resolves string variant keys (woman/man) from nested catalog labels", () => {
+    const localized = localizeEventChoices(
+      "mysteriousWoman",
+      [{ id: "allowStay", label: "woman", effect: () => ({}) }],
+      { g: "m" } as GameState,
+    );
+    expect(localized![0].label).toBe("Let her stay");
+  });
+
+  it("does not display raw variant keys when nested catalog lookup fails", () => {
+    const localized = localizeEventChoices(
+      "mysteriousWoman",
+      [
+        {
+          id: "allowStay",
+          label: () => "missingVariant",
+          effect: () => ({}),
+        },
+      ],
+      { g: "m" } as GameState,
+    );
+    expect(localized![0].label).toBe("");
+  });
+
   it("preserves already-localized mysteriousWoman labels on second pass", () => {
     const alreadyLocalized: EventChoice[] = [
       { id: "allowStay", label: "Let her stay", effect: () => ({}) },

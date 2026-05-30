@@ -36,6 +36,24 @@ function hasNestedCatalogKey(catalogId: string, prefix: string): boolean {
   );
 }
 
+function choiceLabelPrefix(choiceId: string): string {
+  return `choices.${choiceId}.label`;
+}
+
+/** True when `labelDef` is a catalog variant key (e.g. gender), not player-facing text. */
+function isChoiceLabelVariantKey(value: string): boolean {
+  return value === "woman" || value === "man" || /^level\d+$/.test(value);
+}
+
+function resolveEventChoiceVariantLabel(
+  catalogId: string,
+  choiceId: string,
+  variant: string,
+  vars?: TranslateOptions,
+): string {
+  return tEvent(catalogId, `${choiceLabelPrefix(choiceId)}.${variant}`, vars);
+}
+
 /** True when i18next fell back to its "object instead of string" dev message. */
 export function isI18nReturnedObjectError(text: string): boolean {
   return text.includes("returned an object instead of string");
@@ -139,7 +157,7 @@ export function resolveEventChoiceLabel(
   choiceId: string,
   vars?: TranslateOptions,
 ): string {
-  const prefix = `choices.${choiceId}.label`;
+  const prefix = choiceLabelPrefix(choiceId);
   if (hasNestedCatalogKey(catalogId, prefix)) {
     return "";
   }
@@ -171,24 +189,40 @@ function resolveLocalizedEventChoiceLabel(
   state?: GameState,
   vars?: TranslateOptions,
 ): string {
+  const prefix = choiceLabelPrefix(choiceId);
+  const nestedLabels = hasNestedCatalogKey(catalogId, prefix);
+
   if (typeof labelDef === "function") {
     if (!state) {
       return resolveEventChoiceLabel(catalogId, choiceId, vars);
     }
     const variant = labelDef(state);
     if (typeof variant !== "string") return "";
-    const variantLabel = tEvent(
+    const variantLabel = resolveEventChoiceVariantLabel(
       catalogId,
-      `choices.${choiceId}.label.${variant}`,
+      choiceId,
+      variant,
       vars,
     );
     if (variantLabel) return variantLabel;
     const baseLabel = resolveEventChoiceLabel(catalogId, choiceId, vars);
     if (baseLabel) return baseLabel;
-    return variant;
+    // Inline dynamic labels (e.g. "Buy for 500 gold") when catalog has no nested variants.
+    if (!nestedLabels) return variant;
+    return "";
   }
 
   if (typeof labelDef === "string" && labelDef && !isI18nReturnedObjectError(labelDef)) {
+    if (nestedLabels && isChoiceLabelVariantKey(labelDef)) {
+      const variantLabel = resolveEventChoiceVariantLabel(
+        catalogId,
+        choiceId,
+        labelDef,
+        vars,
+      );
+      if (variantLabel) return variantLabel;
+      return "";
+    }
     return labelDef;
   }
 
