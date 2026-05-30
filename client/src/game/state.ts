@@ -1171,11 +1171,12 @@ function isBlockingDialogOpen(state: GameStore): boolean {
 }
 
 /**
- * True when any blocking modal except the reward dialog is open, or a timed-event tab visit is active.
- * Single place to OR new blocking flags; `isModalDialogOpen` adds `rewardDialog` on top.
+ * True when any blocking modal except the reward dialog is open.
+ * An active timed-event tab alone does not freeze sim — players can manage the village
+ * while a forest visit timer runs (hotkeys still work via `shouldBlockGameHotkeys`).
  */
 function isNonRewardBlockingModalOpen(state: GameStore): boolean {
-  return isBlockingDialogOpen(state) || state.timedEventTab.isActive;
+  return isBlockingDialogOpen(state);
 }
 
 /** True while simulation should freeze (loop, attack-wave timers, random events, etc.). */
@@ -1190,17 +1191,6 @@ export function isModalDialogOpen(state: GameStore): boolean {
  */
 export function shouldBlockGameHotkeys(state: GameStore): boolean {
   return state.rewardDialog.isOpen || isBlockingDialogOpen(state);
-}
-
-/**
- * Timed-event tab is active but no hard-blocking modal (event/combat/shop/etc.).
- * Production and random events stay frozen; action cooldowns and executions still advance.
- */
-export function isTimedEventTabOnlyPause(state: GameStore): boolean {
-  if (!state.timedEventTab.isActive) return false;
-  if (state.isPaused || state.idleModeState?.isActive) return false;
-  if (state.rewardDialog.isOpen || isBlockingDialogOpen(state)) return false;
-  return true;
 }
 
 /**

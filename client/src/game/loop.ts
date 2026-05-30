@@ -2,7 +2,6 @@ import {
   useGameStore,
   StateManager,
   isModalDialogOpen,
-  isTimedEventTabOnlyPause,
   shouldFreezeTimedEventTabCountdown,
   syncTimedEventTabPauseTracking,
   getTimedEventTabEffectiveRemainingMs,
@@ -307,30 +306,6 @@ export function startGameLoop() {
 
     // Blocking modals: `isModalDialogOpen` in state.ts (add new dialogs there only).
     const IsDialogOpen = isModalDialogOpen(state);
-
-    const timedEventTabOnlyPause =
-      isTimedEventTabOnlyPause(state) && !requiresFullGamePurchase;
-
-    if (timedEventTabOnlyPause) {
-      // Freeze production / random events, but keep action cooldowns and executions advancing
-      // so forest trade buttons (etc.) still recover while a timed-tab visit is open.
-      if (productionPauseStartedAt === null) {
-        productionPauseStartedAt = timestamp;
-      }
-      tickAccumulator += deltaTime;
-      while (tickAccumulator >= TICK_INTERVAL) {
-        tickAccumulator -= TICK_INTERVAL;
-        processActionTicks();
-      }
-      // Production stays frozen, but keep the village cycle UI animating (wrap each 15s;
-      // real production still waits until the timed visit ends and lastProduction catches up).
-      const elapsedInCycle =
-        (timestamp - lastProduction) % PRODUCTION_INTERVAL;
-      const progressPercent = (elapsedInCycle / PRODUCTION_INTERVAL) * 100;
-      useGameStore.setState({ loopProgress: progressPercent });
-      gameLoopId = requestAnimationFrame(tick);
-      return;
-    }
 
     const isPaused =
       state.isPaused ||
