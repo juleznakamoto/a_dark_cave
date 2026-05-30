@@ -622,10 +622,6 @@ export default function GameContainer() {
     const rowRect = row.getBoundingClientRect();
     const nav = row.closest("nav");
     const navRect = nav?.getBoundingClientRect() ?? rowRect;
-    setPauseHotkeyHint({
-      top: Math.max(4, navRect.top - 42),
-      left: rowRect.left + rowRect.width / 2,
-    });
     const queryTabButton = (testId: string) =>
       row.querySelector<HTMLElement>(`[data-testid="${testId}"]`) ??
       document.querySelector<HTMLElement>(`[data-testid="${testId}"]`);
@@ -656,8 +652,19 @@ export default function GameContainer() {
     }
     setPauseHotkeyBadges(next);
 
+    const minBadgeAnchorTop =
+      next.length > 0 ? Math.min(...next.map((b) => b.top)) : null;
+    // Keep the help line above [1]… badges (badges use translateY(-100%) from tab tops).
+    const hintTop =
+      minBadgeAnchorTop != null
+        ? Math.max(4, minBadgeAnchorTop - 36)
+        : Math.max(4, navRect.top - 42);
+    setPauseHotkeyHint({
+      top: hintTop,
+      left: rowRect.left + rowRect.width / 2,
+    });
+
     if (showVillageHotkeyBox && next.length > 0) {
-      const hintTop = Math.max(4, navRect.top - 42);
       let minLeft = rowRect.left;
       let maxRight = rowRect.right;
       next.forEach((b) => {
@@ -798,7 +805,7 @@ export default function GameContainer() {
     "inline-flex h-10 items-end justify-center bg-transparent pb-3 text-sm font-normal leading-none";
 
   const pauseHotkeyHintContent = (
-    <>
+    <span className="inline-flex flex-nowrap items-baseline justify-center gap-0">
       <span>{t("pauseHotkey.hintPrefix", { ns: "ui" })}</span>
       <span className="text-sm font-medium">←</span>
       <span> </span>
@@ -808,7 +815,7 @@ export default function GameContainer() {
       <span> </span>
       <span className="text-sm font-medium">D</span>
       <span>{t("pauseHotkey.hintSuffix", { ns: "ui" })}</span>
-    </>
+    </span>
   );
 
   return (
@@ -861,10 +868,7 @@ export default function GameContainer() {
           {pauseHotkeyHint != null && (
             <div
               data-testid={showVillageHotkeyBox ? "village-hotkey-hint" : undefined}
-              className={`pause-hotkey-hint-animated absolute z-[1] px-2 text-center text-xs leading-snug text-foreground drop-shadow ${showVillageHotkeyBox
-                ? "whitespace-nowrap"
-                : "max-w-[min(100vw-1rem,28rem)]"
-                }`}
+              className="pause-hotkey-hint-animated absolute z-[2] w-max max-w-[calc(100vw-1rem)] whitespace-nowrap px-2 text-center text-xs leading-snug text-foreground drop-shadow"
               style={{
                 top: pauseHotkeyHint.top,
                 left: pauseHotkeyHint.left,
