@@ -322,13 +322,12 @@ export function startGameLoop() {
         tickAccumulator -= TICK_INTERVAL;
         processActionTicks();
       }
-      // Production timer stays frozen (productionPauseStartedAt above), but the village
-      // cycle UI should still tick while the player is on another tab during a timed visit.
-      const progressPercent =
-        ((timestamp - lastProduction) / PRODUCTION_INTERVAL) * 100;
-      useGameStore.setState({
-        loopProgress: Math.min(Math.max(progressPercent, 0), 100),
-      });
+      // Production stays frozen, but keep the village cycle UI animating (wrap each 15s;
+      // real production still waits until the timed visit ends and lastProduction catches up).
+      const elapsedInCycle =
+        (timestamp - lastProduction) % PRODUCTION_INTERVAL;
+      const progressPercent = (elapsedInCycle / PRODUCTION_INTERVAL) * 100;
+      useGameStore.setState({ loopProgress: progressPercent });
       gameLoopId = requestAnimationFrame(tick);
       return;
     }
