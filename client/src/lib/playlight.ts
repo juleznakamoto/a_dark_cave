@@ -6,16 +6,24 @@ export function isPlaylightReferralUrl(): boolean {
   return new URLSearchParams(window.location.search).get("utm_source") === "playlight";
 }
 
-/** While `playTime` is below this, exit intent is capped at once per early window. */
-const NORMAL_PLAY_EXIT_EARLY_PHASE_PLAY_MS = 30 * 60 * 1000;
-const NORMAL_PLAY_EXIT_WINDOW_EARLY_MS = 5 * 60 * 1000;
-const NORMAL_PLAY_EXIT_WINDOW_LATE_MS = 10 * 60 * 1000;
+/** Exit intent stays off until this much `playTime` has elapsed. */
+const NORMAL_PLAY_EXIT_MIN_PLAY_MS = 15 * 60 * 1000;
+/** Phase 1: 15–75 min playTime — once per 10 min; phase 2: 75–135 min — once per 15 min; then once per 20 min. */
+const NORMAL_PLAY_EXIT_PHASE1_END_MS = (15 + 60) * 60 * 1000;
+const NORMAL_PLAY_EXIT_PHASE2_END_MS = (75 + 60) * 60 * 1000;
+const NORMAL_PLAY_EXIT_WINDOW_PHASE1_MS = 10 * 60 * 1000;
+const NORMAL_PLAY_EXIT_WINDOW_PHASE2_MS = 15 * 60 * 1000;
+const NORMAL_PLAY_EXIT_WINDOW_PHASE3_MS = 20 * 60 * 1000;
 const NORMAL_PLAY_EXIT_MAX_PER_WINDOW = 1;
 
 function getNormalPlayExitWindowMs(playTimeMs: number): number {
-  return playTimeMs < NORMAL_PLAY_EXIT_EARLY_PHASE_PLAY_MS
-    ? NORMAL_PLAY_EXIT_WINDOW_EARLY_MS
-    : NORMAL_PLAY_EXIT_WINDOW_LATE_MS;
+  if (playTimeMs < NORMAL_PLAY_EXIT_PHASE1_END_MS) {
+    return NORMAL_PLAY_EXIT_WINDOW_PHASE1_MS;
+  }
+  if (playTimeMs < NORMAL_PLAY_EXIT_PHASE2_END_MS) {
+    return NORMAL_PLAY_EXIT_WINDOW_PHASE2_MS;
+  }
+  return NORMAL_PLAY_EXIT_WINDOW_PHASE3_MS;
 }
 /** Ignore duplicate `exitIntent` emissions from the SDK within one gesture. */
 const EXIT_INTENT_EVENT_DEDUP_MS = 600;
@@ -207,16 +215,21 @@ export async function initPlaylight() {
           shouldEnableExitIntent = true;
         } else {
           const playTime = state.playTime ?? 0;
-          const windowMs = getNormalPlayExitWindowMs(playTime);
-          pruneNormalPlayExitIntentTimestamps(windowMs);
-          const atCap =
-            normalPlayExitIntentTimestamps.length >= NORMAL_PLAY_EXIT_MAX_PER_WINDOW;
-          if (!atCap) {
+          if (playTime < NORMAL_PLAY_EXIT_MIN_PLAY_MS) {
             clearExitIntentDisableDefer();
-            shouldEnableExitIntent = true;
+            shouldEnableExitIntent = false;
           } else {
-            const deferActive = Date.now() < exitIntentDisableDeferredUntil;
-            shouldEnableExitIntent = deferActive;
+            const windowMs = getNormalPlayExitWindowMs(playTime);
+            pruneNormalPlayExitIntentTimestamps(windowMs);
+            const atCap =
+              normalPlayExitIntentTimestamps.length >= NORMAL_PLAY_EXIT_MAX_PER_WINDOW;
+            if (!atCap) {
+              clearExitIntentDisableDefer();
+              shouldEnableExitIntent = true;
+            } else {
+              const deferActive = Date.now() < exitIntentDisableDeferredUntil;
+              shouldEnableExitIntent = deferActive;
+            }
           }
         }
 

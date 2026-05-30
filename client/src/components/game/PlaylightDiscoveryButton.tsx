@@ -1,10 +1,39 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
+import { useGameStore } from "@/game/state";
 import { useTranslation } from "react-i18next";
 
-const CYCLE_MS = 5 * 60 * 1000;
 const SHOW_MS = 30 * 1000;
+const FIRST_SHOW_PLAY_MS = 5 * 60 * 1000;
+/** Phase 1: 5–65 min — every 5 min; phase 2: 65–125 min — every 10 min; then every 15 min. */
+const PHASE1_END_PLAY_MS = (5 + 60) * 60 * 1000;
+const PHASE2_END_PLAY_MS = (65 + 60) * 60 * 1000;
+const INTERVAL_PHASE1_MS = 5 * 60 * 1000;
+const INTERVAL_PHASE2_MS = 10 * 60 * 1000;
+const INTERVAL_PHASE3_MS = 15 * 60 * 1000;
+
+function getLatestTooltipMilestonePlayMs(playTimeMs: number): number {
+  if (playTimeMs < FIRST_SHOW_PLAY_MS) {
+    return 0;
+  }
+
+  if (playTimeMs < PHASE1_END_PLAY_MS) {
+    const elapsed = playTimeMs - FIRST_SHOW_PLAY_MS;
+    const steps = Math.floor(elapsed / INTERVAL_PHASE1_MS);
+    return FIRST_SHOW_PLAY_MS + steps * INTERVAL_PHASE1_MS;
+  }
+
+  if (playTimeMs < PHASE2_END_PLAY_MS) {
+    const elapsed = playTimeMs - PHASE1_END_PLAY_MS;
+    const steps = Math.floor(elapsed / INTERVAL_PHASE2_MS);
+    return PHASE1_END_PLAY_MS + steps * INTERVAL_PHASE2_MS;
+  }
+
+  const elapsed = playTimeMs - PHASE2_END_PLAY_MS;
+  const steps = Math.floor(elapsed / INTERVAL_PHASE3_MS);
+  return PHASE2_END_PLAY_MS + steps * INTERVAL_PHASE3_MS;
+}
 
 type PlaylightDiscoveryButtonProps = {
   onClick: () => void;
@@ -18,29 +47,34 @@ export default function PlaylightDiscoveryButton({
   forceShowTooltip = false,
 }: PlaylightDiscoveryButtonProps) {
   const { t } = useTranslation("ui");
+  const playTime = useGameStore((state) => state.playTime ?? 0);
   const [showDiscoveryTooltip, setShowDiscoveryTooltip] = useState(false);
+  const lastShownMilestoneRef = useRef(
+    getLatestTooltipMilestonePlayMs(playTime),
+  );
+  const hideTimeoutRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
-    let hideTimeout: number | undefined;
+    const latestMilestone = getLatestTooltipMilestonePlayMs(playTime);
+    if (latestMilestone <= lastShownMilestoneRef.current) {
+      return;
+    }
 
-    const showTooltip = () => {
-      if (hideTimeout !== undefined) {
-        window.clearTimeout(hideTimeout);
-      }
-      setShowDiscoveryTooltip(true);
-      hideTimeout = window.setTimeout(() => {
-        setShowDiscoveryTooltip(false);
-        hideTimeout = undefined;
-      }, SHOW_MS);
-    };
+    lastShownMilestoneRef.current = latestMilestone;
+    if (hideTimeoutRef.current !== undefined) {
+      window.clearTimeout(hideTimeoutRef.current);
+    }
+    setShowDiscoveryTooltip(true);
+    hideTimeoutRef.current = window.setTimeout(() => {
+      setShowDiscoveryTooltip(false);
+      hideTimeoutRef.current = undefined;
+    }, SHOW_MS);
+  }, [playTime]);
 
-    showTooltip();
-    const intervalId = window.setInterval(showTooltip, CYCLE_MS);
-
+  useEffect(() => {
     return () => {
-      window.clearInterval(intervalId);
-      if (hideTimeout !== undefined) {
-        window.clearTimeout(hideTimeout);
+      if (hideTimeoutRef.current !== undefined) {
+        window.clearTimeout(hideTimeoutRef.current);
       }
     };
   }, []);
