@@ -36,6 +36,22 @@ describe('Event System', () => {
     expect(Array.isArray(newLogEntries)).toBe(true);
   });
 
+  it('does not trigger any events while a timed event tab is active', () => {
+    mockState.timedEventTab = {
+      isActive: true,
+      event: null,
+      expiryTime: Date.now() + 60_000,
+      startTime: Date.now(),
+    };
+
+    const { newLogEntries, stateChanges } = EventManager.checkEvents(
+      mockState as GameState,
+    );
+
+    expect(newLogEntries).toHaveLength(0);
+    expect(stateChanges._timedTabEvent).toBeUndefined();
+  });
+
   it('should not trigger events with unmet conditions', () => {
     mockState.buildings!.woodenHut = 0; // No huts
 

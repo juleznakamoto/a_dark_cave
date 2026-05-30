@@ -3,6 +3,7 @@ import {
   useGameStore,
   isModalDialogOpen,
 } from "./state";
+import { EventManager } from "./rules/events";
 import { clearExpiredTimedEventTab } from "./loop";
 
 describe('Game Loop Production', () => {
@@ -79,6 +80,36 @@ describe('Game Loop Production', () => {
     });
 
     expect(isModalDialogOpen(useGameStore.getState())).toBe(false);
+  });
+
+  it("does not roll new events while a timed event tab is active", () => {
+    const state = useGameStore.getState();
+    useGameStore.setState({
+      rewardDialog: { isOpen: false, data: null },
+      eventDialog: { isOpen: false, currentEvent: null },
+      timedEventTab: {
+        isActive: true,
+        event: {
+          id: "theDamned-test",
+          message: "Test",
+          timestamp: Date.now(),
+          type: "event" as const,
+        },
+        expiryTime: Date.now() + 60_000,
+        startTime: Date.now(),
+      },
+    });
+
+    const logLengthBefore = useGameStore.getState().log.length;
+    useGameStore.getState().checkEvents();
+    expect(useGameStore.getState().log.length).toBe(logLengthBefore);
+
+    const { newLogEntries, stateChanges } = EventManager.checkEvents({
+      ...state,
+      timedEventTab: useGameStore.getState().timedEventTab,
+    } as typeof state);
+    expect(newLogEntries).toHaveLength(0);
+    expect(stateChanges._timedTabEvent).toBeUndefined();
   });
 
   it("clears expired timed events via clearExpiredTimedEventTab", () => {

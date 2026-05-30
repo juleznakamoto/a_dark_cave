@@ -1174,6 +1174,7 @@ function isBlockingDialogOpen(state: GameStore): boolean {
  * True when any blocking modal except the reward dialog is open.
  * An active timed-event tab alone does not freeze sim — players can manage the village
  * while a forest visit timer runs (hotkeys still work via `shouldBlockGameHotkeys`).
+ * EventManager rolls are suppressed in `checkEvents` while a visit is open; other log lines are not.
  */
 function isNonRewardBlockingModalOpen(state: GameStore): boolean {
   return isBlockingDialogOpen(state);
@@ -2452,11 +2453,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     if (isModalDialogOpen(state)) return;
 
-    // Don't check for new timed tab events if one is already active
-    const timedTabActive = get().timedEventTab.isActive;
+    // Active forest visit: block EventManager rolls only (story/random events, attack waves,
+    // second timed-tab spawn). Production log lines (strangers, starvation, actions) use addLogEntry elsewhere.
+    if (state.timedEventTab.isActive) return;
 
     const { newLogEntries, stateChanges } =
-      EventManager.checkEvents({ ...state, timedEventTab: { isActive: timedTabActive } } as any);
+      EventManager.checkEvents(state);
 
     // Handle timed tab event if present
     if (stateChanges._timedTabEvent) {
