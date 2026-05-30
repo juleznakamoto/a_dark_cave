@@ -29,7 +29,7 @@
     "fromBuildings": "{{percent}} % durch Gebäude",
     "fromBlessings": "{{percent}} % durch Segen",
     "fromEvents": "{{percent}} % durch Ereignisse", //ok
-    "fromHeartfire": "{{percent}} % durch Herdfeuer",
+    "fromHeartfire": "{{percent}} % durch Herzfeuer",
     "merchantBlocked": "Der Händler kann nicht gerufen werden, solange ein anderes Ereignis aktiv ist", //ok
     "merchantAvailableIn": "Verfügbar in {{time}}",
     "investCompleteIn": "Investition abgeschlossen in {{time}}", //ok

@@ -65,7 +65,7 @@
   "ui.village.lowPopulationBonus": "{{percent}} % Bonus bei geringer Bevölkerung",
   "ui.village.fromBlessings": "{{percent}} % durch Segen",
   "ui.village.fromEvents": "{{percent}} % durch Ereignisse",
-  "ui.village.fromHeartfire": "{{percent}} % durch Herdfeuer",
+  "ui.village.fromHeartfire": "{{percent}} % durch Herzfeuer",
   "ui.village.merchantBlocked": "Der Händler kann nicht gerufen werden, solange ein anderes Ereignis aktiv ist",
   "ui.village.merchantAvailableIn": "Verfügbar in {{time}}",
   "ui.village.investCompleteIn": "Investition abgeschlossen in {{time}}",

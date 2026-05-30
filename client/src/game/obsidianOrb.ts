@@ -31,7 +31,15 @@ export function tickObsidianOrbFocus(
 
   const fs = state.focusState as FocusState | undefined;
   const currentPoints = fs?.points ?? 0;
+
+  /** At cap, discard elapsed intervals — do not bank cooldowns while full. */
+  const scheduleNextGainFromNow = () => now + OBSIDIAN_ORB_FOCUS_INTERVAL_MS;
+
   if (currentPoints >= MAX_FOCUS_POINTS) {
+    const alignedNext = scheduleNextGainFromNow();
+    if (alignedNext === next) {
+      return null;
+    }
     return {
       focusState: {
         isActive: fs?.isActive ?? false,
@@ -40,15 +48,25 @@ export function tickObsidianOrbFocus(
         startTime: fs?.startTime,
         points: currentPoints,
       },
-      obsidianOrbState: { nextFocusGainTime: next + OBSIDIAN_ORB_FOCUS_INTERVAL_MS },
+      obsidianOrbState: { nextFocusGainTime: alignedNext },
       totalFocusEarned: 0,
     };
   }
 
-  let gained = 0;
-  while (now >= next && currentPoints + gained < MAX_FOCUS_POINTS) {
-    gained += 1;
-    next += OBSIDIAN_ORB_FOCUS_INTERVAL_MS;
+  const roomToMax = MAX_FOCUS_POINTS - currentPoints;
+  const intervalsDue =
+    now >= next
+      ? Math.min(
+        roomToMax,
+        Math.floor((now - next) / OBSIDIAN_ORB_FOCUS_INTERVAL_MS) || 1,
+      )
+      : 0;
+  const gained = intervalsDue;
+  next = next + gained * OBSIDIAN_ORB_FOCUS_INTERVAL_MS;
+
+  const newPoints = currentPoints + gained;
+  if (newPoints >= MAX_FOCUS_POINTS) {
+    next = scheduleNextGainFromNow();
   }
 
   if (gained === 0) {
@@ -61,7 +79,7 @@ export function tickObsidianOrbFocus(
       endTime: fs?.endTime ?? 0,
       duration: fs?.duration,
       startTime: fs?.startTime,
-      points: currentPoints + gained,
+      points: newPoints,
     },
     obsidianOrbState: { nextFocusGainTime: next },
     totalFocusEarned: gained,

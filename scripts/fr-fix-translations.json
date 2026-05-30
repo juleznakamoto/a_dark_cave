@@ -150,7 +150,7 @@
   "ui.village.lowPopulationBonus": "{{percent}} % Bonus bei geringer Bevölkerung",
   "ui.village.fromBlessings": "{{percent}} % durch bénédiction",
   "ui.village.fromEvents": "{{percent}} % durch Ereignisse",
-  "ui.village.fromHeartfire": "{{percent}} % durch Herdfeuer",
+  "ui.village.fromHeartfire": "{{percent}} % durch Herzfeuer",
   "ui.village.merchantBlocked": "Der marchand kann nicht gerufen werden, solange ein anderes Ereignis aktiv ist",
   "ui.village.merchantAvailableIn": "Disponible in {{time}}",
   "ui.village.investCompleteIn": "investissement abgeschlossen in {{time}}",

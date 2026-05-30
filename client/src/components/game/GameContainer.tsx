@@ -861,10 +861,7 @@ export default function GameContainer() {
           {pauseHotkeyHint != null && (
             <div
               data-testid={showVillageHotkeyBox ? "village-hotkey-hint" : undefined}
-              className={`pause-hotkey-hint-animated absolute z-[1] px-2 text-center text-xs leading-snug text-foreground drop-shadow ${showVillageHotkeyBox
-                ? "whitespace-nowrap"
-                : "max-w-[min(100vw-1rem,28rem)]"
-                }`}
+              className="pause-hotkey-hint-animated absolute z-[1] whitespace-nowrap px-2 text-center text-xs leading-snug text-foreground drop-shadow"
               style={{
                 top: pauseHotkeyHint.top,
                 left: pauseHotkeyHint.left,

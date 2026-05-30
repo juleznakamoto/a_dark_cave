@@ -109,7 +109,7 @@ const GERMAN_IN_ROMANCE = [
 
   "Pulvermacher",
 
-  "Herdfeuer",
+  "Herzfeuer",
 
   "Bevölkerung",
 
