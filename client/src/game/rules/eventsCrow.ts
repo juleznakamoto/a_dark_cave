@@ -30,7 +30,7 @@ export const crowEvents: Record<string, GameEvent> = {
     },
     timeProbability: (state: GameState) => {
       return state.story.seen?.villageElderFirstTime ? 20 : 10;
-    },
+    },
     message: (state: GameState) => {
       const count =
         (state.story.seen?.crowSentToMonastery ? 1 : 0) +
@@ -46,7 +46,7 @@ export const crowEvents: Record<string, GameEvent> = {
 
       if (!state.story.seen?.crowSentToMonastery) {
         choices.push({
-          id: "mountainMonastery",
+          id: "mountainMonastery",
           effect: (state: GameState) => {
             return {
               story: {
@@ -65,7 +65,7 @@ export const crowEvents: Record<string, GameEvent> = {
 
       if (!state.story.seen?.crowSentToSwamp) {
         choices.push({
-          id: "swampTribe",
+          id: "swampTribe",
           effect: (state: GameState) => {
             return {
               story: {
@@ -84,7 +84,7 @@ export const crowEvents: Record<string, GameEvent> = {
 
       if (!state.story.seen?.crowSentToShore) {
         choices.push({
-          id: "shoreFishermen",
+          id: "shoreFishermen",
           effect: (state: GameState) => {
             return {
               story: {
@@ -110,13 +110,14 @@ export const crowEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen?.crowSentToMonastery === true &&
       !state.story.seen?.monasteryResponse,
-    timeProbability: 15,
+    timeProbability: 15,
+
     priority: 5,
     showAsTimedTab: true,
     timedTabDuration: 5 * 60 * 1000,
     skipEventLog: true,
     fallbackChoice: {
-      id: "decline",
+      id: "decline",
       effect: (state: GameState) => {
         return {
           story: {
@@ -132,15 +133,9 @@ export const crowEvents: Record<string, GameEvent> = {
     },
     choices: [
       {
-        id: "accept",
+        id: "accept",
         cost: "250 gold",
-        effect: (state: GameState) => {
-          if (state.resources.gold < 250) {
-            return {
-              _logMessageKey: "outcome1",
-            };
-          }
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               gold: state.resources.gold - 250,
@@ -157,11 +152,10 @@ export const crowEvents: Record<string, GameEvent> = {
               },
             },
             _logMessageKey: "outcome2",
-          };
-        },
+        }),
       },
       {
-        id: "decline",
+        id: "decline",
         effect: (state: GameState) => {
           return {
             story: {
@@ -184,12 +178,13 @@ export const crowEvents: Record<string, GameEvent> = {
       state.story.seen?.crowSentToSwamp === true &&
       !state.story.seen?.swampTribeResponse,
     timeProbability: 15,
-    repeatable: true,
+    repeatable: true,
+
     priority: 5,
     skipEventLog: true,
     choices: [
       {
-        id: "accept",
+        id: "accept",
         effect: (state: GameState) => {
           return {
             story: {
@@ -205,7 +200,7 @@ export const crowEvents: Record<string, GameEvent> = {
         },
       },
       {
-        id: "decline",
+        id: "decline",
         effect: (state: GameState) => {
           return {
             story: {
@@ -227,13 +222,14 @@ export const crowEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen?.crowSentToShore === true &&
       !state.story.seen?.shoreFishermenResponse,
-    timeProbability: 15,
+    timeProbability: 15,
+
     priority: 5,
     showAsTimedTab: true,
     timedTabDuration: 5 * 60 * 1000,
     skipEventLog: true,
     fallbackChoice: {
-      id: "decline",
+      id: "decline",
       effect: (state: GameState) => {
         return {
           story: {
@@ -249,15 +245,9 @@ export const crowEvents: Record<string, GameEvent> = {
     },
     choices: [
       {
-        id: "accept",
+        id: "accept",
         cost: "250 gold",
-        effect: (state: GameState) => {
-          if (state.resources.gold < 250) {
-            return {
-              _logMessageKey: "outcome1",
-            };
-          }
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               gold: state.resources.gold - 250,
@@ -274,11 +264,10 @@ export const crowEvents: Record<string, GameEvent> = {
               },
             },
             _logMessageKey: "outcome2",
-          };
-        },
+        }),
       },
       {
-        id: "decline",
+        id: "decline",
         effect: (state: GameState) => {
           return {
             story: {

@@ -58,14 +58,7 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
     choices: [
       {
         id: "sellBones",
-        effect: (state: GameState) => {
-          if (state.resources.bones < boneCost) {
-            return {
-              _logMessageKey: "outcome0",
-            };
-          }
-
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               bones: state.resources.bones - boneCost,
@@ -80,8 +73,7 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
               [`${eventId}_seen`]: true,
             },
             _logMessageKey: "outcome1",
-          };
-        },
+        }),
       },
       {
         id: "refuse",

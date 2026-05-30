@@ -197,7 +197,6 @@
       }
     },
     "log": {
-      "outcome0": "You don't have enough bones for the trade.",
       "outcome1": "The creature takes the bones with its gnarled hands, as if attempting to count them. It places a pouch of silver at your feet and disappears into the darkness.",
       "outcome2": "You refuse the creature's offer. It hisses in displeasure and retreats into the shadows. You sense it will return.",
       "outcome3": "Your indecision frustrates the creature. It hisses in displeasure and retreats into the shadows."
@@ -605,13 +604,35 @@
       }
     },
     "log": {
-      "outcome0": "You don't have enough gold to pay the scholar.",
       "outcome1": "The scholar creates a shadowy red mixture and instructs you to bathe in it. As you emerge from the bath, you feel stronger but also tainted.",
       "outcome2": "You send the scholar away. He departs with a disappointed sigh, but you sense he may return.",
       "outcome3": "The scholar departs, displeased by your indecision."
     },
     "message": "A scholar of the dark arts approaches your estate. Upon seeing the three blood vials, he says, with a hint of restrained excitement, 'I can create a mixture that will grant you great power.'",
     "title": "The Exiled Scholar"
+  },
+  "obsidianOrbVisit": {
+    "choices": {
+      "payGold": {
+        "cost": "250 Gold",
+        "label": "Pay 250 Gold"
+      },
+      "payVillagers": {
+        "cost": "20 Villagers",
+        "label": "Offer 20 Villagers"
+      },
+      "sendAway": {
+        "label": "Send her away"
+      }
+    },
+    "log": {
+      "outcome0": "You pay the woman, and she shares the secret of the Obsidian Orb.",
+      "outcome1": "Twenty villagers are dragged away in chains. The woman shares the knowledge, but the village is sickened by disgust at what was done.",
+      "outcome2": "You send her away. She says she may return when you are ready.",
+      "outcome3": "Time runs out. She departs, saying she may return when you are ready."
+    },
+    "message": "A richly adorned, Eastern-looking woman arrives with two muscular attendants. She offers to share the knowledge to craft a powerful Obsidian Orb in exchange for gold or villagers.",
+    "title": "The Obsidian Orb"
   },
   "facesInWalls": {
     "choices": {
@@ -644,7 +665,6 @@
       }
     },
     "log": {
-      "outcome0": "You don't have enough food for the feast.",
       "outcome1": "The villagers gather for a feast! Weariness fades and spirits rise, if only briefly.",
       "outcome2": "You decline the feast proposal. The villagers accept your decision, though disappointed.",
       "outcome3": "Time passes and the opportunity for a feast fades away."
@@ -727,7 +747,6 @@
     },
     "log": {
       "outcome0": "The blizzard hits with brutal force. All production slows to a crawl as villagers struggle to survive the cold.",
-      "outcome1": "You don't have enough resources to prepare.",
       "outcome2": "Thanks to the stockpiles of firewood and food, the villagers survive the blizzard unharmed.",
       "outcome3": "The blizzard hits with brutal force. All production slows to a crawl as villagers struggle to survive the cold."
     },
@@ -871,7 +890,6 @@
       }
     },
     "log": {
-      "outcome0": "You don't have enough leather to help her.",
       "outcome1": "You hand her the leather. She takes it with a grateful smile, her eyes brightening. 'Thank you. He'll be... very surprised.' She hurries off, clutching the hides to her chest.",
       "outcome2": "You decline. She nods, disappointment flickering across her face, and returns to the village without another word."
     },
@@ -922,9 +940,7 @@
     },
     "log": {
       "outcome0": "Your indecision frustrates the archer. He shakes his head and leaves, taking his expertise elsewhere.",
-      "outcome1": "You don't have enough food for this offer.",
       "outcome2": "The master archer takes the payment and begins training your hunters immediately.",
-      "outcome3": "You don't have enough gold for this offer.",
       "outcome4": "The master archer takes the gold with a nod and begins training your hunters immediately.",
       "outcome5": "The archer nods understandingly. 'I'll return in case you change your mind,' he says before disappearing into the forest."
     },
@@ -1079,9 +1095,7 @@
     },
     "log": {
       "outcome0": "You decline the monk's offer. He bows respectfully and begins his journey back to the mountains.",
-      "outcome1": "You don't have enough resources for the tribute.",
       "outcome2": "The monk accepts your tribute with a solemn nod and reveals detailed plans for a skeleton key. “This key is said to open any lock,” he says, before departing.",
-      "outcome3": "You don't have enough gold.",
       "outcome4": "The monk's eyes widen at the sight of gold. 'This will help the monastery greatly,' he says, drawing out detailed plans for a skeleton key. “This key is said to open any lock,” he says, before departing.",
       "outcome5": "You decline the monk's offer. He bows respectfully and begins his journey back to the mountains."
     },
@@ -1100,7 +1114,6 @@
     },
     "log": {
       "outcome0": "You took too long to decide. The monks' offer expires.",
-      "outcome1": "You don't have enough gold.",
       "outcome2": "You pay the monks for their map. It reveals the location of the Hidden Library deep in the cave.",
       "outcome3": "You decline the monks' offer. The opportunity is lost."
     },
@@ -1195,7 +1208,6 @@
       }
     },
     "log": {
-      "outcome0": "You don't have enough gold.",
       "ignoreForced": "You ignore the offer. The viking eventually spits on the ground and leaves with his war axe, muttering about your lack of respect.",
       "ignoreNormal": "You ignore the offer. The viking eventually nods and leaves with his war axe.",
       "buyForced": "The viking takes the payment with a cold smile. 'Perhaps you should have been more generous before, instead of attacking me. You would have paid much less for the axe then.' he speaks before leaving.",
@@ -1268,7 +1280,6 @@
     },
     "log": {
       "outcome0": "You give no order. Rumors spread, fear curdles into disgust, and village work falters.",
-      "outcome1": "You don't have enough food to hold a proper funeral.",
       "outcome2": "You order funeral rites and feed the mourners. Grief remains, but the village steadies.",
       "outcome3": "You uncover a group of conspirators and order their execution. Justice is swift, and fear recedes.",
       "outcome4": "You consecrate the body to the cross. The villagers recoil in disgust, but the power of the cross seems to have grown."
@@ -1345,7 +1356,6 @@
     },
     "log": {
       "outcome0": "The knight waited but you did not respond. 'Perhaps another time,' he says before continuing his journey.",
-      "outcome1": "You don't have enough gold.",
       "outcome2": "The knight speaks: 'Beyond the eastern mountains lies a dead city of giant stone towers, almost touching the clouds. Empty windows stare across the land like countless eyes. Nature has climbed every wall and filled the streets with roots. No one has lived there for ages.'",
       "outcome3": "Your words intrigue the knight, he speaks: 'Beyond the eastern mountains lies a dead city of giant stone towers, almost touching the clouds. Empty windows stare across the land like countless eyes. Nature has climbed every wall and filled the streets with roots. No one has lived there for ages.'",
       "outcome4": "The knight listens to your words but shakes his head. 'Your words are earnest, but my knowledge has value. Perhaps our paths will cross again.' He departs without sharing his tale.",
@@ -1393,9 +1403,7 @@
     },
     "log": {
       "outcome0": "The knight waited but you did not respond. 'Perhaps another time,' he says before continuing his journey.",
-      "outcome1": "You don't have enough gold.",
       "outcome2": "The knight shares: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.'",
-      "outcome3": "You don't have enough food.",
       "outcome4": "Content for the meal, the knight shares: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.'",
       "outcome5": "Your words move the knight. He speaks: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.'",
       "outcome6": "The knight listens but remains unmoved. 'Your words are sincere, but this knowledge is precious. Perhaps another time.' He departs without sharing his discovery.",
@@ -1423,9 +1431,7 @@
     },
     "log": {
       "outcome0": "The knight waited but you did not respond. 'Perhaps another time,' he says before continuing his journey.",
-      "outcome1": "You don't have enough gold.",
       "outcome2": "The knight nods with satisfaction. 'A fair price. I shall defend your people with my life.' He removes his weathered helm, revealing a scarred but determined face. The restless knight has joined your fellowship.",
-      "outcome3": "You don't have enough silver.",
       "outcome4": "The knight accepts the silver with a solemn bow. 'I shall defend your people with my life.' He removes his weathered helm, revealing a scarred but determined face. The restless knight has joined your fellowship.",
       "outcome5": "'Your purpose seems noble, the knight’s eyes brighten. 'I would be honored to stand with you.' He removes his weathered helm, revealing a scarred but determined face. The restless knight has joined your fellowship.",
       "outcome6": "The knight listens but shakes his head. 'Words alone cannot sustain a warrior. I must continue my journey, then, for now.', he says, turning away and departing.",
@@ -1450,9 +1456,7 @@
     },
     "log": {
       "outcome0": "The knight waited but you did not respond. 'Perhaps another time,' he says before continuing his journey.",
-      "outcome1": "You don't have enough gold.",
       "outcome2": "The knight shares his discovery: 'High in the mountains lies a monastery carved into the cliffs. Scholars who gathered there to study the past tell of an advanced civilization far beyond our understanding. Yet something brought their world to ruin.'",
-      "outcome3": "You don't have enough food.",
       "outcome4": "Grateful for the meal, the knight shares his discovery: 'High in the mountains lies a monastery carved into the cliffs. The scholars there who study the past speak of a civilization far beyond our understanding. Their craft was so advanced it would seem like magic to us. Yet something brought their world to ruin.'",
       "outcome5": "You decline his offer. The knight nods understandingly. 'The knowledge will remain with me then,' he says before departing once more."
     },
@@ -1789,7 +1793,6 @@
     },
     "log": {
       "outcome0": "You took too long to decide. The fishermen's offer expires.",
-      "outcome1": "You don't have enough gold.",
       "outcome2": "The fishermen share their elaborated techniques of building fish traps you.",
       "outcome3": "You decline the fishermen's offer. The opportunity is lost."
     },
@@ -1852,8 +1855,6 @@
       }
     },
     "log": {
-      "outcome0": "You don't have enough gold for the gathering.",
-      "outcome1": "You don't have enough food for the gathering.",
       "outcome2": "The fires burn and laughter breaks the darkness for a time. By dawn, many visitors linger, considering staying.",
       "outcome3": "You decline. The night passes without cheer, warmth, or laughter."
     },
@@ -1872,7 +1873,6 @@
     },
     "log": {
       "outcome0": "The black timber resists, but your people bring it down. You claim the black cursed timber.",
-      "outcome1": "You have not enough food for a worthy offering. The tree waits.",
       "outcome2": "Blood and smoke rise from the offering. A chill grace settles on the village."
     },
     "message": "Your expedition reaches the forgotten swamp sanctuary. Crumbling ruins encircle a massive tree of dark black timber. What do you do?",
@@ -1955,7 +1955,6 @@
       }
     },
     "log": {
-      "outcome0": "You don't have enough food and torches for the search party.",
       "outcome1": "The search party finds the girl unharmed. She had discovered a small cave strewn with silver trinkets and coins, and was quietly playing among them.",
       "outcome2": "You decline. The trader nods sadly and leaves to search on his own.",
       "outcome3": "You decline. The trader nods sadly and leaves to search on his own."
@@ -2053,9 +2052,7 @@
     },
     "log": {
       "outcome0": "You decline the wanderer's offer. He shrugs, adjusts his worn pack, and disappears down the road.",
-      "outcome1": "You don't have enough food to offer.",
       "outcome2": "The wanderer gives a brief nod and walks off to the mining pit to begin his labor.",
-      "outcome3": "You don't have enough gold to offer.",
       "outcome4": "The wanderer gives a brief nod and walks off to the mining pit to begin his labor."
     },
     "message": "A man in torn clothes approaches the village, his hands marked from years of hard labor. 'I come from a mining colony,' he says in a rough voice. 'I can work for you to improve your mining yield.'",
@@ -2072,7 +2069,6 @@
       }
     },
     "log": {
-      "outcome0": "You don't have enough gold.",
       "outcome1": "The seer falls silent. His stare drifts beyond you. \"Great challenges await you{{name}},\" he says softly. \"You believe this world is yours to shape. But you are shaped in turn. When the final truth surfaces, you will see the strings. And by then, it might be too late.\"",
       "outcome2": "The seer nods. {{farewell}}"
     },
@@ -2091,6 +2087,7 @@
   "vikingBuilder": {
     "choices": {
       "acceptDeal": {
+        "cost": "250 Gold",
         "label": "Pay 250 Gold"
       },
       "forceHim": {
@@ -2102,7 +2099,6 @@
     },
     "log": {
       "outcome0": "The builder waits for a while, but eventually shrugs and disappears into the wilderness, taking his knowledge with him.",
-      "outcome1": "You don't have enough gold for this deal.",
       "outcome2": "You pay the builder. He teaches the villagers the ancient nordic techniques for constructing longhouses.",
       "outcome3": "Your men overpower the builder and force him to share his knowledge. Reluctantly, he teaches you the secrets of longhouse construction.",
       "outcome4": "The builder proves stronger than expected! He fights back fiercely, killing ${actualCasualties} men before escaping into the wilderness.",
@@ -2200,9 +2196,7 @@
     },
     "log": {
       "outcome0": "The firecrafter eventually sighs, 'Perhaps you are not ready for such power yet,' and disappears into the night.",
-      "outcome1": "You don't have enough gold.",
       "outcome2": "The firecrafter takes your gold and begins teaching you the dark art of void bomb creation. 'Use this power wisely,' he warns before vanishing into the shadows.",
-      "outcome3": "You don't have enough silver.",
       "outcome4": "The firecrafter takes your silver and begins teaching you the dark art of void bomb creation. 'Use this power wisely,' he warns before vanishing into the shadows.",
       "outcome5": "You refuse the firecrafter's offer. He nods knowingly, 'Perhaps you are not ready for such power yet,' and disappears into the night."
     },
@@ -2342,7 +2336,6 @@
       }
     },
     "log": {
-      "outcome0": "You don't have enough gold to pay her.",
       "outcome1": "You hand over the gold. The witch cackles, pockets the coins, and disappears into the mist without another word.",
       "outcome2": "You refuse to pay. The witch spits and curses, but nothing happens. She hobbles away, muttering threats into the wind. It seems you got lucky.",
       "outcome3": "As you refuse to pay the witch raises her gnarled hands and speaks words in a forgotten tongue. When she leaves the villagers start to feel weak, as if their strength was sapped by an unseen force.",
@@ -2388,7 +2381,6 @@
     },
     "log": {
       "outcome0": "Your indecision frustrates the wizard. He shakes his head. 'I will remain in my tower, then. Perhaps our paths will cross again when the need is greater,' he says before departing.",
-      "outcome1": "You don't have enough gold.",
       "outcome2": "The wizard nods with satisfaction. 'A fair price for my services. I shall defend your people with arcane fire.' He removes his weathered hood, revealing ancient eyes that glow with fading power. The Elder Wizard has joined your fellowship.",
       "outcome3": "You decline the wizard's offer. He nods with understanding. 'I will remain in my tower, then. Perhaps our paths will cross again when the need is greater,' he says before departing."
     },
@@ -2479,7 +2471,6 @@
       "timeoutLevel4": "Your indecision frustrates the woodcutter. He looks disappointed but accepts and leaves.",
       "timeoutLevel5": "Your indecision frustrates the woodcutter. He frowns and walks away.",
       "timeoutLevel6": "Your indecision frustrates the woodcutter. He frowns and walks away.",
-      "outcome0": "You don't have enough Food for this deal.",
       "successLevel1": "The woodcutter takes the food and heads into the forest. By evening, he returns with the promised wood stacked neatly at the village's edge.",
       "successLevel2": "The woodcutter takes the food and disappears into the forest. By nightfall, he returns with a large pile of wood.",
       "successLevel3": "The woodcutter takes the food and ventures deep into the forest. He returns with an impressive haul of wood.",

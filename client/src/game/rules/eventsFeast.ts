@@ -88,12 +88,6 @@ function createFeastEvent(config: FeastConfig): GameEvent {
       {
         id: "makeFeast",
         effect: (state: GameState) => {
-          if (state.resources.food < foodCost) {
-            return {
-              _logMessageKey: "outcome0",
-            };
-          }
-
           const baseDuration = 10 * 60 * 1000;
           const btpBonus = state.BTP === 1 ? 5 * 60 * 1000 : 0;
           const feastDuration = baseDuration + btpBonus;

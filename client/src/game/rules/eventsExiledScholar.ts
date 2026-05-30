@@ -12,7 +12,8 @@ export const exiledScholarEvents: Record<string, GameEvent> = {
     timeProbability: (state: GameState) => {
       // Return 20 if this is the first visit, 60 if the player hasn't paid yet
       return state.exiledScholarState?.hasPaid ? 60 : 20;
-    },
+    },
+
     priority: 10,
     repeatable: true,
     showAsTimedTab: true,
@@ -20,16 +21,9 @@ export const exiledScholarEvents: Record<string, GameEvent> = {
     skipEventLog: true,
     choices: [
       {
-        id: "payScholar",
+        id: "payScholar",
         cost: "250 Gold",
-        effect: (state: GameState) => {
-          if (state.resources.gold < 250) {
-            return {
-              _logMessageKey: "outcome0",
-            };
-          }
-
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               gold: state.resources.gold - 250,
@@ -48,11 +42,10 @@ export const exiledScholarEvents: Record<string, GameEvent> = {
               hasPaid: true,
             },
             _logMessageKey: "outcome1",
-          };
-        },
+        }),
       },
       {
-        id: "sendAway",
+        id: "sendAway",
         effect: (state: GameState) => ({
           exiledScholarState: {
             hasPaid: false,
@@ -62,7 +55,7 @@ export const exiledScholarEvents: Record<string, GameEvent> = {
       },
     ],
     fallbackChoice: {
-      id: "sendAway",
+      id: "sendAway",
       effect: (state: GameState) => ({
         exiledScholarState: {
           hasPaid: false,

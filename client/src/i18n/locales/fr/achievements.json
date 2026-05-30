@@ -28,7 +28,7 @@
       "label": "Mineur d'obsidienne"
     },
     "1-mineStone": {
-      "label": "Mineur de pierre"  //x1.5
+      "label": "Mineur de pierre"
     },
     "1-mineSulfur": {
       "label": "Mineur de soufre"
@@ -69,22 +69,22 @@
   },
   "basic": {
     "0-coalMiner": {
-      "label": "Récolter du charbon"  //x1.7
+      "label": "Récolter du charbon"
     },
     "0-hunter": {
       "label": "Chasseur"
     },
     "0-ironMiner": {
-      "label": "Récolter du fer"  //x1.4
+      "label": "Récolter du fer"
     },
     "0-stoneMiner": {
-      "label": "Récolter de la pierre"  //x1.8
+      "label": "Récolter de la pierre"
     },
     "0-woodGatherer": {
-      "label": "Récolter du bois"  //x1.5
+      "label": "Récolter du bois"
     },
     "1-builder": {
-      "label": "Construire des bâtiments"  //x1.3
+      "label": "Construire des bâtiments"
     },
     "1-communityBuilder": {
       "label": "Bâtir une communauté"
@@ -143,7 +143,7 @@
       "label": "Murs du fort"
     },
     "4-1": {
-      "label": "Poste de guet"  //x1.9
+      "label": "Poste de guet"
     }
   },
   "item": {
@@ -163,7 +163,7 @@
       "label": "Épées"
     },
     "2-explorer_pack": {
-      "label": "Travail du cuir"  //x1.3
+      "label": "Travail du cuir"
     },
     "2-schematic_weapons": {
       "label": "Schémas"

@@ -105,6 +105,7 @@ export const gameStateSchema = z.object({
       nightshade_bow_schematic: z.boolean().default(false),
       stormglass_halberd_schematic: z.boolean().default(false),
       skeleton_key_schematic: z.boolean().default(false),
+      obsidian_orb_schematic: z.boolean().default(false),
     })
     .default({}),
   tools: z
@@ -219,6 +220,7 @@ export const gameStateSchema = z.object({
       bone_devourer_blood: z.boolean().default(false),
       survivors_notes: z.boolean().default(false),
       black_wood: z.boolean().default(false),
+      obsidian_orb: z.boolean().default(false),
     })
     .default({}),
   fellowship: z.object(fellowshipShape).default({}),
@@ -576,6 +578,14 @@ export const gameStateSchema = z.object({
     .default({
       isActive: false,
       endTime: 0,
+    }),
+
+  obsidianOrbState: z
+    .object({
+      nextFocusGainTime: z.number().default(0),
+    })
+    .default({
+      nextFocusGainTime: 0,
     }),
   authNotificationSeen: z.boolean().default(false), // Added new field for auth notification
   authNotificationVisible: z.boolean().default(false), // Added new field for auth notification visibility

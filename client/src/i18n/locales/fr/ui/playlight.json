@@ -2,8 +2,8 @@
   "playlight": {
     "welcomeTitle": "Bienvenue, joueur Playlight",
     "welcomeGift": "Merci d'utiliser Playlight. {{reward}} a été ajouté à votre inventaire en cadeau de bienvenue.",
-    "welcomeDiscount": "Vous bénéficiez aussi de {{percent}} % de réduction sur votre premier achat dans la boutique. La réduction est appliquée automatiquement.",  //x1.4
-    "moreGames": "Plus de jeux",  //x1.2
+    "welcomeDiscount": "Vous bénéficiez aussi de {{percent}} % de réduction sur votre premier achat dans la boutique. La réduction est appliquée automatiquement.",
+    "moreGames": "Plus de jeux",
     "discoveryAria": "Découvrir"
   }
 }

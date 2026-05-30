@@ -8,23 +8,18 @@ export const tradersDaughterEvents: Record<string, GameEvent> = {
       (state.resources.food ?? 0) > 500 &&
       (state.buildings.tradePost ?? 0) >= 1 &&
       !state.triggeredEvents.traders_daughter_helped,
-    timeProbability: 30,
+    timeProbability: 30,
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 6 * 60 * 1000, // 6 minutes
     choices: [
       {
-        id: "send_search_party",
+        id: "send_search_party",
         cost: "500 food, 50 torch",
         effect: (state: GameState) => {
           const food = state.resources.food ?? 0;
           const torch = state.resources.torch ?? 0;
-          if (food < 500 || torch < 50) {
-            return {
-              _logMessageKey: "outcome0",
-            };
-          }
           return {
             resources: {
               ...state.resources,
@@ -41,14 +36,14 @@ export const tradersDaughterEvents: Record<string, GameEvent> = {
         },
       },
       {
-        id: "do_not_help",
+        id: "do_not_help",
         effect: (_state: GameState) => ({
           _logMessageKey: "outcome2",
         }),
       },
     ],
     fallbackChoice: {
-      id: "do_not_help",
+      id: "do_not_help",
       effect: (_state: GameState) => ({
         _logMessageKey: "outcome3",
       }),
@@ -60,14 +55,14 @@ export const tradersDaughterEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.triggeredEvents?.traders_daughter_helped === true &&
       state.triggeredEvents?.traders_gratitude_used !== true,
-    timeProbability: 2,
+    timeProbability: 2,
     priority: 3,
     repeatable: false,
     showAsTimedTab: true,
     timedTabDuration: 10 * 60 * 1000, // 10 minutes
     choices: [
       {
-        id: "accept_traders_gratitude",
+        id: "accept_traders_gratitude",
         effect: (state: GameState) => ({
           tradersGratitudeState: {
             accepted: true,
@@ -75,7 +70,7 @@ export const tradersDaughterEvents: Record<string, GameEvent> = {
         }),
       },
       {
-        id: "decline_traders_gratitude",
+        id: "decline_traders_gratitude",
         effect: (state: GameState) => ({
           tradersGratitudeState: { accepted: false },
           triggeredEvents: {
@@ -87,7 +82,7 @@ export const tradersDaughterEvents: Record<string, GameEvent> = {
       },
     ],
     fallbackChoice: {
-      id: "decline_traders_gratitude",
+      id: "decline_traders_gratitude",
       effect: (state: GameState) => ({
         tradersGratitudeState: { accepted: false },
         triggeredEvents: {

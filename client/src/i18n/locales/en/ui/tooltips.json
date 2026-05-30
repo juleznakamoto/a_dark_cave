@@ -33,6 +33,8 @@
     "frostfall": "Frostfall",
     "chokingFog": "Choking Fog",
     "focus": "Focus",
+    "obsidianOrbFocusCountdown": "{{time}} until next Focus Point is gained",
+    "obsidianOrbFocusCap": "Focus reserve full ({{max}})",
     "actionBonus": "Action Bonus: {{multiplier}}x",
     "baseDamage": "Base Damage: {{value}}",
     "knowledgeBonus": "Knowledge Bonus: +{{value}}",

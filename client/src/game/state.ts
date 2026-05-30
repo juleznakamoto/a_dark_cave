@@ -770,6 +770,8 @@ const mergeStateUpdates = (
       stateUpdates.tradersSonGratitudeState || prevState.tradersSonGratitudeState,
     fogState: stateUpdates.fogState || prevState.fogState,
     disgustState: stateUpdates.disgustState || prevState.disgustState,
+    obsidianOrbState:
+      stateUpdates.obsidianOrbState || prevState.obsidianOrbState,
     sleepUpgrades: stateUpdates.sleepUpgrades || prevState.sleepUpgrades,
     combatSkills: stateUpdates.combatSkills || prevState.combatSkills,
     clickAnalytics: {
@@ -1001,6 +1003,9 @@ export const createInitialState = (): GameState => ({
   disgustState: {
     isActive: false,
     endTime: 0,
+  },
+  obsidianOrbState: {
+    nextFocusGainTime: 0,
   },
   combatSkills: {
     crushingStrikeLevel: 0,
@@ -2238,8 +2243,25 @@ export const useGameStore = create<GameStore>((set, get) => ({
         gamblerGame: gamblerGameForResume,
       });
 
+      const legacyObsidianOrbInClothing = Boolean(
+        (savedState.clothing as { obsidian_orb?: boolean } | undefined)
+          ?.obsidian_orb,
+      );
+
       const loadedState = {
         ...savedForHydration,
+        relics: {
+          ...defaultGameState.relics,
+          ...savedState.relics,
+          obsidian_orb:
+            savedState.relics?.obsidian_orb === true ||
+            legacyObsidianOrbInClothing,
+        },
+        clothing: {
+          ...defaultGameState.clothing,
+          ...savedState.clothing,
+          obsidian_orb: false,
+        },
         activeTab,
         gamblerDiceDialogOpen,
         timedEventTab,
@@ -2335,6 +2357,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
           savedState.tradersSonGratitudeState ??
           defaultGameState.tradersSonGratitudeState,
         disgustState: savedState.disgustState || defaultGameState.disgustState, // Load disgustState
+        obsidianOrbState:
+          savedState.obsidianOrbState || defaultGameState.obsidianOrbState,
         solsticeState: savedState.solsticeState || defaultGameState.solsticeState, // Load solsticeState
         lastFreeGoldClaim: savedState.lastFreeGoldClaim || 0, // Load lastFreeGoldClaim
         traderDialogOpens: savedState.traderDialogOpens ?? 0,

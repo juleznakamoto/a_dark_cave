@@ -42,6 +42,7 @@ import {
 } from "./socialPromptAuto";
 import { FEEDBACK_PROMPT_PLAY_MS } from "./feedbackPromptAuto";
 import { isSocialPromoExclusiveRewardComplete } from "@/game/socialPromoExclusiveReward";
+import { tickObsidianOrbFocus } from "@/game/obsidianOrb";
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
 
@@ -822,6 +823,21 @@ export function processActionTicks() {
         isActive: false,
       },
     });
+  }
+
+  const obsidianOrbPatch = tickObsidianOrbFocus(
+    useGameStore.getState() as GameState,
+  );
+  if (obsidianOrbPatch) {
+    useGameStore.setState((s) => ({
+      focusState: {
+        ...s.focusState,
+        ...obsidianOrbPatch.focusState,
+      },
+      obsidianOrbState: obsidianOrbPatch.obsidianOrbState,
+      totalFocusEarned:
+        (s.totalFocusEarned || 0) + obsidianOrbPatch.totalFocusEarned,
+    }));
   }
 
   // Check if mining boost has expired

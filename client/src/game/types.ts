@@ -87,6 +87,7 @@ export interface ActionEffectUpdates {
   compassBonusTriggered?: boolean;
   buttonUpgrades?: Partial<GameState["buttonUpgrades"]>;
   focusState?: GameState["focusState"];
+  obsidianOrbState?: GameState["obsidianOrbState"];
   focus?: number;
   totalFocusEarned?: number;
   huntingSkills?: GameState["huntingSkills"];

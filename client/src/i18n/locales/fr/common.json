@@ -4,7 +4,7 @@
     "continue": "Continuer",
     "confirm": "Confirmer",
     "cancel": "Annuler",
-    "save": "Sauvegarder",  //x2.8
+    "save": "Sauvegarder",
     "refresh": "Actualiser",
     "dismiss": "Ignorer",
     "fight": "Combattre",
@@ -34,13 +34,13 @@
     "fortress": "Forteresse",
     "trader": "Marchand",
     "achievements": "Succès",
-    "timedEvent": "Événement chronométré"  //x1.9
+    "timedEvent": "Événement chronométré"
   },
   "resources": {
     "wood": "Bois",
     "stone": "Pierre",
     "food": "Nourriture",
-    "veinroot": "Racine-veine",  //x1.5
+    "veinroot": "Racine-veine",
     "bones": "Os",
     "fur": "Fourrure",
     "leather": "Cuir",
@@ -53,14 +53,14 @@
     "adamant": "Adamant",
     "steel": "Acier",
     "blacksteel": "Acier noir",
-    "moonstone": "Pierre de lune",  //x1.6
+    "moonstone": "Pierre de lune",
     "black_powder": "Poudre noire",
-    "ember_bomb": "Bombe de braise",  //x1.5
-    "ashfire_dust": "Poussière feu-cendre",  //x1.7
-    "ashfire_bomb": "Bombe de feu cendré",  //x1.6
+    "ember_bomb": "Bombe de braise",
+    "ashfire_dust": "Poussière feu-cendre",
+    "ashfire_bomb": "Bombe de feu cendré",
     "void_bomb": "Bombe du néant",
-    "veinfire_elixir": "Élixir de feu-veine",  //x1.3
-    "poison_arrows": "Flèches empoisonnées",  //x1.5
+    "veinfire_elixir": "Élixir de feu-veine",
+    "poison_arrows": "Flèches empoisonnées",
     "torch": "Torche",
     "silver": "Argent",
     "gold": "Or"

@@ -194,6 +194,14 @@
       "description": "Blueprint for crafting a poisonous bow",
       "name": "Nightshade Bow"
     },
+    "obsidian_orb": {
+      "description": "Powerful orb of volcanic glass granting mental strength",
+      "name": "Obsidian Orb"
+    },
+    "obsidian_orb_schematic": {
+      "description": "Blueprint for crafting a powerful obsidian orb",
+      "name": "Obsidian Orb"
+    },
     "occultist_grimoire": {
       "description": "Grimoire containing the unholy knowledge of a heretic occultist",
       "name": "Occultist Grimoire"

@@ -126,12 +126,6 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
       {
         id: "acceptServices",
         effect: (state: GameState) => {
-          if (state.resources.food < foodCost) {
-            return {
-              _logMessageKey: "outcome0",
-            };
-          }
-
           // Handle betrayal chance if it exists
           if (betrayalChance !== undefined) {
             const isBetrayedNow = Math.random() < betrayalChance;

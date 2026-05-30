@@ -37,10 +37,10 @@
     "termsOfService": "Nutzungsbedingungen", //ok
     "rightOfWithdrawal": "Widerrufsrecht",
     "completePurchaseFor": "Kauf abschließen für {{price}}",
-    "paymentFailed": "Zahlung fehlgeschlagen",  //x1.6
-    "notAuthenticated": "Benutzer nicht authentifiziert",  //x1.4
+    "paymentFailed": "Zahlung fehlgeschlagen",
+    "notAuthenticated": "Benutzer nicht authentifiziert",
     "verificationFailed": "Zahlungsüberprüfung fehlgeschlagen. Bitte kontaktiere den Support.",
-    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten",  //x1.4
+    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten",
     "purchaseSuccessful": "Kauf erfolgreich!",
     "purchaseAddedSingle": "{{name}} wurde deinen Käufen hinzugefügt. Prüfe den Tab „Käufe“, um es zu aktivieren.",
     "purchaseAddedBundle": "Die Bestandteile von {{name}} wurden deinen Käufen hinzugefügt. Prüfe den Tab „Käufe“, um sie zu aktivieren.",
@@ -53,7 +53,7 @@
     "artifactSkullLantern": {
       "title": "Schädellaterne",
       "caveExploreBonus": "Höhlenerkundung: +200 % Bonus",
-      "caveExploreCooldown": "Höhlenerkundung: -5 s Abklingzeit",  //x1.3
+      "caveExploreCooldown": "Höhlenerkundung: -5 s Abklingzeit",
       "miningBonus": "Abbau: +200 % Bonus",
       "miningCooldown": "Abbau: -5s Abklingzeit"
     },
@@ -67,15 +67,15 @@
       "doubleGain": "bis zu 15 % Chance, Aktionsgewinne zu verdoppeln"
     },
     "cruelMode": {
-      "title": "Grausamer Modus",  //x1.5
-      "moreEvents": "Mehr Ereignisse",  //x1.4
-      "moreItems": "Mehr Gegenstände",  //x1.6
+      "title": "Grausamer Modus",
+      "moreEvents": "Mehr Ereignisse",
+      "moreItems": "Mehr Gegenstände",
       "strongerEnemies": "Stärkere Feinde",
-      "harderChallenges": "Härtere Herausforderungen",  //x1.5
-      "reusePurchases": "Bestehende Käufe wiederverwenden"  //x1.3
+      "harderChallenges": "Härtere Herausforderungen",
+      "reusePurchases": "Bestehende Käufe wiederverwenden"
     },
     "alreadyClaimedItemLog": "Du hast {{name}} bereits abgeholt.",
-    "claimFailedLog": "{{name}} konnte nicht abgeholt werden. Bitte versuche es erneut.",  //x1.5
+    "claimFailedLog": "{{name}} konnte nicht abgeholt werden. Bitte versuche es erneut.",
     "activatedDefaultLog": "{{name}} aktiviert! Belohnungen wurden deinem Inventar hinzugefügt.",
     "freeGoldClaimedLog": "Du hast {{amount}} Gold abgeholt. Komm morgen wieder, wenn du die Nacht überstehst.",
     "freeGoldCooldownLog_one": "Du kannst in {{hours}} Stunde wieder kostenloses Gold abholen.",

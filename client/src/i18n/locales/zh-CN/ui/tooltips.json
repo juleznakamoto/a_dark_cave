@@ -140,6 +140,8 @@
       "newVillagerChancePercent": "新村民概率 +{{percent}}%",
       "steelForgerSteel": "炼钢工：+{{amount}} 钢",
       "tannerLeather": "制革工：+{{amount}} 皮革"
-    }
+    },
+    "obsidianOrbFocusCountdown": "{{time}} 后获得下一点专注",
+    "obsidianOrbFocusCap": "专注储备已满 ({{max}})"
   }
 }

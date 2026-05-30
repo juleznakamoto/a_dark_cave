@@ -65,11 +65,11 @@
     "label": "Cimetière"
   },
   "buildBottomlessPit": {
-    "description": "Fosse extrêmement profonde atteignant les matériaux les plus rares", //x1.4
+    "description": "Fosse extrêmement profonde atteignant les matériaux les plus rares",
     "label": "Fosse sans fond"
   },
   "buildCabin": {
-    "description": "Cabane de chasse rudimentaire avec des outils pour les chasseurs", //x1.5
+    "description": "Cabane de chasse rudimentaire avec des outils pour les chasseurs",
     "label": "Cabane"
   },
   "buildChitinPlating": {
@@ -97,11 +97,11 @@
     "label": "Fosse profonde"
   },
   "buildDeepeningPit": {
-    "description": "Fosse plus profonde atteignant davantage de ressources souterraines", //x1.6
+    "description": "Fosse plus profonde atteignant davantage de ressources souterraines",
     "label": "Fosse approfondie"
   },
   "buildFortifiedMoat": {
-    "description": "Douves défensives ralentissant et affaiblissant les assaillants", //x1.4
+    "description": "Douves défensives ralentissant et affaiblissant les assaillants",
     "label": "Douves fortifiées"
   },
   "buildFortifiedStorehouse": {
@@ -126,14 +126,14 @@
   },
   "buildGrandHunterLodge": {
     "description": "Pavillon de chasse suprême pour maîtres chasseurs",
-    "label": "Grand pavillon de chasse" //x1.3
+    "label": "Grand pavillon de chasse"
   },
   "buildGrandRepository": {
     "description": "Immense dépôt à la capacité de stockage exceptionnelle",
     "label": "Grand dépôt"
   },
   "buildGreatCabin": {
-    "description": "Pavillon de chasse agrandi augmentant la production des chasseurs", //x1.4
+    "description": "Pavillon de chasse agrandi augmentant la production des chasseurs",
     "label": "Grande cabane"
   },
   "buildGreatVault": {
@@ -189,7 +189,7 @@
     "label": "Fonderie majeure"
   },
   "buildQuarry": {
-    "description": "Carrière de pierre augmentant la production de pierre des récolteurs", //x1.5
+    "description": "Carrière de pierre augmentant la production de pierre des récolteurs",
     "label": "Carrière"
   },
   "buildSanctum": {
@@ -213,12 +213,12 @@
     "label": "Hutte de pierre"
   },
   "buildStorehouse": {
-    "description": "Installation de stockage agrandie pour davantage de ressources", //x1.4
+    "description": "Installation de stockage agrandie pour davantage de ressources",
     "label": "Entrepôt"
   },
   "buildSupplyHut": {
     "description": "Petite hutte pour stocker les ressources",
-    "label": "Hutte de ravitaillement" //x2.3
+    "label": "Hutte de ravitaillement"
   },
   "buildTannery": {
     "description": "Atelier où les fourrures sont transformées en cuir",
@@ -233,7 +233,7 @@
     "label": "Scierie"
   },
   "buildTradePost": {
-    "description": "Comptoir commercial attirant des marchands qui vendent des biens", //x1.4
+    "description": "Comptoir commercial attirant des marchands qui vendent des biens",
     "label": "Comptoir commercial"
   },
   "buildTraps": {
@@ -306,7 +306,7 @@
     "label": "Arbalète"
   },
   "craftAshenGreatshield": {
-    "label": "Grand bouclier cendreux" //x1.4
+    "label": "Grand bouclier cendreux"
   },
   "craftAshfireBomb": {
     "label": "Bombe feu-cendre"
@@ -330,7 +330,7 @@
     "label": "Épée d'acier noir"
   },
   "craftBloodstoneStaff": {
-    "label": "Bâton de pierre de sang" //x1.4
+    "label": "Bâton de pierre de sang"
   },
   "craftBoneTotems": {
     "label": "Totems d'os"
@@ -426,7 +426,7 @@
     "label": "Pioche de pierre"
   },
   "craftStormglassHalberd": {
-    "label": "Hallebarde de verre-tempête" //x1.5
+    "label": "Hallebarde de verre-tempête"
   },
   "craftTorches": {
     "label": "Torchees"
@@ -447,7 +447,7 @@
     }
   },
   "encounterBeyondPortal": {
-    "label": "S'aventurer au-delà de la porte" //x1.6
+    "label": "S'aventurer au-delà de la porte"
   },
   "exploreCave": {
     "label": "Explorer la grotte",
@@ -495,7 +495,7 @@
     "label": "Soigner le vieux mage"
   },
   "healRestlessKnight": {
-    "label": "Soigner le chevalier tourmenté" //x1.5
+    "label": "Soigner le chevalier tourmenté"
   },
   "hiddenLibrary": {
     "label": "Bibliothèque cachée",
@@ -590,7 +590,7 @@
     }
   },
   "occultistChamber": {
-    "label": "Chambre de l'occultiste", //x1.4
+    "label": "Chambre de l'occultiste",
     "log": {
       "complete": "En suivant la carte de l'occultiste, vous trouvez la chambre qui contient ses trésors. Parmi eux se trouve son grimoire, rempli de savoir interdit et de secrets arcanes."
     }
@@ -605,7 +605,7 @@
     "label": "Réparer les palissades"
   },
   "repairWatchtower": {
-    "label": "Réparer la tour de guet" //x1.4
+    "label": "Réparer la tour de guet"
   },
   "risingSmoke": {
     "label": "Fumée montante",
@@ -649,13 +649,13 @@
     "label": "Acheter une bombe feu-cendre"
   },
   "tradeGoldForBlacksteel": {
-    "label": "Acheter de l'acier noir" //x1.6
+    "label": "Acheter de l'acier noir"
   },
   "tradeGoldForEmberBomb": {
-    "label": "Acheter une bombe de braise" //x1.9
+    "label": "Acheter une bombe de braise"
   },
   "tradeGoldForFood": {
-    "label": "Acheter de la nourriture" //x3.0
+    "label": "Acheter de la nourriture"
   },
   "tradeGoldForIron": {
     "label": "Acheter du fer"
@@ -664,7 +664,7 @@
     "label": "Acheter du cuir"
   },
   "tradeGoldForObsidian": {
-    "label": "Acheter de l'obsidienne" //x1.9
+    "label": "Acheter de l'obsidienne"
   },
   "tradeGoldForSteel": {
     "label": "Acheter de l'acier"
@@ -676,7 +676,7 @@
     "label": "Acheter une torche"
   },
   "tradeGoldForVoidBomb": {
-    "label": "Acheter une bombe du Vide" //x1.9
+    "label": "Acheter une bombe du Vide"
   },
   "tradeGoldForWood": {
     "label": "Acheter du bois"
@@ -685,7 +685,7 @@
     "label": "Acheter de l'or"
   },
   "ventureDeeper": {
-    "label": "S'aventurer plus profond", //x1.7
+    "label": "S'aventurer plus profond",
     "log": {
       "tarnishedAmulet": "Dans l'ombre de la grotte, quelque chose scintille. Vous trouvez un amulette ternie.",
       "silverSack": "Vous trouvez un petit sac en cuir contenant 50 pièces d'argent.",

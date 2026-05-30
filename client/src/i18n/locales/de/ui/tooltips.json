@@ -106,7 +106,7 @@
       "hunterBones": "Jäger: +{{amount}} Knochen",
       "knowledgeBonus": "+{{amount}} Wissen",
       "resourceChangeHints": "Hinweise zu Ressourcenänderungen", //ok
-      "improvedResourceChangeHints": "Verbesserte Hinweise zu Ressourcenänderungen", //x1.5
+      "improvedResourceChangeHints": "Verbesserte Hinweise zu Ressourcenänderungen",
       "resourceHighlighting": "Ressourcen-Hervorhebung",
       "abortActions": "Aktionen abbrechen", //ok
       "madnessReduction": "-{{amount}} Wahnsinn",
@@ -140,6 +140,8 @@
       "newVillagerChancePercent": "+{{percent}} % Chance auf neue Dorfbewohner",
       "steelForgerSteel": "Stahlschmied: +{{amount}} Stahl",
       "tannerLeather": "Gerber: +{{amount}} Leder"
-    }
+    },
+    "obsidianOrbFocusCountdown": "{{time}} bis zum nächsten Fokuspunkt",
+    "obsidianOrbFocusCap": "Fokusreserve voll ({{max}})"
   }
 }

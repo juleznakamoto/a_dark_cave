@@ -441,7 +441,11 @@ export default function SidePanel() {
         (k in gameState.weapons &&
           gameState.weapons[k as keyof typeof gameState.weapons]) ||
         (k in gameState.tools &&
-          gameState.tools[k as keyof typeof gameState.tools])
+          gameState.tools[k as keyof typeof gameState.tools]) ||
+        (k in gameState.clothing &&
+          gameState.clothing[k as keyof typeof gameState.clothing]) ||
+        (k in gameState.relics &&
+          gameState.relics[k as keyof typeof gameState.relics])
       ) {
         return false;
       }

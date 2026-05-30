@@ -76,7 +76,7 @@
   "bloodiedAwakening": {
     "choices": {
       "investigateMurders": {
-        "label": "Investigar los asesinatos"  //x1.3
+        "label": "Investigar los asesinatos"
       },
       "severFinger": {
         "label": "Cortar el dedo"
@@ -112,7 +112,7 @@
         "label": "Prepararse para el ataque"
       },
       "sacrificeVillagers": {
-        "label": "Prepararse para el ataque"  //x1.3
+        "label": "Prepararse para el ataque"
       }
     },
     "log": {
@@ -197,7 +197,6 @@
       }
     },
     "log": {
-      "outcome0": "No tienes suficientes huesos para el trato.",
       "outcome1": "La criatura toma los huesos con sus manos nudosas, como si intentara contarlos. Deja una bolsa de plata a tus pies y desaparece en la oscuridad.",
       "outcome2": "Rechazas la oferta de la criatura. Sisea con disgusto y se retira a las sombras. Presientes que volverá.",
       "outcome3": "Tu indecisión frustra a la criatura. Sisea con disgusto y se retira a las sombras."
@@ -574,7 +573,7 @@
   "establishTradeProposal": {
     "choices": {
       "mountainMonastery": {
-        "label": "Monasterio de la Montaña"  //x1.3
+        "label": "Monasterio de la Montaña"
       },
       "swampTribe": {
         "label": "Tribu del Pantano"
@@ -605,7 +604,6 @@
       }
     },
     "log": {
-      "outcome0": "No tienes suficiente oro para pagar al erudito.",
       "outcome1": "El erudito crea una mezcla roja y sombría y te indica que te bañes en ella. Al salir del baño, te sientes más fuerte, pero también mancillado.",
       "outcome2": "Despides al erudito. Se marcha con un suspiro decepcionado, pero presientes que puede volver.",
       "outcome3": "El erudito se marcha, disgustado por tu indecisión."
@@ -644,7 +642,6 @@
       }
     },
     "log": {
-      "outcome0": "No tienes suficiente comida para el banquete.",
       "outcome1": "¡Los aldeanos se reúnen para un banquete! El cansancio se desvanece y los ánimos se elevan, aunque solo sea por un momento.",
       "outcome2": "Rechazas la propuesta del banquete. Los aldeanos aceptan tu decisión, aunque decepcionados.",
       "outcome3": "El tiempo pasa y la oportunidad de celebrar un banquete se desvanece."
@@ -727,7 +724,6 @@
     },
     "log": {
       "outcome0": "La ventisca golpea con fuerza brutal. Toda producción se ralentiza hasta casi detenerse mientras los aldeanos luchan por sobrevivir al frío.",
-      "outcome1": "No tienes suficientes recursos para prepararte.",
       "outcome2": "Gracias a las reservas de leña y comida, los aldeanos sobreviven ilesos a la ventisca.",
       "outcome3": "La ventisca golpea con fuerza brutal. Toda producción se ralentiza hasta casi detenerse mientras los aldeanos luchan por sobrevivir al frío."
     },
@@ -871,7 +867,6 @@
       }
     },
     "log": {
-      "outcome0": "No tienes suficiente cuero para ayudarla.",
       "outcome1": "Le entregas el cuero. Lo toma con una sonrisa agradecida, los ojos iluminándose. 'Gracias. Él estará... muy sorprendido'. Se marcha deprisa, apretando las pieles contra el pecho.",
       "outcome2": "Rechazas. Ella asiente, con una sombra de decepción en el rostro, y vuelve a la aldea sin decir otra palabra."
     },
@@ -922,9 +917,7 @@
     },
     "log": {
       "outcome0": "Tu indecisión frustra al arquero. Sacude la cabeza y se marcha, llevando su pericia a otra parte.",
-      "outcome1": "No tienes suficiente comida para esta oferta.",
       "outcome2": "El maestro arquero toma el pago y comienza a entrenar a tus cazadores de inmediato.",
-      "outcome3": "No tienes suficiente oro para esta oferta.",
       "outcome4": "El maestro arquero toma el oro con un gesto de asentimiento y comienza a entrenar a tus cazadores de inmediato.",
       "outcome5": "El arquero asiente con comprensión. 'Volveré por si cambias de opinión', dice antes de desaparecer en el bosque."
     },
@@ -934,7 +927,7 @@
   "mercenaryDemand": {
     "choices": {
       "giveRing": {
-        "label": "Dar el anillo de alimentación"  //x1.7
+        "label": "Dar el anillo de alimentación"
       },
       "payGold": {
         "cost": "100 oro",
@@ -956,7 +949,7 @@
   "mercenaryReturnDemand": {
     "choices": {
       "giveRing": {
-        "label": "Dar el anillo de alimentación"  //x1.7
+        "label": "Dar el anillo de alimentación"
       },
       "payGold": {
         "cost": "200 oro",
@@ -992,7 +985,7 @@
         "message": "Compras el esquema del arco sombrío. El mercader sonríe con oscuridad: «El diseño de este arco es cruel. Sus flechas envenenarán a tus enemigos.»"
       },
       "trade_skull_lantern": {
-        "label": "Linterna de cráneo",  //x1.4
+        "label": "Linterna de cráneo",
         "message": "Compras la linterna de cráneo. Forjada con hueso maldito, su luz inquietante te guiará por las profundidades más hondas."
       },
       "trade_tarnished_compass": {
@@ -1000,15 +993,15 @@
         "message": "Compras la brújula deslustrada. Artefacto de la civilización desaparecida, su aguja señala lugares ocultos."
       },
       "trade_map_fragment_wooden": {
-        "label": "Fragmento de mapa",  //x1.4
+        "label": "Fragmento de mapa",
         "message": "Compras un fragmento de mapa hecho jirones."
       },
       "trade_map_fragment_stone": {
-        "label": "Fragmento de mapa",  //x1.4
+        "label": "Fragmento de mapa",
         "message": "Compras un fragmento de mapa hecho jirones."
       },
       "trade_crow_harness": {
-        "label": "Arnés de cuervo",  //x1.3
+        "label": "Arnés de cuervo",
         "message": "Compras el arnés de cuervo. Un arnés especialmente fabricado para cuervos mensajeros."
       },
       "trade_clarity_elixir": {
@@ -1016,7 +1009,7 @@
         "message": "Bebes el Elixir de claridad. Tu mente se siente más ligera."
       },
       "trade_veinfire_elixir": {
-        "label": "Elixir de fuego venoso",  //x1.5
+        "label": "Elixir de fuego venoso",
         "message": "Compras una botella de Elixir de fuego venoso."
       },
       "trade_book_of_trials": {
@@ -1041,7 +1034,7 @@
       },
       "trade_giant_trap": {
         "message": "Al comprar la trampa gigante, el mercader sonríe: «Con esto puedes atrapar algo gigantesco en el bosque. Úsala con sabiduría.»",
-        "label": "Trampa gigante"  //x1.4
+        "label": "Trampa gigante"
       },
       "trade_arbalest_schematic": {
         "message": "Compras el esquema de ballesta. El mercader despliega un plano intrincado: «Un diseño de un ingeniero maestro. Con esto puedes fabricar un arma poderosa.»",
@@ -1053,7 +1046,7 @@
       },
       "trade_stormglass_halberd_schematic": {
         "message": "Compras el esquema de alabarda de cristal de tormenta. El mercader muestra los planos desvaídos: «Con este diseño puedes forjar una alabarda de poder tremendo.»",
-        "label": "Esquema de alabarda de cristal de tormenta"  //x1.5
+        "label": "Esquema de alabarda de cristal de tormenta"
       },
       "trade_natharit_pickaxe": {
         "message": "Compras el pico de natharit. El mercader te entrega la herramienta robusta: «Un pico extremadamente duradero de material desconocido. Su calidad es excepcional.»",
@@ -1079,9 +1072,7 @@
     },
     "log": {
       "outcome0": "Rechazas la oferta del monje. Hace una reverencia respetuosa y emprende el regreso a las montañas.",
-      "outcome1": "No tienes suficientes recursos para el tributo.",
       "outcome2": "El monje acepta tu tributo con un gesto solemne y revela planos detallados para una llave maestra. “Se dice que esta llave abre cualquier cerradura”, dice antes de partir.",
-      "outcome3": "No tienes suficiente oro.",
       "outcome4": "Los ojos del monje se abren al ver el oro. 'Esto ayudará mucho al monasterio', dice, sacando planos detallados para una llave maestra. “Se dice que esta llave abre cualquier cerradura”, dice antes de partir.",
       "outcome5": "Rechazas la oferta del monje. Hace una reverencia respetuosa y emprende el regreso a las montañas."
     },
@@ -1100,7 +1091,6 @@
     },
     "log": {
       "outcome0": "Tardaste demasiado en decidir. La oferta de los monjes expira.",
-      "outcome1": "No tienes suficiente oro.",
       "outcome2": "Pagas a los monjes por su mapa. Revela la ubicación de la Biblioteca Oculta en las profundidades de la cueva.",
       "outcome3": "Rechazas la oferta de los monjes. La oportunidad se pierde."
     },
@@ -1195,7 +1185,6 @@
       }
     },
     "log": {
-      "outcome0": "No tienes suficiente oro.",
       "ignoreForced": "Ignoras la oferta. El vikingo acaba escupiendo al suelo y se marcha con su hacha de guerra, murmurando sobre tu falta de respeto.",
       "ignoreNormal": "Ignoras la oferta. El vikingo acaba asintiendo y se marcha con su hacha de guerra.",
       "buyForced": "El vikingo acepta el pago con una sonrisa fría. «Quizá debiste ser más generoso antes, en vez de atacarme. Entonces habrías pagado mucho menos por el hacha», dice antes de marcharse.",
@@ -1268,7 +1257,6 @@
     },
     "log": {
       "outcome0": "No das ninguna orden. Se extienden rumores, el miedo se cuaja en asco y el trabajo de la aldea flaquea.",
-      "outcome1": "No tienes suficiente comida para celebrar un funeral apropiado.",
       "outcome2": "Ordenas ritos funerarios y alimentas a los dolientes. El duelo permanece, pero la aldea se estabiliza.",
       "outcome3": "Descubres a un grupo de conspiradores y ordenas su ejecución. La justicia es rápida y el miedo retrocede.",
       "outcome4": "Consagras el cuerpo a la cruz. Los aldeanos retroceden asqueados, pero el poder de la cruz parece haber crecido."
@@ -1345,7 +1333,6 @@
     },
     "log": {
       "outcome0": "El caballero esperó, pero no respondiste. 'Quizá en otra ocasión', dice antes de continuar su viaje.",
-      "outcome1": "No tienes suficiente oro.",
       "outcome2": "El caballero habla: 'Más allá de las montañas orientales yace una ciudad muerta de torres gigantes de piedra, casi tocando las nubes. Ventanas vacías miran la tierra como incontables ojos. La naturaleza ha trepado por cada muro y llenado las calles de raíces. Nadie ha vivido allí desde hace eras'.",
       "outcome3": "Tus palabras intrigan al caballero, y habla: 'Más allá de las montañas orientales yace una ciudad muerta de torres gigantes de piedra, casi tocando las nubes. Ventanas vacías miran la tierra como incontables ojos. La naturaleza ha trepado por cada muro y llenado las calles de raíces. Nadie ha vivido allí desde hace eras'.",
       "outcome4": "El caballero escucha tus palabras, pero sacude la cabeza. 'Tus palabras son sinceras, pero mi conocimiento tiene valor. Quizá nuestros caminos se crucen de nuevo'. Se marcha sin compartir su relato.",
@@ -1393,9 +1380,7 @@
     },
     "log": {
       "outcome0": "El caballero esperó, pero no respondiste. 'Quizá en otra ocasión', dice antes de continuar su viaje.",
-      "outcome1": "No tienes suficiente oro.",
       "outcome2": "El caballero comparte: 'En la costa del océano encontré una ciudad muerta, medio reclamada por las olas. Entre sus ruinas yacen enormes vasijas de metal, sus cascos oxidados aún desafiando el tiempo. Los antiguos dominaron una vez los mares con esos gigantes, ahora varados y silenciosos sobre la arena'.",
-      "outcome3": "No tienes suficiente comida.",
       "outcome4": "Satisfecho con la comida, el caballero comparte: 'En la costa del océano encontré una ciudad muerta, medio reclamada por las olas. Entre sus ruinas yacen enormes vasijas de metal, sus cascos oxidados aún desafiando el tiempo. Los antiguos dominaron una vez los mares con esos gigantes, ahora varados y silenciosos sobre la arena'.",
       "outcome5": "Tus palabras conmueven al caballero. Habla: 'En la costa del océano encontré una ciudad muerta, medio reclamada por las olas. Entre sus ruinas yacen enormes vasijas de metal, sus cascos oxidados aún desafiando el tiempo. Los antiguos dominaron una vez los mares con esos gigantes, ahora varados y silenciosos sobre la arena'.",
       "outcome6": "El caballero escucha, pero no se conmueve. 'Tus palabras son sinceras, pero este conocimiento es valioso. Quizá en otra ocasión'. Se marcha sin compartir su descubrimiento.",
@@ -1423,9 +1408,7 @@
     },
     "log": {
       "outcome0": "El caballero esperó, pero no respondiste. 'Quizá en otra ocasión', dice antes de continuar su viaje.",
-      "outcome1": "No tienes suficiente oro.",
       "outcome2": "El caballero asiente satisfecho. 'Un precio justo. Defenderé a tu gente con mi vida'. Se quita el yelmo gastado, revelando un rostro marcado pero decidido. El caballero inquieto se ha unido a tu compañía.",
-      "outcome3": "No tienes suficiente plata.",
       "outcome4": "El caballero acepta la plata con una reverencia solemne. 'Defenderé a tu gente con mi vida'. Se quita el yelmo gastado, revelando un rostro marcado pero decidido. El caballero inquieto se ha unido a tu compañía.",
       "outcome5": "'Tu propósito parece noble', los ojos del caballero se iluminan. 'Sería un honor estar a tu lado'. Se quita el yelmo gastado, revelando un rostro marcado pero decidido. El caballero inquieto se ha unido a tu compañía.",
       "outcome6": "El caballero escucha, pero sacude la cabeza. 'Las palabras por sí solas no sostienen a un guerrero. Debo continuar mi viaje, entonces, por ahora', dice, dándose la vuelta y marchándose.",
@@ -1450,9 +1433,7 @@
     },
     "log": {
       "outcome0": "El caballero esperó, pero no respondiste. 'Quizá en otra ocasión', dice antes de continuar su viaje.",
-      "outcome1": "No tienes suficiente oro.",
       "outcome2": "El caballero comparte su descubrimiento: 'En lo alto de las montañas hay un monasterio tallado en los riscos. Los eruditos que se reunían allí para estudiar el pasado hablan de una civilización avanzada, muy por encima de nuestra comprensión. Sin embargo, algo llevó su mundo a la ruina'.",
-      "outcome3": "No tienes suficiente comida.",
       "outcome4": "Agradecido por la comida, el caballero comparte su descubrimiento: 'En lo alto de las montañas hay un monasterio tallado en los riscos. Los eruditos de allí, que estudian el pasado, hablan de una civilización muy por encima de nuestra comprensión. Su arte era tan avanzado que nos parecería magia. Sin embargo, algo llevó su mundo a la ruina'.",
       "outcome5": "Rechazas su oferta. El caballero asiente con comprensión. 'Entonces el conocimiento permanecerá conmigo', dice antes de partir una vez más."
     },
@@ -1718,7 +1699,7 @@
         "label": "Dedicar a todos"
       },
       "deepenDevotion": {
-        "label": "Profundizar la devoción"  //x1.5
+        "label": "Profundizar la devoción"
       }
     },
     "log": {
@@ -1789,7 +1770,6 @@
     },
     "log": {
       "outcome0": "Tardaste demasiado en decidir. La oferta de los pescadores expira.",
-      "outcome1": "No tienes suficiente oro.",
       "outcome2": "Los pescadores comparten contigo sus técnicas elaboradas para construir trampas de peces.",
       "outcome3": "Rechazas la oferta de los pescadores. La oportunidad se pierde."
     },
@@ -1842,7 +1822,7 @@
     "choices": {
       "hostSolstice": {
         "cost": "{{goldCost}} oro, {{foodCost}} comida",
-        "label": "Organizar la celebración"  //x1.7
+        "label": "Organizar la celebración"
       },
       "refuseSolstice": {
         "label": "Rechazar"
@@ -1852,8 +1832,6 @@
       }
     },
     "log": {
-      "outcome0": "No tienes suficiente oro para la celebración.",
-      "outcome1": "No tienes suficiente comida para la celebración.",
       "outcome2": "Los fuegos arden y la risa rompe la oscuridad por un tiempo. Al amanecer, muchos visitantes permanecen, considerando quedarse.",
       "outcome3": "Rechazas. La noche pasa sin alegría, calor ni risas."
     },
@@ -1872,7 +1850,6 @@
     },
     "log": {
       "outcome0": "La madera negra resiste, pero tu gente la derriba. Reclamas la madera negra maldita.",
-      "outcome1": "No tienes suficiente comida para una ofrenda digna. El árbol espera.",
       "outcome2": "Sangre y humo se alzan de la ofrenda. Una gracia fría se posa sobre la aldea."
     },
     "message": "Tu expedición alcanza el santuario olvidado del pantano. Ruinas derruidas rodean un árbol enorme de oscura madera negra. ¿Qué haces?",
@@ -1951,11 +1928,10 @@
       },
       "send_search_party": {
         "cost": "500 comida, 50 antorcha",
-        "label": "Enviar grupo de búsqueda"  //x1.4
+        "label": "Enviar grupo de búsqueda"
       }
     },
     "log": {
-      "outcome0": "No tienes suficiente comida ni antorchas para el grupo de búsqueda.",
       "outcome1": "El grupo de búsqueda encuentra a la niña ilesa. Había descubierto una pequeña cueva llena de abalorios y monedas de plata, y jugaba tranquilamente entre ellos.",
       "outcome2": "Rechazas. El comerciante asiente con tristeza y se va a buscarla por su cuenta.",
       "outcome3": "Rechazas. El comerciante asiente con tristeza y se va a buscarla por su cuenta."
@@ -2053,9 +2029,7 @@
     },
     "log": {
       "outcome0": "Rechazas la oferta del errante. Se encoge de hombros, ajusta su gastada mochila y desaparece por el camino.",
-      "outcome1": "No tienes suficiente comida para ofrecer.",
       "outcome2": "El errante hace un breve gesto de asentimiento y camina hacia el pozo minero para comenzar su labor.",
-      "outcome3": "No tienes suficiente oro para ofrecer.",
       "outcome4": "El errante hace un breve gesto de asentimiento y camina hacia el pozo minero para comenzar su labor."
     },
     "message": "Un hombre con ropas rasgadas se acerca a la aldea, las manos marcadas por años de trabajo duro. 'Vengo de una colonia minera', dice con voz áspera. 'Puedo trabajar para ti y mejorar tu producción minera'.",
@@ -2072,7 +2046,6 @@
       }
     },
     "log": {
-      "outcome0": "No tienes suficiente oro.",
       "outcome1": "El vidente queda en silencio. Su mirada se pierde más allá de ti. \"Te esperan grandes desafíos{{name}}\", dice suavemente. \"Crees que este mundo es tuyo para moldearlo. Pero tú también eres moldeado. Cuando la verdad final salga a la superficie, verás los hilos. Y para entonces quizá sea demasiado tarde\".",
       "outcome2": "El vidente asiente. {{farewell}}"
     },
@@ -2091,7 +2064,8 @@
   "vikingBuilder": {
     "choices": {
       "acceptDeal": {
-        "label": "pagar 250 oro"
+        "label": "pagar 250 oro",
+        "cost": "250 Gold"
       },
       "forceHim": {
         "label": "Forzarlo"
@@ -2102,7 +2076,6 @@
     },
     "log": {
       "outcome0": "El constructor espera un rato, pero al final se encoge de hombros y desaparece en la espesura, llevándose su conocimiento.",
-      "outcome1": "No tienes suficiente oro para este trato.",
       "outcome2": "Pagas al constructor. Enseña a los aldeanos las antiguas técnicas nórdicas para construir casas comunales.",
       "outcome3": "Tus hombres dominan al constructor y lo obligan a compartir su conocimiento. A regañadientes, te enseña los secretos de la construcción de casas comunales.",
       "outcome4": "¡El constructor resulta más fuerte de lo esperado! Contraataca con ferocidad y mata a {{actualCasualties}} hombres antes de escapar a la espesura.",
@@ -2200,9 +2173,7 @@
     },
     "log": {
       "outcome0": "El artífice del fuego acaba suspirando: 'Quizá aún no estés preparado para tal poder', y desaparece en la noche.",
-      "outcome1": "No tienes suficiente oro.",
       "outcome2": "El artífice del fuego toma tu oro y empieza a enseñarte el arte oscuro de crear bombas del vacío. 'Usa este poder con prudencia', advierte antes de desvanecerse entre las sombras.",
-      "outcome3": "No tienes suficiente plata.",
       "outcome4": "El artífice del fuego toma tu plata y empieza a enseñarte el arte oscuro de crear bombas del vacío. 'Usa este poder con prudencia', advierte antes de desvanecerse entre las sombras.",
       "outcome5": "Rechazas la oferta del artífice del fuego. Él asiente con conocimiento. 'Quizá aún no estés preparado para tal poder', y desaparece en la noche."
     },
@@ -2342,7 +2313,6 @@
       }
     },
     "log": {
-      "outcome0": "No tienes suficiente oro para pagarle.",
       "outcome1": "Entregas el oro. La bruja cacarea, se guarda las monedas y desaparece en la niebla sin decir otra palabra.",
       "outcome2": "Te niegas a pagar. La bruja escupe y maldice, pero no ocurre nada. Se aleja cojeando, murmurando amenazas al viento. Parece que tuviste suerte.",
       "outcome3": "Al negarte a pagar, la bruja alza sus manos nudosas y pronuncia palabras en una lengua olvidada. Cuando se marcha, los aldeanos empiezan a sentirse débiles, como si una fuerza invisible les hubiera drenado la fuerza.",
@@ -2363,7 +2333,7 @@
   },
   "wizardBloodstoneStaff": {
     "message": "El mago examina las gemas de piedra de sangre que recuperaste del Templo Hundido. 'Con estas piedras de sangre, ya tenemos todo lo necesario. Ahora podemos fabricar el Bastón de Piedra de Sangre. Junto con la Espada de Cristal de Escarcha, tendremos los medios para enfrentar la oscuridad que acecha abajo'.",
-    "title": "El Bastón de Piedra de Sangre"  //x1.5
+    "title": "El Bastón de Piedra de Sangre"
   },
   "wizardDecryptsScrolls": {
     "message": "El mago sale de su torre. 'He descifrado los pergaminos antiguos', dice. 'Las criaturas de abajo solo pueden morir con armas de gran poder: una espada de cristal de escarcha y un bastón coronado con piedra de sangre. En lo profundo del bosque yace la tumba de un rey antiguo, cuyos tesoros podrían contener el cristal de escarcha que necesitamos'.",
@@ -2388,7 +2358,6 @@
     },
     "log": {
       "outcome0": "Tu indecisión frustra al mago. Sacude la cabeza. 'Entonces permaneceré en mi torre. Quizá nuestros caminos se crucen de nuevo cuando la necesidad sea mayor', dice antes de partir.",
-      "outcome1": "No tienes suficiente oro.",
       "outcome2": "El mago asiente satisfecho. 'Un precio justo por mis servicios. Defenderé a tu gente con fuego arcano'. Se quita la capucha gastada, revelando ojos antiguos que brillan con un poder menguante. El Mago anciano se ha unido a tu compañía.",
       "outcome3": "Rechazas la oferta del mago. Asiente con comprensión. 'Entonces permaneceré en mi torre. Quizá nuestros caminos se crucen de nuevo cuando la necesidad sea mayor', dice antes de partir."
     },
@@ -2479,7 +2448,6 @@
       "timeoutLevel4": "Tu indecisión frustra al leñador. Parece decepcionado, pero acepta y se marcha.",
       "timeoutLevel5": "Tu indecisión frustra al leñador. Frunce el ceño y se marcha.",
       "timeoutLevel6": "Tu indecisión frustra al leñador. Frunce el ceño y se marcha.",
-      "outcome0": "No tienes suficiente comida para este trato.",
       "successLevel1": "El leñador toma la comida y se adentra en el bosque. Al anochecer, regresa con la madera prometida apilada ordenadamente al borde de la aldea.",
       "successLevel2": "El leñador toma la comida y desaparece en el bosque. Al caer la noche, regresa con un gran montón de madera.",
       "successLevel3": "El leñador toma la comida y se adentra profundamente en el bosque. Regresa con una impresionante carga de madera.",
@@ -2547,7 +2515,7 @@
         "label": "Sacrificarla"
       },
       "stopSacrifices": {
-        "label": "Detener los sacrificios humanos"  //x1.5
+        "label": "Detener los sacrificios humanos"
       }
     },
     "log": {
@@ -2557,5 +2525,28 @@
     },
     "message": "Una joven se acerca a ti con lágrimas corriendo por su rostro. 'Mis dos padres fueron sacrificados a ese monolito maldito', llora. '¡Este comportamiento bárbaro tiene que terminar!'",
     "title": "La súplica de la joven"
+  },
+  "obsidianOrbVisit": {
+    "choices": {
+      "payGold": {
+        "cost": "250 Gold",
+        "label": "Pagar 250 de oro"
+      },
+      "payVillagers": {
+        "cost": "20 Villagers",
+        "label": "Ofrecer 20 aldeanos"
+      },
+      "sendAway": {
+        "label": "Enviarla lejos"
+      }
+    },
+    "log": {
+      "outcome0": "Pagas a la mujer y comparte el secreto del orbe de obsidiana. Recibes el esquema.",
+      "outcome1": "Veinte aldeanos son arrastrados en cadenas. La mujer comparte el conocimiento, pero la aldea se llena de asco por lo ocurrido.",
+      "outcome2": "La envías lejos. Dice que puede volver cuando estés listo.",
+      "outcome3": "Se acaba el tiempo. Se marcha diciendo que puede volver cuando estés listo."
+    },
+    "message": "Llega una mujer ricamente ataviada, de aspecto oriental, con dos robustos acompañantes. Ofrece compartir el conocimiento para forjar un poderoso orbe de obsidiana a cambio de oro o aldeanos.",
+    "title": "El orbe de obsidiana"
   }
 }

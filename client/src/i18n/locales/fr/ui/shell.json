@@ -8,7 +8,7 @@
     "titleCruel": "Une grotte très sombre.",
     "airNormal": "L'air est froid et humide.",
     "airCruel": "L'air est glacial et humide.",
-    "seeNormal": "Vous distinguez à peine les formes autour de vous.",  //x1.4
+    "seeNormal": "Vous distinguez à peine les formes autour de vous.",
     "seeCruel": "Vous ne distinguez presque rien autour de vous.",
     "makeFire": "Faire du feu",
     "boostDeactivate": "Cliquez pour désactiver le boost",
@@ -18,10 +18,10 @@
     "fullGame": "Jeu complet",
     "trader": "Marchand",
     "openShop": "Ouvrir la boutique",
-    "donate": "Faire un don",  //x2.0
+    "donate": "Faire un don",
     "supportGame": "Soutenir le jeu",
     "privacy": "Confidentialité",
-    "imprint": "Mentions légales",  //x2.3
+    "imprint": "Mentions légales",
     "contact": "Contact",
     "pauseGame": "Mettre le jeu en pause",
     "resumeGame": "Reprendre le jeu",
@@ -34,19 +34,19 @@
   "profile": {
     "title": "Profil",
     "signInUp": "Connexion/Inscription",
-    "emailsOn": "E-mails activés",  //x1.7
-    "emailsOff": "E-mails désactivés",  //x1.8
-    "marketingOnTooltip": "Vous recevez actuellement des e-mails avec des mises à jour, des réductions et des récompenses exclusives. Appuyez pour les désactiver.",  //x1.4
+    "emailsOn": "E-mails activés",
+    "emailsOff": "E-mails désactivés",
+    "marketingOnTooltip": "Vous recevez actuellement des e-mails avec des mises à jour, des réductions et des récompenses exclusives. Appuyez pour les désactiver.",
     "marketingOffTooltip": "Vous ne recevez actuellement pas d'e-mails avec des mises à jour, des réductions et des récompenses exclusives. Appuyez pour les activer.",
     "rewardsTasks": "Tâches de récompenses",
-    "save": "Sauvegarder",  //x2.8
-    "newGame": "Nouvelle partie",  //x1.9
+    "save": "Sauvegarder",
+    "newGame": "Nouvelle partie",
     "restart": "Recommencer",
-    "signIn": "Se connecter",  //x1.7
-    "signOut": "Se déconnecter",  //x1.8
+    "signIn": "Se connecter",
+    "signOut": "Se déconnecter",
     "leaderboard": "Classement",
     "rewards": "Récompenses",
-    "deleteAccount": "Supprimer le compte",  //x1.4
+    "deleteAccount": "Supprimer le compte",
     "marketingSubscribe": "S'abonner aux e-mails",
     "marketingUnsubscribe": "Se désabonner des e-mails",
     "autoSaveSignedIn": "Sauvegarde automatique chaque minute",
@@ -66,7 +66,7 @@
     "unsubscribed": "Vous êtes désabonné",
     "subscribedDesc": "Nous vous enverrons parfois des nouvelles et des offres par e-mail.",
     "unsubscribedDesc": "Vous ne recevrez pas d'e-mails marketing de notre part.",
-    "preferenceUpdateFailed": "Impossible de mettre à jour la préférence"  //x1.5
+    "preferenceUpdateFailed": "Impossible de mettre à jour la préférence"
   },
   "pauseHotkey": {
     "hintPrefix": "Utilisez ",

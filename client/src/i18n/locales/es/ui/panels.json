@@ -40,14 +40,14 @@
       "hunter": "Cazador",
       "iron_miner": "Minero de hierro",
       "coal_miner": "Minero de carbón",
-      "steel_forger": "Forjador de acero", //x1.4
-      "blacksteel_forger": "Forjador de acero negro", //x1.4
+      "steel_forger": "Forjador de acero",
+      "blacksteel_forger": "Forjador de acero negro",
       "sulfur_miner": "Minero de azufre",
-      "obsidian_miner": "Minero de obsidiana", //x1.4
+      "obsidian_miner": "Minero de obsidiana",
       "adamant_miner": "Minero de adamantio",
-      "moonstone_miner": "Minero de piedra lunar", //x1.5
-      "powder_maker": "Fabricante de pólvora", //x1.8
-      "ashfire_dust_maker": "Fabricante de polvo de fuego cenizo", //x1.9
+      "moonstone_miner": "Minero de piedra lunar",
+      "powder_maker": "Fabricante de pólvora",
+      "ashfire_dust_maker": "Fabricante de polvo de fuego cenizo",
       "tanner": "Curtidor"
     }
   },
@@ -116,19 +116,19 @@
     "boneTotems": "Tótems de hueso",
     "leatherTotems": "Tótems de cuero",
     "craftDiscount": "Descuento de artesanía",
-    "buildDiscount": "Descuento de construcción", //x1.8
-    "doubleGainChance": "Probabilidad de ganancia doble" //x1.7
+    "buildDiscount": "Descuento de construcción",
+    "doubleGainChance": "Probabilidad de ganancia doble"
   },
   "badges": {
     "priorUpgradeRequired": "Mejora al Prior deshonrado para asignar más acciones",
     "priorRemove": "Haz clic para quitar al Prior deshonrado",
     "priorAssign": "Haz clic para asignar al Prior deshonrado",
-    "bonus": "Bonificación:", //x2.2
+    "bonus": "Bonificación:",
     "nextBonus": "Próxima bonificación:",
     "craftMultiplier": "Artesanía x{{amount}}",
     "bonusPercent": "+{{percent}} %",
     "maxLevel": "nivel máx.",
-    "executionTimeReduction": "-50 % de tiempo de ejecución" //x1.5
+    "executionTimeReduction": "-50 % de tiempo de ejecución"
   },
   "sidePanel": {
     "bastion": "Bastión",
@@ -137,23 +137,23 @@
     "freeVillagers": "Libres",
     "onExpedition": "En expedición",
     "resources": "Recursos",
-    "tools": "Herramientas", //x2.4
+    "tools": "Herramientas",
     "weapons": "Armas",
     "clothing": "Ropa",
     "relics": "Reliquias",
     "schematics": "Esquemas",
-    "blessings": "Bendiciones", //x1.2
+    "blessings": "Bendiciones",
     "buildings": "Edificios",
     "books": "Libros",
     "fellowship": "Compañía",
-    "stats": "Estadísticas", //x2.4
-    "bonuses": "Bonificaciones", //x2.0
+    "stats": "Estadísticas",
+    "bonuses": "Bonificaciones",
     "fortifications": "Fortificaciones",
     "combatItems": "Objetos de combate",
     "mapFragments": "Fragmentos de mapa",
     "craftDiscount": "Descuento de artesanía",
-    "buildDiscount": "Descuento de construcción", //x1.8
-    "doubleGainChance": "Probabilidad de ganancia doble", //x1.7
+    "buildDiscount": "Descuento de construcción",
+    "doubleGainChance": "Probabilidad de ganancia doble",
     "populationTooltip": "Cada aldeano consume 1 comida y 1 madera",
     "resourceLimitMax": "máx. {{limit}}",
     "resourceLimitTooltip": "sin límite para plata y oro",
@@ -181,7 +181,7 @@
   "idleMode": {
     "title": "Modo sueño",
     "sleeping": "Durmiendo",
-    "awake": "¡Estás despierto!", //x1.2
+    "awake": "¡Estás despierto!",
     "wakingIn": "Despertar en: {{time}}",
     "wake": "Despertar",
     "getUp": "Levantarse",

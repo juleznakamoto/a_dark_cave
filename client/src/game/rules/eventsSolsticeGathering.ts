@@ -50,18 +50,6 @@ export const solsticeGatheringEvent: GameEvent = {
         const goldCost = getGoldCost(tier);
         const foodCost = getFoodCost(tier);
 
-        if (state.resources.gold < goldCost) {
-          return {
-            _logMessageKey: "outcome0",
-          };
-        }
-
-        if (state.resources.food < foodCost) {
-          return {
-            _logMessageKey: "outcome1",
-          };
-        }
-
         const nextTier = Math.min(tier + 1, MAX_TIER);
         const activationsCount =
           (state.solsticeState?.activationsCount ?? 0) + 1;

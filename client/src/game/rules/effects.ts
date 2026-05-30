@@ -555,7 +555,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         strength: 10,
-        knowledge: 30,
+        knowledge: 25,
       },
     },
   },
@@ -862,7 +862,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         luck: 3,
-        knowledge: 4,
+        knowledge: 3,
         madness: 3,
       },
     },
@@ -939,7 +939,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       },
       generalBonuses: {
         strength: 3,
-        knowledge: 6,
+        knowledge: 5,
         madness: 6,
         miningDoubleChance: 0.05,
       },
@@ -967,7 +967,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         luck: 2,
-        knowledge: 6,
+        knowledge: 5,
         madness: 4,
       },
     },
@@ -1180,7 +1180,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       "Grimoire containing the unholy knowledge of a heretic occultist",
     bonuses: {
       generalBonuses: {
-        knowledge: 7,
+        knowledge: 6,
         madness: 3,
       },
     },
@@ -1192,8 +1192,21 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Dark orb blessed by ravens with ancient knowledge",
     bonuses: {
       generalBonuses: {
-        knowledge: 6,
+        knowledge: 5,
         madness: 3,
+      },
+    },
+  },
+
+  obsidian_orb: {
+    id: "obsidian_orb",
+    name: "Obsidian Orb",
+    description:
+      "Powerful orb of volcanic glass granting mental strength",
+    bonuses: {
+      generalBonuses: {
+        knowledge: 10,
+        madness: -3,
       },
     },
   },
@@ -1270,6 +1283,13 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "stormglass_halberd_schematic",
     name: "Stormglass Halberd",
     description: "Blueprint for crafting a formidable halberd",
+    bonuses: {},
+  },
+
+  obsidian_orb_schematic: {
+    id: "obsidian_orb_schematic",
+    name: "Obsidian Orb",
+    description: "Blueprint for crafting a powerful obsidian orb",
     bonuses: {},
   },
 

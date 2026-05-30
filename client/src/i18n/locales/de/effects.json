@@ -293,6 +293,14 @@
     "wooden_figure": {
       "description": "Geschnitzte Holzfigur einer beunruhigenden Kreatur mit Tentakeln",
       "name": "Holzfigur"
+    },
+    "obsidian_orb": {
+      "description": "Mächtige Kugel aus vulkanischem Glas, die geistige Stärke verleiht",
+      "name": "Obsidiankugel"
+    },
+    "obsidian_orb_schematic": {
+      "description": "Bauplan zur Herstellung einer mächtigen Obsidiankugel",
+      "name": "Obsidiankugel"
     }
   },
   "fellowship": {

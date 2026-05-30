@@ -80,6 +80,7 @@ import { fullGameUnlockEvents } from "./eventsFullGameUnlock";
 import { crowEvents } from "./eventsCrow";
 import { wanderingCollectorEvents } from "./eventsWanderingCollector";
 import { exiledScholarEvents } from "./eventsExiledScholar";
+import { obsidianOrbEvents } from "./eventsObsidianOrb";
 import { tradersDaughterEvents } from "./eventsTradersDaughter";
 import { tradersSonEvents } from "./eventsTradersSon";
 import { disgracedPriorEvents } from "./eventsDisgracedPrior";
@@ -130,6 +131,7 @@ export interface GameEvent {
 export type EventChoiceEffectResult = Partial<GameState> & {
   _logMessage?: string;
   _logMessageKey?: string;
+  _logMessageI18nKey?: string;
   _logMessageVars?: Record<string, string | number>;
   _combatData?: unknown;
 };
@@ -141,7 +143,7 @@ export interface EventChoice {
   relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[];
   success_chance?: number | ((state: GameState) => number); // Success probability for this choice
   cost?: string | ((state: GameState) => string); // Optional cost information for hover display
-  effect: (state: GameState) => Partial<GameState>;
+  effect: (state: GameState) => EventChoiceEffectResult;
   cooldown?: number; // Cooldown in seconds for choice buttons
 }
 
@@ -194,6 +196,7 @@ export const gameEvents: Record<string, GameEvent> = {
   ...crowEvents,
   ...wanderingCollectorEvents,
   ...exiledScholarEvents,
+  ...obsidianOrbEvents,
   ...tradersDaughterEvents,
   ...tradersSonEvents,
   ...disgracedPriorEvents,
@@ -420,7 +423,7 @@ export class EventManager {
     choiceId: string,
     eventId: string,
     currentLogEntry?: LogEntry,
-  ): Partial<GameState> {
+  ): EventChoiceEffectResult {
     logger.log('[EVENT MANAGER] applyEventChoice called:', {
       choiceId,
       eventId,

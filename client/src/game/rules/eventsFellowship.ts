@@ -35,14 +35,7 @@ export const fellowshipEvents: Record<string, GameEvent> = {
       {
         id: "payGold",
         cost: "250 gold",
-        effect: (state: GameState) => {
-          if (state.resources.gold < 250) {
-            return {
-              _logMessageKey: "outcome1",
-            };
-          }
-
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               gold: state.resources.gold - 250,
@@ -59,8 +52,7 @@ export const fellowshipEvents: Record<string, GameEvent> = {
               },
             },
             _logMessageKey: "outcome2",
-          };
-        },
+        }),
       },
       {
         id: "refuse",

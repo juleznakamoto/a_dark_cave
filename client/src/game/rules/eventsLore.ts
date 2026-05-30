@@ -34,14 +34,7 @@ export const loreEvents: Record<string, GameEvent> = {
       {
         id: "payGold",
         cost: "50 gold",
-        effect: (state: GameState) => {
-          if (state.resources.gold < 50) {
-            return {
-              _logMessageKey: "outcome1",
-            };
-          }
-
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               gold: state.resources.gold - 50,
@@ -58,8 +51,7 @@ export const loreEvents: Record<string, GameEvent> = {
               madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
             _logMessageKey: "outcome2",
-          };
-        },
+        }),
       },
       {
         id: "convince",
@@ -130,7 +122,7 @@ export const loreEvents: Record<string, GameEvent> = {
       state.story.seen.restlessKnightSuccess &&
       !state.story.seen.restlessKnightMountains,
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightMountainsFailed ? 20 : 15,
+      state.story.seen.restlessKnightMountainsFailed ? 20 : 15,
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
@@ -154,14 +146,7 @@ export const loreEvents: Record<string, GameEvent> = {
       {
         id: "payGold",
         cost: "50 gold",
-        effect: (state: GameState) => {
-          if (state.resources.gold < 50) {
-            return {
-              _logMessageKey: "outcome1",
-            };
-          }
-
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               gold: state.resources.gold - 50,
@@ -178,20 +163,12 @@ export const loreEvents: Record<string, GameEvent> = {
               madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
             _logMessageKey: "outcome2",
-          };
-        },
+        }),
       },
       {
         id: "payFood",
         cost: "2500 food",
-        effect: (state: GameState) => {
-          if (state.resources.food < 2500) {
-            return {
-              _logMessageKey: "outcome3",
-            };
-          }
-
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               food: state.resources.food - 2500,
@@ -208,8 +185,7 @@ export const loreEvents: Record<string, GameEvent> = {
               madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
             _logMessageKey: "outcome4",
-          };
-        },
+        }),
       },
       {
         id: "refuse",
@@ -236,7 +212,7 @@ export const loreEvents: Record<string, GameEvent> = {
       state.story.seen.restlessKnightMountains &&
       !state.story.seen.restlessKnightCoast,
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightCoastFailed ? 20 : 15,
+      state.story.seen.restlessKnightCoastFailed ? 20 : 15,
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
@@ -260,14 +236,7 @@ export const loreEvents: Record<string, GameEvent> = {
       {
         id: "payGold",
         cost: "50 gold",
-        effect: (state: GameState) => {
-          if (state.resources.gold < 50) {
-            return {
-              _logMessageKey: "outcome1",
-            };
-          }
-
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               gold: state.resources.gold - 50,
@@ -284,20 +253,12 @@ export const loreEvents: Record<string, GameEvent> = {
               madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
             _logMessageKey: "outcome2",
-          };
-        },
+        }),
       },
       {
         id: "payFood",
         cost: "2500 food",
-        effect: (state: GameState) => {
-          if (state.resources.food < 2500) {
-            return {
-              _logMessageKey: "outcome3",
-            };
-          }
-
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               food: state.resources.food - 2500,
@@ -314,8 +275,7 @@ export const loreEvents: Record<string, GameEvent> = {
               madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
             _logMessageKey: "outcome4",
-          };
-        },
+        }),
       },
       {
         id: "convince",
@@ -387,7 +347,7 @@ export const loreEvents: Record<string, GameEvent> = {
       state.story.seen.restlessKnightCoast &&
       !state.story.seen.restlessKnightDesert,
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightDesertFailed ? 20 : 10,
+      state.story.seen.restlessKnightDesertFailed ? 20 : 10,
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
@@ -411,14 +371,7 @@ export const loreEvents: Record<string, GameEvent> = {
       {
         id: "payGold",
         cost: "250 gold",
-        effect: (state: GameState) => {
-          if (state.resources.gold < 250) {
-            return {
-              _logMessageKey: "outcome1",
-            };
-          }
-
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               gold: state.resources.gold - 250,
@@ -439,20 +392,12 @@ export const loreEvents: Record<string, GameEvent> = {
               madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
             _logMessageKey: "outcome2",
-          };
-        },
+        }),
       },
       {
         id: "paySilver",
         cost: "1000 silver",
-        effect: (state: GameState) => {
-          if (state.resources.silver < 1000) {
-            return {
-              _logMessageKey: "outcome3",
-            };
-          }
-
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               silver: state.resources.silver - 1000,
@@ -473,8 +418,7 @@ export const loreEvents: Record<string, GameEvent> = {
               madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
             _logMessageKey: "outcome4",
-          };
-        },
+        }),
       },
       {
         id: "convince",
@@ -547,7 +491,7 @@ export const loreEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.cruelMode === true && Boolean(state.fellowship?.restless_knight),
     timeProbability: 45,
-    repeatable: false,
+    repeatable: false,
     priority: 3,
     showAsTimedTab: true,
     timedTabDuration: 5 * 60 * 1000,
@@ -592,7 +536,7 @@ export const loreEvents: Record<string, GameEvent> = {
       Boolean(state.flags.forestUnlocked) &&
       !Boolean(state.story.seen.risingSmokeUnlocked),
     timeProbability: 20,
-    repeatable: false,
+    repeatable: false,
     priority: 3,
     skipEventLog: true,
     choices: [

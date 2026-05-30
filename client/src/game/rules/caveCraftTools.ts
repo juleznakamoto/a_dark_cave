@@ -2,6 +2,7 @@ import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
 import { getUpgradeBonusMultiplier } from "@/game/buttonUpgrades";
 import { applyActionEffects } from "./actionEffects";
+import { OBSIDIAN_ORB_FOCUS_INTERVAL_MS } from "@/game/obsidianOrb";
 
 const CRAFT_TORCHES_BASE_COST = 10;
 const CRAFT_TORCHES_BASE_AMOUNT = 1;
@@ -591,6 +592,26 @@ export const caveCraftTools: Record<string, Action> = {
     executionTime: 60,
     cooldown: 0,
   },
+
+  craftObsidianOrb: {
+    id: "craftObsidianOrb",
+    label: "Obsidian Orb",
+    show_when: {
+      "buildings.advancedBlacksmith": 1,
+      "schematics.obsidian_orb_schematic": true,
+      "relics.obsidian_orb": false,
+    },
+    cost: {
+      "schematics.obsidian_orb_schematic": true,
+      "resources.obsidian": 10000,
+      "resources.silver": 1000,
+    },
+    effects: {
+      "relics.obsidian_orb": true,
+    },
+    executionTime: 90,
+    cooldown: 0,
+  },
 };
 
 // Action handlers
@@ -848,5 +869,17 @@ export function handleCraftSkeletonKey(
 ): ActionResult {
   const effectUpdates = applyActionEffects("craftSkeletonKey", state);
   Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftObsidianOrb(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftObsidianOrb", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  result.stateUpdates.obsidianOrbState = {
+    nextFocusGainTime: Date.now() + OBSIDIAN_ORB_FOCUS_INTERVAL_MS,
+  };
   return result;
 }

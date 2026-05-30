@@ -197,7 +197,6 @@
       }
     },
     "log": {
-      "outcome0": "Du hast nicht genug Knochen für den Handel.",
       "outcome1": "Die Kreatur nimmt die Knochen mit knorrigen Händen, als wolle sie sie zählen. Sie legt einen Beutel Silber zu deinen Füßen und verschwindet in der Dunkelheit.",
       "outcome2": "Du lehnst das Angebot der Kreatur ab. Sie zischt missbilligend und zieht sich in die Schatten zurück. Du spürst, dass sie zurückkehren wird.",
       "outcome3": "Deine Unentschlossenheit verärgert die Kreatur. Sie zischt missbilligend und zieht sich in die Schatten zurück."
@@ -605,7 +604,6 @@
       }
     },
     "log": {
-      "outcome0": "Du hast nicht genug Gold, um den Gelehrten zu bezahlen.",
       "outcome1": "Der Gelehrte erschafft eine schattenrote Mixtur und weist dich an, darin zu baden. Als du aus dem Bad steigst, fühlst du dich stärker, aber auch befleckt.",
       "outcome2": "Du schickst den Gelehrten fort. Er geht mit einem enttäuschten Seufzen, doch du spürst, dass er zurückkehren könnte.",
       "outcome3": "Der Gelehrte geht, unzufrieden mit deinem Zögern."
@@ -644,7 +642,6 @@
       }
     },
     "log": {
-      "outcome0": "Du hast nicht genug Nahrung für das Fest.",
       "outcome1": "Die Dorfbewohner versammeln sich zum Fest! Müdigkeit weicht und die Stimmung hebt sich, wenn auch nur kurz.",
       "outcome2": "Du lehnst den Festvorschlag ab. Die Dorfbewohner akzeptieren deine Entscheidung, wenn auch enttäuscht.",
       "outcome3": "Die Zeit vergeht und die Gelegenheit für ein Fest verblasst."
@@ -727,7 +724,6 @@
     },
     "log": {
       "outcome0": "Der Schneesturm trifft mit brutaler Wucht. Alle Produktion verlangsamt sich auf ein Kriechen, während die Dorfbewohner ums Überleben in der Kälte kämpfen.", //ok
-      "outcome1": "Du hast nicht genug Ressourcen, um Vorbereitungen zu treffen.",
       "outcome2": "Dank der Vorräte an Brennholz und Nahrung überstehen die Dorfbewohner den Schneesturm unversehrt.",
       "outcome3": "Der Schneesturm trifft mit brutaler Wucht. Alle Produktion verlangsamt sich auf ein Kriechen, während die Dorfbewohner ums Überleben in der Kälte kämpfen." //ok
     },
@@ -871,7 +867,6 @@
       }
     },
     "log": {
-      "outcome0": "Du hast nicht genug Leder, um ihr zu helfen.",
       "outcome1": "Du gibst ihr das Leder. Sie nimmt es mit dankbarem Lächeln, ihre Augen hellen sich auf. 'Danke. Er wird... sehr überrascht sein.' Sie eilt davon und presst die Häute an ihre Brust.",
       "outcome2": "Du lehnst ab. Sie nickt, Enttäuschung flackert über ihr Gesicht, und sie kehrt ohne ein weiteres Wort ins Dorf zurück."
     },
@@ -922,9 +917,7 @@
     },
     "log": {
       "outcome0": "Deine Unentschlossenheit frustriert den Bogenschützen. Er schüttelt den Kopf und geht, seine Erfahrung nimmt er mit.",
-      "outcome1": "Du hast nicht genug Nahrung für dieses Angebot.",
       "outcome2": "Der Meisterschütze nimmt die Bezahlung und beginnt sofort, deine Jäger auszubilden.",
-      "outcome3": "Du hast nicht genug Gold für dieses Angebot.",
       "outcome4": "Der Meisterschütze nimmt das Gold mit einem Nicken und beginnt sofort, deine Jäger auszubilden.",
       "outcome5": "Der Bogenschütze nickt verständnisvoll. 'Ich komme zurück, falls du deine Meinung änderst', sagt er, bevor er im Wald verschwindet."
     },
@@ -1041,7 +1034,7 @@
       },
       "trade_giant_trap": {
         "message": "Als du die Riesenfalle kaufst, grinst der Händler: „Damit kann man im Wald etwas Gigantisches fangen. Setze sie weise ein.“",
-        "label": "Riesige Falle"  //x1.3
+        "label": "Riesige Falle"
       },
       "trade_arbalest_schematic": {
         "message": "Du kaufst den Armbrust-Bauplan. Der Händler entfaltet einen filigranen Entwurf: „Ein Design eines Meisteringenieurs. Damit kannst du eine mächtige Waffe herstellen.“",
@@ -1079,9 +1072,7 @@
     },
     "log": {
       "outcome0": "Du lehnst das Angebot des Mönchs ab. Er verbeugt sich respektvoll und tritt seine Reise zurück in die Berge an.",
-      "outcome1": "Du hast nicht genug Ressourcen für die Gabe.",
       "outcome2": "Der Mönch nimmt deine Gabe mit feierlichem Nicken an und offenbart detaillierte Pläne für einen Skelettschlüssel. “Dieser Schlüssel soll jedes Schloss öffnen,” sagt er, bevor er aufbricht.",
-      "outcome3": "Du hast nicht genug Gold.",
       "outcome4": "Die Augen des Mönchs weiten sich beim Anblick des Goldes. 'Das wird dem Kloster sehr helfen', sagt er und zeichnet detaillierte Pläne für einen Skelettschlüssel. “Dieser Schlüssel soll jedes Schloss öffnen,” sagt er, bevor er aufbricht.",
       "outcome5": "Du lehnst das Angebot des Mönchs ab. Er verbeugt sich respektvoll und tritt seine Reise zurück in die Berge an."
     },
@@ -1100,7 +1091,6 @@
     },
     "log": {
       "outcome0": "Du hast zu lange gebraucht, um dich zu entscheiden. Das Angebot der Mönche verfällt.",
-      "outcome1": "Du hast nicht genug Gold.",
       "outcome2": "Du bezahlst die Mönche für ihre Karte. Sie zeigt den Ort der verborgenen Bibliothek tief in der Höhle.",
       "outcome3": "Du lehnst das Angebot der Mönche ab. Die Gelegenheit ist verloren."
     },
@@ -1195,7 +1185,6 @@
       }
     },
     "log": {
-      "outcome0": "Du hast nicht genug Gold.",
       "ignoreForced": "Du ignorierst das Angebot. Der Wikinger spuckt schließlich auf den Boden und geht mit seiner Kriegsaxt, murmelnd über deinen Mangel an Respekt.",
       "ignoreNormal": "Du ignorierst das Angebot. Der Wikinger nickt schließlich und geht mit seiner Kriegsaxt.",
       "buyForced": "Der Wikinger nimmt die Zahlung mit kaltem Lächeln entgegen. „Vielleicht hättest du früher großzügiger sein sollen, statt mich anzugreifen. Die Axt hätte dich damals viel weniger gekostet“, sagt er, bevor er geht.",
@@ -1268,7 +1257,6 @@
     },
     "log": {
       "outcome0": "Du gibst keinen Befehl. Gerüchte breiten sich aus, Angst gerinnt zu Abscheu, und die Arbeit im Dorf stockt.",
-      "outcome1": "Du hast nicht genug Nahrung, um eine würdige Beerdigung auszurichten.",
       "outcome2": "Du ordnest Bestattungsriten an und speist die Trauernden. Die Trauer bleibt, doch das Dorf findet Halt.",
       "outcome3": "Du deckst eine Gruppe von Verschwörern auf und ordnest ihre Hinrichtung an. Die Gerechtigkeit ist schnell, und die Angst weicht.",
       "outcome4": "Du weihst den Körper dem Kreuz. Die Dorfbewohner schrecken angewidert zurück, doch die Macht des Kreuzes scheint gewachsen zu sein."
@@ -1345,7 +1333,6 @@
     },
     "log": {
       "outcome0": "Der Ritter wartete, doch du hast nicht geantwortet. 'Vielleicht ein andermal', sagt er, bevor er seine Reise fortsetzt.",
-      "outcome1": "Du hast nicht genug Gold.",
       "outcome2": "Der Ritter spricht: 'Jenseits der östlichen Berge liegt eine tote Stadt aus riesigen Steintürmen, die fast die Wolken berühren. Leere Fenster starren wie zahllose Augen über das Land. Die Natur ist jede Mauer hinaufgeklettert und hat die Straßen mit Wurzeln gefüllt. Seit Zeitaltern hat dort niemand gelebt.'",
       "outcome3": "Deine Worte wecken das Interesse des Ritters. Er spricht: 'Jenseits der östlichen Berge liegt eine tote Stadt aus riesigen Steintürmen, die fast die Wolken berühren. Leere Fenster starren wie zahllose Augen über das Land. Die Natur ist jede Mauer hinaufgeklettert und hat die Straßen mit Wurzeln gefüllt. Seit Zeitaltern hat dort niemand gelebt.'",
       "outcome4": "Der Ritter hört deine Worte, schüttelt jedoch den Kopf. 'Deine Worte sind aufrichtig, doch mein Wissen hat Wert. Vielleicht kreuzen sich unsere Wege erneut.' Er geht, ohne seine Geschichte zu teilen.",
@@ -1393,9 +1380,7 @@
     },
     "log": {
       "outcome0": "Der Ritter wartete, doch du hast nicht geantwortet. 'Vielleicht ein andermal', sagt er, bevor er seine Reise fortsetzt.",
-      "outcome1": "Du hast nicht genug Gold.",
       "outcome2": "Der Ritter erzählt: 'An der Küste des Ozeans fand ich eine tote Stadt, halb von den Wellen verschlungen. Zwischen ihren Ruinen liegen gewaltige Metallgefäße, ihre rostigen Rümpfe trotzen noch immer der Zeit. Die Alten beherrschten einst die Meere mit diesen Riesen, nun liegen sie gestrandet und stumm im Sand.'",
-      "outcome3": "Du hast nicht genug Nahrung.",
       "outcome4": "Zufrieden mit der Mahlzeit erzählt der Ritter: 'An der Küste des Ozeans fand ich eine tote Stadt, halb von den Wellen verschlungen. Zwischen ihren Ruinen liegen gewaltige Metallgefäße, ihre rostigen Rümpfe trotzen noch immer der Zeit. Die Alten beherrschten einst die Meere mit diesen Riesen, nun liegen sie gestrandet und stumm im Sand.'",
       "outcome5": "Deine Worte bewegen den Ritter. Er spricht: 'An der Küste des Ozeans fand ich eine tote Stadt, halb von den Wellen verschlungen. Zwischen ihren Ruinen liegen gewaltige Metallgefäße, ihre rostigen Rümpfe trotzen noch immer der Zeit. Die Alten beherrschten einst die Meere mit diesen Riesen, nun liegen sie gestrandet und stumm im Sand.'",
       "outcome6": "Der Ritter hört zu, bleibt aber ungerührt. 'Deine Worte sind ehrlich, doch dieses Wissen ist kostbar. Vielleicht ein andermal.' Er geht, ohne seine Entdeckung zu teilen.",
@@ -1423,9 +1408,7 @@
     },
     "log": {
       "outcome0": "Der Ritter wartete, doch du hast nicht geantwortet. 'Vielleicht ein andermal', sagt er, bevor er seine Reise fortsetzt.",
-      "outcome1": "Du hast nicht genug Gold.",
       "outcome2": "Der Ritter nickt zufrieden. 'Ein fairer Preis. Ich werde dein Volk mit meinem Leben verteidigen.' Er nimmt seinen verwitterten Helm ab und zeigt ein vernarbtes, doch entschlossenes Gesicht. Der rastlose Ritter hat sich deinen Gefährten angeschlossen.",
-      "outcome3": "Du hast nicht genug Silber.",
       "outcome4": "Der Ritter nimmt das Silber mit feierlicher Verbeugung an. 'Ich werde dein Volk mit meinem Leben verteidigen.' Er nimmt seinen verwitterten Helm ab und zeigt ein vernarbtes, doch entschlossenes Gesicht. Der rastlose Ritter hat sich deinen Gefährten angeschlossen.",
       "outcome5": "'Dein Ziel wirkt edel', die Augen des Ritters hellen sich auf. 'Es wäre mir eine Ehre, an deiner Seite zu stehen.' Er nimmt seinen verwitterten Helm ab und zeigt ein vernarbtes, doch entschlossenes Gesicht. Der rastlose Ritter hat sich deinen Gefährten angeschlossen.",
       "outcome6": "Der Ritter hört zu, schüttelt aber den Kopf. 'Worte allein können keinen Krieger nähren. Dann muss ich meine Reise vorerst fortsetzen', sagt er, wendet sich ab und geht.",
@@ -1450,9 +1433,7 @@
     },
     "log": {
       "outcome0": "Der Ritter wartete, doch du hast nicht geantwortet. 'Vielleicht ein andermal', sagt er, bevor er seine Reise fortsetzt.",
-      "outcome1": "Du hast nicht genug Gold.",
       "outcome2": "Der Ritter teilt seine Entdeckung: 'Hoch in den Bergen liegt ein Kloster, in die Klippen gehauen. Gelehrte, die sich dort versammelten, um die Vergangenheit zu erforschen, erzählen von einer fortgeschrittenen Zivilisation jenseits unseres Verständnisses. Doch etwas brachte ihre Welt zu Fall.'",
-      "outcome3": "Du hast nicht genug Nahrung.",
       "outcome4": "Dankbar für die Mahlzeit teilt der Ritter seine Entdeckung: 'Hoch in den Bergen liegt ein Kloster, in die Klippen gehauen. Die Gelehrten dort, die die Vergangenheit erforschen, sprechen von einer Zivilisation jenseits unseres Verständnisses. Ihre Kunst war so fortgeschritten, dass sie uns wie Magie erscheinen würde. Doch etwas brachte ihre Welt zu Fall.'",
       "outcome5": "Du lehnst sein Angebot ab. Der Ritter nickt verständnisvoll. 'Dann bleibt das Wissen bei mir', sagt er, bevor er erneut aufbricht."
     },
@@ -1789,7 +1770,6 @@
     },
     "log": {
       "outcome0": "Du hast zu lange gebraucht, um dich zu entscheiden. Das Angebot der Fischer verfällt.",
-      "outcome1": "Du hast nicht genug Gold.",
       "outcome2": "Die Fischer teilen ihre ausgefeilten Techniken zum Bau von Fischfallen mit dir.",
       "outcome3": "Du lehnst das Angebot der Fischer ab. Die Gelegenheit ist verloren."
     },
@@ -1852,8 +1832,6 @@
       }
     },
     "log": {
-      "outcome0": "Du hast nicht genug Gold für das Fest.",
-      "outcome1": "Du hast nicht genug Nahrung für das Fest.",
       "outcome2": "Die Feuer brennen und Lachen durchbricht eine Zeit lang die Dunkelheit. Bei Tagesanbruch verweilen viele Besucher und erwägen zu bleiben.",
       "outcome3": "Du lehnst ab. Die Nacht vergeht ohne Freude, Wärme oder Lachen."
     },
@@ -1872,7 +1850,6 @@
     },
     "log": {
       "outcome0": "Das schwarze Holz widersetzt sich, doch die Dorfbewohner bringt den Baum zu Fall. Du beanspruchst das schwarze, verfluchte Holz.",
-      "outcome1": "Du hast nicht genug Nahrung für eine würdige Opfergabe. Der Baum wartet.",
       "outcome2": "Blut und Rauch steigen aus der Opfergabe auf. Eine kalte Gnade legt sich über das Dorf."
     },
     "message": "Deine Expedition erreicht das vergessene Sumpfheiligtum. Zerfallene Ruinen umgeben einen massiven Baum aus dunklem schwarzem Holz. Was tust du?",
@@ -1955,7 +1932,6 @@
       }
     },
     "log": {
-      "outcome0": "Du hast nicht genug Nahrung und Fackeln für den Suchtrupp.",
       "outcome1": "Der Suchtrupp findet das Mädchen unverletzt. Sie hatte eine kleine Höhle voller silberner Schmuckstücke und Münzen entdeckt und spielte still zwischen ihnen.",
       "outcome2": "Du lehnst ab. Der Händler nickt traurig und bricht auf, um allein zu suchen.",
       "outcome3": "Du lehnst ab. Der Händler nickt traurig und bricht auf, um allein zu suchen."
@@ -2053,9 +2029,7 @@
     },
     "log": {
       "outcome0": "Du lehnst das Angebot des Wanderers ab. Er zuckt mit den Schultern, rückt seinen abgetragenen Rucksack zurecht und verschwindet die Straße hinunter.", //ok
-      "outcome1": "Du hast nicht genug Nahrung anzubieten.",
       "outcome2": "Der Wanderer nickt knapp und geht zur Bergbaugrube, um seine Arbeit aufzunehmen.",
-      "outcome3": "Du hast nicht genug Gold anzubieten.",
       "outcome4": "Der Wanderer nickt knapp und geht zur Bergbaugrube, um seine Arbeit aufzunehmen."
     },
     "message": "Ein Mann in zerrissener Kleidung nähert sich dem Dorf, seine Hände gezeichnet von Jahren harter Arbeit. 'Ich komme aus einer Bergbaukolonie', sagt er mit rauer Stimme. 'Ich kann für dich arbeiten und deinen Bergbauertrag verbessern.'",
@@ -2072,7 +2046,6 @@
       }
     },
     "log": {
-      "outcome0": "Du hast nicht genug Gold.",
       "outcome1": "Der Seher verstummt. Sein Blick driftet an dir vorbei. \"Große Prüfungen erwarten dich{{name}}\", sagt er leise. \"Du glaubst, diese Welt sei deine zu formen. Doch auch du wirst geformt. Wenn die letzte Wahrheit an die Oberfläche kommt, wirst du die Fäden sehen. Und dann könnte es zu spät sein.\"",
       "outcome2": "Der Seher nickt. {{farewell}}"
     },
@@ -2091,7 +2064,8 @@
   "vikingBuilder": {
     "choices": {
       "acceptDeal": {
-        "label": "250 Gold zahlen"
+        "label": "250 Gold zahlen",
+        "cost": "250 Gold"
       },
       "forceHim": {
         "label": "Ihn zwingen"
@@ -2102,7 +2076,6 @@
     },
     "log": {
       "outcome0": "Der Baumeister wartet eine Weile, zuckt schließlich mit den Schultern und verschwindet in der Wildnis, sein Wissen nimmt er mit.",
-      "outcome1": "Du hast nicht genug Gold für dieses Geschäft.",
       "outcome2": "Du bezahlst den Baumeister. Er lehrt die Dorfbewohner die alten nordischen Techniken zum Bau von Langhäusern.",
       "outcome3": "Deine Männer überwältigen den Baumeister und zwingen ihn, sein Wissen zu teilen. Widerwillig lehrt er dich die Geheimnisse des Langhausbaus.",
       "outcome4": "Der Baumeister erweist sich als stärker als erwartet! Er wehrt sich heftig und tötet {{actualCasualties}} Männer, bevor er in die Wildnis entkommt.",
@@ -2200,9 +2173,7 @@
     },
     "log": {
       "outcome0": "Der Feuerschaffer seufzt schließlich: 'Vielleicht bist du für solche Macht noch nicht bereit', und verschwindet in der Nacht.",
-      "outcome1": "Du hast nicht genug Gold.",
       "outcome2": "Der Feuerschaffer nimmt dein Gold und beginnt, dich die dunkle Kunst der Leerenbombenherstellung zu lehren. 'Nutze diese Macht weise', warnt er, bevor er in den Schatten verschwindet.",
-      "outcome3": "Du hast nicht genug Silber.",
       "outcome4": "Der Feuerschaffer nimmt dein Silber und beginnt, dich die dunkle Kunst der Leerenbombenherstellung zu lehren. 'Nutze diese Macht weise', warnt er, bevor er in den Schatten verschwindet.",
       "outcome5": "Du lehnst das Angebot des Feuerschaffers ab. Er nickt wissend. 'Vielleicht bist du für solche Macht noch nicht bereit', sagt er und verschwindet in der Nacht."
     },
@@ -2342,7 +2313,6 @@
       }
     },
     "log": {
-      "outcome0": "Du hast nicht genug Gold, um sie zu bezahlen.",
       "outcome1": "Du übergibst das Gold. Die Hexe kichert, steckt die Münzen ein und verschwindet ohne ein weiteres Wort im Nebel.",
       "outcome2": "Du weigerst dich zu zahlen. Die Hexe spuckt und flucht, doch nichts geschieht. Sie humpelt davon und murmelt Drohungen in den Wind. Offenbar hattest du Glück.",
       "outcome3": "Als du dich weigerst zu zahlen, hebt die Hexe ihre knorrigen Hände und spricht Worte in einer vergessenen Sprache. Als sie geht, beginnen die Dorfbewohner, sich schwach zu fühlen, als hätte eine unsichtbare Kraft ihnen die Stärke ausgesaugt.",
@@ -2388,7 +2358,6 @@
     },
     "log": {
       "outcome0": "Deine Unentschlossenheit frustriert den Zauberer. Er schüttelt den Kopf. 'Dann werde ich in meinem Turm bleiben. Vielleicht kreuzen sich unsere Wege wieder, wenn die Not größer ist', sagt er, bevor er geht.",
-      "outcome1": "Du hast nicht genug Gold.",
       "outcome2": "Der Zauberer nickt zufrieden. 'Ein fairer Preis für meine Dienste. Ich werde dein Volk mit arkanem Feuer verteidigen.' Er nimmt seine verwitterte Kapuze ab und zeigt alte Augen, die vor schwindender Macht glühen. Der alte Zauberer hat sich deinen Gefährten angeschlossen.",
       "outcome3": "Du lehnst das Angebot des Zauberers ab. Er nickt verständnisvoll. 'Dann werde ich in meinem Turm bleiben. Vielleicht kreuzen sich unsere Wege wieder, wenn die Not größer ist', sagt er, bevor er geht."
     },
@@ -2479,7 +2448,6 @@
       "timeoutLevel4": "Deine Unentschlossenheit frustriert den Holzfäller. Er wirkt enttäuscht, akzeptiert aber und geht.",
       "timeoutLevel5": "Deine Unentschlossenheit frustriert den Holzfäller. Er runzelt die Stirn und geht.",
       "timeoutLevel6": "Deine Unentschlossenheit frustriert den Holzfäller. Er runzelt die Stirn und geht.",
-      "outcome0": "Du hast nicht genug Nahrung für diesen Handel.",
       "successLevel1": "Der Holzfäller nimmt die Nahrung und geht in den Wald. Am Abend kehrt er mit dem versprochenen Holz zurück und stapelt es ordentlich am Dorfrand.",
       "successLevel2": "Der Holzfäller nimmt die Nahrung und verschwindet im Wald. Bei Einbruch der Dunkelheit kehrt er mit einem großen Holzstoß zurück.",
       "successLevel3": "Der Holzfäller nimmt die Nahrung und wagt sich tief in den Wald. Er kehrt mit einer beeindruckenden Holzmenge zurück.",
@@ -2557,5 +2525,28 @@
     },
     "message": "Eine junge Frau tritt an dich heran, Tränen strömen über ihr Gesicht. 'Meine beiden Eltern wurden diesem verfluchten Monolithen geopfert', ruft sie. 'Dieses barbarische Verhalten muss aufhören!'",
     "title": "Die Bitte der jungen Frau"
+  },
+  "obsidianOrbVisit": {
+    "choices": {
+      "payGold": {
+        "cost": "250 Gold",
+        "label": "250 Gold zahlen"
+      },
+      "payVillagers": {
+        "cost": "20 Villagers",
+        "label": "20 Dorfbewohner anbieten"
+      },
+      "sendAway": {
+        "label": "Sie wegschicken"
+      }
+    },
+    "log": {
+      "outcome0": "Du zahlst der Frau, und sie verrät dir das Geheimnis der Obsidiankugel. Du erhältst den Bauplan.",
+      "outcome1": "Zwanzig Dorfbewohner werden in Ketten weggezerrt. Die Frau teilt das Wissen, doch das Dorf ist von Ekel über das Geschehene erfüllt.",
+      "outcome2": "Du schickst sie fort. Sie sagt, sie könne zurückkehren, wenn du bereit seist.",
+      "outcome3": "Die Zeit läuft ab. Sie geht und sagt, sie könne zurückkehren, wenn du bereit seist."
+    },
+    "message": "Eine reich geschmückte, orientalisch wirkende Frau trifft mit zwei kräftigen Begleitern ein. Sie bietet an, das Wissen zur Herstellung einer mächtigen Obsidiankugel zu teilen – im Austausch gegen Gold oder Dorfbewohner.",
+    "title": "Die Obsidiankugel"
   }
 }

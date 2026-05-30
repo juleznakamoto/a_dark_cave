@@ -76,7 +76,7 @@
   "bloodiedAwakening": {
     "choices": {
       "investigateMurders": {
-        "label": "Enquêter sur les meurtres"  //x1.3
+        "label": "Enquêter sur les meurtres"
       },
       "severFinger": {
         "label": "Couper le doigt"
@@ -112,7 +112,7 @@
         "label": "Se préparer à l'attaque"
       },
       "sacrificeVillagers": {
-        "label": "Se préparer à l'attaque"  //x1.2
+        "label": "Se préparer à l'attaque"
       }
     },
     "log": {
@@ -197,7 +197,6 @@
       }
     },
     "log": {
-      "outcome0": "You don't have enough bones for the trade.",
       "outcome1": "The creature takes the bones with its gnarled hands, as if attempting to count them. It places a pouch of silver at your feet and disappears into the darkness.",
       "outcome2": "You refuse the creature's offer. It hisses in displeasure and retreats into the shadows. You sense it will return.",
       "outcome3": "Your indecision frustrates the creature. It hisses in displeasure and retreats into the shadows."
@@ -238,11 +237,11 @@
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {
-        "label": "Accepter la proposition"  //x1.5
+        "label": "Accepter la proposition"
       }
     },
     "log": {
-      "outcome0": "Vous acceptez la sagesse de l'ancienne. Les villageois hochent la tête dans une approbation silencieuse. La voie vers la construction de l'ultime monument aux dieux est désormais ouverte."  //x1.4
+      "outcome0": "Vous acceptez la sagesse de l'ancienne. Les villageois hochent la tête dans une approbation silencieuse. La voie vers la construction de l'ultime monument aux dieux est désormais ouverte."
     },
     "message": "Une vieille femme aux yeux voilés s'approche de vous. 'Nous devons mettre fin à l'effusion de sang humain,' déclare-t-elle. 'Les anciens dieux exigent un grand monument en leur honneur. Alors seulement ils nous accorderont leur faveur durable.'",
     "title": "L'Exigence de l'ancienne"
@@ -574,7 +573,7 @@
   "establishTradeProposal": {
     "choices": {
       "mountainMonastery": {
-        "label": "Monastère de la Montagne"  //x1.3
+        "label": "Monastère de la Montagne"
       },
       "swampTribe": {
         "label": "Tribu du Marais"
@@ -605,7 +604,6 @@
       }
     },
     "log": {
-      "outcome0": "Vous n'avez pas assez d'or pour payer l'érudit.",
       "outcome1": "L'érudit crée un mélange rouge et ombreux, puis vous ordonne de vous y baigner. Quand vous sortez du bain, vous vous sentez plus fort, mais aussi souillé.",
       "outcome2": "Vous renvoyez l'érudit. Il part avec un soupir déçu, mais vous sentez qu'il pourrait revenir.",
       "outcome3": "L'érudit s'en va, contrarié par votre indécision."
@@ -644,7 +642,6 @@
       }
     },
     "log": {
-      "outcome0": "Vous n'avez pas assez de nourriture pour le festin.",
       "outcome1": "Les villageois se rassemblent pour un festin ! La lassitude s'efface et les esprits se relèvent, ne serait-ce qu'un instant.",
       "outcome2": "Vous déclinez la proposition de festin. Les villageois acceptent votre décision, bien que déçus.",
       "outcome3": "Le temps passe et l'occasion d'organiser un festin disparaît."
@@ -727,7 +724,6 @@
     },
     "log": {
       "outcome0": "Le blizzard frappe avec une force brutale. Toute la production ralentit jusqu'à ramper, tandis que les villageois luttent pour survivre au froid.",
-      "outcome1": "Vous n'avez pas assez de ressources pour vous préparer.",
       "outcome2": "Grâce aux réserves de bois de chauffage et de nourriture, les villageois survivent au blizzard indemnes.",
       "outcome3": "Le blizzard frappe avec une force brutale. Toute la production ralentit jusqu'à ramper, tandis que les villageois luttent pour survivre au froid."
     },
@@ -871,7 +867,6 @@
       }
     },
     "log": {
-      "outcome0": "Vous n'avez pas assez de cuir pour l'aider.",
       "outcome1": "Vous lui remettez le cuir. Elle le prend avec un sourire reconnaissant, les yeux brillants. 'Merci. Il sera... très surpris.' Elle s'éloigne en hâte, serrant les peaux contre sa poitrine.",
       "outcome2": "Vous refusez. Elle hoche la tête, une déception passant sur son visage, puis retourne au village sans un mot de plus."
     },
@@ -922,9 +917,7 @@
     },
     "log": {
       "outcome0": "Votre indécision frustre l'archer. Il secoue la tête et s'en va, emportant son expertise ailleurs.",
-      "outcome1": "Vous n'avez pas assez de nourriture pour cette offre.",
       "outcome2": "Le maître archer prend le paiement et commence aussitôt à entraîner vos chasseurs.",
-      "outcome3": "Vous n'avez pas assez d'or pour cette offre.",
       "outcome4": "Le maître archer prend l'or avec un hochement de tête et commence aussitôt à entraîner vos chasseurs.",
       "outcome5": "L'archer hoche la tête avec compréhension. 'Je reviendrai si vous changez d'avis,' dit-il avant de disparaître dans la forêt."
     },
@@ -934,7 +927,7 @@
   "mercenaryDemand": {
     "choices": {
       "giveRing": {
-        "label": "Donner l'anneau nourricier"  //x1.5
+        "label": "Donner l'anneau nourricier"
       },
       "payGold": {
         "cost": "100 or",
@@ -956,7 +949,7 @@
   "mercenaryReturnDemand": {
     "choices": {
       "giveRing": {
-        "label": "Donner l'anneau nourricier"  //x1.5
+        "label": "Donner l'anneau nourricier"
       },
       "payGold": {
         "cost": "200 or",
@@ -992,7 +985,7 @@
         "message": "Vous achetez le schéma d'arc de belladone. Le marchand affiche un sourire sombre : « La conception de cet arc est cruelle. Ses flèches empoisonneront vos ennemis. »"
       },
       "trade_skull_lantern": {
-        "label": "Lanterne crânienne",  //x1.4
+        "label": "Lanterne crânienne",
         "message": "Vous achetez la lanterne crânienne. Forgée dans de l'os maudit, sa lueur inquiétante vous guidera dans les profondeurs les plus reculées."
       },
       "trade_tarnished_compass": {
@@ -1000,15 +993,15 @@
         "message": "Vous achetez la boussole ternie. Artefact de la civilisation disparue, son aiguille pointe vers des lieux cachés."
       },
       "trade_map_fragment_wooden": {
-        "label": "Fragment de carte",  //x1.4
+        "label": "Fragment de carte",
         "message": "Vous achetez un fragment de carte déchiré."
       },
       "trade_map_fragment_stone": {
-        "label": "Fragment de carte",  //x1.4
+        "label": "Fragment de carte",
         "message": "Vous achetez un fragment de carte déchiré."
       },
       "trade_crow_harness": {
-        "label": "Harnais de corbeau",  //x1.5
+        "label": "Harnais de corbeau",
         "message": "Vous achetez le harnais de corbeau. Un harnais spécialement conçu pour les corbeaux messagers."
       },
       "trade_clarity_elixir": {
@@ -1016,7 +1009,7 @@
         "message": "Vous buvez l'élixir de clarté. Votre esprit semble plus léger."
       },
       "trade_veinfire_elixir": {
-        "label": "Élixir de feu veineux",  //x1.4
+        "label": "Élixir de feu veineux",
         "message": "Vous achetez une fiole d'élixir de feu veineux."
       },
       "trade_book_of_trials": {
@@ -1079,9 +1072,7 @@
     },
     "log": {
       "outcome0": "Vous déclinez l'offre du moine. Il s'incline avec respect et reprend le chemin des montagnes.",
-      "outcome1": "Vous n'avez pas assez de ressources pour le tribut.",
       "outcome2": "Le moine accepte votre tribut d'un hochement solennel et révèle des plans détaillés pour une clé passe-partout. “On dit que cette clé ouvre n'importe quelle serrure,” dit-il avant de partir.",
-      "outcome3": "Vous n'avez pas assez d'or.",
       "outcome4": "Les yeux du moine s'écarquillent à la vue de l'or. 'Cela aidera grandement le monastère,' dit-il en sortant des plans détaillés pour une clé passe-partout. “On dit que cette clé ouvre n'importe quelle serrure,” dit-il avant de partir.",
       "outcome5": "Vous déclinez l'offre du moine. Il s'incline avec respect et reprend le chemin des montagnes."
     },
@@ -1100,7 +1091,6 @@
     },
     "log": {
       "outcome0": "Vous avez mis trop longtemps à décider. L'offre des moines expire.",
-      "outcome1": "Vous n'avez pas assez d'or.",
       "outcome2": "Vous payez les moines pour leur carte. Elle révèle l'emplacement de la Bibliothèque Cachée au profond de la grotte.",
       "outcome3": "Vous déclinez l'offre des moines. L'occasion est perdue."
     },
@@ -1195,7 +1185,6 @@
       }
     },
     "log": {
-      "outcome0": "Vous n'avez pas assez d'or.",
       "ignoreForced": "Vous ignorez l'offre. Le Viking finit par cracher au sol et s'en va avec sa hache de guerre, marmonnant au sujet de votre manque de respect.",
       "ignoreNormal": "Vous ignorez l'offre. Le Viking finit par hocher la tête et s'en va avec sa hache de guerre.",
       "buyForced": "Le Viking prend le paiement avec un sourire froid. « Peut-être auriez-vous dû être plus généreux plus tôt, au lieu de m'attaquer. La hache vous aurait alors coûté bien moins cher », dit-il avant de partir.",
@@ -1229,7 +1218,7 @@
         "label": "Aucune décision"
       },
       "refuse": {
-        "label": "Ne faire aucun sacrifice"  //x1.3
+        "label": "Ne faire aucun sacrifice"
       },
       "sacrifice": {
         "label": {
@@ -1260,7 +1249,7 @@
       },
       "holdFuneral": {
         "cost": "1000 nourriture",
-        "label": "Organiser des funérailles"  //x2.1
+        "label": "Organiser des funérailles"
       },
       "investigateKillers": {
         "label": "Enquêter"
@@ -1268,7 +1257,6 @@
     },
     "log": {
       "outcome0": "Vous ne donnez aucun ordre. Les rumeurs se répandent, la peur tourne au dégoût, et le travail du village vacille.",
-      "outcome1": "Vous n'avez pas assez de nourriture pour organiser des funérailles convenables.",
       "outcome2": "Vous ordonnez les rites funéraires et nourrissez les endeuillés. Le chagrin demeure, mais le village se stabilise.",
       "outcome3": "Vous découvrez un groupe de conspirateurs et ordonnez leur exécution. La justice est rapide, et la peur recule.",
       "outcome4": "Vous consacrez le corps à la croix. Les villageois reculent de dégoût, mais la puissance de la croix semble avoir grandi."
@@ -1279,7 +1267,7 @@
   "paleCrossProposal": {
     "choices": {
       "acceptPaleCross": {
-        "label": "Accepter la proposition"  //x1.5
+        "label": "Accepter la proposition"
       },
       "refusePaleCross": {
         "label": "Refuser la proposition"
@@ -1320,7 +1308,7 @@
         "label": "Le laisser"
       },
       "takeMask": {
-        "label": "Prendre le masque rouge"  //x1.8
+        "label": "Prendre le masque rouge"
       }
     },
     "log": {
@@ -1345,7 +1333,6 @@
     },
     "log": {
       "outcome0": "Le chevalier a attendu, mais vous n'avez pas répondu. 'Peut-être une autre fois,' dit-il avant de poursuivre sa route.",
-      "outcome1": "Vous n'avez pas assez d'or.",
       "outcome2": "Le chevalier parle : 'Au-delà des montagnes de l'est se trouve une cité morte de tours de pierre géantes, touchant presque les nuages. Des fenêtres vides regardent le pays comme d'innombrables yeux. La nature a gravi chaque mur et rempli les rues de racines. Personne n'y a vécu depuis des âges.'",
       "outcome3": "Vos paroles intriguent le chevalier, et il parle : 'Au-delà des montagnes de l'est se trouve une cité morte de tours de pierre géantes, touchant presque les nuages. Des fenêtres vides regardent le pays comme d'innombrables yeux. La nature a gravi chaque mur et rempli les rues de racines. Personne n'y a vécu depuis des âges.'",
       "outcome4": "Le chevalier écoute vos paroles, mais secoue la tête. 'Vos mots sont sincères, mais mon savoir a de la valeur. Peut-être nos chemins se croiseront-ils encore.' Il repart sans partager son récit.",
@@ -1393,9 +1380,7 @@
     },
     "log": {
       "outcome0": "Le chevalier a attendu, mais vous n'avez pas répondu. 'Peut-être une autre fois,' dit-il avant de poursuivre sa route.",
-      "outcome1": "Vous n'avez pas assez d'or.",
       "outcome2": "Le chevalier raconte : 'Sur le rivage de l'océan, j'ai trouvé une cité morte, à demi reprise par les vagues. Parmi ses ruines reposent d'immenses vaisseaux de métal, leurs coques rouillées défiant encore le temps. Les anciens régnaient jadis sur les mers avec ces géants, désormais échoués et silencieux sur le sable.'",
-      "outcome3": "Vous n'avez pas assez de nourriture.",
       "outcome4": "Satisfait du repas, le chevalier raconte : 'Sur le rivage de l'océan, j'ai trouvé une cité morte, à demi reprise par les vagues. Parmi ses ruines reposent d'immenses vaisseaux de métal, leurs coques rouillées défiant encore le temps. Les anciens régnaient jadis sur les mers avec ces géants, désormais échoués et silencieux sur le sable.'",
       "outcome5": "Vos paroles touchent le chevalier. Il parle : 'Sur le rivage de l'océan, j'ai trouvé une cité morte, à demi reprise par les vagues. Parmi ses ruines reposent d'immenses vaisseaux de métal, leurs coques rouillées défiant encore le temps. Les anciens régnaient jadis sur les mers avec ces géants, désormais échoués et silencieux sur le sable.'",
       "outcome6": "Le chevalier écoute, mais reste impassible. 'Vos paroles sont sincères, mais ce savoir est précieux. Peut-être une autre fois.' Il repart sans partager sa découverte.",
@@ -1423,9 +1408,7 @@
     },
     "log": {
       "outcome0": "Le chevalier a attendu, mais vous n'avez pas répondu. 'Peut-être une autre fois,' dit-il avant de poursuivre sa route.",
-      "outcome1": "Vous n'avez pas assez d'or.",
       "outcome2": "Le chevalier hoche la tête avec satisfaction. 'Un prix équitable. Je défendrai votre peuple de ma vie.' Il retire son heaume usé, révélant un visage balafré mais déterminé. Le chevalier errant a rejoint votre compagnie.",
-      "outcome3": "Vous n'avez pas assez d'argent.",
       "outcome4": "Le chevalier accepte l'argent avec une révérence solennelle. 'Je défendrai votre peuple de ma vie.' Il retire son heaume usé, révélant un visage balafré mais déterminé. Le chevalier errant a rejoint votre compagnie.",
       "outcome5": "'Votre but semble noble,' les yeux du chevalier s'illuminent. 'Ce serait un honneur de me tenir à vos côtés.' Il retire son heaume usé, révélant un visage balafré mais déterminé. Le chevalier errant a rejoint votre compagnie.",
       "outcome6": "Le chevalier écoute, mais secoue la tête. 'Les mots seuls ne peuvent nourrir un guerrier. Je dois donc poursuivre ma route, pour l'instant,' dit-il en se détournant et en partant.",
@@ -1450,9 +1433,7 @@
     },
     "log": {
       "outcome0": "Le chevalier a attendu, mais vous n'avez pas répondu. 'Peut-être une autre fois,' dit-il avant de poursuivre sa route.",
-      "outcome1": "Vous n'avez pas assez d'or.",
       "outcome2": "Le chevalier partage sa découverte : 'Haut dans les montagnes se trouve un monastère taillé dans les falaises. Les savants qui s'y rassemblaient pour étudier le passé parlent d'une civilisation avancée, bien au-delà de notre compréhension. Pourtant, quelque chose a précipité leur monde dans la ruine.'",
-      "outcome3": "Vous n'avez pas assez de nourriture.",
       "outcome4": "Reconnaissant pour le repas, le chevalier partage sa découverte : 'Haut dans les montagnes se trouve un monastère taillé dans les falaises. Les savants qui y étudient le passé parlent d'une civilisation bien au-delà de notre compréhension. Leur art était si avancé qu'il nous semblerait magique. Pourtant, quelque chose a précipité leur monde dans la ruine.'",
       "outcome5": "Vous déclinez son offre. Le chevalier hoche la tête avec compréhension. 'Le savoir restera donc avec moi,' dit-il avant de repartir une fois encore."
     },
@@ -1718,7 +1699,7 @@
         "label": "Dédier à tous"
       },
       "deepenDevotion": {
-        "label": "Approfondir la dévotion"  //x1.5
+        "label": "Approfondir la dévotion"
       }
     },
     "log": {
@@ -1789,7 +1770,6 @@
     },
     "log": {
       "outcome0": "Vous avez mis trop longtemps à décider. L'offre des pêcheurs expire.",
-      "outcome1": "Vous n'avez pas assez d'or.",
       "outcome2": "Les pêcheurs vous transmettent leurs techniques élaborées de construction de pièges à poissons.",
       "outcome3": "Vous déclinez l'offre des pêcheurs. L'occasion est perdue."
     },
@@ -1852,8 +1832,6 @@
       }
     },
     "log": {
-      "outcome0": "Vous n'avez pas assez d'or pour la fête.",
-      "outcome1": "Vous n'avez pas assez de nourriture pour la fête.",
       "outcome2": "Les feux brûlent et les rires percent l'obscurité un moment. À l'aube, de nombreux visiteurs s'attardent, songeant à rester.",
       "outcome3": "Vous refusez. La nuit passe sans joie, chaleur ni rires."
     },
@@ -1872,7 +1850,6 @@
     },
     "log": {
       "outcome0": "Le bois noir résiste, mais votre peuple l'abat. Vous revendiquez le bois noir maudit.",
-      "outcome1": "Vous n'avez pas assez de nourriture pour une offrande digne. L'arbre attend.",
       "outcome2": "Le sang et la fumée montent de l'offrande. Une grâce glacée se pose sur le village."
     },
     "message": "Votre expédition atteint le sanctuaire oublié du marais. Des ruines croulantes encerclent un arbre massif de bois noir et sombre. Que faites-vous ?",
@@ -1951,11 +1928,10 @@
       },
       "send_search_party": {
         "cost": "500 nourriture, 50 torche",
-        "label": "Envoyer une équipe de recherche"  //x1.8
+        "label": "Envoyer une équipe de recherche"
       }
     },
     "log": {
-      "outcome0": "Vous n'avez pas assez de nourriture ni de torches pour l'équipe de recherche.",
       "outcome1": "L'équipe de recherche trouve la fillette indemne. Elle avait découvert une petite grotte jonchée de bibelots d'argent et de pièces, et jouait tranquillement parmi eux.",
       "outcome2": "Vous refusez. Le marchand hoche tristement la tête et part chercher seul.",
       "outcome3": "Vous refusez. Le marchand hoche tristement la tête et part chercher seul."
@@ -2053,9 +2029,7 @@
     },
     "log": {
       "outcome0": "Vous déclinez l'offre du vagabond. Il hausse les épaules, ajuste son sac usé et disparaît sur la route.",
-      "outcome1": "Vous n'avez pas assez de nourriture à offrir.",
       "outcome2": "Le vagabond fait un bref signe de tête et part vers la fosse minière pour commencer son labeur.",
-      "outcome3": "Vous n'avez pas assez d'or à offrir.",
       "outcome4": "Le vagabond fait un bref signe de tête et part vers la fosse minière pour commencer son labeur."
     },
     "message": "Un homme aux vêtements déchirés approche du village, les mains marquées par des années de dur labeur. 'Je viens d'une colonie minière,' dit-il d'une voix rauque. 'Je peux travailler pour vous afin d'améliorer le rendement de vos mines.'",
@@ -2072,7 +2046,6 @@
       }
     },
     "log": {
-      "outcome0": "Vous n'avez pas assez d'or.",
       "outcome1": "Le voyant se tait. Son regard glisse au-delà de vous. \"De grandes épreuves vous attendent{{name}},\" dit-il doucement. \"Vous croyez que ce monde vous appartient et que vous pouvez le façonner. Mais vous êtes façonné à votre tour. Quand la vérité finale remontera à la surface, vous verrez les fils. Et alors, il sera peut-être trop tard.\"",
       "outcome2": "Le voyant hoche la tête. {{farewell}}"
     },
@@ -2091,7 +2064,8 @@
   "vikingBuilder": {
     "choices": {
       "acceptDeal": {
-        "label": "payer 250 or"
+        "label": "payer 250 or",
+        "cost": "250 Gold"
       },
       "forceHim": {
         "label": "Le forcer"
@@ -2102,7 +2076,6 @@
     },
     "log": {
       "outcome0": "Le bâtisseur attend un moment, puis finit par hausser les épaules et disparaît dans les terres sauvages, emportant son savoir avec lui.",
-      "outcome1": "Vous n'avez pas assez d'or pour cet accord.",
       "outcome2": "Vous payez le bâtisseur. Il enseigne aux villageois les anciennes techniques nordiques de construction des maisons longues.",
       "outcome3": "Vos hommes maîtrisent le bâtisseur et le forcent à partager son savoir. À contrecœur, il vous enseigne les secrets de la construction des maisons longues.",
       "outcome4": "Le bâtisseur se révèle plus fort que prévu ! Il riposte férocement, tuant {{actualCasualties}} hommes avant de s'échapper dans les terres sauvages.",
@@ -2200,9 +2173,7 @@
     },
     "log": {
       "outcome0": "L'artisan du feu finit par soupirer : 'Peut-être n'êtes-vous pas encore prêt pour un tel pouvoir,' puis disparaît dans la nuit.",
-      "outcome1": "Vous n'avez pas assez d'or.",
       "outcome2": "L'artisan du feu prend votre or et commence à vous enseigner l'art sombre de la création de bombes du vide. 'Usez de ce pouvoir avec sagesse,' avertit-il avant de disparaître dans les ombres.",
-      "outcome3": "Vous n'avez pas assez d'argent.",
       "outcome4": "L'artisan du feu prend votre argent et commence à vous enseigner l'art sombre de la création de bombes du vide. 'Usez de ce pouvoir avec sagesse,' avertit-il avant de disparaître dans les ombres.",
       "outcome5": "Vous refusez l'offre de l'artisan du feu. Il hoche la tête d'un air entendu : 'Peut-être n'êtes-vous pas encore prêt pour un tel pouvoir,' puis disparaît dans la nuit."
     },
@@ -2342,7 +2313,6 @@
       }
     },
     "log": {
-      "outcome0": "Vous n'avez pas assez d'or pour la payer.",
       "outcome1": "Vous remettez l'or. La sorcière ricane, empoche les pièces et disparaît dans la brume sans un mot de plus.",
       "outcome2": "Vous refusez de payer. La sorcière crache et maudit, mais rien ne se produit. Elle s'éloigne en boitant, marmonnant des menaces dans le vent. Il semble que vous ayez eu de la chance.",
       "outcome3": "Alors que vous refusez de payer, la sorcière lève ses mains noueuses et prononce des mots dans une langue oubliée. Quand elle s'en va, les villageois commencent à se sentir faibles, comme si leur force était drainée par une puissance invisible.",
@@ -2352,7 +2322,7 @@
       "outcome7": "Vos menaces ne font qu'irriter la sorcière. Elle rit et vous maudit avec une magie noire. Quand elle s'en va, les villageois commencent à se sentir faibles, comme si leur force était drainée par une puissance invisible."
     },
     "message": "Une vieille femme voûtée en robes déchirées arrive aux portes. La voix pleine de malice, elle exige : 'Payez-moi 50 pièces d'or, ou je vous maudirai de malheur.'",
-    "title": "La Malédiction de la sorcière"  //x1.7
+    "title": "La Malédiction de la sorcière"
   },
   "wizardArrives": {
     "message": "Un petit vieil homme à la longue barbe grise, vêtu d'un manteau gris usé, approche de la colonie. Ses yeux brillent d'une sagesse et d'une puissance anciennes. 'Je suis un sorcier,' déclare-t-il d'une voix résonnant d'autorité arcanique. 'Bâtissez-moi une tour, et je vous aiderai avec des pouvoirs au-delà de l'entendement des mortels.'"
@@ -2388,7 +2358,6 @@
     },
     "log": {
       "outcome0": "Votre indécision frustre le sorcier. Il secoue la tête. 'Je resterai donc dans ma tour. Peut-être nos chemins se croiseront-ils encore quand le besoin sera plus grand,' dit-il avant de partir.",
-      "outcome1": "Vous n'avez pas assez d'or.",
       "outcome2": "Le sorcier hoche la tête avec satisfaction. 'Un prix équitable pour mes services. Je défendrai votre peuple par le feu arcanique.' Il retire sa capuche usée, révélant des yeux anciens qui brillent d'une puissance déclinante. L'Ancien Sorcier a rejoint votre compagnie.",
       "outcome3": "Vous déclinez l'offre du sorcier. Il hoche la tête avec compréhension. 'Je resterai donc dans ma tour. Peut-être nos chemins se croiseront-ils encore quand le besoin sera plus grand,' dit-il avant de partir."
     },
@@ -2440,7 +2409,7 @@
       "defend_manyDeaths_food_hut_first": "Les villageois combattent désespérément les loups. Plusieurs villageois succombent à la fureur surnaturelle des loups. Dans le chaos, les loups ravagent vos réserves. Dans leur frénésie, les loups détruisent l'une des huttes, ne laissant que du bois éclaté. Les villageois suggèrent de poser des pièges autour du village pour mieux se protéger des loups et des autres ennemis.",
       "hide_noDeaths": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. À l'aube, les loups sont partis, ne laissant derrière eux que des griffures et de la terreur.",
       "hide_noDeaths_food": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. À l'aube, les loups sont partis, ne laissant derrière eux que des griffures et de la terreur. Les loups pillent vos provisions avant de disparaître à l'aube.",
-      "hide_oneDeath": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Un villageois qui s'était aventuré dehors est retrouvé déchiqueté au lever du soleil.",  //x1.4
+      "hide_oneDeath": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Un villageois qui s'était aventuré dehors est retrouvé déchiqueté au lever du soleil.",
       "hide_oneDeath_food": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Un villageois qui s'était aventuré dehors est retrouvé déchiqueté au lever du soleil. Les loups pillent vos provisions avant de disparaître à l'aube.",
       "hide_manyDeaths": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Plusieurs villageois sont arrachés de leurs huttes, leurs cris résonnant dans la nuit.",
       "hide_manyDeaths_food": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Plusieurs villageois sont arrachés de leurs huttes, leurs cris résonnant dans la nuit. Les loups pillent vos provisions avant de disparaître à l'aube."
@@ -2479,7 +2448,6 @@
       "timeoutLevel4": "Votre indécision frustre le bûcheron. Il semble déçu, mais accepte et part.",
       "timeoutLevel5": "Votre indécision frustre le bûcheron. Il fronce les sourcils et s'en va.",
       "timeoutLevel6": "Votre indécision frustre le bûcheron. Il fronce les sourcils et s'en va.",
-      "outcome0": "Vous n'avez pas assez de nourriture pour cette affaire.",
       "successLevel1": "Le bûcheron prend la nourriture et s'enfonce dans la forêt. Le soir venu, il revient avec le bois promis empilé proprement au bord du village.",
       "successLevel2": "Le bûcheron prend la nourriture et disparaît dans la forêt. À la tombée de la nuit, il revient avec une grande pile de bois.",
       "successLevel3": "Le bûcheron prend la nourriture et s'aventure au cœur de la forêt. Il revient avec une récolte impressionnante de bois.",
@@ -2510,7 +2478,7 @@
         "label": "Bien couvrir de planches"
       },
       "investigate": {
-        "label": "Regarder plus profondément dans le puits"  //x1.9
+        "label": "Regarder plus profondément dans le puits"
       }
     },
     "log": {
@@ -2547,7 +2515,7 @@
         "label": "La sacrifier"
       },
       "stopSacrifices": {
-        "label": "Arrêter les sacrifices humains"  //x1.4
+        "label": "Arrêter les sacrifices humains"
       }
     },
     "log": {
@@ -2556,6 +2524,29 @@
       "outcome2": "Peu après que le sacrifice a été accompli au Monolithe Noir, {{actualLeavers}} villageois horrifiés rassemblent leurs affaires et partent avec dégoût."
     },
     "message": "Une jeune femme s'approche de vous, les larmes ruisselant sur son visage. 'Mes deux parents ont été sacrifiés à ce monolithe maudit,' crie-t-elle. 'Ce comportement barbare doit cesser !'",
-    "title": "La Supplication de la jeune femme"  //x1.5
+    "title": "La Supplication de la jeune femme"
+  },
+  "obsidianOrbVisit": {
+    "choices": {
+      "payGold": {
+        "cost": "250 Gold",
+        "label": "Payer 250 or"
+      },
+      "payVillagers": {
+        "cost": "20 Villagers",
+        "label": "Offrir 20 villageois"
+      },
+      "sendAway": {
+        "label": "La renvoyer"
+      }
+    },
+    "log": {
+      "outcome0": "Vous payez la femme et elle vous révèle le secret de l'orbe d'obsidienne. Vous recevez le schéma.",
+      "outcome1": "Vingt villageois sont emmenés enchaînés. La femme partage le savoir, mais le village est écœuré par ce qui a été fait.",
+      "outcome2": "Vous la renvoyez. Elle dit qu'elle pourra revenir quand vous serez prêt.",
+      "outcome3": "Le temps est écoulé. Elle part en disant qu'elle pourra revenir quand vous serez prêt."
+    },
+    "message": "Une femme richement parée, d'apparence orientale, arrive avec deux robustes serviteurs. Elle propose de partager le savoir pour forger un puissant orbe d'obsidienne en échange d'or ou de villageois.",
+    "title": "L'orbe d'obsidienne"
   }
 }

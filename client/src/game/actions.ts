@@ -59,6 +59,7 @@ import {
   handleCraftBlacksteelLantern,
   handleCraftBlacksteelArmor,
   handleCraftSkeletonKey,
+  handleCraftObsidianOrb,
 } from "./rules/caveCraftTools";
 
 import {
@@ -436,6 +437,8 @@ export function executeGameAction(
       return handleCraftHighpriestRobe(state, result);
     case "craftSkeletonKey":
       return handleCraftSkeletonKey(state, result);
+    case "craftObsidianOrb":
+      return handleCraftObsidianOrb(state, result);
     case "craftBoneTotems":
       return handleCraftBoneTotems(state, result);
     case "craftLeatherTotems":

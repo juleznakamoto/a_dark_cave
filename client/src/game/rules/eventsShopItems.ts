@@ -8,12 +8,13 @@ export const shopItemEvents: Record<string, GameEvent> = {
     id: "compassTreasure",
     condition: (state: GameState) =>
       state.relics.tarnished_compass && !state.story.seen.compassTreasureFound,
-    timeProbability: 10,
+    timeProbability: 10,
+
     priority: 4,
     repeatable: false,
     choices: [
       {
-        id: "followCompass",
+        id: "followCompass",
         effect: (state: GameState) => {
           return {
             relics: {
@@ -44,13 +45,14 @@ export const shopItemEvents: Record<string, GameEvent> = {
     timeProbability: (state: GameState) => {
       const hasBeenSeen = state.triggeredEvents?.monasteryMonk;
       return hasBeenSeen ? 20 : 10;
-    },
+    },
+
     priority: 4,
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 5 * 60 * 1000, // 5 minutes
     fallbackChoice: {
-      id: "sendAway",
+      id: "sendAway",
       effect: (state: GameState) => {
         return {
           _logMessageKey: "outcome0",
@@ -59,22 +61,9 @@ export const shopItemEvents: Record<string, GameEvent> = {
     },
     choices: [
       {
-        id: "payTribute",
+        id: "payTribute",
         cost: "5000 wood, 5000 stone, 5000 food, 500 leather, 500 steel",
-        effect: (state: GameState) => {
-          if (
-            state.resources.wood < 5000 ||
-            state.resources.stone < 5000 ||
-            state.resources.food < 5000 ||
-            state.resources.leather < 500 ||
-            state.resources.steel < 500
-          ) {
-            return {
-              _logMessageKey: "outcome1",
-            };
-          }
-
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               wood: state.resources.wood - 5000,
@@ -95,20 +84,12 @@ export const shopItemEvents: Record<string, GameEvent> = {
               },
             },
             _logMessageKey: "outcome2",
-          };
-        },
+        }),
       },
       {
-        id: "offerGold",
+        id: "offerGold",
         cost: "250 gold",
-        effect: (state: GameState) => {
-          if (state.resources.gold < 250) {
-            return {
-              _logMessageKey: "outcome3",
-            };
-          }
-
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               gold: state.resources.gold - 250,
@@ -125,11 +106,10 @@ export const shopItemEvents: Record<string, GameEvent> = {
               },
             },
             _logMessageKey: "outcome4",
-          };
-        },
+        }),
       },
       {
-        id: "sendAway",
+        id: "sendAway",
         effect: (state: GameState) => {
           return {
             _logMessageKey: "outcome5",
@@ -145,12 +125,13 @@ export const shopItemEvents: Record<string, GameEvent> = {
       state.tools.skeleton_key &&
       state.relics?.sealed_chest &&
       !state.story.seen.mysteriousChestOpened,
-    timeProbability: 0.5,
+    timeProbability: 0.5,
+
     priority: 5,
     repeatable: false,
     choices: [
       {
-        id: "ringBell",
+        id: "ringBell",
         effect: (state: GameState) => {
           return {
             relics: {
@@ -174,7 +155,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
         },
       },
       {
-        id: "doNotRing",
+        id: "doNotRing",
         effect: (state: GameState) => {
           return {
             resources: {
@@ -209,12 +190,13 @@ export const shopItemEvents: Record<string, GameEvent> = {
       state.story.seen.descendedFurther &&
       !state.story.seen.undergroundLakeDiscovered,
 
-    timeProbability: 3,
+    timeProbability: 3,
+
     priority: 4,
     repeatable: false,
     choices: [
       {
-        id: "unlockLake",
+        id: "unlockLake",
         effect: (state: GameState) => {
           return {
             story: {
@@ -236,12 +218,13 @@ export const shopItemEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.undergroundLakeExplored &&
       !state.story.seen.undergroundLakeCreatureDiscovered,
-    timeProbability: 4,
+    timeProbability: 4,
+
     priority: 4,
     repeatable: false,
     choices: [
       {
-        id: "acknowledgeLakeCreature",
+        id: "acknowledgeLakeCreature",
         effect: (state: GameState) => {
           return {
             story: {
@@ -262,12 +245,13 @@ export const shopItemEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.lakeCreatureLured &&
       !state.story.seen.lakeCreatureFateDecided,
-    timeProbability: 0.2,
+    timeProbability: 0.2,
+
     priority: 4,
     repeatable: false,
     choices: [
       {
-        id: "killCreature",
+        id: "killCreature",
         effect: (state: GameState) => {
           return {
             resources: {
@@ -288,7 +272,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
         },
       },
       {
-        id: "spareCreature",
+        id: "spareCreature",
         effect: (state: GameState) => {
           return {
             resources: {
@@ -314,12 +298,13 @@ export const shopItemEvents: Record<string, GameEvent> = {
     id: "lakeCreatureDead",
     condition: (state: GameState) =>
       state.story.seen.lakeCreatureSpared && !state.story.seen.lakeCreatureDead,
-    timeProbability: 15,
+    timeProbability: 15,
+
     priority: 4,
     repeatable: false,
     choices: [
       {
-        id: "forge",
+        id: "forge",
         effect: (state: GameState) => {
           return {
             resources: {

@@ -293,6 +293,14 @@
     "wooden_figure": {
       "description": "雕刻着触手怪物的木像，令人不安",
       "name": "木雕像"
+    },
+    "obsidian_orb": {
+      "description": "强大的火山玻璃宝珠，赋予精神力量",
+      "name": "黑曜石宝珠"
+    },
+    "obsidian_orb_schematic": {
+      "description": "锻造强大黑曜石宝珠的图纸",
+      "name": "黑曜石宝珠"
     }
   },
   "fellowship": {

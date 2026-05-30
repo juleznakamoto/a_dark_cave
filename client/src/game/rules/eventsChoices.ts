@@ -680,14 +680,8 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "acceptDeal",
-        effect: (state: GameState) => {
-          if (state.resources.gold < 250) {
-            return {
-              _logMessageKey: "outcome1",
-            };
-          }
-
-          return {
+        cost: "250 Gold",
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               gold: state.resources.gold - 250,
@@ -701,8 +695,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessageKey: "outcome2",
-          };
-        },
+        }),
       },
       {
         id: "forceHim",
@@ -806,13 +799,6 @@ export const choiceEvents: Record<string, GameEvent> = {
         },
         effect: (state: GameState) => {
           const cost = state.story.seen.vikingBuilderEventForced ? 750 : 500;
-
-          if (state.resources.gold < cost) {
-            return {
-              _logMessageKey: "outcome0",
-            };
-          }
-
           const wasForced = state.story.seen.vikingBuilderEventForced;
 
           return {
@@ -1068,14 +1054,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "holdFuneral",
         cost: "1000 food",
-        effect: (state: GameState) => {
-          if ((state.resources.food || 0) < 1000) {
-            return {
-              _logMessageKey: "outcome1",
-            };
-          }
-
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               food: (state.resources.food || 0) - 1000,
@@ -1092,8 +1071,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessageKey: "outcome2",
-          };
-        },
+        }),
       },
       {
         id: "investigateKillers",
@@ -1266,14 +1244,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "payGold",
         cost: "50 gold",
-        effect: (state: GameState) => {
-          if (state.resources.gold < 50) {
-            return {
-              _logMessageKey: "outcome0",
-            };
-          }
-
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               gold: state.resources.gold - 50,
@@ -1286,8 +1257,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessageKey: "outcome1",
-          };
-        },
+        }),
       },
       {
         id: "doNotPay",
@@ -1446,14 +1416,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "acceptArcherHelp",
         cost: "5000 food",
-        effect: (state: GameState) => {
-          if (state.resources.food < 5000) {
-            return {
-              _logMessageKey: "outcome1",
-            };
-          }
-
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               food: state.resources.food - 5000,
@@ -1470,20 +1433,12 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessageKey: "outcome2",
-          };
-        },
+        }),
       },
       {
         id: "acceptArcherHelpGold",
         cost: "200 gold",
-        effect: (state: GameState) => {
-          if (state.resources.gold < 200) {
-            return {
-              _logMessageKey: "outcome3",
-            };
-          }
-
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               gold: state.resources.gold - 200,
@@ -1500,8 +1455,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessageKey: "outcome4",
-          };
-        },
+        }),
       },
       {
         id: "refuseArcherHelp",
@@ -1585,11 +1539,6 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "accept",
         cost: "50 gold",
         effect: (state: GameState) => {
-          if (state.resources.gold < 50) {
-            return {
-              _logMessageKey: "outcome0",
-            };
-          }
           const name = state.fn ? `, ${state.fn}` : "";
           return {
             resources: {
@@ -1645,12 +1594,6 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "offerFood",
         cost: "2500 food",
         effect: (state: GameState) => {
-          if (state.resources.food < 2500) {
-            return {
-              _logMessageKey: "outcome1",
-            };
-          }
-
           const boostDuration = 30 * 60 * 1000; // 30 minutes
           return {
             resources: {
@@ -1676,12 +1619,6 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "offerGold",
         cost: "100 gold",
         effect: (state: GameState) => {
-          if (state.resources.gold < 100) {
-            return {
-              _logMessageKey: "outcome3",
-            };
-          }
-
           const boostDuration = 30 * 60 * 1000; // 30 minutes
           return {
             resources: {
@@ -1739,14 +1676,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "payGold",
         cost: "250 gold",
-        effect: (state: GameState) => {
-          if (state.resources.gold < 250) {
-            return {
-              _logMessageKey: "outcome1",
-            };
-          }
-
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               gold: state.resources.gold - 250,
@@ -1760,20 +1690,12 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessageKey: "outcome2",
-          };
-        },
+        }),
       },
       {
         id: "paySilver",
         cost: "1000 silver",
-        effect: (state: GameState) => {
-          if (state.resources.silver < 1000) {
-            return {
-              _logMessageKey: "outcome3",
-            };
-          }
-
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               silver: state.resources.silver - 1000,
@@ -1787,8 +1709,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessageKey: "outcome4",
-          };
-        },
+        }),
       },
       {
         id: "sendAway",
@@ -2027,15 +1948,6 @@ export const choiceEvents: Record<string, GameEvent> = {
           const woodCost = 1000 * (timesOccurred + 1);
           const foodCost = 1000 * (timesOccurred + 1);
 
-          if (
-            state.resources.wood < woodCost ||
-            state.resources.food < foodCost
-          ) {
-            return {
-              _logMessageKey: "outcome1",
-            };
-          }
-
           return {
             resources: {
               ...state.resources,
@@ -2155,13 +2067,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "helpWithLeather",
         cost: "100 leather",
-        effect: (state: GameState) => {
-          if ((state.resources.leather || 0) < 100) {
-            return {
-              _logMessageKey: "outcome0",
-            };
-          }
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               leather: (state.resources.leather || 0) - 100,
@@ -2179,8 +2085,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessageKey: "outcome1",
-          };
-        },
+        }),
       },
       {
         id: "refuseLeather",
@@ -2264,13 +2169,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "sacrificeAtTree",
         cost: "1000 Food",
-        effect: (state: GameState) => {
-          if ((state.resources.food || 0) < 1000) {
-            return {
-              _logMessageKey: "outcome1",
-            };
-          }
-          return {
+        effect: (state: GameState) => ({
             resources: {
               ...state.resources,
               food: (state.resources.food || 0) - 1000,
@@ -2287,8 +2186,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessageKey: "outcome2",
-          };
-        },
+        }),
       },
     ],
   },

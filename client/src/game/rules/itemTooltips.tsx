@@ -31,6 +31,10 @@ import {
 import { useGameStore } from "../state";
 import { CRUEL_MODE } from "../cruelMode";
 import { getMapFragmentCount, MAP_FRAGMENT_TOTAL } from "../mapFragments";
+import {
+  formatObsidianOrbFocusCountdown,
+  MAX_FOCUS_POINTS,
+} from "@/game/obsidianOrb";
 import type { GameState } from "@shared/schema";
 
 /** Moon phase for n fragments: 1→◔, 2→◑, 3→◕, 4→● (index = n − 1). */
@@ -475,6 +479,31 @@ export function renderItemTooltip(
           )}
         </div>
       )}
+      {itemId === "obsidian_orb" &&
+        useGameStore.getState().relics?.obsidian_orb && (
+          <div>
+            {(() => {
+              const store = useGameStore.getState();
+              const now = Date.now();
+              const next = store.obsidianOrbState?.nextFocusGainTime ?? 0;
+              const points =
+                (store.focusState as { points?: number } | undefined)?.points ?? 0;
+              if (points >= MAX_FOCUS_POINTS) {
+                return getUiTooltip(
+                  "obsidianOrbFocusCap",
+                  "Focus reserve full ({{max}})",
+                  { max: MAX_FOCUS_POINTS },
+                );
+              }
+              const remainingMs = Math.max(0, next - now);
+              return getUiTooltip(
+                "obsidianOrbFocusCountdown",
+                "{{time}} until next Focus Point is gained",
+                { time: formatObsidianOrbFocusCountdown(remainingMs) },
+              );
+            })()}
+          </div>
+        )}
       {itemId === "bone_dice" && (
         <div>
           {getUiTooltip(

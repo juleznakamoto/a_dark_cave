@@ -1,6 +1,7 @@
 import i18n from "i18next";
 import type { GameState } from "@shared/schema";
 import type { EventChoice } from "@/game/rules/events";
+import { getVillagersInVillage } from "@/game/population";
 import { getResourceName } from "@/i18n/resolveGameText";
 
 type TranslateOptions = Record<string, string | number | boolean | undefined>;
@@ -139,6 +140,25 @@ export function parseResourceCostsFromDisplayText(
   return costs;
 }
 
+export function parseVillagerCostFromDisplayText(costText: string): number | null {
+  const match = costText.trim().match(/^([\d']+)\s+Villagers?$/i);
+  if (!match) return null;
+  return parseFormattedCostAmount(match[1]);
+}
+
+function buildVillagerAffordance(
+  amount: number,
+  state: GameState,
+): EventChoiceAffordance {
+  const inVillage = getVillagersInVillage(state);
+  const hasEnough = inVillage >= amount;
+  return {
+    canAfford: hasEnough,
+    costs: [],
+    individualAffordance: { villagers: hasEnough },
+  };
+}
+
 function buildAffordanceFromCosts(
   costs: EventResourceCost[],
   resources: GameState["resources"],
@@ -203,6 +223,11 @@ export function getEventChoiceAffordance(
   const parsedCosts = parseResourceCostsFromDisplayText(costText, state.resources);
   if (parsedCosts.length > 0) {
     return buildAffordanceFromCosts(parsedCosts, state.resources);
+  }
+
+  const villagerCost = parseVillagerCostFromDisplayText(costText);
+  if (villagerCost !== null) {
+    return buildVillagerAffordance(villagerCost, state);
   }
 
   return { canAfford: true, costs: [], individualAffordance: {} };

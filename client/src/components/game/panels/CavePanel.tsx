@@ -219,6 +219,7 @@ export default function CavePanel() {
             { id: "craftStormglassHalberd", label: "Stormglass Halberd" },
             { id: "craftAshenGreatshield", label: "Ashen Greatshield" },
             { id: "craftSkeletonKey", label: "Skeleton Key" },
+            { id: "craftObsidianOrb", label: "Obsidian Orb" },
           ],
         },
         {
