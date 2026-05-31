@@ -349,7 +349,7 @@ export default function ProfileMenu() {
         isDeleting={deleteAccountInProgress}
       />
       <div className="flex items-center justify-end gap-1">
-        <div className="flex items-center -space-x-1">
+        <div className="flex items-center gap-0.5">
           {cruelMode && (
             <TooltipWrapper
               tooltip={
