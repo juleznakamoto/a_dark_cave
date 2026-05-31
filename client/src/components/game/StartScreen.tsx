@@ -21,7 +21,7 @@ const START_FOOTER_LINK =
 const START_FOOTER_LEGAL_LINK =
   `${START_FOOTER_LINK} text-[9px] sm:text-[10px]`;
 const START_FOOTER_LANGUAGE_BTN =
-  `${START_FOOTER_LINK} p-0 h-auto min-h-0`;
+  "inline-flex items-center gap-0 sm:gap-1 hover:text-foreground transition-colors opacity-70 hover:opacity-100 p-0 h-auto min-h-0";
 export default function StartScreen() {
   const { executeAction, setBoostMode, boostMode, cruelMode } = useGameStore();
   const buttonRef = useRef<HTMLButtonElement>(null);
