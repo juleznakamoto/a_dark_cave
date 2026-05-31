@@ -17,7 +17,6 @@ import {
 import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  getFortificationMarginalStats,
   type FortificationBuildingKey,
 } from "@/game/bastionStats";
 import {
@@ -703,50 +702,11 @@ export default function SidePanel() {
 
       const fk = key as FortificationBuildingKey;
       let label = getFortificationDisplayLabel(fk, buildings, t);
-      let tooltip: React.ReactNode = undefined;
-
-      const margin = getFortificationMarginalStats(gameStateTyped, fk);
-      const defense = margin?.defense ?? 0;
-      const attack = margin?.attack ?? 0;
-      const integrity = margin?.integrity ?? 0;
 
       const isDamaged =
         (key === "watchtower" && story?.seen?.watchtowerDamaged) ||
         (key === "bastion" && story?.seen?.bastionDamaged) ||
         (key === "palisades" && story?.seen?.palisadesDamaged);
-
-      const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
-      const buildAction = villageBuildActions[actionId];
-
-      tooltip = (
-        <div>
-          <div>
-            <span className="font-bold">{label}</span>
-            {isDamaged && (
-              <span className="font-normal text-muted-foreground">
-                {" "}
-                {t("fortifications.damaged")}
-              </span>
-            )}
-          </div>
-          {buildAction?.description && (
-            <div className="text-gray-400 mb-1">
-              {buildAction.description}
-            </div>
-          )}
-          <div className="text-foreground">
-            {attack !== 0 && (
-              <div>{t("fortifications.attack", { value: attack })}</div>
-            )}
-            {defense !== 0 && (
-              <div>{t("fortifications.defense", { value: defense })}</div>
-            )}
-            {integrity !== 0 && (
-              <div>{t("fortifications.integrity", { value: integrity })}</div>
-            )}
-          </div>
-        </div>
-      );
 
       if (isDamaged) {
         label += " ↓";
@@ -758,7 +718,6 @@ export default function SidePanel() {
         value: value ?? 0,
         testId: `fortification-${key}`,
         visible: (value ?? 0) > 0,
-        tooltip: tooltip,
       };
     })
     .filter((item) => item !== null); // Remove nulls from buildings not present

@@ -11,6 +11,49 @@ function storageResourceLimitTooltip(limit: number): BuildingTooltipEffect {
   );
 }
 
+const WATCHTOWER_STATS_BY_LEVEL: Record<
+  number,
+  { defense: number; attack: number; integrity: number }
+> = {
+  1: { defense: 2, attack: 5, integrity: 20 },
+  2: { defense: 5, attack: 10, integrity: 30 },
+  3: { defense: 10, attack: 15, integrity: 40 },
+  4: { defense: 15, attack: 25, integrity: 60 },
+};
+
+const PALISADES_STATS_BY_LEVEL: Record<
+  number,
+  { defense: number; integrity: number }
+> = {
+  1: { defense: 5, integrity: 15 },
+  2: { defense: 10, integrity: 30 },
+  3: { defense: 15, integrity: 45 },
+  4: { defense: 20, integrity: 60 },
+};
+
+export function getWatchtowerTooltipEffectsForLevel(
+  level: number,
+): BuildingTooltipEffect[] {
+  const stats =
+    WATCHTOWER_STATS_BY_LEVEL[level] ?? WATCHTOWER_STATS_BY_LEVEL[4];
+  return [
+    bt("defenseBonus", "+{{amount}} Defense", { amount: stats.defense }),
+    bt("attackBonus", "+{{amount}} Attack", { amount: stats.attack }),
+    bt("integrityBonus", "+{{amount}} Integrity", { amount: stats.integrity }),
+  ];
+}
+
+export function getPalisadesTooltipEffectsForLevel(
+  level: number,
+): BuildingTooltipEffect[] {
+  const stats =
+    PALISADES_STATS_BY_LEVEL[level] ?? PALISADES_STATS_BY_LEVEL[4];
+  return [
+    bt("defenseBonus", "+{{amount}} Defense", { amount: stats.defense }),
+    bt("integrityBonus", "+{{amount}} Integrity", { amount: stats.integrity }),
+  ];
+}
+
 /**
  * Stranger-approach bonus per completed building level, by `GameState.buildings` key.
  * effectsCalculation applies `count * bonus`; tooltips must use these same values.
@@ -544,24 +587,10 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildWatchtower",
     label: "Watchtower",
     description: "Tall tower providing early warning of threats",
-    tooltipEffects: (state: GameState) => {
-      const nextLevel = (state.buildings.watchtower || 0) + 1;
-      const statsByLevel: Record<
-        number,
-        { defense: number; attack: number; integrity: number }
-      > = {
-        1: { defense: 2, attack: 5, integrity: 20 },
-        2: { defense: 5, attack: 10, integrity: 30 },
-        3: { defense: 10, attack: 15, integrity: 40 },
-        4: { defense: 15, attack: 25, integrity: 60 },
-      };
-      const stats = statsByLevel[nextLevel] ?? statsByLevel[4];
-      return [
-        bt("defenseBonus", "+{{amount}} Defense", { amount: stats.defense }),
-        bt("attackBonus", "+{{amount}} Attack", { amount: stats.attack }),
-        bt("integrityBonus", "+{{amount}} Integrity", { amount: stats.integrity }),
-      ];
-    },
+    tooltipEffects: (state: GameState) =>
+      getWatchtowerTooltipEffectsForLevel(
+        (state.buildings.watchtower || 0) + 1,
+      ),
     building: true,
     show_when: {
       1: {
@@ -627,21 +656,8 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildPalisades",
     label: "Palisades",
     description: "Defensive walls protecting the settlement",
-    tooltipEffects: (state: GameState) => {
-      const nextLevel = (state.buildings.palisades || 0) + 1;
-      const statsByLevel: Record<number, { defense: number; integrity: number }> =
-      {
-        1: { defense: 5, integrity: 15 },
-        2: { defense: 10, integrity: 30 },
-        3: { defense: 15, integrity: 45 },
-        4: { defense: 20, integrity: 60 },
-      };
-      const stats = statsByLevel[nextLevel] ?? statsByLevel[4];
-      return [
-        bt("defenseBonus", "+{{amount}} Defense", { amount: stats.defense }),
-        bt("integrityBonus", "+{{amount}} Integrity", { amount: stats.integrity }),
-      ];
-    },
+    tooltipEffects: (state: GameState) =>
+      getPalisadesTooltipEffectsForLevel((state.buildings.palisades || 0) + 1),
     building: true,
     show_when: {
       1: {

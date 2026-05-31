@@ -5,7 +5,7 @@ import {
   toolEffects,
 } from "@/game/rules/effects";
 import { madnessTooltip } from "@/game/rules/tooltips";
-import { renderItemTooltip } from "@/game/rules/itemTooltips";
+import { renderFortificationTooltip, renderItemTooltip } from "@/game/rules/itemTooltips";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import ResourceChangeNotification from "./ResourceChangeNotification";
 import { useGameStore } from "@/game/state";
@@ -652,6 +652,41 @@ export default function SidePanelSection({
         >
           <TooltipWrapper
             tooltip={renderItemTooltip(item.id, itemType)}
+            tooltipId={item.id}
+            disabled
+            tooltipContentClassName="max-w-xs"
+            onMouseEnter={() => handleTooltipHover(item.id)}
+            onMouseLeave={() => handleTooltipLeave(item.id)}
+            className={sidePanelTooltipTriggerClass}
+          >
+            {labelContent}
+          </TooltipWrapper>
+        </div>
+      );
+    }
+
+    // If this item is a fortification, use renderFortificationTooltip
+    if (sectionId === "fortifications") {
+      return (
+        <div
+          key={item.id}
+          data-testid={item.testId}
+          className={`flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""
+            }`}
+        >
+          <TooltipWrapper
+            tooltip={renderFortificationTooltip(
+              item.id,
+              typeof item.label === "string"
+                ? item.label.replace(/ ↓$/, "")
+                : undefined,
+            )}
             tooltipId={item.id}
             disabled
             tooltipContentClassName="max-w-xs"

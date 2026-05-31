@@ -17,7 +17,11 @@ import {
   getBuildingHierarchyChain,
   getBuildingHierarchyTooltipLevel,
 } from "../buildingHierarchy";
-import { villageBuildActions } from "./villageBuildActions";
+import {
+  villageBuildActions,
+  getPalisadesTooltipEffectsForLevel,
+  getWatchtowerTooltipEffectsForLevel,
+} from "./villageBuildActions";
 import type { Action } from "@shared/schema";
 import { capitalizeWords } from "@/lib/utils";
 import {
@@ -119,39 +123,84 @@ function getBuildingTooltipEffectLines(
   return effectsList;
 }
 
+function getChainMemberEffectGroups(
+  buildingKey: string,
+  gameState: GameState,
+  isDamaged: boolean,
+): string[][] {
+  if (buildingKey === "watchtower") {
+    return [1, 2, 3, 4].map((level) =>
+      getWatchtowerTooltipEffectsForLevel(level).map((effect) =>
+        resolveBuildingTooltipEffect(effect),
+      ),
+    );
+  }
+
+  if (buildingKey === "palisades") {
+    return [1, 2, 3, 4].map((level) =>
+      getPalisadesTooltipEffectsForLevel(level).map((effect) =>
+        resolveBuildingTooltipEffect(effect),
+      ),
+    );
+  }
+
+  const buildAction = villageBuildActions[buildingKeyToActionId(buildingKey)];
+  if (!buildAction) return [];
+
+  const effects = getBuildingTooltipEffectLines(
+    buildAction,
+    gameState,
+    isDamaged,
+  );
+  return effects.length > 0 ? [effects] : [];
+}
+
 function renderUpgradeChainTooltipEffects(
   chain: string[],
   gameState: GameState,
   itemId: string,
   isDamaged: boolean,
 ): React.ReactNode | null {
-  const levelSections = chain
-    .map((buildingKey, index) => {
-      const buildAction = villageBuildActions[buildingKeyToActionId(buildingKey)];
-      if (!buildAction) return null;
+  type EffectSection = {
+    chainLevel: number;
+    showChainHeader: boolean;
+    effects: string[];
+  };
 
-      const tierDamaged = isDamaged && buildingKey === itemId;
-      const effects = getBuildingTooltipEffectLines(
-        buildAction,
-        gameState,
-        tierDamaged,
-      );
-      if (effects.length === 0) return null;
+  const sections: EffectSection[] = [];
 
-      return { level: index + 1, effects };
-    })
-    .filter((section) => section !== null);
+  chain.forEach((buildingKey, chainIndex) => {
+    const tierDamaged = isDamaged && buildingKey === itemId;
+    const groups = getChainMemberEffectGroups(
+      buildingKey,
+      gameState,
+      tierDamaged,
+    );
 
-  if (levelSections.length === 0) return null;
+    groups.forEach((effects, groupIndex) => {
+      if (effects.length === 0) return;
+      sections.push({
+        chainLevel: chainIndex + 1,
+        showChainHeader: groupIndex === 0,
+        effects,
+      });
+    });
+  });
+
+  if (sections.length === 0) return null;
 
   return (
     <div key="effects" className="mt-1">
-      {levelSections.map((section, idx) => (
-        <div key={section.level}>
+      {sections.map((section, idx) => (
+        <div key={`${section.chainLevel}-${idx}`}>
           {idx > 0 && <div className="border-t border-border my-1" />}
-          <div className="text-gray-300">
-            {getUiTooltip("level", "Level {{level}}", { level: section.level })}
-          </div>
+          {section.showChainHeader && (
+            <div className="text-gray-300">
+              {getUiTooltip("level", "Level {{level}}", {
+                level: section.chainLevel,
+              })}
+            </div>
+          )}
           {section.effects.map((effect, effectIdx) => (
             <div key={effectIdx}>{effect}</div>
           ))}
@@ -161,6 +210,103 @@ function renderUpgradeChainTooltipEffects(
   );
 }
 
+function renderBuildingItemTooltip(
+  itemId: string,
+  displayLabel?: string,
+): React.ReactNode | null {
+  const gameState = useGameStore.getState();
+  const story = gameState.story;
+
+  const actionId = buildingKeyToActionId(itemId);
+  const buildAction = villageBuildActions[actionId];
+
+  if (!buildAction) return null;
+
+  const isDamaged =
+    (itemId === "bastion" && story?.seen?.bastionDamaged) ||
+    (itemId === "watchtower" && story?.seen?.watchtowerDamaged) ||
+    (itemId === "palisades" && story?.seen?.palisadesDamaged);
+
+  const tooltipParts: React.ReactNode[] = [];
+
+  const buildDescription = getActionDescription(
+    actionId,
+    buildAction.description,
+  );
+  if (buildDescription) {
+    tooltipParts.push(
+      <div key="description" className="text-gray-400 mb-0.5">
+        {buildDescription}
+      </div>,
+    );
+  }
+
+  const hierarchyChain = getBuildingHierarchyChain(itemId);
+
+  if (hierarchyChain) {
+    const chainEffects = renderUpgradeChainTooltipEffects(
+      hierarchyChain,
+      gameState,
+      itemId,
+      isDamaged,
+    );
+    if (chainEffects) {
+      tooltipParts.push(chainEffects);
+    }
+  } else {
+    const effectsList = getBuildingTooltipEffectLines(
+      buildAction,
+      gameState,
+      isDamaged,
+    );
+
+    if (effectsList.length > 0) {
+      tooltipParts.push(
+        <div key="effects" className="mt-1">
+          {effectsList.map((effect, idx) => (
+            <div key={idx}>{effect}</div>
+          ))}
+        </div>,
+      );
+    }
+  }
+
+  const hierarchyLevel = getBuildingHierarchyTooltipLevel(itemId);
+  const titleLabel =
+    displayLabel ?? getActionLabel(actionId, buildAction.label);
+
+  return (
+    <div className="text-xs">
+      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
+        <span>
+          <span className="font-bold">{titleLabel}</span>
+          {isDamaged && (
+            <span className="font-normal text-muted-foreground">
+              {" "}
+              {getUiTooltip("damaged", "(damaged)")}
+            </span>
+          )}
+        </span>
+        {hierarchyLevel != null && (
+          <span className="font-normal text-gray-400">
+            {getUiTooltip("level", "Level {{level}}", {
+              level: hierarchyLevel,
+            })}
+          </span>
+        )}
+      </div>
+      {tooltipParts}
+    </div>
+  );
+}
+
+export function renderFortificationTooltip(
+  itemId: string,
+  displayLabel?: string,
+): React.ReactNode | null {
+  return renderBuildingItemTooltip(itemId, displayLabel);
+}
+
 export function renderItemTooltip(
   itemId: string,
   itemType: "weapon" | "tool" | "blessing" | "book" | "building" | "fellowship",
@@ -168,95 +314,7 @@ export function renderItemTooltip(
 ) {
   // For buildings, generate the tooltip from villageBuildActions
   if (itemType === "building") {
-    const gameState = useGameStore.getState();
-    const story = gameState.story;
-
-    // Get the action definition
-    const actionId = `build${itemId.charAt(0).toUpperCase() + itemId.slice(1)}`;
-    const buildAction = villageBuildActions[actionId];
-
-    if (!buildAction) return null;
-
-    // Check if this building is damaged
-    const isDamaged =
-      (itemId === "bastion" && story?.seen?.bastionDamaged) ||
-      (itemId === "watchtower" && story?.seen?.watchtowerDamaged) ||
-      (itemId === "palisades" && story?.seen?.palisadesDamaged);
-
-    const tooltipParts: React.ReactNode[] = [];
-
-    // Add description if available
-    const buildDescription = getActionDescription(
-      actionId,
-      buildAction.description,
-    );
-    if (buildDescription) {
-      tooltipParts.push(
-        <div key="description" className="text-gray-400 mb-0.5">
-          {buildDescription}
-        </div>
-      );
-    }
-
-    const hierarchyChain = getBuildingHierarchyChain(itemId);
-
-    if (hierarchyChain) {
-      const chainEffects = renderUpgradeChainTooltipEffects(
-        hierarchyChain,
-        gameState,
-        itemId,
-        isDamaged,
-      );
-      if (chainEffects) {
-        tooltipParts.push(chainEffects);
-      }
-    } else {
-      const effectsList = getBuildingTooltipEffectLines(
-        buildAction,
-        gameState,
-        isDamaged,
-      );
-
-      if (effectsList.length > 0) {
-        tooltipParts.push(
-          <div key="effects" className="mt-1">
-            {effectsList.map((effect, idx) => (
-              <div key={idx}>{effect}</div>
-            ))}
-          </div>,
-        );
-      }
-    }
-
-    // Side panel Buildings: always show title row (name + optional chain tier); body may be empty.
-    const hierarchyLevel = hierarchyChain
-      ? null
-      : getBuildingHierarchyTooltipLevel(itemId);
-    return (
-      <div className="text-xs">
-        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
-          <span>
-            <span className="font-bold">
-              {getActionLabel(actionId, buildAction.label)}
-            </span>
-            {isDamaged && (
-              <span className="font-normal text-muted-foreground">
-                {" "}
-                {getUiTooltip("damaged", "(damaged)")}
-              </span>
-            )}
-          </span>
-          {hierarchyLevel != null && (
-            <span className="font-normal text-gray-400">
-              {getUiTooltip("level", "Level {{level}}", {
-                level: hierarchyLevel,
-              })}
-            </span>
-          )}
-        </div>
-        {tooltipParts}
-      </div>
-    );
+    return renderBuildingItemTooltip(itemId);
   }
 
   // Side panel Combat Items (+ combat dialog): bombs, Veinfire Elixir — merged combat line + weapon effect name/description

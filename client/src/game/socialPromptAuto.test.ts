@@ -6,8 +6,8 @@ import {
   SOCIAL_PROMPT_REFERRAL_CAP,
   socialPromptHighestMilestoneIndexToOpen,
   socialPromptMilestoneFloorFromPlayTime,
-} from "@/game/socialPromptAuto";
-import { PLAYLIGHT_DISCOVER_REWARD_KEY } from "@/game/playlightDiscoverReward";
+} from "./socialPromptAuto";
+import { PLAYLIGHT_DISCOVER_REWARD_KEY } from "./playlightDiscoverReward";
 
 const MIN = 60 * 1000;
 
