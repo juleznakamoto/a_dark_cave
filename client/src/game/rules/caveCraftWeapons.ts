@@ -449,13 +449,12 @@ export function handleCraftFrostglassSword(
     frostglass: false,
   };
 
-  result.logEntries!.push({
-    id: `frostglass-sword-forged-${Date.now()}`,
-    message:
-      "The blacksmith's forge burns with ethereal blue flames as the frostglass is shaped into a magnificent sword. The blade gleams with an otherworldly cold light, radiating immense power.",
-    timestamp: Date.now(),
-    type: "system",
-  });
+  pushSystemLog(
+    result,
+    "frostglass-sword-forged",
+    "crafting.frostglassSword",
+    "The blacksmith's forge burns with ethereal blue flames as the frostglass is shaped into a magnificent sword. The blade gleams with an otherworldly cold light, radiating immense power.",
+  );
 
   return result;
 }
@@ -467,13 +466,12 @@ export function handleCraftArbalest(
   const effectUpdates = applyActionEffects("craftArbalest", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-  result.logEntries!.push({
-    id: `arbalest-crafted-${Date.now()}`,
-    message:
-      "Following the schematic, you craft a meticulously decorated arbalest. Its engineering is flawless, designed by a master craftsman.",
-    timestamp: Date.now(),
-    type: "system",
-  });
+  pushSystemLog(
+    result,
+    "arbalest-crafted",
+    "crafting.arbalest",
+    "Following the schematic, you craft a meticulously decorated arbalest. Its engineering is flawless, designed by a master craftsman.",
+  );
 
   return result;
 }
@@ -485,13 +483,12 @@ export function handleCraftNightshadeBow(
   const effectUpdates = applyActionEffects("craftNightshadeBow", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-  result.logEntries!.push({
-    id: `nightshade-bow-crafted-${Date.now()}`,
-    message:
-      "You craft a bow from dark wood. Its arrows will carry poison into your enemies.",
-    timestamp: Date.now(),
-    type: "system",
-  });
+  pushSystemLog(
+    result,
+    "nightshade-bow-crafted",
+    "crafting.nightshadeBow",
+    "You craft a bow from dark wood. Its arrows will carry poison into your enemies.",
+  );
 
   return result;
 }
@@ -510,13 +507,12 @@ export function handleCraftBloodstoneStaff(
     bloodstone: false,
   };
 
-  result.logEntries!.push({
-    id: `bloodstone-staff-crafted-${Date.now()}`,
-    message:
-      "The wizard channels his arcane power into the bloodstone gems, fusing them with ancient wood. The Bloodstone Staff pulses with crimson energy, radiating strength and forbidden knowledge.",
-    timestamp: Date.now(),
-    type: "system",
-  });
+  pushSystemLog(
+    result,
+    "bloodstone-staff-crafted",
+    "crafting.bloodstoneStaff",
+    "The wizard channels his arcane power into the bloodstone gems, fusing them with ancient wood. The Bloodstone Staff pulses with crimson energy, radiating strength and forbidden knowledge.",
+  );
 
   return result;
 }
@@ -528,13 +524,12 @@ export function handleCraftStormglassHalberd(
   const effectUpdates = applyActionEffects("craftStormglassHalberd", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-  result.logEntries!.push({
-    id: `stormglass-halberd-crafted-${Date.now()}`,
-    message:
-      "You forge the Stormglass Halberd, its blade gleaming with an ethereal light. You feel significantly stronger wielding this legendary weapon.",
-    timestamp: Date.now(),
-    type: "system",
-  });
+  pushSystemLog(
+    result,
+    "stormglass-halberd-crafted",
+    "crafting.stormglassHalberd",
+    "You forge the Stormglass Halberd, its blade gleaming with an ethereal light. You feel significantly stronger wielding this legendary weapon.",
+  );
 
   return result;
 }
@@ -546,13 +541,12 @@ export function handleCraftAshenGreatshield(
   const effectUpdates = applyActionEffects("craftAshenGreatshield", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-  result.logEntries!.push({
-    id: `ashen-greatshield-crafted-${Date.now()}`,
-    message:
-      "The blacksmith forges the massive bones of the lake creature into an impenetrable shield. The Ashen Greatshield is a bulwark of unmatched strength, capable of protecting your forces from even the deadliest threats.",
-    timestamp: Date.now(),
-    type: "system",
-  });
+  pushSystemLog(
+    result,
+    "ashen-greatshield-crafted",
+    "crafting.ashenGreatshield",
+    "The blacksmith forges the massive bones of the lake creature into an impenetrable shield. The Ashen Greatshield is a bulwark of unmatched strength, capable of protecting your forces from even the deadliest threats.",
+  );
 
   return result;
 }

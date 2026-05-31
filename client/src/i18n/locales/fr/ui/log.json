@@ -68,7 +68,24 @@
     },
     "gameplay": {
       "forestUnlocked": "Le village est encerclé par une forêt dense et sombre. Le danger flotte dans l'air, même si c'est aussi un bon endroit pour couper du bois et chasser.",
+      "villageUnlocked": "À l'extérieur de la grotte, une clairière s'ouvre. Cela semble être un bon endroit pour construire un abri.",
       "villageBegins": "Un petit village commence à prendre forme. Les villageois ont besoin de nourriture et de bois pour survivre."
+    },
+    "crafting": {
+      "emberBombFirst": "Les connaissances de l'alchimiste s'avèrent inestimables. Vous fabriquez une puissante bombe de braise, dont le cœur brille d'une chaleur intense et d'un potentiel destructeur.",
+      "ashfireBombFirst": "À l'aide de la poussière de feu de cendre mystique, vous fabriquez une bombe extraordinaire qui pulse d'un feu d'un autre monde. Ses flammes brûlent de couleurs qui n'appartiennent pas à ce royaume.",
+      "voidBombFirst": "En combinant la poussière de feu de cendre avec de l'obsidienne et de la poudre noire, vous créez une arme d'une puissance terrifiante. La bombe du vide semble déformer l'espace autour d'elle, la réalité elle-même reculant devant sa présence.",
+      "veinfireElixirFirst": "L'alchimiste distille une essence lumineuse des fibres de veineracine. Vous tenez désormais un élixir de veinefeu — une potion dont on dit qu'elle renforce le bastion quand tout semble perdu.",
+      "frostglassSword": "La forge du forgeron brûle de flammes bleues éthérées tandis que le verre de givre est façonné en une magnifique épée. La lame brille d'une lumière froide d'un autre monde, irradiant une puissance immense.",
+      "arbalest": "En suivant le schéma, vous fabriquez une arbalète méticuleusement décorée. Son ingénierie est impeccable, conçue par un maître artisan.",
+      "nightshadeBow": "Vous fabriquez un arc en bois sombre. Ses flèches porteront le poison jusqu'à vos ennemis.",
+      "bloodstoneStaff": "Le sorcier canalise son pouvoir arcanique dans les gemmes de pierre de sang, les fusionnant avec du bois ancien. Le bâton de pierre de sang pulse d'énergie cramoisie, irradiant force et savoir interdit.",
+      "stormglassHalberd": "Vous forgez la hallebarde de verre d'orage, dont la lame brille d'une lumière éthérée. Vous vous sentez nettement plus fort en maniant cette arme légendaire.",
+      "ashenGreatshield": "Le forgeron forge les os massifs de la créature du lac en un bouclier impénétrable. Le grand bouclier de cendre est un rempart d'une force inégalée, capable de protéger vos forces des menaces les plus mortelles."
+    },
+    "sacrifice": {
+      "ringOfClarity": "Parmi les offrandes du sacrifice, vous découvrez un anneau d'une clarté cristalline.",
+      "moonBracelet": "Parmi les offrandes du sacrifice, vous découvrez un bracelet de pierre blanche."
     },
     "gambler": {
       "win": "Vous avez gagné {{amount}} or au joueur obsédé.",

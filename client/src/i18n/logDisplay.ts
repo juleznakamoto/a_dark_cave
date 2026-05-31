@@ -119,6 +119,15 @@ function buildExactLegacySystemLogMap(): Record<string, string> {
       map[value] = `gameplay.${key}`;
     }
   }
+  for (const section of ["crafting", "sacrifice"] as const) {
+    const entries = enLog.log[section];
+    if (!entries) continue;
+    for (const [key, value] of Object.entries(entries)) {
+      if (typeof value === "string") {
+        map[value] = `${section}.${key}`;
+      }
+    }
+  }
   // Older saves may contain a typo with a double space before "resources".
   map[
     "A clerks hut is erected, its occupant ready to track the flow of  resources with meticulous care."

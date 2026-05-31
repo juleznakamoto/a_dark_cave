@@ -2,6 +2,7 @@ import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 import { getUpgradeBonusMultiplier } from "@/game/buttonUpgrades";
 import { applyActionEffects } from "./actionEffects";
+import { pushSystemLog } from "./systemLog";
 
 const BONE_TOTEM_BASE_COST = 100;
 const BONE_TOTEM_BASE_AMOUNT = 1;
@@ -169,12 +170,12 @@ export function handleCraftEmberBomb(state: GameState, result: ActionResult): Ac
 
   // Only show message on first craft
   if (!state.story.seen.hasEmberBomb) {
-    result.logEntries!.push({
-      id: `ember-bomb-crafted-${Date.now()}`,
-      message: "The alchemist's knowledge proves invaluable. You craft a powerful ember bomb, its core glowing with intense heat and destructive potential.",
-      timestamp: Date.now(),
-      type: 'system',
-    });
+    pushSystemLog(
+      result,
+      "ember-bomb-crafted",
+      "crafting.emberBombFirst",
+      "The alchemist's knowledge proves invaluable. You craft a powerful ember bomb, its core glowing with intense heat and destructive potential.",
+    );
   }
 
   return result;
@@ -186,12 +187,12 @@ export function handleCraftAshfireBomb(state: GameState, result: ActionResult): 
 
   // Only show message on first craft
   if (!state.story.seen.hasAshfireBomb) {
-    result.logEntries!.push({
-      id: `ashfire-bomb-crafted-${Date.now()}`,
-      message: "Using the mystical ashfire dust, you craft an extraordinary bomb that pulses with otherworldly fire. Its flames burn with colors not of this realm.",
-      timestamp: Date.now(),
-      type: 'system',
-    });
+    pushSystemLog(
+      result,
+      "ashfire-bomb-crafted",
+      "crafting.ashfireBombFirst",
+      "Using the mystical ashfire dust, you craft an extraordinary bomb that pulses with otherworldly fire. Its flames burn with colors not of this realm.",
+    );
   }
 
   return result;
@@ -203,12 +204,12 @@ export function handleCraftVoidBomb(state: GameState, result: ActionResult): Act
 
   // Only show message on first craft
   if (!state.story.seen.hasVoidBomb) {
-    result.logEntries!.push({
-      id: `void-bomb-crafted-${Date.now()}`,
-      message: "Combining ashfire dust with obsidian and black powder, you create a weapon of terrifying power. The void bomb seems to distort space around it, reality itself recoiling from its presence.",
-      timestamp: Date.now(),
-      type: 'system',
-    });
+    pushSystemLog(
+      result,
+      "void-bomb-crafted",
+      "crafting.voidBombFirst",
+      "Combining ashfire dust with obsidian and black powder, you create a weapon of terrifying power. The void bomb seems to distort space around it, reality itself recoiling from its presence.",
+    );
   }
 
   return result;
@@ -222,13 +223,12 @@ export function handleCraftVeinfireElixir(
   Object.assign(result.stateUpdates, effectUpdates);
 
   if ((Number(state.story?.seen?.veinfireElixirsCrafted) || 0) === 0) {
-    result.logEntries!.push({
-      id: `veinfire-elixir-crafted-${Date.now()}`,
-      message:
-        "The alchemist distills glowing essence from veinroot fibers. You now hold a Veinfire Elixir — a potion rumored to bolster the bastion when all seems lost.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      result,
+      "veinfire-elixir-crafted",
+      "crafting.veinfireElixirFirst",
+      "The alchemist distills glowing essence from veinroot fibers. You now hold a Veinfire Elixir — a potion rumored to bolster the bastion when all seems lost.",
+    );
   }
 
   return result;

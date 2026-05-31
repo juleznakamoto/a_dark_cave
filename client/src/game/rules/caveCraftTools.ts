@@ -2,6 +2,7 @@ import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
 import { getUpgradeBonusMultiplier } from "@/game/buttonUpgrades";
 import { applyActionEffects } from "./actionEffects";
+import { pushSystemLog } from "./systemLog";
 import { OBSIDIAN_ORB_FOCUS_INTERVAL_MS } from "@/game/obsidianOrb";
 
 const CRAFT_TORCHES_BASE_COST = 10;
@@ -633,13 +634,12 @@ export function handleCraftStoneAxe(
 
   // Add village unlocked message when stone axe is crafted
   if (!state.flags.villageUnlocked) {
-    result.logEntries!.push({
-      id: `village-unlocked-${Date.now()}`,
-      message:
-        "Outside the cave a clearing opens. This looks like a good place to build a shelter.",
-      timestamp: Date.now(),
-      type: "system",
-    });
+    pushSystemLog(
+      result,
+      "village-unlocked",
+      "gameplay.villageUnlocked",
+      "Outside the cave a clearing opens. This looks like a good place to build a shelter.",
+    );
   }
 
   return result;

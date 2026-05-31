@@ -68,7 +68,24 @@
     },
     "gameplay": {
       "forestUnlocked": "The village is encircled by a dense, dark forest. Danger lingers in the air, though it may also be a good place to chop wood and hunt.",
+      "villageUnlocked": "Outside the cave a clearing opens. This looks like a good place to build a shelter.",
       "villageBegins": "A small village begins to take shape. Villagers need food and wood to survive."
+    },
+    "crafting": {
+      "emberBombFirst": "The alchemist's knowledge proves invaluable. You craft a powerful ember bomb, its core glowing with intense heat and destructive potential.",
+      "ashfireBombFirst": "Using the mystical ashfire dust, you craft an extraordinary bomb that pulses with otherworldly fire. Its flames burn with colors not of this realm.",
+      "voidBombFirst": "Combining ashfire dust with obsidian and black powder, you create a weapon of terrifying power. The void bomb seems to distort space around it, reality itself recoiling from its presence.",
+      "veinfireElixirFirst": "The alchemist distills glowing essence from veinroot fibers. You now hold a Veinfire Elixir — a potion rumored to bolster the bastion when all seems lost.",
+      "frostglassSword": "The blacksmith's forge burns with ethereal blue flames as the frostglass is shaped into a magnificent sword. The blade gleams with an otherworldly cold light, radiating immense power.",
+      "arbalest": "Following the schematic, you craft a meticulously decorated arbalest. Its engineering is flawless, designed by a master craftsman.",
+      "nightshadeBow": "You craft a bow from dark wood. Its arrows will carry poison into your enemies.",
+      "bloodstoneStaff": "The wizard channels his arcane power into the bloodstone gems, fusing them with ancient wood. The Bloodstone Staff pulses with crimson energy, radiating strength and forbidden knowledge.",
+      "stormglassHalberd": "You forge the Stormglass Halberd, its blade gleaming with an ethereal light. You feel significantly stronger wielding this legendary weapon.",
+      "ashenGreatshield": "The blacksmith forges the massive bones of the lake creature into an impenetrable shield. The Ashen Greatshield is a bulwark of unmatched strength, capable of protecting your forces from even the deadliest threats."
+    },
+    "sacrifice": {
+      "ringOfClarity": "Among the sacrifice offerings, you discover a crystal-clear ring.",
+      "moonBracelet": "Among the sacrifice offerings, you discover a white stone bracelet."
     },
     "gambler": {
       "win": "You won {{amount}} gold from the obsessed gambler.",

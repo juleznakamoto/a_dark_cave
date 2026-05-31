@@ -68,7 +68,24 @@
     },
     "gameplay": {
       "forestUnlocked": "La aldea está rodeada por un bosque denso y oscuro. El peligro flota en el aire, aunque también puede ser un buen lugar para cortar madera y cazar.",
+      "villageUnlocked": "Fuera de la cueva se abre un claro. Parece un buen lugar para construir un refugio.",
       "villageBegins": "Una pequeña aldea empieza a tomar forma. Los aldeanos necesitan comida y madera para sobrevivir."
+    },
+    "crafting": {
+      "emberBombFirst": "El conocimiento del alquimista resulta invaluable. Fabricas una poderosa bomba de brasa, cuyo núcleo brilla con calor intenso y potencial destructivo.",
+      "ashfireBombFirst": "Usando el polvo místico de fuego de ceniza, fabricas una bomba extraordinaria que pulsa con fuego de otro mundo. Sus llamas arden con colores que no pertenecen a este reino.",
+      "voidBombFirst": "Combinando polvo de fuego de ceniza con obsidiana y pólvora negra, creas un arma de aterradora potencia. La bomba del vacío parece distorsionar el espacio a su alrededor; la realidad misma retrocede ante su presencia.",
+      "veinfireElixirFirst": "El alquimista destila esencia luminosa de fibras de raíz vena. Ahora tienes un elixir de fuego venoso — una poción de la que se rumorea que refuerza el bastión cuando todo parece perdido.",
+      "frostglassSword": "La forja del herrero arde con llamas azules etéreas mientras el vidrio de escarcha se moldea en una magnífica espada. La hoja brilla con una luz fría de otro mundo, irradiando un inmenso poder.",
+      "arbalest": "Siguiendo el esquema, fabricas una ballesta meticulosamente decorada. Su ingeniería es impecable, diseñada por un maestro artesano.",
+      "nightshadeBow": "Fabricas un arco de madera oscura. Sus flechas llevarán veneno a tus enemigos.",
+      "bloodstoneStaff": "El mago canaliza su poder arcano hacia las gemas de piedra de sangre, fusionándolas con madera antigua. El bastón de piedra de sangre pulsa con energía carmesí, irradiando fuerza y conocimiento prohibido.",
+      "stormglassHalberd": "Forjas la alabarda de vidrio de tormenta, cuya hoja brilla con una luz etérea. Te sientes significativamente más fuerte empuñando esta arma legendaria.",
+      "ashenGreatshield": "El herrero forja los huesos masivos de la criatura del lago en un escudo impenetrable. El gran escudo cenizo es un baluarte de fuerza inigualable, capaz de proteger a tus fuerzas de las amenazas más mortales."
+    },
+    "sacrifice": {
+      "ringOfClarity": "Entre las ofrendas del sacrificio, descubres un anillo cristalino.",
+      "moonBracelet": "Entre las ofrendas del sacrificio, descubres una pulsera de piedra blanca."
     },
     "gambler": {
       "win": "Ganaste {{amount}} oro del jugador obsesionado.",

@@ -1,6 +1,7 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 import { applyActionEffects } from "./actionEffects";
+import { pushSystemLog } from "./systemLog";
 import { killVillagers } from "../stateHelpers";
 import { getVillagersInVillage } from "../population";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
@@ -141,6 +142,7 @@ function handleTotemSacrifice(
   discoveryConfig?: {
     itemKey: keyof GameState["clothing"];
     itemName: string;
+    logKey: string;
     discoveryMessage: string;
     baseProbability: number;
     bonusPerUse: number;
@@ -211,12 +213,12 @@ function handleTotemSacrifice(
       effectUpdates.clothing[discoveryConfig.itemKey] = true;
 
       // Add log entry for the discovery
-      result.logEntries!.push({
-        id: `${discoveryConfig.itemKey}-${Date.now()}`,
-        message: discoveryConfig.discoveryMessage,
-        timestamp: Date.now(),
-        type: "system",
-      });
+      pushSystemLog(
+        result,
+        String(discoveryConfig.itemKey),
+        discoveryConfig.logKey,
+        discoveryConfig.discoveryMessage,
+      );
     }
   }
 
@@ -239,6 +241,7 @@ export function handleBoneTotems(
     {
       itemKey: "ring_of_clarity",
       itemName: "Ring of Clarity",
+      logKey: "sacrifice.ringOfClarity",
       discoveryMessage:
         "Among the sacrifice offerings, you discover a crystal-clear ring.",
       baseProbability:
@@ -264,6 +267,7 @@ export function handleLeatherTotems(
     {
       itemKey: "moon_bracelet" as keyof GameState["clothing"],
       itemName: "Moon Bracelet",
+      logKey: "sacrifice.moonBracelet",
       discoveryMessage:
         "Among the sacrifice offerings, you discover a white stone bracelet.",
       baseProbability:
