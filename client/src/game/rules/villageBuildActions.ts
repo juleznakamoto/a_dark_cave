@@ -37,8 +37,8 @@ export function getWatchtowerTooltipEffectsForLevel(
   const stats =
     WATCHTOWER_STATS_BY_LEVEL[level] ?? WATCHTOWER_STATS_BY_LEVEL[4];
   return [
-    bt("defenseBonus", "+{{amount}} Defense", { amount: stats.defense }),
     bt("attackBonus", "+{{amount}} Attack", { amount: stats.attack }),
+    bt("defenseBonus", "+{{amount}} Defense", { amount: stats.defense }),
     bt("integrityBonus", "+{{amount}} Integrity", { amount: stats.integrity }),
   ];
 }

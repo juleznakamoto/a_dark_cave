@@ -242,15 +242,34 @@ type LeveledEffectSection = {
   effects: string[];
 };
 
+const FORT_STAT_EFFECT_ORDER = [
+  "attackBonus",
+  "defenseBonus",
+  "integrityBonus",
+] as const;
+
+function sortFortificationStatEffects(
+  effects: BuildingTooltipEffect[],
+): BuildingTooltipEffect[] {
+  return [...effects].sort((a, b) => {
+    const aIndex = FORT_STAT_EFFECT_ORDER.indexOf(
+      a.key as (typeof FORT_STAT_EFFECT_ORDER)[number],
+    );
+    const bIndex = FORT_STAT_EFFECT_ORDER.indexOf(
+      b.key as (typeof FORT_STAT_EFFECT_ORDER)[number],
+    );
+    return (aIndex === -1 ? 99 : aIndex) - (bIndex === -1 ? 99 : bIndex);
+  });
+}
+
 function applyFortificationDamageToEffectLines(
   effects: BuildingTooltipEffect[],
   isDamaged: boolean,
 ): string[] {
-  if (!isDamaged) {
-    return effects.map((effect) => resolveBuildingTooltipEffect(effect));
-  }
-  return effects.map((effect) => {
-    if (typeof effect === "string") return effect;
+  return sortFortificationStatEffects(effects).map((effect) => {
+    if (!isDamaged) {
+      return resolveBuildingTooltipEffect(effect);
+    }
     const amount = effect.options?.amount;
     if (typeof amount === "number") {
       return resolveBuildingTooltipEffect({
@@ -266,51 +285,13 @@ function getFortificationLevelEffectLines(
   itemId: "watchtower" | "palisades",
   level: number,
   isDamaged: boolean,
-  marginal: boolean,
 ): string[] {
   const fullEffects =
     itemId === "watchtower"
       ? getWatchtowerTooltipEffectsForLevel(level)
       : getPalisadesTooltipEffectsForLevel(level);
 
-  if (!marginal || level <= 1) {
-    return applyFortificationDamageToEffectLines(fullEffects, isDamaged);
-  }
-
-  const prevEffects =
-    itemId === "watchtower"
-      ? getWatchtowerTooltipEffectsForLevel(level - 1)
-      : getPalisadesTooltipEffectsForLevel(level - 1);
-  const damageMult = isDamaged ? 0.5 : 1;
-  const lines: string[] = [];
-
-  fullEffects.forEach((effect, index) => {
-    if (typeof effect === "string") {
-      lines.push(effect);
-      return;
-    }
-    const prev = prevEffects[index];
-    const currAmount = effect.options?.amount;
-    const prevAmount =
-      typeof prev !== "string" ? prev?.options?.amount : undefined;
-    if (typeof currAmount === "number" && typeof prevAmount === "number") {
-      const diff =
-        Math.floor(currAmount * damageMult) -
-        Math.floor(prevAmount * damageMult);
-      if (diff !== 0) {
-        lines.push(
-          resolveBuildingTooltipEffect({
-            ...effect,
-            options: { ...effect.options, amount: diff },
-          }),
-        );
-      }
-      return;
-    }
-    lines.push(resolveBuildingTooltipEffect(effect));
-  });
-
-  return lines;
+  return applyFortificationDamageToEffectLines(fullEffects, isDamaged);
 }
 
 function getFortificationLevelEffectSections(
@@ -331,7 +312,6 @@ function getFortificationLevelEffectSections(
       itemId,
       level,
       isDamaged,
-      level > 1,
     );
     if (effects.length > 0) {
       sections.push({ level, effects });
