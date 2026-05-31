@@ -349,7 +349,7 @@ export default function ProfileMenu() {
         isDeleting={deleteAccountInProgress}
       />
       <div className="flex items-center justify-end gap-1">
-        <div className="flex items-center gap-0.5">
+        <div className="flex items-center -space-x-1">
           {cruelMode && (
             <TooltipWrapper
               tooltip={
@@ -359,7 +359,7 @@ export default function ProfileMenu() {
               }
               tooltipId="cruel-mode-indicator"
               disabled
-              className="p-0 w-7 h-7 shrink-0 cursor-pointer opacity-70 hover:opacity-100 transition-opacity flex items-center justify-center"
+              className="relative z-[1] p-0 h-7 shrink-0 cursor-pointer opacity-70 hover:opacity-100 transition-opacity flex items-center justify-center"
             >
               <span className="font-noto-symbols-2 text-red-600 text-[15px] leading-none font-bold select-none">
                 ⛤
@@ -370,7 +370,7 @@ export default function ProfileMenu() {
             <TooltipWrapper
               tooltip={<p className="text-xs">{t("profile.rewardsTasks")}</p>}
               tooltipId="exclusive-item-shortcut"
-              className="relative p-0 w-7 h-7 rounded-md bg-transparent flex items-center justify-center cursor-pointer hover:bg-muted/30 transition-colors shrink-0 border-0 shadow-none overflow-visible"
+              className="relative z-0 p-0 w-7 h-7 rounded-md bg-transparent flex items-center justify-center cursor-pointer hover:bg-muted/30 transition-colors shrink-0 border-0 shadow-none overflow-visible"
               onClick={() => setSocialPromptDialogOpen(true)}
             >
               <div className="relative flex h-full w-full items-center justify-center overflow-visible">
