@@ -16,10 +16,12 @@ import { tWithFallback } from "@/i18n/resolveGameText";
 import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
 
-const START_FOOTER_LINK =
-  "inline-flex items-center gap-0 sm:gap-1 hover:text-foreground transition-colors opacity-40 hover:opacity-100";
+const START_FOOTER_LINK_BASE =
+  "inline-flex items-center gap-0 sm:gap-1 hover:text-foreground transition-opacity";
+const START_FOOTER_SOCIAL_LINK =
+  `${START_FOOTER_LINK_BASE} opacity-70 hover:opacity-100`;
 const START_FOOTER_LEGAL_LINK =
-  `${START_FOOTER_LINK} text-[9px] sm:text-[10px]`;
+  `${START_FOOTER_LINK_BASE} opacity-40 hover:opacity-100 text-[9px] sm:text-[10px]`;
 const START_FOOTER_LANGUAGE_BTN =
   "inline-flex items-center gap-0 sm:gap-1 bg-transparent hover:bg-transparent hover:text-foreground transition-opacity opacity-70 hover:opacity-100 p-0 h-auto min-h-0 shadow-none";
 export default function StartScreen() {
@@ -301,7 +303,7 @@ export default function StartScreen() {
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer me"
-                className={START_FOOTER_LINK}
+                className={START_FOOTER_SOCIAL_LINK}
                 aria-label={linkLabel}
               >
                 {linkContent}
@@ -310,7 +312,7 @@ export default function StartScreen() {
               <a
                 key={platform}
                 href={href}
-                className={START_FOOTER_LINK}
+                className={START_FOOTER_SOCIAL_LINK}
                 aria-label={linkLabel}
               >
                 {linkContent}
