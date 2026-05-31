@@ -118,6 +118,8 @@ export function getBuildingHierarchyChain(
   buildingKey: string,
 ): string[] | null {
   if (BUILDING_TOOLTIP_LEVEL_EXCLUSIONS.has(buildingKey)) return null;
+  // Fortifications are parallel buildings, not a replacement upgrade chain.
+  if (BUILDING_HIERARCHIES.fortifications.includes(buildingKey)) return null;
   for (const hierarchy of Object.values(BUILDING_HIERARCHIES)) {
     if (hierarchy.includes(buildingKey)) return hierarchy;
   }

@@ -22,6 +22,11 @@ import {
   getPalisadesTooltipEffectsForLevel,
   getWatchtowerTooltipEffectsForLevel,
 } from "./villageBuildActions";
+import type { BuildingTooltipEffect } from "./buildingTooltipEffects";
+import {
+  getFortificationMarginalStats,
+  type FortificationBuildingKey,
+} from "@/game/bastionStats";
 import type { Action } from "@shared/schema";
 import { capitalizeWords } from "@/lib/utils";
 import {
@@ -123,36 +128,175 @@ function getBuildingTooltipEffectLines(
   return effectsList;
 }
 
-function getChainMemberEffectGroups(
-  buildingKey: string,
+type LeveledEffectSection = {
+  level: number;
+  effects: string[];
+};
+
+function applyFortificationDamageToEffectLines(
+  effects: BuildingTooltipEffect[],
+  isDamaged: boolean,
+): string[] {
+  if (!isDamaged) {
+    return effects.map((effect) => resolveBuildingTooltipEffect(effect));
+  }
+  return effects.map((effect) => {
+    if (typeof effect === "string") return effect;
+    const amount = effect.options?.amount;
+    if (typeof amount === "number") {
+      return resolveBuildingTooltipEffect({
+        ...effect,
+        options: { ...effect.options, amount: Math.floor(amount * 0.5) },
+      });
+    }
+    return resolveBuildingTooltipEffect(effect);
+  });
+}
+
+function getFortificationLevelEffectLines(
+  itemId: "watchtower" | "palisades",
+  level: number,
+  isDamaged: boolean,
+  marginal: boolean,
+): string[] {
+  const fullEffects =
+    itemId === "watchtower"
+      ? getWatchtowerTooltipEffectsForLevel(level)
+      : getPalisadesTooltipEffectsForLevel(level);
+
+  if (!marginal || level <= 1) {
+    return applyFortificationDamageToEffectLines(fullEffects, isDamaged);
+  }
+
+  const prevEffects =
+    itemId === "watchtower"
+      ? getWatchtowerTooltipEffectsForLevel(level - 1)
+      : getPalisadesTooltipEffectsForLevel(level - 1);
+  const damageMult = isDamaged ? 0.5 : 1;
+  const lines: string[] = [];
+
+  fullEffects.forEach((effect, index) => {
+    if (typeof effect === "string") {
+      lines.push(effect);
+      return;
+    }
+    const prev = prevEffects[index];
+    const currAmount = effect.options?.amount;
+    const prevAmount =
+      typeof prev !== "string" ? prev?.options?.amount : undefined;
+    if (typeof currAmount === "number" && typeof prevAmount === "number") {
+      const diff =
+        Math.floor(currAmount * damageMult) -
+        Math.floor(prevAmount * damageMult);
+      if (diff !== 0) {
+        lines.push(
+          resolveBuildingTooltipEffect({
+            ...effect,
+            options: { ...effect.options, amount: diff },
+          }),
+        );
+      }
+      return;
+    }
+    lines.push(resolveBuildingTooltipEffect(effect));
+  });
+
+  return lines;
+}
+
+function getFortificationLevelEffectSections(
+  itemId: FortificationBuildingKey,
+  currentLevel: number,
+  isDamaged: boolean,
+): LeveledEffectSection[] {
+  if (
+    currentLevel <= 1 ||
+    (itemId !== "watchtower" && itemId !== "palisades")
+  ) {
+    return [];
+  }
+
+  const sections: LeveledEffectSection[] = [];
+  for (let level = 1; level <= currentLevel; level++) {
+    const effects = getFortificationLevelEffectLines(
+      itemId,
+      level,
+      isDamaged,
+      level > 1,
+    );
+    if (effects.length > 0) {
+      sections.push({ level, effects });
+    }
+  }
+  return sections;
+}
+
+function renderLeveledEffectsBlock(
+  currentEffects: string[],
+  levelSections: LeveledEffectSection[],
+): React.ReactNode | null {
+  const hasCurrent = currentEffects.length > 0;
+  const visibleSections = levelSections.filter(
+    (section) => section.effects.length > 0,
+  );
+  if (!hasCurrent && visibleSections.length === 0) return null;
+
+  return (
+    <div key="effects" className="mt-1">
+      {hasCurrent &&
+        currentEffects.map((effect, idx) => (
+          <div key={`current-${idx}`}>{effect}</div>
+        ))}
+      {visibleSections.map((section, idx) => (
+        <div key={`level-${section.level}`}>
+          {(hasCurrent || idx > 0) && (
+            <div className="border-t border-border my-1" />
+          )}
+          <div className="text-gray-300">
+            {getUiTooltip("level", "Level {{level}}", {
+              level: section.level,
+            })}
+          </div>
+          {section.effects.map((effect, effectIdx) => (
+            <div key={effectIdx}>{effect}</div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function getUpgradeChainLevelEffectSections(
+  chain: string[],
+  itemId: string,
   gameState: GameState,
   isDamaged: boolean,
-): string[][] {
-  if (buildingKey === "watchtower") {
-    return [1, 2, 3, 4].map((level) =>
-      getWatchtowerTooltipEffectsForLevel(level).map((effect) =>
-        resolveBuildingTooltipEffect(effect),
-      ),
+): LeveledEffectSection[] {
+  const currentIndex = chain.indexOf(itemId);
+  if (currentIndex < 0) return [];
+
+  // Only show upgrade steps up to the tier the player owns (not future chain tiers).
+  const sections: LeveledEffectSection[] = [];
+  for (let index = 0; index <= currentIndex; index++) {
+    const buildingKey = chain[index];
+    const buildAction = villageBuildActions[buildingKeyToActionId(buildingKey)];
+    if (!buildAction) continue;
+
+    const tierDamaged = isDamaged && buildingKey === itemId;
+    const effects = getBuildingTooltipEffectLines(
+      buildAction,
+      gameState,
+      tierDamaged,
     );
+    if (effects.length > 0) {
+      sections.push({ level: index + 1, effects });
+    }
   }
 
-  if (buildingKey === "palisades") {
-    return [1, 2, 3, 4].map((level) =>
-      getPalisadesTooltipEffectsForLevel(level).map((effect) =>
-        resolveBuildingTooltipEffect(effect),
-      ),
-    );
-  }
+  // Tier-1 chain buildings: current block already shows their effects; skip duplicate Level 1 section.
+  if (sections.length <= 1) return [];
 
-  const buildAction = villageBuildActions[buildingKeyToActionId(buildingKey)];
-  if (!buildAction) return [];
-
-  const effects = getBuildingTooltipEffectLines(
-    buildAction,
-    gameState,
-    isDamaged,
-  );
-  return effects.length > 0 ? [effects] : [];
+  return sections;
 }
 
 function renderUpgradeChainTooltipEffects(
@@ -161,53 +305,69 @@ function renderUpgradeChainTooltipEffects(
   itemId: string,
   isDamaged: boolean,
 ): React.ReactNode | null {
-  type EffectSection = {
-    chainLevel: number;
-    showChainHeader: boolean;
-    effects: string[];
-  };
+  const buildAction = villageBuildActions[buildingKeyToActionId(itemId)];
+  if (!buildAction) return null;
 
-  const sections: EffectSection[] = [];
-
-  chain.forEach((buildingKey, chainIndex) => {
-    const tierDamaged = isDamaged && buildingKey === itemId;
-    const groups = getChainMemberEffectGroups(
-      buildingKey,
-      gameState,
-      tierDamaged,
-    );
-
-    groups.forEach((effects, groupIndex) => {
-      if (effects.length === 0) return;
-      sections.push({
-        chainLevel: chainIndex + 1,
-        showChainHeader: groupIndex === 0,
-        effects,
-      });
-    });
-  });
-
-  if (sections.length === 0) return null;
-
-  return (
-    <div key="effects" className="mt-1">
-      {sections.map((section, idx) => (
-        <div key={`${section.chainLevel}-${idx}`}>
-          {idx > 0 && <div className="border-t border-border my-1" />}
-          {section.showChainHeader && (
-            <div className="text-gray-300">
-              {getUiTooltip("level", "Level {{level}}", {
-                level: section.chainLevel,
-              })}
-            </div>
-          )}
-          {section.effects.map((effect, effectIdx) => (
-            <div key={effectIdx}>{effect}</div>
-          ))}
-        </div>
-      ))}
-    </div>
+  const currentEffects = getBuildingTooltipEffectLines(
+    buildAction,
+    gameState,
+    isDamaged,
   );
+  const levelSections = getUpgradeChainLevelEffectSections(
+    chain,
+    itemId,
+    gameState,
+    isDamaged,
+  );
+
+  return renderLeveledEffectsBlock(currentEffects, levelSections);
+}
+
+function getFortificationUpgradeLevel(
+  itemId: FortificationBuildingKey,
+  gameState: GameState,
+): number | null {
+  if (itemId === "watchtower") {
+    const level = gameState.buildings.watchtower ?? 0;
+    return level > 0 ? level : null;
+  }
+  if (itemId === "palisades") {
+    const level = gameState.buildings.palisades ?? 0;
+    return level > 0 ? level : null;
+  }
+  return null;
+}
+
+function getFortificationTooltipEffectLines(
+  itemId: FortificationBuildingKey,
+  gameState: GameState,
+): string[] {
+  const margin = getFortificationMarginalStats(gameState, itemId);
+  if (!margin) return [];
+
+  const lines: string[] = [];
+  if (margin.attack !== 0) {
+    lines.push(
+      getUiTooltip("attackBonus", "+{{amount}} Attack", {
+        amount: margin.attack,
+      }),
+    );
+  }
+  if (margin.defense !== 0) {
+    lines.push(
+      getUiTooltip("defenseBonus", "+{{amount}} Defense", {
+        amount: margin.defense,
+      }),
+    );
+  }
+  if (margin.integrity !== 0) {
+    lines.push(
+      getUiTooltip("integrityBonus", "+{{amount}} Integrity", {
+        amount: margin.integrity,
+      }),
+    );
+  }
+  return lines;
 }
 
 function renderBuildingItemTooltip(
@@ -259,15 +419,9 @@ function renderBuildingItemTooltip(
       gameState,
       isDamaged,
     );
-
-    if (effectsList.length > 0) {
-      tooltipParts.push(
-        <div key="effects" className="mt-1">
-          {effectsList.map((effect, idx) => (
-            <div key={idx}>{effect}</div>
-          ))}
-        </div>,
-      );
+    const effectsBlock = renderLeveledEffectsBlock(effectsList, []);
+    if (effectsBlock) {
+      tooltipParts.push(effectsBlock);
     }
   }
 
@@ -280,6 +434,14 @@ function renderBuildingItemTooltip(
       <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
         <span>
           <span className="font-bold">{titleLabel}</span>
+          {hierarchyLevel != null && (
+            <span className="font-normal text-gray-400">
+              {" "}
+              {getUiTooltip("level", "Level {{level}}", {
+                level: hierarchyLevel,
+              })}
+            </span>
+          )}
           {isDamaged && (
             <span className="font-normal text-muted-foreground">
               {" "}
@@ -287,13 +449,6 @@ function renderBuildingItemTooltip(
             </span>
           )}
         </span>
-        {hierarchyLevel != null && (
-          <span className="font-normal text-gray-400">
-            {getUiTooltip("level", "Level {{level}}", {
-              level: hierarchyLevel,
-            })}
-          </span>
-        )}
       </div>
       {tooltipParts}
     </div>
@@ -304,7 +459,65 @@ export function renderFortificationTooltip(
   itemId: string,
   displayLabel?: string,
 ): React.ReactNode | null {
-  return renderBuildingItemTooltip(itemId, displayLabel);
+  const gameState = useGameStore.getState();
+  const story = gameState.story;
+  const fortKey = itemId as FortificationBuildingKey;
+
+  const actionId = buildingKeyToActionId(itemId);
+  const buildAction = villageBuildActions[actionId];
+  if (!buildAction) return null;
+
+  const isDamaged = Boolean(
+    (itemId === "bastion" && story?.seen?.bastionDamaged) ||
+    (itemId === "watchtower" && story?.seen?.watchtowerDamaged) ||
+    (itemId === "palisades" && story?.seen?.palisadesDamaged),
+  );
+
+  const upgradeLevel = getFortificationUpgradeLevel(fortKey, gameState);
+  const titleLabel =
+    displayLabel ?? getActionLabel(actionId, buildAction.label);
+
+  const buildDescription = getActionDescription(
+    actionId,
+    buildAction.description,
+  );
+  const currentEffects = getFortificationTooltipEffectLines(fortKey, gameState);
+  const levelSections =
+    upgradeLevel != null
+      ? getFortificationLevelEffectSections(fortKey, upgradeLevel, isDamaged)
+      : [];
+  const effectsBlock = renderLeveledEffectsBlock(
+    currentEffects,
+    levelSections,
+  );
+
+  return (
+    <div className="text-xs">
+      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
+        <span>
+          <span className="font-bold">{titleLabel}</span>
+          {upgradeLevel != null && (
+            <span className="font-normal text-gray-400">
+              {" "}
+              {getUiTooltip("level", "Level {{level}}", {
+                level: upgradeLevel,
+              })}
+            </span>
+          )}
+          {isDamaged && (
+            <span className="font-normal text-muted-foreground">
+              {" "}
+              {getUiTooltip("damaged", "(damaged)")}
+            </span>
+          )}
+        </span>
+      </div>
+      {buildDescription && (
+        <div className="text-gray-400 mb-0.5">{buildDescription}</div>
+      )}
+      {effectsBlock}
+    </div>
+  );
 }
 
 export function renderItemTooltip(
