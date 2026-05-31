@@ -349,43 +349,45 @@ export default function ProfileMenu() {
         isDeleting={deleteAccountInProgress}
       />
       <div className="flex items-center justify-end gap-1">
-        {cruelMode && (
-          <TooltipWrapper
-            tooltip={
-              <div className="text-xs whitespace-nowrap">
-                {t("footer.cruelModeActive")}
-              </div>
-            }
-            tooltipId="cruel-mode-indicator"
-            disabled
-            className="px-1 py-1 cursor-pointer opacity-70 hover:opacity-100 transition-opacity flex items-center"
-          >
-            <span className="font-noto-symbols-2 text-red-600 text-sm font-bold">
-              ⛤
-            </span>
-          </TooltipWrapper>
-        )}
-        {showRewardsTasksShortcut && (
-          <TooltipWrapper
-            tooltip={<p className="text-xs">{t("profile.rewardsTasks")}</p>}
-            tooltipId="exclusive-item-shortcut"
-            className="relative p-0 w-7 h-7 rounded-md bg-transparent flex items-center justify-center cursor-pointer hover:bg-muted/30 transition-colors shrink-0 border-0 shadow-none overflow-visible"
-            onClick={() => setSocialPromptDialogOpen(true)}
-          >
-            <div className="relative flex h-full w-full items-center justify-center overflow-visible">
-              <span
-                className="exclusive-promo-shockwave-ring"
-                aria-hidden
-              />
-              <span
-                className="relative z-[1] text-[15px] leading-none select-none text-lime-500"
-                aria-hidden
-              >
-                ⯫
+        <div className="flex items-center gap-0.5">
+          {cruelMode && (
+            <TooltipWrapper
+              tooltip={
+                <div className="text-xs whitespace-nowrap">
+                  {t("footer.cruelModeActive")}
+                </div>
+              }
+              tooltipId="cruel-mode-indicator"
+              disabled
+              className="p-0 w-7 h-7 shrink-0 cursor-pointer opacity-70 hover:opacity-100 transition-opacity flex items-center justify-center"
+            >
+              <span className="font-noto-symbols-2 text-red-600 text-[15px] leading-none font-bold select-none">
+                ⛤
               </span>
-            </div>
-          </TooltipWrapper>
-        )}
+            </TooltipWrapper>
+          )}
+          {showRewardsTasksShortcut && (
+            <TooltipWrapper
+              tooltip={<p className="text-xs">{t("profile.rewardsTasks")}</p>}
+              tooltipId="exclusive-item-shortcut"
+              className="relative p-0 w-7 h-7 rounded-md bg-transparent flex items-center justify-center cursor-pointer hover:bg-muted/30 transition-colors shrink-0 border-0 shadow-none overflow-visible"
+              onClick={() => setSocialPromptDialogOpen(true)}
+            >
+              <div className="relative flex h-full w-full items-center justify-center overflow-visible">
+                <span
+                  className="exclusive-promo-shockwave-ring"
+                  aria-hidden
+                />
+                <span
+                  className="relative z-[1] text-[15px] leading-none select-none text-lime-500"
+                  aria-hidden
+                >
+                  ⯫
+                </span>
+              </div>
+            </TooltipWrapper>
+          )}
+        </div>
         <DropdownMenu
           open={accountDropdownOpen}
           onOpenChange={(open) => {
