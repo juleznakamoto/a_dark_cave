@@ -71,34 +71,34 @@ function buildingKeyToActionId(buildingKey: string): string {
   return `build${buildingKey.charAt(0).toUpperCase() + buildingKey.slice(1)}`;
 }
 
-function getBuildingTooltipEffectLines(
+type TooltipEffectEntry = string | BuildingTooltipEffect;
+
+function getBuildingTooltipEffectEntries(
   buildAction: Action,
   gameState: GameState,
-  isDamaged: boolean,
-): string[] {
+): TooltipEffectEntry[] {
   const tooltipEffects = buildAction.tooltipEffects;
   const effectsArray =
     typeof tooltipEffects === "function"
       ? tooltipEffects(gameState)
       : tooltipEffects;
-  const hasManualTooltip = effectsArray && effectsArray.length > 0;
-
-  if (hasManualTooltip) {
-    return effectsArray.map((effect) => resolveBuildingTooltipEffect(effect));
+  if (effectsArray && effectsArray.length > 0) {
+    return effectsArray;
   }
 
-  const effectsList: string[] = [];
+  const entries: TooltipEffectEntry[] = [];
 
   if (buildAction.statsEffects) {
     Object.entries(buildAction.statsEffects).forEach(([stat, statValue]) => {
-      const finalValue = isDamaged ? Math.floor(statValue * 0.5) : statValue;
-      effectsList.push(
-        getUiTooltip("statBonus", "{{sign}}{{value}} {{stat}}", {
-          sign: finalValue > 0 ? "+" : "",
-          value: finalValue,
+      entries.push({
+        key: `__stat__${stat}`,
+        fallback: "{{sign}}{{value}} {{stat}}",
+        options: {
+          sign: statValue > 0 ? "+" : "",
+          value: statValue,
           stat: formatTooltipStatName(stat),
-        }),
-      );
+        },
+      });
     });
   }
 
@@ -110,22 +110,131 @@ function getBuildingTooltipEffectLines(
 
     Object.entries(productionEffects).forEach(([jobType, production]) => {
       Object.entries(production).forEach(([resource, amount]) => {
-        effectsList.push(
-          getUiTooltip(
-            "productionBonusLine",
-            "+{{amount}} {{resource}} ({{job}})",
-            {
-              amount,
-              resource: formatTooltipResourceName(resource),
-              job: capitalizeWords(jobType),
-            },
-          ),
-        );
+        entries.push({
+          key: `__production__${jobType}__${resource}`,
+          fallback: "+{{amount}} {{resource}} ({{job}})",
+          options: {
+            amount,
+            resource: formatTooltipResourceName(resource),
+            job: capitalizeWords(jobType),
+          },
+        });
       });
     });
   }
 
-  return effectsList;
+  return entries;
+}
+
+function resolveTooltipEffectEntry(
+  entry: TooltipEffectEntry,
+  isDamaged: boolean,
+): string {
+  if (typeof entry === "string") return entry;
+
+  let options = entry.options;
+  if (isDamaged) {
+    if (typeof options?.amount === "number") {
+      options = {
+        ...options,
+        amount: Math.floor(options.amount * 0.5),
+      };
+    } else if (typeof options?.value === "number") {
+      options = {
+        ...options,
+        value: Math.floor(options.value * 0.5),
+      };
+    }
+  }
+
+  if (entry.key.startsWith("__stat__")) {
+    return getUiTooltip("statBonus", "{{sign}}{{value}} {{stat}}", options);
+  }
+  if (entry.key.startsWith("__production__")) {
+    return getUiTooltip(
+      "productionBonusLine",
+      "+{{amount}} {{resource}} ({{job}})",
+      options,
+    );
+  }
+  return resolveBuildingTooltipEffect(
+    options === entry.options ? entry : { ...entry, options },
+  );
+}
+
+function tooltipEffectEntryKey(entry: TooltipEffectEntry): string {
+  if (typeof entry === "string") return `str:${entry}`;
+  return `fx:${entry.key}`;
+}
+
+/** Lines newly introduced or increased compared to the previous chain tier. */
+function getMarginalTooltipEffectLines(
+  prevEntries: TooltipEffectEntry[],
+  currEntries: TooltipEffectEntry[],
+  isDamaged: boolean,
+): string[] {
+  const prevByKey = new Map<string, TooltipEffectEntry>();
+  for (const entry of prevEntries) {
+    prevByKey.set(tooltipEffectEntryKey(entry), entry);
+  }
+
+  const lines: string[] = [];
+  const damageMult = isDamaged ? 0.5 : 1;
+
+  for (const curr of currEntries) {
+    if (typeof curr === "string") {
+      if (!prevEntries.some((prev) => typeof prev === "string" && prev === curr)) {
+        lines.push(curr);
+      }
+      continue;
+    }
+
+    const prev = prevByKey.get(tooltipEffectEntryKey(curr));
+    if (!prev || typeof prev === "string") {
+      lines.push(resolveTooltipEffectEntry(curr, isDamaged));
+      continue;
+    }
+
+    const currAmount = curr.options?.amount ?? curr.options?.value;
+    const prevAmount = prev.options?.amount ?? prev.options?.value;
+    if (typeof currAmount === "number" && typeof prevAmount === "number") {
+      const diff =
+        Math.floor(currAmount * damageMult) -
+        Math.floor(prevAmount * damageMult);
+      if (diff !== 0) {
+        const amountKey =
+          curr.options?.amount !== undefined ? "amount" : "value";
+        lines.push(
+          resolveTooltipEffectEntry(
+            {
+              ...curr,
+              options: { ...curr.options, [amountKey]: diff },
+            },
+            false,
+          ),
+        );
+      }
+      continue;
+    }
+
+    const currResolved = resolveTooltipEffectEntry(curr, isDamaged);
+    const prevResolved = resolveTooltipEffectEntry(prev, isDamaged);
+    if (currResolved !== prevResolved) {
+      lines.push(currResolved);
+    }
+  }
+
+  return lines;
+}
+
+function getBuildingTooltipEffectLines(
+  buildAction: Action,
+  gameState: GameState,
+  isDamaged: boolean,
+): string[] {
+  return getBuildingTooltipEffectEntries(buildAction, gameState).map((entry) =>
+    resolveTooltipEffectEntry(entry, isDamaged),
+  );
 }
 
 type LeveledEffectSection = {
@@ -275,19 +384,23 @@ function getUpgradeChainLevelEffectSections(
   const currentIndex = chain.indexOf(itemId);
   if (currentIndex < 0) return [];
 
-  // Only show upgrade steps up to the tier the player owns (not future chain tiers).
   const sections: LeveledEffectSection[] = [];
+  let prevEntries: TooltipEffectEntry[] | null = null;
+
   for (let index = 0; index <= currentIndex; index++) {
     const buildingKey = chain[index];
     const buildAction = villageBuildActions[buildingKeyToActionId(buildingKey)];
     if (!buildAction) continue;
 
     const tierDamaged = isDamaged && buildingKey === itemId;
-    const effects = getBuildingTooltipEffectLines(
-      buildAction,
-      gameState,
-      tierDamaged,
-    );
+    const entries = getBuildingTooltipEffectEntries(buildAction, gameState);
+    const effects =
+      index === 0 || prevEntries === null
+        ? entries.map((entry) => resolveTooltipEffectEntry(entry, tierDamaged))
+        : getMarginalTooltipEffectLines(prevEntries, entries, tierDamaged);
+
+    prevEntries = entries;
+
     if (effects.length > 0) {
       sections.push({ level: index + 1, effects });
     }
