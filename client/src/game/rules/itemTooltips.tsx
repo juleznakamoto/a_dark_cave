@@ -162,71 +162,6 @@ function resolveTooltipEffectEntry(
   );
 }
 
-function tooltipEffectEntryKey(entry: TooltipEffectEntry): string {
-  if (typeof entry === "string") return `str:${entry}`;
-  return `fx:${entry.key}`;
-}
-
-/** Lines newly introduced or increased compared to the previous chain tier. */
-function getMarginalTooltipEffectLines(
-  prevEntries: TooltipEffectEntry[],
-  currEntries: TooltipEffectEntry[],
-  isDamaged: boolean,
-): string[] {
-  const prevByKey = new Map<string, TooltipEffectEntry>();
-  for (const entry of prevEntries) {
-    prevByKey.set(tooltipEffectEntryKey(entry), entry);
-  }
-
-  const lines: string[] = [];
-  const damageMult = isDamaged ? 0.5 : 1;
-
-  for (const curr of currEntries) {
-    if (typeof curr === "string") {
-      if (!prevEntries.some((prev) => typeof prev === "string" && prev === curr)) {
-        lines.push(curr);
-      }
-      continue;
-    }
-
-    const prev = prevByKey.get(tooltipEffectEntryKey(curr));
-    if (!prev || typeof prev === "string") {
-      lines.push(resolveTooltipEffectEntry(curr, isDamaged));
-      continue;
-    }
-
-    const currAmount = curr.options?.amount ?? curr.options?.value;
-    const prevAmount = prev.options?.amount ?? prev.options?.value;
-    if (typeof currAmount === "number" && typeof prevAmount === "number") {
-      const diff =
-        Math.floor(currAmount * damageMult) -
-        Math.floor(prevAmount * damageMult);
-      if (diff !== 0) {
-        const amountKey =
-          curr.options?.amount !== undefined ? "amount" : "value";
-        lines.push(
-          resolveTooltipEffectEntry(
-            {
-              ...curr,
-              options: { ...curr.options, [amountKey]: diff },
-            },
-            false,
-          ),
-        );
-      }
-      continue;
-    }
-
-    const currResolved = resolveTooltipEffectEntry(curr, isDamaged);
-    const prevResolved = resolveTooltipEffectEntry(prev, isDamaged);
-    if (currResolved !== prevResolved) {
-      lines.push(currResolved);
-    }
-  }
-
-  return lines;
-}
-
 function getBuildingTooltipEffectLines(
   buildAction: Action,
   gameState: GameState,
@@ -234,6 +169,26 @@ function getBuildingTooltipEffectLines(
 ): string[] {
   return getBuildingTooltipEffectEntries(buildAction, gameState).map((entry) =>
     resolveTooltipEffectEntry(entry, isDamaged),
+  );
+}
+
+/** Per-tier breakdown: omit storage footnote repeated on every level line. */
+function getBuildingTooltipEffectLinesForLevelSection(
+  buildAction: Action,
+  gameState: GameState,
+  isDamaged: boolean,
+): string[] {
+  return getBuildingTooltipEffectEntries(buildAction, gameState).map(
+    (entry) => {
+      if (typeof entry !== "string" && entry.key === "resourceLimit") {
+        return getUiTooltip(
+          "buildings.resourceLimitTier",
+          "Resource Limit: {{limit}}",
+          entry.options,
+        );
+      }
+      return resolveTooltipEffectEntry(entry, isDamaged);
+    },
   );
 }
 
@@ -365,7 +320,6 @@ function getUpgradeChainLevelEffectSections(
   if (currentIndex < 0) return [];
 
   const sections: LeveledEffectSection[] = [];
-  let prevEntries: TooltipEffectEntry[] | null = null;
 
   for (let index = 0; index <= currentIndex; index++) {
     const buildingKey = chain[index];
@@ -373,13 +327,11 @@ function getUpgradeChainLevelEffectSections(
     if (!buildAction) continue;
 
     const tierDamaged = isDamaged && buildingKey === itemId;
-    const entries = getBuildingTooltipEffectEntries(buildAction, gameState);
-    const effects =
-      index === 0 || prevEntries === null
-        ? entries.map((entry) => resolveTooltipEffectEntry(entry, tierDamaged))
-        : getMarginalTooltipEffectLines(prevEntries, entries, tierDamaged);
-
-    prevEntries = entries;
+    const effects = getBuildingTooltipEffectLinesForLevelSection(
+      buildAction,
+      gameState,
+      tierDamaged,
+    );
 
     if (effects.length > 0) {
       sections.push({ level: index + 1, effects });

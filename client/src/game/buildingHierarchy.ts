@@ -111,6 +111,13 @@ const BUILDING_TOOLTIP_LEVEL_EXCLUSIONS = new Set([
   "longhouse",
 ]);
 
+/** Not linear upgrade chains — omit tier labels / level breakdown in building tooltips. */
+const BUILDING_TOOLTIP_CHAIN_EXCLUSIONS = new Set([
+  ...BUILDING_HIERARCHIES.fortifications,
+  // Mutually exclusive or add-on dark buildings, not monolith → tier 2 → tier 3.
+  ...BUILDING_HIERARCHIES.dark,
+]);
+
 /**
  * Full upgrade chain for a building key, or null if not in a chain or excluded.
  */
@@ -118,8 +125,7 @@ export function getBuildingHierarchyChain(
   buildingKey: string,
 ): string[] | null {
   if (BUILDING_TOOLTIP_LEVEL_EXCLUSIONS.has(buildingKey)) return null;
-  // Fortifications are parallel buildings, not a replacement upgrade chain.
-  if (BUILDING_HIERARCHIES.fortifications.includes(buildingKey)) return null;
+  if (BUILDING_TOOLTIP_CHAIN_EXCLUSIONS.has(buildingKey)) return null;
   for (const hierarchy of Object.values(BUILDING_HIERARCHIES)) {
     if (hierarchy.includes(buildingKey)) return hierarchy;
   }
