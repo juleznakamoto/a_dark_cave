@@ -24,10 +24,16 @@ import {
 } from "./villageBuildActions";
 import type { BuildingTooltipEffect } from "./buildingTooltipEffects";
 import {
+  buildingKeyToActionId,
+  getBuildingTooltipEffectLines,
+  getUpgradeChainCurrentEffectLines,
+  getUpgradeChainLevelEffectSections,
+  type LeveledEffectSection,
+} from "./buildingTooltipSections";
+import {
   getFortificationMarginalStats,
   type FortificationBuildingKey,
 } from "@/game/bastionStats";
-import type { Action } from "@shared/schema";
 import { capitalizeWords } from "@/lib/utils";
 import {
   getActionDescription,
@@ -37,7 +43,6 @@ import {
 } from "@/i18n/resolveGameText";
 import {
   formatTooltipResourceName,
-  formatTooltipStatName,
   getUiTooltip,
   resolveBuildingTooltipEffect,
 } from "@/i18n/tooltipLabels";
@@ -66,136 +71,6 @@ function formatProbabilityPercent(probability: number): string {
     ? `${Math.round(roundedTenth)}`
     : roundedTenth.toFixed(1);
 }
-
-function buildingKeyToActionId(buildingKey: string): string {
-  return `build${buildingKey.charAt(0).toUpperCase() + buildingKey.slice(1)}`;
-}
-
-type TooltipEffectEntry = string | BuildingTooltipEffect;
-
-function getBuildingTooltipEffectEntries(
-  buildAction: Action,
-  gameState: GameState,
-): TooltipEffectEntry[] {
-  const tooltipEffects = buildAction.tooltipEffects;
-  const effectsArray =
-    typeof tooltipEffects === "function"
-      ? tooltipEffects(gameState)
-      : tooltipEffects;
-  if (effectsArray && effectsArray.length > 0) {
-    return effectsArray;
-  }
-
-  const entries: TooltipEffectEntry[] = [];
-
-  if (buildAction.statsEffects) {
-    Object.entries(buildAction.statsEffects).forEach(([stat, statValue]) => {
-      entries.push({
-        key: `__stat__${stat}`,
-        fallback: "{{sign}}{{value}} {{stat}}",
-        options: {
-          sign: statValue > 0 ? "+" : "",
-          value: statValue,
-          stat: formatTooltipStatName(stat),
-        },
-      });
-    });
-  }
-
-  if (buildAction.productionEffects) {
-    const productionEffects =
-      typeof buildAction.productionEffects === "function"
-        ? buildAction.productionEffects(gameState)
-        : buildAction.productionEffects;
-
-    Object.entries(productionEffects).forEach(([jobType, production]) => {
-      Object.entries(production).forEach(([resource, amount]) => {
-        entries.push({
-          key: `__production__${jobType}__${resource}`,
-          fallback: "+{{amount}} {{resource}} ({{job}})",
-          options: {
-            amount,
-            resource: formatTooltipResourceName(resource),
-            job: capitalizeWords(jobType),
-          },
-        });
-      });
-    });
-  }
-
-  return entries;
-}
-
-function resolveTooltipEffectEntry(
-  entry: TooltipEffectEntry,
-  isDamaged: boolean,
-): string {
-  if (typeof entry === "string") return entry;
-
-  let options = entry.options;
-  if (isDamaged) {
-    if (typeof options?.amount === "number") {
-      options = {
-        ...options,
-        amount: Math.floor(options.amount * 0.5),
-      };
-    } else if (typeof options?.value === "number") {
-      options = {
-        ...options,
-        value: Math.floor(options.value * 0.5),
-      };
-    }
-  }
-
-  if (entry.key.startsWith("__stat__")) {
-    return getUiTooltip("statBonus", "{{sign}}{{value}} {{stat}}", options);
-  }
-  if (entry.key.startsWith("__production__")) {
-    return getUiTooltip(
-      "productionBonusLine",
-      "+{{amount}} {{resource}} ({{job}})",
-      options,
-    );
-  }
-  return resolveBuildingTooltipEffect(
-    options === entry.options ? entry : { ...entry, options },
-  );
-}
-
-function getBuildingTooltipEffectLines(
-  buildAction: Action,
-  gameState: GameState,
-  isDamaged: boolean,
-): string[] {
-  return getBuildingTooltipEffectEntries(buildAction, gameState).map((entry) =>
-    resolveTooltipEffectEntry(entry, isDamaged),
-  );
-}
-
-/** Per-tier breakdown: omit storage footnote repeated on every level line. */
-function getBuildingTooltipEffectLinesForLevelSection(
-  buildAction: Action,
-  gameState: GameState,
-  isDamaged: boolean,
-): string[] {
-  return getBuildingTooltipEffectEntries(buildAction, gameState).map(
-    (entry) => {
-      if (typeof entry !== "string" && entry.key === "resourceLimit") {
-        return getUiTooltip(
-          "buildings.resourceLimitTier",
-          "Resource Limit: {{limit}}",
-          entry.options,
-        );
-      }
-      return resolveTooltipEffectEntry(entry, isDamaged);
-    },
-  );
-}
-
-type LeveledEffectSection = {
-  level: number;
-  effects: string[];
-};
 
 const FORT_STAT_EFFECT_ORDER = [
   "attackBonus",
@@ -310,40 +185,6 @@ function renderLeveledEffectsBlock(
   );
 }
 
-function getUpgradeChainLevelEffectSections(
-  chain: string[],
-  itemId: string,
-  gameState: GameState,
-  isDamaged: boolean,
-): LeveledEffectSection[] {
-  const currentIndex = chain.indexOf(itemId);
-  if (currentIndex < 0) return [];
-
-  const sections: LeveledEffectSection[] = [];
-
-  for (let index = 0; index <= currentIndex; index++) {
-    const buildingKey = chain[index];
-    const buildAction = villageBuildActions[buildingKeyToActionId(buildingKey)];
-    if (!buildAction) continue;
-
-    const tierDamaged = isDamaged && buildingKey === itemId;
-    const effects = getBuildingTooltipEffectLinesForLevelSection(
-      buildAction,
-      gameState,
-      tierDamaged,
-    );
-
-    if (effects.length > 0) {
-      sections.push({ level: index + 1, effects });
-    }
-  }
-
-  // Tier-1 chain buildings: current block already shows their effects; skip duplicate Level 1 section.
-  if (sections.length <= 1) return [];
-
-  return sections;
-}
-
 function renderUpgradeChainTooltipEffects(
   chain: string[],
   gameState: GameState,
@@ -353,8 +194,9 @@ function renderUpgradeChainTooltipEffects(
   const buildAction = villageBuildActions[buildingKeyToActionId(itemId)];
   if (!buildAction) return null;
 
-  const currentEffects = getBuildingTooltipEffectLines(
-    buildAction,
+  const currentEffects = getUpgradeChainCurrentEffectLines(
+    chain,
+    itemId,
     gameState,
     isDamaged,
   );
