@@ -16,28 +16,47 @@ export default function LanguageSelector({
   buttonClassName = "group px-1 py-1 text-xs text-neutral-300 hover hover:text-red-500",
   iconClassName = "w-4 h-4 opacity-60 transition-[opacity,color] group-hover:opacity-100",
   menuAlign = "end",
+  showTooltip = true,
+  showInlineLabel = false,
+  inlineLabelClassName = "sr-only sm:not-sr-only sm:inline",
 }: {
   buttonClassName?: string;
   iconClassName?: string;
   menuAlign?: "start" | "end";
+  showTooltip?: boolean;
+  showInlineLabel?: boolean;
+  inlineLabelClassName?: string;
 } = {}) {
   const { locale, setLocale, locales, localeLabels } = useLocale();
   const { t } = useTranslation("ui");
 
+  const trigger = (
+    <DropdownMenuTrigger asChild>
+      <Button
+        variant="ghost"
+        size="xs"
+        className={buttonClassName}
+        aria-label={t("languageSelector.ariaLabel")}
+      >
+        <Globe className={iconClassName} aria-hidden />
+        {showInlineLabel && (
+          <span className={inlineLabelClassName}>
+            {t("languageSelector.label")}
+          </span>
+        )}
+      </Button>
+    </DropdownMenuTrigger>
+  );
+
   return (
     <DropdownMenu modal={false}>
-      <HoverCalloutTooltip label={t("languageSelector.ariaLabel")} side="top">
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="xs"
-            className={buttonClassName}
-            aria-label={t("languageSelector.ariaLabel")}
-          >
-            <Globe className={iconClassName} aria-hidden />
-          </Button>
-        </DropdownMenuTrigger>
-      </HoverCalloutTooltip>
+      {showTooltip ? (
+        <HoverCalloutTooltip label={t("languageSelector.ariaLabel")} side="top">
+          {trigger}
+        </HoverCalloutTooltip>
+      ) : (
+        trigger
+      )}
       <DropdownMenuContent align={menuAlign} className="w-max min-w-0 text-xs">
         {locales.map((code) => (
           <DropdownMenuItem

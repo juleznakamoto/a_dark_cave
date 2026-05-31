@@ -6,7 +6,6 @@ import CloudShader from "@/components/ui/cloud-shader";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
-import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import LanguageSelector from "@/components/game/LanguageSelector";
 import {
   GAME_FOOTER_RIGHT_ICON_LINKS,
@@ -22,7 +21,7 @@ const START_FOOTER_LINK =
 const START_FOOTER_LEGAL_LINK =
   `${START_FOOTER_LINK} text-[9px] sm:text-[10px]`;
 const START_FOOTER_LANGUAGE_BTN =
-  "inline-flex items-center p-0 h-auto min-h-0 hover:text-foreground transition-colors opacity-40 hover:opacity-100";
+  `${START_FOOTER_LINK} p-0 h-auto min-h-0`;
 export default function StartScreen() {
   const { executeAction, setBoostMode, boostMode, cruelMode } = useGameStore();
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -275,6 +274,8 @@ export default function StartScreen() {
           buttonClassName={START_FOOTER_LANGUAGE_BTN}
           iconClassName="w-3.5 h-3.5 shrink-0"
           menuAlign="start"
+          showTooltip={false}
+          showInlineLabel
         />
         <div className="flex flex-wrap justify-end items-center gap-x-3 gap-y-1.5">
           {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
@@ -294,32 +295,26 @@ export default function StartScreen() {
                 </span>
               </>
             );
-            return (
-              <HoverCalloutTooltip
+            return href.startsWith("http") ? (
+              <a
                 key={platform}
-                label={linkLabel}
-                side="top"
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer me"
+                className={START_FOOTER_LINK}
+                aria-label={linkLabel}
               >
-                {href.startsWith("http") ? (
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer me"
-                    className={START_FOOTER_LINK}
-                    aria-label={linkLabel}
-                  >
-                    {linkContent}
-                  </a>
-                ) : (
-                  <a
-                    href={href}
-                    className={START_FOOTER_LINK}
-                    aria-label={linkLabel}
-                  >
-                    {linkContent}
-                  </a>
-                )}
-              </HoverCalloutTooltip>
+                {linkContent}
+              </a>
+            ) : (
+              <a
+                key={platform}
+                href={href}
+                className={START_FOOTER_LINK}
+                aria-label={linkLabel}
+              >
+                {linkContent}
+              </a>
             );
           })}
           <div className="flex flex-col items-end leading-tight sm:flex-row sm:items-center sm:gap-x-3">
