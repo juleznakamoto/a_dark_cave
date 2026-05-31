@@ -112,16 +112,26 @@ const BUILDING_TOOLTIP_LEVEL_EXCLUSIONS = new Set([
 ]);
 
 /**
+ * Full upgrade chain for a building key, or null if not in a chain or excluded.
+ */
+export function getBuildingHierarchyChain(
+  buildingKey: string,
+): string[] | null {
+  if (BUILDING_TOOLTIP_LEVEL_EXCLUSIONS.has(buildingKey)) return null;
+  for (const hierarchy of Object.values(BUILDING_HIERARCHIES)) {
+    if (hierarchy.includes(buildingKey)) return hierarchy;
+  }
+  return null;
+}
+
+/**
  * 1-based tier in an upgrade chain (`BUILDING_HIERARCHIES`) for tooltip labels.
  * Returns null if not in a chain or excluded.
  */
 export function getBuildingHierarchyTooltipLevel(
   buildingKey: string,
 ): number | null {
-  if (BUILDING_TOOLTIP_LEVEL_EXCLUSIONS.has(buildingKey)) return null;
-  for (const hierarchy of Object.values(BUILDING_HIERARCHIES)) {
-    const index = hierarchy.indexOf(buildingKey);
-    if (index !== -1) return index + 1;
-  }
-  return null;
+  const chain = getBuildingHierarchyChain(buildingKey);
+  if (!chain) return null;
+  return chain.indexOf(buildingKey) + 1;
 }

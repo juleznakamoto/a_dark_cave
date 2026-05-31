@@ -13,8 +13,12 @@ import {
   getMaxBombLimit,
   getMaxVeinfireElixirLimit,
 } from "@/game/resourceLimits";
-import { getBuildingHierarchyTooltipLevel } from "../buildingHierarchy";
+import {
+  getBuildingHierarchyChain,
+  getBuildingHierarchyTooltipLevel,
+} from "../buildingHierarchy";
 import { villageBuildActions } from "./villageBuildActions";
+import type { Action } from "@shared/schema";
 import { capitalizeWords } from "@/lib/utils";
 import {
   getActionDescription,
@@ -54,6 +58,109 @@ function formatProbabilityPercent(probability: number): string {
     : roundedTenth.toFixed(1);
 }
 
+function buildingKeyToActionId(buildingKey: string): string {
+  return `build${buildingKey.charAt(0).toUpperCase() + buildingKey.slice(1)}`;
+}
+
+function getBuildingTooltipEffectLines(
+  buildAction: Action,
+  gameState: GameState,
+  isDamaged: boolean,
+): string[] {
+  const tooltipEffects = buildAction.tooltipEffects;
+  const effectsArray =
+    typeof tooltipEffects === "function"
+      ? tooltipEffects(gameState)
+      : tooltipEffects;
+  const hasManualTooltip = effectsArray && effectsArray.length > 0;
+
+  if (hasManualTooltip) {
+    return effectsArray.map((effect) => resolveBuildingTooltipEffect(effect));
+  }
+
+  const effectsList: string[] = [];
+
+  if (buildAction.statsEffects) {
+    Object.entries(buildAction.statsEffects).forEach(([stat, statValue]) => {
+      const finalValue = isDamaged ? Math.floor(statValue * 0.5) : statValue;
+      effectsList.push(
+        getUiTooltip("statBonus", "{{sign}}{{value}} {{stat}}", {
+          sign: finalValue > 0 ? "+" : "",
+          value: finalValue,
+          stat: formatTooltipStatName(stat),
+        }),
+      );
+    });
+  }
+
+  if (buildAction.productionEffects) {
+    const productionEffects =
+      typeof buildAction.productionEffects === "function"
+        ? buildAction.productionEffects(gameState)
+        : buildAction.productionEffects;
+
+    Object.entries(productionEffects).forEach(([jobType, production]) => {
+      Object.entries(production).forEach(([resource, amount]) => {
+        effectsList.push(
+          getUiTooltip(
+            "productionBonusLine",
+            "+{{amount}} {{resource}} ({{job}})",
+            {
+              amount,
+              resource: formatTooltipResourceName(resource),
+              job: capitalizeWords(jobType),
+            },
+          ),
+        );
+      });
+    });
+  }
+
+  return effectsList;
+}
+
+function renderUpgradeChainTooltipEffects(
+  chain: string[],
+  gameState: GameState,
+  itemId: string,
+  isDamaged: boolean,
+): React.ReactNode | null {
+  const levelSections = chain
+    .map((buildingKey, index) => {
+      const buildAction = villageBuildActions[buildingKeyToActionId(buildingKey)];
+      if (!buildAction) return null;
+
+      const tierDamaged = isDamaged && buildingKey === itemId;
+      const effects = getBuildingTooltipEffectLines(
+        buildAction,
+        gameState,
+        tierDamaged,
+      );
+      if (effects.length === 0) return null;
+
+      return { level: index + 1, effects };
+    })
+    .filter((section) => section !== null);
+
+  if (levelSections.length === 0) return null;
+
+  return (
+    <div key="effects" className="mt-1">
+      {levelSections.map((section, idx) => (
+        <div key={section.level}>
+          {idx > 0 && <div className="border-t border-border my-1" />}
+          <div className="text-gray-300">
+            {getUiTooltip("level", "Level {{level}}", { level: section.level })}
+          </div>
+          {section.effects.map((effect, effectIdx) => (
+            <div key={effectIdx}>{effect}</div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function renderItemTooltip(
   itemId: string,
   itemType: "weapon" | "tool" | "blessing" | "book" | "building" | "fellowship",
@@ -91,86 +198,40 @@ export function renderItemTooltip(
       );
     }
 
-    // Check if manual tooltipEffects exist
-    const tooltipEffects = buildAction.tooltipEffects;
-    const effectsArray =
-      typeof tooltipEffects === "function"
-        ? tooltipEffects(gameState)
-        : tooltipEffects;
-    const hasManualTooltip = effectsArray && effectsArray.length > 0;
+    const hierarchyChain = getBuildingHierarchyChain(itemId);
 
-    if (hasManualTooltip) {
-      // Use manual tooltipEffects
-      tooltipParts.push(
-        <div key="effects" className="mt-1">
-          {effectsArray.map((effect, idx) => (
-            <div key={idx}>{resolveBuildingTooltipEffect(effect)}</div>
-          ))}
-        </div>
+    if (hierarchyChain) {
+      const chainEffects = renderUpgradeChainTooltipEffects(
+        hierarchyChain,
+        gameState,
+        itemId,
+        isDamaged,
       );
+      if (chainEffects) {
+        tooltipParts.push(chainEffects);
+      }
     } else {
-      // Auto-generate effects from statsEffects and productionEffects
-      const effectsList: string[] = [];
+      const effectsList = getBuildingTooltipEffectLines(
+        buildAction,
+        gameState,
+        isDamaged,
+      );
 
-      if (buildAction.statsEffects) {
-        Object.entries(buildAction.statsEffects).forEach(
-          ([stat, statValue]) => {
-            // Apply 50% reduction and round down if damaged
-            let finalValue = isDamaged
-              ? Math.floor(statValue * 0.5)
-              : statValue;
-
-            effectsList.push(
-              getUiTooltip("statBonus", "{{sign}}{{value}} {{stat}}", {
-                sign: finalValue > 0 ? "+" : "",
-                value: finalValue,
-                stat: formatTooltipStatName(stat),
-              }),
-            );
-          }
-        );
-      }
-
-      // Special handling for production effects
-      if (buildAction.productionEffects) {
-        // Resolve productionEffects (can be object or function)
-        const productionEffects = typeof buildAction.productionEffects === 'function'
-          ? buildAction.productionEffects(gameState)
-          : buildAction.productionEffects;
-
-        Object.entries(productionEffects).forEach(
-          ([jobType, production]) => {
-            Object.entries(production).forEach(([resource, amount]) => {
-              effectsList.push(
-                getUiTooltip(
-                  "productionBonusLine",
-                  "+{{amount}} {{resource}} ({{job}})",
-                  {
-                    amount,
-                    resource: formatTooltipResourceName(resource),
-                    job: capitalizeWords(jobType),
-                  },
-                ),
-              );
-            });
-          }
-        );
-      }
-
-      // Add effects section if there are any auto-generated effects
       if (effectsList.length > 0) {
         tooltipParts.push(
           <div key="effects" className="mt-1">
             {effectsList.map((effect, idx) => (
               <div key={idx}>{effect}</div>
             ))}
-          </div>
+          </div>,
         );
       }
     }
 
     // Side panel Buildings: always show title row (name + optional chain tier); body may be empty.
-    const hierarchyLevel = getBuildingHierarchyTooltipLevel(itemId);
+    const hierarchyLevel = hierarchyChain
+      ? null
+      : getBuildingHierarchyTooltipLevel(itemId);
     return (
       <div className="text-xs">
         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
