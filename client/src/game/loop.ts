@@ -35,10 +35,7 @@ import {
   DISGRACED_PRIOR_UPGRADES,
 } from "./rules/skillUpgrades";
 import { CRUEL_MODE, cruelModeScale } from "./cruelMode";
-import {
-  SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS,
-  SOCIAL_PROMPT_AUTO_OPEN_COUNT,
-} from "./socialPromptAuto";
+import { socialPromptHighestMilestoneIndexToOpen } from "./socialPromptAuto";
 import { FEEDBACK_PROMPT_PLAY_MS } from "./feedbackPromptAuto";
 import { isSocialPromoExclusiveRewardComplete } from "@/game/socialPromoExclusiveReward";
 import { tickObsidianOrbFocus } from "@/game/obsidianOrb";
@@ -451,14 +448,14 @@ export function startGameLoop() {
         // Rewards dialog: auto-open at play-time milestones until exclusive-item tasks are done (same bar as profile shortcut).
         if (!isSocialPromoExclusiveRewardComplete(state)) {
           const playTimeMs = state.playTime || 0;
-          const idx = state.socialPromptMilestoneIndex ?? 0;
-          if (
-            idx < SOCIAL_PROMPT_AUTO_OPEN_COUNT &&
-            playTimeMs >= SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS[idx]
-          ) {
+          const milestoneToOpen = socialPromptHighestMilestoneIndexToOpen(
+            playTimeMs,
+            state.socialPromptMilestoneIndex ?? 0,
+          );
+          if (milestoneToOpen !== null) {
             useGameStore.setState({
               socialPromptDialogOpen: true,
-              socialPromptMilestoneIndex: idx + 1,
+              socialPromptMilestoneIndex: milestoneToOpen + 1,
             });
           }
         }

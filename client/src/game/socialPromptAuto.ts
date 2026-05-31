@@ -40,6 +40,31 @@ export function socialPromptMilestoneFloorFromPlayTime(
   return n;
 }
 
+/**
+ * When `playTimeMs` has crossed several unreached milestones at once (e.g. after returning
+ * with the tab open), returns the index of the highest threshold to show once; lower thresholds
+ * are skipped.
+ */
+export function socialPromptHighestMilestoneIndexToOpen(
+  playTimeMs: number,
+  nextMilestoneIndex: number,
+): number | null {
+  if (nextMilestoneIndex >= SOCIAL_PROMPT_AUTO_OPEN_COUNT) return null;
+
+  let target = nextMilestoneIndex;
+  while (
+    target + 1 < SOCIAL_PROMPT_AUTO_OPEN_COUNT &&
+    playTimeMs >= SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS[target + 1]
+  ) {
+    target++;
+  }
+
+  if (playTimeMs >= SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS[target]) {
+    return target;
+  }
+  return null;
+}
+
 export const SOCIAL_PROMPT_REFERRAL_CAP = 10;
 
 export { REFERRAL_REWARD_GOLD } from "@shared/schema";

@@ -4,6 +4,7 @@ import {
   isSocialPromptFirstWaveEligible,
   isSocialPromptRepeatWaveEligible,
   SOCIAL_PROMPT_REFERRAL_CAP,
+  socialPromptHighestMilestoneIndexToOpen,
   socialPromptMilestoneFloorFromPlayTime,
 } from "@/game/socialPromptAuto";
 import { PLAYLIGHT_DISCOVER_REWARD_KEY } from "@/game/playlightDiscoverReward";
@@ -32,6 +33,27 @@ describe("socialPromptMilestoneFloorFromPlayTime", () => {
     expect(socialPromptMilestoneFloorFromPlayTime(359 * MIN)).toBe(6);
     expect(socialPromptMilestoneFloorFromPlayTime(360 * MIN)).toBe(7);
     expect(socialPromptMilestoneFloorFromPlayTime(24 * 60 * MIN)).toBe(7);
+  });
+});
+
+describe("socialPromptHighestMilestoneIndexToOpen", () => {
+  it("returns null when all milestones were already shown", () => {
+    expect(socialPromptHighestMilestoneIndexToOpen(24 * 60 * MIN, 7)).toBe(null);
+  });
+
+  it("returns the next single milestone when only one threshold was crossed", () => {
+    expect(socialPromptHighestMilestoneIndexToOpen(20 * MIN, 0)).toBe(0);
+    expect(socialPromptHighestMilestoneIndexToOpen(20 * MIN, 1)).toBe(null);
+  });
+
+  it("skips lower thresholds and returns the highest crossed milestone", () => {
+    expect(socialPromptHighestMilestoneIndexToOpen(65 * MIN, 0)).toBe(2);
+    expect(socialPromptHighestMilestoneIndexToOpen(125 * MIN, 1)).toBe(4);
+  });
+
+  it("respects the next milestone index when play time is between thresholds", () => {
+    expect(socialPromptHighestMilestoneIndexToOpen(45 * MIN, 1)).toBe(1);
+    expect(socialPromptHighestMilestoneIndexToOpen(29 * MIN, 1)).toBe(null);
   });
 });
 
