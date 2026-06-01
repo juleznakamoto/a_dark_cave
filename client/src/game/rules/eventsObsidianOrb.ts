@@ -41,11 +41,7 @@ export const obsidianOrbEvents: Record<string, GameEvent> = {
         id: "payVillagers",
         cost: "20 Villagers",
         effect: (state: GameState) => {
-          const cost = 20;
-          if ((state.villagers?.free ?? 0) < cost) {
-            return {};
-          }
-          const deathResult = spendFreeVillagers(state, cost);
+          const deathResult = spendFreeVillagers(state, 20);
           return {
             ...deathResult,
             schematics: {

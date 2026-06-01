@@ -95,6 +95,7 @@ import {
   resolveEventMessage,
   resolveEventTitle,
 } from "@/i18n/eventText";
+import { getEventChoiceAffordance } from "@/i18n/eventAffordance";
 
 export interface GameEvent {
   id: string;
@@ -134,6 +135,8 @@ export type EventChoiceEffectResult = Partial<GameState> & {
   _logMessageI18nKey?: string;
   _logMessageVars?: Record<string, string | number>;
   _combatData?: unknown;
+  /** Choice blocked by affordance (e.g. insufficient free villagers); no state merge or outcome UI. */
+  _choiceRejected?: boolean;
 };
 
 export interface EventChoice {
@@ -671,6 +674,23 @@ export class EventManager {
       label: choice.label,
       hasEffect: typeof choice.effect === 'function',
     });
+
+    const catalogId = eventDefinition.i18nKey ?? eventId;
+    const i18nVars =
+      typeof eventDefinition.i18nVars === "function"
+        ? eventDefinition.i18nVars(state)
+        : eventDefinition.i18nVars;
+    const affordance = getEventChoiceAffordance(choice, state, {
+      catalogId,
+      vars: i18nVars,
+    });
+    if (!affordance.canAfford) {
+      logger.log("[EVENT MANAGER] Choice rejected - cannot afford:", {
+        choiceId,
+        eventId,
+      });
+      return { _choiceRejected: true };
+    }
 
     const choiceResult = choice.effect(state);
 

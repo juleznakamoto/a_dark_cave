@@ -345,7 +345,10 @@ export default function TimedEventPanel() {
     });
 
     // Don't pre-emptively mark as purchased - let applyEventChoice handle it atomically
-    applyEventChoice(choiceId, eventId, event);
+    const accepted = applyEventChoice(choiceId, eventId, event);
+    if (!accepted) {
+      return;
+    }
 
     // For Trader's Gratitude: Accept opens the Shop (real-money) but event continues until time runs out or player declines
     if (eventId === "traders_gratitude" && choiceId === "accept_traders_gratitude") {

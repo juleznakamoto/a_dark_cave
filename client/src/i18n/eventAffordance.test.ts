@@ -149,9 +149,10 @@ describe("eventAffordance", () => {
 
     expect(rows).toHaveLength(2);
     expect(rows[0].text).toContain("20");
+    expect(rows[0].text).toContain("Free Villager");
     expect(rows[0].satisfied).toBe(false);
     expect(rows[1].text).toContain("15");
-    expect(rows[1].text.toLowerCase()).toContain("free");
+    expect(rows[1].text).toContain("Free Villager");
     expect(rows[1].satisfied).toBe(false);
   });
 });

@@ -336,7 +336,11 @@ interface GameStore extends GameState {
   setCompassGlow: (actionId: string | null) => void;
   addLogEntry: (entry: LogEntry) => void;
   checkEvents: () => void;
-  applyEventChoice: (choiceId: string, eventId: string, currentLogEntry?: LogEntry) => void;
+  applyEventChoice: (
+    choiceId: string,
+    eventId: string,
+    currentLogEntry?: LogEntry,
+  ) => boolean;
   assignVillager: (job: keyof GameState["villagers"]) => void;
   unassignVillager: (job: keyof GameState["villagers"]) => void;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
@@ -2602,7 +2606,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   applyEventChoice: (choiceId: string, eventId: string, currentLogEntry?: LogEntry) => {
     const state = get();
     // If the game is paused, do not apply event choices
-    if (state.isPaused) return;
+    if (state.isPaused) return false;
 
     // Use passed currentLogEntry or fall back to eventDialog.currentEvent
     const logEntry = currentLogEntry || get().eventDialog.currentEvent;
@@ -2638,6 +2642,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       hasResources: !!changes.resources,
       resourceKeys: changes.resources ? Object.keys(changes.resources) : [],
     });
+
+    if (changes._choiceRejected) {
+      return false;
+    }
 
     let combatData = null;
     let logMessage = null;
@@ -2763,7 +2771,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (shouldShowRewardDialog && rewardDialogData) {
       get().setEventDialog(false);
       scheduleRewardDialogWhenClear(get, rewardDialogData, 200);
-      return;
+      return true;
     }
 
     if (shouldShowMadnessDialog && madnessDialogData) {
@@ -2771,7 +2779,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       setTimeout(() => {
         get().setMadnessDialog(true, madnessDialogData);
       }, 200);
-      return;
+      return true;
     }
 
     // For merchant events, don't show any dialog - just apply the changes
@@ -2819,7 +2827,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
         get().setEventDialog(true, messageEntry);
       }, 200);
-      return; // Don't proceed to combat dialog
+      return true; // Don't proceed to combat dialog
     }
 
     // Handle combat dialog
@@ -2857,10 +2865,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
           get().setCombatDialog(false);
         },
       });
-      return;
+      return true;
     }
 
     // Dialog closing is now handled in EventDialog component
+    return true;
   },
 
   toggleDevMode: () => {

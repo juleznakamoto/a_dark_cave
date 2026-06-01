@@ -196,8 +196,10 @@ export function getEventVillagerCostTooltipRows(
   const rows: Array<{ text: string; satisfied: boolean }> = [
     {
       text: getUiTooltip(
-        "villagerCost",
-        costAmount === 1 ? "-{{count}} Villager" : "-{{count}} Villagers",
+        "freeVillagerCost",
+        costAmount === 1
+          ? "-{{count}} Free Villager"
+          : "-{{count}} Free Villagers",
         { count: costAmount },
       ),
       satisfied: canAfford,
@@ -208,7 +210,7 @@ export function getEventVillagerCostTooltipRows(
     rows.push({
       text: getUiTooltip(
         "freeVillagersAvailable",
-        free === 1 ? "{{count}} free villager" : "{{count}} free villagers",
+        free === 1 ? "{{count}} Free Villager" : "{{count}} Free Villagers",
         { count: free },
       ),
       satisfied: false,

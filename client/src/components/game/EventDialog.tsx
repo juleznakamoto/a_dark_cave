@@ -221,7 +221,11 @@ export default function EventDialog({
 
     // For non-merchant events, process normally
     fallbackExecutedRef.current = true;
-    applyEventChoice(choiceId, eventId);
+    const accepted = applyEventChoice(choiceId, eventId);
+    if (!accepted) {
+      fallbackExecutedRef.current = false;
+      return;
+    }
     onClose();
   };
 

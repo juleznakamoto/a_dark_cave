@@ -121,4 +121,31 @@ describe('Event System', () => {
 
     expect(changes).toEqual({});
   });
+
+  it("rejects obsidian orb villager payment when free villagers are insufficient", () => {
+    const state = createInitialState();
+    state.resources.gold = 0;
+    state.buildings.advancedBlacksmith = 1;
+    state.buildings.darkEstate = 1;
+    state.story = {
+      ...state.story,
+      seen: { ...state.story?.seen, hasObsidian: true },
+    };
+    state.villagers = {
+      ...state.villagers,
+      free: 15,
+      gatherer: 10,
+    };
+
+    const changes = EventManager.applyEventChoice(
+      state,
+      "payVillagers",
+      "obsidianOrbVisit",
+    );
+
+    expect(changes._choiceRejected).toBe(true);
+    expect(changes._logMessageKey).toBeUndefined();
+    expect(changes.schematics?.obsidian_orb_schematic).toBeUndefined();
+    expect(changes.villagers).toBeUndefined();
+  });
 });
