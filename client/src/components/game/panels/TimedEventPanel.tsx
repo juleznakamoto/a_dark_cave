@@ -534,9 +534,6 @@ export default function TimedEventPanel() {
               }
               const showSuccessTooltip = hasEventChoiceSuccessTooltip(choice);
 
-              // Check if we have a Scriptorium to show stat icons
-              const hasScriptorium = gameState.buildings.scriptorium >= 1;
-
               const buttonContent = (
                 <Button
                   onClick={(e) => {
@@ -551,28 +548,27 @@ export default function TimedEventPanel() {
                 >
                   <div className="flex items-center gap-1 flex-1 min-w-0">
                     <span className="whitespace-nowrap">{labelText}</span>
-                    {hasScriptorium &&
-                      successPercentage &&
-                      choice.relevant_stats &&
-                      choice.relevant_stats.length > 0 && (
-                        <div className="flex items-center gap-0.5 flex-shrink-0">
-                          <span className="text-xs text-muted-foreground whitespace-nowrap">
-                            {successPercentage}
-                          </span>
-                          {choice.relevant_stats.map((stat) => {
-                            const statInfo = statIcons[stat.toLowerCase()];
-                            if (!statInfo) return null;
-                            return (
-                              <span
-                                key={stat}
-                                className={`font-noto-symbols-2 text-xs ${statInfo.color}`}
-                              >
-                                {statInfo.icon}
-                              </span>
-                            );
-                          })}
-                        </div>
+                    <div className="flex items-center gap-0.5 flex-shrink-0">
+                      {successPercentage && (
+                        <span className="text-xs text-muted-foreground whitespace-nowrap">
+                          {successPercentage}
+                        </span>
                       )}
+                      {choice.relevant_stats &&
+                        choice.relevant_stats.length > 0 &&
+                        choice.relevant_stats.map((stat) => {
+                          const statInfo = statIcons[stat.toLowerCase()];
+                          if (!statInfo) return null;
+                          return (
+                            <span
+                              key={stat}
+                              className={`font-noto-symbols-2 text-xs ${statInfo.color}`}
+                            >
+                              {statInfo.icon}
+                            </span>
+                          );
+                        })}
+                    </div>
                   </div>
                   <div className="flex items-center flex-shrink-0">
                     {isPurchased && <span className="ml-1 font-noto-symbols-2">✓</span>}
