@@ -8,7 +8,6 @@ import {
 import { craftActionIdToItemKey, getCraftItemDescription } from "./craftItemDescription";
 import { clothingEffects, toolEffects, weaponEffects } from "./effects";
 import { renderItemTooltip } from "./itemTooltips";
-import { getUiTooltip } from "@/i18n/tooltipLabels";
 import { isCraftOnceAction, isBuildingAction } from "./insightReveal";
 
 function resolveBuildingEffectLines(
@@ -68,9 +67,6 @@ export function renderRevealedEffectsTooltipSection(
   if (!content) return null;
   return (
     <div className="border-t border-border mt-1 pt-1">
-      <div className="text-muted-foreground mb-0.5">
-        {getUiTooltip("insightRevealEffects", "Effects")}
-      </div>
       {content}
     </div>
   );
