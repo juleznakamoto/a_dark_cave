@@ -39,13 +39,14 @@ function maxTierBuildingKey(chain: string[]): string {
 
 function findRepeatedLinesAcrossSections(
   levelSections: { level: number; effects: string[] }[],
-  allowedRepeats = new Set<string>(),
+  allowedRepeats: Set<string> = new Set(),
 ): string[] {
+  const allowed = allowedRepeats ?? new Set<string>();
   const seen = new Set<string>();
   const repeats: string[] = [];
   for (const section of levelSections) {
     for (const line of section.effects) {
-      if (seen.has(line) && !allowedRepeats.has(line)) {
+      if (seen.has(line) && !allowed.has(line)) {
         repeats.push(`Level ${section.level}: "${line}"`);
       }
       seen.add(line);
@@ -188,11 +189,11 @@ describe("building tooltip audit at max tier", () => {
         chainForTooltip!,
         gameState,
       );
-      const allowedRepeats =
-        chainName === "trade" ? new Set(["Higher Trade Amounts"]) : undefined;
       const repeats = findRepeatedLinesAcrossSections(
         levelSections,
-        allowedRepeats,
+        chainName === "trade"
+          ? new Set(["Higher Trade Amounts"])
+          : new Set(),
       );
       expect(repeats, repeats.join("; ")).toEqual([]);
     });

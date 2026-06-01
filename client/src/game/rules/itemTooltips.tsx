@@ -161,13 +161,13 @@ function renderLeveledEffectsBlock(
   if (!hasCurrent && visibleSections.length === 0) return null;
 
   return (
-    <div key="effects" className="mt-1 text-gray-400">
+    <div key="effects" className="mt-1">
       {hasCurrent &&
         currentEffects.map((effect, idx) => (
           <div key={`current-${idx}`}>{effect}</div>
         ))}
       {visibleSections.map((section, idx) => (
-        <div key={`level-${section.level}`}>
+        <div key={`level-${section.level}`} className="text-gray-400">
           {(hasCurrent || idx > 0) && (
             <div className="border-t border-border my-1" />
           )}
