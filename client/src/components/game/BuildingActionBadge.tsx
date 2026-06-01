@@ -17,8 +17,9 @@ export function BuildingActionBadge() {
       >
         <defs>
           <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="30%" stopColor="#93c5fd" />
-            <stop offset="70%" stopColor="#1d4ed8" />
+            <stop offset="0%" stopColor="#3b82f6" />
+            <stop offset="55%" stopColor="#2563eb" />
+            <stop offset="100%" stopColor="#1e40af" />
           </linearGradient>
           <mask id={maskId}>
             <g className="building-action-badge__clip">
