@@ -1,8 +1,8 @@
 import i18n from "i18next";
 import type { GameState } from "@shared/schema";
 import type { EventChoice } from "@/game/rules/events";
-import { getVillagersInVillage } from "@/game/population";
 import { getResourceName } from "@/i18n/resolveGameText";
+import { getUiTooltip } from "@/i18n/tooltipLabels";
 
 type TranslateOptions = Record<string, string | number | boolean | undefined>;
 
@@ -146,17 +146,76 @@ export function parseVillagerCostFromDisplayText(costText: string): number | nul
   return parseFormattedCostAmount(match[1]);
 }
 
+export function getFreeVillagerCount(state: GameState): number {
+  return state.villagers?.free ?? 0;
+}
+
 function buildVillagerAffordance(
   amount: number,
   state: GameState,
 ): EventChoiceAffordance {
-  const inVillage = getVillagersInVillage(state);
-  const hasEnough = inVillage >= amount;
+  const free = getFreeVillagerCount(state);
+  const hasEnough = free >= amount;
   return {
     canAfford: hasEnough,
     costs: [],
     individualAffordance: { villagers: hasEnough },
   };
+}
+
+export function resolveEventVillagerCostAmount(
+  cost: string | ((state: GameState) => string) | undefined,
+  state: GameState,
+  options?: { catalogId?: string; choiceId?: string },
+): number | null {
+  if (options?.catalogId && options?.choiceId) {
+    const template = getCatalogCostTemplate(options.catalogId, options.choiceId);
+    if (template) {
+      const fromCatalog = parseVillagerCostFromDisplayText(template);
+      if (fromCatalog !== null) {
+        return fromCatalog;
+      }
+    }
+  }
+
+  if (!cost) return null;
+
+  const costText = typeof cost === "function" ? cost(state) : cost;
+  if (!costText || typeof costText !== "string") return null;
+
+  return parseVillagerCostFromDisplayText(costText);
+}
+
+/** Tooltip rows for event choices that cost free villagers. */
+export function getEventVillagerCostTooltipRows(
+  costAmount: number,
+  state: GameState,
+): Array<{ text: string; satisfied: boolean }> {
+  const free = getFreeVillagerCount(state);
+  const canAfford = free >= costAmount;
+  const rows: Array<{ text: string; satisfied: boolean }> = [
+    {
+      text: getUiTooltip(
+        "villagerCost",
+        costAmount === 1 ? "-{{count}} Villager" : "-{{count}} Villagers",
+        { count: costAmount },
+      ),
+      satisfied: canAfford,
+    },
+  ];
+
+  if (!canAfford) {
+    rows.push({
+      text: getUiTooltip(
+        "freeVillagersAvailable",
+        free === 1 ? "{{count}} free villager" : "{{count}} free villagers",
+        { count: free },
+      ),
+      satisfied: false,
+    });
+  }
+
+  return rows;
 }
 
 function buildAffordanceFromCosts(
@@ -199,6 +258,14 @@ export function getEventChoiceAffordance(
   }
 
   if (options?.catalogId) {
+    const catalogTemplate = getCatalogCostTemplate(options.catalogId, choice.id);
+    if (catalogTemplate) {
+      const villagerCost = parseVillagerCostFromDisplayText(catalogTemplate);
+      if (villagerCost !== null) {
+        return buildVillagerAffordance(villagerCost, state);
+      }
+    }
+
     const catalogCosts = getResourceCostsFromCatalogTemplate(
       options.catalogId,
       choice.id,

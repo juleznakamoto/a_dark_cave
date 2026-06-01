@@ -1902,10 +1902,10 @@
   "theDamned": {
     "choices": {
       "turnThemAway": {
-        "label": "No"
+        "label": "Enviar lejos"
       },
       "welcomeThem": {
-        "label": "Sí"
+        "label": "Acogerlos"
       }
     },
     "log": {

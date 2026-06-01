@@ -1925,10 +1925,10 @@
   "theDamned": {
     "choices": {
       "turnThemAway": {
-        "label": "No"
+        "label": "Send away"
       },
       "welcomeThem": {
-        "label": "Yes"
+        "label": "Welcome them"
       }
     },
     "log": {

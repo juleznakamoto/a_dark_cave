@@ -1,6 +1,6 @@
 import { GameState } from "@shared/schema";
 import { GameEvent } from "./events";
-import { killVillagers } from "@/game/stateHelpers";
+import { spendFreeVillagers } from "@/game/stateHelpers";
 import { getCurrentPopulation } from "@/game/population";
 
 const DISGUST_DURATION_MS = 15 * 60 * 1000;
@@ -41,7 +41,11 @@ export const obsidianOrbEvents: Record<string, GameEvent> = {
         id: "payVillagers",
         cost: "20 Villagers",
         effect: (state: GameState) => {
-          const deathResult = killVillagers(state, 20);
+          const cost = 20;
+          if ((state.villagers?.free ?? 0) < cost) {
+            return {};
+          }
+          const deathResult = spendFreeVillagers(state, cost);
           return {
             ...deathResult,
             schematics: {

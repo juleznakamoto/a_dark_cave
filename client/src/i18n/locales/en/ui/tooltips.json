@@ -10,6 +10,8 @@
     "costLine": "-{{amount}} {{resource}}",
     "villagerCost_one": "-{{count}} Villager",
     "villagerCost_other": "-{{count}} Villagers",
+    "freeVillagersAvailable_one": "{{count}} free villager",
+    "freeVillagersAvailable_other": "{{count}} free villagers",
     "mapFragmentProgress": "{{count}} of {{total}} map fragments",
     "defense": "Defense: {{value}}",
     "madnessFromItems": "{{value}} from Items",

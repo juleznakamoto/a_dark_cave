@@ -216,6 +216,31 @@ export function unassignVillagerFromJob(
   };
 }
 
+/** Deducts villagers from the free pool only (event payments, not combat casualties). */
+export function spendFreeVillagers(
+  state: GameState,
+  count: number,
+): Partial<GameState> & { villagersKilled?: number } {
+  if (count <= 0) return { villagersKilled: 0 };
+
+  const free = state.villagers?.free ?? 0;
+  const spent = Math.min(count, free);
+  if (spent <= 0) return { villagersKilled: 0 };
+
+  return {
+    villagers: {
+      ...state.villagers,
+      free: free - spent,
+    },
+    villagersKilled: spent,
+    stats: {
+      ...state.stats,
+      villagerDeathsLifetime:
+        (state.stats.villagerDeathsLifetime ?? 0) + spent,
+    },
+  };
+}
+
 export function killVillagers(state: GameState, deathCount: number): Partial<GameState> & { villagersKilled?: number } {
   if (deathCount <= 0) return { villagersKilled: 0 };
 

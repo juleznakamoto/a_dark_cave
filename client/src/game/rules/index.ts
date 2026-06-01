@@ -22,7 +22,12 @@ import {
   formatTooltipResourceName,
   getUiTooltip,
 } from "@/i18n/tooltipLabels";
-import { getEventChoiceAffordance } from "@/i18n/eventAffordance";
+import {
+  getEventChoiceAffordance,
+  getEventVillagerCostTooltipRows,
+  parseVillagerCostFromDisplayText,
+  resolveEventVillagerCostAmount,
+} from "@/i18n/eventAffordance";
 import { getResourceName } from "@/i18n/resolveGameText";
 
 // Import action modules
@@ -758,6 +763,14 @@ export function getEventChoiceCostBreakdown(
         satisfied: affordance.individualAffordance[resource] !== false,
       }));
     }
+
+    const villagerCost = resolveEventVillagerCostAmount(cost, state, {
+      catalogId: options.catalogId,
+      choiceId: options.choiceId,
+    });
+    if (villagerCost !== null) {
+      return getEventVillagerCostTooltipRows(villagerCost, state);
+    }
   }
 
   if (!cost) return [];
@@ -808,6 +821,11 @@ export function getEventChoiceCostBreakdown(
         }),
         satisfied: affordance.individualAffordance[resource] !== false,
       }));
+    }
+
+    const villagerCost = parseVillagerCostFromDisplayText(costText);
+    if (villagerCost !== null) {
+      return getEventVillagerCostTooltipRows(villagerCost, state);
     }
   }
 

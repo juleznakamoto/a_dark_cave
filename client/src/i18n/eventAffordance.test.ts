@@ -2,12 +2,15 @@ import { describe, it, expect, beforeEach } from "vitest";
 import i18n from "./index";
 import {
   getEventChoiceAffordance,
+  getEventVillagerCostTooltipRows,
   getResourceCostsFromCatalogTemplate,
+  resolveEventVillagerCostAmount,
 } from "./eventAffordance";
 import type { GameState } from "@shared/schema";
 
 function makeState(
   resourceOverrides: Partial<GameState["resources"]> = {},
+  villagerOverrides: Partial<GameState["villagers"]> = {},
 ): GameState {
   return {
     resources: {
@@ -24,6 +27,12 @@ function makeState(
       steel: 0,
       torch: 0,
       ...resourceOverrides,
+    },
+    villagers: {
+      free: 5,
+      gatherer: 0,
+      hunter: 0,
+      ...villagerOverrides,
     },
   } as GameState;
 }
@@ -97,5 +106,52 @@ describe("eventAffordance", () => {
 
     expect(affordance.canAfford).toBe(false);
     expect(affordance.costs).toEqual([{ resource: "food", amount: 250 }]);
+  });
+
+  it("requires free villagers for villager event costs", () => {
+    const affordance = getEventChoiceAffordance(
+      {
+        id: "payVillagers",
+        effect: () => ({}),
+        cost: "20 Villagers",
+      },
+      makeState({}, { free: 15, gatherer: 10 }),
+    );
+
+    expect(affordance.canAfford).toBe(false);
+    expect(affordance.individualAffordance.villagers).toBe(false);
+  });
+
+  it("allows villager event costs when enough free villagers are available", () => {
+    const affordance = getEventChoiceAffordance(
+      {
+        id: "payVillagers",
+        effect: () => ({}),
+        cost: "20 Villagers",
+      },
+      makeState({}, { free: 20, gatherer: 5 }),
+    );
+
+    expect(affordance.canAfford).toBe(true);
+  });
+
+  it("resolves villager costs from i18n catalog templates", () => {
+    const amount = resolveEventVillagerCostAmount(undefined, makeState(), {
+      catalogId: "obsidianOrbVisit",
+      choiceId: "payVillagers",
+    });
+
+    expect(amount).toBe(20);
+  });
+
+  it("shows available free villagers in tooltip when cost is unaffordable", () => {
+    const rows = getEventVillagerCostTooltipRows(20, makeState({}, { free: 15 }));
+
+    expect(rows).toHaveLength(2);
+    expect(rows[0].text).toContain("20");
+    expect(rows[0].satisfied).toBe(false);
+    expect(rows[1].text).toContain("15");
+    expect(rows[1].text.toLowerCase()).toContain("free");
+    expect(rows[1].satisfied).toBe(false);
   });
 });

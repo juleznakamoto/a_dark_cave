@@ -1902,10 +1902,10 @@
   "theDamned": {
     "choices": {
       "turnThemAway": {
-        "label": "否"
+        "label": "送走"
       },
       "welcomeThem": {
-        "label": "是"
+        "label": "接纳他们"
       }
     },
     "log": {
