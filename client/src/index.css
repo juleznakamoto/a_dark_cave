@@ -206,7 +206,6 @@ body {
   border-radius: 9999px;
   opacity: 0.55;
   background: #3b82f6;
-  box-shadow: 0 0 0 1px rgb(30 64 175 / 0.2);
   transition:
     opacity 200ms ease,
     border-color 200ms ease,
