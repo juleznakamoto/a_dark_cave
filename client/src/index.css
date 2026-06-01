@@ -224,12 +224,19 @@ body {
 .building-action-badge__idle {
   border-radius: inherit;
   background: radial-gradient(circle at 35% 30%, #60a5fa, #3b82f6 56%, #2563eb);
-  transition: opacity 160ms ease;
 }
 
 .building-action-badge__svg {
   opacity: 0;
-  transition: opacity 160ms ease;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.building-action-badge:not(:hover) .building-action-badge__clip,
+.building-action-badge:not(:hover) .building-action-badge__triangle {
+  animation: none !important;
+  filter: none;
+  transform: none;
 }
 
 .building-action-badge__clip {
@@ -246,10 +253,14 @@ body {
 
 .building-action-badge:hover .building-action-badge__idle {
   opacity: 0;
+  transition: opacity 120ms ease;
 }
 
 .building-action-badge:hover .building-action-badge__svg {
   opacity: 1;
+  visibility: visible;
+  pointer-events: none;
+  transition: opacity 120ms ease;
   animation: building-action-badge-blue-glow 2s ease-in-out infinite;
 }
 
