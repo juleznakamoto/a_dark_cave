@@ -63,7 +63,8 @@
     "poison_arrows": "Poison Arrows",
     "torch": "Torch",
     "silver": "Silver",
-    "gold": "Gold"
+    "gold": "Gold",
+    "insight": "Insight"
   },
   "stats": {
     "strength": "Strength",

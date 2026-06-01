@@ -50,7 +50,7 @@ export function isBombAtLimit(
 }
 
 // Resources that are never limited
-const UNLIMITED_RESOURCES = ['silver', 'gold'];
+const UNLIMITED_RESOURCES = ['silver', 'gold', 'insight'];
 
 // Get the current resource limit based on storage building level.
 // IMPORTANT: Server-side validation mirrors this logic in

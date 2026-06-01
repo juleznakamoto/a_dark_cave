@@ -42,6 +42,12 @@ import {
 } from "@/game/stateHelpers";
 import { capResourceToLimit } from "@/game/resourceLimits";
 import {
+  canRevealEffects,
+  getInsightAmount,
+  getInsightRevealCost,
+  INSIGHT_REVEAL_DURATION_MS,
+} from "@/game/rules/insightReveal";
+import {
   calculateTotalEffects,
   getTotalLuck,
   getTotalStrength,
@@ -386,6 +392,9 @@ interface GameStore extends GameState {
   updateResources: (updates: Partial<GameState["resources"]>) => void;
   setRewardDialog: (isOpen: boolean, data?: any) => void;
   setMadnessDialog: (isOpen: boolean, data?: any) => void;
+  /** Session-only: actionId → reveal animation end timestamp (ms). */
+  insightRevealing: Record<string, number>;
+  revealActionEffects: (actionId: string) => boolean;
 }
 
 /**
@@ -1062,6 +1071,8 @@ export const createInitialState = (): GameState => ({
 
   // Initialize compass glow
   compassGlowButton: null,
+
+  insightRevealing: {},
 
   // Initialize analytics tracking
   clickAnalytics: {},
@@ -1947,6 +1958,25 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
   },
 
+  revealActionEffects: (actionId: string) => {
+    const state = get();
+    if (!canRevealEffects(actionId, state)) return false;
+    const cost = getInsightRevealCost(actionId);
+    if (cost == null || getInsightAmount(state) < cost) return false;
+
+    const resourceUpdates = updateResource(state, "insight", -cost);
+    set({
+      ...resourceUpdates,
+      insightRevealing: {
+        ...state.insightRevealing,
+        [actionId]: Date.now() + INSIGHT_REVEAL_DURATION_MS,
+      },
+      cooldowns: { ...state.cooldowns, [actionId]: 10 },
+      initialCooldowns: { ...state.initialCooldowns, [actionId]: 10 },
+    });
+    return true;
+  },
+
   tickCooldowns: () => {
     set((state) => {
       const newCooldowns = { ...state.cooldowns };
@@ -1966,11 +1996,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }
       }
 
-      let newState = changed ? {
-        ...state,
-        cooldowns: newCooldowns,
-        initialCooldowns: newInitialCooldowns,
-      } : state;
+      const now = Date.now();
+      const newRevealing = { ...state.insightRevealing };
+      const revealedEffects = [...(state.revealedEffects ?? [])];
+      let revealChanged = false;
+      for (const [actionId, endTime] of Object.entries(state.insightRevealing ?? {})) {
+        if (now >= endTime) {
+          if (!revealedEffects.includes(actionId)) {
+            revealedEffects.push(actionId);
+          }
+          delete newRevealing[actionId];
+          revealChanged = true;
+        }
+      }
 
       let newHeartfireState = state.heartfireState;
       if (state.heartfireState?.level > 0) {
@@ -1988,7 +2026,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...state,
         cooldowns: newCooldowns,
         initialCooldowns: newInitialCooldowns,
-        heartfireState: newHeartfireState
+        heartfireState: newHeartfireState,
+        ...(revealChanged
+          ? { insightRevealing: newRevealing, revealedEffects }
+          : {}),
       };
     });
   },
@@ -2245,6 +2286,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       const loadedState = {
         ...savedForHydration,
+        resources: {
+          ...defaultGameState.resources,
+          ...savedState.resources,
+        },
+        villagers: {
+          ...defaultGameState.villagers,
+          ...savedState.villagers,
+        },
+        revealedEffects: savedState.revealedEffects ?? [],
         relics: {
           ...defaultGameState.relics,
           ...savedState.relics,

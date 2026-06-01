@@ -79,7 +79,7 @@ export function getBuildingTooltipEffectEntries(
   return entries;
 }
 
-function resolveTooltipEffectEntry(
+export function resolveTooltipEffectEntry(
   entry: TooltipEffectEntry,
   isDamaged: boolean,
 ): string {

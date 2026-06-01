@@ -339,6 +339,7 @@ const UI_ONLY_PROPERTIES = [
   'fullGamePurchaseDialogOpen',
   'madnessDialog',
   'versionCheckDialogOpen',
+  'insightRevealing',
 ] as const;
 
 /**

@@ -336,8 +336,7 @@ export const getResourceGainTooltip = (
 
   const formatResourceName = formatTooltipResourceName;
 
-  const isCraftAction = actionId.startsWith("craft");
-  const showExactGains = !!state.buildings.clerksHut || isCraftAction;
+  const showExactGains = true;
 
   const headerBlockAboveVein =
     gains.length > 0 || costs.length > 0 || isBombAtMax || isVeinfireElixirAtMax;

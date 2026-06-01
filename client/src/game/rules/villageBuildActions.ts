@@ -1673,7 +1673,8 @@ export const villageBuildActions: Record<string, Action> = {
     description: "Hut where clerks track resources of the village",
     tooltipEffects: [
       bt("knowledgeBonus", "+{{amount}} Knowledge", { amount: 2 }),
-      bt("resourceChangeHints", "Resource change hints"),
+      bt("unlocksScholar", "Unlocks Scholar villager"),
+      bt("scholarInsight1", "Scholar produces 1 Insight per cycle"),
     ],
     building: true,
     show_when: {
@@ -1707,7 +1708,7 @@ export const villageBuildActions: Record<string, Action> = {
       "Library of knowledge providing detailed tracking of resources",
     tooltipEffects: [
       bt("knowledgeBonus", "+{{amount}} Knowledge", { amount: 5 }),
-      bt("improvedResourceChangeHints", "Improved resource change hints"),
+      bt("scholarInsight2", "Scholar produces 2 Insight per cycle"),
     ],
     building: true,
     show_when: {
@@ -1742,8 +1743,7 @@ export const villageBuildActions: Record<string, Action> = {
       "Grand academy of scholars providing supreme knowledge and resource tracking",
     tooltipEffects: [
       bt("knowledgeBonus", "+{{amount}} Knowledge", { amount: 10 }),
-      bt("improvedResourceChangeHints", "Improved resource change hints"),
-      bt("resourceHighlighting", "Resource highlighting"),
+      bt("scholarInsight3", "Scholar produces 3 Insight per cycle"),
     ],
     building: true,
     show_when: {

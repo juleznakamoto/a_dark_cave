@@ -497,6 +497,7 @@ export function startGameLoop() {
         if (!currentState.idleModeState?.isActive) {
           handleGathererProduction();
           handleHunterProduction();
+          handleScholarProduction();
           handleMinerProduction();
           handlePopulationSurvival();
           handleStarvationCheck();
@@ -882,6 +883,23 @@ function handleHunterProduction() {
         prod.resource as keyof typeof state.resources,
         prod.totalAmount,
       );
+    });
+  }
+}
+
+function handleScholarProduction() {
+  const state = useGameStore.getState();
+  const scholarCount = state.villagers.scholar ?? 0;
+
+  if (scholarCount > 0) {
+    const production = getPopulationProduction("scholar", scholarCount, state);
+    production.forEach((prod) => {
+      if (prod.totalAmount > 0) {
+        state.updateResource(
+          prod.resource as keyof typeof state.resources,
+          prod.totalAmount,
+        );
+      }
     });
   }
 }

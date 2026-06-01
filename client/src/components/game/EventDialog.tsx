@@ -57,8 +57,6 @@ export default function EventDialog({
   const { t } = useTranslation("ui");
   const { applyEventChoice } = useGameStore();
   const gameState = useGameStore();
-  const hasScriptorium = gameState.buildings.scriptorium > 0;
-
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
   const [totalTime, setTotalTime] = useState<number>(0);
   const startTimeRef = useRef<number>(0);
@@ -284,7 +282,7 @@ export default function EventDialog({
                   {displayTitle}
                 </DialogTitle>
                 <div className="flex gap-2 items-center flex-shrink-0">
-                  {hasScriptorium && event.isTimedChoice && getTotalKnowledge(gameState) > 0 && (
+                  {event.isTimedChoice && getTotalKnowledge(gameState) > 0 && (
                     <TooltipWrapper
                       tooltip={
                         <div className="text-xs whitespace-nowrap">
@@ -308,7 +306,7 @@ export default function EventDialog({
                       </span>
                     </TooltipWrapper>
                   )}
-                  {hasScriptorium && event.relevant_stats && event.relevant_stats.length > 0 && (
+                  {event.relevant_stats && event.relevant_stats.length > 0 && (
                     <div className="flex gap-1">
                       {event.relevant_stats.map((stat) => {
                         const statInfo = statIcons[stat.toLowerCase()];
@@ -391,7 +389,7 @@ export default function EventDialog({
                           {successPercentage}
                         </span>
                       )}
-                      {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
+                      {choice.relevant_stats && choice.relevant_stats.length > 0 && (
                         <div className="flex gap-1">
                           {choice.relevant_stats.map((stat) => {
                             const statInfo = statIcons[stat.toLowerCase()];

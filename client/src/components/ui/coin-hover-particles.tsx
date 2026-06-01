@@ -28,6 +28,8 @@ export function useCoinHoverParticles(
   options?: {
     zIndex?: number;
     enabled?: boolean;
+    /** Milliseconds between burst emissions while hovered (default 350). */
+    emitIntervalMs?: number;
     /**
      * Burst origin: center of this element (viewport coords). When omitted, the hook
      * uses an internal ref—`CoinHoverParticleSurface` attaches it to the hover target.
@@ -41,6 +43,8 @@ export function useCoinHoverParticles(
 ) {
   const zIndex = options?.zIndex ?? 50;
   const enabled = options?.enabled !== false;
+  const emitIntervalMs =
+    options?.emitIntervalMs ?? COIN_HOVER_EMIT_INTERVAL_MS;
 
   const [bubbles, setBubbles] = useState<BubbleWithParticles[]>([]);
   const bubbleIdCounter = useRef(0);
@@ -76,11 +80,8 @@ export function useCoinHoverParticles(
   const onMouseEnter = useCallback(() => {
     if (!enabled) return;
     spawnParticles();
-    emitIntervalRef.current = setInterval(
-      spawnParticles,
-      COIN_HOVER_EMIT_INTERVAL_MS,
-    );
-  }, [enabled, spawnParticles]);
+    emitIntervalRef.current = setInterval(spawnParticles, emitIntervalMs);
+  }, [enabled, spawnParticles, emitIntervalMs]);
 
   const onMouseLeave = useCallback(() => {
     if (emitIntervalRef.current) {
@@ -117,6 +118,8 @@ export function CoinHoverParticleSurface({
   children,
   zIndex,
   enabled,
+  emitIntervalMs,
+  particleConfig,
 }: {
   resource: CoinHoverResource;
   className?: string;
@@ -124,12 +127,16 @@ export function CoinHoverParticleSurface({
   children: ReactNode;
   zIndex?: number;
   enabled?: boolean;
+  emitIntervalMs?: number;
+  particleConfig?: Partial<ParticleConfig>;
 }) {
   const { glyphOriginRef, hoverHandlers, portal } = useCoinHoverParticles(
     resource,
     {
       zIndex,
       enabled,
+      emitIntervalMs,
+      particleConfig,
     },
   );
 

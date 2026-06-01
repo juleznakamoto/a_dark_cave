@@ -63,7 +63,8 @@
     "poison_arrows": "Flèches empoisonnées",
     "torch": "Torche",
     "silver": "Argent",
-    "gold": "Or"
+    "gold": "Or",
+    "insight": "Perspicacité"
   },
   "stats": {
     "strength": "Force",

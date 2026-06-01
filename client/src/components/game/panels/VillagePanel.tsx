@@ -43,7 +43,9 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
-// import { BuildingActionBadge } from "@/components/game/BuildingActionBadge";
+import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
+import { renderRevealedEffectsTooltipSection } from "@/game/rules/insightRevealTooltip";
+import { canRevealEffects } from "@/game/rules/insightReveal";
 import {
   SuccessParticles,
   useFeedFireParticles,
@@ -326,6 +328,11 @@ export default function VillagePanel() {
       id: "ashfire_dust_maker",
       label: "Ashfire Dust Maker",
       showWhen: () => state.story?.seen?.canMakeAshfireDust === true,
+    },
+    {
+      id: "scholar",
+      label: "Scholar",
+      showWhen: () => buildings.clerksHut > 0,
     },
   ];
 
@@ -640,6 +647,7 @@ export default function VillagePanel() {
             ↑
           </span>
         )}
+        {renderRevealedEffectsTooltipSection(actionId, state)}
       </div>
     );
 
@@ -650,6 +658,7 @@ export default function VillagePanel() {
         cooldownMs={action.cooldown * 1000}
         data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
         button_id={actionId}
+        actionId={actionId}
         disabled={!canExecute}
         size="xs"
         variant="outline"
@@ -657,17 +666,12 @@ export default function VillagePanel() {
         tooltip={tooltipContent}
         onAnimationTrigger={handleAnimationTrigger}
         onMouseEnter={() => {
-          // Only highlight resources if Tomewarden Academy is built
-          if (buildings.inkwardenAcademy > 0) {
-            setHighlightedResources(
-              getResourcesFromActionCost(actionId, state),
-            );
-          }
+          setHighlightedResources(
+            getResourcesFromActionCost(actionId, state),
+          );
         }}
         onMouseLeave={() => {
-          if (buildings.inkwardenAcademy > 0) {
-            setHighlightedResources([]);
-          }
+          setHighlightedResources([]);
         }}
         style={{ pointerEvents: "auto" }}
       >
@@ -675,14 +679,14 @@ export default function VillagePanel() {
       </CooldownButton>
     );
 
-    // if (actionId.startsWith("build")) {
-    //   return (
-    //     <div key={`${actionId}-wrapper`} className="relative inline-block">
-    //       {button}
-    //       <BuildingActionBadge />
-    //     </div>
-    //   );
-    // }
+    if (canRevealEffects(actionId, state)) {
+      return (
+        <div key={`${actionId}-wrapper`} className="relative inline-block">
+          {button}
+          <ActionInsightBadge actionId={actionId} state={state} />
+        </div>
+      );
+    }
 
     return button;
   };

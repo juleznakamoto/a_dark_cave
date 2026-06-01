@@ -71,6 +71,7 @@ export const gameStateSchema = z.object({
       torch: z.number().min(0).default(0),
       silver: z.number().min(0).default(0),
       gold: z.number().min(0).default(0),
+      insight: z.number().min(0).default(0),
     })
     .default({}),
   stats: z
@@ -338,6 +339,7 @@ export const gameStateSchema = z.object({
       tanner: z.number().min(0).default(0),
       powder_maker: z.number().min(0).default(0),
       ashfire_dust_maker: z.number().min(0).default(0),
+      scholar: z.number().min(0).default(0),
     })
     .default({}),
   expeditionVillagers: z.record(z.string(), z.number()).default({}),
@@ -612,6 +614,8 @@ export const gameStateSchema = z.object({
   lastResourceSnapshotTime: z.number().default(0).optional(),
   /** Resource keys that have appeared in the side panel (persisted once amount > 0). */
   seenResources: z.array(z.string()).default([]),
+  /** Action IDs whose full effect rows were revealed via Insight (persisted). */
+  revealedEffects: z.array(z.string()).default([]),
   isNewGame: z.boolean().default(false), // Track if this is a newly started game
   startTime: z.number().default(0), // Timestamp when the current game was started
   allowPlayTimeOverwrite: z.boolean().default(false), // Allow overwriting higher playTime on next save (used for game restarts)

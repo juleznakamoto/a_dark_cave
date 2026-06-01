@@ -139,7 +139,22 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
       { resource: "food", amount: -10, interval: 15000 },
     ],
   },
+  scholar: {
+    id: "scholar",
+    label: "scholar",
+    production: [{ resource: "insight", amount: 1, interval: 15000 }],
+  },
 };
+
+/** Insight per scholar per cycle from highest clerk-chain building only. */
+export function getScholarInsightPerWorker(
+  state: Pick<GameState, "buildings">,
+): number {
+  if ((state.buildings.inkwardenAcademy ?? 0) > 0) return 3;
+  if ((state.buildings.scriptorium ?? 0) > 0) return 2;
+  if ((state.buildings.clerksHut ?? 0) > 0) return 1;
+  return 0;
+}
 
 export interface GetPopulationProductionOptions {
   /** When true, excludes temporary bonuses (feast, solstice gathering, curse, frostfall, fog, disgust, mining boost) and Disgraced Prior food upkeep. Use for sleep / idle eligibility: those effects are inactive while the sim is paused in sleep, and the Prior does not auto-execute. */
@@ -398,6 +413,16 @@ export const getPopulationProduction = (
   if (state && state.devMode) {
     baseProduction.forEach((prod) => {
       prod.totalAmount *= 10;
+    });
+  }
+
+  if (jobId === "scholar" && state) {
+    const perWorker = getScholarInsightPerWorker(state);
+    baseProduction.forEach((prod) => {
+      if (prod.resource === "insight") {
+        prod.baseAmount = perWorker;
+        prod.totalAmount = perWorker * count;
+      }
     });
   }
 

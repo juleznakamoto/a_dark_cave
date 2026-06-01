@@ -63,7 +63,8 @@
     "poison_arrows": "Flechas envenenadas",
     "torch": "Antorcha",
     "silver": "Plata",
-    "gold": "Oro"
+    "gold": "Oro",
+    "insight": "Perspicacia"
   },
   "stats": {
     "strength": "Fuerza",

@@ -87,6 +87,10 @@ describe('Resource Limits - Core Functionality', () => {
     it('should return false for gold', () => {
       expect(isResourceLimited('gold', state)).toBe(false);
     });
+
+    it('should return false for insight', () => {
+      expect(isResourceLimited('insight', state)).toBe(false);
+    });
   });
 
   describe('capResourceToLimit', () => {
@@ -104,6 +108,7 @@ describe('Resource Limits - Core Functionality', () => {
       state.buildings.supplyHut = 1; // limit = 1000
       expect(capResourceToLimit('silver', 50000, state)).toBe(50000);
       expect(capResourceToLimit('gold', 50000, state)).toBe(50000);
+      expect(capResourceToLimit('insight', 50000, state)).toBe(50000);
     });
 
     it('should handle edge case of exact limit', () => {

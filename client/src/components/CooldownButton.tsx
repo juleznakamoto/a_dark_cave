@@ -50,7 +50,14 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     },
     ref
   ) {
-    const { cooldowns, initialCooldowns, executionStartTimes, executionDurations, compassGlowButton } = useGameStore();
+    const {
+      cooldowns,
+      initialCooldowns,
+      executionStartTimes,
+      executionDurations,
+      compassGlowButton,
+      insightRevealing,
+    } = useGameStore();
     const isFirstRenderRef = useRef<boolean>(true);
     const [, forceUpdate] = useState(0);
 
@@ -61,7 +68,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
     const executionAbortEligible = useGameStore((s) => s.executionAbortEligible?.[actionIdFromProps]);
     const hasAbortSnapshot = useGameStore((s) => s.executionSpendSnapshots?.[actionIdFromProps] != null);
-    const hasClerksHut = useGameStore((s) => (s.buildings.clerksHut ?? 0) > 0);
     const gold = useGameStore((s) => s.resources.gold ?? 0);
     const abortActionExecution = useGameStore((s) => s.abortActionExecution);
 
@@ -77,6 +83,9 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     const currentCooldown = cooldowns[actionIdFromProps] || 0;
     const storedInitialCooldown = initialCooldowns[actionIdFromProps] || 0;
     const isCoolingDown = currentCooldown > 0;
+    const isInsightRevealing =
+      typeof insightRevealing?.[actionIdFromProps] === "number" &&
+      insightRevealing[actionIdFromProps] > Date.now();
 
     // Execution state (reverse cooldown - fills as time passes)
     const executionStart = executionStartTimes?.[actionIdFromProps] || 0;
@@ -178,7 +187,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         {/* Cooldown or execution progress overlay */}
         {(isCoolingDown || isExecuting) && (
           <div
-            className={`absolute inset-0 transition-opacity duration-200 bg-white/15`}
+            className={`absolute inset-0 transition-opacity duration-200 ${isInsightRevealing ? "bg-blue-400/25" : "bg-white/15"
+              }`}
             style={{
               width: `${overlayWidth}%`,
               left: 0,
@@ -225,7 +235,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     const showAbortOverlay =
       isAbortActionType &&
       isExecuting &&
-      hasClerksHut &&
       executionAbortEligible === true &&
       hasAbortSnapshot;
     const canAffordAbort = gold >= GAME_CONSTANTS.ACTION_ABORT_GOLD_COST;

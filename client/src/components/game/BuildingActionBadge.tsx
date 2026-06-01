@@ -1,12 +1,21 @@
 import { useId } from "react";
+import { cn } from "@/lib/utils";
 
-export function BuildingActionBadge() {
+type BuildingActionBadgeProps = {
+  /** Force the hover animation (e.g. during Insight reveal cooldown). */
+  playing?: boolean;
+};
+
+export function BuildingActionBadge({ playing = false }: BuildingActionBadgeProps) {
   const id = useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const maskId = `building-action-badge-mask-${id}`;
   const gradientId = `building-action-badge-gradient-${id}`;
 
   return (
-    <span className="building-action-badge" aria-hidden="true">
+    <span
+      className={cn("building-action-badge", playing && "building-action-badge--playing")}
+      aria-hidden="true"
+    >
       <span className="building-action-badge__idle" />
       <svg
         className="building-action-badge__svg"

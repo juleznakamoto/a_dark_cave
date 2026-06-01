@@ -10,6 +10,9 @@ import { getActionBonuses } from "@/game/rules/effectsCalculation";
 import { getResourceGainTooltip } from "@/game/rules/tooltips";
 import { getCraftItemDescription } from "@/game/rules/craftItemDescription";
 import CooldownButton from "@/components/CooldownButton";
+import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
+import { canRevealEffects } from "@/game/rules/insightReveal";
+import { renderRevealedEffectsTooltipSection } from "@/game/rules/insightRevealTooltip";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useExplosionEffect } from "@/components/ui/explosion-effect";
 import { useRef, useState } from "react";
@@ -410,6 +413,22 @@ export default function CavePanel() {
         );
       }
 
+      const revealedSection = renderRevealedEffectsTooltipSection(actionId, state);
+      if (revealedSection && tooltipContent) {
+        tooltipContent = (
+          <div className="text-xs whitespace-nowrap" style={{ width: "12rem" }}>
+            {tooltipContent}
+            {revealedSection}
+          </div>
+        );
+      } else if (revealedSection) {
+        tooltipContent = (
+          <div className="text-xs whitespace-nowrap" style={{ width: "12rem" }}>
+            {revealedSection}
+          </div>
+        );
+      }
+
       const button = (
         <CooldownButton
           key={actionId}
@@ -418,6 +437,7 @@ export default function CavePanel() {
           cooldownMs={action.cooldown * 1000}
           data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
           button_id={actionId}
+          actionId={actionId}
           size="xs"
           disabled={!canExecute}
           variant="outline"
@@ -435,16 +455,12 @@ export default function CavePanel() {
                     : undefined
           }
           onMouseEnter={() => {
-            if (state.buildings.inkwardenAcademy > 0) {
-              setHighlightedResources(
-                getResourcesFromActionCost(actionId, state),
-              );
-            }
+            setHighlightedResources(
+              getResourcesFromActionCost(actionId, state),
+            );
           }}
           onMouseLeave={() => {
-            if (state.buildings.inkwardenAcademy > 0) {
-              setHighlightedResources([]);
-            }
+            setHighlightedResources([]);
           }}
           style={{ pointerEvents: "auto" }}
         >
@@ -454,15 +470,21 @@ export default function CavePanel() {
 
       const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
       const needsWrapper = upgradeKey || isPriorEligible;
-      return needsWrapper ? (
-        <div key={actionId} className="relative inline-block">
-          {button}
-          {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
-          {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
-        </div>
-      ) : (
-        button
-      );
+      const showInsightBadge = canRevealEffects(actionId, state);
+      const wrapWithBadges = (inner: React.ReactNode) => {
+        if (!needsWrapper && !showInsightBadge) return inner;
+        return (
+          <div key={actionId} className="relative inline-block">
+            {inner}
+            {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
+            {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
+            {showInsightBadge && (
+              <ActionInsightBadge actionId={actionId} state={state} />
+            )}
+          </div>
+        );
+      };
+      return wrapWithBadges(button);
     }
 
     const button = (
@@ -473,6 +495,7 @@ export default function CavePanel() {
         cooldownMs={action.cooldown * 1000}
         data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
         data-analytics-id={actionId}
+        actionId={actionId}
         size="xs"
         disabled={!canExecute}
         variant="outline"
@@ -489,16 +512,12 @@ export default function CavePanel() {
                   : undefined
         }
         onMouseEnter={() => {
-          if (state.buildings.inkwardenAcademy > 0) {
-            setHighlightedResources(
-              getResourcesFromActionCost(actionId, state),
-            );
-          }
+          setHighlightedResources(
+            getResourcesFromActionCost(actionId, state),
+          );
         }}
         onMouseLeave={() => {
-          if (state.buildings.inkwardenAcademy > 0) {
-            setHighlightedResources([]);
-          }
+          setHighlightedResources([]);
         }}
         style={{ pointerEvents: "auto" }}
       >
@@ -508,14 +527,17 @@ export default function CavePanel() {
 
     const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
     const needsWrapper = upgradeKey || isPriorEligible;
-    return needsWrapper ? (
+    const showInsightBadge = canRevealEffects(actionId, state);
+    if (!needsWrapper && !showInsightBadge) return button;
+    return (
       <div key={actionId} className="relative inline-block">
         {button}
         {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
         {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
+        {showInsightBadge && (
+          <ActionInsightBadge actionId={actionId} state={state} />
+        )}
       </div>
-    ) : (
-      button
     );
   };
 

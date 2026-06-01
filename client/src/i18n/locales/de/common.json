@@ -63,7 +63,8 @@
     "poison_arrows": "Giftpfeile",
     "torch": "Fackel",
     "silver": "Silber",
-    "gold": "Gold"
+    "gold": "Gold",
+    "insight": "Einsicht"
   },
   "stats": {
     "strength": "Stärke",

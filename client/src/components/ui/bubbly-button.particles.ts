@@ -311,6 +311,24 @@ export function getShopGlyphHoverParticleConfig(
   };
 }
 
+// Insight orb - slower, slightly larger cold-blue sparks (BuildingActionBadge palette)
+export const INSIGHT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
+  colors: [
+    tailwindToHex("blue-400"),
+    tailwindToHex("blue-500"),
+    tailwindToHex("blue-600"),
+    "#60a5fa",
+    "#3b82f6",
+  ],
+  count: 4,
+  durationMin: 0.65,
+  durationMax: 1.75,
+  distanceMin: 10,
+  distanceMax: 28,
+  sizeMin: 1,
+  sizeMax: 5,
+};
+
 // Silver coin - slow gentle emission for hover
 export const SILVER_COIN_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   colors: [

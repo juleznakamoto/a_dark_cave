@@ -428,39 +428,33 @@ export default function ForestPanel() {
             isChopWood ? handleChopWoodAnimationTrigger : isHunt ? handleHuntAnimationTrigger : undefined
           }
           onMouseEnter={() => {
-            if (state.buildings.inkwardenAcademy > 0) {
-              const resources: string[] = [];
+            const resources: string[] = [];
 
-              // For trade buttons, extract both buy and sell resources
-              if (isTradeButton && action.cost && action.effects) {
-                const costRow = resolveForestPanelTradeCost(action, state);
-                const effectRow = resolveForestPanelTradeEffects(action, state);
+            if (isTradeButton && action.cost && action.effects) {
+              const costRow = resolveForestPanelTradeCost(action, state);
+              const effectRow = resolveForestPanelTradeEffects(action, state);
 
-                const costResourceKey = costRow
-                  ? Object.keys(costRow).find((key) => key.startsWith("resources."))
-                  : undefined;
-                if (costResourceKey) {
-                  resources.push(costResourceKey.split(".")[1]);
-                }
-
-                const effectResourceKey = effectRow
-                  ? Object.keys(effectRow).find((key) => key.startsWith("resources."))
-                  : undefined;
-                if (effectResourceKey) {
-                  resources.push(effectResourceKey.split(".")[1]);
-                }
-              } else {
-                // For non-trade actions, use existing logic
-                resources.push(...getResourcesFromActionCost(actionId, state));
+              const costResourceKey = costRow
+                ? Object.keys(costRow).find((key) => key.startsWith("resources."))
+                : undefined;
+              if (costResourceKey) {
+                resources.push(costResourceKey.split(".")[1]);
               }
 
-              setHighlightedResources(resources);
+              const effectResourceKey = effectRow
+                ? Object.keys(effectRow).find((key) => key.startsWith("resources."))
+                : undefined;
+              if (effectResourceKey) {
+                resources.push(effectResourceKey.split(".")[1]);
+              }
+            } else {
+              resources.push(...getResourcesFromActionCost(actionId, state));
             }
+
+            setHighlightedResources(resources);
           }}
           onMouseLeave={() => {
-            if (state.buildings.inkwardenAcademy > 0) {
-              setHighlightedResources([]);
-            }
+            setHighlightedResources([]);
           }}
           style={{ pointerEvents: 'auto' }}
         >

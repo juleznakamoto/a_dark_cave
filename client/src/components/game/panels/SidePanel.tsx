@@ -1,6 +1,7 @@
 import { useGameStore } from "@/game/state";
 import SidePanelSection from "./SidePanelSection";
 import { ResourceCoinIcon } from "@/components/ui/resource-coin-icon";
+import { ResourceInsightIcon } from "@/components/ui/resource-insight-icon";
 import { clothingEffects } from "@/game/rules/effects";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { logger } from "@/lib/logger";
@@ -153,7 +154,7 @@ export default function SidePanel() {
       return true;
     });
 
-    if (newEvents.length === 0 || buildings.clerksHut <= 0) return;
+    if (newEvents.length === 0) return;
 
     setResourceChanges((prev) =>
       [
@@ -165,7 +166,7 @@ export default function SidePanel() {
         })),
       ].slice(-50),
     );
-  }, [resourceChangeEvents, buildings.clerksHut]);
+  }, [resourceChangeEvents]);
 
   // Get game state once for the entire component (needed early for stat calculations)
   const gameState = useGameStore();
@@ -183,20 +184,18 @@ export default function SidePanel() {
     seenResourceKeySet.has(key),
   );
 
-  // Separate gold and silver from other resources; exclude bombs (Combat Items section)
-  const goldSilverResources = seenResourceKeys.filter(
-    (key) => key === "gold" || key === "silver",
+  const PRECIOUS_RESOURCE_ORDER = ["gold", "silver", "insight"] as const;
+  const preciousResources = seenResourceKeys.filter((key) =>
+    PRECIOUS_RESOURCE_ORDER.includes(key as (typeof PRECIOUS_RESOURCE_ORDER)[number]),
   );
   const otherResources = seenResourceKeys.filter(
     (key) =>
-      key !== "gold" &&
-      key !== "silver" &&
+      !PRECIOUS_RESOURCE_ORDER.includes(key as (typeof PRECIOUS_RESOURCE_ORDER)[number]) &&
       !COMBAT_ITEM_RESOURCES.includes(key as CombatItemResourceKey),
   );
 
-  // Order gold first, then silver
-  const orderedGoldSilver = ["gold", "silver"].filter((key) =>
-    goldSilverResources.includes(key),
+  const orderedPrecious = PRECIOUS_RESOURCE_ORDER.filter((key) =>
+    preciousResources.includes(key),
   );
 
   // Net production per resource (for sidepanel delta column)
@@ -210,20 +209,21 @@ export default function SidePanel() {
 
   // Create resource items with special styling for gold and silver
   const resourceItems = [
-    // Gold and silver with special symbols and colors
-    ...orderedGoldSilver.map((key, index) => ({
+    ...orderedPrecious.map((key, index) => ({
       id: key,
       label: (
         <span className="inline-flex items-center gap-1">
-          <ResourceCoinIcon
-            resource={key as "gold" | "silver"}
-            className={cn(
-              "shrink-0",
-              key === "gold"
-                ? "text-yellow-600"
-                : "text-gray-400",
-            )}
-          />
+          {key === "insight" ? (
+            <ResourceInsightIcon className="shrink-0" />
+          ) : (
+            <ResourceCoinIcon
+              resource={key as "gold" | "silver"}
+              className={cn(
+                "shrink-0",
+                key === "gold" ? "text-yellow-600" : "text-gray-400",
+              )}
+            />
+          )}
           <span>{getResourceName(key, capitalizeWords(key))}</span>
         </span>
       ),
@@ -231,9 +231,9 @@ export default function SidePanel() {
       productionDelta: productionDeltas[key] ?? undefined,
       testId: `resource-${key}`,
       visible: true,
-      isPrecious: true, // Custom flag for spacing
+      isPrecious: true,
       hasSpacingAfter:
-        index === orderedGoldSilver.length - 1 && otherResources.length > 0, // Add spacing after last precious metal if there are other resources
+        index === orderedPrecious.length - 1 && otherResources.length > 0,
     })),
     // Other resources
     ...otherResources.map((key) => ({
@@ -592,20 +592,17 @@ export default function SidePanel() {
 
   // Build stats items with total values
   const statsItems = [];
-  const hasScriptorium = buildings.scriptorium > 0;
-  const hasClerksHut = buildings.clerksHut > 0;
-
   statsItems.push({
     id: "luck",
     label: getStatName("luck", "Luck"),
     value: totalLuck,
     testId: "stat-luck",
     visible: true,
-    icon: hasScriptorium ? "☆" : undefined,
-    iconColor: hasScriptorium ? "text-green-300/80" : undefined,
-    tooltip: hasClerksHut ? (
+    icon: "☆",
+    iconColor: "text-green-300/80",
+    tooltip: (
       <span className="text-gray-400">{t("sidePanel.statLuckTooltip")}</span>
-    ) : undefined,
+    ),
   });
 
   statsItems.push({
@@ -614,11 +611,11 @@ export default function SidePanel() {
     value: totalStrength,
     testId: "stat-strength",
     visible: true,
-    icon: hasScriptorium ? "⬡" : undefined,
-    iconColor: hasScriptorium ? "text-red-300/80" : undefined,
-    tooltip: hasClerksHut ? (
+    icon: "⬡",
+    iconColor: "text-red-300/80",
+    tooltip: (
       <span className="text-gray-400">{t("sidePanel.statStrengthTooltip")}</span>
-    ) : undefined,
+    ),
   });
 
   statsItems.push({
@@ -627,49 +624,43 @@ export default function SidePanel() {
     value: totalKnowledge,
     testId: "stat-knowledge",
     visible: true,
-    icon: hasScriptorium ? "✧" : undefined,
-    iconColor: hasScriptorium ? "text-blue-300/80" : undefined,
-    tooltip: hasClerksHut ? (
+    icon: "✧",
+    iconColor: "text-blue-300/80",
+    tooltip: (
       <span className="text-gray-400">{t("sidePanel.statKnowledgeTooltip")}</span>
-    ) : undefined,
+    ),
   });
 
-  // Build combined madness tooltip
-  let madnessTooltipContent: React.ReactNode = undefined;
-  if (hasClerksHut) {
-    const { fromItems, fromBuildings, fromEvents } =
-      getMadnessComponents(gameState);
-    const showMadnessBreakdown =
-      fromItems !== 0 ||
-      fromBuildings !== 0 ||
-      fromEvents !== 0;
-    madnessTooltipContent = (
-      <>
-        <div className="text-gray-400">{t("sidePanel.statMadnessTooltip")}</div>
-        {showMadnessBreakdown && (
+  const { fromItems, fromBuildings, fromEvents } =
+    getMadnessComponents(gameState);
+  const showMadnessBreakdown =
+    fromItems !== 0 ||
+    fromBuildings !== 0 ||
+    fromEvents !== 0;
+  const madnessTooltipContent = (
+    <>
+      <div className="text-gray-400">{t("sidePanel.statMadnessTooltip")}</div>
+      {showMadnessBreakdown && (
+        <div>
           <div>
-            <div>
-              {t("sidePanel.madnessFromItems", {
-                value: formatSignedNumber(fromItems),
-              })}
-            </div>
-            <div>
-              {t("sidePanel.madnessFromBuildings", {
-                value: formatSignedNumber(fromBuildings),
-              })}
-            </div>
-            <div>
-              {t("sidePanel.madnessFromEvents", {
-                value: formatSignedNumber(fromEvents),
-              })}
-            </div>
+            {t("sidePanel.madnessFromItems", {
+              value: formatSignedNumber(fromItems),
+            })}
           </div>
-        )}
-      </>
-    );
-  } else {
-    madnessTooltipContent = undefined;
-  }
+          <div>
+            {t("sidePanel.madnessFromBuildings", {
+              value: formatSignedNumber(fromBuildings),
+            })}
+          </div>
+          <div>
+            {t("sidePanel.madnessFromEvents", {
+              value: formatSignedNumber(fromEvents),
+            })}
+          </div>
+        </div>
+      )}
+    </>
+  );
 
   statsItems.push({
     id: "madness",
@@ -677,9 +668,9 @@ export default function SidePanel() {
     value: totalMadness,
     testId: "stat-madness",
     visible: true,
-    icon: hasScriptorium ? "✺" : undefined,
-    iconColor: hasScriptorium ? "text-violet-300/80" : undefined,
-    tooltip: hasClerksHut ? madnessTooltipContent : undefined,
+    icon: "✺",
+    iconColor: "text-violet-300/80",
+    tooltip: madnessTooltipContent,
   });
 
   // Dynamically generate fortification items from state
@@ -919,17 +910,14 @@ export default function SidePanel() {
                 );
               }}
               resourceChanges={resourceChanges}
-              showNotifications={buildings.clerksHut > 0}
+              showNotifications
               onResourceChange={(change) => {
-                if (buildings.clerksHut > 0) {
-                  setResourceChanges((prev) => {
-                    // Keep only the last 50 changes to prevent unbounded growth
-                    const updated = [...prev, change];
-                    return updated.slice(-50);
-                  });
-                }
+                setResourceChanges((prev) => {
+                  const updated = [...prev, change];
+                  return updated.slice(-50);
+                });
               }}
-              forceNotifications={buildings.clerksHut > 0}
+              forceNotifications
             />
           )}
         </div>

@@ -5,6 +5,7 @@ import {
   getVillagersInVillage,
   getPopulationProduction,
   getTotalPopulationEffects,
+  getScholarInsightPerWorker,
 } from './population';
 import { DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE } from './rules/skillUpgrades';
 import { GameState } from '@shared/schema';
@@ -398,7 +399,7 @@ describe('Population Production Display Tests', () => {
       );
       expect(baseline.food).toBe(
         withoutAssignments.food -
-          3 * DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
+        3 * DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
       );
     });
 
@@ -689,5 +690,54 @@ describe('Population Production Display Tests', () => {
       expect(displayedEffects.food).toBe(foodFromJobs - totalPop);
       expect(displayedEffects.wood).toBe(-totalPop);
     });
+  });
+});
+
+describe('Scholar insight production', () => {
+  it('returns 0 insight per worker without clerk-chain buildings', () => {
+    const state = createTestState({
+      buildings: { ...createTestState().buildings, clerksHut: 0, scriptorium: 0, inkwardenAcademy: 0 },
+    });
+    expect(getScholarInsightPerWorker(state)).toBe(0);
+  });
+
+  it('uses highest clerk-chain tier only (not additive)', () => {
+    const state = createTestState({
+      buildings: {
+        ...createTestState().buildings,
+        clerksHut: 1,
+        scriptorium: 1,
+        inkwardenAcademy: 1,
+      },
+    });
+    expect(getScholarInsightPerWorker(state)).toBe(3);
+  });
+
+  it('produces tiered insight per scholar count', () => {
+    const clerksOnly = createTestState({
+      buildings: { ...createTestState().buildings, clerksHut: 1, scriptorium: 0, inkwardenAcademy: 0 },
+      villagers: { ...createTestState().villagers, scholar: 2, free: 0 },
+    });
+    const prod = getPopulationProduction('scholar', 2, clerksOnly);
+    const insight = prod.find((p) => p.resource === 'insight');
+    expect(insight?.totalAmount).toBe(2);
+
+    const academy = createTestState({
+      buildings: { ...createTestState().buildings, clerksHut: 1, scriptorium: 1, inkwardenAcademy: 1 },
+      villagers: { ...createTestState().villagers, scholar: 1, free: 0 },
+    });
+    const prod3 = getPopulationProduction('scholar', 1, academy);
+    expect(prod3.find((p) => p.resource === 'insight')?.totalAmount).toBe(3);
+  });
+
+  it('includes scholar insight and upkeep in getTotalPopulationEffects', () => {
+    const state = createTestState({
+      buildings: { ...createTestState().buildings, clerksHut: 1 },
+      villagers: { ...createTestState().villagers, scholar: 1, free: 0 },
+    });
+    const effects = getTotalPopulationEffects(state, ['scholar']);
+    expect(effects.insight).toBe(1);
+    expect(effects.wood).toBe(-1);
+    expect(effects.food).toBe(-1);
   });
 });
