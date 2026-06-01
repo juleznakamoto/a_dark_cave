@@ -12,6 +12,8 @@ import { useGameStore } from "@/game/state";
 import { getUiTooltip } from "@/i18n/tooltipLabels";
 import type { GameState } from "@shared/schema";
 
+const BADGE_SIZE_PX = 16;
+
 type ActionInsightBadgeProps = {
   actionId: string;
   state: GameState;
@@ -36,7 +38,16 @@ export function ActionInsightBadge({ actionId, state }: ActionInsightBadgeProps)
 
   return (
     <div
-      className={`absolute bottom-[-10px] right-[-7px] z-[30] pointer-events-auto ${!canAfford ? "opacity-40" : ""}`}
+      className={!canAfford ? "opacity-40" : undefined}
+      style={{
+        position: "absolute",
+        bottom: "-7px",
+        right: "-7px",
+        width: BADGE_SIZE_PX,
+        height: BADGE_SIZE_PX,
+        zIndex: 30,
+        pointerEvents: "auto",
+      }}
       onPointerDown={(e) => e.stopPropagation()}
     >
       <TooltipWrapper
@@ -44,11 +55,12 @@ export function ActionInsightBadge({ actionId, state }: ActionInsightBadgeProps)
           <span className={canAfford ? "" : "text-red-400"}>{costTooltip}</span>
         }
         tooltipId={`${actionId}-insight-badge`}
-        className="inline-flex"
+        className="block h-full w-full"
+        tooltipTriggerAsChild
       >
         <button
           type="button"
-          className="inline-flex border-0 bg-transparent p-0 cursor-pointer disabled:cursor-not-allowed"
+          className="relative flex h-full w-full items-center justify-center border-0 bg-transparent p-0 cursor-pointer disabled:cursor-not-allowed"
           aria-label={costTooltip}
           disabled={!canAfford || playing}
           onClick={(e) => {
@@ -57,7 +69,7 @@ export function ActionInsightBadge({ actionId, state }: ActionInsightBadgeProps)
             if (canAfford) revealActionEffects(actionId);
           }}
         >
-          <BuildingActionBadge playing={playing} />
+          <BuildingActionBadge playing={playing} embedded />
         </button>
       </TooltipWrapper>
     </div>

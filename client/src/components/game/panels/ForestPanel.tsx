@@ -490,16 +490,12 @@ export default function ForestPanel() {
           isChopWood ? handleChopWoodAnimationTrigger : isHunt ? handleHuntAnimationTrigger : undefined
         }
         onMouseEnter={() => {
-          if (state.buildings.inkwardenAcademy > 0) {
-            setHighlightedResources(
-              getResourcesFromActionCost(actionId, state),
-            );
-          }
+          setHighlightedResources(
+            getResourcesFromActionCost(actionId, state),
+          );
         }}
         onMouseLeave={() => {
-          if (state.buildings.inkwardenAcademy > 0) {
-            setHighlightedResources([]);
-          }
+          setHighlightedResources([]);
         }}
         style={{ pointerEvents: 'auto' }}
       >

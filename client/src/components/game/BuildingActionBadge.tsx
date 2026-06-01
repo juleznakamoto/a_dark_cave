@@ -4,16 +4,25 @@ import { cn } from "@/lib/utils";
 type BuildingActionBadgeProps = {
   /** Force the hover animation (e.g. during Insight reveal cooldown). */
   playing?: boolean;
+  /** When true, badge fills its parent instead of self-anchoring with absolute CSS. */
+  embedded?: boolean;
 };
 
-export function BuildingActionBadge({ playing = false }: BuildingActionBadgeProps) {
+export function BuildingActionBadge({
+  playing = false,
+  embedded = false,
+}: BuildingActionBadgeProps) {
   const id = useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const maskId = `building-action-badge-mask-${id}`;
   const gradientId = `building-action-badge-gradient-${id}`;
 
   return (
     <span
-      className={cn("building-action-badge", playing && "building-action-badge--playing")}
+      className={cn(
+        "building-action-badge",
+        embedded && "building-action-badge--embedded",
+        playing && "building-action-badge--playing",
+      )}
       aria-hidden="true"
     >
       <span className="building-action-badge__idle" />

@@ -620,33 +620,38 @@ export default function VillagePanel() {
       ? actionId.slice(5, 6).toLowerCase() + actionId.slice(6)
       : null;
     const isUpgrade = buildingKey ? isBuildingUpgrade(buildingKey) : false;
+    const hasRevealedEffects = (state.revealedEffects ?? []).includes(actionId);
     const tooltipContent = (
       <div
-        className="text-xs flex items-start gap-2"
-        style={buildingHint ? { width: "12rem" } : undefined}
+        className="text-xs"
+        style={
+          buildingHint || hasRevealedEffects ? { width: "12rem" } : undefined
+        }
       >
-        <div className="flex-1 min-w-0 whitespace-nowrap">
-          {costBreakdown.map((cost, index) => (
-            <div
-              key={index}
-              className={
-                cost.satisfied ? "text-foreground" : "text-muted-foreground"
-              }
-            >
-              {cost.text}
-            </div>
-          ))}
-          {buildingHint && (
-            <div className="border-t border-border my-1 pt-1 text-muted-foreground whitespace-normal">
-              {buildingHint}
-            </div>
+        <div className="flex items-start gap-2">
+          <div className="flex-1 min-w-0 whitespace-nowrap">
+            {costBreakdown.map((cost, index) => (
+              <div
+                key={index}
+                className={
+                  cost.satisfied ? "text-foreground" : "text-muted-foreground"
+                }
+              >
+                {cost.text}
+              </div>
+            ))}
+            {buildingHint && (
+              <div className="border-t border-border my-1 pt-1 text-muted-foreground whitespace-normal">
+                {buildingHint}
+              </div>
+            )}
+          </div>
+          {isUpgrade && (
+            <span className="font-noto-symbols-2 text-green-700 leading-none shrink-0">
+              ↑
+            </span>
           )}
         </div>
-        {isUpgrade && (
-          <span className="font-noto-symbols-2 text-green-700 leading-none shrink-0">
-            ↑
-          </span>
-        )}
         {renderRevealedEffectsTooltipSection(actionId, state)}
       </div>
     );

@@ -212,6 +212,16 @@ body {
     box-shadow 200ms ease;
 }
 
+/* Fills ActionInsightBadge host (16×16); do not self-anchor with absolute offsets. */
+.building-action-badge--embedded {
+  position: relative;
+  right: auto;
+  bottom: auto;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .building-action-badge__idle,
 .building-action-badge__svg {
   position: absolute;
@@ -231,8 +241,11 @@ body {
   pointer-events: none;
 }
 
-.building-action-badge:not(:hover) .building-action-badge__clip,
-.building-action-badge:not(:hover) .building-action-badge__triangle {
+/* Idle: static blue disc. Hover or reveal cooldown (--playing) runs blob animation. */
+.building-action-badge:not(:hover):not(.building-action-badge--playing)
+  .building-action-badge__clip,
+.building-action-badge:not(:hover):not(.building-action-badge--playing)
+  .building-action-badge__triangle {
   animation: none !important;
   filter: none;
   transform: none;

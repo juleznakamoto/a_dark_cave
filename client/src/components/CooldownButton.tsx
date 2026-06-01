@@ -68,6 +68,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
     const executionAbortEligible = useGameStore((s) => s.executionAbortEligible?.[actionIdFromProps]);
     const hasAbortSnapshot = useGameStore((s) => s.executionSpendSnapshots?.[actionIdFromProps] != null);
+    const hasClerksHut = useGameStore((s) => (s.buildings.clerksHut ?? 0) > 0);
     const gold = useGameStore((s) => s.resources.gold ?? 0);
     const abortActionExecution = useGameStore((s) => s.abortActionExecution);
 
@@ -235,6 +236,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     const showAbortOverlay =
       isAbortActionType &&
       isExecuting &&
+      hasClerksHut &&
       executionAbortEligible === true &&
       hasAbortSnapshot;
     const canAffordAbort = gold >= GAME_CONSTANTS.ACTION_ABORT_GOLD_COST;
