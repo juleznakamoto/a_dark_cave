@@ -193,7 +193,7 @@ export function getEventVillagerCostTooltipRows(
 ): Array<{ text: string; satisfied: boolean }> {
   const free = getFreeVillagerCount(state);
   const canAfford = free >= costAmount;
-  const rows: Array<{ text: string; satisfied: boolean }> = [
+  return [
     {
       text: getUiTooltip(
         "freeVillagerCost",
@@ -205,19 +205,6 @@ export function getEventVillagerCostTooltipRows(
       satisfied: canAfford,
     },
   ];
-
-  if (!canAfford) {
-    rows.push({
-      text: getUiTooltip(
-        "freeVillagersAvailable",
-        free === 1 ? "{{count}} Free Villager" : "{{count}} Free Villagers",
-        { count: free },
-      ),
-      satisfied: false,
-    });
-  }
-
-  return rows;
 }
 
 function buildAffordanceFromCosts(

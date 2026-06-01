@@ -144,15 +144,12 @@ describe("eventAffordance", () => {
     expect(amount).toBe(20);
   });
 
-  it("shows available free villagers in tooltip when cost is unaffordable", () => {
+  it("shows free villager cost in tooltip when unaffordable", () => {
     const rows = getEventVillagerCostTooltipRows(20, makeState({}, { free: 15 }));
 
-    expect(rows).toHaveLength(2);
+    expect(rows).toHaveLength(1);
     expect(rows[0].text).toContain("20");
     expect(rows[0].text).toContain("Free Villager");
     expect(rows[0].satisfied).toBe(false);
-    expect(rows[1].text).toContain("15");
-    expect(rows[1].text).toContain("Free Villager");
-    expect(rows[1].satisfied).toBe(false);
   });
 });

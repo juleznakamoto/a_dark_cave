@@ -12,8 +12,6 @@
     "villagerCost_other": "-{{count}} Villagers",
     "freeVillagerCost_one": "-{{count}} Free Villager",
     "freeVillagerCost_other": "-{{count}} Free Villagers",
-    "freeVillagersAvailable_one": "{{count}} Free Villager",
-    "freeVillagersAvailable_other": "{{count}} Free Villagers",
     "mapFragmentProgress": "{{count}} of {{total}} map fragments",
     "defense": "Defense: {{value}}",
     "madnessFromItems": "{{value}} from Items",
