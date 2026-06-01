@@ -200,7 +200,8 @@ body {
   width: 16px;
   height: 16px;
   overflow: hidden;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: default;
   border: 1px solid #1e40af;
   border-radius: 9999px;
   opacity: 0.55;
@@ -235,7 +236,7 @@ body {
   filter: contrast(15);
 }
 
-.building-build-button:hover .building-action-badge {
+.building-action-badge:hover {
   opacity: 1;
   border-color: #1d4ed8;
   box-shadow:
@@ -243,20 +244,20 @@ body {
     0 4px 12px 0 rgb(37 99 235 / 0.35);
 }
 
-.building-build-button:hover .building-action-badge__idle {
+.building-action-badge:hover .building-action-badge__idle {
   opacity: 0;
 }
 
-.building-build-button:hover .building-action-badge__svg {
+.building-action-badge:hover .building-action-badge__svg {
   opacity: 1;
   animation: building-action-badge-blue-glow 2s ease-in-out infinite;
 }
 
-.building-build-button:hover .building-action-badge__clip {
+.building-action-badge:hover .building-action-badge__clip {
   animation: building-action-badge-roundness 1s linear infinite;
 }
 
-.building-build-button:hover .building-action-badge__triangle {
+.building-action-badge:hover .building-action-badge__triangle {
   filter: blur(7px);
 }
 
@@ -264,7 +265,7 @@ body {
   transform-origin: 50% 50%;
 }
 
-.building-build-button:hover .building-action-badge__triangle--one {
+.building-action-badge:hover .building-action-badge__triangle--one {
   animation: building-action-badge-rotation 2s linear infinite reverse;
 }
 
@@ -272,7 +273,7 @@ body {
   transform-origin: 50% 60%;
 }
 
-.building-build-button:hover .building-action-badge__triangle--two {
+.building-action-badge:hover .building-action-badge__triangle--two {
   animation: building-action-badge-rotation 2s linear infinite;
   animation-delay: -0.67s;
 }
@@ -282,12 +283,12 @@ body {
   transform-origin: 40% 40%;
 }
 
-.building-build-button:hover .building-action-badge__triangle--three,
-.building-build-button:hover .building-action-badge__triangle--four {
+.building-action-badge:hover .building-action-badge__triangle--three,
+.building-action-badge:hover .building-action-badge__triangle--four {
   animation: building-action-badge-rotation 2s linear infinite reverse;
 }
 
-.building-build-button:hover .building-action-badge__triangle--four {
+.building-action-badge:hover .building-action-badge__triangle--four {
   animation-delay: -1s;
 }
 
@@ -296,12 +297,12 @@ body {
   transform-origin: 60% 40%;
 }
 
-.building-build-button:hover .building-action-badge__triangle--five,
-.building-build-button:hover .building-action-badge__triangle--six {
+.building-action-badge:hover .building-action-badge__triangle--five,
+.building-action-badge:hover .building-action-badge__triangle--six {
   animation: building-action-badge-rotation 2s linear infinite;
 }
 
-.building-build-button:hover .building-action-badge__triangle--six {
+.building-action-badge:hover .building-action-badge__triangle--six {
   animation-delay: -1.33s;
 }
 

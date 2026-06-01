@@ -677,10 +677,7 @@ export default function VillagePanel() {
 
     if (actionId.startsWith("build")) {
       return (
-        <div
-          key={`${actionId}-wrapper`}
-          className="building-build-button relative inline-block"
-        >
+        <div key={`${actionId}-wrapper`} className="relative inline-block">
           {button}
           <BuildingActionBadge />
         </div>
