@@ -202,10 +202,10 @@ body {
   overflow: hidden;
   pointer-events: auto;
   cursor: default;
-  border: 1px solid #1e40af;
+  border: 1px solid #1233a1;
   border-radius: 9999px;
   opacity: 0.55;
-  background: #3b82f6;
+  background: #619af5;
   transition:
     opacity 200ms ease,
     border-color 200ms ease,
@@ -222,7 +222,7 @@ body {
 
 .building-action-badge__idle {
   border-radius: inherit;
-  background: radial-gradient(circle at 35% 30%, #60a5fa, #3b82f6 56%, #2563eb);
+  background: #2563eb;
 }
 
 .building-action-badge__svg {
@@ -240,6 +240,9 @@ body {
 
 .building-action-badge__clip {
   filter: contrast(15);
+  transform: scale(1.1);
+  transform-origin: 50% 50%;
+  transform-box: fill-box;
 }
 
 .building-action-badge:hover {
