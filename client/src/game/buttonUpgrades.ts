@@ -199,6 +199,7 @@ export const PRIOR_ELIGIBLE_ACTIONS = new Set<string>([
   "craftEmberBomb",
   "craftAshfireBomb",
   "craftVoidBomb",
+  "craftVeinfireElixir",
 ]);
 
 /**
