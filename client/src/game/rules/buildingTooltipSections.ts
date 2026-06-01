@@ -177,6 +177,8 @@ export function getLevelSectionEffectLines(
     const prevLine = resolveTooltipEffectEntryForLevelSection(prev, isDamaged);
     if (currLine !== prevLine) {
       lines.push(currLine);
+    } else if (typeof curr !== "string" && curr.repeatEveryLevel) {
+      lines.push(currLine);
     }
   }
 

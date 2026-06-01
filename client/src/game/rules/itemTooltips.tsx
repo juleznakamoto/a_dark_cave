@@ -161,7 +161,7 @@ function renderLeveledEffectsBlock(
   if (!hasCurrent && visibleSections.length === 0) return null;
 
   return (
-    <div key="effects" className="mt-1">
+    <div key="effects" className="mt-1 text-gray-400">
       {hasCurrent &&
         currentEffects.map((effect, idx) => (
           <div key={`current-${idx}`}>{effect}</div>
@@ -171,7 +171,7 @@ function renderLeveledEffectsBlock(
           {(hasCurrent || idx > 0) && (
             <div className="border-t border-border my-1" />
           )}
-          <div className="text-gray-300">
+          <div>
             {getUiTooltip("level", "Level {{level}}", {
               level: section.level,
             })}

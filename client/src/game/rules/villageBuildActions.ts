@@ -2187,7 +2187,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Trade Post",
     description: "Trading post attracting merchants selling goods",
     tooltipEffects: [
-      bt("higherTradeAmounts", "Higher Trade Amounts"),
+      { ...bt("higherTradeAmounts", "Higher Trade Amounts"), repeatEveryLevel: true },
       bt("tradesAtMerchant", "+{{count}} Trade at Travelling Merchant", { count: 1 }),
       bt("unlocksCallMerchant", "Unlocks Call Merchant"),
     ],
@@ -2218,7 +2218,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Grand Bazaar",
     description: "Sprawling marketplace attracting more merchants",
     tooltipEffects: [
-      bt("higherTradeAmounts", "Higher Trade Amounts"),
+      { ...bt("higherTradeAmounts", "Higher Trade Amounts"), repeatEveryLevel: true },
       bt("tradesAtMerchant", "+{{count}} Trades at Travelling Merchant", { count: 2 }),
     ],
     building: true,
@@ -2249,7 +2249,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Merchants Guild",
     description: "Powerful guild bringing the best trades and merchants",
     tooltipEffects: [
-      bt("higherTradeAmounts", "Higher Trade Amounts"),
+      { ...bt("higherTradeAmounts", "Higher Trade Amounts"), repeatEveryLevel: true },
       bt("tradesAtMerchant", "+{{count}} Trades at Travelling Merchant", { count: 3 }),
     ],
     building: true,

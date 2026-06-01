@@ -39,12 +39,13 @@ function maxTierBuildingKey(chain: string[]): string {
 
 function findRepeatedLinesAcrossSections(
   levelSections: { level: number; effects: string[] }[],
+  allowedRepeats = new Set<string>(),
 ): string[] {
   const seen = new Set<string>();
   const repeats: string[] = [];
   for (const section of levelSections) {
     for (const line of section.effects) {
-      if (seen.has(line)) {
+      if (seen.has(line) && !allowedRepeats.has(line)) {
         repeats.push(`Level ${section.level}: "${line}"`);
       }
       seen.add(line);
@@ -187,7 +188,12 @@ describe("building tooltip audit at max tier", () => {
         chainForTooltip!,
         gameState,
       );
-      const repeats = findRepeatedLinesAcrossSections(levelSections);
+      const allowedRepeats =
+        chainName === "trade" ? new Set(["Higher Trade Amounts"]) : undefined;
+      const repeats = findRepeatedLinesAcrossSections(
+        levelSections,
+        allowedRepeats,
+      );
       expect(repeats, repeats.join("; ")).toEqual([]);
     });
 
@@ -271,6 +277,17 @@ describe("building tooltip audit at max tier", () => {
     expect(
       merchantsGuild.levelSections.slice(1).flatMap((s) => s.effects),
     ).not.toContain("Unlocks Call Merchant");
+    expect(
+      merchantsGuild.levelSections.map((s) => s.effects),
+    ).toEqual([
+      [
+        "Higher Trade Amounts",
+        "+1 Trade at Travelling Merchant",
+        "Unlocks Call Merchant",
+      ],
+      ["Higher Trade Amounts", "+2 Trades at Travelling Merchant"],
+      ["Higher Trade Amounts", "+3 Trades at Travelling Merchant"],
+    ]);
 
     const grandBlacksmith = getBuildingTooltipSnapshot(
       "grandBlacksmith",
