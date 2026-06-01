@@ -192,6 +192,157 @@ body {
   animation: tab-blink-new 1.2s ease-in-out infinite;
 }
 
+.building-action-badge {
+  position: absolute;
+  right: -7px;
+  bottom: -7px;
+  z-index: 20;
+  width: 16px;
+  height: 16px;
+  overflow: hidden;
+  pointer-events: none;
+  border: 1px solid #1e40af;
+  border-radius: 9999px;
+  opacity: 0.55;
+  background: #3b82f6;
+  box-shadow: 0 0 0 1px rgb(30 64 175 / 0.2);
+  transition:
+    opacity 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.building-action-badge__idle,
+.building-action-badge__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.building-action-badge__idle {
+  border-radius: inherit;
+  background: radial-gradient(circle at 35% 30%, #60a5fa, #3b82f6 56%, #2563eb);
+  transition: opacity 160ms ease;
+}
+
+.building-action-badge__svg {
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.building-action-badge__clip {
+  filter: contrast(15);
+}
+
+.building-build-button:hover .building-action-badge {
+  opacity: 1;
+  border-color: #1d4ed8;
+  box-shadow:
+    0 0 10px 0 rgb(96 165 250 / 0.45),
+    0 4px 12px 0 rgb(37 99 235 / 0.35);
+}
+
+.building-build-button:hover .building-action-badge__idle {
+  opacity: 0;
+}
+
+.building-build-button:hover .building-action-badge__svg {
+  opacity: 1;
+  animation: building-action-badge-blue-glow 2s ease-in-out infinite;
+}
+
+.building-build-button:hover .building-action-badge__clip {
+  animation: building-action-badge-roundness 1s linear infinite;
+}
+
+.building-build-button:hover .building-action-badge__triangle {
+  filter: blur(7px);
+}
+
+.building-action-badge__triangle--one {
+  transform-origin: 50% 50%;
+}
+
+.building-build-button:hover .building-action-badge__triangle--one {
+  animation: building-action-badge-rotation 2s linear infinite reverse;
+}
+
+.building-action-badge__triangle--two {
+  transform-origin: 50% 60%;
+}
+
+.building-build-button:hover .building-action-badge__triangle--two {
+  animation: building-action-badge-rotation 2s linear infinite;
+  animation-delay: -0.67s;
+}
+
+.building-action-badge__triangle--three,
+.building-action-badge__triangle--four {
+  transform-origin: 40% 40%;
+}
+
+.building-build-button:hover .building-action-badge__triangle--three,
+.building-build-button:hover .building-action-badge__triangle--four {
+  animation: building-action-badge-rotation 2s linear infinite reverse;
+}
+
+.building-build-button:hover .building-action-badge__triangle--four {
+  animation-delay: -1s;
+}
+
+.building-action-badge__triangle--five,
+.building-action-badge__triangle--six {
+  transform-origin: 60% 40%;
+}
+
+.building-build-button:hover .building-action-badge__triangle--five,
+.building-build-button:hover .building-action-badge__triangle--six {
+  animation: building-action-badge-rotation 2s linear infinite;
+}
+
+.building-build-button:hover .building-action-badge__triangle--six {
+  animation-delay: -1.33s;
+}
+
+@keyframes building-action-badge-rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes building-action-badge-roundness {
+  0% {
+    filter: contrast(15);
+  }
+
+  20%,
+  40% {
+    filter: contrast(3);
+  }
+
+  60%,
+  100% {
+    filter: contrast(15);
+  }
+}
+
+@keyframes building-action-badge-blue-glow {
+
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+
+  50% {
+    filter: brightness(1.35);
+  }
+}
+
 @keyframes gambler-goal-blink {
 
   0%,

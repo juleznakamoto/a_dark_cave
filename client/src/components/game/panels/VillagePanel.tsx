@@ -43,6 +43,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { BuildingActionBadge } from "@/components/game/BuildingActionBadge";
 import {
   SuccessParticles,
   useFeedFireParticles,
@@ -642,7 +643,7 @@ export default function VillagePanel() {
       </div>
     );
 
-    return (
+    const button = (
       <CooldownButton
         key={actionId}
         onClick={() => executeAction(actionId)}
@@ -673,6 +674,20 @@ export default function VillagePanel() {
         {displayLabel}
       </CooldownButton>
     );
+
+    if (actionId.startsWith("build")) {
+      return (
+        <div
+          key={`${actionId}-wrapper`}
+          className="building-build-button relative inline-block"
+        >
+          {button}
+          <BuildingActionBadge />
+        </div>
+      );
+    }
+
+    return button;
   };
 
   // Hold-to-repeat state management (moved outside to avoid conditional hooks)
