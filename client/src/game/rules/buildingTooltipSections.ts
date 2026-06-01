@@ -251,11 +251,15 @@ export function getUpgradeChainCurrentEffectLines(
 
   for (let i = 0; i < currentIndex; i++) {
     const prevAction = villageBuildActions[buildingKeyToActionId(chain[i])];
+    if (!prevAction) continue;
+
     for (const entry of getBuildingTooltipEffectEntries(prevAction, gameState)) {
       if (typeof entry === "string") continue;
       if (!entry.key.startsWith("unlocks")) continue;
       if (maxKeys.has(entry.key) || inheritedKeys.has(entry.key)) continue;
-      inherited.push(resolveTooltipEffectEntry(entry, isDamaged));
+      // Earlier tiers are not damaged — only this tier can be. Inherited lines are
+      // unlocks* only (no amount/value), so damage halving does not apply here.
+      inherited.push(resolveTooltipEffectEntry(entry, false));
       inheritedKeys.add(entry.key);
     }
   }

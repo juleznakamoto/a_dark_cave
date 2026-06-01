@@ -62,6 +62,8 @@ function findDeltaInsteadOfAbsoluteIssues(
 
   for (let index = 0; index < chain.length; index++) {
     const buildAction = villageBuildActions[buildingKeyToActionId(chain[index])];
+    if (!buildAction) continue;
+
     const entries = getBuildingTooltipEffectEntries(buildAction, gameState);
     const sectionLines = getLevelSectionEffectLines(
       prevEntries,
@@ -129,6 +131,8 @@ function findMissingInheritedUnlocks(
   const issues: string[] = [];
 
   const tier1 = villageBuildActions[buildingKeyToActionId(chain[0])];
+  if (!tier1) return issues;
+
   const tier1Entries = getBuildingTooltipEffectEntries(tier1, gameState);
 
   for (const entry of tier1Entries) {
@@ -204,6 +208,18 @@ describe("building tooltip audit at max tier", () => {
       expect(footnotes, footnotes.join("; ")).toEqual([]);
     });
   }
+
+  it("inherited unlock lines are unchanged by isDamaged (no numeric stats to halve)", () => {
+    const entry = villageBuildActions.buildBlacksmith.tooltipEffects?.[0];
+    expect(entry).toBeDefined();
+    expect(typeof entry).not.toBe("string");
+    if (typeof entry === "string") return;
+
+    expect(entry.key.startsWith("unlocks")).toBe(true);
+    const undamaged = resolveTooltipEffectEntryForLevelSection(entry, false);
+    const damaged = resolveTooltipEffectEntryForLevelSection(entry, true);
+    expect(undamaged).toBe(damaged);
+  });
 
   it("documents expected max-tier snapshots for key chains", () => {
     expect(
