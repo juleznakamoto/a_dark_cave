@@ -141,6 +141,7 @@
       "steelForgerSteel": "炼钢工：+{{amount}} 钢",
       "tannerLeather": "制革工：+{{amount}} 皮革"
     },
+    "obsidianOrbFocusRate": "专注：每15分钟1点",
     "obsidianOrbFocusCountdown": "{{time}} 后获得下一点专注",
     "obsidianOrbFocusCap": "专注储备已满 ({{max}})"
   }

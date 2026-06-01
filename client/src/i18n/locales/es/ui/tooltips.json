@@ -141,6 +141,7 @@
       "steelForgerSteel": "Forjador de acero: +{{amount}} acero",
       "tannerLeather": "Curtidor: +{{amount}} cuero"
     },
+    "obsidianOrbFocusRate": "Concentración: 1 cada 15 minutos",
     "obsidianOrbFocusCountdown": "{{time}} hasta el próximo punto de concentración",
     "obsidianOrbFocusCap": "Reserva de concentración llena ({{max}})"
   }

@@ -141,6 +141,7 @@
       "steelForgerSteel": "Stahlschmied: +{{amount}} Stahl",
       "tannerLeather": "Gerber: +{{amount}} Leder"
     },
+    "obsidianOrbFocusRate": "Fokus: 1 alle 15 Minuten",
     "obsidianOrbFocusCountdown": "{{time}} bis zum nächsten Fokuspunkt",
     "obsidianOrbFocusCap": "Fokusreserve voll ({{max}})"
   }

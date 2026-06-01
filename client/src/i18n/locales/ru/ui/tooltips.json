@@ -141,6 +141,7 @@
       "steelForgerSteel": "Сталевар: +{{amount}} стали",
       "tannerLeather": "Дубильщик: +{{amount}} кожи"
     },
+    "obsidianOrbFocusRate": "Концентрация: 1 каждые 15 минут",
     "obsidianOrbFocusCountdown": "{{time}} до следующего очка концентрации",
     "obsidianOrbFocusCap": "Резерв концентрации полон ({{max}})"
   }

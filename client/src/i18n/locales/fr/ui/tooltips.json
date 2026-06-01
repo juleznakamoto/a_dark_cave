@@ -141,6 +141,7 @@
       "steelForgerSteel": "Forgeron d'acier : +{{amount}} acier",
       "tannerLeather": "Tanneur : +{{amount}} cuir"
     },
+    "obsidianOrbFocusRate": "Concentration : 1 toutes les 15 minutes",
     "obsidianOrbFocusCountdown": "{{time}} avant le prochain point de concentration",
     "obsidianOrbFocusCap": "Réserve de concentration pleine ({{max}})"
   }

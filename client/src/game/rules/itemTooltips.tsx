@@ -700,28 +700,36 @@ export function renderItemTooltip(
       )}
       {itemId === "obsidian_orb" &&
         useGameStore.getState().relics?.obsidian_orb && (
-          <div>
-            {(() => {
-              const store = useGameStore.getState();
-              const now = Date.now();
-              const next = store.obsidianOrbState?.nextFocusGainTime ?? 0;
-              const points =
-                (store.focusState as { points?: number } | undefined)?.points ?? 0;
-              if (points >= MAX_FOCUS_POINTS) {
+          <>
+            <div>
+              {getUiTooltip(
+                "obsidianOrbFocusRate",
+                "Focus: 1 per 15 minutes",
+              )}
+            </div>
+            <div>
+              {(() => {
+                const store = useGameStore.getState();
+                const now = Date.now();
+                const next = store.obsidianOrbState?.nextFocusGainTime ?? 0;
+                const points =
+                  (store.focusState as { points?: number } | undefined)?.points ?? 0;
+                if (points >= MAX_FOCUS_POINTS) {
+                  return getUiTooltip(
+                    "obsidianOrbFocusCap",
+                    "Focus reserve full ({{max}})",
+                    { max: MAX_FOCUS_POINTS },
+                  );
+                }
+                const remainingMs = Math.max(0, next - now);
                 return getUiTooltip(
-                  "obsidianOrbFocusCap",
-                  "Focus reserve full ({{max}})",
-                  { max: MAX_FOCUS_POINTS },
+                  "obsidianOrbFocusCountdown",
+                  "{{time}} until next Focus Point is gained",
+                  { time: formatObsidianOrbFocusCountdown(remainingMs) },
                 );
-              }
-              const remainingMs = Math.max(0, next - now);
-              return getUiTooltip(
-                "obsidianOrbFocusCountdown",
-                "{{time}} until next Focus Point is gained",
-                { time: formatObsidianOrbFocusCountdown(remainingMs) },
-              );
-            })()}
-          </div>
+              })()}
+            </div>
+          </>
         )}
       {itemId === "bone_dice" && (
         <div>
