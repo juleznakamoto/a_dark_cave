@@ -43,7 +43,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
-import { BuildingActionBadge } from "@/components/game/BuildingActionBadge";
+// import { BuildingActionBadge } from "@/components/game/BuildingActionBadge";
 import {
   SuccessParticles,
   useFeedFireParticles,
@@ -675,14 +675,14 @@ export default function VillagePanel() {
       </CooldownButton>
     );
 
-    if (actionId.startsWith("build")) {
-      return (
-        <div key={`${actionId}-wrapper`} className="relative inline-block">
-          {button}
-          <BuildingActionBadge />
-        </div>
-      );
-    }
+    // if (actionId.startsWith("build")) {
+    //   return (
+    //     <div key={`${actionId}-wrapper`} className="relative inline-block">
+    //       {button}
+    //       <BuildingActionBadge />
+    //     </div>
+    //   );
+    // }
 
     return button;
   };
