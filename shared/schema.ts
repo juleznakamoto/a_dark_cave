@@ -593,10 +593,10 @@ export const gameStateSchema = z.object({
   /** Legacy; lastSocialPromptPlayTime is no longer used to schedule auto-open. */
   lastSocialPromptPlayTime: z.number().default(0),
   /**
-   * Next rewards-dialog auto-open milestone index (0–7). When playTime reaches
+   * Next rewards-dialog auto-open milestone index (0–5). When playTime reaches
    * `socialPromptAuto`’s `SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS[index]`, the dialog opens once and index increments.
    */
-  socialPromptMilestoneIndex: z.number().int().min(0).max(7).default(0),
+  socialPromptMilestoneIndex: z.number().int().min(0).max(5).default(0),
   /** Legacy scheduler phase (retained for save compatibility; unused for auto-open). */
   socialPromptAutoPhase: z.number().int().min(0).max(2).default(0),
   /**

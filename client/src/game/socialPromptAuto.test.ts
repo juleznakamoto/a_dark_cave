@@ -18,42 +18,38 @@ const claimedPlaylightDiscover = {
 describe("socialPromptMilestoneFloorFromPlayTime", () => {
   it("counts thresholds strictly by active-play milestones", () => {
     expect(socialPromptMilestoneFloorFromPlayTime(0)).toBe(0);
-    expect(socialPromptMilestoneFloorFromPlayTime(14 * MIN)).toBe(0);
-    expect(socialPromptMilestoneFloorFromPlayTime(15 * MIN)).toBe(1);
-    expect(socialPromptMilestoneFloorFromPlayTime(29 * MIN)).toBe(1);
-    expect(socialPromptMilestoneFloorFromPlayTime(30 * MIN)).toBe(2);
-    expect(socialPromptMilestoneFloorFromPlayTime(59 * MIN)).toBe(2);
-    expect(socialPromptMilestoneFloorFromPlayTime(60 * MIN)).toBe(3);
-    expect(socialPromptMilestoneFloorFromPlayTime(89 * MIN)).toBe(3);
-    expect(socialPromptMilestoneFloorFromPlayTime(90 * MIN)).toBe(4);
-    expect(socialPromptMilestoneFloorFromPlayTime(119 * MIN)).toBe(4);
-    expect(socialPromptMilestoneFloorFromPlayTime(120 * MIN)).toBe(5);
-    expect(socialPromptMilestoneFloorFromPlayTime(239 * MIN)).toBe(5);
-    expect(socialPromptMilestoneFloorFromPlayTime(240 * MIN)).toBe(6);
-    expect(socialPromptMilestoneFloorFromPlayTime(359 * MIN)).toBe(6);
-    expect(socialPromptMilestoneFloorFromPlayTime(360 * MIN)).toBe(7);
-    expect(socialPromptMilestoneFloorFromPlayTime(24 * 60 * MIN)).toBe(7);
+    expect(socialPromptMilestoneFloorFromPlayTime(44 * MIN)).toBe(0);
+    expect(socialPromptMilestoneFloorFromPlayTime(45 * MIN)).toBe(1);
+    expect(socialPromptMilestoneFloorFromPlayTime(89 * MIN)).toBe(1);
+    expect(socialPromptMilestoneFloorFromPlayTime(90 * MIN)).toBe(2);
+    expect(socialPromptMilestoneFloorFromPlayTime(179 * MIN)).toBe(2);
+    expect(socialPromptMilestoneFloorFromPlayTime(180 * MIN)).toBe(3);
+    expect(socialPromptMilestoneFloorFromPlayTime(239 * MIN)).toBe(3);
+    expect(socialPromptMilestoneFloorFromPlayTime(240 * MIN)).toBe(4);
+    expect(socialPromptMilestoneFloorFromPlayTime(359 * MIN)).toBe(4);
+    expect(socialPromptMilestoneFloorFromPlayTime(360 * MIN)).toBe(5);
+    expect(socialPromptMilestoneFloorFromPlayTime(24 * 60 * MIN)).toBe(5);
   });
 });
 
 describe("socialPromptHighestMilestoneIndexToOpen", () => {
   it("returns null when all milestones were already shown", () => {
-    expect(socialPromptHighestMilestoneIndexToOpen(24 * 60 * MIN, 7)).toBe(null);
+    expect(socialPromptHighestMilestoneIndexToOpen(24 * 60 * MIN, 5)).toBe(null);
   });
 
   it("returns the next single milestone when only one threshold was crossed", () => {
-    expect(socialPromptHighestMilestoneIndexToOpen(20 * MIN, 0)).toBe(0);
-    expect(socialPromptHighestMilestoneIndexToOpen(20 * MIN, 1)).toBe(null);
+    expect(socialPromptHighestMilestoneIndexToOpen(50 * MIN, 0)).toBe(0);
+    expect(socialPromptHighestMilestoneIndexToOpen(50 * MIN, 1)).toBe(null);
   });
 
   it("skips lower thresholds and returns the highest crossed milestone", () => {
-    expect(socialPromptHighestMilestoneIndexToOpen(65 * MIN, 0)).toBe(2);
-    expect(socialPromptHighestMilestoneIndexToOpen(125 * MIN, 1)).toBe(4);
+    expect(socialPromptHighestMilestoneIndexToOpen(100 * MIN, 0)).toBe(1);
+    expect(socialPromptHighestMilestoneIndexToOpen(200 * MIN, 1)).toBe(2);
   });
 
   it("respects the next milestone index when play time is between thresholds", () => {
-    expect(socialPromptHighestMilestoneIndexToOpen(45 * MIN, 1)).toBe(1);
-    expect(socialPromptHighestMilestoneIndexToOpen(29 * MIN, 1)).toBe(null);
+    expect(socialPromptHighestMilestoneIndexToOpen(100 * MIN, 1)).toBe(1);
+    expect(socialPromptHighestMilestoneIndexToOpen(50 * MIN, 1)).toBe(null);
   });
 });
 
