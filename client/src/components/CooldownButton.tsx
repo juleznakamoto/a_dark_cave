@@ -153,8 +153,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     const actionExecutedRef = useRef<boolean>(false);
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (disabled && !isCoolingDown && !isExecuting) return;
-      if (!isCoolingDown && !isExecuting) {
+      if (disabled && !isCoolingDown && !isExecuting && !isInsightRevealing) return;
+      if (!isCoolingDown && !isExecuting && !isInsightRevealing) {
         actionExecutedRef.current = true;
 
         // Trigger animation if provided - use button center, not click position
@@ -174,7 +174,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       }
     };
 
-    const isButtonDisabled = disabled || isCoolingDown || isExecuting;
+    const isButtonDisabled =
+      disabled || isCoolingDown || isExecuting || isInsightRevealing;
     const isCompassGlowing = compassGlowButton === actionIdFromProps;
 
     const buttonId = testId || `button-${Math.random()}`;
@@ -187,7 +188,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         disabled={isButtonDisabled}
         variant={variant}
         size={size}
-        className={`relative overflow-hidden transition-all duration-200 select-none ${isCoolingDown ? "cursor-not-allowed" : ""
+        className={`relative overflow-hidden transition-all duration-200 select-none ${isCoolingDown || isInsightRevealing ? "cursor-not-allowed" : ""
           } ${isCompassGlowing ? "compass-glow" : ""} ${className}`}
         data-testid={testId}
         button_id={props.button_id || actionIdFromProps}
