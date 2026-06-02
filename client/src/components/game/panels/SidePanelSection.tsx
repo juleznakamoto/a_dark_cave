@@ -74,9 +74,10 @@ const EFFECT_TOOLTIP_SECTIONS = new Set<SidePanelSectionId>([
   "blessings",
 ]);
 
-/** Shared layout for resource name + amount + production delta. */
+/** Shared layout for resource name + amount + production delta / change hint. */
 const RESOURCE_ROW_GRID_CLASS =
-  "grid grid-cols-[minmax(0,1fr)_6.25rem_3rem] items-center gap-x-1.5";
+  "grid grid-cols-[minmax(0,1fr)_6.25rem_3rem] items-baseline gap-x-1.5";
+const RESOURCE_ROW_TEXT_CLASS = "text-xs leading-none";
 
 /** Food/wood at zero while villagers remain — blink red in the resources panel. */
 const CRITICAL_ZERO_RESOURCES = new Set(["food", "wood"]);
@@ -471,8 +472,12 @@ export default function SidePanelSection({
     const labelContent = (
       <span
         className={cn(
-          "text-xs text-gray-400",
-          item.icon !== undefined && "inline-flex items-start gap-1",
+          "text-gray-400",
+          isResourcesSection ? RESOURCE_ROW_TEXT_CLASS : "text-xs",
+          item.icon !== undefined &&
+          (isResourcesSection
+            ? "inline-flex items-baseline gap-1"
+            : "inline-flex items-start gap-1"),
           newItemPulseClass,
           isHighlighted && "!text-gray-100",
           isCriticalZeroResource && "resource-critical-blink",
@@ -538,6 +543,7 @@ export default function SidePanelSection({
 
     const valueCellClassName = cn(
       "text-right font-mono tabular-nums whitespace-nowrap text-gray-300",
+      usesResourceRowLayout && RESOURCE_ROW_TEXT_CLASS,
       isAnimated && !isCriticalZeroResource && "text-green-800 font-bold",
       isDecreaseAnimated && !isCriticalZeroResource && "text-red-800 font-bold",
       isMaxAnimated && !isCriticalZeroResource && "text-yellow-800 font-bold",
@@ -548,6 +554,7 @@ export default function SidePanelSection({
 
     const productionDeltaCellClassName = cn(
       "text-right font-mono tabular-nums whitespace-nowrap font-normal",
+      usesResourceRowLayout && RESOURCE_ROW_TEXT_CLASS,
       tabForProductionColors !== "village" && "text-muted-foreground",
       tabForProductionColors === "village" &&
       (item.productionDelta ?? 0) > 0 &&
@@ -558,10 +565,10 @@ export default function SidePanelSection({
     );
 
     const resourceRowClassName = cn(
-      "mr-1 min-w-0 leading-tight transition-all duration-300",
+      "mr-1 min-w-0 transition-all duration-300",
       usesResourceRowLayout
         ? RESOURCE_ROW_GRID_CLASS
-        : "flex items-start gap-1.5 justify-between",
+        : "flex items-start gap-1.5 justify-between leading-tight",
       itemAnimationClass,
     );
 
@@ -571,8 +578,28 @@ export default function SidePanelSection({
         {formatNumber(item.productionDelta ?? 0)}
       </span>
     ) : (
-      <span aria-hidden="true" />
+      <span className="invisible select-none" aria-hidden="true">
+        0
+      </span>
     );
+
+    const resourceThirdColumn = usesResourceRowLayout ? (
+      <div
+        className={cn(
+          "relative min-w-0",
+          RESOURCE_ROW_TEXT_CLASS,
+          "font-mono tabular-nums",
+        )}
+      >
+        {productionDeltaCell}
+        {onResourceChange ? (
+          <ResourceChangeNotification
+            resource={item.id}
+            changes={resourceChanges}
+          />
+        ) : null}
+      </div>
+    ) : null;
 
     const itemContent = (
       <div data-testid={item.testId} className={resourceRowClassName}>
@@ -580,7 +607,7 @@ export default function SidePanelSection({
         {usesResourceRowLayout ? (
           <>
             <span className={valueCellClassName}>{displayValue}</span>
-            {productionDeltaCell}
+            {resourceThirdColumn}
           </>
         ) : showItemValue ? (
           <span className={cn(valueCellClassName, "shrink-0")}>
@@ -855,17 +882,8 @@ export default function SidePanelSection({
       )}
       <div className="min-w-0 text-xs">
         {visibleItems.map((item) => (
-          <div
-            key={item.id}
-            className={`relative ${item.hasSpacingAfter ? "mb-1" : ""}`}
-          >
+          <div key={item.id} className={item.hasSpacingAfter ? "mb-1" : undefined}>
             {renderItemWithTooltip(item)}
-            {onResourceChange && (
-              <ResourceChangeNotification
-                resource={item.id}
-                changes={resourceChanges}
-              />
-            )}
           </div>
         ))}
       </div>
