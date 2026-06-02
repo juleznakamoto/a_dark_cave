@@ -125,12 +125,12 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
 
   return (
     <div
-      className="pointer-events-none absolute inset-0 z-[1] flex items-end justify-end bg-background"
+      className="pointer-events-none absolute inset-0 z-[1] bg-background text-right"
       aria-live="polite"
     >
       <span
         className={`
-          text-xs font-mono font-bold tabular-nums leading-none
+          block w-full text-right text-xs font-mono font-bold tabular-nums leading-none whitespace-nowrap
           animate-in fade-in-0 slide-in-from-left-2 duration-300
           ${visibleChange.amount > 0
             ? "text-green-600"

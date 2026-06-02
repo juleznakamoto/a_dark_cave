@@ -78,6 +78,9 @@ const EFFECT_TOOLTIP_SECTIONS = new Set<SidePanelSectionId>([
 const RESOURCE_ROW_GRID_CLASS =
   "grid grid-cols-[minmax(0,1fr)_6.25rem_3rem] items-baseline gap-x-1.5";
 const RESOURCE_ROW_TEXT_CLASS = "text-xs leading-none";
+/** Third column: production rate and change popup share one right-aligned slot. */
+const RESOURCE_DELTA_SLOT_CLASS =
+  "block w-full text-right font-mono tabular-nums whitespace-nowrap";
 
 /** Food/wood at zero while villagers remain — blink red in the resources panel. */
 const CRITICAL_ZERO_RESOURCES = new Set(["food", "wood"]);
@@ -553,8 +556,11 @@ export default function SidePanelSection({
     );
 
     const productionDeltaCellClassName = cn(
-      "text-right font-mono tabular-nums whitespace-nowrap font-normal",
+      usesResourceRowLayout && RESOURCE_DELTA_SLOT_CLASS,
       usesResourceRowLayout && RESOURCE_ROW_TEXT_CLASS,
+      !usesResourceRowLayout &&
+      "text-right font-mono tabular-nums whitespace-nowrap font-normal",
+      usesResourceRowLayout && "font-normal",
       tabForProductionColors !== "village" && "text-muted-foreground",
       tabForProductionColors === "village" &&
       (item.productionDelta ?? 0) > 0 &&
@@ -578,19 +584,16 @@ export default function SidePanelSection({
         {formatNumber(item.productionDelta ?? 0)}
       </span>
     ) : (
-      <span className="invisible select-none" aria-hidden="true">
+      <span
+        className={cn(productionDeltaCellClassName, "invisible select-none")}
+        aria-hidden="true"
+      >
         0
       </span>
     );
 
     const resourceThirdColumn = usesResourceRowLayout ? (
-      <div
-        className={cn(
-          "relative min-w-0",
-          RESOURCE_ROW_TEXT_CLASS,
-          "font-mono tabular-nums",
-        )}
-      >
+      <div className="relative min-w-0 text-right">
         {productionDeltaCell}
         {onResourceChange ? (
           <ResourceChangeNotification
