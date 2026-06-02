@@ -810,7 +810,7 @@ export default function GameContainer() {
       <span className="text-sm font-medium">←</span>
       <span> </span>
       <span className="text-sm font-medium">→</span>
-      <span> or </span>
+      <span> {t("pauseHotkey.hintOr", { ns: "ui" })} </span>
       <span className="text-sm font-medium">A</span>
       <span> </span>
       <span className="text-sm font-medium">D</span>

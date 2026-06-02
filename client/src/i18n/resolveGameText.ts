@@ -321,6 +321,35 @@ export function getStartScreenNarrativeLogMessage(cruelMode: boolean): string {
   ].join(" ");
 }
 
+/** English fallback for saves / legacy rows (display re-localizes via logKey). */
+export function getStartScreenNarrativeEnglishFallback(cruelMode: boolean): string {
+  if (cruelMode) {
+    return [
+      i18n.t("ui:startScreen.titleCruel", { lng: "en" }),
+      i18n.t("ui:startScreen.airCruel", { lng: "en" }),
+      i18n.t("ui:startScreen.seeCruel", { lng: "en" }),
+    ].join(" ");
+  }
+  return [
+    i18n.t("ui:startScreen.titleNormal", { lng: "en" }),
+    i18n.t("ui:startScreen.airNormal", { lng: "en" }),
+    i18n.t("ui:startScreen.seeNormal", { lng: "en" }),
+  ].join(" ");
+}
+
+export const START_NARRATIVE_LOG_KEY = "gameplay.startNarrative";
+
+export function inferCruelModeFromStartNarrativeMessage(message: string): boolean {
+  const cruelEn = getStartScreenNarrativeEnglishFallback(true);
+  if (message === cruelEn) return true;
+  const cruelDe = [
+    i18n.t("ui:startScreen.titleCruel", { lng: "de" }),
+    i18n.t("ui:startScreen.airCruel", { lng: "de" }),
+    i18n.t("ui:startScreen.seeCruel", { lng: "de" }),
+  ].join(" ");
+  return message === cruelDe || message.startsWith("A very dark cave.");
+}
+
 export function getStatName(statKey: string, fallback: string): string {
   return tWithFallback("common", `stats.${statKey}`, fallback);
 }

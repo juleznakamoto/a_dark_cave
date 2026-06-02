@@ -42,8 +42,17 @@ describe("insightReveal", () => {
     expect(canRevealEffects("craftStoneAxe", state)).toBe(false);
   });
 
-  it("canRevealEffects is true for craft-once and buildings", () => {
+  it("canRevealEffects is false before Clerks Hut is built", () => {
     const state = base();
+    expect(canRevealEffects("craftStoneAxe", state)).toBe(false);
+    expect(canRevealEffects("buildWatchtower", state)).toBe(false);
+  });
+
+  it("canRevealEffects is true for craft-once and buildings after Clerks Hut", () => {
+    const state = {
+      ...base(),
+      buildings: { ...base().buildings, clerksHut: 1 },
+    };
     expect(canRevealEffects("craftStoneAxe", state)).toBe(true);
     expect(canRevealEffects("buildClerksHut", state)).toBe(true);
     expect(canRevealEffects("buildWatchtower", state)).toBe(true);

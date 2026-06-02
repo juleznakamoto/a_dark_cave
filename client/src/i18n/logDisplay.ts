@@ -4,7 +4,13 @@ import {
   getEventCatalogIdByEventId,
 } from "@/game/rules/events";
 import { UPGRADE_LABELS, type UpgradeKey } from "@/game/buttonUpgrades";
-import { getActionLogMessage, tWithFallback } from "@/i18n/resolveGameText";
+import {
+  getActionLogMessage,
+  getStartScreenNarrativeLogMessage,
+  inferCruelModeFromStartNarrativeMessage,
+  START_NARRATIVE_LOG_KEY,
+  tWithFallback,
+} from "@/i18n/resolveGameText";
 import { resolveEventMessage } from "@/i18n/eventText";
 import enEvents from "@/i18n/locales/en/events.json";
 import enLog from "@/i18n/locales/en/ui/log.json";
@@ -742,8 +748,24 @@ export function resolveOutcomeLogMessage(
   });
 }
 
+function resolveStartNarrativeLogMessage(entry: LogEntry): string | null {
+  if (entry.logKey === START_NARRATIVE_LOG_KEY || entry.id === "initial-narrative") {
+    const cruelFromVars = entry.logVars?.cruelMode;
+    const cruel =
+      cruelFromVars === 1 ||
+      cruelFromVars === true ||
+      (cruelFromVars === undefined &&
+        inferCruelModeFromStartNarrativeMessage(entry.message));
+    return getStartScreenNarrativeLogMessage(cruel);
+  }
+  return null;
+}
+
 /** Display text for a log panel row (re-localizes system lines from keys or English fallbacks). */
 export function resolveLogPanelMessage(entry: LogEntry): string {
+  const startNarrative = resolveStartNarrativeLogMessage(entry);
+  if (startNarrative) return startNarrative;
+
   if (entry.logKey) {
     return resolveUiCatalogLog(entry.logKey, entry.message, entry.logVars);
   }

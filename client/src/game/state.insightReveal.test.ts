@@ -7,6 +7,10 @@ describe("revealActionEffects", () => {
 
   it("deducts insight and starts reveal cooldown when affordable", () => {
     useGameStore.setState({
+      buildings: {
+        ...useGameStore.getState().buildings,
+        clerksHut: 1,
+      },
       resources: {
         ...useGameStore.getState().resources,
         insight: 100,
@@ -25,6 +29,10 @@ describe("revealActionEffects", () => {
 
   it("does nothing when insight is insufficient", () => {
     useGameStore.setState({
+      buildings: {
+        ...useGameStore.getState().buildings,
+        clerksHut: 1,
+      },
       resources: {
         ...useGameStore.getState().resources,
         insight: 5,
@@ -34,6 +42,24 @@ describe("revealActionEffects", () => {
     const ok = useGameStore.getState().revealActionEffects("craftStoneAxe");
     expect(ok).toBe(false);
     expect(useGameStore.getState().resources.insight).toBe(5);
+    expect(useGameStore.getState().insightRevealing.craftStoneAxe).toBeUndefined();
+  });
+
+  it("does nothing before Clerks Hut is built", () => {
+    useGameStore.setState({
+      buildings: {
+        ...useGameStore.getState().buildings,
+        clerksHut: 0,
+      },
+      resources: {
+        ...useGameStore.getState().resources,
+        insight: 100,
+      },
+    });
+
+    const ok = useGameStore.getState().revealActionEffects("craftStoneAxe");
+    expect(ok).toBe(false);
+    expect(useGameStore.getState().resources.insight).toBe(100);
     expect(useGameStore.getState().insightRevealing.craftStoneAxe).toBeUndefined();
   });
 

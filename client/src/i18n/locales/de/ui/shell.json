@@ -70,6 +70,7 @@
   },
   "pauseHotkey": {
     "hintPrefix": "Nutze ",
+    "hintOr": "oder",
     "hintSuffix": " oder die Tasten unten zum Wechseln zwischen Tabs"
   },
   "villageHotkeyTutorial": {

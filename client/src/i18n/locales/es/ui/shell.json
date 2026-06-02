@@ -70,6 +70,7 @@
   },
   "pauseHotkey": {
     "hintPrefix": "Usa ",
+    "hintOr": "o",
     "hintSuffix": " o las teclas de abajo para cambiar entre pestañas"
   },
   "villageHotkeyTutorial": {

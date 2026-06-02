@@ -1,7 +1,11 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import i18n from "./index";
 import { hasLogEntryText, resolveLogPanelMessage, resolveOutcomeLogMessage } from "./logDisplay";
-import { resolveInheritedActionLogMessage } from "./resolveGameText";
+import {
+  getStartScreenNarrativeEnglishFallback,
+  resolveInheritedActionLogMessage,
+  START_NARRATIVE_LOG_KEY,
+} from "./resolveGameText";
 import type { LogEntry } from "@/game/rules/events";
 
 function systemEntry(
@@ -20,6 +24,33 @@ function systemEntry(
 describe("resolveLogPanelMessage", () => {
   beforeEach(async () => {
     await i18n.changeLanguage("en");
+  });
+
+  it("re-localizes cruel-mode opening narrative in German (legacy English save)", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage({
+      id: "initial-narrative",
+      message: getStartScreenNarrativeEnglishFallback(true),
+      timestamp: 0,
+      type: "system",
+    });
+    expect(text).toBe(
+      "Eine sehr dunkle Höhle. Die Luft ist eiskalt und feucht. Du erkennst kaum etwas um dich herum.",
+    );
+  });
+
+  it("re-localizes opening narrative via logKey and logVars in German", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(getStartScreenNarrativeEnglishFallback(false), {
+        id: "initial-narrative",
+        logKey: START_NARRATIVE_LOG_KEY,
+        logVars: { cruelMode: 0 },
+      }),
+    );
+    expect(text).toBe(
+      "Eine dunkle Höhle. Die Luft ist kalt und feucht. Du erkennst kaum die Umrisse um dich herum.",
+    );
   });
 
   it("translates system logs via logKey in German", async () => {

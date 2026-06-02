@@ -70,6 +70,7 @@
   },
   "pauseHotkey": {
     "hintPrefix": "Utilisez ",
+    "hintOr": "ou",
     "hintSuffix": " ou les touches ci-dessous pour changer d'onglet"
   },
   "villageHotkeyTutorial": {

@@ -94,7 +94,8 @@ import {
 import {
   getEventLogMessageByFallback,
   getEventsCatalogText,
-  getStartScreenNarrativeLogMessage,
+  getStartScreenNarrativeEnglishFallback,
+  START_NARRATIVE_LOG_KEY,
   resolveEventLogMessage,
   tWithFallback,
 } from "@/i18n/resolveGameText";
@@ -2123,9 +2124,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set(resetState);
     StateManager.scheduleEffectsUpdate(get);
 
+    const cruelMode = Boolean(preserved.cruelMode);
     const initialLogEntry: LogEntry = {
       id: "initial-narrative",
-      message: getStartScreenNarrativeLogMessage(Boolean(preserved.cruelMode)),
+      logKey: START_NARRATIVE_LOG_KEY,
+      logVars: { cruelMode: cruelMode ? 1 : 0 },
+      message: getStartScreenNarrativeEnglishFallback(cruelMode),
       timestamp: Date.now(),
       type: "system",
     };
@@ -2473,9 +2477,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       set(newGameState);
 
+      const cruelMode = Boolean(get().cruelMode);
       const initialLogEntry: LogEntry = {
         id: "initial-narrative",
-        message: getStartScreenNarrativeLogMessage(get().cruelMode),
+        logKey: START_NARRATIVE_LOG_KEY,
+        logVars: { cruelMode: cruelMode ? 1 : 0 },
+        message: getStartScreenNarrativeEnglishFallback(cruelMode),
         timestamp: Date.now(),
         type: "system",
       };

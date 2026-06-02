@@ -61,6 +61,7 @@ export function getInsightRevealCost(actionId: string): number | null {
 }
 
 export function canRevealEffects(actionId: string, state: GameState): boolean {
+  if ((state.buildings.clerksHut ?? 0) < 1) return false;
   if ((state.revealedEffects ?? []).includes(actionId)) return false;
   return getInsightRevealCost(actionId) !== null;
 }
