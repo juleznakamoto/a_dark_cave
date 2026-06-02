@@ -275,30 +275,32 @@ export default function EventDialog({
                   {displayTitle}
                 </DialogTitle>
                 <div className="flex gap-2 items-center flex-shrink-0">
-                  {event.isTimedChoice && getTotalKnowledge(gameState) > 0 && (
-                    <TooltipWrapper
-                      tooltip={
-                        <div className="text-xs whitespace-nowrap">
-                          {t("event.knowledgeTimeBonus", {
-                            seconds: calculateKnowledgeTimeBonus(
-                              getTotalKnowledge(gameState),
-                            ),
-                            maxSuffix: isKnowledgeBonusMaxed(
-                              getTotalKnowledge(gameState),
-                            )
-                              ? t("event.knowledgeTimeBonusMax")
-                              : "",
-                          })}
-                        </div>
-                      }
-                      tooltipId="event-time-bonus"
-                      disabled
-                    >
-                      <span className="font-noto-symbols-2 text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-xl">
-                        ✧
-                      </span>
-                    </TooltipWrapper>
-                  )}
+                  {event.isTimedChoice &&
+                    calculateKnowledgeTimeBonus(getTotalKnowledge(gameState)) >
+                    0 && (
+                      <TooltipWrapper
+                        tooltip={
+                          <div className="text-xs whitespace-nowrap">
+                            {t("event.knowledgeTimeBonus", {
+                              seconds: calculateKnowledgeTimeBonus(
+                                getTotalKnowledge(gameState),
+                              ),
+                              maxSuffix: isKnowledgeBonusMaxed(
+                                getTotalKnowledge(gameState),
+                              )
+                                ? t("event.knowledgeTimeBonusMax")
+                                : "",
+                            })}
+                          </div>
+                        }
+                        tooltipId="event-time-bonus"
+                        disabled
+                      >
+                        <span className="font-noto-symbols-2 text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-xl">
+                          ✧
+                        </span>
+                      </TooltipWrapper>
+                    )}
                   {event.relevant_stats && event.relevant_stats.length > 0 && (
                     <div className="flex gap-1">
                       {event.relevant_stats.map((stat) => (
