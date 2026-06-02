@@ -48,14 +48,8 @@ import {
   EventChoiceSuccessTooltipContent,
   getEventChoiceSuccessPercent,
   hasEventChoiceSuccessTooltip,
+  RelevantStatIcon,
 } from "@/components/game/EventChoiceSuccessTooltip";
-
-// Stat icon mapping
-const statIcons: Record<string, { icon: string; color: string }> = {
-  luck: { icon: "☆", color: "text-green-300/80" },
-  strength: { icon: "⬡", color: "text-red-300/80" },
-  knowledge: { icon: "✧", color: "text-blue-300/80" },
-};
 
 export default function TimedEventPanel() {
   const { t } = useTranslation(["ui", "common"]);
@@ -549,11 +543,11 @@ export default function TimedEventPanel() {
                   size="xs"
                   disabled={isDisabled}
                   button_id={`timedevent-${choice.id}`}
-                  className="h-auto min-h-7 w-fit max-w-full gap-1 py-1 text-left justify-start whitespace-normal"
+                  className="h-auto min-h-7 w-fit max-w-full gap-2 py-1 text-left justify-start whitespace-normal"
                 >
                   <span>{labelText}</span>
                   {hasChoiceMeta && (
-                    <span className="inline-flex items-center gap-0.5 flex-shrink-0">
+                    <span className="inline-flex items-center gap-1.5 flex-shrink-0">
                       {successPercentage && (
                         <span className="text-xs text-muted-foreground whitespace-nowrap">
                           {successPercentage}
@@ -561,18 +555,9 @@ export default function TimedEventPanel() {
                       )}
                       {choice.relevant_stats &&
                         choice.relevant_stats.length > 0 &&
-                        choice.relevant_stats.map((stat) => {
-                          const statInfo = statIcons[stat.toLowerCase()];
-                          if (!statInfo) return null;
-                          return (
-                            <span
-                              key={stat}
-                              className={`font-noto-symbols-2 text-xs ${statInfo.color}`}
-                            >
-                              {statInfo.icon}
-                            </span>
-                          );
-                        })}
+                        choice.relevant_stats.map((stat) => (
+                          <RelevantStatIcon key={stat} stat={stat} />
+                        ))}
                       {isPurchased && <span className="font-noto-symbols-2">✓</span>}
                     </span>
                   )}

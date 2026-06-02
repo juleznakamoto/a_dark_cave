@@ -2,15 +2,42 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import type { EventChoice } from "@/game/rules/events";
 import type { GameState } from "@shared/schema";
+import { cn } from "@/lib/utils";
 
 export type RelevantStat = "strength" | "knowledge" | "luck" | "madness";
 
-const EVENT_STAT_ICONS: Record<string, { icon: string; color: string }> = {
+export const EVENT_STAT_ICONS: Record<string, { icon: string; color: string }> = {
   luck: { icon: "☆", color: "text-green-300/80" },
   strength: { icon: "⬡", color: "text-red-300/80" },
   knowledge: { icon: "✧", color: "text-blue-300/80" },
   madness: { icon: "✺", color: "text-violet-300/80" },
 };
+
+export function RelevantStatIcon({
+  stat,
+  className,
+  title,
+}: {
+  stat: string;
+  className?: string;
+  title?: string;
+}) {
+  const statInfo = EVENT_STAT_ICONS[stat.toLowerCase()];
+  if (!statInfo) return null;
+  return (
+    <span
+      className={cn(
+        "font-noto-symbols-2 inline-flex shrink-0 items-center justify-center translate-y-px text-xs leading-none",
+        statInfo.color,
+        className,
+      )}
+      aria-hidden={title ? undefined : true}
+      title={title}
+    >
+      {statInfo.icon}
+    </span>
+  );
+}
 
 type SuccessChanceValue = number | ((state: GameState) => number);
 
@@ -71,20 +98,12 @@ export function SuccessChanceTooltipContent({
       {relevantStats.length > 0 && (
         <>
           <div className="mt-1">{t("ui:event.influencedBy")}</div>
-          {relevantStats.map((stat) => {
-            const statInfo = EVENT_STAT_ICONS[stat.toLowerCase()];
-            if (!statInfo) return null;
-            return (
-              <div key={stat} className="flex items-center gap-1 leading-none">
-                <span
-                  className={`font-noto-symbols-2 ${statInfo.color} inline-flex h-[1em] w-[1em] shrink-0 items-center justify-center`}
-                >
-                  {statInfo.icon}
-                </span>
-                <span>{t(`common:stats.${stat.toLowerCase()}`)}</span>
-              </div>
-            );
-          })}
+          {relevantStats.map((stat) => (
+            <div key={stat} className="flex items-center gap-1.5">
+              <RelevantStatIcon stat={stat} />
+              <span>{t(`common:stats.${stat.toLowerCase()}`)}</span>
+            </div>
+          ))}
         </>
       )}
     </div>

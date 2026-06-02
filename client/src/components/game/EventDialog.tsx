@@ -32,6 +32,7 @@ import {
   EventChoiceSuccessTooltipContent,
   getEventChoiceSuccessPercent,
   hasEventChoiceSuccessTooltip,
+  RelevantStatIcon,
 } from "@/components/game/EventChoiceSuccessTooltip";
 
 interface EventDialogProps {
@@ -40,14 +41,6 @@ interface EventDialogProps {
   event: LogEntry
   | null;
 }
-
-// Stat icon mapping
-const statIcons: Record<string, { icon: string; color: string }> = {
-  luck: { icon: '☆', color: 'text-green-300/80' },
-  strength: { icon: '⬡', color: 'text-red-300/80' },
-  knowledge: { icon: '✧', color: 'text-blue-300/80' },
-  madness: { icon: '✺', color: 'text-violet-300/80' },
-};
 
 export default function EventDialog({
   isOpen,
@@ -308,19 +301,9 @@ export default function EventDialog({
                   )}
                   {event.relevant_stats && event.relevant_stats.length > 0 && (
                     <div className="flex gap-1">
-                      {event.relevant_stats.map((stat) => {
-                        const statInfo = statIcons[stat.toLowerCase()];
-                        if (!statInfo) return null;
-                        return (
-                          <span
-                            key={stat}
-                            className={`font-noto-symbols-2 text-xs ${statInfo.color}`}
-                            title={stat}
-                          >
-                            {statInfo.icon}
-                          </span>
-                        );
-                      })}
+                      {event.relevant_stats.map((stat) => (
+                        <RelevantStatIcon key={stat} stat={stat} title={stat} />
+                      ))}
                     </div>
                   )}
                 </div>
@@ -330,7 +313,7 @@ export default function EventDialog({
               </DialogDescription>
             </DialogHeader>
 
-            <div className="grid grid-cols-2 gap-3 mt-4">
+            <div className="grid grid-cols-2 gap-3 mt-4 justify-items-start">
               {eventChoices.map((choice) => {
                 const tradeChoice = choice as typeof choice & Partial<MerchantTradeData>;
                 const cost = choice.cost;
@@ -378,36 +361,28 @@ export default function EventDialog({
                   <Button
                     onClick={selectChoice}
                     variant="outline"
-                    className="w-full flex items-center justify-start gap-1 text-left whitespace-normal"
+                    size="xs"
+                    className="h-auto min-h-7 w-fit max-w-full flex items-center justify-start gap-2 py-1 text-left whitespace-normal"
                     disabled={isDisabled}
                     button_id={`event-choice-${choice.id}`}
                   >
                     <span>{labelText}</span>
                     {(successPercentage ||
                       (choice.relevant_stats && choice.relevant_stats.length > 0)) && (
-                        <div className="flex gap-1 items-center flex-shrink-0">
+                        <span className="inline-flex items-center gap-1.5 flex-shrink-0">
                           {successPercentage && (
                             <span className="text-xs text-muted-foreground whitespace-nowrap">
                               {successPercentage}
                             </span>
                           )}
                           {choice.relevant_stats && choice.relevant_stats.length > 0 && (
-                            <div className="flex gap-1">
-                              {choice.relevant_stats.map((stat) => {
-                                const statInfo = statIcons[stat.toLowerCase()];
-                                if (!statInfo) return null;
-                                return (
-                                  <span
-                                    key={stat}
-                                    className={`font-noto-symbols-2 text-xs ${statInfo.color}`}
-                                  >
-                                    {statInfo.icon}
-                                  </span>
-                                );
-                              })}
-                            </div>
+                            <>
+                              {choice.relevant_stats.map((stat) => (
+                                <RelevantStatIcon key={stat} stat={stat} />
+                              ))}
+                            </>
                           )}
-                        </div>
+                        </span>
                       )}
                   </Button>
                 );
@@ -454,7 +429,8 @@ export default function EventDialog({
                 return tooltipContent ? (
                   <TooltipWrapper
                     key={choice.id}
-                    className="relative block w-full"
+                    className="relative inline-block w-fit max-w-full"
+                    tooltipTriggerClassName="inline-block w-fit max-w-full"
                     tooltip={tooltipContent}
                     tooltipId={choice.id}
                     disabled={isDisabled}
@@ -463,7 +439,7 @@ export default function EventDialog({
                     {buttonContent}
                   </TooltipWrapper>
                 ) : (
-                  <div key={choice.id} className="w-full">
+                  <div key={choice.id} className="w-fit max-w-full">
                     {buttonContent}
                   </div>
                 );
