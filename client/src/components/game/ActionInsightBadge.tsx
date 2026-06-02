@@ -64,7 +64,7 @@ export function ActionInsightBadge({ actionId }: ActionInsightBadgeProps) {
 
   return (
     <div
-      className={!canAfford ? "opacity-40" : undefined}
+      className={!canAfford && !playing ? "opacity-40" : undefined}
       style={{
         position: "absolute",
         bottom: "-7px",
