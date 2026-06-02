@@ -378,7 +378,7 @@ export default function EventDialog({
                   <Button
                     onClick={selectChoice}
                     variant="outline"
-                    className="w-fit max-w-full flex items-center justify-start gap-1 text-left whitespace-normal"
+                    className="w-full flex items-center justify-start gap-1 text-left whitespace-normal"
                     disabled={isDisabled}
                     button_id={`event-choice-${choice.id}`}
                   >
