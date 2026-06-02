@@ -30,20 +30,25 @@ export function ActionInsightBadge({ actionId, state }: ActionInsightBadgeProps)
   const executionStart = useGameStore((s) => s.executionStartTimes?.[actionId] ?? 0);
   const executionDuration = useGameStore((s) => s.executionDurations?.[actionId] ?? 0);
 
-  if (!canRevealEffects(actionId, state)) return null;
-  // Abort overlay (craft/build) shares this corner — hide while the action runs.
-  if (executionStart > 0 && executionDuration > 0) return null;
-
-  const cost = getInsightRevealCost(actionId) ?? 0;
-  const insight = getInsightAmount(state);
-  const canAfford = insight >= cost;
-  const playing = isInsightRevealInProgress(actionId, insightRevealing);
+  const canShow = canRevealEffects(actionId, state);
+  const isExecuting = executionStart > 0 && executionDuration > 0;
+  const playing =
+    canShow &&
+    !isExecuting &&
+    isInsightRevealInProgress(actionId, insightRevealing);
 
   useEffect(() => {
     if (!playing) return;
     setHighlightedResources(["insight"]);
     return () => setHighlightedResources([]);
   }, [playing, setHighlightedResources]);
+
+  // Abort overlay (craft/build) shares this corner — hide while the action runs.
+  if (!canShow || isExecuting) return null;
+
+  const cost = getInsightRevealCost(actionId) ?? 0;
+  const insight = getInsightAmount(state);
+  const canAfford = insight >= cost;
 
   const costTooltip = getUiTooltip(
     "buildings.insightRevealSeeEffects",
