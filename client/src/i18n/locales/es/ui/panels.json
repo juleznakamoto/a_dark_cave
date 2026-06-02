@@ -156,7 +156,7 @@
     "doubleGainChance": "Probabilidad de ganancia doble",
     "populationTooltip": "Cada aldeano consume 1 comida y 1 madera",
     "resourceLimitMax": "máx. {{limit}}",
-    "resourceLimitTooltip": "sin límite para plata y oro",
+    "resourceLimitTooltip": "sin límite para plata, oro y perspicacia",
     "statsTooltip": "Las estadísticas influyen en el resultado de los eventos y más adelante son relevantes en combate.",
     "statLuckTooltip": "Inclina el destino a tu favor",
     "statStrengthTooltip": "Ayuda donde las palabras llegan a su límite",

@@ -156,7 +156,7 @@
     "doubleGainChance": "Chance de gain double",
     "populationTooltip": "Chaque villageois consomme 1 nourriture et 1 bois",
     "resourceLimitMax": "max. {{limit}}",
-    "resourceLimitTooltip": "pas de limite pour l'argent et l'or",
+    "resourceLimitTooltip": "pas de limite pour l'argent, l'or et la perspicacité",
     "statsTooltip": "Les statistiques influencent l'issue des événements et deviennent ensuite importantes au combat.",
     "statLuckTooltip": "Incline la fortune en votre faveur",
     "statStrengthTooltip": "Aide là où les mots atteignent leurs limites",

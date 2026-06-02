@@ -156,7 +156,7 @@
     "doubleGainChance": "Doppelgewinn-Chance",
     "populationTooltip": "Jeder Dorfbewohner verbraucht 1 Nahrung und 1 Holz",
     "resourceLimitMax": "max. {{limit}}",
-    "resourceLimitTooltip": "kein Limit für Silber und Gold",
+    "resourceLimitTooltip": "kein Limit für Silber, Gold und Einsicht",
     "statsTooltip": "Werte beeinflussen den Ausgang von Ereignissen und werden später im Kampf relevant.",
     "statLuckTooltip": "Beugt das Schicksal zu deinen Gunsten", //ok
     "statStrengthTooltip": "Hilft dort, wo Worte an ihre Grenzen stoßen",

@@ -156,7 +156,7 @@
     "doubleGainChance": "Шанс двойного урожая",
     "populationTooltip": "Каждый житель потребляет 1 еду и 1 древесину",
     "resourceLimitMax": "макс. {{limit}}",
-    "resourceLimitTooltip": "без лимита для серебра и золота",
+    "resourceLimitTooltip": "без лимита для серебра, золота и проницательности",
     "statsTooltip": "Характеристики влияют на исход событий и позже становятся важны в бою.",
     "statLuckTooltip": "Склоняет судьбу в вашу пользу",
     "statStrengthTooltip": "Помогает там, где слова бессильны",

@@ -136,7 +136,7 @@
       "sleepLengthHours": "Schlafdauer +{{hours}} Stunden",
       "sleepIntensityPercent": "Schlafintensität +{{percent}} %",
       "maxVillagers": "+{{amount}} max. Dorfbewohner",
-      "resourceLimit": "Ressourcenlimit: {{limit}} (kein Limit für Silber und Gold)",
+      "resourceLimit": "Ressourcenlimit: {{limit}} (kein Limit für Silber, Gold und Einsicht)",
       "maxPopulation": "+{{amount}} max. Bevölkerung",
       "newVillagerChancePercent": "+{{percent}} % Chance auf neue Dorfbewohner",
       "steelForgerSteel": "Stahlschmied: +{{amount}} Stahl",

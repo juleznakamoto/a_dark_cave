@@ -157,7 +157,7 @@
     "doubleGainChance": "Double Gain Chance",
     "populationTooltip": "Each villager consumes 1 Food and 1 Wood",
     "resourceLimitMax": "max {{limit}}",
-    "resourceLimitTooltip": "no limit on Silver & Gold",
+    "resourceLimitTooltip": "no limit on Silver, Gold & Insight",
     "statsTooltip": "Stats influence the outcome of events and later on are relevant in combat.",
     "statLuckTooltip": "Bends fate in your favor",
     "statStrengthTooltip": "Helps where words reach their limit",

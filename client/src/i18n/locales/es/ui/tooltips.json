@@ -136,7 +136,7 @@
       "sleepLengthHours": "Duración del sueño +{{hours}} horas",
       "sleepIntensityPercent": "Intensidad del sueño +{{percent}} %",
       "maxVillagers": "+{{amount}} aldeanos máx.",
-      "resourceLimit": "Límite de recursos: {{limit}} (sin límite para plata y oro)",
+      "resourceLimit": "Límite de recursos: {{limit}} (sin límite para plata, oro y perspicacia)",
       "maxPopulation": "+{{amount}} población máx.",
       "newVillagerChancePercent": "+{{percent}} % de probabilidad de nuevo aldeano",
       "steelForgerSteel": "Forjador de acero: +{{amount}} acero",

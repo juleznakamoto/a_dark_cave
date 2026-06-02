@@ -458,7 +458,7 @@ export default function CavePanel() {
             {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
             {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
             {showInsightBadge && (
-              <ActionInsightBadge actionId={actionId} state={state} />
+              <ActionInsightBadge actionId={actionId} />
             )}
           </div>
         );
@@ -514,7 +514,7 @@ export default function CavePanel() {
         {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
         {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
         {showInsightBadge && (
-          <ActionInsightBadge actionId={actionId} state={state} />
+          <ActionInsightBadge actionId={actionId} />
         )}
       </div>
     );

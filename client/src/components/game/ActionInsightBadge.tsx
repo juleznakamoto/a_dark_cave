@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BuildingActionBadge } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
   canRevealEffects,
   getInsightAmount,
   getInsightRevealCost,
-  isInsightRevealInProgress,
 } from "@/game/rules/insightReveal";
 import { useGameStore } from "@/game/state";
 import {
@@ -20,22 +19,29 @@ const BADGE_SIZE_PX = 16;
 
 type ActionInsightBadgeProps = {
   actionId: string;
-  state: GameState;
 };
 
-export function ActionInsightBadge({ actionId, state }: ActionInsightBadgeProps) {
-  const insightRevealing = useGameStore((s) => s.insightRevealing);
+export function ActionInsightBadge({ actionId }: ActionInsightBadgeProps) {
+  const state = useGameStore((s) => s as unknown as GameState);
+  const insightRevealEnd = useGameStore((s) => s.insightRevealing?.[actionId]);
   const revealActionEffects = useGameStore((s) => s.revealActionEffects);
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
   const executionStart = useGameStore((s) => s.executionStartTimes?.[actionId] ?? 0);
   const executionDuration = useGameStore((s) => s.executionDurations?.[actionId] ?? 0);
+  const [, forceUpdate] = useState(0);
 
   const canShow = canRevealEffects(actionId, state);
   const isExecuting = executionStart > 0 && executionDuration > 0;
-  const playing =
-    canShow &&
-    !isExecuting &&
-    isInsightRevealInProgress(actionId, insightRevealing);
+  const isRevealing =
+    typeof insightRevealEnd === "number" && insightRevealEnd > Date.now();
+  const playing = canShow && !isExecuting && isRevealing;
+
+  // Match CooldownButton insight overlay: tick so --playing stays in sync until reveal ends.
+  useEffect(() => {
+    if (!isRevealing) return;
+    const id = setInterval(() => forceUpdate((n) => n + 1), 100);
+    return () => clearInterval(id);
+  }, [isRevealing, insightRevealEnd]);
 
   useEffect(() => {
     if (!playing) return;
@@ -86,14 +92,18 @@ export function ActionInsightBadge({ actionId, state }: ActionInsightBadgeProps)
           className="relative flex h-full w-full items-center justify-center border-0 bg-transparent p-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer"
           aria-label={costTooltip}
           aria-busy={playing}
-          disabled={!canAfford}
+          disabled={!canAfford || playing}
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
             if (canAfford && !playing) revealActionEffects(actionId);
           }}
         >
-          <BuildingActionBadge playing={playing} embedded />
+          <BuildingActionBadge
+            key={playing ? "reveal" : "idle"}
+            playing={playing}
+            embedded
+          />
         </button>
       </TooltipWrapper>
     </div>

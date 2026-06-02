@@ -136,7 +136,7 @@
       "sleepLengthHours": "Длительность сна +{{hours}} ч.",
       "sleepIntensityPercent": "Интенсивность сна +{{percent}} %",
       "maxVillagers": "+{{amount}} к макс. числу жителей",
-      "resourceLimit": "Лимит ресурсов: {{limit}} (без лимита для серебра и золота)",
+      "resourceLimit": "Лимит ресурсов: {{limit}} (без лимита для серебра, золота и проницательности)",
       "maxPopulation": "+{{amount}} к макс. населению",
       "newVillagerChancePercent": "+{{percent}} % шанс нового жителя",
       "steelForgerSteel": "Сталевар: +{{amount}} стали",

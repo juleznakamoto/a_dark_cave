@@ -6,7 +6,7 @@ import { bt, type BuildingTooltipEffect } from "./buildingTooltipEffects";
 function storageResourceLimitTooltip(limit: number): BuildingTooltipEffect {
   return bt(
     "resourceLimit",
-    "Resource Limit: {{limit}} (no limit on Silver & Gold)",
+    "Resource Limit: {{limit}} (no limit on Silver, Gold & Insight)",
     { limit: formatNumber(limit) },
   );
 }

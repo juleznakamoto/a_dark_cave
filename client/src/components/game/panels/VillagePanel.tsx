@@ -97,7 +97,7 @@ export default function VillagePanel() {
     [setInvestDialogOpen],
   );
 
-  const state = useGameStore.getState();
+  const state = useGameStore.getState() as unknown as import("@shared/schema").GameState;
 
   // Particle effect state
   const feedFireButtonRef = useRef<HTMLButtonElement>(null);
@@ -686,7 +686,7 @@ export default function VillagePanel() {
       return (
         <div key={`${actionId}-wrapper`} className="relative inline-block">
           {button}
-          <ActionInsightBadge actionId={actionId} state={state} />
+          <ActionInsightBadge actionId={actionId} />
         </div>
       );
     }
