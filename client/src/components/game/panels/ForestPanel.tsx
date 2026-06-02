@@ -419,6 +419,7 @@ export default function ForestPanel() {
           cooldownMs={action.cooldown * 1000}
           data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
           button_id={actionId}
+          actionId={actionId}
           size="xs"
           disabled={!canExecute}
           variant="outline"
@@ -482,6 +483,8 @@ export default function ForestPanel() {
         cooldownMs={action.cooldown * 1000}
         data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
         data-analytics-id={actionId}
+        button_id={actionId}
+        actionId={actionId}
         size="xs"
         disabled={!canExecute}
         variant="outline"

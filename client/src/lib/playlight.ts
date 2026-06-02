@@ -6,24 +6,24 @@ export function isPlaylightReferralUrl(): boolean {
   return new URLSearchParams(window.location.search).get("utm_source") === "playlight";
 }
 
-/** Exit intent stays off until this much `playTime` has elapsed. */
-const NORMAL_PLAY_EXIT_MIN_PLAY_MS = 15 * 60 * 1000;
-/** Phase 1: 15–75 min playTime — once per 10 min; phase 2: 75–135 min — once per 15 min; then once per 20 min. */
-const NORMAL_PLAY_EXIT_PHASE1_END_MS = (15 + 60) * 60 * 1000;
-const NORMAL_PLAY_EXIT_PHASE2_END_MS = (75 + 60) * 60 * 1000;
-const NORMAL_PLAY_EXIT_WINDOW_PHASE1_MS = 10 * 60 * 1000;
-const NORMAL_PLAY_EXIT_WINDOW_PHASE2_MS = 15 * 60 * 1000;
-const NORMAL_PLAY_EXIT_WINDOW_PHASE3_MS = 20 * 60 * 1000;
-const NORMAL_PLAY_EXIT_MAX_PER_WINDOW = 1;
+/** Normal play: one exit-intent show per milestone once `playTime` reaches it. */
+const NORMAL_PLAY_EXIT_MILESTONES_MS = [
+  60 * 60 * 1000,
+  120 * 60 * 1000,
+  240 * 60 * 1000,
+  360 * 60 * 1000,
+] as const;
 
-function getNormalPlayExitWindowMs(playTimeMs: number): number {
-  if (playTimeMs < NORMAL_PLAY_EXIT_PHASE1_END_MS) {
-    return NORMAL_PLAY_EXIT_WINDOW_PHASE1_MS;
+const shownExitIntentMilestones = new Set<number>();
+
+/** Next milestone the player may trigger, or null if none / all consumed. */
+function getActiveExitMilestone(playTimeMs: number): number | null {
+  for (const milestone of NORMAL_PLAY_EXIT_MILESTONES_MS) {
+    if (shownExitIntentMilestones.has(milestone)) continue;
+    if (playTimeMs >= milestone) return milestone;
+    return null;
   }
-  if (playTimeMs < NORMAL_PLAY_EXIT_PHASE2_END_MS) {
-    return NORMAL_PLAY_EXIT_WINDOW_PHASE2_MS;
-  }
-  return NORMAL_PLAY_EXIT_WINDOW_PHASE3_MS;
+  return null;
 }
 /** Ignore duplicate `exitIntent` emissions from the SDK within one gesture. */
 const EXIT_INTENT_EVENT_DEDUP_MS = 600;
@@ -62,26 +62,11 @@ function isNormalPlayExitContext(state: ExitIntentGameSlice): boolean {
   return !!state.flags.gameStarted && !isSpecialExitContext(state);
 }
 
-const normalPlayExitIntentTimestamps: number[] = [];
-let normalPlayExitUnlockTimerId: number | null = null;
 let exitIntentDisableDeferredUntil = 0;
 let exitIntentDeferTimerId: number | null = null;
 /** Skip quota for the next `exitIntent` event (e.g. after `setDiscovery()` from the menu). */
 let skipNextExitIntentQuota = false;
 let lastExitIntentEventRecordedAt = 0;
-
-function pruneNormalPlayExitIntentTimestamps(
-  windowMs: number,
-  now = Date.now(),
-) {
-  const cutoff = now - windowMs;
-  while (
-    normalPlayExitIntentTimestamps.length > 0 &&
-    normalPlayExitIntentTimestamps[0]! <= cutoff
-  ) {
-    normalPlayExitIntentTimestamps.shift();
-  }
-}
 
 /**
  * Call immediately before `playlightSDK.setDiscovery()` so that the resulting flow does not
@@ -140,30 +125,6 @@ export async function initPlaylight() {
       const { getMsSinceUserActivity } = await import("../game/loop");
       type StoreState = ReturnType<typeof useGameStore.getState>;
 
-      const scheduleNormalPlayExitUnlock = () => {
-        if (normalPlayExitUnlockTimerId !== null) {
-          clearTimeout(normalPlayExitUnlockTimerId);
-          normalPlayExitUnlockTimerId = null;
-        }
-        const playTime = useGameStore.getState().playTime ?? 0;
-        const windowMs = getNormalPlayExitWindowMs(playTime);
-        pruneNormalPlayExitIntentTimestamps(windowMs);
-        if (normalPlayExitIntentTimestamps.length < NORMAL_PLAY_EXIT_MAX_PER_WINDOW) {
-          return;
-        }
-        const oldest = normalPlayExitIntentTimestamps[0]!;
-        const delay = Math.max(0, oldest + windowMs - Date.now());
-        normalPlayExitUnlockTimerId = window.setTimeout(() => {
-          normalPlayExitUnlockTimerId = null;
-          const nextPlayTime = useGameStore.getState().playTime ?? 0;
-          pruneNormalPlayExitIntentTimestamps(
-            getNormalPlayExitWindowMs(nextPlayTime),
-          );
-          syncExitIntent(useGameStore.getState());
-          scheduleNormalPlayExitUnlock();
-        }, delay);
-      };
-
       const clearExitIntentDisableDefer = () => {
         exitIntentDisableDeferredUntil = 0;
         if (exitIntentDeferTimerId !== null) {
@@ -180,27 +141,22 @@ export async function initPlaylight() {
         lastExitIntentEventRecordedAt = now;
 
         const playTime = useGameStore.getState().playTime ?? 0;
-        const windowMs = getNormalPlayExitWindowMs(playTime);
-        pruneNormalPlayExitIntentTimestamps(windowMs, now);
-        normalPlayExitIntentTimestamps.push(now);
-        pruneNormalPlayExitIntentTimestamps(windowMs, now);
+        const milestone = getActiveExitMilestone(playTime);
+        if (milestone == null) return;
 
-        const atCap =
-          normalPlayExitIntentTimestamps.length >= NORMAL_PLAY_EXIT_MAX_PER_WINDOW;
-        if (atCap) {
-          exitIntentDisableDeferredUntil = now + EXIT_INTENT_DISABLE_DEFER_MS;
-          if (exitIntentDeferTimerId !== null) {
-            clearTimeout(exitIntentDeferTimerId);
-          }
-          exitIntentDeferTimerId = window.setTimeout(() => {
-            exitIntentDeferTimerId = null;
-            exitIntentDisableDeferredUntil = 0;
-            syncExitIntent(useGameStore.getState());
-          }, EXIT_INTENT_DISABLE_DEFER_MS);
+        shownExitIntentMilestones.add(milestone);
+
+        exitIntentDisableDeferredUntil = now + EXIT_INTENT_DISABLE_DEFER_MS;
+        if (exitIntentDeferTimerId !== null) {
+          clearTimeout(exitIntentDeferTimerId);
         }
+        exitIntentDeferTimerId = window.setTimeout(() => {
+          exitIntentDeferTimerId = null;
+          exitIntentDisableDeferredUntil = 0;
+          syncExitIntent(useGameStore.getState());
+        }, EXIT_INTENT_DISABLE_DEFER_MS);
 
         syncExitIntent(useGameStore.getState());
-        scheduleNormalPlayExitUnlock();
       };
 
       const syncExitIntent = (state: StoreState) => {
@@ -215,21 +171,16 @@ export async function initPlaylight() {
           shouldEnableExitIntent = true;
         } else {
           const playTime = state.playTime ?? 0;
-          if (playTime < NORMAL_PLAY_EXIT_MIN_PLAY_MS) {
+          const activeMilestone = getActiveExitMilestone(playTime);
+          const deferActive = Date.now() < exitIntentDisableDeferredUntil;
+          if (deferActive) {
+            shouldEnableExitIntent = true;
+          } else if (activeMilestone == null) {
             clearExitIntentDisableDefer();
             shouldEnableExitIntent = false;
           } else {
-            const windowMs = getNormalPlayExitWindowMs(playTime);
-            pruneNormalPlayExitIntentTimestamps(windowMs);
-            const atCap =
-              normalPlayExitIntentTimestamps.length >= NORMAL_PLAY_EXIT_MAX_PER_WINDOW;
-            if (!atCap) {
-              clearExitIntentDisableDefer();
-              shouldEnableExitIntent = true;
-            } else {
-              const deferActive = Date.now() < exitIntentDisableDeferredUntil;
-              shouldEnableExitIntent = deferActive;
-            }
+            clearExitIntentDisableDefer();
+            shouldEnableExitIntent = true;
           }
         }
 
