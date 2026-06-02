@@ -8,14 +8,15 @@ import {
 } from "@/game/rules";
 import { getActionBonuses } from "@/game/rules/effectsCalculation";
 import { getResourceGainTooltip } from "@/game/rules/tooltips";
-import { getCraftItemDescription } from "@/game/rules/craftItemDescription";
 import CooldownButton from "@/components/CooldownButton";
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
 import { canRevealEffects } from "@/game/rules/insightReveal";
-import { renderRevealedEffectsTooltipSection } from "@/game/rules/insightRevealTooltip";
+import { getCraftItemDescription } from "@/game/rules/craftItemDescription";
+import { getRevealedEffectsForActionTooltip } from "@/game/rules/insightRevealTooltip";
+import { composeActionTooltip } from "@/game/rules/actionTooltipLayout";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useExplosionEffect } from "@/components/ui/explosion-effect";
-import { useRef, useState } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import {
   BubblyButtonGlobalPortal,
 } from "@/components/ui/bubbly-button";
@@ -338,7 +339,6 @@ export default function CavePanel() {
     const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
 
     if (showCost || resourceGainTooltip || hasExpeditionRequirement) {
-      let tooltipContent;
       const villagerRequirementLine = hasExpeditionRequirement ? (
         <div>
           {t("cave.requiresFreeVillagers", {
@@ -347,10 +347,10 @@ export default function CavePanel() {
         </div>
       ) : null;
 
+      let tooltipHeader: ReactNode;
       if (resourceGainTooltip) {
-        // Mine/craft/explore actions: show gains/costs and optional villager requirement
-        tooltipContent = villagerRequirementLine ? (
-          <div className="text-xs whitespace-nowrap">
+        tooltipHeader = villagerRequirementLine ? (
+          <div className="whitespace-nowrap">
             {villagerRequirementLine}
             <div className="border-t border-border my-1" />
             {resourceGainTooltip}
@@ -358,14 +358,13 @@ export default function CavePanel() {
         ) : (
           resourceGainTooltip
         );
-      } else if (showCost || villagerRequirementLine) {
-        // Other actions with costs and/or villager requirement
+      } else {
         const costBreakdown = getActionCostBreakdown(actionId, state);
         const bonuses = state.activeEffects?.actionBonuses?.[actionId];
         const cooldownReduction = bonuses?.cooldownReduction || 0;
 
-        tooltipContent = (
-          <div className="text-xs whitespace-nowrap">
+        tooltipHeader = (
+          <div className="whitespace-nowrap">
             {villagerRequirementLine}
             {villagerRequirementLine &&
               (costBreakdown.length > 0 || cooldownReduction > 0) && (
@@ -388,46 +387,26 @@ export default function CavePanel() {
         );
       }
 
-      const craftingHint =
-        state.books?.book_of_craftsmanship &&
-          isCraftAction &&
-          !CRAFT_NO_BOOK_DESCRIPTION.has(actionId)
+      const hasRevealedEffects = (state.revealedEffects ?? []).includes(
+        actionId,
+      );
+      const craftDescription =
+        isCraftAction &&
+          !CRAFT_NO_BOOK_DESCRIPTION.has(actionId) &&
+          (state.books?.book_of_craftsmanship || hasRevealedEffects)
           ? getCraftItemDescription(actionId)
           : undefined;
-      if (craftingHint && tooltipContent) {
-        tooltipContent = (
-          <div className="text-xs whitespace-nowrap" style={{ width: '12rem' }}>
-            {tooltipContent}
-            <div className="border-t border-border my-1 pt-1 text-muted-foreground whitespace-normal">
-              {craftingHint}
-            </div>
-          </div>
-        );
-      } else if (craftingHint) {
-        tooltipContent = (
-          <div className="text-xs whitespace-nowrap" style={{ width: '12rem' }}>
-            <div className="border-t border-border my-1 pt-1 text-muted-foreground whitespace-normal">
-              {craftingHint}
-            </div>
-          </div>
-        );
-      }
-
-      const revealedSection = renderRevealedEffectsTooltipSection(actionId, state);
-      if (revealedSection && tooltipContent) {
-        tooltipContent = (
-          <div className="text-xs whitespace-nowrap" style={{ width: "12rem" }}>
-            {tooltipContent}
-            {revealedSection}
-          </div>
-        );
-      } else if (revealedSection) {
-        tooltipContent = (
-          <div className="text-xs whitespace-nowrap" style={{ width: "12rem" }}>
-            {revealedSection}
-          </div>
-        );
-      }
+      const revealedEffects = getRevealedEffectsForActionTooltip(
+        actionId,
+        state,
+      );
+      const tooltipContent = composeActionTooltip({
+        header: tooltipHeader,
+        description: craftDescription,
+        effects: revealedEffects,
+        style:
+          craftDescription || revealedEffects ? { width: "12rem" } : undefined,
+      });
 
       const button = (
         <CooldownButton

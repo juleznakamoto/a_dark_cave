@@ -10,6 +10,12 @@ import { clothingEffects, toolEffects, weaponEffects } from "./effects";
 import { renderItemTooltip } from "./itemTooltips";
 import { isCraftOnceAction, isBuildingAction } from "./insightReveal";
 
+const EFFECTS_ONLY_DISPLAY = {
+  showTitle: false,
+  showDescription: false,
+  showEffects: true,
+} as const;
+
 function resolveBuildingEffectLines(
   actionId: string,
   state: GameState,
@@ -29,6 +35,7 @@ function getCraftItemType(
   return null;
 }
 
+/** Effect lines only (no title/description) after insight reveal is purchased. */
 export function getRevealedEffectsTooltipContent(
   actionId: string,
   state: GameState,
@@ -36,11 +43,8 @@ export function getRevealedEffectsTooltipContent(
   if (isCraftOnceAction(actionId)) {
     const itemKey = craftActionIdToItemKey(actionId);
     const itemType = getCraftItemType(itemKey);
-    if (!itemType) {
-      const desc = getCraftItemDescription(actionId);
-      return desc ? <div className="text-gray-400">{desc}</div> : null;
-    }
-    return renderItemTooltip(itemKey, itemType);
+    if (!itemType) return null;
+    return renderItemTooltip(itemKey, itemType, undefined, EFFECTS_ONLY_DISPLAY);
   }
 
   if (isBuildingAction(actionId)) {
@@ -58,16 +62,18 @@ export function getRevealedEffectsTooltipContent(
   return null;
 }
 
-export function renderRevealedEffectsTooltipSection(
+export function getRevealedEffectsForActionTooltip(
   actionId: string,
   state: GameState,
 ): React.ReactNode | null {
   if (!(state.revealedEffects ?? []).includes(actionId)) return null;
-  const content = getRevealedEffectsTooltipContent(actionId, state);
-  if (!content) return null;
-  return (
-    <div className="border-t border-border mt-1 pt-1">
-      {content}
-    </div>
-  );
+  return getRevealedEffectsTooltipContent(actionId, state);
+}
+
+/** @deprecated Prefer {@link getRevealedEffectsForActionTooltip} inside {@link composeActionTooltip}. */
+export function renderRevealedEffectsTooltipSection(
+  actionId: string,
+  state: GameState,
+): React.ReactNode | null {
+  return getRevealedEffectsForActionTooltip(actionId, state);
 }

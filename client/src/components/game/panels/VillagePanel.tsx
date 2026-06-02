@@ -44,7 +44,8 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
-import { renderRevealedEffectsTooltipSection } from "@/game/rules/insightRevealTooltip";
+import { getRevealedEffectsForActionTooltip } from "@/game/rules/insightRevealTooltip";
+import { composeActionTooltip } from "@/game/rules/actionTooltipLayout";
 import { canRevealEffects } from "@/game/rules/insightReveal";
 import {
   SuccessParticles,
@@ -613,21 +614,18 @@ export default function VillagePanel() {
       displayLabel = getPalisadesTierLabel(buildings.palisades || 0);
     }
 
-    const buildingHint = state.books?.book_of_craftsmanship
-      ? resolveActionDescription(actionId, action.description)
-      : undefined;
+    const hasRevealedEffects = (state.revealedEffects ?? []).includes(actionId);
+    const buildingDescription =
+      state.books?.book_of_craftsmanship || hasRevealedEffects
+        ? resolveActionDescription(actionId, action.description)
+        : undefined;
     const buildingKey = actionId.startsWith("build")
       ? actionId.slice(5, 6).toLowerCase() + actionId.slice(6)
       : null;
     const isUpgrade = buildingKey ? isBuildingUpgrade(buildingKey) : false;
-    const hasRevealedEffects = (state.revealedEffects ?? []).includes(actionId);
-    const tooltipContent = (
-      <div
-        className="text-xs"
-        style={
-          buildingHint || hasRevealedEffects ? { width: "12rem" } : undefined
-        }
-      >
+    const revealedEffects = getRevealedEffectsForActionTooltip(actionId, state);
+    const tooltipContent = composeActionTooltip({
+      header: (
         <div className="flex items-start gap-2">
           <div className="flex-1 min-w-0 whitespace-nowrap">
             {costBreakdown.map((cost, index) => (
@@ -640,11 +638,6 @@ export default function VillagePanel() {
                 {cost.text}
               </div>
             ))}
-            {buildingHint && (
-              <div className="border-t border-border my-1 pt-1 text-muted-foreground whitespace-normal">
-                {buildingHint}
-              </div>
-            )}
           </div>
           {isUpgrade && (
             <span className="font-noto-symbols-2 text-green-700 leading-none shrink-0">
@@ -652,9 +645,14 @@ export default function VillagePanel() {
             </span>
           )}
         </div>
-        {renderRevealedEffectsTooltipSection(actionId, state)}
-      </div>
-    );
+      ),
+      description: buildingDescription,
+      effects: revealedEffects,
+      style:
+        buildingDescription || revealedEffects
+          ? { width: "12rem" }
+          : undefined,
+    });
 
     const button = (
       <CooldownButton

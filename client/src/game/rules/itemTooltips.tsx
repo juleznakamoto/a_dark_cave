@@ -407,11 +407,21 @@ export function renderFortificationTooltip(
   );
 }
 
+export type ItemTooltipDisplay = {
+  showTitle?: boolean;
+  showDescription?: boolean;
+  showEffects?: boolean;
+};
+
 export function renderItemTooltip(
   itemId: string,
   itemType: "weapon" | "tool" | "blessing" | "book" | "building" | "fellowship",
   customTooltip?: React.ReactNode,
+  display: ItemTooltipDisplay = {},
 ) {
+  const showTitle = display.showTitle ?? true;
+  const showDescription = display.showDescription ?? true;
+  const showEffects = display.showEffects ?? true;
   // For buildings, generate the tooltip from villageBuildActions
   if (itemType === "building") {
     return renderBuildingItemTooltip(itemId);
@@ -435,20 +445,26 @@ export function renderItemTooltip(
         : getMaxVeinfireElixirLimit();
       return (
         <div className="text-xs">
-          <div className="font-bold">
-            {getEffectName("weapons", itemId, effect?.name ?? itemId)}
-          </div>
-          {effect?.description && (
+          {showTitle && (
+            <div className="font-bold">
+              {getEffectName("weapons", itemId, effect?.name ?? itemId)}
+            </div>
+          )}
+          {showDescription && effect?.description && (
             <div className="text-gray-400 mb-1">
               {getEffectDescription("weapons", itemId, effect.description)}
             </div>
           )}
-          <pre className="whitespace-pre-wrap font-sans text-xs text-foreground">
-            {content}
-          </pre>
-          <div className="text-gray-400 mt-1">
-            {getUiTooltip("maxHeld", "Max: {{value}}", { value: maxHeld })}
-          </div>
+          {showEffects && (
+            <>
+              <pre className="whitespace-pre-wrap font-sans text-xs text-foreground">
+                {content}
+              </pre>
+              <div className="text-gray-400 mt-1">
+                {getUiTooltip("maxHeld", "Max: {{value}}", { value: maxHeld })}
+              </div>
+            </>
+          )}
         </div>
       );
     }
@@ -482,12 +498,12 @@ export function renderItemTooltip(
   if (itemType === "fellowship") {
     return (
       <div className="text-xs">
-        {effect.name && (
+        {showTitle && effect.name && (
           <div className="font-bold">
             {getEffectName(effectCategory, itemId, effect.name)}
           </div>
         )}
-        {effect.description && (
+        {showDescription && effect.description && (
           <div className="text-gray-400">
             {getEffectDescription(effectCategory, itemId, effect.description)}
           </div>
@@ -521,7 +537,8 @@ export function renderItemTooltip(
 
   return (
     <div className="text-xs">
-      {effect.name &&
+      {showTitle &&
+        effect.name &&
         (itemId === "map_fragment" ? (
           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
             <span className="font-bold">
@@ -544,12 +561,12 @@ export function renderItemTooltip(
             {getEffectName(effectCategory, itemId, effect.name)}
           </div>
         ))}
-      {effect.description && (
+      {showDescription && effect.description && (
         <div className="text-gray-400 mb-1">
           {getEffectDescription(effectCategory, itemId, effect.description)}
         </div>
       )}
-      {effect.bonuses?.generalBonuses && (
+      {showEffects && effect.bonuses?.generalBonuses && (
         <div>
           {effect.bonuses.generalBonuses.actionBonusChance != null &&
             effect.bonuses.generalBonuses.actionBonusChance > 0 && (
@@ -698,7 +715,7 @@ export function renderItemTooltip(
           )}
         </div>
       )}
-      {itemId === "obsidian_orb" &&
+      {showEffects && itemId === "obsidian_orb" &&
         useGameStore.getState().relics?.obsidian_orb && (
           <>
             <div>
@@ -731,7 +748,7 @@ export function renderItemTooltip(
             </div>
           </>
         )}
-      {itemId === "bone_dice" && (
+      {showEffects && itemId === "bone_dice" && (
         <div>
           {getUiTooltip(
             "boneDiceGambler",
@@ -739,7 +756,7 @@ export function renderItemTooltip(
           )}
         </div>
       )}
-      {effect.bonuses?.actionBonuses &&
+      {showEffects && effect.bonuses?.actionBonuses &&
         Object.entries(effect.bonuses.actionBonuses).map(
           ([actionId, bonus]) => {
             const actionLabel = getActionLabel(
@@ -822,7 +839,7 @@ export function renderItemTooltip(
             );
           },
         )}
-      {itemType === "weapon" && itemId === "nightshade_bow" && (
+      {showEffects && itemType === "weapon" && itemId === "nightshade_bow" && (
         <pre className="mt-2 whitespace-pre-wrap font-sans text-xs text-foreground">
           {`${combatItemTooltips.poison_arrows.getContent(useGameStore.getState() as unknown as GameState)}\n${getUiTooltip("poisonArrowsAvailable", "Available: 1/1 per combat")}`}
         </pre>
