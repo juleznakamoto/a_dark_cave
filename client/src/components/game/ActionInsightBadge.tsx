@@ -27,8 +27,12 @@ export function ActionInsightBadge({ actionId, state }: ActionInsightBadgeProps)
   const insightRevealing = useGameStore((s) => s.insightRevealing);
   const revealActionEffects = useGameStore((s) => s.revealActionEffects);
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
+  const executionStart = useGameStore((s) => s.executionStartTimes?.[actionId] ?? 0);
+  const executionDuration = useGameStore((s) => s.executionDurations?.[actionId] ?? 0);
 
   if (!canRevealEffects(actionId, state)) return null;
+  // Abort overlay (craft/build) shares this corner — hide while the action runs.
+  if (executionStart > 0 && executionDuration > 0) return null;
 
   const cost = getInsightRevealCost(actionId) ?? 0;
   const insight = getInsightAmount(state);
