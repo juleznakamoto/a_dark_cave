@@ -76,7 +76,7 @@ const EFFECT_TOOLTIP_SECTIONS = new Set<SidePanelSectionId>([
 
 /** Shared layout for resource name + amount + production delta. */
 const RESOURCE_ROW_GRID_CLASS =
-  "grid grid-cols-[minmax(0,1fr)_6.25rem_3rem] items-start gap-x-1.5";
+  "grid grid-cols-[minmax(0,1fr)_6.25rem_3rem] items-center gap-x-1.5";
 
 /** Food/wood at zero while villagers remain — blink red in the resources panel. */
 const CRITICAL_ZERO_RESOURCES = new Set(["food", "wood"]);
