@@ -534,6 +534,11 @@ export default function TimedEventPanel() {
               }
               const showSuccessTooltip = hasEventChoiceSuccessTooltip(choice);
 
+              const hasChoiceMeta =
+                !!successPercentage ||
+                !!(choice.relevant_stats && choice.relevant_stats.length > 0) ||
+                isPurchased;
+
               const buttonContent = (
                 <Button
                   onClick={(e) => {
@@ -544,31 +549,33 @@ export default function TimedEventPanel() {
                   size="xs"
                   disabled={isDisabled}
                   button_id={`timedevent-${choice.id}`}
-                  className="gap-1 w-auto text-left justify-start"
+                  className="h-auto min-h-7 w-fit max-w-full gap-1 py-1 text-left justify-start whitespace-normal"
                 >
-                  <span className="whitespace-nowrap">{labelText}</span>
-                  <div className="flex items-center gap-0.5 flex-shrink-0">
-                    {successPercentage && (
-                      <span className="text-xs text-muted-foreground whitespace-nowrap">
-                        {successPercentage}
-                      </span>
-                    )}
-                    {choice.relevant_stats &&
-                      choice.relevant_stats.length > 0 &&
-                      choice.relevant_stats.map((stat) => {
-                        const statInfo = statIcons[stat.toLowerCase()];
-                        if (!statInfo) return null;
-                        return (
-                          <span
-                            key={stat}
-                            className={`font-noto-symbols-2 text-xs ${statInfo.color}`}
-                          >
-                            {statInfo.icon}
-                          </span>
-                        );
-                      })}
-                    {isPurchased && <span className="font-noto-symbols-2">✓</span>}
-                  </div>
+                  <span>{labelText}</span>
+                  {hasChoiceMeta && (
+                    <span className="inline-flex items-center gap-0.5 flex-shrink-0">
+                      {successPercentage && (
+                        <span className="text-xs text-muted-foreground whitespace-nowrap">
+                          {successPercentage}
+                        </span>
+                      )}
+                      {choice.relevant_stats &&
+                        choice.relevant_stats.length > 0 &&
+                        choice.relevant_stats.map((stat) => {
+                          const statInfo = statIcons[stat.toLowerCase()];
+                          if (!statInfo) return null;
+                          return (
+                            <span
+                              key={stat}
+                              className={`font-noto-symbols-2 text-xs ${statInfo.color}`}
+                            >
+                              {statInfo.icon}
+                            </span>
+                          );
+                        })}
+                      {isPurchased && <span className="font-noto-symbols-2">✓</span>}
+                    </span>
+                  )}
                 </Button>
               );
 
@@ -627,6 +634,8 @@ export default function TimedEventPanel() {
               return tooltipContent ? (
                 <TooltipWrapper
                   key={choice.id}
+                  className="relative inline-block w-fit max-w-full"
+                  tooltipTriggerClassName="inline-block w-fit max-w-full"
                   tooltip={tooltipContent}
                   tooltipId={`timedevent-${choice.id}`}
                   disabled={isDisabled}
@@ -637,7 +646,9 @@ export default function TimedEventPanel() {
                   {buttonContent}
                 </TooltipWrapper>
               ) : (
-                <div key={choice.id}>{buttonContent}</div>
+                <div key={choice.id} className="w-fit max-w-full">
+                  {buttonContent}
+                </div>
               );
             })}
         </div>

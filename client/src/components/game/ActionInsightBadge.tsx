@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { BuildingActionBadge } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
@@ -34,8 +35,14 @@ export function ActionInsightBadge({ actionId, state }: ActionInsightBadgeProps)
   const canAfford = insight >= cost;
   const playing = isInsightRevealInProgress(actionId, insightRevealing);
 
+  useEffect(() => {
+    if (!playing) return;
+    setHighlightedResources(["insight"]);
+    return () => setHighlightedResources([]);
+  }, [playing, setHighlightedResources]);
+
   const costTooltip = getUiTooltip(
-    "insightRevealSeeEffects",
+    "buildings.insightRevealSeeEffects",
     "See effects for {{cost}} {{resource}}",
     { cost, resource: formatTooltipResourceName("insight") },
   );
@@ -61,17 +68,20 @@ export function ActionInsightBadge({ actionId, state }: ActionInsightBadgeProps)
         className="block h-full w-full"
         tooltipTriggerAsChild
         onMouseEnter={() => setHighlightedResources(["insight"])}
-        onMouseLeave={() => setHighlightedResources([])}
+        onMouseLeave={() => {
+          if (!playing) setHighlightedResources([]);
+        }}
       >
         <button
           type="button"
-          className="relative flex h-full w-full items-center justify-center border-0 bg-transparent p-0 cursor-pointer disabled:cursor-not-allowed"
+          className="relative flex h-full w-full items-center justify-center border-0 bg-transparent p-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer"
           aria-label={costTooltip}
-          disabled={!canAfford || playing}
+          aria-busy={playing}
+          disabled={!canAfford}
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
-            if (canAfford) revealActionEffects(actionId);
+            if (canAfford && !playing) revealActionEffects(actionId);
           }}
         >
           <BuildingActionBadge playing={playing} embedded />

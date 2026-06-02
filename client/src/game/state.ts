@@ -45,6 +45,7 @@ import {
   canRevealEffects,
   getInsightAmount,
   getInsightRevealCost,
+  INSIGHT_REVEAL_ACTION_COOLDOWN_SEC,
   INSIGHT_REVEAL_DURATION_MS,
 } from "@/game/rules/insightReveal";
 import {
@@ -1972,8 +1973,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...state.insightRevealing,
         [actionId]: Date.now() + INSIGHT_REVEAL_DURATION_MS,
       },
-      cooldowns: { ...state.cooldowns, [actionId]: 10 },
-      initialCooldowns: { ...state.initialCooldowns, [actionId]: 10 },
+      cooldowns: {
+        ...state.cooldowns,
+        [actionId]: INSIGHT_REVEAL_ACTION_COOLDOWN_SEC,
+      },
+      initialCooldowns: {
+        ...state.initialCooldowns,
+        [actionId]: INSIGHT_REVEAL_ACTION_COOLDOWN_SEC,
+      },
     });
     return true;
   },

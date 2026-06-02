@@ -378,11 +378,11 @@ export default function EventDialog({
                   <Button
                     onClick={selectChoice}
                     variant="outline"
-                    className="w-auto flex items-center justify-start gap-1 text-left"
+                    className="w-fit max-w-full flex items-center justify-start gap-1 text-left whitespace-normal"
                     disabled={isDisabled}
                     button_id={`event-choice-${choice.id}`}
                   >
-                    <span className="whitespace-nowrap">{labelText}</span>
+                    <span>{labelText}</span>
                     {(successPercentage ||
                       (choice.relevant_stats && choice.relevant_stats.length > 0)) && (
                         <div className="flex gap-1 items-center flex-shrink-0">

@@ -22,8 +22,8 @@ describe("revealActionEffects", () => {
 
     const after = useGameStore.getState();
     expect(after.resources.insight).toBe(75);
-    expect(after.cooldowns.craftStoneAxe).toBe(10);
-    expect(after.initialCooldowns.craftStoneAxe).toBe(10);
+    expect(after.cooldowns.craftStoneAxe).toBe(3);
+    expect(after.initialCooldowns.craftStoneAxe).toBe(3);
     expect(after.insightRevealing.craftStoneAxe).toBeGreaterThan(Date.now());
   });
 

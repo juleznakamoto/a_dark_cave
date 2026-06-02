@@ -5,7 +5,9 @@ import type { Action } from "@shared/schema";
 export const INSIGHT_REVEAL_BUILDING_COST = 50;
 export const INSIGHT_REVEAL_FORTIFICATION_COST = 25;
 export const INSIGHT_REVEAL_CRAFT_COST = 25;
-export const INSIGHT_REVEAL_DURATION_MS = 10_000;
+export const INSIGHT_REVEAL_DURATION_MS = 3_000;
+/** Action button cooldown (seconds); ticks subtract 0.25 every 250ms → 1s per unit. */
+export const INSIGHT_REVEAL_ACTION_COOLDOWN_SEC = 3;
 
 const FORTIFICATION_BUILDING_KEYS = new Set([
   "bastion",
