@@ -77,7 +77,7 @@
     "label": "Revestimiento de quitina"
   },
   "buildClerksHut": {
-    "description": "Choza donde los escribientes registran los recursos de la aldea",
+    "description": "Choza donde eruditos estudian para obtener perspicacia sobre el mundo",
     "label": "Choza de escribientes"
   },
   "buildCoinhouse": {
@@ -153,7 +153,7 @@
     "label": "Trampas mejoradas"
   },
   "buildInkwardenAcademy": {
-    "description": "Gran academia de eruditos que proporciona conocimiento supremo y seguimiento de recursos",
+    "description": "Gran academia donde maestros eruditos destilan un conocimiento profundo",
     "label": "Academia de los guardianes del tomo"
   },
   "buildLonghouse": {
@@ -197,7 +197,7 @@
     "label": "Santuario"
   },
   "buildScriptorium": {
-    "description": "Biblioteca de conocimiento que permite un seguimiento detallado de los recursos",
+    "description": "Centro de sabiduría donde eruditos reúnen conocimiento",
     "label": "Scriptorium"
   },
   "buildShallowPit": {

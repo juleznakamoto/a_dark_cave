@@ -1670,7 +1670,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildClerksHut: {
     id: "buildClerksHut",
     label: "Clerk's Hut",
-    description: "Hut where clerks track resources of the village",
+    description: "Hut where scholars study to gain Insight about the world",
     tooltipEffects: [
       bt("knowledgeBonus", "+{{amount}} Knowledge", { amount: 2 }),
       bt("unlocksScholar", "Unlocks Scholar villager"),
@@ -1704,8 +1704,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildScriptorium: {
     id: "buildScriptorium",
     label: "Scriptorium",
-    description:
-      "Library of knowledge providing detailed tracking of resources",
+    description: "Hub of wisdom where scholars gather Knowledge",
     tooltipEffects: [
       bt("knowledgeBonus", "+{{amount}} Knowledge", { amount: 5 }),
       bt("scholarInsight2", "Scholar produces 2 Insight per cycle"),
@@ -1740,7 +1739,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildInkwardenAcademy",
     label: "Tomewarden Academy",
     description:
-      "Grand academy of scholars providing supreme knowledge and resource tracking",
+      "Grand academy where master scholars distill deep Knowledge",
     tooltipEffects: [
       bt("knowledgeBonus", "+{{amount}} Knowledge", { amount: 10 }),
       bt("scholarInsight3", "Scholar produces 3 Insight per cycle"),

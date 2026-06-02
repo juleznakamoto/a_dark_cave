@@ -77,7 +77,7 @@
     "label": "甲壳护板"
   },
   "buildClerksHut": {
-    "description": "书记员记录村庄资源的小屋",
+    "description": "学者在此研习世界、获得洞见的小屋",
     "label": "书记员小屋"
   },
   "buildCoinhouse": {
@@ -153,7 +153,7 @@
     "label": "改良陷阱"
   },
   "buildInkwardenAcademy": {
-    "description": "宏伟的学者学院，提供至高知识与资源记录",
+    "description": "大师在此淬炼深层知识的宏伟学院",
     "label": "卷卫学院"
   },
   "buildLonghouse": {
@@ -197,7 +197,7 @@
     "label": "圣所"
   },
   "buildScriptorium": {
-    "description": "知识书库，可详细追踪资源",
+    "description": "学者聚集智慧与知识的智识中心",
     "label": "抄经室"
   },
   "buildShallowPit": {

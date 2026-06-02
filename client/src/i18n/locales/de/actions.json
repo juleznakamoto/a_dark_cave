@@ -77,7 +77,7 @@
     "label": "Chitinpanzerung"
   },
   "buildClerksHut": {
-    "description": "Hütte, in der Schreiber die Ressourcen des Dorfes erfassen",
+    "description": "Hütte, in der Gelehrte studieren und Einsicht über die Welt gewinnen",
     "label": "Schreiberhütte"
   },
   "buildCoinhouse": {
@@ -153,7 +153,7 @@
     "label": "Verbesserte Fallen"
   },
   "buildInkwardenAcademy": {
-    "description": "Große Akademie der Gelehrten, die höchstes Wissen und Ressourcenerfassung bietet",
+    "description": "Große Akademie, in der Meistergelehrte tiefes Wissen destillieren",
     "label": "Akademie der Schriftenwächter" //ok
   },
   "buildLonghouse": {
@@ -197,7 +197,7 @@
     "label": "Heiligtum"
   },
   "buildScriptorium": {
-    "description": "Bibliothek des Wissens, die genaue Ressourcenerfassung ermöglicht",
+    "description": "Zentrum der Weisheit, in dem Gelehrte Wissen sammeln",
     "label": "Skriptorium"
   },
   "buildShallowPit": {

@@ -77,7 +77,7 @@
     "label": "Chitin Plating"
   },
   "buildClerksHut": {
-    "description": "Hut where clerks track resources of the village",
+    "description": "Hut where scholars study to gain Insight about the world",
     "label": "Clerk's Hut"
   },
   "buildCoinhouse": {
@@ -153,7 +153,7 @@
     "label": "Improved Traps"
   },
   "buildInkwardenAcademy": {
-    "description": "Grand academy of scholars providing supreme knowledge and resource tracking",
+    "description": "Grand academy where master scholars distill deep Knowledge",
     "label": "Tomewarden Academy"
   },
   "buildLonghouse": {
@@ -197,7 +197,7 @@
     "label": "Sanctum"
   },
   "buildScriptorium": {
-    "description": "Library of knowledge providing detailed tracking of resources",
+    "description": "Hub of wisdom where scholars gather Knowledge",
     "label": "Scriptorium"
   },
   "buildShallowPit": {

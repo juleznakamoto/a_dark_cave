@@ -77,7 +77,7 @@
     "label": "Blindage de chitine"
   },
   "buildClerksHut": {
-    "description": "Hutte où les commis suivent les ressources du village",
+    "description": "Hutte où des érudits étudient pour acquérir de la perspicacité sur le monde",
     "label": "Hutte des commis"
   },
   "buildCoinhouse": {
@@ -153,7 +153,7 @@
     "label": "Pièges améliorés"
   },
   "buildInkwardenAcademy": {
-    "description": "Grande académie d'érudits offrant un savoir suprême et un suivi des ressources",
+    "description": "Grande académie où des maîtres érudits distillent un savoir profond",
     "label": "Académie des gardiens des écrits"
   },
   "buildLonghouse": {
@@ -197,7 +197,7 @@
     "label": "Sanctuaire"
   },
   "buildScriptorium": {
-    "description": "Bibliothèque du savoir offrant un suivi détaillé des ressources",
+    "description": "Carrefour de sagesse où les érudits rassemblent du savoir",
     "label": "Scriptorium"
   },
   "buildShallowPit": {

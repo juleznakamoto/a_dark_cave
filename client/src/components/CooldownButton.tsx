@@ -4,6 +4,7 @@ import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { X } from "lucide-react";
 import { GAME_CONSTANTS } from "@/game/constants";
+import { INSIGHT_REVEAL_DURATION_MS } from "@/game/rules/insightReveal";
 import { tWithFallback } from "@/i18n/resolveGameText";
 
 interface CooldownButtonProps {
@@ -72,21 +73,21 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     const gold = useGameStore((s) => s.resources.gold ?? 0);
     const abortActionExecution = useGameStore((s) => s.abortActionExecution);
 
-    // Force re-renders during execution so progress bar updates
-    const isExecutingCheck = !!(executionStartTimes && executionStartTimes[actionIdFromProps]);
-    useEffect(() => {
-      if (!isExecutingCheck) return;
-      const id = setInterval(() => forceUpdate((n) => n + 1), 100);
-      return () => clearInterval(id);
-    }, [isExecutingCheck, actionIdFromProps]);
-
     // Get current and initial cooldown from game state
     const currentCooldown = cooldowns[actionIdFromProps] || 0;
     const storedInitialCooldown = initialCooldowns[actionIdFromProps] || 0;
     const isCoolingDown = currentCooldown > 0;
+    const insightRevealEnd = insightRevealing?.[actionIdFromProps];
     const isInsightRevealing =
-      typeof insightRevealing?.[actionIdFromProps] === "number" &&
-      insightRevealing[actionIdFromProps] > Date.now();
+      typeof insightRevealEnd === "number" && insightRevealEnd > Date.now();
+
+    // Force re-renders during execution / insight reveal so progress overlay updates
+    const isExecutingCheck = !!(executionStartTimes && executionStartTimes[actionIdFromProps]);
+    useEffect(() => {
+      if (!isExecutingCheck && !isInsightRevealing) return;
+      const id = setInterval(() => forceUpdate((n) => n + 1), 100);
+      return () => clearInterval(id);
+    }, [isExecutingCheck, isInsightRevealing, actionIdFromProps]);
 
     // Execution state (reverse cooldown - fills as time passes)
     const executionStart = executionStartTimes?.[actionIdFromProps] || 0;
@@ -120,7 +121,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
     // Track first render for transition
     useEffect(() => {
-      if (isCoolingDown || isExecuting) {
+      if (isCoolingDown || isExecuting || isInsightRevealing) {
         isFirstRenderRef.current = true;
         // Allow transition after initial render (next frame)
         requestAnimationFrame(() => {
@@ -129,14 +130,25 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       } else {
         isFirstRenderRef.current = true;
       }
-    }, [isCoolingDown, isExecuting]);
+    }, [isCoolingDown, isExecuting, isInsightRevealing]);
+
+    const insightRevealWidth =
+      isInsightRevealing && typeof insightRevealEnd === "number"
+        ? Math.max(
+          0,
+          Math.min(
+            100,
+            ((insightRevealEnd - Date.now()) / INSIGHT_REVEAL_DURATION_MS) * 100,
+          ),
+        )
+        : 0;
 
     // Calculate width percentage: cooldown = shrinks 100→0, execution = grows 0→100
     const overlayWidth = isExecuting
       ? executionProgress * 100
       : isCoolingDown && initialCooldown > 0
         ? (currentCooldown / initialCooldown) * 100
-        : 0;
+        : insightRevealWidth;
 
     const actionExecutedRef = useRef<boolean>(false);
 
@@ -183,10 +195,10 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         style={{ opacity: 1, position: 'relative', zIndex: 10, ...style }}
       >
         {/* Button content */}
-        <span className={`relative transition-opacity duration-200 ${isCoolingDown || isExecuting || disabled ? "opacity-60" : ""}`}>{children}</span>
+        <span className={`relative transition-opacity duration-200 ${isCoolingDown || isExecuting || isInsightRevealing || disabled ? "opacity-60" : ""}`}>{children}</span>
 
-        {/* Cooldown or execution progress overlay */}
-        {(isCoolingDown || isExecuting) && (
+        {/* Cooldown, execution, or insight-reveal progress overlay */}
+        {(isCoolingDown || isExecuting || isInsightRevealing) && (
           <div
             className={`absolute inset-0 transition-opacity duration-200 ${isInsightRevealing ? "bg-blue-400/25" : "bg-white/15"
               }`}
