@@ -9,7 +9,10 @@ import {
   isInsightRevealInProgress,
 } from "@/game/rules/insightReveal";
 import { useGameStore } from "@/game/state";
-import { getUiTooltip } from "@/i18n/tooltipLabels";
+import {
+  formatTooltipResourceName,
+  getUiTooltip,
+} from "@/i18n/tooltipLabels";
 import type { GameState } from "@shared/schema";
 
 const BADGE_SIZE_PX = 16;
@@ -22,6 +25,7 @@ type ActionInsightBadgeProps = {
 export function ActionInsightBadge({ actionId, state }: ActionInsightBadgeProps) {
   const insightRevealing = useGameStore((s) => s.insightRevealing);
   const revealActionEffects = useGameStore((s) => s.revealActionEffects);
+  const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
 
   if (!canRevealEffects(actionId, state)) return null;
 
@@ -31,9 +35,9 @@ export function ActionInsightBadge({ actionId, state }: ActionInsightBadgeProps)
   const playing = isInsightRevealInProgress(actionId, insightRevealing);
 
   const costTooltip = getUiTooltip(
-    "insightRevealCost",
-    "{{cost}} Insight",
-    { cost },
+    "insightRevealSeeEffects",
+    "See effects for {{cost}} {{resource}}",
+    { cost, resource: formatTooltipResourceName("insight") },
   );
 
   return (
@@ -51,12 +55,13 @@ export function ActionInsightBadge({ actionId, state }: ActionInsightBadgeProps)
       onPointerDown={(e) => e.stopPropagation()}
     >
       <TooltipWrapper
-        tooltip={
-          <span className={canAfford ? "" : "text-red-400"}>{costTooltip}</span>
-        }
+        tooltip={costTooltip}
         tooltipId={`${actionId}-insight-badge`}
+        tooltipContentClassName="text-white"
         className="block h-full w-full"
         tooltipTriggerAsChild
+        onMouseEnter={() => setHighlightedResources(["insight"])}
+        onMouseLeave={() => setHighlightedResources([])}
       >
         <button
           type="button"

@@ -108,6 +108,7 @@
       "resourceChangeHints": "Indications de changement de ressources",
       "improvedResourceChangeHints": "Indications améliorées de changement de ressources",
       "resourceHighlighting": "Mise en évidence des ressources",
+      "insightRevealSeeEffects": "Voir les effets pour {{cost}} {{resource}}",
       "abortActions": "Interrompre les actions",
       "madnessReduction": "-{{amount}} folie",
       "madnessIncrease": "+{{amount}} folie",

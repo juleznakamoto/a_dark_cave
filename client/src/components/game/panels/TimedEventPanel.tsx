@@ -544,34 +544,30 @@ export default function TimedEventPanel() {
                   size="xs"
                   disabled={isDisabled}
                   button_id={`timedevent-${choice.id}`}
-                  className="gap-0 w-full text-left justify-between"
+                  className="gap-1 w-auto text-left justify-start"
                 >
-                  <div className="flex items-center gap-1 flex-1 min-w-0">
-                    <span className="whitespace-nowrap">{labelText}</span>
-                    <div className="flex items-center gap-0.5 flex-shrink-0">
-                      {successPercentage && (
-                        <span className="text-xs text-muted-foreground whitespace-nowrap">
-                          {successPercentage}
-                        </span>
-                      )}
-                      {choice.relevant_stats &&
-                        choice.relevant_stats.length > 0 &&
-                        choice.relevant_stats.map((stat) => {
-                          const statInfo = statIcons[stat.toLowerCase()];
-                          if (!statInfo) return null;
-                          return (
-                            <span
-                              key={stat}
-                              className={`font-noto-symbols-2 text-xs ${statInfo.color}`}
-                            >
-                              {statInfo.icon}
-                            </span>
-                          );
-                        })}
-                    </div>
-                  </div>
-                  <div className="flex items-center flex-shrink-0">
-                    {isPurchased && <span className="ml-1 font-noto-symbols-2">✓</span>}
+                  <span className="whitespace-nowrap">{labelText}</span>
+                  <div className="flex items-center gap-0.5 flex-shrink-0">
+                    {successPercentage && (
+                      <span className="text-xs text-muted-foreground whitespace-nowrap">
+                        {successPercentage}
+                      </span>
+                    )}
+                    {choice.relevant_stats &&
+                      choice.relevant_stats.length > 0 &&
+                      choice.relevant_stats.map((stat) => {
+                        const statInfo = statIcons[stat.toLowerCase()];
+                        if (!statInfo) return null;
+                        return (
+                          <span
+                            key={stat}
+                            className={`font-noto-symbols-2 text-xs ${statInfo.color}`}
+                          >
+                            {statInfo.icon}
+                          </span>
+                        );
+                      })}
+                    {isPurchased && <span className="font-noto-symbols-2">✓</span>}
                   </div>
                 </Button>
               );

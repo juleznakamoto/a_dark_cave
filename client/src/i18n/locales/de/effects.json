@@ -199,8 +199,8 @@
       "name": "Okkultistengrimoire"
     },
     "odd_trinket": {
-      "description": "Seltsam aussehendes Schmuckstück, auf dem Boden gefunden", //ok
-      "name": "Seltsames Schmuckstück"
+      "description": "Glühendes bernsteinfarbenes Elixir, beim Holzhacken gefunden",
+      "name": "Seltsames Elixir"
     },
     "ravenfeather_mantle": {
       "description": "Mystischer Mantel, aus schimmernden Rabenfedern gewoben",

@@ -1205,12 +1205,12 @@
       }
     },
     "log": {
-      "outcome0": "Vous buvez le liquide ambré. Il brûle en descendant, mais vous vous sentez plus fort qu'avant.",
-      "outcome1": "Vous décidez de ne pas prendre le risque et lancez la babiole dans les bois. Elle disparaît dans les broussailles.",
-      "outcome2": "Votre hésitation vous coûte cher. La babiole glisse de vos doigts et se brise sur un rocher, le liquide ambré s'infiltrant dans la terre."
+      "outcome0": "Vous buvez l'élixir ambré. Il brûle en descendant, mais vous vous sentez plus fort qu'avant.",
+      "outcome1": "Vous décidez de ne pas prendre le risque et lancez la fiole dans les bois. Elle disparaît dans les broussailles.",
+      "outcome2": "Votre hésitation vous coûte cher. La fiole glisse de vos doigts et se brise sur un rocher, l'élixir ambré s'infiltrant dans la terre."
     },
-    "message": "En coupant du bois, vous trouvez une babiole contenant un liquide ambré lumineux. Le liquide tourbillonne de façon hypnotique. Le buvez-vous ?",
-    "title": "L'Étrange babiole"
+    "message": "En coupant du bois, vous trouvez une fiole d'élixir ambré lumineux. Le liquide tourbillonne de façon hypnotique. Le buvez-vous ?",
+    "title": "L'étrange élixir"
   },
   "offerToTheForestGods": {
     "choices": {

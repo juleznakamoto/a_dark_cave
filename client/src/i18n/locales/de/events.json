@@ -1205,12 +1205,12 @@
       }
     },
     "log": {
-      "outcome0": "Du trinkst die bernsteinfarbene Flüssigkeit. Sie brennt beim Schlucken, doch du fühlst dich stärker als zuvor.",
-      "outcome1": "Du beschließt, es nicht zu riskieren, und wirfst das Schmuckstück in den Wald. Es verschwindet im Unterholz.",
-      "outcome2": "Dein Zögern kostet dich. Das Schmuckstück gleitet dir aus den Fingern und zerschellt an einem Felsen, die bernsteinfarbene Flüssigkeit sickert in die Erde."
+      "outcome0": "Du trinkst das bernsteinfarbene Elixir. Es brennt beim Schlucken, doch du fühlst dich stärker als zuvor.",
+      "outcome1": "Du beschließt, es nicht zu riskieren, und wirfst das Fläschchen in den Wald. Es verschwindet im Unterholz.",
+      "outcome2": "Dein Zögern kostet dich. Das Fläschchen gleitet dir aus den Fingern und zerschellt an einem Felsen, das bernsteinfarbene Elixir sickert in die Erde."
     },
-    "message": "Beim Holzhacken findest du ein Schmuckstück mit glühender bernsteinfarbener Flüssigkeit darin. Die Flüssigkeit wirbelt hypnotisch. Trinkst du sie?",
-    "title": "Das seltsame Schmuckstück"
+    "message": "Beim Holzhacken findest du ein Fläschchen mit glühendem bernsteinfarbenem Elixir. Die Flüssigkeit wirbelt hypnotisch. Trinkst du es?",
+    "title": "Das seltsame Elixir"
   },
   "offerToTheForestGods": {
     "choices": {

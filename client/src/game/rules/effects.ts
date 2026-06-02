@@ -870,8 +870,8 @@ export const clothingEffects: Record<string, EffectDefinition> = {
 
   odd_trinket: {
     id: "odd_trinket",
-    name: "Odd Trinket",
-    description: "Oddly looking trinket found on the floor",
+    name: "Odd Elixir",
+    description: "A glowing amber elixir found while chopping wood",
     bonuses: {
       generalBonuses: {
         luck: 2,

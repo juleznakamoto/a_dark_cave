@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "hooks": {
+    "stop": [
+      {
+        "command": "node .cursor/hooks/architecture-update-check.mjs",
+        "loop_limit": 2
+      }
+    ]
+  }
+}

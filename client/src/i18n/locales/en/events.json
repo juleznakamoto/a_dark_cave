@@ -1228,12 +1228,12 @@
       }
     },
     "log": {
-      "outcome0": "You drink the amber liquid. It burns as it goes down, but you feel stronger than before.",
-      "outcome1": "You decide not to risk it and toss the trinket into the woods. It disappears into the undergrowth.",
-      "outcome2": "Your hesitation costs you. The trinket slips from your fingers and shatters on a rock, the amber liquid seeping into the earth."
+      "outcome0": "You drink the amber elixir. It burns as it goes down, but you feel stronger than before.",
+      "outcome1": "You decide not to risk it and toss the vial into the woods. It disappears into the undergrowth.",
+      "outcome2": "Your hesitation costs you. The vial slips from your fingers and shatters on a rock, the amber elixir seeping into the earth."
     },
-    "message": "While chopping wood, you find a trinket with glowing amber liquid inside. The liquid swirls hypnotically. Do you drink it?",
-    "title": "The Odd Trinket"
+    "message": "While chopping wood, you find a vial of glowing amber elixir. The liquid swirls hypnotically. Do you drink it?",
+    "title": "The Odd Elixir"
   },
   "offerToTheForestGods": {
     "choices": {

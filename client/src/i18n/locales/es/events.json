@@ -1205,12 +1205,12 @@
       }
     },
     "log": {
-      "outcome0": "Bebes el líquido ámbar. Quema al bajar, pero te sientes más fuerte que antes.",
-      "outcome1": "Decides no arriesgarte y arrojas el abalorio al bosque. Desaparece entre la maleza.",
-      "outcome2": "Tu vacilación te cuesta caro. El abalorio se resbala de tus dedos y se rompe contra una roca; el líquido ámbar se filtra en la tierra."
+      "outcome0": "Bebes el elixir ámbar. Quema al bajar, pero te sientes más fuerte que antes.",
+      "outcome1": "Decides no arriesgarte y arrojas el frasco al bosque. Desaparece entre la maleza.",
+      "outcome2": "Tu vacilación te cuesta caro. El frasco se resbala de tus dedos y se rompe contra una roca; el elixir ámbar se filtra en la tierra."
     },
-    "message": "Mientras cortas madera, encuentras un abalorio con un líquido ámbar brillante dentro. El líquido gira hipnóticamente. ¿Lo bebes?",
-    "title": "El abalorio extraño"
+    "message": "Mientras cortas madera, encuentras un frasco de elixir ámbar resplandeciente. El líquido gira hipnóticamente. ¿Lo bebes?",
+    "title": "El elixir extraño"
   },
   "offerToTheForestGods": {
     "choices": {

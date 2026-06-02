@@ -118,6 +118,7 @@
       "scholarInsight2": "Scholar produces 2 Insight per cycle",
       "scholarInsight3": "Scholar produces 3 Insight per cycle",
       "insightRevealCost": "{{cost}} Insight",
+      "insightRevealSeeEffects": "See effects for {{cost}} {{resource}}",
       "insightRevealEffects": "Effects",
       "abortActions": "Abort actions",
       "madnessReduction": "-{{amount}} Madness",
