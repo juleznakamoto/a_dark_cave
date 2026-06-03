@@ -80,6 +80,7 @@
     "alreadyClaimedItemLog": "Você já resgatou {{name}}.",
     "claimFailedLog": "Falha ao resgatar {{name}}. Tente novamente.",
     "activatedDefaultLog": "{{name}} ativado! As recompensas foram adicionadas ao seu inventário.",
-    "securePaymentVia": "Pagamento seguro via"
+    "securePaymentVia": "Pagamento seguro via",
+    "securePaymentWith": "com"
   }
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { PaymentMethodLogos } from "@/components/game/paymentMethodLogos";
 
 const STRIPE_BRAND_COLOR = "#635BFF";
 
@@ -20,7 +21,6 @@ function StripeWordmark() {
   );
 }
 
-/** Stripe symbol (rounded square mark), distinct from the wordmark. */
 function StripeIcon() {
   return (
     <svg
@@ -41,13 +41,11 @@ function StripeIcon() {
 }
 
 export function StripePoweredBy({ className = "" }: { className?: string }) {
-  const { t, i18n } = useTranslation("ui");
-  const afterKey = "shop.securePaymentViaAfter";
-  const after = i18n.exists(afterKey) ? t(afterKey) : null;
+  const { t } = useTranslation("ui");
 
   return (
     <div
-      className={`flex flex-wrap items-center justify-center gap-x-1 gap-y-0.5 text-xs text-foreground ${className}`.trim()}
+      className={`flex flex-wrap items-center justify-center gap-x-1 gap-y-1.5 text-xs text-foreground ${className}`.trim()}
     >
       <span>{t("shop.securePaymentVia")}</span>
       <span
@@ -58,7 +56,8 @@ export function StripePoweredBy({ className = "" }: { className?: string }) {
         <StripeWordmark />
         <StripeIcon />
       </span>
-      {after ? <span>{after}</span> : null}
+      <span>{t("shop.securePaymentWith")}</span>
+      <PaymentMethodLogos />
     </div>
   );
 }

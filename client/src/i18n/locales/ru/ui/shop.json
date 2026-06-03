@@ -80,6 +80,7 @@
     "freeGoldClaimedLog": "Вы получили {{amount}} золота. Вернитесь завтра, если переживёте ночь.",
     "freeGoldCooldownLog_one": "Бесплатное золото снова через {{hours}} ч.",
     "freeGoldCooldownLog_other": "Бесплатное золото снова через {{hours}} ч.",
-    "securePaymentVia": "Безопасная оплата через"
+    "securePaymentVia": "Безопасная оплата через",
+    "securePaymentWith": "с"
   }
 }
