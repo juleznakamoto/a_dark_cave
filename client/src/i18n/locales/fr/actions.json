@@ -589,6 +589,9 @@
       "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
     }
   },
+  "mining": {
+    "label": "Minage"
+  },
   "occultistChamber": {
     "label": "Chambre de l'occultiste",
     "log": {

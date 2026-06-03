@@ -589,6 +589,9 @@
       "natharitSilverVein": "The natharit pickaxe reveals a vein of silver! +{{amount}} {{resource}}"
     }
   },
+  "mining": {
+    "label": "Mining"
+  },
   "occultistChamber": {
     "label": "Occultist Chamber",
     "log": {

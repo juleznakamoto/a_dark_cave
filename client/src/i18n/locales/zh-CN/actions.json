@@ -589,6 +589,9 @@
       "natharitSilverVein": "纳萨里特镐发现了银矿脉！+{{amount}} {{resource}}"
     }
   },
+  "mining": {
+    "label": "采矿"
+  },
   "occultistChamber": {
     "label": "秘术师密室",
     "log": {

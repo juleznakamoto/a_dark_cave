@@ -589,6 +589,9 @@
       "natharitSilverVein": "Кирка из натарита обнажает жилу серебра! +{{amount}} {{resource}}"
     }
   },
+  "mining": {
+    "label": "Добыча"
+  },
   "occultistChamber": {
     "label": "Палата оккультиста",
     "log": {

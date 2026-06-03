@@ -589,6 +589,9 @@
       "natharitSilverVein": "El pico de natharit revela una veta de plata. +{{amount}} {{resource}}"
     }
   },
+  "mining": {
+    "label": "Minería"
+  },
   "occultistChamber": {
     "label": "Cámara del ocultista",
     "log": {

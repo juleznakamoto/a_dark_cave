@@ -589,6 +589,9 @@
       "natharitSilverVein": "Die Natharit-Spitzhacke legt eine Silberader frei! +{{amount}} {{resource}}"
     }
   },
+  "mining": {
+    "label": "Bergbau"
+  },
   "occultistChamber": {
     "label": "Okkultistenkammer",
     "log": {
