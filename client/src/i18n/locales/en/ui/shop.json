@@ -6,7 +6,6 @@
     "notEnoughGold": "You don't have enough gold.",
     "forSale": "For Sale",
     "purchases": "Purchases",
-    "signInPrompt": "Sign in or create an account to purchase items",
     "srDescription": "Shop for gold, artifacts, boosts, and bundles",
     "betaDiscountTitle": "Beta discounts of up to {{percent}} off are currently active.",
     "betaDiscountNote": "All purchases remain available across future playthroughs and after full release.",

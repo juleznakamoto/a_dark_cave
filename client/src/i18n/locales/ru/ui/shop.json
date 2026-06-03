@@ -6,12 +6,11 @@
     "notEnoughGold": "У вас недостаточно золота.",
     "forSale": "В продаже",
     "purchases": "Покупки",
-    "signInPrompt": "Войдите или создайте аккаунт, чтобы покупать предметы",
     "srDescription": "Магазин золота, артефактов, усилений и наборов",
     "betaDiscountTitle": "Сейчас действуют бета-скидки до {{percent}}%.",
     "betaDiscountNote": "Все покупки сохраняются в будущих прохождениях и после релиза.",
     "noPurchasesTitle": "Покупок пока нет.",
-    "noPurchasesHint": "Откройте вкладку «В продаже», чтобы купить предметы.",  //x1.4
+    "noPurchasesHint": "Откройте вкладку «В продаже», чтобы купить предметы.", //x1.4
     "activatePurchasesTitle": "Активируйте покупки, чтобы получить награды.",
     "activatePurchasesNote": "Каждую покупку можно активировать один раз за прохождение.",
     "highlights": "Избранное",
@@ -38,7 +37,7 @@
     "rightOfWithdrawal": "Право на отказ",
     "completePurchaseFor": "Завершить покупку за {{price}}",
     "paymentFailed": "Ошибка оплаты",
-    "notAuthenticated": "Пользователь не авторизован",  //x1.2
+    "notAuthenticated": "Пользователь не авторизован", //x1.2
     "verificationFailed": "Ошибка проверки платежа. Свяжитесь с поддержкой.",
     "unexpectedError": "Произошла непредвиденная ошибка",
     "purchaseSuccessful": "Покупка успешна!",
@@ -51,9 +50,9 @@
     "playlightDiscount": "Дополнительная скидка {{percent}}% на первую покупку за реальные деньги как игрок Playlight.",
     "journeyCompleteDiscount": "Особая скидка за прохождение игры",
     "artifactSkullLantern": {
-      "title": "Фонарь из черепа",  //x1.2
-      "caveExploreBonus": "Исследование пещеры: +200% бонус",  //x1.3
-      "caveExploreCooldown": "Исследование пещеры: -5 с перезарядки",  //x1.4
+      "title": "Фонарь из черепа", //x1.2
+      "caveExploreBonus": "Исследование пещеры: +200% бонус", //x1.3
+      "caveExploreCooldown": "Исследование пещеры: -5 с перезарядки", //x1.4
       "miningBonus": "Добыча: +200% бонус",
       "miningCooldown": "Добыча: -5с перезарядки"
     },
@@ -63,16 +62,16 @@
       "luck": "+5 удачи"
     },
     "artifactCrowHarness": {
-      "title": "Одноглазая ворона",  //x1.3
+      "title": "Одноглазая ворона", //x1.3
       "doubleGain": "до 15% шанс удвоить награды за действия"
     },
     "cruelMode": {
-      "title": "Жестокий режим",  //x1.4
-      "moreEvents": "Больше событий",  //x1.3
-      "moreItems": "Больше предметов",  //x1.6
+      "title": "Жестокий режим", //x1.4
+      "moreEvents": "Больше событий", //x1.3
+      "moreItems": "Больше предметов", //x1.6
       "strongerEnemies": "Сильнее враги",
       "harderChallenges": "Сложнее испытания",
-      "reusePurchases": "Повторное использование покупок"  //x1.3
+      "reusePurchases": "Повторное использование покупок" //x1.3
     },
     "alreadyClaimedItemLog": "Вы уже получили {{name}}.",
     "claimFailedLog": "Не удалось получить {{name}}. Попробуйте снова.",
@@ -80,11 +79,11 @@
     "freeGoldClaimedLog": "Вы получили {{amount}} золота. Вернитесь завтра, если переживёте ночь.",
     "freeGoldCooldownLog_one": "Бесплатное золото снова через {{hours}} ч.",
     "freeGoldCooldownLog_other": "Бесплатное золото снова через {{hours}} ч.",
-    "securePaymentVia": "Безопасная оплата через",  //x1.3
+    "securePaymentVia": "Безопасная оплата через", //x1.3
     "securePaymentWith": "с",
     "securePurchaseTitle": "Защитите покупку",
     "securePurchaseBody": "Покупка сохранена только в этом браузере. Создайте аккаунт, чтобы сохранить покупки и прогресс при смене устройства или очистке данных браузера.",
-    "securePurchaseSignUp": "Зарегистрироваться",  //x2.6
+    "securePurchaseSignUp": "Зарегистрироваться", //x2.6
     "securePurchaseLater": "Позже"
   }
 }

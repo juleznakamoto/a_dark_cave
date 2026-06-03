@@ -6,7 +6,6 @@
     "notEnoughGold": "你的金币不足。",
     "forSale": "待售",
     "purchases": "已购",
-    "signInPrompt": "登录或创建账户以购买物品",
     "srDescription": "购买金币、文物、增益与捆绑包",
     "betaDiscountTitle": "测试折扣最高 {{percent}}% 现已生效。",
     "betaDiscountNote": "所有购买在未来局与正式版后仍可用。",

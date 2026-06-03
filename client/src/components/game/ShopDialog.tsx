@@ -1439,22 +1439,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
               </div>
             )}
 
-            {!isLoading &&
-              !showSecurePurchasePrompt &&
-              !sessionUser &&
-              !gameState.isUserSignedIn && (
-                <Button
-                  onClick={() => {
-                    setAuthDialogOpen(true);
-                    onClose();
-                  }}
-                  className="h-10 w-full shrink-0 border-0 text-sm"
-                  button_id="shop-sign-in-button"
-                >
-                  {t("ui:shop.signInPrompt")}
-                </Button>
-              )}
-
             {!isLoading && !showSecurePurchasePrompt && (
               <Tabs
                 value={activeTab}

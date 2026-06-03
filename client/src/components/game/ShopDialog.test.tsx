@@ -709,19 +709,6 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
   });
 
   describe('Authentication', () => {
-    it('should show sign-in message when not authenticated', async () => {
-      mockGetCurrentUser.mockResolvedValue(null);
-      mockGetSessionUser.mockResolvedValue(null);
-      useGameStore.setState({ isUserSignedIn: false });
-
-      const onClose = vi.fn();
-      render(<ShopDialog isOpen={true} onClose={onClose} />);
-
-      await waitFor(() => {
-        expect(screen.getByText(/sign in or create an account/i)).toBeInTheDocument();
-      });
-    });
-
     it('should still allow guest checkout for paid items without account', async () => {
       mockGetCurrentUser.mockResolvedValue(null);
       mockGetSessionUser.mockResolvedValue(null);
