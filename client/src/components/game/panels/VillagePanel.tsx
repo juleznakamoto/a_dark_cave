@@ -97,7 +97,8 @@ export default function VillagePanel() {
     [setInvestDialogOpen],
   );
 
-  const state = useGameStore.getState() as unknown as import("@shared/schema").GameState;
+  const state =
+    useGameStore.getState() as unknown as import("@shared/schema").GameState;
 
   // Particle effect state
   const feedFireButtonRef = useRef<HTMLButtonElement>(null);
@@ -649,9 +650,7 @@ export default function VillagePanel() {
       description: buildingDescription,
       effects: revealedEffects,
       style:
-        buildingDescription || revealedEffects
-          ? { width: "12rem" }
-          : undefined,
+        buildingDescription || revealedEffects ? { width: "12rem" } : undefined,
     });
 
     const button = (
@@ -669,9 +668,7 @@ export default function VillagePanel() {
         tooltip={tooltipContent}
         onAnimationTrigger={handleAnimationTrigger}
         onMouseEnter={() => {
-          setHighlightedResources(
-            getResourcesFromActionCost(actionId, state),
-          );
+          setHighlightedResources(getResourcesFromActionCost(actionId, state));
         }}
         onMouseLeave={() => {
           setHighlightedResources([]);
@@ -1160,7 +1157,7 @@ export default function VillagePanel() {
                               strokeWidth={2}
                               className="text-green-800"
                             />
-                            <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[12px] mt-[4px] text-green-800">
+                            <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-normal text-[12px] mt-[4px] text-green-800">
                               ❢
                             </span>
                           </div>
