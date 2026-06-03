@@ -23,6 +23,20 @@ describe("i18n runtime", () => {
     expect(tWithFallback("ui", "estate.improve", "Improve")).toBe("Improve");
   });
 
+  it("resolves insight reveal badge tooltip in German", async () => {
+    await i18n.changeLanguage("de");
+    expect(
+      i18n.exists("tooltips.buildings.insightRevealSeeEffects", { ns: "ui" }),
+    ).toBe(true);
+    const result = getUiTooltip(
+      "buildings.insightRevealSeeEffects",
+      "See effects for {{cost}} {{resource}}",
+      { cost: 50, resource: "Einsicht" },
+    );
+    expect(result).toBe("Effekte für 50 Einsicht anzeigen");
+    expect(result).not.toContain("See effects");
+  });
+
   it("resolves villagerCost plural tooltip in English and German", async () => {
     expect(getUiTooltip("villagerCost", "-{{count}} Villager", { count: 1 })).toBe(
       "-1 Villager",

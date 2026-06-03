@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { BuildingActionBadge } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
@@ -9,10 +10,7 @@ import {
   getInsightRevealCost,
 } from "@/game/rules/insightReveal";
 import { useGameStore } from "@/game/state";
-import {
-  formatTooltipResourceName,
-  getUiTooltip,
-} from "@/i18n/tooltipLabels";
+import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
 import type { GameState } from "@shared/schema";
 
 const BADGE_SIZE_PX = 16;
@@ -22,6 +20,7 @@ type ActionInsightBadgeProps = {
 };
 
 export function ActionInsightBadge({ actionId }: ActionInsightBadgeProps) {
+  const { t } = useTranslation("ui");
   const state = useGameStore((s) => s as unknown as GameState);
   const insightRevealEnd = useGameStore((s) => s.insightRevealing?.[actionId]);
   const revealActionEffects = useGameStore((s) => s.revealActionEffects);
@@ -56,11 +55,11 @@ export function ActionInsightBadge({ actionId }: ActionInsightBadgeProps) {
   const insight = getInsightAmount(state);
   const canAfford = insight >= cost;
 
-  const costTooltip = getUiTooltip(
-    "buildings.insightRevealSeeEffects",
-    "See effects for {{cost}} {{resource}}",
-    { cost, resource: formatTooltipResourceName("insight") },
-  );
+  const costTooltip = t("tooltips.buildings.insightRevealSeeEffects", {
+    cost,
+    resource: formatTooltipResourceName("insight"),
+    defaultValue: "See effects for {{cost}} {{resource}}",
+  });
 
   return (
     <div
