@@ -208,10 +208,10 @@
         "label": "什么都不做"
       },
       "keepDice": {
-        "label": "留下他们"
+        "label": "保留"
       },
       "leaveDice": {
-        "label": "离开他们"
+        "label": "留在原地"
       }
     },
     "log": {
