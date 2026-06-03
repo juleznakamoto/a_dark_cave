@@ -1,0 +1,209 @@
+{
+  "event": {
+    "fallbackTitle": "Evento",
+    "choose": "Escolha uma opção",
+    "timeRemaining": "Tempo restante: {{seconds}}s",
+    "knowledgeTimeBonus": "+{{seconds}}s de Tempo de Decisão por Conhecimento{{maxSuffix}}",
+    "knowledgeTimeBonusMax": " (máx.)",
+    "successChance": "Chance de Sucesso: {{percent}}%",
+    "successChanceLocked": "Chance de Sucesso: ??%",
+    "influencedBy": "Influenciado por:"
+  },
+  "reward": {
+    "title": "Recompensa",
+    "loss": "Perda",
+    "actionReward": "Recompensa de Ação",
+    "claimRewards": "Resgatar Recompensas"
+  },
+  "madness": {
+    "title": "Evento de Loucura",
+    "change": "{{sign}} {{amount}} de Loucura"
+  },
+  "socialPrompt": {
+    "title": "Mantenha-se conectado e ganhe Recompensas",
+    "description": "Conclua as tarefas abaixo para receber bônus. Conclua todas as tarefas para receber um item exclusivo.",
+    "signUpRequiresSignInTooltip": "cadastre-se para concluir a tarefa",
+    "signUpTitle": "Cadastre-se (+{{amount}} de Ouro)",
+    "signUpDesc": "Crie uma conta gratuita para sincronizar seu progresso entre dispositivos. Sem uma conta, seu progresso é salvo apenas localmente e pode ser perdido.",
+    "signUpButton": "Cadastrar",
+    "emailUpdatesTitle": "Novidades por e-mail (+{{amount}} de Ouro)",
+    "subscribe": "Inscrever-se",
+    "playlightTitle": "Descubra 1 jogo (+{{amount}} de Ouro)",
+    "discoverGames": "Descobrir jogos",
+    "inviteTitle": "Convide 1 amigo (+{{amount}} de Ouro cada)",
+    "inviteDesc": "Convide até {{cap}} amigos e, a cada vez, vocês dois receberão {{amount}} de Ouro ({{count}}/{{cap}} convidados).",
+    "copyInviteLink": "Copiar link de convite",
+    "progressComplete": "Você concluiu todas as tarefas. Em breve receberá sua recompensa.",
+    "progressToward": "Progresso rumo ao item exclusivo",
+    "progressAriaLabel": "Progresso do item exclusivo",
+    "alreadyClaimedReward": "Você já resgatou esta recompensa!",
+    "playlightDiscoverRewardLog": "Você recebeu {{amount}} de Ouro por descobrir jogos!",
+    "marketingSubscribeLog": "Você recebeu {{amount}} de Ouro por se inscrever nas novidades por e-mail!",
+    "followRewardLog": "Você recebeu {{amount}} de Ouro por nos seguir no {{platform}}!",
+    "platforms": {
+      "instagram": {
+        "title": "Instagram (+{{amount}} de Ouro)",
+        "actionFollow": "Seguir"
+      },
+      "reddit": {
+        "title": "Reddit (+{{amount}} de Ouro)",
+        "actionJoin": "Participar"
+      }
+    }
+  },
+  "referral": {
+    "invitedLog": "Você convidou alguém novo para este mundo! +{{amount}} de Ouro"
+  },
+  "invite": {
+    "button": "Convidar",
+    "goldBonus": "+{{amount}} de Ouro",
+    "linkCopied": "Link de convite copiado!",
+    "linkCopiedDesc": "Compartilhe com amigos para ganhar {{amount}} de Ouro cada.",
+    "copyFailed": "Não foi possível copiar o link de convite",
+    "tooltip": "Convide seus amigos e vocês dois receberão {{amount}} de Ouro. Você pode convidar até {{cap}} amigos. ({{count}}/{{cap}} convidados)."
+  },
+  "invest": {
+    "title": "Investir",
+    "strategy": "Estratégia de Investimento",
+    "amount": "Valor do Investimento",
+    "potentialProfit": "Lucro Potencial:",
+    "startInvestment": "Iniciar Investimento",
+    "infoAriaLabel": "Explicar os investimentos e a tabela de estratégia",
+    "unlockTooltip": "Desbloqueia em um nível de edifício mais alto",
+    "minutes": "{{count}} min",
+    "luckBonus": "+{{pct}} % de Chance de Sucesso por Sorte (incluído na tabela).",
+    "buildingLuckyBonus2": "+2 % de Golpe de Sorte pelo nível do edifício (incluído na tabela).",
+    "buildingLuckyBonus1": "+1 % de Golpe de Sorte pelo nível do edifício (incluído na tabela).",
+    "headers": {
+      "time": "Tempo",
+      "success": "Sucesso",
+      "profit": "Lucro",
+      "lucky": "Sorte",
+      "loss": "Perda",
+      "wipeout": "Perda Total"
+    },
+    "tooltip": {
+      "time": "Quanto tempo o investimento dura.",
+      "success": "Chance de um investimento bem-sucedido.",
+      "profit": "O lucro que você obtém em caso de sucesso.",
+      "lucky": "Chance, em caso de sucesso, de multiplicar seu lucro por {{multiplier}}.",
+      "loss": "A parte do seu investimento que você perde em caso de fracasso.",
+      "wipeout": "Chance de perder todo o seu investimento em caso de fracasso.",
+      "potentialProfit": "Lucro máximo que você pode obter no seu investimento. O segundo valor é caso o Golpe de Sorte ocorra (lucro × {{multiplier}})."
+    }
+  },
+  "gambler": {
+    "title": "O Apostador Obcecado",
+    "srDescription": "Jogo de dados contra o apostador obcecado",
+    "rulesAriaLabel": "Regras do jogo de dados",
+    "rulesTurns": "Você e o Apostador se revezam jogando um dado.",
+    "rulesTotals": "As jogadas de cada jogador são somadas.",
+    "rulesGoal": "O objetivo é definido como 15.",
+    "rulesWinLose": "Se um jogador atingir o objetivo exatamente, ele vence. Se ultrapassar, ele perde.",
+    "rulesStand": "Se o jogador da vez tiver mais pontos totais que o oponente, ele pode optar por não jogar.",
+    "tutorialIntro": "Para ajudá-lo a aprender o jogo, o Apostador se oferece para jogar {{count}} vezes sem aposta.",
+    "boneDiceIntro": "Faça sua aposta. Possuir os Dados de Osso permite jogar duas vezes contra o Apostador.",
+    "placeBet": "Faça sua aposta.",
+    "gamesRemaining": "{{remaining}} de {{total}} jogos restantes.",
+    "requiresLuck": "Requer {{luck}} de Sorte para desbloquear",
+    "bet": "Aposta:",
+    "practiceBet": "Treino (0 de Ouro)",
+    "goal": "Objetivo:",
+    "you": "Você",
+    "gambler": "Apostador",
+    "roll": "Jogar",
+    "noRoll": "Não Jogar",
+    "youWin": "Você venceu",
+    "youLose": "Você perdeu",
+    "practiceOutcome": "Rodada de treino. Nenhum ouro ganho ou perdido.",
+    "goldWon": "+{{amount}} de Ouro",
+    "goldLost": "-{{amount}} de Ouro",
+    "practiceWinRemaining": "Você venceu a rodada de treino (sem ouro em jogo). {{remaining}} de {{total}} jogos de treino restantes.",
+    "practiceLoseRemaining": "Você perdeu a rodada de treino (sem ouro em jogo). {{remaining}} de {{total}} jogos de treino restantes.",
+    "practiceWinComplete": "Você venceu a rodada de treino (sem ouro em jogo). Treino concluído — você já pode fazer uma aposta de ouro.",
+    "practiceLoseComplete": "Você perdeu a rodada de treino (sem ouro em jogo). Treino concluído — você já pode fazer uma aposta de ouro."
+  },
+  "fullGame": {
+    "titleTrial": "A Jornada Continua",
+    "titleCheckout": "Conclua sua Compra",
+    "trialDesc": "Você chegou ao fim da versão de teste. A jornada completa o aguarda além deste ponto.",
+    "oneTimePurchase": "Compra única. Sem assinaturas. Sem microtransações.",
+    "featureHours": "Mais de 14 horas de jogo",
+    "featureStructures": "Mais de 100 estruturas",
+    "featureItems": "Mais de 250 itens, membros da irmandade, livros, bênçãos...",
+    "featureAchievements": "Mais de 50 conquistas",
+    "featureStory": "História sombria e desafiadora baseada nas suas escolhas",
+    "signInRequired": "Entre para comprar o Jogo Completo.",
+    "continueJourney": "Continuar a Jornada",
+    "progressSaved": "Seu progresso está salvo. Você pode voltar a qualquer momento e continuar de onde parou.",
+    "loadingPayment": "Carregando o sistema de pagamento...",
+    "purchaseSuccessful": "Compra Concluída!",
+    "purchaseSuccessfulDesc": "Jogo Completo desbloqueado e ativado! Agora você pode continuar sua jornada sem restrições.",
+    "legalConsent": "Ao comprar, você consente com a entrega imediata de conteúdo digital e renuncia ao seu direito de arrependimento. Para mais informações, consulte nossos",
+    "termsOfService": "Termos de Serviço",
+    "rightOfWithdrawal": "Direito de Arrependimento",
+    "completePurchaseFor": "Concluir Compra por {{price}}",
+    "paymentFailed": "Pagamento falhou",
+    "notAuthenticated": "Usuário não autenticado",
+    "unexpectedError": "Ocorreu um erro inesperado"
+  },
+  "leaderboard": {
+    "title": "Classificação",
+    "dev": "Dev",
+    "prod": "Prod",
+    "rank": "#",
+    "player": "Jogador",
+    "completionTime": "Tempo de Conclusão",
+    "noEntries": "Nenhum registro ainda",
+    "lastUpdated": "Última atualização: {{time}}",
+    "username": "Nome de usuário:",
+    "notSet": "Não definido",
+    "currentPlaytime": "Tempo de Jogo Atual:",
+    "enterName": "Digite o nome",
+    "normalMode": "Modo Normal",
+    "cruelMode": "Modo Cruel",
+    "loadFailed": "Falha ao carregar a classificação",
+    "invalidUsername": "Nome de usuário inválido",
+    "usernameEmpty": "O nome de usuário não pode ficar vazio",
+    "usernameTooLong": "O nome de usuário deve ter no máximo 20 caracteres",
+    "mustSignIn": "Você precisa estar conectado para definir um nome de usuário",
+    "usernameNotAllowed": "Nome de usuário não permitido",
+    "usernameInappropriate": "Este nome de usuário contém linguagem inadequada. Escolha outro.",
+    "usernameTaken": "Nome de usuário em uso",
+    "usernameTakenDesc": "Este nome de usuário já está em uso. Escolha outro.",
+    "usernameSaved": "Nome de usuário salvo",
+    "usernameSavedDesc": "Seu nome de usuário foi atualizado",
+    "saveFailed": "Falha ao salvar o nome de usuário"
+  },
+  "investmentResult": {
+    "title": "Resultado do Investimento",
+    "success": "Seu investimento de {{amount}} de Ouro foi bem-sucedido.",
+    "luckyChance": "Golpe de Sorte. Os ganhos do seu investimento de {{amount}} de Ouro são multiplicados por {{multiplier}}.",
+    "wipeout": "Perda Total. Você perdeu todo o seu investimento de {{amount}} de Ouro.",
+    "partialLoss": "Seu investimento de {{amount}} de Ouro fracassou."
+  },
+  "cube": {
+    "fallbackTitle": "O Cubo Sussurrante",
+    "fallbackMessage": "O cubo sussurra segredos ancestrais...",
+    "close": "Fechar",
+    "completionLog": "Você concluiu esta jornada. Continue aqui ou inicie um novo jogo. Talvez no Modo Cruel, se tiver coragem."
+  },
+  "timedEvent": {
+    "buy": "Comprar",
+    "sell": "Vender",
+    "sayGoodbye": "Despedir-se",
+    "successChance": "Chance de Sucesso: {{percent}}",
+    "discount": "{{percent}}% de desconto",
+    "discountFromKnowledge": "{{percent}}% por Conhecimento{{max}}",
+    "knowledgeMax": " (máx.)",
+    "discountFromRing": "5% do Anel da Obediência"
+  },
+  "feedback": {
+    "title": "Feedback",
+    "message": "Se você encontrar bugs, notar problemas de tradução ou tiver ideias ou comentários, eu adoraria saber.",
+    "contactVia": "Você pode entrar em contato comigo por:",
+    "reddit": "Reddit",
+    "instagram": "Instagram",
+    "email": "E-mail"
+  }
+}

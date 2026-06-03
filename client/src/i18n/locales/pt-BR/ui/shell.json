@@ -1,0 +1,80 @@
+{
+  "languageSelector": {
+    "label": "Idioma",
+    "ariaLabel": "Selecionar idioma"
+  },
+  "startScreen": {
+    "titleNormal": "Uma caverna sombria.",
+    "titleCruel": "Uma caverna muito sombria.",
+    "airNormal": "O ar é frio e úmido.",
+    "airCruel": "O ar é gélido e úmido.",
+    "seeNormal": "Você mal distingue as formas ao seu redor.",
+    "seeCruel": "Você mal enxerga qualquer coisa ao seu redor.",
+    "makeFire": "Acender Fogo",
+    "boostDeactivate": "Clique para desativar o impulso",
+    "recommendedBy": "Recomendado por"
+  },
+  "footer": {
+    "fullGame": "Jogo Completo",
+    "trader": "Mercador",
+    "openShop": "Abrir Loja",
+    "donate": "Doar",
+    "supportGame": "Apoiar o Jogo",
+    "privacy": "Privacidade",
+    "imprint": "Aviso Legal",
+    "contact": "Contato",
+    "pauseGame": "Pausar jogo",
+    "resumeGame": "Retomar jogo",
+    "muteMusic": "Silenciar música",
+    "unmuteMusic": "Ativar música",
+    "muteSfx": "Silenciar efeitos sonoros",
+    "unmuteSfx": "Silenciar efeitos sonoros",
+    "cruelModeActive": "Modo Cruel ativado"
+  },
+  "profile": {
+    "title": "Perfil",
+    "signInUp": "Entrar/Cadastrar",
+    "emailsOn": "E-mails Ativados",
+    "emailsOff": "E-mails Desativados",
+    "marketingOnTooltip": "Você está recebendo e-mails com novidades, descontos e recompensas exclusivas. Toque para desativar.",
+    "marketingOffTooltip": "Você não está recebendo e-mails com novidades, descontos e recompensas exclusivas. Toque para ativar.",
+    "rewardsTasks": "Tarefas de recompensa",
+    "save": "Salvar",
+    "newGame": "Novo Jogo",
+    "restart": "Reiniciar",
+    "signIn": "Entrar",
+    "signOut": "Sair",
+    "leaderboard": "Classificação",
+    "rewards": "Recompensas",
+    "deleteAccount": "Excluir Conta",
+    "marketingSubscribe": "Inscrever-se nos e-mails",
+    "marketingUnsubscribe": "Cancelar inscrição dos e-mails",
+    "autoSaveSignedIn": "O jogo salva automaticamente a cada minuto",
+    "autoSaveGuest": "O jogo salva automaticamente a cada 15 segundos",
+    "signUpCloudSave": "Cadastre-se para salvar o jogo na nuvem",
+    "lastSave": "Último Salvamento: {{time}}",
+    "signedOut": "Sessão encerrada com sucesso",
+    "signOutError": "Erro ao sair",
+    "gameSaved": "Jogo salvo com sucesso",
+    "saveFailed": "Falha ao salvar o jogo",
+    "accountDeleted": "Sua conta foi excluída",
+    "accountDeletedDesc": "Você foi desconectado e o salvamento local deste dispositivo foi apagado.",
+    "deleteAccountFailed": "Não foi possível excluir a conta",
+    "tryAgainLater": "Tente novamente mais tarde.",
+    "notSignedIn": "Não conectado",
+    "subscribed": "Inscrição confirmada",
+    "unsubscribed": "Inscrição cancelada",
+    "subscribedDesc": "Enviaremos novidades e ofertas ocasionais para o seu e-mail.",
+    "unsubscribedDesc": "Você não receberá mais e-mails de marketing nossos.",
+    "preferenceUpdateFailed": "Não foi possível atualizar a preferência"
+  },
+  "pauseHotkey": {
+    "hintPrefix": "Use ",
+    "hintOr": "ou",
+    "hintSuffix": " ou as teclas abaixo para alternar entre as abas"
+  },
+  "villageHotkeyTutorial": {
+    "dismiss": "Dispensar"
+  },
+  "never": "Nunca"
+}

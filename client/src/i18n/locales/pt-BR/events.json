@@ -1,0 +1,2552 @@
+{
+  "alchemistArrives": {
+    "message": "The alchemist emerges from his hall: 'I have been conducting experiments day and night,' holding a vial of shimmering dust. 'I've created something extraordinary and terribly dangerous.'",
+    "title": "The Alchemist's Discovery"
+  },
+  "ashwraithCanyonTradeOffer": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "message": "The Ashwraith Huntress approaches you. 'My people wish to trade,' she says, 'but between our lands lies a deep canyon. We need a bridge so caravans can cross. Build it, and both our peoples will prosper.'",
+    "title": "A Bridge for Trade"
+  },
+  "bastionBecomesFortress": {
+    "message": "Your bastion has grown into a mighty fortress of stone and steel."
+  },
+  "beyondGatePassagesClear": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "message": "The cave passages behind the gate seem clear at last. You seem to have slain the pale creatures. You can finally venture beyond the gate.",
+    "title": "Beyond the Gate"
+  },
+  "blackenedMirror": {
+    "choices": {
+      "buyMirror": {
+        "cost": "500 iron",
+        "label": "Pay 500 Ferro"
+      },
+      "refuseMirror": {
+        "label": "Refuse"
+      }
+    },
+    "log": {
+      "outcome0": "You purchase the mirror. Its dark surface gives glimpses of your own future, nudging your sanity toward the edge.",
+      "outcome1": "You decline the trader's offer. The mirror disappears into the night with him."
+    },
+    "message": "A wandering tradesman offers a tall, cracked mirror framed in black iron. It radiates a cold, unnatural aura. He claims it can give glimpses of the future.",
+    "title": "The Blackened Mirror"
+  },
+  "blacksmithHammerChoice": {
+    "choices": {
+      "leaveHammer": {
+        "label": "Leave it"
+      },
+      "takeHammer": {
+        "label": "Take hammer"
+      }
+    },
+    "log": {
+      "outcome0": "You grasp the ancient hammer, feeling its weight and balance. Despite the ages that have passed, it remains a masterwork of smithing.",
+      "outcome1": "You decide to leave the hammer where it lies, respecting the giant's final resting place."
+    },
+    "message": "Deep in the forest, you discover the ruin of a stone building with a massive furnace. You find skeletal remains of what must have been a giant, next to it a magnificent blacksmith hammer. Do you take it?",
+    "title": "The Giant's Forge"
+  },
+  "blindDruidBlessing": {
+    "message": "A blind druid emerges from the forest. He approaches the shrine and nods approvingly. 'The gods of the forest are pleased with your devotion, they grant you their blessing'.",
+    "title": "The Blind Druid"
+  },
+  "bloodDrainedVillagers": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "message": {
+      "firstTime": "One morning, 6 aldeões are found dead in their beds, pale and drained of all blood. Small punctures cover their skin. Some aldeões suspect this could be connected to the collapsed tower in the forest where hunters heard strange sounds.",
+      "repeat": "Again, 8 more aldeões are discovered dead at dawn, their bodies drained of blood, covered in the same mysterious marks. The demands that something be done about what dwells in the collapsed tower grow louder."
+    },
+    "title": "Drained Bodies"
+  },
+  "bloodiedAwakening": {
+    "choices": {
+      "investigateMurders": {
+        "label": "Investigate Murders"
+      },
+      "severFinger": {
+        "label": "Sever finger"
+      }
+    },
+    "log": {
+      "outcome0": "As you follow muddy footprints through the village, they lead to each murder scene, one after another. The prints match your own boots. The horror dawns slowly - it was you, possessed by the ring's hunger. When the aldeões discover the truth, eighteen flee, unwilling to remain near such a cursed creature.",
+      "outcome1": "With trembling hands, you raise your axe. The ring pulses as the blade falls. Agony tears through your arm as bone shatters. Lifting the severed finger, you see small black threads, like tentacles, sunk deep into its flesh."
+    },
+    "message": "You wake as dawn breaks, your clothes soaked in fresh blood. It is not yours. A villager arrives at the estate, face pale with horror. 'Eight are dead,' he whispers. 'Torn apart in the night.' The ring on your finger throbs with agonizing pain.",
+    "title": "Bloodied Awakening"
+  },
+  "bloodInWater": {
+    "choices": {
+      "drink_water": {
+        "label": "Drink water"
+      },
+      "ignore": {
+        "label": "Ignore it"
+      }
+    },
+    "log": {
+      "outcome0": "You drink from the well despite the red tint. The water is cold, tasteless and after a few moments it suddenly looks clear again. Your mind seems to have tricked you.",
+      "outcome1": "You drink deeply. The copper taste floods your mouth, thick and warm. That night you dream of drowning in red water, and wake with the taste still on your tongue.",
+      "outcome2": "You refuse to drink, but the aldeões keep filling their cups. Their lips stain red as they smile at you, as if nothing is wrong."
+    },
+    "message": "The village water runs red for three days. The aldeões don't seem to notice, drinking it as if nothing has changed. You smell copper and iron, but they claim it tastes like pure spring water.",
+    "title": "Blood in the Water"
+  },
+  "bloodMoonAttack": {
+    "choices": {
+      "prepareForAttack": {
+        "label": "Prepare for attack"
+      },
+      "sacrificeVillagers": {
+        "label": "Sacrifice aldeões"
+      }
+    },
+    "log": {
+      "outcome0": "The aldeões are offered to the lycanthropes. With the blood moon fading, peace returns to the village. At least for now.",
+      "outcome1": "The lycanthropes attack, but your defenses hold. Their leader falls, and from its corpse you harvest Lycan Blood, still warm and seething with power.",
+      "outcome2": "The lycanthropes overwhelm your defenses and overrun the settlement! The blood moon fades, but the threat remains.",
+      "outcome3": "The lycanthropes attack, but your defenses hold. Their leader falls, and from its corpse you harvest Lycan Blood, still warm and seething with power.",
+      "outcome4": "The lycanthropes overwhelm your defenses and overrun the settlement! The blood moon fades, but the threat remains."
+    },
+    "message": {
+      "default": "The moon at night turned blood red, village elders speak of lycanthropes. Ancient pacts demand a sacrifice of {{sacrificeAmount}} aldeões to appease the beasts. If you refuse, they will ensure their hunger is satisfied."
+    },
+    "title": "Blood Moon"
+  },
+  "bloodstainedBeltChoice": {
+    "choices": {
+      "doNothing": {
+        "label": "Do nothing"
+      },
+      "leaveBelt": {
+        "label": "Leave it"
+      },
+      "takeBelt": {
+        "label": "Take it"
+      }
+    },
+    "log": {
+      "outcome0": "You buckle the belt around your waist. A faint whisper seems to curl at the edge of your thoughts.",
+      "outcome1": "You leave the belt where it hangs. Whatever blood soaked into it, you would rather not carry that history with you.",
+      "outcome2": "One of your men buckles it on before you can stop him. He laughs, then gasps as the belt tightens. His hands scrabble at the leather, but there's no give. By the time you reach him, it's too late."
+    },
+    "message": "Hanging from a rusted spike in the cave wall you find a thick leather belt, dark with old bloodstains. Do you take it?",
+    "title": "Bloodstained Belt"
+  },
+  "boneArmyAttack": {
+    "choices": {
+      "defendAgainstBoneArmy": {
+        "label": "Defend village"
+      },
+      "hideFromBoneArmy": {
+        "label": "Hide"
+      }
+    },
+    "log": {
+      "outcome0": "The aldeões defeat the bone army! Bone and silence litter the battlefield. You tear the Devourer’s Crown from its remains and drain a vial of its pale, viscous blood.",
+      "outcome1": "The aldeões hide in terror as the bone army searches the village. The skeletal creatures eventually march away, their purpose unfulfilled.",
+      "defend_noDeaths": "The aldeões fight desperately against the bone army. The aldeões survive the onslaught.",
+      "defend_noDeaths_hut": "The aldeões fight desperately against the bone army. The aldeões survive the onslaught. The skeletal creatures tear apart one of the huts, reducing it to rubble.",
+      "defend_noDeaths_steel": "The aldeões fight desperately against the bone army. The aldeões survive the onslaught. The bone army ransacks the stores before leaving.",
+      "defend_noDeaths_steel_hut": "The aldeões fight desperately against the bone army. The aldeões survive the onslaught. The bone army ransacks the stores before leaving. The skeletal creatures tear apart one of the huts, reducing it to rubble.",
+      "defend_oneDeath": "The aldeões fight desperately against the bone army. One villager falls to the skeletal warriors.",
+      "defend_oneDeath_hut": "The aldeões fight desperately against the bone army. One villager falls to the skeletal warriors. The skeletal creatures tear apart one of the huts, reducing it to rubble.",
+      "defend_oneDeath_steel": "The aldeões fight desperately against the bone army. One villager falls to the skeletal warriors. The bone army ransacks the stores before leaving.",
+      "defend_oneDeath_steel_hut": "The aldeões fight desperately against the bone army. One villager falls to the skeletal warriors. The bone army ransacks the stores before leaving. The skeletal creatures tear apart one of the huts, reducing it to rubble.",
+      "defend_manyDeaths": "The aldeões fight desperately against the bone army. Several aldeões fall to the skeletal warriors.",
+      "defend_manyDeaths_hut": "The aldeões fight desperately against the bone army. Several aldeões fall to the skeletal warriors. The skeletal creatures tear apart one of the huts, reducing it to rubble.",
+      "defend_manyDeaths_steel": "The aldeões fight desperately against the bone army. Several aldeões fall to the skeletal warriors. The bone army ransacks the stores before leaving.",
+      "defend_manyDeaths_steel_hut": "The aldeões fight desperately against the bone army. Several aldeões fall to the skeletal warriors. The bone army ransacks the stores before leaving. The skeletal creatures tear apart one of the huts, reducing it to rubble.",
+      "hide_noDeaths": "The aldeões hide in terror as the bone army searches the village. By morning, the skeletal army has departed, leaving only bone fragments behind.",
+      "hide_noDeaths_loot": "The aldeões hide in terror as the bone army searches the village. By morning, the skeletal army has departed, leaving only bone fragments behind. The army ransacks your supplies before disappearing into the dark.",
+      "hide_oneDeath": "The aldeões hide in terror as the bone army searches the village. One villager who tried to flee is killed.",
+      "hide_oneDeath_loot": "The aldeões hide in terror as the bone army searches the village. One villager who tried to flee is killed. The army ransacks your supplies before disappearing into the dark.",
+      "hide_manyDeaths": "The aldeões hide in terror as the bone army searches the village. The aldeões who tried to flee are killed by the bone creatures.",
+      "hide_manyDeaths_loot": "The aldeões hide in terror as the bone army searches the village. The aldeões who tried to flee are killed by the bone creatures. The army ransacks your supplies before disappearing into the dark."
+    },
+    "message": "The earth trembles as skeletal creatures emerge from the forest. The Bone Devourer has used the bones you traded to forge an unholy legion. With hollow eyes and sharpened bone weapons, they approach the city.",
+    "title": "The Bone Army"
+  },
+  "boneDevourer": {
+    "title": "The Bone Devourer",
+    "message": {
+      "firstTime": "A deformed creature shuffles to the gates, its hunched form covered in pale, stretched skin. It speaks in a rasping voice: 'I seek bones. I pay {{silverReward}} Prata.'",
+      "repeat": "The creature returns to the gates, its hunched form still covered in pale, stretched skin. It speaks in its familiar rasping voice: 'I seek bones. I pay {{silverReward}} Prata.'"
+    },
+    "choices": {
+      "sellBones": {
+        "label": "Sell {{boneCost}} Bones",
+        "cost": "{{boneCost}} bones"
+      },
+      "refuse": {
+        "label": "Refuse trade"
+      }
+    },
+    "log": {
+      "outcome1": "The creature takes the bones with its gnarled hands, as if attempting to count them. It places a pouch of silver at your feet and disappears into the darkness.",
+      "outcome2": "You refuse the creature's offer. It hisses in displeasure and retreats into the shadows. You sense it will return.",
+      "outcome3": "Your indecision frustrates the creature. It hisses in displeasure and retreats into the shadows."
+    }
+  },
+  "boneDiceChoice": {
+    "choices": {
+      "doNothing": {
+        "label": "Do nothing"
+      },
+      "keepDice": {
+        "label": "Keep them"
+      },
+      "leaveDice": {
+        "label": "Leave them"
+      }
+    },
+    "log": {
+      "outcome0": "You pocket the bone dice. They feel warm in your hand.",
+      "outcome1": "You decide to leave them on the cave floor. As you walk away, you hear them rattle once, as if rolling themselves in farewell.",
+      "outcome2": "Your hesitation seems to anger the ancient magic within the dice. They roll from your hand into the darkness."
+    },
+    "message": "As you descend further, you find a set of bone dice carved with ancient runes. These dice have seen much fortune and much tragedy. Do you keep them?",
+    "title": "The Bone Dice"
+  },
+  "clarityElixirCaveFound": {
+    "choices": {
+      "drinkElixir": {
+        "label": "Continue"
+      }
+    },
+    "log": {
+      "outcome0": "You find an Elixir of Clarity in the cave. As you drink it, your mind feels lighter."
+    },
+    "message": "You find an Elixir of Clarity in the cave. As you drink it, your mind feels lighter.",
+    "title": "Elixir of Clarity"
+  },
+  "boneTempleProposal": {
+    "choices": {
+      "acceptBoneTemple": {
+        "label": "Accept proposal"
+      }
+    },
+    "log": {
+      "outcome0": "You accept the elder's wisdom. The aldeões nod in silent approval. The path to building the ultimate monument to the gods now lies open."
+    },
+    "message": "An elder woman with clouded eyes approaches you, 'We must end the spillng of human blood,' she declares. 'The old gods demand a great monument in their honor. Only then will the gods grant us their continued favor.'",
+    "title": "The Elder's Demand"
+  },
+  "boneyardPlea": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "message": "A delegation of aldeões finds you: 'Many of us have died. We need a proper place to bury our dead, so they may finally rest.'",
+    "title": "Burying the Dead"
+  },
+  "cannibalRaid": {
+    "choices": {
+      "fightCannibals": {
+        "label": "Defend village"
+      },
+      "hideFromCannibals": {
+        "label": "Hide"
+      }
+    },
+    "log": {
+      "outcome0": "The aldeões hide in terror as the cannibals search the village. By dawn, the cannibals have left without finding anyone.",
+      "defeat_noDeaths": "The cannibals overwhelm your defenses. The aldeões manage to survive, though barely.",
+      "defeat_noDeaths_loot": "The cannibals overwhelm your defenses. The aldeões manage to survive, though barely. The cannibals ransack your stores before retreating to the wilds.",
+      "defeat_oneDeath": "The cannibals overwhelm your defenses. One villager is abducted by the cannibals.",
+      "defeat_oneDeath_loot": "The cannibals overwhelm your defenses. One villager is abducted by the cannibals. The cannibals ransack your stores before retreating to the wilds.",
+      "defeat_manyDeaths": "The cannibals overwhelm your defenses. Several aldeões are killed or abducted by the cannibals.",
+      "defeat_manyDeaths_loot": "The cannibals overwhelm your defenses. Several aldeões are killed or abducted by the cannibals. The cannibals ransack your stores before retreating to the wilds.",
+      "hide_noDeaths": "The aldeões hide in terror as the cannibals search the village. By dawn, the cannibals have left without finding anyone.",
+      "hide_noDeaths_loot": "The aldeões hide in terror as the cannibals search the village. By dawn, the cannibals have left without finding anyone. The cannibals plunder your stores freely before slipping away.",
+      "hide_oneDeath": "The aldeões hide in terror as the cannibals search the village. One villager gets abducted.",
+      "hide_oneDeath_loot": "The aldeões hide in terror as the cannibals search the village. One villager gets abducted. The cannibals plunder your stores freely before slipping away.",
+      "hide_manyDeaths": "The aldeões hide in terror as the cannibals search the village. Several aldeões are killed or abducted.",
+      "hide_manyDeaths_loot": "The aldeões hide in terror as the cannibals search the village. Several aldeões are killed or abducted. The cannibals plunder your stores freely before slipping away.",
+      "victory_one": "The aldeões drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat. Among the bodies, you find a primitive necklace made of human bones.",
+      "victory_many": "The aldeões fight valiantly and repel the cannibals! Multiple illagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones."
+    },
+    "message": "War drums echo through the night as tribe of cannibals emerges from the wilderness. They advance on the village with crude weapons and terrible intent.",
+    "title": "Cannibal Raid"
+  },
+  "compassTreasure": {
+    "choices": {
+      "followCompass": {
+        "label": "Follow compass"
+      }
+    },
+    "log": {
+      "outcome0": "You follow the compass deap into the woods, where you unearth a small chest extraordinarily sturdy construction. You cannot open it, so you carry it back with you."
+    },
+    "message": "You wake in the night to a strange sound. The tarnished compass needle spins wildly in the darkness. When you grasp it, the needle stops, pointing firmly in one direction.",
+    "title": "The Stirring Needle"
+  },
+  "creatureInHut": {
+    "choices": {
+      "burn_hut": {
+        "label": "Burn hut"
+      },
+      "do_nothing": {
+        "label": "Do nothing"
+      }
+    },
+    "log": {
+      "outcome0": "You set the hut ablaze. The flames consume the creature. Searching the ruins afterward, you find a small chest hidden beneath the floorboards containing 250 Ouro.",
+      "outcome1": "You set the hut ablaze. The flames consume everything, including the two aldeões sleeping inside. In the morning, you find only ash and the lingering smell of something that was never meant to burn.",
+      "outcome2": "You turn away and try to forget what you saw. But in your dreams, the creature visits you. It whispers your name with a voice like grinding stone, and shows you visions of what lies beneath the earth."
+    },
+    "message": "Through the cracks in one of your wooden huts, you glimpse something that shouldn't be there. A dark shape moves in the darkness, too tall and too thin to be human. As it turns toward you, you see eyes gleaming like dying stars.",
+    "title": "Something in the Hut"
+  },
+  "cthulhuFigure": {
+    "choices": {
+      "discardFigure": {
+        "label": "Discard it"
+      },
+      "keepFigure": {
+        "label": "Keep it"
+      }
+    },
+    "log": {
+      "outcome0": "You decide to keep the figure. Its strange aura makes the aldeões uneasy.",
+      "outcome1": "You discard the figure. The forest seems to watch silently as it disappears."
+    },
+    "message": "At the forest's edge a small wooden figure is found, carved with tentacled features. It emanates a strange aura. Do you keep it?",
+    "title": "A Strange Madeiraen Figure"
+  },
+  "cube01": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "You wake in the night. The cube hums softly. Suddenly a gentle, melodic voice emerges from it: 'Long ago, a great civilization thrived upon this world, but it crumbled, its knowledge lost to the ages.'",
+    "title": "The Cube Awakens"
+  },
+  "cube02": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "'In the distant past, a tribe of fierce warriors was chosen to live deep in the caves. Their purpose was to guard something of great importance.'",
+    "title": "The Warrior Tribe"
+  },
+  "cube03": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "'The warrior tribe grew into a vast underground city, safe from the world above, still protecting what they were sent to protect lifetimes ago.'",
+    "title": "The Underground City"
+  },
+  "cube04": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "'Though memory of what they protected has faded into legend, their vigilance endured. For generations the warriors have kept their sacred oath, watching over what lies at the city's deepest point.'",
+    "title": "The Sacred Oath"
+  },
+  "cube05": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "'Long after the inhabitants of the underground city perished, the object of their devotion remained: a colossal, impenetrable gate, crafted with long-forgotten technology, hidden deep within the city's lowest chambers'",
+    "title": "The Sealed Gate"
+  },
+  "cube06": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "As the gate is shatters, the cube trembles in your hands, growing warm. A soft, but urgent whisper escapes it: 'I have gained new insights.'",
+    "title": "The Gate Opens"
+  },
+  "cube07": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "'The ancient civilization that forged the gate possessed knowledge and technology far beyond the current age. They even crafted devices designed to be implanted within their skulls, enhancing both mind and body'",
+    "title": "Ancient Technology"
+  },
+  "cube08": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "'The leaders ruled that every citizen must bear a device in their head. A small faction began to voice their concerns, forming a resistance as they recognized the dangers hidden within the technology.'",
+    "title": "The Resistance"
+  },
+  "cube09": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "'With the aid of the devices, the civilization thrived. An era of unprecedented peace and progress began, their knowledge and skill reaching heights that would never be seen again.'",
+    "title": "The Ouroen Age"
+  },
+  "cube10": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "'Knowledge flowed instantly, and society thrived. Behind the progress, the skull devices orchestrated humanity's thoughts, connecting minds in a quiet, inescapable web.''",
+    "title": "The Great Collapse"
+  },
+  "cube11": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "'One day, without warning, an unimaginable magneto-electric pulse swept across the globe. Every device of the civilization, including those embedded within the skulls, was obliterated.'",
+    "title": "The Hive Mind"
+  },
+  "cube12": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "'The few survivors could not survive without the devices. Most died. Civilization regressed. Knowledge slipped into oblivion. Nature reclaimed the lands, leaving only buried ruins where greatness once stood.'",
+    "title": "End of Civilization"
+  },
+  "cube13": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "The cube pulses with energy as you approach the slain creatures. It seems to extract information from somewhere. The cube grows warm, processing the recovered knowledge.",
+    "title": "Recovered Data"
+  },
+  "cube14a": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "message": "'When the resistance opposed the skull devices, they were exiled into the mountain's depths, sealed away behind the gate. With no path back, they dug ever deeper. In isolation and darkness, their minds eroded and they descended into madness and degeneration.'",
+    "title": "The Resistance"
+  },
+  "cube14b": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "message": "'One day, deep in the earth, they found a monolith of unknown ore. From it they forged an explosive to destroy the gate. But the bomb failed to breach the gate, instead unleashed an electro-magnetic pulse spanning the whole planet destroying all devices, ending civilization.'",
+    "title": "The Unknown Ore"
+  },
+  "cube14c": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "message": "'Shortly after the explosion, a man standing nearby began to dematerialize, his form flickering, half-transparent for seconds. Terrified and driven mad by what had happened, he took his own life moments later.'",
+    "title": "The Unknown Ore"
+  },
+  "cube14d": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "'Desperate, the survivors theorized the ore could help them pass through the gate. With its last fragments, they built a smaller bomb and positioned their sanest man with it before the gate. Right after the blast, he turned ghostly, translucent, and then vanished through the gate.'",
+    "title": "Through the Gate"
+  },
+  "cube15a": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "That was when you recognize that the creatures did not attack as they recognized you as one of their own. You are the man who vanished through the gate.",
+    "title": "Recognition"
+  },
+  "cube15b": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "After finishing their story one of the survivors steps forward, pointing at you: 'You are the man who vanished through the gate. You are one of us.",
+    "title": "Recognition"
+  },
+  "cubeDiscovery": {
+    "choices": {
+      "close": {
+        "label": "Close"
+      }
+    },
+    "message": "Near the cave's entrance, you discover a perfectly polished metal cube. At first it seems still, but then you feel a faint vibration like a slow, rhythmic pulse, almost like a heartbeat.",
+    "title": "The Whispering Cube"
+  },
+  "cursedMercenaryMassacre": {
+    "choices": {
+      "nodSilently": {
+        "label": "Continue"
+      }
+    },
+    "log": {
+      "outcome0": "The villager hurries away, unaware of the dark truth. The ring fed well."
+    },
+    "message": "A pale villager rushes to you, breathless with terror. 'The mercenary camp... everyone's dead. They killed each other in the night. We found some silver among the corpses.'",
+    "title": "The Massacre"
+  },
+  "desperateAmputation": {
+    "choices": {
+      "severFinger": {
+        "label": "Sever finger"
+      }
+    },
+    "log": {
+      "outcome0": "With trembling hands, you raise your axe. The ring pulses as the blade falls. Agony tears through your arm as bone shatters. Lifting the severed finger, you see small black threads, like tentacles, sunk deep into its flesh."
+    },
+    "message": "After the horrifying events, you try once more to remove the cursed ring. But the ring will not yield, as if it has become part of you. There is only one way to be free of it now.",
+    "title": "No Escape"
+  },
+  "disgracedPriorOffer": {
+    "choices": {
+      "offerShelter": {
+        "label": "Offer him shelter"
+      }
+    },
+    "log": {
+      "outcome0": "He accepts your offer without a word and resumes his toil. His eyes hold the quiet torment of a man who has seen his faith crumble. Once he preached of virtue, until the day he committed a great sin. The Disgraced Prior has joined your fellowship."
+    },
+    "message": "Your aldeões report a gaunt man in tattered robes quietly repairing the walls of stone huts. He works without speaking, without rest, asking for nothing. When approached, he only says he has much to make amends for.",
+    "title": "A Silent Repairman"
+  },
+  "doNothing": {
+    "log": {
+      "outcome0": "You decline. The night passes without cheer, warmth, or laughter."
+    }
+  },
+  "eighthWave": {
+    "message": "The ground shudders under the weight of their numbers, as a new wave of the pale horde tightens its ring around the city.",
+    "title": "The Eighth Wave"
+  },
+  "encounterBeyondPortal": {
+    "choices": {
+      "attempt_communication": {
+        "label": "Try to communicate"
+      },
+      "slaughter_creatures": {
+        "label": "Slaughter them"
+      }
+    },
+    "log": {
+      "outcome0": "You cut them down without mercy. Their cries echo through the caverns as they fall.",
+      "outcome1": "You lower your weapons and attempt to understand them. Through gestures and broken words, they share fragments of their history leaving you speechless."
+    },
+    "message": "In the depths beyond the shattered gate, you find some creatures that don't attack. Their forms are vaguely human, twisted by generations in darkness. They gesture, attempting to communicate through broken words and signs.",
+    "title": "The Dwellers Below"
+  },
+  "establishTradeProposal": {
+    "choices": {
+      "mountainMonastery": {
+        "label": "Mountain Monastery"
+      },
+      "swampTribe": {
+        "label": "Swamp Tribe"
+      },
+      "shoreFishermen": {
+        "label": "Shore Fishermen"
+      }
+    },
+    "log": {
+      "outcome0": "You send the one-eyed crow with a message to the Mountain Monastery. You wait for it to return.",
+      "outcome1": "You send the one-eyed crow with a message to the Swamp Tribe. You wait for it to return.",
+      "outcome2": "You send the one-eyed crow with a message to the Shore Fishermen. You wait for it to return."
+    },
+    "title": "Establishing Trade",
+    "message": {
+      "firstTime": "A village elder approaches you and recommends sending the crow out with a message to establish trade. Where to send a message first?",
+      "repeat": "The village elder approaches you once more. 'The crow has proven useful. Shall we send another message?'"
+    }
+  },
+  "exiledScholarVisit": {
+    "choices": {
+      "payScholar": {
+        "cost": "250 Ouro",
+        "label": "Pay 250 Ouro"
+      },
+      "sendAway": {
+        "label": "Send him away"
+      }
+    },
+    "log": {
+      "outcome1": "The scholar creates a shadowy red mixture and instructs you to bathe in it. As you emerge from the bath, you feel stronger but also tainted.",
+      "outcome2": "You send the scholar away. He departs with a disappointed sigh, but you sense he may return.",
+      "outcome3": "The scholar departs, displeased by your indecision."
+    },
+    "message": "A scholar of the dark arts approaches your estate. Upon seeing the three blood vials, he says, with a hint of restrained excitement, 'I can create a mixture that will grant you great power.'",
+    "title": "The Exiled Scholar"
+  },
+  "obsidianOrbVisit": {
+    "choices": {
+      "payGold": {
+        "cost": "250 Ouro",
+        "label": "Pay 250 Ouro"
+      },
+      "payVillagers": {
+        "cost": "20 Aldeões",
+        "label": "Offer 20 Aldeões"
+      },
+      "sendAway": {
+        "label": "Send her away"
+      }
+    },
+    "log": {
+      "outcome0": "You pay the woman, and she shares the secret of the Obsidian Orb.",
+      "outcome1": "Twenty aldeões are dragged away in chains. The woman shares the knowledge, but the village is sickened by disgust at what was done.",
+      "outcome2": "You send her away. She says she may return when you are ready.",
+      "outcome3": "Time runs out. She departs, saying she may return when you are ready."
+    },
+    "message": "A richly adorned, Eastern-looking woman arrives with two muscular attendants. She offers to share the knowledge to craft a powerful Obsidian Orb in exchange for gold or aldeões.",
+    "title": "The Obsidian Orb"
+  },
+  "facesInWalls": {
+    "choices": {
+      "examine": {
+        "label": "Examine faces"
+      },
+      "ignore": {
+        "label": "Ignore them"
+      }
+    },
+    "log": {
+      "outcome0": "Upon closer inspection, it seems to have been merely an optical illusion. You breathe a sigh of relief.",
+      "outcome1": "You lean close to one of the faces. Its eyes snap open and it whispers your name. You recognize the face as someone who died long time ago.",
+      "outcome2": "You try to ignore the faces, but they multiply. Soon every wooden surface in the village bears the mark of tortured souls. One morning they are all gone, as they were never there."
+    },
+    "message": "The wooden walls of your huts have begun showing faces - twisted, agonized expressions that seem to push through from the other side. They mouth silent screams and pleas. The aldeões step around them as if they've always been there.",
+    "title": "Faces in the Walls"
+  },
+  "feast": {
+    "choices": {
+      "makeFeast": {
+        "cost": "{{foodCost}} food",
+        "label": "Spend {{foodCost}} Comida"
+      },
+      "noFeast": {
+        "label": "Refuse feast"
+      },
+      "doNothing": {
+        "label": "No Decision Made"
+      }
+    },
+    "log": {
+      "outcome1": "The aldeões gather for a feast! Weariness fades and spirits rise, if only briefly.",
+      "outcome2": "You decline the feast proposal. The aldeões accept your decision, though disappointed.",
+      "outcome3": "Time passes and the opportunity for a feast fades away."
+    },
+    "message": "The aldeões propose organizing a feast. A short comfort to ease their weariness and quiet their minds.",
+    "title": "Aldeia Feast"
+  },
+  "feedingRing": {
+    "choices": {
+      "keepRing": {
+        "label": "Keep the ring"
+      },
+      "removeRing": {
+        "label": "Take it off"
+      }
+    },
+    "log": {
+      "outcome0": "Your finger aches softly, but you leave it be for now. It almost feels like a faint pulsing against your skin.",
+      "outcome1": "No matter how hard you try, the ring won't come off. It almost seems fused to your flesh. Your finger aches softly, but you leave it be for now. It almost feels like a faint pulsing against your skin."
+    },
+    "message": "You awaken in the dead of night, paralyzed. You sense a presence looming beside your bed, silent and unmoving. Before terror can take hold, sleep drags you back into the void. At dawn, you find an unfamiliar ring on one of your fingers.",
+    "title": "The Night Terror"
+  },
+  "fifthWave": {
+    "message": "From the cave emerge countless pale figures, their forms unspeakable as they advance on the city.",
+    "title": "The Fifth Wave"
+  },
+  "findElderScroll": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "log": {
+      "outcome0": "You take the ancient scroll from the cold stones. Forbidden knowledge is written across its brittle parchment."
+    },
+    "message": "During the night as you pass a narrow path, something moves at the edge of your vision, like a shadow fleeing the firelight. You follow it, and there, upon the cold stones, lies an ancient scroll.",
+    "title": "The Ancient Scroll"
+  },
+  "fireStorm": {
+    "message": "A fire sweeps through the village in the night, destroying one wooden hut and killing its occupants."
+  },
+  "firstElderWarning": {
+    "choices": {
+      "nod": {
+        "label": "Continue"
+      }
+    },
+    "message": "An older villager approaches you, his eyes heavy with knowledge. 'You have taken your first steps in this cruel world,' he says quietly. 'Soon, you will have to decide whether you are willing to face what lies ahead.'",
+    "title": "The Aldeia Elder"
+  },
+  "firstWave": {
+    "message": "Pale figures emerge from the cave, finally freed, their ember eyes cutting through the dark as they march towards the city.",
+    "title": "The First Wave"
+  },
+  "forestTribeHelpRequest": {
+    "choices": {
+      "accept_help": {
+        "label": "Offer help"
+      }
+    },
+    "log": {
+      "outcome0": "The wildling's eyes light up with hope. 'You are our only chance,' she says. 'The cave of the beasts lies deep in the forest. May the gods protect you.'"
+    },
+    "message": "A wildling emerges from the forest, her pale body covered in tribal markings and scars. 'I come from a tribe in the woods,' she says urgently. 'Brutal beasts living in a cave in the woods attack us relentlessly. We face extinction. Please, help us survive.'",
+    "title": "A Desperate Plea"
+  },
+  "fourthWave": {
+    "message": "The sky seems to darken as an uncountable mass of pale creatures surges from the cave, pressing towards the city.",
+    "title": "The Fourth Wave"
+  },
+  "frostfall": {
+    "choices": {
+      "doNothing": {
+        "label": "Do nothing"
+      },
+      "prepareFrostfall": {
+        "label": "Prepare"
+      }
+    },
+    "log": {
+      "outcome0": "The blizzard hits with brutal force. All production slows to a crawl as aldeões struggle to survive the cold.",
+      "outcome2": "Thanks to the stockpiles of firewood and food, the aldeões survive the blizzard unharmed.",
+      "outcome3": "The blizzard hits with brutal force. All production slows to a crawl as aldeões struggle to survive the cold."
+    },
+    "message": "Icy winds howl through the village. The elders warn that a terrible blizzard is approaching. Preparations must be made, or the consequences will be dire.",
+    "title": "Frostfall"
+  },
+  "gambler": {
+    "choices": {
+      "accept": {
+        "label": "Accept"
+      },
+      "decline": {
+        "label": "Decline"
+      }
+    },
+    "leaveAfterGames": "The gambler pockets his dice, gives a last crooked smile, and disappears into the darkness of the woods.",
+    "log": {
+      "outcome0": "The gambler shrugs, pockets his dice, and slips into the dark without another word.",
+      "outcome1": "The gambler shrugs, pockets his dice, and slips into the dark without another word."
+    },
+    "message": "The gambler sits cross-legged by the fire, eyes fixed on the dice. 'Place your bet,' he breathes with a crooked grin, 'and let's find out who endures.'",
+    "title": "The Obsessed Gambler"
+  },
+  "giftedRingDiscovery": {
+    "choices": {
+      "takeGiftedRing": {
+        "label": "Take ring"
+      }
+    },
+    "log": {
+      "outcome0": "You hold the ring in your hand. It feels soft, faintly warm and welcoming."
+    },
+    "message": "One morning, on a tree stump beside the cave entrance, you find a ring, as though someone left it there for you.",
+    "title": "An Expected Gift"
+  },
+  "hiddenLake": {
+    "choices": {
+      "avoidLake": {
+        "label": "Avoid lake"
+      },
+      "investigate": {
+        "label": "Investigate lake"
+      }
+    },
+    "log": {
+      "outcome0": "As the men approach the lake a creature emerges from the depths and strikes with fury, but the aldeões' strength prevails. At the bottom of the lake they find countless human bones and a golden crown.",
+      "outcome1": "The men wade into the waters, but the creature bursts forth with inhuman speed. Her beauty twists into rows of teeth and glowing eyes. Terrified, the aldeões flee to save their lives.",
+      "outcome2": "You order the aldeões to avoid the lake. Some grumble about lost opportunities, but they obey. Its secrets remain hidden beneath the water.",
+      "outcome3": "You forbid any approach, but the villager who claimed to have seen the creature cannot resist. One night he sneaks away, never to return. At dawn, only his clothes lie at the water's edge.",
+      "lakeDrownOne": "The creature rises like a nightmare, beauty masking deadly intent. With unnatural strength, she drags a villager beneath the waters. Only ripples and faint screams remain as the rest flee in terror.",
+      "lakeDrownMany": "The creature rises like a nightmare, beauty masking deadly intent. With unnatural strength, she drags the aldeões beneath the waters. Only ripples and faint screams remain as the rest flee in terror."
+    },
+    "message": "While gathering wood in the forest, the aldeões discover a lake hidden among trees. One villager swears he saw a woman-like figure surface briefly, her gaze beautiful yet inhuman. What do you do?",
+    "title": "The Hidden Lake"
+  },
+  "hollowKingScepterChoice": {
+    "choices": {
+      "doNothing": {
+        "label": "Do nothing"
+      },
+      "keepScepter": {
+        "label": "Keep it"
+      },
+      "leaveScepter": {
+        "label": "Leave it"
+      }
+    },
+    "log": {
+      "outcome0": "You grasp the Hollow King Scepter, feeling immense power flow through you. Ancient knowledge floods your mind, along with the King memories of his final, maddening days.",
+      "outcome1": "You decide to leave the dead King scepter where it belongs. As you turn away, you swear you hear a faint whisper of disappointment echoing through the empty throne room.",
+      "outcome2": "As you stand frozen in indecision, the men grow impatient and greedy. One reaches for the scepter, then another. Soon they are fighting viciously. In the bloody melee ${actualDeaths} of your fellowship die, their blood mixing with the dust of ages."
+    },
+    "message": "In the throne room of the citadel, you find a magnificent scepter of obsidian. It must have belonged to the king of this lost city. Dark knowledge flows from it. Do you keep it?",
+    "title": "The Hollow King Scepter"
+  },
+  "humanSacrificeDemand": {
+    "message": "The aldeões gather around the monolith, their eyes hollow. 'The animals are not enough,' they whisper in unison. 'The darkness demands more. It hungers for human souls.' They look at you, waiting for your command to make the ultimate sacrifice.",
+    "title": "Dark Hunger"
+  },
+  "lakeCreatureDead": {
+    "choices": {
+      "forge": {
+        "label": "Continue"
+      }
+    },
+    "message": "Some men found the lake creature on the shore of the underground lake, dead of what seems to be old age. As the blacksmith observes the remains, he declares 'Its bones are like nothing I've ever seen. I can forge a mighty greatshield from them.'",
+    "title": "End of an Age"
+  },
+  "lakeCreatureFate": {
+    "choices": {
+      "killCreature": {
+        "label": "Kill creature"
+      },
+      "spareCreature": {
+        "label": "Spare life"
+      }
+    },
+    "log": {
+      "outcome0": "The creature’s last violent thrashes shake the cavern as the men drive their spears into its writhing body. As the blacksmith eyes the creature's massive bones, he declares he can forge them into a mighty greatshield.",
+      "outcome1": "You open the trap and step back. The creature watches a moment, then dives deep, resurfacing to spit out a small rotten chest. Inside lie gleaming gold coins. It vanishes into the black depths, leaving only ripples."
+    },
+    "message": "The massive creature writhes in the trap, its tentacles thrashing against the steel bars. Its ancient eyes regard you with what might be intelligence. What will you do?",
+    "title": "The Creature's Fate"
+  },
+  "lastSurvivor": {
+    "choices": {
+      "letHimStay": {
+        "label": "Let him stay"
+      },
+      "sendHimAway": {
+        "label": "Send him away"
+      }
+    },
+    "log": {
+      "outcome0": "The survivor is given shelter and care. That night, he calls you to his hut. Though dying, his eyes are clear. 'Thank you for your kindness, may fortune favor you always.' he whispers with his last breath.",
+      "outcome1": "You turn the dying man away. He leaves and is found dead in the forest nearby the next day. The aldeões are horrified and disgusted by your cruelty."
+    },
+    "message": "A stranger arrives at the village, barely clinging to life. He speaks of his settlement to the north, where food shortages drove aldeões to kill each other in desperation. He asks to stay for a few nights to recover.",
+    "title": "The Last Survivor"
+  },
+  "leatherHarnessGratefulReturn": {
+    "choices": {
+      "acceptRing": {
+        "label": "Accept the ring"
+      }
+    },
+    "log": {
+      "outcome0": "You slip the ring onto your finger. It fits perfectly. The woman smiles and takes her leave, a lightness in her step."
+    },
+    "message": "The woman from the village approaches you again, her face radiant with gratitude. 'I had to thank you properly,' she says, her voice warm. 'Things went... very well. I made this ring for you.' She hands you a ring with a smaller ring attached to it.",
+    "title": "A Grateful Return"
+  },
+  "leatherHarnessRequest": {
+    "choices": {
+      "helpWithLeather": {
+        "cost": "100 leather",
+        "label": "Help her"
+      },
+      "refuseLeather": {
+        "label": "Do not help"
+      }
+    },
+    "log": {
+      "outcome1": "You hand her the leather. She takes it with a grateful smile, her eyes brightening. 'Thank you. He'll be... very surprised.' She hurries off, clutching the hides to her chest.",
+      "outcome2": "You decline. She nods, disappointment flickering across her face, and returns to the village without another word."
+    },
+    "message": "A woman from the village approaches you, her cheeks faintly flushed. She hesitates before speaking, eyes cast down: 'I was wondering if you might spare some leather. I'd like to craft something... for my partner. A harness. To surprise him with.'",
+    "title": "A Aldeia Woman"
+  },
+  "madBeduine": {
+    "choices": {
+      "allowStay": {
+        "label": "Allow to stay"
+      },
+      "turnAway": {
+        "label": "Turn away"
+      }
+    },
+    "log": {
+      "outcome0": "You grant the stranger shelter. At dawn, he has vanished. Only his robes remain, and within them lies a book bound in human skin. Its pages whisper forbidden knowledge.",
+      "outcome1": "You refuse the stranger entry. He leaves screaming curses in an alien tongue. Before dawn, a barbarian tribe attacks as if summoned by his cries, killing ${actualDeaths} aldeões. In the morning you find a book on the ground, bound in human skin."
+    },
+    "message": "In the evening, a robed figure approaches from the wilderness. His eyes burn with madness as he mutters in a foreign tongue, gestures sharp and unsettling. The aldeões grow uneasy. Do you allow this Beduine to stay the night?",
+    "title": "The Mad Beduine"
+  },
+  "mapFragmentsAssembled": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "message": "You piece together the map fragments. They reveal the map to a forgotten sanctuary deep in the swamp.",
+    "title": "A Map Revealed"
+  },
+  "masterArcher": {
+    "choices": {
+      "acceptArcherHelp": {
+        "cost": "5000 food",
+        "label": "Give 5000 Comida"
+      },
+      "acceptArcherHelpGold": {
+        "cost": "200 gold",
+        "label": "Pay 200 Ouro"
+      },
+      "doNothing": {
+        "label": "No Decision Made"
+      },
+      "refuseArcherHelp": {
+        "label": "Refuse his offer"
+      }
+    },
+    "log": {
+      "outcome0": "Your indecision frustrates the archer. He shakes his head and leaves, taking his expertise elsewhere.",
+      "outcome2": "The master archer takes the payment and begins training your hunters immediately.",
+      "outcome4": "The master archer takes the gold with a nod and begins training your hunters immediately.",
+      "outcome5": "The archer nods understandingly. 'I'll return in case you change your mind,' he says before disappearing into the forest."
+    },
+    "message": "A man in a dark red leather coat arrives with a confident grin and sharp eyes. He offers to help your archers, saying he can sharpen their aim and improve their hunting skills. If you accept, he'll stay and get to work.",
+    "title": "The Master Archer"
+  },
+  "mercenaryDemand": {
+    "choices": {
+      "giveRing": {
+        "label": "Give Feeding Ring"
+      },
+      "payGold": {
+        "cost": "100 gold",
+        "label": "Pay 100 Ouro"
+      },
+      "refuse": {
+        "label": "Refuse to pay"
+      }
+    },
+    "log": {
+      "outcome0": "You hand over the gold. The mercenary counts it slowly, a cruel smile on his face. 'Pleasure doing business,' he says, before disappearing.",
+      "outcome1": "The mercenary signals his men to attack. The battle is fierce, but your the aldeões prevails. The mercenaries flee into the forest, leaving behind their weapons and wounded.",
+      "outcome2": "The mercenary signals his men to attack. Despite your best efforts, you are overwhelmed. ${deaths} aldeões fall before the mercenaries finally retreat, satisfied with the carnage.",
+      "outcome3": "You offer him the feeding ring you still kept in a locked chest. The mercenary examines it with interest, slipping it onto his own finger. 'A nice ring,' he says, 'but not enough. I'll return tomorrow to collect the gold.'"
+    },
+    "message": "A scarred mercenary arrives at the village, hand resting on his blade. 'I’m not here to stir up trouble. Pay me 100 Ouro, and I'll keep things peaceful. Refuse, and my men will burn this place to the ground.'",
+    "title": "The Mercenary"
+  },
+  "mercenaryReturnDemand": {
+    "choices": {
+      "giveRing": {
+        "label": "Give Feeding Ring"
+      },
+      "payGold": {
+        "cost": "200 gold",
+        "label": "Pay 200 Ouro"
+      },
+      "refuse": {
+        "label": "Refuse to pay"
+      }
+    },
+    "log": {
+      "outcome0": "You pay the gold, your hands shaking with rage. The mercenary laughs. 'Smart choice. I won't be bothering you again... probably.' He vanishes into the woods with his men.",
+      "outcome1": "You refuse. The mercenaries attack, but this time you're ready. After a brutal fight, they scatter into the wilderness, leaving their dead behind.",
+      "outcome2": "Your defiance costs you dearly. The mercenaries rampage through the village, killing ${deaths} before they finally depart, laughing at the destruction they've caused.",
+      "outcome3": "You offer him the feeding ring you still kept in a locked chest. The mercenary examines it with interest, slipping it onto his own finger. 'A nice ring,' he says, 'but not enough. I'll return tomorrow to collect the gold.'"
+    },
+    "message": "The mercenary is back, and this time he brings more men. 'Times are tough,' he says with a grin. 'The price has gone up. 200 Ouro, or things get messy.'",
+    "title": "The Mercenary Returns"
+  },
+  "merchant": {
+    "choices": {
+      "say_goodbye": {
+        "label": "Say goodbye"
+      }
+    },
+    "log": {
+      "outcome0": "You bid the merchant farewell. He tips his hat and mutters about the road ahead."
+    },
+    "message": "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",
+    "title": "Traveling Merchant",
+    "toolTrades": {
+      "trade_nightshade_bow_schematic": {
+        "label": "Nightshade Bow Schematic",
+        "message": "You purchase the nightshade bow schematic. The merchant grins darkly: 'This bow's design is cruel. Its arrows will poison your enemies.'"
+      },
+      "trade_skull_lantern": {
+        "label": "Skull Lantern",
+        "message": "You purchase the skull lantern. Forged from cursed bone, its eerie light will guide you through the deepest depths."
+      },
+      "trade_tarnished_compass": {
+        "label": "Tarnished Compass",
+        "message": "You purchase the tarnished compass. Artifact of the vanished civilization, its needle points to hidden places."
+      },
+      "trade_map_fragment_wooden": {
+        "label": "Map Fragment",
+        "message": "You purchase a tattered map fragment."
+      },
+      "trade_map_fragment_stone": {
+        "label": "Map Fragment",
+        "message": "You purchase a tattered map fragment."
+      },
+      "trade_crow_harness": {
+        "label": "Crow Harness",
+        "message": "You purchase the crow harness. A specially crafted harness for messenger crows."
+      },
+      "trade_clarity_elixir": {
+        "label": "Elixir of Clarity",
+        "message": "You drink the Elixir of Clarity. Your mind feels lighter."
+      },
+      "trade_veinfire_elixir": {
+        "label": "Veinfire Elixir",
+        "message": "You purchase a bottle of Veinfire Elixir."
+      },
+      "trade_book_of_trials": {
+        "message": "You purchase the Book of Trials. The merchant smiles knowingly: 'A guide for those who seek to track their journey.'",
+        "label": "Book of Trials"
+      },
+      "trade_book_of_craftsmanship": {
+        "message": "You purchase the Book of Craftsmanship. The merchant nods approvingly: 'A craftsman's tome, worn but full of wisdom. It will whisper secrets to those who build.'",
+        "label": "Book of Craftsmanship"
+      },
+      "trade_book_of_war": {
+        "message": "You purchase the Book of War. The merchant nods gravely: 'Knowledge from a long gone kingdom in the far east. With this, you will better understand the outcomes of your choices.'",
+        "label": "Book of War"
+      },
+      "trade_reinforced_rope": {
+        "message": "You purchase the reinforced rope. This rope can withstand tremendous strain and reach places in the deepest cave chambers.",
+        "label": "Reinforced Rope"
+      },
+      "trade_occultist_map": {
+        "message": "As you buy the occultist's map the merchant whispers: 'An old occultist hid his secrets in a chamber deep in the cave. This map will guide you.'",
+        "label": "Occultist's Map"
+      },
+      "trade_giant_trap": {
+        "message": "As you purchase the giant trap, the merchant grins: 'This can trap something gigantic in the woods. Use it wisely.'",
+        "label": "Giant Trap"
+      },
+      "trade_arbalest_schematic": {
+        "message": "You purchase the arbalest schematic. The merchant unfurls an intricate blueprint: 'A design from a master engineer. With this, you can craft a powerful weapon.'",
+        "label": "Arbalest Schematic"
+      },
+      "trade_compound_bow": {
+        "message": "You purchase the compound bow. The merchant nods approvingly: 'High precision weapon from the vanished civilization. It will serve you well.'",
+        "label": "Compound Bow"
+      },
+      "trade_stormglass_halberd_schematic": {
+        "message": "You purchase the stormglass halberd schematic. The merchant reveals the faded plans: 'With this design, you can forge a halberd of tremendous power.'",
+        "label": "Stormglass Halberd Schematic"
+      },
+      "trade_natharit_pickaxe": {
+        "message": "You purchase the natharit pickaxe. The merchant hands you the sturdy tool: 'Extremely durable pickaxe of unknown material. Its quality is exceptional.'",
+        "label": "Natharit Pickaxe"
+      }
+    },
+    "tradeCost": "{{amount}} {{resource}}",
+    "tradeLabel": "{{amount}} {{resource}}"
+  },
+  "monasteryMonk": {
+    "choices": {
+      "offerGold": {
+        "cost": "250 gold",
+        "label": "Offer 250 Ouro"
+      },
+      "payTribute": {
+        "cost": "5000 wood, 5000 stone, 5000 food, 500 leather, 500 steel",
+        "label": "Pay tribute"
+      },
+      "sendAway": {
+        "label": "Send away"
+      }
+    },
+    "log": {
+      "outcome0": "You decline the monk's offer. He bows respectfully and begins his journey back to the mountains.",
+      "outcome2": "The monk accepts your tribute with a solemn nod and reveals detailed plans for a skeleton key. “This key is said to open any lock,” he says, before departing.",
+      "outcome4": "The monk's eyes widen at the sight of gold. 'This will help the monastery greatly,' he says, drawing out detailed plans for a skeleton key. “This key is said to open any lock,” he says, before departing.",
+      "outcome5": "You decline the monk's offer. He bows respectfully and begins his journey back to the mountains."
+    },
+    "message": "A monk from a mountain monastery arrives in the village. 'I hear you found a mysterious chest, he says softly. 'The monastery knows how to open it. Offer a tribute, and I will share the secret.'",
+    "title": "The Mountain Monk"
+  },
+  "monasteryResponse": {
+    "choices": {
+      "accept": {
+        "cost": "250 gold",
+        "label": "Pay 250 Ouro"
+      },
+      "decline": {
+        "label": "Decline"
+      }
+    },
+    "log": {
+      "outcome0": "You took too long to decide. The monks' offer expires.",
+      "outcome2": "You pay the monks for their map. It reveals the location of the Hidden Library deep in the cave.",
+      "outcome3": "You decline the monks' offer. The opportunity is lost."
+    },
+    "message": "The one-eyed crow returns from the Mountain Monastery with a sealed scroll. The monks offer to sell you a map to a hidden library deep within the cave. They ask for 250 Ouro.",
+    "title": "Message from the Mountain Monastery"
+  },
+  "monolithDemand": {
+    "message": "The aldeões demand to build a monolith in the village center, a monument to appease the darkness that creeps into their minds. Through sacrifice of animals they want to find peace.",
+    "title": "Demand for the Monolith"
+  },
+  "mysteriousBell": {
+    "choices": {
+      "doNotRing": {
+        "label": "Do not ring it"
+      },
+      "ringBell": {
+        "label": "Ring it"
+      }
+    },
+    "log": {
+      "outcome0": "The moment you hear the first ring, darkness swallows you whole. You dream of a vast city of glass and steel, filled with strange lights and people who move with purpose you cannot understand. When you awake, the bell has vanished, but a bell-shaped mark burns on your forearm.",
+      "outcome1": "The risk is too great. That same day, a tradesman arrives and offers 500 Ouro for the bell. You accept immediately, relieved to be rid of the cursed object. The tradesman departs with a knowing smile."
+    },
+    "message": "You open the sealed chest with the skeleton key. Inside, resting on faded velvet, lies a golden bell covered in grotesque engravings and strange symbols written across its surface.",
+    "title": "The mysterious Bell"
+  },
+  "mysteriousBook": {
+    "choices": {
+      "unpack_it": {
+        "label": "Unpack"
+      }
+    },
+    "log": {
+      "outcome0": "Within is a book which age you cannot guess. Its cover is long gone, the pages are torn, yet the perfectly written letters are still sharp. As you carefully turn the pages, you realize it teaches the slow shaping of the self through repetition."
+    },
+    "message": "One late evening, you hear a gentle knock on the door of the estate. As you open it, no one is there, only something bound in dark brown leather resting on the doorstep.",
+    "title": "A Quiet Knock"
+  },
+  "mysteriousNote": {
+    "choices": {
+      "throw_away": {
+        "label": "Throw away"
+      }
+    },
+    "log": {
+      "outcome0": "You crumple the note and let it fall from your fingers. You understand the words, yet you cannot make any sense of them. As the paper drifts away, you catch something carried on the wind, faint and distant. It sounds like soft, lonely weeping fading into the night."
+    },
+    "title": "A Mysterious Note",
+    "message": "As dusk settles, you find a piece of paper on the doorstep of your estate. Someone left a note in a careful, elegant handwriting: \n \"I hope you're enjoying your time here. If you do, please consider supporting the journey ahead, either by visiting the shop or donating. Your help keeps this world alive and free to enjoy. Thank you!\""
+  },
+  "mysteriousWoman": {
+    "log": {
+      "outcome0_woman": "You grant her shelter for the night. By morning, she has vanished without a trace, leaving your bed still warm and {{silverStolen}} Prata missing.",
+      "outcome0_man": "You grant him shelter for the night. By morning, he has vanished without a trace, leaving your bed still warm and {{silverStolen}} Prata missing.",
+      "outcome1_woman": "You politely refuse her request. She looks disappointed but nods in understanding, disappearing into the evening mist without another word.",
+      "outcome1_man": "You politely refuse his request. He looks disappointed but nods in understanding, disappearing into the evening mist without another word."
+    },
+    "title": {
+      "woman": "The Mysterious Woman",
+      "man": "The Mysterious Man"
+    },
+    "message": {
+      "woman": "An attractive young woman in fine clothes arrives at the estate as the sun sets. She smiles warmly at you and asks, 'Might I have shelter in your hut for the night? I've traveled far and have nowhere else to go.'",
+      "man": "An attractive young man in fine clothes arrives at the estate as the sun sets. He smiles warmly at you and asks, 'Might I have shelter in your hut for the night? I've traveled far and have nowhere else to go.'"
+    },
+    "choices": {
+      "allowStay": {
+        "label": {
+          "woman": "Let her stay",
+          "man": "Let him stay"
+        }
+      },
+      "refuseStay": {
+        "label": {
+          "woman": "Refuse her",
+          "man": "Refuse him"
+        }
+      }
+    }
+  },
+  "ninthWave": {
+    "message": "With unrelenting hunger, an even larger mass of pale creatures surges toward the city.",
+    "title": "The Ninth Wave"
+  },
+  "nordicWarAxe": {
+    "choices": {
+      "buyAxe": {
+        "label": "Decline"
+      },
+      "decline": {
+        "label": "Decline"
+      }
+    },
+    "log": {
+      "ignoreForced": "You ignore the offer. The viking eventually spits on the ground and leaves with his war axe, muttering about your lack of respect.",
+      "ignoreNormal": "You ignore the offer. The viking eventually nods and leaves with his war axe.",
+      "buyForced": "The viking takes the payment with a cold smile. 'Perhaps you should have been more generous before, instead of attacking me. You would have paid much less for the axe then.' he speaks before leaving.",
+      "buyNormal": "Happy with the trade the viking nods approvingly and departs.",
+      "declineForced": "You decline the offer. The viking spits on the ground, muttering curses as he leaves with his war axe. 'You should have paid me when you had the chance,' he growls.",
+      "declineNormal": "You decline the offer. The viking nods respectfully and leaves with his war axe."
+    },
+    "message": "The viking builder returns to your village, carrying a magnificent war axe. 'I forged this Nordic War Axe in my homeland. It shall be yours... for a price.'",
+    "title": "The Viking Returns"
+  },
+  "oddTrinket": {
+    "choices": {
+      "discardTrinket": {
+        "label": "Discard it"
+      },
+      "drinkTrinket": {
+        "label": "Drink it"
+      }
+    },
+    "log": {
+      "outcome0": "You drink the amber elixir. It burns as it goes down, but you feel stronger than before.",
+      "outcome1": "You decide not to risk it and toss the vial into the woods. It disappears into the undergrowth.",
+      "outcome2": "Your hesitation costs you. The vial slips from your fingers and shatters on a rock, the amber elixir seeping into the earth."
+    },
+    "message": "While chopping wood, you find a vial of glowing amber elixir. The liquid swirls hypnotically. Do you drink it?",
+    "title": "The Odd Elixir"
+  },
+  "offerToTheForestGods": {
+    "choices": {
+      "noDecision": {
+        "label": "No Decision Made"
+      },
+      "refuse": {
+        "label": "Make no sacrifices"
+      },
+      "sacrifice": {
+        "label": {
+          "Sacrifice 4 villagers": "Sacrifice 4 aldeões",
+          "Sacrifice 8 villagers": "Sacrifice 8 aldeões"
+        }
+      }
+    },
+    "log": {
+      "outcome0": "The forest gods accept the sacrifice. The figures vanish, and an ebony ring is found on the altar where the aldeões were offered. Peace returns to the woods.",
+      "outcome1": "The forest accepts the sacrifice. The figures vanish, and an ebony ring is found on the altar where the aldeões were offered. But the horror of the sacrifice drives {{actualAdditionalDeaths}} aldeões to take their own lives.",
+      "outcome2": "Your refusal to sacrifice innocent lives somehow pleases the forest gods. The appearances vanish, and you find an ebony ring left as a gift.",
+      "outcome3": "You refuse the sacrifice. The forest remains silent for now. The threat lingers.",
+      "outcome5": "Your indecision angers the aldeões. {{actualDepartures}} aldeões, frustrated with your lack of leadership, pack their belongings and leave in disgust.",
+      "outcome4_one": "You refuse the sacrifice. During the night, {{actualDisappearances}} villager wanders into the woods as if sleepwalking, drawn by a voice only they could hear. They are never seen again.",
+      "outcome4_other": "You refuse the sacrifice. During the night, {{actualDisappearances}} aldeões wander into the woods as if sleepwalking, drawn by a voice only they could hear. They are never seen again."
+    },
+    "message": "While hunting, aldeões report unsettling figures in the forest. They are terrified. Aldeia elders say the forest gods demand four aldeões as sacrifice.",
+    "title": "Offer to the Floresta Gods"
+  },
+  "paleCrossCrucifixion": {
+    "choices": {
+      "consecrateToCross": {
+        "label": "Consecrate to cross"
+      },
+      "doNothing": {
+        "label": "Do nothing"
+      },
+      "holdFuneral": {
+        "cost": "1000 food",
+        "label": "Hold funeral"
+      },
+      "investigateKillers": {
+        "label": "Investigate"
+      }
+    },
+    "log": {
+      "outcome0": "You give no order. Rumors spread, fear curdles into disgust, and village work falters.",
+      "outcome2": "You order funeral rites and feed the mourners. Grief remains, but the village steadies.",
+      "outcome3": "You uncover a group of conspirators and order their execution. Justice is swift, and fear recedes.",
+      "outcome4": "You consecrate the body to the cross. The aldeões recoil in disgust, but the power of the cross seems to have grown."
+    },
+    "message": "One morning, aldeões make a cruel discovery. A young man hangs crucified on the Pale Cross, his head bowed and his body swaying faintly in the cold morning wind.",
+    "title": "The Pale Cross at Dawn"
+  },
+  "paleCrossProposal": {
+    "choices": {
+      "acceptPaleCross": {
+        "label": "Accept proposal"
+      },
+      "refusePaleCross": {
+        "label": "Deny proposal"
+      }
+    },
+    "log": {
+      "outcome0": "The druid bows his head. 'Then let it be raised.'",
+      "outcome1": "'Perhaps this was wisdom. Perhaps it was fear,' the druid says before leaving into the forest."
+    },
+    "message": "The blind druid returns, his milky eyes rest on the bone totems: 'You have offered the gods much. Raise them a symbol to prove your devotion.'",
+    "title": "The Pale Cross"
+  },
+  "paleFigure": {
+    "choices": {
+      "ignore": {
+        "label": "Ignore it"
+      },
+      "investigate": {
+        "label": "Investigate"
+      }
+    },
+    "log": {
+      "outcome0": "As the aldeões near, the figure vanishes. In its place lies a raven-feather mantle, shimmering with otherworldly power.",
+      "outcome1": "The investigation goes wrong. One of the aldeões screams in the mist and is never seen again. The others flee in terror.",
+      "outcome2": "The pale figure moves with inhuman speed. ${actualDeaths} aldeões vanish into the mist, their screams echoing through the trees.",
+      "outcome3": "The aldeões stay close to the village. By evening, the figure is gone.",
+      "outcome4": "At dawn, one of the aldeões who claimed to have seen the figure is found dead in his bed, his face frozen in terror."
+    },
+    "message": "At dawn, aldeões glimpse a tall, pale, slender figure at the woods’ edge. What do you do?",
+    "title": "The Pale Figure"
+  },
+  "portalDiscovered": {
+    "message": "In the citadel's lowest chambers you find a colossal gate forged from an unknown, unyielding metal. Perhaps the alchemist creations will be able to open it."
+  },
+  "redMaskChoice": {
+    "choices": {
+      "leaveMask": {
+        "label": "Leave it"
+      },
+      "takeMask": {
+        "label": "Take red mask"
+      }
+    },
+    "log": {
+      "outcome0": "You pick up the crimson leather mask. It feels warm to the touch.",
+      "outcome1": "You decide the raven's gift carries too much mystery. As you walk away, you hear the raven's call echoing through the trees."
+    },
+    "message": "While hunting, you see an oddly large black raven staring at you from a broken tree. As you approach it, Suddenly it croaks, sounding like it's saying a word again and again. Then it flies away. In front of the tree lies a mask made of deep red leather. Do you take it?",
+    "title": "The Raven's Gift"
+  },
+  "restlessKnight": {
+    "choices": {
+      "convince": {
+        "label": "Convince him"
+      },
+      "payGold": {
+        "cost": "50 gold",
+        "label": "Pay 50 Ouro"
+      },
+      "refuse": {
+        "label": "Refuse"
+      }
+    },
+    "log": {
+      "outcome0": "The knight waited but you did not respond. 'Perhaps another time,' he says before continuing his journey.",
+      "outcome2": "The knight speaks: 'Beyond the eastern mountains lies a dead city of giant stone towers, almost touching the clouds. Empty windows stare across the land like countless eyes. Nature has climbed every wall and filled the streets with roots. No one has lived there for ages.'",
+      "outcome3": "Your words intrigue the knight, he speaks: 'Beyond the eastern mountains lies a dead city of giant stone towers, almost touching the clouds. Empty windows stare across the land like countless eyes. Nature has climbed every wall and filled the streets with roots. No one has lived there for ages.'",
+      "outcome4": "The knight listens to your words but shakes his head. 'Your words are earnest, but my knowledge has value. Perhaps our paths will cross again.' He departs without sharing his tale.",
+      "outcome5": "You decline the knight's offer. He nods respectfully. 'Perhaps our paths will cross again,' he says before continuing his journey."
+    },
+    "title": "The Restless Knight",
+    "message": {
+      "firstTime": "A knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'",
+      "repeat": "Again, the knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'"
+    }
+  },
+  "restlessKnightBurden": {
+    "choices": {
+      "accept": {
+        "label": "Accept"
+      },
+      "decline": {
+        "label": "Decline"
+      }
+    },
+    "log": {
+      "outcome0": "You refuse. His face tightens, he gives a short nod and says nothing. The weight continues to stay on him alone.",
+      "outcome1": "He speaks of the skull device collector in the desert. He captured humans to implant the devices, without mercy and without success. The knight found a trench filled with hundreds of dead.",
+      "outcome2": "You refuse. His face tightens, he gives a short nod and says nothing. The weight continues to stay on him alone."
+    },
+    "message": "The restless knight comes to you. 'There is one thing I never spoke of,' he says. 'I meant to spare everyone. But you might want to know it.'",
+    "title": "The unspeakable Burden"
+  },
+  "restlessKnightCoast": {
+    "choices": {
+      "convince": {
+        "label": "Convince him"
+      },
+      "payFood": {
+        "cost": "2500 food",
+        "label": "Pay 2500 Comida"
+      },
+      "payGold": {
+        "cost": "50 gold",
+        "label": "Pay 50 Ouro"
+      },
+      "refuse": {
+        "label": "Refuse"
+      }
+    },
+    "log": {
+      "outcome0": "The knight waited but you did not respond. 'Perhaps another time,' he says before continuing his journey.",
+      "outcome2": "The knight shares: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.'",
+      "outcome4": "Content for the meal, the knight shares: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.'",
+      "outcome5": "Your words move the knight. He speaks: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.'",
+      "outcome6": "The knight listens but remains unmoved. 'Your words are sincere, but this knowledge is precious. Perhaps another time.' He departs without sharing his discovery.",
+      "outcome7": "You decline his offer. The knight nods solemnly. 'Very well. The secrets of the shore shall remain with me for now,' he says before walking away."
+    },
+    "message": "The knight appears once more, 'I have traveled to a city on the shore of an ocean,' he says. 'What I found there defies belief. I will share this knowledge, for a price.'",
+    "title": "Tales from the Shore"
+  },
+  "restlessKnightDesert": {
+    "choices": {
+      "convince": {
+        "label": "Convince him"
+      },
+      "payGold": {
+        "cost": "250 gold",
+        "label": "Pay 250 Ouro"
+      },
+      "paySilver": {
+        "cost": "1000 silver",
+        "label": "Pay 1000 Prata"
+      },
+      "refuse": {
+        "label": "Refuse"
+      }
+    },
+    "log": {
+      "outcome0": "The knight waited but you did not respond. 'Perhaps another time,' he says before continuing his journey.",
+      "outcome2": "The knight nods with satisfaction. 'A fair price. I shall defend your people with my life.' He removes his weathered helm, revealing a scarred but determined face. The restless knight has joined your fellowship.",
+      "outcome4": "The knight accepts the silver with a solemn bow. 'I shall defend your people with my life.' He removes his weathered helm, revealing a scarred but determined face. The restless knight has joined your fellowship.",
+      "outcome5": "'Your purpose seems noble, the knight’s eyes brighten. 'I would be honored to stand with you.' He removes his weathered helm, revealing a scarred but determined face. The restless knight has joined your fellowship.",
+      "outcome6": "The knight listens but shakes his head. 'Words alone cannot sustain a warrior. I must continue my journey, then, for now.', he says, turning away and departing.",
+      "outcome7": "You decline his offer. The knight nods with understanding. 'I respect your decision. I must continue my journey, then, for now.', he says, turning away and departing."
+    },
+    "message": "The knight returns, 'I traveled far south to a vast desert. There, I met a man devoted to recovering lost technology of the ancients. He showed me devices once embedded in the skull, enhancing senses beyond natural limits. ' He pauses, 'I have traveled enough. You could use a veteran blade. I offer my service in combat, if you accept.'",
+    "title": "The Knight's Final Journey"
+  },
+  "restlessKnightMountains": {
+    "choices": {
+      "payFood": {
+        "cost": "2500 food",
+        "label": "Pay 2500 Comida"
+      },
+      "payGold": {
+        "cost": "50 gold",
+        "label": "Pay 50 Ouro"
+      },
+      "refuse": {
+        "label": "Refuse"
+      }
+    },
+    "log": {
+      "outcome0": "The knight waited but you did not respond. 'Perhaps another time,' he says before continuing his journey.",
+      "outcome2": "The knight shares his discovery: 'High in the mountains lies a monastery carved into the cliffs. Scholars who gathered there to study the past tell of an advanced civilization far beyond our understanding. Yet something brought their world to ruin.'",
+      "outcome4": "Grateful for the meal, the knight shares his discovery: 'High in the mountains lies a monastery carved into the cliffs. The scholars there who study the past speak of a civilization far beyond our understanding. Their craft was so advanced it would seem like magic to us. Yet something brought their world to ruin.'",
+      "outcome5": "You decline his offer. The knight nods understandingly. 'The knowledge will remain with me then,' he says before departing once more."
+    },
+    "message": "The knight returns, his armor scratched and battered. 'I found something extraordinary in the mountains,' he says. I will tell you about it, for a price'",
+    "title": "Return from the Mountains"
+  },
+  "riddleOfAges": {
+    "title": "Voices in the Dark",
+    "message": {
+      "original": "The cloaked figure returns to the estate under the pale moonlight. Its voice echoes: 'Goes on four feet in the morning, two feet at noon, and three feet in the evening.'",
+      "variant": "The cloaked figure returns to the estate under the pale moonlight. Its voice echoes: 'Can't hurt you, but leaves you with scars.'"
+    },
+    "choices": {
+      "answerEarth": {
+        "label": "Earth"
+      },
+      "answerWolf": {
+        "label": "Wolf"
+      },
+      "answerMan": {
+        "label": "Man"
+      },
+      "answerBird": {
+        "label": "Bird"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Aldeões claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_second": "The figure gives a faint nod and vanishes into the night. At dawn, a weathered leather pouch of gold lies where it stood."
+    }
+  },
+  "riddleOfAges_variant": {
+    "title": "Voices in the Dark",
+    "message": {
+      "original": "The cloaked figure returns to the estate under the pale moonlight. Its voice echoes: 'Goes on four feet in the morning, two feet at noon, and three feet in the evening.'",
+      "variant": "The cloaked figure returns to the estate under the pale moonlight. Its voice echoes: 'Can't hurt you, but leaves you with scars.'"
+    },
+    "choices": {
+      "answerNightmares": {
+        "label": "Nightmares"
+      },
+      "answerTime": {
+        "label": "Touch"
+      },
+      "answerLove": {
+        "label": "Knife"
+      },
+      "answerDeath": {
+        "label": "Lust"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Aldeões claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_second": "The figure gives a faint nod and vanishes into the night. At dawn, a weathered leather pouch of gold lies where it stood."
+    }
+  },
+  "riddleOfDevourer": {
+    "title": "A nightly Visitor",
+    "message": {
+      "original": "Once again, the mysterious figure appears at the estate. It whispers with a low voice: 'All things it devours, turns bones to dust, slays kings, wears mountains down, erases towns.'",
+      "variant": "Once again, the mysterious figure appears at the estate. It whispers with a low voice: 'Has fingers yet no flesh, no feathers, no scales, no bone.'"
+    },
+    "choices": {
+      "answerMan": {
+        "label": "Man"
+      },
+      "answerWater": {
+        "label": "Water"
+      },
+      "answerTime": {
+        "label": "Time"
+      },
+      "answerFire": {
+        "label": "Fire"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Aldeões claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_third": "The figure tilts its head in quiet acknowledgment before stepping back into the dim. When morning comes, a worn coin purse of gold is found outside the door."
+    }
+  },
+  "riddleOfDevourer_variant": {
+    "title": "A nightly Visitor",
+    "message": {
+      "original": "Once again, the mysterious figure appears at the estate. It whispers with a low voice: 'All things it devours, turns bones to dust, slays kings, wears mountains down, erases towns.'",
+      "variant": "Once again, the mysterious figure appears at the estate. It whispers with a low voice: 'Has fingers yet no flesh, no feathers, no scales, no bone.'"
+    },
+    "choices": {
+      "answerFin": {
+        "label": "Fin"
+      },
+      "answerWing": {
+        "label": "Wing"
+      },
+      "answerGlove": {
+        "label": "Glove"
+      },
+      "answerHand": {
+        "label": "Hand"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Aldeões claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_third": "The figure tilts its head in quiet acknowledgment before stepping back into the dim. When morning comes, a worn coin purse of gold is found outside the door."
+    }
+  },
+  "riddleOfEternal": {
+    "title": "The unknown Guest",
+    "message": {
+      "original": "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Your eyes are open, I am there, your eyes are closed, I am there too.'",
+      "variant": "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Poor have me, rich need me. Eat me, you die.'"
+    },
+    "choices": {
+      "answerLight": {
+        "label": "Light"
+      },
+      "answerLife": {
+        "label": "Life"
+      },
+      "answerDarkness": {
+        "label": "Darkness"
+      },
+      "answerDeath": {
+        "label": "Death"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Aldeões claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_fifth": "The figure bows its head in silent reverence before fading completely. A big sack of gold lays on the ground where it stood."
+    }
+  },
+  "riddleOfEternal_variant": {
+    "title": "The unknown Guest",
+    "message": {
+      "original": "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Your eyes are open, I am there, your eyes are closed, I am there too.'",
+      "variant": "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Poor have me, rich need me. Eat me, you die.'"
+    },
+    "choices": {
+      "answerPoison": {
+        "label": "Poison"
+      },
+      "answerAir": {
+        "label": "Ouro"
+      },
+      "answerNothing": {
+        "label": "Nothing"
+      },
+      "answerTime": {
+        "label": "Time"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Aldeões claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_fifth": "The figure bows its head in silent reverence before fading completely. A big sack of gold lays on the ground where it stood."
+    }
+  },
+  "riddleOfTears": {
+    "title": "A hooded Guest",
+    "message": {
+      "original": "The hulled figure appears once more at the estate. It whispers: 'Flies without wings, cries without eyes, darkness follows wherever it goes.'",
+      "variant": "The hulled figure appears once more at the estate. It whispers: 'Soft, delicate, silky, but if you're wrapped in me, you scream.'"
+    },
+    "choices": {
+      "answerNight": {
+        "label": "Night"
+      },
+      "answerWind": {
+        "label": "Wind"
+      },
+      "answerClouds": {
+        "label": "Clouds"
+      },
+      "answerShadow": {
+        "label": "Shadow"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Aldeões claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_fourth": "The figure lowers its hooded head for a moment before dissolving into the shadows. A small sack of gold remains behind on the cold ground."
+    }
+  },
+  "riddleOfTears_variant": {
+    "title": "A hooded Guest",
+    "message": {
+      "original": "The hulled figure appears once more at the estate. It whispers: 'Flies without wings, cries without eyes, darkness follows wherever it goes.'",
+      "variant": "The hulled figure appears once more at the estate. It whispers: 'Soft, delicate, silky, but if you're wrapped in me, you scream.'"
+    },
+    "choices": {
+      "answerNightmares": {
+        "label": "Nightmares"
+      },
+      "answerCobweb": {
+        "label": "Cobweb"
+      },
+      "answerSilk": {
+        "label": "Silk"
+      },
+      "answerDeath": {
+        "label": "Death"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Aldeões claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_fourth": "The figure lowers its hooded head for a moment before dissolving into the shadows. A small sack of gold remains behind on the cold ground."
+    }
+  },
+  "ringOfDrownedChoice": {
+    "choices": {
+      "doNothing": {
+        "label": "Do nothing"
+      },
+      "keepRing": {
+        "label": "Keep it"
+      },
+      "leaveRing": {
+        "label": "Leave it"
+      }
+    },
+    "log": {
+      "outcome0": "You slip the ring onto your finger. Water continues to drip from it continuously, never stopping.",
+      "outcome1": "You decide the risk is too great. As you turn away, you hear a faint splash behind you, as if something has fallen into deep water, though no water is nearby.",
+      "outcome2": "Your hesitation proves fatal. One of your men, unable to resist the mysterious ring, picks it up. Immediately, water begins pouring from his mouth in an endless torrent. He drowns on dry land."
+    },
+    "message": "Deep in the forgotten city, you find a strange ring that drips constantly with water. Do you keep it?",
+    "title": "Ring of Drowned"
+  },
+  "risingSmokeRumor": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "message": "Aldeões come to you. They saw a very dense pillar of smoke rising in the woods. Maybe it makes sense to investigate it.",
+    "title": "Rising smoke"
+  },
+  "sanctumDedication": {
+    "choices": {
+      "dedicateToAll": {
+        "label": "Dedicate to all"
+      },
+      "deepenDevotion": {
+        "label": "Deepen Devotion"
+      }
+    },
+    "log": {
+      "outcome0": "The Sanctum transforms into a nexus of divine power. All gods answer your call, their gifts are yours.",
+      "dedicate_dagon": "Dagon's Blessing flows stronger than before.",
+      "dedicate_flame": "The First Flame burns brighter than before.",
+      "dedicate_raven": "The Raven's Mark grows stronger than before.",
+      "dedicate_ash": "The Ashen Embrace is stronger than before.",
+      "dedicate_unknown": ""
+    },
+    "message": "The blind druid emerges: 'The Sanctum stands complete,' he says, his voice carrying the weight of ancient wisdom. 'Now you must choose: deepen your devotion to the path you have chosen, or embrace all gods and their gifts. Choose wisely.'",
+    "title": "The Dedication of the Sanctum"
+  },
+  "secondWave": {
+    "message": "The creatures return in greater numbers, with weapons of crude bone, glowing with foul light.",
+    "title": "The Second Wave"
+  },
+  "seventhWave": {
+    "message": "The creatures advance again, a writhing carpet of limbs and teeth scraping toward the city.",
+    "title": "The Seventh Wave"
+  },
+  "shadowFluteChoice": {
+    "choices": {
+      "doNothing": {
+        "label": "Do nothing"
+      },
+      "keepFlute": {
+        "label": "Keep it"
+      },
+      "leaveFlute": {
+        "label": "Leave it"
+      }
+    },
+    "log": {
+      "outcome0": "You keep the bone flute. Its tunes are beautiful, yet there's a subtle dissonance that gnaws quietly at your mind.",
+      "outcome1": "You set the flute back down carefully. The shadows return to their natural stillness, and the oppressive atmosphere lifts.",
+      "outcome2": "Your hesitation proves costly. The shadows grow hungry and violent, writhing with unnatural life. They surge forward and devour ${actualDevoured} members of your fellowship. Their screams echo briefly before being swallowed by silence."
+    },
+    "message": "Deep in the cave you discover a bone flute of disturbing craftsmanship. As you play it, the shadows around you begin to move in unnatural ways, as if dancing to a melody. Do you keep it?",
+    "title": "The Shadow Flute"
+  },
+  "shadowsMove": {
+    "choices": {
+      "ignore": {
+        "label": "Ignore them"
+      },
+      "stare_at_shadows": {
+        "label": "Stare at shadows"
+      }
+    },
+    "log": {
+      "outcome0": "You fix your gaze on the shifting shadows until they become still. Perhaps it was nothing. Or so you tell yourself.",
+      "outcome1": "The shadows lean toward you. Shapes coalesce at the edge of sight, and something whispers your name in a voice like dry leaves.",
+      "outcome2": "You look away, but the wrongness follows. Out of the corner of your eye, the shadows keep moving long after you stop watching."
+    },
+    "message": "The shadows in the village seem to move wrong. They stretch too long, twist at impossible angles, and sometimes seem to move independently of their sources.",
+    "title": "Moving Shadows"
+  },
+  "shoreFishermenResponse": {
+    "choices": {
+      "accept": {
+        "cost": "250 gold",
+        "label": "Pay 250 Ouro"
+      },
+      "decline": {
+        "label": "Decline"
+      }
+    },
+    "log": {
+      "outcome0": "You took too long to decide. The fishermen's offer expires.",
+      "outcome2": "The fishermen share their elaborated techniques of building fish traps you.",
+      "outcome3": "You decline the fishermen's offer. The opportunity is lost."
+    },
+    "message": "The one-eyed crow returns from the Shore Fishermen with dried fish as a gift. The fishermen offer to teach you the secrets of building powerful fish traps for 250 Ouro.",
+    "title": "Message from the Shore Fishermen"
+  },
+  "sixthWave": {
+    "message": "The cave mouth vomits forth another tide of pale bodies. Bone spears clatter like rain as they mass for another assault.",
+    "title": "The Sixth Wave"
+  },
+  "skinCrawling": {
+    "choices": {
+      "calm_down": {
+        "label": "Try to calm down"
+      },
+      "keep_scratching": {
+        "label": "Keep scratching"
+      }
+    },
+    "log": {
+      "outcome0": "You take deep breaths and force yourself to remain still. The crawling sensation gradually fades, and your skin returns to normal. You have conquered this horror through sheer willpower.",
+      "outcome1": "You try to calm yourself, but the sensation intensifies. Your vision blurs and you collapse. In your fevered dreams, ancient things whisper your true name. When you awaken, the crawling has stopped, but the memory lingers.",
+      "outcome2": "You claw frantically at your skin, drawing blood. The aldeões rush to stop you, grabbing your arms. In your maddened rage, you lash out violently, killing ${killedAldeões} aldeões before collapsing from exhaustion. When you awaken, the crawling has stopped, but blood stains your hands."
+    },
+    "message": "Your skin begins to crawl - literally. You can see shapes moving beneath the surface, seamingly creating patterns. The aldeões watch you scratch bloody furrows in your arms with expressions of great worry.",
+    "title": "Crawling Skin"
+  },
+  "slaveTrader": {
+    "choices": {
+      "freeSlaves": {
+        "label": "Try to free slaves"
+      },
+      "refuseTrader": {
+        "label": "Refuse the offer"
+      },
+      "sellVillagers": {
+        "label": "Sell 2 aldeões"
+      }
+    },
+    "log": {
+      "outcome0": "You hand over two of the aldeões. The trader tosses you a bag of steel and rides off with his new captives. When the remaining aldeões see what you've done, they abandon the village in disgust.",
+      "outcome1": "Your men attack the slaver! The fight is brutal but victorious. You free the captives and claim the trader's steel. The freed souls join your village.",
+      "outcome2": "Your men attack the slaver, but he's prepared! He fights back viciously. {{actualDeaths}} aldeões fall in the struggle. The trader escapes with his captives, leaving only death behind.",
+      "outcome3": "You refuse the slaver's vile offer. He spits on the ground in disgust and rides away with his captives."
+    },
+    "message": "A man on a cart drawn by two horses approaches the village. An iron cage on the cart holds two miserable souls. The trader grins wickedly: 'I'll pay you 100 Steel for two of your aldeões. What do you say?'",
+    "title": "The Slave Trader"
+  },
+  "solsticeGathering": {
+    "choices": {
+      "hostSolstice": {
+        "cost": "{{goldCost}} gold, {{foodCost}} food",
+        "label": "Host gathering"
+      },
+      "refuseSolstice": {
+        "label": "Refuse"
+      },
+      "doNothing": {
+        "label": "No Decision Made"
+      }
+    },
+    "log": {
+      "outcome2": "The fires burn and laughter breaks the darkness for a time. By dawn, many visitors linger, considering staying.",
+      "outcome3": "You decline. The night passes without cheer, warmth, or laughter."
+    },
+    "message": "The aldeões propose a gathering to mark the longest night of the year. Fires will be lit, food prepared, and games held. Travelers may come, drawn by the light.",
+    "title": "Solstice Gathering"
+  },
+  "swampSanctuaryChoice": {
+    "choices": {
+      "chopBlackTree": {
+        "label": "Chop down tree"
+      },
+      "sacrificeAtTree": {
+        "cost": "1000 Comida",
+        "label": "Sacrifice animals at tree"
+      }
+    },
+    "log": {
+      "outcome0": "The black timber resists, but your people bring it down. You claim the black cursed timber.",
+      "outcome2": "Blood and smoke rise from the offering. A chill grace settles on the village."
+    },
+    "message": "Your expedition reaches the forgotten swamp sanctuary. Crumbling ruins encircle a massive tree of dark black timber. What do you do?",
+    "title": "Swamp Sanctuary"
+  },
+  "swampTribeResponse": {
+    "choices": {
+      "accept": {
+        "label": "Accept"
+      },
+      "decline": {
+        "label": "Decline"
+      }
+    },
+    "log": {
+      "outcome0": "You accept the Swamp Tribe's offer and prepare to send the steel delivery to the swamp.",
+      "outcome1": "You decline the Swamp Tribe's offer. The opportunity is lost."
+    },
+    "message": "The one-eyed crow returns from the Swamp Tribe with a crumbling letter. The tribe offers powerful Chitin Plates in exchange for 1000 Steel delivered to their village.",
+    "title": "Message from the Swamp Tribe"
+  },
+  "templeDedication": {
+    "choices": {
+      "church_of_dagon": {
+        "label": "Church of Dagon"
+      },
+      "cult_of_ravenborn": {
+        "label": "Cult of the Ravenborn"
+      },
+      "order_of_ashbringer": {
+        "label": "Order of the Ashbringer"
+      },
+      "way_of_first_flame": {
+        "label": "Way of the First Flame"
+      }
+    },
+    "log": {
+      "outcome0": "You dedicate the temple to Dagon, an ancient and mysterious god of the deep.",
+      "outcome1": "You dedicate the temple to the Way of the First Flame, an ancient path of fire and rebirth.",
+      "outcome2": "You dedicate the temple to the Cult of the Ravenborn, an enigmatic and shadowed order.",
+      "outcome3": "You dedicate the temple to the Order of the Ashbringer, a solemn and fire-bound brotherhood."
+    },
+    "message": "Shortly after the temple is built, the blind druid appears. His milky eyes seem to see through your soul as he speaks: 'The temple must be dedicated to a god. Choose wisely.'",
+    "title": "The Blind Druid returns"
+  },
+  "tenthWave": {
+    "message": "From the deepest reaches of the cave, an unimaginable mass of pale creatures erupts. They flood over the land like a living tide, as the city braces for annihilation.",
+    "title": "The Final Wave"
+  },
+  "theDamned": {
+    "choices": {
+      "turnThemAway": {
+        "label": "Send away"
+      },
+      "welcomeThem": {
+        "label": "Welcome them"
+      }
+    },
+    "log": {
+      "outcome0": "{{added}} survivors join your village, grateful yet haunted by what they endured in the woods.",
+      "outcome1": "You turn them away. A bitter unease settles over the village as the aldeões are not happy with your decision.",
+      "outcome2": "You turn them away. A bitter unease settles over the village as the aldeões are not happy with your decision.",
+      "outcome3": "You welcome them, but there is no room in the village for more aldeões."
+    },
+    "message": "A group of young men and women stumbles from the forest, half dead from cold and hunger. They were left in the woods as a sacrifice to the forest gods, yet somehow survived. Do you welcome them in the village?",
+    "title": "The Damned"
+  },
+  "thirdWave": {
+    "message": "Hordes of pale creatures come from the cave; screams shake even the stones, their bone weapons cracking the ground.",
+    "title": "The Third Wave"
+  },
+  "traders_daughter": {
+    "choices": {
+      "do_not_help": {
+        "label": "Do not help"
+      },
+      "send_search_party": {
+        "cost": "500 food, 50 torch",
+        "label": "Send search party"
+      }
+    },
+    "log": {
+      "outcome1": "The search party finds the girl unharmed. She had discovered a small cave strewn with silver trinkets and coins, and was quietly playing among them.",
+      "outcome2": "You decline. The trader nods sadly and leaves to search on his own.",
+      "outcome3": "You decline. The trader nods sadly and leaves to search on his own."
+    },
+    "message": "One evening, the trader approaches you in distress. His youngest daughter has gone missing near the forest’s edge, and he begs for your help.",
+    "title": "The Trader's Daughter"
+  },
+  "traders_gratitude": {
+    "choices": {
+      "accept_traders_gratitude": {
+        "label": "Accept"
+      },
+      "decline_traders_gratitude": {
+        "label": "Decline offer"
+      }
+    },
+    "log": {
+      "outcome0": "You decline the offer. The trader thanks you once more and departs quietly.",
+      "outcome1": "You decline the offer. The trader thanks you once more and departs quietly."
+    },
+    "message": "The trader returns, eyes filled with relief and gratitude. To repay your kindness, he promises a generous discount on your next purchase.",
+    "title": "The Trader's Gratitude"
+  },
+  "traders_son": {
+    "choices": {
+      "agree_recover_dagger": {
+        "label": "Help him"
+      },
+      "traders_son_refuse": {
+        "label": "Refuse"
+      }
+    },
+    "message": "The village trader's son approaches you. He wore his father's prized dagger to impress a woman, but a nearby bandit mugged him. He asks you to retrieve it.",
+    "title": "The Trader's Son"
+  },
+  "traders_son_gratitude": {
+    "choices": {
+      "accept_traders_son_gratitude": {
+        "label": "Accept"
+      },
+      "decline_traders_son_gratitude": {
+        "label": "Decline offer"
+      }
+    },
+    "log": {
+      "outcome0": "You decline the offer. The young trader nods, relieved perhaps that no debt remains.",
+      "outcome1": "You decline the offer. The young trader nods, relieved perhaps that no debt remains."
+    },
+    "message": "The trader's son returns, holding his father's dagger. He is full of gratitude and offers you a great discount on your next purchase of his father's goods.",
+    "title": "The Trader's Son's Gratitude"
+  },
+  "traderSettles": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "message": "A trader arrives in the village with his family. They look exhausted, their faces weathered by years on the road. They are finally ready to settle down.",
+    "title": "The Trader"
+  },
+  "undergroundLakeCreature": {
+    "choices": {
+      "acknowledgeLakeCreature": {
+        "label": "Prepare"
+      }
+    },
+    "message": "While exploring the underground lake, you catch a huge shadow beneath the black waters, something vast and unseen. Perhaps a trap could lure it out of the waters.",
+    "title": "Something Beneath"
+  },
+  "undergroundLakeDiscovery": {
+    "choices": {
+      "unlockLake": {
+        "label": "Prepare"
+      }
+    },
+    "log": {
+      "outcome0": "You agree to investigate, but first the necessary preparations must be made for the descent to the lake."
+    },
+    "message": "After the last cave expedition, two men claim to have seen an underground lake. The darkness was too dense to see clearly. Perhaps the skull lantern could reveal those dark waters.",
+    "title": "The Underground Lake"
+  },
+  "unnamedWanderer": {
+    "choices": {
+      "offerFood": {
+        "cost": "2500 food",
+        "label": "Offer 2500 Comida"
+      },
+      "offerGold": {
+        "cost": "100 gold",
+        "label": "Offer 100 Ouro"
+      },
+      "sendAway": {
+        "label": "Send away"
+      }
+    },
+    "log": {
+      "outcome0": "You decline the wanderer's offer. He shrugs, adjusts his worn pack, and disappears down the road.",
+      "outcome2": "The wanderer gives a brief nod and walks off to the mining pit to begin his labor.",
+      "outcome4": "The wanderer gives a brief nod and walks off to the mining pit to begin his labor."
+    },
+    "message": "A man in torn clothes approaches the village, his hands marked from years of hard labor. 'I come from a mining colony,' he says in a rough voice. 'I can work for you to improve your mining yield.'",
+    "title": "The Unnamed Wanderer"
+  },
+  "veiledSeer": {
+    "choices": {
+      "accept": {
+        "cost": "50 gold",
+        "label": "Accept"
+      },
+      "decline": {
+        "label": "Decline"
+      }
+    },
+    "log": {
+      "outcome1": "The seer falls silent. His stare drifts beyond you. \"Great challenges await you{{name}},\" he says softly. \"You believe this world is yours to shape. But you are shaped in turn. When the final truth surfaces, you will see the strings. And by then, it might be too late.\"",
+      "outcome2": "The seer nods. {{farewell}}"
+    },
+    "message": "A hooded figureappears at dusk. His eyes gleam from beneath the veil. 'I have glimpsed what lies ahead,' he rasps. '50 Ouro, and I shall tell you what awaits.'",
+    "title": "The Veiled Seer"
+  },
+  "veinrootIntroduction": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "message": "The alchemist approaches you. Aldeões found a strangely looking root in the forest and brought it to him. He managed to create a powerful potion from it.",
+    "title": "The Mysterious Root"
+  },
+  "vikingBuilder": {
+    "choices": {
+      "acceptDeal": {
+        "cost": "250 Ouro",
+        "label": "Pay 250 Ouro"
+      },
+      "forceHim": {
+        "label": "Force him"
+      },
+      "sendAway": {
+        "label": "Send away"
+      }
+    },
+    "log": {
+      "outcome0": "The builder waits for a while, but eventually shrugs and disappears into the wilderness, taking his knowledge with him.",
+      "outcome2": "You pay the builder. He teaches the aldeões the ancient nordic techniques for constructing longhouses.",
+      "outcome3": "Your men overpower the builder and force him to share his knowledge. Reluctantly, he teaches you the secrets of longhouse construction.",
+      "outcome4": "The builder proves stronger than expected! He fights back fiercely, killing ${actualCasualties} men before escaping into the wilderness.",
+      "outcome5": "You refuse the builder's offer and send him away. He shrugs and disappears into the wilderness, taking his knowledge with him."
+    },
+    "message": "One day, a strong man wearing thick furs stands at the gates. He says he comes from the far north and is a skilled builder. For a little gold, he will teach you how to build big houses that can hold many aldeões.",
+    "title": "The Viking Builder"
+  },
+  "villageBecomesCity": {
+    "message": "The village has grown into a city. What began as a small settlement now stands as a thriving center of stone and smoke."
+  },
+  "villageElderDecision": {
+    "choices": {
+      "nod": {
+        "label": "Continue"
+      }
+    },
+    "message": "The village elder returns, his expression grave. 'The time has come,' he says. 'You have taken your first steps on a long and unforgiving path. What lies ahead is deeper, darker, and more demanding. Decide now whether you will continue this journey.'",
+    "title": "The Time Has Come"
+  },
+  "villageElderNotice": {
+    "choices": {
+      "nod": {
+        "label": "Continue"
+      }
+    },
+    "message": "A village elder approaches you. He speaks quietly. 'You stand at the beginning of a long path filled with trials. Very soon, you must choose whether you will continue this journey.'",
+    "title": "The Elder's Notice"
+  },
+  "villagersStareAtSky": {
+    "choices": {
+      "look_up_too": {
+        "label": "Stare at sky"
+      },
+      "shake_them": {
+        "label": "Wake them"
+      }
+    },
+    "log": {
+      "outcome0": "You grab the nearest villager and shake them. They blink once and return to normal, but whisper 'It's coming' before resuming their work. The others slowly follow suit.",
+      "outcome1": "When you touch one villager, they crumble to dust. The others snap out of their trance and scream, pointing at the sky. For just a moment, you see it too, something vast and hungry watching from above.",
+      "outcome2": "You crane your neck skyward and suddenly see it, something immense and impossible that exists between the clouds. Your mind rejects what it witnesses, but the image burns itself into your memory forever."
+    },
+    "message": "All the aldeões have stopped their work and stand motionless, staring at the empty sky. They remain like this for hours, unblinking, while tears of black liquid stream down their faces. When you follow their gaze, you see only ordinary clouds, but something feels terribly wrong.",
+    "title": "Skyward Gaze"
+  },
+  "villagerStares": {
+    "choices": {
+      "avoid": {
+        "label": "Avoid villager"
+      },
+      "confront": {
+        "label": "Confront villager"
+      }
+    },
+    "log": {
+      "outcome0": "You confront the villager. They turn to you with that black-eyed smile and whisper something that makes your mind reel. The words echo in your head for days.",
+      "outcome1": "As you approach, the villager's smile widens impossibly. They collapse, black fluid pouring from their eyes and mouth. You realize they've been dead for hours.",
+      "outcome2": "You avoid the villager, but you feel their hollow gaze following you wherever you go. Sleep becomes difficult. After a few nights, the villager is found dead in his bed, his clothes soaked through with a black, reeking slime."
+    },
+    "message": "One of the aldeões has begun staring at nothing for hours. When you approach, their eyes are completely black. They smile when they notice you watching.",
+    "title": "Hollow Stares"
+  },
+  "wandering_collector": {
+    "choices": {
+      "sell_nothing": {
+        "label": "Nothing"
+      }
+    },
+    "log": {
+      "whisper0": "The collector sighs and turns away. 'In my travels, I uncovered many relics of the ancient civilization. They were far more advanced than we ever were,' he whispers before fading into the dark.",
+      "whisper1": "A low hum seeps from beneath the hood. 'The great explosion destroyed most artifacts of the ancient civilization. What little remains is scattered and rare,' he murmurs.",
+      "whisper2": "A faint breath escapes the collector. 'I learned much of the ancient civilization on my journeys. Before the great explosion, there was no magic in this world. It was born in that moment,' he whispers as he departs."
+    },
+    "title": "The Wandering Collector",
+    "message": {
+      "visit0": "A figure wrapped in tattered robes approaches. He seems intrigued by what you've gathered. 'I sense value among your possessions,' he murmurs. 'Allow me to take one, in exchange for {{reward}} gold.'",
+      "visit1": "The robed figure returns, his steps soundless on the ground. 'More artifacts, more secrets', he whispers. 'Let me claim one again, and your purse will be {{reward}} gold heavier.'",
+      "visit2": "The collector appears again, eyes glowing within the hood. 'Our dealings near their end,' he says softly. 'Sell me one more, and {{reward}} gold shall be yours.'"
+    }
+  },
+  "wanderingFirecrafter": {
+    "choices": {
+      "payGold": {
+        "cost": "250 gold",
+        "label": "Pay 250 Ouro"
+      },
+      "paySilver": {
+        "cost": "1000 silver",
+        "label": "Pay 1000 Prata"
+      },
+      "sendAway": {
+        "label": "Send away"
+      }
+    },
+    "log": {
+      "outcome0": "The firecrafter eventually sighs, 'Perhaps you are not ready for such power yet,' and disappears into the night.",
+      "outcome2": "The firecrafter takes your gold and begins teaching you the dark art of void bomb creation. 'Use this power wisely,' he warns before vanishing into the shadows.",
+      "outcome4": "The firecrafter takes your silver and begins teaching you the dark art of void bomb creation. 'Use this power wisely,' he warns before vanishing into the shadows.",
+      "outcome5": "You refuse the firecrafter's offer. He nods knowingly, 'Perhaps you are not ready for such power yet,' and disappears into the night."
+    },
+    "message": "A hooded figure in stained robes arrives at your village. 'I am a firecrafter,' he says with an echoing voice. 'I can teach you to craft a bomb of extreme power, that tears reality itself. But knowledge has its price.'",
+    "title": "The Wandering Firecrafter"
+  },
+  "wanderingTribe": {
+    "choices": {
+      "acceptTribe": {
+        "label": "Help them"
+      },
+      "refuseTribeChoice": {
+        "label": "Do not help"
+      }
+    },
+    "log": {
+      "outcome0": "You welcome the nomads and offer support. In return, they teach your people how to build fur tents.",
+      "outcome1": "You decline to help. The tribe leader nods respectfully and leads their people back into the wilderness."
+    },
+    "message": "A small tribe of nomads approaches the village. Their leader speaks: 'We have traveled far and seek a place to call home. Help us settle and we will teach your people how to raise fur tents.'",
+    "title": "The Wandering Tribe"
+  },
+  "whispererInTheDark": {
+    "title": "Whisperer in the Dark",
+    "message": {
+      "original": "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'Voiceless it cries, wingless flutters, toothless bites, mouthless mutters.'",
+      "variant": "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'A lady's desire, grown in darkness, shining with pale light.'"
+    },
+    "choices": {
+      "answerFire": {
+        "label": "Fire"
+      },
+      "answerWaves": {
+        "label": "Waves"
+      },
+      "answerWind": {
+        "label": "Wind"
+      },
+      "answerDarkness": {
+        "label": "Darkness"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Aldeões claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_first": "The figure nods its head slightly before fading into the darkness. By morning, a small bag of gold rests upon the estate's doorstep."
+    }
+  },
+  "whispererInTheDark_variant": {
+    "title": "Whisperer in the Dark",
+    "message": {
+      "original": "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'Voiceless it cries, wingless flutters, toothless bites, mouthless mutters.'",
+      "variant": "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'A lady's desire, grown in darkness, shining with pale light.'"
+    },
+    "choices": {
+      "answerSilver": {
+        "label": "Prata"
+      },
+      "answerPearl": {
+        "label": "Pearl"
+      },
+      "answerGold": {
+        "label": "Ouro"
+      },
+      "answerDiamond": {
+        "label": "Diamond"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Aldeões claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_first": "The figure nods its head slightly before fading into the darkness. By morning, a small bag of gold rests upon the estate's doorstep."
+    }
+  },
+  "whisperersReward": {
+    "choices": {
+      "accept": {
+        "label": "Accept gift"
+      }
+    },
+    "log": {
+      "outcome0": "As the figure fades into the dark, a faint euphoria washes over you, quiet and fleeting, like a half-remembered memory of a better time."
+    },
+    "message": "The cloaked figure appears again. His whispers drift through the cold night one last time before he vanishes, 'Your wisdom has been weighed and found worthy. May shadows guard your path, and fortune follow your name.'",
+    "title": "The Whisperer's Gift"
+  },
+  "whisperingVoices": {
+    "message": "You hear faint whispers in the wind, speaking words in no language you recognize, but somehow you understand them. They speak of ancient things buried beneath the earth. The voices grow clearer until in the evening they are suddenly gone.",
+    "title": "Whispering Voices"
+  },
+  "whispersBeneathHut": {
+    "choices": {
+      "ignoreHut": {
+        "label": "Ignore"
+      },
+      "investigateHut": {
+        "label": "Investigate"
+      }
+    },
+    "log": {
+      "outcome0": "You lift the floorboards and find a strange amulet, faintly whispering.",
+      "outcome1": "You choose to leave the hut alone. The whispers fade by morning, but a chill remains in the air."
+    },
+    "message": "At night, faint whispers seem to rise from under the floor of one of the huts. The aldeões are uneasy. Do you investigate?",
+    "title": "Whispers Beneath the Hut"
+  },
+  "wildlingBloodOath": {
+    "choices": {
+      "accept_oath": {
+        "label": "Accept Oath"
+      }
+    },
+    "log": {
+      "outcome0": "You accept the blood oath. The huntress cuts your palm and presses it against hers, binding the oath in blood. 'In my tribe, I am called Ashwraith Huntress,' she says. 'I will teach your hunters the ways of the wild.' The Ashwraith Huntress has joined your fellowship."
+    },
+    "message": "The wildling huntress returns from the forest. 'You saved my tribe from extinction,' she says, drawing a bone knife across her palm. Blood drips to the earth. 'By the old ways of my people, I offer you a blood oath. I will stand in your debt forever.'",
+    "title": "The Blood Oath"
+  },
+  "witchsCurse": {
+    "choices": {
+      "attackHer": {
+        "label": "Attack witch"
+      },
+      "doNotPay": {
+        "label": "Refuse to pay"
+      },
+      "payGold": {
+        "cost": "50 gold",
+        "label": "Pay 50 Ouro"
+      },
+      "threatenHer": {
+        "label": "Threaten witch"
+      }
+    },
+    "log": {
+      "outcome1": "You hand over the gold. The witch cackles, pockets the coins, and disappears into the mist without another word.",
+      "outcome2": "You refuse to pay. The witch spits and curses, but nothing happens. She hobbles away, muttering threats into the wind. It seems you got lucky.",
+      "outcome3": "As you refuse to pay the witch raises her gnarled hands and speaks words in a forgotten tongue. When she leaves the aldeões start to feel weak, as if their strength was sapped by an unseen force.",
+      "outcome4": "The aldeões strike her down before she can finish her curse. Before the witch falls her body dissolves into black smoke, leaving only a foul stench.",
+      "outcome5": "The men attack, but the witch is too quick. With a final cackle, she curses the village before vanishing into the woods. An intense weakness falls over your people, sapping their strength and will.",
+      "outcome6": "You speak ancient words of power, learned from old texts. The witch recoils in fear and flees, her curse broken before it could take hold.",
+      "outcome7": "Your threats only anger the witch. She laughs and curses you with dark magic. When she leaves the aldeões start to feel weak, as if their strength was sapped by an unseen force."
+    },
+    "message": "A hunched old woman in tattered robes arrives at the gates. With malice in her voice she demands, 'Pay me 50 Ouro, or I shall curse you with misfortune.'",
+    "title": "The Witch's Curse"
+  },
+  "wizardArrives": {
+    "message": "A small old man with a long grey beard in a weathered grey coat approaches the settlement. His eyes gleam with ancient wisdom and power. 'I am a wizard,' he declares in a voice echoing with arcane authority. 'Build me a tower, and I shall aid you with powers beyond mortal ken.'"
+  },
+  "wizardBloodstone": {
+    "message": "The wizard returns from a journey into the forest. 'I have consulted with an old friend, a hermit wizard who dwells deep in the woods,' he says gravely. 'He spoke of the bloodstone we need. It lies within the Sunken Temple, an ancient shrine now half-drowned in the swamps of the forest.'",
+    "title": "The Sunken Temple"
+  },
+  "wizardBloodstoneStaff": {
+    "message": "The wizard examines the bloodstone gems you've retrieved from the Sunken Temple. 'With these bloodstones, we now have everything we need. Now we can craft the Bloodstone Staff. Together with the Frostglass Sword, we will have the means to face the darkness that lurks below.'",
+    "title": "The Bloodstone Staff"
+  },
+  "wizardDecryptsScrolls": {
+    "message": "The wizard steps from his tower, 'I have decrypted the ancient scrolls,' he says. 'The creatures below can only be slain with weapons of great power: a sword of frostglass and a staff crowned with bloodstone. 'Deep in the forest lies the grave of an ancient king which treasures may hold the frostglass we need.'",
+    "title": "Ancient Knowledge"
+  },
+  "wizardFrostglassSword": {
+    "message": "The wizard examines the frostglass, cold light dancing across its surface. 'You have found it. Now, the Frostglass Sword can be forged.'"
+  },
+  "wizardNecromancerCastle": {
+    "message": "The wizard calls you to his tower: 'I have learned of a castle deep in the wilderness, the former domain of a long-dead necromancer. Within its walls lie ancient scrolls that speak of how we can defeat what dwells in the depths of the cave.'",
+    "title": "The Necromancer's Castle"
+  },
+  "wizardOffer": {
+    "choices": {
+      "payGold": {
+        "cost": "250 gold",
+        "label": "Pay 250 Ouro"
+      },
+      "refuse": {
+        "label": "Decline"
+      }
+    },
+    "log": {
+      "outcome0": "Your indecision frustrates the wizard. He shakes his head. 'I will remain in my tower, then. Perhaps our paths will cross again when the need is greater,' he says before departing.",
+      "outcome2": "The wizard nods with satisfaction. 'A fair price for my services. I shall defend your people with arcane fire.' He removes his weathered hood, revealing ancient eyes that glow with fading power. The Elder Wizard has joined your fellowship.",
+      "outcome3": "You decline the wizard's offer. He nods with understanding. 'I will remain in my tower, then. Perhaps our paths will cross again when the need is greater,' he says before departing."
+    },
+    "message": {
+      "firstVisit": "The old wizard approaches you, 'I have lived long and seen much,' he says with a weary voice. 'The threat you face is dire. For a fair price, I will join you in the fight against the foes that emerge from the depths.'",
+      "repeat": "The old wizard approaches you again, 'My offer to join you in the fight against the foes from the depths still stands. For a fair price, I will join you.'"
+    },
+    "title": "The Wizard's Offer"
+  },
+  "wizardReadyForBattle": {
+    "message": "The wizard stands at the entrance to his tower, 'The weapons are forged. We now possess what we need to stand against the creatures of the depths of the cave. The darkness below will soon learn that this village will not fall without a fight. We are ready.'",
+    "title": "The Final Preparation"
+  },
+  "wolfAttack": {
+    "choices": {
+      "defendVillage": {
+        "label": "Defend village"
+      },
+      "hideAndWait": {
+        "label": "Hide"
+      }
+    },
+    "log": {
+      "outcome0": "The aldeões defeat the wolf pack! You slay the alpha wolf and claim its hide as a trophy. It radiates with primal power.",
+      "outcome1": "The aldeões huddle in their huts as the wolves prowl outside. By dawn, the wolves have departed without finding anyone, leaving only scratches and terror behind.",
+      "defend_noDeaths": "The aldeões fight desperately against the wolves. The aldeões survive the attack.",
+      "defend_noDeaths_first": "The aldeões fight desperately against the wolves. The aldeões survive the attack. Aldeões suggest to lay traps around the village to protect better from wolfs and other foes.",
+      "defend_noDeaths_hut": "The aldeões fight desperately against the wolves. The aldeões survive the attack. In their rampage, the wolves destroy one of the huts, leaving only splintered wood.",
+      "defend_noDeaths_hut_first": "The aldeões fight desperately against the wolves. The aldeões survive the attack. In their rampage, the wolves destroy one of the huts, leaving only splintered wood. Aldeões suggest to lay traps around the village to protect better from wolfs and other foes.",
+      "defend_noDeaths_food": "The aldeões fight desperately against the wolves. The aldeões survive the attack. In the chaos, the wolves ravage your stores.",
+      "defend_noDeaths_food_first": "The aldeões fight desperately against the wolves. The aldeões survive the attack. In the chaos, the wolves ravage your stores. Aldeões suggest to lay traps around the village to protect better from wolfs and other foes.",
+      "defend_noDeaths_food_hut": "The aldeões fight desperately against the wolves. The aldeões survive the attack. In the chaos, the wolves ravage your stores. In their rampage, the wolves destroy one of the huts, leaving only splintered wood.",
+      "defend_noDeaths_food_hut_first": "The aldeões fight desperately against the wolves. The aldeões survive the attack. In the chaos, the wolves ravage your stores. In their rampage, the wolves destroy one of the huts, leaving only splintered wood. Aldeões suggest to lay traps around the village to protect better from wolfs and other foes.",
+      "defend_oneDeath": "The aldeões fight desperately against the wolves. One villager falls to the wolves' supernatural fury.",
+      "defend_oneDeath_first": "The aldeões fight desperately against the wolves. One villager falls to the wolves' supernatural fury. Aldeões suggest to lay traps around the village to protect better from wolfs and other foes.",
+      "defend_oneDeath_hut": "The aldeões fight desperately against the wolves. One villager falls to the wolves' supernatural fury. In their rampage, the wolves destroy one of the huts, leaving only splintered wood.",
+      "defend_oneDeath_hut_first": "The aldeões fight desperately against the wolves. One villager falls to the wolves' supernatural fury. In their rampage, the wolves destroy one of the huts, leaving only splintered wood. Aldeões suggest to lay traps around the village to protect better from wolfs and other foes.",
+      "defend_oneDeath_food": "The aldeões fight desperately against the wolves. One villager falls to the wolves' supernatural fury. In the chaos, the wolves ravage your stores.",
+      "defend_oneDeath_food_first": "The aldeões fight desperately against the wolves. One villager falls to the wolves' supernatural fury. In the chaos, the wolves ravage your stores. Aldeões suggest to lay traps around the village to protect better from wolfs and other foes.",
+      "defend_oneDeath_food_hut": "The aldeões fight desperately against the wolves. One villager falls to the wolves' supernatural fury. In the chaos, the wolves ravage your stores. In their rampage, the wolves destroy one of the huts, leaving only splintered wood.",
+      "defend_oneDeath_food_hut_first": "The aldeões fight desperately against the wolves. One villager falls to the wolves' supernatural fury. In the chaos, the wolves ravage your stores. In their rampage, the wolves destroy one of the huts, leaving only splintered wood. Aldeões suggest to lay traps around the village to protect better from wolfs and other foes.",
+      "defend_manyDeaths": "The aldeões fight desperately against the wolves. THe aldeões fall to the wolves' supernatural fury.",
+      "defend_manyDeaths_first": "The aldeões fight desperately against the wolves. THe aldeões fall to the wolves' supernatural fury. Aldeões suggest to lay traps around the village to protect better from wolfs and other foes.",
+      "defend_manyDeaths_hut": "The aldeões fight desperately against the wolves. THe aldeões fall to the wolves' supernatural fury. In their rampage, the wolves destroy one of the huts, leaving only splintered wood.",
+      "defend_manyDeaths_hut_first": "The aldeões fight desperately against the wolves. THe aldeões fall to the wolves' supernatural fury. In their rampage, the wolves destroy one of the huts, leaving only splintered wood. Aldeões suggest to lay traps around the village to protect better from wolfs and other foes.",
+      "defend_manyDeaths_food": "The aldeões fight desperately against the wolves. THe aldeões fall to the wolves' supernatural fury. In the chaos, the wolves ravage your stores.",
+      "defend_manyDeaths_food_first": "The aldeões fight desperately against the wolves. THe aldeões fall to the wolves' supernatural fury. In the chaos, the wolves ravage your stores. Aldeões suggest to lay traps around the village to protect better from wolfs and other foes.",
+      "defend_manyDeaths_food_hut": "The aldeões fight desperately against the wolves. THe aldeões fall to the wolves' supernatural fury. In the chaos, the wolves ravage your stores. In their rampage, the wolves destroy one of the huts, leaving only splintered wood.",
+      "defend_manyDeaths_food_hut_first": "The aldeões fight desperately against the wolves. THe aldeões fall to the wolves' supernatural fury. In the chaos, the wolves ravage your stores. In their rampage, the wolves destroy one of the huts, leaving only splintered wood. Aldeões suggest to lay traps around the village to protect better from wolfs and other foes.",
+      "hide_noDeaths": "The aldeões huddle in their huts as the wolves prowl outside. By dawn, the wolves have departed, leaving only scratches and terror behind.",
+      "hide_noDeaths_food": "The aldeões huddle in their huts as the wolves prowl outside. By dawn, the wolves have departed, leaving only scratches and terror behind. The wolves ransack your supplies before vanishing at dawn.",
+      "hide_oneDeath": "The aldeões huddle in their huts as the wolves prowl outside. One villager who ventured out is found torn apart at sunrise.",
+      "hide_oneDeath_food": "The aldeões huddle in their huts as the wolves prowl outside. One villager who ventured out is found torn apart at sunrise. The wolves ransack your supplies before vanishing at dawn.",
+      "hide_manyDeaths": "The aldeões huddle in their huts as the wolves prowl outside. Several aldeões are dragged from their huts, their screams echoing through the night.",
+      "hide_manyDeaths_food": "The aldeões huddle in their huts as the wolves prowl outside. Several aldeões are dragged from their huts, their screams echoing through the night. The wolves ransack your supplies before vanishing at dawn."
+    },
+    "message": "Close to midnight, wolves emerge from the darkness, their eyes glowing with unnatural hunger. Their howls echo filled with malice as they circle the village.",
+    "title": "Wolf Attack"
+  },
+  "woodcutter": {
+    "choices": {
+      "acceptServices": {
+        "label": "Pay {{foodCost}} Comida",
+        "cost": "{{foodCost}} food"
+      },
+      "denyServices": {
+        "label": "Deny services"
+      },
+      "timeExpired": {
+        "label": "Time Expired"
+      }
+    },
+    "log": {
+      "betray": "You hand over the food, but days pass with no sign of the woodcutter. It seems you got betrayed.",
+      "betrayLast": "You hand over the food. The woodcutter grins as he leaves towards the forest. You wait, but he never returns. It seems you got betrayed.",
+      "betrayLevel5": "You hand over the food. The woodcutter promises to return the same day. But he never does. It seems you got betrayed.",
+      "denyLastUneasy": "Something about his demeanor makes you uneasy. You refuse the deal. The woodcutter's smile fades, and he leaves without a word.",
+      "denyLevel1": "You decline his offer. The woodcutter shrugs and walks away into the forest.",
+      "denyLevel2": "You decline his offer. The woodcutter nods and departs without complaint.",
+      "denyLevel3": "You turn down his offer. He shrugs and walks back into the woods.",
+      "denyLevel4": "You decline his ambitious offer. The woodcutter looks disappointed but accepts your decision.",
+      "denyLevel5": "You refuse the deal. The woodcutter frowns but doesn't argue.",
+      "denyLevel6": "You refuse the deal. The woodcutter frowns but doesn't argue.",
+      "timeoutLast": "Your indecision frustrates the woodcutter. He shakes his head and walks away into the forest.",
+      "timeoutLevel1": "Your indecision frustrates the woodcutter. He shrugs and walks away into the forest.",
+      "timeoutLevel2": "Your indecision frustrates the woodcutter. He nods and departs without complaint.",
+      "timeoutLevel3": "Your indecision frustrates the woodcutter. He shrugs and walks back into the woods.",
+      "timeoutLevel4": "Your indecision frustrates the woodcutter. He looks disappointed but accepts and leaves.",
+      "timeoutLevel5": "Your indecision frustrates the woodcutter. He frowns and walks away.",
+      "timeoutLevel6": "Your indecision frustrates the woodcutter. He frowns and walks away.",
+      "successLevel1": "The woodcutter takes the food and heads into the forest. By evening, he returns with the promised wood stacked neatly at the village's edge.",
+      "successLevel2": "The woodcutter takes the food and disappears into the forest. By nightfall, he returns with a large pile of wood.",
+      "successLevel3": "The woodcutter takes the food and ventures deep into the forest. He returns with an impressive haul of wood.",
+      "successLevel4": "The woodcutter takes the food and spends the afternoon in the forest. He returns with an enormous pile of wood.",
+      "successLevel5": "The woodcutter takes the food and within the same day he delivers a massive stockpile of wood to the village.",
+      "successLevel6": "The woodcutter takes the food and within the same day he delivers a massive stockpile of wood to the village."
+    },
+    "message": {
+      "level1": "A muscular man with a large axe approaches the village. He flexes his arms. \"I can cut trees like no other,\" he boasts. \"Give me {{foodCost}} Comida, and I'll bring {{woodReward}} Madeira.\"",
+      "level2": "The woodcutter returns, his axe gleaming in the sun. \"Your village grows well,\" he observes. \"I can bring you {{woodReward}} Madeira. You give me {{foodCost}} Comida. What do you say?\"",
+      "level3": "The woodcutter approaches again. \"I see your village continues to thrive,\" he says with a grin. \"I can bring you {{woodReward}} Madeira if you pay {{foodCost}} Comida for it.\"",
+      "level4": "The woodcutter arrives once more. \"Do you want to use my services once more? {{woodReward}} Madeira for {{foodCost}} Comida,\" he asks.",
+      "level5": "The woodcutter appears with a confident smile. \"How about we make one more deal? {{woodReward}} Madeira for {{foodCost}} Comida.\"",
+      "level6": "The woodcutter returns to the village. \"Do you want to use my services once more? I offer {{woodReward}} Madeira for {{foodCost}} Comida,\" he says."
+    },
+    "title": {
+      "level1": "The Madeiracutter",
+      "level2": "The Madeiracutter Returns",
+      "level3": "The Madeiracutter's Offer",
+      "level4": "The Madeiracutter's Ambitious Plan",
+      "level5": "The Madeiracutter's Grand Proposal",
+      "level6": "The Madeiracutter's Offer"
+    }
+  },
+  "wrongReflections": {
+    "choices": {
+      "cover_well": {
+        "label": "Cover well with planks"
+      },
+      "investigate": {
+        "label": "Look deeper into well"
+      }
+    },
+    "log": {
+      "outcome0": "Upon inspection, you see nothing unusual in the well. It must have been a trick of the light or your imagination. The unease lingers, but you feel slightly better.",
+      "outcome1": "You lean over the well's edge. Your reflection grins back with too many teeth and whispers secrets about what was once built where the village stands now. You pull back, but the knowledge remains, burning in your mind.",
+      "outcome2": "You board up the well with wooden planks, forbidding all access to the unholy water. Building a new well takes too long to finish, and ${thirstDeaths} of the aldeões perish of thirst."
+    },
+    "message": "The surface of the village well shows reflections that don't match reality. You see yourself, but older, with hollow eyes and a mouth full of darkness.",
+    "title": "Wrong Reflections"
+  },
+  "wrongVillagers": {
+    "choices": {
+      "avoid_them": {
+        "label": "Avoid them"
+      },
+      "talk_to_them": {
+        "label": "Talk to them"
+      }
+    },
+    "log": {
+      "outcome0": "You speak to the strangers. They admit they are wanderers who were too afraid to ask for shelter, so they simply moved into an empty hut. You allow them to stay and work in the village.",
+      "outcome1": "As you confront them, they laugh and confess they are thieves who came to rob the village. They overpower you and make off with 250 Prata before vanishing into the woods.",
+      "outcome2": "You keep your distance and watch them from afar. After several days they are simply gone, as if they were never there. You have no idea who they were."
+    },
+    "message": "You count the aldeões and find three more than there should be. Strangers have appeared among your people, working and eating as if they belong to your commmunity.",
+    "title": "Wrong Aldeões"
+  },
+  "youngWomanProtest": {
+    "choices": {
+      "banishHer": {
+        "label": "Banish her"
+      },
+      "sacrificeHer": {
+        "label": "Sacrifice her"
+      },
+      "stopSacrifices": {
+        "label": "Stop human sacrifices"
+      }
+    },
+    "log": {
+      "outcome0": "You banish the young woman from the village. She convinces ${actualLeavers} sympathetic aldeões to leave with her, abandoning your settlement forever.",
+      "outcome1": "Shortly after the sacrifice is carried out at the Black Monolith, ${actualLeavers} horrified aldeões pack their belongings and leave in disgust.",
+      "outcome2": "You agree to end the practice of human sacrifice. The woman proposes destroying the Black Monolith and building a pure white obelisk in its place cleansing the darkness from the people's minds."
+    },
+    "message": "A young woman approaches you with tears streaming down her face. 'Both my parents were sacrificed to that cursed monolith,' she cries. 'This barbaric behavior has to stop!'",
+    "title": "The Young Woman's Plea"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "advanced_bundle": {
+    "activationMessage": "Os componentes do pacote foram adicionados às suas compras!",
+    "name": "Pacote do Rei Pálido"
+  },
+  "artifact_bundle": {
+    "activationMessage": "Os componentes do pacote foram adicionados às suas compras!",
+    "name": "Pacote de Artefatos Sombrios"
+  },
+  "ashen_throne_bundle": {
+    "activationMessage": "Os componentes do pacote foram adicionados às suas compras!",
+    "name": "Pacote do Trono de Cinzas"
+  },
+  "basic_survival_bundle": {
+    "activationMessage": "Os componentes do pacote foram adicionados às suas compras!",
+    "name": "Pacote do Andarilho Esmaecido"
+  },
+  "crow_harness": {
+    "activationMessage": "O Arreio de Corvo foi adicionado às suas ferramentas! Agora você deve procurar um corvo para prender ao arreio.",
+    "description": "Arreio especialmente fabricado para corvos mensageiros. Desbloqueia a trama do Corvo. Adiciona um Membro da Irmandade.",
+    "name": "Arreio de Corvo"
+  },
+  "cruel_mode": {
+    "activationMessage": "Modo Cruel ativado! Inicie um novo jogo para viver o desafio supremo.",
+    "description": "Um mundo mais cruel, história expandida, mais itens, inimigos mais mortais. Resista ou desapareça.",
+    "name": "Modo Cruel"
+  },
+  "full_game": {
+    "activationMessage": "Jogo Completo desbloqueado e ativado! A jornada continua sem restrições.",
+    "description": "Desbloqueie o jogo completo e continue sua jornada.",
+    "name": "Jogo Completo"
+  },
+  "gold_1000": {
+    "activationMessage": "1000 de Ouro foram adicionados ao seu inventário.",
+    "description": "Uma quantia razoável de Ouro",
+    "name": "1'000 de Ouro"
+  },
+  "gold_100_free": {
+    "activationMessage": "100 de Ouro foram adicionados ao seu inventário como presente!",
+    "description": "Uma pequena clemência diária num mundo gélido",
+    "name": "Presente de 100 de Ouro"
+  },
+  "gold_20000": {
+    "activationMessage": "20'000 de Ouro foram adicionados ao seu inventário.",
+    "description": "Quantias profanas de Ouro",
+    "name": "20'000 de Ouro"
+  },
+  "gold_250": {
+    "activationMessage": "1000 de Ouro foram adicionados ao seu inventário.",
+    "description": "Uma quantia razoável de Ouro",
+    "name": "1'000 de Ouro"
+  },
+  "gold_2500": {
+    "activationMessage": "2500 de Ouro foram adicionados ao seu inventário.",
+    "description": "Um tesouro substancial",
+    "name": "2'500 de Ouro"
+  },
+  "gold_5000": {
+    "activationMessage": "5000 de Ouro foram adicionados ao seu inventário.",
+    "description": "Uma fortuna em Ouro",
+    "name": "5'000 de Ouro"
+  },
+  "great_feast_1": {
+    "activationMessage": "Um Grande Banquete começou!",
+    "description": "Aumenta a produção dos aldeões em 5x por 30 minutos",
+    "name": "1 Grande Banquete"
+  },
+  "great_feast_3": {
+    "activationMessage": "Um Grande Banquete começou!",
+    "description": "Aumenta a produção dos aldeões em 5x por 30 minutos (3 vezes)",
+    "name": "3 Grandes Banquetes"
+  },
+  "skull_lantern": {
+    "activationMessage": "A Lanterna de Caveira foi adicionada às suas ferramentas! Sua luz sinistra o guiará pelas profundezas.",
+    "description": "Forjada de osso amaldiçoado, iluminando as profundezas mais fundas. Desbloqueia a trama da Lanterna de Caveira.",
+    "name": "Lanterna de Caveira"
+  },
+  "tarnished_compass": {
+    "activationMessage": "A Bússola Manchada foi adicionada ao seu inventário! Sua magia antiga pode conceder fortuna aos seus empreendimentos.",
+    "description": "Artefato da civilização desaparecida, sua agulha aponta para lugares ocultos. Desbloqueia a trama da Bússola.",
+    "name": "Bússola Manchada"
+  }
+}

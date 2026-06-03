@@ -1,0 +1,184 @@
+{
+  "action": {
+    "0-chopWood": {
+      "label": "Lenhador"
+    },
+    "0-craftTorches": {
+      "label": "Fabricante de Tochas"
+    },
+    "0-exploreCave": {
+      "label": "Explorador de Cavernas"
+    },
+    "0-gamblerWins": {
+      "label": "Apostador Experiente"
+    },
+    "0-hunt": {
+      "label": "Caçador"
+    },
+    "1-mineAdamant": {
+      "label": "Minerador de Adamante"
+    },
+    "1-mineCoal": {
+      "label": "Minerador de Carvão"
+    },
+    "1-mineIron": {
+      "label": "Minerador de Ferro"
+    },
+    "1-mineObsidian": {
+      "label": "Minerador de Obsidiana"
+    },
+    "1-mineStone": {
+      "label": "Minerador de Pedra"
+    },
+    "1-mineSulfur": {
+      "label": "Minerador de Enxofre"
+    },
+    "2-animals": {
+      "label": "Sacrificador de Animais"
+    },
+    "2-boneTotems": {
+      "label": "Sacrificador de Ossos"
+    },
+    "2-craftBoneTotems": {
+      "label": "Fabricante de Totens de Osso"
+    },
+    "2-craftLeatherTotems": {
+      "label": "Fabricante de Totens de Couro"
+    },
+    "2-leatherTotems": {
+      "label": "Sacrificador de Couro"
+    },
+    "3-ashfireBombs": {
+      "label": "Fabricante de Bombas de Cinzafogo"
+    },
+    "3-emberBombs": {
+      "label": "Fabricante de Bombas de Brasa"
+    },
+    "4-feedFire": {
+      "label": "Alimentador do Fogo"
+    },
+    "4-merchantPurchases": {
+      "label": "Negociador"
+    },
+    "4-solsticeGatherings": {
+      "label": "Celebrante do Solstício"
+    },
+    "4-wellRested": {
+      "label": "Dorminhoco"
+    }
+  },
+  "basic": {
+    "0-coalMiner": {
+      "label": "Coletar Carvão"
+    },
+    "0-hunter": {
+      "label": "Caçador"
+    },
+    "0-ironMiner": {
+      "label": "Coletar Ferro"
+    },
+    "0-stoneMiner": {
+      "label": "Coletar Pedra"
+    },
+    "0-woodGatherer": {
+      "label": "Coletar Madeira"
+    },
+    "1-builder": {
+      "label": "Construir Edifícios"
+    },
+    "1-communityBuilder": {
+      "label": "Construir Comunidade"
+    },
+    "1-explorer": {
+      "label": "Explorar Caverna"
+    },
+    "1-toolCrafter": {
+      "label": "Fabricar Ferramentas"
+    },
+    "1-torchCrafter": {
+      "label": "Fabricar Tochas"
+    }
+  },
+  "building": {
+    "0-0": {
+      "label": "Abrigo Básico"
+    },
+    "0-1": {
+      "label": "Abrigo Resistente"
+    },
+    "0-2": {
+      "label": "Abrigo Nórdico"
+    },
+    "0-3": {
+      "label": "Abrigo Nômade"
+    },
+    "1-0": {
+      "label": "Caçadores"
+    },
+    "1-1": {
+      "label": "Forjadores"
+    },
+    "1-2": {
+      "label": "Fundidores"
+    },
+    "1-3": {
+      "label": "Curtidores"
+    },
+    "2-0": {
+      "label": "Mineradores"
+    },
+    "3-0": {
+      "label": "Mercadores"
+    },
+    "3-1": {
+      "label": "Abastecedores"
+    },
+    "3-2": {
+      "label": "Estudiosos"
+    },
+    "3-3": {
+      "label": "Sacerdotes"
+    },
+    "4-0": {
+      "label": "Muralhas"
+    },
+    "4-1": {
+      "label": "Vigia"
+    }
+  },
+  "item": {
+    "0-axes": {
+      "label": "Machados"
+    },
+    "0-lanterns": {
+      "label": "Lanternas"
+    },
+    "0-pickaxes": {
+      "label": "Picaretas"
+    },
+    "1-bows": {
+      "label": "Arcos"
+    },
+    "1-swords": {
+      "label": "Espadas"
+    },
+    "2-explorer_pack": {
+      "label": "Trabalhos em Couro"
+    },
+    "2-schematic_weapons": {
+      "label": "Esquemas"
+    },
+    "3-ancient_books": {
+      "label": "Sabedoria Antiga"
+    },
+    "3-fellowship": {
+      "label": "Boa Companhia"
+    },
+    "4-blacksteel_equipment": {
+      "label": "Equipamento de Guerra Sombrio"
+    },
+    "4-blacksteel_tools": {
+      "label": "Ferramentas Sombrias"
+    }
+  }
+}

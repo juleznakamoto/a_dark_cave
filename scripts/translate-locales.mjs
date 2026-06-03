@@ -11,7 +11,7 @@ import { listCatalogPaths } from "./locale-catalog.mjs";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const EN_DIR = path.join(ROOT, "client/src/i18n/locales/en");
-const TARGETS = ["de", "fr", "es", "zh-CN", "ru"];
+const TARGETS = ["de", "fr", "es", "pt-BR", "zh-CN", "ru"];
 
 /** Phrase-level replacements applied before per-locale overrides. */
 const PHRASE_MAPS = {
@@ -83,6 +83,29 @@ const PHRASE_MAPS = {
     [/Save/g, "Guardar"],
     [/Fight/g, "Luchar"],
     [/Retreat/g, "Retirarse"],
+  ],
+  "pt-BR": [
+    [/Wood/g, "Madeira"],
+    [/Stone/g, "Pedra"],
+    [/Food/g, "Comida"],
+    [/Gold/g, "Ouro"],
+    [/Silver/g, "Prata"],
+    [/Iron/g, "Ferro"],
+    [/Coal/g, "Carvão"],
+    [/Villager(s)?/g, "Aldeão(ões)"],
+    [/villagers/g, "aldeões"],
+    [/Village/g, "Aldeia"],
+    [/Cave/g, "Caverna"],
+    [/Forest/g, "Floresta"],
+    [/Build/g, "Construir"],
+    [/Gather/g, "Coletar"],
+    [/Investigate/g, "Investigar"],
+    [/Ignore/g, "Ignorar"],
+    [/Continue/g, "Continuar"],
+    [/Close/g, "Fechar"],
+    [/Save/g, "Salvar"],
+    [/Fight/g, "Lutar"],
+    [/Retreat/g, "Recuar"],
   ],
   "zh-CN": [
     [/Wood/g, "木材"],

@@ -1,0 +1,113 @@
+{
+  "log": {
+    "freezingDeath": {
+      "one": "Um aldeão morre congelado no frio.",
+      "other": "{{count}} aldeões morrem congelados no frio."
+    },
+    "madnessDeath": {
+      "one": "Um aldeão sucumbe à loucura e tira a própria vida.",
+      "other": "{{count}} aldeões sucumbem à loucura e tiram as próprias vidas."
+    },
+    "starvationDeath": {
+      "one": "Um aldeão sucumbe à fome.",
+      "other": "{{count}} aldeões morrem de fome."
+    },
+    "investmentComplete": {
+      "success": "Investimento de {{amount}} de Ouro concluído: Sucesso. Você ganhou {{payout}} de Ouro.",
+      "successLucky": "Investimento de {{amount}} de Ouro concluído: Golpe de Sorte! Você ganhou {{payout}} de Ouro.",
+      "wipeout": "Investimento de {{amount}} de Ouro concluído: Perda Total. Você perdeu todo o seu investimento de {{amount}} de Ouro.",
+      "failure": "Investimento de {{amount}} de Ouro concluído: Fracasso. Você perdeu {{loss}} de Ouro."
+    },
+    "stranger": {
+      "variant0": "Um estranho se aproxima e se junta à aldeia.",
+      "variant1": "Um viajante chega e decide ficar.",
+      "variant2": "Um andarilho aparece e passa a fazer parte da comunidade.",
+      "variant3": "Alguém se aproxima da aldeia e se estabelece.",
+      "variant4": "Um estranho se junta à comunidade.",
+      "variant5": "Um recém-chegado aparece e se sente em casa.",
+      "multiple0": "{{count}} estranhos se juntam à aldeia.",
+      "multiple1": "{{count}} viajantes chegam e decidem ficar.",
+      "multiple2": "{{count}} andarilhos chegam e se juntam à comunidade."
+    },
+    "building": {
+      "darkEstate": "A Propriedade Sombria foi erguida numa pequena colina perto da aldeia, oferecendo solidão e refúgio.",
+      "blacksmith": "A forja do ferreiro ganha vida. O coração da indústria agora pulsa na aldeia.",
+      "firstWoodenHut": "A primeira cabana de madeira está completa; este pode ser o início de algo grandioso.",
+      "villageGrowthSuggestion": "A aldeia cresce depressa. Talvez casas de pedra possam abrigar mais aldeões.",
+      "cityGrowthMilestone": "A cidade se tornou uma metrópole movimentada, repleta de comércio, indústria e a promessa de dias melhores.",
+      "moonstoneDiscovered": "No fundo do poço, os trabalhadores descobrem algo extraordinário. Eles revelam veios de pedra-da-lua — um mineral luminescente que contém imensa energia.",
+      "foundry": "A fundição ruge ao ganhar vida enquanto o fogo e o calor fundem matérias-primas.",
+      "masterworkFoundry": "A Fundição-Mestra está completa, um monumento ao supremo domínio da metalurgia. Em seu fogo, o aço negro pode ser forjado — quase indestrutível, mas dificílimo de produzir.",
+      "altar": "Um altar se ergue à beira da floresta, erguido para apaziguar o que habita lá dentro.",
+      "grandHunterLodge": "O Grande Alojamento dos Caçadores está completo, uma estrutura magnífica onde mestres caçadores se reúnem.",
+      "clerksHut": "Uma cabana de escriturário é erguida, com seu ocupante pronto para acompanhar o fluxo de recursos com cuidado meticuloso.",
+      "scriptorium": "O Scriptorium está completo. Cada detalhe da vida na aldeia agora é registrado com precisão meticulosa.",
+      "inkwardenAcademy": "A Academia dos Guardiões de Tomos se ergue como um monumento ao conhecimento. Seus salões repletos da sabedoria das eras, e cada recurso agora é registrado com precisão incomparável.",
+      "tannery": "O Curtume está completo. O cheiro de couro em cura preenche o ar enquanto os artesãos começam seu trabalho.",
+      "highTannery": "O Alto Curtume é construído, uma grandiosa oficina onde artesãos experientes transformam peles no mais fino couro.",
+      "longhouse": "A primeira casa comprida se ergue, um imenso salão de madeira com vigas robustas e muito espaço.",
+      "furTents": "As primeiras tendas de pele são erguidas na borda da aldeia, dando a mais pessoas um abrigo quente.",
+      "shrine": "Um santuário sagrado se ergue ao lado do altar, e sua presença traz paz e foco às mentes atormentadas.",
+      "temple": "Um grandioso templo está completo, e seus salões sagrados ecoam preces sussurradas que acalmam a alma atormentada.",
+      "sanctum": "O sacrário se ergue como um farol de proteção divina, sua aura abençoada afastando os pensamentos e medos mais sombrios.",
+      "alchemistHall": "Os Salões do Alquimista erguem-se altivos, suas câmaras repletas de crisóis borbulhantes e instrumentos reluzentes de um ofício esquecido.",
+      "tradePost": "Um posto de comércio é construído perto da floresta, atraindo comerciantes que buscam vender seus bens por ouro.",
+      "grandBazaar": "O Grande Bazar se ergue, um vasto mercado onde mercadores de terras distantes se reúnem para negociar.",
+      "merchantsGuild": "A Guilda dos Mercadores está completa, uma organização poderosa que controla todas as rotas comerciais e traz riqueza sem precedentes ao seu assentamento.",
+      "bastion": "O bastião se ergue como uma montanha de pedra, suas muralhas espessas e inabaláveis. Uma promessa de proteção contra o que quer que se agite nas profundezas.",
+      "wizardTower": "A Torre do Mago espirala em direção ao céu, crepitando com energia arcana. O mago se muda para lá com sua coleção de tomos antigos e artefatos misteriosos.",
+      "fortifiedMoat": "Um fosso profundo agora cerca o assentamento, suas águas escuras e traiçoeiras. Nenhum inimigo o cruzará com facilidade.",
+      "traps": "Armadilhas foram preparadas ao redor do perímetro da aldeia. Buracos ocultos, laços e estacas afiadas aguardam quem ousar atacar.",
+      "improvedTraps": "O perímetro da aldeia é reforçado com fossos cobertos, laços de mola e mecanismos de aço. Os atacantes encontram uma recepção muito mais letal.",
+      "blackMonolith": "O Monólito Negro se ergue do centro da aldeia, um monumento imponente de adamante sombrio. Sua superfície parece beber a luz, e os aldeões se reúnem ao seu redor com reverência e medo.",
+      "blackEstate": "A Propriedade Negra se ergue da colina, envolta por um véu de névoa.",
+      "chitinPlating": "As fortificações agora estão reforçadas com blindagem de quitina. A defesa da aldeia aumenta significativamente.",
+      "pillarOfClarity": "O Pilar da Clareza se ergue, um obelisco reluzente que parece vibrar com poder ancestral. Sua presença traz uma sensação de calma e foco a quem está por perto.",
+      "boneTemple": "O Templo de Ossos se ergue de milhares de ossos cuidadosamente dispostos, um monumento aos velhos deuses. Sua presença emana poder sombrio, e os aldeões se aproximam dele com reverência e medo.",
+      "heartfire": "O Fogo do Coração é aceso. Seu calor e sua luz trazem um novo senso de propósito à aldeia."
+    },
+    "gameplay": {
+      "forestUnlocked": "A aldeia é cercada por uma floresta densa e sombria. O perigo paira no ar, embora também possa ser um bom lugar para cortar madeira e caçar.",
+      "villageUnlocked": "Do lado de fora da caverna, abre-se uma clareira. Parece um bom lugar para construir um abrigo.",
+      "villageBegins": "Uma pequena aldeia começa a tomar forma. Os aldeões precisam de comida e madeira para sobreviver."
+    },
+    "crafting": {
+      "emberBombFirst": "O conhecimento do alquimista se mostra inestimável. Você fabrica uma poderosa bomba de brasa, com seu núcleo brilhando em calor intenso e potencial destrutivo.",
+      "ashfireBombFirst": "Usando o místico pó de cinzafogo, você fabrica uma bomba extraordinária que pulsa com fogo de outro mundo. Suas chamas ardem em cores que não são deste reino.",
+      "voidBombFirst": "Combinando pó de cinzafogo com obsidiana e pólvora negra, você cria uma arma de poder aterrorizante. A bomba do vazio parece distorcer o espaço ao seu redor, e a própria realidade recua diante de sua presença.",
+      "veinfireElixirFirst": "O alquimista destila uma essência luminosa das fibras de raiz venosa. Você agora carrega um Elixir de Fogo Venoso — uma poção que, dizem, fortalece o bastião quando tudo parece perdido.",
+      "frostglassSword": "A forja do ferreiro arde com chamas azuis etéreas enquanto o vidro-de-gelo é moldado em uma magnífica espada. A lâmina reluz com uma luz fria de outro mundo, irradiando imenso poder.",
+      "arbalest": "Seguindo o esquema, você fabrica uma balestra meticulosamente decorada. Sua engenharia é impecável, projetada por um artesão mestre.",
+      "nightshadeBow": "Você fabrica um arco de madeira escura. Suas flechas levarão veneno aos seus inimigos.",
+      "bloodstoneStaff": "O mago canaliza seu poder arcano nas gemas de pedra-de-sangue, fundindo-as com madeira antiga. O Cajado de Pedra-de-Sangue pulsa com energia carmesim, irradiando força e conhecimento proibido.",
+      "stormglassHalberd": "Você forja a Alabarda de Vidro-Tempestade, com sua lâmina reluzindo em luz etérea. Você se sente significativamente mais forte ao empunhar esta arma lendária.",
+      "ashenGreatshield": "O ferreiro forja os imensos ossos da criatura do lago em um escudo impenetrável. O Grande Escudo de Cinzas é um baluarte de força inigualável, capaz de proteger suas forças até das ameaças mais letais."
+    },
+    "sacrifice": {
+      "ringOfClarity": "Entre as oferendas de sacrifício, você descobre um anel cristalino.",
+      "moonBracelet": "Entre as oferendas de sacrifício, você descobre um bracelete de pedra branca."
+    },
+    "gambler": {
+      "win": "Você ganhou {{amount}} de ouro do apostador obcecado.",
+      "lose": "Você perdeu {{amount}} de ouro para o apostador obcecado.",
+      "forfeit": "O apostador obcecado tomou seu silêncio como desistência."
+    },
+    "buttonUpgrade": {
+      "deepens": "Seu domínio de {{skill}} se aprofunda.",
+      "skills": {
+        "caveExplore": "Exploração de Cavernas",
+        "mineStone": "Mineração de Pedra",
+        "mineIron": "Mineração de Ferro",
+        "mineCoal": "Mineração de Carvão",
+        "mineSulfur": "Mineração de Enxofre",
+        "mineObsidian": "Mineração de Obsidiana",
+        "mineAdamant": "Mineração de Adamante",
+        "hunt": "Caça",
+        "chopWood": "Corte de Madeira",
+        "craftTorches": "Fabricação de Tochas",
+        "craftBoneTotems": "Fabricação de Totens de Osso",
+        "craftLeatherTotems": "Fabricação de Totens de Couro"
+      }
+    }
+  }
+}

@@ -5,7 +5,7 @@ import { parseLocaleJson } from "./parseLocaleJson";
 
 const LOCALES_DIR = path.resolve(import.meta.dirname, "./locales");
 const SOURCE_LOCALE = "en";
-const TARGET_LOCALES = ["de", "fr", "es", "zh-CN", "ru"];
+const TARGET_LOCALES = ["de", "fr", "es", "pt-BR", "zh-CN", "ru"];
 
 function flattenKeys(obj: Record<string, unknown>, prefix = ""): string[] {
   return Object.entries(obj).flatMap(([key, value]) => {

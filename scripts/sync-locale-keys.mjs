@@ -17,7 +17,7 @@ import {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const EN_DIR = path.join(ROOT, "client/src/i18n/locales/en");
-const TARGETS = ["de", "fr", "es", "zh-CN", "ru"];
+const TARGETS = ["de", "fr", "es", "pt-BR", "zh-CN", "ru"];
 
 function deepMergeMissing(target, source) {
   for (const [key, value] of Object.entries(source)) {

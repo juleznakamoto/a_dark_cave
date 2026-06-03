@@ -1,0 +1,91 @@
+{
+  "buttons": {
+    "close": "Fechar",
+    "continue": "Continuar",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "refresh": "Atualizar",
+    "dismiss": "Dispensar",
+    "fight": "Lutar",
+    "refuse": "Recusar",
+    "accept": "Aceitar",
+    "back": "Voltar",
+    "claim": "Resgatar",
+    "activate": "Ativar",
+    "deactivate": "Desativar"
+  },
+  "status": {
+    "loading": "Carregando...",
+    "processing": "Processando...",
+    "free": "Grátis",
+    "error": "Erro",
+    "success": "Sucesso!",
+    "active": "Ativo",
+    "activated": "Ativado"
+  },
+  "tabs": {
+    "cave": "Caverna",
+    "village": "Aldeia",
+    "city": "Cidade",
+    "forest": "Floresta",
+    "estate": "Propriedade",
+    "bastion": "Bastião",
+    "fortress": "Fortaleza",
+    "trader": "Mercador",
+    "achievements": "Conquistas",
+    "timedEvent": "Evento"
+  },
+  "resources": {
+    "wood": "Madeira",
+    "stone": "Pedra",
+    "food": "Comida",
+    "veinroot": "Raiz Venosa",
+    "bones": "Ossos",
+    "fur": "Pelo",
+    "leather": "Couro",
+    "bone_totem": "Totem de Osso",
+    "leather_totem": "Totem de Couro",
+    "iron": "Ferro",
+    "coal": "Carvão",
+    "sulfur": "Enxofre",
+    "obsidian": "Obsidiana",
+    "adamant": "Adamante",
+    "steel": "Aço",
+    "blacksteel": "Aço Negro",
+    "moonstone": "Pedra-da-Lua",
+    "black_powder": "Pólvora Negra",
+    "ember_bomb": "Bomba de Brasa",
+    "ashfire_dust": "Pó de Cinzafogo",
+    "ashfire_bomb": "Bomba de Cinzafogo",
+    "void_bomb": "Bomba do Vazio",
+    "veinfire_elixir": "Elixir de Fogo Venoso",
+    "poison_arrows": "Flechas Envenenadas",
+    "torch": "Tocha",
+    "silver": "Prata",
+    "gold": "Ouro",
+    "insight": "Perspicácia"
+  },
+  "stats": {
+    "strength": "Força",
+    "knowledge": "Conhecimento",
+    "luck": "Sorte",
+    "madness": "Loucura",
+    "attack": "Ataque",
+    "defense": "Defesa",
+    "integrity": "Integridade"
+  },
+  "time": {
+    "never": "Nunca",
+    "hoursMinutes": "{{hours}}h {{minutes}}m",
+    "minutesSeconds": "{{minutes}}m {{seconds}}s"
+  },
+  "population": {
+    "villager_one": "{{count}} Aldeão",
+    "villager_other": "{{count}} Aldeões",
+    "maxPopulation": "+{{count}} de População Máx."
+  },
+  "currency": {
+    "goldAmount": "{{amount}} de Ouro"
+  }
+}
