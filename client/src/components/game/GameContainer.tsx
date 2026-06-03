@@ -805,15 +805,11 @@ export default function GameContainer() {
     "inline-flex h-10 items-end justify-center bg-transparent pb-3 text-sm font-normal leading-none";
 
   const pauseHotkeyHintContent = (
-    <span className="inline-flex flex-nowrap items-baseline justify-center gap-0">
+    <span className="inline-flex flex-nowrap items-baseline justify-center gap-x-1">
       <span>{t("pauseHotkey.hintPrefix", { ns: "ui" })}</span>
-      <span className="text-sm font-medium">←</span>
-      <span> </span>
-      <span className="text-sm font-medium">→</span>
-      <span> {t("pauseHotkey.hintOr", { ns: "ui" })} </span>
-      <span className="text-sm font-medium">A</span>
-      <span> </span>
-      <span className="text-sm font-medium">D</span>
+      <span className="text-sm font-medium">{"← →"}</span>
+      <span>{t("pauseHotkey.hintOr", { ns: "ui" })}</span>
+      <span className="text-sm font-medium">{"A D"}</span>
       <span>{t("pauseHotkey.hintSuffix", { ns: "ui" })}</span>
     </span>
   );
