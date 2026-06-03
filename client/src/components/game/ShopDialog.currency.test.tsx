@@ -350,10 +350,10 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
     it('should send correct currency to payment intent creation', async () => {
       global.fetch = createShopDialogFetchMock((u) => {
         if (u.includes('/api/payment/create-intent')) {
-          return {
+          return Promise.resolve({
             ok: true,
             json: () => Promise.resolve({ clientSecret: 'test_secret_eur' }),
-          } as Response;
+          } as Response);
         }
         return null;
       });
@@ -383,15 +383,15 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
     it('should send USD currency for non-EU users', async () => {
       global.fetch = createShopDialogFetchMock((u) => {
         if (u.includes('ipapi.co')) {
-          return {
+          return Promise.resolve({
             json: () => Promise.resolve({ country_code: 'US' }),
-          } as Response;
+          } as Response);
         }
         if (u.includes('/api/payment/create-intent')) {
-          return {
+          return Promise.resolve({
             ok: true,
             json: () => Promise.resolve({ clientSecret: 'test_secret_usd' }),
-          } as Response;
+          } as Response);
         }
         return null;
       });
