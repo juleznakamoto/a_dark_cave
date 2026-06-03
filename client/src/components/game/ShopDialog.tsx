@@ -2250,7 +2250,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 </div>
               </div>
             )}
-            <div className="max-h-[calc(85vh-120px)] overflow-y-auto pb-4 scrollbar-hide">
+            <div className="max-h-[calc(85vh-120px)] overflow-y-auto overflow-x-hidden pb-4 scrollbar-hide">
               {stripePromise ? (
                 <Elements stripe={stripePromise} options={{ clientSecret }}>
                   <CheckoutForm
