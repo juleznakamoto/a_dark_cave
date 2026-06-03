@@ -3,6 +3,12 @@ import {
   gameEvents,
   getEventCatalogIdByEventId,
 } from "@/game/rules/events";
+import {
+  CAVE_EXPLORE_LOG_FALLBACKS,
+  CAVE_FIRST_VISIT_LOG_FALLBACKS,
+  CAVE_LOOT_LOG_FALLBACKS,
+} from "@/game/rules/caveExploreActions";
+import { SUPPORTED_LOCALES } from "@/i18n/locales";
 import { UPGRADE_LABELS, type UpgradeKey } from "@/game/buttonUpgrades";
 import {
   getActionLogMessage,
@@ -748,6 +754,83 @@ export function resolveOutcomeLogMessage(
   });
 }
 
+type ActionLogRef = { actionId: string; actionLogKey: string };
+
+function registerActionLogMessage(
+  map: Record<string, ActionLogRef>,
+  actionId: string,
+  actionLogKey: string,
+  enFallback: string,
+): void {
+  const ref = { actionId, actionLogKey };
+  map[enFallback] = ref;
+  for (const lng of SUPPORTED_LOCALES) {
+    const text = i18n.t(`actions:${actionId}.log.${actionLogKey}`, {
+      lng,
+      defaultValue: enFallback,
+    });
+    if (typeof text === "string" && text.trim()) {
+      map[text] = ref;
+    }
+  }
+}
+
+function buildLegacyActionLogMessageMap(): Record<string, ActionLogRef> {
+  const map: Record<string, ActionLogRef> = {};
+  for (const [actionId, keys] of Object.entries(CAVE_FIRST_VISIT_LOG_FALLBACKS)) {
+    for (const [logKey, enFallback] of Object.entries(keys)) {
+      if (typeof enFallback === "string") {
+        registerActionLogMessage(map, actionId, logKey, enFallback);
+      }
+    }
+  }
+  for (const [actionId, enFallback] of Object.entries(CAVE_EXPLORE_LOG_FALLBACKS)) {
+    if (typeof enFallback === "string") {
+      registerActionLogMessage(map, actionId, "complete", enFallback);
+    }
+  }
+  for (const [actionId, keys] of Object.entries(CAVE_LOOT_LOG_FALLBACKS)) {
+    for (const [logKey, enFallback] of Object.entries(keys)) {
+      if (typeof enFallback === "string") {
+        registerActionLogMessage(map, actionId, logKey, enFallback);
+      }
+    }
+  }
+  for (const entry of LEGACY_ACTION_LOG_MESSAGES) {
+    registerActionLogMessage(map, entry.actionId, entry.logKey, entry.message);
+  }
+  return map;
+}
+
+const LEGACY_ACTION_LOG_BY_MESSAGE = buildLegacyActionLogMessageMap();
+
+function resolveActionLogPanelMessage(entry: LogEntry): string | null {
+  const ref =
+    entry.actionId && entry.actionLogKey
+      ? { actionId: entry.actionId, actionLogKey: entry.actionLogKey }
+      : LEGACY_ACTION_LOG_BY_MESSAGE[entry.message];
+  if (!ref) return null;
+
+  const fallback =
+    CAVE_FIRST_VISIT_LOG_FALLBACKS[ref.actionId]?.[ref.actionLogKey] ??
+    CAVE_LOOT_LOG_FALLBACKS[ref.actionId]?.[ref.actionLogKey] ??
+    (ref.actionLogKey === "complete"
+      ? CAVE_EXPLORE_LOG_FALLBACKS[ref.actionId]
+      : undefined) ??
+    LEGACY_ACTION_LOG_MESSAGES.find(
+      (e) => e.actionId === ref.actionId && e.logKey === ref.actionLogKey,
+    )?.message ??
+    entry.message;
+
+  const localized = getActionLogMessage(
+    ref.actionId,
+    ref.actionLogKey,
+    fallback,
+    entry.logVars,
+  );
+  return localized.trim() ? localized : null;
+}
+
 function resolveStartNarrativeLogMessage(entry: LogEntry): string | null {
   if (entry.logKey === START_NARRATIVE_LOG_KEY || entry.id === "initial-narrative") {
     const cruelFromVars = entry.logVars?.cruelMode;
@@ -769,6 +852,9 @@ export function resolveLogPanelMessage(entry: LogEntry): string {
   if (entry.logKey) {
     return resolveUiCatalogLog(entry.logKey, entry.message, entry.logVars);
   }
+
+  const actionLog = resolveActionLogPanelMessage(entry);
+  if (actionLog) return actionLog;
 
   if (entry.type === "system") {
     const legacy = resolveLegacySystemLog(entry.message);

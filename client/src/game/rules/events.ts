@@ -158,6 +158,9 @@ export interface LogEntry {
   /** ui:log.* key for display-time localization (English kept in `message` for saves). */
   logKey?: string;
   logVars?: Record<string, string | number>;
+  /** actions:*.log.* pair for display-time localization (English kept in `message` for saves). */
+  actionId?: string;
+  actionLogKey?: string;
   timestamp: number;
   type: "event" | "action" | "system";
   title?: string;

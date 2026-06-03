@@ -12,7 +12,7 @@ import {
 } from "@/i18n/resolveGameText";
 import { getTotalMadness } from "./effectsCalculation";
 
-const CAVE_FIRST_VISIT_LOG_FALLBACKS: Record<string, Record<string, string>> = {
+export const CAVE_FIRST_VISIT_LOG_FALLBACKS: Record<string, Record<string, string>> = {
   lightFire: {
     firstVisit:
       "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.",
@@ -49,7 +49,7 @@ const CAVE_FIRST_VISIT_LOG_FALLBACKS: Record<string, Record<string, string>> = {
   },
 };
 
-const CAVE_EXPLORE_LOG_FALLBACKS: Record<string, string> = {
+export const CAVE_EXPLORE_LOG_FALLBACKS: Record<string, string> = {
   blastPortal:
     "The ember bombs detonate in a bright flash of fire and light. The ancient gate cracks and crumbles. Whatever could have been sealed within has been released. The city should get ready for whatever comes out of there.",
   lowChamber:
@@ -72,7 +72,9 @@ function pushCaveExploreLog(
   const fallback = CAVE_EXPLORE_LOG_FALLBACKS[actionId] ?? "";
   result.logEntries!.push({
     id: `${idPrefix}-${Date.now()}`,
-    message: getActionLogMessage(actionId, "complete", fallback),
+    message: fallback,
+    actionId,
+    actionLogKey: "complete",
     timestamp: Date.now(),
     type: "system",
   });
@@ -87,13 +89,15 @@ function pushFirstVisitLog(
   const fallback = CAVE_FIRST_VISIT_LOG_FALLBACKS[actionId]?.[logKey] ?? "";
   result.logEntries!.push({
     id: `${idPrefix}-${Date.now()}`,
-    message: getActionLogMessage(actionId, logKey, fallback),
+    message: fallback,
+    actionId,
+    actionLogKey: logKey,
     timestamp: Date.now(),
     type: "system",
   });
 }
 
-const CAVE_LOOT_LOG_FALLBACKS: Record<string, Record<string, string>> = {
+export const CAVE_LOOT_LOG_FALLBACKS: Record<string, Record<string, string>> = {
   exploreCave: {
     debrisScroll:
       "Among the debris you uncover a timeworn scroll containing wisdom for enduring this unforgiving world.",
@@ -133,16 +137,15 @@ function appendActionLogMessages(
       "actionId" in message
     ) {
       const ref = message as ActionLogMessageRef;
-      const resolved = resolveInheritedActionLogMessage(
-        ref.actionId,
-        ref.logKey,
-        CAVE_LOOT_LOG_FALLBACKS,
-        ref.vars,
-      );
-      if (!resolved.trim()) return;
+      const fallback =
+        CAVE_LOOT_LOG_FALLBACKS[ref.actionId]?.[ref.logKey] ?? "";
+      if (!fallback.trim()) return;
       result.logEntries!.push({
         id: `probability-effect-${Date.now()}-${Math.random()}`,
-        message: resolved,
+        message: fallback,
+        actionId: ref.actionId,
+        actionLogKey: ref.logKey,
+        logVars: ref.vars,
         timestamp: Date.now(),
         type: "system",
       });
