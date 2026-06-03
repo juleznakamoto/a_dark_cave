@@ -79,6 +79,7 @@
     "activatedDefaultLog": "{{name}} aktiviert! Belohnungen wurden deinem Inventar hinzugefügt.",
     "freeGoldClaimedLog": "Du hast {{amount}} Gold abgeholt. Komm morgen wieder, wenn du die Nacht überstehst.",
     "freeGoldCooldownLog_one": "Du kannst in {{hours}} Stunde wieder kostenloses Gold abholen.",
-    "freeGoldCooldownLog_other": "Du kannst in {{hours}} Stunden wieder kostenloses Gold abholen."
+    "freeGoldCooldownLog_other": "Du kannst in {{hours}} Stunden wieder kostenloses Gold abholen.",
+    "securePaymentVia": "Sichere Zahlung über"
   }
 }

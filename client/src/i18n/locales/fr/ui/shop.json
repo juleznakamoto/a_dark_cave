@@ -79,6 +79,7 @@
     },
     "alreadyClaimedItemLog": "Vous avez déjà récupéré {{name}}.",
     "claimFailedLog": "Impossible de récupérer {{name}}. Veuillez réessayer.",
-    "activatedDefaultLog": "{{name}} activé ! Les récompenses ont été ajoutées à votre inventaire."
+    "activatedDefaultLog": "{{name}} activé ! Les récompenses ont été ajoutées à votre inventaire.",
+    "securePaymentVia": "Paiement sécurisé via"
   }
 }

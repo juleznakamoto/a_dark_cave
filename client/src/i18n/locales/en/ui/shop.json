@@ -79,6 +79,7 @@
     },
     "alreadyClaimedItemLog": "You have already claimed {{name}}.",
     "claimFailedLog": "Failed to claim {{name}}. Please try again.",
-    "activatedDefaultLog": "Activated {{name}}! Rewards have been added to your inventory."
+    "activatedDefaultLog": "Activated {{name}}! Rewards have been added to your inventory.",
+    "securePaymentVia": "Secure payment via"
   }
 }

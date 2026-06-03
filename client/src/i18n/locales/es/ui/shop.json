@@ -79,6 +79,7 @@
     },
     "alreadyClaimedItemLog": "Ya has reclamado {{name}}.",
     "claimFailedLog": "No se pudo reclamar {{name}}. Inténtalo de nuevo.",
-    "activatedDefaultLog": "¡{{name}} activado! Las recompensas se han añadido a tu inventario."
+    "activatedDefaultLog": "¡{{name}} activado! Las recompensas se han añadido a tu inventario.",
+    "securePaymentVia": "Pago seguro a través de"
   }
 }

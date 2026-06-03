@@ -79,6 +79,8 @@
     "activatedDefaultLog": "已激活 {{name}}！奖励已加入物品栏。",
     "freeGoldClaimedLog": "你领取了 {{amount}} 金币。若能熬过今夜，明天再来。",
     "freeGoldCooldownLog_one": "{{hours}} 小时后可再次领取免费金币。",
-    "freeGoldCooldownLog_other": "{{hours}} 小时后可再次领取免费金币。"
+    "freeGoldCooldownLog_other": "{{hours}} 小时后可再次领取免费金币。",
+    "securePaymentVia": "通过",
+    "securePaymentViaAfter": "安全支付"
   }
 }
