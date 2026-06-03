@@ -202,7 +202,7 @@ function GooglePayLogo() {
 export function PaymentMethodLogos({ className = "" }: { className?: string }) {
   return (
     <span
-      className={`inline-flex min-w-0 flex-wrap items-center justify-center gap-0.5 ${className}`.trim()}
+      className={`inline-flex flex-wrap items-center justify-center gap-1 ${className}`.trim()}
     >
       <VisaLogo />
       <MastercardLogo />

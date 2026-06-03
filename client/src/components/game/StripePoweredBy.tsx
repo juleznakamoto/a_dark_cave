@@ -45,7 +45,7 @@ export function StripePoweredBy({ className = "" }: { className?: string }) {
 
   return (
     <div
-      className={`flex w-full min-w-0 max-w-full flex-wrap items-center justify-center gap-x-1 gap-y-1.5 text-xs text-foreground ${className}`.trim()}
+      className={`flex flex-wrap items-center justify-center gap-x-1 gap-y-1.5 text-xs text-foreground ${className}`.trim()}
     >
       <span>{t("shop.securePaymentVia")}</span>
       <span
