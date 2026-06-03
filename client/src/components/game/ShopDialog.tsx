@@ -66,6 +66,7 @@ import {
   resolveShopActivationMessage,
 } from "@/i18n/shopLabels";
 import { useTranslation } from "react-i18next";
+import { cn } from "@/lib/utils";
 
 const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
@@ -1367,16 +1368,29 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       <Dialog open={isOpen} onOpenChange={handleShopDialogOpenChange}>
         {!isPaymentMode && (
           <DialogContent
-            className="[--adc-dialog-max-w:56rem] flex h-[80vh] min-h-0 flex-col gap-4 overflow-hidden z-[70] p-6"
-            style={{
-              height: "80vh",
-              maxHeight: "80vh",
-              minHeight: "80vh",
-            }}
+            className={cn(
+              showSecurePurchasePrompt
+                ? "[--adc-dialog-max-w:28rem] max-h-[80vh] z-[70] gap-2"
+                : "[--adc-dialog-max-w:56rem] flex h-[80vh] min-h-0 flex-col gap-4 overflow-hidden z-[70] p-6",
+            )}
+            style={
+              showSecurePurchasePrompt
+                ? undefined
+                : {
+                  height: "80vh",
+                  maxHeight: "80vh",
+                  minHeight: "80vh",
+                }
+            }
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
-            <DialogHeader className="space-y-1.5 shrink-0">
+            <DialogHeader
+              className={cn(
+                "shrink-0",
+                showSecurePurchasePrompt ? "space-y-1 pb-0" : "space-y-1.5",
+              )}
+            >
               <DialogTitle>{t("ui:shop.title")}</DialogTitle>
               <DialogDescription className="sr-only">
                 {t("ui:shop.srDescription")}
@@ -1390,7 +1404,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             )}
 
             {!isLoading && showSecurePurchasePrompt && (
-              <div className="flex min-h-0 flex-1 flex-col gap-4 py-2">
+              <div className="flex flex-col gap-4">
                 <div className="rounded-lg border border-amber-600/50 bg-amber-600/10 p-4 space-y-3">
                   <h3 className="text-lg font-semibold">
                     {t("ui:shop.securePurchaseTitle")}
@@ -1429,17 +1443,17 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
               !showSecurePurchasePrompt &&
               !sessionUser &&
               !gameState.isUserSignedIn && (
-              <Button
-                onClick={() => {
-                  setAuthDialogOpen(true);
-                  onClose();
-                }}
-                className="h-10 w-full shrink-0 border-0 text-sm"
-                button_id="shop-sign-in-button"
-              >
-                {t("ui:shop.signInPrompt")}
-              </Button>
-            )}
+                <Button
+                  onClick={() => {
+                    setAuthDialogOpen(true);
+                    onClose();
+                  }}
+                  className="h-10 w-full shrink-0 border-0 text-sm"
+                  button_id="shop-sign-in-button"
+                >
+                  {t("ui:shop.signInPrompt")}
+                </Button>
+              )}
 
             {!isLoading && !showSecurePurchasePrompt && (
               <Tabs

@@ -194,6 +194,14 @@
       "description": "Bauplan zur Herstellung eines giftigen Bogens",
       "name": "Nachtschattenbogen"
     },
+    "obsidian_orb": {
+      "description": "Mächtige Kugel aus vulkanischem Glas, die geistige Stärke verleiht",
+      "name": "Obsidiankugel"
+    },
+    "obsidian_orb_schematic": {
+      "description": "Bauplan zur Herstellung einer mächtigen Obsidiankugel",
+      "name": "Obsidiankugel"
+    },
     "occultist_grimoire": {
       "description": "Grimoire mit dem unheiligen Wissen eines ketzerischen Okkultisten",
       "name": "Okkultistengrimoire"
@@ -293,14 +301,6 @@
     "wooden_figure": {
       "description": "Geschnitzte Holzfigur einer beunruhigenden Kreatur mit Tentakeln",
       "name": "Holzfigur"
-    },
-    "obsidian_orb": {
-      "description": "Mächtige Kugel aus vulkanischem Glas, die geistige Stärke verleiht",
-      "name": "Obsidiankugel"
-    },
-    "obsidian_orb_schematic": {
-      "description": "Bauplan zur Herstellung einer mächtigen Obsidiankugel",
-      "name": "Obsidiankugel"
     }
   },
   "fellowship": {

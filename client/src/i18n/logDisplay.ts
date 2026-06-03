@@ -7,7 +7,7 @@ import {
   CAVE_EXPLORE_LOG_FALLBACKS,
   CAVE_FIRST_VISIT_LOG_FALLBACKS,
   CAVE_LOOT_LOG_FALLBACKS,
-} from "@/game/rules/caveExploreActions";
+} from "@/game/rules/caveLogFallbacks";
 import { SUPPORTED_LOCALES } from "@/i18n/locales";
 import { UPGRADE_LABELS, type UpgradeKey } from "@/game/buttonUpgrades";
 import {
@@ -140,10 +140,28 @@ function buildExactLegacySystemLogMap(): Record<string, string> {
       }
     }
   }
-  // Older saves may contain a typo with a double space before "resources".
+  // Older saves may contain pre–Insight-rework build log lines (resource-tracking wording).
+  map[
+    "A clerks hut is erected, its occupant ready to track the flow of resources with meticulous care."
+  ] = "building.clerksHut";
   map[
     "A clerks hut is erected, its occupant ready to track the flow of  resources with meticulous care."
   ] = "building.clerksHut";
+  map[
+    "The Scriptorium stands complete. Every detail of village life now gets tracked with meticulous precision."
+  ] = "building.scriptorium";
+  map[
+    "The Tomewarden Academy rises as a monument to knowledge. Its halls filled with the wisdom of ages, and every resource is now tracked with unparalleled precision."
+  ] = "building.inkwardenAcademy";
+  map[
+    "A Clerk's Hut stands complete. Scholars gather within to study the world and sharpen their Insight."
+  ] = "building.clerksHut";
+  map[
+    "The Scriptorium is finished—a hub of wisdom where scholars deepen their Knowledge."
+  ] = "building.scriptorium";
+  map[
+    "The Tomewarden Academy rises, a grand hall where master scholars distill the deepest Knowledge."
+  ] = "building.inkwardenAcademy";
   return map;
 }
 

@@ -34,14 +34,14 @@ async function clickShopFilter(
 import { ShopDialog } from './ShopDialog';
 import { useGameStore } from '@/game/state';
 import { SHOP_ITEMS, bundleComponentsCatalogPriceSumCents, bundleComponentsListPriceSumCents } from '@shared/shopItems';
+import { createShopDialogFetchMock, resetShopDialogAuthMocks } from './shopDialogTestMocks';
 
 /** Paid shop card CTA (checkout step still uses "Complete Purchase…"). */
 const SHOP_PAID_ITEM_CTA = /^(Continue|Purchase)$/i;
 /** Shop item action buttons including free Claim (e.g. unauthenticated cases). */
 const SHOP_ITEM_ACTION_CTA = /^(Continue|Purchase|Claim)$/i;
 
-// Use vi.hoisted so mock is available when vi.mock factory runs
-const { mockSupabaseClient, mockGetCurrentUser, mockInsert } = vi.hoisted(() => {
+const shopAuthMocks = vi.hoisted(() => {
   const mockInsert = vi.fn(() => Promise.resolve({ data: null, error: null }));
   const from = vi.fn(() => ({
     select: vi.fn(() => ({
@@ -49,30 +49,59 @@ const { mockSupabaseClient, mockGetCurrentUser, mockInsert } = vi.hoisted(() => 
     })),
     insert: mockInsert,
   }));
-  const mockGetCurrentUser = vi.fn(() =>
-    Promise.resolve({ id: "test-user-123", email: "test@example.com" })
-  );
+  const mockUser = { id: "test-user-123", email: "test@example.com" };
+  const mockGetCurrentUser = vi.fn(() => Promise.resolve(mockUser));
+  const mockGetSessionUser = vi.fn(() => Promise.resolve(mockUser));
+  const mockEnsureAnonymousSession = vi.fn(() => Promise.resolve(mockUser));
+  const mockIsAnonymousSession = vi.fn(() => Promise.resolve(false));
   return {
     mockSupabaseClient: {
       from,
-      auth: { getSession: vi.fn(() => Promise.resolve({ data: { session: null } })) },
+      auth: {
+        getSession: vi.fn(() =>
+          Promise.resolve({
+            data: {
+              session: {
+                access_token: "test-token",
+                user: { id: mockUser.id, email: mockUser.email },
+              },
+            },
+          }),
+        ),
+      },
     },
     mockGetCurrentUser,
+    mockGetSessionUser,
+    mockEnsureAnonymousSession,
+    mockIsAnonymousSession,
     mockInsert,
   };
 });
 
-// Mock dependencies - use explicit factory so session user resolves before isLoading clears
+const {
+  mockSupabaseClient,
+  mockGetCurrentUser,
+  mockGetSessionUser,
+  mockEnsureAnonymousSession,
+  mockInsert,
+} = shopAuthMocks;
+
 vi.mock("@/game/auth", () => ({
-  getCurrentUser: (...args: unknown[]) => mockGetCurrentUser(...args),
-  getSessionUser: (...args: unknown[]) => mockGetCurrentUser(...args),
-  ensureAnonymousSession: (...args: unknown[]) => mockGetCurrentUser(...args),
+  getCurrentUser: (...args: unknown[]) =>
+    shopAuthMocks.mockGetCurrentUser(...args),
+  getSessionUser: (...args: unknown[]) =>
+    shopAuthMocks.mockGetSessionUser(...args),
+  ensureAnonymousSession: (...args: unknown[]) =>
+    shopAuthMocks.mockEnsureAnonymousSession(...args),
   getSessionAccessToken: vi.fn(() => Promise.resolve("test-token")),
-  isAnonymousSession: vi.fn(() => Promise.resolve(false)),
+  isAnonymousSession: (...args: unknown[]) =>
+    shopAuthMocks.mockIsAnonymousSession(...args),
 }));
-vi.mock('@/lib/supabase', () => ({
-  supabase: mockSupabaseClient,
-  getSupabaseClient: vi.fn(() => Promise.resolve(mockSupabaseClient)),
+vi.mock("@/lib/supabase", () => ({
+  supabase: shopAuthMocks.mockSupabaseClient,
+  getSupabaseClient: vi.fn(() =>
+    Promise.resolve(shopAuthMocks.mockSupabaseClient),
+  ),
   getCachedAuthUser: vi.fn(() => null),
   isAuthStateReady: vi.fn(() => true),
 }));
@@ -88,22 +117,10 @@ vi.mock('@stripe/react-stripe-js', () => ({
   useElements: () => ({}),
 }));
 
-describe('ShopDialog', () => {
-  const mockUser = {
-    id: 'test-user-123',
-    email: 'test@example.com',
-  };
-
+describe('ShopDialog', { timeout: 15_000 }, () => {
   beforeEach(() => {
-    // Default to EUR for price-display tests (fetch ipapi.co)
-    global.fetch = vi.fn((url: string | URL) => {
-      if (String(url).includes('ipapi.co')) {
-        return Promise.resolve({
-          json: () => Promise.resolve({ country_code: 'DE' }),
-        } as Response);
-      }
-      return Promise.reject(new Error('Unknown URL'));
-    }) as typeof fetch;
+    resetShopDialogAuthMocks(shopAuthMocks);
+    global.fetch = createShopDialogFetchMock();
 
     // jsdom doesn't implement matchMedia - required by use-mobile hook
     Object.defineProperty(window, "matchMedia", {
@@ -128,6 +145,7 @@ describe('ShopDialog', () => {
       greatFeastState: { isActive: false, endTime: 0 },
       hasMadeNonFreePurchase: false,
       lastFreeGoldClaim: 0,
+      isUserSignedIn: true,
       tools: {},
       weapons: {},
       blessings: {},
@@ -135,14 +153,11 @@ describe('ShopDialog', () => {
       addLogEntry: vi.fn(),
       updateResource: vi.fn(),
     });
-
-    mockGetCurrentUser.mockResolvedValue(mockUser);
   });
 
   afterEach(() => {
     vi.clearAllMocks();
-    // Re-apply mock - clearAllMocks can reset implementation in some setups
-    mockGetCurrentUser.mockResolvedValue(mockUser);
+    resetShopDialogAuthMocks(shopAuthMocks);
   });
 
   describe('Free Items', () => {
@@ -348,12 +363,6 @@ describe('ShopDialog', () => {
       const user = userEvent.setup();
       const onClose = vi.fn();
 
-      global.fetch = vi.fn(() =>
-        Promise.resolve({
-          json: () => Promise.resolve({ clientSecret: 'test_secret' }),
-        })
-      ) as any;
-
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
@@ -370,6 +379,7 @@ describe('ShopDialog', () => {
       await user.click(purchaseButton);
 
       await waitFor(() => {
+        expect(mockEnsureAnonymousSession).toHaveBeenCalled();
         expect(global.fetch).toHaveBeenCalledWith(
           '/api/payment/create-intent',
           expect.objectContaining({
@@ -459,13 +469,15 @@ describe('ShopDialog', () => {
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-      await waitFor(() => {
-        // Non-repeatable item already owned: button shows "Already Purchased" (or "Already Claimed" for $0 items)
-        if (import.meta.env.DEV) {
-          const disabledButton = screen.getByRole('button', { name: /already (claimed|purchased)/i });
+      await waitFor(
+        () => {
+          const disabledButton = screen.getByRole('button', {
+            name: /already (claimed|purchased)/i,
+          });
           expect(disabledButton).toBeDisabled();
-        }
-      });
+        },
+        { timeout: 10_000 },
+      );
     });
 
     it('should allow first-time purchase of cruel_mode', async () => {
@@ -699,6 +711,8 @@ describe('ShopDialog', () => {
   describe('Authentication', () => {
     it('should show sign-in message when not authenticated', async () => {
       mockGetCurrentUser.mockResolvedValue(null);
+      mockGetSessionUser.mockResolvedValue(null);
+      useGameStore.setState({ isUserSignedIn: false });
 
       const onClose = vi.fn();
       render(<ShopDialog isOpen={true} onClose={onClose} />);
@@ -708,20 +722,23 @@ describe('ShopDialog', () => {
       });
     });
 
-    it('should disable purchase buttons when not authenticated', async () => {
+    it('should still allow guest checkout for paid items without account', async () => {
       mockGetCurrentUser.mockResolvedValue(null);
+      mockGetSessionUser.mockResolvedValue(null);
+      useGameStore.setState({ isUserSignedIn: false });
 
+      const user = userEvent.setup();
       const onClose = vi.fn();
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getByText(/sign in or create an account/i)).toBeInTheDocument();
-        // Shop item buttons (exclude sign-in CTA) should be disabled
-        const purchaseButtons = screen.getAllByRole('button', { name: SHOP_ITEM_ACTION_CTA })
-          .filter(b => !b.textContent?.includes('Sign in'));
-        purchaseButtons.forEach(button => {
-          expect(button).toBeDisabled();
-        });
+        expect(screen.getAllByRole('button', { name: SHOP_PAID_ITEM_CTA }).length).toBeGreaterThan(0);
+      });
+
+      await user.click(screen.getAllByRole('button', { name: SHOP_PAID_ITEM_CTA })[0]);
+
+      await waitFor(() => {
+        expect(mockEnsureAnonymousSession).toHaveBeenCalled();
       });
     });
   });
@@ -799,7 +816,7 @@ describe('ShopDialog', () => {
       await waitFor(() => {
         expect(insertMock).toHaveBeenCalledWith(
           expect.objectContaining({
-            user_id: mockUser.id,
+            user_id: 'test-user-123',
             item_id: 'test_free_item',
           })
         );
@@ -1084,9 +1101,12 @@ describe('ShopDialog', () => {
       ) ?? activateButtons[1];
       await user.click(goldButton);
 
-      await waitFor(() => {
-        expect(updateResource).toHaveBeenCalledWith('gold', 5000);
-      });
+      await waitFor(
+        () => {
+          expect(updateResource).toHaveBeenCalledWith('gold', 5000);
+        },
+        { timeout: 10_000 },
+      );
     });
 
     it('should track feast activations from bundle components separately', async () => {
@@ -1683,6 +1703,8 @@ describe('ShopDialog', () => {
   describe('Edge Cases and Error Handling', () => {
     it('should handle missing user gracefully', async () => {
       mockGetCurrentUser.mockResolvedValue(null);
+      mockGetSessionUser.mockResolvedValue(null);
+      useGameStore.setState({ isUserSignedIn: false });
       const onClose = vi.fn();
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);

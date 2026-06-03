@@ -86,6 +86,7 @@ describe("TimedEventPanel gambler coverage", () => {
 
     useGameStore.getState().initialize();
     useGameStore.setState((s) => ({
+      applyEventChoice: vi.fn(() => true) as typeof s.applyEventChoice,
       story: {
         ...s.story,
         seen: {
@@ -136,7 +137,7 @@ describe("TimedEventPanel gambler coverage", () => {
   });
 
   it("freezes the timed event countdown while the gambler dice dialog is open", () => {
-    const applyEventChoice = vi.fn();
+    const applyEventChoice = vi.fn(() => true);
     const setTimedEventTab = vi.fn();
     const setHighlightedResources = vi.fn();
 

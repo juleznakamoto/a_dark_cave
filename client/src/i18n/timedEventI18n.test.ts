@@ -133,7 +133,10 @@ describe("timed tab event i18n", () => {
           vars,
         });
 
-        if (affordance.costs.length === 0) {
+        const hasParsedAffordance =
+          affordance.costs.length > 0 ||
+          Object.keys(affordance.individualAffordance).length > 0;
+        if (!hasParsedAffordance) {
           failures.push(`${eventId}.${choice.id} (cost=${JSON.stringify(cost)})`);
         }
       }

@@ -611,6 +611,29 @@
     "message": "Ein Gelehrter der dunklen Künste nähert sich deinem Anwesen. Beim Anblick der drei Blutphiolen sagt er mit kaum verhaltener Erregung: 'Ich kann eine Mixtur erschaffen, die dir große Macht verleiht.'",
     "title": "Der verbannte Gelehrte"
   },
+  "obsidianOrbVisit": {
+    "choices": {
+      "payGold": {
+        "cost": "250 Gold",
+        "label": "250 Gold zahlen"
+      },
+      "payVillagers": {
+        "cost": "20 Dorfbewohner",
+        "label": "20 Dorfbewohner anbieten"  //x1.3
+      },
+      "sendAway": {
+        "label": "Sie wegschicken"
+      }
+    },
+    "log": {
+      "outcome0": "Du zahlst der Frau, und sie verrät dir das Geheimnis der Obsidiankugel. Du erhältst den Bauplan.",
+      "outcome1": "Zwanzig Dorfbewohner werden in Ketten weggezerrt. Die Frau teilt das Wissen, doch das Dorf ist von Ekel über das Geschehene erfüllt.",
+      "outcome2": "Du schickst sie fort. Sie sagt, sie könne zurückkehren, wenn du bereit seist.",
+      "outcome3": "Die Zeit läuft ab. Sie geht und sagt, sie könne zurückkehren, wenn du bereit seist."
+    },
+    "message": "Eine reich geschmückte, orientalisch wirkende Frau trifft mit zwei kräftigen Begleitern ein. Sie bietet an, das Wissen zur Herstellung einer mächtigen Obsidiankugel zu teilen – im Austausch gegen Gold oder Dorfbewohner.",
+    "title": "Die Obsidiankugel"
+  },
   "facesInWalls": {
     "choices": {
       "examine": {
@@ -1034,7 +1057,7 @@
       },
       "trade_giant_trap": {
         "message": "Als du die Riesenfalle kaufst, grinst der Händler: „Damit kann man im Wald etwas Gigantisches fangen. Setze sie weise ein.“",
-        "label": "Riesige Falle"
+        "label": "Riesige Falle"  //x1.3
       },
       "trade_arbalest_schematic": {
         "message": "Du kaufst den Armbrust-Bauplan. Der Händler entfaltet einen filigranen Entwurf: „Ein Design eines Meisteringenieurs. Damit kannst du eine mächtige Waffe herstellen.“",
@@ -2064,8 +2087,8 @@
   "vikingBuilder": {
     "choices": {
       "acceptDeal": {
-        "label": "250 Gold zahlen",
-        "cost": "250 Gold"
+        "cost": "250 Gold",
+        "label": "250 Gold zahlen"
       },
       "forceHim": {
         "label": "Ihn zwingen"
@@ -2525,28 +2548,5 @@
     },
     "message": "Eine junge Frau tritt an dich heran, Tränen strömen über ihr Gesicht. 'Meine beiden Eltern wurden diesem verfluchten Monolithen geopfert', ruft sie. 'Dieses barbarische Verhalten muss aufhören!'",
     "title": "Die Bitte der jungen Frau"
-  },
-  "obsidianOrbVisit": {
-    "choices": {
-      "payGold": {
-        "cost": "250 Gold",
-        "label": "250 Gold zahlen"
-      },
-      "payVillagers": {
-        "cost": "20 Villagers",
-        "label": "20 Dorfbewohner anbieten"
-      },
-      "sendAway": {
-        "label": "Sie wegschicken"
-      }
-    },
-    "log": {
-      "outcome0": "Du zahlst der Frau, und sie verrät dir das Geheimnis der Obsidiankugel. Du erhältst den Bauplan.",
-      "outcome1": "Zwanzig Dorfbewohner werden in Ketten weggezerrt. Die Frau teilt das Wissen, doch das Dorf ist von Ekel über das Geschehene erfüllt.",
-      "outcome2": "Du schickst sie fort. Sie sagt, sie könne zurückkehren, wenn du bereit seist.",
-      "outcome3": "Die Zeit läuft ab. Sie geht und sagt, sie könne zurückkehren, wenn du bereit seist."
-    },
-    "message": "Eine reich geschmückte, orientalisch wirkende Frau trifft mit zwei kräftigen Begleitern ein. Sie bietet an, das Wissen zur Herstellung einer mächtigen Obsidiankugel zu teilen – im Austausch gegen Gold oder Dorfbewohner.",
-    "title": "Die Obsidiankugel"
   }
 }

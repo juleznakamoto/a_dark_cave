@@ -443,7 +443,7 @@ export function handleBuildClerksHut(
       clerksHutResult,
       "clerks-hut-built",
       "building.clerksHut",
-      "A clerks hut is erected, its occupant ready to track the flow of resources with meticulous care.",
+      "A Clerk's Hut stands complete. Scholars gather within to study the world and sharpen their knowledge.",
     );
   }
 
@@ -467,7 +467,7 @@ export function handleBuildScriptorium(
       scriptoriumResult,
       "scriptorium-built",
       "building.scriptorium",
-      "The Scriptorium stands complete. Every detail of village life now gets tracked with meticulous precision.",
+      "The Scriptorium is finished. A hub of wisdom where scholars deepen their knowledge.",
     );
   }
 
@@ -491,7 +491,7 @@ export function handleBuildInkwardenAcademy(
       inkwardenAcademyResult,
       "inkwarden-academy-built",
       "building.inkwardenAcademy",
-      "The Tomewarden Academy rises as a monument to knowledge. Its halls filled with the wisdom of ages, and every resource is now tracked with unparalleled precision.",
+      "The Tomewarden Academy rises, a grand hall where master scholars distill the deepest knowledge.",
     );
   }
 

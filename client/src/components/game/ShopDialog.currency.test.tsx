@@ -6,40 +6,65 @@ import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { ShopDialog } from './ShopDialog';
 import { useGameStore } from '@/game/state';
+import { createShopDialogFetchMock, resetShopDialogAuthMocks } from './shopDialogTestMocks';
 
 const SHOP_PAID_ITEM_CTA = /^(Continue|Purchase)$/i;
 
-// Use vi.hoisted so mock is available when vi.mock factory runs
-const { mockSupabaseClient, mockGetCurrentUser } = vi.hoisted(() => {
+const shopAuthMocks = vi.hoisted(() => {
+  const mockInsert = vi.fn(() => Promise.resolve({ data: null, error: null }));
   const from = vi.fn(() => ({
     select: vi.fn(() => ({
       eq: vi.fn(() => Promise.resolve({ data: [], error: null })),
     })),
-    insert: vi.fn(() => Promise.resolve({ data: null, error: null })),
+    insert: mockInsert,
   }));
-  const mockGetCurrentUser = vi.fn(() =>
-    Promise.resolve({ id: "test-user-123", email: "test@example.com" })
-  );
+  const mockUser = { id: "test-user-123", email: "test@example.com" };
+  const mockGetCurrentUser = vi.fn(() => Promise.resolve(mockUser));
+  const mockGetSessionUser = vi.fn(() => Promise.resolve(mockUser));
+  const mockEnsureAnonymousSession = vi.fn(() => Promise.resolve(mockUser));
+  const mockIsAnonymousSession = vi.fn(() => Promise.resolve(false));
   return {
     mockSupabaseClient: {
       from,
-      auth: { getSession: vi.fn(() => Promise.resolve({ data: { session: null } })) },
+      auth: {
+        getSession: vi.fn(() =>
+          Promise.resolve({
+            data: {
+              session: {
+                access_token: "test-token",
+                user: { id: mockUser.id, email: mockUser.email },
+              },
+            },
+          }),
+        ),
+      },
     },
     mockGetCurrentUser,
+    mockGetSessionUser,
+    mockEnsureAnonymousSession,
+    mockIsAnonymousSession,
+    mockInsert,
   };
 });
 
-// Mock dependencies - use explicit factory so session user resolves before isLoading clears
+const { mockEnsureAnonymousSession } = shopAuthMocks;
+
 vi.mock("@/game/auth", () => ({
-  getCurrentUser: (...args: unknown[]) => mockGetCurrentUser(...args),
-  getSessionUser: (...args: unknown[]) => mockGetCurrentUser(...args),
-  ensureAnonymousSession: (...args: unknown[]) => mockGetCurrentUser(...args),
+  getCurrentUser: (...args: unknown[]) =>
+    shopAuthMocks.mockGetCurrentUser(...args),
+  getSessionUser: (...args: unknown[]) =>
+    shopAuthMocks.mockGetSessionUser(...args),
+  ensureAnonymousSession: (...args: unknown[]) =>
+    shopAuthMocks.mockEnsureAnonymousSession(...args),
   getSessionAccessToken: vi.fn(() => Promise.resolve("test-token")),
-  isAnonymousSession: vi.fn(() => Promise.resolve(false)),
+  isAnonymousSession: (...args: unknown[]) =>
+    shopAuthMocks.mockIsAnonymousSession(...args),
 }));
-vi.mock('@/lib/supabase', () => ({
-  supabase: mockSupabaseClient,
-  getSupabaseClient: vi.fn(() => Promise.resolve(mockSupabaseClient)),
+vi.mock("@/lib/supabase", () => ({
+  supabase: shopAuthMocks.mockSupabaseClient,
+  getSupabaseClient: vi.fn(() =>
+    Promise.resolve(shopAuthMocks.mockSupabaseClient),
+  ),
   getCachedAuthUser: vi.fn(() => null),
   isAuthStateReady: vi.fn(() => true),
 }));
@@ -56,11 +81,6 @@ vi.mock('@stripe/react-stripe-js', () => ({
 }));
 
 describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
-  const mockUser = {
-    id: 'test-user-123',
-    email: 'test@example.com',
-  };
-
   beforeEach(() => {
     // jsdom doesn't implement matchMedia - required by use-mobile hook
     Object.defineProperty(window, "matchMedia", {
@@ -93,15 +113,13 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       updateResource: vi.fn(),
     });
 
-    mockGetCurrentUser.mockResolvedValue(mockUser);
-
-    // Reset fetch mock
-    global.fetch = vi.fn();
+    resetShopDialogAuthMocks(shopAuthMocks);
+    global.fetch = createShopDialogFetchMock();
   });
 
   afterEach(() => {
     vi.clearAllMocks();
-    mockGetCurrentUser.mockResolvedValue(mockUser);
+    resetShopDialogAuthMocks(shopAuthMocks);
   });
 
   describe('Currency Detection', () => {
@@ -330,18 +348,14 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
 
   describe('Payment Intent with Currency', () => {
     it('should send correct currency to payment intent creation', async () => {
-      global.fetch = vi.fn((url) => {
-        if (String(url).includes('ipapi.co')) {
-          return Promise.resolve({
-            json: () => Promise.resolve({ country_code: 'DE' }),
-          } as Response);
-        }
-        if (String(url).includes('/api/payment/create-intent')) {
-          return Promise.resolve({
+      global.fetch = createShopDialogFetchMock((u) => {
+        if (u.includes('/api/payment/create-intent')) {
+          return {
+            ok: true,
             json: () => Promise.resolve({ clientSecret: 'test_secret_eur' }),
-          } as Response);
+          } as Response;
         }
-        return Promise.reject(new Error('Unknown URL'));
+        return null;
       });
 
       const onClose = vi.fn();
@@ -355,6 +369,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       fireEvent.click(purchaseButton);
 
       await waitFor(() => {
+        expect(mockEnsureAnonymousSession).toHaveBeenCalled();
         expect(global.fetch).toHaveBeenCalledWith(
           '/api/payment/create-intent',
           expect.objectContaining({
@@ -366,18 +381,19 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
     });
 
     it('should send USD currency for non-EU users', async () => {
-      global.fetch = vi.fn((url) => {
-        if (String(url).includes('ipapi.co')) {
-          return Promise.resolve({
+      global.fetch = createShopDialogFetchMock((u) => {
+        if (u.includes('ipapi.co')) {
+          return {
             json: () => Promise.resolve({ country_code: 'US' }),
-          } as Response);
+          } as Response;
         }
-        if (String(url).includes('/api/payment/create-intent')) {
-          return Promise.resolve({
+        if (u.includes('/api/payment/create-intent')) {
+          return {
+            ok: true,
             json: () => Promise.resolve({ clientSecret: 'test_secret_usd' }),
-          } as Response);
+          } as Response;
         }
-        return Promise.reject(new Error('Unknown URL'));
+        return null;
       });
 
       const onClose = vi.fn();
@@ -391,6 +407,7 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       fireEvent.click(purchaseButton);
 
       await waitFor(() => {
+        expect(mockEnsureAnonymousSession).toHaveBeenCalled();
         expect(global.fetch).toHaveBeenCalledWith(
           '/api/payment/create-intent',
           expect.objectContaining({

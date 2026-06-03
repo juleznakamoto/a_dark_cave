@@ -3,7 +3,7 @@
     "title": "Combat",
     "skillsTitle": "Compétences de combat",
     "fight": "Combattre",
-    "fighting": "Combat en cours…",
+    "fighting": "Combat en cours…",  //x1.5
     "startFight": "Lancer le combat",
     "roundTitle": "Combat – Manche {{round}}",
     "youLost": "Vous avez perdu",
@@ -47,18 +47,18 @@
   },
   "attackWaves": {
     "title": "Vagues d'attaque",
-    "calm": "C'est calme, pour l'instant…",
+    "calm": "C'est calme, pour l'instant…",  //x1.3
     "soon": "bientôt",
     "provoke": "Provocation",
     "waves": {
       "firstWave": "Première vague",
       "secondWave": "Deuxième vague",
       "thirdWave": "Troisième vague",
-      "fourthWave": "Quatrième vague",
+      "fourthWave": "Quatrième vague",  //x1.4
       "fifthWave": "Cinquième vague",
       "sixthWave": "Sixième vague",
       "seventhWave": "Septième vague",
-      "eighthWave": "Huitième vague",
+      "eighthWave": "Huitième vague",  //x1.3
       "ninthWave": "Neuvième vague",
       "tenthWave": "Dixième vague"
     }

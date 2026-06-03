@@ -75,7 +75,8 @@ describe("shouldBlockGameHotkeys", () => {
     });
 
     const state = useGameStore.getState();
-    expect(isModalDialogOpen(state)).toBe(true);
+    expect(state.timedEventTab.isActive).toBe(true);
+    expect(isModalDialogOpen(state)).toBe(false);
     expect(shouldBlockGameHotkeys(state)).toBe(false);
   });
 

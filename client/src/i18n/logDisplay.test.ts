@@ -128,7 +128,7 @@ describe("resolveLogPanelMessage", () => {
       ),
     );
     expect(text).toBe(
-      "Eine Schreibstube wird errichtet, ihr Bewohner bereit, den Ressourcenfluss sorgfältig zu verfolgen.",
+      "Die Schreiberhütte steht fertig. Gelehrte versammeln sich darin, um die Welt zu studieren und ihr Wissen zu schärfen.",
     );
   });
 

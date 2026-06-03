@@ -115,7 +115,7 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
   attack-wave timer, play-time accumulation. Started/stopped from `pages/game.tsx` via
   `startGameLoop()` / `stopGameLoop()`.
 - **`rules/`** — `actionsRegistry.ts` (central `gameActions`), per-area action modules
-  (`caveExploreActions.ts`, `villageBuildActions.ts`, `forestSacrificeActions.ts`,
+  (`caveLogFallbacks.ts`, `caveExploreActions.ts`, `villageBuildActions.ts`, `forestSacrificeActions.ts`,
   `bastionActions.ts`, …), `index.ts` (visibility/affordability + `allEvents`), effects
   (`actionEffects.ts`, `effectsCalculation.ts`, `costCalculation.ts`), events (`events.ts`
   → `EventManager`, `LogEntry`, plus topic files `events*.ts`), `insightReveal.ts` /

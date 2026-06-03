@@ -5,14 +5,14 @@
     "timeRemaining": "Tiempo restante: {{seconds}} s",
     "knowledgeTimeBonus": "+{{seconds}}s de tiempo de decisión por Conocimiento{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (máx.)",
-    "successChance": "Probabilidad de éxito: {{percent}}%",
-    "successChanceLocked": "Probabilidad de éxito: ??%",
+    "successChance": "Probabilidad de éxito: {{percent}}%",  //x1.3
+    "successChanceLocked": "Probabilidad de éxito: ??%",  //x1.4
     "influencedBy": "Influido por:"
   },
   "reward": {
     "title": "Recompensa",
     "loss": "Pérdida",
-    "actionReward": "Recompensa de acción",
+    "actionReward": "Recompensa de acción",  //x1.5
     "claimRewards": "Reclamar recompensas"
   },
   "madness": {
@@ -22,12 +22,12 @@
   "socialPrompt": {
     "title": "Mantente conectado y gana recompensas",
     "description": "Completa las tareas siguientes para recibir bonificaciones. Completa todas las tareas para recibir un objeto exclusivo.",
-    "signUpRequiresSignInTooltip": "regístrate para completar la tarea",
+    "signUpRequiresSignInTooltip": "regístrate para completar la tarea",  //x1.4
     "signUpTitle": "Registrarse (+{{amount}} oro)",
     "signUpDesc": "Crea una cuenta gratuita para sincronizar tu progreso entre dispositivos. Sin cuenta, tu progreso solo se guarda localmente y puede perderse.",
     "signUpButton": "Registrarse",
-    "emailUpdatesTitle": "Actualizaciones por correo (+{{amount}} oro)",
-    "subscribe": "Suscribirse",
+    "emailUpdatesTitle": "Actualizaciones por correo (+{{amount}} oro)",  //x1.4
+    "subscribe": "Suscribirse",  //x1.2
     "playlightTitle": "Descubrir 1 juego (+{{amount}} oro)",
     "discoverGames": "Descubrir juegos",
     "inviteTitle": "Invitar a 1 amigo (+{{amount}} oro cada uno)",
@@ -64,8 +64,8 @@
   },
   "invest": {
     "title": "Invertir",
-    "strategy": "Estrategia de inversión",
-    "amount": "Importe de la inversión",
+    "strategy": "Estrategia de inversión",  //x1.2
+    "amount": "Importe de la inversión",  //x1.4
     "potentialProfit": "Beneficio potencial:",
     "startInvestment": "Iniciar inversión",
     "infoAriaLabel": "Explicar inversiones y la tabla de estrategias",
@@ -95,10 +95,10 @@
   "gambler": {
     "title": "El jugador obsesionado",
     "srDescription": "Juego de dados contra el jugador obsesionado",
-    "rulesAriaLabel": "Reglas del juego de dados",
+    "rulesAriaLabel": "Reglas del juego de dados",  //x1.7
     "rulesTurns": "Tú y el jugador tiráis el dado por turnos.",
     "rulesTotals": "Las tiradas de cada jugador se suman.",
-    "rulesGoal": "El objetivo está fijado en 15.",
+    "rulesGoal": "El objetivo está fijado en 15.",  //x1.4
     "rulesWinLose": "Si un jugador alcanza exactamente el objetivo, gana. Si lo supera, pierde.",
     "rulesStand": "Si el jugador activo tiene más puntos que el oponente, puede elegir no tirar.",
     "tutorialIntro": "Para enseñarte el juego, el jugador ofrece jugar {{count}} veces sin apuesta.",
@@ -141,7 +141,7 @@
     "purchaseSuccessfulDesc": "¡Juego completo desbloqueado y activado! Puedes continuar tu viaje sin restricciones.",
     "legalConsent": "Al comprar, aceptas la entrega inmediata de contenido digital y renuncias a tu derecho de desistimiento. Para más información, consulta nuestros",
     "termsOfService": "Condiciones del servicio",
-    "rightOfWithdrawal": "Derecho de desistimiento",
+    "rightOfWithdrawal": "Derecho de desistimiento",  //x1.3
     "completePurchaseFor": "Completar compra por {{price}}",
     "paymentFailed": "Pago fallido",
     "notAuthenticated": "Usuario no autenticado",
@@ -153,19 +153,19 @@
     "prod": "Prod.",
     "rank": "#",
     "player": "Jugador",
-    "completionTime": "Tiempo de finalización",
+    "completionTime": "Tiempo de finalización",  //x1.5
     "noEntries": "Aún no hay entradas",
     "lastUpdated": "Última actualización: {{time}}",
     "username": "Nombre de usuario:",
     "notSet": "Sin definir",
-    "currentPlaytime": "Tiempo de juego actual:",
+    "currentPlaytime": "Tiempo de juego actual:",  //x1.4
     "enterName": "Introducir nombre",
     "normalMode": "Modo normal",
     "cruelMode": "Modo cruel",
     "loadFailed": "Error al cargar la clasificación",
     "invalidUsername": "Nombre de usuario no válido",
     "usernameEmpty": "El nombre de usuario no puede estar vacío",
-    "usernameTooLong": "El nombre de usuario debe tener 20 caracteres o menos",
+    "usernameTooLong": "El nombre de usuario debe tener 20 caracteres o menos",  //x1.4
     "mustSignIn": "Debes iniciar sesión para establecer un nombre de usuario",
     "usernameNotAllowed": "Nombre de usuario no permitido",
     "usernameInappropriate": "Este nombre de usuario contiene lenguaje inapropiado. Elige otro.",
@@ -192,8 +192,8 @@
     "buy": "Comprar",
     "sell": "Vender",
     "sayGoodbye": "Despedirse",
-    "successChance": "Probabilidad de éxito: {{percent}}",
-    "discount": "{{percent}} % de descuento",
+    "successChance": "Probabilidad de éxito: {{percent}}",  //x1.3
+    "discount": "{{percent}} % de descuento",  //x1.2
     "discountFromKnowledge": "{{percent}} % por Conocimiento{{max}}",
     "knowledgeMax": " (máx.)",
     "discountFromRing": "5 % por Anillo de Obediencia"

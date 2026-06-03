@@ -11,7 +11,7 @@
     "bastion": "Бастион",
     "fortress": "Крепость",
     "items": "Предметы",
-    "integrity": "Целостность",
+    "integrity": "Целостность",  //x1.2
     "attack": "Атака",
     "defense": "Защита",
     "attackFailed": "Атака не удалась",
@@ -54,7 +54,7 @@
       "firstWave": "Первая волна",
       "secondWave": "Вторая волна",
       "thirdWave": "Третья волна",
-      "fourthWave": "Четвёртая волна",
+      "fourthWave": "Четвёртая волна",  //x1.4
       "fifthWave": "Пятая волна",
       "sixthWave": "Шестая волна",
       "seventhWave": "Седьмая волна",
@@ -80,6 +80,6 @@
     "damaged": "(повреждено)",
     "attack": "+{{value}} к атаке",
     "defense": "+{{value}} к защите",
-    "integrity": "+{{value}} к целостности"
+    "integrity": "+{{value}} к целостности"  //x1.2
   }
 }

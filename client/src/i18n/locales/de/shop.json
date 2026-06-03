@@ -22,7 +22,7 @@
   },
   "cruel_mode": {
     "activationMessage": "Grausamer Modus aktiviert! Starte ein neues Spiel, um die ultimative Herausforderung zu erleben.",
-    "description": "Eine grausamere Welt, erweiterte Geschichte, mehr Gegenstände, tödlichere Feinde. Ertrage sie oder verschwinde.",
+    "description": "Eine grausamere Welt, erweiterte Geschichte, mehr Gegenstände, tödlichere Feinde. Ertrage sie oder verschwinde.",  //x1.4
     "name": "Grausamer Modus" //ok
   },
   "full_game": {

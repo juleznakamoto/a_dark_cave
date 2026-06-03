@@ -10,6 +10,8 @@
     "costLine": "-{{amount}} {{resource}}",
     "villagerCost_one": "-{{count}} Dorfbewohner", //ok
     "villagerCost_other": "-{{count}} Dorfbewohner",
+    "freeVillagerCost_one": "-{{count}} freier Dorfbewohner",
+    "freeVillagerCost_other": "-{{count}} freie Dorfbewohner",
     "mapFragmentProgress": "{{count}} von {{total}} Kartenfragmenten",
     "defense": "Verteidigung: {{value}}", //ok
     "madnessFromItems": "{{value}} von Gegenständen", //ok
@@ -109,7 +111,12 @@
       "improvedResourceChangeHints": "Verbesserte Hinweise zu Ressourcenänderungen",
       "resourceHighlighting": "Ressourcen-Hervorhebung",
       "unlocksScholar": "Schaltet Gelehrte frei",
+      "scholarInsight1": "Gelehrter produziert 1 Einsicht pro Zyklus",
+      "scholarInsight2": "Gelehrter produziert 2 Einsicht pro Zyklus",
+      "scholarInsight3": "Gelehrter produziert 3 Einsicht pro Zyklus",
+      "insightRevealCost": "{{cost}} Einsicht",
       "insightRevealSeeEffects": "Effekte für {{cost}} {{resource}} anzeigen",
+      "insightRevealEffects": "Effekte",
       "abortActions": "Aktionen abbrechen", //ok
       "madnessReduction": "-{{amount}} Wahnsinn",
       "madnessIncrease": "+{{amount}} Wahnsinn",

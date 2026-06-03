@@ -1242,4 +1242,19 @@ describe('Save Game System - Comprehensive Tests', () => {
       await expect(deleteSave()).resolves.not.toThrow();
     });
   });
+
+  describe('11. Cooldown persistence', () => {
+    it('should preserve cooldowns after save/load cycle', async () => {
+      const gameState = createMockGameState({
+        cooldowns: { gatherWood: 5, buildHut: 10 },
+        cooldownDurations: { gatherWood: 5, buildHut: 10 },
+      });
+
+      await saveGame(gameState, true);
+      const loaded = await loadGame();
+
+      expect(loaded?.cooldowns).toEqual(gameState.cooldowns);
+      expect(loaded?.cooldownDurations).toEqual(gameState.cooldownDurations);
+    });
+  });
 });
