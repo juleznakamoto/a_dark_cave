@@ -5,19 +5,44 @@ import React from "react";
  * Source: datatrans/payment-logos (MIT). Do not hand-edit the path data.
  */
 
-const cardClass = "block h-5 w-auto shrink-0 rounded-[3px]";
+const CARD_W = 120;
+const CARD_H = 80;
+const CARD_CX = CARD_W / 2;
+const CARD_CY = CARD_H / 2;
+/** Scale mark up so less empty margin inside the white card. */
+const LOGO_SCALE = 1.14;
 
-function VisaLogo() {
+const cardClass = "block h-4 w-auto shrink-0 rounded-[2px]";
+
+function PaymentCard({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <svg
       className={cardClass}
-      viewBox="0 0 120 80"
+      viewBox={`0 0 ${CARD_W} ${CARD_H}`}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Visa"
+      aria-label={label}
     >
-      <rect width="120" height="80" rx="4" fill="white" />
+      <rect width={CARD_W} height={CARD_H} rx="4" fill="white" />
+      <g
+        transform={`translate(${CARD_CX} ${CARD_CY}) scale(${LOGO_SCALE}) translate(${-CARD_CX} ${-CARD_CY})`}
+      >
+        {children}
+      </g>
+    </svg>
+  );
+}
+
+function VisaLogo() {
+  return (
+    <PaymentCard label="Visa">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -42,21 +67,13 @@ function VisaLogo() {
         d="M42.3113 27.1625L35.9217 44.8213L35.1663 41.0185L35.167 41.0199L32.9114 29.4749C32.9114 29.4749 32.6394 27.1625 29.7324 27.1625H19.1709L19.0476 27.5966C19.0476 27.5966 22.2782 28.2669 26.057 30.5326L31.8793 52.8375H38.8617L49.5238 27.1625H42.3113Z"
         fill="#1434CB"
       />
-    </svg>
+    </PaymentCard>
   );
 }
 
 function MastercardLogo() {
   return (
-    <svg
-      className={cardClass}
-      viewBox="0 0 120 80"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      role="img"
-      aria-label="Mastercard"
-    >
-      <rect width="120" height="80" rx="4" fill="white" />
+    <PaymentCard label="Mastercard">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -81,21 +98,13 @@ function MastercardLogo() {
         d="M50.966 40.0003C50.966 32.4552 54.4988 25.7354 59.9999 21.4044C55.977 18.2376 50.9003 16.348 45.3828 16.348C32.3208 16.348 21.7324 26.937 21.7324 40.0003C21.7324 53.063 32.3208 63.652 45.3828 63.652C50.9003 63.652 55.977 61.7624 59.9999 58.5956C54.4988 54.2646 50.966 47.5448 50.966 40.0003Z"
         fill="#EB001B"
       />
-    </svg>
+    </PaymentCard>
   );
 }
 
 function PayPalLogo() {
   return (
-    <svg
-      className={cardClass}
-      viewBox="0 0 120 80"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      role="img"
-      aria-label="PayPal"
-    >
-      <rect width="120" height="80" rx="4" fill="white" />
+    <PaymentCard label="PayPal">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -132,21 +141,13 @@ function PayPalLogo() {
         d="M99.8516 28.7239L97.0321 46.6504C96.9771 46.9973 97.2455 47.3116 97.5972 47.3116H100.434C100.903 47.3116 101.303 46.9699 101.376 46.5061L104.157 28.9018C104.212 28.5548 103.943 28.2406 103.591 28.2406H100.418C100.135 28.2406 99.895 28.445 99.8516 28.7239Z"
         fill="#009CDE"
       />
-    </svg>
+    </PaymentCard>
   );
 }
 
 function ApplePayLogo() {
   return (
-    <svg
-      className={cardClass}
-      viewBox="0 0 120 80"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      role="img"
-      aria-label="Apple Pay"
-    >
-      <rect width="120" height="80" rx="4" fill="white" />
+    <PaymentCard label="Apple Pay">
       <path
         d="M55.5533 22.9046C61.103 22.9046 64.9675 26.7301 64.9675 32.2997C64.9675 37.8892 61.0235 41.7345 55.4142 41.7345H49.2696V51.5062H44.8301V22.9046L55.5533 22.9046ZM49.2695 38.0081H54.3635C58.2288 38.0081 60.4286 35.9271 60.4286 32.3196C60.4286 28.7124 58.2288 26.6509 54.3834 26.6509H49.2695V38.0081Z"
         fill="black"
@@ -167,21 +168,13 @@ function ApplePayLogo() {
         d="M33.3204 28.2186C30.7671 28.0665 28.5961 29.6678 27.3767 29.6678C26.1567 29.6678 24.2894 28.2952 22.2698 28.3322C19.6412 28.3708 17.2022 29.8571 15.8682 32.2209C13.1246 36.9497 15.1442 43.9642 17.8122 47.8155C19.1079 49.7209 20.6694 51.8189 22.7269 51.7435C24.6709 51.6672 25.4328 50.4847 27.7958 50.4847C30.1571 50.4847 30.8435 51.7435 32.9013 51.7054C35.0353 51.6672 36.3695 49.799 37.6651 47.8918C39.1515 45.7198 39.7599 43.6225 39.7982 43.5073C39.7599 43.4692 35.6832 41.9053 35.6454 37.2158C35.6069 33.2892 38.8461 31.4215 38.9985 31.3057C37.1694 28.6003 34.3113 28.2952 33.3204 28.2186Z"
         fill="black"
       />
-    </svg>
+    </PaymentCard>
   );
 }
 
 function GooglePayLogo() {
   return (
-    <svg
-      className={cardClass}
-      viewBox="0 0 120 80"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      role="img"
-      aria-label="Google Pay"
-    >
-      <rect width="120" height="80" rx="4" fill="white" />
+    <PaymentCard label="Google Pay">
       <path
         d="M57.5437 26.997V35.9796H63.0833C64.4033 35.9796 65.4945 35.5352 66.3569 34.6486C67.2435 33.7642 67.6879 32.7082 67.6879 31.4872C67.6879 30.2904 67.2435 29.2476 66.3569 28.3588C65.4945 27.4502 64.4033 26.9948 63.0833 26.9948H57.5437V26.997ZM57.5437 39.141V49.5602H54.2349V23.8356H63.0129C65.2415 23.8356 67.1335 24.577 68.6933 26.062C70.2773 27.547 71.0693 29.3554 71.0693 31.4872C71.0693 33.6674 70.2773 35.489 68.6933 36.9476C67.1599 38.4106 65.2635 39.1388 63.0107 39.1388H57.5437V39.141ZM74.4133 44.1724C74.4133 45.0348 74.7785 45.752 75.5111 46.3284C76.2415 46.9004 77.0995 47.1886 78.0807 47.1886C79.4733 47.1886 80.7119 46.6738 81.8031 45.6464C82.8965 44.6146 83.4399 43.4046 83.4399 42.0164C82.4081 41.2024 80.9693 40.7954 79.1235 40.7954C77.7815 40.7954 76.6595 41.121 75.7619 41.7678C74.8621 42.4146 74.4133 43.2132 74.4133 44.1724ZM78.6945 31.3794C81.1409 31.3794 83.0703 32.0328 84.4871 33.3374C85.8995 34.6442 86.6079 36.435 86.6079 38.7098V49.5602H83.4421V47.1182H83.2991C81.9307 49.129 80.1091 50.1366 77.8299 50.1366C75.8895 50.1366 74.2637 49.5602 72.9569 48.4118C71.6501 47.2612 70.9967 45.8246 70.9967 44.0998C70.9967 42.2782 71.6853 40.8306 73.0647 39.7526C74.4441 38.6746 76.2833 38.1356 78.5867 38.1356C80.5491 38.1356 82.1705 38.4942 83.4399 39.2136V38.4568C83.4399 37.3084 82.9845 36.3316 82.0737 35.5308C81.1961 34.7411 80.0531 34.3114 78.8727 34.3274C77.0247 34.3274 75.5639 35.104 74.4837 36.6638L71.5709 34.829C73.1769 32.53 75.5529 31.3794 78.6945 31.3794ZM104.771 31.9558L93.7271 57.3218H90.3105L94.4113 48.447L87.1469 31.9558H90.7439L95.9953 44.6036H96.0657L101.174 31.9536L104.771 31.9558Z"
         fill="#3C4043"
@@ -202,7 +195,7 @@ function GooglePayLogo() {
         d="M29.96 27.6262C32.1424 27.6262 34.096 28.3742 35.636 29.8438V29.846L39.86 25.6264C37.2992 23.2416 33.9552 21.7764 29.9622 21.7764C24.3703 21.7757 19.2553 24.9264 16.7402 29.9208L21.655 33.729C22.8254 30.2266 26.1034 27.6262 29.9622 27.6262"
         fill="#E94235"
       />
-    </svg>
+    </PaymentCard>
   );
 }
 
