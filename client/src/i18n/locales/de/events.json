@@ -1476,7 +1476,7 @@
     },
     "choices": {
       "answerNightmares": {
-        "label": "Alpträume"
+        "label": "Albträume"
       },
       "answerTime": {
         "label": "Berührung"
@@ -1644,7 +1644,7 @@
     },
     "choices": {
       "answerNightmares": {
-        "label": "Alpträume"
+        "label": "Albträume"
       },
       "answerCobweb": {
         "label": "Spinnennetz"
