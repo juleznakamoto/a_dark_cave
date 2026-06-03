@@ -203,7 +203,10 @@ const EXPLORE_HIGHLIGHT_COLORS: Record<string, string[]> = {
   ],
 };
 
-const EXPLORE_LEVEL_ORDER_FOR_COUNT = [...EXPLORE_LEVEL_ORDER, "exploreCitadel"];
+const EXPLORE_LEVEL_ORDER_FOR_COUNT = [
+  ...EXPLORE_LEVEL_ORDER,
+  "exploreCitadel",
+];
 
 /** Get cave explore particle config by action id (shared base + per-level highlights) */
 export function getExploreParticleConfig(
@@ -212,7 +215,11 @@ export function getExploreParticleConfig(
   const highlightColors = EXPLORE_HIGHLIGHT_COLORS[actionId] ?? [];
   const levelIndex = EXPLORE_LEVEL_ORDER_FOR_COUNT.indexOf(actionId);
   const count =
-    actionId === "exploreCitadel" ? 150 : levelIndex >= 0 ? 40 + levelIndex * 15 : 100;
+    actionId === "exploreCitadel"
+      ? 150
+      : levelIndex >= 0
+        ? 40 + levelIndex * 15
+        : 100;
   return {
     colors: EXPLORE_TONES,
     smallParticleOnlyColors: highlightColors,
@@ -282,8 +289,7 @@ function adjustHexBrightness(hex: string, factor: number): string {
 export function shopGlyphHoverParticleColors(
   symbolColorClass?: string,
 ): string[] {
-  const key =
-    symbolColorClass?.replace(/^text-/, "").trim() || "yellow-500";
+  const key = symbolColorClass?.replace(/^text-/, "").trim() || "yellow-500";
   const primary = tailwindToHex(key);
   if (primary.startsWith("#")) {
     return [
@@ -314,9 +320,9 @@ export function getShopGlyphHoverParticleConfig(
 // Insight orb - slower, slightly larger cold-blue sparks (BuildingActionBadge palette)
 export const INSIGHT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   colors: [
-    tailwindToHex("blue-400"),
     tailwindToHex("blue-500"),
     tailwindToHex("blue-600"),
+    tailwindToHex("blue-700"),
     "#60a5fa",
     "#3b82f6",
   ],
@@ -370,7 +376,9 @@ export function getHuntParticleConfig(level = 0): Partial<ParticleConfig> {
 }
 
 /** Merged config with computed bubbleRemoveDelay (derived from durationMax) */
-export type MergedParticleConfig = Required<Omit<ParticleConfig, "bubbleRemoveDelay">> & {
+export type MergedParticleConfig = Required<
+  Omit<ParticleConfig, "bubbleRemoveDelay">
+> & {
   bubbleRemoveDelay: number;
 };
 
@@ -380,11 +388,12 @@ export function mergeParticleConfig(
 ): MergedParticleConfig {
   const merged = override
     ? {
-      ...DEFAULT_PARTICLE_CONFIG,
-      ...base,
-      ...override,
-      colors: override.colors ?? base.colors ?? DEFAULT_PARTICLE_CONFIG.colors,
-    }
+        ...DEFAULT_PARTICLE_CONFIG,
+        ...base,
+        ...override,
+        colors:
+          override.colors ?? base.colors ?? DEFAULT_PARTICLE_CONFIG.colors,
+      }
     : { ...DEFAULT_PARTICLE_CONFIG, ...base };
   // All particles start at once, so we only need durationMax + small buffer for cleanup
   return {
@@ -394,29 +403,49 @@ export function mergeParticleConfig(
 }
 
 /** Get bubble remove delay in ms (derived from durationMax). Use when you have a partial config. */
-export function getBubbleRemoveDelayMs(config: Partial<ParticleConfig>): number {
+export function getBubbleRemoveDelayMs(
+  config: Partial<ParticleConfig>,
+): number {
   return mergeParticleConfig(config).bubbleRemoveDelay;
 }
 
 // Helper to generate particle data for global layer (accepts full config or colors array for legacy)
 export function generateParticleData(
   configOrColors?: Partial<ParticleConfig> | string[],
-): Array<{ size: number; color: string; duration: number; endX: number; endY: number }> {
+): Array<{
+  size: number;
+  color: string;
+  duration: number;
+  endX: number;
+  endY: number;
+}> {
   const config = mergeParticleConfig(
-    Array.isArray(configOrColors) ? { colors: configOrColors } : (configOrColors ?? {}),
+    Array.isArray(configOrColors)
+      ? { colors: configOrColors }
+      : (configOrColors ?? {}),
   );
   return Array.from({ length: config.count }).map(() => {
     const angle = Math.random() * Math.PI * 2;
-    const distance = config.distanceMin + Math.random() * (config.distanceMax - config.distanceMin);
-    const size = config.sizeMin + Math.random() * (config.sizeMax - config.sizeMin);
+    const distance =
+      config.distanceMin +
+      Math.random() * (config.distanceMax - config.distanceMin);
+    const size =
+      config.sizeMin + Math.random() * (config.sizeMax - config.sizeMin);
     const colorPool =
-      config.smallParticleOnlyColors?.length && size > config.smallParticleMaxSize
-        ? config.colors.filter((c) => !config.smallParticleOnlyColors!.includes(c))
+      config.smallParticleOnlyColors?.length &&
+      size > config.smallParticleMaxSize
+        ? config.colors.filter(
+            (c) => !config.smallParticleOnlyColors!.includes(c),
+          )
         : config.smallParticleOnlyColors?.length
           ? [...config.colors, ...config.smallParticleOnlyColors]
           : config.colors;
-    const color = colorPool[Math.floor(Math.random() * colorPool.length)] ?? config.colors[0];
-    const duration = config.durationMin + Math.random() * (config.durationMax - config.durationMin);
+    const color =
+      colorPool[Math.floor(Math.random() * colorPool.length)] ??
+      config.colors[0];
+    const duration =
+      config.durationMin +
+      Math.random() * (config.durationMax - config.durationMin);
     const endX = Math.cos(angle) * distance;
     const endY = Math.sin(angle) * distance;
     return { size, color, duration, endX, endY };

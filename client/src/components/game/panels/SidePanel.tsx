@@ -215,7 +215,7 @@ export default function SidePanel() {
         <span className="inline-flex items-center gap-1">
           {key === "insight" ? (
             <ResourceInsightIcon
-              className={cn("shrink-0", "text-blue-500")}
+              className={cn("shrink-0", "text-blue-600")}
             />
           ) : (
             <ResourceCoinIcon
