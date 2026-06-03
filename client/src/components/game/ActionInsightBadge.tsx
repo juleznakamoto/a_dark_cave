@@ -60,6 +60,14 @@ export function ActionInsightBadge({ actionId }: ActionInsightBadgeProps) {
     resource: formatTooltipResourceName("insight"),
   });
 
+  const isBadgeDisabled = !canAfford || playing;
+
+  // TooltipWrapper handles mobile taps via onClick; without it, touchEnd preventDefault
+  // blocks the inner button's onClick (same pattern as CooldownButton).
+  const handleReveal = () => {
+    if (!isBadgeDisabled) revealActionEffects(actionId);
+  };
+
   return (
     <div
       className={!canAfford && !playing ? "opacity-40" : undefined}
@@ -80,6 +88,8 @@ export function ActionInsightBadge({ actionId }: ActionInsightBadgeProps) {
         tooltipContentClassName="text-white"
         className="block h-full w-full"
         tooltipTriggerAsChild
+        disabled={isBadgeDisabled}
+        onClick={handleReveal}
         onMouseEnter={() => setHighlightedResources(["insight"])}
         onMouseLeave={() => {
           if (!playing) setHighlightedResources([]);
@@ -90,11 +100,11 @@ export function ActionInsightBadge({ actionId }: ActionInsightBadgeProps) {
           className="relative flex h-full w-full items-center justify-center border-0 bg-transparent p-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer"
           aria-label={costTooltip}
           aria-busy={playing}
-          disabled={!canAfford || playing}
+          disabled={isBadgeDisabled}
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
-            if (canAfford && !playing) revealActionEffects(actionId);
+            handleReveal();
           }}
         >
           <BuildingActionBadge
