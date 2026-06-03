@@ -166,11 +166,10 @@ export const storyEvents: Record<string, GameEvent> = {
   traderSettles: {
     id: "traderSettles",
     condition: (state: GameState) =>
-      (state.buildings.woodenHut ?? 0) >= 5 &&
-      !state.story.seen.traderSettled,
+      (state.buildings.woodenHut ?? 0) >= 5 && !state.story.seen.traderSettled,
     timeProbability: 5,
     priority: 5,
-    repeatable: false,
+    repeatable: true,
     choices: [
       {
         id: "continue",
@@ -392,8 +391,8 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       Boolean(
         state.story.seen.tenthWaveVictory &&
-        state.story.seen.portalBlasted &&
-        !state.story.seen.beyondGateVentureUnlocked,
+          state.story.seen.portalBlasted &&
+          !state.story.seen.beyondGateVentureUnlocked,
       ),
     timeProbability: 0.01,
     priority: 5,
@@ -524,8 +523,8 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       Boolean(
         state.story.seen.secondWaveVictory == true &&
-        state.fellowship.ashwraith_huntress &&
-        !state.story.seen.ashwraithCanyonTradeOfferSeen,
+          state.fellowship.ashwraith_huntress &&
+          !state.story.seen.ashwraithCanyonTradeOfferSeen,
       ),
     timeProbability: 20,
     priority: 5,
