@@ -743,3 +743,50 @@ describe("Timed event tab cleanup on new game", () => {
     expect(state.activeTab).toBe("cave");
   });
 });
+
+describe("Disgraced Prior assignment does not bypass affordability", () => {
+  beforeEach(() => {
+    useGameStore.getState().initialize();
+  });
+
+  // craftEmberBomb costs 100 iron + 50 black_powder and takes 20s to execute.
+  // Assigning the Prior to it must NOT start an execution (and deduct costs) when
+  // the player cannot afford it — previously this drove black_powder negative.
+  function setupEmberBombState(overrides: Partial<GameState["resources"]>) {
+    const base = useGameStore.getState();
+    useGameStore.setState({
+      fellowship: { disgraced_prior: true },
+      disgracedPriorSkills: { level: 0 },
+      priorAssignedActions: [],
+      buildings: { ...base.buildings, alchemistHall: 1 },
+      story: { ...base.story, seen: { ...base.story.seen, portalDiscovered: true } },
+      resources: { ...base.resources, iron: 200, black_powder: 0, ...overrides },
+      cooldowns: {},
+    });
+  }
+
+  it("does not start an unaffordable execution-time craft when the Prior is assigned", () => {
+    setupEmberBombState({ black_powder: 0 });
+
+    useGameStore.getState().togglePriorAction("craftEmberBomb");
+
+    const state = useGameStore.getState();
+    // Assignment is recorded, but nothing was started and no resources were spent.
+    expect(state.priorAssignedActions).toContain("craftEmberBomb");
+    expect(state.executionStartTimes?.craftEmberBomb).toBeUndefined();
+    expect(state.resources.black_powder).toBe(0);
+    expect(state.resources.iron).toBe(200);
+  });
+
+  it("starts the craft and deducts costs when affordable", () => {
+    setupEmberBombState({ black_powder: 100 });
+
+    useGameStore.getState().togglePriorAction("craftEmberBomb");
+
+    const state = useGameStore.getState();
+    expect(state.executionStartTimes?.craftEmberBomb).toBeGreaterThan(0);
+    // Costs are deducted at execution start.
+    expect(state.resources.black_powder).toBe(50);
+    expect(state.resources.iron).toBe(100);
+  });
+});

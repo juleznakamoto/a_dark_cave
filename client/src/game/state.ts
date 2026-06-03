@@ -1474,6 +1474,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
         // This prevents the Prior (or any caller) from draining resources for
         // an action whose show_when conditions are no longer satisfied.
         if (!shouldShowAction(actionId, state as any)) return;
+        // Guard affordability/eligibility before starting (costs are deducted at
+        // execution start). Callers that bypass the UI's disabled-button gate —
+        // e.g. assigning the Disgraced Prior via togglePriorAction — must not be
+        // able to start an unaffordable action and drive resources negative.
+        if (!canExecuteAction(actionId, state as any)) return;
         get().startActionExecution(actionId, meta);
         return;
       }
