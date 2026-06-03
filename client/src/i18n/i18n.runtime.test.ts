@@ -26,15 +26,15 @@ describe("i18n runtime", () => {
   it("resolves insight reveal badge tooltip in German", async () => {
     await i18n.changeLanguage("de");
     expect(
-      i18n.exists("tooltips.buildings.insightRevealSeeEffects", { ns: "ui" }),
+      i18n.exists("badges.insightRevealSeeEffects", { ns: "ui" }),
     ).toBe(true);
-    const result = getUiTooltip(
-      "buildings.insightRevealSeeEffects",
-      "See effects for {{cost}} {{resource}}",
-      { cost: 50, resource: "Einsicht" },
+    expect(i18n.getResource("de", "ui", "badges.insightRevealSeeEffects")).toBe(
+      "Effekte für {{cost}} {{resource}} anzeigen",
     );
-    expect(result).toBe("Effekte für 50 Einsicht anzeigen");
-    expect(result).not.toContain("See effects");
+    const opts = { cost: 50, resource: "Einsicht" };
+    const viaBadgeKey = i18n.t("ui:badges.insightRevealSeeEffects", opts);
+    expect(viaBadgeKey).toBe("Effekte für 50 Einsicht anzeigen");
+    expect(viaBadgeKey).not.toContain("See effects");
   });
 
   it("resolves villagerCost plural tooltip in English and German", async () => {

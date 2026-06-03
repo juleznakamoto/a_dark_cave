@@ -123,6 +123,7 @@
     "priorUpgradeRequired": "Улучшите Падшего приора, чтобы назначить больше действий",
     "priorRemove": "Нажмите, чтобы снять Падшего приора",
     "priorAssign": "Нажмите, чтобы назначить Падшего приора",
+    "insightRevealSeeEffects": "Показать эффекты за {{cost}} {{resource}}",
     "bonus": "Бонус:",
     "nextBonus": "Следующий бонус:",
     "craftMultiplier": "Создание ×{{amount}}",

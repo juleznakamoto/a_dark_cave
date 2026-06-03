@@ -55,10 +55,9 @@ export function ActionInsightBadge({ actionId }: ActionInsightBadgeProps) {
   const insight = getInsightAmount(state);
   const canAfford = insight >= cost;
 
-  const costTooltip = t("tooltips.buildings.insightRevealSeeEffects", {
+  const costTooltip = t("badges.insightRevealSeeEffects", {
     cost,
     resource: formatTooltipResourceName("insight"),
-    defaultValue: "See effects for {{cost}} {{resource}}",
   });
 
   return (

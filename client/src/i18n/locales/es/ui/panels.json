@@ -123,6 +123,7 @@
     "priorUpgradeRequired": "Mejora al Prior deshonrado para asignar más acciones",
     "priorRemove": "Haz clic para quitar al Prior deshonrado",
     "priorAssign": "Haz clic para asignar al Prior deshonrado",
+    "insightRevealSeeEffects": "Ver efectos por {{cost}} {{resource}}",
     "bonus": "Bonificación:",
     "nextBonus": "Próxima bonificación:",
     "craftMultiplier": "Artesanía x{{amount}}",

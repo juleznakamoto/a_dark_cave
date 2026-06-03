@@ -123,6 +123,7 @@
     "priorUpgradeRequired": "Verbessere den Gefallenen Prior, um mehr Aktionen zuzuweisen", //ok
     "priorRemove": "Klicken, um den Gefallenen Prior zu entfernen", //ok
     "priorAssign": "Klicken, um den Gefallenen Prior zuzuweisen", //ok
+    "insightRevealSeeEffects": "Effekte für {{cost}} {{resource}} anzeigen",
     "bonus": "Bonus:",
     "nextBonus": "Nächster Bonus:", //ok
     "craftMultiplier": "Herstellung x{{amount}}", //ok

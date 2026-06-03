@@ -124,6 +124,7 @@
     "priorUpgradeRequired": "Upgrade Disgraced Prior to assign more actions",
     "priorRemove": "Click to remove Disgraced Prior",
     "priorAssign": "Click to assign Disgraced Prior",
+    "insightRevealSeeEffects": "See effects for {{cost}} {{resource}}",
     "bonus": "Bonus:",
     "nextBonus": "Next Bonus:",
     "craftMultiplier": "Craft x{{amount}}",

@@ -123,6 +123,7 @@
     "priorUpgradeRequired": "Améliorez le Prieur déchu pour assigner plus d'actions",
     "priorRemove": "Cliquez pour retirer le Prieur déchu",
     "priorAssign": "Cliquez pour assigner le Prieur déchu",
+    "insightRevealSeeEffects": "Voir les effets pour {{cost}} {{resource}}",
     "bonus": "Bonus :",
     "nextBonus": "Prochain bonus :",
     "craftMultiplier": "Artisanat x{{amount}}",

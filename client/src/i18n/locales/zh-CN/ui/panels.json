@@ -123,6 +123,7 @@
     "priorUpgradeRequired": "升级堕落修道院长以分配更多行动",
     "priorRemove": "点击移除堕落修道院长",
     "priorAssign": "点击指派堕落修道院长",
+    "insightRevealSeeEffects": "消耗 {{cost}} {{resource}} 查看效果",
     "bonus": "加成：",
     "nextBonus": "下一加成：",
     "craftMultiplier": "制作 ×{{amount}}",
