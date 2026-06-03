@@ -108,6 +108,7 @@
       "resourceChangeHints": "Indicaciones de cambio de recursos",
       "improvedResourceChangeHints": "Indicaciones mejoradas de cambio de recursos",
       "resourceHighlighting": "Resaltado de recursos",
+      "unlocksScholar": "Desbloquea eruditos",
       "insightRevealSeeEffects": "Ver efectos por {{cost}} {{resource}}",
       "abortActions": "Cancelar acciones",
       "madnessReduction": "-{{amount}} locura",

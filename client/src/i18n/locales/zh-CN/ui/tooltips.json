@@ -108,6 +108,7 @@
       "resourceChangeHints": "资源变化提示",
       "improvedResourceChangeHints": "改进的资源变化提示",
       "resourceHighlighting": "资源高亮",
+      "unlocksScholar": "解锁学者",
       "insightRevealSeeEffects": "消耗 {{cost}} {{resource}} 查看效果",
       "abortActions": "中止行动",
       "madnessReduction": "-{{amount}} 疯狂",

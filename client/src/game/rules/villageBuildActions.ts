@@ -1673,7 +1673,7 @@ export const villageBuildActions: Record<string, Action> = {
     description: "Hut where scholars study to gain Insight about the world",
     tooltipEffects: [
       bt("knowledgeBonus", "+{{amount}} Knowledge", { amount: 2 }),
-      bt("unlocksScholar", "Unlocks Scholar villager"),
+      bt("unlocksScholar", "Unlocks Scholar"),
       bt("scholarInsight1", "Scholar produces 1 Insight per cycle"),
     ],
     building: true,

@@ -108,6 +108,7 @@
       "resourceChangeHints": "Подсказки об изменении ресурсов",
       "improvedResourceChangeHints": "Улучшенные подсказки об изменении ресурсов",
       "resourceHighlighting": "Подсветка ресурсов",
+      "unlocksScholar": "Разблокирует учёных",
       "insightRevealSeeEffects": "Показать эффекты за {{cost}} {{resource}}",
       "abortActions": "Прерывание действий",
       "madnessReduction": "-{{amount}} безумия",
