@@ -684,7 +684,7 @@ export default function GameContainer() {
       const boxLeft = minLeft - padX;
       const boxWidth = maxRight - minLeft + padX * 2;
       const boxTop = hintTop - 6;
-      const boxBottom = rowRect.top - 2;
+      const boxBottom = rowRect.top + 2;
       const boxHeight = Math.max(0, boxBottom - boxTop);
       setVillageHotkeyBoxLayout({
         top: boxTop,
@@ -842,7 +842,7 @@ export default function GameContainer() {
         >
           {showVillageHotkeyBox && villageHotkeyBoxLayout != null && (
             <div
-              className="absolute pointer-events-auto rounded bg-gray-600/30"
+              className="absolute pointer-events-auto rounded bg-neutral-800"
               style={{
                 top: villageHotkeyBoxLayout.top,
                 left: villageHotkeyBoxLayout.left,
