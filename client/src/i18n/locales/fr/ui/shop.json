@@ -81,6 +81,10 @@
     "claimFailedLog": "Impossible de récupérer {{name}}. Veuillez réessayer.",
     "activatedDefaultLog": "{{name}} activé ! Les récompenses ont été ajoutées à votre inventaire.",
     "securePaymentVia": "Paiement sécurisé via",
-    "securePaymentWith": "avec"
+    "securePaymentWith": "avec",
+    "securePurchaseTitle": "Sécurisez votre achat",
+    "securePurchaseBody": "Votre achat n'est enregistré que sur ce navigateur. Créez un compte pour conserver vos achats et votre progression si vous changez d'appareil ou effacez les données du navigateur.",
+    "securePurchaseSignUp": "Créer un compte",
+    "securePurchaseLater": "Plus tard"
   }
 }

@@ -75,7 +75,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 |-----------|------|-----------|
 | entry | React root → router | `main.tsx`, `App.tsx`, `index.html`, `index.css` |
 | `pages/` | Route-level components (lazy-loaded) | `start-screen-page.tsx`, `game.tsx`, `end-screen.tsx`, `reset-password.tsx`, `withdrawal.tsx`, `not-found.tsx`, `admin/dashboard.tsx` |
-| `game/` | **Game engine** (see below) | `state.ts`, `loop.ts`, `actions.ts`, `save.ts`, `saveCodec.ts`, `stateHelpers.ts`, `auth.ts`, `constants.ts`, `rules/` |
+| `game/` | **Game engine** (see below) | `state.ts`, `loop.ts`, `actions.ts`, `save.ts`, `saveCodec.ts`, `stateHelpers.ts`, `auth.ts`, `shopPurchases.ts`, `constants.ts`, `rules/` |
 | `components/game/` | Game-specific UI | `GameContainer.tsx`, `GameTabs.tsx`, `GameButton.tsx`, `panels/`, `*Dialog.tsx`, `EndScreen.tsx`, `StripePoweredBy.tsx` (checkout Stripe + payment-methods footer), `paymentMethodLogos.tsx` (Visa/MC/PayPal/Apple Pay/Google Pay SVG marks) |
 | `components/ui/` | shadcn/ui design system + game visuals | `button.tsx`, `card.tsx`, `dialog`, `toast.tsx`, `mist-background.tsx`, `cloud-shader.tsx`, `limelight-nav.tsx` |
 | `hooks/` | React hooks | `use-toast.ts`, `useCooldown.ts`, `use-mobile.tsx` |
@@ -136,7 +136,9 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
 - **`save.ts`** — IndexedDB (`ADarkCaveDB`); guest saves encode via `saveCodec.ts`
   (XOR+Base64, `ADC2:` prefix); signed-in saves diff against last cloud state → Supabase.
   Load applies migrations (e.g. `migrateTraderShopUnlockOnLoad`).
-- **`auth.ts`** — Supabase auth, `saveGameToSupabase`/`loadGameFromSupabase`, referral metadata.
+- **`auth.ts`** — Supabase auth (incl. anonymous guest-checkout via `ensureAnonymousSession`),
+  `saveGameToSupabase`/`loadGameFromSupabase`, referral metadata.
+- **`shopPurchases.ts`** — Supabase `purchases` fetch/rehydrate, feast-activation merge, purchase ID helpers (used by `ShopDialog`, payment return).
 - **`shared/schema.ts`** — Zod schema = source of truth; `createInitialState()` derives defaults from it.
 
 > **Modal-pause convention:** blocking dialogs must be added to `isNonRewardBlockingModalOpen`
@@ -165,7 +167,7 @@ rate-limited `/api/*` routes.
 
 | Route group | Module | Purpose |
 |-------------|--------|---------|
-| `/api/payment/*` | `stripe.ts` | Stripe checkout intents + verification |
+| `/api/payment/*` | `stripe.ts`, `paymentVerifyAuth.ts` | Stripe checkout intents + verification; verify body `userId` must match Bearer session |
 | `/api/referral/*` | `referral.ts`, `referralCodes.ts` | Referral codes & rewards |
 | `/api/marketing/*` | `marketing.ts` | Email prefs, unsubscribe |
 | `/api/leaderboard/*`, `/api/account/*`, `/api/session/ping` | inline + Supabase | Leaderboard, account deletion, session heartbeat |
@@ -174,7 +176,8 @@ rate-limited `/api/*` routes.
 | `/api/version`, `/api/config` | build meta | Version + public Supabase keys |
 
 Support: `server/vite.ts` (dev/prod hosting), `server/supabaseServerClient.ts` (service-role client),
-`server/stripeFxQuote.ts`, `server/resendContactCsv.ts`.
+`server/paymentVerifyAuth.ts` (payment-verify session/body user match), `server/stripeFxQuote.ts`,
+`server/resendContactCsv.ts`.
 
 ---
 

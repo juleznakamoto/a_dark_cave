@@ -282,6 +282,11 @@ export default function Game() {
 
         await applySignupWelcomeBonusAfterOAuthLoad();
 
+        const { rehydratePurchasesFromSupabase } = await import(
+          "@/game/shopPurchases"
+        );
+        await rehydratePurchasesFromSupabase();
+
         await processStripePaymentReturn();
 
         // Remove Google Ads source parameter from URL if it was present

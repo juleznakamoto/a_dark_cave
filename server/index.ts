@@ -10,6 +10,7 @@ import { setupVite, serveStatic, log } from "./vite";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 import { createPaymentIntent, verifyPayment } from "./stripe";
+import { validatePaymentVerifyAuth } from "./paymentVerifyAuth";
 import { processReferral } from "./referral";
 import { getOrCreateReferralCode } from "./referralCodes";
 import {
@@ -1343,8 +1344,10 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
     try {
       const { paymentIntentId, userId } = req.body;
 
-      if (!userId) {
-        return res.status(400).json({ error: "User ID required" });
+      const sessionUser = await getSessionUserIdFromBearer(req);
+      const authCheck = validatePaymentVerifyAuth(userId, sessionUser?.id);
+      if (!("ok" in authCheck && authCheck.ok)) {
+        return res.status(authCheck.status).json({ error: authCheck.error });
       }
 
       // Get supabase admin client

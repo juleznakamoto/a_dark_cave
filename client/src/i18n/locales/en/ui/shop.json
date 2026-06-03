@@ -81,6 +81,10 @@
     "claimFailedLog": "Failed to claim {{name}}. Please try again.",
     "activatedDefaultLog": "Activated {{name}}! Rewards have been added to your inventory.",
     "securePaymentVia": "Secure payment via",
-    "securePaymentWith": "with"
+    "securePaymentWith": "with",
+    "securePurchaseTitle": "Secure your purchase",
+    "securePurchaseBody": "Your purchase is saved on this browser only. Create an account to keep your purchases and progress if you switch devices or clear browser data.",
+    "securePurchaseSignUp": "Sign up",
+    "securePurchaseLater": "Maybe later"
   }
 }

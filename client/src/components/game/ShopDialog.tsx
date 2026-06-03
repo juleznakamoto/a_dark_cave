@@ -29,7 +29,19 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { supabase } from "@/lib/supabase";
-import { getCurrentUser } from "@/game/auth";
+import {
+  ensureAnonymousSession,
+  getCurrentUser,
+  getSessionAccessToken,
+  getSessionUser,
+  isAnonymousSession,
+} from "@/game/auth";
+import {
+  applyFeastActivationsFromPurchaseRows,
+  fetchPurchaseRowsForSessionUser,
+  purchaseIdToItemId,
+  purchaseIdsFromRows,
+} from "@/game/shopPurchases";
 import {
   GREAT_FEAST_DURATION_MS,
   SHOP_ITEMS,
@@ -94,26 +106,6 @@ function completePaidShopPurchaseInStore() {
       },
     },
   }));
-}
-
-/**
- * Extract itemId from purchaseId.
- * Format: purchase-{itemId}-{suffix} where suffix is numeric (e.g. 1) or UUID (8-4-4-4-12).
- */
-function purchaseIdToItemId(purchaseId: string): string | null {
-  if (!purchaseId.startsWith("purchase-")) return null;
-  const withoutPrefix = purchaseId.substring("purchase-".length);
-  if (withoutPrefix.includes("-temp-")) {
-    return withoutPrefix.substring(0, withoutPrefix.indexOf("-temp-"));
-  }
-  const parts = withoutPrefix.split("-");
-  // UUID suffix: 5 segments (8-4-4-4-12). When 6+ parts, always strip last 5
-  // (valid UUID or malformed) to avoid incorrect extraction from generic fallback.
-  if (parts.length >= 6) {
-    return parts.slice(0, -5).join("-") || null;
-  }
-  // Numeric or other: single suffix segment
-  return parts.slice(0, -1).join("-") || null;
 }
 
 /** Small pill on shop cards (green border / tint); e.g. featured labels. */
@@ -578,16 +570,22 @@ function CheckoutForm({
         setIsProcessing(false);
       } else if (paymentIntent && paymentIntent.status === "succeeded") {
         // Verify payment on backend - server creates all purchases
-        const user = await getCurrentUser();
+        const user = await getSessionUser();
         if (!user) {
           setErrorMessage(t("ui:shop.notAuthenticated"));
           setIsProcessing(false);
           return;
         }
 
+        const accessToken = await getSessionAccessToken();
         const response = await fetch("/api/payment/verify", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            ...(accessToken
+              ? { Authorization: `Bearer ${accessToken}` }
+              : {}),
+          },
           body: JSON.stringify({
             paymentIntentId: paymentIntent.id,
             userId: user.id,
@@ -699,10 +697,12 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const [selectedFilter, setSelectedFilter] = useState<
     "gold" | "artifacts" | "boosts" | "bundles" | null
   >(null);
-  const [currentUser, setCurrentUser] = useState<{
+  const [sessionUser, setSessionUser] = useState<{
     id: string;
     email: string;
   } | null>(null);
+  const [showSecurePurchasePrompt, setShowSecurePurchasePrompt] =
+    useState(false);
   const detectedCurrency = useGameStore((state) => state.detectedCurrency);
   const setDetectedCurrency = useGameStore(
     (state) => state.setDetectedCurrency,
@@ -724,6 +724,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   useEffect(() => {
     if (!isOpen) {
       setSelectedFilter(null);
+      setShowSecurePurchasePrompt(false);
     }
   }, [isOpen]);
 
@@ -746,8 +747,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       getStripePromise();
 
       try {
-        const user = await getCurrentUser();
-        setCurrentUser(user);
+        const user = await getSessionUser();
+        setSessionUser(user);
 
         if (user) {
           await loadPurchasedItems();
@@ -764,52 +765,13 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
   const loadPurchasedItems = async () => {
     try {
-      const user = await getCurrentUser();
-      if (!user) {
+      const data = await fetchPurchaseRowsForSessionUser();
+      if (!data) {
         return;
       }
 
-      const client = await getSupabaseClient();
-      const { data, error } = await client
-        .from("purchases")
-        .select("id, item_id")
-        .eq("user_id", user.id);
-
-      if (error) throw error;
-      if (data) {
-        // Use numeric database ID as the unique purchase identifier
-        // Format: purchase-{itemId}-{numericDbId}
-        const purchaseIds = data.map((p) => `purchase-${p.item_id}-${p.id}`);
-
-        setPurchasedItems(purchaseIds);
-
-        // Initialize feast activations for any feast purchases that don't have them yet
-        const currentFeastActivations = gameState.feastActivations || {};
-        const newFeastActivations = { ...currentFeastActivations };
-        let hasNewActivations = false;
-
-        data.forEach((purchase) => {
-          const purchaseId = `purchase-${purchase.item_id}-${purchase.id}`;
-          const item = SHOP_ITEMS[purchase.item_id];
-
-          // If this item has feast activations and doesn't already have them set up in state
-          // BUT skip bundles - only track activations for bundle components
-          // Use 'in' to preserve explicit 0 (exhausted) values
-          if (
-            item?.rewards.feastActivations &&
-            !item.bundleComponents &&
-            !(purchaseId in currentFeastActivations)
-          ) {
-            newFeastActivations[purchaseId] = item.rewards.feastActivations;
-            hasNewActivations = true;
-          }
-        });
-
-        // Update state if we added any new activations
-        if (hasNewActivations) {
-          useGameStore.setState({ feastActivations: newFeastActivations });
-        }
-      }
+      setPurchasedItems(purchaseIdsFromRows(data));
+      applyFeastActivationsFromPurchaseRows(data);
     } catch (error) {
       logger.error("Error loading purchased items:", error);
     }
@@ -1020,7 +982,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     }
 
     // For paid items, create payment intent for embedded checkout
-    const user = await getCurrentUser();
+    const user = await ensureAnonymousSession();
+    setSessionUser(user);
     const tradersGratitudeDiscount =
       gameState.tradersGratitudeState?.accepted === true;
     const tradersSonGratitudeDiscount =
@@ -1036,8 +999,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         itemId,
-        userEmail: user?.email,
-        userId: user?.id,
+        userEmail: user.email || undefined,
+        userId: user.id,
         currency: currency.toLowerCase(),
         tradersGratitudeDiscount: tradersGratitudeDiscount || undefined,
         tradersSonGratitudeDiscount: tradersSonGratitudeDiscount || undefined,
@@ -1117,24 +1080,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
     // IMPORTANT: After loadPurchasedItems completes, purchasedItems state is updated
     // We need to access the updated state, not the stale closure variable
-    const updatedPurchasedItems = await (async () => {
-      const user = await getCurrentUser();
-      if (!user) return [];
-
-      const client = await getSupabaseClient();
-      const { data, error } = await client
-        .from("purchases")
-        .select("id, item_id")
-        .eq("user_id", user.id);
-
-      if (error) throw error;
-
-      const purchaseIds = data
-        ? data.map((p) => `purchase-${p.item_id}-${p.id}`)
-        : [];
-
-      return purchaseIds;
-    })();
+    const purchaseRows = await fetchPurchaseRowsForSessionUser();
+    const updatedPurchasedItems = purchaseRows
+      ? purchaseIdsFromRows(purchaseRows)
+      : [];
 
     // If this is a single item (NOT a bundle) with feast activations, set activations from item definition
     if (item.rewards.feastActivations && !item.bundleComponents) {
@@ -1197,9 +1146,23 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         : t("ui:shop.purchaseAddedSingle", { name: resolvedPurchaseName }),
     });
 
+    try {
+      const { saveGame } = await import("@/game/save");
+      const { buildGameState } = await import("@/game/stateHelpers");
+      await saveGame(buildGameState(useGameStore.getState()), false);
+    } catch (e) {
+      logger.error("[SHOP] Post-purchase save failed:", e);
+    }
+
     setClientSecret(null);
     setSelectedItem(null);
-    setActiveTab("purchases"); // Switch to purchases tab to show the new purchase
+
+    const anonymousAfterPurchase = await isAnonymousSession();
+    if (anonymousAfterPurchase) {
+      setShowSecurePurchasePrompt(true);
+    } else {
+      setActiveTab("purchases");
+    }
   };
 
   const handleActivatePurchase = (purchaseId: string, itemId: string) => {
@@ -1426,7 +1389,46 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
               </div>
             )}
 
-            {!isLoading && !currentUser && (
+            {!isLoading && showSecurePurchasePrompt && (
+              <div className="flex min-h-0 flex-1 flex-col gap-4 py-2">
+                <div className="rounded-lg border border-amber-600/50 bg-amber-600/10 p-4 space-y-3">
+                  <h3 className="text-lg font-semibold">
+                    {t("ui:shop.securePurchaseTitle")}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {t("ui:shop.securePurchaseBody")}
+                  </p>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <Button
+                    className="w-full"
+                    button_id="shop-secure-purchase-sign-up"
+                    onClick={() => {
+                      setShowSecurePurchasePrompt(false);
+                      setAuthDialogOpen(true);
+                    }}
+                  >
+                    {t("ui:shop.securePurchaseSignUp")}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    button_id="shop-secure-purchase-later"
+                    onClick={() => {
+                      setShowSecurePurchasePrompt(false);
+                      setActiveTab("purchases");
+                    }}
+                  >
+                    {t("ui:shop.securePurchaseLater")}
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {!isLoading &&
+              !showSecurePurchasePrompt &&
+              !sessionUser &&
+              !gameState.isUserSignedIn && (
               <Button
                 onClick={() => {
                   setAuthDialogOpen(true);
@@ -1439,7 +1441,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
               </Button>
             )}
 
-            {!isLoading && (
+            {!isLoading && !showSecurePurchasePrompt && (
               <Tabs
                 value={activeTab}
                 onValueChange={(value) =>
@@ -1459,7 +1461,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </TabsTrigger>
                     <TabsTrigger
                       value="purchases"
-                      disabled={!currentUser}
+                      disabled={!sessionUser}
                       className="flex h-full min-h-0 min-w-0 w-full items-center justify-center rounded-sm border border-transparent py-0 data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
                     >
                       {t("ui:shop.purchases")}
@@ -1968,7 +1970,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                       <Button
                                         onClick={() => handlePurchaseClick(item.id)}
                                         disabled={
-                                          !currentUser ||
+                                          (item.price === 0 &&
+                                            item.id !== "gold_100_free" &&
+                                            !gameState.isUserSignedIn) ||
                                           (item.id === "gold_100_free" &&
                                             (Date.now() -
                                               (gameState.lastFreeGoldClaim || 0)) /

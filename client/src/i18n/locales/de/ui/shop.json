@@ -81,6 +81,10 @@
     "freeGoldCooldownLog_one": "Du kannst in {{hours}} Stunde wieder kostenloses Gold abholen.",
     "freeGoldCooldownLog_other": "Du kannst in {{hours}} Stunden wieder kostenloses Gold abholen.",
     "securePaymentVia": "Sichere Zahlung über",
-    "securePaymentWith": "mit"
+    "securePaymentWith": "mit",
+    "securePurchaseTitle": "Kauf sichern",
+    "securePurchaseBody": "Dein Kauf ist nur in diesem Browser gespeichert. Erstelle ein Konto, damit Käufe und Fortschritt erhalten bleiben, wenn du das Gerät wechselst oder Browserdaten löschst.",
+    "securePurchaseSignUp": "Registrieren",
+    "securePurchaseLater": "Vielleicht später"
   }
 }

@@ -81,6 +81,10 @@
     "claimFailedLog": "No se pudo reclamar {{name}}. Inténtalo de nuevo.",
     "activatedDefaultLog": "¡{{name}} activado! Las recompensas se han añadido a tu inventario.",
     "securePaymentVia": "Pago seguro a través de",
-    "securePaymentWith": "con"
+    "securePaymentWith": "con",
+    "securePurchaseTitle": "Protege tu compra",
+    "securePurchaseBody": "Tu compra solo se guarda en este navegador. Crea una cuenta para conservar tus compras y tu progreso si cambias de dispositivo o borras los datos del navegador.",
+    "securePurchaseSignUp": "Registrarse",
+    "securePurchaseLater": "Quizá más tarde"
   }
 }

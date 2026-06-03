@@ -265,24 +265,41 @@ export async function signUp(
 ) {
   const supabase = await getSupabaseClient();
 
-  // Store referral code in user metadata - will be processed after email confirmation
+  setPendingMarketingOptInFromSignup(marketingOptIn === true, false);
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  // Upgrade anonymous checkout user in place so purchases stay on the same user_id.
+  if (session?.user?.is_anonymous === true) {
+    const { data, error } = await supabase.auth.updateUser({
+      email,
+      password,
+      data: {
+        ...(referralCode ? { referral_code: referralCode } : {}),
+      },
+    });
+    if (error) throw error;
+    return { user: data.user, session: data.session };
+  }
+
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      ...(referralCode ? {
-        data: {
-          referral_code: referralCode,
-        }
-      } : {}),
+      ...(referralCode
+        ? {
+            data: {
+              referral_code: referralCode,
+            },
+          }
+        : {}),
       emailRedirectTo: window.location.origin + '/?email_confirmed=true',
     },
   });
 
   if (error) throw error;
-
-  // Persisted on first confirmed session via flushPendingMarketingPreferences()
-  setPendingMarketingOptInFromSignup(marketingOptIn === true, false);
 
   return data;
 }
@@ -440,18 +457,36 @@ export async function signInWithGoogle(opts?: {
 
   const supabase = await getSupabaseClient();
 
-  // Determine the correct redirect URL based on environment
   const redirectTo = window.location.origin + '/?game=true';
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (session?.user?.is_anonymous === true) {
+    const { data, error } = await supabase.auth.linkIdentity({
+      provider: 'google',
+      options: {
+        redirectTo,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        },
+      },
+    });
+    if (error) throw error;
+    return data;
+  }
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: redirectTo,
+      redirectTo,
       queryParams: {
         access_type: 'offline',
         prompt: 'consent',
-      }
-    }
+      },
+    },
   });
 
   if (error) throw error;
@@ -537,6 +572,73 @@ export async function signOut() {
 
   // Note: No reload needed - the calling component will reset game state
   logger.log('[AUTH] ✅ Sign out complete - ready for state reset');
+}
+
+/** Access token for the current session (anonymous or registered). */
+export async function getSessionAccessToken(): Promise<string | null> {
+  const supabase = await getSupabaseClient();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  return session?.access_token ?? null;
+}
+
+/** Any signed-in Supabase user, including anonymous (no confirmed email required). */
+export async function getSessionUser(): Promise<AuthUser | null> {
+  try {
+    const supabase = await getSupabaseClient();
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.getSession();
+    if (error || !session?.user?.id) {
+      return null;
+    }
+    return {
+      id: session.user.id,
+      email: session.user.email ?? '',
+    };
+  } catch (error) {
+    logger.warn('Failed to get session user:', error);
+    return null;
+  }
+}
+
+/** True when the current session is an anonymous (guest checkout) user. */
+export async function isAnonymousSession(): Promise<boolean> {
+  try {
+    const supabase = await getSupabaseClient();
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    return session?.user?.is_anonymous === true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Ensures a Supabase session exists for shop checkout. Creates an anonymous user if needed.
+ */
+export async function ensureAnonymousSession(): Promise<AuthUser> {
+  const existing = await getSessionUser();
+  if (existing) {
+    return existing;
+  }
+
+  const supabase = await getSupabaseClient();
+  const { data, error } = await supabase.auth.signInAnonymously();
+  if (error) {
+    throw error;
+  }
+  if (!data.user?.id) {
+    throw new Error('Anonymous sign-in did not return a user');
+  }
+
+  return {
+    id: data.user.id,
+    email: data.user.email ?? '',
+  };
 }
 
 export async function getCurrentUser(): Promise<AuthUser | null> {

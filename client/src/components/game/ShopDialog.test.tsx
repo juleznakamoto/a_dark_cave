@@ -62,9 +62,13 @@ const { mockSupabaseClient, mockGetCurrentUser, mockInsert } = vi.hoisted(() => 
   };
 });
 
-// Mock dependencies - use explicit factory so getCurrentUser resolves before isLoading clears
+// Mock dependencies - use explicit factory so session user resolves before isLoading clears
 vi.mock("@/game/auth", () => ({
   getCurrentUser: (...args: unknown[]) => mockGetCurrentUser(...args),
+  getSessionUser: (...args: unknown[]) => mockGetCurrentUser(...args),
+  ensureAnonymousSession: (...args: unknown[]) => mockGetCurrentUser(...args),
+  getSessionAccessToken: vi.fn(() => Promise.resolve("test-token")),
+  isAnonymousSession: vi.fn(() => Promise.resolve(false)),
 }));
 vi.mock('@/lib/supabase', () => ({
   supabase: mockSupabaseClient,

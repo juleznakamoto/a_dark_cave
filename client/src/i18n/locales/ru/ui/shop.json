@@ -81,6 +81,10 @@
     "freeGoldCooldownLog_one": "Бесплатное золото снова через {{hours}} ч.",
     "freeGoldCooldownLog_other": "Бесплатное золото снова через {{hours}} ч.",
     "securePaymentVia": "Безопасная оплата через",
-    "securePaymentWith": "с"
+    "securePaymentWith": "с",
+    "securePurchaseTitle": "Защитите покупку",
+    "securePurchaseBody": "Покупка сохранена только в этом браузере. Создайте аккаунт, чтобы сохранить покупки и прогресс при смене устройства или очистке данных браузера.",
+    "securePurchaseSignUp": "Зарегистрироваться",
+    "securePurchaseLater": "Позже"
   }
 }

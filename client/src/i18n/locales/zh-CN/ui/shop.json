@@ -81,6 +81,10 @@
     "freeGoldCooldownLog_one": "{{hours}} 小时后可再次领取免费金币。",
     "freeGoldCooldownLog_other": "{{hours}} 小时后可再次领取免费金币。",
     "securePaymentVia": "安全支付由",
-    "securePaymentWith": "提供，支持"
+    "securePaymentWith": "提供，支持",
+    "securePurchaseTitle": "保护你的购买",
+    "securePurchaseBody": "你的购买仅保存在当前浏览器中。创建账户后，更换设备或清除浏览器数据时仍可保留购买与进度。",
+    "securePurchaseSignUp": "注册",
+    "securePurchaseLater": "以后再说"
   }
 }

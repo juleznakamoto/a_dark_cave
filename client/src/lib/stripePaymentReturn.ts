@@ -1,4 +1,8 @@
-import { getCurrentUser } from "@/game/auth";
+import {
+  getSessionAccessToken,
+  getSessionUser,
+} from "@/game/auth";
+import { rehydratePurchasesFromSupabase } from "@/game/shopPurchases";
 import { toast } from "@/hooks/use-toast";
 import { useGameStore } from "@/game/state";
 import { SHOP_ITEMS } from "../../../shared/shopItems";
@@ -85,7 +89,7 @@ export async function processStripePaymentReturn(): Promise<void> {
     return;
   }
 
-  const user = await getCurrentUser();
+  const user = await getSessionUser();
   if (!user) {
     stripStripeReturnParamsFromUrl();
     toast({
@@ -97,10 +101,15 @@ export async function processStripePaymentReturn(): Promise<void> {
     return;
   }
 
+  const accessToken = await getSessionAccessToken();
+
   try {
     const response = await fetch("/api/payment/verify", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+      },
       body: JSON.stringify({
         paymentIntentId,
         userId: user.id,
@@ -115,6 +124,14 @@ export async function processStripePaymentReturn(): Promise<void> {
       const item = SHOP_ITEMS[result.itemId];
       if (item && item.price > 0) {
         applyStoreAfterVerifiedPurchase();
+      }
+      await rehydratePurchasesFromSupabase();
+      try {
+        const { saveGame } = await import("@/game/save");
+        const { buildGameState } = await import("@/game/stateHelpers");
+        await saveGame(buildGameState(useGameStore.getState()), false);
+      } catch (e) {
+        logger.error("[Stripe] Post-return save failed:", e);
       }
       stripStripeReturnParamsFromUrl();
       toast({
