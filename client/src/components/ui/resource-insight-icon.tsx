@@ -1,6 +1,7 @@
 "use client";
 
 import { CoinHoverParticleSurface } from "@/components/ui/coin-hover-particles";
+import { RESOURCE_GLYPH_CLASS } from "@/components/ui/resource-coin-icon";
 import { INSIGHT_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
 import { cn } from "@/lib/utils";
 
@@ -14,10 +15,7 @@ export function ResourceInsightIcon({ className = "" }: ResourceInsightIconProps
       resource="silver"
       particleConfig={INSIGHT_PARTICLE_CONFIG}
       emitIntervalMs={600}
-      className={cn(
-        "font-noto-symbols-2 inline-block w-[1em] translate-y-[0.12em] cursor-default text-center leading-none",
-        className,
-      )}
+      className={cn(RESOURCE_GLYPH_CLASS, className)}
       zIndex={50}
     >
       🟖
