@@ -210,10 +210,10 @@ BEGIN
         ELSE 500
       END;
 
-      -- Validate limited resources (everything except gold/silver) against storage cap
+      -- Validate limited resources (everything except gold/silver/insight) against storage cap
       IF v_merged_state ? 'resources' THEN
         FOR v_resource_key IN SELECT jsonb_object_keys(v_merged_state->'resources') LOOP
-          IF v_resource_key NOT IN ('gold', 'silver') THEN
+          IF v_resource_key NOT IN ('gold', 'silver', 'insight') THEN
             v_new_res := COALESCE((v_merged_state->'resources'->>v_resource_key)::NUMERIC, 0);
             IF v_new_res > v_resource_limit THEN
               RAISE EXCEPTION 'Save rejected';
