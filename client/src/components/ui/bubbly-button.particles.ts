@@ -320,13 +320,13 @@ export const INSIGHT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
     "#60a5fa",
     "#3b82f6",
   ],
-  count: 4,
+  count: 3,
   durationMin: 0.65,
   durationMax: 1.75,
   distanceMin: 10,
   distanceMax: 28,
-  sizeMin: 1,
-  sizeMax: 5,
+  sizeMin: 2,
+  sizeMax: 7,
 };
 
 // Silver coin - slow gentle emission for hover
