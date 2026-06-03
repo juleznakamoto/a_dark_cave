@@ -1,12 +1,14 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
+const STRIPE_BRAND_COLOR = "#635BFF";
+
 const STRIPE_LOGO = (
   <svg
     className="h-4"
     viewBox="0 0 60 25"
     xmlns="http://www.w3.org/2000/svg"
-    fill="currentColor"
+    fill={STRIPE_BRAND_COLOR}
     aria-label="Stripe"
   >
     <path
@@ -17,12 +19,13 @@ const STRIPE_LOGO = (
 );
 
 export function StripePoweredBy({ className = "" }: { className?: string }) {
-  const { t } = useTranslation("ui");
-  const after = t("shop.securePaymentViaAfter", { defaultValue: "" });
+  const { t, i18n } = useTranslation("ui");
+  const afterKey = "shop.securePaymentViaAfter";
+  const after = i18n.exists(afterKey) ? t(afterKey) : null;
 
   return (
     <div
-      className={`flex flex-wrap items-center justify-center gap-1 text-xs text-muted-foreground ${className}`.trim()}
+      className={`flex flex-wrap items-center justify-center gap-1 text-xs text-foreground ${className}`.trim()}
     >
       <span>{t("shop.securePaymentVia")}</span>
       {STRIPE_LOGO}
