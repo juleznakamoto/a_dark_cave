@@ -1095,7 +1095,7 @@ export default function GameContainer() {
 
                 {traderUnlocked && (
                   <button
-                    className={`${tabButtonClass} group shrink-0 gap-1.5 pl-2 ${animatingTabs.has("trader")
+                    className={`inline-flex h-10 items-baseline justify-center bg-transparent text-sm font-normal leading-none group shrink-0 gap-1 pl-2 ${animatingTabs.has("trader")
                       ? fadePhaseTabs.has("trader")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -1117,7 +1117,7 @@ export default function GameContainer() {
                     data-testid="tab-trader"
                   >
                     <span
-                      className="font-noto-symbols-2 text-[17px] leading-none text-lime-500 opacity-80 transition-opacity group-hover:opacity-100"
+                      className="font-noto-symbols-2 text-[17px] leading-none text-lime-500 opacity-80 transition-opacity group-hover:opacity-100 relative top-px ml-0.5"
                       aria-hidden
                     >
                       ◬
