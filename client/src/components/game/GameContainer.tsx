@@ -642,18 +642,20 @@ export default function GameContainer() {
       minBadgeAnchorTop != null
         ? Math.max(4, minBadgeAnchorTop - 36)
         : Math.max(4, navRect.top - 42);
+    const hintLeft =
+      next.length > 0
+        ? (Math.min(...next.map((b) => b.left)) +
+          Math.max(...next.map((b) => b.left))) /
+        2
+        : rowRect.left + rowRect.width / 2;
     setPauseHotkeyHint({
       top: hintTop,
-      left: rowRect.left + rowRect.width / 2,
+      left: hintLeft,
     });
 
     if (showVillageHotkeyBox && next.length > 0) {
-      let minLeft = rowRect.left;
-      let maxRight = rowRect.right;
-      next.forEach((b) => {
-        minLeft = Math.min(minLeft, b.left - 20);
-        maxRight = Math.max(maxRight, b.left + 20);
-      });
+      let minLeft = Math.min(...next.map((b) => b.left - 20));
+      let maxRight = Math.max(...next.map((b) => b.left + 20));
       // Ensure the box also covers the (single-line) hint text width.
       const hintEl = document.querySelector<HTMLElement>(
         '[data-testid="village-hotkey-hint"]',
@@ -885,7 +887,7 @@ export default function GameContainer() {
         <section className="flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
           {/* Horizontal Game Tabs */}
           <nav
-            className={`border-t border-border pl-2 md:pl-4 flex-shrink-0${isPaused ? " relative z-[41] pointer-events-auto" : ""}`}
+            className={`border-t border-border pl-2 pr-2 md:pl-4 md:pr-4 flex-shrink-0${isPaused ? " relative z-[41] pointer-events-auto" : ""}`}
           >
             {useLimelightNav ? (
               // Alternative LimelightNav design
@@ -904,11 +906,11 @@ export default function GameContainer() {
               />
             ) : (
               // Standard button design
-              <div
-                ref={tabButtonRowRef}
-                className="flex w-full max-w-full flex-nowrap items-center gap-x-2 overflow-hidden pl-[3px] md:gap-x-3"
-              >
-                <div className="inline-flex min-w-0 flex-1 flex-nowrap items-center gap-x-2 overflow-x-auto scrollbar-hide md:gap-x-3">
+              <div className="flex w-full max-w-full flex-nowrap items-center gap-x-2 overflow-hidden pl-[3px] pr-[3px] md:gap-x-3">
+                <div
+                  ref={tabButtonRowRef}
+                  className="inline-flex min-w-0 flex-1 flex-nowrap items-center gap-x-2 overflow-x-auto scrollbar-hide md:gap-x-3"
+                >
                   <button
                     className={`${tabButtonClass} ${activeTab === "cave"
                       ? tabActiveTextClass
@@ -1093,13 +1095,11 @@ export default function GameContainer() {
 
                 {traderUnlocked && (
                   <button
-                    className={`${tabButtonClass} shrink-0 gap-1.5 pl-2 transition-opacity ${animatingTabs.has("trader")
+                    className={`${tabButtonClass} group shrink-0 gap-1.5 pl-2 ${animatingTabs.has("trader")
                       ? fadePhaseTabs.has("trader")
                         ? "tab-fade-in"
                         : "tab-blink-new"
-                      : isPaused
-                        ? tabInactiveTextClass
-                        : "opacity-60 hover:opacity-100"
+                      : ""
                       }`}
                     onClick={() => {
                       setAnimatingTabs((prev) => {
@@ -1117,12 +1117,21 @@ export default function GameContainer() {
                     data-testid="tab-trader"
                   >
                     <span
-                      className="font-noto-symbols-2 text-[15px] leading-none text-lime-500"
+                      className="font-noto-symbols-2 text-[17px] leading-none text-lime-500 opacity-80 transition-opacity group-hover:opacity-100"
                       aria-hidden
                     >
                       ◬
                     </span>
-                    {t("tabs.trader", { ns: "common" })}
+                    <span
+                      className={`transition-opacity ${animatingTabs.has("trader")
+                        ? ""
+                        : isPaused
+                          ? tabInactiveTextClass
+                          : "opacity-60 group-hover:opacity-100"
+                        }`}
+                    >
+                      {t("tabs.trader", { ns: "common" })}
+                    </span>
                   </button>
                 )}
               </div>
