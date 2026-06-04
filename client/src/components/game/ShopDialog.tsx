@@ -798,7 +798,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
   const handleShopItemPurchaseClick = (itemId: string) => {
     const item = SHOP_ITEMS[itemId];
-    if (item.price === 0 && !gameState.isUserSignedIn) {
+    const isUserSignedIn = useGameStore.getState().isUserSignedIn;
+    if (item.price === 0 && !isUserSignedIn) {
       setAuthDialogOpen(true);
       return;
     }
@@ -1980,6 +1981,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           handleShopItemPurchaseClick(item.id)
                                         }
                                         disabled={
+                                          (item.price === 0 &&
+                                            item.id !== "gold_100_free" &&
+                                            !gameState.isUserSignedIn) ||
                                           (item.id === "gold_100_free" &&
                                             (Date.now() -
                                               (gameState.lastFreeGoldClaim || 0)) /
