@@ -86,6 +86,19 @@ describe("i18n runtime", () => {
     ).not.toContain("Extend time by");
   });
 
+  it("resolves prolong tooltip via reactive t() with ui: prefix in German", async () => {
+    await i18n.changeLanguage("de");
+    const opts = {
+      defaultValue: "Extend time by {{minutes}} min for {{cost}} {{resource}}",
+      minutes: 5,
+      cost: 250,
+      resource: "Einsicht",
+    };
+    const result = i18n.t("ui:timedEvent.prolongForInsight", opts);
+    expect(result).toBe("Zeit um 5 Min. für 250 Einsicht verlängern");
+    expect(result).not.toContain("Extend time by");
+  });
+
   it("tWithFallback uses German catalog when language tag is de-DE", async () => {
     await i18n.changeLanguage("de-DE");
     const opts = { minutes: 5, cost: 250, resource: "Einsicht" };

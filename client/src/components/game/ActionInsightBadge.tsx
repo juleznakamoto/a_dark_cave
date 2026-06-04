@@ -22,7 +22,6 @@ import {
   getTimedEventTabEffectiveRemainingMs,
   useGameStore,
 } from "@/game/state";
-import { tWithFallback } from "@/i18n/resolveGameText";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
 import { cn } from "@/lib/utils";
 import type { GameState } from "@shared/schema";
@@ -52,7 +51,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   const safetyTimeRemainingMs =
     target === "timedEvent" ? props.safetyTimeRemainingMs : 0;
 
-  const { i18n } = useTranslation(["ui", "common"]);
+  const { t, i18n } = useTranslation(["ui", "common"]);
   const state = useGameStore((s) => s as unknown as GameState);
   const timedTabActive = useGameStore((s) => s.timedEventTab.isActive);
   const insightProlongUsed = useGameStore(
@@ -127,26 +126,24 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
       : (actionId ? (getInsightRevealCost(actionId) ?? 0) : 0);
 
   const insightResource = formatTooltipResourceName("insight");
+  // Resolve via the reactive `t` (same pattern as the other timed-event tooltips in
+  // TimedEventPanel, e.g. `t("ui:timedEvent.buy")`) so the active locale is always used.
+  // English defaultValue is only a safety net for missing keys.
   const costTooltip = useMemo(
     () =>
       isTimedEvent
-        ? tWithFallback(
-          "ui",
-          "timedEvent.prolongForInsight",
-          "Extend time by {{minutes}} min for {{cost}} {{resource}}",
-          {
-            minutes: PROLONG_MINUTES,
-            cost,
-            resource: insightResource,
-          },
-        )
-        : tWithFallback(
-          "ui",
-          "badges.insightRevealSeeEffects",
-          "See effects for {{cost}} {{resource}}",
-          { cost, resource: insightResource },
-        ),
-    [i18n.resolvedLanguage ?? i18n.language, isTimedEvent, cost, insightResource],
+        ? t("ui:timedEvent.prolongForInsight", {
+          defaultValue: "Extend time by {{minutes}} min for {{cost}} {{resource}}",
+          minutes: PROLONG_MINUTES,
+          cost,
+          resource: insightResource,
+        })
+        : t("ui:badges.insightRevealSeeEffects", {
+          defaultValue: "See effects for {{cost}} {{resource}}",
+          cost,
+          resource: insightResource,
+        }),
+    [t, i18n.language, isTimedEvent, cost, insightResource],
   );
 
   if (!canShow || isExecuting) return null;
