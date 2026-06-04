@@ -1,5 +1,6 @@
 import { useGameStore } from "@/game/state";
 import SidePanelSection from "./SidePanelSection";
+import StatEffectsTooltip from "@/components/game/StatEffectsTooltip";
 import { ResourceCoinIcon } from "@/components/ui/resource-coin-icon";
 import { ResourceInsightIcon } from "@/components/ui/resource-insight-icon";
 import { clothingEffects } from "@/game/rules/effects";
@@ -603,7 +604,10 @@ export default function SidePanel() {
     icon: "☆",
     iconColor: "text-green-300/80",
     tooltip: (
-      <span className="text-gray-400">{t("sidePanel.statLuckTooltip")}</span>
+      <>
+        <span className="text-gray-400">{t("sidePanel.statLuckTooltip")}</span>
+        <StatEffectsTooltip statKey="luck" />
+      </>
     ),
   });
 
@@ -616,7 +620,10 @@ export default function SidePanel() {
     icon: "⬡",
     iconColor: "text-red-300/80",
     tooltip: (
-      <span className="text-gray-400">{t("sidePanel.statStrengthTooltip")}</span>
+      <>
+        <span className="text-gray-400">{t("sidePanel.statStrengthTooltip")}</span>
+        <StatEffectsTooltip statKey="strength" />
+      </>
     ),
   });
 
@@ -629,7 +636,10 @@ export default function SidePanel() {
     icon: "✧",
     iconColor: "text-blue-300/80",
     tooltip: (
-      <span className="text-gray-400">{t("sidePanel.statKnowledgeTooltip")}</span>
+      <>
+        <span className="text-gray-400">{t("sidePanel.statKnowledgeTooltip")}</span>
+        <StatEffectsTooltip statKey="knowledge" />
+      </>
     ),
   });
 
@@ -661,6 +671,7 @@ export default function SidePanel() {
           </div>
         </div>
       )}
+      <StatEffectsTooltip statKey="madness" />
     </>
   );
 

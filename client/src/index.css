@@ -657,9 +657,9 @@ body {
 
 .playlight-sdk .adc-playlight-exit-intent-close {
   position: absolute;
-  top: 0.4rem;
-  right: 0.4rem;
-  z-index: 30;
+  top: 0;
+  right: 0;
+  z-index: 40;
   display: flex;
   align-items: center;
   justify-content: center;

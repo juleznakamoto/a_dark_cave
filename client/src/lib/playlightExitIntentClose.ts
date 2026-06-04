@@ -29,15 +29,20 @@ function disconnectContainerObserver(): void {
 }
 
 /**
- * Close the banner. The SDK only drops it (`u=false`, which unmounts the node) ~1500ms after a
- * window `mousemove` whose target is outside the banner — but a `mouseenter` on the banner cancels
- * that timer. Since the cursor sits on the banner right after the click, we hide it first (so the
- * SDK's `mouseenter` can't re-arm), keep exit intent enabled so the SDK handler runs, then dispatch
- * the window `mousemove` that schedules the unmount. We do not un-hide: the SDK creates a fresh node
- * on the next show.
+ * Close the banner. The SDK only unmounts it (`u=false`) ~1500ms after a `mousemove` whose target is
+ * outside the banner — and a `mouseenter` on the banner cancels that timer. Since the cursor sits on
+ * the banner after the click, we hide it instantly with inline `display:none !important` (so the SDK's
+ * `mouseenter` can't re-arm and no stylesheet can override it), keep exit intent enabled so the SDK
+ * handler still runs, then dispatch a `mousemove` on `document.body` (a real Node — dispatching on
+ * `window` makes the SDK's `banner.contains(e.target)` throw) so the SDK resets `u=false` for the next
+ * show. We never un-hide: the SDK builds a fresh node when it shows again.
  */
-function dismissExitIntentBanner(banner: HTMLElement): void {
-  banner.classList.add(HIDDEN_CLASS);
+function dismissExitIntentBanner(): void {
+  const banner = document.querySelector(EXIT_INTENT_BAR_SELECTOR);
+  if (banner instanceof HTMLElement) {
+    banner.classList.add(HIDDEN_CLASS);
+    banner.style.setProperty('display', 'none', 'important');
+  }
   try {
     const sdk = (window as unknown as { playlightSDK?: { setConfig?: (c: unknown) => void } })
       .playlightSDK;
@@ -45,8 +50,6 @@ function dismissExitIntentBanner(banner: HTMLElement): void {
   } catch {
     /* ignore */
   }
-  // Dispatch on document.body (a Node) — NOT window: the SDK handler runs `banner.contains(e.target)`,
-  // which throws if `e.target` is `window`. Bubbles up to the SDK's window listener either way.
   document.body.dispatchEvent(
     new MouseEvent('mousemove', { bubbles: true, clientX: 0, clientY: 0 }),
   );
@@ -67,22 +70,16 @@ function injectCloseButton(banner: HTMLElement): void {
   btn.innerHTML = ABORT_ICON_SVG;
 
   // Force corner placement inline with !important: the banner's flex `items-center` + SDK rules
-  // otherwise win over our stylesheet and vertically center the button.
+  // otherwise win over our stylesheet and vertically center the button. The banner is `overflow:hidden`,
+  // so sit flush inside the very corner (0/0) rather than overhanging.
   btn.style.setProperty('position', 'absolute', 'important');
-  btn.style.setProperty('top', '0.4rem', 'important');
-  btn.style.setProperty('right', '0.4rem', 'important');
+  btn.style.setProperty('top', '0', 'important');
+  btn.style.setProperty('right', '0', 'important');
   btn.style.setProperty('left', 'auto', 'important');
   btn.style.setProperty('bottom', 'auto', 'important');
   btn.style.setProperty('margin', '0', 'important');
-  btn.style.setProperty('z-index', '30', 'important');
-
-  // Stop pointerdown/click reaching the SDK's banner handlers (which open "More games").
-  btn.addEventListener('pointerdown', (e) => e.stopPropagation());
-  btn.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    dismissExitIntentBanner(banner);
-  });
+  btn.style.setProperty('z-index', '40', 'important');
+  btn.style.setProperty('pointer-events', 'auto', 'important');
 
   banner.appendChild(btn);
 }
@@ -95,6 +92,19 @@ export function scanPlaylightExitIntentBar(): void {
 }
 
 /**
+ * Capture-phase click delegation on the persistent SDK root. The banner node is re-rendered by the
+ * SDK, so a listener bound to a specific button instance can be lost; delegation survives re-renders
+ * and runs before the SDK's own handlers.
+ */
+function handleRootClickCapture(e: MouseEvent): void {
+  const target = e.target as Element | null;
+  if (!target?.closest(`.${CLOSE_BTN_CLASS}`)) return;
+  e.preventDefault();
+  e.stopPropagation();
+  dismissExitIntentBanner();
+}
+
+/**
  * Watches the Playlight mount node and adds an abort-style close on the exit-intent banner.
  * Call once after `playlightSDK.init()`.
  */
@@ -104,6 +114,16 @@ export function installPlaylightExitIntentCloseButton(): void {
   const attach = (root: HTMLElement) => {
     disconnectBodyObserver();
     disconnectContainerObserver();
+    const delegated = root as HTMLElement & { __adcCloseDelegated?: boolean };
+    if (!delegated.__adcCloseDelegated) {
+      root.addEventListener('click', handleRootClickCapture as EventListener, true);
+      root.addEventListener('pointerdown', (ev) => {
+        if ((ev.target as Element | null)?.closest(`.${CLOSE_BTN_CLASS}`)) {
+          ev.stopPropagation();
+        }
+      }, true);
+      delegated.__adcCloseDelegated = true;
+    }
     containerObserver = new MutationObserver(() => scanPlaylightExitIntentBar());
     containerObserver.observe(root, { childList: true, subtree: true });
     scanPlaylightExitIntentBar();

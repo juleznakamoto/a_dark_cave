@@ -2,11 +2,9 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
 import {
@@ -74,15 +72,6 @@ export default function FeedbackDialog() {
             </div>
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter>
-          <Button
-            onClick={() => useGameStore.setState({ feedbackDialogOpen: false })}
-            className="w-full font-medium"
-            button_id="feedback-dialog-continue"
-          >
-            {t("buttons.continue", { ns: "common" })}
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
