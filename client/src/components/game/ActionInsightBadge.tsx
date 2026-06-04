@@ -128,12 +128,12 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
       : getInsightAmount(state) >= cost;
 
   const costTooltip = isTimedEvent
-    ? t("ui:timedEvent.prolongForInsight", {
+    ? t("timedEvent.prolongForInsight", {
       minutes: PROLONG_MINUTES,
       cost,
       resource: formatTooltipResourceName("insight"),
     })
-    : t("ui:badges.insightRevealSeeEffects", {
+    : t("badges.insightRevealSeeEffects", {
       cost,
       resource: formatTooltipResourceName("insight"),
     });

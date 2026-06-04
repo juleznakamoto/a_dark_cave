@@ -224,12 +224,12 @@ body {
 
 /* Stats side-panel header insight badge */
 .building-action-badge--stats-header {
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
 .building-action-badge--stats-header:hover,
 .building-action-badge--stats-header.building-action-badge--playing {
-  border-color: rgba(255, 255, 255, 0.6);
+  border-color: rgba(255, 255, 255, 0.8);
 }
 
 .building-action-badge__idle,

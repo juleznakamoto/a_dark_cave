@@ -37,6 +37,17 @@ describe("i18n runtime", () => {
     expect(viaBadgeKey).not.toContain("See effects");
   });
 
+  it("resolves timed event prolong tooltip in ui namespace", () => {
+    const opts = { minutes: 5, cost: 250, resource: "Insight" };
+    expect(i18n.exists("timedEvent.prolongForInsight", { ns: "ui" })).toBe(true);
+    expect(i18n.t("timedEvent.prolongForInsight", { ...opts, ns: "ui" })).toBe(
+      "Extend time by 5 min for 250 Insight",
+    );
+    expect(i18n.t("ui:timedEvent.prolongForInsight", opts)).toBe(
+      "Extend time by 5 min for 250 Insight",
+    );
+  });
+
   it("resolves villagerCost plural tooltip in English and German", async () => {
     expect(getUiTooltip("villagerCost", "-{{count}} Villager", { count: 1 })).toBe(
       "-1 Villager",
