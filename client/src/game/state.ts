@@ -41,6 +41,7 @@ import {
   markSeenResources,
 } from "@/game/stateHelpers";
 import { capResourceToLimit } from "@/game/resourceLimits";
+import { computePersistedSocialTasksGold } from "@/game/socialTasksGold";
 import {
   canRevealEffects,
   canRevealStatEffects,
@@ -2159,6 +2160,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
       playTime: 0,
       allowPlaytimeOverwrite: true,
     };
+
+    const socialTasksGold = computePersistedSocialTasksGold({
+      social_media_rewards: preserved.social_media_rewards,
+      signupWelcomeGoldClaimed: preserved.signupWelcomeGoldClaimed,
+      referrals: preserved.referrals,
+    });
+    if (socialTasksGold > 0) {
+      resetState.resources = {
+        ...resetState.resources,
+        gold: (resetState.resources?.gold ?? 0) + socialTasksGold,
+      };
+    }
 
     set(resetState);
     StateManager.scheduleEffectsUpdate(get);

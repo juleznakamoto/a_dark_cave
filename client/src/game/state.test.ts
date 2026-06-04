@@ -742,6 +742,30 @@ describe("Timed event tab cleanup on new game", () => {
     expect(state.merchantTrades.choices).toEqual([]);
     expect(state.activeTab).toBe("cave");
   });
+
+  it("restartGame re-applies gold from already-claimed social tasks", async () => {
+    mockSaveGame.mockClear();
+
+    useGameStore.setState({
+      resources: { ...useGameStore.getState().resources, gold: 9999 },
+      signupWelcomeGoldClaimed: true,
+      social_media_rewards: {
+        marketing_email: { claimed: true, timestamp: 1 },
+        instagram: { claimed: true, timestamp: 1 },
+      },
+      referrals: [{ userId: "friend", claimed: true, timestamp: 1 }],
+      flags: { ...useGameStore.getState().flags, gameStarted: true },
+    });
+
+    await useGameStore.getState().restartGame();
+
+    const state = useGameStore.getState();
+    expect(state.resources.gold).toBe(600);
+    expect(state.social_media_rewards.marketing_email?.claimed).toBe(true);
+    expect(state.social_media_rewards.instagram?.claimed).toBe(true);
+    expect(state.signupWelcomeGoldClaimed).toBe(true);
+    expect(state.referrals).toHaveLength(1);
+  });
 });
 
 describe("Disgraced Prior assignment does not bypass affordability", () => {
