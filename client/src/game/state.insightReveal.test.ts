@@ -1,5 +1,9 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { STAT_INSIGHT_REVEAL_KEY } from "./rules/insightReveal";
+import {
+  STAT_INSIGHT_REVEAL_KEY,
+  TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
+  TIMED_EVENT_TAB_PROLONG_MS,
+} from "./rules/insightReveal";
 import { createInitialState, useGameStore } from "./state";
 describe("revealActionEffects", () => {
   beforeEach(() => {
@@ -125,6 +129,76 @@ describe("revealStatEffects", () => {
     const after = useGameStore.getState();
     expect(after.statEffectsRevealed).toBe(true);
     expect(after.insightRevealing[STAT_INSIGHT_REVEAL_KEY]).toBeUndefined();
+  });
+});
+
+describe("prolongTimedEventTab", () => {
+  beforeEach(() => {
+    useGameStore.getState().initialize();
+  });
+
+  it("extends expiry and deducts insight when affordable", () => {
+    const expiryTime = Date.now() + 60_000;
+    useGameStore.setState({
+      buildings: {
+        ...useGameStore.getState().buildings,
+        clerksHut: 1,
+      },
+      resources: {
+        ...useGameStore.getState().resources,
+        insight: 300,
+      },
+      timedEventTab: {
+        isActive: true,
+        event: { id: "merchant-test", message: "m", title: "t" },
+        expiryTime,
+        startTime: Date.now(),
+        pauseAccumMs: 0,
+        pauseStartedAt: 0,
+      },
+    });
+
+    const ok = useGameStore.getState().prolongTimedEventTab();
+    expect(ok).toBe(true);
+
+    const after = useGameStore.getState();
+    expect(after.resources.insight).toBe(
+      300 - TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
+    );
+    expect(after.timedEventTab.expiryTime).toBe(
+      expiryTime + TIMED_EVENT_TAB_PROLONG_MS,
+    );
+  });
+
+  it("does nothing without Clerks Hut or insufficient insight", () => {
+    const expiryTime = Date.now() + 60_000;
+    useGameStore.setState({
+      resources: {
+        ...useGameStore.getState().resources,
+        insight: 100,
+      },
+      timedEventTab: {
+        isActive: true,
+        event: { id: "merchant-test", message: "m", title: "t" },
+        expiryTime,
+        startTime: Date.now(),
+      },
+    });
+
+    expect(useGameStore.getState().prolongTimedEventTab()).toBe(false);
+    expect(useGameStore.getState().timedEventTab.expiryTime).toBe(expiryTime);
+
+    useGameStore.setState({
+      buildings: {
+        ...useGameStore.getState().buildings,
+        clerksHut: 1,
+      },
+      resources: {
+        ...useGameStore.getState().resources,
+        insight: 10,
+      },
+    });
+    expect(useGameStore.getState().prolongTimedEventTab()).toBe(false);
   });
 });
 

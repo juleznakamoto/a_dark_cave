@@ -51,6 +51,9 @@ import {
   INSIGHT_REVEAL_DURATION_MS,
   STAT_EFFECTS_INSIGHT_COST,
   STAT_INSIGHT_REVEAL_KEY,
+  TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
+  TIMED_EVENT_TAB_PROLONG_MS,
+  canProlongTimedEventTab,
 } from "@/game/rules/insightReveal";
 import {
   calculateTotalEffects,
@@ -401,6 +404,7 @@ interface GameStore extends GameState {
   insightRevealing: Record<string, number>;
   revealActionEffects: (actionId: string) => boolean;
   revealStatEffects: () => boolean;
+  prolongTimedEventTab: () => boolean;
 }
 
 /**
@@ -2007,6 +2011,28 @@ export const useGameStore = create<GameStore>((set, get) => ({
       insightRevealing: {
         ...(state.insightRevealing ?? {}),
         [STAT_INSIGHT_REVEAL_KEY]: Date.now() + INSIGHT_REVEAL_DURATION_MS,
+      },
+    });
+    return true;
+  },
+
+  prolongTimedEventTab: () => {
+    syncTimedEventTabPauseTracking();
+    const state = get();
+    const remaining = getTimedEventTabEffectiveRemainingMs(state);
+    if (!canProlongTimedEventTab(state, remaining)) return false;
+
+    const resourceUpdates = updateResource(
+      state,
+      "insight",
+      -TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
+    );
+    set({
+      ...resourceUpdates,
+      timedEventTab: {
+        ...state.timedEventTab,
+        expiryTime:
+          (state.timedEventTab.expiryTime ?? 0) + TIMED_EVENT_TAB_PROLONG_MS,
       },
     });
     return true;

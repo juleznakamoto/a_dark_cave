@@ -10,6 +10,13 @@ export const INSIGHT_REVEAL_DURATION_MS = 3_000;
 export const INSIGHT_REVEAL_ACTION_COOLDOWN_SEC = 3;
 /** One-time cost to reveal all side-panel stat effect tooltips. */
 export const STAT_EFFECTS_INSIGHT_COST = 500;
+/** Spend Insight to extend an active timed-event tab countdown. */
+export const TIMED_EVENT_TAB_PROLONG_INSIGHT_COST = 250;
+export const TIMED_EVENT_TAB_PROLONG_MS = 5 * 60 * 1000;
+
+export function isInsightUnlocked(state: GameState): boolean {
+  return (state.buildings.clerksHut ?? 0) >= 1;
+}
 /** `insightRevealing` key while the Stats header badge plays its reveal animation. */
 export const STAT_INSIGHT_REVEAL_KEY = "stats";
 
@@ -21,7 +28,7 @@ export function canRevealStatEffects(
   state: GameState,
   insightRevealing?: Record<string, number>,
 ): boolean {
-  if ((state.buildings.clerksHut ?? 0) < 1) return false;
+  if (!isInsightUnlocked(state)) return false;
   if (isStatEffectsRevealed(state)) return false;
   if (isInsightRevealInProgress(STAT_INSIGHT_REVEAL_KEY, insightRevealing)) {
     return false;
@@ -83,7 +90,7 @@ export function getInsightRevealCost(actionId: string): number | null {
 }
 
 export function canRevealEffects(actionId: string, state: GameState): boolean {
-  if ((state.buildings.clerksHut ?? 0) < 1) return false;
+  if (!isInsightUnlocked(state)) return false;
   if ((state.revealedEffects ?? []).includes(actionId)) return false;
   return getInsightRevealCost(actionId) !== null;
 }
@@ -98,4 +105,20 @@ export function isInsightRevealInProgress(
 
 export function getInsightAmount(state: GameState): number {
   return state.resources.insight ?? 0;
+}
+
+export function canProlongTimedEventTab(
+  state: GameState & {
+    timedEventTab?: {
+      isActive?: boolean;
+      expiryTime?: number;
+    };
+  },
+  effectiveRemainingMs: number | null,
+): boolean {
+  if (!isInsightUnlocked(state)) return false;
+  const tab = state.timedEventTab;
+  if (!tab?.isActive || !tab.expiryTime) return false;
+  if (effectiveRemainingMs == null || effectiveRemainingMs <= 0) return false;
+  return getInsightAmount(state) >= TIMED_EVENT_TAB_PROLONG_INSIGHT_COST;
 }

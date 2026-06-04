@@ -50,6 +50,7 @@ import {
   hasEventChoiceSuccessTooltip,
   RelevantStatIcon,
 } from "@/components/game/EventChoiceSuccessTooltip";
+import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
 
 export default function TimedEventPanel() {
   const { t } = useTranslation(["ui", "common"]);
@@ -398,11 +399,16 @@ export default function TimedEventPanel() {
       {/* Event Title */}
       {displayTitle && (
         <h2 className="text-xs flex items-center justify-between">
-          <div>
+          <div className="flex items-center min-w-0 flex-wrap gap-x-0.5">
             <span className="font-semibold">{displayTitle} </span>
             <span className="text-muted-foreground">
               &nbsp;{formatTime(timeRemaining)}
             </span>
+            <ActionInsightBadge
+              target="timedEvent"
+              timeRemainingMs={timeRemaining}
+              safetyTimeRemainingMs={safetyTimeRemaining}
+            />
           </div>
         </h2>
       )}
