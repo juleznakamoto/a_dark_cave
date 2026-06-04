@@ -649,34 +649,39 @@ body {
   animation: notification-pulse .8s ease-in-out infinite;
 }
 
-/* Playlight exit-intent bar: red close control (SDK has no built-in dismiss) */
+/* Playlight exit-intent bar: abort-style dismiss on outer banner (SDK has no built-in close) */
 .playlight-sdk .adc-playlight-exit-intent-bar {
   position: relative;
-  padding-right: 2.75rem;
+  padding-right: 2rem;
 }
 
 .playlight-sdk .adc-playlight-exit-intent-close {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  z-index: 10;
+  top: 0.35rem;
+  right: 0.35rem;
+  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 1.25rem;
+  height: 1.25rem;
   padding: 0;
-  border: none;
-  border-radius: 0.25rem;
-  background: transparent;
-  color: rgb(220 38 38);
+  border-radius: 9999px;
+  border: 1px solid rgb(153 27 27 / 0.5);
+  background: rgb(69 10 10);
+  color: rgb(255 255 255);
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   cursor: pointer;
-  opacity: 0.9;
-  transition: opacity 0.15s ease;
+  transition: background-color 0.15s ease;
 }
 
 .playlight-sdk .adc-playlight-exit-intent-close:hover {
-  opacity: 1;
+  background: rgb(127 29 29);
+}
+
+.playlight-sdk .adc-playlight-exit-intent-close svg {
+  width: 0.75rem;
+  height: 0.75rem;
 }
 
 .playlight-sdk .adc-playlight-exit-intent-close:focus-visible {

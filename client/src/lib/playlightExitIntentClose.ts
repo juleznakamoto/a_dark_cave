@@ -25,45 +25,64 @@ function disconnectContainerObserver(): void {
   }
 }
 
-function dismissExitIntentBar(bar: HTMLElement): void {
-  bar.classList.add(HIDDEN_CLASS);
+/** Full-width exit-intent banner (not the nested "MORE GAMES" menu). */
+function resolveExitIntentHost(menu: HTMLElement): HTMLElement {
+  let host: HTMLElement = menu;
+  while (host.parentElement) {
+    const parent = host.parentElement;
+    if (
+      parent.id === 'playlight-sdk-container' ||
+      parent.classList.contains('playlight-sdk')
+    ) {
+      break;
+    }
+    host = parent;
+  }
+  return host;
+}
+
+function dismissExitIntentBar(host: HTMLElement): void {
+  host.classList.add(HIDDEN_CLASS);
   document.dispatchEvent(
     new MouseEvent('mousemove', { bubbles: true, clientX: 0, clientY: 0 }),
   );
   window.setTimeout(() => {
-    bar.classList.remove(HIDDEN_CLASS);
+    host.classList.remove(HIDDEN_CLASS);
   }, SDK_DISMISS_MS);
 }
 
-function injectCloseButton(bar: HTMLElement): void {
-  if (bar.querySelector(`.${CLOSE_BTN_CLASS}`)) return;
+/** Matches CooldownButton craft/build abort overlay (slightly larger). */
+const ABORT_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>`;
 
-  bar.classList.add(BAR_HOOK_CLASS);
+function injectCloseButton(host: HTMLElement): void {
+  if (host.querySelector(`.${CLOSE_BTN_CLASS}`)) return;
+
+  host.classList.add(BAR_HOOK_CLASS);
 
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = CLOSE_BTN_CLASS;
   btn.setAttribute('aria-label', 'Close');
-  btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>`;
+  btn.innerHTML = ABORT_ICON_SVG;
 
   btn.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
-    dismissExitIntentBar(bar);
+    dismissExitIntentBar(host);
   });
 
-  bar.appendChild(btn);
+  host.appendChild(btn);
 }
 
 export function scanPlaylightExitIntentBar(): void {
-  const bar = document.querySelector(EXIT_INTENT_BAR_SELECTOR);
-  if (bar instanceof HTMLElement) {
-    injectCloseButton(bar);
+  const menu = document.querySelector(EXIT_INTENT_BAR_SELECTOR);
+  if (menu instanceof HTMLElement) {
+    injectCloseButton(resolveExitIntentHost(menu));
   }
 }
 
 /**
- * Watches the Playlight mount node and adds a red close button to the exit-intent bar.
+ * Watches the Playlight mount node and adds an abort-style close on the exit-intent banner.
  * Call once after `playlightSDK.init()`.
  */
 export function installPlaylightExitIntentCloseButton(): void {
