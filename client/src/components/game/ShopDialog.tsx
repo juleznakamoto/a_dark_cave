@@ -1474,19 +1474,19 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </div>
                   )}
                   {activeTab === "purchases" && (
-                    <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/5 px-2 py-2 text-sm text-foreground">
+                    <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/5 px-2 py-2 text-xs font-normal  text-foreground">
                       {purchasedItems.length === 0 &&
                         Object.keys(gameState.feastActivations || {}).length ===
                         0 ? (
                         <>
-                          <p className="text-md font-medium">
+                          <p>
                             {t("ui:shop.noPurchasesTitle")}
                           </p>
                           <p>{t("ui:shop.noPurchasesHint")}</p>
                         </>
                       ) : (
                         <>
-                          <p className="text-md font-medium">
+                          <p>
                             {t("ui:shop.activatePurchasesTitle")}
                           </p>
                           <p>{t("ui:shop.activatePurchasesNote")}</p>
