@@ -64,6 +64,7 @@
     "react-dom": "^18.3.1",
     "react-helmet-async": "^2.0.5",
     "react-i18next": "^17.0.8",
+    "react-refresh": "^0.18.0",
     "recharts": "^2.15.4",
     "stripe": "^19.2.0",
     "supertest": "^7.1.4",
