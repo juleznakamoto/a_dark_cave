@@ -129,11 +129,13 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
 
   const costTooltip = isTimedEvent
     ? t("timedEvent.prolongForInsight", {
+      ns: "ui",
       minutes: PROLONG_MINUTES,
       cost,
       resource: formatTooltipResourceName("insight"),
     })
     : t("badges.insightRevealSeeEffects", {
+      ns: "ui",
       cost,
       resource: formatTooltipResourceName("insight"),
     });

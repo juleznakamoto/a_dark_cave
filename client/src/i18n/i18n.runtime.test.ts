@@ -38,12 +38,9 @@ describe("i18n runtime", () => {
   });
 
   it("resolves timed event prolong tooltip in ui namespace", () => {
-    const opts = { minutes: 5, cost: 250, resource: "Insight" };
+    const opts = { ns: "ui" as const, minutes: 5, cost: 250, resource: "Insight" };
     expect(i18n.exists("timedEvent.prolongForInsight", { ns: "ui" })).toBe(true);
-    expect(i18n.t("timedEvent.prolongForInsight", { ...opts, ns: "ui" })).toBe(
-      "Extend time by 5 min for 250 Insight",
-    );
-    expect(i18n.t("ui:timedEvent.prolongForInsight", opts)).toBe(
+    expect(i18n.t("timedEvent.prolongForInsight", opts)).toBe(
       "Extend time by 5 min for 250 Insight",
     );
   });

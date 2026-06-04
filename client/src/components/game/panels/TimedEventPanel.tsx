@@ -423,8 +423,10 @@ export default function TimedEventPanel() {
       {/* Choices */}
       <div className="space-y-2 pt-1">
         {(isMerchantEvent || isCollectorEvent) && (
-          <h3 className="text-xs font-medium flex items-center">
-            <span>{isMerchantEvent ? t("ui:timedEvent.buy") : t("ui:timedEvent.sell")}</span>
+          <h3 className="text-xs font-medium inline-flex items-center gap-1.5">
+            <span className="leading-none">
+              {isMerchantEvent ? t("ui:timedEvent.buy") : t("ui:timedEvent.sell")}
+            </span>
             {isMerchantEvent &&
               (() => {
                 const knowledge = gameState.stats?.knowledge || 0;
@@ -468,7 +470,7 @@ export default function TimedEventPanel() {
                       tooltipId="merchant-discount"
                       disabled
                     >
-                      <span className="font-noto-symbols-2 text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-lg pl-2">
+                      <span className="font-noto-symbols-2 text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-flex shrink-0 items-center justify-center text-sm leading-none">
                         ✧
                       </span>
                     </TooltipWrapper>
