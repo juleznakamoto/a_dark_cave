@@ -183,6 +183,25 @@ export default function OverviewTab(props: OverviewTabProps) {
 
   const conversionChartHasReliableData = conversionChartData.some((d) => d.conversion != null);
 
+  const conversionYAxisDomain = useMemo((): [number, number] => {
+    const values = conversionChartData
+      .map((d) => d.conversion)
+      .filter((v): v is number => v != null);
+    if (values.length === 0) return [0, 10];
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    if (min === max) {
+      const pad = min === 0 ? 1 : Math.max(0.5, min * 0.2);
+      return [Math.max(0, Math.round((min - pad) * 10) / 10), Math.round((max + pad) * 10) / 10];
+    }
+    const span = max - min;
+    const pad = Math.max(span * 0.08, 0.3);
+    return [
+      Math.max(0, Math.round((min - pad) * 10) / 10),
+      Math.round((max + pad) * 10) / 10,
+    ];
+  }, [conversionChartData]);
+
   // Filter and format DAU data based on this chart's range only
   const getFormattedDailyActiveUsers = () => {
     const now = new Date();
@@ -588,7 +607,7 @@ export default function OverviewTab(props: OverviewTabProps) {
               />
               <YAxis
                 tickFormatter={(v) => `${v}%`}
-                domain={[0, 100]}
+                domain={conversionYAxisDomain}
               />
               <Tooltip
                 formatter={(value: number | null, _name, item) => {
