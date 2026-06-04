@@ -1,6 +1,6 @@
 {
   "shop": {
-    "title": "Loja do Mercador",
+    "title": "Mercador",
     "purchase": "Comprar",
     "owned": "Adquirido",
     "notEnoughGold": "Você não tem ouro suficiente.",
@@ -43,8 +43,8 @@
     "purchaseSuccessful": "Compra Concluída!",
     "purchaseAddedSingle": "{{name}} foi adicionado às suas compras. Acesse a aba Compras para ativá-lo.",
     "purchaseAddedBundle": "Os componentes de {{name}} foram adicionados às suas compras. Acesse a aba Compras para ativá-los.",
-    "freeGoldAdded": "{{amount}} de Ouro foi adicionado aos seus recursos!",
-    "freeGoldClaimedLog": "Você resgatou {{amount}} de Ouro. Volte amanhã se sobreviver à noite.",
+    "freeGoldAdded": "{{amount}} Ouro foi adicionado aos seus recursos!",
+    "freeGoldClaimedLog": "Você resgatou {{amount}} Ouro. Volte amanhã se sobreviver à noite.",
     "freeGoldCooldownLog_one": "Você poderá resgatar ouro grátis novamente em {{hours}} hora.",
     "freeGoldCooldownLog_other": "Você poderá resgatar ouro grátis novamente em {{hours}} horas.",
     "freeItemAdded": "{{name}} foi adicionado às suas compras. Acesse a aba Compras para ativá-lo.",

@@ -31,34 +31,34 @@
     "name": "Jogo Completo"
   },
   "gold_1000": {
-    "activationMessage": "1000 de Ouro foram adicionados ao seu inventário.",
+    "activationMessage": "1000 Ouro foram adicionados ao seu inventário.",
     "description": "Uma quantia razoável de Ouro",
-    "name": "1'000 de Ouro"
+    "name": "1'000 Ouro"
   },
   "gold_100_free": {
-    "activationMessage": "100 de Ouro foram adicionados ao seu inventário como presente!",
+    "activationMessage": "100 Ouro foram adicionados ao seu inventário como presente!",
     "description": "Uma pequena clemência diária num mundo gélido",
-    "name": "Presente de 100 de Ouro"
+    "name": "Presente de 100 Ouro"
   },
   "gold_20000": {
-    "activationMessage": "20'000 de Ouro foram adicionados ao seu inventário.",
+    "activationMessage": "20'000 Ouro foram adicionados ao seu inventário.",
     "description": "Quantias profanas de Ouro",
-    "name": "20'000 de Ouro"
+    "name": "20'000 Ouro"
   },
   "gold_250": {
-    "activationMessage": "1000 de Ouro foram adicionados ao seu inventário.",
+    "activationMessage": "1000 Ouro foram adicionados ao seu inventário.",
     "description": "Uma quantia razoável de Ouro",
-    "name": "1'000 de Ouro"
+    "name": "1'000 Ouro"
   },
   "gold_2500": {
-    "activationMessage": "2500 de Ouro foram adicionados ao seu inventário.",
+    "activationMessage": "2500 Ouro foram adicionados ao seu inventário.",
     "description": "Um tesouro substancial",
-    "name": "2'500 de Ouro"
+    "name": "2'500 Ouro"
   },
   "gold_5000": {
-    "activationMessage": "5000 de Ouro foram adicionados ao seu inventário.",
+    "activationMessage": "5000 Ouro foram adicionados ao seu inventário.",
     "description": "Uma fortuna em Ouro",
-    "name": "5'000 de Ouro"
+    "name": "5'000 Ouro"
   },
   "great_feast_1": {
     "activationMessage": "Um Grande Banquete começou!",
@@ -67,7 +67,7 @@
   },
   "great_feast_3": {
     "activationMessage": "Um Grande Banquete começou!",
-    "description": "Aumenta a produção dos aldeões em 5x por 30 minutos (3 vezes)",
+    "description": "Aumenta a produção dos aldeões em 5x por 30 minutos (3 usos)",
     "name": "3 Grandes Banquetes"
   },
   "skull_lantern": {
