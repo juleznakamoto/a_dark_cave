@@ -38,11 +38,31 @@ describe("i18n runtime", () => {
   });
 
   it("resolves timed event prolong tooltip in ui namespace", () => {
-    const opts = { ns: "ui" as const, minutes: 5, cost: 250, resource: "Insight" };
+    const opts = { minutes: 5, cost: 250, resource: "Insight" };
     expect(i18n.exists("timedEvent.prolongForInsight", { ns: "ui" })).toBe(true);
-    expect(i18n.t("timedEvent.prolongForInsight", opts)).toBe(
+    expect(i18n.t("ui:timedEvent.prolongForInsight", opts)).toBe(
       "Extend time by 5 min for 250 Insight",
     );
+    expect(
+      tWithFallback(
+        "ui",
+        "timedEvent.prolongForInsight",
+        "Extend time by {{minutes}} min for {{cost}} {{resource}}",
+        opts,
+      ),
+    ).toBe("Extend time by 5 min for 250 Insight");
+  });
+
+  it("resolves timed event prolong tooltip in German", async () => {
+    await i18n.changeLanguage("de");
+    expect(
+      tWithFallback(
+        "ui",
+        "timedEvent.prolongForInsight",
+        "Extend time by {{minutes}} min for {{cost}} {{resource}}",
+        { minutes: 5, cost: 250, resource: "Einsicht" },
+      ),
+    ).toBe("Zeit um 5 Min. für 250 Einsicht verlängern");
   });
 
   it("resolves villagerCost plural tooltip in English and German", async () => {

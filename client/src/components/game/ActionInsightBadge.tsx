@@ -22,6 +22,7 @@ import {
   getTimedEventTabEffectiveRemainingMs,
   useGameStore,
 } from "@/game/state";
+import { tWithFallback } from "@/i18n/resolveGameText";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
 import { cn } from "@/lib/utils";
 import type { GameState } from "@shared/schema";
@@ -51,7 +52,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   const safetyTimeRemainingMs =
     target === "timedEvent" ? props.safetyTimeRemainingMs : 0;
 
-  const { t } = useTranslation("ui");
+  useTranslation("ui");
   const state = useGameStore((s) => s as unknown as GameState);
   const timedTabActive = useGameStore((s) => s.timedEventTab.isActive);
   const insightProlongUsed = useGameStore(
@@ -132,25 +133,31 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
       ? canRevealStatEffects(state, insightRevealing)
       : getInsightAmount(state) >= cost;
 
+  const insightResource = formatTooltipResourceName("insight");
   const costTooltip = isTimedEvent
-    ? t("timedEvent.prolongForInsight", {
-      ns: "ui",
-      minutes: PROLONG_MINUTES,
-      cost,
-      resource: formatTooltipResourceName("insight"),
-    })
-    : t("badges.insightRevealSeeEffects", {
-      ns: "ui",
-      cost,
-      resource: formatTooltipResourceName("insight"),
-    });
+    ? tWithFallback(
+      "ui",
+      "timedEvent.prolongForInsight",
+      "Extend time by {{minutes}} min for {{cost}} {{resource}}",
+      {
+        minutes: PROLONG_MINUTES,
+        cost,
+        resource: insightResource,
+      },
+    )
+    : tWithFallback(
+      "ui",
+      "badges.insightRevealSeeEffects",
+      "See effects for {{cost}} {{resource}}",
+      { cost, resource: insightResource },
+    );
 
   const isBadgeDisabled = isTimedEvent
     ? !timedTimerUsable || !canAfford || playing
     : !canAfford || playing;
 
   const showDisabledOpacity = isTimedEvent
-    ? isBadgeDisabled
+    ? !playing && (!timedTimerUsable || !canAfford)
     : !canAfford && !playing;
 
   const tooltipId = isTimedEvent
