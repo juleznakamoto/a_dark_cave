@@ -424,9 +424,11 @@ export function isTraderFooterShopVisible(state: {
   story?: { seen?: Record<string, unknown> };
   traderDialogOpens?: number;
   cruelMode?: boolean;
+  devMode?: boolean;
   hasMadeNonFreePurchase?: boolean;
   activatedPurchases?: Record<string, boolean>;
 }): boolean {
+  if (state.devMode) return true;
   if (state.cruelMode) return true;
   if (hasAnyShopPurchase(state)) return true;
   return isTraderShopUnlocked(state);

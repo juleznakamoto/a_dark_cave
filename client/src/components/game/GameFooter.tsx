@@ -42,6 +42,7 @@ export default function GameFooter() {
     setMusicMuted,
     setSfxMuted,
     cruelMode,
+    devMode,
     idleModeDialog,
     playTime,
     setFullGamePurchaseDialogOpen,
@@ -84,6 +85,7 @@ export default function GameFooter() {
     story,
     traderDialogOpens,
     cruelMode,
+    devMode,
     hasMadeNonFreePurchase,
     activatedPurchases,
   });
@@ -187,7 +189,8 @@ export default function GameFooter() {
               >
                 {t("footer.fullGame")}
               </Button>
-            ) : traderShopUnlocked ? (
+            ) : null}
+            {traderShopUnlocked && (devMode || BTP !== 1) ? (
               <HoverCalloutTooltip
                 label={t("footer.openShop")}
                 side="top"

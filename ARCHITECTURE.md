@@ -80,7 +80,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | `components/ui/` | shadcn/ui design system + game visuals | `button.tsx`, `card.tsx`, `dialog`, `toast.tsx`, `mist-background.tsx`, `cloud-shader.tsx`, `limelight-nav.tsx` |
 | `hooks/` | React hooks | `use-toast.ts`, `useCooldown.ts`, `use-mobile.tsx` |
 | `i18n/` | Localization (see below) | `index.ts`, `locales.ts`, `resolveGameText.ts`, `logDisplay.ts`, `locales/` |
-| `lib/` | Cross-cutting utilities | `logger.ts` (always use instead of `console.*`), `queryClient.ts`, `sessionTracker.ts`, `tailwindColors.ts`, Supabase/audio clients |
+| `lib/` | Cross-cutting utilities | `logger.ts` (always use instead of `console.*`), `queryClient.ts`, `sessionTracker.ts`, `tailwindColors.ts`, Supabase/audio clients; `playlight.ts` (Playlight SDK init, exit-intent gating, discovery pause); `playlightExitIntentClose.ts` (injected red close on SDK exit-intent bar) |
 | `achievements/` | Achievement configs, charts, claim logic | — |
 
 **Lazy-loading:** start screen loads first; the full `Game` chunk loads only after "Light Fire"

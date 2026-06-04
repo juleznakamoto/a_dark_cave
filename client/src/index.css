@@ -242,10 +242,8 @@ body {
 }
 
 /* Idle: static blue disc. Hover or reveal cooldown (--playing) runs blob animation. */
-.building-action-badge:not(:hover):not(.building-action-badge--playing)
-  .building-action-badge__clip,
-.building-action-badge:not(:hover):not(.building-action-badge--playing)
-  .building-action-badge__triangle {
+.building-action-badge:not(:hover):not(.building-action-badge--playing) .building-action-badge__clip,
+.building-action-badge:not(:hover):not(.building-action-badge--playing) .building-action-badge__triangle {
   animation: none !important;
   filter: none;
   transform: none;
@@ -649,6 +647,46 @@ body {
 
 .notification-pulse {
   animation: notification-pulse .8s ease-in-out infinite;
+}
+
+/* Playlight exit-intent bar: red close control (SDK has no built-in dismiss) */
+.playlight-sdk .adc-playlight-exit-intent-bar {
+  position: relative;
+  padding-right: 2.75rem;
+}
+
+.playlight-sdk .adc-playlight-exit-intent-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: none;
+  border-radius: 0.25rem;
+  background: transparent;
+  color: rgb(220 38 38);
+  cursor: pointer;
+  opacity: 0.9;
+  transition: opacity 0.15s ease;
+}
+
+.playlight-sdk .adc-playlight-exit-intent-close:hover {
+  opacity: 1;
+}
+
+.playlight-sdk .adc-playlight-exit-intent-close:focus-visible {
+  outline: 2px solid rgb(220 38 38);
+  outline-offset: 2px;
+}
+
+.playlight-sdk .adc-playlight-exit-intent-hidden {
+  display: none !important;
+  pointer-events: none !important;
 }
 
 /* Playlight discovery: cue next to flashlight when paused / after sleep dialog delay */

@@ -37,6 +37,22 @@ describe("isTraderShopUnlocked", () => {
 });
 
 describe("isTraderFooterShopVisible", () => {
+  it("is true in dev mode before traderSettled", () => {
+    expect(
+      isTraderFooterShopVisible({
+        story: { seen: {} },
+        traderDialogOpens: 0,
+        devMode: true,
+      }),
+    ).toBe(true);
+    expect(
+      isTraderShopUnlocked({
+        story: { seen: {} },
+        traderDialogOpens: 0,
+      }),
+    ).toBe(false);
+  });
+
   it("is true in cruel mode before traderSettled (tabs stay locked)", () => {
     expect(
       isTraderFooterShopVisible({

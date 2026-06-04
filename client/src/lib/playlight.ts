@@ -1,4 +1,8 @@
 import { logger } from "@/lib/logger";
+import {
+  installPlaylightExitIntentCloseButton,
+  scanPlaylightExitIntentBar,
+} from "@/lib/playlightExitIntentClose";
 
 /** True when the player landed with the Playlight campaign URL (`?utm_source=playlight`). */
 export function isPlaylightReferralUrl(): boolean {
@@ -224,6 +228,7 @@ export async function initPlaylight() {
       };
 
       (window as any).playlightSDK = playlightSDK;
+      installPlaylightExitIntentCloseButton();
 
       // Clean up previous subscription if it exists (shouldn't happen, but defensive)
       if (gameStoreUnsubscribe) {
@@ -243,6 +248,7 @@ export async function initPlaylight() {
 
       // Rate limit uses SDK `exitIntent` (top bar / indicator), not discovery opens.
       playlightSDK.onEvent("exitIntent", () => {
+        requestAnimationFrame(() => scanPlaylightExitIntentBar());
         const state = useGameStore.getState();
         if (skipNextExitIntentQuota) {
           skipNextExitIntentQuota = false;
