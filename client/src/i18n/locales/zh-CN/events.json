@@ -716,7 +716,7 @@
   "frostfall": {
     "choices": {
       "doNothing": {
-        "label": "什么都不做"
+        "label": "不准备"
       },
       "prepareFrostfall": {
         "label": "准备"

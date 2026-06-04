@@ -739,7 +739,7 @@
   "frostfall": {
     "choices": {
       "doNothing": {
-        "label": "Non fare nulla"
+        "label": "Non prepararti"
       },
       "prepareFrostfall": {
         "label": "Preparati"
