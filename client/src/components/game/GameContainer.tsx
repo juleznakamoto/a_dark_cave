@@ -887,7 +887,7 @@ export default function GameContainer() {
         <section className="flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
           {/* Horizontal Game Tabs */}
           <nav
-            className={`border-t border-border pl-2 pr-2 md:pl-4 md:pr-4 flex-shrink-0${isPaused ? " relative z-[41] pointer-events-auto" : ""}`}
+            className={`border-t border-border pl-2 pr-12 md:pl-4 md:pr-14 flex-shrink-0${isPaused ? " relative z-[41] pointer-events-auto" : ""}`}
           >
             {useLimelightNav ? (
               // Alternative LimelightNav design
@@ -1095,7 +1095,7 @@ export default function GameContainer() {
 
                 {traderUnlocked && (
                   <button
-                    className={`inline-flex h-10 items-baseline justify-center bg-transparent text-sm font-normal leading-none group shrink-0 gap-1 pl-2 ${animatingTabs.has("trader")
+                    className={`${tabButtonClass} group shrink-0 gap-1.5 pl-2 ${animatingTabs.has("trader")
                       ? fadePhaseTabs.has("trader")
                         ? "tab-fade-in"
                         : "tab-blink-new"
@@ -1117,7 +1117,7 @@ export default function GameContainer() {
                     data-testid="tab-trader"
                   >
                     <span
-                      className="font-noto-symbols-2 text-[17px] leading-none text-lime-500 opacity-80 transition-opacity group-hover:opacity-100 relative top-px ml-0.5"
+                      className="font-noto-symbols-2 text-base leading-none text-lime-500 opacity-80 transition-opacity group-hover:opacity-100 self-end mb-0.5"
                       aria-hidden
                     >
                       ◬
