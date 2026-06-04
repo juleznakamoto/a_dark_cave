@@ -102,7 +102,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
 
   const hostClassName = cn(
     !canAfford && !playing && "opacity-40",
-    layout === "inline" && "inline-flex shrink-0 translate-y-px",
+    layout === "inline" && "inline-flex shrink-0 items-center self-center",
   );
   const hostStyle =
     layout === "overlay"
@@ -127,7 +127,11 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
         tooltip={costTooltip}
         tooltipId={tooltipId}
         tooltipContentClassName="text-white"
-        className={layout === "overlay" ? "block h-full w-full" : "inline-flex"}
+        className={
+          layout === "overlay"
+            ? "block h-full w-full"
+            : "inline-flex items-center"
+        }
         tooltipTriggerAsChild
         disabled={isBadgeDisabled}
         onClick={handleReveal}

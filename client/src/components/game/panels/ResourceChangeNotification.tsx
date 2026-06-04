@@ -1,4 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useGameStore } from '@/game/state';
+import type { GameState } from '@shared/schema';
+import {
+  getMaxBombLimit,
+  getMaxVeinfireElixirLimit,
+  getResourceLimit,
+  isBombResource,
+  isResourceLimited,
+  isVeinfireElixirResource,
+} from '@/game/resourceLimits';
 
 interface ResourceChange {
   resource: string;
@@ -28,7 +38,28 @@ interface ResourceChangeNotificationProps {
   changes: ResourceChange[];
 }
 
+/** True when a positive gain left this resource at its effective cap (matches side-panel amount yellow). */
+function isPositiveGainAtResourceCap(
+  resource: string,
+  amount: number,
+  state: GameState,
+): boolean {
+  if (amount <= 0 || !isResourceLimited(resource, state)) return false;
+  const current =
+    state.resources[resource as keyof GameState['resources']] ?? 0;
+  let cap: number;
+  if (isVeinfireElixirResource(resource)) {
+    cap = getMaxVeinfireElixirLimit();
+  } else if (isBombResource(resource)) {
+    cap = getMaxBombLimit(state);
+  } else {
+    cap = getResourceLimit(state);
+  }
+  return current >= cap;
+}
+
 export default function ResourceChangeNotification({ resource, changes }: ResourceChangeNotificationProps) {
+  const gameState = useGameStore();
   const [visibleChange, setVisibleChange] = useState<ResourceChange | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const microDelayTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -123,6 +154,12 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
     return null;
   }
 
+  const hitResourceCap = isPositiveGainAtResourceCap(
+    resource,
+    visibleChange.amount,
+    gameState as GameState,
+  );
+
   return (
     <div
       className="pointer-events-none absolute inset-0 z-[1] bg-background text-right"
@@ -133,7 +170,9 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
           block w-full text-right text-xs font-mono font-bold tabular-nums leading-none whitespace-nowrap
           animate-in fade-in-0 slide-in-from-left-2 duration-300
           ${visibleChange.amount > 0
-            ? "text-green-600"
+            ? hitResourceCap
+              ? "text-yellow-800"
+              : "text-green-600"
             : "text-red-600"
           }
         `}

@@ -928,7 +928,7 @@ export default function SidePanelSection({
   const tooltipKey = `section-title-${baseTitleForKey}`;
 
   const titleHeading = (
-    <h3 className="text-xs font-medium tracking-wide">{title}</h3>
+    <h3 className="text-xs font-medium tracking-wide leading-none">{title}</h3>
   );
 
   const titleLabel = titleTooltip ? (
@@ -942,7 +942,7 @@ export default function SidePanelSection({
         }
       }}
       className={cn(
-        titleExtra ? "inline-block" : "min-w-0 flex-1",
+        titleExtra ? "inline-flex items-center" : "min-w-0 flex-1",
         globalTooltip.isMobile ? "cursor-pointer" : "",
         !hoveredTooltips[tooltipKey] && "new-item-pulse",
       )}
@@ -958,11 +958,11 @@ export default function SidePanelSection({
       <div
         className={cn(
           "mb-0.5 flex items-center",
-          titleExtra ? "gap-0.5" : "gap-1",
+          titleExtra ? "gap-1.5" : "gap-1",
         )}
       >
         {titleExtra ? (
-          <div className="flex items-center gap-0.5">
+          <div className="flex items-center gap-1.5">
             {titleLabel}
             {titleExtra}
           </div>
