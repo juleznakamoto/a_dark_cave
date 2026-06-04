@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useGameStore } from '@/game/state';
-import type { GameState } from '@shared/schema';
+import React, { useEffect, useState, useRef } from "react";
+import { useGameStore } from "@/game/state";
+import type { GameState } from "@shared/schema";
 import {
   getMaxBombLimit,
   getMaxVeinfireElixirLimit,
@@ -8,7 +8,7 @@ import {
   isBombResource,
   isResourceLimited,
   isVeinfireElixirResource,
-} from '@/game/resourceLimits';
+} from "@/game/resourceLimits";
 
 interface ResourceChange {
   resource: string;
@@ -19,16 +19,28 @@ interface ResourceChange {
 // Helper function to abbreviate large numbers
 const abbreviateNumber = (num: number): string => {
   const absNum = Math.abs(num);
-  const sign = num < 0 ? '-' : '';
+  const sign = num < 0 ? "-" : "";
 
   if (absNum >= 1000000000) {
-    return sign + (absNum / 1000000000).toFixed(1).replace(/\.0$/, '').replace(".", "'") + 'B';
+    return (
+      sign +
+      (absNum / 1000000000).toFixed(1).replace(/\.0$/, "").replace(".", "'") +
+      "B"
+    );
   }
   if (absNum >= 1000000) {
-    return sign + (absNum / 1000000).toFixed(1).replace(/\.0$/, '').replace(".", "'") + 'M';
+    return (
+      sign +
+      (absNum / 1000000).toFixed(1).replace(/\.0$/, "").replace(".", "'") +
+      "M"
+    );
   }
   if (absNum >= 1000) {
-    return sign + (absNum / 1000).toFixed(1).replace(/\.0$/, '').replace(".", "'") + 'K';
+    return (
+      sign +
+      (absNum / 1000).toFixed(1).replace(/\.0$/, "").replace(".", "'") +
+      "K"
+    );
   }
   return num.toString();
 };
@@ -46,7 +58,7 @@ function isPositiveGainAtResourceCap(
 ): boolean {
   if (amount <= 0 || !isResourceLimited(resource, state)) return false;
   const current =
-    state.resources[resource as keyof GameState['resources']] ?? 0;
+    state.resources[resource as keyof GameState["resources"]] ?? 0;
   let cap: number;
   if (isVeinfireElixirResource(resource)) {
     cap = getMaxVeinfireElixirLimit();
@@ -58,25 +70,35 @@ function isPositiveGainAtResourceCap(
   return current >= cap;
 }
 
-export default function ResourceChangeNotification({ resource, changes }: ResourceChangeNotificationProps) {
+export default function ResourceChangeNotification({
+  resource,
+  changes,
+}: ResourceChangeNotificationProps) {
   const gameState = useGameStore();
-  const [visibleChange, setVisibleChange] = useState<ResourceChange | null>(null);
+  const [visibleChange, setVisibleChange] = useState<ResourceChange | null>(
+    null,
+  );
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const microDelayTimerRef = useRef<NodeJS.Timeout | null>(null);
   const lastChangeTimestampRef = useRef<number>(0);
 
   useEffect(() => {
     // Find the latest change overall (not just for this resource)
-    const latestChangeOverall = changes
-      .sort((a, b) => b.timestamp - a.timestamp)[0];
+    const latestChangeOverall = changes.sort(
+      (a, b) => b.timestamp - a.timestamp,
+    )[0];
 
     // Find the latest change for this specific resource
     const latestChangeForResource = changes
-      .filter(change => change.resource === resource)
+      .filter((change) => change.resource === resource)
       .sort((a, b) => b.timestamp - a.timestamp)[0];
 
     // If there's ANY new change (different timestamp than our last one), clear the current notification
-    if (latestChangeOverall && visibleChange && latestChangeOverall.timestamp !== lastChangeTimestampRef.current) {
+    if (
+      latestChangeOverall &&
+      visibleChange &&
+      latestChangeOverall.timestamp !== lastChangeTimestampRef.current
+    ) {
       // Clear any existing timers
       if (timerRef.current) {
         clearTimeout(timerRef.current);
@@ -93,7 +115,10 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
     }
 
     // Only update if we have a new change for THIS resource (different timestamp)
-    if (latestChangeForResource && latestChangeForResource.timestamp !== lastChangeTimestampRef.current) {
+    if (
+      latestChangeForResource &&
+      latestChangeForResource.timestamp !== lastChangeTimestampRef.current
+    ) {
       // Clear any existing timers
       if (timerRef.current) {
         clearTimeout(timerRef.current);
@@ -169,15 +194,17 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
         className={`
           block w-full text-right text-xs font-mono font-bold tabular-nums leading-none whitespace-nowrap
           animate-in fade-in-0 slide-in-from-left-2 duration-300
-          ${visibleChange.amount > 0
-            ? hitResourceCap
-              ? "text-yellow-800"
-              : "text-green-600"
-            : "text-red-600"
+          ${
+            visibleChange.amount > 0
+              ? hitResourceCap
+                ? "text-yellow-600"
+                : "text-green-600"
+              : "text-red-600"
           }
         `}
       >
-        {visibleChange.amount > 0 ? '+' : ''}{abbreviateNumber(Math.round(visibleChange.amount))}
+        {visibleChange.amount > 0 ? "+" : ""}
+        {abbreviateNumber(Math.round(visibleChange.amount))}
       </span>
     </div>
   );
