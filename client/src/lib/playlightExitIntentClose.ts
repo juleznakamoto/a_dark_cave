@@ -45,7 +45,9 @@ function dismissExitIntentBanner(banner: HTMLElement): void {
   } catch {
     /* ignore */
   }
-  window.dispatchEvent(
+  // Dispatch on document.body (a Node) — NOT window: the SDK handler runs `banner.contains(e.target)`,
+  // which throws if `e.target` is `window`. Bubbles up to the SDK's window listener either way.
+  document.body.dispatchEvent(
     new MouseEvent('mousemove', { bubbles: true, clientX: 0, clientY: 0 }),
   );
 }
@@ -63,6 +65,16 @@ function injectCloseButton(banner: HTMLElement): void {
   btn.className = CLOSE_BTN_CLASS;
   btn.setAttribute('aria-label', 'Close');
   btn.innerHTML = ABORT_ICON_SVG;
+
+  // Force corner placement inline with !important: the banner's flex `items-center` + SDK rules
+  // otherwise win over our stylesheet and vertically center the button.
+  btn.style.setProperty('position', 'absolute', 'important');
+  btn.style.setProperty('top', '0.4rem', 'important');
+  btn.style.setProperty('right', '0.4rem', 'important');
+  btn.style.setProperty('left', 'auto', 'important');
+  btn.style.setProperty('bottom', 'auto', 'important');
+  btn.style.setProperty('margin', '0', 'important');
+  btn.style.setProperty('z-index', '30', 'important');
 
   // Stop pointerdown/click reaching the SDK's banner handlers (which open "More games").
   btn.addEventListener('pointerdown', (e) => e.stopPropagation());
