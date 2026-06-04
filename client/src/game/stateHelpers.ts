@@ -434,6 +434,40 @@ export function isTraderFooterShopVisible(state: {
   return isTraderShopUnlocked(state);
 }
 
+/** Slice of a timed debuff stored on game state (disgust, fog, etc.). */
+export type TimedDebuffSlice = {
+  isActive?: boolean;
+  endTime?: number;
+  duration?: number;
+};
+
+export type StackedTimedDebuff = {
+  isActive: true;
+  endTime: number;
+  duration: number;
+};
+
+/**
+ * Extend an active timed debuff by stacking duration on its current end time.
+ * If inactive or expired, starts a fresh window from `now`.
+ * `duration` is the total remaining span from `now` (for UI progress rings).
+ */
+export function stackTimedDebuff(
+  current: TimedDebuffSlice | undefined,
+  additionalDurationMs: number,
+  now = Date.now(),
+): StackedTimedDebuff {
+  const active =
+    current?.isActive === true && (current.endTime ?? 0) > now;
+  const baseEnd = active ? current!.endTime! : now;
+  const endTime = baseEnd + additionalDurationMs;
+  return {
+    isActive: true,
+    endTime,
+    duration: endTime - now,
+  };
+}
+
 // Cap resource to current storage limit
 function capResourceToLimit(resource: keyof GameState['resources'], amount: number, state: GameState): number {
   // Check if this resource should be limited

@@ -1,10 +1,26 @@
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Hero from "@/components/ui/animated-shader-hero";
 import { initPlaylight, markPlaylightDiscoveryUserInitiated } from "@/lib/playlight";
+import { useGameStore } from "@/game/state";
 import { useTranslation } from "react-i18next";
 
 export default function EndScreenPage() {
   const { t } = useTranslation("ui");
+  const [isCruelModeRun, setIsCruelModeRun] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    void (async () => {
+      try {
+        await useGameStore.getState().loadGame();
+        setIsCruelModeRun(Boolean(useGameStore.getState().cruelMode));
+      } catch {
+        setIsCruelModeRun(false);
+      }
+    })();
+  }, []);
+
+  const showCruelModePromo = isCruelModeRun !== true;
   const handleMainMenu = async () => {
     // Navigate to main menu (or home page)
     window.location.href = "/";
@@ -48,6 +64,10 @@ export default function EndScreenPage() {
     }
   };
 
+  if (isCruelModeRun === null) {
+    return <div className="fixed inset-0 z-[10000] bg-black" aria-busy="true" />;
+  }
+
   return (
     <div className="fixed inset-0 z-[10000] overflow-x-hidden">
       <Helmet>
@@ -62,16 +82,20 @@ export default function EndScreenPage() {
           line1: t("endScreen.headline1"),
           line2: t("endScreen.headline2"),
         }}
-        subtitle1={t("endScreen.subtitle1")}
-        subtitle2={t("endScreen.subtitle2")}
+        subtitle1={showCruelModePromo ? t("endScreen.subtitle1") : ""}
+        subtitle2={showCruelModePromo ? t("endScreen.subtitle2") : ""}
         subtitle3=""
         buttons={{
-          primary: {
-            text: t("endScreen.cruelMode"),
-            onClick: handleCruelMode,
-            buttonId: "end-screen-cruel-mode",
-            badge: t("endScreen.cruelModeBadge"),
-          },
+          ...(showCruelModePromo
+            ? {
+              primary: {
+                text: t("endScreen.cruelMode"),
+                onClick: handleCruelMode,
+                buttonId: "end-screen-cruel-mode",
+                badge: t("endScreen.cruelModeBadge"),
+              },
+            }
+            : {}),
           feedback: {
             text: t("endScreen.feedback"),
             onClick: handleFeedback,

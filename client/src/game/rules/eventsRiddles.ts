@@ -2,6 +2,7 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { riddleFogDurationMs, cruelModeScale } from "../cruelMode";
+import { stackTimedDebuff } from "@/game/stateHelpers";
 
 const RIDDLE_REWARD = 150;
 
@@ -128,11 +129,7 @@ function applyPenalty(
       [baseEventId]: true,
       [oppositeEventId]: true,
     } as any,
-    fogState: {
-      isActive: true,
-      endTime: Date.now() + fogDuration,
-      duration: fogDuration,
-    },
+    fogState: stackTimedDebuff(state.fogState, fogDuration),
     _logMessageKey: "wrong",
   };
 }

@@ -541,17 +541,25 @@ const Hero: React.FC<HeroProps> = ({
           </div>
 
           {/* Subtitle with Animation */}
-          <div className="w-full max-w-3xl mx-auto animate-fade-in-up animation-delay-2400 min-w-0">
-            <p className="mt-4 text-base sm:text-lg lg:text-xl text-grey-200 font-medium leading-relaxed break-words">
-              {subtitle1}
-            </p>
-            <p className="text-base sm:text-lg lg:text-xl text-grey-200 font-medium leading-relaxed break-words">
-              {subtitle2}
-            </p>
-            <p className="mb-6 text-base sm:text-lg lg:text-xl text-grey-200 font-medium leading-relaxed break-words">
-              {subtitle3}
-            </p>
-          </div>
+          {(subtitle1 || subtitle2 || subtitle3) && (
+            <div className="w-full max-w-3xl mx-auto animate-fade-in-up animation-delay-2400 min-w-0">
+              {subtitle1 ? (
+                <p className="mt-4 text-base sm:text-lg lg:text-xl text-grey-200 font-medium leading-relaxed break-words">
+                  {subtitle1}
+                </p>
+              ) : null}
+              {subtitle2 ? (
+                <p className="text-base sm:text-lg lg:text-xl text-grey-200 font-medium leading-relaxed break-words">
+                  {subtitle2}
+                </p>
+              ) : null}
+              {subtitle3 ? (
+                <p className="mb-6 text-base sm:text-lg lg:text-xl text-grey-200 font-medium leading-relaxed break-words">
+                  {subtitle3}
+                </p>
+              ) : null}
+            </div>
+          )}
 
           {/* CTA Buttons with Animation */}
           {buttons && buttons.primary && (

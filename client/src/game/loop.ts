@@ -803,6 +803,19 @@ export function processActionTicks() {
     });
   }
 
+  // Check if villager disgust has expired
+  if (
+    state.disgustState?.isActive &&
+    state.disgustState.endTime <= Date.now()
+  ) {
+    useGameStore.setState({
+      disgustState: {
+        ...state.disgustState,
+        isActive: false,
+      },
+    });
+  }
+
   // Check if focus has expired
   if (state.focusState?.isActive && state.focusState.endTime <= Date.now()) {
     useGameStore.setState({

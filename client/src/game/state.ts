@@ -1022,6 +1022,7 @@ export const createInitialState = (): GameState => ({
   disgustState: {
     isActive: false,
     endTime: 0,
+    duration: 0,
   },
   obsidianOrbState: {
     nextFocusGainTime: 0,

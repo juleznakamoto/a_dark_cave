@@ -1,16 +1,15 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
-import { addFreeVillagersWithinCap } from "@/game/stateHelpers";
+import { addFreeVillagersWithinCap, stackTimedDebuff } from "@/game/stateHelpers";
 import { getCurrentPopulation } from "@/game/population";
-
-const DISGUST_DURATION_MS = 10 * 60 * 1000;
+import { disgustDurationMs } from "@/game/cruelMode";
 
 function turnThemAwayEffect(logKey: string) {
-  return (_state: GameState) => ({
-    disgustState: {
-      isActive: true,
-      endTime: Date.now() + DISGUST_DURATION_MS,
-    },
+  return (state: GameState) => ({
+    disgustState: stackTimedDebuff(
+      state.disgustState,
+      disgustDurationMs(state.cruelMode),
+    ),
     _logMessageKey: logKey,
   });
 }

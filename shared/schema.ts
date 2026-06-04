@@ -576,10 +576,13 @@ export const gameStateSchema = z.object({
     .object({
       isActive: z.boolean().default(false),
       endTime: z.number().default(0),
+      /** Remaining span from last apply/stack; used by village debuff progress UI. */
+      duration: z.number().default(0),
     })
     .default({
       isActive: false,
       endTime: 0,
+      duration: 0,
     }),
 
   obsidianOrbState: z

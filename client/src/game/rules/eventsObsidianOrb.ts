@@ -1,6 +1,6 @@
 import { GameState } from "@shared/schema";
 import { GameEvent } from "./events";
-import { spendFreeVillagers } from "@/game/stateHelpers";
+import { spendFreeVillagers, stackTimedDebuff } from "@/game/stateHelpers";
 import { getCurrentPopulation } from "@/game/population";
 
 const DISGUST_DURATION_MS = 15 * 60 * 1000;
@@ -48,10 +48,10 @@ export const obsidianOrbEvents: Record<string, GameEvent> = {
               ...state.schematics,
               obsidian_orb_schematic: true,
             },
-            disgustState: {
-              isActive: true,
-              endTime: Date.now() + DISGUST_DURATION_MS,
-            },
+            disgustState: stackTimedDebuff(
+              state.disgustState,
+              DISGUST_DURATION_MS,
+            ),
             _logMessageKey: "outcome1",
           };
         },

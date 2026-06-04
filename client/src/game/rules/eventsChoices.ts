@@ -1,6 +1,6 @@
 import { GameEvent, calculateSuccessChance } from "./events";
 import { GameState } from "@shared/schema";
-import { addFreeVillagersWithinCap, killVillagers } from "@/game/stateHelpers";
+import { addFreeVillagersWithinCap, killVillagers, stackTimedDebuff } from "@/game/stateHelpers";
 import { getTotalStrength } from "./effectsCalculation";
 import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
 import { woodcutterEvents } from "./eventsWoodcutter";
@@ -682,19 +682,19 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "acceptDeal",
         cost: "250 Gold",
         effect: (state: GameState) => ({
-            resources: {
-              ...state.resources,
-              gold: state.resources.gold - 250,
+          resources: {
+            ...state.resources,
+            gold: state.resources.gold - 250,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              vikingBuilderEvent: true,
+              longhouseUnlocked: true,
             },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                vikingBuilderEvent: true,
-                longhouseUnlocked: true,
-              },
-            },
-            _logMessageKey: "outcome2",
+          },
+          _logMessageKey: "outcome2",
         }),
       },
       {
@@ -1042,10 +1042,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               paleCrossCrucifixionEvent: true,
             },
           },
-          disgustState: {
-            isActive: true,
-            endTime: Date.now() + duration,
-          },
+          disgustState: stackTimedDebuff(state.disgustState, duration),
           _logMessageKey: "outcome0",
         };
       },
@@ -1055,22 +1052,22 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "holdFuneral",
         cost: "1000 food",
         effect: (state: GameState) => ({
-            resources: {
-              ...state.resources,
-              food: (state.resources.food || 0) - 1000,
+          resources: {
+            ...state.resources,
+            food: (state.resources.food || 0) - 1000,
+          },
+          stats: {
+            ...state.stats,
+            madnessFromEvents: (state.stats.madnessFromEvents || 0) - 2,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              paleCrossCrucifixionEvent: true,
             },
-            stats: {
-              ...state.stats,
-              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 2,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                paleCrossCrucifixionEvent: true,
-              },
-            },
-            _logMessageKey: "outcome2",
+          },
+          _logMessageKey: "outcome2",
         }),
       },
       {
@@ -1112,10 +1109,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 paleCrossCrucifixionEvent: true,
               },
             },
-            disgustState: {
-              isActive: true,
-              endTime: Date.now() + duration,
-            },
+            disgustState: stackTimedDebuff(state.disgustState, duration),
             _logMessageKey: "outcome4",
           };
         },
@@ -1245,18 +1239,18 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "payGold",
         cost: "50 gold",
         effect: (state: GameState) => ({
-            resources: {
-              ...state.resources,
-              gold: state.resources.gold - 50,
+          resources: {
+            ...state.resources,
+            gold: state.resources.gold - 50,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              witchsCurseEvent: true,
             },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                witchsCurseEvent: true,
-              },
-            },
-            _logMessageKey: "outcome1",
+          },
+          _logMessageKey: "outcome1",
         }),
       },
       {
@@ -1417,44 +1411,44 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "acceptArcherHelp",
         cost: "5000 food",
         effect: (state: GameState) => ({
-            resources: {
-              ...state.resources,
-              food: state.resources.food - 5000,
+          resources: {
+            ...state.resources,
+            food: state.resources.food - 5000,
+          },
+          blessings: {
+            ...state.blessings,
+            sharp_aim: true,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              masterArcherEvent: true,
             },
-            blessings: {
-              ...state.blessings,
-              sharp_aim: true,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                masterArcherEvent: true,
-              },
-            },
-            _logMessageKey: "outcome2",
+          },
+          _logMessageKey: "outcome2",
         }),
       },
       {
         id: "acceptArcherHelpGold",
         cost: "200 gold",
         effect: (state: GameState) => ({
-            resources: {
-              ...state.resources,
-              gold: state.resources.gold - 200,
+          resources: {
+            ...state.resources,
+            gold: state.resources.gold - 200,
+          },
+          blessings: {
+            ...state.blessings,
+            sharp_aim: true,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              masterArcherEvent: true,
             },
-            blessings: {
-              ...state.blessings,
-              sharp_aim: true,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                masterArcherEvent: true,
-              },
-            },
-            _logMessageKey: "outcome4",
+          },
+          _logMessageKey: "outcome4",
         }),
       },
       {
@@ -1677,38 +1671,38 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "payGold",
         cost: "250 gold",
         effect: (state: GameState) => ({
-            resources: {
-              ...state.resources,
-              gold: state.resources.gold - 250,
+          resources: {
+            ...state.resources,
+            gold: state.resources.gold - 250,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              wanderingFirecrafterEvent: true,
+              canCraftVoidBomb: true,
             },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                wanderingFirecrafterEvent: true,
-                canCraftVoidBomb: true,
-              },
-            },
-            _logMessageKey: "outcome2",
+          },
+          _logMessageKey: "outcome2",
         }),
       },
       {
         id: "paySilver",
         cost: "1000 silver",
         effect: (state: GameState) => ({
-            resources: {
-              ...state.resources,
-              silver: state.resources.silver - 1000,
+          resources: {
+            ...state.resources,
+            silver: state.resources.silver - 1000,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              wanderingFirecrafterEvent: true,
+              canCraftVoidBomb: true,
             },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                wanderingFirecrafterEvent: true,
-                canCraftVoidBomb: true,
-              },
-            },
-            _logMessageKey: "outcome4",
+          },
+          _logMessageKey: "outcome4",
         }),
       },
       {
@@ -2029,7 +2023,6 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "sendHimAway",
         effect: (state: GameState) => {
-          const duration = disgustDurationMs(state.cruelMode);
           return {
             stats: {
               ...state.stats,
@@ -2042,10 +2035,10 @@ export const choiceEvents: Record<string, GameEvent> = {
                 lastSurvivorRejected: true,
               },
             },
-            disgustState: {
-              isActive: true,
-              endTime: Date.now() + duration,
-            },
+            disgustState: stackTimedDebuff(
+              state.disgustState,
+              disgustDurationMs(state.cruelMode),
+            ),
             _logMessageKey: "outcome1",
           };
         },
@@ -2068,23 +2061,23 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "helpWithLeather",
         cost: "100 leather",
         effect: (state: GameState) => ({
-            resources: {
-              ...state.resources,
-              leather: (state.resources.leather || 0) - 100,
+          resources: {
+            ...state.resources,
+            leather: (state.resources.leather || 0) - 100,
+          },
+          stats: {
+            ...state.stats,
+            madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              leatherHarnessRequest: true,
+              leatherHarnessHelped: true,
             },
-            stats: {
-              ...state.stats,
-              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                leatherHarnessRequest: true,
-                leatherHarnessHelped: true,
-              },
-            },
-            _logMessageKey: "outcome1",
+          },
+          _logMessageKey: "outcome1",
         }),
       },
       {
@@ -2170,22 +2163,22 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "sacrificeAtTree",
         cost: "1000 Food",
         effect: (state: GameState) => ({
-            resources: {
-              ...state.resources,
-              food: (state.resources.food || 0) - 1000,
+          resources: {
+            ...state.resources,
+            food: (state.resources.food || 0) - 1000,
+          },
+          blessings: {
+            ...state.blessings,
+            ebon_grace: true,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              swampSanctuaryChoiceMade: true,
             },
-            blessings: {
-              ...state.blessings,
-              ebon_grace: true,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                swampSanctuaryChoiceMade: true,
-              },
-            },
-            _logMessageKey: "outcome2",
+          },
+          _logMessageKey: "outcome2",
         }),
       },
     ],

@@ -1,6 +1,10 @@
 import { describe, it, expect } from "vitest";
 import { computePersistedSocialTasksGold } from "@/game/socialTasksGold";
-import { PLAYLIGHT_DISCOVER_REWARD_KEY } from "@/game/playlightRewards";
+import {
+  PLAYLIGHT_DISCOVER_REWARD_GOLD,
+  PLAYLIGHT_DISCOVER_REWARD_KEY,
+} from "@/game/playlightRewards";
+import { SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
 import {
   MARKETING_SUBSCRIBE_GOLD,
   MARKETING_EMAIL_REWARD_KEY,
@@ -27,12 +31,16 @@ describe("computePersistedSocialTasksGold", () => {
       ],
     });
 
+    const claimedSocialPlatformGold = SOCIAL_PLATFORMS.reduce(
+      (sum, platform) => sum + platform.reward,
+      0,
+    );
+
     expect(total).toBe(
       SIGN_UP_WELCOME_GOLD +
       MARKETING_SUBSCRIBE_GOLD +
-      100 +
-      100 +
-      100 +
+      claimedSocialPlatformGold +
+      PLAYLIGHT_DISCOVER_REWARD_GOLD +
       REFERRAL_REWARD_GOLD,
     );
   });

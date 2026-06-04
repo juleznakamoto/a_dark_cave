@@ -1144,9 +1144,9 @@ export default function VillagePanel() {
                                   0,
                                   disgustState.endTime - Date.now(),
                                 );
-                                const totalDuration = disgustDurationMs(
-                                  state.cruelMode,
-                                );
+                                const totalDuration =
+                                  disgustState.duration ||
+                                  disgustDurationMs(state.cruelMode);
                                 const elapsed = totalDuration - timeRemaining;
                                 return Math.min(
                                   100,
