@@ -14,6 +14,7 @@ import {
   isStatEffectsRevealed,
   STAT_EFFECTS_INSIGHT_COST,
   STAT_INSIGHT_REVEAL_KEY,
+  TIMED_EVENT_INSIGHT_PROLONG_KEY,
   TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
   TIMED_EVENT_TAB_PROLONG_MS,
 } from "@/game/rules/insightReveal";
@@ -60,9 +61,11 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   const insightRevealEnd = useGameStore((s) =>
     target === "stats"
       ? s.insightRevealing?.[STAT_INSIGHT_REVEAL_KEY]
-      : actionId
-        ? s.insightRevealing?.[actionId]
-        : undefined,
+      : target === "timedEvent"
+        ? s.insightRevealing?.[TIMED_EVENT_INSIGHT_PROLONG_KEY]
+        : actionId
+          ? s.insightRevealing?.[actionId]
+          : undefined,
   );
   const revealActionEffects = useGameStore((s) => s.revealActionEffects);
   const revealStatEffects = useGameStore((s) => s.revealStatEffects);
@@ -79,7 +82,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
 
   const isStats = target === "stats";
   const isTimedEvent = target === "timedEvent";
-  const isStatsRevealing =
+  const isInsightRevealAnimating =
     typeof insightRevealEnd === "number" && insightRevealEnd > Date.now();
 
   const effectiveTimedRemaining = isTimedEvent
@@ -93,13 +96,15 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
     effectiveTimedRemaining > 0;
 
   const canShow = isTimedEvent
-    ? isInsightUnlocked(state) && timedTabActive && !insightProlongUsed
+    ? isInsightUnlocked(state) &&
+    timedTabActive &&
+    (!insightProlongUsed || isInsightRevealAnimating)
     : isStats
       ? isInsightUnlocked(state) &&
-      (!isStatEffectsRevealed(state) || isStatsRevealing)
+      (!isStatEffectsRevealed(state) || isInsightRevealAnimating)
       : canRevealEffects(actionId!, state);
   const isExecuting = target === "action" && executionStart > 0 && executionDuration > 0;
-  const isRevealing = isStatsRevealing;
+  const isRevealing = isInsightRevealAnimating;
   const playing = canShow && !isExecuting && isRevealing;
 
   useEffect(() => {
@@ -141,7 +146,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
     });
 
   const isBadgeDisabled = isTimedEvent
-    ? !timedTimerUsable || !canAfford
+    ? !timedTimerUsable || !canAfford || playing
     : !canAfford || playing;
 
   const showDisabledOpacity = isTimedEvent

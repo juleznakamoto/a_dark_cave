@@ -53,6 +53,7 @@ import {
   STAT_INSIGHT_REVEAL_KEY,
   TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
   TIMED_EVENT_TAB_PROLONG_MS,
+  TIMED_EVENT_INSIGHT_PROLONG_KEY,
   canProlongTimedEventTab,
 } from "@/game/rules/insightReveal";
 import {
@@ -2038,6 +2039,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
           (state.timedEventTab.expiryTime ?? 0) + TIMED_EVENT_TAB_PROLONG_MS,
         insightProlongUsed: true,
       },
+      insightRevealing: {
+        ...(state.insightRevealing ?? {}),
+        [TIMED_EVENT_INSIGHT_PROLONG_KEY]:
+          Date.now() + INSIGHT_REVEAL_DURATION_MS,
+      },
     });
     return true;
   },
@@ -2070,6 +2076,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         if (now >= endTime) {
           if (actionId === STAT_INSIGHT_REVEAL_KEY) {
             statEffectsRevealed = true;
+          } else if (actionId === TIMED_EVENT_INSIGHT_PROLONG_KEY) {
+            // Timed-tab prolong: animation only (no revealedEffects entry).
           } else if (!revealedEffects.includes(actionId)) {
             revealedEffects.push(actionId);
           }

@@ -19,6 +19,8 @@ export function isInsightUnlocked(state: GameState): boolean {
 }
 /** `insightRevealing` key while the Stats header badge plays its reveal animation. */
 export const STAT_INSIGHT_REVEAL_KEY = "stats";
+/** `insightRevealing` key while the timed-event tab prolong badge plays its animation. */
+export const TIMED_EVENT_INSIGHT_PROLONG_KEY = "timedEventProlong";
 
 export function isStatEffectsRevealed(state: GameState): boolean {
   return Boolean(state.statEffectsRevealed);

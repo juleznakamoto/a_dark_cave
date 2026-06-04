@@ -45,6 +45,7 @@ import {
   isEditableKeyboardTarget,
 } from "./tabHotkeys";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
+import { TraderTabButton } from "@/components/game/TraderTabButton";
 import i18n from "@/i18n";
 import { useTranslation } from "react-i18next";
 
@@ -1094,13 +1095,12 @@ export default function GameContainer() {
                 </div>
 
                 {traderUnlocked && (
-                  <button
-                    className={`${tabButtonClass} group shrink-0 gap-1.5 pl-2 ${animatingTabs.has("trader")
-                      ? fadePhaseTabs.has("trader")
-                        ? "tab-fade-in"
-                        : "tab-blink-new"
-                      : ""
-                      }`}
+                  <TraderTabButton
+                    tabButtonClass={tabButtonClass}
+                    tabInactiveTextClass={tabInactiveTextClass}
+                    isPaused={isPaused}
+                    isAnimating={animatingTabs.has("trader")}
+                    isFadePhase={fadePhaseTabs.has("trader")}
                     onClick={() => {
                       setAnimatingTabs((prev) => {
                         const next = new Set(prev);
@@ -1114,33 +1114,7 @@ export default function GameContainer() {
                       });
                       setShopDialogOpen(true);
                     }}
-                    data-testid="tab-trader"
-                  >
-                    <span
-                      className="font-noto-symbols-2 text-[19px] leading-none text-lime-500 opacity-80 transition-[opacity,text-shadow] group-hover:opacity-100 group-hover:[text-shadow:0_0_8px_rgba(132,204,22,0.95),0_0_16px_rgba(132,204,22,0.5)] group-focus-visible:opacity-100 group-focus-visible:[text-shadow:0_0_8px_rgba(132,204,22,0.95),0_0_16px_rgba(132,204,22,0.5)] relative top-px"
-                      aria-hidden
-                    >
-                      ◬
-                    </span>
-                    <span className="inline-grid">
-                      <span
-                        className="invisible col-start-1 row-start-1 font-semibold"
-                        aria-hidden
-                      >
-                        {t("tabs.trader", { ns: "common" })}
-                      </span>
-                      <span
-                        className={`col-start-1 row-start-1 font-normal transition-opacity group-hover:font-semibold ${animatingTabs.has("trader")
-                          ? ""
-                          : isPaused
-                            ? tabInactiveTextClass
-                            : "opacity-60 group-hover:opacity-100"
-                          }`}
-                      >
-                        {t("tabs.trader", { ns: "common" })}
-                      </span>
-                    </span>
-                  </button>
+                  />
                 )}
               </div>
             )}

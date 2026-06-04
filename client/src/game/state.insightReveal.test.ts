@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   STAT_INSIGHT_REVEAL_KEY,
+  TIMED_EVENT_INSIGHT_PROLONG_KEY,
   TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
   TIMED_EVENT_TAB_PROLONG_MS,
 } from "./rules/insightReveal";
@@ -169,6 +170,9 @@ describe("prolongTimedEventTab", () => {
       expiryTime + TIMED_EVENT_TAB_PROLONG_MS,
     );
     expect(after.timedEventTab.insightProlongUsed).toBe(true);
+    expect(
+      after.insightRevealing[TIMED_EVENT_INSIGHT_PROLONG_KEY],
+    ).toBeGreaterThan(Date.now());
   });
 
   it("cannot prolong twice in the same timed-tab visit", () => {

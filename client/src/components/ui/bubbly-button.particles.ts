@@ -335,6 +335,23 @@ export const INSIGHT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   sizeMax: 7,
 };
 
+/** Trader tab ◬ glyph — lime burst on hover (same cadence as gold/silver coins). */
+export const TRADER_TAB_PARTICLE_CONFIG: Partial<ParticleConfig> = {
+  colors: [
+    tailwindToHex("lime-400"),
+    tailwindToHex("lime-500"),
+    tailwindToHex("green-400"),
+    tailwindToHex("green-500"),
+  ],
+  count: 4,
+  durationMin: 0.5,
+  durationMax: 1.5,
+  distanceMin: 10,
+  distanceMax: 40,
+  sizeMin: 1,
+  sizeMax: 3,
+};
+
 // Silver coin - slow gentle emission for hover
 export const SILVER_COIN_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   colors: [
@@ -388,12 +405,12 @@ export function mergeParticleConfig(
 ): MergedParticleConfig {
   const merged = override
     ? {
-        ...DEFAULT_PARTICLE_CONFIG,
-        ...base,
-        ...override,
-        colors:
-          override.colors ?? base.colors ?? DEFAULT_PARTICLE_CONFIG.colors,
-      }
+      ...DEFAULT_PARTICLE_CONFIG,
+      ...base,
+      ...override,
+      colors:
+        override.colors ?? base.colors ?? DEFAULT_PARTICLE_CONFIG.colors,
+    }
     : { ...DEFAULT_PARTICLE_CONFIG, ...base };
   // All particles start at once, so we only need durationMax + small buffer for cleanup
   return {
@@ -433,10 +450,10 @@ export function generateParticleData(
       config.sizeMin + Math.random() * (config.sizeMax - config.sizeMin);
     const colorPool =
       config.smallParticleOnlyColors?.length &&
-      size > config.smallParticleMaxSize
+        size > config.smallParticleMaxSize
         ? config.colors.filter(
-            (c) => !config.smallParticleOnlyColors!.includes(c),
-          )
+          (c) => !config.smallParticleOnlyColors!.includes(c),
+        )
         : config.smallParticleOnlyColors?.length
           ? [...config.colors, ...config.smallParticleOnlyColors]
           : config.colors;
