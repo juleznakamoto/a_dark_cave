@@ -1466,8 +1466,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </TabsTrigger>
                   </TabsList>
                   {activeTab === "shop" && (
-                    <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/5 px-2 py-2 text-sm text-foreground">
-                      <p className="text-md font-medium">
+                    <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/5 px-2 py-2 text-xs font-normal text-foreground">
+                      <p>
                         {t("ui:shop.betaDiscountTitle", { percent: "40%" })}
                       </p>
                       <p>{t("ui:shop.betaDiscountNote")}</p>
