@@ -254,7 +254,7 @@ interface GameStore extends GameState {
     pauseAccumMs?: number;
     /** Wall time when the current pause segment started; 0 while the countdown is running. */
     pauseStartedAt?: number;
-    /** Insight +5 min prolong already bought this timed-tab visit; badge hidden after use. */
+    /** Insight +3 min prolong already bought this timed-tab visit; badge hidden after use. */
     insightProlongUsed?: boolean;
   };
 

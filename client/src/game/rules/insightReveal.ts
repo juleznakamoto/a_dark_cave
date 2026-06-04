@@ -12,7 +12,7 @@ export const INSIGHT_REVEAL_ACTION_COOLDOWN_SEC = 3;
 export const STAT_EFFECTS_INSIGHT_COST = 500;
 /** Spend Insight to extend an active timed-event tab countdown. */
 export const TIMED_EVENT_TAB_PROLONG_INSIGHT_COST = 250;
-export const TIMED_EVENT_TAB_PROLONG_MS = 5 * 60 * 1000;
+export const TIMED_EVENT_TAB_PROLONG_MS = 3 * 60 * 1000;
 
 export function isInsightUnlocked(state: GameState): boolean {
   return (state.buildings.clerksHut ?? 0) >= 1;
