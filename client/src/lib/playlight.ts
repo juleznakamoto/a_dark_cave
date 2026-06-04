@@ -71,6 +71,12 @@ let exitIntentDeferTimerId: number | null = null;
 /** Skip quota for the next `exitIntent` event (e.g. after `setDiscovery()` from the menu). */
 let skipNextExitIntentQuota = false;
 let lastExitIntentEventRecordedAt = 0;
+/**
+ * Last `enabled` value pushed to the SDK. `syncExitIntent` runs on every game-store change (the
+ * loop writes `playTime` ~60x/sec), so we must only call `setConfig` when the value actually
+ * changes; re-pushing `enabled: true` every frame re-arms the SDK and pops the banner repeatedly.
+ */
+let lastAppliedExitIntentEnabled: boolean | null = null;
 
 /**
  * Call immediately before `playlightSDK.setDiscovery()` so that the resulting flow does not
@@ -78,6 +84,15 @@ let lastExitIntentEventRecordedAt = 0;
  */
 export function markPlaylightDiscoveryUserInitiated() {
   skipNextExitIntentQuota = true;
+}
+
+/**
+ * The close-button dismiss path force-enables exit intent on the SDK directly. Keep our
+ * change-detection cache in sync so the next `syncExitIntent` still re-applies a needed disable
+ * (otherwise we'd think `enabled` was already `true` and skip turning it back off).
+ */
+export function noteExitIntentForcedEnabled() {
+  lastAppliedExitIntentEnabled = true;
 }
 
 // Track Playlight SDK initialization state to prevent duplicate subscriptions
@@ -187,6 +202,11 @@ export async function initPlaylight() {
             shouldEnableExitIntent = true;
           }
         }
+
+        if (shouldEnableExitIntent === lastAppliedExitIntentEnabled) {
+          return;
+        }
+        lastAppliedExitIntentEnabled = shouldEnableExitIntent;
 
         playlightSDK.setConfig({
           exitIntent: {

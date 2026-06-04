@@ -2,6 +2,7 @@ import i18n from "i18next";
 import type { GameState } from "@shared/schema";
 import { clothingEffects } from "@/game/rules/effects";
 import { capitalizeWords } from "@/lib/utils";
+import { normalizeLocale } from "./locales";
 
 type TranslateOptions = Record<string, string | number | boolean | undefined>;
 
@@ -40,19 +41,23 @@ export function tWithFallback(
       ? fallback
       : interpolateFallback(fallback, options);
 
-  const lng = i18n.language;
-  const opts = { ...(options as Record<string, unknown>), lng };
+  const lng = normalizeLocale(i18n.resolvedLanguage ?? i18n.language);
+  const translateOpts = {
+    ...(options as Record<string, unknown>),
+    lng,
+    ns: namespace,
+  };
 
-  // Prefer catalog text for the active locale (avoid English defaultValue masking a hit).
-  if (i18n.exists(fullKey, { lng })) {
-    const translated = i18n.t(fullKey, opts);
+  // Use ns + key for exists/t (ui:… exists checks can miss sharded ui keys in some runtimes).
+  if (i18n.exists(key, { ns: namespace, lng })) {
+    const translated = i18n.t(key, translateOpts);
     if (typeof translated === "string" && translated.trim()) {
       return translated;
     }
   }
 
   // Plural keys like villagerCost_one/_other resolve via count but exists("…villagerCost") is false.
-  const translated = i18n.t(fullKey, { ...opts, defaultValue });
+  const translated = i18n.t(key, translateOpts);
   if (
     typeof translated === "string" &&
     translated.trim() &&

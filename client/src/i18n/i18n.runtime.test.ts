@@ -86,6 +86,22 @@ describe("i18n runtime", () => {
     ).not.toContain("Extend time by");
   });
 
+  it("tWithFallback uses German catalog when language tag is de-DE", async () => {
+    await i18n.changeLanguage("de-DE");
+    const opts = { minutes: 5, cost: 250, resource: "Einsicht" };
+    expect(
+      i18n.exists("timedEvent.prolongForInsight", { ns: "ui", lng: "de" }),
+    ).toBe(true);
+    expect(
+      tWithFallback(
+        "ui",
+        "timedEvent.prolongForInsight",
+        "Extend time by {{minutes}} min for {{cost}} {{resource}}",
+        opts,
+      ),
+    ).toBe("Zeit um 5 Min. für 250 Einsicht verlängern");
+  });
+
   it("resolves villagerCost plural tooltip in English and German", async () => {
     expect(getUiTooltip("villagerCost", "-{{count}} Villager", { count: 1 })).toBe(
       "-1 Villager",

@@ -47,6 +47,11 @@ function dismissExitIntentBanner(): void {
     const sdk = (window as unknown as { playlightSDK?: { setConfig?: (c: unknown) => void } })
       .playlightSDK;
     sdk?.setConfig?.({ exitIntent: { enabled: true, immediate: false } });
+    // Keep playlight.ts's change-detection cache aligned with this direct force-enable so the
+    // next `syncExitIntent` can still turn exit intent back off when the milestone is consumed.
+    void import("@/lib/playlight").then(({ noteExitIntentForcedEnabled }) => {
+      noteExitIntentForcedEnabled();
+    });
   } catch {
     /* ignore */
   }

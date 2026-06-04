@@ -153,7 +153,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
           "See effects for {{cost}} {{resource}}",
           { cost, resource: insightResource },
         ),
-    [i18n.language, isTimedEvent, cost, insightResource],
+    [i18n.resolvedLanguage ?? i18n.language, isTimedEvent, cost, insightResource],
   );
 
   const isBadgeDisabled = isTimedEvent
