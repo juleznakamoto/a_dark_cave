@@ -1,0 +1,80 @@
+{
+  "languageSelector": {
+    "label": "Lingua",
+    "ariaLabel": "Seleziona lingua"
+  },
+  "startScreen": {
+    "titleNormal": "Una caverna oscura.",
+    "titleCruel": "Una caverna molto oscura.",
+    "airNormal": "L'aria è fredda e umida.",
+    "airCruel": "L'aria è gelida e umida.",
+    "seeNormal": "Distingui a malapena le forme attorno a te.",
+    "seeCruel": "Non distingui quasi nulla attorno a te.",
+    "makeFire": "Accendi il Fuoco",
+    "boostDeactivate": "Clicca per disattivare il potenziamento",
+    "recommendedBy": "Consigliato da"
+  },
+  "footer": {
+    "fullGame": "Gioco Completo",
+    "trader": "Mercante",
+    "openShop": "Apri Negozio",
+    "donate": "Dona",
+    "supportGame": "Sostieni il Gioco",
+    "privacy": "Privacy",
+    "imprint": "Note Legali",
+    "contact": "Contatti",
+    "pauseGame": "Metti in pausa",
+    "resumeGame": "Riprendi il gioco",
+    "muteMusic": "Silenzia musica",
+    "unmuteMusic": "Riattiva musica",
+    "muteSfx": "Silenzia effetti sonori",
+    "unmuteSfx": "Silenzia effetti sonori",
+    "cruelModeActive": "Modalità Crudele attivata"
+  },
+  "profile": {
+    "title": "Profilo",
+    "signInUp": "Accedi/Registrati",
+    "emailsOn": "Email Attive",
+    "emailsOff": "Email Disattivate",
+    "marketingOnTooltip": "Attualmente ricevi email con aggiornamenti, sconti e ricompense esclusive. Tocca per disattivare.",
+    "marketingOffTooltip": "Attualmente non ricevi email con aggiornamenti, sconti e ricompense esclusive. Tocca per attivare.",
+    "rewardsTasks": "Attività ricompense",
+    "save": "Salva",
+    "newGame": "Nuova Partita",
+    "restart": "Ricomincia",
+    "signIn": "Accedi",
+    "signOut": "Esci",
+    "leaderboard": "Classifica",
+    "rewards": "Ricompense",
+    "deleteAccount": "Elimina Account",
+    "marketingSubscribe": "Iscriviti alle email",
+    "marketingUnsubscribe": "Disiscriviti dalle email",
+    "autoSaveSignedIn": "Il gioco si salva automaticamente ogni minuto",
+    "autoSaveGuest": "Il gioco si salva automaticamente ogni 15 secondi",
+    "signUpCloudSave": "Registrati per salvare la partita nel cloud",
+    "lastSave": "Ultimo salvataggio: {{time}}",
+    "signedOut": "Disconnessione riuscita",
+    "signOutError": "Errore durante la disconnessione",
+    "gameSaved": "Partita salvata con successo",
+    "saveFailed": "Salvataggio della partita non riuscito",
+    "accountDeleted": "Il tuo account è stato eliminato",
+    "accountDeletedDesc": "Sei stato disconnesso e il salvataggio locale di questo dispositivo è stato cancellato.",
+    "deleteAccountFailed": "Impossibile eliminare l'account",
+    "tryAgainLater": "Riprova più tardi.",
+    "notSignedIn": "Non hai effettuato l'accesso",
+    "subscribed": "Iscrizione completata",
+    "unsubscribed": "Disiscrizione completata",
+    "subscribedDesc": "Ti invieremo aggiornamenti e offerte occasionali via email.",
+    "unsubscribedDesc": "Non riceverai più email di marketing da noi.",
+    "preferenceUpdateFailed": "Impossibile aggiornare la preferenza"
+  },
+  "pauseHotkey": {
+    "hintPrefix": "Usa ",
+    "hintOr": "o",
+    "hintSuffix": " o i tasti qui sotto per cambiare scheda"
+  },
+  "villageHotkeyTutorial": {
+    "dismiss": "Ignora"
+  },
+  "never": "Mai"
+}

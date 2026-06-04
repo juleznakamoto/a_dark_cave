@@ -1,0 +1,540 @@
+{
+  "books": {
+    "book_of_ascension": {
+      "description": "Libro sull'ascesa di sé. Concede la capacità di migliorare nei compiti attraverso la pratica.",
+      "name": "Libro dell'Ascensione"
+    },
+    "book_of_craftsmanship": {
+      "description": "Antico tomo di un maestro artigiano. Rivela sottili indizi sulla fabbricazione di oggetti e la costruzione di edifici.",
+      "name": "Libro dell'Artigianato"
+    },
+    "book_of_trials": {
+      "description": "Libro su come affrontare le sfide della vita. Sblocca ricompense per chi si dimostra all'altezza attraverso gli obiettivi.",
+      "name": "Libro delle Prove"
+    },
+    "book_of_war": {
+      "description": "Libro che racchiude la saggezza sul combattimento. Rivela la probabilità di successo in battaglie e incontri.",
+      "name": "Libro della Guerra"
+    }
+  },
+  "clothing": {
+    "alphas_hide": {
+      "description": "Pelle del capobranco dei lupi, intrisa di potere primordiale",
+      "name": "Pelle dell'Alfa"
+    },
+    "ancient_scrolls": {
+      "description": "Misteriose pergamene scritte in una lingua sconosciuta, in attesa di essere decifrate",
+      "name": "Pergamene Antiche"
+    },
+    "arbalest_schematic": {
+      "description": "Progetto per fabbricare una potente balestra",
+      "name": "Balestra"
+    },
+    "ashen_embrace": {
+      "description": "La tua capacità di estrarre è migliorata",
+      "name": "Abbraccio di Cenere"
+    },
+    "ashen_embrace_enhanced": {
+      "description": "La tua capacità di estrarre è notevolmente migliorata",
+      "name": "Profondo Abbraccio di Cenere"
+    },
+    "bell_blessing": {
+      "description": "Un misterioso marchio a forma di campana sull'avambraccio. Raddoppia i Punti Concentrazione ottenuti durante il Sonno.",
+      "name": "Benedizione della Campana"
+    },
+    "black_bear_fur": {
+      "description": "Pelliccia nera maledetta di un gigantesco orso ultraterreno",
+      "name": "Pelliccia di Orso Nero"
+    },
+    "black_wood": {
+      "description": "Una lastra di legno denso che assorbe la luce, ricavata dall'albero del santuario.",
+      "name": "Legno Nero"
+    },
+    "blackened_mirror": {
+      "description": "Alto specchio incrinato incorniciato in ferro nero che irradia un'aura gelida",
+      "name": "Specchio Annerito"
+    },
+    "blacksteel_armor": {
+      "description": "Armatura pesante adornata di spuntoni mortali",
+      "name": "Armatura d'Acciaio Nero"
+    },
+    "blood_baptized": {
+      "description": "Ottenuto dopo essersi bagnati nel sangue di creature potenti",
+      "name": "Battezzato nel Sangue"
+    },
+    "bloodstained_belt": {
+      "description": "Cintura di cuoio macchiata di sangue vecchio",
+      "name": "Cintura Insanguinata"
+    },
+    "bloodstone": {
+      "description": "Gemma cremisi che pulsa di energia oscura",
+      "name": "Pietra di Sangue"
+    },
+    "bone_devourer_blood": {
+      "description": "Una fiala di sangue pallido raccolto dal Divoratore d'Ossa. I suoi effetti sono sconosciuti.",
+      "name": "Sangue del Divoratore"
+    },
+    "bone_dice": {
+      "description": "Dadi intagliati nelle ossa, levigati fino a una morbidezza inquietante. Concedono una partita extra dal Giocatore.",
+      "name": "Dadi d'Osso"
+    },
+    "bone_necklace": {
+      "description": "Collana primitiva fatta di ossa umane",
+      "name": "Collana d'Ossa"
+    },
+    "chitin_plates": {
+      "description": "Potenti placche di chitina di creature giganti delle paludi. Possono essere usate per aggiungere Corazza di Chitina alle fortificazioni.",
+      "name": "Placche di Chitina"
+    },
+    "cracked_crown": {
+      "description": "Antica corona d'oro che irradia un potere misterioso",
+      "name": "Corona Incrinata"
+    },
+    "dagons_gift": {
+      "description": "La tua capacità di cacciare è migliorata",
+      "name": "Dono di Dagon"
+    },
+    "dagons_gift_enhanced": {
+      "description": "La tua capacità di cacciare è notevolmente migliorata",
+      "name": "Grande Dono di Dagon"
+    },
+    "devourer_crown": {
+      "description": "Corona del Divoratore d'Ossa, fatta di ossa",
+      "name": "Corona del Divoratore"
+    },
+    "ebon_grace": {
+      "description": "Oscura benedizione ricevuta dall'albero nero. Raddoppia il bonus di produzione del Fuoco del Cuore.",
+      "name": "Grazia d'Ebano"
+    },
+    "ebony_ring": {
+      "description": "Anello oscuro lasciato in dono dagli dèi della foresta",
+      "name": "Anello d'Ebano"
+    },
+    "elder_scroll": {
+      "description": "Antica pergamena che contiene conoscenza proibita",
+      "name": "Pergamena Antica"
+    },
+    "explorer_pack": {
+      "description": "Zaino di cuoio ben fatto che allevia il peso sulle spalle",
+      "name": "Zaino dell'Esploratore"
+    },
+    "feeding_ring": {
+      "description": "Anello apparso una mattina, apparentemente fuso al tuo dito",
+      "name": "Anello Vorace"
+    },
+    "fishers_hand": {
+      "description": "Antiche tecniche dei pescatori della costa per costruire trappole per pesci",
+      "name": "Mano del Pescatore"
+    },
+    "flames_touch": {
+      "description": "I costi di fabbricazione sono ridotti",
+      "name": "Tocco della Fiamma"
+    },
+    "flames_touch_enhanced": {
+      "description": "I costi di fabbricazione sono notevolmente ridotti",
+      "name": "Forte Tocco della Fiamma"
+    },
+    "forests_grace": {
+      "description": "I cervi della foresta sembrano notarti di meno",
+      "name": "Grazia della Foresta"
+    },
+    "frostglass": {
+      "description": "Materiale cristallino che irradia freddo",
+      "name": "Vetro di Gelo"
+    },
+    "gifted_ring": {
+      "description": "Anello semplice che qualcuno ha lasciato perché lo trovassi",
+      "name": "Anello in Dono"
+    },
+    "grenadier_bag": {
+      "description": "Borsa di cuoio rinforzata per trasportare più esplosivi",
+      "name": "Borsa del Granatiere"
+    },
+    "highpriest_robe": {
+      "description": "Veste sacra adornata con filo d'oro",
+      "name": "Veste del Sommo Sacerdote"
+    },
+    "hollow_king_scepter": {
+      "description": "Scettro del re perduto, che irradia potere e follia. Le azioni di estrazione hanno il 5% di probabilità di raddoppiare le ricompense.",
+      "name": "Scettro del Re Cavo"
+    },
+    "hunter_cloak": {
+      "description": "Mantello di cuoio morbido che attutisce ogni movimento",
+      "name": "Mantello del Cacciatore"
+    },
+    "knights_burden": {
+      "description": "La conoscenza che il cavaliere ha condiviso con te, che grava pesantemente sulla tua mente",
+      "name": "Fardello del Cavaliere"
+    },
+    "loggers_gloves": {
+      "description": "Robusti guanti di cuoio che aiutano nella raccolta del legno",
+      "name": "Guanti del Taglialegna"
+    },
+    "lycan_blood": {
+      "description": "Una fiala di sangue denso di un alfa Licantropo. I suoi effetti sono sconosciuti.",
+      "name": "Sangue di Licantropo"
+    },
+    "map_fragment": {
+      "description": "Frammenti di una mappa che conduce a un luogo sconosciuto.",
+      "name": "Frammento di Mappa"
+    },
+    "moon_bracelet": {
+      "description": "Pregevole bracciale senza peso di duratura pietra bianca",
+      "name": "Bracciale di Luna"
+    },
+    "muttering_amulet": {
+      "description": "Misterioso amuleto che emette strani suoni",
+      "name": "Amuleto Borbottante"
+    },
+    "necromancer_blood": {
+      "description": "Una fiala di sangue oscuro raccolto da un Negromante. I suoi effetti sono sconosciuti.",
+      "name": "Sangue di Negromante"
+    },
+    "nightshade_bow_schematic": {
+      "description": "Progetto per fabbricare un arco velenoso",
+      "name": "Arco di Belladonna"
+    },
+    "obsidian_orb": {
+      "description": "Potente sfera di vetro vulcanico che concede forza mentale",
+      "name": "Sfera di Ossidiana"
+    },
+    "obsidian_orb_schematic": {
+      "description": "Progetto per fabbricare una potente sfera di ossidiana",
+      "name": "Sfera di Ossidiana"
+    },
+    "occultist_grimoire": {
+      "description": "Grimorio che racchiude la conoscenza empia di un occultista eretico",
+      "name": "Grimorio dell'Occultista"
+    },
+    "odd_trinket": {
+      "description": "Un elisir d'ambra luminoso trovato mentre tagliavi la legna",
+      "name": "Elisir Bizzarro"
+    },
+    "ravenfeather_mantle": {
+      "description": "Mistico mantello intessuto di scintillanti piume di corvo",
+      "name": "Mantello di Piuma di Corvo"
+    },
+    "ravens_mark": {
+      "description": "Gli stranieri si avvicinano al villaggio più spesso",
+      "name": "Marchio del Corvo"
+    },
+    "ravens_mark_enhanced": {
+      "description": "Gli stranieri si avvicinano al villaggio molto più spesso",
+      "name": "Grande Marchio del Corvo"
+    },
+    "ravens_orb": {
+      "description": "Sfera oscura benedetta dai corvi con conoscenza antica",
+      "name": "Sfera del Corvo"
+    },
+    "red_mask": {
+      "description": "Maschera repellente realizzata in cuoio cremisi intenso",
+      "name": "Maschera Rossa"
+    },
+    "ring_of_clarity": {
+      "description": "Anello intagliato in un cristallo limpidissimo",
+      "name": "Anello della Chiarezza"
+    },
+    "ring_of_drowned": {
+      "description": "Anello annerito sempre bagnato e freddo",
+      "name": "Anello degli Annegati"
+    },
+    "ring_of_obedience": {
+      "description": "Anello con un anello più piccolo attaccato, donato da una donna felice",
+      "name": "Anello dell'Obbedienza"
+    },
+    "sacrificial_tunic": {
+      "description": "Veste sacra che amplifica le offerte agli antichi dèi",
+      "name": "Tunica Sacrificale"
+    },
+    "sealed_chest": {
+      "description": "Un baule molto robusto che non riesci ad aprire",
+      "name": "Baule Sigillato"
+    },
+    "shadow_boots": {
+      "description": "Muoviti su ogni terreno veloce come un'ombra",
+      "name": "Stivali d'Ombra"
+    },
+    "shadow_flute": {
+      "description": "Flauto d'osso che fa muovere le ombre in modo innaturale",
+      "name": "Flauto d'Ombra"
+    },
+    "sharp_aim": {
+      "description": "La mira dei tuoi cacciatori è migliorata",
+      "name": "Mira Acuta"
+    },
+    "stonebinders_codex": {
+      "description": "Tomo della biblioteca nascosta che rivela i segreti di una costruzione efficiente",
+      "name": "Codice del Legapietra"
+    },
+    "stormglass_halberd_schematic": {
+      "description": "Progetto per fabbricare una formidabile alabarda",
+      "name": "Alabarda di Vetrotempesta"
+    },
+    "survivors_last_words": {
+      "description": "La benedizione finale di uno straniero morente",
+      "name": "Ultime Parole del Sopravvissuto"
+    },
+    "survivors_notes": {
+      "description": "Pergamena logora dal tempo piena di consigli pratici lasciata da chi visse qui molto tempo fa. Sblocca gli obiettivi di base.",
+      "name": "Note del Sopravvissuto"
+    },
+    "tarnished_amulet": {
+      "description": "Amuleto logoro dal tempo che porta buona fortuna",
+      "name": "Amuleto Annerito"
+    },
+    "tarnished_compass": {
+      "description": "Antica reliquia per chi cerca una guida.",
+      "name": "Bussola Annerita"
+    },
+    "unnamed_book": {
+      "description": "Libro rilegato in pelle umana pieno di conoscenza proibita",
+      "name": "Libro Senza Nome"
+    },
+    "whisperers_mark": {
+      "description": "Il marchio del sussurratore nell'oscurità",
+      "name": "Marchio del Sussurratore"
+    },
+    "whispering_cube": {
+      "description": "Cubo di metallo perfettamente levigato di origine sconosciuta, che sussurra frammenti della storia della civiltà scomparsa.",
+      "name": "Cubo Sussurrante"
+    },
+    "wooden_figure": {
+      "description": "Figura di legno intagliata di un'inquietante creatura con tentacoli",
+      "name": "Figura di Legno"
+    }
+  },
+  "fellowship": {
+    "ashwraith_huntress": {
+      "description": "Cacciatrice selvaggia di una tribù della foresta, legata da un giuramento di sangue. Sblocca i potenziamenti dell'abilità di caccia e della produzione dei cacciatori.",
+      "name": "Cacciatrice Spettro di Cenere"
+    },
+    "disgraced_prior": {
+      "description": "Ex priore espulso dal suo ordine. Si redime attraverso un lavoro senza fine. Può essere assegnato per ripetere automaticamente le azioni.",
+      "name": "Priore Caduto in Disgrazia"
+    },
+    "elder_wizard": {
+      "description": "Vecchio mago nei suoi ultimi giorni che molto tempo fa padroneggiò le arti del fuoco arcano. Sblocca l'abilità di combattimento Sfera di Fiammasangue.",
+      "name": "Vecchio Mago"
+    },
+    "one_eyed_crow": {
+      "description": "Mistico corvo con un unico occhio penetrante, addomesticato con l'imbragatura del corvo. Sblocca l'abilità Occhio del Corvo e l'invio di messaggi.",
+      "name": "Corvo Guercio"
+    },
+    "restless_knight": {
+      "description": "Veterano del combattimento che ha visto i resti del vecchio mondo. Sblocca l'abilità di combattimento Colpo Devastante.",
+      "name": "Cavaliere Inquieto"
+    }
+  },
+  "tools": {
+    "adamant_axe": {
+      "description": "Ascia infrangibile, forgiata dal metallo più duro",
+      "name": "Ascia d'Adamante"
+    },
+    "adamant_lantern": {
+      "description": "Fonte di luce suprema, che illumina ogni sentiero",
+      "name": "Lanterna d'Adamante"
+    },
+    "adamant_pickaxe": {
+      "description": "Apice degli strumenti da estrazione, irremovibile e preciso",
+      "name": "Piccone d'Adamante"
+    },
+    "blacksmith_hammer": {
+      "description": "Leggendario martello da fabbro un tempo posseduto da un grande fabbro",
+      "name": "Martello del Fabbro"
+    },
+    "blacksteel_axe": {
+      "description": "Ascia forgiata da raro acciaio nero",
+      "name": "Ascia d'Acciaio Nero"
+    },
+    "blacksteel_lantern": {
+      "description": "Lanterna forgiata da raro acciaio nero",
+      "name": "Lanterna d'Acciaio Nero"
+    },
+    "blacksteel_pickaxe": {
+      "description": "Piccone forgiato da raro acciaio nero",
+      "name": "Piccone d'Acciaio Nero"
+    },
+    "bone_saw": {
+      "description": "Lo strumento del negromante, innaturalmente efficiente nel macellare",
+      "name": "Sega d'Ossa"
+    },
+    "crow_harness": {
+      "description": "Un'imbragatura appositamente creata per catturare i corvi. Può essere usata per catturare un corvo nel Canyon di Nereforo.",
+      "name": "Imbragatura del Corvo"
+    },
+    "giant_trap": {
+      "description": "Trappola massiccia capace di catturare gigantesche creature della foresta",
+      "name": "Trappola Gigante"
+    },
+    "hidden_library_map": {
+      "description": "Mappa del monastero che rivela la posizione di una biblioteca nascosta nelle profondità della caverna",
+      "name": "Mappa della Biblioteca Nascosta"
+    },
+    "iron_axe": {
+      "description": "Ascia affilata per il taglio pesante",
+      "name": "Ascia di Ferro"
+    },
+    "iron_lantern": {
+      "description": "Semplice lanterna che fornisce una luce affidabile",
+      "name": "Lanterna di Ferro"
+    },
+    "iron_pickaxe": {
+      "description": "Piccone resistente per estrarre con efficienza",
+      "name": "Piccone di Ferro"
+    },
+    "mastermason_chisel": {
+      "description": "Strumento squisitamente fabbricato di un maestro costruttore dimenticato da tempo",
+      "name": "Scalpello del Maestro Muratore"
+    },
+    "natharit_pickaxe": {
+      "description": "Piccone estremamente robusto di un materiale sconosciuto dalla qualità eccezionale",
+      "name": "Piccone di Natharit"
+    },
+    "obsidian_axe": {
+      "description": "Ascia leggendaria con bordi vulcanici affilatissimi",
+      "name": "Ascia di Ossidiana"
+    },
+    "obsidian_lantern": {
+      "description": "Potente lanterna che proietta una luce forte e costante",
+      "name": "Lanterna di Ossidiana"
+    },
+    "obsidian_pickaxe": {
+      "description": "Strumento magistrale per l'estrazione fatto di vetro vulcanico",
+      "name": "Piccone di Ossidiana"
+    },
+    "occultist_map": {
+      "description": "Mappa logora dal tempo che rivela la camera di un occultista nella caverna",
+      "name": "Mappa dell'Occultista"
+    },
+    "reinforced_rope": {
+      "description": "Corda resistente che consente l'accesso a camere più profonde della caverna",
+      "name": "Corda Rinforzata"
+    },
+    "skeleton_key": {
+      "description": "Una misteriosa chiave che si dice apra qualsiasi serratura",
+      "name": "Chiave Scheletro"
+    },
+    "skull_lantern": {
+      "description": "Forgiata da ossa maledette, illumina le profondità più oscure",
+      "name": "Lanterna di Teschio"
+    },
+    "steel_axe": {
+      "description": "Ascia finemente fabbricata forgiata in acciaio temprato",
+      "name": "Ascia d'Acciaio"
+    },
+    "steel_lantern": {
+      "description": "Lanterna luminosa che illumina i luoghi più oscuri",
+      "name": "Lanterna d'Acciaio"
+    },
+    "steel_pickaxe": {
+      "description": "Strumento da estrazione molto robusto fabbricato in acciaio resistente",
+      "name": "Piccone d'Acciaio"
+    },
+    "stone_axe": {
+      "description": "Ascia basilare per tagliare la legna",
+      "name": "Ascia di Pietra"
+    },
+    "stone_pickaxe": {
+      "description": "Piccone rudimentale per l'estrazione",
+      "name": "Piccone di Pietra"
+    }
+  },
+  "weapons": {
+    "adamant_sword": {
+      "description": "Lama leggendaria di forza impareggiabile",
+      "name": "Spada d'Adamante"
+    },
+    "arbalest": {
+      "description": "Balestra meticolosamente fabbricata progettata da un brillante ingegnere",
+      "name": "Balestra"
+    },
+    "ashen_dagger": {
+      "description": "Pugnale forgiato di cenere vulcanica donato dal Portatore di Cenere",
+      "name": "Pugnale di Cenere"
+    },
+    "ashen_greatshield": {
+      "description": "Scudo massiccio forgiato dalle ossa della creatura del lago sotterraneo",
+      "name": "Grande Scudo di Cenere"
+    },
+    "ashfire_bomb": {
+      "description": "Bomba devastante che brilla di fuoco ultraterreno",
+      "name": "Bomba di Cenerardente"
+    },
+    "blacksteel_bow": {
+      "description": "Arco forgiato da raro acciaio nero",
+      "name": "Arco d'Acciaio Nero"
+    },
+    "blacksteel_sword": {
+      "description": "Spada forgiata da raro acciaio nero",
+      "name": "Spada d'Acciaio Nero"
+    },
+    "bloodstone_staff": {
+      "description": "Bastone coronato da pietra di sangue, che pulsa di energia oscura",
+      "name": "Bastone di Pietrasangue"
+    },
+    "compound_bow": {
+      "description": "Arma ad alta precisione della civiltà scomparsa",
+      "name": "Arco Composito"
+    },
+    "crude_bow": {
+      "description": "Arco semplice, affidabile per ogni sfida",
+      "name": "Arco Rudimentale"
+    },
+    "ember_bomb": {
+      "description": "Potente bomba con un nucleo incandescente che crea un calore intenso",
+      "name": "Bomba di Brace"
+    },
+    "frostglass_sword": {
+      "description": "Lama forgiata da vetro di gelo, che irradia un potere gelido",
+      "name": "Spada di Vetro di Gelo"
+    },
+    "huntsman_bow": {
+      "description": "Arco migliorato, finemente bilanciato e preciso",
+      "name": "Arco del Cacciatore"
+    },
+    "iron_sword": {
+      "description": "Robusta lama di ferro che accresce l'abilità in combattimento",
+      "name": "Spada di Ferro"
+    },
+    "long_bow": {
+      "description": "Arco superiore con portata e precisione estese",
+      "name": "Arco Lungo"
+    },
+    "master_bow": {
+      "description": "Arco supremo, impareggiabile in potenza e controllo",
+      "name": "Arco del Maestro"
+    },
+    "nightshade_bow": {
+      "description": "Arco fabbricato in legno scuro, le sue frecce portano il veleno",
+      "name": "Arco di Belladonna"
+    },
+    "nordic_war_axe": {
+      "description": "Leggendaria ascia da guerra forgiata da un maestro fabbro vichingo",
+      "name": "Ascia da Guerra Nordica"
+    },
+    "obsidian_sword": {
+      "description": "Lama affilatissima forgiata dal vetro vulcanico",
+      "name": "Spada di Ossidiana"
+    },
+    "steel_sword": {
+      "description": "Lama d'acciaio finemente fabbricata con un bilanciamento superiore",
+      "name": "Spada d'Acciaio"
+    },
+    "stormglass_halberd": {
+      "description": "Alabarda suprema forgiata da adamante magistralmente raffinato",
+      "name": "Alabarda di Vetrotempesta"
+    },
+    "veinfire_elixir": {
+      "description": "Elisir curativo alchemico distillato da rara radicevena",
+      "name": "Elisir di Venafuoco"
+    },
+    "void_bomb": {
+      "description": "Bomba terrificante che sembra distorcere lo spazio attorno a sé",
+      "name": "Bomba del Vuoto"
+    },
+    "war_bow": {
+      "description": "Arco molto potente, fabbricato per forza e precisione",
+      "name": "Arco da Guerra"
+    }
+  }
+}

@@ -151,7 +151,7 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
 
 - **`index.ts`** — i18next bootstrap; eager `import.meta.glob` of `locales/*/*.json` and
   `locales/*/ui/*.json`. UI namespace assembled from shards under `locales/{lang}/ui/`.
-- **`locales.ts`** — supported: **en, de, fr, es, zh-CN, ru**. Namespaces: `common`, `ui`,
+- **`locales.ts`** — supported: **en, de, fr, es, it, pt-BR, zh-CN, ru**. Namespaces: `common`, `ui`,
   `shop`, `actions`, `effects`, `events`, `achievements`.
 - **Resolution:** `resolveGameText.ts` (`tWithFallback`, resource/log names), `eventText.ts`,
   `eventDisplay.ts`, `logDisplay.ts`, `actionLabels.ts`, `tooltipLabels.ts`.

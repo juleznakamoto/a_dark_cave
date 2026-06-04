@@ -1,0 +1,2552 @@
+{
+  "alchemistArrives": {
+    "message": "L'alchimista emerge dalla sua sala: 'Ho condotto esperimenti giorno e notte,' tenendo una fiala di polvere scintillante. 'Ho creato qualcosa di straordinario e terribilmente pericoloso.'",
+    "title": "La Scoperta dell'Alchimista"
+  },
+  "ashwraithCanyonTradeOffer": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "message": "La Cacciatrice Spettro di Cenere si avvicina a te. 'Il mio popolo desidera commerciare,' dice, 'ma tra le nostre terre si apre un profondo canyon. Ci serve un ponte perché le carovane possano attraversarlo. Costruiscilo, e entrambi i nostri popoli prospereranno.'",
+    "title": "Un Ponte per il Commercio"
+  },
+  "bastionBecomesFortress": {
+    "message": "Il tuo bastione è cresciuto fino a diventare una possente fortezza di pietra e acciaio."
+  },
+  "beyondGatePassagesClear": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "message": "I passaggi della caverna dietro il cancello sembrano finalmente liberi. Pare che tu abbia ucciso le creature pallide. Puoi finalmente avventurarti oltre il cancello.",
+    "title": "Oltre il Cancello"
+  },
+  "blackenedMirror": {
+    "choices": {
+      "buyMirror": {
+        "cost": "500 ferro",
+        "label": "Paga 500 Ferro"
+      },
+      "refuseMirror": {
+        "label": "Rifiuta"
+      }
+    },
+    "log": {
+      "outcome0": "Acquisti lo specchio. La sua superficie scura offre scorci del tuo stesso futuro, spingendo la tua sanità mentale verso il baratro.",
+      "outcome1": "Rifiuti l'offerta del mercante. Lo specchio scompare nella notte insieme a lui."
+    },
+    "message": "Un mercante errante offre un alto specchio incrinato incorniciato in ferro nero. Irradia un'aura fredda e innaturale. Afferma che può mostrare scorci del futuro.",
+    "title": "Lo Specchio Annerito"
+  },
+  "blacksmithHammerChoice": {
+    "choices": {
+      "leaveHammer": {
+        "label": "Lascialo"
+      },
+      "takeHammer": {
+        "label": "Prendi il martello"
+      }
+    },
+    "log": {
+      "outcome0": "Afferri l'antico martello, sentendone il peso e l'equilibrio. Nonostante le ere trascorse, resta un capolavoro di forgiatura.",
+      "outcome1": "Decidi di lasciare il martello dove giace, rispettando il luogo di riposo finale del gigante."
+    },
+    "message": "Nelle profondità della foresta, scopri la rovina di un edificio di pietra con una fornace massiccia. Trovi i resti scheletrici di quello che doveva essere un gigante, e accanto un magnifico martello da fabbro. Lo prendi?",
+    "title": "La Forgia del Gigante"
+  },
+  "blindDruidBlessing": {
+    "message": "Un druido cieco emerge dalla foresta. Si avvicina al sacrario e annuisce con approvazione. 'Gli dèi della foresta sono compiaciuti della tua devozione, ti concedono la loro benedizione'.",
+    "title": "Il Druido Cieco"
+  },
+  "bloodDrainedVillagers": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "message": {
+      "firstTime": "Una mattina, 6 abitanti vengono trovati morti nei loro letti, pallidi e svuotati di tutto il sangue. Piccoli fori coprono la loro pelle. Alcuni abitanti sospettano che ciò possa essere collegato alla torre crollata nella foresta, dove i cacciatori udirono strani suoni.",
+      "repeat": "Di nuovo, altri 8 abitanti vengono scoperti morti all'alba, i loro corpi svuotati di sangue, coperti dagli stessi misteriosi segni. Le richieste che si faccia qualcosa riguardo a ciò che dimora nella torre crollata si fanno più insistenti."
+    },
+    "title": "Corpi Svuotati"
+  },
+  "bloodiedAwakening": {
+    "choices": {
+      "investigateMurders": {
+        "label": "Indaga sugli omicidi"
+      },
+      "severFinger": {
+        "label": "Recidi il dito"
+      }
+    },
+    "log": {
+      "outcome0": "Mentre segui impronte fangose attraverso il villaggio, queste conducono a ogni scena del delitto, una dopo l'altra. Le impronte corrispondono ai tuoi stessi stivali. L'orrore si fa strada lentamente - eri tu, posseduto dalla fame dell'anello. Quando gli abitanti scoprono la verità, diciotto fuggono, non volendo restare vicino a una creatura tanto maledetta.",
+      "outcome1": "Con mani tremanti, sollevi l'ascia. L'anello pulsa mentre la lama cade. L'agonia ti squarcia il braccio mentre l'osso si frantuma. Sollevando il dito reciso, vedi piccoli fili neri, come tentacoli, affondati nella sua carne."
+    },
+    "message": "Ti svegli allo spuntare dell'alba, i vestiti zuppi di sangue fresco. Non è il tuo. Un abitante arriva alla tenuta, il volto pallido di orrore. 'Otto sono morti,' sussurra. 'Fatti a pezzi nella notte.' L'anello al tuo dito pulsa di un dolore lancinante.",
+    "title": "Risveglio Insanguinato"
+  },
+  "bloodInWater": {
+    "choices": {
+      "drink_water": {
+        "label": "Bevi l'acqua"
+      },
+      "ignore": {
+        "label": "Ignorala"
+      }
+    },
+    "log": {
+      "outcome0": "Bevi dal pozzo nonostante la sfumatura rossa. L'acqua è fredda, insapore e dopo qualche istante torna improvvisamente limpida. La tua mente sembra averti ingannato.",
+      "outcome1": "Bevi a lungo. Il gusto di rame ti inonda la bocca, denso e caldo. Quella notte sogni di annegare in acqua rossa, e ti svegli con il sapore ancora sulla lingua.",
+      "outcome2": "Rifiuti di bere, ma gli abitanti continuano a riempire le loro coppe. Le loro labbra si tingono di rosso mentre ti sorridono, come se nulla fosse."
+    },
+    "message": "L'acqua del villaggio scorre rossa per tre giorni. Gli abitanti non sembrano accorgersene, bevendola come se nulla fosse cambiato. Tu senti odore di rame e ferro, ma loro sostengono che sappia di pura acqua di sorgente.",
+    "title": "Sangue nell'Acqua"
+  },
+  "bloodMoonAttack": {
+    "choices": {
+      "prepareForAttack": {
+        "label": "Preparati all'attacco"
+      },
+      "sacrificeVillagers": {
+        "label": "Sacrifica abitanti"
+      }
+    },
+    "log": {
+      "outcome0": "Gli abitanti vengono offerti ai licantropi. Con la luna di sangue che svanisce, la pace torna al villaggio. Almeno per ora.",
+      "outcome1": "I licantropi attaccano, ma le tue difese reggono. Il loro capo cade, e dal suo cadavere raccogli Sangue di Licantropo, ancora caldo e ribollente di potere.",
+      "outcome2": "I licantropi travolgono le tue difese e invadono l'insediamento! La luna di sangue svanisce, ma la minaccia rimane.",
+      "outcome3": "I licantropi attaccano, ma le tue difese reggono. Il loro capo cade, e dal suo cadavere raccogli Sangue di Licantropo, ancora caldo e ribollente di potere.",
+      "outcome4": "I licantropi travolgono le tue difese e invadono l'insediamento! La luna di sangue svanisce, ma la minaccia rimane."
+    },
+    "message": {
+      "default": "La luna di notte si è tinta di rosso sangue, gli anziani del villaggio parlano di licantropi. Antichi patti esigono il sacrificio di {{sacrificeAmount}} abitanti per placare le bestie. Se ti rifiuti, faranno in modo di soddisfare la loro fame."
+    },
+    "title": "Luna di Sangue"
+  },
+  "bloodstainedBeltChoice": {
+    "choices": {
+      "doNothing": {
+        "label": "Non fare nulla"
+      },
+      "leaveBelt": {
+        "label": "Lasciala"
+      },
+      "takeBelt": {
+        "label": "Prendila"
+      }
+    },
+    "log": {
+      "outcome0": "Allacci la cintura intorno alla vita. Un debole sussurro sembra insinuarsi ai margini dei tuoi pensieri.",
+      "outcome1": "Lasci la cintura dove pende. Qualunque sangue l'abbia impregnata, preferiresti non portare quella storia con te.",
+      "outcome2": "Uno dei tuoi uomini la allaccia prima che tu possa fermarlo. Ride, poi soffoca mentre la cintura si stringe. Le sue mani graffiano il cuoio, ma non cede. Quando lo raggiungi, è troppo tardi."
+    },
+    "message": "Appesa a un chiodo arrugginito nella parete della caverna trovi una spessa cintura di cuoio, scura per le vecchie macchie di sangue. La prendi?",
+    "title": "Cintura Insanguinata"
+  },
+  "boneArmyAttack": {
+    "choices": {
+      "defendAgainstBoneArmy": {
+        "label": "Difendi il villaggio"
+      },
+      "hideFromBoneArmy": {
+        "label": "Nasconditi"
+      }
+    },
+    "log": {
+      "outcome0": "Gli abitanti sconfiggono l'esercito d'ossa! Ossa e silenzio ricoprono il campo di battaglia. Strappi la Corona del Divoratore dai suoi resti e prelevi una fiala del suo sangue pallido e viscoso.",
+      "outcome1": "Gli abitanti si nascondono terrorizzati mentre l'esercito d'ossa perlustra il villaggio. Le creature scheletriche alla fine se ne vanno, il loro scopo incompiuto.",
+      "defend_noDeaths": "Gli abitanti combattono disperatamente contro l'esercito d'ossa. Gli abitanti sopravvivono all'assalto.",
+      "defend_noDeaths_hut": "Gli abitanti combattono disperatamente contro l'esercito d'ossa. Gli abitanti sopravvivono all'assalto. Le creature scheletriche fanno a pezzi una delle capanne, riducendola in macerie.",
+      "defend_noDeaths_steel": "Gli abitanti combattono disperatamente contro l'esercito d'ossa. Gli abitanti sopravvivono all'assalto. L'esercito d'ossa saccheggia le scorte prima di andarsene.",
+      "defend_noDeaths_steel_hut": "Gli abitanti combattono disperatamente contro l'esercito d'ossa. Gli abitanti sopravvivono all'assalto. L'esercito d'ossa saccheggia le scorte prima di andarsene. Le creature scheletriche fanno a pezzi una delle capanne, riducendola in macerie.",
+      "defend_oneDeath": "Gli abitanti combattono disperatamente contro l'esercito d'ossa. Un abitante cade per mano dei guerrieri scheletrici.",
+      "defend_oneDeath_hut": "Gli abitanti combattono disperatamente contro l'esercito d'ossa. Un abitante cade per mano dei guerrieri scheletrici. Le creature scheletriche fanno a pezzi una delle capanne, riducendola in macerie.",
+      "defend_oneDeath_steel": "Gli abitanti combattono disperatamente contro l'esercito d'ossa. Un abitante cade per mano dei guerrieri scheletrici. L'esercito d'ossa saccheggia le scorte prima di andarsene.",
+      "defend_oneDeath_steel_hut": "Gli abitanti combattono disperatamente contro l'esercito d'ossa. Un abitante cade per mano dei guerrieri scheletrici. L'esercito d'ossa saccheggia le scorte prima di andarsene. Le creature scheletriche fanno a pezzi una delle capanne, riducendola in macerie.",
+      "defend_manyDeaths": "Gli abitanti combattono disperatamente contro l'esercito d'ossa. Diversi abitanti cadono per mano dei guerrieri scheletrici.",
+      "defend_manyDeaths_hut": "Gli abitanti combattono disperatamente contro l'esercito d'ossa. Diversi abitanti cadono per mano dei guerrieri scheletrici. Le creature scheletriche fanno a pezzi una delle capanne, riducendola in macerie.",
+      "defend_manyDeaths_steel": "Gli abitanti combattono disperatamente contro l'esercito d'ossa. Diversi abitanti cadono per mano dei guerrieri scheletrici. L'esercito d'ossa saccheggia le scorte prima di andarsene.",
+      "defend_manyDeaths_steel_hut": "Gli abitanti combattono disperatamente contro l'esercito d'ossa. Diversi abitanti cadono per mano dei guerrieri scheletrici. L'esercito d'ossa saccheggia le scorte prima di andarsene. Le creature scheletriche fanno a pezzi una delle capanne, riducendola in macerie.",
+      "hide_noDeaths": "Gli abitanti si nascondono terrorizzati mentre l'esercito d'ossa perlustra il villaggio. All'alba, l'esercito scheletrico è partito, lasciando dietro di sé solo frammenti d'osso.",
+      "hide_noDeaths_loot": "Gli abitanti si nascondono terrorizzati mentre l'esercito d'ossa perlustra il villaggio. All'alba, l'esercito scheletrico è partito, lasciando dietro di sé solo frammenti d'osso. L'esercito saccheggia le tue provviste prima di sparire nell'oscurità.",
+      "hide_oneDeath": "Gli abitanti si nascondono terrorizzati mentre l'esercito d'ossa perlustra il villaggio. Un abitante che ha tentato di fuggire viene ucciso.",
+      "hide_oneDeath_loot": "Gli abitanti si nascondono terrorizzati mentre l'esercito d'ossa perlustra il villaggio. Un abitante che ha tentato di fuggire viene ucciso. L'esercito saccheggia le tue provviste prima di sparire nell'oscurità.",
+      "hide_manyDeaths": "Gli abitanti si nascondono terrorizzati mentre l'esercito d'ossa perlustra il villaggio. Gli abitanti che hanno tentato di fuggire vengono uccisi dalle creature d'ossa.",
+      "hide_manyDeaths_loot": "Gli abitanti si nascondono terrorizzati mentre l'esercito d'ossa perlustra il villaggio. Gli abitanti che hanno tentato di fuggire vengono uccisi dalle creature d'ossa. L'esercito saccheggia le tue provviste prima di sparire nell'oscurità."
+    },
+    "message": "La terra trema mentre creature scheletriche emergono dalla foresta. Il Divoratore d'Ossa ha usato le ossa che hai scambiato per forgiare una legione empia. Con occhi vuoti e armi d'osso affilate, avanzano verso la città.",
+    "title": "L'Esercito d'Ossa"
+  },
+  "boneDevourer": {
+    "title": "Il Divoratore d'Ossa",
+    "message": {
+      "firstTime": "Una creatura deforme si trascina ai cancelli, la sua forma curva coperta di pelle pallida e tesa. Parla con voce roca: 'Cerco ossa. Pago {{silverReward}} Argento.'",
+      "repeat": "La creatura torna ai cancelli, la sua forma curva ancora coperta di pelle pallida e tesa. Parla con la sua familiare voce roca: 'Cerco ossa. Pago {{silverReward}} Argento.'"
+    },
+    "choices": {
+      "sellBones": {
+        "label": "Vendi {{boneCost}} Ossa",
+        "cost": "{{boneCost}} ossa"
+      },
+      "refuse": {
+        "label": "Rifiuta lo scambio"
+      }
+    },
+    "log": {
+      "outcome1": "La creatura prende le ossa con le sue mani nodose, come tentando di contarle. Depone una borsa d'argento ai tuoi piedi e scompare nell'oscurità.",
+      "outcome2": "Rifiuti l'offerta della creatura. Sibila contrariata e si ritira nell'ombra. Percepisci che tornerà.",
+      "outcome3": "La tua indecisione frustra la creatura. Sibila contrariata e si ritira nell'ombra."
+    }
+  },
+  "boneDiceChoice": {
+    "choices": {
+      "doNothing": {
+        "label": "Non fare nulla"
+      },
+      "keepDice": {
+        "label": "Tienili"
+      },
+      "leaveDice": {
+        "label": "Lasciali"
+      }
+    },
+    "log": {
+      "outcome0": "Intaschi i dadi d'osso. Ti sembrano caldi nella mano.",
+      "outcome1": "Decidi di lasciarli sul fondo della caverna. Mentre ti allontani, li senti tintinnare una volta, come se rotolassero da soli in segno di addio.",
+      "outcome2": "La tua esitazione sembra far adirare l'antica magia dentro i dadi. Rotolano via dalla tua mano nell'oscurità."
+    },
+    "message": "Mentre scendi più a fondo, trovi un set di dadi d'osso intagliati con antiche rune. Questi dadi hanno visto molta fortuna e molta tragedia. Li tieni?",
+    "title": "I Dadi d'Osso"
+  },
+  "clarityElixirCaveFound": {
+    "choices": {
+      "drinkElixir": {
+        "label": "Continua"
+      }
+    },
+    "log": {
+      "outcome0": "Trovi un Elisir di Chiarezza nella caverna. Mentre lo bevi, la tua mente si fa più leggera."
+    },
+    "message": "Trovi un Elisir di Chiarezza nella caverna. Mentre lo bevi, la tua mente si fa più leggera.",
+    "title": "Elisir di Chiarezza"
+  },
+  "boneTempleProposal": {
+    "choices": {
+      "acceptBoneTemple": {
+        "label": "Accetta la proposta"
+      }
+    },
+    "log": {
+      "outcome0": "Accetti la saggezza dell'anziana. Gli abitanti annuiscono in silenziosa approvazione. La via per costruire il monumento supremo agli dèi è ora aperta."
+    },
+    "message": "Un'anziana donna dagli occhi velati si avvicina a te, 'Dobbiamo porre fine allo spargimento di sangue umano,' dichiara. 'Gli antichi dèi esigono un grande monumento in loro onore. Solo allora gli dèi ci concederanno il loro continuo favore.'",
+    "title": "La Richiesta dell'Anziana"
+  },
+  "boneyardPlea": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "message": "Una delegazione di abitanti ti trova: 'Molti di noi sono morti. Abbiamo bisogno di un luogo adeguato per seppellire i nostri morti, così che possano finalmente riposare.'",
+    "title": "Seppellire i Morti"
+  },
+  "cannibalRaid": {
+    "choices": {
+      "fightCannibals": {
+        "label": "Difendi il villaggio"
+      },
+      "hideFromCannibals": {
+        "label": "Nasconditi"
+      }
+    },
+    "log": {
+      "outcome0": "Gli abitanti si nascondono terrorizzati mentre i cannibali perlustrano il villaggio. All'alba, i cannibali se ne sono andati senza trovare nessuno.",
+      "defeat_noDeaths": "I cannibali travolgono le tue difese. Gli abitanti riescono a sopravvivere, anche se a malapena.",
+      "defeat_noDeaths_loot": "I cannibali travolgono le tue difese. Gli abitanti riescono a sopravvivere, anche se a malapena. I cannibali saccheggiano le tue scorte prima di ritirarsi nelle terre selvagge.",
+      "defeat_oneDeath": "I cannibali travolgono le tue difese. Un abitante viene rapito dai cannibali.",
+      "defeat_oneDeath_loot": "I cannibali travolgono le tue difese. Un abitante viene rapito dai cannibali. I cannibali saccheggiano le tue scorte prima di ritirarsi nelle terre selvagge.",
+      "defeat_manyDeaths": "I cannibali travolgono le tue difese. Diversi abitanti vengono uccisi o rapiti dai cannibali.",
+      "defeat_manyDeaths_loot": "I cannibali travolgono le tue difese. Diversi abitanti vengono uccisi o rapiti dai cannibali. I cannibali saccheggiano le tue scorte prima di ritirarsi nelle terre selvagge.",
+      "hide_noDeaths": "Gli abitanti si nascondono terrorizzati mentre i cannibali perlustrano il villaggio. All'alba, i cannibali se ne sono andati senza trovare nessuno.",
+      "hide_noDeaths_loot": "Gli abitanti si nascondono terrorizzati mentre i cannibali perlustrano il villaggio. All'alba, i cannibali se ne sono andati senza trovare nessuno. I cannibali saccheggiano liberamente le tue scorte prima di dileguarsi.",
+      "hide_oneDeath": "Gli abitanti si nascondono terrorizzati mentre i cannibali perlustrano il villaggio. Un abitante viene rapito.",
+      "hide_oneDeath_loot": "Gli abitanti si nascondono terrorizzati mentre i cannibali perlustrano il villaggio. Un abitante viene rapito. I cannibali saccheggiano liberamente le tue scorte prima di dileguarsi.",
+      "hide_manyDeaths": "Gli abitanti si nascondono terrorizzati mentre i cannibali perlustrano il villaggio. Diversi abitanti vengono uccisi o rapiti.",
+      "hide_manyDeaths_loot": "Gli abitanti si nascondono terrorizzati mentre i cannibali perlustrano il villaggio. Diversi abitanti vengono uccisi o rapiti. I cannibali saccheggiano liberamente le tue scorte prima di dileguarsi.",
+      "victory_one": "Gli abitanti respingono i cannibali! Un abitante cade in battaglia, ma la tribù si ritira sconfitta. Tra i corpi, trovi una collana primitiva fatta di ossa umane.",
+      "victory_many": "Gli abitanti combattono valorosamente e respingono i cannibali! Diversi abitanti cadono in battaglia, ma la tribù è costretta a ritirarsi. Tra i corpi, trovi una collana primitiva fatta di ossa umane."
+    },
+    "message": "I tamburi di guerra echeggiano nella notte mentre una tribù di cannibali emerge dalle terre selvagge. Avanzano sul villaggio con armi rozze e terribili intenzioni.",
+    "title": "Razzia dei Cannibali"
+  },
+  "compassTreasure": {
+    "choices": {
+      "followCompass": {
+        "label": "Segui la bussola"
+      }
+    },
+    "log": {
+      "outcome0": "Segui la bussola nel profondo dei boschi, dove dissotterri un piccolo baule di costruzione straordinariamente robusta. Non riesci ad aprirlo, così lo riporti con te."
+    },
+    "message": "Ti svegli nella notte a uno strano suono. L'ago della bussola annerita gira impazzito nell'oscurità. Quando la afferri, l'ago si ferma, puntando saldamente in una direzione.",
+    "title": "L'Ago che si Agita"
+  },
+  "creatureInHut": {
+    "choices": {
+      "burn_hut": {
+        "label": "Brucia la capanna"
+      },
+      "do_nothing": {
+        "label": "Non fare nulla"
+      }
+    },
+    "log": {
+      "outcome0": "Dai fuoco alla capanna. Le fiamme consumano la creatura. Frugando tra le rovine in seguito, trovi un piccolo baule nascosto sotto le assi del pavimento contenente 250 Oro.",
+      "outcome1": "Dai fuoco alla capanna. Le fiamme consumano tutto, inclusi i due abitanti che dormivano all'interno. Al mattino, trovi solo cenere e l'odore persistente di qualcosa che non avrebbe mai dovuto bruciare.",
+      "outcome2": "Ti volti dall'altra parte e cerchi di dimenticare ciò che hai visto. Ma nei tuoi sogni, la creatura ti fa visita. Sussurra il tuo nome con una voce come pietra che gratta, e ti mostra visioni di ciò che giace sotto la terra."
+    },
+    "message": "Attraverso le crepe di una delle tue capanne di legno, intravedi qualcosa che non dovrebbe essere lì. Una sagoma scura si muove nell'oscurità, troppo alta e troppo magra per essere umana. Mentre si volta verso di te, vedi occhi che brillano come stelle morenti.",
+    "title": "Qualcosa nella Capanna"
+  },
+  "cthulhuFigure": {
+    "choices": {
+      "discardFigure": {
+        "label": "Scartala"
+      },
+      "keepFigure": {
+        "label": "Tienila"
+      }
+    },
+    "log": {
+      "outcome0": "Decidi di tenere la figura. La sua strana aura mette a disagio gli abitanti.",
+      "outcome1": "Scarti la figura. La foresta sembra osservare in silenzio mentre scompare."
+    },
+    "message": "Ai margini della foresta viene trovata una piccola figura di legno, intagliata con fattezze tentacolari. Emana una strana aura. La tieni?",
+    "title": "Una Strana Figura di Legno"
+  },
+  "cube01": {
+    "choices": {
+      "close": {
+        "label": "Chiudi"
+      }
+    },
+    "message": "Ti svegli nella notte. Il cubo ronza dolcemente. All'improvviso una voce gentile e melodica ne emerge: 'Molto tempo fa, una grande civiltà prosperò su questo mondo, ma si sgretolò, la sua conoscenza perduta nelle ere.'",
+    "title": "Il Cubo si Risveglia"
+  },
+  "cube02": {
+    "choices": {
+      "close": {
+        "label": "Chiudi"
+      }
+    },
+    "message": "'In un lontano passato, una tribù di feroci guerrieri fu scelta per vivere nelle profondità delle caverne. Il loro scopo era custodire qualcosa di grande importanza.'",
+    "title": "La Tribù dei Guerrieri"
+  },
+  "cube03": {
+    "choices": {
+      "close": {
+        "label": "Chiudi"
+      }
+    },
+    "message": "'La tribù dei guerrieri crebbe fino a diventare una vasta città sotterranea, al sicuro dal mondo di sopra, ancora a proteggere ciò che era stata mandata a proteggere ere fa.'",
+    "title": "La Città Sotterranea"
+  },
+  "cube04": {
+    "choices": {
+      "close": {
+        "label": "Chiudi"
+      }
+    },
+    "message": "'Sebbene il ricordo di ciò che proteggevano sia svanito nella leggenda, la loro vigilanza perdurò. Per generazioni i guerrieri hanno mantenuto il loro sacro giuramento, vegliando su ciò che giace nel punto più profondo della città.'",
+    "title": "Il Sacro Giuramento"
+  },
+  "cube05": {
+    "choices": {
+      "close": {
+        "label": "Chiudi"
+      }
+    },
+    "message": "'Molto dopo che gli abitanti della città sotterranea perirono, l'oggetto della loro devozione rimase: un colossale cancello impenetrabile, costruito con una tecnologia da tempo dimenticata, nascosto nelle camere più basse della città'",
+    "title": "Il Cancello Sigillato"
+  },
+  "cube06": {
+    "choices": {
+      "close": {
+        "label": "Chiudi"
+      }
+    },
+    "message": "Mentre il cancello va in frantumi, il cubo trema nelle tue mani, scaldandosi. Un sussurro sommesso ma urgente ne sfugge: 'Ho acquisito nuove intuizioni.'",
+    "title": "Il Cancello si Apre"
+  },
+  "cube07": {
+    "choices": {
+      "close": {
+        "label": "Chiudi"
+      }
+    },
+    "message": "'L'antica civiltà che forgiò il cancello possedeva conoscenza e tecnologia ben oltre l'epoca attuale. Crearono persino dispositivi progettati per essere impiantati nel cranio, potenziando sia la mente che il corpo'",
+    "title": "Tecnologia Antica"
+  },
+  "cube08": {
+    "choices": {
+      "close": {
+        "label": "Chiudi"
+      }
+    },
+    "message": "'I capi decretarono che ogni cittadino dovesse portare un dispositivo nella testa. Una piccola fazione iniziò a esprimere le proprie preoccupazioni, formando una resistenza poiché riconobbe i pericoli nascosti nella tecnologia.'",
+    "title": "La Resistenza"
+  },
+  "cube09": {
+    "choices": {
+      "close": {
+        "label": "Chiudi"
+      }
+    },
+    "message": "'Con l'aiuto dei dispositivi, la civiltà prosperò. Iniziò un'era di pace e progresso senza precedenti, la loro conoscenza e abilità raggiunsero vette che non si sarebbero mai più riviste.'",
+    "title": "L'Età dell'Oro"
+  },
+  "cube10": {
+    "choices": {
+      "close": {
+        "label": "Chiudi"
+      }
+    },
+    "message": "'La conoscenza fluiva all'istante, e la società prosperava. Dietro il progresso, i dispositivi cranici orchestravano i pensieri dell'umanità, collegando le menti in una rete silenziosa e inevitabile.''",
+    "title": "Il Grande Collasso"
+  },
+  "cube11": {
+    "choices": {
+      "close": {
+        "label": "Chiudi"
+      }
+    },
+    "message": "'Un giorno, senza preavviso, un inimmaginabile impulso magneto-elettrico spazzò il globo. Ogni dispositivo della civiltà, compresi quelli incorporati nei crani, fu annientato.'",
+    "title": "La Mente Alveare"
+  },
+  "cube12": {
+    "choices": {
+      "close": {
+        "label": "Chiudi"
+      }
+    },
+    "message": "'I pochi sopravvissuti non riuscirono a vivere senza i dispositivi. La maggior parte morì. La civiltà regredì. La conoscenza scivolò nell'oblio. La natura si riprese le terre, lasciando solo rovine sepolte dove un tempo sorgeva la grandezza.'",
+    "title": "La Fine della Civiltà"
+  },
+  "cube13": {
+    "choices": {
+      "close": {
+        "label": "Chiudi"
+      }
+    },
+    "message": "Il cubo pulsa di energia mentre ti avvicini alle creature uccise. Sembra estrarre informazioni da qualche parte. Il cubo si scalda, elaborando la conoscenza recuperata.",
+    "title": "Dati Recuperati"
+  },
+  "cube14a": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "message": "'Quando la resistenza si oppose ai dispositivi cranici, fu esiliata nelle profondità della montagna, sigillata dietro il cancello. Senza via di ritorno, scavarono sempre più in profondità. Nell'isolamento e nell'oscurità, le loro menti si erosero e discesero nella follia e nella degenerazione.'",
+    "title": "La Resistenza"
+  },
+  "cube14b": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "message": "'Un giorno, nelle profondità della terra, trovarono un monolite di un minerale sconosciuto. Da esso forgiarono un esplosivo per distruggere il cancello. Ma la bomba non riuscì a sfondare il cancello, scatenando invece un impulso elettromagnetico che si estese all'intero pianeta distruggendo tutti i dispositivi, ponendo fine alla civiltà.'",
+    "title": "Il Minerale Sconosciuto"
+  },
+  "cube14c": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "message": "'Poco dopo l'esplosione, un uomo lì vicino iniziò a smaterializzarsi, la sua forma che tremolava, semitrasparente per alcuni secondi. Terrorizzato e impazzito per quanto accaduto, si tolse la vita pochi istanti dopo.'",
+    "title": "Il Minerale Sconosciuto"
+  },
+  "cube14d": {
+    "choices": {
+      "close": {
+        "label": "Chiudi"
+      }
+    },
+    "message": "'Disperati, i sopravvissuti teorizzarono che il minerale potesse aiutarli ad attraversare il cancello. Con i suoi ultimi frammenti, costruirono una bomba più piccola e posizionarono il loro uomo più lucido davanti al cancello. Subito dopo l'esplosione, divenne spettrale, traslucido, e poi svanì attraverso il cancello.'",
+    "title": "Attraverso il Cancello"
+  },
+  "cube15a": {
+    "choices": {
+      "close": {
+        "label": "Chiudi"
+      }
+    },
+    "message": "Fu allora che capisti che le creature non avevano attaccato perché ti avevano riconosciuto come uno di loro. Tu sei l'uomo che è svanito attraverso il cancello.",
+    "title": "Riconoscimento"
+  },
+  "cube15b": {
+    "choices": {
+      "close": {
+        "label": "Chiudi"
+      }
+    },
+    "message": "Dopo aver concluso la loro storia uno dei sopravvissuti si fa avanti, indicandoti: 'Tu sei l'uomo che è svanito attraverso il cancello. Sei uno di noi.",
+    "title": "Riconoscimento"
+  },
+  "cubeDiscovery": {
+    "choices": {
+      "close": {
+        "label": "Chiudi"
+      }
+    },
+    "message": "Vicino all'ingresso della caverna, scopri un cubo di metallo perfettamente levigato. All'inizio sembra immobile, ma poi senti una debole vibrazione come un lento pulsare ritmico, quasi un battito cardiaco.",
+    "title": "Il Cubo Sussurrante"
+  },
+  "cursedMercenaryMassacre": {
+    "choices": {
+      "nodSilently": {
+        "label": "Continua"
+      }
+    },
+    "log": {
+      "outcome0": "L'abitante si allontana in fretta, ignaro dell'oscura verità. L'anello si è nutrito bene."
+    },
+    "message": "Un abitante pallido si precipita da te, senza fiato dal terrore. 'L'accampamento dei mercenari... sono tutti morti. Si sono uccisi a vicenda nella notte. Abbiamo trovato dell'argento tra i cadaveri.'",
+    "title": "Il Massacro"
+  },
+  "desperateAmputation": {
+    "choices": {
+      "severFinger": {
+        "label": "Recidi il dito"
+      }
+    },
+    "log": {
+      "outcome0": "Con mani tremanti, sollevi l'ascia. L'anello pulsa mentre la lama cade. L'agonia ti squarcia il braccio mentre l'osso si frantuma. Sollevando il dito reciso, vedi piccoli fili neri, come tentacoli, affondati nella sua carne."
+    },
+    "message": "Dopo gli eventi orribili, provi ancora una volta a rimuovere l'anello maledetto. Ma l'anello non cede, come se fosse diventato parte di te. C'è solo un modo per liberartene ora.",
+    "title": "Nessuna Via di Fuga"
+  },
+  "disgracedPriorOffer": {
+    "choices": {
+      "offerShelter": {
+        "label": "Offrigli riparo"
+      }
+    },
+    "log": {
+      "outcome0": "Accetta la tua offerta senza una parola e riprende la sua fatica. I suoi occhi celano il tormento silenzioso di un uomo che ha visto crollare la propria fede. Un tempo predicava la virtù, fino al giorno in cui commise un grande peccato. Il Priore Caduto in Disgrazia si è unito alla tua compagnia."
+    },
+    "message": "I tuoi abitanti riferiscono di un uomo emaciato in vesti laceri che ripara silenziosamente le mura delle capanne di pietra. Lavora senza parlare, senza riposo, senza chiedere nulla. Quando avvicinato, dice soltanto che ha molto di cui farsi perdonare.",
+    "title": "Un Riparatore Silenzioso"
+  },
+  "doNothing": {
+    "log": {
+      "outcome0": "Rifiuti. La notte trascorre senza allegria, calore o risate."
+    }
+  },
+  "eighthWave": {
+    "message": "Il terreno trema sotto il peso del loro numero, mentre una nuova ondata dell'orda pallida stringe il suo cerchio attorno alla città.",
+    "title": "L'Ottava Ondata"
+  },
+  "encounterBeyondPortal": {
+    "choices": {
+      "attempt_communication": {
+        "label": "Prova a comunicare"
+      },
+      "slaughter_creatures": {
+        "label": "Massacrale"
+      }
+    },
+    "log": {
+      "outcome0": "Le abbatti senza pietà. Le loro grida echeggiano nelle caverne mentre cadono.",
+      "outcome1": "Abbassi le armi e tenti di comprenderle. Attraverso gesti e parole spezzate, condividono frammenti della loro storia lasciandoti senza parole."
+    },
+    "message": "Nelle profondità oltre il cancello in frantumi, trovi alcune creature che non attaccano. Le loro forme sono vagamente umane, deformate da generazioni nell'oscurità. Gesticolano, tentando di comunicare con parole e segni spezzati.",
+    "title": "Gli Abitanti del Profondo"
+  },
+  "establishTradeProposal": {
+    "choices": {
+      "mountainMonastery": {
+        "label": "Monastero di Montagna"
+      },
+      "swampTribe": {
+        "label": "Tribù della Palude"
+      },
+      "shoreFishermen": {
+        "label": "Pescatori della Costa"
+      }
+    },
+    "log": {
+      "outcome0": "Invii il corvo guercio con un messaggio al Monastero di Montagna. Attendi il suo ritorno.",
+      "outcome1": "Invii il corvo guercio con un messaggio alla Tribù della Palude. Attendi il suo ritorno.",
+      "outcome2": "Invii il corvo guercio con un messaggio ai Pescatori della Costa. Attendi il suo ritorno."
+    },
+    "title": "Stabilire il Commercio",
+    "message": {
+      "firstTime": "Un anziano del villaggio si avvicina a te e consiglia di mandare il corvo con un messaggio per stabilire commerci. Dove inviare per primo un messaggio?",
+      "repeat": "L'anziano del villaggio si avvicina ancora una volta. 'Il corvo si è dimostrato utile. Inviamo un altro messaggio?'"
+    }
+  },
+  "exiledScholarVisit": {
+    "choices": {
+      "payScholar": {
+        "cost": "250 Oro",
+        "label": "Paga 250 Oro"
+      },
+      "sendAway": {
+        "label": "Mandalo via"
+      }
+    },
+    "log": {
+      "outcome1": "Lo studioso crea una misteriosa mistura rossa e ti istruisce a immergerti in essa. Mentre emergi dal bagno, ti senti più forte ma anche corrotto.",
+      "outcome2": "Mandi via lo studioso. Se ne va con un sospiro deluso, ma percepisci che potrebbe tornare.",
+      "outcome3": "Lo studioso se ne va, scontento della tua indecisione."
+    },
+    "message": "Uno studioso delle arti oscure si avvicina alla tua tenuta. Alla vista delle tre fiale di sangue, dice, con un accenno di trattenuta eccitazione, 'Posso creare una mistura che ti concederà un grande potere.'",
+    "title": "Lo Studioso Esiliato"
+  },
+  "obsidianOrbVisit": {
+    "choices": {
+      "payGold": {
+        "cost": "250 Oro",
+        "label": "Paga 250 Oro"
+      },
+      "payVillagers": {
+        "cost": "20 Abitanti",
+        "label": "Offri 20 Abitanti"
+      },
+      "sendAway": {
+        "label": "Mandala via"
+      }
+    },
+    "log": {
+      "outcome0": "Paghi la donna, e lei condivide il segreto della Sfera di Ossidiana.",
+      "outcome1": "Venti abitanti vengono trascinati via in catene. La donna condivide la conoscenza, ma il villaggio è nauseato dal disgusto per ciò che è stato fatto.",
+      "outcome2": "La mandi via. Dice che potrebbe tornare quando sarai pronto.",
+      "outcome3": "Il tempo scade. Se ne va, dicendo che potrebbe tornare quando sarai pronto."
+    },
+    "message": "Una donna riccamente adornata, dall'aspetto orientale, arriva con due robusti attendenti. Offre di condividere la conoscenza per fabbricare una potente Sfera di Ossidiana in cambio di oro o abitanti.",
+    "title": "La Sfera di Ossidiana"
+  },
+  "facesInWalls": {
+    "choices": {
+      "examine": {
+        "label": "Esamina i volti"
+      },
+      "ignore": {
+        "label": "Ignorali"
+      }
+    },
+    "log": {
+      "outcome0": "A un esame più attento, sembra essere stata solo un'illusione ottica. Tiri un sospiro di sollievo.",
+      "outcome1": "Ti avvicini a uno dei volti. I suoi occhi si spalancano di colpo e sussurra il tuo nome. Riconosci il volto come quello di qualcuno morto molto tempo fa.",
+      "outcome2": "Cerchi di ignorare i volti, ma si moltiplicano. Presto ogni superficie di legno del villaggio reca il marchio di anime torturate. Una mattina sono tutti spariti, come se non fossero mai stati lì."
+    },
+    "message": "Le pareti di legno delle tue capanne hanno cominciato a mostrare volti - espressioni contorte, agonizzanti che sembrano spingere dall'altra parte. Articolano urla e suppliche silenziose. Gli abitanti li aggirano come se fossero sempre stati lì.",
+    "title": "Volti nelle Pareti"
+  },
+  "feast": {
+    "choices": {
+      "makeFeast": {
+        "cost": "{{foodCost}} cibo",
+        "label": "Spendi {{foodCost}} Cibo"
+      },
+      "noFeast": {
+        "label": "Rifiuta il banchetto"
+      },
+      "doNothing": {
+        "label": "Nessuna Decisione Presa"
+      }
+    },
+    "log": {
+      "outcome1": "Gli abitanti si radunano per un banchetto! La stanchezza svanisce e gli animi si sollevano, anche se solo per poco.",
+      "outcome2": "Rifiuti la proposta del banchetto. Gli abitanti accettano la tua decisione, anche se delusi.",
+      "outcome3": "Il tempo passa e l'occasione per un banchetto svanisce."
+    },
+    "message": "Gli abitanti propongono di organizzare un banchetto. Un breve conforto per alleviare la loro stanchezza e quietare le loro menti.",
+    "title": "Banchetto del Villaggio"
+  },
+  "feedingRing": {
+    "choices": {
+      "keepRing": {
+        "label": "Tieni l'anello"
+      },
+      "removeRing": {
+        "label": "Toglilo"
+      }
+    },
+    "log": {
+      "outcome0": "Il dito ti duole leggermente, ma per ora lo lasci stare. Quasi sembra un debole pulsare contro la tua pelle.",
+      "outcome1": "Per quanto tu ci provi, l'anello non si toglie. Sembra quasi fuso alla tua carne. Il dito ti duole leggermente, ma per ora lo lasci stare. Quasi sembra un debole pulsare contro la tua pelle."
+    },
+    "message": "Ti risvegli nel cuore della notte, paralizzato. Percepisci una presenza incombere accanto al tuo letto, silenziosa e immobile. Prima che il terrore possa prendere il sopravvento, il sonno ti trascina di nuovo nel vuoto. All'alba, trovi un anello sconosciuto a uno dei tuoi diti.",
+    "title": "Il Terrore Notturno"
+  },
+  "fifthWave": {
+    "message": "Dalla caverna emergono innumerevoli figure pallide, le loro forme indicibili mentre avanzano sulla città.",
+    "title": "La Quinta Ondata"
+  },
+  "findElderScroll": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "log": {
+      "outcome0": "Prendi l'antica pergamena dalle fredde pietre. Conoscenza proibita è scritta sulla sua pergamena fragile."
+    },
+    "message": "Durante la notte, mentre percorri uno stretto sentiero, qualcosa si muove ai margini della tua vista, come un'ombra che fugge dalla luce del fuoco. La segui, e lì, sulle fredde pietre, giace un'antica pergamena.",
+    "title": "L'Antica Pergamena"
+  },
+  "fireStorm": {
+    "message": "Un incendio divampa nel villaggio durante la notte, distruggendo una capanna di legno e uccidendone gli occupanti."
+  },
+  "firstElderWarning": {
+    "choices": {
+      "nod": {
+        "label": "Continua"
+      }
+    },
+    "message": "Un abitante anziano si avvicina a te, gli occhi pesanti di conoscenza. 'Hai mosso i tuoi primi passi in questo mondo crudele,' dice sommessamente. 'Presto, dovrai decidere se sei disposto ad affrontare ciò che ti attende.'",
+    "title": "L'Anziano del Villaggio"
+  },
+  "firstWave": {
+    "message": "Figure pallide emergono dalla caverna, finalmente libere, i loro occhi di brace che tagliano l'oscurità mentre marciano verso la città.",
+    "title": "La Prima Ondata"
+  },
+  "forestTribeHelpRequest": {
+    "choices": {
+      "accept_help": {
+        "label": "Offri aiuto"
+      }
+    },
+    "log": {
+      "outcome0": "Gli occhi della selvaggia si illuminano di speranza. 'Sei la nostra unica possibilità,' dice. 'La caverna delle bestie giace nel profondo della foresta. Che gli dèi ti proteggano.'"
+    },
+    "message": "Una selvaggia emerge dalla foresta, il corpo pallido coperto di segni tribali e cicatrici. 'Vengo da una tribù dei boschi,' dice con urgenza. 'Bestie brutali che vivono in una caverna nei boschi ci attaccano senza sosta. Rischiamo l'estinzione. Ti prego, aiutaci a sopravvivere.'",
+    "title": "Una Disperata Supplica"
+  },
+  "fourthWave": {
+    "message": "Il cielo sembra oscurarsi mentre una massa incalcolabile di creature pallide irrompe dalla caverna, premendo verso la città.",
+    "title": "La Quarta Ondata"
+  },
+  "frostfall": {
+    "choices": {
+      "doNothing": {
+        "label": "Non fare nulla"
+      },
+      "prepareFrostfall": {
+        "label": "Preparati"
+      }
+    },
+    "log": {
+      "outcome0": "La bufera colpisce con forza brutale. Tutta la produzione rallenta fino a fermarsi mentre gli abitanti lottano per sopravvivere al freddo.",
+      "outcome2": "Grazie alle scorte di legna da ardere e cibo, gli abitanti sopravvivono alla bufera illesi.",
+      "outcome3": "La bufera colpisce con forza brutale. Tutta la produzione rallenta fino a fermarsi mentre gli abitanti lottano per sopravvivere al freddo."
+    },
+    "message": "Venti gelidi ululano per il villaggio. Gli anziani avvertono che una terribile bufera si avvicina. Bisogna fare i preparativi, o le conseguenze saranno terribili.",
+    "title": "Caduta di Gelo"
+  },
+  "gambler": {
+    "choices": {
+      "accept": {
+        "label": "Accetta"
+      },
+      "decline": {
+        "label": "Rifiuta"
+      }
+    },
+    "leaveAfterGames": "Il giocatore intasca i suoi dadi, regala un ultimo sorriso storto e scompare nell'oscurità dei boschi.",
+    "log": {
+      "outcome0": "Il giocatore alza le spalle, intasca i suoi dadi e si dilegua nel buio senza un'altra parola.",
+      "outcome1": "Il giocatore alza le spalle, intasca i suoi dadi e si dilegua nel buio senza un'altra parola."
+    },
+    "message": "Il giocatore siede a gambe incrociate accanto al fuoco, gli occhi fissi sui dadi. 'Piazza la tua puntata,' sussurra con un sorriso storto, 'e scopriamo chi resiste.'",
+    "title": "Il Giocatore Ossessionato"
+  },
+  "giftedRingDiscovery": {
+    "choices": {
+      "takeGiftedRing": {
+        "label": "Prendi l'anello"
+      }
+    },
+    "log": {
+      "outcome0": "Tieni l'anello in mano. Sembra morbido, lievemente caldo e accogliente."
+    },
+    "message": "Una mattina, su un ceppo d'albero accanto all'ingresso della caverna, trovi un anello, come se qualcuno l'avesse lasciato lì per te.",
+    "title": "Un Dono Inatteso"
+  },
+  "hiddenLake": {
+    "choices": {
+      "avoidLake": {
+        "label": "Evita il lago"
+      },
+      "investigate": {
+        "label": "Indaga sul lago"
+      }
+    },
+    "log": {
+      "outcome0": "Mentre gli uomini si avvicinano al lago una creatura emerge dalle profondità e colpisce con furia, ma la forza degli abitanti prevale. Sul fondo del lago trovano innumerevoli ossa umane e una corona d'oro.",
+      "outcome1": "Gli uomini guadano nelle acque, ma la creatura erompe con velocità inumana. La sua bellezza si contorce in file di denti e occhi luminosi. Terrorizzati, gli abitanti fuggono per salvarsi la vita.",
+      "outcome2": "Ordini agli abitanti di evitare il lago. Alcuni borbottano per le occasioni perdute, ma obbediscono. I suoi segreti restano nascosti sotto l'acqua.",
+      "outcome3": "Vieti qualunque avvicinamento, ma l'abitante che diceva di aver visto la creatura non riesce a resistere. Una notte sgattaiola via, per non tornare mai più. All'alba, solo i suoi vestiti giacciono in riva all'acqua.",
+      "lakeDrownOne": "La creatura si solleva come un incubo, la bellezza che maschera un intento mortale. Con forza innaturale, trascina un abitante sotto le acque. Restano solo increspature e deboli urla mentre gli altri fuggono terrorizzati.",
+      "lakeDrownMany": "La creatura si solleva come un incubo, la bellezza che maschera un intento mortale. Con forza innaturale, trascina gli abitanti sotto le acque. Restano solo increspature e deboli urla mentre gli altri fuggono terrorizzati."
+    },
+    "message": "Mentre raccolgono legna nella foresta, gli abitanti scoprono un lago nascosto tra gli alberi. Un abitante giura di aver visto una figura simile a una donna emergere per un istante, lo sguardo bellissimo eppure inumano. Cosa fai?",
+    "title": "Il Lago Nascosto"
+  },
+  "hollowKingScepterChoice": {
+    "choices": {
+      "doNothing": {
+        "label": "Non fare nulla"
+      },
+      "keepScepter": {
+        "label": "Tienilo"
+      },
+      "leaveScepter": {
+        "label": "Lascialo"
+      }
+    },
+    "log": {
+      "outcome0": "Afferri lo Scettro del Re Cavo, sentendo un potere immenso fluire attraverso di te. Conoscenza antica ti inonda la mente, insieme ai ricordi del Re dei suoi ultimi, folli giorni.",
+      "outcome1": "Decidi di lasciare lo scettro del Re morto dove appartiene. Mentre ti volti, giuri di sentire un debole sussurro di delusione echeggiare per la sala del trono vuota.",
+      "outcome2": "Mentre resti immobile nell'indecisione, gli uomini si fanno impazienti e avidi. Uno allunga la mano verso lo scettro, poi un altro. Presto stanno combattendo ferocemente. Nella sanguinosa mischia {{actualDeaths}} membri della tua compagnia muoiono, il loro sangue che si mescola alla polvere delle ere."
+    },
+    "message": "Nella sala del trono della cittadella, trovi un magnifico scettro di ossidiana. Deve essere appartenuto al re di questa città perduta. Conoscenza oscura ne emana. Lo tieni?",
+    "title": "Lo Scettro del Re Cavo"
+  },
+  "humanSacrificeDemand": {
+    "message": "Gli abitanti si radunano attorno al monolite, gli occhi vuoti. 'Gli animali non bastano,' sussurrano all'unisono. 'L'oscurità esige di più. Ha fame di anime umane.' Ti guardano, in attesa del tuo comando per compiere il sacrificio supremo.",
+    "title": "Fame Oscura"
+  },
+  "lakeCreatureDead": {
+    "choices": {
+      "forge": {
+        "label": "Continua"
+      }
+    },
+    "message": "Alcuni uomini hanno trovato la creatura del lago sulla riva del lago sotterraneo, morta per quella che sembra vecchiaia. Mentre il fabbro osserva i resti, dichiara 'Le sue ossa sono come nient'altro che abbia mai visto. Posso forgiare da esse un possente grande scudo.'",
+    "title": "La Fine di un'Era"
+  },
+  "lakeCreatureFate": {
+    "choices": {
+      "killCreature": {
+        "label": "Uccidi la creatura"
+      },
+      "spareCreature": {
+        "label": "Risparmiale la vita"
+      }
+    },
+    "log": {
+      "outcome0": "Gli ultimi violenti sussulti della creatura scuotono la caverna mentre gli uomini conficcano le loro lance nel suo corpo contorto. Mentre il fabbro osserva le enormi ossa della creatura, dichiara di poterle forgiare in un possente grande scudo.",
+      "outcome1": "Apri la trappola e fai un passo indietro. La creatura osserva un momento, poi si immerge in profondità, riemergendo per sputare un piccolo baule marcio. All'interno giacciono monete d'oro luccicanti. Svanisce nelle nere profondità, lasciando solo increspature."
+    },
+    "message": "La creatura massiccia si dimena nella trappola, i suoi tentacoli che sferzano contro le sbarre d'acciaio. I suoi occhi antichi ti scrutano con quella che potrebbe essere intelligenza. Cosa farai?",
+    "title": "Il Destino della Creatura"
+  },
+  "lastSurvivor": {
+    "choices": {
+      "letHimStay": {
+        "label": "Lascialo restare"
+      },
+      "sendHimAway": {
+        "label": "Mandalo via"
+      }
+    },
+    "log": {
+      "outcome0": "Al sopravvissuto vengono dati riparo e cure. Quella notte, ti chiama nella sua capanna. Pur morente, i suoi occhi sono lucidi. 'Grazie per la tua gentilezza, che la fortuna ti accompagni sempre.' sussurra con il suo ultimo respiro.",
+      "outcome1": "Respingi l'uomo morente. Se ne va e il giorno dopo viene trovato morto nella foresta vicina. Gli abitanti sono inorriditi e disgustati dalla tua crudeltà."
+    },
+    "message": "Uno straniero arriva al villaggio, aggrappato a malapena alla vita. Parla del suo insediamento a nord, dove la carenza di cibo spinse gli abitanti a uccidersi a vicenda per disperazione. Chiede di restare qualche notte per riprendersi.",
+    "title": "L'Ultimo Sopravvissuto"
+  },
+  "leatherHarnessGratefulReturn": {
+    "choices": {
+      "acceptRing": {
+        "label": "Accetta l'anello"
+      }
+    },
+    "log": {
+      "outcome0": "Infili l'anello al dito. Calza perfettamente. La donna sorride e prende congedo, con un passo leggero."
+    },
+    "message": "La donna del villaggio si avvicina di nuovo a te, il volto radioso di gratitudine. 'Dovevo ringraziarti come si deve,' dice, la voce calda. 'Le cose sono andate... molto bene. Ho fatto questo anello per te.' Ti porge un anello con un anello più piccolo attaccato.",
+    "title": "Un Ritorno Riconoscente"
+  },
+  "leatherHarnessRequest": {
+    "choices": {
+      "helpWithLeather": {
+        "cost": "100 cuoio",
+        "label": "Aiutala"
+      },
+      "refuseLeather": {
+        "label": "Non aiutarla"
+      }
+    },
+    "log": {
+      "outcome1": "Le porgi il cuoio. Lo prende con un sorriso riconoscente, gli occhi che si illuminano. 'Grazie. Lui sarà... molto sorpreso.' Si allontana in fretta, stringendo le pelli al petto.",
+      "outcome2": "Rifiuti. Lei annuisce, la delusione che le balena sul volto, e torna al villaggio senza un'altra parola."
+    },
+    "message": "Una donna del villaggio si avvicina a te, le guance lievemente arrossate. Esita prima di parlare, gli occhi bassi: 'Mi chiedevo se potessi cedermi un po' di cuoio. Vorrei creare qualcosa... per il mio compagno. Un'imbragatura. Per fargli una sorpresa.'",
+    "title": "Una Donna del Villaggio"
+  },
+  "madBeduine": {
+    "choices": {
+      "allowStay": {
+        "label": "Permettigli di restare"
+      },
+      "turnAway": {
+        "label": "Mandalo via"
+      }
+    },
+    "log": {
+      "outcome0": "Concedi riparo allo straniero. All'alba, è svanito. Restano solo le sue vesti, e al loro interno giace un libro rilegato in pelle umana. Le sue pagine sussurrano conoscenza proibita.",
+      "outcome1": "Rifiuti l'ingresso allo straniero. Se ne va urlando maledizioni in una lingua aliena. Prima dell'alba, una tribù di barbari attacca come evocata dalle sue grida, uccidendo {{actualDeaths}} abitanti. Al mattino trovi a terra un libro, rilegato in pelle umana."
+    },
+    "message": "La sera, una figura in vesti si avvicina dalle terre selvagge. I suoi occhi ardono di follia mentre borbotta in una lingua straniera, con gesti bruschi e inquietanti. Gli abitanti si fanno nervosi. Permetti a questo Beduino di passare la notte?",
+    "title": "Il Beduino Folle"
+  },
+  "mapFragmentsAssembled": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "message": "Metti insieme i frammenti di mappa. Rivelano la mappa di un santuario dimenticato nel profondo della palude.",
+    "title": "Una Mappa Rivelata"
+  },
+  "masterArcher": {
+    "choices": {
+      "acceptArcherHelp": {
+        "cost": "5000 cibo",
+        "label": "Dai 5000 Cibo"
+      },
+      "acceptArcherHelpGold": {
+        "cost": "200 oro",
+        "label": "Paga 200 Oro"
+      },
+      "doNothing": {
+        "label": "Nessuna Decisione Presa"
+      },
+      "refuseArcherHelp": {
+        "label": "Rifiuta la sua offerta"
+      }
+    },
+    "log": {
+      "outcome0": "La tua indecisione frustra l'arciere. Scuote la testa e se ne va, portando altrove la sua esperienza.",
+      "outcome2": "Il maestro arciere accetta il pagamento e inizia subito ad addestrare i tuoi cacciatori.",
+      "outcome4": "Il maestro arciere prende l'oro con un cenno e inizia subito ad addestrare i tuoi cacciatori.",
+      "outcome5": "L'arciere annuisce comprensivo. 'Tornerò nel caso tu cambi idea,' dice prima di sparire nella foresta."
+    },
+    "message": "Un uomo in un cappotto di cuoio rosso scuro arriva con un sorriso sicuro e occhi acuti. Offre di aiutare i tuoi arcieri, dicendo di poter affinare la loro mira e migliorare le loro abilità di caccia. Se accetti, resterà e si metterà all'opera.",
+    "title": "Il Maestro Arciere"
+  },
+  "mercenaryDemand": {
+    "choices": {
+      "giveRing": {
+        "label": "Dai l'Anello Vorace"
+      },
+      "payGold": {
+        "cost": "100 oro",
+        "label": "Paga 100 Oro"
+      },
+      "refuse": {
+        "label": "Rifiuta di pagare"
+      }
+    },
+    "log": {
+      "outcome0": "Consegni l'oro. Il mercenario lo conta lentamente, un sorriso crudele sul volto. 'Un piacere fare affari,' dice, prima di sparire.",
+      "outcome1": "Il mercenario fa segno ai suoi uomini di attaccare. La battaglia è feroce, ma i tuoi abitanti prevalgono. I mercenari fuggono nella foresta, lasciando dietro di sé le loro armi e i feriti.",
+      "outcome2": "Il mercenario fa segno ai suoi uomini di attaccare. Nonostante i tuoi sforzi, vieni sopraffatto. {{deaths}} abitanti cadono prima che i mercenari si ritirino finalmente, soddisfatti del massacro.",
+      "outcome3": "Gli offri l'anello vorace che ancora conservavi in un baule chiuso a chiave. Il mercenario lo esamina con interesse, infilandolo al proprio dito. 'Un bell'anello,' dice, 'ma non basta. Tornerò domani a ritirare l'oro.'"
+    },
+    "message": "Un mercenario sfregiato arriva al villaggio, la mano poggiata sulla lama. 'Non sono qui per creare guai. Pagami 100 Oro, e manterrò la pace. Rifiuta, e i miei uomini raderanno al suolo questo posto.'",
+    "title": "Il Mercenario"
+  },
+  "mercenaryReturnDemand": {
+    "choices": {
+      "giveRing": {
+        "label": "Dai l'Anello Vorace"
+      },
+      "payGold": {
+        "cost": "200 oro",
+        "label": "Paga 200 Oro"
+      },
+      "refuse": {
+        "label": "Rifiuta di pagare"
+      }
+    },
+    "log": {
+      "outcome0": "Paghi l'oro, le mani che tremano di rabbia. Il mercenario ride. 'Scelta saggia. Non ti disturberò più... probabilmente.' Svanisce nei boschi con i suoi uomini.",
+      "outcome1": "Rifiuti. I mercenari attaccano, ma questa volta sei pronto. Dopo uno scontro brutale, si disperdono nelle terre selvagge, lasciando i loro morti.",
+      "outcome2": "La tua sfida ti costa cara. I mercenari devastano il villaggio, uccidendo {{deaths}} prima di andarsene finalmente, ridendo della distruzione che hanno causato.",
+      "outcome3": "Gli offri l'anello vorace che ancora conservavi in un baule chiuso a chiave. Il mercenario lo esamina con interesse, infilandolo al proprio dito. 'Un bell'anello,' dice, 'ma non basta. Tornerò domani a ritirare l'oro.'"
+    },
+    "message": "Il mercenario è tornato, e questa volta porta più uomini. 'Tempi duri,' dice con un ghigno. 'Il prezzo è salito. 200 Oro, o le cose si fanno brutte.'",
+    "title": "Il Mercenario Ritorna"
+  },
+  "merchant": {
+    "choices": {
+      "say_goodbye": {
+        "label": "Saluta"
+      }
+    },
+    "log": {
+      "outcome0": "Saluti il mercante. Si tocca il cappello e borbotta sulla strada che lo attende."
+    },
+    "message": "Un mercante segnato dalle intemperie arriva, il suo carro traboccante di merci. I suoi occhi brillano di avidità mentre mormora 'Ho oggetti rari in vendita'.",
+    "title": "Mercante Viaggiante",
+    "toolTrades": {
+      "trade_nightshade_bow_schematic": {
+        "label": "Schema dell'Arco di Belladonna",
+        "message": "Acquisti lo schema dell'arco di belladonna. Il mercante ghigna cupamente: 'Il design di quest'arco è crudele. Le sue frecce avveleneranno i tuoi nemici.'"
+      },
+      "trade_skull_lantern": {
+        "label": "Lanterna di Teschio",
+        "message": "Acquisti la lanterna di teschio. Forgiata da osso maledetto, la sua luce inquietante ti guiderà attraverso le profondità più oscure."
+      },
+      "trade_tarnished_compass": {
+        "label": "Bussola Annerita",
+        "message": "Acquisti la bussola annerita. Artefatto della civiltà scomparsa, il suo ago indica luoghi nascosti."
+      },
+      "trade_map_fragment_wooden": {
+        "label": "Frammento di Mappa",
+        "message": "Acquisti un frammento di mappa sbrindellato."
+      },
+      "trade_map_fragment_stone": {
+        "label": "Frammento di Mappa",
+        "message": "Acquisti un frammento di mappa sbrindellato."
+      },
+      "trade_crow_harness": {
+        "label": "Imbragatura del Corvo",
+        "message": "Acquisti l'imbragatura del corvo. Un'imbragatura appositamente creata per i corvi messaggeri."
+      },
+      "trade_clarity_elixir": {
+        "label": "Elisir di Chiarezza",
+        "message": "Bevi l'Elisir di Chiarezza. La tua mente si fa più leggera."
+      },
+      "trade_veinfire_elixir": {
+        "label": "Elisir di Venafuoco",
+        "message": "Acquisti una bottiglia di Elisir di Venafuoco."
+      },
+      "trade_book_of_trials": {
+        "message": "Acquisti il Libro delle Prove. Il mercante sorride con cognizione di causa: 'Una guida per chi cerca di seguire il proprio viaggio.'",
+        "label": "Libro delle Prove"
+      },
+      "trade_book_of_craftsmanship": {
+        "message": "Acquisti il Libro dell'Artigianato. Il mercante annuisce con approvazione: 'Un tomo da artigiano, logoro ma pieno di saggezza. Sussurrerà segreti a chi costruisce.'",
+        "label": "Libro dell'Artigianato"
+      },
+      "trade_book_of_war": {
+        "message": "Acquisti il Libro della Guerra. Il mercante annuisce gravemente: 'Conoscenza da un regno scomparso del lontano est. Con questo, comprenderai meglio gli esiti delle tue scelte.'",
+        "label": "Libro della Guerra"
+      },
+      "trade_reinforced_rope": {
+        "message": "Acquisti la corda rinforzata. Questa corda può sopportare uno sforzo enorme e raggiungere luoghi nelle camere più profonde della caverna.",
+        "label": "Corda Rinforzata"
+      },
+      "trade_occultist_map": {
+        "message": "Mentre acquisti la mappa dell'occultista il mercante sussurra: 'Un vecchio occultista nascose i suoi segreti in una camera nel profondo della caverna. Questa mappa ti guiderà.'",
+        "label": "Mappa dell'Occultista"
+      },
+      "trade_giant_trap": {
+        "message": "Mentre acquisti la trappola gigante, il mercante ghigna: 'Questa può intrappolare qualcosa di gigantesco nei boschi. Usala con saggezza.'",
+        "label": "Trappola Gigante"
+      },
+      "trade_arbalest_schematic": {
+        "message": "Acquisti lo schema della balestra. Il mercante srotola un progetto intricato: 'Un design di un maestro ingegnere. Con questo, puoi fabbricare un'arma potente.'",
+        "label": "Schema della Balestra"
+      },
+      "trade_compound_bow": {
+        "message": "Acquisti l'arco composito. Il mercante annuisce con approvazione: 'Arma ad alta precisione della civiltà scomparsa. Ti servirà bene.'",
+        "label": "Arco Composito"
+      },
+      "trade_stormglass_halberd_schematic": {
+        "message": "Acquisti lo schema dell'alabarda di vetrotempesta. Il mercante rivela i piani sbiaditi: 'Con questo design, puoi forgiare un'alabarda di tremendo potere.'",
+        "label": "Schema dell'Alabarda di Vetrotempesta"
+      },
+      "trade_natharit_pickaxe": {
+        "message": "Acquisti il piccone di natharit. Il mercante ti porge il robusto strumento: 'Piccone estremamente resistente di un materiale sconosciuto. La sua qualità è eccezionale.'",
+        "label": "Piccone di Natharit"
+      }
+    },
+    "tradeCost": "{{amount}} {{resource}}",
+    "tradeLabel": "{{amount}} {{resource}}"
+  },
+  "monasteryMonk": {
+    "choices": {
+      "offerGold": {
+        "cost": "250 oro",
+        "label": "Offri 250 Oro"
+      },
+      "payTribute": {
+        "cost": "5000 legno, 5000 pietra, 5000 cibo, 500 cuoio, 500 acciaio",
+        "label": "Paga tributo"
+      },
+      "sendAway": {
+        "label": "Mandalo via"
+      }
+    },
+    "log": {
+      "outcome0": "Rifiuti l'offerta del monaco. Si inchina rispettosamente e inizia il suo viaggio di ritorno verso le montagne.",
+      "outcome2": "Il monaco accetta il tuo tributo con un cenno solenne e rivela i piani dettagliati per una chiave scheletro. “Si dice che questa chiave apra qualsiasi serratura,” afferma, prima di partire.",
+      "outcome4": "Gli occhi del monaco si spalancano alla vista dell'oro. 'Questo aiuterà molto il monastero,' dice, estraendo piani dettagliati per una chiave scheletro. “Si dice che questa chiave apra qualsiasi serratura,” afferma, prima di partire.",
+      "outcome5": "Rifiuti l'offerta del monaco. Si inchina rispettosamente e inizia il suo viaggio di ritorno verso le montagne."
+    },
+    "message": "Un monaco di un monastero di montagna arriva al villaggio. 'Ho saputo che hai trovato un baule misterioso,' dice sommessamente. 'Il monastero sa come aprirlo. Offri un tributo, e condividerò il segreto.'",
+    "title": "Il Monaco di Montagna"
+  },
+  "monasteryResponse": {
+    "choices": {
+      "accept": {
+        "cost": "250 oro",
+        "label": "Paga 250 Oro"
+      },
+      "decline": {
+        "label": "Rifiuta"
+      }
+    },
+    "log": {
+      "outcome0": "Hai impiegato troppo tempo a decidere. L'offerta dei monaci scade.",
+      "outcome2": "Paghi i monaci per la loro mappa. Rivela la posizione della Biblioteca Nascosta nel profondo della caverna.",
+      "outcome3": "Rifiuti l'offerta dei monaci. L'occasione è perduta."
+    },
+    "message": "Il corvo guercio torna dal Monastero di Montagna con una pergamena sigillata. I monaci offrono di venderti una mappa per una biblioteca nascosta nel profondo della caverna. Chiedono 250 Oro.",
+    "title": "Messaggio dal Monastero di Montagna"
+  },
+  "monolithDemand": {
+    "message": "Gli abitanti chiedono di costruire un monolite al centro del villaggio, un monumento per placare l'oscurità che s'insinua nelle loro menti. Attraverso il sacrificio di animali vogliono trovare pace.",
+    "title": "Richiesta del Monolite"
+  },
+  "mysteriousBell": {
+    "choices": {
+      "doNotRing": {
+        "label": "Non suonarla"
+      },
+      "ringBell": {
+        "label": "Suonala"
+      }
+    },
+    "log": {
+      "outcome0": "Nell'istante in cui senti il primo rintocco, l'oscurità ti inghiotte del tutto. Sogni una vasta città di vetro e acciaio, piena di strane luci e di gente che si muove con uno scopo che non riesci a comprendere. Quando ti svegli, la campana è svanita, ma un marchio a forma di campana ti brucia sull'avambraccio.",
+      "outcome1": "Il rischio è troppo grande. Quello stesso giorno, arriva un mercante e offre 500 Oro per la campana. Accetti immediatamente, sollevato di liberarti dell'oggetto maledetto. Il mercante se ne va con un sorriso d'intesa."
+    },
+    "message": "Apri il baule sigillato con la chiave scheletro. Dentro, posata su velluto sbiadito, giace una campana d'oro coperta di incisioni grottesche e strani simboli scritti sulla sua superficie.",
+    "title": "La Campana Misteriosa"
+  },
+  "mysteriousBook": {
+    "choices": {
+      "unpack_it": {
+        "label": "Apri il pacco"
+      }
+    },
+    "log": {
+      "outcome0": "All'interno c'è un libro di cui non sapresti indovinare l'età. La sua copertina è andata da tempo, le pagine strappate, eppure le lettere scritte alla perfezione sono ancora nitide. Mentre giri con cura le pagine, ti rendi conto che insegna la lenta plasmazione di sé attraverso la ripetizione."
+    },
+    "message": "Una sera tardi, senti un gentile bussare alla porta della tenuta. Quando apri, non c'è nessuno, solo qualcosa rilegato in cuoio marrone scuro posato sulla soglia.",
+    "title": "Un Sommesso Bussare"
+  },
+  "mysteriousNote": {
+    "choices": {
+      "throw_away": {
+        "label": "Buttala via"
+      }
+    },
+    "log": {
+      "outcome0": "Accartocci il biglietto e lo lasci cadere dalle dita. Comprendi le parole, eppure non riesci a dar loro alcun senso. Mentre la carta si allontana, cogli qualcosa portato dal vento, debole e lontano. Suona come un pianto sommesso e solitario che svanisce nella notte."
+    },
+    "title": "Un Biglietto Misterioso",
+    "message": "Al calar del crepuscolo, trovi un foglio di carta sulla soglia della tua tenuta. Qualcuno ha lasciato un biglietto in una calligrafia curata ed elegante: \n \"Spero che ti stia godendo il tuo tempo qui. Se è così, ti prego di considerare di sostenere il viaggio che ti attende, visitando il negozio o facendo una donazione. Il tuo aiuto mantiene questo mondo vivo e libero da godere. Grazie!\""
+  },
+  "mysteriousWoman": {
+    "log": {
+      "outcome0_woman": "Le concedi riparo per la notte. Al mattino, è svanita senza lasciare traccia, lasciando il tuo letto ancora caldo e {{silverStolen}} Argento in meno.",
+      "outcome0_man": "Gli concedi riparo per la notte. Al mattino, è svanito senza lasciare traccia, lasciando il tuo letto ancora caldo e {{silverStolen}} Argento in meno.",
+      "outcome1_woman": "Rifiuti educatamente la sua richiesta. Sembra delusa ma annuisce comprensiva, scomparendo nella nebbia serale senza un'altra parola.",
+      "outcome1_man": "Rifiuti educatamente la sua richiesta. Sembra deluso ma annuisce comprensivo, scomparendo nella nebbia serale senza un'altra parola."
+    },
+    "title": {
+      "woman": "La Donna Misteriosa",
+      "man": "L'Uomo Misterioso"
+    },
+    "message": {
+      "woman": "Una giovane donna avvenente in abiti raffinati arriva alla tenuta al tramonto. Ti sorride calorosamente e chiede, 'Potrei avere riparo nella tua capanna per la notte? Ho viaggiato a lungo e non ho nessun altro posto dove andare.'",
+      "man": "Un giovane uomo avvenente in abiti raffinati arriva alla tenuta al tramonto. Ti sorride calorosamente e chiede, 'Potrei avere riparo nella tua capanna per la notte? Ho viaggiato a lungo e non ho nessun altro posto dove andare.'"
+    },
+    "choices": {
+      "allowStay": {
+        "label": {
+          "woman": "Lasciala restare",
+          "man": "Lascialo restare"
+        }
+      },
+      "refuseStay": {
+        "label": {
+          "woman": "Rifiutala",
+          "man": "Rifiutalo"
+        }
+      }
+    }
+  },
+  "ninthWave": {
+    "message": "Con fame implacabile, una massa ancora più grande di creature pallide si riversa verso la città.",
+    "title": "La Nona Ondata"
+  },
+  "nordicWarAxe": {
+    "choices": {
+      "buyAxe": {
+        "label": "Rifiuta"
+      },
+      "decline": {
+        "label": "Rifiuta"
+      }
+    },
+    "log": {
+      "ignoreForced": "Ignori l'offerta. Il vichingo alla fine sputa a terra e se ne va con la sua ascia da guerra, borbottando sulla tua mancanza di rispetto.",
+      "ignoreNormal": "Ignori l'offerta. Il vichingo alla fine annuisce e se ne va con la sua ascia da guerra.",
+      "buyForced": "Il vichingo prende il pagamento con un sorriso gelido. 'Forse avresti dovuto essere più generoso prima, invece di attaccarmi. Avresti pagato molto meno per l'ascia allora.' dice prima di andarsene.",
+      "buyNormal": "Soddisfatto dello scambio il vichingo annuisce con approvazione e se ne va.",
+      "declineForced": "Rifiuti l'offerta. Il vichingo sputa a terra, borbottando maledizioni mentre se ne va con la sua ascia da guerra. 'Avresti dovuto pagarmi quando ne avevi la possibilità,' ringhia.",
+      "declineNormal": "Rifiuti l'offerta. Il vichingo annuisce rispettosamente e se ne va con la sua ascia da guerra."
+    },
+    "message": "Il costruttore vichingo torna al tuo villaggio, portando una magnifica ascia da guerra. 'Ho forgiato questa Ascia da Guerra Nordica nella mia terra natia. Sarà tua... a un prezzo.'",
+    "title": "Il Vichingo Ritorna"
+  },
+  "oddTrinket": {
+    "choices": {
+      "discardTrinket": {
+        "label": "Scartalo"
+      },
+      "drinkTrinket": {
+        "label": "Bevilo"
+      }
+    },
+    "log": {
+      "outcome0": "Bevi l'elisir d'ambra. Brucia mentre scende, ma ti senti più forte di prima.",
+      "outcome1": "Decidi di non rischiare e getti la fiala nei boschi. Scompare nel sottobosco.",
+      "outcome2": "La tua esitazione ti costa. La fiala ti scivola dalle dita e si frantuma su una roccia, l'elisir d'ambra che filtra nella terra."
+    },
+    "message": "Mentre tagli la legna, trovi una fiala di elisir d'ambra luminoso. Il liquido turbina in modo ipnotico. Lo bevi?",
+    "title": "L'Elisir Bizzarro"
+  },
+  "offerToTheForestGods": {
+    "choices": {
+      "noDecision": {
+        "label": "Nessuna Decisione Presa"
+      },
+      "refuse": {
+        "label": "Non fare sacrifici"
+      },
+      "sacrifice": {
+        "label": {
+          "Sacrifice 4 villagers": "Sacrifica 4 abitanti",
+          "Sacrifice 8 villagers": "Sacrifica 8 abitanti"
+        }
+      }
+    },
+    "log": {
+      "outcome0": "Gli dèi della foresta accettano il sacrificio. Le figure svaniscono, e un anello d'ebano viene trovato sull'altare dove gli abitanti furono offerti. La pace torna nei boschi.",
+      "outcome1": "La foresta accetta il sacrificio. Le figure svaniscono, e un anello d'ebano viene trovato sull'altare dove gli abitanti furono offerti. Ma l'orrore del sacrificio spinge {{actualAdditionalDeaths}} abitanti a togliersi la vita.",
+      "outcome2": "Il tuo rifiuto di sacrificare vite innocenti in qualche modo compiace gli dèi della foresta. Le apparizioni svaniscono, e trovi un anello d'ebano lasciato in dono.",
+      "outcome3": "Rifiuti il sacrificio. La foresta resta silenziosa per ora. La minaccia persiste.",
+      "outcome5": "La tua indecisione fa adirare gli abitanti. {{actualDepartures}} abitanti, frustrati dalla tua mancanza di leadership, fanno i bagagli e se ne vanno disgustati.",
+      "outcome4_one": "Rifiuti il sacrificio. Durante la notte, {{actualDisappearances}} abitante si addentra nei boschi come sonnambulo, attirato da una voce che solo lui poteva udire. Non viene mai più rivisto.",
+      "outcome4_other": "Rifiuti il sacrificio. Durante la notte, {{actualDisappearances}} abitanti si addentrano nei boschi come sonnambuli, attirati da una voce che solo loro potevano udire. Non vengono mai più rivisti."
+    },
+    "message": "Mentre cacciano, gli abitanti riferiscono di figure inquietanti nella foresta. Sono terrorizzati. Gli anziani del villaggio dicono che gli dèi della foresta esigono quattro abitanti in sacrificio.",
+    "title": "Offerta agli Dèi della Foresta"
+  },
+  "paleCrossCrucifixion": {
+    "choices": {
+      "consecrateToCross": {
+        "label": "Consacra alla croce"
+      },
+      "doNothing": {
+        "label": "Non fare nulla"
+      },
+      "holdFuneral": {
+        "cost": "1000 cibo",
+        "label": "Tieni un funerale"
+      },
+      "investigateKillers": {
+        "label": "Indaga"
+      }
+    },
+    "log": {
+      "outcome0": "Non dai alcun ordine. Le voci si diffondono, la paura si rapprende in disgusto, e il lavoro del villaggio vacilla.",
+      "outcome2": "Ordini i riti funebri e nutri chi è in lutto. Il dolore rimane, ma il villaggio si stabilizza.",
+      "outcome3": "Scopri un gruppo di cospiratori e ne ordini l'esecuzione. La giustizia è rapida, e la paura recede.",
+      "outcome4": "Consacri il corpo alla croce. Gli abitanti indietreggiano disgustati, ma il potere della croce sembra essere cresciuto."
+    },
+    "message": "Una mattina, gli abitanti fanno una scoperta crudele. Un giovane pende crocifisso sulla Croce Pallida, la testa china e il corpo che ondeggia leggermente nel freddo vento mattutino.",
+    "title": "La Croce Pallida all'Alba"
+  },
+  "paleCrossProposal": {
+    "choices": {
+      "acceptPaleCross": {
+        "label": "Accetta la proposta"
+      },
+      "refusePaleCross": {
+        "label": "Nega la proposta"
+      }
+    },
+    "log": {
+      "outcome0": "Il druido china il capo. 'Allora che sia eretta.'",
+      "outcome1": "'Forse era saggezza. Forse era paura,' dice il druido prima di addentrarsi nella foresta."
+    },
+    "message": "Il druido cieco ritorna, i suoi occhi lattiginosi si posano sui totem d'ossa: 'Hai offerto molto agli dèi. Erigi loro un simbolo per dimostrare la tua devozione.'",
+    "title": "La Croce Pallida"
+  },
+  "paleFigure": {
+    "choices": {
+      "ignore": {
+        "label": "Ignorala"
+      },
+      "investigate": {
+        "label": "Indaga"
+      }
+    },
+    "log": {
+      "outcome0": "Mentre gli abitanti si avvicinano, la figura svanisce. Al suo posto giace un mantello di piuma di corvo, scintillante di potere ultraterreno.",
+      "outcome1": "L'indagine va male. Uno degli abitanti urla nella nebbia e non viene mai più rivisto. Gli altri fuggono terrorizzati.",
+      "outcome2": "La figura pallida si muove con velocità inumana. {{actualDeaths}} abitanti svaniscono nella nebbia, le loro urla che echeggiano tra gli alberi.",
+      "outcome3": "Gli abitanti restano vicini al villaggio. Verso sera, la figura è sparita.",
+      "outcome4": "All'alba, uno degli abitanti che diceva di aver visto la figura viene trovato morto nel suo letto, il volto congelato dal terrore."
+    },
+    "message": "All'alba, gli abitanti intravedono una figura alta, pallida e snella ai margini dei boschi. Cosa fai?",
+    "title": "La Figura Pallida"
+  },
+  "portalDiscovered": {
+    "message": "Nelle camere più basse della cittadella trovi un colossale cancello forgiato in un metallo sconosciuto e inflessibile. Forse le creazioni dell'alchimista riusciranno ad aprirlo."
+  },
+  "redMaskChoice": {
+    "choices": {
+      "leaveMask": {
+        "label": "Lasciala"
+      },
+      "takeMask": {
+        "label": "Prendi la maschera rossa"
+      }
+    },
+    "log": {
+      "outcome0": "Raccogli la maschera di cuoio cremisi. È calda al tatto.",
+      "outcome1": "Decidi che il dono del corvo porta con sé troppo mistero. Mentre ti allontani, senti il richiamo del corvo echeggiare tra gli alberi."
+    },
+    "message": "Mentre cacci, vedi un corvo nero stranamente grande che ti fissa da un albero spezzato. Mentre ti avvicini, all'improvviso gracchia, sembrando ripetere una parola ancora e ancora. Poi vola via. Davanti all'albero giace una maschera fatta di cuoio rosso intenso. La prendi?",
+    "title": "Il Dono del Corvo"
+  },
+  "restlessKnight": {
+    "choices": {
+      "convince": {
+        "label": "Convincilo"
+      },
+      "payGold": {
+        "cost": "50 oro",
+        "label": "Paga 50 Oro"
+      },
+      "refuse": {
+        "label": "Rifiuta"
+      }
+    },
+    "log": {
+      "outcome0": "Il cavaliere attese ma tu non rispondesti. 'Forse un'altra volta,' dice prima di riprendere il suo viaggio.",
+      "outcome2": "Il cavaliere parla: 'Oltre le montagne orientali giace una città morta di giganteschi torri di pietra, che quasi sfiorano le nuvole. Finestre vuote scrutano il paesaggio come innumerevoli occhi. La natura ha scalato ogni muro e riempito le strade di radici. Nessuno vi ha vissuto per ere.'",
+      "outcome3": "Le tue parole incuriosiscono il cavaliere, parla: 'Oltre le montagne orientali giace una città morta di giganteschi torri di pietra, che quasi sfiorano le nuvole. Finestre vuote scrutano il paesaggio come innumerevoli occhi. La natura ha scalato ogni muro e riempito le strade di radici. Nessuno vi ha vissuto per ere.'",
+      "outcome4": "Il cavaliere ascolta le tue parole ma scuote la testa. 'Le tue parole sono sincere, ma la mia conoscenza ha un valore. Forse i nostri sentieri si incroceranno di nuovo.' Se ne va senza condividere il suo racconto.",
+      "outcome5": "Rifiuti l'offerta del cavaliere. Annuisce rispettosamente. 'Forse i nostri sentieri si incroceranno di nuovo,' dice prima di riprendere il suo viaggio."
+    },
+    "title": "Il Cavaliere Inquieto",
+    "message": {
+      "firstTime": "Un cavaliere in armatura logora arriva al villaggio. 'Ho visto molto del mondo,' dice con voce cava. 'Per un po' d'oro, condividerò ciò che ho visto nei miei viaggi.'",
+      "repeat": "Di nuovo, il cavaliere in armatura logora arriva al villaggio. 'Ho visto molto del mondo,' dice con voce cava. 'Per un po' d'oro, condividerò ciò che ho visto nei miei viaggi.'"
+    }
+  },
+  "restlessKnightBurden": {
+    "choices": {
+      "accept": {
+        "label": "Accetta"
+      },
+      "decline": {
+        "label": "Rifiuta"
+      }
+    },
+    "log": {
+      "outcome0": "Rifiuti. Il suo volto si irrigidisce, fa un breve cenno e non dice nulla. Il peso continua a gravare su di lui soltanto.",
+      "outcome1": "Parla del collezionista di dispositivi cranici nel deserto. Catturava esseri umani per impiantare i dispositivi, senza pietà e senza successo. Il cavaliere trovò una fossa piena di centinaia di morti.",
+      "outcome2": "Rifiuti. Il suo volto si irrigidisce, fa un breve cenno e non dice nulla. Il peso continua a gravare su di lui soltanto."
+    },
+    "message": "Il cavaliere inquieto viene da te. 'C'è una cosa di cui non ho mai parlato,' dice. 'Intendevo risparmiarla a tutti. Ma forse vorrai saperla.'",
+    "title": "Il Fardello Indicibile"
+  },
+  "restlessKnightCoast": {
+    "choices": {
+      "convince": {
+        "label": "Convincilo"
+      },
+      "payFood": {
+        "cost": "2500 cibo",
+        "label": "Paga 2500 Cibo"
+      },
+      "payGold": {
+        "cost": "50 oro",
+        "label": "Paga 50 Oro"
+      },
+      "refuse": {
+        "label": "Rifiuta"
+      }
+    },
+    "log": {
+      "outcome0": "Il cavaliere attese ma tu non rispondesti. 'Forse un'altra volta,' dice prima di riprendere il suo viaggio.",
+      "outcome2": "Il cavaliere condivide: 'Sulla riva dell'oceano ho trovato una città morta, per metà reclamata dalle onde. Tra le sue rovine giacciono vasti vascelli di metallo, i loro scafi arrugginiti che ancora sfidano il tempo. Gli antichi un tempo dominavano i mari con questi giganti, ora arenati e silenziosi sulla sabbia.'",
+      "outcome4": "Soddisfatto del pasto, il cavaliere condivide: 'Sulla riva dell'oceano ho trovato una città morta, per metà reclamata dalle onde. Tra le sue rovine giacciono vasti vascelli di metallo, i loro scafi arrugginiti che ancora sfidano il tempo. Gli antichi un tempo dominavano i mari con questi giganti, ora arenati e silenziosi sulla sabbia.'",
+      "outcome5": "Le tue parole commuovono il cavaliere. Parla: 'Sulla riva dell'oceano ho trovato una città morta, per metà reclamata dalle onde. Tra le sue rovine giacciono vasti vascelli di metallo, i loro scafi arrugginiti che ancora sfidano il tempo. Gli antichi un tempo dominavano i mari con questi giganti, ora arenati e silenziosi sulla sabbia.'",
+      "outcome6": "Il cavaliere ascolta ma resta impassibile. 'Le tue parole sono sincere, ma questa conoscenza è preziosa. Forse un'altra volta.' Se ne va senza condividere la sua scoperta.",
+      "outcome7": "Rifiuti la sua offerta. Il cavaliere annuisce solenne. 'Molto bene. I segreti della costa resteranno con me per ora,' dice prima di allontanarsi."
+    },
+    "message": "Il cavaliere appare ancora una volta, 'Ho viaggiato fino a una città sulla riva di un oceano,' dice. 'Ciò che vi ho trovato sfida ogni immaginazione. Condividerò questa conoscenza, a un prezzo.'",
+    "title": "Racconti dalla Costa"
+  },
+  "restlessKnightDesert": {
+    "choices": {
+      "convince": {
+        "label": "Convincilo"
+      },
+      "payGold": {
+        "cost": "250 oro",
+        "label": "Paga 250 Oro"
+      },
+      "paySilver": {
+        "cost": "1000 argento",
+        "label": "Paga 1000 Argento"
+      },
+      "refuse": {
+        "label": "Rifiuta"
+      }
+    },
+    "log": {
+      "outcome0": "Il cavaliere attese ma tu non rispondesti. 'Forse un'altra volta,' dice prima di riprendere il suo viaggio.",
+      "outcome2": "Il cavaliere annuisce soddisfatto. 'Un prezzo giusto. Difenderò il tuo popolo con la mia vita.' Si toglie l'elmo logoro, rivelando un volto sfregiato ma determinato. Il cavaliere inquieto si è unito alla tua compagnia.",
+      "outcome4": "Il cavaliere accetta l'argento con un solenne inchino. 'Difenderò il tuo popolo con la mia vita.' Si toglie l'elmo logoro, rivelando un volto sfregiato ma determinato. Il cavaliere inquieto si è unito alla tua compagnia.",
+      "outcome5": "'Il tuo scopo sembra nobile,' gli occhi del cavaliere si illuminano. 'Sarei onorato di stare al tuo fianco.' Si toglie l'elmo logoro, rivelando un volto sfregiato ma determinato. Il cavaliere inquieto si è unito alla tua compagnia.",
+      "outcome6": "Il cavaliere ascolta ma scuote la testa. 'Le sole parole non possono sostenere un guerriero. Devo proseguire il mio viaggio, allora, per ora.', dice, voltandosi e andandosene.",
+      "outcome7": "Rifiuti la sua offerta. Il cavaliere annuisce con comprensione. 'Rispetto la tua decisione. Devo proseguire il mio viaggio, allora, per ora.', dice, voltandosi e andandosene."
+    },
+    "message": "Il cavaliere ritorna, 'Ho viaggiato lontano a sud fino a un vasto deserto. Lì, ho incontrato un uomo dedito a recuperare la tecnologia perduta degli antichi. Mi ha mostrato dispositivi un tempo incastonati nel cranio, che potenziavano i sensi oltre i limiti naturali.' Fa una pausa, 'Ho viaggiato abbastanza. Ti servirebbe una lama veterana. Offro il mio servizio in combattimento, se accetti.'",
+    "title": "L'Ultimo Viaggio del Cavaliere"
+  },
+  "restlessKnightMountains": {
+    "choices": {
+      "payFood": {
+        "cost": "2500 cibo",
+        "label": "Paga 2500 Cibo"
+      },
+      "payGold": {
+        "cost": "50 oro",
+        "label": "Paga 50 Oro"
+      },
+      "refuse": {
+        "label": "Rifiuta"
+      }
+    },
+    "log": {
+      "outcome0": "Il cavaliere attese ma tu non rispondesti. 'Forse un'altra volta,' dice prima di riprendere il suo viaggio.",
+      "outcome2": "Il cavaliere condivide la sua scoperta: 'In alto tra le montagne giace un monastero scavato nelle rupi. Gli studiosi che vi si radunarono per studiare il passato raccontano di una civiltà avanzata ben oltre la nostra comprensione. Eppure qualcosa portò il loro mondo alla rovina.'",
+      "outcome4": "Grato per il pasto, il cavaliere condivide la sua scoperta: 'In alto tra le montagne giace un monastero scavato nelle rupi. Gli studiosi lì che studiano il passato parlano di una civiltà ben oltre la nostra comprensione. La loro arte era così avanzata da sembrarci magia. Eppure qualcosa portò il loro mondo alla rovina.'",
+      "outcome5": "Rifiuti la sua offerta. Il cavaliere annuisce comprensivo. 'La conoscenza resterà con me, allora,' dice prima di andarsene ancora una volta."
+    },
+    "message": "Il cavaliere ritorna, l'armatura graffiata e ammaccata. 'Ho trovato qualcosa di straordinario tra le montagne,' dice. 'Te ne parlerò, a un prezzo'",
+    "title": "Ritorno dalle Montagne"
+  },
+  "riddleOfAges": {
+    "title": "Voci nel Buio",
+    "message": {
+      "original": "La figura incappucciata torna alla tenuta sotto la pallida luce della luna. La sua voce echeggia: 'Cammina su quattro zampe al mattino, due a mezzogiorno e tre la sera.'",
+      "variant": "La figura incappucciata torna alla tenuta sotto la pallida luce della luna. La sua voce echeggia: 'Non può ferirti, ma ti lascia cicatrici.'"
+    },
+    "choices": {
+      "answerEarth": {
+        "label": "Terra"
+      },
+      "answerWolf": {
+        "label": "Lupo"
+      },
+      "answerMan": {
+        "label": "Uomo"
+      },
+      "answerBird": {
+        "label": "Uccello"
+      },
+      "timeout": {
+        "label": "Nessuna risposta data"
+      }
+    },
+    "log": {
+      "wrong": "La figura scuote la testa prima di svanire. Il giorno dopo, una fitta nebbia s'insinua nel villaggio. Gli abitanti affermano di vedere forme mutevoli al suo interno, molti sono troppo timorosi per lasciare le loro capanne.",
+      "success_second": "La figura fa un debole cenno e svanisce nella notte. All'alba, una logora borsa di cuoio piena d'oro giace dove si trovava."
+    }
+  },
+  "riddleOfAges_variant": {
+    "title": "Voci nel Buio",
+    "message": {
+      "original": "La figura incappucciata torna alla tenuta sotto la pallida luce della luna. La sua voce echeggia: 'Cammina su quattro zampe al mattino, due a mezzogiorno e tre la sera.'",
+      "variant": "La figura incappucciata torna alla tenuta sotto la pallida luce della luna. La sua voce echeggia: 'Non può ferirti, ma ti lascia cicatrici.'"
+    },
+    "choices": {
+      "answerNightmares": {
+        "label": "Incubi"
+      },
+      "answerTime": {
+        "label": "Tocco"
+      },
+      "answerLove": {
+        "label": "Coltello"
+      },
+      "answerDeath": {
+        "label": "Lussuria"
+      },
+      "timeout": {
+        "label": "Nessuna risposta data"
+      }
+    },
+    "log": {
+      "wrong": "La figura scuote la testa prima di svanire. Il giorno dopo, una fitta nebbia s'insinua nel villaggio. Gli abitanti affermano di vedere forme mutevoli al suo interno, molti sono troppo timorosi per lasciare le loro capanne.",
+      "success_second": "La figura fa un debole cenno e svanisce nella notte. All'alba, una logora borsa di cuoio piena d'oro giace dove si trovava."
+    }
+  },
+  "riddleOfDevourer": {
+    "title": "Un Visitatore Notturno",
+    "message": {
+      "original": "Ancora una volta, la misteriosa figura appare alla tenuta. Sussurra con voce bassa: 'Tutto divora, riduce le ossa in polvere, uccide i re, consuma le montagne, cancella le città.'",
+      "variant": "Ancora una volta, la misteriosa figura appare alla tenuta. Sussurra con voce bassa: 'Ha dita ma niente carne, né piume, né squame, né ossa.'"
+    },
+    "choices": {
+      "answerMan": {
+        "label": "Uomo"
+      },
+      "answerWater": {
+        "label": "Acqua"
+      },
+      "answerTime": {
+        "label": "Tempo"
+      },
+      "answerFire": {
+        "label": "Fuoco"
+      },
+      "timeout": {
+        "label": "Nessuna risposta data"
+      }
+    },
+    "log": {
+      "wrong": "La figura scuote la testa prima di svanire. Il giorno dopo, una fitta nebbia s'insinua nel villaggio. Gli abitanti affermano di vedere forme mutevoli al suo interno, molti sono troppo timorosi per lasciare le loro capanne.",
+      "success_third": "La figura inclina il capo in silenzioso riconoscimento prima di rientrare nella penombra. Quando viene il mattino, una logora borsa di monete d'oro viene trovata fuori dalla porta."
+    }
+  },
+  "riddleOfDevourer_variant": {
+    "title": "Un Visitatore Notturno",
+    "message": {
+      "original": "Ancora una volta, la misteriosa figura appare alla tenuta. Sussurra con voce bassa: 'Tutto divora, riduce le ossa in polvere, uccide i re, consuma le montagne, cancella le città.'",
+      "variant": "Ancora una volta, la misteriosa figura appare alla tenuta. Sussurra con voce bassa: 'Ha dita ma niente carne, né piume, né squame, né ossa.'"
+    },
+    "choices": {
+      "answerFin": {
+        "label": "Pinna"
+      },
+      "answerWing": {
+        "label": "Ala"
+      },
+      "answerGlove": {
+        "label": "Guanto"
+      },
+      "answerHand": {
+        "label": "Mano"
+      },
+      "timeout": {
+        "label": "Nessuna risposta data"
+      }
+    },
+    "log": {
+      "wrong": "La figura scuote la testa prima di svanire. Il giorno dopo, una fitta nebbia s'insinua nel villaggio. Gli abitanti affermano di vedere forme mutevoli al suo interno, molti sono troppo timorosi per lasciare le loro capanne.",
+      "success_third": "La figura inclina il capo in silenzioso riconoscimento prima di rientrare nella penombra. Quando viene il mattino, una logora borsa di monete d'oro viene trovata fuori dalla porta."
+    }
+  },
+  "riddleOfEternal": {
+    "title": "L'Ospite Sconosciuto",
+    "message": {
+      "original": "La figura notturna appare un'altra volta alla tenuta. La sua voce echeggia silenziosa nella notte: 'I tuoi occhi sono aperti, io sono lì, i tuoi occhi sono chiusi, io sono lì anche allora.'",
+      "variant": "La figura notturna appare un'altra volta alla tenuta. La sua voce echeggia silenziosa nella notte: 'I poveri mi hanno, i ricchi ne hanno bisogno. Mangiami, e muori.'"
+    },
+    "choices": {
+      "answerLight": {
+        "label": "Luce"
+      },
+      "answerLife": {
+        "label": "Vita"
+      },
+      "answerDarkness": {
+        "label": "Oscurità"
+      },
+      "answerDeath": {
+        "label": "Morte"
+      },
+      "timeout": {
+        "label": "Nessuna risposta data"
+      }
+    },
+    "log": {
+      "wrong": "La figura scuote la testa prima di svanire. Il giorno dopo, una fitta nebbia s'insinua nel villaggio. Gli abitanti affermano di vedere forme mutevoli al suo interno, molti sono troppo timorosi per lasciare le loro capanne.",
+      "success_fifth": "La figura china il capo in silenziosa riverenza prima di svanire del tutto. Un grosso sacco d'oro giace a terra dove si trovava."
+    }
+  },
+  "riddleOfEternal_variant": {
+    "title": "L'Ospite Sconosciuto",
+    "message": {
+      "original": "La figura notturna appare un'altra volta alla tenuta. La sua voce echeggia silenziosa nella notte: 'I tuoi occhi sono aperti, io sono lì, i tuoi occhi sono chiusi, io sono lì anche allora.'",
+      "variant": "La figura notturna appare un'altra volta alla tenuta. La sua voce echeggia silenziosa nella notte: 'I poveri mi hanno, i ricchi ne hanno bisogno. Mangiami, e muori.'"
+    },
+    "choices": {
+      "answerPoison": {
+        "label": "Veleno"
+      },
+      "answerAir": {
+        "label": "Oro"
+      },
+      "answerNothing": {
+        "label": "Niente"
+      },
+      "answerTime": {
+        "label": "Tempo"
+      },
+      "timeout": {
+        "label": "Nessuna risposta data"
+      }
+    },
+    "log": {
+      "wrong": "La figura scuote la testa prima di svanire. Il giorno dopo, una fitta nebbia s'insinua nel villaggio. Gli abitanti affermano di vedere forme mutevoli al suo interno, molti sono troppo timorosi per lasciare le loro capanne.",
+      "success_fifth": "La figura china il capo in silenziosa riverenza prima di svanire del tutto. Un grosso sacco d'oro giace a terra dove si trovava."
+    }
+  },
+  "riddleOfTears": {
+    "title": "Un Ospite Incappucciato",
+    "message": {
+      "original": "La figura incappucciata appare ancora una volta alla tenuta. Sussurra: 'Vola senza ali, piange senza occhi, l'oscurità la segue ovunque vada.'",
+      "variant": "La figura incappucciata appare ancora una volta alla tenuta. Sussurra: 'Morbida, delicata, setosa, ma se ne sei avvolto, urli.'"
+    },
+    "choices": {
+      "answerNight": {
+        "label": "Notte"
+      },
+      "answerWind": {
+        "label": "Vento"
+      },
+      "answerClouds": {
+        "label": "Nuvole"
+      },
+      "answerShadow": {
+        "label": "Ombra"
+      },
+      "timeout": {
+        "label": "Nessuna risposta data"
+      }
+    },
+    "log": {
+      "wrong": "La figura scuote la testa prima di svanire. Il giorno dopo, una fitta nebbia s'insinua nel villaggio. Gli abitanti affermano di vedere forme mutevoli al suo interno, molti sono troppo timorosi per lasciare le loro capanne.",
+      "success_fourth": "La figura abbassa il capo incappucciato per un istante prima di dissolversi nell'ombra. Un piccolo sacco d'oro resta sul freddo terreno."
+    }
+  },
+  "riddleOfTears_variant": {
+    "title": "Un Ospite Incappucciato",
+    "message": {
+      "original": "La figura incappucciata appare ancora una volta alla tenuta. Sussurra: 'Vola senza ali, piange senza occhi, l'oscurità la segue ovunque vada.'",
+      "variant": "La figura incappucciata appare ancora una volta alla tenuta. Sussurra: 'Morbida, delicata, setosa, ma se ne sei avvolto, urli.'"
+    },
+    "choices": {
+      "answerNightmares": {
+        "label": "Incubi"
+      },
+      "answerCobweb": {
+        "label": "Ragnatela"
+      },
+      "answerSilk": {
+        "label": "Seta"
+      },
+      "answerDeath": {
+        "label": "Morte"
+      },
+      "timeout": {
+        "label": "Nessuna risposta data"
+      }
+    },
+    "log": {
+      "wrong": "La figura scuote la testa prima di svanire. Il giorno dopo, una fitta nebbia s'insinua nel villaggio. Gli abitanti affermano di vedere forme mutevoli al suo interno, molti sono troppo timorosi per lasciare le loro capanne.",
+      "success_fourth": "La figura abbassa il capo incappucciato per un istante prima di dissolversi nell'ombra. Un piccolo sacco d'oro resta sul freddo terreno."
+    }
+  },
+  "ringOfDrownedChoice": {
+    "choices": {
+      "doNothing": {
+        "label": "Non fare nulla"
+      },
+      "keepRing": {
+        "label": "Tienilo"
+      },
+      "leaveRing": {
+        "label": "Lascialo"
+      }
+    },
+    "log": {
+      "outcome0": "Infili l'anello al dito. L'acqua continua a gocciolarne incessantemente, senza mai fermarsi.",
+      "outcome1": "Decidi che il rischio è troppo grande. Mentre ti volti, senti un debole tonfo dietro di te, come se qualcosa fosse caduto in acqua profonda, sebbene non vi sia acqua nelle vicinanze.",
+      "outcome2": "La tua esitazione si rivela fatale. Uno dei tuoi uomini, incapace di resistere al misterioso anello, lo raccoglie. Immediatamente, l'acqua inizia a sgorgargli dalla bocca in un torrente senza fine. Annega sulla terraferma."
+    },
+    "message": "Nel profondo della città dimenticata, trovi uno strano anello che gocciola incessantemente acqua. Lo tieni?",
+    "title": "Anello degli Annegati"
+  },
+  "risingSmokeRumor": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "message": "Gli abitanti vengono da te. Hanno visto una densissima colonna di fumo alzarsi nei boschi. Forse ha senso indagare.",
+    "title": "Fumo che si Alza"
+  },
+  "sanctumDedication": {
+    "choices": {
+      "dedicateToAll": {
+        "label": "Dedicalo a tutti"
+      },
+      "deepenDevotion": {
+        "label": "Approfondisci la Devozione"
+      }
+    },
+    "log": {
+      "outcome0": "Il Santuario si trasforma in un nesso di potere divino. Tutti gli dèi rispondono al tuo richiamo, i loro doni sono tuoi.",
+      "dedicate_dagon": "La Benedizione di Dagon scorre più forte di prima.",
+      "dedicate_flame": "La Prima Fiamma arde più luminosa di prima.",
+      "dedicate_raven": "Il Marchio del Corvo si fa più forte di prima.",
+      "dedicate_ash": "L'Abbraccio di Cenere è più forte di prima.",
+      "dedicate_unknown": ""
+    },
+    "message": "Il druido cieco emerge: 'Il Santuario è completo,' dice, la voce che porta il peso dell'antica saggezza. 'Ora devi scegliere: approfondire la tua devozione al cammino che hai scelto, o abbracciare tutti gli dèi e i loro doni. Scegli con saggezza.'",
+    "title": "La Dedicazione del Santuario"
+  },
+  "secondWave": {
+    "message": "Le creature tornano in numero maggiore, con armi di osso grezzo, splendenti di luce immonda.",
+    "title": "La Seconda Ondata"
+  },
+  "seventhWave": {
+    "message": "Le creature avanzano di nuovo, un tappeto brulicante di arti e denti che striscia verso la città.",
+    "title": "La Settima Ondata"
+  },
+  "shadowFluteChoice": {
+    "choices": {
+      "doNothing": {
+        "label": "Non fare nulla"
+      },
+      "keepFlute": {
+        "label": "Tienilo"
+      },
+      "leaveFlute": {
+        "label": "Lascialo"
+      }
+    },
+    "log": {
+      "outcome0": "Tieni il flauto d'osso. Le sue melodie sono bellissime, eppure c'è una sottile dissonanza che rode silenziosamente la tua mente.",
+      "outcome1": "Riponi il flauto con cura. Le ombre tornano alla loro naturale immobilità, e l'atmosfera opprimente si dissolve.",
+      "outcome2": "La tua esitazione si rivela costosa. Le ombre si fanno affamate e violente, contorcendosi di vita innaturale. Si avventano in avanti e divorano {{actualDevoured}} membri della tua compagnia. Le loro urla echeggiano brevemente prima di essere inghiottite dal silenzio."
+    },
+    "message": "Nel profondo della caverna scopri un flauto d'osso di inquietante fattura. Mentre lo suoni, le ombre attorno a te iniziano a muoversi in modi innaturali, come danzando a una melodia. Lo tieni?",
+    "title": "Il Flauto d'Ombra"
+  },
+  "shadowsMove": {
+    "choices": {
+      "ignore": {
+        "label": "Ignorale"
+      },
+      "stare_at_shadows": {
+        "label": "Fissa le ombre"
+      }
+    },
+    "log": {
+      "outcome0": "Fissi lo sguardo sulle ombre mutevoli finché non si immobilizzano. Forse non era nulla. O così ti dici.",
+      "outcome1": "Le ombre si protendono verso di te. Forme si coagulano ai margini della vista, e qualcosa sussurra il tuo nome con una voce come foglie secche.",
+      "outcome2": "Distogli lo sguardo, ma la stranezza ti segue. Con la coda dell'occhio, le ombre continuano a muoversi molto dopo che hai smesso di guardare."
+    },
+    "message": "Le ombre nel villaggio sembrano muoversi in modo sbagliato. Si allungano troppo, si contorcono ad angoli impossibili, e a volte sembrano muoversi indipendentemente dalle loro fonti.",
+    "title": "Ombre in Movimento"
+  },
+  "shoreFishermenResponse": {
+    "choices": {
+      "accept": {
+        "cost": "250 oro",
+        "label": "Paga 250 Oro"
+      },
+      "decline": {
+        "label": "Rifiuta"
+      }
+    },
+    "log": {
+      "outcome0": "Hai impiegato troppo tempo a decidere. L'offerta dei pescatori scade.",
+      "outcome2": "I pescatori condividono con te le loro elaborate tecniche di costruzione delle trappole per pesci.",
+      "outcome3": "Rifiuti l'offerta dei pescatori. L'occasione è perduta."
+    },
+    "message": "Il corvo guercio torna dai Pescatori della Costa con pesce essiccato in dono. I pescatori offrono di insegnarti i segreti per costruire potenti trappole per pesci per 250 Oro.",
+    "title": "Messaggio dai Pescatori della Costa"
+  },
+  "sixthWave": {
+    "message": "La bocca della caverna vomita un'altra marea di corpi pallidi. Le lance d'osso tintinnano come pioggia mentre si ammassano per un altro assalto.",
+    "title": "La Sesta Ondata"
+  },
+  "skinCrawling": {
+    "choices": {
+      "calm_down": {
+        "label": "Prova a calmarti"
+      },
+      "keep_scratching": {
+        "label": "Continua a grattarti"
+      }
+    },
+    "log": {
+      "outcome0": "Fai respiri profondi e ti costringi a restare immobile. La sensazione di strisciamento svanisce gradualmente, e la tua pelle torna normale. Hai vinto questo orrore con la pura forza di volontà.",
+      "outcome1": "Cerchi di calmarti, ma la sensazione si intensifica. La vista ti si annebbia e crolli. Nei tuoi sogni febbrili, cose antiche sussurrano il tuo vero nome. Quando ti svegli, lo strisciamento è cessato, ma il ricordo persiste.",
+      "outcome2": "Ti gratti freneticamente la pelle, facendoti sanguinare. Gli abitanti accorrono per fermarti, afferrandoti le braccia. Nella tua furia folle, ti scagli violentemente, uccidendo {{killedVillagers}} abitanti prima di crollare per lo sfinimento. Quando ti svegli, lo strisciamento è cessato, ma il sangue ti macchia le mani."
+    },
+    "message": "La tua pelle inizia a strisciare - letteralmente. Riesci a vedere forme muoversi sotto la superficie, sembrando creare disegni. Gli abitanti ti guardano graffiarti solchi sanguinanti sulle braccia con espressioni di grande preoccupazione.",
+    "title": "Pelle Strisciante"
+  },
+  "slaveTrader": {
+    "choices": {
+      "freeSlaves": {
+        "label": "Prova a liberare gli schiavi"
+      },
+      "refuseTrader": {
+        "label": "Rifiuta l'offerta"
+      },
+      "sellVillagers": {
+        "label": "Vendi 2 abitanti"
+      }
+    },
+    "log": {
+      "outcome0": "Consegni due degli abitanti. Il mercante ti lancia una borsa d'acciaio e se ne va a cavallo con i suoi nuovi prigionieri. Quando gli abitanti rimasti vedono ciò che hai fatto, abbandonano il villaggio disgustati.",
+      "outcome1": "I tuoi uomini attaccano lo schiavista! Lo scontro è brutale ma vittorioso. Liberi i prigionieri e reclami l'acciaio del mercante. Le anime liberate si uniscono al tuo villaggio.",
+      "outcome2": "I tuoi uomini attaccano lo schiavista, ma lui è preparato! Reagisce ferocemente. {{actualDeaths}} abitanti cadono nella lotta. Il mercante fugge con i suoi prigionieri, lasciandosi dietro solo morte.",
+      "outcome3": "Rifiuti la vile offerta dello schiavista. Sputa a terra disgustato e se ne va a cavallo con i suoi prigionieri."
+    },
+    "message": "Un uomo su un carro trainato da due cavalli si avvicina al villaggio. Una gabbia di ferro sul carro tiene due anime miserabili. Il mercante ghigna malvagio: 'Ti pago 100 Acciaio per due dei tuoi abitanti. Che ne dici?'",
+    "title": "Il Mercante di Schiavi"
+  },
+  "solsticeGathering": {
+    "choices": {
+      "hostSolstice": {
+        "cost": "{{goldCost}} oro, {{foodCost}} cibo",
+        "label": "Ospita il raduno"
+      },
+      "refuseSolstice": {
+        "label": "Rifiuta"
+      },
+      "doNothing": {
+        "label": "Nessuna Decisione Presa"
+      }
+    },
+    "log": {
+      "outcome2": "I fuochi ardono e le risate spezzano l'oscurità per un po'. All'alba, molti visitatori indugiano, considerando di restare.",
+      "outcome3": "Rifiuti. La notte trascorre senza allegria, calore o risate."
+    },
+    "message": "Gli abitanti propongono un raduno per celebrare la notte più lunga dell'anno. Verranno accesi fuochi, preparato cibo e tenuti giochi. Potrebbero venire dei viaggiatori, attratti dalla luce.",
+    "title": "Raduno del Solstizio"
+  },
+  "swampSanctuaryChoice": {
+    "choices": {
+      "chopBlackTree": {
+        "label": "Abbatti l'albero"
+      },
+      "sacrificeAtTree": {
+        "cost": "1000 Cibo",
+        "label": "Sacrifica animali all'albero"
+      }
+    },
+    "log": {
+      "outcome0": "Il legno nero resiste, ma il tuo popolo lo abbatte. Reclami il maledetto legno nero.",
+      "outcome2": "Sangue e fumo si levano dall'offerta. Una gelida grazia cala sul villaggio."
+    },
+    "message": "La tua spedizione raggiunge il dimenticato santuario della palude. Rovine fatiscenti circondano un albero massiccio di legno nero. Cosa fai?",
+    "title": "Santuario della Palude"
+  },
+  "swampTribeResponse": {
+    "choices": {
+      "accept": {
+        "label": "Accetta"
+      },
+      "decline": {
+        "label": "Rifiuta"
+      }
+    },
+    "log": {
+      "outcome0": "Accetti l'offerta della Tribù della Palude e ti prepari a inviare la consegna d'acciaio alla palude.",
+      "outcome1": "Rifiuti l'offerta della Tribù della Palude. L'occasione è perduta."
+    },
+    "message": "Il corvo guercio torna dalla Tribù della Palude con una lettera sgualcita. La tribù offre potenti Placche di Chitina in cambio di 1000 Acciaio consegnati al loro villaggio.",
+    "title": "Messaggio dalla Tribù della Palude"
+  },
+  "templeDedication": {
+    "choices": {
+      "church_of_dagon": {
+        "label": "Chiesa di Dagon"
+      },
+      "cult_of_ravenborn": {
+        "label": "Culto del Corvonato"
+      },
+      "order_of_ashbringer": {
+        "label": "Ordine del Portatore di Cenere"
+      },
+      "way_of_first_flame": {
+        "label": "Via della Prima Fiamma"
+      }
+    },
+    "log": {
+      "outcome0": "Dedichi il tempio a Dagon, un antico e misterioso dio del profondo.",
+      "outcome1": "Dedichi il tempio alla Via della Prima Fiamma, un antico cammino di fuoco e rinascita.",
+      "outcome2": "Dedichi il tempio al Culto del Corvonato, un ordine enigmatico e oscuro.",
+      "outcome3": "Dedichi il tempio all'Ordine del Portatore di Cenere, una solenne confraternita votata al fuoco."
+    },
+    "message": "Poco dopo la costruzione del tempio, appare il druido cieco. I suoi occhi lattiginosi sembrano vedere attraverso la tua anima mentre parla: 'Il tempio dev'essere dedicato a un dio. Scegli con saggezza.'",
+    "title": "Il Druido Cieco Ritorna"
+  },
+  "tenthWave": {
+    "message": "Dalle profondità più recondite della caverna, erompe una massa inimmaginabile di creature pallide. Si riversano sulla terra come una marea vivente, mentre la città si prepara all'annientamento.",
+    "title": "L'Ondata Finale"
+  },
+  "theDamned": {
+    "choices": {
+      "turnThemAway": {
+        "label": "Mandali via"
+      },
+      "welcomeThem": {
+        "label": "Accoglili"
+      }
+    },
+    "log": {
+      "outcome0": "{{added}} sopravvissuti si uniscono al tuo villaggio, riconoscenti eppure tormentati da ciò che hanno sopportato nei boschi.",
+      "outcome1": "Li mandi via. Un'amara inquietudine cala sul villaggio poiché gli abitanti non sono contenti della tua decisione.",
+      "outcome2": "Li mandi via. Un'amara inquietudine cala sul villaggio poiché gli abitanti non sono contenti della tua decisione.",
+      "outcome3": "Li accogli, ma non c'è spazio nel villaggio per altri abitanti."
+    },
+    "message": "Un gruppo di giovani uomini e donne barcolla fuori dalla foresta, mezzi morti di freddo e fame. Furono lasciati nei boschi in sacrificio agli dèi della foresta, eppure in qualche modo sopravvissero. Li accogli nel villaggio?",
+    "title": "I Dannati"
+  },
+  "thirdWave": {
+    "message": "Orde di creature pallide arrivano dalla caverna; le urla scuotono persino le pietre, le loro armi d'osso che spaccano il terreno.",
+    "title": "La Terza Ondata"
+  },
+  "traders_daughter": {
+    "choices": {
+      "do_not_help": {
+        "label": "Non aiutare"
+      },
+      "send_search_party": {
+        "cost": "500 cibo, 50 torcia",
+        "label": "Manda una squadra di ricerca"
+      }
+    },
+    "log": {
+      "outcome1": "La squadra di ricerca trova la bambina illesa. Aveva scoperto una piccola caverna disseminata di gingilli e monete d'argento, e ci giocava tranquillamente in mezzo.",
+      "outcome2": "Rifiuti. Il mercante annuisce tristemente e parte a cercare da solo.",
+      "outcome3": "Rifiuti. Il mercante annuisce tristemente e parte a cercare da solo."
+    },
+    "message": "Una sera, il mercante ti si avvicina in preda all'angoscia. La sua figlia più piccola è scomparsa vicino ai margini della foresta, e implora il tuo aiuto.",
+    "title": "La Figlia del Mercante"
+  },
+  "traders_gratitude": {
+    "choices": {
+      "accept_traders_gratitude": {
+        "label": "Accetta"
+      },
+      "decline_traders_gratitude": {
+        "label": "Rifiuta l'offerta"
+      }
+    },
+    "log": {
+      "outcome0": "Rifiuti l'offerta. Il mercante ti ringrazia ancora una volta e parte in silenzio.",
+      "outcome1": "Rifiuti l'offerta. Il mercante ti ringrazia ancora una volta e parte in silenzio."
+    },
+    "message": "Il mercante ritorna, gli occhi colmi di sollievo e gratitudine. Per ripagare la tua gentilezza, promette un generoso sconto sul tuo prossimo acquisto.",
+    "title": "La Gratitudine del Mercante"
+  },
+  "traders_son": {
+    "choices": {
+      "agree_recover_dagger": {
+        "label": "Aiutalo"
+      },
+      "traders_son_refuse": {
+        "label": "Rifiuta"
+      }
+    },
+    "message": "Il figlio del mercante del villaggio ti si avvicina. Indossava il prezioso pugnale del padre per impressionare una donna, ma un bandito nelle vicinanze lo ha derubato. Ti chiede di recuperarlo.",
+    "title": "Il Figlio del Mercante"
+  },
+  "traders_son_gratitude": {
+    "choices": {
+      "accept_traders_son_gratitude": {
+        "label": "Accetta"
+      },
+      "decline_traders_son_gratitude": {
+        "label": "Rifiuta l'offerta"
+      }
+    },
+    "log": {
+      "outcome0": "Rifiuti l'offerta. Il giovane mercante annuisce, forse sollevato che non resti alcun debito.",
+      "outcome1": "Rifiuti l'offerta. Il giovane mercante annuisce, forse sollevato che non resti alcun debito."
+    },
+    "message": "Il figlio del mercante ritorna, tenendo il pugnale del padre. È pieno di gratitudine e ti offre un grande sconto sul tuo prossimo acquisto delle merci del padre.",
+    "title": "La Gratitudine del Figlio del Mercante"
+  },
+  "traderSettles": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "message": "Un mercante arriva al villaggio con la sua famiglia. Sembrano sfiniti, i volti segnati da anni sulla strada. Sono finalmente pronti a stabilirsi.",
+    "title": "Il Mercante"
+  },
+  "undergroundLakeCreature": {
+    "choices": {
+      "acknowledgeLakeCreature": {
+        "label": "Preparati"
+      }
+    },
+    "message": "Mentre esplori il lago sotterraneo, scorgi un'enorme ombra sotto le acque nere, qualcosa di vasto e invisibile. Forse una trappola potrebbe attirarla fuori dalle acque.",
+    "title": "Qualcosa nel Profondo"
+  },
+  "undergroundLakeDiscovery": {
+    "choices": {
+      "unlockLake": {
+        "label": "Preparati"
+      }
+    },
+    "log": {
+      "outcome0": "Acconsenti a indagare, ma prima devono essere fatti i preparativi necessari per la discesa al lago."
+    },
+    "message": "Dopo l'ultima spedizione nella caverna, due uomini affermano di aver visto un lago sotterraneo. L'oscurità era troppo fitta per vedere chiaramente. Forse la lanterna di teschio potrebbe rivelare quelle acque scure.",
+    "title": "Il Lago Sotterraneo"
+  },
+  "unnamedWanderer": {
+    "choices": {
+      "offerFood": {
+        "cost": "2500 cibo",
+        "label": "Offri 2500 Cibo"
+      },
+      "offerGold": {
+        "cost": "100 oro",
+        "label": "Offri 100 Oro"
+      },
+      "sendAway": {
+        "label": "Mandalo via"
+      }
+    },
+    "log": {
+      "outcome0": "Rifiuti l'offerta del viandante. Alza le spalle, sistema il suo zaino logoro e scompare lungo la strada.",
+      "outcome2": "Il viandante fa un breve cenno e si avvia verso la cava mineraria per iniziare il suo lavoro.",
+      "outcome4": "Il viandante fa un breve cenno e si avvia verso la cava mineraria per iniziare il suo lavoro."
+    },
+    "message": "Un uomo in abiti laceri si avvicina al villaggio, le mani segnate da anni di duro lavoro. 'Vengo da una colonia mineraria,' dice con voce rauca. 'Posso lavorare per te per migliorare la tua resa mineraria.'",
+    "title": "Il Viandante Senza Nome"
+  },
+  "veiledSeer": {
+    "choices": {
+      "accept": {
+        "cost": "50 oro",
+        "label": "Accetta"
+      },
+      "decline": {
+        "label": "Rifiuta"
+      }
+    },
+    "log": {
+      "outcome1": "Il veggente tace. Il suo sguardo si perde oltre di te. \"Grandi sfide ti attendono{{name}},\" dice sommessamente. \"Credi che questo mondo sia tuo da plasmare. Ma sei plasmato a tua volta. Quando la verità finale emergerà, vedrai i fili. E allora, potrebbe essere troppo tardi.\"",
+      "outcome2": "Il veggente annuisce. {{farewell}}"
+    },
+    "message": "Una figura incappucciata appare al crepuscolo. I suoi occhi brillano da sotto il velo. 'Ho intravisto ciò che ti attende,' gracchia. '50 Oro, e ti dirò cosa ti aspetta.'",
+    "title": "Il Veggente Velato"
+  },
+  "veinrootIntroduction": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "message": "L'alchimista si avvicina a te. Gli abitanti hanno trovato una radice dall'aspetto strano nella foresta e gliel'hanno portata. È riuscito a creare una potente pozione da essa.",
+    "title": "La Radice Misteriosa"
+  },
+  "vikingBuilder": {
+    "choices": {
+      "acceptDeal": {
+        "cost": "250 Oro",
+        "label": "Paga 250 Oro"
+      },
+      "forceHim": {
+        "label": "Forzalo"
+      },
+      "sendAway": {
+        "label": "Mandalo via"
+      }
+    },
+    "log": {
+      "outcome0": "Il costruttore attende per un po', ma alla fine alza le spalle e scompare nelle terre selvagge, portando con sé la sua conoscenza.",
+      "outcome2": "Paghi il costruttore. Insegna agli abitanti le antiche tecniche nordiche per costruire case lunghe.",
+      "outcome3": "I tuoi uomini sopraffanno il costruttore e lo costringono a condividere la sua conoscenza. A malincuore, ti insegna i segreti della costruzione delle case lunghe.",
+      "outcome4": "Il costruttore si rivela più forte del previsto! Reagisce ferocemente, uccidendo {{actualCasualties}} uomini prima di fuggire nelle terre selvagge.",
+      "outcome5": "Rifiuti l'offerta del costruttore e lo mandi via. Alza le spalle e scompare nelle terre selvagge, portando con sé la sua conoscenza."
+    },
+    "message": "Un giorno, un uomo robusto vestito di spesse pellicce sta ai cancelli. Dice di venire dal lontano nord ed essere un abile costruttore. Per un po' d'oro, ti insegnerà a costruire grandi case che possono ospitare molti abitanti.",
+    "title": "Il Costruttore Vichingo"
+  },
+  "villageBecomesCity": {
+    "message": "Il villaggio è cresciuto fino a diventare una città. Ciò che cominciò come un piccolo insediamento ora si erge come un fiorente centro di pietra e fumo."
+  },
+  "villageElderDecision": {
+    "choices": {
+      "nod": {
+        "label": "Continua"
+      }
+    },
+    "message": "L'anziano del villaggio ritorna, l'espressione grave. 'È giunto il momento,' dice. 'Hai mosso i tuoi primi passi su un sentiero lungo e spietato. Ciò che ti attende è più profondo, più oscuro e più esigente. Decidi ora se continuerai questo viaggio.'",
+    "title": "È Giunto il Momento"
+  },
+  "villageElderNotice": {
+    "choices": {
+      "nod": {
+        "label": "Continua"
+      }
+    },
+    "message": "Un anziano del villaggio ti si avvicina. Parla sommessamente. 'Ti trovi all'inizio di un lungo sentiero pieno di prove. Molto presto, dovrai scegliere se continuerai questo viaggio.'",
+    "title": "L'Avviso dell'Anziano"
+  },
+  "villagersStareAtSky": {
+    "choices": {
+      "look_up_too": {
+        "label": "Fissa il cielo"
+      },
+      "shake_them": {
+        "label": "Svegliali"
+      }
+    },
+    "log": {
+      "outcome0": "Afferri l'abitante più vicino e lo scuoti. Sbatte le palpebre una volta e torna normale, ma sussurra 'Sta arrivando' prima di riprendere il lavoro. Gli altri lentamente lo seguono.",
+      "outcome1": "Quando tocchi un abitante, si sgretola in polvere. Gli altri escono dalla loro trance e urlano, indicando il cielo. Per un solo istante, lo vedi anche tu, qualcosa di vasto e affamato che osserva dall'alto.",
+      "outcome2": "Pieghi il collo verso il cielo e all'improvviso lo vedi, qualcosa di immenso e impossibile che esiste tra le nuvole. La tua mente rifiuta ciò che testimonia, ma l'immagine si imprime per sempre nella tua memoria."
+    },
+    "message": "Tutti gli abitanti hanno smesso di lavorare e stanno immobili, fissando il cielo vuoto. Restano così per ore, senza battere ciglio, mentre lacrime di liquido nero scendono lungo i loro volti. Quando segui il loro sguardo, vedi solo nuvole ordinarie, ma qualcosa sembra terribilmente sbagliato.",
+    "title": "Sguardo al Cielo"
+  },
+  "villagerStares": {
+    "choices": {
+      "avoid": {
+        "label": "Evita l'abitante"
+      },
+      "confront": {
+        "label": "Affronta l'abitante"
+      }
+    },
+    "log": {
+      "outcome0": "Affronti l'abitante. Si volta verso di te con quel sorriso dagli occhi neri e sussurra qualcosa che ti fa vacillare la mente. Le parole echeggiano nella tua testa per giorni.",
+      "outcome1": "Mentre ti avvicini, il sorriso dell'abitante si allarga in modo impossibile. Crolla, fluido nero che gli sgorga da occhi e bocca. Ti rendi conto che è morto da ore.",
+      "outcome2": "Eviti l'abitante, ma senti il suo sguardo vuoto seguirti ovunque tu vada. Dormire diventa difficile. Dopo qualche notte, l'abitante viene trovato morto nel suo letto, i vestiti zuppi di una melma nera e fetida."
+    },
+    "message": "Uno degli abitanti ha cominciato a fissare il nulla per ore. Quando ti avvicini, i suoi occhi sono completamente neri. Sorride quando si accorge che lo stai guardando.",
+    "title": "Sguardi Vuoti"
+  },
+  "wandering_collector": {
+    "choices": {
+      "sell_nothing": {
+        "label": "Niente"
+      }
+    },
+    "log": {
+      "whisper0": "Il collezionista sospira e si volta. 'Nei miei viaggi, ho scoperto molte reliquie dell'antica civiltà. Erano molto più avanzati di quanto noi siamo mai stati,' sussurra prima di svanire nel buio.",
+      "whisper1": "Un sommesso ronzio filtra da sotto il cappuccio. 'La grande esplosione distrusse la maggior parte degli artefatti dell'antica civiltà. Quel poco che resta è sparso e raro,' mormora.",
+      "whisper2": "Un debole respiro sfugge al collezionista. 'Ho appreso molto dell'antica civiltà nei miei viaggi. Prima della grande esplosione, non c'era magia in questo mondo. Nacque in quel momento,' sussurra mentre se ne va."
+    },
+    "title": "Il Collezionista Errante",
+    "message": {
+      "visit0": "Una figura avvolta in vesti laceri si avvicina. Sembra incuriosita da ciò che hai raccolto. 'Percepisco valore tra i tuoi averi,' mormora. 'Permettimi di prenderne uno, in cambio di {{reward}} oro.'",
+      "visit1": "La figura in vesti ritorna, i passi silenziosi sul terreno. 'Più artefatti, più segreti', sussurra. 'Lascia che ne reclami un altro, e la tua borsa sarà più pesante di {{reward}} oro.'",
+      "visit2": "Il collezionista appare di nuovo, gli occhi che brillano nel cappuccio. 'I nostri affari si avvicinano alla fine,' dice sommessamente. 'Vendimene uno ancora, e {{reward}} oro saranno tuoi.'"
+    }
+  },
+  "wanderingFirecrafter": {
+    "choices": {
+      "payGold": {
+        "cost": "250 oro",
+        "label": "Paga 250 Oro"
+      },
+      "paySilver": {
+        "cost": "1000 argento",
+        "label": "Paga 1000 Argento"
+      },
+      "sendAway": {
+        "label": "Mandalo via"
+      }
+    },
+    "log": {
+      "outcome0": "L'artefice del fuoco alla fine sospira, 'Forse non sei ancora pronto per un tale potere,' e scompare nella notte.",
+      "outcome2": "L'artefice del fuoco prende il tuo oro e inizia a insegnarti l'oscura arte della creazione della bomba del vuoto. 'Usa questo potere con saggezza,' avverte prima di svanire nell'ombra.",
+      "outcome4": "L'artefice del fuoco prende il tuo argento e inizia a insegnarti l'oscura arte della creazione della bomba del vuoto. 'Usa questo potere con saggezza,' avverte prima di svanire nell'ombra.",
+      "outcome5": "Rifiuti l'offerta dell'artefice del fuoco. Annuisce consapevole, 'Forse non sei ancora pronto per un tale potere,' e scompare nella notte."
+    },
+    "message": "Una figura incappucciata in vesti macchiate arriva al tuo villaggio. 'Sono un artefice del fuoco,' dice con voce echeggiante. 'Posso insegnarti a fabbricare una bomba di estremo potere, che squarcia la realtà stessa. Ma la conoscenza ha il suo prezzo.'",
+    "title": "L'Artefice del Fuoco Errante"
+  },
+  "wanderingTribe": {
+    "choices": {
+      "acceptTribe": {
+        "label": "Aiutali"
+      },
+      "refuseTribeChoice": {
+        "label": "Non aiutarli"
+      }
+    },
+    "log": {
+      "outcome0": "Accogli i nomadi e offri sostegno. In cambio, insegnano al tuo popolo a costruire tende di pelliccia.",
+      "outcome1": "Rifiuti di aiutarli. Il capo della tribù annuisce rispettosamente e riconduce il suo popolo nelle terre selvagge."
+    },
+    "message": "Una piccola tribù di nomadi si avvicina al villaggio. Il loro capo parla: 'Abbiamo viaggiato a lungo e cerchiamo un luogo da chiamare casa. Aiutaci a stabilirci e insegneremo al tuo popolo a erigere tende di pelliccia.'",
+    "title": "La Tribù Errante"
+  },
+  "whispererInTheDark": {
+    "title": "Il Sussurratore nell'Oscurità",
+    "message": {
+      "original": "Un colpo risuona dalla porta della tenuta. Una figura completamente avvolta in vesti scure sta nell'ombra fuori. Sussurra: 'Senza voce grida, senza ali svolazza, senza denti morde, senza bocca mormora.'",
+      "variant": "Un colpo risuona dalla porta della tenuta. Una figura completamente avvolta in vesti scure sta nell'ombra fuori. Sussurra: 'Il desiderio di una signora, cresciuto nell'oscurità, splendente di pallida luce.'"
+    },
+    "choices": {
+      "answerFire": {
+        "label": "Fuoco"
+      },
+      "answerWaves": {
+        "label": "Onde"
+      },
+      "answerWind": {
+        "label": "Vento"
+      },
+      "answerDarkness": {
+        "label": "Oscurità"
+      },
+      "timeout": {
+        "label": "Nessuna risposta data"
+      }
+    },
+    "log": {
+      "wrong": "La figura scuote la testa prima di svanire. Il giorno dopo, una fitta nebbia s'insinua nel villaggio. Gli abitanti affermano di vedere forme mutevoli al suo interno, molti sono troppo timorosi per lasciare le loro capanne.",
+      "success_first": "La figura annuisce leggermente prima di svanire nell'oscurità. Al mattino, un piccolo sacco d'oro giace sulla soglia della tenuta."
+    }
+  },
+  "whispererInTheDark_variant": {
+    "title": "Il Sussurratore nell'Oscurità",
+    "message": {
+      "original": "Un colpo risuona dalla porta della tenuta. Una figura completamente avvolta in vesti scure sta nell'ombra fuori. Sussurra: 'Senza voce grida, senza ali svolazza, senza denti morde, senza bocca mormora.'",
+      "variant": "Un colpo risuona dalla porta della tenuta. Una figura completamente avvolta in vesti scure sta nell'ombra fuori. Sussurra: 'Il desiderio di una signora, cresciuto nell'oscurità, splendente di pallida luce.'"
+    },
+    "choices": {
+      "answerSilver": {
+        "label": "Argento"
+      },
+      "answerPearl": {
+        "label": "Perla"
+      },
+      "answerGold": {
+        "label": "Oro"
+      },
+      "answerDiamond": {
+        "label": "Diamante"
+      },
+      "timeout": {
+        "label": "Nessuna risposta data"
+      }
+    },
+    "log": {
+      "wrong": "La figura scuote la testa prima di svanire. Il giorno dopo, una fitta nebbia s'insinua nel villaggio. Gli abitanti affermano di vedere forme mutevoli al suo interno, molti sono troppo timorosi per lasciare le loro capanne.",
+      "success_first": "La figura annuisce leggermente prima di svanire nell'oscurità. Al mattino, un piccolo sacco d'oro giace sulla soglia della tenuta."
+    }
+  },
+  "whisperersReward": {
+    "choices": {
+      "accept": {
+        "label": "Accetta il dono"
+      }
+    },
+    "log": {
+      "outcome0": "Mentre la figura svanisce nel buio, una debole euforia ti pervade, quieta e fugace, come il ricordo a metà di un tempo migliore."
+    },
+    "message": "La figura incappucciata appare di nuovo. I suoi sussurri si diffondono nella fredda notte un'ultima volta prima che svanisca, 'La tua saggezza è stata pesata e trovata degna. Che le ombre custodiscano il tuo cammino, e la fortuna segua il tuo nome.'",
+    "title": "Il Dono del Sussurratore"
+  },
+  "whisperingVoices": {
+    "message": "Senti deboli sussurri nel vento, che pronunciano parole in nessuna lingua che riconosci, eppure in qualche modo le comprendi. Parlano di cose antiche sepolte sotto la terra. Le voci si fanno più chiare finché, di sera, all'improvviso non ci sono più.",
+    "title": "Voci Sussurranti"
+  },
+  "whispersBeneathHut": {
+    "choices": {
+      "ignoreHut": {
+        "label": "Ignora"
+      },
+      "investigateHut": {
+        "label": "Indaga"
+      }
+    },
+    "log": {
+      "outcome0": "Sollevi le assi del pavimento e trovi uno strano amuleto, che sussurra debolmente.",
+      "outcome1": "Scegli di lasciare in pace la capanna. I sussurri svaniscono al mattino, ma un gelo resta nell'aria."
+    },
+    "message": "Di notte, deboli sussurri sembrano levarsi da sotto il pavimento di una delle capanne. Gli abitanti sono inquieti. Indaghi?",
+    "title": "Sussurri Sotto la Capanna"
+  },
+  "wildlingBloodOath": {
+    "choices": {
+      "accept_oath": {
+        "label": "Accetta il Giuramento"
+      }
+    },
+    "log": {
+      "outcome0": "Accetti il giuramento di sangue. La cacciatrice ti incide il palmo e lo preme contro il suo, suggellando il giuramento nel sangue. 'Nella mia tribù, sono chiamata Cacciatrice Spettro di Cenere,' dice. 'Insegnerò ai tuoi cacciatori le vie del selvaggio.' La Cacciatrice Spettro di Cenere si è unita alla tua compagnia."
+    },
+    "message": "La cacciatrice selvaggia torna dalla foresta. 'Hai salvato la mia tribù dall'estinzione,' dice, facendosi scorrere un coltello d'osso sul palmo. Il sangue gocciola a terra. 'Per le antiche vie del mio popolo, ti offro un giuramento di sangue. Sarò in debito con te per sempre.'",
+    "title": "Il Giuramento di Sangue"
+  },
+  "witchsCurse": {
+    "choices": {
+      "attackHer": {
+        "label": "Attacca la strega"
+      },
+      "doNotPay": {
+        "label": "Rifiuta di pagare"
+      },
+      "payGold": {
+        "cost": "50 oro",
+        "label": "Paga 50 Oro"
+      },
+      "threatenHer": {
+        "label": "Minaccia la strega"
+      }
+    },
+    "log": {
+      "outcome1": "Consegni l'oro. La strega ride sguaiatamente, intasca le monete e scompare nella nebbia senza un'altra parola.",
+      "outcome2": "Rifiuti di pagare. La strega sputa e impreca, ma non accade nulla. Si allontana zoppicando, borbottando minacce al vento. Sembra che tu sia stato fortunato.",
+      "outcome3": "Mentre rifiuti di pagare la strega solleva le sue mani nodose e pronuncia parole in una lingua dimenticata. Quando se ne va gli abitanti iniziano a sentirsi deboli, come se la loro forza fosse prosciugata da una forza invisibile.",
+      "outcome4": "Gli abitanti la abbattono prima che possa terminare la sua maledizione. Prima che la strega cada il suo corpo si dissolve in fumo nero, lasciando solo un fetore nauseabondo.",
+      "outcome5": "Gli uomini attaccano, ma la strega è troppo rapida. Con un'ultima risata sguaiata, maledice il villaggio prima di svanire nei boschi. Un'intensa debolezza cala sul tuo popolo, prosciugandone forza e volontà.",
+      "outcome6": "Pronunci antiche parole di potere, apprese da vecchi testi. La strega indietreggia spaventata e fugge, la sua maledizione spezzata prima che potesse attecchire.",
+      "outcome7": "Le tue minacce non fanno che irritare la strega. Ride e ti maledice con magia oscura. Quando se ne va gli abitanti iniziano a sentirsi deboli, come se la loro forza fosse prosciugata da una forza invisibile."
+    },
+    "message": "Una vecchia donna ricurva in vesti laceri arriva ai cancelli. Con malizia nella voce esige, 'Pagami 50 Oro, o ti maledirò con la sventura.'",
+    "title": "La Maledizione della Strega"
+  },
+  "wizardArrives": {
+    "message": "Un piccolo uomo anziano con una lunga barba grigia in un logoro cappotto grigio si avvicina all'insediamento. I suoi occhi brillano di antica saggezza e potere. 'Sono un mago,' dichiara con voce che echeggia di autorità arcana. 'Costruiscimi una torre, e ti aiuterò con poteri oltre la comprensione mortale.'"
+  },
+  "wizardBloodstone": {
+    "message": "Il mago torna da un viaggio nella foresta. 'Ho consultato un vecchio amico, un mago eremita che dimora nel profondo dei boschi,' dice gravemente. 'Ha parlato della pietra di sangue che ci serve. Giace nel Tempio Sommerso, un antico santuario ormai per metà annegato nelle paludi della foresta.'",
+    "title": "Il Tempio Sommerso"
+  },
+  "wizardBloodstoneStaff": {
+    "message": "Il mago esamina le gemme di pietra di sangue che hai recuperato dal Tempio Sommerso. 'Con queste pietre di sangue, ora abbiamo tutto ciò che ci serve. Ora possiamo fabbricare il Bastone di Pietrasangue. Insieme alla Spada di Vetro di Gelo, avremo i mezzi per affrontare l'oscurità che si cela nel profondo.'",
+    "title": "Il Bastone di Pietrasangue"
+  },
+  "wizardDecryptsScrolls": {
+    "message": "Il mago esce dalla sua torre, 'Ho decifrato le antiche pergamene,' dice. 'Le creature del profondo possono essere uccise solo con armi di grande potere: una spada di vetro di gelo e un bastone coronato di pietra di sangue. 'Nel profondo della foresta giace la tomba di un antico re i cui tesori potrebbero contenere il vetro di gelo che ci serve.'",
+    "title": "Conoscenza Antica"
+  },
+  "wizardFrostglassSword": {
+    "message": "Il mago esamina il vetro di gelo, luce fredda che danza sulla sua superficie. 'L'hai trovato. Ora, la Spada di Vetro di Gelo può essere forgiata.'"
+  },
+  "wizardNecromancerCastle": {
+    "message": "Il mago ti chiama alla sua torre: 'Ho saputo di un castello nel profondo delle terre selvagge, l'antico dominio di un negromante morto da tempo. Tra le sue mura giacciono antiche pergamene che parlano di come possiamo sconfiggere ciò che dimora nelle profondità della caverna.'",
+    "title": "Il Castello del Negromante"
+  },
+  "wizardOffer": {
+    "choices": {
+      "payGold": {
+        "cost": "250 oro",
+        "label": "Paga 250 Oro"
+      },
+      "refuse": {
+        "label": "Rifiuta"
+      }
+    },
+    "log": {
+      "outcome0": "La tua indecisione frustra il mago. Scuote la testa. 'Resterò nella mia torre, allora. Forse i nostri sentieri si incroceranno di nuovo quando il bisogno sarà maggiore,' dice prima di andarsene.",
+      "outcome2": "Il mago annuisce soddisfatto. 'Un prezzo giusto per i miei servizi. Difenderò il tuo popolo con il fuoco arcano.' Si toglie il cappuccio logoro, rivelando occhi antichi che brillano di un potere ormai sbiadito. Il Vecchio Mago si è unito alla tua compagnia.",
+      "outcome3": "Rifiuti l'offerta del mago. Annuisce con comprensione. 'Resterò nella mia torre, allora. Forse i nostri sentieri si incroceranno di nuovo quando il bisogno sarà maggiore,' dice prima di andarsene."
+    },
+    "message": {
+      "firstVisit": "Il vecchio mago si avvicina a te, 'Ho vissuto a lungo e visto molto,' dice con voce stanca. 'La minaccia che affronti è terribile. Per un prezzo giusto, mi unirò a te nella lotta contro i nemici che emergono dal profondo.'",
+      "repeat": "Il vecchio mago si avvicina di nuovo a te, 'La mia offerta di unirmi a te nella lotta contro i nemici del profondo è ancora valida. Per un prezzo giusto, mi unirò a te.'"
+    },
+    "title": "L'Offerta del Mago"
+  },
+  "wizardReadyForBattle": {
+    "message": "Il mago sta all'ingresso della sua torre, 'Le armi sono forgiate. Ora possediamo ciò che ci serve per fronteggiare le creature delle profondità della caverna. L'oscurità del profondo imparerà presto che questo villaggio non cadrà senza combattere. Siamo pronti.'",
+    "title": "La Preparazione Finale"
+  },
+  "wolfAttack": {
+    "choices": {
+      "defendVillage": {
+        "label": "Difendi il villaggio"
+      },
+      "hideAndWait": {
+        "label": "Nasconditi"
+      }
+    },
+    "log": {
+      "outcome0": "Gli abitanti sconfiggono il branco di lupi! Abbatti il lupo alfa e ne reclami la pelle come trofeo. Irradia potere primordiale.",
+      "outcome1": "Gli abitanti si rannicchiano nelle loro capanne mentre i lupi si aggirano fuori. All'alba, i lupi se ne sono andati senza trovare nessuno, lasciandosi dietro solo graffi e terrore.",
+      "defend_noDeaths": "Gli abitanti combattono disperatamente contro i lupi. Gli abitanti sopravvivono all'attacco.",
+      "defend_noDeaths_first": "Gli abitanti combattono disperatamente contro i lupi. Gli abitanti sopravvivono all'attacco. Gli abitanti suggeriscono di disporre trappole attorno al villaggio per proteggersi meglio da lupi e altri nemici.",
+      "defend_noDeaths_hut": "Gli abitanti combattono disperatamente contro i lupi. Gli abitanti sopravvivono all'attacco. Nella loro furia, i lupi distruggono una delle capanne, lasciando solo legno scheggiato.",
+      "defend_noDeaths_hut_first": "Gli abitanti combattono disperatamente contro i lupi. Gli abitanti sopravvivono all'attacco. Nella loro furia, i lupi distruggono una delle capanne, lasciando solo legno scheggiato. Gli abitanti suggeriscono di disporre trappole attorno al villaggio per proteggersi meglio da lupi e altri nemici.",
+      "defend_noDeaths_food": "Gli abitanti combattono disperatamente contro i lupi. Gli abitanti sopravvivono all'attacco. Nel caos, i lupi devastano le tue scorte.",
+      "defend_noDeaths_food_first": "Gli abitanti combattono disperatamente contro i lupi. Gli abitanti sopravvivono all'attacco. Nel caos, i lupi devastano le tue scorte. Gli abitanti suggeriscono di disporre trappole attorno al villaggio per proteggersi meglio da lupi e altri nemici.",
+      "defend_noDeaths_food_hut": "Gli abitanti combattono disperatamente contro i lupi. Gli abitanti sopravvivono all'attacco. Nel caos, i lupi devastano le tue scorte. Nella loro furia, i lupi distruggono una delle capanne, lasciando solo legno scheggiato.",
+      "defend_noDeaths_food_hut_first": "Gli abitanti combattono disperatamente contro i lupi. Gli abitanti sopravvivono all'attacco. Nel caos, i lupi devastano le tue scorte. Nella loro furia, i lupi distruggono una delle capanne, lasciando solo legno scheggiato. Gli abitanti suggeriscono di disporre trappole attorno al villaggio per proteggersi meglio da lupi e altri nemici.",
+      "defend_oneDeath": "Gli abitanti combattono disperatamente contro i lupi. Un abitante cade per la furia soprannaturale dei lupi.",
+      "defend_oneDeath_first": "Gli abitanti combattono disperatamente contro i lupi. Un abitante cade per la furia soprannaturale dei lupi. Gli abitanti suggeriscono di disporre trappole attorno al villaggio per proteggersi meglio da lupi e altri nemici.",
+      "defend_oneDeath_hut": "Gli abitanti combattono disperatamente contro i lupi. Un abitante cade per la furia soprannaturale dei lupi. Nella loro furia, i lupi distruggono una delle capanne, lasciando solo legno scheggiato.",
+      "defend_oneDeath_hut_first": "Gli abitanti combattono disperatamente contro i lupi. Un abitante cade per la furia soprannaturale dei lupi. Nella loro furia, i lupi distruggono una delle capanne, lasciando solo legno scheggiato. Gli abitanti suggeriscono di disporre trappole attorno al villaggio per proteggersi meglio da lupi e altri nemici.",
+      "defend_oneDeath_food": "Gli abitanti combattono disperatamente contro i lupi. Un abitante cade per la furia soprannaturale dei lupi. Nel caos, i lupi devastano le tue scorte.",
+      "defend_oneDeath_food_first": "Gli abitanti combattono disperatamente contro i lupi. Un abitante cade per la furia soprannaturale dei lupi. Nel caos, i lupi devastano le tue scorte. Gli abitanti suggeriscono di disporre trappole attorno al villaggio per proteggersi meglio da lupi e altri nemici.",
+      "defend_oneDeath_food_hut": "Gli abitanti combattono disperatamente contro i lupi. Un abitante cade per la furia soprannaturale dei lupi. Nel caos, i lupi devastano le tue scorte. Nella loro furia, i lupi distruggono una delle capanne, lasciando solo legno scheggiato.",
+      "defend_oneDeath_food_hut_first": "Gli abitanti combattono disperatamente contro i lupi. Un abitante cade per la furia soprannaturale dei lupi. Nel caos, i lupi devastano le tue scorte. Nella loro furia, i lupi distruggono una delle capanne, lasciando solo legno scheggiato. Gli abitanti suggeriscono di disporre trappole attorno al villaggio per proteggersi meglio da lupi e altri nemici.",
+      "defend_manyDeaths": "Gli abitanti combattono disperatamente contro i lupi. Gli abitanti cadono per la furia soprannaturale dei lupi.",
+      "defend_manyDeaths_first": "Gli abitanti combattono disperatamente contro i lupi. Gli abitanti cadono per la furia soprannaturale dei lupi. Gli abitanti suggeriscono di disporre trappole attorno al villaggio per proteggersi meglio da lupi e altri nemici.",
+      "defend_manyDeaths_hut": "Gli abitanti combattono disperatamente contro i lupi. Gli abitanti cadono per la furia soprannaturale dei lupi. Nella loro furia, i lupi distruggono una delle capanne, lasciando solo legno scheggiato.",
+      "defend_manyDeaths_hut_first": "Gli abitanti combattono disperatamente contro i lupi. Gli abitanti cadono per la furia soprannaturale dei lupi. Nella loro furia, i lupi distruggono una delle capanne, lasciando solo legno scheggiato. Gli abitanti suggeriscono di disporre trappole attorno al villaggio per proteggersi meglio da lupi e altri nemici.",
+      "defend_manyDeaths_food": "Gli abitanti combattono disperatamente contro i lupi. Gli abitanti cadono per la furia soprannaturale dei lupi. Nel caos, i lupi devastano le tue scorte.",
+      "defend_manyDeaths_food_first": "Gli abitanti combattono disperatamente contro i lupi. Gli abitanti cadono per la furia soprannaturale dei lupi. Nel caos, i lupi devastano le tue scorte. Gli abitanti suggeriscono di disporre trappole attorno al villaggio per proteggersi meglio da lupi e altri nemici.",
+      "defend_manyDeaths_food_hut": "Gli abitanti combattono disperatamente contro i lupi. Gli abitanti cadono per la furia soprannaturale dei lupi. Nel caos, i lupi devastano le tue scorte. Nella loro furia, i lupi distruggono una delle capanne, lasciando solo legno scheggiato.",
+      "defend_manyDeaths_food_hut_first": "Gli abitanti combattono disperatamente contro i lupi. Gli abitanti cadono per la furia soprannaturale dei lupi. Nel caos, i lupi devastano le tue scorte. Nella loro furia, i lupi distruggono una delle capanne, lasciando solo legno scheggiato. Gli abitanti suggeriscono di disporre trappole attorno al villaggio per proteggersi meglio da lupi e altri nemici.",
+      "hide_noDeaths": "Gli abitanti si rannicchiano nelle loro capanne mentre i lupi si aggirano fuori. All'alba, i lupi se ne sono andati, lasciandosi dietro solo graffi e terrore.",
+      "hide_noDeaths_food": "Gli abitanti si rannicchiano nelle loro capanne mentre i lupi si aggirano fuori. All'alba, i lupi se ne sono andati, lasciandosi dietro solo graffi e terrore. I lupi saccheggiano le tue scorte prima di svanire all'alba.",
+      "hide_oneDeath": "Gli abitanti si rannicchiano nelle loro capanne mentre i lupi si aggirano fuori. Un abitante che si è avventurato fuori viene trovato fatto a pezzi all'alba.",
+      "hide_oneDeath_food": "Gli abitanti si rannicchiano nelle loro capanne mentre i lupi si aggirano fuori. Un abitante che si è avventurato fuori viene trovato fatto a pezzi all'alba. I lupi saccheggiano le tue scorte prima di svanire all'alba.",
+      "hide_manyDeaths": "Gli abitanti si rannicchiano nelle loro capanne mentre i lupi si aggirano fuori. Diversi abitanti vengono trascinati fuori dalle loro capanne, le loro urla che echeggiano nella notte.",
+      "hide_manyDeaths_food": "Gli abitanti si rannicchiano nelle loro capanne mentre i lupi si aggirano fuori. Diversi abitanti vengono trascinati fuori dalle loro capanne, le loro urla che echeggiano nella notte. I lupi saccheggiano le tue scorte prima di svanire all'alba."
+    },
+    "message": "Verso mezzanotte, i lupi emergono dall'oscurità, gli occhi che brillano di fame innaturale. I loro ululati echeggiano carichi di malizia mentre circondano il villaggio.",
+    "title": "Attacco dei Lupi"
+  },
+  "woodcutter": {
+    "choices": {
+      "acceptServices": {
+        "label": "Paga {{foodCost}} Cibo",
+        "cost": "{{foodCost}} cibo"
+      },
+      "denyServices": {
+        "label": "Rifiuta i servizi"
+      },
+      "timeExpired": {
+        "label": "Tempo Scaduto"
+      }
+    },
+    "log": {
+      "betray": "Consegni il cibo, ma passano i giorni senza alcun segno del taglialegna. Sembra che tu sia stato tradito.",
+      "betrayLast": "Consegni il cibo. Il taglialegna ghigna mentre si dirige verso la foresta. Aspetti, ma non torna mai. Sembra che tu sia stato tradito.",
+      "betrayLevel5": "Consegni il cibo. Il taglialegna promette di tornare lo stesso giorno. Ma non lo fa mai. Sembra che tu sia stato tradito.",
+      "denyLastUneasy": "C'è qualcosa nel suo atteggiamento che ti mette a disagio. Rifiuti l'accordo. Il sorriso del taglialegna svanisce, e se ne va senza una parola.",
+      "denyLevel1": "Rifiuti la sua offerta. Il taglialegna alza le spalle e si allontana nella foresta.",
+      "denyLevel2": "Rifiuti la sua offerta. Il taglialegna annuisce e se ne va senza lamentarsi.",
+      "denyLevel3": "Respingi la sua offerta. Alza le spalle e torna nei boschi.",
+      "denyLevel4": "Rifiuti la sua ambiziosa offerta. Il taglialegna sembra deluso ma accetta la tua decisione.",
+      "denyLevel5": "Rifiuti l'accordo. Il taglialegna aggrotta la fronte ma non discute.",
+      "denyLevel6": "Rifiuti l'accordo. Il taglialegna aggrotta la fronte ma non discute.",
+      "timeoutLast": "La tua indecisione frustra il taglialegna. Scuote la testa e si allontana nella foresta.",
+      "timeoutLevel1": "La tua indecisione frustra il taglialegna. Alza le spalle e si allontana nella foresta.",
+      "timeoutLevel2": "La tua indecisione frustra il taglialegna. Annuisce e se ne va senza lamentarsi.",
+      "timeoutLevel3": "La tua indecisione frustra il taglialegna. Alza le spalle e torna nei boschi.",
+      "timeoutLevel4": "La tua indecisione frustra il taglialegna. Sembra deluso ma accetta e se ne va.",
+      "timeoutLevel5": "La tua indecisione frustra il taglialegna. Aggrotta la fronte e se ne va.",
+      "timeoutLevel6": "La tua indecisione frustra il taglialegna. Aggrotta la fronte e se ne va.",
+      "successLevel1": "Il taglialegna prende il cibo e si dirige nella foresta. Verso sera, torna con la legna promessa accatastata ordinatamente ai margini del villaggio.",
+      "successLevel2": "Il taglialegna prende il cibo e scompare nella foresta. Al calar della notte, torna con una grande catasta di legna.",
+      "successLevel3": "Il taglialegna prende il cibo e si avventura nel profondo della foresta. Torna con un impressionante carico di legna.",
+      "successLevel4": "Il taglialegna prende il cibo e trascorre il pomeriggio nella foresta. Torna con un'enorme catasta di legna.",
+      "successLevel5": "Il taglialegna prende il cibo e nello stesso giorno consegna al villaggio una massiccia scorta di legna.",
+      "successLevel6": "Il taglialegna prende il cibo e nello stesso giorno consegna al villaggio una massiccia scorta di legna."
+    },
+    "message": {
+      "level1": "Un uomo muscoloso con una grande ascia si avvicina al villaggio. Flette le braccia. \"So tagliare gli alberi come nessun altro,\" si vanta. \"Dammi {{foodCost}} Cibo, e ti porterò {{woodReward}} Legno.\"",
+      "level2": "Il taglialegna ritorna, l'ascia che luccica al sole. \"Il tuo villaggio cresce bene,\" osserva. \"Posso portarti {{woodReward}} Legno. Tu mi dai {{foodCost}} Cibo. Che ne dici?\"",
+      "level3": "Il taglialegna si avvicina di nuovo. \"Vedo che il tuo villaggio continua a prosperare,\" dice con un ghigno. \"Posso portarti {{woodReward}} Legno se paghi {{foodCost}} Cibo per averlo.\"",
+      "level4": "Il taglialegna arriva ancora una volta. \"Vuoi usare i miei servizi un'altra volta? {{woodReward}} Legno per {{foodCost}} Cibo,\" chiede.",
+      "level5": "Il taglialegna appare con un sorriso sicuro. \"Che ne dici di fare un altro affare? {{woodReward}} Legno per {{foodCost}} Cibo.\"",
+      "level6": "Il taglialegna torna al villaggio. \"Vuoi usare i miei servizi un'altra volta? Offro {{woodReward}} Legno per {{foodCost}} Cibo,\" dice."
+    },
+    "title": {
+      "level1": "Il Taglialegna",
+      "level2": "Il Taglialegna Ritorna",
+      "level3": "L'Offerta del Taglialegna",
+      "level4": "Il Piano Ambizioso del Taglialegna",
+      "level5": "La Grande Proposta del Taglialegna",
+      "level6": "L'Offerta del Taglialegna"
+    }
+  },
+  "wrongReflections": {
+    "choices": {
+      "cover_well": {
+        "label": "Copri il pozzo con assi"
+      },
+      "investigate": {
+        "label": "Guarda più a fondo nel pozzo"
+      }
+    },
+    "log": {
+      "outcome0": "All'ispezione, non vedi nulla di insolito nel pozzo. Dev'essere stato un gioco di luce o la tua immaginazione. L'inquietudine persiste, ma ti senti leggermente meglio.",
+      "outcome1": "Ti sporgi sul bordo del pozzo. Il tuo riflesso ti sorride con troppi denti e sussurra segreti su ciò che un tempo fu costruito dove ora sorge il villaggio. Ti ritrai, ma la conoscenza rimane, bruciando nella tua mente.",
+      "outcome2": "Sbarri il pozzo con assi di legno, vietando ogni accesso all'acqua empia. Costruire un nuovo pozzo richiede troppo tempo per essere completato, e {{thirstDeaths}} degli abitanti muoiono di sete."
+    },
+    "message": "La superficie del pozzo del villaggio mostra riflessi che non corrispondono alla realtà. Vedi te stesso, ma più vecchio, con occhi infossati e una bocca piena di oscurità.",
+    "title": "Riflessi Sbagliati"
+  },
+  "wrongVillagers": {
+    "choices": {
+      "avoid_them": {
+        "label": "Evitali"
+      },
+      "talk_to_them": {
+        "label": "Parla con loro"
+      }
+    },
+    "log": {
+      "outcome0": "Parli con gli stranieri. Ammettono di essere vagabondi troppo spaventati per chiedere riparo, così si sono semplicemente trasferiti in una capanna vuota. Permetti loro di restare e lavorare nel villaggio.",
+      "outcome1": "Mentre li affronti, ridono e confessano di essere ladri venuti a derubare il villaggio. Ti sopraffanno e fuggono con 250 Argento prima di svanire nei boschi.",
+      "outcome2": "Mantieni le distanze e li osservi da lontano. Dopo diversi giorni sono semplicemente spariti, come se non fossero mai stati lì. Non hai idea di chi fossero."
+    },
+    "message": "Conti gli abitanti e ne trovi tre in più di quanti dovrebbero essercene. Sono apparsi degli stranieri tra il tuo popolo, che lavorano e mangiano come se appartenessero alla tua comunità.",
+    "title": "Abitanti Sbagliati"
+  },
+  "youngWomanProtest": {
+    "choices": {
+      "banishHer": {
+        "label": "Bandiscila"
+      },
+      "sacrificeHer": {
+        "label": "Sacrificala"
+      },
+      "stopSacrifices": {
+        "label": "Ferma i sacrifici umani"
+      }
+    },
+    "log": {
+      "outcome0": "Bandisci la giovane donna dal villaggio. Convince {{actualLeavers}} abitanti solidali ad andarsene con lei, abbandonando per sempre il tuo insediamento.",
+      "outcome1": "Poco dopo che il sacrificio viene compiuto al Monolite Nero, {{actualLeavers}} abitanti inorriditi fanno i bagagli e se ne vanno disgustati.",
+      "outcome2": "Acconsenti a porre fine alla pratica del sacrificio umano. La donna propone di distruggere il Monolite Nero e di erigere al suo posto un puro obelisco bianco che purifichi l'oscurità dalle menti del popolo."
+    },
+    "message": "Una giovane donna ti si avvicina con le lacrime che le rigano il volto. 'Entrambi i miei genitori sono stati sacrificati a quel monolite maledetto,' grida. 'Questo comportamento barbaro deve finire!'",
+    "title": "La Supplica della Giovane Donna"
+  }
+}

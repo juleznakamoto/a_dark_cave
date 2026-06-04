@@ -1,0 +1,702 @@
+{
+  "animals": {
+    "label": "Animali"
+  },
+  "banditLair": {
+    "label": "Covo del Bandito",
+    "log": {
+      "success": "Il tuo gruppo segue le tracce del bandito fino a un covo malridotto. Lo sopraffai, recuperi il pugnale del mercante e trovi 250 argento nascosti tra il suo bottino.",
+      "failure": "I tuoi abitanti perlustrano le colline ma non riescono a mettere alle strette il bandito. La pista si raffredda e il pugnale è ancora nelle sue mani."
+    }
+  },
+  "blackreachCanyon": {
+    "label": "Canyon di Nereforo",
+    "log": {
+      "success": "Ti avventuri nelle profondità del Canyon di Nereforo. Lì, appollaiato su un pilastro di pietra, siede un magnifico corvo guercio. Usando l'imbragatura, ti avvicini con cautela e crei un legame con la creatura. Il Corvo Guercio si è unito alla tua compagnia."
+    }
+  },
+  "blastPortal": {
+    "label": "Cancello da Far Saltare",
+    "log": {
+      "complete": "Le bombe di brace detonano in un lampo brillante di fuoco e luce. L'antico cancello si incrina e crolla. Qualunque cosa potesse essere sigillata al suo interno è stata liberata. La città dovrebbe prepararsi a ciò che ne uscirà."
+    }
+  },
+  "boneTotems": {
+    "label": "Totem d'Ossa"
+  },
+  "buildAdvancedBlacksmith": {
+    "description": "Fabbro migliorato con strumenti e tecniche superiori",
+    "label": "Fabbro Avanzato"
+  },
+  "buildAlchemistHall": {
+    "description": "Sala dove l'alchimista crea polveri ed esplosivi",
+    "label": "Sala dell'Alchimista"
+  },
+  "buildAltar": {
+    "description": "Luogo sacro di culto e sacrificio",
+    "label": "Altare"
+  },
+  "buildBank": {
+    "description": "Edificio finanziario che consente di fare investimenti più grandi",
+    "label": "Banca"
+  },
+  "buildBastion": {
+    "description": "Massiccia fortificazione che funge da ultima linea di difesa",
+    "label": "Bastione"
+  },
+  "buildBlackEstate": {
+    "description": "Imponente tenuta di legno nero e pietra, che domina la città.",
+    "label": "Tenuta Nera"
+  },
+  "buildBlackMonolith": {
+    "description": "Oscuro monumento eretto per i sacrifici viventi",
+    "label": "Monolite Nero"
+  },
+  "buildBlacksmith": {
+    "description": "Fabbro con strumenti di base per la fabbricazione",
+    "label": "Fabbro"
+  },
+  "buildBoneTemple": {
+    "description": "Mostruosa struttura costruita di ossa, in onore degli antichi dèi",
+    "label": "Tempio d'Ossa"
+  },
+  "buildBoneyard": {
+    "description": "Terreno dove i morti vengono sepolti, alleviando il dolore degli abitanti.",
+    "label": "Ossario"
+  },
+  "buildBottomlessPit": {
+    "description": "Cava estremamente profonda che raggiunge i materiali più rari",
+    "label": "Pozzo Senza Fondo"
+  },
+  "buildCabin": {
+    "description": "Capanna di caccia basilare con strumenti per i cacciatori",
+    "label": "Capanno"
+  },
+  "buildChitinPlating": {
+    "description": "Le fortificazioni sono rinforzate con impenetrabili placche di chitina",
+    "label": "Corazza di Chitina"
+  },
+  "buildClerksHut": {
+    "description": "Capanna dove gli studiosi studiano per acquisire Intuizione sul mondo",
+    "label": "Capanna dello Scrivano"
+  },
+  "buildCoinhouse": {
+    "description": "Modesto edificio finanziario che consente di fare piccoli investimenti",
+    "label": "Casa della Moneta"
+  },
+  "buildConsecratedPaleCross": {
+    "description": "Imponente monumento di ossa sbiancate che amplifica notevolmente i sacrifici di totem d'ossa.",
+    "label": "Croce Pallida Consacrata"
+  },
+  "buildDarkEstate": {
+    "description": "Tenuta appartata che offre rifugio dal mondo",
+    "label": "Tenuta Oscura"
+  },
+  "buildDeepPit": {
+    "description": "Cava molto profonda che espone preziose vene minerali",
+    "label": "Pozzo Profondo"
+  },
+  "buildDeepeningPit": {
+    "description": "Cava più profonda che raggiunge ulteriori risorse della terra",
+    "label": "Pozzo in Approfondimento"
+  },
+  "buildFortifiedMoat": {
+    "description": "Fossato difensivo che rallenta e indebolisce gli aggressori",
+    "label": "Fossato Fortificato"
+  },
+  "buildFortifiedStorehouse": {
+    "description": "Magazzino rinforzato con capacità potenziata",
+    "label": "Magazzino Fortificato"
+  },
+  "buildFoundry": {
+    "description": "Edificio specializzato nella produzione di acciaio",
+    "label": "Fonderia"
+  },
+  "buildFurTents": {
+    "description": "Caldo riparo di pelliccia usato dalla tribù errante",
+    "label": "Tenda di Pelliccia"
+  },
+  "buildGrandBazaar": {
+    "description": "Vastissimo mercato che attira più mercanti",
+    "label": "Grande Bazar"
+  },
+  "buildGrandBlacksmith": {
+    "description": "Fabbro avanzato capace di creare i prodotti più pregiati",
+    "label": "Gran Fabbro"
+  },
+  "buildGrandHunterLodge": {
+    "description": "Loggia di caccia suprema per i maestri cacciatori",
+    "label": "Grande Loggia dei Cacciatori"
+  },
+  "buildGrandRepository": {
+    "description": "Massiccio deposito con capacità di stoccaggio eccezionale",
+    "label": "Grande Deposito"
+  },
+  "buildGreatCabin": {
+    "description": "Loggia di caccia ampliata che aumenta la produzione dei cacciatori",
+    "label": "Grande Capanno"
+  },
+  "buildGreatVault": {
+    "description": "Caveau supremo capace di immagazzinare risorse immense",
+    "label": "Grande Caveau"
+  },
+  "buildHeartfire": {
+    "description": "Fuoco sacro che offre conforto e un senso di protezione",
+    "label": "Fuoco del Cuore"
+  },
+  "buildHighTannery": {
+    "description": "Conceria suprema per esperti artigiani del cuoio",
+    "label": "Alta Conceria"
+  },
+  "buildImprovedTraps": {
+    "description": "Trappole perimetrali potenziate con meccanismi più forti e copertura migliore",
+    "label": "Trappole Migliorate"
+  },
+  "buildInkwardenAcademy": {
+    "description": "Grande accademia dove i maestri studiosi distillano una profonda Conoscenza",
+    "label": "Accademia dei Custodi dei Tomi"
+  },
+  "buildLonghouse": {
+    "description": "Massiccia sala comunitaria nordica che ospita molti abitanti",
+    "label": "Casa Lunga"
+  },
+  "buildMasterTannery": {
+    "description": "Conceria avanzata che migliora la produzione di cuoio",
+    "label": "Conceria del Maestro"
+  },
+  "buildMasterworkFoundry": {
+    "description": "Fonderia con produzione di acciaio superiore",
+    "label": "Fonderia Magistrale"
+  },
+  "buildMerchantsGuild": {
+    "description": "Potente gilda che porta i migliori scambi e mercanti",
+    "label": "Gilda dei Mercanti"
+  },
+  "buildPaleCross": {
+    "description": "Imponente monumento di ossa sbiancate che amplifica i sacrifici di totem d'ossa.",
+    "label": "Croce Pallida"
+  },
+  "buildPalisades": {
+    "description": "Mura difensive che proteggono l'insediamento",
+    "label": "Palizzate"
+  },
+  "buildPillarOfClarity": {
+    "description": "Obelisco di un bianco puro che purifica le menti dall'oscurità",
+    "label": "Pilastro della Chiarezza"
+  },
+  "buildPrimeFoundry": {
+    "description": "Fonderia avanzata con produzione di acciaio migliorata",
+    "label": "Fonderia Primaria"
+  },
+  "buildQuarry": {
+    "description": "Cava di pietra che aumenta la produzione di pietra del raccoglitore",
+    "label": "Cava"
+  },
+  "buildSanctum": {
+    "description": "Santuario divino che offre la massima protezione contro l'oscurità",
+    "label": "Santuario"
+  },
+  "buildScriptorium": {
+    "description": "Centro di saggezza dove gli studiosi raccolgono Conoscenza",
+    "label": "Scriptorium"
+  },
+  "buildShallowPit": {
+    "description": "Piccola cava mineraria che consente l'estrazione di minerali",
+    "label": "Pozzo Superficiale"
+  },
+  "buildShrine": {
+    "description": "Sacro sacrario che offre maggiore protezione contro la follia",
+    "label": "Sacrario"
+  },
+  "buildStoneHut": {
+    "description": "Resistente dimora di pietra che offre un riparo superiore",
+    "label": "Capanna di Pietra"
+  },
+  "buildStorehouse": {
+    "description": "Struttura di stoccaggio ampliata per più risorse",
+    "label": "Magazzino"
+  },
+  "buildSupplyHut": {
+    "description": "Piccola capanna per immagazzinare risorse",
+    "label": "Capanna delle Scorte"
+  },
+  "buildTannery": {
+    "description": "Bottega dove le pellicce vengono lavorate in cuoio",
+    "label": "Conceria"
+  },
+  "buildTemple": {
+    "description": "Grande tempio che offre una forte resistenza alla follia",
+    "label": "Tempio"
+  },
+  "buildTimberMill": {
+    "description": "Mulino che aiuta a lavorare il legno in modo più efficiente",
+    "label": "Segheria"
+  },
+  "buildTradePost": {
+    "description": "Avamposto commerciale che attira mercanti in vendita di merci",
+    "label": "Avamposto Commerciale"
+  },
+  "buildTraps": {
+    "description": "Trappole intorno al villaggio che indeboliscono tutti gli aggressori",
+    "label": "Trappole"
+  },
+  "buildTreasury": {
+    "description": "Grande edificio finanziario che consente di fare investimenti molto grandi",
+    "label": "Tesoreria"
+  },
+  "buildVillageWarehouse": {
+    "description": "Grande deposito capace di immagazzinare vaste quantità",
+    "label": "Deposito del Villaggio"
+  },
+  "buildWatchtower": {
+    "description": "Alta torre che fornisce un preavviso delle minacce",
+    "label": "Torre di Guardia"
+  },
+  "buildWizardTower": {
+    "description": "Mistica torre dove il mago conduce ricerche arcane",
+    "label": "Torre del Mago"
+  },
+  "buildWoodenHut": {
+    "description": "Semplice capanna di legno che offre un riparo basilare",
+    "label": "Capanna di Legno"
+  },
+  "canyonBridge": {
+    "label": "Ponte del Canyon",
+    "log": {
+      "complete": "Il ponte del canyon è completo. I mercanti Spettro di Cenere possono ora raggiungere il tuo insediamento—e tu puoi vendere loro merci a tariffe concordate."
+    }
+  },
+  "castleRuins": {
+    "label": "Rovine del Castello",
+    "log": {
+      "success": "La spedizione alle rovine del castello del negromante morto si rivela un successo! Nelle loro profondità trovi le antiche pergamene avvolte in seta scura, che rivelano conoscenze criptiche su come sconfiggere ciò che era rinchiuso nelle profondità della caverna.",
+      "minorFailure": "La tua spedizione viene tesa in un'imboscata da grotteschi esperimenti non morti lasciati dal negromante. {{count}} abitanti cadono per mano dei non morti prima che i sopravvissuti riescano a ritirarsi.",
+      "majorFailure": "Poco dopo che la tua spedizione entra nelle maledette rovine del castello, decine di creature non morte si riversano da camere nascoste. Nella disperata battaglia che segue, {{count}} abitanti vengono sopraffatti dall'orda soprannaturale. I sopravvissuti fuggono terrorizzati."
+    }
+  },
+  "chopWood": {
+    "label": "Raccogli Legno",
+    "log": {
+      "firstVisit": "Della legna giace sparsa vicino all'ingresso della caverna. Potrebbe rivelarsi utile."
+    }
+  },
+  "callMerchant": {
+    "label": "Chiama Mercante"
+  },
+  "collapsedTower": {
+    "label": "Torre Crollata",
+    "log": {
+      "success": "Dentro la torre trovi un negromante e i suoi seguaci, circondati da fiale di liquidi e siringhe rozze. Stava raccogliendo il sangue degli abitanti per oscuri esperimenti. I tuoi uomini pongono fine alla sua vile opera e prelevano una fiala del suo sangue. Tra i suoi strumenti, trovi la sua potente sega d'ossa.",
+      "failure": "La tua spedizione raggiunge la Torre Crollata, ma vieni attaccato da figure incappucciate all'esterno. Un uomo alto in una veste scura sta tra loro, comandando un'aura di minaccia. {{count}} abitanti cadono prima che gli altri fuggano in salvo."
+    }
+  },
+  "craftAdamantAxe": {
+    "label": "Ascia d'Adamante"
+  },
+  "craftAdamantLantern": {
+    "label": "Lanterna d'Adamante"
+  },
+  "craftAdamantPickaxe": {
+    "label": "Piccone d'Adamante"
+  },
+  "craftAdamantSword": {
+    "label": "Spada d'Adamante"
+  },
+  "craftArbalest": {
+    "label": "Balestra"
+  },
+  "craftAshenGreatshield": {
+    "label": "Grande Scudo di Cenere"
+  },
+  "craftAshfireBomb": {
+    "label": "Bomba di Cenerardente"
+  },
+  "craftBlacksteelArmor": {
+    "label": "Armatura d'Acciaio Nero"
+  },
+  "craftBlacksteelAxe": {
+    "label": "Ascia d'Acciaio Nero"
+  },
+  "craftBlacksteelBow": {
+    "label": "Arco d'Acciaio Nero"
+  },
+  "craftBlacksteelLantern": {
+    "label": "Lanterna d'Acciaio Nero"
+  },
+  "craftBlacksteelPickaxe": {
+    "label": "Piccone d'Acciaio Nero"
+  },
+  "craftBlacksteelSword": {
+    "label": "Spada d'Acciaio Nero"
+  },
+  "craftBloodstoneStaff": {
+    "label": "Bastone di Pietrasangue"
+  },
+  "craftBoneTotems": {
+    "label": "Totem d'Ossa"
+  },
+  "craftCrudeBow": {
+    "label": "Arco Rudimentale"
+  },
+  "craftEmberBomb": {
+    "label": "Bomba di Brace"
+  },
+  "craftExplorerPack": {
+    "label": "Zaino dell'Esploratore"
+  },
+  "craftFrostglassSword": {
+    "label": "Spada di Vetro di Gelo"
+  },
+  "craftGrenadierBag": {
+    "label": "Borsa del Granatiere"
+  },
+  "craftHighpriestRobe": {
+    "label": "Veste del Sommo Sacerdote"
+  },
+  "craftHunterCloak": {
+    "label": "Mantello del Cacciatore"
+  },
+  "craftHuntsmanBow": {
+    "label": "Arco del Cacciatore"
+  },
+  "craftIronAxe": {
+    "label": "Ascia di Ferro"
+  },
+  "craftIronLantern": {
+    "label": "Lanterna di Ferro"
+  },
+  "craftIronPickaxe": {
+    "label": "Piccone di Ferro"
+  },
+  "craftIronSword": {
+    "label": "Spada di Ferro"
+  },
+  "craftLeatherTotems": {
+    "label": "Totem di Cuoio"
+  },
+  "craftLoggersGloves": {
+    "label": "Guanti del Taglialegna"
+  },
+  "craftLongBow": {
+    "label": "Arco Lungo"
+  },
+  "craftMasterBow": {
+    "label": "Arco del Maestro"
+  },
+  "craftNightshadeBow": {
+    "label": "Arco di Belladonna"
+  },
+  "craftObsidianAxe": {
+    "label": "Ascia di Ossidiana"
+  },
+  "craftObsidianLantern": {
+    "label": "Lanterna di Ossidiana"
+  },
+  "craftObsidianPickaxe": {
+    "label": "Piccone di Ossidiana"
+  },
+  "craftObsidianSword": {
+    "label": "Spada di Ossidiana"
+  },
+  "craftSacrificialTunic": {
+    "label": "Tunica Sacrificale"
+  },
+  "craftShadowBoots": {
+    "label": "Stivali d'Ombra"
+  },
+  "craftSkeletonKey": {
+    "label": "Chiave Scheletro"
+  },
+  "craftSteelAxe": {
+    "label": "Ascia d'Acciaio"
+  },
+  "craftSteelLantern": {
+    "label": "Lanterna d'Acciaio"
+  },
+  "craftSteelPickaxe": {
+    "label": "Piccone d'Acciaio"
+  },
+  "craftSteelSword": {
+    "label": "Spada d'Acciaio"
+  },
+  "craftStoneAxe": {
+    "label": "Ascia di Pietra"
+  },
+  "craftStonePickaxe": {
+    "label": "Piccone di Pietra"
+  },
+  "craftStormglassHalberd": {
+    "label": "Alabarda di Vetrotempesta"
+  },
+  "craftTorches": {
+    "label": "Torce"
+  },
+  "craftVeinfireElixir": {
+    "label": "Elisir di Venafuoco"
+  },
+  "craftVoidBomb": {
+    "label": "Bomba del Vuoto"
+  },
+  "craftWarBow": {
+    "label": "Arco da Guerra"
+  },
+  "descendFurther": {
+    "label": "Scendi Ancora",
+    "log": {
+      "firstVisit": "Con la lanterna che proietta un bagliore costante, scendi ancora più in profondità. All'improvviso i tuoi piedi toccano gradini di pietra fatti dall'uomo, consumati dal tempo."
+    }
+  },
+  "encounterBeyondPortal": {
+    "label": "Avventurati oltre il Cancello"
+  },
+  "exploreCave": {
+    "label": "Esplora Caverna",
+    "log": {
+      "debrisScroll": "Tra i detriti scopri una pergamena logora dal tempo che contiene saggezza per resistere a questo mondo spietato.",
+      "torchBag": "Trovi una vecchia borsa polverosa con 25 Torce nella caverna.",
+      "firstVisit": "La luce della torcia illumina le pareti della caverna. Nella luce tremolante, noti un sentiero che conduce più in profondità nelle caverne."
+    }
+  },
+  "exploreCitadel": {
+    "label": "Esplora Cittadella",
+    "log": {
+      "firstVisit": "Nella parte più profonda della città, una massiccia cittadella si erge davanti a te. La sua dimensione suggerisce che custodisca qualcosa di grande potere, o di grande pericolo."
+    }
+  },
+  "exploreRuins": {
+    "label": "Esplora Rovine",
+    "log": {
+      "firstVisit": "Alla fine delle scale, una vasta caverna si apre davanti a te. Nell'oscurità giacciono le rovine di una città perduta, i resti di una civiltà scomparsa da tempo."
+    }
+  },
+  "exploreTemple": {
+    "label": "Esplora Tempio",
+    "log": {
+      "firstVisit": "Mentre ti addentri nelle rovine della città sotterranea, un grande tempio emerge dal fondo della caverna, per lo più intatto, la sua ombra che si estende sui resti dimenticati della città."
+    }
+  },
+  "exploreUndergroundLake": {
+    "label": "Lago Sotterraneo",
+    "log": {
+      "complete": "Usando il sinistro bagliore della lanterna di teschio, scendi al lago sotterraneo e costruisci una piccola barca. Su una minuscola isola al centro del lago oscuro, tesori dimenticati giacciono nell'ombra, intatti da ere."
+    }
+  },
+  "feedFire": {
+    "label": "Alimenta il Fuoco"
+  },
+  "forestCave": {
+    "label": "Caverna della Foresta",
+    "log": {
+      "success": "Mentre gli abitanti scendono nella caverna, segugi selvaggi erompono dall'oscurità in branchi incessanti. Le urla riecheggiano mentre gli artigli lacerano e i denti azzannano. Quando l'ultima creatura cade, tutti gli abitanti sopravvivono, ma svuotati da ciò che hanno sopportato.",
+      "failure": "Mentre la spedizione entra nella caverna viene sopraffatta da un branco di brutali segugi. {{count}} abitanti vengono fatti a pezzi da fauci selvagge prima che i sopravvissuti riescano a ritirarsi."
+    }
+  },
+  "healElderWizard": {
+    "label": "Cura il Vecchio Mago"
+  },
+  "healRestlessKnight": {
+    "label": "Cura il Cavaliere Inquieto"
+  },
+  "hiddenLibrary": {
+    "label": "Biblioteca Nascosta",
+    "log": {
+      "complete": "La mappa del monastero ti conduce nelle profondità della caverna fino alla biblioteca nascosta dove trovi un codice."
+    }
+  },
+  "hillGrave": {
+    "label": "Tomba della Collina",
+    "log": {
+      "success": "La tua spedizione attraversa con attenzione le insidiose trappole della tomba della collina. I tuoi abitanti disinnescano gli antichi meccanismi e raggiungono la camera sepolcrale. Tra i tesori del re, scopri vetro di gelo puro, freddo come il vuoto stesso.",
+      "failure": "La tua spedizione entra nella tomba della collina ma manca dell'abilità di superare le sue trappole mortali. {{count}} abitanti cadono per le ultime difese del re prima che i sopravvissuti si ritirino inorriditi, lasciando i corpi dei loro compagni nella tomba maledetta."
+    }
+  },
+  "humans": {
+    "label": "Umani"
+  },
+  "hunt": {
+    "label": "Caccia",
+    "log": {
+      "mapFragmentHunt": "Mentre cacci, qualcosa attira il tuo sguardo nel fango. Un brandello macchiato d'acqua, forse parte di una mappa."
+    }
+  },
+  "invest": {
+    "label": "Investi"
+  },
+  "layTrap": {
+    "label": "Disponi Trappola",
+    "log": {
+      "trapSuccessNoDeaths": "La trappola gigante funziona alla perfezione! Un enorme orso nero dagli occhi rossi luminosi viene catturato. I tuoi abitanti abbattono la bestia soprannaturale e ne reclamano la maledetta pelliccia nera come trofeo.",
+      "trapSuccessWithDeaths": "La trappola gigante cattura un colossale orso nero dagli occhi rossi ardenti! {{count}} abitanti cadono per i suoi artigli soprannaturali prima che la bestia venga infine abbattuta. Reclami la sua maledetta pelliccia nera come trofeo conquistato a caro prezzo.",
+      "trapSuccessHeavy": "La trappola gigante cattura un colossale orso nero dagli occhi come carboni ardenti. {{count}} abitanti cadono per la sua furia soprannaturale prima che la bestia venga infine sopraffatta. Reclami la sua maledetta pelliccia nera.",
+      "trapFailed": "La trappola gigante è posizionata, ma al controllo si trovano solo enormi segni di artigli accanto ad essa. Qualunque cosa si aggiri in queste foreste è troppo astuta per la tua trappola... per questa volta."
+    }
+  },
+  "leatherTotems": {
+    "label": "Totem di Cuoio"
+  },
+  "lightFire": {
+    "label": "Accendi il Fuoco",
+    "log": {
+      "firstVisit": "Il fuoco crepita dolcemente, proiettando ombre danzanti sulle pareti della caverna. Il calore è confortante.",
+      "firstVisitBoost": "Il fuoco crepita dolcemente, proiettando ombre danzanti sulle pareti della caverna. Il calore è confortante. Qualcuno ti ha lasciato un dono."
+    }
+  },
+  "lowChamber": {
+    "label": "Camera Bassa",
+    "log": {
+      "complete": "Usando la corda rinforzata, scendi nella camera bassa. Tra i tesori trovi lo scalpello di un maestro muratore, uno strumento di artigianalità leggendaria."
+    }
+  },
+  "lureLakeCreature": {
+    "label": "Piazza Trappola",
+    "log": {
+      "complete": "Disponi una trappola massiccia sul bordo del lago sotterraneo, esca con cumuli di carne. Passano ore prima che le acque nere erompano, e un titanico orrore tentacolare si solleva dalle profondità e striscia nella trappola."
+    }
+  },
+  "mineAdamant": {
+    "label": "Adamante",
+    "log": {
+      "natharitSilverVein": "Il piccone di natharit rivela una vena d'argento! +{{amount}} {{resource}}"
+    }
+  },
+  "mineCoal": {
+    "label": "Carbone",
+    "log": {
+      "natharitSilverVein": "Il piccone di natharit rivela una vena d'argento! +{{amount}} {{resource}}"
+    }
+  },
+  "mineIron": {
+    "label": "Ferro",
+    "log": {
+      "natharitSilverVein": "Il piccone di natharit rivela una vena d'argento! +{{amount}} {{resource}}"
+    }
+  },
+  "mineObsidian": {
+    "label": "Ossidiana",
+    "log": {
+      "natharitSilverVein": "Il piccone di natharit rivela una vena d'argento! +{{amount}} {{resource}}"
+    }
+  },
+  "mineStone": {
+    "label": "Pietra",
+    "log": {
+      "natharitSilverVein": "Il piccone di natharit rivela una vena d'argento! +{{amount}} {{resource}}"
+    }
+  },
+  "mineSulfur": {
+    "label": "Zolfo",
+    "log": {
+      "natharitSilverVein": "Il piccone di natharit rivela una vena d'argento! +{{amount}} {{resource}}"
+    }
+  },
+  "mining": {
+    "label": "Estrazione"
+  },
+  "occultistChamber": {
+    "label": "Camera dell'Occultista",
+    "log": {
+      "complete": "Seguendo la mappa dell'occultista, trovi la camera che contiene i suoi tesori. Tra essi c'è il suo grimorio, pieno di conoscenza proibita e segreti arcani."
+    }
+  },
+  "provokeAttackWave": {
+    "label": "Provoca ondata di attacco"
+  },
+  "repairBastion": {
+    "label": "Ripara Bastione"
+  },
+  "repairPalisades": {
+    "label": "Ripara Palizzate"
+  },
+  "repairWatchtower": {
+    "label": "Ripara Torre di Guardia"
+  },
+  "risingSmoke": {
+    "label": "Fumo che si Alza",
+    "log": {
+      "success": "La tua spedizione trova un accampamento di fuorilegge. Lo scontro è brutale, ma vinci. In un baule trovi 500 Oro.",
+      "successKeyBonus": " Con la tua chiave scheletro apri uno scomparto nascosto e trovi altri 250 Oro.",
+      "captiveOne": " 1 prigioniero dell'accampamento sceglie di unirsi al villaggio.",
+      "captivesOther": " {{count}} prigionieri dell'accampamento scelgono di unirsi al villaggio.",
+      "failure": "La tua spedizione raggiunge un accampamento di fuorilegge, ma lo scontro va terribilmente storto. {{count}} abitanti cadono prima che i sopravvissuti fuggano al villaggio."
+    }
+  },
+  "sellBlacksteelBatch": {
+    "label": "Vendi Acciaio Nero"
+  },
+  "sellLeatherBatch": {
+    "label": "Vendi Cuoio"
+  },
+  "sellSteelBatch": {
+    "label": "Vendi Acciaio"
+  },
+  "steelDelivery": {
+    "label": "Consegna d'Acciaio",
+    "log": {
+      "success": "La tua carovana consegna l'acciaio alla Tribù della Palude come promesso. In cambio, la tribù ti offre Placche di Chitina raccolte dalle creature della palude. Possono essere usate per costruire potenti fortificazioni."
+    }
+  },
+  "sunkenTemple": {
+    "label": "Tempio Sommerso",
+    "log": {
+      "success": "La tua spedizione guada le acque della palude per raggiungere l'antico tempio semisommerso. Nonostante i pericoli in agguato nelle acque scure, gli abitanti navigano con attenzione tra le sale sommerse e trovano le gemme di pietra di sangue nel sancta sanctorum del tempio.",
+      "failure": "La tua spedizione si avventura nella palude, alla ricerca del tempio sommerso. Le acque torbide nascondono orrori indicibili. Creature abominevoli nate da magia antica si sollevano dalle profondità e trascinano {{count}} abitanti sotto la superficie prima che i sopravvissuti fuggano."
+    }
+  },
+  "swampSanctuary": {
+    "label": "Santuario della Palude"
+  },
+  "tradeGoldForAdamant": {
+    "label": "Compra Adamante"
+  },
+  "tradeGoldForAshfireBomb": {
+    "label": "Compra Bomba di Cenerardente"
+  },
+  "tradeGoldForBlacksteel": {
+    "label": "Compra Acciaio Nero"
+  },
+  "tradeGoldForEmberBomb": {
+    "label": "Compra Bomba di Brace"
+  },
+  "tradeGoldForFood": {
+    "label": "Compra Cibo"
+  },
+  "tradeGoldForIron": {
+    "label": "Compra Ferro"
+  },
+  "tradeGoldForLeather": {
+    "label": "Compra Cuoio"
+  },
+  "tradeGoldForObsidian": {
+    "label": "Compra Ossidiana"
+  },
+  "tradeGoldForSteel": {
+    "label": "Compra Acciaio"
+  },
+  "tradeGoldForStone": {
+    "label": "Compra Pietra"
+  },
+  "tradeGoldForTorch": {
+    "label": "Compra Torcia"
+  },
+  "tradeGoldForVoidBomb": {
+    "label": "Compra Bomba del Vuoto"
+  },
+  "tradeGoldForVeinfireElixir": {
+    "label": "Compra Elisir di Venafuoco"
+  },
+  "tradeGoldForWood": {
+    "label": "Compra Legno"
+  },
+  "tradeSilverForGold": {
+    "label": "Compra Oro"
+  },
+  "ventureDeeper": {
+    "label": "Avventurati più a Fondo",
+    "log": {
+      "tarnishedAmulet": "Nelle ombre della caverna, qualcosa luccica. Trovi un Amuleto Annerito.",
+      "silverSack": "Trovi un piccolo sacco di cuoio contenente 50 Argento.",
+      "mapFragment": "Sul fondo della caverna trovi un frammento sbrindellato di una mappa.",
+      "firstVisit": "L'aria si fa più fredda mentre scendi lungo il sentiero più in profondità nella caverna. Le pareti attorno a te sembrano innaturalmente lisce, come se fossero state plasmate da qualcuno."
+    }
+  }
+}

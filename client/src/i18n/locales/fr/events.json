@@ -182,24 +182,24 @@
     "title": "L'Armée d'os"
   },
   "boneDevourer": {
-    "title": "The Bone Devourer",
+    "title": "Le Dévoreur d'Os",
     "message": {
-      "firstTime": "A deformed creature shuffles to the gates, its hunched form covered in pale, stretched skin. It speaks in a rasping voice: 'I seek bones. I pay {{silverReward}} Silver.'",
-      "repeat": "The creature returns to the gates, its hunched form still covered in pale, stretched skin. It speaks in its familiar rasping voice: 'I seek bones. I pay {{silverReward}} Silver.'"
+      "firstTime": "Une créature difforme se traîne jusqu'aux portes, sa forme voûtée couverte d'une peau pâle et tendue. Elle parle d'une voix râpeuse : 'Je cherche des os. Je paie {{silverReward}} Argent.'",
+      "repeat": "La créature revient aux portes, sa forme voûtée toujours couverte d'une peau pâle et tendue. Elle parle de sa voix râpeuse familière : 'Je cherche des os. Je paie {{silverReward}} Argent.'"
     },
     "choices": {
       "sellBones": {
-        "label": "Sell {{boneCost}} Bones",
-        "cost": "{{boneCost}} bones"
+        "label": "Vendre {{boneCost}} Os",
+        "cost": "{{boneCost}} os"
       },
       "refuse": {
-        "label": "Refuse trade"
+        "label": "Refuser l'échange"
       }
     },
     "log": {
-      "outcome1": "The creature takes the bones with its gnarled hands, as if attempting to count them. It places a pouch of silver at your feet and disappears into the darkness.",
-      "outcome2": "You refuse the creature's offer. It hisses in displeasure and retreats into the shadows. You sense it will return.",
-      "outcome3": "Your indecision frustrates the creature. It hisses in displeasure and retreats into the shadows."
+      "outcome1": "La créature prend les os de ses mains noueuses, comme si elle tentait de les compter. Elle dépose une bourse d'argent à vos pieds et disparaît dans les ténèbres.",
+      "outcome2": "Vous refusez l'offre de la créature. Elle siffle de mécontentement et se retire dans l'ombre. Vous sentez qu'elle reviendra.",
+      "outcome3": "Votre indécision frustre la créature. Elle siffle de mécontentement et se retire dans l'ombre."
     }
   },
   "boneDiceChoice": {
@@ -1340,8 +1340,8 @@
     },
     "title": "Le Chevalier errant",
     "message": {
-      "firstTime": "A knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'",
-      "repeat": "Again, the knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'"
+      "firstTime": "Un chevalier en armure usée arrive au village. 'J'ai vu beaucoup du monde,' dit-il d'une voix caverneuse. 'Pour un peu d'or, je partagerai ce que j'ai vu lors de mes voyages.'",
+      "repeat": "À nouveau, le chevalier en armure usée arrive au village. 'J'ai vu beaucoup du monde,' dit-il d'une voix caverneuse. 'Pour un peu d'or, je partagerai ce que j'ai vu lors de mes voyages.'"
     }
   },
   "restlessKnightBurden": {
@@ -2065,7 +2065,7 @@
     "choices": {
       "acceptDeal": {
         "label": "payer 250 or",
-        "cost": "250 Gold"
+        "cost": "250 Or"
       },
       "forceHim": {
         "label": "Le forcer"
@@ -2421,7 +2421,7 @@
     "choices": {
       "acceptServices": {
         "label": "Payer {{foodCost}} nourriture",
-        "cost": "{{foodCost}} food"
+        "cost": "{{foodCost}} nourriture"
       },
       "denyServices": {
         "label": "Refuser les services"
@@ -2529,11 +2529,11 @@
   "obsidianOrbVisit": {
     "choices": {
       "payGold": {
-        "cost": "250 Gold",
+        "cost": "250 Or",
         "label": "Payer 250 or"
       },
       "payVillagers": {
-        "cost": "20 Villagers",
+        "cost": "20 Villageois",
         "label": "Offrir 20 villageois"
       },
       "sendAway": {

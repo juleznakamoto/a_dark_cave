@@ -4,6 +4,7 @@ export const SUPPORTED_LOCALES = [
   "de",
   "fr",
   "es",
+  "it",
   "pt-BR",
   "zh-CN",
   "ru",
@@ -20,10 +21,16 @@ export const LOCALE_LABELS: Record<SupportedLocale, string> = {
   de: "Deutsch",
   fr: "Français",
   es: "Español",
+  it: "Italiano",
   "pt-BR": "Português (Brasil)",
   "zh-CN": "简体中文",
   ru: "Русский",
 };
+
+/** BCP-47 tags for schema.org `availableLanguage` (keep `client/index.html` in sync). */
+export const SCHEMA_AVAILABLE_LANGUAGES: readonly string[] = SUPPORTED_LOCALES.map(
+  (locale) => (locale === "zh-CN" ? "zh-Hans" : locale),
+);
 
 /** Open Graph locale tags (underscore form). */
 export const OG_LOCALE_TAGS: Record<SupportedLocale, string> = {
@@ -31,6 +38,7 @@ export const OG_LOCALE_TAGS: Record<SupportedLocale, string> = {
   de: "de_DE",
   fr: "fr_FR",
   es: "es_ES",
+  it: "it_IT",
   "pt-BR": "pt_BR",
   "zh-CN": "zh_CN",
   ru: "ru_RU",
@@ -59,6 +67,7 @@ export function normalizeLocale(value: string | null | undefined): SupportedLoca
   if (lower.startsWith("de")) return "de";
   if (lower.startsWith("fr")) return "fr";
   if (lower.startsWith("es")) return "es";
+  if (lower.startsWith("it")) return "it";
   if (lower.startsWith("pt")) return "pt-BR";
   if (lower.startsWith("zh")) return "zh-CN";
   if (lower.startsWith("ru")) return "ru";

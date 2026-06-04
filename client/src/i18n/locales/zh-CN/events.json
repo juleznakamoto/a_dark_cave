@@ -1340,8 +1340,8 @@
     },
     "title": "不眠骑士",
     "message": {
-      "firstTime": "A knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'",
-      "repeat": "Again, the knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'"
+      "firstTime": "一位身着破旧盔甲的骑士来到村庄。'我见过世间百态,'他用空洞的声音说道。'给我一些金币,我便分享我在旅途中的所见所闻。'",
+      "repeat": "那位身着破旧盔甲的骑士再次来到村庄。'我见过世间百态,'他用空洞的声音说道。'给我一些金币,我便分享我在旅途中的所见所闻。'"
     }
   },
   "restlessKnightBurden": {
@@ -2065,7 +2065,7 @@
     "choices": {
       "acceptDeal": {
         "label": "支付 250 金币",
-        "cost": "250 Gold"
+        "cost": "250 金币"
       },
       "forceHim": {
         "label": "强迫他"
@@ -2421,7 +2421,7 @@
     "choices": {
       "acceptServices": {
         "label": "支付 {{foodCost}} 食物",
-        "cost": "{{foodCost}} food"
+        "cost": "{{foodCost}} 食物"
       },
       "denyServices": {
         "label": "拒绝效劳"
@@ -2529,11 +2529,11 @@
   "obsidianOrbVisit": {
     "choices": {
       "payGold": {
-        "cost": "250 Gold",
+        "cost": "250 金币",
         "label": "支付 250 金币"
       },
       "payVillagers": {
-        "cost": "20 Villagers",
+        "cost": "20 村民",
         "label": "献出 20 名村民"
       },
       "sendAway": {

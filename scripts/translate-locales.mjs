@@ -11,7 +11,7 @@ import { listCatalogPaths } from "./locale-catalog.mjs";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const EN_DIR = path.join(ROOT, "client/src/i18n/locales/en");
-const TARGETS = ["de", "fr", "es", "pt-BR", "zh-CN", "ru"];
+const TARGETS = ["de", "fr", "es", "it", "pt-BR", "zh-CN", "ru"];
 
 /** Phrase-level replacements applied before per-locale overrides. */
 const PHRASE_MAPS = {
@@ -83,6 +83,29 @@ const PHRASE_MAPS = {
     [/Save/g, "Guardar"],
     [/Fight/g, "Luchar"],
     [/Retreat/g, "Retirarse"],
+  ],
+  it: [
+    [/Wood/g, "Legno"],
+    [/Stone/g, "Pietra"],
+    [/Food/g, "Cibo"],
+    [/Gold/g, "Oro"],
+    [/Silver/g, "Argento"],
+    [/Iron/g, "Ferro"],
+    [/Coal/g, "Carbone"],
+    [/Villager(s)?/g, "Abitante(i)"],
+    [/villagers/g, "abitanti"],
+    [/Village/g, "Villaggio"],
+    [/Cave/g, "Caverna"],
+    [/Forest/g, "Foresta"],
+    [/Build/g, "Costruire"],
+    [/Gather/g, "Raccogliere"],
+    [/Investigate/g, "Investigare"],
+    [/Ignore/g, "Ignorare"],
+    [/Continue/g, "Continua"],
+    [/Close/g, "Chiudi"],
+    [/Save/g, "Salva"],
+    [/Fight/g, "Combatti"],
+    [/Retreat/g, "Ritirati"],
   ],
   "pt-BR": [
     [/Wood/g, "Madeira"],
@@ -188,11 +211,19 @@ function copyLocaleFile(rel, locale) {
   fs.writeFileSync(outPath, JSON.stringify(translated, null, 2) + "\n");
 }
 
-const catalogPaths = listCatalogPaths(EN_DIR);
-
-for (const locale of TARGETS) {
+export function generateLocale(locale) {
+  const catalogPaths = listCatalogPaths(EN_DIR);
   for (const rel of catalogPaths) {
     copyLocaleFile(rel, locale);
   }
   console.log(`Generated locale: ${locale} (${catalogPaths.length} catalog files)`);
+}
+
+const invokedDirectly =
+  process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1]);
+
+if (invokedDirectly) {
+  for (const locale of TARGETS) {
+    generateLocale(locale);
+  }
 }

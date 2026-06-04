@@ -817,7 +817,7 @@
     "log": {
       "outcome0": "You grasp the Hollow King Scepter, feeling immense power flow through you. Ancient knowledge floods your mind, along with the King memories of his final, maddening days.",
       "outcome1": "You decide to leave the dead King scepter where it belongs. As you turn away, you swear you hear a faint whisper of disappointment echoing through the empty throne room.",
-      "outcome2": "As you stand frozen in indecision, the men grow impatient and greedy. One reaches for the scepter, then another. Soon they are fighting viciously. In the bloody melee ${actualDeaths} of your fellowship die, their blood mixing with the dust of ages."
+      "outcome2": "As you stand frozen in indecision, the men grow impatient and greedy. One reaches for the scepter, then another. Soon they are fighting viciously. In the bloody melee {{actualDeaths}} of your fellowship die, their blood mixing with the dust of ages."
     },
     "message": "In the throne room of the citadel, you find a magnificent scepter of obsidian. It must have belonged to the king of this lost city. Dark knowledge flows from it. Do you keep it?",
     "title": "The Hollow King Scepter"
@@ -907,7 +907,7 @@
     },
     "log": {
       "outcome0": "You grant the stranger shelter. At dawn, he has vanished. Only his robes remain, and within them lies a book bound in human skin. Its pages whisper forbidden knowledge.",
-      "outcome1": "You refuse the stranger entry. He leaves screaming curses in an alien tongue. Before dawn, a barbarian tribe attacks as if summoned by his cries, killing ${actualDeaths} villagers. In the morning you find a book on the ground, bound in human skin."
+      "outcome1": "You refuse the stranger entry. He leaves screaming curses in an alien tongue. Before dawn, a barbarian tribe attacks as if summoned by his cries, killing {{actualDeaths}} villagers. In the morning you find a book on the ground, bound in human skin."
     },
     "message": "In the evening, a robed figure approaches from the wilderness. His eyes burn with madness as he mutters in a foreign tongue, gestures sharp and unsettling. The villagers grow uneasy. Do you allow this Beduine to stay the night?",
     "title": "The Mad Beduine"
@@ -963,7 +963,7 @@
     "log": {
       "outcome0": "You hand over the gold. The mercenary counts it slowly, a cruel smile on his face. 'Pleasure doing business,' he says, before disappearing.",
       "outcome1": "The mercenary signals his men to attack. The battle is fierce, but your the villagers prevails. The mercenaries flee into the forest, leaving behind their weapons and wounded.",
-      "outcome2": "The mercenary signals his men to attack. Despite your best efforts, you are overwhelmed. ${deaths} villagers fall before the mercenaries finally retreat, satisfied with the carnage.",
+      "outcome2": "The mercenary signals his men to attack. Despite your best efforts, you are overwhelmed. {{deaths}} villagers fall before the mercenaries finally retreat, satisfied with the carnage.",
       "outcome3": "You offer him the feeding ring you still kept in a locked chest. The mercenary examines it with interest, slipping it onto his own finger. 'A nice ring,' he says, 'but not enough. I'll return tomorrow to collect the gold.'"
     },
     "message": "A scarred mercenary arrives at the village, hand resting on his blade. 'I’m not here to stir up trouble. Pay me 100 Gold, and I'll keep things peaceful. Refuse, and my men will burn this place to the ground.'",
@@ -985,7 +985,7 @@
     "log": {
       "outcome0": "You pay the gold, your hands shaking with rage. The mercenary laughs. 'Smart choice. I won't be bothering you again... probably.' He vanishes into the woods with his men.",
       "outcome1": "You refuse. The mercenaries attack, but this time you're ready. After a brutal fight, they scatter into the wilderness, leaving their dead behind.",
-      "outcome2": "Your defiance costs you dearly. The mercenaries rampage through the village, killing ${deaths} before they finally depart, laughing at the destruction they've caused.",
+      "outcome2": "Your defiance costs you dearly. The mercenaries rampage through the village, killing {{deaths}} before they finally depart, laughing at the destruction they've caused.",
       "outcome3": "You offer him the feeding ring you still kept in a locked chest. The mercenary examines it with interest, slipping it onto his own finger. 'A nice ring,' he says, 'but not enough. I'll return tomorrow to collect the gold.'"
     },
     "message": "The mercenary is back, and this time he brings more men. 'Times are tough,' he says with a grin. 'The price has gone up. 200 Gold, or things get messy.'",
@@ -1315,7 +1315,7 @@
     "log": {
       "outcome0": "As the villagers near, the figure vanishes. In its place lies a raven-feather mantle, shimmering with otherworldly power.",
       "outcome1": "The investigation goes wrong. One of the villagers screams in the mist and is never seen again. The others flee in terror.",
-      "outcome2": "The pale figure moves with inhuman speed. ${actualDeaths} villagers vanish into the mist, their screams echoing through the trees.",
+      "outcome2": "The pale figure moves with inhuman speed. {{actualDeaths}} villagers vanish into the mist, their screams echoing through the trees.",
       "outcome3": "The villagers stay close to the village. By evening, the figure is gone.",
       "outcome4": "At dawn, one of the villagers who claimed to have seen the figure is found dead in his bed, his face frozen in terror."
     },
@@ -1759,7 +1759,7 @@
     "log": {
       "outcome0": "You keep the bone flute. Its tunes are beautiful, yet there's a subtle dissonance that gnaws quietly at your mind.",
       "outcome1": "You set the flute back down carefully. The shadows return to their natural stillness, and the oppressive atmosphere lifts.",
-      "outcome2": "Your hesitation proves costly. The shadows grow hungry and violent, writhing with unnatural life. They surge forward and devour ${actualDevoured} members of your fellowship. Their screams echo briefly before being swallowed by silence."
+      "outcome2": "Your hesitation proves costly. The shadows grow hungry and violent, writhing with unnatural life. They surge forward and devour {{actualDevoured}} members of your fellowship. Their screams echo briefly before being swallowed by silence."
     },
     "message": "Deep in the cave you discover a bone flute of disturbing craftsmanship. As you play it, the shadows around you begin to move in unnatural ways, as if dancing to a melody. Do you keep it?",
     "title": "The Shadow Flute"
@@ -1815,7 +1815,7 @@
     "log": {
       "outcome0": "You take deep breaths and force yourself to remain still. The crawling sensation gradually fades, and your skin returns to normal. You have conquered this horror through sheer willpower.",
       "outcome1": "You try to calm yourself, but the sensation intensifies. Your vision blurs and you collapse. In your fevered dreams, ancient things whisper your true name. When you awaken, the crawling has stopped, but the memory lingers.",
-      "outcome2": "You claw frantically at your skin, drawing blood. The villagers rush to stop you, grabbing your arms. In your maddened rage, you lash out violently, killing ${killedVillagers} villagers before collapsing from exhaustion. When you awaken, the crawling has stopped, but blood stains your hands."
+      "outcome2": "You claw frantically at your skin, drawing blood. The villagers rush to stop you, grabbing your arms. In your maddened rage, you lash out violently, killing {{killedVillagers}} villagers before collapsing from exhaustion. When you awaken, the crawling has stopped, but blood stains your hands."
     },
     "message": "Your skin begins to crawl - literally. You can see shapes moving beneath the surface, seamingly creating patterns. The villagers watch you scratch bloody furrows in your arms with expressions of great worry.",
     "title": "Crawling Skin"
@@ -2101,7 +2101,7 @@
       "outcome0": "The builder waits for a while, but eventually shrugs and disappears into the wilderness, taking his knowledge with him.",
       "outcome2": "You pay the builder. He teaches the villagers the ancient nordic techniques for constructing longhouses.",
       "outcome3": "Your men overpower the builder and force him to share his knowledge. Reluctantly, he teaches you the secrets of longhouse construction.",
-      "outcome4": "The builder proves stronger than expected! He fights back fiercely, killing ${actualCasualties} men before escaping into the wilderness.",
+      "outcome4": "The builder proves stronger than expected! He fights back fiercely, killing {{actualCasualties}} men before escaping into the wilderness.",
       "outcome5": "You refuse the builder's offer and send him away. He shrugs and disappears into the wilderness, taking his knowledge with him."
     },
     "message": "One day, a strong man wearing thick furs stands at the gates. He says he comes from the far north and is a skilled builder. For a little gold, he will teach you how to build big houses that can hold many villagers.",
@@ -2507,7 +2507,7 @@
     "log": {
       "outcome0": "Upon inspection, you see nothing unusual in the well. It must have been a trick of the light or your imagination. The unease lingers, but you feel slightly better.",
       "outcome1": "You lean over the well's edge. Your reflection grins back with too many teeth and whispers secrets about what was once built where the village stands now. You pull back, but the knowledge remains, burning in your mind.",
-      "outcome2": "You board up the well with wooden planks, forbidding all access to the unholy water. Building a new well takes too long to finish, and ${thirstDeaths} of the villagers perish of thirst."
+      "outcome2": "You board up the well with wooden planks, forbidding all access to the unholy water. Building a new well takes too long to finish, and {{thirstDeaths}} of the villagers perish of thirst."
     },
     "message": "The surface of the village well shows reflections that don't match reality. You see yourself, but older, with hollow eyes and a mouth full of darkness.",
     "title": "Wrong Reflections"
@@ -2542,8 +2542,8 @@
       }
     },
     "log": {
-      "outcome0": "You banish the young woman from the village. She convinces ${actualLeavers} sympathetic villagers to leave with her, abandoning your settlement forever.",
-      "outcome1": "Shortly after the sacrifice is carried out at the Black Monolith, ${actualLeavers} horrified villagers pack their belongings and leave in disgust.",
+      "outcome0": "You banish the young woman from the village. She convinces {{actualLeavers}} sympathetic villagers to leave with her, abandoning your settlement forever.",
+      "outcome1": "Shortly after the sacrifice is carried out at the Black Monolith, {{actualLeavers}} horrified villagers pack their belongings and leave in disgust.",
       "outcome2": "You agree to end the practice of human sacrifice. The woman proposes destroying the Black Monolith and building a pure white obelisk in its place cleansing the darkness from the people's minds."
     },
     "message": "A young woman approaches you with tears streaming down her face. 'Both my parents were sacrificed to that cursed monolith,' she cries. 'This barbaric behavior has to stop!'",

@@ -1,0 +1,209 @@
+{
+  "event": {
+    "fallbackTitle": "Evento",
+    "choose": "Scegli un'opzione",
+    "timeRemaining": "Tempo rimanente: {{seconds}}s",
+    "knowledgeTimeBonus": "+{{seconds}}s di Tempo di Decisione grazie alla Conoscenza{{maxSuffix}}",
+    "knowledgeTimeBonusMax": " (max)",
+    "successChance": "Probabilità di Successo: {{percent}}%",
+    "successChanceLocked": "Probabilità di Successo: ??%",
+    "influencedBy": "Influenzata da:"
+  },
+  "reward": {
+    "title": "Ricompensa",
+    "loss": "Perdita",
+    "actionReward": "Ricompensa Azione",
+    "claimRewards": "Riscatta Ricompense"
+  },
+  "madness": {
+    "title": "Evento di Follia",
+    "change": "{{sign}} {{amount}} Follia"
+  },
+  "socialPrompt": {
+    "title": "Resta connesso e guadagna Ricompense",
+    "description": "Completa le attività qui sotto per ricevere bonus. Completa tutte le attività per ricevere un oggetto esclusivo.",
+    "signUpRequiresSignInTooltip": "registrati per completare l'attività",
+    "signUpTitle": "Registrati (+{{amount}} Oro)",
+    "signUpDesc": "Crea un account gratuito per sincronizzare i tuoi progressi su tutti i dispositivi. Senza un account, i tuoi progressi vengono salvati solo localmente e potrebbero andare persi.",
+    "signUpButton": "Registrati",
+    "emailUpdatesTitle": "Aggiornamenti email (+{{amount}} Oro)",
+    "subscribe": "Iscriviti",
+    "playlightTitle": "Scopri 1 gioco (+{{amount}} Oro)",
+    "discoverGames": "Scopri giochi",
+    "inviteTitle": "Invita 1 amico (+{{amount}} Oro ciascuno)",
+    "inviteDesc": "Invita fino a {{cap}} amici e ogni volta entrambi riceverete {{amount}} Oro ({{count}}/{{cap}} invitati).",
+    "copyInviteLink": "Copia link di invito",
+    "progressComplete": "Hai completato tutte le attività. Riceverai presto la tua ricompensa.",
+    "progressToward": "Progressi verso l'oggetto esclusivo",
+    "progressAriaLabel": "Progressi oggetto esclusivo",
+    "alreadyClaimedReward": "Hai già riscattato questa ricompensa!",
+    "playlightDiscoverRewardLog": "Hai ricevuto {{amount}} Oro per aver scoperto giochi!",
+    "marketingSubscribeLog": "Hai ricevuto {{amount}} Oro per esserti iscritto agli aggiornamenti email!",
+    "followRewardLog": "Hai ricevuto {{amount}} Oro per averci seguito su {{platform}}!",
+    "platforms": {
+      "instagram": {
+        "title": "Instagram (+{{amount}} Oro)",
+        "actionFollow": "Segui"
+      },
+      "reddit": {
+        "title": "Reddit (+{{amount}} Oro)",
+        "actionJoin": "Unisciti"
+      }
+    }
+  },
+  "referral": {
+    "invitedLog": "Hai invitato qualcuno di nuovo in questo mondo! +{{amount}} Oro"
+  },
+  "invite": {
+    "button": "Invita",
+    "goldBonus": "+{{amount}} Oro",
+    "linkCopied": "Link di invito copiato!",
+    "linkCopiedDesc": "Condividilo con gli amici per guadagnare {{amount}} Oro ciascuno.",
+    "copyFailed": "Impossibile copiare il link di invito",
+    "tooltip": "Invita i tuoi amici ed entrambi riceverete {{amount}} Oro. Puoi invitare fino a {{cap}} amici. ({{count}}/{{cap}} invitati)."
+  },
+  "invest": {
+    "title": "Investi",
+    "strategy": "Strategia d'Investimento",
+    "amount": "Importo dell'Investimento",
+    "potentialProfit": "Profitto Potenziale:",
+    "startInvestment": "Avvia Investimento",
+    "infoAriaLabel": "Spiega gli investimenti e la tabella delle strategie",
+    "unlockTooltip": "Si sblocca a un livello di edificio più alto",
+    "minutes": "{{count}} min",
+    "luckBonus": "+{{pct}} % di Probabilità di Successo dalla Fortuna (inclusa nella tabella).",
+    "buildingLuckyBonus2": "+2 % di Probabilità Fortunata dal livello dell'edificio (inclusa nella tabella).",
+    "buildingLuckyBonus1": "+1 % di Probabilità Fortunata dal livello dell'edificio (inclusa nella tabella).",
+    "headers": {
+      "time": "Tempo",
+      "success": "Successo",
+      "profit": "Profitto",
+      "lucky": "Fortuna",
+      "loss": "Perdita",
+      "wipeout": "Azzeramento"
+    },
+    "tooltip": {
+      "time": "Per quanto tempo dura l'investimento.",
+      "success": "Probabilità di un investimento riuscito.",
+      "profit": "Il profitto che ottieni in caso di successo.",
+      "lucky": "Probabilità in caso di successo di moltiplicare il tuo profitto per {{multiplier}}.",
+      "loss": "La parte del tuo investimento che perdi in caso di fallimento.",
+      "wipeout": "Probabilità di perdere l'intero investimento in caso di fallimento.",
+      "potentialProfit": "Profitto massimo che puoi ottenere dal tuo investimento. Il secondo valore è se scatta la Probabilità Fortunata (profitto × {{multiplier}})."
+    }
+  },
+  "gambler": {
+    "title": "Il Giocatore Ossessionato",
+    "srDescription": "Gioco di dadi contro il giocatore ossessionato",
+    "rulesAriaLabel": "Regole del gioco di dadi",
+    "rulesTurns": "Tu e il Giocatore vi alternate a lanciare un dado.",
+    "rulesTotals": "I lanci di ogni giocatore vengono sommati.",
+    "rulesGoal": "L'obiettivo è fissato a 15.",
+    "rulesWinLose": "Se un giocatore raggiunge esattamente l'obiettivo, vince. Se lo supera, perde.",
+    "rulesStand": "Se il giocatore di turno ha più punti totali dell'avversario, può scegliere di non lanciare.",
+    "tutorialIntro": "Per aiutarti a imparare il gioco, il Giocatore propone di giocare {{count}} volte senza puntata.",
+    "boneDiceIntro": "Piazza la tua puntata. Possedere i Dadi d'Osso ti permette di giocare due volte contro il Giocatore.",
+    "placeBet": "Piazza la tua puntata.",
+    "gamesRemaining": "{{remaining}} di {{total}} partite rimanenti.",
+    "requiresLuck": "Richiede {{luck}} Fortuna per sbloccarsi",
+    "bet": "Puntata:",
+    "practiceBet": "Pratica (0 Oro)",
+    "goal": "Obiettivo:",
+    "you": "Tu",
+    "gambler": "Giocatore",
+    "roll": "Lancia",
+    "noRoll": "Non Lanciare",
+    "youWin": "Hai vinto",
+    "youLose": "Hai perso",
+    "practiceOutcome": "Round di pratica. Nessun oro vinto o perso.",
+    "goldWon": "+{{amount}} Oro",
+    "goldLost": "-{{amount}} Oro",
+    "practiceWinRemaining": "Hai vinto il round di pratica (nessun oro in gioco). {{remaining}} di {{total}} partite di pratica rimanenti.",
+    "practiceLoseRemaining": "Hai perso il round di pratica (nessun oro in gioco). {{remaining}} di {{total}} partite di pratica rimanenti.",
+    "practiceWinComplete": "Hai vinto il round di pratica (nessun oro in gioco). Pratica completata — puoi piazzare una puntata in oro.",
+    "practiceLoseComplete": "Hai perso il round di pratica (nessun oro in gioco). Pratica completata — puoi piazzare una puntata in oro."
+  },
+  "fullGame": {
+    "titleTrial": "Il Viaggio Continua",
+    "titleCheckout": "Completa il Tuo Acquisto",
+    "trialDesc": "Hai raggiunto la fine della versione di prova. Il viaggio completo ti attende oltre questo punto.",
+    "oneTimePurchase": "Acquisto unico. Nessun abbonamento. Nessuna microtransazione.",
+    "featureHours": "14+ ore di gioco",
+    "featureStructures": "100+ strutture",
+    "featureItems": "250+ oggetti, membri della compagnia, libri, benedizioni...",
+    "featureAchievements": "50+ obiettivi",
+    "featureStory": "Storia oscura e impegnativa basata sulle tue scelte",
+    "signInRequired": "Accedi per acquistare il Gioco Completo.",
+    "continueJourney": "Continua il Viaggio",
+    "progressSaved": "I tuoi progressi sono salvati. Puoi tornare in qualsiasi momento e continuare da dove hai interrotto.",
+    "loadingPayment": "Caricamento del sistema di pagamento...",
+    "purchaseSuccessful": "Acquisto Completato!",
+    "purchaseSuccessfulDesc": "Gioco Completo sbloccato e attivato! Ora puoi continuare il tuo viaggio senza restrizioni.",
+    "legalConsent": "Acquistando, acconsenti alla consegna immediata del contenuto digitale e rinunci al tuo diritto di recesso. Per maggiori informazioni, consulta i nostri",
+    "termsOfService": "Termini di Servizio",
+    "rightOfWithdrawal": "Diritto di Recesso",
+    "completePurchaseFor": "Completa l'Acquisto per {{price}}",
+    "paymentFailed": "Pagamento fallito",
+    "notAuthenticated": "Utente non autenticato",
+    "unexpectedError": "Si è verificato un errore imprevisto"
+  },
+  "leaderboard": {
+    "title": "Classifica",
+    "dev": "Dev",
+    "prod": "Prod",
+    "rank": "#",
+    "player": "Giocatore",
+    "completionTime": "Tempo di Completamento",
+    "noEntries": "Ancora nessuna voce",
+    "lastUpdated": "Ultimo aggiornamento: {{time}}",
+    "username": "Nome utente:",
+    "notSet": "Non impostato",
+    "currentPlaytime": "Tempo di Gioco Attuale:",
+    "enterName": "Inserisci nome",
+    "normalMode": "Modalità Normale",
+    "cruelMode": "Modalità Crudele",
+    "loadFailed": "Impossibile caricare la classifica",
+    "invalidUsername": "Nome utente non valido",
+    "usernameEmpty": "Il nome utente non può essere vuoto",
+    "usernameTooLong": "Il nome utente deve avere al massimo 20 caratteri",
+    "mustSignIn": "Devi aver effettuato l'accesso per impostare un nome utente",
+    "usernameNotAllowed": "Nome utente non consentito",
+    "usernameInappropriate": "Questo nome utente contiene linguaggio inappropriato. Scegline un altro.",
+    "usernameTaken": "Nome utente già in uso",
+    "usernameTakenDesc": "Questo nome utente è già in uso. Scegline un altro.",
+    "usernameSaved": "Nome utente salvato",
+    "usernameSavedDesc": "Il tuo nome utente è stato aggiornato",
+    "saveFailed": "Impossibile salvare il nome utente"
+  },
+  "investmentResult": {
+    "title": "Risultato dell'Investimento",
+    "success": "Il tuo investimento di {{amount}} Oro ha avuto successo.",
+    "luckyChance": "Probabilità Fortunata. I guadagni del tuo investimento di {{amount}} Oro sono moltiplicati per {{multiplier}}.",
+    "wipeout": "Azzeramento. Hai perso l'intero investimento di {{amount}} Oro.",
+    "partialLoss": "Il tuo investimento di {{amount}} Oro è fallito."
+  },
+  "cube": {
+    "fallbackTitle": "Il Cubo Sussurrante",
+    "fallbackMessage": "Il cubo sussurra antichi segreti...",
+    "close": "Chiudi",
+    "completionLog": "Hai completato questo viaggio. Continua qui o inizia una nuova partita. Magari in Modalità Crudele, se hai il coraggio."
+  },
+  "timedEvent": {
+    "buy": "Compra",
+    "sell": "Vendi",
+    "sayGoodbye": "Saluta",
+    "successChance": "Probabilità di Successo: {{percent}}",
+    "discount": "{{percent}}% di sconto",
+    "discountFromKnowledge": "{{percent}}% dalla Conoscenza{{max}}",
+    "knowledgeMax": " (max)",
+    "discountFromRing": "5% dall'Anello dell'Obbedienza"
+  },
+  "feedback": {
+    "title": "Feedback",
+    "message": "Se incontri bug, noti problemi di traduzione o hai idee o suggerimenti, mi farebbe piacere sentirti.",
+    "contactVia": "Puoi contattarmi tramite:",
+    "reddit": "Reddit",
+    "instagram": "Instagram",
+    "email": "E-Mail"
+  }
+}

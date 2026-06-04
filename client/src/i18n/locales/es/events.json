@@ -1340,8 +1340,8 @@
     },
     "title": "El caballero inquieto",
     "message": {
-      "firstTime": "A knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'",
-      "repeat": "Again, the knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'"
+      "firstTime": "Un caballero con armadura desgastada llega a la aldea. 'He visto mucho del mundo,' dice con voz hueca. 'Por algo de oro, compartiré lo que he visto en mis viajes.'",
+      "repeat": "De nuevo, el caballero con armadura desgastada llega a la aldea. 'He visto mucho del mundo,' dice con voz hueca. 'Por algo de oro, compartiré lo que he visto en mis viajes.'"
     }
   },
   "restlessKnightBurden": {
@@ -2065,7 +2065,7 @@
     "choices": {
       "acceptDeal": {
         "label": "pagar 250 oro",
-        "cost": "250 Gold"
+        "cost": "250 Oro"
       },
       "forceHim": {
         "label": "Forzarlo"
@@ -2421,7 +2421,7 @@
     "choices": {
       "acceptServices": {
         "label": "Pagar {{foodCost}} comida",
-        "cost": "{{foodCost}} food"
+        "cost": "{{foodCost}} comida"
       },
       "denyServices": {
         "label": "Rechazar los servicios"
@@ -2529,11 +2529,11 @@
   "obsidianOrbVisit": {
     "choices": {
       "payGold": {
-        "cost": "250 Gold",
+        "cost": "250 Oro",
         "label": "Pagar 250 de oro"
       },
       "payVillagers": {
-        "cost": "20 Villagers",
+        "cost": "20 Aldeanos",
         "label": "Ofrecer 20 aldeanos"
       },
       "sendAway": {

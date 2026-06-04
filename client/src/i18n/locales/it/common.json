@@ -1,0 +1,91 @@
+{
+  "buttons": {
+    "close": "Chiudi",
+    "continue": "Continua",
+    "confirm": "Conferma",
+    "cancel": "Annulla",
+    "save": "Salva",
+    "refresh": "Aggiorna",
+    "dismiss": "Ignora",
+    "fight": "Combatti",
+    "refuse": "Rifiuta",
+    "accept": "Accetta",
+    "back": "Indietro",
+    "claim": "Riscatta",
+    "activate": "Attiva",
+    "deactivate": "Disattiva"
+  },
+  "status": {
+    "loading": "Caricamento...",
+    "processing": "Elaborazione...",
+    "free": "Gratis",
+    "error": "Errore",
+    "success": "Successo!",
+    "active": "Attivo",
+    "activated": "Attivato"
+  },
+  "tabs": {
+    "cave": "Caverna",
+    "village": "Villaggio",
+    "city": "Città",
+    "forest": "Foresta",
+    "estate": "Tenuta",
+    "bastion": "Bastione",
+    "fortress": "Fortezza",
+    "trader": "Mercante",
+    "achievements": "Obiettivi",
+    "timedEvent": "Evento a Tempo"
+  },
+  "resources": {
+    "wood": "Legno",
+    "stone": "Pietra",
+    "food": "Cibo",
+    "veinroot": "Radicevena",
+    "bones": "Ossa",
+    "fur": "Pelliccia",
+    "leather": "Cuoio",
+    "bone_totem": "Totem d'Ossa",
+    "leather_totem": "Totem di Cuoio",
+    "iron": "Ferro",
+    "coal": "Carbone",
+    "sulfur": "Zolfo",
+    "obsidian": "Ossidiana",
+    "adamant": "Adamante",
+    "steel": "Acciaio",
+    "blacksteel": "Acciaio Nero",
+    "moonstone": "Pietra di Luna",
+    "black_powder": "Polvere Nera",
+    "ember_bomb": "Bomba di Brace",
+    "ashfire_dust": "Polvere di Cenerardente",
+    "ashfire_bomb": "Bomba di Cenerardente",
+    "void_bomb": "Bomba del Vuoto",
+    "veinfire_elixir": "Elisir di Venafuoco",
+    "poison_arrows": "Frecce Avvelenate",
+    "torch": "Torcia",
+    "silver": "Argento",
+    "gold": "Oro",
+    "insight": "Intuizione"
+  },
+  "stats": {
+    "strength": "Forza",
+    "knowledge": "Conoscenza",
+    "luck": "Fortuna",
+    "madness": "Follia",
+    "attack": "Attacco",
+    "defense": "Difesa",
+    "integrity": "Integrità"
+  },
+  "time": {
+    "never": "Mai",
+    "hoursMinutes": "{{hours}}h {{minutes}}m",
+    "minutesSeconds": "{{minutes}}m {{seconds}}s"
+  },
+  "population": {
+    "villager_one": "{{count}} Abitante",
+    "villager_other": "{{count}} Abitanti",
+    "maxPopulation": "+{{count}} Popolazione Max"
+  },
+  "currency": {
+    "goldAmount": "{{amount}} Oro"
+  }
+}

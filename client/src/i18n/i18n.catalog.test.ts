@@ -2,10 +2,11 @@ import { describe, it, expect } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
 import { parseLocaleJson } from "./parseLocaleJson";
+import { SCHEMA_AVAILABLE_LANGUAGES } from "./locales";
 
 const LOCALES_DIR = path.resolve(import.meta.dirname, "./locales");
 const SOURCE_LOCALE = "en";
-const TARGET_LOCALES = ["de", "fr", "es", "pt-BR", "zh-CN", "ru"];
+const TARGET_LOCALES = ["de", "fr", "es", "it", "pt-BR", "zh-CN", "ru"];
 
 function flattenKeys(obj: Record<string, unknown>, prefix = ""): string[] {
   return Object.entries(obj).flatMap(([key, value]) => {
@@ -71,6 +72,36 @@ describe("i18n catalog parity", () => {
           seen.add(key);
         }
       }
+    });
+  }
+});
+
+describe("SEO language metadata", () => {
+  it("index.html availableLanguage matches SCHEMA_AVAILABLE_LANGUAGES", () => {
+    const indexHtml = fs.readFileSync(
+      path.resolve(import.meta.dirname, "../../index.html"),
+      "utf8",
+    );
+    const match = indexHtml.match(/"availableLanguage":\s*(\[[^\]]+\])/);
+    expect(match).not.toBeNull();
+    const listed = JSON.parse(match![1]) as string[];
+    expect(listed).toEqual([...SCHEMA_AVAILABLE_LANGUAGES]);
+  });
+});
+
+describe("locale interpolation syntax", () => {
+  for (const locale of [SOURCE_LOCALE, ...TARGET_LOCALES]) {
+    it(`${locale}/events.json uses i18next {{var}} placeholders, not \${var}`, () => {
+      const raw = fs.readFileSync(
+        path.join(LOCALES_DIR, locale, "events.json"),
+        "utf8",
+      );
+      const bad = [...raw.matchAll(/\$\{[a-zA-Z_][a-zA-Z0-9_]*\}/g)].map(
+        (m) => m[0],
+      );
+      expect(bad, `Found JS-style placeholders: ${bad.join(", ")}`).toEqual(
+        [],
+      );
     });
   }
 });

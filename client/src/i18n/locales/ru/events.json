@@ -1340,8 +1340,8 @@
     },
     "title": "Беспокойный рыцарь",
     "message": {
-      "firstTime": "A knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'",
-      "repeat": "Again, the knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'"
+      "firstTime": "Рыцарь в потрёпанных доспехах приходит в деревню. 'Я повидал немало в этом мире,' говорит он глухим голосом. 'За немного золота я поделюсь тем, что видел в своих странствиях.'",
+      "repeat": "Снова рыцарь в потрёпанных доспехах приходит в деревню. 'Я повидал немало в этом мире,' говорит он глухим голосом. 'За немного золота я поделюсь тем, что видел в своих странствиях.'"
     }
   },
   "restlessKnightBurden": {
@@ -2065,7 +2065,7 @@
     "choices": {
       "acceptDeal": {
         "label": "Заплатить 250 золота",
-        "cost": "250 Gold"
+        "cost": "250 Золото"
       },
       "forceHim": {
         "label": "Заставить его"
@@ -2421,7 +2421,7 @@
     "choices": {
       "acceptServices": {
         "label": "Заплатить {{foodCost}} еды",
-        "cost": "{{foodCost}} food"
+        "cost": "{{foodCost}} еда"
       },
       "denyServices": {
         "label": "Отказать в услугах"
@@ -2529,11 +2529,11 @@
   "obsidianOrbVisit": {
     "choices": {
       "payGold": {
-        "cost": "250 Gold",
+        "cost": "250 Золото",
         "label": "Заплатить 250 золота"
       },
       "payVillagers": {
-        "cost": "20 Villagers",
+        "cost": "20 Жители",
         "label": "Отдать 20 жителей"
       },
       "sendAway": {

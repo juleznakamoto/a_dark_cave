@@ -1,0 +1,113 @@
+{
+  "log": {
+    "freezingDeath": {
+      "one": "Un abitante muore congelato dal freddo.",
+      "other": "{{count}} abitanti muoiono congelati dal freddo."
+    },
+    "madnessDeath": {
+      "one": "Un abitante cede alla follia e si toglie la vita.",
+      "other": "{{count}} abitanti cedono alla follia e si tolgono la vita."
+    },
+    "starvationDeath": {
+      "one": "Un abitante muore di fame.",
+      "other": "{{count}} abitanti muoiono di fame."
+    },
+    "investmentComplete": {
+      "success": "Investimento di {{amount}} Oro completato: Successo. Hai guadagnato {{payout}} Oro.",
+      "successLucky": "Investimento di {{amount}} Oro completato: Probabilità Fortunata! Hai guadagnato {{payout}} Oro.",
+      "wipeout": "Investimento di {{amount}} Oro completato: Azzeramento. Hai perso l'intero investimento di {{amount}} Oro.",
+      "failure": "Investimento di {{amount}} Oro completato: Fallimento. Hai perso {{loss}} Oro."
+    },
+    "stranger": {
+      "variant0": "Uno straniero si avvicina e si unisce al villaggio.",
+      "variant1": "Un viaggiatore arriva e decide di restare.",
+      "variant2": "Un vagabondo appare e diventa parte della comunità.",
+      "variant3": "Qualcuno si avvicina al villaggio e vi si stabilisce.",
+      "variant4": "Uno straniero si unisce alla comunità.",
+      "variant5": "Un nuovo arrivato giunge e si sente subito a casa.",
+      "multiple0": "{{count}} stranieri si uniscono al villaggio.",
+      "multiple1": "{{count}} viaggiatori arrivano e decidono di restare.",
+      "multiple2": "{{count}} vagabondi arrivano e si uniscono alla comunità."
+    },
+    "building": {
+      "darkEstate": "La Tenuta Oscura è stata costruita su una piccola collina vicino al villaggio, offrendo solitudine e rifugio.",
+      "blacksmith": "La forgia del fabbro prende vita. Il cuore dell'industria ora batte nel villaggio.",
+      "firstWoodenHut": "La prima capanna di legno è completa, questo potrebbe essere l'inizio di qualcosa di grande.",
+      "villageGrowthSuggestion": "Il villaggio cresce in fretta. Forse case di pietra potrebbero ospitare più abitanti.",
+      "cityGrowthMilestone": "La città è cresciuta fino a diventare una metropoli vivace, animata da commercio, industria e la promessa di giorni migliori.",
+      "moonstoneDiscovered": "Nelle profondità della cava, gli operai scoprono qualcosa di straordinario. Portano alla luce vene di pietra di luna - un minerale luminescente che contiene un'energia immensa.",
+      "foundry": "La fonderia ruggisce alla vita mentre fuoco e calore fondono le materie prime.",
+      "masterworkFoundry": "La Fonderia Magistrale è completa, un monumento alla suprema maestria metallurgica. Tra le sue fiamme si può forgiare l'acciaio nero, quasi infrangibile, ma molto difficile da produrre.",
+      "altar": "Un altare sorge ai margini della foresta, eretto per placare ciò che vi dimora.",
+      "grandHunterLodge": "La Grande Loggia dei Cacciatori è completa, una struttura magnifica dove si radunano i maestri cacciatori.",
+      "clerksHut": "Una Capanna dello Scrivano è completa. Gli studiosi vi si radunano per studiare il mondo e affinare la loro conoscenza.",
+      "scriptorium": "Lo Scriptorium è finito. Un centro di saggezza dove gli studiosi approfondiscono la loro conoscenza.",
+      "inkwardenAcademy": "L'Accademia dei Custodi dei Tomi sorge, una grande sala dove i maestri studiosi distillano la conoscenza più profonda.",
+      "tannery": "La Conceria è completa. L'odore del cuoio in concia riempie l'aria mentre gli artigiani iniziano il loro lavoro.",
+      "highTannery": "L'Alta Conceria è costruita, una grande bottega dove artigiani esperti trasformano le pelli nel cuoio più pregiato.",
+      "longhouse": "La prima casa lunga sorge, una massiccia sala di legno con grosse travi e molto spazio.",
+      "furTents": "Le prime tende di pelliccia vengono erette ai margini del villaggio, offrendo a più persone un riparo caldo.",
+      "shrine": "Un sacro sacrario sorge accanto all'altare, la sua presenza porta pace e concentrazione alle menti turbate.",
+      "temple": "Un grande tempio è completo, le sue sacre sale echeggiano di preghiere sussurrate che calmano l'anima tormentata.",
+      "sanctum": "Il santuario sorge come un faro di protezione divina, la sua aura benedetta scaccia i pensieri e le paure più oscure.",
+      "alchemistHall": "Le Sale dell'Alchimista si ergono imponenti, le loro camere piene di crogioli gorgoglianti e luccicanti strumenti di un'arte dimenticata.",
+      "tradePost": "Un avamposto commerciale è costruito vicino alla foresta, attirando mercanti che cercano di vendere le loro merci in cambio di oro.",
+      "grandBazaar": "Il Grande Bazar sorge, un mercato vastissimo dove mercanti da terre lontane si radunano per scambiare merci.",
+      "merchantsGuild": "La Gilda dei Mercanti è completa, una potente organizzazione che controlla tutte le rotte commerciali e porta una ricchezza senza precedenti al tuo insediamento.",
+      "bastion": "Il bastione sorge come una montagna di pietra, le sue mura spesse e incrollabili. Una promessa di protezione contro qualunque cosa si muova nelle profondità sottostanti.",
+      "wizardTower": "La Torre del Mago si avvita verso il cielo, crepitando di energia arcana. Il mago vi si trasferisce con la sua collezione di antichi tomi e misteriosi artefatti.",
+      "fortifiedMoat": "Un profondo fossato circonda ora l'insediamento, le sue acque scure e insidiose. Nessun nemico lo attraverserà con facilità.",
+      "traps": "Sono state disposte trappole lungo il perimetro del villaggio. Fosse nascoste, lacci e pali appuntiti attendono chiunque osi attaccare.",
+      "improvedTraps": "Il perimetro del villaggio è rinforzato con fosse coperte, lacci a molla e meccanismi d'acciaio. Gli aggressori affrontano un'accoglienza ben più letale.",
+      "blackMonolith": "Il Monolite Nero sorge dal centro del villaggio, un imponente monumento di oscuro adamante. La sua superficie sembra assorbire la luce, e gli abitanti si radunano attorno ad esso con riverenza e timore.",
+      "blackEstate": "La Tenuta Nera sorge dalla collina, avvolta da un velo di nebbia.",
+      "chitinPlating": "Le fortificazioni sono ora rinforzate con corazza di chitina. La difesa del villaggio è notevolmente aumentata.",
+      "pillarOfClarity": "Il Pilastro della Chiarezza sorge, un obelisco scintillante che sembra vibrare di antico potere. La sua presenza porta un senso di calma e concentrazione a chi gli sta vicino.",
+      "boneTemple": "Il Tempio d'Ossa sorge da migliaia di ossa accuratamente disposte, un monumento agli antichi dèi. La sua presenza emana un potere oscuro, e gli abitanti vi si avvicinano con riverenza e timore.",
+      "heartfire": "Il Fuoco del Cuore è acceso. Il suo calore e la sua luce portano un nuovo senso di scopo al villaggio."
+    },
+    "gameplay": {
+      "forestUnlocked": "Il villaggio è circondato da una fitta e oscura foresta. Il pericolo aleggia nell'aria, anche se potrebbe essere un buon posto per tagliare legna e cacciare.",
+      "villageUnlocked": "Fuori dalla caverna si apre una radura. Sembra un buon posto per costruire un riparo.",
+      "villageBegins": "Un piccolo villaggio comincia a prendere forma. Gli abitanti hanno bisogno di cibo e legna per sopravvivere."
+    },
+    "crafting": {
+      "emberBombFirst": "La conoscenza dell'alchimista si rivela preziosa. Fabbrichi una potente bomba di brace, il suo nucleo che brilla di calore intenso e potenziale distruttivo.",
+      "ashfireBombFirst": "Usando la mistica polvere di cenerardente, fabbrichi una bomba straordinaria che pulsa di fuoco ultraterreno. Le sue fiamme bruciano di colori non di questo mondo.",
+      "voidBombFirst": "Combinando polvere di cenerardente con ossidiana e polvere nera, crei un'arma di potere terrificante. La bomba del vuoto sembra distorcere lo spazio attorno a sé, la realtà stessa che indietreggia dalla sua presenza.",
+      "veinfireElixirFirst": "L'alchimista distilla un'essenza luminosa dalle fibre di radicevena. Ora possiedi un Elisir di Venafuoco — una pozione che, si dice, rinforzi il bastione quando tutto sembra perduto.",
+      "frostglassSword": "La forgia del fabbro arde di eteree fiamme blu mentre il vetro di gelo prende la forma di una magnifica spada. La lama luccica di una luce fredda e ultraterrena, irradiando un potere immenso.",
+      "arbalest": "Seguendo lo schema, fabbrichi una balestra meticolosamente decorata. La sua ingegneria è impeccabile, progettata da un maestro artigiano.",
+      "nightshadeBow": "Fabbrichi un arco di legno scuro. Le sue frecce porteranno il veleno nei tuoi nemici.",
+      "bloodstoneStaff": "Il mago incanala il suo potere arcano nelle gemme di pietra di sangue, fondendole con legno antico. Il Bastone di Pietrasangue pulsa di energia cremisi, irradiando forza e conoscenza proibita.",
+      "stormglassHalberd": "Forgi l'Alabarda di Vetrotempesta, la sua lama che luccica di una luce eterea. Ti senti molto più forte impugnando quest'arma leggendaria.",
+      "ashenGreatshield": "Il fabbro forgia le enormi ossa della creatura del lago in uno scudo impenetrabile. Il Grande Scudo di Cenere è un baluardo di forza impareggiabile, capace di proteggere le tue forze anche dalle minacce più letali."
+    },
+    "sacrifice": {
+      "ringOfClarity": "Tra le offerte sacrificali, scopri un anello cristallino.",
+      "moonBracelet": "Tra le offerte sacrificali, scopri un bracciale di pietra bianca."
+    },
+    "gambler": {
+      "win": "Hai vinto {{amount}} oro dal giocatore ossessionato.",
+      "lose": "Hai perso {{amount}} oro a favore del giocatore ossessionato.",
+      "forfeit": "Il giocatore ossessionato ha interpretato il tuo silenzio come una rinuncia."
+    },
+    "buttonUpgrade": {
+      "deepens": "La tua maestria in {{skill}} si approfondisce.",
+      "skills": {
+        "caveExplore": "Esplorazione della Caverna",
+        "mineStone": "Estrazione della Pietra",
+        "mineIron": "Estrazione del Ferro",
+        "mineCoal": "Estrazione del Carbone",
+        "mineSulfur": "Estrazione dello Zolfo",
+        "mineObsidian": "Estrazione dell'Ossidiana",
+        "mineAdamant": "Estrazione dell'Adamante",
+        "hunt": "Caccia",
+        "chopWood": "Taglio della Legna",
+        "craftTorches": "Fabbricazione di Torce",
+        "craftBoneTotems": "Fabbricazione di Totem d'Ossa",
+        "craftLeatherTotems": "Fabbricazione di Totem di Cuoio"
+      }
+    }
+  }
+}

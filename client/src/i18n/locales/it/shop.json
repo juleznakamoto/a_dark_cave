@@ -1,0 +1,83 @@
+{
+  "advanced_bundle": {
+    "activationMessage": "I componenti del pacchetto sono stati aggiunti ai tuoi acquisti!",
+    "name": "Pacchetto del Re Pallido"
+  },
+  "artifact_bundle": {
+    "activationMessage": "I componenti del pacchetto sono stati aggiunti ai tuoi acquisti!",
+    "name": "Pacchetto Artefatti Oscuri"
+  },
+  "ashen_throne_bundle": {
+    "activationMessage": "I componenti del pacchetto sono stati aggiunti ai tuoi acquisti!",
+    "name": "Pacchetto Trono di Cenere"
+  },
+  "basic_survival_bundle": {
+    "activationMessage": "I componenti del pacchetto sono stati aggiunti ai tuoi acquisti!",
+    "name": "Pacchetto del Viandante Sbiadito"
+  },
+  "crow_harness": {
+    "activationMessage": "L'Imbragatura del Corvo è stata aggiunta ai tuoi strumenti! Ora devi trovare un corvo da legare all'imbragatura.",
+    "description": "Imbragatura appositamente creata per i corvi messaggeri. Sblocca la trama del Corvo. Aggiunge un Membro della Compagnia.",
+    "name": "Imbragatura del Corvo"
+  },
+  "cruel_mode": {
+    "activationMessage": "Modalità Crudele attivata! Inizia una nuova partita per vivere la sfida definitiva.",
+    "description": "Un mondo più crudele, storia ampliata, più oggetti, nemici più letali. Resisti, o svanisci.",
+    "name": "Modalità Crudele"
+  },
+  "full_game": {
+    "activationMessage": "Gioco Completo sbloccato e attivato! Il viaggio continua senza restrizioni.",
+    "description": "Sblocca il gioco completo e continua il tuo viaggio.",
+    "name": "Gioco Completo"
+  },
+  "gold_1000": {
+    "activationMessage": "1000 Oro sono stati aggiunti al tuo inventario.",
+    "description": "Una discreta quantità di Oro",
+    "name": "1'000 Oro"
+  },
+  "gold_100_free": {
+    "activationMessage": "100 Oro sono stati aggiunti al tuo inventario in regalo!",
+    "description": "Una piccola grazia quotidiana in un mondo freddo",
+    "name": "Regalo di 100 Oro"
+  },
+  "gold_20000": {
+    "activationMessage": "20'000 Oro sono stati aggiunti al tuo inventario.",
+    "description": "Quantità empie di Oro",
+    "name": "20'000 Oro"
+  },
+  "gold_250": {
+    "activationMessage": "1000 Oro sono stati aggiunti al tuo inventario.",
+    "description": "Una discreta quantità di Oro",
+    "name": "1'000 Oro"
+  },
+  "gold_2500": {
+    "activationMessage": "2500 Oro sono stati aggiunti al tuo inventario.",
+    "description": "Un tesoro considerevole",
+    "name": "2'500 Oro"
+  },
+  "gold_5000": {
+    "activationMessage": "5000 Oro sono stati aggiunti al tuo inventario.",
+    "description": "Una fortuna in Oro",
+    "name": "5'000 Oro"
+  },
+  "great_feast_1": {
+    "activationMessage": "È iniziato un Grande Banchetto!",
+    "description": "Aumenta la produzione degli abitanti di 5x per 30 minuti",
+    "name": "1 Grande Banchetto"
+  },
+  "great_feast_3": {
+    "activationMessage": "È iniziato un Grande Banchetto!",
+    "description": "Aumenta la produzione degli abitanti di 5x per 30 minuti (3 volte)",
+    "name": "3 Grandi Banchetti"
+  },
+  "skull_lantern": {
+    "activationMessage": "La Lanterna di Teschio è stata aggiunta ai tuoi strumenti! La sua luce inquietante ti guiderà attraverso le profondità.",
+    "description": "Forgiata da ossa maledette, illumina le profondità più oscure. Sblocca la trama della Lanterna di Teschio.",
+    "name": "Lanterna di Teschio"
+  },
+  "tarnished_compass": {
+    "activationMessage": "La Bussola Annerita è stata aggiunta al tuo inventario! La sua antica magia potrebbe concedere fortuna alle tue imprese.",
+    "description": "Artefatto della civiltà scomparsa, il suo ago indica luoghi nascosti. Sblocca la trama della Bussola.",
+    "name": "Bussola Annerita"
+  }
+}

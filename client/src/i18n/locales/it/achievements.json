@@ -1,0 +1,184 @@
+{
+  "action": {
+    "0-chopWood": {
+      "label": "Taglialegna"
+    },
+    "0-craftTorches": {
+      "label": "Fabbricante di Torce"
+    },
+    "0-exploreCave": {
+      "label": "Esploratore di Caverne"
+    },
+    "0-gamblerWins": {
+      "label": "Giocatore Esperto"
+    },
+    "0-hunt": {
+      "label": "Cacciatore"
+    },
+    "1-mineAdamant": {
+      "label": "Minatore di Adamante"
+    },
+    "1-mineCoal": {
+      "label": "Minatore di Carbone"
+    },
+    "1-mineIron": {
+      "label": "Minatore di Ferro"
+    },
+    "1-mineObsidian": {
+      "label": "Minatore di Ossidiana"
+    },
+    "1-mineStone": {
+      "label": "Minatore di Pietra"
+    },
+    "1-mineSulfur": {
+      "label": "Minatore di Zolfo"
+    },
+    "2-animals": {
+      "label": "Sacrificatore di Animali"
+    },
+    "2-boneTotems": {
+      "label": "Sacrificatore di Ossa"
+    },
+    "2-craftBoneTotems": {
+      "label": "Fabbricante di Totem d'Ossa"
+    },
+    "2-craftLeatherTotems": {
+      "label": "Fabbricante di Totem di Cuoio"
+    },
+    "2-leatherTotems": {
+      "label": "Sacrificatore di Cuoio"
+    },
+    "3-ashfireBombs": {
+      "label": "Fabbricante di Bombe di Cenerardente"
+    },
+    "3-emberBombs": {
+      "label": "Fabbricante di Bombe di Brace"
+    },
+    "4-feedFire": {
+      "label": "Guardiano del Fuoco"
+    },
+    "4-merchantPurchases": {
+      "label": "Affarista"
+    },
+    "4-solsticeGatherings": {
+      "label": "Celebrante del Solstizio"
+    },
+    "4-wellRested": {
+      "label": "Dormiglione"
+    }
+  },
+  "basic": {
+    "0-coalMiner": {
+      "label": "Raccogli Carbone"
+    },
+    "0-hunter": {
+      "label": "Cacciatore"
+    },
+    "0-ironMiner": {
+      "label": "Raccogli Ferro"
+    },
+    "0-stoneMiner": {
+      "label": "Raccogli Pietra"
+    },
+    "0-woodGatherer": {
+      "label": "Raccogli Legno"
+    },
+    "1-builder": {
+      "label": "Costruisci Edifici"
+    },
+    "1-communityBuilder": {
+      "label": "Costruisci una Comunità"
+    },
+    "1-explorer": {
+      "label": "Esplora la Caverna"
+    },
+    "1-toolCrafter": {
+      "label": "Fabbrica Strumenti"
+    },
+    "1-torchCrafter": {
+      "label": "Fabbrica Torce"
+    }
+  },
+  "building": {
+    "0-0": {
+      "label": "Riparo Basilare"
+    },
+    "0-1": {
+      "label": "Riparo Robusto"
+    },
+    "0-2": {
+      "label": "Riparo Nordico"
+    },
+    "0-3": {
+      "label": "Riparo Nomade"
+    },
+    "1-0": {
+      "label": "Cacciatori"
+    },
+    "1-1": {
+      "label": "Forgiatori"
+    },
+    "1-2": {
+      "label": "Fonditori"
+    },
+    "1-3": {
+      "label": "Conciatori di Pelli"
+    },
+    "2-0": {
+      "label": "Minatori"
+    },
+    "3-0": {
+      "label": "Mercanti"
+    },
+    "3-1": {
+      "label": "Approvvigionatori"
+    },
+    "3-2": {
+      "label": "Studiosi"
+    },
+    "3-3": {
+      "label": "Sacerdoti"
+    },
+    "4-0": {
+      "label": "Mura del Mastio"
+    },
+    "4-1": {
+      "label": "Posto di Vedetta"
+    }
+  },
+  "item": {
+    "0-axes": {
+      "label": "Asce"
+    },
+    "0-lanterns": {
+      "label": "Lanterne"
+    },
+    "0-pickaxes": {
+      "label": "Picconi"
+    },
+    "1-bows": {
+      "label": "Archi"
+    },
+    "1-swords": {
+      "label": "Spade"
+    },
+    "2-explorer_pack": {
+      "label": "Lavori in Cuoio"
+    },
+    "2-schematic_weapons": {
+      "label": "Schemi"
+    },
+    "3-ancient_books": {
+      "label": "Saggezza Antica"
+    },
+    "3-fellowship": {
+      "label": "Buona Compagnia"
+    },
+    "4-blacksteel_equipment": {
+      "label": "Equipaggiamento da Guerra Oscuro"
+    },
+    "4-blacksteel_tools": {
+      "label": "Strumenti Oscuri"
+    }
+  }
+}
