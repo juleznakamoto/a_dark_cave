@@ -55,14 +55,23 @@ describe("i18n runtime", () => {
 
   it("resolves timed event prolong tooltip in German", async () => {
     await i18n.changeLanguage("de");
+    const opts = { minutes: 5, cost: 250, resource: "Einsicht" };
     expect(
       tWithFallback(
         "ui",
         "timedEvent.prolongForInsight",
         "Extend time by {{minutes}} min for {{cost}} {{resource}}",
-        { minutes: 5, cost: 250, resource: "Einsicht" },
+        opts,
       ),
     ).toBe("Zeit um 5 Min. für 250 Einsicht verlängern");
+    expect(
+      tWithFallback(
+        "ui",
+        "timedEvent.prolongForInsight",
+        "Extend time by {{minutes}} min for {{cost}} {{resource}}",
+        opts,
+      ),
+    ).not.toContain("Extend time by");
   });
 
   it("resolves villagerCost plural tooltip in English and German", async () => {

@@ -46,7 +46,7 @@ export function TraderTabButton({
       >
         <span
           ref={iconRef}
-          className="font-noto-symbols-2 text-[19px] leading-none text-lime-500 opacity-80 transition-[opacity,text-shadow] group-hover:opacity-100 group-hover:[text-shadow:0_0_8px_rgba(132,204,22,0.95),0_0_16px_rgba(132,204,22,0.5)] group-focus-visible:opacity-100 group-focus-visible:[text-shadow:0_0_8px_rgba(132,204,22,0.95),0_0_16px_rgba(132,204,22,0.5)] relative top-px"
+          className="font-noto-symbols-2 text-[19px] leading-none text-lime-500 opacity-80 transition-[opacity,text-shadow] group-hover:opacity-100 group-hover:[text-shadow:0_0_14px_rgba(132,204,22,0.95),0_0_28px_rgba(132,204,22,0.55)] group-focus-visible:opacity-100 group-focus-visible:[text-shadow:0_0_14px_rgba(132,204,22,0.95),0_0_28px_rgba(132,204,22,0.55)] relative top-px"
           aria-hidden
         >
           ◬

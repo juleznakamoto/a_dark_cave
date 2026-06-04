@@ -22,7 +22,6 @@ import {
   getTimedEventTabEffectiveRemainingMs,
   useGameStore,
 } from "@/game/state";
-import { tWithFallback } from "@/i18n/resolveGameText";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
 import { cn } from "@/lib/utils";
 import type { GameState } from "@shared/schema";
@@ -52,7 +51,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   const safetyTimeRemainingMs =
     target === "timedEvent" ? props.safetyTimeRemainingMs : 0;
 
-  useTranslation("ui");
+  const { t } = useTranslation(["ui", "common"]);
   const state = useGameStore((s) => s as unknown as GameState);
   const timedTabActive = useGameStore((s) => s.timedEventTab.isActive);
   const insightProlongUsed = useGameStore(
@@ -135,22 +134,15 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
 
   const insightResource = formatTooltipResourceName("insight");
   const costTooltip = isTimedEvent
-    ? tWithFallback(
-      "ui",
-      "timedEvent.prolongForInsight",
-      "Extend time by {{minutes}} min for {{cost}} {{resource}}",
-      {
-        minutes: PROLONG_MINUTES,
-        cost,
-        resource: insightResource,
-      },
-    )
-    : tWithFallback(
-      "ui",
-      "badges.insightRevealSeeEffects",
-      "See effects for {{cost}} {{resource}}",
-      { cost, resource: insightResource },
-    );
+    ? t("timedEvent.prolongForInsight", {
+      minutes: PROLONG_MINUTES,
+      cost,
+      resource: insightResource,
+    })
+    : t("badges.insightRevealSeeEffects", {
+      cost,
+      resource: insightResource,
+    });
 
   const isBadgeDisabled = isTimedEvent
     ? !timedTimerUsable || !canAfford || playing

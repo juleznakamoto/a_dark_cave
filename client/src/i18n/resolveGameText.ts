@@ -40,14 +40,25 @@ export function tWithFallback(
       ? fallback
       : interpolateFallback(fallback, options);
 
-  // Always call t (not exists): plural keys like villagerCost_one/_other
-  // resolve via count but exists("…villagerCost") is false.
-  const translated = i18n.t(fullKey, {
-    ...(options as Record<string, unknown>),
-    defaultValue,
-  });
+  const lng = i18n.language;
+  const opts = { ...(options as Record<string, unknown>), lng };
 
-  if (typeof translated === "string" && translated.trim()) {
+  // Prefer catalog text for the active locale (avoid English defaultValue masking a hit).
+  if (i18n.exists(fullKey, { lng })) {
+    const translated = i18n.t(fullKey, opts);
+    if (typeof translated === "string" && translated.trim()) {
+      return translated;
+    }
+  }
+
+  // Plural keys like villagerCost_one/_other resolve via count but exists("…villagerCost") is false.
+  const translated = i18n.t(fullKey, { ...opts, defaultValue });
+  if (
+    typeof translated === "string" &&
+    translated.trim() &&
+    translated !== fullKey &&
+    translated !== key
+  ) {
     return translated;
   }
   return defaultValue;
