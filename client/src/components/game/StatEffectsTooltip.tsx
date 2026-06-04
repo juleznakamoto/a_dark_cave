@@ -64,9 +64,9 @@ export function hasMerchantAppearedOnce(state: GameState): boolean {
   return false;
 }
 
-/** Bastion attack-wave combat has started at least once (`firstWaveTriggered`). */
-export function hasPlayerFoughtCombatOnce(state: GameState): boolean {
-  return Boolean(state.story?.seen?.firstWaveTriggered);
+/** Bastion tab is visible in the main game UI (`flags.bastionUnlocked`). */
+export function isBastionTabUnlocked(state: GameState): boolean {
+  return Boolean(state.flags?.bastionUnlocked);
 }
 
 /** Highest gambler wager amount currently unlocked by the player's luck. */
@@ -83,19 +83,21 @@ function getLuckEffectLines(
   t: (key: string, opts?: Record<string, unknown>) => string,
 ): EffectLine[] {
   const luck = getTotalLuck(state);
-  const crit = calculateCriticalStrikeChance(luck);
-  const lines: EffectLine[] = [
-    {
+  const lines: EffectLine[] = [];
+
+  if (isBastionTabUnlocked(state)) {
+    const crit = calculateCriticalStrikeChance(luck);
+    lines.push({
       key: "crit",
       primary: t("sidePanel.statLuckEffectCrit", { percent: crit }),
       secondary:
         crit < LUCK_CRIT_MAX_PERCENT
           ? t("sidePanel.statEffectMaxPercent", {
-              value: LUCK_CRIT_MAX_PERCENT,
-            })
+            value: LUCK_CRIT_MAX_PERCENT,
+          })
           : undefined,
-    },
-  ];
+    });
+  }
 
   if (hasGamblerAppearedOnce(state)) {
     const unlockedWager = getUnlockedWager(luck);
@@ -118,6 +120,7 @@ function getStrengthEffectLines(
   state: GameState,
   t: (key: string, opts?: Record<string, unknown>) => string,
 ): EffectLine[] {
+  if (!isBastionTabUnlocked(state)) return [];
   const strength = getTotalStrength(state);
   const bastionAttack = Math.floor(strength / 2);
   return [
@@ -152,8 +155,8 @@ function getKnowledgeEffectLines(
       secondary:
         discountPercent < KNOWLEDGE_MERCHANT_MAX_PERCENT
           ? t("sidePanel.statEffectMaxPercent", {
-              value: KNOWLEDGE_MERCHANT_MAX_PERCENT,
-            })
+            value: KNOWLEDGE_MERCHANT_MAX_PERCENT,
+          })
           : undefined,
     });
   }
@@ -166,17 +169,19 @@ function getKnowledgeEffectLines(
     secondary:
       decisionTime < KNOWLEDGE_DECISION_MAX_SEC
         ? t("sidePanel.statEffectMaxSeconds", {
-            value: KNOWLEDGE_DECISION_MAX_SEC,
-          })
+          value: KNOWLEDGE_DECISION_MAX_SEC,
+        })
         : undefined,
   });
 
-  lines.push({
-    key: "combatItems",
-    primary: t("sidePanel.statKnowledgeEffectCombatItems", {
-      damage: combatItemDamage,
-    }),
-  });
+  if (isBastionTabUnlocked(state)) {
+    lines.push({
+      key: "combatItems",
+      primary: t("sidePanel.statKnowledgeEffectCombatItems", {
+        damage: combatItemDamage,
+      }),
+    });
+  }
 
   return lines;
 }
@@ -208,13 +213,13 @@ function getMadnessEffectLines(
       secondary:
         productionPenalty < maxProductionPenalty
           ? t("sidePanel.statEffectMaxPercent", {
-              value: maxProductionPenalty,
-            })
+            value: maxProductionPenalty,
+          })
           : undefined,
     },
   ];
 
-  if (hasPlayerFoughtCombatOnce(state)) {
+  if (isBastionTabUnlocked(state)) {
     lines.push({
       key: "combat",
       primary: t("sidePanel.statMadnessEffectCombat", {
@@ -223,8 +228,8 @@ function getMadnessEffectLines(
       secondary:
         combatFail < MADNESS_COMBAT_FAIL_MAX_PERCENT
           ? t("sidePanel.statEffectMaxPercent", {
-              value: MADNESS_COMBAT_FAIL_MAX_PERCENT,
-            })
+            value: MADNESS_COMBAT_FAIL_MAX_PERCENT,
+          })
           : undefined,
     });
   }
@@ -241,6 +246,18 @@ function getMadnessEffectLines(
   });
 
   return lines;
+}
+
+/** Stable id list for visible stat effect lines (for side-panel new-item pulse). */
+export function getStatEffectLinesSignature(
+  statKey: TooltipStatKey,
+  state: GameState,
+): string {
+  const noopT = (key: string) => key;
+  return getStatEffectLines(statKey, state, noopT)
+    .map((line) => line.key)
+    .sort()
+    .join(",");
 }
 
 function getStatEffectLines(

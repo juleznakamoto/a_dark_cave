@@ -12,6 +12,18 @@ import { useGameStore } from "@/game/state";
 import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
 import { cn } from "@/lib/utils";
 import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
+import {
+  getStatEffectLinesSignature,
+  type TooltipStatKey,
+} from "@/components/game/StatEffectsTooltip";
+import type { GameState } from "@shared/schema";
+
+const STAT_EFFECT_PULSE_STAT_IDS: TooltipStatKey[] = [
+  "luck",
+  "strength",
+  "knowledge",
+  "madness",
+];
 
 interface SidePanelItem {
   id: string;
@@ -182,6 +194,43 @@ export default function SidePanelSection({
       setHoveredTooltip(globalTooltip.openTooltipId, true);
     }
   }, [globalTooltip.openTooltipId, hoveredTooltips, setHoveredTooltip]);
+
+  /** Last seen effect-line keys per stat; when new lines unlock, clear hover to re-pulse. */
+  const prevStatEffectSigsRef = useRef<Partial<Record<TooltipStatKey, string>>>(
+    {},
+  );
+  const statEffectPulseInitializedRef = useRef(false);
+
+  useEffect(() => {
+    if (sectionId !== "stats") return;
+
+    const state = gameState as unknown as GameState;
+
+    for (const statId of STAT_EFFECT_PULSE_STAT_IDS) {
+      const sig = getStatEffectLinesSignature(statId, state);
+      const prev = prevStatEffectSigsRef.current[statId] ?? "";
+
+      if (!statEffectPulseInitializedRef.current) {
+        prevStatEffectSigsRef.current[statId] = sig;
+        continue;
+      }
+
+      if (sig === prev) continue;
+
+      const prevKeys = new Set(prev ? prev.split(",") : []);
+      const gainedLine = sig
+        .split(",")
+        .filter((key) => key.length > 0 && !prevKeys.has(key));
+
+      if (gainedLine.length > 0) {
+        setHoveredTooltip(statId, false);
+      }
+
+      prevStatEffectSigsRef.current[statId] = sig;
+    }
+
+    statEffectPulseInitializedRef.current = true;
+  }, [gameState, sectionId, setHoveredTooltip]);
 
   const [maxAnimatedItems, setMaxAnimatedItems] = useState<Set<string>>(
     new Set(),
@@ -584,11 +633,11 @@ export default function SidePanelSection({
       usesResourceRowLayout
         ? RESOURCE_ROW_GRID_CLASS
         : cn(
-            "flex gap-1.5 justify-between leading-tight",
-            isIconCenteredLabelSection && item.icon !== undefined
-              ? "items-center"
-              : "items-start",
-          ),
+          "flex gap-1.5 justify-between leading-tight",
+          isIconCenteredLabelSection && item.icon !== undefined
+            ? "items-center"
+            : "items-start",
+        ),
       itemAnimationClass,
     );
 
