@@ -8,7 +8,22 @@ const BAR_HOOK_CLASS = 'adc-playlight-exit-intent-bar';
 /** Matches SDK auto-dismiss (~1500ms) so internal state can clear before re-show. */
 const SDK_DISMISS_MS = 1600;
 
-let observer: MutationObserver | null = null;
+let containerObserver: MutationObserver | null = null;
+let bodyObserver: MutationObserver | null = null;
+
+function disconnectBodyObserver(): void {
+  if (bodyObserver) {
+    bodyObserver.disconnect();
+    bodyObserver = null;
+  }
+}
+
+function disconnectContainerObserver(): void {
+  if (containerObserver) {
+    containerObserver.disconnect();
+    containerObserver = null;
+  }
+}
 
 function dismissExitIntentBar(bar: HTMLElement): void {
   bar.classList.add(HIDDEN_CLASS);
@@ -55,11 +70,10 @@ export function installPlaylightExitIntentCloseButton(): void {
   if (typeof document === 'undefined') return;
 
   const attach = (root: HTMLElement) => {
-    if (observer) {
-      observer.disconnect();
-    }
-    observer = new MutationObserver(() => scanPlaylightExitIntentBar());
-    observer.observe(root, { childList: true, subtree: true });
+    disconnectBodyObserver();
+    disconnectContainerObserver();
+    containerObserver = new MutationObserver(() => scanPlaylightExitIntentBar());
+    containerObserver.observe(root, { childList: true, subtree: true });
     scanPlaylightExitIntentBar();
   };
 
@@ -69,10 +83,10 @@ export function installPlaylightExitIntentCloseButton(): void {
     return;
   }
 
-  const bodyObserver = new MutationObserver(() => {
+  disconnectBodyObserver();
+  bodyObserver = new MutationObserver(() => {
     const root = document.getElementById('playlight-sdk-container');
     if (root) {
-      bodyObserver.disconnect();
       attach(root);
     }
   });
