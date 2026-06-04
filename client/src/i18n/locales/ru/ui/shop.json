@@ -22,6 +22,7 @@
     "threeXValue": "Ценность",
     "availableInOneHour": "Доступно через 1 час",
     "availableInHours": "Доступно через {{hours}} ч",
+    "signInToClaim": "Войдите, чтобы получить",
     "alreadyClaimed": "Уже получено",
     "alreadyPurchased": "Уже куплено",
     "continueCheckout": "Продолжить",

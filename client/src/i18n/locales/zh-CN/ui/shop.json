@@ -22,6 +22,7 @@
     "threeXValue": "价值",
     "availableInOneHour": "1 小时后可用",
     "availableInHours": "{{hours}} 小时后可用",
+    "signInToClaim": "登录后领取",
     "alreadyClaimed": "已领取",
     "alreadyPurchased": "已购买",
     "continueCheckout": "继续",

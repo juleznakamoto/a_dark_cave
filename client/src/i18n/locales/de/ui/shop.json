@@ -22,6 +22,7 @@
     "threeXValue": "Wert",
     "availableInOneHour": "Verfügbar in 1 Stunde",
     "availableInHours": "Verfügbar in {{hours}} Stunden",
+    "signInToClaim": "Zum Abholen anmelden",
     "alreadyClaimed": "Bereits abgeholt",
     "alreadyPurchased": "Bereits gekauft",
     "continueCheckout": "Weiter",

@@ -796,6 +796,15 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     }
   }, [isOpen, detectedCurrency, setDetectedCurrency]);
 
+  const handleShopItemPurchaseClick = (itemId: string) => {
+    const item = SHOP_ITEMS[itemId];
+    if (item.price === 0 && !gameState.isUserSignedIn) {
+      setAuthDialogOpen(true);
+      return;
+    }
+    void handlePurchaseClick(itemId);
+  };
+
   const handlePurchaseClick = async (itemId: string) => {
     const item = SHOP_ITEMS[itemId];
 
@@ -804,7 +813,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       try {
         const user = await getCurrentUser();
         if (!user) {
-          throw new Error("User not authenticated");
+          setAuthDialogOpen(true);
+          return;
         }
 
         // Special handling for daily free gold - claim immediately without saving to DB
@@ -1966,11 +1976,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         </div>
                                       )}
                                       <Button
-                                        onClick={() => handlePurchaseClick(item.id)}
+                                        onClick={() =>
+                                          handleShopItemPurchaseClick(item.id)
+                                        }
                                         disabled={
-                                          (item.price === 0 &&
-                                            item.id !== "gold_100_free" &&
-                                            !gameState.isUserSignedIn) ||
                                           (item.id === "gold_100_free" &&
                                             (Date.now() -
                                               (gameState.lastFreeGoldClaim || 0)) /
@@ -1986,37 +1995,40 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         className="relative z-10 h-10 w-full"
                                         button_id={`shop-purchase-${item.id}`}
                                       >
-                                        {item.id === "gold_100_free"
-                                          ? (Date.now() -
-                                            (gameState.lastFreeGoldClaim || 0)) /
-                                            (1000 * 60 * 60) <
-                                            24
-                                            ? (() => {
-                                              const hoursRemaining = Math.ceil(
-                                                24 -
-                                                (Date.now() -
-                                                  (gameState.lastFreeGoldClaim ||
-                                                    0)) /
-                                                (1000 * 60 * 60),
-                                              );
-                                              return hoursRemaining === 1
-                                                ? t("ui:shop.availableInOneHour")
-                                                : t("ui:shop.availableInHours", {
-                                                  hours: hoursRemaining,
-                                                });
-                                            })()
-                                            : t("common:buttons.claim")
-                                          : !item.canPurchaseMultipleTimes &&
-                                            purchasedItems.some(
-                                              (pid) =>
-                                                purchaseIdToItemId(pid) === item.id,
-                                            )
-                                            ? item.price === 0
-                                              ? t("ui:shop.alreadyClaimed")
-                                              : t("ui:shop.alreadyPurchased")
-                                            : item.price === 0
-                                              ? t("common:buttons.claim")
-                                              : t("ui:shop.continueCheckout")}
+                                        {item.price === 0 &&
+                                          !gameState.isUserSignedIn
+                                          ? t("ui:shop.signInToClaim")
+                                          : item.id === "gold_100_free"
+                                            ? (Date.now() -
+                                              (gameState.lastFreeGoldClaim || 0)) /
+                                              (1000 * 60 * 60) <
+                                              24
+                                              ? (() => {
+                                                const hoursRemaining = Math.ceil(
+                                                  24 -
+                                                  (Date.now() -
+                                                    (gameState.lastFreeGoldClaim ||
+                                                      0)) /
+                                                  (1000 * 60 * 60),
+                                                );
+                                                return hoursRemaining === 1
+                                                  ? t("ui:shop.availableInOneHour")
+                                                  : t("ui:shop.availableInHours", {
+                                                    hours: hoursRemaining,
+                                                  });
+                                              })()
+                                              : t("common:buttons.claim")
+                                            : !item.canPurchaseMultipleTimes &&
+                                              purchasedItems.some(
+                                                (pid) =>
+                                                  purchaseIdToItemId(pid) === item.id,
+                                              )
+                                              ? item.price === 0
+                                                ? t("ui:shop.alreadyClaimed")
+                                                : t("ui:shop.alreadyPurchased")
+                                              : item.price === 0
+                                                ? t("common:buttons.claim")
+                                                : t("ui:shop.continueCheckout")}
                                       </Button>
                                     </div>
                                   </CardFooter>
