@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BuildingActionBadge } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
@@ -22,6 +22,7 @@ import {
   getTimedEventTabEffectiveRemainingMs,
   useGameStore,
 } from "@/game/state";
+import { tWithFallback } from "@/i18n/resolveGameText";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
 import { cn } from "@/lib/utils";
 import type { GameState } from "@shared/schema";
@@ -51,7 +52,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   const safetyTimeRemainingMs =
     target === "timedEvent" ? props.safetyTimeRemainingMs : 0;
 
-  const { t } = useTranslation(["ui", "common"]);
+  const { i18n } = useTranslation(["ui", "common"]);
   const state = useGameStore((s) => s as unknown as GameState);
   const timedTabActive = useGameStore((s) => s.timedEventTab.isActive);
   const insightProlongUsed = useGameStore(
@@ -133,16 +134,27 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
       : getInsightAmount(state) >= cost;
 
   const insightResource = formatTooltipResourceName("insight");
-  const costTooltip = isTimedEvent
-    ? t("timedEvent.prolongForInsight", {
-      minutes: PROLONG_MINUTES,
-      cost,
-      resource: insightResource,
-    })
-    : t("badges.insightRevealSeeEffects", {
-      cost,
-      resource: insightResource,
-    });
+  const costTooltip = useMemo(
+    () =>
+      isTimedEvent
+        ? tWithFallback(
+          "ui",
+          "timedEvent.prolongForInsight",
+          "Extend time by {{minutes}} min for {{cost}} {{resource}}",
+          {
+            minutes: PROLONG_MINUTES,
+            cost,
+            resource: insightResource,
+          },
+        )
+        : tWithFallback(
+          "ui",
+          "badges.insightRevealSeeEffects",
+          "See effects for {{cost}} {{resource}}",
+          { cost, resource: insightResource },
+        ),
+    [i18n.language, isTimedEvent, cost, insightResource],
+  );
 
   const isBadgeDisabled = isTimedEvent
     ? !timedTimerUsable || !canAfford || playing

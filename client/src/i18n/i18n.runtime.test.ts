@@ -53,6 +53,18 @@ describe("i18n runtime", () => {
     ).toBe("Extend time by 5 min for 250 Insight");
   });
 
+  it("tWithFallback returns English default when ui key is missing", async () => {
+    await i18n.changeLanguage("de");
+    expect(
+      tWithFallback(
+        "ui",
+        "timedEvent.thisKeyDoesNotExist",
+        "Extend time by {{minutes}} min for {{cost}} {{resource}}",
+        { minutes: 5, cost: 250, resource: "Einsicht" },
+      ),
+    ).toBe("Extend time by 5 min for 250 Einsicht");
+  });
+
   it("resolves timed event prolong tooltip in German", async () => {
     await i18n.changeLanguage("de");
     const opts = { minutes: 5, cost: 250, resource: "Einsicht" };
