@@ -657,7 +657,6 @@ function CheckoutForm({
       <div className="flex gap-3 justify-center">
         <Button
           type="submit"
-          size="sm"
           disabled={!stripe || isProcessing}
           className="flex-1 font-bold"
           button_id="shop-complete-purchase"
@@ -1372,7 +1371,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             className={cn(
               showSecurePurchasePrompt
                 ? "[--adc-dialog-max-w:28rem] max-h-[80vh] z-[70] gap-2"
-                : "[--adc-dialog-max-w:56rem] flex h-[80vh] min-h-0 flex-col gap-4 overflow-hidden z-[70] p-6",
+                : "[--adc-dialog-max-w:56rem] flex h-[80vh] min-h-0 flex-col gap-3 overflow-hidden z-[70] p-6",
             )}
             style={
               showSecurePurchasePrompt
@@ -1967,7 +1966,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         </div>
                                       )}
                                       <Button
-                                        size="sm"
                                         onClick={() => handlePurchaseClick(item.id)}
                                         disabled={
                                           (item.price === 0 &&
@@ -1985,7 +1983,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                                 purchaseIdToItemId(pid) === item.id,
                                             ))
                                         }
-                                        className="relative z-10 w-full"
+                                        className="relative z-10 h-10 w-full"
                                         button_id={`shop-purchase-${item.id}`}
                                       >
                                         {item.id === "gold_100_free"
