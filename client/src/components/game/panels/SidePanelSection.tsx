@@ -464,6 +464,8 @@ export default function SidePanelSection({
     const isHighlighted = highlightedResources.has(item.id);
 
     const isResourcesSection = sectionId === "resources";
+    const isIconCenteredLabelSection =
+      sectionId === "stats" || sectionId === "bastion";
     const tabForProductionColors = activeTab ?? storeActiveTab;
     const isCriticalZeroResource =
       isResourcesSection &&
@@ -476,11 +478,17 @@ export default function SidePanelSection({
       <span
         className={cn(
           "text-gray-400",
-          isResourcesSection ? RESOURCE_ROW_TEXT_CLASS : "text-xs",
+          isResourcesSection
+            ? RESOURCE_ROW_TEXT_CLASS
+            : isIconCenteredLabelSection
+              ? "text-xs leading-none"
+              : "text-xs",
           item.icon !== undefined &&
           (isResourcesSection
             ? "inline-flex items-baseline gap-1"
-            : "inline-flex items-start gap-1"),
+            : isIconCenteredLabelSection
+              ? "inline-flex items-center gap-1"
+              : "inline-flex items-start gap-1"),
           newItemPulseClass,
           isHighlighted && "!text-gray-100",
           isCriticalZeroResource && "resource-critical-blink",
@@ -489,9 +497,10 @@ export default function SidePanelSection({
         {item.icon !== undefined && (
           <span
             className={cn(
-              "mr-1 font-noto-symbols-2",
-              (sectionId === "stats" || sectionId === "bastion") &&
-              "mr-1 inline-flex w-3 items-center justify-center",
+              "font-noto-symbols-2",
+              isIconCenteredLabelSection
+                ? "inline-flex w-3 shrink-0 items-center justify-center leading-none"
+                : "mr-1",
               item.iconColor,
             )}
           >
@@ -574,7 +583,12 @@ export default function SidePanelSection({
       "mr-1 min-w-0 transition-all duration-300",
       usesResourceRowLayout
         ? RESOURCE_ROW_GRID_CLASS
-        : "flex items-start gap-1.5 justify-between leading-tight",
+        : cn(
+            "flex gap-1.5 justify-between leading-tight",
+            isIconCenteredLabelSection && item.icon !== undefined
+              ? "items-center"
+              : "items-start",
+          ),
       itemAnimationClass,
     );
 

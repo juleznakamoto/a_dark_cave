@@ -3,7 +3,7 @@
  *
  * The SDK renders the banner as `<div role="menu" class="bg-background/85 fixed ... overflow-hidden p-4">`
  * (heading + "More games" group inside it). That `[role="menu"]` node IS the banner, so we attach the
- * close button directly to it; it is `position: fixed`, which is the containing block for our absolute X.
+ * close button directly to it; center the circle on the top-right corner with `translate(50%, -50%)`.
  */
 
 const EXIT_INTENT_BAR_SELECTOR = '.playlight-sdk [role="menu"]';
@@ -69,15 +69,15 @@ function injectCloseButton(banner: HTMLElement): void {
   btn.setAttribute('aria-label', 'Close');
   btn.innerHTML = ABORT_ICON_SVG;
 
-  // Force corner placement inline with !important: the banner's flex `items-center` + SDK rules
-  // otherwise win over our stylesheet and vertically center the button. The banner is `overflow:hidden`,
-  // so sit flush inside the very corner (0/0) rather than overhanging.
+  // Center the circle on the banner's top-right corner (translate offsets by half width/height).
+  banner.style.setProperty('overflow', 'visible', 'important');
   btn.style.setProperty('position', 'absolute', 'important');
   btn.style.setProperty('top', '0', 'important');
   btn.style.setProperty('right', '0', 'important');
   btn.style.setProperty('left', 'auto', 'important');
   btn.style.setProperty('bottom', 'auto', 'important');
   btn.style.setProperty('margin', '0', 'important');
+  btn.style.setProperty('transform', 'translate(50%, -50%)', 'important');
   btn.style.setProperty('z-index', '40', 'important');
   btn.style.setProperty('pointer-events', 'auto', 'important');
 

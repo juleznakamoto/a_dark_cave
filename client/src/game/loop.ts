@@ -35,6 +35,7 @@ import {
   DISGRACED_PRIOR_UPGRADES,
 } from "./rules/skillUpgrades";
 import { CRUEL_MODE, cruelModeScale } from "./cruelMode";
+import { getMadnessDeathChancePerCycle } from "./rules/effectsStats";
 import { socialPromptHighestMilestoneIndexToOpen } from "./socialPromptAuto";
 import { FEEDBACK_PROMPT_PLAY_MS } from "./feedbackPromptAuto";
 import { isSocialPromoExclusiveRewardComplete } from "@/game/socialPromoExclusiveReward";
@@ -1125,22 +1126,11 @@ function handleMadnessCheck() {
   const totalMadness = getTotalMadness(state);
   if (totalMadness <= 0) return;
 
-  // Determine probability and possible death counts based on madness level
+  const probability = getMadnessDeathChancePerCycle(
+    totalMadness,
+    Boolean(state.cruelMode),
+  );
   const md = CRUEL_MODE.loop.madnessDeath;
-  let probability = 0;
-  if (totalMadness <= 5) {
-    probability += 0.0;
-  } else if (totalMadness <= 10) {
-    probability += md.tier2.base + cruelModeScale(state) * md.tier2.whenCruel;
-  } else if (totalMadness <= 20) {
-    probability += md.tier3.base + cruelModeScale(state) * md.tier3.whenCruel;
-  } else if (totalMadness <= 30) {
-    probability += md.tier4.base + cruelModeScale(state) * md.tier4.whenCruel;
-  } else if (totalMadness <= 40) {
-    probability += md.tier5.base + cruelModeScale(state) * md.tier5.whenCruel;
-  } else {
-    probability += md.tier6.base + cruelModeScale(state) * md.tier6.whenCruel;
-  }
 
   // Check if a madness death event occurs
   if (Math.random() < probability) {

@@ -22,7 +22,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | `server/` | Express server: API routes, Stripe/referral/marketing, dev Vite middleware, prod static serving. |
 | `shared/` | Cross-cutting TypeScript shared by client + server: Zod schemas, shop/referral pricing. |
 | `supabase/` | SQL migrations + edge function (`functions/save-game/`) for Postgres/RLS. |
-| `scripts/` | Build & i18n tooling (`extract-i18n.mjs`, `write-build-meta.mjs`, locale sync, etc.). |
+| `scripts/` | Build & i18n tooling — see [Scripts](#scripts-scripts) below. |
 | `gender-service/` | Internal Python Flask service for first-name gender inference (localhost only). |
 | `public/`, `attached_assets/` | Static assets (`@assets` alias → `attached_assets`). |
 | `dist/` | Build output (`dist/public` client, `dist/index.js` server). |
@@ -157,6 +157,30 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
   `eventDisplay.ts`, `logDisplay.ts`, `actionLabels.ts`, `tooltipLabels.ts`.
 - **Pattern:** game logic stores English fallback + optional `logKey`/`i18nKey`; UI resolves at
   display time. Parity maintained by `scripts/` (`i18n:verify`, `sync-locale-keys.mjs`).
+
+---
+
+## Scripts (`scripts/`)
+
+Node `.mjs` / `.ts` utilities (not imported at runtime). Invoked via `package.json` npm scripts or
+run ad hoc for locale maintenance.
+
+| npm script | Key files | Purpose |
+|------------|-----------|---------|
+| `build` | `write-build-meta.mjs` | Embeds version/build metadata for `/api/version`. |
+| `i18n:extract` | `extract-i18n.mjs` | Scan client strings → locale JSON. |
+| `i18n:translate` | `translate-locales.mjs` | Machine-translate missing locale keys. |
+| `i18n:events:extract` / `i18n:events:migrate` | `extract-events-i18n.mjs`, `migrate-events-i18n.mjs` | Events namespace extraction + migration. |
+| `i18n:verify` | `list-unmigrated-events.mjs`, `check-event-coverage.mjs`, `audit-i18n-ui.mjs`, `audit-locale-length.mjs` | CI-style i18n parity checks (+ Vitest i18n tests). |
+| `i18n:sync` | `sync-locale-keys.mjs`, `fill-identical-locale-strings.mjs` | Align locale key sets across languages. |
+| `export:resend-csvs` | `export-resend-contact-csvs.ts` | Marketing contact CSV export (uses gender proxy). |
+| `test:gender` | `test-gender-service.js` | Smoke-test `gender-service/`. |
+
+Support modules (not always npm-wired): `locale-catalog.mjs`, `parse-locale-json.mjs`,
+`i18n-ui-shards.mjs`, `audit-locale-translations.mjs`, `audit-timed-tab-i18n.mjs`,
+`apply-*-fix-translations.mjs`, `apply-cube-translations.mjs`, `restore-ok-comments.mjs`,
+`fix-es-locale-encoding.mjs`, plus `*-fix-translations.json` / `cube-events-translations.json`
+data files for batch locale fixes.
 
 ---
 

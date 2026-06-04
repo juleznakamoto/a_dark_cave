@@ -13,6 +13,9 @@ import {
   calculateKnowledgeTimeBonus,
   calculateCriticalStrikeChance,
   getCombatAttackFailChancePercent,
+  getMadnessDeathChancePerCycle,
+  getMadnessDeathChanceMaxPerCycle,
+  madnessDeathChanceToTooltipPercent,
 } from "@/game/rules/effectsStats";
 import { getMadnessProductionMultiplier } from "@/game/population";
 import { WAGER_TIERS, WAGER_LUCK_THRESHOLDS } from "@/game/diceFifteenGame";
@@ -29,7 +32,6 @@ const COMBAT_ITEM_DAMAGE_PER_KNOWLEDGE = 5;
 const LUCK_CRIT_MAX_PERCENT = 25;
 const KNOWLEDGE_MERCHANT_MAX_PERCENT = 25;
 const KNOWLEDGE_DECISION_MAX_SEC = 25;
-const MADNESS_PRODUCTION_MAX_PERCENT = 50;
 const MADNESS_COMBAT_FAIL_MAX_PERCENT = 15;
 /** Highest gambler wager tier (luck unlocks tiers via WAGER_LUCK_THRESHOLDS). */
 const MAX_WAGER_TIER = WAGER_TIERS[WAGER_TIERS.length - 1];
@@ -134,17 +136,22 @@ function getMadnessEffectLines(
   t: (key: string, opts?: Record<string, unknown>) => string,
 ): EffectLine[] {
   const madness = getTotalMadness(state);
+  const cruelMode = Boolean(state.cruelMode);
   const productionPenalty = Math.round(
-    (1 - getMadnessProductionMultiplier(madness, Boolean(state.cruelMode))) *
-    100,
+    (1 - getMadnessProductionMultiplier(madness, cruelMode)) * 100,
+  );
+  const maxProductionPenalty = Math.round(
+    (1 - getMadnessProductionMultiplier(50, cruelMode)) * 100,
   );
   const combatFail = getCombatAttackFailChancePercent(madness);
+  const deathChance = getMadnessDeathChancePerCycle(madness, cruelMode);
+  const maxDeathChance = getMadnessDeathChanceMaxPerCycle(cruelMode);
   return [
     {
       key: "production",
       text: t("sidePanel.statMadnessEffectProduction", {
         percent: productionPenalty,
-        maxPercent: MADNESS_PRODUCTION_MAX_PERCENT,
+        maxPercent: maxProductionPenalty,
       }),
     },
     {
@@ -154,7 +161,13 @@ function getMadnessEffectLines(
         maxPercent: MADNESS_COMBAT_FAIL_MAX_PERCENT,
       }),
     },
-    { key: "deaths", text: t("sidePanel.statMadnessEffectDeaths") },
+    {
+      key: "deaths",
+      text: t("sidePanel.statMadnessEffectDeaths", {
+        percent: madnessDeathChanceToTooltipPercent(deathChance),
+        maxPercent: madnessDeathChanceToTooltipPercent(maxDeathChance),
+      }),
+    },
   ];
 }
 
@@ -192,7 +205,6 @@ export default function StatEffectsTooltip({
   if (lines.length === 0) return null;
   return (
     <div className="mt-1 border-t border-border pt-1">
-      <div className="text-gray-500">{t("sidePanel.statEffectsHeader")}</div>
       {lines.map((line) => (
         <div key={line.key} className="text-gray-400">
           {line.text}

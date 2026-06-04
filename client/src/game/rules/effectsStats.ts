@@ -1,4 +1,5 @@
 import type { GameState } from "@shared/schema";
+import { CRUEL_MODE } from "@/game/cruelMode";
 
 /**
  * Calculate merchant discount based on knowledge
@@ -70,4 +71,45 @@ export function getCombatAttackFailChancePercent(madness: number): number {
   if (madness >= 20) return 5;
   if (madness >= 10) return 2.5;
   return 0;
+}
+
+/**
+ * Per-cycle probability (0–1) that madness kills villagers.
+ * Mirrors `handleMadnessCheck` in `loop.ts` (tier thresholds + cruel bonuses).
+ */
+export function getMadnessDeathChancePerCycle(
+  totalMadness: number,
+  cruelMode: boolean,
+): number {
+  if (totalMadness <= 5) return 0;
+  const scale = cruelMode ? 1 : 0;
+  const md = CRUEL_MODE.loop.madnessDeath;
+  if (totalMadness <= 10) {
+    return md.tier2.base + scale * md.tier2.whenCruel;
+  }
+  if (totalMadness <= 20) {
+    return md.tier3.base + scale * md.tier3.whenCruel;
+  }
+  if (totalMadness <= 30) {
+    return md.tier4.base + scale * md.tier4.whenCruel;
+  }
+  if (totalMadness <= 40) {
+    return md.tier5.base + scale * md.tier5.whenCruel;
+  }
+  return md.tier6.base + scale * md.tier6.whenCruel;
+}
+
+/** Max per-cycle madness death chance (41+ Madness, tier6). */
+export function getMadnessDeathChanceMaxPerCycle(cruelMode: boolean): number {
+  const scale = cruelMode ? 1 : 0;
+  const md = CRUEL_MODE.loop.madnessDeath;
+  return md.tier6.base + scale * md.tier6.whenCruel;
+}
+
+/** Decimal chance → percent for stat tooltips (one decimal when under 10%). */
+export function madnessDeathChanceToTooltipPercent(chance: number): number {
+  const pct = chance * 100;
+  if (pct === 0) return 0;
+  if (pct < 10) return Math.round(pct * 10) / 10;
+  return Math.round(pct);
 }
