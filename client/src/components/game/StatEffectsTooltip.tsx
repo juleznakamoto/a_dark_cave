@@ -279,9 +279,9 @@ export default function StatEffectsTooltip({
     <div className="mt-1 border-t border-border pt-1">
       {lines.map((line) => (
         <div key={line.key}>
-          <div>{line.primary}</div>
-          {line.secondary ? (
-            <div className={MUTED_SECONDARY_CLASS}>{line.secondary}</div>
+          {line.primary}
+          {line.secondary != null ? (
+            <span className={MUTED_SECONDARY_CLASS}> {line.secondary}</span>
           ) : null}
         </div>
       ))}
