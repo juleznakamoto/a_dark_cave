@@ -262,6 +262,15 @@ export function getStatEffectLinesSignature(
     .join(",");
 }
 
+/** Side-panel stat label pulse: after insight reveal and when effect lines exist. */
+export function shouldPulseStatItem(
+  statKey: TooltipStatKey,
+  state: GameState,
+): boolean {
+  if (!isStatEffectsRevealed(state)) return false;
+  return getStatEffectLinesSignature(statKey, state).length > 0;
+}
+
 function getStatEffectLines(
   statKey: TooltipStatKey,
   state: GameState,

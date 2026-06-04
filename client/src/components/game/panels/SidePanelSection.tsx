@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
 import {
   getStatEffectLinesSignature,
+  shouldPulseStatItem,
   type TooltipStatKey,
 } from "@/components/game/StatEffectsTooltip";
 import { isStatEffectsRevealed } from "@/game/rules/insightReveal";
@@ -216,6 +217,9 @@ export default function SidePanelSection({
 
       if (!statEffectPulseInitializedRef.current) {
         prevStatEffectSigsRef.current[statId] = sig;
+        if (sig.length > 0) {
+          setHoveredTooltip(statId, false);
+        }
         continue;
       }
 
@@ -501,14 +505,23 @@ export default function SidePanelSection({
       isMadness && typeof item.value === "number" ? Math.max(0, item.value) : 0;
     const madnessClasses = isMadness ? getMadnessClasses(madnessForStyle) : "";
 
-    // Only apply pulse to items that have tooltips (effects or item.tooltip)
+    const statPulseKey = STAT_EFFECT_PULSE_STAT_IDS.includes(
+      item.id as TooltipStatKey,
+    )
+      ? (item.id as TooltipStatKey)
+      : null;
+
+    // Pulse: effect items, building/fortification tooltips, or stat rows with revealed effect lines.
+    // Stat tooltips are JSX (always truthy) — never use bare `item.tooltip` for the stats section.
     const shouldPulse =
-      (hasEffect &&
-        sectionId !== undefined &&
-        EFFECT_TOOLTIP_SECTIONS.has(sectionId)) ||
-      (hasTooltip &&
-        (sectionId === "fortifications" || sectionId === "buildings")) ||
-      item.tooltip;
+      sectionId === "stats" && statPulseKey !== null
+        ? shouldPulseStatItem(statPulseKey, gameState as GameState)
+        : (hasEffect &&
+          sectionId !== undefined &&
+          EFFECT_TOOLTIP_SECTIONS.has(sectionId)) ||
+        (hasTooltip &&
+          (sectionId === "fortifications" || sectionId === "buildings")) ||
+        Boolean(item.tooltip);
 
     const newItemPulseClass =
       shouldPulse && !hoveredTooltips[item.id] ? "new-item-pulse" : "";
