@@ -42,6 +42,16 @@ import MistBackground from "@/components/ui/mist-background";
 import { getUnclaimedAchievementIds } from "@/achievements";
 import { getVisibleHotkeyTabs, isEditableKeyboardTarget } from "./tabHotkeys";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
+import {
+  hasUnviewedUnclaimedAchievementsForTabPulse,
+  withAchievementTabPulseViewed,
+} from "@/game/achievementTabPulse";
+import {
+  buildTabUnlockSnapshot,
+  getNewlyUnlockedTabsForBlink,
+  withTabUnlockBlinkSeen,
+  type TabUnlockBlinkId,
+} from "@/game/tabUnlockBlink";
 import { TraderTabButton } from "@/components/game/TraderTabButton";
 import i18n from "@/i18n";
 import { useTranslation } from "react-i18next";
@@ -100,10 +110,6 @@ export default function GameContainer() {
 
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
   const [fadePhaseTabs, setFadePhaseTabs] = useState<Set<string>>(new Set());
-  const [
-    lastViewedUnclaimedAchievementIds,
-    setLastViewedUnclaimedAchievementIds,
-  ] = useState<string[]>([]);
   const tabButtonRowRef = useRef<HTMLDivElement | null>(null);
   const [pauseHotkeyHint, setPauseHotkeyHint] = useState<{
     top: number;
@@ -156,37 +162,61 @@ export default function GameContainer() {
       books?.book_of_trials,
     ],
   );
-  const hasUnviewedAchievement =
-    unclaimedAchievementIds.length > 0 &&
-    unclaimedAchievementIds.some(
-      (id) => !lastViewedUnclaimedAchievementIds.includes(id),
-    );
+  const hasUnviewedAchievement = useMemo(
+    () =>
+      hasUnviewedUnclaimedAchievementsForTabPulse(
+        story,
+        unclaimedAchievementIds,
+      ),
+    [story, unclaimedAchievementIds],
+  );
 
-  // Track unlocked tabs to trigger blink until clicked
+  // Track unlocked tabs to trigger one-time blink until clicked (persisted in story.seen)
   const traderUnlocked = isTraderShopUnlocked({ story, traderDialogOpens });
   const achievementsUnlocked =
     !!relics?.survivors_notes || !!books?.book_of_trials;
-  const prevFlagsRef = useRef({
-    villageUnlocked: flags.villageUnlocked,
-    forestUnlocked: flags.forestUnlocked,
-    estateUnlocked: estateUnlocked,
-    bastionUnlocked: flags.bastionUnlocked,
-    traderUnlocked: traderUnlocked,
-    achievementsUnlocked: achievementsUnlocked,
-  });
+  const tabUnlockSnapshot = useMemo(
+    () =>
+      buildTabUnlockSnapshot({
+        flags,
+        buildings,
+        relics,
+        books,
+        story,
+        traderDialogOpens,
+      }),
+    [
+      flags.villageUnlocked,
+      flags.forestUnlocked,
+      flags.bastionUnlocked,
+      buildings.darkEstate,
+      relics?.survivors_notes,
+      books?.book_of_trials,
+      story?.seen?.traderSettled,
+      traderDialogOpens,
+    ],
+  );
+  const prevTabUnlockRef = useRef(tabUnlockSnapshot);
+  /** Tabs mid unlock-blink; avoids re-trigger while fade timeout is pending. */
+  const tabUnlockBlinkPendingRef = useRef<Set<TabUnlockBlinkId>>(new Set());
+  const tabUnlockFadeTimeoutsRef = useRef<
+    Map<TabUnlockBlinkId, ReturnType<typeof setTimeout>>
+  >(new Map());
+  const TAB_UNLOCK_FADE_MS = 3000;
 
-  // Initialize prevFlagsRef to current state on mount so we don't re-trigger
-  // tab blink for already-unlocked tabs after page refresh
-  useEffect(() => {
-    prevFlagsRef.current = {
-      villageUnlocked: flags.villageUnlocked,
-      forestUnlocked: flags.forestUnlocked,
-      estateUnlocked: estateUnlocked,
-      bastionUnlocked: flags.bastionUnlocked,
-      traderUnlocked: traderUnlocked,
-      achievementsUnlocked: achievementsUnlocked,
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  const markTabUnlockBlinkDismissed = useCallback((tabId: TabUnlockBlinkId) => {
+    const state = useGameStore.getState();
+    useGameStore.setState({
+      story: withTabUnlockBlinkSeen(state.story, tabId),
+    });
+  }, []);
+
+  const markAchievementTabPulseViewed = useCallback((ids: string[]) => {
+    if (ids.length === 0) return;
+    const state = useGameStore.getState();
+    useGameStore.setState({
+      story: withAchievementTabPulseViewed(state.story, ids),
+    });
   }, []);
 
   // Track previous timed event state to detect when a new event starts
@@ -325,60 +355,110 @@ export default function GameContainer() {
     };
   }, [flags.bastionUnlocked]);
 
-  // Track when new tabs are unlocked and trigger animations
-  useEffect(() => {
-    const prev = prevFlagsRef.current;
-    const newAnimations = new Set<string>();
+  const maybeAdvancePrevTabUnlockRef = useCallback(() => {
+    if (tabUnlockBlinkPendingRef.current.size === 0) {
+      prevTabUnlockRef.current = buildTabUnlockSnapshot(
+        useGameStore.getState(),
+      );
+    }
+  }, []);
 
-    if (!prev.villageUnlocked && flags.villageUnlocked) {
-      newAnimations.add("village");
-      if (!useGameStore.getState().villageHotkeyTutorialShown) {
-        setVillageHotkeyTutorialOpen(true);
+  const clearTabUnlockFadeTimeout = useCallback((tabId: TabUnlockBlinkId) => {
+    const existing = tabUnlockFadeTimeoutsRef.current.get(tabId);
+    if (existing !== undefined) {
+      clearTimeout(existing);
+      tabUnlockFadeTimeoutsRef.current.delete(tabId);
+    }
+  }, []);
+
+  const finishTabUnlockFadeForTab = useCallback(
+    (tabId: TabUnlockBlinkId) => {
+      clearTabUnlockFadeTimeout(tabId);
+      if (!tabUnlockBlinkPendingRef.current.has(tabId)) return;
+
+      tabUnlockBlinkPendingRef.current.delete(tabId);
+      setFadePhaseTabs((p) => {
+        const next = new Set(p);
+        next.delete(tabId);
+        return next;
+      });
+      markTabUnlockBlinkDismissed(tabId);
+      maybeAdvancePrevTabUnlockRef();
+    },
+    [
+      clearTabUnlockFadeTimeout,
+      markTabUnlockBlinkDismissed,
+      maybeAdvancePrevTabUnlockRef,
+    ],
+  );
+
+  const scheduleTabUnlockFadeEndForTabs = useCallback(
+    (tabIds: TabUnlockBlinkId[]) => {
+      for (const tabId of tabIds) {
+        clearTabUnlockFadeTimeout(tabId);
+        tabUnlockFadeTimeoutsRef.current.set(
+          tabId,
+          setTimeout(
+            () => finishTabUnlockFadeForTab(tabId),
+            TAB_UNLOCK_FADE_MS,
+          ),
+        );
       }
-    }
-    if (!prev.forestUnlocked && flags.forestUnlocked) {
-      newAnimations.add("forest");
-    }
-    if (!prev.estateUnlocked && estateUnlocked) {
-      newAnimations.add("estate");
-    }
-    if (!prev.bastionUnlocked && flags.bastionUnlocked) {
-      newAnimations.add("bastion");
-    }
-    if (!prev.traderUnlocked && traderUnlocked) {
-      newAnimations.add("trader");
-    }
-    if (!prev.achievementsUnlocked && achievementsUnlocked) {
-      newAnimations.add("achievements");
-    }
+    },
+    [clearTabUnlockFadeTimeout, finishTabUnlockFadeForTab],
+  );
 
-    if (newAnimations.size > 0) {
-      setAnimatingTabs(
-        (prev) => new Set([...Array.from(prev), ...Array.from(newAnimations)]),
-      );
-      setFadePhaseTabs(
-        (prev) => new Set([...Array.from(prev), ...Array.from(newAnimations)]),
-      );
-      const ids = Array.from(newAnimations);
-      const t = setTimeout(() => {
-        setFadePhaseTabs((p) => {
-          const next = new Set(p);
-          ids.forEach((id) => next.delete(id));
-          return next;
-        });
-      }, 3000);
-      return () => clearTimeout(t);
-    }
-
-    prevFlagsRef.current = {
-      villageUnlocked: flags.villageUnlocked,
-      forestUnlocked: flags.forestUnlocked,
-      estateUnlocked: estateUnlocked,
-      bastionUnlocked: flags.bastionUnlocked,
-      traderUnlocked: traderUnlocked,
-      achievementsUnlocked: achievementsUnlocked,
+  useEffect(() => {
+    return () => {
+      for (const timeoutId of tabUnlockFadeTimeoutsRef.current.values()) {
+        clearTimeout(timeoutId);
+      }
+      tabUnlockFadeTimeoutsRef.current.clear();
     };
+  }, []);
+
+  // Track when new tabs are unlocked and trigger one-time animations
+  useEffect(() => {
+    const prev = prevTabUnlockRef.current;
+    const current = tabUnlockSnapshot;
+    const storyNow = useGameStore.getState().story;
+    const newlyUnlocked = getNewlyUnlockedTabsForBlink(
+      prev,
+      current,
+      storyNow,
+    ).filter((id) => !tabUnlockBlinkPendingRef.current.has(id));
+
+    if (newlyUnlocked.length === 0) {
+      prevTabUnlockRef.current = current;
+      return;
+    }
+
+    if (
+      newlyUnlocked.includes("village") &&
+      !useGameStore.getState().villageHotkeyTutorialShown
+    ) {
+      setVillageHotkeyTutorialOpen(true);
+    }
+
+    for (const id of newlyUnlocked) {
+      tabUnlockBlinkPendingRef.current.add(id);
+    }
+
+    const newAnimations = new Set(newlyUnlocked);
+    setAnimatingTabs(
+      (prevAnim) =>
+        new Set([...Array.from(prevAnim), ...Array.from(newAnimations)]),
+    );
+    setFadePhaseTabs(
+      (prevFade) =>
+        new Set([...Array.from(prevFade), ...Array.from(newAnimations)]),
+    );
+
+    scheduleTabUnlockFadeEndForTabs(newlyUnlocked);
+    // Do not advance prevTabUnlockRef here — wait until fade completes (or tab click via clearTabAnimation).
   }, [
+    tabUnlockSnapshot,
+    scheduleTabUnlockFadeEndForTabs,
     flags.villageUnlocked,
     flags.forestUnlocked,
     estateUnlocked,
@@ -542,18 +622,29 @@ export default function GameContainer() {
     ],
   );
 
-  const clearTabAnimation = useCallback((tabId: string) => {
-    setAnimatingTabs((prev) => {
-      const next = new Set(prev);
-      next.delete(tabId);
-      return next;
-    });
-    setFadePhaseTabs((prev) => {
-      const next = new Set(prev);
-      next.delete(tabId);
-      return next;
-    });
-  }, []);
+  const clearTabAnimation = useCallback(
+    (tabId: TabUnlockBlinkId) => {
+      clearTabUnlockFadeTimeout(tabId);
+      tabUnlockBlinkPendingRef.current.delete(tabId);
+      maybeAdvancePrevTabUnlockRef();
+      setAnimatingTabs((prev) => {
+        const next = new Set(prev);
+        next.delete(tabId);
+        return next;
+      });
+      setFadePhaseTabs((prev) => {
+        const next = new Set(prev);
+        next.delete(tabId);
+        return next;
+      });
+      markTabUnlockBlinkDismissed(tabId);
+    },
+    [
+      clearTabUnlockFadeTimeout,
+      maybeAdvancePrevTabUnlockRef,
+      markTabUnlockBlinkDismissed,
+    ],
+  );
 
   const applyHotkeyTab = useCallback(
     (tab: GameTab) => {
@@ -576,19 +667,14 @@ export default function GameContainer() {
           break;
         case "achievements":
           clearTabAnimation("achievements");
-          setLastViewedUnclaimedAchievementIds(unclaimedAchievementIds);
+          markAchievementTabPulseViewed(unclaimedAchievementIds);
           setActiveTab("achievements");
           break;
         default:
           setActiveTab(tab);
       }
     },
-    [
-      clearTabAnimation,
-      setActiveTab,
-      unclaimedAchievementIds,
-      setLastViewedUnclaimedAchievementIds,
-    ],
+    [clearTabAnimation, setActiveTab, unclaimedAchievementIds, markAchievementTabPulseViewed],
   );
 
   const closeVillageHotkeyTutorial = useCallback(() => {
@@ -661,8 +747,8 @@ export default function GameContainer() {
     const hintLeft =
       next.length > 0
         ? (Math.min(...next.map((b) => b.left)) +
-            Math.max(...next.map((b) => b.left))) /
-          2
+          Math.max(...next.map((b) => b.left))) /
+        2
         : rowRect.left + rowRect.width / 2;
     setPauseHotkeyHint({
       top: hintTop,
@@ -930,11 +1016,10 @@ export default function GameContainer() {
                   className="inline-flex min-w-0 flex-1 flex-nowrap items-center gap-x-2 overflow-x-auto scrollbar-hide md:gap-x-3"
                 >
                   <button
-                    className={`${tabButtonClass} ${
-                      activeTab === "cave"
-                        ? tabActiveTextClass
-                        : tabInactiveTextClass
-                    } `}
+                    className={`${tabButtonClass} ${activeTab === "cave"
+                      ? tabActiveTextClass
+                      : tabInactiveTextClass
+                      } `}
                     onClick={() => setActiveTab("cave")}
                     data-testid="tab-cave"
                   >
@@ -943,26 +1028,16 @@ export default function GameContainer() {
 
                   {flags.villageUnlocked && (
                     <button
-                      className={`${tabButtonClass} ${
-                        animatingTabs.has("village")
-                          ? fadePhaseTabs.has("village")
-                            ? "tab-fade-in"
-                            : "tab-blink-new"
-                          : activeTab === "village"
-                            ? tabActiveTextClass
-                            : tabInactiveTextClass
-                      }`}
+                      className={`${tabButtonClass} ${animatingTabs.has("village")
+                        ? fadePhaseTabs.has("village")
+                          ? "tab-fade-in"
+                          : "tab-blink-new"
+                        : activeTab === "village"
+                          ? tabActiveTextClass
+                          : tabInactiveTextClass
+                        }`}
                       onClick={() => {
-                        setAnimatingTabs((prev) => {
-                          const next = new Set(prev);
-                          next.delete("village");
-                          return next;
-                        });
-                        setFadePhaseTabs((prev) => {
-                          const next = new Set(prev);
-                          next.delete("village");
-                          return next;
-                        });
+                        clearTabAnimation("village");
                         setActiveTab("village");
                       }}
                       data-testid="tab-village"
@@ -976,26 +1051,16 @@ export default function GameContainer() {
                   {/* Estate Tab Button */}
                   {(estateUnlocked || buildings.darkEstate >= 1) && (
                     <button
-                      className={`${tabButtonClass} ${
-                        animatingTabs.has("estate")
-                          ? fadePhaseTabs.has("estate")
-                            ? "tab-fade-in"
-                            : "tab-blink-new"
-                          : activeTab === "estate"
-                            ? tabActiveTextClass
-                            : tabInactiveTextClass
-                      }`}
+                      className={`${tabButtonClass} ${animatingTabs.has("estate")
+                        ? fadePhaseTabs.has("estate")
+                          ? "tab-fade-in"
+                          : "tab-blink-new"
+                        : activeTab === "estate"
+                          ? tabActiveTextClass
+                          : tabInactiveTextClass
+                        }`}
                       onClick={() => {
-                        setAnimatingTabs((prev) => {
-                          const next = new Set(prev);
-                          next.delete("estate");
-                          return next;
-                        });
-                        setFadePhaseTabs((prev) => {
-                          const next = new Set(prev);
-                          next.delete("estate");
-                          return next;
-                        });
+                        clearTabAnimation("estate");
                         setActiveTab("estate");
                       }}
                       data-testid="tab-estate"
@@ -1006,26 +1071,16 @@ export default function GameContainer() {
 
                   {flags.forestUnlocked && (
                     <button
-                      className={`${tabButtonClass} ${
-                        animatingTabs.has("forest")
-                          ? fadePhaseTabs.has("forest")
-                            ? "tab-fade-in"
-                            : "tab-blink-new"
-                          : activeTab === "forest"
-                            ? tabActiveTextClass
-                            : tabInactiveTextClass
-                      }`}
+                      className={`${tabButtonClass} ${animatingTabs.has("forest")
+                        ? fadePhaseTabs.has("forest")
+                          ? "tab-fade-in"
+                          : "tab-blink-new"
+                        : activeTab === "forest"
+                          ? tabActiveTextClass
+                          : tabInactiveTextClass
+                        }`}
                       onClick={() => {
-                        setAnimatingTabs((prev) => {
-                          const next = new Set(prev);
-                          next.delete("forest");
-                          return next;
-                        });
-                        setFadePhaseTabs((prev) => {
-                          const next = new Set(prev);
-                          next.delete("forest");
-                          return next;
-                        });
+                        clearTabAnimation("forest");
                         setActiveTab("forest");
                       }}
                       data-testid="tab-forest"
@@ -1036,26 +1091,16 @@ export default function GameContainer() {
 
                   {flags.bastionUnlocked && (
                     <button
-                      className={`${tabButtonClass} ${
-                        animatingTabs.has("bastion")
-                          ? fadePhaseTabs.has("bastion")
-                            ? "tab-fade-in"
-                            : "tab-blink-new"
-                          : activeTab === "bastion"
-                            ? tabActiveTextClass
-                            : tabInactiveTextClass
-                      }`}
+                      className={`${tabButtonClass} ${animatingTabs.has("bastion")
+                        ? fadePhaseTabs.has("bastion")
+                          ? "tab-fade-in"
+                          : "tab-blink-new"
+                        : activeTab === "bastion"
+                          ? tabActiveTextClass
+                          : tabInactiveTextClass
+                        }`}
                       onClick={() => {
-                        setAnimatingTabs((prev) => {
-                          const next = new Set(prev);
-                          next.delete("bastion");
-                          return next;
-                        });
-                        setFadePhaseTabs((prev) => {
-                          const next = new Set(prev);
-                          next.delete("bastion");
-                          return next;
-                        });
+                        clearTabAnimation("bastion");
                         setActiveTab("bastion");
                       }}
                       data-testid="tab-bastion"
@@ -1069,29 +1114,17 @@ export default function GameContainer() {
                   {/* Achievements Tab Button ⚜︎ */}
                   {(relics?.survivors_notes || books?.book_of_trials) && (
                     <button
-                      className={`${tabIconButtonClass} ${
-                        animatingTabs.has("achievements")
-                          ? fadePhaseTabs.has("achievements")
-                            ? "tab-fade-in"
-                            : "tab-blink-new"
-                          : activeTab === "achievements"
-                            ? tabActiveTextClass
-                            : tabInactiveTextClass
-                      }`}
+                      className={`${tabIconButtonClass} ${animatingTabs.has("achievements")
+                        ? fadePhaseTabs.has("achievements")
+                          ? "tab-fade-in"
+                          : "tab-blink-new"
+                        : activeTab === "achievements"
+                          ? tabActiveTextClass
+                          : tabInactiveTextClass
+                        }`}
                       onClick={() => {
-                        setAnimatingTabs((prev) => {
-                          const next = new Set(prev);
-                          next.delete("achievements");
-                          return next;
-                        });
-                        setFadePhaseTabs((prev) => {
-                          const next = new Set(prev);
-                          next.delete("achievements");
-                          return next;
-                        });
-                        setLastViewedUnclaimedAchievementIds(
-                          unclaimedAchievementIds,
-                        );
+                        clearTabAnimation("achievements");
+                        markAchievementTabPulseViewed(unclaimedAchievementIds);
                         setActiveTab("achievements");
                       }}
                       data-testid="tab-achievements"
@@ -1105,11 +1138,10 @@ export default function GameContainer() {
                   {/* Timed Event Tab Button */}
                   {timedEventTab.isActive && (
                     <button
-                      className={`${tabIconButtonClass} gap-1 ${
-                        activeTab === "timedevent"
-                          ? tabActiveTextClass
-                          : tabInactiveTextClass
-                      }`}
+                      className={`${tabIconButtonClass} gap-1 ${activeTab === "timedevent"
+                        ? tabActiveTextClass
+                        : tabInactiveTextClass
+                        }`}
                       onClick={() => setActiveTab("timedevent")}
                       data-testid="tab-timedevent"
                     >
@@ -1128,16 +1160,7 @@ export default function GameContainer() {
                     isAnimating={animatingTabs.has("trader")}
                     isFadePhase={fadePhaseTabs.has("trader")}
                     onClick={() => {
-                      setAnimatingTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("trader");
-                        return next;
-                      });
-                      setFadePhaseTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("trader");
-                        return next;
-                      });
+                      clearTabAnimation("trader");
                       setShopDialogOpen(true);
                     }}
                   />
@@ -1148,11 +1171,10 @@ export default function GameContainer() {
 
           {/* Action Panels */}
           <div
-            className={`flex-1 overflow-x-hidden pl-2 pr-2 md:pl-4 md:pr-4 min-h-0 ${
-              activeTab === "achievements"
-                ? "overflow-hidden"
-                : "overflow-y-auto scrollbar-hide"
-            }`}
+            className={`flex-1 overflow-x-hidden pl-2 pr-2 md:pl-4 md:pr-4 min-h-0 ${activeTab === "achievements"
+              ? "overflow-hidden"
+              : "overflow-y-auto scrollbar-hide"
+              }`}
           >
             {activeTab === "cave" && <CavePanel />}
             {activeTab === "village" && <VillagePanel />}

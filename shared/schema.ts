@@ -594,6 +594,9 @@ export const gameStateSchema = z.object({
     }),
   authNotificationSeen: z.boolean().default(false), // Added new field for auth notification
   authNotificationVisible: z.boolean().default(false), // Added new field for auth notification visibility
+  /** Play time (ms) when the guest Profile sign-in dot was last shown; schedules repeat via `authNotificationAuto`. */
+  lastAuthNotificationPlayTime: z.number().default(0),
+  /** Legacy alias; migrated into `lastAuthNotificationPlayTime` on load. */
   lastSignUpPromptPlayTime: z.number().default(0),
   /** Legacy; lastSocialPromptPlayTime is no longer used to schedule auto-open. */
   lastSocialPromptPlayTime: z.number().default(0),

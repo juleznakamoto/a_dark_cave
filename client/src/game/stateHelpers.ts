@@ -419,6 +419,15 @@ export function isTraderShopUnlocked(state: {
   return false;
 }
 
+/** Run one-time load migrations on loaded saves (trader shop unlock gate). */
+export function applyGameStateLoadMigrations(state: GameState): GameState {
+  const trader = migrateTraderShopUnlockOnLoad(state);
+  if (trader?.story) {
+    return { ...state, story: trader.story };
+  }
+  return state;
+}
+
 /** Footer Trader button: normal tab unlock, or cruel mode, or any prior shop purchase. */
 export function isTraderFooterShopVisible(state: {
   story?: { seen?: Record<string, unknown> };

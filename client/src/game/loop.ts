@@ -36,6 +36,10 @@ import {
 } from "./rules/skillUpgrades";
 import { CRUEL_MODE, cruelModeScale } from "./cruelMode";
 import { getMadnessDeathChancePerCycle } from "./rules/effectsStats";
+import {
+  guestAuthNotificationTriggerUpdates,
+  shouldTriggerGuestAuthNotification,
+} from "./authNotificationAuto";
 import { socialPromptHighestMilestoneIndexToOpen } from "./socialPromptAuto";
 import { FEEDBACK_PROMPT_PLAY_MS } from "./feedbackPromptAuto";
 import { isSocialPromoExclusiveRewardComplete } from "@/game/socialPromoExclusiveReward";
@@ -125,8 +129,6 @@ const TICK_INTERVAL = GAME_CONSTANTS.TICK_INTERVAL;
 const AUTO_SAVE_INTERVAL_SIGNED_IN = 60 * 1000; // Cloud autosave every 1 minute
 const AUTO_SAVE_INTERVAL_GUEST = 15 * 1000; // Local IndexedDB only — matches production tick
 const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 seconds
-const AUTH_NOTIFICATION_INITIAL_DELAY = 15 * 60 * 1000; // 15 minutes in milliseconds
-const AUTH_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milliseconds
 const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minute in milliseconds
 const TARGET_FPS = 4;
 const FRAME_DURATION = 1000 / TARGET_FPS; // 250ms per frame at 4 FPS
@@ -136,8 +138,6 @@ let tickAccumulator = 0;
 let lastAutoSave = 0;
 let lastProduction = 0;
 let productionPauseStartedAt: number | null = null;
-let gameStartTime = 0;
-let lastAuthNotificationTime = 0;
 let loopProgressTimeoutId: NodeJS.Timeout | null = null;
 let lastRenderTime = 0;
 let lastUserActivity = 0;
@@ -171,10 +171,6 @@ export function startGameLoop() {
   lastProduction = now; // Reset production interval to start fresh
   productionPauseStartedAt = null;
   tickAccumulator = 0;
-  if (gameStartTime === 0) {
-    gameStartTime = now; // Set game start time only once
-  }
-
   // Initialize inactivity tracking
   lastUserActivity = Date.now();
   isInactive = false;
@@ -420,68 +416,55 @@ export function startGameLoop() {
         handleAutoSave();
       }
 
-      if (gameStartTime > 0) {
-        const elapsedSinceStart = timestamp - gameStartTime;
-        const state = useGameStore.getState();
+      const state = useGameStore.getState();
+      const playTimeMs = state.playTime || 0;
 
-        // Auth notification logic (first after 15 minutes, then every 60 minutes) - only if not signed in
-        if (!state.isUserSignedIn) {
-          // First notification after 15 minutes
-          if (
-            elapsedSinceStart >= AUTH_NOTIFICATION_INITIAL_DELAY &&
-            lastAuthNotificationTime === 0
-          ) {
-            lastAuthNotificationTime = timestamp;
-            if (state.authNotificationSeen) {
-              useGameStore.setState({
-                authNotificationSeen: false,
-                authNotificationVisible: true,
-              });
-            } else if (!state.authNotificationVisible) {
-              useGameStore.setState({ authNotificationVisible: true });
-            }
-          }
-          // Subsequent notifications every 60 minutes after the last one
-          else if (
-            lastAuthNotificationTime > 0 &&
-            timestamp - lastAuthNotificationTime >=
-            AUTH_NOTIFICATION_REPEAT_INTERVAL
-          ) {
-            lastAuthNotificationTime = timestamp;
-            if (state.authNotificationSeen) {
-              useGameStore.setState({ authNotificationSeen: false });
-            }
-          }
-        }
-
-        // Rewards dialog: auto-open at play-time milestones until exclusive-item tasks are done (same bar as profile shortcut).
-        if (!isSocialPromoExclusiveRewardComplete(state)) {
-          const playTimeMs = state.playTime || 0;
-          const milestoneToOpen = socialPromptHighestMilestoneIndexToOpen(
-            playTimeMs,
-            state.socialPromptMilestoneIndex ?? 0,
-          );
-          if (milestoneToOpen !== null) {
-            useGameStore.setState({
-              socialPromptDialogOpen: true,
-              socialPromptMilestoneIndex: milestoneToOpen + 1,
-            });
-          }
-        }
-
-        // One-time feedback / contact dialog at 105 minutes of play.
-        const feedbackState = useGameStore.getState();
+      // Guest Profile sign-in dot: first after 15m play time, then every 60m play time (persisted).
+      if (!state.isUserSignedIn) {
+        const lastShown = state.lastAuthNotificationPlayTime ?? 0;
         if (
-          !feedbackState.feedbackPromptShown &&
-          (feedbackState.playTime || 0) >= FEEDBACK_PROMPT_PLAY_MS &&
-          !isModalDialogOpen(feedbackState)
+          shouldTriggerGuestAuthNotification({
+            playTimeMs,
+            lastShownPlayTimeMs: lastShown,
+            authNotificationSeen: state.authNotificationSeen,
+            authNotificationVisible: state.authNotificationVisible,
+          })
         ) {
+          useGameStore.setState(
+            guestAuthNotificationTriggerUpdates({
+              playTimeMs,
+              lastShownPlayTimeMs: lastShown,
+              authNotificationSeen: state.authNotificationSeen,
+              authNotificationVisible: state.authNotificationVisible,
+            }),
+          );
+        }
+      }
+
+      // Rewards dialog: auto-open at play-time milestones until exclusive-item tasks are done (same bar as profile shortcut).
+      if (!isSocialPromoExclusiveRewardComplete(state)) {
+        const milestoneToOpen = socialPromptHighestMilestoneIndexToOpen(
+          playTimeMs,
+          state.socialPromptMilestoneIndex ?? 0,
+        );
+        if (milestoneToOpen !== null) {
           useGameStore.setState({
-            feedbackDialogOpen: true,
-            feedbackPromptShown: true,
+            socialPromptDialogOpen: true,
+            socialPromptMilestoneIndex: milestoneToOpen + 1,
           });
         }
+      }
 
+      // One-time feedback / contact dialog at 105 minutes of play.
+      if (
+        !state.feedbackPromptShown &&
+        playTimeMs >= FEEDBACK_PROMPT_PLAY_MS &&
+        !isModalDialogOpen(state)
+      ) {
+        useGameStore.setState({
+          feedbackDialogOpen: true,
+          feedbackPromptShown: true,
+        });
       }
 
       // All production and game logic checks (every 15 seconds)

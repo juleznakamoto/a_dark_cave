@@ -136,7 +136,12 @@ export default function Game() {
         const preHydrationSnapshot = useGameStore.getState();
 
         // Load saved game or initialize with defaults
-        const savedState = await loadGame();
+        const rawSavedState = await loadGame();
+        const savedState = rawSavedState
+          ? (
+            await import("@/game/stateHelpers")
+          ).applyGameStateLoadMigrations(rawSavedState)
+          : null;
         if (savedState) {
           // Track Google Ads source if present in URL and not already saved
           const stateUpdates: any = {};

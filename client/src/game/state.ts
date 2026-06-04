@@ -37,7 +37,7 @@ import {
   assignVillagerToJob,
   unassignVillagerFromJob,
   mergeCombatVictoryState,
-  migrateTraderShopUnlockOnLoad,
+  applyGameStateLoadMigrations,
   markSeenResources,
 } from "@/game/stateHelpers";
 import { capResourceToLimit } from "@/game/resourceLimits";
@@ -67,6 +67,7 @@ import { calculateBastionStats } from "@/game/bastionStats";
 import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { GAME_CONSTANTS } from "@/game/constants";
+import { lastAuthNotificationPlayTimeFloorOnLoad } from "@/game/authNotificationAuto";
 import { playlightExitIntentMilestoneFloorFromPlayTime } from "@/game/playlightExitIntent";
 import { socialPromptMilestoneFloorFromPlayTime } from "@/game/socialPromptAuto";
 import {
@@ -188,7 +189,10 @@ interface GameStore extends GameState {
   authNotificationVisible: boolean;
 
   signUpPromptEligibleForGold: boolean; // Set when opening auth from rewards sign-up task; cleared after signup or dialog close
-  lastSignUpPromptPlayTime: number; // playTime when guest rewards dialog was last auto-shown (repeat cadence)
+  /** Play time (ms) when guest Profile sign-in notification was last triggered. */
+  lastAuthNotificationPlayTime: number;
+  /** Legacy; migrated to `lastAuthNotificationPlayTime` on load. */
+  lastSignUpPromptPlayTime: number;
 
   /** Social / email / invite / sign-up rewards prompt (guest + signed-in schedules in game loop). */
   socialPromptDialogOpen: boolean;
@@ -323,7 +327,7 @@ interface GameStore extends GameState {
   setAuthNotificationSeen: (seen: boolean) => void;
   setAuthNotificationVisible: (visible: boolean) => void;
   setSignUpPromptEligibleForGold: (eligible: boolean) => void;
-  setLastSignUpPromptPlayTime: (playTime: number) => void;
+  setLastAuthNotificationPlayTime: (playTime: number) => void;
   setSocialPromptDialogOpen: (isOpen: boolean) => void;
   setHighlightedResources: (resources: string[]) => void;
   emitResourceChange: (resource: string, amount: number) => void;
@@ -1053,6 +1057,7 @@ export const createInitialState = (): GameState => ({
   authNotificationVisible: false,
 
   signUpPromptEligibleForGold: false,
+  lastAuthNotificationPlayTime: 0,
   lastSignUpPromptPlayTime: 0,
   socialPromptDialogOpen: false,
   lastSocialPromptPlayTime: 0,
@@ -1426,6 +1431,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   authNotificationSeen: false,
   authNotificationVisible: false,
   signUpPromptEligibleForGold: false,
+  lastAuthNotificationPlayTime: 0,
   lastSignUpPromptPlayTime: 0,
   socialPromptDialogOpen: false,
   lastSocialPromptPlayTime: 0,
@@ -1474,8 +1480,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ authNotificationVisible: visible }),
   setSignUpPromptEligibleForGold: (eligible: boolean) =>
     set({ signUpPromptEligibleForGold: eligible }),
-  setLastSignUpPromptPlayTime: (playTime: number) =>
-    set({ lastSignUpPromptPlayTime: playTime }),
+  setLastAuthNotificationPlayTime: (playTime: number) =>
+    set({ lastAuthNotificationPlayTime: playTime }),
   setSocialPromptDialogOpen: (isOpen: boolean) =>
     set({ socialPromptDialogOpen: isOpen }),
   setHighlightedResources: (resources: string[]) => {
@@ -2516,6 +2522,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
           savedState.authNotificationVisible !== undefined
             ? savedState.authNotificationVisible
             : false,
+        lastAuthNotificationPlayTime: lastAuthNotificationPlayTimeFloorOnLoad(
+          loadedPlayTime,
+          Math.max(
+            (savedState as { lastAuthNotificationPlayTime?: number })
+              .lastAuthNotificationPlayTime ?? 0,
+            savedState.lastSignUpPromptPlayTime !== undefined
+              ? savedState.lastSignUpPromptPlayTime
+              : 0,
+          ),
+          savedState.authNotificationSeen === true,
+        ),
         lastSignUpPromptPlayTime:
           savedState.lastSignUpPromptPlayTime !== undefined
             ? savedState.lastSignUpPromptPlayTime
@@ -2620,12 +2637,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         };
       }
 
-      const traderShopMigration = migrateTraderShopUnlockOnLoad(loadedState);
-      if (traderShopMigration?.story) {
-        loadedState.story = traderShopMigration.story;
-      }
-
-      set(loadedState);
+      set(applyGameStateLoadMigrations(loadedState));
       StateManager.scheduleEffectsUpdate(get);
     } else {
       const newGameState = {
