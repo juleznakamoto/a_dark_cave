@@ -156,9 +156,11 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
     ? !timedTimerUsable || !canAfford || playing
     : !canAfford || playing;
 
-  const showDisabledOpacity = isTimedEvent
-    ? !playing && (!timedTimerUsable || !canAfford)
-    : !canAfford && !playing;
+  // Match Stats header badge: full opacity during the 3s insight reveal animation (`playing`).
+  // Only dim when idle and unaffordable (timed tab also when the decision timer is unusable).
+  const showDisabledOpacity =
+    !playing &&
+    (isTimedEvent ? !timedTimerUsable || !canAfford : !canAfford);
 
   const tooltipId = isTimedEvent
     ? "timed-event-insight-prolong"
