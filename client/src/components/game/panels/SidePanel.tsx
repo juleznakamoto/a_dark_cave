@@ -842,16 +842,18 @@ export default function SidePanel() {
   // Determine which sections to show based on active tab
   const shouldShowSection = (sectionName: string): boolean => {
     switch (activeTab) {
-      case "cave":
-        let caveSections = [
+      case "cave": {
+        const caveSections = [
           "resources",
           "tools",
           "weapons",
           "clothing",
           "schematics",
         ];
+        if (!flags.bastionUnlocked) caveSections.push("combatItems");
         if (!estateUnlocked) caveSections.push("stats");
         return caveSections.includes(sectionName);
+      }
       case "village":
         return ["resources", "buildings", "population"].includes(sectionName);
       case "forest":
@@ -932,6 +934,9 @@ export default function SidePanel() {
           {weaponItems.length > 0 && shouldShowSection("weapons") && (
             <SidePanelSection sectionId="weapons" title={t("sidePanel.weapons")} items={weaponItems} />
           )}
+          {combatItemRows.length > 0 && shouldShowSection("combatItems") && (
+            <SidePanelSection sectionId="combatItems" title={t("sidePanel.combatItems")} items={combatItemRows} />
+          )}
           {bastionStatsItems.length > 0 && shouldShowSection("bastion") && (
             <SidePanelSection
               sectionId="bastion"
@@ -951,9 +956,6 @@ export default function SidePanel() {
                 items={fortificationItems}
               />
             )}
-          {combatItemRows.length > 0 && shouldShowSection("combatItems") && (
-            <SidePanelSection sectionId="combatItems" title={t("sidePanel.combatItems")} items={combatItemRows} />
-          )}
           {clothingItems.length > 0 && shouldShowSection("clothing") && (
             <SidePanelSection sectionId="clothing" title={t("sidePanel.clothing")} items={clothingItems} />
           )}
