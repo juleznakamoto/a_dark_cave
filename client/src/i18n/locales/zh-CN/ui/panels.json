@@ -164,6 +164,7 @@
     "statStrengthTooltip": "在言语无力之处提供帮助",
     "statKnowledgeTooltip": "在需要智慧之处产生影响",
     "statMadnessTooltip": "将思绪引向危险之路",
+    "statEffectNotUnlockedYet": "尚未解锁",
     "statEffectMaxPercent": "最高 {{value}}%",
     "statEffectMaxGold": "最高 {{value}} 金币",
     "statEffectMaxSeconds": "最高 {{value}} 秒",

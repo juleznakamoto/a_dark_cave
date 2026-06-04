@@ -46,6 +46,10 @@ type EffectLine = {
   secondary?: string;
 };
 
+type StatEffectRow = EffectLine & {
+  unlocked: boolean;
+};
+
 /** Gambler timed event has rolled at least once, or the player has started gambler rounds. */
 export function hasGamblerAppearedOnce(state: GameState): boolean {
   if (state.eventCooldowns?.gambler != null) return true;
@@ -79,17 +83,23 @@ function getUnlockedWager(luck: number): number {
   return unlocked;
 }
 
-function getLuckEffectLines(
+function lockedRow(key: string, label: string): StatEffectRow {
+  return { key, unlocked: false, primary: label };
+}
+
+function getLuckEffectRows(
   state: GameState,
   t: (key: string, opts?: Record<string, unknown>) => string,
-): EffectLine[] {
+): StatEffectRow[] {
   const luck = getTotalLuck(state);
-  const lines: EffectLine[] = [];
+  const lockedLabel = t("sidePanel.statEffectNotUnlockedYet");
+  const rows: StatEffectRow[] = [];
 
   if (isBastionTabUnlocked(state)) {
     const crit = calculateCriticalStrikeChance(luck);
-    lines.push({
+    rows.push({
       key: "crit",
+      unlocked: true,
       primary: t("sidePanel.statLuckEffectCrit", { percent: crit }),
       secondary:
         crit < LUCK_CRIT_MAX_PERCENT
@@ -98,12 +108,15 @@ function getLuckEffectLines(
           })
           : undefined,
     });
+  } else {
+    rows.push(lockedRow("crit", lockedLabel));
   }
 
   if (hasGamblerAppearedOnce(state)) {
     const unlockedWager = getUnlockedWager(luck);
-    lines.push({
+    rows.push({
       key: "gambling",
+      unlocked: true,
       primary: t("sidePanel.statLuckEffectGambling", {
         amount: unlockedWager,
       }),
@@ -112,21 +125,29 @@ function getLuckEffectLines(
           ? t("sidePanel.statEffectMaxGold", { value: MAX_WAGER_TIER })
           : undefined,
     });
+  } else {
+    rows.push(lockedRow("gambling", lockedLabel));
   }
 
-  return lines;
+  return rows;
 }
 
-function getStrengthEffectLines(
+function getStrengthEffectRows(
   state: GameState,
   t: (key: string, opts?: Record<string, unknown>) => string,
-): EffectLine[] {
-  if (!isBastionTabUnlocked(state)) return [];
+): StatEffectRow[] {
+  const lockedLabel = t("sidePanel.statEffectNotUnlockedYet");
+
+  if (!isBastionTabUnlocked(state)) {
+    return [lockedRow("bastion", lockedLabel)];
+  }
+
   const strength = getTotalStrength(state);
   const bastionAttack = Math.floor(strength / 2);
   return [
     {
       key: "bastion",
+      unlocked: true,
       primary: t("sidePanel.statStrengthEffectBastion", {
         value: bastionAttack,
       }),
@@ -134,22 +155,23 @@ function getStrengthEffectLines(
   ];
 }
 
-function getKnowledgeEffectLines(
+function getKnowledgeEffectRows(
   state: GameState,
   t: (key: string, opts?: Record<string, unknown>) => string,
-): EffectLine[] {
+): StatEffectRow[] {
   const knowledge = getTotalKnowledge(state);
   const discountPercent = Math.round(calculateMerchantDiscount(knowledge) * 100);
   const decisionTime = calculateKnowledgeTimeBonus(knowledge);
   const combatItemDamage = Math.floor(
     knowledge / COMBAT_ITEM_DAMAGE_PER_KNOWLEDGE,
   );
-
-  const lines: EffectLine[] = [];
+  const lockedLabel = t("sidePanel.statEffectNotUnlockedYet");
+  const rows: StatEffectRow[] = [];
 
   if (hasMerchantAppearedOnce(state)) {
-    lines.push({
+    rows.push({
       key: "merchant",
+      unlocked: true,
       primary: t("sidePanel.statKnowledgeEffectMerchant", {
         percent: discountPercent,
       }),
@@ -160,10 +182,13 @@ function getKnowledgeEffectLines(
           })
           : undefined,
     });
+  } else {
+    rows.push(lockedRow("merchant", lockedLabel));
   }
 
-  lines.push({
+  rows.push({
     key: "decisionTime",
+    unlocked: true,
     primary: t("sidePanel.statKnowledgeEffectDecisionTime", {
       seconds: decisionTime,
     }),
@@ -176,21 +201,24 @@ function getKnowledgeEffectLines(
   });
 
   if (isBastionTabUnlocked(state)) {
-    lines.push({
+    rows.push({
       key: "combatItems",
+      unlocked: true,
       primary: t("sidePanel.statKnowledgeEffectCombatItems", {
         damage: combatItemDamage,
       }),
     });
+  } else {
+    rows.push(lockedRow("combatItems", lockedLabel));
   }
 
-  return lines;
+  return rows;
 }
 
-function getMadnessEffectLines(
+function getMadnessEffectRows(
   state: GameState,
   t: (key: string, opts?: Record<string, unknown>) => string,
-): EffectLine[] {
+): StatEffectRow[] {
   const madness = getTotalMadness(state);
   const cruelMode = Boolean(state.cruelMode);
   const productionPenalty = Math.round(
@@ -204,10 +232,12 @@ function getMadnessEffectLines(
   const maxDeathChance = getMadnessDeathChanceMaxPerCycle(cruelMode);
   const deathPercent = madnessDeathChanceToTooltipPercent(deathChance);
   const maxDeathPercent = madnessDeathChanceToTooltipPercent(maxDeathChance);
+  const lockedLabel = t("sidePanel.statEffectNotUnlockedYet");
 
-  const lines: EffectLine[] = [
+  const rows: StatEffectRow[] = [
     {
       key: "production",
+      unlocked: true,
       primary: t("sidePanel.statMadnessEffectProduction", {
         percent: productionPenalty,
       }),
@@ -221,8 +251,9 @@ function getMadnessEffectLines(
   ];
 
   if (isBastionTabUnlocked(state)) {
-    lines.push({
+    rows.push({
       key: "combat",
+      unlocked: true,
       primary: t("sidePanel.statMadnessEffectCombat", {
         percent: combatFail,
       }),
@@ -233,10 +264,13 @@ function getMadnessEffectLines(
           })
           : undefined,
     });
+  } else {
+    rows.push(lockedRow("combat", lockedLabel));
   }
 
-  lines.push({
+  rows.push({
     key: "deaths",
+    unlocked: true,
     primary: t("sidePanel.statMadnessEffectDeaths", {
       percent: deathPercent,
     }),
@@ -246,7 +280,37 @@ function getMadnessEffectLines(
         : undefined,
   });
 
-  return lines;
+  return rows;
+}
+
+function getStatEffectRows(
+  statKey: TooltipStatKey,
+  state: GameState,
+  t: (key: string, opts?: Record<string, unknown>) => string,
+): StatEffectRow[] {
+  switch (statKey) {
+    case "luck":
+      return getLuckEffectRows(state, t);
+    case "strength":
+      return getStrengthEffectRows(state, t);
+    case "knowledge":
+      return getKnowledgeEffectRows(state, t);
+    case "madness":
+      return getMadnessEffectRows(state, t);
+    default:
+      return [];
+  }
+}
+
+/** Unlocked effect lines only (values + caps). */
+function getStatEffectLines(
+  statKey: TooltipStatKey,
+  state: GameState,
+  t: (key: string, opts?: Record<string, unknown>) => string,
+): EffectLine[] {
+  return getStatEffectRows(statKey, state, t)
+    .filter((row) => row.unlocked)
+    .map(({ key, primary, secondary }) => ({ key, primary, secondary }));
 }
 
 /** Stable id list for visible stat effect lines (for side-panel new-item pulse). */
@@ -271,25 +335,6 @@ export function shouldPulseStatItem(
   return getStatEffectLinesSignature(statKey, state).length > 0;
 }
 
-function getStatEffectLines(
-  statKey: TooltipStatKey,
-  state: GameState,
-  t: (key: string, opts?: Record<string, unknown>) => string,
-): EffectLine[] {
-  switch (statKey) {
-    case "luck":
-      return getLuckEffectLines(state, t);
-    case "strength":
-      return getStrengthEffectLines(state, t);
-    case "knowledge":
-      return getKnowledgeEffectLines(state, t);
-    case "madness":
-      return getMadnessEffectLines(state, t);
-    default:
-      return [];
-  }
-}
-
 /**
  * Divider + per-stat effect breakdown appended below the short stat flavor text in
  * the side-panel stat tooltips. Shows the current bonus and (where stepped) the cap.
@@ -302,15 +347,18 @@ export default function StatEffectsTooltip({
   const { t } = useTranslation("ui");
   const state = useGameStore() as unknown as GameState;
   if (!isStatEffectsRevealed(state)) return null;
-  const lines = getStatEffectLines(statKey, state, t);
-  if (lines.length === 0) return null;
+  const rows = getStatEffectRows(statKey, state, t);
+  if (rows.length === 0) return null;
   return (
     <div className="mt-1 border-t border-border pt-1">
-      {lines.map((line) => (
-        <div key={line.key}>
-          {line.primary}
-          {line.secondary != null ? (
-            <span className={MUTED_SECONDARY_CLASS}> {line.secondary}</span>
+      {rows.map((row) => (
+        <div
+          key={row.key}
+          className={!row.unlocked ? MUTED_SECONDARY_CLASS : undefined}
+        >
+          {row.primary}
+          {row.unlocked && row.secondary != null ? (
+            <span className={MUTED_SECONDARY_CLASS}> {row.secondary}</span>
           ) : null}
         </div>
       ))}

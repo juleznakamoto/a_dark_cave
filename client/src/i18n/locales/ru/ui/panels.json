@@ -164,6 +164,7 @@
     "statStrengthTooltip": "Помогает там, где слова бессильны",
     "statKnowledgeTooltip": "Влияет там, где помогает смекалка",
     "statMadnessTooltip": "Ведёт мысли на опасные пути",
+    "statEffectNotUnlockedYet": "Ещё не разблокировано",
     "statEffectMaxPercent": "макс. {{value}} %",
     "statEffectMaxGold": "макс. {{value}} зол.",
     "statEffectMaxSeconds": "макс. {{value}} с",

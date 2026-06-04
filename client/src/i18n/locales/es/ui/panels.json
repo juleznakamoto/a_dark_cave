@@ -164,6 +164,7 @@
     "statStrengthTooltip": "Ayuda donde las palabras llegan a su límite",
     "statKnowledgeTooltip": "Influye en lo que la astucia ayuda",
     "statMadnessTooltip": "Lleva los pensamientos por caminos peligrosos",
+    "statEffectNotUnlockedYet": "Aún no desbloqueado",
     "statEffectMaxPercent": "{{value}} % máx.",
     "statEffectMaxGold": "{{value}} de oro máx.",
     "statEffectMaxSeconds": "{{value}} s máx.",
