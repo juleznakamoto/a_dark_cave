@@ -168,6 +168,34 @@ describe("prolongTimedEventTab", () => {
     expect(after.timedEventTab.expiryTime).toBe(
       expiryTime + TIMED_EVENT_TAB_PROLONG_MS,
     );
+    expect(after.timedEventTab.insightProlongUsed).toBe(true);
+  });
+
+  it("cannot prolong twice in the same timed-tab visit", () => {
+    const expiryTime = Date.now() + 60_000;
+    useGameStore.setState({
+      buildings: {
+        ...useGameStore.getState().buildings,
+        clerksHut: 1,
+      },
+      resources: {
+        ...useGameStore.getState().resources,
+        insight: 600,
+      },
+      timedEventTab: {
+        isActive: true,
+        event: { id: "merchant-test", message: "m", title: "t" },
+        expiryTime,
+        startTime: Date.now(),
+        pauseAccumMs: 0,
+        pauseStartedAt: 0,
+        insightProlongUsed: true,
+      },
+    });
+
+    expect(useGameStore.getState().prolongTimedEventTab()).toBe(false);
+    expect(useGameStore.getState().resources.insight).toBe(600);
+    expect(useGameStore.getState().timedEventTab.expiryTime).toBe(expiryTime);
   });
 
   it("does nothing without Clerks Hut or insufficient insight", () => {

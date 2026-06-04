@@ -197,7 +197,7 @@
     "discountFromKnowledge": "{{percent}} % от Знания{{max}}",
     "knowledgeMax": " (макс.)",
     "discountFromRing": "5 % от Кольца повиновения",
-    "prolongForInsight": "Extend time by {{minutes}} min for {{cost}} {{resource}}"
+    "prolongForInsight": "Продлить время на {{minutes}} мин. за {{cost}} {{resource}}"
   },
   "feedback": {
     "title": "Обратная связь",  //x1.8

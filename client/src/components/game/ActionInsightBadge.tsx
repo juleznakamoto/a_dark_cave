@@ -53,6 +53,9 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   const { t } = useTranslation("ui");
   const state = useGameStore((s) => s as unknown as GameState);
   const timedTabActive = useGameStore((s) => s.timedEventTab.isActive);
+  const insightProlongUsed = useGameStore(
+    (s) => s.timedEventTab.insightProlongUsed ?? false,
+  );
   const insightRevealing = useGameStore((s) => s.insightRevealing);
   const insightRevealEnd = useGameStore((s) =>
     target === "stats"
@@ -90,7 +93,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
     effectiveTimedRemaining > 0;
 
   const canShow = isTimedEvent
-    ? isInsightUnlocked(state) && timedTabActive
+    ? isInsightUnlocked(state) && timedTabActive && !insightProlongUsed
     : isStats
       ? isInsightUnlocked(state) &&
       (!isStatEffectsRevealed(state) || isStatsRevealing)
@@ -125,12 +128,12 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
       : getInsightAmount(state) >= cost;
 
   const costTooltip = isTimedEvent
-    ? t("timedEvent.prolongForInsight", {
+    ? t("ui:timedEvent.prolongForInsight", {
       minutes: PROLONG_MINUTES,
       cost,
       resource: formatTooltipResourceName("insight"),
     })
-    : t("badges.insightRevealSeeEffects", {
+    : t("ui:badges.insightRevealSeeEffects", {
       cost,
       resource: formatTooltipResourceName("insight"),
     });
@@ -152,7 +155,9 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   const handleClick = () => {
     if (isBadgeDisabled) return;
     if (isTimedEvent) {
-      prolongTimedEventTab();
+      if (!prolongTimedEventTab()) {
+        forceUpdate((n) => n + 1);
+      }
       return;
     }
     if (isStats) {

@@ -319,7 +319,7 @@ export default function TimedEventPanel() {
     const totalSeconds = Math.ceil(ms / 1000);
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
-    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+    return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   };
 
   const handleChoice = (choiceId: string) => {
@@ -399,10 +399,13 @@ export default function TimedEventPanel() {
       {/* Event Title */}
       {displayTitle && (
         <h2 className="text-xs flex items-center justify-between">
-          <div className="flex items-center min-w-0 flex-wrap gap-x-0.5">
-            <span className="font-semibold">{displayTitle} </span>
-            <span className="text-muted-foreground">
-              &nbsp;{formatTime(timeRemaining)}
+          <div className="flex items-center min-w-0 flex-wrap gap-x-1">
+            <span className="font-semibold">{displayTitle}</span>
+            <span
+              className="inline-block w-[5ch] shrink-0 text-right text-muted-foreground tabular-nums"
+              aria-live="polite"
+            >
+              {formatTime(timeRemaining)}
             </span>
             <ActionInsightBadge
               target="timedEvent"

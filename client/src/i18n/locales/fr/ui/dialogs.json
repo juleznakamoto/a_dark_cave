@@ -197,7 +197,7 @@
     "discountFromKnowledge": "{{percent}} % grâce au Savoir{{max}}",
     "knowledgeMax": " (max.)",
     "discountFromRing": "5 % grâce à l'Anneau d'obéissance",
-    "prolongForInsight": "Extend time by {{minutes}} min for {{cost}} {{resource}}"
+    "prolongForInsight": "Prolonger le temps de {{minutes}} min pour {{cost}} {{resource}}"
   },
   "feedback": {
     "title": "Retour",

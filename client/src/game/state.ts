@@ -253,6 +253,8 @@ interface GameStore extends GameState {
     pauseAccumMs?: number;
     /** Wall time when the current pause segment started; 0 while the countdown is running. */
     pauseStartedAt?: number;
+    /** Insight +5 min prolong already bought this timed-tab visit; badge hidden after use. */
+    insightProlongUsed?: boolean;
   };
 
   // Merchant trades state
@@ -1260,6 +1262,7 @@ export const INACTIVE_TIMED_EVENT_TAB: GameStore["timedEventTab"] = {
   startTime: undefined,
   pauseAccumMs: 0,
   pauseStartedAt: 0,
+  insightProlongUsed: false,
 };
 
 /** Store patch that ends any active timed-tab visit (merchant, gambler, etc.). */
@@ -2033,6 +2036,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...state.timedEventTab,
         expiryTime:
           (state.timedEventTab.expiryTime ?? 0) + TIMED_EVENT_TAB_PROLONG_MS,
+        insightProlongUsed: true,
       },
     });
     return true;
@@ -2352,6 +2356,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...rawTimedEventTab,
         pauseAccumMs: 0,
         pauseStartedAt: 0,
+        insightProlongUsed: false,
       };
       const gamblerGameForResume =
         savedState.gamblerGame !== undefined
@@ -3120,6 +3125,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           startTime: Date.now(),
           pauseAccumMs: 0,
           pauseStartedAt: 0,
+          insightProlongUsed: false,
         },
         merchantTrades: {
           choices, // SSOT: Use the choices that were already generated
@@ -3142,6 +3148,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             startTime: undefined,
             pauseAccumMs: 0,
             pauseStartedAt: 0,
+            insightProlongUsed: false,
           },
           merchantTrades: {
             choices: [],
@@ -3181,6 +3188,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             startTime: isActive ? Date.now() : undefined,
             pauseAccumMs: 0,
             pauseStartedAt: 0,
+            insightProlongUsed: false,
             ...(gamblerRoundsRemaining != null && { gamblerRoundsRemaining }),
           },
         };

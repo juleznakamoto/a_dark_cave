@@ -112,6 +112,7 @@ export function canProlongTimedEventTab(
     timedEventTab?: {
       isActive?: boolean;
       expiryTime?: number;
+      insightProlongUsed?: boolean;
     };
   },
   effectiveRemainingMs: number | null,
@@ -119,6 +120,7 @@ export function canProlongTimedEventTab(
   if (!isInsightUnlocked(state)) return false;
   const tab = state.timedEventTab;
   if (!tab?.isActive || !tab.expiryTime) return false;
+  if (tab.insightProlongUsed) return false;
   if (effectiveRemainingMs == null || effectiveRemainingMs <= 0) return false;
   return getInsightAmount(state) >= TIMED_EVENT_TAB_PROLONG_INSIGHT_COST;
 }

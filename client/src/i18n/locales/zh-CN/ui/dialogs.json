@@ -197,7 +197,7 @@
     "discountFromKnowledge": "知识 {{percent}}%{{max}}",
     "knowledgeMax": "（上限）",
     "discountFromRing": "顺从之戒 5%",
-    "prolongForInsight": "Extend time by {{minutes}} min for {{cost}} {{resource}}"
+    "prolongForInsight": "消耗 {{cost}} {{resource}} 延长 {{minutes}} 分钟"
   },
   "feedback": {
     "title": "反馈",

@@ -197,7 +197,7 @@
     "discountFromKnowledge": "{{percent}} % por Conocimiento{{max}}",
     "knowledgeMax": " (máx.)",
     "discountFromRing": "5 % por Anillo de Obediencia",
-    "prolongForInsight": "Extend time by {{minutes}} min for {{cost}} {{resource}}"
+    "prolongForInsight": "Extender el tiempo {{minutes}} min por {{cost}} {{resource}}"
   },
   "feedback": {
     "title": "Comentarios",

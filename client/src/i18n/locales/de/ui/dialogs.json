@@ -197,7 +197,7 @@
     "discountFromKnowledge": "{{percent}} % durch Wissen{{max}}",
     "knowledgeMax": " (max.)",
     "discountFromRing": "5 % durch Ring des Gehorsams",
-    "prolongForInsight": "Extend time by {{minutes}} min for {{cost}} {{resource}}"
+    "prolongForInsight": "Zeit um {{minutes}} Min. für {{cost}} {{resource}} verlängern"
   },
   "feedback": {
     "title": "Feedback",
