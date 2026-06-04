@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import {
   useGameStore,
   isModalDialogOpen,
@@ -249,5 +249,49 @@ describe('Game Loop Production', () => {
     expect(applySpy).not.toHaveBeenCalled();
 
     applySpy.mockRestore();
+  });
+});
+
+describe("reward and event dialog stacking", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    useGameStore.getState().initialize();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("defers event dialog while reward dialog is open", () => {
+    const store = useGameStore.getState();
+    const testEvent = {
+      id: "test-event",
+      message: "Test",
+      timestamp: Date.now(),
+      type: "event" as const,
+      skipSound: true,
+      choices: [{ id: "acknowledge", label: "OK", effect: () => ({}) }],
+    };
+
+    store.setRewardDialog(true, {
+      rewards: { resources: { wood: 1 } },
+      variant: "success",
+    });
+
+    store.setEventDialog(true, testEvent);
+    expect(useGameStore.getState().eventDialog.isOpen).toBe(false);
+
+    vi.advanceTimersByTime(200);
+    expect(useGameStore.getState().eventDialog.isOpen).toBe(false);
+
+    store.setRewardDialog(false);
+    vi.advanceTimersByTime(200);
+    expect(useGameStore.getState().eventDialog.isOpen).toBe(false);
+
+    vi.advanceTimersByTime(3000);
+    expect(useGameStore.getState().eventDialog.isOpen).toBe(true);
+    expect(useGameStore.getState().eventDialog.currentEvent?.id).toBe(
+      "test-event",
+    );
   });
 });

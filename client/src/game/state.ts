@@ -1231,28 +1231,98 @@ export function shouldFreezeTimedEventTabCountdown(state: GameStore): boolean {
   return state.isPaused || state.rewardDialog.isOpen || isBlockingDialogOpen(state);
 }
 
-const REWARD_DIALOG_DEFER_RETRY_MS = 200;
+const DIALOG_DEFER_POLL_MS = 200;
+/** Pause after a blocking dialog closes before the next deferred dialog opens. */
+const DIALOG_HANDOFF_DELAY_MS = 3000;
+
+type GameStoreSetter = (
+  partial:
+    | Partial<GameStore>
+    | ((state: GameStore) => Partial<GameStore>),
+) => void;
+
+function scheduleWhenDialogClear(
+  get: () => GameStore,
+  isBlocked: (store: GameStore) => boolean,
+  onOpen: () => void,
+  initialDelayMs: number,
+): void {
+  setTimeout(() => {
+    let wasBlocked = false;
+    const tryOpen = () => {
+      if (isBlocked(get())) {
+        wasBlocked = true;
+        setTimeout(tryOpen, DIALOG_DEFER_POLL_MS);
+        return;
+      }
+      if (wasBlocked) {
+        setTimeout(onOpen, DIALOG_HANDOFF_DELAY_MS);
+        return;
+      }
+      onOpen();
+    };
+    tryOpen();
+  }, initialDelayMs);
+}
+
+function openEventDialogNow(
+  set: GameStoreSetter,
+  currentEvent: LogEntry,
+): void {
+  set((state) => ({
+    ...state,
+    eventDialog: {
+      isOpen: true,
+      currentEvent,
+    },
+  }));
+
+  if (!currentEvent.skipSound) {
+    const eventId = currentEvent.id.split("-")[0];
+    const madnessEventIds = Object.keys(madnessEvents);
+    const isMadnessEvent = madnessEventIds.includes(eventId);
+    audioManager.playSound(
+      isMadnessEvent ? "eventMadness" : "event",
+      SOUND_VOLUME.eventUi,
+    );
+  }
+}
+
+/**
+ * After `initialDelayMs`, opens the event dialog only when the reward dialog is closed;
+ * otherwise polls every {@link DIALOG_DEFER_POLL_MS} and waits {@link DIALOG_HANDOFF_DELAY_MS}
+ * after the reward closes before opening.
+ */
+function scheduleEventDialogWhenClear(
+  get: () => GameStore,
+  set: GameStoreSetter,
+  event: LogEntry,
+  initialDelayMs: number,
+): void {
+  scheduleWhenDialogClear(
+    get,
+    (store) => store.rewardDialog.isOpen,
+    () => openEventDialogNow(set, event),
+    initialDelayMs,
+  );
+}
 
 /**
  * After `initialDelayMs`, opens the reward dialog only when no other blocking modal is open;
- * otherwise retries every {@link REWARD_DIALOG_DEFER_RETRY_MS} so rewards do not stack on event/combat/etc.
+ * otherwise retries every {@link DIALOG_DEFER_POLL_MS} and waits {@link DIALOG_HANDOFF_DELAY_MS}
+ * after the blocking dialog closes so back-to-back popups do not feel spammed.
  */
 function scheduleRewardDialogWhenClear(
   get: () => GameStore,
   data: NonNullable<GameStore["rewardDialog"]["data"]>,
   initialDelayMs: number,
 ): void {
-  setTimeout(() => {
-    const tryOpen = () => {
-      const store = get();
-      if (isNonRewardBlockingModalOpen(store)) {
-        setTimeout(tryOpen, REWARD_DIALOG_DEFER_RETRY_MS);
-        return;
-      }
-      store.setRewardDialog(true, data);
-    };
-    tryOpen();
-  }, initialDelayMs);
+  scheduleWhenDialogClear(
+    get,
+    isNonRewardBlockingModalOpen,
+    () => get().setRewardDialog(true, data),
+    initialDelayMs,
+  );
 }
 
 /** Cleared timed-event tab slice — use when starting a new game so no visit survives reset. */
@@ -3068,6 +3138,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setEventDialog: (isOpen: boolean, currentEvent?: LogEntry) => {
+    if (isOpen && currentEvent) {
+      if (get().rewardDialog.isOpen) {
+        scheduleEventDialogWhenClear(get, set, currentEvent, 0);
+        return;
+      }
+      openEventDialogNow(set, currentEvent);
+      return;
+    }
+
     set((state) => ({
       ...state,
       eventDialog: {
@@ -3075,16 +3154,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         currentEvent: currentEvent || null,
       },
     }));
-
-    if (isOpen && currentEvent && !currentEvent.skipSound) {
-      const eventId = currentEvent.id.split("-")[0];
-      const madnessEventIds = Object.keys(madnessEvents);
-      const isMadnessEvent = madnessEventIds.includes(eventId);
-      audioManager.playSound(
-        isMadnessEvent ? "eventMadness" : "event",
-        SOUND_VOLUME.eventUi,
-      );
-    }
   },
 
   setCombatDialog: (isOpen: boolean, data?: any) => {

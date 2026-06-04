@@ -4,7 +4,6 @@ import GameContainer from "@/components/game/GameContainer";
 import { StateManager, useGameStore } from "@/game/state";
 import { startGameLoop, stopGameLoop } from "@/game/loop";
 import { loadGame, saveGame } from "@/game/save"; // Import saveGame
-const EventDialog = lazy(() => import("@/components/game/EventDialog"));
 const EmailConfirmedDialog = lazy(() => import("@/components/game/EmailConfirmedDialog"));
 const PlaylightWelcomeDialog = lazy(() => import("@/components/game/PlaylightWelcomeDialog"));
 const FeedbackDialog = lazy(() => import("@/components/game/FeedbackDialog"));
@@ -20,11 +19,7 @@ import type { TimedEventTabState } from "@/game/types";
 
 export default function Game() {
   const initialize = useGameStore((state) => state.initialize);
-  const {
-    eventDialog,
-    setEventDialog,
-    setShopDialogOpen,
-  } = useGameStore();
+  const { setShopDialogOpen } = useGameStore();
   const [isInitialized, setIsInitialized] = useState(false);
   const [emailConfirmedDialogOpen, setEmailConfirmedDialogOpen] = useState(false);
   useEffect(() => {
@@ -372,12 +367,6 @@ export default function Game() {
   return (
     <div>
       <GameContainer />
-
-      <EventDialog
-        isOpen={eventDialog.isOpen}
-        onClose={() => setEventDialog(false)}
-        event={eventDialog.currentEvent}
-      />
 
       <EmailConfirmedDialog
         isOpen={emailConfirmedDialogOpen}
