@@ -19,16 +19,17 @@ import {
 } from "@/game/rules/effectsStats";
 import { getMadnessProductionMultiplier } from "@/game/population";
 import { WAGER_TIERS, WAGER_LUCK_THRESHOLDS } from "@/game/diceFifteenGame";
+import {
+  GAMBLER_TUTORIAL_PLAYS,
+  getGamblerTutorialPlaysRemaining,
+} from "@/game/gamblerSession";
 
 export type TooltipStatKey = "luck" | "strength" | "knowledge" | "madness";
 
-/** Knowledge: forest trade cooldown reduction (mirror of forestTradeActions). */
-const TRADE_COOLDOWN_REDUCTION_PER_KNOWLEDGE = 0.5;
-const TRADE_COOLDOWN_REDUCTION_MAX_SEC = 15;
 /** Knowledge: +1 bomb / poison-arrow damage per 5 knowledge. */
 const COMBAT_ITEM_DAMAGE_PER_KNOWLEDGE = 5;
 
-/** Caps for stepped/clamped stat bonuses (shown as "(N max)" in the tooltip). */
+/** Caps for stepped/clamped stat bonuses (shown on a muted secondary line). */
 const LUCK_CRIT_MAX_PERCENT = 25;
 const KNOWLEDGE_MERCHANT_MAX_PERCENT = 25;
 const KNOWLEDGE_DECISION_MAX_SEC = 25;
@@ -36,7 +37,37 @@ const MADNESS_COMBAT_FAIL_MAX_PERCENT = 15;
 /** Highest gambler wager tier (luck unlocks tiers via WAGER_LUCK_THRESHOLDS). */
 const MAX_WAGER_TIER = WAGER_TIERS[WAGER_TIERS.length - 1];
 
-type EffectLine = { key: string; text: string };
+const MUTED_SECONDARY_CLASS = "text-muted-foreground text-gray-400/70";
+
+type EffectLine = {
+  key: string;
+  primary: string;
+  secondary?: string;
+};
+
+/** Gambler timed event has rolled at least once, or the player has started gambler rounds. */
+export function hasGamblerAppearedOnce(state: GameState): boolean {
+  if (state.eventCooldowns?.gambler != null) return true;
+  return (
+    getGamblerTutorialPlaysRemaining(state.story?.seen) <
+    GAMBLER_TUTORIAL_PLAYS
+  );
+}
+
+/** Travelling merchant event or manual call has happened at least once. */
+export function hasMerchantAppearedOnce(state: GameState): boolean {
+  const seen = state.story?.seen ?? {};
+  if (state.eventCooldowns?.merchant != null) return true;
+  if (Number(seen.callMerchantUsageCount) > 0) return true;
+  if (seen.callMerchantLastEndPlayTime != null) return true;
+  if ((state.story?.merchantPurchases ?? 0) > 0) return true;
+  return false;
+}
+
+/** Bastion attack-wave combat has started at least once (`firstWaveTriggered`). */
+export function hasPlayerFoughtCombatOnce(state: GameState): boolean {
+  return Boolean(state.story?.seen?.firstWaveTriggered);
+}
 
 /** Highest gambler wager amount currently unlocked by the player's luck. */
 function getUnlockedWager(luck: number): number {
@@ -53,23 +84,34 @@ function getLuckEffectLines(
 ): EffectLine[] {
   const luck = getTotalLuck(state);
   const crit = calculateCriticalStrikeChance(luck);
-  const unlockedWager = getUnlockedWager(luck);
-  return [
+  const lines: EffectLine[] = [
     {
       key: "crit",
-      text: t("sidePanel.statLuckEffectCrit", {
-        percent: crit,
-        maxPercent: LUCK_CRIT_MAX_PERCENT,
-      }),
-    },
-    {
-      key: "gambling",
-      text: t("sidePanel.statLuckEffectGambling", {
-        amount: unlockedWager,
-        maxAmount: MAX_WAGER_TIER,
-      }),
+      primary: t("sidePanel.statLuckEffectCrit", { percent: crit }),
+      secondary:
+        crit < LUCK_CRIT_MAX_PERCENT
+          ? t("sidePanel.statEffectMaxPercent", {
+              value: LUCK_CRIT_MAX_PERCENT,
+            })
+          : undefined,
     },
   ];
+
+  if (hasGamblerAppearedOnce(state)) {
+    const unlockedWager = getUnlockedWager(luck);
+    lines.push({
+      key: "gambling",
+      primary: t("sidePanel.statLuckEffectGambling", {
+        amount: unlockedWager,
+      }),
+      secondary:
+        unlockedWager < MAX_WAGER_TIER
+          ? t("sidePanel.statEffectMaxGold", { value: MAX_WAGER_TIER })
+          : undefined,
+    });
+  }
+
+  return lines;
 }
 
 function getStrengthEffectLines(
@@ -81,7 +123,9 @@ function getStrengthEffectLines(
   return [
     {
       key: "bastion",
-      text: t("sidePanel.statStrengthEffectBastion", { value: bastionAttack }),
+      primary: t("sidePanel.statStrengthEffectBastion", {
+        value: bastionAttack,
+      }),
     },
   ];
 }
@@ -93,42 +137,48 @@ function getKnowledgeEffectLines(
   const knowledge = getTotalKnowledge(state);
   const discountPercent = Math.round(calculateMerchantDiscount(knowledge) * 100);
   const decisionTime = calculateKnowledgeTimeBonus(knowledge);
-  const tradeCooldownReduction = Math.min(
-    TRADE_COOLDOWN_REDUCTION_PER_KNOWLEDGE * knowledge,
-    TRADE_COOLDOWN_REDUCTION_MAX_SEC,
-  );
   const combatItemDamage = Math.floor(
     knowledge / COMBAT_ITEM_DAMAGE_PER_KNOWLEDGE,
   );
-  return [
-    {
+
+  const lines: EffectLine[] = [];
+
+  if (hasMerchantAppearedOnce(state)) {
+    lines.push({
       key: "merchant",
-      text: t("sidePanel.statKnowledgeEffectMerchant", {
+      primary: t("sidePanel.statKnowledgeEffectMerchant", {
         percent: discountPercent,
-        maxPercent: KNOWLEDGE_MERCHANT_MAX_PERCENT,
       }),
-    },
-    {
-      key: "decisionTime",
-      text: t("sidePanel.statKnowledgeEffectDecisionTime", {
-        seconds: decisionTime,
-        maxSeconds: KNOWLEDGE_DECISION_MAX_SEC,
-      }),
-    },
-    {
-      key: "tradeCooldown",
-      text: t("sidePanel.statKnowledgeEffectTradeCooldown", {
-        seconds: tradeCooldownReduction,
-        maxSeconds: TRADE_COOLDOWN_REDUCTION_MAX_SEC,
-      }),
-    },
-    {
-      key: "combatItems",
-      text: t("sidePanel.statKnowledgeEffectCombatItems", {
-        damage: combatItemDamage,
-      }),
-    },
-  ];
+      secondary:
+        discountPercent < KNOWLEDGE_MERCHANT_MAX_PERCENT
+          ? t("sidePanel.statEffectMaxPercent", {
+              value: KNOWLEDGE_MERCHANT_MAX_PERCENT,
+            })
+          : undefined,
+    });
+  }
+
+  lines.push({
+    key: "decisionTime",
+    primary: t("sidePanel.statKnowledgeEffectDecisionTime", {
+      seconds: decisionTime,
+    }),
+    secondary:
+      decisionTime < KNOWLEDGE_DECISION_MAX_SEC
+        ? t("sidePanel.statEffectMaxSeconds", {
+            value: KNOWLEDGE_DECISION_MAX_SEC,
+          })
+        : undefined,
+  });
+
+  lines.push({
+    key: "combatItems",
+    primary: t("sidePanel.statKnowledgeEffectCombatItems", {
+      damage: combatItemDamage,
+    }),
+  });
+
+  return lines;
 }
 
 function getMadnessEffectLines(
@@ -146,29 +196,51 @@ function getMadnessEffectLines(
   const combatFail = getCombatAttackFailChancePercent(madness);
   const deathChance = getMadnessDeathChancePerCycle(madness, cruelMode);
   const maxDeathChance = getMadnessDeathChanceMaxPerCycle(cruelMode);
-  return [
+  const deathPercent = madnessDeathChanceToTooltipPercent(deathChance);
+  const maxDeathPercent = madnessDeathChanceToTooltipPercent(maxDeathChance);
+
+  const lines: EffectLine[] = [
     {
       key: "production",
-      text: t("sidePanel.statMadnessEffectProduction", {
+      primary: t("sidePanel.statMadnessEffectProduction", {
         percent: productionPenalty,
-        maxPercent: maxProductionPenalty,
       }),
-    },
-    {
-      key: "combat",
-      text: t("sidePanel.statMadnessEffectCombat", {
-        percent: combatFail,
-        maxPercent: MADNESS_COMBAT_FAIL_MAX_PERCENT,
-      }),
-    },
-    {
-      key: "deaths",
-      text: t("sidePanel.statMadnessEffectDeaths", {
-        percent: madnessDeathChanceToTooltipPercent(deathChance),
-        maxPercent: madnessDeathChanceToTooltipPercent(maxDeathChance),
-      }),
+      secondary:
+        productionPenalty < maxProductionPenalty
+          ? t("sidePanel.statEffectMaxPercent", {
+              value: maxProductionPenalty,
+            })
+          : undefined,
     },
   ];
+
+  if (hasPlayerFoughtCombatOnce(state)) {
+    lines.push({
+      key: "combat",
+      primary: t("sidePanel.statMadnessEffectCombat", {
+        percent: combatFail,
+      }),
+      secondary:
+        combatFail < MADNESS_COMBAT_FAIL_MAX_PERCENT
+          ? t("sidePanel.statEffectMaxPercent", {
+              value: MADNESS_COMBAT_FAIL_MAX_PERCENT,
+            })
+          : undefined,
+    });
+  }
+
+  lines.push({
+    key: "deaths",
+    primary: t("sidePanel.statMadnessEffectDeaths", {
+      percent: deathPercent,
+    }),
+    secondary:
+      deathPercent < maxDeathPercent
+        ? t("sidePanel.statEffectMaxPercent", { value: maxDeathPercent })
+        : undefined,
+  });
+
+  return lines;
 }
 
 function getStatEffectLines(
@@ -206,7 +278,12 @@ export default function StatEffectsTooltip({
   return (
     <div className="mt-1 border-t border-border pt-1">
       {lines.map((line) => (
-        <div key={line.key}>{line.text}</div>
+        <div key={line.key}>
+          <div>{line.primary}</div>
+          {line.secondary ? (
+            <div className={MUTED_SECONDARY_CLASS}>{line.secondary}</div>
+          ) : null}
+        </div>
       ))}
     </div>
   );

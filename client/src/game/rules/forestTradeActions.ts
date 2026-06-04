@@ -1,6 +1,5 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
-import { getTotalKnowledge } from "./effectsCalculation";
 import { applyActionEffects } from "./actionEffects";
 import { getMerchantGoldPricePerUnit } from "./eventsMerchant";
 
@@ -586,7 +585,10 @@ export const forestTradeActions: Record<string, Action> = {
   },
 };
 
-// Generic handler for all trade actions with knowledge-based cooldown reduction
+/** Forest buy-trade cooldown (seconds); knowledge no longer reduces this. */
+const FOREST_TRADE_COOLDOWN_SEC = 30;
+const FOREST_TRADE_SILVER_FOR_GOLD_COOLDOWN_SEC = 5;
+
 export function handleTradeAction(
   actionId: string,
   state: GameState,
@@ -595,14 +597,10 @@ export function handleTradeAction(
   const effectUpdates = applyActionEffects(actionId, state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-  let actualCooldown: number;
-  if (actionId === "tradeSilverForGold") {
-    actualCooldown = 5;
-  } else {
-    const knowledge = getTotalKnowledge(state);
-    const cooldownReduction = Math.min(0.5 * knowledge, 15);
-    actualCooldown = Math.max(15, 30 - cooldownReduction);
-  }
+  const actualCooldown =
+    actionId === "tradeSilverForGold"
+      ? FOREST_TRADE_SILVER_FOR_GOLD_COOLDOWN_SEC
+      : FOREST_TRADE_COOLDOWN_SEC;
 
   result.stateUpdates.cooldowns = {
     ...result.stateUpdates.cooldowns,
