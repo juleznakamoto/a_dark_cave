@@ -206,9 +206,7 @@ export default function StatEffectsTooltip({
   return (
     <div className="mt-1 border-t border-border pt-1">
       {lines.map((line) => (
-        <div key={line.key} className="text-gray-400">
-          {line.text}
-        </div>
+        <div key={line.key}>{line.text}</div>
       ))}
     </div>
   );
