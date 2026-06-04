@@ -222,6 +222,16 @@ body {
   height: 100%;
 }
 
+/* Stats side-panel header insight badge */
+.building-action-badge--stats-header {
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.building-action-badge--stats-header:hover,
+.building-action-badge--stats-header.building-action-badge--playing {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
 .building-action-badge__idle,
 .building-action-badge__svg {
   position: absolute;

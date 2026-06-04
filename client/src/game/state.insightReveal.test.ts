@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
+import { STAT_INSIGHT_REVEAL_KEY } from "./rules/insightReveal";
 import { createInitialState, useGameStore } from "./state";
 describe("revealActionEffects", () => {
   beforeEach(() => {
@@ -80,6 +81,50 @@ describe("revealActionEffects", () => {
     const after = useGameStore.getState();
     expect(after.revealedEffects).toContain("craftStoneAxe");
     expect(after.insightRevealing.craftStoneAxe).toBeUndefined();
+  });
+});
+
+describe("revealStatEffects", () => {
+  beforeEach(() => {
+    useGameStore.getState().initialize();
+  });
+
+  it("deducts insight and starts reveal animation before statEffectsRevealed", () => {
+    useGameStore.setState({
+      buildings: {
+        ...useGameStore.getState().buildings,
+        clerksHut: 1,
+      },
+      resources: {
+        ...useGameStore.getState().resources,
+        insight: 600,
+      },
+    });
+
+    const ok = useGameStore.getState().revealStatEffects();
+    expect(ok).toBe(true);
+
+    const after = useGameStore.getState();
+    expect(after.resources.insight).toBe(100);
+    expect(after.statEffectsRevealed).toBeFalsy();
+    expect(after.insightRevealing[STAT_INSIGHT_REVEAL_KEY]).toBeGreaterThan(
+      Date.now(),
+    );
+  });
+
+  it("sets statEffectsRevealed after reveal window", () => {
+    useGameStore.setState({
+      statEffectsRevealed: false,
+      insightRevealing: {
+        [STAT_INSIGHT_REVEAL_KEY]: Date.now() - 1,
+      },
+    });
+
+    useGameStore.getState().tickCooldowns();
+
+    const after = useGameStore.getState();
+    expect(after.statEffectsRevealed).toBe(true);
+    expect(after.insightRevealing[STAT_INSIGHT_REVEAL_KEY]).toBeUndefined();
   });
 });
 

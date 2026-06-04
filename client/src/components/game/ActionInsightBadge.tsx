@@ -11,6 +11,7 @@ import {
   getInsightRevealCost,
   isStatEffectsRevealed,
   STAT_EFFECTS_INSIGHT_COST,
+  STAT_INSIGHT_REVEAL_KEY,
 } from "@/game/rules/insightReveal";
 import { useGameStore } from "@/game/state";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
@@ -31,8 +32,13 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
 
   const { t } = useTranslation("ui");
   const state = useGameStore((s) => s as unknown as GameState);
+  const insightRevealing = useGameStore((s) => s.insightRevealing);
   const insightRevealEnd = useGameStore((s) =>
-    actionId ? s.insightRevealing?.[actionId] : undefined,
+    target === "stats"
+      ? s.insightRevealing?.[STAT_INSIGHT_REVEAL_KEY]
+      : actionId
+        ? s.insightRevealing?.[actionId]
+        : undefined,
   );
   const revealActionEffects = useGameStore((s) => s.revealActionEffects);
   const revealStatEffects = useGameStore((s) => s.revealStatEffects);
@@ -47,14 +53,14 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   const [, forceUpdate] = useState(0);
 
   const isStats = target === "stats";
+  const isStatsRevealing =
+    typeof insightRevealEnd === "number" && insightRevealEnd > Date.now();
   const canShow = isStats
-    ? (state.buildings.clerksHut ?? 0) >= 1 && !isStatEffectsRevealed(state)
+    ? (state.buildings.clerksHut ?? 0) >= 1 &&
+    (!isStatEffectsRevealed(state) || isStatsRevealing)
     : canRevealEffects(actionId!, state);
   const isExecuting = !isStats && executionStart > 0 && executionDuration > 0;
-  const isRevealing =
-    !isStats &&
-    typeof insightRevealEnd === "number" &&
-    insightRevealEnd > Date.now();
+  const isRevealing = isStatsRevealing;
   const playing = canShow && !isExecuting && isRevealing;
 
   useEffect(() => {
@@ -75,7 +81,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
     ? STAT_EFFECTS_INSIGHT_COST
     : (getInsightRevealCost(actionId!) ?? 0);
   const canAfford = isStats
-    ? canRevealStatEffects(state)
+    ? canRevealStatEffects(state, insightRevealing)
     : getInsightAmount(state) >= cost;
 
   const costTooltip = t("badges.insightRevealSeeEffects", {
@@ -161,6 +167,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
             key={playing ? "reveal" : "idle"}
             playing={playing}
             embedded
+            statsHeader={isStats}
           />
         </button>
       </TooltipWrapper>

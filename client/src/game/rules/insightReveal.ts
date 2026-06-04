@@ -10,14 +10,22 @@ export const INSIGHT_REVEAL_DURATION_MS = 3_000;
 export const INSIGHT_REVEAL_ACTION_COOLDOWN_SEC = 3;
 /** One-time cost to reveal all side-panel stat effect tooltips. */
 export const STAT_EFFECTS_INSIGHT_COST = 500;
+/** `insightRevealing` key while the Stats header badge plays its reveal animation. */
+export const STAT_INSIGHT_REVEAL_KEY = "stats";
 
 export function isStatEffectsRevealed(state: GameState): boolean {
   return Boolean(state.statEffectsRevealed);
 }
 
-export function canRevealStatEffects(state: GameState): boolean {
+export function canRevealStatEffects(
+  state: GameState,
+  insightRevealing?: Record<string, number>,
+): boolean {
   if ((state.buildings.clerksHut ?? 0) < 1) return false;
   if (isStatEffectsRevealed(state)) return false;
+  if (isInsightRevealInProgress(STAT_INSIGHT_REVEAL_KEY, insightRevealing)) {
+    return false;
+  }
   return getInsightAmount(state) >= STAT_EFFECTS_INSIGHT_COST;
 }
 

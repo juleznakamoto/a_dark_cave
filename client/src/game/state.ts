@@ -49,6 +49,7 @@ import {
   INSIGHT_REVEAL_ACTION_COOLDOWN_SEC,
   INSIGHT_REVEAL_DURATION_MS,
   STAT_EFFECTS_INSIGHT_COST,
+  STAT_INSIGHT_REVEAL_KEY,
 } from "@/game/rules/insightReveal";
 import {
   calculateTotalEffects,
@@ -1992,7 +1993,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   revealStatEffects: () => {
     const state = get();
-    if (!canRevealStatEffects(state)) return false;
+    if (!canRevealStatEffects(state, state.insightRevealing)) return false;
 
     const resourceUpdates = updateResource(
       state,
@@ -2001,7 +2002,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     );
     set({
       ...resourceUpdates,
-      statEffectsRevealed: true,
+      insightRevealing: {
+        ...(state.insightRevealing ?? {}),
+        [STAT_INSIGHT_REVEAL_KEY]: Date.now() + INSIGHT_REVEAL_DURATION_MS,
+      },
     });
     return true;
   },
@@ -2029,9 +2033,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const newRevealing = { ...state.insightRevealing };
       const revealedEffects = [...(state.revealedEffects ?? [])];
       let revealChanged = false;
+      let statEffectsRevealed = state.statEffectsRevealed;
       for (const [actionId, endTime] of Object.entries(state.insightRevealing ?? {})) {
         if (now >= endTime) {
-          if (!revealedEffects.includes(actionId)) {
+          if (actionId === STAT_INSIGHT_REVEAL_KEY) {
+            statEffectsRevealed = true;
+          } else if (!revealedEffects.includes(actionId)) {
             revealedEffects.push(actionId);
           }
           delete newRevealing[actionId];
@@ -2057,7 +2064,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
         initialCooldowns: newInitialCooldowns,
         heartfireState: newHeartfireState,
         ...(revealChanged
-          ? { insightRevealing: newRevealing, revealedEffects }
+          ? {
+            insightRevealing: newRevealing,
+            revealedEffects,
+            statEffectsRevealed,
+          }
           : {}),
       };
     });

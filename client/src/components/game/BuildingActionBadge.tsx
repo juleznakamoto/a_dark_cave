@@ -6,11 +6,14 @@ type BuildingActionBadgeProps = {
   playing?: boolean;
   /** When true, badge fills its parent instead of self-anchoring with absolute CSS. */
   embedded?: boolean;
+  /** Side-panel Stats header: 1px white border at 60% opacity. */
+  statsHeader?: boolean;
 };
 
 export function BuildingActionBadge({
   playing = false,
   embedded = false,
+  statsHeader = false,
 }: BuildingActionBadgeProps) {
   const id = useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const maskId = `building-action-badge-mask-${id}`;
@@ -21,6 +24,7 @@ export function BuildingActionBadge({
       className={cn(
         "building-action-badge",
         embedded && "building-action-badge--embedded",
+        statsHeader && "building-action-badge--stats-header",
         playing && "building-action-badge--playing",
       )}
       aria-hidden="true"
