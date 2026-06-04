@@ -796,11 +796,16 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     }
   }, [isOpen, detectedCurrency, setDetectedCurrency]);
 
+  const openSignInFromShop = () => {
+    onClose();
+    setAuthDialogOpen(true);
+  };
+
   const handleShopItemPurchaseClick = (itemId: string) => {
     const item = SHOP_ITEMS[itemId];
     const isUserSignedIn = useGameStore.getState().isUserSignedIn;
     if (item.price === 0 && !isUserSignedIn) {
-      setAuthDialogOpen(true);
+      openSignInFromShop();
       return;
     }
     void handlePurchaseClick(itemId);
@@ -814,7 +819,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       try {
         const user = await getCurrentUser();
         if (!user) {
-          setAuthDialogOpen(true);
+          openSignInFromShop();
           return;
         }
 
@@ -1430,7 +1435,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     button_id="shop-secure-purchase-sign-up"
                     onClick={() => {
                       setShowSecurePurchasePrompt(false);
-                      setAuthDialogOpen(true);
+                      openSignInFromShop();
                     }}
                   >
                     {t("ui:shop.securePurchaseSignUp")}
