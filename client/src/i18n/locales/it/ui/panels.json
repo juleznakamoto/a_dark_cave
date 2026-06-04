@@ -165,7 +165,7 @@
     "statKnowledgeTooltip": "Influenza le situazioni in cui l'astuzia è utile",
     "statMadnessTooltip": "Conduce i pensieri su sentieri pericolosi",
     "statLuckEffectCrit": "+{{percent}}% critical strike chance in combat ({{maxPercent}}% max)",
-    "statLuckEffectGambling": "Wager up to {{amount}} gold at the gambler ({{maxAmount}} max)",
+    "statLuckEffectGambling": "Wager up to {{amount}} Gold at the gambler ({{maxAmount}} max)",
     "statStrengthEffectBastion": "+{{value}} Bastion attack (½ of Strength)",
     "statKnowledgeEffectMerchant": "−{{percent}}% merchant prices ({{maxPercent}}% max)",
     "statKnowledgeEffectDecisionTime": "+{{seconds}}s decision time in timed events ({{maxSeconds}}s max)",

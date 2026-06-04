@@ -499,7 +499,7 @@ export default function SidePanelSection({
             className={cn(
               "font-noto-symbols-2",
               isIconCenteredLabelSection
-                ? "inline-flex w-3 shrink-0 items-center justify-center leading-none"
+                ? "inline-flex w-3 shrink-0 items-center justify-center leading-none translate-y-px"
                 : "mr-1",
               item.iconColor,
             )}
