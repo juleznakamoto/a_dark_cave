@@ -575,11 +575,6 @@ export default function GameContainer() {
     ],
   );
 
-  const openTraderFromHotkey = useCallback(() => {
-    clearTabAnimation("trader");
-    setShopDialogOpen(true);
-  }, [clearTabAnimation, setShopDialogOpen]);
-
   const closeVillageHotkeyTutorial = useCallback(() => {
     setVillageHotkeyTutorialOpen(false);
     useGameStore.setState({ villageHotkeyTutorialShown: true });
@@ -638,18 +633,6 @@ export default function GameContainer() {
         label: `[${i + 1}]`,
       });
     });
-    if (traderUnlocked) {
-      const el = queryTabButton("tab-trader");
-      if (el) {
-        const r = el.getBoundingClientRect();
-        next.push({
-          key: "hotkey-trader",
-          left: r.left + r.width / 2,
-          top: r.top - 2,
-          label: "[T]",
-        });
-      }
-    }
     setPauseHotkeyBadges(next);
 
     const minBadgeAnchorTop =
@@ -700,7 +683,6 @@ export default function GameContainer() {
     showVillageHotkeyBox,
     useLimelightNav,
     visibleHotkeyTabs,
-    traderUnlocked,
   ]);
 
   useLayoutEffect(() => {
@@ -742,13 +724,6 @@ export default function GameContainer() {
 
       const key = e.key;
 
-      if (key === "t" || key === "T") {
-        if (!traderUnlocked) return;
-        e.preventDefault();
-        openTraderFromHotkey();
-        return;
-      }
-
       if (key >= "1" && key <= "9") {
         const index = Number(key) - 1;
         if (index < 0 || index >= visibleHotkeyTabs.length) return;
@@ -776,13 +751,7 @@ export default function GameContainer() {
 
     window.addEventListener("keydown", onKeyDown, true);
     return () => window.removeEventListener("keydown", onKeyDown, true);
-  }, [
-    flags.gameStarted,
-    traderUnlocked,
-    visibleHotkeyTabs,
-    applyHotkeyTab,
-    openTraderFromHotkey,
-  ]);
+  }, [flags.gameStarted, visibleHotkeyTabs, applyHotkeyTab]);
 
   // Show start screen if game hasn't started yet
   if (!flags.gameStarted) {
@@ -937,148 +906,200 @@ export default function GameContainer() {
               // Standard button design
               <div
                 ref={tabButtonRowRef}
-                className="inline-flex max-w-full flex-nowrap items-center gap-x-2 overflow-x-auto pl-[3px] scrollbar-hide md:gap-x-3"
+                className="flex w-full max-w-full flex-nowrap items-center gap-x-2 overflow-hidden pl-[3px] md:gap-x-3"
               >
-                <button
-                  className={`${tabButtonClass} ${activeTab === "cave"
-                    ? tabActiveTextClass
-                    : tabInactiveTextClass
-                    } `}
-                  onClick={() => setActiveTab("cave")}
-                  data-testid="tab-cave"
-                >
-                  {t("tabs.cave", { ns: "common" })}
-                </button>
-
-                {flags.villageUnlocked && (
+                <div className="inline-flex min-w-0 flex-1 flex-nowrap items-center gap-x-2 overflow-x-auto scrollbar-hide md:gap-x-3">
                   <button
-                    className={`${tabButtonClass} ${animatingTabs.has("village")
-                      ? fadePhaseTabs.has("village")
-                        ? "tab-fade-in"
-                        : "tab-blink-new"
-                      : activeTab === "village"
+                    className={`${tabButtonClass} ${activeTab === "cave"
+                      ? tabActiveTextClass
+                      : tabInactiveTextClass
+                      } `}
+                    onClick={() => setActiveTab("cave")}
+                    data-testid="tab-cave"
+                  >
+                    {t("tabs.cave", { ns: "common" })}
+                  </button>
+
+                  {flags.villageUnlocked && (
+                    <button
+                      className={`${tabButtonClass} ${animatingTabs.has("village")
+                        ? fadePhaseTabs.has("village")
+                          ? "tab-fade-in"
+                          : "tab-blink-new"
+                        : activeTab === "village"
+                          ? tabActiveTextClass
+                          : tabInactiveTextClass
+                        }`}
+                      onClick={() => {
+                        setAnimatingTabs((prev) => {
+                          const next = new Set(prev);
+                          next.delete("village");
+                          return next;
+                        });
+                        setFadePhaseTabs((prev) => {
+                          const next = new Set(prev);
+                          next.delete("village");
+                          return next;
+                        });
+                        setActiveTab("village");
+                      }}
+                      data-testid="tab-village"
+                    >
+                      {buildings.stoneHut >= 5
+                        ? t("tabs.city", { ns: "common" })
+                        : t("tabs.village", { ns: "common" })}
+                    </button>
+                  )}
+
+                  {/* Estate Tab Button */}
+                  {(estateUnlocked || buildings.darkEstate >= 1) && (
+                    <button
+                      className={`${tabButtonClass} ${animatingTabs.has("estate")
+                        ? fadePhaseTabs.has("estate")
+                          ? "tab-fade-in"
+                          : "tab-blink-new"
+                        : activeTab === "estate"
+                          ? tabActiveTextClass
+                          : tabInactiveTextClass
+                        }`}
+                      onClick={() => {
+                        setAnimatingTabs((prev) => {
+                          const next = new Set(prev);
+                          next.delete("estate");
+                          return next;
+                        });
+                        setFadePhaseTabs((prev) => {
+                          const next = new Set(prev);
+                          next.delete("estate");
+                          return next;
+                        });
+                        setActiveTab("estate");
+                      }}
+                      data-testid="tab-estate"
+                    >
+                      {t("tabs.estate", { ns: "common" })}
+                    </button>
+                  )}
+
+                  {flags.forestUnlocked && (
+                    <button
+                      className={`${tabButtonClass} ${animatingTabs.has("forest")
+                        ? fadePhaseTabs.has("forest")
+                          ? "tab-fade-in"
+                          : "tab-blink-new"
+                        : activeTab === "forest"
+                          ? tabActiveTextClass
+                          : tabInactiveTextClass
+                        }`}
+                      onClick={() => {
+                        setAnimatingTabs((prev) => {
+                          const next = new Set(prev);
+                          next.delete("forest");
+                          return next;
+                        });
+                        setFadePhaseTabs((prev) => {
+                          const next = new Set(prev);
+                          next.delete("forest");
+                          return next;
+                        });
+                        setActiveTab("forest");
+                      }}
+                      data-testid="tab-forest"
+                    >
+                      {t("tabs.forest", { ns: "common" })}
+                    </button>
+                  )}
+
+                  {flags.bastionUnlocked && (
+                    <button
+                      className={`${tabButtonClass} ${animatingTabs.has("bastion")
+                        ? fadePhaseTabs.has("bastion")
+                          ? "tab-fade-in"
+                          : "tab-blink-new"
+                        : activeTab === "bastion"
+                          ? tabActiveTextClass
+                          : tabInactiveTextClass
+                        }`}
+                      onClick={() => {
+                        setAnimatingTabs((prev) => {
+                          const next = new Set(prev);
+                          next.delete("bastion");
+                          return next;
+                        });
+                        setFadePhaseTabs((prev) => {
+                          const next = new Set(prev);
+                          next.delete("bastion");
+                          return next;
+                        });
+                        setActiveTab("bastion");
+                      }}
+                      data-testid="tab-bastion"
+                    >
+                      {flags.hasFortress
+                        ? t("tabs.fortress", { ns: "common" })
+                        : t("tabs.bastion", { ns: "common" })}
+                    </button>
+                  )}
+
+                  {/* Achievements Tab Button ⚜︎ */}
+                  {(relics?.survivors_notes || books?.book_of_trials) && (
+                    <button
+                      className={`${tabIconButtonClass} ${animatingTabs.has("achievements")
+                        ? fadePhaseTabs.has("achievements")
+                          ? "tab-fade-in"
+                          : "tab-blink-new"
+                        : activeTab === "achievements"
+                          ? tabActiveTextClass
+                          : tabInactiveTextClass
+                        }`}
+                      onClick={() => {
+                        setAnimatingTabs((prev) => {
+                          const next = new Set(prev);
+                          next.delete("achievements");
+                          return next;
+                        });
+                        setFadePhaseTabs((prev) => {
+                          const next = new Set(prev);
+                          next.delete("achievements");
+                          return next;
+                        });
+                        setLastViewedUnclaimedAchievementIds(unclaimedAchievementIds);
+                        setActiveTab("achievements");
+                      }}
+                      data-testid="tab-achievements"
+                    >
+                      <span className="text-[14px] leading-none font-noto-symbols-2">
+                        ⚜
+                      </span>
+                    </button>
+                  )}
+
+                  {/* Timed Event Tab Button */}
+                  {timedEventTab.isActive && (
+                    <button
+                      className={`${tabIconButtonClass} gap-1 ${activeTab === "timedevent"
                         ? tabActiveTextClass
                         : tabInactiveTextClass
-                      }`}
-                    onClick={() => {
-                      setAnimatingTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("village");
-                        return next;
-                      });
-                      setFadePhaseTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("village");
-                        return next;
-                      });
-                      setActiveTab("village");
-                    }}
-                    data-testid="tab-village"
-                  >
-                    {buildings.stoneHut >= 5
-                      ? t("tabs.city", { ns: "common" })
-                      : t("tabs.village", { ns: "common" })}
-                  </button>
-                )}
+                        }`}
+                      onClick={() => setActiveTab("timedevent")}
+                      data-testid="tab-timedevent"
+                    >
+                      <span className="timer-symbol text-[14px] leading-none font-noto-symbols-2">
+                        ⊚
+                      </span>
+                    </button>
+                  )}
+                </div>
 
-                {/* Estate Tab Button */}
-                {(estateUnlocked || buildings.darkEstate >= 1) && (
-                  <button
-                    className={`${tabButtonClass} ${animatingTabs.has("estate")
-                      ? fadePhaseTabs.has("estate")
-                        ? "tab-fade-in"
-                        : "tab-blink-new"
-                      : activeTab === "estate"
-                        ? tabActiveTextClass
-                        : tabInactiveTextClass
-                      }`}
-                    onClick={() => {
-                      setAnimatingTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("estate");
-                        return next;
-                      });
-                      setFadePhaseTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("estate");
-                        return next;
-                      });
-                      setActiveTab("estate");
-                    }}
-                    data-testid="tab-estate"
-                  >
-                    {t("tabs.estate", { ns: "common" })}
-                  </button>
-                )}
-
-                {flags.forestUnlocked && (
-                  <button
-                    className={`${tabButtonClass} ${animatingTabs.has("forest")
-                      ? fadePhaseTabs.has("forest")
-                        ? "tab-fade-in"
-                        : "tab-blink-new"
-                      : activeTab === "forest"
-                        ? tabActiveTextClass
-                        : tabInactiveTextClass
-                      }`}
-                    onClick={() => {
-                      setAnimatingTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("forest");
-                        return next;
-                      });
-                      setFadePhaseTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("forest");
-                        return next;
-                      });
-                      setActiveTab("forest");
-                    }}
-                    data-testid="tab-forest"
-                  >
-                    {t("tabs.forest", { ns: "common" })}
-                  </button>
-                )}
-
-                {flags.bastionUnlocked && (
-                  <button
-                    className={`${tabButtonClass} ${animatingTabs.has("bastion")
-                      ? fadePhaseTabs.has("bastion")
-                        ? "tab-fade-in"
-                        : "tab-blink-new"
-                      : activeTab === "bastion"
-                        ? tabActiveTextClass
-                        : tabInactiveTextClass
-                      }`}
-                    onClick={() => {
-                      setAnimatingTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("bastion");
-                        return next;
-                      });
-                      setFadePhaseTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("bastion");
-                        return next;
-                      });
-                      setActiveTab("bastion");
-                    }}
-                    data-testid="tab-bastion"
-                  >
-                    {flags.hasFortress
-                      ? t("tabs.fortress", { ns: "common" })
-                      : t("tabs.bastion", { ns: "common" })}
-                  </button>
-                )}
-
-                {/* Trader Tab Button */}
                 {traderUnlocked && (
                   <button
-                    className={`${tabButtonClass} ${animatingTabs.has("trader")
+                    className={`${tabButtonClass} shrink-0 gap-1.5 pl-2 transition-opacity ${animatingTabs.has("trader")
                       ? fadePhaseTabs.has("trader")
                         ? "tab-fade-in"
                         : "tab-blink-new"
-                      : tabInactiveTextClass
+                      : isPaused
+                        ? tabInactiveTextClass
+                        : "opacity-60 hover:opacity-100"
                       }`}
                     onClick={() => {
                       setAnimatingTabs((prev) => {
@@ -1095,56 +1116,13 @@ export default function GameContainer() {
                     }}
                     data-testid="tab-trader"
                   >
+                    <span
+                      className="font-noto-symbols-2 text-[15px] leading-none text-lime-500"
+                      aria-hidden
+                    >
+                      ◬
+                    </span>
                     {t("tabs.trader", { ns: "common" })}
-                  </button>
-                )}
-
-                {/* Achievements Tab Button ⚜︎ */}
-                {(relics?.survivors_notes || books?.book_of_trials) && (
-                  <button
-                    className={`${tabIconButtonClass} ${animatingTabs.has("achievements")
-                      ? fadePhaseTabs.has("achievements")
-                        ? "tab-fade-in"
-                        : "tab-blink-new"
-                      : activeTab === "achievements"
-                        ? tabActiveTextClass
-                        : tabInactiveTextClass
-                      }`}
-                    onClick={() => {
-                      setAnimatingTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("achievements");
-                        return next;
-                      });
-                      setFadePhaseTabs((prev) => {
-                        const next = new Set(prev);
-                        next.delete("achievements");
-                        return next;
-                      });
-                      setLastViewedUnclaimedAchievementIds(unclaimedAchievementIds);
-                      setActiveTab("achievements");
-                    }}
-                    data-testid="tab-achievements"
-                  >
-                    <span className="text-[14px] leading-none font-noto-symbols-2">
-                      ⚜
-                    </span>
-                  </button>
-                )}
-
-                {/* Timed Event Tab Button */}
-                {timedEventTab.isActive && (
-                  <button
-                    className={`${tabIconButtonClass} gap-1 ${activeTab === "timedevent"
-                      ? tabActiveTextClass
-                      : tabInactiveTextClass
-                      }`}
-                    onClick={() => setActiveTab("timedevent")}
-                    data-testid="tab-timedevent"
-                  >
-                    <span className="timer-symbol text-[14px] leading-none font-noto-symbols-2">
-                      ⊚
-                    </span>
                   </button>
                 )}
               </div>

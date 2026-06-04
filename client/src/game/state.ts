@@ -1214,7 +1214,7 @@ export function isModalDialogOpen(state: GameStore): boolean {
 }
 
 /**
- * True when tab/trader keyboard shortcuts should be ignored.
+ * True when tab keyboard shortcuts should be ignored.
  * Unlike `isModalDialogOpen`, an active timed-event tab alone does not block hotkeys —
  * players should still switch tabs with 1–9 / arrows while a visit is open.
  */
