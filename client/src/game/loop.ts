@@ -416,36 +416,37 @@ export function startGameLoop() {
         handleAutoSave();
       }
 
-      const state = useGameStore.getState();
-      const playTimeMs = state.playTime || 0;
+      // Fresh state after playTime tick (do not redeclare `state` — shadows tick `state` above).
+      const promptState = useGameStore.getState();
+      const playTimeMs = promptState.playTime || 0;
 
       // Guest Profile sign-in dot: first after 15m play time, then every 60m play time (persisted).
-      if (!state.isUserSignedIn) {
-        const lastShown = state.lastAuthNotificationPlayTime ?? 0;
+      if (!promptState.isUserSignedIn) {
+        const lastShown = promptState.lastAuthNotificationPlayTime ?? 0;
         if (
           shouldTriggerGuestAuthNotification({
             playTimeMs,
             lastShownPlayTimeMs: lastShown,
-            authNotificationSeen: state.authNotificationSeen,
-            authNotificationVisible: state.authNotificationVisible,
+            authNotificationSeen: promptState.authNotificationSeen,
+            authNotificationVisible: promptState.authNotificationVisible,
           })
         ) {
           useGameStore.setState(
             guestAuthNotificationTriggerUpdates({
               playTimeMs,
               lastShownPlayTimeMs: lastShown,
-              authNotificationSeen: state.authNotificationSeen,
-              authNotificationVisible: state.authNotificationVisible,
+              authNotificationSeen: promptState.authNotificationSeen,
+              authNotificationVisible: promptState.authNotificationVisible,
             }),
           );
         }
       }
 
       // Rewards dialog: auto-open at play-time milestones until exclusive-item tasks are done (same bar as profile shortcut).
-      if (!isSocialPromoExclusiveRewardComplete(state)) {
+      if (!isSocialPromoExclusiveRewardComplete(promptState)) {
         const milestoneToOpen = socialPromptHighestMilestoneIndexToOpen(
           playTimeMs,
-          state.socialPromptMilestoneIndex ?? 0,
+          promptState.socialPromptMilestoneIndex ?? 0,
         );
         if (milestoneToOpen !== null) {
           useGameStore.setState({
@@ -457,9 +458,9 @@ export function startGameLoop() {
 
       // One-time feedback / contact dialog at 105 minutes of play.
       if (
-        !state.feedbackPromptShown &&
+        !promptState.feedbackPromptShown &&
         playTimeMs >= FEEDBACK_PROMPT_PLAY_MS &&
-        !isModalDialogOpen(state)
+        !isModalDialogOpen(promptState)
       ) {
         useGameStore.setState({
           feedbackDialogOpen: true,
