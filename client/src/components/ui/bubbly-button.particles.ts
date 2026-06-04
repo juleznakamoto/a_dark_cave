@@ -343,13 +343,13 @@ export const TRADER_TAB_PARTICLE_CONFIG: Partial<ParticleConfig> = {
     tailwindToHex("green-400"),
     tailwindToHex("green-500"),
   ],
-  count: 4,
+  count: 2,
   durationMin: 0.5,
   durationMax: 1.5,
-  distanceMin: 10,
-  distanceMax: 40,
+  distanceMin: 20,
+  distanceMax: 30,
   sizeMin: 1,
-  sizeMax: 3,
+  sizeMax: 2,
 };
 
 // Silver coin - slow gentle emission for hover
