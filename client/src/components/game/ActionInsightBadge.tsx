@@ -120,18 +120,11 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
     return () => setHighlightedResources([]);
   }, [playing, setHighlightedResources]);
 
-  if (!canShow || isExecuting) return null;
-
   const cost = isTimedEvent
     ? TIMED_EVENT_TAB_PROLONG_INSIGHT_COST
     : isStats
       ? STAT_EFFECTS_INSIGHT_COST
-      : (getInsightRevealCost(actionId!) ?? 0);
-  const canAfford = isTimedEvent
-    ? canProlongTimedEventTab(state, effectiveTimedRemaining)
-    : isStats
-      ? canRevealStatEffects(state, insightRevealing)
-      : getInsightAmount(state) >= cost;
+      : (actionId ? (getInsightRevealCost(actionId) ?? 0) : 0);
 
   const insightResource = formatTooltipResourceName("insight");
   const costTooltip = useMemo(
@@ -155,6 +148,14 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
         ),
     [i18n.resolvedLanguage ?? i18n.language, isTimedEvent, cost, insightResource],
   );
+
+  if (!canShow || isExecuting) return null;
+
+  const canAfford = isTimedEvent
+    ? canProlongTimedEventTab(state, effectiveTimedRemaining)
+    : isStats
+      ? canRevealStatEffects(state, insightRevealing)
+      : getInsightAmount(state) >= cost;
 
   const isBadgeDisabled = isTimedEvent
     ? !timedTimerUsable || !canAfford || playing
