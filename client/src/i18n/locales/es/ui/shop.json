@@ -1,6 +1,6 @@
 {
   "shop": {
-    "title": "Tienda del mercader", //x1.5
+    "title": "Mercader",
     "purchase": "Comprar",
     "owned": "Adquirido",
     "notEnoughGold": "No tienes suficiente oro.",

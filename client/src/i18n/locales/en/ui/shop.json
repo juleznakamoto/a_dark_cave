@@ -1,6 +1,6 @@
 {
   "shop": {
-    "title": "Trader's Shop",
+    "title": "Trader",
     "purchase": "Purchase",
     "owned": "Owned",
     "notEnoughGold": "You don't have enough gold.",

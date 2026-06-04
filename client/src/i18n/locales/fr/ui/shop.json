@@ -1,6 +1,6 @@
 {
   "shop": {
-    "title": "Boutique du marchand", //x1.5
+    "title": "Marchand",
     "purchase": "Acheter",
     "owned": "Possédé",
     "notEnoughGold": "Vous n'avez pas assez d'or.",

@@ -657,6 +657,7 @@ function CheckoutForm({
       <div className="flex gap-3 justify-center">
         <Button
           type="submit"
+          size="sm"
           disabled={!stripe || isProcessing}
           className="flex-1 font-bold"
           button_id="shop-complete-purchase"
@@ -1966,6 +1967,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         </div>
                                       )}
                                       <Button
+                                        size="sm"
                                         onClick={() => handlePurchaseClick(item.id)}
                                         disabled={
                                           (item.price === 0 &&
@@ -1983,7 +1985,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                                 purchaseIdToItemId(pid) === item.id,
                                             ))
                                         }
-                                        className="relative z-10 h-10 w-full"
+                                        className="relative z-10 w-full"
                                         button_id={`shop-purchase-${item.id}`}
                                       >
                                         {item.id === "gold_100_free"
