@@ -63,6 +63,7 @@ import {
   curseLikeDurationMs,
   disgustDurationMs,
   cruelModeScale,
+  riddleFogDurationMs,
 } from "@/game/cruelMode";
 import { isBuildingUpgrade } from "@/game/buildingHierarchy";
 import cn from "clsx";
@@ -1145,7 +1146,6 @@ export default function VillagePanel() {
                                   disgustState.endTime - Date.now(),
                                 );
                                 const totalDuration =
-                                  disgustState.duration ||
                                   disgustDurationMs(state.cruelMode);
                                 const elapsed = totalDuration - timeRemaining;
                                 return Math.min(
@@ -1290,8 +1290,9 @@ export default function VillagePanel() {
                             <div className="relative inline-flex items-center gap-1 mt-[0px]">
                               <CircularProgress
                                 value={(() => {
-                                  const fogDuration =
-                                    fogState.duration || 5 * 60 * 1000;
+                                  const fogDuration = riddleFogDurationMs(
+                                    cruelModeScale(state),
+                                  );
                                   const timeRemaining = Math.max(
                                     0,
                                     fogState.endTime - Date.now(),
