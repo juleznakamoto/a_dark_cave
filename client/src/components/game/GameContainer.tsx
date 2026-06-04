@@ -1117,13 +1117,13 @@ export default function GameContainer() {
                     data-testid="tab-trader"
                   >
                     <span
-                      className="font-noto-symbols-2 text-base leading-none text-lime-500 opacity-80 transition-opacity group-hover:opacity-100 self-end mb-0.5"
+                      className="font-noto-symbols-2 text-[19px] leading-none text-lime-500 opacity-80 transition-opacity group-hover:opacity-100 relative top-px"
                       aria-hidden
                     >
                       ◬
                     </span>
                     <span
-                      className={`transition-opacity ${animatingTabs.has("trader")
+                      className={`font-normal transition-[opacity,font-weight] group-hover:font-semibold ${animatingTabs.has("trader")
                         ? ""
                         : isPaused
                           ? tabInactiveTextClass
