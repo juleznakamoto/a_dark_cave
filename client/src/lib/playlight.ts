@@ -3,31 +3,12 @@ import {
   installPlaylightExitIntentCloseButton,
   scanPlaylightExitIntentBar,
 } from "@/lib/playlightExitIntentClose";
+import { getActivePlaylightExitMilestone } from "@/game/playlightExitIntent";
 
 /** True when the player landed with the Playlight campaign URL (`?utm_source=playlight`). */
 export function isPlaylightReferralUrl(): boolean {
   if (typeof window === "undefined") return false;
   return new URLSearchParams(window.location.search).get("utm_source") === "playlight";
-}
-
-/** Normal play: one exit-intent show per milestone once `playTime` reaches it. */
-const NORMAL_PLAY_EXIT_MILESTONES_MS = [
-  60 * 60 * 1000,
-  120 * 60 * 1000,
-  240 * 60 * 1000,
-  360 * 60 * 1000,
-] as const;
-
-const shownExitIntentMilestones = new Set<number>();
-
-/** Next milestone the player may trigger, or null if none / all consumed. */
-function getActiveExitMilestone(playTimeMs: number): number | null {
-  for (const milestone of NORMAL_PLAY_EXIT_MILESTONES_MS) {
-    if (shownExitIntentMilestones.has(milestone)) continue;
-    if (playTimeMs >= milestone) return milestone;
-    return null;
-  }
-  return null;
 }
 /** Ignore duplicate `exitIntent` emissions from the SDK within one gesture. */
 const EXIT_INTENT_EVENT_DEDUP_MS = 600;
@@ -159,11 +140,15 @@ export async function initPlaylight() {
         }
         lastExitIntentEventRecordedAt = now;
 
-        const playTime = useGameStore.getState().playTime ?? 0;
-        const milestone = getActiveExitMilestone(playTime);
+        const storeState = useGameStore.getState();
+        const playTime = storeState.playTime ?? 0;
+        const milestoneIndex = storeState.playlightExitIntentMilestoneIndex ?? 0;
+        const milestone = getActivePlaylightExitMilestone(playTime, milestoneIndex);
         if (milestone == null) return;
 
-        shownExitIntentMilestones.add(milestone);
+        useGameStore.setState({
+          playlightExitIntentMilestoneIndex: milestoneIndex + 1,
+        });
 
         exitIntentDisableDeferredUntil = now + EXIT_INTENT_DISABLE_DEFER_MS;
         if (exitIntentDeferTimerId !== null) {
@@ -190,7 +175,10 @@ export async function initPlaylight() {
           shouldEnableExitIntent = true;
         } else {
           const playTime = state.playTime ?? 0;
-          const activeMilestone = getActiveExitMilestone(playTime);
+          const activeMilestone = getActivePlaylightExitMilestone(
+            playTime,
+            state.playlightExitIntentMilestoneIndex ?? 0,
+          );
           const deferActive = Date.now() < exitIntentDisableDeferredUntil;
           if (deferActive) {
             shouldEnableExitIntent = true;

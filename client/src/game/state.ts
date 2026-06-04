@@ -67,6 +67,7 @@ import { calculateBastionStats } from "@/game/bastionStats";
 import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { GAME_CONSTANTS } from "@/game/constants";
+import { playlightExitIntentMilestoneFloorFromPlayTime } from "@/game/playlightExitIntent";
 import { socialPromptMilestoneFloorFromPlayTime } from "@/game/socialPromptAuto";
 import {
   ACTION_TO_UPGRADE_KEY,
@@ -1056,6 +1057,7 @@ export const createInitialState = (): GameState => ({
   socialPromptDialogOpen: false,
   lastSocialPromptPlayTime: 0,
   socialPromptMilestoneIndex: 0,
+  playlightExitIntentMilestoneIndex: 0,
   socialPromptAutoPhase: 0,
   socialPromoExclusiveRewardPending: false,
   feedbackDialogOpen: false,
@@ -1428,6 +1430,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   socialPromptDialogOpen: false,
   lastSocialPromptPlayTime: 0,
   socialPromptMilestoneIndex: 0,
+  playlightExitIntentMilestoneIndex: 0,
   socialPromptAutoPhase: 0,
   socialPromoExclusiveRewardPending: false,
   // Initialize resource highlighting
@@ -2521,6 +2524,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
           (savedState as { socialPromptMilestoneIndex?: number })
             .socialPromptMilestoneIndex ?? 0,
           socialPromptMilestoneFloorFromPlayTime(loadedPlayTime),
+        ),
+        playlightExitIntentMilestoneIndex: Math.max(
+          (savedState as { playlightExitIntentMilestoneIndex?: number })
+            .playlightExitIntentMilestoneIndex ?? 0,
+          playlightExitIntentMilestoneFloorFromPlayTime(loadedPlayTime),
         ),
         feedbackPromptShown:
           (savedState as { feedbackPromptShown?: boolean }).feedbackPromptShown ===
