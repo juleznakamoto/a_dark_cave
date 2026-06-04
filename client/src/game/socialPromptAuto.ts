@@ -3,22 +3,12 @@ import { MARKETING_EMAIL_REWARD_KEY } from "@/game/marketingEmailReward";
 import { PLAYLIGHT_DISCOVER_REWARD_KEY } from "@/game/playlightDiscoverReward";
 import { SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
 
-/** @deprecated Legacy signed-in scheduler; auto-open now uses {@link SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS}. */
-export const SOCIAL_PROMPT_INITIAL_PLAY_MS = 30 * 60 * 1000;
-
-/** @deprecated Legacy signed-in scheduler. */
-export const SOCIAL_PROMPT_REPEAT_PLAY_MS = 90 * 60 * 1000;
-
-/** @deprecated Legacy signed-in scheduler. */
-export const SOCIAL_PROMPT_LONG_REPEAT_PLAY_MS = 4 * 60 * 60 * 1000;
-
 /**
- * Active-play milestones (ms) at which the rewards dialog auto-opens once each,
- * for both guests and signed-in players.
+ * Active-play milestones (ms) at which the rewards dialog auto-opens once each, * for both guests and signed-in players.
  */
 export const SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS = [
-  45 * 60 * 1000,
-  90 * 60 * 1000,
+  60 * 60 * 1000,
+  120 * 60 * 1000,
   180 * 60 * 1000,
   240 * 60 * 1000,
   360 * 60 * 1000,

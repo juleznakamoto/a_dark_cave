@@ -18,10 +18,10 @@ const claimedPlaylightDiscover = {
 describe("socialPromptMilestoneFloorFromPlayTime", () => {
   it("counts thresholds strictly by active-play milestones", () => {
     expect(socialPromptMilestoneFloorFromPlayTime(0)).toBe(0);
-    expect(socialPromptMilestoneFloorFromPlayTime(44 * MIN)).toBe(0);
-    expect(socialPromptMilestoneFloorFromPlayTime(45 * MIN)).toBe(1);
-    expect(socialPromptMilestoneFloorFromPlayTime(89 * MIN)).toBe(1);
-    expect(socialPromptMilestoneFloorFromPlayTime(90 * MIN)).toBe(2);
+    expect(socialPromptMilestoneFloorFromPlayTime(59 * MIN)).toBe(0);
+    expect(socialPromptMilestoneFloorFromPlayTime(60 * MIN)).toBe(1);
+    expect(socialPromptMilestoneFloorFromPlayTime(119 * MIN)).toBe(1);
+    expect(socialPromptMilestoneFloorFromPlayTime(120 * MIN)).toBe(2);
     expect(socialPromptMilestoneFloorFromPlayTime(179 * MIN)).toBe(2);
     expect(socialPromptMilestoneFloorFromPlayTime(180 * MIN)).toBe(3);
     expect(socialPromptMilestoneFloorFromPlayTime(239 * MIN)).toBe(3);
@@ -38,18 +38,18 @@ describe("socialPromptHighestMilestoneIndexToOpen", () => {
   });
 
   it("returns the next single milestone when only one threshold was crossed", () => {
-    expect(socialPromptHighestMilestoneIndexToOpen(50 * MIN, 0)).toBe(0);
-    expect(socialPromptHighestMilestoneIndexToOpen(50 * MIN, 1)).toBe(null);
+    expect(socialPromptHighestMilestoneIndexToOpen(70 * MIN, 0)).toBe(0);
+    expect(socialPromptHighestMilestoneIndexToOpen(70 * MIN, 1)).toBe(null);
   });
 
   it("skips lower thresholds and returns the highest crossed milestone", () => {
-    expect(socialPromptHighestMilestoneIndexToOpen(100 * MIN, 0)).toBe(1);
+    expect(socialPromptHighestMilestoneIndexToOpen(130 * MIN, 0)).toBe(1);
     expect(socialPromptHighestMilestoneIndexToOpen(200 * MIN, 1)).toBe(2);
   });
 
   it("respects the next milestone index when play time is between thresholds", () => {
-    expect(socialPromptHighestMilestoneIndexToOpen(100 * MIN, 1)).toBe(1);
-    expect(socialPromptHighestMilestoneIndexToOpen(50 * MIN, 1)).toBe(null);
+    expect(socialPromptHighestMilestoneIndexToOpen(130 * MIN, 1)).toBe(1);
+    expect(socialPromptHighestMilestoneIndexToOpen(70 * MIN, 1)).toBe(null);
   });
 });
 

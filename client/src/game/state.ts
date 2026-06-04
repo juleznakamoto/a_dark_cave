@@ -314,7 +314,6 @@ interface GameStore extends GameState {
   setSignUpPromptEligibleForGold: (eligible: boolean) => void;
   setLastSignUpPromptPlayTime: (playTime: number) => void;
   setSocialPromptDialogOpen: (isOpen: boolean) => void;
-  setLastSocialPromptPlayTime: (playTime: number) => void;
   setHighlightedResources: (resources: string[]) => void;
   emitResourceChange: (resource: string, amount: number) => void;
   setIsUserSignedIn: (signedIn: boolean) => void;
@@ -1392,8 +1391,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ lastSignUpPromptPlayTime: playTime }),
   setSocialPromptDialogOpen: (isOpen: boolean) =>
     set({ socialPromptDialogOpen: isOpen }),
-  setLastSocialPromptPlayTime: (playTime: number) =>
-    set({ lastSocialPromptPlayTime: playTime }),
   setHighlightedResources: (resources: string[]) => {
     // Updated type
     set({ highlightedResources: resources });
