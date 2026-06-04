@@ -211,6 +211,14 @@ export function startGameLoop() {
   }
   inactivityCheckInterval = setInterval(() => {
     const now = Date.now();
+    const state = useGameStore.getState();
+
+    // Sleep mode: intentional absence of input — not an AFK timeout
+    if (state.idleModeDialog?.isOpen || state.idleModeState?.isActive) {
+      lastUserActivity = now;
+      return;
+    }
+
     const timeSinceActivity = now - lastUserActivity;
 
     // Don't trigger inactivity if the page is currently visible and active
