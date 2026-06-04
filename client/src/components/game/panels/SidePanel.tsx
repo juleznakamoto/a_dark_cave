@@ -1,6 +1,7 @@
 import { useGameStore } from "@/game/state";
 import SidePanelSection from "./SidePanelSection";
 import StatEffectsTooltip from "@/components/game/StatEffectsTooltip";
+import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
 import { ResourceCoinIcon } from "@/components/ui/resource-coin-icon";
 import { ResourceInsightIcon } from "@/components/ui/resource-insight-icon";
 import { clothingEffects } from "@/game/rules/effects";
@@ -838,7 +839,7 @@ export default function SidePanel() {
     totalMadness > 0;
 
   const statsHeaderTooltipFallback =
-    "Stats influence the outcome of events and later on are relevant in combat.";
+    "Stats influence the outcome of events and grant specific effects that reveal as you progress.";
   const statsHeaderTooltipRaw = tWithFallback(
     "ui",
     "sidePanel.statsTooltip",
@@ -1002,6 +1003,7 @@ export default function SidePanel() {
               sectionId="stats"
               title={t("sidePanel.stats")}
               titleTooltip={statsHeaderTooltip}
+              titleExtra={<ActionInsightBadge target="stats" />}
               items={statsItems}
             />
           )}

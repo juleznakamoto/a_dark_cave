@@ -23,6 +23,7 @@ import {
   GAMBLER_TUTORIAL_PLAYS,
   getGamblerTutorialPlaysRemaining,
 } from "@/game/gamblerSession";
+import { isStatEffectsRevealed } from "@/game/rules/insightReveal";
 
 export type TooltipStatKey = "luck" | "strength" | "knowledge" | "madness";
 
@@ -253,6 +254,7 @@ export function getStatEffectLinesSignature(
   statKey: TooltipStatKey,
   state: GameState,
 ): string {
+  if (!isStatEffectsRevealed(state)) return "";
   const noopT = (key: string) => key;
   return getStatEffectLines(statKey, state, noopT)
     .map((line) => line.key)
@@ -290,6 +292,7 @@ export default function StatEffectsTooltip({
 }) {
   const { t } = useTranslation("ui");
   const state = useGameStore() as unknown as GameState;
+  if (!isStatEffectsRevealed(state)) return null;
   const lines = getStatEffectLines(statKey, state, t);
   if (lines.length === 0) return null;
   return (

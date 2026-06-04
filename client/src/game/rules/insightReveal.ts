@@ -8,6 +8,18 @@ export const INSIGHT_REVEAL_CRAFT_COST = 25;
 export const INSIGHT_REVEAL_DURATION_MS = 3_000;
 /** Action button cooldown (seconds); ticks subtract 0.25 every 250ms → 1s per unit. */
 export const INSIGHT_REVEAL_ACTION_COOLDOWN_SEC = 3;
+/** One-time cost to reveal all side-panel stat effect tooltips. */
+export const STAT_EFFECTS_INSIGHT_COST = 500;
+
+export function isStatEffectsRevealed(state: GameState): boolean {
+  return Boolean(state.statEffectsRevealed);
+}
+
+export function canRevealStatEffects(state: GameState): boolean {
+  if ((state.buildings.clerksHut ?? 0) < 1) return false;
+  if (isStatEffectsRevealed(state)) return false;
+  return getInsightAmount(state) >= STAT_EFFECTS_INSIGHT_COST;
+}
 
 const FORTIFICATION_BUILDING_KEYS = new Set([
   "bastion",

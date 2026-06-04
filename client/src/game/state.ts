@@ -43,10 +43,12 @@ import {
 import { capResourceToLimit } from "@/game/resourceLimits";
 import {
   canRevealEffects,
+  canRevealStatEffects,
   getInsightAmount,
   getInsightRevealCost,
   INSIGHT_REVEAL_ACTION_COOLDOWN_SEC,
   INSIGHT_REVEAL_DURATION_MS,
+  STAT_EFFECTS_INSIGHT_COST,
 } from "@/game/rules/insightReveal";
 import {
   calculateTotalEffects,
@@ -396,6 +398,7 @@ interface GameStore extends GameState {
   /** Session-only: actionId → reveal animation end timestamp (ms). */
   insightRevealing: Record<string, number>;
   revealActionEffects: (actionId: string) => boolean;
+  revealStatEffects: () => boolean;
 }
 
 /**
@@ -1987,6 +1990,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
     return true;
   },
 
+  revealStatEffects: () => {
+    const state = get();
+    if (!canRevealStatEffects(state)) return false;
+
+    const resourceUpdates = updateResource(
+      state,
+      "insight",
+      -STAT_EFFECTS_INSIGHT_COST,
+    );
+    set({
+      ...resourceUpdates,
+      statEffectsRevealed: true,
+    });
+    return true;
+  },
+
   tickCooldowns: () => {
     set((state) => {
       const newCooldowns = { ...state.cooldowns };
@@ -2308,6 +2327,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           ...savedState.villagers,
         },
         revealedEffects: savedState.revealedEffects ?? [],
+        statEffectsRevealed: savedState.statEffectsRevealed ?? false,
         relics: {
           ...defaultGameState.relics,
           ...savedState.relics,

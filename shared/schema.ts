@@ -616,6 +616,8 @@ export const gameStateSchema = z.object({
   seenResources: z.array(z.string()).default([]),
   /** Action IDs whose full effect rows were revealed via Insight (persisted). */
   revealedEffects: z.array(z.string()).default([]),
+  /** Side-panel stat tooltips (luck/strength/knowledge/madness effect breakdown) unlocked via Insight. */
+  statEffectsRevealed: z.boolean().default(false),
   isNewGame: z.boolean().default(false), // Track if this is a newly started game
   startTime: z.number().default(0), // Timestamp when the current game was started
   allowPlayTimeOverwrite: z.boolean().default(false), // Allow overwriting higher playTime on next save (used for game restarts)

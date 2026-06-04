@@ -16,6 +16,7 @@ import {
   getStatEffectLinesSignature,
   type TooltipStatKey,
 } from "@/components/game/StatEffectsTooltip";
+import { isStatEffectsRevealed } from "@/game/rules/insightReveal";
 import type { GameState } from "@shared/schema";
 
 const STAT_EFFECT_PULSE_STAT_IDS: TooltipStatKey[] = [
@@ -108,6 +109,7 @@ interface SidePanelSectionProps {
   forceNotifications?: boolean; // Added prop
   onResourceChange?: (change: ResourceChange) => void;
   titleTooltip?: string;
+  titleExtra?: React.ReactNode;
   activeTab?: string;
 }
 import { logger } from "@/lib/logger";
@@ -121,6 +123,7 @@ export default function SidePanelSection({
   resourceChanges = [],
   onResourceChange,
   titleTooltip,
+  titleExtra,
   activeTab,
 }: SidePanelSectionProps) {
   const visibleItems = (items || []).filter((item) => item.visible !== false);
@@ -205,6 +208,7 @@ export default function SidePanelSection({
     if (sectionId !== "stats") return;
 
     const state = gameState as unknown as GameState;
+    if (!isStatEffectsRevealed(state)) return;
 
     for (const statId of STAT_EFFECT_PULSE_STAT_IDS) {
       const sig = getStatEffectLinesSignature(statId, state);
@@ -923,29 +927,36 @@ export default function SidePanelSection({
   const baseTitleForKey = titleString.split(" ")[0];
   const tooltipKey = `section-title-${baseTitleForKey}`;
 
+  const titleHeading = (
+    <h3 className="text-xs font-medium tracking-wide">{title}</h3>
+  );
+
   return (
     <div className={`py-1.5 border-border pt-0 ${className}`}>
-      {titleTooltip ? (
-        <TooltipWrapper
-          tooltip={<div className="text-xs">{titleTooltip}</div>}
-          tooltipId={tooltipKey}
-          disabled
-          onMouseEnter={() => {
-            if (!hoveredTooltips[tooltipKey]) {
-              setHoveredTooltip(tooltipKey, true);
-            }
-          }}
-          className={cn(
-            "block",
-            globalTooltip.isMobile ? "cursor-pointer" : "",
-            !hoveredTooltips[tooltipKey] && "new-item-pulse",
-          )}
-        >
-          <h3 className="text-xs font-medium tracking-wide mb-0.5">{title}</h3>
-        </TooltipWrapper>
-      ) : (
-        <h3 className="text-xs font-medium tracking-wide mb-0.5">{title}</h3>
-      )}
+      <div className="mb-0.5 flex items-center gap-1">
+        {titleTooltip ? (
+          <TooltipWrapper
+            tooltip={<div className="text-xs">{titleTooltip}</div>}
+            tooltipId={tooltipKey}
+            disabled
+            onMouseEnter={() => {
+              if (!hoveredTooltips[tooltipKey]) {
+                setHoveredTooltip(tooltipKey, true);
+              }
+            }}
+            className={cn(
+              "min-w-0 flex-1",
+              globalTooltip.isMobile ? "cursor-pointer" : "",
+              !hoveredTooltips[tooltipKey] && "new-item-pulse",
+            )}
+          >
+            {titleHeading}
+          </TooltipWrapper>
+        ) : (
+          <div className="min-w-0 flex-1">{titleHeading}</div>
+        )}
+        {titleExtra}
+      </div>
       <div className="min-w-0 text-xs">
         {visibleItems.map((item) => (
           <div key={item.id} className={item.hasSpacingAfter ? "mb-1" : undefined}>

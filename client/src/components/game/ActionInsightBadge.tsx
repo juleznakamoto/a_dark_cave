@@ -6,36 +6,57 @@ import { BuildingActionBadge } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
   canRevealEffects,
+  canRevealStatEffects,
   getInsightAmount,
   getInsightRevealCost,
+  isStatEffectsRevealed,
+  STAT_EFFECTS_INSIGHT_COST,
 } from "@/game/rules/insightReveal";
 import { useGameStore } from "@/game/state";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
+import { cn } from "@/lib/utils";
 import type { GameState } from "@shared/schema";
 
 const BADGE_SIZE_PX = 16;
+const STAT_EFFECT_PULSE_IDS = ["luck", "strength", "knowledge", "madness"] as const;
 
-type ActionInsightBadgeProps = {
-  actionId: string;
-};
+type ActionInsightBadgeProps =
+  | { target: "stats"; layout?: "inline" }
+  | { target?: "action"; actionId: string; layout?: "overlay" };
 
-export function ActionInsightBadge({ actionId }: ActionInsightBadgeProps) {
+export function ActionInsightBadge(props: ActionInsightBadgeProps) {
+  const target = props.target ?? "action";
+  const layout = props.layout ?? (target === "stats" ? "inline" : "overlay");
+  const actionId = target === "action" ? props.actionId : undefined;
+
   const { t } = useTranslation("ui");
   const state = useGameStore((s) => s as unknown as GameState);
-  const insightRevealEnd = useGameStore((s) => s.insightRevealing?.[actionId]);
+  const insightRevealEnd = useGameStore((s) =>
+    actionId ? s.insightRevealing?.[actionId] : undefined,
+  );
   const revealActionEffects = useGameStore((s) => s.revealActionEffects);
+  const revealStatEffects = useGameStore((s) => s.revealStatEffects);
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
-  const executionStart = useGameStore((s) => s.executionStartTimes?.[actionId] ?? 0);
-  const executionDuration = useGameStore((s) => s.executionDurations?.[actionId] ?? 0);
+  const setHoveredTooltip = useGameStore((s) => s.setHoveredTooltip);
+  const executionStart = useGameStore((s) =>
+    actionId ? (s.executionStartTimes?.[actionId] ?? 0) : 0,
+  );
+  const executionDuration = useGameStore((s) =>
+    actionId ? (s.executionDurations?.[actionId] ?? 0) : 0,
+  );
   const [, forceUpdate] = useState(0);
 
-  const canShow = canRevealEffects(actionId, state);
-  const isExecuting = executionStart > 0 && executionDuration > 0;
+  const isStats = target === "stats";
+  const canShow = isStats
+    ? (state.buildings.clerksHut ?? 0) >= 1 && !isStatEffectsRevealed(state)
+    : canRevealEffects(actionId!, state);
+  const isExecuting = !isStats && executionStart > 0 && executionDuration > 0;
   const isRevealing =
-    typeof insightRevealEnd === "number" && insightRevealEnd > Date.now();
+    !isStats &&
+    typeof insightRevealEnd === "number" &&
+    insightRevealEnd > Date.now();
   const playing = canShow && !isExecuting && isRevealing;
 
-  // Match CooldownButton insight overlay: tick so --playing stays in sync until reveal ends.
   useEffect(() => {
     if (!isRevealing) return;
     const id = setInterval(() => forceUpdate((n) => n + 1), 100);
@@ -48,12 +69,14 @@ export function ActionInsightBadge({ actionId }: ActionInsightBadgeProps) {
     return () => setHighlightedResources([]);
   }, [playing, setHighlightedResources]);
 
-  // Abort overlay (craft/build) shares this corner — hide while the action runs.
   if (!canShow || isExecuting) return null;
 
-  const cost = getInsightRevealCost(actionId) ?? 0;
-  const insight = getInsightAmount(state);
-  const canAfford = insight >= cost;
+  const cost = isStats
+    ? STAT_EFFECTS_INSIGHT_COST
+    : (getInsightRevealCost(actionId!) ?? 0);
+  const canAfford = isStats
+    ? canRevealStatEffects(state)
+    : getInsightAmount(state) >= cost;
 
   const costTooltip = t("badges.insightRevealSeeEffects", {
     cost,
@@ -61,32 +84,50 @@ export function ActionInsightBadge({ actionId }: ActionInsightBadgeProps) {
   });
 
   const isBadgeDisabled = !canAfford || playing;
+  const tooltipId = isStats
+    ? "stats-insight-reveal"
+    : `${actionId}-insight-badge`;
 
-  // TooltipWrapper handles mobile taps via onClick; without it, touchEnd preventDefault
-  // blocks the inner button's onClick (same pattern as CooldownButton).
   const handleReveal = () => {
-    if (!isBadgeDisabled) revealActionEffects(actionId);
+    if (isBadgeDisabled) return;
+    if (isStats) {
+      if (!revealStatEffects()) return;
+      for (const statId of STAT_EFFECT_PULSE_IDS) {
+        setHoveredTooltip(statId, false);
+      }
+      return;
+    }
+    revealActionEffects(actionId!);
   };
 
-  return (
-    <div
-      className={!canAfford && !playing ? "opacity-40" : undefined}
-      style={{
-        position: "absolute",
+  const hostClassName = cn(
+    !canAfford && !playing && "opacity-40",
+    layout === "inline" && "inline-flex shrink-0 translate-y-px",
+  );
+  const hostStyle =
+    layout === "overlay"
+      ? {
+        position: "absolute" as const,
         bottom: "-7px",
         right: "-7px",
         width: BADGE_SIZE_PX,
         height: BADGE_SIZE_PX,
         zIndex: 30,
-        pointerEvents: "auto",
-      }}
+        pointerEvents: "auto" as const,
+      }
+      : undefined;
+
+  return (
+    <div
+      className={hostClassName}
+      style={hostStyle}
       onPointerDown={(e) => e.stopPropagation()}
     >
       <TooltipWrapper
         tooltip={costTooltip}
-        tooltipId={`${actionId}-insight-badge`}
+        tooltipId={tooltipId}
         tooltipContentClassName="text-white"
-        className="block h-full w-full"
+        className={layout === "overlay" ? "block h-full w-full" : "inline-flex"}
         tooltipTriggerAsChild
         disabled={isBadgeDisabled}
         onClick={handleReveal}
@@ -97,7 +138,12 @@ export function ActionInsightBadge({ actionId }: ActionInsightBadgeProps) {
       >
         <button
           type="button"
-          className="relative flex h-full w-full items-center justify-center border-0 bg-transparent p-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer"
+          className={cn(
+            "relative items-center justify-center border-0 bg-transparent p-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
+            layout === "overlay"
+              ? "flex h-full w-full"
+              : "inline-flex h-4 w-4 shrink-0",
+          )}
           aria-label={costTooltip}
           aria-busy={playing}
           disabled={isBadgeDisabled}
