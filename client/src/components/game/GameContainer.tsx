@@ -1117,7 +1117,7 @@ export default function GameContainer() {
                     data-testid="tab-trader"
                   >
                     <span
-                      className="font-noto-symbols-2 text-[19px] leading-none text-lime-500 opacity-80 transition-opacity group-hover:opacity-100 relative top-px"
+                      className="font-noto-symbols-2 text-[19px] leading-none text-lime-500 opacity-80 transition-[opacity,text-shadow] group-hover:opacity-100 group-hover:[text-shadow:0_0_8px_rgba(132,204,22,0.95),0_0_16px_rgba(132,204,22,0.5)] group-focus-visible:opacity-100 group-focus-visible:[text-shadow:0_0_8px_rgba(132,204,22,0.95),0_0_16px_rgba(132,204,22,0.5)] relative top-px"
                       aria-hidden
                     >
                       ◬
