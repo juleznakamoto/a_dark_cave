@@ -649,18 +649,15 @@ body {
   animation: notification-pulse .8s ease-in-out infinite;
 }
 
-/* Playlight exit-intent banner: abort-style dismiss centered on the top-right corner vertex.
-   The banner is `[role="menu"]` (position: fixed); allow overflow so the button can straddle the corner. */
+/* Playlight exit-intent banner: abort-style dismiss in the top-right (fully inside — parents clip overflow). */
 .playlight-sdk .adc-playlight-exit-intent-bar {
-  overflow: visible !important;
   padding-right: 2.25rem;
 }
 
 .playlight-sdk .adc-playlight-exit-intent-close {
   position: absolute;
-  top: 0;
-  right: 0;
-  transform: translate(50%, -50%);
+  top: 0.35rem;
+  right: 0.35rem;
   z-index: 40;
   display: flex;
   align-items: center;

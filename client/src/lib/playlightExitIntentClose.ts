@@ -3,7 +3,7 @@
  *
  * The SDK renders the banner as `<div role="menu" class="bg-background/85 fixed ... overflow-hidden p-4">`
  * (heading + "More games" group inside it). That `[role="menu"]` node IS the banner, so we attach the
- * close button directly to it; center the circle on the top-right corner with `translate(50%, -50%)`.
+ * close button directly to it; inset in the top-right so parents with `overflow: hidden` do not clip it.
  */
 
 const EXIT_INTENT_BAR_SELECTOR = '.playlight-sdk [role="menu"]';
@@ -58,29 +58,33 @@ function dismissExitIntentBanner(): void {
 /** Matches CooldownButton craft/build abort overlay (slightly larger). */
 const ABORT_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>`;
 
-function injectCloseButton(banner: HTMLElement): void {
-  if (banner.querySelector(`.${CLOSE_BTN_CLASS}`)) return;
+function applyCloseButtonPlacement(btn: HTMLElement): void {
+  btn.style.setProperty('position', 'absolute', 'important');
+  btn.style.setProperty('top', '0.35rem', 'important');
+  btn.style.setProperty('right', '0.35rem', 'important');
+  btn.style.setProperty('left', 'auto', 'important');
+  btn.style.setProperty('bottom', 'auto', 'important');
+  btn.style.setProperty('margin', '0', 'important');
+  btn.style.setProperty('transform', 'none', 'important');
+  btn.style.setProperty('z-index', '40', 'important');
+  btn.style.setProperty('pointer-events', 'auto', 'important');
+}
 
+function injectCloseButton(banner: HTMLElement): void {
   banner.classList.add(BAR_HOOK_CLASS);
+
+  const existing = banner.querySelector(`.${CLOSE_BTN_CLASS}`);
+  if (existing instanceof HTMLElement) {
+    applyCloseButtonPlacement(existing);
+    return;
+  }
 
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = CLOSE_BTN_CLASS;
   btn.setAttribute('aria-label', 'Close');
   btn.innerHTML = ABORT_ICON_SVG;
-
-  // Center the circle on the banner's top-right corner (translate offsets by half width/height).
-  banner.style.setProperty('overflow', 'visible', 'important');
-  btn.style.setProperty('position', 'absolute', 'important');
-  btn.style.setProperty('top', '0', 'important');
-  btn.style.setProperty('right', '0', 'important');
-  btn.style.setProperty('left', 'auto', 'important');
-  btn.style.setProperty('bottom', 'auto', 'important');
-  btn.style.setProperty('margin', '0', 'important');
-  btn.style.setProperty('transform', 'translate(50%, -50%)', 'important');
-  btn.style.setProperty('z-index', '40', 'important');
-  btn.style.setProperty('pointer-events', 'auto', 'important');
-
+  applyCloseButtonPlacement(btn);
   banner.appendChild(btn);
 }
 
