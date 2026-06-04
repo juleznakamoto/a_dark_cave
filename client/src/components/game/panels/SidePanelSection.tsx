@@ -931,31 +931,46 @@ export default function SidePanelSection({
     <h3 className="text-xs font-medium tracking-wide">{title}</h3>
   );
 
+  const titleLabel = titleTooltip ? (
+    <TooltipWrapper
+      tooltip={<div className="text-xs">{titleTooltip}</div>}
+      tooltipId={tooltipKey}
+      disabled
+      onMouseEnter={() => {
+        if (!hoveredTooltips[tooltipKey]) {
+          setHoveredTooltip(tooltipKey, true);
+        }
+      }}
+      className={cn(
+        titleExtra ? "inline-block" : "min-w-0 flex-1",
+        globalTooltip.isMobile ? "cursor-pointer" : "",
+        !hoveredTooltips[tooltipKey] && "new-item-pulse",
+      )}
+    >
+      {titleHeading}
+    </TooltipWrapper>
+  ) : (
+    titleHeading
+  );
+
   return (
     <div className={`py-1.5 border-border pt-0 ${className}`}>
-      <div className="mb-0.5 flex items-center gap-1">
-        {titleTooltip ? (
-          <TooltipWrapper
-            tooltip={<div className="text-xs">{titleTooltip}</div>}
-            tooltipId={tooltipKey}
-            disabled
-            onMouseEnter={() => {
-              if (!hoveredTooltips[tooltipKey]) {
-                setHoveredTooltip(tooltipKey, true);
-              }
-            }}
-            className={cn(
-              "min-w-0 flex-1",
-              globalTooltip.isMobile ? "cursor-pointer" : "",
-              !hoveredTooltips[tooltipKey] && "new-item-pulse",
-            )}
-          >
-            {titleHeading}
-          </TooltipWrapper>
+      <div
+        className={cn(
+          "mb-0.5 flex items-center",
+          titleExtra ? "gap-0.5" : "gap-1",
+        )}
+      >
+        {titleExtra ? (
+          <div className="flex items-center gap-0.5">
+            {titleLabel}
+            {titleExtra}
+          </div>
+        ) : titleTooltip ? (
+          titleLabel
         ) : (
           <div className="min-w-0 flex-1">{titleHeading}</div>
         )}
-        {titleExtra}
       </div>
       <div className="min-w-0 text-xs">
         {visibleItems.map((item) => (
