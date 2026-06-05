@@ -1,2 +1,3 @@
-/** Height of the fixed game header/footer chrome (pause overlay insets). */
-export const GAME_CHROME_INSET = "45px";
+/** Pause overlay insets — keep in sync with header/footer padding + control height. */
+export const GAME_HEADER_INSET = "36px";
+export const GAME_FOOTER_INSET = "45px";

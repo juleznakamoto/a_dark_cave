@@ -42,7 +42,7 @@ import PlaylightDiscoveryButton from "./PlaylightDiscoveryButton";
 import { useTranslation } from "react-i18next";
 
 const HEADER_ICON_BTN =
-  "group shrink-0 p-0 w-7 h-7 flex items-center justify-center bg-background backdrop-blur-sm border border-border";
+  "group shrink-0 p-0 w-7 h-7 flex items-center justify-center";
 
 type ProfileMenuContextValue = ReturnType<typeof useProfileMenuState>;
 
@@ -502,7 +502,7 @@ export function GameHeaderControls() {
             aria-label={t("profile.leaderboard")}
             className={`${HEADER_ICON_BTN} group`}
           >
-            <span className="text-lg opacity-60 group-hover:opacity-100 transition-opacity">
+            <span className="text-lg text-neutral-300 opacity-100">
               ♕
             </span>
           </Button>
@@ -530,7 +530,7 @@ export function GameHeaderControls() {
           <Button
             variant="ghost"
             size="xs"
-            className="px-2 py-1 text-xs hover relative bg-background text-neutral-300 backdrop-blur-sm border border-border"
+            className="px-2 py-1 text-xs hover relative text-neutral-300 opacity-100"
           >
             {t("profile.title")}
             {authNotificationVisible &&

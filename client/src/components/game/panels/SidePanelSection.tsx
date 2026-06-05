@@ -91,13 +91,12 @@ const EFFECT_TOOLTIP_SECTIONS = new Set<SidePanelSectionId>([
   "blessings",
 ]);
 
-/** Shared layout for resource name + amount + production delta / change hint. */
-const RESOURCE_ROW_GRID_CLASS =
-  "grid grid-cols-[auto_auto_3rem] items-baseline gap-x-2";
+/** Shared layout for resource name + amount + optional production delta. */
+const RESOURCE_ROW_LAYOUT_CLASS =
+  "flex w-fit max-w-full items-baseline gap-x-2";
 const RESOURCE_ROW_TEXT_CLASS = "text-xs leading-none";
-/** Third column: production rate and change popup share one right-aligned slot. */
-const RESOURCE_DELTA_SLOT_CLASS =
-  "block w-full text-right font-mono tabular-nums whitespace-nowrap";
+const RESOURCE_DELTA_CLASS =
+  "shrink-0 text-right font-mono tabular-nums whitespace-nowrap";
 
 /** Food/wood at zero while villagers remain — blink red in the resources panel. */
 const CRITICAL_ZERO_RESOURCES = new Set(["food", "wood"]);
@@ -634,7 +633,7 @@ export default function SidePanelSection({
     );
 
     const productionDeltaCellClassName = cn(
-      usesResourceRowLayout && RESOURCE_DELTA_SLOT_CLASS,
+      usesResourceRowLayout && RESOURCE_DELTA_CLASS,
       usesResourceRowLayout && RESOURCE_ROW_TEXT_CLASS,
       !usesResourceRowLayout &&
       "text-right font-mono tabular-nums whitespace-nowrap font-normal",
@@ -651,7 +650,7 @@ export default function SidePanelSection({
     const resourceRowClassName = cn(
       "mr-1 min-w-0 transition-all duration-300",
       usesResourceRowLayout
-        ? RESOURCE_ROW_GRID_CLASS
+        ? RESOURCE_ROW_LAYOUT_CLASS
         : cn(
           "flex gap-1.5 justify-between leading-tight",
           isIconCenteredLabelSection && item.icon !== undefined
@@ -661,39 +660,26 @@ export default function SidePanelSection({
       itemAnimationClass,
     );
 
-    const productionDeltaCell = showProductionDelta ? (
-      <span className={productionDeltaCellClassName}>
-        {(item.productionDelta ?? 0) > 0 ? "+" : ""}
-        {formatNumber(item.productionDelta ?? 0)}
-      </span>
-    ) : (
-      <span
-        className={cn(productionDeltaCellClassName, "invisible select-none")}
-        aria-hidden="true"
-      >
-        0
-      </span>
-    );
-
-    const resourceThirdColumn = usesResourceRowLayout ? (
-      <div className="relative min-w-0 text-right">
-        {productionDeltaCell}
-        {onResourceChange ? (
-          <ResourceChangeNotification
-            resource={item.id}
-            changes={resourceChanges}
-          />
-        ) : null}
-      </div>
-    ) : null;
-
     const itemContent = (
       <div data-testid={item.testId} className={resourceRowClassName}>
-        <div className="min-w-0">{labelContent}</div>
+        <div className="shrink-0 min-w-0">{labelContent}</div>
         {usesResourceRowLayout ? (
           <>
-            <span className={valueCellClassName}>{displayValue}</span>
-            {resourceThirdColumn}
+            <span className={cn(valueCellClassName, "relative shrink-0")}>
+              {displayValue}
+              {onResourceChange ? (
+                <ResourceChangeNotification
+                  resource={item.id}
+                  changes={resourceChanges}
+                />
+              ) : null}
+            </span>
+            {showProductionDelta ? (
+              <span className={productionDeltaCellClassName}>
+                {(item.productionDelta ?? 0) > 0 ? "+" : ""}
+                {formatNumber(item.productionDelta ?? 0)}
+              </span>
+            ) : null}
           </>
         ) : showItemValue ? (
           <span className={cn(valueCellClassName, "shrink-0")}>
@@ -714,12 +700,12 @@ export default function SidePanelSection({
           key={item.id}
           data-testid={item.testId}
           className={`flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isAtMax
-                  ? "text-yellow-400"
-                  : ""
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isAtMax
+                ? "text-yellow-400"
+                : ""
             }`}
         >
           <TooltipWrapper
@@ -755,12 +741,12 @@ export default function SidePanelSection({
           key={item.id}
           data-testid={item.testId}
           className={`flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isMaxAnimated
-                  ? "text-yellow-400"
-                  : ""
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""
             }`}
         >
           <TooltipWrapper
@@ -785,12 +771,12 @@ export default function SidePanelSection({
           key={item.id}
           data-testid={item.testId}
           className={`flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isMaxAnimated
-                  ? "text-yellow-400"
-                  : ""
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""
             }`}
         >
           <TooltipWrapper
@@ -820,12 +806,12 @@ export default function SidePanelSection({
           key={item.id}
           data-testid={item.testId}
           className={`flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isMaxAnimated
-                  ? "text-yellow-400"
-                  : ""
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""
             }`}
         >
           <TooltipWrapper
@@ -895,12 +881,12 @@ export default function SidePanelSection({
           key={item.id}
           data-testid={item.testId}
           className={`mr-1 flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isMaxAnimated
-                  ? "text-yellow-400"
-                  : ""
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""
             }`}
         >
           <TooltipWrapper
@@ -917,14 +903,14 @@ export default function SidePanelSection({
           {showItemValue && (
             <span
               className={`font-mono ${isAnimated
-                  ? "text-green-800 font-bold"
-                  : isDecreaseAnimated
-                    ? "text-red-800 font-bold"
-                    : isMaxAnimated
-                      ? "text-yellow-800 font-bold"
-                      : isMadness
-                        ? madnessClasses
-                        : ""
+                ? "text-green-800 font-bold"
+                : isDecreaseAnimated
+                  ? "text-red-800 font-bold"
+                  : isMaxAnimated
+                    ? "text-yellow-800 font-bold"
+                    : isMadness
+                      ? madnessClasses
+                      : ""
                 }`}
             >
               {displayValue}

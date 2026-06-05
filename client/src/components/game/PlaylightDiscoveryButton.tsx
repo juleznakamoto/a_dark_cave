@@ -86,7 +86,7 @@ export default function PlaylightDiscoveryButton({
         type="button"
         onClick={onClick}
         aria-label={t("playlight.discoveryAria")}
-        className="playlight-discovery-btn group relative h-7 w-7 shrink-0 overflow-visible border border-border bg-background/70 p-0 backdrop-blur-sm"
+        className="playlight-discovery-btn group relative h-7 w-7 shrink-0 overflow-visible p-0"
       >
         <span
           className="flex h-full w-full items-center justify-center opacity-60 transition-opacity duration-300 group-hover:opacity-100"

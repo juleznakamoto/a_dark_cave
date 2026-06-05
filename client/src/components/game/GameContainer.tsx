@@ -9,7 +9,7 @@ import {
 import GameTabs from "./GameTabs";
 import GameFooter from "./GameFooter";
 import GameHeader from "./GameHeader";
-import { GAME_CHROME_INSET } from "./gameChrome";
+import { GAME_FOOTER_INSET, GAME_HEADER_INSET } from "./gameChrome";
 import CavePanel from "./panels/CavePanel";
 import VillagePanel from "./panels/VillagePanel";
 import ForestPanel from "./panels/ForestPanel";
@@ -891,382 +891,382 @@ export default function GameContainer() {
 
   return (
     <ProfileMenuProvider>
-    <div
-      className="fixed inset-0 bg-background text-foreground flex flex-col"
-      style={{
-        backgroundColor: isBloodMoonActive ? "hsl(0, 50%, 5%)" : undefined,
-        transition: "background-color 1s ease-in-out",
-      }}
-    >
-      <GameHeader />
+      <div
+        className="fixed inset-0 bg-background text-foreground flex flex-col"
+        style={{
+          backgroundColor: isBloodMoonActive ? "hsl(0, 50%, 5%)" : undefined,
+          transition: "background-color 1s ease-in-out",
+        }}
+      >
+        <GameHeader />
 
-      {/* Pause Overlay - covers panels; header, tabs, and footer stay above */}
-      {isPaused && (
-        <div
-          className="fixed inset-0 bg-black/80 z-40 pointer-events-auto overlay-fade-in"
-          style={{ top: GAME_CHROME_INSET, bottom: GAME_CHROME_INSET }}
-        />
-      )}
+        {/* Pause Overlay - covers panels; header, tabs, and footer stay above */}
+        {isPaused && (
+          <div
+            className="fixed inset-0 bg-black/80 z-40 pointer-events-auto overlay-fade-in"
+            style={{ top: GAME_HEADER_INSET, bottom: GAME_FOOTER_INSET }}
+          />
+        )}
 
-      {showTabHotkeyOverlay && (
-        <div
-          className="pointer-events-none fixed inset-x-0 z-[45] hidden md:block"
-          style={{ top: GAME_CHROME_INSET, bottom: GAME_CHROME_INSET }}
-          aria-hidden={!showVillageHotkeyBox}
-        >
-          {showVillageHotkeyBox && villageHotkeyBoxLayout != null && (
-            <div
-              className="absolute pointer-events-auto rounded bg-neutral-800"
-              style={{
-                top: villageHotkeyBoxLayout.top,
-                left: villageHotkeyBoxLayout.left,
-                width: villageHotkeyBoxLayout.width,
-                height: villageHotkeyBoxLayout.height,
-              }}
-              data-testid="village-hotkey-tutorial-box"
-            >
-              <button
-                type="button"
-                className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
-                aria-label={t("villageHotkeyTutorial.dismiss", {
-                  ns: "ui",
-                  defaultValue: "Dismiss",
-                })}
-                data-testid="village-hotkey-tutorial-dismiss"
-                onClick={closeVillageHotkeyTutorial}
+        {showTabHotkeyOverlay && (
+          <div
+            className="pointer-events-none fixed inset-x-0 z-[45] hidden md:block"
+            style={{ top: GAME_HEADER_INSET, bottom: GAME_FOOTER_INSET }}
+            aria-hidden={!showVillageHotkeyBox}
+          >
+            {showVillageHotkeyBox && villageHotkeyBoxLayout != null && (
+              <div
+                className="absolute pointer-events-auto rounded bg-neutral-800"
+                style={{
+                  top: villageHotkeyBoxLayout.top,
+                  left: villageHotkeyBoxLayout.left,
+                  width: villageHotkeyBoxLayout.width,
+                  height: villageHotkeyBoxLayout.height,
+                }}
+                data-testid="village-hotkey-tutorial-box"
               >
-                <X className="h-2.5 w-2.5 stroke-[3]" />
-              </button>
-            </div>
-          )}
-          {pauseHotkeyHint != null && (
-            <div
-              data-testid={
-                showVillageHotkeyBox ? "village-hotkey-hint" : undefined
-              }
-              className="pause-hotkey-hint-animated absolute z-[2] w-max max-w-[calc(100vw-1rem)] whitespace-nowrap px-2 text-center text-xs leading-snug text-foreground drop-shadow"
-              style={{
-                top: pauseHotkeyHint.top,
-                left: pauseHotkeyHint.left,
-                transform: "translateX(-50%)",
-              }}
-            >
-              {pauseHotkeyHintContent}
-            </div>
-          )}
-          {pauseHotkeyBadges.map((b) => (
-            <span
-              key={b.key}
-              className="pause-hotkey-badge-animated absolute z-[1] text-xs font-semibold text-foreground drop-shadow"
-              style={{
-                left: b.left,
-                top: b.top,
-                transform: "translate(-50%, -100%)",
-              }}
-            >
-              {b.label}
-            </span>
-          ))}
-        </div>
-      )}
+                <button
+                  type="button"
+                  className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
+                  aria-label={t("villageHotkeyTutorial.dismiss", {
+                    ns: "ui",
+                    defaultValue: "Dismiss",
+                  })}
+                  data-testid="village-hotkey-tutorial-dismiss"
+                  onClick={closeVillageHotkeyTutorial}
+                >
+                  <X className="h-2.5 w-2.5 stroke-[3]" />
+                </button>
+              </div>
+            )}
+            {pauseHotkeyHint != null && (
+              <div
+                data-testid={
+                  showVillageHotkeyBox ? "village-hotkey-hint" : undefined
+                }
+                className="pause-hotkey-hint-animated absolute z-[2] w-max max-w-[calc(100vw-1rem)] whitespace-nowrap px-2 text-center text-xs leading-snug text-foreground drop-shadow"
+                style={{
+                  top: pauseHotkeyHint.top,
+                  left: pauseHotkeyHint.left,
+                  transform: "translateX(-50%)",
+                }}
+              >
+                {pauseHotkeyHintContent}
+              </div>
+            )}
+            {pauseHotkeyBadges.map((b) => (
+              <span
+                key={b.key}
+                className="pause-hotkey-badge-animated absolute z-[1] text-xs font-semibold text-foreground drop-shadow"
+                style={{
+                  left: b.left,
+                  top: b.top,
+                  transform: "translate(-50%, -100%)",
+                }}
+              >
+                {b.label}
+              </span>
+            ))}
+          </div>
+        )}
 
-      {/* Sleep Mode Mist Background - covers everything except header and footer */}
-      {idleModeDialog.isOpen && (
-        <div
-          className="fixed inset-0 z-[35] pointer-events-auto"
-          style={{ top: GAME_CHROME_INSET, bottom: GAME_CHROME_INSET }}
-        >
-          <MistBackground />
-        </div>
-      )}
+        {/* Sleep Mode Mist Background - covers everything except header and footer */}
+        {idleModeDialog.isOpen && (
+          <div
+            className="fixed inset-0 z-[35] pointer-events-auto"
+            style={{ top: GAME_HEADER_INSET, bottom: GAME_FOOTER_INSET }}
+          >
+            <MistBackground />
+          </div>
+        )}
 
-      {/* Main Content Area - Fills remaining space.
+        {/* Main Content Area - Fills remaining space.
           Desktop (left → right): event log, tabs/actions, resources side panel.
           Mobile (stacked top → bottom): event log, side panel, tabs/actions. */}
-      <main className="flex-1 pb-0 flex flex-col md:flex-row min-h-0 overflow-hidden">
-        {/* Event Log - top on mobile, left column on desktop */}
-        <div className="order-1 w-full md:w-[22rem] flex-shrink-0 overflow-hidden p-2 pb-0 md:border-r border-border">
-          <LogPanel />
-        </div>
+        <main className="flex-1 pb-0 flex flex-col md:flex-row min-h-0 overflow-hidden">
+          {/* Event Log - top on mobile, left column on desktop */}
+          <div className="order-1 w-full md:w-[22rem] flex-shrink-0 overflow-hidden p-2 pb-0 md:border-r border-border">
+            <LogPanel />
+          </div>
 
-        {/* Resources Side Panel - below log on mobile, right column on desktop */}
-        <div className="order-2 md:order-3 min-h-[36vh] md:min-h-0 w-full pl-2 pr-2 md:w-[34rem] border-t md:border-t-0 md:border-l border-border overflow-hidden">
-          <GameTabs />
-        </div>
+          {/* Resources Side Panel - below log on mobile, right column on desktop */}
+          <div className="order-2 md:order-3 min-h-[36vh] md:min-h-0 w-full pl-2 pr-2 md:w-[40rem] border-t md:border-t-0 md:border-l border-border overflow-hidden">
+            <GameTabs />
+          </div>
 
-        {/* Right Content Area with Horizontal Tabs and Actions - below side panel on mobile, middle column on desktop */}
-        <section className="order-3 md:order-2 flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
-          {/* Horizontal Game Tabs */}
-          <nav
-            className={`relative border-t border-border pl-2 pr-2 md:pl-4 md:pr-4 flex-shrink-0${isPaused ? " z-[41] pointer-events-auto" : ""}`}
-          >
-            {useLimelightNav ? (
-              // Alternative LimelightNav design
-              <LimelightNav
-                items={limelightNavItems}
-                defaultActiveIndex={limelightNavItems.findIndex(
-                  (item) => item.id === activeTab,
-                )}
-                onTabChange={(index) => {
-                  const selectedTab = limelightNavItems[index];
-                  if (selectedTab && selectedTab.onClick) {
-                    selectedTab.onClick();
-                  }
-                }}
-                className="bg-transparent border-0"
-              />
-            ) : (
-              <>
-                {/* Standard button design */}
-                <div
-                  className={`flex w-full max-w-full flex-nowrap items-center gap-x-2 overflow-hidden pl-[3px] md:gap-x-3${traderUnlocked ? " pr-[4.5rem]" : " pr-[3px]"}`}
-                >
+          {/* Right Content Area with Horizontal Tabs and Actions - below side panel on mobile, middle column on desktop */}
+          <section className="order-3 md:order-2 flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
+            {/* Horizontal Game Tabs */}
+            <nav
+              className={`relative border-t border-border pl-2 pr-2 md:pl-4 md:pr-4 flex-shrink-0${isPaused ? " z-[41] pointer-events-auto" : ""}`}
+            >
+              {useLimelightNav ? (
+                // Alternative LimelightNav design
+                <LimelightNav
+                  items={limelightNavItems}
+                  defaultActiveIndex={limelightNavItems.findIndex(
+                    (item) => item.id === activeTab,
+                  )}
+                  onTabChange={(index) => {
+                    const selectedTab = limelightNavItems[index];
+                    if (selectedTab && selectedTab.onClick) {
+                      selectedTab.onClick();
+                    }
+                  }}
+                  className="bg-transparent border-0"
+                />
+              ) : (
+                <>
+                  {/* Standard button design */}
                   <div
-                    ref={tabButtonRowRef}
-                    className="inline-flex min-w-0 flex-1 flex-nowrap items-center gap-x-2 overflow-x-auto scrollbar-hide md:gap-x-3"
+                    className={`flex w-full max-w-full flex-nowrap items-center gap-x-2 overflow-hidden pl-[3px] md:gap-x-3${traderUnlocked ? " pr-[4.5rem]" : " pr-[3px]"}`}
                   >
-                    <button
-                      className={`${tabButtonClass} ${activeTab === "cave"
-                        ? tabActiveTextClass
-                        : tabInactiveTextClass
-                        } `}
-                      onClick={() => setActiveTab("cave")}
-                      data-testid="tab-cave"
+                    <div
+                      ref={tabButtonRowRef}
+                      className="inline-flex min-w-0 flex-1 flex-nowrap items-center gap-x-2 overflow-x-auto scrollbar-hide md:gap-x-3"
                     >
-                      {t("tabs.cave", { ns: "common" })}
-                    </button>
-
-                    {flags.villageUnlocked && (
                       <button
-                        className={`${tabButtonClass} ${animatingTabs.has("village")
-                          ? fadePhaseTabs.has("village")
-                            ? "tab-fade-in"
-                            : "tab-blink-new"
-                          : activeTab === "village"
-                            ? tabActiveTextClass
-                            : tabInactiveTextClass
-                          }`}
-                        onClick={() => {
-                          clearTabAnimation("village");
-                          setActiveTab("village");
-                        }}
-                        data-testid="tab-village"
-                      >
-                        {buildings.stoneHut >= 5
-                          ? t("tabs.city", { ns: "common" })
-                          : t("tabs.village", { ns: "common" })}
-                      </button>
-                    )}
-
-                    {/* Estate Tab Button */}
-                    {(estateUnlocked || buildings.darkEstate >= 1) && (
-                      <button
-                        className={`${tabButtonClass} ${animatingTabs.has("estate")
-                          ? fadePhaseTabs.has("estate")
-                            ? "tab-fade-in"
-                            : "tab-blink-new"
-                          : activeTab === "estate"
-                            ? tabActiveTextClass
-                            : tabInactiveTextClass
-                          }`}
-                        onClick={() => {
-                          clearTabAnimation("estate");
-                          setActiveTab("estate");
-                        }}
-                        data-testid="tab-estate"
-                      >
-                        {t("tabs.estate", { ns: "common" })}
-                      </button>
-                    )}
-
-                    {flags.forestUnlocked && (
-                      <button
-                        className={`${tabButtonClass} ${animatingTabs.has("forest")
-                          ? fadePhaseTabs.has("forest")
-                            ? "tab-fade-in"
-                            : "tab-blink-new"
-                          : activeTab === "forest"
-                            ? tabActiveTextClass
-                            : tabInactiveTextClass
-                          }`}
-                        onClick={() => {
-                          clearTabAnimation("forest");
-                          setActiveTab("forest");
-                        }}
-                        data-testid="tab-forest"
-                      >
-                        {t("tabs.forest", { ns: "common" })}
-                      </button>
-                    )}
-
-                    {flags.bastionUnlocked && (
-                      <button
-                        className={`${tabButtonClass} ${animatingTabs.has("bastion")
-                          ? fadePhaseTabs.has("bastion")
-                            ? "tab-fade-in"
-                            : "tab-blink-new"
-                          : activeTab === "bastion"
-                            ? tabActiveTextClass
-                            : tabInactiveTextClass
-                          }`}
-                        onClick={() => {
-                          clearTabAnimation("bastion");
-                          setActiveTab("bastion");
-                        }}
-                        data-testid="tab-bastion"
-                      >
-                        {flags.hasFortress
-                          ? t("tabs.fortress", { ns: "common" })
-                          : t("tabs.bastion", { ns: "common" })}
-                      </button>
-                    )}
-
-                    {/* Achievements Tab Button ⚜︎ */}
-                    {(relics?.survivors_notes || books?.book_of_trials) && (
-                      <button
-                        className={`${tabIconButtonClass} ${animatingTabs.has("achievements")
-                          ? fadePhaseTabs.has("achievements")
-                            ? "tab-fade-in"
-                            : "tab-blink-new"
-                          : activeTab === "achievements"
-                            ? tabActiveTextClass
-                            : tabInactiveTextClass
-                          }`}
-                        onClick={() => {
-                          clearTabAnimation("achievements");
-                          markAchievementTabPulseViewed(unclaimedAchievementIds);
-                          setActiveTab("achievements");
-                        }}
-                        data-testid="tab-achievements"
-                      >
-                        <span className="text-[14px] leading-none font-noto-symbols-2">
-                          ⚜
-                        </span>
-                      </button>
-                    )}
-
-                    {/* Timed Event Tab Button */}
-                    {timedEventTab.isActive && (
-                      <button
-                        className={`${tabIconButtonClass} gap-1 ${activeTab === "timedevent"
+                        className={`${tabButtonClass} ${activeTab === "cave"
                           ? tabActiveTextClass
                           : tabInactiveTextClass
-                          }`}
-                        onClick={() => setActiveTab("timedevent")}
-                        data-testid="tab-timedevent"
+                          } `}
+                        onClick={() => setActiveTab("cave")}
+                        data-testid="tab-cave"
                       >
-                        <span className="timer-symbol text-[14px] leading-none font-noto-symbols-2">
-                          ⊚
-                        </span>
+                        {t("tabs.cave", { ns: "common" })}
                       </button>
-                    )}
+
+                      {flags.villageUnlocked && (
+                        <button
+                          className={`${tabButtonClass} ${animatingTabs.has("village")
+                            ? fadePhaseTabs.has("village")
+                              ? "tab-fade-in"
+                              : "tab-blink-new"
+                            : activeTab === "village"
+                              ? tabActiveTextClass
+                              : tabInactiveTextClass
+                            }`}
+                          onClick={() => {
+                            clearTabAnimation("village");
+                            setActiveTab("village");
+                          }}
+                          data-testid="tab-village"
+                        >
+                          {buildings.stoneHut >= 5
+                            ? t("tabs.city", { ns: "common" })
+                            : t("tabs.village", { ns: "common" })}
+                        </button>
+                      )}
+
+                      {/* Estate Tab Button */}
+                      {(estateUnlocked || buildings.darkEstate >= 1) && (
+                        <button
+                          className={`${tabButtonClass} ${animatingTabs.has("estate")
+                            ? fadePhaseTabs.has("estate")
+                              ? "tab-fade-in"
+                              : "tab-blink-new"
+                            : activeTab === "estate"
+                              ? tabActiveTextClass
+                              : tabInactiveTextClass
+                            }`}
+                          onClick={() => {
+                            clearTabAnimation("estate");
+                            setActiveTab("estate");
+                          }}
+                          data-testid="tab-estate"
+                        >
+                          {t("tabs.estate", { ns: "common" })}
+                        </button>
+                      )}
+
+                      {flags.forestUnlocked && (
+                        <button
+                          className={`${tabButtonClass} ${animatingTabs.has("forest")
+                            ? fadePhaseTabs.has("forest")
+                              ? "tab-fade-in"
+                              : "tab-blink-new"
+                            : activeTab === "forest"
+                              ? tabActiveTextClass
+                              : tabInactiveTextClass
+                            }`}
+                          onClick={() => {
+                            clearTabAnimation("forest");
+                            setActiveTab("forest");
+                          }}
+                          data-testid="tab-forest"
+                        >
+                          {t("tabs.forest", { ns: "common" })}
+                        </button>
+                      )}
+
+                      {flags.bastionUnlocked && (
+                        <button
+                          className={`${tabButtonClass} ${animatingTabs.has("bastion")
+                            ? fadePhaseTabs.has("bastion")
+                              ? "tab-fade-in"
+                              : "tab-blink-new"
+                            : activeTab === "bastion"
+                              ? tabActiveTextClass
+                              : tabInactiveTextClass
+                            }`}
+                          onClick={() => {
+                            clearTabAnimation("bastion");
+                            setActiveTab("bastion");
+                          }}
+                          data-testid="tab-bastion"
+                        >
+                          {flags.hasFortress
+                            ? t("tabs.fortress", { ns: "common" })
+                            : t("tabs.bastion", { ns: "common" })}
+                        </button>
+                      )}
+
+                      {/* Achievements Tab Button ⚜︎ */}
+                      {(relics?.survivors_notes || books?.book_of_trials) && (
+                        <button
+                          className={`${tabIconButtonClass} ${animatingTabs.has("achievements")
+                            ? fadePhaseTabs.has("achievements")
+                              ? "tab-fade-in"
+                              : "tab-blink-new"
+                            : activeTab === "achievements"
+                              ? tabActiveTextClass
+                              : tabInactiveTextClass
+                            }`}
+                          onClick={() => {
+                            clearTabAnimation("achievements");
+                            markAchievementTabPulseViewed(unclaimedAchievementIds);
+                            setActiveTab("achievements");
+                          }}
+                          data-testid="tab-achievements"
+                        >
+                          <span className="text-[14px] leading-none font-noto-symbols-2">
+                            ⚜
+                          </span>
+                        </button>
+                      )}
+
+                      {/* Timed Event Tab Button */}
+                      {timedEventTab.isActive && (
+                        <button
+                          className={`${tabIconButtonClass} gap-1 ${activeTab === "timedevent"
+                            ? tabActiveTextClass
+                            : tabInactiveTextClass
+                            }`}
+                          onClick={() => setActiveTab("timedevent")}
+                          data-testid="tab-timedevent"
+                        >
+                          <span className="timer-symbol text-[14px] leading-none font-noto-symbols-2">
+                            ⊚
+                          </span>
+                        </button>
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                {traderUnlocked && (
-                  <div className="pointer-events-auto absolute inset-y-0 right-2 flex items-center">
-                    <TraderTabButton
-                      tabButtonClass={tabButtonClass}
-                      tabInactiveTextClass={tabInactiveTextClass}
-                      isPaused={isPaused}
-                      isAnimating={animatingTabs.has("trader")}
-                      isFadePhase={fadePhaseTabs.has("trader")}
-                      onClick={() => {
-                        clearTabAnimation("trader");
-                        setShopDialogOpen(true);
-                      }}
-                    />
-                  </div>
-                )}
-              </>
-            )}
-          </nav>
+                  {traderUnlocked && (
+                    <div className="pointer-events-auto absolute inset-y-0 right-2 flex items-center">
+                      <TraderTabButton
+                        tabButtonClass={tabButtonClass}
+                        tabInactiveTextClass={tabInactiveTextClass}
+                        isPaused={isPaused}
+                        isAnimating={animatingTabs.has("trader")}
+                        isFadePhase={fadePhaseTabs.has("trader")}
+                        onClick={() => {
+                          clearTabAnimation("trader");
+                          setShopDialogOpen(true);
+                        }}
+                      />
+                    </div>
+                  )}
+                </>
+              )}
+            </nav>
 
-          {/* Action Panels */}
-          <div
-            className={`flex-1 overflow-x-hidden pl-2 pr-2 md:pl-4 md:pr-4 min-h-0 ${activeTab === "achievements"
-              ? "overflow-hidden"
-              : "overflow-y-auto scrollbar-hide"
-              }`}
-          >
-            {activeTab === "cave" && <CavePanel />}
-            {activeTab === "village" && <VillagePanel />}
-            {activeTab === "forest" && <ForestPanel />}
-            {activeTab === "estate" && <EstatePanel />}
-            {activeTab === "bastion" && <BastionPanel />}
-            {activeTab === "achievements" && <AchievementsPanel />}
-            {activeTab === "timedevent" && <TimedEventPanel />}
-          </div>
-        </section>
-      </main>
+            {/* Action Panels */}
+            <div
+              className={`flex-1 overflow-x-hidden pl-2 pr-2 md:pl-4 md:pr-4 min-h-0 ${activeTab === "achievements"
+                ? "overflow-hidden"
+                : "overflow-y-auto scrollbar-hide"
+                }`}
+            >
+              {activeTab === "cave" && <CavePanel />}
+              {activeTab === "village" && <VillagePanel />}
+              {activeTab === "forest" && <ForestPanel />}
+              {activeTab === "estate" && <EstatePanel />}
+              {activeTab === "bastion" && <BastionPanel />}
+              {activeTab === "achievements" && <AchievementsPanel />}
+              {activeTab === "timedevent" && <TimedEventPanel />}
+            </div>
+          </section>
+        </main>
 
-      {/* Footer - above pause overlay (z-40) so hover tooltips stay visible when paused */}
-      <div className="relative z-50 flex-shrink-0 pointer-events-auto">
-        <GameFooter />
+        {/* Footer - above pause overlay (z-40) so hover tooltips stay visible when paused */}
+        <div className="relative z-50 flex-shrink-0 pointer-events-auto">
+          <GameFooter />
+        </div>
+
+        {/* Event Dialog */}
+        <EventDialog
+          isOpen={eventDialog.isOpen}
+          onClose={() => setEventDialog(false)}
+          event={eventDialog.currentEvent}
+        />
+
+        {/* Combat Dialog */}
+        <CombatDialog
+          isOpen={combatDialog.isOpen}
+          onClose={() => setCombatDialog(false)}
+          enemy={combatDialog.enemy}
+          eventTitle={combatDialog.eventTitle}
+          eventMessage={combatDialog.eventMessage}
+          onVictory={combatDialog.onVictory || (() => ({}))}
+          onDefeat={combatDialog.onDefeat || (() => ({}))}
+        />
+
+        {/* Idle Mode Dialog */}
+        <IdleModeDialog />
+        <CubeDialog />
+        <ShopDialog
+          isOpen={shopDialogOpen}
+          onClose={() => setShopDialogOpen(false)}
+          onOpen={() => setShopDialogOpen(true)}
+        />
+        <LeaderboardDialog
+          isOpen={leaderboardDialogOpen}
+          onClose={() => setLeaderboardDialogOpen(false)}
+        />
+        <FullGamePurchaseDialog
+          isOpen={fullGamePurchaseDialogOpen}
+          onClose={() => setFullGamePurchaseDialogOpen(false)}
+        />
+        {inactivityDialogOpen && <InactivityDialog />}
+
+        {/* Restart Game Dialog */}
+        <RestartGameDialog
+          isOpen={restartGameDialogOpen}
+          onClose={() => setRestartGameDialogOpen(false)}
+          onConfirm={restartGame}
+        />
+
+        {/* Reward Dialog */}
+        <RewardDialog
+          isOpen={rewardDialog.isOpen}
+          data={rewardDialog.data}
+          onClose={() => setRewardDialog(false)}
+        />
+        <InvestmentResultDialog
+          isOpen={investmentResultDialog.isOpen}
+          data={investmentResultDialog.data}
+          onClose={() => setInvestmentResultDialog(false)}
+        />
+        <MadnessDialog
+          isOpen={madnessDialog.isOpen}
+          data={madnessDialog.data}
+          onClose={() => setMadnessDialog(false)}
+        />
+
+        <InviteFriendsFloatingButton />
       </div>
-
-      {/* Event Dialog */}
-      <EventDialog
-        isOpen={eventDialog.isOpen}
-        onClose={() => setEventDialog(false)}
-        event={eventDialog.currentEvent}
-      />
-
-      {/* Combat Dialog */}
-      <CombatDialog
-        isOpen={combatDialog.isOpen}
-        onClose={() => setCombatDialog(false)}
-        enemy={combatDialog.enemy}
-        eventTitle={combatDialog.eventTitle}
-        eventMessage={combatDialog.eventMessage}
-        onVictory={combatDialog.onVictory || (() => ({}))}
-        onDefeat={combatDialog.onDefeat || (() => ({}))}
-      />
-
-      {/* Idle Mode Dialog */}
-      <IdleModeDialog />
-      <CubeDialog />
-      <ShopDialog
-        isOpen={shopDialogOpen}
-        onClose={() => setShopDialogOpen(false)}
-        onOpen={() => setShopDialogOpen(true)}
-      />
-      <LeaderboardDialog
-        isOpen={leaderboardDialogOpen}
-        onClose={() => setLeaderboardDialogOpen(false)}
-      />
-      <FullGamePurchaseDialog
-        isOpen={fullGamePurchaseDialogOpen}
-        onClose={() => setFullGamePurchaseDialogOpen(false)}
-      />
-      {inactivityDialogOpen && <InactivityDialog />}
-
-      {/* Restart Game Dialog */}
-      <RestartGameDialog
-        isOpen={restartGameDialogOpen}
-        onClose={() => setRestartGameDialogOpen(false)}
-        onConfirm={restartGame}
-      />
-
-      {/* Reward Dialog */}
-      <RewardDialog
-        isOpen={rewardDialog.isOpen}
-        data={rewardDialog.data}
-        onClose={() => setRewardDialog(false)}
-      />
-      <InvestmentResultDialog
-        isOpen={investmentResultDialog.isOpen}
-        data={investmentResultDialog.data}
-        onClose={() => setInvestmentResultDialog(false)}
-      />
-      <MadnessDialog
-        isOpen={madnessDialog.isOpen}
-        data={madnessDialog.data}
-        onClose={() => setMadnessDialog(false)}
-      />
-
-      <InviteFriendsFloatingButton />
-    </div>
     </ProfileMenuProvider>
   );
 }
