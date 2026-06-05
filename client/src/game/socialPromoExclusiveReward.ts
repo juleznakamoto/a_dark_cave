@@ -36,6 +36,18 @@ export function isSignUpRewardsStepDone(
   );
 }
 
+/** Signed in + email + social + Playlight discover — invite step may still be open. */
+export function areInviteFriendsPrereqsDone(
+  state: SocialPromoExclusiveSlice,
+): boolean {
+  if (!isSignUpRewardsStepDone(state)) return false;
+  const rewards = state.social_media_rewards ?? {};
+  if (!rewards[MARKETING_EMAIL_REWARD_KEY]?.claimed) return false;
+  if (!SOCIAL_PLATFORMS.every((p) => rewards[p.id]?.claimed)) return false;
+  if (!rewards[PLAYLIGHT_DISCOVER_REWARD_KEY]?.claimed) return false;
+  return true;
+}
+
 /** At least one successful invite for the exclusive-item track (gold rewards may still go up to 10). */
 export function isExclusiveInviteStepDone(
   state: SocialPromoExclusiveSlice,
@@ -88,15 +100,13 @@ export function isRewardsTasksShortcutVisible(
 }
 
 /**
- * Lower-right invite CTA: all exclusive-track tasks done (independent of ring event).
- * `gifted_ring` is granted by `giftedRingDiscovery` in eventsSocialPromoExclusive.ts.
+ * Floating invite CTA: signed in and under referral cap (same gate as the rewards-dialog invite row).
  */
 export function isInviteFriendsFloatingButtonVisible(
   state: SocialPromoExclusiveSlice,
 ): boolean {
   return (
     state.isUserSignedIn === true &&
-    isSocialPromoExclusiveRewardComplete(state) &&
     (state.referralCount ?? 0) < SOCIAL_PROMPT_REFERRAL_CAP
   );
 }

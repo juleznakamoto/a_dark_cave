@@ -139,7 +139,7 @@ function AchievementTabContent({
   const claimButtonClass = CLAIM_BUTTON_CLASS[config.idPrefix] ?? CLAIM_BUTTON_CLASS.item;
 
   return (
-    <div className="flex-1 min-h-0 overflow-hidden flex flex-col w-full md:max-w-96">
+    <div className="flex-1 min-h-0 overflow-hidden flex flex-col w-full">
       <ScrollAreaWithIndicator className="h-full w-full" scrollAreaId={`achievements-${tabId}`}>
         <div className="pb-6 space-y-1">
           {rows.map((row) => (
@@ -215,7 +215,7 @@ export default function AchievementsPanel() {
   const lockedTooltip = t("achievements.notUnlocked");
   const chartUnavailable = t("achievements.chartUnavailable");
   return (
-    <div className="mt-0 flex h-full flex-col min-h-0 overflow-hidden w-full md:max-w-96">
+    <div className="mt-0 flex h-full flex-col min-h-0 overflow-hidden w-full">
       <Tabs
         value={effectiveTab}
         onValueChange={setActiveTab}

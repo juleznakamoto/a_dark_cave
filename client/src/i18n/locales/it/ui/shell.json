@@ -71,7 +71,7 @@
   "pauseHotkey": {
     "hintPrefix": "Usa ",
     "hintOr": "o",
-    "hintSuffix": " o i tasti qui sotto per cambiare scheda"
+    "hintSuffix": " o i tasti qui sopra per cambiare scheda"
   },
   "villageHotkeyTutorial": {
     "dismiss": "Ignora"

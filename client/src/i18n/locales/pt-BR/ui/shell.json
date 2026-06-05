@@ -71,7 +71,7 @@
   "pauseHotkey": {
     "hintPrefix": "Use ",
     "hintOr": "ou",
-    "hintSuffix": " ou as teclas abaixo para alternar entre as abas"
+    "hintSuffix": " ou as teclas acima para alternar entre as abas"
   },
   "villageHotkeyTutorial": {
     "dismiss": "Dispensar"

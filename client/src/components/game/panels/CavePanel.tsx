@@ -524,7 +524,7 @@ export default function CavePanel() {
     <>
       <ScrollArea className="h-full w-full">
         {explosionEffect.ExplosionEffectRenderer()}
-        <div className="space-y-4 mt-2 mb-2 pl-[3px] pr-[3px]">
+        <div className="w-full space-y-4 mt-2 mb-2">
           {actionGroups.map((group, groupIndex) => {
             // Handle groups with subGroups (like Craft)
             if (group.subGroups) {
@@ -557,14 +557,11 @@ export default function CavePanel() {
                     if (visibleActions.length === 0) return null;
 
                     return (
-                      <div className="w-full md:max-w-96">
-
-                        <div key={subGroupIndex} className="flex flex-wrap gap-2">
-                          {visibleActions.map((action) =>
-                            renderButton(action.id, action.label),
-                          )}
-                        </div>                    </div>
-
+                      <div key={subGroupIndex} className="flex w-full flex-wrap gap-2">
+                        {visibleActions.map((action) =>
+                          renderButton(action.id, action.label),
+                        )}
+                      </div>
                     );
                   })}
                 </div>
@@ -590,7 +587,7 @@ export default function CavePanel() {
                     {group.title}
                   </h3>
                 )}
-                <div className="flex flex-wrap gap-2">
+                <div className="flex w-full flex-wrap gap-2">
                   {visibleActions.map((action) =>
                     renderButton(action.id, action.label),
                   )}

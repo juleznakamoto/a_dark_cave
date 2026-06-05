@@ -19,7 +19,7 @@ import type { TimedEventTabState } from "@/game/types";
 
 export default function Game() {
   const initialize = useGameStore((state) => state.initialize);
-  const { setShopDialogOpen } = useGameStore();
+  const { setShopDialogOpen, setIsUserSignedIn } = useGameStore();
   const [isInitialized, setIsInitialized] = useState(false);
   const [emailConfirmedDialogOpen, setEmailConfirmedDialogOpen] = useState(false);
   useEffect(() => {
@@ -65,6 +65,7 @@ export default function Game() {
         const user = await getCurrentUser();
         if (user) {
           logger.log("[GAME PAGE] User authenticated, loading game");
+          setIsUserSignedIn(true);
           await flushPendingMarketingPreferences();
         }
 

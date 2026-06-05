@@ -45,19 +45,23 @@ function LogPanel() {
   }, [log.length]);
 
   return (
-    <div className="h-[18vh] min-h-[6rem] pt-2 overflow-hidden">
+    <div className="h-[18vh] min-h-[6rem] md:h-full md:min-h-0 pt-2 overflow-hidden">
       <ScrollAreaWithIndicator
         className="h-full w-full"
         showIndicatorWhen={recentEntries.length >= 8}
         scrollAreaId="event-log"
       >
-        <div className="pl-2 px-3 relative ">
+        <div className="pl-0.5 pr-2 relative">
           <div ref={topRef} />
           <div className="space-y-1 text-xs pb-1">
             {recentEntries.map((entry: any, index: number) => {
               const typedEntry = entry as ExtendedLogEntry;
+              const isUnread = !readEntries.has(typedEntry.id);
+
               let opacity = "";
-              if (recentEntries.length >= GAME_CONSTANTS.LOG_MAX_ENTRIES) {
+              if (!isUnread) {
+                opacity = "opacity-80";
+              } else if (recentEntries.length >= GAME_CONSTANTS.LOG_MAX_ENTRIES) {
                 if (index === recentEntries.length - 1) {
                   opacity = "opacity-60";
                 } else if (index === recentEntries.length - 2) {
@@ -68,8 +72,6 @@ function LogPanel() {
                   opacity = "opacity-90";
                 }
               }
-
-              const isUnread = !readEntries.has(typedEntry.id);
               const showNewIndicator = isUnread;
               const isNewVillager = isNewVillagerLogEntry(typedEntry as LogEntry);
               const blinkClass = isUnread ? "animate-pulse" : "";

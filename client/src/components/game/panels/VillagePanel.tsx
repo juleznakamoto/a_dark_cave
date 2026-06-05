@@ -861,7 +861,7 @@ export default function VillagePanel() {
       <SuccessParticles buttonRef={feedFireButtonRef} sparks={sparks} />
       <BubblyButtonGlobalPortal bubbles={bubbles} />
       <ScrollArea className="h-full w-full">
-        <div className="space-y-4 mt-2 mb-2 pl-[3px] pr-[3px]">
+        <div className="w-full space-y-4 mt-2 mb-2">
           {actionGroups.map((group, groupIndex) => {
             const visibleActions = group.actions.filter((action) => {
               const actionWithShow = action as {
@@ -889,12 +889,7 @@ export default function VillagePanel() {
                       : group.title}
                   </h3>
                 )}
-                <div
-                  className={cn(
-                    "flex flex-wrap gap-2",
-                    group.title === "Build" && "max-w-full md:max-w-96",
-                  )}
-                >
+                <div className="flex w-full flex-wrap gap-2">
                   {visibleActions.map((action) =>
                     renderButton(action.id, action.label),
                   )}

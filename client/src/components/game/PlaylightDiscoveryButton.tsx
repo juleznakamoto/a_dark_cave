@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { useGameStore } from "@/game/state";
+import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 
 const SHOW_MS = 20 * 1000;
@@ -31,12 +32,16 @@ type PlaylightDiscoveryButtonProps = {
   onClick: () => void;
   showNotificationDot?: boolean;
   forceShowTooltip?: boolean;
+  tooltipSide?: "top" | "left" | "right" | "bottom";
+  className?: string;
 };
 
 export default function PlaylightDiscoveryButton({
   onClick,
   showNotificationDot = false,
   forceShowTooltip = false,
+  tooltipSide = "left",
+  className,
 }: PlaylightDiscoveryButtonProps) {
   const { t } = useTranslation("ui");
   const playTime = useGameStore((state) => state.playTime ?? 0);
@@ -74,7 +79,7 @@ export default function PlaylightDiscoveryButton({
   return (
     <HoverCalloutTooltip
       label={t("playlight.moreGames")}
-      side="left"
+      side={tooltipSide}
       forceVisible={forceShowTooltip || showDiscoveryTooltip}
       onCalloutClick={onClick}
     >
@@ -84,7 +89,10 @@ export default function PlaylightDiscoveryButton({
         type="button"
         onClick={onClick}
         aria-label={t("playlight.discoveryAria")}
-        className="playlight-discovery-btn group relative h-7 w-7 shrink-0 overflow-visible border border-border bg-background/70 p-0 backdrop-blur-sm"
+        className={cn(
+          "playlight-discovery-btn group relative h-7 w-7 shrink-0 overflow-visible p-0",
+          className,
+        )}
       >
         <span
           className="flex h-full w-full items-center justify-center opacity-60 transition-opacity duration-300 group-hover:opacity-100"

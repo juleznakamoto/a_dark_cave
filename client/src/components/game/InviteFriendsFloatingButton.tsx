@@ -1,15 +1,19 @@
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { UserPlus } from "lucide-react";
 import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { useToast } from "@/hooks/use-toast";
 import { logger } from "@/lib/logger";
 import { copyInviteLinkToClipboard } from "@/game/copyInviteLink";
+import { getCurrentUser } from "@/game/auth";
 import {
   SOCIAL_PROMPT_REFERRAL_CAP,
   REFERRAL_REWARD_GOLD,
 } from "@/game/socialPromptAuto";
 import { isInviteFriendsFloatingButtonVisible } from "@/game/socialPromoExclusiveReward";
 import { useTranslation } from "react-i18next";
+import { GAME_FOOTER_INSET } from "./gameChrome";
 
 export default function InviteFriendsFloatingButton() {
   const { t } = useTranslation("ui");
@@ -21,12 +25,32 @@ export default function InviteFriendsFloatingButton() {
   const signupWelcomeGoldClaimed = useGameStore(
     (s) => s.signupWelcomeGoldClaimed === true,
   );
+  const setIsUserSignedIn = useGameStore((s) => s.setIsUserSignedIn);
+  const [sessionSignedIn, setSessionSignedIn] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      const user = await getCurrentUser();
+      if (cancelled) return;
+      const signedIn = !!user;
+      setSessionSignedIn(signedIn);
+      if (signedIn && !isUserSignedIn) {
+        setIsUserSignedIn(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [isUserSignedIn, setIsUserSignedIn]);
+
+  const signedIn = isUserSignedIn === true || sessionSignedIn === true;
 
   const showFloatingInvite = isInviteFriendsFloatingButtonVisible({
     social_media_rewards,
     referralCount,
     referrals,
-    isUserSignedIn,
+    isUserSignedIn: signedIn,
     signupWelcomeGoldClaimed,
   });
 
@@ -48,8 +72,11 @@ export default function InviteFriendsFloatingButton() {
     }
   };
 
-  return (
-    <div className="pointer-events-auto fixed right-4 bottom-[calc(45px+1rem)] z-[46]">
+  return createPortal(
+    <div
+      className="pointer-events-auto fixed right-4 z-[60]"
+      style={{ bottom: `calc(${GAME_FOOTER_INSET} + 0.75rem)` }}
+    >
       <TooltipWrapper
         tooltip={
           <p className="text-xs">
@@ -83,6 +110,7 @@ export default function InviteFriendsFloatingButton() {
           </span>
         </button>
       </TooltipWrapper>
-    </div>
+    </div>,
+    document.body,
   );
 }
