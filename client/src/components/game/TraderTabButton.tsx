@@ -1,9 +1,17 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import cn from "clsx";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { TRADER_TAB_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
+import { useGameStore } from "@/game/state";
+
+const TRADER_TAB_HINT_INTERVAL_MS = 15 * 60 * 1000;
+const TRADER_TAB_HINT_DURATION_MS = 10 * 1000;
+
+const TRADER_ICON_GLOW_CLASS =
+  "[text-shadow:0_0_14px_rgba(132,204,22,0.95),0_0_28px_rgba(132,204,22,0.55)]";
 
 interface TraderTabButtonProps {
   tabButtonClass: string;
@@ -29,6 +37,34 @@ export function TraderTabButton({
     particleConfig: TRADER_TAB_PARTICLE_CONFIG,
     zIndex: 50,
   });
+  const [isHintActive, setIsHintActive] = useState(false);
+
+  useEffect(() => {
+    let endTimeout: ReturnType<typeof setTimeout> | null = null;
+
+    const startHint = () => {
+      if (useGameStore.getState().shopDialogOpen) return;
+
+      setIsHintActive(true);
+      hoverHandlers.onMouseEnter();
+      if (endTimeout) clearTimeout(endTimeout);
+      endTimeout = setTimeout(() => {
+        setIsHintActive(false);
+        hoverHandlers.onMouseLeave();
+        endTimeout = null;
+      }, TRADER_TAB_HINT_DURATION_MS);
+    };
+
+    const intervalId = setInterval(startHint, TRADER_TAB_HINT_INTERVAL_MS);
+
+    return () => {
+      clearInterval(intervalId);
+      if (endTimeout) {
+        clearTimeout(endTimeout);
+        hoverHandlers.onMouseLeave();
+      }
+    };
+  }, [hoverHandlers.onMouseEnter, hoverHandlers.onMouseLeave]);
 
   return (
     <>
@@ -46,7 +82,12 @@ export function TraderTabButton({
       >
         <span
           ref={iconRef}
-          className="font-noto-symbols-2 text-[19px] leading-none text-lime-500 opacity-80 transition-[opacity,text-shadow] group-hover:opacity-100 group-hover:[text-shadow:0_0_14px_rgba(132,204,22,0.95),0_0_28px_rgba(132,204,22,0.55)] group-focus-visible:opacity-100 group-focus-visible:[text-shadow:0_0_14px_rgba(132,204,22,0.95),0_0_28px_rgba(132,204,22,0.55)] relative top-px"
+          className={cn(
+            "font-noto-symbols-2 text-[19px] leading-none text-lime-500 transition-[opacity,text-shadow] relative top-px",
+            isHintActive
+              ? cn("opacity-100", TRADER_ICON_GLOW_CLASS)
+              : "opacity-80 group-hover:opacity-100 group-hover:[text-shadow:0_0_14px_rgba(132,204,22,0.95),0_0_28px_rgba(132,204,22,0.55)] group-focus-visible:opacity-100 group-focus-visible:[text-shadow:0_0_14px_rgba(132,204,22,0.95),0_0_28px_rgba(132,204,22,0.55)]",
+          )}
           aria-hidden
         >
           ◬
@@ -59,12 +100,16 @@ export function TraderTabButton({
             {t("tabs.trader", { ns: "common" })}
           </span>
           <span
-            className={`col-start-1 row-start-1 font-normal transition-opacity group-hover:font-semibold ${isAnimating
-              ? ""
-              : isPaused
-                ? tabInactiveTextClass
-                : "opacity-80 group-hover:opacity-100"
-              }`}
+            className={cn(
+              "col-start-1 row-start-1 font-normal transition-opacity",
+              isAnimating
+                ? ""
+                : isHintActive
+                  ? "opacity-100 font-semibold"
+                  : isPaused
+                    ? tabInactiveTextClass
+                    : "opacity-80 group-hover:opacity-100 group-hover:font-semibold",
+            )}
           >
             {t("tabs.trader", { ns: "common" })}
           </span>
