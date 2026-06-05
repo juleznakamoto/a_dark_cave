@@ -37,6 +37,7 @@ import {
   assignVillagerToJob,
   unassignVillagerFromJob,
   mergeCombatVictoryState,
+  extractCombatResultSummary,
   applyGameStateLoadMigrations,
   markSeenResources,
 } from "@/game/stateHelpers";
@@ -694,6 +695,19 @@ const detectMadnessChange = (
 
   return 0;
 };
+
+function scheduleMadnessDialogAfterCombat(
+  get: () => GameStore,
+  madnessChange: number,
+): void {
+  if (madnessChange === 0) return;
+  scheduleWhenDialogClear(
+    get,
+    (store) => store.combatDialog.isOpen,
+    () => get().setMadnessDialog(true, { madnessChange }),
+    DIALOG_HANDOFF_DELAY_MS,
+  );
+}
 
 // Define which actions should trigger reward dialogs (whitelist)
 export const rewardDialogActions = new Set([
@@ -2761,15 +2775,24 @@ export const useGameStore = create<GameStore>((set, get) => ({
                 type: "system",
               });
             }
-            return _combatSummary || {};
+            return extractCombatResultSummary(
+              _combatSummary
+                ? { _combatSummary }
+                : (victoryResult as Record<string, unknown>),
+            );
           },
           onDefeat: () => {
+            const prevState = get();
             const defeatResult = combatData.onDefeat();
             const { _logMessage, _combatSummary, ...stateUpdates } =
               defeatResult as Record<string, unknown> & {
                 _logMessage?: string;
                 _combatSummary?: Record<string, unknown>;
               };
+            const madnessChange = detectMadnessChange(
+              stateUpdates as Partial<GameState>,
+              prevState,
+            );
             set((prevState) => ({
               ...prevState,
               ...(stateUpdates as object),
@@ -2785,7 +2808,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
                 ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
                 : prevState.log,
             }));
-            return _combatSummary || {};
+            scheduleMadnessDialogAfterCombat(get, madnessChange);
+            return extractCombatResultSummary(
+              _combatSummary
+                ? { _combatSummary }
+                : (defeatResult as Record<string, unknown>),
+            );
           },
         });
       } else {
@@ -3086,23 +3114,38 @@ export const useGameStore = create<GameStore>((set, get) => ({
           get().setCombatDialog(false);
         },
         onDefeat: () => {
+          const prevState = get();
           const defeatResult = combatData.onDefeat();
+          const { _logMessage, _combatSummary, ...stateUpdates } =
+            defeatResult as Record<string, unknown> & {
+              _logMessage?: string;
+              _combatSummary?: Record<string, unknown>;
+            };
+          const madnessChange = detectMadnessChange(
+            stateUpdates as Partial<GameState>,
+            prevState,
+          );
           set((prevState) => ({
             ...prevState,
-            ...defeatResult,
-            log: defeatResult._logMessage
+            ...(stateUpdates as object),
+            log: _logMessage
               ? [
                 ...prevState.log,
                 {
                   id: `combat-defeat-${Date.now()}`,
-                  message: defeatResult._logMessage,
+                  message: _logMessage,
                   timestamp: Date.now(),
                   type: "system",
                 },
               ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
               : prevState.log,
           }));
-          get().setCombatDialog(false);
+          scheduleMadnessDialogAfterCombat(get, madnessChange);
+          return extractCombatResultSummary(
+            _combatSummary
+              ? { _combatSummary }
+              : (defeatResult as Record<string, unknown>),
+          );
         },
       });
       return true;

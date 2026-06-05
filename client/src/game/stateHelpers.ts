@@ -1,4 +1,5 @@
 import { GameState } from "@shared/schema";
+import type { CombatResultSummary } from "./types";
 import { getCurrentPopulation, getMaxPopulation } from "./population";
 import {
   isResourceLimited,
@@ -6,6 +7,27 @@ import {
   capResourceToLimit,
 } from "./resourceLimits";
 import { getTotalEventDeathReduction } from "./rules/effectsCalculation";
+
+type CombatResultPayload =
+  | CombatResultSummary
+  | (Record<string, unknown> & { _combatSummary?: CombatResultSummary });
+
+/** Unwrap `_combatSummary` from combat callbacks that return `Partial<GameState>`. */
+export function extractCombatResultSummary(
+  result: CombatResultPayload | null | undefined,
+): CombatResultSummary {
+  if (!result || typeof result !== "object") {
+    return {};
+  }
+  if (
+    "_combatSummary" in result &&
+    result._combatSummary &&
+    typeof result._combatSummary === "object"
+  ) {
+    return result._combatSummary;
+  }
+  return result as CombatResultSummary;
+}
 
 /**
  * Merge combat victory updates onto live `prevState`. Combat `onVictory` must not spread stale

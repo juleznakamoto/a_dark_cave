@@ -34,6 +34,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { Enemy, CombatItem, CombatResultSummary } from "@/game/types";
+import { extractCombatResultSummary } from "@/game/stateHelpers";
 import { ProceduralGroundBackground } from "@/components/ui/procedural-ground-background";
 import { formatNumber } from "@/lib/utils";
 import { getResourceName, getStatName } from "@/i18n/resolveGameText";
@@ -276,9 +277,9 @@ export default function CombatDialog({
     }
     consequencesAppliedRef.current = true;
     if (combatResult === "victory") {
-      setCombatSummary(onVictory() ?? {});
+      setCombatSummary(extractCombatResultSummary(onVictory()));
     } else {
-      setCombatSummary(onDefeat() ?? {});
+      setCombatSummary(extractCombatResultSummary(onDefeat()));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- run once per combat outcome; callbacks are stable from store
   }, [combatResult]);
@@ -702,6 +703,19 @@ export default function CombatDialog({
           }),
           className: "text-gray-400 text-sm",
         })),
+        ...(combatSummary.madnessGain !== undefined &&
+          combatSummary.madnessGain > 0
+          ? [
+            {
+              key: "madness",
+              text: t("ui:madness.change", {
+                sign: "+",
+                amount: formatNumber(combatSummary.madnessGain),
+              }),
+              className: "text-violet-300 text-sm",
+            },
+          ]
+          : []),
       ]
       : [];
   const defeatButtonDelay =

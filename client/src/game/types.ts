@@ -128,6 +128,8 @@ export interface CombatResultSummary {
   woundedFellows?: string[];
   silverReward?: number;
   goldReward?: number;
+  /** Attack wave: one-time madness from first defeat on this wave. */
+  madnessGain?: number;
 }
 
 /**

@@ -6,6 +6,16 @@ import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 import { getVillagersInVillage } from "../population";
 import { ATTACK_WAVE_IDS, type AttackWaveId } from "./attackWaveOrder";
 import { resolveEventMessage, resolveEventTitle } from "@/i18n/eventText";
+import type { CombatResultSummary } from "@/game/types";
+
+/** story.seen flag: first defeat on this wave (one-time madness grant). */
+export function attackWaveDefeatSeenFlag(waveId: AttackWaveId): string {
+  return `${waveId}Defeat`;
+}
+
+const attackWaveDefeatMadnessGain = (state: GameState): number =>
+  1 +
+  (state.cruelMode ? CRUEL_MODE.madnessFromEvents.flatBonusWhenCruel : 0);
 
 // Helper function to calculate enemy stats
 function calculateEnemyStats(
@@ -384,6 +394,42 @@ function handleDefeat(
   };
 }
 
+/** First defeat per wave grants +1 madness (up to +10 across all waves). */
+export function applyAttackWaveDefeatMadness(
+  state: GameState,
+  waveId: AttackWaveId,
+  defeatResult: ReturnType<typeof handleDefeat>,
+): ReturnType<typeof handleDefeat> & { _combatSummary: CombatResultSummary } {
+  const defeatFlag = attackWaveDefeatSeenFlag(waveId);
+  const isFirstDefeat = !state.story.seen[defeatFlag];
+  if (!isFirstDefeat) {
+    return defeatResult;
+  }
+
+  const madnessGain = attackWaveDefeatMadnessGain(state);
+  return {
+    ...defeatResult,
+    story: {
+      ...defeatResult.story,
+      seen: {
+        ...defeatResult.story.seen,
+        [defeatFlag]: true,
+      },
+    },
+    stats: {
+      ...(defeatResult.stats ?? state.stats),
+      madnessFromEvents:
+        ((defeatResult.stats?.madnessFromEvents ??
+          state.stats.madnessFromEvents) ||
+          0) + madnessGain,
+    },
+    _combatSummary: {
+      ...defeatResult._combatSummary,
+      madnessGain,
+    },
+  };
+}
+
 function createAttackWaveEvent(waveId: AttackWaveId): GameEvent {
   const def = ATTACK_WAVE_DEFINITIONS[waveId];
   const rules = WAVE_RULES[waveId];
@@ -497,11 +543,15 @@ function createAttackWaveEvent(waveId: AttackWaveId): GameEvent {
             },
           }),
           onDefeat: () => {
-            const defeatResult = handleDefeat(
+            const defeatResult = applyAttackWaveDefeatMadness(
               state,
-              def.buildingDamageMultiplier,
-              def.maxCasualties,
-              def.fellowshipWoundedMultiplier,
+              waveId,
+              handleDefeat(
+                state,
+                def.buildingDamageMultiplier,
+                def.maxCasualties,
+                def.fellowshipWoundedMultiplier,
+              ),
             );
             return {
               ...defeatResult,
