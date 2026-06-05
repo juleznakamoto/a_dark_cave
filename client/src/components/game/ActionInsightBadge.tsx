@@ -188,8 +188,6 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
     revealActionEffects(actionId!);
   };
 
-  const useStatsHeaderStyle = isStats || isTimedEvent;
-
   const hostClassName = cn(
     showDisabledOpacity && "opacity-40",
     layout === "inline" && "inline-flex shrink-0 items-center self-center",
@@ -252,7 +250,6 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
             key={playing ? "reveal" : "idle"}
             playing={playing}
             embedded
-            statsHeader={useStatsHeaderStyle}
           />
         </button>
       </TooltipWrapper>
