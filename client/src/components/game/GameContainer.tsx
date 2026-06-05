@@ -983,19 +983,19 @@ export default function GameContainer() {
         {/* Main Content Area - Fills remaining space.
           Desktop (left → right): event log, tabs/actions, resources side panel.
           Mobile (stacked top → bottom): event log, side panel, tabs/actions. */}
-        <main className="flex-1 pb-0 flex flex-col md:flex-row min-h-0 overflow-hidden">
-          {/* Event Log - top on mobile, left column on desktop (fixed width; does not shrink) */}
-          <div className="order-1 w-full md:flex-[0_0_16rem] md:max-w-[22rem] md:shrink-0 min-h-0 overflow-hidden p-2 pb-0 md:border-r border-border">
+        <main className="flex-1 pb-0 flex flex-col md:grid md:w-full md:max-w-[84rem] md:mx-auto md:grid-cols-[minmax(14rem,18rem)_minmax(12rem,1fr)_minmax(20rem,26rem)] min-h-0 overflow-hidden">
+          {/* Event Log - top on mobile, left column on desktop */}
+          <div className="order-1 w-full min-h-0 overflow-hidden p-2 pb-0 md:border-r border-border">
             <LogPanel />
           </div>
 
-          {/* Resources Side Panel - below log on mobile, right column on desktop (fixed width; does not shrink) */}
-          <div className="order-2 md:order-3 min-h-[36vh] md:min-h-0 w-full md:flex-[0_0_20rem] md:max-w-[26rem] md:shrink-0 pl-2 pr-2 border-t md:border-t-0 md:border-l border-border overflow-hidden">
+          {/* Resources Side Panel - below log on mobile, right column on desktop */}
+          <div className="order-2 md:order-3 min-h-[36vh] md:min-h-0 w-full min-h-0 pl-2 pr-2 border-t md:border-t-0 md:border-l border-border overflow-hidden">
             <GameTabs />
           </div>
 
-          {/* Game tab area - below side panel on mobile, middle column on desktop (absorbs horizontal shrink) */}
-          <section className="order-3 md:order-2 flex-1 min-w-0 flex flex-col min-h-0 overflow-hidden md:pl-0">
+          {/* Game tab area - below side panel on mobile, middle column on desktop (flexible; shrinks first) */}
+          <section className="order-3 md:order-2 min-w-0 flex flex-col min-h-0 overflow-hidden md:pl-0">
             {/* Horizontal Game Tabs */}
             <nav
               className={`relative border-t border-border pl-2 pr-2 md:pl-4 md:pr-4 flex-shrink-0${isPaused ? " z-[41] pointer-events-auto" : ""}`}
