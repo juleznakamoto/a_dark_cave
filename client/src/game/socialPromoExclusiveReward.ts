@@ -100,15 +100,13 @@ export function isRewardsTasksShortcutVisible(
 }
 
 /**
- * Floating invite CTA: signed in, invite prereqs done, under referral cap.
- * Shown for the first invite and for additional invites after the track completes.
+ * Floating invite CTA: signed in and under referral cap (same gate as the rewards-dialog invite row).
  */
 export function isInviteFriendsFloatingButtonVisible(
   state: SocialPromoExclusiveSlice,
 ): boolean {
   return (
     state.isUserSignedIn === true &&
-    areInviteFriendsPrereqsDone(state) &&
     (state.referralCount ?? 0) < SOCIAL_PROMPT_REFERRAL_CAP
   );
 }

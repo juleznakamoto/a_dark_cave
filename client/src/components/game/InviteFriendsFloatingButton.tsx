@@ -1,9 +1,12 @@
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { UserPlus } from "lucide-react";
 import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { useToast } from "@/hooks/use-toast";
 import { logger } from "@/lib/logger";
 import { copyInviteLinkToClipboard } from "@/game/copyInviteLink";
+import { getCurrentUser } from "@/game/auth";
 import {
   SOCIAL_PROMPT_REFERRAL_CAP,
   REFERRAL_REWARD_GOLD,
@@ -22,14 +25,36 @@ export default function InviteFriendsFloatingButton() {
   const signupWelcomeGoldClaimed = useGameStore(
     (s) => s.signupWelcomeGoldClaimed === true,
   );
+  const setIsUserSignedIn = useGameStore((s) => s.setIsUserSignedIn);
+  const [sessionSignedIn, setSessionSignedIn] = useState<boolean | null>(null);
 
-  const showFloatingInvite = isInviteFriendsFloatingButtonVisible({
-    social_media_rewards,
-    referralCount,
-    referrals,
-    isUserSignedIn,
-    signupWelcomeGoldClaimed,
-  });
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      const user = await getCurrentUser();
+      if (cancelled) return;
+      const signedIn = !!user;
+      setSessionSignedIn(signedIn);
+      if (signedIn && !isUserSignedIn) {
+        setIsUserSignedIn(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [isUserSignedIn, setIsUserSignedIn]);
+
+  const signedIn = isUserSignedIn === true || sessionSignedIn === true;
+
+  const showFloatingInvite =
+    signedIn &&
+    isInviteFriendsFloatingButtonVisible({
+      social_media_rewards,
+      referralCount,
+      referrals,
+      isUserSignedIn: true,
+      signupWelcomeGoldClaimed,
+    });
 
   if (!showFloatingInvite) return null;
 
@@ -49,7 +74,7 @@ export default function InviteFriendsFloatingButton() {
     }
   };
 
-  return (
+  return createPortal(
     <div
       className="pointer-events-auto fixed right-4 z-[60]"
       style={{ bottom: `calc(${GAME_FOOTER_INSET} + 0.75rem)` }}
@@ -87,6 +112,7 @@ export default function InviteFriendsFloatingButton() {
           </span>
         </button>
       </TooltipWrapper>
-    </div>
+    </div>,
+    document.body,
   );
 }
