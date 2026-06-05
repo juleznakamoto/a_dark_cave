@@ -12,9 +12,9 @@ const TRADER_TAB_HINT_DURATION_MS = 10 * 1000;
 
 /** Intense lime glow when hovered, focused, or hint-pulsing (full class strings for Tailwind). */
 const TRADER_ICON_GLOW_ACTIVE =
-  "[text-shadow:0_0_14px_rgba(132,204,22,0.95),0_0_28px_rgba(132,204,22,0.55),0_0_36px_rgba(132,204,22,0.25)]";
+  "[text-shadow:0_0_4px_rgba(132,204,22,1),0_0_8px_rgba(132,204,22,1),0_0_16px_rgba(132,204,22,1)]";
 const TRADER_ICON_GLOW_ACTIVE_HOVER =
-  "group-hover:[text-shadow:0_0_14px_rgba(132,204,22,0.95),0_0_28px_rgba(132,204,22,0.55),0_0_36px_rgba(132,204,22,0.25)] group-focus-visible:[text-shadow:0_0_14px_rgba(132,204,22,0.95),0_0_28px_rgba(132,204,22,0.55),0_0_36px_rgba(132,204,22,0.25)]";
+  "group-hover:[text-shadow:0_0_4px_rgba(132,204,22,1),0_0_8px_rgba(132,204,22,1),0_0_16px_rgba(132,204,22,1),0_0_32px_rgba(132,204,22,1)] group-focus-visible:[text-shadow:0_0_4px_rgba(132,204,22,1),0_0_8px_rgba(132,204,22,1),0_0_16px_rgba(132,204,22,1),0_0_32px_rgba(132,204,22,1)]";
 
 interface TraderTabButtonProps {
   tabButtonClass: string;
@@ -80,12 +80,9 @@ export function TraderTabButton({
       <button
         type="button"
         {...hoverHandlers}
-        className={`${tabButtonClass} group shrink-0 gap-1.5 pl-2 ${isAnimating
-          ? isFadePhase
-            ? "tab-fade-in"
-            : "tab-blink-new"
-          : ""
-          }`}
+        className={`${tabButtonClass} group shrink-0 gap-1.5 pl-2 ${
+          isAnimating ? (isFadePhase ? "tab-fade-in" : "tab-blink-new") : ""
+        }`}
         onClick={onClick}
         data-testid="tab-trader"
       >
@@ -96,10 +93,10 @@ export function TraderTabButton({
             showActiveGlow
               ? cn("opacity-100", TRADER_ICON_GLOW_ACTIVE)
               : cn(
-                "opacity-80",
-                "group-hover:opacity-100 group-focus-visible:opacity-100",
-                TRADER_ICON_GLOW_ACTIVE_HOVER,
-              ),
+                  "opacity-80",
+                  "group-hover:opacity-100 group-focus-visible:opacity-100",
+                  TRADER_ICON_GLOW_ACTIVE_HOVER,
+                ),
           )}
           aria-hidden
         >
