@@ -88,7 +88,7 @@ function LogPanel() {
               const isNewVillager = isNewVillagerLogEntry(typedEntry as LogEntry);
               const blinkClass = isUnread ? "animate-pulse" : "";
 
-              const handleMouseEnter = () => {
+              const startMarkReadTimer = () => {
                 if (!isUnread) return;
 
                 const existing = markReadTimeoutsRef.current.get(typedEntry.id);
@@ -102,7 +102,7 @@ function LogPanel() {
                 markReadTimeoutsRef.current.set(typedEntry.id, timeout);
               };
 
-              const handleMouseLeave = () => {
+              const cancelMarkReadTimer = () => {
                 const timeout = markReadTimeoutsRef.current.get(typedEntry.id);
                 if (timeout) {
                   clearTimeout(timeout);
@@ -113,8 +113,23 @@ function LogPanel() {
               return (
                 <div
                   key={typedEntry.id}
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
+                  onPointerEnter={(e) => {
+                    if (e.pointerType === "touch") return;
+                    startMarkReadTimer();
+                  }}
+                  onPointerLeave={(e) => {
+                    if (e.pointerType === "touch") return;
+                    cancelMarkReadTimer();
+                  }}
+                  onPointerDown={(e) => {
+                    if (e.pointerType !== "touch") return;
+                    startMarkReadTimer();
+                  }}
+                  onPointerUp={(e) => {
+                    if (e.pointerType !== "touch") return;
+                    cancelMarkReadTimer();
+                  }}
+                  onPointerCancel={cancelMarkReadTimer}
                   className={`flex items-start gap-2 text-foreground leading-relaxed py-0.5 ${opacity} ${blinkClass}`}
                 >
                   {showNewIndicator ? (
