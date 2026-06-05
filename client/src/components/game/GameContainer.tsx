@@ -975,20 +975,22 @@ export default function GameContainer() {
         </div>
       )}
 
-      {/* Event Log - Fixed Height at Top */}
-      <div className="w-full overflow-hidden pb-0 p-2 flex-shrink-0 pr-14">
-        <LogPanel />
-      </div>
-
-      {/* Main Content Area - Fills remaining space */}
+      {/* Main Content Area - Fills remaining space.
+          Desktop (left → right): event log, tabs/actions, resources side panel.
+          Mobile (stacked top → bottom): event log, side panel, tabs/actions. */}
       <main className="flex-1 pb-0 flex flex-col md:flex-row min-h-0 overflow-hidden">
-        {/* Left Sidebar for Resources - On top for mobile, left for desktop */}
-        <div className="min-h-[36vh] w-full pl-2 pr-2 md:w-[30rem] border-t md:border-r overflow-hidden">
+        {/* Event Log - top on mobile, left column on desktop */}
+        <div className="order-1 w-full md:w-[22rem] flex-shrink-0 overflow-hidden p-2 pb-0 pr-14 md:pr-2 md:border-r border-border">
+          <LogPanel />
+        </div>
+
+        {/* Resources Side Panel - below log on mobile, right column on desktop */}
+        <div className="order-2 md:order-3 min-h-[36vh] md:min-h-0 w-full pl-2 pr-2 md:w-[30rem] border-t md:border-t-0 md:border-l border-border overflow-hidden md:pt-9">
           <GameTabs />
         </div>
 
-        {/* Right Content Area with Horizontal Tabs and Actions - Below for mobile, right for desktop */}
-        <section className="flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
+        {/* Right Content Area with Horizontal Tabs and Actions - below side panel on mobile, middle column on desktop */}
+        <section className="order-3 md:order-2 flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
           {/* Horizontal Game Tabs */}
           <nav
             className={`relative border-t border-border pl-2 pr-2 md:pl-4 md:pr-4 flex-shrink-0${isPaused ? " z-[41] pointer-events-auto" : ""}`}
