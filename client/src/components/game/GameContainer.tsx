@@ -720,9 +720,7 @@ export default function GameContainer() {
     const queryTabButton = (testId: string) =>
       row.querySelector<HTMLElement>(`[data-testid="${testId}"]`) ??
       document.querySelector<HTMLElement>(`[data-testid="${testId}"]`);
-    const TAB_HOTKEY_GAP = 12;
-    const TAB_HOTKEY_BADGE_LINE = 18;
-    const TAB_HOTKEY_HINT_GAP = 6;
+    const TAB_HOTKEY_GAP = 2;
     const badgeRowTop = navRect.bottom + TAB_HOTKEY_GAP;
     const next: { key: string; left: number; top: number; label: string }[] =
       [];
@@ -739,8 +737,18 @@ export default function GameContainer() {
     });
     setPauseHotkeyBadges(next);
 
+    const badgeNodes = document.querySelectorAll<HTMLElement>(
+      ".pause-hotkey-badge-animated",
+    );
     // [1]… badges on the first line below the tab row; hint text on the second.
-    const hintTop = badgeRowTop + TAB_HOTKEY_BADGE_LINE + TAB_HOTKEY_HINT_GAP;
+    const hintTop =
+      badgeNodes.length > 0
+        ? Math.max(
+          ...Array.from(badgeNodes).map(
+            (n) => n.getBoundingClientRect().bottom,
+          ),
+        ) + 2
+        : badgeRowTop + 14 + 2;
     const hintLeft =
       next.length > 0
         ? (Math.min(...next.map((b) => b.left)) +
@@ -763,13 +771,20 @@ export default function GameContainer() {
         minLeft = Math.min(minLeft, hr.left);
         maxRight = Math.max(maxRight, hr.right);
       }
-      const padX = 12;
-      const padY = 8;
+      const padX = 10;
+      const padY = 3;
       const boxLeft = minLeft - padX;
       const boxWidth = maxRight - minLeft + padX * 2;
-      const boxTop = badgeRowTop - padY;
+      const boxTop =
+        (badgeNodes.length > 0
+          ? Math.min(
+            ...Array.from(badgeNodes).map(
+              (n) => n.getBoundingClientRect().top,
+            ),
+          )
+          : badgeRowTop) - padY;
       const boxBottom =
-        (hintEl?.getBoundingClientRect().bottom ?? hintTop + 24) + padY;
+        (hintEl?.getBoundingClientRect().bottom ?? hintTop + 14) + padY;
       const boxHeight = Math.max(0, boxBottom - boxTop);
       setVillageHotkeyBoxLayout({
         top: boxTop,
@@ -939,7 +954,7 @@ export default function GameContainer() {
             {pauseHotkeyBadges.map((b) => (
               <span
                 key={b.key}
-                className="pause-hotkey-badge-animated absolute z-[1] text-xs font-semibold text-foreground drop-shadow"
+                className="pause-hotkey-badge-animated absolute z-[1] text-xs font-semibold leading-none text-foreground drop-shadow"
                 style={{
                   left: b.left,
                   top: b.top,
@@ -952,7 +967,7 @@ export default function GameContainer() {
             {pauseHotkeyHint != null && (
               <div
                 data-testid="tab-hotkey-hint"
-                className="pause-hotkey-hint-animated absolute z-[2] w-max max-w-[calc(100vw-1rem)] whitespace-nowrap px-2 text-center text-xs leading-snug text-foreground drop-shadow"
+                className="pause-hotkey-hint-animated absolute z-[2] w-max max-w-[calc(100vw-1rem)] whitespace-nowrap px-1 text-center text-xs leading-none text-foreground drop-shadow"
                 style={{
                   top: pauseHotkeyHint.top,
                   left: pauseHotkeyHint.left,
