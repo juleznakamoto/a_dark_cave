@@ -63,7 +63,7 @@ export function TraderTabButton({
               ? ""
               : isPaused
                 ? tabInactiveTextClass
-                : "opacity-60 group-hover:opacity-100"
+                : "opacity-80 group-hover:opacity-100"
               }`}
           >
             {t("tabs.trader", { ns: "common" })}
