@@ -64,7 +64,7 @@ function SkillUpgradeRow({
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
   const costLine = formatTooltipCostLine(upgradeCost, "gold");
   return (
-    <div className="w-full md:max-w-96 space-y-1 pt-2">
+    <div className="w-full space-y-1 pt-2">
       <div className="flex items-center justify-between">
         <span className="pb-1 text-xs font-medium text-foreground">{title}</span>
         {level < maxLevel ? (
@@ -380,7 +380,7 @@ export default function EstatePanel() {
 
   return (
     <ScrollArea className="h-full w-full">
-      <div className="space-y-2 mt-2 mb-2 pl-[3px] pr-[3px]">
+      <div className="w-full space-y-2 mt-2 mb-2">
         {/* Sleep Mode Section */}
         <div className="space-y-">
           <div className="flex items-center gap-2 pb-2">
@@ -498,7 +498,7 @@ export default function EstatePanel() {
         </div>
 
         {/* Sleep Upgrades Section */}
-        <div className="w-full md:max-w-96 space-y-1 pt-2">
+        <div className="w-full space-y-1 pt-2">
           {/* Sleep Length Upgrade */}
           <div className="space-y-1">
             <div className="flex items-center justify-between">
@@ -793,14 +793,14 @@ export default function EstatePanel() {
                 const description =
                   curBonusPercent > 0
                     ? t("estate.priorSummaryBonus", {
-                        actions: cur.maxActions,
-                        bonus: curBonusPercent,
-                        upkeep: upkeepText,
-                      })
+                      actions: cur.maxActions,
+                      bonus: curBonusPercent,
+                      upkeep: upkeepText,
+                    })
                     : t("estate.priorSummaryNoBonus", {
-                        count: cur.maxActions,
-                        upkeep: upkeepText,
-                      });
+                      count: cur.maxActions,
+                      upkeep: upkeepText,
+                    });
                 return (
                   <SkillUpgradeRow
                     title={t("estate.disgracedPrior")}
@@ -819,7 +819,7 @@ export default function EstatePanel() {
           )}
 
         {/* Cube Section */}
-        <div className="space-y-2 pt-1 pb-4 w-full md:max-w-96">
+        <div className="w-full space-y-2 pt-1 pb-4">
           <h3 className="text-xs font-medium text-foreground">{t("estate.cubeWhispers")}</h3>
 
           <div className="grid grid-cols-6 place-items-center gap-x-2 gap-y-3 w-full">
