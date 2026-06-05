@@ -31,12 +31,14 @@ type PlaylightDiscoveryButtonProps = {
   onClick: () => void;
   showNotificationDot?: boolean;
   forceShowTooltip?: boolean;
+  tooltipSide?: "top" | "left" | "right" | "bottom";
 };
 
 export default function PlaylightDiscoveryButton({
   onClick,
   showNotificationDot = false,
   forceShowTooltip = false,
+  tooltipSide = "left",
 }: PlaylightDiscoveryButtonProps) {
   const { t } = useTranslation("ui");
   const playTime = useGameStore((state) => state.playTime ?? 0);
@@ -74,7 +76,7 @@ export default function PlaylightDiscoveryButton({
   return (
     <HoverCalloutTooltip
       label={t("playlight.moreGames")}
-      side="left"
+      side={tooltipSide}
       forceVisible={forceShowTooltip || showDiscoveryTooltip}
       onCalloutClick={onClick}
     >

@@ -8,6 +8,8 @@ import {
 } from "react";
 import GameTabs from "./GameTabs";
 import GameFooter from "./GameFooter";
+import GameHeader from "./GameHeader";
+import { GAME_CHROME_INSET } from "./gameChrome";
 import CavePanel from "./panels/CavePanel";
 import VillagePanel from "./panels/VillagePanel";
 import ForestPanel from "./panels/ForestPanel";
@@ -33,7 +35,7 @@ import InvestmentResultDialog from "./InvestmentResultDialog";
 import MadnessDialog from "./MadnessDialog";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark, X } from "lucide-react";
-import ProfileMenu from "./ProfileMenu";
+import { ProfileMenuProvider } from "./ProfileMenu";
 import InviteFriendsFloatingButton from "./InviteFriendsFloatingButton";
 import { startVersionCheck, stopVersionCheck } from "@/game/versionCheck";
 import { logger } from "@/lib/logger";
@@ -888,6 +890,7 @@ export default function GameContainer() {
   );
 
   return (
+    <ProfileMenuProvider>
     <div
       className="fixed inset-0 bg-background text-foreground flex flex-col"
       style={{
@@ -895,18 +898,20 @@ export default function GameContainer() {
         transition: "background-color 1s ease-in-out",
       }}
     >
-      {/* Pause Overlay - covers panels; tabs, footer, and profile menu stay above */}
+      <GameHeader />
+
+      {/* Pause Overlay - covers panels; header, tabs, and footer stay above */}
       {isPaused && (
         <div
           className="fixed inset-0 bg-black/80 z-40 pointer-events-auto overlay-fade-in"
-          style={{ bottom: "45px" }}
+          style={{ top: GAME_CHROME_INSET, bottom: GAME_CHROME_INSET }}
         />
       )}
 
       {showTabHotkeyOverlay && (
         <div
           className="pointer-events-none fixed inset-x-0 z-[45] hidden md:block"
-          style={{ top: 0, bottom: "45px" }}
+          style={{ top: GAME_CHROME_INSET, bottom: GAME_CHROME_INSET }}
           aria-hidden={!showVillageHotkeyBox}
         >
           {showVillageHotkeyBox && villageHotkeyBoxLayout != null && (
@@ -965,11 +970,11 @@ export default function GameContainer() {
         </div>
       )}
 
-      {/* Sleep Mode Mist Background - covers everything except footer and profile menu */}
+      {/* Sleep Mode Mist Background - covers everything except header and footer */}
       {idleModeDialog.isOpen && (
         <div
           className="fixed inset-0 z-[35] pointer-events-auto"
-          style={{ bottom: "45px" }}
+          style={{ top: GAME_CHROME_INSET, bottom: GAME_CHROME_INSET }}
         >
           <MistBackground />
         </div>
@@ -980,12 +985,12 @@ export default function GameContainer() {
           Mobile (stacked top → bottom): event log, side panel, tabs/actions. */}
       <main className="flex-1 pb-0 flex flex-col md:flex-row min-h-0 overflow-hidden">
         {/* Event Log - top on mobile, left column on desktop */}
-        <div className="order-1 w-full md:w-[22rem] flex-shrink-0 overflow-hidden p-2 pb-0 pr-14 md:pr-2 md:border-r border-border">
+        <div className="order-1 w-full md:w-[22rem] flex-shrink-0 overflow-hidden p-2 pb-0 md:border-r border-border">
           <LogPanel />
         </div>
 
         {/* Resources Side Panel - below log on mobile, right column on desktop */}
-        <div className="order-2 md:order-3 min-h-[36vh] md:min-h-0 w-full pl-2 pr-2 md:w-[30rem] border-t md:border-t-0 md:border-l border-border overflow-hidden md:pt-9">
+        <div className="order-2 md:order-3 min-h-[36vh] md:min-h-0 w-full pl-2 pr-2 md:w-[34rem] border-t md:border-t-0 md:border-l border-border overflow-hidden">
           <GameTabs />
         </div>
 
@@ -1261,7 +1266,7 @@ export default function GameContainer() {
       />
 
       <InviteFriendsFloatingButton />
-      <ProfileMenu />
     </div>
+    </ProfileMenuProvider>
   );
 }
