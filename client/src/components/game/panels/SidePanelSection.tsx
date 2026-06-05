@@ -93,7 +93,7 @@ const EFFECT_TOOLTIP_SECTIONS = new Set<SidePanelSectionId>([
 
 /** Shared layout for resource name + amount + production delta / change hint. */
 const RESOURCE_ROW_GRID_CLASS =
-  "grid w-full max-w-full grid-cols-[5rem_4rem_3rem] items-baseline gap-x-1.5";
+  "grid w-fit max-w-full grid-cols-[5rem_4rem_2.5rem] items-baseline gap-x-1";
 const RESOURCE_ROW_TEXT_CLASS = "text-xs leading-none";
 /** Third column: production rate and change popup share one right-aligned slot. */
 const RESOURCE_DELTA_SLOT_CLASS =
@@ -649,7 +649,7 @@ export default function SidePanelSection({
     );
 
     const resourceRowClassName = cn(
-      "mr-1 min-w-0 transition-all duration-300",
+      "min-w-0 transition-all duration-300",
       usesResourceRowLayout
         ? RESOURCE_ROW_GRID_CLASS
         : cn(
@@ -714,12 +714,12 @@ export default function SidePanelSection({
           key={item.id}
           data-testid={item.testId}
           className={`flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isAtMax
-                  ? "text-yellow-400"
-                  : ""
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isAtMax
+                ? "text-yellow-400"
+                : ""
             }`}
         >
           <TooltipWrapper
@@ -755,12 +755,12 @@ export default function SidePanelSection({
           key={item.id}
           data-testid={item.testId}
           className={`flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isMaxAnimated
-                  ? "text-yellow-400"
-                  : ""
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""
             }`}
         >
           <TooltipWrapper
@@ -785,12 +785,12 @@ export default function SidePanelSection({
           key={item.id}
           data-testid={item.testId}
           className={`flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isMaxAnimated
-                  ? "text-yellow-400"
-                  : ""
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""
             }`}
         >
           <TooltipWrapper
@@ -820,12 +820,12 @@ export default function SidePanelSection({
           key={item.id}
           data-testid={item.testId}
           className={`flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isMaxAnimated
-                  ? "text-yellow-400"
-                  : ""
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""
             }`}
         >
           <TooltipWrapper
@@ -895,12 +895,12 @@ export default function SidePanelSection({
           key={item.id}
           data-testid={item.testId}
           className={`mr-1 flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isMaxAnimated
-                  ? "text-yellow-400"
-                  : ""
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""
             }`}
         >
           <TooltipWrapper
@@ -917,14 +917,14 @@ export default function SidePanelSection({
           {showItemValue && (
             <span
               className={`font-mono ${isAnimated
-                  ? "text-green-800 font-bold"
-                  : isDecreaseAnimated
-                    ? "text-red-800 font-bold"
-                    : isMaxAnimated
-                      ? "text-yellow-800 font-bold"
-                      : isMadness
-                        ? madnessClasses
-                        : ""
+                ? "text-green-800 font-bold"
+                : isDecreaseAnimated
+                  ? "text-red-800 font-bold"
+                  : isMaxAnimated
+                    ? "text-yellow-800 font-bold"
+                    : isMadness
+                      ? madnessClasses
+                      : ""
                 }`}
             >
               {displayValue}
