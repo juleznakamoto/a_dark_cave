@@ -19,6 +19,8 @@ type ExtendedLogEntry =
     timestamp: number;
   };
 
+const MARK_READ_HOVER_MS = 300;
+
 function LogPanel() {
   const { i18n } = useTranslation("ui");
   const { log, timedEventTab } = useGameStore();
@@ -29,6 +31,16 @@ function LogPanel() {
   );
   const topRef = useRef<HTMLDivElement>(null);
   const prevLogLengthRef = useRef(log.length);
+  const markReadTimeoutsRef = useRef(
+    new Map<string, ReturnType<typeof setTimeout>>(),
+  );
+
+  useEffect(() => {
+    return () => {
+      markReadTimeoutsRef.current.forEach(clearTimeout);
+      markReadTimeoutsRef.current.clear();
+    };
+  }, []);
 
   // Get only the last entries and reverse them so latest is at top
   const recentEntries = useMemo(
@@ -77,8 +89,24 @@ function LogPanel() {
               const blinkClass = isUnread ? "animate-pulse" : "";
 
               const handleMouseEnter = () => {
-                if (isUnread) {
+                if (!isUnread) return;
+
+                const existing = markReadTimeoutsRef.current.get(typedEntry.id);
+                if (existing) clearTimeout(existing);
+
+                const timeout = setTimeout(() => {
+                  markReadTimeoutsRef.current.delete(typedEntry.id);
                   setReadEntries((prev) => new Set(prev).add(typedEntry.id));
+                }, MARK_READ_HOVER_MS);
+
+                markReadTimeoutsRef.current.set(typedEntry.id, timeout);
+              };
+
+              const handleMouseLeave = () => {
+                const timeout = markReadTimeoutsRef.current.get(typedEntry.id);
+                if (timeout) {
+                  clearTimeout(timeout);
+                  markReadTimeoutsRef.current.delete(typedEntry.id);
                 }
               };
 
@@ -86,6 +114,7 @@ function LogPanel() {
                 <div
                   key={typedEntry.id}
                   onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
                   className={`flex items-start gap-2 text-foreground leading-relaxed py-0.5 ${opacity} ${blinkClass}`}
                 >
                   {showNewIndicator ? (
