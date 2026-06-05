@@ -990,7 +990,7 @@ export default function GameContainer() {
           </div>
 
           {/* Resources Side Panel - below log on mobile, right column on desktop */}
-          <div className="order-2 md:order-3 min-h-[36vh] md:min-h-0 w-full pl-2 pr-2 md:w-[40rem] border-t md:border-t-0 md:border-l border-border overflow-hidden">
+          <div className="order-2 md:order-3 min-h-[36vh] md:min-h-0 w-full shrink-0 pl-2 pr-2 md:min-w-[30rem] md:w-[40rem] border-t md:border-t-0 md:border-l border-border overflow-hidden">
             <GameTabs />
           </div>
 
