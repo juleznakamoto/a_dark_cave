@@ -46,15 +46,13 @@ export default function InviteFriendsFloatingButton() {
 
   const signedIn = isUserSignedIn === true || sessionSignedIn === true;
 
-  const showFloatingInvite =
-    signedIn &&
-    isInviteFriendsFloatingButtonVisible({
-      social_media_rewards,
-      referralCount,
-      referrals,
-      isUserSignedIn: true,
-      signupWelcomeGoldClaimed,
-    });
+  const showFloatingInvite = isInviteFriendsFloatingButtonVisible({
+    social_media_rewards,
+    referralCount,
+    referrals,
+    isUserSignedIn: signedIn,
+    signupWelcomeGoldClaimed,
+  });
 
   if (!showFloatingInvite) return null;
 
