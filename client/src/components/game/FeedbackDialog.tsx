@@ -40,7 +40,7 @@ export default function FeedbackDialog() {
         <DialogHeader>
           <DialogTitle className="leading-6">{t("feedback.title")}</DialogTitle>
           <DialogDescription asChild>
-            <div className="py-2 space-y-3 text-sm text-muted-foreground">
+            <div className="py-2 space-y-3 text-sm text-foreground">
               <p>{t("feedback.message")}</p>
               <p>{t("feedback.contactVia")}</p>
               <div className="flex flex-wrap justify-center gap-4 pt-1">
