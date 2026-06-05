@@ -512,6 +512,7 @@ export function GameHeaderControls() {
         onClick={handleDiscovery}
         forceShowTooltip={isPaused}
         tooltipSide="bottom"
+        className="h-6 w-6"
         showNotificationDot={
           isPaused || sleepDialogOpen || leaderboardDialogOpen
         }
