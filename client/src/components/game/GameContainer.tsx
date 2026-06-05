@@ -983,9 +983,9 @@ export default function GameContainer() {
         {/* Main Content Area - Fills remaining space.
           Desktop (left → right): event log, tabs/actions, resources side panel.
           Mobile (stacked top → bottom): event log, side panel, tabs/actions. */}
-        <main className="flex-1 pb-0 flex flex-col md:grid md:w-full md:max-w-[84rem] md:mx-auto md:grid-cols-[minmax(14rem,18rem)_minmax(12rem,1fr)_minmax(20rem,26rem)] min-h-0 overflow-hidden">
+        <main className="flex-1 pb-0 flex flex-col md:grid md:w-full md:grid-cols-[minmax(14rem,18rem)_minmax(12rem,1fr)_minmax(20rem,26rem)] min-h-0 overflow-hidden">
           {/* Event Log - top on mobile, left column on desktop */}
-          <div className="order-1 w-full min-h-0 overflow-hidden p-2 pb-0 md:border-r border-border">
+          <div className="order-1 w-full min-h-0 overflow-hidden pt-2 pr-2 pb-0 pl-1 md:border-r border-border">
             <LogPanel />
           </div>
 
