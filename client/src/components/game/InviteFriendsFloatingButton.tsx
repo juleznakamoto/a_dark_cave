@@ -10,6 +10,7 @@ import {
 } from "@/game/socialPromptAuto";
 import { isInviteFriendsFloatingButtonVisible } from "@/game/socialPromoExclusiveReward";
 import { useTranslation } from "react-i18next";
+import { GAME_FOOTER_INSET } from "./gameChrome";
 
 export default function InviteFriendsFloatingButton() {
   const { t } = useTranslation("ui");
@@ -49,7 +50,10 @@ export default function InviteFriendsFloatingButton() {
   };
 
   return (
-    <div className="pointer-events-auto fixed right-4 bottom-[calc(45px+1rem)] z-[46]">
+    <div
+      className="pointer-events-auto fixed right-4 z-[46]"
+      style={{ bottom: `calc(${GAME_FOOTER_INSET} + 1rem)` }}
+    >
       <TooltipWrapper
         tooltip={
           <p className="text-xs">
