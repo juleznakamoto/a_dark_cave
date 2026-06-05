@@ -257,8 +257,8 @@
     "label": "Torre do Mago"
   },
   "buildWoodenHut": {
-    "description": "Cabana simples de madeira que oferece abrigo básico",
-    "label": "Cabana de Madeira"
+    "description": "Casebre simples de madeira que oferece abrigo básico",
+    "label": "Casebre de madeira"
   },
   "canyonBridge": {
     "label": "Ponte do Cânion",

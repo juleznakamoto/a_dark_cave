@@ -299,19 +299,19 @@
   "creatureInHut": {
     "choices": {
       "burn_hut": {
-        "label": "Queimar a cabana"
+        "label": "Queimar o casebre"
       },
       "do_nothing": {
         "label": "Não fazer nada"
       }
     },
     "log": {
-      "outcome0": "Você incendeia a cabana. As chamas consomem a criatura. Vasculhando as ruínas depois, você encontra um pequeno baú escondido sob as tábuas do assoalho contendo 250 Ouro.",
-      "outcome1": "Você incendeia a cabana. As chamas consomem tudo, inclusive os dois aldeões que dormiam lá dentro. Pela manhã, você encontra apenas cinzas e o cheiro persistente de algo que nunca deveria queimar.",
+      "outcome0": "Você incendeia o casebre. As chamas consomem a criatura. Vasculhando as ruínas depois, você encontra um pequeno baú escondido sob as tábuas do assoalho contendo 250 Ouro.",
+      "outcome1": "Você incendeia o casebre. As chamas consomem tudo, inclusive os dois aldeões que dormiam lá dentro. Pela manhã, você encontra apenas cinzas e o cheiro persistente de algo que nunca deveria queimar.",
       "outcome2": "Você se vira e tenta esquecer o que viu. Mas em seus sonhos, a criatura o visita. Ela sussurra seu nome com uma voz como pedra raspando, e lhe mostra visões do que jaz sob a terra."
     },
-    "message": "Pelas frestas de uma das suas cabanas de madeira, você vislumbra algo que não deveria estar ali. Uma forma escura se move na escuridão, alta e magra demais para ser humana. Quando ela se vira para você, você vê olhos brilhando como estrelas moribundas.",
-    "title": "Algo na Cabana"
+    "message": "Pelas frestas de um dos seus casebres de madeira, você vislumbra algo que não deveria estar ali. Uma forma escura se move na escuridão, alta e magra demais para ser humana. Quando ela se vira para você, você vê olhos brilhando como estrelas moribundas.",
+    "title": "Algo no Casebre"
   },
   "cthulhuFigure": {
     "choices": {
@@ -648,7 +648,7 @@
       "outcome1": "Você se aproxima de um dos rostos. Seus olhos se abrem de repente e ele sussurra seu nome. Você reconhece o rosto como o de alguém que morreu há muito tempo.",
       "outcome2": "Você tenta ignorar os rostos, mas eles se multiplicam. Logo toda superfície de madeira da aldeia traz a marca de almas torturadas. Certa manhã, todos desaparecem, como se nunca tivessem estado ali."
     },
-    "message": "As paredes de madeira das suas cabanas começaram a exibir rostos - expressões retorcidas e agonizantes que parecem se projetar do outro lado. Eles articulam gritos e súplicas silenciosas. Os aldeões os contornam como se sempre estivessem ali.",
+    "message": "As paredes de madeira dos seus casebres começaram a exibir rostos - expressões retorcidas e agonizantes que parecem se projetar do outro lado. Eles articulam gritos e súplicas silenciosas. Os aldeões os contornam como se sempre estivessem ali.",
     "title": "Rostos nas Paredes"
   },
   "feast": {
@@ -705,7 +705,7 @@
     "title": "O Pergaminho Antigo"
   },
   "fireStorm": {
-    "message": "Um incêndio varre a aldeia durante a noite, destruindo uma cabana de madeira e matando seus ocupantes."
+    "message": "Um incêndio varre a aldeia durante a noite, destruindo um casebre de madeira e matando seus ocupantes."
   },
   "firstElderWarning": {
     "choices": {
