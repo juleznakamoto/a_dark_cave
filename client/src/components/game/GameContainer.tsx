@@ -715,9 +715,15 @@ export default function GameContainer() {
       return;
     }
     const rowRect = row.getBoundingClientRect();
+    const nav = row.closest("nav");
+    const navRect = nav?.getBoundingClientRect() ?? rowRect;
     const queryTabButton = (testId: string) =>
       row.querySelector<HTMLElement>(`[data-testid="${testId}"]`) ??
       document.querySelector<HTMLElement>(`[data-testid="${testId}"]`);
+    const TAB_HOTKEY_GAP = 12;
+    const TAB_HOTKEY_BADGE_LINE = 18;
+    const TAB_HOTKEY_HINT_GAP = 6;
+    const badgeRowTop = navRect.bottom + TAB_HOTKEY_GAP;
     const next: { key: string; left: number; top: number; label: string }[] =
       [];
     visibleHotkeyTabs.forEach((tab, i) => {
@@ -727,18 +733,14 @@ export default function GameContainer() {
       next.push({
         key: `hotkey-${tab}`,
         left: r.left + r.width / 2,
-        top: r.bottom + 2,
+        top: badgeRowTop,
         label: `[${i + 1}]`,
       });
     });
     setPauseHotkeyBadges(next);
 
-    const badgeRowTop =
-      next.length > 0
-        ? Math.min(...next.map((b) => b.top))
-        : rowRect.bottom + 2;
-    // [1]… badges sit on the first line below tabs; hint text on the second line.
-    const hintTop = badgeRowTop + 18 + 4;
+    // [1]… badges on the first line below the tab row; hint text on the second.
+    const hintTop = badgeRowTop + TAB_HOTKEY_BADGE_LINE + TAB_HOTKEY_HINT_GAP;
     const hintLeft =
       next.length > 0
         ? (Math.min(...next.map((b) => b.left)) +
@@ -750,12 +752,11 @@ export default function GameContainer() {
       left: hintLeft,
     });
 
-    if (showVillageHotkeyBox && next.length > 0) {
+    if (next.length > 0) {
       let minLeft = Math.min(...next.map((b) => b.left - 20));
       let maxRight = Math.max(...next.map((b) => b.left + 20));
-      // Ensure the box also covers the (single-line) hint text width.
       const hintEl = document.querySelector<HTMLElement>(
-        '[data-testid="village-hotkey-hint"]',
+        '[data-testid="tab-hotkey-hint"]',
       );
       if (hintEl) {
         const hr = hintEl.getBoundingClientRect();
@@ -763,11 +764,12 @@ export default function GameContainer() {
         maxRight = Math.max(maxRight, hr.right);
       }
       const padX = 12;
+      const padY = 8;
       const boxLeft = minLeft - padX;
       const boxWidth = maxRight - minLeft + padX * 2;
-      const boxTop = rowRect.top - 6;
+      const boxTop = badgeRowTop - padY;
       const boxBottom =
-        (hintEl?.getBoundingClientRect().bottom ?? hintTop + 28) + 6;
+        (hintEl?.getBoundingClientRect().bottom ?? hintTop + 24) + padY;
       const boxHeight = Math.max(0, boxBottom - boxTop);
       setVillageHotkeyBoxLayout({
         top: boxTop,
@@ -778,12 +780,7 @@ export default function GameContainer() {
     } else {
       setVillageHotkeyBoxLayout(null);
     }
-  }, [
-    showTabHotkeyOverlay,
-    showVillageHotkeyBox,
-    useLimelightNav,
-    visibleHotkeyTabs,
-  ]);
+  }, [showTabHotkeyOverlay, useLimelightNav, visibleHotkeyTabs]);
 
   useLayoutEffect(() => {
     if (!showTabHotkeyOverlay) {
@@ -906,31 +903,37 @@ export default function GameContainer() {
           <div
             className="pointer-events-none fixed inset-x-0 z-[45] hidden md:block"
             style={{ top: GAME_HEADER_INSET, bottom: GAME_FOOTER_INSET }}
-            aria-hidden={!showVillageHotkeyBox}
+            aria-hidden={false}
           >
-            {showVillageHotkeyBox && villageHotkeyBoxLayout != null && (
+            {villageHotkeyBoxLayout != null && (
               <div
-                className="absolute pointer-events-auto rounded bg-neutral-800"
+                className={`absolute z-0 rounded bg-neutral-800${showVillageHotkeyBox ? " pointer-events-auto" : " pointer-events-none"}`}
                 style={{
                   top: villageHotkeyBoxLayout.top,
                   left: villageHotkeyBoxLayout.left,
                   width: villageHotkeyBoxLayout.width,
                   height: villageHotkeyBoxLayout.height,
                 }}
-                data-testid="village-hotkey-tutorial-box"
+                data-testid={
+                  showVillageHotkeyBox
+                    ? "village-hotkey-tutorial-box"
+                    : "pause-hotkey-callout-box"
+                }
               >
-                <button
-                  type="button"
-                  className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
-                  aria-label={t("villageHotkeyTutorial.dismiss", {
-                    ns: "ui",
-                    defaultValue: "Dismiss",
-                  })}
-                  data-testid="village-hotkey-tutorial-dismiss"
-                  onClick={closeVillageHotkeyTutorial}
-                >
-                  <X className="h-2.5 w-2.5 stroke-[3]" />
-                </button>
+                {showVillageHotkeyBox && (
+                  <button
+                    type="button"
+                    className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
+                    aria-label={t("villageHotkeyTutorial.dismiss", {
+                      ns: "ui",
+                      defaultValue: "Dismiss",
+                    })}
+                    data-testid="village-hotkey-tutorial-dismiss"
+                    onClick={closeVillageHotkeyTutorial}
+                  >
+                    <X className="h-2.5 w-2.5 stroke-[3]" />
+                  </button>
+                )}
               </div>
             )}
             {pauseHotkeyBadges.map((b) => (
@@ -948,9 +951,7 @@ export default function GameContainer() {
             ))}
             {pauseHotkeyHint != null && (
               <div
-                data-testid={
-                  showVillageHotkeyBox ? "village-hotkey-hint" : undefined
-                }
+                data-testid="tab-hotkey-hint"
                 className="pause-hotkey-hint-animated absolute z-[2] w-max max-w-[calc(100vw-1rem)] whitespace-nowrap px-2 text-center text-xs leading-snug text-foreground drop-shadow"
                 style={{
                   top: pauseHotkeyHint.top,
