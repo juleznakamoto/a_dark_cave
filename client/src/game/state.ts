@@ -70,7 +70,10 @@ import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { GAME_CONSTANTS } from "@/game/constants";
 import { lastAuthNotificationPlayTimeFloorOnLoad } from "@/game/authNotificationAuto";
 import { playlightExitIntentMilestoneFloorFromPlayTime } from "@/game/playlightExitIntent";
-import { socialPromptMilestoneFloorFromPlayTime } from "@/game/socialPromptAuto";
+import {
+  socialPromptMilestoneFloorFromPlayTime,
+  socialPromptMilestoneIndexAfterDismiss,
+} from "@/game/socialPromptAuto";
 import {
   ACTION_TO_UPGRADE_KEY,
   incrementButtonUsage,
@@ -1497,7 +1500,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setLastAuthNotificationPlayTime: (playTime: number) =>
     set({ lastAuthNotificationPlayTime: playTime }),
   setSocialPromptDialogOpen: (isOpen: boolean) =>
-    set({ socialPromptDialogOpen: isOpen }),
+    set((state) => {
+      if (isOpen) {
+        return { socialPromptDialogOpen: true };
+      }
+      return {
+        socialPromptDialogOpen: false,
+        socialPromptMilestoneIndex: socialPromptMilestoneIndexAfterDismiss(
+          state.playTime || 0,
+          state.socialPromptMilestoneIndex ?? 0,
+        ),
+      };
+    }),
   setHighlightedResources: (resources: string[]) => {
     // Updated type
     set({ highlightedResources: resources });

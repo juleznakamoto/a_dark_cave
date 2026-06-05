@@ -28,6 +28,17 @@ export function socialPromptMilestoneFloorFromPlayTime(
   return n;
 }
 
+/** After the player dismisses the dialog, bump index so owed milestones are not re-shown. */
+export function socialPromptMilestoneIndexAfterDismiss(
+  playTimeMs: number,
+  currentIndex: number,
+): number {
+  return Math.max(
+    currentIndex,
+    socialPromptMilestoneFloorFromPlayTime(playTimeMs),
+  );
+}
+
 /**
  * When `playTimeMs` has crossed several unreached milestones at once (e.g. after returning
  * with the tab open), returns the index of the highest threshold to show once; lower thresholds
