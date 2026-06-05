@@ -91,12 +91,13 @@ const EFFECT_TOOLTIP_SECTIONS = new Set<SidePanelSectionId>([
   "blessings",
 ]);
 
-/** Shared layout for resource name + amount + optional production delta. */
-const RESOURCE_ROW_LAYOUT_CLASS =
-  "flex w-fit max-w-full items-baseline gap-x-2";
+/** Shared layout for resource name + amount + production delta / change hint. */
+const RESOURCE_ROW_GRID_CLASS =
+  "grid grid-cols-[minmax(0,1fr)_5.5rem_3rem] items-baseline gap-x-1";
 const RESOURCE_ROW_TEXT_CLASS = "text-xs leading-none";
-const RESOURCE_DELTA_CLASS =
-  "shrink-0 text-right font-mono tabular-nums whitespace-nowrap";
+/** Third column: production rate and change popup share one right-aligned slot. */
+const RESOURCE_DELTA_SLOT_CLASS =
+  "block w-full text-right font-mono tabular-nums whitespace-nowrap";
 
 /** Food/wood at zero while villagers remain — blink red in the resources panel. */
 const CRITICAL_ZERO_RESOURCES = new Set(["food", "wood"]);
@@ -633,7 +634,7 @@ export default function SidePanelSection({
     );
 
     const productionDeltaCellClassName = cn(
-      usesResourceRowLayout && RESOURCE_DELTA_CLASS,
+      usesResourceRowLayout && RESOURCE_DELTA_SLOT_CLASS,
       usesResourceRowLayout && RESOURCE_ROW_TEXT_CLASS,
       !usesResourceRowLayout &&
       "text-right font-mono tabular-nums whitespace-nowrap font-normal",
@@ -650,7 +651,7 @@ export default function SidePanelSection({
     const resourceRowClassName = cn(
       "mr-1 min-w-0 transition-all duration-300",
       usesResourceRowLayout
-        ? RESOURCE_ROW_LAYOUT_CLASS
+        ? RESOURCE_ROW_GRID_CLASS
         : cn(
           "flex gap-1.5 justify-between leading-tight",
           isIconCenteredLabelSection && item.icon !== undefined
@@ -660,26 +661,39 @@ export default function SidePanelSection({
       itemAnimationClass,
     );
 
+    const productionDeltaCell = showProductionDelta ? (
+      <span className={productionDeltaCellClassName}>
+        {(item.productionDelta ?? 0) > 0 ? "+" : ""}
+        {formatNumber(item.productionDelta ?? 0)}
+      </span>
+    ) : (
+      <span
+        className={cn(productionDeltaCellClassName, "invisible select-none")}
+        aria-hidden="true"
+      >
+        0
+      </span>
+    );
+
+    const resourceThirdColumn = usesResourceRowLayout ? (
+      <div className="relative min-w-0 text-right">
+        {productionDeltaCell}
+        {onResourceChange ? (
+          <ResourceChangeNotification
+            resource={item.id}
+            changes={resourceChanges}
+          />
+        ) : null}
+      </div>
+    ) : null;
+
     const itemContent = (
       <div data-testid={item.testId} className={resourceRowClassName}>
-        <div className="shrink-0 min-w-0">{labelContent}</div>
+        <div className="min-w-0">{labelContent}</div>
         {usesResourceRowLayout ? (
           <>
-            <span className={cn(valueCellClassName, "relative shrink-0")}>
-              {displayValue}
-              {onResourceChange ? (
-                <ResourceChangeNotification
-                  resource={item.id}
-                  changes={resourceChanges}
-                />
-              ) : null}
-            </span>
-            {showProductionDelta ? (
-              <span className={productionDeltaCellClassName}>
-                {(item.productionDelta ?? 0) > 0 ? "+" : ""}
-                {formatNumber(item.productionDelta ?? 0)}
-              </span>
-            ) : null}
+            <span className={valueCellClassName}>{displayValue}</span>
+            {resourceThirdColumn}
           </>
         ) : showItemValue ? (
           <span className={cn(valueCellClassName, "shrink-0")}>

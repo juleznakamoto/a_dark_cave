@@ -893,7 +893,7 @@ export default function SidePanel() {
     <ScrollArea className="h-full max-h-[36vh] md:max-h-full px-3 pt-2 pb-1.5 pl-1 pr-2">
       <div className="pb-1 flex gap-2 md:gap-4 items-start min-w-0">
         {/* First column - Resources */}
-        <div className="min-w-0 flex-none shrink-0">
+        <div className="min-w-0 flex-[3] basis-0">
           {resourceItems.length > 0 && shouldShowSection("resources") && (
             <SidePanelSection
               className="pt-0"
@@ -939,7 +939,7 @@ export default function SidePanel() {
         </div>
 
         {/* Second column - Everything else */}
-        <div className="min-w-0 flex-1 basis-0">
+        <div className="min-w-0 flex-[2] basis-0">
           {toolItems.length > 0 && shouldShowSection("tools") && (
             <SidePanelSection className="pt-0" sectionId="tools" title={t("sidePanel.tools")} items={toolItems} />
           )}
