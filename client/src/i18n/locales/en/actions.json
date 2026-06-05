@@ -70,7 +70,7 @@
   },
   "buildCabin": {
     "description": "Basic hunting cabin with tools for hunters",
-    "label": "Cabin"
+    "label": "Hunter Cabin"
   },
   "buildChitinPlating": {
     "description": "Fortifications are reinforced with impenetrable chitin plates",
@@ -134,7 +134,7 @@
   },
   "buildGreatCabin": {
     "description": "Expanded hunting lodge increasing hunter output",
-    "label": "Great Cabin"
+    "label": "Great Hunter Cabin"
   },
   "buildGreatVault": {
     "description": "Supreme vault capable of storing immense resources",

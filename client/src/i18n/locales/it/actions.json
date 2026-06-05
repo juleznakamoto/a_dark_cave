@@ -70,7 +70,7 @@
   },
   "buildCabin": {
     "description": "Capanna di caccia basilare con strumenti per i cacciatori",
-    "label": "Capanno"
+    "label": "Capanna di Caccia"
   },
   "buildChitinPlating": {
     "description": "Le fortificazioni sono rinforzate con impenetrabili placche di chitina",
@@ -134,7 +134,7 @@
   },
   "buildGreatCabin": {
     "description": "Loggia di caccia ampliata che aumenta la produzione dei cacciatori",
-    "label": "Grande Capanno"
+    "label": "Grande Capanna di Caccia"
   },
   "buildGreatVault": {
     "description": "Caveau supremo capace di immagazzinare risorse immense",

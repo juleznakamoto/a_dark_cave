@@ -70,7 +70,7 @@
   },
   "buildCabin": {
     "description": "Cabane de chasse rudimentaire avec des outils pour les chasseurs",
-    "label": "Cabane"
+    "label": "Cabane de chasse"
   },
   "buildChitinPlating": {
     "description": "Les fortifications sont renforcées de plaques de chitine impénétrables",
@@ -134,7 +134,7 @@
   },
   "buildGreatCabin": {
     "description": "Pavillon de chasse agrandi augmentant la production des chasseurs",
-    "label": "Grande cabane"
+    "label": "Grande cabane de chasse"
   },
   "buildGreatVault": {
     "description": "Coffre suprême capable de stocker d'immenses ressources",

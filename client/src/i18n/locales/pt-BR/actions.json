@@ -70,7 +70,7 @@
   },
   "buildCabin": {
     "description": "Cabana de caça básica com ferramentas para caçadores",
-    "label": "Cabana"
+    "label": "Cabana de Caça"
   },
   "buildChitinPlating": {
     "description": "As fortificações são reforçadas com placas de quitina impenetráveis",
@@ -134,7 +134,7 @@
   },
   "buildGreatCabin": {
     "description": "Alojamento de caça ampliado que aumenta a produção dos caçadores",
-    "label": "Grande Cabana"
+    "label": "Grande Cabana de Caça"
   },
   "buildGreatVault": {
     "description": "Cofre supremo capaz de armazenar recursos imensos",

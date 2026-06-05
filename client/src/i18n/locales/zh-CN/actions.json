@@ -70,7 +70,7 @@
   },
   "buildCabin": {
     "description": "配有猎人工具的基础猎屋",
-    "label": "猎屋"
+    "label": "猎人小屋"
   },
   "buildChitinPlating": {
     "description": "用难以穿透的甲壳板加固防御工事",
@@ -134,7 +134,7 @@
   },
   "buildGreatCabin": {
     "description": "扩建的猎屋，可提高猎人产出",
-    "label": "大猎屋"
+    "label": "大猎人小屋"
   },
   "buildGreatVault": {
     "description": "可储存海量资源的顶级金库",

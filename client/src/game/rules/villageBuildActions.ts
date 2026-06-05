@@ -228,7 +228,7 @@ export const villageBuildActions: Record<string, Action> = {
 
   buildCabin: {
     id: "buildCabin",
-    label: "Cabin",
+    label: "Hunter Cabin",
     description: "Basic hunting cabin with tools for hunters",
     tooltipEffects: [bt("unlocksHunters", "Unlocks Hunters")],
     building: true,
@@ -1519,7 +1519,7 @@ export const villageBuildActions: Record<string, Action> = {
 
   buildGreatCabin: {
     id: "buildGreatCabin",
-    label: "Great Cabin",
+    label: "Great Hunter Cabin",
     description: "Expanded hunting lodge increasing hunter output",
     tooltipEffects: [
       bt("unlocksHunters", "Unlocks Hunters"),

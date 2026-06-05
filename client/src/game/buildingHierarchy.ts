@@ -44,7 +44,7 @@ export const BUILDING_HIERARCHIES: Record<string, string[]> = {
   // Pit chain
   pit: ["shallowPit", "deepeningPit", "deepPit", "bottomlessPit"],
 
-  // Cabin chain
+  // Hunter cabin chain
   cabin: ["cabin", "greatCabin", "grandHunterLodge"],
 
   // Traps: side panel shows Improved Traps only once the upgrade exists (traps count stays 2 for combat)
