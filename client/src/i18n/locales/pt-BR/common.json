@@ -86,6 +86,6 @@
     "maxPopulation": "+{{count}} de População Máx."
   },
   "currency": {
-    "goldAmount": "{{amount}} de Ouro"
+    "goldAmount": "{{amount}} Ouro"
   }
 }

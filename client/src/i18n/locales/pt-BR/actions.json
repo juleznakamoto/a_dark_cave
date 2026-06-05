@@ -6,7 +6,7 @@
     "label": "Covil do Bandido",
     "log": {
       "success": "Seu grupo rastreia o bandido até um covil em ruínas. Você o domina, recupera a adaga do mercador e encontra 250 de prata escondidas em meio à pilhagem.",
-      "failure": "Seus aldeões vasculham as colinas, mas não conseguem encurralar o bandido. A trilha esfria, e a adaga continua em suas mãos."
+      "failure": "Seus aldeões vasculham as colinas, mas não conseguem encurralar o bandido. A trilha esfria, e ele continua com a adaga."
     }
   },
   "blackreachCanyon": {
@@ -16,7 +16,7 @@
     }
   },
   "blastPortal": {
-    "label": "Portão de Explosão",
+    "label": "Explodir Portão",
     "log": {
       "complete": "As bombas de brasa detonam num clarão brilhante de fogo e luz. O portão antigo racha e desmorona. O que quer que estivesse selado ali dentro foi libertado. A cidade deveria se preparar para o que sair daí."
     }
@@ -263,15 +263,15 @@
   "canyonBridge": {
     "label": "Ponte do Cânion",
     "log": {
-      "complete": "A ponte do cânion está completa. Os mercadores Espectro de Cinzas agora podem chegar ao seu assentamento — e você pode vender bens a eles a taxas acordadas."
+      "complete": "A ponte do cânion está completa. Os mercadores Espectro de Cinzas agora podem chegar ao seu assentamento, e você pode vender seus produtos para eles pelos preços combinados."
     }
   },
   "castleRuins": {
     "label": "Ruínas do Castelo",
     "log": {
       "success": "A expedição às ruínas do castelo do necromante morto é um sucesso! Bem no fundo, você encontra os pergaminhos antigos envoltos em seda escura, revelando conhecimento críptico sobre como derrotar o que estava trancado no fundo da caverna.",
-      "minorFailure": "Sua expedição é emboscada por grotescos experimentos mortos-vivos deixados pelo necromante. {{count}} aldeões tombam diante dos mortos-vivos antes que os sobreviventes consigam recuar.",
-      "majorFailure": "Pouco depois de sua expedição entrar nas ruínas amaldiçoadas do castelo, dezenas de criaturas mortas-vivas irrompem de câmaras ocultas. Na batalha desesperada que se segue, {{count}} aldeões são dominados pela horda sobrenatural. Os sobreviventes fogem aterrorizados."
+      "minorFailure": "Sua expedição é emboscada por grotescos experimentos mortos-vivos deixados pelo necromante. {{count}} aldeões caem diante dos mortos-vivos antes que os sobreviventes consigam recuar.",
+      "majorFailure": "Pouco depois de sua expedição entrar nas ruínas amaldiçoadas do castelo, dezenas de criaturas mortas-vivas emergem de câmaras ocultas. Na batalha desesperada que se segue, {{count}} aldeões são dominados pela horda sobrenatural. Os sobreviventes fogem aterrorizados."
     }
   },
   "chopWood": {
@@ -287,7 +287,7 @@
     "label": "Torre Desmoronada",
     "log": {
       "success": "Dentro da torre, você encontra um necromante e seus seguidores, cercados por frascos de líquidos e seringas rudimentares. Ele estava colhendo o sangue dos aldeões para experimentos sombrios. Seus homens põem fim ao trabalho vil dele e tomam um frasco de seu sangue. Entre suas ferramentas, você encontra sua poderosa serra de osso.",
-      "failure": "Sua expedição chega à Torre Desmoronada, mas vocês são atacados por figuras encapuzadas do lado de fora. Um homem alto de manto escuro está entre elas, exalando uma aura de ameaça. {{count}} aldeões tombam antes que os demais fujam em segurança."
+      "failure": "Sua expedição chega à Torre Desmoronada, mas vocês são atacados por figuras encapuzadas do lado de fora. Um homem alto de manto escuro está entre elas, exalando uma aura de ameaça. {{count}} aldeões caem antes que os demais fujam em segurança."
     }
   },
   "craftAdamantAxe": {
@@ -507,7 +507,7 @@
     "label": "Túmulo da Colina",
     "log": {
       "success": "Sua expedição contorna com cuidado as armadilhas traiçoeiras do túmulo da colina. Seus aldeões desarmam os antigos mecanismos e alcançam a câmara funerária. Entre os tesouros do rei, você descobre vidro-de-gelo puro, frio como o próprio vazio.",
-      "failure": "Sua expedição entra no túmulo da colina, mas lhe falta habilidade para contornar suas armadilhas letais. {{count}} aldeões tombam diante das defesas finais do rei antes que os sobreviventes recuem horrorizados, deixando os corpos dos companheiros na tumba amaldiçoada."
+      "failure": "Sua expedição entra no túmulo da colina, mas lhe falta habilidade para contornar suas armadilhas letais. {{count}} aldeões caem diante das defesas finais do rei antes que os sobreviventes recuem horrorizados, deixando os corpos dos companheiros na tumba amaldiçoada."
     }
   },
   "humans": {
@@ -526,8 +526,8 @@
     "label": "Armar Armadilha",
     "log": {
       "trapSuccessNoDeaths": "A armadilha gigante funciona perfeitamente! Um enorme urso negro de olhos vermelhos brilhantes é capturado. Seus aldeões abatem a fera sobrenatural e tomam seu pelo negro amaldiçoado como troféu.",
-      "trapSuccessWithDeaths": "A armadilha gigante captura um colossal urso negro de olhos vermelhos ardentes! {{count}} aldeões tombam diante de suas garras sobrenaturais antes de a fera ser finalmente abatida. Você toma seu pelo negro amaldiçoado como um troféu arduamente conquistado.",
-      "trapSuccessHeavy": "A armadilha gigante captura um colossal urso negro de olhos como brasas ardentes. {{count}} aldeões tombam diante de sua fúria sobrenatural antes de a fera ser finalmente dominada. Você toma seu pelo negro amaldiçoado.",
+      "trapSuccessWithDeaths": "A armadilha gigante captura um colossal urso negro de olhos vermelhos ardentes! {{count}} aldeões caem diante de suas garras sobrenaturais antes de a fera ser finalmente abatida. Você toma seu pelo negro amaldiçoado como um troféu arduamente conquistado.",
+      "trapSuccessHeavy": "A armadilha gigante captura um colossal urso negro de olhos como brasas ardentes. {{count}} aldeões caem diante de sua fúria sobrenatural antes de a fera ser finalmente dominada. Você toma seu pelo negro amaldiçoado.",
       "trapFailed": "A armadilha gigante é montada, mas, ao ser verificada, só se encontram marcas de garras gigantes ao lado dela. O que quer que ronde estas florestas é astuto demais para sua armadilha... por enquanto."
     }
   },
@@ -613,11 +613,11 @@
   "risingSmoke": {
     "label": "Fumaça Subindo",
     "log": {
-      "success": "Sua expedição encontra um acampamento de foras da lei. A luta é brutal, mas você vence. Num baú, você encontra 500 de Ouro.",
-      "successKeyBonus": " Com sua chave-mestra, você abre um compartimento oculto e encontra mais 250 de Ouro.",
+      "success": "Sua expedição encontra um acampamento de foras da lei. A luta é brutal, mas você vence. Num baú, você encontra 500 Ouro.",
+      "successKeyBonus": " Com sua chave-mestra, você abre um compartimento oculto e encontra mais 250 Ouro.",
       "captiveOne": " 1 cativo do acampamento decide se juntar à aldeia.",
       "captivesOther": " {{count}} cativos do acampamento decidem se juntar à aldeia.",
-      "failure": "Sua expedição alcança um acampamento de foras da lei, mas a luta dá terrivelmente errado. {{count}} aldeões tombam antes que os sobreviventes fujam de volta à aldeia."
+      "failure": "Sua expedição alcança um acampamento de foras da lei, mas a luta dá terrivelmente errado. {{count}} aldeões caem antes que os sobreviventes fujam de volta à aldeia."
     }
   },
   "sellBlacksteelBatch": {
@@ -696,7 +696,7 @@
       "tarnishedAmulet": "Nas sombras da caverna, algo reluz. Você encontra um Amuleto Manchado.",
       "silverSack": "Você encontra um pequeno saco de couro contendo 50 de Prata.",
       "mapFragment": "No chão da caverna, você encontra um fragmento esfarrapado de um mapa.",
-      "firstVisit": "O ar fica mais frio conforme você desce o caminho mais fundo na caverna. As paredes ao seu redor parecem antinaturalmente lisas, como se moldadas por alguém."
+      "firstVisit": "O ar fica mais frio conforme você desce o caminho mais fundo na caverna. As paredes ao seu redor parecem estranhamente lisas, como se moldadas por alguém."
     }
   }
 }
