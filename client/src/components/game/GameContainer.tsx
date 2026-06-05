@@ -26,7 +26,6 @@ import CombatDialog from "./CombatDialog";
 import IdleModeDialog from "./IdleModeDialog";
 import CubeDialog from "./CubeDialog";
 import InactivityDialog from "./InactivityDialog";
-import { RestartGameDialog } from "./RestartGameDialog";
 import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
 import { ShopDialog } from "./ShopDialog";
 import LeaderboardDialog from "./LeaderboardDialog";
@@ -75,9 +74,6 @@ export default function GameContainer() {
     setCombatDialog,
     isPaused,
     inactivityDialogOpen,
-    restartGameDialogOpen,
-    setRestartGameDialogOpen,
-    restartGame,
   } = useGameStore();
 
   // State selectors for dialogs - must be at top before any conditional returns
@@ -1240,13 +1236,6 @@ export default function GameContainer() {
           onClose={() => setFullGamePurchaseDialogOpen(false)}
         />
         {inactivityDialogOpen && <InactivityDialog />}
-
-        {/* Restart Game Dialog */}
-        <RestartGameDialog
-          isOpen={restartGameDialogOpen}
-          onClose={() => setRestartGameDialogOpen(false)}
-          onConfirm={restartGame}
-        />
 
         {/* Reward Dialog */}
         <RewardDialog

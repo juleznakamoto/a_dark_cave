@@ -9,6 +9,11 @@ export type HoverCalloutArrowAlign = "start" | "center" | "end";
 const CALLOUT_BASE =
   "absolute z-[1] flex rounded-md bg-primary px-2 py-1.5 text-[10px] font-semibold leading-none tracking-wide text-primary-foreground shadow-md transition-opacity duration-300";
 
+/** Touch taps synthesize mouseenter; only fine pointers should drive hover tooltips. */
+function isHoverCapablePointer(pointerType: string): boolean {
+  return pointerType === "mouse" || pointerType === "pen";
+}
+
 const SIDE_LAYOUT: Record<
   HoverCalloutSide,
   Record<HoverCalloutArrowAlign, { callout: string; arrow: string }>
@@ -111,17 +116,29 @@ export function HoverCalloutTooltip({
     </>
   );
 
+  const showHoverTooltip = (e: React.PointerEvent) => {
+    if (isHoverCapablePointer(e.pointerType)) {
+      setIsHovered(true);
+    }
+  };
+
+  const hideHoverTooltip = (e: React.PointerEvent) => {
+    if (isHoverCapablePointer(e.pointerType)) {
+      setIsHovered(false);
+    }
+  };
+
   return (
     <div
       className={cn("relative inline-flex shrink-0 overflow-visible", className)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onPointerEnter={showHoverTooltip}
+      onPointerLeave={hideHoverTooltip}
     >
       {calloutClickable ? (
         <button
           type="button"
           onClick={onCalloutClick}
-          onMouseEnter={() => setIsHovered(true)}
+          onPointerEnter={showHoverTooltip}
           tabIndex={visible ? 0 : -1}
           aria-hidden={!visible}
           className={cn(

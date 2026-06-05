@@ -2287,6 +2287,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       idleModeDialog: { isOpen: false }, // Explicitly ensure idle mode dialog is closed
       ...getTimedEventTabCleanupPatch(get().activeTab),
       investDialogOpen: false,
+      restartGameDialogOpen: false,
+      deleteAccountDialogOpen: false,
       resourceChangeEvents: [],
 
       // Recalculate derived state

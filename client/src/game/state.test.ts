@@ -728,6 +728,7 @@ describe("Timed event tab cleanup on new game", () => {
       timedEventTab: activeTimedTab,
       gamblerGame: { wager: 25, stakeNotYetDeducted: true },
       gamblerDiceDialogOpen: true,
+      restartGameDialogOpen: true,
       merchantTrades: { choices: [{ id: "trade-1" }], purchasedIds: ["trade-0"] },
       flags: { ...useGameStore.getState().flags, gameStarted: true },
     });
@@ -735,6 +736,7 @@ describe("Timed event tab cleanup on new game", () => {
     await useGameStore.getState().restartGame();
 
     const state = useGameStore.getState();
+    expect(state.restartGameDialogOpen).toBe(false);
     expect(state.timedEventTab.isActive).toBe(false);
     expect(state.timedEventTab.event).toBeNull();
     expect(state.gamblerGame).toBeNull();
