@@ -10,10 +10,6 @@ import { useGameStore } from "@/game/state";
 const TRADER_TAB_HINT_INTERVAL_MS = 15 * 60 * 1000;
 const TRADER_TAB_HINT_DURATION_MS = 10 * 1000;
 
-/** Subtle lime glow on the ◬ glyph while idle. */
-const TRADER_ICON_GLOW_IDLE =
-  "[text-shadow:0_0_6px_rgba(132,204,22,0.35),0_0_10px_rgba(132,204,22,0.2)]";
-
 /** Intense lime glow when hovered, focused, or hint-pulsing (full class strings for Tailwind). */
 const TRADER_ICON_GLOW_ACTIVE =
   "[text-shadow:0_0_14px_rgba(132,204,22,0.95),0_0_28px_rgba(132,204,22,0.55),0_0_36px_rgba(132,204,22,0.25)]";
@@ -101,7 +97,6 @@ export function TraderTabButton({
               ? cn("opacity-100", TRADER_ICON_GLOW_ACTIVE)
               : cn(
                 "opacity-80",
-                TRADER_ICON_GLOW_IDLE,
                 "group-hover:opacity-100 group-focus-visible:opacity-100",
                 TRADER_ICON_GLOW_ACTIVE_HOVER,
               ),
