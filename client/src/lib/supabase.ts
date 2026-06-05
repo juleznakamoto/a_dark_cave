@@ -148,6 +148,19 @@ export function getCachedAuthUser(): any | null {
   return cachedAuthUser;
 }
 
+/**
+ * Synchronously prime the cached auth user from a known-good session/user
+ * (e.g. the value returned by `signInWithPassword`).
+ *
+ * The `onAuthStateChange` listener updates `cachedAuthUser` asynchronously, so right after an
+ * in-page sign-in `getCurrentUser()` can still read a stale `null` and load the local (new) game
+ * instead of the cloud save. Priming the cache here closes that cross-device race.
+ */
+export function primeCachedAuthUser(user: any | null): void {
+  cachedAuthUser = user;
+  authStateInitialized = true;
+}
+
 // Check if auth state is initialized
 export function isAuthStateReady(): boolean {
   return authStateInitialized;

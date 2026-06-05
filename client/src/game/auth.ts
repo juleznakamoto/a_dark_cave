@@ -1,4 +1,4 @@
-import { getSupabaseClient } from '@/lib/supabase';
+import { getSupabaseClient, primeCachedAuthUser } from '@/lib/supabase';
 import { apiUrl } from '@/lib/apiUrl';
 import { GameState, SaveData, SIGN_UP_WELCOME_GOLD } from '@shared/schema';
 import { logger } from '@/lib/logger';
@@ -290,10 +290,10 @@ export async function signUp(
     options: {
       ...(referralCode
         ? {
-            data: {
-              referral_code: referralCode,
-            },
-          }
+          data: {
+            referral_code: referralCode,
+          },
+        }
         : {}),
       emailRedirectTo: window.location.origin + '/?email_confirmed=true',
     },
@@ -436,6 +436,13 @@ export async function signIn(email: string, password: string) {
   if (data.user && !data.user.email_confirmed_at) {
     await supabase.auth.signOut();
     throw new Error('Please confirm your email address before signing in. Check your inbox for the confirmation link.');
+  }
+
+  // Prime the cached auth user synchronously: the onAuthStateChange listener updates the cache
+  // asynchronously, so the loadGame() that runs right after sign-in could otherwise read a stale
+  // null user and load the local/new game instead of the cloud save (broken cross-device sync).
+  if (data.user) {
+    primeCachedAuthUser(data.user);
   }
 
   await flushPendingMarketingPreferences();
