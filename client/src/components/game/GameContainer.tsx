@@ -984,18 +984,18 @@ export default function GameContainer() {
           Desktop (left → right): event log, tabs/actions, resources side panel.
           Mobile (stacked top → bottom): event log, side panel, tabs/actions. */}
         <main className="flex-1 pb-0 flex flex-col md:flex-row min-h-0 overflow-hidden">
-          {/* Event Log - top on mobile, left column on desktop */}
-          <div className="order-1 w-full md:flex-[2_1_0] md:min-w-[16rem] md:max-w-[26rem] min-h-0 overflow-hidden p-2 pb-0 md:border-r border-border">
+          {/* Event Log - top on mobile, left column on desktop (fixed width; does not shrink) */}
+          <div className="order-1 w-full md:flex-[0_0_16rem] md:max-w-[22rem] md:shrink-0 min-h-0 overflow-hidden p-2 pb-0 md:border-r border-border">
             <LogPanel />
           </div>
 
-          {/* Resources Side Panel - below log on mobile, right column on desktop */}
-          <div className="order-2 md:order-3 min-h-[36vh] md:min-h-0 w-full md:flex-[3_1_0] md:min-w-[20rem] md:max-w-[28rem] pl-2 pr-2 border-t md:border-t-0 md:border-l border-border overflow-hidden">
+          {/* Resources Side Panel - below log on mobile, right column on desktop (fixed width; does not shrink) */}
+          <div className="order-2 md:order-3 min-h-[36vh] md:min-h-0 w-full md:flex-[0_0_20rem] md:max-w-[26rem] md:shrink-0 pl-2 pr-2 border-t md:border-t-0 md:border-l border-border overflow-hidden">
             <GameTabs />
           </div>
 
-          {/* Right Content Area with Horizontal Tabs and Actions - below side panel on mobile, middle column on desktop */}
-          <section className="order-3 md:order-2 flex-1 md:flex-[4_1_0] md:min-w-[12rem] flex flex-col min-w-0 min-h-0 overflow-hidden md:pl-0">
+          {/* Game tab area - below side panel on mobile, middle column on desktop (absorbs horizontal shrink) */}
+          <section className="order-3 md:order-2 flex-1 min-w-0 flex flex-col min-h-0 overflow-hidden md:pl-0">
             {/* Horizontal Game Tabs */}
             <nav
               className={`relative border-t border-border pl-2 pr-2 md:pl-4 md:pr-4 flex-shrink-0${isPaused ? " z-[41] pointer-events-auto" : ""}`}
@@ -1164,7 +1164,7 @@ export default function GameContainer() {
                   </div>
 
                   {traderUnlocked && (
-                    <div className="pointer-events-auto absolute inset-y-0 right-2 flex items-center">
+                    <div className="pointer-events-auto absolute inset-y-0 right-4 flex items-center">
                       <TraderTabButton
                         tabButtonClass={tabButtonClass}
                         tabInactiveTextClass={tabInactiveTextClass}
