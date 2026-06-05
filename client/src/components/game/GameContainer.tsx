@@ -985,17 +985,17 @@ export default function GameContainer() {
           Mobile (stacked top → bottom): event log, side panel, tabs/actions. */}
         <main className="flex-1 pb-0 flex flex-col md:flex-row min-h-0 overflow-hidden">
           {/* Event Log - top on mobile, left column on desktop */}
-          <div className="order-1 w-full md:w-[22rem] flex-shrink-0 overflow-hidden p-2 pb-0 md:border-r border-border">
+          <div className="order-1 w-full md:flex-[2_1_0] md:min-w-[12rem] md:max-w-[22rem] min-h-0 overflow-hidden p-2 pb-0 md:border-r border-border">
             <LogPanel />
           </div>
 
           {/* Resources Side Panel - below log on mobile, right column on desktop */}
-          <div className="order-2 md:order-3 min-h-[36vh] md:min-h-0 w-full shrink-0 pl-2 pr-2 md:min-w-[30rem] md:w-[40rem] border-t md:border-t-0 md:border-l border-border overflow-hidden">
+          <div className="order-2 md:order-3 min-h-[36vh] md:min-h-0 w-full md:flex-[3_1_0] md:min-w-[20rem] md:max-w-[30rem] pl-2 pr-2 border-t md:border-t-0 md:border-l border-border overflow-hidden">
             <GameTabs />
           </div>
 
           {/* Right Content Area with Horizontal Tabs and Actions - below side panel on mobile, middle column on desktop */}
-          <section className="order-3 md:order-2 flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
+          <section className="order-3 md:order-2 flex-1 md:flex-[4_1_0] md:min-w-[12rem] flex flex-col min-w-0 min-h-0 overflow-hidden md:pl-0">
             {/* Horizontal Game Tabs */}
             <nav
               className={`relative border-t border-border pl-2 pr-2 md:pl-4 md:pr-4 flex-shrink-0${isPaused ? " z-[41] pointer-events-auto" : ""}`}
