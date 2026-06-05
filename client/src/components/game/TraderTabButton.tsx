@@ -10,8 +10,15 @@ import { useGameStore } from "@/game/state";
 const TRADER_TAB_HINT_INTERVAL_MS = 15 * 60 * 1000;
 const TRADER_TAB_HINT_DURATION_MS = 10 * 1000;
 
-const TRADER_ICON_GLOW_CLASS =
-  "[text-shadow:0_0_14px_rgba(132,204,22,0.95),0_0_28px_rgba(132,204,22,0.55)]";
+/** Subtle lime glow on the ◬ glyph while idle. */
+const TRADER_ICON_GLOW_IDLE =
+  "[text-shadow:0_0_6px_rgba(132,204,22,0.35),0_0_10px_rgba(132,204,22,0.2)]";
+
+/** Intense lime glow when hovered, focused, or hint-pulsing (full class strings for Tailwind). */
+const TRADER_ICON_GLOW_ACTIVE =
+  "[text-shadow:0_0_14px_rgba(132,204,22,0.95),0_0_28px_rgba(132,204,22,0.55),0_0_36px_rgba(132,204,22,0.25)]";
+const TRADER_ICON_GLOW_ACTIVE_HOVER =
+  "group-hover:[text-shadow:0_0_14px_rgba(132,204,22,0.95),0_0_28px_rgba(132,204,22,0.55),0_0_36px_rgba(132,204,22,0.25)] group-focus-visible:[text-shadow:0_0_14px_rgba(132,204,22,0.95),0_0_28px_rgba(132,204,22,0.55),0_0_36px_rgba(132,204,22,0.25)]";
 
 interface TraderTabButtonProps {
   tabButtonClass: string;
@@ -38,6 +45,12 @@ export function TraderTabButton({
     zIndex: 50,
   });
   const [isHintActive, setIsHintActive] = useState(false);
+  const onMouseEnterRef = useRef(hoverHandlers.onMouseEnter);
+  const onMouseLeaveRef = useRef(hoverHandlers.onMouseLeave);
+  onMouseEnterRef.current = hoverHandlers.onMouseEnter;
+  onMouseLeaveRef.current = hoverHandlers.onMouseLeave;
+
+  const showActiveGlow = isHintActive;
 
   useEffect(() => {
     let endTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -46,11 +59,11 @@ export function TraderTabButton({
       if (useGameStore.getState().shopDialogOpen) return;
 
       setIsHintActive(true);
-      hoverHandlers.onMouseEnter();
+      onMouseEnterRef.current();
       if (endTimeout) clearTimeout(endTimeout);
       endTimeout = setTimeout(() => {
         setIsHintActive(false);
-        hoverHandlers.onMouseLeave();
+        onMouseLeaveRef.current();
         endTimeout = null;
       }, TRADER_TAB_HINT_DURATION_MS);
     };
@@ -61,10 +74,10 @@ export function TraderTabButton({
       clearInterval(intervalId);
       if (endTimeout) {
         clearTimeout(endTimeout);
-        hoverHandlers.onMouseLeave();
+        onMouseLeaveRef.current();
       }
     };
-  }, [hoverHandlers.onMouseEnter, hoverHandlers.onMouseLeave]);
+  }, []);
 
   return (
     <>
@@ -84,9 +97,14 @@ export function TraderTabButton({
           ref={iconRef}
           className={cn(
             "font-noto-symbols-2 text-[19px] leading-none text-lime-500 transition-[opacity,text-shadow] relative top-px",
-            isHintActive
-              ? cn("opacity-100", TRADER_ICON_GLOW_CLASS)
-              : "opacity-80 group-hover:opacity-100 group-hover:[text-shadow:0_0_14px_rgba(132,204,22,0.95),0_0_28px_rgba(132,204,22,0.55)] group-focus-visible:opacity-100 group-focus-visible:[text-shadow:0_0_14px_rgba(132,204,22,0.95),0_0_28px_rgba(132,204,22,0.55)]",
+            showActiveGlow
+              ? cn("opacity-100", TRADER_ICON_GLOW_ACTIVE)
+              : cn(
+                "opacity-80",
+                TRADER_ICON_GLOW_IDLE,
+                "group-hover:opacity-100 group-focus-visible:opacity-100",
+                TRADER_ICON_GLOW_ACTIVE_HOVER,
+              ),
           )}
           aria-hidden
         >
@@ -104,7 +122,7 @@ export function TraderTabButton({
               "col-start-1 row-start-1 font-normal transition-opacity",
               isAnimating
                 ? ""
-                : isHintActive
+                : showActiveGlow
                   ? "opacity-100 font-semibold"
                   : isPaused
                     ? tabInactiveTextClass
