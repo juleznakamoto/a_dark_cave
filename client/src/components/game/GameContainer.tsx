@@ -715,8 +715,6 @@ export default function GameContainer() {
       return;
     }
     const rowRect = row.getBoundingClientRect();
-    const nav = row.closest("nav");
-    const navRect = nav?.getBoundingClientRect() ?? rowRect;
     const queryTabButton = (testId: string) =>
       row.querySelector<HTMLElement>(`[data-testid="${testId}"]`) ??
       document.querySelector<HTMLElement>(`[data-testid="${testId}"]`);
@@ -729,19 +727,18 @@ export default function GameContainer() {
       next.push({
         key: `hotkey-${tab}`,
         left: r.left + r.width / 2,
-        top: r.top - 2,
+        top: r.bottom + 2,
         label: `[${i + 1}]`,
       });
     });
     setPauseHotkeyBadges(next);
 
-    const minBadgeAnchorTop =
-      next.length > 0 ? Math.min(...next.map((b) => b.top)) : null;
-    // Keep the help line above [1]… badges (badges use translateY(-100%) from tab tops).
-    const hintTop =
-      minBadgeAnchorTop != null
-        ? Math.max(4, minBadgeAnchorTop - 36)
-        : Math.max(4, navRect.top - 42);
+    const badgeRowTop =
+      next.length > 0
+        ? Math.min(...next.map((b) => b.top))
+        : rowRect.bottom + 2;
+    // [1]… badges sit on the first line below tabs; hint text on the second line.
+    const hintTop = badgeRowTop + 18 + 4;
     const hintLeft =
       next.length > 0
         ? (Math.min(...next.map((b) => b.left)) +
@@ -768,8 +765,9 @@ export default function GameContainer() {
       const padX = 12;
       const boxLeft = minLeft - padX;
       const boxWidth = maxRight - minLeft + padX * 2;
-      const boxTop = hintTop - 6;
-      const boxBottom = rowRect.top + 2;
+      const boxTop = rowRect.top - 6;
+      const boxBottom =
+        (hintEl?.getBoundingClientRect().bottom ?? hintTop + 28) + 6;
       const boxHeight = Math.max(0, boxBottom - boxTop);
       setVillageHotkeyBoxLayout({
         top: boxTop,
@@ -935,6 +933,19 @@ export default function GameContainer() {
                 </button>
               </div>
             )}
+            {pauseHotkeyBadges.map((b) => (
+              <span
+                key={b.key}
+                className="pause-hotkey-badge-animated absolute z-[1] text-xs font-semibold text-foreground drop-shadow"
+                style={{
+                  left: b.left,
+                  top: b.top,
+                  transform: "translate(-50%, 0)",
+                }}
+              >
+                {b.label}
+              </span>
+            ))}
             {pauseHotkeyHint != null && (
               <div
                 data-testid={
@@ -950,19 +961,6 @@ export default function GameContainer() {
                 {pauseHotkeyHintContent}
               </div>
             )}
-            {pauseHotkeyBadges.map((b) => (
-              <span
-                key={b.key}
-                className="pause-hotkey-badge-animated absolute z-[1] text-xs font-semibold text-foreground drop-shadow"
-                style={{
-                  left: b.left,
-                  top: b.top,
-                  transform: "translate(-50%, -100%)",
-                }}
-              >
-                {b.label}
-              </span>
-            ))}
           </div>
         )}
 

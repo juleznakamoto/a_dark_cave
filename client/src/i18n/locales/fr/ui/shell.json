@@ -71,7 +71,7 @@
   "pauseHotkey": {
     "hintPrefix": "Utilisez ",
     "hintOr": "ou",
-    "hintSuffix": " ou les touches ci-dessous pour changer d'onglet"
+    "hintSuffix": " ou les touches ci-dessus pour changer d'onglet"
   },
   "villageHotkeyTutorial": {
     "dismiss": "Fermer"

@@ -71,7 +71,7 @@
   "pauseHotkey": {
     "hintPrefix": "Используйте ",
     "hintOr": "или",
-    "hintSuffix": " или клавиши ниже для переключения между вкладками"
+    "hintSuffix": " или клавиши выше для переключения между вкладками"
   },
   "villageHotkeyTutorial": {
     "dismiss": "Закрыть"

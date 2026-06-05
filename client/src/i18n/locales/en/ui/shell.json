@@ -71,7 +71,7 @@
   "pauseHotkey": {
     "hintPrefix": "Use ",
     "hintOr": "or",
-    "hintSuffix": " or keys below to switch between tabs"
+    "hintSuffix": " or keys above to switch between tabs"
   },
   "villageHotkeyTutorial": {
     "dismiss": "Dismiss"

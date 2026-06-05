@@ -71,7 +71,7 @@
   "pauseHotkey": {
     "hintPrefix": "Usa ",
     "hintOr": "o",
-    "hintSuffix": " o las teclas de abajo para cambiar entre pestañas"
+    "hintSuffix": " o las teclas de arriba para cambiar entre pestañas"
   },
   "villageHotkeyTutorial": {
     "dismiss": "Cerrar"
