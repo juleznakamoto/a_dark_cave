@@ -672,7 +672,12 @@ export default function GameContainer() {
           setActiveTab(tab);
       }
     },
-    [clearTabAnimation, setActiveTab, unclaimedAchievementIds, markAchievementTabPulseViewed],
+    [
+      clearTabAnimation,
+      setActiveTab,
+      unclaimedAchievementIds,
+      markAchievementTabPulseViewed,
+    ],
   );
 
   const closeVillageHotkeyTutorial = useCallback(() => {
@@ -1131,7 +1136,9 @@ export default function GameContainer() {
                             }`}
                           onClick={() => {
                             clearTabAnimation("achievements");
-                            markAchievementTabPulseViewed(unclaimedAchievementIds);
+                            markAchievementTabPulseViewed(
+                              unclaimedAchievementIds,
+                            );
                             setActiveTab("achievements");
                           }}
                           data-testid="tab-achievements"
