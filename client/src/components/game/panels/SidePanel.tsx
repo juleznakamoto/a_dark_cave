@@ -939,7 +939,7 @@ export default function SidePanel() {
         </div>
 
         {/* Second column - Everything else */}
-        <div className="min-w-0 flex-[2] basis-0">
+        <div className="min-w-[10rem] flex-[2] basis-0">
           {toolItems.length > 0 && shouldShowSection("tools") && (
             <SidePanelSection className="pt-0" sectionId="tools" title={t("sidePanel.tools")} items={toolItems} />
           )}
