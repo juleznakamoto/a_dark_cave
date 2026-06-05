@@ -93,7 +93,7 @@ const EFFECT_TOOLTIP_SECTIONS = new Set<SidePanelSectionId>([
 
 /** Shared layout for resource name + amount + production delta / change hint. */
 const RESOURCE_ROW_GRID_CLASS =
-  "grid grid-cols-[4rem_5.5rem_3rem] items-baseline gap-x-1";
+  "grid grid-cols-[5rem_5rem_3rem] items-baseline gap-x-1";
 const RESOURCE_ROW_TEXT_CLASS = "text-xs leading-none";
 /** Third column: production rate and change popup share one right-aligned slot. */
 const RESOURCE_DELTA_SLOT_CLASS =
