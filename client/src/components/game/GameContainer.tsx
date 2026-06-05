@@ -720,7 +720,12 @@ export default function GameContainer() {
     const queryTabButton = (testId: string) =>
       row.querySelector<HTMLElement>(`[data-testid="${testId}"]`) ??
       document.querySelector<HTMLElement>(`[data-testid="${testId}"]`);
-    const TAB_HOTKEY_GAP = 2;
+    // Single-line text heights (text-xs, leading-none). Kept as constants so the
+    // layout is deterministic and never reads back already-positioned overlay nodes.
+    const TAB_HOTKEY_GAP = 2; // tabs → badges
+    const BADGE_LINE_H = 14; // [1] … row
+    const HINT_GAP = 2; // badges → hint
+    const HINT_LINE_H = 14; // hint row
     const badgeRowTop = navRect.bottom + TAB_HOTKEY_GAP;
     const next: { key: string; left: number; top: number; label: string }[] =
       [];
@@ -737,18 +742,8 @@ export default function GameContainer() {
     });
     setPauseHotkeyBadges(next);
 
-    const badgeNodes = document.querySelectorAll<HTMLElement>(
-      ".pause-hotkey-badge-animated",
-    );
     // [1]… badges on the first line below the tab row; hint text on the second.
-    const hintTop =
-      badgeNodes.length > 0
-        ? Math.max(
-          ...Array.from(badgeNodes).map(
-            (n) => n.getBoundingClientRect().bottom,
-          ),
-        ) + 2
-        : badgeRowTop + 14 + 2;
+    const hintTop = badgeRowTop + BADGE_LINE_H + HINT_GAP;
     const hintLeft =
       next.length > 0
         ? (Math.min(...next.map((b) => b.left)) +
@@ -763,6 +758,7 @@ export default function GameContainer() {
     if (next.length > 0) {
       let minLeft = Math.min(...next.map((b) => b.left - 20));
       let maxRight = Math.max(...next.map((b) => b.left + 20));
+      // Only the hint's horizontal extent is read back (width is offset-safe).
       const hintEl = document.querySelector<HTMLElement>(
         '[data-testid="tab-hotkey-hint"]',
       );
@@ -775,16 +771,8 @@ export default function GameContainer() {
       const padY = 3;
       const boxLeft = minLeft - padX;
       const boxWidth = maxRight - minLeft + padX * 2;
-      const boxTop =
-        (badgeNodes.length > 0
-          ? Math.min(
-            ...Array.from(badgeNodes).map(
-              (n) => n.getBoundingClientRect().top,
-            ),
-          )
-          : badgeRowTop) - padY;
-      const boxBottom =
-        (hintEl?.getBoundingClientRect().bottom ?? hintTop + 14) + padY;
+      const boxTop = badgeRowTop - padY;
+      const boxBottom = hintTop + HINT_LINE_H + padY;
       const boxHeight = Math.max(0, boxBottom - boxTop);
       setVillageHotkeyBoxLayout({
         top: boxTop,
@@ -916,8 +904,7 @@ export default function GameContainer() {
 
         {showTabHotkeyOverlay && (
           <div
-            className="pointer-events-none fixed inset-x-0 z-[45] hidden md:block"
-            style={{ top: GAME_HEADER_INSET, bottom: GAME_FOOTER_INSET }}
+            className="pointer-events-none fixed inset-0 z-[45] hidden md:block"
             aria-hidden={false}
           >
             {villageHotkeyBoxLayout != null && (
@@ -993,7 +980,7 @@ export default function GameContainer() {
         {/* Main Content Area - Fills remaining space.
           Desktop (left → right): event log, tabs/actions, resources side panel.
           Mobile (stacked top → bottom): event log, side panel, tabs/actions. */}
-        <main className="flex-1 pb-0 flex flex-col md:grid md:w-full md:grid-cols-[minmax(14rem,26rem)_minmax(16rem,1fr)_minmax(20rem,28rem)] min-h-0 overflow-hidden">
+        <main className="flex-1 pb-0 flex flex-col md:grid md:w-full md:grid-cols-[minmax(14rem,26rem)_minmax(20rem,1fr)_minmax(20rem,28rem)] min-h-0 overflow-hidden">
           {/* Event Log - top on mobile, left column on desktop */}
           <div className="order-1 w-full min-h-0 overflow-hidden pt-2 pr-2 pb-0 pl-1 md:border-r border-border">
             <LogPanel />
