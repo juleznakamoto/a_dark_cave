@@ -189,7 +189,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   };
 
   const hostClassName = cn(
-    showDisabledOpacity && "opacity-40",
+    showDisabledOpacity && "opacity-60",
     layout === "inline" && "inline-flex shrink-0 items-center self-center",
     isTimedEvent && layout === "inline" && "ml-1",
   );
