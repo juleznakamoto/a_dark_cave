@@ -705,7 +705,6 @@ const toolTrades = [
     give: "book",
     giveItem: "book_of_war",
     condition: (state: GameState) =>
-      state.story.seen.firstWolfAttack &&
       state.buildings.scriptorium >= 1 &&
       state.buildings.darkEstate >= 1 &&
       !state.books.book_of_war,
