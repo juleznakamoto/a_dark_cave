@@ -51,8 +51,8 @@ export default function InviteFriendsFloatingButton() {
 
   return (
     <div
-      className="pointer-events-auto fixed left-4 z-[55]"
-      style={{ bottom: `calc(${GAME_FOOTER_INSET} + 1rem)` }}
+      className="pointer-events-auto fixed right-4 z-[60]"
+      style={{ bottom: `calc(${GAME_FOOTER_INSET} + 0.75rem)` }}
     >
       <TooltipWrapper
         tooltip={
