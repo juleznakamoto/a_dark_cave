@@ -36,6 +36,40 @@ const DB_VERSION = 2;
 const SAVE_KEY = "mainSave";
 const LAST_CLOUD_STATE_KEY = "lastCloudState";
 
+/**
+ * Order-independent deep equality with early exit on first difference.
+ *
+ * Used by the save diff instead of `JSON.stringify(a) !== JSON.stringify(b)`: for large
+ * append-only objects (e.g. `story.seen`, `triggeredEvents`, `eventCooldowns`) this avoids
+ * building two big JSON strings on every cloud save and bails as soon as a value differs.
+ * Both inputs are JSON-clean (no functions/undefined) since they come from JSON round-trips.
+ */
+function deepEqual(a: any, b: any): boolean {
+  if (a === b) return true;
+  if (a === null || b === null) return a === b;
+  if (typeof a !== "object" || typeof b !== "object") return a === b;
+
+  const aIsArray = Array.isArray(a);
+  if (aIsArray !== Array.isArray(b)) return false;
+
+  if (aIsArray) {
+    if (a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) {
+      if (!deepEqual(a[i], b[i])) return false;
+    }
+    return true;
+  }
+
+  const aKeys = Object.keys(a);
+  const bKeys = Object.keys(b);
+  if (aKeys.length !== bKeys.length) return false;
+  for (const key of aKeys) {
+    if (!Object.prototype.hasOwnProperty.call(b, key)) return false;
+    if (!deepEqual(a[key], b[key])) return false;
+  }
+  return true;
+}
+
 // Calculate diff between two states
 function calculateStateDiff(
   oldState: GameState | null,
@@ -51,7 +85,8 @@ function calculateStateDiff(
     if (a === b) return false;
     if (a === null || b === null) return true;
     if (typeof a === "object") {
-      return JSON.stringify(a) !== JSON.stringify(b);
+      // Early-exit deep compare instead of stringifying both sides (cheaper for large objects).
+      return !deepEqual(a, b);
     }
     return true;
   };

@@ -108,6 +108,45 @@ export function updateResource(
   };
 }
 
+/**
+ * Apply many resource deltas in a single pass (same clamping/cap/seen/limit-flag semantics as
+ * `updateResource`, just batched). Used by the production cycle so a tick that updates N resources
+ * results in one store write instead of N — avoids a burst of re-renders late game.
+ *
+ * `deltas` are amounts to add (can be negative). Returns a `Partial<GameState>` to feed into `set`.
+ */
+export function applyResourceDeltas(
+  state: GameState,
+  deltas: Partial<Record<keyof GameState['resources'], number>>,
+): Partial<GameState> {
+  const newResources = { ...state.resources };
+  const limit = getResourceLimit(state);
+  let reachedLimit = false;
+
+  for (const [key, delta] of Object.entries(deltas)) {
+    if (typeof delta !== 'number' || delta === 0) continue;
+    const resource = key as keyof GameState['resources'];
+    const currentAmount = newResources[resource] || 0;
+    const newAmount = Math.max(0, currentAmount + delta);
+    const cappedAmount = capResourceToLimit(resource, newAmount, state);
+    newResources[resource] = cappedAmount;
+    if (isResourceLimited(resource, state) && cappedAmount >= limit) {
+      reachedLimit = true;
+    }
+  }
+
+  return {
+    resources: newResources,
+    seenResources: markSeenResources(state.seenResources, newResources),
+    ...(reachedLimit && !state.flags.hasHitResourceLimit && {
+      flags: {
+        ...state.flags,
+        hasHitResourceLimit: true,
+      },
+    }),
+  };
+}
+
 export function updateFlag(
   state: GameState,
   flag: keyof GameState['flags'],

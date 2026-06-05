@@ -211,6 +211,11 @@ export const gameEvents: Record<string, GameEvent> = {
   ...theDamnedEvents,
 };
 
+/** Priority order for event rolls (higher first). Static priorities — sorted once at module load. */
+const sortedEventsByPriority = Object.values(gameEvents).sort(
+  (a, b) => (b.priority || 0) - (a.priority || 0),
+);
+
 /** Game state plus UI-only timed-tab flag (from GameStore, not on persisted GameState). */
 export type EventRollState = GameState & {
   timedEventTab?: { isActive: boolean };
@@ -243,9 +248,6 @@ export class EventManager {
   } {
     const newLogEntries: LogEntry[] = [];
     let stateChanges: Partial<GameState> = {};
-    const sortedEvents = Object.values(this.allEvents).sort(
-      (a, b) => (b.priority || 0) - (a.priority || 0),
-    );
 
     // Initialize event cooldowns if not present
     const eventCooldowns = state.eventCooldowns || {};
@@ -253,7 +255,7 @@ export class EventManager {
 
     const isTimedTabActive = state.timedEventTab?.isActive || false;
 
-    for (const event of sortedEvents) {
+    for (const event of sortedEventsByPriority) {
       // Skip if already triggered and not repeatable
       if (event.triggered && !event.repeatable) continue;
 
@@ -290,10 +292,11 @@ export class EventManager {
 
       // Apply time-based probability if specified
       if (event.timeProbability) {
-        // Calculate ticks per minute dynamically based on TICK_INTERVAL from constants
-        // TICK_INTERVAL is in milliseconds, so: (1000ms / TICK_INTERVAL) * 60 seconds
-        const ticksPerSecond = 1000 / GAME_CONSTANTS.TICK_INTERVAL;
-        const ticksPerMinute = ticksPerSecond * 60;
+        // `checkEvents` is rolled once per EVENT_CHECK_INTERVAL (not per simulation tick), so the
+        // per-roll probability is derived from how many event checks happen per minute. This keeps
+        // `timeProbability` meaning "average minutes between triggers" regardless of EVENT_CHECK_INTERVAL.
+        const checksPerSecond = 1000 / GAME_CONSTANTS.EVENT_CHECK_INTERVAL;
+        const checksPerMinute = checksPerSecond * 60;
 
         // Get timeProbability - can be number or function
         const timeProbability =
@@ -301,10 +304,10 @@ export class EventManager {
             ? event.timeProbability(state)
             : event.timeProbability;
 
-        const averageTicksBetweenEvents = timeProbability * ticksPerMinute;
-        const probabilityPerTick = 1 / averageTicksBetweenEvents;
+        const averageChecksBetweenEvents = timeProbability * checksPerMinute;
+        const probabilityPerCheck = 1 / averageChecksBetweenEvents;
 
-        shouldTrigger = Math.random() < probabilityPerTick;
+        shouldTrigger = Math.random() < probabilityPerCheck;
       }
 
       if (shouldTrigger) {

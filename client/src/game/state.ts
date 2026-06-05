@@ -2191,6 +2191,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }
       }
 
+      // Nothing actually changed this tick (no active cooldowns, no insight reveal resolved,
+      // no heartfire decay). Return the identical state reference so Zustand skips notifying
+      // subscribers — this runs ~4x/sec and a fresh object would re-render the whole UI tree.
+      if (
+        !changed &&
+        !revealChanged &&
+        newHeartfireState === state.heartfireState
+      ) {
+        return state;
+      }
+
       return {
         ...state,
         cooldowns: newCooldowns,

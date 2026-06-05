@@ -18,6 +18,7 @@ import {
   addFreeVillagersWithinCap,
   killVillagers,
   buildGameState,
+  applyResourceDeltas,
 } from "@/game/stateHelpers";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import {
@@ -126,6 +127,7 @@ function canPriorExecute(actionId: string, state: GameState): boolean {
   return true;
 }
 const TICK_INTERVAL = GAME_CONSTANTS.TICK_INTERVAL;
+const EVENT_CHECK_INTERVAL = GAME_CONSTANTS.EVENT_CHECK_INTERVAL; // Roll events once per second (decoupled from the 250ms tick)
 const AUTO_SAVE_INTERVAL_SIGNED_IN = 60 * 1000; // Cloud autosave every 1 minute
 const AUTO_SAVE_INTERVAL_GUEST = 15 * 1000; // Local IndexedDB only — matches production tick
 const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 seconds
@@ -135,6 +137,8 @@ const FRAME_DURATION = 1000 / TARGET_FPS; // 250ms per frame at 4 FPS
 const SESSION_CHECK_INTERVAL = 5 * 60 * 1000; // Check session every 5 minutes
 
 let tickAccumulator = 0;
+/** Elapsed ms toward the next event roll; frozen during pause like `tickAccumulator` (not timestamp-based). */
+let eventCheckAccumulator = 0;
 let lastAutoSave = 0;
 let lastProduction = 0;
 let productionPauseStartedAt: number | null = null;
@@ -171,6 +175,7 @@ export function startGameLoop() {
   lastProduction = now; // Reset production interval to start fresh
   productionPauseStartedAt = null;
   tickAccumulator = 0;
+  eventCheckAccumulator = 0;
   // Initialize inactivity tracking
   lastUserActivity = Date.now();
   isInactive = false;
@@ -396,6 +401,18 @@ export function startGameLoop() {
         ticksProcessed++;
       }
 
+      // Roll events on a fixed 1s cadence (decoupled from the 250ms simulation tick).
+      // Uses an accumulator (like tickAccumulator) so pause/dialog freeze does not credit
+      // wall-clock gap — avoids an immediate roll on unpause. Probabilities are calibrated
+      // to EVENT_CHECK_INTERVAL in EventManager.checkEvents.
+      eventCheckAccumulator += deltaTime;
+      while (eventCheckAccumulator >= EVENT_CHECK_INTERVAL) {
+        eventCheckAccumulator -= EVENT_CHECK_INTERVAL;
+        if (!useGameStore.getState().idleModeState?.isActive) {
+          processEventCheck();
+        }
+      }
+
       // Auto-save logic (skip if inactive, recently loaded, or in sleep/idle mode)
       const timeSinceLoad = timestamp - lastGameLoadTime;
       const skipAutoSaveAfterLoad = timeSinceLoad > 0 && timeSinceLoad < 30000; // Skip for 30s after load
@@ -497,11 +514,8 @@ export function startGameLoop() {
           handleFreezingCheck();
           handleMadnessCheck();
           handleStrangerApproach();
-
-          // Check for events (including attack waves) - but NOT when dialogs are open
-          if (!IsDialogOpen) {
-            currentState.checkEvents();
-          }
+          // Event rolling now runs on the dedicated 1s EVENT_CHECK_INTERVAL cadence above,
+          // so it is intentionally not invoked here (avoids double-rolling on production ticks).
         }
       } else {
         // Update loop progress (0-100 based on production cycle)
@@ -601,6 +615,7 @@ export function setLastGameLoadTime(time: number) {
 export function resetProductionCycle() {
   lastProduction = performance.now();
   productionPauseStartedAt = null;
+  eventCheckAccumulator = 0;
 }
 
 export function stopGameLoop() {
@@ -841,7 +856,13 @@ export function processActionTicks() {
 
 function processTick() {
   processActionTicks();
+}
 
+/**
+ * Roll random/story/attack-wave events. Runs on the 1s EVENT_CHECK_INTERVAL cadence rather than
+ * every simulation tick, so event scanning (which grows with unlocked content) is ~4x cheaper.
+ */
+function processEventCheck() {
   const state = useGameStore.getState();
 
   // Check for random events
@@ -859,21 +880,35 @@ function processTick() {
   }
 }
 
+/** Accumulate a production output/consumption delta into a batch map. */
+function addDelta(
+  deltas: Record<string, number>,
+  resource: string,
+  amount: number,
+): void {
+  deltas[resource] = (deltas[resource] ?? 0) + amount;
+}
+
+/** Apply a batch of resource deltas in a single store write (skips empty batches). */
+function commitResourceDeltas(deltas: Record<string, number>): void {
+  if (Object.keys(deltas).length === 0) return;
+  useGameStore.setState((s) =>
+    applyResourceDeltas(s, deltas as Partial<Record<keyof typeof s.resources, number>>),
+  );
+}
+
 function handleGathererProduction() {
   const state = useGameStore.getState();
   const gatherer = state.villagers.gatherer;
 
   if (gatherer > 0) {
-    const updates: Record<string, number> = {};
+    const deltas: Record<string, number> = {};
     const production = getPopulationProduction("gatherer", gatherer, state);
     production.forEach((prod) => {
-      updates[prod.resource] = prod.totalAmount;
-      // updateResource automatically applies resource limits via capResourceToLimit
-      state.updateResource(
-        prod.resource as keyof typeof state.resources,
-        prod.totalAmount,
-      );
+      addDelta(deltas, prod.resource, prod.totalAmount);
     });
+    // Single batched write applies resource limits via applyResourceDeltas (capResourceToLimit).
+    commitResourceDeltas(deltas);
   }
 }
 
@@ -882,14 +917,12 @@ function handleHunterProduction() {
   const hunter = state.villagers.hunter;
 
   if (hunter > 0) {
+    const deltas: Record<string, number> = {};
     const production = getPopulationProduction("hunter", hunter, state);
     production.forEach((prod) => {
-      // updateResource automatically applies resource limits via capResourceToLimit
-      state.updateResource(
-        prod.resource as keyof typeof state.resources,
-        prod.totalAmount,
-      );
+      addDelta(deltas, prod.resource, prod.totalAmount);
     });
+    commitResourceDeltas(deltas);
   }
 }
 
@@ -898,15 +931,14 @@ function handleScholarProduction() {
   const scholarCount = state.villagers.scholar ?? 0;
 
   if (scholarCount > 0) {
+    const deltas: Record<string, number> = {};
     const production = getPopulationProduction("scholar", scholarCount, state);
     production.forEach((prod) => {
       if (prod.totalAmount > 0) {
-        state.updateResource(
-          prod.resource as keyof typeof state.resources,
-          prod.totalAmount,
-        );
+        addDelta(deltas, prod.resource, prod.totalAmount);
       }
     });
+    commitResourceDeltas(deltas);
   }
 }
 
@@ -930,8 +962,10 @@ function handleMinerProduction() {
     }
   });
 
-  // Track available resources after each job's production/consumption
+  // Track available resources after each job's production/consumption (sequential affordability),
+  // and accumulate the net deltas so they can all be applied in one store write at the end.
   const availableResources = { ...state.resources };
+  const deltas: Record<string, number> = {};
 
   // Process each job sequentially
   allProduction.forEach(({ job, production }) => {
@@ -951,19 +985,19 @@ function handleMinerProduction() {
     // Only apply production if all resources are available
     if (canProduce) {
       production.forEach((prod) => {
-        // Update both the tracked available resources and the actual state
+        // Update the tracked available resources (for the next job's affordability check)
+        // and accumulate the delta for a single batched commit.
         availableResources[prod.resource as keyof typeof availableResources] =
           (availableResources[
             prod.resource as keyof typeof availableResources
           ] || 0) + prod.totalAmount;
 
-        state.updateResource(
-          prod.resource as keyof typeof state.resources,
-          prod.totalAmount,
-        );
+        addDelta(deltas, prod.resource, prod.totalAmount);
       });
     }
   });
+
+  commitResourceDeltas(deltas);
 }
 
 function handlePopulationSurvival() {
