@@ -41,10 +41,7 @@ import {
   guestAuthNotificationTriggerUpdates,
   shouldTriggerGuestAuthNotification,
 } from "./authNotificationAuto";
-import {
-  socialPromptHighestMilestoneIndexToOpen,
-  socialPromptMilestoneIndexAfterDismiss,
-} from "./socialPromptAuto";
+import { socialPromptHighestMilestoneIndexToOpen } from "./socialPromptAuto";
 import { FEEDBACK_PROMPT_PLAY_MS } from "./feedbackPromptAuto";
 import { isSocialPromoExclusiveRewardComplete } from "@/game/socialPromoExclusiveReward";
 import { tickObsidianOrbFocus } from "@/game/obsidianOrb";
@@ -463,10 +460,7 @@ export function startGameLoop() {
       }
 
       // Rewards dialog: auto-open at play-time milestones until exclusive-item tasks are done (same bar as profile shortcut).
-      if (
-        !promptState.socialPromptDialogOpen &&
-        !isSocialPromoExclusiveRewardComplete(promptState)
-      ) {
+      if (!isSocialPromoExclusiveRewardComplete(promptState)) {
         const milestoneToOpen = socialPromptHighestMilestoneIndexToOpen(
           playTimeMs,
           promptState.socialPromptMilestoneIndex ?? 0,
@@ -474,10 +468,7 @@ export function startGameLoop() {
         if (milestoneToOpen !== null) {
           useGameStore.setState({
             socialPromptDialogOpen: true,
-            socialPromptMilestoneIndex: socialPromptMilestoneIndexAfterDismiss(
-              playTimeMs,
-              milestoneToOpen + 1,
-            ),
+            socialPromptMilestoneIndex: milestoneToOpen + 1,
           });
         }
       }
