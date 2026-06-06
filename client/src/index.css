@@ -747,10 +747,32 @@ body {
   animation: exclusive-promo-shockwave 20s cubic-bezier(0.33, 1, 0.68, 1) infinite;
 }
 
+@keyframes exclusive-promo-shockwave-hover-once {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.85;
+    border-color: rgba(132, 204, 22, 0.9);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+    border-color: rgba(132, 204, 22, 0);
+  }
+}
+
+.exclusive-promo-shockwave-ring--hover-once {
+  animation: exclusive-promo-shockwave-hover-once 0.75s cubic-bezier(0.33, 1, 0.68, 1) 1 !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
 
   .exclusive-promo-shockwave-ring {
     animation: none;
+  }
+
+  .exclusive-promo-shockwave-ring--hover-once {
+    animation: none !important;
   }
 }
 

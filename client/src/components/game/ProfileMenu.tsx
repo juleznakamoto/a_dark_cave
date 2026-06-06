@@ -3,6 +3,8 @@ import React, {
   useContext,
   useState,
   useEffect,
+  useRef,
+  useCallback,
   type ReactNode,
 } from "react";
 import { Button } from "@/components/ui/button";
@@ -425,7 +427,19 @@ function ProfileMenuDialogs() {
   );
 }
 
+function triggerExclusivePromoHoverPulse(ring: HTMLSpanElement | null) {
+  if (!ring) return;
+  ring.classList.remove("exclusive-promo-shockwave-ring--hover-once");
+  void ring.offsetWidth;
+  ring.classList.add("exclusive-promo-shockwave-ring--hover-once");
+}
+
 export function GameHeaderControls() {
+  const rewardsTasksRingRef = useRef<HTMLSpanElement>(null);
+  const triggerRewardsTasksHoverPulse = useCallback(() => {
+    triggerExclusivePromoHoverPulse(rewardsTasksRingRef.current);
+  }, []);
+
   const {
     showRewardsTasksShortcut,
     cruelMode,
@@ -465,11 +479,21 @@ export function GameHeaderControls() {
             type="button"
             aria-label={t("profile.rewardsTasks")}
             onClick={() => setSocialPromptDialogOpen(true)}
+            onMouseEnter={triggerRewardsTasksHoverPulse}
             className={`${HEADER_ICON_BTN} relative overflow-visible hover:bg-muted/30 transition-colors`}
           >
-            <span className="exclusive-promo-shockwave-ring" aria-hidden />
             <span
-              className="relative z-[1] text-[15px] leading-none select-none text-lime-500"
+              ref={rewardsTasksRingRef}
+              className="exclusive-promo-shockwave-ring"
+              aria-hidden
+              onAnimationEnd={(e) => {
+                e.currentTarget.classList.remove(
+                  "exclusive-promo-shockwave-ring--hover-once",
+                );
+              }}
+            />
+            <span
+              className="relative z-[1] text-[17px] leading-none select-none text-lime-500"
               aria-hidden
             >
               ⯫
@@ -486,12 +510,18 @@ export function GameHeaderControls() {
             className={`${HEADER_ICON_BTN} cursor-default opacity-70 hover:opacity-100 transition-opacity`}
             aria-label={t("footer.cruelModeActive")}
           >
-            <span className="font-noto-symbols-2 text-red-600 text-[15px] leading-none font-bold select-none">
+            <span className="font-noto-symbols-2 text-red-600 text-[17px] leading-none font-bold select-none">
               ⛤
             </span>
           </span>
         </HoverCalloutTooltip>
       )}
+      <PlaylightDiscoveryButton
+        onClick={handleDiscovery}
+        forceShowTooltip={isPaused || sleepDialogOpen}
+        tooltipSide="bottom"
+        className={HEADER_ICON_BTN}
+      />
       {(hasWonAnyGame || devMode) && (
         <HoverCalloutTooltip label={t("profile.leaderboard")} side="bottom">
           <Button
@@ -507,12 +537,6 @@ export function GameHeaderControls() {
           </Button>
         </HoverCalloutTooltip>
       )}
-      <PlaylightDiscoveryButton
-        onClick={handleDiscovery}
-        forceShowTooltip={isPaused || sleepDialogOpen}
-        tooltipSide="bottom"
-        className={HEADER_ICON_BTN}
-      />
       <DropdownMenu
         open={accountDropdownOpen}
         onOpenChange={(open) => {
