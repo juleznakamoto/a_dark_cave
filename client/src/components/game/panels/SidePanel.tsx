@@ -470,7 +470,7 @@ export default function SidePanel() {
         "clothing",
         key,
         clothingEffects[key]?.name ||
-        capitalizeWords(key.replace("_schematic", "")),
+          capitalizeWords(key.replace("_schematic", "")),
       ),
       value: 1,
       testId: `schematic-${key}`,
@@ -746,58 +746,58 @@ export default function SidePanel() {
     bastion_stats == null
       ? []
       : BASTION_STAT_SIDE_PANEL_ORDER.map((key) => {
-        const value = bastion_stats[key] ?? 0;
-        let tooltip = undefined;
+          const value = bastion_stats[key] ?? 0;
+          let tooltip = undefined;
 
-        if (key === "defense") {
-          tooltip = (
-            <span className="text-gray-400">
-              {t("sidePanel.bastionDefenseTooltip")}
-            </span>
-          );
-        }
+          if (key === "defense") {
+            tooltip = (
+              <span className="text-gray-400">
+                {t("sidePanel.bastionDefenseTooltip")}
+              </span>
+            );
+          }
 
-        if (key === "integrity") {
-          tooltip = (
-            <span className="text-gray-400">
-              {t("sidePanel.bastionIntegrityTooltip")}
-            </span>
-          );
-        }
+          if (key === "integrity") {
+            tooltip = (
+              <span className="text-gray-400">
+                {t("sidePanel.bastionIntegrityTooltip")}
+              </span>
+            );
+          }
 
-        if (key === "attack") {
-          const fortAttack = bastion_stats.attackFromFortifications || 0;
-          const strengthAttack = bastion_stats.attackFromStrength || 0;
-          tooltip = (
-            <div>
-              <div className="mb-1 text-gray-400">
-                {t("sidePanel.bastionAttackTooltip")}
-              </div>
+          if (key === "attack") {
+            const fortAttack = bastion_stats.attackFromFortifications || 0;
+            const strengthAttack = bastion_stats.attackFromStrength || 0;
+            tooltip = (
               <div>
-                {t("sidePanel.bastionAttackFromFortifications", {
-                  value: fortAttack,
-                })}
+                <div className="mb-1 text-gray-400">
+                  {t("sidePanel.bastionAttackTooltip")}
+                </div>
+                <div>
+                  {t("sidePanel.bastionAttackFromFortifications", {
+                    value: fortAttack,
+                  })}
+                </div>
+                <div>
+                  {t("sidePanel.bastionAttackFromStrength", {
+                    value: strengthAttack,
+                  })}
+                </div>
               </div>
-              <div>
-                {t("sidePanel.bastionAttackFromStrength", {
-                  value: strengthAttack,
-                })}
-              </div>
-            </div>
-          );
-        }
+            );
+          }
 
-        return {
-          id: `bastion-${key}`,
-          label: getStatName(key, capitalizeWords(key)),
-          icon: BASTION_STAT_SIDE_PANEL_ICONS[key],
-          iconColor: BASTION_STAT_SIDE_PANEL_ICON_COLORS[key],
-          value,
-          testId: `bastion-stat-${key}`,
-          visible: true,
-          tooltip,
-        };
-      });
+          return {
+            id: `bastion-${key}`,
+            label: getStatName(key, capitalizeWords(key)),
+            icon: BASTION_STAT_SIDE_PANEL_ICONS[key],
+            iconColor: BASTION_STAT_SIDE_PANEL_ICON_COLORS[key],
+            value,
+            testId: `bastion-stat-${key}`,
+            visible: true,
+            tooltip,
+          };
+        });
 
   // Use SSOT for bonus calculations
   const bonusItems = getAllActionBonuses(gameState).map((bonus) => ({
@@ -861,7 +861,7 @@ export default function SidePanel() {
   );
   const statsHeaderTooltip =
     statsHeaderTooltipRaw === "sidePanel.statsTooltip" ||
-      statsHeaderTooltipRaw === "ui:sidePanel.statsTooltip"
+    statsHeaderTooltipRaw === "ui:sidePanel.statsTooltip"
       ? statsHeaderTooltipFallback
       : statsHeaderTooltipRaw;
 
@@ -908,7 +908,7 @@ export default function SidePanel() {
 
   return (
     <ScrollArea className="h-full max-h-[36vh] md:max-h-full w-full pt-2 pb-1.5 pl-0 pr-4">
-      <div className="pb-1 w-full grid grid-cols-[auto_1fr] gap-x-1.5 items-start min-w-0">
+      <div className="pb-1 w-full grid grid-cols-[auto_auto] gap-x-1.5 items-start min-w-0">
         {/* First column - Resources */}
         <div className={cn("min-w-0", SIDE_PANEL_SECTION_SPACING_CLASS)}>
           {resourceItems.length > 0 && shouldShowSection("resources") && (
