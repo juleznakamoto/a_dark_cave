@@ -710,44 +710,6 @@ export default function SidePanelSection({
       </div>
     );
 
-    // Bastion / stats: keep grid row layout when labels have tooltips (avoid flex rows that vary in height).
-    if (item.tooltip && isIconCenteredLabelSection && showItemValue) {
-      const tooltipContent =
-        typeof item.tooltip === "string" ? (
-          <>
-            {isMadnessTooltip && (
-              <p className="whitespace-pre-line">{madnessTooltipContent}</p>
-            )}
-            {item.tooltip}
-          </>
-        ) : (
-          item.tooltip
-        );
-
-      return (
-        <div
-          key={item.id}
-          data-testid={item.testId}
-          className={cn(resourceRowClassName, itemAnimationClass)}
-        >
-          <TooltipWrapper
-            tooltip={tooltipContent}
-            tooltipId={item.id}
-            disabled
-            tooltipContentClassName="max-w-xs"
-            onMouseEnter={() => handleTooltipHover(item.id)}
-            onMouseLeave={() => handleTooltipLeave(item.id)}
-            className="min-w-0"
-          >
-            {labelContent}
-          </TooltipWrapper>
-          <span className={cn(valueCellClassName, "shrink-0")}>
-            {displayValue}
-          </span>
-        </div>
-      );
-    }
-
     // If this item has effects, wrap it in a tooltip with item effects
     if (
       hasEffect &&
