@@ -93,11 +93,11 @@ const EFFECT_TOOLTIP_SECTIONS = new Set<SidePanelSectionId>([
 
 /** Shared layout for resource name + amount + production delta / change hint. */
 const RESOURCE_ROW_GRID_CLASS =
-  "grid w-fit max-w-full pr-1 grid-cols-[5rem_4rem_2.8rem] items-baseline gap-x-1";
+  "grid w-fit max-w-full pr-1 grid-cols-[5rem_4rem_2.5rem] items-baseline gap-x-1";
 const RESOURCE_ROW_TEXT_CLASS = "text-xs leading-none";
 /** Third column: production rate and change popup share one right-aligned slot. */
 const RESOURCE_DELTA_SLOT_CLASS =
-  "block w-full min-w-[2.8rem] text-right font-mono tabular-nums whitespace-nowrap";
+  "block w-full min-w-[2.5rem] text-right font-mono tabular-nums whitespace-nowrap";
 
 /** Food/wood at zero while villagers remain — blink red in the resources panel. */
 const CRITICAL_ZERO_RESOURCES = new Set(["food", "wood"]);
