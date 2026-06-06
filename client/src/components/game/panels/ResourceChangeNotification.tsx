@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useGameStore } from "@/game/state";
+import { abbreviateNumber } from "@/lib/utils";
 import type { GameState } from "@shared/schema";
 import {
   getMaxBombLimit,
@@ -15,35 +16,6 @@ interface ResourceChange {
   amount: number;
   timestamp: number;
 }
-
-// Helper function to abbreviate large numbers
-const abbreviateNumber = (num: number): string => {
-  const absNum = Math.abs(num);
-  const sign = num < 0 ? "-" : "";
-
-  if (absNum >= 1000000000) {
-    return (
-      sign +
-      (absNum / 1000000000).toFixed(1).replace(/\.0$/, "").replace(".", "'") +
-      "B"
-    );
-  }
-  if (absNum >= 1000000) {
-    return (
-      sign +
-      (absNum / 1000000).toFixed(1).replace(/\.0$/, "").replace(".", "'") +
-      "M"
-    );
-  }
-  if (absNum >= 1000) {
-    return (
-      sign +
-      (absNum / 1000).toFixed(1).replace(/\.0$/, "").replace(".", "'") +
-      "K"
-    );
-  }
-  return num.toString();
-};
 
 interface ResourceChangeNotificationProps {
   resource: string;

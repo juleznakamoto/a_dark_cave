@@ -10,10 +10,7 @@ import {
 import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
 import LanguageSelector from "./LanguageSelector";
 import { useState, useEffect } from "react";
-import {
-  hasAnyShopPurchase,
-  isTraderFooterShopVisible,
-} from "@/game/stateHelpers";
+import { hasAnyShopPurchase } from "@/game/stateHelpers";
 import { useTranslation } from "react-i18next";
 import { tWithFallback } from "@/i18n/resolveGameText";
 
@@ -42,14 +39,11 @@ export default function GameFooter() {
     setMusicMuted,
     setSfxMuted,
     cruelMode,
-    devMode,
     idleModeDialog,
     playTime,
     setFullGamePurchaseDialogOpen,
     fullGamePurchaseDialogOpen,
     BTP,
-    story,
-    traderDialogOpens,
     hasMadeNonFreePurchase,
     activatedPurchases,
   } = useGameStore();
@@ -81,14 +75,6 @@ export default function GameFooter() {
 
   // Check if gameplay time is less than 30 minutes
   const isEarlyGameplay = playTime < 30 * 60 * 1000; // 30 minutes in milliseconds
-  const traderShopUnlocked = isTraderFooterShopVisible({
-    story,
-    traderDialogOpens,
-    cruelMode,
-    devMode,
-    hasMadeNonFreePurchase,
-    activatedPurchases,
-  });
   const traderFooterFullOpacity =
     cruelMode ||
     hasAnyShopPurchase({ hasMadeNonFreePurchase, activatedPurchases }) ||
@@ -190,22 +176,20 @@ export default function GameFooter() {
                 {t("footer.fullGame")}
               </Button>
             ) : null}
-            {traderShopUnlocked && (devMode || BTP !== 1) ? (
-              <HoverCalloutTooltip
-                label={t("footer.openShop")}
-                side="top"
+            <HoverCalloutTooltip
+              label={t("footer.openShop")}
+              side="top"
+            >
+              <Button
+                variant="ghost"
+                size="xs"
+                onClick={() => setShopDialogOpen(true)}
+                aria-label={t("footer.openShop")}
+                className={`${FOOTER_CONTROL_BTN} ${traderFooterFullOpacity ? "opacity-100" : "opacity-60"} hover:!opacity-100`}
               >
-                <Button
-                  variant="ghost"
-                  size="xs"
-                  onClick={() => setShopDialogOpen(true)}
-                  aria-label={t("footer.openShop")}
-                  className={`${FOOTER_CONTROL_BTN} ${traderFooterFullOpacity ? "opacity-100" : "opacity-60"} hover:!opacity-100`}
-                >
-                  {t("footer.trader")}
-                </Button>
-              </HoverCalloutTooltip>
-            ) : null}
+                {t("footer.trader")}
+              </Button>
+            </HoverCalloutTooltip>
             <HoverCalloutTooltip
               label={t("footer.supportGame")}
               side="top"

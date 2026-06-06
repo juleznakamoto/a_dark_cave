@@ -120,7 +120,7 @@ interface SidePanelSectionProps {
   activeTab?: string;
 }
 import { logger } from "@/lib/logger";
-import { formatNumber } from "@/lib/utils";
+import { abbreviateNumber, formatNumber } from "@/lib/utils";
 
 export default function SidePanelSection({
   title,

@@ -48,6 +48,35 @@ export function formatSignedNumber(value: number): string {
   return value > 0 ? `+${formatted}` : formatted;
 }
 
+/** Abbreviate large magnitudes for compact UI (e.g. side-panel change column). */
+export function abbreviateNumber(num: number): string {
+  const absNum = Math.abs(num);
+  const sign = num < 0 ? "-" : "";
+
+  if (absNum >= 1_000_000_000) {
+    return (
+      sign +
+      (absNum / 1_000_000_000).toFixed(1).replace(/\.0$/, "").replace(".", THOUSANDS_SEPARATOR) +
+      "B"
+    );
+  }
+  if (absNum >= 1_000_000) {
+    return (
+      sign +
+      (absNum / 1_000_000).toFixed(1).replace(/\.0$/, "").replace(".", THOUSANDS_SEPARATOR) +
+      "M"
+    );
+  }
+  if (absNum >= 1000) {
+    return (
+      sign +
+      (absNum / 1000).toFixed(1).replace(/\.0$/, "").replace(".", THOUSANDS_SEPARATOR) +
+      "K"
+    );
+  }
+  return num.toString();
+}
+
 export function formatSaveTimestamp(): string {
   const now = new Date();
   return now.toLocaleString(getIntlLocale(), {
