@@ -511,7 +511,7 @@ export function GameHeaderControls() {
         onClick={handleDiscovery}
         forceShowTooltip={isPaused || sleepDialogOpen}
         tooltipSide="bottom"
-        className="h-6 w-6"
+        className={HEADER_ICON_BTN}
       />
       <DropdownMenu
         open={accountDropdownOpen}

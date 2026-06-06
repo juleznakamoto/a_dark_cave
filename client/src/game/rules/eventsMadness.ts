@@ -15,7 +15,6 @@ export const madnessEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       getTotalMadness(state) >= 10 && !state.events.whisperingVoices,
     timeProbability: 30,
-
     priority: 2,
     repeatable: false,
     effect: (state: GameState) => ({

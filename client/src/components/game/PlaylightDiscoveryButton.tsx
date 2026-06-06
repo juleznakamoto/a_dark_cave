@@ -90,18 +90,18 @@ export default function PlaylightDiscoveryButton({
         onClick={onClick}
         aria-label={t("playlight.discoveryAria")}
         className={cn(
-          "playlight-discovery-btn group relative h-7 w-7 shrink-0 overflow-visible p-0",
+          "playlight-discovery-btn group relative shrink-0 overflow-visible p-0 h-7 w-7 flex items-center justify-center",
           className,
         )}
       >
         <span
-          className="flex h-full w-full items-center justify-center opacity-60 transition-opacity duration-300 group-hover:opacity-100"
+          className="flex h-full w-full items-end justify-center opacity-60 transition-opacity duration-300 group-hover:opacity-100"
           aria-hidden
         >
           <img
             src="/flashlight.png"
             alt=""
-            className="h-full w-full rounded-md object-contain invert transition-[filter] duration-300 group-hover:invert-0"
+            className="h-full w-full rounded-md object-contain object-bottom invert transition-[filter] duration-300 group-hover:invert-0"
           />
         </span>
         {showNotificationDot && (
