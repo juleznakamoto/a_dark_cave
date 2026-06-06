@@ -5,9 +5,11 @@ import { MotionValue, motion, useSpring, useTransform } from "framer-motion";
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 
-const fontSize = 14;
-const padding = 4;
-const height = fontSize + padding;
+export const ANIMATED_COUNTER_FONT_SIZE = 14;
+export const ANIMATED_COUNTER_HEIGHT = 18;
+
+const fontSize = ANIMATED_COUNTER_FONT_SIZE;
+const height = ANIMATED_COUNTER_HEIGHT;
 
 export function AnimatedCounter({
   value,
@@ -30,18 +32,25 @@ export function AnimatedCounter({
   return (
     <div
       translate="no"
+      style={{ height, fontSize, lineHeight: `${height}px` }}
       className={cn(
-        "notranslate flex items-center leading-none tabular-nums",
+        "notranslate flex items-center tabular-nums",
         className,
       )}
     >
-      <div style={{ fontSize }} className="flex overflow-hidden">
+      <div
+        style={{ height, fontSize, lineHeight: `${height}px` }}
+        className="flex overflow-hidden"
+      >
         {digits.map((place) => (
           <Digit key={place} place={place} value={value} />
         ))}
       </div>
       {suffix != null && (
-        <span style={{ fontSize }} className="leading-none">
+        <span
+          style={{ fontSize, lineHeight: `${height}px` }}
+          className="inline-block"
+        >
           {suffix}
         </span>
       )}

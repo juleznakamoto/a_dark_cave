@@ -45,7 +45,10 @@ import {
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { AnimatedCounter } from "@/components/ui/animated-counter";
+import {
+  ANIMATED_COUNTER_HEIGHT,
+  AnimatedCounter,
+} from "@/components/ui/animated-counter";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
 import { getRevealedEffectsForActionTooltip } from "@/game/rules/insightRevealTooltip";
@@ -782,7 +785,13 @@ export default function VillagePanel() {
 
     return (
       <div key={jobId} className="flex items-center justify-between">
-        <div className="flex h-5 items-center gap-0.5">
+        <div
+          className="grid shrink-0 items-center gap-x-0.5"
+          style={{
+            height: ANIMATED_COUNTER_HEIGHT,
+            gridTemplateColumns: `${ANIMATED_COUNTER_HEIGHT}px 3.5rem ${ANIMATED_COUNTER_HEIGHT}px`,
+          }}
+        >
           <Button
             onMouseDown={() =>
               currentCount > 0 &&
@@ -804,17 +813,19 @@ export default function VillagePanel() {
             disabled={currentCount === 0}
             variant="ghost"
             size="xs"
-            className="h-5 w-5 shrink-0 p-0 text-sm font-normal leading-none no-hover"
+            className="size-[18px] shrink-0 p-0 text-[14px] font-normal leading-[18px] no-hover"
             style={{ touchAction: "manipulation" }}
             button_id={`unassign-${jobId}`}
           >
             -
           </Button>
-          <AnimatedCounter
-            value={currentCount}
-            suffix={showCap ? `/${cap}` : undefined}
-            className={atCap ? "text-muted-foreground" : undefined}
-          />
+          <div className="flex items-center justify-center">
+            <AnimatedCounter
+              value={currentCount}
+              suffix={showCap ? `/${cap}` : undefined}
+              className={atCap ? "text-muted-foreground" : undefined}
+            />
+          </div>
           <Button
             onMouseDown={() =>
               canAssignMore && startHold(() => assignVillager(jobId), false)
@@ -835,7 +846,7 @@ export default function VillagePanel() {
             disabled={!canAssignMore}
             variant="ghost"
             size="xs"
-            className="h-5 w-5 shrink-0 p-0 text-sm font-normal leading-none no-hover"
+            className="size-[18px] shrink-0 p-0 text-[14px] font-normal leading-[18px] no-hover"
             style={{ touchAction: "manipulation" }}
             button_id={`assign-${jobId}`}
           >
