@@ -901,39 +901,29 @@ export default function SidePanelSection({
         <div
           key={item.id}
           data-testid={item.testId}
-          className={`mr-1 flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
-            ? "text-green-400"
-            : isDecreaseAnimated
-              ? "text-red-400"
-              : isMaxAnimated
-                ? "text-yellow-400"
-                : ""
-            }`}
+          className={cn(
+            "mr-1 min-w-0 transition-all duration-300",
+            isIconCenteredLabelSection && showItemValue
+              ? STAT_ROW_GRID_CLASS
+              : "flex leading-tight justify-between items-center gap-x-1",
+            itemAnimationClass,
+          )}
         >
-          <TooltipWrapper
-            tooltip={tooltipContent}
-            tooltipId={item.id}
-            disabled
-            tooltipContentClassName="max-w-xs"
-            onMouseEnter={() => handleTooltipHover(item.id)}
-            onMouseLeave={() => handleTooltipLeave(item.id)}
-            className={sidePanelTooltipTriggerClass}
-          >
-            {labelContent}
-          </TooltipWrapper>
-          {showItemValue && (
-            <span
-              className={`font-mono ${isAnimated
-                ? "text-green-800 font-bold"
-                : isDecreaseAnimated
-                  ? "text-red-800 font-bold"
-                  : isMaxAnimated
-                    ? "text-yellow-800 font-bold"
-                    : isMadness
-                      ? madnessClasses
-                      : ""
-                }`}
+          <div className="min-w-0">
+            <TooltipWrapper
+              tooltip={tooltipContent}
+              tooltipId={item.id}
+              disabled
+              tooltipContentClassName="max-w-xs"
+              onMouseEnter={() => handleTooltipHover(item.id)}
+              onMouseLeave={() => handleTooltipLeave(item.id)}
+              className={sidePanelTooltipTriggerClass}
             >
+              {labelContent}
+            </TooltipWrapper>
+          </div>
+          {showItemValue && (
+            <span className={cn(valueCellClassName, "shrink-0")}>
               {displayValue}
             </span>
           )}
