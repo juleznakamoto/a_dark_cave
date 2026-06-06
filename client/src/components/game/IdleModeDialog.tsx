@@ -21,6 +21,10 @@ import { BOMB_RESOURCES, capResourceToLimit } from "@/game/resourceLimits";
 import type { GameState } from "@shared/schema";
 import { useTranslation } from "react-i18next";
 import { getResourceName } from "@/i18n/resolveGameText";
+import {
+  SLEEP_LENGTH_UPGRADES,
+  SLEEP_INTENSITY_UPGRADES,
+} from "@/game/rules/skillUpgrades";
 
 /** Match live play: limited resources cannot exceed storage cap during sleep simulation. */
 function clampSimulatedResourcesToStorage(
@@ -33,25 +37,6 @@ function clampSimulatedResourcesToStorage(
     simulated[key] = capResourceToLimit(key, Math.max(0, v), gameState);
   }
 }
-
-// Sleep upgrade configurations
-const SLEEP_LENGTH_UPGRADES = [
-  { level: 0, hours: 2 },
-  { level: 1, hours: 4 },
-  { level: 2, hours: 6 },
-  { level: 3, hours: 10 },
-  { level: 4, hours: 16 },
-  { level: 5, hours: 24 },
-];
-
-const SLEEP_INTENSITY_UPGRADES = [
-  { level: 0, percentage: 10 },
-  { level: 1, percentage: 12.5 },
-  { level: 2, percentage: 15 },
-  { level: 3, percentage: 17.5 },
-  { level: 4, percentage: 20 },
-  { level: 5, percentage: 25 },
-];
 
 // Simulate production during sleep - no temporary bonuses (feast, curse, etc.) are active
 const SLEEP_PRODUCTION_OPTIONS = { excludeTemporaryBonuses: true };

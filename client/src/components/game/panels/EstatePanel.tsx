@@ -108,6 +108,8 @@ function SkillUpgradeRow({
 
 const SLEEP_LENGTH_TOOLTIP_ID = "estate-sleep-length";
 const SLEEP_INTENSITY_TOOLTIP_ID = "estate-sleep-intensity";
+const MAX_SLEEP_LENGTH_LEVEL = SLEEP_LENGTH_UPGRADES.length - 1;
+const MAX_SLEEP_INTENSITY_LEVEL = SLEEP_INTENSITY_UPGRADES.length - 1;
 
 export default function EstatePanel() {
   const { t } = useTranslation("ui");
@@ -280,7 +282,11 @@ export default function EstatePanel() {
   ) => {
     useGameStore.setState((state) => {
       const currentLevel = state.sleepUpgrades[levelKey];
-      if (currentLevel >= 5) return state;
+      const maxLevel =
+        levelKey === "lengthLevel"
+          ? MAX_SLEEP_LENGTH_LEVEL
+          : MAX_SLEEP_INTENSITY_LEVEL;
+      if (currentLevel >= maxLevel) return state;
 
       const nextUpgrade = upgrades[currentLevel + 1];
       const currency = nextUpgrade.currency as "gold" | "silver";
@@ -367,7 +373,7 @@ export default function EstatePanel() {
   const nextLengthUpgrade =
     SLEEP_LENGTH_UPGRADES[sleepUpgrades.lengthLevel + 1];
   const canUpgradeLength =
-    sleepUpgrades.lengthLevel < 5 &&
+    sleepUpgrades.lengthLevel < MAX_SLEEP_LENGTH_LEVEL &&
     resources.gold >= (nextLengthUpgrade?.cost || 0);
 
   const currentIntensityUpgrade =
@@ -375,7 +381,7 @@ export default function EstatePanel() {
   const nextIntensityUpgrade =
     SLEEP_INTENSITY_UPGRADES[sleepUpgrades.intensityLevel + 1];
   const canUpgradeIntensity =
-    sleepUpgrades.intensityLevel < 5 &&
+    sleepUpgrades.intensityLevel < MAX_SLEEP_INTENSITY_LEVEL &&
     resources.gold >= (nextIntensityUpgrade?.cost || 0);
 
   return (
@@ -519,7 +525,7 @@ export default function EstatePanel() {
               >
                 <span>{t("estate.sleepLength")}</span>
               </TooltipWrapper>
-              {sleepUpgrades.lengthLevel < 5 ? (
+              {sleepUpgrades.lengthLevel < MAX_SLEEP_LENGTH_LEVEL ? (
                 <TooltipWrapper
                   tooltip={
                     <div className="text-xs whitespace-nowrap">
@@ -560,9 +566,9 @@ export default function EstatePanel() {
               ) : null}
             </div>
             <Progress
-              value={(sleepUpgrades.lengthLevel / 5) * 100}
+              value={(sleepUpgrades.lengthLevel / MAX_SLEEP_LENGTH_LEVEL) * 100}
               className="h-2"
-              segments={5}
+              segments={MAX_SLEEP_LENGTH_LEVEL}
               growAnimationMs={ESTATE_BAR_GROW_ANIMATION_MS}
             />
             <div className="flex justify-between text-xs text-muted-foreground">
@@ -592,7 +598,7 @@ export default function EstatePanel() {
               >
                 <span>{t("estate.sleepIntensity")}</span>
               </TooltipWrapper>
-              {sleepUpgrades.intensityLevel < 5 ? (
+              {sleepUpgrades.intensityLevel < MAX_SLEEP_INTENSITY_LEVEL ? (
                 <TooltipWrapper
                   tooltip={
                     <div className="text-xs whitespace-nowrap">
@@ -633,9 +639,9 @@ export default function EstatePanel() {
               ) : null}
             </div>
             <Progress
-              value={(sleepUpgrades.intensityLevel / 5) * 100}
+              value={(sleepUpgrades.intensityLevel / MAX_SLEEP_INTENSITY_LEVEL) * 100}
               className="h-2"
-              segments={5}
+              segments={MAX_SLEEP_INTENSITY_LEVEL}
               growAnimationMs={ESTATE_BAR_GROW_ANIMATION_MS}
             />
             <div className="flex justify-between text-xs text-muted-foreground">

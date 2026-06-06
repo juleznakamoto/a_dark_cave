@@ -155,18 +155,24 @@ export const SLEEP_LENGTH_UPGRADES = [
   { level: 0, hours: 2, cost: 0, currency: null },
   { level: 1, hours: 4, cost: 250, currency: "gold" },
   { level: 2, hours: 6, cost: 500, currency: "gold" },
-  { level: 3, hours: 8, cost: 1000, currency: "gold" },
-  { level: 4, hours: 10, cost: 1500, currency: "gold" },
-  { level: 5, hours: 12, cost: 2000, currency: "gold" },
+  { level: 3, hours: 8, cost: 750, currency: "gold" },
+  { level: 4, hours: 10, cost: 1000, currency: "gold" },
+  { level: 5, hours: 12, cost: 1250, currency: "gold" },
+  { level: 6, hours: 14, cost: 1500, currency: "gold" },
+  { level: 7, hours: 16, cost: 1750, currency: "gold" },
+  { level: 8, hours: 18, cost: 2000, currency: "gold" },
 ];
 
 export const SLEEP_INTENSITY_UPGRADES = [
   { level: 0, percentage: 10, cost: 0, currency: null },
-  { level: 1, percentage: 12.5, cost: 250, currency: "gold" },
-  { level: 2, percentage: 15, cost: 500, currency: "gold" },
-  { level: 3, percentage: 17.5, cost: 1000, currency: "gold" },
-  { level: 4, percentage: 20, cost: 1500, currency: "gold" },
-  { level: 5, percentage: 25, cost: 2000, currency: "gold" },
+  { level: 1, percentage: 15, cost: 250, currency: "gold" },
+  { level: 2, percentage: 20, cost: 500, currency: "gold" },
+  { level: 3, percentage: 25, cost: 750, currency: "gold" },
+  { level: 4, percentage: 30, cost: 1000, currency: "gold" },
+  { level: 5, percentage: 35, cost: 1250, currency: "gold" },
+  { level: 6, percentage: 40, cost: 1500, currency: "gold" },
+  { level: 7, percentage: 45, cost: 1750, currency: "gold" },
+  { level: 8, percentage: 50, cost: 2000, currency: "gold" },
 ];
 
 /** Food consumed per 15s production cycle for each action assigned to the Disgraced Prior. */
