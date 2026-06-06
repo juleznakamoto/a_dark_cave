@@ -54,8 +54,17 @@
     "3-emberBombs": {
       "label": "Ember Bombs Crafter"
     },
+    "3-veinfireElixir": {
+      "label": "Veinfire Elixir Maker"
+    },
     "4-feedFire": {
       "label": "Fire Feeder"
+    },
+    "4-investor": {
+      "label": "Investor"
+    },
+    "4-mentalClarity": {
+      "label": "Mental Clarity"
     },
     "4-merchantPurchases": {
       "label": "Deal Maker"
@@ -76,6 +85,9 @@
     },
     "0-ironMiner": {
       "label": "Gather Iron"
+    },
+    "0-steelForger": {
+      "label": "Forge Steel"
     },
     "0-stoneMiner": {
       "label": "Gather Stone"

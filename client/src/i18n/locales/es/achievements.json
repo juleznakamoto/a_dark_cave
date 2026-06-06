@@ -54,8 +54,17 @@
     "3-emberBombs": {
       "label": "Artesano de bombas de brasas" //ok
     },
+    "3-veinfireElixir": {
+      "label": "Artesano de elixir de fuego venal"
+    },
     "4-feedFire": {
       "label": "Alimentador del fuego" //ok
+    },
+    "4-investor": {
+      "label": "Inversor"
+    },
+    "4-mentalClarity": {
+      "label": "Claridad mental"
     },
     "4-merchantPurchases": {
       "label": "Negociador"
@@ -76,6 +85,9 @@
     },
     "0-ironMiner": {
       "label": "Reunir hierro"
+    },
+    "0-steelForger": {
+      "label": "Forjar acero"
     },
     "0-stoneMiner": {
       "label": "Reunir piedra"

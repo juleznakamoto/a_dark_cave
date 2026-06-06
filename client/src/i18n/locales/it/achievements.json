@@ -54,8 +54,17 @@
     "3-emberBombs": {
       "label": "Fabbricante di Bombe di Brace"
     },
+    "3-veinfireElixir": {
+      "label": "Fabbricante di Elisir di Venafuoco"
+    },
     "4-feedFire": {
       "label": "Guardiano del Fuoco"
+    },
+    "4-investor": {
+      "label": "Investitore"
+    },
+    "4-mentalClarity": {
+      "label": "Lucidità Mentale"
     },
     "4-merchantPurchases": {
       "label": "Affarista"
@@ -76,6 +85,9 @@
     },
     "0-ironMiner": {
       "label": "Raccogli Ferro"
+    },
+    "0-steelForger": {
+      "label": "Forgia Acciaio"
     },
     "0-stoneMiner": {
       "label": "Raccogli Pietra"

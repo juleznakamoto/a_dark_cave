@@ -54,8 +54,17 @@
     "3-emberBombs": {
       "label": "Мастер угольных бомб"
     },
+    "3-veinfireElixir": {
+      "label": "Мастер эликсиров жилового огня"
+    },
     "4-feedFire": {
       "label": "Хранитель огня"
+    },
+    "4-investor": {
+      "label": "Инвестор"
+    },
+    "4-mentalClarity": {
+      "label": "Ясность ума"
     },
     "4-merchantPurchases": {
       "label": "Умелый торговец"
@@ -76,6 +85,9 @@
     },
     "0-ironMiner": {
       "label": "Собирать железо"  //x1.4
+    },
+    "0-steelForger": {
+      "label": "Ковать сталь"
     },
     "0-stoneMiner": {
       "label": "Собирать камень"  //x1.3

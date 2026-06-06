@@ -25,6 +25,8 @@ function createClarityElixirCaveFoundEvent(
             seen: {
               ...state.story.seen,
               [seenKey]: true,
+              clarityElixirsUsed:
+                (Number(state.story?.seen?.clarityElixirsUsed) || 0) + 1,
             },
           },
           _logMessageKey: "outcome0",

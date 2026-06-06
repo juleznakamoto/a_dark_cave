@@ -54,8 +54,17 @@
     "3-emberBombs": {
       "label": "余烬炸弹工匠"
     },
+    "3-veinfireElixir": {
+      "label": "脉火灵药工匠"
+    },
     "4-feedFire": {
       "label": "添火者"
+    },
+    "4-investor": {
+      "label": "投资者"
+    },
+    "4-mentalClarity": {
+      "label": "心智清明"
     },
     "4-merchantPurchases": {
       "label": "交易好手"
@@ -76,6 +85,9 @@
     },
     "0-ironMiner": {
       "label": "采集铁矿"
+    },
+    "0-steelForger": {
+      "label": "锻造钢铁"
     },
     "0-stoneMiner": {
       "label": "采集石料"

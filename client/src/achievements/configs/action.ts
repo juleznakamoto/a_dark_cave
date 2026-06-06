@@ -42,7 +42,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "0-craftTorches",
         maxCount: 10,
         label: "Torch Crafter",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.["craftTorches"]?.level || 0;
           return count === 1 ? 1.3 : count;
@@ -140,7 +140,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "2-craftBoneTotems",
         maxCount: 10,
         label: "Bone Totem Crafter",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.["craftBoneTotems"]?.level || 0;
           return count === 1 ? 1.8 : count;
@@ -150,7 +150,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "2-craftLeatherTotems",
         maxCount: 10,
         label: "Leather Totem Crafter",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) => {
           const count =
             state.buttonUpgrades?.["craftLeatherTotems"]?.level || 0;
@@ -158,13 +158,13 @@ export const actionChartConfig: AchievementChartConfig = {
         },
       },
     ],
-    // Fourth ring: Bomb Crafting
+    // Fourth ring: Bomb & Elixir Crafting
     [
       {
         segmentId: "3-emberBombs",
         maxCount: 20,
         label: "Ember Bombs Crafter",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) =>
           Math.min(Number(state.story?.seen?.emberBombsCrafted) || 0, 20),
       },
@@ -172,9 +172,17 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "3-ashfireBombs",
         maxCount: 20,
         label: "Ashfire Bombs Crafter",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) =>
           Math.min(Number(state.story?.seen?.ashfireBombsCrafted) || 0, 20),
+      },
+      {
+        segmentId: "3-veinfireElixir",
+        maxCount: 10,
+        label: "Veinfire Elixir Maker",
+        rewards: { silver: 250 },
+        getCount: (state: GameState) =>
+          Math.min(Number(state.story?.seen?.veinfireElixirsCrafted) || 0, 10),
       },
     ],
     // Fifth ring: Merchant Purchases
@@ -217,6 +225,14 @@ export const actionChartConfig: AchievementChartConfig = {
         },
       },
       {
+        segmentId: "4-mentalClarity",
+        maxCount: 5,
+        label: "Mental Clarity",
+        rewards: { silver: 250 },
+        getCount: (state: GameState) =>
+          Math.min(Number(state.story?.seen?.clarityElixirsUsed) || 0, 5),
+      },
+      {
         segmentId: "4-wellRested",
         maxCount: 20,
         label: "Heavy Sleeper",
@@ -239,6 +255,15 @@ export const actionChartConfig: AchievementChartConfig = {
         reward: 500,
         getCount: (state: GameState) =>
           Math.min(Number(state.solsticeState?.activationsCount) || 0, 10),
+      },
+      {
+        segmentId: "4-investor",
+        maxCount: 2500,
+        label: "Investor",
+        rewards: { silver: 250 },
+        segments: 10,
+        getCount: (state: GameState) =>
+          Math.min(Number(state.story?.seen?.totalGoldInvested) || 0, 2500),
       },
     ],
   ],

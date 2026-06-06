@@ -3501,6 +3501,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...s.investmentHallState,
         active: rolled.active,
       },
+      story: {
+        ...s.story,
+        seen: {
+          ...s.story.seen,
+          totalGoldInvested:
+            (Number(s.story?.seen?.totalGoldInvested) || 0) + amountGold,
+        },
+      },
     }));
     return { ok: true };
   },

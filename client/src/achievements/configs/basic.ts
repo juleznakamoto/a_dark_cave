@@ -66,6 +66,15 @@ export const basicChartConfig: AchievementChartConfig = {
         segments: 10,
       },
       {
+        segmentId: "0-steelForger",
+        maxCount: 250,
+        label: "Forge Steel",
+        rewards: { silver: 100 },
+        getCount: (state: GameState) =>
+          Number(state.story?.seen?.steelForgedTotal) || 0,
+        segments: 10,
+      },
+      {
         segmentId: "0-hunter",
         maxCount: 500,
         label: "Hunter",

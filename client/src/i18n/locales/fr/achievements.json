@@ -54,8 +54,17 @@
     "3-emberBombs": {
       "label": "Artisan de bombes de braise"
     },
+    "3-veinfireElixir": {
+      "label": "Artisan d'élixir de feu-veine"
+    },
     "4-feedFire": {
       "label": "Gardien du feu"
+    },
+    "4-investor": {
+      "label": "Investisseur"
+    },
+    "4-mentalClarity": {
+      "label": "Clarté mentale"
     },
     "4-merchantPurchases": {
       "label": "Marchandeur"
@@ -76,6 +85,9 @@
     },
     "0-ironMiner": {
       "label": "Récolter du fer"  //x1.4
+    },
+    "0-steelForger": {
+      "label": "Forger de l'acier"
     },
     "0-stoneMiner": {
       "label": "Récolter de la pierre"  //x1.8

@@ -54,8 +54,17 @@
     "3-emberBombs": {
       "label": "Glutbombenmacher"
     },
+    "3-veinfireElixir": {
+      "label": "Aderfeuer-Elixier-Brauer"
+    },
     "4-feedFire": {
       "label": "Feuerschürer"
+    },
+    "4-investor": {
+      "label": "Investor"
+    },
+    "4-mentalClarity": {
+      "label": "Geistige Klarheit"
     },
     "4-merchantPurchases": {
       "label": "Handelspartner" //ok
@@ -76,6 +85,9 @@
     },
     "0-ironMiner": {
       "label": "Eisen sammeln"
+    },
+    "0-steelForger": {
+      "label": "Stahl schmieden"
     },
     "0-stoneMiner": {
       "label": "Stein sammeln"

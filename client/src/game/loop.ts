@@ -966,6 +966,8 @@ function handleMinerProduction() {
   // and accumulate the net deltas so they can all be applied in one store write at the end.
   const availableResources = { ...state.resources };
   const deltas: Record<string, number> = {};
+  // Accumulate steel produced by steel forgers this tick for the "Forge Steel" achievement.
+  let steelForgedThisTick = 0;
 
   // Process each job sequentially
   allProduction.forEach(({ job, production }) => {
@@ -993,11 +995,28 @@ function handleMinerProduction() {
           ] || 0) + prod.totalAmount;
 
         addDelta(deltas, prod.resource, prod.totalAmount);
+
+        if (job === "steel_forger" && prod.resource === "steel" && prod.totalAmount > 0) {
+          steelForgedThisTick += prod.totalAmount;
+        }
       });
     }
   });
 
   commitResourceDeltas(deltas);
+
+  if (steelForgedThisTick > 0) {
+    useGameStore.setState((s) => ({
+      story: {
+        ...s.story,
+        seen: {
+          ...s.story.seen,
+          steelForgedTotal:
+            (Number(s.story?.seen?.steelForgedTotal) || 0) + steelForgedThisTick,
+        },
+      },
+    }));
+  }
 }
 
 function handlePopulationSurvival() {

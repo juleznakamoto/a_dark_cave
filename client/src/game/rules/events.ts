@@ -562,6 +562,8 @@ export class EventManager {
               seen: {
                 ...state.story.seen,
                 clarityElixirPurchases: currentPurchases + 1,
+                clarityElixirsUsed:
+                  (Number(state.story?.seen?.clarityElixirsUsed) || 0) + 1,
               },
             };
             stateChanges._logMessageI18nKey =
