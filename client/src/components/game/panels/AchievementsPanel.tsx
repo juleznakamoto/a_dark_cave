@@ -167,6 +167,7 @@ function TabTriggerWithTooltipWhenLocked({
   disabled,
   lockedTooltip,
   chartUnavailable,
+  centerSymbolClassName,
 }: {
   value: string;
   config: AchievementChartConfig;
@@ -174,6 +175,7 @@ function TabTriggerWithTooltipWhenLocked({
   disabled: boolean;
   lockedTooltip: string;
   chartUnavailable: string;
+  centerSymbolClassName?: string;
 }) {
   const trigger = (
     <TabsTrigger
@@ -186,7 +188,12 @@ function TabTriggerWithTooltipWhenLocked({
       }
     >
       <ChartErrorBoundary unavailableLabel={chartUnavailable}>
-        <AchievementMiniRingChart config={config} isActive={isActive} hideProgress={disabled} />
+        <AchievementMiniRingChart
+          config={config}
+          isActive={isActive}
+          hideProgress={disabled}
+          centerSymbolClassName={centerSymbolClassName}
+        />
       </ChartErrorBoundary>
     </TabsTrigger>
   );
@@ -239,6 +246,7 @@ export default function AchievementsPanel() {
             disabled={!bookOfTrials}
             lockedTooltip={lockedTooltip}
             chartUnavailable={chartUnavailable}
+            centerSymbolClassName={hasBasicTab ? "pt-1" : undefined}
           />
           <TabTriggerWithTooltipWhenLocked
             value="item"
@@ -247,6 +255,7 @@ export default function AchievementsPanel() {
             disabled={!bookOfTrials}
             lockedTooltip={lockedTooltip}
             chartUnavailable={chartUnavailable}
+            centerSymbolClassName="pt-1"
           />
           <TabTriggerWithTooltipWhenLocked
             value="action"
@@ -255,6 +264,7 @@ export default function AchievementsPanel() {
             disabled={!bookOfTrials}
             lockedTooltip={lockedTooltip}
             chartUnavailable={chartUnavailable}
+            centerSymbolClassName="pt-1"
           />
         </TabsList>
         {hasBasicTab && (

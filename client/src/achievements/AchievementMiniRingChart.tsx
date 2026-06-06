@@ -1,6 +1,7 @@
 import type { GameState } from "@shared/schema";
 import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { cn } from "@/lib/utils";
 import { tailwindToHex } from "@/lib/tailwindColors";
 import type { AchievementChartConfig } from "./achievementTypes";
 import {
@@ -15,6 +16,7 @@ interface Props {
   isActive?: boolean;
   /** When true, hide progress (show empty rings). Used for locked tabs. */
   hideProgress?: boolean;
+  centerSymbolClassName?: string;
 }
 
 /** Compact label-free ring chart for tab triggers. */
@@ -22,6 +24,7 @@ export default function AchievementMiniRingChart({
   config,
   isActive = false,
   hideProgress = false,
+  centerSymbolClassName,
 }: Props) {
   const state = useGameStore.getState();
   void useGameStore(
@@ -137,7 +140,10 @@ export default function AchievementMiniRingChart({
         </PieChart>
       </ResponsiveContainer>
       <span
-        className="absolute inset-0 flex items-center justify-center font-noto-symbols-2 text-foreground text-[10px] font-medium"
+        className={cn(
+          "absolute inset-0 flex items-center justify-center font-noto-symbols-2 text-foreground text-[10px] font-medium",
+          centerSymbolClassName,
+        )}
         style={{ opacity: isActive ? 1 : 0.5 }}
       >
         {config.centerSymbol}
