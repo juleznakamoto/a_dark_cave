@@ -1021,11 +1021,11 @@ export default function GameContainer() {
                 <>
                   {/* Standard button design */}
                   <div
-                    className={`flex w-full max-w-full flex-nowrap items-center gap-x-2 overflow-hidden md:gap-x-3${traderUnlocked ? " pr-[4.5rem]" : " pr-[3px]"}`}
+                    className={`flex w-full max-w-full flex-nowrap items-center gap-x-2 overflow-hidden${traderUnlocked ? " pr-[4.5rem]" : " pr-[3px]"}`}
                   >
                     <div
                       ref={tabButtonRowRef}
-                      className="inline-flex min-w-0 flex-1 flex-nowrap items-center gap-x-2 overflow-x-auto scrollbar-hide md:gap-x-3"
+                      className="inline-flex min-w-0 flex-1 flex-nowrap items-center gap-x-2 overflow-x-auto scrollbar-hide"
                     >
                       <button
                         className={`${tabButtonClass} ${
