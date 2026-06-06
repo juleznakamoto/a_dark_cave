@@ -35,33 +35,33 @@ export function TraderTabButton({
 }: TraderTabButtonProps) {
   const { t } = useTranslation();
   const iconRef = useRef<HTMLSpanElement>(null);
-  const { hoverHandlers, portal } = useCoinHoverParticles("gold", {
+  const { hoverHandlers, portal, setForcedEmit } = useCoinHoverParticles("gold", {
     particleOriginRef: iconRef,
     particleConfig: TRADER_TAB_PARTICLE_CONFIG,
     zIndex: 50,
   });
   const [isHintActive, setIsHintActive] = useState(false);
-  const onMouseEnterRef = useRef(hoverHandlers.onMouseEnter);
-  const onMouseLeaveRef = useRef(hoverHandlers.onMouseLeave);
-  onMouseEnterRef.current = hoverHandlers.onMouseEnter;
-  onMouseLeaveRef.current = hoverHandlers.onMouseLeave;
+  const setForcedEmitRef = useRef(setForcedEmit);
+  setForcedEmitRef.current = setForcedEmit;
 
   const showActiveGlow = isHintActive;
 
   useEffect(() => {
     let endTimeout: ReturnType<typeof setTimeout> | null = null;
 
+    const endHint = () => {
+      setIsHintActive(false);
+      setForcedEmitRef.current(false);
+      endTimeout = null;
+    };
+
     const startHint = () => {
       if (useGameStore.getState().shopDialogOpen) return;
 
       setIsHintActive(true);
-      onMouseEnterRef.current();
+      setForcedEmitRef.current(true);
       if (endTimeout) clearTimeout(endTimeout);
-      endTimeout = setTimeout(() => {
-        setIsHintActive(false);
-        onMouseLeaveRef.current();
-        endTimeout = null;
-      }, TRADER_TAB_HINT_DURATION_MS);
+      endTimeout = setTimeout(endHint, TRADER_TAB_HINT_DURATION_MS);
     };
 
     const intervalId = setInterval(startHint, TRADER_TAB_HINT_INTERVAL_MS);
@@ -70,7 +70,7 @@ export function TraderTabButton({
       clearInterval(intervalId);
       if (endTimeout) {
         clearTimeout(endTimeout);
-        onMouseLeaveRef.current();
+        endHint();
       }
     };
   }, []);
@@ -80,9 +80,8 @@ export function TraderTabButton({
       <button
         type="button"
         {...hoverHandlers}
-        className={`${tabButtonClass} group shrink-0 gap-1.5 pl-2 ${
-          isAnimating ? (isFadePhase ? "tab-fade-in" : "tab-blink-new") : ""
-        }`}
+        className={`${tabButtonClass} group shrink-0 gap-1.5 pl-2 ${isAnimating ? (isFadePhase ? "tab-fade-in" : "tab-blink-new") : ""
+          }`}
         onClick={onClick}
         data-testid="tab-trader"
       >
@@ -93,10 +92,10 @@ export function TraderTabButton({
             showActiveGlow
               ? cn("opacity-100", TRADER_ICON_GLOW_ACTIVE)
               : cn(
-                  "opacity-80",
-                  "group-hover:opacity-100 group-focus-visible:opacity-100",
-                  TRADER_ICON_GLOW_ACTIVE_HOVER,
-                ),
+                "opacity-80",
+                "group-hover:opacity-100 group-focus-visible:opacity-100",
+                TRADER_ICON_GLOW_ACTIVE_HOVER,
+              ),
           )}
           aria-hidden
         >

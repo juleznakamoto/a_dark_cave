@@ -49,6 +49,8 @@ export function useCoinHoverParticles(
   const [bubbles, setBubbles] = useState<BubbleWithParticles[]>([]);
   const bubbleIdCounter = useRef(0);
   const emitIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const hoverActiveRef = useRef(false);
+  const forcedEmitRef = useRef(false);
   const internalOriginRef = useRef<HTMLSpanElement | null>(null);
   const originRef = options?.particleOriginRef ?? internalOriginRef;
   const particleConfig = options?.particleConfig;
@@ -77,23 +79,51 @@ export function useCoinHoverParticles(
     }, COIN_HOVER_BUBBLE_REMOVE_DELAY_MS);
   }, [enabled, resource, originRef, particleConfig]);
 
-  const onMouseEnter = useCallback(() => {
-    if (!enabled) return;
-    spawnParticles();
-    emitIntervalRef.current = setInterval(spawnParticles, emitIntervalMs);
-  }, [enabled, spawnParticles, emitIntervalMs]);
+  const syncEmitInterval = useCallback(() => {
+    const shouldEmit =
+      enabled && (hoverActiveRef.current || forcedEmitRef.current);
 
-  const onMouseLeave = useCallback(() => {
+    if (shouldEmit) {
+      if (!emitIntervalRef.current) {
+        spawnParticles();
+        emitIntervalRef.current = setInterval(spawnParticles, emitIntervalMs);
+      }
+      return;
+    }
+
     if (emitIntervalRef.current) {
       clearInterval(emitIntervalRef.current);
       emitIntervalRef.current = null;
     }
-  }, []);
+  }, [enabled, spawnParticles, emitIntervalMs]);
+
+  const onMouseEnter = useCallback(() => {
+    if (!enabled) return;
+    hoverActiveRef.current = true;
+    syncEmitInterval();
+  }, [enabled, syncEmitInterval]);
+
+  const onMouseLeave = useCallback(() => {
+    hoverActiveRef.current = false;
+    syncEmitInterval();
+  }, [syncEmitInterval]);
+
+  /** Programmatic burst (e.g. trader tab hint) without faking pointer hover. */
+  const setForcedEmit = useCallback(
+    (active: boolean) => {
+      forcedEmitRef.current = active;
+      syncEmitInterval();
+    },
+    [syncEmitInterval],
+  );
 
   useEffect(() => {
     return () => {
+      hoverActiveRef.current = false;
+      forcedEmitRef.current = false;
       if (emitIntervalRef.current) {
         clearInterval(emitIntervalRef.current);
+        emitIntervalRef.current = null;
       }
     };
   }, []);
@@ -106,6 +136,7 @@ export function useCoinHoverParticles(
     /** Put this on the node whose geometric center should emit particles. */
     glyphOriginRef: originRef,
     hoverHandlers: { onMouseEnter, onMouseLeave },
+    setForcedEmit,
     portal,
   } as const;
 }
