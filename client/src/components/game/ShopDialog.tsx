@@ -653,7 +653,7 @@ function CheckoutForm({
         <div className="text-red-500 text-sm">{errorMessage}</div>
       )}
 
-      <div className="flex gap-3 justify-center">
+      <div className="flex gap-4 justify-center">
         <Button
           type="submit"
           disabled={!stripe || isProcessing}

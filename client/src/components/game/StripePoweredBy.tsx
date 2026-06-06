@@ -58,9 +58,9 @@ export function StripePoweredBy({ className = "" }: { className?: string }) {
         <span>{t("shop.securePaymentWith")}</span>
         <PaymentMethodLogos />
       </div>
-      <p className="text-center text-[11px] leading-tight text-muted-foreground">
-        {t("shop.noCardDataStored")}
-      </p>
+      <div className="flex flex-wrap items-center justify-center gap-x-1 gap-y-1.5 text-xs text-foreground">
+        <span>{t("shop.noCardDataStored")}</span>
+      </div>
     </div>
   );
 }
