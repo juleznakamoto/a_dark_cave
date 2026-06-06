@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { PaymentMethodLogos } from "@/components/game/paymentMethodLogos";
+import { tWithFallback } from "@/i18n/resolveGameText";
 
 const STRIPE_BRAND_COLOR = "#635BFF";
 
@@ -41,12 +42,12 @@ function StripeIcon() {
 }
 
 export function StripePoweredBy({ className = "" }: { className?: string }) {
-  const { t } = useTranslation("ui");
+  const { t } = useTranslation(["ui", "common"]);
 
   return (
     <div className={`space-y-1.5 ${className}`.trim()}>
       <div className="flex flex-wrap items-center justify-center gap-x-1 gap-y-1.5 text-xs text-foreground">
-        <span>{t("shop.securePaymentVia")}</span>
+        <span>{t("ui:shop.securePaymentVia")}</span>
         <span
           className="inline-flex shrink-0 items-center gap-1"
           role="img"
@@ -55,11 +56,17 @@ export function StripePoweredBy({ className = "" }: { className?: string }) {
           <StripeWordmark />
           <StripeIcon />
         </span>
-        <span>{t("shop.securePaymentWith")}</span>
+        <span>{t("ui:shop.securePaymentWith")}</span>
         <PaymentMethodLogos />
       </div>
       <div className="flex flex-wrap items-center justify-center gap-x-1 gap-y-1.5 text-xs text-foreground">
-        <span>{t("shop.noCardDataStored")}</span>
+        <span>
+          {tWithFallback(
+            "ui",
+            "shop.noCardDataStored",
+            "No card data is stored on our servers.",
+          )}
+        </span>
       </div>
     </div>
   );
