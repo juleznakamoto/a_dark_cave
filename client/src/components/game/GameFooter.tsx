@@ -29,6 +29,8 @@ const FOOTER_CONTROL_TEXT =
   `${FOOTER_CONTROL_BTN_FADE} transition-[opacity,color] group-hover:!text-red-600`;
 const FOOTER_SOCIAL_ICON =
   "w-4 h-4 text-neutral-300 opacity-80 transition-opacity group-hover:opacity-100";
+const FOOTER_SOCIAL_LABEL =
+  `${FOOTER_CONTROL_BTN_FADE} hidden sm:inline transition-[opacity,color] group-hover:!text-red-600`;
 const FOOTER_LEGAL_LINK =
   "text-[10px] text-neutral-300 opacity-40 hover:opacity-100 transition-opacity";
 
@@ -94,7 +96,7 @@ export default function GameFooter() {
     hasAnyShopPurchase({ hasMadeNonFreePurchase, activatedPurchases }) ||
     !isEarlyGameplay;
 
-  const socialLinkClass = `group ${FOOTER_CONTROL_BTN} flex items-center justify-center`;
+  const socialLinkClass = `group ${FOOTER_CONTROL_BTN} flex items-center justify-center gap-1`;
   const socialIconClass = `${FOOTER_SOCIAL_ICON}${isPaused ? " !opacity-100" : ""}`;
 
   return (
@@ -230,28 +232,24 @@ export default function GameFooter() {
                   ? tWithFallback("ui", "footer.contact", title)
                   : title;
               return (
-                <HoverCalloutTooltip
+                <a
                   key={platform}
-                  label={linkLabel}
-                  side="top"
+                  href={href}
+                  {...(href.startsWith("http")
+                    ? {
+                      target: "_blank",
+                      rel: "noopener noreferrer me",
+                    }
+                    : {})}
+                  className={socialLinkClass}
+                  aria-label={linkLabel}
                 >
-                  <a
-                    href={href}
-                    {...(href.startsWith("http")
-                      ? {
-                        target: "_blank",
-                        rel: "noopener noreferrer me",
-                      }
-                      : {})}
-                    className={socialLinkClass}
-                    aria-label={linkLabel}
-                  >
-                    <FooterSocialIcon
-                      platform={platform}
-                      className={socialIconClass}
-                    />
-                  </a>
-                </HoverCalloutTooltip>
+                  <FooterSocialIcon
+                    platform={platform}
+                    className={socialIconClass}
+                  />
+                  <span className={FOOTER_SOCIAL_LABEL}>{linkLabel}</span>
+                </a>
               );
             })}
             <div className="flex flex-col items-end leading-tight sm:flex-row sm:items-center sm:gap-1">
