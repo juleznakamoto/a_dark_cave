@@ -63,7 +63,7 @@ function LogPanel() {
         showIndicatorWhen={recentEntries.length >= 8}
         scrollAreaId="event-log"
       >
-        <div className="pl-0.5 pr-2 relative">
+        <div className="pl-1 relative">
           <div ref={topRef} />
           <div className="space-y-1 text-xs pb-1">
             {recentEntries.map((entry: any, index: number) => {

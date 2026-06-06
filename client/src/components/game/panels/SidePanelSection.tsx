@@ -978,7 +978,7 @@ export default function SidePanelSection({
     <div className={`py-1.5 border-border pt-0 ${className}`}>
       <div
         className={cn(
-          "mb-0.5 flex items-center",
+          "mb-1 flex items-center",
           titleExtra ? "gap-1.5" : "gap-1",
         )}
       >

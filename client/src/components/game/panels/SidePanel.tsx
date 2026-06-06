@@ -905,7 +905,7 @@ export default function SidePanel() {
   };
 
   return (
-    <ScrollArea className="h-full max-h-[36vh] md:max-h-full px-3 pt-2 pb-1.5 pl-1 pr-2">
+    <ScrollArea className="h-full max-h-[36vh] md:max-h-full px-3 pt-2 pb-1.5 pl-0 pr-0">
       <div className="pb-1 grid grid-cols-[auto_minmax(10.5rem,0.9fr)] gap-x-1.5 items-start min-w-0">
         {/* First column - Resources */}
         <div className="min-w-0">
