@@ -432,8 +432,6 @@ export function GameHeaderControls() {
     accountDropdownOpen,
     setAccountDropdownOpen,
     setAuthNotificationSeen,
-    authNotificationVisible,
-    authNotificationSeen,
     currentUser,
     handleManualSave,
     cooldowns,
@@ -451,7 +449,6 @@ export function GameHeaderControls() {
     handleDiscovery,
     isPaused,
     sleepDialogOpen,
-    leaderboardDialogOpen,
     setDeleteAccountDialogOpen,
   } = useProfileMenuContext();
 
@@ -510,12 +507,9 @@ export function GameHeaderControls() {
       )}
       <PlaylightDiscoveryButton
         onClick={handleDiscovery}
-        forceShowTooltip={isPaused}
+        forceShowTooltip={isPaused || sleepDialogOpen}
         tooltipSide="bottom"
         className="h-6 w-6"
-        showNotificationDot={
-          isPaused || sleepDialogOpen || leaderboardDialogOpen
-        }
       />
       <DropdownMenu
         open={accountDropdownOpen}
@@ -534,11 +528,6 @@ export function GameHeaderControls() {
             className="px-2 py-1 text-xs hover relative text-neutral-300 opacity-100"
           >
             {t("profile.title")}
-            {authNotificationVisible &&
-              !authNotificationSeen &&
-              !currentUser && (
-                <span className="absolute -top-[4px] -right-[4px] w-2 h-2 !bg-red-600 rounded-full shop-notification-pulse !opacity-100" />
-              )}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent

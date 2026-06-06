@@ -415,7 +415,7 @@ export const forestScoutActions: Record<string, Action> = {
     success_chance: (state: GameState) =>
       calculateSuccessChance(state, 0, { type: "strength", multiplier: 0.01 }),
     relevant_stats: ["strength"],
-    executionTime: 120,
+    executionTime: 45,
     cooldown: 0,
   },
 

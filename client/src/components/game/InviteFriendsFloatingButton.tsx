@@ -84,8 +84,8 @@ export default function InviteFriendsFloatingButton() {
 
   return createPortal(
     <div
-      className="pointer-events-auto fixed right-4 z-[60]"
-      style={{ bottom: `calc(${GAME_FOOTER_INSET} + 0.75rem)` }}
+      className="pointer-events-auto fixed right-4 z-40"
+      style={{ bottom: `calc(${GAME_FOOTER_INSET} + 1rem)` }}
     >
       <TooltipWrapper
         tooltip={
