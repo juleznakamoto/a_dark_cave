@@ -488,7 +488,7 @@ export default function SidePanelSection({
         tooltipId={tooltipId}
         disabled
         tooltipContentClassName="max-w-xs"
-        className="shrink-0"
+        className={cn("shrink-0", !affordable && "opacity-60")}
       >
         <button
           type="button"
@@ -507,11 +507,10 @@ export default function SidePanelSection({
           }}
           className={cn(
             RESOURCE_GLYPH_CLASS,
-            "font-noto-symbols-2 border-0 bg-transparent p-0 text-sm leading-none transition-opacity",
+            "font-noto-symbols-2 border-0 bg-transparent p-0 text-sm leading-none transition-opacity duration-200",
             INSIGHT_TEXT_CLASS,
-            affordable
-              ? "cursor-pointer opacity-60 hover:opacity-100"
-              : "cursor-not-allowed opacity-30",
+            "opacity-80 hover:opacity-100",
+            affordable ? "cursor-pointer" : "cursor-not-allowed",
           )}
         >
           {INSIGHT_GLYPH}
