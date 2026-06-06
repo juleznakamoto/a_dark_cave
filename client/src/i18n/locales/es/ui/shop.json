@@ -33,7 +33,7 @@
     "betaDiscount": "Descuento beta",
     "additionalDiscount": "Descuento adicional",
     "total": "Total",
-    "legalConsent": "Al comprar, aceptas la entrega inmediata de contenido digital y renuncias a tu derecho de desistimiento. Para más información, consulta nuestros",
+    "legalConsent": "Obtienes acceso instantáneo al contenido digital tras la compra.",
     "termsOfService": "Condiciones del servicio",
     "rightOfWithdrawal": "Derecho de desistimiento", //x1.3
     "completePurchaseFor": "Completar compra por {{price}}",
@@ -80,6 +80,7 @@
     "alreadyClaimedItemLog": "Ya has reclamado {{name}}.",
     "claimFailedLog": "No se pudo reclamar {{name}}. Inténtalo de nuevo.",
     "activatedDefaultLog": "¡{{name}} activado! Las recompensas se han añadido a tu inventario.",
+    "noCardDataStored": "No almacenamos datos de tarjetas en nuestros servidores.",
     "securePaymentVia": "Pago seguro a través de",
     "securePaymentWith": "con",
     "securePurchaseTitle": "Protege tu compra",

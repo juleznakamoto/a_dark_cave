@@ -638,7 +638,7 @@ function CheckoutForm({
           >
             {t("ui:shop.termsOfService")}
           </a>{" "}
-          and{" "}
+          •{" "}
           <a
             href="/withdrawal"
             target="_blank"
@@ -646,7 +646,6 @@ function CheckoutForm({
           >
             {t("ui:shop.rightOfWithdrawal")}
           </a>
-          .
         </p>
       </div>
 

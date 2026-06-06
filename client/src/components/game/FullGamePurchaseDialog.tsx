@@ -187,7 +187,7 @@ function CheckoutForm({
           >
             {t("ui:fullGame.termsOfService")}
           </a>{" "}
-          and{" "}
+          •{" "}
           <a
             href="/withdrawal"
             target="_blank"
@@ -195,7 +195,6 @@ function CheckoutForm({
           >
             {t("ui:fullGame.rightOfWithdrawal")}
           </a>
-          .
         </p>
       </div>
 

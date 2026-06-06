@@ -139,7 +139,7 @@
     "loadingPayment": "正在加载支付系统……",
     "purchaseSuccessful": "购买成功！",
     "purchaseSuccessfulDesc": "完整版已解锁并激活！你现在可以不受限制地继续旅程。",
-    "legalConsent": "购买即表示同意立即交付数字内容并放弃撤回权。详见",
+    "legalConsent": "购买后即可立即访问数字内容。",
     "termsOfService": "服务条款",
     "rightOfWithdrawal": "撤回权",
     "completePurchaseFor": "完成购买 {{price}}",

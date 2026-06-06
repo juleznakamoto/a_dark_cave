@@ -21,6 +21,10 @@ export default function InviteFriendsFloatingButton() {
   const referralCount = useGameStore((s) => s.referralCount ?? 0);
   const referrals = useGameStore((s) => s.referrals ?? []);
   const social_media_rewards = useGameStore((s) => s.social_media_rewards);
+  const shopDialogOpen = useGameStore((s) => s.shopDialogOpen);
+  const fullGamePurchaseDialogOpen = useGameStore(
+    (s) => s.fullGamePurchaseDialogOpen,
+  );
   const isUserSignedIn = useGameStore((s) => s.isUserSignedIn);
   const signupWelcomeGoldClaimed = useGameStore(
     (s) => s.signupWelcomeGoldClaimed === true,
@@ -54,7 +58,13 @@ export default function InviteFriendsFloatingButton() {
     signupWelcomeGoldClaimed,
   });
 
-  if (!showFloatingInvite) return null;
+  if (
+    !showFloatingInvite ||
+    shopDialogOpen ||
+    fullGamePurchaseDialogOpen
+  ) {
+    return null;
+  }
 
   const handleCopyInviteLink = async () => {
     try {

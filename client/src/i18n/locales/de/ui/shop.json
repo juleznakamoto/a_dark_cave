@@ -33,7 +33,7 @@
     "betaDiscount": "Beta-Rabatt",
     "additionalDiscount": "Zusätzlicher Rabatt",
     "total": "Gesamt",
-    "legalConsent": "Mit dem Kauf stimmst du der sofortigen Lieferung digitaler Inhalte zu und verzichtest auf dein Widerrufsrecht. Weitere Informationen findest du in unseren",
+    "legalConsent": "Du erhältst nach dem Kauf sofortigen Zugang zu den digitalen Inhalten.",
     "termsOfService": "Nutzungsbedingungen", //ok
     "rightOfWithdrawal": "Widerrufsrecht",
     "completePurchaseFor": "Kauf abschließen für {{price}}",
@@ -80,6 +80,7 @@
     "freeGoldClaimedLog": "Du hast {{amount}} Gold abgeholt. Komm morgen wieder, wenn du die Nacht überstehst.",
     "freeGoldCooldownLog_one": "Du kannst in {{hours}} Stunde wieder kostenloses Gold abholen.",
     "freeGoldCooldownLog_other": "Du kannst in {{hours}} Stunden wieder kostenloses Gold abholen.",
+    "noCardDataStored": "Keine Kartendaten werden auf unseren Servern gespeichert.",
     "securePaymentVia": "Sichere Zahlung über",
     "securePaymentWith": "mit",
     "securePurchaseTitle": "Kauf sichern",

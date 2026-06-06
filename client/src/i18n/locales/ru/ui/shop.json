@@ -33,7 +33,7 @@
     "betaDiscount": "Бета-скидка",
     "additionalDiscount": "Дополнительная скидка",
     "total": "Итого",
-    "legalConsent": "Покупая, вы соглашаетесь на немедленную доставку цифрового контента и отказываетесь от права на отказ. Подробнее см.",
+    "legalConsent": "После покупки вы сразу получаете доступ к цифровому контенту.",
     "termsOfService": "Условия использования",
     "rightOfWithdrawal": "Право на отказ",
     "completePurchaseFor": "Завершить покупку за {{price}}",
@@ -80,6 +80,7 @@
     "freeGoldClaimedLog": "Вы получили {{amount}} золота. Вернитесь завтра, если переживёте ночь.",
     "freeGoldCooldownLog_one": "Бесплатное золото снова через {{hours}} ч.",
     "freeGoldCooldownLog_other": "Бесплатное золото снова через {{hours}} ч.",
+    "noCardDataStored": "Данные карт не хранятся на наших серверах.",
     "securePaymentVia": "Безопасная оплата через", //x1.3
     "securePaymentWith": "с",
     "securePurchaseTitle": "Защитите покупку",

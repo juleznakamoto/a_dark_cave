@@ -44,20 +44,23 @@ export function StripePoweredBy({ className = "" }: { className?: string }) {
   const { t } = useTranslation("ui");
 
   return (
-    <div
-      className={`flex flex-wrap items-center justify-center gap-x-1 gap-y-1.5 text-xs text-foreground ${className}`.trim()}
-    >
-      <span>{t("shop.securePaymentVia")}</span>
-      <span
-        className="inline-flex shrink-0 items-center gap-1"
-        role="img"
-        aria-label="Stripe"
-      >
-        <StripeWordmark />
-        <StripeIcon />
-      </span>
-      <span>{t("shop.securePaymentWith")}</span>
-      <PaymentMethodLogos />
+    <div className={`space-y-1.5 ${className}`.trim()}>
+      <div className="flex flex-wrap items-center justify-center gap-x-1 gap-y-1.5 text-xs text-foreground">
+        <span>{t("shop.securePaymentVia")}</span>
+        <span
+          className="inline-flex shrink-0 items-center gap-1"
+          role="img"
+          aria-label="Stripe"
+        >
+          <StripeWordmark />
+          <StripeIcon />
+        </span>
+        <span>{t("shop.securePaymentWith")}</span>
+        <PaymentMethodLogos />
+      </div>
+      <p className="text-center text-[11px] leading-tight text-muted-foreground">
+        {t("shop.noCardDataStored")}
+      </p>
     </div>
   );
 }
