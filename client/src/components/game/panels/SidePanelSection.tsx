@@ -669,7 +669,7 @@ export default function SidePanelSection({
     const productionDeltaCell = showProductionDelta ? (
       <span className={productionDeltaCellClassName}>
         {(item.productionDelta ?? 0) > 0 ? "+" : ""}
-        {formatNumber(item.productionDelta ?? 0)}
+        {abbreviateNumber(Math.round(item.productionDelta ?? 0))}
       </span>
     ) : (
       <span
