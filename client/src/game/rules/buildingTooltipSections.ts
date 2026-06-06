@@ -7,6 +7,7 @@ import {
   getUiTooltip,
   resolveBuildingTooltipEffect,
 } from "@/i18n/tooltipLabels";
+import { getBuildingHierarchyChain } from "../buildingHierarchy";
 import type { BuildingTooltipEffect } from "./buildingTooltipEffects";
 import { villageBuildActions } from "./villageBuildActions";
 
@@ -193,6 +194,38 @@ export function getBuildingTooltipEffectLines(
   return getBuildingTooltipEffectEntries(buildAction, gameState).map((entry) =>
     resolveTooltipEffectEntry(entry, isDamaged),
   );
+}
+
+/** Marginal tooltip lines for one upgrade tier (matches side-panel level sections). */
+export function getBuildingUpgradeMarginalEffectLines(
+  buildingKey: string,
+  gameState: GameState,
+  isDamaged = false,
+): string[] {
+  const buildAction = villageBuildActions[buildingKeyToActionId(buildingKey)];
+  if (!buildAction) return [];
+
+  const currEntries = getBuildingTooltipEffectEntries(buildAction, gameState);
+  const chain = getBuildingHierarchyChain(buildingKey);
+
+  if (!chain) {
+    return currEntries.map((entry) =>
+      resolveTooltipEffectEntry(entry, isDamaged),
+    );
+  }
+
+  const currentIndex = chain.indexOf(buildingKey);
+  if (currentIndex <= 0) {
+    return getLevelSectionEffectLines(null, currEntries, isDamaged);
+  }
+
+  const prevAction =
+    villageBuildActions[buildingKeyToActionId(chain[currentIndex - 1])];
+  const prevEntries = prevAction
+    ? getBuildingTooltipEffectEntries(prevAction, gameState)
+    : null;
+
+  return getLevelSectionEffectLines(prevEntries, currEntries, isDamaged);
 }
 
 export function getUpgradeChainLevelEffectSections(

@@ -1,10 +1,7 @@
 import React from "react";
 import type { GameState } from "@shared/schema";
 import { villageBuildActions } from "./villageBuildActions";
-import {
-  getBuildingTooltipEffectEntries,
-  resolveTooltipEffectEntry,
-} from "./buildingTooltipSections";
+import { getBuildingUpgradeMarginalEffectLines } from "./buildingTooltipSections";
 import { craftActionIdToItemKey, getCraftItemDescription } from "./craftItemDescription";
 import { clothingEffects, toolEffects, weaponEffects } from "./effects";
 import { renderItemTooltip } from "./itemTooltips";
@@ -20,10 +17,14 @@ function resolveBuildingEffectLines(
   actionId: string,
   state: GameState,
 ): string[] {
-  const action = villageBuildActions[actionId];
-  if (!action) return [];
-  const entries = getBuildingTooltipEffectEntries(action, state);
-  return entries.map((entry) => resolveTooltipEffectEntry(entry, false));
+  if (!villageBuildActions[actionId]) return [];
+
+  const buildingKey = actionId.startsWith("build")
+    ? actionId.slice(5, 6).toLowerCase() + actionId.slice(6)
+    : null;
+  if (!buildingKey) return [];
+
+  return getBuildingUpgradeMarginalEffectLines(buildingKey, state);
 }
 
 function getCraftItemType(
