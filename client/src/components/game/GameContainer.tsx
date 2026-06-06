@@ -1000,7 +1000,7 @@ export default function GameContainer() {
           <section className="order-3 md:order-2 min-w-0 flex flex-col min-h-0 overflow-hidden md:pl-0">
             {/* Horizontal Game Tabs */}
             <nav
-              className={`relative border-t border-border pl-2 pr-2 md:pl-4 md:pr-4 flex-shrink-0${isPaused ? " z-[41] pointer-events-auto" : ""}`}
+              className={`relative border-t md:border-t-0 border-border pl-2 pr-2 md:pl-4 md:pr-4 flex-shrink-0${isPaused ? " z-[41] pointer-events-auto" : ""}`}
             >
               {useLimelightNav ? (
                 // Alternative LimelightNav design
