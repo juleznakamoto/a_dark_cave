@@ -33,6 +33,7 @@
   },
   "profile": {
     "title": "Профиль",
+    "menuTooltip": "Меню профиля",
     "signInUp": "Вход / регистрация",
     "emailsOn": "Письма вкл.",
     "emailsOff": "Письма выкл.",

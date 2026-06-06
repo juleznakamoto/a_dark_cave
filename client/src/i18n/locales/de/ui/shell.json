@@ -33,6 +33,7 @@
   },
   "profile": {
     "title": "Profil",
+    "menuTooltip": "Profilmenü",
     "signInUp": "Anmelden/Registrieren", //ok
     "emailsOn": "E-Mails an",
     "emailsOff": "E-Mails aus",
