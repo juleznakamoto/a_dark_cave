@@ -33,7 +33,6 @@
   },
   "profile": {
     "title": "Profile",
-    "menuTooltip": "Profile Menu",
     "signInUp": "Sign In/Up",
     "emailsOn": "Emails On",
     "emailsOff": "Emails Off",

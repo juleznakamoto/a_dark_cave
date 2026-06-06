@@ -33,7 +33,6 @@
   },
   "profile": {
     "title": "Perfil",
-    "menuTooltip": "Menú de perfil",
     "signInUp": "Iniciar sesión/Registrarse",
     "emailsOn": "Correos activados",
     "emailsOff": "Correos desactivados",

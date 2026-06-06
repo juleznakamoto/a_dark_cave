@@ -33,7 +33,6 @@
   },
   "profile": {
     "title": "个人资料",
-    "menuTooltip": "个人资料菜单",
     "signInUp": "登录/注册",
     "emailsOn": "邮件已开启",
     "emailsOff": "邮件已关闭",
