@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
 import { UserPlus } from "lucide-react";
 import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
@@ -82,9 +81,9 @@ export default function InviteFriendsFloatingButton() {
     }
   };
 
-  return createPortal(
+  return (
     <div
-      className="pointer-events-auto fixed right-4 z-40"
+      className="pointer-events-auto fixed right-4 z-30"
       style={{ bottom: `calc(${GAME_FOOTER_INSET} + 1rem)` }}
     >
       <TooltipWrapper
@@ -120,7 +119,6 @@ export default function InviteFriendsFloatingButton() {
           </span>
         </button>
       </TooltipWrapper>
-    </div>,
-    document.body,
+    </div>
   );
 }
