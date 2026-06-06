@@ -197,6 +197,7 @@ function TabTriggerWithTooltipWhenLocked({
         disabled={true}
         tooltipId={`achievement-tab-locked-${value}`}
         className="flex items-center justify-center min-h-[3rem] cursor-default"
+        tooltipTriggerAsChild
       >
         {trigger}
       </TooltipWrapper>

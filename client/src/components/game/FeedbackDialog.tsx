@@ -39,8 +39,8 @@ export default function FeedbackDialog() {
       <DialogContent className="[--adc-dialog-max-w:28rem] z-[70]">
         <DialogHeader>
           <DialogTitle className="leading-6">{t("feedback.title")}</DialogTitle>
-          <DialogDescription asChild>
-            <div className="py-2 space-y-3 text-sm text-foreground">
+          <DialogDescription asChild className="!text-white">
+            <div className="space-y-3 py-2 text-sm">
               <p>{t("feedback.message")}</p>
               <p>{t("feedback.contactVia")}</p>
               <div className="flex flex-wrap justify-center gap-4 pt-1">
@@ -57,12 +57,13 @@ export default function FeedbackDialog() {
                           rel: "noopener noreferrer me",
                         }
                         : {})}
-                      className="group flex min-w-[4.5rem] flex-col items-center gap-1.5 rounded-md px-2 py-1.5 text-foreground transition-colors hover:bg-muted/60"
+                      className="group flex min-w-[4.5rem] flex-col items-center gap-1.5 rounded-md px-2 py-1.5 text-white transition-colors hover:bg-muted/60"
                       aria-label={label}
                     >
                       <FooterSocialIcon
                         platform={platform}
-                        className="h-6 w-6 text-muted-foreground transition-colors group-hover:text-foreground"
+                        variant="brand"
+                        className="h-6 w-6"
                       />
                       <span className="text-xs font-medium">{label}</span>
                     </a>
