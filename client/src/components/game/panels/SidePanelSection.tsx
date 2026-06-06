@@ -434,10 +434,10 @@ export default function SidePanelSection({
       return value;
     }
 
-    if (value < 0) {
-      return `${formatNumber(value)}`;
-    } else if (value === -1) {
+    if (value === -1) {
       return "done";
+    } else if (value < 0) {
+      return `${formatNumber(value)}`;
     } else if (value > 0 && value < 1) {
       return `${Math.round(value * 100)}%`;
     }

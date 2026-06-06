@@ -29,6 +29,7 @@ import type {
   MerchantTradesState,
   GameStats,
   ActionResult,
+  CombatResultSummary,
 } from "@/game/types";
 import {
   updateResource,
@@ -699,8 +700,11 @@ const detectMadnessChange = (
 function scheduleMadnessDialogAfterCombat(
   get: () => GameStore,
   madnessChange: number,
+  combatSummary?: CombatResultSummary,
 ): void {
   if (madnessChange === 0) return;
+  // Attack-wave defeat overlay already shows madness via _combatSummary.madnessGain.
+  if ((combatSummary?.madnessGain ?? 0) > 0) return;
   scheduleWhenDialogClear(
     get,
     (store) => store.combatDialog.isOpen,
@@ -2821,12 +2825,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
                 ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
                 : prevState.log,
             }));
-            scheduleMadnessDialogAfterCombat(get, madnessChange);
-            return extractCombatResultSummary(
+            const combatSummary = extractCombatResultSummary(
               _combatSummary
                 ? { _combatSummary }
                 : (defeatResult as Record<string, unknown>),
             );
+            scheduleMadnessDialogAfterCombat(
+              get,
+              madnessChange,
+              combatSummary,
+            );
+            return combatSummary;
           },
         });
       } else {
@@ -3153,12 +3162,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
               ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
               : prevState.log,
           }));
-          scheduleMadnessDialogAfterCombat(get, madnessChange);
-          return extractCombatResultSummary(
+          const combatSummary = extractCombatResultSummary(
             _combatSummary
               ? { _combatSummary }
               : (defeatResult as Record<string, unknown>),
           );
+          scheduleMadnessDialogAfterCombat(
+            get,
+            madnessChange,
+            combatSummary,
+          );
+          return combatSummary;
         },
       });
       return true;
