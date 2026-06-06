@@ -821,7 +821,11 @@ export function handleLightFire(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  result.stateUpdates.flags = { ...state.flags, gameStarted: true };
+  result.stateUpdates.flags = {
+    ...state.flags,
+    gameStarted: true,
+    villagerCapsEnabled: true,
+  };
   result.stateUpdates.story = {
     ...state.story,
     seen: {

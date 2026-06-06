@@ -87,6 +87,12 @@ import { logger } from "@/lib/logger";
 import { madnessEvents } from "@/game/rules/eventsMadness";
 import { DISGRACED_PRIOR_UPGRADES } from "@/game/rules/skillUpgrades";
 import {
+  canUpgradeVillagerCap,
+  getNextCapUpgradeCost,
+  getVillagerCapLevel,
+  type VillagerCapGroupId,
+} from "@/game/villagerCapUpgrades";
+import {
   isI18nReturnedObjectError,
   resolveEventMessage,
   resolveEventTitle,
@@ -367,6 +373,7 @@ interface GameStore extends GameState {
   ) => boolean;
   assignVillager: (job: keyof GameState["villagers"]) => void;
   unassignVillager: (job: keyof GameState["villagers"]) => void;
+  upgradeVillagerCap: (groupId: string) => boolean;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
   setCombatDialog: (isOpen: boolean, data?: any) => void;
   setTimedEventTab: (isActive: boolean, event?: LogEntry | null, duration?: number) => Promise<void>;
@@ -3204,6 +3211,25 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
       return updates;
     });
+  },
+
+  upgradeVillagerCap: (groupId: string) => {
+    const state = get();
+    const capGroupId = groupId as VillagerCapGroupId;
+    if (!canUpgradeVillagerCap(state, capGroupId)) return false;
+
+    const level = getVillagerCapLevel(state, capGroupId);
+    const cost = getNextCapUpgradeCost(level);
+    const resourceUpdates = updateResource(state, "insight", -cost);
+
+    set({
+      ...resourceUpdates,
+      villagerCapUpgrades: {
+        ...(state.villagerCapUpgrades ?? {}),
+        [capGroupId]: level + 1,
+      },
+    });
+    return true;
   },
 
   getMaxPopulation: () => {

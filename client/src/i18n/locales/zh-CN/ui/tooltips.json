@@ -52,6 +52,7 @@
     "currentResource": "当前：{{amount}} {{resource}}",
     "damaged": "（受损）",
     "level": "等级 {{level}}",
+    "improveForInsight": "消耗 {{cost}} 洞见升级",
     "maxHeld": "上限：{{value}}",
     "doubleActionChance": "{{percent}}% 几率使行动收益翻倍",
     "luck": "幸运：+{{value}}",

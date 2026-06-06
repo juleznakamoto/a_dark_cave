@@ -55,6 +55,7 @@
     "currentResource": "Atual: {{amount}} {{resource}}",
     "damaged": "(danificado)",
     "level": "Nível {{level}}",
+    "improveForInsight": "Aprimorar por {{cost}} Perspicácia",
     "maxHeld": "Máx.: {{value}}",
     "doubleActionChance": "{{percent}}% de chance de dobrar os ganhos das ações",
     "luck": "Sorte: +{{value}}",

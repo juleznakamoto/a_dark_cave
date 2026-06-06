@@ -7,6 +7,7 @@ import {
   capResourceToLimit,
 } from "./resourceLimits";
 import { getTotalEventDeathReduction } from "./rules/effectsCalculation";
+import { getVillagerCapForJob } from "./villagerCapUpgrades";
 
 type CombatResultPayload =
   | CombatResultSummary
@@ -228,6 +229,8 @@ export function assignVillagerToJob(
 
   // Initialize job count to 0 if undefined (for backwards compatibility with old saves)
   const currentJobCount = state.villagers[job] ?? 0;
+
+  if (currentJobCount >= getVillagerCapForJob(state, job)) return {};
 
   const updates: Partial<GameState> = {
     villagers: {

@@ -20,8 +20,23 @@ import {
   shouldPulseStatItem,
   type TooltipStatKey,
 } from "@/components/game/StatEffectsTooltip";
-import { isStatEffectsRevealed } from "@/game/rules/insightReveal";
+import {
+  getInsightAmount,
+  isInsightUnlocked,
+  isStatEffectsRevealed,
+} from "@/game/rules/insightReveal";
 import type { GameState } from "@shared/schema";
+import { RESOURCE_GLYPH_CLASS } from "@/components/ui/resource-coin-icon";
+import {
+  areVillagerCapsEnabled,
+  getGroupForBuildingKey,
+  getNextCapUpgradeCost,
+  getVillagerCapLevel,
+  INSIGHT_GLYPH,
+  INSIGHT_TEXT_CLASS,
+  MAX_VILLAGER_CAP_LEVEL,
+} from "@/game/villagerCapUpgrades";
+import { getUiTooltip } from "@/i18n/tooltipLabels";
 
 const STAT_EFFECT_PULSE_STAT_IDS: TooltipStatKey[] = [
   "luck",
@@ -446,6 +461,65 @@ export default function SidePanelSection({
     return formatNumber(value);
   };
 
+  const renderBuildingVillagerCapUpgradeButton = (buildingKey: string) => {
+    const state = gameState as unknown as GameState;
+    if (!areVillagerCapsEnabled(state)) return null;
+
+    const groupId = getGroupForBuildingKey(buildingKey);
+    if (!groupId) return null;
+
+    const level = getVillagerCapLevel(state, groupId);
+    if (level >= MAX_VILLAGER_CAP_LEVEL) return null;
+    if (!isInsightUnlocked(state)) return null;
+
+    const cost = getNextCapUpgradeCost(level);
+    const affordable = getInsightAmount(state) >= cost;
+    const tooltipId = `villager-cap-upgrade-${buildingKey}`;
+
+    return (
+      <TooltipWrapper
+        tooltip={
+          <div className="text-xs">
+            {getUiTooltip("improveForInsight", "Improve for {{cost}} Insight", {
+              cost,
+            })}
+          </div>
+        }
+        tooltipId={tooltipId}
+        disabled
+        tooltipContentClassName="max-w-xs"
+        className="shrink-0"
+      >
+        <button
+          type="button"
+          aria-label={getUiTooltip(
+            "improveForInsight",
+            "Improve for {{cost}} Insight",
+            { cost },
+          )}
+          disabled={!affordable}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (affordable) {
+              useGameStore.getState().upgradeVillagerCap(groupId);
+            }
+          }}
+          className={cn(
+            RESOURCE_GLYPH_CLASS,
+            "font-noto-symbols-2 border-0 bg-transparent p-0 text-sm leading-none transition-opacity",
+            INSIGHT_TEXT_CLASS,
+            affordable
+              ? "cursor-pointer opacity-60 hover:opacity-100"
+              : "cursor-not-allowed opacity-30",
+          )}
+        >
+          {INSIGHT_GLYPH}
+        </button>
+      </TooltipWrapper>
+    );
+  };
+
   const renderItemWithTooltip = (item: SidePanelItem) => {
     const isAnimated = animatedItems.has(item.id);
     const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
@@ -829,17 +903,20 @@ export default function SidePanelSection({
                 : ""
             }`}
         >
-          <TooltipWrapper
-            tooltip={renderItemTooltip(item.id, "building")}
-            tooltipId={item.id}
-            disabled
-            tooltipContentClassName="max-w-xs"
-            onMouseEnter={() => handleTooltipHover(item.id)}
-            onMouseLeave={() => handleTooltipLeave(item.id)}
-            className={sidePanelTooltipTriggerClass}
-          >
-            {labelContent}
-          </TooltipWrapper>
+          <div className="flex min-w-0 flex-1 items-center gap-1">
+            {renderBuildingVillagerCapUpgradeButton(item.id)}
+            <TooltipWrapper
+              tooltip={renderItemTooltip(item.id, "building")}
+              tooltipId={item.id}
+              disabled
+              tooltipContentClassName="max-w-xs"
+              onMouseEnter={() => handleTooltipHover(item.id)}
+              onMouseLeave={() => handleTooltipLeave(item.id)}
+              className={sidePanelTooltipTriggerClass}
+            >
+              {labelContent}
+            </TooltipWrapper>
+          </div>
         </div>
       );
     }

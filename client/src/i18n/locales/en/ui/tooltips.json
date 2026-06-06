@@ -55,6 +55,7 @@
     "currentResource": "Current: {{amount}} {{resource}}",
     "damaged": "(damaged)",
     "level": "Level {{level}}",
+    "improveForInsight": "Improve for {{cost}} Insight",
     "maxHeld": "Max: {{value}}",
     "doubleActionChance": "{{percent}}% chance to double action gains",
     "luck": "Luck: +{{value}}",

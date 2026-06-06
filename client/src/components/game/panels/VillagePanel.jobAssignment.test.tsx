@@ -47,6 +47,35 @@ describe("Job assignment - touch/ghost-click fix", () => {
     expect(updates).toEqual({});
   });
 
+  it("assignVillagerToJob returns empty when profession cap is reached (gated games)", () => {
+    const state = useGameStore.getState();
+    const updates = assignVillagerToJob(
+      {
+        ...state,
+        flags: { ...state.flags, villagerCapsEnabled: true },
+        villagers: { ...state.villagers, hunter: 10, free: 3 },
+      },
+      "hunter",
+    );
+
+    expect(updates).toEqual({});
+  });
+
+  it("assignVillagerToJob ignores profession cap when feature gate is off", () => {
+    const state = useGameStore.getState();
+    const updates = assignVillagerToJob(
+      {
+        ...state,
+        flags: { ...state.flags, villagerCapsEnabled: false },
+        villagers: { ...state.villagers, hunter: 25, free: 1 },
+      },
+      "hunter",
+    );
+
+    expect(updates.villagers?.hunter).toBe(26);
+    expect(updates.villagers?.free).toBe(0);
+  });
+
   it("touch handlers call preventDefault when condition met (prevents ghost click)", () => {
     // Verify the VillagePanel touch handler pattern: when we have a valid action,
     // we call e.preventDefault() to block synthetic mouse events.

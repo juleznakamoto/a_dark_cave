@@ -98,6 +98,7 @@ export const gameStateSchema = z.object({
       hasCity: z.boolean().default(false),
       hasFortress: z.boolean().default(false),
       hasHitResourceLimit: z.boolean().default(false),
+      villagerCapsEnabled: z.boolean().default(false),
     })
     .default({}),
   schematics: z
@@ -342,6 +343,7 @@ export const gameStateSchema = z.object({
       scholar: z.number().min(0).default(0),
     })
     .default({}),
+  villagerCapUpgrades: z.record(z.string(), z.number()).default({}),
   expeditionVillagers: z.record(z.string(), z.number()).default({}),
   story: z
     .object({

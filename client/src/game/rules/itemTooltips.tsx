@@ -54,6 +54,13 @@ import {
   MAX_FOCUS_POINTS,
 } from "@/game/obsidianOrb";
 import type { GameState } from "@shared/schema";
+import {
+  areVillagerCapsEnabled,
+  getGroupForBuildingKey,
+  getVillagerCapLevel,
+  INSIGHT_GLYPH,
+  INSIGHT_TEXT_CLASS,
+} from "@/game/villagerCapUpgrades";
 
 /** Moon phase for n fragments: 1→◔, 2→◑, 3→◕, 4→● (index = n − 1). */
 const MAP_FRAGMENT_MOON_GLYPHS = ["◔", "◑", "◕", "●"] as const;
@@ -316,9 +323,16 @@ function renderBuildingItemTooltip(
   const titleLabel =
     displayLabel ?? getActionLabel(actionId, buildAction.label);
 
+  const capGroupId = getGroupForBuildingKey(itemId);
+  const insightCapLevel =
+    areVillagerCapsEnabled(gameState) && capGroupId
+      ? getVillagerCapLevel(gameState, capGroupId)
+      : 0;
+  const showInsightCapLevel = insightCapLevel > 0;
+
   return (
     <div className="text-xs">
-      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
+      <div className="flex w-full flex-wrap items-baseline justify-between gap-x-2 gap-y-0">
         <span>
           <span className="font-bold">{titleLabel}</span>
           {hierarchyLevel != null && (
@@ -336,6 +350,14 @@ function renderBuildingItemTooltip(
             </span>
           )}
         </span>
+        {showInsightCapLevel && (
+          <span
+            className={`ml-auto inline-flex items-center gap-0.5 font-noto-symbols-2 tabular-nums ${INSIGHT_TEXT_CLASS}`}
+          >
+            <span aria-hidden>{INSIGHT_GLYPH}</span>
+            <span>{insightCapLevel}</span>
+          </span>
+        )}
       </div>
       {tooltipParts}
     </div>

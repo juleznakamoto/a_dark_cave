@@ -52,6 +52,7 @@
     "currentResource": "Сейчас: {{amount}} {{resource}}",
     "damaged": "(повреждено)",
     "level": "Уровень {{level}}",
+    "improveForInsight": "Улучшить за {{cost}} Прозрение",
     "maxHeld": "Макс.: {{value}}",
     "doubleActionChance": "{{percent}} % шанс удвоить награды действия",
     "luck": "Удача: +{{value}}",

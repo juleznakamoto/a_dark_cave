@@ -52,6 +52,7 @@
     "currentResource": "Aktuell: {{amount}} {{resource}}",
     "damaged": "(beschädigt)", //ok
     "level": "Stufe {{level}}",
+    "improveForInsight": "Verbessern für {{cost}} Einsicht",
     "maxHeld": "Max.: {{value}}",
     "doubleActionChance": "{{percent}} % Chance, Aktionsgewinne zu verdoppeln",
     "luck": "Glück: +{{value}}",
