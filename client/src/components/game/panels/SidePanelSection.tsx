@@ -94,6 +94,9 @@ const EFFECT_TOOLTIP_SECTIONS = new Set<SidePanelSectionId>([
 /** Shared layout for resource name + amount + production delta / change hint. */
 const RESOURCE_ROW_GRID_CLASS =
   "grid w-fit max-w-full pr-1 grid-cols-[5rem_4rem_2.5rem] items-baseline gap-x-1";
+/** Stats / bastion: label + value without stretching across the panel column. */
+const STAT_ROW_GRID_CLASS =
+  "grid w-fit max-w-full grid-cols-[auto_auto] items-center gap-x-2 leading-none";
 const RESOURCE_ROW_TEXT_CLASS = "text-xs leading-none";
 /** Third column: production rate and change popup share one right-aligned slot. */
 const RESOURCE_DELTA_SLOT_CLASS =
@@ -652,12 +655,14 @@ export default function SidePanelSection({
       "min-w-0 transition-all duration-300",
       usesResourceRowLayout
         ? RESOURCE_ROW_GRID_CLASS
-        : cn(
-          "flex gap-1.5 justify-between leading-tight",
-          isIconCenteredLabelSection && item.icon !== undefined
-            ? "items-center"
-            : "items-start",
-        ),
+        : isIconCenteredLabelSection && showItemValue
+          ? STAT_ROW_GRID_CLASS
+          : cn(
+            "flex gap-1.5 justify-between leading-tight",
+            isIconCenteredLabelSection && item.icon !== undefined
+              ? "items-center"
+              : "items-start",
+          ),
       itemAnimationClass,
     );
 
