@@ -12,7 +12,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "0-exploreCave",
         maxCount: 10,
         label: "Cave Explorer",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.caveExplore?.level || 0;
           return count === 1 ? 1.3 : count;
@@ -22,7 +22,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "0-chopWood",
         maxCount: 10,
         label: "Wood Chopper",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.chopWood?.level || 0;
           return count === 1 ? 1.3 : count;
@@ -32,7 +32,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "0-hunt",
         maxCount: 10,
         label: "Hunter",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.hunt?.level || 0;
           return count === 1 ? 1.3 : count;
@@ -55,7 +55,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "1-mineStone",
         maxCount: 10,
         label: "Stone Miner",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) =>
           Math.floor(state.buttonUpgrades?.mineStone?.level || 0),
       },
@@ -63,7 +63,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "1-mineIron",
         maxCount: 10,
         label: "Iron Miner",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.mineIron?.level || 0;
           return count === 1 ? 1.8 : count;
@@ -73,7 +73,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "1-mineCoal",
         maxCount: 10,
         label: "Coal Miner",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.mineCoal?.level || 0;
           return count === 1 ? 1.8 : count;
@@ -83,7 +83,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "1-mineSulfur",
         maxCount: 10,
         label: "Sulfur Miner",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.mineSulfur?.level || 0;
           return count === 1 ? 1.8 : count;
@@ -93,7 +93,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "1-mineObsidian",
         maxCount: 10,
         label: "Obsidian Miner",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.mineObsidian?.level || 0;
           return count === 1 ? 1.8 : count;
@@ -103,7 +103,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "1-mineAdamant",
         maxCount: 10,
         label: "Adamant Miner",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.mineAdamant?.level || 0;
           return count === 1 ? 1.8 : count;
@@ -116,7 +116,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "2-boneTotems",
         maxCount: 20,
         label: "Bone Sacrificer",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) =>
           Math.min(Number(state.story?.seen?.boneTotemsUsageCount) || 0, 20),
       },
@@ -124,7 +124,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "2-leatherTotems",
         maxCount: 20,
         label: "Leather Sacrificer",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) =>
           Math.min(Number(state.story?.seen?.leatherTotemsUsageCount) || 0, 20),
       },
@@ -132,7 +132,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "2-animals",
         maxCount: 10,
         label: "Animal Sacrificer",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) =>
           Math.min(Number(state.story?.seen?.animalsSacrificeLevel) || 0, 10),
       },
@@ -180,7 +180,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "3-veinfireElixir",
         maxCount: 10,
         label: "Veinfire Elixir Maker",
-        rewards: { silver: 250 },
+        reward: 250,
         getCount: (state: GameState) =>
           Math.min(Number(state.story?.seen?.veinfireElixirsCrafted) || 0, 10),
       },
@@ -191,7 +191,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "4-merchantPurchases",
         maxCount: 100,
         label: "Deal Maker",
-        reward: 500,
+        reward: 250,
         segments: 20,
         getCount: (state: GameState) => {
           const count = Math.min(
@@ -205,7 +205,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "0-gamblerWins",
         maxCount: 10,
         label: "Experienced Gambler",
-        rewards: { gold: 50 },
+        reward: 250,
         getCount: (state: GameState) =>
           Number(state.story?.seen?.gamblerWinsTotal) || 0,
         segments: 10,
@@ -214,7 +214,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "4-feedFire",
         maxCount: 100,
         label: "Fire Feeder",
-        reward: 500,
+        reward: 250,
         segments: 20,
         getCount: (state: GameState) => {
           const count = Math.min(
@@ -228,7 +228,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "4-mentalClarity",
         maxCount: 5,
         label: "Mental Clarity",
-        rewards: { silver: 250 },
+        reward: 250,
         getCount: (state: GameState) =>
           Math.min(Number(state.story?.seen?.clarityElixirsUsed) || 0, 5),
       },
@@ -236,7 +236,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "4-wellRested",
         maxCount: 20,
         label: "Heavy Sleeper",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) => {
           const count = Math.min(
             Math.max(
@@ -252,7 +252,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "4-solsticeGatherings",
         maxCount: 10,
         label: "Solstice Celebrant",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) =>
           Math.min(Number(state.solsticeState?.activationsCount) || 0, 10),
       },
@@ -260,7 +260,7 @@ export const actionChartConfig: AchievementChartConfig = {
         segmentId: "4-investor",
         maxCount: 2500,
         label: "Investor",
-        rewards: { silver: 250 },
+        reward: 250,
         segments: 10,
         getCount: (state: GameState) =>
           Math.min(Number(state.story?.seen?.totalGoldInvested) || 0, 2500),

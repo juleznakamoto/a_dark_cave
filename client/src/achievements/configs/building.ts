@@ -12,14 +12,14 @@ export const buildingChartConfig: AchievementChartConfig = {
         segmentId: "0-0",
         maxCount: 10,
         label: "Basic Shelter",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) => state.buildings.woodenHut || 0,
       },
       {
         segmentId: "0-1",
         maxCount: 10,
         label: "Sturdy Shelter",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) => state.buildings.stoneHut || 0,
       },
       {
@@ -98,7 +98,7 @@ export const buildingChartConfig: AchievementChartConfig = {
         segmentId: "2-0",
         maxCount: 4,
         label: "Miners",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) => {
           return (
             (state.buildings.shallowPit || 0) +
@@ -128,7 +128,7 @@ export const buildingChartConfig: AchievementChartConfig = {
         segmentId: "3-1",
         maxCount: 6,
         label: "Provisioners",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) => {
           return (
             (state.buildings.supplyHut || 0) +
@@ -157,7 +157,7 @@ export const buildingChartConfig: AchievementChartConfig = {
         segmentId: "3-3",
         maxCount: 4,
         label: "Priests",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) => {
           return (
             (state.buildings.altar || 0) +
@@ -174,14 +174,14 @@ export const buildingChartConfig: AchievementChartConfig = {
         segmentId: "4-0",
         maxCount: 4,
         label: "Keep Walls",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) => state.buildings.palisades || 0,
       },
       {
         segmentId: "4-1",
         maxCount: 4,
         label: "Lookout",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) => state.buildings.watchtower || 0,
       },
     ],

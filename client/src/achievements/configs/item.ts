@@ -43,7 +43,7 @@ export const itemChartConfig: AchievementChartConfig = {
         segmentId: "0-axes",
         maxCount: 5,
         label: "Axes",
-        reward: 500,
+        reward: 250,
         getCount: (_state: GameState) =>
           getItemCount([
             "stone_axe",
@@ -57,7 +57,7 @@ export const itemChartConfig: AchievementChartConfig = {
         segmentId: "0-pickaxes",
         maxCount: 5,
         label: "Pickaxes",
-        reward: 500,
+        reward: 250,
         getCount: (_state: GameState) =>
           getItemCount([
             "stone_pickaxe",
@@ -71,7 +71,7 @@ export const itemChartConfig: AchievementChartConfig = {
         segmentId: "0-lanterns",
         maxCount: 4,
         label: "Lanterns",
-        reward: 500,
+        reward: 250,
         getCount: (_state: GameState) =>
           getItemCount([
             "iron_lantern",
@@ -87,7 +87,7 @@ export const itemChartConfig: AchievementChartConfig = {
         segmentId: "1-swords",
         maxCount: 4,
         label: "Swords",
-        reward: 500,
+        reward: 250,
         getCount: (_state: GameState) =>
           getItemCount([
             "iron_sword",
@@ -100,7 +100,7 @@ export const itemChartConfig: AchievementChartConfig = {
         segmentId: "1-bows",
         maxCount: 5,
         label: "Bows",
-        reward: 500,
+        reward: 250,
         getCount: (_state: GameState) =>
           getItemCount([
             "crude_bow",
@@ -117,7 +117,7 @@ export const itemChartConfig: AchievementChartConfig = {
         segmentId: "2-explorer_pack",
         maxCount: 6,
         label: "Leatherworks",
-        reward: 500,
+        reward: 250,
         getCount: (_state: GameState) =>
           getItemCount([
             "explorer_pack",
