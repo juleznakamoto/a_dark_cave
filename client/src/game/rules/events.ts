@@ -346,14 +346,20 @@ export class EventManager {
             state,
             i18nVars,
           )!;
-          eventChoices = eventChoices.map((c) => ({
-            ...c,
-            cost: typeof c.cost === "function" ? c.cost(state) : c.cost,
-            success_chance:
+          eventChoices = eventChoices.map((c) => {
+            const evaluatedSuccessChance =
               typeof c.success_chance === "function"
                 ? c.success_chance(state)
-                : c.success_chance,
-          }));
+                : c.success_chance;
+            return {
+              ...c,
+              cost: typeof c.cost === "function" ? c.cost(state) : c.cost,
+              ...(evaluatedSuccessChance != null &&
+                !Number.isNaN(evaluatedSuccessChance) && {
+                success_chance: evaluatedSuccessChance,
+              }),
+            };
+          });
         }
 
         const localizedFallback = localizeFallbackChoice(

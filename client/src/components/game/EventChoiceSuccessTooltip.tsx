@@ -41,11 +41,17 @@ export function RelevantStatIcon({
 
 type SuccessChanceValue = number | ((state: GameState) => number);
 
+export function hasDefinedSuccessChance(
+  successChance: SuccessChanceValue | undefined | null,
+): successChance is SuccessChanceValue {
+  return successChance !== undefined && successChance !== null;
+}
+
 export function getSuccessPercent(
-  successChance: SuccessChanceValue | undefined,
+  successChance: SuccessChanceValue | undefined | null,
   gameState: GameState,
 ): number | null {
-  if (successChance === undefined) {
+  if (!hasDefinedSuccessChance(successChance)) {
     return null;
   }
 
@@ -54,16 +60,19 @@ export function getSuccessPercent(
       ? successChance(gameState)
       : successChance;
 
+  if (typeof rawChance !== "number" || Number.isNaN(rawChance)) {
+    return null;
+  }
+
   return Math.round(Math.min(1, Math.max(0, rawChance)) * 100);
 }
 
 export function hasSuccessChanceTooltip(
-  successChance: SuccessChanceValue | undefined,
+  successChance: SuccessChanceValue | undefined | null,
   relevantStats?: RelevantStat[],
 ): boolean {
   return (
-    successChance !== undefined &&
-    successChance !== null &&
+    hasDefinedSuccessChance(successChance) &&
     (relevantStats?.length ?? 0) > 0
   );
 }

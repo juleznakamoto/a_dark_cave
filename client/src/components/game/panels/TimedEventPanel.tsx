@@ -47,6 +47,7 @@ import type { MerchantTradeData } from "@/game/types";
 import {
   EventChoiceSuccessTooltipContent,
   getEventChoiceSuccessPercent,
+  hasDefinedSuccessChance,
   hasEventChoiceSuccessTooltip,
   RelevantStatIcon,
 } from "@/components/game/EventChoiceSuccessTooltip";
@@ -531,11 +532,19 @@ export default function TimedEventPanel() {
                 safetyTimeRemaining > 0 ||
                 !villagersCheckPassed;
 
-              // Calculate success percentage if available
+              // Calculate success percentage if this choice has odds (Book of War)
               let successPercentage: string | null = null;
-              const successPercent = getEventChoiceSuccessPercent(choice, gameState);
-              if (successPercent !== null && gameState.books?.book_of_war) {
-                successPercentage = `${successPercent}%`;
+              if (
+                hasDefinedSuccessChance(choice.success_chance) &&
+                gameState.books?.book_of_war
+              ) {
+                const successPercent = getEventChoiceSuccessPercent(
+                  choice,
+                  gameState,
+                );
+                if (successPercent !== null) {
+                  successPercentage = `${successPercent}%`;
+                }
               }
               const showSuccessTooltip = hasEventChoiceSuccessTooltip(choice);
 

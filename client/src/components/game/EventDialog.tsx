@@ -31,6 +31,7 @@ import type { MerchantTradeData } from "@/game/types";
 import {
   EventChoiceSuccessTooltipContent,
   getEventChoiceSuccessPercent,
+  hasDefinedSuccessChance,
   hasEventChoiceSuccessTooltip,
   RelevantStatIcon,
 } from "@/components/game/EventChoiceSuccessTooltip";
@@ -347,9 +348,12 @@ export default function EventDialog({
                 const labelText =
                   typeof choice.label === "string" ? choice.label : "";
 
-                // Calculate success percentage if available and book_of_war is owned
+                // Calculate success percentage if this choice has odds (Book of War)
                 let successPercentage: string | null = null;
-                if (choice.success_chance !== undefined && gameState.books?.book_of_war) {
+                if (
+                  hasDefinedSuccessChance(choice.success_chance) &&
+                  gameState.books?.book_of_war
+                ) {
                   const percent = getEventChoiceSuccessPercent(choice, gameState);
                   if (percent !== null) {
                     successPercentage = `${percent}%`;

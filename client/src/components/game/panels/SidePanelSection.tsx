@@ -97,6 +97,8 @@ const RESOURCE_ROW_GRID_CLASS =
 /** Stats / bastion: label + value without stretching across the panel column. */
 const STAT_ROW_GRID_CLASS =
   "grid w-fit max-w-full grid-cols-[auto_auto] items-center gap-x-2 leading-none";
+/** Uniform vertical gap between side-panel sections (applied on column parents). */
+export const SIDE_PANEL_SECTION_SPACING_CLASS = "space-y-2";
 const RESOURCE_ROW_TEXT_CLASS = "text-xs leading-none";
 /** Third column: production rate and change popup share one right-aligned slot. */
 const RESOURCE_DELTA_SLOT_CLASS =
@@ -708,6 +710,44 @@ export default function SidePanelSection({
       </div>
     );
 
+    // Bastion / stats: keep grid row layout when labels have tooltips (avoid flex rows that vary in height).
+    if (item.tooltip && isIconCenteredLabelSection && showItemValue) {
+      const tooltipContent =
+        typeof item.tooltip === "string" ? (
+          <>
+            {isMadnessTooltip && (
+              <p className="whitespace-pre-line">{madnessTooltipContent}</p>
+            )}
+            {item.tooltip}
+          </>
+        ) : (
+          item.tooltip
+        );
+
+      return (
+        <div
+          key={item.id}
+          data-testid={item.testId}
+          className={cn(resourceRowClassName, itemAnimationClass)}
+        >
+          <TooltipWrapper
+            tooltip={tooltipContent}
+            tooltipId={item.id}
+            disabled
+            tooltipContentClassName="max-w-xs"
+            onMouseEnter={() => handleTooltipHover(item.id)}
+            onMouseLeave={() => handleTooltipLeave(item.id)}
+            className="min-w-0"
+          >
+            {labelContent}
+          </TooltipWrapper>
+          <span className={cn(valueCellClassName, "shrink-0")}>
+            {displayValue}
+          </span>
+        </div>
+      );
+    }
+
     // If this item has effects, wrap it in a tooltip with item effects
     if (
       hasEffect &&
@@ -975,7 +1015,7 @@ export default function SidePanelSection({
   );
 
   return (
-    <div className={`py-1.5 border-border pt-0 ${className}`}>
+    <div className={cn("min-w-0", className)}>
       <div
         className={cn(
           "mb-1 flex items-center",
