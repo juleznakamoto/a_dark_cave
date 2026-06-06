@@ -466,4 +466,38 @@ describe("resolveLogPanelMessage", () => {
       "Unter den Trümmern findest du eine verwitterte Schriftrolle mit Weisheit, um in dieser unbarmherzigen Welt zu überleben.",
     );
   });
+
+  it("re-localizes achievement claim logs via logKey in English UI", async () => {
+    await i18n.changeLanguage("en");
+    const text = resolveLogPanelMessage({
+      id: "achievement-basic-0-hunter-123",
+      message: "Hunter Achievement complete: +500 Wood",
+      logKey: "achievements.completeLog",
+      logVars: {
+        achievementId: "basic-0-hunter",
+        fallbackName: "Hunter",
+        reward_wood: 500,
+      },
+      timestamp: 0,
+      type: "event",
+    });
+    expect(text).toBe("Hunter Achievement complete: +500 Wood");
+  });
+
+  it("re-localizes gambler practice logs via logKey in German UI", async () => {
+    await i18n.changeLanguage("de");
+    const text = resolveLogPanelMessage(
+      systemEntry(
+        "You won the practice round (no gold at stake). 2 of 3 practice games remaining.",
+        {
+          id: "gambler-practice-round-123",
+          logKey: "gambler.practiceWinRemaining",
+          logVars: { remaining: 2, total: 3 },
+        },
+      ),
+    );
+    expect(text).toBe(
+      "Du hast die Übungsrunde gewonnen (kein Gold im Einsatz). Noch 2 von 3 Übungsspielen.",
+    );
+  });
 });

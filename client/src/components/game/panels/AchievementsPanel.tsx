@@ -66,7 +66,7 @@ function AchievementRowComponent({
   const handleClaim = () => {
     if (canClaim) {
       claimAchievement(row.achievementId, {
-        name: row.label,
+        fallbackName: row.englishLabel,
         reward: row.reward,
         rewards: row.rewards,
         maxCount: row.maxCount,

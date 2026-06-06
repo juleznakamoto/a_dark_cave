@@ -15,7 +15,7 @@ function escapeRegExp(value: string): string {
 }
 
 /** Interpolate `{key}` and i18next-style `{{key}}` placeholders in fallback strings. */
-function interpolateFallback(
+export function interpolateFallback(
   fallback: string,
   options: TranslateOptions,
 ): string {

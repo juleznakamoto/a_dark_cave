@@ -907,8 +907,8 @@ export default function SidePanel() {
   };
 
   return (
-    <ScrollArea className="h-full max-h-[36vh] md:max-h-full px-3 pt-2 pb-1.5 pl-0 pr-0">
-      <div className="pb-1 grid grid-cols-[auto_minmax(10.5rem,0.9fr)] gap-x-1.5 items-start min-w-0">
+    <ScrollArea className="h-full max-h-[36vh] md:max-h-full w-full pt-2 pb-1.5 pl-0 pr-2">
+      <div className="pb-1 w-full grid grid-cols-[auto_1fr] gap-x-1.5 items-start min-w-0">
         {/* First column - Resources */}
         <div className={cn("min-w-0", SIDE_PANEL_SECTION_SPACING_CLASS)}>
           {resourceItems.length > 0 && shouldShowSection("resources") && (
@@ -957,7 +957,7 @@ export default function SidePanel() {
         </div>
 
         {/* Second column - Everything else */}
-        <div className={cn("min-w-0", SIDE_PANEL_SECTION_SPACING_CLASS)}>
+        <div className={cn("min-w-0 w-full", SIDE_PANEL_SECTION_SPACING_CLASS)}>
           {toolItems.length > 0 && shouldShowSection("tools") && (
             <SidePanelSection
               sectionId="tools"

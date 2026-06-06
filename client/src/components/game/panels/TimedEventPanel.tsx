@@ -41,6 +41,7 @@ import {
   resolveTimedEventCatalogId,
 } from "@/i18n/eventDisplay";
 import { localizeEventChoices } from "@/i18n/eventText";
+import { interpolateFallback } from "@/i18n/resolveGameText";
 import { getEventChoiceAffordance } from "@/i18n/eventAffordance";
 import { getEventChoiceCostBreakdown } from "@/game/rules/index";
 import type { MerchantTradeData } from "@/game/types";
@@ -832,16 +833,29 @@ export default function TimedEventPanel() {
                     : outcome === "win"
                       ? "gambler.practiceWinComplete"
                       : "gambler.practiceLoseComplete";
-                const msg = t(msgKey, {
+                const practiceFallbacks: Record<string, string> = {
+                  "gambler.practiceWinRemaining":
+                    "You won the practice round (no gold at stake). {{remaining}} of {{total}} practice games remaining.",
+                  "gambler.practiceLoseRemaining":
+                    "You lost the practice round (no gold at stake). {{remaining}} of {{total}} practice games remaining.",
+                  "gambler.practiceWinComplete":
+                    "You won the practice round (no gold at stake). Practice complete — you may place a gold wager.",
+                  "gambler.practiceLoseComplete":
+                    "You lost the practice round (no gold at stake). Practice complete — you may place a gold wager.",
+                };
+                const logVars = {
                   remaining: next,
                   total: GAMBLER_TUTORIAL_PLAYS,
-                });
+                };
+                const fallback = practiceFallbacks[msgKey];
                 useGameStore.setState((s) => ({
                   log: [
                     ...s.log,
                     {
                       id: `gambler-practice-round-${Date.now()}`,
-                      message: msg,
+                      message: interpolateFallback(fallback, logVars),
+                      logKey: msgKey,
+                      logVars,
                       timestamp: Date.now(),
                       type: "system" as const,
                     },

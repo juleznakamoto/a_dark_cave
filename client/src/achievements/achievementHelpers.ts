@@ -1,11 +1,16 @@
 import { useGameStore } from "@/game/state";
 import type { AchievementChartConfig } from "./achievementTypes";
-import { getAchievementLabel, tWithFallback } from "@/i18n/resolveGameText";
+import {
+  getAchievementLabel,
+  interpolateFallback,
+} from "@/i18n/resolveGameText";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
 
 export interface AchievementRow {
   segmentId: string;
   label: string;
+  /** English config label — used as save fallback for log re-localization. */
+  englishLabel: string;
   currentCount: number;
   maxCount: number;
   achievementId: string;
@@ -72,6 +77,7 @@ export function getAchievementRows(
       rows.push({
         segmentId: seg.segmentId,
         label: getAchievementLabel(config.idPrefix, seg.segmentId, seg.label),
+        englishLabel: seg.label,
         currentCount,
         maxCount: seg.maxCount,
         achievementId,
@@ -89,7 +95,12 @@ export function getAchievementRows(
 /** Claims an achievement: grants all rewards, logs, updates claimedAchievements. */
 export function claimAchievement(
   achievementId: string,
-  segment: { name: string; reward?: number; rewards?: Record<string, number>; maxCount: number }
+  segment: {
+    fallbackName: string;
+    reward?: number;
+    rewards?: Record<string, number>;
+    maxCount: number;
+  },
 ): void {
   const BTP = useGameStore.getState().BTP || 0;
   const rewards = computeAchievementRewards(segment, BTP);
@@ -101,18 +112,28 @@ export function claimAchievement(
   }
 
   const rewardText = formatRewardsTooltip(rewards);
+  const logTemplate = "{{name}} Achievement complete: {{rewards}}";
+  const logVars: Record<string, string | number> = {
+    achievementId,
+    fallbackName: segment.fallbackName,
+    ...Object.fromEntries(
+      Object.entries(rewards)
+        .filter(([, amount]) => amount > 0)
+        .map(([resource, amount]) => [`reward_${resource}`, amount]),
+    ),
+  };
 
   useGameStore.setState((s) => ({
     log: [
       ...s.log,
       {
         id: `achievement-${achievementId}-${Date.now()}`,
-        message: tWithFallback(
-          "ui",
-          "achievements.completeLog",
-          "{{name}} Achievement complete: {{rewards}}",
-          { name: segment.name, rewards: rewardText },
-        ),
+        message: interpolateFallback(logTemplate, {
+          name: segment.fallbackName,
+          rewards: rewardText,
+        }),
+        logKey: "achievements.completeLog",
+        logVars,
         timestamp: Date.now(),
         type: "event" as const,
       },

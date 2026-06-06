@@ -11,12 +11,14 @@ import {
 import { SUPPORTED_LOCALES } from "@/i18n/locales";
 import { UPGRADE_LABELS, type UpgradeKey } from "@/game/buttonUpgrades";
 import {
+  getAchievementLabel,
   getActionLogMessage,
   getStartScreenNarrativeLogMessage,
   inferCruelModeFromStartNarrativeMessage,
   START_NARRATIVE_LOG_KEY,
   tWithFallback,
 } from "@/i18n/resolveGameText";
+import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
 import { resolveEventMessage } from "@/i18n/eventText";
 import enEvents from "@/i18n/locales/en/events.json";
 import enLog from "@/i18n/locales/en/ui/log.json";
@@ -24,6 +26,58 @@ import i18n from "./index";
 import type { GameState } from "@shared/schema";
 
 type LogVars = Record<string, string | number>;
+
+/** ui namespace keys stored on log entries that are not under ui:log.* */
+function isUiRootCatalogKey(catalogKey: string): boolean {
+  return (
+    catalogKey.startsWith("auth.") ||
+    catalogKey.startsWith("achievements.") ||
+    catalogKey.startsWith("idleMode.") ||
+    catalogKey.startsWith("gambler.practice")
+  );
+}
+
+function parseAchievementId(
+  achievementId: string,
+): { chartPrefix: string; segmentId: string } | null {
+  const dash = achievementId.indexOf("-");
+  if (dash <= 0) return null;
+  return {
+    chartPrefix: achievementId.slice(0, dash),
+    segmentId: achievementId.slice(dash + 1),
+  };
+}
+
+function rebuildRewardTextFromLogVars(vars?: LogVars): string {
+  if (!vars) return "";
+  const rewards: Record<string, number> = {};
+  for (const [key, value] of Object.entries(vars)) {
+    if (key.startsWith("reward_")) {
+      rewards[key.slice("reward_".length)] = Number(value);
+    }
+  }
+  const entries = Object.entries(rewards).filter(([, amount]) => amount > 0);
+  if (entries.length === 0) return "";
+  return entries
+    .map(([key, amount]) => `+${amount} ${formatTooltipResourceName(key)}`)
+    .join(", ");
+}
+
+function expandUiCatalogLogVars(
+  catalogKey: string,
+  vars: LogVars | undefined,
+): LogVars | undefined {
+  if (catalogKey === "achievements.completeLog" && vars?.achievementId != null) {
+    const parsed = parseAchievementId(String(vars.achievementId));
+    const fallbackName = String(vars.fallbackName ?? "");
+    const name =
+      parsed != null
+        ? getAchievementLabel(parsed.chartPrefix, parsed.segmentId, fallbackName)
+        : fallbackName;
+    return { name, rewards: rebuildRewardTextFromLogVars(vars) };
+  }
+  return vars;
+}
 
 function uiLogKey(key: string): string {
   return `log.${key}`;
@@ -51,11 +105,16 @@ function resolveUiCatalogLog(
   fallback: string,
   vars?: LogVars,
 ): string {
-  if (catalogKey.startsWith("auth.")) {
-    const translated = tWithFallback("ui", catalogKey, fallback, vars);
+  if (isUiRootCatalogKey(catalogKey)) {
+    const expanded = expandUiCatalogLogVars(catalogKey, vars);
+    const translated = tWithFallback("ui", catalogKey, fallback, expanded);
     return translated.trim() ? translated : fallback;
   }
-  return translateLogEntry(catalogKey, fallback, vars);
+  return translateLogEntry(
+    catalogKey,
+    fallback,
+    expandLogVars(catalogKey, vars, fallback),
+  );
 }
 
 function resolveSkillName(skillKey: string): string {
