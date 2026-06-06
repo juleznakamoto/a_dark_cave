@@ -782,7 +782,7 @@ export default function VillagePanel() {
 
     return (
       <div key={jobId} className="flex items-center justify-between">
-        <div className="flex items-center gap-1">
+        <div className="flex h-5 items-center gap-0.5">
           <Button
             onMouseDown={() =>
               currentCount > 0 &&
@@ -804,31 +804,17 @@ export default function VillagePanel() {
             disabled={currentCount === 0}
             variant="ghost"
             size="xs"
-            className="h-5 w-5 flex items-center justify-center no-hover text-lg text-center"
+            className="h-5 w-5 shrink-0 p-0 text-sm font-normal leading-none no-hover"
             style={{ touchAction: "manipulation" }}
             button_id={`unassign-${jobId}`}
           >
             -
           </Button>
-          <div
-            className={cn(
-              "flex items-center justify-center tabular-nums",
-              showCap ? "min-w-[2.75rem]" : "w-5",
-            )}
-          >
-            {showCap ? (
-              <span
-                className={cn(
-                  "text-xs",
-                  atCap && "text-muted-foreground",
-                )}
-              >
-                {currentCount}/{cap}
-              </span>
-            ) : (
-              <AnimatedCounter value={currentCount} />
-            )}
-          </div>
+          <AnimatedCounter
+            value={currentCount}
+            suffix={showCap ? `/${cap}` : undefined}
+            className={atCap ? "text-muted-foreground" : undefined}
+          />
           <Button
             onMouseDown={() =>
               canAssignMore && startHold(() => assignVillager(jobId), false)
@@ -849,7 +835,7 @@ export default function VillagePanel() {
             disabled={!canAssignMore}
             variant="ghost"
             size="xs"
-            className="h-5 w-5 flex items-center justify-center no-hover text-lg text-center"
+            className="h-5 w-5 shrink-0 p-0 text-sm font-normal leading-none no-hover"
             style={{ touchAction: "manipulation" }}
             button_id={`assign-${jobId}`}
           >

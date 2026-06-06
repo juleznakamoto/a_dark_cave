@@ -3,15 +3,24 @@
 
 import { MotionValue, motion, useSpring, useTransform } from "framer-motion";
 import { useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 const fontSize = 14;
 const padding = 4;
 const height = fontSize + padding;
 
-export function AnimatedCounter({ value }: { value: number }) {
+export function AnimatedCounter({
+  value,
+  suffix,
+  className,
+}: {
+  value: number;
+  suffix?: string;
+  className?: string;
+}) {
   // Determine how many digits we need
   const digitCount = value === 0 ? 1 : Math.floor(Math.log10(Math.abs(value))) + 1;
-  
+
   // Generate digit places dynamically
   const digits = [];
   for (let i = digitCount - 1; i >= 0; i--) {
@@ -21,12 +30,21 @@ export function AnimatedCounter({ value }: { value: number }) {
   return (
     <div
       translate="no"
-      style={{ fontSize }}
-      className="notranslate flex overflow-hidden leading-none tabular-nums"
+      className={cn(
+        "notranslate flex items-center leading-none tabular-nums",
+        className,
+      )}
     >
-      {digits.map((place) => (
-        <Digit key={place} place={place} value={value} />
-      ))}
+      <div style={{ fontSize }} className="flex overflow-hidden">
+        {digits.map((place) => (
+          <Digit key={place} place={place} value={value} />
+        ))}
+      </div>
+      {suffix != null && (
+        <span style={{ fontSize }} className="leading-none">
+          {suffix}
+        </span>
+      )}
     </div>
   );
 }
