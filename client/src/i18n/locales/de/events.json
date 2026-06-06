@@ -44,7 +44,7 @@
   "blacksmithHammerChoice": {
     "choices": {
       "leaveHammer": {
-        "label": "In Ruhe lassen"
+        "label": "Liegen lassen"
       },
       "takeHammer": {
         "label": "Hammer nehmen"
@@ -133,7 +133,7 @@
         "label": "Nichts tun"
       },
       "leaveBelt": {
-        "label": "In Ruhe lassen"
+        "label": "Liegen lassen"
       },
       "takeBelt": {
         "label": "Nehmen"
@@ -811,7 +811,7 @@
         "label": "Behalten"
       },
       "leaveScepter": {
-        "label": "In Ruhe lassen"
+        "label": "Liegen lassen"
       }
     },
     "log": {
@@ -1696,7 +1696,7 @@
         "label": "Behalten"
       },
       "leaveRing": {
-        "label": "In Ruhe lassen"
+        "label": "Liegen lassen"
       }
     },
     "log": {
@@ -1753,7 +1753,7 @@
         "label": "Behalten"
       },
       "leaveFlute": {
-        "label": "In Ruhe lassen"
+        "label": "Liegen lassen"
       }
     },
     "log": {
@@ -2302,7 +2302,7 @@
     },
     "log": {
       "outcome0": "Du hebst die Dielen an und findest ein seltsames Amulett, das leise flüstert.",
-      "outcome1": "Du entscheidest dich, die Hütte in Ruhe zu lassen. Bis zum Morgen verblasst das Flüstern, doch eine Kälte bleibt in der Luft."
+      "outcome1": "Du entscheidest dich, die Hütte in Ruhe zu lassen. Bis zum Morgen verschwindet das Flüstern, doch eine Kälte bleibt in der Luft."
     },
     "message": "In der Nacht scheinen leise Flüstern unter dem Boden einer der Hütten aufzusteigen. Die Dorfbewohner sind unruhig. Untersuchst du es?",
     "title": "Flüstern unter der Hütte"
