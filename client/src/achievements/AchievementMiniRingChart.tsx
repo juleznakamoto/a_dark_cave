@@ -24,7 +24,6 @@ export default function AchievementMiniRingChart({
   hideProgress = false,
 }: Props) {
   const state = useGameStore.getState();
-  const claimedAchievements = useGameStore((s) => s.claimedAchievements || []);
   void useGameStore(
     (s) =>
       (s.story?.heavySleeperHours ?? 0) + (s.totalFocusEarned ?? 0),
@@ -80,7 +79,6 @@ export default function AchievementMiniRingChart({
               currentStartAngle = startA - segmentDegrees - paddingAngle;
 
               const achievementId = `${config.idPrefix}-${seg.segmentId}`;
-              const isClaimed = claimedAchievements.includes(achievementId);
               const isFull = currentCount >= seg.maxCount;
               const fill = isFull
                 ? (COMPLETE_COLOR[config.idPrefix] ??
