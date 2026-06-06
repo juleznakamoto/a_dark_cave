@@ -94,9 +94,9 @@ const EFFECT_TOOLTIP_SECTIONS = new Set<SidePanelSectionId>([
 /** Shared layout for resource name + amount + production delta / change hint. */
 const RESOURCE_ROW_GRID_CLASS =
   "grid w-fit max-w-full pr-1 grid-cols-[5rem_4rem_2.5rem] items-baseline gap-x-1";
-/** Stats / bastion: label + value without stretching across the panel column. */
-const STAT_ROW_GRID_CLASS =
-  "grid w-fit max-w-full grid-cols-[auto_auto] items-center gap-x-2 leading-none";
+/** Label + amount only — same column widths as resources (no delta column). */
+const LABEL_VALUE_ROW_GRID_CLASS =
+  "grid w-fit max-w-full pr-1 grid-cols-[5rem_4rem] items-baseline gap-x-1";
 /** Uniform vertical gap between side-panel sections (applied on column parents). */
 export const SIDE_PANEL_SECTION_SPACING_CLASS = "space-y-2";
 const RESOURCE_ROW_TEXT_CLASS = "text-xs leading-none";
@@ -538,8 +538,6 @@ export default function SidePanelSection({
     const isHighlighted = highlightedResources.has(item.id);
 
     const isResourcesSection = sectionId === "resources";
-    const isIconCenteredLabelSection =
-      sectionId === "stats" || sectionId === "bastion";
     const tabForProductionColors = activeTab ?? storeActiveTab;
     const isCriticalZeroResource =
       isResourcesSection &&
@@ -547,50 +545,6 @@ export default function SidePanelSection({
       typeof item.value === "number" &&
       item.value === 0 &&
       (gameState.current_population ?? 0) > 0;
-
-    const labelContent = (
-      <span
-        className={cn(
-          "text-gray-400",
-          isResourcesSection
-            ? RESOURCE_ROW_TEXT_CLASS
-            : isIconCenteredLabelSection
-              ? "text-xs leading-none"
-              : "text-xs",
-          item.icon !== undefined &&
-          (isResourcesSection
-            ? "inline-flex items-baseline gap-1"
-            : isIconCenteredLabelSection
-              ? "inline-flex items-center gap-1"
-              : "inline-flex items-start gap-1"),
-          newItemPulseClass,
-          isHighlighted && "!text-gray-100",
-          isCriticalZeroResource && "resource-critical-blink",
-        )}
-      >
-        {item.icon !== undefined && (
-          <span
-            className={cn(
-              "font-noto-symbols-2",
-              isIconCenteredLabelSection
-                ? "inline-flex w-3 shrink-0 items-center justify-center leading-none translate-y-px"
-                : "mr-1",
-              item.iconColor,
-            )}
-          >
-            {item.icon}
-          </span>
-        )}
-        {typeof item.label === "string" && item.label.includes("↓") ? (
-          <>
-            {item.label.replace(" ↓", "")}
-            <span className="text-red-800 ml-1">↓</span>
-          </>
-        ) : (
-          item.label
-        )}
-      </span>
-    );
 
     const showValue =
       sectionId === undefined
@@ -611,8 +565,39 @@ export default function SidePanelSection({
     // Stats always show numeric values (legacy English-title fallback).
     const showItemValue =
       showValue || (sectionId === undefined && title === "Stats");
+    const usesLabelValueGridLayout = showItemValue;
 
-    const usesResourceRowLayout = isResourcesSection && showItemValue;
+    const labelContent = (
+      <span
+        className={cn(
+          "text-gray-400",
+          usesLabelValueGridLayout
+            ? RESOURCE_ROW_TEXT_CLASS
+            : "text-xs",
+          item.icon !== undefined &&
+          (usesLabelValueGridLayout
+            ? "inline-flex items-baseline gap-1"
+            : "inline-flex items-start gap-1"),
+          newItemPulseClass,
+          isHighlighted && "!text-gray-100",
+          isCriticalZeroResource && "resource-critical-blink",
+        )}
+      >
+        {item.icon !== undefined && (
+          <span className={cn("font-noto-symbols-2", item.iconColor)}>
+            {item.icon}
+          </span>
+        )}
+        {typeof item.label === "string" && item.label.includes("↓") ? (
+          <>
+            {item.label.replace(" ↓", "")}
+            <span className="text-red-800 ml-1">↓</span>
+          </>
+        ) : (
+          item.label
+        )}
+      </span>
+    );
 
     const showProductionDelta =
       isResourcesSection &&
@@ -629,7 +614,7 @@ export default function SidePanelSection({
 
     const valueCellClassName = cn(
       "text-right font-mono tabular-nums whitespace-nowrap text-gray-300",
-      usesResourceRowLayout && RESOURCE_ROW_TEXT_CLASS,
+      usesLabelValueGridLayout && RESOURCE_ROW_TEXT_CLASS,
       isAnimated && !isCriticalZeroResource && "text-green-600 font-bold",
       isDecreaseAnimated && !isCriticalZeroResource && "text-red-600 font-bold",
       isMaxAnimated && !isCriticalZeroResource && "text-yellow-600 font-bold",
@@ -639,11 +624,9 @@ export default function SidePanelSection({
     );
 
     const productionDeltaCellClassName = cn(
-      usesResourceRowLayout && RESOURCE_DELTA_SLOT_CLASS,
-      usesResourceRowLayout && RESOURCE_ROW_TEXT_CLASS,
-      !usesResourceRowLayout &&
-      "text-right font-mono tabular-nums whitespace-nowrap font-normal",
-      usesResourceRowLayout && "font-normal",
+      isResourcesSection && RESOURCE_DELTA_SLOT_CLASS,
+      isResourcesSection && RESOURCE_ROW_TEXT_CLASS,
+      isResourcesSection && "font-normal",
       tabForProductionColors !== "village" && "text-muted-foreground",
       tabForProductionColors === "village" &&
       (item.productionDelta ?? 0) > 0 &&
@@ -655,16 +638,11 @@ export default function SidePanelSection({
 
     const resourceRowClassName = cn(
       "min-w-0 transition-all duration-300",
-      usesResourceRowLayout
-        ? RESOURCE_ROW_GRID_CLASS
-        : isIconCenteredLabelSection && showItemValue
-          ? STAT_ROW_GRID_CLASS
-          : cn(
-            "flex gap-1.5 justify-between leading-tight",
-            isIconCenteredLabelSection && item.icon !== undefined
-              ? "items-center"
-              : "items-start",
-          ),
+      usesLabelValueGridLayout
+        ? isResourcesSection
+          ? RESOURCE_ROW_GRID_CLASS
+          : LABEL_VALUE_ROW_GRID_CLASS
+        : "flex gap-1.5 justify-between leading-tight items-start",
       itemAnimationClass,
     );
 
@@ -682,7 +660,7 @@ export default function SidePanelSection({
       </span>
     );
 
-    const resourceThirdColumn = usesResourceRowLayout ? (
+    const resourceThirdColumn = isResourcesSection ? (
       <div className="relative shrink-0 text-right">
         {productionDeltaCell}
         {onResourceChange ? (
@@ -694,21 +672,37 @@ export default function SidePanelSection({
       </div>
     ) : null;
 
-    const itemContent = (
+    const labelValueCells = usesLabelValueGridLayout ? (
+      <>
+        <span className={valueCellClassName}>{displayValue}</span>
+        {resourceThirdColumn}
+      </>
+    ) : null;
+
+    const renderLabelValueRow = (tooltip?: React.ReactNode) => (
       <div data-testid={item.testId} className={resourceRowClassName}>
-        <div className="min-w-0">{labelContent}</div>
-        {usesResourceRowLayout ? (
-          <>
-            <span className={valueCellClassName}>{displayValue}</span>
-            {resourceThirdColumn}
-          </>
-        ) : showItemValue ? (
-          <span className={cn(valueCellClassName, "shrink-0")}>
-            {displayValue}
-          </span>
-        ) : null}
+        <div className="min-w-0">
+          {tooltip ? (
+            <TooltipWrapper
+              tooltip={tooltip}
+              tooltipId={item.id}
+              disabled
+              tooltipContentClassName="max-w-xs"
+              onMouseEnter={() => handleTooltipHover(item.id)}
+              onMouseLeave={() => handleTooltipLeave(item.id)}
+              className={sidePanelTooltipTriggerClass}
+            >
+              {labelContent}
+            </TooltipWrapper>
+          ) : (
+            labelContent
+          )}
+        </div>
+        {labelValueCells}
       </div>
     );
+
+    const itemContent = renderLabelValueRow();
 
     // If this item has effects, wrap it in a tooltip with item effects
     if (
@@ -854,33 +848,7 @@ export default function SidePanelSection({
     if (sectionId === "combatItems") {
       const combatItemTooltip = renderItemTooltip(item.id, "weapon");
       if (combatItemTooltip) {
-        return (
-          <div
-            key={item.id}
-            data-testid={item.testId}
-            className={cn(
-              "mr-1 flex min-w-0 items-center justify-between gap-x-1 leading-tight transition-all duration-300",
-              itemAnimationClass,
-            )}
-          >
-            <TooltipWrapper
-              tooltip={combatItemTooltip}
-              tooltipId={item.id}
-              disabled
-              tooltipContentClassName="max-w-xs"
-              onMouseEnter={() => handleTooltipHover(item.id)}
-              onMouseLeave={() => handleTooltipLeave(item.id)}
-              className={sidePanelTooltipTriggerClass}
-            >
-              {labelContent}
-            </TooltipWrapper>
-            {showItemValue && (
-              <span className={cn(valueCellClassName, "shrink-0")}>
-                {displayValue}
-              </span>
-            )}
-          </div>
-        );
+        return <div key={item.id}>{renderLabelValueRow(combatItemTooltip)}</div>;
       }
     }
 
@@ -897,36 +865,31 @@ export default function SidePanelSection({
         ) : (
           item.tooltip
         );
+
+      if (usesLabelValueGridLayout) {
+        return <div key={item.id}>{renderLabelValueRow(tooltipContent)}</div>;
+      }
+
       return (
         <div
           key={item.id}
           data-testid={item.testId}
           className={cn(
-            "mr-1 min-w-0 transition-all duration-300",
-            isIconCenteredLabelSection && showItemValue
-              ? STAT_ROW_GRID_CLASS
-              : "flex leading-tight justify-between items-center gap-x-1",
+            "mr-1 flex min-w-0 items-start justify-between gap-x-1 leading-tight transition-all duration-300",
             itemAnimationClass,
           )}
         >
-          <div className="min-w-0">
-            <TooltipWrapper
-              tooltip={tooltipContent}
-              tooltipId={item.id}
-              disabled
-              tooltipContentClassName="max-w-xs"
-              onMouseEnter={() => handleTooltipHover(item.id)}
-              onMouseLeave={() => handleTooltipLeave(item.id)}
-              className={sidePanelTooltipTriggerClass}
-            >
-              {labelContent}
-            </TooltipWrapper>
-          </div>
-          {showItemValue && (
-            <span className={cn(valueCellClassName, "shrink-0")}>
-              {displayValue}
-            </span>
-          )}
+          <TooltipWrapper
+            tooltip={tooltipContent}
+            tooltipId={item.id}
+            disabled
+            tooltipContentClassName="max-w-xs"
+            onMouseEnter={() => handleTooltipHover(item.id)}
+            onMouseLeave={() => handleTooltipLeave(item.id)}
+            className={sidePanelTooltipTriggerClass}
+          >
+            {labelContent}
+          </TooltipWrapper>
         </div>
       );
     }
