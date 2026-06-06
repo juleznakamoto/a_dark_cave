@@ -19,7 +19,7 @@ export default function GameTabs() {
   ]);
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full w-full flex flex-col">
       <SidePanel />
     </div>
   );

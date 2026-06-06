@@ -94,9 +94,9 @@ const EFFECT_TOOLTIP_SECTIONS = new Set<SidePanelSectionId>([
 /** Shared layout for resource name + amount + production delta / change hint. */
 const RESOURCE_ROW_GRID_CLASS =
   "grid w-fit max-w-full pr-1 grid-cols-[5rem_4rem_2.5rem] items-baseline gap-x-1";
-/** Label + amount only — same column widths as resources (no delta column). */
+/** Label + amount — fills column width; value sits at the right edge. */
 const LABEL_VALUE_ROW_GRID_CLASS =
-  "grid w-fit max-w-full pr-1 grid-cols-[5rem_4rem] items-baseline gap-x-1";
+  "grid w-full min-w-0 grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-2";
 /** Uniform vertical gap between side-panel sections (applied on column parents). */
 export const SIDE_PANEL_SECTION_SPACING_CLASS = "space-y-2";
 const RESOURCE_ROW_TEXT_CLASS = "text-xs leading-none";
@@ -930,7 +930,7 @@ export default function SidePanelSection({
   );
 
   return (
-    <div className={cn("min-w-0", className)}>
+    <div className={cn("min-w-0 w-full", className)}>
       <div
         className={cn(
           "mb-1 flex items-center",
