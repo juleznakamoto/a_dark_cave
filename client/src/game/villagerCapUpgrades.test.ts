@@ -16,9 +16,10 @@ import {
 } from "./villagerCapUpgrades";
 
 function baseState(
-  overrides: Partial<GameState> = {},
-): GameState {
+  overrides: Partial<GameState> & { devMode?: boolean } = {},
+): GameState & { devMode?: boolean } {
   return {
+    devMode: true,
     flags: { villagerCapsEnabled: true },
     villagerCapUpgrades: {},
     buildings: { clerksHut: 1 },
@@ -66,6 +67,13 @@ describe("villagerCapUpgrades", () => {
     });
     expect(areVillagerCapsEnabled(state)).toBe(false);
     expect(getVillagerCapForJob(state, "hunter")).toBe(Infinity);
+  });
+
+  it("returns Infinity outside dev mode even when villagerCapsEnabled is set", () => {
+    const state = baseState({ devMode: false });
+    expect(areVillagerCapsEnabled(state)).toBe(false);
+    expect(getVillagerCapForJob(state, "hunter")).toBe(Infinity);
+    expect(canUpgradeVillagerCap(state, "hunter")).toBe(false);
   });
 
   it("computes upgrade costs as 50 * (level + 1)", () => {
@@ -121,8 +129,9 @@ describe("villagerCapUpgrades", () => {
       baseState({
         villagerCapUpgrades: {},
         resources: { insight: 100 } as GameState["resources"],
-      }) as Partial<GameState>,
+      }) as Partial<GameState> & { devMode?: boolean },
     );
+    useGameStore.setState({ devMode: true });
 
     const ok = useGameStore.getState().upgradeVillagerCap("hunter");
     expect(ok).toBe(true);

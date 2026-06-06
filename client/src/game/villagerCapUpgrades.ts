@@ -71,10 +71,15 @@ for (const [groupId, config] of Object.entries(VILLAGER_CAP_GROUPS) as [
   }
 }
 
-export function areVillagerCapsEnabled(
-  state: Pick<GameState, "flags">,
-): boolean {
-  return state.flags?.villagerCapsEnabled === true;
+export type VillagerCapGateState = Pick<GameState, "flags"> & {
+  devMode?: boolean;
+};
+
+/** New-game flag + dev build only until the feature ships broadly. */
+export function areVillagerCapsEnabled(state: VillagerCapGateState): boolean {
+  return (
+    state.devMode === true && state.flags?.villagerCapsEnabled === true
+  );
 }
 
 export function getGroupForJob(
@@ -103,7 +108,7 @@ export function getVillagerCapForLevel(level: number): number {
 }
 
 export function getVillagerCapForGroup(
-  state: Pick<GameState, "flags" | "villagerCapUpgrades">,
+  state: Pick<GameState, "villagerCapUpgrades"> & VillagerCapGateState,
   groupId: VillagerCapGroupId,
 ): number {
   if (!areVillagerCapsEnabled(state)) return Infinity;
@@ -111,7 +116,7 @@ export function getVillagerCapForGroup(
 }
 
 export function getVillagerCapForJob(
-  state: Pick<GameState, "flags" | "villagerCapUpgrades">,
+  state: Pick<GameState, "villagerCapUpgrades"> & VillagerCapGateState,
   jobId: keyof GameState["villagers"],
 ): number {
   if (!areVillagerCapsEnabled(state)) return Infinity;
@@ -126,7 +131,8 @@ export function getNextCapUpgradeCost(level: number): number {
 }
 
 export function canUpgradeVillagerCap(
-  state: Pick<GameState, "flags" | "villagerCapUpgrades" | "resources">,
+  state: Pick<GameState, "villagerCapUpgrades" | "resources"> &
+    VillagerCapGateState,
   groupId: VillagerCapGroupId,
 ): boolean {
   if (!areVillagerCapsEnabled(state)) return false;

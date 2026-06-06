@@ -222,7 +222,7 @@ export function addFreeVillagersWithinCap(
 }
 
 export function assignVillagerToJob(
-  state: GameState,
+  state: GameState & { devMode?: boolean },
   job: keyof GameState['villagers']
 ): Partial<GameState> {
   if (state.villagers.free <= 0) return {};

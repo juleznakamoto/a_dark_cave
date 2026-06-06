@@ -5,10 +5,11 @@ export const tradersDaughterEvents: Record<string, GameEvent> = {
   traders_daughter: {
     id: "traders_daughter",
     condition: (state: GameState) =>
+      state.story?.seen?.traderSettled === true &&
       (state.resources.food ?? 0) > 500 &&
       (state.buildings.tradePost ?? 0) >= 1 &&
       !state.triggeredEvents.traders_daughter_helped,
-    timeProbability: 30,
+    timeProbability: 30,
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
@@ -55,7 +56,7 @@ export const tradersDaughterEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.triggeredEvents?.traders_daughter_helped === true &&
       state.triggeredEvents?.traders_gratitude_used !== true,
-    timeProbability: 2,
+    timeProbability: 2,
     priority: 3,
     repeatable: false,
     showAsTimedTab: true,
