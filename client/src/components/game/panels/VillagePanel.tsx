@@ -45,10 +45,7 @@ import {
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import {
-  ANIMATED_COUNTER_HEIGHT,
-  AnimatedCounter,
-} from "@/components/ui/animated-counter";
+import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
 import { getRevealedEffectsForActionTooltip } from "@/game/rules/insightRevealTooltip";
@@ -785,13 +782,7 @@ export default function VillagePanel() {
 
     return (
       <div key={jobId} className="flex items-center justify-between">
-        <div
-          className="grid shrink-0 items-center gap-x-0.5"
-          style={{
-            height: ANIMATED_COUNTER_HEIGHT,
-            gridTemplateColumns: `${ANIMATED_COUNTER_HEIGHT}px 3.5rem ${ANIMATED_COUNTER_HEIGHT}px`,
-          }}
-        >
+        <div className="grid h-5 shrink-0 grid-cols-[1.25rem_3.5rem_1.25rem] items-center gap-x-0.5">
           <Button
             onMouseDown={() =>
               currentCount > 0 &&
@@ -813,7 +804,7 @@ export default function VillagePanel() {
             disabled={currentCount === 0}
             variant="ghost"
             size="xs"
-            className="size-[18px] shrink-0 p-0 text-[14px] font-normal leading-[18px] no-hover"
+            className="h-5 w-5 flex items-center justify-center no-hover text-lg text-center"
             style={{ touchAction: "manipulation" }}
             button_id={`unassign-${jobId}`}
           >
@@ -846,7 +837,7 @@ export default function VillagePanel() {
             disabled={!canAssignMore}
             variant="ghost"
             size="xs"
-            className="size-[18px] shrink-0 p-0 text-[14px] font-normal leading-[18px] no-hover"
+            className="h-5 w-5 flex items-center justify-center no-hover text-lg text-center"
             style={{ touchAction: "manipulation" }}
             button_id={`assign-${jobId}`}
           >
