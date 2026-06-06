@@ -43,6 +43,8 @@ import { useTranslation } from "react-i18next";
 
 const HEADER_ICON_BTN =
   "group shrink-0 p-0 w-7 h-7 flex items-center justify-center";
+const HEADER_ICON_SYMBOL_HOVER =
+  "text-neutral-300 opacity-60 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
 
 type ProfileMenuContextValue = ReturnType<typeof useProfileMenuState>;
 
@@ -499,7 +501,7 @@ export function GameHeaderControls() {
             aria-label={t("profile.leaderboard")}
             className={`${HEADER_ICON_BTN} group`}
           >
-            <span className="text-lg text-neutral-300 opacity-100">
+            <span className={`text-lg leading-none select-none ${HEADER_ICON_SYMBOL_HOVER}`}>
               ♕
             </span>
           </Button>

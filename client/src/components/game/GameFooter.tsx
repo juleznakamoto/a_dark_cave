@@ -27,8 +27,6 @@ const FOOTER_CONTROL_SVG_ICON_HOVER =
   "w-4 h-4 text-neutral-300 opacity-60 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
 const FOOTER_CONTROL_TEXT =
   `${FOOTER_CONTROL_BTN_FADE} transition-[opacity,color] group-hover:!text-red-600`;
-const FOOTER_SOCIAL_ICON =
-  "w-4 h-4 text-neutral-300 opacity-80 transition-opacity group-hover:opacity-100";
 const FOOTER_SOCIAL_LABEL =
   `${FOOTER_CONTROL_BTN_FADE} hidden sm:inline transition-[opacity,color] group-hover:!text-red-600`;
 const FOOTER_LEGAL_LINK =
@@ -97,7 +95,7 @@ export default function GameFooter() {
     !isEarlyGameplay;
 
   const socialLinkClass = `group ${FOOTER_CONTROL_BTN} flex items-center justify-center gap-1`;
-  const socialIconClass = `${FOOTER_SOCIAL_ICON}${isPaused ? " !opacity-100" : ""}`;
+  const socialIconClass = `${FOOTER_CONTROL_SVG_ICON_HOVER}${isPaused ? " !opacity-100" : ""}`;
 
   return (
     <>
