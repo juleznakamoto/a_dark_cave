@@ -781,81 +781,77 @@ export default function VillagePanel() {
       .join("|");
 
     return (
-      <div key={jobId} className="flex items-center justify-between">
-        <div className="flex h-5 shrink-0 items-center gap-x-0.5">
-          <Button
-            onMouseDown={() =>
-              currentCount > 0 &&
-              startHold(() => unassignVillager(jobId), false)
+      <div key={jobId} className="flex min-w-0 items-center">
+        <Button
+          onMouseDown={() =>
+            currentCount > 0 &&
+            startHold(() => unassignVillager(jobId), false)
+          }
+          onMouseUp={() => stopHold(false)}
+          onMouseLeave={() => stopHold(false)}
+          onTouchStart={(e) => {
+            if (currentCount > 0) {
+              e.preventDefault(); // Prevent ghost click - synthetic mouse events cause unwanted assign on nearby +
+              startHold(() => unassignVillager(jobId), true);
             }
-            onMouseUp={() => stopHold(false)}
-            onMouseLeave={() => stopHold(false)}
-            onTouchStart={(e) => {
-              if (currentCount > 0) {
-                e.preventDefault(); // Prevent ghost click - synthetic mouse events cause unwanted assign on nearby +
-                startHold(() => unassignVillager(jobId), true);
-              }
-            }}
-            onTouchEnd={(e) => {
-              if (e.cancelable) e.preventDefault();
-              stopHold(true);
-            }}
-            onTouchCancel={() => stopHold(true)}
-            disabled={currentCount === 0}
-            variant="ghost"
-            size="xs"
-            className="h-5 w-5 flex items-center justify-center no-hover text-lg text-center"
-            style={{ touchAction: "manipulation" }}
-            button_id={`unassign-${jobId}`}
-          >
-            -
-          </Button>
-          <div className="flex w-14 items-center justify-center">
-            <AnimatedCounter
-              value={currentCount}
-              className={atCap ? "text-muted-foreground" : undefined}
-            />
-          </div>
-          <Button
-            onMouseDown={() =>
-              canAssignMore && startHold(() => assignVillager(jobId), false)
-            }
-            onMouseUp={() => stopHold(false)}
-            onMouseLeave={() => stopHold(false)}
-            onTouchStart={(e) => {
-              if (canAssignMore) {
-                e.preventDefault(); // Prevent ghost click - synthetic mouse events cause unwanted actions
-                startHold(() => assignVillager(jobId), true);
-              }
-            }}
-            onTouchEnd={(e) => {
-              if (e.cancelable) e.preventDefault();
-              stopHold(true);
-            }}
-            onTouchCancel={() => stopHold(true)}
-            disabled={!canAssignMore}
-            variant="ghost"
-            size="xs"
-            className="h-5 w-5 flex items-center justify-center no-hover text-lg text-center"
-            style={{ touchAction: "manipulation" }}
-            button_id={`assign-${jobId}`}
-          >
-            +
-          </Button>
-          {showCap && (
-            <span
-              translate="no"
-              className="notranslate tabular-nums text-muted-foreground"
-              style={{
-                fontSize: ANIMATED_COUNTER_FONT_SIZE,
-                lineHeight: `${ANIMATED_COUNTER_HEIGHT}px`,
-              }}
-            >
-              /{cap}
-            </span>
-          )}
+          }}
+          onTouchEnd={(e) => {
+            if (e.cancelable) e.preventDefault();
+            stopHold(true);
+          }}
+          onTouchCancel={() => stopHold(true)}
+          disabled={currentCount === 0}
+          variant="ghost"
+          size="xs"
+          className="h-5 w-5 shrink-0 flex items-center justify-center no-hover text-lg text-center"
+          style={{ touchAction: "manipulation" }}
+          button_id={`unassign-${jobId}`}
+        >
+          -
+        </Button>
+        <div className="flex w-[3ch] shrink-0 items-center justify-center">
+          <AnimatedCounter
+            value={currentCount}
+            className={atCap ? "text-muted-foreground" : undefined}
+          />
         </div>
-        <span className="text-xs ml-1 text-left flex-1">
+        <Button
+          onMouseDown={() =>
+            canAssignMore && startHold(() => assignVillager(jobId), false)
+          }
+          onMouseUp={() => stopHold(false)}
+          onMouseLeave={() => stopHold(false)}
+          onTouchStart={(e) => {
+            if (canAssignMore) {
+              e.preventDefault(); // Prevent ghost click - synthetic mouse events cause unwanted actions
+              startHold(() => assignVillager(jobId), true);
+            }
+          }}
+          onTouchEnd={(e) => {
+            if (e.cancelable) e.preventDefault();
+            stopHold(true);
+          }}
+          onTouchCancel={() => stopHold(true)}
+          disabled={!canAssignMore}
+          variant="ghost"
+          size="xs"
+          className="h-5 w-5 shrink-0 flex items-center justify-center no-hover text-lg text-center"
+          style={{ touchAction: "manipulation" }}
+          button_id={`assign-${jobId}`}
+        >
+          +
+        </Button>
+        <span
+          translate="no"
+          className="notranslate w-[4ch] shrink-0 tabular-nums text-muted-foreground"
+          style={{
+            fontSize: ANIMATED_COUNTER_FONT_SIZE,
+            lineHeight: `${ANIMATED_COUNTER_HEIGHT}px`,
+          }}
+        >
+          {showCap ? `/${cap}` : ""}
+        </span>
+        <span className="ml-1 min-w-0 flex-1 text-left text-xs">
           {label}{" "}
           <span key={productionKey} className="text-xs text-muted-foreground">
             {productionEntries.map((prod, i) => (
