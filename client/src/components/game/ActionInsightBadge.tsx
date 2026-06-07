@@ -206,7 +206,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   const hostClassName = cn(
     showDisabledOpacity && "opacity-60",
     layout === "inline" && "inline-flex shrink-0 items-center self-center",
-    isTimedEvent && layout === "inline" && "ml-1",
+    isTimedEvent && layout === "inline" && "ml-0.5",
   );
   const hostStyle =
     layout === "overlay"
