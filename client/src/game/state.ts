@@ -1150,6 +1150,7 @@ export const createInitialState = (): GameState => ({
   // Achievements
   unlockedAchievements: [],
   claimedAchievements: [],
+  revealedAchievementTitles: [],
 
   // Reward dialog
   rewardDialog: {

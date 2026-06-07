@@ -28,6 +28,7 @@ import type { AchievementRow } from "@/achievements/achievementHelpers";
 import type { AchievementChartConfig } from "@/achievements";
 import AchievementMiniRingChart from "@/achievements/AchievementMiniRingChart";
 import { useTranslation } from "react-i18next";
+import type { GameState } from "@shared/schema";
 
 class ChartErrorBoundary extends Component<
   { children: ReactNode; unavailableLabel?: string },
@@ -66,7 +67,7 @@ function AchievementRowComponent({
   claimButtonClass: string;
 }) {
   const { t } = useTranslation("ui");
-  const gameState = useGameStore((s) => s as unknown as import("@shared/schema").GameState);
+  const gameState = useGameStore((s) => s as unknown as GameState);
   const revealAchievementTitle = useGameStore((s) => s.revealAchievementTitle);
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
   const canClaim = row.isFull && !row.isClaimed;
