@@ -160,6 +160,9 @@ export default function SidePanelSection({
   const storeActiveTab = useGameStore((state) => state.activeTab);
   const hoveredTooltips = useGameStore((state) => state.hoveredTooltips || {});
   const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
+  const setHighlightedResources = useGameStore(
+    (state) => state.setHighlightedResources,
+  );
   const highlightedResourcesRaw = useGameStore(
     (state) => state.highlightedResources,
   );
@@ -487,6 +490,8 @@ export default function SidePanelSection({
         tooltipId={tooltipId}
         disabled
         tooltipContentClassName="max-w-xs"
+        onMouseEnter={() => setHighlightedResources(["insight"])}
+        onMouseLeave={() => setHighlightedResources([])}
         className={cn(
           "inline-flex shrink-0 self-baseline translate-y-[0.05em]",
           !affordable && "opacity-60",
