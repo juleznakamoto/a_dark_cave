@@ -352,10 +352,10 @@ function renderBuildingItemTooltip(
         </span>
         {showInsightCapLevel && (
           <span
-            className={`ml-auto !text-base inline-flex items-center gap-0 font-noto-symbols-2 tabular-nums ${INSIGHT_TEXT_CLASS}`}
+            className={`ml-auto !text-sm inline-flex items-center gap-0 font-noto-symbols-2 tabular-nums ${INSIGHT_TEXT_CLASS}`}
           >
             <span aria-hidden>{INSIGHT_GLYPH}</span>
-            <span>{insightCapLevel}</span>
+            <span className="font-light text-base">{insightCapLevel}</span>
           </span>
         )}
       </div>
