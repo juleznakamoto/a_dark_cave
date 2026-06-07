@@ -1,9 +1,10 @@
 /** Normal play: one exit-intent show per milestone once `playTime` reaches it. */
 export const PLAYLIGHT_EXIT_INTENT_MILESTONES_MS = [
-  60 * 60 * 1000,
-  120 * 60 * 1000,
-  240 * 60 * 1000,
-  360 * 60 * 1000,
+  90 * 60 * 1000,
+  150 * 60 * 1000,
+  210 * 60 * 1000,
+  270 * 60 * 1000,
+  330 * 60 * 1000,
 ] as const;
 
 export const PLAYLIGHT_EXIT_INTENT_MILESTONE_COUNT =

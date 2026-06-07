@@ -608,10 +608,10 @@ export const gameStateSchema = z.object({
    */
   socialPromptMilestoneIndex: z.number().int().min(0).max(5).default(0),
   /**
-   * Playlight exit-intent banners shown in normal play (0–4). When playTime reaches
+   * Playlight exit-intent banners shown in normal play (0–5). When playTime reaches
    * `PLAYLIGHT_EXIT_INTENT_MILESTONES_MS[index]`, one show is allowed then index increments.
    */
-  playlightExitIntentMilestoneIndex: z.number().int().min(0).max(4).default(0),
+  playlightExitIntentMilestoneIndex: z.number().int().min(0).max(5).default(0),
   /** Legacy scheduler phase (retained for save compatibility; unused for auto-open). */
   socialPromptAutoPhase: z.number().int().min(0).max(2).default(0),
   /**
