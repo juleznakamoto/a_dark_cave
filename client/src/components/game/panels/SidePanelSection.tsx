@@ -9,6 +9,7 @@ import {
   renderFortificationTooltip,
   renderItemTooltip,
 } from "@/game/rules/itemTooltips";
+import { BuildingActionBadge } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import ResourceChangeNotification from "./ResourceChangeNotification";
 import { useGameStore } from "@/game/state";
@@ -31,8 +32,6 @@ import {
   getGroupForBuildingKey,
   getNextCapUpgradeCost,
   getVillagerCapLevel,
-  INSIGHT_GLYPH,
-  INSIGHT_TEXT_CLASS,
   MAX_VILLAGER_CAP_LEVEL,
 } from "@/game/villagerCapUpgrades";
 import { getUiTooltip } from "@/i18n/tooltipLabels";
@@ -513,13 +512,11 @@ export default function SidePanelSection({
             }
           }}
           className={cn(
-            "font-noto-symbols-2 inline-flex w-[1em] items-center justify-center border-0 bg-transparent p-0 text-[14px] leading-none transition-opacity duration-200",
-            INSIGHT_TEXT_CLASS,
-            "opacity-80 hover:opacity-100",
+            "insight-action-badge-trigger relative inline-flex h-4 w-4 shrink-0 items-center justify-center border-0 bg-transparent p-0",
             affordable ? "cursor-pointer" : "cursor-not-allowed",
           )}
         >
-          {INSIGHT_GLYPH}
+          <BuildingActionBadge embedded />
         </button>
       </TooltipWrapper>
     );
