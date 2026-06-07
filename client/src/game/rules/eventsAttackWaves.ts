@@ -162,13 +162,13 @@ const ATTACK_WAVE_DEFINITIONS: Record<AttackWaveId, AttackWaveDefinition> = {
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(9),
     attack: { options: [90], cruelBonus: 30 },
-    health: { base: 1200, cruelBonus: 300 },
+    health: { base: 1200, cruelBonus: 250 },
   },
   tenthWave: {
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(10),
     attack: { options: [100], cruelBonus: 50 },
-    health: { base: 1500, cruelBonus: 300 },
+    health: { base: 1400, cruelBonus: 250 },
   },
 };
 
