@@ -17,6 +17,7 @@ import {
 import {
   BLOODFLAME_SPHERE_UPGRADES,
   BOMB_BASE_DAMAGE_BY_ID,
+  bombKnowledgeDamageBonus,
   CRUSHING_STRIKE_UPGRADES,
   POISON_ARROWS_BASE_DAMAGE,
   POISON_ARROWS_DOT_FIGHT_ROUNDS,
@@ -491,8 +492,7 @@ export default function CombatDialog({
     setUsedItemsInCombat((prev) => [...prev, item.id]);
 
     // Calculate final damage with knowledge bonus (bombs only)
-    const totalKnowledge = getTotalKnowledge(gameState);
-    const knowledgeBonus = Math.floor(totalKnowledge / 5);
+    const knowledgeBonus = bombKnowledgeDamageBonus(getTotalKnowledge(gameState));
     const finalDamage = item.damage + knowledgeBonus;
 
     if (item.id === "poison_arrows") {

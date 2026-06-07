@@ -173,7 +173,7 @@
     "statStrengthEffectBastion": "+{{value}} 堡垒攻击（力量的一半）",
     "statKnowledgeEffectMerchant": "旅行商人 {{percent}}% 折扣",
     "statKnowledgeEffectDecisionTime": "限时事件 +{{seconds}} 秒决策时间",
-    "statKnowledgeEffectCombatItems": "+{{damage}} 炸弹与毒箭伤害（每 5 知识 +1）",
+    "statKnowledgeEffectCombatItems": "+{{bombDamage}} 炸弹伤害（每 5 知识 +2），+{{arrowDamage}} 毒箭伤害（每 5 知识 +1）",
     "statMadnessEffectProduction": "−{{percent}}% 村庄产量",
     "statMadnessEffectCombat": "{{percent}}% 攻击在战斗中失败的几率",
     "statMadnessEffectDeaths": "每周期 {{percent}}% 村民因疯狂死亡的几率",

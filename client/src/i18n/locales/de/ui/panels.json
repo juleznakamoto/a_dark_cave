@@ -173,7 +173,7 @@
     "statStrengthEffectBastion": "+{{value}} Bastion-Angriff (½ Stärke)",
     "statKnowledgeEffectMerchant": "{{percent}} % Rabatt beim reisenden Händler",
     "statKnowledgeEffectDecisionTime": "+{{seconds}} s Entscheidungszeit bei zeitlich begrenzten Ereignissen",
-    "statKnowledgeEffectCombatItems": "+{{damage}} Schaden durch Bomben & Giftpfeile (+1 pro 5 Wissen)",
+    "statKnowledgeEffectCombatItems": "+{{bombDamage}} Bombenschaden (+2 pro 5 Wissen), +{{arrowDamage}} Giftpfeilschaden (+1 pro 5 Wissen)",
     "statMadnessEffectProduction": "−{{percent}} % Dorfproduktion",
     "statMadnessEffectCombat": "{{percent}} % Chance auf gescheiterte Angriffe im Kampf",
     "statMadnessEffectDeaths": "{{percent}} % Chance auf Wahnsinnstod eines Dorfbewohners pro Zyklus",

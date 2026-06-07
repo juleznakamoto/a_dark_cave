@@ -24,11 +24,12 @@ import {
   getGamblerTutorialPlaysRemaining,
 } from "@/game/gamblerSession";
 import { isStatEffectsRevealed } from "@/game/rules/insightReveal";
+import { bombKnowledgeDamageBonus } from "@/game/rules/skillUpgrades";
 
 export type TooltipStatKey = "luck" | "strength" | "knowledge" | "madness";
 
-/** Knowledge: +1 bomb / poison-arrow damage per 5 knowledge. */
-const COMBAT_ITEM_DAMAGE_PER_KNOWLEDGE = 5;
+/** Poison arrows: +1 damage per 5 knowledge (bombs use bombKnowledgeDamageBonus). */
+const POISON_ARROW_DAMAGE_PER_KNOWLEDGE = 5;
 
 /** Caps for stepped/clamped stat bonuses (shown on a muted secondary line). */
 const LUCK_CRIT_MAX_PERCENT = 25;
@@ -162,9 +163,8 @@ function getKnowledgeEffectRows(
   const knowledge = getTotalKnowledge(state);
   const discountPercent = Math.round(calculateMerchantDiscount(knowledge) * 100);
   const decisionTime = calculateKnowledgeTimeBonus(knowledge);
-  const combatItemDamage = Math.floor(
-    knowledge / COMBAT_ITEM_DAMAGE_PER_KNOWLEDGE,
-  );
+  const bombDamage = bombKnowledgeDamageBonus(knowledge);
+  const arrowDamage = Math.floor(knowledge / POISON_ARROW_DAMAGE_PER_KNOWLEDGE);
   const lockedLabel = t("sidePanel.statEffectNotUnlockedYet");
   const rows: StatEffectRow[] = [];
 
@@ -205,7 +205,8 @@ function getKnowledgeEffectRows(
       key: "combatItems",
       unlocked: true,
       primary: t("sidePanel.statKnowledgeEffectCombatItems", {
-        damage: combatItemDamage,
+        bombDamage,
+        arrowDamage,
       }),
     });
   } else {

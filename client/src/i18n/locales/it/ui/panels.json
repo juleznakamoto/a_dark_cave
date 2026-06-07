@@ -173,7 +173,7 @@
     "statStrengthEffectBastion": "+{{value}} attacco Bastione (½ Forza)",
     "statKnowledgeEffectMerchant": "{{percent}} % sconto dal mercante viaggiatore",
     "statKnowledgeEffectDecisionTime": "+{{seconds}} s tempo di decisione negli eventi a tempo",
-    "statKnowledgeEffectCombatItems": "+{{damage}} danni da bombe e frecce avvelenate (+1 ogni 5 Conoscenza)",
+    "statKnowledgeEffectCombatItems": "+{{bombDamage}} danni da bombe (+2 ogni 5 Conoscenza), +{{arrowDamage}} danni da frecce avvelenate (+1 ogni 5 Conoscenza)",
     "statMadnessEffectProduction": "−{{percent}} % produzione del villaggio",
     "statMadnessEffectCombat": "{{percent}} % probabilità che l'attacco fallisca in combattimento",
     "statMadnessEffectDeaths": "{{percent}} % probabilità di morte per follia di un villico per ciclo",

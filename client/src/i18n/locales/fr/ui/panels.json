@@ -173,7 +173,7 @@
     "statStrengthEffectBastion": "+{{value}} d'attaque de la Bastion (½ de Force)",
     "statKnowledgeEffectMerchant": "{{percent}} % de réduction chez le marchand itinérant",
     "statKnowledgeEffectDecisionTime": "+{{seconds}} s de temps de décision dans les événements chronométrés",
-    "statKnowledgeEffectCombatItems": "+{{damage}} de dégâts des bombes et flèches empoisonnées (+1 par 5 de Savoir)",
+    "statKnowledgeEffectCombatItems": "+{{bombDamage}} de dégâts des bombes (+2 par 5 de Savoir), +{{arrowDamage}} de dégâts des flèches empoisonnées (+1 par 5 de Savoir)",
     "statMadnessEffectProduction": "−{{percent}} % de production du village",
     "statMadnessEffectCombat": "{{percent}} % de chances d'échec de l'attaque au combat",
     "statMadnessEffectDeaths": "{{percent}} % de chances de mort par folie d'un villageois par cycle",

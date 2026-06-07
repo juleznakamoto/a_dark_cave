@@ -173,7 +173,7 @@
     "statStrengthEffectBastion": "+{{value}} ataque da Bastilha (½ Força)",
     "statKnowledgeEffectMerchant": "{{percent}}% desconto no mercador viajante",
     "statKnowledgeEffectDecisionTime": "+{{seconds}}s tempo de decisão em eventos cronometrados",
-    "statKnowledgeEffectCombatItems": "+{{damage}} dano de bombas e flechas envenenadas (+1 a cada 5 Conhecimento)",
+    "statKnowledgeEffectCombatItems": "+{{bombDamage}} dano de bombas (+2 a cada 5 Conhecimento), +{{arrowDamage}} dano de flechas envenenadas (+1 a cada 5 Conhecimento)",
     "statMadnessEffectProduction": "−{{percent}}% produção da vila",
     "statMadnessEffectCombat": "{{percent}}% chance de o ataque falhar em combate",
     "statMadnessEffectDeaths": "{{percent}}% de chance de morte por loucura de um aldeão por ciclo",

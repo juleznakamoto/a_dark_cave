@@ -12,6 +12,7 @@ import { getBoneTotemsCost } from "./forestSacrificeActions";
 import {
   BLOODFLAME_SPHERE_UPGRADES,
   BOMB_BASE_DAMAGE_BY_ID,
+  bombKnowledgeDamageBonus,
   CRUSHING_STRIKE_UPGRADES,
   POISON_ARROWS_BASE_DAMAGE,
   POISON_ARROWS_DOT_FIGHT_ROUNDS,
@@ -789,7 +790,7 @@ function formatBombCombatTooltip(
   baseDamage: number,
 ): string {
   const knowledge = getTotalKnowledge(state) || 0;
-  const knowledgeBonus = Math.floor(knowledge / 5);
+  const knowledgeBonus = bombKnowledgeDamageBonus(knowledge);
   const total = baseDamage + knowledgeBonus;
   const lines = [
     getUiTooltip("baseDamage", "Base Damage: {{value}}", { value: baseDamage }),

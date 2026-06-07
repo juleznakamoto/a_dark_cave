@@ -173,7 +173,7 @@
     "statStrengthEffectBastion": "+{{value}} de ataque de la Bastión (½ de Fuerza)",
     "statKnowledgeEffectMerchant": "{{percent}} % de descuento en el mercader ambulante",
     "statKnowledgeEffectDecisionTime": "+{{seconds}} s de tiempo de decisión en eventos temporizados",
-    "statKnowledgeEffectCombatItems": "+{{damage}} de daño de bombas y flechas envenenadas (+1 por cada 5 de Conocimiento)",
+    "statKnowledgeEffectCombatItems": "+{{bombDamage}} de daño de bombas (+2 por cada 5 de Conocimiento), +{{arrowDamage}} de daño de flechas envenenadas (+1 por cada 5 de Conocimiento)",
     "statMadnessEffectProduction": "−{{percent}} % de producción del pueblo",
     "statMadnessEffectCombat": "{{percent}} % de probabilidad de que el ataque falle en combate",
     "statMadnessEffectDeaths": "{{percent}} % de probabilidad de muerte por locura de un aldeano por ciclo",

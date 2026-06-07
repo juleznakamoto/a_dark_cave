@@ -173,7 +173,7 @@
     "statStrengthEffectBastion": "+{{value}} атака бастиона (½ силы)",
     "statKnowledgeEffectMerchant": "{{percent}} % скидка у странствующего торговца",
     "statKnowledgeEffectDecisionTime": "+{{seconds}} с на принятие решения в событиях на время",
-    "statKnowledgeEffectCombatItems": "+{{damage}} урон бомб и отравленных стрел (+1 за 5 знаний)",
+    "statKnowledgeEffectCombatItems": "+{{bombDamage}} урон бомб (+2 за 5 знаний), +{{arrowDamage}} урон отравленных стрел (+1 за 5 знаний)",
     "statMadnessEffectProduction": "−{{percent}} % производства деревни",
     "statMadnessEffectCombat": "{{percent}} % шанс провала атаки в бою",
     "statMadnessEffectDeaths": "{{percent}} % шанс смерти жителя от безумия за цикл",

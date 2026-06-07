@@ -124,12 +124,17 @@ export function poisonArrowsDamagePerTick(totalKnowledge: number): number {
   return POISON_ARROWS_BASE_DAMAGE + Math.floor(totalKnowledge / 5);
 }
 
-/** Per-bomb base damage before knowledge (+1 damage per 5 total knowledge); used when thrown in combat. */
+/** Per-bomb base damage before knowledge bonus; used when thrown in combat. */
 export const BOMB_BASE_DAMAGE_BY_ID = {
   ember_bomb: 20,
   ashfire_bomb: 40,
   void_bomb: 60,
 } as const satisfies Record<string, number>;
+
+/** Extra bomb damage from total knowledge: +2 per 5 knowledge (floored). */
+export function bombKnowledgeDamageBonus(totalKnowledge: number): number {
+  return Math.floor(totalKnowledge / 5) * 2;
+}
 
 // Hunting Skill upgrade configurations (from Ashwraith Huntress)
 export const HUNTING_SKILL_UPGRADES = [
