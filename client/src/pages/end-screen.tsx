@@ -2,12 +2,17 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Hero from "@/components/ui/animated-shader-hero";
 import { initPlaylight, markPlaylightDiscoveryUserInitiated } from "@/lib/playlight";
+import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
 import { useGameStore } from "@/game/state";
 import { useTranslation } from "react-i18next";
 
 export default function EndScreenPage() {
   const { t } = useTranslation("ui");
   const [isCruelModeRun, setIsCruelModeRun] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    mountNotoSansSymbols2FontFace();
+  }, []);
 
   useEffect(() => {
     void (async () => {
