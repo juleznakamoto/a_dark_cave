@@ -1,4 +1,5 @@
 import { useId } from "react";
+import { INSIGHT_GLYPH } from "@/game/villagerCapUpgrades";
 import { cn } from "@/lib/utils";
 
 type BuildingActionBadgeProps = {
@@ -25,7 +26,11 @@ export function BuildingActionBadge({
       )}
       aria-hidden="true"
     >
-      <span className="building-action-badge__idle" />
+      <span className="building-action-badge__idle">
+        <span className="building-action-badge__glyph font-noto-symbols-2">
+          {INSIGHT_GLYPH}
+        </span>
+      </span>
       <svg
         className="building-action-badge__svg"
         width="16"

@@ -231,8 +231,18 @@ body {
 }
 
 .building-action-badge__idle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: inherit;
-  background: #2563eb;
+  background: transparent;
+}
+
+.building-action-badge__glyph {
+  font-size: 11px;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
 }
 
 .building-action-badge__svg {
