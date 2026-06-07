@@ -586,8 +586,7 @@ export const forestTradeActions: Record<string, Action> = {
 };
 
 /** Forest buy-trade cooldown (seconds); knowledge no longer reduces this. */
-const FOREST_TRADE_COOLDOWN_SEC = 30;
-const FOREST_TRADE_SILVER_FOR_GOLD_COOLDOWN_SEC = 5;
+const FOREST_TRADE_COOLDOWN_SEC = 5;
 
 export function handleTradeAction(
   actionId: string,
@@ -597,20 +596,15 @@ export function handleTradeAction(
   const effectUpdates = applyActionEffects(actionId, state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-  const actualCooldown =
-    actionId === "tradeSilverForGold"
-      ? FOREST_TRADE_SILVER_FOR_GOLD_COOLDOWN_SEC
-      : FOREST_TRADE_COOLDOWN_SEC;
-
   result.stateUpdates.cooldowns = {
     ...result.stateUpdates.cooldowns,
-    [actionId]: actualCooldown,
+    [actionId]: FOREST_TRADE_COOLDOWN_SEC,
   };
 
   // Update initialCooldowns to match the custom cooldown for animation persistence
   (result.stateUpdates as any).initialCooldowns = {
     ...(result.stateUpdates as any).initialCooldowns,
-    [actionId]: actualCooldown,
+    [actionId]: FOREST_TRADE_COOLDOWN_SEC,
   };
 
   return result;
