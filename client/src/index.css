@@ -237,16 +237,20 @@ body {
   background: transparent;
 }
 
-/* Idle triangle is an SVG (not a font glyph) so it sits in the exact same
-   geometric center as the hover/playing blob — font metrics no longer offset it. */
-.building-action-badge__idle-triangle {
-  display: block;
-  width: 100%;
-  height: 100%;
+.building-action-badge__glyph {
+  line-height: 1;
   pointer-events: none;
   user-select: none;
-  /* Stay readable on dark action buttons. */
+  /* Glyph-only idle (no blue disc); stay readable on dark action buttons. */
   filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.85));
+}
+
+.building-action-badge--sm .building-action-badge__glyph {
+  font-size: 14px;
+}
+
+.building-action-badge--lg .building-action-badge__glyph {
+  font-size: 17px;
 }
 
 .building-action-badge__svg {

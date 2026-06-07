@@ -1,6 +1,13 @@
 import { useId } from "react";
-import { INSIGHT_TEXT_CLASS } from "@/game/villagerCapUpgrades";
+import { INSIGHT_GLYPH, INSIGHT_TEXT_CLASS } from "@/game/villagerCapUpgrades";
 import { cn } from "@/lib/utils";
+
+/**
+ * Tailwind classes to nudge insight badges vertically next to adjacent text.
+ * Tune here (e.g. `translate-y-[0.1em]`, `pb-[0.05em]`, `mt-[1px]`).
+ * Applied on inline badge buttons (stats, timed event, side-panel buildings).
+ */
+export const INSIGHT_BADGE_ALIGN_CLASS = "translate-y-[0.12em]";
 
 type BuildingActionBadgeProps = {
   /** Force the hover animation (e.g. during Insight reveal cooldown). */
@@ -33,14 +40,14 @@ export function BuildingActionBadge({
       aria-hidden="true"
     >
       <span className="building-action-badge__idle">
-        <svg
-          className={cn("building-action-badge__idle-triangle", INSIGHT_TEXT_CLASS)}
-          viewBox="0 0 100 100"
-          focusable="false"
-          aria-hidden="true"
+        <span
+          className={cn(
+            "building-action-badge__glyph font-noto-symbols-2 inline-flex items-center justify-center",
+            INSIGHT_TEXT_CLASS,
+          )}
         >
-          <polygon points="50,14 86,70 14,70" fill="currentColor" />
-        </svg>
+          {INSIGHT_GLYPH}
+        </span>
       </span>
       <svg
         className="building-action-badge__svg"

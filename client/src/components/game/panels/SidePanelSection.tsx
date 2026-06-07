@@ -9,7 +9,10 @@ import {
   renderFortificationTooltip,
   renderItemTooltip,
 } from "@/game/rules/itemTooltips";
-import { BuildingActionBadge } from "@/components/game/BuildingActionBadge";
+import {
+  BuildingActionBadge,
+  INSIGHT_BADGE_ALIGN_CLASS,
+} from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import ResourceChangeNotification from "./ResourceChangeNotification";
 import { useGameStore } from "@/game/state";
@@ -230,6 +233,7 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
         }}
         className={cn(
           "insight-action-badge-trigger relative inline-flex h-[1em] w-[1em] items-center justify-center border-0 bg-transparent p-0 text-[14px] leading-none",
+          INSIGHT_BADGE_ALIGN_CLASS,
           isDisabled ? "cursor-not-allowed" : "cursor-pointer",
         )}
       >

@@ -2,7 +2,10 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { BuildingActionBadge } from "@/components/game/BuildingActionBadge";
+import {
+  BuildingActionBadge,
+  INSIGHT_BADGE_ALIGN_CLASS,
+} from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
   canProlongTimedEventTab,
@@ -247,7 +250,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
             "insight-action-badge-trigger relative items-center justify-center border-0 bg-transparent p-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
             layout === "overlay"
               ? "flex h-full w-full"
-              : "inline-flex h-5 w-5 shrink-0",
+              : cn("inline-flex h-5 w-5 shrink-0", INSIGHT_BADGE_ALIGN_CLASS),
           )}
           aria-label={costTooltip}
           aria-busy={playing}
