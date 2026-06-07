@@ -489,10 +489,11 @@ export default function SidePanelSection({
         tooltipId={tooltipId}
         disabled
         tooltipContentClassName="max-w-xs"
+        tooltipTriggerAsChild
         onMouseEnter={() => setHighlightedResources(["insight"])}
         onMouseLeave={() => setHighlightedResources([])}
         className={cn(
-          "inline-flex shrink-0 self-center",
+          "inline-flex shrink-0 items-center self-center",
           !affordable && "opacity-60",
         )}
       >

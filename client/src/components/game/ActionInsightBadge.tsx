@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BuildingActionBadge } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
@@ -107,6 +107,15 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   const isRevealing = isInsightRevealAnimating;
   const playing = canShow && !isExecuting && isRevealing;
 
+  // Once the reveal animation has started, we must never fall back to the idle
+  // triangle: when the animation timer ends, `playing` flips to false a moment
+  // before the store marks the effect as revealed (which unmounts this badge).
+  // That race briefly re-shows the idle glyph; suppress it.
+  const revealStartedRef = useRef(false);
+  useEffect(() => {
+    if (isRevealing) revealStartedRef.current = true;
+  }, [isRevealing]);
+
   useEffect(() => {
     if (!isRevealing) return;
     const id = setInterval(() => forceUpdate((n) => n + 1), 100);
@@ -147,6 +156,9 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   );
 
   if (!canShow || isExecuting) return null;
+  // Reveal animation finished but the store hasn't unmounted us yet — hide
+  // rather than flash the idle triangle for a frame.
+  if (revealStartedRef.current && !isRevealing) return null;
 
   const canAfford = isTimedEvent
     ? canProlongTimedEventTab(state, effectiveTimedRemaining)
