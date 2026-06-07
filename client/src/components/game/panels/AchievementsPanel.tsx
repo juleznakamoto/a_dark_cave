@@ -142,16 +142,15 @@ function AchievementTitleInsightBadge({
           canAfford: affordable || playing,
           playing,
           className: cn(
-            "inline-flex h-[1em] w-[1em] text-[14px] leading-none",
+            "inline-flex h-5 w-5 shrink-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
             INSIGHT_BADGE_ALIGN_CLASS,
-            isDisabled && !playing ? "cursor-not-allowed" : "cursor-pointer",
           ),
         })}
       >
         <BuildingActionBadge
           key={playing ? "reveal" : "idle"}
           embedded
-          size="sm"
+          size="lg"
           playing={playing}
         />
       </button>
