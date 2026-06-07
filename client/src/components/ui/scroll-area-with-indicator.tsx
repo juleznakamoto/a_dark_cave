@@ -88,12 +88,10 @@ const ScrollAreaWithIndicator = React.forwardRef<
         <ScrollBar orientation="vertical" />
         {shouldShow && (
           <div
-            className="absolute bottom-0 left-0 right-0 h-8 pointer-events-none flex items-end justify-center pb-1 transition-opacity duration-300 z-10"
+            className="absolute bottom-1 left-0 right-0 pointer-events-none flex justify-center z-10"
             aria-hidden
           >
-            <div className="bg-gradient-to-t from-background via-background/80 to-transparent w-full h-full flex items-end justify-center">
-              <ChevronDown className="w-4 h-4 text-muted-foreground/70 animate-bounce" />
-            </div>
+            <ChevronDown className="h-4 w-4 text-muted-foreground/70 animate-bounce" />
           </div>
         )}
       </ScrollAreaPrimitive.Root>

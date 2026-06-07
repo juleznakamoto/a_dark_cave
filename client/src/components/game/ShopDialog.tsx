@@ -1386,15 +1386,15 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             className={cn(
               showSecurePurchasePrompt
                 ? "[--adc-dialog-max-w:28rem] max-h-[80vh] z-[70] gap-2"
-                : "[--adc-dialog-max-w:56rem] flex h-[80vh] min-h-0 flex-col gap-3 overflow-hidden z-[70] p-6",
+                : "[--adc-dialog-max-w:56rem] flex h-[82vh] min-h-0 flex-col gap-3 overflow-hidden z-[70] p-6",
             )}
             style={
               showSecurePurchasePrompt
                 ? undefined
                 : {
-                  height: "80vh",
-                  maxHeight: "80vh",
-                  minHeight: "80vh",
+                  height: "82vh",
+                  maxHeight: "82vh",
+                  minHeight: "82vh",
                 }
             }
             onPointerDownOutside={(e) => e.preventDefault()}
