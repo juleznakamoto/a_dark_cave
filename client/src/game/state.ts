@@ -1288,7 +1288,12 @@ function scheduleWhenDialogClear(
         return;
       }
       if (wasBlocked) {
-        setTimeout(onOpen, DIALOG_HANDOFF_DELAY_MS);
+        // Re-enter tryOpen after handoff so a modal that reopened in the gap is
+        // respected; the queued dialog keeps polling until it can actually show.
+        setTimeout(() => {
+          wasBlocked = false;
+          tryOpen();
+        }, DIALOG_HANDOFF_DELAY_MS);
         return;
       }
       onOpen();
@@ -1321,9 +1326,9 @@ function openEventDialogNow(
 }
 
 /**
- * After `initialDelayMs`, opens the event dialog only when the reward dialog is closed;
+ * After `initialDelayMs`, opens the event dialog only when no blocking modal is up;
  * otherwise polls every {@link DIALOG_DEFER_POLL_MS} and waits {@link DIALOG_HANDOFF_DELAY_MS}
- * after the reward closes before opening.
+ * after the path is clear before opening (same deferral semantics as reward scheduling).
  */
 function scheduleEventDialogWhenClear(
   get: () => GameStore,
@@ -1333,7 +1338,7 @@ function scheduleEventDialogWhenClear(
 ): void {
   scheduleWhenDialogClear(
     get,
-    (store) => store.rewardDialog.isOpen,
+    isModalDialogOpen,
     () => openEventDialogNow(set, event),
     initialDelayMs,
   );

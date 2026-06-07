@@ -816,3 +816,53 @@ describe("Disgraced Prior assignment does not bypass affordability", () => {
     expect(state.resources.iron).toBe(100);
   });
 });
+
+describe("deferred dialog scheduling", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    useGameStore.getState().initialize();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("keeps a deferred event queued until every blocking modal has cleared", () => {
+    const blockingEvent = {
+      id: "disgracedPriorOffer-test",
+      message: "Blocking",
+      timestamp: Date.now(),
+      type: "event" as const,
+      choices: [{ id: "offerShelter", label: "Shelter", effect: () => ({}) }],
+    };
+    const deferredEvent = {
+      id: "forestTribeHelpRequest-test",
+      message: "Deferred",
+      timestamp: Date.now(),
+      type: "event" as const,
+      choices: [{ id: "accept_help", label: "Offer help", effect: () => ({}) }],
+    };
+
+    useGameStore.setState({
+      rewardDialog: { isOpen: true, data: { rewards: {}, variant: "success" } },
+      eventDialog: { isOpen: true, currentEvent: blockingEvent },
+    });
+
+    useGameStore.getState().setEventDialog(true, deferredEvent);
+    useGameStore.getState().setRewardDialog(false);
+
+    vi.advanceTimersByTime(10_000);
+
+    expect(useGameStore.getState().eventDialog.currentEvent?.id).toBe(
+      blockingEvent.id,
+    );
+
+    useGameStore.getState().setEventDialog(false);
+    vi.advanceTimersByTime(3000 + 200 + 50);
+
+    expect(useGameStore.getState().eventDialog.isOpen).toBe(true);
+    expect(useGameStore.getState().eventDialog.currentEvent?.id).toBe(
+      deferredEvent.id,
+    );
+  });
+});

@@ -465,7 +465,10 @@ export function startGameLoop() {
           playTimeMs,
           promptState.socialPromptMilestoneIndex ?? 0,
         );
-        if (milestoneToOpen !== null) {
+        // Only open when no other blocking modal is up (fresh state — may differ from
+        // frame-start IsDialogOpen if an event fired earlier this tick). When blocked,
+        // leave socialPromptMilestoneIndex unchanged so the milestone retries until shown.
+        if (milestoneToOpen !== null && !isModalDialogOpen(promptState)) {
           useGameStore.setState({
             socialPromptDialogOpen: true,
             socialPromptMilestoneIndex: milestoneToOpen + 1,

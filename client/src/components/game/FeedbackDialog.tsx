@@ -63,7 +63,7 @@ export default function FeedbackDialog() {
                       <FooterSocialIcon
                         platform={platform}
                         variant="brand"
-                        className="h-6 w-6"
+                        className="h-6 w-6 transition-opacity md:opacity-90 md:group-hover:opacity-100"
                       />
                       <span className="text-xs font-medium">{label}</span>
                     </a>
