@@ -492,7 +492,7 @@ export default function SidePanelSection({
         onMouseEnter={() => setHighlightedResources(["insight"])}
         onMouseLeave={() => setHighlightedResources([])}
         className={cn(
-          "inline-flex shrink-0 self-baseline translate-y-[0.05em]",
+          "inline-flex shrink-0 self-center",
           !affordable && "opacity-60",
         )}
       >
@@ -516,7 +516,7 @@ export default function SidePanelSection({
             affordable ? "cursor-pointer" : "cursor-not-allowed",
           )}
         >
-          <BuildingActionBadge embedded />
+          <BuildingActionBadge embedded size="sm" />
         </button>
       </TooltipWrapper>
     );
@@ -906,7 +906,7 @@ export default function SidePanelSection({
                 : ""
             }`}
         >
-          <span className="inline-flex min-w-0 max-w-full items-baseline gap-0.5">
+          <span className="inline-flex min-w-0 max-w-full items-center gap-0.5">
             <TooltipWrapper
               tooltip={renderItemTooltip(item.id, "building")}
               tooltipId={item.id}

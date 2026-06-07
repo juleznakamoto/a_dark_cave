@@ -26,7 +26,7 @@ import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
 import { cn } from "@/lib/utils";
 import type { GameState } from "@shared/schema";
 
-const BADGE_SIZE_PX = 16;
+const BADGE_SIZE_PX = 20;
 const PROLONG_MINUTES = TIMED_EVENT_TAB_PROLONG_MS / 60_000;
 const STAT_EFFECT_PULSE_IDS = ["luck", "strength", "knowledge", "madness"] as const;
 
@@ -197,8 +197,8 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
     layout === "overlay"
       ? {
         position: "absolute" as const,
-        bottom: "-7px",
-        right: "-7px",
+        bottom: "-9px",
+        right: "-9px",
         width: BADGE_SIZE_PX,
         height: BADGE_SIZE_PX,
         zIndex: 30,
@@ -235,7 +235,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
             "insight-action-badge-trigger relative items-center justify-center border-0 bg-transparent p-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
             layout === "overlay"
               ? "flex h-full w-full"
-              : "inline-flex h-4 w-4 shrink-0",
+              : "inline-flex h-5 w-5 shrink-0",
           )}
           aria-label={costTooltip}
           aria-busy={playing}
@@ -250,6 +250,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
             key={playing ? "reveal" : "idle"}
             playing={playing}
             embedded
+            size="lg"
           />
         </button>
       </TooltipWrapper>

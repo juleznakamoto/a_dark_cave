@@ -7,11 +7,14 @@ type BuildingActionBadgeProps = {
   playing?: boolean;
   /** When true, badge fills its parent instead of self-anchoring with absolute CSS. */
   embedded?: boolean;
+  /** `sm` = side-panel building row; `lg` = action overlays and header badges. */
+  size?: "sm" | "lg";
 };
 
 export function BuildingActionBadge({
   playing = false,
   embedded = false,
+  size = "lg",
 }: BuildingActionBadgeProps) {
   const id = useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const maskId = `building-action-badge-mask-${id}`;
@@ -21,6 +24,9 @@ export function BuildingActionBadge({
     <span
       className={cn(
         "building-action-badge",
+        size === "sm"
+          ? "building-action-badge--sm"
+          : "building-action-badge--lg",
         embedded && "building-action-badge--embedded",
         playing && "building-action-badge--playing",
       )}
