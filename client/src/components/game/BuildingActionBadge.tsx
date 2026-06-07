@@ -17,6 +17,27 @@ export const INSIGHT_BADGE_BLOB_ALIGN_CLASS_SM = "-translate-y-[0.14em]";
 /** Stats header, timed-event tab, and action-button overlays (`size="lg"`). */
 export const INSIGHT_BADGE_BLOB_ALIGN_CLASS_LG = "-translate-y-[0.14em]";
 
+/** Shared insight badge button: single-layer opacity (no nested badge opacity). */
+export function getInsightBadgeTriggerClassName({
+  canAfford,
+  playing,
+  className,
+}: {
+  canAfford: boolean;
+  playing: boolean;
+  className?: string;
+}) {
+  return cn(
+    "insight-action-badge-trigger relative items-center justify-center border-0 bg-transparent p-0 transition-opacity duration-200",
+    className,
+    playing && "opacity-100",
+    !playing && canAfford && "opacity-80 hover:opacity-100",
+    !playing &&
+    !canAfford &&
+    "opacity-60 hover:opacity-70 insight-action-badge-trigger--unaffordable",
+  );
+}
+
 type BuildingActionBadgeProps = {
   /** Force the hover animation (e.g. during Insight reveal cooldown). */
   playing?: boolean;

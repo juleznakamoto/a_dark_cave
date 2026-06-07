@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   BuildingActionBadge,
+  getInsightBadgeTriggerClassName,
   INSIGHT_BADGE_ALIGN_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
@@ -173,11 +174,9 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
     ? !timedTimerUsable || !canAfford || playing
     : !canAfford || playing;
 
-  // Match Stats header badge: full opacity during the 3s insight reveal animation (`playing`).
-  // Only dim when idle and unaffordable (timed tab also when the decision timer is unusable).
-  const showDisabledOpacity =
-    !playing &&
-    (isTimedEvent ? !timedTimerUsable || !canAfford : !canAfford);
+  const canAffordForDisplay = isTimedEvent
+    ? timedTimerUsable && canAfford
+    : canAfford;
 
   const tooltipId = isTimedEvent
     ? "timed-event-insight-prolong"
@@ -204,7 +203,6 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   };
 
   const hostClassName = cn(
-    showDisabledOpacity && "opacity-60",
     layout === "inline" && "inline-flex shrink-0 items-center self-center",
     isTimedEvent && layout === "inline" && "ml-0.5",
   );
@@ -247,10 +245,16 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
         <button
           type="button"
           className={cn(
-            "insight-action-badge-trigger relative items-center justify-center border-0 bg-transparent p-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
-            layout === "overlay"
-              ? "flex h-full w-full"
-              : cn("inline-flex h-5 w-5 shrink-0", INSIGHT_BADGE_ALIGN_CLASS),
+            getInsightBadgeTriggerClassName({
+              canAfford: canAffordForDisplay,
+              playing,
+              className: cn(
+                "cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
+                layout === "overlay"
+                  ? "flex h-full w-full"
+                  : cn("inline-flex h-5 w-5 shrink-0", INSIGHT_BADGE_ALIGN_CLASS),
+              ),
+            }),
           )}
           aria-label={costTooltip}
           aria-busy={playing}
