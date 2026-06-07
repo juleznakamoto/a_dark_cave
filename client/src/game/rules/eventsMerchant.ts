@@ -3,6 +3,7 @@ import {
   getResourceName,
   tWithFallback,
 } from "@/i18n/resolveGameText";
+import { getUiTooltip } from "@/i18n/tooltipLabels";
 import { bookEffects, clothingEffects } from "./effects";
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
@@ -676,6 +677,20 @@ function getToolTradeLabelFallback(trade: {
     default:
       return item;
   }
+}
+
+/** Madness removed when the player buys and drinks a Clarity Elixir from the merchant. */
+export const CLARITY_ELIXIR_MADNESS_REDUCTION = 2;
+
+export function getMerchantTradeEffectTooltipLine(
+  trade: Pick<MerchantTradeData, "buyItem">,
+): string | null {
+  if (trade.buyItem === "clarity_elixir") {
+    return getUiTooltip("buildings.madnessReduction", "-{{amount}} Madness", {
+      amount: CLARITY_ELIXIR_MADNESS_REDUCTION,
+    });
+  }
+  return null;
 }
 
 const toolTrades = [

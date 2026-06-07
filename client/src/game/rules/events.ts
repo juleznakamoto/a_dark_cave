@@ -59,6 +59,7 @@ import {
   merchantEvents,
   generateMerchantChoices,
   isMerchantTradeCurrentlyAvailable,
+  CLARITY_ELIXIR_MADNESS_REDUCTION,
 } from "./eventsMerchant";
 import { madnessEvents } from "./eventsMadness";
 import { caveEvents } from "./eventsCave";
@@ -555,7 +556,9 @@ export class EventManager {
               (state.story?.seen?.clarityElixirPurchases as number) ?? 0;
             stateChanges.stats = {
               ...state.stats,
-              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 2,
+              madnessFromEvents:
+                (state.stats.madnessFromEvents || 0) -
+                CLARITY_ELIXIR_MADNESS_REDUCTION,
             };
             stateChanges.story = {
               ...stateChanges.story,

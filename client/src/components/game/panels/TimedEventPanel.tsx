@@ -13,7 +13,7 @@ import {
 } from "@/game/state";
 import { Button } from "@/components/ui/button";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
-import { merchantTooltip } from "@/game/rules/tooltips";
+import { getMerchantTradeEffectTooltipLine } from "@/game/rules/eventsMerchant";
 import { EventChoice, type LogEntry } from "@/game/rules/events";
 import { logger } from "@/lib/logger";
 import {
@@ -585,8 +585,13 @@ export default function TimedEventPanel() {
                 </Button>
               );
 
+              const merchantEffectLine =
+                isMerchantEvent && tradeChoice.buyItem
+                  ? getMerchantTradeEffectTooltipLine(tradeChoice)
+                  : null;
+
               const tooltipContent =
-                costText || showSuccessTooltip ? (
+                costText || showSuccessTooltip || merchantEffectLine ? (
                   <div className="text-xs whitespace-nowrap">
                     {costText && (
                       <>
@@ -610,9 +615,11 @@ export default function TimedEventPanel() {
                         )}
                       </>
                     )}
-                    {costText && showSuccessTooltip && (
-                      <div className="border-t border-border my-1" />
-                    )}
+                    {costText &&
+                      (showSuccessTooltip || merchantEffectLine) && (
+                        <div className="border-t border-border my-1" />
+                      )}
+                    {merchantEffectLine && <div>{merchantEffectLine}</div>}
                     {showSuccessTooltip && (
                       <EventChoiceSuccessTooltipContent
                         choice={choice}
