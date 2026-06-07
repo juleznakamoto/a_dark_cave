@@ -811,7 +811,7 @@ export const caveExploreActions: Record<string, Action> = {
     effects: {
       "story.seen.encounteredBeyondPortal": true,
     },
-    executionTime: 30,
+    executionTime: 15,
     cooldown: 0,
   },
 };
