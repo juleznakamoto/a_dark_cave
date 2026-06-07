@@ -29,6 +29,11 @@ interface CooldownButtonProps {
   onMouseEnter?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onMouseLeave?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onAnimationTrigger?: (x: number, y: number) => void;
+  /** Play-time-based fill overlay (e.g. investments maturing on `playTime`). */
+  playTimeProgress?: {
+    startPlayTime: number;
+    endPlayTime: number;
+  } | null;
 }
 
 const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
@@ -47,6 +52,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       onMouseEnter,
       onMouseLeave,
       style,
+      playTimeProgress,
       ...props
     },
     ref
@@ -58,6 +64,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       executionDurations,
       compassGlowButton,
       insightRevealing,
+      playTime,
     } = useGameStore();
     const isFirstRenderRef = useRef<boolean>(true);
     const [, forceUpdate] = useState(0);
@@ -81,13 +88,31 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     const isInsightRevealing =
       typeof insightRevealEnd === "number" && insightRevealEnd > Date.now();
 
+    const currentPlayTime = playTime ?? 0;
+    const playTimeRange = playTimeProgress;
+    const isPlayTimeProgressing = !!(
+      playTimeRange &&
+      playTimeRange.endPlayTime > playTimeRange.startPlayTime &&
+      currentPlayTime < playTimeRange.endPlayTime
+    );
+    const playTimeProgressValue = isPlayTimeProgressing && playTimeRange
+      ? Math.min(
+        1,
+        Math.max(
+          0,
+          (currentPlayTime - playTimeRange.startPlayTime) /
+          (playTimeRange.endPlayTime - playTimeRange.startPlayTime),
+        ),
+      )
+      : 0;
+
     // Force re-renders during execution / insight reveal so progress overlay updates
     const isExecutingCheck = !!(executionStartTimes && executionStartTimes[actionIdFromProps]);
     useEffect(() => {
-      if (!isExecutingCheck && !isInsightRevealing) return;
+      if (!isExecutingCheck && !isInsightRevealing && !isPlayTimeProgressing) return;
       const id = setInterval(() => forceUpdate((n) => n + 1), 100);
       return () => clearInterval(id);
-    }, [isExecutingCheck, isInsightRevealing, actionIdFromProps]);
+    }, [isExecutingCheck, isInsightRevealing, isPlayTimeProgressing, actionIdFromProps]);
 
     // Execution state (reverse cooldown - fills as time passes)
     const executionStart = executionStartTimes?.[actionIdFromProps] || 0;
@@ -121,7 +146,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
     // Track first render for transition
     useEffect(() => {
-      if (isCoolingDown || isExecuting || isInsightRevealing) {
+      if (isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeProgressing) {
         isFirstRenderRef.current = true;
         // Allow transition after initial render (next frame)
         requestAnimationFrame(() => {
@@ -130,7 +155,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       } else {
         isFirstRenderRef.current = true;
       }
-    }, [isCoolingDown, isExecuting, isInsightRevealing]);
+    }, [isCoolingDown, isExecuting, isInsightRevealing, isPlayTimeProgressing]);
 
     const insightRevealWidth =
       isInsightRevealing && typeof insightRevealEnd === "number"
@@ -144,17 +169,19 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         : 0;
 
     // Calculate width percentage: cooldown = shrinks 100→0, execution = grows 0→100
-    const overlayWidth = isExecuting
-      ? executionProgress * 100
-      : isCoolingDown && initialCooldown > 0
-        ? (currentCooldown / initialCooldown) * 100
-        : insightRevealWidth;
+    const overlayWidth = isPlayTimeProgressing
+      ? playTimeProgressValue * 100
+      : isExecuting
+        ? executionProgress * 100
+        : isCoolingDown && initialCooldown > 0
+          ? (currentCooldown / initialCooldown) * 100
+          : insightRevealWidth;
 
     const actionExecutedRef = useRef<boolean>(false);
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (disabled && !isCoolingDown && !isExecuting && !isInsightRevealing) return;
-      if (!isCoolingDown && !isExecuting && !isInsightRevealing) {
+      if (disabled && !isCoolingDown && !isExecuting && !isInsightRevealing && !isPlayTimeProgressing) return;
+      if (!isCoolingDown && !isExecuting && !isInsightRevealing && !isPlayTimeProgressing) {
         actionExecutedRef.current = true;
 
         // Trigger animation if provided - use button center, not click position
@@ -175,7 +202,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     };
 
     const isButtonDisabled =
-      disabled || isCoolingDown || isExecuting || isInsightRevealing;
+      disabled || isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeProgressing;
     const isCompassGlowing = compassGlowButton === actionIdFromProps;
 
     const buttonId = testId || `button-${Math.random()}`;
@@ -188,7 +215,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         disabled={isButtonDisabled}
         variant={variant}
         size={size}
-        className={`relative overflow-hidden transition-all duration-200 select-none ${isCoolingDown || isInsightRevealing ? "cursor-not-allowed" : ""
+        className={`relative overflow-hidden transition-all duration-200 select-none ${isCoolingDown || isInsightRevealing || isPlayTimeProgressing ? "cursor-not-allowed" : ""
           } ${isCompassGlowing ? "compass-glow" : ""} ${className}`}
         data-testid={testId}
         button_id={props.button_id || actionIdFromProps}
@@ -196,10 +223,10 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         style={{ opacity: 1, position: 'relative', zIndex: 10, ...style }}
       >
         {/* Button content */}
-        <span className={`relative transition-opacity duration-200 ${isCoolingDown || isExecuting || isInsightRevealing || disabled ? "opacity-60" : ""}`}>{children}</span>
+        <span className={`relative transition-opacity duration-200 ${isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeProgressing || disabled ? "opacity-60" : ""}`}>{children}</span>
 
         {/* Cooldown, execution, or insight-reveal progress overlay */}
-        {(isCoolingDown || isExecuting || isInsightRevealing) && (
+        {(isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeProgressing) && (
           <div
             className={`absolute inset-0 transition-opacity duration-200 ${isInsightRevealing ? "bg-blue-400/25" : "bg-white/15"
               }`}

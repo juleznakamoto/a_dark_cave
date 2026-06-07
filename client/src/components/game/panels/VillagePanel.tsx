@@ -456,6 +456,14 @@ export default function VillagePanel() {
             actionId="invest"
             button_id="invest"
             disabled={!investReady}
+            playTimeProgress={
+              active
+                ? {
+                  startPlayTime: active.startPlayTime,
+                  endPlayTime: active.endPlayTime,
+                }
+                : null
+            }
             size="xs"
             variant="outline"
             className="hover:bg-background hover:text-foreground"

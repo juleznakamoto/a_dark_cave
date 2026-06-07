@@ -36,7 +36,7 @@ export function calculateBastionStats(state: GameState): BastionStats {
   if (state.buildings.bastion > 0) {
     const defenseBonus = Math.floor(10 * bastionMultiplier);
     const attackBonus = Math.floor(10 * bastionMultiplier);
-    const integrityBonus = Math.floor(50 * bastionMultiplier);
+    const integrityBonus = Math.floor(60 * bastionMultiplier);
 
     defense += defenseBonus;
     attackFromFortifications += attackBonus;
@@ -76,19 +76,19 @@ export function calculateBastionStats(state: GameState): BastionStats {
   if (palisadesLevel === 1) {
     // Level 1: Wooden Palisades
     defense += Math.floor(5 * palisadesMultiplier);
-    baseIntegrity += Math.floor(15 * palisadesMultiplier);
+    baseIntegrity += Math.floor(20 * palisadesMultiplier);
   } else if (palisadesLevel === 2) {
     // Level 2: Fortified Palisades
     defense += Math.floor(10 * palisadesMultiplier);
-    baseIntegrity += Math.floor(30 * palisadesMultiplier);
+    baseIntegrity += Math.floor(40 * palisadesMultiplier);
   } else if (palisadesLevel === 3) {
     // Level 3: Stone Wall
     defense += Math.floor(15 * palisadesMultiplier);
-    baseIntegrity += Math.floor(45 * palisadesMultiplier);
+    baseIntegrity += Math.floor(60 * palisadesMultiplier);
   } else if (palisadesLevel === 4) {
     // Level 4: Reinforced Wall
     const defenseBonus = Math.floor(20 * palisadesMultiplier);
-    const integrityBonus = Math.floor(60 * palisadesMultiplier);
+    const integrityBonus = Math.floor(80 * palisadesMultiplier);
 
     defense += defenseBonus;
     baseIntegrity += integrityBonus;
@@ -96,7 +96,7 @@ export function calculateBastionStats(state: GameState): BastionStats {
 
   // Fortified Moat (cannot be damaged, no integrity bonus)
   if (state.buildings.fortifiedMoat > 0) {
-    defense += 5;
+    defense += 10;
   }
 
   // Chitin Plating
