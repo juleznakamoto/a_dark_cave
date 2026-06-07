@@ -23,6 +23,7 @@ import {
 } from "@/components/game/StatEffectsTooltip";
 import {
   getInsightAmount,
+  INSIGHT_REVEAL_DURATION_MS,
   isInsightUnlocked,
   isStatEffectsRevealed,
 } from "@/game/rules/insightReveal";
@@ -136,6 +137,107 @@ interface SidePanelSectionProps {
 }
 import { logger } from "@/lib/logger";
 import { abbreviateNumber, formatNumber } from "@/lib/utils";
+
+/**
+ * Villager-cap upgrade badge shown next to a building name. Mirrors the insight
+ * reveal badges: clicking plays the blob animation for INSIGHT_REVEAL_DURATION_MS
+ * (3s) and the actual upgrade is applied when the animation resolves.
+ */
+function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
+  const gameState = useGameStore((s) => s as unknown as GameState);
+  const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
+  const [playingUntil, setPlayingUntil] = useState(0);
+  const [, forceUpdate] = useState(0);
+  const upgradeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const playing = playingUntil > Date.now();
+
+  useEffect(() => {
+    if (!playing) return;
+    const id = setTimeout(
+      () => forceUpdate((n) => n + 1),
+      Math.max(0, playingUntil - Date.now()),
+    );
+    return () => clearTimeout(id);
+  }, [playing, playingUntil]);
+
+  useEffect(
+    () => () => {
+      if (upgradeTimerRef.current) clearTimeout(upgradeTimerRef.current);
+    },
+    [],
+  );
+
+  if (!areVillagerCapsEnabled(gameState)) return null;
+
+  const groupId = getGroupForBuildingKey(buildingKey);
+  if (!groupId) return null;
+
+  const level = getVillagerCapLevel(gameState, groupId);
+  if (level >= MAX_VILLAGER_CAP_LEVEL) return null;
+  if (!isInsightUnlocked(gameState)) return null;
+
+  const cost = getNextCapUpgradeCost(level);
+  const affordable = getInsightAmount(gameState) >= cost;
+  const tooltipId = `villager-cap-upgrade-${buildingKey}`;
+  const isDisabled = !affordable || playing;
+
+  const handleClick = () => {
+    if (isDisabled) return;
+    setPlayingUntil(Date.now() + INSIGHT_REVEAL_DURATION_MS);
+    setHighlightedResources(["insight"]);
+    upgradeTimerRef.current = setTimeout(() => {
+      useGameStore.getState().upgradeVillagerCap(groupId);
+      setHighlightedResources([]);
+    }, INSIGHT_REVEAL_DURATION_MS);
+  };
+
+  return (
+    <TooltipWrapper
+      tooltip={
+        <div className="text-xs">
+          {getUiTooltip("improveForInsight", "Improve for {{cost}} Insight", {
+            cost,
+          })}
+        </div>
+      }
+      tooltipId={tooltipId}
+      disabled
+      tooltipContentClassName="max-w-xs"
+      tooltipTriggerAsChild
+      onMouseEnter={() => setHighlightedResources(["insight"])}
+      onMouseLeave={() => {
+        if (!playing) setHighlightedResources([]);
+      }}
+      className={cn(
+        "inline-flex shrink-0 items-center self-center",
+        !affordable && !playing && "opacity-60",
+      )}
+    >
+      <button
+        type="button"
+        aria-label={getUiTooltip(
+          "improveForInsight",
+          "Improve for {{cost}} Insight",
+          { cost },
+        )}
+        aria-busy={playing}
+        disabled={isDisabled}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handleClick();
+        }}
+        className={cn(
+          "insight-action-badge-trigger relative inline-flex h-[1em] w-[1em] items-center justify-center border-0 bg-transparent p-0 text-[14px] leading-none",
+          isDisabled ? "cursor-not-allowed" : "cursor-pointer",
+        )}
+      >
+        <BuildingActionBadge embedded size="sm" playing={playing} />
+      </button>
+    </TooltipWrapper>
+  );
+}
 
 export default function SidePanelSection({
   title,
@@ -462,66 +564,9 @@ export default function SidePanelSection({
     return formatNumber(value);
   };
 
-  const renderBuildingVillagerCapUpgradeButton = (buildingKey: string) => {
-    const state = gameState as unknown as GameState;
-    if (!areVillagerCapsEnabled(state)) return null;
-
-    const groupId = getGroupForBuildingKey(buildingKey);
-    if (!groupId) return null;
-
-    const level = getVillagerCapLevel(state, groupId);
-    if (level >= MAX_VILLAGER_CAP_LEVEL) return null;
-    if (!isInsightUnlocked(state)) return null;
-
-    const cost = getNextCapUpgradeCost(level);
-    const affordable = getInsightAmount(state) >= cost;
-    const tooltipId = `villager-cap-upgrade-${buildingKey}`;
-
-    return (
-      <TooltipWrapper
-        tooltip={
-          <div className="text-xs">
-            {getUiTooltip("improveForInsight", "Improve for {{cost}} Insight", {
-              cost,
-            })}
-          </div>
-        }
-        tooltipId={tooltipId}
-        disabled
-        tooltipContentClassName="max-w-xs"
-        tooltipTriggerAsChild
-        onMouseEnter={() => setHighlightedResources(["insight"])}
-        onMouseLeave={() => setHighlightedResources([])}
-        className={cn(
-          "inline-flex shrink-0 items-center self-center",
-          !affordable && "opacity-60",
-        )}
-      >
-        <button
-          type="button"
-          aria-label={getUiTooltip(
-            "improveForInsight",
-            "Improve for {{cost}} Insight",
-            { cost },
-          )}
-          disabled={!affordable}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (affordable) {
-              useGameStore.getState().upgradeVillagerCap(groupId);
-            }
-          }}
-          className={cn(
-            "insight-action-badge-trigger relative inline-flex h-[1em] w-[1em] items-center justify-center border-0 bg-transparent p-0 text-[14px] leading-none",
-            affordable ? "cursor-pointer" : "cursor-not-allowed",
-          )}
-        >
-          <BuildingActionBadge embedded size="sm" />
-        </button>
-      </TooltipWrapper>
-    );
-  };
+  const renderBuildingVillagerCapUpgradeButton = (buildingKey: string) => (
+    <BuildingCapUpgradeBadge buildingKey={buildingKey} />
+  );
 
   const renderItemWithTooltip = (item: SidePanelItem) => {
     const isAnimated = animatedItems.has(item.id);

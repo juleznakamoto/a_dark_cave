@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { INSIGHT_GLYPH, INSIGHT_TEXT_CLASS } from "@/game/villagerCapUpgrades";
+import { INSIGHT_TEXT_CLASS } from "@/game/villagerCapUpgrades";
 import { cn } from "@/lib/utils";
 
 type BuildingActionBadgeProps = {
@@ -33,14 +33,14 @@ export function BuildingActionBadge({
       aria-hidden="true"
     >
       <span className="building-action-badge__idle">
-        <span
-          className={cn(
-            "building-action-badge__glyph font-noto-symbols-2 inline-flex items-center justify-center",
-            INSIGHT_TEXT_CLASS,
-          )}
+        <svg
+          className={cn("building-action-badge__idle-triangle", INSIGHT_TEXT_CLASS)}
+          viewBox="0 0 100 100"
+          focusable="false"
+          aria-hidden="true"
         >
-          {INSIGHT_GLYPH}
-        </span>
+          <polygon points="50,14 86,70 14,70" fill="currentColor" />
+        </svg>
       </span>
       <svg
         className="building-action-badge__svg"
