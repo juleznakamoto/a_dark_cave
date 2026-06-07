@@ -73,21 +73,25 @@ export function handleFinanceExpedition(
   const usageCount = getFinanceExpeditionUsageCount(state);
   const tier = getFinanceExpeditionTier(state);
 
-  const effectUpdates: Partial<GameState> = {
-    resources: {
-      ...state.resources,
-      insight: (state.resources.insight || 0) + tier.insight,
-    },
-    story: {
-      ...state.story,
-      seen: {
-        ...state.story.seen,
-        financeExpeditionUsageCount: usageCount + 1,
-      },
-    },
+  const existingStory = result.stateUpdates.story ?? { ...state.story };
+  const existingSeen = {
+    ...state.story.seen,
+    ...(existingStory.seen ?? {}),
   };
 
-  Object.assign(result.stateUpdates, effectUpdates);
+  result.stateUpdates.resources = {
+    ...state.resources,
+    ...(result.stateUpdates.resources ?? {}),
+    insight: (state.resources.insight || 0) + tier.insight,
+  };
+  result.stateUpdates.story = {
+    ...state.story,
+    ...existingStory,
+    seen: {
+      ...existingSeen,
+      financeExpeditionUsageCount: usageCount + 1,
+    },
+  };
 
   result.logEntries!.push({
     id: `finance-expedition-${Date.now()}`,

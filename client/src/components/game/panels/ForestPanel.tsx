@@ -183,11 +183,8 @@ export default function ForestPanel() {
         { id: "steelDelivery", label: "Steel Delivery" },
         { id: "risingSmoke", label: "Rising smoke" },
         { id: "canyonBridge", label: "Canyon Bridge" },
+        { id: "financeExpedition", label: "Finance Expedition" },
       ],
-    },
-    {
-      title: "Research",
-      actions: [{ id: "financeExpedition", label: "Finance Expedition" }],
     },
     {
       title: "Sacrifice",
