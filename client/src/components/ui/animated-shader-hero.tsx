@@ -680,27 +680,33 @@ const Hero: React.FC<HeroProps> = ({
                           type="button"
                           onClick={buttons.secondaryTrailing.onClick}
                           button_id={buttons.secondaryTrailing.buttonId}
-                          className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 whitespace-nowrap"
+                          className="inline-flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 whitespace-nowrap"
                         >
-                          <span className="font-noto-symbols-2 inline-block align-middle font-normal leading-none -translate-y-[0.06em]">
-                            🎮
-                          </span>
-                          <span className="inline-block align-middle ml-1.5">
-                            {buttons.secondaryTrailing.text}
-                          </span>
+                          <svg
+                            className="h-[1.05em] w-[1.05em] shrink-0"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            aria-hidden
+                          >
+                            <path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM11 13H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm4-3a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                          </svg>
+                          <span>{buttons.secondaryTrailing.text}</span>
                         </button>
                       )}
                       <button
                         onClick={buttons.secondary.onClick}
                         button_id={buttons.secondary.buttonId}
-                        className="px-4 sm:px-5 py-2.5 sm:py-3 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 backdrop-blur-sm whitespace-nowrap"
+                        className="inline-flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2.5 sm:py-3 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 backdrop-blur-sm whitespace-nowrap"
                       >
-                        <span className="font-noto-symbols-2 inline-block align-middle font-normal leading-none -translate-y-[0.06em]">
-                          ▶
-                        </span>
-                        <span className="inline-block align-middle ml-1.5">
-                          {buttons.secondary.text}
-                        </span>
+                        <svg
+                          className="h-[1em] w-[1em] shrink-0"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          aria-hidden
+                        >
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                        <span>{buttons.secondary.text}</span>
                       </button>
                     </div>
                   </div>
