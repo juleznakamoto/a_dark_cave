@@ -675,29 +675,33 @@ const Hero: React.FC<HeroProps> = ({
                 {buttons?.secondary && (
                   <div className="w-full flex justify-center">
                     <div className="flex flex-wrap justify-center gap-3 sm:gap-4 items-center">
-                      <button
-                        onClick={buttons.secondary.onClick}
-                        button_id={buttons.secondary.buttonId}
-                        className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-1.5"
-                      >
-                        <span className="font-noto-symbols-2 inline-flex shrink-0 items-center justify-center font-normal leading-none">
-                          ▶
-                        </span>
-                        <span>{buttons.secondary.text}</span>
-                      </button>
                       {buttons.secondaryTrailing && (
                         <button
                           type="button"
                           onClick={buttons.secondaryTrailing.onClick}
                           button_id={buttons.secondaryTrailing.buttonId}
-                          className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-1.5"
+                          className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 whitespace-nowrap"
                         >
-                          <span className="font-noto-symbols-2 inline-flex shrink-0 items-center justify-center font-normal leading-none">
+                          <span className="font-noto-symbols-2 inline-block align-middle font-normal leading-none -translate-y-[0.06em]">
                             🎮
                           </span>
-                          <span>{buttons.secondaryTrailing.text}</span>
+                          <span className="inline-block align-middle ml-1.5">
+                            {buttons.secondaryTrailing.text}
+                          </span>
                         </button>
                       )}
+                      <button
+                        onClick={buttons.secondary.onClick}
+                        button_id={buttons.secondary.buttonId}
+                        className="px-4 sm:px-5 py-2.5 sm:py-3 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 backdrop-blur-sm whitespace-nowrap"
+                      >
+                        <span className="font-noto-symbols-2 inline-block align-middle font-normal leading-none -translate-y-[0.06em]">
+                          ▶
+                        </span>
+                        <span className="inline-block align-middle ml-1.5">
+                          {buttons.secondary.text}
+                        </span>
+                      </button>
                     </div>
                   </div>
                 )}
