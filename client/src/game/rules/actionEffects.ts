@@ -12,7 +12,9 @@ import {
   getActionBonuses as getActionBonusesCalc,
   getTotalLuck as getTotalLuckCalc,
   getDoubleGainChance,
+  computeResourceRandomRange,
 } from "./effectsCalculation";
+import { getTotemSacrificeUsageFlatBonus } from "./forestSacrificeActions";
 import {
   getUpgradeBonusMultiplier,
   ACTION_TO_UPGRADE_KEY,
@@ -359,44 +361,19 @@ export function applyActionEffects(
             actionId === "boneTotems" || actionId === "leatherTotems";
 
           if (isSacrificeAction) {
-            // Bone totems: usage-based silver bonus (Pale Cross amplifies it)
-            if (actionId === "boneTotems") {
-              const usageCount =
-                Number(state.story?.seen?.boneTotemsUsageCount) || 0;
-              const hasPaleCross =
-                (state.buildings?.paleCross || 0) >= 1 ||
-                (state.buildings?.consecratedPaleCross || 0) >= 1;
-              const cappedUsageCount = Math.min(
-                usageCount,
-                hasPaleCross ? 45 : 20,
-              );
-              const silverBonusPerLevel = hasPaleCross ? 4 : 2;
-              min += cappedUsageCount * silverBonusPerLevel;
-              max += cappedUsageCount * silverBonusPerLevel;
-            }
-            // Leather totems: +2 gold per usage, capped at 20
-            else if (actionId === "leatherTotems") {
-              const usageCount =
-                Number(state.story?.seen?.leatherTotemsUsageCount) || 0;
-              const cappedUsageCount = Math.min(usageCount, 20);
-              min += cappedUsageCount * 2;
-              max += cappedUsageCount * 2;
-            }
-
-            const actionBonuses = getActionBonusesCalc(actionId, state);
-
-            // Apply multiplier first (like Bone Temple or Sacrificial Tunic)
-            if (actionBonuses?.resourceMultiplier > 1) {
-              min = Math.floor(min * actionBonuses.resourceMultiplier);
-              max = Math.floor(max * actionBonuses.resourceMultiplier);
-            }
-
-            // Apply flat bonuses after multiplier (like devourer_crown +20 silver)
-            const flatBonus = actionBonuses?.resourceBonus?.[finalKey] || 0;
-            if (flatBonus > 0) {
-              min += flatBonus;
-              max += flatBonus;
-            }
+            const usageFlat =
+              actionId === "boneTotems" || actionId === "leatherTotems"
+                ? getTotemSacrificeUsageFlatBonus(actionId, state)
+                : 0;
+            const scaled = computeResourceRandomRange(
+              min,
+              max,
+              actionId,
+              state,
+              { extraFlat: usageFlat, resourceKey: finalKey },
+            );
+            min = scaled.min;
+            max = scaled.max;
 
             // Generate and assign the random value for sacrifice actions
             const baseAmount = rollResourceGain(min, max);
@@ -418,38 +395,13 @@ export function applyActionEffects(
               current.gold = existingGold + goldBonus;
             }
           } else if (!isSacrificeAction) {
-            const actionBonuses = getActionBonusesCalc(actionId, state);
-            if (
-              actionBonuses?.resourceBonus?.[
-              finalKey as keyof typeof actionBonuses.resourceBonus
-              ]
-            ) {
-              const bonus =
-                actionBonuses.resourceBonus[
-                finalKey as keyof typeof actionBonuses.resourceBonus
-                ];
-              min += bonus;
-              max += bonus;
-            }
-
-            let totalMultiplier = actionBonuses?.resourceMultiplier || 1;
-
-            const caveExploreActions = [
-              "exploreCave",
-              "ventureDeeper",
-              "descendFurther",
-              "exploreRuins",
-              "exploreTemple",
-              "exploreCitadel",
-            ];
-            if (caveExploreActions.includes(actionId)) {
-              // Add cave explore bonus additively, not multiplicatively
-              totalMultiplier += (actionBonuses?.caveExploreMultiplier || 1) - 1;
-            }
-
-            if (totalMultiplier !== 1 && !isCraftUpgradeAction(actionId)) {
-              min = Math.floor(min * totalMultiplier);
-              max = Math.floor(max * totalMultiplier);
+            if (!isCraftUpgradeAction(actionId)) {
+              const scaled = computeResourceRandomRange(min, max, actionId, state, {
+                resourceKey: finalKey,
+                includeCaveExplore: true,
+              });
+              min = scaled.min;
+              max = scaled.max;
             }
 
             // Apply focus multiplier for eligible actions (exclude sacrifice actions)

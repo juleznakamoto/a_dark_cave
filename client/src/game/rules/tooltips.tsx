@@ -6,8 +6,10 @@ import {
   getTotalBuildingCostReduction,
   getMadnessComponents,
   getTotalMadness,
+  computeResourceRandomRange,
 } from "./effectsCalculation";
 import { isCraftUpgradeAction } from "@/game/craftUpgradeUtils";
+import { getTotemSacrificeUsageFlatBonus } from "./forestSacrificeActions";
 import { gameActions } from "./index";
 import { getBoneTotemsCost } from "./forestSacrificeActions";
 import {
@@ -119,41 +121,19 @@ export const calculateResourceGains = (
             let min = parseInt(match[1]);
             let max = parseInt(match[2]);
 
-            // Bone totems: usage-based silver bonus (Pale Cross amplifies it)
-            if (actionId === "boneTotems") {
-              const hasPaleCross =
-                (state.buildings?.paleCross || 0) >= 1 ||
-                (state.buildings?.consecratedPaleCross || 0) >= 1;
-              const cappedUsageCount = Math.min(
-                usageCount,
-                hasPaleCross ? 50 : 20,
-              );
-              const silverBonusPerLevel = hasPaleCross ? 4 : 2;
-              min = min + cappedUsageCount * silverBonusPerLevel;
-              max = max + cappedUsageCount * silverBonusPerLevel;
-            }
-            // Leather totems: +2 gold per usage, capped at 20
-            else if (actionId === "leatherTotems") {
-              const cappedUsageCount = Math.min(usageCount, 20);
-              min = min + cappedUsageCount * 2;
-              max = max + cappedUsageCount * 2;
-            }
-
-            // Apply bonuses through centralized system (includes Bone Temple + items)
-            const totalMultiplier = bonuses.resourceMultiplier;
-
-            // Apply combined multiplier first
-            if (totalMultiplier > 1) {
-              min = Math.floor(min * totalMultiplier);
-              max = Math.floor(max * totalMultiplier);
-            }
-
-            // Apply flat bonuses after multiplier (like devourer_crown +20 silver)
-            const flatBonus = bonuses.resourceBonus?.[resource] || 0;
-            if (flatBonus > 0) {
-              min += flatBonus;
-              max += flatBonus;
-            }
+            const usageFlat =
+              actionId === "boneTotems" || actionId === "leatherTotems"
+                ? getTotemSacrificeUsageFlatBonus(actionId, state)
+                : 0;
+            const scaled = computeResourceRandomRange(
+              min,
+              max,
+              actionId,
+              state,
+              { extraFlat: usageFlat, resourceKey: resource },
+            );
+            min = scaled.min;
+            max = scaled.max;
 
             gains.push({ resource, min, max });
 
@@ -196,25 +176,16 @@ export const calculateResourceGains = (
             let max = parseInt(match[2]);
 
             if (!isCraftUpgradeAction(actionId)) {
-              // Apply flat bonuses first
-              const flatBonus = bonuses.resourceBonus[resource] || 0;
-              min += flatBonus;
-              max += flatBonus;
+              const scaled = computeResourceRandomRange(
+                min,
+                max,
+                actionId,
+                state,
+                { resourceKey: resource, includeCaveExplore: isCaveExploreAction },
+              );
+              min = scaled.min;
+              max = scaled.max;
 
-              // Apply all multipliers (resourceMultiplier already includes button upgrades from getActionBonuses)
-              let totalMultiplier = bonuses.resourceMultiplier;
-
-              // Apply cave exploration multiplier for cave explore actions (additive, not multiplicative)
-              if (isCaveExploreAction) {
-                totalMultiplier += (bonuses.caveExploreMultiplier || 1) - 1;
-              }
-
-              if (totalMultiplier > 1) {
-                min = Math.floor(min * totalMultiplier);
-                max = Math.floor(max * totalMultiplier);
-              }
-
-              // Apply focus multiplier for eligible actions (exclude sacrifice actions)
               if (
                 FOCUS_ELIGIBLE_ACTIONS.includes(actionId) &&
                 state.focusState?.isActive &&

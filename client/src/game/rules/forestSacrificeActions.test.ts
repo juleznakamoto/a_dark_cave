@@ -704,3 +704,40 @@ describe("Bone and Leather Totem Sacrifices - Buildings and Items", () => {
     });
   });
 });
+
+describe("Totem sacrifice Prior scaling", () => {
+  it("leatherTotems: Prior scales base roll only, usage flat is not multiplied", () => {
+    const state = createBaseState({
+      buildings: { ...createBaseState().buildings, temple: 1 },
+      resources: { ...createBaseState().resources, leather_totem: 500, gold: 0 },
+      fellowship: { disgraced_prior: true },
+      priorAssignedActions: ["leatherTotems"],
+      disgracedPriorSkills: { level: 4 },
+      story: { seen: { leatherTotemsUsageCount: 10 } },
+    });
+
+    const gains = runTotemSacrificeSamples("leatherTotems", state, 100);
+    const avg = gains.reduce((a, b) => a + b, 0) / gains.length;
+
+    expect(avg).toBeGreaterThanOrEqual(55);
+    expect(avg).toBeLessThanOrEqual(125);
+    expect(avg).toBeLessThan(135);
+  });
+
+  it("boneTotems: Prior scales base roll only, usage flat is not multiplied", () => {
+    const state = createBaseState({
+      buildings: { ...createBaseState().buildings, altar: 1 },
+      resources: { ...createBaseState().resources, bone_totem: 500, silver: 0 },
+      fellowship: { disgraced_prior: true },
+      priorAssignedActions: ["boneTotems"],
+      disgracedPriorSkills: { level: 4 },
+      story: { seen: { boneTotemsUsageCount: 10 } },
+    });
+
+    const gains = runTotemSacrificeSamples("boneTotems", state, 100);
+    const avg = gains.reduce((a, b) => a + b, 0) / gains.length;
+
+    expect(avg).toBeGreaterThanOrEqual(55);
+    expect(avg).toBeLessThan(125);
+  });
+});

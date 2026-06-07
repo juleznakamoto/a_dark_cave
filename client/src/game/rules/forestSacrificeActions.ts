@@ -22,6 +22,24 @@ export function getLeatherTotemsCost(state: GameState): number {
   return Math.min(5 + usageCount, 25);
 }
 
+/** Flat silver/gold added to sacrifice roll from usage count (not multiplied by Prior). */
+export function getTotemSacrificeUsageFlatBonus(
+  actionId: "boneTotems" | "leatherTotems",
+  state: GameState,
+): number {
+  if (actionId === "boneTotems") {
+    const usageCount = Number(state.story?.seen?.boneTotemsUsageCount) || 0;
+    const hasPaleCross =
+      (state.buildings?.paleCross || 0) >= 1 ||
+      (state.buildings?.consecratedPaleCross || 0) >= 1;
+    const cappedUsageCount = Math.min(usageCount, hasPaleCross ? 45 : 20);
+    const silverBonusPerLevel = hasPaleCross ? 4 : 2;
+    return cappedUsageCount * silverBonusPerLevel;
+  }
+  const usageCount = Number(state.story?.seen?.leatherTotemsUsageCount) || 0;
+  return Math.min(usageCount, 20) * 2;
+}
+
 // Helper function to get dynamic cost for animal sacrifices
 export function getAnimalsCost(state: GameState): number {
   const usageCount = Number(state.story?.seen?.animalsSacrificeLevel) || 0;

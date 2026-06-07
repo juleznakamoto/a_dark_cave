@@ -15,7 +15,7 @@ import { CRUEL_MODE } from "../cruelMode";
 import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
 import { BUILDING_HIERARCHIES } from "@/game/buildingHierarchy";
 import { getBonusSidebarLabel } from "@/i18n/resolveGameText";
-import { CRAFT_UPGRADE_ACTIONS } from "@/game/craftUpgradeUtils";
+import { CRAFT_UPGRADE_ACTIONS, getCraftPriorMultiplier } from "@/game/craftUpgradeUtils";
 
 // Tool hierarchy definitions
 const AXE_HIERARCHY = [
@@ -389,6 +389,78 @@ export const getActionBonuses = (
     executionTimeReduction,
     caveExploreMultiplier,
   };
+};
+
+const CAVE_EXPLORE_ACTIONS = [
+  "exploreCave",
+  "ventureDeeper",
+  "descendFurther",
+  "exploreRuins",
+  "exploreTemple",
+  "exploreCitadel",
+] as const;
+
+/**
+ * Scale a random resource range: each % multiplier applies to the base roll only;
+ * flat bonuses (usage scaling, devourer crown, etc.) are added after — not multiplied.
+ * Prior and other multipliers stack additively on the base (same model as craft output).
+ */
+export function computeResourceRandomRange(
+  baseMin: number,
+  baseMax: number,
+  actionId: string,
+  state: GameState,
+  options: {
+    extraFlat?: number;
+    resourceKey?: string;
+    includeCaveExplore?: boolean;
+  } = {},
+): { min: number; max: number } {
+  const bonuses = getActionBonuses(actionId, state);
+  const mults: number[] = [];
+
+  const priorMult = getCraftPriorMultiplier(actionId, state);
+  if (priorMult > 1) {
+    mults.push(priorMult);
+  }
+
+  let nonPriorMult = bonuses.resourceMultiplier;
+  if (priorMult > 1) {
+    nonPriorMult -= priorMult - 1;
+  }
+  if (nonPriorMult > 1) {
+    mults.push(nonPriorMult);
+  }
+
+  const includeCave =
+    options.includeCaveExplore ??
+    CAVE_EXPLORE_ACTIONS.includes(actionId as (typeof CAVE_EXPLORE_ACTIONS)[number]);
+  if (includeCave && bonuses.caveExploreMultiplier > 1) {
+    mults.push(bonuses.caveExploreMultiplier);
+  }
+
+  let min: number;
+  let max: number;
+  if (mults.length === 0) {
+    min = baseMin;
+    max = baseMax;
+  } else {
+    min = 0;
+    max = 0;
+    for (const mult of mults) {
+      min += Math.floor(baseMin * mult);
+      max += Math.floor(baseMax * mult);
+    }
+  }
+
+  const itemFlat = options.resourceKey
+    ? bonuses.resourceBonus[options.resourceKey] ?? 0
+    : 0;
+  const extraFlat = options.extraFlat ?? 0;
+  min += extraFlat + itemFlat;
+  max += extraFlat + itemFlat;
+
+  return { min, max };
 };
 
 // SSOT: Calculate all action bonuses for display and internal use
