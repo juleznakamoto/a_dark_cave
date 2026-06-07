@@ -51,6 +51,18 @@ interface HeroProps {
   className?: string;
 }
 
+/** Split "⛤ Cruel Mode" into a Noto symbol span + default-font label (like Buy Me a Coffee). */
+function renderSymbolLabelButtonContent(text: string) {
+  const parts = text.match(/^(\S+)\s+(.*)$/);
+  if (!parts) return text;
+  return (
+    <>
+      <span className="font-noto-symbols-2">{parts[1]} </span>
+      <span>{parts[2]}</span>
+    </>
+  );
+}
+
 // Reusable Shader Background Hook
 const useShaderBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -570,9 +582,9 @@ const Hero: React.FC<HeroProps> = ({
                 <button
                   onClick={buttons.primary.onClick}
                   button_id={buttons.primary.buttonId}
-                  className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 group-hover:from-red-700 group-hover:to-red-600 text-slate-200 rounded-md font-semibold text-base sm:text-lg transition-all duration-300 whitespace-nowrap font-noto-symbols-2"
+                  className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 group-hover:from-red-700 group-hover:to-red-600 text-slate-200 rounded-md font-semibold text-base sm:text-lg transition-all duration-300 whitespace-nowrap"
                 >
-                  {buttons.primary.text}
+                  {renderSymbolLabelButtonContent(buttons.primary.text)}
                 </button>
               </div>
             </div>
@@ -680,28 +692,18 @@ const Hero: React.FC<HeroProps> = ({
                           type="button"
                           onClick={buttons.secondaryTrailing.onClick}
                           button_id={buttons.secondaryTrailing.buttonId}
-                          className="inline-flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2.5 sm:py-3 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 backdrop-blur-sm whitespace-nowrap"
+                          className="px-4 sm:px-5 py-2.5 sm:py-3 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 backdrop-blur-sm whitespace-nowrap"
                         >
-                          <span
-                            className="font-noto-symbols-2 inline-flex shrink-0 items-center justify-center font-normal leading-none"
-                            style={{ transform: `translateY(0.18em)` }}
-                          >
-                            🎮
-                          </span>
+                          <span className="font-noto-symbols-2">🎮 </span>
                           <span>{buttons.secondaryTrailing.text}</span>
                         </button>
                       )}
                       <button
                         onClick={buttons.secondary.onClick}
                         button_id={buttons.secondary.buttonId}
-                        className="inline-flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2.5 sm:py-3 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 backdrop-blur-sm whitespace-nowrap"
+                        className="px-4 sm:px-5 py-2.5 sm:py-3 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 backdrop-blur-sm whitespace-nowrap"
                       >
-                        <span
-                          className="font-noto-symbols-2 inline-flex shrink-0 items-center justify-center font-normal leading-none"
-                          style={{ transform: `translateY(0.13em)` }}
-                        >
-                          ▶
-                        </span>
+                        <span className="font-noto-symbols-2">▶ </span>
                         <span>{buttons.secondary.text}</span>
                       </button>
                     </div>
