@@ -232,7 +232,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
         <button
           type="button"
           className={cn(
-            "relative items-center justify-center border-0 bg-transparent p-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
+            "insight-action-badge-trigger relative items-center justify-center border-0 bg-transparent p-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
             layout === "overlay"
               ? "flex h-full w-full"
               : "inline-flex h-4 w-4 shrink-0",

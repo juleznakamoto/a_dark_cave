@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { INSIGHT_GLYPH } from "@/game/villagerCapUpgrades";
+import { INSIGHT_GLYPH, INSIGHT_TEXT_CLASS } from "@/game/villagerCapUpgrades";
 import { cn } from "@/lib/utils";
 
 type BuildingActionBadgeProps = {
@@ -27,7 +27,12 @@ export function BuildingActionBadge({
       aria-hidden="true"
     >
       <span className="building-action-badge__idle">
-        <span className="building-action-badge__glyph font-noto-symbols-2">
+        <span
+          className={cn(
+            "building-action-badge__glyph font-noto-symbols-2 inline-flex items-center justify-center",
+            INSIGHT_TEXT_CLASS,
+          )}
+        >
           {INSIGHT_GLYPH}
         </span>
       </span>
