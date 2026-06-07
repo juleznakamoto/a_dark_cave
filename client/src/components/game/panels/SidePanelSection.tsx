@@ -903,7 +903,6 @@ export default function SidePanelSection({
             }`}
         >
           <div className="flex min-w-0 flex-1 items-center gap-1">
-            {renderBuildingVillagerCapUpgradeButton(item.id)}
             <TooltipWrapper
               tooltip={renderItemTooltip(item.id, "building")}
               tooltipId={item.id}
@@ -915,6 +914,7 @@ export default function SidePanelSection({
             >
               {labelContent}
             </TooltipWrapper>
+            {renderBuildingVillagerCapUpgradeButton(item.id)}
           </div>
         </div>
       );

@@ -71,14 +71,13 @@ for (const [groupId, config] of Object.entries(VILLAGER_CAP_GROUPS) as [
   }
 }
 
-export type VillagerCapGateState = Pick<GameState, "flags"> & {
-  devMode?: boolean;
-};
-
-/** New-game flag + dev build only until the feature ships broadly. */
-export function areVillagerCapsEnabled(state: VillagerCapGateState): boolean {
+export function areVillagerCapsEnabled(
+  state: Pick<GameState, "flags">,
+): boolean {
+  // Dev build only until shipped. Gate on import.meta.env.DEV (not store devMode) so
+  // persisted GameState passed to assignVillagerToJob does not need UI-only fields.
   return (
-    state.devMode === true && state.flags?.villagerCapsEnabled === true
+    import.meta.env.DEV && state.flags?.villagerCapsEnabled === true
   );
 }
 
@@ -108,7 +107,7 @@ export function getVillagerCapForLevel(level: number): number {
 }
 
 export function getVillagerCapForGroup(
-  state: Pick<GameState, "villagerCapUpgrades"> & VillagerCapGateState,
+  state: Pick<GameState, "flags" | "villagerCapUpgrades">,
   groupId: VillagerCapGroupId,
 ): number {
   if (!areVillagerCapsEnabled(state)) return Infinity;
@@ -116,7 +115,7 @@ export function getVillagerCapForGroup(
 }
 
 export function getVillagerCapForJob(
-  state: Pick<GameState, "villagerCapUpgrades"> & VillagerCapGateState,
+  state: Pick<GameState, "flags" | "villagerCapUpgrades">,
   jobId: keyof GameState["villagers"],
 ): number {
   if (!areVillagerCapsEnabled(state)) return Infinity;
@@ -131,8 +130,7 @@ export function getNextCapUpgradeCost(level: number): number {
 }
 
 export function canUpgradeVillagerCap(
-  state: Pick<GameState, "villagerCapUpgrades" | "resources"> &
-    VillagerCapGateState,
+  state: Pick<GameState, "flags" | "villagerCapUpgrades" | "resources">,
   groupId: VillagerCapGroupId,
 ): boolean {
   if (!areVillagerCapsEnabled(state)) return false;

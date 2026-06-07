@@ -52,7 +52,6 @@ describe("Job assignment - touch/ghost-click fix", () => {
     const updates = assignVillagerToJob(
       {
         ...state,
-        devMode: true,
         flags: { ...state.flags, villagerCapsEnabled: true },
         villagers: { ...state.villagers, hunter: 10, free: 3 },
       },

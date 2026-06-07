@@ -133,7 +133,7 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
 - **`authNotificationAuto.ts`** — guest Profile sign-in dot schedule (`lastAuthNotificationPlayTime` + 15m / 60m play time);
   written when the blink is shown/dismissed; UI in `GameContainer.tsx`.
 - **`villagerCapUpgrades.ts`** — per-profession villager caps via Insight upgrades (group/building mapping,
-  cap/cost tables, `flags.villagerCapsEnabled` new-games gate + `devMode` until shipped); enforced in
+  cap/cost tables, `flags.villagerCapsEnabled` new-games gate + `import.meta.env.DEV` until shipped); enforced in
   `assignVillagerToJob`, `upgradeVillagerCap` in `state.ts`, UI in `VillagePanel` / `SidePanelSection` /
   `itemTooltips.tsx`.
 

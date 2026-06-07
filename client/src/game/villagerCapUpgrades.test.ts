@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { GameState } from "@shared/schema";
 import { handleLightFire } from "@/game/rules/caveExploreActions";
 import { useGameStore } from "@/game/state";
@@ -16,10 +16,9 @@ import {
 } from "./villagerCapUpgrades";
 
 function baseState(
-  overrides: Partial<GameState> & { devMode?: boolean } = {},
-): GameState & { devMode?: boolean } {
+  overrides: Partial<GameState> = {},
+): GameState {
   return {
-    devMode: true,
     flags: { villagerCapsEnabled: true },
     villagerCapUpgrades: {},
     buildings: { clerksHut: 1 },
@@ -46,6 +45,15 @@ function baseState(
 }
 
 describe("villagerCapUpgrades", () => {
+  // Gate uses import.meta.env.DEV (not store devMode), so baseState() needs no devMode field.
+  beforeEach(() => {
+    vi.stubEnv("DEV", true);
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
   it("maps jobs and buildings to upgrade groups", () => {
     expect(getGroupForJob("hunter")).toBe("hunter");
     expect(getGroupForJob("gatherer")).toBeUndefined();
@@ -67,13 +75,6 @@ describe("villagerCapUpgrades", () => {
     });
     expect(areVillagerCapsEnabled(state)).toBe(false);
     expect(getVillagerCapForJob(state, "hunter")).toBe(Infinity);
-  });
-
-  it("returns Infinity outside dev mode even when villagerCapsEnabled is set", () => {
-    const state = baseState({ devMode: false });
-    expect(areVillagerCapsEnabled(state)).toBe(false);
-    expect(getVillagerCapForJob(state, "hunter")).toBe(Infinity);
-    expect(canUpgradeVillagerCap(state, "hunter")).toBe(false);
   });
 
   it("computes upgrade costs as 50 * (level + 1)", () => {
@@ -129,9 +130,8 @@ describe("villagerCapUpgrades", () => {
       baseState({
         villagerCapUpgrades: {},
         resources: { insight: 100 } as GameState["resources"],
-      }) as Partial<GameState> & { devMode?: boolean },
+      }) as Partial<GameState>,
     );
-    useGameStore.setState({ devMode: true });
 
     const ok = useGameStore.getState().upgradeVillagerCap("hunter");
     expect(ok).toBe(true);
@@ -140,5 +140,13 @@ describe("villagerCapUpgrades", () => {
     expect(next.villagerCapUpgrades?.hunter).toBe(1);
     expect(next.resources.insight).toBe(50);
     expect(getVillagerCapForJob(next, "hunter")).toBe(20);
+  });
+
+  it("returns Infinity in production builds even when villagerCapsEnabled is set", () => {
+    vi.stubEnv("DEV", false);
+    const state = baseState();
+    expect(areVillagerCapsEnabled(state)).toBe(false);
+    expect(getVillagerCapForJob(state, "hunter")).toBe(Infinity);
+    expect(canUpgradeVillagerCap(state, "hunter")).toBe(false);
   });
 });
