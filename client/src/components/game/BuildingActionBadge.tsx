@@ -14,7 +14,8 @@ export const INSIGHT_BADGE_ALIGN_CLASS = "translate-y-[0.12em]";
  * differ). Negative translate-y pulls the blob up. Tune per size if needed.
  */
 export const INSIGHT_BADGE_BLOB_ALIGN_CLASS_SM = "-translate-y-[0.12em]";
-export const INSIGHT_BADGE_BLOB_ALIGN_CLASS_LG = "";
+/** Stats header, timed-event tab, and action-button overlays (`size="lg"`). */
+export const INSIGHT_BADGE_BLOB_ALIGN_CLASS_LG = "-translate-y-[0.12em]";
 
 type BuildingActionBadgeProps = {
   /** Force the hover animation (e.g. during Insight reveal cooldown). */
