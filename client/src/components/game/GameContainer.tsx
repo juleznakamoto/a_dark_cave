@@ -1021,7 +1021,7 @@ export default function GameContainer() {
                 <>
                   {/* Standard button design */}
                   <div
-                    className={`flex w-full max-w-full flex-nowrap items-center gap-x-2 overflow-hidden${traderUnlocked ? " pr-[4.5rem]" : " pr-[3px]"}`}
+                    className={`flex w-full max-w-full flex-nowrap items-center gap-x-2 overflow-hidden${traderUnlocked ? " pr-[4.5rem]" : ""}`}
                   >
                     <div
                       ref={tabButtonRowRef}
@@ -1029,8 +1029,8 @@ export default function GameContainer() {
                     >
                       <button
                         className={`${tabButtonClass} ${activeTab === "cave"
-                            ? tabActiveTextClass
-                            : tabInactiveTextClass
+                          ? tabActiveTextClass
+                          : tabInactiveTextClass
                           } `}
                         onClick={() => setActiveTab("cave")}
                         data-testid="tab-cave"
@@ -1041,12 +1041,12 @@ export default function GameContainer() {
                       {flags.villageUnlocked && (
                         <button
                           className={`${tabButtonClass} ${animatingTabs.has("village")
-                              ? fadePhaseTabs.has("village")
-                                ? "tab-fade-in"
-                                : "tab-blink-new"
-                              : activeTab === "village"
-                                ? tabActiveTextClass
-                                : tabInactiveTextClass
+                            ? fadePhaseTabs.has("village")
+                              ? "tab-fade-in"
+                              : "tab-blink-new"
+                            : activeTab === "village"
+                              ? tabActiveTextClass
+                              : tabInactiveTextClass
                             }`}
                           onClick={() => {
                             clearTabAnimation("village");
@@ -1064,12 +1064,12 @@ export default function GameContainer() {
                       {(estateUnlocked || buildings.darkEstate >= 1) && (
                         <button
                           className={`${tabButtonClass} ${animatingTabs.has("estate")
-                              ? fadePhaseTabs.has("estate")
-                                ? "tab-fade-in"
-                                : "tab-blink-new"
-                              : activeTab === "estate"
-                                ? tabActiveTextClass
-                                : tabInactiveTextClass
+                            ? fadePhaseTabs.has("estate")
+                              ? "tab-fade-in"
+                              : "tab-blink-new"
+                            : activeTab === "estate"
+                              ? tabActiveTextClass
+                              : tabInactiveTextClass
                             }`}
                           onClick={() => {
                             clearTabAnimation("estate");
@@ -1084,12 +1084,12 @@ export default function GameContainer() {
                       {flags.forestUnlocked && (
                         <button
                           className={`${tabButtonClass} ${animatingTabs.has("forest")
-                              ? fadePhaseTabs.has("forest")
-                                ? "tab-fade-in"
-                                : "tab-blink-new"
-                              : activeTab === "forest"
-                                ? tabActiveTextClass
-                                : tabInactiveTextClass
+                            ? fadePhaseTabs.has("forest")
+                              ? "tab-fade-in"
+                              : "tab-blink-new"
+                            : activeTab === "forest"
+                              ? tabActiveTextClass
+                              : tabInactiveTextClass
                             }`}
                           onClick={() => {
                             clearTabAnimation("forest");
@@ -1104,12 +1104,12 @@ export default function GameContainer() {
                       {flags.bastionUnlocked && (
                         <button
                           className={`${tabButtonClass} ${animatingTabs.has("bastion")
-                              ? fadePhaseTabs.has("bastion")
-                                ? "tab-fade-in"
-                                : "tab-blink-new"
-                              : activeTab === "bastion"
-                                ? tabActiveTextClass
-                                : tabInactiveTextClass
+                            ? fadePhaseTabs.has("bastion")
+                              ? "tab-fade-in"
+                              : "tab-blink-new"
+                            : activeTab === "bastion"
+                              ? tabActiveTextClass
+                              : tabInactiveTextClass
                             }`}
                           onClick={() => {
                             clearTabAnimation("bastion");
@@ -1127,12 +1127,12 @@ export default function GameContainer() {
                       {(relics?.survivors_notes || books?.book_of_trials) && (
                         <button
                           className={`${tabIconButtonClass} ${animatingTabs.has("achievements")
-                              ? fadePhaseTabs.has("achievements")
-                                ? "tab-fade-in"
-                                : "tab-blink-new"
-                              : activeTab === "achievements"
-                                ? tabActiveTextClass
-                                : tabInactiveTextClass
+                            ? fadePhaseTabs.has("achievements")
+                              ? "tab-fade-in"
+                              : "tab-blink-new"
+                            : activeTab === "achievements"
+                              ? tabActiveTextClass
+                              : tabInactiveTextClass
                             }`}
                           onClick={() => {
                             clearTabAnimation("achievements");
@@ -1153,8 +1153,8 @@ export default function GameContainer() {
                       {timedEventTab.isActive && (
                         <button
                           className={`${tabIconButtonClass} gap-1 ${activeTab === "timedevent"
-                              ? tabActiveTextClass
-                              : tabInactiveTextClass
+                            ? tabActiveTextClass
+                            : tabInactiveTextClass
                             }`}
                           onClick={() => setActiveTab("timedevent")}
                           data-testid="tab-timedevent"
@@ -1188,9 +1188,9 @@ export default function GameContainer() {
 
             {/* Action Panels */}
             <div
-              className={`flex-1 overflow-x-hidden pl-2 pr-2 min-h-0 ${activeTab === "achievements"
-                  ? "overflow-hidden"
-                  : "overflow-y-auto scrollbar-hide"
+              className={`flex-1 overflow-x-hidden pl-2 min-h-0 ${activeTab === "achievements"
+                ? "overflow-hidden"
+                : "overflow-y-auto scrollbar-hide"
                 }`}
             >
               {activeTab === "cave" && <CavePanel />}

@@ -522,7 +522,7 @@ export default function ForestPanel() {
   return (
     <>
       <ScrollArea className="h-full w-full">
-        <div className="w-full space-y-4 mt-2 mb-2">
+        <div className="w-full space-y-4 mt-2 mb-2 pr-2 pb-2">
           {actionGroups.map((group, groupIndex) => {
             const visibleActions = group.actions.filter((action) =>
               shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id],

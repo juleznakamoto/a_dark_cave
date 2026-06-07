@@ -46,7 +46,7 @@ export default function BastionPanel() {
   };
 
   return (
-    <div className="w-full space-y-4 mt-2 mb-2">
+    <div className="w-full space-y-4 mt-2 mb-2 pr-2">
       <AttackWavesChart />
 
       {(story?.seen?.restlessKnightWounded || story?.seen?.elderWizardWounded) && (
