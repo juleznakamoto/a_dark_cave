@@ -889,6 +889,7 @@ export default function SidePanelSection({
 
     // If this item is a building (not fortification) with a tooltip, use renderItemTooltip
     if (item.tooltip && sectionId === "buildings") {
+      const capUpgradeButton = renderBuildingVillagerCapUpgradeButton(item.id);
       return (
         <div
           key={item.id}
@@ -902,20 +903,23 @@ export default function SidePanelSection({
                 : ""
             }`}
         >
-          <div className="flex min-w-0 flex-1 items-center gap-1">
-            <TooltipWrapper
-              tooltip={renderItemTooltip(item.id, "building")}
-              tooltipId={item.id}
-              disabled
-              tooltipContentClassName="max-w-xs"
-              onMouseEnter={() => handleTooltipHover(item.id)}
-              onMouseLeave={() => handleTooltipLeave(item.id)}
-              className={sidePanelTooltipTriggerClass}
-            >
+          <TooltipWrapper
+            tooltip={renderItemTooltip(item.id, "building")}
+            tooltipId={item.id}
+            disabled
+            tooltipContentClassName="max-w-xs"
+            onMouseEnter={() => handleTooltipHover(item.id)}
+            onMouseLeave={() => handleTooltipLeave(item.id)}
+            className={cn(
+              "inline-flex min-w-0 max-w-full items-center gap-0.5",
+              globalTooltip.isMobile && "cursor-pointer",
+            )}
+          >
+            <span className="inline-flex min-w-0 items-center gap-0.5">
               {labelContent}
-            </TooltipWrapper>
-            {renderBuildingVillagerCapUpgradeButton(item.id)}
-          </div>
+              {capUpgradeButton}
+            </span>
+          </TooltipWrapper>
         </div>
       );
     }
