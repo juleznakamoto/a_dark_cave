@@ -1,5 +1,6 @@
 import { GameState } from "@shared/schema";
 import { getUpgradeBonusMultiplier, type UpgradeKey } from "./buttonUpgrades";
+import { DISGRACED_PRIOR_UPGRADES } from "./rules/skillUpgrades";
 
 export const CRAFT_UPGRADE_ACTIONS = [
   "craftTorches",
@@ -19,6 +20,21 @@ export function isCraftUpgradeAction(
   actionId: string,
 ): actionId is CraftUpgradeActionId {
   return (CRAFT_UPGRADE_ACTIONS as readonly string[]).includes(actionId);
+}
+
+/** Disgraced Prior reward multiplier when this action is assigned (else 1). */
+export function getCraftPriorMultiplier(
+  actionId: string,
+  state: GameState,
+): number {
+  if (
+    !state.fellowship?.disgraced_prior ||
+    !(state.priorAssignedActions ?? []).includes(actionId)
+  ) {
+    return 1;
+  }
+  const priorLevel = state.disgracedPriorSkills?.level ?? 0;
+  return DISGRACED_PRIOR_UPGRADES[priorLevel]?.rewardMultiplier ?? 1;
 }
 
 /** Book of Ascension craft mastery multiplier only. */
@@ -58,15 +74,27 @@ export function getCraftProduceAmount(
 }
 
 /**
- * Craft output: base → base bonuses (Prior, etc.) → craft mastery on top.
- * floor(floor(baseAmount * baseMult) * masteryMult)
+ * Craft batch output stacks additively:
+ * - Prior on base: floor(base × priorMult)  e.g. 1 × 4 = 4
+ * - Mastery batch: floor(base × masteryMult) e.g. 1 × 3 = 3
+ * - Total: 4 + 3 = 7 (not multiplicative)
  */
-export function applyCraftProduceScaling(
+export function scaleCraftProduceAmount(
   baseAmount: number,
   actionId: CraftUpgradeActionId,
   state: GameState,
-  baseMult: number,
 ): number {
+  let total = 0;
+
+  const priorMult = getCraftPriorMultiplier(actionId, state);
+  if (priorMult > 1) {
+    total += Math.floor(baseAmount * priorMult);
+  }
+
   const masteryMult = getCraftMasteryMultiplier(actionId, state);
-  return Math.floor(Math.floor(baseAmount * baseMult) * masteryMult);
+  if (masteryMult > 1) {
+    total += Math.floor(baseAmount * masteryMult);
+  }
+
+  return total > 0 ? total : baseAmount;
 }

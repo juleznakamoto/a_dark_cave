@@ -15,7 +15,7 @@ import { CRUEL_MODE } from "../cruelMode";
 import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
 import { BUILDING_HIERARCHIES } from "@/game/buildingHierarchy";
 import { getBonusSidebarLabel } from "@/i18n/resolveGameText";
-import { CRAFT_UPGRADE_ACTIONS, applyCraftProduceScaling, type CraftUpgradeActionId } from "@/game/craftUpgradeUtils";
+import { CRAFT_UPGRADE_ACTIONS } from "@/game/craftUpgradeUtils";
 
 // Tool hierarchy definitions
 const AXE_HIERARCHY = [
@@ -348,8 +348,13 @@ export const getActionBonuses = (
     }
   }
 
-  // Add Disgraced Prior bonus for actions assigned to him
-  if (state.fellowship?.disgraced_prior && (state.priorAssignedActions ?? []).includes(actionId)) {
+  // Add Disgraced Prior bonus for actions assigned to him (not craft-upgrade batch actions —
+  // those scale output via Book of Ascension mastery only; Prior still auto-executes them).
+  if (
+    state.fellowship?.disgraced_prior &&
+    (state.priorAssignedActions ?? []).includes(actionId) &&
+    !CRAFT_UPGRADE_ACTIONS.includes(actionId)
+  ) {
     const priorLevel = state.disgracedPriorSkills?.level ?? 0;
     const priorMultiplier = DISGRACED_PRIOR_UPGRADES[priorLevel]?.rewardMultiplier ?? 1;
     if (priorMultiplier > 1) {
@@ -384,16 +389,6 @@ export const getActionBonuses = (
     executionTimeReduction,
     caveExploreMultiplier,
   };
-};
-
-/** Craft output: base bonuses (Prior, etc.) first, then Book of Ascension mastery. */
-export function scaleCraftProduceAmount(
-  baseAmount: number,
-  actionId: CraftUpgradeActionId,
-  state: GameState,
-): number {
-  const baseMult = getActionBonuses(actionId, state).resourceMultiplier;
-  return applyCraftProduceScaling(baseAmount, actionId, state, baseMult);
 };
 
 // SSOT: Calculate all action bonuses for display and internal use

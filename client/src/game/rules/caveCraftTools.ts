@@ -1,7 +1,7 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
 import { getUpgradeBonusMultiplier } from "@/game/buttonUpgrades";
-import { scaleCraftProduceAmount } from "./effectsCalculation";
+import { scaleCraftProduceAmount } from "@/game/craftUpgradeUtils";
 import { applyActionEffects } from "./actionEffects";
 import { pushSystemLog } from "./systemLog";
 import { OBSIDIAN_ORB_FOCUS_INTERVAL_MS } from "@/game/obsidianOrb";

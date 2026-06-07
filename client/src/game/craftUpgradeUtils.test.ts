@@ -3,16 +3,18 @@ import type { GameState } from "@shared/schema";
 import { applyActionEffects } from "./rules/actionEffects";
 import { calculateResourceGains } from "./rules/tooltips";
 import {
-  applyCraftProduceScaling,
   getCraftProduceAmount,
+  scaleCraftProduceAmount,
 } from "./craftUpgradeUtils";
-import { scaleCraftProduceAmount } from "./rules/effectsCalculation";
+import { executeGameAction } from "./actions";
 
 function createTestState(overrides: Partial<GameState> = {}): GameState {
   return {
     resources: {
       leather_totem: 0,
       leather: 500,
+      bones: 500,
+      bone_totem: 0,
     },
     buildings: {},
     books: {},
@@ -21,44 +23,27 @@ function createTestState(overrides: Partial<GameState> = {}): GameState {
     buttonUpgrades: {},
     priorAssignedActions: [],
     disgracedPriorSkills: { level: 0 },
+    cooldowns: {},
     ...overrides,
   } as GameState;
 }
 
 describe("craft upgrade produce scaling", () => {
-  it("applies base bonuses before craft mastery", () => {
+  it("craftLeatherTotems at mastery level 2 produces 3 totems without prior", () => {
     const state = createTestState({
       buildings: { temple: 1 },
       books: { book_of_ascension: true },
       buttonUpgrades: { craftLeatherTotems: { clicks: 15, level: 2 } },
-      fellowship: { disgraced_prior: true },
-      priorAssignedActions: ["craftLeatherTotems"],
-      disgracedPriorSkills: { level: 2 },
     });
 
-    // Prior 2.5x at base, then craft mastery 3x: floor(floor(1 * 2.5) * 3) = 6
-    expect(scaleCraftProduceAmount(1, "craftLeatherTotems", state)).toBe(6);
-    expect(applyCraftProduceScaling(1, "craftLeatherTotems", state, 2.5)).toBe(
-      6,
-    );
-  });
-
-  it("does not double-apply prior in applyActionEffects", () => {
-    const state = createTestState({
-      buildings: { temple: 1 },
-      books: { book_of_ascension: true },
-      buttonUpgrades: { craftLeatherTotems: { clicks: 15, level: 2 } },
-      fellowship: { disgraced_prior: true },
-      priorAssignedActions: ["craftLeatherTotems"],
-      disgracedPriorSkills: { level: 4 },
-      resources: { leather_totem: 0, leather: 500 },
-    });
+    expect(scaleCraftProduceAmount(1, "craftLeatherTotems", state)).toBe(3);
+    expect(getCraftProduceAmount("craftLeatherTotems", state)).toBe(3);
 
     const effectUpdates = applyActionEffects("craftLeatherTotems", state);
-    expect(effectUpdates.resources?.leather_totem).toBe(12);
+    expect(effectUpdates.resources?.leather_totem).toBe(3);
   });
 
-  it("level badge shows craft mastery only", () => {
+  it("prior and mastery stack additively (4 + 3 = 7)", () => {
     const state = createTestState({
       buildings: { temple: 1 },
       books: { book_of_ascension: true },
@@ -68,11 +53,28 @@ describe("craft upgrade produce scaling", () => {
       disgracedPriorSkills: { level: 4 },
     });
 
-    expect(getCraftProduceAmount("craftLeatherTotems", state)).toBe(3);
-    expect(scaleCraftProduceAmount(1, "craftLeatherTotems", state)).toBe(12);
+    // Prior 4× on base 1 → 4; mastery 3× on base 1 → 3; total 7
+    expect(scaleCraftProduceAmount(1, "craftLeatherTotems", state)).toBe(7);
+
+    const effectUpdates = applyActionEffects("craftLeatherTotems", state);
+    expect(effectUpdates.resources?.leather_totem).toBe(7);
   });
 
-  it("tooltip matches scaled craft output", () => {
+  it("executeGameAction matches additive craft output", () => {
+    const state = createTestState({
+      buildings: { temple: 1 },
+      books: { book_of_ascension: true },
+      buttonUpgrades: { craftLeatherTotems: { clicks: 15, level: 2 } },
+      fellowship: { disgraced_prior: true },
+      priorAssignedActions: ["craftLeatherTotems"],
+      disgracedPriorSkills: { level: 4 },
+    });
+
+    const result = executeGameAction("craftLeatherTotems", state);
+    expect(result.stateUpdates.resources?.leather_totem).toBe(7);
+  });
+
+  it("tooltip shows full additive craft output", () => {
     const state = createTestState({
       buildings: { temple: 1 },
       books: { book_of_ascension: true },
@@ -85,8 +87,33 @@ describe("craft upgrade produce scaling", () => {
     const { gains } = calculateResourceGains("craftLeatherTotems", state);
     expect(gains.find((g) => g.resource === "leather_totem")).toEqual({
       resource: "leather_totem",
-      min: 12,
-      max: 12,
+      min: 7,
+      max: 7,
     });
+  });
+
+  it("prior only (no ascension book) produces prior-scaled base", () => {
+    const state = createTestState({
+      buildings: { temple: 1 },
+      fellowship: { disgraced_prior: true },
+      priorAssignedActions: ["craftLeatherTotems"],
+      disgracedPriorSkills: { level: 4 },
+    });
+
+    expect(scaleCraftProduceAmount(1, "craftLeatherTotems", state)).toBe(4);
+  });
+
+  it("craftBoneTotems at mastery level 3 with prior level 4 produces 8", () => {
+    const state = createTestState({
+      buildings: { altar: 1 },
+      books: { book_of_ascension: true },
+      buttonUpgrades: { craftBoneTotems: { clicks: 30, level: 3 } },
+      fellowship: { disgraced_prior: true },
+      priorAssignedActions: ["craftBoneTotems"],
+      disgracedPriorSkills: { level: 4 },
+    });
+
+    const effectUpdates = applyActionEffects("craftBoneTotems", state);
+    expect(effectUpdates.resources?.bone_totem).toBe(8);
   });
 });
