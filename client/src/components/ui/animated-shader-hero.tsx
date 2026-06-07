@@ -680,7 +680,7 @@ const Hero: React.FC<HeroProps> = ({
                           type="button"
                           onClick={buttons.secondaryTrailing.onClick}
                           button_id={buttons.secondaryTrailing.buttonId}
-                          className="inline-flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 whitespace-nowrap"
+                          className="inline-flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2.5 sm:py-3 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 backdrop-blur-sm whitespace-nowrap"
                         >
                           <span
                             className="font-noto-symbols-2 inline-flex shrink-0 items-center justify-center font-normal leading-none"
