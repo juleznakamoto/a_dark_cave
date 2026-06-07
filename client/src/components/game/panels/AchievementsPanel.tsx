@@ -1,10 +1,16 @@
-import { Component, type ReactNode, useState } from "react";
+import { Component, type ReactNode, useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
 import { Progress } from "@/components/ui/progress";
 import GameButton from "@/components/game/GameButton";
+import {
+  BuildingActionBadge,
+  getInsightBadgeTriggerClassName,
+  INSIGHT_BADGE_ALIGN_CLASS,
+} from "@/components/game/BuildingActionBadge";
 import { useGameStore } from "@/game/state";
+import { cn } from "@/lib/utils";
 import {
   buildingChartConfig,
   itemChartConfig,
@@ -15,6 +21,8 @@ import { getAchievementRows, claimAchievement, formatRewardsTooltip } from "@/ac
 import {
   ACHIEVEMENT_TITLE_INSIGHT_COST,
   canRevealAchievementTitle,
+  getAchievementTitleInsightKey,
+  getInsightAmount,
   isAchievementTitleVisible,
   isInsightUnlocked,
 } from "@/game/rules/insightReveal";
@@ -55,6 +63,102 @@ class ChartErrorBoundary extends Component<
   }
 }
 
+function AchievementTitleInsightBadge({
+  achievementId,
+  currentCount,
+}: {
+  achievementId: string;
+  currentCount: number;
+}) {
+  const { t } = useTranslation("ui");
+  const gameState = useGameStore((s) => s as unknown as GameState);
+  const revealAchievementTitle = useGameStore((s) => s.revealAchievementTitle);
+  const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
+  const insightKey = getAchievementTitleInsightKey(achievementId);
+  const insightRevealEnd = useGameStore((s) => s.insightRevealing?.[insightKey]);
+  const [, forceUpdate] = useState(0);
+
+  const isRevealing =
+    typeof insightRevealEnd === "number" && insightRevealEnd > Date.now();
+
+  useEffect(() => {
+    if (!isRevealing) return;
+    const id = setInterval(() => forceUpdate((n) => n + 1), 100);
+    return () => clearInterval(id);
+  }, [isRevealing, insightRevealEnd]);
+
+  if (!isInsightUnlocked(gameState)) return null;
+  if (
+    isAchievementTitleVisible(gameState, achievementId, currentCount) &&
+    !isRevealing
+  ) {
+    return null;
+  }
+
+  const canUnlock = canRevealAchievementTitle(
+    gameState,
+    achievementId,
+    currentCount,
+    gameState.insightRevealing,
+  );
+  const affordable = getInsightAmount(gameState) >= ACHIEVEMENT_TITLE_INSIGHT_COST;
+  const playing = isRevealing;
+  const isDisabled = playing || !canUnlock;
+  const unlockLabel = t("achievements.unlockTitleForInsight", {
+    cost: ACHIEVEMENT_TITLE_INSIGHT_COST,
+    defaultValue: "Unlock title for {{cost}} Insight",
+  });
+
+  const handleClick = () => {
+    if (isDisabled) return;
+    setHighlightedResources(["insight"]);
+    revealAchievementTitle(achievementId, currentCount);
+  };
+
+  return (
+    <TooltipWrapper
+      tooltip={<div className="text-xs">{unlockLabel}</div>}
+      tooltipId={`achievement-unlock-title-${achievementId}`}
+      disabled
+      tooltipContentClassName="max-w-xs"
+      tooltipTriggerAsChild
+      onMouseEnter={() => setHighlightedResources(["insight"])}
+      onMouseLeave={() => {
+        if (!playing) setHighlightedResources([]);
+      }}
+      className="inline-flex shrink-0 items-center self-center"
+    >
+      <button
+        type="button"
+        aria-label={unlockLabel}
+        aria-busy={playing}
+        disabled={isDisabled}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handleClick();
+        }}
+        className={getInsightBadgeTriggerClassName({
+          canAfford: affordable || playing,
+          playing,
+          className: cn(
+            "inline-flex h-[1em] w-[1em] text-[14px] leading-none",
+            INSIGHT_BADGE_ALIGN_CLASS,
+            isDisabled && !playing ? "cursor-not-allowed" : "cursor-pointer",
+          ),
+        })}
+      >
+        <BuildingActionBadge
+          key={playing ? "reveal" : "idle"}
+          embedded
+          size="sm"
+          playing={playing}
+        />
+      </button>
+    </TooltipWrapper>
+  );
+}
+
 function AchievementRowComponent({
   row,
   indicatorClassIncomplete,
@@ -68,8 +172,6 @@ function AchievementRowComponent({
 }) {
   const { t } = useTranslation("ui");
   const gameState = useGameStore((s) => s as unknown as GameState);
-  const revealAchievementTitle = useGameStore((s) => s.revealAchievementTitle);
-  const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
   const canClaim = row.isFull && !row.isClaimed;
   const tooltipText = canClaim ? formatRewardsTooltip(row.rewards) : "";
   const isTitleVisible = isAchievementTitleVisible(
@@ -77,17 +179,6 @@ function AchievementRowComponent({
     row.achievementId,
     row.currentCount,
   );
-  const showUnlockButton =
-    !isTitleVisible && isInsightUnlocked(gameState);
-  const canUnlockTitle = canRevealAchievementTitle(
-    gameState,
-    row.achievementId,
-    row.currentCount,
-  );
-  const unlockLabel = t("achievements.unlockTitleForInsight", {
-    cost: ACHIEVEMENT_TITLE_INSIGHT_COST,
-    defaultValue: "Unlock title for {{cost}} Insight",
-  });
 
   const handleClaim = () => {
     if (canClaim) {
@@ -100,15 +191,10 @@ function AchievementRowComponent({
     }
   };
 
-  const handleUnlockTitle = () => {
-    if (!canUnlockTitle) return;
-    revealAchievementTitle(row.achievementId, row.currentCount);
-  };
-
   return (
     <div className="space-y-2 py-2">
       <div className="flex items-center justify-between gap-2 min-h-5">
-        <div className="flex items-center gap-1.5 min-w-0 flex-1">
+        <div className="flex items-center gap-1 min-w-0 flex-1">
           {isTitleVisible ? (
             <span className="text-xs font-medium text-foreground truncate">
               {row.label}
@@ -121,23 +207,10 @@ function AchievementRowComponent({
               >
                 ❔
               </span>
-              {showUnlockButton && (
-                <div className="h-5 flex items-center shrink-0">
-                  <GameButton
-                    variant="outline"
-                    size="xs"
-                    className={`h-5 px-2 ${claimButtonClass}`}
-                    onClick={handleUnlockTitle}
-                    disabled={!canUnlockTitle}
-                    tooltip={unlockLabel}
-                    tooltipId={`achievement-unlock-title-${row.achievementId}`}
-                    onMouseEnter={() => setHighlightedResources(["insight"])}
-                    onMouseLeave={() => setHighlightedResources([])}
-                  >
-                    {unlockLabel}
-                  </GameButton>
-                </div>
-              )}
+              <AchievementTitleInsightBadge
+                achievementId={row.achievementId}
+                currentCount={row.currentCount}
+              />
             </>
           )}
         </div>

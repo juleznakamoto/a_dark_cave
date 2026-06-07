@@ -12,6 +12,17 @@ export const INSIGHT_REVEAL_ACTION_COOLDOWN_SEC = 3;
 export const STAT_EFFECTS_INSIGHT_COST = 500;
 /** One-time cost to reveal a hidden achievement title before any progress is made. */
 export const ACHIEVEMENT_TITLE_INSIGHT_COST = 100;
+/** Prefix for `insightRevealing` keys while an achievement title reveal animates. */
+export const ACHIEVEMENT_TITLE_INSIGHT_KEY_PREFIX = "achievementTitle:";
+
+export function getAchievementTitleInsightKey(achievementId: string): string {
+  return `${ACHIEVEMENT_TITLE_INSIGHT_KEY_PREFIX}${achievementId}`;
+}
+
+export function parseAchievementTitleInsightKey(key: string): string | null {
+  if (!key.startsWith(ACHIEVEMENT_TITLE_INSIGHT_KEY_PREFIX)) return null;
+  return key.slice(ACHIEVEMENT_TITLE_INSIGHT_KEY_PREFIX.length) || null;
+}
 /** Spend Insight to extend an active timed-event tab countdown. */
 export const TIMED_EVENT_TAB_PROLONG_INSIGHT_COST = 250;
 export const TIMED_EVENT_TAB_PROLONG_MS = 3 * 60 * 1000;
@@ -130,9 +141,18 @@ export function canRevealAchievementTitle(
   state: GameState,
   achievementId: string,
   currentCount: number,
+  insightRevealing?: Record<string, number>,
 ): boolean {
   if (!isInsightUnlocked(state)) return false;
   if (isAchievementTitleVisible(state, achievementId, currentCount)) return false;
+  if (
+    isInsightRevealInProgress(
+      getAchievementTitleInsightKey(achievementId),
+      insightRevealing ?? state.insightRevealing,
+    )
+  ) {
+    return false;
+  }
   return getInsightAmount(state) >= ACHIEVEMENT_TITLE_INSIGHT_COST;
 }
 

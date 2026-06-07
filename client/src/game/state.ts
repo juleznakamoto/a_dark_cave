@@ -51,6 +51,8 @@ import {
   getInsightAmount,
   getInsightRevealCost,
   ACHIEVEMENT_TITLE_INSIGHT_COST,
+  getAchievementTitleInsightKey,
+  parseAchievementTitleInsightKey,
   INSIGHT_REVEAL_ACTION_COOLDOWN_SEC,
   INSIGHT_REVEAL_DURATION_MS,
   STAT_EFFECTS_INSIGHT_COST,
@@ -1504,7 +1506,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   revealAchievementTitle: (achievementId, currentCount) => {
     const state = get();
-    if (!canRevealAchievementTitle(state, achievementId, currentCount)) {
+    if (!canRevealAchievementTitle(state, achievementId, currentCount, state.insightRevealing)) {
       return false;
     }
 
@@ -1515,10 +1517,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     );
     set({
       ...resourceUpdates,
-      revealedAchievementTitles: [
-        ...(state.revealedAchievementTitles ?? []),
-        achievementId,
-      ],
+      insightRevealing: {
+        ...(state.insightRevealing ?? {}),
+        [getAchievementTitleInsightKey(achievementId)]:
+          Date.now() + INSIGHT_REVEAL_DURATION_MS,
+      },
     });
     return true;
   },
@@ -2207,6 +2210,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const now = Date.now();
       const newRevealing = { ...state.insightRevealing };
       const revealedEffects = [...(state.revealedEffects ?? [])];
+      const revealedAchievementTitles = [
+        ...(state.revealedAchievementTitles ?? []),
+      ];
       let revealChanged = false;
       let statEffectsRevealed = state.statEffectsRevealed;
       for (const [actionId, endTime] of Object.entries(state.insightRevealing ?? {})) {
@@ -2215,8 +2221,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
             statEffectsRevealed = true;
           } else if (actionId === TIMED_EVENT_INSIGHT_PROLONG_KEY) {
             // Timed-tab prolong: animation only (no revealedEffects entry).
-          } else if (!revealedEffects.includes(actionId)) {
-            revealedEffects.push(actionId);
+          } else {
+            const achievementId = parseAchievementTitleInsightKey(actionId);
+            if (achievementId) {
+              if (!revealedAchievementTitles.includes(achievementId)) {
+                revealedAchievementTitles.push(achievementId);
+              }
+            } else if (!revealedEffects.includes(actionId)) {
+              revealedEffects.push(actionId);
+            }
           }
           delete newRevealing[actionId];
           revealChanged = true;
@@ -2256,6 +2269,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             insightRevealing: newRevealing,
             revealedEffects,
             statEffectsRevealed,
+            revealedAchievementTitles,
           }
           : {}),
       };
