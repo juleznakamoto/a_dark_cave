@@ -512,7 +512,7 @@ export default function SidePanelSection({
             }
           }}
           className={cn(
-            "insight-action-badge-trigger relative inline-flex h-4 w-4 shrink-0 items-center justify-center border-0 bg-transparent p-0",
+            "insight-action-badge-trigger relative inline-flex h-[1em] w-[1em] items-center justify-center border-0 bg-transparent p-0 text-[14px] leading-none",
             affordable ? "cursor-pointer" : "cursor-not-allowed",
           )}
         >
