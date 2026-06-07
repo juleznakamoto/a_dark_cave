@@ -47,8 +47,10 @@ import { computePersistedSocialTasksGold } from "@/game/socialTasksGold";
 import {
   canRevealEffects,
   canRevealStatEffects,
+  canRevealAchievementTitle,
   getInsightAmount,
   getInsightRevealCost,
+  ACHIEVEMENT_TITLE_INSIGHT_COST,
   INSIGHT_REVEAL_ACTION_COOLDOWN_SEC,
   INSIGHT_REVEAL_DURATION_MS,
   STAT_EFFECTS_INSIGHT_COST,
@@ -303,6 +305,7 @@ interface GameStore extends GameState {
   unlockedAchievements: string[];
   claimedAchievements: string[];
   unlockAchievement: (achievementId: string) => void;
+  revealAchievementTitle: (achievementId: string, currentCount: number) => boolean;
 
   // Leaderboard
   username?: string;
@@ -918,6 +921,8 @@ const mergeStateUpdates = (
       stateUpdates.unlockedAchievements || prevState.unlockedAchievements,
     claimedAchievements:
       stateUpdates.claimedAchievements || prevState.claimedAchievements,
+    revealedAchievementTitles:
+      stateUpdates.revealedAchievementTitles || prevState.revealedAchievementTitles,
     // Game ID
     gameId:
       stateUpdates.gameId !== undefined
@@ -1488,12 +1493,34 @@ export const useGameStore = create<GameStore>((set, get) => ({
   // Achievements
   unlockedAchievements: [],
   claimedAchievements: [],
+  revealedAchievementTitles: [],
   unlockAchievement: (achievementId) =>
     set((state) => ({
       unlockedAchievements: state.unlockedAchievements.includes(achievementId)
         ? state.unlockedAchievements
         : [...state.unlockedAchievements, achievementId],
     })),
+
+  revealAchievementTitle: (achievementId, currentCount) => {
+    const state = get();
+    if (!canRevealAchievementTitle(state, achievementId, currentCount)) {
+      return false;
+    }
+
+    const resourceUpdates = updateResource(
+      state,
+      "insight",
+      -ACHIEVEMENT_TITLE_INSIGHT_COST,
+    );
+    set({
+      ...resourceUpdates,
+      revealedAchievementTitles: [
+        ...(state.revealedAchievementTitles ?? []),
+        achievementId,
+      ],
+    });
+    return true;
+  },
 
   // Leaderboard
   username: undefined,
@@ -2514,6 +2541,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         },
         revealedEffects: savedState.revealedEffects ?? [],
         statEffectsRevealed: savedState.statEffectsRevealed ?? false,
+        revealedAchievementTitles: savedState.revealedAchievementTitles ?? [],
         relics: {
           ...defaultGameState.relics,
           ...savedState.relics,

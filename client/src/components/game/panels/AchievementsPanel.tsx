@@ -13,6 +13,12 @@ import {
 } from "@/achievements";
 import { getAchievementRows, claimAchievement, formatRewardsTooltip } from "@/achievements/achievementHelpers";
 import {
+  ACHIEVEMENT_TITLE_INSIGHT_COST,
+  canRevealAchievementTitle,
+  isAchievementTitleVisible,
+  isInsightUnlocked,
+} from "@/game/rules/insightReveal";
+import {
   INDICATOR_CLASS_INCOMPLETE,
   INDICATOR_CLASS_COMPLETE,
   CLAIM_BUTTON_CLASS,
@@ -60,8 +66,27 @@ function AchievementRowComponent({
   claimButtonClass: string;
 }) {
   const { t } = useTranslation("ui");
+  const gameState = useGameStore((s) => s as unknown as import("@shared/schema").GameState);
+  const revealAchievementTitle = useGameStore((s) => s.revealAchievementTitle);
+  const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
   const canClaim = row.isFull && !row.isClaimed;
   const tooltipText = canClaim ? formatRewardsTooltip(row.rewards) : "";
+  const isTitleVisible = isAchievementTitleVisible(
+    gameState,
+    row.achievementId,
+    row.currentCount,
+  );
+  const showUnlockButton =
+    !isTitleVisible && isInsightUnlocked(gameState);
+  const canUnlockTitle = canRevealAchievementTitle(
+    gameState,
+    row.achievementId,
+    row.currentCount,
+  );
+  const unlockLabel = t("achievements.unlockTitleForInsight", {
+    cost: ACHIEVEMENT_TITLE_INSIGHT_COST,
+    defaultValue: "Unlock title for {{cost}} Insight",
+  });
 
   const handleClaim = () => {
     if (canClaim) {
@@ -74,13 +99,47 @@ function AchievementRowComponent({
     }
   };
 
+  const handleUnlockTitle = () => {
+    if (!canUnlockTitle) return;
+    revealAchievementTitle(row.achievementId, row.currentCount);
+  };
+
   return (
     <div className="space-y-2 py-2">
-      <div className="flex items-center justify-between gap-2 h-5">
-
-        <span className="text-xs font-medium text-foreground truncate">
-          {row.currentCount >= 1 ? row.label : "❔"}
-        </span>
+      <div className="flex items-center justify-between gap-2 min-h-5">
+        <div className="flex items-center gap-1.5 min-w-0 flex-1">
+          {isTitleVisible ? (
+            <span className="text-xs font-medium text-foreground truncate">
+              {row.label}
+            </span>
+          ) : (
+            <>
+              <span
+                className="text-xs font-medium text-foreground shrink-0 leading-none"
+                aria-hidden
+              >
+                ❔
+              </span>
+              {showUnlockButton && (
+                <div className="h-5 flex items-center shrink-0">
+                  <GameButton
+                    variant="outline"
+                    size="xs"
+                    className={`h-5 px-2 ${claimButtonClass}`}
+                    onClick={handleUnlockTitle}
+                    disabled={!canUnlockTitle}
+                    tooltip={unlockLabel}
+                    tooltipId={`achievement-unlock-title-${row.achievementId}`}
+                    onMouseEnter={() => setHighlightedResources(["insight"])}
+                    onMouseLeave={() => setHighlightedResources([])}
+                  >
+                    {unlockLabel}
+                  </GameButton>
+                </div>
+              )}
+            </>
+          )}
+        </div>
         {canClaim && (
           <div className="h-5 flex items-center shrink-0">
             <GameButton

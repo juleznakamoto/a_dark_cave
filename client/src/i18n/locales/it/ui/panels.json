@@ -191,6 +191,7 @@
     "notUnlocked": "Non ancora sbloccato.",
     "chartUnavailable": "Grafico non disponibile",
     "claim": "Riscatta",
+    "unlockTitleForInsight": "Sblocca titolo per {{cost}} Intuizione",
     "completeLog": "Obiettivo {{name}} completato: {{rewards}}"
   },
   "idleMode": {

@@ -191,6 +191,7 @@
     "notUnlocked": "Aún no desbloqueado.",
     "chartUnavailable": "Gráfico no disponible",
     "claim": "Reclamar",
+    "unlockTitleForInsight": "Desbloquear título por {{cost}} Perspicacia",
     "completeLog": "Logro completado: {{name}}: {{rewards}}"
   },
   "idleMode": {

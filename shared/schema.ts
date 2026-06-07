@@ -809,6 +809,8 @@ export const gameStateSchema = z.object({
   // Achievements
   unlockedAchievements: z.array(z.string()).default([]),
   claimedAchievements: z.array(z.string()).default([]), // Achievement segment IDs that have been claimed for silver
+  /** Achievement IDs whose titles were revealed via Insight before any progress was made. */
+  revealedAchievementTitles: z.array(z.string()).default([]),
   username: z.string().optional(), // Player's chosen username for leaderboard
   g: z.enum(["m", "f"]).optional(), // Estimated gender from signup name/email (from gender-detector)
   fn: z.string().optional(), // First name extracted for gender detection

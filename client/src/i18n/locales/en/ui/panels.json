@@ -191,6 +191,7 @@
     "notUnlocked": "Not yet unlocked.",
     "chartUnavailable": "Chart unavailable",
     "claim": "Claim",
+    "unlockTitleForInsight": "Unlock title for {{cost}} Insight",
     "completeLog": "{{name}} Achievement complete: {{rewards}}"
   },
   "idleMode": {

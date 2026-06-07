@@ -191,6 +191,7 @@
     "notUnlocked": "Noch nicht freigeschaltet.", //ok
     "chartUnavailable": "Diagramm nicht verfügbar", //ok
     "claim": "Einfordern",
+    "unlockTitleForInsight": "Titel für {{cost}} Einsicht freischalten",
     "completeLog": "Erfolg abgeschlossen: {{name}}: {{rewards}}"
   },
   "idleMode": {

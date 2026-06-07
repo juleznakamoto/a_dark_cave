@@ -191,6 +191,7 @@
     "notUnlocked": "Еще не открыто.",
     "chartUnavailable": "График недоступен",
     "claim": "Забрать",
+    "unlockTitleForInsight": "Открыть название за {{cost}} Проницательности",
     "completeLog": "Достижение завершено: {{name}}: {{rewards}}"
   },
   "idleMode": {

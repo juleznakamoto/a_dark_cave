@@ -10,6 +10,8 @@ export const INSIGHT_REVEAL_DURATION_MS = 3_000;
 export const INSIGHT_REVEAL_ACTION_COOLDOWN_SEC = 3;
 /** One-time cost to reveal all side-panel stat effect tooltips. */
 export const STAT_EFFECTS_INSIGHT_COST = 500;
+/** One-time cost to reveal a hidden achievement title before any progress is made. */
+export const ACHIEVEMENT_TITLE_INSIGHT_COST = 100;
 /** Spend Insight to extend an active timed-event tab countdown. */
 export const TIMED_EVENT_TAB_PROLONG_INSIGHT_COST = 250;
 export const TIMED_EVENT_TAB_PROLONG_MS = 3 * 60 * 1000;
@@ -107,6 +109,31 @@ export function isInsightRevealInProgress(
 
 export function getInsightAmount(state: GameState): number {
   return state.resources.insight ?? 0;
+}
+
+export function isAchievementTitleRevealed(
+  state: GameState,
+  achievementId: string,
+): boolean {
+  return (state.revealedAchievementTitles ?? []).includes(achievementId);
+}
+
+export function isAchievementTitleVisible(
+  state: GameState,
+  achievementId: string,
+  currentCount: number,
+): boolean {
+  return currentCount >= 1 || isAchievementTitleRevealed(state, achievementId);
+}
+
+export function canRevealAchievementTitle(
+  state: GameState,
+  achievementId: string,
+  currentCount: number,
+): boolean {
+  if (!isInsightUnlocked(state)) return false;
+  if (isAchievementTitleVisible(state, achievementId, currentCount)) return false;
+  return getInsightAmount(state) >= ACHIEVEMENT_TITLE_INSIGHT_COST;
 }
 
 export function canProlongTimedEventTab(
