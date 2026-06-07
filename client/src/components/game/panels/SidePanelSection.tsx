@@ -488,7 +488,7 @@ export default function SidePanelSection({
         disabled
         tooltipContentClassName="max-w-xs"
         className={cn(
-          "inline-flex shrink-0 self-baseline -translate-y-[0.08em]",
+          "inline-flex shrink-0 self-baseline translate-y-[0.05em]",
           !affordable && "opacity-60",
         )}
       >
@@ -508,7 +508,7 @@ export default function SidePanelSection({
             }
           }}
           className={cn(
-            "font-noto-symbols-2 inline-flex w-[1em] items-center justify-center border-0 bg-transparent p-0 text-xs leading-none transition-opacity duration-200",
+            "font-noto-symbols-2 inline-flex w-[1em] items-center justify-center border-0 bg-transparent p-0 text-[14px] leading-none transition-opacity duration-200",
             INSIGHT_TEXT_CLASS,
             "opacity-80 hover:opacity-100",
             affordable ? "cursor-pointer" : "cursor-not-allowed",
