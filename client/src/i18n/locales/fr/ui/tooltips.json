@@ -140,6 +140,7 @@
       "madnessPerHumanSacrifice": "-2 folie par sacrifice humain (max -20)",
       "totemSilverGain": "10-25 argent",
       "totemGoldGain": "10-25 or",
+      "insightGain": "+{{amount}} Perspicacité",
       "boneTotemSacrificeBonus": "Bonus de sacrifice de totem d'os : 50–100 or",
       "totemSacrificesBonus": "Sacrifices de totem : +25 % de bonus",
       "sleepLengthHours": "Durée de sommeil +{{hours}} heures",

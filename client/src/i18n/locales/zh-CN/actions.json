@@ -484,6 +484,13 @@
   "feedFire": {
     "label": "添柴"
   },
+  "financeExpedition": {
+    "description": "资助学者带队前往森林中的神殿与遗迹",
+    "label": "资助探险",
+    "log": {
+      "complete": "研究探险队从森林归来。学者们花费数日整理铭文、风化的遗骸与被遗忘知识的残片。"
+    }
+  },
   "forestCave": {
     "label": "森林洞穴",
     "log": {

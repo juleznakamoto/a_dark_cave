@@ -143,6 +143,7 @@
       "madnessPerHumanSacrifice": "-2 de Loucura por sacrifício Humano (máx. -20)",
       "totemSilverGain": "10-25 de Prata",
       "totemGoldGain": "10-25 de Ouro",
+      "insightGain": "+{{amount}} Perspicácia",
       "boneTotemSacrificeBonus": "Bônus de Sacrifício de Totem de Osso: 50-100 de Ouro",
       "totemSacrificesBonus": "Sacrifícios de Totem: +25% de Bônus",
       "sleepLengthHours": "Duração do Sono +{{hours}} horas",

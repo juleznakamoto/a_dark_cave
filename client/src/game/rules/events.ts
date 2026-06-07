@@ -88,6 +88,7 @@ import { disgracedPriorEvents } from "./eventsDisgracedPrior";
 import { socialPromoExclusiveEvents } from "./eventsSocialPromoExclusive";
 import { gamblerEvents } from "./eventsGambler";
 import { theDamnedEvents } from "./eventsTheDamned";
+import { scholarResearchEvents } from "./eventsScholarResearch";
 import { GAME_CONSTANTS } from "../constants";
 import {
   getEventCatalogId,
@@ -210,6 +211,7 @@ export const gameEvents: Record<string, GameEvent> = {
   ...socialPromoExclusiveEvents,
   ...gamblerEvents,
   ...theDamnedEvents,
+  ...scholarResearchEvents,
 };
 
 /** Priority order for event rolls (higher first). Static priorities — sorted once at module load. */

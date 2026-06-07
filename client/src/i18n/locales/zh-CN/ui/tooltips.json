@@ -140,6 +140,7 @@
       "madnessPerHumanSacrifice": "每次人类献祭 -2 疯狂（上限 -20）",
       "totemSilverGain": "10-25 白银",
       "totemGoldGain": "10-25 黄金",
+      "insightGain": "+{{amount}} 洞见",
       "boneTotemSacrificeBonus": "骨图腾献祭奖励：50–100 黄金",
       "totemSacrificesBonus": "图腾献祭：+25% 奖励",
       "sleepLengthHours": "睡眠时长 +{{hours}} 小时",

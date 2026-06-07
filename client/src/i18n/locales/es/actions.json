@@ -484,6 +484,13 @@
   "feedFire": {
     "label": "Alimentar el fuego"
   },
+  "financeExpedition": {
+    "description": "Financiar una expedición liderada por eruditos a templos y ruinas del bosque",
+    "label": "Financiar expedición",
+    "log": {
+      "complete": "La expedición de investigación regresa del bosque. Los eruditos pasan días catalogando inscripciones, reliquias erosionadas y fragmentos de un conocimiento olvidado."
+    }
+  },
   "forestCave": {
     "label": "Cueva del bosque",
     "log": {

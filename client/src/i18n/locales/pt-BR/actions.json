@@ -484,6 +484,13 @@
   "feedFire": {
     "label": "Alimentar o Fogo"
   },
+  "financeExpedition": {
+    "description": "Financiar uma expedição liderada por estudiosos a templos e ruínas na floresta",
+    "label": "Financiar expedição",
+    "log": {
+      "complete": "A expedição de pesquisa retorna da floresta. Estudiosos passam dias catalogando inscrições, relíquias desgastadas e fragmentos de conhecimento esquecido."
+    }
+  },
   "forestCave": {
     "label": "Caverna da Floresta",
     "log": {

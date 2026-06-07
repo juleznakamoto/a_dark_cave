@@ -40,6 +40,10 @@ import { forestSacrificeActions } from "./forestSacrificeActions";
 import { forestTradeActions } from "./forestTradeActions";
 import { caveExploreActions } from "./caveExploreActions";
 import { forestScoutActions } from "./forestScoutActions";
+import {
+  forestResearchActions,
+  getFinanceExpeditionTier,
+} from "./forestResearchActions";
 import { bastionActions } from "./bastionActions";
 
 // Import event modules
@@ -74,6 +78,7 @@ registerActions({
   ...forestSacrificeActions,
   ...forestTradeActions,
   ...forestScoutActions,
+  ...forestResearchActions,
   ...bastionActions,
 });
 
@@ -345,6 +350,13 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
     }
   }
 
+  if (actionId === "financeExpedition") {
+    const tier = getFinanceExpeditionTier(state);
+    if ((state.resources.gold || 0) < tier.gold) {
+      return false;
+    }
+  }
+
   // Check cooldown first
   if (state.cooldowns[actionId] && state.cooldowns[actionId] > 0) {
     return false;
@@ -602,6 +614,16 @@ export function getActionCostBreakdown(
       {
         text: formatTooltipCostLine(dynamicCost, "food"),
         satisfied: (state.resources.food || 0) >= dynamicCost,
+      },
+    ];
+  }
+
+  if (actionId === "financeExpedition") {
+    const tier = getFinanceExpeditionTier(state);
+    return [
+      {
+        text: formatTooltipCostLine(tier.gold, "gold"),
+        satisfied: (state.resources.gold || 0) >= tier.gold,
       },
     ];
   }

@@ -484,6 +484,13 @@
   "feedFire": {
     "label": "Alimenter le feu"
   },
+  "financeExpedition": {
+    "description": "Financer une expédition menée par des érudits vers les temples et ruines de la forêt",
+    "label": "Financer l'expédition",
+    "log": {
+      "complete": "L'expédition de recherche revient de la forêt. Les érudits passent des jours à cataloguer inscriptions, reliques usées et fragments de savoir oublié."
+    }
+  },
   "forestCave": {
     "label": "Grotte forestière",
     "log": {

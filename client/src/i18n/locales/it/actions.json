@@ -484,6 +484,13 @@
   "feedFire": {
     "label": "Alimenta il Fuoco"
   },
+  "financeExpedition": {
+    "description": "Finanziare una spedizione guidata da studiosi verso templi e rovine nella foresta",
+    "label": "Finanziare spedizione",
+    "log": {
+      "complete": "La spedizione di ricerca torna dalla foresta. Gli studiosi passano giorni a catalogare iscrizioni, reliquie erose e frammenti di conoscenza dimenticata."
+    }
+  },
   "forestCave": {
     "label": "Caverna della Foresta",
     "log": {

@@ -1736,6 +1736,15 @@
     "message": "Der blinde Druide tritt hervor: 'Das Heiligtum ist vollendet', sagt er, seine Stimme trägt das Gewicht alter Weisheit. 'Nun musst du wählen: Vertiefe deine Hingabe an den Pfad, den du gewählt hast, oder umarme alle Götter und ihre Gaben. Wähle weise.'",
     "title": "Die Weihe des Heiligtums"
   },
+  "scholarResearchProposal": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "message": "Eine junge Gelehrte sucht dich auf, Feldnotizen und eine handgezeichnete Karte unter dem Arm. Sie spricht von vergessenen Tempeln und Heiligtümern tief im Wald. Mit genügend Gold könnte sie Expeditionen ins Wildnis führen und Wissen zurückbringen, das längst verloren schien.",
+    "title": "Der Vorschlag der Gelehrten"
+  },
   "secondWave": {
     "message": "Die Kreaturen kehren in noch größerer Zahl zurück, mit Waffen aus rohem Knochen, die von üblem Licht erfüllt sind.",
     "title": "Die zweite Welle"

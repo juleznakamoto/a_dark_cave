@@ -1713,6 +1713,15 @@
     "message": "El druida ciego emerge: 'El Santuario está completo', dice, con una voz cargada de sabiduría antigua. 'Ahora debes elegir: profundizar tu devoción por el camino escogido o abrazar a todos los dioses y sus dones. Elige con sabiduría'.",
     "title": "La dedicación del Santuario"
   },
+  "scholarResearchProposal": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Una joven erudita te busca, con notas de campo y un mapa dibujado a mano bajo el brazo. Habla de templos olvidados y santuarios ocultos en lo profundo del bosque. Con suficiente financiación, podría liderar expediciones hacia la espesura y regresar con un saber que se creía perdido.",
+    "title": "La propuesta de la erudita"
+  },
   "secondWave": {
     "message": "Las criaturas regresan en mayor número, con armas de hueso tosco que brillan con luz impura.",
     "title": "La segunda oleada"

@@ -10,6 +10,10 @@ import {
   getAnimalsCost,
   getHumansCost,
 } from "@/game/rules/forestSacrificeActions";
+import {
+  handleFinanceExpedition,
+  getFinanceExpeditionGoldCost,
+} from "@/game/rules/forestResearchActions";
 import { killVillagers } from "@/game/stateHelpers";
 import { getProvokeAttackWaveExecutionUpdates } from "@/game/rules/bastionActions";
 // Import all handlers from the modular action files
@@ -219,6 +223,16 @@ export function deductActionCosts(actionId: string, state: GameState): Partial<G
   if (actionId === "humans") {
     const cost = getHumansCost(state);
     return killVillagers(state, cost);
+  }
+  if (actionId === "financeExpedition") {
+    const cost = getFinanceExpeditionGoldCost(state);
+    if (cost <= 0) return {};
+    return {
+      resources: {
+        ...state.resources,
+        gold: (state.resources.gold || 0) - cost,
+      },
+    };
   }
   return applyActionCostsOnly(actionId, state);
 }
@@ -659,6 +673,9 @@ export function executeGameAction(
       return handleAnimals(state, result);
     case "humans":
       return handleHumans(state, result);
+
+    case "financeExpedition":
+      return handleFinanceExpedition(state, result);
 
     // Forest Trade Actions
     case "tradeGoldForFood":

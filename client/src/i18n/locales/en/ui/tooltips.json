@@ -143,6 +143,7 @@
       "madnessPerHumanSacrifice": "-2 Madness per Human sacrifice (max -20)",
       "totemSilverGain": "10-25 Silver",
       "totemGoldGain": "10-25 Gold",
+      "insightGain": "+{{amount}} Insight",
       "boneTotemSacrificeBonus": "Bone Totem Sacrifice Bonus: 50-100 Gold",
       "totemSacrificesBonus": "Totem Sacrifices: +25% Bonus",
       "sleepLengthHours": "Sleep Length +{{hours}} hours",

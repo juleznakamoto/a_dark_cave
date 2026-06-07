@@ -1713,6 +1713,15 @@
     "message": "Le druide aveugle émerge : 'Le Sanctum est achevé,' dit-il, sa voix portant le poids d'une sagesse ancienne. 'Vous devez maintenant choisir : approfondir votre dévotion à la voie que vous avez choisie, ou embrasser tous les dieux et leurs dons. Choisissez avec sagesse.'",
     "title": "La Dédicace du Sanctum"
   },
+  "scholarResearchProposal": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "message": "Une jeune érudite vient te trouver, notes de terrain et carte dessinée à la main sous le bras. Elle parle de temples oubliés et de sanctuaires cachés au cœur de la forêt. Avec assez d'or, elle pourrait mener des expéditions en pleine nature et ramener des connaissances longtemps réputées perdues.",
+    "title": "La proposition de l'érudite"
+  },
   "secondWave": {
     "message": "Les créatures reviennent en plus grand nombre, armées d'armes d'os brut, luisant d'une lumière impure.",
     "title": "La deuxième vague"

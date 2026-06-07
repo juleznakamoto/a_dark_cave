@@ -1736,6 +1736,15 @@
     "message": "Il druido cieco emerge: 'Il Santuario è completo,' dice, la voce che porta il peso dell'antica saggezza. 'Ora devi scegliere: approfondire la tua devozione al cammino che hai scelto, o abbracciare tutti gli dèi e i loro doni. Scegli con saggezza.'",
     "title": "La Dedicazione del Santuario"
   },
+  "scholarResearchProposal": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "message": "Una giovane studiosa viene a cercarti, appunti di campo e una mappa disegnata a mano sotto il braccio. Parla di templi dimenticati e santuari nascosti nel cuore della foresta. Con abbastanza finanziamenti, potrebbe condurre spedizioni nella selva e tornare con conoscenze ritenute da tempo perdute.",
+    "title": "La proposta della studiosa"
+  },
   "secondWave": {
     "message": "Le creature tornano in numero maggiore, con armi di osso grezzo, splendenti di luce immonda.",
     "title": "La Seconda Ondata"

@@ -1,0 +1,28 @@
+import type { GameState } from "@shared/schema";
+import type { GameEvent } from "./events";
+
+export const scholarResearchEvents: Record<string, GameEvent> = {
+  scholarResearchProposal: {
+    id: "scholarResearchProposal",
+    condition: (state: GameState) =>
+      (state.buildings.clerksHut ?? 0) >= 1 &&
+      !state.story.seen.scholarResearchExpeditionsUnlocked,
+    timeProbability: 45,
+    priority: 5,
+    repeatable: false,
+    choices: [
+      {
+        id: "continue",
+        effect: (state: GameState) => ({
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              scholarResearchExpeditionsUnlocked: true,
+            },
+          },
+        }),
+      },
+    ],
+  },
+};

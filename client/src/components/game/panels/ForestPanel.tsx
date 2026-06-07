@@ -186,6 +186,10 @@ export default function ForestPanel() {
       ],
     },
     {
+      title: "Research",
+      actions: [{ id: "financeExpedition", label: "Finance Expedition" }],
+    },
+    {
       title: "Sacrifice",
       actions: [
         { id: "boneTotems", label: "Bone Totems" },
@@ -278,6 +282,7 @@ export default function ForestPanel() {
       actionId === "boneTotems" || actionId === "leatherTotems";
     const isAnimalsSacrifice = actionId === "animals";
     const isHumansSacrifice = actionId === "humans";
+    const isFinanceExpedition = actionId === "financeExpedition";
     const isBombTradeAction = [
       "tradeGoldForEmberBomb",
       "tradeGoldForAshfireBomb",
@@ -319,6 +324,7 @@ export default function ForestPanel() {
       resourceGainTooltip ||
       isAnimalsSacrifice ||
       isHumansSacrifice ||
+      isFinanceExpedition ||
       showSuccessTooltip ||
       hasExpeditionRequirement
     ) {
@@ -336,10 +342,10 @@ export default function ForestPanel() {
         // chopWood or hunt: show resource gains only
         tooltipContent = resourceGainTooltip;
       } else if (
-        (isAnimalsSacrifice || isHumansSacrifice) &&
+        (isAnimalsSacrifice || isHumansSacrifice || isFinanceExpedition) &&
         action.tooltipEffects
       ) {
-        // Animals/Humans sacrifice: show madness effect
+        // Animals/Humans sacrifice / Finance Expedition: show effect + cost
         const costBreakdown = getActionCostBreakdown(actionId, state);
         const effectLines = resolveActionTooltipEffects(
           action.tooltipEffects,
@@ -347,10 +353,16 @@ export default function ForestPanel() {
         );
         tooltipContent = (
           <div className="text-xs whitespace-nowrap">
+            {isFinanceExpedition && villagerMessage}
+            {isFinanceExpedition &&
+              villagerMessage &&
+              (effectLines.length > 0 || costBreakdown.length > 0) && (
+                <div className="border-t border-border my-1" />
+              )}
             {effectLines.map((effect, index) => (
               <div key={`effect-${index}`}>{effect}</div>
             ))}
-            {costBreakdown.length > 0 && (
+            {costBreakdown.length > 0 && effectLines.length > 0 && (
               <div className="border-t border-border my-1" />
             )}
             {costBreakdown.map((costItem, index) => (

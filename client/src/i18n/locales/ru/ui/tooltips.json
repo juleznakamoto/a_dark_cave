@@ -140,6 +140,7 @@
       "madnessPerHumanSacrifice": "-2 безумия за человеческое жертвоприношение (макс. -20)",
       "totemSilverGain": "10-25 серебра",
       "totemGoldGain": "10-25 золота",
+      "insightGain": "+{{amount}} Прозрение",
       "boneTotemSacrificeBonus": "Бонус жертвоприношения костяному тотему: 50–100 золота",
       "totemSacrificesBonus": "Жертвоприношения тотемам: +25 % бонус",
       "sleepLengthHours": "Длительность сна +{{hours}} ч.",

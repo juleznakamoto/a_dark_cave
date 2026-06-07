@@ -140,6 +140,7 @@
       "madnessPerHumanSacrifice": "-2 locura por sacrificio humano (máx. -20)",
       "totemSilverGain": "10-25 plata",
       "totemGoldGain": "10-25 oro",
+      "insightGain": "+{{amount}} Perspicacia",
       "boneTotemSacrificeBonus": "Bonificación de sacrificio de tótem de hueso: 50–100 oro",
       "totemSacrificesBonus": "Sacrificios de tótem: +25 % de bonificación",
       "sleepLengthHours": "Duración del sueño +{{hours}} horas",

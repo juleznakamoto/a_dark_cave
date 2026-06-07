@@ -1736,6 +1736,15 @@
     "message": "O druida cego emerge: 'O Sanctum está completo,' diz ele, sua voz carregando o peso da sabedoria antiga. 'Agora você deve escolher: aprofundar sua devoção ao caminho que escolheu, ou abraçar todos os deuses e seus dons. Escolha com sabedoria.'",
     "title": "A Dedicação do Sanctum"
   },
+  "scholarResearchProposal": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Uma jovem estudiosa procura você, com anotações de campo e um mapa desenhado à mão debaixo do braço. Ela fala de templos esquecidos e santuários escondidos nas profundezas da floresta. Com financiamento suficiente, ela poderia liderar expedições pela mata e voltar com conhecimentos há muito considerados perdidos.",
+    "title": "A proposta da estudiosa"
+  },
   "secondWave": {
     "message": "As criaturas retornam em maior número, com armas de osso bruto, brilhando com luz imunda.",
     "title": "A Segunda Onda"

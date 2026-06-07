@@ -484,6 +484,13 @@
   "feedFire": {
     "label": "Feed Fire"
   },
+  "financeExpedition": {
+    "description": "Fund a scholar-led expedition to temples and ruins in the forest",
+    "label": "Finance Expedition",
+    "log": {
+      "complete": "The research expedition returns from the forest. Scholars spend days cataloguing inscriptions, weathered relics, and fragments of forgotten knowledge."
+    }
+  },
   "forestCave": {
     "label": "Forest Cave",
     "log": {

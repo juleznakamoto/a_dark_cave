@@ -116,7 +116,7 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
   `startGameLoop()` / `stopGameLoop()`.
 - **`rules/`** — `actionsRegistry.ts` (central `gameActions`), per-area action modules
   (`caveLogFallbacks.ts`, `caveExploreActions.ts`, `villageBuildActions.ts`, `forestSacrificeActions.ts`,
-  `bastionActions.ts`, …), `index.ts` (visibility/affordability + `allEvents`), effects
+  `forestResearchActions.ts`, `bastionActions.ts`, …), `index.ts` (visibility/affordability + `allEvents`), effects
   (`actionEffects.ts`, `effectsCalculation.ts`, `costCalculation.ts`), events (`events.ts`
   → `EventManager`, `LogEntry`, plus topic files `events*.ts`), `insightReveal.ts` /
   `insightRevealTooltip.tsx`, `actionTooltipLayout.tsx` (`composeActionTooltip` — cost,

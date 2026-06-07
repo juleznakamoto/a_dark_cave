@@ -1736,6 +1736,15 @@
     "message": "The blind druid emerges: 'The Sanctum stands complete,' he says, his voice carrying the weight of ancient wisdom. 'Now you must choose: deepen your devotion to the path you have chosen, or embrace all gods and their gifts. Choose wisely.'",
     "title": "The Dedication of the Sanctum"
   },
+  "scholarResearchProposal": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "message": "A young scholar seeks you out, field notes and a hand-drawn map tucked beneath her arm. She speaks of forgotten temples and sanctuaries hidden deep within the forest. With enough funding, she could lead expeditions into the wilds and return with knowledge long thought lost.",
+    "title": "The Scholar's Proposal"
+  },
   "secondWave": {
     "message": "The creatures return in greater numbers, with weapons of crude bone, glowing with foul light.",
     "title": "The Second Wave"

@@ -484,6 +484,13 @@
   "feedFire": {
     "label": "Feuer schüren"
   },
+  "financeExpedition": {
+    "description": "Eine von Gelehrten geleitete Expedition zu Tempeln und Ruinen im Wald finanzieren",
+    "label": "Expedition finanzieren",
+    "log": {
+      "complete": "Die Forschungsexpedition kehrt aus dem Wald zurück. Gelehrte verbringen Tage damit, Inschriften, verwitterte Relikte und Fragmente vergessenen Wissens zu katalogisieren."
+    }
+  },
   "forestCave": {
     "label": "Waldhöhle",
     "log": {

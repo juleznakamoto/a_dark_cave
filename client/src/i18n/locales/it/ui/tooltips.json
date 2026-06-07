@@ -143,6 +143,7 @@
       "madnessPerHumanSacrifice": "-2 Follia per sacrificio Umano (max -20)",
       "totemSilverGain": "10-25 Argento",
       "totemGoldGain": "10-25 Oro",
+      "insightGain": "+{{amount}} Intuizione",
       "boneTotemSacrificeBonus": "Bonus Sacrificio Totem d'Ossa: 50-100 Oro",
       "totemSacrificesBonus": "Sacrifici di Totem: +25% Bonus",
       "sleepLengthHours": "Durata del Sonno +{{hours}} ore",
