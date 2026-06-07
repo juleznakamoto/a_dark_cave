@@ -45,7 +45,7 @@ import {
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { AnimatedCounter } from "@/components/ui/animated-counter";
+import { AnimatedCounter, ANIMATED_COUNTER_FONT_SIZE, ANIMATED_COUNTER_HEIGHT } from "@/components/ui/animated-counter";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
 import { getRevealedEffectsForActionTooltip } from "@/game/rules/insightRevealTooltip";
@@ -782,7 +782,7 @@ export default function VillagePanel() {
 
     return (
       <div key={jobId} className="flex items-center justify-between">
-        <div className="grid h-5 shrink-0 grid-cols-[1.25rem_3.5rem_1.25rem] items-center gap-x-0.5">
+        <div className="flex h-5 shrink-0 items-center gap-x-0.5">
           <Button
             onMouseDown={() =>
               currentCount > 0 &&
@@ -810,12 +810,10 @@ export default function VillagePanel() {
           >
             -
           </Button>
-          <div className="flex items-center justify-center">
+          <div className="flex w-14 items-center justify-center">
             <AnimatedCounter
               value={currentCount}
-              suffix={showCap ? `/${cap}` : undefined}
               className={atCap ? "text-muted-foreground" : undefined}
-              suffixClassName="text-muted-foreground"
             />
           </div>
           <Button
@@ -844,6 +842,18 @@ export default function VillagePanel() {
           >
             +
           </Button>
+          {showCap && (
+            <span
+              translate="no"
+              className="notranslate tabular-nums text-muted-foreground"
+              style={{
+                fontSize: ANIMATED_COUNTER_FONT_SIZE,
+                lineHeight: `${ANIMATED_COUNTER_HEIGHT}px`,
+              }}
+            >
+              /{cap}
+            </span>
+          )}
         </div>
         <span className="text-xs ml-1 text-left flex-1">
           {label}{" "}
