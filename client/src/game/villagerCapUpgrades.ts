@@ -74,11 +74,7 @@ for (const [groupId, config] of Object.entries(VILLAGER_CAP_GROUPS) as [
 export function areVillagerCapsEnabled(
   state: Pick<GameState, "flags">,
 ): boolean {
-  // Dev build only until shipped. Gate on import.meta.env.DEV (not store devMode) so
-  // persisted GameState passed to assignVillagerToJob does not need UI-only fields.
-  return (
-    import.meta.env.DEV && state.flags?.villagerCapsEnabled === true
-  );
+  return state.flags?.villagerCapsEnabled === true;
 }
 
 export function getGroupForJob(

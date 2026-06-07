@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import type { GameState } from "@shared/schema";
 import { handleLightFire } from "@/game/rules/caveExploreActions";
 import { useGameStore } from "@/game/state";
@@ -45,15 +45,6 @@ function baseState(
 }
 
 describe("villagerCapUpgrades", () => {
-  // Gate uses import.meta.env.DEV (not store devMode), so baseState() needs no devMode field.
-  beforeEach(() => {
-    vi.stubEnv("DEV", true);
-  });
-
-  afterEach(() => {
-    vi.unstubAllEnvs();
-  });
-
   it("maps jobs and buildings to upgrade groups", () => {
     expect(getGroupForJob("hunter")).toBe("hunter");
     expect(getGroupForJob("gatherer")).toBeUndefined();
@@ -142,11 +133,10 @@ describe("villagerCapUpgrades", () => {
     expect(getVillagerCapForJob(next, "hunter")).toBe(20);
   });
 
-  it("returns Infinity in production builds even when villagerCapsEnabled is set", () => {
-    vi.stubEnv("DEV", false);
+  it("enables caps when villagerCapsEnabled flag is set", () => {
     const state = baseState();
-    expect(areVillagerCapsEnabled(state)).toBe(false);
-    expect(getVillagerCapForJob(state, "hunter")).toBe(Infinity);
-    expect(canUpgradeVillagerCap(state, "hunter")).toBe(false);
+    expect(areVillagerCapsEnabled(state)).toBe(true);
+    expect(getVillagerCapForJob(state, "hunter")).toBe(10);
+    expect(canUpgradeVillagerCap(state, "hunter")).toBe(true);
   });
 });
