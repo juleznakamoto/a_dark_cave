@@ -72,6 +72,7 @@
     "bombCapacityCombat": "+1 de Capacidade para todas as bombas (combate)",
     "maxBombsPerType": "Máx. {{count}} bombas por tipo",
     "boneDiceGambler": "Jogue duas rodadas contra o apostador por visita",
+    "ebonGraceHeartfire": "Dobra o bônus de produção do Fogo do Coração",
     "actionBonusPercent": "{{action}}: +{{percent}}% de Bônus",
     "actionResourceBonus": "{{action}}: +{{amount}} {{resource}}",
     "actionProbabilityBonus": "{{action}}: {{percent}}% de chance de +50 {{resource}}",

@@ -69,6 +69,7 @@
     "bombCapacityCombat": "+1 вместимость для всех бомб (бой)",
     "maxBombsPerType": "Макс. {{count}} бомб каждого типа",
     "boneDiceGambler": "Две игры с игроком за визит",
+    "ebonGraceHeartfire": "Удваивает производственный бонус Сердечного огня",
     "actionBonusPercent": "{{action}}: +{{percent}} % бонуса",
     "actionResourceBonus": "{{action}}: +{{amount}} {{resource}}",
     "actionProbabilityBonus": "{{action}}: {{percent}} % шанс на +50 {{resource}}",

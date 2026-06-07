@@ -17,6 +17,7 @@ import {
   getUpgradeBonusMultiplier,
   ACTION_TO_UPGRADE_KEY,
 } from "../buttonUpgrades";
+import { isCraftUpgradeAction } from "@/game/craftUpgradeUtils";
 import { getNextBuildingLevel } from "./villageBuildActions";
 import { calculateAdjustedCost } from "./costCalculation";
 import { clothingEffects } from "./effects";
@@ -446,7 +447,7 @@ export function applyActionEffects(
               totalMultiplier += (actionBonuses?.caveExploreMultiplier || 1) - 1;
             }
 
-            if (totalMultiplier !== 1) {
+            if (totalMultiplier !== 1 && !isCraftUpgradeAction(actionId)) {
               min = Math.floor(min * totalMultiplier);
               max = Math.floor(max * totalMultiplier);
             }
@@ -670,10 +671,12 @@ export function applyActionEffects(
         }
       } else if (typeof effect === "number") {
         if (pathParts[0] === "resources") {
-          // Apply resource multiplier (e.g. Disgraced Prior) for resource gains
-          const actionBonuses = getActionBonusesCalc(actionId, state);
-          const mult = actionBonuses?.resourceMultiplier ?? 1;
-          const adjustedEffect = Math.floor(effect * mult);
+          let adjustedEffect = effect;
+          if (!isCraftUpgradeAction(actionId)) {
+            const actionBonuses = getActionBonusesCalc(actionId, state);
+            const mult = actionBonuses?.resourceMultiplier ?? 1;
+            adjustedEffect = Math.floor(effect * mult);
+          }
           let newValue =
             (state.resources[finalKey as keyof typeof state.resources] || 0) +
             adjustedEffect;
@@ -703,7 +706,7 @@ export function applyActionEffects(
   // Don't apply resource bonuses here for sacrifice actions - they're already applied in the sacrifice logic
   const isSacrificeAction = actionId === "boneTotems" || actionId === "leatherTotems";
 
-  if (updates.resources && !isSacrificeAction) {
+  if (updates.resources && !isSacrificeAction && !isCraftUpgradeAction(actionId)) {
     const actionBonuses = getActionBonusesCalc(actionId, state);
 
     if (actionBonuses.resourceBonus) {

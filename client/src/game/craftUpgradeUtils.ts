@@ -1,31 +1,72 @@
 import { GameState } from "@shared/schema";
-import { getGameActions } from "./rules/actionsRegistry";
+import { getUpgradeBonusMultiplier, type UpgradeKey } from "./buttonUpgrades";
 
-const CRAFT_UPGRADE_KEYS = ["craftTorches", "craftBoneTotems", "craftLeatherTotems"] as const;
+export const CRAFT_UPGRADE_ACTIONS = [
+  "craftTorches",
+  "craftBoneTotems",
+  "craftLeatherTotems",
+] as const;
+
+export type CraftUpgradeActionId = (typeof CRAFT_UPGRADE_ACTIONS)[number];
+
+const CRAFT_BASE_AMOUNTS: Record<CraftUpgradeActionId, number> = {
+  craftTorches: 1,
+  craftBoneTotems: 1,
+  craftLeatherTotems: 1,
+};
+
+export function isCraftUpgradeAction(
+  actionId: string,
+): actionId is CraftUpgradeActionId {
+  return (CRAFT_UPGRADE_ACTIONS as readonly string[]).includes(actionId);
+}
+
+/** Book of Ascension craft mastery multiplier only. */
+export function getCraftMasteryMultiplier(
+  actionId: CraftUpgradeActionId,
+  state: GameState,
+): number {
+  if (!state.books?.book_of_ascension) return 1;
+  return getUpgradeBonusMultiplier(actionId as UpgradeKey, state);
+}
+
+/** Mastery-only amount for the level badge ("Produce 3 at a time"). */
+export function getCraftMasteryProduceAmount(
+  baseAmount: number,
+  actionId: CraftUpgradeActionId,
+  state: GameState,
+): number {
+  return Math.floor(baseAmount * getCraftMasteryMultiplier(actionId, state));
+}
 
 /**
- * Get the produce amount for craft upgrade keys (for "Produce x at a time" tooltip).
- * Returns the scaled amount from the action's effects for the current state.
+ * Produce amount shown on the Book of Ascension level badge.
+ * Returns mastery scaling only, not Prior or other base bonuses.
  */
 export function getCraftProduceAmount(
   upgradeKey: string,
   state: GameState,
 ): number | undefined {
-  if (!CRAFT_UPGRADE_KEYS.includes(upgradeKey as (typeof CRAFT_UPGRADE_KEYS)[number])) {
+  if (!isCraftUpgradeAction(upgradeKey)) {
     return undefined;
   }
-  const action = getGameActions()[upgradeKey];
-  if (!action?.effects) return undefined;
-  const effects =
-    typeof action.effects === "function" ? action.effects(state) : action.effects;
-  if (upgradeKey === "craftTorches") {
-    const torchEffect = effects["resources.torch"];
-    if (typeof torchEffect === "string" && torchEffect.startsWith("random(")) {
-      const m = torchEffect.match(/random\((\d+),(\d+)\)/);
-      return m ? parseInt(m[1], 10) : undefined;
-    }
-  }
-  if (upgradeKey === "craftBoneTotems") return effects["resources.bone_totem"];
-  if (upgradeKey === "craftLeatherTotems") return effects["resources.leather_totem"];
-  return undefined;
+  return getCraftMasteryProduceAmount(
+    CRAFT_BASE_AMOUNTS[upgradeKey],
+    upgradeKey,
+    state,
+  );
+}
+
+/**
+ * Craft output: base → base bonuses (Prior, etc.) → craft mastery on top.
+ * floor(floor(baseAmount * baseMult) * masteryMult)
+ */
+export function applyCraftProduceScaling(
+  baseAmount: number,
+  actionId: CraftUpgradeActionId,
+  state: GameState,
+  baseMult: number,
+): number {
+  const masteryMult = getCraftMasteryMultiplier(actionId, state);
+  return Math.floor(Math.floor(baseAmount * baseMult) * masteryMult);
 }

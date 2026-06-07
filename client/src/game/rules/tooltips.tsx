@@ -7,6 +7,7 @@ import {
   getMadnessComponents,
   getTotalMadness,
 } from "./effectsCalculation";
+import { isCraftUpgradeAction } from "@/game/craftUpgradeUtils";
 import { gameActions } from "./index";
 import { getBoneTotemsCost } from "./forestSacrificeActions";
 import {
@@ -194,10 +195,46 @@ export const calculateResourceGains = (
             let min = parseInt(match[1]);
             let max = parseInt(match[2]);
 
+            if (!isCraftUpgradeAction(actionId)) {
+              // Apply flat bonuses first
+              const flatBonus = bonuses.resourceBonus[resource] || 0;
+              min += flatBonus;
+              max += flatBonus;
+
+              // Apply all multipliers (resourceMultiplier already includes button upgrades from getActionBonuses)
+              let totalMultiplier = bonuses.resourceMultiplier;
+
+              // Apply cave exploration multiplier for cave explore actions (additive, not multiplicative)
+              if (isCaveExploreAction) {
+                totalMultiplier += (bonuses.caveExploreMultiplier || 1) - 1;
+              }
+
+              if (totalMultiplier > 1) {
+                min = Math.floor(min * totalMultiplier);
+                max = Math.floor(max * totalMultiplier);
+              }
+
+              // Apply focus multiplier for eligible actions (exclude sacrifice actions)
+              if (
+                FOCUS_ELIGIBLE_ACTIONS.includes(actionId) &&
+                state.focusState?.isActive &&
+                state.focusState.endTime > Date.now()
+              ) {
+                min = Math.floor(min * 2);
+                max = Math.floor(max * 2);
+              }
+            }
+
+            gains.push({ resource, min, max });
+          }
+        } else if (typeof value === "number") {
+          // Fixed value
+          let amount = value;
+
+          if (!isCraftUpgradeAction(actionId)) {
             // Apply flat bonuses first
             const flatBonus = bonuses.resourceBonus[resource] || 0;
-            min += flatBonus;
-            max += flatBonus;
+            amount += flatBonus;
 
             // Apply all multipliers (resourceMultiplier already includes button upgrades from getActionBonuses)
             let totalMultiplier = bonuses.resourceMultiplier;
@@ -208,8 +245,7 @@ export const calculateResourceGains = (
             }
 
             if (totalMultiplier > 1) {
-              min = Math.floor(min * totalMultiplier);
-              max = Math.floor(max * totalMultiplier);
+              amount = Math.floor(amount * totalMultiplier);
             }
 
             // Apply focus multiplier for eligible actions (exclude sacrifice actions)
@@ -218,39 +254,8 @@ export const calculateResourceGains = (
               state.focusState?.isActive &&
               state.focusState.endTime > Date.now()
             ) {
-              min = Math.floor(min * 2);
-              max = Math.floor(max * 2);
+              amount = Math.floor(amount * 2);
             }
-
-            gains.push({ resource, min, max });
-          }
-        } else if (typeof value === "number") {
-          // Fixed value
-          let amount = value;
-
-          // Apply flat bonuses first
-          const flatBonus = bonuses.resourceBonus[resource] || 0;
-          amount += flatBonus;
-
-          // Apply all multipliers (resourceMultiplier already includes button upgrades from getActionBonuses)
-          let totalMultiplier = bonuses.resourceMultiplier;
-
-          // Apply cave exploration multiplier for cave explore actions (additive, not multiplicative)
-          if (isCaveExploreAction) {
-            totalMultiplier += (bonuses.caveExploreMultiplier || 1) - 1;
-          }
-
-          if (totalMultiplier > 1) {
-            amount = Math.floor(amount * totalMultiplier);
-          }
-
-          // Apply focus multiplier for eligible actions (exclude sacrifice actions)
-          if (
-            FOCUS_ELIGIBLE_ACTIONS.includes(actionId) &&
-            state.focusState?.isActive &&
-            state.focusState.endTime > Date.now()
-          ) {
-            amount = Math.floor(amount * 2);
           }
 
           gains.push({ resource, min: amount, max: amount });

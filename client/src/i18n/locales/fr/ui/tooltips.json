@@ -69,6 +69,7 @@
     "bombCapacityCombat": "+1 capacité pour toutes les bombes (combat)",
     "maxBombsPerType": "Max {{count}} bombes par type",
     "boneDiceGambler": "Jouez deux manches contre le joueur par visite",
+    "ebonGraceHeartfire": "Double le bonus de production du Feu du cœur",
     "actionBonusPercent": "{{action}} : +{{percent}} % de bonus",
     "actionResourceBonus": "{{action}} : +{{amount}} {{resource}}",
     "actionProbabilityBonus": "{{action}} : {{percent}} % de chance pour +50 {{resource}}",

@@ -69,6 +69,7 @@
     "bombCapacityCombat": "+1 Kapazität für alle Bomben (Kampf)",
     "maxBombsPerType": "Max. {{count}} Bomben pro Typ",
     "boneDiceGambler": "Spiele zwei Runden gegen den Spieler pro Besuch",
+    "ebonGraceHeartfire": "Verdoppelt den Produktionsbonus des Herzfeuers",
     "actionBonusPercent": "{{action}}: +{{percent}} % Bonus",
     "actionResourceBonus": "{{action}}: +{{amount}} {{resource}}",
     "actionProbabilityBonus": "{{action}}: {{percent}} % Chance auf +50 {{resource}}",

@@ -1,6 +1,7 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
 import { getUpgradeBonusMultiplier } from "@/game/buttonUpgrades";
+import { scaleCraftProduceAmount } from "./effectsCalculation";
 import { applyActionEffects } from "./actionEffects";
 import { pushSystemLog } from "./systemLog";
 import { OBSIDIAN_ORB_FOCUS_INTERVAL_MS } from "@/game/obsidianOrb";
@@ -26,8 +27,11 @@ export const caveCraftTools: Record<string, Action> = {
       return { "resources.wood": Math.floor(CRAFT_TORCHES_BASE_COST * mult) };
     },
     effects: (state: GameState) => {
-      const mult = getCraftTorchesUpgradeMultiplier(state);
-      const amount = Math.floor(CRAFT_TORCHES_BASE_AMOUNT * mult);
+      const amount = scaleCraftProduceAmount(
+        CRAFT_TORCHES_BASE_AMOUNT,
+        "craftTorches",
+        state,
+      );
       return {
         "resources.torch": `random(${amount},${amount})` as any,
         "story.seen.actionCraftTorch": true,

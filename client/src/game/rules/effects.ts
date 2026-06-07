@@ -1385,8 +1385,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   ebon_grace: {
     id: "ebon_grace",
     name: "Ebon Grace",
-    description:
-      "Dark blessing received by the black tree. Doubling production bonus from Heartfire.",
+    description: "Dark blessing received by the black tree.",
     bonuses: {
       generalBonuses: {
         knowledge: 5,

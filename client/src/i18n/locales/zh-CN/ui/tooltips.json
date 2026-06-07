@@ -69,6 +69,7 @@
     "bombCapacityCombat": "所有炸弹容量 +1（战斗）",
     "maxBombsPerType": "每种炸弹最多 {{count}} 个",
     "boneDiceGambler": "每次访问与赌徒玩两轮",
+    "ebonGraceHeartfire": "心火提供的生产加成翻倍",
     "actionBonusPercent": "{{action}}：+{{percent}}% 加成",
     "actionResourceBonus": "{{action}}：+{{amount}} {{resource}}",
     "actionProbabilityBonus": "{{action}}：{{percent}}% 几率获得 +50 {{resource}}",

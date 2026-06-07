@@ -72,6 +72,7 @@
     "bombCapacityCombat": "+1 Capacità per tutte le bombe (combattimento)",
     "maxBombsPerType": "Max {{count}} bombe per tipo",
     "boneDiceGambler": "Gioca due round contro il giocatore per visita",
+    "ebonGraceHeartfire": "Raddoppia il bonus di produzione del Fuoco del Cuore",
     "actionBonusPercent": "{{action}}: +{{percent}}% Bonus",
     "actionResourceBonus": "{{action}}: +{{amount}} {{resource}}",
     "actionProbabilityBonus": "{{action}}: {{percent}}% di probabilità di +50 {{resource}}",

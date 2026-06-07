@@ -72,6 +72,7 @@
     "bombCapacityCombat": "+1 Capacity for all bombs (combat)",
     "maxBombsPerType": "Max {{count}} bombs per type",
     "boneDiceGambler": "Play two rounds against the gambler per visit",
+    "ebonGraceHeartfire": "Doubles production bonus from Heartfire",
     "actionBonusPercent": "{{action}}: +{{percent}}% Bonus",
     "actionResourceBonus": "{{action}}: +{{amount}} {{resource}}",
     "actionProbabilityBonus": "{{action}}: {{percent}}% chance for +50 {{resource}}",

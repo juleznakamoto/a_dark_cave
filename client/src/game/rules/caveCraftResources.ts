@@ -1,6 +1,7 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 import { getUpgradeBonusMultiplier } from "@/game/buttonUpgrades";
+import { scaleCraftProduceAmount } from "./effectsCalculation";
 import { applyActionEffects } from "./actionEffects";
 import { pushSystemLog } from "./systemLog";
 
@@ -27,8 +28,11 @@ export const caveCraftResources: Record<string, Action> = {
       return { "resources.bones": Math.floor(BONE_TOTEM_BASE_COST * mult) };
     },
     effects: (state: GameState) => {
-      const mult = getCraftTotemUpgradeMultiplier(state, "craftBoneTotems");
-      const amount = Math.floor(BONE_TOTEM_BASE_AMOUNT * mult);
+      const amount = scaleCraftProduceAmount(
+        BONE_TOTEM_BASE_AMOUNT,
+        "craftBoneTotems",
+        state,
+      );
       return {
         "resources.bone_totem": amount,
         "story.seen.hasBoneTotem": true,
@@ -49,8 +53,11 @@ export const caveCraftResources: Record<string, Action> = {
       return { "resources.leather": Math.floor(LEATHER_TOTEM_BASE_COST * mult) };
     },
     effects: (state: GameState) => {
-      const mult = getCraftTotemUpgradeMultiplier(state, "craftLeatherTotems");
-      const amount = Math.floor(LEATHER_TOTEM_BASE_AMOUNT * mult);
+      const amount = scaleCraftProduceAmount(
+        LEATHER_TOTEM_BASE_AMOUNT,
+        "craftLeatherTotems",
+        state,
+      );
       return {
         "resources.leather_totem": amount,
         "story.seen.hasLeatherTotem": true,

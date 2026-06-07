@@ -15,9 +15,7 @@ import { CRUEL_MODE } from "../cruelMode";
 import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
 import { BUILDING_HIERARCHIES } from "@/game/buildingHierarchy";
 import { getBonusSidebarLabel } from "@/i18n/resolveGameText";
-
-// Craft actions handle their own cost/gain scaling; exclude from generic upgrade multiplier
-const CRAFT_UPGRADE_ACTIONS = ["craftTorches", "craftBoneTotems", "craftLeatherTotems"];
+import { CRAFT_UPGRADE_ACTIONS, applyCraftProduceScaling, type CraftUpgradeActionId } from "@/game/craftUpgradeUtils";
 
 // Tool hierarchy definitions
 const AXE_HIERARCHY = [
@@ -386,6 +384,16 @@ export const getActionBonuses = (
     executionTimeReduction,
     caveExploreMultiplier,
   };
+};
+
+/** Craft output: base bonuses (Prior, etc.) first, then Book of Ascension mastery. */
+export function scaleCraftProduceAmount(
+  baseAmount: number,
+  actionId: CraftUpgradeActionId,
+  state: GameState,
+): number {
+  const baseMult = getActionBonuses(actionId, state).resourceMultiplier;
+  return applyCraftProduceScaling(baseAmount, actionId, state, baseMult);
 };
 
 // SSOT: Calculate all action bonuses for display and internal use

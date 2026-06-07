@@ -778,6 +778,14 @@ export function renderItemTooltip(
           )}
         </div>
       )}
+      {showEffects && itemId === "ebon_grace" && (
+        <div>
+          {getUiTooltip(
+            "ebonGraceHeartfire",
+            "Doubles production bonus from Heartfire",
+          )}
+        </div>
+      )}
       {showEffects && effect.bonuses?.actionBonuses &&
         Object.entries(effect.bonuses.actionBonuses).map(
           ([actionId, bonus]) => {
