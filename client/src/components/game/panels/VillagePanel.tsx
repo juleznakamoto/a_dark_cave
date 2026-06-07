@@ -815,6 +815,7 @@ export default function VillagePanel() {
               value={currentCount}
               suffix={showCap ? `/${cap}` : undefined}
               className={atCap ? "text-muted-foreground" : undefined}
+              suffixClassName="text-muted-foreground"
             />
           </div>
           <Button

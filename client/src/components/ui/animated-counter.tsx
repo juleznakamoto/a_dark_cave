@@ -15,10 +15,12 @@ export function AnimatedCounter({
   value,
   suffix,
   className,
+  suffixClassName,
 }: {
   value: number;
   suffix?: string;
   className?: string;
+  suffixClassName?: string;
 }) {
   // Determine how many digits we need
   const digitCount = value === 0 ? 1 : Math.floor(Math.log10(Math.abs(value))) + 1;
@@ -49,7 +51,7 @@ export function AnimatedCounter({
       {suffix != null && (
         <span
           style={{ fontSize, lineHeight: `${height}px` }}
-          className="inline-block"
+          className={cn("inline-block", suffixClassName)}
         >
           {suffix}
         </span>
