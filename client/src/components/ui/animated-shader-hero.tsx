@@ -381,12 +381,6 @@ void main(){gl_Position=position;}`;
   return canvasRef;
 };
 
-// Manual vertical alignment for the Noto Sans Symbols 2 glyphs in the
-// Continue Playing / More Games buttons. Units are `em` (scale with font size).
-// Negative = move glyph UP, positive = move glyph DOWN. Tune by eye.
-const CONTINUE_PLAYING_ICON_OFFSET_EM = -0.06;
-const MORE_GAMES_ICON_OFFSET_EM = -0.06;
-
 // Reusable Hero Component
 const Hero: React.FC<HeroProps> = ({
   trustBadge,
@@ -690,7 +684,7 @@ const Hero: React.FC<HeroProps> = ({
                         >
                           <span
                             className="font-noto-symbols-2 inline-flex shrink-0 items-center justify-center font-normal leading-none"
-                            style={{ transform: `translateY(${MORE_GAMES_ICON_OFFSET_EM}em)` }}
+                            style={{ transform: `translateY(0.18em)` }}
                           >
                             🎮
                           </span>
@@ -704,7 +698,7 @@ const Hero: React.FC<HeroProps> = ({
                       >
                         <span
                           className="font-noto-symbols-2 inline-flex shrink-0 items-center justify-center font-normal leading-none"
-                          style={{ transform: `translateY(${CONTINUE_PLAYING_ICON_OFFSET_EM}em)` }}
+                          style={{ transform: `translateY(0.13em)` }}
                         >
                           ▶
                         </span>
