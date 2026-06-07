@@ -42,10 +42,6 @@ export default function EndScreenPage() {
     window.open("https://www.reddit.com/r/aDarkCave/", "_blank", "noopener,noreferrer");
   };
 
-  const handleFandomWiki = () => {
-    window.open("https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki", "_blank", "noopener,noreferrer");
-  };
-
   const handleMoreGames = async () => {
     // Mirror ProfileMenu discovery: load Playlight SDK if needed, then open discovery.
     let playlightSDK: { setDiscovery?: (open?: boolean) => void } | undefined =
@@ -118,9 +114,6 @@ export default function EndScreenPage() {
           },
           reddit: {
             onClick: handleReddit,
-          },
-          fandomWiki: {
-            onClick: handleFandomWiki,
           },
         }}
       />

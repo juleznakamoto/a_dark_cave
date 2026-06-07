@@ -47,9 +47,6 @@ interface HeroProps {
     reddit?: {
       onClick?: () => void;
     };
-    fandomWiki?: {
-      onClick?: () => void;
-    };
   };
   className?: string;
 }
@@ -564,7 +561,7 @@ const Hero: React.FC<HeroProps> = ({
           {/* CTA Buttons with Animation */}
           {buttons && buttons.primary && (
             <div className="flex flex-wrap justify-center gap-4 mt-10 animate-fade-in-up animation-delay-3000">
-              <div className="relative inline-block">
+              <div className="group relative inline-block transition-all duration-300 hover:scale-105 hover:drop-shadow-[0_10px_25px_rgba(239,68,68,0.25)]">
                 {buttons.primary.badge && (
                   <span className="pointer-events-none absolute -top-2.5 -right-2 z-10 max-w-[min(12rem,calc(100vw-4rem))] rounded border border-emerald-500/90 bg-emerald-950/95 px-2 py-0.5 text-center text-[10px] font-semibold uppercase leading-tight tracking-wide text-emerald-300 shadow-md sm:text-xs">
                     {buttons.primary.badge}
@@ -573,7 +570,7 @@ const Hero: React.FC<HeroProps> = ({
                 <button
                   onClick={buttons.primary.onClick}
                   button_id={buttons.primary.buttonId}
-                  className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-base sm:text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 whitespace-nowrap font-noto-symbols-2"
+                  className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 group-hover:from-red-700 group-hover:to-red-600 text-slate-200 rounded-md font-semibold text-base sm:text-lg transition-all duration-300 whitespace-nowrap font-noto-symbols-2"
                 >
                   {buttons.primary.text}
                 </button>
@@ -602,7 +599,7 @@ const Hero: React.FC<HeroProps> = ({
             </button>
           </div>
 
-          {/* Incremental DB & IndieDB Vote Section */}
+          {/* Vote Section */}
           <div className="py-3 flex flex-col items-center gap-3 mt-8 animate-fade-in-up animation-delay-4500 w-full min-w-0">
             <p className="text-sm sm:text-base font-medium text-grey-200 text-center max-w-md px-2 sm:px-4 break-words">
               You can support the game for free by leaving a vote or review. It
@@ -665,138 +662,93 @@ const Hero: React.FC<HeroProps> = ({
                 </svg>
                 <span>Incremental DB</span>
               </button>
-              <button
-                onClick={() =>
-                  window.open(
-                    "https://www.indiedb.com/games/a-dark-cave",
-                    "_blank",
-                    "noopener,noreferrer",
-                  )
-                }
-                className="px-3 sm:px-4 py-2 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-1.5 sm:gap-2 min-w-0"
-              >
-                <img
-                  src="/indiedb_logo_black.png"
-                  alt="IndieDB"
-                  className="h-5 w-5 object-contain flex-shrink-0 invert"
-                />
-                <span>IndieDB</span>
-              </button>
-              <button
-                onClick={() =>
-                  window.open(
-                    "https://www.producthunt.com/products/a-dark-cave?launch=a-dark-cave",
-                    "_blank",
-                    "noopener,noreferrer",
-                  )
-                }
-                className="px-3 sm:px-4 py-2 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-1.5 sm:gap-2 min-w-0"
-              >
-                <img
-                  src="https://ph-static.imgix.net/logo_PH.svg"
-                  alt=""
-                  className="h-5 w-5 flex-shrink-0 brightness-0 invert"
-                  aria-hidden
-                />
-                <span>Product Hunt</span>
-              </button>
             </div>
           </div>
 
-          {/* Social, Feedback and Continue Playing Buttons */}
+          {/* Continue Playing and Social Links */}
           {(socialButtons?.instagram ||
             socialButtons?.reddit ||
-            socialButtons?.fandomWiki ||
             buttons?.feedback ||
             buttons?.secondary ||
             buttons?.secondaryTrailing) && (
               <div className="flex flex-col items-center gap-4 animate-fade-in-up animation-delay-4500 px-2">
-                <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
-                  {socialButtons?.instagram && (
-                    <button
-                      onClick={socialButtons.instagram.onClick}
-                      className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5 min-w-0"
-                    >
-                      <svg
-                        className="w-3.5 h-3.5 shrink-0"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                      </svg>
-                      <span>Instagram</span>
-                    </button>
-                  )}
-                  {socialButtons?.reddit && (
-                    <button
-                      onClick={socialButtons.reddit.onClick}
-                      className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5 min-w-0"
-                    >
-                      <svg
-                        className="w-3.5 h-3.5 shrink-0"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z" />
-                      </svg>
-                      <span>Reddit</span>
-                    </button>
-                  )}
-                  {socialButtons?.fandomWiki && (
-                    <button
-                      onClick={socialButtons.fandomWiki.onClick}
-                      className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5 min-w-0"
-                    >
-                      <svg
-                        className="w-3.5 h-3.5 shrink-0"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M8.123.008a.431.431 0 00-.512.42v9.746L4.104 6.666a.432.432 0 00-.66.064.428.428 0 00-.071.239v10.064a2.387 2.387 0 00.701 1.694l4.565 4.57a2.4 2.4 0 001.693.703h3.34c.635 0 1.242-.252 1.691-.701l4.565-4.572a2.394 2.394 0 00.699-1.694V13.41a2.39 2.39 0 00-.7-1.693L8.343.125a.427.427 0 00-.219-.117zM9.646 12.51a.719.719 0 01.508.21l1.848 1.85 1.844-1.85a.714.714 0 011.015 0l1.32 1.321a.724.724 0 01.212.508v1.406a.72.72 0 01-.21.508l-3.68 3.7a.72.72 0 01-1.019 0l-3.668-3.7a.716.716 0 01-.209-.506v-1.408a.71.71 0 01.211-.506l1.32-1.322a.713.713 0 01.508-.211Z" />
-                      </svg>
-                      <span>Wiki</span>
-                    </button>
-                  )}
-                  {buttons?.feedback && (
-                    <button
-                      onClick={buttons.feedback.onClick}
-                      button_id={buttons.feedback.buttonId}
-                      className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5"
-                    >
-                      <svg
-                        className="w-3.5 h-3.5 shrink-0"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-                      </svg>
-                      <span>{buttons.feedback.text}</span>
-                    </button>
-                  )}
-                </div>
                 {buttons?.secondary && (
                   <div className="w-full flex justify-center">
                     <div className="flex flex-wrap justify-center gap-3 sm:gap-4 items-center">
                       <button
                         onClick={buttons.secondary.onClick}
                         button_id={buttons.secondary.buttonId}
-                        className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25"
+                        className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-1.5"
                       >
-                        {buttons.secondary.text}
+                        <span className="font-noto-symbols-2">▶</span>
+                        <span>{buttons.secondary.text}</span>
                       </button>
                       {buttons.secondaryTrailing && (
                         <button
                           type="button"
                           onClick={buttons.secondaryTrailing.onClick}
                           button_id={buttons.secondaryTrailing.buttonId}
-                          className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25"
+                          className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-1.5"
                         >
-                          {buttons.secondaryTrailing.text}
+                          <span className="font-noto-symbols-2">🎮</span>
+                          <span>{buttons.secondaryTrailing.text}</span>
                         </button>
                       )}
                     </div>
                   </div>
                 )}
+                {(socialButtons?.instagram ||
+                  socialButtons?.reddit ||
+                  buttons?.feedback) && (
+                    <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
+                      {socialButtons?.instagram && (
+                        <button
+                          onClick={socialButtons.instagram.onClick}
+                          className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5 min-w-0"
+                        >
+                          <svg
+                            className="w-3.5 h-3.5 shrink-0"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                          >
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                          </svg>
+                          <span>Instagram</span>
+                        </button>
+                      )}
+                      {socialButtons?.reddit && (
+                        <button
+                          onClick={socialButtons.reddit.onClick}
+                          className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5 min-w-0"
+                        >
+                          <svg
+                            className="w-3.5 h-3.5 shrink-0"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                          >
+                            <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z" />
+                          </svg>
+                          <span>Reddit</span>
+                        </button>
+                      )}
+                      {buttons?.feedback && (
+                        <button
+                          onClick={buttons.feedback.onClick}
+                          button_id={buttons.feedback.buttonId}
+                          className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5"
+                        >
+                          <svg
+                            className="w-3.5 h-3.5 shrink-0"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                          >
+                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                          </svg>
+                          <span>{buttons.feedback.text}</span>
+                        </button>
+                      )}
+                    </div>
+                  )}
               </div>
             )}
         </div>
