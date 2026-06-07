@@ -26,7 +26,6 @@ import {
   isStatEffectsRevealed,
 } from "@/game/rules/insightReveal";
 import type { GameState } from "@shared/schema";
-import { RESOURCE_GLYPH_CLASS } from "@/components/ui/resource-coin-icon";
 import {
   areVillagerCapsEnabled,
   getGroupForBuildingKey,
@@ -488,7 +487,10 @@ export default function SidePanelSection({
         tooltipId={tooltipId}
         disabled
         tooltipContentClassName="max-w-xs"
-        className={cn("shrink-0", !affordable && "opacity-60")}
+        className={cn(
+          "inline-flex shrink-0 self-baseline -translate-y-[0.08em]",
+          !affordable && "opacity-60",
+        )}
       >
         <button
           type="button"
@@ -506,8 +508,7 @@ export default function SidePanelSection({
             }
           }}
           className={cn(
-            RESOURCE_GLYPH_CLASS,
-            "font-noto-symbols-2 border-0 bg-transparent p-0 text-sm leading-none transition-opacity duration-200",
+            "font-noto-symbols-2 inline-flex w-[1em] items-center justify-center border-0 bg-transparent p-0 text-xs leading-none transition-opacity duration-200",
             INSIGHT_TEXT_CLASS,
             "opacity-80 hover:opacity-100",
             affordable ? "cursor-pointer" : "cursor-not-allowed",
@@ -903,23 +904,23 @@ export default function SidePanelSection({
                 : ""
             }`}
         >
-          <TooltipWrapper
-            tooltip={renderItemTooltip(item.id, "building")}
-            tooltipId={item.id}
-            disabled
-            tooltipContentClassName="max-w-xs"
-            onMouseEnter={() => handleTooltipHover(item.id)}
-            onMouseLeave={() => handleTooltipLeave(item.id)}
-            className={cn(
-              "inline-flex min-w-0 max-w-full items-center gap-0.5",
-              globalTooltip.isMobile && "cursor-pointer",
-            )}
-          >
-            <span className="inline-flex min-w-0 items-center gap-0.5">
+          <span className="inline-flex min-w-0 max-w-full items-baseline gap-0.5">
+            <TooltipWrapper
+              tooltip={renderItemTooltip(item.id, "building")}
+              tooltipId={item.id}
+              disabled
+              tooltipContentClassName="max-w-xs"
+              onMouseEnter={() => handleTooltipHover(item.id)}
+              onMouseLeave={() => handleTooltipLeave(item.id)}
+              className={cn(
+                "inline-flex min-w-0 shrink-0",
+                globalTooltip.isMobile && "cursor-pointer",
+              )}
+            >
               {labelContent}
-              {capUpgradeButton}
-            </span>
-          </TooltipWrapper>
+            </TooltipWrapper>
+            {capUpgradeButton}
+          </span>
         </div>
       );
     }
