@@ -50,6 +50,8 @@
     "calm": "C'est calme, pour l'instant…", //x1.3
     "soon": "bientôt",
     "provoke": "Provocation",
+    "pause": "Pause",
+    "unpause": "Reprendre",
     "postCompletion": "Vague {{waveNumber}}",
     "waves": {
       "firstWave": "Première vague",

@@ -3171,8 +3171,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
       get().setEventDialog(false);
       get().setCombatDialog(true, {
         enemy: combatData.enemy,
-        eventTitle: combatData.eventTitle,
-        eventMessage: logEntry?.message || "",
+        eventTitle:
+          combatData.eventTitle ||
+          logEntry?.title ||
+          "",
+        eventMessage:
+          combatData.eventMessage ||
+          logEntry?.message ||
+          "",
         onVictory: () => {
           const victoryResult = combatData.onVictory();
           set((prevState) => ({

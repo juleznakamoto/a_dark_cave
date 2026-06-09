@@ -123,6 +123,40 @@ export function getPostCompletionWaveNumber(state: GameState): number {
   return CANONICAL_ATTACK_WAVE_COUNT + 1 + (state.postCompletionAttackWaveCount ?? 0);
 }
 
+type AttackWaveTimer = NonNullable<GameState["attackWaveTimers"]>[string];
+
+/** True when the player paused this wave's countdown (endless waves UI). */
+export function isAttackWaveTimerUserPaused(timer: AttackWaveTimer): boolean {
+  return Boolean(timer.pausedAt);
+}
+
+/** Toggle pause on the endless post-completion attack wave timer. */
+export function togglePostCompletionAttackWaveTimerPause(
+  state: GameState,
+): Partial<GameState> | null {
+  if (!isPostCompletionAttackWavesActive(state)) {
+    return null;
+  }
+
+  const waveId = POST_COMPLETION_ATTACK_WAVE_ID;
+  const timer = state.attackWaveTimers?.[waveId];
+  if (!timer || timer.defeated) {
+    return null;
+  }
+
+  const paused = isAttackWaveTimerUserPaused(timer);
+  return {
+    attackWaveTimers: {
+      ...state.attackWaveTimers,
+      [waveId]: {
+        ...timer,
+        pausedAt: paused ? undefined : Date.now(),
+        startTime: Date.now(),
+      },
+    },
+  };
+}
+
 /** Wave index 1..10 → reward / siege-impact fields (combat uses per-wave attack/health below). */
 function attackWaveScaledParams(waveNumber: number): Pick<
   WaveParams,
@@ -529,6 +563,10 @@ function createAttackWaveEvent(waveId: AttackWaveId): GameEvent {
 
       if (timer.defeated) return false;
 
+      if (isAttackWaveTimerUserPaused(timer) && !timer.provoked) {
+        return false;
+      }
+
       const store = useGameStore.getState();
       const isPaused = Boolean(
         store.isPaused || isModalDialogOpen(store),
@@ -692,6 +730,10 @@ function createPostCompletionAttackWaveEvent(): GameEvent {
         return false;
       }
 
+      if (isAttackWaveTimerUserPaused(timer) && !timer.provoked) {
+        return false;
+      }
+
       const store = useGameStore.getState();
       const isPaused = Boolean(store.isPaused || isModalDialogOpen(store));
 
@@ -720,6 +762,9 @@ function createPostCompletionAttackWaveEvent(): GameEvent {
     timeProbability: 0.25,
     priority: 5,
     repeatable: true,
+    i18nVars: (state: GameState) => ({
+      waveNumber: getPostCompletionWaveNumber(state),
+    }),
     effect: (state: GameState): EventChoiceEffectResult => {
       const waveNumber = getPostCompletionWaveNumber(state);
       const def = getPostCompletionWaveParams(waveNumber);

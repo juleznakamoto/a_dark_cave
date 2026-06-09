@@ -1,16 +1,25 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi, beforeEach } from "vitest";
+import i18n from "@/i18n/index";
+import { GameState } from "@shared/schema";
 
 vi.mock("@/game/state", () => ({
   useGameStore: {
     getState: () => ({}),
     setState: vi.fn(),
   },
+  isModalDialogOpen: () => false,
 }));
 
-import { ATTACK_WAVE_IDS, TOTAL_ATTACK_WAVES } from "./attackWaveOrder";
+import {
+  ATTACK_WAVE_IDS,
+  POST_COMPLETION_ATTACK_WAVE_ID,
+  TOTAL_ATTACK_WAVES,
+} from "./attackWaveOrder";
 import {
   attackWaveEvents,
   getPostCompletionWaveParams,
+  isAttackWaveTimerUserPaused,
+  togglePostCompletionAttackWaveTimerPause,
 } from "./eventsAttackWaves";
 
 describe("attack waves expansion", () => {
@@ -41,5 +50,54 @@ describe("attack waves expansion", () => {
     expect(wave12.health.base).toBe(wave11.health.base + 50);
     expect(wave12.attack.options[0]).toBe(wave11.attack.options[0] + 10);
     expect(wave12.goldReward).toBe(wave11.goldReward + 50);
+  });
+
+  it("includes title and message for wave 12 in post-completion _combatData", async () => {
+    await i18n.changeLanguage("en");
+    const state = { postCompletionAttackWaveCount: 1 } as GameState;
+    const result = attackWaveEvents.postCompletionWave.effect!(state);
+
+    expect(result._combatData?.eventTitle).toBe("Wave 12");
+    expect(result._combatData?.eventMessage).toContain("mindless pale creatures");
+  });
+
+  it("toggles pause on the post-completion attack wave timer", () => {
+    const baseState = {
+      events: { cube15a: true },
+      story: { seen: { tenthWaveVictory: true }, merchantPurchases: 0 },
+      postCompletionAttackWaveCount: 0,
+      attackWaveTimers: {
+        [POST_COMPLETION_ATTACK_WAVE_ID]: {
+          startTime: Date.now(),
+          duration: 60 * 60 * 1000,
+          defeated: false,
+          provoked: false,
+          elapsedTime: 1000,
+        },
+      },
+    } as GameState;
+
+    const paused = togglePostCompletionAttackWaveTimerPause(baseState);
+    const pausedTimer =
+      paused?.attackWaveTimers?.[POST_COMPLETION_ATTACK_WAVE_ID];
+    expect(pausedTimer && isAttackWaveTimerUserPaused(pausedTimer)).toBe(true);
+
+    const resumed = togglePostCompletionAttackWaveTimerPause({
+      ...baseState,
+      ...paused,
+    } as GameState);
+    const resumedTimer =
+      resumed?.attackWaveTimers?.[POST_COMPLETION_ATTACK_WAVE_ID];
+    expect(resumedTimer?.pausedAt).toBeUndefined();
+  });
+
+  it("exposes i18nVars with waveNumber for log and dialog resolution", () => {
+    const state = { postCompletionAttackWaveCount: 1 } as GameState;
+    const i18nVars = attackWaveEvents.postCompletionWave.i18nVars;
+
+    expect(typeof i18nVars).toBe("function");
+    expect((i18nVars as (s: GameState) => { waveNumber: number })(state)).toEqual({
+      waveNumber: 12,
+    });
   });
 });

@@ -50,6 +50,8 @@
     "calm": "È tutto calmo, per ora...",
     "soon": "presto",
     "provoke": "Provoca",
+    "pause": "Pausa",
+    "unpause": "Riprendi",
     "postCompletion": "Ondata {{waveNumber}}",
     "waves": {
       "firstWave": "Prima Ondata",

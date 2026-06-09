@@ -50,6 +50,8 @@
     "calm": "Пока что спокойно…",
     "soon": "скоро",
     "provoke": "Спровоцировать",
+    "pause": "Пауза",
+    "unpause": "Продолжить",
     "postCompletion": "Волна {{waveNumber}}",
     "waves": {
       "firstWave": "Первая волна",

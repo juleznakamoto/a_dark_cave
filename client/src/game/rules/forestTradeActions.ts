@@ -1,6 +1,33 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "./actionEffects";
+import {
+  getMerchantGoldPricePerUnit,
+  type MerchantGoldPricedResource,
+} from "./eventsMerchant";
+
+/** Ashwraith bridge sell pays this fraction of the merchant gold-per-unit rate. */
+const FOREST_BRIDGE_SELL_GOLD_RATIO = 0.25;
+
+const FOREST_SELL_GOLD_STEP = 25;
+
+function roundForestSellGold(rawGold: number): number {
+  const quotient = rawGold / FOREST_SELL_GOLD_STEP;
+  const lower = Math.floor(quotient);
+  const remainder = quotient - lower;
+  if (remainder < 0.5) return lower * FOREST_SELL_GOLD_STEP;
+  if (remainder > 0.5) return (lower + 1) * FOREST_SELL_GOLD_STEP;
+  return lower * FOREST_SELL_GOLD_STEP;
+}
+
+function calculateForestBridgeSellGold(
+  amount: number,
+  resource: MerchantGoldPricedResource,
+): number {
+  return roundForestSellGold(
+    amount * getMerchantGoldPricePerUnit(resource) * FOREST_BRIDGE_SELL_GOLD_RATIO,
+  );
+}
 
 export const forestTradeActions: Record<string, Action> = {
   tradeGoldForFood: {
@@ -371,9 +398,9 @@ export const forestTradeActions: Record<string, Action> = {
     cost: {
       "resources.leather": 500,
     },
-    effects: {
-      "resources.gold": 100,
-    },
+    effects: (_state: GameState) => ({
+      "resources.gold": calculateForestBridgeSellGold(500, "leather"),
+    }),
   },
 
   sellSteelBatch: {
@@ -385,9 +412,9 @@ export const forestTradeActions: Record<string, Action> = {
     cost: {
       "resources.steel": 500,
     },
-    effects: {
-      "resources.gold": 125,
-    },
+    effects: (_state: GameState) => ({
+      "resources.gold": calculateForestBridgeSellGold(500, "steel"),
+    }),
   },
 
   sellBlacksteelBatch: {
@@ -400,9 +427,9 @@ export const forestTradeActions: Record<string, Action> = {
     cost: {
       "resources.blacksteel": 100,
     },
-    effects: {
-      "resources.gold": 125,
-    },
+    effects: (_state: GameState) => ({
+      "resources.gold": calculateForestBridgeSellGold(100, "blacksteel"),
+    }),
   },
 
   tradeGoldForTorch: {

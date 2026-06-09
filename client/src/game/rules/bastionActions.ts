@@ -81,6 +81,7 @@ export function getProvokeAttackWaveExecutionUpdates(
         ...timer,
         elapsedTime: timer.duration,
         provoked: true,
+        pausedAt: undefined,
       },
     },
   };

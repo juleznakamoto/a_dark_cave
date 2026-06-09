@@ -376,7 +376,11 @@ export function startGameLoop() {
         let hasUpdates = false;
 
         for (const [waveId, timer] of Object.entries(attackWaveTimers)) {
-          if (!timer.defeated && timer.startTime > 0) {
+          if (
+            !timer.defeated &&
+            timer.startTime > 0 &&
+            !timer.pausedAt
+          ) {
             const newElapsed = (timer.elapsedTime || 0) + deltaTime;
             updatedTimers[waveId] = {
               ...timer,

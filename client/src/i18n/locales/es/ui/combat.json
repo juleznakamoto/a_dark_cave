@@ -50,6 +50,8 @@
     "calm": "Por ahora reina la calma…",
     "soon": "pronto",
     "provoke": "Provocar",
+    "pause": "Pausar",
+    "unpause": "Reanudar",
     "postCompletion": "Oleada {{waveNumber}}",
     "waves": {
       "firstWave": "Primera oleada", //ok

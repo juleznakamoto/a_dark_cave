@@ -50,6 +50,8 @@
     "calm": "目前还算平静……",
     "soon": "即将",
     "provoke": "挑衅",
+    "pause": "暂停",
+    "unpause": "继续",
     "postCompletion": "第{{waveNumber}}波",
     "waves": {
       "firstWave": "第一波",

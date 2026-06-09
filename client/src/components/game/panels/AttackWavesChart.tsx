@@ -5,8 +5,11 @@ import { useEffect, useState } from "react";
 import {
   getAttackWavesChartRows,
   getPostCompletionWaveNumber,
+  isAttackWaveTimerUserPaused,
   isPostCompletionAttackWavesActive,
+  togglePostCompletionAttackWaveTimerPause,
 } from "@/game/rules/eventsAttackWaves";
+import { Button } from "@/components/ui/button";
 import {
   POST_COMPLETION_ATTACK_WAVE_ID,
   TOTAL_ATTACK_WAVES,
@@ -64,6 +67,11 @@ export default function AttackWavesChart() {
   const postCompletionWaveNumber = postCompletionActive
     ? getPostCompletionWaveNumber(state)
     : null;
+  const postCompletionTimer =
+    attackWaveTimers?.[POST_COMPLETION_ATTACK_WAVE_ID];
+  const isPostCompletionTimerPaused = postCompletionTimer
+    ? isAttackWaveTimerUserPaused(postCompletionTimer)
+    : false;
 
   const shouldShowChart = buildings.bastion || false;
 
@@ -165,48 +173,75 @@ export default function AttackWavesChart() {
                 : t("attackWaves.calm")}
             </span>
           </div>
-          {attackWaveTimers?.[POST_COMPLETION_ATTACK_WAVE_ID] && (
-            <CooldownButton
-              actionId={PROVOKE_ACTION_ID}
-              onClick={async () => {
-                executeAction(PROVOKE_ACTION_ID);
-                const { manualSave } = await import("@/game/loop");
-                await manualSave();
-              }}
-              cooldownMs={0}
-              variant="outline"
-              size="xs"
-              className="w-19 "
-              button_id="provoke-attack"
-              data-testid="button-provoke-attack"
-              disabled={!canExecuteAction(PROVOKE_ACTION_ID, state)}
-              tooltip={
-                <div className="text-xs whitespace-nowrap">
-                  {getActionCostBreakdown(PROVOKE_ACTION_ID, state).map(
-                    (row, index) => (
-                      <div
-                        key={index}
-                        className={
-                          row.satisfied ? "" : "text-muted-foreground"
-                        }
-                      >
-                        {row.text}
-                      </div>
-                    ),
-                  )}
-                </div>
-              }
-              onMouseEnter={() => {
-                setHighlightedResources(
-                  getResourcesFromActionCost(PROVOKE_ACTION_ID, state),
-                );
-              }}
-              onMouseLeave={() => {
-                setHighlightedResources([]);
-              }}
-            >
-              {t("attackWaves.provoke")}
-            </CooldownButton>
+          {postCompletionTimer && (
+            <div className="flex items-center gap-2 flex-wrap">
+              <CooldownButton
+                actionId={PROVOKE_ACTION_ID}
+                onClick={async () => {
+                  executeAction(PROVOKE_ACTION_ID);
+                  const { manualSave } = await import("@/game/loop");
+                  await manualSave();
+                }}
+                cooldownMs={0}
+                variant="outline"
+                size="xs"
+                className="w-19 "
+                button_id="provoke-attack"
+                data-testid="button-provoke-attack"
+                disabled={!canExecuteAction(PROVOKE_ACTION_ID, state)}
+                tooltip={
+                  <div className="text-xs whitespace-nowrap">
+                    {getActionCostBreakdown(PROVOKE_ACTION_ID, state).map(
+                      (row, index) => (
+                        <div
+                          key={index}
+                          className={
+                            row.satisfied ? "" : "text-muted-foreground"
+                          }
+                        >
+                          {row.text}
+                        </div>
+                      ),
+                    )}
+                  </div>
+                }
+                onMouseEnter={() => {
+                  setHighlightedResources(
+                    getResourcesFromActionCost(PROVOKE_ACTION_ID, state),
+                  );
+                }}
+                onMouseLeave={() => {
+                  setHighlightedResources([]);
+                }}
+              >
+                {t("attackWaves.provoke")}
+              </CooldownButton>
+              <Button
+                type="button"
+                variant="outline"
+                size="xs"
+                className="w-19"
+                button_id="pause-post-completion-attack-wave"
+                data-testid="button-pause-post-completion-attack-wave"
+                onClick={async () => {
+                  const currentState =
+                    useGameStore.getState() as unknown as GameState;
+                  const updates =
+                    togglePostCompletionAttackWaveTimerPause(currentState);
+                  if (updates?.attackWaveTimers) {
+                    useGameStore.setState({
+                      attackWaveTimers: updates.attackWaveTimers,
+                    });
+                  }
+                  const { manualSave } = await import("@/game/loop");
+                  await manualSave();
+                }}
+              >
+                {isPostCompletionTimerPaused
+                  ? t("attackWaves.unpause")
+                  : t("attackWaves.pause")}
+              </Button>
+            </div>
           )}
         </div>
       ) : (
