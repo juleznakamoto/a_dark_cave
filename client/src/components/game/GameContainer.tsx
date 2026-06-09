@@ -983,16 +983,16 @@ export default function GameContainer() {
         )}
 
         {/* Main Content Area - Fills remaining space.
-          Desktop (left → right): event log, tabs/actions, resources side panel.
+          Desktop (left → right): resources side panel, tabs/actions, event log.
           Mobile (stacked top → bottom): event log, side panel, tabs/actions. */}
-        <main className="flex-1 pb-0 flex flex-col md:grid md:w-full md:grid-cols-[minmax(14rem,26rem)_minmax(22rem,1fr)_minmax(24rem,28rem)] min-h-0 overflow-hidden">
-          {/* Event Log - top on mobile, left column on desktop */}
-          <div className="order-1 w-full min-h-0 overflow-hidden pt-2 pr-2 pb-0 pl-1 md:border-r border-border">
+        <main className="flex-1 pb-0 flex flex-col md:grid md:w-full md:grid-cols-[minmax(24rem,28rem)_minmax(22rem,1fr)_minmax(14rem,26rem)] min-h-0 overflow-hidden">
+          {/* Event Log - top on mobile, right column on desktop */}
+          <div className="order-1 md:order-3 w-full min-h-0 overflow-hidden pt-2 pr-2 pb-0 pl-1 md:border-l border-border">
             <LogPanel />
           </div>
 
-          {/* Resources Side Panel - below log on mobile, right column on desktop */}
-          <div className="order-2 md:order-3 min-h-[36vh] md:min-h-0 w-full min-h-0 pl-2 pr-0 border-t md:border-t-0 md:border-l border-border overflow-hidden">
+          {/* Resources Side Panel - below log on mobile, left column on desktop */}
+          <div className="order-2 md:order-1 min-h-[36vh] md:min-h-0 w-full min-h-0 pl-2 pr-0 border-t md:border-t-0 md:border-r border-border overflow-hidden">
             <GameTabs />
           </div>
 

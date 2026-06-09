@@ -1,7 +1,7 @@
 
 // Game configuration constants - Single Source of Truth
 export const GAME_CONSTANTS = {
-  LOG_MAX_ENTRIES: 25,
+  LOG_MAX_ENTRIES: 40,
   TICK_INTERVAL: 250, // 250ms between game logic ticks (cooldowns, executions, prior, buffs)
   /**
    * How often random/story/attack-wave events are rolled, in ms. Decoupled from TICK_INTERVAL
