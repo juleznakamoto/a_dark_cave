@@ -907,180 +907,182 @@ export default function SidePanel() {
   };
 
   return (
-    <ScrollArea className="h-full max-h-[36vh] md:max-h-full w-full pt-2 md:pt-0 pb-1.5 pl-0 pr-4">
-      <div className="pb-1 w-full grid grid-cols-[auto_auto] gap-x-1.5 items-start min-w-0 md:pt-2">
-        {/* First column - Resources */}
-        <div className={cn("min-w-0", SIDE_PANEL_SECTION_SPACING_CLASS)}>
-          {resourceItems.length > 0 && shouldShowSection("resources") && (
-            <SidePanelSection
-              sectionId="resources"
-              title={
-                showResourceLimit ? (
-                  <>
-                    <span className="font-medium">
-                      {t("sidePanel.resources")}
-                    </span>
-                    <span className="font-normal text-[10px] text-muted-foreground">
-                      {" "}
-                      {t("sidePanel.resourceLimitMax", {
-                        limit: resourceLimitText,
-                      })}
-                    </span>
-                  </>
-                ) : (
-                  t("sidePanel.resources")
-                )
-              }
-              activeTab={activeTab}
-              titleTooltip={
-                showResourceLimit
-                  ? t("sidePanel.resourceLimitTooltip")
-                  : undefined
-              }
-              items={resourceItems}
-              onValueChange={(itemId, oldValue, newValue) => {
-                logger.log(
-                  `Resource ${itemId} increased from ${oldValue} to ${newValue}`,
-                );
-              }}
-              resourceChanges={resourceChanges}
-              showNotifications
-              onResourceChange={(change) => {
-                setResourceChanges((prev) => {
-                  const updated = [...prev, change];
-                  return updated.slice(-50);
-                });
-              }}
-              forceNotifications
-            />
-          )}
-        </div>
-
-        {/* Second column - Everything else */}
-        <div className={cn("min-w-0 w-full", SIDE_PANEL_SECTION_SPACING_CLASS)}>
-          {toolItems.length > 0 && shouldShowSection("tools") && (
-            <SidePanelSection
-              sectionId="tools"
-              title={t("sidePanel.tools")}
-              items={toolItems}
-            />
-          )}
-          {weaponItems.length > 0 && shouldShowSection("weapons") && (
-            <SidePanelSection
-              sectionId="weapons"
-              title={t("sidePanel.weapons")}
-              items={weaponItems}
-            />
-          )}
-          {combatItemRows.length > 0 && shouldShowSection("combatItems") && (
-            <SidePanelSection
-              sectionId="combatItems"
-              title={t("sidePanel.combatItems")}
-              items={combatItemRows}
-            />
-          )}
-          {bastionStatsItems.length > 0 && shouldShowSection("bastion") && (
-            <SidePanelSection
-              sectionId="bastion"
-              title={
-                flags.hasFortress
-                  ? t("sidePanel.fortress")
-                  : t("sidePanel.bastion")
-              }
-              items={bastionStatsItems}
-            />
-          )}
-          {fortificationItems.length > 0 &&
-            shouldShowSection("fortifications") && (
+    <div className="h-full max-h-[36vh] md:max-h-full min-h-0 pt-2 overflow-hidden">
+      <ScrollArea className="h-full w-full pb-1.5 pl-0 pr-4">
+        <div className="pb-1 w-full grid grid-cols-[auto_auto] gap-x-1.5 items-start min-w-0">
+          {/* First column - Resources */}
+          <div className={cn("min-w-0", SIDE_PANEL_SECTION_SPACING_CLASS)}>
+            {resourceItems.length > 0 && shouldShowSection("resources") && (
               <SidePanelSection
-                sectionId="fortifications"
-                title={t("sidePanel.fortifications")}
-                items={fortificationItems}
+                sectionId="resources"
+                title={
+                  showResourceLimit ? (
+                    <>
+                      <span className="font-medium">
+                        {t("sidePanel.resources")}
+                      </span>
+                      <span className="font-normal text-[10px] text-muted-foreground">
+                        {" "}
+                        {t("sidePanel.resourceLimitMax", {
+                          limit: resourceLimitText,
+                        })}
+                      </span>
+                    </>
+                  ) : (
+                    t("sidePanel.resources")
+                  )
+                }
+                activeTab={activeTab}
+                titleTooltip={
+                  showResourceLimit
+                    ? t("sidePanel.resourceLimitTooltip")
+                    : undefined
+                }
+                items={resourceItems}
+                onValueChange={(itemId, oldValue, newValue) => {
+                  logger.log(
+                    `Resource ${itemId} increased from ${oldValue} to ${newValue}`,
+                  );
+                }}
+                resourceChanges={resourceChanges}
+                showNotifications
+                onResourceChange={(change) => {
+                  setResourceChanges((prev) => {
+                    const updated = [...prev, change];
+                    return updated.slice(-50);
+                  });
+                }}
+                forceNotifications
               />
             )}
-          {clothingItems.length > 0 && shouldShowSection("clothing") && (
-            <SidePanelSection
-              sectionId="clothing"
-              title={t("sidePanel.clothing")}
-              items={clothingItems}
-            />
-          )}
-          {relicItems.length > 0 && shouldShowSection("relics") && (
-            <SidePanelSection
-              sectionId="relics"
-              title={t("sidePanel.relics")}
-              items={relicItems}
-            />
-          )}
-          {schematicItems.length > 0 && shouldShowSection("schematics") && (
-            <SidePanelSection
-              sectionId="schematics"
-              title={t("sidePanel.schematics")}
-              items={schematicItems}
-            />
-          )}
-          {blessingItems.length > 0 && shouldShowSection("blessings") && (
-            <SidePanelSection
-              sectionId="blessings"
-              title={t("sidePanel.blessings")}
-              items={blessingItems}
-            />
-          )}
-          {buildingItems.length > 0 && shouldShowSection("buildings") && (
-            <SidePanelSection
-              sectionId="buildings"
-              title={t("sidePanel.buildings")}
-              items={buildingItems}
-            />
-          )}
-          {populationItems.length > 0 && shouldShowSection("population") && (
-            <SidePanelSection
-              sectionId="population"
-              title={
-                <>
-                  {t("sidePanel.population")}{" "}
-                  <span className="text-muted-foreground font-normal">
-                    {current_population}/{total_population}
-                  </span>
-                </>
-              }
-              items={populationItems}
-              titleTooltip={t("sidePanel.populationTooltip")}
-            />
-          )}
-          {anyPlayerStatPositive && shouldShowSection("stats") && (
-            <SidePanelSection
-              sectionId="stats"
-              title={t("sidePanel.stats")}
-              titleTooltip={statsHeaderTooltip}
-              titleExtra={<ActionInsightBadge target="stats" />}
-              items={statsItems}
-            />
-          )}
-          {bonusItems.length > 0 && shouldShowSection("bonuses") && (
-            <SidePanelSection
-              sectionId="bonuses"
-              title={t("sidePanel.bonuses")}
-              items={bonusItems}
-            />
-          )}
-          {bookItems.length > 0 && shouldShowSection("books") && (
-            <SidePanelSection
-              sectionId="books"
-              title={t("sidePanel.books")}
-              items={bookItems}
-            />
-          )}
-          {fellowshipItems.length > 0 && shouldShowSection("fellowship") && (
-            <SidePanelSection
-              sectionId="fellowship"
-              title={t("sidePanel.fellowship")}
-              items={fellowshipItems}
-            />
-          )}
+          </div>
+
+          {/* Second column - Everything else */}
+          <div className={cn("min-w-0 w-full", SIDE_PANEL_SECTION_SPACING_CLASS)}>
+            {toolItems.length > 0 && shouldShowSection("tools") && (
+              <SidePanelSection
+                sectionId="tools"
+                title={t("sidePanel.tools")}
+                items={toolItems}
+              />
+            )}
+            {weaponItems.length > 0 && shouldShowSection("weapons") && (
+              <SidePanelSection
+                sectionId="weapons"
+                title={t("sidePanel.weapons")}
+                items={weaponItems}
+              />
+            )}
+            {combatItemRows.length > 0 && shouldShowSection("combatItems") && (
+              <SidePanelSection
+                sectionId="combatItems"
+                title={t("sidePanel.combatItems")}
+                items={combatItemRows}
+              />
+            )}
+            {bastionStatsItems.length > 0 && shouldShowSection("bastion") && (
+              <SidePanelSection
+                sectionId="bastion"
+                title={
+                  flags.hasFortress
+                    ? t("sidePanel.fortress")
+                    : t("sidePanel.bastion")
+                }
+                items={bastionStatsItems}
+              />
+            )}
+            {fortificationItems.length > 0 &&
+              shouldShowSection("fortifications") && (
+                <SidePanelSection
+                  sectionId="fortifications"
+                  title={t("sidePanel.fortifications")}
+                  items={fortificationItems}
+                />
+              )}
+            {clothingItems.length > 0 && shouldShowSection("clothing") && (
+              <SidePanelSection
+                sectionId="clothing"
+                title={t("sidePanel.clothing")}
+                items={clothingItems}
+              />
+            )}
+            {relicItems.length > 0 && shouldShowSection("relics") && (
+              <SidePanelSection
+                sectionId="relics"
+                title={t("sidePanel.relics")}
+                items={relicItems}
+              />
+            )}
+            {schematicItems.length > 0 && shouldShowSection("schematics") && (
+              <SidePanelSection
+                sectionId="schematics"
+                title={t("sidePanel.schematics")}
+                items={schematicItems}
+              />
+            )}
+            {blessingItems.length > 0 && shouldShowSection("blessings") && (
+              <SidePanelSection
+                sectionId="blessings"
+                title={t("sidePanel.blessings")}
+                items={blessingItems}
+              />
+            )}
+            {buildingItems.length > 0 && shouldShowSection("buildings") && (
+              <SidePanelSection
+                sectionId="buildings"
+                title={t("sidePanel.buildings")}
+                items={buildingItems}
+              />
+            )}
+            {populationItems.length > 0 && shouldShowSection("population") && (
+              <SidePanelSection
+                sectionId="population"
+                title={
+                  <>
+                    {t("sidePanel.population")}{" "}
+                    <span className="text-muted-foreground font-normal">
+                      {current_population}/{total_population}
+                    </span>
+                  </>
+                }
+                items={populationItems}
+                titleTooltip={t("sidePanel.populationTooltip")}
+              />
+            )}
+            {anyPlayerStatPositive && shouldShowSection("stats") && (
+              <SidePanelSection
+                sectionId="stats"
+                title={t("sidePanel.stats")}
+                titleTooltip={statsHeaderTooltip}
+                titleExtra={<ActionInsightBadge target="stats" />}
+                items={statsItems}
+              />
+            )}
+            {bonusItems.length > 0 && shouldShowSection("bonuses") && (
+              <SidePanelSection
+                sectionId="bonuses"
+                title={t("sidePanel.bonuses")}
+                items={bonusItems}
+              />
+            )}
+            {bookItems.length > 0 && shouldShowSection("books") && (
+              <SidePanelSection
+                sectionId="books"
+                title={t("sidePanel.books")}
+                items={bookItems}
+              />
+            )}
+            {fellowshipItems.length > 0 && shouldShowSection("fellowship") && (
+              <SidePanelSection
+                sectionId="fellowship"
+                title={t("sidePanel.fellowship")}
+                items={fellowshipItems}
+              />
+            )}
+          </div>
         </div>
-      </div>
-      <ScrollBar orientation="vertical" />
-    </ScrollArea>
+        <ScrollBar orientation="vertical" />
+      </ScrollArea>
+    </div>
   );
 }
