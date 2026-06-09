@@ -23,8 +23,8 @@ export type VisibleHotkeyTabsParams = {
 export function getVisibleHotkeyTabs(p: VisibleHotkeyTabsParams): GameTab[] {
   const tabs: GameTab[] = ["cave"];
   if (p.villageUnlocked) tabs.push("village");
-  if (p.darkEstate >= 1) tabs.push("estate");
   if (p.forestUnlocked) tabs.push("forest");
+  if (p.darkEstate >= 1) tabs.push("estate");
   if (p.bastionUnlocked) tabs.push("bastion");
   if (p.survivorsNotes || p.bookOfTrials) tabs.push("achievements");
   if (p.timedEventActive) tabs.push("timedevent");

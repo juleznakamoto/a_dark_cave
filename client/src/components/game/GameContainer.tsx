@@ -1060,6 +1060,26 @@ export default function GameContainer() {
                         </button>
                       )}
 
+                      {flags.forestUnlocked && (
+                        <button
+                          className={`${tabButtonClass} ${animatingTabs.has("forest")
+                            ? fadePhaseTabs.has("forest")
+                              ? "tab-fade-in"
+                              : "tab-blink-new"
+                            : activeTab === "forest"
+                              ? tabActiveTextClass
+                              : tabInactiveTextClass
+                            }`}
+                          onClick={() => {
+                            clearTabAnimation("forest");
+                            setActiveTab("forest");
+                          }}
+                          data-testid="tab-forest"
+                        >
+                          {t("tabs.forest", { ns: "common" })}
+                        </button>
+                      )}
+
                       {/* Estate Tab Button */}
                       {(estateUnlocked || buildings.darkEstate >= 1) && (
                         <button
@@ -1078,26 +1098,6 @@ export default function GameContainer() {
                           data-testid="tab-estate"
                         >
                           {t("tabs.estate", { ns: "common" })}
-                        </button>
-                      )}
-
-                      {flags.forestUnlocked && (
-                        <button
-                          className={`${tabButtonClass} ${animatingTabs.has("forest")
-                            ? fadePhaseTabs.has("forest")
-                              ? "tab-fade-in"
-                              : "tab-blink-new"
-                            : activeTab === "forest"
-                              ? tabActiveTextClass
-                              : tabInactiveTextClass
-                            }`}
-                          onClick={() => {
-                            clearTabAnimation("forest");
-                            setActiveTab("forest");
-                          }}
-                          data-testid="tab-forest"
-                        >
-                          {t("tabs.forest", { ns: "common" })}
                         </button>
                       )}
 
