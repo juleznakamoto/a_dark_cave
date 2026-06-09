@@ -111,7 +111,7 @@ const EFFECT_TOOLTIP_SECTIONS = new Set<SidePanelSectionId>([
 
 /** Shared layout for resource name + amount + production delta / change hint. */
 const RESOURCE_ROW_GRID_CLASS =
-  "grid w-full max-w-full pr-1 grid-cols-[minmax(5rem,1fr)_4rem_2.5rem] items-baseline gap-x-1";
+  "grid w-fit max-w-full pr-1 grid-cols-[5rem_4rem_2.5rem] items-baseline gap-x-1";
 /** Label + amount — fills column width; value sits at the right edge. */
 const LABEL_VALUE_ROW_GRID_CLASS =
   "grid w-full min-w-0 grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-2";
@@ -843,12 +843,12 @@ export default function SidePanelSection({
           key={item.id}
           data-testid={item.testId}
           className={`flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isAtMax
-                  ? "text-yellow-400"
-                  : ""
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isAtMax
+                ? "text-yellow-400"
+                : ""
             }`}
         >
           <TooltipWrapper
@@ -884,12 +884,12 @@ export default function SidePanelSection({
           key={item.id}
           data-testid={item.testId}
           className={`flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isMaxAnimated
-                  ? "text-yellow-400"
-                  : ""
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""
             }`}
         >
           <TooltipWrapper
@@ -914,12 +914,12 @@ export default function SidePanelSection({
           key={item.id}
           data-testid={item.testId}
           className={`flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isMaxAnimated
-                  ? "text-yellow-400"
-                  : ""
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""
             }`}
         >
           <TooltipWrapper
@@ -950,12 +950,12 @@ export default function SidePanelSection({
           key={item.id}
           data-testid={item.testId}
           className={`flex min-w-0 leading-tight justify-between items-center gap-x-1 transition-all duration-300 ${isAnimated
-              ? "text-green-400"
-              : isDecreaseAnimated
-                ? "text-red-400"
-                : isMaxAnimated
-                  ? "text-yellow-400"
-                  : ""
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""
             }`}
         >
           <span className="inline-flex min-w-0 max-w-full items-center gap-0.5">

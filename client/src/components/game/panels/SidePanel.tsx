@@ -907,8 +907,8 @@ export default function SidePanel() {
   };
 
   return (
-    <ScrollArea className="h-full max-h-[36vh] md:max-h-full w-full pt-2 md:pt-0 pb-1.5 pl-0 pr-4">
-      <div className="pb-1 w-full grid grid-cols-[auto_auto] gap-x-1 items-start min-w-0">
+    <ScrollArea className="h-full max-h-[36vh] md:max-h-full w-full pt-2 pb-1.5 pl-0 pr-4">
+      <div className="pb-1 w-full grid grid-cols-[auto_auto] gap-x-1.5 items-start min-w-0">
         {/* First column - Resources */}
         <div className={cn("min-w-0", SIDE_PANEL_SECTION_SPACING_CLASS)}>
           {resourceItems.length > 0 && shouldShowSection("resources") && (
