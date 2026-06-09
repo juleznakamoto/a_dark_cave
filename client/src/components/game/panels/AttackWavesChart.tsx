@@ -2,8 +2,15 @@ import type { GameState } from "@shared/schema";
 import { useGameStore } from "@/game/state";
 import { Progress } from "@/components/ui/progress";
 import { useEffect, useState } from "react";
-import { getAttackWavesChartRows } from "@/game/rules/eventsAttackWaves";
-import { TOTAL_ATTACK_WAVES } from "@/game/rules/attackWaveOrder";
+import {
+  getAttackWavesChartRows,
+  getPostCompletionWaveNumber,
+  isPostCompletionAttackWavesActive,
+} from "@/game/rules/eventsAttackWaves";
+import {
+  POST_COMPLETION_ATTACK_WAVE_ID,
+  TOTAL_ATTACK_WAVES,
+} from "@/game/rules/attackWaveOrder";
 import {
   canExecuteAction,
   getActionCostBreakdown,
@@ -11,7 +18,10 @@ import {
 } from "@/game/rules";
 import CooldownButton from "@/components/CooldownButton";
 import { useTranslation } from "react-i18next";
-import { getAttackWaveDisplayName } from "@/i18n/attackWaveLabels";
+import {
+  getAttackWaveDisplayName,
+  getPostCompletionAttackWaveDisplayName,
+} from "@/i18n/attackWaveLabels";
 
 const PROVOKE_ACTION_ID = "provokeAttackWave" as const;
 
@@ -50,6 +60,10 @@ export default function AttackWavesChart() {
   };
 
   const activeWave = waves.find((wave) => !wave.completed && wave.conditionMet);
+  const postCompletionActive = isPostCompletionAttackWavesActive(state);
+  const postCompletionWaveNumber = postCompletionActive
+    ? getPostCompletionWaveNumber(state)
+    : null;
 
   const shouldShowChart = buildings.bastion || false;
 
@@ -96,6 +110,62 @@ export default function AttackWavesChart() {
             </span>
           </div>
           {attackWaveTimers?.[activeWave.id] && (
+            <CooldownButton
+              actionId={PROVOKE_ACTION_ID}
+              onClick={async () => {
+                executeAction(PROVOKE_ACTION_ID);
+                const { manualSave } = await import("@/game/loop");
+                await manualSave();
+              }}
+              cooldownMs={0}
+              variant="outline"
+              size="xs"
+              className="w-19 "
+              button_id="provoke-attack"
+              data-testid="button-provoke-attack"
+              disabled={!canExecuteAction(PROVOKE_ACTION_ID, state)}
+              tooltip={
+                <div className="text-xs whitespace-nowrap">
+                  {getActionCostBreakdown(PROVOKE_ACTION_ID, state).map(
+                    (row, index) => (
+                      <div
+                        key={index}
+                        className={
+                          row.satisfied ? "" : "text-muted-foreground"
+                        }
+                      >
+                        {row.text}
+                      </div>
+                    ),
+                  )}
+                </div>
+              }
+              onMouseEnter={() => {
+                setHighlightedResources(
+                  getResourcesFromActionCost(PROVOKE_ACTION_ID, state),
+                );
+              }}
+              onMouseLeave={() => {
+                setHighlightedResources([]);
+              }}
+            >
+              {t("attackWaves.provoke")}
+            </CooldownButton>
+          )}
+        </div>
+      ) : postCompletionActive && postCompletionWaveNumber ? (
+        <div className="space-y-2 pt-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-xs font-medium text-foreground">
+              {getPostCompletionAttackWaveDisplayName(postCompletionWaveNumber)}
+            </span>
+            <span className="text-xs text-muted-foreground">
+              {attackWaveTimers?.[POST_COMPLETION_ATTACK_WAVE_ID]
+                ? formatTime(getTimeRemaining(POST_COMPLETION_ATTACK_WAVE_ID))
+                : t("attackWaves.calm")}
+            </span>
+          </div>
+          {attackWaveTimers?.[POST_COMPLETION_ATTACK_WAVE_ID] && (
             <CooldownButton
               actionId={PROVOKE_ACTION_ID}
               onClick={async () => {

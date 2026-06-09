@@ -10,3 +10,13 @@ export function getAttackWaveDisplayName(waveId: AttackWaveId): string {
     ATTACK_WAVE_DISPLAY_NAMES[waveId],
   );
 }
+
+/** Endless post-completion wave label (wave 11+). */
+export function getPostCompletionAttackWaveDisplayName(waveNumber: number): string {
+  return tWithFallback(
+    "ui",
+    "attackWaves.postCompletion",
+    `Wave ${waveNumber}`,
+    { waveNumber },
+  );
+}

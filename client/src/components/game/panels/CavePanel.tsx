@@ -178,6 +178,7 @@ export default function CavePanel() {
             { id: "craftHunterCloak", label: "Hunter Cloak" },
             { id: "craftLoggersGloves", label: "Logger's Gloves" },
             { id: "craftGrenadierBag", label: "Grenadier's Bag" },
+            { id: "craftFlaskHarness", label: "Flask Harness" },
             { id: "craftHighpriestRobe", label: "Highpriest Robe" },
             { id: "craftSacrificialTunic", label: "Sacrificial Tunic" },
             { id: "craftShadowBoots", label: "Shadow Boots" },

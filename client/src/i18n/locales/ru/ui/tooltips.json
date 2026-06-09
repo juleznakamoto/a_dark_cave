@@ -67,6 +67,7 @@
     "villagerDeathReduction": "Смерти жителей в боях: -{{percent}} %",
     "caveExploreBonus": "Исследование пещеры: +{{percent}} % бонуса",
     "bombCapacityCombat": "+1 вместимость для всех бомб (бой)",
+    "elixirCapacityCombat": "+1 эликсир жилового огня за бой",
     "maxBombsPerType": "Макс. {{count}} бомб каждого типа",
     "boneDiceGambler": "Две игры с игроком за визит",
     "ebonGraceHeartfire": "Удваивает производственный бонус Сердечного огня",

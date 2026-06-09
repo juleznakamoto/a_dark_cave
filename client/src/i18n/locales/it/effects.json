@@ -146,6 +146,10 @@
       "description": "Anello semplice che qualcuno ha lasciato perché lo trovassi",
       "name": "Anello in Dono"
     },
+    "flask_harness": {
+      "description": "Imbracatura di cuoio con scomparti imbottiti per elisir di Venafuoco aggiuntivi",
+      "name": "Imbracatura per Fiaschi"
+    },
     "grenadier_bag": {
       "description": "Borsa di cuoio rinforzata per trasportare più esplosivi",
       "name": "Borsa del Granatiere"

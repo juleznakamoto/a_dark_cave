@@ -1908,6 +1908,10 @@
     "message": "洞穴最深处喷发出难以想象的苍白生物洪流。它们如活潮漫过大地，城市准备迎接毁灭。",
     "title": "最终波攻势"
   },
+  "postCompletionWave": {
+    "message": "洞穴暗处不断涌出无意识的苍白生物，无休止地袭击着城市。",
+    "title": "第{{waveNumber}}波"
+  },
   "theDamned": {
     "choices": {
       "turnThemAway": {

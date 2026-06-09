@@ -146,6 +146,10 @@
       "description": "Anneau simple que quelqu'un vous a laissé trouver",
       "name": "Anneau offert"
     },
+    "flask_harness": {
+      "description": "Harnais en cuir avec emplacements rembourrés pour des élixirs de feu-veine supplémentaires",
+      "name": "Harnais à flasques"
+    },
     "grenadier_bag": {
       "description": "Sac de cuir renforcé pour transporter davantage d'explosifs",
       "name": "Sac de grenadier"

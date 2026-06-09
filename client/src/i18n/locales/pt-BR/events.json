@@ -1931,6 +1931,10 @@
     "message": "Dos recantos mais profundos da caverna, uma massa inimaginável de criaturas pálidas irrompe. Elas inundam a terra como uma maré viva, enquanto a cidade se prepara para o aniquilamento.",
     "title": "A Onda Final"
   },
+  "postCompletionWave": {
+    "message": "Das profundezas ocultas da caverna, criaturas pálidas sem mente continuam a emergir, assaltando a cidade sem fim.",
+    "title": "Onda {{waveNumber}}"
+  },
   "theDamned": {
     "choices": {
       "turnThemAway": {

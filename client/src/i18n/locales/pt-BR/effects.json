@@ -146,6 +146,10 @@
       "description": "Anel simples que alguém deixou para você encontrar",
       "name": "Anel Presenteado"
     },
+    "flask_harness": {
+      "description": "Arnês de couro com compartimentos acolchoados para elixires de Fogo Venoso adicionais",
+      "name": "Arnês para Frascos"
+    },
     "grenadier_bag": {
       "description": "Bolsa de couro reforçada para carregar mais explosivos",
       "name": "Bolsa do Granadeiro"

@@ -619,7 +619,7 @@
       },
       "payVillagers": {
         "cost": "20 Dorfbewohner",
-        "label": "20 Dorfbewohner anbieten"  //x1.3
+        "label": "20 Dorfbewohner anbieten" //x1.3
       },
       "sendAway": {
         "label": "Sie wegschicken"
@@ -1057,7 +1057,7 @@
       },
       "trade_giant_trap": {
         "message": "Als du die Riesenfalle kaufst, grinst der Händler: „Damit kann man im Wald etwas Gigantisches fangen. Setze sie weise ein.“",
-        "label": "Riesige Falle"  //x1.3
+        "label": "Riesige Falle" //x1.3
       },
       "trade_arbalest_schematic": {
         "message": "Du kaufst den Armbrust-Bauplan. Der Händler entfaltet einen filigranen Entwurf: „Ein Design eines Meisteringenieurs. Damit kannst du eine mächtige Waffe herstellen.“",
@@ -1930,6 +1930,10 @@
   "tenthWave": {
     "message": "Aus den tiefsten Tiefen der Höhle bricht eine unvorstellbare Masse bleicher Kreaturen hervor. Sie fluten das Land wie eine lebende Flut, während die Stadt sich auf die Vernichtung vorbereitet.",
     "title": "Die letzte Welle"
+  },
+  "postCompletionWave": {
+    "message": "Aus den verborgenen Tiefen der Höhle tauchen immer wieder gedankenlose bleiche Kreaturen auf und stürmen sich ohne Ende auf die Stadt.",
+    "title": "Welle {{waveNumber}}"
   },
   "theDamned": {
     "choices": {

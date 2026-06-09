@@ -813,6 +813,10 @@ const mergeStateUpdates = (
       ...prevState.attackWaveTimers,
       ...stateUpdates.attackWaveTimers,
     },
+    postCompletionAttackWaveCount:
+      stateUpdates.postCompletionAttackWaveCount !== undefined
+        ? stateUpdates.postCompletionAttackWaveCount
+        : prevState.postCompletionAttackWaveCount,
     triggeredEvents: {
       ...prevState.triggeredEvents,
       ...stateUpdates.triggeredEvents,

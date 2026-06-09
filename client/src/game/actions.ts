@@ -54,6 +54,7 @@ import {
   handleCraftExplorerPack,
   handleCraftHunterCloak,
   handleCraftGrenadierBag,
+  handleCraftFlaskHarness,
   handleCraftHighpriestRobe,
   handleCraftLoggersGloves,
   handleCraftSacrificialTunic,
@@ -447,6 +448,8 @@ export function executeGameAction(
       return handleCraftBlacksteelLantern(state, result);
     case "craftGrenadierBag":
       return handleCraftGrenadierBag(state, result);
+    case "craftFlaskHarness":
+      return handleCraftFlaskHarness(state, result);
     case "craftHighpriestRobe":
       return handleCraftHighpriestRobe(state, result);
     case "craftSkeletonKey":

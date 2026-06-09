@@ -50,6 +50,7 @@
     "calm": "It is calm, for now...",
     "soon": "soon",
     "provoke": "Provoke",
+    "postCompletion": "Wave {{waveNumber}}",
     "waves": {
       "firstWave": "First Wave",
       "secondWave": "Second Wave",

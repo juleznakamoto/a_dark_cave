@@ -70,6 +70,7 @@
     "villagerDeathReduction": "Villager Deaths in Fights: -{{percent}}%",
     "caveExploreBonus": "Cave Explore: +{{percent}}% Bonus",
     "bombCapacityCombat": "+1 Capacity for all bombs (combat)",
+    "elixirCapacityCombat": "+1 Veinfire Elixir per combat",
     "maxBombsPerType": "Max {{count}} bombs per type",
     "boneDiceGambler": "Play two rounds against the gambler per visit",
     "ebonGraceHeartfire": "Doubles production bonus from Heartfire",

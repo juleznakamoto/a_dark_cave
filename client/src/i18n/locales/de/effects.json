@@ -146,6 +146,10 @@
       "description": "Schlichter Ring, den jemand für dich zurückgelassen hat", //ok
       "name": "Geschenkter Ring"
     },
+    "flask_harness": {
+      "description": "Ledergeschirr mit gepolsterten Halterungen für zusätzliche Aderfeuer-Elixiere",
+      "name": "Flaschengeschirr"
+    },
     "grenadier_bag": {
       "description": "Verstärkte Ledertasche zum Tragen weiterer Sprengstoffe",
       "name": "Grenadierstasche"

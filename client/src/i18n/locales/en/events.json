@@ -1931,6 +1931,10 @@
     "message": "From the deepest reaches of the cave, an unimaginable mass of pale creatures erupts. They flood over the land like a living tide, as the city braces for annihilation.",
     "title": "The Final Wave"
   },
+  "postCompletionWave": {
+    "message": "From the hidden depths of the cave, mindless pale creatures continue to emerge, assaulting the city without end.",
+    "title": "Wave {{waveNumber}}"
+  },
   "theDamned": {
     "choices": {
       "turnThemAway": {

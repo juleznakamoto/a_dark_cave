@@ -735,6 +735,14 @@ export function renderItemTooltip(
               })}
             </div>
           )}
+          {effect.bonuses.generalBonuses.MAX_VEINFIRE_ELIXIRS && (
+            <div>
+              {getUiTooltip(
+                "elixirCapacityCombat",
+                "+1 Veinfire Elixir per combat",
+              )}
+            </div>
+          )}
         </div>
       )}
       {showEffects && itemId === "obsidian_orb" &&

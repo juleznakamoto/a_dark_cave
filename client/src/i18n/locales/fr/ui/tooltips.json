@@ -67,6 +67,7 @@
     "villagerDeathReduction": "Morts de villageois au combat : -{{percent}} %",
     "caveExploreBonus": "Exploration de grotte : +{{percent}} % de bonus",
     "bombCapacityCombat": "+1 capacité pour toutes les bombes (combat)",
+    "elixirCapacityCombat": "+1 Élixir de feu-veine par combat",
     "maxBombsPerType": "Max {{count}} bombes par type",
     "boneDiceGambler": "Jouez deux manches contre le joueur par visite",
     "ebonGraceHeartfire": "Double le bonus de production du Feu du cœur",

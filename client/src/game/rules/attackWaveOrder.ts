@@ -25,3 +25,6 @@ export const FINAL_ATTACK_WAVE_ID: AttackWaveId = "tenthWave";
 export function isFinalAttackWave(waveId: AttackWaveId): boolean {
   return waveId === FINAL_ATTACK_WAVE_ID;
 }
+
+/** Endless attack waves after game completion (not part of the 10/10 chart). */
+export const POST_COMPLETION_ATTACK_WAVE_ID = "postCompletionWave" as const;

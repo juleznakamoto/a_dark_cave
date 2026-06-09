@@ -67,6 +67,7 @@
     "villagerDeathReduction": "Tode von Dorfbewohnern in Kämpfen: -{{percent}} %",
     "caveExploreBonus": "Höhlenerkundung: +{{percent}} % Bonus",
     "bombCapacityCombat": "+1 Kapazität für alle Bomben (Kampf)",
+    "elixirCapacityCombat": "+1 Aderfeuer-Elixier pro Kampf",
     "maxBombsPerType": "Max. {{count}} Bomben pro Typ",
     "boneDiceGambler": "Spiele zwei Runden gegen den Spieler pro Besuch",
     "ebonGraceHeartfire": "Verdoppelt den Produktionsbonus des Herzfeuers",

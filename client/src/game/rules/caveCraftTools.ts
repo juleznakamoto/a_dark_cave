@@ -451,6 +451,7 @@ export const caveCraftTools: Record<string, Action> = {
     },
     cost: {
       "resources.leather": 200,
+      "resources.silver": 50,
     },
     effects: {
       "clothing.explorer_pack": true,
@@ -470,6 +471,7 @@ export const caveCraftTools: Record<string, Action> = {
     },
     cost: {
       "resources.leather": 150,
+      "resources.silver": 50,
     },
     effects: {
       "clothing.hunter_cloak": true,
@@ -489,6 +491,7 @@ export const caveCraftTools: Record<string, Action> = {
     },
     cost: {
       "resources.leather": 750,
+      "resources.silver": 250,
     },
     effects: {
       "clothing.grenadier_bag": true,
@@ -496,6 +499,26 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.actionCraftGrenadierBag": true,
     },
     executionTime: 30,
+    cooldown: 0,
+  },
+
+  craftFlaskHarness: {
+    id: "craftFlaskHarness",
+    label: "Flask Harness",
+    show_when: {
+      "story.seen.veinrootDiscovered": true,
+      "clothing.flask_harness": false,
+    },
+    cost: {
+      "resources.leather": 1500,
+      "resources.silver": 500,
+    },
+    effects: {
+      "clothing.flask_harness": true,
+      "story.seen.hasFlaskHarness": true,
+      "story.seen.actionCraftFlaskHarness": true,
+    },
+    executionTime: 45,
     cooldown: 0,
   },
 
@@ -790,6 +813,15 @@ export function handleCraftGrenadierBag(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("craftGrenadierBag", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftFlaskHarness(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftFlaskHarness", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }

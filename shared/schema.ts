@@ -171,6 +171,7 @@ export const gameStateSchema = z.object({
       explorer_pack: z.boolean().default(false),
       hunter_cloak: z.boolean().default(false),
       grenadier_bag: z.boolean().default(false),
+      flask_harness: z.boolean().default(false),
       highpriest_robe: z.boolean().default(false),
       loggers_gloves: z.boolean().default(false),
       tarnished_amulet: z.boolean().default(false),
@@ -521,6 +522,8 @@ export const gameStateSchema = z.object({
   cruelMode: z.boolean().default(false), // Cruel mode flag
   BTP: z.number().default(0), // Buy To Play mode (0 = normal, 1 = BTP active)
   attackWaveTimers: z.record(attackWaveTimerSchema).default({}),
+  /** Post-story endless waves won (next wave number = 11 + this count). */
+  postCompletionAttackWaveCount: z.number().min(0).default(0),
   curseState: z
     .object({
       isActive: z.boolean().default(false),

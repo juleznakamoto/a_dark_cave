@@ -1908,6 +1908,10 @@
     "message": "Des profondeurs les plus reculées de la grotte, une masse inimaginable de créatures pâles jaillit. Elles inondent la terre comme une marée vivante, tandis que la cité se prépare à l'anéantissement.",
     "title": "La dernière vague"
   },
+  "postCompletionWave": {
+    "message": "Des profondeurs cachées de la grotte, des créatures pâles sans esprit continuent d'émerger, assaillant la cité sans fin.",
+    "title": "Vague {{waveNumber}}"
+  },
   "theDamned": {
     "choices": {
       "turnThemAway": {

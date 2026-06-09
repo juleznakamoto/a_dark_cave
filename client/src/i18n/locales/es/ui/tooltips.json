@@ -67,6 +67,7 @@
     "villagerDeathReduction": "Muertes de aldeanos en combates: -{{percent}} %",
     "caveExploreBonus": "Exploración de cueva: +{{percent}} % de bonificación",
     "bombCapacityCombat": "+1 capacidad para todas las bombas (combate)",
+    "elixirCapacityCombat": "+1 Elixir de fuego venal por combate",
     "maxBombsPerType": "Máx. {{count}} bombas por tipo",
     "boneDiceGambler": "Juega dos rondas contra el jugador por visita",
     "ebonGraceHeartfire": "Duplica la bonificación de producción del Fuego del corazón",

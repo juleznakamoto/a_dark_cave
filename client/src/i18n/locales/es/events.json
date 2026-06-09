@@ -1908,6 +1908,10 @@
     "message": "Desde los confines más profundos de la cueva estalla una masa inimaginable de criaturas pálidas. Inundan la tierra como una marea viva, mientras la ciudad se prepara para la aniquilación.",
     "title": "La oleada final"
   },
+  "postCompletionWave": {
+    "message": "Desde las profundidades ocultas de la cueva, criaturas pálidas sin mente siguen emergiendo, asaltando la ciudad sin cesar.",
+    "title": "Oleada {{waveNumber}}"
+  },
   "theDamned": {
     "choices": {
       "turnThemAway": {

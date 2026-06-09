@@ -146,6 +146,10 @@
       "description": "Plain ring someone left for you to find",
       "name": "Gifted Ring"
     },
+    "flask_harness": {
+      "description": "Leather harness with padded slots for extra Veinfire Elixirs",
+      "name": "Flask Harness"
+    },
     "grenadier_bag": {
       "description": "Reinforced leather bag for carrying more explosives",
       "name": "Grenadier's Bag"

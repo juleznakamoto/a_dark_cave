@@ -289,6 +289,7 @@ export default function CombatDialog({
   const MAX_EMBER_BOMBS = gameState.clothing.grenadier_bag ? 4 : 3;
   const MAX_CINDERFLAME_BOMBS = gameState.clothing.grenadier_bag ? 3 : 2;
   const MAX_VOID_BOMBS = gameState.clothing.grenadier_bag ? 2 : 1;
+  const MAX_VEINFIRE_ELIXIRS = gameState.clothing.flask_harness ? 2 : 1;
   const NIGHTSHADE_BOW_OWNED = gameState.weapons.nightshade_bow;
 
   const emberBombsUsed = usedItemsInCombat.filter(
@@ -358,7 +359,7 @@ export default function CombatDialog({
     damage: 0,
     available:
       combatResources.veinfire_elixir > 0 &&
-      veinfireUsedInCombat < 1 &&
+      veinfireUsedInCombat < MAX_VEINFIRE_ELIXIRS &&
       currentIntegrity < maxIntegrityForCombat &&
       !usedItemsInRound.has("veinfire_elixir"),
   });
@@ -1117,8 +1118,8 @@ export default function CombatDialog({
                                   )
                                   : item.id === "veinfire_elixir"
                                     ? formatAvailable(
-                                      veinfireUsedInCombat < 1 ? 1 : 0,
-                                      1,
+                                      MAX_VEINFIRE_ELIXIRS - veinfireUsedInCombat,
+                                      MAX_VEINFIRE_ELIXIRS,
                                     )
                                     : item.id === "ember_bomb"
                                       ? formatAvailable(

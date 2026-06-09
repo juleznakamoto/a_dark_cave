@@ -308,6 +308,7 @@ export interface EffectDefinition {
       MAX_EMBER_BOMBS?: number; // Bonus to max ember bombs capacity (combat)
       MAX_CINDERFLAME_BOMBS?: number; // Bonus to max ashfire bombs (combat)
       MAX_VOID_BOMBS?: number;
+      MAX_VEINFIRE_ELIXIRS?: number; // Bonus to max Veinfire Elixirs per combat (base 1, +1 with Flask Harness = 2)
       MAX_BOMB_STORAGE?: number; // Bonus to max bombs owned (base 10, +10 with Grenadier's Bag = 20)
       caveExploreMultiplier?: number; // Multiplier for all cave exploration actions
       eventDeathReduction?: number; // Percentage reduction in villager deaths from events (0.25 = 25% reduction)

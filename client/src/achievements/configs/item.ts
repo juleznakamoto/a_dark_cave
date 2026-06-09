@@ -115,7 +115,7 @@ export const itemChartConfig: AchievementChartConfig = {
     [
       {
         segmentId: "2-explorer_pack",
-        maxCount: 6,
+        maxCount: 7,
         label: "Leatherworks",
         reward: 250,
         getCount: (_state: GameState) =>
@@ -123,6 +123,7 @@ export const itemChartConfig: AchievementChartConfig = {
             "explorer_pack",
             "hunter_cloak",
             "grenadier_bag",
+            "flask_harness",
             "highpriest_robe",
             "loggers_gloves",
             "shadow_boots",

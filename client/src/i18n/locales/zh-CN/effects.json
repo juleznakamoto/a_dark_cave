@@ -146,6 +146,10 @@
       "description": "某人留下、等你发现的朴素戒指",
       "name": "赠予之戒"
     },
+    "flask_harness": {
+      "description": "皮革背带，配有软垫槽位，可携带额外的脉火灵药",
+      "name": "药瓶背带"
+    },
     "grenadier_bag": {
       "description": "加固皮包，可携带更多爆炸物",
       "name": "掷弹兵背包"

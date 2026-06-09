@@ -1931,6 +1931,10 @@
     "message": "Dalle profondità più recondite della caverna, erompe una massa inimmaginabile di creature pallide. Si riversano sulla terra come una marea vivente, mentre la città si prepara all'annientamento.",
     "title": "L'Ondata Finale"
   },
+  "postCompletionWave": {
+    "message": "Dalle profondità nascoste della caverna, creature pallide senza mente continuano a emergere, assaltando la città senza fine.",
+    "title": "Ondata {{waveNumber}}"
+  },
   "theDamned": {
     "choices": {
       "turnThemAway": {

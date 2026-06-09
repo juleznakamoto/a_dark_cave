@@ -70,6 +70,7 @@
     "villagerDeathReduction": "Mortes de Aldeões em Combate: -{{percent}}%",
     "caveExploreBonus": "Explorar Caverna: +{{percent}}% de Bônus",
     "bombCapacityCombat": "+1 de Capacidade para todas as bombas (combate)",
+    "elixirCapacityCombat": "+1 Elixir de Fogo Venoso por combate",
     "maxBombsPerType": "Máx. {{count}} bombas por tipo",
     "boneDiceGambler": "Jogue duas rodadas contra o apostador por visita",
     "ebonGraceHeartfire": "Dobra o bônus de produção do Fogo do Coração",

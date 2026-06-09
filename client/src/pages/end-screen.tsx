@@ -27,7 +27,6 @@ export default function EndScreenPage() {
 
   const showCruelModePromo = isCruelModeRun !== true;
   const handleMainMenu = async () => {
-    // Navigate to main menu (or home page)
     window.location.href = "/";
   };
 

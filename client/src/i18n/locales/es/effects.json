@@ -146,6 +146,10 @@
       "description": "Anillo sencillo que alguien dejó para que lo encontraras",
       "name": "Anillo regalado"
     },
+    "flask_harness": {
+      "description": "Arnés de cuero con ranuras acolchadas para elixires de fuego venal adicionales",
+      "name": "Arnés de frascos"
+    },
     "grenadier_bag": {
       "description": "Bolsa de cuero reforzado para llevar más explosivos",
       "name": "Bolsa de granadero"

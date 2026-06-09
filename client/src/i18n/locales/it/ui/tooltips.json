@@ -70,6 +70,7 @@
     "villagerDeathReduction": "Morti di Abitanti nei Combattimenti: -{{percent}}%",
     "caveExploreBonus": "Esplora Caverna: +{{percent}}% Bonus",
     "bombCapacityCombat": "+1 Capacità per tutte le bombe (combattimento)",
+    "elixirCapacityCombat": "+1 Elisir di Venafuoco per combattimento",
     "maxBombsPerType": "Max {{count}} bombe per tipo",
     "boneDiceGambler": "Gioca due round contro il giocatore per visita",
     "ebonGraceHeartfire": "Raddoppia il bonus di produzione del Fuoco del Cuore",

@@ -11,7 +11,7 @@
     "bastion": "Бастион",
     "fortress": "Крепость",
     "items": "Предметы",
-    "integrity": "Целостность",  //x1.2
+    "integrity": "Целостность", //x1.2
     "attack": "Атака",
     "defense": "Защита",
     "attackFailed": "Атака не удалась",
@@ -50,11 +50,12 @@
     "calm": "Пока что спокойно…",
     "soon": "скоро",
     "provoke": "Спровоцировать",
+    "postCompletion": "Волна {{waveNumber}}",
     "waves": {
       "firstWave": "Первая волна",
       "secondWave": "Вторая волна",
       "thirdWave": "Третья волна",
-      "fourthWave": "Четвёртая волна",  //x1.4
+      "fourthWave": "Четвёртая волна", //x1.4
       "fifthWave": "Пятая волна",
       "sixthWave": "Шестая волна",
       "seventhWave": "Седьмая волна",
@@ -80,6 +81,6 @@
     "damaged": "(повреждено)",
     "attack": "+{{value}} к атаке",
     "defense": "+{{value}} к защите",
-    "integrity": "+{{value}} к целостности"  //x1.2
+    "integrity": "+{{value}} к целостности" //x1.2
   }
 }

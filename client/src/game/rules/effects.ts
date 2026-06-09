@@ -813,6 +813,17 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  flask_harness: {
+    id: "flask_harness",
+    name: "Flask Harness",
+    description: "Leather harness with padded slots for extra Veinfire Elixirs",
+    bonuses: {
+      generalBonuses: {
+        MAX_VEINFIRE_ELIXIRS: 1, // Base 1 + 1 = 2 elixirs per combat
+      },
+    },
+  },
+
   bloodstained_belt: {
     id: "bloodstained_belt",
     name: "Bloodstained Belt",

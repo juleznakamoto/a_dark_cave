@@ -50,6 +50,7 @@
     "calm": "Es ist ruhig, vorerst…",
     "soon": "bald",
     "provoke": "Provozieren", //ok
+    "postCompletion": "Welle {{waveNumber}}",
     "waves": {
       "firstWave": "Erste Welle",
       "secondWave": "Zweite Welle",

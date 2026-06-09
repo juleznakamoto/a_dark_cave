@@ -589,12 +589,26 @@ export function reconcileInFlightExecutionsOnLoad(
   } as GameState;
 }
 
+/** Default post-completion wave counter on older saves. */
+export function migratePostCompletionAttackWavesOnLoad(
+  state: GameState,
+): Partial<GameState> | null {
+  if (state.postCompletionAttackWaveCount !== undefined) {
+    return null;
+  }
+  return { postCompletionAttackWaveCount: 0 };
+}
+
 /** Run one-time load migrations on loaded saves (trader shop unlock gate). */
 export function applyGameStateLoadMigrations(state: GameState): GameState {
   let migrated = reconcileInFlightExecutionsOnLoad(state);
   const trader = migrateTraderShopUnlockOnLoad(migrated);
   if (trader?.story) {
     migrated = { ...migrated, story: trader.story };
+  }
+  const postCompletion = migratePostCompletionAttackWavesOnLoad(migrated);
+  if (postCompletion) {
+    migrated = { ...migrated, ...postCompletion };
   }
   return migrated;
 }

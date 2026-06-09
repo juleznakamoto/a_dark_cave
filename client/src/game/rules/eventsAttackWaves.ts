@@ -1,10 +1,14 @@
-import type { GameEvent } from "./events";
+import type { EventChoiceEffectResult, GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { useGameStore, isModalDialogOpen } from "@/game/state";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 import { getVillagersInVillage } from "../population";
-import { ATTACK_WAVE_IDS, type AttackWaveId } from "./attackWaveOrder";
+import {
+  ATTACK_WAVE_IDS,
+  POST_COMPLETION_ATTACK_WAVE_ID,
+  type AttackWaveId,
+} from "./attackWaveOrder";
 import { resolveEventMessage, resolveEventTitle } from "@/i18n/eventText";
 import type { CombatResultSummary } from "@/game/types";
 
@@ -92,6 +96,33 @@ const ATTACK_WAVE_TIMER_DEFAULTS = {
   defeatDuration: 20 * 60 * 1000,
 } as const;
 
+const CANONICAL_ATTACK_WAVE_COUNT = 10;
+const POST_WAVE_HEALTH_INCREMENT = 50;
+const POST_WAVE_ATTACK_INCREMENT = 10;
+const POST_WAVE_GOLD_INCREMENT = 50;
+
+/** True after the final cube choice (cube15a/b). */
+export function isGameStoryCompleted(state: GameState): boolean {
+  return Boolean(state.events?.cube15a || state.events?.cube15b);
+}
+
+/** All ten chart waves have been won. */
+export function areAllCanonicalAttackWavesCompleted(state: GameState): boolean {
+  return Boolean(state.story?.seen?.tenthWaveVictory);
+}
+
+/** Endless waves after story complete and all 10 chart waves won. */
+export function isPostCompletionAttackWavesActive(state: GameState): boolean {
+  return (
+    isGameStoryCompleted(state) && areAllCanonicalAttackWavesCompleted(state)
+  );
+}
+
+/** Next post-completion wave number (11, 12, …). */
+export function getPostCompletionWaveNumber(state: GameState): number {
+  return CANONICAL_ATTACK_WAVE_COUNT + 1 + (state.postCompletionAttackWaveCount ?? 0);
+}
+
 /** Wave index 1..10 → reward / siege-impact fields (combat uses per-wave attack/health below). */
 function attackWaveScaledParams(waveNumber: number): Pick<
   WaveParams,
@@ -171,6 +202,28 @@ const ATTACK_WAVE_DEFINITIONS: Record<AttackWaveId, AttackWaveDefinition> = {
     health: { base: 1400, cruelBonus: 250 },
   },
 };
+
+/** Post-completion wave stats: +50 integrity, +10 attack, +50 gold per wave beyond the tenth. */
+export function getPostCompletionWaveParams(waveNumber: number): WaveParams {
+  const stepsBeyondTenth = waveNumber - CANONICAL_ATTACK_WAVE_COUNT;
+  const tenthDef = ATTACK_WAVE_DEFINITIONS.tenthWave;
+  return {
+    ...ATTACK_WAVE_TIMER_DEFAULTS,
+    ...attackWaveScaledParams(waveNumber),
+    goldReward:
+      tenthDef.goldReward + stepsBeyondTenth * POST_WAVE_GOLD_INCREMENT,
+    attack: {
+      options: [
+        tenthDef.attack.options[0] + stepsBeyondTenth * POST_WAVE_ATTACK_INCREMENT,
+      ],
+      cruelBonus: tenthDef.attack.cruelBonus,
+    },
+    health: {
+      base: tenthDef.health.base + stepsBeyondTenth * POST_WAVE_HEALTH_INCREMENT,
+      cruelBonus: tenthDef.health.cruelBonus,
+    },
+  };
+}
 
 const WAVE_RULES: Record<AttackWaveId, WaveRules> = {
   firstWave: {
@@ -579,11 +632,149 @@ function createAttackWaveEvent(waveId: AttackWaveId): GameEvent {
   };
 }
 
+function clearPostCompletionAttackWaveTimer(): void {
+  setTimeout(() => {
+    useGameStore.setState((prevState) => {
+      const timers = { ...(prevState.attackWaveTimers ?? {}) };
+      delete timers[POST_COMPLETION_ATTACK_WAVE_ID];
+      return { attackWaveTimers: timers };
+    });
+  }, 0);
+}
+
+function createPostCompletionAttackWaveEvent(): GameEvent {
+  const waveId = POST_COMPLETION_ATTACK_WAVE_ID;
+
+  return {
+    id: waveId,
+    condition: (state: GameState) => {
+      if (!isPostCompletionAttackWavesActive(state)) {
+        return false;
+      }
+
+      const waveNumber = getPostCompletionWaveNumber(state);
+      const def = getPostCompletionWaveParams(waveNumber);
+      const timer = state.attackWaveTimers?.[waveId];
+
+      if (!timer) {
+        setTimeout(() => {
+          const currentState = useGameStore.getState();
+          if (!currentState.attackWaveTimers?.[waveId]) {
+            useGameStore.setState({
+              attackWaveTimers: {
+                ...currentState.attackWaveTimers,
+                [waveId]: {
+                  startTime: Date.now(),
+                  duration: def.initialDuration,
+                  defeated: false,
+                  provoked: false,
+                  elapsedTime: 0,
+                },
+              },
+            });
+          }
+        }, 0);
+        return false;
+      }
+
+      if (timer.defeated) {
+        return false;
+      }
+
+      const store = useGameStore.getState();
+      const isPaused = Boolean(store.isPaused || isModalDialogOpen(store));
+
+      if (isPaused) {
+        if (timer.startTime && timer.elapsedTime !== undefined) {
+          const currentElapsedTime =
+            timer.elapsedTime + (Date.now() - timer.startTime);
+          useGameStore.setState((prevState) => ({
+            attackWaveTimers: {
+              ...prevState.attackWaveTimers,
+              [waveId]: {
+                ...prevState.attackWaveTimers![waveId],
+                startTime: Date.now(),
+                elapsedTime: currentElapsedTime,
+              },
+            },
+          }));
+        }
+        return false;
+      }
+
+      const elapsed = timer.elapsedTime || 0;
+      return elapsed >= timer.duration || timer.provoked;
+    },
+
+    timeProbability: 0.25,
+    priority: 5,
+    repeatable: true,
+    effect: (state: GameState): EventChoiceEffectResult => {
+      const waveNumber = getPostCompletionWaveNumber(state);
+      const def = getPostCompletionWaveParams(waveNumber);
+      const enemyStats = calculateEnemyStats(def, state);
+      const waveVars = { waveNumber };
+
+      return {
+        _combatData: {
+          enemy: {
+            name: ATTACK_WAVE_ENEMY_NAME,
+            ...enemyStats,
+          },
+          eventTitle:
+            resolveEventTitle(waveId, undefined, state, waveVars) ?? "",
+          eventMessage: resolveEventMessage(
+            waveId,
+            undefined,
+            state,
+            waveVars,
+          ),
+          onVictory: () => {
+            clearPostCompletionAttackWaveTimer();
+            return {
+              resources: {
+                gold: def.goldReward,
+              },
+              postCompletionAttackWaveCount:
+                (state.postCompletionAttackWaveCount ?? 0) + 1,
+              _combatSummary: {
+                goldReward: def.goldReward,
+              },
+            };
+          },
+          onDefeat: () => {
+            const defeatResult = handleDefeat(
+              state,
+              def.buildingDamageMultiplier,
+              def.maxCasualties,
+              def.fellowshipWoundedMultiplier,
+            );
+            return {
+              ...defeatResult,
+              attackWaveTimers: {
+                ...state.attackWaveTimers,
+                [waveId]: {
+                  startTime: Date.now(),
+                  duration: def.defeatDuration,
+                  defeated: false,
+                  elapsedTime: 0,
+                  provoked: false,
+                },
+              },
+            };
+          },
+        },
+      };
+    },
+  };
+}
+
 function buildAttackWaveEvents(): Record<string, GameEvent> {
   const out: Record<string, GameEvent> = {};
   for (const id of ATTACK_WAVE_IDS) {
     out[id] = createAttackWaveEvent(id);
   }
+  out[POST_COMPLETION_ATTACK_WAVE_ID] = createPostCompletionAttackWaveEvent();
   return out;
 }
 

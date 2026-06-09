@@ -2,7 +2,11 @@ import { Action, GameState } from "@shared/schema";
 import { getGameActions } from "./actionsRegistry";
 import { CRUEL_MODE } from "@/game/cruelMode";
 import { getTotalBuildingCostReduction } from "./effectsCalculation";
-import { getAttackWavesChartRows } from "./eventsAttackWaves";
+import {
+  getAttackWavesChartRows,
+  isPostCompletionAttackWavesActive,
+} from "./eventsAttackWaves";
+import { POST_COMPLETION_ATTACK_WAVE_ID } from "./attackWaveOrder";
 import { applyActionEffects } from "./actionEffects";
 
 /** Repair resource paths and amounts (same formula as former Bastion panel helpers). */
@@ -29,18 +33,29 @@ export function getBastionRepairCostPaths(
   return out;
 }
 
-/** True when the active wave can be provoked (timer running, not already provoked, etc.). */
-export function canProvokeAttackWave(state: GameState): boolean {
+function getProvokableAttackWaveId(state: GameState): string | null {
   const waves = getAttackWavesChartRows({
     story: state.story,
     buildings: state.buildings,
     weapons: state.weapons,
   });
   const activeWave = waves.find((w) => !w.completed && w.conditionMet);
-  if (!activeWave) {
+  if (activeWave) {
+    return activeWave.id;
+  }
+  if (isPostCompletionAttackWavesActive(state)) {
+    return POST_COMPLETION_ATTACK_WAVE_ID;
+  }
+  return null;
+}
+
+/** True when the active wave can be provoked (timer running, not already provoked, etc.). */
+export function canProvokeAttackWave(state: GameState): boolean {
+  const waveId = getProvokableAttackWaveId(state);
+  if (!waveId) {
     return false;
   }
-  const timer = state.attackWaveTimers?.[activeWave.id];
+  const timer = state.attackWaveTimers?.[waveId];
   if (!timer || timer.defeated || timer.provoked) {
     return false;
   }
@@ -55,19 +70,14 @@ export function getProvokeAttackWaveExecutionUpdates(
   if (!canProvokeAttackWave(state)) {
     return null;
   }
-  const waves = getAttackWavesChartRows({
-    story: state.story,
-    buildings: state.buildings,
-    weapons: state.weapons,
-  });
-  const activeWave = waves.find((w) => !w.completed && w.conditionMet)!;
-  const timer = state.attackWaveTimers![activeWave.id]!;
+  const waveId = getProvokableAttackWaveId(state)!;
+  const timer = state.attackWaveTimers![waveId]!;
   const effectUpdates = applyActionEffects("provokeAttackWave", state);
   return {
     ...effectUpdates,
     attackWaveTimers: {
       ...state.attackWaveTimers,
-      [activeWave.id]: {
+      [waveId]: {
         ...timer,
         elapsedTime: timer.duration,
         provoked: true,
