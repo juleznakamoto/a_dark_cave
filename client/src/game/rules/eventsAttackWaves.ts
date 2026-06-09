@@ -151,7 +151,6 @@ export function togglePostCompletionAttackWaveTimerPause(
       [waveId]: {
         ...timer,
         pausedAt: paused ? undefined : Date.now(),
-        startTime: Date.now(),
       },
     },
   };

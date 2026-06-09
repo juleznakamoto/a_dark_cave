@@ -62,13 +62,14 @@ describe("attack waves expansion", () => {
   });
 
   it("toggles pause on the post-completion attack wave timer", () => {
+    const originalStartTime = 1_700_000_000_000;
     const baseState = {
       events: { cube15a: true },
       story: { seen: { tenthWaveVictory: true }, merchantPurchases: 0 },
       postCompletionAttackWaveCount: 0,
       attackWaveTimers: {
         [POST_COMPLETION_ATTACK_WAVE_ID]: {
-          startTime: Date.now(),
+          startTime: originalStartTime,
           duration: 60 * 60 * 1000,
           defeated: false,
           provoked: false,
@@ -81,6 +82,8 @@ describe("attack waves expansion", () => {
     const pausedTimer =
       paused?.attackWaveTimers?.[POST_COMPLETION_ATTACK_WAVE_ID];
     expect(pausedTimer && isAttackWaveTimerUserPaused(pausedTimer)).toBe(true);
+    expect(pausedTimer?.startTime).toBe(originalStartTime);
+    expect(pausedTimer?.elapsedTime).toBe(1000);
 
     const resumed = togglePostCompletionAttackWaveTimerPause({
       ...baseState,
@@ -89,6 +92,8 @@ describe("attack waves expansion", () => {
     const resumedTimer =
       resumed?.attackWaveTimers?.[POST_COMPLETION_ATTACK_WAVE_ID];
     expect(resumedTimer?.pausedAt).toBeUndefined();
+    expect(resumedTimer?.startTime).toBe(originalStartTime);
+    expect(resumedTimer?.elapsedTime).toBe(1000);
   });
 
   it("exposes i18nVars with waveNumber for log and dialog resolution", () => {
