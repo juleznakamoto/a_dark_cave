@@ -1,4 +1,4 @@
-import { Component, type ReactNode, useEffect, useState } from "react";
+import { Component, type ReactNode, useEffect, useRef, useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
@@ -81,6 +81,11 @@ function AchievementTitleInsightBadge({
   const isRevealing =
     typeof insightRevealEnd === "number" && insightRevealEnd > Date.now();
 
+  const revealStartedRef = useRef(false);
+  useEffect(() => {
+    if (isRevealing) revealStartedRef.current = true;
+  }, [isRevealing]);
+
   useEffect(() => {
     if (!isRevealing) return;
     const id = setInterval(() => forceUpdate((n) => n + 1), 100);
@@ -94,6 +99,7 @@ function AchievementTitleInsightBadge({
   ) {
     return null;
   }
+  if (revealStartedRef.current && !isRevealing) return null;
 
   const canUnlock = canRevealAchievementTitle(
     gameState,
