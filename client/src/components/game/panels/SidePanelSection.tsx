@@ -590,7 +590,7 @@ export default function SidePanelSection({
       isLimited &&
       limit !== null &&
       typeof item.value === "number" &&
-      item.value === limit;
+      item.value >= limit;
 
     // Check if this is a relic, weapon, tool, blessing, or schematic that has effect information
     const relicEffect = clothingEffects[item.id];
@@ -669,12 +669,20 @@ export default function SidePanelSection({
 
     const isResourcesSection = sectionId === "resources";
     const tabForProductionColors = activeTab ?? storeActiveTab;
+    const isVillageTab = tabForProductionColors === "village";
     const isCriticalZeroResource =
       isResourcesSection &&
       CRITICAL_ZERO_RESOURCES.has(item.id) &&
       typeof item.value === "number" &&
       item.value === 0 &&
       (gameState.current_population ?? 0) > 0;
+    const showVillageMaxCapacityHighlight =
+      isResourcesSection &&
+      isVillageTab &&
+      isAtMax &&
+      !isCriticalZeroResource &&
+      !isAnimated &&
+      !isDecreaseAnimated;
 
     const showValue =
       sectionId === undefined
@@ -746,6 +754,7 @@ export default function SidePanelSection({
       isAnimated && !isCriticalZeroResource && "text-green-600 font-bold",
       isDecreaseAnimated && !isCriticalZeroResource && "text-red-600 font-bold",
       isMaxAnimated && !isCriticalZeroResource && "text-yellow-600 font-bold",
+      showVillageMaxCapacityHighlight && "text-yellow-500",
       isMadness && madnessClasses,
       isHighlighted && !isCriticalZeroResource && "font-bold !text-gray-100",
       isCriticalZeroResource && "resource-critical-blink font-bold",
