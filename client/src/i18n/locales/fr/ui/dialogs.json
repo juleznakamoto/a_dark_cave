@@ -156,6 +156,7 @@
     "completionTime": "Temps de complétion", //x1.3
     "noEntries": "Aucune entrée pour l'instant",
     "lastUpdated": "Dernière mise à jour : {{time}}",
+    "recentCompletionsNote": "Seules les complétions des 6 derniers mois sont affichées.",
     "username": "Nom d'utilisateur :",
     "notSet": "Non défini",
     "currentPlaytime": "Temps de jeu actuel :",

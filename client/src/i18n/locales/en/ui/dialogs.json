@@ -156,6 +156,7 @@
     "completionTime": "Completion Time",
     "noEntries": "No entries yet",
     "lastUpdated": "Last updated: {{time}}",
+    "recentCompletionsNote": "Only completions from the last 6 months are shown.",
     "username": "Username:",
     "notSet": "Not set",
     "currentPlaytime": "Current Playtime:",

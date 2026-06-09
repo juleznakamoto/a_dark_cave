@@ -156,6 +156,7 @@
     "completionTime": "完成时间",
     "noEntries": "暂无条目",
     "lastUpdated": "最后更新：{{time}}",
+    "recentCompletionsNote": "仅显示最近6个月内的通关记录。",
     "username": "用户名：",
     "notSet": "未设置",
     "currentPlaytime": "当前游戏时长：",

@@ -104,13 +104,16 @@ function LeaderboardTab({ entries, loading, lastUpdated, tabId }: LeaderboardTab
           )}
         </div>
       </ScrollAreaWithIndicator>
-      {lastUpdated && (
-        <div className="text-xs text-muted-foreground text-center pt-2 opacity-50">
-          {t("ui:leaderboard.lastUpdated", {
-            time: new Date(lastUpdated).toLocaleString(),
-          })}
-        </div>
-      )}
+      <div className="text-xs text-muted-foreground text-center pt-2 opacity-50 space-y-0.5">
+        {lastUpdated && (
+          <div>
+            {t("ui:leaderboard.lastUpdated", {
+              time: new Date(lastUpdated).toLocaleString(),
+            })}
+          </div>
+        )}
+        <div>{t("ui:leaderboard.recentCompletionsNote")}</div>
+      </div>
     </div>
   );
 }

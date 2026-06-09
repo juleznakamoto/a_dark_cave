@@ -156,6 +156,7 @@
     "completionTime": "Abschlusszeit",
     "noEntries": "Noch keine Einträge", //ok
     "lastUpdated": "Zuletzt aktualisiert: {{time}}", //ok
+    "recentCompletionsNote": "Es werden nur Abschlüsse der letzten 6 Monate angezeigt.",
     "username": "Benutzername:", //ok
     "notSet": "Nicht festgelegt", //ok
     "currentPlaytime": "Aktuelle Spielzeit:",

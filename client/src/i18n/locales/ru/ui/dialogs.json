@@ -156,6 +156,7 @@
     "completionTime": "Время прохождения",
     "noEntries": "Пока нет записей",
     "lastUpdated": "Обновлено: {{time}}",
+    "recentCompletionsNote": "Показываются только прохождения за последние 6 месяцев.",
     "username": "Имя пользователя:",
     "notSet": "Не задано",
     "currentPlaytime": "Текущее время игры:",

@@ -297,6 +297,13 @@ async function refreshLeaderboardFromGameStats(
   }
 }
 
+/** Only completions within this window appear on the leaderboard. */
+function getLeaderboardCompletionCutoff(): string {
+  const cutoff = new Date();
+  cutoff.setMonth(cutoff.getMonth() - 6);
+  return cutoff.toISOString();
+}
+
 function summarizeResponseBody(body: unknown): string {
   if (body === null || body === undefined) {
     return "body:null";
@@ -891,10 +898,12 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
       );
     }
 
+    const completionCutoff = getLeaderboardCompletionCutoff();
     const { data, error } = await adminClient
       .from("leaderboard")
       .select("id, username, email, play_time, completed_at")
       .eq("cruel_mode", cruelMode)
+      .gte("completed_at", completionCutoff)
       .order("play_time", { ascending: true })
       .limit(50);
 
