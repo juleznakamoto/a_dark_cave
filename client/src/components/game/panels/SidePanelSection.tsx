@@ -117,6 +117,33 @@ const LABEL_VALUE_ROW_GRID_CLASS =
   "grid w-full min-w-0 grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-2";
 /** Uniform vertical gap between side-panel sections (applied on column parents). */
 export const SIDE_PANEL_SECTION_SPACING_CLASS = "space-y-2";
+
+/** One active tooltip-hover highlight for the whole side panel (all sections share this). */
+let sidePanelActiveTooltipHoverId: string | null = null;
+const sidePanelTooltipHoverListeners = new Set<() => void>();
+
+function setSidePanelActiveTooltipHoverId(id: string | null) {
+  if (sidePanelActiveTooltipHoverId === id) return;
+  sidePanelActiveTooltipHoverId = id;
+  sidePanelTooltipHoverListeners.forEach((listener) => listener());
+}
+
+/** Clear row/header highlight when the pointer leaves the panel or the list scrolls. */
+export function clearSidePanelActiveTooltipHover() {
+  setSidePanelActiveTooltipHoverId(null);
+}
+
+function useSidePanelActiveTooltipHoverId(): string | null {
+  const [, bump] = useState(0);
+  useEffect(() => {
+    const listener = () => bump((n) => n + 1);
+    sidePanelTooltipHoverListeners.add(listener);
+    return () => {
+      sidePanelTooltipHoverListeners.delete(listener);
+    };
+  }, []);
+  return sidePanelActiveTooltipHoverId;
+}
 const RESOURCE_ROW_TEXT_CLASS = "text-xs leading-none";
 /** Third column: production rate and change popup share one right-aligned slot. */
 const RESOURCE_DELTA_SLOT_CLASS =
@@ -263,9 +290,7 @@ export default function SidePanelSection({
   const [decreaseAnimatedItems, setDecreaseAnimatedItems] = useState<
     Set<string>
   >(new Set());
-  const [tooltipHoveredIds, setTooltipHoveredIds] = useState<Set<string>>(
-    new Set(),
-  );
+  const activeTooltipHoverId = useSidePanelActiveTooltipHoverId();
   const prevValuesRef = useRef<Map<string, number>>(new Map());
   const isInitialRender = useRef(true);
   const gameState = useGameStore((state) => state);
@@ -319,22 +344,29 @@ export default function SidePanelSection({
   };
 
   const handleItemTooltipEnter = (itemId: string) => {
-    setTooltipHoveredIds((prev) => new Set(prev).add(itemId));
+    const previousId = sidePanelActiveTooltipHoverId;
+    if (previousId !== null && previousId !== itemId) {
+      setHoveredTooltip(previousId, false);
+      handleTooltipLeave(previousId);
+    }
+    setSidePanelActiveTooltipHoverId(itemId);
     handleTooltipHover(itemId);
   };
 
   const handleItemTooltipLeave = (itemId: string) => {
-    setTooltipHoveredIds((prev) => {
-      const next = new Set(prev);
-      next.delete(itemId);
-      return next;
-    });
+    if (sidePanelActiveTooltipHoverId === itemId) {
+      setSidePanelActiveTooltipHoverId(null);
+    }
     handleTooltipLeave(itemId);
+    setHoveredTooltip(itemId, false);
   };
 
-  const isItemTooltipHovered = (itemId: string) =>
-    tooltipHoveredIds.has(itemId) ||
-    globalTooltip.openTooltipId === itemId;
+  const isItemTooltipHovered = (itemId: string) => {
+    if (activeTooltipHoverId !== null) {
+      return activeTooltipHoverId === itemId;
+    }
+    return globalTooltip.openTooltipId === itemId;
+  };
 
   // Cleanup timers on unmount
   useEffect(() => {
@@ -1074,7 +1106,7 @@ export default function SidePanelSection({
   const titleHeading = (
     <h3
       className={cn(
-        "text-xs font-medium tracking-wide leading-none",
+        "text-xs font-medium tracking-wide leading-none text-gray-300",
         titleTooltip &&
         isItemTooltipHovered(tooltipKey) &&
         "!text-gray-100",

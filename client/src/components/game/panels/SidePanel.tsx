@@ -1,5 +1,6 @@
 import { useGameStore } from "@/game/state";
 import SidePanelSection, {
+  clearSidePanelActiveTooltipHover,
   SIDE_PANEL_SECTION_SPACING_CLASS,
 } from "./SidePanelSection";
 import StatEffectsTooltip from "@/components/game/StatEffectsTooltip";
@@ -906,8 +907,21 @@ export default function SidePanel() {
     }
   };
 
+  const handleSidePanelPointerLeave = (
+    event: React.PointerEvent<HTMLDivElement>,
+  ) => {
+    const related = event.relatedTarget as Node | null;
+    if (!related || !event.currentTarget.contains(related)) {
+      clearSidePanelActiveTooltipHover();
+    }
+  };
+
   return (
-    <div className="h-full max-h-[36vh] md:max-h-full min-h-0 pt-2 md:pt-0 overflow-hidden">
+    <div
+      className="h-full max-h-[36vh] md:max-h-full min-h-0 pt-2 md:pt-0 overflow-hidden"
+      onPointerLeave={handleSidePanelPointerLeave}
+      onWheel={clearSidePanelActiveTooltipHover}
+    >
       <ScrollArea className="h-full w-full pb-1.5 pl-0 pr-4">
         <div className="pb-1 w-full grid grid-cols-[auto_auto] gap-x-1.5 items-start min-w-0">
           {/* First column - Resources */}
