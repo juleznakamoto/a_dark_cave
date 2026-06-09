@@ -8,6 +8,8 @@ import {
 } from "./resourceLimits";
 import { getTotalEventDeathReduction } from "./rules/effectsCalculation";
 import { getVillagerCapForJob } from "./villagerCapUpgrades";
+import { getExecutionTime } from "./rules";
+import { getGameActions } from "./rules/actionsRegistry";
 
 type CombatResultPayload =
   | CombatResultSummary
@@ -404,6 +406,7 @@ const UI_ONLY_PROPERTIES = [
   'madnessDialog',
   'versionCheckDialogOpen',
   'insightRevealing',
+  '_completingExecution',
 ] as const;
 
 /**
@@ -483,13 +486,117 @@ export function isTraderShopUnlocked(state: {
   return false;
 }
 
+type InFlightExecutionSlice = {
+  executionStartTimes?: Record<string, number>;
+  executionDurations?: Record<string, number>;
+  executionAbortEligible?: Record<string, boolean>;
+  executionSpendSnapshots?: Record<string, unknown>;
+  expeditionVillagers?: Record<string, number>;
+};
+
+/**
+ * Keep valid in-flight executions from a save so reload can resume the progress
+ * bar; drop corrupt/orphan entries that would block buttons forever (e.g.
+ * startTime without duration). Expedition villagers stay locked only for
+ * resumed actions; stranded locks from dropped entries return to the free pool.
+ */
+export function reconcileInFlightExecutionsOnLoad(
+  state: GameState,
+  now = Date.now(),
+): GameState {
+  const slice = state as GameState & InFlightExecutionSlice;
+  const rawStart = slice.executionStartTimes ?? {};
+  const rawDur = slice.executionDurations ?? {};
+  const rawAbort = slice.executionAbortEligible ?? {};
+  const rawSpend = { ...(slice.executionSpendSnapshots ?? {}) };
+  const rawExpedition = slice.expeditionVillagers ?? {};
+
+  const executionStartTimes: Record<string, number> = {};
+  const executionDurations: Record<string, number> = {};
+  const executionAbortEligible: Record<string, boolean> = {};
+  const executionSpendSnapshots: Record<string, unknown> = {};
+  const expeditionVillagers: Record<string, number> = {};
+
+  const actionIds = new Set([
+    ...Object.keys(rawStart),
+    ...Object.keys(rawDur),
+    ...Object.keys(rawExpedition),
+  ]);
+
+  for (const actionId of actionIds) {
+    if (!getGameActions()[actionId]) {
+      continue;
+    }
+
+    let startTime = rawStart[actionId];
+    let durationSec = rawDur[actionId];
+
+    if (typeof startTime !== "number" || !Number.isFinite(startTime)) {
+      continue;
+    }
+    if (
+      typeof durationSec !== "number" ||
+      !Number.isFinite(durationSec) ||
+      durationSec <= 0
+    ) {
+      durationSec = getExecutionTime(actionId, state);
+    }
+    if (durationSec <= 0) {
+      continue;
+    }
+
+    if (startTime > now) {
+      startTime = now;
+    }
+
+    executionStartTimes[actionId] = startTime;
+    executionDurations[actionId] = durationSec;
+    if (rawAbort[actionId]) {
+      executionAbortEligible[actionId] = true;
+    }
+    if (rawSpend[actionId]) {
+      executionSpendSnapshots[actionId] = rawSpend[actionId];
+    }
+    const locked = rawExpedition[actionId];
+    if (typeof locked === "number" && locked > 0) {
+      expeditionVillagers[actionId] = locked;
+    }
+  }
+
+  let strandedExpeditionVillagers = 0;
+  for (const [actionId, count] of Object.entries(rawExpedition)) {
+    if (!executionStartTimes[actionId]) {
+      strandedExpeditionVillagers += count || 0;
+    }
+  }
+
+  const villagers =
+    strandedExpeditionVillagers > 0
+      ? {
+        ...state.villagers,
+        free: (state.villagers?.free || 0) + strandedExpeditionVillagers,
+      }
+      : state.villagers;
+
+  return {
+    ...state,
+    villagers,
+    executionStartTimes,
+    executionDurations,
+    executionAbortEligible,
+    executionSpendSnapshots,
+    expeditionVillagers,
+  } as GameState;
+}
+
 /** Run one-time load migrations on loaded saves (trader shop unlock gate). */
 export function applyGameStateLoadMigrations(state: GameState): GameState {
-  const trader = migrateTraderShopUnlockOnLoad(state);
+  let migrated = reconcileInFlightExecutionsOnLoad(state);
+  const trader = migrateTraderShopUnlockOnLoad(migrated);
   if (trader?.story) {
-    return { ...state, story: trader.story };
+    migrated = { ...migrated, story: trader.story };
   }
-  return state;
+  return migrated;
 }
 
 /** Footer Trader button: normal tab unlock, or cruel mode, or any prior shop purchase. */

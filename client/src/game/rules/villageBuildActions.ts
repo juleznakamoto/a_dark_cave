@@ -157,6 +157,12 @@ export const villageBuildActions: Record<string, Action> = {
       10: {
         "buildings.woodenHut": 9,
       },
+      11: {
+        "buildings.woodenHut": 10,
+      },
+      12: {
+        "buildings.woodenHut": 11,
+      },
     },
     cost: {
       1: {
@@ -189,6 +195,12 @@ export const villageBuildActions: Record<string, Action> = {
       10: {
         "resources.wood": 5000,
       },
+      11: {
+        "resources.wood": 7500,
+      },
+      12: {
+        "resources.wood": 10000,
+      },
     },
     effects: {
       1: {
@@ -219,6 +231,12 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.woodenHut": 1,
       },
       10: {
+        "buildings.woodenHut": 1,
+      },
+      11: {
+        "buildings.woodenHut": 1,
+      },
+      12: {
         "buildings.woodenHut": 1,
       },
     },
@@ -2322,6 +2340,12 @@ export const villageBuildActions: Record<string, Action> = {
       10: {
         "buildings.stoneHut": 9,
       },
+      11: {
+        "buildings.stoneHut": 10,
+      },
+      12: {
+        "buildings.stoneHut": 11,
+      },
     },
     cost: {
       1: {
@@ -2354,6 +2378,12 @@ export const villageBuildActions: Record<string, Action> = {
       10: {
         "resources.stone": 10000,
       },
+      11: {
+        "resources.stone": 12500,
+      },
+      12: {
+        "resources.stone": 15000,
+      },
     },
     effects: {
       1: {
@@ -2384,6 +2414,12 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.stoneHut": 1,
       },
       10: {
+        "buildings.stoneHut": 1,
+      },
+      11: {
+        "buildings.stoneHut": 1,
+      },
+      12: {
         "buildings.stoneHut": 1,
       },
     },

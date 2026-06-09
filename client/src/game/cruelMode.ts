@@ -231,7 +231,32 @@ export const CRUEL_MODE = {
     /** Subtracted from investment success chance % (percentage points) in cruel mode. */
     successChanceSubtractPct: 5,
   },
+
+  huts: {
+    maxWoodenHut: { normal: 10, cruel: 12 },
+    maxStoneHut: { normal: 10, cruel: 12 },
+  },
 } as const;
+
+export function getMaxWoodenHutLevel(state: { cruelMode: boolean }): number {
+  const { normal, cruel } = CRUEL_MODE.huts.maxWoodenHut;
+  return state.cruelMode ? cruel : normal;
+}
+
+export function getMaxStoneHutLevel(state: { cruelMode: boolean }): number {
+  const { normal, cruel } = CRUEL_MODE.huts.maxStoneHut;
+  return state.cruelMode ? cruel : normal;
+}
+
+/** Max build tier for hut actions; null for non-hut building actions. */
+export function getMaxHutLevelForBuildAction(
+  actionId: string,
+  state: { cruelMode: boolean },
+): number | null {
+  if (actionId === "buildWoodenHut") return getMaxWoodenHutLevel(state);
+  if (actionId === "buildStoneHut") return getMaxStoneHutLevel(state);
+  return null;
+}
 
 const MS_PER_MIN = 60 * 1000;
 

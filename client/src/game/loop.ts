@@ -35,7 +35,7 @@ import { getPriorActionSuccessor } from "./buttonUpgrades";
 import {
   DISGRACED_PRIOR_UPGRADES,
 } from "./rules/skillUpgrades";
-import { CRUEL_MODE, cruelModeScale } from "./cruelMode";
+import { CRUEL_MODE, cruelModeScale, getMaxStoneHutLevel, getMaxWoodenHutLevel } from "./cruelMode";
 import { getMadnessDeathChancePerCycle } from "./rules/effectsStats";
 import {
   guestAuthNotificationTriggerUpdates,
@@ -667,6 +667,30 @@ export function stopGameLoop() {
   StateManager.clearUpdateTimer();
 }
 
+/** Complete in-flight actions whose execution window already elapsed (e.g. after reload). */
+export function flushOverdueActionExecutions(now = Date.now()): void {
+  const state = useGameStore.getState();
+  const { executionStartTimes, executionDurations, completeActionExecution } =
+    state;
+  const overdue = Object.keys(executionStartTimes || {}).filter((actionId) => {
+    const startTime = executionStartTimes[actionId];
+    const durationSec = executionDurations?.[actionId];
+    return (
+      startTime &&
+      durationSec &&
+      (now - startTime) / 1000 >= durationSec
+    );
+  });
+
+  for (const actionId of overdue) {
+    completeActionExecution(actionId);
+    if (priorInFlightExecutions.has(actionId)) {
+      priorInFlightExecutions.delete(actionId);
+      priorLastCompleted.set(actionId, Date.now());
+    }
+  }
+}
+
 /** Cooldowns, executions, prior automation, and timed buff expiry — no random events. */
 export function processActionTicks() {
   const state = useGameStore.getState();
@@ -674,20 +698,7 @@ export function processActionTicks() {
   // Tick down cooldowns
   state.tickCooldowns();
 
-  // Complete any actions that have finished their execution time
-  const { executionStartTimes, executionDurations, completeActionExecution } = state;
-  const now = Date.now();
-  for (const actionId of Object.keys(executionStartTimes || {})) {
-    const startTime = executionStartTimes[actionId];
-    const durationSec = executionDurations?.[actionId];
-    if (startTime && durationSec && (now - startTime) / 1000 >= durationSec) {
-      completeActionExecution(actionId);
-      if (priorInFlightExecutions.has(actionId)) {
-        priorInFlightExecutions.delete(actionId);
-        priorLastCompleted.set(actionId, Date.now());
-      }
-    }
-  }
+  flushOverdueActionExecutions();
 
   // Disgraced Prior: auto-execute assigned actions when cooldown is 0 and conditions are met.
   // We check isReadyNow (not just the transition from >0 to 0) so that actions blocked by
@@ -1285,11 +1296,11 @@ function handleStrangerApproach() {
         multiStrangerMultiplier += 0.3;
       }
 
-      if (state.buildings.woodenHut >= 10) {
+      if (state.buildings.woodenHut >= getMaxWoodenHutLevel(state)) {
         multiStrangerMultiplier += 0.15;
       }
 
-      if (state.buildings.stoneHut >= 10) {
+      if (state.buildings.stoneHut >= getMaxStoneHutLevel(state)) {
         multiStrangerMultiplier += 0.2;
       }
 

@@ -175,6 +175,8 @@ export default function Game() {
               hasLitFire: isGamePath ? true : savedState.flags.hasLitFire, // Force fire lit if /game path
             },
           });
+          const { flushOverdueActionExecutions } = await import("@/game/loop");
+          flushOverdueActionExecutions();
           logger.log("[GAME] Game loaded from save");
 
           const staleDiskPredatesPlaylightWarmWelcome =

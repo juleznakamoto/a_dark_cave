@@ -2573,9 +2573,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         gamblerDiceDialogOpen,
         timedEventTab,
         cooldowns: savedState.cooldowns || {},
-        executionStartTimes: {},
-        executionDurations: {},
-        expeditionVillagers: {},
         attackWaveTimers: savedState.attackWaveTimers || {},
         log: savedState.log || [],
         events: savedState.events || defaultGameState.events,
@@ -2711,19 +2708,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         investmentResultDialog: { isOpen: false, data: null },
       };
 
-      const savedExpeditionVillagers = savedState.expeditionVillagers || {};
-      const strandedExpeditionVillagers = Object.values(
-        savedExpeditionVillagers,
-      ).reduce((sum, count) => sum + (count || 0), 0);
-      if (strandedExpeditionVillagers > 0) {
-        loadedState.villagers = {
-          ...loadedState.villagers,
-          free:
-            (loadedState.villagers?.free || 0) + strandedExpeditionVillagers,
-        };
-      }
-
       set(applyGameStateLoadMigrations(loadedState));
+      const { flushOverdueActionExecutions } = await import("@/game/loop");
+      flushOverdueActionExecutions();
       StateManager.scheduleEffectsUpdate(get);
     } else {
       const newGameState = {

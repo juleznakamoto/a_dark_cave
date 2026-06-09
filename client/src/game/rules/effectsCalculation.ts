@@ -653,7 +653,7 @@ const STRANGER_APPROACH_BUILDINGS = [
  * New Villager Chance (stranger approach probability) per production cycle.
  *
  * Sources:
- * - Buildings: Wooden Hut +1% each (max 10), Stone Hut +0.75% each (max 10),
+ * - Buildings: Wooden Hut +1% each (max 10, 12 in cruel mode), Stone Hut +0.75% each (max 10, 12 in cruel mode),
  *   Longhouse +0.5% each (max 5), Fur Tent +0.5% each (max 5).
  *   Max from buildings: 22.5%.
  * - Blessings: ravens_mark +10%, ravens_mark_enhanced +15%. Both stack: 25%.

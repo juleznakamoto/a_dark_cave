@@ -3,6 +3,7 @@ import { GameState } from "@shared/schema";
 import { GameEvent } from "./events";
 import { registerActions, getGameActions } from "./actionsRegistry";
 import { getNextBuildingLevel } from "./villageBuildActions";
+import { getMaxHutLevelForBuildAction } from "@/game/cruelMode";
 import {
   getBoneTotemsCost,
   getLeatherTotemsCost,
@@ -199,6 +200,10 @@ export const shouldShowAction = (
     if (!cost?.[nextLevel]) {
       return false;
     }
+    const maxHutLevel = getMaxHutLevelForBuildAction(actionId, state);
+    if (maxHutLevel !== null && nextLevel > maxHutLevel) {
+      return false;
+    }
   }
 
   // Check if show_when has tiered conditions (numeric keys)
@@ -371,6 +376,14 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
   // Check action's custom canExecute function if it exists
   if (action.canExecute && !action.canExecute(state)) {
     return false;
+  }
+
+  if (action.building) {
+    const nextLevel = getNextBuildingLevel(actionId, state);
+    const maxHutLevel = getMaxHutLevelForBuildAction(actionId, state);
+    if (maxHutLevel !== null && nextLevel > maxHutLevel) {
+      return false;
+    }
   }
 
   // Bomb craft/trade: block if at max capacity (10 base, 20 with Grenadier's Bag)
