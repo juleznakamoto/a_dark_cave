@@ -894,8 +894,8 @@ export default function SidePanel() {
         return [
           "resources",
           "bastion",
-          "combatItems",
           "fortifications",
+          "combatItems",
         ].includes(sectionName);
       case "achievements":
         return ["resources"].includes(sectionName);
@@ -933,11 +933,7 @@ export default function SidePanel() {
                   )
                 }
                 activeTab={activeTab}
-                titleTooltip={
-                  showResourceLimit
-                    ? t("sidePanel.resourceLimitTooltip")
-                    : undefined
-                }
+                titleTooltip={t("sidePanel.resourceLimitTooltip")}
                 items={resourceItems}
                 onValueChange={(itemId, oldValue, newValue) => {
                   logger.log(
@@ -973,13 +969,6 @@ export default function SidePanel() {
                 items={weaponItems}
               />
             )}
-            {combatItemRows.length > 0 && shouldShowSection("combatItems") && (
-              <SidePanelSection
-                sectionId="combatItems"
-                title={t("sidePanel.combatItems")}
-                items={combatItemRows}
-              />
-            )}
             {bastionStatsItems.length > 0 && shouldShowSection("bastion") && (
               <SidePanelSection
                 sectionId="bastion"
@@ -999,6 +988,13 @@ export default function SidePanel() {
                   items={fortificationItems}
                 />
               )}
+            {combatItemRows.length > 0 && shouldShowSection("combatItems") && (
+              <SidePanelSection
+                sectionId="combatItems"
+                title={t("sidePanel.combatItems")}
+                items={combatItemRows}
+              />
+            )}
             {clothingItems.length > 0 && shouldShowSection("clothing") && (
               <SidePanelSection
                 sectionId="clothing"

@@ -1066,10 +1066,10 @@ export default function SidePanelSection({
     return <div key={item.id}>{itemContent}</div>;
   };
 
-  // Extract base title without dynamic values for consistent tooltip key
-  const titleString = typeof title === "string" ? title : "section-title";
-  const baseTitleForKey = titleString.split(" ")[0];
-  const tooltipKey = `section-title-${baseTitleForKey}`;
+  // Stable per-section key (ReactNode titles must not share one generic id).
+  const tooltipKey = sectionId
+    ? `section-title-${sectionId}`
+    : `section-title-${(typeof title === "string" ? title : "section").split(" ")[0]}`;
 
   const titleHeading = (
     <h3
@@ -1077,7 +1077,7 @@ export default function SidePanelSection({
         "text-xs font-medium tracking-wide leading-none",
         titleTooltip &&
         isItemTooltipHovered(tooltipKey) &&
-        "font-bold !text-gray-100",
+        "!text-gray-100",
       )}
     >
       {title}
