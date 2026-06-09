@@ -72,7 +72,7 @@ function LogPanel() {
 
               let opacity = "";
               if (!isUnread) {
-                opacity = "opacity-80";
+                opacity = "opacity-70";
               } else if (recentEntries.length >= GAME_CONSTANTS.LOG_MAX_ENTRIES) {
                 if (index === recentEntries.length - 1) {
                   opacity = "opacity-60";

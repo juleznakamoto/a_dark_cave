@@ -907,7 +907,7 @@ export default function SidePanel() {
   };
 
   return (
-    <div className="h-full max-h-[36vh] md:max-h-full min-h-0 pt-2 overflow-hidden">
+    <div className="h-full max-h-[36vh] md:max-h-full min-h-0 pt-2 md:pt-0 overflow-hidden">
       <ScrollArea className="h-full w-full pb-1.5 pl-0 pr-4">
         <div className="pb-1 w-full grid grid-cols-[auto_auto] gap-x-1.5 items-start min-w-0">
           {/* First column - Resources */}
