@@ -72,16 +72,16 @@ function LogPanel() {
 
               let opacity = "";
               if (!isUnread) {
-                opacity = "opacity-70";
+                opacity = "opacity-60";
               } else if (recentEntries.length >= GAME_CONSTANTS.LOG_MAX_ENTRIES) {
                 if (index === recentEntries.length - 1) {
-                  opacity = "opacity-60";
+                  opacity = "opacity-40";
                 } else if (index === recentEntries.length - 2) {
-                  opacity = "opacity-70";
+                  opacity = "opacity-45";
                 } else if (index === recentEntries.length - 3) {
-                  opacity = "opacity-80";
+                  opacity = "opacity-50";
                 } else if (index === recentEntries.length - 4) {
-                  opacity = "opacity-90";
+                  opacity = "opacity-55";
                 }
               }
               const showNewIndicator = isUnread;
