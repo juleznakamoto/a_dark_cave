@@ -1,6 +1,7 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
+import { getMaxVeinfireElixirLimit } from "@/game/resourceLimits";
 import { getMapFragmentCount, MAP_FRAGMENT_TOTAL } from "../mapFragments";
 
 export const storyEvents: Record<string, GameEvent> = {
@@ -63,7 +64,7 @@ export const storyEvents: Record<string, GameEvent> = {
           return {
             resources: {
               ...state.resources,
-              veinfire_elixir: Math.min(current + 1, 5),
+              veinfire_elixir: Math.min(current + 1, getMaxVeinfireElixirLimit()),
             },
             story: {
               ...state.story,
@@ -391,8 +392,8 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       Boolean(
         state.story.seen.tenthWaveVictory &&
-          state.story.seen.portalBlasted &&
-          !state.story.seen.beyondGateVentureUnlocked,
+        state.story.seen.portalBlasted &&
+        !state.story.seen.beyondGateVentureUnlocked,
       ),
     timeProbability: 0.01,
     priority: 5,
@@ -523,8 +524,8 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       Boolean(
         state.story.seen.secondWaveVictory == true &&
-          state.fellowship.ashwraith_huntress &&
-          !state.story.seen.ashwraithCanyonTradeOfferSeen,
+        state.fellowship.ashwraith_huntress &&
+        !state.story.seen.ashwraithCanyonTradeOfferSeen,
       ),
     timeProbability: 20,
     priority: 5,

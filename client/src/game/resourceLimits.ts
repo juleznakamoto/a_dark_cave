@@ -19,7 +19,7 @@ export function isCombatItemResource(key: string): boolean {
 
 /** Max Veinfire Elixir the player may hold */
 export function getMaxVeinfireElixirLimit(): number {
-  return 5;
+  return 10;
 }
 
 export function isVeinfireElixirResource(key: string): boolean {

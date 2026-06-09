@@ -632,7 +632,7 @@ export function applyActionEffects(
           let newValue =
             (state.resources[finalKey as keyof typeof state.resources] || 0) +
             adjustedEffect;
-          // Cap bombs to max (10 base, 20 with Grenadier's Bag); veinfire elixir max 5
+          // Cap bombs to max (10 base, 20 with Grenadier's Bag); veinfire elixir max 10
           if (isBombResource(finalKey)) {
             newValue = Math.min(newValue, getMaxBombLimit(state));
           }

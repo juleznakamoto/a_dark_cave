@@ -505,10 +505,10 @@ describe('Resource Limits - Integration with Game Components', () => {
   });
 
   describe('Veinroot and Veinfire Elixir caps', () => {
-    it('enforces fixed max Veinfire Elixir (5) before warehouse cap', () => {
+    it('enforces fixed max Veinfire Elixir (10) before warehouse cap', () => {
       state.buildings.supplyHut = 1;
-      expect(getMaxVeinfireElixirLimit()).toBe(5);
-      expect(capResourceToLimit('veinfire_elixir', 99, state)).toBe(5);
+      expect(getMaxVeinfireElixirLimit()).toBe(10);
+      expect(capResourceToLimit('veinfire_elixir', 99, state)).toBe(10);
       expect(capResourceToLimit('veinfire_elixir', 2, state)).toBe(2);
     });
 
@@ -518,9 +518,9 @@ describe('Resource Limits - Integration with Game Components', () => {
     });
 
     it('detects when Veinfire Elixir is at limit', () => {
-      state.resources = { ...state.resources, veinfire_elixir: 5 };
+      state.resources = { ...state.resources, veinfire_elixir: 10 };
       expect(isVeinfireElixirAtLimit(state)).toBe(true);
-      state.resources = { ...state.resources, veinfire_elixir: 4 };
+      state.resources = { ...state.resources, veinfire_elixir: 9 };
       expect(isVeinfireElixirAtLimit(state)).toBe(false);
     });
   });
