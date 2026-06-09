@@ -66,7 +66,7 @@ export default function BastionPanel() {
                 disabled={!canExecuteAction("healRestlessKnight", state)}
                 variant="outline"
                 size="xs"
-                className="hover:bg-background hover:text-foreground"
+                className=""
                 tooltip={
                   <div className="text-xs whitespace-nowrap">
                     {getActionCostBreakdown("healRestlessKnight", state).map(
@@ -107,7 +107,7 @@ export default function BastionPanel() {
                 disabled={!canExecuteAction("healElderWizard", state)}
                 variant="outline"
                 size="xs"
-                className="hover:bg-background hover:text-foreground"
+                className=""
                 tooltip={
                   <div className="text-xs whitespace-nowrap">
                     {getActionCostBreakdown("healElderWizard", state).map(
@@ -157,7 +157,7 @@ export default function BastionPanel() {
                 disabled={!canExecuteAction("repairBastion", state)}
                 variant="outline"
                 size="xs"
-                className="hover:bg-background hover:text-foreground"
+                className=""
                 tooltip={renderRepairTooltip("repairBastion")}
                 onMouseEnter={() => {
                   setHighlightedResources(
@@ -183,7 +183,7 @@ export default function BastionPanel() {
                 disabled={!canExecuteAction("repairWatchtower", state)}
                 variant="outline"
                 size="xs"
-                className="hover:bg-background hover:text-foreground"
+                className=""
                 tooltip={renderRepairTooltip("repairWatchtower")}
                 onMouseEnter={() => {
                   setHighlightedResources(
@@ -209,7 +209,7 @@ export default function BastionPanel() {
                 disabled={!canExecuteAction("repairPalisades", state)}
                 variant="outline"
                 size="xs"
-                className="hover:bg-background hover:text-foreground"
+                className=""
                 tooltip={renderRepairTooltip("repairPalisades")}
                 onMouseEnter={() => {
                   setHighlightedResources(

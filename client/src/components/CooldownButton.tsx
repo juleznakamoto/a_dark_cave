@@ -1,11 +1,13 @@
 import React, { useRef, useEffect, useState, forwardRef } from "react";
 import { Button } from "@/components/ui/button";
+import { GAME_ACTION_BUTTON_HOVER_CLASS } from "@/components/game/gameChrome";
 import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { X } from "lucide-react";
 import { GAME_CONSTANTS } from "@/game/constants";
 import { INSIGHT_REVEAL_DURATION_MS } from "@/game/rules/insightReveal";
 import { tWithFallback } from "@/i18n/resolveGameText";
+import { cn } from "@/lib/utils";
 
 interface CooldownButtonProps {
   children: React.ReactNode;
@@ -215,8 +217,14 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         disabled={isButtonDisabled}
         variant={variant}
         size={size}
-        className={`relative overflow-hidden transition-all duration-200 select-none ${isCoolingDown || isInsightRevealing || isPlayTimeProgressing ? "cursor-not-allowed" : ""
-          } ${isCompassGlowing ? "compass-glow" : ""} ${className}`}
+        className={cn(
+          "relative overflow-hidden transition-all duration-200 select-none",
+          (isCoolingDown || isInsightRevealing || isPlayTimeProgressing) &&
+            "cursor-not-allowed",
+          isCompassGlowing && "compass-glow",
+          variant === "outline" && GAME_ACTION_BUTTON_HOVER_CLASS,
+          className,
+        )}
         data-testid={testId}
         button_id={props.button_id || actionIdFromProps}
         {...props}

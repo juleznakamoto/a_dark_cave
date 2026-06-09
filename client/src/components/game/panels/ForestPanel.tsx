@@ -432,7 +432,7 @@ export default function ForestPanel() {
           size="xs"
           disabled={!canExecute}
           variant="outline"
-          className={`hover:bg-background hover:text-foreground ${isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""} ${shouldGlow ? "focus-glow" : ""}`}
+          className={`${isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""} ${shouldGlow ? "focus-glow" : ""}`}
           tooltip={tooltipContent}
           onAnimationTrigger={
             isChopWood ? handleChopWoodAnimationTrigger : isHunt ? handleHuntAnimationTrigger : undefined
@@ -497,7 +497,7 @@ export default function ForestPanel() {
         size="xs"
         disabled={!canExecute}
         variant="outline"
-        className={`hover:bg-background hover:text-foreground ${isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""} ${shouldGlow ? "focus-glow" : ""}`}
+        className={`${isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""} ${shouldGlow ? "focus-glow" : ""}`}
         onAnimationTrigger={
           isChopWood ? handleChopWoodAnimationTrigger : isHunt ? handleHuntAnimationTrigger : undefined
         }

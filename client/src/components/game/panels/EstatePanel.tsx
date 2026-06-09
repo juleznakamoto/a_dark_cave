@@ -10,6 +10,7 @@ import { getTotalPopulationEffects } from "@/game/population";
 import { Progress } from "@/components/ui/progress";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import CooldownButton from "@/components/CooldownButton";
+import { GAME_ACTION_BUTTON_HOVER_CLASS } from "@/components/game/gameChrome";
 import {
   Tooltip,
   TooltipContent,
@@ -438,7 +439,7 @@ export default function EstatePanel() {
                 disabled={!canActivateIdle}
                 size="xs"
                 variant="outline"
-                className="h-7 hover:bg-background hover:text-foreground"
+                className={`h-7 ${GAME_ACTION_BUTTON_HOVER_CLASS}`}
                 button_id="activate-sleep-mode"
               >
                 {t("estate.sleep")}
@@ -465,7 +466,7 @@ export default function EstatePanel() {
                 cooldownMs={0}
                 size="xs"
                 variant="outline"
-                className="h-7 hover:bg-background hover:text-foreground"
+                className="h-7"
                 button_id="activate-focus"
                 disabled={!focusState?.points || focusState.points === 0 || focusState?.isActive}
                 tooltip={

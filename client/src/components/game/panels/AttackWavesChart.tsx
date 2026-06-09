@@ -106,7 +106,7 @@ export default function AttackWavesChart() {
               cooldownMs={0}
               variant="outline"
               size="xs"
-              className="w-19 hover:bg-background hover:text-foreground"
+              className="w-19 "
               button_id="provoke-attack"
               data-testid="button-provoke-attack"
               disabled={!canExecuteAction(PROVOKE_ACTION_ID, state)}

@@ -420,7 +420,7 @@ export default function CavePanel() {
           size="xs"
           disabled={!canExecute}
           variant="outline"
-          className={`hover:bg-background hover:text-foreground ${shouldGlow ? "focus-glow" : ""}`}
+          className={`${shouldGlow ? "focus-glow" : ""}`}
           tooltip={tooltipContent}
           onAnimationTrigger={
             isCraftAction
@@ -478,7 +478,7 @@ export default function CavePanel() {
         size="xs"
         disabled={!canExecute}
         variant="outline"
-        className={`hover:bg-background hover:text-foreground ${shouldGlow ? "focus-glow" : ""}`}
+        className={`${shouldGlow ? "focus-glow" : ""}`}
         onAnimationTrigger={
           isCraftAction
             ? handleCraftAnimationTrigger

@@ -466,7 +466,7 @@ export default function VillagePanel() {
             }
             size="xs"
             variant="outline"
-            className="hover:bg-background hover:text-foreground"
+            className=""
             tooltip={tooltipContent}
             style={{ pointerEvents: "auto" }}
           >
@@ -539,7 +539,7 @@ export default function VillagePanel() {
           disabled={isDisabled}
           size="xs"
           variant="outline"
-          className="hover:bg-background hover:text-foreground"
+          className=""
           tooltip={tooltipContent}
           style={{ pointerEvents: "auto" }}
         >
@@ -594,7 +594,7 @@ export default function VillagePanel() {
           disabled={!canExecute || (state.cooldowns[actionId] || 0) > 0}
           size="xs"
           variant="outline"
-          className="hover:bg-background hover:text-foreground"
+          className=""
           tooltip={tooltipContent}
           style={{ pointerEvents: "auto" }}
         >
@@ -677,7 +677,7 @@ export default function VillagePanel() {
         disabled={!canExecute}
         size="xs"
         variant="outline"
-        className="hover:bg-background hover:text-foreground"
+        className=""
         tooltip={tooltipContent}
         onAnimationTrigger={handleAnimationTrigger}
         onMouseEnter={() => {

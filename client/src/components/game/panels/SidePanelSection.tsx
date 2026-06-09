@@ -136,22 +136,34 @@ function setSidePanelActiveTooltipHoverId(id: string | null) {
   sidePanelTooltipHoverListeners.forEach((listener) => listener());
 }
 
-function cancelSidePanelPulseDismissTimer(itemId: string) {
-  const timer = sidePanelPulseDismissTimers.get(itemId);
+/** Scope pulse/hover keys per section so duplicate item ids cannot collide across sections. */
+function getSidePanelScopedTooltipKey(
+  sectionId: SidePanelSectionId | undefined,
+  itemId: string,
+): string {
+  return sectionId ? `${sectionId}:${itemId}` : itemId;
+}
+
+function cancelSidePanelPulseDismissTimer(timerKey: string) {
+  const timer = sidePanelPulseDismissTimers.get(timerKey);
   if (timer) {
     clearTimeout(timer);
-    sidePanelPulseDismissTimers.delete(itemId);
+    sidePanelPulseDismissTimers.delete(timerKey);
   }
 }
 
 /** After 500ms hover, permanently dismiss new-item pulse for this id (never reset on leave). */
-function scheduleSidePanelPulseDismiss(itemId: string) {
-  cancelSidePanelPulseDismissTimer(itemId);
+function scheduleSidePanelPulseDismiss(
+  sectionId: SidePanelSectionId | undefined,
+  itemId: string,
+) {
+  const timerKey = getSidePanelScopedTooltipKey(sectionId, itemId);
+  cancelSidePanelPulseDismissTimer(timerKey);
   const timer = setTimeout(() => {
     useGameStore.getState().setHoveredTooltip(itemId, true);
-    sidePanelPulseDismissTimers.delete(itemId);
+    sidePanelPulseDismissTimers.delete(timerKey);
   }, 500);
-  sidePanelPulseDismissTimers.set(itemId, timer);
+  sidePanelPulseDismissTimers.set(timerKey, timer);
 }
 
 /** Clear row/header highlight when the pointer leaves the panel or the list scrolls. */
@@ -343,29 +355,31 @@ export default function SidePanelSection({
   );
 
   const handleItemTooltipEnter = (itemId: string) => {
-    if (globalTooltip.isMobile) return;
-
+    const scopedKey = getSidePanelScopedTooltipKey(sectionId, itemId);
     const previousId = getSidePanelActiveTooltipHoverId();
-    if (previousId !== null && previousId !== itemId) {
+    if (previousId !== null && previousId !== scopedKey) {
       cancelSidePanelPulseDismissTimer(previousId);
     }
-    setSidePanelActiveTooltipHoverId(itemId);
-    scheduleSidePanelPulseDismiss(itemId);
+    setSidePanelActiveTooltipHoverId(scopedKey);
+    // Desktop-only: 500ms hover dismisses new-item pulse (old handleTooltipHover guard).
+    if (!globalTooltip.isMobile) {
+      scheduleSidePanelPulseDismiss(sectionId, itemId);
+    }
   };
 
   const handleItemTooltipLeave = (itemId: string) => {
-    if (globalTooltip.isMobile) return;
-
-    if (getSidePanelActiveTooltipHoverId() === itemId) {
+    const scopedKey = getSidePanelScopedTooltipKey(sectionId, itemId);
+    if (getSidePanelActiveTooltipHoverId() === scopedKey) {
       setSidePanelActiveTooltipHoverId(null);
     }
     // Cancel pending pulse dismiss only; do not reset hoveredTooltips — glow stays off once seen.
-    cancelSidePanelPulseDismissTimer(itemId);
+    cancelSidePanelPulseDismissTimer(scopedKey);
   };
 
   const isItemTooltipHovered = (itemId: string) => {
+    const scopedKey = getSidePanelScopedTooltipKey(sectionId, itemId);
     if (activeTooltipHoverId !== null) {
-      return activeTooltipHoverId === itemId;
+      return activeTooltipHoverId === scopedKey;
     }
     return globalTooltip.openTooltipId === itemId;
   };
@@ -373,14 +387,20 @@ export default function SidePanelSection({
   const visibleItemIdsRef = useRef<string[]>([]);
   visibleItemIdsRef.current = visibleItems.map((item) => item.id);
 
-  // Cancel pending pulse-dismiss timers when this section unmounts (hoveredTooltips persist).
+  // Cancel this section's pending pulse-dismiss timers only (hoveredTooltips persist).
   useEffect(() => {
     const titleId = sectionId ? `section-title-${sectionId}` : null;
     return () => {
       visibleItemIdsRef.current.forEach((id) =>
-        cancelSidePanelPulseDismissTimer(id),
+        cancelSidePanelPulseDismissTimer(
+          getSidePanelScopedTooltipKey(sectionId, id),
+        ),
       );
-      if (titleId) cancelSidePanelPulseDismissTimer(titleId);
+      if (titleId) {
+        cancelSidePanelPulseDismissTimer(
+          getSidePanelScopedTooltipKey(sectionId, titleId),
+        );
+      }
     };
   }, [sectionId]);
 
