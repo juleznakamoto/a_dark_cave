@@ -447,12 +447,23 @@ function handleDefeat(
   };
 }
 
+/** Canonical waves 1–10 only; endless post-completion waves never grant defeat madness. */
+export function isAttackWaveDefeatMadnessEligible(
+  waveId: string,
+): waveId is AttackWaveId {
+  return (ATTACK_WAVE_IDS as readonly string[]).includes(waveId);
+}
+
 /** First defeat per wave grants +1 madness (up to +10 across all waves). */
 export function applyAttackWaveDefeatMadness(
   state: GameState,
-  waveId: AttackWaveId,
+  waveId: string,
   defeatResult: ReturnType<typeof handleDefeat>,
 ): ReturnType<typeof handleDefeat> & { _combatSummary: CombatResultSummary } {
+  if (!isAttackWaveDefeatMadnessEligible(waveId)) {
+    return defeatResult;
+  }
+
   const defeatFlag = attackWaveDefeatSeenFlag(waveId);
   const isFirstDefeat = !state.story.seen[defeatFlag];
   if (!isFirstDefeat) {
@@ -751,6 +762,10 @@ function createPostCompletionAttackWaveEvent(): GameEvent {
             );
             return {
               ...defeatResult,
+              _combatSummary: {
+                ...defeatResult._combatSummary,
+                madnessGain: undefined,
+              },
               attackWaveTimers: {
                 ...state.attackWaveTimers,
                 [waveId]: {

@@ -3,7 +3,9 @@ import { GameState } from "@shared/schema";
 import {
   applyAttackWaveDefeatMadness,
   attackWaveDefeatSeenFlag,
+  isAttackWaveDefeatMadnessEligible,
 } from "./eventsAttackWaves";
+import { POST_COMPLETION_ATTACK_WAVE_ID } from "./attackWaveOrder";
 
 function baseState(): GameState {
   return {
@@ -76,6 +78,21 @@ describe("applyAttackWaveDefeatMadness", () => {
 
     expect(result.stats?.villagerDeathsLifetime).toBe(52);
     expect(result.stats?.madnessFromEvents).toBe(1);
+  });
+
+  it("does not grant madness for endless post-completion waves", () => {
+    const state = baseState();
+    const result = applyAttackWaveDefeatMadness(
+      state,
+      POST_COMPLETION_ATTACK_WAVE_ID,
+      defeatResult,
+    );
+
+    expect(isAttackWaveDefeatMadnessEligible(POST_COMPLETION_ATTACK_WAVE_ID)).toBe(
+      false,
+    );
+    expect(result.stats?.madnessFromEvents).toBeUndefined();
+    expect(result._combatSummary.madnessGain).toBeUndefined();
   });
 
   it("grants separate madness for each wave's first defeat", () => {

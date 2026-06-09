@@ -1,10 +1,6 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "./actionEffects";
-import { getMerchantGoldPricePerUnit } from "./eventsMerchant";
-
-/** Ashwraith bridge sell pays this fraction of the merchant gold-per-unit rate. */
-const FOREST_BRIDGE_SELL_GOLD_RATIO = 0.5;
 
 export const forestTradeActions: Record<string, Action> = {
   tradeGoldForFood: {
@@ -375,13 +371,9 @@ export const forestTradeActions: Record<string, Action> = {
     cost: {
       "resources.leather": 500,
     },
-    effects: (_state: GameState) => ({
-      "resources.gold": Math.round(
-        500 *
-        getMerchantGoldPricePerUnit("leather") *
-        FOREST_BRIDGE_SELL_GOLD_RATIO,
-      ),
-    }),
+    effects: {
+      "resources.gold": 100,
+    },
   },
 
   sellSteelBatch: {
@@ -393,13 +385,9 @@ export const forestTradeActions: Record<string, Action> = {
     cost: {
       "resources.steel": 500,
     },
-    effects: (_state: GameState) => ({
-      "resources.gold": Math.round(
-        500 *
-        getMerchantGoldPricePerUnit("steel") *
-        FOREST_BRIDGE_SELL_GOLD_RATIO,
-      ),
-    }),
+    effects: {
+      "resources.gold": 125,
+    },
   },
 
   sellBlacksteelBatch: {
@@ -412,13 +400,9 @@ export const forestTradeActions: Record<string, Action> = {
     cost: {
       "resources.blacksteel": 100,
     },
-    effects: (_state: GameState) => ({
-      "resources.gold": Math.round(
-        100 *
-        getMerchantGoldPricePerUnit("blacksteel") *
-        FOREST_BRIDGE_SELL_GOLD_RATIO,
-      ),
-    }),
+    effects: {
+      "resources.gold": 125,
+    },
   },
 
   tradeGoldForTorch: {
