@@ -121,11 +121,37 @@ export const SIDE_PANEL_SECTION_SPACING_CLASS = "space-y-2";
 /** One active tooltip-hover highlight for the whole side panel (all sections share this). */
 let sidePanelActiveTooltipHoverId: string | null = null;
 const sidePanelTooltipHoverListeners = new Set<() => void>();
+const sidePanelPulseDismissTimers = new Map<
+  string,
+  ReturnType<typeof setTimeout>
+>();
+
+function getSidePanelActiveTooltipHoverId(): string | null {
+  return sidePanelActiveTooltipHoverId;
+}
 
 function setSidePanelActiveTooltipHoverId(id: string | null) {
   if (sidePanelActiveTooltipHoverId === id) return;
   sidePanelActiveTooltipHoverId = id;
   sidePanelTooltipHoverListeners.forEach((listener) => listener());
+}
+
+function cancelSidePanelPulseDismissTimer(itemId: string) {
+  const timer = sidePanelPulseDismissTimers.get(itemId);
+  if (timer) {
+    clearTimeout(timer);
+    sidePanelPulseDismissTimers.delete(itemId);
+  }
+}
+
+/** After 500ms hover, permanently dismiss new-item pulse for this id (never reset on leave). */
+function scheduleSidePanelPulseDismiss(itemId: string) {
+  cancelSidePanelPulseDismissTimer(itemId);
+  const timer = setTimeout(() => {
+    useGameStore.getState().setHoveredTooltip(itemId, true);
+    sidePanelPulseDismissTimers.delete(itemId);
+  }, 500);
+  sidePanelPulseDismissTimers.set(itemId, timer);
 }
 
 /** Clear row/header highlight when the pointer leaves the panel or the list scrolls. */
@@ -142,7 +168,7 @@ function useSidePanelActiveTooltipHoverId(): string | null {
       sidePanelTooltipHoverListeners.delete(listener);
     };
   }, []);
-  return sidePanelActiveTooltipHoverId;
+  return getSidePanelActiveTooltipHoverId();
 }
 const RESOURCE_ROW_TEXT_CLASS = "text-xs leading-none";
 /** Third column: production rate and change popup share one right-aligned slot. */
@@ -309,7 +335,6 @@ export default function SidePanelSection({
       : new Set(
         Array.isArray(highlightedResourcesRaw) ? highlightedResourcesRaw : [],
       );
-  const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const globalTooltip = useGlobalTooltip();
 
   const sidePanelTooltipTriggerClass = cn(
@@ -317,48 +342,25 @@ export default function SidePanelSection({
     globalTooltip.isMobile && "cursor-pointer",
   );
 
-  const handleTooltipHover = (itemId: string) => {
-    if (globalTooltip.isMobile) return;
-
-    const existingTimer = hoverTimersRef.current.get(itemId);
-    if (existingTimer) {
-      clearTimeout(existingTimer);
-    }
-
-    const timer = setTimeout(() => {
-      setHoveredTooltip(itemId, true);
-      hoverTimersRef.current.delete(itemId);
-    }, 500);
-
-    hoverTimersRef.current.set(itemId, timer);
-  };
-
-  const handleTooltipLeave = (itemId: string) => {
-    if (globalTooltip.isMobile) return;
-
-    const timer = hoverTimersRef.current.get(itemId);
-    if (timer) {
-      clearTimeout(timer);
-      hoverTimersRef.current.delete(itemId);
-    }
-  };
-
   const handleItemTooltipEnter = (itemId: string) => {
-    const previousId = sidePanelActiveTooltipHoverId;
+    if (globalTooltip.isMobile) return;
+
+    const previousId = getSidePanelActiveTooltipHoverId();
     if (previousId !== null && previousId !== itemId) {
-      setHoveredTooltip(previousId, false);
-      handleTooltipLeave(previousId);
+      cancelSidePanelPulseDismissTimer(previousId);
     }
     setSidePanelActiveTooltipHoverId(itemId);
-    handleTooltipHover(itemId);
+    scheduleSidePanelPulseDismiss(itemId);
   };
 
   const handleItemTooltipLeave = (itemId: string) => {
-    if (sidePanelActiveTooltipHoverId === itemId) {
+    if (globalTooltip.isMobile) return;
+
+    if (getSidePanelActiveTooltipHoverId() === itemId) {
       setSidePanelActiveTooltipHoverId(null);
     }
-    handleTooltipLeave(itemId);
-    setHoveredTooltip(itemId, false);
+    // Cancel pending pulse dismiss only; do not reset hoveredTooltips — glow stays off once seen.
+    cancelSidePanelPulseDismissTimer(itemId);
   };
 
   const isItemTooltipHovered = (itemId: string) => {
@@ -368,13 +370,19 @@ export default function SidePanelSection({
     return globalTooltip.openTooltipId === itemId;
   };
 
-  // Cleanup timers on unmount
+  const visibleItemIdsRef = useRef<string[]>([]);
+  visibleItemIdsRef.current = visibleItems.map((item) => item.id);
+
+  // Cancel pending pulse-dismiss timers when this section unmounts (hoveredTooltips persist).
   useEffect(() => {
+    const titleId = sectionId ? `section-title-${sectionId}` : null;
     return () => {
-      hoverTimersRef.current.forEach((timer) => clearTimeout(timer));
-      hoverTimersRef.current.clear();
+      visibleItemIdsRef.current.forEach((id) =>
+        cancelSidePanelPulseDismissTimer(id),
+      );
+      if (titleId) cancelSidePanelPulseDismissTimer(titleId);
     };
-  }, []);
+  }, [sectionId]);
 
   // Mark as hovered when tooltip opens via hold (stops pulse animation)
   useEffect(() => {
