@@ -10,7 +10,7 @@
     "betaDiscountTitle": "Descuentos beta de hasta {{percent}} % activos actualmente.",
     "betaDiscountNote": "Todas las compras siguen disponibles en futuras partidas y tras el lanzamiento completo.",
     "noPurchasesTitle": "Aún no hay compras.",
-    "noPurchasesHint": "Visita la pestaña «En venta» para comprar artículos.", //x1.4
+    "noPurchasesHint": "Visita la pestaña «En venta» para comprar artículos.",  //x1.4
     "activatePurchasesTitle": "Activa tus compras para recibir recompensas.",
     "activatePurchasesNote": "Cada compra puede activarse una vez por partida.",
     "highlights": "Destacados",
@@ -22,7 +22,7 @@
     "threeXValue": "Valor",
     "availableInOneHour": "Disponible en 1 hora",
     "availableInHours": "Disponible en {{hours}} horas",
-    "signInToClaim": "Inicia sesión para reclamar",
+    "signInToClaim": "Inicia sesión para reclamar",  //x1.7
     "alreadyClaimed": "Ya reclamado",
     "alreadyPurchased": "Ya comprado",
     "continueCheckout": "Continuar",
@@ -35,7 +35,7 @@
     "total": "Total",
     "legalConsent": "Obtienes acceso instantáneo al contenido digital tras la compra.",
     "termsOfService": "Condiciones del servicio",
-    "rightOfWithdrawal": "Derecho de desistimiento", //x1.3
+    "rightOfWithdrawal": "Derecho de desistimiento",  //x1.3
     "completePurchaseFor": "Completar compra por {{price}}",
     "paymentFailed": "Pago fallido",
     "notAuthenticated": "Usuario no autenticado",
@@ -54,38 +54,38 @@
     "playlightDiscount": "{{percent}} % de descuento adicional en tu primera compra con dinero real como jugador de Playlight.",
     "journeyCompleteDiscount": "Descuento especial por completar el juego",
     "artifactSkullLantern": {
-      "title": "Linterna de cráneo", //x1.4
-      "caveExploreBonus": "Exploración de cueva: +200 % de bonificación", //x1.8
-      "caveExploreCooldown": "Exploración de cueva: -5 s de recarga", //x1.4
-      "miningBonus": "Extracción: +200 % de bonificación", //x1.8
-      "miningCooldown": "Extracción: -5 s de recarga" //x1.4
+      "title": "Linterna de cráneo",  //x1.4
+      "caveExploreBonus": "Exploración de cueva: +200 % de bonificación",  //x1.8
+      "caveExploreCooldown": "Exploración de cueva: -5 s de recarga",  //x1.4
+      "miningBonus": "Extracción: +200 % de bonificación",  //x1.8
+      "miningCooldown": "Extracción: -5 s de recarga"  //x1.4
     },
     "artifactTarnishedCompass": {
       "title": "Brújula deslustrada",
-      "doubleGain": "10 % de probabilidad de duplicar las ganancias de acciones", //x1.7
+      "doubleGain": "10 % de probabilidad de duplicar las ganancias de acciones",  //x1.7
       "luck": "+5 Suerte"
     },
     "artifactCrowHarness": {
       "title": "Cuervo tuerto",
-      "doubleGain": "Hasta un 15 % de probabilidad de duplicar las ganancias de acciones" //x1.7
+      "doubleGain": "Hasta un 15 % de probabilidad de duplicar las ganancias de acciones"  //x1.7
     },
     "cruelMode": {
       "title": "Modo cruel",
       "moreEvents": "Más eventos",
       "moreItems": "Más objetos",
-      "strongerEnemies": "Enemigos más fuertes", //x1.3
-      "harderChallenges": "Desafíos más difíciles", //x1.3
-      "reusePurchases": "Reutilizar compras existentes" //x1.2
+      "strongerEnemies": "Enemigos más fuertes",  //x1.3
+      "harderChallenges": "Desafíos más difíciles",  //x1.3
+      "reusePurchases": "Reutilizar compras existentes"  //x1.2
     },
     "alreadyClaimedItemLog": "Ya has reclamado {{name}}.",
     "claimFailedLog": "No se pudo reclamar {{name}}. Inténtalo de nuevo.",
     "activatedDefaultLog": "¡{{name}} activado! Las recompensas se han añadido a tu inventario.",
-    "noCardDataStored": "No almacenamos datos de tarjetas en nuestros servidores.",
+    "noCardDataStored": "No almacenamos datos de tarjetas en nuestros servidores.",  //x1.5
     "securePaymentVia": "Pago seguro a través de",
     "securePaymentWith": "con",
     "securePurchaseTitle": "Protege tu compra",
     "securePurchaseBody": "Tu compra solo se guarda en este navegador. Crea una cuenta para conservar tus compras y tu progreso si cambias de dispositivo o borras los datos del navegador.",
-    "securePurchaseSignUp": "Registrarse", //x1.6
-    "securePurchaseLater": "Quizá más tarde" //x1.4
+    "securePurchaseSignUp": "Registrarse",  //x1.6
+    "securePurchaseLater": "Quizá más tarde"  //x1.4
   }
 }

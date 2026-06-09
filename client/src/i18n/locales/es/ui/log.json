@@ -95,18 +95,18 @@
     "buttonUpgrade": {
       "deepens": "Tu dominio de {{skill}} se profundiza.",
       "skills": {
-        "caveExplore": "exploración de cuevas", //x1.5
-        "mineStone": "extracción de piedra", //x1.7
-        "mineIron": "extracción de hierro", //x1.8
-        "mineCoal": "extracción de carbón", //x1.8
-        "mineSulfur": "extracción de azufre", //x1.5
-        "mineObsidian": "extracción de obsidiana", //x1.5
-        "mineAdamant": "extracción de adamantio", //x1.6
+        "caveExplore": "exploración de cuevas",  //x1.5
+        "mineStone": "extracción de piedra",  //x1.7
+        "mineIron": "extracción de hierro",  //x1.8
+        "mineCoal": "extracción de carbón",  //x1.8
+        "mineSulfur": "extracción de azufre",  //x1.5
+        "mineObsidian": "extracción de obsidiana",  //x1.5
+        "mineAdamant": "extracción de adamantio",  //x1.6
         "hunt": "caza",
-        "chopWood": "tala de madera", //x1.3
+        "chopWood": "tala de madera",  //x1.3
         "craftTorches": "fabricación de antorchas",
         "craftBoneTotems": "fabricación de tótems de hueso",
-        "craftLeatherTotems": "fabricación de tótems de cuero" //x1.4
+        "craftLeatherTotems": "fabricación de tótems de cuero"  //x1.4
       }
     }
   }

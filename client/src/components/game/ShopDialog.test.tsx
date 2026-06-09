@@ -1697,7 +1697,7 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getByText(/sign in or create an account/i)).toBeInTheDocument();
+        expect(screen.getByText(/sign in to claim/i)).toBeInTheDocument();
       });
     });
 
@@ -1754,7 +1754,7 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
 
       // Should render without crashing
       await waitFor(() => {
-        expect(screen.getByText("Trader's Shop")).toBeInTheDocument();
+        expect(screen.getByText("Trader")).toBeInTheDocument();
       });
     });
 

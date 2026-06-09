@@ -17,7 +17,7 @@ describe("getVisibleHotkeyTabs", () => {
     ).toEqual(["cave"]);
   });
 
-  it("matches tab bar order: cave, village, estate, forest, bastion, achievements, timedevent", () => {
+  it("matches tab bar order: cave, village, forest, estate, bastion, achievements, timedevent", () => {
     expect(
       getVisibleHotkeyTabs({
         villageUnlocked: true,
@@ -31,8 +31,8 @@ describe("getVisibleHotkeyTabs", () => {
     ).toEqual([
       "cave",
       "village",
-      "estate",
       "forest",
+      "estate",
       "bastion",
       "achievements",
       "timedevent",

@@ -1,5 +1,5 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from '@/game/actions';
+import { ActionResult } from "@/game/types";
 import { applyActionEffects } from "./actionEffects";
 import { pushSystemLog } from "./systemLog";
 import { killVillagers } from "../stateHelpers";

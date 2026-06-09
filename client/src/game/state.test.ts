@@ -9,10 +9,16 @@ import {
 } from "./state";
 import { GameState } from "@shared/schema";
 
-const { mockLoadGame, mockSetLastGameLoadTime, mockSaveGame } = vi.hoisted(() => ({
+const {
+  mockLoadGame,
+  mockSetLastGameLoadTime,
+  mockSaveGame,
+  mockFlushOverdueActionExecutions,
+} = vi.hoisted(() => ({
   mockLoadGame: vi.fn(),
   mockSetLastGameLoadTime: vi.fn(),
   mockSaveGame: vi.fn().mockResolvedValue(undefined),
+  mockFlushOverdueActionExecutions: vi.fn(),
 }));
 
 vi.mock("@/game/save", () => ({
@@ -22,6 +28,8 @@ vi.mock("@/game/save", () => ({
 
 vi.mock("@/game/loop", () => ({
   setLastGameLoadTime: (...args: unknown[]) => mockSetLastGameLoadTime(...args),
+  flushOverdueActionExecutions: (...args: unknown[]) =>
+    mockFlushOverdueActionExecutions(...args),
 }));
 
 describe("Focus State Management", () => {

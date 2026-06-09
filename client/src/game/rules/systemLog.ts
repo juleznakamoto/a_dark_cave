@@ -1,4 +1,4 @@
-import type { ActionResult } from "@/game/actions";
+import type { ActionResult } from "@/game/types";
 import type { LogEntry } from "@/game/rules/events";
 /** Push a localized system log row (English fallback in `message` for saves; display uses `logKey`). */
 export function pushSystemLog(

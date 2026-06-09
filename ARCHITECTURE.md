@@ -59,6 +59,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | `client/src/game/actions.ts` | Action execution dispatch — maps action IDs to handlers, applies costs/effects. |
 | `client/src/game/rules/index.ts` | Action visibility/affordability (`shouldShowAction`, `canExecuteAction`) + event aggregation (`allEvents`). |
 | `client/src/game/rules/actionsRegistry.ts` | Central `gameActions` map; action modules register via `registerActions()`. |
+| `client/src/game/rules/executionTime.ts` | `getExecutionTime()` — action duration lookup without importing `rules/index` (avoids registration cycles). |
 | `client/src/game/save.ts` | Load/save orchestration: IndexedDB + Supabase cloud diff sync. |
 | `client/src/game/stateHelpers.ts` | Pure state mutations + `buildGameState()` + `UI_ONLY_PROPERTIES` (keys excluded from saves). |
 | `shared/schema.ts` | Zod `gameStateSchema` / `SaveData` + shared shop constants. |

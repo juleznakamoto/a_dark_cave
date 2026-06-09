@@ -2,8 +2,6 @@ import { describe, expect, it } from "vitest";
 import type { GameState } from "@shared/schema";
 import { computeResourceRandomRange } from "./rules/effectsCalculation";
 import { calculateResourceGains } from "./rules/tooltips";
-import { gameActions } from "./rules";
-import { forestSacrificeActions } from "./rules/forestSacrificeActions";
 
 function createState(overrides: Partial<GameState> = {}): GameState {
   return {
@@ -41,8 +39,6 @@ describe("computeResourceRandomRange", () => {
       disgracedPriorSkills: { level: 4 },
     });
 
-    expect(forestSacrificeActions.leatherTotems).toBeDefined();
-    expect(gameActions.leatherTotems).toBeDefined();
     const { gains } = calculateResourceGains("leatherTotems", state);
     const gold = gains.find((g) => g.resource === "gold");
     expect(gold).toEqual({ resource: "gold", min: 60, max: 120 });

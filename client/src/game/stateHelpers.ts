@@ -8,7 +8,7 @@ import {
 } from "./resourceLimits";
 import { getTotalEventDeathReduction } from "./rules/effectsCalculation";
 import { getVillagerCapForJob } from "./villagerCapUpgrades";
-import { getExecutionTime } from "./rules";
+import { getExecutionTime } from "./rules/executionTime";
 import { getGameActions } from "./rules/actionsRegistry";
 
 type CombatResultPayload =
