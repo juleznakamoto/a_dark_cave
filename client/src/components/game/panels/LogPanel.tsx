@@ -130,7 +130,7 @@ function LogPanel() {
                     cancelMarkReadTimer();
                   }}
                   onPointerCancel={cancelMarkReadTimer}
-                  className="flex items-start gap-2 text-foreground leading-relaxed py-0.5"
+                  className="group flex items-start gap-2 text-foreground leading-relaxed py-0.5"
                 >
                   {showNewIndicator ? (
                     <span
@@ -141,7 +141,9 @@ function LogPanel() {
                   ) : (
                     <span className="w-1 shrink-0" aria-hidden={true} />
                   )}
-                  <span className={`flex-1 min-w-0 ${opacity} ${blinkClass}`}>
+                  <span
+                    className={`flex-1 min-w-0 group-hover:opacity-100 group-hover:animate-none ${opacity} ${blinkClass}`}
+                  >
                     {resolveLogPanelMessage(typedEntry as LogEntry)}
                   </span>
                 </div>
