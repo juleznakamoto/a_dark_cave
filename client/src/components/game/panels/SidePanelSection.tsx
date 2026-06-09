@@ -263,6 +263,9 @@ export default function SidePanelSection({
   const [decreaseAnimatedItems, setDecreaseAnimatedItems] = useState<
     Set<string>
   >(new Set());
+  const [tooltipHoveredIds, setTooltipHoveredIds] = useState<Set<string>>(
+    new Set(),
+  );
   const prevValuesRef = useRef<Map<string, number>>(new Map());
   const isInitialRender = useRef(true);
   const gameState = useGameStore((state) => state);
@@ -314,6 +317,24 @@ export default function SidePanelSection({
       hoverTimersRef.current.delete(itemId);
     }
   };
+
+  const handleItemTooltipEnter = (itemId: string) => {
+    setTooltipHoveredIds((prev) => new Set(prev).add(itemId));
+    handleTooltipHover(itemId);
+  };
+
+  const handleItemTooltipLeave = (itemId: string) => {
+    setTooltipHoveredIds((prev) => {
+      const next = new Set(prev);
+      next.delete(itemId);
+      return next;
+    });
+    handleTooltipLeave(itemId);
+  };
+
+  const isItemTooltipHovered = (itemId: string) =>
+    tooltipHoveredIds.has(itemId) ||
+    globalTooltip.openTooltipId === itemId;
 
   // Cleanup timers on unmount
   useEffect(() => {
@@ -664,8 +685,9 @@ export default function SidePanelSection({
     const newItemPulseClass =
       shouldPulse && !hoveredTooltips[item.id] ? "new-item-pulse" : "";
 
-    // Check if this resource is highlighted
-    const isHighlighted = highlightedResources.has(item.id);
+    // Check if this resource is highlighted (external cost hover or tooltip hover)
+    const isHighlighted =
+      highlightedResources.has(item.id) || isItemTooltipHovered(item.id);
 
     const isResourcesSection = sectionId === "resources";
     const tabForProductionColors = activeTab ?? storeActiveTab;
@@ -825,8 +847,8 @@ export default function SidePanelSection({
               tooltipId={item.id}
               disabled
               tooltipContentClassName="max-w-xs"
-              onMouseEnter={() => handleTooltipHover(item.id)}
-              onMouseLeave={() => handleTooltipLeave(item.id)}
+              onMouseEnter={() => handleItemTooltipEnter(item.id)}
+              onMouseLeave={() => handleItemTooltipLeave(item.id)}
               className={sidePanelTooltipTriggerClass}
             >
               {labelContent}
@@ -875,8 +897,8 @@ export default function SidePanelSection({
             tooltipId={item.id}
             disabled
             tooltipContentClassName="max-w-xs"
-            onMouseEnter={() => handleTooltipHover(item.id)}
-            onMouseLeave={() => handleTooltipLeave(item.id)}
+            onMouseEnter={() => handleItemTooltipEnter(item.id)}
+            onMouseLeave={() => handleItemTooltipLeave(item.id)}
             className={sidePanelTooltipTriggerClass}
           >
             {labelContent}
@@ -906,8 +928,8 @@ export default function SidePanelSection({
             tooltipId={item.id}
             disabled
             tooltipContentClassName="max-w-xs"
-            onMouseEnter={() => handleTooltipHover(item.id)}
-            onMouseLeave={() => handleTooltipLeave(item.id)}
+            onMouseEnter={() => handleItemTooltipEnter(item.id)}
+            onMouseLeave={() => handleItemTooltipLeave(item.id)}
             className={sidePanelTooltipTriggerClass}
           >
             {labelContent}
@@ -941,8 +963,8 @@ export default function SidePanelSection({
             tooltipId={item.id}
             disabled
             tooltipContentClassName="max-w-xs"
-            onMouseEnter={() => handleTooltipHover(item.id)}
-            onMouseLeave={() => handleTooltipLeave(item.id)}
+            onMouseEnter={() => handleItemTooltipEnter(item.id)}
+            onMouseLeave={() => handleItemTooltipLeave(item.id)}
             className={sidePanelTooltipTriggerClass}
           >
             {labelContent}
@@ -973,8 +995,8 @@ export default function SidePanelSection({
               tooltipId={item.id}
               disabled
               tooltipContentClassName="max-w-xs"
-              onMouseEnter={() => handleTooltipHover(item.id)}
-              onMouseLeave={() => handleTooltipLeave(item.id)}
+              onMouseEnter={() => handleItemTooltipEnter(item.id)}
+              onMouseLeave={() => handleItemTooltipLeave(item.id)}
               className={cn(
                 "inline-flex min-w-0 shrink-0",
                 globalTooltip.isMobile && "cursor-pointer",
@@ -1030,8 +1052,8 @@ export default function SidePanelSection({
             tooltipId={item.id}
             disabled
             tooltipContentClassName="max-w-xs"
-            onMouseEnter={() => handleTooltipHover(item.id)}
-            onMouseLeave={() => handleTooltipLeave(item.id)}
+            onMouseEnter={() => handleItemTooltipEnter(item.id)}
+            onMouseLeave={() => handleItemTooltipLeave(item.id)}
             className={sidePanelTooltipTriggerClass}
           >
             {labelContent}
@@ -1050,7 +1072,16 @@ export default function SidePanelSection({
   const tooltipKey = `section-title-${baseTitleForKey}`;
 
   const titleHeading = (
-    <h3 className="text-xs font-medium tracking-wide leading-none">{title}</h3>
+    <h3
+      className={cn(
+        "text-xs font-medium tracking-wide leading-none",
+        titleTooltip &&
+        isItemTooltipHovered(tooltipKey) &&
+        "font-bold !text-gray-100",
+      )}
+    >
+      {title}
+    </h3>
   );
 
   const titleLabel = titleTooltip ? (
@@ -1059,10 +1090,12 @@ export default function SidePanelSection({
       tooltipId={tooltipKey}
       disabled
       onMouseEnter={() => {
+        handleItemTooltipEnter(tooltipKey);
         if (!hoveredTooltips[tooltipKey]) {
           setHoveredTooltip(tooltipKey, true);
         }
       }}
+      onMouseLeave={() => handleItemTooltipLeave(tooltipKey)}
       className={cn(
         titleExtra ? "inline-flex items-center" : "min-w-0 flex-1",
         globalTooltip.isMobile ? "cursor-pointer" : "",
