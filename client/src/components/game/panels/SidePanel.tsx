@@ -910,8 +910,13 @@ export default function SidePanel() {
   const handleSidePanelPointerLeave = (
     event: React.PointerEvent<HTMLDivElement>,
   ) => {
-    const related = event.relatedTarget as Node | null;
-    if (!related || !event.currentTarget.contains(related)) {
+    const related = event.relatedTarget;
+    // Touch/pointer events often omit relatedTarget or set a non-Node EventTarget.
+    if (
+      related == null ||
+      !(related instanceof Node) ||
+      !event.currentTarget.contains(related)
+    ) {
       clearSidePanelActiveTooltipHover();
     }
   };
