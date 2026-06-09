@@ -911,7 +911,7 @@ export default function SidePanel() {
       <ScrollArea className="h-full w-full pb-1.5 pl-0 pr-4">
         <div className="pb-1 w-full grid grid-cols-[auto_auto] gap-x-1.5 items-start min-w-0">
           {/* First column - Resources */}
-          <div className={cn("min-w-0", SIDE_PANEL_SECTION_SPACING_CLASS)}>
+          <div className={cn(SIDE_PANEL_SECTION_SPACING_CLASS)}>
             {resourceItems.length > 0 && shouldShowSection("resources") && (
               <SidePanelSection
                 sectionId="resources"
