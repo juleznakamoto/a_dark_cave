@@ -295,3 +295,4 @@ describe("reward and event dialog stacking", () => {
     );
   });
 });
+

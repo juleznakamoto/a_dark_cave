@@ -85,6 +85,7 @@ import {
   gamblerDiceResumeOnLoad,
   getGamblerTutorialPlaysRemaining,
   GAMBLER_TUTORIAL_PLAYS,
+  GAMBLER_EVENT_SEEN_KEY,
   GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY,
 } from "@/game/gamblerSession";
 import { logger } from "@/lib/logger";
@@ -2783,11 +2784,40 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const { newLogEntries, stateChanges } =
       EventManager.checkEvents(state);
 
-    // Handle timed tab event if present (never stack a second timed tab)
-    if (stateChanges._timedTabEvent && !state.timedEventTab.isActive) {
-      const timedTabEntry = stateChanges._timedTabEvent;
-      delete stateChanges._timedTabEvent;
+    let combatData = null;
+    const updatedChanges = { ...stateChanges };
 
+    if (updatedChanges._combatData) {
+      combatData = updatedChanges._combatData;
+      delete updatedChanges._combatData;
+    }
+
+    const timedTabEntry = updatedChanges._timedTabEvent;
+    if (timedTabEntry) {
+      delete updatedChanges._timedTabEvent;
+    }
+
+    const pendingEventCooldowns = updatedChanges.eventCooldowns;
+    if (pendingEventCooldowns) {
+      delete updatedChanges.eventCooldowns;
+    }
+
+    const hasPersistableStateChanges = Object.keys(updatedChanges).length > 0;
+    if (hasPersistableStateChanges || pendingEventCooldowns) {
+      set((prevState) => ({
+        ...prevState,
+        ...updatedChanges,
+        ...(pendingEventCooldowns && {
+          eventCooldowns: {
+            ...(prevState.eventCooldowns || {}),
+            ...pendingEventCooldowns,
+          },
+        }),
+      }));
+    }
+
+    // Handle timed tab event if present (never stack a second timed tab)
+    if (timedTabEntry && !state.timedEventTab.isActive) {
       // Play event sound for timed tab events
       if (timedTabEntry._playSound) {
         // Use merchant sound for merchant events, otherwise use generic event sound
@@ -2803,19 +2833,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     if (newLogEntries.length > 0) {
-      let combatData = null;
-      const updatedChanges = { ...stateChanges };
-
-      if (updatedChanges._combatData) {
-        combatData = updatedChanges._combatData;
-        delete updatedChanges._combatData;
-      }
-
-      set((prevState) => ({
-        ...prevState,
-        ...updatedChanges,
-      }));
-
       // Handle combat dialog for attack waves
       if (combatData) {
         get().setCombatDialog(true, {
@@ -2930,18 +2947,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
       StateManager.schedulePopulationUpdate(get);
 
       // Play sound if new events were triggered
-      if (newLogEntries && newLogEntries.length > 0) {
-        const madnessEventIds = Object.keys(madnessEvents);
+      const madnessEventIds = Object.keys(madnessEvents);
 
-        const hasMadnessEvent = newLogEntries.some((entry) =>
-          madnessEventIds.includes(entry.id.split("-")[0]),
-        );
+      const hasMadnessEvent = newLogEntries.some((entry) =>
+        madnessEventIds.includes(entry.id.split("-")[0]),
+      );
 
-        audioManager.playSound(
-          hasMadnessEvent ? "eventMadness" : "event",
-          SOUND_VOLUME.eventCheckEvents,
-        );
-      }
+      audioManager.playSound(
+        hasMadnessEvent ? "eventMadness" : "event",
+        SOUND_VOLUME.eventCheckEvents,
+      );
+    } else if (hasPersistableStateChanges) {
+      StateManager.schedulePopulationUpdate(get);
     }
   },
 
@@ -3455,6 +3472,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
             insightProlongUsed: false,
             ...(gamblerRoundsRemaining != null && { gamblerRoundsRemaining }),
           },
+          ...(isGambler && {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story?.seen,
+                [GAMBLER_EVENT_SEEN_KEY]: true,
+              },
+            },
+          }),
         };
       });
     }

@@ -1,10 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
   createDefaultGamblerSession,
+  GAMBLER_EVENT_SEEN_KEY,
   gamblerDiceResumeOnLoad,
+  hasGamblerAppearedOnce,
   resolveGamblerSessionForHydrate,
 } from "./gamblerSession";
 import type { GameState } from "@shared/schema";
+import { createInitialState } from "./state";
 
 const activeGamblerTab = {
   isActive: true,
@@ -16,6 +19,40 @@ const activeGamblerTab = {
   },
   expiryTime: Date.now() + 600_000,
 };
+
+describe("hasGamblerAppearedOnce", () => {
+  it("does not require playing a gambler round", () => {
+    const state = {
+      ...createInitialState(),
+      story: {
+        seen: { [GAMBLER_EVENT_SEEN_KEY]: true },
+        merchantPurchases: 0,
+      },
+    };
+    expect(hasGamblerAppearedOnce(state)).toBe(true);
+  });
+
+  it("is set when the gambler timed tab opens", async () => {
+    const { useGameStore } = await import("./state");
+    useGameStore.getState().initialize();
+    await useGameStore.getState().setTimedEventTab(
+      true,
+      {
+        id: "gambler-test",
+        eventId: "gambler",
+        message: "A stranger offers dice.",
+        title: "The Obsessed Gambler",
+        type: "event",
+        timestamp: Date.now(),
+      },
+      4 * 60 * 1000,
+    );
+
+    const after = useGameStore.getState();
+    expect(after.story?.seen?.[GAMBLER_EVENT_SEEN_KEY]).toBe(true);
+    expect(hasGamblerAppearedOnce(after)).toBe(true);
+  });
+});
 
 describe("gamblerSession", () => {
   it("gamblerDiceResumeOnLoad opens timed tab when gambler event is active and round is in progress", () => {

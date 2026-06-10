@@ -7,6 +7,14 @@ export const GAMBLER_TUTORIAL_PLAYS = 3;
 export const GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY =
   "gamblerTutorialPlaysRemaining" as const;
 
+/** Set when the gambler timed-tab event first appears (no dice round required). */
+export const GAMBLER_EVENT_SEEN_KEY = "gamblerEventSeen" as const;
+
+/** Gambler timed event has appeared at least once (playing a round is not required). */
+export function hasGamblerAppearedOnce(state: GameState): boolean {
+  return Boolean(state.story?.seen?.[GAMBLER_EVENT_SEEN_KEY]);
+}
+
 /** Missing or invalid values count as no tutorial plays remaining. New games set `GAMBLER_TUTORIAL_PLAYS`. */
 export function getGamblerTutorialPlaysRemaining(
   seen: GameState["story"]["seen"] | undefined,

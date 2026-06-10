@@ -19,10 +19,7 @@ import {
 } from "@/game/rules/effectsStats";
 import { getMadnessProductionMultiplier } from "@/game/population";
 import { WAGER_TIERS, WAGER_LUCK_THRESHOLDS } from "@/game/diceFifteenGame";
-import {
-  GAMBLER_TUTORIAL_PLAYS,
-  getGamblerTutorialPlaysRemaining,
-} from "@/game/gamblerSession";
+import { hasGamblerAppearedOnce } from "@/game/gamblerSession";
 import { isStatEffectsRevealed } from "@/game/rules/insightReveal";
 import { bombKnowledgeDamageBonus } from "@/game/rules/skillUpgrades";
 
@@ -50,15 +47,6 @@ type EffectLine = {
 type StatEffectRow = EffectLine & {
   unlocked: boolean;
 };
-
-/** Gambler timed event has rolled at least once, or the player has started gambler rounds. */
-export function hasGamblerAppearedOnce(state: GameState): boolean {
-  if (state.eventCooldowns?.gambler != null) return true;
-  return (
-    getGamblerTutorialPlaysRemaining(state.story?.seen) <
-    GAMBLER_TUTORIAL_PLAYS
-  );
-}
 
 /** Travelling merchant event or manual call has happened at least once. */
 export function hasMerchantAppearedOnce(state: GameState): boolean {
