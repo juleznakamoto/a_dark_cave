@@ -482,7 +482,7 @@ export const caveExploreActions: Record<string, Action> = {
         "resources.veinroot": {
           probability: 0.005,
           condition: "story.seen.veinrootDiscovered",
-          value: 1,
+          value: 10,
         },
       };
     },
