@@ -78,6 +78,8 @@
     "cooldownReduction": "{{action}}: -{{seconds}}с перезарядки",
     "durationReduction": "{{action}}: -{{seconds}}с длительности",
     "poisonArrowsAvailable": "Доступно: 1/1 за бой",
+    "poisonEnchantRound_one": "+{{count}} раунд",
+    "poisonEnchantRound_other": "+{{count}} раунда",
     "statBonus": "{{sign}}{{value}} {{stat}}",
     "productionBonusLine": "+{{amount}} {{resource}} ({{job}})",
     "secRemaining": "Осталось {{count}} сек",

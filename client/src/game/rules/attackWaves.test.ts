@@ -18,9 +18,9 @@ import {
 import {
   attackWaveEvents,
   getPostCompletionWaveParams,
-  isAttackWaveTimerUserPaused,
-  togglePostCompletionAttackWaveTimerPause,
+  isPostCompletionAttackWavesActive,
 } from "./eventsAttackWaves";
+import { canProvokeAttackWave } from "./bastionActions";
 
 describe("attack waves expansion", () => {
   it("exposes 10 canonical wave ids ending in tenthWave", () => {
@@ -61,39 +61,56 @@ describe("attack waves expansion", () => {
     expect(result._combatData?.eventMessage).toContain("mindless pale creatures");
   });
 
-  it("toggles pause on the post-completion attack wave timer", () => {
-    const originalStartTime = 1_700_000_000_000;
-    const baseState = {
+  it("allows provoking post-completion waves even when elapsed equals duration", () => {
+    const state = {
       events: { cube15a: true },
       story: { seen: { tenthWaveVictory: true }, merchantPurchases: 0 },
+      buildings: { bastion: 1 },
+      weapons: {},
       postCompletionAttackWaveCount: 0,
       attackWaveTimers: {
         [POST_COMPLETION_ATTACK_WAVE_ID]: {
-          startTime: originalStartTime,
+          startTime: Date.now(),
           duration: 60 * 60 * 1000,
           defeated: false,
           provoked: false,
-          elapsedTime: 1000,
+          elapsedTime: 60 * 60 * 1000,
         },
       },
     } as GameState;
 
-    const paused = togglePostCompletionAttackWaveTimerPause(baseState);
-    const pausedTimer =
-      paused?.attackWaveTimers?.[POST_COMPLETION_ATTACK_WAVE_ID];
-    expect(pausedTimer && isAttackWaveTimerUserPaused(pausedTimer)).toBe(true);
-    expect(pausedTimer?.startTime).toBe(originalStartTime);
-    expect(pausedTimer?.elapsedTime).toBe(1000);
+    expect(isPostCompletionAttackWavesActive(state)).toBe(true);
+    expect(canProvokeAttackWave(state)).toBe(true);
+  });
 
-    const resumed = togglePostCompletionAttackWaveTimerPause({
-      ...baseState,
-      ...paused,
-    } as GameState);
-    const resumedTimer =
-      resumed?.attackWaveTimers?.[POST_COMPLETION_ATTACK_WAVE_ID];
-    expect(resumedTimer?.pausedAt).toBeUndefined();
-    expect(resumedTimer?.startTime).toBe(originalStartTime);
-    expect(resumedTimer?.elapsedTime).toBe(1000);
+  it("post-completion waves only trigger when provoked", () => {
+    const baseTimer = {
+      startTime: Date.now(),
+      duration: 60 * 60 * 1000,
+      defeated: false,
+      provoked: false,
+      elapsedTime: 60 * 60 * 1000,
+    };
+    const state = {
+      events: { cube15a: true },
+      story: { seen: { tenthWaveVictory: true }, merchantPurchases: 0 },
+      postCompletionAttackWaveCount: 0,
+      attackWaveTimers: {
+        [POST_COMPLETION_ATTACK_WAVE_ID]: baseTimer,
+      },
+    } as GameState;
+
+    const condition = attackWaveEvents.postCompletionWave.condition!;
+    expect(condition(state)).toBe(false);
+
+    expect(
+      condition({
+        ...state,
+        attackWaveTimers: {
+          [POST_COMPLETION_ATTACK_WAVE_ID]: { ...baseTimer, provoked: true },
+        },
+      } as GameState),
+    ).toBe(true);
   });
 
   it("exposes i18nVars with waveNumber for log and dialog resolution", () => {

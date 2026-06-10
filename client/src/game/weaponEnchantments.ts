@@ -9,6 +9,38 @@ export const ENCHANT_COST_PER_STAT = 250;
 /** Building that unlocks weapon enchantment (Tomewarden Academy). */
 const ENCHANT_BUILDING_KEY = "inkwardenAcademy";
 
+/** Bow/sword upgrade chains — only the top-tier blacksteel item in each may be enchanted. */
+const BOW_HIERARCHY = [
+  "crude_bow",
+  "huntsman_bow",
+  "long_bow",
+  "war_bow",
+  "master_bow",
+  "blacksteel_bow",
+] as const;
+
+const SWORD_HIERARCHY = [
+  "iron_sword",
+  "steel_sword",
+  "obsidian_sword",
+  "adamant_sword",
+  "blacksteel_sword",
+] as const;
+
+const TIERED_BOW_ENCHANTABLE = "blacksteel_bow";
+const TIERED_SWORD_ENCHANTABLE = "blacksteel_sword";
+
+/** Whether this weapon id supports Insight enchantment (tier bows/swords: blacksteel only). */
+export function isWeaponEnchantable(weaponId: string): boolean {
+  if ((BOW_HIERARCHY as readonly string[]).includes(weaponId)) {
+    return weaponId === TIERED_BOW_ENCHANTABLE;
+  }
+  if ((SWORD_HIERARCHY as readonly string[]).includes(weaponId)) {
+    return weaponId === TIERED_SWORD_ENCHANTABLE;
+  }
+  return weaponId in weaponEffects;
+}
+
 /**
  * Per-level enchant deltas for special weapons (non-generic). Generic weapons get a
  * single level derived from their base stats. `baseStrength`/`baseKnowledge` are folded
@@ -35,6 +67,7 @@ const SPECIAL_ENCHANTS: Record<string, EnchantDelta[]> = {
 
 /** Max enchant level for a weapon (generic weapons: 1; specials defined above). */
 export function getMaxEnchantLevel(weaponId: string): number {
+  if (!isWeaponEnchantable(weaponId)) return 0;
   return SPECIAL_ENCHANTS[weaponId]?.length ?? 1;
 }
 
@@ -95,6 +128,15 @@ export function getWeaponEnchantBonus(
   state: Pick<GameState, "weaponEnchantments">,
   weaponId: string,
 ): WeaponEnchantBonus {
+  if (!isWeaponEnchantable(weaponId)) {
+    return {
+      baseStrength: 0,
+      baseKnowledge: 0,
+      enchantStrength: 0,
+      enchantKnowledge: 0,
+      poisonRounds: 0,
+    };
+  }
   const level = getWeaponEnchantLevel(state, weaponId);
   const bonus: WeaponEnchantBonus = {
     baseStrength: 0,
@@ -120,6 +162,7 @@ export function getNextEnchantCost(
   state: Pick<GameState, "weaponEnchantments">,
   weaponId: string,
 ): number | null {
+  if (!isWeaponEnchantable(weaponId)) return null;
   const level = getWeaponEnchantLevel(state, weaponId);
   const delta = getEnchantLevelDelta(weaponId, level);
   return delta ? delta.cost : null;
@@ -135,6 +178,7 @@ export function canEnchantWeapon(
 ): boolean {
   if (!isWeaponEnchantUnlocked(state)) return false;
   if (!isInsightUnlocked(state as GameState)) return false;
+  if (!isWeaponEnchantable(weaponId)) return false;
   if (!(state.weapons as Record<string, boolean>)[weaponId]) return false;
   const level = getWeaponEnchantLevel(state, weaponId);
   if (level >= getMaxEnchantLevel(weaponId)) return false;

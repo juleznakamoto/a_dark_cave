@@ -138,8 +138,9 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
   `assignVillagerToJob`, `upgradeVillagerCap` in `state.ts`, UI in `VillagePanel` / `SidePanelSection` /
   `itemTooltips.tsx`.
 - **`weaponEnchantments.ts`** — weapon enchantment via Insight, unlocked by Tomewarden Academy
-  (`buildings.inkwardenAcademy`). Generic weapons enchant once (+`1 + floor(stat/10)` Strength/Knowledge each,
-  cost `(added) × 250`); Nightshade Bow has a 2-level table (+base/enchant Strength, +1 poison DoT round).
+  (`buildings.inkwardenAcademy`). Tiered bow/sword chains: only `blacksteel_bow` / `blacksteel_sword` are
+  enchantable; other weapons enchant once (+`1 + floor(stat/10)` Strength/Knowledge each, cost `(added) × 250`);
+  Nightshade Bow has a 2-level table (+base/enchant Strength, +1 poison DoT round).
   Levels persist in `weaponEnchantments` (`shared/schema.ts`); bonuses applied in `calculateTotalEffects`,
   spent via `enchantWeapon` (`state.ts`), UI badge + blue tooltip stats in `SidePanelSection` / `itemTooltips.tsx`,
   combat poison rounds via `getPoisonArrowsDotFightRounds` (`CombatDialog`, `tooltips.tsx`).

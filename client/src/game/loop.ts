@@ -26,6 +26,7 @@ import {
   getStrangerApproachProbability,
 } from "./rules/effectsCalculation";
 import { GAME_CONSTANTS } from "./constants";
+import { POST_COMPLETION_ATTACK_WAVE_ID } from "./rules/attackWaveOrder";
 import { logger } from "@/lib/logger";
 import { startVersionCheck, stopVersionCheck } from "./versionCheck";
 import { formatSaveTimestamp } from "@/lib/utils";
@@ -376,10 +377,12 @@ export function startGameLoop() {
         let hasUpdates = false;
 
         for (const [waveId, timer] of Object.entries(attackWaveTimers)) {
+          const isAwaitingPostCompletionProvoke =
+            waveId === POST_COMPLETION_ATTACK_WAVE_ID && !timer.provoked;
           if (
             !timer.defeated &&
             timer.startTime > 0 &&
-            !timer.pausedAt
+            !isAwaitingPostCompletionProvoke
           ) {
             const newElapsed = (timer.elapsedTime || 0) + deltaTime;
             updatedTimers[waveId] = {

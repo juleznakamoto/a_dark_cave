@@ -59,6 +59,9 @@ export function canProvokeAttackWave(state: GameState): boolean {
   if (!timer || timer.defeated || timer.provoked) {
     return false;
   }
+  if (waveId === POST_COMPLETION_ATTACK_WAVE_ID) {
+    return true;
+  }
   const remaining = Math.max(0, timer.duration - (timer.elapsedTime || 0));
   return remaining > 0;
 }
@@ -81,7 +84,6 @@ export function getProvokeAttackWaveExecutionUpdates(
         ...timer,
         elapsedTime: timer.duration,
         provoked: true,
-        pausedAt: undefined,
       },
     },
   };

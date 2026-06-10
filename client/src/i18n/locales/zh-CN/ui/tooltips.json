@@ -78,6 +78,8 @@
     "cooldownReduction": "{{action}}：冷却 -{{seconds}} 秒",
     "durationReduction": "{{action}}：持续时间 -{{seconds}} 秒",
     "poisonArrowsAvailable": "可用：每场战斗 1/1",
+    "poisonEnchantRound_one": "+{{count}} 回合",
+    "poisonEnchantRound_other": "+{{count}} 回合",
     "statBonus": "{{sign}}{{value}} {{stat}}",
     "productionBonusLine": "+{{amount}} {{resource}}（{{job}}）",
     "secRemaining": "剩余 {{count}} 秒",

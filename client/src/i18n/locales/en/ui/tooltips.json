@@ -81,6 +81,8 @@
     "cooldownReduction": "{{action}}: -{{seconds}}s Cooldown",
     "durationReduction": "{{action}}: -{{seconds}}s Duration",
     "poisonArrowsAvailable": "Available: 1/1 per combat",
+    "poisonEnchantRound_one": "+{{count}} round",
+    "poisonEnchantRound_other": "+{{count}} rounds",
     "statBonus": "{{sign}}{{value}} {{stat}}",
     "productionBonusLine": "+{{amount}} {{resource}} ({{job}})",
     "secRemaining": "{{count}} sec remaining",

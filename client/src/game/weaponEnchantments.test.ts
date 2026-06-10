@@ -13,6 +13,7 @@ import {
   getPoisonArrowsDotFightRounds,
   getWeaponEnchantBonus,
   getWeaponEnchantLevel,
+  isWeaponEnchantable,
   isWeaponEnchantUnlocked,
 } from "./weaponEnchantments";
 
@@ -29,7 +30,11 @@ function stateWithWeapon(
 function baseState(overrides: Partial<GameState> = {}): GameState {
   return {
     buildings: { clerksHut: 1, inkwardenAcademy: 1 },
-    weapons: { adamant_sword: true, nightshade_bow: true, bloodstone_staff: true },
+    weapons: {
+      blacksteel_sword: true,
+      nightshade_bow: true,
+      bloodstone_staff: true,
+    },
     weaponEnchantments: {},
     resources: { insight: 5000 },
     ...overrides,
@@ -38,8 +43,22 @@ function baseState(overrides: Partial<GameState> = {}): GameState {
 
 describe("weaponEnchantments", () => {
   it("limits generic weapons to one level and Nightshade Bow to two", () => {
-    expect(getMaxEnchantLevel("adamant_sword")).toBe(1);
+    expect(getMaxEnchantLevel("blacksteel_sword")).toBe(1);
     expect(getMaxEnchantLevel("nightshade_bow")).toBe(2);
+    expect(getMaxEnchantLevel("adamant_sword")).toBe(0);
+    expect(getMaxEnchantLevel("master_bow")).toBe(0);
+  });
+
+  it("allows enchanting only blacksteel among tiered bows and swords", () => {
+    expect(isWeaponEnchantable("blacksteel_bow")).toBe(true);
+    expect(isWeaponEnchantable("blacksteel_sword")).toBe(true);
+    expect(isWeaponEnchantable("master_bow")).toBe(false);
+    expect(isWeaponEnchantable("adamant_sword")).toBe(false);
+    expect(isWeaponEnchantable("iron_sword")).toBe(false);
+    expect(isWeaponEnchantable("crude_bow")).toBe(false);
+    // Non-hierarchical weapons remain enchantable.
+    expect(isWeaponEnchantable("nightshade_bow")).toBe(true);
+    expect(isWeaponEnchantable("stormglass_halberd")).toBe(true);
   });
 
   it("unlocks only once the Tomewarden Academy is built", () => {
@@ -52,12 +71,19 @@ describe("weaponEnchantments", () => {
   });
 
   it("derives generic enchant bonus as base 1 plus 1 per full 10 of the stat", () => {
-    const state = baseState({ weaponEnchantments: { adamant_sword: 1 } });
-    // Adamant Sword has +12 Strength -> 1 + floor(12/10) = 2
-    const bonus = getWeaponEnchantBonus(state, "adamant_sword");
+    const state = baseState({ weaponEnchantments: { blacksteel_sword: 1 } });
+    // Blacksteel Sword has +18 Strength -> 1 + floor(18/10) = 2
+    const bonus = getWeaponEnchantBonus(state, "blacksteel_sword");
     expect(bonus.enchantStrength).toBe(2);
     expect(bonus.enchantKnowledge).toBe(0);
     expect(bonus.baseStrength).toBe(0);
+  });
+
+  it("ignores stored enchant levels on non-enchantable tier weapons", () => {
+    const state = baseState({ weaponEnchantments: { adamant_sword: 1 } });
+    expect(getWeaponEnchantBonus(state, "adamant_sword").enchantStrength).toBe(0);
+    expect(getNextEnchantCost(state, "adamant_sword")).toBeNull();
+    expect(canEnchantWeapon(state, "adamant_sword")).toBe(false);
   });
 
   it("enchants both Strength and Knowledge when the weapon has both", () => {
@@ -71,8 +97,8 @@ describe("weaponEnchantments", () => {
   });
 
   it("prices generic enchant at 250 per added stat point", () => {
-    // Adamant Sword adds +2 Strength -> 2 * 250 = 500
-    expect(getNextEnchantCost(baseState(), "adamant_sword")).toBe(500);
+    // Blacksteel Sword adds +2 Strength -> 2 * 250 = 500
+    expect(getNextEnchantCost(baseState(), "blacksteel_sword")).toBe(500);
   });
 
   it("applies the Nightshade Bow two-level table", () => {
@@ -111,20 +137,20 @@ describe("weaponEnchantments", () => {
   });
 
   it("gates enchanting on unlock, ownership, max level, and affordability", () => {
-    expect(canEnchantWeapon(baseState(), "adamant_sword")).toBe(true);
+    expect(canEnchantWeapon(baseState(), "blacksteel_sword")).toBe(true);
 
     const locked = baseState({
       buildings: { clerksHut: 1, inkwardenAcademy: 0 } as GameState["buildings"],
     });
-    expect(canEnchantWeapon(locked, "adamant_sword")).toBe(false);
+    expect(canEnchantWeapon(locked, "blacksteel_sword")).toBe(false);
 
     const unowned = baseState({
-      weapons: { adamant_sword: false } as GameState["weapons"],
+      weapons: { blacksteel_sword: false } as GameState["weapons"],
     });
-    expect(canEnchantWeapon(unowned, "adamant_sword")).toBe(false);
+    expect(canEnchantWeapon(unowned, "blacksteel_sword")).toBe(false);
 
     const poor = baseState({ resources: { insight: 10 } as GameState["resources"] });
-    expect(canEnchantWeapon(poor, "adamant_sword")).toBe(false);
+    expect(canEnchantWeapon(poor, "blacksteel_sword")).toBe(false);
 
     const maxed = baseState({ weaponEnchantments: { nightshade_bow: 2 } });
     expect(canEnchantWeapon(maxed, "nightshade_bow")).toBe(false);
@@ -149,11 +175,17 @@ describe("weaponEnchantments", () => {
 
 describe("weaponEnchantments — total effects integration", () => {
   it("adds the generic enchant Strength to total stat bonuses", () => {
-    const before = calculateTotalEffects(stateWithWeapon("adamant_sword", 0));
-    const after = calculateTotalEffects(stateWithWeapon("adamant_sword", 1));
-    // Adamant Sword (+12 base) gains +2 Strength from enchanting.
+    const before = calculateTotalEffects(stateWithWeapon("blacksteel_sword", 0));
+    const after = calculateTotalEffects(stateWithWeapon("blacksteel_sword", 1));
+    // Blacksteel Sword (+18 base) gains +2 Strength from enchanting.
     expect(after.statBonuses.strength - before.statBonuses.strength).toBe(2);
     expect(after.statBonuses.knowledge - before.statBonuses.knowledge).toBe(0);
+  });
+
+  it("does not apply enchant bonuses to lower-tier swords in saves", () => {
+    const before = calculateTotalEffects(stateWithWeapon("adamant_sword", 0));
+    const after = calculateTotalEffects(stateWithWeapon("adamant_sword", 1));
+    expect(after.statBonuses.strength - before.statBonuses.strength).toBe(0);
   });
 
   it("adds both Strength and Knowledge for dual-stat weapons", () => {
@@ -195,6 +227,10 @@ describe("weaponEnchantments — i18n parity", () => {
       expect(
         json.tooltips?.enchantForInsight,
         `enchantForInsight missing in ${locale}`,
+      ).toBeTruthy();
+      expect(
+        json.tooltips?.poisonEnchantRound_one,
+        `poisonEnchantRound_one missing in ${locale}`,
       ).toBeTruthy();
       expect(
         json.tooltips?.buildings?.weaponEnhancement,

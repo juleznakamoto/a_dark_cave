@@ -81,6 +81,8 @@
     "cooldownReduction": "{{action}}: -{{seconds}}s de Recarga",
     "durationReduction": "{{action}}: -{{seconds}}s de Duração",
     "poisonArrowsAvailable": "Disponível: 1/1 por combate",
+    "poisonEnchantRound_one": "+{{count}} rodada",
+    "poisonEnchantRound_other": "+{{count}} rodadas",
     "statBonus": "{{sign}}{{value}} de {{stat}}",
     "productionBonusLine": "+{{amount}} {{resource}} ({{job}})",
     "secRemaining": "{{count}} seg restantes",

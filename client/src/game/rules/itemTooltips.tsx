@@ -66,6 +66,12 @@ import {
   getWeaponEnchantBonus,
   getWeaponEnchantLevel,
 } from "@/game/weaponEnchantments";
+import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
+import {
+  POISON_ARROWS_BASE_DAMAGE,
+  POISON_ARROWS_DOT_FIGHT_ROUNDS,
+  poisonArrowsDamagePerTick,
+} from "@/game/rules/skillUpgrades";
 
 /** Moon phase for n fragments: 1→◔, 2→◑, 3→◕, 4→● (index = n − 1). */
 const MAP_FRAGMENT_MOON_GLYPHS = ["◔", "◑", "◕", "●"] as const;
@@ -73,6 +79,65 @@ const MAP_FRAGMENT_MOON_GLYPHS = ["◔", "◑", "◕", "●"] as const;
 function mapFragmentMoonGlyphIndex(fragmentCount: number): number {
   if (fragmentCount <= 0) return 0;
   return Math.min(fragmentCount - 1, MAP_FRAGMENT_MOON_GLYPHS.length - 1);
+}
+
+function renderEnchantStatSuffix(value: number) {
+  if (value <= 0) return null;
+  return (
+    <span className={INSIGHT_TEXT_CLASS}>{` +${value}`}</span>
+  );
+}
+
+/** Nightshade Bow poison block — base rounds in black, enchant rounds in Insight-blue. */
+function renderNightshadePoisonTooltip(gameState: GameState) {
+  const knowledge = getTotalKnowledge(gameState) || 0;
+  const knowledgeBonus = Math.floor(knowledge / 5);
+  const perHit = poisonArrowsDamagePerTick(knowledge);
+  const poisonEnchantRounds = getWeaponEnchantBonus(
+    gameState,
+    "nightshade_bow",
+  ).poisonRounds;
+
+  return (
+    <div className="mt-2 space-y-0 text-xs text-foreground">
+      <div>
+        {getUiTooltip("baseDamage", "Base Damage: {{value}}", {
+          value: POISON_ARROWS_BASE_DAMAGE,
+        })}
+      </div>
+      {knowledge >= 5 && (
+        <div>
+          {getUiTooltip("knowledgeBonus", "Knowledge Bonus: +{{value}}", {
+            value: knowledgeBonus,
+          })}
+        </div>
+      )}
+      <div>
+        {getUiTooltip(
+          "totalDamageForRounds",
+          "Total Damage: {{value}} for {{rounds}} rounds",
+          { value: perHit, rounds: POISON_ARROWS_DOT_FIGHT_ROUNDS },
+        )}
+        {poisonEnchantRounds > 0 && (
+          <span className={INSIGHT_TEXT_CLASS}>
+            {" "}
+            {getUiTooltip(
+              poisonEnchantRounds === 1
+                ? "poisonEnchantRound_one"
+                : "poisonEnchantRound_other",
+              poisonEnchantRounds === 1
+                ? "+{{count}} round"
+                : "+{{count}} rounds",
+              { count: poisonEnchantRounds },
+            )}
+          </span>
+        )}
+      </div>
+      <div className="mt-1 text-gray-400">
+        {getUiTooltip("poisonArrowsAvailable", "Available: 1/1 per combat")}
+      </div>
+    </div>
+  );
 }
 
 /** Format unit probability (0–1) as a % label; keeps one decimal when needed so 2.5% does not round to 3%. */
@@ -576,8 +641,10 @@ export function renderItemTooltip(
     itemType === "weapon" && getMaxEnchantLevel(itemId) > 1;
   const baseStrength = effect.bonuses?.generalBonuses?.strength ?? 0;
   const baseKnowledge = effect.bonuses?.generalBonuses?.knowledge ?? 0;
-  const displayStrength = baseStrength + (enchantBonus?.baseStrength ?? 0);
-  const displayKnowledge = baseKnowledge + (enchantBonus?.baseKnowledge ?? 0);
+  const enchantBaseStrength = enchantBonus?.baseStrength ?? 0;
+  const enchantBaseKnowledge = enchantBonus?.baseKnowledge ?? 0;
+  const enchantBonusStrength = enchantBonus?.enchantStrength ?? 0;
+  const enchantBonusKnowledge = enchantBonus?.enchantKnowledge ?? 0;
 
   return (
     <div className="text-xs">
@@ -647,34 +714,28 @@ export function renderItemTooltip(
               })}
             </div>
           )}
-          {(displayStrength > 0 ||
-            (enchantBonus?.enchantStrength ?? 0) > 0) && (
-            <div>
-              {getUiTooltip("strength", "Strength: +{{value}}", {
-                value: displayStrength,
-              })}
-              {(enchantBonus?.enchantStrength ?? 0) > 0 && (
-                <span className={INSIGHT_TEXT_CLASS}>
-                  {" "}
-                  +{enchantBonus?.enchantStrength}
-                </span>
-              )}
-            </div>
-          )}
-          {(displayKnowledge > 0 ||
-            (enchantBonus?.enchantKnowledge ?? 0) > 0) && (
-            <div>
-              {getUiTooltip("knowledge", "Knowledge: +{{value}}", {
-                value: displayKnowledge,
-              })}
-              {(enchantBonus?.enchantKnowledge ?? 0) > 0 && (
-                <span className={INSIGHT_TEXT_CLASS}>
-                  {" "}
-                  +{enchantBonus?.enchantKnowledge}
-                </span>
-              )}
-            </div>
-          )}
+          {(baseStrength > 0 ||
+            enchantBaseStrength > 0 ||
+            enchantBonusStrength > 0) && (
+              <div>
+                {getUiTooltip("strength", "Strength: +{{value}}", {
+                  value: baseStrength,
+                })}
+                {renderEnchantStatSuffix(enchantBaseStrength)}
+                {renderEnchantStatSuffix(enchantBonusStrength)}
+              </div>
+            )}
+          {(baseKnowledge > 0 ||
+            enchantBaseKnowledge > 0 ||
+            enchantBonusKnowledge > 0) && (
+              <div>
+                {getUiTooltip("knowledge", "Knowledge: +{{value}}", {
+                  value: baseKnowledge,
+                })}
+                {renderEnchantStatSuffix(enchantBaseKnowledge)}
+                {renderEnchantStatSuffix(enchantBonusKnowledge)}
+              </div>
+            )}
           {madnessValue && (
             <div>
               {getUiTooltip("madnessStat", "Madness:{{sign}}{{value}}", {
@@ -927,11 +988,10 @@ export function renderItemTooltip(
             );
           },
         )}
-      {showEffects && itemType === "weapon" && itemId === "nightshade_bow" && (
-        <pre className="mt-2 whitespace-pre-wrap font-sans text-xs text-foreground">
-          {`${combatItemTooltips.poison_arrows.getContent(useGameStore.getState() as unknown as GameState)}\n${getUiTooltip("poisonArrowsAvailable", "Available: 1/1 per combat")}`}
-        </pre>
-      )}
+      {showEffects && itemType === "weapon" && itemId === "nightshade_bow" &&
+        renderNightshadePoisonTooltip(
+          useGameStore.getState() as unknown as GameState,
+        )}
     </div>
   );
 }
