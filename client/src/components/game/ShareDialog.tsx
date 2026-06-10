@@ -65,7 +65,7 @@ const RING_ENTRIES: ShareRingEntry[] = [
 ];
 
 /** Shared size for the "Resources" and "Achievements: X %" headings. */
-const SECTION_HEADING_FONT_SIZE = 28;
+const SECTION_HEADING_FONT_SIZE = 32;
 const SECTION_HEADING_CLASS =
   "mb-6 font-medium tracking-wide text-gray-300 leading-none";
 
@@ -80,13 +80,13 @@ function getResourceListMetrics(
   rowCount: number,
   hasPreciousSpacer: boolean,
 ): { fontSize: number; rowGap: number } {
-  if (rowCount <= 0) return { fontSize: 28, rowGap: 6 };
+  if (rowCount <= 0) return { fontSize: 30, rowGap: 6 };
   const spacer = hasPreciousSpacer ? 12 : 0;
   const targetRowHeight = (RESOURCE_LIST_MAX_HEIGHT - spacer) / rowCount;
   const rowGap = Math.max(2, Math.min(6, Math.round(targetRowHeight * 0.1)));
   const fontSize = Math.max(
     16,
-    Math.min(30, Math.floor(targetRowHeight - rowGap)),
+    Math.min(32, Math.floor(targetRowHeight - rowGap)),
   );
   return { fontSize, rowGap };
 }
