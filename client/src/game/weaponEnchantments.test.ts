@@ -220,10 +220,10 @@ describe("weaponEnchantments — total effects integration", () => {
 });
 
 describe("Tomewarden Academy tooltip", () => {
-  it("lists Weapon Enhancement as a build effect", () => {
+  it("lists Weapon Enchantment as a build effect", () => {
     const academy = villageBuildActions.buildInkwardenAcademy;
     const keys = (academy.tooltipEffects ?? []).map((e) => e.key);
-    expect(keys).toContain("weaponEnhancement");
+    expect(keys).toContain("weaponEnchantment");
   });
 });
 
@@ -234,7 +234,7 @@ describe("weaponEnchantments — i18n parity", () => {
       const json = parseLocaleJson(fs.readFileSync(path, "utf8")) as {
         tooltips?: {
           enchantForInsight?: string;
-          buildings?: { weaponEnhancement?: string };
+          buildings?: { weaponEnchantment?: string };
         };
       };
       expect(
@@ -246,8 +246,8 @@ describe("weaponEnchantments — i18n parity", () => {
         `poisonEnchantRound_one missing in ${locale}`,
       ).toBeTruthy();
       expect(
-        json.tooltips?.buildings?.weaponEnhancement,
-        `buildings.weaponEnhancement missing in ${locale}`,
+        json.tooltips?.buildings?.weaponEnchantment,
+        `buildings.weaponEnchantment missing in ${locale}`,
       ).toBeTruthy();
     }
   });

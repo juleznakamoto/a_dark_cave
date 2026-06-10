@@ -156,7 +156,7 @@
       "newVillagerChancePercent": "+{{percent}} % Chance auf neue Dorfbewohner",
       "steelForgerSteel": "Stahlschmied: +{{amount}} Stahl",
       "tannerLeather": "Gerber: +{{amount}} Leder",
-      "weaponEnhancement": "Waffenverzauberung"
+      "weaponEnchantment": "Waffenverzauberung"
     },
     "obsidianOrbFocusRate": "Fokus: 1 alle 15 Minuten",
     "obsidianOrbFocusCountdown": "{{time}} bis zum nächsten Fokuspunkt",

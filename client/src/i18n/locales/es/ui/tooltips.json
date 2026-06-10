@@ -156,7 +156,7 @@
       "newVillagerChancePercent": "+{{percent}} % de probabilidad de nuevo aldeano",
       "steelForgerSteel": "Forjador de acero: +{{amount}} acero",
       "tannerLeather": "Curtidor: +{{amount}} cuero",
-      "weaponEnhancement": "Mejora de armas"
+      "weaponEnchantment": "Encantamiento de armas"
     },
     "obsidianOrbFocusRate": "Concentración: 1 cada 15 minutos",
     "obsidianOrbFocusCountdown": "{{time}} hasta el próximo punto de concentración",

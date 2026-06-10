@@ -159,7 +159,7 @@
       "newVillagerChancePercent": "+{{percent}}% de Chance de Novo Aldeão",
       "steelForgerSteel": "Forjador de Aço: +{{amount}} de Aço",
       "tannerLeather": "Curtidor: +{{amount}} de Couro",
-      "weaponEnhancement": "Aprimoramento de armas"
+      "weaponEnchantment": "Encantamento de armas"
     }
   }
 }

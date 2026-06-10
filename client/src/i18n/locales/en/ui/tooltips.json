@@ -159,7 +159,7 @@
       "newVillagerChancePercent": "+{{percent}}% New Villager Chance",
       "steelForgerSteel": "Steel Forger: +{{amount}} Steel",
       "tannerLeather": "Tanner: +{{amount}} Leather",
-      "weaponEnhancement": "Weapon Enhancement"
+      "weaponEnchantment": "Weapon Enchantment"
     }
   }
 }

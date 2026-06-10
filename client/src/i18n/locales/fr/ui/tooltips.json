@@ -156,7 +156,7 @@
       "newVillagerChancePercent": "+{{percent}} % de chance de nouveau villageois",
       "steelForgerSteel": "Forgeron d'acier : +{{amount}} acier",
       "tannerLeather": "Tanneur : +{{amount}} cuir",
-      "weaponEnhancement": "Amélioration d'armes"
+      "weaponEnchantment": "Enchantement d'armes"
     },
     "obsidianOrbFocusRate": "Concentration : 1 toutes les 15 minutes",
     "obsidianOrbFocusCountdown": "{{time}} avant le prochain point de concentration",

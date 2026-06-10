@@ -159,7 +159,7 @@
       "newVillagerChancePercent": "+{{percent}}% Probabilità di Nuovo Abitante",
       "steelForgerSteel": "Forgiatore d'Acciaio: +{{amount}} Acciaio",
       "tannerLeather": "Conciatore: +{{amount}} Cuoio",
-      "weaponEnhancement": "Potenziamento delle armi"
+      "weaponEnchantment": "Incantesimo delle armi"
     }
   }
 }

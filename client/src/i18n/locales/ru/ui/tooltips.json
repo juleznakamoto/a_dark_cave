@@ -156,7 +156,7 @@
       "newVillagerChancePercent": "+{{percent}} % шанс нового жителя",
       "steelForgerSteel": "Сталевар: +{{amount}} стали",
       "tannerLeather": "Дубильщик: +{{amount}} кожи",
-      "weaponEnhancement": "Улучшение оружия"
+      "weaponEnchantment": "Зачарование оружия"
     },
     "obsidianOrbFocusRate": "Концентрация: 1 каждые 15 минут",
     "obsidianOrbFocusCountdown": "{{time}} до следующего очка концентрации",

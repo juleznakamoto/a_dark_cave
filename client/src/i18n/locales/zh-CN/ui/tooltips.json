@@ -156,7 +156,7 @@
       "newVillagerChancePercent": "新村民概率 +{{percent}}%",
       "steelForgerSteel": "炼钢工：+{{amount}} 钢",
       "tannerLeather": "制革工：+{{amount}} 皮革",
-      "weaponEnhancement": "武器强化"
+      "weaponEnchantment": "武器附魔"
     },
     "obsidianOrbFocusRate": "专注：每15分钟1点",
     "obsidianOrbFocusCountdown": "{{time}} 后获得下一点专注",
