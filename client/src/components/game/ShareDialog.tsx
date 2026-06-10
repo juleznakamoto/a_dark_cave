@@ -41,6 +41,8 @@ const SHARE_RESOURCE_MILESTONE = 50_000;
 
 const RING_CHART_SIZE = 208;
 const RING_GRID_GAP = 40;
+/** Nudge achievement rings right for clearer separation from the resource list. */
+const ACHIEVEMENT_COLUMN_OFFSET = 32;
 /** Matches `pt-1` on the 58px tab icon, scaled to the share ring size. */
 const RING_SYMBOL_NUDGE_PX = 4 * (RING_CHART_SIZE / 58);
 
@@ -260,7 +262,10 @@ function ShareCard({
             </div>
           </div>
 
-          <div className="flex shrink-0 flex-col items-start">
+          <div
+            className="flex shrink-0 flex-col items-start"
+            style={{ marginLeft: ACHIEVEMENT_COLUMN_OFFSET }}
+          >
             <div
               className={SECTION_HEADING_CLASS}
               style={{ fontSize: SECTION_HEADING_FONT_SIZE }}

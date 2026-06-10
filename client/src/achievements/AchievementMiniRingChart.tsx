@@ -8,6 +8,7 @@ import type { AchievementChartConfig } from "./achievementTypes";
 import {
   INCOMPLETE_COLOR,
   COMPLETE_COLOR,
+  COMPLETE_ICON_COLOR,
   BACKGROUND_COLOR_HEX,
   BACKGROUND_SELECTED_COLOR_HEX,
 } from "./achievementColors";
@@ -64,7 +65,7 @@ export default function AchievementMiniRingChart({
     !hideProgress &&
     isCategoryFullyComplete(config, state as unknown as GameState);
   const centerIconColor = categoryComplete
-    ? (COMPLETE_COLOR[config.idPrefix] ?? undefined)
+    ? (COMPLETE_ICON_COLOR[config.idPrefix] ?? undefined)
     : undefined;
 
   const ringOpacity = isActive ? 1 : 0.9;

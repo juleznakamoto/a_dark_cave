@@ -16,12 +16,28 @@ export const PROGRESS_BAR_BG_CLASS = "bg-neutral-900";
  */
 const ACHIEVEMENT_COLORS: Record<
   AchievementCategoryId,
-  { incomplete: string; complete: string }
+  { incomplete: string; complete: string; completeIcon: string }
 > = {
-  building: { incomplete: "bg-blue-800/50", complete: "bg-blue-800" },
-  item: { incomplete: "bg-red-800/50", complete: "bg-red-800" },
-  action: { incomplete: "bg-green-800/50", complete: "bg-green-800" },
-  basic: { incomplete: "bg-amber-600/50", complete: "bg-amber-600" },
+  building: {
+    incomplete: "bg-blue-800/50",
+    complete: "bg-blue-800",
+    completeIcon: "bg-blue-600",
+  },
+  item: {
+    incomplete: "bg-red-800/50",
+    complete: "bg-red-800",
+    completeIcon: "bg-red-600",
+  },
+  action: {
+    incomplete: "bg-green-800/50",
+    complete: "bg-green-800",
+    completeIcon: "bg-green-600",
+  },
+  basic: {
+    incomplete: "bg-amber-600/50",
+    complete: "bg-amber-600",
+    completeIcon: "bg-amber-500",
+  },
 };
 
 /** Tailwind classes for Progress bar indicators (incomplete state). */
@@ -68,4 +84,14 @@ export const COMPLETE_COLOR: Record<string, string> = {
   item: tailwindToHex(tailwindColor(ACHIEVEMENT_COLORS.item.complete)),
   action: tailwindToHex(tailwindColor(ACHIEVEMENT_COLORS.action.complete)),
   basic: tailwindToHex(tailwindColor(ACHIEVEMENT_COLORS.basic.complete)),
+};
+
+/** Brighter hex colors for the center icon when a category is fully complete. */
+export const COMPLETE_ICON_COLOR: Record<string, string> = {
+  building: tailwindToHex(
+    tailwindColor(ACHIEVEMENT_COLORS.building.completeIcon),
+  ),
+  item: tailwindToHex(tailwindColor(ACHIEVEMENT_COLORS.item.completeIcon)),
+  action: tailwindToHex(tailwindColor(ACHIEVEMENT_COLORS.action.completeIcon)),
+  basic: tailwindToHex(tailwindColor(ACHIEVEMENT_COLORS.basic.completeIcon)),
 };
