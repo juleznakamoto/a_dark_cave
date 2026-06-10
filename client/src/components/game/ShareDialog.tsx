@@ -36,6 +36,8 @@ const SHARE_FILE_NAME = "a-dark-cave.png";
 
 const RESOURCE_ORDER = Object.keys(gameStateSchema.parse({}).resources);
 const PRECIOUS_RESOURCE_ORDER = ["gold", "silver", "insight"] as const;
+/** Share card: resource rows at or above this amount count toward the header %. */
+const SHARE_RESOURCE_MILESTONE = 50_000;
 
 const RING_CHART_SIZE = 230;
 /** Matches `pt-1` on the 58px tab icon, scaled to the share ring size. */
@@ -118,6 +120,27 @@ function getVisibleResourceKeys(
   return { precious, others };
 }
 
+function getVisibleResourceKeyList(
+  resources: Record<string, number>,
+  seenResources: string[],
+): string[] {
+  const { precious, others } = getVisibleResourceKeys(resources, seenResources);
+  return [...precious, ...others];
+}
+
+/** % of visible resources with amount >= SHARE_RESOURCE_MILESTONE. */
+function getResourceMilestonePercent(
+  resources: Record<string, number>,
+  seenResources: string[],
+): number {
+  const keys = getVisibleResourceKeyList(resources, seenResources);
+  if (keys.length === 0) return 0;
+  const met = keys.filter(
+    (key) => (resources[key] ?? 0) >= SHARE_RESOURCE_MILESTONE,
+  ).length;
+  return Math.round((met / keys.length) * 100);
+}
+
 function ShareResourceRow({
   resourceKey,
   value,
@@ -125,6 +148,7 @@ function ShareResourceRow({
   resourceKey: string;
   value: number;
 }) {
+  const meetsMilestone = value >= SHARE_RESOURCE_MILESTONE;
   const icon =
     resourceKey === "insight" ? (
       <ResourceInsightIcon className="shrink-0 text-blue-600" />
@@ -144,8 +168,15 @@ function ShareResourceRow({
         {icon}
         <span>{getResourceName(resourceKey, capitalizeWords(resourceKey))}</span>
       </span>
-      <span className="text-right font-mono tabular-nums text-gray-300">
-        {formatNumber(value)}
+      <span className="inline-flex items-center justify-end gap-2">
+        <span className="text-right font-mono tabular-nums text-gray-300">
+          {formatNumber(value)}
+        </span>
+        {meetsMilestone && (
+          <span className="text-green-500 leading-none" aria-hidden>
+            ✓
+          </span>
+        )}
       </span>
     </div>
   );
@@ -292,6 +323,9 @@ export default function ShareDialog() {
   const percent = open
     ? getOverallAchievementPercent(useGameStore.getState() as unknown as GameState)
     : 0;
+  const resourcePercent = open
+    ? getResourceMilestonePercent(resources, seenResources)
+    : 0;
 
   useLayoutEffect(() => {
     if (!open) return;
@@ -427,7 +461,10 @@ export default function ShareDialog() {
                 resources={resources}
                 seenResources={seenResources}
                 percent={percent}
-                resourcesLabel={t("sidePanel.resources")}
+                resourcesLabel={t("share.resources", {
+                  percent: resourcePercent,
+                  defaultValue: "Resources: {{percent}} %",
+                })}
                 achievementsLabel={t("share.achievements", {
                   percent,
                   defaultValue: "Achievements: {{percent}} %",
