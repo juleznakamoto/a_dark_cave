@@ -163,20 +163,16 @@ function ShareResourceRow({
     ) : null;
 
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-12 leading-none">
+    <div className="grid grid-cols-[minmax(0,1fr)_auto_1.25em] items-baseline gap-x-12 leading-none">
       <span className="inline-flex items-center gap-2 text-gray-400">
         {icon}
         <span>{getResourceName(resourceKey, capitalizeWords(resourceKey))}</span>
       </span>
-      <span className="inline-flex items-center justify-end gap-2">
-        <span className="text-right font-mono tabular-nums text-gray-300">
-          {formatNumber(value)}
-        </span>
-        {meetsMilestone && (
-          <span className="text-green-500 leading-none" aria-hidden>
-            ✓
-          </span>
-        )}
+      <span className="text-right font-mono tabular-nums text-gray-300">
+        {formatNumber(value)}
+      </span>
+      <span className="text-right text-green-500 leading-none" aria-hidden>
+        {meetsMilestone ? "✓" : null}
       </span>
     </div>
   );
