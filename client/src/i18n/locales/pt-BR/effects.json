@@ -218,6 +218,10 @@
       "description": "Manto místico tecido com penas reluzentes de corvo",
       "name": "Manto de Pena de Corvo"
     },
+    "rootseeker_charm": {
+      "description": "Amuleto entalhado que atrai raiz venosa para quem coleta na natureza.",
+      "name": "Amuleto Buscador de Raízes"
+    },
     "ravens_mark": {
       "description": "Estranhos se aproximam da aldeia com mais frequência",
       "name": "Marca do Corvo"

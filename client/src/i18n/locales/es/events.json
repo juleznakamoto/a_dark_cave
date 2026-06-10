@@ -992,6 +992,10 @@
         "label": "Brújula deslustrada",
         "message": "Compras la brújula deslustrada. Artefacto de la civilización desaparecida, su aguja señala lugares ocultos."
       },
+      "trade_rootseeker_charm": {
+        "label": "Amuleto buscador de raíces",
+        "message": "Compras el Amuleto buscador de raíces. El mercader murmura algo sobre plantas devoradoras de hombres que, según dicen, crecen en lo profundo de los bosques antiguos."
+      },
       "trade_map_fragment_wooden": {
         "label": "Fragmento de mapa",
         "message": "Compras un fragmento de mapa hecho jirones."

@@ -226,6 +226,10 @@
       "description": "Fremde nähern sich dem Dorf sehr viel häufiger",
       "name": "Großes Mal des Raben"
     },
+    "rootseeker_charm": {
+      "description": "Geschnitzter Talisman, der Aderwurzel zu denen zieht, die in der Wildnis sammeln.",
+      "name": "Wurzelsucher-Talisman"
+    },
     "ravens_orb": {
       "description": "Dunkle Kugel, von Raben mit uraltem Wissen gesegnet",
       "name": "Rabenkugel"

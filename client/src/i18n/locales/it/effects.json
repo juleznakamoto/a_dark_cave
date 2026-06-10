@@ -218,6 +218,10 @@
       "description": "Mistico mantello intessuto di scintillanti piume di corvo",
       "name": "Mantello di Piuma di Corvo"
     },
+    "rootseeker_charm": {
+      "description": "Talismano intagliato che attira la radicevena a chi raccoglie in natura.",
+      "name": "Talismano Cercaradici"
+    },
     "ravens_mark": {
       "description": "Gli stranieri si avvicinano al villaggio più spesso",
       "name": "Marchio del Corvo"

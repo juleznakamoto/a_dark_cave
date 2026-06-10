@@ -218,6 +218,10 @@
       "description": "Les étrangers approchent le village beaucoup plus souvent",
       "name": "Grande marque du corbeau"
     },
+    "rootseeker_charm": {
+      "description": "Charme sculpté qui attire la racine de veine vers ceux qui récoltent dans la nature.",
+      "name": "Charme du cherche-racines"
+    },
     "ravens_orb": {
       "description": "Orbe sombre béni par les corbeaux et chargé de savoir ancien",
       "name": "Orbe du corbeau"

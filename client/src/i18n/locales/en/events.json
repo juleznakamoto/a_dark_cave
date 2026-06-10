@@ -1015,6 +1015,10 @@
         "label": "Tarnished Compass",
         "message": "You purchase the tarnished compass. Artifact of the vanished civilization, its needle points to hidden places."
       },
+      "trade_rootseeker_charm": {
+        "label": "Rootseeker Charm",
+        "message": "You purchase the Rootseeker Charm. The merchant murmurs something of man-eating plants said growing deep within the ancient woods."
+      },
       "trade_map_fragment_wooden": {
         "label": "Map Fragment",
         "message": "You purchase a tattered map fragment."

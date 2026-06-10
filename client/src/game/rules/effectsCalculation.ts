@@ -1310,6 +1310,18 @@ export const getTotalCriticalChance = (state: GameState): number => {
   return criticalChance;
 };
 
+/** Product of `generalBonuses.veinrootFindMultiplier` from active effects (1 = no bonus). */
+export function getVeinrootFindMultiplier(state: GameState): number {
+  let multiplier = 1;
+  getActiveEffects(state).forEach((effect) => {
+    const m = effect.bonuses.generalBonuses?.veinrootFindMultiplier;
+    if (typeof m === "number" && m > 0) {
+      multiplier *= m;
+    }
+  });
+  return multiplier;
+}
+
 /** Sum of `generalBonuses.actionBonusChance` from all active item/tool/relic/blessing/book/fellowship effects. */
 export function getTotalActionBonusChance(state: GameState): number {
   let total = 0;

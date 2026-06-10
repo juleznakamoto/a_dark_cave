@@ -1015,6 +1015,10 @@
         "label": "Bussola Annerita",
         "message": "Acquisti la bussola annerita. Artefatto della civiltà scomparsa, il suo ago indica luoghi nascosti."
       },
+      "trade_rootseeker_charm": {
+        "label": "Talismano Cercaradici",
+        "message": "Acquisti il Talismano Cercaradici. Il mercante mormora qualcosa su piante mangiauomini che, si dice, crescono nel profondo degli antichi boschi."
+      },
       "trade_map_fragment_wooden": {
         "label": "Frammento di Mappa",
         "message": "Acquisti un frammento di mappa sbrindellato."

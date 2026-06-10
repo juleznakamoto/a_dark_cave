@@ -992,6 +992,10 @@
         "label": "Boussole ternie",
         "message": "Vous achetez la boussole ternie. Artefact de la civilisation disparue, son aiguille pointe vers des lieux cachés."
       },
+      "trade_rootseeker_charm": {
+        "label": "Charme du cherche-racines",
+        "message": "Vous achetez le Charme du cherche-racines. Le marchand murmure quelque chose à propos de plantes dévoreuses d'hommes que l'on dit pousser au plus profond des bois anciens."
+      },
       "trade_map_fragment_wooden": {
         "label": "Fragment de carte",
         "message": "Vous achetez un fragment de carte déchiré."

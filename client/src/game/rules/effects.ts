@@ -1535,6 +1535,17 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  rootseeker_charm: {
+    id: "rootseeker_charm",
+    name: "Rootseeker Charm",
+    description: "Carved charm that draws veinroot to those who gather in the wild.",
+    bonuses: {
+      generalBonuses: {
+        veinrootFindMultiplier: 2,
+      },
+    },
+  },
+
   tarnished_compass: {
     id: "tarnished_compass",
     name: "Tarnished Compass",

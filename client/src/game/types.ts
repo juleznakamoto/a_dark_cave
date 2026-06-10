@@ -318,6 +318,8 @@ export interface EffectDefinition {
       miningDoubleChance?: number;
       merchantDiscount?: number; // Additional discount at wandering merchant (0.05 = 5% discount)
       strangerApproachBonus?: number; // Bonus to stranger approach probability (0.1 = 10%)
+      /** Multiplier for veinroot find chance on Hunt and Gather Wood (2 = doubles). */
+      veinrootFindMultiplier?: number;
     };
   };
 }

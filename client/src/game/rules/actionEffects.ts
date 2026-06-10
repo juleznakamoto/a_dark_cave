@@ -12,6 +12,7 @@ import {
   getActionBonuses as getActionBonusesCalc,
   getTotalLuck as getTotalLuckCalc,
   getDoubleGainChance,
+  getVeinrootFindMultiplier,
   computeResourceRandomRange,
 } from "./effectsCalculation";
 import { getTotemSacrificeUsageFlatBonus } from "./forestSacrificeActions";
@@ -466,10 +467,17 @@ export function applyActionEffects(
           }
         }
 
-        const baseProbability =
+        let baseProbability =
           typeof probabilityEffect.probability === "function"
             ? probabilityEffect.probability(state)
             : probabilityEffect.probability;
+
+        if (finalKey === "veinroot") {
+          baseProbability = Math.min(
+            1,
+            baseProbability * getVeinrootFindMultiplier(state),
+          );
+        }
 
         const totalLuck = getTotalLuckCalc(state);
         const luckBonus = totalLuck / 100;

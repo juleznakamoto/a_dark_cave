@@ -773,6 +773,15 @@ export function renderItemTooltip(
               )}
             </div>
           )}
+          {effect.bonuses.generalBonuses.veinrootFindMultiplier != null &&
+            effect.bonuses.generalBonuses.veinrootFindMultiplier > 1 && (
+              <div>
+                {getUiTooltip(
+                  "veinrootFindMultiplier",
+                  "Doubles chance of finding Veinroot",
+                )}
+              </div>
+            )}
           {effect.bonuses.generalBonuses.strangerApproachBonus != null &&
             effect.bonuses.generalBonuses.strangerApproachBonus > 0 && (
               <div>

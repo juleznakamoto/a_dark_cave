@@ -215,6 +215,7 @@ export const gameStateSchema = z.object({
       bloodstone: z.boolean().default(false),
       frostglass: z.boolean().default(false),
       tarnished_compass: z.boolean().default(false),
+      rootseeker_charm: z.boolean().default(false),
       sealed_chest: z.boolean().default(false),
       stonebinders_codex: z.boolean().default(false),
       chitin_plates: z.boolean().default(false),

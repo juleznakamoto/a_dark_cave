@@ -1015,6 +1015,10 @@
         "label": "Angelaufener Kompass",
         "message": "Du kaufst den angelaufenen Kompass. Artefakt der verschwundenen Zivilisation – seine Nadel weist auf verborgene Orte."
       },
+      "trade_rootseeker_charm": {
+        "label": "Wurzelsucher-Talisman",
+        "message": "Du kaufst den Wurzelsucher-Talisman. Der Händler murmelt etwas von menschenfressenden Pflanzen, von denen man sagt, sie wüchsen tief in den alten Wäldern."
+      },
       "trade_map_fragment_wooden": {
         "label": "Kartenfragment",
         "message": "Du kaufst ein zerrissenes Kartenfragment."

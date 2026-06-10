@@ -6,6 +6,7 @@ import {
   getTotalBuildingCostReduction,
   getMadnessComponents,
   getTotalMadness,
+  getVeinrootFindMultiplier,
   computeResourceRandomRange,
 } from "./effectsCalculation";
 import { isCraftUpgradeAction } from "@/game/craftUpgradeUtils";
@@ -295,12 +296,17 @@ export const getResourceGainTooltip = (
   const veinrootPctLine =
     (actionId === "chopWood" || actionId === "hunt") &&
       Boolean(state.story?.seen?.veinrootDiscovered)
-      ? actionId === "chopWood"
-        ? getUiTooltip(
-          "veinrootChanceChopWood",
-          "0.5% chance of Veinroot",
-        )
-        : getUiTooltip("veinrootChanceHunt", "1% chance of Veinroot")
+      ? (() => {
+        const basePct = actionId === "chopWood" ? 0.5 : 1;
+        const pct = basePct * getVeinrootFindMultiplier(state);
+        const formatted =
+          pct % 1 === 0 ? String(pct) : pct.toFixed(1).replace(/\.0$/, "");
+        return getUiTooltip(
+          "veinrootChance",
+          "{{percent}}% chance of Veinroot",
+          { percent: formatted },
+        );
+      })()
       : null;
 
   if (

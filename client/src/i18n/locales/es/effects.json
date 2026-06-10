@@ -218,6 +218,10 @@
       "description": "Los desconocidos se acercan a la aldea con mucha más frecuencia",
       "name": "Gran marca del cuervo"
     },
+    "rootseeker_charm": {
+      "description": "Amuleto tallado que atrae la raíz de vena a quienes recogen en la naturaleza.",
+      "name": "Amuleto buscador de raíces"
+    },
     "ravens_orb": {
       "description": "Orbe oscuro bendecido por cuervos con conocimiento antiguo",
       "name": "Orbe del cuervo"

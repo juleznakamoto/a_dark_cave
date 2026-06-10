@@ -1015,6 +1015,10 @@
         "label": "Bússola Manchada",
         "message": "Você compra a bússola manchada. Artefato da civilização desaparecida, sua agulha aponta para lugares ocultos."
       },
+      "trade_rootseeker_charm": {
+        "label": "Amuleto Buscador de Raízes",
+        "message": "Você compra o Amuleto Buscador de Raízes. O mercador murmura algo sobre plantas devoradoras de homens que dizem crescer nas profundezas dos bosques antigos."
+      },
       "trade_map_fragment_wooden": {
         "label": "Fragmento de Mapa",
         "message": "Você compra um fragmento de mapa esfarrapado."

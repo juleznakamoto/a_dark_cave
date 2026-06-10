@@ -226,6 +226,10 @@
       "description": "Strangers approach the village much more often",
       "name": "Raven's Great Mark"
     },
+    "rootseeker_charm": {
+      "description": "Carved charm that draws veinroot to those who gather in the wild.",
+      "name": "Rootseeker Charm"
+    },
     "ravens_orb": {
       "description": "Dark orb blessed by ravens with ancient knowledge",
       "name": "Raven's Orb"

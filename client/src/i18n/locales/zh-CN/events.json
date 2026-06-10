@@ -992,6 +992,10 @@
         "label": "黯淡指南针",
         "message": "你买下了黯淡指南针。失落文明的遗物，指针指向隐秘之处。"
       },
+      "trade_rootseeker_charm": {
+        "label": "寻根护符",
+        "message": "你买下了寻根护符。商人低语着传说深藏于远古密林深处的食人植物。"
+      },
       "trade_map_fragment_wooden": {
         "label": "地图碎片",
         "message": "你买下一块残破的地图片段。"

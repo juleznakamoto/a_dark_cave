@@ -2,6 +2,8 @@
   "tooltips": {
     "veinrootChanceChopWood": "0,5 % de probabilidad de Raíz de vena",
     "veinrootChanceHunt": "1 % de probabilidad de Raíz de vena",
+    "veinrootChance": "{{percent}} % de probabilidad de Raíz de vena",
+    "veinrootFindMultiplier": "Duplica la probabilidad de encontrar Raíz de vena",
     "maxBombsReached": "Máximo de bombas alcanzado ({{limit}} por tipo)",
     "maxVeinfireElixirReached": "Máximo de elixir de fuego de vena alcanzado ({{limit}})",
     "gainExact": "+{{amount}} {{resource}}",

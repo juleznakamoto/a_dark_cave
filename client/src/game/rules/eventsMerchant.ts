@@ -690,6 +690,12 @@ export function getMerchantTradeEffectTooltipLine(
       amount: CLARITY_ELIXIR_MADNESS_REDUCTION,
     });
   }
+  if (trade.buyItem === "rootseeker_charm") {
+    return getUiTooltip(
+      "veinrootFindMultiplier",
+      "Doubles chance of finding Veinroot",
+    );
+  }
   return null;
 }
 
@@ -828,6 +834,18 @@ const toolTrades = [
       state.BTP === 1 &&
       state.buildings.stoneHut >= 3 &&
       !state.relics.tarnished_compass,
+    costs: [{ resource: "gold", amounts: [2000] }],
+
+  },
+  {
+    id: "trade_rootseeker_charm",
+    label: getEffectName("relics", "rootseeker_charm", "Rootseeker Charm"),
+    give: "relic",
+    giveItem: "rootseeker_charm",
+    condition: (state: GameState) =>
+      Boolean(state.story.seen.veinrootDiscovered) &&
+      Boolean(state.story.seen.thirdWaveVictory) &&
+      !state.relics.rootseeker_charm,
     costs: [{ resource: "gold", amounts: [2000] }],
 
   },

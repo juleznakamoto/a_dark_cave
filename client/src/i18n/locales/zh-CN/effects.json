@@ -218,6 +218,10 @@
       "description": "陌生人更频繁地接近村庄",
       "name": "渡鸦大印"
     },
+    "rootseeker_charm": {
+      "description": "雕刻护符，能吸引脉根靠近在野外采集之人。",
+      "name": "寻根护符"
+    },
     "ravens_orb": {
       "description": "受渡鸦祝福、蕴含古老知识的黑暗宝珠",
       "name": "渡鸦宝珠"
