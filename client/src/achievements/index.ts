@@ -5,7 +5,7 @@ import { getUnclaimedBasicIds, basicChartConfig } from "./configs/basic";
 
 /**
  * Returns IDs of achievements that are full (claimable) but not yet claimed.
- * @param includeBasic — Survivor's Notes basic ring (matches panel visibility)
+ * @param includeBasic — basic ring (Survivor's Notes or Book of Trials)
  * @param includeAdvanced — building/item/action rings (only claimable in UI with Book of Trials)
  */
 export function getUnclaimedAchievementIds(

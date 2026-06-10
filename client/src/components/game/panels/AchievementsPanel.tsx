@@ -355,7 +355,7 @@ export default function AchievementsPanel() {
   const { t } = useTranslation("ui");
   const bookOfTrials = useGameStore((s) => s.books?.book_of_trials);
   const survivorsNotes = useGameStore((s) => s.relics?.survivors_notes);
-  const hasBasicTab = !!survivorsNotes;
+  const hasBasicTab = !!survivorsNotes || !!bookOfTrials;
   const [activeTab, setActiveTab] = useState(hasBasicTab ? "basic" : "building");
   const effectiveTab = hasBasicTab ? activeTab : (activeTab === "basic" ? "building" : activeTab);
   const lockedTooltip = t("achievements.notUnlocked");

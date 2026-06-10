@@ -142,7 +142,7 @@ export default function GameContainer() {
   const unclaimedAchievementIds = useMemo(
     () =>
       getUnclaimedAchievementIds(
-        !!relics?.survivors_notes,
+        !!relics?.survivors_notes || !!books?.book_of_trials,
         !!books?.book_of_trials,
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
