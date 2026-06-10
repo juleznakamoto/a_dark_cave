@@ -62,7 +62,7 @@ const priorInFlightExecutions = new Set<string>();
  * - At least one output resource has room below the storage cap
  */
 function canPriorExecute(actionId: string, state: GameState): boolean {
-  // Require enough food for upkeep on every assigned action (matches handlePopulationSurvival once hunting has started).
+  // Require enough food for upkeep on every assigned action (matches accumulatePopulationSurvival once hunting has started).
   if (state.story?.seen?.hasHunted) {
     const upkeep = getDisgracedPriorFoodUpkeepPerCycle(state);
     if (upkeep > 0 && (state.resources?.food ?? 0) < upkeep) return false;
@@ -515,11 +515,7 @@ export function startGameLoop() {
         clearExpiredTimedEventTab();
 
         if (!currentState.idleModeState?.isActive) {
-          handleGathererProduction();
-          handleHunterProduction();
-          handleScholarProduction();
-          handleMinerProduction();
-          handlePopulationSurvival();
+          runProductionCycle();
           handleStarvationCheck();
           handleFreezingCheck();
           handleMadnessCheck();
@@ -918,64 +914,73 @@ function commitResourceDeltas(deltas: Record<string, number>): void {
   );
 }
 
-function handleGathererProduction() {
-  const state = useGameStore.getState();
+/** Add a production/consumption entry to both the running ledger and the commit batch. */
+function accumulateProduction(
+  prod: { resource: string; totalAmount: number },
+  available: Record<string, number>,
+  deltas: Record<string, number>,
+): void {
+  available[prod.resource] = (available[prod.resource] ?? 0) + prod.totalAmount;
+  addDelta(deltas, prod.resource, prod.totalAmount);
+}
+
+/** True when every consumption entry can be paid from the running ledger. */
+function canAffordProduction(
+  production: { resource: string; totalAmount: number }[],
+  available: Record<string, number>,
+): boolean {
+  return production.every((prod) => {
+    if (prod.totalAmount < 0) {
+      return (available[prod.resource] ?? 0) >= Math.abs(prod.totalAmount);
+    }
+    return true;
+  });
+}
+
+function accumulateGathererProduction(
+  state: GameState,
+  available: Record<string, number>,
+  deltas: Record<string, number>,
+): void {
   const gatherer = state.villagers.gatherer;
-
-  if (gatherer > 0) {
-    const deltas: Record<string, number> = {};
-    const production = getPopulationProduction("gatherer", gatherer, state);
-    production.forEach((prod) => {
-      addDelta(deltas, prod.resource, prod.totalAmount);
-    });
-    // Single batched write applies resource limits via applyResourceDeltas (capResourceToLimit).
-    commitResourceDeltas(deltas);
-  }
+  if (gatherer <= 0) return;
+  getPopulationProduction("gatherer", gatherer, state).forEach((prod) =>
+    accumulateProduction(prod, available, deltas),
+  );
 }
 
-function handleHunterProduction() {
-  const state = useGameStore.getState();
+function accumulateHunterProduction(
+  state: GameState,
+  available: Record<string, number>,
+  deltas: Record<string, number>,
+): void {
   const hunter = state.villagers.hunter;
-
-  if (hunter > 0) {
-    const deltas: Record<string, number> = {};
-    const production = getPopulationProduction("hunter", hunter, state);
-    production.forEach((prod) => {
-      addDelta(deltas, prod.resource, prod.totalAmount);
-    });
-    commitResourceDeltas(deltas);
-  }
+  if (hunter <= 0) return;
+  getPopulationProduction("hunter", hunter, state).forEach((prod) =>
+    accumulateProduction(prod, available, deltas),
+  );
 }
 
-function handleScholarProduction() {
-  const state = useGameStore.getState();
+function accumulateScholarProduction(
+  state: GameState,
+  available: Record<string, number>,
+  deltas: Record<string, number>,
+): void {
   const scholarCount = state.villagers.scholar ?? 0;
+  if (scholarCount <= 0) return;
 
-  if (scholarCount > 0) {
-    const production = getPopulationProduction("scholar", scholarCount, state);
-    const canProduce = production.every((prod) => {
-      if (prod.totalAmount < 0) {
-        const available =
-          state.resources[prod.resource as keyof typeof state.resources] || 0;
-        return available >= Math.abs(prod.totalAmount);
-      }
-      return true;
-    });
+  const production = getPopulationProduction("scholar", scholarCount, state);
+  if (!canAffordProduction(production, available)) return;
 
-    if (!canProduce) return;
-
-    const deltas: Record<string, number> = {};
-    production.forEach((prod) => {
-      addDelta(deltas, prod.resource, prod.totalAmount);
-    });
-    commitResourceDeltas(deltas);
-  }
+  production.forEach((prod) => accumulateProduction(prod, available, deltas));
 }
 
-function handleMinerProduction() {
-  const state = useGameStore.getState();
-
-  // Collect all production data
+/** Returns the steel forged this cycle (for the "Forge Steel" achievement). */
+function accumulateMinerProduction(
+  state: GameState,
+  available: Record<string, number>,
+  deltas: Record<string, number>,
+): number {
   const allProduction: { job: string; production: any[] }[] = [];
   Object.entries(state.villagers).forEach(([job, count]) => {
     if (
@@ -987,52 +992,81 @@ function handleMinerProduction() {
         job === "powder_maker" ||
         job === "ashfire_dust_maker")
     ) {
-      const production = getPopulationProduction(job, count, state);
-      allProduction.push({ job, production });
+      allProduction.push({ job, production: getPopulationProduction(job, count, state) });
     }
   });
 
-  // Track available resources after each job's production/consumption (sequential affordability),
-  // and accumulate the net deltas so they can all be applied in one store write at the end.
-  const availableResources = { ...state.resources };
-  const deltas: Record<string, number> = {};
-  // Accumulate steel produced by steel forgers this tick for the "Forge Steel" achievement.
   let steelForgedThisTick = 0;
 
-  // Process each job sequentially
+  // Process jobs sequentially so each consumer's affordability reflects earlier jobs this cycle.
   allProduction.forEach(({ job, production }) => {
-    // Check if this job can produce based on currently available resources
-    const canProduce = production.every((prod) => {
-      if (prod.totalAmount < 0) {
-        // Consumption - check if we have enough available
-        const available =
-          availableResources[
-          prod.resource as keyof typeof availableResources
-          ] || 0;
-        return available >= Math.abs(prod.totalAmount);
+    if (!canAffordProduction(production, available)) return;
+    production.forEach((prod) => {
+      accumulateProduction(prod, available, deltas);
+      if (job === "steel_forger" && prod.resource === "steel" && prod.totalAmount > 0) {
+        steelForgedThisTick += prod.totalAmount;
       }
-      return true; // Production is always allowed
     });
-
-    // Only apply production if all resources are available
-    if (canProduce) {
-      production.forEach((prod) => {
-        // Update the tracked available resources (for the next job's affordability check)
-        // and accumulate the delta for a single batched commit.
-        availableResources[prod.resource as keyof typeof availableResources] =
-          (availableResources[
-            prod.resource as keyof typeof availableResources
-          ] || 0) + prod.totalAmount;
-
-        addDelta(deltas, prod.resource, prod.totalAmount);
-
-        if (job === "steel_forger" && prod.resource === "steel" && prod.totalAmount > 0) {
-          steelForgedThisTick += prod.totalAmount;
-        }
-      });
-    }
   });
 
+  return steelForgedThisTick;
+}
+
+function accumulatePopulationSurvival(
+  state: GameState,
+  available: Record<string, number>,
+  deltas: Record<string, number>,
+): void {
+  const totalPopulation = state.current_population;
+  const priorFoodPerCycle = getDisgracedPriorFoodUpkeepPerCycle(state);
+
+  if (totalPopulation === 0 && priorFoodPerCycle === 0) return;
+  if (!state.story.seen.hasHunted) return;
+
+  // Food consumption (starvation deaths are handled separately by handleStarvationCheck).
+  // Consume against the post-production ledger so eating never undercuts this cycle's hunt.
+  const foodNeeded = totalPopulation + priorFoodPerCycle;
+  const availableFood = available["food"] ?? 0;
+  const foodConsumed = Math.min(availableFood, foodNeeded);
+  if (foodConsumed > 0) {
+    addDelta(deltas, "food", -foodConsumed);
+    available["food"] = availableFood - foodConsumed;
+  }
+
+  if (totalPopulation === 0) return;
+
+  // Wood consumption (1 per villager for heating/shelter; freezing check handles deaths).
+  const woodNeeded = totalPopulation;
+  const availableWood = available["wood"] ?? 0;
+  const woodConsumed = Math.min(availableWood, woodNeeded);
+  if (woodConsumed > 0) {
+    addDelta(deltas, "wood", -woodConsumed);
+    available["wood"] = availableWood - woodConsumed;
+  }
+}
+
+/**
+ * Run a full production cycle as one capped store write.
+ *
+ * All villager production/consumption and population upkeep are accumulated into a single delta
+ * batch and committed once. Committing per-handler (as before) capped each producer's output to
+ * the storage limit *before* later consumers ran, so a resource produced then consumed in the same
+ * cycle (e.g. fur: hunters produce, tanners consume) settled at `max - consumption` instead of max.
+ * Netting first, then capping once, fixes this for every resource. Mirrors the sleep/idle sim,
+ * which likewise caps only after the full cycle.
+ */
+function runProductionCycle(): void {
+  const state = useGameStore.getState();
+  const available: Record<string, number> = { ...state.resources };
+  const deltas: Record<string, number> = {};
+
+  accumulateGathererProduction(state, available, deltas);
+  accumulateHunterProduction(state, available, deltas);
+  accumulateScholarProduction(state, available, deltas);
+  const steelForgedThisTick = accumulateMinerProduction(state, available, deltas);
+  accumulatePopulationSurvival(state, available, deltas);
+
+  // Single capped write: applyResourceDeltas applies storage limits to the net result.
   commitResourceDeltas(deltas);
 
   if (steelForgedThisTick > 0) {
@@ -1046,44 +1080,6 @@ function handleMinerProduction() {
         },
       },
     }));
-  }
-}
-
-function handlePopulationSurvival() {
-  const state = useGameStore.getState();
-
-  const totalPopulation = state.current_population;
-
-  const priorFoodPerCycle = getDisgracedPriorFoodUpkeepPerCycle(state);
-
-  if (totalPopulation === 0 && priorFoodPerCycle === 0) return;
-
-  if (!state.story.seen.hasHunted) return;
-
-  // Handle food consumption (but not starvation - that's handled by events)
-  const foodNeeded = totalPopulation + priorFoodPerCycle;
-  const availableFood = state.resources.food;
-
-  if (availableFood >= foodNeeded) {
-    // Everyone can eat, consume food normally
-    state.updateResource("food", -foodNeeded);
-  } else {
-    // Not enough food, consume all available food (starvation event will trigger separately)
-    state.updateResource("food", -availableFood);
-  }
-
-  // Handle wood consumption (1 wood per villager for heating/shelter)
-  if (totalPopulation === 0) return;
-
-  const woodNeeded = totalPopulation;
-  const availableWood = state.resources.wood;
-
-  if (availableWood >= woodNeeded) {
-    // Consume wood normally
-    state.updateResource("wood", -woodNeeded);
-  } else {
-    // Not enough wood, consume all available wood (freezing check will handle deaths)
-    state.updateResource("wood", -availableWood);
   }
 }
 
