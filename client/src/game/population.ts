@@ -142,7 +142,10 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
   scholar: {
     id: "scholar",
     label: "scholar",
-    production: [{ resource: "insight", amount: 1, interval: 15000 }],
+    production: [
+      { resource: "insight", amount: 1, interval: 15000 },
+      { resource: "food", amount: -5, interval: 15000 },
+    ],
   },
 };
 

@@ -91,17 +91,17 @@ function renderNightshadePoisonTooltip(gameState: GameState) {
   const knowledge = getTotalKnowledge(gameState) || 0;
   const knowledgeBonus = Math.floor(knowledge / 5);
   const perHit = getPoisonArrowsDamagePerTick(gameState);
-  const nightshadeEnchant = getWeaponEnchantBonus(gameState, "nightshade_bow");
-  const poisonEnchantBase = nightshadeEnchant.poisonBaseDamage;
-  const poisonEnchantRounds = nightshadeEnchant.poisonRounds;
+  const poisonEnchantRounds = getWeaponEnchantBonus(
+    gameState,
+    "nightshade_bow",
+  ).poisonRounds;
 
   return (
     <div className="mt-2 space-y-0 text-xs text-foreground">
       <div>
         {getUiTooltip("baseDamage", "Base Damage: {{value}}", {
-          value: getPoisonArrowsBaseDamage(gameState) - poisonEnchantBase,
+          value: getPoisonArrowsBaseDamage(gameState),
         })}
-        {renderEnchantStatSuffix(poisonEnchantBase)}
       </div>
       {knowledge >= 5 && (
         <div>

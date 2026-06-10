@@ -952,12 +952,21 @@ function handleScholarProduction() {
   const scholarCount = state.villagers.scholar ?? 0;
 
   if (scholarCount > 0) {
-    const deltas: Record<string, number> = {};
     const production = getPopulationProduction("scholar", scholarCount, state);
-    production.forEach((prod) => {
-      if (prod.totalAmount > 0) {
-        addDelta(deltas, prod.resource, prod.totalAmount);
+    const canProduce = production.every((prod) => {
+      if (prod.totalAmount < 0) {
+        const available =
+          state.resources[prod.resource as keyof typeof state.resources] || 0;
+        return available >= Math.abs(prod.totalAmount);
       }
+      return true;
+    });
+
+    if (!canProduce) return;
+
+    const deltas: Record<string, number> = {};
+    production.forEach((prod) => {
+      addDelta(deltas, prod.resource, prod.totalAmount);
     });
     commitResourceDeltas(deltas);
   }

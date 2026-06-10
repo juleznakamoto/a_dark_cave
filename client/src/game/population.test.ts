@@ -721,6 +721,7 @@ describe('Scholar insight production', () => {
     const prod = getPopulationProduction('scholar', 2, clerksOnly);
     const insight = prod.find((p) => p.resource === 'insight');
     expect(insight?.totalAmount).toBe(2);
+    expect(prod.find((p) => p.resource === 'food')?.totalAmount).toBe(-10);
 
     const academy = createTestState({
       buildings: { ...createTestState().buildings, clerksHut: 1, scriptorium: 1, inkwardenAcademy: 1 },
@@ -738,6 +739,6 @@ describe('Scholar insight production', () => {
     const effects = getTotalPopulationEffects(state, ['scholar']);
     expect(effects.insight).toBe(1);
     expect(effects.wood).toBe(-1);
-    expect(effects.food).toBe(-1);
+    expect(effects.food).toBe(-6);
   });
 });
