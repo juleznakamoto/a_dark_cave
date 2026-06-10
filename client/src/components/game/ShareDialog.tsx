@@ -230,7 +230,7 @@ function ShareCard({
             </div>
           </div>
 
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-start">
             <div
               className={SECTION_HEADING_CLASS}
               style={{ fontSize: SECTION_HEADING_FONT_SIZE }}
