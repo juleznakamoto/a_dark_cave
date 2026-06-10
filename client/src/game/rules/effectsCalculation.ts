@@ -16,6 +16,7 @@ import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
 import { BUILDING_HIERARCHIES } from "@/game/buildingHierarchy";
 import { getBonusSidebarLabel } from "@/i18n/resolveGameText";
 import { CRAFT_UPGRADE_ACTIONS, getCraftPriorMultiplier } from "@/game/craftUpgradeUtils";
+import { getWeaponEnchantBonus } from "@/game/weaponEnchantments";
 
 // Tool hierarchy definitions
 const AXE_HIERARCHY = [
@@ -1140,6 +1141,17 @@ export const calculateTotalEffects = (state: GameState) => {
           effect.bonuses.generalBonuses.knowledge;
       }
     }
+  });
+
+  // Weapon enchantments — only displayed weapons contribute (mirrors getActiveEffects).
+  const enchantDisplayTools = getDisplayTools(state);
+  Object.keys(enchantDisplayTools).forEach((weaponId) => {
+    if (!weaponEffects[weaponId]) return;
+    const enchant = getWeaponEnchantBonus(state, weaponId);
+    effects.statBonuses.strength +=
+      enchant.baseStrength + enchant.enchantStrength;
+    effects.statBonuses.knowledge +=
+      enchant.baseKnowledge + enchant.enchantKnowledge;
   });
 
   // Add relic effects directly to statBonuses

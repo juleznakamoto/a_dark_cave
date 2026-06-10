@@ -345,6 +345,8 @@ export const gameStateSchema = z.object({
     })
     .default({}),
   villagerCapUpgrades: z.record(z.string(), z.number()).default({}),
+  // Weapon enchantment levels keyed by weapon id (Tomewarden Academy feature).
+  weaponEnchantments: z.record(z.string(), z.number()).default({}),
   expeditionVillagers: z.record(z.string(), z.number()).default({}),
   story: z
     .object({

@@ -53,6 +53,7 @@
     "damaged": "(beschädigt)", //ok
     "level": "Stufe {{level}}",
     "improveForInsight": "Verbessern für {{cost}} Einsicht",
+    "enchantForInsight": "Verzaubern für {{cost}} Einsicht",
     "maxHeld": "Max.: {{value}}",
     "doubleActionChance": "{{percent}} % Chance, Aktionsgewinne zu verdoppeln",
     "luck": "Glück: +{{value}}",
@@ -152,7 +153,8 @@
       "maxPopulation": "+{{amount}} max. Bevölkerung",
       "newVillagerChancePercent": "+{{percent}} % Chance auf neue Dorfbewohner",
       "steelForgerSteel": "Stahlschmied: +{{amount}} Stahl",
-      "tannerLeather": "Gerber: +{{amount}} Leder"
+      "tannerLeather": "Gerber: +{{amount}} Leder",
+      "weaponEnhancement": "Waffenverzauberung"
     },
     "obsidianOrbFocusRate": "Fokus: 1 alle 15 Minuten",
     "obsidianOrbFocusCountdown": "{{time}} bis zum nächsten Fokuspunkt",

@@ -39,6 +39,10 @@ import {
   getVillagerCapLevel,
   MAX_VILLAGER_CAP_LEVEL,
 } from "@/game/villagerCapUpgrades";
+import {
+  getNextEnchantCost,
+  isWeaponEnchantUnlocked,
+} from "@/game/weaponEnchantments";
 import { getUiTooltip } from "@/i18n/tooltipLabels";
 
 const STAT_EFFECT_PULSE_STAT_IDS: TooltipStatKey[] = [
@@ -287,6 +291,109 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
         aria-label={getUiTooltip(
           "improveForInsight",
           "Improve for {{cost}} Insight",
+          { cost },
+        )}
+        aria-busy={playing}
+        disabled={isDisabled}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handleClick();
+        }}
+        className={getInsightBadgeTriggerClassName({
+          canAfford: affordable,
+          playing,
+          className: cn(
+            "inline-flex h-[1em] w-[1em] text-[14px] leading-none",
+            INSIGHT_BADGE_ALIGN_CLASS,
+            isDisabled ? "cursor-not-allowed" : "cursor-pointer",
+          ),
+        })}
+      >
+        <BuildingActionBadge embedded size="sm" playing={playing} />
+      </button>
+    </TooltipWrapper>
+  );
+}
+
+/**
+ * Enchant badge shown next to an owned weapon once the Tomewarden Academy is built.
+ * Mirrors {@link BuildingCapUpgradeBadge}: clicking plays the blob animation for
+ * INSIGHT_REVEAL_DURATION_MS and the enchantment is applied when the animation resolves.
+ */
+function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
+  const gameState = useGameStore((s) => s as unknown as GameState);
+  const setHighlightedResources = useGameStore(
+    (s) => s.setHighlightedResources,
+  );
+  const [playingUntil, setPlayingUntil] = useState(0);
+  const [, forceUpdate] = useState(0);
+  const enchantTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const playing = playingUntil > Date.now();
+
+  useEffect(() => {
+    if (!playing) return;
+    const id = setTimeout(
+      () => forceUpdate((n) => n + 1),
+      Math.max(0, playingUntil - Date.now()),
+    );
+    return () => clearTimeout(id);
+  }, [playing, playingUntil]);
+
+  useEffect(
+    () => () => {
+      if (enchantTimerRef.current) clearTimeout(enchantTimerRef.current);
+    },
+    [],
+  );
+
+  if (!isWeaponEnchantUnlocked(gameState)) return null;
+  if (!isInsightUnlocked(gameState)) return null;
+  if (!(gameState.weapons as Record<string, boolean>)[weaponId]) return null;
+
+  const cost = getNextEnchantCost(gameState, weaponId);
+  // Hide once the weapon is fully enchanted (no further level available).
+  if (cost == null) return null;
+
+  const affordable = getInsightAmount(gameState) >= cost;
+  const tooltipId = `weapon-enchant-${weaponId}`;
+  const isDisabled = !affordable || playing;
+
+  const handleClick = () => {
+    if (isDisabled) return;
+    setPlayingUntil(Date.now() + INSIGHT_REVEAL_DURATION_MS);
+    setHighlightedResources(["insight"]);
+    enchantTimerRef.current = setTimeout(() => {
+      useGameStore.getState().enchantWeapon(weaponId);
+      setHighlightedResources([]);
+    }, INSIGHT_REVEAL_DURATION_MS);
+  };
+
+  return (
+    <TooltipWrapper
+      tooltip={
+        <div className="text-xs">
+          {getUiTooltip("enchantForInsight", "Enchant for {{cost}} Insight", {
+            cost,
+          })}
+        </div>
+      }
+      tooltipId={tooltipId}
+      disabled
+      tooltipContentClassName="max-w-xs"
+      tooltipTriggerAsChild
+      onMouseEnter={() => setHighlightedResources(["insight"])}
+      onMouseLeave={() => {
+        if (!playing) setHighlightedResources([]);
+      }}
+      className="inline-flex shrink-0 items-center self-center"
+    >
+      <button
+        type="button"
+        aria-label={getUiTooltip(
+          "enchantForInsight",
+          "Enchant for {{cost}} Insight",
           { cost },
         )}
         aria-busy={playing}
@@ -929,6 +1036,10 @@ export default function SidePanelSection({
       sectionId !== undefined &&
       EFFECT_TOOLTIP_SECTIONS.has(sectionId)
     ) {
+      const enchantBadge =
+        sectionId === "weapons" ? (
+          <WeaponEnchantBadge weaponId={item.id} />
+        ) : null;
       return (
         <div
           key={item.id}
@@ -942,27 +1053,33 @@ export default function SidePanelSection({
                 : ""
             }`}
         >
-          <TooltipWrapper
-            tooltip={renderItemTooltip(
-              item.id,
-              sectionId === "weapons"
-                ? "weapon"
-                : sectionId === "blessings" ||
-                  sectionId === "clothing" ||
-                  sectionId === "relics" ||
-                  sectionId === "schematics"
-                  ? "blessing"
-                  : "tool",
-            )}
-            tooltipId={item.id}
-            disabled
-            tooltipContentClassName="max-w-xs"
-            onMouseEnter={() => handleItemTooltipEnter(item.id)}
-            onMouseLeave={() => handleItemTooltipLeave(item.id)}
-            className={sidePanelTooltipTriggerClass}
-          >
-            {labelContent}
-          </TooltipWrapper>
+          <span className="inline-flex min-w-0 max-w-full items-center gap-0.5">
+            <TooltipWrapper
+              tooltip={renderItemTooltip(
+                item.id,
+                sectionId === "weapons"
+                  ? "weapon"
+                  : sectionId === "blessings" ||
+                    sectionId === "clothing" ||
+                    sectionId === "relics" ||
+                    sectionId === "schematics"
+                    ? "blessing"
+                    : "tool",
+              )}
+              tooltipId={item.id}
+              disabled
+              tooltipContentClassName="max-w-xs"
+              onMouseEnter={() => handleItemTooltipEnter(item.id)}
+              onMouseLeave={() => handleItemTooltipLeave(item.id)}
+              className={cn(
+                "inline-flex min-w-0 shrink-0",
+                globalTooltip.isMobile && "cursor-pointer",
+              )}
+            >
+              {labelContent}
+            </TooltipWrapper>
+            {enchantBadge}
+          </span>
         </div>
       );
     }

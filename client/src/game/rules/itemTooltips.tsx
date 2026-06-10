@@ -61,6 +61,11 @@ import {
   INSIGHT_GLYPH,
   INSIGHT_TEXT_CLASS,
 } from "@/game/villagerCapUpgrades";
+import {
+  getMaxEnchantLevel,
+  getWeaponEnchantBonus,
+  getWeaponEnchantLevel,
+} from "@/game/weaponEnchantments";
 
 /** Moon phase for n fragments: 1→◔, 2→◑, 3→◕, 4→● (index = n − 1). */
 const MAP_FRAGMENT_MOON_GLYPHS = ["◔", "◑", "◕", "●"] as const;
@@ -557,11 +562,42 @@ export function renderItemTooltip(
       ? MAP_FRAGMENT_MOON_GLYPHS[mapFragmentMoonGlyphIndex(mapFragmentCount)]
       : null;
 
+  // Weapon enchantment (Tomewarden Academy): adds Insight-blue stat bonuses + a
+  // title glyph. Nightshade-style multi-level weapons also show the level number.
+  const enchantBonus =
+    itemType === "weapon"
+      ? getWeaponEnchantBonus(useGameStore.getState(), itemId)
+      : null;
+  const enchantLevel =
+    itemType === "weapon"
+      ? getWeaponEnchantLevel(useGameStore.getState(), itemId)
+      : 0;
+  const showEnchantNumber =
+    itemType === "weapon" && getMaxEnchantLevel(itemId) > 1;
+  const baseStrength = effect.bonuses?.generalBonuses?.strength ?? 0;
+  const baseKnowledge = effect.bonuses?.generalBonuses?.knowledge ?? 0;
+  const displayStrength = baseStrength + (enchantBonus?.baseStrength ?? 0);
+  const displayKnowledge = baseKnowledge + (enchantBonus?.baseKnowledge ?? 0);
+
   return (
     <div className="text-xs">
       {showTitle &&
         effect.name &&
-        (itemId === "map_fragment" ? (
+        (enchantLevel > 0 ? (
+          <div className="flex w-full flex-wrap items-baseline justify-between gap-x-2 gap-y-0">
+            <span className="font-bold">
+              {getEffectName(effectCategory, itemId, effect.name)}
+            </span>
+            <span
+              className={`ml-auto !text-sm inline-flex items-center gap-0 font-noto-symbols-2 tabular-nums ${INSIGHT_TEXT_CLASS}`}
+            >
+              <span aria-hidden>{INSIGHT_GLYPH}</span>
+              {showEnchantNumber && (
+                <span className="font-light text-base">{enchantLevel}</span>
+              )}
+            </span>
+          </div>
+        ) : itemId === "map_fragment" ? (
           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
             <span className="font-bold">
               {getEffectName(effectCategory, itemId, effect.name)}
@@ -611,18 +647,32 @@ export function renderItemTooltip(
               })}
             </div>
           )}
-          {effect.bonuses.generalBonuses.strength && (
+          {(displayStrength > 0 ||
+            (enchantBonus?.enchantStrength ?? 0) > 0) && (
             <div>
               {getUiTooltip("strength", "Strength: +{{value}}", {
-                value: effect.bonuses.generalBonuses.strength,
+                value: displayStrength,
               })}
+              {(enchantBonus?.enchantStrength ?? 0) > 0 && (
+                <span className={INSIGHT_TEXT_CLASS}>
+                  {" "}
+                  +{enchantBonus?.enchantStrength}
+                </span>
+              )}
             </div>
           )}
-          {effect.bonuses.generalBonuses.knowledge && (
+          {(displayKnowledge > 0 ||
+            (enchantBonus?.enchantKnowledge ?? 0) > 0) && (
             <div>
               {getUiTooltip("knowledge", "Knowledge: +{{value}}", {
-                value: effect.bonuses.generalBonuses.knowledge,
+                value: displayKnowledge,
               })}
+              {(enchantBonus?.enchantKnowledge ?? 0) > 0 && (
+                <span className={INSIGHT_TEXT_CLASS}>
+                  {" "}
+                  +{enchantBonus?.enchantKnowledge}
+                </span>
+              )}
             </div>
           )}
           {madnessValue && (

@@ -53,6 +53,7 @@
     "damaged": "(dañado)",
     "level": "Nivel {{level}}",
     "improveForInsight": "Mejorar por {{cost}} Perspicacia",
+    "enchantForInsight": "Encantar por {{cost}} Perspicacia",
     "maxHeld": "Máx.: {{value}}",
     "doubleActionChance": "{{percent}} % de probabilidad de duplicar ganancias de acción",
     "luck": "Suerte: +{{value}}",
@@ -152,7 +153,8 @@
       "maxPopulation": "+{{amount}} población máx.",
       "newVillagerChancePercent": "+{{percent}} % de probabilidad de nuevo aldeano",
       "steelForgerSteel": "Forjador de acero: +{{amount}} acero",
-      "tannerLeather": "Curtidor: +{{amount}} cuero"
+      "tannerLeather": "Curtidor: +{{amount}} cuero",
+      "weaponEnhancement": "Mejora de armas"
     },
     "obsidianOrbFocusRate": "Concentración: 1 cada 15 minutos",
     "obsidianOrbFocusCountdown": "{{time}} hasta el próximo punto de concentración",

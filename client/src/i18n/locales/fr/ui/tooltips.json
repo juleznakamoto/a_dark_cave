@@ -53,6 +53,7 @@
     "damaged": "(endommagé)",
     "level": "Niveau {{level}}",
     "improveForInsight": "Améliorer pour {{cost}} Perspicacité",
+    "enchantForInsight": "Enchanter pour {{cost}} Perspicacité",
     "maxHeld": "Max : {{value}}",
     "doubleActionChance": "{{percent}} % de chance de doubler les gains d'action",
     "luck": "Chance : +{{value}}",
@@ -152,7 +153,8 @@
       "maxPopulation": "+{{amount}} population max.",
       "newVillagerChancePercent": "+{{percent}} % de chance de nouveau villageois",
       "steelForgerSteel": "Forgeron d'acier : +{{amount}} acier",
-      "tannerLeather": "Tanneur : +{{amount}} cuir"
+      "tannerLeather": "Tanneur : +{{amount}} cuir",
+      "weaponEnhancement": "Amélioration d'armes"
     },
     "obsidianOrbFocusRate": "Concentration : 1 toutes les 15 minutes",
     "obsidianOrbFocusCountdown": "{{time}} avant le prochain point de concentration",

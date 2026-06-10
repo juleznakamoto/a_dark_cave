@@ -56,6 +56,7 @@
     "damaged": "(danificado)",
     "level": "Nível {{level}}",
     "improveForInsight": "Aprimorar por {{cost}} Perspicácia",
+    "enchantForInsight": "Encantar por {{cost}} Perspicácia",
     "maxHeld": "Máx.: {{value}}",
     "doubleActionChance": "{{percent}}% de chance de dobrar os ganhos das ações",
     "luck": "Sorte: +{{value}}",
@@ -155,7 +156,8 @@
       "maxPopulation": "+{{amount}} de População Máx.",
       "newVillagerChancePercent": "+{{percent}}% de Chance de Novo Aldeão",
       "steelForgerSteel": "Forjador de Aço: +{{amount}} de Aço",
-      "tannerLeather": "Curtidor: +{{amount}} de Couro"
+      "tannerLeather": "Curtidor: +{{amount}} de Couro",
+      "weaponEnhancement": "Aprimoramento de armas"
     }
   }
 }

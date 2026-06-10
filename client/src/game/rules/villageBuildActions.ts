@@ -1761,6 +1761,7 @@ export const villageBuildActions: Record<string, Action> = {
     tooltipEffects: [
       bt("knowledgeBonus", "+{{amount}} Knowledge", { amount: 10 }),
       bt("scholarInsight3", "Scholar produces 3 Insight per cycle"),
+      bt("weaponEnhancement", "Weapon Enhancement"),
     ],
     building: true,
     show_when: {

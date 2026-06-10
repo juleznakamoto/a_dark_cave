@@ -20,10 +20,10 @@ import {
   bombKnowledgeDamageBonus,
   CRUSHING_STRIKE_UPGRADES,
   POISON_ARROWS_BASE_DAMAGE,
-  POISON_ARROWS_DOT_FIGHT_ROUNDS,
   bloodflameSphereFightBurnTicksAfterCast,
   poisonArrowsDamagePerTick,
 } from "@/game/rules/skillUpgrades";
+import { getPoisonArrowsDotFightRounds } from "@/game/weaponEnchantments";
 import {
   Dialog,
   DialogContent,
@@ -504,7 +504,7 @@ export default function CombatDialog({
       );
 
       setEnemyPoisonDamage(dmg);
-      setEnemyPoisonRounds(POISON_ARROWS_DOT_FIGHT_ROUNDS);
+      setEnemyPoisonRounds(getPoisonArrowsDotFightRounds(gameState));
 
       setCurrentEnemy((prev) =>
         prev ? { ...prev, currentHealth: newEnemyHealth } : null,

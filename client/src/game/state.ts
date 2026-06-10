@@ -97,6 +97,11 @@ import {
   type VillagerCapGroupId,
 } from "@/game/villagerCapUpgrades";
 import {
+  canEnchantWeapon,
+  getNextEnchantCost,
+  getWeaponEnchantLevel,
+} from "@/game/weaponEnchantments";
+import {
   isI18nReturnedObjectError,
   resolveEventMessage,
   resolveEventTitle,
@@ -379,6 +384,7 @@ interface GameStore extends GameState {
   assignVillager: (job: keyof GameState["villagers"]) => void;
   unassignVillager: (job: keyof GameState["villagers"]) => void;
   upgradeVillagerCap: (groupId: string) => boolean;
+  enchantWeapon: (weaponId: string) => boolean;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
   setCombatDialog: (isOpen: boolean, data?: any) => void;
   setTimedEventTab: (isActive: boolean, event?: LogEntry | null, duration?: number) => Promise<void>;
@@ -3274,6 +3280,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
         [capGroupId]: level + 1,
       },
     });
+    return true;
+  },
+
+  enchantWeapon: (weaponId: string) => {
+    const state = get();
+    if (!canEnchantWeapon(state, weaponId)) return false;
+
+    const cost = getNextEnchantCost(state, weaponId);
+    if (cost == null) return false;
+    const level = getWeaponEnchantLevel(state, weaponId);
+    const resourceUpdates = updateResource(state, "insight", -cost);
+
+    set({
+      ...resourceUpdates,
+      weaponEnchantments: {
+        ...(state.weaponEnchantments ?? {}),
+        [weaponId]: level + 1,
+      },
+    });
+    StateManager.scheduleEffectsUpdate(get);
     return true;
   },
 

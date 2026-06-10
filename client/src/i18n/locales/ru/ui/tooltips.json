@@ -53,6 +53,7 @@
     "damaged": "(повреждено)",
     "level": "Уровень {{level}}",
     "improveForInsight": "Улучшить за {{cost}} Прозрение",
+    "enchantForInsight": "Зачаровать за {{cost}} Прозрение",
     "maxHeld": "Макс.: {{value}}",
     "doubleActionChance": "{{percent}} % шанс удвоить награды действия",
     "luck": "Удача: +{{value}}",
@@ -152,7 +153,8 @@
       "maxPopulation": "+{{amount}} к макс. населению",
       "newVillagerChancePercent": "+{{percent}} % шанс нового жителя",
       "steelForgerSteel": "Сталевар: +{{amount}} стали",
-      "tannerLeather": "Дубильщик: +{{amount}} кожи"
+      "tannerLeather": "Дубильщик: +{{amount}} кожи",
+      "weaponEnhancement": "Улучшение оружия"
     },
     "obsidianOrbFocusRate": "Концентрация: 1 каждые 15 минут",
     "obsidianOrbFocusCountdown": "{{time}} до следующего очка концентрации",

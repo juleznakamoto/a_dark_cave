@@ -56,6 +56,7 @@
     "damaged": "(danneggiato)",
     "level": "Livello {{level}}",
     "improveForInsight": "Migliora per {{cost}} Intuizione",
+    "enchantForInsight": "Incanta per {{cost}} Intuizione",
     "maxHeld": "Max: {{value}}",
     "doubleActionChance": "{{percent}}% di probabilità di raddoppiare i guadagni delle azioni",
     "luck": "Fortuna: +{{value}}",
@@ -155,7 +156,8 @@
       "maxPopulation": "+{{amount}} Popolazione Max",
       "newVillagerChancePercent": "+{{percent}}% Probabilità di Nuovo Abitante",
       "steelForgerSteel": "Forgiatore d'Acciaio: +{{amount}} Acciaio",
-      "tannerLeather": "Conciatore: +{{amount}} Cuoio"
+      "tannerLeather": "Conciatore: +{{amount}} Cuoio",
+      "weaponEnhancement": "Potenziamento delle armi"
     }
   }
 }

@@ -18,9 +18,9 @@ import {
   bombKnowledgeDamageBonus,
   CRUSHING_STRIKE_UPGRADES,
   POISON_ARROWS_BASE_DAMAGE,
-  POISON_ARROWS_DOT_FIGHT_ROUNDS,
   poisonArrowsDamagePerTick,
 } from "./skillUpgrades";
+import { getPoisonArrowsDotFightRounds } from "@/game/weaponEnchantments";
 import { formatNumber, formatSignedNumber } from "@/lib/utils";
 import type { TooltipConfig } from "@/game/types";
 import {
@@ -819,7 +819,7 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
         getUiTooltip(
           "totalDamageForRounds",
           "Total Damage: {{value}} for {{rounds}} rounds",
-          { value: perHit, rounds: POISON_ARROWS_DOT_FIGHT_ROUNDS },
+          { value: perHit, rounds: getPoisonArrowsDotFightRounds(state) },
         ),
       ];
       return lines.join("\n");

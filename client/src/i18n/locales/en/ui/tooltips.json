@@ -56,6 +56,7 @@
     "damaged": "(damaged)",
     "level": "Level {{level}}",
     "improveForInsight": "Improve for {{cost}} Insight",
+    "enchantForInsight": "Enchant for {{cost}} Insight",
     "maxHeld": "Max: {{value}}",
     "doubleActionChance": "{{percent}}% chance to double action gains",
     "luck": "Luck: +{{value}}",
@@ -155,7 +156,8 @@
       "maxPopulation": "+{{amount}} Max Population",
       "newVillagerChancePercent": "+{{percent}}% New Villager Chance",
       "steelForgerSteel": "Steel Forger: +{{amount}} Steel",
-      "tannerLeather": "Tanner: +{{amount}} Leather"
+      "tannerLeather": "Tanner: +{{amount}} Leather",
+      "weaponEnhancement": "Weapon Enhancement"
     }
   }
 }
