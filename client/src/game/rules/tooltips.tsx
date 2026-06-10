@@ -294,17 +294,16 @@ export const getResourceGainTooltip = (
     isVeinfireElixirAtLimit(state);
 
   const veinrootPctLine =
-    (actionId === "chopWood" || actionId === "hunt") &&
-      Boolean(state.story?.seen?.veinrootDiscovered)
+    actionId === "chopWood" && Boolean(state.story?.seen?.veinrootDiscovered)
       ? (() => {
-        const basePct = actionId === "chopWood" ? 0.5 : 1;
+        const basePct = 0.5;
         const pct = basePct * getVeinrootFindMultiplier(state);
         const formatted =
           pct % 1 === 0 ? String(pct) : pct.toFixed(1).replace(/\.0$/, "");
         return getUiTooltip(
-          "veinrootChance",
-          "{{percent}}% chance of Veinroot",
-          { percent: formatted },
+          "veinrootChanceWood",
+          "{{percent}}% chance of {{amount}} Veinroot",
+          { percent: formatted, amount: 100 },
         );
       })()
       : null;

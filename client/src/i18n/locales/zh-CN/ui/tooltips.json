@@ -3,6 +3,7 @@
     "veinrootChanceChopWood": "0.5% 几率获得脉根",
     "veinrootChanceHunt": "1% 几率获得脉根",
     "veinrootChance": "{{percent}}% 几率获得脉根",
+    "veinrootChanceWood": "{{percent}}% 几率获得 {{amount}} 脉根",
     "veinrootFindMultiplier": "脉根发现几率翻倍",
     "maxBombsReached": "炸弹已达上限（每种 {{limit}} 个）",
     "maxVeinfireElixirReached": "脉火灵药已达上限（{{limit}}）",

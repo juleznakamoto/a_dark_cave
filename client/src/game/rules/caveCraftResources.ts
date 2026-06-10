@@ -144,7 +144,7 @@ export const caveCraftResources: Record<string, Action> = {
       "story.seen.veinrootDiscovered": true,
     },
     cost: {
-      "resources.veinroot": 100,
+      "resources.veinroot": 500,
     },
     effects: {
       "resources.veinfire_elixir": 1,

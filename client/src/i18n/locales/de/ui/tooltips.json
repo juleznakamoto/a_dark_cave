@@ -3,6 +3,7 @@
     "veinrootChanceChopWood": "0,5 % Chance auf Aderwurzel",
     "veinrootChanceHunt": "1 % Chance auf Aderwurzel",
     "veinrootChance": "{{percent}} % Chance auf Aderwurzel",
+    "veinrootChanceWood": "{{percent}} % Chance auf {{amount}} Aderwurzel",
     "veinrootFindMultiplier": "Verdoppelt die Chance, Aderwurzel zu finden",
     "maxBombsReached": "Max. Bomben erreicht ({{limit}} pro Typ)",
     "maxVeinfireElixirReached": "Max. Aderfeuer-Elixier erreicht ({{limit}})",

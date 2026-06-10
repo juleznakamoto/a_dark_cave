@@ -3,6 +3,7 @@
     "veinrootChanceChopWood": "0,5 % шанс получить Корень жилы",
     "veinrootChanceHunt": "1 % шанс получить Корень жилы",
     "veinrootChance": "{{percent}} % шанс получить Корень жилы",
+    "veinrootChanceWood": "{{percent}} % шанс получить {{amount}} Корень жилы",
     "veinrootFindMultiplier": "Удваивает шанс найти Корень жилы",
     "maxBombsReached": "Достигнут максимум бомб ({{limit}} каждого типа)",
     "maxVeinfireElixirReached": "Достигнут максимум эликсира жилового огня ({{limit}})",

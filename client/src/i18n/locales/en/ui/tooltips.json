@@ -3,6 +3,7 @@
     "veinrootChanceChopWood": "0.5% chance of Veinroot",
     "veinrootChanceHunt": "1% chance of Veinroot",
     "veinrootChance": "{{percent}}% chance of Veinroot",
+    "veinrootChanceWood": "{{percent}}% chance of {{amount}} Veinroot",
     "veinrootFindMultiplier": "Doubles chance of finding Veinroot",
     "maxBombsReached": "Max bombs reached ({{limit}} per type)",
     "maxVeinfireElixirReached": "Max Veinfire Elixir reached ({{limit}})",

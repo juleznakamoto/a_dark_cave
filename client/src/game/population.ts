@@ -324,7 +324,7 @@ export const getPopulationProduction = (
     });
   }
 
-  // Apply hunting skills bonuses to hunter production
+  // Hunter job bonuses (skills, tools, veinroot unlock)
   if (state && jobId === "hunter") {
     const huntingSkillLevel = state.huntingSkills?.level || 0;
     const skillBonus = HUNTING_SKILL_BONUSES[huntingSkillLevel];
@@ -344,6 +344,24 @@ export const getPopulationProduction = (
         prod.totalAmount += skillBonus.bones * count;
       }
     });
+
+    if (state.tools?.bone_saw) {
+      baseProduction.forEach((prod) => {
+        if (prod.resource === "fur" || prod.resource === "bones") {
+          prod.totalAmount += 1 * count; // +1 fur and +1 bones per hunter
+        }
+      });
+    }
+
+    if (state.story?.seen?.veinrootDiscovered) {
+      baseProduction.push({
+        resource: "veinroot",
+        amount: 1,
+        interval: 15000,
+        baseAmount: 1,
+        totalAmount: count,
+      });
+    }
   }
 
   // Apply Flame's Touch blessing bonus to steel production
@@ -358,15 +376,6 @@ export const getPopulationProduction = (
           bonusSteel = 3; // +3 steel per forger (replaces the +1 from basic)
         }
         prod.totalAmount += bonusSteel * count;
-      }
-    });
-  }
-
-  // Apply Bone Saw tool bonus to hunter production
-  if (state && jobId === "hunter" && state.tools?.bone_saw) {
-    baseProduction.forEach((prod) => {
-      if (prod.resource === "fur" || prod.resource === "bones") {
-        prod.totalAmount += 1 * count; // +1 fur and +1 bones per hunter
       }
     });
   }

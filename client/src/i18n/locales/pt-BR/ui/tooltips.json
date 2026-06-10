@@ -3,6 +3,7 @@
     "veinrootChanceChopWood": "0,5% de chance de Raiz Venosa",
     "veinrootChanceHunt": "1% de chance de Raiz Venosa",
     "veinrootChance": "{{percent}}% de chance de Raiz Venosa",
+    "veinrootChanceWood": "{{percent}}% de chance de {{amount}} Raiz Venosa",
     "veinrootFindMultiplier": "Dobra a chance de encontrar Raiz Venosa",
     "maxBombsReached": "Limite de bombas atingido ({{limit}} por tipo)",
     "maxVeinfireElixirReached": "Limite de Elixir de Fogo Venoso atingido ({{limit}})",

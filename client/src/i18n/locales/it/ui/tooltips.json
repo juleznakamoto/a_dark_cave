@@ -3,6 +3,7 @@
     "veinrootChanceChopWood": "0,5% di probabilità di Radicevena",
     "veinrootChanceHunt": "1% di probabilità di Radicevena",
     "veinrootChance": "{{percent}}% di probabilità di Radicevena",
+    "veinrootChanceWood": "{{percent}}% di probabilità di {{amount}} Radicevena",
     "veinrootFindMultiplier": "Raddoppia la probabilità di trovare Radicevena",
     "maxBombsReached": "Numero massimo di bombe raggiunto ({{limit}} per tipo)",
     "maxVeinfireElixirReached": "Numero massimo di Elisir di Venafuoco raggiunto ({{limit}})",

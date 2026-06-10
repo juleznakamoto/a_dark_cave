@@ -3,6 +3,7 @@
     "veinrootChanceChopWood": "0,5 % de chance d'obtenir une racine de veine",
     "veinrootChanceHunt": "1 % de chance d'obtenir une racine de veine",
     "veinrootChance": "{{percent}} % de chance d'obtenir une racine de veine",
+    "veinrootChanceWood": "{{percent}} % de chance d'obtenir {{amount}} racines de veine",
     "veinrootFindMultiplier": "Double les chances de trouver une racine de veine",
     "maxBombsReached": "Maximum de bombes atteint ({{limit}} par type)",
     "maxVeinfireElixirReached": "Maximum d'élixir de veinefeu atteint ({{limit}})",
