@@ -67,14 +67,15 @@ export default function AchievementMiniRingChart({
     ? (COMPLETE_COLOR[config.idPrefix] ?? undefined)
     : undefined;
 
-  const chartOpacity = isActive ? 1 : 0.9;
+  const ringOpacity = isActive ? 1 : 0.9;
+  const iconOpacity = isActive ? 1 : 0.5;
 
   return (
     <div
       className="relative flex items-center justify-center shrink-0 overflow-visible p-1 pointer-events-none select-none"
-      style={{ width: size, height: size, minWidth: size, opacity: chartOpacity }}
+      style={{ width: size, height: size, minWidth: size }}
     >
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%" style={{ opacity: ringOpacity }}>
         <PieChart margin={{ top: 2, right: 2, bottom: 2, left: 2 }}>
           {ringConfigs.map((ring, ringIndex) => {
             const totalMaxCount = ring.segments.reduce(
@@ -168,6 +169,7 @@ export default function AchievementMiniRingChart({
           centerSymbolClassName,
         )}
         style={{
+          opacity: iconOpacity,
           fontSize: 10 * scale,
           ...(centerIconColor ? { color: centerIconColor } : {}),
           ...centerSymbolStyle,

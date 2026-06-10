@@ -39,7 +39,8 @@ const PRECIOUS_RESOURCE_ORDER = ["gold", "silver", "insight"] as const;
 /** Share card: resource rows at or above this amount count toward the header %. */
 const SHARE_RESOURCE_MILESTONE = 50_000;
 
-const RING_CHART_SIZE = 230;
+const RING_CHART_SIZE = 208;
+const RING_GRID_GAP = 40;
 /** Matches `pt-1` on the 58px tab icon, scaled to the share ring size. */
 const RING_SYMBOL_NUDGE_PX = 4 * (RING_CHART_SIZE / 58);
 
@@ -163,7 +164,7 @@ function ShareResourceRow({
     ) : null;
 
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-12 leading-none">
+    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-10 leading-none">
       <span className="inline-flex items-center gap-2 text-gray-400">
         {icon}
         <span>{getResourceName(resourceKey, capitalizeWords(resourceKey))}</span>
@@ -229,8 +230,8 @@ function ShareCard({
           </div>
         </div>
 
-        <div className="flex min-h-0 flex-1 justify-between gap-12">
-          <div className="flex flex-col">
+        <div className="flex min-h-0 flex-1 gap-10">
+          <div className="flex min-w-0 flex-1 flex-col">
             <div
               className={SECTION_HEADING_CLASS}
               style={{ fontSize: SECTION_HEADING_FONT_SIZE }}
@@ -259,14 +260,14 @@ function ShareCard({
             </div>
           </div>
 
-          <div className="flex flex-col items-start">
+          <div className="flex shrink-0 flex-col items-start">
             <div
               className={SECTION_HEADING_CLASS}
               style={{ fontSize: SECTION_HEADING_FONT_SIZE }}
             >
               {achievementsLabel}
             </div>
-            <div className="grid grid-cols-2" style={{ gap: 56 }}>
+            <div className="grid grid-cols-2" style={{ gap: RING_GRID_GAP }}>
               {RING_ENTRIES.map(({ config, centerSymbolStyle }) => (
                 <div
                   key={config.idPrefix}
