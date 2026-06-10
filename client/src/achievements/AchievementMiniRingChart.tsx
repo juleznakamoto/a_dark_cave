@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { GameState } from "@shared/schema";
 import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
@@ -19,6 +20,8 @@ interface Props {
   centerSymbolClassName?: string;
   /** Outer pixel size of the chart. Defaults to the compact tab-trigger size. */
   size?: number;
+  /** Extra styles for the center glyph (e.g. scaled `paddingTop` nudge on large charts). */
+  centerSymbolStyle?: CSSProperties;
 }
 
 const BASE_SIZE = 58;
@@ -30,6 +33,7 @@ export default function AchievementMiniRingChart({
   hideProgress = false,
   centerSymbolClassName,
   size = BASE_SIZE,
+  centerSymbolStyle,
 }: Props) {
   const state = useGameStore.getState();
   void useGameStore(
@@ -152,7 +156,11 @@ export default function AchievementMiniRingChart({
           "absolute inset-0 flex items-center justify-center font-noto-symbols-2 text-foreground font-medium",
           centerSymbolClassName,
         )}
-        style={{ opacity: isActive ? 1 : 0.5, fontSize: 10 * scale }}
+        style={{
+          opacity: isActive ? 1 : 0.5,
+          fontSize: 10 * scale,
+          ...centerSymbolStyle,
+        }}
       >
         {config.centerSymbol}
       </span>

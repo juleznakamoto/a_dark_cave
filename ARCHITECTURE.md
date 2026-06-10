@@ -212,7 +212,7 @@ rate-limited `/api/*` routes.
 
 | Route group | Module | Purpose |
 |-------------|--------|---------|
-| `/api/payment/*` | `stripe.ts`, `paymentVerifyAuth.ts` | Stripe checkout intents + verification; verify body `userId` must match Bearer session |
+| `/api/payment/*` | `stripe.ts`, `paymentVerifyAuth.ts` | Stripe checkout intents + verification; on verify, guest PayPal email backfilled to PaymentIntent `metadata.userEmail` from charge |
 | `/api/referral/*` | `referral.ts`, `referralCodes.ts` | Referral codes & rewards |
 | `/api/marketing/*` | `marketing.ts` | Email prefs, unsubscribe |
 | `/api/leaderboard/*`, `/api/account/*`, `/api/session/ping` | inline + Supabase | Leaderboard, account deletion, session heartbeat |

@@ -6,6 +6,7 @@ vi.mock('stripe', () => {
   const mockPaymentIntents = {
     create: vi.fn(),
     retrieve: vi.fn(),
+    update: vi.fn(),
   };
 
   return {

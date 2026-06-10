@@ -1,4 +1,5 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import type { AchievementChartConfig } from "@/achievements/achievementTypes";
 import { useTranslation } from "react-i18next";
 import {
   Dialog,
@@ -36,12 +37,60 @@ const SHARE_FILE_NAME = "a-dark-cave.png";
 const RESOURCE_ORDER = Object.keys(gameStateSchema.parse({}).resources);
 const PRECIOUS_RESOURCE_ORDER = ["gold", "silver", "insight"] as const;
 
-const RING_CONFIGS = [
-  basicChartConfig,
-  buildingChartConfig,
-  itemChartConfig,
-  actionChartConfig,
+const RING_CHART_SIZE = 230;
+/** Matches `pt-1` on the 58px tab icon, scaled to the share ring size. */
+const RING_SYMBOL_NUDGE_PX = 4 * (RING_CHART_SIZE / 58);
+
+type ShareRingEntry = {
+  config: AchievementChartConfig;
+  centerSymbolStyle?: CSSProperties;
+};
+
+const RING_ENTRIES: ShareRingEntry[] = [
+  { config: basicChartConfig },
+  {
+    config: buildingChartConfig,
+    centerSymbolStyle: { paddingTop: RING_SYMBOL_NUDGE_PX },
+  },
+  {
+    config: itemChartConfig,
+    centerSymbolStyle: { paddingTop: RING_SYMBOL_NUDGE_PX },
+  },
+  {
+    config: actionChartConfig,
+    centerSymbolStyle: { paddingTop: RING_SYMBOL_NUDGE_PX },
+  },
 ];
+
+/** Vertical space for the resource list after header + section title (px). */
+const RESOURCE_LIST_MAX_HEIGHT =
+  SHARE_IMAGE_HEIGHT -
+  64 * 2 - // p-16 top + bottom
+  (80 + 16 + 32 + 48) - // title + mt-4 + subtitle + mb-12
+  (30 + 24); // resources heading + mb-6
+
+function getResourceListMetrics(
+  rowCount: number,
+  hasPreciousSpacer: boolean,
+): { fontSize: number; rowGap: number } {
+  if (rowCount <= 0) return { fontSize: 26, rowGap: 8 };
+  const spacer = hasPreciousSpacer ? 12 : 0;
+  const targetRowHeight = (RESOURCE_LIST_MAX_HEIGHT - spacer) / rowCount;
+  const rowGap = Math.max(2, Math.min(8, Math.round(targetRowHeight * 0.12)));
+  const fontSize = Math.max(
+    14,
+    Math.min(26, Math.floor(targetRowHeight - rowGap)),
+  );
+  return { fontSize, rowGap };
+}
+
+/** HH:MM play time — same rounding as the leaderboard. */
+function formatSharePlayTime(ms: number): string {
+  const totalMinutes = Math.floor(ms / 1000 / 60);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+}
 
 function getVisibleResourceKeys(
   resources: Record<string, number>,
@@ -85,7 +134,7 @@ function ShareResourceRow({
     ) : null;
 
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-12">
+    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-12 leading-none">
       <span className="inline-flex items-center gap-2 text-gray-400">
         {icon}
         <span>{getResourceName(resourceKey, capitalizeWords(resourceKey))}</span>
@@ -107,14 +156,22 @@ function ShareCard({
   seenResources,
   percent,
   resourcesLabel,
+  playTimeLabel,
+  playTimeMs,
 }: {
   cardRef: React.RefObject<HTMLDivElement>;
   resources: Record<string, number>;
   seenResources: string[];
   percent: number;
   resourcesLabel: string;
+  playTimeLabel: string;
+  playTimeMs: number;
 }) {
   const { precious, others } = getVisibleResourceKeys(resources, seenResources);
+  const hasPreciousSpacer = precious.length > 0 && others.length > 0;
+  const resourceRowCount = precious.length + others.length;
+  const { fontSize: resourceFontSize, rowGap: resourceRowGap } =
+    getResourceListMetrics(resourceRowCount, hasPreciousSpacer);
 
   return (
     <div
@@ -135,7 +192,7 @@ function ShareCard({
             A Dark Cave
           </div>
           <div
-            className="mt-4 font-medium text-primary"
+            className="mt-4 font-medium text-gray-400"
             style={{ fontSize: 32 }}
           >
             Play for free at {SHARE_URL}
@@ -151,8 +208,8 @@ function ShareCard({
               {resourcesLabel}
             </div>
             <div
-              className="flex flex-col"
-              style={{ fontSize: 26, rowGap: 8 }}
+              className="flex flex-col leading-none"
+              style={{ fontSize: resourceFontSize, rowGap: resourceRowGap }}
             >
               {precious.map((key) => (
                 <ShareResourceRow
@@ -161,9 +218,7 @@ function ShareCard({
                   value={resources[key] ?? 0}
                 />
               ))}
-              {precious.length > 0 && others.length > 0 && (
-                <div style={{ height: 12 }} />
-              )}
+              {hasPreciousSpacer && <div style={{ height: 12 }} />}
               {others.map((key) => (
                 <ShareResourceRow
                   key={key}
@@ -182,7 +237,7 @@ function ShareCard({
               {percent}% finished
             </div>
             <div className="grid grid-cols-2" style={{ gap: 56 }}>
-              {RING_CONFIGS.map((config) => (
+              {RING_ENTRIES.map(({ config, centerSymbolStyle }) => (
                 <div
                   key={config.idPrefix}
                   className="flex items-center justify-center"
@@ -190,12 +245,23 @@ function ShareCard({
                   <AchievementMiniRingChart
                     config={config}
                     isActive
-                    size={230}
+                    size={RING_CHART_SIZE}
+                    centerSymbolStyle={centerSymbolStyle}
                   />
                 </div>
               ))}
             </div>
           </div>
+        </div>
+
+        <div
+          className="absolute bottom-16 right-16 text-right leading-none"
+          style={{ fontSize: 28 }}
+        >
+          <span className="text-gray-400">{playTimeLabel}</span>{" "}
+          <span className="font-mono tabular-nums text-gray-300">
+            {formatSharePlayTime(playTimeMs)}
+          </span>
         </div>
       </div>
     </div>
@@ -209,6 +275,7 @@ export default function ShareDialog() {
   const setOpen = useGameStore((s) => s.setShareDialogOpen);
   const resources = useGameStore((s) => s.resources) as Record<string, number>;
   const seenResources = useGameStore((s) => s.seenResources);
+  const playTimeMs = useGameStore((s) => s.playTime);
 
   const cardRef = useRef<HTMLDivElement>(null);
   const previewWrapRef = useRef<HTMLDivElement>(null);
@@ -354,6 +421,10 @@ export default function ShareDialog() {
                 seenResources={seenResources}
                 percent={percent}
                 resourcesLabel={t("sidePanel.resources")}
+                playTimeLabel={t("share.playTime", {
+                  defaultValue: "Play time",
+                })}
+                playTimeMs={playTimeMs}
               />
             </div>
           </div>

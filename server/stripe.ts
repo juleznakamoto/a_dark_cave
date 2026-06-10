@@ -43,30 +43,68 @@ export function paymentTypeSummaryFromCharge(
   return type;
 }
 
+function trimOrNull(value: unknown): string | null {
+  if (typeof value !== "string") {
+    return null;
+  }
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+type PayPalChargeDetails = {
+  country?: string | null;
+  payer_email?: string | null;
+};
+
+function paypalDetailsFromCharge(
+  charge: Stripe.Charge,
+): PayPalChargeDetails | null {
+  const pmd = charge.payment_method_details;
+  if (!pmd || typeof pmd !== "object" || !("type" in pmd)) {
+    return null;
+  }
+  if ((pmd as { type?: string }).type !== "paypal") {
+    return null;
+  }
+  return (pmd as { paypal?: PayPalChargeDetails }).paypal ?? null;
+}
+
+export type PurchaseBuyerDetails = {
+  email: string | null;
+  country: string | null;
+};
+
+/**
+ * Buyer contact + country from a succeeded charge.
+ * Billing details first; PayPal redirect checkouts often omit billing but expose
+ * payer_email / country on payment_method_details.paypal.
+ */
+export function purchaseBuyerDetailsFromCharge(
+  charge: Stripe.Charge,
+  paymentIntent?: Pick<Stripe.PaymentIntent, "receipt_email" | "metadata">,
+): PurchaseBuyerDetails {
+  const paypal = paypalDetailsFromCharge(charge);
+
+  const billingCountry = trimOrNull(charge.billing_details?.address?.country);
+  const paypalCountry = trimOrNull(paypal?.country);
+
+  return {
+    email:
+      trimOrNull(charge.billing_details?.email) ??
+      trimOrNull(paypal?.payer_email) ??
+      trimOrNull(charge.receipt_email) ??
+      trimOrNull(paymentIntent?.receipt_email) ??
+      trimOrNull(paymentIntent?.metadata?.userEmail),
+    country: billingCountry ?? paypalCountry,
+  };
+}
+
 /**
  * ISO 3166-1 alpha-2 country for purchase analytics.
  * Billing address is preferred; PayPal exposes buyer country on payment_method_details instead.
  */
 export function purchaseCountryFromCharge(charge: Stripe.Charge): string | null {
-  const billing = charge.billing_details?.address?.country;
-  if (typeof billing === "string" && billing.trim()) {
-    return billing.trim();
-  }
-
-  const pmd = charge.payment_method_details;
-  if (!pmd || typeof pmd !== "object" || !("type" in pmd)) {
-    return null;
-  }
-  const type = (pmd as { type?: string }).type;
-  if (type === "paypal") {
-    const paypalCountry = (pmd as { paypal?: { country?: string | null } })
-      .paypal?.country;
-    if (typeof paypalCountry === "string" && paypalCountry.trim()) {
-      return paypalCountry.trim();
-    }
-  }
-
-  return null;
+  return purchaseBuyerDetailsFromCharge(charge).country;
 }
 
 export { SHOP_ITEMS };
@@ -239,7 +277,7 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
       throw new Error('Missing charge on succeeded PaymentIntent');
     }
 
-    const billingCountry = purchaseCountryFromCharge(charge);
+    const buyer = purchaseBuyerDetailsFromCharge(charge, paymentIntent);
     const paymentType = paymentTypeSummaryFromCharge(charge);
     const cruelMode =
       paymentIntent.metadata.cruelMode === 'true'
@@ -266,7 +304,7 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
         price_paid: paymentIntent.amount,
         bundle_id: null,
         purchased_at: new Date().toISOString(),
-        country: billingCountry,
+        country: buyer.country,
         payment_type: paymentType,
         cruel_mode: cruelMode,
         currency: chargeCurrency,
@@ -302,6 +340,20 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
     }
 
     logger.log('✅ Purchase saved:', purchaseData);
+
+    // Guest / PayPal: email is only on the charge — backfill Stripe metadata for support.
+    if (buyer.email && !trimOrNull(paymentIntent.metadata?.userEmail)) {
+      stripe.paymentIntents
+        .update(paymentIntentId, {
+          metadata: { userEmail: buyer.email },
+        })
+        .catch((err) => {
+          logger.warn(
+            'Failed to backfill PaymentIntent metadata with buyer email:',
+            err,
+          );
+        });
+    }
 
     // If this is a bundle, create component purchases
     if (item.bundleComponents && item.bundleComponents.length > 0) {

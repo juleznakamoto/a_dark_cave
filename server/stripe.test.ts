@@ -7,6 +7,7 @@ vi.mock('stripe', () => {
   const mockPaymentIntents = {
     create: vi.fn(),
     retrieve: vi.fn(),
+    update: vi.fn(),
   };
 
   return {
@@ -22,6 +23,7 @@ import {
   verifyPayment,
   paymentTypeSummaryFromCharge,
   purchaseCountryFromCharge,
+  purchaseBuyerDetailsFromCharge,
 } from './stripe';
 import { createSupabaseMockForStripeVerify } from './stripeVerifyTestSupabase';
 
@@ -47,6 +49,67 @@ function chargeWithCard(brand: string): Stripe.Charge {
     },
   } as Stripe.Charge;
 }
+
+describe('purchaseBuyerDetailsFromCharge', () => {
+  it('returns PayPal payer email and name when billing details are missing', () => {
+    const ch = {
+      billing_details: { address: { country: null } },
+      payment_method_details: {
+        type: 'paypal',
+        paypal: {
+          country: 'US',
+          payer_email: 'buyer@example.com',
+          payer_name: 'Jane Buyer',
+        },
+      },
+    } as Stripe.Charge;
+
+    expect(purchaseBuyerDetailsFromCharge(ch)).toEqual({
+      email: 'buyer@example.com',
+      country: 'US',
+    });
+  });
+
+  it('prefers billing details over PayPal fields', () => {
+    const ch = {
+      billing_details: {
+        email: 'card@example.com',
+        name: 'Card User',
+        address: { country: 'DE' },
+      },
+      payment_method_details: {
+        type: 'paypal',
+        paypal: {
+          country: 'US',
+          payer_email: 'paypal@example.com',
+          payer_name: 'PayPal User',
+        },
+      },
+    } as Stripe.Charge;
+
+    expect(purchaseBuyerDetailsFromCharge(ch)).toEqual({
+      email: 'card@example.com',
+      country: 'DE',
+    });
+  });
+
+  it('falls back to PaymentIntent receipt_email and metadata', () => {
+    const ch = {
+      billing_details: {},
+      payment_method_details: { type: 'link' },
+    } as Stripe.Charge;
+
+    expect(
+      purchaseBuyerDetailsFromCharge(ch, {
+        receipt_email: 'receipt@example.com',
+        metadata: { userEmail: 'meta@example.com' },
+      }),
+    ).toEqual({
+      email: 'receipt@example.com',
+      country: null,
+    });
+  });
+});
 
 describe('purchaseCountryFromCharge', () => {
   it('returns billing address country when present', () => {
@@ -500,12 +563,17 @@ describe('Stripe Shop Integration', () => {
           billing_details: { address: { country: null } },
           payment_method_details: {
             type: 'paypal',
-            paypal: { country: 'GB' },
+            paypal: {
+              country: 'GB',
+              payer_email: 'guest@example.com',
+              payer_name: 'Guest Buyer',
+            },
           },
         },
       } as Stripe.PaymentIntent;
 
       mockPaymentIntents.retrieve.mockResolvedValue(mockIntent);
+      mockPaymentIntents.update.mockResolvedValue({});
 
       const result = await verifyPayment('pi_test', 'user123', mockSupabase);
       expect(result.success).toBe(true);
@@ -519,6 +587,9 @@ describe('Stripe Shop Integration', () => {
       expect(mainInsert?.[0]).toMatchObject({
         country: 'GB',
         payment_type: 'paypal',
+      });
+      expect(mockPaymentIntents.update).toHaveBeenCalledWith('pi_test', {
+        metadata: { userEmail: 'guest@example.com' },
       });
     });
 
