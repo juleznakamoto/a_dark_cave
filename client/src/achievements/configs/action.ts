@@ -229,8 +229,16 @@ export const actionChartConfig: AchievementChartConfig = {
         maxCount: 5,
         label: "Mental Clarity",
         reward: 250,
-        getCount: (state: GameState) =>
-          Math.min(Number(state.story?.seen?.clarityElixirsUsed) || 0, 5),
+        getCount: (state: GameState) => {
+          const seen = state.story?.seen;
+          const tracked = Number(seen?.clarityElixirsUsed) || 0;
+          const legacy =
+            (Number(seen?.clarityElixirPurchases) || 0) +
+            (seen?.clarityElixirFoundVentureDeeper ? 1 : 0) +
+            (seen?.clarityElixirFoundDescendFurther ? 1 : 0) +
+            (seen?.clarityElixirFoundExploreRuins ? 1 : 0);
+          return Math.min(Math.max(tracked, legacy), 5);
+        },
       },
       {
         segmentId: "4-wellRested",
