@@ -136,6 +136,11 @@ export const forestScoutActions: Record<string, Action> = {
             "!story.seen.mapFragmentHuntFound && !story.seen.swampMapAssembled",
           logMessageKey: "mapFragmentHunt",
         },
+        "resources.veinroot": {
+          probability: 0.01,
+          condition: "story.seen.veinrootDiscovered",
+          value: 100,
+        },
       };
     },
     executionTime: 8,
