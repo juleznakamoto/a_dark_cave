@@ -1,0 +1,380 @@
+import { useLayoutEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { useGameStore } from "@/game/state";
+import { ResourceCoinIcon } from "@/components/ui/resource-coin-icon";
+import { ResourceInsightIcon } from "@/components/ui/resource-insight-icon";
+import AchievementMiniRingChart from "@/achievements/AchievementMiniRingChart";
+import {
+  basicChartConfig,
+  buildingChartConfig,
+  itemChartConfig,
+  actionChartConfig,
+} from "@/achievements";
+import { getOverallAchievementPercent } from "@/achievements/achievementProgress";
+import { COMBAT_ITEM_RESOURCES } from "@/game/resourceLimits";
+import { getResourceName } from "@/i18n/resolveGameText";
+import { capitalizeWords, cn, formatNumber } from "@/lib/utils";
+import { logger } from "@/lib/logger";
+import { getShareFontEmbedCss } from "@/lib/shareImageFonts";
+import { useToast } from "@/hooks/use-toast";
+import { gameStateSchema, type GameState } from "@shared/schema";
+
+const SHARE_IMAGE_WIDTH = 1080;
+const SHARE_IMAGE_HEIGHT = 1350;
+const CARD_BG = "#0b0b0e";
+const SHARE_URL = "a-dark-cave.com";
+const SHARE_FILE_NAME = "a-dark-cave.png";
+
+const RESOURCE_ORDER = Object.keys(gameStateSchema.parse({}).resources);
+const PRECIOUS_RESOURCE_ORDER = ["gold", "silver", "insight"] as const;
+
+const RING_CONFIGS = [
+  basicChartConfig,
+  buildingChartConfig,
+  itemChartConfig,
+  actionChartConfig,
+];
+
+function getVisibleResourceKeys(
+  resources: Record<string, number>,
+  seenResources: string[],
+): { precious: string[]; others: string[] } {
+  const seen = new Set(seenResources);
+  for (const [key, amount] of Object.entries(resources)) {
+    if (amount > 0) seen.add(key);
+  }
+  const seenKeys = RESOURCE_ORDER.filter((key) => seen.has(key));
+  const precious = PRECIOUS_RESOURCE_ORDER.filter((key) =>
+    seenKeys.includes(key),
+  );
+  const others = seenKeys.filter(
+    (key) =>
+      !PRECIOUS_RESOURCE_ORDER.includes(
+        key as (typeof PRECIOUS_RESOURCE_ORDER)[number],
+      ) && !COMBAT_ITEM_RESOURCES.includes(key as never),
+  );
+  return { precious, others };
+}
+
+function ShareResourceRow({
+  resourceKey,
+  value,
+}: {
+  resourceKey: string;
+  value: number;
+}) {
+  const icon =
+    resourceKey === "insight" ? (
+      <ResourceInsightIcon className="shrink-0 text-blue-600" />
+    ) : resourceKey === "gold" || resourceKey === "silver" ? (
+      <ResourceCoinIcon
+        resource={resourceKey}
+        className={cn(
+          "shrink-0",
+          resourceKey === "gold" ? "text-yellow-600" : "text-gray-400",
+        )}
+      />
+    ) : null;
+
+  return (
+    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-12">
+      <span className="inline-flex items-center gap-2 text-gray-400">
+        {icon}
+        <span>{getResourceName(resourceKey, capitalizeWords(resourceKey))}</span>
+      </span>
+      <span className="text-right font-mono tabular-nums text-gray-300">
+        {formatNumber(value)}
+      </span>
+    </div>
+  );
+}
+
+/**
+ * The off-DOM 1080×1350 share card. Rendered at full size and visually scaled
+ * down in the preview; `cardRef` is captured at native resolution.
+ */
+function ShareCard({
+  cardRef,
+  resources,
+  seenResources,
+  percent,
+  resourcesLabel,
+}: {
+  cardRef: React.RefObject<HTMLDivElement>;
+  resources: Record<string, number>;
+  seenResources: string[];
+  percent: number;
+  resourcesLabel: string;
+}) {
+  const { precious, others } = getVisibleResourceKeys(resources, seenResources);
+
+  return (
+    <div
+      ref={cardRef}
+      className="relative flex flex-col font-sans text-foreground"
+      style={{
+        width: SHARE_IMAGE_WIDTH,
+        height: SHARE_IMAGE_HEIGHT,
+        backgroundColor: CARD_BG,
+      }}
+    >
+      <div className="flex h-full flex-col p-16">
+        <div className="mb-12">
+          <div
+            className="font-bold leading-none tracking-tight text-neutral-100"
+            style={{ fontSize: 80 }}
+          >
+            A Dark Cave
+          </div>
+          <div
+            className="mt-4 font-medium text-primary"
+            style={{ fontSize: 32 }}
+          >
+            Play for free at {SHARE_URL}
+          </div>
+        </div>
+
+        <div className="flex min-h-0 flex-1 justify-between gap-12">
+          <div className="flex flex-col">
+            <div
+              className="mb-6 font-medium tracking-wide text-gray-300"
+              style={{ fontSize: 30 }}
+            >
+              {resourcesLabel}
+            </div>
+            <div
+              className="flex flex-col"
+              style={{ fontSize: 26, rowGap: 8 }}
+            >
+              {precious.map((key) => (
+                <ShareResourceRow
+                  key={key}
+                  resourceKey={key}
+                  value={resources[key] ?? 0}
+                />
+              ))}
+              {precious.length > 0 && others.length > 0 && (
+                <div style={{ height: 12 }} />
+              )}
+              {others.map((key) => (
+                <ShareResourceRow
+                  key={key}
+                  resourceKey={key}
+                  value={resources[key] ?? 0}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center">
+            <div
+              className="mb-10 font-semibold text-neutral-100"
+              style={{ fontSize: 46 }}
+            >
+              {percent}% finished
+            </div>
+            <div className="grid grid-cols-2" style={{ gap: 56 }}>
+              {RING_CONFIGS.map((config) => (
+                <div
+                  key={config.idPrefix}
+                  className="flex items-center justify-center"
+                >
+                  <AchievementMiniRingChart
+                    config={config}
+                    isActive
+                    size={230}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function ShareDialog() {
+  const { t } = useTranslation("ui");
+  const { toast } = useToast();
+  const open = useGameStore((s) => s.shareDialogOpen);
+  const setOpen = useGameStore((s) => s.setShareDialogOpen);
+  const resources = useGameStore((s) => s.resources) as Record<string, number>;
+  const seenResources = useGameStore((s) => s.seenResources);
+
+  const cardRef = useRef<HTMLDivElement>(null);
+  const previewWrapRef = useRef<HTMLDivElement>(null);
+  const [previewScale, setPreviewScale] = useState(0.3);
+  const [busy, setBusy] = useState(false);
+
+  const percent = open
+    ? getOverallAchievementPercent(useGameStore.getState() as unknown as GameState)
+    : 0;
+
+  useLayoutEffect(() => {
+    if (!open) return;
+    const el = previewWrapRef.current;
+    if (!el) return;
+    const update = () =>
+      setPreviewScale(el.clientWidth / SHARE_IMAGE_WIDTH || 0.3);
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [open]);
+
+  const generateBlob = async (): Promise<Blob | null> => {
+    const node = cardRef.current;
+    if (!node) return null;
+    // Ensure the real fonts are active in the live DOM, and inline them so the
+    // off-screen SVG rasterization renders the resource icons in the correct font.
+    const [fontEmbedCSS] = await Promise.all([
+      getShareFontEmbedCss(),
+      document.fonts?.ready?.catch(() => undefined),
+    ]);
+    const { toBlob } = await import("html-to-image");
+    return toBlob(node, {
+      width: SHARE_IMAGE_WIDTH,
+      height: SHARE_IMAGE_HEIGHT,
+      pixelRatio: 1,
+      cacheBust: true,
+      backgroundColor: CARD_BG,
+      fontEmbedCSS,
+    });
+  };
+
+  const downloadBlob = (blob: Blob) => {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = SHARE_FILE_NAME;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleShare = async () => {
+    if (busy) return;
+    setBusy(true);
+    try {
+      const blob = await generateBlob();
+      if (!blob) throw new Error("Failed to render share image");
+      const file = new File([blob], SHARE_FILE_NAME, { type: "image/png" });
+      const shareData: ShareData = {
+        files: [file],
+        title: "A Dark Cave",
+        text: t("share.shareText", {
+          percent,
+          defaultValue: `I'm ${percent}% through A Dark Cave. Play for free at ${SHARE_URL}`,
+        }),
+      };
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share(shareData);
+      } else {
+        downloadBlob(blob);
+      }
+    } catch (error) {
+      if ((error as Error)?.name === "AbortError") return;
+      logger.error("Failed to share progress image", error);
+      toast({
+        title: t("share.errorTitle", { defaultValue: "Could not create image" }),
+        description: t("share.errorDesc", {
+          defaultValue: "Something went wrong while generating the image.",
+        }),
+        variant: "destructive",
+      });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleDownload = async () => {
+    if (busy) return;
+    setBusy(true);
+    try {
+      const blob = await generateBlob();
+      if (!blob) throw new Error("Failed to render share image");
+      downloadBlob(blob);
+    } catch (error) {
+      logger.error("Failed to download progress image", error);
+      toast({
+        title: t("share.errorTitle", { defaultValue: "Could not create image" }),
+        description: t("share.errorDesc", {
+          defaultValue: "Something went wrong while generating the image.",
+        }),
+        variant: "destructive",
+      });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={(next) => !next && setOpen(false)}>
+      <DialogContent className="[--adc-dialog-max-w:30rem] max-h-[90vh] flex flex-col overflow-hidden z-[70]">
+        <DialogHeader>
+          <DialogTitle>
+            {t("share.title", { defaultValue: "Share your progress" })}
+          </DialogTitle>
+          <DialogDescription>
+            {t("share.description", {
+              defaultValue:
+                "Save or share an image of your resources and achievements.",
+            })}
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="flex min-h-0 flex-1 justify-center overflow-auto py-2">
+          {/* Outer width drives the preview scale; height reserves the scaled card. */}
+          <div
+            ref={previewWrapRef}
+            className="w-full max-w-[360px] overflow-hidden rounded-md border border-border"
+            style={{ height: SHARE_IMAGE_HEIGHT * previewScale }}
+          >
+            <div
+              style={{
+                transform: `scale(${previewScale})`,
+                transformOrigin: "top left",
+                width: SHARE_IMAGE_WIDTH,
+                height: SHARE_IMAGE_HEIGHT,
+              }}
+            >
+              <ShareCard
+                cardRef={cardRef}
+                resources={resources}
+                seenResources={seenResources}
+                percent={percent}
+                resourcesLabel={t("sidePanel.resources")}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex shrink-0 justify-end gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleDownload}
+            disabled={busy}
+          >
+            {t("share.download", { defaultValue: "Download" })}
+          </Button>
+          <Button size="sm" onClick={handleShare} disabled={busy}>
+            {busy
+              ? t("share.generating", { defaultValue: "Generating…" })
+              : t("share.share", { defaultValue: "Share" })}
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}

@@ -402,6 +402,7 @@ const UI_ONLY_PROPERTIES = [
   'gamblerDiceDialogOpen',
   'rewardDialog',
   'leaderboardDialogOpen',
+  'shareDialogOpen',
   'fullGamePurchaseDialogOpen',
   'madnessDialog',
   'versionCheckDialogOpen',

@@ -181,6 +181,7 @@ interface GameStore extends GameState {
     data: ReturnType<typeof buildInvestmentResultDialogPayload> | null;
   };
   leaderboardDialogOpen: boolean;
+  shareDialogOpen: boolean;
   fullGamePurchaseDialogOpen: boolean;
   idleModeDialog: {
     isOpen: boolean;
@@ -406,6 +407,7 @@ interface GameStore extends GameState {
     data?: ReturnType<typeof buildInvestmentResultDialogPayload> | null,
   ) => void;
   setLeaderboardDialogOpen: (isOpen: boolean) => void;
+  setShareDialogOpen: (isOpen: boolean) => void;
   setFullGamePurchaseDialogOpen: (isOpen: boolean) => void;
   setIdleModeDialog: (isOpen: boolean) => void;
   setRestartGameDialogOpen: (isOpen: boolean) => void;
@@ -1236,6 +1238,7 @@ function isBlockingDialogOpen(state: GameStore): boolean {
     state.shopDialogOpen ||
     state.gamblerDiceDialogOpen ||
     state.leaderboardDialogOpen ||
+    state.shareDialogOpen ||
     state.fullGamePurchaseDialogOpen ||
     state.idleModeDialog.isOpen ||
     state.restartGameDialogOpen ||
@@ -1446,6 +1449,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     data: null,
   },
   leaderboardDialogOpen: false,
+  shareDialogOpen: false,
   fullGamePurchaseDialogOpen: false,
   musicMuted: false,
   sfxMuted: false,
@@ -3684,6 +3688,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setLeaderboardDialogOpen: (isOpen: boolean) => {
     set({ leaderboardDialogOpen: isOpen });
+  },
+
+  setShareDialogOpen: (isOpen: boolean) => {
+    set({ shareDialogOpen: isOpen });
   },
 
   setFullGamePurchaseDialogOpen: (isOpen: boolean) => {

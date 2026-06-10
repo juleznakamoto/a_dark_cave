@@ -32,7 +32,7 @@ import { RestartGameDialog } from "./RestartGameDialog";
 import { DeleteAccountDialog } from "./DeleteAccountDialog";
 import SocialPromptDialog from "./SocialPromptDialog";
 import { initPlaylight, markPlaylightDiscoveryUserInitiated } from "@/lib/playlight";
-import { Mail } from "lucide-react";
+import { Mail, Share2 } from "lucide-react";
 import {
   MARKETING_EMAIL_REWARD_KEY,
   MARKETING_SUBSCRIBE_GOLD,
@@ -439,6 +439,7 @@ export function GameHeaderControls() {
   const triggerRewardsTasksHoverPulse = useCallback(() => {
     triggerExclusivePromoHoverPulse(rewardsTasksRingRef.current);
   }, []);
+  const setShareDialogOpen = useGameStore((s) => s.setShareDialogOpen);
 
   const {
     showRewardsTasksShortcut,
@@ -522,6 +523,23 @@ export function GameHeaderControls() {
         tooltipSide="bottom"
         className={HEADER_ICON_BTN}
       />
+      <HoverCalloutTooltip
+        label={t("share.title", { defaultValue: "Share your progress" })}
+        side="bottom"
+      >
+        <Button
+          variant="ghost"
+          size="xs"
+          onClick={() => setShareDialogOpen(true)}
+          aria-label={t("share.title", { defaultValue: "Share your progress" })}
+          className={`${HEADER_ICON_BTN} group`}
+        >
+          <Share2
+            className={`h-[15px] w-[15px] ${HEADER_ICON_SYMBOL_HOVER}`}
+            aria-hidden="true"
+          />
+        </Button>
+      </HoverCalloutTooltip>
       {(hasWonAnyGame || devMode) && (
         <HoverCalloutTooltip label={t("profile.leaderboard")} side="bottom">
           <Button

@@ -17,7 +17,11 @@ interface Props {
   /** When true, hide progress (show empty rings). Used for locked tabs. */
   hideProgress?: boolean;
   centerSymbolClassName?: string;
+  /** Outer pixel size of the chart. Defaults to the compact tab-trigger size. */
+  size?: number;
 }
+
+const BASE_SIZE = 58;
 
 /** Compact label-free ring chart for tab triggers. */
 export default function AchievementMiniRingChart({
@@ -25,6 +29,7 @@ export default function AchievementMiniRingChart({
   isActive = false,
   hideProgress = false,
   centerSymbolClassName,
+  size = BASE_SIZE,
 }: Props) {
   const state = useGameStore.getState();
   void useGameStore(
@@ -32,10 +37,13 @@ export default function AchievementMiniRingChart({
       (s.story?.heavySleeperHours ?? 0) + (s.totalFocusEarned ?? 0),
   );
 
-  const size = 58;
-  const centerHoleRadius = 10; // Space for icon in center, rings start outside
-  const ringSize = 1.5;
-  const spaceBetweenRings = 1.7;
+  // Radii are in chart pixel units; scale them with the outer size so larger
+  // charts (e.g. share image) keep the same ring proportions as the tab icon.
+  const scale = size / BASE_SIZE;
+  const centerHoleRadius = 10 * scale; // Space for icon in center, rings start outside
+  const ringSize = 1.5 * scale;
+  const spaceBetweenRings = 1.7 * scale;
+  const cornerRadius = 2 * scale;
 
   const ringConfigs = config.rings.map((segments, index) => {
     const innerRadius =
@@ -109,7 +117,7 @@ export default function AchievementMiniRingChart({
                 dataKey="value"
                 startAngle={startAngle}
                 endAngle={-360 + startAngle}
-                cornerRadius={2}
+                cornerRadius={cornerRadius}
                 strokeWidth={0}
                 isAnimationActive={false}
               >
@@ -128,7 +136,7 @@ export default function AchievementMiniRingChart({
                   dataKey="value"
                   startAngle={seg.startAngle}
                   endAngle={seg.endAngle}
-                  cornerRadius={2}
+                  cornerRadius={cornerRadius}
                   strokeWidth={0}
                   isAnimationActive={false}
                 >
@@ -141,10 +149,10 @@ export default function AchievementMiniRingChart({
       </ResponsiveContainer>
       <span
         className={cn(
-          "absolute inset-0 flex items-center justify-center font-noto-symbols-2 text-foreground text-[10px] font-medium",
+          "absolute inset-0 flex items-center justify-center font-noto-symbols-2 text-foreground font-medium",
           centerSymbolClassName,
         )}
-        style={{ opacity: isActive ? 1 : 0.5 }}
+        style={{ opacity: isActive ? 1 : 0.5, fontSize: 10 * scale }}
       >
         {config.centerSymbol}
       </span>
