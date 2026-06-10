@@ -44,6 +44,15 @@ export function getCategoryAchievementPercent(
   return total > 0 ? Math.round((completed / total) * 100) : 0;
 }
 
+/** True when every segment in the category has reached its max count. */
+export function isCategoryFullyComplete(
+  config: AchievementChartConfig,
+  state: GameState,
+): boolean {
+  const { completed, total } = tallyConfig(config, state);
+  return total > 0 && completed === total;
+}
+
 /**
  * Overall percentage (0–100) of all achievements completed across every
  * category. An achievement counts as finished when its current count reaches

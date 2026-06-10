@@ -11,6 +11,7 @@ import {
   BACKGROUND_COLOR_HEX,
   BACKGROUND_SELECTED_COLOR_HEX,
 } from "./achievementColors";
+import { isCategoryFullyComplete } from "./achievementProgress";
 
 interface Props {
   config: AchievementChartConfig;
@@ -59,10 +60,19 @@ export default function AchievementMiniRingChart({
   const paddingAngle = 3;
   const startAngle = 90 - paddingAngle / 2;
 
+  const categoryComplete =
+    !hideProgress &&
+    isCategoryFullyComplete(config, state as unknown as GameState);
+  const centerIconColor = categoryComplete
+    ? (COMPLETE_COLOR[config.idPrefix] ?? undefined)
+    : undefined;
+
+  const chartOpacity = isActive ? 1 : 0.9;
+
   return (
     <div
       className="relative flex items-center justify-center shrink-0 overflow-visible p-1 pointer-events-none select-none"
-      style={{ width: size, height: size, minWidth: size }}
+      style={{ width: size, height: size, minWidth: size, opacity: chartOpacity }}
     >
       <ResponsiveContainer width="100%" height="100%">
         <PieChart margin={{ top: 2, right: 2, bottom: 2, left: 2 }}>
@@ -153,12 +163,13 @@ export default function AchievementMiniRingChart({
       </ResponsiveContainer>
       <span
         className={cn(
-          "absolute inset-0 flex items-center justify-center font-noto-symbols-2 text-foreground font-medium",
+          "absolute inset-0 flex items-center justify-center font-noto-symbols-2 font-medium",
+          !centerIconColor && "text-foreground",
           centerSymbolClassName,
         )}
         style={{
-          opacity: isActive ? 1 : 0.5,
           fontSize: 10 * scale,
+          ...(centerIconColor ? { color: centerIconColor } : {}),
           ...centerSymbolStyle,
         }}
       >
