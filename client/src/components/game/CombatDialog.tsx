@@ -23,7 +23,10 @@ import {
   bloodflameSphereFightBurnTicksAfterCast,
   poisonArrowsDamagePerTick,
 } from "@/game/rules/skillUpgrades";
-import { getPoisonArrowsDotFightRounds } from "@/game/weaponEnchantments";
+import {
+  getPoisonArrowsDamagePerTick,
+  getPoisonArrowsDotFightRounds,
+} from "@/game/weaponEnchantments";
 import {
   Dialog,
   DialogContent,
@@ -497,7 +500,7 @@ export default function CombatDialog({
     const finalDamage = item.damage + knowledgeBonus;
 
     if (item.id === "poison_arrows") {
-      const dmg = poisonArrowsDamagePerTick(getTotalKnowledge(gameState));
+      const dmg = getPoisonArrowsDamagePerTick(gameState);
       const newEnemyHealth = Math.max(
         0,
         (currentEnemy?.currentHealth || 0) - dmg,

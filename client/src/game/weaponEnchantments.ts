@@ -1,7 +1,11 @@
 import type { GameState } from "@shared/schema";
 import { weaponEffects } from "@/game/rules/effects";
 import { getInsightAmount, isInsightUnlocked } from "@/game/rules/insightReveal";
-import { POISON_ARROWS_DOT_FIGHT_ROUNDS } from "@/game/rules/skillUpgrades";
+import {
+  POISON_ARROWS_BASE_DAMAGE,
+  POISON_ARROWS_DOT_FIGHT_ROUNDS,
+} from "@/game/rules/skillUpgrades";
+import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
 
 /** Insight cost per point of stat added by a generic weapon enchantment. */
 export const ENCHANT_COST_PER_STAT = 250;
@@ -52,6 +56,8 @@ interface EnchantDelta {
   baseKnowledge?: number;
   enchantStrength?: number;
   enchantKnowledge?: number;
+  /** Bonus to Poison Arrows base damage (Nightshade Bow level 1). */
+  poisonBaseDamage?: number;
   /** Extra poison DoT Fight rounds (Nightshade Bow). */
   poisonRounds?: number;
   /** Insight cost to reach this level from the previous one. */
@@ -60,7 +66,7 @@ interface EnchantDelta {
 
 const SPECIAL_ENCHANTS: Record<string, EnchantDelta[]> = {
   nightshade_bow: [
-    { baseStrength: 5, enchantStrength: 2, cost: 1000 },
+    { poisonBaseDamage: 5, enchantStrength: 2, cost: 1000 },
     { enchantStrength: 3, poisonRounds: 1, cost: 2000 },
   ],
 };
@@ -119,6 +125,8 @@ export interface WeaponEnchantBonus {
   /** Enchant bonus rendered in Insight-blue after the original value. */
   enchantStrength: number;
   enchantKnowledge: number;
+  /** Bonus to Poison Arrows base damage. */
+  poisonBaseDamage: number;
   /** Extra poison DoT Fight rounds. */
   poisonRounds: number;
 }
@@ -134,6 +142,7 @@ export function getWeaponEnchantBonus(
       baseKnowledge: 0,
       enchantStrength: 0,
       enchantKnowledge: 0,
+      poisonBaseDamage: 0,
       poisonRounds: 0,
     };
   }
@@ -143,6 +152,7 @@ export function getWeaponEnchantBonus(
     baseKnowledge: 0,
     enchantStrength: 0,
     enchantKnowledge: 0,
+    poisonBaseDamage: 0,
     poisonRounds: 0,
   };
   for (let i = 0; i < level; i++) {
@@ -152,6 +162,7 @@ export function getWeaponEnchantBonus(
     bonus.baseKnowledge += delta.baseKnowledge ?? 0;
     bonus.enchantStrength += delta.enchantStrength ?? 0;
     bonus.enchantKnowledge += delta.enchantKnowledge ?? 0;
+    bonus.poisonBaseDamage += delta.poisonBaseDamage ?? 0;
     bonus.poisonRounds += delta.poisonRounds ?? 0;
   }
   return bonus;
@@ -185,6 +196,26 @@ export function canEnchantWeapon(
   const cost = getNextEnchantCost(state, weaponId);
   if (cost == null) return false;
   return getInsightAmount(state as GameState) >= cost;
+}
+
+/** Poison Arrows base damage including Nightshade Bow enchant bonus. */
+export function getPoisonArrowsBaseDamage(
+  state: Pick<GameState, "weaponEnchantments">,
+): number {
+  return (
+    POISON_ARROWS_BASE_DAMAGE +
+    getWeaponEnchantBonus(state, "nightshade_bow").poisonBaseDamage
+  );
+}
+
+/** Poison damage per tick (base + knowledge), including Nightshade enchant base. */
+export function getPoisonArrowsDamagePerTick(
+  state: Pick<GameState, "weaponEnchantments" | "stats">,
+): number {
+  const knowledge = getTotalKnowledge(state as GameState) || 0;
+  return (
+    getPoisonArrowsBaseDamage(state) + Math.floor(knowledge / 5)
+  );
 }
 
 /** Poison Arrows DoT Fight rounds including Nightshade Bow enchant bonus. */

@@ -63,15 +63,13 @@ import {
 } from "@/game/villagerCapUpgrades";
 import {
   getMaxEnchantLevel,
+  getPoisonArrowsBaseDamage,
+  getPoisonArrowsDamagePerTick,
   getWeaponEnchantBonus,
   getWeaponEnchantLevel,
 } from "@/game/weaponEnchantments";
 import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
-import {
-  POISON_ARROWS_BASE_DAMAGE,
-  POISON_ARROWS_DOT_FIGHT_ROUNDS,
-  poisonArrowsDamagePerTick,
-} from "@/game/rules/skillUpgrades";
+import { POISON_ARROWS_DOT_FIGHT_ROUNDS } from "@/game/rules/skillUpgrades";
 
 /** Moon phase for n fragments: 1→◔, 2→◑, 3→◕, 4→● (index = n − 1). */
 const MAP_FRAGMENT_MOON_GLYPHS = ["◔", "◑", "◕", "●"] as const;
@@ -92,18 +90,18 @@ function renderEnchantStatSuffix(value: number) {
 function renderNightshadePoisonTooltip(gameState: GameState) {
   const knowledge = getTotalKnowledge(gameState) || 0;
   const knowledgeBonus = Math.floor(knowledge / 5);
-  const perHit = poisonArrowsDamagePerTick(knowledge);
-  const poisonEnchantRounds = getWeaponEnchantBonus(
-    gameState,
-    "nightshade_bow",
-  ).poisonRounds;
+  const perHit = getPoisonArrowsDamagePerTick(gameState);
+  const nightshadeEnchant = getWeaponEnchantBonus(gameState, "nightshade_bow");
+  const poisonEnchantBase = nightshadeEnchant.poisonBaseDamage;
+  const poisonEnchantRounds = nightshadeEnchant.poisonRounds;
 
   return (
     <div className="mt-2 space-y-0 text-xs text-foreground">
       <div>
         {getUiTooltip("baseDamage", "Base Damage: {{value}}", {
-          value: POISON_ARROWS_BASE_DAMAGE,
+          value: getPoisonArrowsBaseDamage(gameState) - poisonEnchantBase,
         })}
+        {renderEnchantStatSuffix(poisonEnchantBase)}
       </div>
       {knowledge >= 5 && (
         <div>

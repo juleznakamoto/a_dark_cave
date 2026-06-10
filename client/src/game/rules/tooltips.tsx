@@ -20,7 +20,12 @@ import {
   POISON_ARROWS_BASE_DAMAGE,
   poisonArrowsDamagePerTick,
 } from "./skillUpgrades";
-import { getPoisonArrowsDotFightRounds } from "@/game/weaponEnchantments";
+import {
+  getPoisonArrowsBaseDamage,
+  getPoisonArrowsDamagePerTick,
+  getPoisonArrowsDotFightRounds,
+  getWeaponEnchantBonus,
+} from "@/game/weaponEnchantments";
 import { formatNumber, formatSignedNumber } from "@/lib/utils";
 import type { TooltipConfig } from "@/game/types";
 import {
@@ -804,11 +809,18 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
     getContent: (state) => {
       const knowledge = getTotalKnowledge(state) || 0;
       const knowledgeBonus = Math.floor(knowledge / 5);
-      const perHit = poisonArrowsDamagePerTick(knowledge);
-      const lines = [
+      const perHit = getPoisonArrowsDamagePerTick(state);
+      const poisonEnchantBase = getWeaponEnchantBonus(
+        state,
+        "nightshade_bow",
+      ).poisonBaseDamage;
+      const baseDamageLine =
         getUiTooltip("baseDamage", "Base Damage: {{value}}", {
-          value: POISON_ARROWS_BASE_DAMAGE,
-        }),
+          value: getPoisonArrowsBaseDamage(state) - poisonEnchantBase,
+        }) +
+        (poisonEnchantBase > 0 ? ` +${poisonEnchantBase}` : "");
+      const lines = [
+        baseDamageLine,
         ...(knowledge >= 5
           ? [
             getUiTooltip("knowledgeBonus", "Knowledge Bonus: +{{value}}", {
