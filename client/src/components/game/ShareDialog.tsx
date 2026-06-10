@@ -62,24 +62,29 @@ const RING_ENTRIES: ShareRingEntry[] = [
   },
 ];
 
+/** Shared size for the "Resources" and "Achievements: X %" headings. */
+const SECTION_HEADING_FONT_SIZE = 28;
+const SECTION_HEADING_CLASS =
+  "mb-6 font-medium tracking-wide text-gray-300 leading-none";
+
 /** Vertical space for the resource list after header + section title (px). */
 const RESOURCE_LIST_MAX_HEIGHT =
   SHARE_IMAGE_HEIGHT -
   64 * 2 - // p-16 top + bottom
-  (80 + 16 + 32 + 48) - // title + mt-4 + subtitle + mb-12
-  (30 + 24); // resources heading + mb-6
+  (80 + 48) - // title + mb-12
+  (SECTION_HEADING_FONT_SIZE + 24); // section heading + mb-6
 
 function getResourceListMetrics(
   rowCount: number,
   hasPreciousSpacer: boolean,
 ): { fontSize: number; rowGap: number } {
-  if (rowCount <= 0) return { fontSize: 26, rowGap: 8 };
+  if (rowCount <= 0) return { fontSize: 28, rowGap: 6 };
   const spacer = hasPreciousSpacer ? 12 : 0;
   const targetRowHeight = (RESOURCE_LIST_MAX_HEIGHT - spacer) / rowCount;
-  const rowGap = Math.max(2, Math.min(8, Math.round(targetRowHeight * 0.12)));
+  const rowGap = Math.max(2, Math.min(6, Math.round(targetRowHeight * 0.1)));
   const fontSize = Math.max(
-    14,
-    Math.min(26, Math.floor(targetRowHeight - rowGap)),
+    16,
+    Math.min(30, Math.floor(targetRowHeight - rowGap)),
   );
   return { fontSize, rowGap };
 }
@@ -156,6 +161,7 @@ function ShareCard({
   seenResources,
   percent,
   resourcesLabel,
+  achievementsLabel,
   playTimeLabel,
   playTimeMs,
 }: {
@@ -164,6 +170,7 @@ function ShareCard({
   seenResources: string[];
   percent: number;
   resourcesLabel: string;
+  achievementsLabel: string;
   playTimeLabel: string;
   playTimeMs: number;
 }) {
@@ -191,19 +198,13 @@ function ShareCard({
           >
             A Dark Cave
           </div>
-          <div
-            className="mt-4 font-medium text-gray-400"
-            style={{ fontSize: 32 }}
-          >
-            Play for free at {SHARE_URL}
-          </div>
         </div>
 
         <div className="flex min-h-0 flex-1 justify-between gap-12">
           <div className="flex flex-col">
             <div
-              className="mb-6 font-medium tracking-wide text-gray-300"
-              style={{ fontSize: 30 }}
+              className={SECTION_HEADING_CLASS}
+              style={{ fontSize: SECTION_HEADING_FONT_SIZE }}
             >
               {resourcesLabel}
             </div>
@@ -231,10 +232,10 @@ function ShareCard({
 
           <div className="flex flex-col items-center">
             <div
-              className="mb-10 font-semibold text-neutral-100"
-              style={{ fontSize: 46 }}
+              className={SECTION_HEADING_CLASS}
+              style={{ fontSize: SECTION_HEADING_FONT_SIZE }}
             >
-              {percent}% finished
+              {achievementsLabel}
             </div>
             <div className="grid grid-cols-2" style={{ gap: 56 }}>
               {RING_ENTRIES.map(({ config, centerSymbolStyle }) => (
@@ -254,6 +255,12 @@ function ShareCard({
           </div>
         </div>
 
+        <div
+          className="absolute bottom-16 left-16 font-medium leading-none text-gray-400"
+          style={{ fontSize: 32 }}
+        >
+          Play for free at {SHARE_URL}
+        </div>
         <div
           className="absolute bottom-16 right-16 text-right leading-none"
           style={{ fontSize: 28 }}
@@ -421,6 +428,10 @@ export default function ShareDialog() {
                 seenResources={seenResources}
                 percent={percent}
                 resourcesLabel={t("sidePanel.resources")}
+                achievementsLabel={t("share.achievements", {
+                  percent,
+                  defaultValue: "Achievements: {{percent}} %",
+                })}
                 playTimeLabel={t("share.playTime", {
                   defaultValue: "Play time",
                 })}
