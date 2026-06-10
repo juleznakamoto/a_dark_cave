@@ -10,6 +10,8 @@ import {
   canEnchantWeapon,
   getMaxEnchantLevel,
   getNextEnchantCost,
+  getPoisonArrowsBaseDamage,
+  getPoisonArrowsDamagePerTick,
   getPoisonArrowsDotFightRounds,
   getWeaponEnchantBonus,
   getWeaponEnchantLevel,
@@ -107,14 +109,16 @@ describe("weaponEnchantments", () => {
 
     const lvl1 = baseState({ weaponEnchantments: { nightshade_bow: 1 } });
     const bonus1 = getWeaponEnchantBonus(lvl1, "nightshade_bow");
-    expect(bonus1.baseStrength).toBe(5);
+    expect(bonus1.poisonBaseDamage).toBe(5);
+    expect(bonus1.baseStrength).toBe(0);
     expect(bonus1.enchantStrength).toBe(2);
     expect(bonus1.poisonRounds).toBe(0);
     expect(getNextEnchantCost(lvl1, "nightshade_bow")).toBe(2000);
 
     const lvl2 = baseState({ weaponEnchantments: { nightshade_bow: 2 } });
     const bonus2 = getWeaponEnchantBonus(lvl2, "nightshade_bow");
-    expect(bonus2.baseStrength).toBe(5);
+    expect(bonus2.poisonBaseDamage).toBe(5);
+    expect(bonus2.baseStrength).toBe(0);
     expect(bonus2.enchantStrength).toBe(5); // 2 + 3
     expect(bonus2.poisonRounds).toBe(1);
     // Fully enchanted -> no further level
@@ -122,7 +126,16 @@ describe("weaponEnchantments", () => {
     expect(getWeaponEnchantLevel(lvl2, "nightshade_bow")).toBe(2);
   });
 
-  it("adds the Nightshade poison round only at level 2", () => {
+  it("adds Nightshade poison base damage at level 1 and extra round at level 2", () => {
+    expect(getPoisonArrowsBaseDamage(baseState())).toBe(15);
+    expect(
+      getPoisonArrowsBaseDamage(
+        baseState({ weaponEnchantments: { nightshade_bow: 1 } }),
+      ),
+    ).toBe(20);
+    expect(getPoisonArrowsDamagePerTick(stateWithWeapon("nightshade_bow", 1))).toBe(
+      20,
+    );
     expect(getPoisonArrowsDotFightRounds(baseState())).toBe(2);
     expect(
       getPoisonArrowsDotFightRounds(
@@ -196,13 +209,13 @@ describe("weaponEnchantments — total effects integration", () => {
     expect(after.statBonuses.knowledge - before.statBonuses.knowledge).toBe(3);
   });
 
-  it("stacks Nightshade base + enchant Strength across both levels", () => {
+  it("stacks Nightshade enchant Strength across both levels (poison base is separate)", () => {
     const lvl0 = calculateTotalEffects(stateWithWeapon("nightshade_bow", 0));
     const lvl1 = calculateTotalEffects(stateWithWeapon("nightshade_bow", 1));
     const lvl2 = calculateTotalEffects(stateWithWeapon("nightshade_bow", 2));
-    // L1: +5 base +2 enchant = +7; L2: +5 base +5 enchant = +10.
-    expect(lvl1.statBonuses.strength - lvl0.statBonuses.strength).toBe(7);
-    expect(lvl2.statBonuses.strength - lvl0.statBonuses.strength).toBe(10);
+    // L1: +2 enchant Strength; L2: +2 +3 = +5 enchant Strength.
+    expect(lvl1.statBonuses.strength - lvl0.statBonuses.strength).toBe(2);
+    expect(lvl2.statBonuses.strength - lvl0.statBonuses.strength).toBe(5);
   });
 });
 

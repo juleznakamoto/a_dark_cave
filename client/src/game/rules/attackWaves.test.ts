@@ -20,7 +20,10 @@ import {
   getPostCompletionWaveParams,
   isPostCompletionAttackWavesActive,
 } from "./eventsAttackWaves";
-import { canProvokeAttackWave } from "./bastionActions";
+import {
+  canProvokeAttackWave,
+  getProvokeAttackWaveFoodCost,
+} from "./bastionActions";
 
 describe("attack waves expansion", () => {
   it("exposes 10 canonical wave ids ending in tenthWave", () => {
@@ -59,6 +62,27 @@ describe("attack waves expansion", () => {
 
     expect(result._combatData?.eventTitle).toBe("Wave 12");
     expect(result._combatData?.eventMessage).toContain("mindless pale creatures");
+  });
+
+  it("charges 5000 food to provoke post-completion waves", () => {
+    const state = {
+      events: { cube15a: true },
+      story: { seen: { tenthWaveVictory: true }, merchantPurchases: 0 },
+      buildings: { bastion: 1 },
+      weapons: {},
+      postCompletionAttackWaveCount: 0,
+      attackWaveTimers: {
+        [POST_COMPLETION_ATTACK_WAVE_ID]: {
+          startTime: Date.now(),
+          duration: 60 * 60 * 1000,
+          defeated: false,
+          provoked: false,
+          elapsedTime: 0,
+        },
+      },
+    } as GameState;
+
+    expect(getProvokeAttackWaveFoodCost(state)).toBe(5000);
   });
 
   it("allows provoking post-completion waves even when elapsed equals duration", () => {

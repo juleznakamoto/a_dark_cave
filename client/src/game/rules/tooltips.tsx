@@ -17,8 +17,6 @@ import {
   BOMB_BASE_DAMAGE_BY_ID,
   bombKnowledgeDamageBonus,
   CRUSHING_STRIKE_UPGRADES,
-  POISON_ARROWS_BASE_DAMAGE,
-  poisonArrowsDamagePerTick,
 } from "./skillUpgrades";
 import {
   getPoisonArrowsBaseDamage,

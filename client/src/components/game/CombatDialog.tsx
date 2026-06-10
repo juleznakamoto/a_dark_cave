@@ -19,11 +19,10 @@ import {
   BOMB_BASE_DAMAGE_BY_ID,
   bombKnowledgeDamageBonus,
   CRUSHING_STRIKE_UPGRADES,
-  POISON_ARROWS_BASE_DAMAGE,
   bloodflameSphereFightBurnTicksAfterCast,
-  poisonArrowsDamagePerTick,
 } from "@/game/rules/skillUpgrades";
 import {
+  getPoisonArrowsBaseDamage,
   getPoisonArrowsDamagePerTick,
   getPoisonArrowsDotFightRounds,
 } from "@/game/weaponEnchantments";
@@ -350,7 +349,7 @@ export default function CombatDialog({
     combatItems.push({
       id: "poison_arrows",
       name: combatItemName("poison_arrows", "Poison Arrows"),
-      damage: POISON_ARROWS_BASE_DAMAGE,
+      damage: getPoisonArrowsBaseDamage(gameState),
       available:
         poisonArrowsUsedInCombat < 1 && !usedItemsInRound.has("poison_arrows"),
     });

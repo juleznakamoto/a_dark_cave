@@ -33,6 +33,9 @@ export function getBastionRepairCostPaths(
   return out;
 }
 
+const CANONICAL_PROVOKE_FOOD_COST = 500;
+const POST_COMPLETION_PROVOKE_FOOD_COST = 5000;
+
 function getProvokableAttackWaveId(state: GameState): string | null {
   const waves = getAttackWavesChartRows({
     story: state.story,
@@ -47,6 +50,13 @@ function getProvokableAttackWaveId(state: GameState): string | null {
     return POST_COMPLETION_ATTACK_WAVE_ID;
   }
   return null;
+}
+
+/** Food cost for the currently provokable attack wave. */
+export function getProvokeAttackWaveFoodCost(state: GameState): number {
+  return getProvokableAttackWaveId(state) === POST_COMPLETION_ATTACK_WAVE_ID
+    ? POST_COMPLETION_PROVOKE_FOOD_COST
+    : CANONICAL_PROVOKE_FOOD_COST;
 }
 
 /** True when the active wave can be provoked (timer running, not already provoked, etc.). */
@@ -161,7 +171,9 @@ export const bastionActions: Record<string, Action> = {
     label: "Provoke attack wave",
     executionTime: 0,
     cooldown: 0,
-    cost: { "resources.food": 500 },
+    cost: (state: GameState) => ({
+      "resources.food": getProvokeAttackWaveFoodCost(state),
+    }),
     show_when: {
       "buildings.bastion": 1,
     },
