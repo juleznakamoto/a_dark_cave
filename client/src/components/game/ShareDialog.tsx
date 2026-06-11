@@ -467,7 +467,10 @@ export default function ShareDialog() {
 
   return (
     <Dialog open={open} onOpenChange={(next) => !next && setOpen(false)}>
-      <DialogContent className="[--adc-dialog-max-w:30rem] max-h-[90vh] flex flex-col overflow-hidden z-[70]">
+      <DialogContent
+        className="[--adc-dialog-max-w:30rem] max-h-[90vh] flex flex-col overflow-hidden z-[70]"
+        overlayClassName="z-[69]"
+      >
         <DialogHeader>
           <DialogTitle>
             {t("share.title", { defaultValue: "Share your progress" })}

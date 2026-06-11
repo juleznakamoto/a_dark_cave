@@ -37,11 +37,13 @@ const DialogContent = React.forwardRef<
     customBackground?: React.ReactNode;
     /** When true, skip inline width/maxWidth (e.g. dialogs that use `w-max` / intrinsic sizing). */
     skipViewportWidthClamp?: boolean;
+    /** Backdrop classes — pair with elevated content z-index (e.g. overlay `z-[69]` + content `z-[70]`). */
+    overlayClassName?: string;
   }
->(({ className, children, hideClose, hideOverlay, customBackground, style, skipViewportWidthClamp, ...props }, ref) => (
+>(({ className, children, hideClose, hideOverlay, customBackground, style, skipViewportWidthClamp, overlayClassName, ...props }, ref) => (
   <DialogPortal>
     {customBackground}
-    {!hideOverlay && <DialogOverlay />}
+    {!hideOverlay && <DialogOverlay className={overlayClassName} />}
     <DialogPrimitive.Content
       ref={ref}
       onOpenAutoFocus={(e) => {
