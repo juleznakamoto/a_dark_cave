@@ -1188,9 +1188,9 @@ export default function GameContainer() {
               )}
             </nav>
 
-            {/* Action Panels — horizontal inset lives on each panel's scroll wrapper (`pl-1`) for focus-glow bleed + tab alignment. */}
+            {/* Action Panels */}
             <div
-              className={`flex-1 overflow-x-hidden min-h-0 ${activeTab === "achievements"
+              className={`flex-1 overflow-x-hidden pl-2 min-h-0 ${activeTab === "achievements"
                 ? "overflow-hidden"
                 : "overflow-y-auto scrollbar-hide"
                 }`}
