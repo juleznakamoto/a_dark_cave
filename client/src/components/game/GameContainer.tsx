@@ -141,7 +141,7 @@ export default function GameContainer() {
   const unclaimedAchievementIds = useMemo(
     () =>
       getUnclaimedAchievementIds(
-        !!relics?.survivors_notes || !!books?.book_of_trials,
+        !!relics?.survivors_notes,
         !!books?.book_of_trials,
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -996,10 +996,8 @@ export default function GameContainer() {
             <GameTabs />
           </div>
 
-          {/* Game tab area - below side panel on mobile, middle column on desktop (flexible; shrinks first).
-              `flex-1` lets the panel area fill the remaining mobile height so its size stays constant
-              across tabs instead of tracking each tab's content (ignored in the desktop grid). */}
-          <section className="order-3 md:order-2 flex-1 min-w-0 flex flex-col min-h-0 overflow-hidden md:pl-0">
+          {/* Game tab area - below side panel on mobile, middle column on desktop (flexible; shrinks first) */}
+          <section className="order-3 md:order-2 min-w-0 flex flex-col min-h-0 overflow-hidden md:pl-0">
             {/* Horizontal Game Tabs */}
             <nav
               className={`relative border-t border-border pl-2 pr-2 md:pl-4 md:pr-4 flex-shrink-0${isPaused ? " z-[41] pointer-events-auto" : ""}`}
@@ -1188,9 +1186,10 @@ export default function GameContainer() {
               )}
             </nav>
 
-            {/* Action Panels */}
+            {/* Action Panels — left inset matches the tab row so the first button (e.g. Feed Fire)
+                lines up with the first tab (e.g. Cave): nav `pl-2`/`md:pl-4` plus the tab row's `pl-[3px]` glow inset. */}
             <div
-              className={`flex-1 overflow-x-hidden pl-2 min-h-0 ${activeTab === "achievements"
+              className={`flex-1 overflow-x-hidden pl-[11px] pr-2 md:pl-[19px] md:pr-4 min-h-0 ${activeTab === "achievements"
                 ? "overflow-hidden"
                 : "overflow-y-auto scrollbar-hide"
                 }`}

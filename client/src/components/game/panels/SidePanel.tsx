@@ -923,7 +923,7 @@ export default function SidePanel() {
 
   return (
     <div
-      className="h-full max-h-[36vh] md:max-h-full min-h-0 pt-2 md:pt-0 overflow-hidden"
+      className="h-full max-h-[36vh] md:max-h-full min-h-0 pt-2 overflow-hidden"
       onPointerLeave={handleSidePanelPointerLeave}
       onWheel={clearSidePanelActiveTooltipHover}
     >
