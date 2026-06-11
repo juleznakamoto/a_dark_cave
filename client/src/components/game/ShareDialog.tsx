@@ -74,7 +74,7 @@ const RING_ENTRIES: ShareRingEntry[] = [
 ];
 
 /** Shared size for the "Resources" and "Achievements: X %" headings. */
-const SECTION_HEADING_FONT_SIZE = 32;
+const SECTION_HEADING_FONT_SIZE = 36;
 const SECTION_HEADING_CLASS =
   "mb-6 font-medium tracking-wide text-gray-300 leading-none";
 
@@ -175,7 +175,9 @@ function ShareResourceRow({
     <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-10 leading-none">
       <span className="inline-flex items-center gap-2 text-gray-400">
         {icon}
-        <span>{getResourceName(resourceKey, capitalizeWords(resourceKey))}</span>
+        <span>
+          {getResourceName(resourceKey, capitalizeWords(resourceKey))}
+        </span>
       </span>
       <div className="grid grid-cols-[auto_1.25em] items-baseline gap-x-2">
         <span className="text-right font-mono tabular-nums text-gray-300">
@@ -332,7 +334,9 @@ export default function ShareDialog() {
   const [busy, setBusy] = useState(false);
 
   const percent = open
-    ? getOverallAchievementPercent(useGameStore.getState() as unknown as GameState)
+    ? getOverallAchievementPercent(
+        useGameStore.getState() as unknown as GameState,
+      )
     : 0;
   const resourcePercent = open
     ? getResourceMilestonePercent(resources, seenResources)
@@ -405,7 +409,9 @@ export default function ShareDialog() {
       if ((error as Error)?.name === "AbortError") return;
       logger.error("Failed to share progress image", error);
       toast({
-        title: t("share.errorTitle", { defaultValue: "Could not create image" }),
+        title: t("share.errorTitle", {
+          defaultValue: "Could not create image",
+        }),
         description: t("share.errorDesc", {
           defaultValue: "Something went wrong while generating the image.",
         }),
@@ -442,7 +448,9 @@ export default function ShareDialog() {
     } catch (error) {
       logger.error("Failed to download progress image", error);
       toast({
-        title: t("share.errorTitle", { defaultValue: "Could not create image" }),
+        title: t("share.errorTitle", {
+          defaultValue: "Could not create image",
+        }),
         description: t("share.errorDesc", {
           defaultValue: "Something went wrong while generating the image.",
         }),
