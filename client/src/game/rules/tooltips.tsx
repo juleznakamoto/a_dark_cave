@@ -31,6 +31,7 @@ import {
   formatTooltipResourceName,
   getUiTooltip,
 } from "@/i18n/tooltipLabels";
+import { wrapTooltipHeaderWithTrailing } from "./actionTooltipLayout";
 import {
   getMaxBombLimit,
   getMaxVeinfireElixirLimit,
@@ -329,7 +330,7 @@ export const getResourceGainTooltip = (
   const headerBlockAboveVein =
     gains.length > 0 || costs.length > 0 || isBombAtMax || isVeinfireElixirAtMax;
 
-  const bodyContent = (
+  const gainsBlock = (
     <>
       {isBombAtMax && (
         <div className="text-muted-foreground mb-1">
@@ -347,10 +348,9 @@ export const getResourceGainTooltip = (
           )}
         </div>
       )}
-      {(isBombAtMax || isVeinfireElixirAtMax) &&
-        (gains.length > 0 || costs.length > 0) && (
-          <div className="border-t border-border my-1" />
-        )}
+      {(isBombAtMax || isVeinfireElixirAtMax) && gains.length > 0 && (
+        <div className="border-t border-border my-1" />
+      )}
       {gains.map((gain, index) => (
         <div key={`gain-${index}`}>
           {showExactGains
@@ -369,6 +369,22 @@ export const getResourceGainTooltip = (
             })}
         </div>
       ))}
+    </>
+  );
+
+  const hasGainsSection =
+    isBombAtMax || isVeinfireElixirAtMax || gains.length > 0;
+
+  return (
+    <div className="text-xs">
+      {hasGainsSection
+        ? wrapTooltipHeaderWithTrailing(gainsBlock, headerTrailing)
+        : null}
+      {(isBombAtMax || isVeinfireElixirAtMax) &&
+        gains.length === 0 &&
+        costs.length > 0 && (
+          <div className="border-t border-border my-1" />
+        )}
       {gains.length > 0 && costs.length > 0 && (
         <div className="border-t border-border my-1" />
       )}
@@ -383,19 +399,6 @@ export const getResourceGainTooltip = (
           })}
         </div>
       ))}
-    </>
-  );
-
-  return (
-    <div className="text-xs">
-      {headerTrailing != null ? (
-        <div className="flex items-start gap-2">
-          <div className="flex-1 min-w-0">{bodyContent}</div>
-          <span className="shrink-0 leading-none">{headerTrailing}</span>
-        </div>
-      ) : (
-        bodyContent
-      )}
       {veinrootPctLine != null && (
         <>
           {headerBlockAboveVein && (

@@ -288,13 +288,14 @@ export default function ForestPanel() {
     ].includes(actionId);
     const isVeinfireElixirTradeAction =
       actionId === "tradeGoldForVeinfireElixir";
+    const focusTrailing = getFocusTooltipHeaderTrailing(actionId, state);
     const resourceGainTooltip =
       isChopWood ||
         isHunt ||
         isSacrificeAction ||
         isBombTradeAction ||
         isVeinfireElixirTradeAction
-        ? getResourceGainTooltip(actionId, state)
+        ? getResourceGainTooltip(actionId, state, focusTrailing)
         : null;
 
     // Check if this action is affected by focus mode (only actions that get 2x bonus)
@@ -316,7 +317,6 @@ export default function ForestPanel() {
 
     // Check if this action has upgrade tracking
     const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
-    const focusTrailing = getFocusTooltipHeaderTrailing(actionId, state);
 
     if (
       showCost ||
@@ -339,7 +339,7 @@ export default function ForestPanel() {
 
       if (resourceGainTooltip && !villagerRequirementNotMet) {
         // chopWood or hunt: show resource gains only
-        tooltipContent = getResourceGainTooltip(actionId, state, focusTrailing);
+        tooltipContent = resourceGainTooltip;
       } else if (
         (isAnimalsSacrifice || isHumansSacrifice || isFinanceExpedition) &&
         action.tooltipEffects

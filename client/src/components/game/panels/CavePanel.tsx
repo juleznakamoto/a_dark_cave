@@ -312,9 +312,10 @@ export default function CavePanel() {
       ? action.expeditionVillagersRequired(state)
       : 0;
     const hasExpeditionRequirement = expeditionVillagersRequired > 0;
+    const focusTrailing = getFocusTooltipHeaderTrailing(actionId, state);
     const resourceGainTooltip =
       isChopWood || isMineAction || isCaveExploreAction || isCraftAction
-        ? getResourceGainTooltip(actionId, state)
+        ? getResourceGainTooltip(actionId, state, focusTrailing)
         : null;
 
     // Check if this action is affected by focus mode (only actions that get 2x bonus)
@@ -402,10 +403,9 @@ export default function CavePanel() {
         actionId,
         state,
       );
-      const focusTrailing = getFocusTooltipHeaderTrailing(actionId, state);
       const tooltipContent = composeActionTooltip({
         header: tooltipHeader,
-        headerTrailing: focusTrailing,
+        headerTrailing: resourceGainTooltip ? undefined : focusTrailing,
         description: craftDescription,
         effects: revealedEffects,
         style:
