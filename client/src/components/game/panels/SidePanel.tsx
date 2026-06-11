@@ -927,7 +927,7 @@ export default function SidePanel() {
       onPointerLeave={handleSidePanelPointerLeave}
       onWheel={clearSidePanelActiveTooltipHover}
     >
-      <ScrollArea className="h-full w-full pb-1.5 pr-4">
+      <ScrollArea className="h-full w-full pb-1.5 pr-2">
         <div className="pb-1 w-full grid grid-cols-[auto_auto] gap-x-1.5 items-start min-w-0">
           {/* First column - Resources */}
           <div className={cn(SIDE_PANEL_SECTION_SPACING_CLASS)}>

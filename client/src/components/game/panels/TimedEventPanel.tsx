@@ -397,7 +397,7 @@ export default function TimedEventPanel() {
   };
 
   return (
-    <div className="w-full space-y-1 mt-0 md:mt-2 mb-2 pl-2 pr-2">
+    <div className="w-full space-y-1 pt-1 md:pt-0 mt-0 md:mt-2 mb-2 pl-2 pr-2">
       {/* Event Title */}
       {displayTitle && (
         <h2 className="text-xs flex items-center justify-between">

@@ -890,7 +890,7 @@ export default function VillagePanel() {
       <SuccessParticles buttonRef={feedFireButtonRef} sparks={sparks} />
       <BubblyButtonGlobalPortal bubbles={bubbles} />
       <ScrollArea className="h-full w-full">
-        <div className="w-full space-y-4 mt-0 md:mt-2 mb-2 pr-2 pb-2">
+        <div className="w-full space-y-4 pt-1 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
           {actionGroups.map((group, groupIndex) => {
             const visibleActions = group.actions.filter((action) => {
               const actionWithShow = action as {
