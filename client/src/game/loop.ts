@@ -38,13 +38,7 @@ import {
 } from "./rules/skillUpgrades";
 import { CRUEL_MODE, cruelModeScale, getMaxStoneHutLevel, getMaxWoodenHutLevel } from "./cruelMode";
 import { getMadnessDeathChancePerCycle } from "./rules/effectsStats";
-import {
-  guestAuthNotificationTriggerUpdates,
-  shouldTriggerGuestAuthNotification,
-} from "./authNotificationAuto";
-import { socialPromptHighestMilestoneIndexToOpen } from "./socialPromptAuto";
-import { FEEDBACK_PROMPT_PLAY_MS } from "./feedbackPromptAuto";
-import { isSocialPromoExclusiveRewardComplete } from "@/game/socialPromoExclusiveReward";
+import { processPlayTimeAutoPrompts } from "./playTimeAutoPrompts";
 import { tickObsidianOrbFocus } from "@/game/obsidianOrb";
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
@@ -440,60 +434,7 @@ export function startGameLoop() {
         handleAutoSave();
       }
 
-      // Fresh state after playTime tick (do not redeclare `state` — shadows tick `state` above).
-      const promptState = useGameStore.getState();
-      const playTimeMs = promptState.playTime || 0;
-
-      // Guest Profile sign-in dot: first after 15m play time, then every 60m play time (persisted).
-      if (!promptState.isUserSignedIn) {
-        const lastShown = promptState.lastAuthNotificationPlayTime ?? 0;
-        if (
-          shouldTriggerGuestAuthNotification({
-            playTimeMs,
-            lastShownPlayTimeMs: lastShown,
-            authNotificationSeen: promptState.authNotificationSeen,
-            authNotificationVisible: promptState.authNotificationVisible,
-          })
-        ) {
-          useGameStore.setState(
-            guestAuthNotificationTriggerUpdates({
-              playTimeMs,
-              lastShownPlayTimeMs: lastShown,
-              authNotificationSeen: promptState.authNotificationSeen,
-              authNotificationVisible: promptState.authNotificationVisible,
-            }),
-          );
-        }
-      }
-
-      // Rewards dialog: auto-open at play-time milestones until exclusive-item tasks are done (same bar as profile shortcut).
-      if (!isSocialPromoExclusiveRewardComplete(promptState)) {
-        const milestoneToOpen = socialPromptHighestMilestoneIndexToOpen(
-          playTimeMs,
-          promptState.socialPromptMilestoneIndex ?? 0,
-        );
-        // Only open when no other blocking modal is up (fresh state — may differ from
-        // frame-start IsDialogOpen if an event fired earlier this tick). When blocked,
-        // leave socialPromptMilestoneIndex unchanged so the milestone retries until shown.
-        if (milestoneToOpen !== null && !isModalDialogOpen(promptState)) {
-          useGameStore.setState({
-            socialPromptDialogOpen: true,
-            socialPromptMilestoneIndex: milestoneToOpen + 1,
-          });
-        }
-      }
-
-      // One-time feedback / contact dialog at 105 minutes of play.
-      if (
-        !promptState.feedbackPromptShown &&
-        playTimeMs >= FEEDBACK_PROMPT_PLAY_MS &&
-        !isModalDialogOpen(promptState)
-      ) {
-        useGameStore.setState({
-          feedbackDialogOpen: true,
-          feedbackPromptShown: true,
-        });
-      }
+      processPlayTimeAutoPrompts();
 
       // All production and game logic checks (every 15 seconds)
       if (timestamp - lastProduction >= PRODUCTION_INTERVAL) {

@@ -718,6 +718,19 @@ const detectMadnessChange = (
   return 0;
 };
 
+function scheduleMadnessDialogWhenClear(
+  get: () => GameStore,
+  data: NonNullable<GameStore["madnessDialog"]["data"]>,
+  initialDelayMs: number,
+): void {
+  scheduleWhenDialogClear(
+    get,
+    (store) => isModalDialogOpen(store) && !store.madnessDialog.isOpen,
+    () => get().setMadnessDialog(true, data),
+    initialDelayMs,
+  );
+}
+
 function scheduleMadnessDialogAfterCombat(
   get: () => GameStore,
   madnessChange: number,
@@ -3139,9 +3152,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     if (shouldShowMadnessDialog && madnessDialogData) {
       get().setEventDialog(false);
-      setTimeout(() => {
-        get().setMadnessDialog(true, madnessDialogData);
-      }, 200);
+      scheduleMadnessDialogWhenClear(get, madnessDialogData, 200);
       return true;
     }
 
@@ -3347,7 +3358,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setEventDialog: (isOpen: boolean, currentEvent?: LogEntry) => {
     if (isOpen && currentEvent) {
-      if (get().rewardDialog.isOpen) {
+      const store = get();
+      // Replace in-place when the event dialog is already showing; otherwise wait for
+      // any blocking modal (rewards, social prompts, combat, etc.) to clear first.
+      if (isModalDialogOpen(store) && !store.eventDialog.isOpen) {
         scheduleEventDialogWhenClear(get, set, currentEvent, 0);
         return;
       }
@@ -3834,6 +3848,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }));
   },
   setMadnessDialog: (isOpen, data) => {
+    if (isOpen && data) {
+      const store = get();
+      if (isModalDialogOpen(store) && !store.madnessDialog.isOpen) {
+        scheduleMadnessDialogWhenClear(get, data, 0);
+        return;
+      }
+    }
+
     set(() => ({
       madnessDialog: {
         isOpen,
