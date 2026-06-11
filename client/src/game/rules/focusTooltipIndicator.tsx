@@ -4,6 +4,7 @@ import { FOCUS_ELIGIBLE_ACTIONS } from "./actionEffects";
 import { cn } from "@/lib/utils";
 
 export const FOCUS_TOOLTIP_SYMBOL = "☩";
+export const FOCUS_TOOLTIP_HIGHLIGHT_CLASS = "text-teal-400";
 
 export function isFocusGlowActive(actionId: string, state: GameState): boolean {
   return (
@@ -16,7 +17,8 @@ export function FocusTooltipIcon({ className }: { className?: string }) {
   return (
     <span
       className={cn(
-        "font-extrabold text-[10px] leading-none text-teal-400",
+        "font-extrabold text-[10px] leading-none",
+        FOCUS_TOOLTIP_HIGHLIGHT_CLASS,
         className,
       )}
       aria-hidden

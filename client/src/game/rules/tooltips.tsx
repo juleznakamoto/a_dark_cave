@@ -33,6 +33,10 @@ import {
 } from "@/i18n/tooltipLabels";
 import { wrapTooltipHeaderWithTrailing } from "./actionTooltipLayout";
 import {
+  FOCUS_TOOLTIP_HIGHLIGHT_CLASS,
+  isFocusGlowActive,
+} from "./focusTooltipIndicator";
+import {
   getMaxBombLimit,
   getMaxVeinfireElixirLimit,
   isBombAtLimit,
@@ -327,6 +331,10 @@ export const getResourceGainTooltip = (
 
   const showExactGains = true;
 
+  const focusGainClass = isFocusGlowActive(actionId, state)
+    ? FOCUS_TOOLTIP_HIGHLIGHT_CLASS
+    : undefined;
+
   const headerBlockAboveVein =
     gains.length > 0 || costs.length > 0 || isBombAtMax || isVeinfireElixirAtMax;
 
@@ -352,7 +360,7 @@ export const getResourceGainTooltip = (
         <div className="border-t border-border my-1" />
       )}
       {gains.map((gain, index) => (
-        <div key={`gain-${index}`}>
+        <div key={`gain-${index}`} className={focusGainClass}>
           {showExactGains
             ? gain.min === gain.max
               ? getUiTooltip("gainExact", "+{{amount}} {{resource}}", {
