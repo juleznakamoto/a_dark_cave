@@ -9,6 +9,7 @@ import {
 } from "@/game/rules";
 import { getResourceGainTooltip } from "@/game/rules/tooltips";
 import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
+import { wrapActionTooltipWithFocusIndicator } from "@/game/rules/focusTooltipIndicator";
 import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
 import CooldownButton from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -433,7 +434,11 @@ export default function ForestPanel() {
           disabled={!canExecute}
           variant="outline"
           className={`${isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""} ${shouldGlow ? "focus-glow" : ""}`}
-          tooltip={tooltipContent}
+          tooltip={wrapActionTooltipWithFocusIndicator(
+            tooltipContent,
+            actionId,
+            state,
+          )}
           onAnimationTrigger={
             isChopWood ? handleChopWoodAnimationTrigger : isHunt ? handleHuntAnimationTrigger : undefined
           }

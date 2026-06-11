@@ -101,7 +101,7 @@ export default function PlaylightDiscoveryButton({
           <img
             src="/flashlight.png"
             alt=""
-            className="h-full w-full rounded-md object-contain object-bottom invert transition-[filter] duration-300 group-hover:invert-0"
+            className="h-full w-full object-contain object-bottom invert transition-[filter] duration-300 group-hover:invert-0"
           />
         </span>
         {showNotificationDot && (

@@ -121,7 +121,8 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
   (`actionEffects.ts`, `effectsCalculation.ts`, `costCalculation.ts`), events (`events.ts`
   → `EventManager`, `LogEntry`, plus topic files `events*.ts`), `insightReveal.ts` /
   `insightRevealTooltip.tsx`, `actionTooltipLayout.tsx` (`composeActionTooltip` — cost,
-  description, revealed effects), `tooltips.tsx` / `itemTooltips.tsx`.
+  description, revealed effects), `focusTooltipIndicator.tsx` (focus `☩` icon on eligible action
+  tooltips while focus is active), `tooltips.tsx` / `itemTooltips.tsx`.
 - **Action path:** UI → `useGameStore.executeAction(id)` → `actions.ts` maps ID → `handle*`
   function in a rule module → `StateManager.scheduleEffectsUpdate()` recomputes derived stats.
 - **Event path:** `loop.ts`/store → `checkEvents()` → `EventManager` evaluates `allEvents`
@@ -250,7 +251,8 @@ Support: `server/vite.ts` (dev/prod hosting), `server/supabaseServerClient.ts` (
 7. **Logging** — use `client/src/lib/logger.ts`, never `console.*`.
 8. **Backward-compatible saves** — add new fields with `z.default()`; don't rename stored IDs.
 9. **Tooltips** — `TooltipWrapper` + `useGlobalTooltip`; panel action buttons compose layout via
-   `rules/actionTooltipLayout.tsx` (`composeActionTooltip`).
+   `rules/actionTooltipLayout.tsx` (`composeActionTooltip`); focus glow actions add `☩` via
+   `rules/focusTooltipIndicator.tsx` while focus is active.
 10. **Dual persistence** — IndexedDB always; Supabase when authenticated (optimistic diff saves).
 
 > See `.cursorrules` for the full coding-style/philosophy guide; this file is the navigational map.

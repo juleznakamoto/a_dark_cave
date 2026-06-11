@@ -1189,7 +1189,7 @@ export default function GameContainer() {
 
             {/* Action Panels */}
             <div
-              className={`flex-1 overflow-x-hidden pl-1 min-h-0 ${activeTab === "achievements"
+              className={`flex-1 overflow-x-hidden min-h-0 ${activeTab === "achievements"
                 ? "overflow-hidden"
                 : "overflow-y-auto scrollbar-hide"
                 }`}
