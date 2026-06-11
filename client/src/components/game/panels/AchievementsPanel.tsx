@@ -361,7 +361,7 @@ export default function AchievementsPanel() {
   const lockedTooltip = t("achievements.notUnlocked");
   const chartUnavailable = t("achievements.chartUnavailable");
   return (
-    <div className="mt-0 flex h-full flex-col min-h-0 overflow-hidden w-full pr-2">
+    <div className="mt-0 flex h-full flex-col min-h-0 overflow-hidden w-full pl-1 pr-2">
       <Tabs
         value={effectiveTab}
         onValueChange={setActiveTab}

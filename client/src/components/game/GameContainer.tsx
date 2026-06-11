@@ -527,15 +527,6 @@ export default function GameContainer() {
       });
     }
 
-    if (flags.forestUnlocked) {
-      tabs.push({
-        id: "forest",
-        icon: <Trees />,
-        label: "The Forest",
-        onClick: () => setActiveTab("forest"),
-      });
-    }
-
     // Add Estate tab if unlocked
     if (estateUnlocked) {
       tabs.push({
@@ -543,6 +534,15 @@ export default function GameContainer() {
         icon: <Castle />,
         label: "The Estate",
         onClick: () => setActiveTab("estate"),
+      });
+    }
+
+    if (flags.forestUnlocked) {
+      tabs.push({
+        id: "forest",
+        icon: <Trees />,
+        label: "The Forest",
+        onClick: () => setActiveTab("forest"),
       });
     }
 
@@ -1186,10 +1186,9 @@ export default function GameContainer() {
               )}
             </nav>
 
-            {/* Action Panels — left inset matches the tab row so the first button (e.g. Feed Fire)
-                lines up with the first tab (e.g. Cave): nav `pl-2`/`md:pl-4` plus the tab row's `pl-[3px]` glow inset. */}
+            {/* Action Panels */}
             <div
-              className={`flex-1 overflow-x-hidden pl-[11px] pr-2 md:pl-[19px] md:pr-4 min-h-0 ${activeTab === "achievements"
+              className={`flex-1 overflow-x-hidden pl-2 pr-2 md:pl-4 md:pr-4 min-h-0 ${activeTab === "achievements"
                 ? "overflow-hidden"
                 : "overflow-y-auto scrollbar-hide"
                 }`}
