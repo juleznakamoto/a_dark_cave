@@ -37,7 +37,7 @@ import { gameStateSchema, type GameState } from "@shared/schema";
 const SHARE_IMAGE_WIDTH = 1080;
 const SHARE_IMAGE_HEIGHT = 1350;
 const CARD_BG = "#0b0b0e";
-const SHARE_URL = "a-dark-cave.com";
+const SHARE_URL = "https://a-dark-cave.com";
 const SHARE_FILE_NAME = "a-dark-cave.png";
 
 const RESOURCE_ORDER = Object.keys(gameStateSchema.parse({}).resources);
