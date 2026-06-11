@@ -996,7 +996,7 @@ export default function GameContainer() {
               Mobile: locked to 36vh so the panel (and tabs/actions below it) keep a
               consistent height regardless of the active tab's side-panel content.
               Desktop: md:min-h-0 lets it shrink within the grid column. */}
-          <div className="order-2 md:order-1 h-[36vh] md:h-auto min-h-[36vh] md:min-h-0 w-full pt-1 md:pt-3 pr-0 border-t md:border-t-0 md:border-r border-border overflow-hidden">
+          <div className="order-2 md:order-1 h-[36vh] md:h-auto min-h-[36vh] md:min-h-0 w-full pt-2 md:pt-3 pr-0 border-t md:border-t-0 md:border-r border-border overflow-hidden">
             <GameTabs />
           </div>
 
