@@ -866,6 +866,16 @@ body {
     border-color 0.15s ease;
 }
 
+.invite-friends-dismiss-btn {
+  animation: invite-friends-float-scale 2.5s ease-in-out infinite;
+  transition: background-color 0.15s ease;
+}
+
+.invite-friends-dismiss-btn:hover {
+  animation-play-state: paused;
+  transform: scale(1.1);
+}
+
 /* Match shop "Continue" buttons (default primary). */
 .invite-friends-float-btn:hover {
   animation-play-state: paused;
@@ -877,7 +887,8 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
 
-  .invite-friends-float-btn {
+  .invite-friends-float-btn,
+  .invite-friends-dismiss-btn {
     animation: none;
     transform: scale(1);
   }
