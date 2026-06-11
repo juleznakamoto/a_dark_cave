@@ -38,7 +38,7 @@ const SHARE_IMAGE_WIDTH = 1080;
 const SHARE_IMAGE_HEIGHT = 1350;
 const CARD_BG = "#0b0b0e";
 const SHARE_URL = "https://a-dark-cave.com";
-const SHARE_URL_IMAGE = "https://a-dark-cave.com";
+const SHARE_URL_IMAGE = "a-dark-cave.com";
 
 const SHARE_FILE_NAME = "a-dark-cave.png";
 
