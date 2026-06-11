@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { UserPlus } from "lucide-react";
+import { UserPlus, X } from "lucide-react";
 import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { useToast } from "@/hooks/use-toast";
@@ -30,6 +30,7 @@ export default function InviteFriendsFloatingButton() {
   );
   const setIsUserSignedIn = useGameStore((s) => s.setIsUserSignedIn);
   const [sessionSignedIn, setSessionSignedIn] = useState<boolean | null>(null);
+  const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -58,6 +59,7 @@ export default function InviteFriendsFloatingButton() {
   });
 
   if (
+    dismissed ||
     !showFloatingInvite ||
     shopDialogOpen ||
     fullGamePurchaseDialogOpen
@@ -86,39 +88,57 @@ export default function InviteFriendsFloatingButton() {
       className="pointer-events-auto fixed right-4 z-30"
       style={{ bottom: `calc(${GAME_FOOTER_INSET} + 1rem)` }}
     >
-      <TooltipWrapper
-        tooltip={
-          <p className="text-xs">
-            {t("invite.tooltip", {
-              amount: REFERRAL_REWARD_GOLD,
-              cap: SOCIAL_PROMPT_REFERRAL_CAP,
-              count: referralCount,
-            })}
-          </p>
-        }
-        tooltipId="referral-floating-invite"
-        tooltipContentClassName="max-w-xs"
-        className="inline-flex"
-        onClick={() => {
-          void handleCopyInviteLink();
-        }}
-      >
-        <button
-          type="button"
-          className="invite-friends-float-btn flex items-center gap-2 rounded-md border border-border border-red-700/50 bg-red-950/30 px-2.5 py-1.5 text-xs text-neutral-300 backdrop-blur-sm"
+      <div className="relative inline-block">
+        <TooltipWrapper
+          tooltip={
+            <p className="text-xs">
+              {t("invite.tooltip", {
+                amount: REFERRAL_REWARD_GOLD,
+                cap: SOCIAL_PROMPT_REFERRAL_CAP,
+                count: referralCount,
+              })}
+            </p>
+          }
+          tooltipId="referral-floating-invite"
+          tooltipContentClassName="max-w-xs"
+          className="inline-flex"
+          onClick={() => {
+            void handleCopyInviteLink();
+          }}
         >
-          <div className="flex min-w-0 items-center gap-1.5">
-            <UserPlus
-              className="h-4 w-4 shrink-0 opacity-90"
-              aria-hidden
-            />
-            <span>{t("invite.button")}</span>
-          </div>
-          <span className="shrink-0 font-semibold">
-            {t("invite.goldBonus", { amount: REFERRAL_REWARD_GOLD })}
-          </span>
-        </button>
-      </TooltipWrapper>
+          <button
+            type="button"
+            className="invite-friends-float-btn flex items-center gap-2 rounded-md border border-border border-red-700/50 bg-red-950/30 px-2.5 py-1.5 text-xs text-neutral-300 backdrop-blur-sm"
+          >
+            <div className="flex min-w-0 items-center gap-1.5">
+              <UserPlus
+                className="h-4 w-4 shrink-0 opacity-90"
+                aria-hidden
+              />
+              <span>{t("invite.button")}</span>
+            </div>
+            <span className="shrink-0 font-semibold">
+              {t("invite.goldBonus", { amount: REFERRAL_REWARD_GOLD })}
+            </span>
+          </button>
+        </TooltipWrapper>
+        <div className="absolute top-[-10px] right-[-7px] z-[30] pointer-events-auto">
+          <button
+            type="button"
+            className="flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
+            data-testid="button-invite-friends-dismiss"
+            aria-label={t("invite.dismiss", { defaultValue: "Close" })}
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setDismissed(true);
+            }}
+          >
+            <X className="h-2.5 w-2.5 stroke-[3]" />
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
