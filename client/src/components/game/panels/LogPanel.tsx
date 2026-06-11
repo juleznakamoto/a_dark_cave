@@ -13,11 +13,11 @@ import {
 type ExtendedLogEntry =
   | LogEntry
   | {
-    message: string;
-    type: "production";
-    id: string;
-    timestamp: number;
-  };
+      message: string;
+      type: "production";
+      id: string;
+      timestamp: number;
+    };
 
 const MARK_READ_HOVER_MS = 300;
 
@@ -63,7 +63,7 @@ function LogPanel() {
         showIndicatorWhen={recentEntries.length >= 8}
         scrollAreaId="event-log"
       >
-        <div className="pl-1 relative">
+        <div className="pl-0 relative">
           <div ref={topRef} />
           <div className="space-y-1 text-xs pb-1">
             {recentEntries.map((entry: any, index: number) => {
@@ -73,7 +73,9 @@ function LogPanel() {
               let opacity = "";
               if (!isUnread) {
                 opacity = "opacity-60";
-              } else if (recentEntries.length >= GAME_CONSTANTS.LOG_MAX_ENTRIES) {
+              } else if (
+                recentEntries.length >= GAME_CONSTANTS.LOG_MAX_ENTRIES
+              ) {
                 if (index === recentEntries.length - 1) {
                   opacity = "opacity-40";
                 } else if (index === recentEntries.length - 2) {
@@ -85,7 +87,9 @@ function LogPanel() {
                 }
               }
               const showNewIndicator = isUnread;
-              const isNewVillager = isNewVillagerLogEntry(typedEntry as LogEntry);
+              const isNewVillager = isNewVillagerLogEntry(
+                typedEntry as LogEntry,
+              );
               const blinkClass = isUnread ? "animate-pulse" : "";
 
               const startMarkReadTimer = () => {
@@ -134,8 +138,9 @@ function LogPanel() {
                 >
                   {showNewIndicator ? (
                     <span
-                      className={`mt-2 h-1 w-1 shrink-0 rounded-full ${isNewVillager ? "bg-white" : "bg-primary"
-                        }`}
+                      className={`mt-2 h-1 w-1 shrink-0 rounded-full ${
+                        isNewVillager ? "bg-white" : "bg-primary"
+                      }`}
                       aria-hidden={true}
                     />
                   ) : (
