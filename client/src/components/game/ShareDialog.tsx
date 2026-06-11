@@ -38,6 +38,8 @@ const SHARE_IMAGE_WIDTH = 1080;
 const SHARE_IMAGE_HEIGHT = 1350;
 const CARD_BG = "#0b0b0e";
 const SHARE_URL = "https://a-dark-cave.com";
+const SHARE_URL_IMAGE = "https://a-dark-cave.com";
+
 const SHARE_FILE_NAME = "a-dark-cave.png";
 
 const RESOURCE_ORDER = Object.keys(gameStateSchema.parse({}).resources);
@@ -302,7 +304,7 @@ function ShareCard({
           className="absolute bottom-16 left-16 font-medium leading-none text-gray-400"
           style={{ fontSize: 32 }}
         >
-          Play for free at {SHARE_URL}
+          Play for free at {SHARE_URL_IMAGE}
         </div>
         <div
           className="absolute bottom-16 right-16 text-right leading-none"
@@ -427,7 +429,9 @@ export default function ShareDialog() {
       await copyInviteLinkToClipboard();
       toast({
         title: t("invite.linkCopied"),
-        description: t("invite.linkCopiedDesc", { amount: REFERRAL_REWARD_GOLD }),
+        description: t("invite.linkCopiedDesc", {
+          amount: REFERRAL_REWARD_GOLD,
+        }),
       });
     } catch (error) {
       logger.error("Failed to copy invite link:", error);
@@ -470,8 +474,7 @@ export default function ShareDialog() {
           </DialogTitle>
           <DialogDescription>
             {t("share.description", {
-              defaultValue:
-                "Save or share an image of your game progress.",
+              defaultValue: "Save or share an image of your game progress.",
             })}
           </DialogDescription>
         </DialogHeader>
