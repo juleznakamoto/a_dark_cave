@@ -825,11 +825,11 @@ body {
 
   0%,
   100% {
-    box-shadow: 0 0 2px rgba(20, 184, 166, .3), 0 0 3px rgba(20, 184, 166, .2);
+    box-shadow: 0 0 2px rgba(20, 184, 166, .5), 0 0 3px rgba(20, 184, 166, .4);
   }
 
   50% {
-    box-shadow: 0 0 2px rgba(20, 184, 166, .5), 0 0 3px rgba(20, 184, 166, .4);
+    box-shadow: 0 0 2px rgba(20, 184, 166, .7), 0 0 3px rgba(20, 184, 166, .6);
   }
 }
 
