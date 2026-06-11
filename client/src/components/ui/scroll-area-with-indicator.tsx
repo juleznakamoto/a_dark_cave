@@ -80,7 +80,7 @@ const ScrollAreaWithIndicator = React.forwardRef<
       >
         <ScrollAreaPrimitive.Viewport
           ref={viewportRef}
-          className="h-full w-full rounded-[inherit] overflow-x-hidden"
+          className="h-full w-full rounded-[inherit] overflow-x-hidden pl-2"
         >
           {children}
         </ScrollAreaPrimitive.Viewport>
