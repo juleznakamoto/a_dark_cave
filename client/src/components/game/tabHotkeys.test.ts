@@ -91,4 +91,16 @@ describe("shouldBlockGameHotkeys", () => {
     });
     expect(shouldBlockGameHotkeys(useGameStore.getState())).toBe(true);
   });
+
+  it("blocks tab hotkeys while the share dialog is open", () => {
+    useGameStore.setState({ shareDialogOpen: true });
+    expect(shouldBlockGameHotkeys(useGameStore.getState())).toBe(true);
+  });
+
+  it("does not block tab hotkeys for a stale eventDialog flag without an event", () => {
+    useGameStore.setState({
+      eventDialog: { isOpen: true, currentEvent: null },
+    });
+    expect(shouldBlockGameHotkeys(useGameStore.getState())).toBe(false);
+  });
 });

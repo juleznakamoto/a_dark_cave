@@ -988,7 +988,7 @@ export default function GameContainer() {
           Mobile (stacked top → bottom): event log, side panel, tabs/actions. */}
         <main className="flex-1 pb-0 flex flex-col md:grid md:w-full md:grid-cols-[minmax(20rem,28rem)_minmax(24rem,1fr)_minmax(14rem,26rem)] min-h-0 overflow-hidden">
           {/* Event Log - top on mobile, right column on desktop */}
-          <div className="order-1 md:order-3 w-full min-h-0 overflow-hidden pt-2 pr-2 pb-0 pl-1 md:border-l border-border">
+          <div className="order-1 md:order-3 w-full min-h-0 overflow-hidden pt-1 md:pt-2 pr-2 pb-0 pl-1 md:border-l border-border">
             <LogPanel />
           </div>
 
@@ -996,7 +996,7 @@ export default function GameContainer() {
               Mobile: locked to 36vh so the panel (and tabs/actions below it) keep a
               consistent height regardless of the active tab's side-panel content.
               Desktop: md:min-h-0 lets it shrink within the grid column. */}
-          <div className="order-2 md:order-1 h-[36vh] md:h-auto min-h-[36vh] md:min-h-0 w-full pt-3 pr-0 border-t md:border-t-0 md:border-r border-border overflow-hidden">
+          <div className="order-2 md:order-1 h-[36vh] md:h-auto min-h-[36vh] md:min-h-0 w-full pt-1 md:pt-3 pl-2 pr-0 border-t md:border-t-0 md:border-r border-border overflow-hidden">
             <GameTabs />
           </div>
 
@@ -1195,7 +1195,7 @@ export default function GameContainer() {
 
             {/* Action Panels */}
             <div
-              className={`flex-1 overflow-x-hidden min-h-0 ${activeTab === "achievements"
+              className={`flex-1 overflow-x-hidden min-h-0 pt-1 md:pt-0 pl-2 ${activeTab === "achievements"
                 ? "overflow-hidden"
                 : "overflow-y-auto scrollbar-hide"
                 }`}

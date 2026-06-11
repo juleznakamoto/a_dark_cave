@@ -40,6 +40,7 @@ import {
   mergeCombatVictoryState,
   extractCombatResultSummary,
   applyGameStateLoadMigrations,
+  getTransientDialogResetOnLoad,
   markSeenResources,
 } from "@/game/stateHelpers";
 import { capResourceToLimit } from "@/game/resourceLimits";
@@ -1245,7 +1246,7 @@ export class StateManager {
  */
 function isBlockingDialogOpen(state: GameStore): boolean {
   return (
-    state.eventDialog.isOpen ||
+    (state.eventDialog.isOpen && state.eventDialog.currentEvent != null) ||
     state.combatDialog.isOpen ||
     state.authDialogOpen ||
     state.shopDialogOpen ||
@@ -1636,6 +1637,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     set((state) => ({
       ...stateToSet,
+      ...getTransientDialogResetOnLoad(),
       ...getTimedEventTabCleanupPatch(state.activeTab),
     }));
     StateManager.scheduleEffectsUpdate(get);
@@ -2729,11 +2731,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           savedState.investmentHallState ??
           defaultGameState.investmentHallState,
         // Never restore transient dialog UI from older saves that persisted these fields.
-        rewardDialog: { isOpen: false, data: null },
-        leaderboardDialogOpen: false,
-        fullGamePurchaseDialogOpen: false,
-        madnessDialog: { isOpen: false, data: null },
-        investmentResultDialog: { isOpen: false, data: null },
+        ...getTransientDialogResetOnLoad(),
       };
 
       set(applyGameStateLoadMigrations(loadedState));

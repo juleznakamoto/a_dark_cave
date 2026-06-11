@@ -17,6 +17,7 @@ import {
 } from "./saveCodec";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
+import { buildGameState } from "./stateHelpers";
 
 const isDev = import.meta.env.DEV;
 
@@ -331,11 +332,14 @@ export async function saveGame(
 
     const db = await getDB();
 
+    // Strip UI-only store fields (dialog open flags, etc.) even when callers pass get().
+    const persistedState = buildGameState(gameState);
+
     // Deep clone and sanitize the game state to remove non-serializable data
     let sanitizedState: any;
     try {
       // Use custom replacer to convert undefined to null for safe serialization
-      sanitizedState = JSON.parse(JSON.stringify(gameState, (key, value) => {
+      sanitizedState = JSON.parse(JSON.stringify(persistedState, (key, value) => {
         return value === undefined ? null : value;
       }));
     } catch (parseError) {

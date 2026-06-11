@@ -410,6 +410,40 @@ const UI_ONLY_PROPERTIES = [
   '_completingExecution',
 ] as const;
 
+/** Closed dialog slices applied on load so persisted UI flags never block hotkeys or freeze sim. */
+export function getTransientDialogResetOnLoad() {
+  return {
+    eventDialog: { isOpen: false, currentEvent: null },
+    combatDialog: {
+      isOpen: false,
+      enemy: null,
+      eventTitle: "",
+      eventMessage: "",
+      onVictory: null,
+      onDefeat: null,
+    },
+    authDialogOpen: false,
+    shopDialogOpen: false,
+    shopCruelModeHighlight: false,
+    gamblerDiceDialogOpen: false,
+    investDialogOpen: false,
+    idleModeDialog: { isOpen: false },
+    inactivityDialogOpen: false,
+    restartGameDialogOpen: false,
+    deleteAccountDialogOpen: false,
+    playlightWelcomeDialogOpen: false,
+    feedbackDialogOpen: false,
+    socialPromptDialogOpen: false,
+    rewardDialog: { isOpen: false, data: null },
+    leaderboardDialogOpen: false,
+    shareDialogOpen: false,
+    fullGamePurchaseDialogOpen: false,
+    madnessDialog: { isOpen: false, data: null },
+    investmentResultDialog: { isOpen: false, data: null },
+    versionCheckDialogOpen: false,
+  };
+}
+
 /**
  * Builds a clean GameState object from the Zustand store state
  * Filters out UI-only properties and functions
