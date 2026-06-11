@@ -39,7 +39,7 @@ import {
 } from "@/game/buttonUpgrades";
 import { getCraftProduceAmount } from "@/game/craftUpgradeUtils";
 import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
-import { wrapActionTooltipWithFocusIndicator } from "@/game/rules/focusTooltipIndicator";
+import { getFocusTooltipHeaderTrailing } from "@/game/rules/focusTooltipIndicator";
 import { resolveActionLabel } from "@/i18n/actionLabels";
 import { useTranslation } from "react-i18next";
 
@@ -402,17 +402,15 @@ export default function CavePanel() {
         actionId,
         state,
       );
-      const tooltipContent = wrapActionTooltipWithFocusIndicator(
-        composeActionTooltip({
-          header: tooltipHeader,
-          description: craftDescription,
-          effects: revealedEffects,
-          style:
-            craftDescription || revealedEffects ? { width: "12rem" } : undefined,
-        }),
-        actionId,
-        state,
-      );
+      const focusTrailing = getFocusTooltipHeaderTrailing(actionId, state);
+      const tooltipContent = composeActionTooltip({
+        header: tooltipHeader,
+        headerTrailing: focusTrailing,
+        description: craftDescription,
+        effects: revealedEffects,
+        style:
+          craftDescription || revealedEffects ? { width: "12rem" } : undefined,
+      });
 
       const button = (
         <CooldownButton

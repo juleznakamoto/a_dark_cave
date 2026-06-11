@@ -1,3 +1,4 @@
+import type React from "react";
 import { GameState } from "@shared/schema";
 import {
   getTotalKnowledge,
@@ -284,6 +285,7 @@ const BOMB_ACTIONS: Record<string, string> = {
 export const getResourceGainTooltip = (
   actionId: string,
   state: GameState,
+  headerTrailing?: React.ReactNode,
 ): React.ReactNode | null => {
   const { gains, costs } = calculateResourceGains(actionId, state);
 
@@ -327,8 +329,8 @@ export const getResourceGainTooltip = (
   const headerBlockAboveVein =
     gains.length > 0 || costs.length > 0 || isBombAtMax || isVeinfireElixirAtMax;
 
-  return (
-    <div className="text-xs">
+  const bodyContent = (
+    <>
       {isBombAtMax && (
         <div className="text-muted-foreground mb-1">
           {getUiTooltip("maxBombsReached", "Max bombs reached ({{limit}} per type)", {
@@ -381,6 +383,19 @@ export const getResourceGainTooltip = (
           })}
         </div>
       ))}
+    </>
+  );
+
+  return (
+    <div className="text-xs">
+      {headerTrailing != null ? (
+        <div className="flex items-start gap-2">
+          <div className="flex-1 min-w-0">{bodyContent}</div>
+          <span className="shrink-0 leading-none">{headerTrailing}</span>
+        </div>
+      ) : (
+        bodyContent
+      )}
       {veinrootPctLine != null && (
         <>
           {headerBlockAboveVein && (

@@ -26,19 +26,13 @@ export function FocusTooltipIcon({ className }: { className?: string }) {
   );
 }
 
-export function wrapActionTooltipWithFocusIndicator(
-  tooltip: React.ReactNode | null,
+export function getFocusTooltipHeaderTrailing(
   actionId: string,
   state: GameState,
-): React.ReactNode | null {
-  if (tooltip == null || !isFocusGlowActive(actionId, state)) {
-    return tooltip;
+): React.ReactNode | undefined {
+  if (!isFocusGlowActive(actionId, state)) {
+    return undefined;
   }
 
-  return (
-    <div className="relative">
-      <FocusTooltipIcon className="absolute top-0 right-0" />
-      <div className="pr-3">{tooltip}</div>
-    </div>
-  );
+  return <FocusTooltipIcon />;
 }

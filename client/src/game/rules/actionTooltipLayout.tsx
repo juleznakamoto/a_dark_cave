@@ -7,6 +7,8 @@ export function ActionTooltipSeparator() {
 export type ActionTooltipParts = {
   /** Cost lines, resource gains, villager requirements, etc. */
   header?: React.ReactNode;
+  /** Icon or badge shown at the top-right of the header row (e.g. upgrade ↑, focus ☩). */
+  headerTrailing?: React.ReactNode;
   /** Flavour text — never includes the action/item title. */
   description?: string;
   /** Stat/effect lines (e.g. after paying insight to reveal). */
@@ -16,8 +18,26 @@ export type ActionTooltipParts = {
 };
 
 /** Standard action tooltip order: header → separator → description → separator → effects. */
+/** Matches building upgrade tooltips: trailing icon sits in the header row only. */
+export function wrapTooltipHeaderWithTrailing(
+  header: React.ReactNode,
+  trailing: React.ReactNode | undefined,
+): React.ReactNode {
+  if (trailing == null) {
+    return header;
+  }
+
+  return (
+    <div className="flex items-start gap-2">
+      <div className="flex-1 min-w-0">{header}</div>
+      <span className="shrink-0 leading-none">{trailing}</span>
+    </div>
+  );
+}
+
 export function composeActionTooltip({
   header,
+  headerTrailing,
   description,
   effects,
   className = "text-xs",
@@ -43,7 +63,7 @@ export function composeActionTooltip({
   };
 
   if (hasHeader) {
-    push(header);
+    push(wrapTooltipHeaderWithTrailing(header, headerTrailing));
   }
   if (hasDescription) {
     push(

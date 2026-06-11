@@ -9,7 +9,7 @@ import {
 } from "@/game/rules";
 import { getResourceGainTooltip } from "@/game/rules/tooltips";
 import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
-import { wrapActionTooltipWithFocusIndicator } from "@/game/rules/focusTooltipIndicator";
+import { getFocusTooltipHeaderTrailing } from "@/game/rules/focusTooltipIndicator";
 import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
 import CooldownButton from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -316,6 +316,7 @@ export default function ForestPanel() {
 
     // Check if this action has upgrade tracking
     const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
+    const focusTrailing = getFocusTooltipHeaderTrailing(actionId, state);
 
     if (
       showCost ||
@@ -338,7 +339,7 @@ export default function ForestPanel() {
 
       if (resourceGainTooltip && !villagerRequirementNotMet) {
         // chopWood or hunt: show resource gains only
-        tooltipContent = resourceGainTooltip;
+        tooltipContent = getResourceGainTooltip(actionId, state, focusTrailing);
       } else if (
         (isAnimalsSacrifice || isHumansSacrifice || isFinanceExpedition) &&
         action.tooltipEffects
@@ -434,11 +435,7 @@ export default function ForestPanel() {
           disabled={!canExecute}
           variant="outline"
           className={`${isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""} ${shouldGlow ? "focus-glow" : ""}`}
-          tooltip={wrapActionTooltipWithFocusIndicator(
-            tooltipContent,
-            actionId,
-            state,
-          )}
+          tooltip={tooltipContent}
           onAnimationTrigger={
             isChopWood ? handleChopWoodAnimationTrigger : isHunt ? handleHuntAnimationTrigger : undefined
           }
