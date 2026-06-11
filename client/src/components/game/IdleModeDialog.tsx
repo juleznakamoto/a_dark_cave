@@ -208,6 +208,7 @@ export default function IdleModeDialog() {
     gameId,
     devMode,
     buildings,
+    shareDialogOpen,
   } = useGameStore();
   const [accumulatedResources, setAccumulatedResources] = useState<
     Record<string, number>
@@ -624,9 +625,14 @@ export default function IdleModeDialog() {
   const isTimeUp = remainingTime <= 0;
 
   return (
-    <Dialog open={idleModeDialog.isOpen} onOpenChange={() => { }} modal={true}>
+    <Dialog
+      open={idleModeDialog.isOpen}
+      onOpenChange={() => { }}
+      modal={!shareDialogOpen}
+    >
       <DialogContent
-        className="[--adc-dialog-max-w:28rem] z-[60]"
+        className="[--adc-dialog-max-w:28rem]"
+        layerZIndex={60}
         hideClose={true}
         hideOverlay={true}
       >

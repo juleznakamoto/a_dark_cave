@@ -39,11 +39,25 @@ const DialogContent = React.forwardRef<
     skipViewportWidthClamp?: boolean;
     /** Backdrop classes — pair with elevated content z-index (e.g. overlay `z-[69]` + content `z-[70]`). */
     overlayClassName?: string;
+    /**
+     * Stacking above other modals (e.g. sleep at z-60). Uses inline z-index so third-party
+     * CSS (e.g. Playlight) cannot strip arbitrary Tailwind z utilities from the panel.
+     */
+    layerZIndex?: number;
   }
->(({ className, children, hideClose, hideOverlay, customBackground, style, skipViewportWidthClamp, overlayClassName, ...props }, ref) => (
+>(({ className, children, hideClose, hideOverlay, customBackground, style, skipViewportWidthClamp, overlayClassName, layerZIndex, ...props }, ref) => (
   <DialogPortal>
     {customBackground}
-    {!hideOverlay && <DialogOverlay className={overlayClassName} />}
+    {!hideOverlay && (
+      <DialogOverlay
+        className={overlayClassName}
+        style={
+          layerZIndex != null
+            ? { zIndex: layerZIndex - 1 }
+            : undefined
+        }
+      />
+    )}
     <DialogPrimitive.Content
       ref={ref}
       onOpenAutoFocus={(e) => {
@@ -64,6 +78,7 @@ const DialogContent = React.forwardRef<
             width: "min(95vw, var(--adc-dialog-max-w, 32rem))",
             maxWidth: "min(95vw, var(--adc-dialog-max-w, 32rem))",
           }),
+        ...(layerZIndex != null ? { zIndex: layerZIndex } : {}),
         ...style,
       }}
       {...props}
