@@ -528,11 +528,12 @@ export function GameHeaderControls() {
         side="bottom"
       >
         <Button
+          type="button"
           variant="ghost"
           size="xs"
           onClick={() => setShareDialogOpen(true)}
           aria-label={t("share.title", { defaultValue: "Share your progress" })}
-          className={`${HEADER_ICON_BTN} group`}
+          className={`${HEADER_ICON_BTN} group touch-manipulation`}
         >
           <Share2
             className={`h-[15px] w-[15px] ${HEADER_ICON_SYMBOL_HOVER}`}
@@ -543,11 +544,12 @@ export function GameHeaderControls() {
       {(hasWonAnyGame || devMode) && (
         <HoverCalloutTooltip label={t("profile.leaderboard")} side="bottom">
           <Button
+            type="button"
             variant="ghost"
             size="xs"
             onClick={() => setLeaderboardDialogOpen(true)}
             aria-label={t("profile.leaderboard")}
-            className={`${HEADER_ICON_BTN} group`}
+            className={`${HEADER_ICON_BTN} group touch-manipulation`}
           >
             <span className={`text-lg leading-none select-none ${HEADER_ICON_SYMBOL_HOVER}`}>
               ♕

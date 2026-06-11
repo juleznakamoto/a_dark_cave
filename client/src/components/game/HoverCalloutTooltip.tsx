@@ -130,7 +130,10 @@ export function HoverCalloutTooltip({
 
   return (
     <div
-      className={cn("relative inline-flex shrink-0 overflow-visible", className)}
+      className={cn(
+        "relative inline-flex shrink-0 overflow-visible touch-manipulation",
+        className,
+      )}
       onPointerEnter={showHoverTooltip}
       onPointerLeave={hideHoverTooltip}
     >

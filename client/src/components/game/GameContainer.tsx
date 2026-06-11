@@ -29,6 +29,7 @@ import InactivityDialog from "./InactivityDialog";
 import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
 import { ShopDialog } from "./ShopDialog";
 import LeaderboardDialog from "./LeaderboardDialog";
+import ShareDialog from "./ShareDialog";
 import RewardDialog from "./RewardDialog";
 import InvestmentResultDialog from "./InvestmentResultDialog";
 import MadnessDialog from "./MadnessDialog";
@@ -1245,6 +1246,7 @@ export default function GameContainer() {
           isOpen={leaderboardDialogOpen}
           onClose={() => setLeaderboardDialogOpen(false)}
         />
+        <ShareDialog />
         <FullGamePurchaseDialog
           isOpen={fullGamePurchaseDialogOpen}
           onClose={() => setFullGamePurchaseDialogOpen(false)}
