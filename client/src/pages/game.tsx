@@ -11,6 +11,10 @@ import { logger } from "@/lib/logger";
 import { getCurrentUser, flushPendingMarketingPreferences, applySignupWelcomeBonusAfterOAuthLoad } from "@/game/auth";
 import { initSessionTracker } from "@/lib/sessionTracker";
 import { gamblerDiceResumeOnLoad } from "@/game/gamblerSession";
+import {
+  applyGameStateLoadMigrations,
+  getTransientDialogResetOnLoad,
+} from "@/game/stateHelpers";
 import { syncSocialPromoExclusiveRewardPending } from "@/game/socialPromoExclusiveReward";
 import { processStripePaymentReturn } from "@/lib/stripePaymentReturn";
 import { isPlaylightReferralUrl } from "@/lib/playlight";
@@ -139,9 +143,7 @@ export default function Game() {
         // Load saved game or initialize with defaults
         const rawSavedState = await loadGame();
         const savedState = rawSavedState
-          ? (
-            await import("@/game/stateHelpers")
-          ).applyGameStateLoadMigrations(rawSavedState)
+          ? applyGameStateLoadMigrations(rawSavedState)
           : null;
         if (savedState) {
           // Track Google Ads source if present in URL and not already saved
@@ -174,6 +176,8 @@ export default function Game() {
               gameStarted: isGamePath ? true : savedState.flags.gameStarted, // Force game started if /game path
               hasLitFire: isGamePath ? true : savedState.flags.hasLitFire, // Force fire lit if /game path
             },
+            // Never restore transient dialog UI from older saves that persisted these fields.
+            ...getTransientDialogResetOnLoad(),
           });
           const { flushOverdueActionExecutions } = await import("@/game/loop");
           flushOverdueActionExecutions();
