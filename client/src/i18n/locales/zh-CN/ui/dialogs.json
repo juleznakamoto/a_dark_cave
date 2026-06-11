@@ -200,6 +200,18 @@
     "discountFromRing": "顺从之戒 5%",
     "prolongForInsight": "消耗 {{cost}} {{resource}} 延长 {{minutes}} 分钟"
   },
+  "share": {
+    "title": "分享进度",
+    "description": "保存或分享一张游戏进度图片。",
+    "resources": "资源：{{percent}} %",
+    "achievements": "成就：{{percent}} %",
+    "playTime": "游戏时长",
+    "download": "下载",
+    "generating": "生成中…",
+    "share": "分享",
+    "errorTitle": "无法创建图片",
+    "errorDesc": "生成图片时出现问题。"
+  },
   "feedback": {
     "title": "反馈",
     "message": "如果你遇到错误、发现翻译问题，或有想法和建议，我很乐意听取你的意见。",

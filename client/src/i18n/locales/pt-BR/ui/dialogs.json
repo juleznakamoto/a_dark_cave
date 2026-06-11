@@ -200,6 +200,18 @@
     "discountFromRing": "5% do Anel da Obediência",
     "prolongForInsight": "Estender o tempo em {{minutes}} min por {{cost}} {{resource}}"
   },
+  "share": {
+    "title": "Compartilhar seu progresso",
+    "description": "Salve ou compartilhe uma imagem do seu progresso no jogo.",
+    "resources": "Recursos: {{percent}} %",
+    "achievements": "Conquistas: {{percent}} %",
+    "playTime": "Tempo de jogo",
+    "download": "Baixar",
+    "generating": "Gerando…",
+    "share": "Compartilhar",
+    "errorTitle": "Não foi possível criar a imagem",
+    "errorDesc": "Algo deu errado ao gerar a imagem."
+  },
   "feedback": {
     "title": "Feedback",
     "message": "Se você encontrar bugs, notar problemas de tradução ou tiver ideias ou comentários, eu adoraria saber.",

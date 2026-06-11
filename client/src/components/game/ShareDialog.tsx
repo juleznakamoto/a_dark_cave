@@ -9,7 +9,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { useGameStore } from "@/game/state";
+import { copyInviteLinkToClipboard } from "@/game/copyInviteLink";
+import {
+  REFERRAL_REWARD_GOLD,
+  SOCIAL_PROMPT_REFERRAL_CAP,
+} from "@/game/socialPromptAuto";
 import { ResourceCoinIcon } from "@/components/ui/resource-coin-icon";
 import { ResourceInsightIcon } from "@/components/ui/resource-insight-icon";
 import AchievementMiniRingChart from "@/achievements/AchievementMiniRingChart";
@@ -318,6 +324,7 @@ export default function ShareDialog() {
   const resources = useGameStore((s) => s.resources) as Record<string, number>;
   const seenResources = useGameStore((s) => s.seenResources);
   const playTimeMs = useGameStore((s) => s.playTime);
+  const referralCount = useGameStore((s) => s.referralCount ?? 0);
 
   const cardRef = useRef<HTMLDivElement>(null);
   const previewWrapRef = useRef<HTMLDivElement>(null);
@@ -409,6 +416,22 @@ export default function ShareDialog() {
     }
   };
 
+  const handleCopyInviteLink = async () => {
+    try {
+      await copyInviteLinkToClipboard();
+      toast({
+        title: t("invite.linkCopied"),
+        description: t("invite.linkCopiedDesc", { amount: REFERRAL_REWARD_GOLD }),
+      });
+    } catch (error) {
+      logger.error("Failed to copy invite link:", error);
+      toast({
+        title: t("invite.copyFailed"),
+        variant: "destructive",
+      });
+    }
+  };
+
   const handleDownload = async () => {
     if (busy) return;
     setBusy(true);
@@ -440,7 +463,7 @@ export default function ShareDialog() {
           <DialogDescription>
             {t("share.description", {
               defaultValue:
-                "Save or share an image of your resources and achievements.",
+                "Save or share an image of your game progress.",
             })}
           </DialogDescription>
         </DialogHeader>
@@ -483,6 +506,26 @@ export default function ShareDialog() {
         </div>
 
         <div className="flex shrink-0 justify-end gap-2">
+          <TooltipWrapper
+            tooltip={
+              <p className="text-xs">
+                {t("invite.tooltip", {
+                  amount: REFERRAL_REWARD_GOLD,
+                  cap: SOCIAL_PROMPT_REFERRAL_CAP,
+                  count: referralCount,
+                })}
+              </p>
+            }
+            tooltipId="share-dialog-invite"
+            tooltipContentClassName="max-w-xs"
+            onClick={() => {
+              void handleCopyInviteLink();
+            }}
+          >
+            <Button variant="outline" size="sm" disabled={busy}>
+              {t("invite.button")}
+            </Button>
+          </TooltipWrapper>
           <Button
             variant="outline"
             size="sm"

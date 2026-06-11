@@ -200,6 +200,18 @@
     "discountFromRing": "5% from Ring of Obedience",
     "prolongForInsight": "Extend time by {{minutes}} min for {{cost}} {{resource}}"
   },
+  "share": {
+    "title": "Share your progress",
+    "description": "Save or share an image of your game progress.",
+    "resources": "Resources: {{percent}} %",
+    "achievements": "Achievements: {{percent}} %",
+    "playTime": "Play time",
+    "download": "Download",
+    "generating": "Generating…",
+    "share": "Share",
+    "errorTitle": "Could not create image",
+    "errorDesc": "Something went wrong while generating the image."
+  },
   "feedback": {
     "title": "Feedback",
     "message": "If you encounter any bugs, notice translation issues, or have ideas or feedback, I'd love to hear from you.",
