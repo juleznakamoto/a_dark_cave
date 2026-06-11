@@ -999,8 +999,11 @@ export default function GameContainer() {
             <GameTabs />
           </div>
 
-          {/* Game tab area - below side panel on mobile, middle column on desktop (flexible; shrinks first) */}
-          <section className="order-3 md:order-2 min-w-0 flex flex-col min-h-0 overflow-hidden md:pl-0">
+          {/* Game tab area - below side panel on mobile, middle column on desktop (flexible; shrinks first).
+              Mobile: flex-1 so the section fills the space left by the fixed log/side panels and its
+              inner action list scrolls internally — keeping panel heights consistent across tabs
+              instead of growing with the active tab's content. (Ignored on desktop grid.) */}
+          <section className="order-3 md:order-2 flex-1 min-w-0 flex flex-col min-h-0 overflow-hidden md:pl-0">
             {/* Horizontal Game Tabs */}
             <nav
               className={`relative border-t md:border-t-0 border-border pl-2 pr-2 flex-shrink-0${isPaused ? " z-[41] pointer-events-auto" : ""}`}
