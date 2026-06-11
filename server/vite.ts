@@ -10,7 +10,64 @@ import { nanoid } from "nanoid";
 const viteLogger = createLogger();
 const logger = console;
 
+export type LogLevel = "error" | "warn" | "info";
+
+export interface LogEntry {
+  /** ISO timestamp of when the line was logged. */
+  time: string;
+  source: string;
+  message: string;
+  level: LogLevel;
+}
+
+/**
+ * In-memory ring buffer of recent server log lines. Survives only for the life of
+ * the process (lost on restart/redeploy) and is per-instance — see `/api/admin/logs`.
+ */
+const LOG_BUFFER_CAPACITY = 300;
+const logBuffer: LogEntry[] = [];
+
+/** Classify a log line by its conventional emoji/word markers (❌ error, ⚠️ warn). */
+function detectLogLevel(text: string): LogLevel {
+  if (text.includes("❌") || text.includes("FATAL") || /\berror\b/i.test(text)) {
+    return "error";
+  }
+  if (text.includes("⚠️") || /\bwarn/i.test(text)) {
+    return "warn";
+  }
+  return "info";
+}
+
+function recordLog(message: string, source: string) {
+  const entry: LogEntry = {
+    time: new Date().toISOString(),
+    source,
+    message,
+    level: detectLogLevel(`${message} ${source}`),
+  };
+  logBuffer.push(entry);
+  if (logBuffer.length > LOG_BUFFER_CAPACITY) {
+    logBuffer.splice(0, logBuffer.length - LOG_BUFFER_CAPACITY);
+  }
+}
+
+/**
+ * Return the most recent buffered log entries, newest first.
+ * @param limit max entries to return (clamped to the buffer capacity).
+ * @param level optional level filter ("error" also includes nothing else).
+ */
+export function getRecentLogs(limit = 100, level?: LogLevel): LogEntry[] {
+  const filtered = level
+    ? logBuffer.filter((e) => e.level === level)
+    : logBuffer;
+  const safeLimit = Math.max(0, Math.min(limit, LOG_BUFFER_CAPACITY));
+  return filtered.slice(-safeLimit).reverse();
+}
+
 export function log(message: string, source = "express") {
+  const sourceText = typeof source === "string" ? source : String(source);
+  recordLog(message, sourceText);
+
   const formattedTime = new Date().toLocaleTimeString("en-US", {
     hour: "numeric",
     minute: "2-digit",
@@ -18,7 +75,7 @@ export function log(message: string, source = "express") {
     hour12: true,
   });
 
-  logger.log(`${formattedTime} [${source}] ${message}`);
+  logger.log(`${formattedTime} [${sourceText}] ${message}`);
 }
 
 export async function setupVite(app: Express, server: Server) {

@@ -29,7 +29,6 @@ import InactivityDialog from "./InactivityDialog";
 import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
 import { ShopDialog } from "./ShopDialog";
 import LeaderboardDialog from "./LeaderboardDialog";
-import ShareDialog from "./ShareDialog";
 import RewardDialog from "./RewardDialog";
 import InvestmentResultDialog from "./InvestmentResultDialog";
 import MadnessDialog from "./MadnessDialog";
@@ -142,7 +141,7 @@ export default function GameContainer() {
   const unclaimedAchievementIds = useMemo(
     () =>
       getUnclaimedAchievementIds(
-        !!relics?.survivors_notes || !!books?.book_of_trials,
+        !!relics?.survivors_notes,
         !!books?.book_of_trials,
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -984,24 +983,26 @@ export default function GameContainer() {
         )}
 
         {/* Main Content Area - Fills remaining space.
-          Desktop (left → right): resources side panel, tabs/actions, event log.
+          Desktop (left → right): event log, tabs/actions, resources side panel.
           Mobile (stacked top → bottom): event log, side panel, tabs/actions. */}
-        <main className="flex-1 pb-0 flex flex-col md:grid md:w-full md:grid-cols-[minmax(20rem,28rem)_minmax(24rem,1fr)_minmax(14rem,26rem)] min-h-0 overflow-hidden">
-          {/* Event Log - top on mobile, right column on desktop */}
-          <div className="order-1 md:order-3 w-full min-h-0 overflow-hidden pt-2 pr-2 pb-0 pl-1 md:border-l border-border">
+        <main className="flex-1 pb-0 flex flex-col md:grid md:w-full md:grid-cols-[minmax(14rem,26rem)_minmax(20rem,1fr)_minmax(20rem,28rem)] min-h-0 overflow-hidden">
+          {/* Event Log - top on mobile, left column on desktop */}
+          <div className="order-1 w-full min-h-0 overflow-hidden pt-2 pr-2 pb-0 pl-1 md:border-r border-border">
             <LogPanel />
           </div>
 
-          {/* Resources Side Panel - below log on mobile, left column on desktop */}
-          <div className="order-2 md:order-1 min-h-[36vh] md:min-h-0 w-full min-h-0 pt-3 pl-2 pr-0 border-t md:border-t-0 md:border-r border-border overflow-hidden">
+          {/* Resources Side Panel - below log on mobile, right column on desktop */}
+          <div className="order-2 md:order-3 min-h-[36vh] md:min-h-0 w-full min-h-0 pl-2 pr-2 border-t md:border-t-0 md:border-l border-border overflow-hidden">
             <GameTabs />
           </div>
 
-          {/* Game tab area - below side panel on mobile, middle column on desktop (flexible; shrinks first) */}
-          <section className="order-3 md:order-2 min-w-0 flex flex-col min-h-0 overflow-hidden md:pl-0">
+          {/* Game tab area - below side panel on mobile, middle column on desktop (flexible; shrinks first).
+              `flex-1` lets the panel area fill the remaining mobile height so its size stays constant
+              across tabs instead of tracking each tab's content (ignored in the desktop grid). */}
+          <section className="order-3 md:order-2 flex-1 min-w-0 flex flex-col min-h-0 overflow-hidden md:pl-0">
             {/* Horizontal Game Tabs */}
             <nav
-              className={`relative border-t md:border-t-0 border-border pl-2 pr-2 flex-shrink-0${isPaused ? " z-[41] pointer-events-auto" : ""}`}
+              className={`relative border-t border-border pl-2 pr-2 md:pl-4 md:pr-4 flex-shrink-0${isPaused ? " z-[41] pointer-events-auto" : ""}`}
             >
               {useLimelightNav ? (
                 // Alternative LimelightNav design
@@ -1022,11 +1023,11 @@ export default function GameContainer() {
                 <>
                   {/* Standard button design */}
                   <div
-                    className={`flex w-full max-w-full flex-nowrap items-center gap-x-2 overflow-hidden${traderUnlocked ? " pr-[4.5rem]" : ""}`}
+                    className={`flex w-full max-w-full flex-nowrap items-center gap-x-2 overflow-hidden pl-[3px] md:gap-x-3${traderUnlocked ? " pr-[4.5rem]" : " pr-[3px]"}`}
                   >
                     <div
                       ref={tabButtonRowRef}
-                      className="inline-flex min-w-0 flex-1 flex-nowrap items-center gap-x-2 overflow-x-auto scrollbar-hide"
+                      className="inline-flex min-w-0 flex-1 flex-nowrap items-center gap-x-2 overflow-x-auto scrollbar-hide md:gap-x-3"
                     >
                       <button
                         className={`${tabButtonClass} ${activeTab === "cave"
@@ -1061,26 +1062,6 @@ export default function GameContainer() {
                         </button>
                       )}
 
-                      {flags.forestUnlocked && (
-                        <button
-                          className={`${tabButtonClass} ${animatingTabs.has("forest")
-                            ? fadePhaseTabs.has("forest")
-                              ? "tab-fade-in"
-                              : "tab-blink-new"
-                            : activeTab === "forest"
-                              ? tabActiveTextClass
-                              : tabInactiveTextClass
-                            }`}
-                          onClick={() => {
-                            clearTabAnimation("forest");
-                            setActiveTab("forest");
-                          }}
-                          data-testid="tab-forest"
-                        >
-                          {t("tabs.forest", { ns: "common" })}
-                        </button>
-                      )}
-
                       {/* Estate Tab Button */}
                       {(estateUnlocked || buildings.darkEstate >= 1) && (
                         <button
@@ -1099,6 +1080,26 @@ export default function GameContainer() {
                           data-testid="tab-estate"
                         >
                           {t("tabs.estate", { ns: "common" })}
+                        </button>
+                      )}
+
+                      {flags.forestUnlocked && (
+                        <button
+                          className={`${tabButtonClass} ${animatingTabs.has("forest")
+                            ? fadePhaseTabs.has("forest")
+                              ? "tab-fade-in"
+                              : "tab-blink-new"
+                            : activeTab === "forest"
+                              ? tabActiveTextClass
+                              : tabInactiveTextClass
+                            }`}
+                          onClick={() => {
+                            clearTabAnimation("forest");
+                            setActiveTab("forest");
+                          }}
+                          data-testid="tab-forest"
+                        >
+                          {t("tabs.forest", { ns: "common" })}
                         </button>
                       )}
 
@@ -1169,7 +1170,7 @@ export default function GameContainer() {
                   </div>
 
                   {traderUnlocked && (
-                    <div className="pointer-events-auto absolute inset-y-0 right-2 flex items-center">
+                    <div className="pointer-events-auto absolute inset-y-0 right-4 flex items-center">
                       <TraderTabButton
                         tabButtonClass={tabButtonClass}
                         tabInactiveTextClass={tabInactiveTextClass}
@@ -1187,7 +1188,7 @@ export default function GameContainer() {
               )}
             </nav>
 
-            {/* Action Panels */}
+            {/* Action Panels — horizontal inset lives on each panel's scroll wrapper (`pl-1`) for focus-glow bleed + tab alignment. */}
             <div
               className={`flex-1 overflow-x-hidden min-h-0 ${activeTab === "achievements"
                 ? "overflow-hidden"
@@ -1240,7 +1241,6 @@ export default function GameContainer() {
           isOpen={leaderboardDialogOpen}
           onClose={() => setLeaderboardDialogOpen(false)}
         />
-        <ShareDialog />
         <FullGamePurchaseDialog
           isOpen={fullGamePurchaseDialogOpen}
           onClose={() => setFullGamePurchaseDialogOpen(false)}

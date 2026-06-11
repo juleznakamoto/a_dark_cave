@@ -5,7 +5,7 @@ import path from "path";
 import fs from "fs";
 import { spawn, spawnSync } from "child_process";
 import { fileURLToPath } from "url";
-import { setupVite, serveStatic, log } from "./vite";
+import { setupVite, serveStatic, log, getRecentLogs, type LogLevel } from "./vite";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -1532,6 +1532,39 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
       return res.status(500).json({
         error: error?.message ?? "Export failed",
       });
+    }
+  });
+
+  /**
+   * Recent server log lines from the in-memory ring buffer (see `getRecentLogs`).
+   * Admin-only; buffer is per-instance and cleared on restart/redeploy.
+   * Query: limit (1–300), level ("error" | "warn" | "info").
+   */
+  app.get("/api/admin/logs", async (req, res) => {
+    try {
+      const sessionUser = await getSessionUserFromBearer(req);
+      if (!sessionUser?.email) {
+        return res.status(401).json({ error: "Authorization required" });
+      }
+      if (!isConfiguredAdminEmail(sessionUser.email)) {
+        return res.status(403).json({ error: "Forbidden" });
+      }
+
+      const limit = Math.min(
+        300,
+        Math.max(1, parseInt(req.query.limit as string) || 100),
+      );
+      const levelParam = req.query.level as string | undefined;
+      const level: LogLevel | undefined =
+        levelParam === "error" || levelParam === "warn" || levelParam === "info"
+          ? levelParam
+          : undefined;
+
+      res.setHeader("Cache-Control", "no-store");
+      res.json({ logs: getRecentLogs(limit, level) });
+    } catch (error: any) {
+      log("❌ /api/admin/logs failed:", error);
+      res.status(500).json({ error: error?.message ?? "Failed to load logs" });
     }
   });
 

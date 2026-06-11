@@ -46,6 +46,7 @@ import UpgradesTab from "./tabs/UpgradesTab";
 import LookupTab from "./tabs/LookupTab";
 import SessionsTab from "./tabs/SessionsTab";
 import SocialPromptTab from "./tabs/SocialPromptTab";
+import LogsTab from "./tabs/LogsTab";
 import { aggregateSocialPromptFromSaves } from "@shared/socialPromptAdminStats";
 
 interface ButtonClickData {
@@ -1096,15 +1097,16 @@ export default function AdminDashboard() {
                 <TabsList className="inline-flex w-auto">
                   <TabsTrigger value="overview">Overview</TabsTrigger>
                   <TabsTrigger value="engagement">Engagement</TabsTrigger>
-                  <TabsTrigger value="clicks">Button Clicks</TabsTrigger>
+                  <TabsTrigger value="clicks">Clicks</TabsTrigger>
                   <TabsTrigger value="purchases">Purchases</TabsTrigger>
                   <TabsTrigger value="referrals">Referrals</TabsTrigger>
                   <TabsTrigger value="socialPrompt">Social prompt</TabsTrigger>
                   <TabsTrigger value="churn">Churn</TabsTrigger>
-                  <TabsTrigger value="sleep">Sleep Upgrades</TabsTrigger>
+                  <TabsTrigger value="sleep">Sleep</TabsTrigger>
                   <TabsTrigger value="resources">Resources</TabsTrigger>
-                  <TabsTrigger value="upgrades">Button Upgrades</TabsTrigger>
+                  <TabsTrigger value="upgrades">Upgrades</TabsTrigger>
                   <TabsTrigger value="sessions">Sessions</TabsTrigger>
+                  <TabsTrigger value="logs">Logs</TabsTrigger>
                   <TabsTrigger value="lookup">User Lookup</TabsTrigger>
                 </TabsList>
                 <ScrollBar orientation="horizontal" />
@@ -1476,6 +1478,10 @@ export default function AdminDashboard() {
 
               <TabsContent value="sessions">
                 <SessionsTab environment={environment} />
+              </TabsContent>
+
+              <TabsContent value="logs">
+                <LogsTab />
               </TabsContent>
 
               <TabsContent value="lookup">
