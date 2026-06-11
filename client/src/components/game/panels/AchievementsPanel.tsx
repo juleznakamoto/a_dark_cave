@@ -368,7 +368,7 @@ export default function AchievementsPanel() {
         className="flex h-full flex-col flex-1 min-h-0 overflow-hidden"
       >
         <TabsList
-          className={`sticky top-0 z-10 bg-background grid w-full mb-2 shrink-0 overflow-visible h-auto min-h-12 py-1 ${hasBasicTab ? "grid-cols-4" : "grid-cols-3"}`}
+          className={`sticky top-0 z-10 bg-background grid w-full mb-2 shrink-0 overflow-visible h-auto min-h-12 py-1 pl-2 ${hasBasicTab ? "grid-cols-4" : "grid-cols-3"}`}
         >
           {hasBasicTab && (
             <TabsTrigger value="basic" className={TAB_TRIGGER_CLASS}>
