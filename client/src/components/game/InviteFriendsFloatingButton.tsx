@@ -88,7 +88,7 @@ export default function InviteFriendsFloatingButton() {
       className="pointer-events-auto fixed right-4 z-30"
       style={{ bottom: `calc(${GAME_FOOTER_INSET} + 1rem)` }}
     >
-      <div className="relative inline-block">
+      <div className="invite-friends-float relative inline-block">
         <TooltipWrapper
           tooltip={
             <p className="text-xs">
@@ -125,7 +125,7 @@ export default function InviteFriendsFloatingButton() {
         <div className="absolute top-[-10px] right-[-7px] z-[30] pointer-events-auto">
           <button
             type="button"
-            className="invite-friends-dismiss-btn flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 cursor-pointer"
+            className="flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
             data-testid="button-invite-friends-dismiss"
             aria-label={t("invite.dismiss", { defaultValue: "Close" })}
             onPointerDown={(e) => e.stopPropagation()}

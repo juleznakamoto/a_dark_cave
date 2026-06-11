@@ -858,28 +858,25 @@ body {
   }
 }
 
-.invite-friends-float-btn {
+/* Wrapper scales the invite button and its close affordance together. */
+.invite-friends-float {
   animation: invite-friends-float-scale 5.5s ease-in-out infinite;
+}
+
+.invite-friends-float:hover {
+  animation-play-state: paused;
+  transform: scale(1.02);
+}
+
+.invite-friends-float-btn {
   transition:
     background-color 0.15s ease,
     color 0.15s ease,
     border-color 0.15s ease;
 }
 
-.invite-friends-dismiss-btn {
-  animation: invite-friends-float-scale 2.5s ease-in-out infinite;
-  transition: background-color 0.15s ease;
-}
-
-.invite-friends-dismiss-btn:hover {
-  animation-play-state: paused;
-  transform: scale(1.1);
-}
-
 /* Match shop "Continue" buttons (default primary). */
 .invite-friends-float-btn:hover {
-  animation-play-state: paused;
-  transform: scale(1.02);
   background-color: hsl(0, 87.6%, 52.55%);
   color: hsl(0, 0%, 100%);
   border-color: hsl(0, 89.12%, 53.14%);
@@ -887,8 +884,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
 
-  .invite-friends-float-btn,
-  .invite-friends-dismiss-btn {
+  .invite-friends-float {
     animation: none;
     transform: scale(1);
   }
