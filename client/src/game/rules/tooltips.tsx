@@ -43,6 +43,7 @@ const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreRuins",
   "exploreTemple",
   "exploreCitadel",
+  "mineStone",
   "mineCoal",
   "mineIron",
   "mineSulfur",
