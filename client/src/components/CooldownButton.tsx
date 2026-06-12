@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 /** Outline border + hover for game action buttons (panels, timed events, dialogs). */
 export function gameActionOutlineButtonClassName(disabled = false): string {
   return cn(
-    disabled ? "border-red-900/50" : "border-red-900",
+    disabled ? "border-orange-950/50" : "border-orange-950",
     !disabled && "hover:bg-accent hover:text-accent-foreground",
   );
 }
