@@ -9,10 +9,15 @@ import { tWithFallback } from "@/i18n/resolveGameText";
 import { cn } from "@/lib/utils";
 
 /** Outline border + hover for game action buttons (panels, timed events, dialogs). */
-export function gameActionOutlineButtonClassName(disabled = false): string {
+export function gameActionOutlineButtonClassName(
+  disabled = false,
+  options?: { groupHover?: boolean },
+): string {
+  const hoverPrefix = options?.groupHover ? "group-hover:" : "hover:";
   return cn(
     disabled ? "border-orange-950/50" : "border-orange-950",
-    !disabled && "hover:bg-accent hover:text-accent-foreground",
+    !disabled &&
+      `${hoverPrefix}bg-accent ${hoverPrefix}text-accent-foreground`,
   );
 }
 
