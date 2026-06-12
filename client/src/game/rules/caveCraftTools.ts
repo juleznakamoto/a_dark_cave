@@ -46,7 +46,7 @@ export const caveCraftTools: Record<string, Action> = {
 
   craftStoneAxe: {
     id: "craftStoneAxe",
-    label: "StoneAxe",
+    label: "Stone Axe",
     show_when: {
       "story.seen.caveExplored": true,
       "tools.stone_axe": false,
