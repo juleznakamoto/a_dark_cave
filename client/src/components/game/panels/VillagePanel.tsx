@@ -1494,7 +1494,7 @@ export default function VillagePanel() {
                           className={
                             presetSaveConfirmed
                               ? "inline-flex items-center justify-center text-[11px] leading-none text-green-500"
-                              : "inline-flex items-center justify-center font-noto-symbols-2 text-[12px] leading-none"
+                              : "inline-flex items-center justify-center font-noto-symbols-2 text-[12px] leading-none translate-y-0.5"
                           }
                         >
                           {presetSaveConfirmed ? "✓" : "🖫"}
