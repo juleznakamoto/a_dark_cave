@@ -95,7 +95,7 @@ export default function PlaylightDiscoveryButton({
         )}
       >
         <span
-          className="flex h-full w-full items-end justify-center opacity-60 transition-opacity duration-300 group-hover:opacity-100"
+          className="flex h-full w-full items-end justify-center opacity-80 transition-opacity duration-300 group-hover:opacity-100"
           aria-hidden
         >
           <img

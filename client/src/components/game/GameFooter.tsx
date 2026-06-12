@@ -16,13 +16,13 @@ import { tWithFallback } from "@/i18n/resolveGameText";
 const FOOTER_CONTROL_BTN =
   "group shrink-0 px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-600";
 const FOOTER_CONTROL_BTN_FADE =
-  "opacity-60 transition-opacity group-hover:opacity-100";
+  "opacity-80 transition-opacity group-hover:opacity-100";
 const FOOTER_CONTROL_BTN_SELF_FADE =
-  "opacity-60 transition-opacity hover:!opacity-100";
+  "opacity-80 transition-opacity hover:!opacity-100";
 const FOOTER_CONTROL_ICON_HOVER =
-  "w-4 h-4 shrink-0 object-contain opacity-60 transition-[filter,opacity] group-hover:opacity-100 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]";
+  "w-4 h-4 shrink-0 object-contain opacity-80 transition-[filter,opacity] group-hover:opacity-100 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]";
 const FOOTER_CONTROL_SVG_ICON_HOVER =
-  "w-4 h-4 opacity-60 transition-opacity group-hover:opacity-100";
+  "w-4 h-4 opacity-80 transition-opacity group-hover:opacity-100";
 const FOOTER_CONTROL_TEXT =
   `${FOOTER_CONTROL_BTN_FADE} group-hover:!text-red-600`;
 const FOOTER_SOCIAL_LABEL =

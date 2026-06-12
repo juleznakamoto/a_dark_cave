@@ -7,7 +7,7 @@ export type HoverCalloutSide = "top" | "left" | "right" | "bottom";
 export type HoverCalloutArrowAlign = "start" | "center" | "end";
 
 const CALLOUT_BASE =
-  "absolute z-[1] flex rounded-md bg-primary px-2 py-1.5 text-[10px] font-semibold leading-none tracking-wide text-primary-foreground shadow-md transition-opacity duration-300";
+  "absolute z-[1] flex appearance-none [-webkit-appearance:none] rounded-md bg-primary px-2 py-1.5 text-[10px] font-semibold leading-none tracking-wide text-primary-foreground shadow-md transition-opacity duration-300";
 
 /** Touch taps synthesize mouseenter; only fine pointers should drive hover tooltips. */
 function isHoverCapablePointer(pointerType: string): boolean {
