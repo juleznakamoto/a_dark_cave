@@ -221,13 +221,18 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       <Button
         ref={ref}
         onClick={handleClick}
-        disabled={isButtonDisabled}
+        // Use aria-disabled instead of the native `disabled` attribute: native disabled triggers
+        // `disabled:opacity-50` (and Android/Samsung's own control dimming), which washes out the
+        // cooldown/execution progress overlay. Interaction stays blocked via pointer-events-none
+        // plus the guards in handleClick / triggerPrimaryClick.
+        aria-disabled={isButtonDisabled || undefined}
         variant={variant}
         size={size}
         className={cn(
-          "relative overflow-hidden transition-all duration-200 select-none",
-          (isCoolingDown || isInsightRevealing || isPlayTimeProgressing) &&
-          "cursor-not-allowed",
+          // appearance-none resets native Android Chromium button chrome that otherwise leaks
+          // through and makes the dark outline buttons look flat/grey.
+          "relative overflow-hidden transition-all duration-200 select-none appearance-none [-webkit-appearance:none]",
+          isButtonDisabled && "pointer-events-none cursor-not-allowed",
           isCompassGlowing && "compass-glow",
           variant === "outline" && gameActionOutlineButtonClassName(isButtonDisabled),
           className,
