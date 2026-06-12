@@ -2,6 +2,8 @@
   "name": "A Dark Cave",
   "short_name": "Dark Cave",
   "description": "A text-based survival and settlement building game. Start with nothing and build your way to survival.",
+  "id": "/",
+  "scope": "/",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1a1a1a",

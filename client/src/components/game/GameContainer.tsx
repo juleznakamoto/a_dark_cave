@@ -472,6 +472,18 @@ export default function GameContainer() {
 
     // Capture toast in closure to ensure it's available when callback fires
     const showUpdateToast = toast;
+    let updatePending = false;
+
+    // Apply a pending update when the user leaves and comes back to the app.
+    // The game was already saved when the update was detected, so reloading on
+    // re-entry is safe and avoids interrupting active play.
+    const handleVisibilityReload = () => {
+      if (updatePending && document.visibilityState === "visible") {
+        logger.log("[VERSION] Applying pending update on app re-entry");
+        window.location.reload();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityReload);
 
     startVersionCheck(async () => {
       logger.log("[VERSION] Version check callback fired!");
@@ -480,11 +492,13 @@ export default function GameContainer() {
         const state = useGameStore.getState();
         await saveGame(state, false);
         logger.log("[VERSION] Game saved before update notification");
+        updatePending = true;
         showUpdateToast({
           title: i18n.t("versionUpdate.title", { ns: "ui" }),
           description: i18n.t("versionUpdate.description", { ns: "ui" }),
           variant: "default",
-          duration: 30000, // 30 seconds
+          // Persist until acted on; on mobile a timed toast is easily missed.
+          duration: Infinity,
           action: {
             label: i18n.t("versionUpdate.refresh", { ns: "ui" }),
             onClick: () => {
@@ -501,6 +515,7 @@ export default function GameContainer() {
 
     return () => {
       logger.log("[VERSION] Cleaning up version check");
+      document.removeEventListener("visibilitychange", handleVisibilityReload);
       stopVersionCheck();
     };
   }, []);
@@ -867,10 +882,10 @@ export default function GameContainer() {
     timedEventTab.isActive &&
     timedEventTab.event?.eventId === "bloodMoonAttack";
 
-  /** Muted tab labels use ~60% opacity; while paused, distinguish inactive via color (consistent font weight avoids layout shift). */
+  /** Muted tab labels use ~80% opacity; while paused, distinguish inactive via color (consistent font weight avoids layout shift). */
   const tabInactiveTextClass = isPaused
     ? "opacity-100 text-muted-foreground"
-    : "opacity-60";
+    : "opacity-80";
   const tabActiveTextClass = isPaused
     ? "opacity-100 text-foreground"
     : "opacity-100";
