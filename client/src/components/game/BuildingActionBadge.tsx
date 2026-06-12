@@ -121,11 +121,14 @@ export function BuildingActionBadge({
             >
               <animate
                 attributeName="values"
+                attributeType="matrix"
                 dur="1s"
                 repeatCount="indefinite"
                 calcMode="linear"
+                keyTimes="0;0.2;0.4;1"
                 values="
                   1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 15 -6;
+                  1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 3 -1;
                   1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 3 -1;
                   1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 15 -6
                 "

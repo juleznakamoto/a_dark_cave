@@ -10,30 +10,10 @@
 
 html,
 body {
-  height: 100%;
   height: 100dvh;
-  /* iOS Chrome/Safari: dvh alone can overshoot the visible viewport when toolbars show. */
-  height: -webkit-fill-available;
   overflow: hidden;
   background: #0b0b0e;
   color: #e6e6e6;
-}
-
-#root {
-  height: 100%;
-  height: 100dvh;
-  height: -webkit-fill-available;
-  min-height: 100%;
-  min-height: 100dvh;
-  min-height: -webkit-fill-available;
-}
-
-/* CriOS: sync document height chain with visualViewport (see useIOSChromeViewportShell). */
-html.ios-chrome-viewport-pinned,
-html.ios-chrome-viewport-pinned body,
-html.ios-chrome-viewport-pinned #root {
-  height: var(--visual-viewport-height);
-  min-height: var(--visual-viewport-height);
 }
 
 .scrollbar-hide::-webkit-scrollbar {
@@ -46,20 +26,12 @@ html.ios-chrome-viewport-pinned #root {
 }
 
 :root {
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-serif: Georgia, serif;
   --font-mono: 'Courier New', monospace;
 }
 
-@font-face {
-  font-family: 'Inter';
-  src: url('/fonts/inter.woff2') format('woff2');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Legacy hook: game.tsx still toggles this after FontFace load; family is already Inter above. */
+/* Apply Inter font as soon as it's loaded */
 :root.font-loaded {
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
@@ -70,7 +42,7 @@ html.ios-chrome-viewport-pinned #root {
 
 /* Apply symbol fallback font only once confirmed loaded — avoids FOUT */
 :root.symbols-font-loaded {
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Noto Sans Symbols 2", sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Noto Sans Symbols 2", sans-serif;
 }
 
 :root.font-loaded.symbols-font-loaded {
@@ -89,22 +61,10 @@ html.ios-chrome-viewport-pinned #root {
 
   html {
     @apply dark;
-    /* Lock rem base; Tailwind text-* sizes assume 16px root. */
-    font-size: 16px;
-    /*
-     * iOS text inflation: Chrome (CriOS) and Safari apply different auto-scaling on
-     * small text in divs/spans. Without this, text-xs panels look wrong-sized while
-     * vh layout regions stay fixed — reads as "broken layout" on Chrome iOS only.
-     * Order: unprefixed first (Safari ignores it), then -webkit- (Safari uses this).
-     */
-    text-size-adjust: 100%;
-    -webkit-text-size-adjust: 100%;
   }
 
   body {
     @apply font-sans antialiased;
-    text-size-adjust: 100%;
-    -webkit-text-size-adjust: 100%;
     background-color: hsl(0, 0%, 5%) !important;
     color: hsl(0, 6.6667%, 91.1765%) !important;
   }
@@ -123,8 +83,6 @@ html.ios-chrome-viewport-pinned #root {
   /* Force symbol blocks (e.g. map fragment moons) to use the loaded Noto face */
   .font-noto-symbols-2 {
     font-family: "Noto Sans Symbols 2", ui-sans-serif, system-ui, sans-serif;
-    /* Prefer text glyphs over Apple/Segoe color emoji for dual-presentation codepoints (e.g. ⚜). */
-    font-variant-emoji: text;
   }
 }
 
@@ -208,7 +166,7 @@ html.ios-chrome-viewport-pinned #root {
   }
 
   100% {
-    opacity: 0.8;
+    opacity: 0.6;
     filter: blur(0);
   }
 }
@@ -222,7 +180,7 @@ html.ios-chrome-viewport-pinned #root {
 
   0%,
   100% {
-    opacity: 0.8;
+    opacity: 0.6;
   }
 
   50% {
@@ -304,10 +262,17 @@ html.ios-chrome-viewport-pinned #root {
   backface-visibility: hidden;
 }
 
-/* Idle: insight triangle glyph only. Hover or reveal cooldown (--playing) runs blob animation. */
+/* Idle: reset triangles; clip keeps SVG filter (CSS filter:none would override it). */
+.building-action-badge:not(:hover):not(.building-action-badge--playing) .building-action-badge__clip,
+.insight-action-badge-trigger:not(:hover) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__clip {
+  animation: none !important;
+  transform: none;
+}
+
 .building-action-badge:not(:hover):not(.building-action-badge--playing) .building-action-badge__triangle,
 .insight-action-badge-trigger:not(:hover) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__triangle {
   animation: none !important;
+  filter: none;
   transform: none;
 }
 
@@ -333,6 +298,12 @@ html.ios-chrome-viewport-pinned #root {
 
 .building-action-badge--playing .building-action-badge__idle {
   opacity: 0;
+}
+
+/* Complements SVG feColorMatrix roundness; scale pulse stays on clip during interaction. */
+.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):hover .building-action-badge .building-action-badge__clip,
+.building-action-badge--playing .building-action-badge__clip {
+  animation: building-action-badge-roundness 1s linear infinite;
 }
 
 .building-action-badge__triangle--one {
@@ -395,6 +366,19 @@ html.ios-chrome-viewport-pinned #root {
 
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes building-action-badge-roundness {
+  0%,
+  60%,
+  100% {
+    transform: scale(1.1);
+  }
+
+  20%,
+  40% {
+    transform: scale(1.18);
   }
 }
 
@@ -729,8 +713,44 @@ html.ios-chrome-viewport-pinned #root {
   animation: explore-fun-games-cue-pulse 1.4s ease-in-out infinite;
 }
 
-/* Exclusive promo shortcut: green shockwave on play-time milestones (ProfileMenu.tsx). */
-@keyframes exclusive-promo-shockwave-once {
+/* Exclusive promo shortcut: green shockwave ~every 10s (same cadence idea as notification ripples) */
+@keyframes exclusive-promo-shockwave {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.85;
+    border-color: rgba(132, 204, 22, 0.9);
+  }
+
+  12% {
+    transform: translate(-50%, -50%) scale(2.0);
+    opacity: 0;
+    border-color: rgba(132, 204, 22, 0);
+  }
+
+  12.01%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+    border-color: transparent;
+  }
+}
+
+.exclusive-promo-shockwave-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.0rem;
+  height: 1.0rem;
+  box-sizing: border-box;
+  transform: translate(-50%, -50%);
+  border-radius: 0.5rem;
+  border: 2px solid rgba(132, 204, 22, 0.85);
+  pointer-events: none;
+  z-index: 0;
+  animation: exclusive-promo-shockwave 20s cubic-bezier(0.33, 1, 0.68, 1) infinite;
+}
+
+@keyframes exclusive-promo-shockwave-hover-once {
   0% {
     transform: translate(-50%, -50%) scale(1);
     opacity: 0.85;
@@ -744,28 +764,17 @@ html.ios-chrome-viewport-pinned #root {
   }
 }
 
-.exclusive-promo-shockwave-ring {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 1.0rem;
-  height: 1.0rem;
-  box-sizing: border-box;
-  transform: translate(-50%, -50%);
-  border-radius: 0.5rem;
-  border: 2px solid transparent;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.exclusive-promo-shockwave-ring--ping-once {
-  animation: exclusive-promo-shockwave-once 2.4s cubic-bezier(0.33, 1, 0.68, 1) 1;
+.exclusive-promo-shockwave-ring--hover-once {
+  animation: exclusive-promo-shockwave-hover-once 0.75s cubic-bezier(0.33, 1, 0.68, 1) 1 !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
 
-  .exclusive-promo-shockwave-ring--ping-once {
+  .exclusive-promo-shockwave-ring {
+    animation: none;
+  }
+
+  .exclusive-promo-shockwave-ring--hover-once {
     animation: none !important;
   }
 }
@@ -817,11 +826,11 @@ html.ios-chrome-viewport-pinned #root {
 
   0%,
   100% {
-    box-shadow: 0 0 2px rgba(20, 184, 166, .5), 0 0 3px rgba(20, 184, 166, .4);
+    box-shadow: 0 0 2px rgba(20, 184, 166, .3), 0 0 3px rgba(20, 184, 166, .2);
   }
 
   50% {
-    box-shadow: 0 0 2px rgba(20, 184, 166, .7), 0 0 3px rgba(20, 184, 166, .6);
+    box-shadow: 0 0 2px rgba(20, 184, 166, .5), 0 0 3px rgba(20, 184, 166, .4);
   }
 }
 
@@ -850,17 +859,8 @@ html.ios-chrome-viewport-pinned #root {
   }
 }
 
-/* Wrapper scales the invite button and its close affordance together. */
-.invite-friends-float {
-  animation: invite-friends-float-scale 5.5s ease-in-out infinite;
-}
-
-.invite-friends-float:hover {
-  animation-play-state: paused;
-  transform: scale(1.02);
-}
-
 .invite-friends-float-btn {
+  animation: invite-friends-float-scale 5.5s ease-in-out infinite;
   transition:
     background-color 0.15s ease,
     color 0.15s ease,
@@ -869,6 +869,8 @@ html.ios-chrome-viewport-pinned #root {
 
 /* Match shop "Continue" buttons (default primary). */
 .invite-friends-float-btn:hover {
+  animation-play-state: paused;
+  transform: scale(1.02);
   background-color: hsl(0, 87.6%, 52.55%);
   color: hsl(0, 0%, 100%);
   border-color: hsl(0, 89.12%, 53.14%);
@@ -876,7 +878,7 @@ html.ios-chrome-viewport-pinned #root {
 
 @media (prefers-reduced-motion: reduce) {
 
-  .invite-friends-float {
+  .invite-friends-float-btn {
     animation: none;
     transform: scale(1);
   }
