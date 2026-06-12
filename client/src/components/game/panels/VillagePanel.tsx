@@ -976,8 +976,8 @@ export default function VillagePanel() {
           {/* Rule Section */}
           {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
             <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <h3 className="text-xs font-medium text-foreground">
+              <div className="flex w-full items-center gap-2">
+                <h3 className="text-xs font-medium text-foreground leading-none">
                   {t("village.sectionProduce")}
                 </h3>
                 {/* Production Cycle */}
@@ -1418,7 +1418,7 @@ export default function VillagePanel() {
                   );
                 })()}
                 {arePresetsVisible(state) && (
-                  <div className="ml-auto flex items-center gap-1">
+                  <div className="ml-auto flex shrink-0 items-center gap-1">
                     {Array.from({ length: MAX_PRESET_SLOTS }).map((_, i) => {
                       const slot = i + 1;
                       const unlockedCount = getUnlockedPresetCount(state);
@@ -1436,10 +1436,11 @@ export default function VillagePanel() {
                           tooltipId={`preset-slot-${slot}`}
                           tooltip={<div className="text-xs">{tooltipText}</div>}
                           disabled={!unlocked}
+                          tooltipTriggerClassName="inline-flex items-center leading-none"
                           className={
                             unlocked
-                              ? "relative inline-block cursor-pointer"
-                              : "relative inline-block"
+                              ? "flex items-center cursor-pointer"
+                              : "flex items-center"
                           }
                           onClick={() => {
                             if (unlocked) applyVillagerJobPreset(slot);
@@ -1451,7 +1452,7 @@ export default function VillagePanel() {
                             disabled={!unlocked}
                             data-testid={`preset-slot-${slot}`}
                             button_id={`preset-slot-${slot}`}
-                            className="h-5 w-5 p-0 text-[10px] tabular-nums pointer-events-none"
+                            className="h-[18px] w-[18px] min-h-0 shrink-0 p-0 text-[10px] tabular-nums leading-none pointer-events-none"
                             style={{ touchAction: "manipulation" }}
                           >
                             {slot}
@@ -1466,7 +1467,8 @@ export default function VillagePanel() {
                           {t("village.presetSave", { slot: activePresetSlot })}
                         </div>
                       }
-                      className="relative inline-block cursor-pointer"
+                      tooltipTriggerClassName="inline-flex items-center leading-none"
+                      className="flex items-center cursor-pointer"
                       onClick={handlePresetSave}
                     >
                       <Button
@@ -1474,7 +1476,7 @@ export default function VillagePanel() {
                         variant="outline"
                         data-testid="preset-save"
                         button_id="preset-save"
-                        className={`h-5 w-5 p-0 pointer-events-none text-[11px] leading-none${presetSaveConfirmed ? " text-green-500" : " font-noto-symbols-2"}`}
+                        className={`h-[18px] w-[18px] min-h-0 shrink-0 p-0 pointer-events-none text-[10px] leading-none${presetSaveConfirmed ? " text-green-500" : " font-noto-symbols-2"}`}
                         style={{ touchAction: "manipulation" }}
                       >
                         {presetSaveConfirmed ? "✓" : "🖫"}
