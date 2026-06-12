@@ -21,6 +21,11 @@
   "village": {
     "sectionBuild": "Construir",
     "sectionProduce": "Produzir",
+    "presetApply": "Aplicar preset {{slot}}",
+    "presetEmpty": "O preset {{slot}} está vazio — selecione-o e salve seus trabalhos atuais",
+    "presetLocked": "Bloqueado — disponível para compra",
+    "presetLockedBuilding": "{{building}} necessário para desbloquear",
+    "presetSave": "Salvar trabalhos atuais no preset {{slot}}",
     "cycle": "Ciclo",
     "cycleDescription": "A cada ciclo, seus aldeões produzem recursos e há uma chance de novos aldeões chegarem.",
     "nextCycleIn": "Próximo ciclo em {{seconds}} segundos",

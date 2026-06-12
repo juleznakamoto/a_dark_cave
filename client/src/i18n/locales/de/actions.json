@@ -708,5 +708,17 @@
       "mapFragment": "Auf dem Höhlenboden findest du ein zerrissenes Kartenfragment.",
       "firstVisit": "Die Luft wird kälter, während du den Pfad tiefer in die Höhle hinabsteigst. Die Wände wirken unnatürlich glatt, als hätte sie jemand geformt."
     }
+  },
+  "buildGrandArchive": {
+    "description": "Ein riesiges Gewölbe voller Schriftrollen, das alles bewahrt, was das Dorf je war – jeder Name und jede Mühe in Tinte verewigt",
+    "label": "Großes Archiv"
+  },
+  "buildRecordsHall": {
+    "description": "Eine Halle voller Regale mit verwitterten Registern und Verzeichnissen – das in Tinte festgehaltene und geordnete Gedächtnis des Dorfes",
+    "label": "Urkundenhalle"
+  },
+  "buildScribesOffice": {
+    "description": "Ein stiller Raum, in dem Schreiber sorgsam jede Arbeitskraft verzeichnen, damit keine Mühe vergessen wird",
+    "label": "Schreiberstube"
   }
 }

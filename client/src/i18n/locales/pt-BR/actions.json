@@ -708,5 +708,17 @@
       "mapFragment": "No chão da caverna, você encontra um fragmento esfarrapado de um mapa.",
       "firstVisit": "O ar fica mais frio conforme você desce o caminho mais fundo na caverna. As paredes ao seu redor parecem estranhamente lisas, como se moldadas por alguém."
     }
+  },
+  "buildGrandArchive": {
+    "description": "Uma vasta câmara de pergaminhos que preserva tudo o que a aldeia foi, cada nome e cada labuta gravados",
+    "label": "Grande Arquivo"
+  },
+  "buildRecordsHall": {
+    "description": "Um salão repleto de prateleiras com livros-razão e listas desgastados, a memória da aldeia registrada em tinta e mantida em ordem",
+    "label": "Salão de Registros"
+  },
+  "buildScribesOffice": {
+    "description": "Uma sala tranquila onde os escribas mantêm um registro cuidadoso de cada mão a trabalhar, para que nenhum labor seja esquecido",
+    "label": "Escritório do Escriba"
   }
 }

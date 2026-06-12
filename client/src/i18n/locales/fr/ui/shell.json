@@ -1,4 +1,7 @@
 {
+  "panelResize": {
+    "handle": "Glissez pour redimensionner les panneaux (double-clic pour réinitialiser)"
+  },
   "languageSelector": {
     "label": "Langue",
     "ariaLabel": "Choisir la langue"

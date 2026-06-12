@@ -708,5 +708,17 @@
   },
   "tradeGoldForVeinfireElixir": {
     "label": "Comprar elixir de fuego venal"
+  },
+  "buildGrandArchive": {
+    "description": "Una vasta bóveda de pergaminos que conserva todo lo que la aldea ha sido, cada nombre y cada esfuerzo grabados",
+    "label": "Gran Archivo"
+  },
+  "buildRecordsHall": {
+    "description": "Un salón lleno de estantes con libros de cuentas y listas desgastados, la memoria de la aldea plasmada en tinta y mantenida en orden",
+    "label": "Salón de registros"
+  },
+  "buildScribesOffice": {
+    "description": "Una sala tranquila donde los escribas llevan un recuento minucioso de cada mano que trabaja, para que ninguna labor se olvide",
+    "label": "Oficina del escriba"
   }
 }

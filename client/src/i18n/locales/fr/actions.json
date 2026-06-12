@@ -708,5 +708,17 @@
   },
   "tradeGoldForVeinfireElixir": {
     "label": "Acheter un élixir feu-veine"
+  },
+  "buildGrandArchive": {
+    "description": "Une vaste voûte de parchemins préservant tout ce que le village a été, chaque nom et chaque labeur gravés",
+    "label": "Grandes Archives"
+  },
+  "buildRecordsHall": {
+    "description": "Une salle remplie d'étagères de registres et de rôles usés, la mémoire du village couchée à l'encre et tenue en ordre",
+    "label": "Salle des registres"
+  },
+  "buildScribesOffice": {
+    "description": "Une pièce tranquille où les scribes tiennent un décompte minutieux de chaque bras au travail, afin qu'aucun labeur ne soit oublié",
+    "label": "Bureau du scribe"
   }
 }

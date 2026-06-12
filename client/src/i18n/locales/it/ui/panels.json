@@ -21,6 +21,11 @@
   "village": {
     "sectionBuild": "Costruisci",
     "sectionProduce": "Produci",
+    "presetApply": "Applica preset {{slot}}",
+    "presetEmpty": "Il preset {{slot}} è vuoto — selezionalo, poi salva i lavori attuali",
+    "presetLocked": "Bloccato — disponibile per l'acquisto",
+    "presetLockedBuilding": "{{building}} necessario per sbloccare",
+    "presetSave": "Salva i lavori attuali nel preset {{slot}}",
     "cycle": "Ciclo",
     "cycleDescription": "Ad ogni ciclo i tuoi abitanti producono risorse e c'è una possibilità che arrivino nuovi abitanti.",
     "nextCycleIn": "Prossimo ciclo tra {{seconds}} secondi",

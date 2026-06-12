@@ -21,6 +21,11 @@
   "village": {
     "sectionBuild": "Construire",
     "sectionProduce": "Produire",
+    "presetApply": "Appliquer le préréglage {{slot}}",
+    "presetEmpty": "Le préréglage {{slot}} est vide — sélectionnez-le, puis enregistrez vos tâches actuelles",
+    "presetLocked": "Verrouillé — disponible à l'achat",
+    "presetLockedBuilding": "{{building}} requis pour déverrouiller",
+    "presetSave": "Enregistrer les tâches actuelles dans le préréglage {{slot}}",
     "cycle": "Cycle",
     "cycleDescription": "À chaque cycle, vos villageois produisent des ressources et il y a une chance que de nouveaux villageois arrivent.",
     "nextCycleIn": "Prochain cycle dans {{seconds}} secondes",

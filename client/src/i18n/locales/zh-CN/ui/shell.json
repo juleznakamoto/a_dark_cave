@@ -1,4 +1,7 @@
 {
+  "panelResize": {
+    "handle": "拖动以调整面板大小（双击重置）"
+  },
   "languageSelector": {
     "label": "语言",
     "ariaLabel": "选择语言"

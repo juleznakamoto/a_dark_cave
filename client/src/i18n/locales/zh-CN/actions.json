@@ -708,5 +708,17 @@
   },
   "tradeGoldForVeinfireElixir": {
     "label": "购买脉火灵药"
+  },
+  "buildGrandArchive": {
+    "description": "一座庞大的卷轴宝库，保存着村庄的全部过往，每个名字与辛劳都被铭刻其中",
+    "label": "宏伟档案馆"
+  },
+  "buildRecordsHall": {
+    "description": "大厅里满是陈旧账册与名册的架子，村庄的记忆以墨记录、井然有序地保存",
+    "label": "记录大厅"
+  },
+  "buildScribesOffice": {
+    "description": "一间安静的房间，书记官们仔细记录每一双劳作的手，使任何辛劳都不被遗忘",
+    "label": "书记官办公室"
   }
 }

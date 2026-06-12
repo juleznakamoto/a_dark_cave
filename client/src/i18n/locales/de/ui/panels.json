@@ -21,6 +21,11 @@
   "village": {
     "sectionBuild": "Bauen",
     "sectionProduce": "Produzieren", //ok
+    "presetApply": "Vorlage {{slot}} anwenden",
+    "presetEmpty": "Vorlage {{slot}} ist leer — wähle sie aus und speichere dann deine aktuellen Jobs",
+    "presetLocked": "Gesperrt — zum Freischalten kaufbar",
+    "presetLockedBuilding": "{{building}} zum Freischalten erforderlich",
+    "presetSave": "Aktuelle Jobs in Vorlage {{slot}} speichern",
     "cycle": "Zyklus",
     "cycleDescription": "In jedem Zyklus produzieren deine Dorfbewohner Ressourcen und es besteht die Chance, dass neue Dorfbewohner ankommen.",
     "nextCycleIn": "Nächster Zyklus in {{seconds}} Sekunden",

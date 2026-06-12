@@ -1,4 +1,7 @@
 {
+  "panelResize": {
+    "handle": "Ziehen, um die Bereiche anzupassen (Doppelklick zum Zurücksetzen)"
+  },
   "languageSelector": {
     "label": "Sprache",
     "ariaLabel": "Sprache auswählen"

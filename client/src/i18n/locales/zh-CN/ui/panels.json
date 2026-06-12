@@ -21,6 +21,11 @@
   "village": {
     "sectionBuild": "建造",
     "sectionProduce": "生产",
+    "presetApply": "应用预设 {{slot}}",
+    "presetEmpty": "预设 {{slot}} 为空 — 选择它，然后保存当前工作分配",
+    "presetLocked": "已锁定 — 可购买解锁",
+    "presetLockedBuilding": "需要 {{building}} 才能解锁",
+    "presetSave": "将当前工作分配保存到预设 {{slot}}",
     "cycle": "周期",
     "cycleDescription": "每个周期，村民都会生产资源，并且有可能迎来新村民。",
     "nextCycleIn": "下一周期 {{seconds}} 秒后",

@@ -708,5 +708,17 @@
       "mapFragment": "Sul fondo della caverna trovi un frammento sbrindellato di una mappa.",
       "firstVisit": "L'aria si fa più fredda mentre scendi lungo il sentiero più in profondità nella caverna. Le pareti attorno a te sembrano innaturalmente lisce, come se fossero state plasmate da qualcuno."
     }
+  },
+  "buildGrandArchive": {
+    "description": "Una vasta volta di pergamene che conserva tutto ciò che il villaggio è stato, ogni nome e ogni fatica incisi",
+    "label": "Grande Archivio"
+  },
+  "buildRecordsHall": {
+    "description": "Una sala piena di scaffali di registri e ruoli logori, la memoria del villaggio messa per iscritto e tenuta in ordine",
+    "label": "Sala dei registri"
+  },
+  "buildScribesOffice": {
+    "description": "Una stanza tranquilla dove gli scribi tengono un conteggio attento di ogni mano al lavoro, così che nessuna fatica venga dimenticata",
+    "label": "Ufficio dello scriba"
   }
 }
