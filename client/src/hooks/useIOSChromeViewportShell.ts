@@ -23,17 +23,20 @@ export function useIOSChromeViewportShell(): CSSProperties {
     if (!vv) return;
 
     const sync = () => {
-      const heightPx = `${vv.height}px`;
+      const viewport = window.visualViewport;
+      if (!viewport) return;
+
+      const heightPx = `${viewport.height}px`;
       document.documentElement.style.setProperty(
         "--visual-viewport-height",
         heightPx,
       );
       setStyle({
-        top: vv.offsetTop,
+        top: viewport.offsetTop,
         left: 0,
         right: 0,
         width: "100%",
-        height: vv.height,
+        height: viewport.height,
         bottom: "auto",
       });
     };
