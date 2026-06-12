@@ -201,10 +201,7 @@ export default function GameFooter() {
                 aria-label={t("footer.supportGame")}
                 className={`${FOOTER_CONTROL_BTN} ${isEarlyGameplay ? "opacity-60" : "opacity-100"} hover:!opacity-100 flex items-center gap-1`}
               >
-                <span
-                  className={`font-noto-symbols-2 inline-flex shrink-0 items-center justify-center text-sm leading-none ${FOOTER_CONTROL_TEXT}`}
-                  aria-hidden
-                >
+                <span className={FOOTER_CONTROL_TEXT} aria-hidden>
                   ❤︎⁠
                 </span>
                 <span className={FOOTER_CONTROL_TEXT}>{t("footer.donate")}</span>
