@@ -1487,10 +1487,18 @@ export default function VillagePanel() {
                         variant="outline"
                         data-testid="preset-save"
                         button_id="preset-save"
-                        className={`h-[18px] w-[18px] min-h-0 shrink-0 p-0 pointer-events-none text-[10px] leading-none${presetSaveConfirmed ? " text-green-500" : " font-noto-symbols-2"}`}
+                        className="h-[18px] w-[18px] min-h-0 shrink-0 p-0 pointer-events-none inline-flex items-center justify-center leading-none"
                         style={{ touchAction: "manipulation" }}
                       >
-                        {presetSaveConfirmed ? "✓" : "🖫"}
+                        <span
+                          className={
+                            presetSaveConfirmed
+                              ? "inline-flex items-center justify-center text-[11px] leading-none text-green-500"
+                              : "inline-flex items-center justify-center font-noto-symbols-2 text-[12px] leading-none"
+                          }
+                        >
+                          {presetSaveConfirmed ? "✓" : "🖫"}
+                        </span>
                       </Button>
                     </TooltipWrapper>
                   </div>

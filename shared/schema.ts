@@ -350,7 +350,7 @@ export const gameStateSchema = z.object({
     .default({}),
   villagerCapUpgrades: z.record(z.string(), z.number()).default({}),
   // Villager job presets. Each slot stores job-count assignments (excludes `free`);
-  // null means the slot has not been saved to yet. Up to 5 slots (1-3 building-unlocked, 4-5 reserved).
+  // null means the slot has not been saved to yet. Up to 3 slots (one per archive building).
   villagerJobPresets: z
     .array(
       z

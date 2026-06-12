@@ -4,11 +4,11 @@ import { getVillagersInVillage } from "@/game/population";
 import { getVillagerCapForJob } from "@/game/villagerCapUpgrades";
 import { updatePopulationCounts } from "@/game/stateHelpers";
 
-/** Total preset slots shown in the UI (1-3 building-unlocked, 4-5 reserved for future purchase). */
-export const MAX_PRESET_SLOTS = 5;
-
 /** Slots unlocked via the Scribe's Office building chain (one per building). */
 export const MAX_BUILDING_PRESET_SLOTS = 3;
+
+/** Total preset slots shown in the UI (matches building-unlocked slots for now). */
+export const MAX_PRESET_SLOTS = MAX_BUILDING_PRESET_SLOTS;
 
 /** Building chain that unlocks preset slots, lowest tier first (one slot each). */
 export const PRESET_UNLOCK_BUILDINGS: (keyof GameState["buildings"])[] = [
