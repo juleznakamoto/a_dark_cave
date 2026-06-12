@@ -94,18 +94,18 @@ describe("weaponEnchantments", () => {
     const bonus = getWeaponEnchantBonus(enchanted, "bloodstone_staff");
     expect(bonus.enchantStrength).toBe(2);
     expect(bonus.enchantKnowledge).toBe(3);
-    // Cost = (2 + 3) * 250
-    expect(getNextEnchantCost(baseState(), "bloodstone_staff")).toBe(1250);
+    // Cost = (2 + 3) * 500
+    expect(getNextEnchantCost(baseState(), "bloodstone_staff")).toBe(2500);
   });
 
-  it("prices generic enchant at 250 per added stat point", () => {
-    // Blacksteel Sword adds +2 Strength -> 2 * 250 = 500
-    expect(getNextEnchantCost(baseState(), "blacksteel_sword")).toBe(500);
+  it("prices generic enchant at 500 per added stat point", () => {
+    // Blacksteel Sword adds +2 Strength -> 2 * 500 = 1000
+    expect(getNextEnchantCost(baseState(), "blacksteel_sword")).toBe(1000);
   });
 
   it("applies the Nightshade Bow two-level table", () => {
     const base = baseState();
-    expect(getNextEnchantCost(base, "nightshade_bow")).toBe(1000);
+    expect(getNextEnchantCost(base, "nightshade_bow")).toBe(1500);
 
     const lvl1 = baseState({ weaponEnchantments: { nightshade_bow: 1 } });
     const bonus1 = getWeaponEnchantBonus(lvl1, "nightshade_bow");
@@ -113,7 +113,7 @@ describe("weaponEnchantments", () => {
     expect(bonus1.baseStrength).toBe(0);
     expect(bonus1.enchantStrength).toBe(2);
     expect(bonus1.poisonRounds).toBe(0);
-    expect(getNextEnchantCost(lvl1, "nightshade_bow")).toBe(2000);
+    expect(getNextEnchantCost(lvl1, "nightshade_bow")).toBe(3000);
 
     const lvl2 = baseState({ weaponEnchantments: { nightshade_bow: 2 } });
     const bonus2 = getWeaponEnchantBonus(lvl2, "nightshade_bow");
@@ -182,7 +182,7 @@ describe("weaponEnchantments", () => {
 
     const next = useGameStore.getState();
     expect(next.weaponEnchantments?.nightshade_bow).toBe(1);
-    expect(next.resources.insight).toBe(4000); // 5000 - 1000
+    expect(next.resources.insight).toBe(3500); // 5000 - 1500
   });
 });
 

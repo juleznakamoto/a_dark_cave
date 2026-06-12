@@ -14,19 +14,19 @@ import {
 describe("insightReveal", () => {
   const base = (): GameState => createInitialState();
 
-  it("getInsightRevealCost returns 50 for village buildings", () => {
+  it("getInsightRevealCost returns 100 for village buildings", () => {
     expect(getInsightRevealCost("buildClerksHut")).toBe(
       INSIGHT_REVEAL_BUILDING_COST,
     );
   });
 
-  it("getInsightRevealCost returns 25 for fortification builds", () => {
+  it("getInsightRevealCost returns 50 for fortification builds", () => {
     expect(getInsightRevealCost("buildWatchtower")).toBe(
       INSIGHT_REVEAL_FORTIFICATION_COST,
     );
   });
 
-  it("getInsightRevealCost returns 25 for craft-once items", () => {
+  it("getInsightRevealCost returns 50 for craft-once items", () => {
     expect(getInsightRevealCost("craftStoneAxe")).toBe(INSIGHT_REVEAL_CRAFT_COST);
   });
 

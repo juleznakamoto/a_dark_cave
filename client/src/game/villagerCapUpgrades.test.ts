@@ -68,9 +68,9 @@ describe("villagerCapUpgrades", () => {
     expect(getVillagerCapForJob(state, "hunter")).toBe(Infinity);
   });
 
-  it("computes upgrade costs as 50 * (level + 1)", () => {
-    expect(getNextCapUpgradeCost(0)).toBe(50);
-    expect(getNextCapUpgradeCost(4)).toBe(250);
+  it("computes upgrade costs as 100 * (level + 1)", () => {
+    expect(getNextCapUpgradeCost(0)).toBe(100);
+    expect(getNextCapUpgradeCost(4)).toBe(500);
   });
 
   it("reads and clamps stored upgrade levels", () => {
@@ -129,7 +129,7 @@ describe("villagerCapUpgrades", () => {
 
     const next = useGameStore.getState();
     expect(next.villagerCapUpgrades?.hunter).toBe(1);
-    expect(next.resources.insight).toBe(50);
+    expect(next.resources.insight).toBe(0);
     expect(getVillagerCapForJob(next, "hunter")).toBe(20);
   });
 

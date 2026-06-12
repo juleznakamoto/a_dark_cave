@@ -27,7 +27,7 @@ describe("revealActionEffects", () => {
     expect(ok).toBe(true);
 
     const after = useGameStore.getState();
-    expect(after.resources.insight).toBe(75);
+    expect(after.resources.insight).toBe(50);
     expect(after.cooldowns.craftStoneAxe).toBe(3);
     expect(after.initialCooldowns.craftStoneAxe).toBe(3);
     expect(after.insightRevealing.craftStoneAxe).toBeGreaterThan(Date.now());
@@ -102,7 +102,7 @@ describe("revealStatEffects", () => {
       },
       resources: {
         ...useGameStore.getState().resources,
-        insight: 600,
+        insight: 1100,
       },
     });
 
@@ -147,7 +147,7 @@ describe("prolongTimedEventTab", () => {
       },
       resources: {
         ...useGameStore.getState().resources,
-        insight: 300,
+        insight: 600,
       },
       timedEventTab: {
         isActive: true,
@@ -164,7 +164,7 @@ describe("prolongTimedEventTab", () => {
 
     const after = useGameStore.getState();
     expect(after.resources.insight).toBe(
-      300 - TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
+      600 - TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
     );
     expect(after.timedEventTab.expiryTime).toBe(
       expiryTime + TIMED_EVENT_TAB_PROLONG_MS,

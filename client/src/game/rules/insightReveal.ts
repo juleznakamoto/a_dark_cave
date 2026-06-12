@@ -2,16 +2,16 @@ import type { GameState } from "@shared/schema";
 import { getGameActions } from "./actionsRegistry";
 import type { Action } from "@shared/schema";
 
-export const INSIGHT_REVEAL_BUILDING_COST = 50;
-export const INSIGHT_REVEAL_FORTIFICATION_COST = 25;
-export const INSIGHT_REVEAL_CRAFT_COST = 25;
+export const INSIGHT_REVEAL_BUILDING_COST = 100;
+export const INSIGHT_REVEAL_FORTIFICATION_COST = 50;
+export const INSIGHT_REVEAL_CRAFT_COST = 50;
 export const INSIGHT_REVEAL_DURATION_MS = 3_000;
 /** Action button cooldown (seconds); ticks subtract 0.25 every 250ms → 1s per unit. */
 export const INSIGHT_REVEAL_ACTION_COOLDOWN_SEC = 3;
 /** One-time cost to reveal all side-panel stat effect tooltips. */
-export const STAT_EFFECTS_INSIGHT_COST = 500;
+export const STAT_EFFECTS_INSIGHT_COST = 1000;
 /** One-time cost to reveal a hidden achievement title before any progress is made. */
-export const ACHIEVEMENT_TITLE_INSIGHT_COST = 100;
+export const ACHIEVEMENT_TITLE_INSIGHT_COST = 250;
 /** Prefix for `insightRevealing` keys while an achievement title reveal animates. */
 export const ACHIEVEMENT_TITLE_INSIGHT_KEY_PREFIX = "achievementTitle:";
 
@@ -24,7 +24,7 @@ export function parseAchievementTitleInsightKey(key: string): string | null {
   return key.slice(ACHIEVEMENT_TITLE_INSIGHT_KEY_PREFIX.length) || null;
 }
 /** Spend Insight to extend an active timed-event tab countdown. */
-export const TIMED_EVENT_TAB_PROLONG_INSIGHT_COST = 250;
+export const TIMED_EVENT_TAB_PROLONG_INSIGHT_COST = 500;
 export const TIMED_EVENT_TAB_PROLONG_MS = 3 * 60 * 1000;
 
 export function isInsightUnlocked(state: GameState): boolean {

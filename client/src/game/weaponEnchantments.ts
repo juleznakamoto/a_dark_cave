@@ -8,7 +8,7 @@ import {
 import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
 
 /** Insight cost per point of stat added by a generic weapon enchantment. */
-export const ENCHANT_COST_PER_STAT = 250;
+export const ENCHANT_COST_PER_STAT = 500;
 
 /** Building that unlocks weapon enchantment (Tomewarden Academy). */
 const ENCHANT_BUILDING_KEY = "inkwardenAcademy";
@@ -66,8 +66,8 @@ interface EnchantDelta {
 
 const SPECIAL_ENCHANTS: Record<string, EnchantDelta[]> = {
   nightshade_bow: [
-    { poisonBaseDamage: 5, enchantStrength: 2, cost: 1000 },
-    { enchantStrength: 3, poisonRounds: 1, cost: 2000 },
+    { poisonBaseDamage: 5, enchantStrength: 2, cost: 1500 },
+    { enchantStrength: 3, poisonRounds: 1, cost: 3000 },
   ],
 };
 
