@@ -4,6 +4,7 @@ import {
   formatNumber,
   formatPrice,
   formatSignedNumber,
+  formatThousandsInLogText,
 } from "./utils";
 
 describe("formatNumber", () => {
@@ -33,6 +34,25 @@ describe("formatSignedNumber", () => {
   it("prefixes positive values", () => {
     expect(formatSignedNumber(83)).toBe("+83");
     expect(formatSignedNumber(-567)).toBe("-567");
+  });
+});
+
+describe("formatThousandsInLogText", () => {
+  it("formats bare integers of four or more digits", () => {
+    expect(
+      formatThousandsInLogText(
+        "You gained 660 Focus from your rest. Villagers produced: Food: +5543",
+      ),
+    ).toBe(
+      "You gained 660 Focus from your rest. Villagers produced: Food: +5'543",
+    );
+    expect(formatThousandsInLogText("You lost 10000 gold")).toBe(
+      "You lost 10'000 gold",
+    );
+  });
+
+  it("does not double-format numbers that already use apostrophes", () => {
+    expect(formatThousandsInLogText("Food: +5'543")).toBe("Food: +5'543");
   });
 });
 

@@ -48,6 +48,14 @@ export function formatSignedNumber(value: number): string {
   return value > 0 ? `+${formatted}` : formatted;
 }
 
+/** Add `'` thousands separators to bare integer runs in log text (display-time). */
+export function formatThousandsInLogText(text: string): string {
+  return text.replace(
+    /([+-]?)(\d{4,})(?!\d)/g,
+    (_match, sign: string, digits: string) => `${sign}${groupIntegerDigits(digits)}`,
+  );
+}
+
 /** Abbreviate large magnitudes for compact UI (e.g. side-panel change column). */
 export function abbreviateNumber(num: number): string {
   const absNum = Math.abs(num);

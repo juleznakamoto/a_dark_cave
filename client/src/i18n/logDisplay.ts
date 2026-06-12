@@ -19,6 +19,7 @@ import {
   tWithFallback,
 } from "@/i18n/resolveGameText";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
+import { formatThousandsInLogText } from "@/lib/utils";
 import { resolveEventMessage } from "@/i18n/eventText";
 import enEvents from "@/i18n/locales/en/events.json";
 import enLog from "@/i18n/locales/en/ui/log.json";
@@ -924,24 +925,26 @@ function resolveStartNarrativeLogMessage(entry: LogEntry): string | null {
 /** Display text for a log panel row (re-localizes system lines from keys or English fallbacks). */
 export function resolveLogPanelMessage(entry: LogEntry): string {
   const startNarrative = resolveStartNarrativeLogMessage(entry);
-  if (startNarrative) return startNarrative;
+  if (startNarrative) return formatThousandsInLogText(startNarrative);
 
   if (entry.logKey) {
-    return resolveUiCatalogLog(entry.logKey, entry.message, entry.logVars);
+    return formatThousandsInLogText(
+      resolveUiCatalogLog(entry.logKey, entry.message, entry.logVars),
+    );
   }
 
   const actionLog = resolveActionLogPanelMessage(entry);
-  if (actionLog) return actionLog;
+  if (actionLog) return formatThousandsInLogText(actionLog);
 
   if (entry.type === "system") {
     const legacy = resolveLegacySystemLog(entry.message);
-    if (legacy) return legacy;
+    if (legacy) return formatThousandsInLogText(legacy);
   }
 
   if (entry.type === "event") {
     const eventLog = resolveEventLogPanelMessage(entry);
-    if (eventLog) return eventLog;
+    if (eventLog) return formatThousandsInLogText(eventLog);
   }
 
-  return entry.message;
+  return formatThousandsInLogText(entry.message);
 }
