@@ -22,11 +22,11 @@ const FOOTER_CONTROL_BTN_SELF_FADE =
 const FOOTER_CONTROL_ICON_HOVER =
   "w-4 h-4 shrink-0 object-contain opacity-60 transition-[filter,opacity] group-hover:opacity-100 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]";
 const FOOTER_CONTROL_SVG_ICON_HOVER =
-  "w-4 h-4 text-neutral-300 opacity-60 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
+  "w-4 h-4 opacity-60 transition-opacity group-hover:opacity-100";
 const FOOTER_CONTROL_TEXT =
-  `${FOOTER_CONTROL_BTN_FADE} transition-[opacity,color] group-hover:!text-red-600`;
+  `${FOOTER_CONTROL_BTN_FADE} group-hover:!text-red-600`;
 const FOOTER_SOCIAL_LABEL =
-  `${FOOTER_CONTROL_BTN_FADE} hidden sm:inline transition-[opacity,color] group-hover:!text-red-600`;
+  `${FOOTER_CONTROL_BTN_FADE} hidden sm:inline`;
 const FOOTER_LEGAL_LINK =
   "text-[10px] text-neutral-300 opacity-40 hover:opacity-100 transition-opacity";
 
