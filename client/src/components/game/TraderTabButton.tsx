@@ -92,7 +92,7 @@ export function TraderTabButton({
             showActiveGlow
               ? cn("opacity-100", TRADER_ICON_GLOW_ACTIVE)
               : cn(
-                "opacity-80",
+                "opacity-60",
                 "group-hover:opacity-100 group-focus-visible:opacity-100",
                 TRADER_ICON_GLOW_ACTIVE_HOVER,
               ),
@@ -117,7 +117,7 @@ export function TraderTabButton({
                   ? "opacity-100 font-semibold"
                   : isPaused
                     ? tabInactiveTextClass
-                    : "opacity-80 group-hover:opacity-100 group-hover:font-semibold",
+                    : "opacity-60 group-hover:opacity-100 group-hover:font-semibold",
             )}
           >
             {t("tabs.trader", { ns: "common" })}
