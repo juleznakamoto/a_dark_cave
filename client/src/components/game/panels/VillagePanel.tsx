@@ -1436,7 +1436,11 @@ export default function VillagePanel() {
                           tooltipId={`preset-slot-${slot}`}
                           tooltip={<div className="text-xs">{tooltipText}</div>}
                           disabled={!unlocked}
-                          className="relative inline-block"
+                          className={
+                            unlocked
+                              ? "relative inline-block cursor-pointer"
+                              : "relative inline-block"
+                          }
                           onClick={() => {
                             if (unlocked) applyVillagerJobPreset(slot);
                           }}
@@ -1462,7 +1466,7 @@ export default function VillagePanel() {
                           {t("village.presetSave", { slot: activePresetSlot })}
                         </div>
                       }
-                      className="relative inline-block"
+                      className="relative inline-block cursor-pointer"
                       onClick={handlePresetSave}
                     >
                       <Button
@@ -1470,7 +1474,7 @@ export default function VillagePanel() {
                         variant="outline"
                         data-testid="preset-save"
                         button_id="preset-save"
-                        className={`h-5 w-5 p-0 pointer-events-none font-noto-symbols-2 text-[11px] leading-none${presetSaveConfirmed ? " text-green-600" : ""}`}
+                        className={`h-5 w-5 p-0 pointer-events-none text-[11px] leading-none${presetSaveConfirmed ? " text-green-500" : " font-noto-symbols-2"}`}
                         style={{ touchAction: "manipulation" }}
                       >
                         {presetSaveConfirmed ? "✓" : "🖫"}
