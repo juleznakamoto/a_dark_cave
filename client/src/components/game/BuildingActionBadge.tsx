@@ -55,7 +55,6 @@ export function BuildingActionBadge({
   const id = useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const maskId = `building-action-badge-mask-${id}`;
   const gradientId = `building-action-badge-gradient-${id}`;
-  const gooeyFilterId = `building-action-badge-gooey-${id}`;
 
   return (
     <span
@@ -97,49 +96,8 @@ export function BuildingActionBadge({
             <stop offset="55%" stopColor="#2563eb" />
             <stop offset="100%" stopColor="#1e40af" />
           </linearGradient>
-          {/*
-           * Gooey blob via SVG filter — CSS blur/contrast on mask content is ignored or
-           * renders jagged on iOS WebKit; native feGaussianBlur + feColorMatrix is reliable.
-           */}
-          <filter
-            id={gooeyFilterId}
-            x="-50%"
-            y="-50%"
-            width="200%"
-            height="200%"
-            colorInterpolationFilters="sRGB"
-          >
-            <feGaussianBlur
-              in="SourceGraphic"
-              stdDeviation="8"
-              result="blur"
-            />
-            <feColorMatrix
-              in="blur"
-              type="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 15 -6"
-            >
-              <animate
-                attributeName="values"
-                attributeType="matrix"
-                dur="1s"
-                repeatCount="indefinite"
-                calcMode="linear"
-                keyTimes="0;0.2;0.4;1"
-                values="
-                  1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 15 -6;
-                  1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 3 -1;
-                  1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 3 -1;
-                  1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 15 -6
-                "
-              />
-            </feColorMatrix>
-          </filter>
           <mask id={maskId}>
-            <g
-              className="building-action-badge__clip"
-              filter={`url(#${gooeyFilterId})`}
-            >
+            <g className="building-action-badge__clip">
               <polygon points="0,0 100,0 100,100 0,100" fill="black" />
               <polygon
                 className="building-action-badge__triangle building-action-badge__triangle--one"
