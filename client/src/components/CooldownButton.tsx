@@ -229,7 +229,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           (isCoolingDown || isInsightRevealing || isPlayTimeProgressing) &&
           "cursor-not-allowed",
           isCompassGlowing && "compass-glow",
-          variant === "outline" && gameActionOutlineButtonClassName(disabled),
+          variant === "outline" && gameActionOutlineButtonClassName(isButtonDisabled),
           className,
         )}
         data-testid={testId}
