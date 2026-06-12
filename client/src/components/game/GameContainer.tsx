@@ -57,6 +57,7 @@ import {
 import { TraderTabButton } from "@/components/game/TraderTabButton";
 import i18n from "@/i18n";
 import { useTranslation } from "react-i18next";
+import { useIOSChromeViewportShell } from "@/hooks/useIOSChromeViewportShell";
 
 export default function GameContainer() {
   const { t } = useTranslation();
@@ -882,10 +883,10 @@ export default function GameContainer() {
     timedEventTab.isActive &&
     timedEventTab.event?.eventId === "bloodMoonAttack";
 
-  /** Muted tab labels use ~80% opacity; while paused, distinguish inactive via color (consistent font weight avoids layout shift). */
+  /** Muted tab labels use ~60% opacity; while paused, distinguish inactive via color (consistent font weight avoids layout shift). */
   const tabInactiveTextClass = isPaused
     ? "opacity-100 text-muted-foreground"
-    : "opacity-80";
+    : "opacity-60";
   const tabActiveTextClass = isPaused
     ? "opacity-100 text-foreground"
     : "opacity-100";
@@ -904,6 +905,8 @@ export default function GameContainer() {
     </span>
   );
 
+  const iosChromeViewportStyle = useIOSChromeViewportShell();
+
   return (
     <ProfileMenuProvider>
       <div
@@ -911,6 +914,7 @@ export default function GameContainer() {
         style={{
           backgroundColor: isBloodMoonActive ? "hsl(0, 50%, 5%)" : undefined,
           transition: "background-color 1s ease-in-out",
+          ...iosChromeViewportStyle,
         }}
       >
         <GameHeader />
