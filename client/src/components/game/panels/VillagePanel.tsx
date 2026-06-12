@@ -42,6 +42,12 @@ import {
   areVillagerCapsEnabled,
   getVillagerCapForJob,
 } from "@/game/villagerCapUpgrades";
+import {
+  MAX_PRESET_SLOTS,
+  arePresetsVisible,
+  getPresetSlot,
+  getUnlockedPresetCount,
+} from "@/game/villagerJobPresets";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -92,6 +98,11 @@ export default function VillagePanel() {
     investmentHallState,
     investDialogOpen,
     setInvestDialogOpen,
+    villagerJobPresets,
+    activePresetSlot,
+    saveVillagerJobPreset,
+    applyVillagerJobPreset,
+    setActivePresetSlot,
   } = useGameStore();
 
   const handleInvestDialogOpenChange = useCallback(
@@ -244,6 +255,9 @@ export default function VillagePanel() {
         { id: "buildClerksHut", label: "Clerk's Hut" },
         { id: "buildScriptorium", label: "Scriptorium" },
         { id: "buildInkwardenAcademy", label: "Tomewarden Academy" },
+        { id: "buildScribesOffice", label: "Scribe's Office" },
+        { id: "buildRecordsHall", label: "Records Hall" },
+        { id: "buildGrandArchive", label: "Grand Archive" },
         { id: "buildTannery", label: "Tannery" },
         { id: "buildMasterTannery", label: "Master Tannery" },
         { id: "buildHighTannery", label: "High Tannery" },
@@ -1377,6 +1391,67 @@ export default function VillagePanel() {
                     </>
                   );
                 })()}
+                {arePresetsVisible(state) && (
+                  <div className="ml-auto flex items-center gap-1">
+                    {Array.from({ length: MAX_PRESET_SLOTS }).map((_, i) => {
+                      const slot = i + 1;
+                      const unlockedCount = getUnlockedPresetCount(state);
+                      const unlocked = i < unlockedCount;
+                      const isActive = activePresetSlot === slot;
+                      const hasPreset = !!getPresetSlot(state, i);
+                      const tooltipText = !unlocked
+                        ? t("village.presetLocked")
+                        : hasPreset
+                          ? t("village.presetApply", { slot })
+                          : t("village.presetEmpty", { slot });
+                      return (
+                        <TooltipWrapper
+                          key={`preset-slot-${slot}`}
+                          tooltipId={`preset-slot-${slot}`}
+                          tooltip={<div className="text-xs">{tooltipText}</div>}
+                          disabled={!unlocked}
+                          className="relative inline-block"
+                          onClick={() => {
+                            if (unlocked) applyVillagerJobPreset(slot);
+                          }}
+                        >
+                          <Button
+                            size="xs"
+                            variant={isActive ? "default" : "outline"}
+                            disabled={!unlocked}
+                            data-testid={`preset-slot-${slot}`}
+                            button_id={`preset-slot-${slot}`}
+                            className="h-5 w-5 p-0 text-[10px] tabular-nums pointer-events-none"
+                            style={{ touchAction: "manipulation" }}
+                          >
+                            {slot}
+                          </Button>
+                        </TooltipWrapper>
+                      );
+                    })}
+                    <TooltipWrapper
+                      tooltipId="preset-save"
+                      tooltip={
+                        <div className="text-xs">
+                          {t("village.presetSave", { slot: activePresetSlot })}
+                        </div>
+                      }
+                      className="relative inline-block"
+                      onClick={() => saveVillagerJobPreset(activePresetSlot)}
+                    >
+                      <Button
+                        size="xs"
+                        variant="outline"
+                        data-testid="preset-save"
+                        button_id="preset-save"
+                        className="h-5 w-5 p-0 pointer-events-none font-noto-symbols-2 text-[11px] leading-none"
+                        style={{ touchAction: "manipulation" }}
+                      >
+                        🖫
+                      </Button>
+                    </TooltipWrapper>
+                  </div>
+                )}
               </div>
               <div className="space-y-1 leading-tight">
                 {visiblePopulationJobs.map((job) =>

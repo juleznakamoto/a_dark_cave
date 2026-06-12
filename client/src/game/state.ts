@@ -99,6 +99,13 @@ import {
   type VillagerCapGroupId,
 } from "@/game/villagerCapUpgrades";
 import {
+  MAX_PRESET_SLOTS,
+  applyPresetAssignments,
+  getPresetSlot,
+  isPresetSlotUnlocked,
+  snapshotAssignments,
+} from "@/game/villagerJobPresets";
+import {
   canEnchantWeapon,
   getNextEnchantCost,
   getWeaponEnchantLevel,
@@ -387,6 +394,12 @@ interface GameStore extends GameState {
   assignVillager: (job: keyof GameState["villagers"]) => void;
   unassignVillager: (job: keyof GameState["villagers"]) => void;
   upgradeVillagerCap: (groupId: string) => boolean;
+  /** Set the active preset slot (1-based) that the save button writes to. */
+  setActivePresetSlot: (slot: number) => void;
+  /** Save the current villager job assignments into a preset slot (1-based). */
+  saveVillagerJobPreset: (slot: number) => void;
+  /** Apply a saved preset (1-based slot); selects the slot and redistributes villagers if saved. */
+  applyVillagerJobPreset: (slot: number) => void;
   enchantWeapon: (weaponId: string) => boolean;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
   setCombatDialog: (isOpen: boolean, data?: any) => void;
@@ -3292,6 +3305,45 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
       return updates;
     });
+  },
+
+  setActivePresetSlot: (slot: number) => {
+    if (slot < 1 || slot > MAX_PRESET_SLOTS) return;
+    set({ activePresetSlot: slot });
+  },
+
+  saveVillagerJobPreset: (slot: number) => {
+    const state = get();
+    const slotIndex = slot - 1;
+    if (!isPresetSlotUnlocked(state, slotIndex)) return;
+
+    const presets = [...(state.villagerJobPresets ?? [])];
+    while (presets.length < MAX_PRESET_SLOTS) {
+      presets.push(null);
+    }
+    presets[slotIndex] = {
+      assignments: snapshotAssignments(state.villagers),
+      savedAt: Date.now(),
+    };
+
+    set({ villagerJobPresets: presets, activePresetSlot: slot });
+  },
+
+  applyVillagerJobPreset: (slot: number) => {
+    const state = get();
+    const slotIndex = slot - 1;
+    if (!isPresetSlotUnlocked(state, slotIndex)) return;
+
+    set({ activePresetSlot: slot });
+
+    const preset = getPresetSlot(state, slotIndex);
+    if (!preset) return;
+
+    const updates = applyPresetAssignments(state, preset.assignments);
+    if (Object.keys(updates).length > 0) {
+      set(updates);
+      StateManager.schedulePopulationUpdate(get);
+    }
   },
 
   upgradeVillagerCap: (groupId: string) => {

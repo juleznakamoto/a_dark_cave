@@ -279,6 +279,9 @@ export const gameStateSchema = z.object({
       clerksHut: z.number().default(0),
       scriptorium: z.number().default(0),
       inkwardenAcademy: z.number().default(0),
+      scribesOffice: z.number().default(0),
+      recordsHall: z.number().default(0),
+      grandArchive: z.number().default(0),
       tradePost: z.number().default(0),
       grandBazaar: z.number().default(0),
       merchantsGuild: z.number().default(0),
@@ -346,6 +349,20 @@ export const gameStateSchema = z.object({
     })
     .default({}),
   villagerCapUpgrades: z.record(z.string(), z.number()).default({}),
+  // Villager job presets. Each slot stores job-count assignments (excludes `free`);
+  // null means the slot has not been saved to yet. Up to 5 slots (1-3 building-unlocked, 4-5 reserved).
+  villagerJobPresets: z
+    .array(
+      z
+        .object({
+          assignments: z.record(z.string(), z.number().min(0)).default({}),
+          savedAt: z.number().optional(),
+        })
+        .nullable(),
+    )
+    .default([]),
+  // Currently selected preset slot (1-based) that the save button writes to.
+  activePresetSlot: z.number().default(1),
   // Weapon enchantment levels keyed by weapon id (Tomewarden Academy feature).
   weaponEnchantments: z.record(z.string(), z.number()).default({}),
   expeditionVillagers: z.record(z.string(), z.number()).default({}),

@@ -76,7 +76,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 |-----------|------|-----------|
 | entry | React root → router | `main.tsx`, `App.tsx`, `index.html`, `index.css` |
 | `pages/` | Route-level components (lazy-loaded) | `start-screen-page.tsx`, `game.tsx`, `end-screen.tsx`, `reset-password.tsx`, `withdrawal.tsx`, `not-found.tsx`, `admin/dashboard.tsx` |
-| `game/` | **Game engine** (see below) | `state.ts`, `loop.ts`, `playTimeAutoPrompts.ts` (play-time rewards/feedback auto-open; one blocking modal per tick), `actions.ts`, `save.ts`, `saveCodec.ts`, `stateHelpers.ts`, `villagerCapUpgrades.ts`, `weaponEnchantments.ts`, `auth.ts`, `shopPurchases.ts`, `socialTasksGold.ts`, `authNotificationAuto.ts`, `playlightExitIntent.ts`, `tabUnlockBlink.ts`, `achievementTabPulse.ts`, `constants.ts`, `rules/` |
+| `game/` | **Game engine** (see below) | `state.ts`, `loop.ts`, `playTimeAutoPrompts.ts` (play-time rewards/feedback auto-open; one blocking modal per tick), `actions.ts`, `save.ts`, `saveCodec.ts`, `stateHelpers.ts`, `villagerCapUpgrades.ts`, `villagerJobPresets.ts`, `weaponEnchantments.ts`, `auth.ts`, `shopPurchases.ts`, `socialTasksGold.ts`, `authNotificationAuto.ts`, `playlightExitIntent.ts`, `tabUnlockBlink.ts`, `achievementTabPulse.ts`, `constants.ts`, `rules/` |
 | `components/game/` | Game-specific UI | `GameContainer.tsx`, `GameHeader.tsx` (title + profile/playlight/leaderboard shortcuts; footer-matched chrome), `gameChrome.ts` (header/footer inset constant), `TraderTabButton.tsx` (shop tab ◬ + lime hover particles; periodic 15m hover hint), `GameTabs.tsx`, `GameButton.tsx`, `panels/`, `*Dialog.tsx`, `ShareDialog.tsx` (1080×1350 social share image: title + resource column + 2×2 achievement rings + overall % via `html-to-image`; header Share button in `ProfileMenu`), `EndScreen.tsx`, `StatEffectsTooltip.tsx` (per-stat luck/strength/knowledge/madness effect breakdown in side-panel tooltips), `StripePoweredBy.tsx` (checkout Stripe + payment-methods footer), `paymentMethodLogos.tsx` (Visa/MC/PayPal/Apple Pay/Google Pay SVG marks) |
 | `components/ui/` | shadcn/ui design system + game visuals | `button.tsx`, `card.tsx`, `dialog`, `toast.tsx`, `mist-background.tsx`, `cloud-shader.tsx`, `limelight-nav.tsx` |
 | `hooks/` | React hooks | `use-toast.ts`, `useCooldown.ts`, `use-mobile.tsx`, `useIOSChromeViewportShell.ts` (CriOS: pin `GameContainer` shell to `visualViewport`) |
@@ -138,6 +138,11 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
   cap/cost tables, `flags.villagerCapsEnabled` new-games gate + `import.meta.env.DEV` until shipped); enforced in
   `assignVillagerToJob`, `upgradeVillagerCap` in `state.ts`, UI in `VillagePanel` / `SidePanelSection` /
   `itemTooltips.tsx`.
+- **`villagerJobPresets.ts`** — villager job presets unlocked by the Scribe's Office → Records Hall → Grand Archive
+  building chain (one slot each, 5 shown / 4-5 reserved). Snapshot/apply helpers (proportional shrink, surplus →
+  free, cap-clamped); persisted in `villagerJobPresets` / `activePresetSlot` (`shared/schema.ts`). Store methods
+  `saveVillagerJobPreset` / `applyVillagerJobPreset` / `setActivePresetSlot` (`state.ts`), UI row in the
+  `VillagePanel` "Produce" header.
 - **`weaponEnchantments.ts`** — weapon enchantment via Insight, unlocked by Tomewarden Academy
   (`buildings.inkwardenAcademy`). Tiered bow/sword chains: only `blacksteel_bow` / `blacksteel_sword` are
   enchantable; other weapons enchant once (+`1 + floor(stat/10)` Strength/Knowledge each, cost `(added) × 250`);

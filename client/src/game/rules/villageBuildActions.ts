@@ -1790,6 +1790,99 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 0,
   },
 
+  buildScribesOffice: {
+    id: "buildScribesOffice",
+    label: "Scribe's Office",
+    description:
+      "A quiet room where scribes keep careful tallies of every hand at work, so no labor is forgotten",
+    tooltipEffects: [
+      bt("unlocksVillagerPreset", "Unlocks 1 villager job preset"),
+    ],
+    building: true,
+    show_when: {
+      1: {
+        "story.seen.maxPopulationReached": 50,
+        "buildings.scribesOffice": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 5000,
+        "resources.stone": 5000,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.scribesOffice": 1,
+      },
+    },
+    executionTime: 30,
+    cooldown: 0,
+  },
+
+  buildRecordsHall: {
+    id: "buildRecordsHall",
+    label: "Records Hall",
+    description:
+      "Hall full of shelves of weathered ledgers and rosters, the village's memory set down in ink and kept in order",
+    tooltipEffects: [
+      bt("unlocksVillagerPreset", "Unlocks 1 villager job preset"),
+    ],
+    building: true,
+    show_when: {
+      1: {
+        "story.seen.maxPopulationReached": 65,
+        "buildings.scribesOffice": 1,
+        "buildings.recordsHall": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 10000,
+        "resources.stone": 10000,
+        "resources.iron": 5000,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.recordsHall": 1,
+      },
+    },
+    executionTime: 60,
+    cooldown: 0,
+  },
+
+  buildGrandArchive: {
+    id: "buildGrandArchive",
+    label: "Grand Archive",
+    description:
+      "A vast vault of scrolls preserving all the village has been, every name and toil etched",
+    tooltipEffects: [
+      bt("unlocksVillagerPreset", "Unlocks 1 villager job preset"),
+    ],
+    building: true,
+    show_when: {
+      1: {
+        "story.seen.maxPopulationReached": 80,
+        "buildings.recordsHall": 1,
+        "buildings.grandArchive": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 15000,
+        "resources.steel": 10000,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.grandArchive": 1,
+      },
+    },
+    executionTime: 90,
+    cooldown: 0,
+  },
+
   buildTannery: {
     id: "buildTannery",
     label: "Tannery",

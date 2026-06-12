@@ -116,6 +116,10 @@
     "description": "Warm fur shelter used by the wandering tribe",
     "label": "Fur Tent"
   },
+  "buildGrandArchive": {
+    "description": "A vast vault of scrolls preserving all the village has been, every name and toil etched",
+    "label": "Grand Archive"
+  },
   "buildGrandBazaar": {
     "description": "Sprawling marketplace attracting more merchants",
     "label": "Grand Bazaar"
@@ -192,9 +196,17 @@
     "description": "Stone quarry increasing gatherer stone output",
     "label": "Quarry"
   },
+  "buildRecordsHall": {
+    "description": "Hall full of shelves of weathered ledgers and rosters, the village's memory set down in ink and kept in order",
+    "label": "Records Hall"
+  },
   "buildSanctum": {
     "description": "Divine sanctum providing the greatest protection against the darkness",
     "label": "Sanctum"
+  },
+  "buildScribesOffice": {
+    "description": "A quiet room where scribes keep careful tallies of every hand at work, so no labor is forgotten",
+    "label": "Scribe's Office"
   },
   "buildScriptorium": {
     "description": "Hub of wisdom where scholars gather Knowledge",

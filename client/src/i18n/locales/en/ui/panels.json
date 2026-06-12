@@ -21,6 +21,10 @@
   "village": {
     "sectionBuild": "Build",
     "sectionProduce": "Produce",
+    "presetApply": "Apply preset {{slot}}",
+    "presetEmpty": "Preset {{slot}} is empty — select it, then save your current jobs",
+    "presetLocked": "Locked — build the Scribe's Office, Records Hall, or Grand Archive to unlock",
+    "presetSave": "Save current jobs to preset {{slot}}",
     "cycle": "Cycle",
     "cycleDescription": "Each cycle your villagers produce resources and there is a chance of new villagers arriving.",
     "nextCycleIn": "Next cycle in {{seconds}} seconds",
