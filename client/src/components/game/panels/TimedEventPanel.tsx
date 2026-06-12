@@ -756,7 +756,7 @@ export default function TimedEventPanel() {
                 const gold = (s.resources?.gold ?? 0) + (practice ? 0 : wager);
                 const logEntry = {
                   id: `gambler-win-${Date.now()}`,
-                  message: `You won ${wager} gold from the obsessed gambler.`,
+                  message: `You won ${wager} Gold from the obsessed gambler.`,
                   logKey: "gambler.win",
                   logVars: { amount: wager },
                   timestamp: Date.now(),
@@ -813,7 +813,7 @@ export default function TimedEventPanel() {
                         ...s.log,
                         {
                           id: `gambler-lose-${Date.now()}`,
-                          message: `You lost ${wager} gold to the obsessed gambler.`,
+                          message: `You lost ${wager} Gold to the obsessed gambler.`,
                           logKey: "gambler.lose",
                           logVars: { amount: wager },
                           timestamp: Date.now(),
@@ -850,13 +850,13 @@ export default function TimedEventPanel() {
                       : "gambler.practiceLoseComplete";
                 const practiceFallbacks: Record<string, string> = {
                   "gambler.practiceWinRemaining":
-                    "You won the practice round (no gold at stake). {{remaining}} of {{total}} practice games remaining.",
+                    "You won the practice round (no Gold at stake). {{remaining}} of {{total}} practice games remaining.",
                   "gambler.practiceLoseRemaining":
-                    "You lost the practice round (no gold at stake). {{remaining}} of {{total}} practice games remaining.",
+                    "You lost the practice round (no Gold at stake). {{remaining}} of {{total}} practice games remaining.",
                   "gambler.practiceWinComplete":
-                    "You won the practice round (no gold at stake). Practice complete — you may place a gold wager.",
+                    "You won the practice round (no Gold at stake). Practice complete — you may place a Gold wager.",
                   "gambler.practiceLoseComplete":
-                    "You lost the practice round (no gold at stake). Practice complete — you may place a gold wager.",
+                    "You lost the practice round (no Gold at stake). Practice complete — you may place a Gold wager.",
                 };
                 const logVars = {
                   remaining: next,

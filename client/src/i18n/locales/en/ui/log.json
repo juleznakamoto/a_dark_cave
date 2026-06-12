@@ -88,8 +88,8 @@
       "moonBracelet": "Among the sacrifice offerings, you discover a white stone bracelet."
     },
     "gambler": {
-      "win": "You won {{amount}} gold from the obsessed gambler.",
-      "lose": "You lost {{amount}} gold to the obsessed gambler.",
+      "win": "You won {{amount}} Gold from the obsessed gambler.",
+      "lose": "You lost {{amount}} Gold to the obsessed gambler.",
       "forfeit": "The obsessed gambler took your silence as forfeit."
     },
     "buttonUpgrade": {

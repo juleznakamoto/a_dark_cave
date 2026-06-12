@@ -115,13 +115,13 @@
     "noRoll": "No Roll",
     "youWin": "You win",
     "youLose": "You lose",
-    "practiceOutcome": "Practice round. No gold won or lost.",
+    "practiceOutcome": "Practice round. No Gold won or lost.",
     "goldWon": "+{{amount}} Gold",
     "goldLost": "-{{amount}} Gold",
-    "practiceWinRemaining": "You won the practice round (no gold at stake). {{remaining}} of {{total}} practice games remaining.",
-    "practiceLoseRemaining": "You lost the practice round (no gold at stake). {{remaining}} of {{total}} practice games remaining.",
-    "practiceWinComplete": "You won the practice round (no gold at stake). Practice complete — you may place a gold wager.",
-    "practiceLoseComplete": "You lost the practice round (no gold at stake). Practice complete — you may place a gold wager."
+    "practiceWinRemaining": "You won the practice round (no Gold at stake). {{remaining}} of {{total}} practice games remaining.",
+    "practiceLoseRemaining": "You lost the practice round (no Gold at stake). {{remaining}} of {{total}} practice games remaining.",
+    "practiceWinComplete": "You won the practice round (no Gold at stake). Practice complete — you may place a Gold wager.",
+    "practiceLoseComplete": "You lost the practice round (no Gold at stake). Practice complete — you may place a Gold wager."
   },
   "fullGame": {
     "titleTrial": "The Journey Continues",

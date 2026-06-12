@@ -362,7 +362,21 @@ const LEGACY_SYSTEM_LOG_MATCHERS: PatternMatcher[] = [
     }),
   },
   {
+    pattern: /^You won (\d+) Gold from the obsessed gambler\.$/,
+    resolve: ([, amount]) => ({
+      logKey: "gambler.win",
+      vars: { amount: Number(amount) },
+    }),
+  },
+  {
     pattern: /^You lost (\d+) gold to the obsessed gambler\.$/,
+    resolve: ([, amount]) => ({
+      logKey: "gambler.lose",
+      vars: { amount: Number(amount) },
+    }),
+  },
+  {
+    pattern: /^You lost (\d+) Gold to the obsessed gambler\.$/,
     resolve: ([, amount]) => ({
       logKey: "gambler.lose",
       vars: { amount: Number(amount) },

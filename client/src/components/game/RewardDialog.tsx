@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { GameState } from "@shared/schema";
 import { formatNumber, capitalizeWords } from "@/lib/utils";
 import { clothingEffects } from "@/game/rules/effects";
@@ -15,9 +15,26 @@ import OutcomeDialog, {
 
 /** Same center symbol + shockwave as Profile → “Rewards tasks” shortcut (exclusive promo track). */
 function SocialPromoTasksOutcomeIcon() {
+  const ringRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const ring = ringRef.current;
+    if (!ring) return;
+    ring.classList.add("exclusive-promo-shockwave-ring--ping-once");
+  }, []);
+
   return (
     <span className="relative flex h-full w-full items-center justify-center overflow-visible">
-      <span className="exclusive-promo-shockwave-ring" aria-hidden />
+      <span
+        ref={ringRef}
+        className="exclusive-promo-shockwave-ring"
+        aria-hidden
+        onAnimationEnd={(e) => {
+          e.currentTarget.classList.remove(
+            "exclusive-promo-shockwave-ring--ping-once",
+          );
+        }}
+      />
       <span
         className="relative z-[1] text-[26px] leading-none select-none text-lime-500"
         aria-hidden

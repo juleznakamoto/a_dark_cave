@@ -4,7 +4,6 @@ import React, {
   useState,
   useEffect,
   useRef,
-  useCallback,
   type ReactNode,
 } from "react";
 import { Button } from "@/components/ui/button";
@@ -42,6 +41,24 @@ import {
 import { isRewardsTasksShortcutVisible } from "@/game/socialPromoExclusiveReward";
 import PlaylightDiscoveryButton from "./PlaylightDiscoveryButton";
 import { useTranslation } from "react-i18next";
+
+const REWARDS_TASKS_ICON_PING_START_MS = 20 * 60 * 1000;
+const REWARDS_TASKS_ICON_PING_INTERVAL_MS = 5 * 60 * 1000;
+
+function rewardsTasksIconPingIndex(playTimeMs: number): number | null {
+  if (playTimeMs < REWARDS_TASKS_ICON_PING_START_MS) return null;
+  return Math.floor(
+    (playTimeMs - REWARDS_TASKS_ICON_PING_START_MS) /
+      REWARDS_TASKS_ICON_PING_INTERVAL_MS,
+  );
+}
+
+function pingRewardsTasksRing(ring: HTMLSpanElement | null): void {
+  if (!ring) return;
+  ring.classList.remove("exclusive-promo-shockwave-ring--ping-once");
+  void ring.offsetWidth;
+  ring.classList.add("exclusive-promo-shockwave-ring--ping-once");
+}
 
 const HEADER_ICON_BTN =
   "group shrink-0 p-0 w-7 h-7 flex items-center justify-center";
@@ -427,19 +444,12 @@ function ProfileMenuDialogs() {
   );
 }
 
-function triggerExclusivePromoHoverPulse(ring: HTMLSpanElement | null) {
-  if (!ring) return;
-  ring.classList.remove("exclusive-promo-shockwave-ring--hover-once");
-  void ring.offsetWidth;
-  ring.classList.add("exclusive-promo-shockwave-ring--hover-once");
-}
-
 export function GameHeaderControls() {
-  const rewardsTasksRingRef = useRef<HTMLSpanElement>(null);
-  const triggerRewardsTasksHoverPulse = useCallback(() => {
-    triggerExclusivePromoHoverPulse(rewardsTasksRingRef.current);
-  }, []);
   const setShareDialogOpen = useGameStore((s) => s.setShareDialogOpen);
+  const playTime = useGameStore((s) => s.playTime);
+  const rewardsTasksRingRef = useRef<HTMLSpanElement>(null);
+  const lastPingIndexRef = useRef<number | null>(null);
+  const pingInitRef = useRef(false);
 
   const {
     showRewardsTasksShortcut,
@@ -469,6 +479,28 @@ export function GameHeaderControls() {
     setDeleteAccountDialogOpen,
   } = useProfileMenuContext();
 
+  useEffect(() => {
+    if (!showRewardsTasksShortcut) {
+      pingInitRef.current = false;
+      lastPingIndexRef.current = null;
+      return;
+    }
+
+    const currentIndex = rewardsTasksIconPingIndex(playTime);
+
+    if (!pingInitRef.current) {
+      pingInitRef.current = true;
+      lastPingIndexRef.current = currentIndex ?? -1;
+      return;
+    }
+
+    if (currentIndex === null) return;
+    if (currentIndex > (lastPingIndexRef.current ?? -1)) {
+      lastPingIndexRef.current = currentIndex;
+      pingRewardsTasksRing(rewardsTasksRingRef.current);
+    }
+  }, [showRewardsTasksShortcut, playTime]);
+
   return (
     <div className="flex items-center gap-0.5 shrink-0">
       {showRewardsTasksShortcut && (
@@ -480,7 +512,6 @@ export function GameHeaderControls() {
             type="button"
             aria-label={t("profile.rewardsTasks")}
             onClick={() => setSocialPromptDialogOpen(true)}
-            onMouseEnter={triggerRewardsTasksHoverPulse}
             className={`${HEADER_ICON_BTN} relative overflow-visible hover:bg-muted/30 transition-colors`}
           >
             <span
@@ -489,7 +520,7 @@ export function GameHeaderControls() {
               aria-hidden
               onAnimationEnd={(e) => {
                 e.currentTarget.classList.remove(
-                  "exclusive-promo-shockwave-ring--hover-once",
+                  "exclusive-promo-shockwave-ring--ping-once",
                 );
               }}
             />
