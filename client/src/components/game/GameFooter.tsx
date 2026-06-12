@@ -10,7 +10,6 @@ import {
 import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
 import LanguageSelector from "./LanguageSelector";
 import { useState, useEffect } from "react";
-import { hasAnyShopPurchase } from "@/game/stateHelpers";
 import { useTranslation } from "react-i18next";
 import { tWithFallback } from "@/i18n/resolveGameText";
 
@@ -38,14 +37,10 @@ export default function GameFooter() {
     sfxMuted,
     setMusicMuted,
     setSfxMuted,
-    cruelMode,
     idleModeDialog,
-    playTime,
     setFullGamePurchaseDialogOpen,
     fullGamePurchaseDialogOpen,
     BTP,
-    hasMadeNonFreePurchase,
-    activatedPurchases,
   } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const { t } = useTranslation("ui");
@@ -72,13 +67,6 @@ export default function GameFooter() {
     setSfxMuted(next);
     audioManager.sfxMute(next);
   };
-
-  // Check if gameplay time is less than 30 minutes
-  const isEarlyGameplay = playTime < 30 * 60 * 1000; // 30 minutes in milliseconds
-  const traderFooterFullOpacity =
-    cruelMode ||
-    hasAnyShopPurchase({ hasMadeNonFreePurchase, activatedPurchases }) ||
-    !isEarlyGameplay;
 
   const socialLinkClass = `group ${FOOTER_CONTROL_BTN} flex items-center justify-center gap-1`;
   const socialIconClass = `${FOOTER_CONTROL_SVG_ICON_HOVER}${isPaused ? " !opacity-100" : ""}`;
@@ -185,7 +173,7 @@ export default function GameFooter() {
                 size="xs"
                 onClick={() => setShopDialogOpen(true)}
                 aria-label={t("footer.openShop")}
-                className={`${FOOTER_CONTROL_BTN} ${traderFooterFullOpacity ? "opacity-100" : "opacity-60"} hover:!opacity-100`}
+                className={`${FOOTER_CONTROL_BTN} ${FOOTER_CONTROL_BTN_FADE}`}
               >
                 {t("footer.trader")}
               </Button>
@@ -199,12 +187,17 @@ export default function GameFooter() {
                 size="xs"
                 onClick={handleOfferTribute}
                 aria-label={t("footer.supportGame")}
-                className={`${FOOTER_CONTROL_BTN} ${isEarlyGameplay ? "opacity-60" : "opacity-100"} hover:!opacity-100 flex items-center gap-1`}
+                className={`${FOOTER_CONTROL_BTN} ${FOOTER_CONTROL_BTN_FADE} flex items-center gap-1`}
               >
-                <span className={FOOTER_CONTROL_TEXT} aria-hidden>
+                <span
+                  className="transition-[color] group-hover:!text-red-600"
+                  aria-hidden
+                >
                   ❤︎⁠
                 </span>
-                <span className={FOOTER_CONTROL_TEXT}>{t("footer.donate")}</span>
+                <span className="transition-[color] group-hover:!text-red-600">
+                  {t("footer.donate")}
+                </span>
               </Button>
             </HoverCalloutTooltip>
           </div>
