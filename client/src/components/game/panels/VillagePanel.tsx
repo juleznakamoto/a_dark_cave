@@ -124,6 +124,32 @@ export default function VillagePanel() {
   const [bubbles, setBubbles] = useState<BubbleWithParticles[]>([]);
   const bubbleIdCounter = useRef(0);
 
+  const [presetSaveConfirmed, setPresetSaveConfirmed] = useState(false);
+  const presetSaveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  );
+
+  const handlePresetSave = useCallback(() => {
+    saveVillagerJobPreset(activePresetSlot);
+    setPresetSaveConfirmed(true);
+    if (presetSaveTimeoutRef.current) {
+      clearTimeout(presetSaveTimeoutRef.current);
+    }
+    presetSaveTimeoutRef.current = setTimeout(() => {
+      setPresetSaveConfirmed(false);
+      presetSaveTimeoutRef.current = null;
+    }, 2000);
+  }, [activePresetSlot, saveVillagerJobPreset]);
+
+  useEffect(
+    () => () => {
+      if (presetSaveTimeoutRef.current) {
+        clearTimeout(presetSaveTimeoutRef.current);
+      }
+    },
+    [],
+  );
+
   const handleAnimationTrigger = (x: number, y: number) => {
     // Use a counter to ensure unique IDs even for rapid clicks
     const id = `bubble-${bubbleIdCounter.current++}-${Date.now()}`;
@@ -1437,17 +1463,17 @@ export default function VillagePanel() {
                         </div>
                       }
                       className="relative inline-block"
-                      onClick={() => saveVillagerJobPreset(activePresetSlot)}
+                      onClick={handlePresetSave}
                     >
                       <Button
                         size="xs"
                         variant="outline"
                         data-testid="preset-save"
                         button_id="preset-save"
-                        className="h-5 w-5 p-0 pointer-events-none font-noto-symbols-2 text-[11px] leading-none"
+                        className={`h-5 w-5 p-0 pointer-events-none font-noto-symbols-2 text-[11px] leading-none${presetSaveConfirmed ? " text-green-600" : ""}`}
                         style={{ touchAction: "manipulation" }}
                       >
-                        🖫
+                        {presetSaveConfirmed ? "✓" : "🖫"}
                       </Button>
                     </TooltipWrapper>
                   </div>
