@@ -230,9 +230,9 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         size={size}
         className={cn(
           // appearance-none resets native Android Chromium button chrome that otherwise leaks
-          // through and makes the dark outline buttons look flat/grey. cursor-default keeps the
-          // normal arrow pointer in every state (no hand, no not-allowed/"forbidden" cursor).
-          "relative overflow-hidden transition-all duration-200 select-none appearance-none [-webkit-appearance:none] cursor-default",
+          // through and makes the dark outline buttons look flat/grey.
+          "relative overflow-hidden transition-all duration-200 select-none appearance-none [-webkit-appearance:none]",
+          !isButtonDisabled && "cursor-pointer",
           isButtonDisabled && "pointer-events-none",
           isCompassGlowing && "compass-glow",
           variant === "outline" && gameActionOutlineButtonClassName(isButtonDisabled),
