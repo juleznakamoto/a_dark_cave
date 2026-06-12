@@ -96,4 +96,27 @@ describe("Job assignment - touch/ghost-click fix", () => {
     handleTouchStart(mockEvent);
     expect(mockEvent.preventDefault).toHaveBeenCalled();
   });
+
+  it("stopHold ignores synthetic mouse events while touch hold is active", () => {
+    // Mirrors VillagePanel hold-to-repeat: touch sets touchActiveRef; mouse stop must no-op.
+    let touchActive = false;
+    let holdCleared = false;
+
+    const stopHold = (isTouch: boolean) => {
+      if (!isTouch && touchActive) return;
+      holdCleared = true;
+      if (isTouch) {
+        setTimeout(() => {
+          touchActive = false;
+        }, 100);
+      }
+    };
+
+    touchActive = true;
+    stopHold(false);
+    expect(holdCleared).toBe(false);
+
+    stopHold(true);
+    expect(holdCleared).toBe(true);
+  });
 });

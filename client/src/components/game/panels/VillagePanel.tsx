@@ -743,6 +743,12 @@ export default function VillagePanel() {
   };
 
   const stopHold = (isTouch: boolean = false) => {
+    // Ignore synthetic mouse up/leave that browsers fire after touch — they would
+    // cancel the hold before the repeat interval starts.
+    if (!isTouch && touchActiveRef.current) {
+      return;
+    }
+
     if (holdRef.current.timeout) {
       clearTimeout(holdRef.current.timeout);
     }

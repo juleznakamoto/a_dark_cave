@@ -544,6 +544,15 @@ export default function GameContainer() {
       });
     }
 
+    if (flags.forestUnlocked) {
+      tabs.push({
+        id: "forest",
+        icon: <Trees />,
+        label: "The Forest",
+        onClick: () => setActiveTab("forest"),
+      });
+    }
+
     // Add Estate tab if unlocked
     if (estateUnlocked) {
       tabs.push({
@@ -551,15 +560,6 @@ export default function GameContainer() {
         icon: <Castle />,
         label: "The Estate",
         onClick: () => setActiveTab("estate"),
-      });
-    }
-
-    if (flags.forestUnlocked) {
-      tabs.push({
-        id: "forest",
-        icon: <Trees />,
-        label: "The Forest",
-        onClick: () => setActiveTab("forest"),
       });
     }
 
@@ -1086,6 +1086,26 @@ export default function GameContainer() {
                         </button>
                       )}
 
+                      {flags.forestUnlocked && (
+                        <button
+                          className={`${tabButtonClass} ${animatingTabs.has("forest")
+                            ? fadePhaseTabs.has("forest")
+                              ? "tab-fade-in"
+                              : "tab-blink-new"
+                            : activeTab === "forest"
+                              ? tabActiveTextClass
+                              : tabInactiveTextClass
+                            }`}
+                          onClick={() => {
+                            clearTabAnimation("forest");
+                            setActiveTab("forest");
+                          }}
+                          data-testid="tab-forest"
+                        >
+                          {t("tabs.forest", { ns: "common" })}
+                        </button>
+                      )}
+
                       {/* Estate Tab Button */}
                       {(estateUnlocked || buildings.darkEstate >= 1) && (
                         <button
@@ -1104,26 +1124,6 @@ export default function GameContainer() {
                           data-testid="tab-estate"
                         >
                           {t("tabs.estate", { ns: "common" })}
-                        </button>
-                      )}
-
-                      {flags.forestUnlocked && (
-                        <button
-                          className={`${tabButtonClass} ${animatingTabs.has("forest")
-                            ? fadePhaseTabs.has("forest")
-                              ? "tab-fade-in"
-                              : "tab-blink-new"
-                            : activeTab === "forest"
-                              ? tabActiveTextClass
-                              : tabInactiveTextClass
-                            }`}
-                          onClick={() => {
-                            clearTabAnimation("forest");
-                            setActiveTab("forest");
-                          }}
-                          data-testid="tab-forest"
-                        >
-                          {t("tabs.forest", { ns: "common" })}
                         </button>
                       )}
 
