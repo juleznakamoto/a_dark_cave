@@ -536,19 +536,30 @@ export default function ShareDialog() {
               void handleCopyInviteLink();
             }}
           >
-            <Button variant="outline" size="sm" disabled={busy}>
+            <Button
+              variant="outline"
+              size="xs"
+              className="shrink-0 font-medium px-3"
+              disabled={busy}
+            >
               {t("invite.button")}
             </Button>
           </TooltipWrapper>
           <Button
             variant="outline"
-            size="sm"
+            size="xs"
+            className="shrink-0 font-medium px-3"
             onClick={handleDownload}
             disabled={busy}
           >
             {t("share.download", { defaultValue: "Download" })}
           </Button>
-          <Button size="sm" onClick={handleShare} disabled={busy}>
+          <Button
+            size="xs"
+            className="shrink-0 font-medium px-3"
+            onClick={handleShare}
+            disabled={busy}
+          >
             {busy
               ? t("share.generating", { defaultValue: "Generating…" })
               : t("share.share", { defaultValue: "Share" })}
