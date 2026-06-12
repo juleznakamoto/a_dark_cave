@@ -17,6 +17,16 @@ export const PRESET_UNLOCK_BUILDINGS: (keyof GameState["buildings"])[] = [
   "grandArchive",
 ];
 
+/** Build action id for each archive building that unlocks a preset slot. */
+export const PRESET_UNLOCK_BUILDING_ACTION_IDS: Record<
+  (typeof PRESET_UNLOCK_BUILDINGS)[number],
+  string
+> = {
+  scribesOffice: "buildScribesOffice",
+  recordsHall: "buildRecordsHall",
+  grandArchive: "buildGrandArchive",
+};
+
 type PresetSlot = NonNullable<GameState["villagerJobPresets"][number]>;
 type PresetAssignments = PresetSlot["assignments"];
 type VillagerJobKey = keyof GameState["villagers"];
@@ -47,6 +57,22 @@ export function isPresetSlotUnlocked(
   slotIndex: number,
 ): boolean {
   return slotIndex >= 0 && slotIndex < getUnlockedPresetCount(state);
+}
+
+/** Building key required to unlock a 0-based slot (slots 0-2 only). */
+export function getPresetSlotUnlockBuildingKey(
+  slotIndex: number,
+): (typeof PRESET_UNLOCK_BUILDINGS)[number] | null {
+  if (slotIndex < 0 || slotIndex >= MAX_BUILDING_PRESET_SLOTS) {
+    return null;
+  }
+  return PRESET_UNLOCK_BUILDINGS[slotIndex];
+}
+
+/** Build action id for the building that unlocks a 0-based slot, or null for purchase slots. */
+export function getPresetSlotUnlockActionId(slotIndex: number): string | null {
+  const buildingKey = getPresetSlotUnlockBuildingKey(slotIndex);
+  return buildingKey ? PRESET_UNLOCK_BUILDING_ACTION_IDS[buildingKey] : null;
 }
 
 /** Saved preset for a 0-based slot index, or null when empty/out of range. */

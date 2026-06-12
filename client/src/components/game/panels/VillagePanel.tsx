@@ -42,10 +42,12 @@ import {
   areVillagerCapsEnabled,
   getVillagerCapForJob,
 } from "@/game/villagerCapUpgrades";
+import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import {
   MAX_PRESET_SLOTS,
   arePresetsVisible,
   getPresetSlot,
+  getPresetSlotUnlockActionId,
   getUnlockedPresetCount,
 } from "@/game/villagerJobPresets";
 import { CircularProgress } from "@/components/ui/circular-progress";
@@ -1425,8 +1427,17 @@ export default function VillagePanel() {
                       const unlocked = i < unlockedCount;
                       const isActive = activePresetSlot === slot;
                       const hasPreset = !!getPresetSlot(state, i);
+                      const unlockActionId = getPresetSlotUnlockActionId(i);
                       const tooltipText = !unlocked
-                        ? t("village.presetLocked")
+                        ? unlockActionId
+                          ? t("village.presetLockedBuilding", {
+                              building: resolveActionLabel(
+                                unlockActionId,
+                                villageBuildActions[unlockActionId]?.label ??
+                                  unlockActionId,
+                              ),
+                            })
+                          : t("village.presetLocked")
                         : hasPreset
                           ? t("village.presetApply", { slot })
                           : t("village.presetEmpty", { slot });

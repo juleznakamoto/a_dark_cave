@@ -5,6 +5,8 @@ import { getVillagersInVillage } from "@/game/population";
 import {
   applyPresetAssignments,
   arePresetsVisible,
+  getPresetSlotUnlockActionId,
+  getPresetSlotUnlockBuildingKey,
   getUnlockedPresetCount,
   snapshotAssignments,
 } from "@/game/villagerJobPresets";
@@ -49,6 +51,21 @@ describe("villagerJobPresets - unlock count", () => {
     expect(
       arePresetsVisible(makeState({ buildings: { scribesOffice: 1 } as any })),
     ).toBe(true);
+  });
+});
+
+describe("villagerJobPresets - slot unlock mapping", () => {
+  it("maps building-gated slots to their unlock buildings", () => {
+    expect(getPresetSlotUnlockBuildingKey(0)).toBe("scribesOffice");
+    expect(getPresetSlotUnlockBuildingKey(1)).toBe("recordsHall");
+    expect(getPresetSlotUnlockBuildingKey(2)).toBe("grandArchive");
+    expect(getPresetSlotUnlockActionId(1)).toBe("buildRecordsHall");
+    expect(getPresetSlotUnlockActionId(2)).toBe("buildGrandArchive");
+  });
+
+  it("returns null for purchase-only slots", () => {
+    expect(getPresetSlotUnlockBuildingKey(3)).toBeNull();
+    expect(getPresetSlotUnlockActionId(4)).toBeNull();
   });
 });
 
