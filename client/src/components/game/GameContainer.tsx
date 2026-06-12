@@ -577,7 +577,7 @@ export default function GameContainer() {
       tabs.push({
         id: "achievements",
         icon: (
-          <span className="text-sm leading-none font-noto-symbols-2">⚜</span>
+          <span className="text-sm leading-none font-noto-symbols-2">{"⚜\uFE0E"}</span>
         ),
         label: "Achievements",
         onClick: () => setActiveTab("achievements"),
@@ -1170,7 +1170,7 @@ export default function GameContainer() {
                           data-testid="tab-achievements"
                         >
                           <span className="text-[14px] leading-none font-noto-symbols-2">
-                            ⚜
+                            {"⚜\uFE0E"}
                           </span>
                         </button>
                       )}
