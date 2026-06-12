@@ -53,6 +53,9 @@ export const BUILDING_HIERARCHIES: Record<string, string[]> = {
   // Clerk chain
   clerk: ["clerksHut", "scriptorium", "inkwardenAcademy"],
 
+  // Archive chain (unlocks villager job presets)
+  archive: ["scribesOffice", "recordsHall", "grandArchive"],
+
   // Estate chain
   estate: ["darkEstate", "blackEstate"],
 

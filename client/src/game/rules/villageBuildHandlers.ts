@@ -498,6 +498,48 @@ export function handleBuildInkwardenAcademy(
   return inkwardenAcademyResult;
 }
 
+export function handleBuildScribesOffice(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const scribesOfficeResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildScribesOffice",
+    "scribesOffice",
+  );
+
+  return scribesOfficeResult;
+}
+
+export function handleBuildRecordsHall(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const recordsHallResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildRecordsHall",
+    "recordsHall",
+  );
+
+  return recordsHallResult;
+}
+
+export function handleBuildGrandArchive(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const grandArchiveResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildGrandArchive",
+    "grandArchive",
+  );
+
+  return grandArchiveResult;
+}
+
 export function handleBuildTannery(
   state: GameState,
   result: ActionResult,

@@ -115,6 +115,9 @@ import {
   handleBuildClerksHut,
   handleBuildScriptorium,
   handleBuildInkwardenAcademy,
+  handleBuildScribesOffice,
+  handleBuildRecordsHall,
+  handleBuildGrandArchive,
   handleBuildTannery,
   handleBuildMasterTannery,
   handleBuildHighTannery,
@@ -558,6 +561,12 @@ export function executeGameAction(
       return handleBuildScriptorium(state, result);
     case "buildInkwardenAcademy":
       return handleBuildInkwardenAcademy(state, result);
+    case "buildScribesOffice":
+      return handleBuildScribesOffice(state, result);
+    case "buildRecordsHall":
+      return handleBuildRecordsHall(state, result);
+    case "buildGrandArchive":
+      return handleBuildGrandArchive(state, result);
     case "buildTannery":
       return handleBuildTannery(state, result);
     case "buildMasterTannery":
