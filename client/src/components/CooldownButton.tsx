@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState, forwardRef } from "react";
 import { Button } from "@/components/ui/button";
-import { GAME_ACTION_BUTTON_HOVER_CLASS } from "@/components/game/gameChrome";
 import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { X } from "lucide-react";
@@ -8,6 +7,14 @@ import { GAME_CONSTANTS } from "@/game/constants";
 import { INSIGHT_REVEAL_DURATION_MS } from "@/game/rules/insightReveal";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { cn } from "@/lib/utils";
+
+/** Outline border + hover for game action buttons (panels, timed events, dialogs). */
+export function gameActionOutlineButtonClassName(disabled = false): string {
+  return cn(
+    disabled ? "border-red-900/50" : "border-red-900",
+    !disabled && "hover:bg-accent hover:text-accent-foreground",
+  );
+}
 
 interface CooldownButtonProps {
   children: React.ReactNode;
@@ -220,9 +227,9 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         className={cn(
           "relative overflow-hidden transition-all duration-200 select-none",
           (isCoolingDown || isInsightRevealing || isPlayTimeProgressing) &&
-            "cursor-not-allowed",
+          "cursor-not-allowed",
           isCompassGlowing && "compass-glow",
-          variant === "outline" && GAME_ACTION_BUTTON_HOVER_CLASS,
+          variant === "outline" && gameActionOutlineButtonClassName(disabled),
           className,
         )}
         data-testid={testId}
@@ -231,7 +238,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         style={{ opacity: 1, position: 'relative', zIndex: 10, ...style }}
       >
         {/* Button content */}
-        <span className={`relative transition-opacity duration-200 ${isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeProgressing || disabled ? "opacity-60" : ""}`}>{children}</span>
+        <span className={`relative transition-opacity duration-200 ${isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeProgressing || disabled ? "opacity-50" : ""}`}>{children}</span>
 
         {/* Cooldown, execution, or insight-reveal progress overlay */}
         {(isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeProgressing) && (

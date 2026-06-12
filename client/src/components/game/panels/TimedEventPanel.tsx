@@ -12,6 +12,8 @@ import {
   getTimedEventTabEffectiveRemainingMs,
 } from "@/game/state";
 import { Button } from "@/components/ui/button";
+import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
+import { cn } from "@/lib/utils";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { getMerchantTradeEffectTooltipLine } from "@/game/rules/eventsMerchant";
 import { EventChoice, type LogEntry } from "@/game/rules/events";
@@ -564,7 +566,10 @@ export default function TimedEventPanel() {
                   size="xs"
                   disabled={isDisabled}
                   button_id={`timedevent-${choice.id}`}
-                  className="h-auto min-h-7 w-fit max-w-full gap-2 py-1 text-left justify-start whitespace-normal"
+                  className={cn(
+                    "h-auto min-h-7 w-fit max-w-full gap-2 py-1 text-left justify-start whitespace-normal",
+                    gameActionOutlineButtonClassName(isDisabled),
+                  )}
                 >
                   <span>{labelText}</span>
                   {hasChoiceMeta && (
@@ -677,6 +682,9 @@ export default function TimedEventPanel() {
             variant="outline"
             size="xs"
             disabled={timeRemaining <= 0 || safetyTimeRemaining > 0}
+            className={gameActionOutlineButtonClassName(
+              timeRemaining <= 0 || safetyTimeRemaining > 0,
+            )}
             button_id="timedevent-say_goodbye"
           >
             {t("ui:timedEvent.sayGoodbye")}

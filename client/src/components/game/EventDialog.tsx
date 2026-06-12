@@ -12,6 +12,8 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
+import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import CubeDialog from "./CubeDialog";
@@ -368,7 +370,10 @@ export default function EventDialog({
                     onClick={selectChoice}
                     variant="outline"
                     size="xs"
-                    className="h-auto min-h-7 w-fit max-w-full flex items-center justify-start gap-2 py-1 text-left whitespace-normal"
+                    className={cn(
+                      "h-auto min-h-7 w-fit max-w-full flex items-center justify-start gap-2 py-1 text-left whitespace-normal",
+                      gameActionOutlineButtonClassName(isDisabled),
+                    )}
                     disabled={isDisabled}
                     button_id={`event-choice-${choice.id}`}
                   >

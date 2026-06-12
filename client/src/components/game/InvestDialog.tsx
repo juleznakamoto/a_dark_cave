@@ -25,6 +25,7 @@ import {
   winPercentInclusiveRange,
 } from "@/game/rules/investmentHallTables";
 import type { InvestmentDurationMin } from "@/game/rules/investmentHallTables";
+import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
 import { formatNumber, cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
@@ -519,7 +520,14 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
               <Button
                 onClick={handleCommit}
                 variant="outline"
-                className="h-8 px-4 text-xs font-medium"
+                className={cn(
+                  "h-8 px-4 text-xs font-medium",
+                  gameActionOutlineButtonClassName(
+                    offers.length < 3 ||
+                      (resources.gold ?? 0) < Number(amountStr) ||
+                      Number(amountStr) > maxStake,
+                  ),
+                )}
                 disabled={
                   offers.length < 3 ||
                   (resources.gold ?? 0) < Number(amountStr) ||

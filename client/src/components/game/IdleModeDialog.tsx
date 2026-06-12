@@ -9,8 +9,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
-import { capitalizeWords } from "@/lib/utils";
-import cn from "clsx";
+import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
+import { capitalizeWords, cn } from "@/lib/utils";
 import {
   getCurrentPopulation,
   getPopulationProduction,
@@ -713,7 +713,10 @@ export default function IdleModeDialog() {
           <Button
             onClick={handleEndIdleMode}
             variant="outline"
-            className="text-xs h-8"
+            className={cn(
+              "text-xs h-8",
+              gameActionOutlineButtonClassName(false),
+            )}
           >
             {isTimeUp ? t("idleMode.getUp") : t("idleMode.wake")}
           </Button>

@@ -39,7 +39,8 @@ import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { Enemy, CombatItem, CombatResultSummary } from "@/game/types";
 import { extractCombatResultSummary } from "@/game/stateHelpers";
 import { ProceduralGroundBackground } from "@/components/ui/procedural-ground-background";
-import { formatNumber } from "@/lib/utils";
+import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
+import { cn, formatNumber } from "@/lib/utils";
 import { getResourceName, getStatName } from "@/i18n/resolveGameText";
 import {
   getCombatEnemyDisplayName,
@@ -789,7 +790,10 @@ export default function CombatDialog({
               <div className="flex justify-center mt-4">
                 <Button
                   onClick={handleStartFight}
-                  className="w-full"
+                  className={cn(
+                    "w-full",
+                    gameActionOutlineButtonClassName(false),
+                  )}
                   variant="outline"
                   button_id="combat-start-fight"
                 >
@@ -1163,7 +1167,12 @@ export default function CombatDialog({
                                       }
                                       variant="outline"
                                       size="sm"
-                                      className="text-xs w-full inline-flex items-center justify-center gap-1"
+                                      className={cn(
+                                        "text-xs w-full inline-flex items-center justify-center gap-1",
+                                        gameActionOutlineButtonClassName(
+                                          !item.available || isProcessingRound,
+                                        ),
+                                      )}
                                       button_id={`combat-use-${item.id}`}
                                     >
                                       {item.id === "poison_arrows" && (
@@ -1222,7 +1231,14 @@ export default function CombatDialog({
                                 }
                                 variant="outline"
                                 size="sm"
-                                className="text-xs w-full inline-flex items-center justify-center gap-1"
+                                className={cn(
+                                  "text-xs w-full inline-flex items-center justify-center gap-1",
+                                  gameActionOutlineButtonClassName(
+                                    usedCrushingStrike ||
+                                      isProcessingRound ||
+                                      isRestlessKnightWounded,
+                                  ),
+                                )}
                                 button_id="combat-use-crushing-strike"
                               >
                                 <span
@@ -1275,7 +1291,18 @@ export default function CombatDialog({
                                 }
                                 variant="outline"
                                 size="sm"
-                                className="text-xs w-full inline-flex items-center justify-center gap-1"
+                                className={cn(
+                                  "text-xs w-full inline-flex items-center justify-center gap-1",
+                                  gameActionOutlineButtonClassName(
+                                    usedBloodflameSphere ||
+                                      isProcessingRound ||
+                                      currentIntegrity <=
+                                        BLOODFLAME_SPHERE_UPGRADES[
+                                          bloodflameSphereLevel
+                                        ].healthCost ||
+                                      isElderWizardWounded,
+                                  ),
+                                )}
                                 button_id="combat-use-bloodflame-sphere"
                               >
                                 <span
@@ -1304,7 +1331,13 @@ export default function CombatDialog({
                         isProcessingRound ||
                         (currentEnemy?.currentHealth || 0) <= 0
                       }
-                      className="w-full"
+                      className={cn(
+                        "w-full",
+                        gameActionOutlineButtonClassName(
+                          isProcessingRound ||
+                            (currentEnemy?.currentHealth || 0) <= 0,
+                        ),
+                      )}
                       variant="outline"
                       button_id="combat-fight"
                     >

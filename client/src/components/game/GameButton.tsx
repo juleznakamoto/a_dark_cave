@@ -1,5 +1,7 @@
 import React, { useRef, forwardRef } from "react";
 import { Button, ButtonProps } from "@/components/ui/button";
+import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
+import { cn } from "@/lib/utils";
 import { TooltipWrapper } from "./TooltipWrapper";
 
 export interface GameButtonProps extends ButtonProps {
@@ -26,6 +28,7 @@ const GameButton = forwardRef<HTMLButtonElement, GameButtonProps>(
       tooltipId,
       onMouseEnter,
       onMouseLeave,
+      variant,
       ...props
     },
     ref
@@ -49,7 +52,11 @@ const GameButton = forwardRef<HTMLButtonElement, GameButtonProps>(
         ref={ref}
         onClick={handleClick}
         disabled={disabled}
-        className={className}
+        variant={variant}
+        className={cn(
+          variant === "outline" && gameActionOutlineButtonClassName(disabled),
+          className,
+        )}
         {...props}
       >
         {children}
