@@ -10,8 +10,19 @@ export interface AchievementSegment {
   /** Resource keys (e.g. silver, gold) to amounts. Overrides reward when present. */
   rewards?: Record<string, number>;
   getCount: (state: GameState) => number;
-  /** Progress bar segment dividers (e.g. 10 for 500/50). Defaults to maxCount. */
+  /**
+   * Visual weight for ring slices and progress-bar tick count
+   * (e.g. 10 while maxCount is 500 → equal ring share, ticks every 50).
+   * Defaults to maxCount.
+   */
   segments?: number;
+}
+
+/** Ring slice width and progress-bar ticks; completion still uses maxCount. */
+export function getAchievementSegmentWeight(
+  segment: Pick<AchievementSegment, "segments" | "maxCount">,
+): number {
+  return segment.segments ?? segment.maxCount;
 }
 
 export interface AchievementChartConfig {

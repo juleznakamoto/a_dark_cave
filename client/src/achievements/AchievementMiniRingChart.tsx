@@ -4,7 +4,10 @@ import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { cn } from "@/lib/utils";
 import { tailwindToHex } from "@/lib/tailwindColors";
-import type { AchievementChartConfig } from "./achievementTypes";
+import {
+  getAchievementSegmentWeight,
+  type AchievementChartConfig,
+} from "./achievementTypes";
 import {
   INCOMPLETE_COLOR,
   COMPLETE_COLOR,
@@ -79,15 +82,15 @@ export default function AchievementMiniRingChart({
       <ResponsiveContainer width="100%" height="100%" style={{ opacity: ringOpacity }}>
         <PieChart margin={{ top: 2, right: 2, bottom: 2, left: 2 }}>
           {ringConfigs.map((ring, ringIndex) => {
-            const totalMaxCount = ring.segments.reduce(
-              (sum, s) => sum + s.maxCount,
+            const totalWeight = ring.segments.reduce(
+              (sum, s) => sum + getAchievementSegmentWeight(s),
               0,
             );
             const totalDegrees = 360 - ring.segments.length * paddingAngle;
 
             const bgColor = isActive ? BACKGROUND_SELECTED_COLOR_HEX : BACKGROUND_COLOR_HEX;
             const backgroundSegments = ring.segments.map((s) => ({
-              value: s.maxCount,
+              value: getAchievementSegmentWeight(s),
               fill: bgColor,
             }));
 
@@ -95,7 +98,9 @@ export default function AchievementMiniRingChart({
             const progressSegments = ring.segments.map((seg) => {
               const currentCount = hideProgress ? 0 : seg.getCount(state as unknown as GameState);
               const segmentDegrees =
-                (totalDegrees * seg.maxCount) / totalMaxCount;
+                totalWeight > 0
+                  ? (totalDegrees * getAchievementSegmentWeight(seg)) / totalWeight
+                  : 0;
               const adjustedCount = currentCount === 1 ? 1.3 : currentCount;
               const progress =
                 seg.maxCount > 0

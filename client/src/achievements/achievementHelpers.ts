@@ -20,7 +20,7 @@ export interface AchievementRow {
   rewards: Record<string, number>;
   isFull: boolean;
   isClaimed: boolean;
-  /** Progress bar segment dividers. Defaults to maxCount. */
+  /** Ring slice weight and progress bar ticks. Defaults to maxCount. */
   segments?: number;
 }
 

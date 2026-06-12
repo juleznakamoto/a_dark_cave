@@ -34,6 +34,7 @@ import {
 } from "@/achievements/achievementColors";
 import type { AchievementRow } from "@/achievements/achievementHelpers";
 import type { AchievementChartConfig } from "@/achievements";
+import { getAchievementSegmentWeight } from "@/achievements/achievementTypes";
 import AchievementMiniRingChart from "@/achievements/AchievementMiniRingChart";
 import { useTranslation } from "react-i18next";
 import type { GameState } from "@shared/schema";
@@ -243,7 +244,7 @@ function AchievementRowComponent({
         <Progress
           value={(Math.floor(row.currentCount) / row.maxCount) * 100}
           className={`h-2 ${PROGRESS_BAR_BG_CLASS}`}
-          segments={row.segments ?? row.maxCount}
+          segments={getAchievementSegmentWeight(row)}
           indicatorClassName={row.isFull ? indicatorClassComplete : indicatorClassIncomplete}
           hideBorder
         />
