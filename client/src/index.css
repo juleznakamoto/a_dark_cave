@@ -255,20 +255,11 @@ body {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  /* Clip gooey mask bleed; helps iOS keep a smooth circular edge. */
-  border-radius: 50%;
-  overflow: hidden;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
 }
 
-/* Idle: reset triangles; clip keeps SVG filter (CSS filter:none would override it). */
+/* Idle: insight triangle glyph only. Hover or reveal cooldown (--playing) runs blob animation. */
 .building-action-badge:not(:hover):not(.building-action-badge--playing) .building-action-badge__clip,
-.insight-action-badge-trigger:not(:hover) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__clip {
-  animation: none !important;
-  transform: none;
-}
-
+.insight-action-badge-trigger:not(:hover) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__clip,
 .building-action-badge:not(:hover):not(.building-action-badge--playing) .building-action-badge__triangle,
 .insight-action-badge-trigger:not(:hover) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__triangle {
   animation: none !important;
@@ -277,6 +268,7 @@ body {
 }
 
 .building-action-badge__clip {
+  filter: contrast(15);
   transform: scale(1.1);
   transform-origin: 50% 50%;
   transform-box: fill-box;
@@ -300,10 +292,14 @@ body {
   opacity: 0;
 }
 
-/* Complements SVG feColorMatrix roundness; scale pulse stays on clip during interaction. */
 .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):hover .building-action-badge .building-action-badge__clip,
 .building-action-badge--playing .building-action-badge__clip {
   animation: building-action-badge-roundness 1s linear infinite;
+}
+
+.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):hover .building-action-badge .building-action-badge__triangle,
+.building-action-badge--playing .building-action-badge__triangle {
+  filter: blur(7px);
 }
 
 .building-action-badge__triangle--one {
@@ -370,16 +366,18 @@ body {
 }
 
 @keyframes building-action-badge-roundness {
-
-  0%,
-  60%,
-  100% {
-    transform: scale(1.1);
+  0% {
+    filter: contrast(15);
   }
 
   20%,
   40% {
-    transform: scale(1.18);
+    filter: contrast(3);
+  }
+
+  60%,
+  100% {
+    filter: contrast(15);
   }
 }
 
