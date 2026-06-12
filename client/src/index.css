@@ -166,7 +166,7 @@ body {
   }
 
   100% {
-    opacity: 0.6;
+    opacity: 0.8;
     filter: blur(0);
   }
 }
@@ -180,7 +180,7 @@ body {
 
   0%,
   100% {
-    opacity: 0.6;
+    opacity: 0.8;
   }
 
   50% {
