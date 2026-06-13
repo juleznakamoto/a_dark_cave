@@ -84,6 +84,22 @@ import cn from "clsx";
 import InvestDialog from "@/components/game/InvestDialog";
 import { isInvestmentWaveReadyForUi } from "@/game/rules/investmentHallTables";
 import { GREAT_FEAST_DURATION_MS } from "@shared/shopItems";
+import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
+
+const VILLAGE_INDICATOR_TOOLTIP_IDS = [
+  "production-cycle-progress",
+  "feast-progress",
+  "solstice-progress",
+  "curse-progress",
+  "disgust-progress",
+  "mining-boost-progress",
+  "heartfire-progress",
+  "frostfall-progress",
+  "fog-progress",
+  "madness-production",
+  "preset-save",
+  ...Array.from({ length: MAX_PRESET_SLOTS }, (_, i) => `preset-slot-${i + 1}`),
+] as const;
 
 export default function VillagePanel() {
   const { t } = useTranslation("ui");
@@ -108,6 +124,8 @@ export default function VillagePanel() {
     applyVillagerJobPreset,
     setActivePresetSlot,
   } = useGameStore();
+  const { pulseClassName, onMouseEnter, onMouseLeave } =
+    useNewItemPulseTooltips(VILLAGE_INDICATOR_TOOLTIP_IDS);
 
   const handleInvestDialogOpenChange = useCallback(
     (next: boolean) => {
@@ -1057,7 +1075,12 @@ export default function VillagePanel() {
                   })()}
                   tooltipId="production-cycle-progress"
                   disabled
-                  className="text-xs flex items-center cursor-pointer"
+                  className={pulseClassName(
+                    "production-cycle-progress",
+                    "text-xs flex items-center cursor-pointer",
+                  )}
+                  onMouseEnter={() => onMouseEnter("production-cycle-progress")}
+                  onMouseLeave={() => onMouseLeave("production-cycle-progress")}
                 >
                   <div className="relative inline-flex items-center">
                     <CircularProgress
@@ -1113,7 +1136,12 @@ export default function VillagePanel() {
                           }
                           tooltipId="feast-progress"
                           disabled
-                          className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                          className={pulseClassName(
+                            "feast-progress",
+                            "text-xs text-primary flex items-center gap-0.5 cursor-pointer",
+                          )}
+                          onMouseEnter={() => onMouseEnter("feast-progress")}
+                          onMouseLeave={() => onMouseLeave("feast-progress")}
                         >
                           <div className="relative inline-flex items-center gap-1 mt-[0px]">
                             <CircularProgress
@@ -1145,7 +1173,12 @@ export default function VillagePanel() {
                           }
                           tooltipId="solstice-progress"
                           disabled
-                          className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                          className={pulseClassName(
+                            "solstice-progress",
+                            "text-xs text-primary flex items-center gap-0.5 cursor-pointer",
+                          )}
+                          onMouseEnter={() => onMouseEnter("solstice-progress")}
+                          onMouseLeave={() => onMouseLeave("solstice-progress")}
                         >
                           <div className="relative inline-flex items-center gap-1 mt-[0px]">
                             <CircularProgress
@@ -1171,7 +1204,12 @@ export default function VillagePanel() {
                           }
                           tooltipId="curse-progress"
                           disabled
-                          className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                          className={pulseClassName(
+                            "curse-progress",
+                            "text-xs text-primary flex items-center gap-0.5 cursor-pointer",
+                          )}
+                          onMouseEnter={() => onMouseEnter("curse-progress")}
+                          onMouseLeave={() => onMouseLeave("curse-progress")}
                         >
                           <div className="relative inline-flex items-center gap-1 mt-[0px]">
                             <CircularProgress
@@ -1210,7 +1248,12 @@ export default function VillagePanel() {
                           }
                           tooltipId="disgust-progress"
                           disabled
-                          className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                          className={pulseClassName(
+                            "disgust-progress",
+                            "text-xs text-primary flex items-center gap-0.5 cursor-pointer",
+                          )}
+                          onMouseEnter={() => onMouseEnter("disgust-progress")}
+                          onMouseLeave={() => onMouseLeave("disgust-progress")}
                         >
                           <div className="relative inline-flex items-center gap-1 mt-[0px]">
                             <CircularProgress
@@ -1248,7 +1291,16 @@ export default function VillagePanel() {
                           }
                           tooltipId="mining-boost-progress"
                           disabled
-                          className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                          className={pulseClassName(
+                            "mining-boost-progress",
+                            "text-xs text-primary flex items-center gap-0.5 cursor-pointer",
+                          )}
+                          onMouseEnter={() =>
+                            onMouseEnter("mining-boost-progress")
+                          }
+                          onMouseLeave={() =>
+                            onMouseLeave("mining-boost-progress")
+                          }
                         >
                           <div className="relative inline-flex items-center gap-1 mt-[0px]">
                             <CircularProgress
@@ -1280,7 +1332,12 @@ export default function VillagePanel() {
                           }
                           tooltipId="heartfire-progress"
                           disabled
-                          className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                          className={pulseClassName(
+                            "heartfire-progress",
+                            "text-xs text-primary flex items-center gap-0.5 cursor-pointer",
+                          )}
+                          onMouseEnter={() => onMouseEnter("heartfire-progress")}
+                          onMouseLeave={() => onMouseLeave("heartfire-progress")}
                         >
                           <div className="relative inline-flex items-center gap-1 mt-[0px]">
                             <CircularProgress
@@ -1312,7 +1369,12 @@ export default function VillagePanel() {
                           }
                           tooltipId="frostfall-progress"
                           disabled
-                          className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                          className={pulseClassName(
+                            "frostfall-progress",
+                            "text-xs text-primary flex items-center gap-0.5 cursor-pointer",
+                          )}
+                          onMouseEnter={() => onMouseEnter("frostfall-progress")}
+                          onMouseLeave={() => onMouseLeave("frostfall-progress")}
                         >
                           <div className="relative inline-flex items-center gap-1 mt-[0px]">
                             <CircularProgress
@@ -1359,7 +1421,12 @@ export default function VillagePanel() {
                             }
                             tooltipId="fog-progress"
                             disabled
-                            className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                            className={pulseClassName(
+                              "fog-progress",
+                              "text-xs text-primary flex items-center gap-0.5 cursor-pointer",
+                            )}
+                            onMouseEnter={() => onMouseEnter("fog-progress")}
+                            onMouseLeave={() => onMouseLeave("fog-progress")}
                           >
                             <div className="relative inline-flex items-center gap-1 mt-[0px]">
                               <CircularProgress
@@ -1402,7 +1469,16 @@ export default function VillagePanel() {
                             }
                             tooltipId="madness-production"
                             disabled
-                            className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                            className={pulseClassName(
+                              "madness-production",
+                              "text-xs text-primary flex items-center gap-0.5 cursor-pointer",
+                            )}
+                            onMouseEnter={() =>
+                              onMouseEnter("madness-production")
+                            }
+                            onMouseLeave={() =>
+                              onMouseLeave("madness-production")
+                            }
                           >
                             <div className="relative inline-flex items-center gap-1 mt-[0px]">
                               <CircularProgress
@@ -1443,18 +1519,22 @@ export default function VillagePanel() {
                         : hasPreset
                           ? t("village.presetApply", { slot })
                           : t("village.presetEmpty", { slot });
+                      const presetTooltipId = `preset-slot-${slot}`;
                       return (
                         <TooltipWrapper
                           key={`preset-slot-${slot}`}
-                          tooltipId={`preset-slot-${slot}`}
+                          tooltipId={presetTooltipId}
                           tooltip={<div className="text-xs">{tooltipText}</div>}
                           disabled={!unlocked}
                           tooltipTriggerClassName="inline-flex items-center leading-none"
-                          className={
+                          className={pulseClassName(
+                            presetTooltipId,
                             unlocked
                               ? "group flex items-center cursor-pointer"
-                              : "flex items-center"
-                          }
+                              : "flex items-center",
+                          )}
+                          onMouseEnter={() => onMouseEnter(presetTooltipId)}
+                          onMouseLeave={() => onMouseLeave(presetTooltipId)}
                           onClick={() => {
                             if (unlocked) applyVillagerJobPreset(slot);
                           }}
@@ -1488,7 +1568,12 @@ export default function VillagePanel() {
                         </div>
                       }
                       tooltipTriggerClassName="inline-flex items-center leading-none"
-                      className="group flex items-center cursor-pointer"
+                      className={pulseClassName(
+                        "preset-save",
+                        "group flex items-center cursor-pointer",
+                      )}
+                      onMouseEnter={() => onMouseEnter("preset-save")}
+                      onMouseLeave={() => onMouseLeave("preset-save")}
                       onClick={handlePresetSave}
                     >
                       <Button
