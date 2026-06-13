@@ -58,6 +58,8 @@ import { TraderTabButton } from "@/components/game/TraderTabButton";
 import i18n from "@/i18n";
 import { useTranslation } from "react-i18next";
 import { useIOSChromeViewportShell } from "@/hooks/useIOSChromeViewportShell";
+import { usePanelResize } from "./panelResize";
+import PanelResizeHandle from "./PanelResizeHandle";
 
 export default function GameContainer() {
   const { t } = useTranslation();
@@ -873,6 +875,8 @@ export default function GameContainer() {
     return () => window.removeEventListener("keydown", onKeyDown, true);
   }, [flags.gameStarted, visibleHotkeyTabs, applyHotkeyTab]);
 
+  const panelResize = usePanelResize();
+
   // Show start screen if game hasn't started yet
   if (!flags.gameStarted) {
     return <StartScreen />;
@@ -1005,18 +1009,50 @@ export default function GameContainer() {
         {/* Main Content Area - Fills remaining space.
           Desktop (left → right): resources side panel, tabs/actions, event log.
           Mobile (stacked top → bottom): event log, side panel, tabs/actions. */}
-        <main className="flex-1 pb-0 flex flex-col md:grid md:w-full md:grid-cols-[minmax(20rem,28rem)_minmax(24rem,1fr)_minmax(14rem,26rem)] min-h-0 overflow-hidden">
-          {/* Event Log - top on mobile, right column on desktop */}
-          <div className="order-1 md:order-3 w-full min-h-0 overflow-hidden pt-1 md:pt-2 pr-2 pb-0 pl-1 md:border-l border-border">
+        <main
+          ref={panelResize.mainRef}
+          className="flex-1 pb-0 flex flex-col md:grid md:w-full md:grid-cols-[minmax(20rem,28rem)_minmax(24rem,1fr)_minmax(14rem,26rem)] min-h-0 overflow-hidden"
+          style={panelResize.mainStyle}
+        >
+          {/* Event Log - top on mobile, right column on desktop. Resizable via a handle on
+              its bottom edge (mobile) / left edge (desktop). */}
+          <div
+            ref={panelResize.logRef}
+            className="order-1 md:order-3 relative w-full h-[18vh] md:h-auto min-h-[6rem] md:min-h-0 overflow-hidden pt-1 md:pt-2 pr-2 pb-0 pl-1 md:border-l border-border"
+            style={panelResize.logStyle}
+          >
             <LogPanel />
+            <PanelResizeHandle
+              edge="log"
+              onPointerDown={panelResize.startLogResize}
+              onReset={panelResize.resetLog}
+              label={t("panelResize.handle", {
+                ns: "ui",
+                defaultValue: "Drag to resize panels (double-click to reset)",
+              })}
+            />
           </div>
 
           {/* Resources Side Panel - below log on mobile, left column on desktop.
-              Mobile: locked to 36vh so the panel (and tabs/actions below it) keep a
+              Mobile: defaults to 36vh so the panel (and tabs/actions below it) keep a
               consistent height regardless of the active tab's side-panel content.
-              Desktop: md:min-h-0 lets it shrink within the grid column. */}
-          <div className="order-2 md:order-1 h-[36vh] md:h-auto min-h-[36vh] md:min-h-0 w-full pt-2 md:pt-3 pr-0 border-t md:border-t-0 md:border-r border-border overflow-hidden">
+              Desktop: md:min-h-0 lets it shrink within the grid column. Resizable via a
+              handle on its bottom edge (mobile) / right edge (desktop). */}
+          <div
+            ref={panelResize.sidePanelRef}
+            className="order-2 md:order-1 relative h-[36vh] md:h-auto min-h-[36vh] md:min-h-0 w-full pt-2 md:pt-3 pr-0 border-t md:border-t-0 md:border-r border-border overflow-hidden"
+            style={panelResize.sidePanelStyle}
+          >
             <GameTabs />
+            <PanelResizeHandle
+              edge="sidePanel"
+              onPointerDown={panelResize.startSidePanelResize}
+              onReset={panelResize.resetSidePanel}
+              label={t("panelResize.handle", {
+                ns: "ui",
+                defaultValue: "Drag to resize panels (double-click to reset)",
+              })}
+            />
           </div>
 
           {/* Game tab area - below side panel on mobile, middle column on desktop (flexible; shrinks first).

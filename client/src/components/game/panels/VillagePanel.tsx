@@ -35,7 +35,9 @@ import {
   getPalisadesTierLabel,
   getWatchtowerTierLabel,
 } from "@/i18n/fortificationLabels";
-import CooldownButton from "@/components/CooldownButton";
+import CooldownButton, {
+  gameActionOutlineButtonClassName,
+} from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
 import { getPopulationProduction } from "@/game/population";
 import {
@@ -1450,7 +1452,7 @@ export default function VillagePanel() {
                           tooltipTriggerClassName="inline-flex items-center leading-none"
                           className={
                             unlocked
-                              ? "flex items-center cursor-pointer"
+                              ? "group flex items-center cursor-pointer"
                               : "flex items-center"
                           }
                           onClick={() => {
@@ -1463,7 +1465,14 @@ export default function VillagePanel() {
                             disabled={!unlocked}
                             data-testid={`preset-slot-${slot}`}
                             button_id={`preset-slot-${slot}`}
-                            className="h-[18px] w-[18px] min-h-0 shrink-0 p-0 text-[10px] tabular-nums leading-none pointer-events-none"
+                            className={cn(
+                              "h-[18px] w-[18px] min-h-0 shrink-0 p-0 text-[10px] tabular-nums leading-none pointer-events-none transition-colors appearance-none [-webkit-appearance:none]",
+                              isActive
+                                ? unlocked && "group-hover:bg-primary/90"
+                                : gameActionOutlineButtonClassName(!unlocked, {
+                                    groupHover: true,
+                                  }),
+                            )}
                             style={{ touchAction: "manipulation" }}
                           >
                             {slot}
@@ -1479,7 +1488,7 @@ export default function VillagePanel() {
                         </div>
                       }
                       tooltipTriggerClassName="inline-flex items-center leading-none"
-                      className="flex items-center cursor-pointer"
+                      className="group flex items-center cursor-pointer"
                       onClick={handlePresetSave}
                     >
                       <Button
@@ -1487,7 +1496,12 @@ export default function VillagePanel() {
                         variant="outline"
                         data-testid="preset-save"
                         button_id="preset-save"
-                        className="h-[18px] w-[18px] min-h-0 shrink-0 p-0 pointer-events-none inline-flex items-center justify-center leading-none"
+                        className={cn(
+                          "h-[18px] w-[18px] min-h-0 shrink-0 p-0 pointer-events-none inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]",
+                          gameActionOutlineButtonClassName(false, {
+                            groupHover: true,
+                          }),
+                        )}
                         style={{ touchAction: "manipulation" }}
                       >
                         <span

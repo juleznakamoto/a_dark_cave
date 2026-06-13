@@ -948,6 +948,24 @@ export const gameStateSchema = z.object({
       startTime: 0,
       needsDisplay: false,
     }),
+
+  /**
+   * User-adjusted layout sizes for the three main panels, persisted separately for
+   * desktop (column widths) and mobile (stacked row heights). `null` means "use the
+   * responsive default" so resizing is fully opt-in and backward compatible.
+   */
+  panelSizes: z
+    .object({
+      /** Desktop left side-panel (resources) column width, px. */
+      desktopSidePanelPx: z.number().positive().nullable().default(null),
+      /** Desktop right event-log column width, px. */
+      desktopLogPanelPx: z.number().positive().nullable().default(null),
+      /** Mobile event-log row height, px. */
+      mobileLogPanelPx: z.number().positive().nullable().default(null),
+      /** Mobile resources side-panel row height, px. */
+      mobileSidePanelPx: z.number().positive().nullable().default(null),
+    })
+    .default({}),
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;

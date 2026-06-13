@@ -57,7 +57,7 @@ function LogPanel() {
   }, [log.length]);
 
   return (
-    <div className="h-[18vh] min-h-[6rem] md:h-full md:min-h-0 overflow-hidden">
+    <div className="h-full min-h-0 overflow-hidden">
       <ScrollAreaWithIndicator
         className="h-full w-full"
         showIndicatorWhen={recentEntries.length >= 8}

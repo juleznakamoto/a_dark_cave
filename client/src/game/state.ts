@@ -349,6 +349,11 @@ interface GameStore extends GameState {
     meta?: { executionSource?: "player" | "prior" },
   ) => void;
   setActiveTab: (tab: GameTab) => void;
+  /** Persist a resizable-panel size (px), or `null` to reset to the responsive default. */
+  setPanelSize: (
+    key: keyof GameState["panelSizes"],
+    px: number | null,
+  ) => void;
   setBoostMode: (enabled: boolean) => void;
   setMusicMuted: (muted: boolean) => void;
   setSfxMuted: (muted: boolean) => void;
@@ -1574,6 +1579,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setActiveTab: (tab: GameTab) => set({ activeTab: tab }),
 
+  setPanelSize: (key: keyof GameState["panelSizes"], px: number | null) =>
+    set((state) => ({
+      panelSizes: { ...state.panelSizes, [key]: px },
+    })),
+
   setBoostMode: (enabled: boolean) => set({ boostMode: enabled }),
   setMusicMuted: (muted: boolean) => set({ musicMuted: muted }),
   setSfxMuted: (muted: boolean) => set({ sfxMuted: muted }),
@@ -2690,6 +2700,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
           startTime: 0,
           needsDisplay: false,
         }, // Load idle mode state
+        panelSizes: {
+          ...defaultGameState.panelSizes,
+          ...savedState.panelSizes,
+        }, // Load persisted desktop/mobile panel sizes (back-compat: defaults are null)
         referrals: Array.isArray(savedState.referrals)
           ? savedState.referrals
           : [],
