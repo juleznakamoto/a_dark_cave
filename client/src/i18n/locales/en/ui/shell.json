@@ -76,8 +76,5 @@
   "villageHotkeyTutorial": {
     "dismiss": "Dismiss"
   },
-  "panelResize": {
-    "handle": "Drag to resize panels (double-click to reset)"
-  },
   "never": "Never"
 }

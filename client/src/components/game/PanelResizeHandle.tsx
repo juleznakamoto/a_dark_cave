@@ -11,7 +11,6 @@ interface PanelResizeHandleProps {
   onPointerDown: (e: ReactPointerEvent) => void;
   /** Double-click / double-tap resets the panel to its responsive default. */
   onReset: () => void;
-  label: string;
 }
 
 /**
@@ -22,7 +21,6 @@ export default function PanelResizeHandle({
   edge,
   onPointerDown,
   onReset,
-  label,
 }: PanelResizeHandleProps) {
   const positionClasses =
     edge === "sidePanel"
@@ -32,8 +30,6 @@ export default function PanelResizeHandle({
   return (
     <div
       role="separator"
-      aria-label={label}
-      title={label}
       className={`group absolute z-30 flex touch-none select-none items-center justify-center ${positionClasses}`}
       onPointerDown={onPointerDown}
       onDoubleClick={onReset}

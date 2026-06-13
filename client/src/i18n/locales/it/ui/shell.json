@@ -1,7 +1,4 @@
 {
-  "panelResize": {
-    "handle": "Trascina per ridimensionare i pannelli (doppio clic per ripristinare)"
-  },
   "languageSelector": {
     "label": "Lingua",
     "ariaLabel": "Seleziona lingua"

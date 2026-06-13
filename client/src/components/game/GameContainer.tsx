@@ -1026,10 +1026,6 @@ export default function GameContainer() {
               edge="log"
               onPointerDown={panelResize.startLogResize}
               onReset={panelResize.resetLog}
-              label={t("panelResize.handle", {
-                ns: "ui",
-                defaultValue: "Drag to resize panels (double-click to reset)",
-              })}
             />
           </div>
 
@@ -1048,10 +1044,6 @@ export default function GameContainer() {
               edge="sidePanel"
               onPointerDown={panelResize.startSidePanelResize}
               onReset={panelResize.resetSidePanel}
-              label={t("panelResize.handle", {
-                ns: "ui",
-                defaultValue: "Drag to resize panels (double-click to reset)",
-              })}
             />
           </div>
 
