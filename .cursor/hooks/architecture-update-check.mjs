@@ -12,7 +12,7 @@ import { createHash } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 
-const WATCHED_DIRS = ["client", "server", "shared", "supabase", "scripts", "gender-service"];
+const WATCHED_DIRS = ["client", "server", "shared", "supabase", "scripts", "services"];
 const WATCHED_EXTS = [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".py"];
 const ARCH_FILE = "ARCHITECTURE.md";
 const MANIFEST_FILE = ".cursor/.architecture-manifest.json";

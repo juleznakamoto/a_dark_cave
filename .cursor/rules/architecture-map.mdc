@@ -18,7 +18,7 @@ alwaysApply: true
 ## Keeping it current
 
 When you **add, remove, rename, or move files/directories** under `client/`, `server/`,
-`shared/`, `supabase/`, `scripts/`, or `gender-service/`, or change a core architectural
+`shared/`, `supabase/`, `scripts/`, or `services/`, or change a core architectural
 fact (engine flow, persistence, routing, tech stack), **update the matching section/table in
 `ARCHITECTURE.md` in the same change.**
 

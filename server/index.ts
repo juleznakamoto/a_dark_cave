@@ -1028,7 +1028,7 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
   const genderServiceUrl = process.env.GENDER_SERVICE_URL;
   const genderServiceToken = process.env.GENDER_SERVICE_TOKEN;
   if (genderServiceUrl && genderServiceToken) {
-    const genderServiceDir = path.join(__dirname, "..", "gender-service");
+    const genderServiceDir = path.join(__dirname, "..", "services", "gender-service");
     const appPy = path.join(genderServiceDir, "app.py");
     const dbPath = path.join(genderServiceDir, "first_names.db");
     const createDbPy = path.join(genderServiceDir, "create_db.py");

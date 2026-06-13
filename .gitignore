@@ -1,8 +1,9 @@
 node_modules
 dist
 .DS_Store
-.env
-.env.local
+.env*
+!.env.example
+!**/.env.example
 server/public
 vite.config.ts.*
 *.tar.gz
@@ -11,10 +12,13 @@ replit.md
 # Video analysis / private transcripts
 _analysis/
 
-# Gender service (internal Python microservice)
-gender-service/venv
-gender-service/.env
-gender-service/first_names_base.db
+# Replit internal dev artifacts (pasted console logs & debug screenshots)
+attached_assets/
+
+# Gender service (internal Python microservice) — match wherever the folder lives
+**/gender-service/venv
+**/gender-service/.env
+**/gender-service/first_names_base.db
 
 # Resend contact exports (PII — never commit)
 exports/

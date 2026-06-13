@@ -4,7 +4,7 @@
 > searching blindly. It is kept current automatically: a `stop` hook
 > (`.cursor/hooks/architecture-update-check.mjs`) detects when files are added,
 > removed, or renamed under `client/`, `server/`, `shared/`, `supabase/`, `scripts/`,
-> or `gender-service/` and asks the agent to refresh the relevant section here.
+> or `services/` and asks the agent to refresh the relevant section here.
 >
 > If you change the project structure, update the matching table below in the same change.
 
@@ -23,7 +23,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | `shared/` | Cross-cutting TypeScript shared by client + server: Zod schemas, shop/referral pricing. |
 | `supabase/` | SQL migrations + edge function (`functions/save-game/`) for Postgres/RLS. |
 | `scripts/` | Build & i18n tooling — see [Scripts](#scripts-scripts) below. |
-| `gender-service/` | Internal Python Flask service for first-name gender inference (localhost only). |
+| `services/` | Internal auxiliary services (currently `gender-service/` — first-name gender inference, localhost only). |
 | `public/`, `attached_assets/` | Static assets (`@assets` alias → `attached_assets`). |
 | `dist/` | Build output (`dist/public` client, `dist/index.js` server). |
 | `.cursor/` | Agent config: `rules/`, `hooks.json`, `hooks/`. |
@@ -201,7 +201,7 @@ run ad hoc for locale maintenance.
 | `i18n:verify` | `list-unmigrated-events.mjs`, `check-event-coverage.mjs`, `audit-i18n-ui.mjs`, `audit-locale-length.mjs` | CI-style i18n parity checks (+ Vitest i18n tests). |
 | `i18n:sync` | `sync-locale-keys.mjs`, `fill-identical-locale-strings.mjs` | Align locale key sets across languages. |
 | `export:resend-csvs` | `export-resend-contact-csvs.ts` | Marketing contact CSV export (uses gender proxy). |
-| `test:gender` | `test-gender-service.js` | Smoke-test `gender-service/`. |
+| `test:gender` | `test-gender-service.js` | Smoke-test `services/gender-service/`. |
 
 Support modules (not always npm-wired): `locale-catalog.mjs`, `parse-locale-json.mjs`,
 `i18n-ui-shards.mjs`, `audit-locale-translations.mjs`, `audit-timed-tab-i18n.mjs`,
@@ -222,7 +222,7 @@ rate-limited `/api/*` routes.
 | `/api/referral/*` | `referral.ts`, `referralCodes.ts` | Referral codes & rewards |
 | `/api/marketing/*` | `marketing.ts` | Email prefs, unsubscribe |
 | `/api/leaderboard/*`, `/api/account/*`, `/api/session/ping` | inline + Supabase | Leaderboard, account deletion, session heartbeat |
-| `/api/gender` | proxies `gender-service/app.py` | First-name gender for marketing CSVs |
+| `/api/gender` | proxies `services/gender-service/app.py` | First-name gender for marketing CSVs |
 | `/api/admin/*` | inline | Admin dashboard metrics (DAU/sessions/purchases) |
 | `/api/version`, `/api/config` | build meta | Version + public Supabase keys |
 
