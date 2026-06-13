@@ -218,12 +218,8 @@ export function startGameLoop() {
 
     const timeSinceActivity = now - lastUserActivity;
 
-    // Don't trigger inactivity if the page is currently visible and active
-    if (
-      timeSinceActivity > INACTIVITY_TIMEOUT &&
-      !isInactive &&
-      !document.hidden
-    ) {
+    // Stop after 15 minutes without input — including when the tab is in the background.
+    if (timeSinceActivity > INACTIVITY_TIMEOUT && !isInactive) {
       handleInactivity();
     }
   }, 30000); // Check every 30 seconds
