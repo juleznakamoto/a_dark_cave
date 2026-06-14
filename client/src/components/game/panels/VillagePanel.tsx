@@ -1016,6 +1016,73 @@ export default function VillagePanel() {
                 <h3 className="text-xs font-medium text-foreground leading-none">
                   {t("village.sectionProduce")}
                 </h3>
+                {(() => {
+                  if (!arePresetsVisible(state)) return null;
+                  const nextUnlockIndex =
+                    getNextPurchasablePresetSlotIndex(state);
+                  const nextUnlockCost = getNextPresetUnlockCost(state);
+                  if (nextUnlockIndex === null || nextUnlockCost === null) {
+                    return null;
+                  }
+                  const canUnlock = canPurchasePresetSlot(state);
+                  return (
+                    <TooltipWrapper
+                      tooltipId="preset-unlock"
+                      tooltip={
+                        <div className="text-xs">
+                          {t("village.presetUnlock", {
+                            cost: formatNumber(nextUnlockCost),
+                          })}
+                        </div>
+                      }
+                      tooltipContentClassName="text-white"
+                      className={pulseClassName(
+                        "preset-unlock",
+                        "inline-flex shrink-0 items-center self-center",
+                      )}
+                      tooltipTriggerAsChild
+                      disabled={!canUnlock}
+                      onMouseEnter={() => {
+                        onMouseEnter("preset-unlock");
+                        setHighlightedResources(["insight"]);
+                      }}
+                      onMouseLeave={() => {
+                        onMouseLeave("preset-unlock");
+                        setHighlightedResources([]);
+                      }}
+                    >
+                      <button
+                        type="button"
+                        data-testid="preset-unlock"
+                        className={cn(
+                          getInsightBadgeTriggerClassName({
+                            canAfford: canUnlock,
+                            playing: false,
+                            className: cn(
+                              "inline-flex h-5 w-5 shrink-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
+                              INSIGHT_BADGE_ALIGN_CLASS,
+                            ),
+                          }),
+                        )}
+                        aria-label={t("village.presetUnlock", {
+                          cost: formatNumber(nextUnlockCost),
+                        })}
+                        disabled={!canUnlock}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          if (canUnlock) handlePresetUnlock();
+                        }}
+                      >
+                        <BuildingActionBadge
+                          playing={false}
+                          embedded
+                          size="lg"
+                        />
+                      </button>
+                    </TooltipWrapper>
+                  );
+                })()}
                 {/* Production Cycle */}
                 <TooltipWrapper
                   tooltip={(() => {
@@ -1512,12 +1579,9 @@ export default function VillagePanel() {
                   );
                 })()}
                 {arePresetsVisible(state) &&
+                  getPurchasedPresetCount(state) >= 1 &&
                   (() => {
                     const purchasedCount = getPurchasedPresetCount(state);
-                    const nextUnlockIndex =
-                      getNextPurchasablePresetSlotIndex(state);
-                    const nextUnlockCost = getNextPresetUnlockCost(state);
-                    const canUnlock = canPurchasePresetSlot(state);
                     return (
                       <div className="ml-auto flex shrink-0 items-center gap-1">
                         {Array.from({ length: purchasedCount }).map((_, i) => {
@@ -1564,63 +1628,6 @@ export default function VillagePanel() {
                             </TooltipWrapper>
                           );
                         })}
-                        {nextUnlockIndex !== null && nextUnlockCost !== null && (
-                          <TooltipWrapper
-                            tooltipId="preset-unlock"
-                            tooltip={
-                              <div className="text-xs">
-                                {t("village.presetUnlock", {
-                                  cost: formatNumber(nextUnlockCost),
-                                })}
-                              </div>
-                            }
-                            tooltipContentClassName="text-white"
-                            className={pulseClassName(
-                              "preset-unlock",
-                              "inline-flex shrink-0 items-center self-center",
-                            )}
-                            tooltipTriggerAsChild
-                            disabled={!canUnlock}
-                            onMouseEnter={() => {
-                              onMouseEnter("preset-unlock");
-                              setHighlightedResources(["insight"]);
-                            }}
-                            onMouseLeave={() => {
-                              onMouseLeave("preset-unlock");
-                              setHighlightedResources([]);
-                            }}
-                          >
-                            <button
-                              type="button"
-                              data-testid="preset-unlock"
-                              className={cn(
-                                getInsightBadgeTriggerClassName({
-                                  canAfford: canUnlock,
-                                  playing: false,
-                                  className: cn(
-                                    "inline-flex h-5 w-5 shrink-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
-                                    INSIGHT_BADGE_ALIGN_CLASS,
-                                  ),
-                                }),
-                              )}
-                              aria-label={t("village.presetUnlock", {
-                                cost: formatNumber(nextUnlockCost),
-                              })}
-                              disabled={!canUnlock}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                e.preventDefault();
-                                if (canUnlock) handlePresetUnlock();
-                              }}
-                            >
-                              <BuildingActionBadge
-                                playing={false}
-                                embedded
-                                size="lg"
-                              />
-                            </button>
-                          </TooltipWrapper>
-                        )}
                         {purchasedCount >= 1 && (
                           <TooltipWrapper
                             tooltipId="preset-save"
