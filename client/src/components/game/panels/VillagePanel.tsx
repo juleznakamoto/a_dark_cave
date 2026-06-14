@@ -47,6 +47,7 @@ import {
 import {
   BuildingActionBadge,
   getInsightBadgeTriggerClassName,
+  INSIGHT_BADGE_ALIGN_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { formatNumber } from "@/lib/utils";
 import {
@@ -1038,7 +1039,7 @@ export default function VillagePanel() {
           {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
             <div className="space-y-2">
               <div className="flex w-full items-center gap-2">
-                <h3 className="inline-flex shrink-0 items-center text-xs font-medium text-foreground leading-[18px]">
+                <h3 className="inline-flex shrink-0 items-center text-xs font-medium text-foreground leading-none">
                   {t("village.sectionProduce")}
                 </h3>
                 {(() => {
@@ -1052,61 +1053,64 @@ export default function VillagePanel() {
                   const canUnlock = canPurchasePresetSlot(state, insightRevealing);
                   const canInteract = canUnlock && !isPresetUnlockAnimating;
                   return (
-                    <TooltipWrapper
-                      tooltipId="preset-unlock"
-                      tooltip={
-                        <div className="text-xs">
-                          {t("village.presetUnlock", {
-                            cost: formatNumber(nextUnlockCost),
-                          })}
-                        </div>
-                      }
-                      tooltipContentClassName="text-white"
-                      className={pulseClassName(
-                        "preset-unlock",
-                        PRODUCE_HEADER_INDICATOR_CLASS,
-                      )}
-                      tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
-                      tooltipTriggerAsChild
-                      disabled={!canInteract}
-                      onMouseEnter={() => {
-                        onMouseEnter("preset-unlock");
-                        setHighlightedResources(["insight"]);
-                      }}
-                      onMouseLeave={() => {
-                        onMouseLeave("preset-unlock");
-                        setHighlightedResources([]);
-                      }}
-                    >
-                      <button
-                        type="button"
-                        data-testid="preset-unlock"
-                        className={cn(
-                          getInsightBadgeTriggerClassName({
-                            canAfford: canUnlock || isPresetUnlockAnimating,
-                            playing: isPresetUnlockAnimating,
-                            className: cn(
-                              "inline-flex h-[18px] w-[18px] shrink-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
-                            ),
-                          }),
+                    <div className="inline-flex shrink-0 items-center self-center">
+                      <TooltipWrapper
+                        tooltipId="preset-unlock"
+                        tooltip={
+                          <div className="text-xs">
+                            {t("village.presetUnlock", {
+                              cost: formatNumber(nextUnlockCost),
+                            })}
+                          </div>
+                        }
+                        tooltipContentClassName="text-white"
+                        className={pulseClassName(
+                          "preset-unlock",
+                          "inline-flex items-center",
                         )}
-                        aria-label={t("village.presetUnlock", {
-                          cost: formatNumber(nextUnlockCost),
-                        })}
+                        tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
+                        tooltipTriggerAsChild
                         disabled={!canInteract}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          e.preventDefault();
-                          if (canInteract) handlePresetUnlock();
+                        onMouseEnter={() => {
+                          onMouseEnter("preset-unlock");
+                          setHighlightedResources(["insight"]);
+                        }}
+                        onMouseLeave={() => {
+                          onMouseLeave("preset-unlock");
+                          setHighlightedResources([]);
                         }}
                       >
-                        <BuildingActionBadge
-                          playing={isPresetUnlockAnimating}
-                          embedded
-                          size="sm"
-                        />
-                      </button>
-                    </TooltipWrapper>
+                        <button
+                          type="button"
+                          data-testid="preset-unlock"
+                          className={cn(
+                            getInsightBadgeTriggerClassName({
+                              canAfford: canUnlock || isPresetUnlockAnimating,
+                              playing: isPresetUnlockAnimating,
+                              className: cn(
+                                "inline-flex h-5 w-5 shrink-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
+                                INSIGHT_BADGE_ALIGN_CLASS,
+                              ),
+                            }),
+                          )}
+                          aria-label={t("village.presetUnlock", {
+                            cost: formatNumber(nextUnlockCost),
+                          })}
+                          disabled={!canInteract}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            if (canInteract) handlePresetUnlock();
+                          }}
+                        >
+                          <BuildingActionBadge
+                            playing={isPresetUnlockAnimating}
+                            embedded
+                            size="lg"
+                          />
+                        </button>
+                      </TooltipWrapper>
+                    </div>
                   );
                 })()}
                 {/* Production Cycle */}
