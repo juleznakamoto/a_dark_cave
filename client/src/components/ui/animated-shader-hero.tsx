@@ -51,17 +51,28 @@ interface HeroProps {
   className?: string;
 }
 
-/** Split "⛤ Cruel Mode" into a Noto symbol span + default-font label (like Buy Me a Coffee). */
+/** Split "⛤ Cruel Mode" into a Noto symbol span + default-font label. */
 function renderSymbolLabelButtonContent(text: string) {
   const parts = text.match(/^(\S+)\s+(.*)$/);
   if (!parts) return text;
   return (
     <>
-      <span className="font-noto-symbols-2">{parts[1]} </span>
+      <span
+        className="font-noto-symbols-2 inline-flex h-5 w-5 shrink-0 items-center justify-center text-base sm:text-lg leading-none"
+        aria-hidden
+      >
+        {parts[1]}
+      </span>
       <span>{parts[2]}</span>
     </>
   );
 }
+
+const END_SCREEN_CTA_BUTTON_CLASS =
+  "px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-base sm:text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 inline-flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap";
+
+const END_SCREEN_CTA_BUTTON_GROUP_CLASS =
+  "px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 group-hover:from-red-700 group-hover:to-red-600 text-slate-200 rounded-md font-semibold text-base sm:text-lg transition-all duration-300 inline-flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap";
 
 const END_SCREEN_LINK_BUTTON_CLASS =
   "px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5 min-w-0";
@@ -600,7 +611,7 @@ const Hero: React.FC<HeroProps> = ({
                 <button
                   onClick={buttons.primary.onClick}
                   button_id={buttons.primary.buttonId}
-                  className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 group-hover:from-red-700 group-hover:to-red-600 text-slate-200 rounded-md font-semibold text-base sm:text-lg transition-all duration-300 whitespace-nowrap"
+                  className={END_SCREEN_CTA_BUTTON_GROUP_CLASS}
                 >
                   {renderSymbolLabelButtonContent(buttons.primary.text)}
                 </button>
@@ -622,9 +633,14 @@ const Hero: React.FC<HeroProps> = ({
                   "noopener,noreferrer",
                 )
               }
-              className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-base sm:text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 whitespace-nowrap"
+              className={END_SCREEN_CTA_BUTTON_CLASS}
             >
-              <span>☕ </span>
+              <span
+                className="inline-flex h-5 w-5 shrink-0 items-center justify-center text-base sm:text-lg leading-none"
+                aria-hidden
+              >
+                ☕
+              </span>
               <span>Buy Me a Coffee</span>
             </button>
           </div>
@@ -644,7 +660,7 @@ const Hero: React.FC<HeroProps> = ({
                     "noopener,noreferrer",
                   )
                 }
-                className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-base sm:text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap"
+                className={END_SCREEN_CTA_BUTTON_CLASS}
               >
                 <svg
                   className="h-5 w-5 flex-shrink-0"
