@@ -2285,9 +2285,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
           } else if (actionId === PRESET_UNLOCK_INSIGHT_KEY) {
             const slotIndex = getNextPurchasablePresetSlotIndex(state);
             if (slotIndex !== null) {
+              const purchasedBefore = getPurchasedPresetCount(state);
               presetUnlockUpdate = {
-                villagerPresetsPurchased: getPurchasedPresetCount(state) + 1,
-                activePresetSlot: slotIndex + 1,
+                villagerPresetsPurchased: purchasedBefore + 1,
+                // First unlock: select slot 1 for save. Later unlocks keep the current slot.
+                ...(purchasedBefore === 0 ? { activePresetSlot: 1 } : {}),
               };
             }
           } else {
