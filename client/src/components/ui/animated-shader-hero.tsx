@@ -63,12 +63,20 @@ function renderSymbolLabelButtonContent(text: string) {
   );
 }
 
-/** Icon + label for compact end-screen buttons (same font metrics for vertical alignment). */
+const END_SCREEN_LINK_BUTTON_CLASS =
+  "px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5 min-w-0";
+
+/** Icon + label for compact end-screen buttons (icon box matches w-3.5 SVG icons). */
 function renderEmojiLabelButtonContent(emoji: string, label: string) {
   return (
     <>
-      <span className="leading-none">{emoji}</span>
-      <span className="leading-none">{label}</span>
+      <span
+        className="inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center text-sm leading-none"
+        aria-hidden
+      >
+        {emoji}
+      </span>
+      <span>{label}</span>
     </>
   );
 }
@@ -671,7 +679,7 @@ const Hero: React.FC<HeroProps> = ({
                           type="button"
                           onClick={buttons.secondaryTrailing.onClick}
                           button_id={buttons.secondaryTrailing.buttonId}
-                          className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm inline-flex items-center gap-1 sm:gap-1.5 min-w-0 leading-none"
+                          className={END_SCREEN_LINK_BUTTON_CLASS}
                         >
                           {renderEmojiLabelButtonContent("🎮", buttons.secondaryTrailing.text)}
                         </button>
@@ -679,7 +687,7 @@ const Hero: React.FC<HeroProps> = ({
                       <button
                         onClick={buttons.secondary.onClick}
                         button_id={buttons.secondary.buttonId}
-                        className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm inline-flex items-center gap-1 sm:gap-1.5 min-w-0 leading-none"
+                        className={END_SCREEN_LINK_BUTTON_CLASS}
                       >
                         {renderEmojiLabelButtonContent("▶", buttons.secondary.text)}
                       </button>
@@ -696,7 +704,7 @@ const Hero: React.FC<HeroProps> = ({
                         "noopener,noreferrer",
                       )
                     }
-                    className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5 min-w-0"
+                    className={END_SCREEN_LINK_BUTTON_CLASS}
                   >
                     <svg
                       className="w-3.5 h-3.5 shrink-0"
@@ -723,7 +731,7 @@ const Hero: React.FC<HeroProps> = ({
                   {socialButtons?.instagram && (
                     <button
                       onClick={socialButtons.instagram.onClick}
-                      className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5 min-w-0"
+                      className={END_SCREEN_LINK_BUTTON_CLASS}
                     >
                       <svg
                         className="w-3.5 h-3.5 shrink-0"
@@ -738,7 +746,7 @@ const Hero: React.FC<HeroProps> = ({
                   {socialButtons?.reddit && (
                     <button
                       onClick={socialButtons.reddit.onClick}
-                      className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5 min-w-0"
+                      className={END_SCREEN_LINK_BUTTON_CLASS}
                     >
                       <svg
                         className="w-3.5 h-3.5 shrink-0"
@@ -754,7 +762,7 @@ const Hero: React.FC<HeroProps> = ({
                     <button
                       onClick={buttons.feedback.onClick}
                       button_id={buttons.feedback.buttonId}
-                      className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5"
+                      className={END_SCREEN_LINK_BUTTON_CLASS}
                     >
                       <svg
                         className="w-3.5 h-3.5 shrink-0"
