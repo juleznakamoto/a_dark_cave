@@ -68,8 +68,8 @@ export function formatExecutionDuration(seconds: number): string {
 }
 
 /**
- * Tooltip line showing an action's execution duration. Rendered directly above
- * the cost line. Returns null for instant (no execution time) actions.
+ * Tooltip line showing an action's execution duration. Rendered as the last
+ * line of the cost section. Returns null for instant (no execution time) actions.
  */
 export const getActionDurationLine = (
   actionId: string,
@@ -447,7 +447,6 @@ export const getResourceGainTooltip = (
       {gains.length > 0 && (costs.length > 0 || hasDuration) && (
         <div className="border-t border-border my-1" />
       )}
-      {durationLine}
       {costs.map((cost, index) => (
         <div
           key={`cost-${index}`}
@@ -459,6 +458,7 @@ export const getResourceGainTooltip = (
           })}
         </div>
       ))}
+      {durationLine}
       {veinrootPctLine != null && (
         <>
           {headerBlockAboveVein && (

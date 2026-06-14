@@ -746,7 +746,6 @@ export default function VillagePanel() {
       header: (
         <div className="flex items-start gap-2">
           <div className="flex-1 min-w-0 whitespace-nowrap">
-            {durationLine}
             {costBreakdown.map((cost, index) => (
               <div
                 key={index}
@@ -757,6 +756,7 @@ export default function VillagePanel() {
                 {cost.text}
               </div>
             ))}
+            {durationLine}
           </div>
           {isUpgrade && (
             <span className="font-noto-symbols-2 text-green-700 leading-none shrink-0">

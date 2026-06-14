@@ -371,7 +371,6 @@ export default function ForestPanel() {
               effectLines.length > 0 && (
                 <div className="border-t border-border my-1" />
               )}
-            {durationLine}
             {costBreakdown.map((costItem, index) => (
               <div
                 key={index}
@@ -380,6 +379,7 @@ export default function ForestPanel() {
                 {costItem.text}
               </div>
             ))}
+            {durationLine}
           </div>
         );
       } else {
@@ -401,7 +401,6 @@ export default function ForestPanel() {
                 durationLine != null) && (
                 <div className="border-t border-border my-1" />
               )}
-            {durationLine}
             {costBreakdown.map((costItem, index) => (
               <div
                 key={index}
@@ -410,6 +409,7 @@ export default function ForestPanel() {
                 {costItem.text}
               </div>
             ))}
+            {durationLine}
             {forestTradeGainLine != null && (
               <>
                 {(villagerMessage || costBreakdown.length > 0) && (

@@ -379,7 +379,6 @@ export default function CavePanel() {
                 durationLine != null) && (
                 <div className="border-t border-border my-1" />
               )}
-            {durationLine}
             {costBreakdown.map((costItem, index) => (
               <div
                 key={index}
@@ -388,6 +387,7 @@ export default function CavePanel() {
                 {costItem.text}
               </div>
             ))}
+            {durationLine}
             {cooldownReduction > 0 && (
               <div>
                 {t("cave.cooldownReduction", { seconds: cooldownReduction })}

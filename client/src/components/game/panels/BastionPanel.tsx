@@ -34,7 +34,6 @@ export default function BastionPanel() {
     if (rows.length === 0) return undefined;
     return (
       <div className="text-xs whitespace-nowrap">
-        {getActionDurationLine(repairActionId, state)}
         {rows.map((cost, index) => (
           <div
             key={index}
@@ -43,6 +42,7 @@ export default function BastionPanel() {
             {cost.text}
           </div>
         ))}
+        {getActionDurationLine(repairActionId, state)}
       </div>
     );
   };
@@ -71,7 +71,6 @@ export default function BastionPanel() {
                 className=""
                 tooltip={
                   <div className="text-xs whitespace-nowrap">
-                    {getActionDurationLine("healRestlessKnight", state)}
                     {getActionCostBreakdown("healRestlessKnight", state).map(
                       (row, index) => (
                         <div
@@ -84,6 +83,7 @@ export default function BastionPanel() {
                         </div>
                       ),
                     )}
+                    {getActionDurationLine("healRestlessKnight", state)}
                   </div>
                 }
                 onMouseEnter={() => {
@@ -113,7 +113,6 @@ export default function BastionPanel() {
                 className=""
                 tooltip={
                   <div className="text-xs whitespace-nowrap">
-                    {getActionDurationLine("healElderWizard", state)}
                     {getActionCostBreakdown("healElderWizard", state).map(
                       (row, index) => (
                         <div
@@ -126,6 +125,7 @@ export default function BastionPanel() {
                         </div>
                       ),
                     )}
+                    {getActionDurationLine("healElderWizard", state)}
                   </div>
                 }
                 onMouseEnter={() => {

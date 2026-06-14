@@ -1049,6 +1049,8 @@ export const actionSchema = z.object({
   executionTime: z
     .union([
       z.number(),
+      // Per-level execution time, keyed by building level (same convention as `cost`).
+      z.record(z.number(), z.number()),
       z.function().args(z.any()).returns(z.number()),
     ])
     .optional(),
