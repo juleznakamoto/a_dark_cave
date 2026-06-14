@@ -101,7 +101,11 @@ import {
 import {
   MAX_PRESET_SLOTS,
   applyPresetAssignments,
+  canPurchasePresetSlot,
+  getNextPresetUnlockCost,
+  getNextPurchasablePresetSlotIndex,
   getPresetSlot,
+  getPurchasedPresetCount,
   isPresetSlotUnlocked,
   snapshotAssignments,
 } from "@/game/villagerJobPresets";
@@ -405,6 +409,8 @@ interface GameStore extends GameState {
   saveVillagerJobPreset: (slot: number) => void;
   /** Apply a saved preset (1-based slot); selects the slot and redistributes villagers if saved. */
   applyVillagerJobPreset: (slot: number) => void;
+  /** Buy the next preset slot with Insight (one at a time). Returns true on success. */
+  purchaseVillagerPresetSlot: () => boolean;
   enchantWeapon: (weaponId: string) => boolean;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
   setCombatDialog: (isOpen: boolean, data?: any) => void;
@@ -3358,6 +3364,25 @@ export const useGameStore = create<GameStore>((set, get) => ({
       set(updates);
       StateManager.schedulePopulationUpdate(get);
     }
+  },
+
+  purchaseVillagerPresetSlot: () => {
+    const state = get();
+    if (!canPurchasePresetSlot(state)) return false;
+
+    const slotIndex = getNextPurchasablePresetSlotIndex(state);
+    const cost = getNextPresetUnlockCost(state);
+    if (slotIndex === null || cost === null) return false;
+
+    const resourceUpdates = updateResource(state, "insight", -cost);
+
+    set({
+      ...resourceUpdates,
+      villagerPresetsPurchased: getPurchasedPresetCount(state) + 1,
+      // Select the freshly unlocked slot so the save button targets it.
+      activePresetSlot: slotIndex + 1,
+    });
+    return true;
   },
 
   upgradeVillagerCap: (groupId: string) => {

@@ -26,6 +26,7 @@
     "presetLocked": "Verrouillé — disponible à l'achat",
     "presetLockedBuilding": "{{building}} requis pour déverrouiller",
     "presetSave": "Enregistrer les tâches actuelles dans le préréglage {{slot}}",
+    "presetUnlock": "Débloquer un préréglage de métiers pour {{cost}} Perspicacité",
     "cycle": "Cycle",
     "cycleDescription": "À chaque cycle, vos villageois produisent des ressources et il y a une chance que de nouveaux villageois arrivent.",
     "nextCycleIn": "Prochain cycle dans {{seconds}} secondes",

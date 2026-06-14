@@ -26,6 +26,7 @@
     "presetLocked": "Bloqueado — disponível para compra",
     "presetLockedBuilding": "{{building}} necessário para desbloquear",
     "presetSave": "Salvar trabalhos atuais no preset {{slot}}",
+    "presetUnlock": "Desbloquear preset de trabalhos por {{cost}} de Perspicácia",
     "cycle": "Ciclo",
     "cycleDescription": "A cada ciclo, seus aldeões produzem recursos e há uma chance de novos aldeões chegarem.",
     "nextCycleIn": "Próximo ciclo em {{seconds}} segundos",

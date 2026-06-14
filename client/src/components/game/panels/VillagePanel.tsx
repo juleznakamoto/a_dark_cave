@@ -43,14 +43,18 @@ import { getPopulationProduction } from "@/game/population";
 import {
   areVillagerCapsEnabled,
   getVillagerCapForJob,
+  INSIGHT_GLYPH,
+  INSIGHT_TEXT_CLASS,
 } from "@/game/villagerCapUpgrades";
-import { villageBuildActions } from "@/game/rules/villageBuildActions";
+import { formatNumber } from "@/lib/utils";
 import {
   MAX_PRESET_SLOTS,
   arePresetsVisible,
+  canPurchasePresetSlot,
+  getNextPresetUnlockCost,
+  getNextPurchasablePresetSlotIndex,
   getPresetSlot,
-  getPresetSlotUnlockActionId,
-  getUnlockedPresetCount,
+  getPurchasedPresetCount,
 } from "@/game/villagerJobPresets";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { useState, useEffect, useRef, useCallback } from "react";
@@ -98,6 +102,7 @@ const VILLAGE_INDICATOR_TOOLTIP_IDS = [
   "fog-progress",
   "madness-production",
   "preset-save",
+  "preset-unlock",
   ...Array.from({ length: MAX_PRESET_SLOTS }, (_, i) => `preset-slot-${i + 1}`),
 ] as const;
 
@@ -120,9 +125,11 @@ export default function VillagePanel() {
     setInvestDialogOpen,
     villagerJobPresets,
     activePresetSlot,
+    villagerPresetsPurchased,
     saveVillagerJobPreset,
     applyVillagerJobPreset,
     setActivePresetSlot,
+    purchaseVillagerPresetSlot,
   } = useGameStore();
   const { pulseClassName, onMouseEnter, onMouseLeave } =
     useNewItemPulseTooltips(VILLAGE_INDICATOR_TOOLTIP_IDS);
@@ -162,6 +169,10 @@ export default function VillagePanel() {
       presetSaveTimeoutRef.current = null;
     }, 2000);
   }, [activePresetSlot, saveVillagerJobPreset]);
+
+  const handlePresetUnlock = useCallback(() => {
+    purchaseVillagerPresetSlot();
+  }, [purchaseVillagerPresetSlot]);
 
   useEffect(
     () => () => {
@@ -1497,111 +1508,152 @@ export default function VillagePanel() {
                     </>
                   );
                 })()}
-                {arePresetsVisible(state) && (
-                  <div className="ml-auto flex shrink-0 items-center gap-1">
-                    {Array.from({ length: MAX_PRESET_SLOTS }).map((_, i) => {
-                      const slot = i + 1;
-                      const unlockedCount = getUnlockedPresetCount(state);
-                      const unlocked = i < unlockedCount;
-                      const isActive = activePresetSlot === slot;
-                      const hasPreset = !!getPresetSlot(state, i);
-                      const unlockActionId = getPresetSlotUnlockActionId(i);
-                      const tooltipText = !unlocked
-                        ? unlockActionId
-                          ? t("village.presetLockedBuilding", {
-                              building: resolveActionLabel(
-                                unlockActionId,
-                                villageBuildActions[unlockActionId]?.label ??
-                                  unlockActionId,
-                              ),
-                            })
-                          : t("village.presetLocked")
-                        : hasPreset
-                          ? t("village.presetApply", { slot })
-                          : t("village.presetEmpty", { slot });
-                      const presetTooltipId = `preset-slot-${slot}`;
-                      return (
-                        <TooltipWrapper
-                          key={`preset-slot-${slot}`}
-                          tooltipId={presetTooltipId}
-                          tooltip={<div className="text-xs">{tooltipText}</div>}
-                          disabled={!unlocked}
-                          tooltipTriggerClassName="inline-flex items-center leading-none"
-                          className={pulseClassName(
-                            presetTooltipId,
-                            unlocked
-                              ? "group flex items-center cursor-pointer"
-                              : "flex items-center",
-                          )}
-                          onMouseEnter={() => onMouseEnter(presetTooltipId)}
-                          onMouseLeave={() => onMouseLeave(presetTooltipId)}
-                          onClick={() => {
-                            if (unlocked) applyVillagerJobPreset(slot);
-                          }}
-                        >
-                          <Button
-                            size="xs"
-                            variant={isActive ? "default" : "outline"}
-                            disabled={!unlocked}
-                            data-testid={`preset-slot-${slot}`}
-                            button_id={`preset-slot-${slot}`}
-                            className={cn(
-                              "h-[18px] w-[18px] min-h-0 shrink-0 p-0 text-[10px] tabular-nums leading-none pointer-events-none transition-colors appearance-none [-webkit-appearance:none]",
-                              isActive
-                                ? unlocked && "group-hover:bg-primary/90"
-                                : gameActionOutlineButtonClassName(!unlocked, {
-                                    groupHover: true,
-                                  }),
+                {arePresetsVisible(state) &&
+                  (() => {
+                    const purchasedCount = getPurchasedPresetCount(state);
+                    const nextUnlockIndex =
+                      getNextPurchasablePresetSlotIndex(state);
+                    const nextUnlockCost = getNextPresetUnlockCost(state);
+                    const canUnlock = canPurchasePresetSlot(state);
+                    return (
+                      <div className="ml-auto flex shrink-0 items-center gap-1">
+                        {Array.from({ length: purchasedCount }).map((_, i) => {
+                          const slot = i + 1;
+                          const isActive = activePresetSlot === slot;
+                          const hasPreset = !!getPresetSlot(state, i);
+                          const tooltipText = hasPreset
+                            ? t("village.presetApply", { slot })
+                            : t("village.presetEmpty", { slot });
+                          const presetTooltipId = `preset-slot-${slot}`;
+                          return (
+                            <TooltipWrapper
+                              key={`preset-slot-${slot}`}
+                              tooltipId={presetTooltipId}
+                              tooltip={
+                                <div className="text-xs">{tooltipText}</div>
+                              }
+                              tooltipTriggerClassName="inline-flex items-center leading-none"
+                              className={pulseClassName(
+                                presetTooltipId,
+                                "group flex items-center cursor-pointer",
+                              )}
+                              onMouseEnter={() => onMouseEnter(presetTooltipId)}
+                              onMouseLeave={() => onMouseLeave(presetTooltipId)}
+                              onClick={() => applyVillagerJobPreset(slot)}
+                            >
+                              <Button
+                                size="xs"
+                                variant={isActive ? "default" : "outline"}
+                                data-testid={`preset-slot-${slot}`}
+                                button_id={`preset-slot-${slot}`}
+                                className={cn(
+                                  "h-[18px] w-[18px] min-h-0 shrink-0 p-0 text-[10px] tabular-nums leading-none pointer-events-none transition-colors appearance-none [-webkit-appearance:none]",
+                                  isActive
+                                    ? "group-hover:bg-primary/90"
+                                    : gameActionOutlineButtonClassName(false, {
+                                        groupHover: true,
+                                      }),
+                                )}
+                                style={{ touchAction: "manipulation" }}
+                              >
+                                {slot}
+                              </Button>
+                            </TooltipWrapper>
+                          );
+                        })}
+                        {nextUnlockIndex !== null && nextUnlockCost !== null && (
+                          <TooltipWrapper
+                            tooltipId="preset-unlock"
+                            tooltip={
+                              <div className="text-xs">
+                                {t("village.presetUnlock", {
+                                  cost: formatNumber(nextUnlockCost),
+                                })}
+                              </div>
+                            }
+                            tooltipTriggerClassName="inline-flex items-center leading-none"
+                            className={pulseClassName(
+                              "preset-unlock",
+                              "group flex items-center cursor-pointer",
                             )}
-                            style={{ touchAction: "manipulation" }}
+                            onMouseEnter={() => onMouseEnter("preset-unlock")}
+                            onMouseLeave={() => onMouseLeave("preset-unlock")}
+                            onClick={() => {
+                              if (canUnlock) handlePresetUnlock();
+                            }}
                           >
-                            {slot}
-                          </Button>
-                        </TooltipWrapper>
-                      );
-                    })}
-                    <TooltipWrapper
-                      tooltipId="preset-save"
-                      tooltip={
-                        <div className="text-xs">
-                          {t("village.presetSave", { slot: activePresetSlot })}
-                        </div>
-                      }
-                      tooltipTriggerClassName="inline-flex items-center leading-none"
-                      className={pulseClassName(
-                        "preset-save",
-                        "group flex items-center cursor-pointer",
-                      )}
-                      onMouseEnter={() => onMouseEnter("preset-save")}
-                      onMouseLeave={() => onMouseLeave("preset-save")}
-                      onClick={handlePresetSave}
-                    >
-                      <Button
-                        size="xs"
-                        variant="outline"
-                        data-testid="preset-save"
-                        button_id="preset-save"
-                        className={cn(
-                          "h-[18px] w-[18px] min-h-0 shrink-0 p-0 pointer-events-none inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]",
-                          gameActionOutlineButtonClassName(false, {
-                            groupHover: true,
-                          }),
+                            <Button
+                              size="xs"
+                              variant="outline"
+                              disabled={!canUnlock}
+                              data-testid="preset-unlock"
+                              button_id="preset-unlock"
+                              className={cn(
+                                "h-[18px] w-[18px] min-h-0 shrink-0 p-0 pointer-events-none inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]",
+                                gameActionOutlineButtonClassName(!canUnlock, {
+                                  groupHover: true,
+                                }),
+                              )}
+                              style={{ touchAction: "manipulation" }}
+                            >
+                              <span
+                                className={cn(
+                                  "inline-flex items-center justify-center font-noto-symbols-2 text-[12px] leading-none",
+                                  INSIGHT_TEXT_CLASS,
+                                )}
+                              >
+                                {INSIGHT_GLYPH}
+                              </span>
+                            </Button>
+                          </TooltipWrapper>
                         )}
-                        style={{ touchAction: "manipulation" }}
-                      >
-                        <span
-                          className={
-                            presetSaveConfirmed
-                              ? "inline-flex items-center justify-center text-[11px] leading-none text-green-500"
-                              : "inline-flex items-center justify-center font-noto-symbols-2 text-[12px] leading-none translate-y-0.5"
-                          }
-                        >
-                          {presetSaveConfirmed ? "✓" : "🖫"}
-                        </span>
-                      </Button>
-                    </TooltipWrapper>
-                  </div>
-                )}
+                        {purchasedCount >= 1 && (
+                          <TooltipWrapper
+                            tooltipId="preset-save"
+                            tooltip={
+                              <div className="text-xs">
+                                {t("village.presetSave", {
+                                  slot: activePresetSlot,
+                                })}
+                              </div>
+                            }
+                            tooltipTriggerClassName="inline-flex items-center leading-none"
+                            className={pulseClassName(
+                              "preset-save",
+                              "group flex items-center cursor-pointer",
+                            )}
+                            onMouseEnter={() => onMouseEnter("preset-save")}
+                            onMouseLeave={() => onMouseLeave("preset-save")}
+                            onClick={handlePresetSave}
+                          >
+                            <Button
+                              size="xs"
+                              variant="outline"
+                              data-testid="preset-save"
+                              button_id="preset-save"
+                              className={cn(
+                                "h-[18px] w-[18px] min-h-0 shrink-0 p-0 pointer-events-none inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]",
+                                gameActionOutlineButtonClassName(false, {
+                                  groupHover: true,
+                                }),
+                              )}
+                              style={{ touchAction: "manipulation" }}
+                            >
+                              <span
+                                className={
+                                  presetSaveConfirmed
+                                    ? "inline-flex items-center justify-center text-[11px] leading-none text-green-500"
+                                    : "inline-flex items-center justify-center font-noto-symbols-2 text-[12px] leading-none translate-y-0.5"
+                                }
+                              >
+                                {presetSaveConfirmed ? "✓" : "🖫"}
+                              </span>
+                            </Button>
+                          </TooltipWrapper>
+                        )}
+                      </div>
+                    );
+                  })()}
               </div>
               <div className="space-y-1 leading-tight">
                 {visiblePopulationJobs.map((job) =>

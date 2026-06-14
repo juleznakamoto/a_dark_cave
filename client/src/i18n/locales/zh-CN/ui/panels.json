@@ -26,6 +26,7 @@
     "presetLocked": "已锁定 — 可购买解锁",
     "presetLockedBuilding": "需要 {{building}} 才能解锁",
     "presetSave": "将当前工作分配保存到预设 {{slot}}",
+    "presetUnlock": "花费 {{cost}} 洞见解锁村民工作预设",
     "cycle": "周期",
     "cycleDescription": "每个周期，村民都会生产资源，并且有可能迎来新村民。",
     "nextCycleIn": "下一周期 {{seconds}} 秒后",

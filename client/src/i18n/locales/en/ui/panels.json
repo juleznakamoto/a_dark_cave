@@ -26,6 +26,7 @@
     "presetLocked": "Locked — available for purchase",
     "presetLockedBuilding": "{{building}} needed to unlock",
     "presetSave": "Save current jobs to preset {{slot}}",
+    "presetUnlock": "Unlock villager preset for {{cost}} Insight",
     "cycle": "Cycle",
     "cycleDescription": "Each cycle your villagers produce resources and there is a chance of new villagers arriving.",
     "nextCycleIn": "Next cycle in {{seconds}} seconds",

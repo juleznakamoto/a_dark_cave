@@ -26,6 +26,7 @@
     "presetLocked": "Gesperrt — zum Freischalten kaufbar",
     "presetLockedBuilding": "{{building}} zum Freischalten erforderlich",
     "presetSave": "Aktuelle Jobs in Vorlage {{slot}} speichern",
+    "presetUnlock": "Job-Vorlage für {{cost}} Einsicht freischalten",
     "cycle": "Zyklus",
     "cycleDescription": "In jedem Zyklus produzieren deine Dorfbewohner Ressourcen und es besteht die Chance, dass neue Dorfbewohner ankommen.",
     "nextCycleIn": "Nächster Zyklus in {{seconds}} Sekunden",

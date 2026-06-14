@@ -2,7 +2,11 @@ import type { GameState } from "@shared/schema";
 import { populationJobs } from "@/game/population";
 import { getVillagersInVillage } from "@/game/population";
 import { getVillagerCapForJob } from "@/game/villagerCapUpgrades";
+import { getInsightAmount, isInsightUnlocked } from "@/game/rules/insightReveal";
 import { updatePopulationCounts } from "@/game/stateHelpers";
+
+/** Base Insight cost for the first preset slot; each later slot costs a multiple of this. */
+export const PRESET_UNLOCK_BASE_INSIGHT_COST = 2500;
 
 /** Slots unlocked via the Scribe's Office building chain (one per building). */
 export const MAX_BUILDING_PRESET_SLOTS = 3;
@@ -34,8 +38,8 @@ type VillagerJobKey = keyof GameState["villagers"];
 /** Stable list of job ids (everything in `villagers` except `free`). */
 const JOB_IDS = Object.keys(populationJobs) as VillagerJobKey[];
 
-/** Number of preset slots currently unlocked by built archive buildings (0-3). */
-export function getUnlockedPresetCount(
+/** Number of preset slots made *available to buy* by built archive buildings (0-3). */
+export function getBuildingPresetSlotCount(
   state: Pick<GameState, "buildings">,
 ): number {
   return PRESET_UNLOCK_BUILDINGS.reduce(
@@ -44,19 +48,102 @@ export function getUnlockedPresetCount(
   );
 }
 
+/** Number of preset slots the player has bought with Insight (usable slots), 0-3. */
+export function getPurchasedPresetCount(
+  state: Pick<GameState, "villagerPresetsPurchased">,
+): number {
+  const raw = state.villagerPresetsPurchased ?? 0;
+  return Math.min(Math.max(0, Math.floor(raw)), MAX_PRESET_SLOTS);
+}
+
+/**
+ * Highest 1-based slot count implied by saved preset data (0 when none saved).
+ * Used for backwards-compat load migration only.
+ */
+export function countUsedPresetSlots(
+  state: Pick<GameState, "villagerJobPresets">,
+): number {
+  const presets = state.villagerJobPresets ?? [];
+  let highestUsedIndex = -1;
+  for (let i = 0; i < MAX_PRESET_SLOTS; i++) {
+    if (presets[i] != null) {
+      highestUsedIndex = i;
+    }
+  }
+  return highestUsedIndex >= 0 ? highestUsedIndex + 1 : 0;
+}
+
+/**
+ * One-time load migration: slots that already had saved presets stay unlocked
+ * without Insight payment. Skipped in dev builds so the unlock flow can be tested.
+ */
+export function migrateVillagerPresetsPurchasedOnLoad(
+  state: Pick<
+    GameState,
+    "buildings" | "villagerJobPresets" | "villagerPresetsPurchased"
+  >,
+): Partial<Pick<GameState, "villagerPresetsPurchased">> | null {
+  if (import.meta.env.DEV) return null;
+
+  const usedCount = countUsedPresetSlots(state);
+  if (usedCount <= 0) return null;
+
+  const current = getPurchasedPresetCount(state);
+  const buildingAvailable = getBuildingPresetSlotCount(state);
+  const target = Math.min(usedCount, buildingAvailable, MAX_PRESET_SLOTS);
+  if (target <= current) return null;
+
+  return { villagerPresetsPurchased: target };
+}
+
 /** True once the first archive building exists (preset controls become visible). */
 export function arePresetsVisible(
   state: Pick<GameState, "buildings">,
 ): boolean {
-  return getUnlockedPresetCount(state) > 0;
+  return getBuildingPresetSlotCount(state) > 0;
 }
 
-/** A slot index (0-based) is usable when within the unlocked building count. */
+/** A slot index (0-based) is usable once it has been bought with Insight. */
 export function isPresetSlotUnlocked(
-  state: Pick<GameState, "buildings">,
+  state: Pick<GameState, "villagerPresetsPurchased">,
   slotIndex: number,
 ): boolean {
-  return slotIndex >= 0 && slotIndex < getUnlockedPresetCount(state);
+  return slotIndex >= 0 && slotIndex < getPurchasedPresetCount(state);
+}
+
+/**
+ * 0-based index of the next slot available to purchase, or null when none is
+ * available (all purchased, or no further archive building built yet). Slots are
+ * bought strictly one after another.
+ */
+export function getNextPurchasablePresetSlotIndex(
+  state: Pick<GameState, "buildings" | "villagerPresetsPurchased">,
+): number | null {
+  const purchased = getPurchasedPresetCount(state);
+  const available = getBuildingPresetSlotCount(state);
+  if (purchased >= available || purchased >= MAX_PRESET_SLOTS) return null;
+  return purchased;
+}
+
+/** Insight cost to unlock the slot at the given 0-based index (2500, 5000, 7500). */
+export function getPresetUnlockCost(slotIndex: number): number {
+  return PRESET_UNLOCK_BASE_INSIGHT_COST * (slotIndex + 1);
+}
+
+/** Insight cost for the next purchasable slot, or null when none is available. */
+export function getNextPresetUnlockCost(
+  state: Pick<GameState, "buildings" | "villagerPresetsPurchased">,
+): number | null {
+  const nextIndex = getNextPurchasablePresetSlotIndex(state);
+  return nextIndex === null ? null : getPresetUnlockCost(nextIndex);
+}
+
+/** True when a slot can be purchased now (slot available, Insight unlocked & affordable). */
+export function canPurchasePresetSlot(state: GameState): boolean {
+  const cost = getNextPresetUnlockCost(state);
+  if (cost === null) return false;
+  if (!isInsightUnlocked(state)) return false;
+  return getInsightAmount(state) >= cost;
 }
 
 /** Building key required to unlock a 0-based slot (slots 0-2 only). */

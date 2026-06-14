@@ -363,6 +363,10 @@ export const gameStateSchema = z.object({
     .default([]),
   // Currently selected preset slot (1-based) that the save button writes to.
   activePresetSlot: z.number().default(1),
+  // Number of preset slots bought with Insight (0-3). Slots must be purchased one
+  // at a time and only once the matching archive building exists. On load, slots
+  // that already contain saved presets are grandfathered (except in dev builds).
+  villagerPresetsPurchased: z.number().default(0),
   // Weapon enchantment levels keyed by weapon id (Tomewarden Academy feature).
   weaponEnchantments: z.record(z.string(), z.number()).default({}),
   expeditionVillagers: z.record(z.string(), z.number()).default({}),

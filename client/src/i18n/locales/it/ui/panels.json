@@ -26,6 +26,7 @@
     "presetLocked": "Bloccato — disponibile per l'acquisto",
     "presetLockedBuilding": "{{building}} necessario per sbloccare",
     "presetSave": "Salva i lavori attuali nel preset {{slot}}",
+    "presetUnlock": "Sblocca preset di lavori per {{cost}} Intuizione",
     "cycle": "Ciclo",
     "cycleDescription": "Ad ogni ciclo i tuoi abitanti producono risorse e c'è una possibilità che arrivino nuovi abitanti.",
     "nextCycleIn": "Prossimo ciclo tra {{seconds}} secondi",

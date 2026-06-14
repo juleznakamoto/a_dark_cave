@@ -10,6 +10,7 @@ import { getTotalEventDeathReduction } from "./rules/effectsCalculation";
 import { getVillagerCapForJob } from "./villagerCapUpgrades";
 import { getExecutionTime } from "./rules/executionTime";
 import { getGameActions } from "./rules/actionsRegistry";
+import { migrateVillagerPresetsPurchasedOnLoad } from "./villagerJobPresets";
 
 type CombatResultPayload =
   | CombatResultSummary
@@ -644,6 +645,10 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
   const postCompletion = migratePostCompletionAttackWavesOnLoad(migrated);
   if (postCompletion) {
     migrated = { ...migrated, ...postCompletion };
+  }
+  const presetPurchases = migrateVillagerPresetsPurchasedOnLoad(migrated);
+  if (presetPurchases) {
+    migrated = { ...migrated, ...presetPurchases };
   }
   return migrated;
 }
