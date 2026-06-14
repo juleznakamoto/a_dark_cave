@@ -197,7 +197,7 @@ body {
   z-index: 20;
   overflow: visible;
   pointer-events: auto;
-  cursor: default;
+  cursor: inherit;
   border: none;
   border-radius: 0;
   background: transparent;
