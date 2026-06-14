@@ -34,6 +34,8 @@ export function isInsightUnlocked(state: GameState): boolean {
 export const STAT_INSIGHT_REVEAL_KEY = "stats";
 /** `insightRevealing` key while the timed-event tab prolong badge plays its animation. */
 export const TIMED_EVENT_INSIGHT_PROLONG_KEY = "timedEventProlong";
+/** `insightRevealing` key while a villager preset slot unlock animates. */
+export const PRESET_UNLOCK_INSIGHT_KEY = "villagerPresetUnlock";
 
 export function isStatEffectsRevealed(state: GameState): boolean {
   return Boolean(state.statEffectsRevealed);

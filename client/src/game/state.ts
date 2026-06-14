@@ -61,6 +61,7 @@ import {
   TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
   TIMED_EVENT_TAB_PROLONG_MS,
   TIMED_EVENT_INSIGHT_PROLONG_KEY,
+  PRESET_UNLOCK_INSIGHT_KEY,
   canProlongTimedEventTab,
 } from "@/game/rules/insightReveal";
 import {
@@ -2274,12 +2275,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ];
       let revealChanged = false;
       let statEffectsRevealed = state.statEffectsRevealed;
+      let presetUnlockUpdate: Partial<GameState> | null = null;
       for (const [actionId, endTime] of Object.entries(state.insightRevealing ?? {})) {
         if (now >= endTime) {
           if (actionId === STAT_INSIGHT_REVEAL_KEY) {
             statEffectsRevealed = true;
           } else if (actionId === TIMED_EVENT_INSIGHT_PROLONG_KEY) {
             // Timed-tab prolong: animation only (no revealedEffects entry).
+          } else if (actionId === PRESET_UNLOCK_INSIGHT_KEY) {
+            const slotIndex = getNextPurchasablePresetSlotIndex(state);
+            if (slotIndex !== null) {
+              presetUnlockUpdate = {
+                villagerPresetsPurchased: getPurchasedPresetCount(state) + 1,
+                activePresetSlot: slotIndex + 1,
+              };
+            }
           } else {
             const achievementId = parseAchievementTitleInsightKey(actionId);
             if (achievementId) {
@@ -2329,6 +2339,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             revealedEffects,
             statEffectsRevealed,
             revealedAchievementTitles,
+            ...(presetUnlockUpdate ?? {}),
           }
           : {}),
       };
@@ -3368,19 +3379,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   purchaseVillagerPresetSlot: () => {
     const state = get();
-    if (!canPurchasePresetSlot(state)) return false;
+    if (!canPurchasePresetSlot(state, state.insightRevealing)) return false;
 
-    const slotIndex = getNextPurchasablePresetSlotIndex(state);
     const cost = getNextPresetUnlockCost(state);
-    if (slotIndex === null || cost === null) return false;
+    if (cost === null) return false;
 
     const resourceUpdates = updateResource(state, "insight", -cost);
 
     set({
       ...resourceUpdates,
-      villagerPresetsPurchased: getPurchasedPresetCount(state) + 1,
-      // Select the freshly unlocked slot so the save button targets it.
-      activePresetSlot: slotIndex + 1,
+      insightRevealing: {
+        ...(state.insightRevealing ?? {}),
+        [PRESET_UNLOCK_INSIGHT_KEY]: Date.now() + INSIGHT_REVEAL_DURATION_MS,
+      },
     });
     return true;
   },

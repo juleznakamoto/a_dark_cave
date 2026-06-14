@@ -2,7 +2,12 @@ import type { GameState } from "@shared/schema";
 import { populationJobs } from "@/game/population";
 import { getVillagersInVillage } from "@/game/population";
 import { getVillagerCapForJob } from "@/game/villagerCapUpgrades";
-import { getInsightAmount, isInsightUnlocked } from "@/game/rules/insightReveal";
+import {
+  getInsightAmount,
+  isInsightRevealInProgress,
+  isInsightUnlocked,
+  PRESET_UNLOCK_INSIGHT_KEY,
+} from "@/game/rules/insightReveal";
 import { updatePopulationCounts } from "@/game/stateHelpers";
 
 /** Base Insight cost for the first preset slot; each later slot costs a multiple of this. */
@@ -139,7 +144,18 @@ export function getNextPresetUnlockCost(
 }
 
 /** True when a slot can be purchased now (slot available, Insight unlocked & affordable). */
-export function canPurchasePresetSlot(state: GameState): boolean {
+export function canPurchasePresetSlot(
+  state: GameState,
+  insightRevealing?: Record<string, number>,
+): boolean {
+  if (
+    isInsightRevealInProgress(
+      PRESET_UNLOCK_INSIGHT_KEY,
+      insightRevealing,
+    )
+  ) {
+    return false;
+  }
   const cost = getNextPresetUnlockCost(state);
   if (cost === null) return false;
   if (!isInsightUnlocked(state)) return false;

@@ -47,7 +47,6 @@ import {
 import {
   BuildingActionBadge,
   getInsightBadgeTriggerClassName,
-  INSIGHT_BADGE_ALIGN_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { formatNumber } from "@/lib/utils";
 import {
@@ -67,7 +66,11 @@ import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
 import { getRevealedEffectsForActionTooltip } from "@/game/rules/insightRevealTooltip";
 import { composeActionTooltip } from "@/game/rules/actionTooltipLayout";
-import { canRevealEffects } from "@/game/rules/insightReveal";
+import {
+  canRevealEffects,
+  isInsightRevealInProgress,
+  PRESET_UNLOCK_INSIGHT_KEY,
+} from "@/game/rules/insightReveal";
 import {
   SuccessParticles,
   useFeedFireParticles,
@@ -108,6 +111,12 @@ const VILLAGE_INDICATOR_TOOLTIP_IDS = [
   "preset-unlock",
   ...Array.from({ length: MAX_PRESET_SLOTS }, (_, i) => `preset-slot-${i + 1}`),
 ] as const;
+
+/** Shared with the 18px circular progress indicators in the Produce header row. */
+const PRODUCE_HEADER_INDICATOR_CLASS =
+  "inline-flex shrink-0 items-center self-center cursor-pointer";
+const PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS =
+  "inline-flex items-center leading-none";
 
 export default function VillagePanel() {
   const { t } = useTranslation("ui");
@@ -176,6 +185,22 @@ export default function VillagePanel() {
   const handlePresetUnlock = useCallback(() => {
     purchaseVillagerPresetSlot();
   }, [purchaseVillagerPresetSlot]);
+
+  const presetUnlockRevealEnd = useGameStore(
+    (s) => s.insightRevealing?.[PRESET_UNLOCK_INSIGHT_KEY],
+  );
+  const insightRevealing = useGameStore((s) => s.insightRevealing);
+  const isPresetUnlockAnimating = isInsightRevealInProgress(
+    PRESET_UNLOCK_INSIGHT_KEY,
+    insightRevealing,
+  );
+  const [, forcePresetUnlockUpdate] = useState(0);
+
+  useEffect(() => {
+    if (!isPresetUnlockAnimating) return;
+    const id = setInterval(() => forcePresetUnlockUpdate((n) => n + 1), 100);
+    return () => clearInterval(id);
+  }, [isPresetUnlockAnimating, presetUnlockRevealEnd]);
 
   useEffect(
     () => () => {
@@ -1013,7 +1038,7 @@ export default function VillagePanel() {
           {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
             <div className="space-y-2">
               <div className="flex w-full items-center gap-2">
-                <h3 className="text-xs font-medium text-foreground leading-none">
+                <h3 className="inline-flex shrink-0 items-center text-xs font-medium text-foreground leading-[18px]">
                   {t("village.sectionProduce")}
                 </h3>
                 {(() => {
@@ -1024,7 +1049,8 @@ export default function VillagePanel() {
                   if (nextUnlockIndex === null || nextUnlockCost === null) {
                     return null;
                   }
-                  const canUnlock = canPurchasePresetSlot(state);
+                  const canUnlock = canPurchasePresetSlot(state, insightRevealing);
+                  const canInteract = canUnlock && !isPresetUnlockAnimating;
                   return (
                     <TooltipWrapper
                       tooltipId="preset-unlock"
@@ -1038,10 +1064,11 @@ export default function VillagePanel() {
                       tooltipContentClassName="text-white"
                       className={pulseClassName(
                         "preset-unlock",
-                        "inline-flex shrink-0 items-center self-center",
+                        PRODUCE_HEADER_INDICATOR_CLASS,
                       )}
+                      tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
                       tooltipTriggerAsChild
-                      disabled={!canUnlock}
+                      disabled={!canInteract}
                       onMouseEnter={() => {
                         onMouseEnter("preset-unlock");
                         setHighlightedResources(["insight"]);
@@ -1056,28 +1083,27 @@ export default function VillagePanel() {
                         data-testid="preset-unlock"
                         className={cn(
                           getInsightBadgeTriggerClassName({
-                            canAfford: canUnlock,
-                            playing: false,
+                            canAfford: canUnlock || isPresetUnlockAnimating,
+                            playing: isPresetUnlockAnimating,
                             className: cn(
-                              "inline-flex h-5 w-5 shrink-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
-                              INSIGHT_BADGE_ALIGN_CLASS,
+                              "inline-flex h-[18px] w-[18px] shrink-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
                             ),
                           }),
                         )}
                         aria-label={t("village.presetUnlock", {
                           cost: formatNumber(nextUnlockCost),
                         })}
-                        disabled={!canUnlock}
+                        disabled={!canInteract}
                         onClick={(e) => {
                           e.stopPropagation();
                           e.preventDefault();
-                          if (canUnlock) handlePresetUnlock();
+                          if (canInteract) handlePresetUnlock();
                         }}
                       >
                         <BuildingActionBadge
-                          playing={false}
+                          playing={isPresetUnlockAnimating}
                           embedded
-                          size="lg"
+                          size="sm"
                         />
                       </button>
                     </TooltipWrapper>
@@ -1156,9 +1182,10 @@ export default function VillagePanel() {
                   })()}
                   tooltipId="production-cycle-progress"
                   disabled
+                  tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
                   className={pulseClassName(
                     "production-cycle-progress",
-                    "text-xs flex items-center cursor-pointer",
+                    PRODUCE_HEADER_INDICATOR_CLASS,
                   )}
                   onMouseEnter={() => onMouseEnter("production-cycle-progress")}
                   onMouseLeave={() => onMouseLeave("production-cycle-progress")}
@@ -1217,9 +1244,10 @@ export default function VillagePanel() {
                           }
                           tooltipId="feast-progress"
                           disabled
+                          tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
                           className={pulseClassName(
                             "feast-progress",
-                            "text-xs text-primary flex items-center gap-0.5 cursor-pointer",
+                            PRODUCE_HEADER_INDICATOR_CLASS,
                           )}
                           onMouseEnter={() => onMouseEnter("feast-progress")}
                           onMouseLeave={() => onMouseLeave("feast-progress")}
@@ -1254,9 +1282,10 @@ export default function VillagePanel() {
                           }
                           tooltipId="solstice-progress"
                           disabled
+                          tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
                           className={pulseClassName(
                             "solstice-progress",
-                            "text-xs text-primary flex items-center gap-0.5 cursor-pointer",
+                            PRODUCE_HEADER_INDICATOR_CLASS,
                           )}
                           onMouseEnter={() => onMouseEnter("solstice-progress")}
                           onMouseLeave={() => onMouseLeave("solstice-progress")}
@@ -1285,9 +1314,10 @@ export default function VillagePanel() {
                           }
                           tooltipId="curse-progress"
                           disabled
+                          tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
                           className={pulseClassName(
                             "curse-progress",
-                            "text-xs text-primary flex items-center gap-0.5 cursor-pointer",
+                            PRODUCE_HEADER_INDICATOR_CLASS,
                           )}
                           onMouseEnter={() => onMouseEnter("curse-progress")}
                           onMouseLeave={() => onMouseLeave("curse-progress")}
@@ -1329,9 +1359,10 @@ export default function VillagePanel() {
                           }
                           tooltipId="disgust-progress"
                           disabled
+                          tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
                           className={pulseClassName(
                             "disgust-progress",
-                            "text-xs text-primary flex items-center gap-0.5 cursor-pointer",
+                            PRODUCE_HEADER_INDICATOR_CLASS,
                           )}
                           onMouseEnter={() => onMouseEnter("disgust-progress")}
                           onMouseLeave={() => onMouseLeave("disgust-progress")}
@@ -1372,9 +1403,10 @@ export default function VillagePanel() {
                           }
                           tooltipId="mining-boost-progress"
                           disabled
+                          tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
                           className={pulseClassName(
                             "mining-boost-progress",
-                            "text-xs text-primary flex items-center gap-0.5 cursor-pointer",
+                            PRODUCE_HEADER_INDICATOR_CLASS,
                           )}
                           onMouseEnter={() =>
                             onMouseEnter("mining-boost-progress")
@@ -1413,9 +1445,10 @@ export default function VillagePanel() {
                           }
                           tooltipId="heartfire-progress"
                           disabled
+                          tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
                           className={pulseClassName(
                             "heartfire-progress",
-                            "text-xs text-primary flex items-center gap-0.5 cursor-pointer",
+                            PRODUCE_HEADER_INDICATOR_CLASS,
                           )}
                           onMouseEnter={() => onMouseEnter("heartfire-progress")}
                           onMouseLeave={() => onMouseLeave("heartfire-progress")}
@@ -1450,9 +1483,10 @@ export default function VillagePanel() {
                           }
                           tooltipId="frostfall-progress"
                           disabled
+                          tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
                           className={pulseClassName(
                             "frostfall-progress",
-                            "text-xs text-primary flex items-center gap-0.5 cursor-pointer",
+                            PRODUCE_HEADER_INDICATOR_CLASS,
                           )}
                           onMouseEnter={() => onMouseEnter("frostfall-progress")}
                           onMouseLeave={() => onMouseLeave("frostfall-progress")}
@@ -1502,9 +1536,10 @@ export default function VillagePanel() {
                             }
                             tooltipId="fog-progress"
                             disabled
+                            tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
                             className={pulseClassName(
                               "fog-progress",
-                              "text-xs text-primary flex items-center gap-0.5 cursor-pointer",
+                              PRODUCE_HEADER_INDICATOR_CLASS,
                             )}
                             onMouseEnter={() => onMouseEnter("fog-progress")}
                             onMouseLeave={() => onMouseLeave("fog-progress")}
@@ -1550,9 +1585,10 @@ export default function VillagePanel() {
                             }
                             tooltipId="madness-production"
                             disabled
+                            tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
                             className={pulseClassName(
                               "madness-production",
-                              "text-xs text-primary flex items-center gap-0.5 cursor-pointer",
+                              PRODUCE_HEADER_INDICATOR_CLASS,
                             )}
                             onMouseEnter={() =>
                               onMouseEnter("madness-production")

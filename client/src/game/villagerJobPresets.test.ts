@@ -142,6 +142,18 @@ describe("villagerJobPresets - Insight unlock", () => {
     } as any);
     expect(canPurchasePresetSlot(noInsight)).toBe(false);
   });
+
+  it("blocks purchase while preset unlock animation is in progress", () => {
+    const ready = makeState({
+      buildings: { clerksHut: 1, scribesOffice: 1 } as any,
+      resources: { insight: 2500 } as any,
+    } as any);
+    expect(
+      canPurchasePresetSlot(ready, {
+        villagerPresetUnlock: Date.now() + 3000,
+      }),
+    ).toBe(false);
+  });
 });
 
 describe("villagerJobPresets - load migration", () => {

@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import {
+  PRESET_UNLOCK_INSIGHT_KEY,
   STAT_INSIGHT_REVEAL_KEY,
   TIMED_EVENT_INSIGHT_PROLONG_KEY,
   TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
@@ -240,5 +241,56 @@ describe("createInitialState insight fields", () => {
     expect(state.resources.insight).toBe(0);
     expect(state.villagers.scholar).toBe(0);
     expect(state.revealedEffects).toEqual([]);
+  });
+});
+
+describe("purchaseVillagerPresetSlot", () => {
+  beforeEach(() => {
+    useGameStore.getState().initialize();
+  });
+
+  it("deducts insight and starts reveal animation before unlocking the slot", () => {
+    useGameStore.setState({
+      buildings: {
+        ...useGameStore.getState().buildings,
+        clerksHut: 1,
+        scribesOffice: 1,
+      },
+      resources: {
+        ...useGameStore.getState().resources,
+        insight: 2500,
+      },
+      villagerPresetsPurchased: 0,
+    });
+
+    const ok = useGameStore.getState().purchaseVillagerPresetSlot();
+    expect(ok).toBe(true);
+
+    const after = useGameStore.getState();
+    expect(after.resources.insight).toBe(0);
+    expect(after.villagerPresetsPurchased).toBe(0);
+    expect(after.insightRevealing[PRESET_UNLOCK_INSIGHT_KEY]).toBeGreaterThan(
+      Date.now(),
+    );
+  });
+
+  it("unlocks the preset slot after the reveal window", () => {
+    useGameStore.setState({
+      buildings: {
+        ...useGameStore.getState().buildings,
+        scribesOffice: 1,
+      },
+      villagerPresetsPurchased: 0,
+      insightRevealing: {
+        [PRESET_UNLOCK_INSIGHT_KEY]: Date.now() - 1,
+      },
+    });
+
+    useGameStore.getState().tickCooldowns();
+
+    const after = useGameStore.getState();
+    expect(after.villagerPresetsPurchased).toBe(1);
+    expect(after.activePresetSlot).toBe(1);
+    expect(after.insightRevealing[PRESET_UNLOCK_INSIGHT_KEY]).toBeUndefined();
   });
 });
