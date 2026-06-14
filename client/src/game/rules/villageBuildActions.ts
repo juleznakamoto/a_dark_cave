@@ -11,6 +11,17 @@ function storageResourceLimitTooltip(limit: number): BuildingTooltipEffect {
   );
 }
 
+/** Cumulative villager job preset slots at each archive chain tier. */
+function archivePresetUnlockTooltip(totalSlots: number): BuildingTooltipEffect {
+  return bt(
+    "addsVillagerPreset",
+    totalSlots === 1
+      ? "Adds {{count}} villager job preset"
+      : "Adds {{count}} villager job presets",
+    { count: totalSlots },
+  );
+}
+
 const WATCHTOWER_STATS_BY_LEVEL: Record<
   number,
   { defense: number; attack: number; integrity: number }
@@ -1795,9 +1806,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Scribe's Office",
     description:
       "A quiet room where scribes keep careful tallies of every hand at work, so no labor is forgotten",
-    tooltipEffects: [
-      bt("unlocksVillagerPreset", "Unlocks 1 villager job preset"),
-    ],
+    tooltipEffects: [archivePresetUnlockTooltip(1)],
     building: true,
     show_when: {
       1: {
@@ -1825,9 +1834,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Records Hall",
     description:
       "Hall full of shelves of weathered ledgers and rosters, the village's memory set down in ink and kept in order",
-    tooltipEffects: [
-      bt("unlocksVillagerPreset", "Unlocks 1 villager job preset"),
-    ],
+    tooltipEffects: [archivePresetUnlockTooltip(2)],
     building: true,
     show_when: {
       1: {
@@ -1857,9 +1864,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Grand Archive",
     description:
       "A vast vault of scrolls preserving all the village has been, every name and toil etched",
-    tooltipEffects: [
-      bt("unlocksVillagerPreset", "Unlocks 1 villager job preset"),
-    ],
+    tooltipEffects: [archivePresetUnlockTooltip(3)],
     building: true,
     show_when: {
       1: {
