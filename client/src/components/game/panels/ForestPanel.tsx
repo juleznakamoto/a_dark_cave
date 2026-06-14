@@ -356,16 +356,21 @@ export default function ForestPanel() {
         );
         tooltipContent = (
           <div className="text-xs whitespace-nowrap">
+            {isFinanceExpedition && villagerMessage}
+            {isFinanceExpedition &&
+              villagerMessage &&
+              (effectLines.length > 0 ||
+                costBreakdown.length > 0 ||
+                durationLine != null) && (
+                <div className="border-t border-border my-1" />
+              )}
             {effectLines.map((effect, index) => (
               <div key={`effect-${index}`}>{effect}</div>
             ))}
-            {(costBreakdown.length > 0 ||
-              durationLine != null ||
-              (isFinanceExpedition && villagerMessage)) &&
+            {(costBreakdown.length > 0 || durationLine != null) &&
               effectLines.length > 0 && (
                 <div className="border-t border-border my-1" />
               )}
-            {isFinanceExpedition && villagerMessage}
             {costBreakdown.map((costItem, index) => (
               <div
                 key={index}
