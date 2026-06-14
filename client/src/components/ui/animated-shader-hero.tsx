@@ -63,6 +63,16 @@ function renderSymbolLabelButtonContent(text: string) {
   );
 }
 
+/** Icon + label for compact end-screen buttons (same font metrics for vertical alignment). */
+function renderEmojiLabelButtonContent(emoji: string, label: string) {
+  return (
+    <>
+      <span className="leading-none">{emoji}</span>
+      <span className="leading-none">{label}</span>
+    </>
+  );
+}
+
 // Reusable Shader Background Hook
 const useShaderBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -661,19 +671,17 @@ const Hero: React.FC<HeroProps> = ({
                           type="button"
                           onClick={buttons.secondaryTrailing.onClick}
                           button_id={buttons.secondaryTrailing.buttonId}
-                          className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5 min-w-0"
+                          className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm inline-flex items-center gap-1 sm:gap-1.5 min-w-0 leading-none"
                         >
-                          <span className="font-noto-symbols-2">🎮 </span>
-                          <span>{buttons.secondaryTrailing.text}</span>
+                          {renderEmojiLabelButtonContent("🎮", buttons.secondaryTrailing.text)}
                         </button>
                       )}
                       <button
                         onClick={buttons.secondary.onClick}
                         button_id={buttons.secondary.buttonId}
-                        className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5 min-w-0"
+                        className="px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm inline-flex items-center gap-1 sm:gap-1.5 min-w-0 leading-none"
                       >
-                        <span className="font-noto-symbols-2">▶ </span>
-                        <span>{buttons.secondary.text}</span>
+                        {renderEmojiLabelButtonContent("▶", buttons.secondary.text)}
                       </button>
                     </div>
                   </div>
