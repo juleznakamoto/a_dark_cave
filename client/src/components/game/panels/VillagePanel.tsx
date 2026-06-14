@@ -43,9 +43,12 @@ import { getPopulationProduction } from "@/game/population";
 import {
   areVillagerCapsEnabled,
   getVillagerCapForJob,
-  INSIGHT_GLYPH,
-  INSIGHT_TEXT_CLASS,
 } from "@/game/villagerCapUpgrades";
+import {
+  BuildingActionBadge,
+  getInsightBadgeTriggerClassName,
+  INSIGHT_BADGE_ALIGN_CLASS,
+} from "@/components/game/BuildingActionBadge";
 import { formatNumber } from "@/lib/utils";
 import {
   MAX_PRESET_SLOTS,
@@ -1571,40 +1574,51 @@ export default function VillagePanel() {
                                 })}
                               </div>
                             }
-                            tooltipTriggerClassName="inline-flex items-center leading-none"
+                            tooltipContentClassName="text-white"
                             className={pulseClassName(
                               "preset-unlock",
-                              "group flex items-center cursor-pointer",
+                              "inline-flex shrink-0 items-center self-center",
                             )}
-                            onMouseEnter={() => onMouseEnter("preset-unlock")}
-                            onMouseLeave={() => onMouseLeave("preset-unlock")}
-                            onClick={() => {
-                              if (canUnlock) handlePresetUnlock();
+                            tooltipTriggerAsChild
+                            disabled={!canUnlock}
+                            onMouseEnter={() => {
+                              onMouseEnter("preset-unlock");
+                              setHighlightedResources(["insight"]);
+                            }}
+                            onMouseLeave={() => {
+                              onMouseLeave("preset-unlock");
+                              setHighlightedResources([]);
                             }}
                           >
-                            <Button
-                              size="xs"
-                              variant="outline"
-                              disabled={!canUnlock}
+                            <button
+                              type="button"
                               data-testid="preset-unlock"
-                              button_id="preset-unlock"
                               className={cn(
-                                "h-[18px] w-[18px] min-h-0 shrink-0 p-0 pointer-events-none inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]",
-                                gameActionOutlineButtonClassName(!canUnlock, {
-                                  groupHover: true,
+                                getInsightBadgeTriggerClassName({
+                                  canAfford: canUnlock,
+                                  playing: false,
+                                  className: cn(
+                                    "inline-flex h-5 w-5 shrink-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
+                                    INSIGHT_BADGE_ALIGN_CLASS,
+                                  ),
                                 }),
                               )}
-                              style={{ touchAction: "manipulation" }}
+                              aria-label={t("village.presetUnlock", {
+                                cost: formatNumber(nextUnlockCost),
+                              })}
+                              disabled={!canUnlock}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                if (canUnlock) handlePresetUnlock();
+                              }}
                             >
-                              <span
-                                className={cn(
-                                  "inline-flex items-center justify-center font-noto-symbols-2 text-[12px] leading-none",
-                                  INSIGHT_TEXT_CLASS,
-                                )}
-                              >
-                                {INSIGHT_GLYPH}
-                              </span>
-                            </Button>
+                              <BuildingActionBadge
+                                playing={false}
+                                embedded
+                                size="lg"
+                              />
+                            </button>
                           </TooltipWrapper>
                         )}
                         {purchasedCount >= 1 && (
