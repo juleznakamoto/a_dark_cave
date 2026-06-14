@@ -11,6 +11,7 @@
     "gainRange": "+{{min}}-{{max}} {{resource}}",
     "gainUnknown": "+? {{resource}}",
     "costLine": "-{{amount}} {{resource}}",
+    "duration": "{{duration}}",
     "villagerCost_one": "-{{count}} villageois",
     "villagerCost_other": "-{{count}} villageois",
     "freeVillagerCost_one": "-{{count}} villageois libre",

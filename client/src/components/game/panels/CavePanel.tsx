@@ -7,7 +7,10 @@ import {
   getResourcesFromActionCost,
 } from "@/game/rules";
 import { getActionBonuses } from "@/game/rules/effectsCalculation";
-import { getResourceGainTooltip } from "@/game/rules/tooltips";
+import {
+  getResourceGainTooltip,
+  getActionDurationLine,
+} from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
 import { canRevealEffects } from "@/game/rules/insightReveal";
@@ -366,13 +369,17 @@ export default function CavePanel() {
         const bonuses = state.activeEffects?.actionBonuses?.[actionId];
         const cooldownReduction = bonuses?.cooldownReduction || 0;
 
+        const durationLine = getActionDurationLine(actionId, state);
         tooltipHeader = (
           <div className="whitespace-nowrap">
             {villagerRequirementLine}
             {villagerRequirementLine &&
-              (costBreakdown.length > 0 || cooldownReduction > 0) && (
+              (costBreakdown.length > 0 ||
+                cooldownReduction > 0 ||
+                durationLine != null) && (
                 <div className="border-t border-border my-1" />
               )}
+            {durationLine}
             {costBreakdown.map((costItem, index) => (
               <div
                 key={index}

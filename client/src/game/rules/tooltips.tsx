@@ -42,6 +42,50 @@ import {
   isBombAtLimit,
   isVeinfireElixirAtLimit,
 } from "@/game/resourceLimits";
+import { getExecutionTime } from "./executionTime";
+
+/**
+ * Format an action's execution time for tooltips:
+ * - `M:SS` when >= 1 minute (e.g. 90s -> "1:30")
+ * - `SS s` when < 1 minute (e.g. "45 s")
+ * - `S.SS s` when < 1 second (fractions, trailing zeros trimmed, e.g. "0.5 s")
+ */
+export function formatExecutionDuration(seconds: number): string {
+  if (seconds >= 60) {
+    const totalSeconds = Math.round(seconds);
+    const minutes = Math.floor(totalSeconds / 60);
+    const remSeconds = totalSeconds % 60;
+    return `${minutes}:${String(remSeconds).padStart(2, "0")}`;
+  }
+  if (seconds >= 1) {
+    const rounded = Math.round(seconds * 10) / 10;
+    const display = Number.isInteger(rounded)
+      ? String(rounded)
+      : rounded.toFixed(1);
+    return `${display} s`;
+  }
+  return `${parseFloat(seconds.toFixed(2))} s`;
+}
+
+/**
+ * Tooltip line showing an action's execution duration. Rendered directly above
+ * the cost line. Returns null for instant (no execution time) actions.
+ */
+export const getActionDurationLine = (
+  actionId: string,
+  state: GameState,
+): React.ReactNode | null => {
+  const seconds = getExecutionTime(actionId, state);
+  if (seconds <= 0) return null;
+  return (
+    <div className="text-muted-foreground">
+      {getUiTooltip("duration", "{{duration}}", {
+        duration: formatExecutionDuration(seconds),
+      })}
+    </div>
+  );
+};
+
 const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
   "ventureDeeper",
@@ -336,7 +380,11 @@ export const getResourceGainTooltip = (
     : undefined;
 
   const headerBlockAboveVein =
-    gains.length > 0 || costs.length > 0 || isBombAtMax || isVeinfireElixirAtMax;
+    gains.length > 0 ||
+    costs.length > 0 ||
+    isBombAtMax ||
+    isVeinfireElixirAtMax ||
+    getExecutionTime(actionId, state) > 0;
 
   const gainsBlock = (
     <>
@@ -383,6 +431,9 @@ export const getResourceGainTooltip = (
   const hasGainsSection =
     isBombAtMax || isVeinfireElixirAtMax || gains.length > 0;
 
+  const durationLine = getActionDurationLine(actionId, state);
+  const hasDuration = durationLine != null;
+
   return (
     <div className="text-xs">
       {hasGainsSection
@@ -390,12 +441,13 @@ export const getResourceGainTooltip = (
         : null}
       {(isBombAtMax || isVeinfireElixirAtMax) &&
         gains.length === 0 &&
-        costs.length > 0 && (
+        (costs.length > 0 || hasDuration) && (
           <div className="border-t border-border my-1" />
         )}
-      {gains.length > 0 && costs.length > 0 && (
+      {gains.length > 0 && (costs.length > 0 || hasDuration) && (
         <div className="border-t border-border my-1" />
       )}
+      {durationLine}
       {costs.map((cost, index) => (
         <div
           key={`cost-${index}`}

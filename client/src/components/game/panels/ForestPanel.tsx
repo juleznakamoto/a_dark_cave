@@ -7,7 +7,10 @@ import {
   getActionCostBreakdown,
   getResourcesFromActionCost,
 } from "@/game/rules";
-import { getResourceGainTooltip } from "@/game/rules/tooltips";
+import {
+  getResourceGainTooltip,
+  getActionDurationLine,
+} from "@/game/rules/tooltips";
 import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
 import { getFocusTooltipHeaderTrailing } from "@/game/rules/focusTooltipIndicator";
 import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
@@ -346,6 +349,7 @@ export default function ForestPanel() {
       ) {
         // Animals/Humans sacrifice / Finance Expedition: show effect + cost
         const costBreakdown = getActionCostBreakdown(actionId, state);
+        const durationLine = getActionDurationLine(actionId, state);
         const effectLines = resolveActionTooltipEffects(
           action.tooltipEffects,
           state,
@@ -355,15 +359,19 @@ export default function ForestPanel() {
             {isFinanceExpedition && villagerMessage}
             {isFinanceExpedition &&
               villagerMessage &&
-              (effectLines.length > 0 || costBreakdown.length > 0) && (
+              (effectLines.length > 0 ||
+                costBreakdown.length > 0 ||
+                durationLine != null) && (
                 <div className="border-t border-border my-1" />
               )}
             {effectLines.map((effect, index) => (
               <div key={`effect-${index}`}>{effect}</div>
             ))}
-            {costBreakdown.length > 0 && effectLines.length > 0 && (
-              <div className="border-t border-border my-1" />
-            )}
+            {(costBreakdown.length > 0 || durationLine != null) &&
+              effectLines.length > 0 && (
+                <div className="border-t border-border my-1" />
+              )}
+            {durationLine}
             {costBreakdown.map((costItem, index) => (
               <div
                 key={index}
@@ -377,6 +385,7 @@ export default function ForestPanel() {
       } else {
         // Other actions with costs and/or success chance
         const costBreakdown = getActionCostBreakdown(actionId, state);
+        const durationLine = getActionDurationLine(actionId, state);
         const forestTradeGainLine =
           isTradeButton && action.effects
             ? formatForestPanelResourceGainLine(
@@ -386,9 +395,13 @@ export default function ForestPanel() {
         tooltipContent = (
           <div className="text-xs whitespace-nowrap">
             {villagerMessage}
-            {villagerMessage && (costBreakdown.length > 0 || showSuccessTooltip) && (
-              <div className="border-t border-border my-1" />
-            )}
+            {villagerMessage &&
+              (costBreakdown.length > 0 ||
+                showSuccessTooltip ||
+                durationLine != null) && (
+                <div className="border-t border-border my-1" />
+              )}
+            {durationLine}
             {costBreakdown.map((costItem, index) => (
               <div
                 key={index}

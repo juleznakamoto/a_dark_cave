@@ -17,6 +17,7 @@ import {
   disgustTooltip,
   heartfireTooltip,
   madnessProductionTooltip,
+  getActionDurationLine,
 } from "@/game/rules/tooltips";
 import {
   getTotalMadness,
@@ -740,10 +741,12 @@ export default function VillagePanel() {
       : null;
     const isUpgrade = buildingKey ? isBuildingUpgrade(buildingKey) : false;
     const revealedEffects = getRevealedEffectsForActionTooltip(actionId, state);
+    const durationLine = getActionDurationLine(actionId, state);
     const tooltipContent = composeActionTooltip({
       header: (
         <div className="flex items-start gap-2">
           <div className="flex-1 min-w-0 whitespace-nowrap">
+            {durationLine}
             {costBreakdown.map((cost, index) => (
               <div
                 key={index}

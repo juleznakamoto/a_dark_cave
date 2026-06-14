@@ -11,6 +11,7 @@
     "gainRange": "+{{min}}-{{max}} {{resource}}",
     "gainUnknown": "+? {{resource}}",
     "costLine": "-{{amount}} {{resource}}",
+    "duration": "{{duration}}",
     "villagerCost_one": "-{{count}} Aldeão",
     "villagerCost_other": "-{{count}} Aldeões",
     "freeVillagerCost_one": "-{{count}} Aldeão Livre",

@@ -11,6 +11,7 @@
     "gainRange": "+{{min}}-{{max}} {{resource}}",
     "gainUnknown": "+? {{resource}}",
     "costLine": "-{{amount}} {{resource}}",
+    "duration": "{{duration}}",
     "villagerCost_one": "-{{count}} житель",
     "villagerCost_other": "-{{count}} жителей",
     "freeVillagerCost_one": "-{{count}} свободный житель",
