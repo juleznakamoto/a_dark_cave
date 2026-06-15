@@ -8,12 +8,18 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
+import { resumeFromInactivity } from "@/game/loop";
 import { logger } from "@/lib/logger";
 import { useTranslation } from "react-i18next";
 
 export default function InactivityDialog() {
   const { inactivityReason } = useGameStore();
   const { t } = useTranslation("ui");
+
+  const handleContinue = () => {
+    logger.log("[INACTIVITY] User clicked continue button");
+    resumeFromInactivity();
+  };
 
   const handleReload = () => {
     logger.log("[INACTIVITY] User clicked reload button");
@@ -40,17 +46,19 @@ export default function InactivityDialog() {
           </DialogTitle>
           <DialogDescription className="py-4 space-y-2">
             {isMultiTab && <p>{t("inactivity.multiTabDesc")}</p>}
-            {isTimeout && (
-              <>
-                <p>{t("inactivity.timeoutDesc")}</p>
-                <p className="font-semibold">{t("inactivity.reloadHint")}</p>
-              </>
-            )}
+            {isTimeout && <p>{t("inactivity.timeoutDesc")}</p>}
           </DialogDescription>
         </DialogHeader>
-        <Button onClick={handleReload} className="w-full">
-          {t("inactivity.reload")}
-        </Button>
+        {isTimeout && (
+          <Button onClick={handleContinue} className="w-full">
+            {t("inactivity.resume")}
+          </Button>
+        )}
+        {isMultiTab && (
+          <Button onClick={handleReload} className="w-full">
+            {t("inactivity.reload")}
+          </Button>
+        )}
       </DialogContent>
     </Dialog>
   );

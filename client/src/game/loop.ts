@@ -28,7 +28,7 @@ import {
 import { GAME_CONSTANTS } from "./constants";
 import { POST_COMPLETION_ATTACK_WAVE_ID } from "./rules/attackWaveOrder";
 import { logger } from "@/lib/logger";
-import { startVersionCheck, stopVersionCheck } from "./versionCheck";
+import { stopVersionCheck } from "./versionCheck";
 import { formatSaveTimestamp } from "@/lib/utils";
 import { gameActions, canExecuteAction, shouldShowAction } from "./rules";
 import { getResourceLimit, isResourceLimited } from "./resourceLimits";
@@ -145,6 +145,47 @@ let sessionCheckInterval: NodeJS.Timeout | null = null; // Added for session che
 let isInactive = false;
 let lastGameLoadTime = 0; // Track when game was last loaded
 
+const ACTIVITY_EVENTS = [
+  "mousedown",
+  "keydown",
+  "touchstart",
+  "scroll",
+  "mousemove",
+] as const;
+
+let activityListenersAttached = false;
+
+function handleUserActivity() {
+  lastUserActivity = Date.now();
+}
+
+function handleActivityVisibilityChange() {
+  if (!document.hidden) {
+    lastUserActivity = Date.now();
+    // Immediately clear any timed event that expired while the tab was hidden,
+    // rather than waiting up to 15 seconds for the next production tick.
+    clearExpiredTimedEventTab();
+  }
+}
+
+function attachActivityListeners() {
+  if (activityListenersAttached) return;
+  ACTIVITY_EVENTS.forEach((event) => {
+    window.addEventListener(event, handleUserActivity, { passive: true });
+  });
+  document.addEventListener("visibilitychange", handleActivityVisibilityChange);
+  activityListenersAttached = true;
+}
+
+function detachActivityListeners() {
+  if (!activityListenersAttached) return;
+  ACTIVITY_EVENTS.forEach((event) => {
+    window.removeEventListener(event, handleUserActivity);
+  });
+  document.removeEventListener("visibilitychange", handleActivityVisibilityChange);
+  activityListenersAttached = false;
+}
+
 /**
  * Time since the last user activity the game loop tracks (mouse, key, touch, scroll, tab visible again).
  * Returns 0 before `startGameLoop` initializes the baseline (treated as active so Playlight auto-discovery
@@ -175,32 +216,7 @@ export function startGameLoop() {
   lastUserActivity = Date.now();
   isInactive = false;
 
-  // Set up activity listeners
-  const activityEvents = [
-    "mousedown",
-    "keydown",
-    "touchstart",
-    "scroll",
-    "mousemove",
-  ];
-  const handleActivity = (event: Event) => {
-    lastUserActivity = Date.now();
-  };
-
-  activityEvents.forEach((event) => {
-    window.addEventListener(event, handleActivity, { passive: true });
-  });
-
-  // Also track page visibility changes
-  const handleVisibilityChange = () => {
-    if (!document.hidden) {
-      lastUserActivity = Date.now();
-      // Immediately clear any timed event that expired while the tab was hidden,
-      // rather than waiting up to 15 seconds for the next production tick.
-      clearExpiredTimedEventTab();
-    }
-  };
-  document.addEventListener("visibilitychange", handleVisibilityChange);
+  attachActivityListeners();
 
   // Start inactivity checker (every 30 seconds)
   if (inactivityCheckInterval) {
@@ -269,9 +285,6 @@ export function startGameLoop() {
     }
   };
   sessionCheckInterval = setInterval(checkSession, SESSION_CHECK_INTERVAL);
-
-  // Start version check
-  startVersionCheck();
 
   // Check if idle mode needs to be displayed (user left during idle mode)
   const state = useGameStore.getState();
@@ -529,9 +542,6 @@ async function handleInactivity() {
     sessionCheckInterval = null;
   }
 
-  // Stop version check
-  stopVersionCheck();
-
   // Save game before showing dialog (must happen before setting inactivityDialogOpen,
   // since saveGame skips when inactivityDialogOpen is true)
   try {
@@ -548,6 +558,26 @@ async function handleInactivity() {
     inactivityDialogOpen: true,
     inactivityReason: "timeout",
   });
+}
+
+/** Resume after the 15-minute AFK timeout without reloading the page. */
+export function resumeFromInactivity() {
+  const state = useGameStore.getState();
+  if (!state.inactivityDialogOpen || state.inactivityReason !== "timeout") {
+    return;
+  }
+
+  logger.log("[INACTIVITY] Resuming from inactivity timeout");
+
+  useGameStore.setState({
+    inactivityDialogOpen: false,
+    inactivityReason: null,
+  });
+
+  flushOverdueActionExecutions();
+  clearExpiredTimedEventTab();
+  resetProductionCycle();
+  startGameLoop();
 }
 
 export function setLastGameLoadTime(time: number) {
@@ -587,22 +617,7 @@ export function stopGameLoop() {
   // Clean up version check
   stopVersionCheck();
 
-  // Remove activity listeners
-  const activityEvents = [
-    "mousedown",
-    "keydown",
-    "touchstart",
-    "scroll",
-    "mousemove",
-  ];
-  const handleActivity = () => { }; // Dummy function for removal
-  activityEvents.forEach((event) => {
-    window.removeEventListener(event, handleActivity);
-  });
-
-  // Remove visibility listener
-  const handleVisibilityChange = () => { };
-  document.removeEventListener("visibilitychange", handleVisibilityChange);
+  detachActivityListeners();
 
   StateManager.clearUpdateTimer();
 }
