@@ -876,6 +876,7 @@ export default function GameContainer() {
   }, [flags.gameStarted, visibleHotkeyTabs, applyHotkeyTab]);
 
   const panelResize = usePanelResize();
+  const iosChromeViewportStyle = useIOSChromeViewportShell();
 
   // Show start screen if game hasn't started yet
   if (!flags.gameStarted) {
@@ -908,8 +909,6 @@ export default function GameContainer() {
       <span>{t("pauseHotkey.hintSuffix", { ns: "ui" })}</span>
     </span>
   );
-
-  const iosChromeViewportStyle = useIOSChromeViewportShell();
 
   return (
     <ProfileMenuProvider>
