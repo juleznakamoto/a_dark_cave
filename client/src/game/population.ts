@@ -421,13 +421,6 @@ export const getPopulationProduction = (
     });
   }
 
-  // Apply 10x multiplier in dev mode
-  if (state && state.devMode) {
-    baseProduction.forEach((prod) => {
-      prod.totalAmount *= 10;
-    });
-  }
-
   if (jobId === "scholar" && state) {
     const perWorker = getScholarInsightPerWorker(state);
     baseProduction.forEach((prod) => {
@@ -435,6 +428,13 @@ export const getPopulationProduction = (
         prod.baseAmount = perWorker;
         prod.totalAmount = perWorker * count;
       }
+    });
+  }
+
+  // Apply 10x multiplier in dev mode
+  if (state && state.devMode) {
+    baseProduction.forEach((prod) => {
+      prod.totalAmount *= 10;
     });
   }
 

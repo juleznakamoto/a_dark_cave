@@ -731,6 +731,16 @@ describe('Scholar insight production', () => {
     expect(prod3.find((p) => p.resource === 'insight')?.totalAmount).toBe(3);
   });
 
+  it('applies dev mode multiplier to scholar insight production', () => {
+    const state = createTestState({
+      devMode: true,
+      buildings: { ...createTestState().buildings, clerksHut: 1 },
+      villagers: { ...createTestState().villagers, scholar: 2, free: 0 },
+    });
+    const prod = getPopulationProduction('scholar', 2, state);
+    expect(prod.find((p) => p.resource === 'insight')?.totalAmount).toBe(20);
+  });
+
   it('includes scholar insight and upkeep in getTotalPopulationEffects', () => {
     const state = createTestState({
       buildings: { ...createTestState().buildings, clerksHut: 1 },
