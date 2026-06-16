@@ -77,5 +77,11 @@ export function getExecutionTime(actionId: string, state: GameState): number {
     adjustedTime = baseTime * (1 - builderReduction) - executionTimeReduction;
   }
 
-  return Math.max(1, adjustedTime);
+  let finalTime = Math.max(1, adjustedTime);
+
+  if (state.devMode && actionId.startsWith("build")) {
+    finalTime = Math.max(1, finalTime * 0.1);
+  }
+
+  return finalTime;
 }
