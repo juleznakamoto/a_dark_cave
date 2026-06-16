@@ -162,6 +162,11 @@
       "newVillagerChancePercent": "+{{percent}} % de probabilidad de nuevo aldeano",
       "steelForgerSteel": "Forjador de acero: +{{amount}} acero",
       "tannerLeather": "Curtidor: +{{amount}} cuero",
+      "buildTimeReduction": "-{{percent}} % de tiempo de construcción",
+      "buildingCostReduction": "-{{percent}} % de costes de construcción",
+      "addsConstructionQueueSlot_one": "Añade {{count}} espacio de cola de construcción",
+      "addsConstructionQueueSlot_other": "Añade {{count}} espacios de cola de construcción",
+      "constructionBoost": "Impulso de construcción: gasta Perspicacia para saltarte el 50 % del tiempo de construcción (una vez por construcción)",
       "weaponEnchantment": "Encantamiento de armas"
     },
     "obsidianOrbFocusRate": "Concentración: 1 cada 15 minutos",

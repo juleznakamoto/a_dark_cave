@@ -60,12 +60,23 @@ import {
   getPresetSlot,
   getPurchasedPresetCount,
 } from "@/game/villagerJobPresets";
+import {
+  canBoostConstruction,
+  canPurchaseQueueSlot,
+  getActiveBuildCount,
+  getNextPurchasableQueueSlotIndex,
+  getNextQueueSlotUnlockCost,
+  getTotalQueueSlots,
+  isConstructionQueueEnabled,
+  QUEUE_SLOT_UNLOCK_INSIGHT_KEY,
+} from "@/game/constructionQueueSlots";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { AnimatedCounter, ANIMATED_COUNTER_FONT_SIZE, ANIMATED_COUNTER_HEIGHT } from "@/components/ui/animated-counter";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
+import { ConstructionBoostBadge } from "@/components/game/ConstructionBoostBadge";
 import { getRevealedEffectsForActionTooltip } from "@/game/rules/insightRevealTooltip";
 import { composeActionTooltip } from "@/game/rules/actionTooltipLayout";
 import {
@@ -111,7 +122,9 @@ const VILLAGE_INDICATOR_TOOLTIP_IDS = [
   "madness-production",
   "preset-save",
   "preset-unlock",
+  "queue-slot-unlock",
   ...Array.from({ length: MAX_PRESET_SLOTS }, (_, i) => `preset-slot-${i + 1}`),
+  ...Array.from({ length: 3 }, (_, i) => `queue-slot-${i + 1}`),
 ] as const;
 
 /** Shared with the 18px circular progress indicators in the Produce header row. */
@@ -144,6 +157,7 @@ export default function VillagePanel() {
     applyVillagerJobPreset,
     setActivePresetSlot,
     purchaseVillagerPresetSlot,
+    purchaseConstructionQueueSlot,
   } = useGameStore();
   const { pulseClassName, onMouseEnter, onMouseLeave } =
     useNewItemPulseTooltips(VILLAGE_INDICATOR_TOOLTIP_IDS);
@@ -188,6 +202,10 @@ export default function VillagePanel() {
     purchaseVillagerPresetSlot();
   }, [purchaseVillagerPresetSlot]);
 
+  const handleQueueSlotUnlock = useCallback(() => {
+    purchaseConstructionQueueSlot();
+  }, [purchaseConstructionQueueSlot]);
+
   const presetUnlockRevealEnd = useGameStore(
     (s) => s.insightRevealing?.[PRESET_UNLOCK_INSIGHT_KEY],
   );
@@ -196,13 +214,27 @@ export default function VillagePanel() {
     PRESET_UNLOCK_INSIGHT_KEY,
     insightRevealing,
   );
+  const queueSlotUnlockRevealEnd = useGameStore(
+    (s) => s.insightRevealing?.[QUEUE_SLOT_UNLOCK_INSIGHT_KEY],
+  );
+  const isQueueSlotUnlockAnimating = isInsightRevealInProgress(
+    QUEUE_SLOT_UNLOCK_INSIGHT_KEY,
+    insightRevealing,
+  );
   const [, forcePresetUnlockUpdate] = useState(0);
+  const [, forceQueueSlotUnlockUpdate] = useState(0);
 
   useEffect(() => {
     if (!isPresetUnlockAnimating) return;
     const id = setInterval(() => forcePresetUnlockUpdate((n) => n + 1), 100);
     return () => clearInterval(id);
   }, [isPresetUnlockAnimating, presetUnlockRevealEnd]);
+
+  useEffect(() => {
+    if (!isQueueSlotUnlockAnimating) return;
+    const id = setInterval(() => forceQueueSlotUnlockUpdate((n) => n + 1), 100);
+    return () => clearInterval(id);
+  }, [isQueueSlotUnlockAnimating, queueSlotUnlockRevealEnd]);
 
   useEffect(
     () => () => {
@@ -316,6 +348,9 @@ export default function VillagePanel() {
       actions: [
         { id: "buildHeartfire", label: "Heartfire" },
         { id: "buildWoodenHut", label: "Wooden Hut" },
+        { id: "buildBuildersLodge", label: "Builder's Lodge" },
+        { id: "buildBuildersHall", label: "Builder's Hall" },
+        { id: "buildBuildersGuild", label: "Builder's Guild" },
         { id: "buildStoneHut", label: "Stone Hut" },
         { id: "buildLonghouse", label: "Longhouse" },
         { id: "buildFurTents", label: "Fur Tent" },
@@ -797,11 +832,17 @@ export default function VillagePanel() {
       </CooldownButton>
     );
 
-    if (canRevealEffects(actionId, state)) {
+    const showInsightReveal = canRevealEffects(actionId, state);
+    const showConstructionBoost = canBoostConstruction(state, actionId);
+
+    if (showInsightReveal || showConstructionBoost) {
       return (
         <div key={`${actionId}-wrapper`} className="relative inline-block">
           {button}
-          <ActionInsightBadge actionId={actionId} />
+          {showConstructionBoost && (
+            <ConstructionBoostBadge actionId={actionId} />
+          )}
+          {showInsightReveal && <ActionInsightBadge actionId={actionId} />}
         </div>
       );
     }
@@ -1022,12 +1063,147 @@ export default function VillagePanel() {
 
             return (
               <div key={groupIndex} className="space-y-2">
-                {group.title && (
-                  <h3 className="text-xs font-medium text-foreground ">
-                    {group.title === "Build"
-                      ? t("village.sectionBuild")
-                      : group.title}
-                  </h3>
+                {group.title === "Build" ? (
+                  <div className="flex w-full items-center gap-2">
+                    <h3 className="inline-flex shrink-0 items-center text-xs font-medium text-foreground leading-none">
+                      {t("village.sectionBuild")}
+                    </h3>
+                    {isConstructionQueueEnabled(state) &&
+                      (() => {
+                        const nextUnlockIndex =
+                          getNextPurchasableQueueSlotIndex(state);
+                        const nextUnlockCost = getNextQueueSlotUnlockCost(state);
+                        if (
+                          nextUnlockIndex === null ||
+                          nextUnlockCost === null
+                        ) {
+                          return null;
+                        }
+                        const canUnlock = canPurchaseQueueSlot(
+                          state,
+                          insightRevealing,
+                        );
+                        const canInteract =
+                          canUnlock && !isQueueSlotUnlockAnimating;
+                        return (
+                          <div className="inline-flex shrink-0 items-center self-center">
+                            <TooltipWrapper
+                              tooltipId="queue-slot-unlock"
+                              tooltip={
+                                <div className="text-xs">
+                                  {t("village.queueSlotUnlock", {
+                                    cost: formatNumber(nextUnlockCost),
+                                  })}
+                                </div>
+                              }
+                              tooltipContentClassName="text-white"
+                              className={pulseClassName(
+                                "queue-slot-unlock",
+                                "inline-flex items-center",
+                              )}
+                              tooltipTriggerClassName={
+                                PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS
+                              }
+                              tooltipTriggerAsChild
+                              disabled={!canInteract}
+                              onMouseEnter={() => {
+                                onMouseEnter("queue-slot-unlock");
+                                setHighlightedResources(["insight"]);
+                              }}
+                              onMouseLeave={() => {
+                                onMouseLeave("queue-slot-unlock");
+                                setHighlightedResources([]);
+                              }}
+                            >
+                              <button
+                                type="button"
+                                data-testid="queue-slot-unlock"
+                                className={cn(
+                                  getInsightBadgeTriggerClassName({
+                                    canAfford:
+                                      canUnlock || isQueueSlotUnlockAnimating,
+                                    playing: isQueueSlotUnlockAnimating,
+                                    className: cn(
+                                      "inline-flex h-5 w-5 shrink-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
+                                      INSIGHT_BADGE_ALIGN_CLASS,
+                                    ),
+                                  }),
+                                )}
+                                aria-label={t("village.queueSlotUnlock", {
+                                  cost: formatNumber(nextUnlockCost),
+                                })}
+                                disabled={!canInteract}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  e.preventDefault();
+                                  if (canInteract) handleQueueSlotUnlock();
+                                }}
+                              >
+                                <BuildingActionBadge
+                                  playing={isQueueSlotUnlockAnimating}
+                                  embedded
+                                  size="lg"
+                                />
+                              </button>
+                            </TooltipWrapper>
+                          </div>
+                        );
+                      })()}
+                    {isConstructionQueueEnabled(state) &&
+                      (() => {
+                        const totalSlots = getTotalQueueSlots(state);
+                        const activeBuilds = getActiveBuildCount(state);
+                        return (
+                          <div className="ml-auto flex shrink-0 items-center gap-1">
+                            {Array.from({ length: totalSlots }).map((_, i) => {
+                              const slot = i + 1;
+                              const isUsed = i < activeBuilds;
+                              const queueTooltipId = `queue-slot-${slot}`;
+                              return (
+                                <TooltipWrapper
+                                  key={queueTooltipId}
+                                  tooltipId={queueTooltipId}
+                                  tooltip={
+                                    <div className="text-xs">
+                                      {isUsed
+                                        ? t("village.queueSlotUsed", { slot })
+                                        : t("village.queueSlotFree", { slot })}
+                                    </div>
+                                  }
+                                  tooltipTriggerClassName="inline-flex items-center leading-none"
+                                  className={pulseClassName(
+                                    queueTooltipId,
+                                    "inline-flex items-center",
+                                  )}
+                                  onMouseEnter={() =>
+                                    onMouseEnter(queueTooltipId)
+                                  }
+                                  onMouseLeave={() =>
+                                    onMouseLeave(queueTooltipId)
+                                  }
+                                >
+                                  <span
+                                    data-testid={queueTooltipId}
+                                    className={cn(
+                                      "inline-block h-[10px] w-[10px] shrink-0 rounded-sm border",
+                                      isUsed
+                                        ? "border-primary bg-primary"
+                                        : "border-muted-foreground/40 bg-transparent",
+                                    )}
+                                  />
+                                </TooltipWrapper>
+                              );
+                            })}
+                          </div>
+                        );
+                      })()}
+                  </div>
+                ) : (
+                  group.title && (
+                    <h3 className="text-xs font-medium text-foreground ">
+                      {group.title}
+                    </h3>
+                  )
                 )}
                 <div className="flex w-full flex-wrap gap-2">
                   {visibleActions.map((action) =>
@@ -1661,8 +1837,8 @@ export default function VillagePanel() {
                                   isActive
                                     ? "group-hover:bg-primary/90"
                                     : gameActionOutlineButtonClassName(false, {
-                                        groupHover: true,
-                                      }),
+                                      groupHover: true,
+                                    }),
                                 )}
                                 style={{ touchAction: "manipulation" }}
                               >

@@ -68,6 +68,18 @@
     "description": "Pozo extremadamente profundo que alcanza los materiales más raros",
     "label": "Pozo sin fondo"
   },
+  "buildBuildersLodge": {
+    "description": "Una cabaña donde los maestros constructores coordinan la construcción en la aldea",
+    "label": "Cabaña de constructores"
+  },
+  "buildBuildersHall": {
+    "description": "Una sala donde constructores veteranos agilizan proyectos y negocian mejores precios de materiales",
+    "label": "Sala de constructores"
+  },
+  "buildBuildersGuild": {
+    "description": "Un gremio de maestros constructores que comanda toda la capacidad de construcción de la aldea",
+    "label": "Gremio de constructores"
+  },
   "buildCabin": {
     "description": "Cabaña de caza básica con herramientas para cazadores",
     "label": "Cabaña de caza"

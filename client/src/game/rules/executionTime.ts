@@ -1,5 +1,10 @@
 import { GameState } from "@shared/schema";
 import { ACTION_TO_UPGRADE_KEY, getUpgradeLevel } from "@/game/buttonUpgrades";
+import {
+  getBuilderBuildTimeReduction,
+  getBuilderLevel,
+  isConstructionQueueEnabled,
+} from "@/game/constructionQueueSlots";
 import { getActionBonuses } from "./effectsCalculation";
 import { getGameActions } from "./actionsRegistry";
 import { getNextBuildingLevel } from "./villageBuildActions";
@@ -65,5 +70,12 @@ export function getExecutionTime(actionId: string, state: GameState): number {
   }
 
   const { executionTimeReduction } = getActionBonuses(actionId, state);
-  return Math.max(1, baseTime - executionTimeReduction);
+  let adjustedTime = baseTime - executionTimeReduction;
+
+  if (actionId.startsWith("build") && isConstructionQueueEnabled(state)) {
+    const builderReduction = getBuilderBuildTimeReduction(getBuilderLevel(state));
+    adjustedTime = baseTime * (1 - builderReduction) - executionTimeReduction;
+  }
+
+  return Math.max(1, adjustedTime);
 }

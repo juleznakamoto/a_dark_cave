@@ -68,6 +68,18 @@
     "description": "Fosse extrêmement profonde atteignant les matériaux les plus rares",
     "label": "Fosse sans fond"
   },
+  "buildBuildersLodge": {
+    "description": "Une loge où les maîtres bâtisseurs coordonnent la construction dans le village",
+    "label": "Loge des bâtisseurs"
+  },
+  "buildBuildersHall": {
+    "description": "Une halle où des bâtisseurs chevronnés rationalisent les projets et négocient de meilleurs prix des matériaux",
+    "label": "Halle des bâtisseurs"
+  },
+  "buildBuildersGuild": {
+    "description": "Une guilde de maîtres bâtisseurs qui dirige toute la capacité de construction du village",
+    "label": "Guilde des bâtisseurs"
+  },
   "buildCabin": {
     "description": "Cabane de chasse rudimentaire avec des outils pour les chasseurs",
     "label": "Cabane de chasse"

@@ -22,6 +22,31 @@ function archivePresetUnlockTooltip(totalSlots: number): BuildingTooltipEffect {
   );
 }
 
+function builderBuildTimeReductionTooltip(percent: number): BuildingTooltipEffect {
+  return bt("buildTimeReduction", "-{{percent}}% Build Time", { percent });
+}
+
+function builderBuildCostReductionTooltip(percent: number): BuildingTooltipEffect {
+  return bt("buildingCostReduction", "-{{percent}}% Building Costs", { percent });
+}
+
+function constructionQueueSlotTooltip(count: number): BuildingTooltipEffect {
+  return bt(
+    "addsConstructionQueueSlot",
+    count === 1
+      ? "Adds {{count}} construction queue slot"
+      : "Adds {{count}} construction queue slots",
+    { count },
+  );
+}
+
+function constructionBoostTooltip(): BuildingTooltipEffect {
+  return bt(
+    "constructionBoost",
+    "Construction Boost: spend Insight to skip 50% of build time (once per build)",
+  );
+}
+
 const WATCHTOWER_STATS_BY_LEVEL: Record<
   number,
   { defense: number; attack: number; integrity: number }
@@ -2598,6 +2623,102 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     executionTime: 60,
+    cooldown: 0,
+  },
+
+  buildBuildersLodge: {
+    id: "buildBuildersLodge",
+    label: "Builder's Lodge",
+    description:
+      "Gathering place for skilled craftsmen, where projects are planned",
+    tooltipEffects: [
+      builderBuildTimeReductionTooltip(5),
+      constructionQueueSlotTooltip(1),
+    ],
+    building: true,
+    show_when: {
+      1: {
+        "flags.constructionQueueEnabled": true,
+        "buildings.woodenHut": 4,
+        "buildings.buildersLodge": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 2000,
+        "resources.stone": 1000,
+      },
+    },
+    effects: {
+      1: { "buildings.buildersLodge": 1 },
+    },
+    executionTime: 60,
+    cooldown: 0,
+  },
+
+  buildBuildersHall: {
+    id: "buildBuildersHall",
+    label: "Builder's Hall",
+    description:
+      "Hall for veteran builders oversee the village's expansion",
+    tooltipEffects: [
+      builderBuildTimeReductionTooltip(10),
+      builderBuildCostReductionTooltip(5),
+      constructionBoostTooltip(),
+    ],
+    building: true,
+    show_when: {
+      1: {
+        "flags.constructionQueueEnabled": true,
+        "buildings.woodenHut": 6,
+        "buildings.buildersLodge": 1,
+        "buildings.buildersHall": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 4000,
+        "resources.stone": 2000,
+        "resources.iron": 1000,
+      },
+    },
+    effects: {
+      1: { "buildings.buildersHall": 1 },
+    },
+    executionTime: 120,
+    cooldown: 0,
+  },
+
+  buildBuildersGuild: {
+    id: "buildBuildersGuild",
+    label: "Builder's Guild",
+    description:
+      "Guild of master builders that commands the village's full construction capacity",
+    tooltipEffects: [
+      builderBuildTimeReductionTooltip(20),
+      builderBuildCostReductionTooltip(10),
+      constructionQueueSlotTooltip(1),
+    ],
+    building: true,
+    show_when: {
+      1: {
+        "flags.constructionQueueEnabled": true,
+        "buildings.woodenHut": 9,
+        "buildings.buildersHall": 1,
+        "buildings.buildersGuild": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 6000,
+        "resources.stone": 3000,
+        "resources.steel": 1000,
+      },
+    },
+    effects: {
+      1: { "buildings.buildersGuild": 1 },
+    },
+    executionTime: 240,
     cooldown: 0,
   },
 };

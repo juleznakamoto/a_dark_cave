@@ -158,6 +158,9 @@ import {
   handleBuildCoinhouse,
   handleBuildBank,
   handleBuildTreasury,
+  handleBuildBuildersLodge,
+  handleBuildBuildersHall,
+  handleBuildBuildersGuild,
 } from "./rules/villageBuildHandlers";
 
 import {
@@ -645,6 +648,12 @@ export function executeGameAction(
       return handleBuildBank(state, result);
     case "buildTreasury":
       return handleBuildTreasury(state, result);
+    case "buildBuildersLodge":
+      return handleBuildBuildersLodge(state, result);
+    case "buildBuildersHall":
+      return handleBuildBuildersHall(state, result);
+    case "buildBuildersGuild":
+      return handleBuildBuildersGuild(state, result);
 
     // Forest Scout Actions
     case "hunt":

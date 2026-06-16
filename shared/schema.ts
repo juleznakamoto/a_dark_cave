@@ -99,6 +99,7 @@ export const gameStateSchema = z.object({
       hasFortress: z.boolean().default(false),
       hasHitResourceLimit: z.boolean().default(false),
       villagerCapsEnabled: z.boolean().default(false),
+      constructionQueueEnabled: z.boolean().default(false),
     })
     .default({}),
   schematics: z
@@ -282,6 +283,9 @@ export const gameStateSchema = z.object({
       scribesOffice: z.number().default(0),
       recordsHall: z.number().default(0),
       grandArchive: z.number().default(0),
+      buildersLodge: z.number().default(0),
+      buildersHall: z.number().default(0),
+      buildersGuild: z.number().default(0),
       tradePost: z.number().default(0),
       grandBazaar: z.number().default(0),
       merchantsGuild: z.number().default(0),
@@ -367,6 +371,10 @@ export const gameStateSchema = z.object({
   // at a time and only once the matching archive building exists. On load, slots
   // that already contain saved presets are grandfathered (except in dev builds).
   villagerPresetsPurchased: z.number().default(0),
+  // Number of extra construction queue slots bought with Insight (0-2). Base slot is always 1.
+  constructionQueueSlotsPurchased: z.number().default(0),
+  // One-time Construction Boost per in-progress build action id.
+  constructionBoostsUsed: z.record(z.string(), z.boolean()).default({}),
   // Weapon enchantment levels keyed by weapon id (Tomewarden Academy feature).
   weaponEnchantments: z.record(z.string(), z.number()).default({}),
   expeditionVillagers: z.record(z.string(), z.number()).default({}),

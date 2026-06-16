@@ -16,6 +16,10 @@ import { calculateAdjustedCost } from "./costCalculation";
 import { getActionBonuses } from "./effectsCalculation";
 import { formatNumber } from "@/lib/utils";
 import { getVillagersInVillage } from "@/game/population";
+import {
+  hasFreeQueueSlot,
+  isConstructionQueueEnabled,
+} from "@/game/constructionQueueSlots";
 import { clothingEffects } from "./effects";
 import i18n from "i18next";
 import {
@@ -359,6 +363,14 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
     const nextLevel = getNextBuildingLevel(actionId, state);
     const maxHutLevel = getMaxHutLevelForBuildAction(actionId, state);
     if (maxHutLevel !== null && nextLevel > maxHutLevel) {
+      return false;
+    }
+
+    if (
+      isConstructionQueueEnabled(state) &&
+      !executionStartTimes?.[actionId] &&
+      !hasFreeQueueSlot(state as GameState)
+    ) {
       return false;
     }
   }

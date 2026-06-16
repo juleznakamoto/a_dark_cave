@@ -165,6 +165,11 @@
       "newVillagerChancePercent": "+{{percent}}% New Villager Chance",
       "steelForgerSteel": "Steel Forger: +{{amount}} Steel",
       "tannerLeather": "Tanner: +{{amount}} Leather",
+      "buildTimeReduction": "-{{percent}}% Build Time",
+      "buildingCostReduction": "-{{percent}}% Building Costs",
+      "addsConstructionQueueSlot_one": "Adds {{count}} construction queue slot",
+      "addsConstructionQueueSlot_other": "Adds {{count}} construction queue slots",
+      "constructionBoost": "Construction Boost: spend Insight to skip 50% of build time (once per build)",
       "weaponEnchantment": "Weapon Enchantment"
     }
   }

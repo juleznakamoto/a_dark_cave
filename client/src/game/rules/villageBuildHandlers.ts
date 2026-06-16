@@ -1405,3 +1405,39 @@ export function handleBuildTreasury(
 ): ActionResult {
   return handleBuildingConstruction(state, result, "buildTreasury", "treasury");
 }
+
+export function handleBuildBuildersLodge(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(
+    state,
+    result,
+    "buildBuildersLodge",
+    "buildersLodge",
+  );
+}
+
+export function handleBuildBuildersHall(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(
+    state,
+    result,
+    "buildBuildersHall",
+    "buildersHall",
+  );
+}
+
+export function handleBuildBuildersGuild(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(
+    state,
+    result,
+    "buildBuildersGuild",
+    "buildersGuild",
+  );
+}

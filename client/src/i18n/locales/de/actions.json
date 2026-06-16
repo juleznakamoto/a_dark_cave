@@ -68,6 +68,18 @@
     "description": "Extrem tiefe Grube, die zu den seltensten Materialien führt",
     "label": "Bodenlose Grube"
   },
+  "buildBuildersLodge": {
+    "description": "Eine Loge, in der Meisterbaumeister den Bau im Dorf koordinieren",
+    "label": "Baumeisterloge"
+  },
+  "buildBuildersHall": {
+    "description": "Eine Halle, in der erfahrene Baumeister Projekte straffen und bessere Materialpreise aushandeln",
+    "label": "Baumeisterhalle"
+  },
+  "buildBuildersGuild": {
+    "description": "Eine Gilde von Meisterbaumeistern, die die volle Baukapazität des Dorfs befehligt",
+    "label": "Baumeistergilde"
+  },
   "buildCabin": {
     "description": "Einfache Jagdhütte mit Werkzeugen für Jäger",
     "label": "Jägerhütte"

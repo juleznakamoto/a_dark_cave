@@ -162,6 +162,11 @@
       "newVillagerChancePercent": "+{{percent}} % de chance de nouveau villageois",
       "steelForgerSteel": "Forgeron d'acier : +{{amount}} acier",
       "tannerLeather": "Tanneur : +{{amount}} cuir",
+      "buildTimeReduction": "-{{percent}} % de temps de construction",
+      "buildingCostReduction": "-{{percent}} % de coûts de construction",
+      "addsConstructionQueueSlot_one": "Ajoute {{count}} emplacement de file de construction",
+      "addsConstructionQueueSlot_other": "Ajoute {{count}} emplacements de file de construction",
+      "constructionBoost": "Boost de construction : dépenser de la Perspicacité pour sauter 50 % du temps de construction (une fois par construction)",
       "weaponEnchantment": "Enchantement d'armes"
     },
     "obsidianOrbFocusRate": "Concentration : 1 toutes les 15 minutes",

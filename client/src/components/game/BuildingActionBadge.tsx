@@ -45,12 +45,15 @@ type BuildingActionBadgeProps = {
   embedded?: boolean;
   /** `sm` = side-panel building row; `lg` = action overlays and header badges. */
   size?: "sm" | "lg";
+  /** Idle glyph in font-noto-symbols-2 (defaults to Insight triangle). */
+  glyph?: string;
 };
 
 export function BuildingActionBadge({
   playing = false,
   embedded = false,
   size = "lg",
+  glyph = INSIGHT_GLYPH,
 }: BuildingActionBadgeProps) {
   const id = useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const maskId = `building-action-badge-mask-${id}`;
@@ -75,7 +78,7 @@ export function BuildingActionBadge({
             INSIGHT_TEXT_CLASS,
           )}
         >
-          {INSIGHT_GLYPH}
+          {glyph}
         </span>
       </span>
       <svg

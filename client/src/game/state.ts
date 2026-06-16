@@ -112,6 +112,16 @@ import {
   snapshotAssignments,
 } from "@/game/villagerJobPresets";
 import {
+  canBoostConstruction,
+  canPurchaseQueueSlot,
+  getConstructionBoostCost,
+  getConstructionBoostReductionSeconds,
+  getNextPurchasableQueueSlotIndex,
+  getNextQueueSlotUnlockCost,
+  getPurchasedQueueSlots,
+  QUEUE_SLOT_UNLOCK_INSIGHT_KEY,
+} from "@/game/constructionQueueSlots";
+import {
   canEnchantWeapon,
   getNextEnchantCost,
   getWeaponEnchantLevel,
@@ -413,6 +423,10 @@ interface GameStore extends GameState {
   applyVillagerJobPreset: (slot: number) => void;
   /** Buy the next preset slot with Insight (one at a time). Returns true on success. */
   purchaseVillagerPresetSlot: () => boolean;
+  /** Buy the next construction queue slot with Insight. Returns true on success. */
+  purchaseConstructionQueueSlot: () => boolean;
+  /** Spend Insight to skip 50% of an in-progress building's construction time (once). */
+  boostConstruction: (actionId: string) => boolean;
   enchantWeapon: (weaponId: string) => boolean;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
   setCombatDialog: (isOpen: boolean, data?: any) => void;
@@ -2071,6 +2085,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
           [actionId]: spendSnapshot,
         },
       }),
+      constructionBoostsUsed: {
+        ...(state.constructionBoostsUsed ?? {}),
+        [actionId]: false,
+      },
     });
   },
 
@@ -2087,6 +2105,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     delete newAbortEligible[actionId];
     const newSpendSnapshots = { ...state.executionSpendSnapshots };
     delete newSpendSnapshots[actionId];
+    const newConstructionBoostsUsed = { ...(state.constructionBoostsUsed ?? {}) };
+    delete newConstructionBoostsUsed[actionId];
     const releasedVillagers = state.expeditionVillagers?.[actionId] ?? 0;
     const updatedExpeditionVillagers = { ...state.expeditionVillagers };
     if (releasedVillagers > 0) {
@@ -2098,6 +2118,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       executionDurations: newDurations,
       executionAbortEligible: newAbortEligible,
       executionSpendSnapshots: newSpendSnapshots,
+      constructionBoostsUsed: newConstructionBoostsUsed,
       villagers: {
         ...state.villagers,
         free: (state.villagers.free || 0) + releasedVillagers,
@@ -2282,6 +2303,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       let revealChanged = false;
       let statEffectsRevealed = state.statEffectsRevealed;
       let presetUnlockUpdate: Partial<GameState> | null = null;
+      let queueUnlockUpdate: Partial<GameState> | null = null;
       for (const [actionId, endTime] of Object.entries(state.insightRevealing ?? {})) {
         if (now >= endTime) {
           if (actionId === STAT_INSIGHT_REVEAL_KEY) {
@@ -2296,6 +2318,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
                 villagerPresetsPurchased: purchasedBefore + 1,
                 // First unlock: select slot 1 for save. Later unlocks keep the current slot.
                 ...(purchasedBefore === 0 ? { activePresetSlot: 1 } : {}),
+              };
+            }
+          } else if (actionId === QUEUE_SLOT_UNLOCK_INSIGHT_KEY) {
+            const slotIndex = getNextPurchasableQueueSlotIndex(state);
+            if (slotIndex !== null) {
+              queueUnlockUpdate = {
+                constructionQueueSlotsPurchased:
+                  getPurchasedQueueSlots(state) + 1,
               };
             }
           } else {
@@ -2348,6 +2378,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             statEffectsRevealed,
             revealedAchievementTitles,
             ...(presetUnlockUpdate ?? {}),
+            ...(queueUnlockUpdate ?? {}),
           }
           : {}),
       };
@@ -3403,6 +3434,53 @@ export const useGameStore = create<GameStore>((set, get) => ({
       insightRevealing: {
         ...(state.insightRevealing ?? {}),
         [PRESET_UNLOCK_INSIGHT_KEY]: Date.now() + INSIGHT_REVEAL_DURATION_MS,
+      },
+    });
+    return true;
+  },
+
+  purchaseConstructionQueueSlot: () => {
+    const state = get();
+    if (!canPurchaseQueueSlot(state, state.insightRevealing)) return false;
+
+    const cost = getNextQueueSlotUnlockCost(state);
+    if (cost === null) return false;
+
+    const resourceUpdates = updateResource(state, "insight", -cost);
+
+    set({
+      ...resourceUpdates,
+      insightRevealing: {
+        ...(state.insightRevealing ?? {}),
+        [QUEUE_SLOT_UNLOCK_INSIGHT_KEY]: Date.now() + INSIGHT_REVEAL_DURATION_MS,
+      },
+    });
+    return true;
+  },
+
+  boostConstruction: (actionId: string) => {
+    const state = get();
+    if (!canBoostConstruction(state, actionId)) return false;
+
+    const cost = getConstructionBoostCost(state, actionId);
+    const reductionSeconds = getConstructionBoostReductionSeconds(
+      state,
+      actionId,
+    );
+    const startTime = state.executionStartTimes?.[actionId];
+    if (startTime == null || reductionSeconds <= 0) return false;
+
+    const resourceUpdates = updateResource(state, "insight", -cost);
+
+    set({
+      ...resourceUpdates,
+      executionStartTimes: {
+        ...(state.executionStartTimes ?? {}),
+        [actionId]: startTime - reductionSeconds * 1000,
+      },
+      constructionBoostsUsed: {
+        ...(state.constructionBoostsUsed ?? {}),
+        [actionId]: true,
       },
     });
     return true;

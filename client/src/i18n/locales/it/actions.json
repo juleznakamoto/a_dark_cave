@@ -68,6 +68,18 @@
     "description": "Cava estremamente profonda che raggiunge i materiali più rari",
     "label": "Pozzo Senza Fondo"
   },
+  "buildBuildersLodge": {
+    "description": "Una loggia dove i capomastri coordinano la costruzione nel villaggio",
+    "label": "Loggia dei costruttori"
+  },
+  "buildBuildersHall": {
+    "description": "Una sala dove costruttori esperti snelliscono i progetti e negoziano prezzi migliori sui materiali",
+    "label": "Sala dei costruttori"
+  },
+  "buildBuildersGuild": {
+    "description": "Una gilda di capomastri che comanda l'intera capacità costruttiva del villaggio",
+    "label": "Gilda dei costruttori"
+  },
   "buildCabin": {
     "description": "Capanna di caccia basilare con strumenti per i cacciatori",
     "label": "Capanna di Caccia"

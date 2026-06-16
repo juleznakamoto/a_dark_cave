@@ -68,6 +68,18 @@
     "description": "Poço extremamente profundo que alcança os materiais mais raros",
     "label": "Poço Sem Fundo"
   },
+  "buildBuildersLodge": {
+    "description": "Um alojamento onde mestres construtores coordenam a construção na aldeia",
+    "label": "Alojamento dos Construtores"
+  },
+  "buildBuildersHall": {
+    "description": "Um salão onde construtores experientes agilizam projetos e negociam melhores preços de materiais",
+    "label": "Salão dos Construtores"
+  },
+  "buildBuildersGuild": {
+    "description": "Uma guilda de mestres construtores que comanda toda a capacidade de construção da aldeia",
+    "label": "Guilda dos Construtores"
+  },
   "buildCabin": {
     "description": "Cabana de caça básica com ferramentas para caçadores",
     "label": "Cabana de Caça"

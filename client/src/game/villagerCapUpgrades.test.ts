@@ -114,6 +114,7 @@ describe("villagerCapUpgrades", () => {
     const result = handleLightFire(state, { stateUpdates: {}, logEntries: [] });
     expect(result.stateUpdates.flags?.gameStarted).toBe(true);
     expect(result.stateUpdates.flags?.villagerCapsEnabled).toBe(true);
+    expect(result.stateUpdates.flags?.constructionQueueEnabled).toBe(true);
   });
 
   it("upgradeVillagerCap spends insight and increments group level", () => {

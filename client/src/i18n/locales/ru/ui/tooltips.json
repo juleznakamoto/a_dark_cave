@@ -162,6 +162,11 @@
       "newVillagerChancePercent": "+{{percent}} % шанс нового жителя",
       "steelForgerSteel": "Сталевар: +{{amount}} стали",
       "tannerLeather": "Дубильщик: +{{amount}} кожи",
+      "buildTimeReduction": "-{{percent}}% времени строительства",
+      "buildingCostReduction": "-{{percent}}% стоимости строительства",
+      "addsConstructionQueueSlot_one": "Добавляет {{count}} слот очереди строительства",
+      "addsConstructionQueueSlot_other": "Добавляет {{count}} слота очереди строительства",
+      "constructionBoost": "Ускорение строительства: потратьте прозрение, чтобы пропустить 50% времени строительства (один раз за постройку)",
       "weaponEnchantment": "Зачарование оружия"
     },
     "obsidianOrbFocusRate": "Концентрация: 1 каждые 15 минут",

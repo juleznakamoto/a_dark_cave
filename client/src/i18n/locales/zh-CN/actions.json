@@ -68,6 +68,18 @@
     "description": "极深的矿坑，可抵达最稀有的矿材",
     "label": "无底矿坑"
   },
+  "buildBuildersLodge": {
+    "description": "大师级建造者在此协调全村的施工",
+    "label": "建造者小屋"
+  },
+  "buildBuildersHall": {
+    "description": "资深建造者在此精简工程并争取更优的材料价格",
+    "label": "建造者大厅"
+  },
+  "buildBuildersGuild": {
+    "description": "大师建造者公会，统管全村建造能力",
+    "label": "建造者公会"
+  },
   "buildCabin": {
     "description": "配有猎人工具的基础猎屋",
     "label": "猎人小屋"

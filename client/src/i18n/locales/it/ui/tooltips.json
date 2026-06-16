@@ -165,6 +165,11 @@
       "newVillagerChancePercent": "+{{percent}}% Probabilità di Nuovo Abitante",
       "steelForgerSteel": "Forgiatore d'Acciaio: +{{amount}} Acciaio",
       "tannerLeather": "Conciatore: +{{amount}} Cuoio",
+      "buildTimeReduction": "-{{percent}} % tempo di costruzione",
+      "buildingCostReduction": "-{{percent}} % costi di costruzione",
+      "addsConstructionQueueSlot_one": "Aggiunge {{count}} slot coda di costruzione",
+      "addsConstructionQueueSlot_other": "Aggiunge {{count}} slot coda di costruzione",
+      "constructionBoost": "Boost costruzione: spendi Intuizione per saltare il 50 % del tempo di costruzione (una volta per costruzione)",
       "weaponEnchantment": "Incantesimo delle armi"
     }
   }

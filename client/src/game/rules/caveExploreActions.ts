@@ -826,6 +826,7 @@ export function handleLightFire(
     ...state.flags,
     gameStarted: true,
     villagerCapsEnabled: true,
+    constructionQueueEnabled: true,
   };
   result.stateUpdates.story = {
     ...state.story,

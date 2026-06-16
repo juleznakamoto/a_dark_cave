@@ -17,6 +17,11 @@ import { BUILDING_HIERARCHIES } from "@/game/buildingHierarchy";
 import { getBonusSidebarLabel } from "@/i18n/resolveGameText";
 import { CRAFT_UPGRADE_ACTIONS, getCraftPriorMultiplier } from "@/game/craftUpgradeUtils";
 import { getWeaponEnchantBonus } from "@/game/weaponEnchantments";
+import {
+  getBuilderBuildCostReduction,
+  getBuilderLevel,
+  isConstructionQueueEnabled,
+} from "@/game/constructionQueueSlots";
 
 // Tool hierarchy definitions
 const AXE_HIERARCHY = [
@@ -878,6 +883,10 @@ export const getTotalBuildingCostReduction = (state: GameState): number => {
       }
       break; // Only apply the highest tier building's discount
     }
+  }
+
+  if (isConstructionQueueEnabled(state)) {
+    reduction += getBuilderBuildCostReduction(getBuilderLevel(state));
   }
 
   return reduction;

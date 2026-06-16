@@ -68,6 +68,18 @@
     "description": "Extremely deep pit reaching the rarest materials",
     "label": "Bottomless Pit"
   },
+  "buildBuildersLodge": {
+    "description": "A lodge where master builders coordinate construction across the village",
+    "label": "Builder's Lodge"
+  },
+  "buildBuildersHall": {
+    "description": "A hall where senior builders streamline projects and negotiate better material prices",
+    "label": "Builder's Hall"
+  },
+  "buildBuildersGuild": {
+    "description": "A guild of master builders that commands the village's full construction capacity",
+    "label": "Builder's Guild"
+  },
   "buildCabin": {
     "description": "Basic hunting cabin with tools for hunters",
     "label": "Hunter Cabin"

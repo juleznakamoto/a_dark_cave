@@ -622,6 +622,11 @@ export function reconcileInFlightExecutionsOnLoad(
     executionAbortEligible,
     executionSpendSnapshots,
     expeditionVillagers,
+    constructionBoostsUsed: Object.fromEntries(
+      Object.entries(state.constructionBoostsUsed ?? {}).filter(([actionId]) =>
+        Boolean(executionStartTimes[actionId]),
+      ),
+    ),
   } as GameState;
 }
 

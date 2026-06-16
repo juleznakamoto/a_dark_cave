@@ -1,0 +1,217 @@
+import { describe, expect, it } from "vitest";
+import type { GameState } from "@shared/schema";
+import { handleLightFire } from "@/game/rules/caveExploreActions";
+import { useGameStore } from "@/game/state";
+import {
+  BASE_QUEUE_SLOTS,
+  canBoostConstruction,
+  canPurchaseQueueSlot,
+  getActiveBuildCount,
+  getBuilderBuildCostReduction,
+  getBuilderBuildTimeReduction,
+  getBuildingQueueSlotCount,
+  getConstructionBoostCost,
+  getConstructionBoostReductionSeconds,
+  getNextQueueSlotUnlockCost,
+  getPurchasedQueueSlots,
+  getTotalQueueSlots,
+  hasFreeQueueSlot,
+  isConstructionBoostUnlocked,
+  isConstructionQueueEnabled,
+} from "@/game/constructionQueueSlots";
+
+function baseState(
+  overrides: Partial<GameState> = {},
+): GameState {
+  return {
+    flags: {
+      constructionQueueEnabled: true,
+      villagerCapsEnabled: true,
+    } as GameState["flags"],
+    buildings: {
+      woodenHut: 4,
+      buildersLodge: 0,
+      clerksHut: 1,
+    } as GameState["buildings"],
+    resources: { insight: 10000 } as GameState["resources"],
+    constructionQueueSlotsPurchased: 0,
+    constructionBoostsUsed: {},
+    executionStartTimes: {},
+    executionDurations: {},
+    ...overrides,
+  } as GameState;
+}
+
+describe("constructionQueueSlots", () => {
+  it("handleLightFire enables construction queue for new games", () => {
+    const state = baseState({
+      flags: {
+        gameStarted: false,
+        constructionQueueEnabled: false,
+      } as GameState["flags"],
+      story: { seen: {}, merchantPurchases: 0, heavySleeperHours: 0 },
+    });
+    const result = handleLightFire(state, { stateUpdates: {}, logEntries: [] });
+    expect(result.stateUpdates.flags?.constructionQueueEnabled).toBe(true);
+  });
+
+  it("computes builder tier reductions (highest tier only)", () => {
+    expect(getBuilderBuildTimeReduction(0)).toBe(0);
+    expect(getBuilderBuildTimeReduction(1)).toBe(0.05);
+    expect(getBuilderBuildTimeReduction(2)).toBe(0.1);
+    expect(getBuilderBuildTimeReduction(3)).toBe(0.2);
+    expect(getBuilderBuildCostReduction(1)).toBe(0);
+    expect(getBuilderBuildCostReduction(2)).toBe(0.05);
+    expect(getBuilderBuildCostReduction(3)).toBe(0.1);
+  });
+
+  it("tracks purchasable queue slots by builder level", () => {
+    expect(getBuildingQueueSlotCount(baseState())).toBe(0);
+    expect(
+      getBuildingQueueSlotCount(
+        baseState({
+          buildings: {
+            ...baseState().buildings,
+            buildersLodge: 1,
+          } as GameState["buildings"],
+        }),
+      ),
+    ).toBe(1);
+    expect(
+      getBuildingQueueSlotCount(
+        baseState({
+          buildings: {
+            ...baseState().buildings,
+            buildersLodge: 1,
+            buildersHall: 1,
+            buildersGuild: 1,
+          } as GameState["buildings"],
+        }),
+      ),
+    ).toBe(2);
+  });
+
+  it("grants extra slots from Builder buildings and allows Insight purchases up to the cap", () => {
+    const lodgeState = baseState({
+      buildings: {
+        ...baseState().buildings,
+        buildersLodge: 1,
+      } as GameState["buildings"],
+    });
+    expect(getTotalQueueSlots(lodgeState)).toBe(BASE_QUEUE_SLOTS + 1);
+    expect(getNextQueueSlotUnlockCost(lodgeState)).toBe(2500);
+    expect(canPurchaseQueueSlot(lodgeState)).toBe(true);
+
+    const guildState = baseState({
+      buildings: {
+        ...baseState().buildings,
+        buildersLodge: 1,
+        buildersHall: 1,
+        buildersGuild: 1,
+      } as GameState["buildings"],
+    });
+    expect(getTotalQueueSlots(guildState)).toBe(BASE_QUEUE_SLOTS + 2);
+    expect(getNextQueueSlotUnlockCost(guildState)).toBeNull();
+    expect(canPurchaseQueueSlot(guildState)).toBe(false);
+  });
+
+  it("allows parallel builds when a building tier grants an extra slot", () => {
+    const state = baseState({
+      buildings: {
+        ...baseState().buildings,
+        buildersLodge: 1,
+      } as GameState["buildings"],
+      executionStartTimes: {
+        buildWoodenHut: Date.now(),
+      },
+      executionDurations: {
+        buildWoodenHut: 30,
+      },
+    });
+    expect(getTotalQueueSlots(state)).toBe(2);
+    expect(hasFreeQueueSlot(state)).toBe(true);
+  });
+
+  it("blocks builds when all queue slots are busy", () => {
+    const state = baseState({
+      executionStartTimes: {
+        buildWoodenHut: Date.now(),
+      },
+      executionDurations: {
+        buildWoodenHut: 30,
+      },
+    });
+    expect(getActiveBuildCount(state)).toBe(1);
+    expect(hasFreeQueueSlot(state)).toBe(false);
+  });
+
+  it("allows parallel builds when extra slots are purchased", () => {
+    const state = baseState({
+      constructionQueueSlotsPurchased: 1,
+      executionStartTimes: {
+        buildWoodenHut: Date.now(),
+      },
+      executionDurations: {
+        buildWoodenHut: 30,
+      },
+    });
+    expect(getTotalQueueSlots(state)).toBe(2);
+    expect(hasFreeQueueSlot(state)).toBe(true);
+  });
+
+  it("computes construction boost cost from saved minutes", () => {
+    const state = baseState({
+      buildings: {
+        ...baseState().buildings,
+        buildersLodge: 1,
+        buildersHall: 1,
+      } as GameState["buildings"],
+      executionStartTimes: { buildWoodenHut: Date.now() },
+      executionDurations: { buildWoodenHut: 360 },
+    });
+    expect(getConstructionBoostReductionSeconds(state, "buildWoodenHut")).toBe(
+      180,
+    );
+    expect(getConstructionBoostCost(state, "buildWoodenHut")).toBe(750);
+    expect(isConstructionBoostUnlocked(state)).toBe(true);
+    expect(canBoostConstruction(state, "buildWoodenHut")).toBe(true);
+  });
+
+  it("boostConstruction spends insight and shifts execution start time", () => {
+    const startTime = Date.now();
+    useGameStore.getState().initialize(
+      baseState({
+        executionStartTimes: { buildWoodenHut: startTime },
+        executionDurations: { buildWoodenHut: 360 },
+        buildings: {
+          ...baseState().buildings,
+          buildersLodge: 1,
+          buildersHall: 1,
+        } as GameState["buildings"],
+        resources: { insight: 1000 } as GameState["resources"],
+      }) as Partial<GameState>,
+    );
+
+    const ok = useGameStore.getState().boostConstruction("buildWoodenHut");
+    expect(ok).toBe(true);
+
+    const next = useGameStore.getState();
+    expect(next.resources.insight).toBe(250);
+    expect(next.constructionBoostsUsed?.buildWoodenHut).toBe(true);
+    expect(next.executionStartTimes?.buildWoodenHut).toBe(
+      startTime - 180 * 1000,
+    );
+    expect(canBoostConstruction(next as GameState, "buildWoodenHut")).toBe(
+      false,
+    );
+  });
+
+  it("is disabled when feature flag is off", () => {
+    const state = baseState({
+      flags: { constructionQueueEnabled: false } as GameState["flags"],
+    });
+    expect(isConstructionQueueEnabled(state)).toBe(false);
+    expect(hasFreeQueueSlot(state)).toBe(true);
+    expect(getPurchasedQueueSlots(state)).toBe(0);
+  });
+});
