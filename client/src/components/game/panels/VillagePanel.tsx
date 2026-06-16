@@ -1210,7 +1210,7 @@ export default function VillagePanel() {
                                   <span
                                     data-testid={queueTooltipId}
                                     className={cn(
-                                      "inline-flex h-[1.05rem] w-[1.05rem] shrink-0 items-center justify-center rounded-md border border-muted-foreground/40",
+                                      "inline-flex h-[1.05rem] w-[1.05rem] shrink-0 items-center justify-center rounded-md border border-neutral-400/50",
                                       !isLocked && "p-[2.4px]",
                                     )}
                                   >
