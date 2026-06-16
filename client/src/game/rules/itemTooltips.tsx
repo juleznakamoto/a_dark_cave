@@ -188,7 +188,7 @@ function renderFortificationStatLine(
   return (
     <>
       {fullLabel}{" "}
-      <span className="text-red-500">({damagedLabel})</span>
+      <span className="text-red-500">↓{damagedLabel}</span>
     </>
   );
 }
@@ -228,9 +228,8 @@ function sortFortificationStatEffects(
   });
 }
 
-function applyFortificationDamageToEffectLines(
+function formatFortificationLevelEffectLines(
   effects: BuildingTooltipEffect[],
-  isDamaged: boolean,
 ): TooltipEffectLine[] {
   return sortFortificationStatEffects(effects).map((effect) => {
     if (!isFortificationStatKey(effect.key)) {
@@ -240,28 +239,25 @@ function applyFortificationDamageToEffectLines(
     if (typeof amount !== "number") {
       return resolveBuildingTooltipEffect(effect);
     }
-    const damagedAmount = isDamaged ? Math.floor(amount * 0.5) : null;
-    return renderFortificationStatLine(effect.key, amount, damagedAmount);
+    return formatFortificationStat(effect.key, amount);
   });
 }
 
 function getFortificationLevelEffectLines(
   itemId: "watchtower" | "palisades",
   level: number,
-  isDamaged: boolean,
 ): TooltipEffectLine[] {
   const fullEffects =
     itemId === "watchtower"
       ? getWatchtowerTooltipEffectsForLevel(level)
       : getPalisadesTooltipEffectsForLevel(level);
 
-  return applyFortificationDamageToEffectLines(fullEffects, isDamaged);
+  return formatFortificationLevelEffectLines(fullEffects);
 }
 
 function getFortificationLevelEffectSections(
   itemId: FortificationBuildingKey,
   currentLevel: number,
-  isDamaged: boolean,
 ): FortificationLeveledEffectSection[] {
   if (
     currentLevel <= 1 ||
@@ -272,11 +268,7 @@ function getFortificationLevelEffectSections(
 
   const sections: FortificationLeveledEffectSection[] = [];
   for (let level = 1; level <= currentLevel; level++) {
-    const effects = getFortificationLevelEffectLines(
-      itemId,
-      level,
-      isDamaged,
-    );
+    const effects = getFortificationLevelEffectLines(itemId, level);
     if (effects.length > 0) {
       sections.push({ level, effects });
     }
@@ -541,7 +533,7 @@ export function renderFortificationTooltip(
   );
   const levelSections =
     upgradeLevel != null
-      ? getFortificationLevelEffectSections(fortKey, upgradeLevel, isDamaged)
+      ? getFortificationLevelEffectSections(fortKey, upgradeLevel)
       : [];
   const effectsBlock = renderLeveledEffectsBlock(
     currentEffects,
