@@ -1217,13 +1217,13 @@ export default function VillagePanel() {
                                     {isLocked ? (
                                       <span
                                         aria-hidden
-                                        className="font-noto-symbols-2 -translate-y-px text-[12px] font-extrabold leading-none text-muted-foreground/45 select-none"
+                                        className="font-noto-symbols-2 -translate-y-px text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
                                       >
                                         ×
                                       </span>
                                     ) : (
                                       isUsed && (
-                                        <span className="block h-full w-full rounded-[2px] bg-red-700" />
+                                        <span className="block h-full w-full rounded-[1px] bg-red-700" />
                                       )
                                     )}
                                   </span>
