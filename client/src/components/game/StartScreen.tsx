@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { ParticleButton } from "@/components/ui/particle-button";
+import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import CloudShader from "@/components/ui/cloud-shader";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
 import LanguageSelector from "@/components/game/LanguageSelector";
 import {
@@ -15,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
+import { isSteamBuild } from "@/lib/edition";
 
 const START_FOOTER_LINK_BASE =
   "inline-flex items-center gap-0 sm:gap-1 hover:text-foreground transition-opacity";
@@ -24,14 +27,33 @@ const START_FOOTER_LEGAL_LINK =
   `${START_FOOTER_LINK_BASE} opacity-40 hover:opacity-100 text-[9px] sm:text-[10px]`;
 const START_FOOTER_LANGUAGE_BTN =
   "inline-flex items-center gap-0 sm:gap-1 bg-transparent hover:bg-transparent hover:text-foreground transition-opacity opacity-70 hover:opacity-100 p-0 h-auto min-h-0 shadow-none";
+const START_AUDIO_BTN =
+  "group shrink-0 p-0 w-7 h-7 flex items-center justify-center opacity-70 hover:opacity-100 transition-opacity";
+const START_AUDIO_ICON =
+  "w-4 h-4 shrink-0 object-contain opacity-80 transition-[filter,opacity] group-hover:opacity-100 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]";
+
 export default function StartScreen() {
-  const { executeAction, setBoostMode, boostMode, cruelMode } = useGameStore();
+  const {
+    executeAction,
+    setBoostMode,
+    boostMode,
+    cruelMode,
+    musicMuted,
+    sfxMuted,
+    setMusicMuted,
+    setSfxMuted,
+  } = useGameStore();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const executedRef = useRef(false);
   const isCruelMode = cruelMode;
   const [showParticles, setShowParticles] = useState(false);
   const { t } = useTranslation("ui");
   const { locale } = useLocale();
+
+  useEffect(() => {
+    audioManager.musicMute(musicMuted);
+    audioManager.sfxMute(sfxMuted);
+  }, [musicMuted, sfxMuted]);
 
   useEffect(() => {
     const isBoostPath = window.location.pathname.includes("/boost");
@@ -133,6 +155,18 @@ export default function StartScreen() {
     }, 3000);
   };
 
+  const toggleMusic = () => {
+    const next = !musicMuted;
+    setMusicMuted(next);
+    audioManager.musicMute(next);
+  };
+
+  const toggleSfx = () => {
+    const next = !sfxMuted;
+    setSfxMuted(next);
+    audioManager.sfxMute(next);
+  };
+
   return (
     <div className="fixed inset-0 bg-black text-white overflow-hidden">
       <Helmet>
@@ -150,19 +184,20 @@ export default function StartScreen() {
         ))}
         <link rel="canonical" href="https://a-dark-cave.com/" />
       </Helmet>
-      {/* Featured By Section */}
-      <div className="absolute bottom-12 right-4 z-20 animate-fade-in-featured">
-        <div className="bg-white/25 backdrop-blur-sm rounded-lg px-2 pt-2 pb-2.5 border border-white/25 flex flex-col items-end">
-          <p className="text-xs text-gray-300/80 font-medium">{t("startScreen.recommendedBy")}</p>
-          <img
-            src="/the_hustle_logo.svg"
-            alt="The Hustle"
-            width={116}
-            height={40}
-            className="h-8 md:h-10 w-auto opacity-100"
-          />
+      {!isSteamBuild && (
+        <div className="absolute bottom-12 right-4 z-20 animate-fade-in-featured">
+          <div className="bg-white/25 backdrop-blur-sm rounded-lg px-2 pt-2 pb-2.5 border border-white/25 flex flex-col items-end">
+            <p className="text-xs text-gray-300/80 font-medium">{t("startScreen.recommendedBy")}</p>
+            <img
+              src="/the_hustle_logo.svg"
+              alt="The Hustle"
+              width={116}
+              height={40}
+              className="h-8 md:h-10 w-auto opacity-100"
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       <style>{`
         @keyframes fade-in-button {
@@ -272,13 +307,59 @@ export default function StartScreen() {
         className={`absolute bottom-4 left-4 right-4 z-10 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 text-[10px] sm:text-xs text-muted-foreground ${boostMode ? "pr-8 sm:pr-10" : ""}`}
         aria-label="Site links"
       >
-        <LanguageSelector
-          buttonClassName={START_FOOTER_LANGUAGE_BTN}
-          iconClassName="w-3.5 h-3.5 shrink-0"
-          menuAlign="start"
-          showTooltip={false}
-          showInlineLabel
-        />
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
+          <LanguageSelector
+            buttonClassName={START_FOOTER_LANGUAGE_BTN}
+            iconClassName="w-3.5 h-3.5 shrink-0"
+            menuAlign="start"
+            showTooltip={false}
+            showInlineLabel
+          />
+          <HoverCalloutTooltip
+            label={musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")}
+            side="top"
+            arrowAlign="start"
+          >
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={toggleMusic}
+              data-testid="button-start-toggle-music"
+              className={START_AUDIO_BTN}
+              aria-label={
+                musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")
+              }
+            >
+              <img
+                src={musicMuted ? "/music_off.png" : "/music_on.png"}
+                alt=""
+                className={START_AUDIO_ICON}
+              />
+            </Button>
+          </HoverCalloutTooltip>
+          <HoverCalloutTooltip
+            label={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
+            side="top"
+            arrowAlign="start"
+          >
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={toggleSfx}
+              data-testid="button-start-toggle-sfx"
+              className={START_AUDIO_BTN}
+              aria-label={
+                sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")
+              }
+            >
+              <img
+                src={sfxMuted ? "/sound_off.png" : "/sound_on.png"}
+                alt=""
+                className={START_AUDIO_ICON}
+              />
+            </Button>
+          </HoverCalloutTooltip>
+        </div>
         <div className="flex flex-wrap justify-end items-center gap-x-3 gap-y-1.5">
           {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
             const { href, title } = GAME_FOOTER_RIGHT_ICON_LINKS[platform];

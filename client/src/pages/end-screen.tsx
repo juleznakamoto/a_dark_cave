@@ -5,6 +5,8 @@ import { initPlaylight, markPlaylightDiscoveryUserInitiated } from "@/lib/playli
 import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
 import { useGameStore } from "@/game/state";
 import { useTranslation } from "react-i18next";
+import { isSteamBuild } from "@/lib/edition";
+import { logger } from "@/lib/logger";
 
 export default function EndScreenPage() {
   const { t } = useTranslation("ui");
@@ -31,6 +33,26 @@ export default function EndScreenPage() {
   };
 
   const handleCruelMode = async () => {
+    // Steam build: Cruel Mode is free once the game has been finished. There is
+    // no shop, so unlock it directly and start a fresh Cruel Mode game.
+    if (isSteamBuild) {
+      try {
+        const store = useGameStore.getState();
+        useGameStore.setState({
+          activatedPurchases: {
+            ...store.activatedPurchases,
+            cruel_mode: true,
+          },
+        });
+        await useGameStore.getState().restartGame();
+        const { saveGame } = await import("@/game/save");
+        await saveGame(useGameStore.getState(), false);
+      } catch (error) {
+        logger.error("[END SCREEN] Failed to start Cruel Mode:", error);
+      }
+      window.location.href = "/?game=true";
+      return;
+    }
     window.location.href = "/?game=true&openShop=true&cruelHighlight=true";
   };
 
@@ -106,11 +128,16 @@ export default function EndScreenPage() {
             onClick: handleMainMenu,
             buttonId: "end-screen-close",
           },
-          secondaryTrailing: {
-            text: t("endScreen.moreGames"),
-            onClick: handleMoreGames,
-            buttonId: "end-screen-more-games",
-          },
+          // "More Games" is the Playlight discovery SDK — web only.
+          ...(isSteamBuild
+            ? {}
+            : {
+              secondaryTrailing: {
+                text: t("endScreen.moreGames"),
+                onClick: handleMoreGames,
+                buttonId: "end-screen-more-games",
+              },
+            }),
         }}
         socialButtons={{
           instagram: {

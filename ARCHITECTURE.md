@@ -19,6 +19,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | Path | What lives here |
 |------|-----------------|
 | `client/` | React SPA: UI, game engine, i18n, assets. Vite root. |
+| `electron/` | Steam desktop shell (Electron `main`/`preload` + loopback static server + steamworks.js). See [Steam edition](#steam-edition-electron) below. |
 | `server/` | Express server: API routes, Stripe/referral/marketing, dev Vite middleware, prod static serving. |
 | `shared/` | Cross-cutting TypeScript shared by client + server: Zod schemas, shop/referral pricing. |
 | `supabase/` | SQL migrations + edge function (`functions/save-game/`) for Postgres/RLS. |
@@ -30,7 +31,8 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 
 **Root config:** `package.json` (scripts/deps), `vite.config.ts` (client build, aliases, chunks),
 `tsconfig.json` (includes `client/src`, `shared`, `server`), `vitest.config.ts` + `vitest.setup.ts`,
-`tailwind.config.ts`, `components.json` (shadcn/ui), `drizzle.config.ts`.
+`tailwind.config.ts`, `components.json` (shadcn/ui), `drizzle.config.ts`,
+`electron-builder.yml` (Steam Windows packaging), `steam_appid.txt` (Steam App ID; `480` = Valve test id).
 
 **Path aliases:** `@/*` → `client/src/*`, `@shared/*` → `shared/*`, `@assets` → `attached_assets`.
 
@@ -208,6 +210,39 @@ Support modules (not always npm-wired): `locale-catalog.mjs`, `parse-locale-json
 `apply-*-fix-translations.mjs`, `apply-cube-translations.mjs`, `restore-ok-comments.mjs`,
 `fix-es-locale-encoding.mjs`, plus `*-fix-translations.json` / `cube-events-translations.json`
 data files for batch locale fixes.
+
+---
+
+## Steam edition (`electron/`)
+
+The same client codebase ships two editions, switched by the build-time flag
+**`isSteamBuild`** (`client/src/lib/edition.ts`, reads `import.meta.env.VITE_STEAM_BUILD === "1"`).
+The Steam build is a Windows desktop app with no online services (Supabase, Stripe,
+leaderboard, social, referral, marketing, Playlight, session/version pings), no real-money
+shop, the whole game unlocked, merchant-sold dark artifacts, and local + Steam Cloud saves.
+
+| Path | Responsibility |
+|------|----------------|
+| `electron/main.ts` | Electron main process: Steamworks init + overlay, loopback server, save-file IPC, single-instance, external-link handling. |
+| `electron/preload.ts` | `contextBridge` exposing `window.steamBridge` (achievements + Cloud save IPC) to the sandboxed renderer. |
+| `electron/loopbackServer.ts` | Serves built `dist/public` over `http://127.0.0.1:<port>` (absolute-path routing needs HTTP, not `file://`). |
+| `electron/steam.ts` | Defensive `steamworks.js` wrapper (degrades to no-ops when Steam absent). |
+| `client/src/lib/edition.ts` | `isSteamBuild` flag (single source of truth). |
+| `client/src/lib/steam.ts` | Renderer-side safe wrapper over `window.steamBridge` (no-ops on web). |
+| `client/src/game/steamSaveAdapter.ts` | Mirrors the encoded `ADC2:` save blob to the Steam Cloud file; reconciles with IndexedDB by `playTime`. |
+| `client/src/achievements/steamAchievements.ts` | Maps the 62 ring achievements to Steam API names (`ACH_*`); unlocks on criteria-met (loop + load backfill). |
+| `scripts/build-electron.mjs` | esbuild bundles `main`/`preload` to `dist-electron/*.cjs`. |
+
+**Edition seams (guarded by `isSteamBuild`):** Supabase short-circuits in `lib/supabase.ts`;
+`App.tsx` skips Playlight; `pages/game.tsx` skips session tracker, auth, purchase rehydrate,
+and Stripe return; `game/save.ts` takes the local-only path + Steam Cloud mirror; `game/loop.ts`
+skips version check + syncs Steam achievements; `state.ts` `createInitialState`/`restartGame`
+set `BTP=1` and grant `full_game` (merchant artifacts, no paywall); `GameContainer`/`ProfileMenu`
+hide shop/leaderboard/share/invite/auth; `pages/end-screen.tsx` unlocks Cruel Mode free once
+`hasWonAnyGame` is set.
+
+**Scripts:** `build:steam` (Vite client build with the flag), `electron:build` (bundle shell),
+`electron:dev` (build + run), `electron:package` (electron-builder Windows installer → `release/`).
 
 ---
 

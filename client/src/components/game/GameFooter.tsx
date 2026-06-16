@@ -12,6 +12,7 @@ import LanguageSelector from "./LanguageSelector";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { tWithFallback } from "@/i18n/resolveGameText";
+import { isSteamBuild } from "@/lib/edition";
 
 const FOOTER_CONTROL_BTN =
   "group shrink-0 px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-600";
@@ -75,11 +76,13 @@ export default function GameFooter() {
 
   return (
     <>
-      <FullGamePurchaseDialog
-        isOpen={fullGamePurchaseDialogOpen}
-        onClose={() => setFullGamePurchaseDialogOpen(false)}
-        openedFromFooter={true}
-      />
+      {!isSteamBuild && (
+        <FullGamePurchaseDialog
+          isOpen={fullGamePurchaseDialogOpen}
+          onClose={() => setFullGamePurchaseDialogOpen(false)}
+          openedFromFooter={true}
+        />
+      )}
       <footer className="relative flex min-h-9 items-center border-t border-border px-2 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible">
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center gap-0.5 shrink-0">
@@ -156,7 +159,7 @@ export default function GameFooter() {
               iconClassName={FOOTER_CONTROL_SVG_ICON_HOVER}
             />
 
-            {BTP === 1 ? (
+            {BTP === 1 && !isSteamBuild ? (
               <Button
                 variant="ghost"
                 size="xs"
@@ -166,35 +169,40 @@ export default function GameFooter() {
                 {t("footer.fullGame")}
               </Button>
             ) : null}
-            <HoverCalloutTooltip
-              label={t("footer.openShop")}
-              side="top"
-            >
-              <Button
-                variant="ghost"
-                size="xs"
-                onClick={() => setShopDialogOpen(true)}
-                aria-label={t("footer.openShop")}
-                className={`${FOOTER_CONTROL_BTN} ${FOOTER_CONTROL_BTN_SELF_FADE}`}
-              >
-                {t("footer.trader")}
-              </Button>
-            </HoverCalloutTooltip>
-            <HoverCalloutTooltip
-              label={t("footer.supportGame")}
-              side="top"
-            >
-              <Button
-                variant="ghost"
-                size="xs"
-                onClick={handleOfferTribute}
-                aria-label={t("footer.supportGame")}
-                className={`${FOOTER_CONTROL_BTN} ${FOOTER_CONTROL_BTN_SELF_FADE} flex items-center gap-1`}
-              >
-                <span aria-hidden>❤︎⁠</span>
-                <span>{t("footer.donate")}</span>
-              </Button>
-            </HoverCalloutTooltip>
+            {/* Shop + donate are web-only (Stripe / external tip jar). */}
+            {!isSteamBuild && (
+              <>
+                <HoverCalloutTooltip
+                  label={t("footer.openShop")}
+                  side="top"
+                >
+                  <Button
+                    variant="ghost"
+                    size="xs"
+                    onClick={() => setShopDialogOpen(true)}
+                    aria-label={t("footer.openShop")}
+                    className={`${FOOTER_CONTROL_BTN} ${FOOTER_CONTROL_BTN_SELF_FADE}`}
+                  >
+                    {t("footer.trader")}
+                  </Button>
+                </HoverCalloutTooltip>
+                <HoverCalloutTooltip
+                  label={t("footer.supportGame")}
+                  side="top"
+                >
+                  <Button
+                    variant="ghost"
+                    size="xs"
+                    onClick={handleOfferTribute}
+                    aria-label={t("footer.supportGame")}
+                    className={`${FOOTER_CONTROL_BTN} ${FOOTER_CONTROL_BTN_SELF_FADE} flex items-center gap-1`}
+                  >
+                    <span aria-hidden>❤︎⁠</span>
+                    <span>{t("footer.donate")}</span>
+                  </Button>
+                </HoverCalloutTooltip>
+              </>
+            )}
           </div>
           <div className="flex-1 flex justify-end gap-1 items-center">
             {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {

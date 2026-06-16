@@ -17,6 +17,7 @@ import { saveGame } from "@/game/save";
 import { buildGameState } from "@/game/stateHelpers";
 import { logger } from "@/lib/logger";
 import { formatSaveTimestamp } from "@/lib/utils";
+import { isSteamBuild } from "@/lib/edition";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { DropdownMenuItemWithTooltip } from "@/components/game/DropdownMenuItemWithTooltip";
 import {
@@ -503,7 +504,7 @@ export function GameHeaderControls() {
 
   return (
     <div className="flex items-center gap-0.5 shrink-0">
-      {showRewardsTasksShortcut && (
+      {showRewardsTasksShortcut && !isSteamBuild && (
         <HoverCalloutTooltip
           label={t("profile.rewardsTasks")}
           side="bottom"
@@ -548,31 +549,36 @@ export function GameHeaderControls() {
           </span>
         </HoverCalloutTooltip>
       )}
-      <PlaylightDiscoveryButton
-        onClick={handleDiscovery}
-        forceShowTooltip={isPaused || sleepDialogOpen}
-        tooltipSide="bottom"
-        className={HEADER_ICON_BTN}
-      />
-      <HoverCalloutTooltip
-        label={t("share.title", { defaultValue: "Share your progress" })}
-        side="bottom"
-      >
-        <Button
-          type="button"
-          variant="ghost"
-          size="xs"
-          onClick={() => setShareDialogOpen(true)}
-          aria-label={t("share.title", { defaultValue: "Share your progress" })}
-          className={`${HEADER_ICON_BTN} group touch-manipulation`}
-        >
-          <Share2
-            className={`h-[15px] w-[15px] ${HEADER_ICON_SYMBOL_HOVER}`}
-            aria-hidden="true"
+      {/* Playlight discovery + social share are web-only features. */}
+      {!isSteamBuild && (
+        <>
+          <PlaylightDiscoveryButton
+            onClick={handleDiscovery}
+            forceShowTooltip={isPaused || sleepDialogOpen}
+            tooltipSide="bottom"
+            className={HEADER_ICON_BTN}
           />
-        </Button>
-      </HoverCalloutTooltip>
-      {(hasWonAnyGame || devMode) && (
+          <HoverCalloutTooltip
+            label={t("share.title", { defaultValue: "Share your progress" })}
+            side="bottom"
+          >
+            <Button
+              type="button"
+              variant="ghost"
+              size="xs"
+              onClick={() => setShareDialogOpen(true)}
+              aria-label={t("share.title", { defaultValue: "Share your progress" })}
+              className={`${HEADER_ICON_BTN} group touch-manipulation`}
+            >
+              <Share2
+                className={`h-[15px] w-[15px] ${HEADER_ICON_SYMBOL_HOVER}`}
+                aria-hidden="true"
+              />
+            </Button>
+          </HoverCalloutTooltip>
+        </>
+      )}
+      {(hasWonAnyGame || devMode) && !isSteamBuild && (
         <HoverCalloutTooltip label={t("profile.leaderboard")} side="bottom">
           <Button
             type="button"
@@ -657,23 +663,25 @@ export function GameHeaderControls() {
           <DropdownMenuItem onClick={handleRestartGame}>
             {t("profile.newGame")}
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          {currentUser ? (
-            <DropdownMenuItem onClick={handleSignOut}>
-              {t("profile.signOut")}
-            </DropdownMenuItem>
-          ) : (
-            <DropdownMenuItem
-              onClick={() => {
-                setAccountDropdownOpen(false);
-                handleSetAuthDialogOpen(true);
-                setAuthNotificationSeen(true);
-              }}
-            >
-              {t("profile.signInUp")}
-            </DropdownMenuItem>
-          )}
-          {currentUser && (
+          {/* Account / auth / marketing are web-only (Supabase). */}
+          {!isSteamBuild && <DropdownMenuSeparator />}
+          {!isSteamBuild &&
+            (currentUser ? (
+              <DropdownMenuItem onClick={handleSignOut}>
+                {t("profile.signOut")}
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem
+                onClick={() => {
+                  setAccountDropdownOpen(false);
+                  handleSetAuthDialogOpen(true);
+                  setAuthNotificationSeen(true);
+                }}
+              >
+                {t("profile.signInUp")}
+              </DropdownMenuItem>
+            ))}
+          {!isSteamBuild && currentUser && (
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItemWithTooltip

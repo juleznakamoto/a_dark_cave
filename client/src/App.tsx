@@ -5,6 +5,7 @@ import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { initPlaylight } from "@/lib/playlight";
+import { isSteamBuild } from "@/lib/edition";
 
 // Lazy load admin dashboard (recharts, date-fns, 11 tabs - only admins need this)
 const AdminDashboard = lazy(() => import("@/pages/admin/dashboard"));
@@ -51,6 +52,8 @@ function Router() {
 
 function App() {
   useEffect(() => {
+    // Playlight is a web-only discovery SDK; the Steam build ships no online services.
+    if (isSteamBuild) return;
     initPlaylight().catch(() => { });
   }, []);
 

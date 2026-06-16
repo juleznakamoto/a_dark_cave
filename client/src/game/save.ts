@@ -18,6 +18,12 @@ import {
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
 import { buildGameState } from "./stateHelpers";
+import { isSteamBuild } from "@/lib/edition";
+import {
+  writeSteamCloudSave,
+  readSteamCloudSave,
+  pickNewerSave,
+} from "./steamSaveAdapter";
 
 const isDev = import.meta.env.DEV;
 
@@ -129,14 +135,25 @@ async function putLocalSave(
   db: Awaited<ReturnType<typeof getDB>>,
   data: SaveData,
 ): Promise<void> {
-  await db.put("saves", encodeLocalSave(data), SAVE_KEY);
+  const encoded = encodeLocalSave(data);
+  await db.put("saves", encoded, SAVE_KEY);
+  // Steam build: also mirror to the Steam Cloud file (no-op on web).
+  if (isSteamBuild) {
+    await writeSteamCloudSave(encoded);
+  }
 }
 
 async function getLocalSave(
   db: Awaited<ReturnType<typeof getDB>>,
 ): Promise<SaveData | undefined> {
   const raw = await db.get("saves", SAVE_KEY);
-  return decodeLocalSave(raw) ?? undefined;
+  const local = decodeLocalSave(raw) ?? undefined;
+  // Steam build: reconcile IndexedDB with the cloud-synced file (newer wins).
+  if (isSteamBuild) {
+    const cloud = await readSteamCloudSave();
+    return pickNewerSave(local, cloud);
+  }
+  return local;
 }
 
 async function putLastCloudState(
@@ -522,8 +539,11 @@ export async function saveGame(
 
 export async function loadGame(): Promise<GameState | null> {
   try {
-    await flushPendingReferralToUserMetadata();
-    await processReferralAfterConfirmation();
+    // Referral metadata sync is web only (Supabase-backed).
+    if (!isSteamBuild) {
+      await flushPendingReferralToUserMetadata();
+      await processReferralAfterConfirmation();
+    }
 
     const db = await getDB();
     const localSave = await getLocalSave(db);
@@ -552,8 +572,8 @@ export async function loadGame(): Promise<GameState | null> {
       });
     }
 
-    // Check if user is authenticated
-    const user = await getCurrentUser();
+    // Check if user is authenticated (never on Steam — fully offline).
+    const user = isSteamBuild ? null : await getCurrentUser();
 
     if (user) {
       // User is authenticated - compare local and cloud saves
@@ -716,8 +736,10 @@ export async function loadGame(): Promise<GameState | null> {
           ...localSave.gameState,
           cooldownDurations: localSave.gameState.cooldownDurations || {},
         };
-        const processedState =
-          await processUnclaimedReferrals(stateWithDefaults);
+        // Steam build has no referral system; skip the Supabase-backed processing.
+        const processedState = isSteamBuild
+          ? stateWithDefaults
+          : await processUnclaimedReferrals(stateWithDefaults);
         if (isDev) {
           logger.log(`[LOAD] Returning local state (no auth):`, {
             hasCooldownDurations: !!processedState.cooldownDurations,

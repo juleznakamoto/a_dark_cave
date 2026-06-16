@@ -1,0 +1,36 @@
+appId: com.adarkcave.game
+productName: A Dark Cave
+copyright: Copyright © A Dark Cave
+
+directories:
+  output: release
+  buildResources: build-resources
+
+# Files included in the packaged app. The compiled Electron code, the built SPA,
+# the Steam App ID, and the steamworks.js native module are required at runtime.
+files:
+  - dist-electron/**/*
+  - dist/public/**/*
+  - steam_appid.txt
+  - package.json
+  - node_modules/steamworks.js/**/*
+
+# Native modules and Steam redistributable binaries must NOT be packed into the
+# asar archive (they are loaded by the OS / native loader).
+asar: true
+asarUnpack:
+  - "**/*.node"
+  - node_modules/steamworks.js/**/*
+
+win:
+  target:
+    - nsis
+  artifactName: ${productName}-${version}-setup.${ext}
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+
+# Steam handles distribution/updates; disable electron auto-update publishing.
+publish: null

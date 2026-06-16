@@ -55,6 +55,7 @@ import {
   type TabUnlockBlinkId,
 } from "@/game/tabUnlockBlink";
 import { TraderTabButton } from "@/components/game/TraderTabButton";
+import { isSteamBuild } from "@/lib/edition";
 import i18n from "@/i18n";
 import { useTranslation } from "react-i18next";
 import { useIOSChromeViewportShell } from "@/hooks/useIOSChromeViewportShell";
@@ -469,8 +470,10 @@ export default function GameContainer() {
     achievementsUnlocked,
   ]);
 
-  // Initialize version check
+  // Initialize version check (web only — Steam updates via depot uploads).
   useEffect(() => {
+    if (isSteamBuild) return;
+
     logger.log("[VERSION] Initializing version check from GameContainer");
 
     // Capture toast in closure to ensure it's available when callback fires
@@ -1220,7 +1223,7 @@ export default function GameContainer() {
                     </div>
                   </div>
 
-                  {traderUnlocked && (
+                  {traderUnlocked && !isSteamBuild && (
                     <div className="pointer-events-auto absolute inset-y-0 right-2 flex items-center">
                       <TraderTabButton
                         tabButtonClass={tabButtonClass}
@@ -1283,20 +1286,26 @@ export default function GameContainer() {
         {/* Idle Mode Dialog */}
         <IdleModeDialog />
         <CubeDialog />
-        <ShopDialog
-          isOpen={shopDialogOpen}
-          onClose={() => setShopDialogOpen(false)}
-          onOpen={() => setShopDialogOpen(true)}
-        />
-        <LeaderboardDialog
-          isOpen={leaderboardDialogOpen}
-          onClose={() => setLeaderboardDialogOpen(false)}
-        />
-        <ShareDialog />
-        <FullGamePurchaseDialog
-          isOpen={fullGamePurchaseDialogOpen}
-          onClose={() => setFullGamePurchaseDialogOpen(false)}
-        />
+        {/* Shop, leaderboard, share, full-game purchase, and invite are all
+            web-only (Stripe/Supabase/social). The Steam build omits them. */}
+        {!isSteamBuild && (
+          <>
+            <ShopDialog
+              isOpen={shopDialogOpen}
+              onClose={() => setShopDialogOpen(false)}
+              onOpen={() => setShopDialogOpen(true)}
+            />
+            <LeaderboardDialog
+              isOpen={leaderboardDialogOpen}
+              onClose={() => setLeaderboardDialogOpen(false)}
+            />
+            <ShareDialog />
+            <FullGamePurchaseDialog
+              isOpen={fullGamePurchaseDialogOpen}
+              onClose={() => setFullGamePurchaseDialogOpen(false)}
+            />
+          </>
+        )}
         {inactivityDialogOpen && <InactivityDialog />}
 
         {/* Reward Dialog */}
@@ -1316,7 +1325,7 @@ export default function GameContainer() {
           onClose={() => setMadnessDialog(false)}
         />
 
-        <InviteFriendsFloatingButton />
+        {!isSteamBuild && <InviteFriendsFloatingButton />}
       </div>
     </ProfileMenuProvider>
   );

@@ -1,6 +1,7 @@
 // Removed duplicate keys and ensured gameId is correctly handled.
 import { create } from "zustand";
 import { GameState, gameStateSchema, Referral } from "@shared/schema";
+import { isSteamBuild } from "@/lib/edition";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
 import {
   EventManager,
@@ -1127,7 +1128,12 @@ export const createInitialState = (): GameState => ({
     crushingStrikeLevel: 0,
     bloodflameSphereLevel: 0,
   },
-  activatedPurchases: {},
+  // Steam build: the whole game is unlocked (single one-time Steam purchase) and
+  // runs in BTP mode so the travelling merchant sells the dark artifacts and the
+  // rebalanced economy applies. Granting `full_game` keeps the loop's paywall
+  // gate from ever pausing the sim (see loop.ts `requiresFullGamePurchase`).
+  activatedPurchases: isSteamBuild ? { full_game: true } : {},
+  BTP: isSteamBuild ? 1 : 0,
   feastActivations: {},
   cruelMode: false,
   attackWaveTimers: {},
@@ -2373,13 +2379,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const preserved = {
       // Purchases and boosts that persist
       boostMode: state.boostMode,
-      // Only preserve cruel_mode activation, reset everything else
-      activatedPurchases: cruelModePurchaseKey
-        ? {
-          [cruelModePurchaseKey]:
-            state.activatedPurchases?.[cruelModePurchaseKey] || false,
-        }
-        : {},
+      // Only preserve cruel_mode activation, reset everything else.
+      // Steam build: always keep `full_game` so the paywall never reappears.
+      activatedPurchases: {
+        ...(isSteamBuild ? { full_game: true } : {}),
+        ...(cruelModePurchaseKey
+          ? {
+            [cruelModePurchaseKey]:
+              state.activatedPurchases?.[cruelModePurchaseKey] || false,
+          }
+          : {}),
+      },
       // Feast activations are reset (cleared) on new game
       feastActivations: {},
 

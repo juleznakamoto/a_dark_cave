@@ -18,6 +18,7 @@ import {
 import { syncSocialPromoExclusiveRewardPending } from "@/game/socialPromoExclusiveReward";
 import { processStripePaymentReturn } from "@/lib/stripePaymentReturn";
 import { isPlaylightReferralUrl } from "@/lib/playlight";
+import { isSteamBuild } from "@/lib/edition";
 import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
 import type { TimedEventTabState } from "@/game/types";
 
@@ -28,7 +29,10 @@ export default function Game() {
   const [emailConfirmedDialogOpen, setEmailConfirmedDialogOpen] = useState(false);
   useEffect(() => {
     logger.log("[GAME PAGE] Initializing game");
-    initSessionTracker();
+    // Session tracking is anonymous online analytics — web only.
+    if (!isSteamBuild) {
+      initSessionTracker();
+    }
     const initializeGame = async () => {
       try {
         // Wait for first paint
@@ -65,8 +69,8 @@ export default function Game() {
           window.history.replaceState({}, document.title, newUrl);
         }
 
-        // Check if user just signed in with OAuth
-        const user = await getCurrentUser();
+        // Check if user just signed in with OAuth (web only; Steam build is offline).
+        const user = isSteamBuild ? null : await getCurrentUser();
         if (user) {
           logger.log("[GAME PAGE] User authenticated, loading game");
           setIsUserSignedIn(true);
@@ -287,14 +291,18 @@ export default function Game() {
           logger.log("[GAME] Game initialized with defaults");
         }
 
-        await applySignupWelcomeBonusAfterOAuthLoad();
+        // Online entitlement/payment flows are web only. The Steam build grants
+        // the full game locally (see createInitialState) and has no shop.
+        if (!isSteamBuild) {
+          await applySignupWelcomeBonusAfterOAuthLoad();
 
-        const { rehydratePurchasesFromSupabase } = await import(
-          "@/game/shopPurchases"
-        );
-        await rehydratePurchasesFromSupabase();
+          const { rehydratePurchasesFromSupabase } = await import(
+            "@/game/shopPurchases"
+          );
+          await rehydratePurchasesFromSupabase();
 
-        await processStripePaymentReturn();
+          await processStripePaymentReturn();
+        }
 
         // Remove Google Ads source parameter from URL if it was present
         if (googleAdsSource) {
@@ -342,6 +350,14 @@ export default function Game() {
 
         // Start game loop
         startGameLoop();
+
+        // Steam build: backfill Steam achievements for progress already earned.
+        if (isSteamBuild) {
+          void import("@/achievements/steamAchievements").then(
+            ({ syncSteamAchievements }) =>
+              syncSteamAchievements(useGameStore.getState()),
+          );
+        }
 
         // Open shop if requested (after a delay to ensure game is loaded)
         if (openShop) {
