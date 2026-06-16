@@ -4,6 +4,9 @@ import { LineChart, Line, BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, Re
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { format, differenceInDays, subDays, startOfDay, endOfDay, isWithinInterval, parseISO } from "date-fns";
 
+const MAX_PLAYTIME_CHART_HOURS = 18;
+const MAX_PLAYTIME_CHART_MINUTES = MAX_PLAYTIME_CHART_HOURS * 60;
+
 interface ChurnTabProps {
   churnDays: 1 | 3 | 5 | 7;
   setChurnDays: (value: 1 | 3 | 5 | 7) => void;
@@ -233,15 +236,16 @@ export default function ChurnTab(props: ChurnTabProps) {
 
   const getCubeEventsOverPlaytime = () => {
     const playtimeBuckets = new Map<number, Map<number, Set<string>>>();
-    let maxBucket = 0;
     let maxCubeEvent = 0;
 
     gameSaves.forEach((save) => {
       const playTimeMinutes = save.game_state?.playTime
         ? Math.round(save.game_state.playTime / 1000 / 60)
         : 0;
-      const bucket = Math.floor(playTimeMinutes / 60) * 60;
-      maxBucket = Math.max(maxBucket, bucket);
+      const bucket = Math.min(
+        Math.floor(playTimeMinutes / 60) * 60,
+        MAX_PLAYTIME_CHART_MINUTES,
+      );
 
       if (!playtimeBuckets.has(bucket)) {
         playtimeBuckets.set(bucket, new Map());
@@ -265,7 +269,7 @@ export default function ChurnTab(props: ChurnTabProps) {
     });
 
     const result: Array<{ time: string;[key: string]: any }> = [];
-    for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
+    for (let bucket = 0; bucket <= MAX_PLAYTIME_CHART_MINUTES; bucket += 60) {
       const hours = bucket / 60;
       const dataPoint: { time: string;[key: string]: any } = {
         time: hours === 0 ? "0h" : `${hours}h`,
@@ -496,16 +500,17 @@ export default function ChurnTab(props: ChurnTabProps) {
     });
 
     const buckets = new Map<number, number>();
-    let maxBucket = 0;
 
     userMaxPlaytime.forEach((minutes) => {
-      const bucket = Math.floor(minutes / 60) * 60;
-      maxBucket = Math.max(maxBucket, bucket);
+      const bucket = Math.min(
+        Math.floor(minutes / 60) * 60,
+        MAX_PLAYTIME_CHART_MINUTES,
+      );
       buckets.set(bucket, (buckets.get(bucket) || 0) + 1);
     });
 
     const result: Array<{ time: string; count: number }> = [];
-    for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
+    for (let bucket = 0; bucket <= MAX_PLAYTIME_CHART_MINUTES; bucket += 60) {
       const hours = bucket / 60;
       result.push({
         time: hours === 0 ? "0h" : `${hours}h`,
@@ -522,15 +527,12 @@ export default function ChurnTab(props: ChurnTabProps) {
     // Group by playtime bucket (e.g., "40m", "80m", etc.)
     const cubeClicksByPlaytime = new Map<number, Map<number, Set<string>>>();
     let maxCubeEvent = 0;
-    let maxPlaytime = 0;
 
     clickData.forEach((entry) => {
       // entry.clicks is structured as: { "40m": { "cube-close-cube03-1766078383278": 1, ... } }
       Object.entries(entry.clicks).forEach(([playtimeKey, buttonClicks]) => {
         const playtimeMinutes = parseInt(playtimeKey.replace('m', ''));
         if (isNaN(playtimeMinutes)) return;
-
-        maxPlaytime = Math.max(maxPlaytime, playtimeMinutes);
 
         Object.keys(buttonClicks as Record<string, number>).forEach(buttonId => {
           // Match cube close buttons: cube-close-cube03-1766078383278
@@ -558,7 +560,10 @@ export default function ChurnTab(props: ChurnTabProps) {
     const hourlyBuckets = new Map<number, Map<number, Set<string>>>();
 
     cubeClicksByPlaytime.forEach((cubeData, playtime) => {
-      const hourlyBucket = Math.floor(playtime / 60) * 60;
+      const hourlyBucket = Math.min(
+        Math.floor(playtime / 60) * 60,
+        MAX_PLAYTIME_CHART_MINUTES,
+      );
 
       if (!hourlyBuckets.has(hourlyBucket)) {
         hourlyBuckets.set(hourlyBucket, new Map());
@@ -578,9 +583,8 @@ export default function ChurnTab(props: ChurnTabProps) {
 
     // Convert to array and create buckets
     const result: Array<{ time: string;[key: string]: any }> = [];
-    const maxBucket = Math.ceil(maxPlaytime / 60) * 60;
 
-    for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
+    for (let bucket = 0; bucket <= MAX_PLAYTIME_CHART_MINUTES; bucket += 60) {
       const hours = bucket / 60;
       const dataPoint: { time: string;[key: string]: any } = {
         time: hours === 0 ? "0h" : `${hours}h`,
