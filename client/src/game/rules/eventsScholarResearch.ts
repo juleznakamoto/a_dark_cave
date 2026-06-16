@@ -9,7 +9,7 @@ export const scholarResearchEvents: Record<string, GameEvent> = {
       !state.story.seen.scholarResearchExpeditionsUnlocked,
     timeProbability: 20,
     priority: 5,
-    repeatable: false,
+    repeatable: true,
     choices: [
       {
         id: "continue",
