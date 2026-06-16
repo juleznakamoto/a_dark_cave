@@ -153,21 +153,21 @@ export function getNextPurchasableQueueSlotIndex(
   return null;
 }
 
-/** 0-based UI slot index for the next Insight purchase, or null. Skips base slot (index 0). */
-export function getNextPurchasableDisplaySlotIndex(
+/** 0-based UI array index for the next Insight purchase (same index as VillagePanel loop `i`). */
+export function getNextPurchasableUiSlotIndex(
   state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
 ): number | null {
   const nextExtra = getNextPurchasableQueueSlotIndex(state);
   return nextExtra === null ? null : nextExtra + BASE_QUEUE_SLOTS;
 }
 
-/** This displayed slot is the next one unlockable with Insight. */
+/** Whether this 0-based UI slot (not tooltip label) is the next Insight unlock. */
 export function isQueueSlotNextPurchasable(
   state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
   slotIndex: number,
 ): boolean {
-  const nextDisplay = getNextPurchasableDisplaySlotIndex(state);
-  return nextDisplay !== null && nextDisplay === slotIndex;
+  const nextUiSlot = getNextPurchasableUiSlotIndex(state);
+  return nextUiSlot !== null && nextUiSlot === slotIndex;
 }
 
 /** Total parallel build capacity (game logic). */

@@ -12,6 +12,7 @@ import {
   getBuildingQueueSlotCount,
   getConstructionBoostCost,
   getConstructionBoostReductionSeconds,
+  getNextPurchasableUiSlotIndex,
   getNextQueueSlotUnlockCost,
   getPurchasedQueueSlots,
   getTotalQueueSlots,
@@ -216,6 +217,7 @@ describe("constructionQueueSlots", () => {
     expect(isQueueSlotBuildingLocked(lodgeOnly, 1)).toBe(false);
     expect(isQueueSlotLockedForUi(lodgeOnly, 1)).toBe(true);
     expect(isQueueSlotNextPurchasable(lodgeOnly, 0)).toBe(false);
+    expect(getNextPurchasableUiSlotIndex(lodgeOnly)).toBe(1);
     expect(isQueueSlotNextPurchasable(lodgeOnly, 1)).toBe(true);
     expect(isQueueSlotBuildingLocked(lodgeOnly, 2)).toBe(true);
 
@@ -240,6 +242,7 @@ describe("constructionQueueSlots", () => {
       constructionQueueSlotsPurchased: 1,
     });
     expect(isQueueSlotNextPurchasable(guildOnePurchased, 2)).toBe(true);
+    expect(getNextPurchasableUiSlotIndex(guildOnePurchased)).toBe(2);
     expect(isQueueSlotLockedForUi(guildOnePurchased, 2)).toBe(true);
     expect(getTotalQueueSlots(guildOnePurchased)).toBe(2);
   });
