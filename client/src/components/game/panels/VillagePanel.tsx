@@ -66,8 +66,11 @@ import {
   getActiveBuildCount,
   getNextPurchasableQueueSlotIndex,
   getNextQueueSlotUnlockCost,
-  getTotalQueueSlots,
   isConstructionQueueEnabled,
+  isQueueSlotActive,
+  isQueueSlotBuildingLocked,
+  isQueueSlotLockedForUi,
+  isQueueSlotNextPurchasable,
   MAX_QUEUE_SLOTS,
   QUEUE_SLOT_UNLOCK_INSIGHT_KEY,
 } from "@/game/constructionQueueSlots";
@@ -1152,14 +1155,19 @@ export default function VillagePanel() {
                       })()}
                     {isConstructionQueueEnabled(state) &&
                       (() => {
-                        const unlockedSlots = getTotalQueueSlots(state);
                         const activeBuilds = getActiveBuildCount(state);
+                        const nextUnlockCost = getNextQueueSlotUnlockCost(state);
                         return (
                           <div className="ml-auto flex shrink-0 items-center gap-1">
                             {Array.from({ length: MAX_QUEUE_SLOTS }).map((_, i) => {
                               const slot = i + 1;
-                              const isLocked = i >= unlockedSlots;
-                              const isUsed = !isLocked && i < activeBuilds;
+                              const isLocked = isQueueSlotLockedForUi(state, i);
+                              const isUsed =
+                                isQueueSlotActive(state, i) && i < activeBuilds;
+                              const isPurchasable = isQueueSlotNextPurchasable(
+                                state,
+                                i,
+                              );
                               const queueTooltipId = `queue-slot-${slot}`;
                               return (
                                 <TooltipWrapper
@@ -1167,11 +1175,23 @@ export default function VillagePanel() {
                                   tooltipId={queueTooltipId}
                                   tooltip={
                                     <div className="text-xs">
-                                      {isLocked
+                                      {isQueueSlotBuildingLocked(state, i)
                                         ? t("village.queueSlotLocked", { slot })
-                                        : isUsed
-                                          ? t("village.queueSlotUsed", { slot })
-                                          : t("village.queueSlotFree", { slot })}
+                                        : isPurchasable && nextUnlockCost !== null
+                                          ? t("village.queueSlotUnlock", {
+                                            cost: formatNumber(nextUnlockCost),
+                                          })
+                                          : isLocked
+                                            ? t("village.queueSlotLocked", {
+                                              slot,
+                                            })
+                                            : isUsed
+                                              ? t("village.queueSlotUsed", {
+                                                slot,
+                                              })
+                                              : t("village.queueSlotFree", {
+                                                slot,
+                                              })}
                                     </div>
                                   }
                                   tooltipTriggerClassName="inline-flex items-center leading-none"
@@ -1196,7 +1216,7 @@ export default function VillagePanel() {
                                     {isLocked ? (
                                       <span
                                         aria-hidden
-                                        className="text-[10px] font-bold leading-none text-muted-foreground/45 select-none"
+                                        className="font-noto-symbols-2 -translate-y-px text-[10px] font-extrabold leading-none text-muted-foreground/45 select-none"
                                       >
                                         ×
                                       </span>

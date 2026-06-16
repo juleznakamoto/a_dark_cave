@@ -18,6 +18,10 @@ import {
   hasFreeQueueSlot,
   isConstructionBoostUnlocked,
   isConstructionQueueEnabled,
+  isQueueSlotActive,
+  isQueueSlotBuildingLocked,
+  isQueueSlotLockedForUi,
+  isQueueSlotNextPurchasable,
 } from "@/game/constructionQueueSlots";
 
 function baseState(
@@ -65,7 +69,7 @@ describe("constructionQueueSlots", () => {
     expect(getBuilderBuildCostReduction(3)).toBe(0.1);
   });
 
-  it("tracks purchasable queue slots by builder level", () => {
+  it("tracks purchasable queue slots by builder buildings", () => {
     expect(getBuildingQueueSlotCount(baseState())).toBe(0);
     expect(
       getBuildingQueueSlotCount(
@@ -84,6 +88,17 @@ describe("constructionQueueSlots", () => {
             ...baseState().buildings,
             buildersLodge: 1,
             buildersHall: 1,
+          } as GameState["buildings"],
+        }),
+      ),
+    ).toBe(1);
+    expect(
+      getBuildingQueueSlotCount(
+        baseState({
+          buildings: {
+            ...baseState().buildings,
+            buildersLodge: 1,
+            buildersHall: 1,
             buildersGuild: 1,
           } as GameState["buildings"],
         }),
@@ -91,7 +106,7 @@ describe("constructionQueueSlots", () => {
     ).toBe(2);
   });
 
-  it("unlocks Insight purchases after Builder buildings without granting slots directly", () => {
+  it("Lodge unlocks first extra slot purchase; Guild unlocks second at 5000 Insight", () => {
     const lodgeState = baseState({
       buildings: {
         ...baseState().buildings,
@@ -102,6 +117,26 @@ describe("constructionQueueSlots", () => {
     expect(getNextQueueSlotUnlockCost(lodgeState)).toBe(2500);
     expect(canPurchaseQueueSlot(lodgeState)).toBe(true);
 
+    const lodgePurchased = baseState({
+      buildings: {
+        ...baseState().buildings,
+        buildersLodge: 1,
+      } as GameState["buildings"],
+      constructionQueueSlotsPurchased: 1,
+    });
+    expect(getTotalQueueSlots(lodgePurchased)).toBe(BASE_QUEUE_SLOTS + 1);
+    expect(getNextQueueSlotUnlockCost(lodgePurchased)).toBeNull();
+
+    const hallOnly = baseState({
+      buildings: {
+        ...baseState().buildings,
+        buildersLodge: 1,
+        buildersHall: 1,
+      } as GameState["buildings"],
+      constructionQueueSlotsPurchased: 1,
+    });
+    expect(getNextQueueSlotUnlockCost(hallOnly)).toBeNull();
+
     const guildState = baseState({
       buildings: {
         ...baseState().buildings,
@@ -109,10 +144,52 @@ describe("constructionQueueSlots", () => {
         buildersHall: 1,
         buildersGuild: 1,
       } as GameState["buildings"],
+      constructionQueueSlotsPurchased: 1,
     });
-    expect(getTotalQueueSlots(guildState)).toBe(BASE_QUEUE_SLOTS);
-    expect(getNextQueueSlotUnlockCost(guildState)).toBe(2500);
+    expect(getNextQueueSlotUnlockCost(guildState)).toBe(5000);
     expect(canPurchaseQueueSlot(guildState)).toBe(true);
+
+    const guildFullyPurchased = baseState({
+      buildings: {
+        ...baseState().buildings,
+        buildersLodge: 1,
+        buildersHall: 1,
+        buildersGuild: 1,
+      } as GameState["buildings"],
+      constructionQueueSlotsPurchased: 2,
+    });
+    expect(getTotalQueueSlots(guildFullyPurchased)).toBe(BASE_QUEUE_SLOTS + 2);
+    expect(getNextQueueSlotUnlockCost(guildFullyPurchased)).toBeNull();
+  });
+
+  it("derives UI slot state from building tiers and Insight purchases separately", () => {
+    const noBuilder = baseState();
+    expect(isQueueSlotActive(noBuilder, 0)).toBe(true);
+    expect(isQueueSlotLockedForUi(noBuilder, 1)).toBe(true);
+    expect(isQueueSlotBuildingLocked(noBuilder, 1)).toBe(true);
+    expect(isQueueSlotBuildingLocked(noBuilder, 2)).toBe(true);
+
+    const lodgeOnly = baseState({
+      buildings: {
+        ...baseState().buildings,
+        buildersLodge: 1,
+      } as GameState["buildings"],
+    });
+    expect(isQueueSlotBuildingLocked(lodgeOnly, 1)).toBe(false);
+    expect(isQueueSlotLockedForUi(lodgeOnly, 1)).toBe(true);
+    expect(isQueueSlotNextPurchasable(lodgeOnly, 1)).toBe(true);
+    expect(isQueueSlotBuildingLocked(lodgeOnly, 2)).toBe(true);
+
+    const lodgePurchased = baseState({
+      buildings: {
+        ...baseState().buildings,
+        buildersLodge: 1,
+      } as GameState["buildings"],
+      constructionQueueSlotsPurchased: 1,
+    });
+    expect(isQueueSlotActive(lodgePurchased, 1)).toBe(true);
+    expect(isQueueSlotLockedForUi(lodgePurchased, 1)).toBe(false);
+    expect(isQueueSlotNextPurchasable(lodgePurchased, 2)).toBe(false);
 
     const guildOnePurchased = baseState({
       buildings: {
@@ -123,8 +200,9 @@ describe("constructionQueueSlots", () => {
       } as GameState["buildings"],
       constructionQueueSlotsPurchased: 1,
     });
-    expect(getTotalQueueSlots(guildOnePurchased)).toBe(BASE_QUEUE_SLOTS + 1);
-    expect(getNextQueueSlotUnlockCost(guildOnePurchased)).toBe(5000);
+    expect(isQueueSlotNextPurchasable(guildOnePurchased, 2)).toBe(true);
+    expect(isQueueSlotLockedForUi(guildOnePurchased, 2)).toBe(true);
+    expect(getTotalQueueSlots(guildOnePurchased)).toBe(2);
   });
 
   it("does not grant a parallel build slot from Builder buildings alone", () => {

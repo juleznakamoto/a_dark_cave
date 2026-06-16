@@ -51,12 +51,15 @@ export function getBuilderBuildCostReduction(level: number): number {
   return 0;
 }
 
-/** Extra queue slots unlockable via Insight after Builder building tiers (0–2). */
+/** Purchasable extra slots unlocked by Builder's Lodge (1) and Builder's Guild (2). */
 export function getBuildingQueueSlotCount(
   state: Pick<GameState, "buildings">,
 ): number {
-  const level = getBuilderLevel(state);
-  return (level >= 1 ? 1 : 0) + (level >= 3 ? 1 : 0);
+  const buildings = state.buildings ?? {};
+  let count = 0;
+  if ((buildings.buildersLodge ?? 0) >= 1) count += 1;
+  if ((buildings.buildersGuild ?? 0) >= 1) count += 1;
+  return count;
 }
 
 export function getPurchasedQueueSlots(
@@ -66,24 +69,101 @@ export function getPurchasedQueueSlots(
   return Math.min(Math.max(0, Math.floor(raw)), MAX_PURCHASABLE_QUEUE_SLOTS);
 }
 
-/** Total parallel build capacity: base slot + Insight-purchased extras (capped by building unlocks). */
+/** 0-based slot index: building tier allows buying this extra slot. */
+export function isQueueSlotBuildingUnlocked(
+  state: Pick<GameState, "buildings">,
+  slotIndex: number,
+): boolean {
+  if (slotIndex === 0) return true;
+  const buildings = state.buildings ?? {};
+  if (slotIndex === 1) return (buildings.buildersLodge ?? 0) >= 1;
+  if (slotIndex === 2) return (buildings.buildersGuild ?? 0) >= 1;
+  return false;
+}
+
+/** 0-based slot index: Insight purchase completed for this extra slot. */
+export function isQueueSlotPaidFor(
+  state: Pick<GameState, "constructionQueueSlotsPurchased">,
+  slotIndex: number,
+): boolean {
+  if (slotIndex === 0) return true;
+  return getPurchasedQueueSlots(state) >= slotIndex;
+}
+
+/** 0-based slot index: usable for parallel builds (base slot or paid + building met). */
+export function isQueueSlotActive(
+  state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
+  slotIndex: number,
+): boolean {
+  if (slotIndex === 0) return true;
+  return (
+    isQueueSlotBuildingUnlocked(state, slotIndex) &&
+    isQueueSlotPaidFor(state, slotIndex)
+  );
+}
+
+/** Grey × — building tier for this slot is not built yet. */
+export function isQueueSlotBuildingLocked(
+  state: Pick<GameState, "buildings">,
+  slotIndex: number,
+): boolean {
+  return slotIndex > 0 && !isQueueSlotBuildingUnlocked(state, slotIndex);
+}
+
+/** Grey × — building met but Insight purchase still required. */
+export function isQueueSlotPurchaseLocked(
+  state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
+  slotIndex: number,
+): boolean {
+  if (slotIndex === 0) return false;
+  return (
+    isQueueSlotBuildingUnlocked(state, slotIndex) &&
+    !isQueueSlotPaidFor(state, slotIndex)
+  );
+}
+
+/** Grey × in UI — slot is not yet usable (building and/or Insight missing). */
+export function isQueueSlotLockedForUi(
+  state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
+  slotIndex: number,
+): boolean {
+  return !isQueueSlotActive(state, slotIndex);
+}
+
+/** This displayed slot is the next one unlockable with Insight. */
+export function isQueueSlotNextPurchasable(
+  state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
+  slotIndex: number,
+): boolean {
+  const next = getNextPurchasableQueueSlotIndex(state);
+  return next !== null && next === slotIndex - 1;
+}
+
+/** Total parallel build capacity (game logic). */
 export function getTotalQueueSlots(
   state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
 ): number {
-  const purchased = getPurchasedQueueSlots(state);
-  const unlockCap = getBuildingQueueSlotCount(state);
-  return BASE_QUEUE_SLOTS + Math.min(purchased, unlockCap);
+  let total = 0;
+  for (let i = 0; i < MAX_QUEUE_SLOTS; i++) {
+    if (isQueueSlotActive(state, i)) total++;
+  }
+  return total;
 }
 
+/** Next extra slot to buy: 0 after Lodge (2500 Insight), 1 after Guild (5000 Insight). */
 export function getNextPurchasableQueueSlotIndex(
   state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
 ): number | null {
   const purchased = getPurchasedQueueSlots(state);
-  const available = getBuildingQueueSlotCount(state);
-  if (purchased >= available || purchased >= MAX_PURCHASABLE_QUEUE_SLOTS) {
-    return null;
-  }
-  return purchased;
+  if (purchased >= MAX_PURCHASABLE_QUEUE_SLOTS) return null;
+
+  const buildings = state.buildings ?? {};
+  const nextIndex = purchased;
+
+  if (nextIndex === 0 && (buildings.buildersLodge ?? 0) >= 1) return 0;
+  if (nextIndex === 1 && (buildings.buildersGuild ?? 0) >= 1) return 1;
+
+  return null;
 }
 
 export function getQueueSlotUnlockCost(slotIndex: number): number {
