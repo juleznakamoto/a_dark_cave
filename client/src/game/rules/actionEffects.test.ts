@@ -10,7 +10,7 @@ import './index';
 import { getExecutionTime } from './index';
 
 const gameActions = getGameActions();
-import { getTotalCraftingCostReduction, getTotalBuildingCostReduction } from './effectsCalculation';
+import { getTotalCraftingCostReduction, getTotalBuildingCostReduction, getTotalBuildingTimeReduction } from './effectsCalculation';
 
 // Helper to create mock state for testing
 function createMockState(overrides?: Partial<GameState>): GameState {
@@ -604,6 +604,27 @@ describe('Cost Reduction Edge Cases', () => {
       expect(updates.resources!.wood).toBeDefined();
       expect(updates.resources!.stone).toBeDefined();
     }
+  });
+});
+
+describe("getTotalBuildingTimeReduction", () => {
+  it("returns builder-chain reduction when construction queue is enabled", () => {
+    const state = createMockState({
+      flags: { constructionQueueEnabled: true } as GameState["flags"],
+      buildings: {
+        buildersLodge: 1,
+        buildersHall: 1,
+        buildersGuild: 1,
+      } as GameState["buildings"],
+    });
+    expect(getTotalBuildingTimeReduction(state)).toBe(0.2);
+  });
+
+  it("returns 0 without builder buildings", () => {
+    const state = createMockState({
+      flags: { constructionQueueEnabled: true } as GameState["flags"],
+    });
+    expect(getTotalBuildingTimeReduction(state)).toBe(0);
   });
 });
 

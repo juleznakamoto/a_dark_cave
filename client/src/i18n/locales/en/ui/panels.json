@@ -167,6 +167,7 @@
     "mapFragments": "Map Fragments",
     "craftDiscount": "Craft Discount",
     "buildDiscount": "Build Discount",
+    "constructionTime": "Construction Time",
     "doubleGainChance": "Double Gain Chance",
     "populationTooltip": "Each villager consumes 1 Food and 1 Wood",
     "resourceLimitMax": "max {{limit}}",

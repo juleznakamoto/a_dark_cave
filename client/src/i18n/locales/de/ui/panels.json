@@ -167,6 +167,7 @@
     "mapFragments": "Kartenfragmente", //ok
     "craftDiscount": "Herstellungsrabatt", //ok
     "buildDiscount": "Baurabatt",
+    "constructionTime": "Bauzeit",
     "doubleGainChance": "Doppelgewinn-Chance",
     "populationTooltip": "Jeder Dorfbewohner verbraucht 1 Nahrung und 1 Holz",
     "resourceLimitMax": "max. {{limit}}",

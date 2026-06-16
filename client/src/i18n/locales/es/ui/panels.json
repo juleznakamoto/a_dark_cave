@@ -167,6 +167,7 @@
     "mapFragments": "Fragmentos de mapa",
     "craftDiscount": "Descuento de artesanía",
     "buildDiscount": "Descuento de construcción",
+    "constructionTime": "Tiempo de construcción",
     "doubleGainChance": "Probabilidad de ganancia doble",
     "populationTooltip": "Cada aldeano consume 1 comida y 1 madera",
     "resourceLimitMax": "máx. {{limit}}",

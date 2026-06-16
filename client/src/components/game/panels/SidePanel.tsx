@@ -33,6 +33,7 @@ import {
   getAllActionBonuses,
   getTotalCraftingCostReduction,
   getTotalBuildingCostReduction,
+  getTotalBuildingTimeReduction,
   getDoubleGainChance,
 } from "@/game/rules/effectsCalculation";
 import { bookEffects, fellowshipEffects } from "@/game/rules/effects";
@@ -829,6 +830,17 @@ export default function SidePanel() {
       label: t("sidePanel.buildDiscount"),
       value: `${Number((buildingCostReduction * 100).toFixed(1))}%`,
       testId: "bonus-building-cost-reduction",
+      visible: true,
+    });
+  }
+
+  const buildingTimeReduction = getTotalBuildingTimeReduction(gameState);
+  if (buildingTimeReduction > 0) {
+    bonusItems.push({
+      id: "buildingTimeReduction",
+      label: t("sidePanel.constructionTime"),
+      value: `${Number((buildingTimeReduction * 100).toFixed(1))}%`,
+      testId: "bonus-building-time-reduction",
       visible: true,
     });
   }

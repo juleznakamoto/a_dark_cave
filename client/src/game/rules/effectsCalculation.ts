@@ -19,6 +19,7 @@ import { CRAFT_UPGRADE_ACTIONS, getCraftPriorMultiplier } from "@/game/craftUpgr
 import { getWeaponEnchantBonus } from "@/game/weaponEnchantments";
 import {
   getBuilderBuildCostReduction,
+  getBuilderBuildTimeReduction,
   getBuilderLevel,
   isConstructionQueueEnabled,
 } from "@/game/constructionQueueSlots";
@@ -890,6 +891,12 @@ export const getTotalBuildingCostReduction = (state: GameState): number => {
   }
 
   return reduction;
+};
+
+/** Builder-chain build time reduction (percentage, 0–0.20). */
+export const getTotalBuildingTimeReduction = (state: GameState): number => {
+  if (!isConstructionQueueEnabled(state)) return 0;
+  return getBuilderBuildTimeReduction(getBuilderLevel(state));
 };
 
 // Helper function to calculate all effects for the current state
