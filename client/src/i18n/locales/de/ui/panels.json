@@ -32,6 +32,7 @@
     "queueSlotFree": "Warteschlange {{slot}}: verfügbar",
     "queueSlotLocked": "Warteschlange {{slot}}: gesperrt",
     "constructionBoost": "Bau um {{time}} für {{cost}} {{resource}} beschleunigen",
+    "constructionBoostFinish": "Bau für {{cost}} {{resource}} abschließen",
     "cycle": "Zyklus",
     "cycleDescription": "In jedem Zyklus produzieren deine Dorfbewohner Ressourcen und es besteht die Chance, dass neue Dorfbewohner ankommen.",
     "nextCycleIn": "Nächster Zyklus in {{seconds}} Sekunden",

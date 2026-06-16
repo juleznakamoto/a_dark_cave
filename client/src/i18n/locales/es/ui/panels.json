@@ -32,6 +32,7 @@
     "queueSlotFree": "Espacio {{slot}}: disponible",
     "queueSlotLocked": "Espacio {{slot}}: bloqueado",
     "constructionBoost": "Acelerar construcción {{time}} por {{cost}} {{resource}}",
+    "constructionBoostFinish": "Terminar construcción por {{cost}} {{resource}}",
     "cycle": "Ciclo",
     "cycleDescription": "En cada ciclo, tus aldeanos producen recursos y hay posibilidad de que lleguen nuevos aldeanos.",
     "nextCycleIn": "Próximo ciclo en {{seconds}} segundos",

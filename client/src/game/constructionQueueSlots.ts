@@ -247,7 +247,33 @@ export function getConstructionBoostReductionSeconds(
   actionId: string,
 ): number {
   const total = state.executionDurations?.[actionId] ?? 0;
-  return Math.floor(total / 2);
+  if (total <= 0) return 0;
+  return Math.max(1, Math.ceil(total / 2));
+}
+
+export function getBuildExecutionRemainingSeconds(
+  state: Pick<GameState, "executionStartTimes" | "executionDurations">,
+  actionId: string,
+  now = Date.now(),
+): number {
+  const start = state.executionStartTimes?.[actionId];
+  const duration = state.executionDurations?.[actionId];
+  if (typeof start !== "number" || start <= 0 || typeof duration !== "number" || duration <= 0) {
+    return 0;
+  }
+  const elapsed = (now - start) / 1000;
+  return Math.max(0, duration - elapsed);
+}
+
+/** True when less time remains than the 50% skip — boost completes the build. */
+export function constructionBoostWillFinishBuild(
+  state: Pick<GameState, "executionStartTimes" | "executionDurations">,
+  actionId: string,
+  now = Date.now(),
+): boolean {
+  const remaining = getBuildExecutionRemainingSeconds(state, actionId, now);
+  const reduction = getConstructionBoostReductionSeconds(state, actionId);
+  return remaining > 0 && remaining < reduction;
 }
 
 export function getConstructionBoostCost(
@@ -264,13 +290,19 @@ export function getConstructionBoostCost(
   );
 }
 
-export function canBoostConstruction(state: GameState, actionId: string): boolean {
+export function isConstructionBoostAvailable(
+  state: GameState,
+  actionId: string,
+): boolean {
   if (!isConstructionBoostUnlocked(state)) return false;
   if (!actionId.startsWith("build")) return false;
   if (!isBuildActionExecuting(state, actionId)) return false;
   if (isConstructionBoostUsed(state, actionId)) return false;
   if (!isInsightUnlocked(state)) return false;
-  const cost = getConstructionBoostCost(state, actionId);
-  if (cost <= 0) return false;
-  return getInsightAmount(state) >= cost;
+  return getConstructionBoostCost(state, actionId) > 0;
+}
+
+export function canBoostConstruction(state: GameState, actionId: string): boolean {
+  if (!isConstructionBoostAvailable(state, actionId)) return false;
+  return getInsightAmount(state) >= getConstructionBoostCost(state, actionId);
 }

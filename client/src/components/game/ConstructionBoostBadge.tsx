@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   BuildingActionBadge,
@@ -9,8 +9,10 @@ import {
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
   canBoostConstruction,
+  constructionBoostWillFinishBuild,
   getConstructionBoostCost,
   getConstructionBoostReductionSeconds,
+  isConstructionBoostAvailable,
 } from "@/game/constructionQueueSlots";
 import { useGameStore } from "@/game/state";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
@@ -39,6 +41,13 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
     (s) => s.constructionBoostsUsed?.[actionId] === true,
   );
   const insight = useGameStore((s) => s.resources?.insight ?? 0);
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    if (!executionStart || !executionDuration) return;
+    const id = setInterval(() => setNow(Date.now()), 500);
+    return () => clearInterval(id);
+  }, [executionStart, executionDuration, actionId]);
 
   const liveState = useMemo(
     () =>
@@ -68,7 +77,7 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
     ],
   );
 
-  const canShow = canBoostConstruction(liveState, actionId);
+  const canShow = isConstructionBoostAvailable(liveState, actionId);
   const cost = getConstructionBoostCost(liveState, actionId);
   const reductionSeconds = getConstructionBoostReductionSeconds(
     liveState,
@@ -76,22 +85,33 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
   );
   const savedTime = formatMinutesSeconds(reductionSeconds);
   const insightResource = formatTooltipResourceName("insight");
+  const finishesBuild = constructionBoostWillFinishBuild(
+    liveState,
+    actionId,
+    now,
+  );
 
   const costTooltip = useMemo(
     () =>
-      t("village.constructionBoost", {
-        defaultValue:
-          "Speed up construction by {{time}} for {{cost}} {{resource}}",
-        time: savedTime,
-        cost,
-        resource: insightResource,
-      }),
-    [t, savedTime, cost, insightResource],
+      finishesBuild
+        ? t("village.constructionBoostFinish", {
+          defaultValue: "Finish construction for {{cost}} {{resource}}",
+          cost,
+          resource: insightResource,
+        })
+        : t("village.constructionBoost", {
+          defaultValue:
+            "Speed up construction by {{time}} for {{cost}} {{resource}}",
+          time: savedTime,
+          cost,
+          resource: insightResource,
+        }),
+    [t, finishesBuild, savedTime, cost, insightResource],
   );
 
   if (!canShow) return null;
 
-  const canAfford = insight >= cost;
+  const canAfford = canBoostConstruction(liveState, actionId);
 
   return (
     <div

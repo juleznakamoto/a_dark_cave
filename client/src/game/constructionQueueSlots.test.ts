@@ -6,6 +6,7 @@ import {
   BASE_QUEUE_SLOTS,
   canBoostConstruction,
   canPurchaseQueueSlot,
+  constructionBoostWillFinishBuild,
   getActiveBuildCount,
   getBuilderBuildCostReduction,
   getBuilderBuildTimeReduction,
@@ -18,6 +19,7 @@ import {
   getTotalQueueSlots,
   getVisibleQueueSlotCount,
   hasFreeQueueSlot,
+  isConstructionBoostAvailable,
   isConstructionBoostUnlocked,
   isConstructionQueueEnabled,
   isQueueSlotActive,
@@ -310,7 +312,52 @@ describe("constructionQueueSlots", () => {
     );
     expect(getConstructionBoostCost(state, "buildWoodenHut")).toBe(750);
     expect(isConstructionBoostUnlocked(state)).toBe(true);
+    expect(isConstructionBoostAvailable(state, "buildWoodenHut")).toBe(true);
     expect(canBoostConstruction(state, "buildWoodenHut")).toBe(true);
+
+    const shortBuild = baseState({
+      executionDurations: { buildWoodenHut: 15 },
+    });
+    expect(getConstructionBoostReductionSeconds(shortBuild, "buildWoodenHut")).toBe(
+      8,
+    );
+    expect(getConstructionBoostCost(shortBuild, "buildWoodenHut")).toBe(250);
+
+    const unaffordable = baseState({
+      buildings: {
+        ...baseState().buildings,
+        buildersLodge: 1,
+        buildersHall: 1,
+      } as GameState["buildings"],
+      executionStartTimes: { buildWoodenHut: Date.now() },
+      executionDurations: { buildWoodenHut: 360 },
+      resources: { insight: 0 } as GameState["resources"],
+    });
+    expect(isConstructionBoostAvailable(unaffordable, "buildWoodenHut")).toBe(
+      true,
+    );
+    expect(canBoostConstruction(unaffordable, "buildWoodenHut")).toBe(false);
+
+    const startedAt = Date.now() - 200_000;
+    const lateBuild = baseState({
+      executionStartTimes: { buildWoodenHut: startedAt },
+      executionDurations: { buildWoodenHut: 360 },
+    });
+    expect(
+      constructionBoostWillFinishBuild(
+        lateBuild,
+        "buildWoodenHut",
+        startedAt + 200_000,
+      ),
+    ).toBe(true);
+
+    const earlyBuild = baseState({
+      executionStartTimes: { buildWoodenHut: Date.now() },
+      executionDurations: { buildWoodenHut: 360 },
+    });
+    expect(constructionBoostWillFinishBuild(earlyBuild, "buildWoodenHut")).toBe(
+      false,
+    );
 
     const partialMinute = baseState({
       executionDurations: { buildWoodenHut: 362 },

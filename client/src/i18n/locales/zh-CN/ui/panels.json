@@ -32,6 +32,7 @@
     "queueSlotFree": "队列槽位 {{slot}}: 可用",
     "queueSlotLocked": "队列槽位 {{slot}}: 未解锁",
     "constructionBoost": "花费 {{cost}} {{resource}} 加速建造 {{time}}",
+    "constructionBoostFinish": "花费 {{cost}} {{resource}} 完成建造",
     "cycle": "周期",
     "cycleDescription": "每个周期，村民都会生产资源，并且有可能迎来新村民。",
     "nextCycleIn": "下一周期 {{seconds}} 秒后",

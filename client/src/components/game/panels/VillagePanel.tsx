@@ -61,12 +61,12 @@ import {
   getPurchasedPresetCount,
 } from "@/game/villagerJobPresets";
 import {
-  canBoostConstruction,
   canPurchaseQueueSlot,
   getActiveBuildCount,
   getNextPurchasableQueueSlotIndex,
   getNextQueueSlotUnlockCost,
   getVisibleQueueSlotCount,
+  isConstructionBoostAvailable,
   isConstructionQueueEnabled,
   isQueueSlotActive,
   isQueueSlotBuildingLocked,
@@ -837,7 +837,7 @@ export default function VillagePanel() {
     );
 
     const showInsightReveal = canRevealEffects(actionId, state);
-    const showConstructionBoost = canBoostConstruction(state, actionId);
+    const showConstructionBoost = isConstructionBoostAvailable(state, actionId);
 
     if (showInsightReveal || showConstructionBoost) {
       return (

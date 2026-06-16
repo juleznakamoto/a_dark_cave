@@ -32,6 +32,7 @@
     "queueSlotFree": "Слот {{slot}}: свободен",
     "queueSlotLocked": "Слот {{slot}}: заблокирован",
     "constructionBoost": "Ускорить строительство на {{time}} за {{cost}} {{resource}}",
+    "constructionBoostFinish": "Завершить строительство за {{cost}} {{resource}}",
     "cycle": "Цикл",
     "cycleDescription": "Каждый цикл ваши жители производят ресурсы, и есть шанс прибытия новых жителей.",
     "nextCycleIn": "Следующий цикл через {{seconds}} сек",
