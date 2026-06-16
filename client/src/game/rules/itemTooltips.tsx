@@ -153,6 +153,67 @@ const FORT_STAT_EFFECT_ORDER = [
   "integrityBonus",
 ] as const;
 
+type FortificationStatKey = (typeof FORT_STAT_EFFECT_ORDER)[number];
+
+const FORTIFICATION_STAT_FALLBACKS: Record<FortificationStatKey, string> = {
+  attackBonus: "{{amount}} Attack",
+  defenseBonus: "{{amount}} Defense",
+  integrityBonus: "{{amount}} Integrity",
+};
+
+type TooltipEffectLine = string | React.ReactNode;
+
+type FortificationLeveledEffectSection = {
+  level: number;
+  effects: TooltipEffectLine[];
+};
+
+function formatFortificationStat(
+  key: FortificationStatKey,
+  amount: number,
+): string {
+  return getUiTooltip(key, FORTIFICATION_STAT_FALLBACKS[key], { amount });
+}
+
+function renderFortificationStatLine(
+  key: FortificationStatKey,
+  fullAmount: number,
+  damagedAmount: number | null,
+): React.ReactNode {
+  const fullLabel = formatFortificationStat(key, fullAmount);
+  if (damagedAmount === null) {
+    return fullLabel;
+  }
+  const damagedLabel = formatFortificationStat(key, damagedAmount);
+  return (
+    <>
+      {fullLabel}{" "}
+      <span className="text-red-500">({damagedLabel})</span>
+    </>
+  );
+}
+
+function isFortificationStatKey(key: string): key is FortificationStatKey {
+  return (FORT_STAT_EFFECT_ORDER as readonly string[]).includes(key);
+}
+
+function getFortificationMarginalStatsFull(
+  gameState: GameState,
+  key: FortificationBuildingKey,
+): { defense: number; attack: number; integrity: number } | null {
+  const seen = { ...(gameState.story?.seen ?? {}) };
+  if (key === "bastion") seen.bastionDamaged = false;
+  if (key === "watchtower") seen.watchtowerDamaged = false;
+  if (key === "palisades") seen.palisadesDamaged = false;
+  return getFortificationMarginalStats(
+    {
+      ...gameState,
+      story: { ...gameState.story, seen },
+    },
+    key,
+  );
+}
+
 function sortFortificationStatEffects(
   effects: BuildingTooltipEffect[],
 ): BuildingTooltipEffect[] {
@@ -170,19 +231,17 @@ function sortFortificationStatEffects(
 function applyFortificationDamageToEffectLines(
   effects: BuildingTooltipEffect[],
   isDamaged: boolean,
-): string[] {
+): TooltipEffectLine[] {
   return sortFortificationStatEffects(effects).map((effect) => {
-    if (!isDamaged) {
+    if (!isFortificationStatKey(effect.key)) {
       return resolveBuildingTooltipEffect(effect);
     }
     const amount = effect.options?.amount;
-    if (typeof amount === "number") {
-      return resolveBuildingTooltipEffect({
-        ...effect,
-        options: { ...effect.options, amount: Math.floor(amount * 0.5) },
-      });
+    if (typeof amount !== "number") {
+      return resolveBuildingTooltipEffect(effect);
     }
-    return resolveBuildingTooltipEffect(effect);
+    const damagedAmount = isDamaged ? Math.floor(amount * 0.5) : null;
+    return renderFortificationStatLine(effect.key, amount, damagedAmount);
   });
 }
 
@@ -190,7 +249,7 @@ function getFortificationLevelEffectLines(
   itemId: "watchtower" | "palisades",
   level: number,
   isDamaged: boolean,
-): string[] {
+): TooltipEffectLine[] {
   const fullEffects =
     itemId === "watchtower"
       ? getWatchtowerTooltipEffectsForLevel(level)
@@ -203,7 +262,7 @@ function getFortificationLevelEffectSections(
   itemId: FortificationBuildingKey,
   currentLevel: number,
   isDamaged: boolean,
-): LeveledEffectSection[] {
+): FortificationLeveledEffectSection[] {
   if (
     currentLevel <= 1 ||
     (itemId !== "watchtower" && itemId !== "palisades")
@@ -211,7 +270,7 @@ function getFortificationLevelEffectSections(
     return [];
   }
 
-  const sections: LeveledEffectSection[] = [];
+  const sections: FortificationLeveledEffectSection[] = [];
   for (let level = 1; level <= currentLevel; level++) {
     const effects = getFortificationLevelEffectLines(
       itemId,
@@ -226,8 +285,8 @@ function getFortificationLevelEffectSections(
 }
 
 function renderLeveledEffectsBlock(
-  currentEffects: string[],
-  levelSections: LeveledEffectSection[],
+  currentEffects: TooltipEffectLine[],
+  levelSections: Array<{ level: number; effects: TooltipEffectLine[] }>,
 ): React.ReactNode | null {
   const hasCurrent = currentEffects.length > 0;
   const visibleSections = levelSections.filter(
@@ -303,30 +362,47 @@ function getFortificationUpgradeLevel(
 function getFortificationTooltipEffectLines(
   itemId: FortificationBuildingKey,
   gameState: GameState,
-): string[] {
-  const margin = getFortificationMarginalStats(gameState, itemId);
-  if (!margin) return [];
+  isDamaged: boolean,
+): TooltipEffectLine[] {
+  const currentMargin = getFortificationMarginalStats(gameState, itemId);
+  if (!currentMargin) return [];
 
-  const lines: string[] = [];
-  if (margin.attack !== 0) {
+  const fullMargin = isDamaged
+    ? getFortificationMarginalStatsFull(gameState, itemId)
+    : currentMargin;
+  if (!fullMargin) return [];
+
+  const lines: TooltipEffectLine[] = [];
+  const stats: Array<{
+    key: FortificationStatKey;
+    full: number;
+    current: number;
+  }> = [
+      {
+        key: "attackBonus",
+        full: fullMargin.attack,
+        current: currentMargin.attack,
+      },
+      {
+        key: "defenseBonus",
+        full: fullMargin.defense,
+        current: currentMargin.defense,
+      },
+      {
+        key: "integrityBonus",
+        full: fullMargin.integrity,
+        current: currentMargin.integrity,
+      },
+    ];
+
+  for (const { key, full, current } of stats) {
+    if (full === 0 && current === 0) continue;
     lines.push(
-      getUiTooltip("attackBonus", "+{{amount}} Attack", {
-        amount: margin.attack,
-      }),
-    );
-  }
-  if (margin.defense !== 0) {
-    lines.push(
-      getUiTooltip("defenseBonus", "+{{amount}} Defense", {
-        amount: margin.defense,
-      }),
-    );
-  }
-  if (margin.integrity !== 0) {
-    lines.push(
-      getUiTooltip("integrityBonus", "+{{amount}} Integrity", {
-        amount: margin.integrity,
-      }),
+      renderFortificationStatLine(
+        key,
+        full,
+        isDamaged && full !== current ? current : null,
+      ),
     );
   }
   return lines;
@@ -458,7 +534,11 @@ export function renderFortificationTooltip(
     actionId,
     buildAction.description,
   );
-  const currentEffects = getFortificationTooltipEffectLines(fortKey, gameState);
+  const currentEffects = getFortificationTooltipEffectLines(
+    fortKey,
+    gameState,
+    isDamaged,
+  );
   const levelSections =
     upgradeLevel != null
       ? getFortificationLevelEffectSections(fortKey, upgradeLevel, isDamaged)
