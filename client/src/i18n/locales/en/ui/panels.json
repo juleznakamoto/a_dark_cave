@@ -30,6 +30,7 @@
     "queueSlotUnlock": "Unlock construction queue slot for {{cost}} Insight",
     "queueSlotUsed": "Queue slot {{slot}}: building in progress",
     "queueSlotFree": "Queue slot {{slot}}: available",
+    "queueSlotLocked": "Queue slot {{slot}}: locked",
     "constructionBoost": "Speed up construction by {{minutes}} min for {{cost}} {{resource}}",
     "cycle": "Cycle",
     "cycleDescription": "Each cycle your villagers produce resources and there is a chance of new villagers arriving.",

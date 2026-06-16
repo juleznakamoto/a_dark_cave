@@ -68,6 +68,7 @@ import {
   getNextQueueSlotUnlockCost,
   getTotalQueueSlots,
   isConstructionQueueEnabled,
+  MAX_QUEUE_SLOTS,
   QUEUE_SLOT_UNLOCK_INSIGHT_KEY,
 } from "@/game/constructionQueueSlots";
 import { CircularProgress } from "@/components/ui/circular-progress";
@@ -1151,13 +1152,14 @@ export default function VillagePanel() {
                       })()}
                     {isConstructionQueueEnabled(state) &&
                       (() => {
-                        const totalSlots = getTotalQueueSlots(state);
+                        const unlockedSlots = getTotalQueueSlots(state);
                         const activeBuilds = getActiveBuildCount(state);
                         return (
                           <div className="ml-auto flex shrink-0 items-center gap-1">
-                            {Array.from({ length: totalSlots }).map((_, i) => {
+                            {Array.from({ length: MAX_QUEUE_SLOTS }).map((_, i) => {
                               const slot = i + 1;
-                              const isUsed = i < activeBuilds;
+                              const isLocked = i >= unlockedSlots;
+                              const isUsed = !isLocked && i < activeBuilds;
                               const queueTooltipId = `queue-slot-${slot}`;
                               return (
                                 <TooltipWrapper
@@ -1165,9 +1167,11 @@ export default function VillagePanel() {
                                   tooltipId={queueTooltipId}
                                   tooltip={
                                     <div className="text-xs">
-                                      {isUsed
-                                        ? t("village.queueSlotUsed", { slot })
-                                        : t("village.queueSlotFree", { slot })}
+                                      {isLocked
+                                        ? t("village.queueSlotLocked", { slot })
+                                        : isUsed
+                                          ? t("village.queueSlotUsed", { slot })
+                                          : t("village.queueSlotFree", { slot })}
                                     </div>
                                   }
                                   tooltipTriggerClassName="inline-flex items-center leading-none"
@@ -1185,12 +1189,23 @@ export default function VillagePanel() {
                                   <span
                                     data-testid={queueTooltipId}
                                     className={cn(
-                                      "inline-block h-[10px] w-[10px] shrink-0 rounded-sm border",
-                                      isUsed
-                                        ? "border-primary bg-primary"
-                                        : "border-muted-foreground/40 bg-transparent",
+                                      "inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-md border border-muted-foreground/40",
+                                      !isLocked && "p-[2px]",
                                     )}
-                                  />
+                                  >
+                                    {isLocked ? (
+                                      <span
+                                        aria-hidden
+                                        className="text-[10px] font-bold leading-none text-muted-foreground/45 select-none"
+                                      >
+                                        ×
+                                      </span>
+                                    ) : (
+                                      isUsed && (
+                                        <span className="block h-full w-full rounded-[2px] bg-red-700" />
+                                      )
+                                    )}
+                                  </span>
                                 </TooltipWrapper>
                               );
                             })}

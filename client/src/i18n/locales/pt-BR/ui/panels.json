@@ -30,6 +30,7 @@
     "queueSlotUnlock": "Desbloquear vaga na fila de construção por {{cost}} de Perspicácia",
     "queueSlotUsed": "Vaga {{slot}}: construção em andamento",
     "queueSlotFree": "Vaga {{slot}}: disponível",
+    "queueSlotLocked": "Vaga {{slot}}: bloqueada",
     "constructionBoost": "Acelerar construção em {{minutes}} min por {{cost}} {{resource}}",
     "cycle": "Ciclo",
     "cycleDescription": "A cada ciclo, seus aldeões produzem recursos e há uma chance de novos aldeões chegarem.",

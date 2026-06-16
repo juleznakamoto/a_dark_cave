@@ -30,6 +30,7 @@
     "queueSlotUnlock": "Открыть слот очереди строительства за {{cost}} прозрения",
     "queueSlotUsed": "Слот {{slot}}: строительство идёт",
     "queueSlotFree": "Слот {{slot}}: свободен",
+    "queueSlotLocked": "Слот {{slot}}: заблокирован",
     "constructionBoost": "Ускорить строительство на {{minutes}} мин за {{cost}} {{resource}}",
     "cycle": "Цикл",
     "cycleDescription": "Каждый цикл ваши жители производят ресурсы, и есть шанс прибытия новых жителей.",

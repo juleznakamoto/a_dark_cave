@@ -30,6 +30,7 @@
     "queueSlotUnlock": "Sblocca slot coda di costruzione per {{cost}} Intuizione",
     "queueSlotUsed": "Slot {{slot}}: costruzione in corso",
     "queueSlotFree": "Slot {{slot}}: disponibile",
+    "queueSlotLocked": "Slot {{slot}}: bloccato",
     "constructionBoost": "Accelera la costruzione di {{minutes}} min per {{cost}} {{resource}}",
     "cycle": "Ciclo",
     "cycleDescription": "Ad ogni ciclo i tuoi abitanti producono risorse e c'è una possibilità che arrivino nuovi abitanti.",

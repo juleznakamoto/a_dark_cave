@@ -30,6 +30,7 @@
     "queueSlotUnlock": "Débloquer un emplacement de file de construction pour {{cost}} Perspicacité",
     "queueSlotUsed": "Emplacement {{slot}}: construction en cours",
     "queueSlotFree": "Emplacement {{slot}}: disponible",
+    "queueSlotLocked": "Emplacement {{slot}}: verrouillé",
     "constructionBoost": "Accélérer la construction de {{minutes}} min pour {{cost}} {{resource}}",
     "cycle": "Cycle",
     "cycleDescription": "À chaque cycle, vos villageois produisent des ressources et il y a une chance que de nouveaux villageois arrivent.",

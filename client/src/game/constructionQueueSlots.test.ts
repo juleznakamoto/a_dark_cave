@@ -91,14 +91,14 @@ describe("constructionQueueSlots", () => {
     ).toBe(2);
   });
 
-  it("grants extra slots from Builder buildings and allows Insight purchases up to the cap", () => {
+  it("unlocks Insight purchases after Builder buildings without granting slots directly", () => {
     const lodgeState = baseState({
       buildings: {
         ...baseState().buildings,
         buildersLodge: 1,
       } as GameState["buildings"],
     });
-    expect(getTotalQueueSlots(lodgeState)).toBe(BASE_QUEUE_SLOTS + 1);
+    expect(getTotalQueueSlots(lodgeState)).toBe(BASE_QUEUE_SLOTS);
     expect(getNextQueueSlotUnlockCost(lodgeState)).toBe(2500);
     expect(canPurchaseQueueSlot(lodgeState)).toBe(true);
 
@@ -110,12 +110,24 @@ describe("constructionQueueSlots", () => {
         buildersGuild: 1,
       } as GameState["buildings"],
     });
-    expect(getTotalQueueSlots(guildState)).toBe(BASE_QUEUE_SLOTS + 2);
-    expect(getNextQueueSlotUnlockCost(guildState)).toBeNull();
-    expect(canPurchaseQueueSlot(guildState)).toBe(false);
+    expect(getTotalQueueSlots(guildState)).toBe(BASE_QUEUE_SLOTS);
+    expect(getNextQueueSlotUnlockCost(guildState)).toBe(2500);
+    expect(canPurchaseQueueSlot(guildState)).toBe(true);
+
+    const guildOnePurchased = baseState({
+      buildings: {
+        ...baseState().buildings,
+        buildersLodge: 1,
+        buildersHall: 1,
+        buildersGuild: 1,
+      } as GameState["buildings"],
+      constructionQueueSlotsPurchased: 1,
+    });
+    expect(getTotalQueueSlots(guildOnePurchased)).toBe(BASE_QUEUE_SLOTS + 1);
+    expect(getNextQueueSlotUnlockCost(guildOnePurchased)).toBe(5000);
   });
 
-  it("allows parallel builds when a building tier grants an extra slot", () => {
+  it("does not grant a parallel build slot from Builder buildings alone", () => {
     const state = baseState({
       buildings: {
         ...baseState().buildings,
@@ -128,8 +140,8 @@ describe("constructionQueueSlots", () => {
         buildWoodenHut: 30,
       },
     });
-    expect(getTotalQueueSlots(state)).toBe(2);
-    expect(hasFreeQueueSlot(state)).toBe(true);
+    expect(getTotalQueueSlots(state)).toBe(BASE_QUEUE_SLOTS);
+    expect(hasFreeQueueSlot(state)).toBe(false);
   });
 
   it("blocks builds when all queue slots are busy", () => {
@@ -147,6 +159,10 @@ describe("constructionQueueSlots", () => {
 
   it("allows parallel builds when extra slots are purchased", () => {
     const state = baseState({
+      buildings: {
+        ...baseState().buildings,
+        buildersLodge: 1,
+      } as GameState["buildings"],
       constructionQueueSlotsPurchased: 1,
       executionStartTimes: {
         buildWoodenHut: Date.now(),

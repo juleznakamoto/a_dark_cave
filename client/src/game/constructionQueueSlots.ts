@@ -51,7 +51,7 @@ export function getBuilderBuildCostReduction(level: number): number {
   return 0;
 }
 
-/** Extra queue slots granted by Builder building tiers (0–2). */
+/** Extra queue slots unlockable via Insight after Builder building tiers (0–2). */
 export function getBuildingQueueSlotCount(
   state: Pick<GameState, "buildings">,
 ): number {
@@ -66,24 +66,23 @@ export function getPurchasedQueueSlots(
   return Math.min(Math.max(0, Math.floor(raw)), MAX_PURCHASABLE_QUEUE_SLOTS);
 }
 
-/** Total parallel build capacity: base slot + building grants + Insight purchases (max 2 extras). */
+/** Total parallel build capacity: base slot + Insight-purchased extras (capped by building unlocks). */
 export function getTotalQueueSlots(
   state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
 ): number {
-  const extraSlots = Math.min(
-    getBuildingQueueSlotCount(state) + getPurchasedQueueSlots(state),
-    MAX_PURCHASABLE_QUEUE_SLOTS,
-  );
-  return BASE_QUEUE_SLOTS + extraSlots;
+  const purchased = getPurchasedQueueSlots(state);
+  const unlockCap = getBuildingQueueSlotCount(state);
+  return BASE_QUEUE_SLOTS + Math.min(purchased, unlockCap);
 }
 
 export function getNextPurchasableQueueSlotIndex(
   state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
 ): number | null {
-  const buildingSlots = getBuildingQueueSlotCount(state);
   const purchased = getPurchasedQueueSlots(state);
-  if (buildingSlots === 0) return null;
-  if (buildingSlots + purchased >= MAX_PURCHASABLE_QUEUE_SLOTS) return null;
+  const available = getBuildingQueueSlotCount(state);
+  if (purchased >= available || purchased >= MAX_PURCHASABLE_QUEUE_SLOTS) {
+    return null;
+  }
   return purchased;
 }
 

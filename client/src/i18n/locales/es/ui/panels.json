@@ -30,6 +30,7 @@
     "queueSlotUnlock": "Desbloquear espacio de cola de construcción por {{cost}} de Perspicacia",
     "queueSlotUsed": "Espacio {{slot}}: construcción en curso",
     "queueSlotFree": "Espacio {{slot}}: disponible",
+    "queueSlotLocked": "Espacio {{slot}}: bloqueado",
     "constructionBoost": "Acelerar construcción {{minutes}} min por {{cost}} {{resource}}",
     "cycle": "Ciclo",
     "cycleDescription": "En cada ciclo, tus aldeanos producen recursos y hay posibilidad de que lleguen nuevos aldeanos.",
