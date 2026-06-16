@@ -239,6 +239,9 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           "relative overflow-hidden transition-all duration-200 select-none appearance-none [-webkit-appearance:none]",
           !isButtonDisabled && "cursor-pointer",
           isButtonDisabled && "pointer-events-none",
+          // aria-disabled (not native disabled) so outline variant hover styles still apply — reset them.
+          isButtonDisabled &&
+            "hover:!bg-background hover:!text-foreground",
           isCompassGlowing && "compass-glow",
           variant === "outline" && gameActionOutlineButtonClassName(isButtonDisabled),
           className,
@@ -320,7 +323,11 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           tooltipId={buttonId}
           disabled={isButtonDisabled}
           onClick={triggerPrimaryClick}
-          onMouseEnter={onMouseEnter}
+          onMouseEnter={
+            isButtonDisabled
+              ? undefined
+              : onMouseEnter
+          }
           onMouseLeave={onMouseLeave}
         >
           {buttonContent}
