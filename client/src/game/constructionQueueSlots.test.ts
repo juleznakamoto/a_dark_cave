@@ -15,6 +15,7 @@ import {
   getNextQueueSlotUnlockCost,
   getPurchasedQueueSlots,
   getTotalQueueSlots,
+  getVisibleQueueSlotCount,
   hasFreeQueueSlot,
   isConstructionBoostUnlocked,
   isConstructionQueueEnabled,
@@ -106,7 +107,44 @@ describe("constructionQueueSlots", () => {
     ).toBe(2);
   });
 
-  it("Lodge unlocks first extra slot purchase; Guild unlocks second at 5000 Insight", () => {
+  it("shows one slot by default, two after Lodge, three after Guild", () => {
+    expect(getVisibleQueueSlotCount(baseState())).toBe(1);
+    expect(
+      getVisibleQueueSlotCount(
+        baseState({
+          buildings: {
+            ...baseState().buildings,
+            buildersLodge: 1,
+          } as GameState["buildings"],
+        }),
+      ),
+    ).toBe(2);
+    expect(
+      getVisibleQueueSlotCount(
+        baseState({
+          buildings: {
+            ...baseState().buildings,
+            buildersLodge: 1,
+            buildersHall: 1,
+          } as GameState["buildings"],
+        }),
+      ),
+    ).toBe(2);
+    expect(
+      getVisibleQueueSlotCount(
+        baseState({
+          buildings: {
+            ...baseState().buildings,
+            buildersLodge: 1,
+            buildersHall: 1,
+            buildersGuild: 1,
+          } as GameState["buildings"],
+        }),
+      ),
+    ).toBe(3);
+  });
+
+  it("Lodge unlocks first extra slot purchase; Guild unlocks second at 2500 Insight", () => {
     const lodgeState = baseState({
       buildings: {
         ...baseState().buildings,
@@ -114,7 +152,7 @@ describe("constructionQueueSlots", () => {
       } as GameState["buildings"],
     });
     expect(getTotalQueueSlots(lodgeState)).toBe(BASE_QUEUE_SLOTS);
-    expect(getNextQueueSlotUnlockCost(lodgeState)).toBe(2500);
+    expect(getNextQueueSlotUnlockCost(lodgeState)).toBe(1000);
     expect(canPurchaseQueueSlot(lodgeState)).toBe(true);
 
     const lodgePurchased = baseState({
@@ -146,7 +184,7 @@ describe("constructionQueueSlots", () => {
       } as GameState["buildings"],
       constructionQueueSlotsPurchased: 1,
     });
-    expect(getNextQueueSlotUnlockCost(guildState)).toBe(5000);
+    expect(getNextQueueSlotUnlockCost(guildState)).toBe(2500);
     expect(canPurchaseQueueSlot(guildState)).toBe(true);
 
     const guildFullyPurchased = baseState({
@@ -177,6 +215,7 @@ describe("constructionQueueSlots", () => {
     });
     expect(isQueueSlotBuildingLocked(lodgeOnly, 1)).toBe(false);
     expect(isQueueSlotLockedForUi(lodgeOnly, 1)).toBe(true);
+    expect(isQueueSlotNextPurchasable(lodgeOnly, 0)).toBe(false);
     expect(isQueueSlotNextPurchasable(lodgeOnly, 1)).toBe(true);
     expect(isQueueSlotBuildingLocked(lodgeOnly, 2)).toBe(true);
 

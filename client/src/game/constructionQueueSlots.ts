@@ -8,8 +8,8 @@ import {
 /** Player always starts with one construction queue slot. */
 export const BASE_QUEUE_SLOTS = 1;
 
-/** Insight cost for the first purchasable extra slot; each later slot costs a multiple. */
-export const QUEUE_SLOT_UNLOCK_BASE_INSIGHT_COST = 2500;
+/** Insight cost per extra slot purchase (Lodge unlock, then Guild unlock). */
+export const QUEUE_SLOT_UNLOCK_INSIGHT_COSTS = [1000, 2500] as const;
 
 /** Max purchasable extra slots (2) plus the base slot = 3 total. */
 export const MAX_PURCHASABLE_QUEUE_SLOTS = 2;
@@ -60,6 +60,13 @@ export function getBuildingQueueSlotCount(
   if ((buildings.buildersLodge ?? 0) >= 1) count += 1;
   if ((buildings.buildersGuild ?? 0) >= 1) count += 1;
   return count;
+}
+
+/** Queue slot squares shown in UI (base + building-unlocked extras). */
+export function getVisibleQueueSlotCount(
+  state: Pick<GameState, "buildings">,
+): number {
+  return BASE_QUEUE_SLOTS + getBuildingQueueSlotCount(state);
 }
 
 export function getPurchasedQueueSlots(
@@ -130,27 +137,7 @@ export function isQueueSlotLockedForUi(
   return !isQueueSlotActive(state, slotIndex);
 }
 
-/** This displayed slot is the next one unlockable with Insight. */
-export function isQueueSlotNextPurchasable(
-  state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
-  slotIndex: number,
-): boolean {
-  const next = getNextPurchasableQueueSlotIndex(state);
-  return next !== null && next === slotIndex - 1;
-}
-
-/** Total parallel build capacity (game logic). */
-export function getTotalQueueSlots(
-  state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
-): number {
-  let total = 0;
-  for (let i = 0; i < MAX_QUEUE_SLOTS; i++) {
-    if (isQueueSlotActive(state, i)) total++;
-  }
-  return total;
-}
-
-/** Next extra slot to buy: 0 after Lodge (2500 Insight), 1 after Guild (5000 Insight). */
+/** Next extra slot to buy: 0 after Lodge (1000 Insight), 1 after Guild (2500 Insight). */
 export function getNextPurchasableQueueSlotIndex(
   state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
 ): number | null {
@@ -166,8 +153,36 @@ export function getNextPurchasableQueueSlotIndex(
   return null;
 }
 
+/** 0-based UI slot index for the next Insight purchase, or null. Skips base slot (index 0). */
+export function getNextPurchasableDisplaySlotIndex(
+  state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
+): number | null {
+  const nextExtra = getNextPurchasableQueueSlotIndex(state);
+  return nextExtra === null ? null : nextExtra + BASE_QUEUE_SLOTS;
+}
+
+/** This displayed slot is the next one unlockable with Insight. */
+export function isQueueSlotNextPurchasable(
+  state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
+  slotIndex: number,
+): boolean {
+  const nextDisplay = getNextPurchasableDisplaySlotIndex(state);
+  return nextDisplay !== null && nextDisplay === slotIndex;
+}
+
+/** Total parallel build capacity (game logic). */
+export function getTotalQueueSlots(
+  state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
+): number {
+  let total = 0;
+  for (let i = 0; i < MAX_QUEUE_SLOTS; i++) {
+    if (isQueueSlotActive(state, i)) total++;
+  }
+  return total;
+}
+
 export function getQueueSlotUnlockCost(slotIndex: number): number {
-  return QUEUE_SLOT_UNLOCK_BASE_INSIGHT_COST * (slotIndex + 1);
+  return QUEUE_SLOT_UNLOCK_INSIGHT_COSTS[slotIndex];
 }
 
 export function getNextQueueSlotUnlockCost(

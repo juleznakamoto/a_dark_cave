@@ -66,12 +66,12 @@ import {
   getActiveBuildCount,
   getNextPurchasableQueueSlotIndex,
   getNextQueueSlotUnlockCost,
+  getVisibleQueueSlotCount,
   isConstructionQueueEnabled,
   isQueueSlotActive,
   isQueueSlotBuildingLocked,
   isQueueSlotLockedForUi,
   isQueueSlotNextPurchasable,
-  MAX_QUEUE_SLOTS,
   QUEUE_SLOT_UNLOCK_INSIGHT_KEY,
 } from "@/game/constructionQueueSlots";
 import { CircularProgress } from "@/components/ui/circular-progress";
@@ -1157,9 +1157,10 @@ export default function VillagePanel() {
                       (() => {
                         const activeBuilds = getActiveBuildCount(state);
                         const nextUnlockCost = getNextQueueSlotUnlockCost(state);
+                        const visibleSlots = getVisibleQueueSlotCount(state);
                         return (
                           <div className="ml-auto flex shrink-0 items-center gap-1">
-                            {Array.from({ length: MAX_QUEUE_SLOTS }).map((_, i) => {
+                            {Array.from({ length: visibleSlots }).map((_, i) => {
                               const slot = i + 1;
                               const isLocked = isQueueSlotLockedForUi(state, i);
                               const isUsed =
@@ -1209,14 +1210,14 @@ export default function VillagePanel() {
                                   <span
                                     data-testid={queueTooltipId}
                                     className={cn(
-                                      "inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-md border border-muted-foreground/40",
-                                      !isLocked && "p-[2px]",
+                                      "inline-flex h-[1.05rem] w-[1.05rem] shrink-0 items-center justify-center rounded-md border border-muted-foreground/40",
+                                      !isLocked && "p-[2.4px]",
                                     )}
                                   >
                                     {isLocked ? (
                                       <span
                                         aria-hidden
-                                        className="font-noto-symbols-2 -translate-y-px text-[10px] font-extrabold leading-none text-muted-foreground/45 select-none"
+                                        className="font-noto-symbols-2 -translate-y-px text-[12px] font-extrabold leading-none text-muted-foreground/45 select-none"
                                       >
                                         ×
                                       </span>
