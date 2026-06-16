@@ -277,9 +277,9 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     executionTime: {
-      1: 15,
-      2: 30,
-      3: 45,
+      1: 10,
+      2: 20,
+      3: 30,
       4: 60,
       5: 120,
       6: 180,
@@ -316,7 +316,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.cabin": 1,
       },
     },
-    executionTime: 30,
+    executionTime: 15,
     cooldown: 0,
   },
 
@@ -346,7 +346,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.blacksmith": 1,
       },
     },
-    executionTime: 30,
+    executionTime: 15,
     cooldown: 0,
   },
 
@@ -441,7 +441,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.shallowPit": 1,
       },
     },
-    executionTime: 30,
+    executionTime: 15,
     cooldown: 0,
   },
 
@@ -1399,7 +1399,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.supplyHut": 1,
       },
     },
-    executionTime: 30,
+    executionTime: 15,
     cooldown: 0,
   },
 
@@ -1786,7 +1786,7 @@ export const villageBuildActions: Record<string, Action> = {
     statsEffects: {
       knowledge: 2,
     },
-    executionTime: 30,
+    executionTime: 15,
     cooldown: 0,
   },
 
@@ -2385,7 +2385,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.tradePost": 1,
       },
     },
-    executionTime: 30,
+    executionTime: 15,
     cooldown: 0,
   },
 
