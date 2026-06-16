@@ -7,7 +7,7 @@ export const scholarResearchEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       (state.buildings.clerksHut ?? 0) >= 1 &&
       !state.story.seen.scholarResearchExpeditionsUnlocked,
-    timeProbability: 45,
+    timeProbability: 20,
     priority: 5,
     repeatable: false,
     choices: [
