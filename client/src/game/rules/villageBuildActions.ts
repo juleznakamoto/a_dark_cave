@@ -2639,7 +2639,7 @@ export const villageBuildActions: Record<string, Action> = {
     show_when: {
       1: {
         "flags.constructionQueueEnabled": true,
-        "buildings.woodenHut": 4,
+        "buildings.woodenHut": 3,
         "buildings.buildersLodge": 0,
       },
     },
