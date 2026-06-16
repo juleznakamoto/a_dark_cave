@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Legend, ResponsiveContainer } from "recharts";
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Legend } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 interface ResourcesTabProps {
@@ -110,60 +110,58 @@ export default function ResourcesTab(props: ResourcesTabProps) {
               ))}
             </div>
           </div>
-          <ResponsiveContainer width="100%" height={400}>
-            <ChartContainer config={{}}>
-              <LineChart data={statsOverPlaytime}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="time"
-                  label={{
-                    value: "Playtime",
-                    position: "insideBottom",
-                    offset: -5,
-                  }}
-                  interval={0}
-                />
-                <YAxis
-                  label={{
-                    value: "Average Value",
-                    angle: -90,
-                    position: "insideLeft",
-                  }}
-                />
-                <ChartTooltip
-                  content={({ active, payload, label }) => (
-                    <ChartTooltipContent
-                      label={label}
-                      active={active}
-                      payload={payload.map((item) => ({
-                        ...item,
-                        value: Math.round(item.value as number),
-                      }))}
-                    />
-                  )}
-                />
-                <Legend />
-                {(() => {
-                  const chartData = statsOverPlaytime;
-                  if (chartData.length === 0) return null;
+          <ChartContainer config={{}} className="h-[400px] w-full">
+            <LineChart data={statsOverPlaytime}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="time"
+                label={{
+                  value: "Playtime",
+                  position: "insideBottom",
+                  offset: -5,
+                }}
+                interval={0}
+              />
+              <YAxis
+                label={{
+                  value: "Average Value",
+                  angle: -90,
+                  position: "insideLeft",
+                }}
+              />
+              <ChartTooltip
+                content={({ active, payload, label }) => (
+                  <ChartTooltipContent
+                    label={label}
+                    active={active}
+                    payload={payload.map((item) => ({
+                      ...item,
+                      value: Math.round(item.value as number),
+                    }))}
+                  />
+                )}
+              />
+              <Legend />
+              {(() => {
+                const chartData = statsOverPlaytime;
+                if (chartData.length === 0) return null;
 
-                  const selectedStatsList = Array.from(selectedStats);
+                const selectedStatsList = Array.from(selectedStats);
 
-                  return selectedStatsList.map((key, index) => (
-                    <Line
-                      key={key}
-                      type="monotone"
-                      dataKey={key}
-                      stroke={COLORS[index % COLORS.length]}
-                      strokeWidth={2}
-                      dot={{ r: 3 }}
-                      name={key.charAt(0).toUpperCase() + key.slice(1)}
-                    />
-                  ));
-                })()}
-              </LineChart>
-            </ChartContainer>
-          </ResponsiveContainer>
+                return selectedStatsList.map((key, index) => (
+                  <Line
+                    key={key}
+                    type="monotone"
+                    dataKey={key}
+                    stroke={COLORS[index % COLORS.length]}
+                    strokeWidth={2}
+                    dot={{ r: 3 }}
+                    name={key.charAt(0).toUpperCase() + key.slice(1)}
+                  />
+                ));
+              })()}
+            </LineChart>
+          </ChartContainer>
         </CardContent>
       </Card>
 
@@ -227,59 +225,57 @@ export default function ResourcesTab(props: ResourcesTabProps) {
               ))}
             </div>
           </div>
-          <ResponsiveContainer width="100%" height={400}>
-            <ChartContainer config={{}}>
-              <LineChart data={resourceStatsOverPlaytime}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="time"
-                  label={{
-                    value: "Playtime",
-                    position: "insideBottom",
-                    offset: -5,
-                  }}
-                  interval={0}
-                />
-                <YAxis
-                  label={{
-                    value: "Average Amount",
-                    angle: -90,
-                    position: "insideLeft",
-                  }}
-                />
-                <ChartTooltip
-                  content={({ active, payload, label }) => (
-                    <ChartTooltipContent
-                      label={label}
-                      active={active}
-                      payload={payload.map((item) => ({
-                        ...item,
-                        value: Math.round(item.value as number),
-                      }))}
-                    />
-                  )}
-                />
-                <Legend />
-                {(() => {
-                  const chartData = resourceStatsOverPlaytime;
-                  if (chartData.length === 0) return null;
+          <ChartContainer config={{}} className="h-[400px] w-full">
+            <LineChart data={resourceStatsOverPlaytime}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="time"
+                label={{
+                  value: "Playtime",
+                  position: "insideBottom",
+                  offset: -5,
+                }}
+                interval={0}
+              />
+              <YAxis
+                label={{
+                  value: "Average Amount",
+                  angle: -90,
+                  position: "insideLeft",
+                }}
+              />
+              <ChartTooltip
+                content={({ active, payload, label }) => (
+                  <ChartTooltipContent
+                    label={label}
+                    active={active}
+                    payload={payload.map((item) => ({
+                      ...item,
+                      value: Math.round(item.value as number),
+                    }))}
+                  />
+                )}
+              />
+              <Legend />
+              {(() => {
+                const chartData = resourceStatsOverPlaytime;
+                if (chartData.length === 0) return null;
 
-                  const selectedResourcesList = Array.from(selectedResources);
+                const selectedResourcesList = Array.from(selectedResources);
 
-                  return selectedResourcesList.map((key, index) => (
-                    <Line
-                      key={key}
-                      type="monotone"
-                      dataKey={key}
-                      stroke={COLORS[index % COLORS.length]}
-                      strokeWidth={2}
-                      dot={{ r: 3 }}
-                    />
-                  ));
-                })()}
-              </LineChart>
-            </ChartContainer>
-          </ResponsiveContainer>
+                return selectedResourcesList.map((key, index) => (
+                  <Line
+                    key={key}
+                    type="monotone"
+                    dataKey={key}
+                    stroke={COLORS[index % COLORS.length]}
+                    strokeWidth={2}
+                    dot={{ r: 3 }}
+                  />
+                ));
+              })()}
+            </LineChart>
+          </ChartContainer>
         </CardContent>
       </Card>
     </div>

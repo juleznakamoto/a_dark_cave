@@ -533,7 +533,7 @@ export default function OverviewTab(props: OverviewTabProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card>
           <CardHeader>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <CardTitle>Daily Active Users ({adminOverviewChartTitleSuffix(dauChartTimeRange)})</CardTitle>
                 <CardDescription>User activity over time</CardDescription>
@@ -556,7 +556,7 @@ export default function OverviewTab(props: OverviewTabProps) {
 
         <Card>
           <CardHeader>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <CardTitle>Daily Sign-ups ({adminOverviewChartTitleSuffix(dailySignupsChartTimeRange)})</CardTitle>
                 <CardDescription>New user registrations</CardDescription>
@@ -583,7 +583,7 @@ export default function OverviewTab(props: OverviewTabProps) {
 
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <CardTitle>Customer Conversion Rate</CardTitle>
               <CardDescription>
@@ -671,7 +671,7 @@ export default function OverviewTab(props: OverviewTabProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card>
           <CardHeader>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <CardTitle>
                   Buyers per 100 Sign-ups ({adminOverviewChartTitleSuffix(buyersPerHundredChartTimeRange)})
@@ -699,7 +699,7 @@ export default function OverviewTab(props: OverviewTabProps) {
 
         <Card>
           <CardHeader>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <CardTitle>
                   Gain per 100 Sign-ups ({adminOverviewChartTitleSuffix(gainPerHundredChartTimeRange)})

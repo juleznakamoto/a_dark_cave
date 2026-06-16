@@ -268,7 +268,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
 
       <Card>
         <CardHeader>
-          <div className="flex justify-between items-start">
+          <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-start">
             <div>
               <CardTitle>Daily Purchases</CardTitle>
               <CardDescription>Purchase activity over time</CardDescription>
@@ -294,7 +294,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
 
       <Card>
         <CardHeader>
-          <div className="flex justify-between items-start">
+          <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-start">
             <div>
               <CardTitle>Daily Sales by Country</CardTitle>
               <CardDescription>
@@ -345,7 +345,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
 
       <Card>
         <CardHeader>
-          <div className="flex justify-between items-start">
+          <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-start">
             <div>
               <CardTitle>Daily revenue by country (EUR)</CardTitle>
               <CardDescription>
@@ -400,7 +400,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
 
       <Card>
         <CardHeader>
-          <div className="flex justify-between items-start">
+          <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-start">
             <div>
               <CardTitle>Daily purchases by payment type</CardTitle>
               <CardDescription>
@@ -456,7 +456,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
 
       <Card>
         <CardHeader>
-          <div className="flex justify-between items-start">
+          <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-start">
             <div>
               <CardTitle>Daily revenue by payment type (EUR)</CardTitle>
               <CardDescription>

@@ -264,10 +264,10 @@ export default function ChurnTab(props: ChurnTabProps) {
       });
     });
 
-    const result: Array<{ time: string; [key: string]: any }> = [];
+    const result: Array<{ time: string;[key: string]: any }> = [];
     for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
       const hours = bucket / 60;
-      const dataPoint: { time: string; [key: string]: any } = {
+      const dataPoint: { time: string;[key: string]: any } = {
         time: hours === 0 ? "0h" : `${hours}h`,
       };
 
@@ -556,33 +556,33 @@ export default function ChurnTab(props: ChurnTabProps) {
 
     // Aggregate 5-minute buckets into hourly buckets
     const hourlyBuckets = new Map<number, Map<number, Set<string>>>();
-    
+
     cubeClicksByPlaytime.forEach((cubeData, playtime) => {
       const hourlyBucket = Math.floor(playtime / 60) * 60;
-      
+
       if (!hourlyBuckets.has(hourlyBucket)) {
         hourlyBuckets.set(hourlyBucket, new Map());
       }
-      
+
       const hourlyData = hourlyBuckets.get(hourlyBucket)!;
-      
+
       cubeData.forEach((users, cubeNum) => {
         if (!hourlyData.has(cubeNum)) {
           hourlyData.set(cubeNum, new Set());
         }
-        
+
         // Merge user sets
         users.forEach(user => hourlyData.get(cubeNum)!.add(user));
       });
     });
 
     // Convert to array and create buckets
-    const result: Array<{ time: string; [key: string]: any }> = [];
+    const result: Array<{ time: string;[key: string]: any }> = [];
     const maxBucket = Math.ceil(maxPlaytime / 60) * 60;
-    
+
     for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
       const hours = bucket / 60;
-      const dataPoint: { time: string; [key: string]: any } = {
+      const dataPoint: { time: string;[key: string]: any } = {
         time: hours === 0 ? "0h" : `${hours}h`,
       };
 
@@ -647,8 +647,8 @@ export default function ChurnTab(props: ChurnTabProps) {
             <p className="text-4xl font-bold">
               {gameSaves.length > 0
                 ? Math.round(
-                    (getChurnedPlayers().length / gameSaves.length) * 100,
-                  )
+                  (getChurnedPlayers().length / gameSaves.length) * 100,
+                )
                 : 0}
               %
             </p>
@@ -694,7 +694,7 @@ export default function ChurnTab(props: ChurnTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ChartContainer config={{}}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <BarChart data={getChurnedPlayersLastClicks()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -719,7 +719,7 @@ export default function ChurnTab(props: ChurnTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ChartContainer config={{}}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <BarChart data={getChurnedPlayersFirstTimeClicks()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -800,7 +800,7 @@ export default function ChurnTab(props: ChurnTabProps) {
               })()}
             </div>
           </div>
-          <ChartContainer config={{}}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <LineChart data={getCubeEventsOverPlaytime()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -854,7 +854,7 @@ export default function ChurnTab(props: ChurnTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ChartContainer config={{}}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <LineChart data={getHighestCubeEventDistribution()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -894,7 +894,7 @@ export default function ChurnTab(props: ChurnTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ChartContainer config={{}}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <BarChart data={getChurnedPlayersLastCubeEvents()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -928,7 +928,7 @@ export default function ChurnTab(props: ChurnTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ChartContainer config={{}}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <LineChart data={getChurnPointDistribution()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -968,7 +968,7 @@ export default function ChurnTab(props: ChurnTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ChartContainer config={{}}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <LineChart data={getChurnRateOverTime()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="day" />
@@ -1002,7 +1002,7 @@ export default function ChurnTab(props: ChurnTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ChartContainer config={{}}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <LineChart data={getCubeEventsOverRealTime()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis

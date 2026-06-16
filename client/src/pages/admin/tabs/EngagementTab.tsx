@@ -35,12 +35,12 @@ function reachedEnding(save: GameSaveRow): boolean {
   const e = save.game_state?.events;
   return Boolean(
     e?.cube15a ||
-      e?.cube15b ||
-      e?.cube13 ||
-      e?.cube14a ||
-      e?.cube14b ||
-      e?.cube14c ||
-      e?.cube14d,
+    e?.cube15b ||
+    e?.cube13 ||
+    e?.cube14a ||
+    e?.cube14b ||
+    e?.cube14c ||
+    e?.cube14d,
   );
 }
 
@@ -69,7 +69,7 @@ export default function EngagementTab(props: EngagementTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ChartContainer config={{}}>
+          <ChartContainer config={{}} className="h-[300px] w-full">
             <BarChart data={sessionLengthDistribution}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="range" />

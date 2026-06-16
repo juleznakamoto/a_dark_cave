@@ -1069,11 +1069,11 @@ export default function AdminDashboard() {
 
   return (
     <div className="h-screen bg-background overflow-hidden">
-      <div className="max-w-7xl mx-auto h-full p-8">
+      <div className="max-w-7xl mx-auto h-full p-4 sm:p-6 lg:p-8">
         <ScrollArea className="h-full">
-          <div className="space-y-8 pr-4">
-            <div className="flex justify-between items-center">
-              <h1 className="text-4xl font-bold">Admin Dashboard</h1>
+          <div className="space-y-6 pr-2 sm:space-y-8 sm:pr-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center">
+              <h1 className="text-2xl font-bold sm:text-3xl lg:text-4xl">Admin Dashboard</h1>
               <div className="flex gap-4">
                 <Select
                   value={environment}

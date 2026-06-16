@@ -795,7 +795,7 @@ export default function GameContainer() {
         maxRight = Math.max(maxRight, hr.right);
       }
       const padX = 10;
-      const padY = 3;
+      const padY = 8;
       const boxLeft = minLeft - padX;
       const boxWidth = maxRight - minLeft + padX * 2;
       const boxTop = badgeRowTop - padY;

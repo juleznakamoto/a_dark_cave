@@ -47,7 +47,8 @@ import { getExecutionTime } from "./executionTime";
 /**
  * Format an action's execution time for tooltips:
  * - `M:SS` when >= 1 minute (e.g. 90s -> "1:30")
- * - `SS s` when < 1 minute (e.g. "45 s")
+ * - `SS s` when < 1 minute (fractions rounded to 2 decimals, trailing zeros
+ *   trimmed, e.g. "45 s", "3.75 s", "3.8 s")
  * - `S.SS s` when < 1 second (fractions, trailing zeros trimmed, e.g. "0.5 s")
  */
 export function formatExecutionDuration(seconds: number): string {
@@ -56,13 +57,6 @@ export function formatExecutionDuration(seconds: number): string {
     const minutes = Math.floor(totalSeconds / 60);
     const remSeconds = totalSeconds % 60;
     return `${minutes}:${String(remSeconds).padStart(2, "0")}`;
-  }
-  if (seconds >= 1) {
-    const rounded = Math.round(seconds * 10) / 10;
-    const display = Number.isInteger(rounded)
-      ? String(rounded)
-      : rounded.toFixed(1);
-    return `${display} s`;
   }
   return `${parseFloat(seconds.toFixed(2))} s`;
 }

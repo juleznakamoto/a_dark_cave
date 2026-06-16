@@ -273,7 +273,7 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
           </div>
         </CardHeader>
         <CardContent>
-          <ChartContainer config={{}}>
+          <ChartContainer config={{}} className="h-[350px] w-full">
             <BarChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -309,7 +309,7 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
           </div>
         </CardHeader>
         <CardContent>
-          <ChartContainer config={{}}>
+          <ChartContainer config={{}} className="h-[350px] w-full">
             <LineChart
               data={filteredData.map((d) => ({
                 date: format(parseISO(d.visit_date), "MMM dd"),
@@ -358,7 +358,7 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
           </div>
         </CardHeader>
         <CardContent>
-          <ChartContainer config={{}}>
+          <ChartContainer config={{}} className="h-[350px] w-full">
             <AreaChart data={percentageChartData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
