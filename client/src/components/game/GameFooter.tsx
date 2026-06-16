@@ -233,14 +233,16 @@ export default function GameFooter() {
                 </a>
               );
             })}
-            <div className="flex flex-col items-end leading-tight sm:flex-row sm:items-center sm:gap-1">
-              <a href="/privacy" className={FOOTER_LEGAL_LINK}>
-                {t("footer.privacy")}
-              </a>
-              <a href="/imprint" className={FOOTER_LEGAL_LINK}>
-                {t("footer.imprint")}
-              </a>
-            </div>
+            {!isSteamBuild && (
+              <div className="flex flex-col items-end leading-tight sm:flex-row sm:items-center sm:gap-1">
+                <a href="/privacy" className={FOOTER_LEGAL_LINK}>
+                  {t("footer.privacy")}
+                </a>
+                <a href="/imprint" className={FOOTER_LEGAL_LINK}>
+                  {t("footer.imprint")}
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </footer>

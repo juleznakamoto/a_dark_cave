@@ -4,6 +4,7 @@ import { applyActionEffects } from "./actionEffects";
 import { gameEvents, LogEntry } from "./events";
 import { logger } from "../../lib/logger";
 import { isPlaylightReferralUrl } from "@/lib/playlight";
+import { isSteamBuild } from "@/lib/edition";
 import { PLAYLIGHT_WELCOME_GOLD } from "@/game/playlightRewards";
 import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
 import {
@@ -878,11 +879,13 @@ export function handleLightFire(
       },
     };
 
-    result.delayedEffects!.push(() => {
-      void import("@/game/state").then(({ useGameStore }) => {
-        useGameStore.setState({ playlightWelcomeDialogOpen: true });
+    if (!isSteamBuild) {
+      result.delayedEffects!.push(() => {
+        void import("@/game/state").then(({ useGameStore }) => {
+          useGameStore.setState({ playlightWelcomeDialogOpen: true });
+        });
       });
-    });
+    }
   }
 
   pushFirstVisitLog(

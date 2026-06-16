@@ -6,6 +6,7 @@ import {
 import { socialPromptHighestMilestoneIndexToOpen } from "@/game/socialPromptAuto";
 import { FEEDBACK_PROMPT_PLAY_MS } from "@/game/feedbackPromptAuto";
 import { isSocialPromoExclusiveRewardComplete } from "@/game/socialPromoExclusiveReward";
+import { isSteamBuild } from "@/lib/edition";
 
 /**
  * Play-time auto prompts from the game loop. Non-blocking updates (auth dot) may
@@ -13,6 +14,9 @@ import { isSocialPromoExclusiveRewardComplete } from "@/game/socialPromoExclusiv
  * the store so same-tick stale snapshots cannot open two dialogs at once.
  */
 export function processPlayTimeAutoPrompts(): void {
+  // Social rewards, feedback, and guest auth prompts are web-only.
+  if (isSteamBuild) return;
+
   let state = useGameStore.getState();
   const playTimeMs = state.playTime || 0;
 

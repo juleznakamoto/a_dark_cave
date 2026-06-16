@@ -369,8 +369,8 @@ export default function Game() {
           }, 500);
         }
 
-        // Show email confirmed dialog after game is loaded
-        if (isEmailConfirmed) {
+        // Show email confirmed dialog after game is loaded (web auth only)
+        if (isEmailConfirmed && !isSteamBuild) {
           setTimeout(() => {
             setEmailConfirmedDialogOpen(true);
           }, 500);
@@ -396,14 +396,18 @@ export default function Game() {
     <div>
       <GameContainer />
 
-      <EmailConfirmedDialog
-        isOpen={emailConfirmedDialogOpen}
-        onClose={() => setEmailConfirmedDialogOpen(false)}
-      />
+      {!isSteamBuild && (
+        <>
+          <EmailConfirmedDialog
+            isOpen={emailConfirmedDialogOpen}
+            onClose={() => setEmailConfirmedDialogOpen(false)}
+          />
 
-      <PlaylightWelcomeDialog />
+          <PlaylightWelcomeDialog />
 
-      <FeedbackDialog />
+          <FeedbackDialog />
+        </>
+      )}
     </div>
   );
 }

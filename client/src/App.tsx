@@ -37,12 +37,25 @@ function Router() {
         <Route path="/boost" component={StartScreenPage} />
         <Route path="/game">{() => <Redirect to="/" />}</Route>
         <Route path="/end-screen" component={EndScreenPage} />
-        <Route path="/imprint" component={Imprint} />
-        <Route path="/privacy" component={Privacy} />
-        <Route path="/terms" component={Terms} />
-        <Route path="/withdrawal" component={Withdrawal} />
-        <Route path="/unsubscribe" component={Unsubscribe} />
-        <Route path="/reset-password" component={ResetPassword} />
+        {isSteamBuild ? (
+          <>
+            <Route path="/imprint">{() => <Redirect to="/" />}</Route>
+            <Route path="/privacy">{() => <Redirect to="/" />}</Route>
+            <Route path="/terms">{() => <Redirect to="/" />}</Route>
+            <Route path="/withdrawal">{() => <Redirect to="/" />}</Route>
+            <Route path="/unsubscribe">{() => <Redirect to="/" />}</Route>
+            <Route path="/reset-password">{() => <Redirect to="/" />}</Route>
+          </>
+        ) : (
+          <>
+            <Route path="/imprint" component={Imprint} />
+            <Route path="/privacy" component={Privacy} />
+            <Route path="/terms" component={Terms} />
+            <Route path="/withdrawal" component={Withdrawal} />
+            <Route path="/unsubscribe" component={Unsubscribe} />
+            <Route path="/reset-password" component={ResetPassword} />
+          </>
+        )}
         <Route path="/admin/dashboard" component={AdminDashboard} />
         <Route component={NotFound} />
       </Switch>

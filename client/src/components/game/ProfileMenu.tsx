@@ -50,7 +50,7 @@ function rewardsTasksIconPingIndex(playTimeMs: number): number | null {
   if (playTimeMs < REWARDS_TASKS_ICON_PING_START_MS) return null;
   return Math.floor(
     (playTimeMs - REWARDS_TASKS_ICON_PING_START_MS) /
-      REWARDS_TASKS_ICON_PING_INTERVAL_MS,
+    REWARDS_TASKS_ICON_PING_INTERVAL_MS,
   );
 }
 
@@ -422,12 +422,16 @@ function ProfileMenuDialogs() {
 
   return (
     <>
-      <SocialPromptDialog isOpen={socialPromptDialogOpen} />
-      <AuthDialog
-        isOpen={authDialogOpen}
-        onClose={() => handleSetAuthDialogOpen(false)}
-        onAuthSuccess={handleAuthSuccess}
-      />
+      {!isSteamBuild && (
+        <>
+          <SocialPromptDialog isOpen={socialPromptDialogOpen} />
+          <AuthDialog
+            isOpen={authDialogOpen}
+            onClose={() => handleSetAuthDialogOpen(false)}
+            onAuthSuccess={handleAuthSuccess}
+          />
+        </>
+      )}
       <RestartGameDialog
         isOpen={restartGameDialogOpen}
         onClose={() => setRestartGameDialogOpen(false)}
