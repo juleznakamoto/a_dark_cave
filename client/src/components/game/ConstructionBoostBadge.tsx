@@ -14,7 +14,7 @@ import {
 } from "@/game/constructionQueueSlots";
 import { useGameStore } from "@/game/state";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
-import { cn } from "@/lib/utils";
+import { cn, formatMinutesSeconds } from "@/lib/utils";
 import type { GameState } from "@shared/schema";
 
 const BADGE_SIZE_PX = 20;
@@ -74,19 +74,19 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
     liveState,
     actionId,
   );
-  const savedMinutes = Math.round((reductionSeconds / 60) * 10) / 10;
+  const savedTime = formatMinutesSeconds(reductionSeconds);
   const insightResource = formatTooltipResourceName("insight");
 
   const costTooltip = useMemo(
     () =>
       t("village.constructionBoost", {
         defaultValue:
-          "Speed up construction by {{minutes}} min for {{cost}} {{resource}}",
-        minutes: savedMinutes,
+          "Speed up construction by {{time}} for {{cost}} {{resource}}",
+        time: savedTime,
         cost,
         resource: insightResource,
       }),
-    [t, savedMinutes, cost, insightResource],
+    [t, savedTime, cost, insightResource],
   );
 
   if (!canShow) return null;

@@ -104,6 +104,14 @@ export function formatPrice(cents: number, currency: "EUR" | "USD"): string {
   return currency === "EUR" ? `${numeric} €` : `$${numeric}`;
 }
 
+/** Format seconds as M:SS (e.g. 180 -> "3:00"). */
+export function formatMinutesSeconds(seconds: number): string {
+  const totalSeconds = Math.max(0, Math.round(seconds));
+  const minutes = Math.floor(totalSeconds / 60);
+  const secs = totalSeconds % 60;
+  return `${minutes}:${String(secs).padStart(2, "0")}`;
+}
+
 /** Format duration in milliseconds as HH:MM:SS */
 export function formatDurationMs(ms: number): string {
   const totalSeconds = Math.floor(ms / 1000);

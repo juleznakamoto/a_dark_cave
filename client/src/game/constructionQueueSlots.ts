@@ -256,7 +256,12 @@ export function getConstructionBoostCost(
 ): number {
   const reductionSeconds = getConstructionBoostReductionSeconds(state, actionId);
   const savedMinutes = reductionSeconds / 60;
-  return Math.round(savedMinutes * CONSTRUCTION_BOOST_INSIGHT_PER_MINUTE);
+  const rawCost = savedMinutes * CONSTRUCTION_BOOST_INSIGHT_PER_MINUTE;
+  if (rawCost <= 0) return 0;
+  return (
+    Math.ceil(rawCost / CONSTRUCTION_BOOST_INSIGHT_PER_MINUTE) *
+    CONSTRUCTION_BOOST_INSIGHT_PER_MINUTE
+  );
 }
 
 export function canBoostConstruction(state: GameState, actionId: string): boolean {

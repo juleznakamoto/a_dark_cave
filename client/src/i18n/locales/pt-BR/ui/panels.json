@@ -31,7 +31,7 @@
     "queueSlotUsed": "Vaga {{slot}}: construção em andamento",
     "queueSlotFree": "Vaga {{slot}}: disponível",
     "queueSlotLocked": "Vaga {{slot}}: bloqueada",
-    "constructionBoost": "Acelerar construção em {{minutes}} min por {{cost}} {{resource}}",
+    "constructionBoost": "Acelerar construção em {{time}} por {{cost}} {{resource}}",
     "cycle": "Ciclo",
     "cycleDescription": "A cada ciclo, seus aldeões produzem recursos e há uma chance de novos aldeões chegarem.",
     "nextCycleIn": "Próximo ciclo em {{seconds}} segundos",

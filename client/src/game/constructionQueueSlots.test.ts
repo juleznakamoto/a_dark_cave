@@ -311,6 +311,13 @@ describe("constructionQueueSlots", () => {
     expect(getConstructionBoostCost(state, "buildWoodenHut")).toBe(750);
     expect(isConstructionBoostUnlocked(state)).toBe(true);
     expect(canBoostConstruction(state, "buildWoodenHut")).toBe(true);
+
+    const partialMinute = baseState({
+      executionDurations: { buildWoodenHut: 362 },
+    });
+    expect(getConstructionBoostCost(partialMinute, "buildWoodenHut")).toBe(
+      1000,
+    );
   });
 
   it("boostConstruction spends insight and shifts execution start time", () => {

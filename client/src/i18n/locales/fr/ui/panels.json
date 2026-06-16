@@ -31,7 +31,7 @@
     "queueSlotUsed": "Emplacement {{slot}}: construction en cours",
     "queueSlotFree": "Emplacement {{slot}}: disponible",
     "queueSlotLocked": "Emplacement {{slot}}: verrouillé",
-    "constructionBoost": "Accélérer la construction de {{minutes}} min pour {{cost}} {{resource}}",
+    "constructionBoost": "Accélérer la construction de {{time}} pour {{cost}} {{resource}}",
     "cycle": "Cycle",
     "cycleDescription": "À chaque cycle, vos villageois produisent des ressources et il y a une chance que de nouveaux villageois arrivent.",
     "nextCycleIn": "Prochain cycle dans {{seconds}} secondes",
