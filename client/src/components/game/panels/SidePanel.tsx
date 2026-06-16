@@ -839,7 +839,7 @@ export default function SidePanel() {
     bonusItems.push({
       id: "buildingTimeReduction",
       label: t("sidePanel.constructionTime"),
-      value: `${Number((buildingTimeReduction * 100).toFixed(1))}%`,
+      value: `-${Number((buildingTimeReduction * 100).toFixed(1))}%`,
       testId: "bonus-building-time-reduction",
       visible: true,
     });
