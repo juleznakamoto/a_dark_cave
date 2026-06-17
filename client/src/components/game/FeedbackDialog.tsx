@@ -57,13 +57,13 @@ export default function FeedbackDialog() {
                           rel: "noopener noreferrer me",
                         }
                         : {})}
-                      className="group flex min-w-[4.5rem] flex-col items-center gap-1.5 rounded-md px-2 py-1.5 text-white transition-colors hover:bg-muted/60"
+                      className="flex min-w-[4.5rem] flex-col items-center gap-1.5 rounded-md px-2 py-1.5 text-white opacity-80 transition-opacity hover:opacity-100"
                       aria-label={label}
                     >
                       <FooterSocialIcon
                         platform={platform}
                         variant="brand"
-                        className="h-6 w-6 transition-opacity md:opacity-90 md:group-hover:opacity-100"
+                        className="h-6 w-6"
                       />
                       <span className="text-xs font-medium">{label}</span>
                     </a>
