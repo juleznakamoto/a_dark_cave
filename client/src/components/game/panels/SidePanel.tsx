@@ -17,7 +17,6 @@ import {
   getEffectName,
   getResourceName,
   getStatName,
-  getVillagerJobName,
   tWithFallback,
 } from "@/i18n/resolveGameText";
 import React, { useState, useEffect, useRef } from "react";
@@ -92,7 +91,6 @@ function getFortificationDisplayLabel(
 const defaultGameState = gameStateSchema.parse({});
 const resourceOrder = Object.keys(defaultGameState.resources);
 const buildingOrder = Object.keys(defaultGameState.buildings);
-const villagerOrder = Object.keys(defaultGameState.villagers);
 
 /** Fortress / Bastion side panel row order (`bastion_stats` object uses defense-first insertion order). */
 const BASTION_STAT_SIDE_PANEL_ORDER = [
@@ -124,8 +122,6 @@ export default function SidePanel() {
   const {
     resources,
     buildings,
-    villagers,
-    expeditionVillagers,
     activeTab,
     bastion_stats, // Added bastion_stats
     story,
@@ -572,40 +568,6 @@ export default function SidePanel() {
       return true;
     });
 
-  // Dynamically generate villager items from state (in schema order)
-  const populationItems = villagerOrder
-    .filter((key) => (villagers[key as keyof typeof villagers] ?? 0) > 0)
-    .map((key) => ({
-      id: key,
-      label: getVillagerJobName(key, capitalizeWords(key)),
-      value: villagers[key as keyof typeof villagers] ?? 0,
-      testId: `population-${key}`,
-      visible: true,
-    }));
-
-  const onExpeditionCount = Object.values(expeditionVillagers || {}).reduce(
-    (sum, count) => sum + (count || 0),
-    0,
-  );
-  if (onExpeditionCount > 0) {
-    const expeditionItem = {
-      id: "on_expedition",
-      label: t("sidePanel.onExpedition"),
-      value: onExpeditionCount,
-      testId: "population-on-expedition",
-      visible: true,
-    };
-
-    const freeVillagerIndex = populationItems.findIndex(
-      (item) => item.id === "free",
-    );
-    if (freeVillagerIndex >= 0) {
-      populationItems.splice(freeVillagerIndex + 1, 0, expeditionItem);
-    } else {
-      populationItems.unshift(expeditionItem);
-    }
-  }
-
   // Build stats items with total values
   const statsItems = [];
   statsItems.push({
@@ -892,7 +854,7 @@ export default function SidePanel() {
         return caveSections.includes(sectionName);
       }
       case "village":
-        return ["resources", "buildings", "population"].includes(sectionName);
+        return ["resources", "buildings"].includes(sectionName);
       case "forest":
         return ["resources", "relics", "blessings", "bonuses"].includes(
           sectionName,
@@ -1055,13 +1017,6 @@ export default function SidePanel() {
                 sectionId="buildings"
                 title={t("sidePanel.buildings")}
                 items={buildingItems}
-              />
-            )}
-            {populationItems.length > 0 && shouldShowSection("population") && (
-              <SidePanelSection
-                sectionId="population"
-                title={t("sidePanel.population")}
-                items={populationItems}
               />
             )}
             {anyPlayerStatPositive && shouldShowSection("stats") && (
