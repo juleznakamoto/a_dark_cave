@@ -2020,12 +2020,11 @@ export default function VillagePanel() {
                   t("village.villagersAvailable"),
                   freeVillagers,
                 )}
-                {onMissionCount > 0 &&
-                  renderVillagerStatRow(
-                    "villagers-on-mission",
-                    t("village.villagersOnMission"),
-                    onMissionCount,
-                  )}
+                {renderVillagerStatRow(
+                  "villagers-on-mission",
+                  t("village.villagersOnMission"),
+                  onMissionCount,
+                )}
                 {visiblePopulationJobs.map((job) =>
                   renderPopulationControl(
                     job.id,
