@@ -197,7 +197,12 @@ export default function GameFooter() {
                     aria-label={t("footer.supportGame")}
                     className={`${FOOTER_CONTROL_BTN} ${FOOTER_CONTROL_BTN_SELF_FADE} flex items-center gap-1`}
                   >
-                    <span aria-hidden>❤︎⁠</span>
+                    <span
+                      aria-hidden
+                      className="text-red-600 group-hover:opacity-80"
+                    >
+                      ❤︎⁠
+                    </span>
                     <span>{t("footer.donate")}</span>
                   </Button>
                 </HoverCalloutTooltip>
