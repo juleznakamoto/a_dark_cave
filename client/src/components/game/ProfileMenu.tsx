@@ -612,9 +612,11 @@ export function GameHeaderControls() {
           <Button
             variant="ghost"
             size="xs"
-            className="px-2 py-1 text-xs hover relative text-neutral-300 opacity-100"
+            className={`group shrink-0 px-2 py-1 text-xs text-neutral-300 hover hover:!text-red-600`}
           >
-            {t("profile.title")}
+            <span className={HEADER_ICON_SYMBOL_HOVER}>
+              {t("profile.title")}
+            </span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
