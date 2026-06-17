@@ -18,8 +18,6 @@ const FOOTER_CONTROL_BTN =
   "group shrink-0 px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-600";
 const FOOTER_CONTROL_BTN_FADE =
   "opacity-80 transition-opacity group-hover:opacity-100";
-const FOOTER_CONTROL_BTN_SELF_FADE =
-  "opacity-80 transition-opacity hover:!opacity-100";
 const FOOTER_CONTROL_ICON_HOVER =
   "w-4 h-4 shrink-0 object-contain opacity-80 transition-[filter,opacity] group-hover:opacity-100 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]";
 const FOOTER_CONTROL_SVG_ICON_HOVER =
@@ -164,9 +162,9 @@ export default function GameFooter() {
                 variant="ghost"
                 size="xs"
                 onClick={() => setFullGamePurchaseDialogOpen(true)}
-                className={`${FOOTER_CONTROL_BTN} ${FOOTER_CONTROL_BTN_SELF_FADE}`}
+                className={FOOTER_CONTROL_BTN}
               >
-                {t("footer.fullGame")}
+                <span className={FOOTER_CONTROL_TEXT}>{t("footer.fullGame")}</span>
               </Button>
             ) : null}
             {/* Shop + donate are web-only (Stripe / external tip jar). */}
@@ -181,9 +179,11 @@ export default function GameFooter() {
                     size="xs"
                     onClick={() => setShopDialogOpen(true)}
                     aria-label={t("footer.openShop")}
-                    className={`${FOOTER_CONTROL_BTN} ${FOOTER_CONTROL_BTN_SELF_FADE}`}
+                    className={FOOTER_CONTROL_BTN}
                   >
-                    {t("footer.trader")}
+                    <span className={FOOTER_CONTROL_TEXT}>
+                      {t("footer.trader")}
+                    </span>
                   </Button>
                 </HoverCalloutTooltip>
                 <HoverCalloutTooltip
@@ -195,15 +195,17 @@ export default function GameFooter() {
                     size="xs"
                     onClick={handleOfferTribute}
                     aria-label={t("footer.supportGame")}
-                    className={`${FOOTER_CONTROL_BTN} ${FOOTER_CONTROL_BTN_SELF_FADE} flex items-center gap-1`}
+                    className={`${FOOTER_CONTROL_BTN} flex items-center gap-1`}
                   >
                     <span
                       aria-hidden
-                      className="text-red-600 group-hover:opacity-80"
+                      className={`text-red-600 ${FOOTER_CONTROL_BTN_FADE}`}
                     >
                       ❤︎⁠
                     </span>
-                    <span>{t("footer.donate")}</span>
+                    <span className={FOOTER_CONTROL_TEXT}>
+                      {t("footer.donate")}
+                    </span>
                   </Button>
                 </HoverCalloutTooltip>
               </>
