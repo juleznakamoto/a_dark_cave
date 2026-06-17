@@ -86,8 +86,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   additional_preset_slots: {
     id: "additional_preset_slots",
     name: "2 Additional Preset Slots",
-    description:
-      "Two more villager job preset slots, to record and recall the order of labor.",
+    description: "Two more villager job preset slots",
     originalPrice: 199,
     price: 149, // 1.49 € (0.50 Beta Discount)
     rewards: {},

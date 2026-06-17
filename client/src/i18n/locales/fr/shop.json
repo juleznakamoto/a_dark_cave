@@ -1,7 +1,7 @@
 {
   "additional_preset_slots": {
     "activationMessage": "Deux emplacements de préréglages de villageois supplémentaires ont été ajoutés.",
-    "description": "Deux emplacements de préréglages de travail des villageois supplémentaires, pour enregistrer et rappeler l'ordre du travail.",
+    "description": "Deux emplacements de préréglages de travail des villageois supplémentaires",
     "name": "2 emplacements de préréglages supplémentaires"
   },
   "advanced_bundle": {

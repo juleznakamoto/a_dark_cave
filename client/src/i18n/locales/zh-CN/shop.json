@@ -1,7 +1,7 @@
 {
   "additional_preset_slots": {
     "activationMessage": "已添加两个额外的村民工作预设槽位。",
-    "description": "再增加两个村民工作预设槽位，用于记录和恢复劳动顺序。",
+    "description": "再增加两个村民工作预设槽位",
     "name": "2个额外预设槽位"
   },
   "advanced_bundle": {

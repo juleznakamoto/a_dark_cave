@@ -1,7 +1,7 @@
 {
   "additional_preset_slots": {
     "activationMessage": "Sono stati aggiunti due slot preimpostazione lavori dei villici aggiuntivi.",
-    "description": "Altri due slot preimpostazione lavori dei villici, per registrare e richiamare l'ordine del lavoro.",
+    "description": "Altri due slot preimpostazione lavori dei villici",
     "name": "2 slot preimpostazione aggiuntivi"
   },
   "advanced_bundle": {

@@ -1,7 +1,7 @@
 {
   "additional_preset_slots": {
     "activationMessage": "Zwei zusätzliche Voreinstellungs-Slots für Dorfbewohner wurden hinzugefügt.",
-    "description": "Zwei weitere Voreinstellungs-Slots für Dorfbewohner-Arbeit, um die Reihenfolge der Arbeit festzuhalten und wiederherzustellen.",
+    "description": "Zwei weitere Voreinstellungs-Slots für Dorfbewohner-Arbeit",
     "name": "2 zusätzliche Voreinstellungs-Slots"
   },
   "advanced_bundle": {
