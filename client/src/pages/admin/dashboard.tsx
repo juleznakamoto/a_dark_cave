@@ -700,47 +700,6 @@ export default function AdminDashboard() {
     return data;
   }, [rawPurchases, purchasesChartTimeRange]);
 
-  const getPurchasesByPlaytime = useCallback(() => {
-    const playtimeBuckets: Record<string, number> = {};
-    for (let i = 0; i < 24; i++) {
-      playtimeBuckets[`${i}h`] = 0;
-    }
-
-    purchases.filter((p) => p.price_paid > 0 && !p.bundle_id).forEach((purchase) => {
-      const save = gameSaves.find((s) => s.user_id === purchase.user_id);
-      if (save) {
-        const playTimeMinutes = save.game_state?.playTime
-          ? Math.round(save.game_state.playTime / 60000)
-          : 0;
-        const bucket = Math.floor(playTimeMinutes / 60);
-
-        if (bucket >= 0 && bucket < 24) {
-          const bucketKey = `${bucket}h`;
-          playtimeBuckets[bucketKey]++;
-        }
-      }
-    });
-
-    return Object.entries(playtimeBuckets)
-      .map(([playtime, purchases]) => ({ playtime, purchases }))
-      .sort((a, b) => parseInt(a.playtime) - parseInt(b.playtime));
-  }, [purchases, gameSaves]);
-
-  const getPurchaseStats = useCallback(() => {
-    const itemCounts = new Map<string, number>();
-
-    purchases.filter((p) => !p.bundle_id).forEach((purchase) => {
-      itemCounts.set(
-        purchase.item_name,
-        (itemCounts.get(purchase.item_name) || 0) + 1
-      );
-    });
-
-    return Array.from(itemCounts.entries())
-      .map(([name, count]) => ({ name, count }))
-      .sort((a, b) => b.count - a.count);
-  }, [purchases]);
-
   const getDailyReferrals = useCallback(() => {
     const days = ADMIN_TWELVE_MONTH_CHART_DAYS[referralsChartTimeRange];
     const rows = referralMetrics?.daily_referrals;
@@ -1411,12 +1370,11 @@ export default function AdminDashboard() {
               <TabsContent value="purchases">
                 <PurchasesTab
                   purchases={purchases}
+                  gameSaves={gameSaves}
                   getTotalRevenueEurUnifiedCents={() =>
                     kpiRevenueEurUnifiedCents
                   }
                   getDailyPurchases={getDailyPurchases}
-                  getPurchasesByPlaytime={getPurchasesByPlaytime}
-                  getPurchaseStats={getPurchaseStats}
                   purchasesChartTimeRange={purchasesChartTimeRange}
                   setPurchasesChartTimeRange={setPurchasesChartTimeRange}
                 />

@@ -27,10 +27,9 @@ const SERIES_COLORS = COUNTRY_COLORS;
 
 interface PurchasesTabProps {
   purchases: any[];
+  gameSaves: any[];
   getTotalRevenueEurUnifiedCents: () => number;
   getDailyPurchases: () => Array<{ day: string; purchases: number }>;
-  getPurchasesByPlaytime: () => Array<{ playtime: string; purchases: number }>;
-  getPurchaseStats: () => Array<{ name: string; count: number }>;
   purchasesChartTimeRange: AdminTwelveMonthChartRange;
   setPurchasesChartTimeRange: (range: AdminTwelveMonthChartRange) => void;
 }
@@ -173,13 +172,71 @@ function buildDailyPaymentTypeData(
   return { data: rows, paymentTypes: topTypes };
 }
 
+function buildPurchasesByPlaytime(
+  purchases: any[],
+  gameSaves: any[],
+  days: number,
+): Array<{ playtime: string; purchases: number }> {
+  const now = new Date();
+  const start = startOfDay(subDays(now, days - 1));
+
+  const playtimeBuckets: Record<string, number> = {};
+  for (let i = 0; i < 24; i++) {
+    playtimeBuckets[`${i}h`] = 0;
+  }
+
+  purchases
+    .filter((p) => {
+      if (p.price_paid <= 0 || p.bundle_id) return false;
+      return parseISO(p.purchased_at) >= start;
+    })
+    .forEach((purchase) => {
+      const save = gameSaves.find((s) => s.user_id === purchase.user_id);
+      if (save) {
+        const playTimeMinutes = save.game_state?.playTime
+          ? Math.round(save.game_state.playTime / 60000)
+          : 0;
+        const bucket = Math.floor(playTimeMinutes / 60);
+
+        if (bucket >= 0 && bucket < 24) {
+          playtimeBuckets[`${bucket}h`]++;
+        }
+      }
+    });
+
+  return Object.entries(playtimeBuckets)
+    .map(([playtime, purchases]) => ({ playtime, purchases }))
+    .sort((a, b) => parseInt(a.playtime) - parseInt(b.playtime));
+}
+
+function buildPurchaseStats(
+  purchases: any[],
+  days: number,
+): Array<{ name: string; count: number }> {
+  const now = new Date();
+  const start = startOfDay(subDays(now, days - 1));
+  const itemCounts = new Map<string, number>();
+
+  purchases
+    .filter((p) => !p.bundle_id && parseISO(p.purchased_at) >= start)
+    .forEach((purchase) => {
+      itemCounts.set(
+        purchase.item_name,
+        (itemCounts.get(purchase.item_name) || 0) + 1,
+      );
+    });
+
+  return Array.from(itemCounts.entries())
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count);
+}
+
 export default function PurchasesTab(props: PurchasesTabProps) {
   const {
     purchases,
+    gameSaves,
     getTotalRevenueEurUnifiedCents,
     getDailyPurchases,
-    getPurchasesByPlaytime,
-    getPurchaseStats,
     purchasesChartTimeRange,
     setPurchasesChartTimeRange,
   } = props;
@@ -189,6 +246,10 @@ export default function PurchasesTab(props: PurchasesTabProps) {
   const [paymentTypeCountRange, setPaymentTypeCountRange] =
     useState<AdminTwelveMonthChartRange>("1m");
   const [paymentTypeRevenueRange, setPaymentTypeRevenueRange] =
+    useState<AdminTwelveMonthChartRange>("1m");
+  const [playtimeChartRange, setPlaytimeChartRange] =
+    useState<AdminTwelveMonthChartRange>("1m");
+  const [itemChartRange, setItemChartRange] =
     useState<AdminTwelveMonthChartRange>("1m");
 
   const { data: countryCountData, countries: countryCountList } = useMemo(
@@ -233,6 +294,25 @@ export default function PurchasesTab(props: PurchasesTabProps) {
         "revenue_unified_eur",
       ),
     [purchases, paymentTypeRevenueRange],
+  );
+
+  const purchasesByPlaytimeData = useMemo(
+    () =>
+      buildPurchasesByPlaytime(
+        purchases,
+        gameSaves,
+        ADMIN_TWELVE_MONTH_CHART_DAYS[playtimeChartRange],
+      ),
+    [purchases, gameSaves, playtimeChartRange],
+  );
+
+  const purchaseStatsData = useMemo(
+    () =>
+      buildPurchaseStats(
+        purchases,
+        ADMIN_TWELVE_MONTH_CHART_DAYS[itemChartRange],
+      ),
+    [purchases, itemChartRange],
   );
 
   return (
@@ -510,14 +590,22 @@ export default function PurchasesTab(props: PurchasesTabProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle>Purchases by Playtime</CardTitle>
-          <CardDescription>
-            When do players make purchases? (hourly intervals, excluding free items)
-          </CardDescription>
+          <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-start">
+            <div>
+              <CardTitle>Purchases by Playtime</CardTitle>
+              <CardDescription>
+                When do players make purchases? (hourly intervals, excluding free items)
+              </CardDescription>
+            </div>
+            <ChartTimeRangeSelectTwelveMonth
+              value={playtimeChartRange}
+              onChange={setPlaytimeChartRange}
+            />
+          </div>
         </CardHeader>
         <CardContent>
           <ChartContainer config={{}} className="h-[400px] w-full">
-            <LineChart data={getPurchasesByPlaytime()}>
+            <LineChart data={purchasesByPlaytimeData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="playtime"
@@ -550,11 +638,19 @@ export default function PurchasesTab(props: PurchasesTabProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle>Purchases by Item</CardTitle>
+          <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-start">
+            <div>
+              <CardTitle>Purchases by Item</CardTitle>
+            </div>
+            <ChartTimeRangeSelectTwelveMonth
+              value={itemChartRange}
+              onChange={setItemChartRange}
+            />
+          </div>
         </CardHeader>
         <CardContent>
           <ChartContainer config={{}} className="h-[400px] w-full">
-            <BarChart data={getPurchaseStats()}>
+            <BarChart data={purchaseStatsData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
               <YAxis />
