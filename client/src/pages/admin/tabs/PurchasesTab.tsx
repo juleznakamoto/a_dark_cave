@@ -218,7 +218,12 @@ function buildPurchaseStats(
   const itemCounts = new Map<string, number>();
 
   purchases
-    .filter((p) => !p.bundle_id && parseISO(p.purchased_at) >= start)
+    .filter(
+      (p) =>
+        p.price_paid > 0 &&
+        !p.bundle_id &&
+        parseISO(p.purchased_at) >= start,
+    )
     .forEach((purchase) => {
       itemCounts.set(
         purchase.item_name,
