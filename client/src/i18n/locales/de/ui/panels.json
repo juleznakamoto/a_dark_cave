@@ -77,9 +77,9 @@
     "focusRewardTooltip_other": "Erhalte 2x Belohnungen bei Aktionen für {{count}} Minuten",
     "focusPointTooltip": "Verdiene 1 Fokuspunkt pro Stunde Schlaf",
     "sleepLength": "Schlaflänge",
-    "sleepLengthTooltip": "Max. Stunden pro Schlaf", //ok
+    "sleepLengthDescription": "{{hours}}h -> Max. {{hours}} Stunden ununterbrochenen Schlaf",
     "sleepIntensity": "Schlafintensität",
-    "sleepIntensityTooltip": "Dorfproduktion in % während des Schlafs",
+    "sleepIntensityDescription": "{{percent}}% -> Erhalte {{percent}}% der Dorfproduktion während des Schlafs",
     "skills": "Fähigkeiten", //ok
     "cubeWhispers": "Flüsternder Würfel", //ok
     "huntressTraining": "Jägerinausbildung",

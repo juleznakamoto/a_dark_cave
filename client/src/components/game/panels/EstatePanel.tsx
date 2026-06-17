@@ -1,10 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { useGameStore } from "@/game/state";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cubeEvents } from "@/game/rules/eventsCube";
 import { resolveEventTitle } from "@/i18n/eventText";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
-import { TooltipInfoIndicator } from "@/components/game/TooltipInfoIndicator";
 import { Button } from "@/components/ui/button";
 import { ImproveButton } from "@/components/ui/improve-button";
 import { getTotalPopulationEffects } from "@/game/population";
@@ -30,7 +29,6 @@ import {
   DISGRACED_PRIOR_UPGRADES,
 } from "@/game/rules/skillUpgrades";
 import { focusTooltip } from "@/game/rules/tooltips";
-import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
 import { formatNumber } from "@/lib/utils";
 import cn from "clsx";
 import { useTranslation } from "react-i18next";
@@ -109,8 +107,6 @@ function SkillUpgradeRow({
   );
 }
 
-const SLEEP_LENGTH_TOOLTIP_ID = "estate-sleep-length";
-const SLEEP_INTENSITY_TOOLTIP_ID = "estate-sleep-intensity";
 const MAX_SLEEP_LENGTH_LEVEL = SLEEP_LENGTH_UPGRADES.length - 1;
 const MAX_SLEEP_INTENSITY_LEVEL = SLEEP_INTENSITY_UPGRADES.length - 1;
 
@@ -132,44 +128,6 @@ export default function EstatePanel() {
     updateResource,
   } = useGameStore();
   const state = useGameStore.getState();
-  const hoveredTooltips = useGameStore((s) => s.hoveredTooltips || {});
-  const setHoveredTooltip = useGameStore((s) => s.setHoveredTooltip);
-  const hoverTimersRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
-  const globalTooltip = useGlobalTooltip();
-
-  const handleTooltipHover = (id: string) => {
-    const existing = hoverTimersRef.current.get(id);
-    if (existing) clearTimeout(existing);
-    const timer = setTimeout(() => {
-      setHoveredTooltip(id, true);
-      hoverTimersRef.current.delete(id);
-    }, 500);
-    hoverTimersRef.current.set(id, timer);
-  };
-
-  const handleTooltipLeave = (id: string) => {
-    const timer = hoverTimersRef.current.get(id);
-    if (timer) {
-      clearTimeout(timer);
-      hoverTimersRef.current.delete(id);
-    }
-  };
-
-  useEffect(() => () => {
-    hoverTimersRef.current.forEach((t) => clearTimeout(t));
-    hoverTimersRef.current.clear();
-  }, []);
-
-  // Mark as seen when tooltip opens (hover or long-press)
-  useEffect(() => {
-    if (globalTooltip.isTooltipOpen(SLEEP_LENGTH_TOOLTIP_ID)) {
-      setHoveredTooltip(SLEEP_LENGTH_TOOLTIP_ID, true);
-    }
-    if (globalTooltip.isTooltipOpen(SLEEP_INTENSITY_TOOLTIP_ID)) {
-      setHoveredTooltip(SLEEP_INTENSITY_TOOLTIP_ID, true);
-    }
-  }, [globalTooltip.openTooltipId, setHoveredTooltip]);
-
   // Calculate focus progress based on game loop timing
   const [focusProgress, setFocusProgress] = React.useState(0);
   const focusState = useGameStore((state) => state.focusState);
@@ -514,27 +472,9 @@ export default function EstatePanel() {
           {/* Sleep Length Upgrade */}
           <div className="space-y-1">
             <div className="flex items-center justify-between">
-              <TooltipWrapper
-                tooltip={
-                  <div className="text-xs whitespace-nowrap">
-                    {t("estate.sleepLengthTooltip")}
-                  </div>
-                }
-                tooltipId={SLEEP_LENGTH_TOOLTIP_ID}
-                disabled
-                tooltipTriggerClassName="inline-flex items-center leading-none"
-                className={cn(
-                  "group relative inline-block pb-1 text-xs font-medium text-foreground",
-                  !hoveredTooltips[SLEEP_LENGTH_TOOLTIP_ID] && "new-item-pulse",
-                )}
-                onMouseEnter={() => handleTooltipHover(SLEEP_LENGTH_TOOLTIP_ID)}
-                onMouseLeave={() => handleTooltipLeave(SLEEP_LENGTH_TOOLTIP_ID)}
-              >
-                <span className="inline-flex items-end gap-0.5">
-                  <span>{t("estate.sleepLength")}</span>
-                  <TooltipInfoIndicator />
-                </span>
-              </TooltipWrapper>
+              <span className="pb-1 text-xs font-medium text-foreground">
+                {t("estate.sleepLength")}
+              </span>
               {sleepUpgrades.lengthLevel < MAX_SLEEP_LENGTH_LEVEL ? (
                 <TooltipWrapper
                   tooltip={
@@ -583,7 +523,9 @@ export default function EstatePanel() {
             />
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>
-                {currentLengthUpgrade.hours + blackEstateBonusHours}h
+                {t("estate.sleepLengthDescription", {
+                  hours: currentLengthUpgrade.hours + blackEstateBonusHours,
+                })}
               </span>
             </div>
           </div>
@@ -591,27 +533,9 @@ export default function EstatePanel() {
           {/* Sleep Intensity Upgrade */}
           <div className="space-y-1 pt-2">
             <div className="flex items-center justify-between">
-              <TooltipWrapper
-                tooltip={
-                  <div className="text-xs whitespace-nowrap">
-                    {t("estate.sleepIntensityTooltip")}
-                  </div>
-                }
-                tooltipId={SLEEP_INTENSITY_TOOLTIP_ID}
-                disabled
-                tooltipTriggerClassName="inline-flex items-center leading-none"
-                className={cn(
-                  "group relative inline-block pb-1 text-xs font-medium text-foreground",
-                  !hoveredTooltips[SLEEP_INTENSITY_TOOLTIP_ID] && "new-item-pulse",
-                )}
-                onMouseEnter={() => handleTooltipHover(SLEEP_INTENSITY_TOOLTIP_ID)}
-                onMouseLeave={() => handleTooltipLeave(SLEEP_INTENSITY_TOOLTIP_ID)}
-              >
-                <span className="inline-flex items-end gap-0.5">
-                  <span>{t("estate.sleepIntensity")}</span>
-                  <TooltipInfoIndicator />
-                </span>
-              </TooltipWrapper>
+              <span className="pb-1 text-xs font-medium text-foreground">
+                {t("estate.sleepIntensity")}
+              </span>
               {sleepUpgrades.intensityLevel < MAX_SLEEP_INTENSITY_LEVEL ? (
                 <TooltipWrapper
                   tooltip={
@@ -660,9 +584,11 @@ export default function EstatePanel() {
             />
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>
-                {currentIntensityUpgrade.percentage +
-                  blackEstateBonusIntensity}
-                %
+                {t("estate.sleepIntensityDescription", {
+                  percent:
+                    currentIntensityUpgrade.percentage +
+                    blackEstateBonusIntensity,
+                })}
               </span>
             </div>
           </div>
