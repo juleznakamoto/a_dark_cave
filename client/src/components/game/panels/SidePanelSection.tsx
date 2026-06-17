@@ -206,6 +206,8 @@ interface SidePanelSectionProps {
   forceNotifications?: boolean; // Added prop
   onResourceChange?: (change: ResourceChange) => void;
   titleTooltip?: string;
+  /** Shown after the title label and info indicator (e.g. resource cap, population count). */
+  titleSuffix?: React.ReactNode;
   titleExtra?: React.ReactNode;
   activeTab?: string;
 }
@@ -428,6 +430,7 @@ export default function SidePanelSection({
   resourceChanges = [],
   onResourceChange,
   titleTooltip,
+  titleSuffix,
   titleExtra,
   activeTab,
 }: SidePanelSectionProps) {
@@ -1258,8 +1261,11 @@ export default function SidePanelSection({
         "!text-gray-100",
       )}
     >
-      {title}
-      {titleTooltip ? <TooltipInfoIndicator /> : null}
+      <span className="inline-flex items-center gap-0.5">
+        {title}
+        {titleTooltip ? <TooltipInfoIndicator /> : null}
+      </span>
+      {titleSuffix}
     </h3>
   );
 

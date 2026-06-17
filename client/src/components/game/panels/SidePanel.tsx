@@ -947,21 +947,19 @@ export default function SidePanel() {
               <SidePanelSection
                 sectionId="resources"
                 title={
+                  <span className="font-medium">
+                    {t("sidePanel.resources")}
+                  </span>
+                }
+                titleSuffix={
                   showResourceLimit ? (
-                    <>
-                      <span className="font-medium">
-                        {t("sidePanel.resources")}
-                      </span>
-                      <span className="font-normal text-[10px] text-muted-foreground">
-                        {" "}
-                        {t("sidePanel.resourceLimitMax", {
-                          limit: resourceLimitText,
-                        })}
-                      </span>
-                    </>
-                  ) : (
-                    t("sidePanel.resources")
-                  )
+                    <span className="font-normal text-[10px] text-muted-foreground">
+                      {" "}
+                      {t("sidePanel.resourceLimitMax", {
+                        limit: resourceLimitText,
+                      })}
+                    </span>
+                  ) : undefined
                 }
                 activeTab={activeTab}
                 titleTooltip={t("sidePanel.resourceLimitTooltip")}
@@ -1064,13 +1062,12 @@ export default function SidePanel() {
             {populationItems.length > 0 && shouldShowSection("population") && (
               <SidePanelSection
                 sectionId="population"
-                title={
-                  <>
-                    {t("sidePanel.population")}{" "}
-                    <span className="text-muted-foreground font-normal">
-                      {current_population}/{total_population}
-                    </span>
-                  </>
+                title={t("sidePanel.population")}
+                titleSuffix={
+                  <span className="font-normal text-muted-foreground">
+                    {" "}
+                    {current_population}/{total_population}
+                  </span>
                 }
                 items={populationItems}
                 titleTooltip={t("sidePanel.populationTooltip")}
