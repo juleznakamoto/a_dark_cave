@@ -22,6 +22,8 @@
     "sectionBuild": "Construir",
     "sectionProduce": "Produzir",
     "villagers": "Aldeões",
+    "villagersAvailable": "Aldeões disponíveis",
+    "villagersOnMission": "Aldeões em missão",
     "presetApply": "Aplicar preset {{slot}}",
     "presetEmpty": "O preset {{slot}} está vazio — selecione-o e salve seus trabalhos atuais",
     "presetLocked": "Bloqueado — disponível para compra",

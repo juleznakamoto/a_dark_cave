@@ -42,6 +42,7 @@ import CooldownButton, {
 import { Button } from "@/components/ui/button";
 import {
   getCurrentPopulation,
+  getExpeditionVillagerCount,
   getPopulationProduction,
 } from "@/game/population";
 import {
@@ -931,8 +932,34 @@ export default function VillagePanel() {
 
   const currentPopulation = useGameStore((s) => getCurrentPopulation(s));
   const maxPopulation = useGameStore((s) => s.total_population);
+  const onMissionCount = useGameStore((s) => getExpeditionVillagerCount(s));
+  const freeVillagers = villagers.free ?? 0;
   const atMaxPopulation =
     maxPopulation > 0 && currentPopulation >= maxPopulation;
+
+  const renderVillagerStatRow = (
+    key: string,
+    label: string,
+    count: number,
+    options?: { className?: string },
+  ) => (
+    <div key={key} className="flex min-w-0 items-center">
+      <div className="h-5 w-5 shrink-0" aria-hidden />
+      <div className="flex w-[3ch] shrink-0 items-center justify-center">
+        <AnimatedCounter value={count} className={options?.className} />
+      </div>
+      <div className="h-5 w-5 shrink-0" aria-hidden />
+      <span
+        translate="no"
+        className="notranslate w-[4ch] shrink-0 tabular-nums text-muted-foreground"
+        style={{
+          fontSize: ANIMATED_COUNTER_FONT_SIZE,
+          lineHeight: `${ANIMATED_COUNTER_HEIGHT}px`,
+        }}
+      />
+      <span className="ml-1 min-w-0 flex-1 text-left text-xs">{label}</span>
+    </div>
+  );
 
   const renderVillagersSummaryRow = () => (
     <div key="villagers-summary" className="flex min-w-0 items-center">
@@ -1983,6 +2010,16 @@ export default function VillagePanel() {
               </div>
               <div className="space-y-1 leading-tight">
                 {renderVillagersSummaryRow()}
+                {renderVillagerStatRow(
+                  "villagers-available",
+                  t("village.villagersAvailable"),
+                  freeVillagers,
+                )}
+                {renderVillagerStatRow(
+                  "villagers-on-mission",
+                  t("village.villagersOnMission"),
+                  onMissionCount,
+                )}
                 {visiblePopulationJobs.map((job) =>
                   renderPopulationControl(
                     job.id,

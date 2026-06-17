@@ -22,6 +22,8 @@
     "sectionBuild": "Строить",
     "sectionProduce": "Производство",
     "villagers": "Жители",
+    "villagersAvailable": "Доступные жители",
+    "villagersOnMission": "Жители в экспедиции",
     "presetApply": "Применить пресет {{slot}}",
     "presetEmpty": "Пресет {{slot}} пуст — выберите его, затем сохраните текущие работы",
     "presetLocked": "Заблокировано — доступно для покупки",
