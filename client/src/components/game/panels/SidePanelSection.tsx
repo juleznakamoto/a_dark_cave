@@ -1268,6 +1268,7 @@ export default function SidePanelSection({
       tooltip={<div className="text-xs">{titleTooltip}</div>}
       tooltipId={tooltipKey}
       disabled
+      tooltipTriggerAsChild
       tooltipTriggerClassName="inline-flex items-center leading-none"
       onMouseEnter={() => {
         handleItemTooltipEnter(tooltipKey);
