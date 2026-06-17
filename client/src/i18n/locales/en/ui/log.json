@@ -12,6 +12,7 @@
       "one": "One villager succumbs to starvation.",
       "other": "{{count}} villagers starve to death."
     },
+    "boostApplied": "Boost has been applied",
     "investmentComplete": {
       "success": "{{amount}} Gold investment complete: Success. You gained {{payout}} Gold.",
       "successLucky": "{{amount}} Gold investment complete: Lucky Chance! You gained {{payout}} Gold.",

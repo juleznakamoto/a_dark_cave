@@ -87,7 +87,7 @@ describe('Save Game System - Comprehensive Tests', () => {
     skills: {},
     activeTab: 'cave',
     devMode: false,
-    boostMode: false,
+    boostApplied: false,
     effects: {},
     bastion_stats: { armor: 0, damage: 0 },
     cruelMode: false,

@@ -12,6 +12,7 @@
       "one": "一名村民因饥饿而死亡。",
       "other": "{{count}} 名村民因饥饿而死亡。"
     },
+    "boostApplied": "加速已应用",
     "investmentComplete": {
       "success": "{{amount}} 金币投资完成：成功。你获得了 {{payout}} 金币。",
       "successLucky": "{{amount}} 金币投资完成：幸运！你获得了 {{payout}} 金币。",

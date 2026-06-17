@@ -121,7 +121,7 @@ const createBaseState = (overrides?: Partial<GameState>): GameState => {
     current_population: 15,
     max_population: 20,
     devMode: false,
-    boostMode: false,
+    boostApplied: false,
     cruelMode: false,
     feastState: { isActive: false, endTime: 0, lastAcceptedLevel: 0 },
     greatFeastState: { isActive: false, endTime: 0 },

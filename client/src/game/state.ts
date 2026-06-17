@@ -178,7 +178,6 @@ interface GameStore extends GameState {
   | "achievements"
   | "timedevent";
   devMode: boolean;
-  boostMode: boolean;
   lastSaved: string;
   eventDialog: {
     isOpen: boolean;
@@ -370,7 +369,6 @@ interface GameStore extends GameState {
     key: keyof GameState["panelSizes"],
     px: number | null,
   ) => void;
-  setBoostMode: (enabled: boolean) => void;
   setMusicMuted: (muted: boolean) => void;
   setSfxMuted: (muted: boolean) => void;
   setAuthNotificationSeen: (seen: boolean) => void;
@@ -1472,7 +1470,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   ...defaultGameState,
   activeTab: "cave",
   devMode: import.meta.env.DEV,
-  boostMode: false,
   lastSaved: "Never",
   cooldowns: {},
   executionStartTimes: {},
@@ -1611,7 +1608,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       panelSizes: { ...state.panelSizes, [key]: px },
     })),
 
-  setBoostMode: (enabled: boolean) => set({ boostMode: enabled }),
   setMusicMuted: (muted: boolean) => set({ musicMuted: muted }),
   setSfxMuted: (muted: boolean) => set({ sfxMuted: muted }),
   setAuthNotificationSeen: (seen: boolean) =>
@@ -2408,9 +2404,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Preserve these across game restarts
     const preserved = {
-      // Purchases and boosts that persist
-      boostMode: state.boostMode,
-      // Only preserve cruel_mode activation, reset everything else.
+      // Purchases that persist
       // Steam build: always keep `full_game` so the paywall never reappears.
       activatedPurchases: {
         ...(isSteamBuild ? { full_game: true } : {}),
@@ -2605,9 +2599,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const { setLastGameLoadTime } = await import("@/game/loop");
     setLastGameLoadTime(performance.now());
 
-    // Get current boost mode before loading
-    const currentBoostMode = get().boostMode;
-
     if (savedState) {
       const saved = savedState as typeof savedState & {
         musicMuted?: boolean;
@@ -2690,7 +2681,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         log: savedState.log || [],
         events: savedState.events || defaultGameState.events,
         devMode: import.meta.env.DEV,
-        boostMode: savedState.boostMode,
+        boostApplied: savedState.boostApplied === true,
         effects: calculateTotalEffects(savedState),
         bastion_stats: calculateBastionStats(savedState),
         cruelMode:
@@ -2835,7 +2826,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         expeditionVillagers: {},
         log: [],
         devMode: import.meta.env.DEV,
-        boostMode: currentBoostMode, // Preserve boost mode flag
         effects: calculateTotalEffects(defaultGameState),
         bastion_stats: calculateBastionStats(defaultGameState),
         startTime: Date.now(), // Set start time for new game

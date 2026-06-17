@@ -12,6 +12,7 @@
       "one": "Um aldeão sucumbe à fome.",
       "other": "{{count}} aldeões morrem de fome."
     },
+    "boostApplied": "Impulso foi aplicado",
     "investmentComplete": {
       "success": "Investimento de {{amount}} de Ouro concluído: Sucesso. Você ganhou {{payout}} de Ouro.",
       "successLucky": "Investimento de {{amount}} de Ouro concluído: Golpe de Sorte! Você ganhou {{payout}} de Ouro.",

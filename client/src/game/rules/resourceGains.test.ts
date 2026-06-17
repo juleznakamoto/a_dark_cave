@@ -229,7 +229,7 @@ const createTestState = (overrides?: Partial<GameState>): GameState => {
     current_population: 5,
     max_population: 10,
     devMode: false,
-    boostMode: false,
+    boostApplied: false,
     cruelMode: false,
     feastState: { isActive: false, endTime: 0, lastAcceptedLevel: 0 },
     greatFeastState: { isActive: false, endTime: 0 },

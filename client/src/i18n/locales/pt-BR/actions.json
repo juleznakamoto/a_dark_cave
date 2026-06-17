@@ -559,8 +559,7 @@
   "lightFire": {
     "label": "Acender Fogo",
     "log": {
-      "firstVisit": "O fogo crepita suavemente, lançando sombras dançantes nas paredes da caverna. O calor é reconfortante.",
-      "firstVisitBoost": "O fogo crepita suavemente, lançando sombras dançantes nas paredes da caverna. O calor é reconfortante. Alguém deixou um presente para você."
+      "firstVisit": "O fogo crepita suavemente, lançando sombras dançantes nas paredes da caverna. O calor é reconfortante."
     }
   },
   "lowChamber": {

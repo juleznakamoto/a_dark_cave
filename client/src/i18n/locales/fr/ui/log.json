@@ -12,6 +12,7 @@
       "one": "Un villageois succombe à la famine.",
       "other": "{{count}} villageois meurent de faim."
     },
+    "boostApplied": "Le boost a été appliqué",
     "investmentComplete": {
       "success": "Investissement de {{amount}} d'or terminé : Succès. Vous avez gagné {{payout}} d'or.",
       "successLucky": "Investissement de {{amount}} d'or terminé : Coup de chance ! Vous avez gagné {{payout}} d'or.",

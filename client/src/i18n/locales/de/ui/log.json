@@ -12,6 +12,7 @@
       "one": "Ein Dorfbewohner erliegt dem Hunger.",
       "other": "{{count}} Dorfbewohner verhungern."
     },
+    "boostApplied": "Boost wurde angewendet",
     "investmentComplete": {
       "success": "{{amount}} Gold-Investition abgeschlossen: Erfolg. Du hast {{payout}} Gold erhalten.",
       "successLucky": "{{amount}} Gold-Investition abgeschlossen: Glückstreffer! Du hast {{payout}} Gold erhalten.",

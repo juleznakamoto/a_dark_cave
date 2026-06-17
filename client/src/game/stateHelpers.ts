@@ -655,6 +655,12 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
   if (presetPurchases) {
     migrated = { ...migrated, ...presetPurchases };
   }
+  if (
+    !migrated.boostApplied &&
+    (migrated as { boostMode?: boolean }).boostMode === true
+  ) {
+    migrated = { ...migrated, boostApplied: true };
+  }
   return migrated;
 }
 

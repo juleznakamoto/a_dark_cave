@@ -126,8 +126,6 @@ export default function SidePanel() {
     buildings,
     villagers,
     expeditionVillagers,
-    current_population,
-    total_population,
     activeTab,
     bastion_stats, // Added bastion_stats
     story,
@@ -1063,12 +1061,6 @@ export default function SidePanel() {
               <SidePanelSection
                 sectionId="population"
                 title={t("sidePanel.population")}
-                titleSuffix={
-                  <span className="align-baseline font-normal text-muted-foreground">
-                    {" "}
-                    {current_population}/{total_population}
-                  </span>
-                }
                 items={populationItems}
               />
             )}

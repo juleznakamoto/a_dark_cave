@@ -559,8 +559,7 @@
   "lightFire": {
     "label": "Encender fuego",
     "log": {
-      "firstVisit": "El fuego crepita suavemente, proyectando sombras danzantes en las paredes de la cueva. El calor es reconfortante.",
-      "firstVisitBoost": "El fuego crepita suavemente, proyectando sombras danzantes en las paredes de la cueva. El calor es reconfortante. Alguien te dejó un regalo."
+      "firstVisit": "El fuego crepita suavemente, proyectando sombras danzantes en las paredes de la cueva. El calor es reconfortante."
     }
   },
   "lowChamber": {

@@ -559,8 +559,7 @@
   "lightFire": {
     "label": "Feuer entzünden",
     "log": {
-      "firstVisit": "Das Feuer knistert leise und wirft tanzende Schatten auf die Höhlenwände. Die Wärme ist tröstlich.",
-      "firstVisitBoost": "Das Feuer knistert leise und wirft tanzende Schatten auf die Höhlenwände. Die Wärme ist tröstlich. Jemand hat dir ein Geschenk hinterlassen."
+      "firstVisit": "Das Feuer knistert leise und wirft tanzende Schatten auf die Höhlenwände. Die Wärme ist tröstlich."
     }
   },
   "lowChamber": {

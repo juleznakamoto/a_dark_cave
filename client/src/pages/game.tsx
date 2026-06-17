@@ -21,6 +21,10 @@ import { isPlaylightReferralUrl } from "@/lib/playlight";
 import { isSteamBuild } from "@/lib/edition";
 import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
 import type { TimedEventTabState } from "@/game/types";
+import {
+  applySaveBoost,
+  canApplySaveBoost,
+} from "@/game/boost";
 
 export default function Game() {
   const initialize = useGameStore((state) => state.initialize);
@@ -81,8 +85,9 @@ export default function Game() {
         const urlParams = new URLSearchParams(window.location.search);
 
         // Check if URL is /boost path or ?game=true param to skip start screen
+        const isBoostPath = window.location.pathname === "/boost";
         const isGamePath =
-          window.location.pathname === "/boost" ||
+          isBoostPath ||
           urlParams.get("game") === "true";
 
         // Check for openShop query parameter only (not /boost path)
@@ -325,6 +330,26 @@ export default function Game() {
             (shopParams.toString() ? `?${shopParams.toString()}` : "") +
             window.location.hash;
           window.history.replaceState({}, document.title, newShopUrl);
+        }
+
+        if (isBoostPath) {
+          const boostState = useGameStore.getState();
+          if (canApplySaveBoost(boostState)) {
+            const { resources, logEntry } = applySaveBoost(boostState);
+            useGameStore.setState({
+              resources,
+              boostApplied: true,
+            });
+            useGameStore.getState().addLogEntry(logEntry);
+            StateManager.scheduleEffectsUpdate(useGameStore.getState);
+            try {
+              await saveGame(useGameStore.getState(), false);
+              logger.log("[GAME] One-time /boost bonus applied and saved");
+            } catch (error) {
+              logger.error("[GAME] Failed to save after /boost bonus:", error);
+            }
+          }
+          window.history.replaceState({}, document.title, "/");
         }
 
         // Mark as initialized

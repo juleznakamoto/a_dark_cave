@@ -12,6 +12,7 @@
       "one": "Un aldeano sucumbe al hambre.",
       "other": "{{count}} aldeanos mueren de hambre."
     },
+    "boostApplied": "Se ha aplicado el impulso",
     "investmentComplete": {
       "success": "Inversión de {{amount}} de oro completada: Éxito. Has ganado {{payout}} de oro.",
       "successLucky": "Inversión de {{amount}} de oro completada: ¡Suerte! Has ganado {{payout}} de oro.",

@@ -7,8 +7,6 @@ export const CAVE_FIRST_VISIT_LOG_FALLBACKS: Record<
   lightFire: {
     firstVisit:
       "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.",
-    firstVisitBoost:
-      "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting. Someone left you a gift.",
   },
   chopWood: {
     firstVisit:

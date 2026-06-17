@@ -837,20 +837,6 @@ export function handleLightFire(
     },
   };
 
-  // Apply boost mode resources if active
-  if (state.boostMode) {
-    result.stateUpdates.resources = {
-      ...state.resources,
-      wood: (state.resources.wood || 0) + 5000,
-      stone: (state.resources.stone || 0) + 5000,
-      food: (state.resources.food || 0) + 2000,
-      torch: (state.resources.torch || 0) + 100,
-      iron: (state.resources.iron || 0) + 1000,
-      steel: (state.resources.steel || 0) + 500,
-      gold: (state.resources.gold || 0) + 10000,
-    };
-  }
-
   const playlightNewMember =
     isPlaylightReferralUrl() &&
     state.story.seen.playlightMemberGoldGranted !== true;
@@ -892,7 +878,7 @@ export function handleLightFire(
   pushFirstVisitLog(
     result,
     "lightFire",
-    state.boostMode ? "firstVisitBoost" : "firstVisit",
+    "firstVisit",
     "fire-lit",
   );
 

@@ -559,8 +559,7 @@
   "lightFire": {
     "label": "Accendi il Fuoco",
     "log": {
-      "firstVisit": "Il fuoco crepita dolcemente, proiettando ombre danzanti sulle pareti della caverna. Il calore è confortante.",
-      "firstVisitBoost": "Il fuoco crepita dolcemente, proiettando ombre danzanti sulle pareti della caverna. Il calore è confortante. Qualcuno ti ha lasciato un dono."
+      "firstVisit": "Il fuoco crepita dolcemente, proiettando ombre danzanti sulle pareti della caverna. Il calore è confortante."
     }
   },
   "lowChamber": {

@@ -930,12 +930,18 @@ export default function VillagePanel() {
   }, []);
 
   const currentPopulation = useGameStore((s) => getCurrentPopulation(s));
+  const maxPopulation = useGameStore((s) => s.total_population);
+  const atMaxPopulation =
+    maxPopulation > 0 && currentPopulation >= maxPopulation;
 
   const renderVillagersSummaryRow = () => (
     <div key="villagers-summary" className="flex min-w-0 items-center">
       <div className="h-5 w-5 shrink-0" aria-hidden />
       <div className="flex w-[3ch] shrink-0 items-center justify-center">
-        <AnimatedCounter value={currentPopulation} />
+        <AnimatedCounter
+          value={currentPopulation}
+          className={atMaxPopulation ? "text-muted-foreground" : undefined}
+        />
       </div>
       <div className="h-5 w-5 shrink-0" aria-hidden />
       <span
@@ -945,7 +951,9 @@ export default function VillagePanel() {
           fontSize: ANIMATED_COUNTER_FONT_SIZE,
           lineHeight: `${ANIMATED_COUNTER_HEIGHT}px`,
         }}
-      />
+      >
+        {maxPopulation > 0 ? `/${maxPopulation}` : ""}
+      </span>
       <span className="ml-1 min-w-0 flex-1 text-left text-xs">
         {t("village.villagers")}{" "}
         {currentPopulation > 0 && (
@@ -1051,7 +1059,11 @@ export default function VillagePanel() {
             lineHeight: `${ANIMATED_COUNTER_HEIGHT}px`,
           }}
         >
-          {showCap ? `/${cap}` : ""}
+          {jobId === "gatherer"
+            ? "/∞"
+            : showCap
+              ? `/${cap}`
+              : ""}
         </span>
         <span className="ml-1 min-w-0 flex-1 text-left text-xs">
           {label}{" "}

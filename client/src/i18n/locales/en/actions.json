@@ -571,8 +571,7 @@
   "lightFire": {
     "label": "Light Fire",
     "log": {
-      "firstVisit": "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.",
-      "firstVisitBoost": "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting. Someone left you a gift."
+      "firstVisit": "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting."
     }
   },
   "lowChamber": {

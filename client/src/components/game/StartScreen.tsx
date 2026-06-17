@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import CloudShader from "@/components/ui/cloud-shader";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
-import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
 import LanguageSelector from "@/components/game/LanguageSelector";
@@ -35,8 +34,6 @@ const START_AUDIO_ICON =
 export default function StartScreen() {
   const {
     executeAction,
-    setBoostMode,
-    boostMode,
     cruelMode,
     musicMuted,
     sfxMuted,
@@ -56,12 +53,6 @@ export default function StartScreen() {
   }, [musicMuted, sfxMuted]);
 
   useEffect(() => {
-    const isBoostPath = window.location.pathname.includes("/boost");
-    if (isBoostPath) {
-      setBoostMode(true);
-      window.history.replaceState({}, "", "/");
-    }
-
     // Wind plays as soon as the user shows intent (mousemove on desktop, touchstart on mobile).
     // Both events fire before the click event, so executedRef.current is still false
     // even when the user's first action is clicking "Light Fire".
@@ -84,7 +75,7 @@ export default function StartScreen() {
       document.removeEventListener("mousemove", handleInitialGesture);
       document.removeEventListener("touchstart", handleInitialGesture);
     };
-  }, [setBoostMode]);
+  }, []);
 
   // ✅ Remove animation class after it finishes once
   useEffect(() => {
@@ -284,27 +275,8 @@ export default function StartScreen() {
         </div>
       </main>
 
-      {boostMode && (
-        <TooltipWrapper
-          tooltip={
-            <div className="text-xs whitespace-nowrap">
-              {t("startScreen.boostDeactivate")}
-            </div>
-          }
-          tooltipId="boost-indicator"
-          disabled={false}
-          onClick={() => {
-            setBoostMode(false);
-          }}
-        >
-          <div className="absolute bottom-4 right-4 z-20 cursor-pointer">
-            <div className="text-green-600 text-xl">↑</div>
-          </div>
-        </TooltipWrapper>
-      )}
-
       <nav
-        className={`absolute bottom-4 left-4 right-4 z-10 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 text-[10px] sm:text-xs text-muted-foreground ${boostMode ? "pr-8 sm:pr-10" : ""}`}
+        className="absolute bottom-4 left-4 right-4 z-10 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 text-[10px] sm:text-xs text-muted-foreground"
         aria-label="Site links"
       >
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">

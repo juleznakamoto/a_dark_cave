@@ -84,7 +84,8 @@ export const gameStateSchema = z.object({
       villagerDeathsLifetime: z.number().min(0).default(0),
     })
     .default({}),
-  boostMode: z.boolean().default(false),
+  /** True after the one-time /boost URL bonus has been applied to this save. */
+  boostApplied: z.boolean().default(false),
   flags: z
     .object({
       villageUnlocked: z.boolean().default(false),

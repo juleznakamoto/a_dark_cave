@@ -559,8 +559,7 @@
   "lightFire": {
     "label": "Allumer le feu",
     "log": {
-      "firstVisit": "Le feu crépite doucement, projetant des ombres dansantes sur les parois de la grotte. La chaleur est réconfortante.",
-      "firstVisitBoost": "Le feu crépite doucement, projetant des ombres dansantes sur les parois de la grotte. La chaleur est réconfortante. Quelqu'un vous a laissé un cadeau."
+      "firstVisit": "Le feu crépite doucement, projetant des ombres dansantes sur les parois de la grotte. La chaleur est réconfortante."
     }
   },
   "lowChamber": {

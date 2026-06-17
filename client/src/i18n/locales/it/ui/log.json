@@ -12,6 +12,7 @@
       "one": "Un abitante muore di fame.",
       "other": "{{count}} abitanti muoiono di fame."
     },
+    "boostApplied": "Potenziamento applicato",
     "investmentComplete": {
       "success": "Investimento di {{amount}} Oro completato: Successo. Hai guadagnato {{payout}} Oro.",
       "successLucky": "Investimento di {{amount}} Oro completato: Probabilità Fortunata! Hai guadagnato {{payout}} Oro.",
