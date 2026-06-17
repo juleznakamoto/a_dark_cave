@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from "vitest";
 import i18n from "./index";
 import {
   getActionLabel,
+  getCatalogString,
   getEffectName,
   getEventMessage,
   tWithFallback,
@@ -14,6 +15,19 @@ import { getActionCostBreakdown } from "@/game/rules/index";
 describe("i18n runtime", () => {
   beforeEach(async () => {
     await i18n.changeLanguage("en");
+  });
+
+  it("loads German village panel strings", async () => {
+    await i18n.changeLanguage("de");
+    expect(i18n.t("village.sectionProduce", { ns: "ui" })).toBe("Produzieren");
+    expect(i18n.t("village.villagers", { ns: "ui" })).toBe("Dorfbewohner");
+    expect(i18n.t("village.villagersAvailable", { ns: "ui" })).toBe(
+      "verfügbar",
+    );
+    expect(i18n.t("village.villagersOnMission", { ns: "ui" })).toBe(
+      "auf Mission",
+    );
+    expect(getCatalogString("en", "ui", "village.villagers")).toBe("Villagers");
   });
 
   it("loads English UI strings", () => {

@@ -2468,6 +2468,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Social media rewards (persist forever)
       social_media_rewards: state.social_media_rewards || {},
 
+      // Extra villager job preset slots bought in the shop (persist across all games)
+      villagerPresetSlotsFromShop: state.villagerPresetSlotsFromShop ?? 0,
+
       // Cruel mode status
       cruelMode: isCruelModeActive,
 

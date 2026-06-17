@@ -29,6 +29,7 @@
     "presetLocked": "Заблокировано — доступно для покупки",
     "presetLockedBuilding": "Для разблокировки нужно: {{building}}",
     "presetSave": "Сохранить текущие работы в пресет {{slot}}",
+    "presetSlotsPurchase": "Добавить ещё 2 слота пресетов",
     "presetUnlock": "Открыть пресет работ за {{cost}} прозрения",
     "queueSlotUnlock": "Открыть слот очереди строительства за {{cost}} прозрения",
     "queueSlotUsed": "Слот {{slot}}: строительство идёт",

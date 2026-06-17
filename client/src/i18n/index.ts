@@ -57,6 +57,25 @@ void i18n.use(initReactI18next).init({
   returnNull: false,
 });
 
+function reloadI18nResources(): void {
+  const next = buildResources();
+  for (const [lng, namespaces] of Object.entries(next)) {
+    for (const [ns, bundle] of Object.entries(namespaces)) {
+      i18n.addResourceBundle(lng, ns, bundle, true, true);
+    }
+  }
+  void i18n.changeLanguage(i18n.language);
+}
+
+if (import.meta.hot) {
+  import.meta.hot.accept(
+    Object.keys(localeModules),
+    () => {
+      reloadI18nResources();
+    },
+  );
+}
+
 export function applyDocumentLocale(locale: SupportedLocale): void {
   if (typeof document !== "undefined") {
     document.documentElement.lang = locale === "zh-CN" ? "zh-Hans" : locale;

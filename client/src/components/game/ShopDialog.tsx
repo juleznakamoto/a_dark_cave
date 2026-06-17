@@ -37,6 +37,7 @@ import {
   isAnonymousSession,
 } from "@/game/auth";
 import {
+  applyAdditionalPresetSlotsFromPurchaseRows,
   applyFeastActivationsFromPurchaseRows,
   fetchPurchaseRowsForSessionUser,
   purchaseIdToItemId,
@@ -772,6 +773,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
       setPurchasedItems(purchaseIdsFromRows(data));
       applyFeastActivationsFromPurchaseRows(data);
+      applyAdditionalPresetSlotsFromPurchaseRows(data);
     } catch (error) {
       logger.error("Error loading purchased items:", error);
     }
@@ -1598,6 +1600,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         : Object.values(SHOP_ITEMS)
                       )
                         .filter((item) => {
+                          // Items sold only via a dedicated checkout dialog are never listed here.
+                          if (item.hiddenFromShop) {
+                            return false;
+                          }
+
                           // Hide full_game item when BTP=0
                           if (item.id === "full_game" && gameState.BTP === 0) {
                             return false;

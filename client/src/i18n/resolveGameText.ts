@@ -4,7 +4,26 @@ import { clothingEffects } from "@/game/rules/effects";
 import { capitalizeWords } from "@/lib/utils";
 import { normalizeLocale } from "./locales";
 
-type TranslateOptions = Record<string, string | number | boolean | undefined>;
+export type TranslateOptions = Record<
+  string,
+  string | number | boolean | undefined
+>;
+
+/** Read a leaf string from a loaded i18n resource bundle (dot-path). */
+export function getCatalogString(
+  locale: string,
+  namespace: string,
+  key: string,
+): string | undefined {
+  const bundle = i18n.getResourceBundle(locale, namespace);
+  if (!bundle) return undefined;
+  let cur: unknown = bundle;
+  for (const part of key.split(".")) {
+    if (!cur || typeof cur !== "object" || Array.isArray(cur)) return undefined;
+    cur = (cur as Record<string, unknown>)[part];
+  }
+  return typeof cur === "string" ? cur : undefined;
+}
 
 function nsKey(namespace: string, key: string): string {
   return `${namespace}:${key}`;

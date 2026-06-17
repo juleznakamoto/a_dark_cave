@@ -31,8 +31,8 @@ import {
 import { focusTooltip } from "@/game/rules/tooltips";
 import { formatNumber } from "@/lib/utils";
 import cn from "clsx";
-import { useTranslation } from "react-i18next";
 import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { formatTooltipCostLine } from "@/i18n/tooltipLabels";
 
 const ESTATE_BAR_GROW_ANIMATION_MS = 500;
@@ -111,7 +111,7 @@ const MAX_SLEEP_LENGTH_LEVEL = SLEEP_LENGTH_UPGRADES.length - 1;
 const MAX_SLEEP_INTENSITY_LEVEL = SLEEP_INTENSITY_UPGRADES.length - 1;
 
 export default function EstatePanel() {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const {
     events,
     setEventDialog,

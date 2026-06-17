@@ -1,0 +1,39 @@
+---
+description: Raw i18n keys in UI (e.g. village.villagers) — stale locale HMR fix
+globs: client/src/components/game/**/*.tsx,client/src/i18n/**/*
+alwaysApply: false
+---
+
+# UI i18n — raw translation keys in dev
+
+## Symptom
+
+UI shows **raw key paths** (e.g. `village.villagers`, `estate.sleepLengthDescription`) while **nearby strings translate fine** (e.g. `village.sectionProduce` → “Produzieren”, resource names from `common`).
+
+## Cause (not missing JSON)
+
+Keys usually **already exist** in `client/src/i18n/locales/{lang}/ui/panels.json`. The bug is **stale i18n resources in dev**: component TSX hot-reloads after new `t("…")` calls, but the eager `import.meta.glob` bundle in `client/src/i18n/index.ts` was built at server start and never picked up new keys.
+
+`common` / `actions` namespaces (single JSON per locale) reload reliably; **`ui` is sharded** (`locales/{lang}/ui/*.json` merged via `Object.assign`).
+
+## Fix (in order)
+
+1. **Panel components** — use `useUiTranslation()` from `@/i18n/useUiTranslation`, **not** `useTranslation("ui")`. It wraps `tWithFallback` with the English catalog as fallback via `getCatalogString("en", "ui", key)`.
+2. **New panel/dialog components** — default to `useUiTranslation()` for all `ui` strings.
+3. **Verify keys** — add to **all** locales under the right shard (usually `ui/panels.json`); run `npm test -- client/src/i18n/i18n.catalog.test.ts`.
+4. **HMR** — `client/src/i18n/index.ts` already reloads shards on locale JSON change and calls `changeLanguage` to re-render. If keys still show raw after a code pull: **hard refresh or restart dev server** once.
+5. **Do not** duplicate English inline in every `t()` call unless `defaultValue` is needed for dynamic keys (e.g. `village.jobs.${id}` with `{ defaultValue: job.label }`).
+
+## Quick diagnosis
+
+```bash
+npm test -- client/src/i18n/i18n.runtime.test.ts
+```
+
+If tests pass but UI shows raw keys → stale dev bundle or panel still on plain `useTranslation("ui")`.
+
+## Reference
+
+- Hook: `client/src/i18n/useUiTranslation.ts`
+- Fallback helper: `tWithFallback` / `getCatalogString` in `client/src/i18n/resolveGameText.ts`
+- Bootstrap + HMR: `client/src/i18n/index.ts`

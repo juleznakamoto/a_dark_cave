@@ -27,7 +27,7 @@ import {
   resolveActionDescription,
   resolveActionLabel,
 } from "@/i18n/actionLabels";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
   formatTooltipCostLine,
   formatTooltipResourceName,
@@ -57,6 +57,7 @@ import {
 import { formatNumber } from "@/lib/utils";
 import {
   MAX_PRESET_SLOTS,
+  areAdditionalPresetSlotsPurchased,
   arePresetsVisible,
   canPurchasePresetSlot,
   getNextPresetUnlockCost,
@@ -130,6 +131,7 @@ const VILLAGE_INDICATOR_TOOLTIP_IDS = [
   "madness-production",
   "preset-save",
   "preset-unlock",
+  "preset-slots-purchase",
   "queue-slot-unlock",
   ...Array.from({ length: MAX_PRESET_SLOTS }, (_, i) => `preset-slot-${i + 1}`),
   ...Array.from({ length: 3 }, (_, i) => `queue-slot-${i + 1}`),
@@ -142,7 +144,7 @@ const PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS =
   "inline-flex items-center leading-none";
 
 export default function VillagePanel() {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const {
     villagers,
     buildings,
@@ -166,6 +168,7 @@ export default function VillagePanel() {
     setActivePresetSlot,
     purchaseVillagerPresetSlot,
     purchaseConstructionQueueSlot,
+    setPresetSlotsPurchaseDialogOpen,
   } = useGameStore();
   const { pulseClassName, onMouseEnter, onMouseLeave } =
     useNewItemPulseTooltips(VILLAGE_INDICATOR_TOOLTIP_IDS);
@@ -802,7 +805,7 @@ export default function VillagePanel() {
             {durationLine}
           </div>
           {isUpgrade && (
-            <span className="font-noto-symbols-2 text-green-700 leading-none shrink-0">
+            <span className="font-noto-symbols-2 text-sm text-green-700 leading-none shrink-0">
               ↑
             </span>
           )}
@@ -1916,9 +1919,16 @@ export default function VillagePanel() {
                   );
                 })()}
                 {arePresetsVisible(state) &&
-                  getPurchasedPresetCount(state) >= 1 &&
                   (() => {
                     const purchasedCount = getPurchasedPresetCount(state);
+                    // The "+" buys 2 extra preset slots; visible once the Scribe's
+                    // Office exists and the slots have not been bought yet.
+                    const showAddPresetSlotsPlus =
+                      (state.buildings?.scribesOffice ?? 0) > 0 &&
+                      !areAdditionalPresetSlotsPurchased(state);
+                    if (purchasedCount < 1 && !showAddPresetSlotsPlus) {
+                      return null;
+                    }
                     return (
                       <div className="ml-auto flex shrink-0 items-center gap-1">
                         {Array.from({ length: purchasedCount }).map((_, i) => {
@@ -1965,6 +1975,46 @@ export default function VillagePanel() {
                             </TooltipWrapper>
                           );
                         })}
+                        {showAddPresetSlotsPlus && (
+                          <TooltipWrapper
+                            tooltipId="preset-slots-purchase"
+                            tooltip={
+                              <div className="text-xs">
+                                {t("village.presetSlotsPurchase")}
+                              </div>
+                            }
+                            tooltipTriggerClassName="inline-flex items-center leading-none"
+                            className={pulseClassName(
+                              "preset-slots-purchase",
+                              "group flex items-center cursor-pointer",
+                            )}
+                            onMouseEnter={() =>
+                              onMouseEnter("preset-slots-purchase")
+                            }
+                            onMouseLeave={() =>
+                              onMouseLeave("preset-slots-purchase")
+                            }
+                            onClick={() => setPresetSlotsPurchaseDialogOpen(true)}
+                          >
+                            <Button
+                              size="xs"
+                              variant="outline"
+                              data-testid="preset-slots-purchase"
+                              button_id="preset-slots-purchase"
+                              className={cn(
+                                "h-[18px] w-[18px] min-h-0 shrink-0 p-0 pointer-events-none inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]",
+                                gameActionOutlineButtonClassName(false, {
+                                  groupHover: true,
+                                }),
+                              )}
+                              style={{ touchAction: "manipulation" }}
+                            >
+                              <span className="inline-flex items-center justify-center text-[12px] font-semibold leading-none text-white">
+                                +
+                              </span>
+                            </Button>
+                          </TooltipWrapper>
+                        )}
                         {purchasedCount >= 1 && (
                           <TooltipWrapper
                             tooltipId="preset-save"

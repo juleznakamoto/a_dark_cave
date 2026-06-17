@@ -29,6 +29,7 @@
     "presetLocked": "Locked — available for purchase",
     "presetLockedBuilding": "{{building}} needed to unlock",
     "presetSave": "Save current jobs to preset {{slot}}",
+    "presetSlotsPurchase": "Add 2 more preset slots",
     "presetUnlock": "Unlock villager preset for {{cost}} Insight",
     "queueSlotUnlock": "Unlock construction queue slot for {{cost}} Insight",
     "queueSlotUsed": "Queue slot {{slot}}: building in progress",

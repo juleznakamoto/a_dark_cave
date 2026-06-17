@@ -79,7 +79,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | entry | React root → router | `main.tsx`, `App.tsx`, `index.html`, `index.css` |
 | `pages/` | Route-level components (lazy-loaded) | `start-screen-page.tsx`, `game.tsx`, `end-screen.tsx`, `reset-password.tsx`, `withdrawal.tsx`, `not-found.tsx`, `admin/dashboard.tsx` |
 | `game/` | **Game engine** (see below) | `state.ts`, `loop.ts`, `playTimeAutoPrompts.ts` (play-time rewards/feedback auto-open; one blocking modal per tick), `actions.ts`, `save.ts`, `saveCodec.ts`, `stateHelpers.ts`, `boost.ts`, `villagerCapUpgrades.ts`, `villagerJobPresets.ts`, `constructionQueueSlots.ts`, `weaponEnchantments.ts`, `auth.ts`, `shopPurchases.ts`, `socialTasksGold.ts`, `authNotificationAuto.ts`, `playlightExitIntent.ts`, `tabUnlockBlink.ts`, `achievementTabPulse.ts`, `constants.ts`, `rules/` |
-| `components/game/` | Game-specific UI | `GameContainer.tsx`, `GameHeader.tsx` (title + profile/playlight/leaderboard shortcuts; footer-matched chrome), `gameChrome.ts` (header/footer inset constant), `panelResize.ts` (`usePanelResize` — drag limits, refs/styles, persists `panelSizes` desktop/mobile), `PanelResizeHandle.tsx` (separator grab handle on side-panel/log dividers), `TraderTabButton.tsx` (shop tab ◬ + lime hover particles; periodic 15m hover hint), `GameTabs.tsx`, `GameButton.tsx`, `panels/`, `*Dialog.tsx`, `ConstructionBoostBadge.tsx` (⏩ Insight badge on in-progress builds — one-time 50% time skip via Builder's Lodge tier 2+), `ShareDialog.tsx` (1080×1350 social share image: title + resource column + 2×2 achievement rings + overall % via `html-to-image`; header Share button in `ProfileMenu`), `EndScreen.tsx`, `StatEffectsTooltip.tsx` (per-stat luck/strength/knowledge/madness effect breakdown in side-panel tooltips), `StripePoweredBy.tsx` (checkout Stripe + payment-methods footer), `paymentMethodLogos.tsx` (Visa/MC/PayPal/Apple Pay/Google Pay SVG marks) |
+| `components/game/` | Game-specific UI | `GameContainer.tsx`, `GameHeader.tsx` (title + profile/playlight/leaderboard shortcuts; footer-matched chrome), `gameChrome.ts` (header/footer inset constant), `panelResize.ts` (`usePanelResize` — drag limits, refs/styles, persists `panelSizes` desktop/mobile), `PanelResizeHandle.tsx` (separator grab handle on side-panel/log dividers), `TraderTabButton.tsx` (shop tab ◬ + lime hover particles; periodic 15m hover hint), `GameTabs.tsx`, `GameButton.tsx`, `panels/`, `*Dialog.tsx`, `PresetSlotsPurchaseDialog.tsx` (Stripe checkout for extra villager job preset slots — opened from VillagePanel Produce header), `ConstructionBoostBadge.tsx` (⏩ Insight badge on in-progress builds — one-time 50% time skip via Builder's Lodge tier 2+), `ShareDialog.tsx` (1080×1350 social share image: title + resource column + 2×2 achievement rings + overall % via `html-to-image`; header Share button in `ProfileMenu`), `EndScreen.tsx`, `StatEffectsTooltip.tsx` (per-stat luck/strength/knowledge/madness effect breakdown in side-panel tooltips), `StripePoweredBy.tsx` (checkout Stripe + payment-methods footer), `paymentMethodLogos.tsx` (Visa/MC/PayPal/Apple Pay/Google Pay SVG marks) |
 | `components/ui/` | shadcn/ui design system + game visuals | `button.tsx`, `card.tsx`, `dialog`, `toast.tsx`, `mist-background.tsx`, `cloud-shader.tsx`, `limelight-nav.tsx` |
 | `hooks/` | React hooks | `use-toast.ts`, `useCooldown.ts`, `use-mobile.tsx`, `useIOSChromeViewportShell.ts` (CriOS: pin `GameContainer` shell to `visualViewport`), `useNewItemPulseTooltip.ts` (first-time `new-item-pulse` on tooltip triggers until hover/open; persisted in `hoveredTooltips`; `VillagePanel` indicators) |
 | `i18n/` | Localization (see below) | `index.ts`, `locales.ts`, `resolveGameText.ts`, `logDisplay.ts`, `locales/` |
@@ -146,8 +146,8 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
 - **`villagerJobPresets.ts`** — villager job presets unlocked by the Scribe's Office → Records Hall → Grand Archive
   building chain (one slot each, 5 shown / 4-5 reserved). Snapshot/apply helpers (proportional shrink, surplus →
   free, cap-clamped); persisted in `villagerJobPresets` / `activePresetSlot` (`shared/schema.ts`). Store methods
-  `saveVillagerJobPreset` / `applyVillagerJobPreset` / `setActivePresetSlot` (`state.ts`), UI row in the
-  `VillagePanel` "Produce" header.
+  `saveVillagerJobPreset` / `applyVillagerJobPreset` / `setActivePresetSlot` / `grantAdditionalPresetSlots` (`state.ts`), UI row in the
+  `VillagePanel` "Produce" header; paid extra slots via `PresetSlotsPurchaseDialog.tsx`.
 - **`constructionQueueSlots.ts`** — parallel construction queue (base 1 slot; Builder's Lodge/Guild unlock purchasable
   extras via Insight), build-time/cost reductions from Builder building tiers, and Construction Boost (Insight skip
   50% of build time). Gated by `flags.constructionQueueEnabled` (new games). UI in `VillagePanel` "Build" header.
@@ -194,7 +194,8 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
   `locales/*/ui/*.json`. UI namespace assembled from shards under `locales/{lang}/ui/`.
 - **`locales.ts`** — supported: **en, de, fr, es, it, pt-BR, zh-CN, ru**. Namespaces: `common`, `ui`,
   `shop`, `actions`, `effects`, `events`, `achievements`.
-- **Resolution:** `resolveGameText.ts` (`tWithFallback`, resource/log names), `eventText.ts`,
+- **Resolution:** `resolveGameText.ts` (`tWithFallback`, resource/log names), `useUiTranslation.ts`
+  (panel hooks with English catalog fallback), `eventText.ts`,
   `eventDisplay.ts`, `logDisplay.ts`, `actionLabels.ts`, `tooltipLabels.ts`.
 - **Pattern:** game logic stores English fallback + optional `logKey`/`i18nKey`; UI resolves at
   display time. Parity maintained by `scripts/` (`i18n:verify`, `sync-locale-keys.mjs`).

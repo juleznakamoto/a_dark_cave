@@ -137,9 +137,12 @@ export function arePresetsVisible(
   return getBuildingPresetSlotCount(state) > 0;
 }
 
-/** A slot index (0-based) is usable once it has been bought with Insight. */
+/** A slot index (0-based) is usable once it has been bought (Insight or shop). */
 export function isPresetSlotUnlocked(
-  state: Pick<GameState, "villagerPresetsPurchased">,
+  state: Pick<
+    GameState,
+    "villagerPresetsPurchased" | "villagerPresetSlotsFromShop"
+  >,
   slotIndex: number,
 ): boolean {
   return slotIndex >= 0 && slotIndex < getPurchasedPresetCount(state);

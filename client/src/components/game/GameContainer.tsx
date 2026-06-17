@@ -27,6 +27,7 @@ import IdleModeDialog from "./IdleModeDialog";
 import CubeDialog from "./CubeDialog";
 import InactivityDialog from "./InactivityDialog";
 import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
+import PresetSlotsPurchaseDialog from "./PresetSlotsPurchaseDialog";
 import { ShopDialog } from "./ShopDialog";
 import LeaderboardDialog from "./LeaderboardDialog";
 import ShareDialog from "./ShareDialog";
@@ -96,6 +97,12 @@ export default function GameContainer() {
   );
   const setFullGamePurchaseDialogOpen = useGameStore(
     (state) => state.setFullGamePurchaseDialogOpen,
+  );
+  const presetSlotsPurchaseDialogOpen = useGameStore(
+    (state) => state.presetSlotsPurchaseDialogOpen,
+  );
+  const setPresetSlotsPurchaseDialogOpen = useGameStore(
+    (state) => state.setPresetSlotsPurchaseDialogOpen,
   );
   const rewardDialog = useGameStore((state) => state.rewardDialog);
   const setRewardDialog = useGameStore((state) => state.setRewardDialog);
@@ -1308,6 +1315,10 @@ export default function GameContainer() {
             <FullGamePurchaseDialog
               isOpen={fullGamePurchaseDialogOpen}
               onClose={() => setFullGamePurchaseDialogOpen(false)}
+            />
+            <PresetSlotsPurchaseDialog
+              isOpen={presetSlotsPurchaseDialogOpen}
+              onClose={() => setPresetSlotsPurchaseDialogOpen(false)}
             />
           </>
         )}

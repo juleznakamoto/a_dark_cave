@@ -29,6 +29,7 @@
     "presetLocked": "Bloqueado — disponible para comprar",
     "presetLockedBuilding": "Se necesita {{building}} para desbloquear",
     "presetSave": "Guardar trabajos actuales en preset {{slot}}",
+    "presetSlotsPurchase": "Añadir 2 espacios de preset más",
     "presetUnlock": "Desbloquear preset de trabajos por {{cost}} de Perspicacia",
     "queueSlotUnlock": "Desbloquear espacio de cola de construcción por {{cost}} de Perspicacia",
     "queueSlotUsed": "Espacio {{slot}}: construcción en curso",

@@ -29,6 +29,7 @@
     "presetLocked": "Verrouillé — disponible à l'achat",
     "presetLockedBuilding": "{{building}} requis pour déverrouiller",
     "presetSave": "Enregistrer les tâches actuelles dans le préréglage {{slot}}",
+    "presetSlotsPurchase": "Ajouter 2 emplacements de préréglage",
     "presetUnlock": "Débloquer un préréglage de métiers pour {{cost}} Perspicacité",
     "queueSlotUnlock": "Débloquer un emplacement de file de construction pour {{cost}} Perspicacité",
     "queueSlotUsed": "Emplacement {{slot}}: construction en cours",

@@ -76,6 +76,20 @@ export function applyFeastActivationsFromPurchaseRows(rows: PurchaseRow[]): void
   }
 }
 
+/**
+ * Re-grant the `additional_preset_slots` entitlement from DB purchases (idempotent).
+ * Makes the 2 extra villager job preset slots persist across all games / fresh loads,
+ * even when local game state was lost. `grantAdditionalPresetSlots` no-ops if already granted.
+ */
+export function applyAdditionalPresetSlotsFromPurchaseRows(
+  rows: PurchaseRow[],
+): void {
+  const owned = rows.some((p) => p.item_id === 'additional_preset_slots');
+  if (owned) {
+    useGameStore.getState().grantAdditionalPresetSlots();
+  }
+}
+
 /** Rehydrate shop entitlements from Supabase after load or refresh. */
 export async function rehydratePurchasesFromSupabase(): Promise<string[]> {
   try {
@@ -85,6 +99,7 @@ export async function rehydratePurchasesFromSupabase(): Promise<string[]> {
     }
 
     applyFeastActivationsFromPurchaseRows(rows);
+    applyAdditionalPresetSlotsFromPurchaseRows(rows);
     return purchaseIdsFromRows(rows);
   } catch (error) {
     logger.error('[SHOP] Failed to rehydrate purchases:', error);
