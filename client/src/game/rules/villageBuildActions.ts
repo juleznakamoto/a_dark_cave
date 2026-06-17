@@ -1870,7 +1870,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "story.seen.maxPopulationReached": 50,
+        "buildings.woodenHut": 8,
         "buildings.scribesOffice": 0,
       },
     },
@@ -1898,7 +1898,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "story.seen.maxPopulationReached": 65,
+        "buildings.stoneHut": 1,
         "buildings.scribesOffice": 1,
         "buildings.recordsHall": 0,
       },
@@ -1928,7 +1928,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "story.seen.maxPopulationReached": 80,
+        "buildings.stoneHut": 4,
         "buildings.recordsHall": 1,
         "buildings.grandArchive": 0,
       },
