@@ -15,15 +15,15 @@ import { tWithFallback } from "@/i18n/resolveGameText";
 import { isSteamBuild } from "@/lib/edition";
 
 const FOOTER_CONTROL_BTN =
-  "group shrink-0 px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-600";
+  "group shrink-0 px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-500";
 const FOOTER_CONTROL_BTN_FADE =
   "opacity-80 transition-opacity group-hover:opacity-100";
 const FOOTER_CONTROL_ICON_HOVER =
-  "w-4 h-4 shrink-0 object-contain opacity-80 transition-[filter,opacity] group-hover:opacity-100 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]";
+  "w-4 h-4 shrink-0 object-contain opacity-80 transition-[filter,opacity] group-hover:opacity-100 [filter:invert(1)] group-hover:[filter:invert(27%)_sepia(89%)_saturate(7458%)_hue-rotate(356deg)_brightness(108%)_contrast(108%)]";
 const FOOTER_CONTROL_SVG_ICON_HOVER =
-  "w-4 h-4 text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
+  "w-4 h-4 text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-500";
 const FOOTER_CONTROL_TEXT =
-  `${FOOTER_CONTROL_BTN_FADE} group-hover:!text-red-600`;
+  `${FOOTER_CONTROL_BTN_FADE} group-hover:!text-red-500`;
 const FOOTER_SOCIAL_LABEL =
   `${FOOTER_CONTROL_TEXT} hidden sm:inline`;
 const FOOTER_LEGAL_LINK =

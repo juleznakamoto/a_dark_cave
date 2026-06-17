@@ -64,7 +64,7 @@ function pingRewardsTasksRing(ring: HTMLSpanElement | null): void {
 const HEADER_ICON_BTN =
   "group shrink-0 p-0 w-7 h-7 flex items-center justify-center";
 const HEADER_ICON_SYMBOL_HOVER =
-  "text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
+  "text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-500";
 
 type ProfileMenuContextValue = ReturnType<typeof useProfileMenuState>;
 
@@ -612,7 +612,7 @@ export function GameHeaderControls() {
           <Button
             variant="ghost"
             size="xs"
-            className={`group shrink-0 px-2 py-1 text-xs text-neutral-300 hover hover:!text-red-600`}
+            className={`group shrink-0 px-2 py-1 text-xs text-neutral-300 hover hover:!text-red-500`}
           >
             <span className={HEADER_ICON_SYMBOL_HOVER}>
               {t("profile.title")}
