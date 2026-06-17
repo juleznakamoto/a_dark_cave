@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import i18n from "./index";
 import { tWithFallback } from "./resolveGameText";
 
@@ -54,6 +54,14 @@ describe("tWithFallback", () => {
         count: 1,
       }),
     ).toBe("-1 Dorfbewohner");
+  });
+
+  it("returns fallback when t() resolves to the raw key path", () => {
+    const spy = vi.spyOn(i18n, "t").mockReturnValue("village.villagers");
+    expect(tWithFallback("ui", "village.villagers", "Villagers")).toBe(
+      "Villagers",
+    );
+    spy.mockRestore();
   });
 
   it("interpolates veiledSeer accept log with player name", async () => {

@@ -12,9 +12,7 @@ UI shows **raw key paths** (e.g. `village.villagers`, `estate.sleepLengthDescrip
 
 ## Cause (not missing JSON)
 
-Keys usually **already exist** in `client/src/i18n/locales/{lang}/ui/panels.json`. The bug is **stale i18n resources in dev**: component TSX hot-reloads after new `t("…")` calls, but the eager `import.meta.glob` bundle in `client/src/i18n/index.ts` was built at server start and never picked up new keys.
-
-`common` / `actions` namespaces (single JSON per locale) reload reliably; **`ui` is sharded** (`locales/{lang}/ui/*.json` merged via `Object.assign`).
+Keys usually **already exist** in `client/src/i18n/locales/{lang}/ui/panels.json`. Typical dev bug: **stale `de` shard in i18n memory** (TSX HMR picked up new `t("village.villagers")` calls; runtime bundle still from server start). `i18n.exists()` can still be **true** via `fallbackLng: en` while `i18n.t(key, { lng: "de" })` returns the **raw key path** — old `tWithFallback` returned that raw key. Fixed: `tWithFallback` rejects unresolved key-like strings and uses the English fallback chain.
 
 ## Fix (in order)
 

@@ -2,7 +2,7 @@ import i18n from "i18next";
 import type { GameState } from "@shared/schema";
 import { clothingEffects } from "@/game/rules/effects";
 import { capitalizeWords } from "@/lib/utils";
-import { normalizeLocale } from "./locales";
+import { DEFAULT_LOCALE, normalizeLocale } from "./locales";
 
 export type TranslateOptions = Record<
   string,
@@ -47,6 +47,19 @@ export function interpolateFallback(
   }, fallback);
 }
 
+function isResolvedTranslation(
+  translated: unknown,
+  key: string,
+  fullKey: string,
+): translated is string {
+  return (
+    typeof translated === "string" &&
+    translated.trim() !== "" &&
+    translated !== key &&
+    translated !== fullKey
+  );
+}
+
 /** Translate with fallback when catalog key is missing (migration-friendly). */
 export function tWithFallback(
   namespace: string,
@@ -65,26 +78,16 @@ export function tWithFallback(
     ...(options as Record<string, unknown>),
     lng,
     ns: namespace,
+    fallbackLng: DEFAULT_LOCALE,
   };
 
-  // Use ns + key for exists/t (ui:… exists checks can miss sharded ui keys in some runtimes).
-  if (i18n.exists(key, { ns: namespace, lng })) {
-    const translated = i18n.t(key, translateOpts);
-    if (typeof translated === "string" && translated.trim()) {
-      return translated;
-    }
-  }
-
-  // Plural keys like villagerCost_one/_other resolve via count but exists("…villagerCost") is false.
+  // Never trust exists() alone — with fallbackLng it can be true while t(lng) still
+  // returns the raw key path (stale shard / missing nested key in active locale).
   const translated = i18n.t(key, translateOpts);
-  if (
-    typeof translated === "string" &&
-    translated.trim() &&
-    translated !== fullKey &&
-    translated !== key
-  ) {
+  if (isResolvedTranslation(translated, key, fullKey)) {
     return translated;
   }
+
   return defaultValue;
 }
 
