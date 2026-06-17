@@ -4,11 +4,11 @@ import { getActionLogMessage } from "@/i18n/resolveGameText";
 import { bt } from "./buildingTooltipEffects";
 
 export const FINANCE_EXPEDITION_TIERS = [
-  { gold: 50, villagers: 4, executionTime: 10, insight: 250 },
-  { gold: 100, villagers: 5, executionTime: 15, insight: 500 },
-  { gold: 150, villagers: 6, executionTime: 20, insight: 750 },
-  { gold: 200, villagers: 7, executionTime: 25, insight: 1000 },
-  { gold: 250, villagers: 10, executionTime: 30, insight: 1500 },
+  { gold: 50, food: 100, villagers: 4, executionTime: 10, insight: 250 },
+  { gold: 100, food: 200, villagers: 5, executionTime: 15, insight: 500 },
+  { gold: 150, food: 300, villagers: 6, executionTime: 20, insight: 750 },
+  { gold: 200, food: 400, villagers: 7, executionTime: 25, insight: 1000 },
+  { gold: 250, food: 500, villagers: 10, executionTime: 30, insight: 1500 },
 ] as const;
 
 export function getFinanceExpeditionUsageCount(
@@ -34,6 +34,10 @@ export function getFinanceExpeditionGoldCost(state: GameState): number {
   return getFinanceExpeditionTier(state).gold;
 }
 
+export function getFinanceExpeditionFoodCost(state: GameState): number {
+  return getFinanceExpeditionTier(state).food;
+}
+
 export function getFinanceExpeditionInsightReward(state: GameState): number {
   return getFinanceExpeditionTier(state).insight;
 }
@@ -56,6 +60,7 @@ export const forestResearchActions: Record<string, Action> = {
     },
     cost: (state: GameState) => ({
       "resources.gold": getFinanceExpeditionGoldCost(state),
+      "resources.food": getFinanceExpeditionFoodCost(state),
     }),
     effects: {},
     expeditionVillagersRequired: (state: GameState) =>

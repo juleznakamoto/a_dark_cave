@@ -9,7 +9,7 @@ import {
 export const BASE_QUEUE_SLOTS = 1;
 
 /** Insight cost per extra slot purchase (Lodge unlock, then Guild unlock). */
-export const QUEUE_SLOT_UNLOCK_INSIGHT_COSTS = [1000, 2500] as const;
+export const QUEUE_SLOT_UNLOCK_INSIGHT_COSTS = [2500, 5000] as const;
 
 /** Max purchasable extra slots (2) plus the base slot = 3 total. */
 export const MAX_PURCHASABLE_QUEUE_SLOTS = 2;
@@ -137,7 +137,7 @@ export function isQueueSlotLockedForUi(
   return !isQueueSlotActive(state, slotIndex);
 }
 
-/** Next extra slot to buy: 0 after Lodge (1000 Insight), 1 after Guild (2500 Insight). */
+/** Next extra slot to buy: 0 after Lodge (2500 Insight), 1 after Guild (5000 Insight). */
 export function getNextPurchasableQueueSlotIndex(
   state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
 ): number | null {

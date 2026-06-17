@@ -341,6 +341,9 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
     if ((state.resources.gold || 0) < tier.gold) {
       return false;
     }
+    if ((state.resources.food || 0) < tier.food) {
+      return false;
+    }
   }
 
   // Check cooldown first
@@ -626,6 +629,10 @@ export function getActionCostBreakdown(
       {
         text: formatTooltipCostLine(tier.gold, "gold"),
         satisfied: (state.resources.gold || 0) >= tier.gold,
+      },
+      {
+        text: formatTooltipCostLine(tier.food, "food"),
+        satisfied: (state.resources.food || 0) >= tier.food,
       },
     ];
   }

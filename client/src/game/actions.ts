@@ -13,6 +13,7 @@ import {
 import {
   handleFinanceExpedition,
   getFinanceExpeditionGoldCost,
+  getFinanceExpeditionFoodCost,
 } from "@/game/rules/forestResearchActions";
 import { killVillagers } from "@/game/stateHelpers";
 import { getProvokeAttackWaveExecutionUpdates } from "@/game/rules/bastionActions";
@@ -232,12 +233,18 @@ export function deductActionCosts(actionId: string, state: GameState): Partial<G
     return killVillagers(state, cost);
   }
   if (actionId === "financeExpedition") {
-    const cost = getFinanceExpeditionGoldCost(state);
-    if (cost <= 0) return {};
+    const goldCost = getFinanceExpeditionGoldCost(state);
+    const foodCost = getFinanceExpeditionFoodCost(state);
+    if (goldCost <= 0 && foodCost <= 0) return {};
     return {
       resources: {
         ...state.resources,
-        gold: (state.resources.gold || 0) - cost,
+        ...(goldCost > 0
+          ? { gold: (state.resources.gold || 0) - goldCost }
+          : {}),
+        ...(foodCost > 0
+          ? { food: (state.resources.food || 0) - foodCost }
+          : {}),
       },
     };
   }

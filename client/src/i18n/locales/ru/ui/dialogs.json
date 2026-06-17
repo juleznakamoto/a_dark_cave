@@ -1,7 +1,7 @@
 {
   "insightPotion": {
-    "title": "Insight Elixir",
-    "message": "You drink the Insight Elixir. Understanding blooms in your mind."
+    "title": "Эликсир прозрения",
+    "message": "Вы пьёте Эликсир прозрения. Понимание расцветает в вашем разуме."
   },
   "event": {
     "fallbackTitle": "Событие",

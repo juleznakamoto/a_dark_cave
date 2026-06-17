@@ -122,7 +122,7 @@ export function getVillagerCapForJob(
 
 /** Insight cost to upgrade from `level` to `level + 1`. */
 export function getNextCapUpgradeCost(level: number): number {
-  return 100 * (level + 1);
+  return 250 * (level + 1);
 }
 
 export function canUpgradeVillagerCap(

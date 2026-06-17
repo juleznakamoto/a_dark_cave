@@ -147,7 +147,7 @@ describe("constructionQueueSlots", () => {
     ).toBe(3);
   });
 
-  it("Lodge unlocks first extra slot purchase; Guild unlocks second at 2500 Insight", () => {
+  it("Lodge unlocks first extra slot purchase; Guild unlocks second at 5000 Insight", () => {
     const lodgeState = baseState({
       buildings: {
         ...baseState().buildings,
@@ -155,7 +155,7 @@ describe("constructionQueueSlots", () => {
       } as GameState["buildings"],
     });
     expect(getTotalQueueSlots(lodgeState)).toBe(BASE_QUEUE_SLOTS);
-    expect(getNextQueueSlotUnlockCost(lodgeState)).toBe(1000);
+    expect(getNextQueueSlotUnlockCost(lodgeState)).toBe(2500);
     expect(canPurchaseQueueSlot(lodgeState)).toBe(true);
 
     const lodgePurchased = baseState({
@@ -187,7 +187,7 @@ describe("constructionQueueSlots", () => {
       } as GameState["buildings"],
       constructionQueueSlotsPurchased: 1,
     });
-    expect(getNextQueueSlotUnlockCost(guildState)).toBe(2500);
+    expect(getNextQueueSlotUnlockCost(guildState)).toBe(5000);
     expect(canPurchaseQueueSlot(guildState)).toBe(true);
 
     const guildFullyPurchased = baseState({
