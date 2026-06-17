@@ -168,7 +168,8 @@ export default function VillagePanel() {
     setActivePresetSlot,
     purchaseVillagerPresetSlot,
     purchaseConstructionQueueSlot,
-    setPresetSlotsPurchaseDialogOpen,
+    setShopDialogOpen,
+    setShopCheckoutItemId,
   } = useGameStore();
   const { pulseClassName, onMouseEnter, onMouseLeave } =
     useNewItemPulseTooltips(VILLAGE_INDICATOR_TOOLTIP_IDS);
@@ -1994,7 +1995,10 @@ export default function VillagePanel() {
                             onMouseLeave={() =>
                               onMouseLeave("preset-slots-purchase")
                             }
-                            onClick={() => setPresetSlotsPurchaseDialogOpen(true)}
+                            onClick={() => {
+                              setShopCheckoutItemId("additional_preset_slots");
+                              setShopDialogOpen(true);
+                            }}
                           >
                             <Button
                               size="xs"

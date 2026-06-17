@@ -208,7 +208,12 @@ interface GameStore extends GameState {
   leaderboardDialogOpen: boolean;
   shareDialogOpen: boolean;
   fullGamePurchaseDialogOpen: boolean;
-  presetSlotsPurchaseDialogOpen: boolean;
+  /**
+   * Transient: when set, the shop dialog opens straight into checkout for this
+   * item id (used for items hidden from the shop grid, e.g. additional preset
+   * slots). Cleared when the shop/checkout closes.
+   */
+  shopCheckoutItemId: string | null;
   idleModeDialog: {
     isOpen: boolean;
   };
@@ -455,7 +460,7 @@ interface GameStore extends GameState {
   setLeaderboardDialogOpen: (isOpen: boolean) => void;
   setShareDialogOpen: (isOpen: boolean) => void;
   setFullGamePurchaseDialogOpen: (isOpen: boolean) => void;
-  setPresetSlotsPurchaseDialogOpen: (isOpen: boolean) => void;
+  setShopCheckoutItemId: (itemId: string | null) => void;
   /** Grant the 2 extra preset slots from the `additional_preset_slots` shop purchase. */
   grantAdditionalPresetSlots: () => void;
   setIdleModeDialog: (isOpen: boolean) => void;
@@ -1325,7 +1330,6 @@ function isBlockingDialogOpen(state: GameStore): boolean {
     state.leaderboardDialogOpen ||
     state.shareDialogOpen ||
     state.fullGamePurchaseDialogOpen ||
-    state.presetSlotsPurchaseDialogOpen ||
     state.idleModeDialog.isOpen ||
     state.restartGameDialogOpen ||
     state.deleteAccountDialogOpen ||
@@ -1537,7 +1541,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   leaderboardDialogOpen: false,
   shareDialogOpen: false,
   fullGamePurchaseDialogOpen: false,
-  presetSlotsPurchaseDialogOpen: false,
+  shopCheckoutItemId: null,
   musicMuted: false,
   sfxMuted: false,
   idleModeDialog: {
@@ -3936,8 +3940,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ fullGamePurchaseDialogOpen: isOpen });
   },
 
-  setPresetSlotsPurchaseDialogOpen: (isOpen: boolean) => {
-    set({ presetSlotsPurchaseDialogOpen: isOpen });
+  setShopCheckoutItemId: (itemId: string | null) => {
+    set({ shopCheckoutItemId: itemId });
   },
 
   grantAdditionalPresetSlots: () => {

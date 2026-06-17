@@ -718,6 +718,14 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const shopCruelModeHighlight = useGameStore(
     (state) => state.shopCruelModeHighlight,
   );
+  const shopCheckoutItemId = useGameStore((state) => state.shopCheckoutItemId);
+  const setShopCheckoutItemId = useGameStore(
+    (state) => state.setShopCheckoutItemId,
+  );
+  // When set, the shop opens straight into checkout for a single (typically
+  // hidden) item, skipping the grid. Cancelling/finishing closes the shop.
+  const isDirectCheckout = !!shopCheckoutItemId;
+  const directCheckoutStartedRef = React.useRef(false);
   const activatedPurchases = gameState.activatedPurchases || {};
   const { toast } = useToast();
 
@@ -796,6 +804,29 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       setCurrency(detectedCurrency);
     }
   }, [isOpen, detectedCurrency, setDetectedCurrency]);
+
+  // Direct-checkout: when the shop is opened for a specific (hidden) item,
+  // jump straight into the existing checkout once currency is resolved.
+  useEffect(() => {
+    if (!isOpen) {
+      directCheckoutStartedRef.current = false;
+      return;
+    }
+    if (!shopCheckoutItemId) return;
+    if (directCheckoutStartedRef.current) return;
+    if (clientSecret || selectedItem) return;
+    if (isDetectingCurrency) return;
+    if (!SHOP_ITEMS[shopCheckoutItemId]) return;
+    directCheckoutStartedRef.current = true;
+    void handlePurchaseClick(shopCheckoutItemId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    isOpen,
+    shopCheckoutItemId,
+    clientSecret,
+    selectedItem,
+    isDetectingCurrency,
+  ]);
 
   const openSignInFromShop = () => {
     onClose();
@@ -1044,7 +1075,13 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const handleCancelPayment = () => {
     setClientSecret(null);
     setSelectedItem(null);
-    // Shop dialog remains open, just reset payment state
+    // In direct-checkout mode the grid was never shown, so cancelling closes
+    // the whole shop instead of returning to an (empty) shop view.
+    if (isDirectCheckout) {
+      setShopCheckoutItemId(null);
+      onClose();
+    }
+    // Otherwise the shop dialog remains open, just reset payment state
   };
 
   const handlePurchaseSuccess = async () => {
@@ -1174,6 +1211,15 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
     setClientSecret(null);
     setSelectedItem(null);
+
+    // Direct-checkout items (hidden from the grid) have no purchases list to
+    // return to — their entitlement was already applied by loadPurchasedItems.
+    // Just close the shop after a successful purchase.
+    if (isDirectCheckout) {
+      setShopCheckoutItemId(null);
+      onClose();
+      return;
+    }
 
     const anonymousAfterPurchase = await isAnonymousSession();
     if (anonymousAfterPurchase) {
@@ -1322,6 +1368,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     if (!open) {
       setClientSecret(null);
       setSelectedItem(null);
+      setShopCheckoutItemId(null);
       onClose();
     }
   };
@@ -1330,7 +1377,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     if (!open) {
       setClientSecret(null);
       setSelectedItem(null);
-      // Payment dialog closes but shop dialog stays open
+      if (isDirectCheckout) {
+        setShopCheckoutItemId(null);
+        onClose();
+      }
+      // Otherwise the payment dialog closes but the shop dialog stays open
     }
   };
 
@@ -1383,7 +1434,30 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
               }
               `}</style>
       <Dialog open={isOpen} onOpenChange={handleShopDialogOpenChange}>
-        {!isPaymentMode && (
+        {isDirectCheckout && !isPaymentMode && (
+          <DialogContent
+            className="[--adc-dialog-max-w:28rem] max-h-[80vh] z-[70] gap-2 [&>button]:hidden"
+            onPointerDownOutside={(e) => e.preventDefault()}
+            onInteractOutside={(e) => e.preventDefault()}
+          >
+            <DialogHeader className="space-y-1 pb-0">
+              <DialogTitle>
+                {shopCheckoutItemId && SHOP_ITEMS[shopCheckoutItemId]
+                  ? resolveShopItemName(SHOP_ITEMS[shopCheckoutItemId])
+                  : ""}
+              </DialogTitle>
+              <DialogDescription className="sr-only">
+                {t("ui:fullGame.loadingPayment")}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex justify-center py-8">
+              <div className="text-muted-foreground">
+                {t("ui:fullGame.loadingPayment")}
+              </div>
+            </div>
+          </DialogContent>
+        )}
+        {!isPaymentMode && !isDirectCheckout && (
           <DialogContent
             className={cn(
               showSecurePurchasePrompt
