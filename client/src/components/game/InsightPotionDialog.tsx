@@ -2,14 +2,12 @@ import React from "react";
 import { formatNumber } from "@/lib/utils";
 import { getResourceName } from "@/i18n/resolveGameText";
 import { useTranslation } from "react-i18next";
-import { resolveOutcomeLogMessage } from "@/i18n/logDisplay";
 import OutcomeDialog, {
   OUTCOME_DIALOG_INSIGHT_ICON_CLASS,
 } from "./OutcomeDialog";
 
 interface InsightPotionDialogData {
   insightGain: number;
-  successLog?: string;
 }
 
 interface InsightPotionDialogProps {
@@ -26,14 +24,18 @@ export default function InsightPotionDialog({
   const { t } = useTranslation(["ui", "common"]);
   if (!data || data.insightGain <= 0) return null;
 
-  const { insightGain, successLog } = data;
+  const { insightGain } = data;
 
   return (
     <OutcomeDialog
       isOpen={isOpen}
       onClose={onClose}
-      icon={<span className={OUTCOME_DIALOG_INSIGHT_ICON_CLASS}>🟖</span>}
-      successLog={resolveOutcomeLogMessage(successLog)}
+      icon={
+        <span className="relative flex h-full w-full items-center justify-center">
+          <span className={OUTCOME_DIALOG_INSIGHT_ICON_CLASS}>🟖</span>
+        </span>
+      }
+      successLog={t("ui:insightPotion.message")}
       title={t("ui:insightPotion.title")}
       variant="insight"
       buttonText={t("common:buttons.continue")}

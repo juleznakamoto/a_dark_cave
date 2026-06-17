@@ -20,7 +20,8 @@
     "change": "{{sign}} {{amount}} Madness"
   },
   "insightPotion": {
-    "title": "Insight Potion"
+    "title": "Insight Elixir",
+    "message": "You drink the Insight Elixir. Understanding blooms in your mind."
   },
   "socialPrompt": {
     "title": "Stay connected and earn Rewards",

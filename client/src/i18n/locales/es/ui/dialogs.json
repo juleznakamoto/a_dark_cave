@@ -1,6 +1,7 @@
 {
   "insightPotion": {
-    "title": "Insight Potion"
+    "title": "Insight Elixir",
+    "message": "You drink the Insight Elixir. Understanding blooms in your mind."
   },
   "event": {
     "fallbackTitle": "Evento",

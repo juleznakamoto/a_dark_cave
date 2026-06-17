@@ -13,7 +13,7 @@ export const OUTCOME_DIALOG_MADNESS_ICON_CLASS =
 
 /** Insight 🟖 glyph in its ring — blue to match the Insight resource styling. */
 export const OUTCOME_DIALOG_INSIGHT_ICON_CLASS =
-  "font-noto-symbols-2 inline-flex text-4xl text-blue-400 leading-none" as const;
+  "font-noto-symbols-2 inline-flex items-center justify-center text-4xl text-blue-400 leading-none translate-y-0.5" as const;
 
 export type OutcomeDialogVariant = "success" | "loss" | "madness" | "insight";
 
@@ -103,7 +103,7 @@ export default function OutcomeDialog({
         >
           <div className={`absolute inset-0 -z-10 pointer-events-none ${glow}`} />
           <DialogHeader>
-            <div className="relative z-[1] flex justify-center">
+            <div className="relative z-[1] flex w-full justify-center">
               <div
                 className={cn(
                   "flex h-14 w-14 shrink-0 justify-center rounded-full border-2",

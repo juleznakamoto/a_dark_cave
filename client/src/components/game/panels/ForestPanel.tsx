@@ -216,7 +216,7 @@ export default function ForestPanel() {
         { id: "tradeGoldForAshfireBomb", label: "Ashfire Bomb" },
         { id: "tradeGoldForVoidBomb", label: "Void Bomb" },
         { id: "tradeGoldForVeinfireElixir", label: "Veinfire Elixir" },
-        { id: "tradeGoldForInsightPotion", label: "Insight Potion" },
+        { id: "tradeGoldForInsightPotion", label: "Insight Elixir" },
         { id: "tradeSilverForGold", label: "Gold" },
       ],
     },
@@ -313,10 +313,14 @@ export default function ForestPanel() {
       const sellText = formatForestPanelResourceRowLabel(costRow);
       if (sellText) displayLabel = sellText;
     } else if (isTradeButton && action.effects) {
-      const buyText = formatForestPanelResourceRowLabel(
-        resolveForestPanelTradeEffects(action, state),
-      );
-      if (buyText) displayLabel = buyText;
+      if (actionId === "tradeGoldForInsightPotion") {
+        displayLabel = resolveActionLabel(actionId, label);
+      } else {
+        const buyText = formatForestPanelResourceRowLabel(
+          resolveForestPanelTradeEffects(action, state),
+        );
+        if (buyText) displayLabel = buyText;
+      }
     }
 
     // Check if this action has upgrade tracking

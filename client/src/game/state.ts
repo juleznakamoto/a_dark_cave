@@ -1882,7 +1882,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
     }
 
-    // Insight Potion (forest trader): blue outcome dialog announcing the Insight gained.
+    // Insight Elixir (forest trader): blue outcome dialog announcing the Insight gained.
     if (actionId === "tradeGoldForInsightPotion") {
       const insightGain = detectRewards(result.stateUpdates, state, actionId)
         ?.resources?.insight;

@@ -13,8 +13,8 @@ import type { SupportedLocale } from "@/i18n/locales";
 import cn from "clsx";
 
 export default function LanguageSelector({
-  buttonClassName = "group px-1 py-1 text-xs text-neutral-300 hover hover:text-red-500",
-  iconClassName = "w-4 h-4 text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-500",
+  buttonClassName = "group px-1 py-1 text-xs text-neutral-300 hover hover:text-red-600",
+  iconClassName = "w-4 h-4 text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600",
   menuAlign = "end",
   showTooltip = true,
   showInlineLabel = false,

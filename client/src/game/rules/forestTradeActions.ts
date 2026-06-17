@@ -597,7 +597,7 @@ export const forestTradeActions: Record<string, Action> = {
 
   tradeGoldForInsightPotion: {
     id: "tradeGoldForInsightPotion",
-    label: "Buy Insight Potion",
+    label: "Insight Elixir",
     show_when: {
       1: {
         "buildings.scriptorium": 1,
