@@ -11,9 +11,9 @@ export const OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS =
 export const OUTCOME_DIALOG_MADNESS_ICON_CLASS =
   "font-noto-symbols-2 inline-flex text-4xl text-violet-300/90 leading-none" as const;
 
-/** Insight 🟖 glyph in its ring — blue; ring uses items-end (see OutcomeDialog insight variant). */
+/** Insight 🟖 glyph in its ring — blue; translate nudges emoji down for optical center. */
 export const OUTCOME_DIALOG_INSIGHT_ICON_CLASS =
-  "font-noto-symbols-2 inline-flex items-center justify-center text-4xl text-blue-400 leading-none" as const;
+  "font-noto-symbols-2 inline-flex items-center justify-center text-4xl text-blue-400 leading-none translate-y-1.5" as const;
 
 export type OutcomeDialogVariant = "success" | "loss" | "madness" | "insight";
 
@@ -107,11 +107,7 @@ export default function OutcomeDialog({
               <div
                 className={cn(
                   "flex h-14 w-14 shrink-0 justify-center rounded-full border-2",
-                  variant === "madness"
-                    ? "items-end pb-1.5"
-                    : variant === "insight"
-                      ? "items-end pb-2"
-                      : "items-center",
+                  variant === "madness" ? "items-end pb-1.5" : "items-center",
                   iconRing,
                   variant !== "madness" && variant !== "insight" && "text-white",
                 )}

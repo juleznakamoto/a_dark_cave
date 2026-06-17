@@ -30,11 +30,7 @@ export default function InsightPotionDialog({
     <OutcomeDialog
       isOpen={isOpen}
       onClose={onClose}
-      icon={
-        <span className="relative flex h-full w-full items-center justify-center">
-          <span className={OUTCOME_DIALOG_INSIGHT_ICON_CLASS}>🟖</span>
-        </span>
-      }
+      icon={<span className={OUTCOME_DIALOG_INSIGHT_ICON_CLASS}>🟖</span>}
       successLog={t("ui:insightPotion.message")}
       title={t("ui:insightPotion.title")}
       variant="insight"
