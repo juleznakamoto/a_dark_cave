@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { DEFAULT_LOCALE } from "./locales";
+import { getEnUiCatalogString } from "./enUiCatalog";
 import { getCatalogString, tWithFallback } from "./resolveGameText";
 
 type UiTranslateOptions = Record<string, string | number | boolean | undefined> & {
@@ -20,6 +21,7 @@ export function useUiTranslation() {
       const fallback =
         defaultValue ??
         getCatalogString(DEFAULT_LOCALE, "ui", key) ??
+        getEnUiCatalogString(key) ??
         key;
       return tWithFallback("ui", key, fallback, interpolation);
     },

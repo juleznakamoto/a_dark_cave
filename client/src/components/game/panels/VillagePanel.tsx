@@ -1981,7 +1981,9 @@ export default function VillagePanel() {
                             tooltipId="preset-slots-purchase"
                             tooltip={
                               <div className="text-xs">
-                                {t("village.presetSlotsPurchase")}
+                                {t("village.presetSlotsPurchase", {
+                                  defaultValue: "Add 2 more preset slots",
+                                })}
                               </div>
                             }
                             tooltipTriggerClassName="inline-flex items-center leading-none"
@@ -2013,7 +2015,7 @@ export default function VillagePanel() {
                               )}
                               style={{ touchAction: "manipulation" }}
                             >
-                              <span className="inline-flex items-center justify-center text-[12px] font-semibold leading-none text-white">
+                              <span className="inline-flex items-center justify-center text-[14px] font-semibold leading-none text-white">
                                 +
                               </span>
                             </Button>

@@ -57,23 +57,15 @@ void i18n.use(initReactI18next).init({
   returnNull: false,
 });
 
-function reloadI18nResources(): void {
-  const next = buildResources();
-  for (const [lng, namespaces] of Object.entries(next)) {
-    for (const [ns, bundle] of Object.entries(namespaces)) {
-      i18n.addResourceBundle(lng, ns, bundle, true, true);
-    }
-  }
-  void i18n.changeLanguage(i18n.language);
-}
-
 if (import.meta.hot) {
-  import.meta.hot.accept(
-    Object.keys(localeModules),
-    () => {
-      reloadI18nResources();
-    },
-  );
+  import.meta.hot.on("vite:beforeUpdate", (payload) => {
+    const localeChanged = payload.updates.some((update) =>
+      /[/\\]i18n[/\\]locales[/\\]/.test(update.path),
+    );
+    if (localeChanged) {
+      import.meta.hot!.invalidate();
+    }
+  });
 }
 
 export function applyDocumentLocale(locale: SupportedLocale): void {

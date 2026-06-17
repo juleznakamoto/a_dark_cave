@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import i18n from "./index";
+import { getEnUiCatalogString } from "./enUiCatalog";
 import {
   getActionLabel,
   getCatalogString,
@@ -31,6 +32,9 @@ describe("i18n runtime", () => {
   });
 
   it("loads English UI strings", () => {
+    expect(getEnUiCatalogString("village.presetSlotsPurchase")).toBe(
+      "Add 2 more preset slots",
+    );
     expect(i18n.t("profile.save", { ns: "ui" })).toBe("Save");
     expect(i18n.t("estate.improve", { ns: "ui" })).toBe("Improve");
     expect(i18n.t("estate.sleepLength", { ns: "ui" })).toBe("Sleep Length");

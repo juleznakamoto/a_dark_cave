@@ -196,7 +196,8 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
 - **`locales.ts`** — supported: **en, de, fr, es, it, pt-BR, zh-CN, ru**. Namespaces: `common`, `ui`,
   `shop`, `actions`, `effects`, `events`, `achievements`.
 - **Resolution:** `resolveGameText.ts` (`tWithFallback`, resource/log names), `useUiTranslation.ts`
-  (panel hooks with English catalog fallback), `eventText.ts`,
+  (panel hooks with English catalog fallback), `enUiCatalog.ts` (eager `en/ui/*.json` lookup for dev HMR),
+  `eventText.ts`,
   `eventDisplay.ts`, `logDisplay.ts`, `actionLabels.ts`, `tooltipLabels.ts`.
 - **Pattern:** game logic stores English fallback + optional `logKey`/`i18nKey`; UI resolves at
   display time. Parity maintained by `scripts/` (`i18n:verify`, `sync-locale-keys.mjs`).

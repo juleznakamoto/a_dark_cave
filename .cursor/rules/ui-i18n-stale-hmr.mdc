@@ -18,11 +18,11 @@ Keys usually **already exist** in `client/src/i18n/locales/{lang}/ui/panels.json
 
 ## Fix (in order)
 
-1. **Panel components** — use `useUiTranslation()` from `@/i18n/useUiTranslation`, **not** `useTranslation("ui")`. It wraps `tWithFallback` with the English catalog as fallback via `getCatalogString("en", "ui", key)`.
+1. **Panel components** — use `useUiTranslation()` from `@/i18n/useUiTranslation`, **not** `useTranslation("ui")`. Fallback chain: `defaultValue` → i18n en bundle → `getEnUiCatalogString()` from `enUiCatalog.ts` (separate eager glob, reloads when `en/ui/*.json` changes).
 2. **New panel/dialog components** — default to `useUiTranslation()` for all `ui` strings.
-3. **Verify keys** — add to **all** locales under the right shard (usually `ui/panels.json`); run `npm test -- client/src/i18n/i18n.catalog.test.ts`.
-4. **HMR** — `client/src/i18n/index.ts` already reloads shards on locale JSON change and calls `changeLanguage` to re-render. If keys still show raw after a code pull: **hard refresh or restart dev server** once.
-5. **Do not** duplicate English inline in every `t()` call unless `defaultValue` is needed for dynamic keys (e.g. `village.jobs.${id}` with `{ defaultValue: job.label }`).
+3. **Brand-new keys** — if TSX HMR lands before locale JSON is picked up, pass English `defaultValue` on the `t()` call (e.g. `village.presetSlotsPurchase`).
+4. **Verify keys** — add to **all** locales under the right shard (usually `ui/panels.json`); run `npm test -- client/src/i18n/i18n.catalog.test.ts`.
+5. **HMR** — `client/src/i18n/index.ts` calls `import.meta.hot.invalidate()` when any file under `i18n/locales/` changes. If keys still show raw: **hard refresh or restart dev server** once.
 
 ## Quick diagnosis
 
@@ -35,5 +35,6 @@ If tests pass but UI shows raw keys → stale dev bundle or panel still on plain
 ## Reference
 
 - Hook: `client/src/i18n/useUiTranslation.ts`
+- English shard catalog: `client/src/i18n/enUiCatalog.ts`
 - Fallback helper: `tWithFallback` / `getCatalogString` in `client/src/i18n/resolveGameText.ts`
 - Bootstrap + HMR: `client/src/i18n/index.ts`
