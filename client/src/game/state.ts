@@ -356,6 +356,10 @@ interface GameStore extends GameState {
     isOpen: boolean;
     data: any;
   };
+  insightPotionDialog: {
+    isOpen: boolean;
+    data: any;
+  };
 
   // Actions
   getAndResetResourceAnalytics: () => Record<string, number> | null;
@@ -470,6 +474,7 @@ interface GameStore extends GameState {
   updateResources: (updates: Partial<GameState["resources"]>) => void;
   setRewardDialog: (isOpen: boolean, data?: any) => void;
   setMadnessDialog: (isOpen: boolean, data?: any) => void;
+  setInsightPotionDialog: (isOpen: boolean, data?: any) => void;
   /** Session-only: actionId → reveal animation end timestamp (ms). */
   insightRevealing: Record<string, number>;
   revealActionEffects: (actionId: string) => boolean;
@@ -766,6 +771,19 @@ function scheduleMadnessDialogWhenClear(
     get,
     (store) => isModalDialogOpen(store) && !store.madnessDialog.isOpen,
     () => get().setMadnessDialog(true, data),
+    initialDelayMs,
+  );
+}
+
+function scheduleInsightPotionDialogWhenClear(
+  get: () => GameStore,
+  data: NonNullable<GameStore["insightPotionDialog"]["data"]>,
+  initialDelayMs: number,
+): void {
+  scheduleWhenDialogClear(
+    get,
+    (store) => isModalDialogOpen(store) && !store.insightPotionDialog.isOpen,
+    () => get().setInsightPotionDialog(true, data),
     initialDelayMs,
   );
 }
@@ -1237,6 +1255,10 @@ export const createInitialState = (): GameState => ({
     isOpen: false,
     data: null,
   },
+  insightPotionDialog: {
+    isOpen: false,
+    data: null,
+  },
 });
 
 const defaultGameState: GameState = createInitialState();
@@ -1303,6 +1325,7 @@ function isBlockingDialogOpen(state: GameStore): boolean {
     state.inactivityDialogOpen ||
     state.investmentResultDialog.isOpen ||
     state.madnessDialog.isOpen ||
+    state.insightPotionDialog.isOpen ||
     state.socialPromptDialogOpen ||
     state.playlightWelcomeDialogOpen ||
     state.feedbackDialogOpen ||
@@ -1856,6 +1879,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
           { rewards, successLog },
           500,
         ); // Initial delay preserves prior pacing; deferral avoids stacking on other modals
+      }
+    }
+
+    // Insight Potion (forest trader): blue outcome dialog announcing the Insight gained.
+    if (actionId === "tradeGoldForInsightPotion") {
+      const insightGain = detectRewards(result.stateUpdates, state, actionId)
+        ?.resources?.insight;
+      if (typeof insightGain === "number" && insightGain > 0) {
+        scheduleInsightPotionDialogWhenClear(get, { insightGain }, 500);
       }
     }
 
@@ -4038,6 +4070,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     set(() => ({
       madnessDialog: {
+        isOpen,
+        data: data || null,
+      },
+    }));
+  },
+  setInsightPotionDialog: (isOpen, data) => {
+    if (isOpen && data) {
+      const store = get();
+      if (isModalDialogOpen(store) && !store.insightPotionDialog.isOpen) {
+        scheduleInsightPotionDialogWhenClear(get, data, 0);
+        return;
+      }
+    }
+
+    set(() => ({
+      insightPotionDialog: {
         isOpen,
         data: data || null,
       },

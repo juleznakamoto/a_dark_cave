@@ -216,6 +216,7 @@ export default function ForestPanel() {
         { id: "tradeGoldForAshfireBomb", label: "Ashfire Bomb" },
         { id: "tradeGoldForVoidBomb", label: "Void Bomb" },
         { id: "tradeGoldForVeinfireElixir", label: "Veinfire Elixir" },
+        { id: "tradeGoldForInsightPotion", label: "Insight Potion" },
         { id: "tradeSilverForGold", label: "Gold" },
       ],
     },

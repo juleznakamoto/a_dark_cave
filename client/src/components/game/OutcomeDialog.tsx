@@ -11,7 +11,11 @@ export const OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS =
 export const OUTCOME_DIALOG_MADNESS_ICON_CLASS =
   "font-noto-symbols-2 inline-flex text-4xl text-violet-300/90 leading-none" as const;
 
-export type OutcomeDialogVariant = "success" | "loss" | "madness";
+/** Insight 🟖 glyph in its ring — blue to match the Insight resource styling. */
+export const OUTCOME_DIALOG_INSIGHT_ICON_CLASS =
+  "font-noto-symbols-2 inline-flex text-4xl text-blue-400 leading-none" as const;
+
+export type OutcomeDialogVariant = "success" | "loss" | "madness" | "insight";
 
 interface OutcomeDialogProps {
   isOpen: boolean;
@@ -41,6 +45,11 @@ const variantStyles = {
     glow: "madness-dialog-glow",
     iconRing: "border-violet-500/45 bg-violet-950/35",
   },
+  insight: {
+    border: "border-blue-600",
+    glow: "insight-dialog-glow",
+    iconRing: "border-blue-500/45 bg-blue-950/35",
+  },
 } as const;
 
 export default function OutcomeDialog({
@@ -68,6 +77,9 @@ export default function OutcomeDialog({
         .madness-dialog-glow {
           animation: madness-glow-pulse 2.5s ease-in-out infinite;
         }
+        .insight-dialog-glow {
+          animation: insight-glow-pulse 2.5s ease-in-out infinite;
+        }
         @keyframes reward-glow-pulse-success {
           0%, 100% { box-shadow: 0 0 15px 5px rgba(234, 179, 8, 0.25); }
           50% { box-shadow: 0 0 0px 0px rgba(234, 179, 8, 0.5); }
@@ -79,6 +91,10 @@ export default function OutcomeDialog({
         @keyframes madness-glow-pulse {
           0%, 100% { box-shadow: 0 0 15px 5px rgba(124, 58, 237, 0.25); }
           50% { box-shadow: 0 0 0px 0px rgba(124, 58, 237, 0.5); }
+        }
+        @keyframes insight-glow-pulse {
+          0%, 100% { box-shadow: 0 0 15px 5px rgba(37, 99, 235, 0.25); }
+          50% { box-shadow: 0 0 0px 0px rgba(37, 99, 235, 0.5); }
         }
       `}</style>
       <Dialog open={isOpen} onOpenChange={() => { }}>
@@ -93,7 +109,7 @@ export default function OutcomeDialog({
                   "flex h-14 w-14 shrink-0 justify-center rounded-full border-2",
                   variant === "madness" ? "items-end pb-1.5" : "items-center",
                   iconRing,
-                  variant !== "madness" && "text-white",
+                  variant !== "madness" && variant !== "insight" && "text-white",
                 )}
               >
                 {icon}

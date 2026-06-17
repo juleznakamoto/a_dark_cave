@@ -33,6 +33,7 @@ import ShareDialog from "./ShareDialog";
 import RewardDialog from "./RewardDialog";
 import InvestmentResultDialog from "./InvestmentResultDialog";
 import MadnessDialog from "./MadnessDialog";
+import InsightPotionDialog from "./InsightPotionDialog";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark, X } from "lucide-react";
 import { ProfileMenuProvider } from "./ProfileMenu";
@@ -106,6 +107,10 @@ export default function GameContainer() {
   );
   const madnessDialog = useGameStore((state) => state.madnessDialog);
   const setMadnessDialog = useGameStore((state) => state.setMadnessDialog);
+  const insightPotionDialog = useGameStore((state) => state.insightPotionDialog);
+  const setInsightPotionDialog = useGameStore(
+    (state) => state.setInsightPotionDialog,
+  );
   const story = useGameStore((state) => state.story);
   const traderDialogOpens = useGameStore((state) => state.traderDialogOpens);
   // Estate unlocks when Dark Estate is built
@@ -1323,6 +1328,11 @@ export default function GameContainer() {
           isOpen={madnessDialog.isOpen}
           data={madnessDialog.data}
           onClose={() => setMadnessDialog(false)}
+        />
+        <InsightPotionDialog
+          isOpen={insightPotionDialog.isOpen}
+          data={insightPotionDialog.data}
+          onClose={() => setInsightPotionDialog(false)}
         />
 
         {!isSteamBuild && <InviteFriendsFloatingButton />}

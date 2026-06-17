@@ -19,6 +19,9 @@
     "title": "Madness Event",
     "change": "{{sign}} {{amount}} Madness"
   },
+  "insightPotion": {
+    "title": "Insight Potion"
+  },
   "socialPrompt": {
     "title": "Stay connected and earn Rewards",
     "description": "Complete the tasks below to receive bonuses. Complete all tasks to receive an exclusive item.",

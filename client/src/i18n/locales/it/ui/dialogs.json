@@ -1,4 +1,7 @@
 {
+  "insightPotion": {
+    "title": "Insight Potion"
+  },
   "event": {
     "fallbackTitle": "Evento",
     "choose": "Scegli un'opzione",

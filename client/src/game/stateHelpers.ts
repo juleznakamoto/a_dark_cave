@@ -406,6 +406,7 @@ const UI_ONLY_PROPERTIES = [
   'shareDialogOpen',
   'fullGamePurchaseDialogOpen',
   'madnessDialog',
+  'insightPotionDialog',
   'versionCheckDialogOpen',
   'insightRevealing',
   '_completingExecution',
@@ -440,6 +441,7 @@ export function getTransientDialogResetOnLoad() {
     shareDialogOpen: false,
     fullGamePurchaseDialogOpen: false,
     madnessDialog: { isOpen: false, data: null },
+    insightPotionDialog: { isOpen: false, data: null },
     investmentResultDialog: { isOpen: false, data: null },
     versionCheckDialogOpen: false,
   };

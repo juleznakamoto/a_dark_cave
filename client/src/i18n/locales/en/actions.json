@@ -714,6 +714,9 @@
   "tradeGoldForVoidBomb": {
     "label": "Buy Void Bomb"
   },
+  "tradeGoldForInsightPotion": {
+    "label": "Buy Insight Potion"
+  },
   "tradeGoldForVeinfireElixir": {
     "label": "Buy Veinfire Elixir"
   },

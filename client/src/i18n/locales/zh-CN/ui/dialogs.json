@@ -1,4 +1,7 @@
 {
+  "insightPotion": {
+    "title": "Insight Potion"
+  },
   "event": {
     "fallbackTitle": "事件",
     "choose": "请选择一个选项",

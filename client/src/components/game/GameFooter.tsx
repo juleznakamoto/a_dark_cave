@@ -19,7 +19,7 @@ const FOOTER_CONTROL_BTN =
 const FOOTER_CONTROL_BTN_FADE =
   "opacity-80 transition-opacity group-hover:opacity-100";
 const FOOTER_CONTROL_ICON_HOVER =
-  "w-4 h-4 shrink-0 object-contain opacity-80 transition-[filter,opacity] group-hover:opacity-100 [filter:invert(1)] group-hover:[filter:invert(27%)_sepia(89%)_saturate(7458%)_hue-rotate(356deg)_brightness(108%)_contrast(108%)]";
+  "w-4 h-4 shrink-0 object-contain opacity-80 transition-[filter,opacity] group-hover:opacity-100 [filter:invert(1)] group-hover:[filter:invert(36%)_sepia(81%)_saturate(2876%)_hue-rotate(343deg)_brightness(104%)_contrast(97%)]";
 const FOOTER_CONTROL_SVG_ICON_HOVER =
   "w-4 h-4 text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-500";
 const FOOTER_CONTROL_TEXT =
@@ -199,7 +199,7 @@ export default function GameFooter() {
                   >
                     <span
                       aria-hidden
-                      className={`text-red-600 ${FOOTER_CONTROL_BTN_FADE}`}
+                      className={`text-red-500 ${FOOTER_CONTROL_BTN_FADE}`}
                     >
                       ❤︎⁠
                     </span>

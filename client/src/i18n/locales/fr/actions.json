@@ -1,4 +1,7 @@
 {
+  "tradeGoldForInsightPotion": {
+    "label": "Buy Insight Potion"
+  },
   "animals": {
     "label": "Animaux"
   },

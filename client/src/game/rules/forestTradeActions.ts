@@ -594,6 +594,26 @@ export const forestTradeActions: Record<string, Action> = {
       },
     },
   },
+
+  tradeGoldForInsightPotion: {
+    id: "tradeGoldForInsightPotion",
+    label: "Buy Insight Potion",
+    show_when: {
+      1: {
+        "buildings.scriptorium": 1,
+      },
+    },
+    cost: {
+      1: {
+        "resources.gold": 500,
+      },
+    },
+    effects: {
+      1: {
+        "resources.insight": 2500,
+      },
+    },
+  },
 };
 
 /** Forest buy-trade cooldown (seconds); knowledge no longer reduces this. */
