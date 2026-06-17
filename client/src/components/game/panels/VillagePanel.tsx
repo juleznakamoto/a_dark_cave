@@ -957,7 +957,7 @@ export default function VillagePanel() {
           lineHeight: `${ANIMATED_COUNTER_HEIGHT}px`,
         }}
       />
-      <span className="ml-1 min-w-0 flex-1 text-left text-xs text-muted-foreground">
+      <span className="ml-1 min-w-0 flex-1 text-left text-xs">
         <span translate="no" className="notranslate" aria-hidden>
           ↳{" "}
         </span>
