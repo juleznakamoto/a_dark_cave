@@ -21,6 +21,7 @@
   "village": {
     "sectionBuild": "Costruisci",
     "sectionProduce": "Produci",
+    "villagers": "Abitanti",
     "presetApply": "Applica preset {{slot}}",
     "presetEmpty": "Il preset {{slot}} è vuoto — selezionalo, poi salva i lavori attuali",
     "presetLocked": "Bloccato — disponibile per l'acquisto",

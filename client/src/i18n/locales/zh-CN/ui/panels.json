@@ -21,6 +21,7 @@
   "village": {
     "sectionBuild": "建造",
     "sectionProduce": "生产",
+    "villagers": "村民",
     "presetApply": "应用预设 {{slot}}",
     "presetEmpty": "预设 {{slot}} 为空 — 选择它，然后保存当前工作分配",
     "presetLocked": "已锁定 — 可购买解锁",

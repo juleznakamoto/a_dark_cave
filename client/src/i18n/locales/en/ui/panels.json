@@ -21,6 +21,7 @@
   "village": {
     "sectionBuild": "Build",
     "sectionProduce": "Produce",
+    "villagers": "Villagers",
     "presetApply": "Apply preset {{slot}}",
     "presetEmpty": "Preset {{slot}} is empty — select it, then save your current jobs",
     "presetLocked": "Locked — available for purchase",

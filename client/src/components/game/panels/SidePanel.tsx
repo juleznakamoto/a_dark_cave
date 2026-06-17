@@ -1070,7 +1070,6 @@ export default function SidePanel() {
                   </span>
                 }
                 items={populationItems}
-                titleTooltip={t("sidePanel.populationTooltip")}
               />
             )}
             {anyPlayerStatPositive && shouldShowSection("stats") && (

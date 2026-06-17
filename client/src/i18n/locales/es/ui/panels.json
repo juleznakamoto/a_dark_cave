@@ -21,6 +21,7 @@
   "village": {
     "sectionBuild": "Construir",
     "sectionProduce": "Producir",
+    "villagers": "Aldeanos",
     "presetApply": "Aplicar preset {{slot}}",
     "presetEmpty": "El preset {{slot}} está vacío — selecciónalo y guarda tus trabajos actuales",
     "presetLocked": "Bloqueado — disponible para comprar",

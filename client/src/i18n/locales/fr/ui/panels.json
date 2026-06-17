@@ -21,6 +21,7 @@
   "village": {
     "sectionBuild": "Construire",
     "sectionProduce": "Produire",
+    "villagers": "Villageois",
     "presetApply": "Appliquer le préréglage {{slot}}",
     "presetEmpty": "Le préréglage {{slot}} est vide — sélectionnez-le, puis enregistrez vos tâches actuelles",
     "presetLocked": "Verrouillé — disponible à l'achat",

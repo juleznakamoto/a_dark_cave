@@ -40,7 +40,10 @@ import CooldownButton, {
   gameActionOutlineButtonClassName,
 } from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
-import { getPopulationProduction } from "@/game/population";
+import {
+  getCurrentPopulation,
+  getPopulationProduction,
+} from "@/game/population";
 import {
   areVillagerCapsEnabled,
   getVillagerCapForJob,
@@ -925,6 +928,41 @@ export default function VillagePanel() {
       touchActiveRef.current = false;
     };
   }, []);
+
+  const currentPopulation = useGameStore((s) => getCurrentPopulation(s));
+
+  const renderVillagersSummaryRow = () => (
+    <div key="villagers-summary" className="flex min-w-0 items-center">
+      <div className="h-5 w-5 shrink-0" aria-hidden />
+      <div className="flex w-[3ch] shrink-0 items-center justify-center">
+        <AnimatedCounter value={currentPopulation} />
+      </div>
+      <div className="h-5 w-5 shrink-0" aria-hidden />
+      <span
+        translate="no"
+        className="notranslate w-[4ch] shrink-0 tabular-nums text-muted-foreground"
+        style={{
+          fontSize: ANIMATED_COUNTER_FONT_SIZE,
+          lineHeight: `${ANIMATED_COUNTER_HEIGHT}px`,
+        }}
+      />
+      <span className="ml-1 min-w-0 flex-1 text-left text-xs">
+        {t("village.villagers")}{" "}
+        {currentPopulation > 0 && (
+          <span className="text-xs text-muted-foreground">
+            <span translate="no" className="notranslate">
+              -{currentPopulation}
+            </span>{" "}
+            {formatTooltipResourceName("food")},{" "}
+            <span translate="no" className="notranslate">
+              -{currentPopulation}
+            </span>{" "}
+            {formatTooltipResourceName("wood")}
+          </span>
+        )}
+      </span>
+    </div>
+  );
 
   const renderPopulationControl = (jobId: string, label: string) => {
     const currentCount = villagers[jobId as keyof typeof villagers] || 0;
@@ -1932,6 +1970,7 @@ export default function VillagePanel() {
                   })()}
               </div>
               <div className="space-y-1 leading-tight">
+                {renderVillagersSummaryRow()}
                 {visiblePopulationJobs.map((job) =>
                   renderPopulationControl(
                     job.id,
