@@ -701,8 +701,10 @@ export default function AdminDashboard() {
   }, [rawPurchases, purchasesChartTimeRange]);
 
   const getPurchasesByPlaytime = useCallback(() => {
-    const playtimeBuckets = new Map<number, number>();
-    let maxBucket = 0;
+    const playtimeBuckets: Record<string, number> = {};
+    for (let i = 0; i < 24; i++) {
+      playtimeBuckets[`${i}h`] = 0;
+    }
 
     purchases.filter((p) => p.price_paid > 0 && !p.bundle_id).forEach((purchase) => {
       const save = gameSaves.find((s) => s.user_id === purchase.user_id);
@@ -711,20 +713,17 @@ export default function AdminDashboard() {
           ? Math.round(save.game_state.playTime / 60000)
           : 0;
         const bucket = Math.floor(playTimeMinutes / 60);
-        maxBucket = Math.max(maxBucket, bucket);
-        playtimeBuckets.set(bucket, (playtimeBuckets.get(bucket) || 0) + 1);
+
+        if (bucket >= 0 && bucket < 24) {
+          const bucketKey = `${bucket}h`;
+          playtimeBuckets[bucketKey]++;
+        }
       }
     });
 
-    const result: Array<{ playtime: string; purchases: number }> = [];
-    for (let bucket = 0; bucket <= maxBucket; bucket++) {
-      result.push({
-        playtime: `${bucket}h`,
-        purchases: playtimeBuckets.get(bucket) || 0,
-      });
-    }
-
-    return result;
+    return Object.entries(playtimeBuckets)
+      .map(([playtime, purchases]) => ({ playtime, purchases }))
+      .sort((a, b) => parseInt(a.playtime) - parseInt(b.playtime));
   }, [purchases, gameSaves]);
 
   const getPurchaseStats = useCallback(() => {
