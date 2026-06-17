@@ -20,6 +20,12 @@ describe("i18n runtime", () => {
     expect(i18n.t("profile.save", { ns: "ui" })).toBe("Save");
     expect(i18n.t("estate.improve", { ns: "ui" })).toBe("Improve");
     expect(i18n.t("estate.sleepLength", { ns: "ui" })).toBe("Sleep Length");
+    expect(
+      i18n.t("estate.sleepLengthDescription", { ns: "ui", hours: 12 }),
+    ).toBe("Max. 12 hours of continuous sleep");
+    expect(
+      i18n.t("estate.sleepIntensityDescription", { ns: "ui", percent: 35 }),
+    ).toBe("Receive 35% of village production while sleeping");
     expect(tWithFallback("ui", "estate.improve", "Improve")).toBe("Improve");
   });
 

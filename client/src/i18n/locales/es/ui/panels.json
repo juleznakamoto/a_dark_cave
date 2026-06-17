@@ -77,9 +77,9 @@
     "focusRewardTooltip_other": "Obtén recompensas x2 en acciones durante {{count}} minutos",
     "focusPointTooltip": "Gana 1 punto de enfoque por hora de sueño",
     "sleepLength": "Duración del sueño", //ok
-    "sleepLengthDescription": "{{hours}}h -> Máx. {{hours}} horas de sueño continuo",
+    "sleepLengthDescription": "Máx. {{hours}} horas de sueño continuo",
     "sleepIntensity": "Intensidad del sueño", //ok
-    "sleepIntensityDescription": "{{percent}}% -> Recibe {{percent}}% de la producción de la aldea mientras duermes",
+    "sleepIntensityDescription": "Recibe {{percent}}% de la producción de la aldea mientras duermes",
     "skills": "Habilidades",
     "cubeWhispers": "Susurros del cubo",
     "huntressTraining": "Entrenamiento de cazadora", //ok
