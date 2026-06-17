@@ -4,6 +4,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cubeEvents } from "@/game/rules/eventsCube";
 import { resolveEventTitle } from "@/i18n/eventText";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { TooltipInfoIndicator } from "@/components/game/TooltipInfoIndicator";
 import { Button } from "@/components/ui/button";
 import { ImproveButton } from "@/components/ui/improve-button";
 import { getTotalPopulationEffects } from "@/game/population";
@@ -521,14 +522,18 @@ export default function EstatePanel() {
                 }
                 tooltipId={SLEEP_LENGTH_TOOLTIP_ID}
                 disabled
+                tooltipTriggerClassName="inline-flex items-center leading-none"
                 className={cn(
-                  "relative inline-block pb-1 text-xs font-medium text-foreground",
+                  "group relative inline-block pb-1 text-xs font-medium text-foreground",
                   !hoveredTooltips[SLEEP_LENGTH_TOOLTIP_ID] && "new-item-pulse",
                 )}
                 onMouseEnter={() => handleTooltipHover(SLEEP_LENGTH_TOOLTIP_ID)}
                 onMouseLeave={() => handleTooltipLeave(SLEEP_LENGTH_TOOLTIP_ID)}
               >
-                <span>{t("estate.sleepLength")}</span>
+                <span className="inline-flex items-center gap-0.5">
+                  <span>{t("estate.sleepLength")}</span>
+                  <TooltipInfoIndicator />
+                </span>
               </TooltipWrapper>
               {sleepUpgrades.lengthLevel < MAX_SLEEP_LENGTH_LEVEL ? (
                 <TooltipWrapper
@@ -594,14 +599,18 @@ export default function EstatePanel() {
                 }
                 tooltipId={SLEEP_INTENSITY_TOOLTIP_ID}
                 disabled
+                tooltipTriggerClassName="inline-flex items-center leading-none"
                 className={cn(
-                  "relative inline-block pb-1 text-xs font-medium text-foreground",
+                  "group relative inline-block pb-1 text-xs font-medium text-foreground",
                   !hoveredTooltips[SLEEP_INTENSITY_TOOLTIP_ID] && "new-item-pulse",
                 )}
                 onMouseEnter={() => handleTooltipHover(SLEEP_INTENSITY_TOOLTIP_ID)}
                 onMouseLeave={() => handleTooltipLeave(SLEEP_INTENSITY_TOOLTIP_ID)}
               >
-                <span>{t("estate.sleepIntensity")}</span>
+                <span className="inline-flex items-center gap-0.5">
+                  <span>{t("estate.sleepIntensity")}</span>
+                  <TooltipInfoIndicator />
+                </span>
               </TooltipWrapper>
               {sleepUpgrades.intensityLevel < MAX_SLEEP_INTENSITY_LEVEL ? (
                 <TooltipWrapper

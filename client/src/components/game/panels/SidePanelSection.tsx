@@ -15,6 +15,7 @@ import {
   INSIGHT_BADGE_ALIGN_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { TooltipInfoIndicator } from "@/components/game/TooltipInfoIndicator";
 import ResourceChangeNotification from "./ResourceChangeNotification";
 import { useGameStore } from "@/game/state";
 import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
@@ -1251,13 +1252,14 @@ export default function SidePanelSection({
   const titleHeading = (
     <h3
       className={cn(
-        "text-xs font-medium tracking-wide leading-none text-gray-300",
+        "inline-flex items-center gap-0.5 text-xs font-medium tracking-wide leading-none text-gray-300",
         titleTooltip &&
         isItemTooltipHovered(tooltipKey) &&
         "!text-gray-100",
       )}
     >
       {title}
+      {titleTooltip ? <TooltipInfoIndicator /> : null}
     </h3>
   );
 
@@ -1266,6 +1268,7 @@ export default function SidePanelSection({
       tooltip={<div className="text-xs">{titleTooltip}</div>}
       tooltipId={tooltipKey}
       disabled
+      tooltipTriggerClassName="inline-flex items-center leading-none"
       onMouseEnter={() => {
         handleItemTooltipEnter(tooltipKey);
         if (!hoveredTooltips[tooltipKey]) {
@@ -1274,6 +1277,7 @@ export default function SidePanelSection({
       }}
       onMouseLeave={() => handleItemTooltipLeave(tooltipKey)}
       className={cn(
+        "group",
         titleExtra ? "inline-flex items-center" : "min-w-0 flex-1",
         globalTooltip.isMobile ? "cursor-pointer" : "",
         !hoveredTooltips[tooltipKey] && "new-item-pulse",

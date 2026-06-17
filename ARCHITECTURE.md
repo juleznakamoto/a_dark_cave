@@ -299,7 +299,8 @@ Support: `server/vite.ts` (dev/prod hosting), `server/supabaseServerClient.ts` (
 6. **Shared Zod schema** — `shared/schema.ts` is authoritative; defaults flow into `createInitialState()`.
 7. **Logging** — use `client/src/lib/logger.ts`, never `console.*`.
 8. **Backward-compatible saves** — add new fields with `z.default()`; don't rename stored IDs.
-9. **Tooltips** — `TooltipWrapper` + `useGlobalTooltip`; panel action buttons compose layout via
+9. **Tooltips** — `TooltipWrapper` + `useGlobalTooltip`; muted trailing 🛈 on section labels via
+   `TooltipInfoIndicator.tsx`; panel action buttons compose layout via
    `rules/actionTooltipLayout.tsx` (`composeActionTooltip`); focus glow actions add `☩` via
    `rules/focusTooltipIndicator.tsx` while focus is active.
 10. **Dual persistence** — IndexedDB always; Supabase when authenticated (optimistic diff saves).
