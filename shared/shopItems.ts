@@ -25,6 +25,8 @@ export interface ShopItem {
    * It still exists for server pricing/verification and can be sold via a dedicated
    * checkout dialog opened from elsewhere in the UI. */
   hiddenFromShop?: boolean;
+  /** When true, rewards/entitlements apply on purchase — no Purchases-tab activation step. */
+  grantedOnPurchase?: boolean;
 }
 
 /** Duration of an activated Great Feast (shop purchase), in milliseconds. */
@@ -93,6 +95,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     category: "tool",
     activationMessage: "Two additional villager job preset slots have been added.",
     hiddenFromShop: true,
+    grantedOnPurchase: true,
   },
 
   gold_250: {

@@ -1,4 +1,9 @@
 {
+  "additional_preset_slots": {
+    "activationMessage": "Two additional villager job preset slots have been added.",
+    "description": "Two more villager job preset slots, to record and recall the order of labor.",
+    "name": "2 Additional Preset Slots"
+  },
   "advanced_bundle": {
     "activationMessage": "The bundle's components have been added to your purchases!",
     "name": "Pale King's Bundle"

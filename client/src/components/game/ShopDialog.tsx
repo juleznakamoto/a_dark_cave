@@ -39,6 +39,7 @@ import {
 import {
   applyAdditionalPresetSlotsFromPurchaseRows,
   applyFeastActivationsFromPurchaseRows,
+  applyGrantedOnPurchaseActivationsFromPurchaseRows,
   fetchPurchaseRowsForSessionUser,
   purchaseIdToItemId,
   purchaseIdsFromRows,
@@ -782,6 +783,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       setPurchasedItems(purchaseIdsFromRows(data));
       applyFeastActivationsFromPurchaseRows(data);
       applyAdditionalPresetSlotsFromPurchaseRows(data);
+      applyGrantedOnPurchaseActivationsFromPurchaseRows(data);
     } catch (error) {
       logger.error("Error loading purchased items:", error);
     }
@@ -1183,12 +1185,34 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       });
     }
 
+    // Items granted immediately on purchase should show as activated in Purchases tab
+    if (item.grantedOnPurchase) {
+      const latestPurchaseId = updatedPurchasedItems
+        .filter((pid) => purchaseIdToItemId(pid) === selectedItem)
+        .pop();
+
+      if (latestPurchaseId) {
+        useGameStore.setState((state) => ({
+          activatedPurchases: {
+            ...state.activatedPurchases,
+            [latestPurchaseId]: true,
+          },
+        }));
+      }
+    }
+
     const resolvedPurchaseName = resolveShopItemName(item);
+    const purchaseSuccessMessage =
+      (item.grantedOnPurchase
+        ? resolveShopActivationMessage(item) ?? item.activationMessage
+        : null) ??
+      (item.bundleComponents
+        ? t("ui:shop.purchaseAddedBundle", { name: resolvedPurchaseName })
+        : t("ui:shop.purchaseAddedSingle", { name: resolvedPurchaseName }));
+
     gameState.addLogEntry({
       id: `purchase-${Date.now()}`,
-      message: item.bundleComponents
-        ? t("ui:shop.purchaseAddedBundle", { name: resolvedPurchaseName })
-        : t("ui:shop.purchaseAddedSingle", { name: resolvedPurchaseName }),
+      message: purchaseSuccessMessage,
       timestamp: Date.now(),
       type: "system",
     });
@@ -1196,9 +1220,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     // Show success message
     toast({
       title: t("ui:shop.purchaseSuccessful"),
-      description: item.bundleComponents
-        ? t("ui:shop.purchaseAddedBundle", { name: resolvedPurchaseName })
-        : t("ui:shop.purchaseAddedSingle", { name: resolvedPurchaseName }),
+      description: purchaseSuccessMessage,
     });
 
     try {
@@ -1232,6 +1254,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const handleActivatePurchase = (purchaseId: string, itemId: string) => {
     const item = SHOP_ITEMS[itemId];
     if (!item) return;
+
+    // Entitlements that apply at purchase time cannot be activated again from Purchases tab
+    if (item.grantedOnPurchase) return;
 
     // Handle Cruel Mode activation/deactivation
     if (itemId === "cruel_mode") {

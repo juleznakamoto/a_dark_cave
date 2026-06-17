@@ -1,4 +1,9 @@
 {
+  "additional_preset_slots": {
+    "activationMessage": "Deux emplacements de préréglages de villageois supplémentaires ont été ajoutés.",
+    "description": "Deux emplacements de préréglages de travail des villageois supplémentaires, pour enregistrer et rappeler l'ordre du travail.",
+    "name": "2 emplacements de préréglages supplémentaires"
+  },
   "advanced_bundle": {
     "activationMessage": "Les éléments du pack du Roi pâle ont été ajoutés à vos achats !",
     "name": "Pack du Roi pâle"
@@ -22,7 +27,7 @@
   },
   "cruel_mode": {
     "activationMessage": "Mode cruel activé ! Commencez une nouvelle partie pour affronter le défi ultime.",
-    "description": "Un monde plus cruel, une histoire étendue, plus d'objets et des ennemis plus mortels. Endurez, ou disparaissez.",  //x1.4
+    "description": "Un monde plus cruel, une histoire étendue, plus d'objets et des ennemis plus mortels. Endurez, ou disparaissez.", //x1.4
     "name": "Mode cruel"
   },
   "full_game": {

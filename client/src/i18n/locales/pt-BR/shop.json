@@ -1,4 +1,9 @@
 {
+  "additional_preset_slots": {
+    "activationMessage": "Dois espaços de predefinição de trabalho de aldeões adicionais foram adicionados.",
+    "description": "Mais dois espaços de predefinição de trabalho de aldeões, para registrar e recuperar a ordem do trabalho.",
+    "name": "2 espaços de predefinição adicionais"
+  },
   "advanced_bundle": {
     "activationMessage": "Os componentes do pacote foram adicionados às suas compras!",
     "name": "Pacote do Rei Pálido"

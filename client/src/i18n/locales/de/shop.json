@@ -1,4 +1,9 @@
 {
+  "additional_preset_slots": {
+    "activationMessage": "Zwei zusätzliche Voreinstellungs-Slots für Dorfbewohner wurden hinzugefügt.",
+    "description": "Zwei weitere Voreinstellungs-Slots für Dorfbewohner-Arbeit, um die Reihenfolge der Arbeit festzuhalten und wiederherzustellen.",
+    "name": "2 zusätzliche Voreinstellungs-Slots"
+  },
   "advanced_bundle": {
     "activationMessage": "Die Bestandteile des Bundles wurden deinen Käufen hinzugefügt!",
     "name": "Bleicher König Bundle" //ok
@@ -22,7 +27,7 @@
   },
   "cruel_mode": {
     "activationMessage": "Grausamer Modus aktiviert! Starte ein neues Spiel, um die ultimative Herausforderung zu erleben.",
-    "description": "Eine grausamere Welt, erweiterte Geschichte, mehr Gegenstände, tödlichere Feinde. Ertrage sie oder verschwinde.",  //x1.4
+    "description": "Eine grausamere Welt, erweiterte Geschichte, mehr Gegenstände, tödlichere Feinde. Ertrage sie oder verschwinde.", //x1.4
     "name": "Grausamer Modus" //ok
   },
   "full_game": {

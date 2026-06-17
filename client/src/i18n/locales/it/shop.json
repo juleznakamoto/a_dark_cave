@@ -1,4 +1,9 @@
 {
+  "additional_preset_slots": {
+    "activationMessage": "Sono stati aggiunti due slot preimpostazione lavori dei villici aggiuntivi.",
+    "description": "Altri due slot preimpostazione lavori dei villici, per registrare e richiamare l'ordine del lavoro.",
+    "name": "2 slot preimpostazione aggiuntivi"
+  },
   "advanced_bundle": {
     "activationMessage": "I componenti del pacchetto sono stati aggiunti ai tuoi acquisti!",
     "name": "Pacchetto del Re Pallido"

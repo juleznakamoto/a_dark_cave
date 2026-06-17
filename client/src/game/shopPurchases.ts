@@ -77,6 +77,32 @@ export function applyFeastActivationsFromPurchaseRows(rows: PurchaseRow[]): void
 }
 
 /**
+ * Mark `grantedOnPurchase` shop items as activated in `activatedPurchases` (idempotent).
+ * These entitlements apply at purchase time; the Purchases tab should show them as already activated.
+ */
+export function applyGrantedOnPurchaseActivationsFromPurchaseRows(
+  rows: PurchaseRow[],
+): void {
+  const state = useGameStore.getState();
+  const activatedPurchases = { ...(state.activatedPurchases || {}) };
+  let changed = false;
+
+  rows.forEach((purchase) => {
+    const item = SHOP_ITEMS[purchase.item_id];
+    if (!item?.grantedOnPurchase) return;
+    const purchaseId = `purchase-${purchase.item_id}-${purchase.id}`;
+    if (!activatedPurchases[purchaseId]) {
+      activatedPurchases[purchaseId] = true;
+      changed = true;
+    }
+  });
+
+  if (changed) {
+    useGameStore.setState({ activatedPurchases });
+  }
+}
+
+/**
  * Re-grant the `additional_preset_slots` entitlement from DB purchases (idempotent).
  * Makes the 2 extra villager job preset slots persist across all games / fresh loads,
  * even when local game state was lost. `grantAdditionalPresetSlots` no-ops if already granted.
@@ -100,6 +126,7 @@ export async function rehydratePurchasesFromSupabase(): Promise<string[]> {
 
     applyFeastActivationsFromPurchaseRows(rows);
     applyAdditionalPresetSlotsFromPurchaseRows(rows);
+    applyGrantedOnPurchaseActivationsFromPurchaseRows(rows);
     return purchaseIdsFromRows(rows);
   } catch (error) {
     logger.error('[SHOP] Failed to rehydrate purchases:', error);
