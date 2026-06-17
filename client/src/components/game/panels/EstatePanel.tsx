@@ -530,7 +530,7 @@ export default function EstatePanel() {
                 onMouseEnter={() => handleTooltipHover(SLEEP_LENGTH_TOOLTIP_ID)}
                 onMouseLeave={() => handleTooltipLeave(SLEEP_LENGTH_TOOLTIP_ID)}
               >
-                <span className="inline-flex items-center gap-0.5">
+                <span className="inline-flex items-end gap-0.5">
                   <span>{t("estate.sleepLength")}</span>
                   <TooltipInfoIndicator />
                 </span>
@@ -607,7 +607,7 @@ export default function EstatePanel() {
                 onMouseEnter={() => handleTooltipHover(SLEEP_INTENSITY_TOOLTIP_ID)}
                 onMouseLeave={() => handleTooltipLeave(SLEEP_INTENSITY_TOOLTIP_ID)}
               >
-                <span className="inline-flex items-center gap-0.5">
+                <span className="inline-flex items-end gap-0.5">
                   <span>{t("estate.sleepIntensity")}</span>
                   <TooltipInfoIndicator />
                 </span>
