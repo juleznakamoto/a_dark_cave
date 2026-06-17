@@ -1209,21 +1209,21 @@ export default function VillagePanel() {
                                 >
                                   <span
                                     data-testid={queueTooltipId}
-                                    className={cn(
-                                      "inline-flex h-[1.05rem] w-[1.05rem] shrink-0 items-center justify-center rounded-md border border-neutral-400/50",
-                                      !isLocked && "p-[2.4px]",
-                                    )}
+                                    className="relative inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-md border border-neutral-400/50 box-border"
                                   >
                                     {isLocked ? (
                                       <span
                                         aria-hidden
-                                        className="font-noto-symbols-2 -translate-y-px text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
+                                        className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
                                       >
                                         ×
                                       </span>
                                     ) : (
                                       isUsed && (
-                                        <span className="block h-full w-full rounded-[1px] bg-red-700" />
+                                        <span
+                                          aria-hidden
+                                          className="absolute inset-[3px] rounded-[1px] bg-red-700"
+                                        />
                                       )
                                     )}
                                   </span>
