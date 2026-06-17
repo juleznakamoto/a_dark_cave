@@ -930,12 +930,12 @@ export default function VillagePanel() {
     };
   }, []);
 
-  const currentPopulation = useGameStore((s) => getCurrentPopulation(s));
+  const totalPopulation = useGameStore((s) => getCurrentPopulation(s));
   const maxPopulation = useGameStore((s) => s.total_population);
   const onMissionCount = useGameStore((s) => getExpeditionVillagerCount(s));
   const freeVillagers = villagers.free ?? 0;
   const atMaxPopulation =
-    maxPopulation > 0 && currentPopulation >= maxPopulation;
+    maxPopulation > 0 && totalPopulation >= maxPopulation;
 
   const renderVillagerStatRow = (
     key: string,
@@ -957,7 +957,12 @@ export default function VillagePanel() {
           lineHeight: `${ANIMATED_COUNTER_HEIGHT}px`,
         }}
       />
-      <span className="ml-1 min-w-0 flex-1 text-left text-xs">{label}</span>
+      <span className="ml-1 min-w-0 flex-1 text-left text-xs text-muted-foreground">
+        <span translate="no" className="notranslate" aria-hidden>
+          ↳{" "}
+        </span>
+        {label}
+      </span>
     </div>
   );
 
@@ -966,7 +971,7 @@ export default function VillagePanel() {
       <div className="h-5 w-5 shrink-0" aria-hidden />
       <div className="flex w-[3ch] shrink-0 items-center justify-center">
         <AnimatedCounter
-          value={currentPopulation}
+          value={totalPopulation}
           className={atMaxPopulation ? "text-muted-foreground" : undefined}
         />
       </div>
@@ -983,14 +988,14 @@ export default function VillagePanel() {
       </span>
       <span className="ml-1 min-w-0 flex-1 text-left text-xs">
         {t("village.villagers")}{" "}
-        {currentPopulation > 0 && (
+        {totalPopulation > 0 && (
           <span className="text-xs text-muted-foreground">
             <span translate="no" className="notranslate">
-              -{currentPopulation}
+              -{totalPopulation}
             </span>{" "}
             {formatTooltipResourceName("food")},{" "}
             <span translate="no" className="notranslate">
-              -{currentPopulation}
+              -{totalPopulation}
             </span>{" "}
             {formatTooltipResourceName("wood")}
           </span>
@@ -2015,11 +2020,12 @@ export default function VillagePanel() {
                   t("village.villagersAvailable"),
                   freeVillagers,
                 )}
-                {renderVillagerStatRow(
-                  "villagers-on-mission",
-                  t("village.villagersOnMission"),
-                  onMissionCount,
-                )}
+                {onMissionCount > 0 &&
+                  renderVillagerStatRow(
+                    "villagers-on-mission",
+                    t("village.villagersOnMission"),
+                    onMissionCount,
+                  )}
                 {visiblePopulationJobs.map((job) =>
                   renderPopulationControl(
                     job.id,

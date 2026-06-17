@@ -22,8 +22,8 @@
     "sectionBuild": "Bauen",
     "sectionProduce": "Produzieren", //ok
     "villagers": "Dorfbewohner",
-    "villagersAvailable": "Verfügbare Dorfbewohner",
-    "villagersOnMission": "Dorfbewohner auf Mission",
+    "villagersAvailable": "verfügbar",
+    "villagersOnMission": "auf Mission",
     "presetApply": "Vorlage {{slot}} anwenden",
     "presetEmpty": "Vorlage {{slot}} ist leer — wähle sie aus und speichere dann deine aktuellen Jobs",
     "presetLocked": "Gesperrt — zum Freischalten kaufbar",
