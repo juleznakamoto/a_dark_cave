@@ -16,8 +16,12 @@ export const PRESET_UNLOCK_BASE_INSIGHT_COST = 2500;
 /** Slots unlocked via the Scribe's Office building chain (one per building). */
 export const MAX_BUILDING_PRESET_SLOTS = 3;
 
-/** Total preset slots shown in the UI (matches building-unlocked slots for now). */
-export const MAX_PRESET_SLOTS = MAX_BUILDING_PRESET_SLOTS;
+/** Extra slots granted by the one-time `additional_preset_slots` shop purchase. */
+export const SHOP_ADDITIONAL_PRESET_SLOTS = 2;
+
+/** Total preset slots shown in the UI (building-unlocked + shop-purchased). */
+export const MAX_PRESET_SLOTS =
+  MAX_BUILDING_PRESET_SLOTS + SHOP_ADDITIONAL_PRESET_SLOTS;
 
 /** Building chain that unlocks preset slots, lowest tier first (one slot each). */
 export const PRESET_UNLOCK_BUILDINGS: (keyof GameState["buildings"])[] = [
@@ -53,12 +57,37 @@ export function getBuildingPresetSlotCount(
   );
 }
 
-/** Number of preset slots the player has bought with Insight (usable slots), 0-3. */
-export function getPurchasedPresetCount(
+/** Number of slots the player has bought with Insight (building-gated), 0-3. */
+export function getInsightPurchasedPresetCount(
   state: Pick<GameState, "villagerPresetsPurchased">,
 ): number {
   const raw = state.villagerPresetsPurchased ?? 0;
-  return Math.min(Math.max(0, Math.floor(raw)), MAX_PRESET_SLOTS);
+  return Math.min(Math.max(0, Math.floor(raw)), MAX_BUILDING_PRESET_SLOTS);
+}
+
+/** Number of extra slots granted by the `additional_preset_slots` shop purchase, 0-2. */
+export function getShopPresetSlotCount(
+  state: Pick<GameState, "villagerPresetSlotsFromShop">,
+): number {
+  const raw = state.villagerPresetSlotsFromShop ?? 0;
+  return Math.min(Math.max(0, Math.floor(raw)), SHOP_ADDITIONAL_PRESET_SLOTS);
+}
+
+/** True once the additional preset slots have been bought from the shop. */
+export function areAdditionalPresetSlotsPurchased(
+  state: Pick<GameState, "villagerPresetSlotsFromShop">,
+): boolean {
+  return getShopPresetSlotCount(state) >= SHOP_ADDITIONAL_PRESET_SLOTS;
+}
+
+/** Total usable preset slots (Insight-bought + shop-bought), 0-5. */
+export function getPurchasedPresetCount(
+  state: Pick<
+    GameState,
+    "villagerPresetsPurchased" | "villagerPresetSlotsFromShop"
+  >,
+): number {
+  return getInsightPurchasedPresetCount(state) + getShopPresetSlotCount(state);
 }
 
 /**
@@ -93,9 +122,9 @@ export function migrateVillagerPresetsPurchasedOnLoad(
   const usedCount = countUsedPresetSlots(state);
   if (usedCount <= 0) return null;
 
-  const current = getPurchasedPresetCount(state);
+  const current = getInsightPurchasedPresetCount(state);
   const buildingAvailable = getBuildingPresetSlotCount(state);
-  const target = Math.min(usedCount, buildingAvailable, MAX_PRESET_SLOTS);
+  const target = Math.min(usedCount, buildingAvailable, MAX_BUILDING_PRESET_SLOTS);
   if (target <= current) return null;
 
   return { villagerPresetsPurchased: target };
@@ -124,9 +153,11 @@ export function isPresetSlotUnlocked(
 export function getNextPurchasablePresetSlotIndex(
   state: Pick<GameState, "buildings" | "villagerPresetsPurchased">,
 ): number | null {
-  const purchased = getPurchasedPresetCount(state);
+  const purchased = getInsightPurchasedPresetCount(state);
   const available = getBuildingPresetSlotCount(state);
-  if (purchased >= available || purchased >= MAX_PRESET_SLOTS) return null;
+  if (purchased >= available || purchased >= MAX_BUILDING_PRESET_SLOTS) {
+    return null;
+  }
   return purchased;
 }
 

@@ -102,8 +102,10 @@ import {
 } from "@/game/villagerCapUpgrades";
 import {
   MAX_PRESET_SLOTS,
+  SHOP_ADDITIONAL_PRESET_SLOTS,
   applyPresetAssignments,
   canPurchasePresetSlot,
+  getInsightPurchasedPresetCount,
   getNextPresetUnlockCost,
   getNextPurchasablePresetSlotIndex,
   getPresetSlot,
@@ -206,6 +208,7 @@ interface GameStore extends GameState {
   leaderboardDialogOpen: boolean;
   shareDialogOpen: boolean;
   fullGamePurchaseDialogOpen: boolean;
+  presetSlotsPurchaseDialogOpen: boolean;
   idleModeDialog: {
     isOpen: boolean;
   };
@@ -452,6 +455,9 @@ interface GameStore extends GameState {
   setLeaderboardDialogOpen: (isOpen: boolean) => void;
   setShareDialogOpen: (isOpen: boolean) => void;
   setFullGamePurchaseDialogOpen: (isOpen: boolean) => void;
+  setPresetSlotsPurchaseDialogOpen: (isOpen: boolean) => void;
+  /** Grant the 2 extra preset slots from the `additional_preset_slots` shop purchase. */
+  grantAdditionalPresetSlots: () => void;
   setIdleModeDialog: (isOpen: boolean) => void;
   setRestartGameDialogOpen: (isOpen: boolean) => void;
   setDeleteAccountDialogOpen: (isOpen: boolean) => void;
@@ -1319,6 +1325,7 @@ function isBlockingDialogOpen(state: GameStore): boolean {
     state.leaderboardDialogOpen ||
     state.shareDialogOpen ||
     state.fullGamePurchaseDialogOpen ||
+    state.presetSlotsPurchaseDialogOpen ||
     state.idleModeDialog.isOpen ||
     state.restartGameDialogOpen ||
     state.deleteAccountDialogOpen ||
@@ -1530,6 +1537,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   leaderboardDialogOpen: false,
   shareDialogOpen: false,
   fullGamePurchaseDialogOpen: false,
+  presetSlotsPurchaseDialogOpen: false,
   musicMuted: false,
   sfxMuted: false,
   idleModeDialog: {
@@ -2341,11 +2349,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
           } else if (actionId === PRESET_UNLOCK_INSIGHT_KEY) {
             const slotIndex = getNextPurchasablePresetSlotIndex(state);
             if (slotIndex !== null) {
-              const purchasedBefore = getPurchasedPresetCount(state);
+              const insightBefore = getInsightPurchasedPresetCount(state);
+              const totalBefore = getPurchasedPresetCount(state);
               presetUnlockUpdate = {
-                villagerPresetsPurchased: purchasedBefore + 1,
+                villagerPresetsPurchased: insightBefore + 1,
                 // First unlock: select slot 1 for save. Later unlocks keep the current slot.
-                ...(purchasedBefore === 0 ? { activePresetSlot: 1 } : {}),
+                ...(totalBefore === 0 ? { activePresetSlot: 1 } : {}),
               };
             }
           } else if (actionId === QUEUE_SLOT_UNLOCK_INSIGHT_KEY) {
@@ -3922,6 +3931,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setFullGamePurchaseDialogOpen: (isOpen: boolean) => {
     set({ fullGamePurchaseDialogOpen: isOpen });
+  },
+
+  setPresetSlotsPurchaseDialogOpen: (isOpen: boolean) => {
+    set({ presetSlotsPurchaseDialogOpen: isOpen });
+  },
+
+  grantAdditionalPresetSlots: () => {
+    set((state) => {
+      if (
+        (state.villagerPresetSlotsFromShop ?? 0) >= SHOP_ADDITIONAL_PRESET_SLOTS
+      ) {
+        return {};
+      }
+      const totalBefore = getPurchasedPresetCount(state);
+      return {
+        villagerPresetSlotsFromShop: SHOP_ADDITIONAL_PRESET_SLOTS,
+        // If this is the player's first usable slot, select slot 1 for saving.
+        ...(totalBefore === 0 ? { activePresetSlot: 1 } : {}),
+      };
+    });
   },
 
   setIdleModeDialog: (isOpen: boolean) => {

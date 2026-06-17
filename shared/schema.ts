@@ -372,6 +372,9 @@ export const gameStateSchema = z.object({
   // at a time and only once the matching archive building exists. On load, slots
   // that already contain saved presets are grandfathered (except in dev builds).
   villagerPresetsPurchased: z.number().default(0),
+  // Extra preset slots bought via the shop (one-time purchase grants 2). Added on top
+  // of the building/Insight-unlocked slots; see `villagerJobPresets.ts`.
+  villagerPresetSlotsFromShop: z.number().default(0),
   // Number of extra construction queue slots bought with Insight (0-2). Base slot is always 1.
   constructionQueueSlotsPurchased: z.number().default(0),
   // One-time Construction Boost per in-progress build action id.
