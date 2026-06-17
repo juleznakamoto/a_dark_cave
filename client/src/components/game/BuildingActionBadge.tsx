@@ -153,17 +153,17 @@ export function BuildingActionBadge({
               />
               <polygon
                 className="building-action-badge__triangle building-action-badge__triangle--four"
-                points="35,35 65,35 50,65"
+                points="28,38 53,38 40,60"
                 fill="white"
               />
               <polygon
                 className="building-action-badge__triangle building-action-badge__triangle--five"
-                points="35,35 65,35 50,65"
+                points="47,38 72,38 60,60"
                 fill="white"
               />
               <polygon
                 className="building-action-badge__triangle building-action-badge__triangle--six"
-                points="35,35 65,35 50,65"
+                points="40,45 60,45 50,68"
                 fill="white"
               />
             </g>
