@@ -48,6 +48,12 @@ import SessionsTab from "./tabs/SessionsTab";
 import SocialPromptTab from "./tabs/SocialPromptTab";
 import LogsTab from "./tabs/LogsTab";
 import { aggregateSocialPromptFromSaves } from "@shared/socialPromptAdminStats";
+import {
+  buildDailyCompletionCounts,
+  buildDailyCompletionsVsPlayers,
+  extractCompletionFinishTimesMs,
+  getGameCompletionDistribution,
+} from "@shared/gameCompletionAdminStats";
 
 interface ButtonClickData {
   user_id: string;
@@ -60,6 +66,13 @@ interface ButtonClickData {
 interface GameSaveData {
   user_id: string;
   game_state: any;
+  game_stats?: Array<{
+    gameId?: string | null;
+    gameMode?: string;
+    startTime?: number;
+    finishTime?: number;
+    playTime?: number;
+  }>;
   updated_at: string;
   created_at: string;
 }
@@ -204,6 +217,9 @@ export default function AdminDashboard() {
     useState<AdminTwelveMonthChartRange>("1m");
 
   const [referralsChartTimeRange, setReferralsChartTimeRange] =
+    useState<AdminTwelveMonthChartRange>("1m");
+
+  const [completionsChartTimeRange, setCompletionsChartTimeRange] =
     useState<AdminTwelveMonthChartRange>("1m");
 
   // Full history for the selected environment (per-tab chart dropdowns still window their own series)
@@ -640,34 +656,22 @@ export default function AdminDashboard() {
     return result;
   }, [gameSaves, selectedMiningTypes]);
 
-  const getGameCompletionStats = useCallback(() => {
-    const relevantSaves = gameSaves;
+  const getGameCompletionStats = useCallback(
+    () => getGameCompletionDistribution(gameSaves),
+    [gameSaves],
+  );
 
-    let completedCount = 0;
-    let notCompletedCount = 0;
+  const getDailyCompletions = useCallback(() => {
+    const days = ADMIN_TWELVE_MONTH_CHART_DAYS[completionsChartTimeRange];
+    const finishTimesMs = extractCompletionFinishTimesMs(gameSaves);
+    return buildDailyCompletionCounts(finishTimesMs, days);
+  }, [gameSaves, completionsChartTimeRange]);
 
-    relevantSaves.forEach(save => {
-      const isCompleted = save.game_state?.events?.cube15a ||
-        save.game_state?.events?.cube15b ||
-        save.game_state?.events?.cube13 ||
-        save.game_state?.events?.cube14a ||
-        save.game_state?.events?.cube14b ||
-        save.game_state?.events?.cube14c ||
-        save.game_state?.events?.cube14d ||
-        save.game_state?.gameComplete;
-
-      if (isCompleted) {
-        completedCount++;
-      } else {
-        notCompletedCount++;
-      }
-    });
-
-    return [
-      { name: "Completed", value: completedCount },
-      { name: "Not Completed", value: notCompletedCount },
-    ];
-  }, [gameSaves]);
+  const getDailyCompletionsVsPlayers = useCallback(() => {
+    const days = ADMIN_TWELVE_MONTH_CHART_DAYS[completionsChartTimeRange];
+    const finishTimesMs = extractCompletionFinishTimesMs(gameSaves);
+    return buildDailyCompletionsVsPlayers(finishTimesMs, dauData, days);
+  }, [gameSaves, dauData, completionsChartTimeRange]);
 
   const getDailyPurchases = useCallback(() => {
     const data: Array<{ day: string; purchases: number }> = [];
@@ -1371,6 +1375,10 @@ export default function AdminDashboard() {
                   gameSaves={gameSaves}
                   totalUserCount={totalUserCount}
                   gameCompletionStats={getGameCompletionStats()}
+                  getDailyCompletions={getDailyCompletions}
+                  getDailyCompletionsVsPlayers={getDailyCompletionsVsPlayers}
+                  completionsChartTimeRange={completionsChartTimeRange}
+                  setCompletionsChartTimeRange={setCompletionsChartTimeRange}
                   COLORS={COLORS}
                 />
               </TabsContent>

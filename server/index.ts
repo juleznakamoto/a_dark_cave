@@ -552,7 +552,7 @@ app.get("/api/admin/data", async (req, res) => {
         .limit(ADMIN_DATA_CLICKS_LIMIT),
       adminClient
         .from("game_saves")
-        .select("user_id,username,game_state,updated_at,created_at")
+        .select("user_id,username,game_state,game_stats,updated_at,created_at")
         .or(`created_at.gte.${oneYearAgoFilter},updated_at.gte.${oneYearAgoFilter}`)
         .order("updated_at", { ascending: false })
         .limit(ADMIN_DATA_SAVES_LIMIT),
