@@ -1255,13 +1255,13 @@ export default function SidePanelSection({
   const titleHeading = (
     <h3
       className={cn(
-        "inline-flex items-end gap-0.5 text-xs font-medium tracking-wide leading-none text-gray-300",
+        "text-xs font-medium tracking-wide leading-none text-gray-300",
         titleTooltip &&
         isItemTooltipHovered(tooltipKey) &&
         "!text-gray-100",
       )}
     >
-      <span className="inline-flex items-end gap-0.5">
+      <span className="inline-flex items-end gap-0.5 align-baseline">
         {title}
         {titleTooltip ? <TooltipInfoIndicator /> : null}
       </span>
@@ -1275,7 +1275,7 @@ export default function SidePanelSection({
       tooltipId={tooltipKey}
       disabled
       tooltipTriggerAsChild
-      tooltipTriggerClassName="inline-flex items-end leading-none"
+      tooltipTriggerClassName="leading-none"
       onMouseEnter={() => {
         handleItemTooltipEnter(tooltipKey);
         if (!hoveredTooltips[tooltipKey]) {

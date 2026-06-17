@@ -953,7 +953,7 @@ export default function SidePanel() {
                 }
                 titleSuffix={
                   showResourceLimit ? (
-                    <span className="font-normal text-[10px] text-muted-foreground">
+                    <span className="align-baseline font-normal text-[10px] text-muted-foreground">
                       {" "}
                       {t("sidePanel.resourceLimitMax", {
                         limit: resourceLimitText,
@@ -1064,7 +1064,7 @@ export default function SidePanel() {
                 sectionId="population"
                 title={t("sidePanel.population")}
                 titleSuffix={
-                  <span className="font-normal text-muted-foreground">
+                  <span className="align-baseline font-normal text-muted-foreground">
                     {" "}
                     {current_population}/{total_population}
                   </span>
