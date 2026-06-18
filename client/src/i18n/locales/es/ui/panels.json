@@ -36,6 +36,7 @@
     "queueSlotUsed": "Espacio {{slot}}: construcción en curso",
     "queueSlotFree": "Espacio {{slot}}: disponible",
     "queueSlotLocked": "Espacio {{slot}}: bloqueado",
+    "slotBuildingNeededToUnlock": "Edificio requerido para desbloquear",
     "constructionBoost": "Acelerar construcción {{time}} por {{cost}} {{resource}}",
     "constructionBoostFinish": "Terminar construcción por {{cost}} {{resource}}",
     "cycle": "Ciclo",

@@ -13,6 +13,7 @@ import {
   getPresetSlotUnlockBuildingKey,
   getPresetUnlockCost,
   getPurchasedPresetCount,
+  isPresetSlotBuildingLocked,
   isPresetSlotUnlocked,
   countUsedPresetSlots,
   migrateVillagerPresetsPurchasedOnLoad,
@@ -77,6 +78,16 @@ describe("villagerJobPresets - Insight unlock", () => {
         makeState({ villagerPresetsPurchased: 99 } as any),
       ),
     ).toBe(3);
+  });
+
+  it("tracks building locks per preset slot index", () => {
+    const scribesOnly = makeState({
+      buildings: { scribesOffice: 1 } as any,
+    } as any);
+    expect(isPresetSlotBuildingLocked(scribesOnly, 0)).toBe(false);
+    expect(isPresetSlotBuildingLocked(scribesOnly, 1)).toBe(true);
+    expect(isPresetSlotBuildingLocked(scribesOnly, 2)).toBe(true);
+    expect(isPresetSlotBuildingLocked(scribesOnly, 3)).toBe(false);
   });
 
   it("only counts purchased slots as unlocked (usable)", () => {

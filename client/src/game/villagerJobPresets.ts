@@ -137,6 +137,18 @@ export function arePresetsVisible(
   return getBuildingPresetSlotCount(state) > 0;
 }
 
+/** Grey preview — archive building for this 0-based slot is not built yet. */
+export function isPresetSlotBuildingLocked(
+  state: Pick<GameState, "buildings">,
+  slotIndex: number,
+): boolean {
+  if (slotIndex < 0 || slotIndex >= MAX_BUILDING_PRESET_SLOTS) {
+    return false;
+  }
+  const buildingKey = PRESET_UNLOCK_BUILDINGS[slotIndex];
+  return (state.buildings?.[buildingKey] ?? 0) < 1;
+}
+
 /** A slot index (0-based) is usable once it has been bought (Insight or shop). */
 export function isPresetSlotUnlocked(
   state: Pick<

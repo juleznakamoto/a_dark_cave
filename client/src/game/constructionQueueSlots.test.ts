@@ -113,41 +113,19 @@ describe("constructionQueueSlots", () => {
     ).toBe(2);
   });
 
-  it("shows one slot by default, two after Lodge, three after Guild", () => {
-    expect(getVisibleQueueSlotCount(baseState())).toBe(1);
+  it("always shows all building-gated queue slots in the UI", () => {
+    expect(getVisibleQueueSlotCount(baseState())).toBe(BASE_QUEUE_SLOTS + 2);
     expect(
       getVisibleQueueSlotCount(
         baseState({
           buildings: {
             ...baseState().buildings,
             buildersLodge: 1,
-          } as GameState["buildings"],
-        }),
-      ),
-    ).toBe(2);
-    expect(
-      getVisibleQueueSlotCount(
-        baseState({
-          buildings: {
-            ...baseState().buildings,
-            buildersLodge: 1,
-            buildersHall: 1,
-          } as GameState["buildings"],
-        }),
-      ),
-    ).toBe(2);
-    expect(
-      getVisibleQueueSlotCount(
-        baseState({
-          buildings: {
-            ...baseState().buildings,
-            buildersLodge: 1,
-            buildersHall: 1,
             buildersGuild: 1,
           } as GameState["buildings"],
         }),
       ),
-    ).toBe(3);
+    ).toBe(BASE_QUEUE_SLOTS + 2);
   });
 
   it("Lodge unlocks first extra slot purchase; Guild unlocks second at 5000 Insight", () => {
@@ -413,7 +391,7 @@ describe("constructionQueueSlots", () => {
     expect(areAdditionalConstructionQueueSlotPurchased(base)).toBe(false);
     expect(getShopQueueSlotCount(base)).toBe(0);
     expect(isQueueSlotActive(base, SHOP_QUEUE_SLOT_INDEX)).toBe(false);
-    expect(getVisibleQueueSlotCount(base)).toBe(BASE_QUEUE_SLOTS);
+    expect(getVisibleQueueSlotCount(base)).toBe(BASE_QUEUE_SLOTS + 2);
 
     const withShop = baseState({ constructionQueueSlotsFromShop: 1 });
     expect(areAdditionalConstructionQueueSlotPurchased(withShop)).toBe(true);
@@ -422,7 +400,7 @@ describe("constructionQueueSlots", () => {
     expect(isQueueSlotBuildingLocked(withShop, SHOP_QUEUE_SLOT_INDEX)).toBe(
       false,
     );
-    expect(getVisibleQueueSlotCount(withShop)).toBe(BASE_QUEUE_SLOTS + 1);
+    expect(getVisibleQueueSlotCount(withShop)).toBe(BASE_QUEUE_SLOTS + 2);
     expect(getTotalQueueSlots(withShop)).toBe(BASE_QUEUE_SLOTS + 1);
   });
 });

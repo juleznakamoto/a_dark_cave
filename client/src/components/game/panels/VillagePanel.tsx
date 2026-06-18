@@ -57,14 +57,19 @@ import {
 } from "@/components/game/BuildingActionBadge";
 import { formatNumber } from "@/lib/utils";
 import {
+  MAX_BUILDING_PRESET_SLOTS,
   MAX_PRESET_SLOTS,
   areAdditionalPresetSlotsPurchased,
   arePresetsVisible,
   canPurchasePresetSlot,
+  getInsightPurchasedPresetCount,
   getNextPresetUnlockCost,
   getNextPurchasablePresetSlotIndex,
   getPresetSlot,
   getPurchasedPresetCount,
+  getShopPresetSlotCount,
+  isPresetSlotBuildingLocked,
+  isPresetSlotUnlocked,
 } from "@/game/villagerJobPresets";
 import {
   canPurchaseQueueSlot,
@@ -1258,6 +1263,10 @@ export default function VillagePanel() {
                           <div className="ml-auto flex shrink-0 items-center gap-1">
                             {Array.from({ length: visibleSlots }).map((_, i) => {
                               const slot = i + 1;
+                              const isBuildingLocked = isQueueSlotBuildingLocked(
+                                state,
+                                i,
+                              );
                               const isLocked = isQueueSlotLockedForUi(state, i);
                               const isUsed =
                                 isQueueSlotActive(state, i) && i < activeBuilds;
@@ -1272,8 +1281,11 @@ export default function VillagePanel() {
                                   tooltipId={queueTooltipId}
                                   tooltip={
                                     <div className="text-xs">
-                                      {isQueueSlotBuildingLocked(state, i)
-                                        ? t("village.queueSlotLocked", { slot })
+                                      {isBuildingLocked
+                                        ? t("village.slotBuildingNeededToUnlock", {
+                                          defaultValue:
+                                            "Building required to unlock",
+                                        })
                                         : isPurchasable && nextUnlockCost !== null
                                           ? t("village.queueSlotUnlock", {
                                             cost: formatNumber(nextUnlockCost),
@@ -1308,6 +1320,7 @@ export default function VillagePanel() {
                                     className={cn(
                                       HEADER_SLOT_SIZE_CLASS,
                                       "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
+                                      isBuildingLocked && "opacity-70",
                                     )}
                                   >
                                     {isLocked ? (
@@ -1980,25 +1993,132 @@ export default function VillagePanel() {
                 })()}
                 {arePresetsVisible(state) &&
                   (() => {
+                    const insightPurchased = getInsightPurchasedPresetCount(state);
+                    const shopPresetCount = getShopPresetSlotCount(state);
                     const purchasedCount = getPurchasedPresetCount(state);
+                    const showAllBuildingSlots = insightPurchased >= 1;
+                    const buildingSlotIndices: number[] = showAllBuildingSlots
+                      ? Array.from(
+                        { length: MAX_BUILDING_PRESET_SLOTS },
+                        (_, i) => i,
+                      )
+                      : Array.from({ length: insightPurchased }, (_, i) => i);
+                    const shopSlotIndices = Array.from(
+                      { length: shopPresetCount },
+                      (_, j) => MAX_BUILDING_PRESET_SLOTS + j,
+                    );
+                    const presetSlotIndices = [
+                      ...buildingSlotIndices,
+                      ...shopSlotIndices,
+                    ];
                     // The "+" buys 2 extra preset slots; visible once the Scribe's
                     // Office exists and the slots have not been bought yet.
                     const showAddPresetSlotsPlus =
                       (state.buildings?.scribesOffice ?? 0) > 0 &&
                       !areAdditionalPresetSlotsPurchased(state);
-                    if (purchasedCount < 1 && !showAddPresetSlotsPlus) {
+                    if (
+                      presetSlotIndices.length < 1 &&
+                      !showAddPresetSlotsPlus
+                    ) {
                       return null;
                     }
                     return (
                       <div className="ml-auto flex shrink-0 items-center gap-1">
-                        {Array.from({ length: purchasedCount }).map((_, i) => {
+                        {presetSlotIndices.map((i) => {
                           const slot = i + 1;
+                          const isBuildingLocked = isPresetSlotBuildingLocked(
+                            state,
+                            i,
+                          );
+                          const isUnlocked = isPresetSlotUnlocked(state, i);
+                          const presetTooltipId = `preset-slot-${slot}`;
+
+                          if (isBuildingLocked) {
+                            return (
+                              <TooltipWrapper
+                                key={`preset-slot-${slot}`}
+                                tooltipId={presetTooltipId}
+                                tooltip={
+                                  <div className="text-xs">
+                                    {t("village.slotBuildingNeededToUnlock", {
+                                      defaultValue:
+                                        "Building required to unlock",
+                                    })}
+                                  </div>
+                                }
+                                tooltipTriggerClassName="inline-flex items-center leading-none"
+                                className={pulseClassName(
+                                  presetTooltipId,
+                                  "inline-flex items-center",
+                                )}
+                                onMouseEnter={() =>
+                                  onMouseEnter(presetTooltipId)
+                                }
+                                onMouseLeave={() =>
+                                  onMouseLeave(presetTooltipId)
+                                }
+                              >
+                                <span
+                                  data-testid={presetTooltipId}
+                                  className={cn(
+                                    HEADER_SLOT_SIZE_CLASS,
+                                    "inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border text-[10px] tabular-nums opacity-70",
+                                  )}
+                                >
+                                  {slot}
+                                </span>
+                              </TooltipWrapper>
+                            );
+                          }
+
+                          if (!isUnlocked) {
+                            return (
+                              <TooltipWrapper
+                                key={`preset-slot-${slot}`}
+                                tooltipId={presetTooltipId}
+                                tooltip={
+                                  <div className="text-xs">
+                                    {t("village.presetLocked", {
+                                      defaultValue:
+                                        "Locked — available for purchase",
+                                    })}
+                                  </div>
+                                }
+                                tooltipTriggerClassName="inline-flex items-center leading-none"
+                                className={pulseClassName(
+                                  presetTooltipId,
+                                  "inline-flex items-center",
+                                )}
+                                onMouseEnter={() =>
+                                  onMouseEnter(presetTooltipId)
+                                }
+                                onMouseLeave={() =>
+                                  onMouseLeave(presetTooltipId)
+                                }
+                              >
+                                <span
+                                  data-testid={presetTooltipId}
+                                  className={cn(
+                                    HEADER_SLOT_SIZE_CLASS,
+                                    "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
+                                  )}
+                                >
+                                  <span
+                                    aria-hidden
+                                    className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
+                                  >
+                                    ×
+                                  </span>
+                                </span>
+                              </TooltipWrapper>
+                            );
+                          }
+
                           const isActive = activePresetSlot === slot;
                           const hasPreset = !!getPresetSlot(state, i);
                           const tooltipText = hasPreset
                             ? t("village.presetApply", { slot })
                             : t("village.presetEmpty", { slot });
-                          const presetTooltipId = `preset-slot-${slot}`;
                           return (
                             <TooltipWrapper
                               key={`preset-slot-${slot}`}
