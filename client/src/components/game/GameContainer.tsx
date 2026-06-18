@@ -272,8 +272,36 @@ export default function GameContainer() {
   }, [activeTab, setActiveTab, timedEventTab.isActive]);
 
   const [timedEventTabPulseClass, setTimedEventTabPulseClass] = useState("");
+  const [timedEventTabViewedEventId, setTimedEventTabViewedEventId] = useState<
+    string | null
+  >(null);
 
-  // Pulse timed event tab green until opened; red in the last 30 seconds
+  const currentTimedEventId = timedEventTab.event?.id ?? null;
+  const hasViewedCurrentTimedEvent =
+    currentTimedEventId != null &&
+    timedEventTabViewedEventId === currentTimedEventId;
+
+  useEffect(() => {
+    if (!timedEventTab.isActive) {
+      setTimedEventTabViewedEventId(null);
+      return;
+    }
+    setTimedEventTabViewedEventId((prev) =>
+      prev != null &&
+        currentTimedEventId != null &&
+        prev !== currentTimedEventId
+        ? null
+        : prev,
+    );
+  }, [timedEventTab.isActive, currentTimedEventId]);
+
+  useEffect(() => {
+    if (activeTab === "timedevent" && currentTimedEventId) {
+      setTimedEventTabViewedEventId(currentTimedEventId);
+    }
+  }, [activeTab, currentTimedEventId]);
+
+  // Green pulse until opened; red in the last 30 seconds
   useEffect(() => {
     if (
       !timedEventTab.isActive ||
@@ -294,9 +322,13 @@ export default function GameContainer() {
         return;
       }
 
-      setTimedEventTabPulseClass(
-        remaining <= 30000 ? "timer-tab-pulse-red" : "timer-tab-pulse-green",
-      );
+      if (remaining <= 30000) {
+        setTimedEventTabPulseClass("timer-tab-pulse-red");
+      } else if (!hasViewedCurrentTimedEvent) {
+        setTimedEventTabPulseClass("timer-tab-pulse-green");
+      } else {
+        setTimedEventTabPulseClass("");
+      }
     };
 
     updatePulse();
@@ -306,6 +338,7 @@ export default function GameContainer() {
     timedEventTab.isActive,
     timedEventTab.expiryTime,
     activeTab,
+    hasViewedCurrentTimedEvent,
   ]);
 
   // Apply pulse animation to achievement tab when there are unviewed achievements
