@@ -1057,10 +1057,7 @@ export default function VillagePanel() {
           -
         </Button>
         <div className="flex w-[3ch] shrink-0 items-center justify-center">
-          <AnimatedCounter
-            value={currentCount}
-            className={atCap ? "text-muted-foreground" : undefined}
-          />
+          <AnimatedCounter value={currentCount} />
         </div>
         <Button
           onMouseDown={() =>
@@ -1082,7 +1079,10 @@ export default function VillagePanel() {
           disabled={!canAssignMore}
           variant="ghost"
           size="xs"
-          className="h-5 w-5 shrink-0 flex items-center justify-center no-hover text-lg text-center"
+          className={cn(
+            "h-5 w-5 shrink-0 flex items-center justify-center no-hover text-lg text-center",
+            atCap && "disabled:opacity-100",
+          )}
           style={{ touchAction: "manipulation" }}
           button_id={`assign-${jobId}`}
         >
