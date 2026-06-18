@@ -944,6 +944,8 @@ body {
 @keyframes timer-tab-pulse-event {
 
   0%,
+  40%,
+  60%,
   100% {
     color: rgb(255 255 255) !important;
   }
