@@ -273,7 +273,7 @@ export default function GameContainer() {
 
   const [timedEventTabPulseClass, setTimedEventTabPulseClass] = useState("");
 
-  // Pulse timed event tab red until opened; more intense in the last 30 seconds
+  // Pulse timed event tab green until opened; red in the last 30 seconds
   useEffect(() => {
     if (
       !timedEventTab.isActive ||
@@ -295,9 +295,7 @@ export default function GameContainer() {
       }
 
       setTimedEventTabPulseClass(
-        remaining <= 30000
-          ? "timer-tab-pulse-red-urgent"
-          : "timer-tab-pulse-red",
+        remaining <= 30000 ? "timer-tab-pulse-red" : "timer-tab-pulse-green",
       );
     };
 
@@ -1214,12 +1212,7 @@ export default function GameContainer() {
                       {/* Timed Event Tab Button */}
                       {timedEventTab.isActive && (
                         <button
-                          className={`${tabIconButtonClass} gap-1 ${activeTab === "timedevent"
-                            ? tabActiveTextClass
-                            : timedEventTabPulseClass
-                              ? "opacity-100"
-                              : tabInactiveTextClass
-                            }`}
+                          className={`${tabIconButtonClass} gap-1 ${tabActiveTextClass}`}
                           onClick={() => setActiveTab("timedevent")}
                           data-testid="tab-timedevent"
                         >
