@@ -62,7 +62,6 @@ import {
   areAdditionalPresetSlotsPurchased,
   arePresetsVisible,
   canPurchasePresetSlot,
-  getInsightPurchasedPresetCount,
   getNextPresetUnlockCost,
   getNextPurchasablePresetSlotIndex,
   getPresetSlot,
@@ -1993,16 +1992,12 @@ export default function VillagePanel() {
                 })()}
                 {arePresetsVisible(state) &&
                   (() => {
-                    const insightPurchased = getInsightPurchasedPresetCount(state);
                     const shopPresetCount = getShopPresetSlotCount(state);
                     const purchasedCount = getPurchasedPresetCount(state);
-                    const showAllBuildingSlots = insightPurchased >= 1;
-                    const buildingSlotIndices: number[] = showAllBuildingSlots
-                      ? Array.from(
-                        { length: MAX_BUILDING_PRESET_SLOTS },
-                        (_, i) => i,
-                      )
-                      : Array.from({ length: insightPurchased }, (_, i) => i);
+                    const buildingSlotIndices = Array.from(
+                      { length: MAX_BUILDING_PRESET_SLOTS },
+                      (_, i) => i,
+                    );
                     const shopSlotIndices = Array.from(
                       { length: shopPresetCount },
                       (_, j) => MAX_BUILDING_PRESET_SLOTS + j,
@@ -2016,12 +2011,6 @@ export default function VillagePanel() {
                     const showAddPresetSlotsPlus =
                       (state.buildings?.scribesOffice ?? 0) > 0 &&
                       !areAdditionalPresetSlotsPurchased(state);
-                    if (
-                      presetSlotIndices.length < 1 &&
-                      !showAddPresetSlotsPlus
-                    ) {
-                      return null;
-                    }
                     return (
                       <div className="ml-auto flex shrink-0 items-center gap-1">
                         {presetSlotIndices.map((i) => {
