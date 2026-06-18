@@ -1216,7 +1216,9 @@ export default function GameContainer() {
                         <button
                           className={`${tabIconButtonClass} gap-1 ${activeTab === "timedevent"
                             ? tabActiveTextClass
-                            : tabInactiveTextClass
+                            : timedEventTabPulseClass
+                              ? "opacity-100"
+                              : tabInactiveTextClass
                             }`}
                           onClick={() => setActiveTab("timedevent")}
                           data-testid="tab-timedevent"
