@@ -97,6 +97,16 @@ export function areAdditionalConstructionQueueSlotPurchased(
   return getShopQueueSlotCount(state) >= SHOP_ADDITIONAL_QUEUE_SLOTS;
 }
 
+/** True when the "+" shop purchase for 2 extra queue slots should appear. */
+export function isAdditionalConstructionQueueSlotPurchaseAvailable(
+  state: Pick<GameState, "buildings" | "constructionQueueSlotsFromShop">,
+): boolean {
+  return (
+    (state.buildings?.buildersHall ?? 0) >= 1 &&
+    !areAdditionalConstructionQueueSlotPurchased(state)
+  );
+}
+
 /** Building-gated queue slot squares always shown in UI (excludes shop-purchased slot). */
 export function getVisibleQueueSlotCount(
   _state?: Pick<GameState, "buildings" | "constructionQueueSlotsFromShop">,

@@ -71,7 +71,7 @@ import {
 } from "@/game/villagerJobPresets";
 import {
   canPurchaseQueueSlot,
-  areAdditionalConstructionQueueSlotPurchased,
+  isAdditionalConstructionQueueSlotPurchaseAvailable,
   getActiveBuildCount,
   getNextPurchasableQueueSlotIndex,
   getNextQueueSlotUnlockCost,
@@ -117,6 +117,7 @@ import {
   riddleFogDurationMs,
 } from "@/game/cruelMode";
 import { isBuildingUpgrade } from "@/game/buildingHierarchy";
+import { BuildingUpgradeTooltipIcon } from "@/game/rules/buildingUpgradeTooltipIndicator";
 import cn from "clsx";
 import InvestDialog from "@/components/game/InvestDialog";
 import { isInvestmentWaveReadyForUi } from "@/game/rules/investmentHallTables";
@@ -794,27 +795,21 @@ export default function VillagePanel() {
     const durationLine = getActionDurationLine(actionId, state);
     const tooltipContent = composeActionTooltip({
       header: (
-        <div className="flex items-start gap-2">
-          <div className="flex-1 min-w-0 whitespace-nowrap">
-            {costBreakdown.map((cost, index) => (
-              <div
-                key={index}
-                className={
-                  cost.satisfied ? "text-foreground" : "text-muted-foreground"
-                }
-              >
-                {cost.text}
-              </div>
-            ))}
-            {durationLine}
-          </div>
-          {isUpgrade && (
-            <span className="font-noto-symbols-2 text-sm text-green-700 leading-none shrink-0">
-              ↑
-            </span>
-          )}
+        <div className="flex-1 min-w-0 whitespace-nowrap">
+          {costBreakdown.map((cost, index) => (
+            <div
+              key={index}
+              className={
+                cost.satisfied ? "text-foreground" : "text-muted-foreground"
+              }
+            >
+              {cost.text}
+            </div>
+          ))}
+          {durationLine}
         </div>
       ),
+      headerTrailing: isUpgrade ? <BuildingUpgradeTooltipIcon /> : undefined,
       description: buildingDescription,
       effects: revealedEffects,
       style:
@@ -1318,43 +1313,45 @@ export default function VillagePanel() {
                                 </TooltipWrapper>
                               );
                             })}
-                            {!areAdditionalConstructionQueueSlotPurchased(state) && (
-                              <TooltipWrapper
-                                tooltipId="queue-slots-purchase"
-                                tooltip={
-                                  <div className="text-xs">
-                                    {t("village.queueSlotsPurchase", {
-                                      defaultValue:
-                                        "Add 2 more construction queue slots",
-                                    })}
-                                  </div>
-                                }
-                                tooltipTriggerClassName="inline-flex items-center leading-none"
-                                className="inline-flex items-center cursor-pointer"
-                                onClick={() => {
-                                  setShopCheckoutItemId(
-                                    "additional_construction_queue_slot",
-                                  );
-                                  setShopDialogOpen(true);
-                                }}
-                              >
-                                <span
-                                  data-testid="queue-slots-purchase"
-                                  className={cn(
-                                    HEADER_SLOT_SIZE_CLASS,
-                                    "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
-                                  )}
-                                  style={{ touchAction: "manipulation" }}
+                            {isAdditionalConstructionQueueSlotPurchaseAvailable(
+                              state,
+                            ) && (
+                                <TooltipWrapper
+                                  tooltipId="queue-slots-purchase"
+                                  tooltip={
+                                    <div className="text-xs">
+                                      {t("village.queueSlotsPurchase", {
+                                        defaultValue:
+                                          "Add 2 more construction queue slots",
+                                      })}
+                                    </div>
+                                  }
+                                  tooltipTriggerClassName="inline-flex items-center leading-none"
+                                  className="inline-flex items-center cursor-pointer"
+                                  onClick={() => {
+                                    setShopCheckoutItemId(
+                                      "additional_construction_queue_slot",
+                                    );
+                                    setShopDialogOpen(true);
+                                  }}
                                 >
                                   <span
-                                    aria-hidden
-                                    className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
+                                    data-testid="queue-slots-purchase"
+                                    className={cn(
+                                      HEADER_SLOT_SIZE_CLASS,
+                                      "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
+                                    )}
+                                    style={{ touchAction: "manipulation" }}
                                   >
-                                    +
+                                    <span
+                                      aria-hidden
+                                      className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
+                                    >
+                                      +
+                                    </span>
                                   </span>
-                                </span>
-                              </TooltipWrapper>
-                            )}
+                                </TooltipWrapper>
+                              )}
                           </div>
                         );
                       })()}

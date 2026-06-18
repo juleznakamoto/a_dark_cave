@@ -5,6 +5,7 @@ import { useGameStore } from "@/game/state";
 import {
   BASE_QUEUE_SLOTS,
   areAdditionalConstructionQueueSlotPurchased,
+  isAdditionalConstructionQueueSlotPurchaseAvailable,
   canBoostConstruction,
   canPurchaseQueueSlot,
   constructionBoostWillFinishBuild,
@@ -415,5 +416,33 @@ describe("constructionQueueSlots", () => {
     );
     expect(getVisibleQueueSlotCount(withShop)).toBe(BASE_QUEUE_SLOTS + 2);
     expect(getTotalQueueSlots(withShop)).toBe(BASE_QUEUE_SLOTS + 2);
+  });
+
+  it("shows the shop purchase only after Builder's Hall is built", () => {
+    const withoutHall = baseState();
+    expect(
+      isAdditionalConstructionQueueSlotPurchaseAvailable(withoutHall),
+    ).toBe(false);
+
+    const withHall = baseState({
+      buildings: {
+        ...withoutHall.buildings,
+        buildersHall: 1,
+      } as GameState["buildings"],
+    });
+    expect(
+      isAdditionalConstructionQueueSlotPurchaseAvailable(withHall),
+    ).toBe(true);
+
+    const alreadyPurchased = baseState({
+      buildings: {
+        ...withoutHall.buildings,
+        buildersHall: 1,
+      } as GameState["buildings"],
+      constructionQueueSlotsFromShop: 2,
+    });
+    expect(
+      isAdditionalConstructionQueueSlotPurchaseAvailable(alreadyPurchased),
+    ).toBe(false);
   });
 });

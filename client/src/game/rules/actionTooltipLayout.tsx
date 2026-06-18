@@ -7,7 +7,7 @@ export function ActionTooltipSeparator() {
 export type ActionTooltipParts = {
   /** Cost lines, resource gains, villager requirements, etc. */
   header?: React.ReactNode;
-  /** Icon or badge shown at the top-right of the header row (e.g. upgrade ↑, focus ☩). */
+  /** Icon or badge shown at the top-right of the header row (e.g. upgrade 🠕, focus ☩). */
   headerTrailing?: React.ReactNode;
   /** Flavour text — never includes the action/item title. */
   description?: string;
