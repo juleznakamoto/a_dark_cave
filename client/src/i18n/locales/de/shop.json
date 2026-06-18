@@ -4,6 +4,11 @@
     "description": "Zwei weitere Voreinstellungs-Slots für Dorfbewohner-Arbeit",
     "name": "2 zusätzliche Voreinstellungs-Slots"
   },
+  "additional_construction_queue_slot": {
+    "activationMessage": "Ein zusätzlicher Bauwarteschlangen-Slot wurde hinzugefügt.",
+    "description": "Ein weiterer paralleler Bau-Slot",
+    "name": "1 zusätzlicher Bauwarteschlangen-Slot"
+  },
   "advanced_bundle": {
     "activationMessage": "Die Bestandteile des Bundles wurden deinen Käufen hinzugefügt!",
     "name": "Bleicher König Bundle" //ok

@@ -4,6 +4,11 @@
     "description": "Deux emplacements de préréglages de travail des villageois supplémentaires",
     "name": "2 emplacements de préréglages supplémentaires"
   },
+  "additional_construction_queue_slot": {
+    "activationMessage": "Un emplacement de file de construction supplémentaire a été ajouté.",
+    "description": "Un emplacement de construction parallèle supplémentaire",
+    "name": "1 emplacement de file de construction supplémentaire"
+  },
   "advanced_bundle": {
     "activationMessage": "Les éléments du pack du Roi pâle ont été ajoutés à vos achats !",
     "name": "Pack du Roi pâle"

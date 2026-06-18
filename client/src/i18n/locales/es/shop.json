@@ -4,6 +4,11 @@
     "description": "Dos espacios de preajuste de trabajos de aldeanos más",
     "name": "2 espacios de preajuste adicionales"
   },
+  "additional_construction_queue_slot": {
+    "activationMessage": "Se ha añadido un espacio de cola de construcción adicional.",
+    "description": "Un espacio de construcción paralela más",
+    "name": "1 espacio de cola de construcción adicional"
+  },
   "advanced_bundle": {
     "activationMessage": "¡Los componentes del Lote del Rey Pálido se han añadido a tus compras!",
     "name": "Lote del Rey Pálido"

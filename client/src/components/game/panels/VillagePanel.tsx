@@ -68,6 +68,7 @@ import {
 } from "@/game/villagerJobPresets";
 import {
   canPurchaseQueueSlot,
+  areAdditionalConstructionQueueSlotPurchased,
   getActiveBuildCount,
   getNextPurchasableQueueSlotIndex,
   getNextQueueSlotUnlockCost,
@@ -78,6 +79,7 @@ import {
   isQueueSlotBuildingLocked,
   isQueueSlotLockedForUi,
   isQueueSlotNextPurchasable,
+  MAX_QUEUE_SLOTS,
   QUEUE_SLOT_UNLOCK_INSIGHT_KEY,
 } from "@/game/constructionQueueSlots";
 import { CircularProgress } from "@/components/ui/circular-progress";
@@ -134,8 +136,9 @@ const VILLAGE_INDICATOR_TOOLTIP_IDS = [
   "preset-unlock",
   "preset-slots-purchase",
   "queue-slot-unlock",
+  "queue-slots-purchase",
   ...Array.from({ length: MAX_PRESET_SLOTS }, (_, i) => `preset-slot-${i + 1}`),
-  ...Array.from({ length: 3 }, (_, i) => `queue-slot-${i + 1}`),
+  ...Array.from({ length: MAX_QUEUE_SLOTS }, (_, i) => `queue-slot-${i + 1}`),
 ] as const;
 
 /** Shared with the 18px circular progress indicators in the Produce header row. */
@@ -1327,6 +1330,54 @@ export default function VillagePanel() {
                                 </TooltipWrapper>
                               );
                             })}
+                            {!areAdditionalConstructionQueueSlotPurchased(state) && (
+                              <TooltipWrapper
+                                tooltipId="queue-slots-purchase"
+                                tooltip={
+                                  <div className="text-xs">
+                                    {t("village.queueSlotsPurchase", {
+                                      defaultValue:
+                                        "Add 1 more construction queue slot",
+                                    })}
+                                  </div>
+                                }
+                                tooltipTriggerClassName="inline-flex items-center leading-none"
+                                className={pulseClassName(
+                                  "queue-slots-purchase",
+                                  "group flex items-center cursor-pointer",
+                                )}
+                                onMouseEnter={() =>
+                                  onMouseEnter("queue-slots-purchase")
+                                }
+                                onMouseLeave={() =>
+                                  onMouseLeave("queue-slots-purchase")
+                                }
+                                onClick={() => {
+                                  setShopCheckoutItemId(
+                                    "additional_construction_queue_slot",
+                                  );
+                                  setShopDialogOpen(true);
+                                }}
+                              >
+                                <Button
+                                  size="xs"
+                                  variant="outline"
+                                  data-testid="queue-slots-purchase"
+                                  button_id="queue-slots-purchase"
+                                  className={cn(
+                                    HEADER_SLOT_BUTTON_CLASS,
+                                    gameActionOutlineButtonClassName(false, {
+                                      groupHover: true,
+                                    }),
+                                  )}
+                                  style={{ touchAction: "manipulation" }}
+                                >
+                                  <span className="inline-flex items-center justify-center text-[14px] font-semibold leading-none text-white">
+                                    +
+                                  </span>
+                                </Button>
+                              </TooltipWrapper>
+                            )}
                           </div>
                         );
                       })()}

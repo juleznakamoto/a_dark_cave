@@ -4,6 +4,7 @@ import { handleLightFire } from "@/game/rules/caveExploreActions";
 import { useGameStore } from "@/game/state";
 import {
   BASE_QUEUE_SLOTS,
+  areAdditionalConstructionQueueSlotPurchased,
   canBoostConstruction,
   canPurchaseQueueSlot,
   constructionBoostWillFinishBuild,
@@ -16,6 +17,7 @@ import {
   getNextPurchasableUiSlotIndex,
   getNextQueueSlotUnlockCost,
   getPurchasedQueueSlots,
+  getShopQueueSlotCount,
   getTotalQueueSlots,
   getVisibleQueueSlotCount,
   hasFreeQueueSlot,
@@ -26,6 +28,7 @@ import {
   isQueueSlotBuildingLocked,
   isQueueSlotLockedForUi,
   isQueueSlotNextPurchasable,
+  SHOP_QUEUE_SLOT_INDEX,
 } from "@/game/constructionQueueSlots";
 
 function baseState(
@@ -403,5 +406,23 @@ describe("constructionQueueSlots", () => {
     expect(isConstructionQueueEnabled(state)).toBe(false);
     expect(hasFreeQueueSlot(state)).toBe(true);
     expect(getPurchasedQueueSlots(state)).toBe(0);
+  });
+
+  it("grants one extra active slot from the shop purchase without building gates", () => {
+    const base = baseState();
+    expect(areAdditionalConstructionQueueSlotPurchased(base)).toBe(false);
+    expect(getShopQueueSlotCount(base)).toBe(0);
+    expect(isQueueSlotActive(base, SHOP_QUEUE_SLOT_INDEX)).toBe(false);
+    expect(getVisibleQueueSlotCount(base)).toBe(BASE_QUEUE_SLOTS);
+
+    const withShop = baseState({ constructionQueueSlotsFromShop: 1 });
+    expect(areAdditionalConstructionQueueSlotPurchased(withShop)).toBe(true);
+    expect(getShopQueueSlotCount(withShop)).toBe(1);
+    expect(isQueueSlotActive(withShop, SHOP_QUEUE_SLOT_INDEX)).toBe(true);
+    expect(isQueueSlotBuildingLocked(withShop, SHOP_QUEUE_SLOT_INDEX)).toBe(
+      false,
+    );
+    expect(getVisibleQueueSlotCount(withShop)).toBe(BASE_QUEUE_SLOTS + 1);
+    expect(getTotalQueueSlots(withShop)).toBe(BASE_QUEUE_SLOTS + 1);
   });
 });

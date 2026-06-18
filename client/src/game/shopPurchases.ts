@@ -116,6 +116,20 @@ export function applyAdditionalPresetSlotsFromPurchaseRows(
   }
 }
 
+/**
+ * Re-grant the `additional_construction_queue_slot` entitlement from DB purchases (idempotent).
+ */
+export function applyAdditionalConstructionQueueSlotFromPurchaseRows(
+  rows: PurchaseRow[],
+): void {
+  const owned = rows.some(
+    (p) => p.item_id === 'additional_construction_queue_slot',
+  );
+  if (owned) {
+    useGameStore.getState().grantAdditionalConstructionQueueSlot();
+  }
+}
+
 /** Rehydrate shop entitlements from Supabase after load or refresh. */
 export async function rehydratePurchasesFromSupabase(): Promise<string[]> {
   try {
@@ -126,6 +140,7 @@ export async function rehydratePurchasesFromSupabase(): Promise<string[]> {
 
     applyFeastActivationsFromPurchaseRows(rows);
     applyAdditionalPresetSlotsFromPurchaseRows(rows);
+    applyAdditionalConstructionQueueSlotFromPurchaseRows(rows);
     applyGrantedOnPurchaseActivationsFromPurchaseRows(rows);
     return purchaseIdsFromRows(rows);
   } catch (error) {

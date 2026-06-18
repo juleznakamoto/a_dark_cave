@@ -30,6 +30,7 @@
     "presetLockedBuilding": "{{building}} zum Freischalten erforderlich",
     "presetSave": "Aktuelle Jobs in Vorlage {{slot}} speichern",
     "presetSlotsPurchase": "2 weitere Vorlagen-Slots hinzufügen",
+    "queueSlotsPurchase": "1 weiteren Bauwarteschlangen-Slot hinzufügen",
     "presetUnlock": "Job-Vorlage für {{cost}} Einsicht freischalten",
     "queueSlotUnlock": "Bauwarteschlange für {{cost}} Einsicht freischalten",
     "queueSlotUsed": "Warteschlange {{slot}}: Bau in Arbeit",

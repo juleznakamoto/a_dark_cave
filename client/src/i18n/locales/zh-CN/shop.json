@@ -4,6 +4,11 @@
     "description": "再增加两个村民工作预设槽位",
     "name": "2个额外预设槽位"
   },
+  "additional_construction_queue_slot": {
+    "activationMessage": "已添加一个额外的建造队列槽位。",
+    "description": "再增加一个并行建造槽位",
+    "name": "1个额外建造队列槽位"
+  },
   "advanced_bundle": {
     "activationMessage": "苍白之王礼包的内容已加入你的购买项目！",
     "name": "苍白之王礼包"

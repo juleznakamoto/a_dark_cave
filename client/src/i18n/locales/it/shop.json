@@ -4,6 +4,11 @@
     "description": "Altri due slot preimpostazione lavori dei villici",
     "name": "2 slot preimpostazione aggiuntivi"
   },
+  "additional_construction_queue_slot": {
+    "activationMessage": "È stato aggiunto uno slot coda di costruzione aggiuntivo.",
+    "description": "Un altro slot di costruzione parallela",
+    "name": "1 slot coda di costruzione aggiuntivo"
+  },
   "advanced_bundle": {
     "activationMessage": "I componenti del pacchetto sono stati aggiunti ai tuoi acquisti!",
     "name": "Pacchetto del Re Pallido"

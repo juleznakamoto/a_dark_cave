@@ -11,10 +11,18 @@ export const BASE_QUEUE_SLOTS = 1;
 /** Insight cost per extra slot purchase (Lodge unlock, then Guild unlock). */
 export const QUEUE_SLOT_UNLOCK_INSIGHT_COSTS = [2500, 5000] as const;
 
-/** Max purchasable extra slots (2) plus the base slot = 3 total. */
+/** Max purchasable extra slots (2) via Insight, plus the base slot. */
 export const MAX_PURCHASABLE_QUEUE_SLOTS = 2;
 
-export const MAX_QUEUE_SLOTS = BASE_QUEUE_SLOTS + MAX_PURCHASABLE_QUEUE_SLOTS;
+/** Extra slot granted by the one-time `additional_construction_queue_slot` shop purchase. */
+export const SHOP_ADDITIONAL_QUEUE_SLOTS = 1;
+
+/** 0-based index of the shop-purchased queue slot (after base + Insight slots). */
+export const SHOP_QUEUE_SLOT_INDEX =
+  BASE_QUEUE_SLOTS + MAX_PURCHASABLE_QUEUE_SLOTS;
+
+export const MAX_QUEUE_SLOTS =
+  BASE_QUEUE_SLOTS + MAX_PURCHASABLE_QUEUE_SLOTS + SHOP_ADDITIONAL_QUEUE_SLOTS;
 
 export const QUEUE_SLOT_UNLOCK_INSIGHT_KEY = "constructionQueueSlotUnlock";
 
@@ -62,11 +70,34 @@ export function getBuildingQueueSlotCount(
   return count;
 }
 
-/** Queue slot squares shown in UI (base + building-unlocked extras). */
-export function getVisibleQueueSlotCount(
-  state: Pick<GameState, "buildings">,
+export function isShopQueueSlot(slotIndex: number): boolean {
+  return slotIndex === SHOP_QUEUE_SLOT_INDEX;
+}
+
+/** Number of extra slots granted by the shop purchase, 0-1. */
+export function getShopQueueSlotCount(
+  state: Pick<GameState, "constructionQueueSlotsFromShop">,
 ): number {
-  return BASE_QUEUE_SLOTS + getBuildingQueueSlotCount(state);
+  const raw = state.constructionQueueSlotsFromShop ?? 0;
+  return Math.min(Math.max(0, Math.floor(raw)), SHOP_ADDITIONAL_QUEUE_SLOTS);
+}
+
+/** True once the additional construction queue slot has been bought from the shop. */
+export function areAdditionalConstructionQueueSlotPurchased(
+  state: Pick<GameState, "constructionQueueSlotsFromShop">,
+): boolean {
+  return getShopQueueSlotCount(state) >= SHOP_ADDITIONAL_QUEUE_SLOTS;
+}
+
+/** Queue slot squares shown in UI (base + building-unlocked extras + shop slot). */
+export function getVisibleQueueSlotCount(
+  state: Pick<GameState, "buildings" | "constructionQueueSlotsFromShop">,
+): number {
+  return (
+    BASE_QUEUE_SLOTS +
+    getBuildingQueueSlotCount(state) +
+    getShopQueueSlotCount(state)
+  );
 }
 
 export function getPurchasedQueueSlots(
@@ -99,10 +130,16 @@ export function isQueueSlotPaidFor(
 
 /** 0-based slot index: usable for parallel builds (base slot or paid + building met). */
 export function isQueueSlotActive(
-  state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
+  state: Pick<
+    GameState,
+    "buildings" | "constructionQueueSlotsPurchased" | "constructionQueueSlotsFromShop"
+  >,
   slotIndex: number,
 ): boolean {
   if (slotIndex === 0) return true;
+  if (isShopQueueSlot(slotIndex)) {
+    return getShopQueueSlotCount(state) >= 1;
+  }
   return (
     isQueueSlotBuildingUnlocked(state, slotIndex) &&
     isQueueSlotPaidFor(state, slotIndex)
@@ -114,15 +151,22 @@ export function isQueueSlotBuildingLocked(
   state: Pick<GameState, "buildings">,
   slotIndex: number,
 ): boolean {
+  if (isShopQueueSlot(slotIndex)) return false;
   return slotIndex > 0 && !isQueueSlotBuildingUnlocked(state, slotIndex);
 }
 
-/** Grey × — building met but Insight purchase still required. */
+/** Grey × — building met but Insight purchase still required (or shop slot not bought). */
 export function isQueueSlotPurchaseLocked(
-  state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
+  state: Pick<
+    GameState,
+    "buildings" | "constructionQueueSlotsPurchased" | "constructionQueueSlotsFromShop"
+  >,
   slotIndex: number,
 ): boolean {
   if (slotIndex === 0) return false;
+  if (isShopQueueSlot(slotIndex)) {
+    return getShopQueueSlotCount(state) < 1;
+  }
   return (
     isQueueSlotBuildingUnlocked(state, slotIndex) &&
     !isQueueSlotPaidFor(state, slotIndex)
@@ -131,7 +175,10 @@ export function isQueueSlotPurchaseLocked(
 
 /** Grey × in UI — slot is not yet usable (building and/or Insight missing). */
 export function isQueueSlotLockedForUi(
-  state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
+  state: Pick<
+    GameState,
+    "buildings" | "constructionQueueSlotsPurchased" | "constructionQueueSlotsFromShop"
+  >,
   slotIndex: number,
 ): boolean {
   return !isQueueSlotActive(state, slotIndex);
@@ -172,7 +219,10 @@ export function isQueueSlotNextPurchasable(
 
 /** Total parallel build capacity (game logic). */
 export function getTotalQueueSlots(
-  state: Pick<GameState, "buildings" | "constructionQueueSlotsPurchased">,
+  state: Pick<
+    GameState,
+    "buildings" | "constructionQueueSlotsPurchased" | "constructionQueueSlotsFromShop"
+  >,
 ): number {
   let total = 0;
   for (let i = 0; i < MAX_QUEUE_SLOTS; i++) {

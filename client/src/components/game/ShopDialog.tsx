@@ -38,6 +38,7 @@ import {
 } from "@/game/auth";
 import {
   applyAdditionalPresetSlotsFromPurchaseRows,
+  applyAdditionalConstructionQueueSlotFromPurchaseRows,
   applyFeastActivationsFromPurchaseRows,
   applyGrantedOnPurchaseActivationsFromPurchaseRows,
   fetchPurchaseRowsForSessionUser,
@@ -783,6 +784,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       setPurchasedItems(purchaseIdsFromRows(data));
       applyFeastActivationsFromPurchaseRows(data);
       applyAdditionalPresetSlotsFromPurchaseRows(data);
+      applyAdditionalConstructionQueueSlotFromPurchaseRows(data);
       applyGrantedOnPurchaseActivationsFromPurchaseRows(data);
     } catch (error) {
       logger.error("Error loading purchased items:", error);

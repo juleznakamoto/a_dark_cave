@@ -122,6 +122,7 @@ import {
   getNextQueueSlotUnlockCost,
   getPurchasedQueueSlots,
   QUEUE_SLOT_UNLOCK_INSIGHT_KEY,
+  SHOP_ADDITIONAL_QUEUE_SLOTS,
 } from "@/game/constructionQueueSlots";
 import {
   canEnchantWeapon,
@@ -463,6 +464,8 @@ interface GameStore extends GameState {
   setShopCheckoutItemId: (itemId: string | null) => void;
   /** Grant the 2 extra preset slots from the `additional_preset_slots` shop purchase. */
   grantAdditionalPresetSlots: () => void;
+  /** Grant the extra construction queue slot from the `additional_construction_queue_slot` shop purchase. */
+  grantAdditionalConstructionQueueSlot: () => void;
   setIdleModeDialog: (isOpen: boolean) => void;
   setRestartGameDialogOpen: (isOpen: boolean) => void;
   setDeleteAccountDialogOpen: (isOpen: boolean) => void;
@@ -2475,6 +2478,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Extra villager job preset slots bought in the shop (persist across all games)
       villagerPresetSlotsFromShop: state.villagerPresetSlotsFromShop ?? 0,
 
+      // Extra construction queue slot bought in the shop (persist across all games)
+      constructionQueueSlotsFromShop: state.constructionQueueSlotsFromShop ?? 0,
+
       // Cruel mode status
       cruelMode: isCruelModeActive,
 
@@ -3956,6 +3962,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
         villagerPresetSlotsFromShop: SHOP_ADDITIONAL_PRESET_SLOTS,
         // If this is the player's first usable slot, select slot 1 for saving.
         ...(totalBefore === 0 ? { activePresetSlot: 1 } : {}),
+      };
+    });
+  },
+
+  grantAdditionalConstructionQueueSlot: () => {
+    set((state) => {
+      if (
+        (state.constructionQueueSlotsFromShop ?? 0) >= SHOP_ADDITIONAL_QUEUE_SLOTS
+      ) {
+        return {};
+      }
+      return {
+        constructionQueueSlotsFromShop: SHOP_ADDITIONAL_QUEUE_SLOTS,
       };
     });
   },

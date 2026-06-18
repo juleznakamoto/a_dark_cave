@@ -378,6 +378,9 @@ export const gameStateSchema = z.object({
   villagerPresetSlotsFromShop: z.number().default(0),
   // Number of extra construction queue slots bought with Insight (0-2). Base slot is always 1.
   constructionQueueSlotsPurchased: z.number().default(0),
+  // Extra construction queue slot bought via the shop (one-time purchase grants 1). Added on top
+  // of the building/Insight-unlocked slots; see `constructionQueueSlots.ts`.
+  constructionQueueSlotsFromShop: z.number().default(0),
   // One-time Construction Boost per in-progress build action id.
   constructionBoostsUsed: z.record(z.string(), z.boolean()).default({}),
   // Weapon enchantment levels keyed by weapon id (Tomewarden Academy feature).

@@ -97,6 +97,22 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     grantedOnPurchase: true,
   },
 
+  /** Sold only via the dedicated "+" checkout dialog next to the construction
+   * queue slots (see VillagePanel). Never listed in the Shop dialog (`hiddenFromShop`). */
+  additional_construction_queue_slot: {
+    id: "additional_construction_queue_slot",
+    name: "1 Additional Construction Queue Slot",
+    description: "One more parallel construction slot",
+    originalPrice: 199,
+    price: 149, // 1.49 € (0.50 Beta Discount)
+    rewards: {},
+    canPurchaseMultipleTimes: false,
+    category: "tool",
+    activationMessage: "One additional construction queue slot has been added.",
+    hiddenFromShop: true,
+    grantedOnPurchase: true,
+  },
+
   gold_250: {
     id: "gold_250",
     name: "1'000 Gold",

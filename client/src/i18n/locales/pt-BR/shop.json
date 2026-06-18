@@ -4,6 +4,11 @@
     "description": "Mais dois espaços de predefinição de trabalho de aldeões",
     "name": "2 espaços de predefinição adicionais"
   },
+  "additional_construction_queue_slot": {
+    "activationMessage": "Um espaço adicional na fila de construção foi adicionado.",
+    "description": "Mais um espaço de construção paralela",
+    "name": "1 espaço adicional na fila de construção"
+  },
   "advanced_bundle": {
     "activationMessage": "Os componentes do pacote foram adicionados às suas compras!",
     "name": "Pacote do Rei Pálido"
