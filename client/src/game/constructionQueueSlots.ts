@@ -107,11 +107,13 @@ export function isAdditionalConstructionQueueSlotPurchaseAvailable(
   );
 }
 
-/** Building-gated queue slot squares always shown in UI (excludes shop-purchased slot). */
+/** Queue slot squares shown in the UI (building-gated slots + purchased shop slots). */
 export function getVisibleQueueSlotCount(
-  _state?: Pick<GameState, "buildings" | "constructionQueueSlotsFromShop">,
+  state?: Pick<GameState, "constructionQueueSlotsFromShop">,
 ): number {
-  return BASE_QUEUE_SLOTS + MAX_PURCHASABLE_QUEUE_SLOTS;
+  const buildingGated = BASE_QUEUE_SLOTS + MAX_PURCHASABLE_QUEUE_SLOTS;
+  if (!state) return buildingGated;
+  return buildingGated + getShopQueueSlotCount(state);
 }
 
 export function getPurchasedQueueSlots(

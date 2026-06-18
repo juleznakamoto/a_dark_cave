@@ -29,6 +29,7 @@ import {
   isQueueSlotBuildingLocked,
   isQueueSlotLockedForUi,
   isQueueSlotNextPurchasable,
+  SHOP_ADDITIONAL_QUEUE_SLOTS,
   SHOP_QUEUE_SLOT_INDEX,
 } from "@/game/constructionQueueSlots";
 
@@ -127,6 +128,19 @@ describe("constructionQueueSlots", () => {
         }),
       ),
     ).toBe(BASE_QUEUE_SLOTS + 2);
+  });
+
+  it("includes purchased shop queue slots in the UI count", () => {
+    expect(
+      getVisibleQueueSlotCount(
+        baseState({ constructionQueueSlotsFromShop: 1 }),
+      ),
+    ).toBe(BASE_QUEUE_SLOTS + 2 + 1);
+    expect(
+      getVisibleQueueSlotCount(
+        baseState({ constructionQueueSlotsFromShop: 2 }),
+      ),
+    ).toBe(BASE_QUEUE_SLOTS + 2 + 2);
   });
 
   it("Lodge unlocks first extra slot purchase; Guild unlocks second at 5000 Insight", () => {
@@ -414,7 +428,9 @@ describe("constructionQueueSlots", () => {
     expect(isQueueSlotBuildingLocked(withShop, SHOP_QUEUE_SLOT_INDEX)).toBe(
       false,
     );
-    expect(getVisibleQueueSlotCount(withShop)).toBe(BASE_QUEUE_SLOTS + 2);
+    expect(getVisibleQueueSlotCount(withShop)).toBe(
+      BASE_QUEUE_SLOTS + 2 + SHOP_ADDITIONAL_QUEUE_SLOTS,
+    );
     expect(getTotalQueueSlots(withShop)).toBe(BASE_QUEUE_SLOTS + 2);
   });
 
