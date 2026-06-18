@@ -272,9 +272,7 @@ export default function TimedEventPanel() {
         setHighlightedResources([]);
         setTimedEventTab(false);
 
-        // The useEffect in GameContainer will automatically switch to cave tab
-        // when it detects timedevent tab is active but event is no longer active
-        // when it detects timedevent tab is active but event is no longer active
+        // GameContainer switches away from timedevent when the event is no longer active
       }
     };
 
@@ -414,7 +412,9 @@ export default function TimedEventPanel() {
             <ActionInsightBadge
               target="timedEvent"
               timeRemainingMs={timeRemaining}
-              safetyTimeRemainingMs={safetyTimeRemaining}
+              safetyTimeRemainingMs={
+                isMerchantEvent ? 0 : safetyTimeRemaining
+              }
             />
           </div>
         </h2>
@@ -527,12 +527,12 @@ export default function TimedEventPanel() {
                 }
               }
 
-              // Disable if can't afford, time is up, already purchased, in safety period, or not enough villagers
+              // Disable if can't afford, time is up, already purchased, in safety period (non-merchant), or not enough villagers
               const isDisabled =
                 !canAfford ||
                 timeRemaining <= 0 ||
                 isPurchased ||
-                safetyTimeRemaining > 0 ||
+                (!isMerchantEvent && safetyTimeRemaining > 0) ||
                 !villagersCheckPassed;
 
               // Calculate success percentage if this choice has odds (Book of War)
@@ -681,9 +681,13 @@ export default function TimedEventPanel() {
             }}
             variant="outline"
             size="xs"
-            disabled={timeRemaining <= 0 || safetyTimeRemaining > 0}
+            disabled={
+              timeRemaining <= 0 ||
+              (!isMerchantEvent && safetyTimeRemaining > 0)
+            }
             className={gameActionOutlineButtonClassName(
-              timeRemaining <= 0 || safetyTimeRemaining > 0,
+              timeRemaining <= 0 ||
+              (!isMerchantEvent && safetyTimeRemaining > 0),
             )}
             button_id="timedevent-say_goodbye"
           >

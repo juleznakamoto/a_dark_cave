@@ -931,8 +931,7 @@ export default function VillagePanel() {
     }
   };
 
-  // When the tab switches away (e.g. Merchant pops up and auto-switches to timedevent tab),
-  // VillagePanel unmounts but the hold interval keeps running. Clear on unmount.
+  // When the tab switches away, VillagePanel unmounts but the hold interval keeps running. Clear on unmount.
   useEffect(() => {
     return () => {
       if (holdRef.current.timeout) clearTimeout(holdRef.current.timeout);
@@ -1344,7 +1343,7 @@ export default function VillagePanel() {
                                 tooltipTriggerClassName="inline-flex items-center leading-none"
                                 className={pulseClassName(
                                   "queue-slots-purchase",
-                                  "group flex items-center cursor-pointer",
+                                  "inline-flex items-center cursor-pointer",
                                 )}
                                 onMouseEnter={() =>
                                   onMouseEnter("queue-slots-purchase")
@@ -1359,23 +1358,21 @@ export default function VillagePanel() {
                                   setShopDialogOpen(true);
                                 }}
                               >
-                                <Button
-                                  size="xs"
-                                  variant="outline"
+                                <span
                                   data-testid="queue-slots-purchase"
-                                  button_id="queue-slots-purchase"
                                   className={cn(
-                                    HEADER_SLOT_BUTTON_CLASS,
-                                    gameActionOutlineButtonClassName(false, {
-                                      groupHover: true,
-                                    }),
+                                    HEADER_SLOT_SIZE_CLASS,
+                                    "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
                                   )}
                                   style={{ touchAction: "manipulation" }}
                                 >
-                                  <span className="inline-flex items-center justify-center text-[14px] font-semibold leading-none text-white">
+                                  <span
+                                    aria-hidden
+                                    className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
+                                  >
                                     +
                                   </span>
-                                </Button>
+                                </span>
                               </TooltipWrapper>
                             )}
                           </div>

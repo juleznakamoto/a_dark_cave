@@ -19,7 +19,12 @@ import AchievementsPanel from "./panels/AchievementsPanel";
 import TimedEventPanel from "./panels/TimedEventPanel";
 import LogPanel from "./panels/LogPanel";
 import StartScreen from "./StartScreen";
-import { useGameStore, shouldBlockGameHotkeys } from "@/game/state";
+import {
+  useGameStore,
+  shouldBlockGameHotkeys,
+  syncTimedEventTabPauseTracking,
+  getTimedEventTabEffectiveRemainingMs,
+} from "@/game/state";
 import type { GameTab } from "@/game/types";
 import EventDialog from "./EventDialog";
 import CombatDialog from "./CombatDialog";
@@ -227,8 +232,6 @@ export default function GameContainer() {
     });
   }, []);
 
-  // Track previous timed event state to detect when a new event starts
-  const prevTimedEventActiveRef = useRef(timedEventTab.isActive);
   const villageHotkeyTutorialShown = useGameStore(
     (state) => state.villageHotkeyTutorialShown,
   );
@@ -245,14 +248,6 @@ export default function GameContainer() {
       setVillageHotkeyTutorialOpen(true);
     }
   }, [flags.gameStarted, flags.villageUnlocked, villageHotkeyTutorialShown]);
-
-  // Auto-switch to timed event tab when a new event becomes active
-  useEffect(() => {
-    if (timedEventTab.isActive && !prevTimedEventActiveRef.current) {
-      setActiveTab("timedevent");
-    }
-    prevTimedEventActiveRef.current = timedEventTab.isActive;
-  }, [timedEventTab.isActive, setActiveTab]);
 
   // Ensure cave tab is ALWAYS active if no valid tab is selected
   useEffect(() => {
@@ -276,38 +271,44 @@ export default function GameContainer() {
     }
   }, [activeTab, setActiveTab, timedEventTab.isActive]);
 
-  // Apply pulse animation to timed event tab button when time is running low
+  const [timedEventTabPulseClass, setTimedEventTabPulseClass] = useState("");
+
+  // Pulse timed event tab red until opened; more intense in the last 30 seconds
   useEffect(() => {
-    const tabButton = document.querySelector('[data-testid="tab-timedevent"]');
-    if (!tabButton) return;
-
-    if (timedEventTab.isActive && timedEventTab.expiryTime) {
-      const updatePulse = () => {
-        const now = Date.now();
-        const remaining = Math.max(0, timedEventTab.expiryTime! - now);
-        const shouldPulse = remaining > 0 && remaining <= 30000; // Last 30 seconds
-
-        if (shouldPulse) {
-          tabButton.classList.add("timer-tab-pulse");
-        } else {
-          tabButton.classList.remove("timer-tab-pulse");
-        }
-      };
-
-      // Initial update
-      updatePulse();
-
-      // Update every second
-      const interval = setInterval(updatePulse, 1000);
-
-      return () => {
-        clearInterval(interval);
-        tabButton.classList.remove("timer-tab-pulse");
-      };
-    } else {
-      tabButton.classList.remove("timer-tab-pulse");
+    if (
+      !timedEventTab.isActive ||
+      !timedEventTab.expiryTime ||
+      activeTab === "timedevent"
+    ) {
+      setTimedEventTabPulseClass("");
+      return;
     }
-  }, [timedEventTab.isActive, timedEventTab.expiryTime]);
+
+    const updatePulse = () => {
+      syncTimedEventTabPauseTracking();
+      const remaining =
+        getTimedEventTabEffectiveRemainingMs(useGameStore.getState()) ?? 0;
+
+      if (remaining <= 0) {
+        setTimedEventTabPulseClass("");
+        return;
+      }
+
+      setTimedEventTabPulseClass(
+        remaining <= 30000
+          ? "timer-tab-pulse-red-urgent"
+          : "timer-tab-pulse-red",
+      );
+    };
+
+    updatePulse();
+    const interval = setInterval(updatePulse, 1000);
+    return () => clearInterval(interval);
+  }, [
+    timedEventTab.isActive,
+    timedEventTab.expiryTime,
+    activeTab,
+  ]);
 
   // Apply pulse animation to achievement tab when there are unviewed achievements
   useEffect(() => {
@@ -1220,7 +1221,9 @@ export default function GameContainer() {
                           onClick={() => setActiveTab("timedevent")}
                           data-testid="tab-timedevent"
                         >
-                          <span className="timer-symbol text-[14px] leading-none font-noto-symbols-2">
+                          <span
+                            className={`timer-symbol text-[14px] leading-none font-noto-symbols-2 ${timedEventTabPulseClass}`}
+                          >
                             ⊚
                           </span>
                         </button>
