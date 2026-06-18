@@ -124,7 +124,8 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
   → `EventManager`, `LogEntry`, plus topic files `events*.ts`), `insightReveal.ts` /
   `insightRevealTooltip.tsx`, `actionTooltipLayout.tsx` (`composeActionTooltip` — cost,
   description, revealed effects), `focusTooltipIndicator.tsx` (focus `☩` icon on eligible action
-  tooltips while focus is active), `tooltips.tsx` / `itemTooltips.tsx`.
+  tooltips while focus is active), `buildingUpgradeTooltipIndicator.tsx` (upgrade `🠕` icon on
+  construction tooltips for buildings that replace earlier tiers), `tooltips.tsx` / `itemTooltips.tsx`.
 - **Action path:** UI → `useGameStore.executeAction(id)` → `actions.ts` maps ID → `handle*`
   function in a rule module → `StateManager.scheduleEffectsUpdate()` recomputes derived stats.
 - **Event path:** `loop.ts`/store → `checkEvents()` → `EventManager` evaluates `allEvents`
@@ -308,7 +309,8 @@ Support: `server/vite.ts` (dev/prod hosting), `server/supabaseServerClient.ts` (
 9. **Tooltips** — `TooltipWrapper` + `useGlobalTooltip`; muted trailing 🛈 on section labels via
    `TooltipInfoIndicator.tsx`; panel action buttons compose layout via
    `rules/actionTooltipLayout.tsx` (`composeActionTooltip`); focus glow actions add `☩` via
-   `rules/focusTooltipIndicator.tsx` while focus is active.
+   `rules/focusTooltipIndicator.tsx` while focus is active; building upgrade construction
+   tooltips add `🠕` via `rules/buildingUpgradeTooltipIndicator.tsx`.
 10. **Dual persistence** — IndexedDB always; Supabase when authenticated (optimistic diff saves).
 
 > See `.cursorrules` for the full coding-style/philosophy guide; this file is the navigational map.
