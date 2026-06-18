@@ -30,7 +30,7 @@
     "presetLockedBuilding": "{{building}} necessario per sbloccare",
     "presetSave": "Salva i lavori attuali nel preset {{slot}}",
     "presetSlotsPurchase": "Aggiungi 2 slot preset in più",
-    "queueSlotsPurchase": "Aggiungi 1 slot coda di costruzione in più",
+    "queueSlotsPurchase": "Aggiungi 2 slot coda di costruzione in più",
     "presetUnlock": "Sblocca preset di lavori per {{cost}} Intuizione",
     "queueSlotUnlock": "Sblocca slot coda di costruzione per {{cost}} Intuizione",
     "queueSlotUsed": "Slot {{slot}}: costruzione in corso",

@@ -5,9 +5,9 @@
     "name": "2 zusätzliche Voreinstellungs-Slots"
   },
   "additional_construction_queue_slot": {
-    "activationMessage": "Ein zusätzlicher Bauwarteschlangen-Slot wurde hinzugefügt.",
-    "description": "Ein weiterer paralleler Bau-Slot",
-    "name": "1 zusätzlicher Bauwarteschlangen-Slot"
+    "activationMessage": "Zwei zusätzliche Bauwarteschlangen-Slots wurden hinzugefügt.",
+    "description": "Zwei weitere parallele Bau-Slots",
+    "name": "2 zusätzliche Bauwarteschlangen-Slots"
   },
   "advanced_bundle": {
     "activationMessage": "Die Bestandteile des Bundles wurden deinen Käufen hinzugefügt!",

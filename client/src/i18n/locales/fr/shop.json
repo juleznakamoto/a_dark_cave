@@ -5,9 +5,9 @@
     "name": "2 emplacements de préréglages supplémentaires"
   },
   "additional_construction_queue_slot": {
-    "activationMessage": "Un emplacement de file de construction supplémentaire a été ajouté.",
-    "description": "Un emplacement de construction parallèle supplémentaire",
-    "name": "1 emplacement de file de construction supplémentaire"
+    "activationMessage": "Deux emplacements de file de construction supplémentaires ont été ajoutés.",
+    "description": "Deux emplacements de construction parallèle supplémentaires",
+    "name": "2 emplacements de file de construction supplémentaires"
   },
   "advanced_bundle": {
     "activationMessage": "Les éléments du pack du Roi pâle ont été ajoutés à vos achats !",

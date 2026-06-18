@@ -464,7 +464,7 @@ interface GameStore extends GameState {
   setShopCheckoutItemId: (itemId: string | null) => void;
   /** Grant the 2 extra preset slots from the `additional_preset_slots` shop purchase. */
   grantAdditionalPresetSlots: () => void;
-  /** Grant the extra construction queue slot from the `additional_construction_queue_slot` shop purchase. */
+  /** Grant the 2 extra construction queue slots from the `additional_construction_queue_slot` shop purchase. */
   grantAdditionalConstructionQueueSlot: () => void;
   setIdleModeDialog: (isOpen: boolean) => void;
   setRestartGameDialogOpen: (isOpen: boolean) => void;

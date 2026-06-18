@@ -1348,7 +1348,7 @@ export default function VillagePanel() {
                                   <div className="text-xs">
                                     {t("village.queueSlotsPurchase", {
                                       defaultValue:
-                                        "Add 1 more construction queue slot",
+                                        "Add 2 more construction queue slots",
                                     })}
                                   </div>
                                 }

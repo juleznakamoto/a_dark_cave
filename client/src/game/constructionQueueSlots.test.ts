@@ -386,21 +386,34 @@ describe("constructionQueueSlots", () => {
     expect(getPurchasedQueueSlots(state)).toBe(0);
   });
 
-  it("grants one extra active slot from the shop purchase without building gates", () => {
+  it("grants two extra active slots from the shop purchase without building gates", () => {
     const base = baseState();
     expect(areAdditionalConstructionQueueSlotPurchased(base)).toBe(false);
     expect(getShopQueueSlotCount(base)).toBe(0);
     expect(isQueueSlotActive(base, SHOP_QUEUE_SLOT_INDEX)).toBe(false);
+    expect(isQueueSlotActive(base, SHOP_QUEUE_SLOT_INDEX + 1)).toBe(false);
     expect(getVisibleQueueSlotCount(base)).toBe(BASE_QUEUE_SLOTS + 2);
 
-    const withShop = baseState({ constructionQueueSlotsFromShop: 1 });
+    const withOneShopSlot = baseState({ constructionQueueSlotsFromShop: 1 });
+    expect(areAdditionalConstructionQueueSlotPurchased(withOneShopSlot)).toBe(
+      false,
+    );
+    expect(getShopQueueSlotCount(withOneShopSlot)).toBe(1);
+    expect(isQueueSlotActive(withOneShopSlot, SHOP_QUEUE_SLOT_INDEX)).toBe(true);
+    expect(
+      isQueueSlotActive(withOneShopSlot, SHOP_QUEUE_SLOT_INDEX + 1),
+    ).toBe(false);
+    expect(getTotalQueueSlots(withOneShopSlot)).toBe(BASE_QUEUE_SLOTS + 1);
+
+    const withShop = baseState({ constructionQueueSlotsFromShop: 2 });
     expect(areAdditionalConstructionQueueSlotPurchased(withShop)).toBe(true);
-    expect(getShopQueueSlotCount(withShop)).toBe(1);
+    expect(getShopQueueSlotCount(withShop)).toBe(2);
     expect(isQueueSlotActive(withShop, SHOP_QUEUE_SLOT_INDEX)).toBe(true);
+    expect(isQueueSlotActive(withShop, SHOP_QUEUE_SLOT_INDEX + 1)).toBe(true);
     expect(isQueueSlotBuildingLocked(withShop, SHOP_QUEUE_SLOT_INDEX)).toBe(
       false,
     );
     expect(getVisibleQueueSlotCount(withShop)).toBe(BASE_QUEUE_SLOTS + 2);
-    expect(getTotalQueueSlots(withShop)).toBe(BASE_QUEUE_SLOTS + 1);
+    expect(getTotalQueueSlots(withShop)).toBe(BASE_QUEUE_SLOTS + 2);
   });
 });

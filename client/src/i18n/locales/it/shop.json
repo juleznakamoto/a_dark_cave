@@ -5,9 +5,9 @@
     "name": "2 slot preimpostazione aggiuntivi"
   },
   "additional_construction_queue_slot": {
-    "activationMessage": "È stato aggiunto uno slot coda di costruzione aggiuntivo.",
-    "description": "Un altro slot di costruzione parallela",
-    "name": "1 slot coda di costruzione aggiuntivo"
+    "activationMessage": "Sono stati aggiunti due slot coda di costruzione aggiuntivi.",
+    "description": "Altri due slot di costruzione parallela",
+    "name": "2 slot coda di costruzione aggiuntivi"
   },
   "advanced_bundle": {
     "activationMessage": "I componenti del pacchetto sono stati aggiunti ai tuoi acquisti!",

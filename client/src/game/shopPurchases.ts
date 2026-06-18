@@ -118,6 +118,7 @@ export function applyAdditionalPresetSlotsFromPurchaseRows(
 
 /**
  * Re-grant the `additional_construction_queue_slot` entitlement from DB purchases (idempotent).
+ * Makes the 2 extra construction queue slots persist across all games / fresh loads,
  */
 export function applyAdditionalConstructionQueueSlotFromPurchaseRows(
   rows: PurchaseRow[],

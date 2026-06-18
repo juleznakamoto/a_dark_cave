@@ -5,9 +5,9 @@
     "name": "2 Additional Preset Slots"
   },
   "additional_construction_queue_slot": {
-    "activationMessage": "One additional construction queue slot has been added.",
-    "description": "One more parallel construction slot",
-    "name": "1 Additional Construction Queue Slot"
+    "activationMessage": "Two additional construction queue slots have been added.",
+    "description": "Two more parallel construction slots",
+    "name": "2 Additional Construction Queue Slots"
   },
   "advanced_bundle": {
     "activationMessage": "The bundle's components have been added to your purchases!",

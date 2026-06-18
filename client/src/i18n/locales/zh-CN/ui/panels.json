@@ -30,7 +30,7 @@
     "presetLockedBuilding": "需要 {{building}} 才能解锁",
     "presetSave": "将当前工作分配保存到预设 {{slot}}",
     "presetSlotsPurchase": "再添加 2 个预设槽位",
-    "queueSlotsPurchase": "再添加 1 个建造队列槽位",
+    "queueSlotsPurchase": "再添加 2 个建造队列槽位",
     "presetUnlock": "花费 {{cost}} 洞见解锁村民工作预设",
     "queueSlotUnlock": "花费 {{cost}} 洞见解锁建造队列槽位",
     "queueSlotUsed": "队列槽位 {{slot}}: 建造进行中",

@@ -14,10 +14,10 @@ export const QUEUE_SLOT_UNLOCK_INSIGHT_COSTS = [2500, 5000] as const;
 /** Max purchasable extra slots (2) via Insight, plus the base slot. */
 export const MAX_PURCHASABLE_QUEUE_SLOTS = 2;
 
-/** Extra slot granted by the one-time `additional_construction_queue_slot` shop purchase. */
-export const SHOP_ADDITIONAL_QUEUE_SLOTS = 1;
+/** Extra slots granted by the one-time `additional_construction_queue_slot` shop purchase. */
+export const SHOP_ADDITIONAL_QUEUE_SLOTS = 2;
 
-/** 0-based index of the shop-purchased queue slot (after base + Insight slots). */
+/** 0-based index of the first shop-purchased queue slot (after base + Insight slots). */
 export const SHOP_QUEUE_SLOT_INDEX =
   BASE_QUEUE_SLOTS + MAX_PURCHASABLE_QUEUE_SLOTS;
 
@@ -71,10 +71,18 @@ export function getBuildingQueueSlotCount(
 }
 
 export function isShopQueueSlot(slotIndex: number): boolean {
-  return slotIndex === SHOP_QUEUE_SLOT_INDEX;
+  return (
+    slotIndex >= SHOP_QUEUE_SLOT_INDEX &&
+    slotIndex < SHOP_QUEUE_SLOT_INDEX + SHOP_ADDITIONAL_QUEUE_SLOTS
+  );
 }
 
-/** Number of extra slots granted by the shop purchase, 0-1. */
+function getShopSlotOffset(slotIndex: number): number | null {
+  if (!isShopQueueSlot(slotIndex)) return null;
+  return slotIndex - SHOP_QUEUE_SLOT_INDEX;
+}
+
+/** Number of extra slots granted by the shop purchase, 0-2. */
 export function getShopQueueSlotCount(
   state: Pick<GameState, "constructionQueueSlotsFromShop">,
 ): number {
@@ -82,7 +90,7 @@ export function getShopQueueSlotCount(
   return Math.min(Math.max(0, Math.floor(raw)), SHOP_ADDITIONAL_QUEUE_SLOTS);
 }
 
-/** True once the additional construction queue slot has been bought from the shop. */
+/** True once the additional construction queue slots have been bought from the shop. */
 export function areAdditionalConstructionQueueSlotPurchased(
   state: Pick<GameState, "constructionQueueSlotsFromShop">,
 ): boolean {
@@ -134,7 +142,10 @@ export function isQueueSlotActive(
 ): boolean {
   if (slotIndex === 0) return true;
   if (isShopQueueSlot(slotIndex)) {
-    return getShopQueueSlotCount(state) >= 1;
+    const shopOffset = getShopSlotOffset(slotIndex);
+    return (
+      shopOffset !== null && getShopQueueSlotCount(state) > shopOffset
+    );
   }
   return (
     isQueueSlotBuildingUnlocked(state, slotIndex) &&
@@ -161,7 +172,8 @@ export function isQueueSlotPurchaseLocked(
 ): boolean {
   if (slotIndex === 0) return false;
   if (isShopQueueSlot(slotIndex)) {
-    return getShopQueueSlotCount(state) < 1;
+    const shopOffset = getShopSlotOffset(slotIndex);
+    return shopOffset === null || getShopQueueSlotCount(state) <= shopOffset;
   }
   return (
     isQueueSlotBuildingUnlocked(state, slotIndex) &&
