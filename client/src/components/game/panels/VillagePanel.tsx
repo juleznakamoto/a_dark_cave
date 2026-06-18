@@ -975,15 +975,15 @@ export default function VillagePanel() {
     <div key="villagers-summary" className="flex min-w-0 items-center">
       <div className="h-5 w-5 shrink-0" aria-hidden />
       <div className="flex w-[3ch] shrink-0 items-center justify-center">
-        <AnimatedCounter
-          value={totalPopulation}
-          className={atMaxPopulation ? "text-muted-foreground" : undefined}
-        />
+        <AnimatedCounter value={totalPopulation} />
       </div>
       <div className="h-5 w-5 shrink-0" aria-hidden />
       <span
         translate="no"
-        className="notranslate w-[4ch] shrink-0 tabular-nums text-muted-foreground"
+        className={cn(
+          "notranslate w-[4ch] shrink-0 tabular-nums",
+          !atMaxPopulation && "text-muted-foreground",
+        )}
         style={{
           fontSize: ANIMATED_COUNTER_FONT_SIZE,
           lineHeight: `${ANIMATED_COUNTER_HEIGHT}px`,
@@ -1090,7 +1090,10 @@ export default function VillagePanel() {
         </Button>
         <span
           translate="no"
-          className="notranslate w-[4ch] shrink-0 tabular-nums text-muted-foreground"
+          className={cn(
+            "notranslate w-[4ch] shrink-0 tabular-nums",
+            !atCap && "text-muted-foreground",
+          )}
           style={{
             fontSize: ANIMATED_COUNTER_FONT_SIZE,
             lineHeight: `${ANIMATED_COUNTER_HEIGHT}px`,
