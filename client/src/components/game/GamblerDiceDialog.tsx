@@ -35,7 +35,7 @@ import {
   resolveGamblerSessionForHydrate,
   type GamblerDiceSession,
 } from "@/game/gamblerSession";
-import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
+import { gameActionButtonGridClassName, gameActionOutlineButtonClassName } from "@/components/CooldownButton";
 import { cn, formatNumber } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 
@@ -578,8 +578,8 @@ export default function GamblerDiceDialog({
                 <p>
                   {inGamblerTutorial
                     ? t("ui:gambler.tutorialIntro", {
-                        count: GAMBLER_TUTORIAL_PLAYS,
-                      })
+                      count: GAMBLER_TUTORIAL_PLAYS,
+                    })
                     : hasBoneDice
                       ? t("ui:gambler.boneDiceIntro")
                       : t("ui:gambler.placeBet")}
@@ -591,7 +591,7 @@ export default function GamblerDiceDialog({
                   })}
                 </p>
               </div>
-              <div className="flex flex-wrap gap-2">
+              <div className={gameActionButtonGridClassName()}>
                 {inGamblerTutorial ? (
                   <Button
                     variant="outline"
@@ -678,8 +678,8 @@ export default function GamblerDiceDialog({
                     {wager === 0
                       ? t("ui:gambler.practiceBet")
                       : t("common:currency.goldAmount", {
-                          amount: formatNumber(wager),
-                        })}
+                        amount: formatNumber(wager),
+                      })}
                   </span>
                 </span>
                 <span>
@@ -742,9 +742,9 @@ export default function GamblerDiceDialog({
                         "text-xs",
                         gameActionOutlineButtonClassName(
                           phase !== "playerTurn" ||
-                            spinning ||
-                            pauseAfterPlayerRoll ||
-                            playerTotal >= goal,
+                          spinning ||
+                          pauseAfterPlayerRoll ||
+                          playerTotal >= goal,
                         ),
                       )}
                       button_id="gambler-roll"
@@ -771,15 +771,15 @@ export default function GamblerDiceDialog({
                         "text-xs",
                         gameActionOutlineButtonClassName(
                           phase !== "playerTurn" ||
-                            !hasRolledThisRound ||
-                            spinning ||
-                            pauseAfterPlayerRoll ||
-                            !canPlayerChooseNoRoll(playerTotal, npcTotal) ||
-                            isStopBlockedTiedFarUnderGoal(
-                              playerTotal,
-                              npcTotal,
-                              goal,
-                            ),
+                          !hasRolledThisRound ||
+                          spinning ||
+                          pauseAfterPlayerRoll ||
+                          !canPlayerChooseNoRoll(playerTotal, npcTotal) ||
+                          isStopBlockedTiedFarUnderGoal(
+                            playerTotal,
+                            npcTotal,
+                            goal,
+                          ),
                         ),
                       )}
                       button_id="gambler-stand"
@@ -802,8 +802,8 @@ export default function GamblerDiceDialog({
                     {wager === 0
                       ? t("ui:gambler.practiceBet")
                       : t("common:currency.goldAmount", {
-                          amount: formatNumber(wager),
-                        })}
+                        amount: formatNumber(wager),
+                      })}
                   </span>
                 </span>
                 <span>

@@ -768,7 +768,7 @@ export default function EstatePanel() {
         <div className="w-full space-y-2 pt-1 pb-4">
           <h3 className="text-xs font-medium text-foreground">{t("estate.cubeWhispers")}</h3>
 
-          <div className="grid grid-cols-6 place-items-center gap-x-2 gap-y-3 w-full">
+          <div className="grid grid-cols-6 place-items-center gap-x-2 gap-y-4 w-full">
             {completedCubeEvents.map((event) => {
               const openCubeEvent = () => {
                 useGameStore.getState().trackButtonClick(`cube-${event.id}`);

@@ -8,7 +8,7 @@ import {
 } from "@/game/rules";
 import { getActionDurationLine } from "@/game/rules/tooltips";
 import AttackWavesChart from "./AttackWavesChart";
-import CooldownButton from "@/components/CooldownButton";
+import CooldownButton, { gameActionButtonGridClassName } from "@/components/CooldownButton";
 import { useTranslation } from "react-i18next";
 import { getEffectName } from "@/i18n/resolveGameText";
 import {
@@ -56,7 +56,7 @@ export default function BastionPanel() {
           <h3 className="text-xs font-medium text-foreground">
             {t("bastion.heal")}
           </h3>
-          <div className="flex flex-wrap gap-2">
+          <div className={gameActionButtonGridClassName()}>
             {story?.seen?.restlessKnightWounded && state.fellowship?.restless_knight && (
               <CooldownButton
                 key="restless-knight"
@@ -149,7 +149,7 @@ export default function BastionPanel() {
           <h3 className="text-xs font-medium text-foreground">
             {t("bastion.repair")}
           </h3>
-          <div className="flex flex-wrap gap-2">
+          <div className={gameActionButtonGridClassName()}>
             {bastionDamaged && buildings.bastion > 0 && (
               <CooldownButton
                 key="bastion"

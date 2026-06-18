@@ -1617,7 +1617,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden outline-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden"
                 >
                   {/* Pinned via flex split below TabsList + intro (sticky breaks under dialog transforms). */}
-                  <div className="flex shrink-0 flex-wrap gap-1.5 pb-3">
+                  <div className="flex shrink-0 flex-wrap gap-x-1.5 gap-y-4 pb-3">
                     <Button
                       variant={selectedFilter === null ? "default" : "outline"}
                       size="xs"

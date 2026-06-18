@@ -37,6 +37,7 @@ import {
   getWatchtowerTierLabel,
 } from "@/i18n/fortificationLabels";
 import CooldownButton, {
+  gameActionButtonGridClassName,
   gameActionOutlineButtonClassName,
 } from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
@@ -1327,7 +1328,7 @@ export default function VillagePanel() {
                     </h3>
                   )
                 )}
-                <div className="flex w-full flex-wrap gap-2">
+                <div className={gameActionButtonGridClassName("w-full")}>
                   {visibleActions.map((action) =>
                     renderButton(action.id, action.label),
                   )}

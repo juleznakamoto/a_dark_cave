@@ -450,7 +450,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
               >
                 <div
                   className={cn(
-                    "flex flex-row flex-wrap items-center justify-start gap-x-6 gap-y-2",
+                    "flex flex-row flex-wrap items-center justify-start gap-x-6 gap-y-4",
                     INVEST_SECTION_INSET,
                   )}
                 >
@@ -524,8 +524,8 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                   "h-8 px-4 text-xs font-medium",
                   gameActionOutlineButtonClassName(
                     offers.length < 3 ||
-                      (resources.gold ?? 0) < Number(amountStr) ||
-                      Number(amountStr) > maxStake,
+                    (resources.gold ?? 0) < Number(amountStr) ||
+                    Number(amountStr) > maxStake,
                   ),
                 )}
                 disabled={

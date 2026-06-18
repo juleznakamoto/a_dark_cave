@@ -11,7 +11,7 @@ import {
   getResourceGainTooltip,
   getActionDurationLine,
 } from "@/game/rules/tooltips";
-import CooldownButton from "@/components/CooldownButton";
+import CooldownButton, { gameActionButtonGridClassName } from "@/components/CooldownButton";
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
 import { canRevealEffects } from "@/game/rules/insightReveal";
 import { getCraftItemDescription } from "@/game/rules/craftItemDescription";
@@ -568,7 +568,7 @@ export default function CavePanel() {
                     if (visibleActions.length === 0) return null;
 
                     return (
-                      <div key={subGroupIndex} className="flex w-full flex-wrap gap-2">
+                      <div key={subGroupIndex} className={gameActionButtonGridClassName("w-full")}>
                         {visibleActions.map((action) =>
                           renderButton(action.id, action.label),
                         )}
@@ -598,7 +598,7 @@ export default function CavePanel() {
                     {group.title}
                   </h3>
                 )}
-                <div className="flex w-full flex-wrap gap-2">
+                <div className={gameActionButtonGridClassName("w-full")}>
                   {visibleActions.map((action) =>
                     renderButton(action.id, action.label),
                   )}

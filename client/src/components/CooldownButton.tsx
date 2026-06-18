@@ -8,6 +8,11 @@ import { INSIGHT_REVEAL_DURATION_MS } from "@/game/rules/insightReveal";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { cn } from "@/lib/utils";
 
+/** Flex-wrap layout for grids of game action buttons (panels, timed events, dialogs). */
+export function gameActionButtonGridClassName(className?: string): string {
+  return cn("flex flex-wrap gap-x-2 gap-y-4", className);
+}
+
 /** Outline border + hover for game action buttons (panels, timed events, dialogs). */
 export function gameActionOutlineButtonClassName(
   disabled = false,
@@ -17,7 +22,7 @@ export function gameActionOutlineButtonClassName(
   return cn(
     disabled ? "border-orange-950/50" : "border-orange-950",
     !disabled &&
-      `${hoverPrefix}bg-accent ${hoverPrefix}text-accent-foreground`,
+    `${hoverPrefix}bg-accent ${hoverPrefix}text-accent-foreground`,
   );
 }
 
@@ -241,7 +246,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           isButtonDisabled && "pointer-events-none",
           // aria-disabled (not native disabled) so outline variant hover styles still apply — reset them.
           isButtonDisabled &&
-            "hover:!bg-background hover:!text-foreground",
+          "hover:!bg-background hover:!text-foreground",
           isCompassGlowing && "compass-glow",
           variant === "outline" && gameActionOutlineButtonClassName(isButtonDisabled),
           className,

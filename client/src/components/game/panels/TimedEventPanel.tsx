@@ -12,7 +12,7 @@ import {
   getTimedEventTabEffectiveRemainingMs,
 } from "@/game/state";
 import { Button } from "@/components/ui/button";
-import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
+import { gameActionButtonGridClassName, gameActionOutlineButtonClassName } from "@/components/CooldownButton";
 import { cn } from "@/lib/utils";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { getMerchantTradeEffectTooltipLine } from "@/game/rules/eventsMerchant";
@@ -484,7 +484,7 @@ export default function TimedEventPanel() {
               })()}
           </h3>
         )}
-        <div className="flex flex-wrap gap-2 mt-2">
+        <div className={gameActionButtonGridClassName("mt-2")}>
           {Array.isArray(eventChoices) &&
             eventChoices.map((choice) => {
               const tradeChoice = choice as EventChoice & Partial<MerchantTradeData>;

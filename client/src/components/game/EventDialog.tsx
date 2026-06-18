@@ -12,7 +12,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
+import { gameActionButtonGridClassName, gameActionOutlineButtonClassName } from "@/components/CooldownButton";
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
@@ -318,7 +318,7 @@ export default function EventDialog({
               </DialogDescription>
             </DialogHeader>
 
-            <div className="flex flex-wrap gap-2">
+            <div className={gameActionButtonGridClassName()}>
               {eventChoices.map((choice) => {
                 const tradeChoice = choice as typeof choice & Partial<MerchantTradeData>;
                 const cost = choice.cost;

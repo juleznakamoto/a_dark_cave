@@ -14,7 +14,7 @@ import {
 import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
 import { getFocusTooltipHeaderTrailing } from "@/game/rules/focusTooltipIndicator";
 import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
-import CooldownButton from "@/components/CooldownButton";
+import CooldownButton, { gameActionButtonGridClassName } from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
 import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
@@ -572,7 +572,7 @@ export default function ForestPanel() {
                           : group.title}
                   </h3>
                 )}
-                <div className="flex w-full flex-wrap gap-2 justify-start">
+                <div className={gameActionButtonGridClassName("w-full justify-start")}>
                   {visibleActions.map((action) =>
                     renderButton(action.id, action.label),
                   )}
