@@ -1,21 +1,48 @@
 import Stripe from 'stripe';
 import { getDiscountedShopPriceCents } from '../shared/shopCheckoutPrice';
+import { shopDiscountFlagsFromPaymentMetadata } from '../shared/shopDiscountEligibility';
 import { SHOP_ITEMS, type ShopItem } from '../shared/shopItems';
+import {
+  assertCanPurchaseShopItem,
+  assertShopDiscountMetadataAllowed,
+  fetchShopDiscountGameState,
+  persistShopDiscountConsumption,
+  resolveServerShopDiscountOptions,
+  userAlreadyOwnsShopItem,
+} from './shopPurchaseEligibility';
 import { reportingEurUsdCentsFromStripeFx } from './stripeFxQuote';
 
 const logger = console;
 
-const stripeSecretKey = process.env.NODE_ENV === 'production'
-  ? process.env.STRIPE_SECRET_KEY_PROD
-  : process.env.STRIPE_SECRET_KEY_DEV;
+function resolveStripeSecretKey(): string {
+  return (
+    (process.env.NODE_ENV === 'production'
+      ? process.env.STRIPE_SECRET_KEY_PROD
+      : process.env.STRIPE_SECRET_KEY_DEV) || ''
+  );
+}
+
+const stripeSecretKey = resolveStripeSecretKey();
 
 if (!stripeSecretKey) {
   logger.error('⚠️ STRIPE SECRET KEY NOT CONFIGURED - Payment features will not work');
 }
 
-const stripe = new Stripe(stripeSecretKey || '', {
+const stripe = new Stripe(stripeSecretKey, {
   apiVersion: '2024-12-18.acacia',
 });
+
+export function getStripeClient(): Stripe {
+  return stripe;
+}
+
+export function getStripeWebhookSecret(): string | null {
+  const secret =
+    process.env.NODE_ENV === 'production'
+      ? process.env.STRIPE_WEBHOOK_SECRET_PROD
+      : process.env.STRIPE_WEBHOOK_SECRET_DEV;
+  return secret?.trim() || null;
+}
 
 /**
  * Compact key for admin charts/DB, from Charge.payment_method_details.
@@ -121,6 +148,7 @@ export async function createPaymentIntent(
   playlightFirstPurchaseDiscount?: boolean,
   tradersSonGratitudeDiscount?: boolean,
   cruelModeJourneyCompleteDiscount?: boolean,
+  supabase?: Parameters<typeof assertCanPurchaseShopItem>[0],
 ) {
   const item = SHOP_ITEMS[itemId];
   if (!item) {
@@ -134,37 +162,59 @@ export async function createPaymentIntent(
     throw new Error('Invalid item configuration');
   }
 
-  // Full game is never discounted; shop discounts (Playlight, trader gratitude) apply only to other items.
-  const allowShopDiscounts = itemId !== "full_game";
+  if (supabase && userId) {
+    await assertCanPurchaseShopItem(supabase, userId, itemId);
+  }
 
-  // CRITICAL: Always use server-side price, never trust client
-  const tradersRequested =
-    allowShopDiscounts && item.price > 0 && tradersGratitudeDiscount === true;
-  const playlightRequested =
-    allowShopDiscounts &&
-    item.price > 0 &&
-    playlightFirstPurchaseDiscount === true;
-  const sonRequested =
-    allowShopDiscounts && item.price > 0 && tradersSonGratitudeDiscount === true;
-  const journeyCompleteRequested =
-    allowShopDiscounts &&
-    itemId === "cruel_mode" &&
-    item.price > 0 &&
-    cruelModeJourneyCompleteDiscount === true;
+  const appliedDiscounts =
+    supabase && userId
+      ? await resolveServerShopDiscountOptions(supabase, userId, itemId, {
+        playlightFirstPurchase:
+          playlightFirstPurchaseDiscount === true ? true : undefined,
+        tradersGratitude:
+          tradersGratitudeDiscount === true ? true : undefined,
+        tradersSonGratitude:
+          tradersSonGratitudeDiscount === true ? true : undefined,
+        cruelModeJourneyComplete:
+          cruelModeJourneyCompleteDiscount === true ? true : undefined,
+      })
+      : {
+        playlightFirstPurchase:
+          itemId !== 'full_game' &&
+            item.price > 0 &&
+            playlightFirstPurchaseDiscount === true
+            ? true
+            : undefined,
+        tradersGratitude:
+          itemId !== 'full_game' &&
+            item.price > 0 &&
+            tradersGratitudeDiscount === true
+            ? true
+            : undefined,
+        tradersSonGratitude:
+          itemId !== 'full_game' &&
+            item.price > 0 &&
+            tradersSonGratitudeDiscount === true
+            ? true
+            : undefined,
+        cruelModeJourneyComplete:
+          itemId === 'cruel_mode' &&
+            item.price > 0 &&
+            cruelModeJourneyCompleteDiscount === true
+            ? true
+            : undefined,
+      };
+
   const amount = getDiscountedShopPriceCents(
     item.price,
-    {
-      playlightFirstPurchase: playlightRequested,
-      tradersGratitude: tradersRequested,
-      tradersSonGratitude: sonRequested,
-      cruelModeJourneyComplete: journeyCompleteRequested,
-    },
+    appliedDiscounts,
     itemId,
   );
-  const tradersApplied = tradersRequested;
-  const playlightApplied = playlightRequested;
-  const sonApplied = sonRequested;
-  const journeyCompleteApplied = journeyCompleteRequested;
+  const tradersApplied = appliedDiscounts.tradersGratitude === true;
+  const playlightApplied = appliedDiscounts.playlightFirstPurchase === true;
+  const sonApplied = appliedDiscounts.tradersSonGratitude === true;
+  const journeyCompleteApplied =
+    appliedDiscounts.cruelModeJourneyComplete === true;
 
   // Optional: Log if client sent a different price (potential attack attempt)
   if (clientPrice !== undefined && clientPrice !== item.price) {
@@ -235,26 +285,52 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
         success: true,
         itemId: existingByPi.item_id,
         purchase: existingByPi,
+        discountMetadata: paymentIntent.metadata,
       };
     }
 
     const itemId = paymentIntent.metadata.itemId;
     const item = SHOP_ITEMS[itemId];
     if (item) {
+      if (!item.canPurchaseMultipleTimes) {
+        const alreadyOwned = await userAlreadyOwnsShopItem(
+          supabase,
+          userId,
+          itemId,
+        );
+        if (alreadyOwned) {
+          logger.error(
+            `Duplicate purchase blocked for item ${itemId}, user ${userId}`,
+          );
+          return {
+            success: false,
+            error: 'Item already purchased',
+          };
+        }
+      }
+
+      const discountMetadata = shopDiscountFlagsFromPaymentMetadata(
+        paymentIntent.metadata,
+      );
+      const gameState = await fetchShopDiscountGameState(supabase, userId);
+      const discountCheck = assertShopDiscountMetadataAllowed(
+        gameState,
+        itemId,
+        paymentIntent.metadata,
+      );
+      if (!discountCheck.ok) {
+        logger.error(
+          `Shop discount rejected for item ${itemId}, user ${userId}: ${discountCheck.error}`,
+        );
+        return {
+          success: false,
+          error: discountCheck.error,
+        };
+      }
+
       const expectedAmount = getDiscountedShopPriceCents(
         item.price,
-        {
-          playlightFirstPurchase:
-            paymentIntent.metadata.playlightFirstPurchaseDiscountApplied ===
-            'true',
-          tradersGratitude:
-            paymentIntent.metadata.tradersGratitudeDiscountApplied === 'true',
-          tradersSonGratitude:
-            paymentIntent.metadata.tradersSonGratitudeDiscountApplied === 'true',
-          cruelModeJourneyComplete:
-            paymentIntent.metadata.cruelModeJourneyCompleteDiscountApplied ===
-            'true',
-        },
+        discountMetadata,
         itemId,
       );
       if (paymentIntent.amount !== expectedAmount) {
@@ -332,6 +408,7 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
             success: true,
             itemId: raceRow.item_id,
             purchase: raceRow,
+            discountMetadata: paymentIntent.metadata,
           };
         }
       }
@@ -340,6 +417,11 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
     }
 
     logger.log('✅ Purchase saved:', purchaseData);
+
+    const discountApplied = shopDiscountFlagsFromPaymentMetadata(
+      paymentIntent.metadata,
+    );
+    await persistShopDiscountConsumption(supabase, userId, discountApplied);
 
     // Guest / PayPal: email is only on the charge — backfill Stripe metadata for support.
     if (buyer.email && !trimOrNull(paymentIntent.metadata?.userEmail)) {
@@ -387,7 +469,8 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
     return {
       success: true,
       itemId,
-      purchase: purchaseData
+      purchase: purchaseData,
+      discountMetadata: paymentIntent.metadata,
     };
   }
 

@@ -1,7 +1,6 @@
-import {
-  getSessionAccessToken,
-  getSessionUser,
-} from "@/game/auth";
+import { verifyPaymentWithRetry } from "@/lib/paymentVerify";
+import { getSessionUser } from "@/game/auth";
+import { applyShopDiscountConsumptionFromPaymentMetadata } from "@/game/shopPostPurchaseState";
 import { rehydratePurchasesFromSupabase } from "@/game/shopPurchases";
 import { toast } from "@/hooks/use-toast";
 import { useGameStore } from "@/game/state";
@@ -101,30 +100,14 @@ export async function processStripePaymentReturn(): Promise<void> {
     return;
   }
 
-  const accessToken = await getSessionAccessToken();
-
   try {
-    const response = await fetch("/api/payment/verify", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-      },
-      body: JSON.stringify({
-        paymentIntentId,
-        userId: user.id,
-      }),
-    });
-    const result = (await response.json()) as {
-      success: boolean;
-      itemId?: string;
-      error?: string;
-    };
+    const result = await verifyPaymentWithRetry(paymentIntentId, user.id);
     if (result.success && result.itemId) {
       const item = SHOP_ITEMS[result.itemId];
       if (item && item.price > 0) {
         applyStoreAfterVerifiedPurchase();
       }
+      applyShopDiscountConsumptionFromPaymentMetadata(result.discountMetadata);
       await rehydratePurchasesFromSupabase();
       try {
         const { saveGame } = await import("@/game/save");

@@ -1,16 +1,23 @@
 import { vi } from "vitest";
 
-/**
- * Minimal Supabase chain for `verifyPayment` tests: duplicate check
- * (`from().select().eq().maybeSingle()`), main `insert().select().single()`,
- * and bundle component lines (`insert()` only, `{ error }`).
- */
-export function createSupabaseMockForStripeVerify(options?: {
+export type StripeVerifySupabaseMockOptions = {
   existingPurchaseByIntent?: Record<string, unknown> | null;
+  userPurchaseRows?: Array<{ item_id: string }>;
+  gameState?: Record<string, unknown> | null;
   insertSingleData?: Record<string, unknown>;
   insertSingleError?: unknown;
-}) {
+};
+
+/**
+ * Supabase chain for `verifyPayment` tests: duplicate PI check, owned-item check,
+ * discount game-state read, purchase insert, and optional discount persistence update.
+ */
+export function createSupabaseMockForStripeVerify(
+  options?: StripeVerifySupabaseMockOptions,
+) {
   const existing = options?.existingPurchaseByIntent ?? null;
+  const userPurchaseRows = options?.userPurchaseRows ?? [];
+  const gameState = options?.gameState ?? null;
   const insertSingleData = options?.insertSingleData ?? {
     id: "purchase123",
     item_id: "gold_250",
@@ -34,15 +41,52 @@ export function createSupabaseMockForStripeVerify(options?: {
     };
   });
 
-  return {
-    from: vi.fn(() => ({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => ({
-          maybeSingle: vi.fn(async () => ({ data: existing })),
+  const update = vi.fn(() => ({
+    eq: vi.fn(async () => ({ error: null })),
+  }));
+
+  const from = vi.fn((table: string) => {
+    if (table === "purchases") {
+      return {
+        select: vi.fn((cols?: string) => {
+          if (cols === "item_id") {
+            return {
+              eq: vi.fn(async () => ({
+                data: userPurchaseRows,
+                error: null,
+              })),
+            };
+          }
+          return {
+            eq: vi.fn(() => ({
+              maybeSingle: vi.fn(async () => ({ data: existing })),
+            })),
+          };
+        }),
+        insert,
+      };
+    }
+
+    if (table === "game_saves") {
+      return {
+        select: vi.fn(() => ({
+          eq: vi.fn(() => ({
+            maybeSingle: vi.fn(async () => ({
+              data: gameState ? { game_state: gameState } : null,
+              error: null,
+            })),
+          })),
         })),
-      })),
-      insert,
-    })),
+        update,
+      };
+    }
+
+    throw new Error(`Unexpected table in mock: ${table}`);
+  });
+
+  return {
+    from,
     insertSpy: insert,
+    updateSpy: update,
   };
 }

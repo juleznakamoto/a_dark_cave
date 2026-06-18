@@ -32,7 +32,6 @@ import { supabase } from "@/lib/supabase";
 import {
   ensureAnonymousSession,
   getCurrentUser,
-  getSessionAccessToken,
   getSessionUser,
   isAnonymousSession,
 } from "@/game/auth";
@@ -45,6 +44,8 @@ import {
   purchaseIdToItemId,
   purchaseIdsFromRows,
 } from "@/game/shopPurchases";
+import { applyShopDiscountConsumptionFromPaymentMetadata } from "@/game/shopPostPurchaseState";
+import { userOwnsShopItemFromPurchaseRows } from "@shared/shopPurchaseEligibility";
 import {
   GREAT_FEAST_DURATION_MS,
   SHOP_ITEMS,
@@ -62,6 +63,7 @@ import { PLAYLIGHT_FIRST_PURCHASE_DISCOUNT_PERCENT } from "@/game/playlightRewar
 import { tailwindToHex } from "@/lib/tailwindColors";
 import { getShopGlyphHoverParticleConfig } from "@/components/ui/bubbly-button.particles";
 import { getStripeReturnUrlForConfirm } from "@/lib/stripePaymentReturn";
+import { verifyPaymentWithRetry } from "@/lib/paymentVerify";
 import { StripePoweredBy } from "@/components/game/StripePoweredBy";
 import {
   resolveShopItemName,
@@ -526,7 +528,7 @@ async function detectCurrency(): Promise<"EUR" | "USD"> {
 
 interface CheckoutFormProps {
   itemId: string;
-  onSuccess: () => void;
+  onSuccess: (discountMetadata?: Record<string, string | undefined>) => void;
   currency: "EUR" | "USD";
   onCancel: () => void;
   displayPriceCents: number;
@@ -581,23 +583,11 @@ function CheckoutForm({
           return;
         }
 
-        const accessToken = await getSessionAccessToken();
-        const response = await fetch("/api/payment/verify", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            ...(accessToken
-              ? { Authorization: `Bearer ${accessToken}` }
-              : {}),
-          },
-          body: JSON.stringify({
-            paymentIntentId: paymentIntent.id,
-            userId: user.id,
-          }),
-        });
-
-        const result = await response.json();
-        if (result.success) {
+        const result = await verifyPaymentWithRetry(
+          paymentIntent.id,
+          user.id,
+        );
+        if (result.success && result.itemId) {
           const item = SHOP_ITEMS[result.itemId];
 
           // Set hasMadeNonFreePurchase flag if this is a paid item
@@ -605,7 +595,7 @@ function CheckoutForm({
             completePaidShopPurchaseInStore();
           }
 
-          onSuccess();
+          onSuccess(result.discountMetadata);
         } else {
           // Payment succeeded on Stripe but server verification failed (e.g. DB error).
           // Do NOT release discount reservation - user was charged; requires manual intervention.
@@ -1034,6 +1024,22 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       return;
     }
 
+    // Block repeat purchases for one-time shop items (server also enforces).
+    if (!item.canPurchaseMultipleTimes) {
+      const existingRows = await fetchPurchaseRowsForSessionUser();
+      if (existingRows && userOwnsShopItemFromPurchaseRows(itemId, existingRows)) {
+        gameState.addLogEntry({
+          id: `already-purchased-${Date.now()}`,
+          message: t("ui:shop.alreadyClaimedItemLog", {
+            name: resolveShopItemName(item),
+          }),
+          timestamp: Date.now(),
+          type: "system",
+        });
+        return;
+      }
+    }
+
     // For paid items, create payment intent for embedded checkout
     const user = await ensureAnonymousSession();
     setSessionUser(user);
@@ -1067,7 +1073,18 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       }),
     });
 
-    const { clientSecret: secret } = await response.json();
+    const body = await response.json();
+    if (body.error) {
+      gameState.addLogEntry({
+        id: `payment-blocked-${Date.now()}`,
+        message: body.error,
+        timestamp: Date.now(),
+        type: "system",
+      });
+      return;
+    }
+
+    const { clientSecret: secret } = body;
     if (secret) {
       useGameStore.getState().recordCompletePurchaseDialogOpen();
     }
@@ -1088,8 +1105,13 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     // Otherwise the shop dialog remains open, just reset payment state
   };
 
-  const handlePurchaseSuccess = async () => {
+  const handlePurchaseSuccess = async (
+    discountMetadata?: Record<string, string | undefined>,
+  ) => {
     const item = SHOP_ITEMS[selectedItem!];
+    const storeBeforeDiscount = useGameStore.getState();
+
+    applyShopDiscountConsumptionFromPaymentMetadata(discountMetadata);
 
     if (selectedItem === "cruel_mode") {
       useGameStore.setState((s) => ({
@@ -1103,26 +1125,16 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       }));
     }
 
-    // If Trader's Gratitude discount was used, clear it, mark as used, and end the event
-    if (gameState.tradersGratitudeState?.accepted) {
-      useGameStore.setState((state) => ({
-        tradersGratitudeState: { accepted: false },
-        triggeredEvents: {
-          ...(state.triggeredEvents || {}),
-          traders_gratitude_used: true,
-        },
-      }));
+    if (
+      storeBeforeDiscount.tradersGratitudeState?.accepted ||
+      discountMetadata?.tradersGratitudeDiscountApplied === "true"
+    ) {
       setTimedEventTab(false);
     }
-
-    if (gameState.tradersSonGratitudeState?.accepted) {
-      useGameStore.setState((state) => ({
-        tradersSonGratitudeState: { accepted: false },
-        triggeredEvents: {
-          ...(state.triggeredEvents || {}),
-          traders_son_gratitude_used: true,
-        },
-      }));
+    if (
+      storeBeforeDiscount.tradersSonGratitudeState?.accepted ||
+      discountMetadata?.tradersSonGratitudeDiscountApplied === "true"
+    ) {
       setTimedEventTab(false);
     }
 

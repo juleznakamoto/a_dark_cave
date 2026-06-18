@@ -9,9 +9,14 @@ vi.mock('stripe', () => {
     update: vi.fn(),
   };
 
+  const mockWebhooks = {
+    constructEvent: vi.fn(),
+  };
+
   return {
     default: class MockStripe {
       paymentIntents = mockPaymentIntents;
+      webhooks = mockWebhooks;
     },
   };
 });
@@ -113,7 +118,17 @@ describe('Bundle Purchase Security Tests', () => {
 
   describe('Trader\'s Gratitude discount security', () => {
     it('should accept valid discounted payment (20% off)', async () => {
-      const mockSupabase = createMockSupabase();
+      const mockSupabase = createSupabaseMockForStripeVerify({
+        insertSingleData: {
+          id: 'purchase123',
+          item_id: 'advanced_bundle',
+          user_id: 'user123',
+        },
+        gameState: {
+          tradersGratitudeState: { accepted: true },
+          triggeredEvents: {},
+        },
+      });
 
       // advanced_bundle: 999 -> floor(999 * 0.8) = 799
       const mockIntent: Stripe.PaymentIntent = {

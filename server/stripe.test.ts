@@ -10,9 +10,14 @@ vi.mock('stripe', () => {
     update: vi.fn(),
   };
 
+  const mockWebhooks = {
+    constructEvent: vi.fn(),
+  };
+
   return {
     default: class MockStripe {
       paymentIntents = mockPaymentIntents;
+      webhooks = mockWebhooks;
     },
   };
 });
@@ -625,6 +630,12 @@ describe('Stripe Shop Integration', () => {
     });
 
     it('should accept discounted payment when tradersGratitudeDiscountApplied is set', async () => {
+      const gratitudeSupabase = createSupabaseMockForStripeVerify({
+        gameState: {
+          tradersGratitudeState: { accepted: true },
+          triggeredEvents: {},
+        },
+      });
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
         amount: 119, // 20% off gold_250 (149 -> 119)
@@ -639,14 +650,20 @@ describe('Stripe Shop Integration', () => {
 
       mockPaymentIntents.retrieve.mockResolvedValue(mockIntent);
 
-      const result = await verifyPayment('pi_test', 'user123', mockSupabase);
+      const result = await verifyPayment('pi_test', 'user123', gratitudeSupabase);
 
       expect(result.success).toBe(true);
       expect(result.itemId).toBe('gold_250');
-      expect(mockSupabase.from).toHaveBeenCalledWith('purchases');
+      expect(gratitudeSupabase.from).toHaveBeenCalledWith('purchases');
     });
 
     it('should accept Playlight-only discounted payment when metadata is set', async () => {
+      const playlightSupabase = createSupabaseMockForStripeVerify({
+        gameState: {
+          hasMadeNonFreePurchase: false,
+          story: { seen: { playlightFirstPurchaseDiscountActive: true } },
+        },
+      });
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
         amount: 134,
@@ -661,7 +678,7 @@ describe('Stripe Shop Integration', () => {
 
       mockPaymentIntents.retrieve.mockResolvedValue(mockIntent);
 
-      const result = await verifyPayment('pi_test', 'user123', mockSupabase);
+      const result = await verifyPayment('pi_test', 'user123', playlightSupabase);
 
       expect(result.success).toBe(true);
       expect(result.itemId).toBe('gold_250');
@@ -684,6 +701,12 @@ describe('Stripe Shop Integration', () => {
     });
 
     it('should reject wrong discounted amount even with metadata', async () => {
+      const gratitudeSupabase = createSupabaseMockForStripeVerify({
+        gameState: {
+          tradersGratitudeState: { accepted: true },
+          triggeredEvents: {},
+        },
+      });
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
         amount: 50, // Wrong - should be 119 for gold_250
@@ -692,14 +715,72 @@ describe('Stripe Shop Integration', () => {
           itemId: 'gold_250',
           tradersGratitudeDiscountApplied: 'true',
         },
+        latest_charge: latestChargeForVerify(),
       } as Stripe.PaymentIntent;
 
       mockPaymentIntents.retrieve.mockResolvedValue(mockIntent);
 
-      const result = await verifyPayment('pi_test', 'user123', mockSupabase);
+      const result = await verifyPayment('pi_test', 'user123', gratitudeSupabase);
 
       expect(result.success).toBe(false);
       expect(result.error).toBe('Payment amount verification failed');
+    });
+
+    it('rejects duplicate non-repeatable shop items', async () => {
+      const duplicateSupabase = createSupabaseMockForStripeVerify({
+        userPurchaseRows: [{ item_id: 'skull_lantern' }],
+      });
+      const mockIntent: Stripe.PaymentIntent = {
+        id: 'pi_skull_dup',
+        amount: 299,
+        status: 'succeeded',
+        currency: 'eur',
+        metadata: { itemId: 'skull_lantern' },
+        latest_charge: latestChargeForVerify(),
+      } as Stripe.PaymentIntent;
+
+      mockPaymentIntents.retrieve.mockResolvedValue(mockIntent);
+
+      const result = await verifyPayment(
+        'pi_skull_dup',
+        'user123',
+        duplicateSupabase,
+      );
+
+      expect(result.success).toBe(false);
+      expect(result.error).toBe('Item already purchased');
+      expect(duplicateSupabase.insertSpy).not.toHaveBeenCalled();
+    });
+
+    it('rejects Trader\'s Gratitude discount when already consumed', async () => {
+      const usedSupabase = createSupabaseMockForStripeVerify({
+        gameState: {
+          tradersGratitudeState: { accepted: false },
+          triggeredEvents: { traders_gratitude_used: true },
+        },
+      });
+      const mockIntent: Stripe.PaymentIntent = {
+        id: 'pi_gratitude_reuse',
+        amount: 239,
+        status: 'succeeded',
+        currency: 'eur',
+        metadata: {
+          itemId: 'skull_lantern',
+          tradersGratitudeDiscountApplied: 'true',
+        },
+        latest_charge: latestChargeForVerify(),
+      } as Stripe.PaymentIntent;
+
+      mockPaymentIntents.retrieve.mockResolvedValue(mockIntent);
+
+      const result = await verifyPayment(
+        'pi_gratitude_reuse',
+        'user123',
+        usedSupabase,
+      );
+
+      expect(result.success).toBe(false);
+      expect(result.error).toBe("Trader's Gratitude discount not eligible");
     });
   });
 });
@@ -730,7 +811,29 @@ describe('Purchase Restrictions', () => {
     expect(SHOP_ITEMS.great_feast_1.canPurchaseMultipleTimes).toBe(true);
   });
 
-  it('should allow payment intent creation for any item (enforcement happens at purchase verification)', async () => {
+  it('blocks payment intent creation when user already owns a one-time item', async () => {
+    const ownedSupabase = createSupabaseMockForStripeVerify({
+      userPurchaseRows: [{ item_id: 'skull_lantern' }],
+    });
+
+    await expect(
+      createPaymentIntent(
+        'skull_lantern',
+        undefined,
+        'user123',
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        ownedSupabase,
+      ),
+    ).rejects.toThrow('Item already purchased');
+  });
+
+  it('should allow payment intent creation without supabase (legacy callers)', async () => {
     mockPaymentIntents.create.mockResolvedValue({
       client_secret: 'test_secret',
     } as any);

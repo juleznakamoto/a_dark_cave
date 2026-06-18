@@ -10,6 +10,7 @@ import { setupVite, serveStatic, log, getRecentLogs, type LogLevel } from "./vit
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 import { createPaymentIntent, verifyPayment } from "./stripe";
+import { handleStripePaymentWebhook } from "./stripeWebhook";
 import { validatePaymentVerifyAuth } from "./paymentVerifyAuth";
 import { processReferral } from "./referral";
 import { getOrCreateReferralCode } from "./referralCodes";
@@ -116,10 +117,7 @@ const app = express();
 // CRITICAL: Enable trust proxy for accurate rate limiting behind reverse proxy
 app.set('trust proxy', 1);
 
-// CRITICAL: Parse JSON bodies BEFORE defining any routes
-app.use(express.json());
-
-// Rate limiting configurations
+// Rate limiting configurations (defined before routes; JSON parser registered after webhook)
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // Limit each IP to 100 requests per windowMs
@@ -358,6 +356,30 @@ const getAdminClient = (env: "dev" | "prod" = "dev") => {
   adminClients.set(env, client);
   return client;
 };
+
+// Stripe webhooks require the raw body for signature verification — register before express.json().
+app.post(
+  "/api/payment/webhook",
+  express.raw({ type: "application/json" }),
+  async (req, res) => {
+    try {
+      const env = process.env.NODE_ENV === "production" ? "prod" : "dev";
+      const adminClient = getAdminClient(env);
+      const signature = req.headers["stripe-signature"];
+      const result = await handleStripePaymentWebhook(
+        req.body as Buffer,
+        typeof signature === "string" ? signature : signature?.[0],
+        adminClient,
+      );
+      res.status(result.status).json(result.body);
+    } catch (error: unknown) {
+      log("❌ Stripe webhook error:", error);
+      res.status(500).json({ error: "Webhook handler failed" });
+    }
+  },
+);
+
+app.use(express.json());
 
 async function getSessionUserFromBearer(
   req: Request,
@@ -1329,6 +1351,9 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
         tradersSonGratitudeDiscount,
         cruelModeJourneyCompleteDiscount,
       } = req.body;
+      const env = process.env.NODE_ENV === "production" ? "prod" : "dev";
+      const adminClient = getAdminClient(env);
+
       const { clientSecret, item } = await createPaymentIntent(
         itemId,
         userEmail,
@@ -1340,6 +1365,7 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
         playlightFirstPurchaseDiscount === true ? true : undefined,
         tradersSonGratitudeDiscount === true ? true : undefined,
         cruelModeJourneyCompleteDiscount === true ? true : undefined,
+        adminClient,
       );
 
       res.json({ clientSecret, item });

@@ -269,7 +269,7 @@ rate-limited `/api/*` routes.
 
 | Route group | Module | Purpose |
 |-------------|--------|---------|
-| `/api/payment/*` | `stripe.ts`, `paymentVerifyAuth.ts` | Stripe checkout intents + verification; on verify, guest PayPal email backfilled to PaymentIntent `metadata.userEmail` from charge |
+| `/api/payment/*` | `stripe.ts`, `stripeWebhook.ts`, `paymentVerifyAuth.ts` | Stripe checkout intents + verification; `payment_intent.succeeded` webhook fulfills via same `verifyPayment()` as client; guest PayPal email backfilled to PaymentIntent `metadata.userEmail` from charge |
 | `/api/referral/*` | `referral.ts`, `referralCodes.ts` | Referral codes & rewards |
 | `/api/marketing/*` | `marketing.ts` | Email prefs, unsubscribe |
 | `/api/leaderboard/*`, `/api/account/*`, `/api/session/ping` | inline + Supabase | Leaderboard, account deletion, session heartbeat |
@@ -279,6 +279,7 @@ rate-limited `/api/*` routes.
 
 Support: `server/vite.ts` (dev/prod hosting), `server/supabaseServerClient.ts` (service-role client),
 `server/paymentVerifyAuth.ts` (payment-verify session/body user match), `server/stripeFxQuote.ts`,
+`server/stripeWebhook.ts` (`POST /api/payment/webhook`, raw body + `STRIPE_WEBHOOK_SECRET_DEV` / `_PROD`),
 `server/resendContactCsv.ts`.
 
 ---
