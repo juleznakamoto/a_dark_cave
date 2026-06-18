@@ -58,7 +58,6 @@ import {
 import { formatNumber } from "@/lib/utils";
 import {
   MAX_BUILDING_PRESET_SLOTS,
-  MAX_PRESET_SLOTS,
   areAdditionalPresetSlotsPurchased,
   arePresetsVisible,
   canPurchasePresetSlot,
@@ -83,7 +82,6 @@ import {
   isQueueSlotBuildingLocked,
   isQueueSlotLockedForUi,
   isQueueSlotNextPurchasable,
-  MAX_QUEUE_SLOTS,
   QUEUE_SLOT_UNLOCK_INSIGHT_KEY,
 } from "@/game/constructionQueueSlots";
 import { CircularProgress } from "@/components/ui/circular-progress";
@@ -136,13 +134,6 @@ const VILLAGE_INDICATOR_TOOLTIP_IDS = [
   "frostfall-progress",
   "fog-progress",
   "madness-production",
-  "preset-save",
-  "preset-unlock",
-  "preset-slots-purchase",
-  "queue-slot-unlock",
-  "queue-slots-purchase",
-  ...Array.from({ length: MAX_PRESET_SLOTS }, (_, i) => `preset-slot-${i + 1}`),
-  ...Array.from({ length: MAX_QUEUE_SLOTS }, (_, i) => `queue-slot-${i + 1}`),
 ] as const;
 
 /** Shared with the 18px circular progress indicators in the Produce header row. */
@@ -1201,21 +1192,16 @@ export default function VillagePanel() {
                                 </div>
                               }
                               tooltipContentClassName="text-white"
-                              className={pulseClassName(
-                                "queue-slot-unlock",
-                                "inline-flex items-center",
-                              )}
+                              className="inline-flex items-center"
                               tooltipTriggerClassName={
                                 PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS
                               }
                               tooltipTriggerAsChild
                               disabled={!canInteract}
                               onMouseEnter={() => {
-                                onMouseEnter("queue-slot-unlock");
                                 setHighlightedResources(["insight"]);
                               }}
                               onMouseLeave={() => {
-                                onMouseLeave("queue-slot-unlock");
                                 setHighlightedResources([]);
                               }}
                             >
@@ -1303,16 +1289,7 @@ export default function VillagePanel() {
                                     </div>
                                   }
                                   tooltipTriggerClassName="inline-flex items-center leading-none"
-                                  className={pulseClassName(
-                                    queueTooltipId,
-                                    "inline-flex items-center",
-                                  )}
-                                  onMouseEnter={() =>
-                                    onMouseEnter(queueTooltipId)
-                                  }
-                                  onMouseLeave={() =>
-                                    onMouseLeave(queueTooltipId)
-                                  }
+                                  className="inline-flex items-center"
                                 >
                                   <span
                                     data-testid={queueTooltipId}
@@ -1353,16 +1330,7 @@ export default function VillagePanel() {
                                   </div>
                                 }
                                 tooltipTriggerClassName="inline-flex items-center leading-none"
-                                className={pulseClassName(
-                                  "queue-slots-purchase",
-                                  "inline-flex items-center cursor-pointer",
-                                )}
-                                onMouseEnter={() =>
-                                  onMouseEnter("queue-slots-purchase")
-                                }
-                                onMouseLeave={() =>
-                                  onMouseLeave("queue-slots-purchase")
-                                }
+                                className="inline-flex items-center cursor-pointer"
                                 onClick={() => {
                                   setShopCheckoutItemId(
                                     "additional_construction_queue_slot",
@@ -1436,19 +1404,14 @@ export default function VillagePanel() {
                           </div>
                         }
                         tooltipContentClassName="text-white"
-                        className={pulseClassName(
-                          "preset-unlock",
-                          "inline-flex items-center",
-                        )}
+                        className="inline-flex items-center"
                         tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
                         tooltipTriggerAsChild
                         disabled={!canInteract}
                         onMouseEnter={() => {
-                          onMouseEnter("preset-unlock");
                           setHighlightedResources(["insight"]);
                         }}
                         onMouseLeave={() => {
-                          onMouseLeave("preset-unlock");
                           setHighlightedResources([]);
                         }}
                       >
@@ -2036,16 +1999,7 @@ export default function VillagePanel() {
                                   </div>
                                 }
                                 tooltipTriggerClassName="inline-flex items-center leading-none"
-                                className={pulseClassName(
-                                  presetTooltipId,
-                                  "inline-flex items-center",
-                                )}
-                                onMouseEnter={() =>
-                                  onMouseEnter(presetTooltipId)
-                                }
-                                onMouseLeave={() =>
-                                  onMouseLeave(presetTooltipId)
-                                }
+                                className="inline-flex items-center"
                               >
                                 <span
                                   data-testid={presetTooltipId}
@@ -2074,16 +2028,7 @@ export default function VillagePanel() {
                                   </div>
                                 }
                                 tooltipTriggerClassName="inline-flex items-center leading-none"
-                                className={pulseClassName(
-                                  presetTooltipId,
-                                  "inline-flex items-center",
-                                )}
-                                onMouseEnter={() =>
-                                  onMouseEnter(presetTooltipId)
-                                }
-                                onMouseLeave={() =>
-                                  onMouseLeave(presetTooltipId)
-                                }
+                                className="inline-flex items-center"
                               >
                                 <span
                                   data-testid={presetTooltipId}
@@ -2116,12 +2061,7 @@ export default function VillagePanel() {
                                 <div className="text-xs">{tooltipText}</div>
                               }
                               tooltipTriggerClassName="inline-flex items-center leading-none"
-                              className={pulseClassName(
-                                presetTooltipId,
-                                "group flex items-center cursor-pointer",
-                              )}
-                              onMouseEnter={() => onMouseEnter(presetTooltipId)}
-                              onMouseLeave={() => onMouseLeave(presetTooltipId)}
+                              className="group flex items-center cursor-pointer"
                               onClick={() => applyVillagerJobPreset(slot)}
                             >
                               <Button
@@ -2160,16 +2100,7 @@ export default function VillagePanel() {
                               </div>
                             }
                             tooltipTriggerClassName="inline-flex items-center leading-none"
-                            className={pulseClassName(
-                              "preset-slots-purchase",
-                              "group flex items-center cursor-pointer",
-                            )}
-                            onMouseEnter={() =>
-                              onMouseEnter("preset-slots-purchase")
-                            }
-                            onMouseLeave={() =>
-                              onMouseLeave("preset-slots-purchase")
-                            }
+                            className="group flex items-center cursor-pointer"
                             onClick={() => {
                               setShopCheckoutItemId("additional_preset_slots");
                               setShopDialogOpen(true);
@@ -2205,12 +2136,7 @@ export default function VillagePanel() {
                               </div>
                             }
                             tooltipTriggerClassName="inline-flex items-center leading-none"
-                            className={pulseClassName(
-                              "preset-save",
-                              "group flex items-center cursor-pointer",
-                            )}
-                            onMouseEnter={() => onMouseEnter("preset-save")}
-                            onMouseLeave={() => onMouseLeave("preset-save")}
+                            className="group flex items-center cursor-pointer"
                             onClick={handlePresetSave}
                           >
                             <Button
