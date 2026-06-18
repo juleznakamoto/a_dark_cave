@@ -945,11 +945,11 @@ body {
 
   0%,
   100% {
-    color: var(--timed-tab-pulse-color) !important;
+    color: rgb(255 255 255) !important;
   }
 
   50% {
-    color: rgb(255 255 255) !important;
+    color: var(--timed-tab-pulse-color) !important;
   }
 }
 
