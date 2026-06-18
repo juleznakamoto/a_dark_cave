@@ -1972,7 +1972,11 @@ export default function VillagePanel() {
                                 )}
                                 style={{ touchAction: "manipulation" }}
                               >
-                                {slot}
+                                <span
+                                  className={cn(!hasPreset && "opacity-70")}
+                                >
+                                  {slot}
+                                </span>
                               </Button>
                             </TooltipWrapper>
                           );
