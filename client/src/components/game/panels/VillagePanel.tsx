@@ -143,6 +143,10 @@ const PRODUCE_HEADER_INDICATOR_CLASS =
   "inline-flex shrink-0 items-center self-center cursor-pointer";
 const PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS =
   "inline-flex items-center leading-none";
+/** Preset numbers, construction queue slots, and related header controls. */
+const HEADER_SLOT_SIZE_CLASS = "h-[18px] w-[18px] min-h-0 shrink-0";
+const HEADER_SLOT_BUTTON_CLASS =
+  `${HEADER_SLOT_SIZE_CLASS} p-0 pointer-events-none inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]`;
 
 export default function VillagePanel() {
   const { t } = useUiTranslation();
@@ -1299,7 +1303,10 @@ export default function VillagePanel() {
                                 >
                                   <span
                                     data-testid={queueTooltipId}
-                                    className="relative inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-md border border-neutral-400/50 box-border"
+                                    className={cn(
+                                      HEADER_SLOT_SIZE_CLASS,
+                                      "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
+                                    )}
                                   >
                                     {isLocked ? (
                                       <span
@@ -1966,7 +1973,8 @@ export default function VillagePanel() {
                                 data-testid={`preset-slot-${slot}`}
                                 button_id={`preset-slot-${slot}`}
                                 className={cn(
-                                  "h-[18px] w-[18px] min-h-0 shrink-0 p-0 text-[10px] tabular-nums leading-none pointer-events-none transition-colors appearance-none [-webkit-appearance:none]",
+                                  HEADER_SLOT_BUTTON_CLASS,
+                                  "text-[10px] tabular-nums",
                                   isActive
                                     ? "group-hover:bg-primary/90"
                                     : gameActionOutlineButtonClassName(false, {
@@ -2016,7 +2024,7 @@ export default function VillagePanel() {
                               data-testid="preset-slots-purchase"
                               button_id="preset-slots-purchase"
                               className={cn(
-                                "h-[18px] w-[18px] min-h-0 shrink-0 p-0 pointer-events-none inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]",
+                                HEADER_SLOT_BUTTON_CLASS,
                                 gameActionOutlineButtonClassName(false, {
                                   groupHover: true,
                                 }),
@@ -2054,7 +2062,7 @@ export default function VillagePanel() {
                               data-testid="preset-save"
                               button_id="preset-save"
                               className={cn(
-                                "h-[18px] w-[18px] min-h-0 shrink-0 p-0 pointer-events-none inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]",
+                                HEADER_SLOT_BUTTON_CLASS,
                                 gameActionOutlineButtonClassName(false, {
                                   groupHover: true,
                                 }),

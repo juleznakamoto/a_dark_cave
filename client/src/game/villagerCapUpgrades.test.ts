@@ -68,9 +68,10 @@ describe("villagerCapUpgrades", () => {
     expect(getVillagerCapForJob(state, "hunter")).toBe(Infinity);
   });
 
-  it("computes upgrade costs as 250 * (level + 1)", () => {
+  it("computes upgrade costs as 250 * (level + 1), with a higher final upgrade", () => {
     expect(getNextCapUpgradeCost(0)).toBe(250);
-    expect(getNextCapUpgradeCost(4)).toBe(1250);
+    expect(getNextCapUpgradeCost(3)).toBe(1000);
+    expect(getNextCapUpgradeCost(4)).toBe(1500);
   });
 
   it("reads and clamps stored upgrade levels", () => {

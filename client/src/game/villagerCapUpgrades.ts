@@ -122,6 +122,8 @@ export function getVillagerCapForJob(
 
 /** Insight cost to upgrade from `level` to `level + 1`. */
 export function getNextCapUpgradeCost(level: number): number {
+  // Final upgrade (level 4 → 5) costs more than the linear progression.
+  if (level === MAX_VILLAGER_CAP_LEVEL - 1) return 1500;
   return 250 * (level + 1);
 }
 
