@@ -18,6 +18,7 @@ import {
   isShopPresetSlot,
   countUsedPresetSlots,
   migrateVillagerPresetsPurchasedOnLoad,
+  migrateShopPresetDataFromSequentialBugOnLoad,
   snapshotAssignments,
 } from "@/game/villagerJobPresets";
 
@@ -118,6 +119,23 @@ describe("villagerJobPresets - Insight unlock", () => {
     expect(isPresetSlotUnlocked(state, 3)).toBe(true);
     expect(isPresetSlotUnlocked(state, 4)).toBe(true);
     expect(getPurchasedPresetCount(state)).toBe(3);
+  });
+
+  it("unlocks all building and shop slots when fully purchased", () => {
+    const state = makeState({
+      buildings: {
+        scribesOffice: 1,
+        recordsHall: 1,
+        grandArchive: 1,
+      } as any,
+      villagerPresetsPurchased: 3,
+      villagerPresetSlotsFromShop: 2,
+    } as any);
+    expect(isPresetSlotUnlocked(state, 0)).toBe(true);
+    expect(isPresetSlotUnlocked(state, 1)).toBe(true);
+    expect(isPresetSlotUnlocked(state, 2)).toBe(true);
+    expect(isPresetSlotUnlocked(state, 3)).toBe(true);
+    expect(isPresetSlotUnlocked(state, 4)).toBe(true);
   });
 
   it("uses escalating Insight costs per slot index", () => {
@@ -257,6 +275,43 @@ describe("villagerJobPresets - load migration", () => {
     expect(migrateVillagerPresetsPurchasedOnLoad(state)).toEqual({
       villagerPresetsPurchased: 1,
     });
+  });
+});
+
+describe("villagerJobPresets - shop slot migration", () => {
+  it("moves presets from sequential-bug indices into shop slots 4–5", () => {
+    const state = makeState({
+      villagerPresetsPurchased: 0,
+      villagerPresetSlotsFromShop: 2,
+      activePresetSlot: 1,
+      villagerJobPresets: [
+        { assignments: { gatherer: 2 }, savedAt: 1 },
+        { assignments: { hunter: 1 }, savedAt: 2 },
+      ],
+    } as any);
+
+    expect(migrateShopPresetDataFromSequentialBugOnLoad(state)).toEqual({
+      villagerJobPresets: [
+        null,
+        null,
+        null,
+        { assignments: { gatherer: 2 }, savedAt: 1 },
+        { assignments: { hunter: 1 }, savedAt: 2 },
+      ],
+      activePresetSlot: 4,
+    });
+  });
+
+  it("does not move presets when Insight-bought slots exist", () => {
+    const state = makeState({
+      villagerPresetsPurchased: 1,
+      villagerPresetSlotsFromShop: 2,
+      villagerJobPresets: [
+        { assignments: { gatherer: 2 }, savedAt: 1 },
+      ],
+    } as any);
+
+    expect(migrateShopPresetDataFromSequentialBugOnLoad(state)).toBeNull();
   });
 });
 

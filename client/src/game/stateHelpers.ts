@@ -10,7 +10,7 @@ import { getTotalEventDeathReduction } from "./rules/effectsCalculation";
 import { getVillagerCapForJob } from "./villagerCapUpgrades";
 import { getExecutionTime } from "./rules/executionTime";
 import { getGameActions } from "./rules/actionsRegistry";
-import { migrateVillagerPresetsPurchasedOnLoad } from "./villagerJobPresets";
+import { migrateVillagerPresetsPurchasedOnLoad, migrateShopPresetDataFromSequentialBugOnLoad } from "./villagerJobPresets";
 
 type CombatResultPayload =
   | CombatResultSummary
@@ -658,6 +658,10 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
   const presetPurchases = migrateVillagerPresetsPurchasedOnLoad(migrated);
   if (presetPurchases) {
     migrated = { ...migrated, ...presetPurchases };
+  }
+  const shopPresetData = migrateShopPresetDataFromSequentialBugOnLoad(migrated);
+  if (shopPresetData) {
+    migrated = { ...migrated, ...shopPresetData };
   }
   if (
     !migrated.boostApplied &&

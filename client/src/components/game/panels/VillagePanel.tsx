@@ -57,15 +57,14 @@ import {
 } from "@/components/game/BuildingActionBadge";
 import { formatNumber } from "@/lib/utils";
 import {
-  MAX_BUILDING_PRESET_SLOTS,
   areAdditionalPresetSlotsPurchased,
   arePresetsVisible,
   canPurchasePresetSlot,
   getNextPresetUnlockCost,
   getNextPurchasablePresetSlotIndex,
   getPresetSlot,
-  getPurchasedPresetCount,
-  getShopPresetSlotCount,
+  getVisiblePresetSlotCount,
+  hasAnyUnlockedPresetSlot,
   isPresetSlotBuildingLocked,
   isPresetSlotUnlocked,
 } from "@/game/villagerJobPresets";
@@ -167,6 +166,7 @@ export default function VillagePanel() {
     villagerJobPresets,
     activePresetSlot,
     villagerPresetsPurchased,
+    villagerPresetSlotsFromShop,
     saveVillagerJobPreset,
     applyVillagerJobPreset,
     setActivePresetSlot,
@@ -1952,34 +1952,30 @@ export default function VillagePanel() {
                 })()}
                 {arePresetsVisible(state) &&
                   (() => {
-                    const shopPresetCount = getShopPresetSlotCount(state);
-                    const purchasedCount = getPurchasedPresetCount(state);
-                    const buildingSlotIndices = Array.from(
-                      { length: MAX_BUILDING_PRESET_SLOTS },
-                      (_, i) => i,
-                    );
-                    const shopSlotIndices = Array.from(
-                      { length: shopPresetCount },
-                      (_, j) => MAX_BUILDING_PRESET_SLOTS + j,
-                    );
-                    const presetSlotIndices = [
-                      ...buildingSlotIndices,
-                      ...shopSlotIndices,
-                    ];
+                    const presetState = {
+                      buildings: state.buildings,
+                      villagerPresetsPurchased,
+                      villagerPresetSlotsFromShop,
+                      villagerJobPresets,
+                    };
+                    const visibleSlots = getVisiblePresetSlotCount(presetState);
                     // The "+" buys 2 extra preset slots; visible once the Scribe's
                     // Office exists and the slots have not been bought yet.
                     const showAddPresetSlotsPlus =
                       (state.buildings?.scribesOffice ?? 0) > 0 &&
-                      !areAdditionalPresetSlotsPurchased(state);
+                      !areAdditionalPresetSlotsPurchased(presetState);
                     return (
                       <div className="ml-auto flex shrink-0 items-center gap-1">
-                        {presetSlotIndices.map((i) => {
+                        {Array.from({ length: visibleSlots }).map((_, i) => {
                           const slot = i + 1;
                           const isBuildingLocked = isPresetSlotBuildingLocked(
-                            state,
+                            presetState,
                             i,
                           );
-                          const isUnlocked = isPresetSlotUnlocked(state, i);
+                          const isUnlocked = isPresetSlotUnlocked(
+                            presetState,
+                            i,
+                          );
                           const presetTooltipId = `preset-slot-${slot}`;
 
                           if (isBuildingLocked) {
@@ -2046,7 +2042,7 @@ export default function VillagePanel() {
                           }
 
                           const isActive = activePresetSlot === slot;
-                          const hasPreset = !!getPresetSlot(state, i);
+                          const hasPreset = !!getPresetSlot(presetState, i);
                           const tooltipText = hasPreset
                             ? t("village.presetApply", { slot })
                             : t("village.presetEmpty", { slot });
@@ -2122,7 +2118,7 @@ export default function VillagePanel() {
                             </Button>
                           </TooltipWrapper>
                         )}
-                        {purchasedCount >= 1 && (
+                        {hasAnyUnlockedPresetSlot(presetState) && (
                           <TooltipWrapper
                             tooltipId="preset-save"
                             tooltip={

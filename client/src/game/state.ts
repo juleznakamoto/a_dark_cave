@@ -109,6 +109,7 @@ import {
   getNextPresetUnlockCost,
   getNextPurchasablePresetSlotIndex,
   getPresetSlot,
+  getFirstUnlockedPresetSlotIndex,
   getPurchasedPresetCount,
   isPresetSlotUnlocked,
   snapshotAssignments,
@@ -2357,12 +2358,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
             const slotIndex = getNextPurchasablePresetSlotIndex(state);
             if (slotIndex !== null) {
               const insightBefore = getInsightPurchasedPresetCount(state);
-              const totalBefore = getPurchasedPresetCount(state);
+              const currentIndex = state.activePresetSlot - 1;
+              const nextPurchased = insightBefore + 1;
               presetUnlockUpdate = {
-                villagerPresetsPurchased: insightBefore + 1,
-                // First unlock: select slot 1 for save. Later unlocks keep the current slot.
-                ...(totalBefore === 0 ? { activePresetSlot: 1 } : {}),
+                villagerPresetsPurchased: nextPurchased,
               };
+              if (
+                !isPresetSlotUnlocked(state, currentIndex) ||
+                currentIndex >= nextPurchased
+              ) {
+                presetUnlockUpdate.activePresetSlot = slotIndex + 1;
+              }
             }
           } else if (actionId === QUEUE_SLOT_UNLOCK_INSIGHT_KEY) {
             const slotIndex = getNextPurchasableQueueSlotIndex(state);
@@ -3957,12 +3963,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ) {
         return {};
       }
-      const totalBefore = getPurchasedPresetCount(state);
-      return {
+      const nextState = {
+        ...state,
         villagerPresetSlotsFromShop: SHOP_ADDITIONAL_PRESET_SLOTS,
-        // If this is the player's first usable slot, select slot 1 for saving.
-        ...(totalBefore === 0 ? { activePresetSlot: 1 } : {}),
       };
+      const currentIndex = state.activePresetSlot - 1;
+      const patch: Partial<GameState> = {
+        villagerPresetSlotsFromShop: SHOP_ADDITIONAL_PRESET_SLOTS,
+      };
+      if (!isPresetSlotUnlocked(nextState, currentIndex)) {
+        const first = getFirstUnlockedPresetSlotIndex(nextState);
+        if (first !== null) {
+          patch.activePresetSlot = first + 1;
+        }
+      }
+      return patch;
     });
   },
 
