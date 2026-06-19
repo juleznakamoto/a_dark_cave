@@ -2,14 +2,6 @@ import { useId, type CSSProperties } from "react";
 import { INSIGHT_GLYPH, INSIGHT_TEXT_CLASS } from "@/game/villagerCapUpgrades";
 import { cn } from "@/lib/utils";
 
-/**
- * Nudge the hover/playing blob animation within the badge (glyph vs SVG center
- * differ). Negative translate-y pulls the blob up. Tune per size if needed.
- */
-export const INSIGHT_BADGE_BLOB_ALIGN_CLASS_SM = "-translate-y-[0.14em]";
-/** Stats header, timed-event tab, and action-button overlays (`size="lg"`). */
-export const INSIGHT_BADGE_BLOB_ALIGN_CLASS_LG = "-translate-y-[0.14em]";
-
 /** Shared insight badge button: single-layer opacity (no nested badge opacity). */
 export function getInsightBadgeTriggerClassName({
   canAfford,
@@ -81,12 +73,7 @@ export function BuildingActionBadge({
         </span>
       </span>
       <svg
-        className={cn(
-          "building-action-badge__svg",
-          size === "sm"
-            ? INSIGHT_BADGE_BLOB_ALIGN_CLASS_SM
-            : INSIGHT_BADGE_BLOB_ALIGN_CLASS_LG,
-        )}
+        className="building-action-badge__svg"
         width="16"
         height="16"
         viewBox="0 0 100 100"

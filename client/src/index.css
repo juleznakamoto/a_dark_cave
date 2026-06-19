@@ -220,8 +220,8 @@ body {
   inset: 0;
 }
 
-/* Optical alignment with adjacent header / label text (was on the trigger). */
-.insight-action-badge-trigger .building-action-badge__glyph {
+/* Optical alignment of idle glyph with adjacent header / label text. */
+.insight-action-badge-trigger:not(:hover):not(:active) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__glyph {
   transform: translateY(0.14em);
 }
 
