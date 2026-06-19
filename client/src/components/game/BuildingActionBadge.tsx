@@ -2,6 +2,13 @@ import { useId, type CSSProperties } from "react";
 import { INSIGHT_GLYPH, INSIGHT_TEXT_CLASS } from "@/game/villagerCapUpgrades";
 import { cn } from "@/lib/utils";
 
+/** Radix tooltip trigger wrapper — matches slot/header controls (not asChild). */
+export const INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS =
+  "inline-flex items-center leading-none";
+/** Fills a fixed-size overlay host (action-button corner badges). */
+export const INSIGHT_BADGE_TOOLTIP_TRIGGER_OVERLAY_CLASS =
+  "flex h-full w-full items-center leading-none";
+
 /** Shared insight badge button: single-layer opacity (no nested badge opacity). */
 export function getInsightBadgeTriggerClassName({
   canAfford,

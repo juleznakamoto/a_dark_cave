@@ -5,6 +5,8 @@ import { useTranslation } from "react-i18next";
 import {
   BuildingActionBadge,
   getInsightBadgeTriggerClassName,
+  INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS,
+  INSIGHT_BADGE_TOOLTIP_TRIGGER_OVERLAY_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
@@ -233,7 +235,11 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
             ? "block h-full w-full"
             : "inline-flex items-center"
         }
-        tooltipTriggerAsChild
+        tooltipTriggerClassName={
+          layout === "overlay"
+            ? INSIGHT_BADGE_TOOLTIP_TRIGGER_OVERLAY_CLASS
+            : INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS
+        }
         disabled={isBadgeDisabled}
         onClick={handleClick}
         onMouseEnter={() => setHighlightedResources(["insight"])}

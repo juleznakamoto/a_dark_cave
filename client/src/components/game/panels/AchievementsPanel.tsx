@@ -7,6 +7,7 @@ import GameButton from "@/components/game/GameButton";
 import {
   BuildingActionBadge,
   getInsightBadgeTriggerClassName,
+  INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { useGameStore } from "@/game/state";
 import { cn } from "@/lib/utils";
@@ -127,7 +128,7 @@ function AchievementTitleInsightBadge({
       tooltipId={`achievement-unlock-title-${achievementId}`}
       disabled
       tooltipContentClassName="max-w-xs"
-      tooltipTriggerAsChild
+      tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS}
       onMouseEnter={() => setHighlightedResources(["insight"])}
       onMouseLeave={() => {
         if (!playing) setHighlightedResources([]);

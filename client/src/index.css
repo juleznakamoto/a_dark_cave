@@ -223,10 +223,9 @@ body {
   height: auto;
 }
 
-/* Idle glyph sits high in its em box. The slot × (same font) needs 2px at 12px,
-   so this 17px glyph needs ~3px to optically center on the animation. */
-.header-slot-insight-trigger .building-action-badge__glyph {
-  transform: translateY(3px);
+/* Idle glyph sits high in font em-box; nudge down to match centered animation blob. */
+.insight-action-badge-trigger:not(:hover):not(:active) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__glyph {
+  transform: translateY(0.18em);
 }
 
 .building-action-badge__idle,

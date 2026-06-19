@@ -12,6 +12,7 @@ import {
 import {
   BuildingActionBadge,
   getInsightBadgeTriggerClassName,
+  INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { TooltipInfoIndicator } from "@/components/game/TooltipInfoIndicator";
@@ -281,7 +282,7 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
       tooltipId={tooltipId}
       disabled
       tooltipContentClassName="max-w-xs"
-      tooltipTriggerAsChild
+      tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS}
       onMouseEnter={() => setHighlightedResources(["insight"])}
       onMouseLeave={() => {
         if (!playing) setHighlightedResources([]);
@@ -383,7 +384,7 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
       tooltipId={tooltipId}
       disabled
       tooltipContentClassName="max-w-xs"
-      tooltipTriggerAsChild
+      tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS}
       onMouseEnter={() => setHighlightedResources(["insight"])}
       onMouseLeave={() => {
         if (!playing) setHighlightedResources([]);
