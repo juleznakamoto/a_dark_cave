@@ -1215,7 +1215,6 @@ export default function VillagePanel() {
                                   tooltipTriggerClassName={
                                     PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS
                                   }
-                                  tooltipTriggerAsChild
                                   disabled={!canInteractQueueUnlock}
                                   onMouseEnter={() => {
                                     setHighlightedResources(["insight"]);
@@ -1947,7 +1946,6 @@ export default function VillagePanel() {
                             tooltipTriggerClassName={
                               PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS
                             }
-                            tooltipTriggerAsChild
                             disabled={!canInteractPresetUnlock}
                             onMouseEnter={() => {
                               setHighlightedResources(["insight"]);
