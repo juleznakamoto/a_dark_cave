@@ -223,8 +223,9 @@ body {
   height: auto;
 }
 
-/* Idle glyph sits high in font em-box; nudge down to match centered animation blob. */
-.insight-action-badge-trigger:not(:hover):not(:active) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__glyph {
+/* Idle glyph sits high in font em-box; nudge down to match centered animation blob.
+   Always applied (including hover) so the glyph doesn't jump when idle fades out. */
+.insight-action-badge-trigger .building-action-badge__glyph {
   transform: translateY(0.18em);
 }
 
