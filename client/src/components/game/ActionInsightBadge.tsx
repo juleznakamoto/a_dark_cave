@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import {
   BuildingActionBadge,
   getInsightBadgeTriggerClassName,
-  INSIGHT_BADGE_ALIGN_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
@@ -252,7 +251,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
                 "cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
                 layout === "overlay"
                   ? "flex h-full w-full"
-                  : cn("inline-flex h-5 w-5 shrink-0", INSIGHT_BADGE_ALIGN_CLASS),
+                  : "h-5 w-5",
               ),
             }),
           )}

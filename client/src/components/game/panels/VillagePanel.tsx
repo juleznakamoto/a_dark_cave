@@ -53,7 +53,6 @@ import {
 import {
   BuildingActionBadge,
   getInsightBadgeTriggerClassName,
-  INSIGHT_BADGE_ALIGN_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { formatNumber } from "@/lib/utils";
 import {
@@ -1232,8 +1231,7 @@ export default function VillagePanel() {
                                           canUnlock || isQueueSlotUnlockAnimating,
                                         playing: isQueueSlotUnlockAnimating,
                                         className: cn(
-                                          "inline-flex h-5 w-5 shrink-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
-                                          INSIGHT_BADGE_ALIGN_CLASS,
+                                          "h-5 w-5 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
                                         ),
                                       }),
                                     )}
@@ -1967,8 +1965,7 @@ export default function VillagePanel() {
                                     canUnlockPreset || isPresetUnlockAnimating,
                                   playing: isPresetUnlockAnimating,
                                   className: cn(
-                                    "inline-flex h-5 w-5 shrink-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
-                                    INSIGHT_BADGE_ALIGN_CLASS,
+                                    "h-5 w-5 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
                                   ),
                                 }),
                               )}

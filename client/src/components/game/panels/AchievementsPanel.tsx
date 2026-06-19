@@ -7,7 +7,6 @@ import GameButton from "@/components/game/GameButton";
 import {
   BuildingActionBadge,
   getInsightBadgeTriggerClassName,
-  INSIGHT_BADGE_ALIGN_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { useGameStore } from "@/game/state";
 import { cn } from "@/lib/utils";
@@ -149,8 +148,7 @@ function AchievementTitleInsightBadge({
           canAfford: affordable || playing,
           playing,
           className: cn(
-            "inline-flex h-5 w-5 shrink-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
-            INSIGHT_BADGE_ALIGN_CLASS,
+            "h-5 w-5 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
           ),
         })}
       >

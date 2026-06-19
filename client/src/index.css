@@ -213,11 +213,16 @@ body {
   height: 20px;
 }
 
-/* Fills parent hit target; do not self-anchor with absolute offsets. */
+/* Fills the trigger hit target without participating in flex layout (avoids
+   collapsed % height and extra empty space below the glyph). */
 .building-action-badge--embedded {
-  display: block;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+/* Optical alignment with adjacent header / label text (was on the trigger). */
+.insight-action-badge-trigger .building-action-badge__glyph {
+  transform: translateY(0.14em);
 }
 
 .building-action-badge__idle,

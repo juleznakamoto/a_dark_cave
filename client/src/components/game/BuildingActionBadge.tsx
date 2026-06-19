@@ -3,13 +3,6 @@ import { INSIGHT_GLYPH, INSIGHT_TEXT_CLASS } from "@/game/villagerCapUpgrades";
 import { cn } from "@/lib/utils";
 
 /**
- * Tailwind classes to nudge the idle glyph vertically next to adjacent text.
- * Tune here (e.g. `translate-y-[0.1em]`, `pb-[0.05em]`, `mt-[1px]`).
- * Applied on inline badge buttons (stats, timed event, side-panel buildings).
- */
-export const INSIGHT_BADGE_ALIGN_CLASS = "translate-y-[0.14em]";
-
-/**
  * Nudge the hover/playing blob animation within the badge (glyph vs SVG center
  * differ). Negative translate-y pulls the blob up. Tune per size if needed.
  */
@@ -28,7 +21,7 @@ export function getInsightBadgeTriggerClassName({
   className?: string;
 }) {
   return cn(
-    "insight-action-badge-trigger relative items-center justify-center border-0 bg-transparent p-0 transition-opacity duration-200",
+    "insight-action-badge-trigger relative inline-flex shrink-0 items-center justify-center overflow-hidden border-0 bg-transparent p-0 leading-none min-h-0 min-w-0 transition-opacity duration-200",
     className,
     playing && "opacity-100",
     !playing && canAfford && "opacity-80 hover:opacity-100",

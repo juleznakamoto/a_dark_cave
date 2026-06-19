@@ -12,7 +12,6 @@ import {
 import {
   BuildingActionBadge,
   getInsightBadgeTriggerClassName,
-  INSIGHT_BADGE_ALIGN_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { TooltipInfoIndicator } from "@/components/game/TooltipInfoIndicator";
@@ -307,8 +306,7 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
           canAfford: affordable,
           playing,
           className: cn(
-            "inline-flex h-[1em] w-[1em] text-[14px] leading-none",
-            INSIGHT_BADGE_ALIGN_CLASS,
+            "h-[1em] w-[1em] text-[14px] leading-none",
             isDisabled ? "cursor-not-allowed" : "cursor-pointer",
           ),
         })}
@@ -410,8 +408,7 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
           canAfford: affordable,
           playing,
           className: cn(
-            "inline-flex h-[1em] w-[1em] text-[14px] leading-none",
-            INSIGHT_BADGE_ALIGN_CLASS,
+            "h-[1em] w-[1em] text-[14px] leading-none",
             isDisabled ? "cursor-not-allowed" : "cursor-pointer",
           ),
         })}
