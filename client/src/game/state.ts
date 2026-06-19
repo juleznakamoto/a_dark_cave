@@ -2249,7 +2249,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   revealActionEffects: (actionId: string) => {
     const state = get();
     if (!canRevealEffects(actionId, state)) return false;
-    const cost = getInsightRevealCost(actionId);
+    const cost = getInsightRevealCost(actionId, state);
     if (cost == null || getInsightAmount(state) < cost) return false;
 
     const resourceUpdates = updateResource(state, "insight", -cost);

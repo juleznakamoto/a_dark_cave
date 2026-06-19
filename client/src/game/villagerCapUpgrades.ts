@@ -120,11 +120,15 @@ export function getVillagerCapForJob(
   return getVillagerCapForGroup(state, groupId);
 }
 
+/** Insight cost to upgrade from each cap level to the next (levels 0–4 → caps 10→20 … 50→100). */
+export const VILLAGER_CAP_UPGRADE_INSIGHT_COSTS = [
+  100, 250, 500, 750, 1000,
+] as const;
+
 /** Insight cost to upgrade from `level` to `level + 1`. */
 export function getNextCapUpgradeCost(level: number): number {
-  // Final upgrade (level 4 → 5) costs more than the linear progression.
-  if (level === MAX_VILLAGER_CAP_LEVEL - 1) return 1500;
-  return 250 * (level + 1);
+  const clamped = Math.min(Math.max(0, level), MAX_VILLAGER_CAP_LEVEL - 1);
+  return VILLAGER_CAP_UPGRADE_INSIGHT_COSTS[clamped];
 }
 
 export function canUpgradeVillagerCap(

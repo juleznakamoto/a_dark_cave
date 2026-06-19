@@ -2,9 +2,13 @@ import type { GameState } from "@shared/schema";
 import { getGameActions } from "./actionsRegistry";
 import type { Action } from "@shared/schema";
 
+export const INSIGHT_REVEAL_BUILDING_COST_EARLY = 50;
 export const INSIGHT_REVEAL_BUILDING_COST = 100;
 export const INSIGHT_REVEAL_FORTIFICATION_COST = 100;
+export const INSIGHT_REVEAL_CRAFT_COST_EARLY = 50;
 export const INSIGHT_REVEAL_CRAFT_COST = 100;
+/** Building/craft reveal costs stay at the early tier while wooden huts are at or below this count. */
+export const INSIGHT_REVEAL_WOODEN_HUT_EARLY_THRESHOLD = 5;
 export const INSIGHT_REVEAL_DURATION_MS = 3_000;
 /** Action button cooldown (seconds); ticks subtract 0.25 every 250ms → 1s per unit. */
 export const INSIGHT_REVEAL_ACTION_COOLDOWN_SEC = 3;
@@ -99,17 +103,31 @@ export function isFortificationBuildAction(actionId: string): boolean {
   return FORTIFICATION_BUILDING_KEYS.has(buildingKey);
 }
 
-export function getInsightRevealCost(actionId: string): number | null {
-  if (isCraftOnceAction(actionId)) return INSIGHT_REVEAL_CRAFT_COST;
+function getBuildingCraftInsightRevealCost(
+  state: Pick<GameState, "buildings">,
+): number {
+  const woodenHuts = state.buildings.woodenHut ?? 0;
+  return woodenHuts <= INSIGHT_REVEAL_WOODEN_HUT_EARLY_THRESHOLD
+    ? INSIGHT_REVEAL_BUILDING_COST_EARLY
+    : INSIGHT_REVEAL_BUILDING_COST;
+}
+
+export function getInsightRevealCost(
+  actionId: string,
+  state: Pick<GameState, "buildings">,
+): number | null {
+  if (isCraftOnceAction(actionId)) {
+    return getBuildingCraftInsightRevealCost(state);
+  }
   if (isFortificationBuildAction(actionId)) return INSIGHT_REVEAL_FORTIFICATION_COST;
-  if (isBuildingAction(actionId)) return INSIGHT_REVEAL_BUILDING_COST;
+  if (isBuildingAction(actionId)) return getBuildingCraftInsightRevealCost(state);
   return null;
 }
 
 export function canRevealEffects(actionId: string, state: GameState): boolean {
   if (!isInsightUnlocked(state)) return false;
   if ((state.revealedEffects ?? []).includes(actionId)) return false;
-  return getInsightRevealCost(actionId) !== null;
+  return getInsightRevealCost(actionId, state) !== null;
 }
 
 export function isInsightRevealInProgress(

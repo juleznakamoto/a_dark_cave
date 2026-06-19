@@ -6,7 +6,9 @@ import {
   canRevealEffects,
   getInsightRevealCost,
   INSIGHT_REVEAL_BUILDING_COST,
+  INSIGHT_REVEAL_BUILDING_COST_EARLY,
   INSIGHT_REVEAL_CRAFT_COST,
+  INSIGHT_REVEAL_CRAFT_COST_EARLY,
   INSIGHT_REVEAL_FORTIFICATION_COST,
   isCraftOnceAction,
 } from "./insightReveal";
@@ -14,24 +16,49 @@ import {
 describe("insightReveal", () => {
   const base = (): GameState => createInitialState();
 
-  it("getInsightRevealCost returns 100 for village buildings", () => {
-    expect(getInsightRevealCost("buildClerksHut")).toBe(
+  const withWoodenHuts = (count: number): GameState => ({
+    ...base(),
+    buildings: { ...base().buildings, woodenHut: count },
+  });
+
+  it("getInsightRevealCost returns early tier for buildings with <=5 wooden huts", () => {
+    expect(getInsightRevealCost("buildClerksHut", withWoodenHuts(0))).toBe(
+      INSIGHT_REVEAL_BUILDING_COST_EARLY,
+    );
+    expect(getInsightRevealCost("buildClerksHut", withWoodenHuts(5))).toBe(
+      INSIGHT_REVEAL_BUILDING_COST_EARLY,
+    );
+  });
+
+  it("getInsightRevealCost returns standard tier for buildings with >5 wooden huts", () => {
+    expect(getInsightRevealCost("buildClerksHut", withWoodenHuts(6))).toBe(
       INSIGHT_REVEAL_BUILDING_COST,
     );
   });
 
-  it("getInsightRevealCost returns 50 for fortification builds", () => {
-    expect(getInsightRevealCost("buildWatchtower")).toBe(
+  it("getInsightRevealCost returns 100 for fortification builds regardless of wooden huts", () => {
+    expect(getInsightRevealCost("buildWatchtower", withWoodenHuts(0))).toBe(
+      INSIGHT_REVEAL_FORTIFICATION_COST,
+    );
+    expect(getInsightRevealCost("buildWatchtower", withWoodenHuts(10))).toBe(
       INSIGHT_REVEAL_FORTIFICATION_COST,
     );
   });
 
-  it("getInsightRevealCost returns 50 for craft-once items", () => {
-    expect(getInsightRevealCost("craftStoneAxe")).toBe(INSIGHT_REVEAL_CRAFT_COST);
+  it("getInsightRevealCost returns early tier for craft-once items with <=5 wooden huts", () => {
+    expect(getInsightRevealCost("craftStoneAxe", withWoodenHuts(3))).toBe(
+      INSIGHT_REVEAL_CRAFT_COST_EARLY,
+    );
+  });
+
+  it("getInsightRevealCost returns standard tier for craft-once items with >5 wooden huts", () => {
+    expect(getInsightRevealCost("craftStoneAxe", withWoodenHuts(6))).toBe(
+      INSIGHT_REVEAL_CRAFT_COST,
+    );
   });
 
   it("getInsightRevealCost returns null for repeatable crafts", () => {
-    expect(getInsightRevealCost("craftTorches")).toBeNull();
+    expect(getInsightRevealCost("craftTorches", withWoodenHuts(0))).toBeNull();
   });
 
   it("canRevealEffects is false when already revealed", () => {

@@ -68,10 +68,12 @@ describe("villagerCapUpgrades", () => {
     expect(getVillagerCapForJob(state, "hunter")).toBe(Infinity);
   });
 
-  it("computes upgrade costs as 250 * (level + 1), with a higher final upgrade", () => {
-    expect(getNextCapUpgradeCost(0)).toBe(250);
-    expect(getNextCapUpgradeCost(3)).toBe(1000);
-    expect(getNextCapUpgradeCost(4)).toBe(1500);
+  it("computes upgrade costs per cap step", () => {
+    expect(getNextCapUpgradeCost(0)).toBe(100);
+    expect(getNextCapUpgradeCost(1)).toBe(250);
+    expect(getNextCapUpgradeCost(2)).toBe(500);
+    expect(getNextCapUpgradeCost(3)).toBe(750);
+    expect(getNextCapUpgradeCost(4)).toBe(1000);
   });
 
   it("reads and clamps stored upgrade levels", () => {
@@ -122,7 +124,7 @@ describe("villagerCapUpgrades", () => {
     useGameStore.getState().initialize(
       baseState({
         villagerCapUpgrades: {},
-        resources: { insight: 250 } as GameState["resources"],
+        resources: { insight: 100 } as GameState["resources"],
       }) as Partial<GameState>,
     );
 

@@ -136,7 +136,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
     ? TIMED_EVENT_TAB_PROLONG_INSIGHT_COST
     : isStats
       ? STAT_EFFECTS_INSIGHT_COST
-      : (actionId ? (getInsightRevealCost(actionId) ?? 0) : 0);
+      : (actionId ? (getInsightRevealCost(actionId, state) ?? 0) : 0);
 
   const insightResource = formatTooltipResourceName("insight");
   // Resolve via the reactive `t` (same pattern as the other timed-event tooltips in
