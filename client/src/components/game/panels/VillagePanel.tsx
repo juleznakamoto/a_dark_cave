@@ -172,6 +172,7 @@ export default function VillagePanel() {
     setActivePresetSlot,
     purchaseVillagerPresetSlot,
     purchaseConstructionQueueSlot,
+    constructionQueueSlotsPurchased,
     setShopDialogOpen,
     setShopCheckoutItemId,
   } = useGameStore();
@@ -239,6 +240,26 @@ export default function VillagePanel() {
   );
   const [, forcePresetUnlockUpdate] = useState(0);
   const [, forceQueueSlotUnlockUpdate] = useState(0);
+
+  // Suppress idle glyph flash after reveal animation (same pattern as ActionInsightBadge).
+  const presetUnlockRevealStartedRef = useRef(false);
+  const queueSlotUnlockRevealStartedRef = useRef(false);
+
+  useEffect(() => {
+    if (isPresetUnlockAnimating) presetUnlockRevealStartedRef.current = true;
+  }, [isPresetUnlockAnimating]);
+
+  useEffect(() => {
+    if (isQueueSlotUnlockAnimating) queueSlotUnlockRevealStartedRef.current = true;
+  }, [isQueueSlotUnlockAnimating]);
+
+  useEffect(() => {
+    presetUnlockRevealStartedRef.current = false;
+  }, [villagerPresetsPurchased]);
+
+  useEffect(() => {
+    queueSlotUnlockRevealStartedRef.current = false;
+  }, [constructionQueueSlotsPurchased]);
 
   useEffect(() => {
     if (!isPresetUnlockAnimating) return;
@@ -1172,66 +1193,75 @@ export default function VillagePanel() {
                           : false;
                         const canInteractQueueUnlock =
                           canUnlock && !isQueueSlotUnlockAnimating;
+                        const hideQueueSlotUnlockAfterReveal =
+                          queueSlotUnlockRevealStartedRef.current &&
+                          !isQueueSlotUnlockAnimating;
                         return (
                           <div className="ml-auto flex shrink-0 items-center gap-1">
-                            {showQueueSlotUnlock && (
-                              <TooltipWrapper
-                                tooltipId="queue-slot-unlock"
-                                tooltip={
-                                  <div className="text-xs">
-                                    {t("village.queueSlotUnlock", {
-                                      cost: formatNumber(nextUnlockCost),
-                                    })}
-                                  </div>
-                                }
-                                tooltipContentClassName="text-white"
-                                className="inline-flex items-center"
-                                tooltipTriggerClassName={
-                                  PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS
-                                }
-                                tooltipTriggerAsChild
-                                disabled={!canInteractQueueUnlock}
-                                onMouseEnter={() => {
-                                  setHighlightedResources(["insight"]);
-                                }}
-                                onMouseLeave={() => {
-                                  setHighlightedResources([]);
-                                }}
-                              >
-                                <button
-                                  type="button"
-                                  data-testid="queue-slot-unlock"
-                                  className={cn(
-                                    getInsightBadgeTriggerClassName({
-                                      canAfford:
-                                        canUnlock || isQueueSlotUnlockAnimating,
-                                      playing: isQueueSlotUnlockAnimating,
-                                      className: cn(
-                                        "inline-flex h-5 w-5 shrink-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
-                                        INSIGHT_BADGE_ALIGN_CLASS,
-                                      ),
-                                    }),
-                                  )}
-                                  aria-label={t("village.queueSlotUnlock", {
-                                    cost: formatNumber(nextUnlockCost),
-                                  })}
+                            {showQueueSlotUnlock &&
+                              !hideQueueSlotUnlockAfterReveal && (
+                                <TooltipWrapper
+                                  tooltipId="queue-slot-unlock"
+                                  tooltip={
+                                    <div className="text-xs">
+                                      {t("village.queueSlotUnlock", {
+                                        cost: formatNumber(nextUnlockCost),
+                                      })}
+                                    </div>
+                                  }
+                                  tooltipContentClassName="text-white"
+                                  className="inline-flex items-center"
+                                  tooltipTriggerClassName={
+                                    PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS
+                                  }
+                                  tooltipTriggerAsChild
                                   disabled={!canInteractQueueUnlock}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    e.preventDefault();
-                                    if (canInteractQueueUnlock) {
-                                      handleQueueSlotUnlock();
-                                    }
+                                  onMouseEnter={() => {
+                                    setHighlightedResources(["insight"]);
+                                  }}
+                                  onMouseLeave={() => {
+                                    setHighlightedResources([]);
                                   }}
                                 >
-                                  <BuildingActionBadge
-                                    playing={isQueueSlotUnlockAnimating}
-                                    embedded
-                                    size="lg"
-                                  />
-                                </button>
-                              </TooltipWrapper>
-                            )}
+                                  <button
+                                    type="button"
+                                    data-testid="queue-slot-unlock"
+                                    className={cn(
+                                      getInsightBadgeTriggerClassName({
+                                        canAfford:
+                                          canUnlock || isQueueSlotUnlockAnimating,
+                                        playing: isQueueSlotUnlockAnimating,
+                                        className: cn(
+                                          "inline-flex h-5 w-5 shrink-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
+                                          INSIGHT_BADGE_ALIGN_CLASS,
+                                        ),
+                                      }),
+                                    )}
+                                    aria-label={t("village.queueSlotUnlock", {
+                                      cost: formatNumber(nextUnlockCost),
+                                    })}
+                                    disabled={!canInteractQueueUnlock}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      e.preventDefault();
+                                      if (canInteractQueueUnlock) {
+                                        handleQueueSlotUnlock();
+                                      }
+                                    }}
+                                  >
+                                    <BuildingActionBadge
+                                      key={
+                                        isQueueSlotUnlockAnimating
+                                          ? "reveal"
+                                          : "idle"
+                                      }
+                                      playing={isQueueSlotUnlockAnimating}
+                                      embedded
+                                      size="lg"
+                                    />
+                                  </button>
+                                </TooltipWrapper>
+                              )}
                             {Array.from({ length: visibleSlots }).map((_, i) => {
                               const slot = i + 1;
                               const isBuildingLocked = isQueueSlotBuildingLocked(
@@ -1894,6 +1924,9 @@ export default function VillagePanel() {
                       : false;
                     const canInteractPresetUnlock =
                       canUnlockPreset && !isPresetUnlockAnimating;
+                    const hidePresetUnlockAfterReveal =
+                      presetUnlockRevealStartedRef.current &&
+                      !isPresetUnlockAnimating;
                     // The "+" buys 2 extra preset slots; visible once the Scribe's
                     // Office exists and the slots have not been bought yet.
                     const showAddPresetSlotsPlus =
@@ -1901,7 +1934,7 @@ export default function VillagePanel() {
                       !areAdditionalPresetSlotsPurchased(presetState);
                     return (
                       <div className="ml-auto flex shrink-0 items-center gap-1">
-                        {showPresetUnlock && (
+                        {showPresetUnlock && !hidePresetUnlockAfterReveal && (
                           <TooltipWrapper
                             tooltipId="preset-unlock"
                             tooltip={
@@ -1952,6 +1985,9 @@ export default function VillagePanel() {
                               }}
                             >
                               <BuildingActionBadge
+                                key={
+                                  isPresetUnlockAnimating ? "reveal" : "idle"
+                                }
                                 playing={isPresetUnlockAnimating}
                                 embedded
                                 size="lg"
