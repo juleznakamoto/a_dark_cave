@@ -223,6 +223,11 @@ body {
   height: auto;
 }
 
+/* Idle glyph sits high in its em box; nudge down to match slot icons (× uses 2px). */
+.header-slot-insight-trigger .building-action-badge__glyph {
+  transform: translateY(2px);
+}
+
 .building-action-badge__idle,
 .building-action-badge__svg {
   position: absolute;
