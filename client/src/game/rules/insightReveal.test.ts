@@ -7,58 +7,76 @@ import {
   getInsightRevealCost,
   INSIGHT_REVEAL_BUILDING_COST,
   INSIGHT_REVEAL_BUILDING_COST_EARLY,
-  INSIGHT_REVEAL_CRAFT_COST,
-  INSIGHT_REVEAL_CRAFT_COST_EARLY,
   INSIGHT_REVEAL_FORTIFICATION_COST,
+  INSIGHT_REVEAL_STONE_HUT_COST_HIGH,
+  INSIGHT_REVEAL_STONE_HUT_COST_MID,
   isCraftOnceAction,
 } from "./insightReveal";
 
 describe("insightReveal", () => {
   const base = (): GameState => createInitialState();
 
-  const withWoodenHuts = (count: number): GameState => ({
+  const withHuts = (
+    woodenHut: number,
+    stoneHut = 0,
+  ): GameState => ({
     ...base(),
-    buildings: { ...base().buildings, woodenHut: count },
+    buildings: { ...base().buildings, woodenHut, stoneHut },
   });
 
-  it("getInsightRevealCost returns early tier for buildings with <=5 wooden huts", () => {
-    expect(getInsightRevealCost("buildClerksHut", withWoodenHuts(0))).toBe(
+  it("getInsightRevealCost returns early tier for buildings with <=5 wooden huts and no stone huts", () => {
+    expect(getInsightRevealCost("buildClerksHut", withHuts(0))).toBe(
       INSIGHT_REVEAL_BUILDING_COST_EARLY,
     );
-    expect(getInsightRevealCost("buildClerksHut", withWoodenHuts(5))).toBe(
+    expect(getInsightRevealCost("buildClerksHut", withHuts(5))).toBe(
       INSIGHT_REVEAL_BUILDING_COST_EARLY,
     );
   });
 
-  it("getInsightRevealCost returns standard tier for buildings with >5 wooden huts", () => {
-    expect(getInsightRevealCost("buildClerksHut", withWoodenHuts(6))).toBe(
+  it("getInsightRevealCost returns standard tier for buildings with >5 wooden huts and no stone huts", () => {
+    expect(getInsightRevealCost("buildClerksHut", withHuts(6))).toBe(
       INSIGHT_REVEAL_BUILDING_COST,
     );
   });
 
-  it("getInsightRevealCost returns 100 for fortification builds regardless of wooden huts", () => {
-    expect(getInsightRevealCost("buildWatchtower", withWoodenHuts(0))).toBe(
+  it("getInsightRevealCost uses stone-hut tiers once stone huts exist", () => {
+    expect(getInsightRevealCost("buildClerksHut", withHuts(10, 1))).toBe(
+      INSIGHT_REVEAL_STONE_HUT_COST_MID,
+    );
+    expect(getInsightRevealCost("buildClerksHut", withHuts(10, 5))).toBe(
+      INSIGHT_REVEAL_STONE_HUT_COST_MID,
+    );
+    expect(getInsightRevealCost("buildClerksHut", withHuts(10, 6))).toBe(
+      INSIGHT_REVEAL_STONE_HUT_COST_HIGH,
+    );
+  });
+
+  it("getInsightRevealCost returns 200 for fortification builds", () => {
+    expect(getInsightRevealCost("buildWatchtower", withHuts(0))).toBe(
       INSIGHT_REVEAL_FORTIFICATION_COST,
     );
-    expect(getInsightRevealCost("buildWatchtower", withWoodenHuts(10))).toBe(
+    expect(getInsightRevealCost("buildWatchtower", withHuts(10, 3))).toBe(
       INSIGHT_REVEAL_FORTIFICATION_COST,
     );
   });
 
-  it("getInsightRevealCost returns early tier for craft-once items with <=5 wooden huts", () => {
-    expect(getInsightRevealCost("craftStoneAxe", withWoodenHuts(3))).toBe(
-      INSIGHT_REVEAL_CRAFT_COST_EARLY,
+  it("getInsightRevealCost mirrors building tiers for craft-once items", () => {
+    expect(getInsightRevealCost("craftStoneAxe", withHuts(3))).toBe(
+      INSIGHT_REVEAL_BUILDING_COST_EARLY,
     );
-  });
-
-  it("getInsightRevealCost returns standard tier for craft-once items with >5 wooden huts", () => {
-    expect(getInsightRevealCost("craftStoneAxe", withWoodenHuts(6))).toBe(
-      INSIGHT_REVEAL_CRAFT_COST,
+    expect(getInsightRevealCost("craftStoneAxe", withHuts(6))).toBe(
+      INSIGHT_REVEAL_BUILDING_COST,
+    );
+    expect(getInsightRevealCost("craftStoneAxe", withHuts(10, 2))).toBe(
+      INSIGHT_REVEAL_STONE_HUT_COST_MID,
+    );
+    expect(getInsightRevealCost("craftStoneAxe", withHuts(10, 8))).toBe(
+      INSIGHT_REVEAL_STONE_HUT_COST_HIGH,
     );
   });
 
   it("getInsightRevealCost returns null for repeatable crafts", () => {
-    expect(getInsightRevealCost("craftTorches", withWoodenHuts(0))).toBeNull();
+    expect(getInsightRevealCost("craftTorches", withHuts(0))).toBeNull();
   });
 
   it("canRevealEffects is false when already revealed", () => {

@@ -605,12 +605,12 @@ export const forestTradeActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.gold": 500,
+        "resources.gold": 250,
       },
     },
     effects: {
       1: {
-        "resources.insight": 2500,
+        "resources.insight": 3000,
       },
     },
   },

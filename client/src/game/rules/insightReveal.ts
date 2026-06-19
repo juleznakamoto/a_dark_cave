@@ -4,11 +4,13 @@ import type { Action } from "@shared/schema";
 
 export const INSIGHT_REVEAL_BUILDING_COST_EARLY = 50;
 export const INSIGHT_REVEAL_BUILDING_COST = 100;
-export const INSIGHT_REVEAL_FORTIFICATION_COST = 100;
-export const INSIGHT_REVEAL_CRAFT_COST_EARLY = 50;
-export const INSIGHT_REVEAL_CRAFT_COST = 100;
-/** Building/craft reveal costs stay at the early tier while wooden huts are at or below this count. */
+export const INSIGHT_REVEAL_STONE_HUT_COST_MID = 150;
+export const INSIGHT_REVEAL_STONE_HUT_COST_HIGH = 200;
+export const INSIGHT_REVEAL_FORTIFICATION_COST = 200;
+/** Building/craft reveal costs stay at the wooden early tier while wooden huts are at or below this count. */
 export const INSIGHT_REVEAL_WOODEN_HUT_EARLY_THRESHOLD = 5;
+/** Stone-hut tier uses the mid cost while stone huts are at or below this count. */
+export const INSIGHT_REVEAL_STONE_HUT_MID_THRESHOLD = 5;
 export const INSIGHT_REVEAL_DURATION_MS = 3_000;
 /** Action button cooldown (seconds); ticks subtract 0.25 every 250ms → 1s per unit. */
 export const INSIGHT_REVEAL_ACTION_COOLDOWN_SEC = 3;
@@ -106,6 +108,13 @@ export function isFortificationBuildAction(actionId: string): boolean {
 function getBuildingCraftInsightRevealCost(
   state: Pick<GameState, "buildings">,
 ): number {
+  const stoneHuts = state.buildings.stoneHut ?? 0;
+  if (stoneHuts >= 1) {
+    return stoneHuts <= INSIGHT_REVEAL_STONE_HUT_MID_THRESHOLD
+      ? INSIGHT_REVEAL_STONE_HUT_COST_MID
+      : INSIGHT_REVEAL_STONE_HUT_COST_HIGH;
+  }
+
   const woodenHuts = state.buildings.woodenHut ?? 0;
   return woodenHuts <= INSIGHT_REVEAL_WOODEN_HUT_EARLY_THRESHOLD
     ? INSIGHT_REVEAL_BUILDING_COST_EARLY
