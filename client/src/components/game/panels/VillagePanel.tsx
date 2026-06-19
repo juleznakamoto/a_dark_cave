@@ -142,11 +142,8 @@ const PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS =
   "inline-flex items-center leading-none";
 /** Preset numbers, construction queue slots, and related header controls. */
 const HEADER_SLOT_SIZE_CLASS = "h-[18px] w-[18px] min-h-0 shrink-0";
-/** Outer box matches queue/preset slot spans; button fills it absolutely. */
-const HEADER_SLOT_INSIGHT_TRIGGER_CLASS =
-  `${HEADER_SLOT_SIZE_CLASS} header-slot-insight-trigger relative inline-flex items-center justify-center`;
 const HEADER_SLOT_INSIGHT_BUTTON_CLASS =
-  "absolute inset-0 h-full w-full appearance-none [-webkit-appearance:none] m-0 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer";
+  `${HEADER_SLOT_SIZE_CLASS} header-slot-insight-trigger cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer`;
 const HEADER_SLOT_BUTTON_CLASS =
   `${HEADER_SLOT_SIZE_CLASS} p-0 pointer-events-none inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]`;
 
@@ -1227,44 +1224,40 @@ export default function VillagePanel() {
                                     setHighlightedResources([]);
                                   }}
                                 >
-                                  <span className={HEADER_SLOT_INSIGHT_TRIGGER_CLASS}>
-                                    <button
-                                      type="button"
-                                      data-testid="queue-slot-unlock"
-                                      className={cn(
-                                        getInsightBadgeTriggerClassName({
-                                          canAfford:
-                                            canUnlock ||
-                                            isQueueSlotUnlockAnimating,
-                                          playing: isQueueSlotUnlockAnimating,
-                                          className:
-                                            HEADER_SLOT_INSIGHT_BUTTON_CLASS,
-                                        }),
-                                      )}
-                                      aria-label={t("village.queueSlotUnlock", {
-                                        cost: formatNumber(nextUnlockCost),
-                                      })}
-                                      disabled={!canInteractQueueUnlock}
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        e.preventDefault();
-                                        if (canInteractQueueUnlock) {
-                                          handleQueueSlotUnlock();
-                                        }
-                                      }}
-                                    >
-                                      <BuildingActionBadge
-                                        key={
-                                          isQueueSlotUnlockAnimating
-                                            ? "reveal"
-                                            : "idle"
-                                        }
-                                        playing={isQueueSlotUnlockAnimating}
-                                        embedded
-                                        size="lg"
-                                      />
-                                    </button>
-                                  </span>
+                                  <button
+                                    type="button"
+                                    data-testid="queue-slot-unlock"
+                                    className={cn(
+                                      getInsightBadgeTriggerClassName({
+                                        canAfford:
+                                          canUnlock || isQueueSlotUnlockAnimating,
+                                        playing: isQueueSlotUnlockAnimating,
+                                        className: HEADER_SLOT_INSIGHT_BUTTON_CLASS,
+                                      }),
+                                    )}
+                                    aria-label={t("village.queueSlotUnlock", {
+                                      cost: formatNumber(nextUnlockCost),
+                                    })}
+                                    disabled={!canInteractQueueUnlock}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      e.preventDefault();
+                                      if (canInteractQueueUnlock) {
+                                        handleQueueSlotUnlock();
+                                      }
+                                    }}
+                                  >
+                                    <BuildingActionBadge
+                                      key={
+                                        isQueueSlotUnlockAnimating
+                                          ? "reveal"
+                                          : "idle"
+                                      }
+                                      playing={isQueueSlotUnlockAnimating}
+                                      embedded
+                                      size="lg"
+                                    />
+                                  </button>
                                 </TooltipWrapper>
                               )}
                             {Array.from({ length: visibleSlots }).map((_, i) => {
@@ -1963,40 +1956,38 @@ export default function VillagePanel() {
                               setHighlightedResources([]);
                             }}
                           >
-                            <span className={HEADER_SLOT_INSIGHT_TRIGGER_CLASS}>
-                              <button
-                                type="button"
-                                data-testid="preset-unlock"
-                                className={cn(
-                                  getInsightBadgeTriggerClassName({
-                                    canAfford:
-                                      canUnlockPreset || isPresetUnlockAnimating,
-                                    playing: isPresetUnlockAnimating,
-                                    className: HEADER_SLOT_INSIGHT_BUTTON_CLASS,
-                                  }),
-                                )}
-                                aria-label={t("village.presetUnlock", {
-                                  cost: formatNumber(nextUnlockCost),
-                                })}
-                                disabled={!canInteractPresetUnlock}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  e.preventDefault();
-                                  if (canInteractPresetUnlock) {
-                                    handlePresetUnlock();
-                                  }
-                                }}
-                              >
-                                <BuildingActionBadge
-                                  key={
-                                    isPresetUnlockAnimating ? "reveal" : "idle"
-                                  }
-                                  playing={isPresetUnlockAnimating}
-                                  embedded
-                                  size="lg"
-                                />
-                              </button>
-                            </span>
+                            <button
+                              type="button"
+                              data-testid="preset-unlock"
+                              className={cn(
+                                getInsightBadgeTriggerClassName({
+                                  canAfford:
+                                    canUnlockPreset || isPresetUnlockAnimating,
+                                  playing: isPresetUnlockAnimating,
+                                  className: HEADER_SLOT_INSIGHT_BUTTON_CLASS,
+                                }),
+                              )}
+                              aria-label={t("village.presetUnlock", {
+                                cost: formatNumber(nextUnlockCost),
+                              })}
+                              disabled={!canInteractPresetUnlock}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                if (canInteractPresetUnlock) {
+                                  handlePresetUnlock();
+                                }
+                              }}
+                            >
+                              <BuildingActionBadge
+                                key={
+                                  isPresetUnlockAnimating ? "reveal" : "idle"
+                                }
+                                playing={isPresetUnlockAnimating}
+                                embedded
+                                size="lg"
+                              />
+                            </button>
                           </TooltipWrapper>
                         )}
                         {Array.from({ length: visibleSlots }).map((_, i) => {
