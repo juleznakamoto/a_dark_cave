@@ -223,13 +223,6 @@ body {
   height: auto;
 }
 
-/* Optical alignment with adjacent header / label text. Applied to the whole
-   badge (both idle glyph and animation blob) so hovering never shifts it.
-   Square header-slot buttons opt out and stay perfectly centered. */
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--header-slot) .building-action-badge {
-  transform: translateY(0.14em);
-}
-
 .building-action-badge__idle,
 .building-action-badge__svg {
   position: absolute;
