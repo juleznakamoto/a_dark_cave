@@ -142,6 +142,8 @@ const PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS =
   "inline-flex items-center leading-none";
 /** Preset numbers, construction queue slots, and related header controls. */
 const HEADER_SLOT_SIZE_CLASS = "h-[18px] w-[18px] min-h-0 shrink-0";
+const HEADER_SLOT_INSIGHT_BUTTON_CLASS =
+  `${HEADER_SLOT_SIZE_CLASS} cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer`;
 const HEADER_SLOT_BUTTON_CLASS =
   `${HEADER_SLOT_SIZE_CLASS} p-0 pointer-events-none inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]`;
 
@@ -1230,9 +1232,7 @@ export default function VillagePanel() {
                                         canAfford:
                                           canUnlock || isQueueSlotUnlockAnimating,
                                         playing: isQueueSlotUnlockAnimating,
-                                        className: cn(
-                                          "h-5 w-5 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
-                                        ),
+                                        className: HEADER_SLOT_INSIGHT_BUTTON_CLASS,
                                       }),
                                     )}
                                     aria-label={t("village.queueSlotUnlock", {
@@ -1964,9 +1964,7 @@ export default function VillagePanel() {
                                   canAfford:
                                     canUnlockPreset || isPresetUnlockAnimating,
                                   playing: isPresetUnlockAnimating,
-                                  className: cn(
-                                    "h-5 w-5 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
-                                  ),
+                                  className: HEADER_SLOT_INSIGHT_BUTTON_CLASS,
                                 }),
                               )}
                               aria-label={t("village.presetUnlock", {
