@@ -182,8 +182,9 @@ export default function Game() {
             ...resumeUi,
             flags: {
               ...savedState.flags,
-              gameStarted: isGamePath ? true : savedState.flags.gameStarted, // Force game started if /game path
-              hasLitFire: isGamePath ? true : savedState.flags.hasLitFire, // Force fire lit if /game path
+              gameStarted: isGamePath ? true : savedState.flags.gameStarted,
+              hasLitFire: isGamePath ? true : savedState.flags.hasLitFire,
+              ...(isGamePath ? { constructionQueueEnabled: true } : {}),
             },
             // Never restore transient dialog UI from older saves that persisted these fields.
             ...getTransientDialogResetOnLoad(),
@@ -258,7 +259,12 @@ export default function Game() {
           initialize();
           if (preInitFlags.gameStarted) {
             useGameStore.setState({
-              flags: { ...useGameStore.getState().flags, gameStarted: true, hasLitFire: preInitFlags.hasLitFire },
+              flags: {
+                ...useGameStore.getState().flags,
+                gameStarted: true,
+                hasLitFire: preInitFlags.hasLitFire,
+                constructionQueueEnabled: true,
+              },
               story: preInitStory,
               resources: preHydrationSnapshot.resources,
             });
@@ -289,6 +295,7 @@ export default function Game() {
                 ...useGameStore.getState().flags,
                 gameStarted: true,
                 hasLitFire: true,
+                constructionQueueEnabled: true,
               },
             });
           }

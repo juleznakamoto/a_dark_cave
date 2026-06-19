@@ -152,7 +152,7 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
   directly through `shopCheckoutItemId` on the store (the item is hidden from the shop grid).
 - **`constructionQueueSlots.ts`** — parallel construction queue (base 1 slot; Builder's Lodge/Guild unlock purchasable
   extras via Insight), build-time/cost reductions from Builder building tiers, and Construction Boost (Insight skip
-  50% of build time). Gated by `flags.constructionQueueEnabled` (new games). UI in `VillagePanel` "Build" header.
+  50% of build time). Gated by `flags.constructionQueueEnabled` (set `true` on light fire). UI in `VillagePanel` "Build" header.
 - **`constructionQueueSlots.ts`** — parallel building queue after lighting fire (`flags.constructionQueueEnabled`);
   Builder's Lodge tier bonuses (build time/cost reduction), slot caps (base 1 + Insight purchases + building tiers),
   Construction Boost (Insight skip 50% of remaining build time, once per build). Enforced in `canExecuteAction`,
