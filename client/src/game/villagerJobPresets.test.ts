@@ -15,6 +15,7 @@ import {
   getPurchasedPresetCount,
   isPresetSlotBuildingLocked,
   isPresetSlotUnlocked,
+  isShopPresetSlot,
   countUsedPresetSlots,
   migrateVillagerPresetsPurchasedOnLoad,
   snapshotAssignments,
@@ -97,6 +98,26 @@ describe("villagerJobPresets - Insight unlock", () => {
     } as any);
     expect(isPresetSlotUnlocked(state, 0)).toBe(true);
     expect(isPresetSlotUnlocked(state, 1)).toBe(false);
+  });
+
+  it("unlocks shop-purchased slots independently of Insight-bought slots", () => {
+    const state = makeState({
+      buildings: {
+        scribesOffice: 1,
+        recordsHall: 1,
+        grandArchive: 1,
+      } as any,
+      villagerPresetsPurchased: 1,
+      villagerPresetSlotsFromShop: 2,
+    } as any);
+    expect(isShopPresetSlot(3)).toBe(true);
+    expect(isShopPresetSlot(4)).toBe(true);
+    expect(isShopPresetSlot(2)).toBe(false);
+    expect(isPresetSlotUnlocked(state, 0)).toBe(true);
+    expect(isPresetSlotUnlocked(state, 1)).toBe(false);
+    expect(isPresetSlotUnlocked(state, 3)).toBe(true);
+    expect(isPresetSlotUnlocked(state, 4)).toBe(true);
+    expect(getPurchasedPresetCount(state)).toBe(3);
   });
 
   it("uses escalating Insight costs per slot index", () => {

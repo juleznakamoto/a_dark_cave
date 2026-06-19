@@ -19,6 +19,9 @@ export const MAX_BUILDING_PRESET_SLOTS = 3;
 /** Extra slots granted by the one-time `additional_preset_slots` shop purchase. */
 export const SHOP_ADDITIONAL_PRESET_SLOTS = 2;
 
+/** 0-based index of the first shop-purchased preset slot (after building-gated slots). */
+export const SHOP_PRESET_SLOT_INDEX = MAX_BUILDING_PRESET_SLOTS;
+
 /** Total preset slots shown in the UI (building-unlocked + shop-purchased). */
 export const MAX_PRESET_SLOTS =
   MAX_BUILDING_PRESET_SLOTS + SHOP_ADDITIONAL_PRESET_SLOTS;
@@ -78,6 +81,18 @@ export function areAdditionalPresetSlotsPurchased(
   state: Pick<GameState, "villagerPresetSlotsFromShop">,
 ): boolean {
   return getShopPresetSlotCount(state) >= SHOP_ADDITIONAL_PRESET_SLOTS;
+}
+
+export function isShopPresetSlot(slotIndex: number): boolean {
+  return (
+    slotIndex >= SHOP_PRESET_SLOT_INDEX &&
+    slotIndex < SHOP_PRESET_SLOT_INDEX + SHOP_ADDITIONAL_PRESET_SLOTS
+  );
+}
+
+function getShopPresetSlotOffset(slotIndex: number): number | null {
+  if (!isShopPresetSlot(slotIndex)) return null;
+  return slotIndex - SHOP_PRESET_SLOT_INDEX;
 }
 
 /** Total usable preset slots (Insight-bought + shop-bought), 0-5. */
@@ -157,7 +172,12 @@ export function isPresetSlotUnlocked(
   >,
   slotIndex: number,
 ): boolean {
-  return slotIndex >= 0 && slotIndex < getPurchasedPresetCount(state);
+  if (slotIndex < 0) return false;
+  if (isShopPresetSlot(slotIndex)) {
+    const shopOffset = getShopPresetSlotOffset(slotIndex);
+    return shopOffset !== null && getShopPresetSlotCount(state) > shopOffset;
+  }
+  return slotIndex < getInsightPurchasedPresetCount(state);
 }
 
 /**
