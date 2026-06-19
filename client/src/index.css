@@ -218,10 +218,18 @@ body {
 .building-action-badge--embedded {
   position: absolute;
   inset: 0;
+  /* Override --sm/--lg fixed dimensions so the badge matches the trigger size. */
+  width: auto;
+  height: auto;
+}
+
+/* Header slot unlock buttons (18px): center glyph/animation, no text nudge. */
+.insight-action-badge-trigger--header-slot:not(:hover):not(:active) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__glyph {
+  transform: none;
 }
 
 /* Optical alignment of idle glyph with adjacent header / label text. */
-.insight-action-badge-trigger:not(:hover):not(:active) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__glyph {
+.insight-action-badge-trigger:not(.insight-action-badge-trigger--header-slot):not(:hover):not(:active) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__glyph {
   transform: translateY(0.14em);
 }
 
@@ -254,6 +262,11 @@ body {
 
 .building-action-badge--lg .building-action-badge__glyph {
   font-size: 17px;
+}
+
+/* 18px header slot insight triggers (between --sm and --lg). */
+.insight-action-badge-trigger--header-slot .building-action-badge__glyph {
+  font-size: 15px;
 }
 
 .building-action-badge__svg {
