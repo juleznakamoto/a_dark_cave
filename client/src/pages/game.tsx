@@ -184,7 +184,12 @@ export default function Game() {
               ...savedState.flags,
               gameStarted: isGamePath ? true : savedState.flags.gameStarted,
               hasLitFire: isGamePath ? true : savedState.flags.hasLitFire,
-              ...(isGamePath ? { constructionQueueEnabled: true } : {}),
+              ...(isGamePath
+                ? {
+                  constructionQueueEnabled: true,
+                  villagerCapsEnabled: true,
+                }
+                : {}),
             },
             // Never restore transient dialog UI from older saves that persisted these fields.
             ...getTransientDialogResetOnLoad(),
@@ -264,6 +269,7 @@ export default function Game() {
                 gameStarted: true,
                 hasLitFire: preInitFlags.hasLitFire,
                 constructionQueueEnabled: true,
+                villagerCapsEnabled: true,
               },
               story: preInitStory,
               resources: preHydrationSnapshot.resources,
@@ -296,6 +302,7 @@ export default function Game() {
                 gameStarted: true,
                 hasLitFire: true,
                 constructionQueueEnabled: true,
+                villagerCapsEnabled: true,
               },
             });
           }
