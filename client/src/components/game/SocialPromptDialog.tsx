@@ -8,13 +8,13 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
-import { getSupabaseClient } from "@/lib/supabase";
-import { apiUrl } from "@/lib/apiUrl";
 import { useToast } from "@/hooks/use-toast";
 import {
   MARKETING_EMAIL_REWARD_KEY,
   MARKETING_SUBSCRIBE_GOLD,
   applyMarketingSubscribeGoldReward,
+  fetchMarketingOptInPreference,
+  getConfirmedUserAccessToken,
   postMarketingPreference,
 } from "@/game/marketingEmailReward";
 import {
@@ -140,24 +140,9 @@ export default function SocialPromptDialog({
 
     (async () => {
       try {
-        const supabase = await getSupabaseClient();
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-        if (!session?.access_token || cancelled) {
-          setPrefLoading(false);
-          return;
-        }
-        const res = await fetch(apiUrl("/api/marketing/preferences"), {
-          headers: { Authorization: `Bearer ${session.access_token}` },
-        });
-        if (!res.ok || cancelled) {
-          setPrefLoading(false);
-          return;
-        }
-        const j = (await res.json()) as { marketing_opt_in?: boolean };
-        if (!cancelled) {
-          setMarketingOptIn(j.marketing_opt_in === true);
+        const optIn = await fetchMarketingOptInPreference();
+        if (!cancelled && optIn !== null) {
+          setMarketingOptIn(optIn);
         }
       } catch {
         /* ignore — rows still usable */
@@ -217,11 +202,17 @@ export default function SocialPromptDialog({
     if (subscribeLoading || prefLoading) return;
     setSubscribeLoading(true);
     try {
-      const supabase = await getSupabaseClient();
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (!session?.access_token) {
+      const user = await getCurrentUser();
+      if (!user) {
+        toast({
+          title: t("profile.notSignedIn"),
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const accessToken = await getConfirmedUserAccessToken();
+      if (!accessToken) {
         toast({
           title: t("profile.notSignedIn"),
           variant: "destructive",
@@ -230,7 +221,7 @@ export default function SocialPromptDialog({
       }
 
       await postMarketingPreference({
-        accessToken: session.access_token,
+        accessToken,
         marketingOptIn: true,
         consentSource: "social_prompt_dialog",
       });

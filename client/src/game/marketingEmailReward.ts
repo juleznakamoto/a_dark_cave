@@ -1,5 +1,6 @@
 import { apiUrl } from "@/lib/apiUrl";
 import { logger } from "@/lib/logger";
+import { getCurrentUser, getSessionAccessToken } from "@/game/auth";
 import { saveGame } from "@/game/save";
 import { buildGameState } from "@/game/stateHelpers";
 import { useGameStore } from "@/game/state";
@@ -15,6 +16,33 @@ export const MARKETING_SUBSCRIBE_GOLD = 100;
 export type MarketingConsentSource =
   | "settings_toggle"
   | "social_prompt_dialog";
+
+/**
+ * Load marketing opt-in for confirmed email accounts only.
+ * Skips the API for guests/anonymous sessions (avoids 401 noise on the server).
+ */
+export async function fetchMarketingOptInPreference(): Promise<boolean | null> {
+  const user = await getCurrentUser();
+  if (!user) return null;
+
+  const accessToken = await getSessionAccessToken();
+  if (!accessToken) return null;
+
+  const res = await fetch(apiUrl("/api/marketing/preferences"), {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  if (!res.ok) return null;
+
+  const j = (await res.json()) as { marketing_opt_in?: boolean };
+  return j.marketing_opt_in === true;
+}
+
+/** Bearer token only when the player has a confirmed email account. */
+export async function getConfirmedUserAccessToken(): Promise<string | null> {
+  const user = await getCurrentUser();
+  if (!user) return null;
+  return await getSessionAccessToken();
+}
 
 /**
  * POST marketing opt-in/out (same endpoint as Profile menu).

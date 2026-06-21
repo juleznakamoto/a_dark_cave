@@ -7,7 +7,29 @@ import {
 
 vi.mock("@/lib/supabase", () => ({
   getSupabaseClient: vi.fn(),
+  isAuthStateReady: vi.fn(),
+  getCachedAuthUser: vi.fn(),
 }));
+
+async function mockConfirmedUser(accessToken: string | null) {
+  const { getSupabaseClient, isAuthStateReady, getCachedAuthUser } =
+    await import("@/lib/supabase");
+  vi.mocked(isAuthStateReady).mockReturnValue(true);
+  vi.mocked(getCachedAuthUser).mockReturnValue({
+    id: "user-1",
+    email: "player@example.com",
+    email_confirmed_at: "2024-01-01T00:00:00Z",
+  } as any);
+  vi.mocked(getSupabaseClient).mockResolvedValue({
+    auth: {
+      getSession: vi.fn().mockResolvedValue({
+        data: {
+          session: accessToken ? { access_token: accessToken } : null,
+        },
+      }),
+    },
+  } as any);
+}
 
 describe("marketing signup pending + flush", () => {
   beforeEach(() => {
@@ -49,17 +71,7 @@ describe("marketing signup pending + flush", () => {
     vi.mocked(fetch).mockResolvedValue(
       new Response(JSON.stringify({ ok: true }), { status: 200 }),
     );
-
-    const { getSupabaseClient } = await import("@/lib/supabase");
-    vi.mocked(getSupabaseClient).mockResolvedValue({
-      auth: {
-        getSession: vi.fn().mockResolvedValue({
-          data: {
-            session: { access_token: "jwt-test" },
-          },
-        }),
-      },
-    } as any);
+    await mockConfirmedUser("jwt-test");
 
     await flushPendingMarketingPreferences();
 
@@ -89,15 +101,7 @@ describe("marketing signup pending + flush", () => {
       JSON.stringify({ optIn: false, google: false, ts: 1 }),
     );
     vi.mocked(fetch).mockResolvedValue(new Response(null, { status: 200 }));
-
-    const { getSupabaseClient } = await import("@/lib/supabase");
-    vi.mocked(getSupabaseClient).mockResolvedValue({
-      auth: {
-        getSession: vi.fn().mockResolvedValue({
-          data: { session: { access_token: "t" } },
-        }),
-      },
-    } as any);
+    await mockConfirmedUser("t");
 
     await flushPendingMarketingPreferences();
 
@@ -107,19 +111,23 @@ describe("marketing signup pending + flush", () => {
     expect(body.marketing_opt_in).toBe(false);
   });
 
-  it("flushPendingMarketingPreferences skips fetch without session", async () => {
+  it("flushPendingMarketingPreferences skips fetch without confirmed user", async () => {
+    const { isAuthStateReady, getCachedAuthUser } = await import("@/lib/supabase");
+    vi.mocked(isAuthStateReady).mockReturnValue(true);
+    vi.mocked(getCachedAuthUser).mockReturnValue(null);
     vi.mocked(sessionStorage.getItem).mockReturnValue(
       JSON.stringify({ optIn: true, google: false, ts: 1 }),
     );
 
-    const { getSupabaseClient } = await import("@/lib/supabase");
-    vi.mocked(getSupabaseClient).mockResolvedValue({
-      auth: {
-        getSession: vi.fn().mockResolvedValue({
-          data: { session: null },
-        }),
-      },
-    } as any);
+    await flushPendingMarketingPreferences();
+    expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it("flushPendingMarketingPreferences skips fetch without session", async () => {
+    vi.mocked(sessionStorage.getItem).mockReturnValue(
+      JSON.stringify({ optIn: true, google: false, ts: 1 }),
+    );
+    await mockConfirmedUser(null);
 
     await flushPendingMarketingPreferences();
     expect(fetch).not.toHaveBeenCalled();

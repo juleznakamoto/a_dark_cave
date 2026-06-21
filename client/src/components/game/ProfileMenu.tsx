@@ -11,7 +11,6 @@ import { useGameStore } from "@/game/state";
 import { deleteSave } from "@/game/save";
 import { getCurrentUser, signOut, deleteAccount } from "@/game/auth";
 import { getSupabaseClient } from "@/lib/supabase";
-import { apiUrl } from "@/lib/apiUrl";
 import { useToast } from "@/hooks/use-toast";
 import { saveGame } from "@/game/save";
 import { buildGameState } from "@/game/stateHelpers";
@@ -37,6 +36,7 @@ import {
   MARKETING_EMAIL_REWARD_KEY,
   MARKETING_SUBSCRIBE_GOLD,
   applyMarketingSubscribeGoldReward,
+  fetchMarketingOptInPreference,
   postMarketingPreference,
 } from "@/game/marketingEmailReward";
 import { isRewardsTasksShortcutVisible } from "@/game/socialPromoExclusiveReward";
@@ -145,17 +145,10 @@ function useProfileMenuState() {
     let cancelled = false;
     (async () => {
       try {
-        const supabase = await getSupabaseClient();
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-        if (!session?.access_token || cancelled) return;
-        const res = await fetch(apiUrl("/api/marketing/preferences"), {
-          headers: { Authorization: `Bearer ${session.access_token}` },
-        });
-        if (!res.ok || cancelled) return;
-        const j = (await res.json()) as { marketing_opt_in?: boolean };
-        if (!cancelled) setMarketingOptIn(j.marketing_opt_in === true);
+        const optIn = await fetchMarketingOptInPreference();
+        if (!cancelled && optIn !== null) {
+          setMarketingOptIn(optIn);
+        }
       } catch {
         /* ignore */
       }

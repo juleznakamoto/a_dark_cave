@@ -226,6 +226,9 @@ export async function flushPendingMarketingPreferences(): Promise<void> {
     return;
   }
 
+  const user = await getCurrentUser();
+  if (!user) return;
+
   const supabase = await getSupabaseClient();
   const { data: { session } } = await supabase.auth.getSession();
   if (!session?.access_token) return;
