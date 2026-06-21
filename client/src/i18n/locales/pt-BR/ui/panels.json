@@ -178,6 +178,7 @@
     "craftDiscount": "Desconto de Fabricação",
     "buildDiscount": "Desconto de Construção",
     "constructionTime": "Tempo de construção",
+    "productionBonus": "Bônus de Produção",
     "doubleGainChance": "Chance de Ganho Duplo",
     "populationTooltip": "Cada aldeão consome 1 de Comida e 1 de Madeira",
     "resourceLimitMax": "máx. {{limit}}",

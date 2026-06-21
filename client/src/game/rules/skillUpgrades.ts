@@ -236,3 +236,12 @@ export const CHAINMASTER_UPGRADES = [
   { level: 4, productionBonus: 0.25, cost: 1000, disgustMinutes: 25 },
   { level: 5, productionBonus: 0.3, cost: 1250, disgustMinutes: 30 },
 ];
+
+export function getChainmasterProductionBonus(state: {
+  books?: { book_of_chainmaster?: boolean };
+  chainmasterSkills?: { level?: number };
+}): number {
+  if (!state.books?.book_of_chainmaster) return 0;
+  const level = state.chainmasterSkills?.level ?? 0;
+  return CHAINMASTER_UPGRADES[level]?.productionBonus ?? 0;
+}

@@ -178,6 +178,7 @@
     "craftDiscount": "Descuento de artesanía",
     "buildDiscount": "Descuento de construcción",
     "constructionTime": "Tiempo de construcción",
+    "productionBonus": "Bonificación de producción",
     "doubleGainChance": "Probabilidad de ganancia doble",
     "populationTooltip": "Cada aldeano consume 1 comida y 1 madera",
     "resourceLimitMax": "máx. {{limit}}",

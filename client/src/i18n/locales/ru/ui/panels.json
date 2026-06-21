@@ -178,6 +178,7 @@
     "craftDiscount": "Скидка на создание",
     "buildDiscount": "Скидка на строительство",
     "constructionTime": "Время строительства",
+    "productionBonus": "Бонус производства",
     "doubleGainChance": "Шанс двойного урожая",
     "populationTooltip": "Каждый житель потребляет 1 еду и 1 древесину",
     "resourceLimitMax": "макс. {{limit}}",

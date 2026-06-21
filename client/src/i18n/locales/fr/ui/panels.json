@@ -178,6 +178,7 @@
     "craftDiscount": "Réduction d'artisanat",
     "buildDiscount": "Réduction de construction",
     "constructionTime": "Temps de construction",
+    "productionBonus": "Bonus de production",
     "doubleGainChance": "Chance de gain double",
     "populationTooltip": "Chaque villageois consomme 1 nourriture et 1 bois",
     "resourceLimitMax": "max. {{limit}}",

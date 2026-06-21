@@ -178,6 +178,7 @@
     "craftDiscount": "制作折扣",
     "buildDiscount": "建造折扣",
     "constructionTime": "建造时间",
+    "productionBonus": "生产加成",
     "doubleGainChance": "双倍收获几率",
     "populationTooltip": "每位村民消耗 1 食物和 1 木材",
     "resourceLimitMax": "上限 {{limit}}",

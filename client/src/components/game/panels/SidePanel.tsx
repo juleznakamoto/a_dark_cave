@@ -35,6 +35,7 @@ import {
   getTotalBuildingTimeReduction,
   getDoubleGainChance,
 } from "@/game/rules/effectsCalculation";
+import { getChainmasterProductionBonus } from "@/game/rules/skillUpgrades";
 import { bookEffects, fellowshipEffects } from "@/game/rules/effects";
 import {
   gameStateSchema,
@@ -801,6 +802,18 @@ export default function SidePanel() {
       label: t("sidePanel.constructionTime"),
       value: `-${Number((buildingTimeReduction * 100).toFixed(1))}%`,
       testId: "bonus-building-time-reduction",
+      visible: true,
+    });
+  }
+
+  const chainmasterProductionBonus =
+    getChainmasterProductionBonus(gameState);
+  if (chainmasterProductionBonus > 0) {
+    bonusItems.push({
+      id: "villagerProductionBonus",
+      label: t("sidePanel.productionBonus"),
+      value: `${Math.round(chainmasterProductionBonus * 100)}%`,
+      testId: "bonus-villager-production",
       visible: true,
     });
   }

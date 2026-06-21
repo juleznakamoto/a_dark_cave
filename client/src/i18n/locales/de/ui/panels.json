@@ -178,6 +178,7 @@
     "craftDiscount": "Herstellungsrabatt", //ok
     "buildDiscount": "Baurabatt",
     "constructionTime": "Bauzeit",
+    "productionBonus": "Produktionsbonus",
     "doubleGainChance": "Doppelgewinn-Chance",
     "populationTooltip": "Jeder Dorfbewohner verbraucht 1 Nahrung und 1 Holz",
     "resourceLimitMax": "max. {{limit}}",

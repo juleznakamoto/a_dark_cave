@@ -1,8 +1,8 @@
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { GameState } from "@shared/schema"; // Assuming GameState is defined elsewhere
 import {
-  CHAINMASTER_UPGRADES,
   DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
+  getChainmasterProductionBonus,
   HUNTING_SKILL_BONUSES,
 } from "@/game/rules/skillUpgrades";
 import { getTotalMadness } from "@/game/rules/effectsCalculation";
@@ -423,21 +423,17 @@ export const getPopulationProduction = (
   }
 
   // Chainmaster skill: permanent villager production bonus
-  if (state?.books?.book_of_chainmaster) {
-    const chainmasterLevel = state.chainmasterSkills?.level ?? 0;
-    const productionBonus =
-      CHAINMASTER_UPGRADES[chainmasterLevel]?.productionBonus ?? 0;
-    if (productionBonus > 0) {
-      const bonusPercent = Math.round(productionBonus * 100);
-      baseProduction.forEach((prod) => {
-        if (prod.totalAmount > 0) {
-          const n = prod.totalAmount;
-          prod.totalAmount = Math.floor(
-            (n * (100 + bonusPercent) + 99) / 100,
-          );
-        }
-      });
-    }
+  const productionBonus = getChainmasterProductionBonus(state ?? {});
+  if (productionBonus > 0) {
+    const bonusPercent = Math.round(productionBonus * 100);
+    baseProduction.forEach((prod) => {
+      if (prod.totalAmount > 0) {
+        const n = prod.totalAmount;
+        prod.totalAmount = Math.floor(
+          (n * (100 + bonusPercent) + 99) / 100,
+        );
+      }
+    });
   }
 
   if (jobId === "scholar" && state) {

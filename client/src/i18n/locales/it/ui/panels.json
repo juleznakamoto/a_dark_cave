@@ -178,6 +178,7 @@
     "craftDiscount": "Sconto Fabbricazione",
     "buildDiscount": "Sconto Costruzione",
     "constructionTime": "Tempo di costruzione",
+    "productionBonus": "Bonus di Produzione",
     "doubleGainChance": "Probabilità Guadagno Doppio",
     "populationTooltip": "Ogni abitante consuma 1 Cibo e 1 Legno",
     "resourceLimitMax": "max {{limit}}",
