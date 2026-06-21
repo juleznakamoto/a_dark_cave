@@ -841,7 +841,8 @@
         "label": "杀死生物"
       },
       "spareCreature": {
-        "label": "饶命"
+        "label": "饶命",
+        "reward": "+500 金币"
       }
     },
     "log": {
@@ -1140,7 +1141,8 @@
   "mysteriousBell": {
     "choices": {
       "doNotRing": {
-        "label": "不敲响"
+        "label": "不敲响",
+        "reward": "+500 金币"
       },
       "ringBell": {
         "label": "敲响"
@@ -2190,6 +2192,9 @@
   },
   "wandering_collector": {
     "choices": {
+      "_sellItem": {
+        "reward": "+{{reward}} 金币"
+      },
       "sell_nothing": {
         "label": "无"
       }

@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from "vitest";
 import i18n from "./index";
 import {
   localizeEventChoices,
+  resolveEventChoiceReward,
   resolveEventMessage,
   resolveEventTitle,
 } from "./eventText";
@@ -247,5 +248,27 @@ describe("localizeEventChoices", () => {
 
     expect(relocalized![0].label).toBe("Sacrifice 4 villagers");
     expect(String(relocalized![0].label)).not.toContain("returned an object");
+  });
+});
+
+describe("resolveEventChoiceReward", () => {
+  beforeEach(async () => {
+    await i18n.changeLanguage("en");
+  });
+
+  it("uses shared sell-item reward for dynamic wandering collector choices", () => {
+    expect(
+      resolveEventChoiceReward("wandering_collector", "sell_bone_dice", {
+        reward: 100,
+      }),
+    ).toBe("+100 Gold");
+  });
+
+  it("does not apply shared sell reward to sell_nothing", () => {
+    expect(
+      resolveEventChoiceReward("wandering_collector", "sell_nothing", {
+        reward: 100,
+      }),
+    ).toBeUndefined();
   });
 });

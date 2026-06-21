@@ -841,7 +841,8 @@
         "label": "Tuer la créature"
       },
       "spareCreature": {
-        "label": "Épargner"
+        "label": "Épargner",
+        "reward": "+500 or"
       }
     },
     "log": {
@@ -1140,7 +1141,8 @@
   "mysteriousBell": {
     "choices": {
       "doNotRing": {
-        "label": "Ne pas sonner"
+        "label": "Ne pas sonner",
+        "reward": "+500 or"
       },
       "ringBell": {
         "label": "Sonner"
@@ -2190,6 +2192,9 @@
   },
   "wandering_collector": {
     "choices": {
+      "_sellItem": {
+        "reward": "+{{reward}} or"
+      },
       "sell_nothing": {
         "label": "Rien"
       }

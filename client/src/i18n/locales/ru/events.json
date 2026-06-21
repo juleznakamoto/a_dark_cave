@@ -841,7 +841,8 @@
         "label": "Убить существо"
       },
       "spareCreature": {
-        "label": "Пощадить"
+        "label": "Пощадить",
+        "reward": "+500 золота"
       }
     },
     "log": {
@@ -1140,7 +1141,8 @@
   "mysteriousBell": {
     "choices": {
       "doNotRing": {
-        "label": "Не звонить"
+        "label": "Не звонить",
+        "reward": "+500 золота"
       },
       "ringBell": {
         "label": "Позвонить"
@@ -2190,6 +2192,9 @@
   },
   "wandering_collector": {
     "choices": {
+      "_sellItem": {
+        "reward": "+{{reward}} золота"
+      },
       "sell_nothing": {
         "label": "Ничего"
       }

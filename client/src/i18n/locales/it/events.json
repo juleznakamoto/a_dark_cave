@@ -864,7 +864,8 @@
         "label": "Uccidi la creatura"
       },
       "spareCreature": {
-        "label": "Risparmiale la vita"
+        "label": "Risparmiale la vita",
+        "reward": "+500 oro"
       }
     },
     "log": {
@@ -1163,7 +1164,8 @@
   "mysteriousBell": {
     "choices": {
       "doNotRing": {
-        "label": "Non suonarla"
+        "label": "Non suonarla",
+        "reward": "+500 oro"
       },
       "ringBell": {
         "label": "Suonala"
@@ -2213,6 +2215,9 @@
   },
   "wandering_collector": {
     "choices": {
+      "_sellItem": {
+        "reward": "+{{reward}} oro"
+      },
       "sell_nothing": {
         "label": "Niente"
       }

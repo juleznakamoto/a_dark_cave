@@ -180,7 +180,15 @@ export function resolveEventChoiceReward(
   vars?: TranslateOptions,
 ): string | undefined {
   const reward = tEvent(catalogId, `choices.${choiceId}.reward`, vars);
-  return reward || undefined;
+  if (reward) return reward;
+
+  // Dynamic sell choices (e.g. wandering_collector sell_bone_dice)
+  if (choiceId.startsWith("sell_") && choiceId !== "sell_nothing") {
+    const shared = tEvent(catalogId, "choices._sellItem.reward", vars);
+    if (shared) return shared;
+  }
+
+  return undefined;
 }
 
 export function resolveEventLogMessage(

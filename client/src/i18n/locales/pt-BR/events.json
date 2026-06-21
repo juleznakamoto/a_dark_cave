@@ -864,7 +864,8 @@
         "label": "Matar a criatura"
       },
       "spareCreature": {
-        "label": "Poupar a vida"
+        "label": "Poupar a vida",
+        "reward": "+500 ouro"
       }
     },
     "log": {
@@ -1163,7 +1164,8 @@
   "mysteriousBell": {
     "choices": {
       "doNotRing": {
-        "label": "Não tocá-lo"
+        "label": "Não tocá-lo",
+        "reward": "+500 ouro"
       },
       "ringBell": {
         "label": "Tocá-lo"
@@ -2213,6 +2215,9 @@
   },
   "wandering_collector": {
     "choices": {
+      "_sellItem": {
+        "reward": "+{{reward}} ouro"
+      },
       "sell_nothing": {
         "label": "Nada"
       }

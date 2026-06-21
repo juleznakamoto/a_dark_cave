@@ -864,7 +864,8 @@
         "label": "Kreatur töten"
       },
       "spareCreature": {
-        "label": "Leben schenken"
+        "label": "Leben schenken",
+        "reward": "+500 Gold"
       }
     },
     "log": {
@@ -1163,7 +1164,8 @@
   "mysteriousBell": {
     "choices": {
       "doNotRing": {
-        "label": "Nicht läuten"
+        "label": "Nicht läuten",
+        "reward": "+500 Gold"
       },
       "ringBell": {
         "label": "Läuten"
@@ -2213,6 +2215,9 @@
   },
   "wandering_collector": {
     "choices": {
+      "_sellItem": {
+        "reward": "+{{reward}} Gold"
+      },
       "sell_nothing": {
         "label": "Nichts"
       }

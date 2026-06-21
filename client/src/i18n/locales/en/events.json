@@ -864,7 +864,8 @@
         "label": "Kill creature"
       },
       "spareCreature": {
-        "label": "Spare life"
+        "label": "Spare life",
+        "reward": "+500 Gold"
       }
     },
     "log": {
@@ -1163,7 +1164,8 @@
   "mysteriousBell": {
     "choices": {
       "doNotRing": {
-        "label": "Do not ring it"
+        "label": "Do not ring it",
+        "reward": "+500 Gold"
       },
       "ringBell": {
         "label": "Ring it"
@@ -2213,6 +2215,9 @@
   },
   "wandering_collector": {
     "choices": {
+      "_sellItem": {
+        "reward": "+{{reward}} Gold"
+      },
       "sell_nothing": {
         "label": "Nothing"
       }

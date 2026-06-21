@@ -841,7 +841,8 @@
         "label": "Matar a la criatura"
       },
       "spareCreature": {
-        "label": "Perdonar la vida"
+        "label": "Perdonar la vida",
+        "reward": "+500 oro"
       }
     },
     "log": {
@@ -1140,7 +1141,8 @@
   "mysteriousBell": {
     "choices": {
       "doNotRing": {
-        "label": "No hacer sonar"
+        "label": "No hacer sonar",
+        "reward": "+500 oro"
       },
       "ringBell": {
         "label": "Hacer sonar"
@@ -2190,6 +2192,9 @@
   },
   "wandering_collector": {
     "choices": {
+      "_sellItem": {
+        "reward": "+{{reward}} oro"
+      },
       "sell_nothing": {
         "label": "Nada"
       }
