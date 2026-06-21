@@ -298,8 +298,8 @@
     "log": {
       "fallback": "The collector shrugs and slips away with the forest mist. He mutters that he may return.",
       "fallbackLast": "The collector leaves without a word. You sense you will not see him again.",
-      "learnOutcome": "You pay the collector and he reads from the book in a low voice. It belonged to a long-dead slaver who called himself the Chainmaster. He branded his slaves with a chain mark — a brand that outlasted skin and leather alike. The knowledge settles in your mind like a cold weight.",
-      "sellOutcome": "The collector counts out the gold and takes the book. 'It belonged to a slaver who called himself the Chainmaster,' he says. 'He branded his slaves with a chain mark. The mark never truly fades.'"
+      "learnOutcome": "You pay the collector and he reads from the book in a low voice. It belonged to a long-dead slaver who called himself the Chainmaster. He branded his slaves with a chain mark. The knowledge weighs heavily on your mind.",
+      "sellOutcome": "The collector counts out the gold and takes the book. 'It belonged to a slaver who called himself the Chainmaster,' he says. 'He branded his slaves with a chain mark.'"
     },
     "message": {
       "lastChance": "The wandering collector appears again. His eyes fix on the leatherbound book. 'This is my last offer,' he says quietly. 'Sell it for {{sellGold}} gold, or pay {{teachCost}} gold and I will teach you what is written within.'",

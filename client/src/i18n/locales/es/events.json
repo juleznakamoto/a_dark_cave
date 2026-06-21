@@ -298,7 +298,7 @@
     "log": {
       "fallback": "El coleccionista se encoge de hombros y se desvanece con la bruma del bosque. Murmura que quizá regrese.",
       "fallbackLast": "El coleccionista se marcha sin decir palabra. Sientes que no volverás a verlo.",
-      "learnOutcome": "Pagas al coleccionista y lee el libro en voz baja. Perteneció a un esclavista muerto hace mucho que se hacía llamar el Maestro de las cadenas. Marcó a sus esclavos con una señal de cadena — una marca que sobrevivía a la piel y al cuero por igual. El conocimiento se asienta en tu mente como un peso frío.",
+      "learnOutcome": "Pagas al coleccionista y lee el libro en voz baja. Perteneció a un esclavista muerto hace mucho que se hacía llamar el Maestro de las cadenas. Marcó a sus esclavos con una señal de cadena. El conocimiento pesa mucho en tu mente.",
       "sellOutcome": "El coleccionista cuenta el oro y se lleva el libro. «Perteneció a un esclavista que se hacía llamar el Maestro de las cadenas», dice. «Marcaba a sus esclavos con una señal de cadena. La marca nunca desaparece del todo.»"
     },
     "message": {

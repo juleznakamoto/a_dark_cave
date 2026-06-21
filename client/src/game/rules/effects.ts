@@ -1630,6 +1630,13 @@ export const bookEffects: Record<string, EffectDefinition> = {
       "Ancient tome of a master craftsman. Reveals subtle hints about crafting items and constructing buildings.",
     bonuses: {},
   },
+  book_of_chainmaster: {
+    id: "book_of_chainmaster",
+    name: "Book of Chainmaster",
+    description:
+      "Book of the long-dead Chainmaster containing harsh methods to drive workers beyond their limits.",
+    bonuses: {},
+  },
 };
 
 export const fellowshipEffects: Record<string, EffectDefinition> = {

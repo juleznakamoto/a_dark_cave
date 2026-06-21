@@ -298,7 +298,7 @@
     "log": {
       "fallback": "O colecionador dá de ombros e desaparece com a névoa da floresta. Ele murmura que talvez retorne.",
       "fallbackLast": "O colecionador parte sem dizer palavra. Você sente que não o verá de novo.",
-      "learnOutcome": "Você paga o colecionador e ele lê o livro em voz baixa. Pertenceu a um traficante de escravos morto há muito que se intitulava Mestre das Correntes. Ele marcava seus escravos com um sinal de corrente — uma marca que sobrevivia à pele e ao couro. O conhecimento se instala em sua mente como um peso frio.",
+      "learnOutcome": "Você paga o colecionador e ele lê o livro em voz baixa. Pertenceu a um traficante de escravos morto há muito que se intitulava Mestre das Correntes. Ele marcava seus escravos com um sinal de corrente. O conhecimento pesa fortemente em sua mente.",
       "sellOutcome": "O colecionador conta o ouro e leva o livro. «Pertenceu a um traficante de escravos que se intitulava Mestre das Correntes», diz ele. «Ele marcava seus escravos com um sinal de corrente. A marca nunca desaparece de verdade.»"
     },
     "message": {

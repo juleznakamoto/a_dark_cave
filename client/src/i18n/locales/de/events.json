@@ -298,7 +298,7 @@
     "log": {
       "fallback": "Der Sammler zuckt mit den Schultern und verschwindet im Waldnebel. Er murmelt, dass er vielleicht zurückkehre.",
       "fallbackLast": "Der Sammler geht, ohne ein Wort zu sagen. Du spürst, dass du ihn nicht wiedersehen wirst.",
-      "learnOutcome": "Du bezahlst den Sammler, und er liest leise aus dem Buch. Es gehörte einem längst totem Sklavenhändler, der sich den Kettenmeister nannte. Er brandmarkte seine Sklaven mit einem Kettenzeichen — ein Mal, das Haut und Leder gleichermaßen überdauerte. Das Wissen legt sich wie eine kalte Last in deinen Geist.",
+      "learnOutcome": "Du bezahlst den Sammler, und er liest leise aus dem Buch. Es gehörte einem längst totem Sklavenhändler, der sich den Kettenmeister nannte. Er brandmarkte seine Sklaven mit einem Kettenzeichen. Das Wissen lastet schwer auf deinem Geist.",
       "sellOutcome": "Der Sammler zählt das Gold ab und nimmt das Buch. „Es gehörte einem Sklavenhändler, der sich den Kettenmeister nannte“, sagt er. „Er brandmarkte seine Sklaven mit einem Kettenzeichen. Das Mal verblasst nie wirklich.“"
     },
     "message": {

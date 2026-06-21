@@ -298,7 +298,7 @@
     "log": {
       "fallback": "Le collectionneur hausse les épaules et disparaît dans la brume forestière. Il murmure qu'il reviendra peut-être.",
       "fallbackLast": "Le collectionneur s'en va sans un mot. Vous sentez que vous ne le reverrez plus.",
-      "learnOutcome": "Vous payez le collectionneur et il lit le livre d'une voix basse. Il appartenait à un esclavagiste mort depuis longtemps qui se faisait appeler le Maître des chaînes. Il marqua ses esclaves d'un signe de chaîne — une marque qui survivait à la peau comme au cuir. Le savoir s'installe dans votre esprit comme un froid poids.",
+      "learnOutcome": "Vous payez le collectionneur et il lit le livre d'une voix basse. Il appartenait à un esclavagiste mort depuis longtemps qui se faisait appeler le Maître des chaînes. Il marqua ses esclaves d'un signe de chaîne. Le savoir pèse lourdement sur votre esprit.",
       "sellOutcome": "Le collectionneur compte l'or et prend le livre. « Il appartenait à un esclavagiste qui se faisait appeler le Maître des chaînes », dit-il. « Il marquait ses esclaves d'un signe de chaîne. La marque ne s'efface jamais vraiment. »"
     },
     "message": {
