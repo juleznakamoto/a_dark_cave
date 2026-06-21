@@ -22,6 +22,14 @@ def get_db_path() -> Path | None:
     return Path(__file__).parent / "first_names.db"
 
 
+def _email_max_rank() -> float:
+    return float(os.environ.get("GENDER_EMAIL_MAX_RANK", "5000"))
+
+
+def _name_max_rank() -> float:
+    return float(os.environ.get("GENDER_NAME_MAX_RANK", "10000"))
+
+
 def _extract_first_name(full_name: str | None) -> str | None:
     """Extract first name from full name (e.g. 'Robert Markowitch' -> 'Robert')."""
     if not full_name or not full_name.strip():
@@ -51,18 +59,19 @@ def _extract_first_name_from_email(
     if len(cleaned) < 3:
         return None
     # No separator: try prefixes (justinchang -> Justin), then suffixes (awadgeorge -> George).
-    # Among all DB matches, pick the one with best rank (lowest rank = most popular).
+    # Among DB matches within GENDER_EMAIL_MAX_RANK, pick the best rank (lowest = most popular).
+    email_max = _email_max_rank()
     if db_path and db_path.exists():
         best: tuple[str, float] | None = None
         for i in range(4, len(cleaned) + 1):
             candidate = cleaned[:i].title()
             rank = _lookup_rank(db_path, candidate)
-            if rank is not None and (best is None or rank < best[1]):
+            if rank is not None and rank <= email_max and (best is None or rank < best[1]):
                 best = (candidate, rank)
         for i in range(4, len(cleaned)):
             candidate = cleaned[-i:].title()
             rank = _lookup_rank(db_path, candidate)
-            if rank is not None and (best is None or rank < best[1]):
+            if rank is not None and rank <= email_max and (best is None or rank < best[1]):
                 best = (candidate, rank)
         if best is not None:
             return best[0]
@@ -110,6 +119,19 @@ def _lookup(db_path: Path, first_name: str) -> str | None:
         raise
 
 
+def _accept_match(
+    db_path: Path, first_name: str, max_rank: float
+) -> tuple[str | None, str | None]:
+    """Return (g, first_name) when name is in DB and rank <= max_rank."""
+    rank = _lookup_rank(db_path, first_name)
+    if rank is None or rank > max_rank:
+        return (None, None)
+    g = _lookup(db_path, first_name)
+    if not g:
+        return (None, None)
+    return (g, first_name.strip().title())
+
+
 def predict_gender(name: str | None = None, email: str | None = None) -> tuple[str | None, str | None]:
     """Returns (g, first_name) or (None, None). g is 'm' or 'f'.
     Tries name first; if no result and email exists, falls back to email."""
@@ -123,16 +145,16 @@ def predict_gender(name: str | None = None, email: str | None = None) -> tuple[s
 
     first_name = _extract_first_name(name) if name else None
     if first_name:
-        g = _lookup(db_path, first_name)
-        if g:
-            return (g, first_name.title())
+        result = _accept_match(db_path, first_name, _name_max_rank())
+        if result[0]:
+            return result
 
     if email:
         first_name = _extract_first_name_from_email(email, db_path)
         if first_name:
-            g = _lookup(db_path, first_name)
-            if g:
-                return (g, first_name.title())
+            result = _accept_match(db_path, first_name, _email_max_rank())
+            if result[0]:
+                return result
 
     return (None, None)
 

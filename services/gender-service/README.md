@@ -37,3 +37,14 @@ GENDER_SERVICE_TOKEN=your-secret-token
 **Automatic:** Start the Node server (`npm run dev`). The gender service starts automatically when configured.
 
 **Manual:** Run `python app.py` in a separate terminal. Runs on `http://127.0.0.1:5001`.
+
+## Rank limits
+
+Matches are rejected when popularity rank exceeds the cap (lower rank = more common):
+
+- **Google / full name** (`GENDER_NAME_MAX_RANK`, default `10000`)
+- **Email extraction** (`GENDER_EMAIL_MAX_RANK`, default `5000`)
+
+Override via environment when starting the service (the Node server passes through `process.env`).
+
+**Tests:** `python -m unittest test_app.py`
