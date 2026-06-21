@@ -284,6 +284,28 @@
     "message": "I tamburi di guerra echeggiano nella notte mentre una tribù di cannibali emerge dalle terre selvagge. Avanzano sul villaggio con armi rozze e terribili intenzioni.",
     "title": "Razzia dei Cannibali"
   },
+  "chainmasterCollector": {
+    "choices": {
+      "learnSecrets": {
+        "cost": "{{teachCost}} oro",
+        "label": "Imparare i suoi segreti ({{teachCost}} oro)"
+      },
+      "sellBook": {
+        "label": "Vendere il libro ({{sellGold}} oro)"
+      }
+    },
+    "log": {
+      "fallback": "Il collezionista scrolla le spalle e svanisce nella nebbia del bosco. Borbotta che forse tornerà.",
+      "fallbackLast": "Il collezionista se ne va senza una parola. Senti che non lo rivedrai più.",
+      "learnOutcome": "Paghi il collezionista e lui legge dal libro a voce bassa. Apparteneva a uno schiavista morto da tempo che si faceva chiamare il Maestro delle catene. Marchiava i suoi schiavi con un segno a catena — un marchio che sopravviveva alla pelle come al cuoio. La conoscenza si deposita nella tua mente come un peso freddo.",
+      "sellOutcome": "Il collezionista conta l'oro e prende il libro. «Apparteneva a uno schiavista che si faceva chiamare il Maestro delle catene», dice. «Marchiava i suoi schiavi con un segno a catena. Il marchio non svanisce mai del tutto.»"
+    },
+    "message": {
+      "lastChance": "Il collezionista errante ricompare. I suoi occhi si fissano sul libro rilegato in pelle. «Questa è la mia ultima offerta», dice piano. «Vendilo per {{sellGold}} oro, o paga {{teachCost}} oro e ti insegnerò ciò che vi è scritto.»",
+      "offer": "Compare il collezionista errante, lo sguardo posato sul libro rilegato in pelle. «Comprerò quel libro per {{sellGold}} oro», propone, «oppure per {{teachCost}} oro posso insegnarti i suoi segreti.»"
+    },
+    "title": "L'offerta del collezionista"
+  },
   "compassTreasure": {
     "choices": {
       "followCompass": {
@@ -866,6 +888,15 @@
     },
     "message": "Uno straniero arriva al villaggio, aggrappato a malapena alla vita. Parla del suo insediamento a nord, dove la carenza di cibo spinse gli abitanti a uccidersi a vicenda per disperazione. Chiede di restare qualche notte per riprendersi.",
     "title": "L'Ultimo Sopravvissuto"
+  },
+  "leatherboundBookFound": {
+    "choices": {
+      "keepBook": {
+        "label": "Keep the book"
+      }
+    },
+    "message": "In the ruins, your expedition finds an old book bound in leather. A chain symbol is branded into the cover — not painted, but pressed deep into the hide like a scar. The pages are filled with writing you cannot read.",
+    "title": "Leatherbound Book"
   },
   "leatherHarnessGratefulReturn": {
     "choices": {

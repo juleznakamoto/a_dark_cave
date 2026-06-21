@@ -119,7 +119,11 @@
     "priorUpkeepShort": "Стоит {{amount}} еды за действие за цикл",
     "priorSummaryBonus": "{{actions}} действий, +{{bonus}}% бонус, {{upkeep}}",
     "priorSummaryNoBonus_one": "{{count}} одновременное действие, {{upkeep}}",
-    "priorSummaryNoBonus_other": "{{count}} одновременных действий, {{upkeep}}"
+    "priorSummaryNoBonus_other": "{{count}} одновременных действий, {{upkeep}}",
+    "chainmaster": "Властелин цепей",
+    "chainmasterProductionBonus": "+{{percent}}% к производству жителей",
+    "chainmasterDisgustDuration": "Отвращение жителей: {{minutes}} мин",
+    "chainmasterSummary": "+{{percent}}% к производству жителей"
   },
   "bonuses": {
     "caveExplore": "Исследование пещеры",

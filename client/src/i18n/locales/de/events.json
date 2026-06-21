@@ -284,6 +284,28 @@
     "message": "Kriegstrommeln hallen durch die Nacht, als ein Stamm von Kannibalen aus der Wildnis tritt. Mit primitiven Waffen und furchtbarer Absicht rücken sie auf das Dorf vor.",
     "title": "Kannibalenüberfall"
   },
+  "chainmasterCollector": {
+    "choices": {
+      "learnSecrets": {
+        "cost": "{{teachCost}} Gold",
+        "label": "Seine Geheimnisse erlernen ({{teachCost}} Gold)"
+      },
+      "sellBook": {
+        "label": "Das Buch verkaufen ({{sellGold}} Gold)"
+      }
+    },
+    "log": {
+      "fallback": "Der Sammler zuckt mit den Schultern und verschwindet im Waldnebel. Er murmelt, dass er vielleicht zurückkehre.",
+      "fallbackLast": "Der Sammler geht, ohne ein Wort zu sagen. Du spürst, dass du ihn nicht wiedersehen wirst.",
+      "learnOutcome": "Du bezahlst den Sammler, und er liest leise aus dem Buch. Es gehörte einem längst totem Sklavenhändler, der sich den Kettenmeister nannte. Er brandmarkte seine Sklaven mit einem Kettenzeichen — ein Mal, das Haut und Leder gleichermaßen überdauerte. Das Wissen legt sich wie eine kalte Last in deinen Geist.",
+      "sellOutcome": "Der Sammler zählt das Gold ab und nimmt das Buch. „Es gehörte einem Sklavenhändler, der sich den Kettenmeister nannte“, sagt er. „Er brandmarkte seine Sklaven mit einem Kettenzeichen. Das Mal verblasst nie wirklich.“"
+    },
+    "message": {
+      "lastChance": "Der wandernde Sammler erscheint erneut. Seine Blicke fixieren das ledergebundene Buch. „Das ist mein letztes Angebot“, sagt er leise. „Verkaufe es für {{sellGold}} Gold, oder zahle {{teachCost}} Gold, und ich lehre dich, was darin steht.“",
+      "offer": "Der wandernde Sammler erscheint, sein Blick verweilt auf dem ledergebundenen Buch. „Ich kaufe dieses Buch für {{sellGold}} Gold“, bietet er an, „oder für {{teachCost}} Gold lehre ich dich seine Geheimnisse.“"
+    },
+    "title": "Das Angebot des Sammlers"
+  },
   "compassTreasure": {
     "choices": {
       "followCompass": {
@@ -866,6 +888,15 @@
     },
     "message": "Ein Fremder erreicht das Dorf und klammert sich kaum noch ans Leben. Er spricht von seiner Siedlung im Norden, wo Nahrungsknappheit die Dorfbewohner in Verzweiflung dazu trieb, einander zu töten. Er bittet darum, ein paar Nächte bleiben zu dürfen, um sich zu erholen.",
     "title": "Der letzte Überlebende"
+  },
+  "leatherboundBookFound": {
+    "choices": {
+      "keepBook": {
+        "label": "Keep the book"
+      }
+    },
+    "message": "In the ruins, your expedition finds an old book bound in leather. A chain symbol is branded into the cover — not painted, but pressed deep into the hide like a scar. The pages are filled with writing you cannot read.",
+    "title": "Leatherbound Book"
   },
   "leatherHarnessGratefulReturn": {
     "choices": {

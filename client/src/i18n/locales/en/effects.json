@@ -8,6 +8,10 @@
       "description": "Ancient tome of a master craftsman. Reveals subtle hints about crafting items and constructing buildings.",
       "name": "Book of Craftsmanship"
     },
+    "book_of_chainmaster": {
+      "description": "Decoded ledger of the Chainmaster containing methods of command that wring more labor from the living.",
+      "name": "Book of Chainmaster"
+    },
     "book_of_trials": {
       "description": "Book about navigating life’s challenges. Unlocks rewards for those who prove themselves through achievements.",
       "name": "Book of Trials"
@@ -169,6 +173,10 @@
     "knights_burden": {
       "description": "Knowledge the knight shared with you, weighing heavily on your mind",
       "name": "Knight's Burden"
+    },
+    "leatherbound_book": {
+      "description": "Ancient book bound in leather, branded with a chain mark on the cover",
+      "name": "Leatherbound Book"
     },
     "loggers_gloves": {
       "description": "Sturdy leather gloves that help with wood gathering",

@@ -119,7 +119,11 @@
     "priorUpkeepShort": "Kostet {{amount}} Nahrung pro Aktion pro Zyklus",
     "priorSummaryBonus": "{{actions}} Aktionen, +{{bonus}} % Bonus, {{upkeep}}",
     "priorSummaryNoBonus_one": "{{count}} gleichzeitige Aktion, {{upkeep}}",
-    "priorSummaryNoBonus_other": "{{count}} gleichzeitige Aktionen, {{upkeep}}"
+    "priorSummaryNoBonus_other": "{{count}} gleichzeitige Aktionen, {{upkeep}}",
+    "chainmaster": "Kettenmeister",
+    "chainmasterProductionBonus": "+{{percent}} % Dorfbewohnerproduktion",
+    "chainmasterDisgustDuration": "Ekel der Dorfbewohner: {{minutes}} Min.",
+    "chainmasterSummary": "+{{percent}} % Dorfbewohnerproduktion"
   },
   "bonuses": {
     "caveExplore": "Höhle erkunden", //ok

@@ -119,7 +119,11 @@
     "priorUpkeepShort": "每个行动每周期消耗 {{amount}} 食物",
     "priorSummaryBonus": "{{actions}} 项行动，+{{bonus}}% 加成，{{upkeep}}",
     "priorSummaryNoBonus_one": "{{count}} 个并发行动，{{upkeep}}",
-    "priorSummaryNoBonus_other": "{{count}} 个并发行动，{{upkeep}}"
+    "priorSummaryNoBonus_other": "{{count}} 个并发行动，{{upkeep}}",
+    "chainmaster": "链主",
+    "chainmasterProductionBonus": "+{{percent}}% 村民产量",
+    "chainmasterDisgustDuration": "村民厌恶：{{minutes}} 分钟",
+    "chainmasterSummary": "+{{percent}}% 村民产量"
   },
   "bonuses": {
     "caveExplore": "探索洞穴",

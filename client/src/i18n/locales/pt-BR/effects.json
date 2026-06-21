@@ -8,6 +8,10 @@
       "description": "Tomo antigo de um artesão mestre. Revela dicas sutis sobre fabricar itens e construir edifícios.",
       "name": "Livro do Artesanato"
     },
+    "book_of_chainmaster": {
+      "description": "Registro decodificado do Mestre das Correntes — métodos de comando que arrancam mais trabalho dos vivos.",
+      "name": "Livro do Mestre das Correntes"
+    },
     "book_of_trials": {
       "description": "Livro sobre superar os desafios da vida. Desbloqueia recompensas para quem se prova por meio de conquistas.",
       "name": "Livro das Provações"
@@ -169,6 +173,10 @@
     "knights_burden": {
       "description": "Conhecimento que o cavaleiro compartilhou com você, pesando muito em sua mente",
       "name": "Fardo do Cavaleiro"
+    },
+    "leatherbound_book": {
+      "description": "Ancient book bound in leather, branded with a chain mark on the cover",
+      "name": "Leatherbound Book"
     },
     "loggers_gloves": {
       "description": "Luvas de couro resistentes que ajudam na coleta de madeira",

@@ -121,7 +121,7 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
   (`caveLogFallbacks.ts`, `caveExploreActions.ts`, `villageBuildActions.ts`, `forestSacrificeActions.ts`,
   `forestResearchActions.ts`, `bastionActions.ts`, …), `index.ts` (visibility/affordability + `allEvents`), effects
   (`actionEffects.ts`, `effectsCalculation.ts`, `costCalculation.ts`), events (`events.ts`
-  → `EventManager`, `LogEntry`, plus topic files `events*.ts`), `insightReveal.ts` /
+  → `EventManager`, `LogEntry`, plus topic files `events*.ts` incl. `eventsChainmaster.ts` — Leatherbound Book discovery + collector timed tab), `insightReveal.ts` /
   `insightRevealTooltip.tsx`, `actionTooltipLayout.tsx` (`composeActionTooltip` — cost,
   description, revealed effects), `focusTooltipIndicator.tsx` (focus `☩` icon on eligible action
   tooltips while focus is active), `buildingUpgradeTooltipIndicator.tsx` (upgrade `🠕` icon on

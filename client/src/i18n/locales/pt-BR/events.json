@@ -284,6 +284,28 @@
     "message": "Tambores de guerra ecoam pela noite enquanto uma tribo de canibais emerge da selva. Eles avançam sobre a aldeia com armas rudimentares e terríveis intenções.",
     "title": "Ataque dos Canibais"
   },
+  "chainmasterCollector": {
+    "choices": {
+      "learnSecrets": {
+        "cost": "{{teachCost}} ouro",
+        "label": "Aprender seus segredos ({{teachCost}} ouro)"
+      },
+      "sellBook": {
+        "label": "Vender o livro ({{sellGold}} ouro)"
+      }
+    },
+    "log": {
+      "fallback": "O colecionador dá de ombros e desaparece com a névoa da floresta. Ele murmura que talvez retorne.",
+      "fallbackLast": "O colecionador parte sem dizer palavra. Você sente que não o verá de novo.",
+      "learnOutcome": "Você paga o colecionador e ele lê o livro em voz baixa. Pertenceu a um traficante de escravos morto há muito que se intitulava Mestre das Correntes. Ele marcava seus escravos com um sinal de corrente — uma marca que sobrevivia à pele e ao couro. O conhecimento se instala em sua mente como um peso frio.",
+      "sellOutcome": "O colecionador conta o ouro e leva o livro. «Pertenceu a um traficante de escravos que se intitulava Mestre das Correntes», diz ele. «Ele marcava seus escravos com um sinal de corrente. A marca nunca desaparece de verdade.»"
+    },
+    "message": {
+      "lastChance": "O colecionador errante aparece de novo. Seus olhos fixam-se no livro encadernado em couro. «Esta é minha última oferta», diz em voz baixa. «Venda-o por {{sellGold}} ouro, ou pague {{teachCost}} ouro e ensinarei o que está escrito nele.»",
+      "offer": "O colecionador errante aparece, o olhar demorando no livro encadernado em couro. «Comprarei esse livro por {{sellGold}} ouro», oferece, «ou por {{teachCost}} ouro posso ensinar-lhe seus segredos.»"
+    },
+    "title": "A oferta do colecionador"
+  },
   "compassTreasure": {
     "choices": {
       "followCompass": {
@@ -866,6 +888,15 @@
     },
     "message": "Um estranho chega à aldeia, mal se agarrando à vida. Ele fala de seu assentamento ao norte, onde a falta de comida levou os aldeões a se matarem em desespero. Ele pede para ficar algumas noites para se recuperar.",
     "title": "O Último Sobrevivente"
+  },
+  "leatherboundBookFound": {
+    "choices": {
+      "keepBook": {
+        "label": "Keep the book"
+      }
+    },
+    "message": "In the ruins, your expedition finds an old book bound in leather. A chain symbol is branded into the cover — not painted, but pressed deep into the hide like a scar. The pages are filled with writing you cannot read.",
+    "title": "Leatherbound Book"
   },
   "leatherHarnessGratefulReturn": {
     "choices": {

@@ -119,7 +119,11 @@
     "priorUpkeepShort": "Costs {{amount}} Food per Action per Cycle",
     "priorSummaryBonus": "{{actions}} Actions, +{{bonus}}% Bonus, {{upkeep}}",
     "priorSummaryNoBonus_one": "{{count}} concurrent Action, {{upkeep}}",
-    "priorSummaryNoBonus_other": "{{count}} concurrent Actions, {{upkeep}}"
+    "priorSummaryNoBonus_other": "{{count}} concurrent Actions, {{upkeep}}",
+    "chainmaster": "Chainmaster",
+    "chainmasterProductionBonus": "+{{percent}}% villager production",
+    "chainmasterDisgustDuration": "Villager disgust: {{minutes}} min",
+    "chainmasterSummary": "+{{percent}}% villager production"
   },
   "bonuses": {
     "caveExplore": "Cave Explore",

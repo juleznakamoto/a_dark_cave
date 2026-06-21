@@ -284,6 +284,28 @@
     "message": "Tambores de guerra resuenan en la noche cuando una tribu de caníbales emerge de la espesura. Avanzan sobre la aldea con armas rudimentarias e intenciones terribles.",
     "title": "Incursión caníbal"
   },
+  "chainmasterCollector": {
+    "choices": {
+      "learnSecrets": {
+        "cost": "{{teachCost}} oro",
+        "label": "Aprender sus secretos ({{teachCost}} oro)"
+      },
+      "sellBook": {
+        "label": "Vender el libro ({{sellGold}} oro)"
+      }
+    },
+    "log": {
+      "fallback": "El coleccionista se encoge de hombros y se desvanece con la bruma del bosque. Murmura que quizá regrese.",
+      "fallbackLast": "El coleccionista se marcha sin decir palabra. Sientes que no volverás a verlo.",
+      "learnOutcome": "Pagas al coleccionista y lee el libro en voz baja. Perteneció a un esclavista muerto hace mucho que se hacía llamar el Maestro de las cadenas. Marcó a sus esclavos con una señal de cadena — una marca que sobrevivía a la piel y al cuero por igual. El conocimiento se asienta en tu mente como un peso frío.",
+      "sellOutcome": "El coleccionista cuenta el oro y se lleva el libro. «Perteneció a un esclavista que se hacía llamar el Maestro de las cadenas», dice. «Marcaba a sus esclavos con una señal de cadena. La marca nunca desaparece del todo.»"
+    },
+    "message": {
+      "lastChance": "El coleccionista errante aparece de nuevo. Sus ojos se fijan en el libro encuadernado en cuero. «Esta es mi última oferta», dice en voz baja. «Véndelo por {{sellGold}} de oro, o paga {{teachCost}} de oro y te enseñaré lo que está escrito en su interior.»",
+      "offer": "Aparece el coleccionista errante, con la mirada posada en el libro encuadernado en cuero. «Compraré ese libro por {{sellGold}} de oro», ofrece, «o por {{teachCost}} de oro puedo enseñarte sus secretos.»"
+    },
+    "title": "La oferta del coleccionista"
+  },
   "compassTreasure": {
     "choices": {
       "followCompass": {
@@ -843,6 +865,15 @@
     },
     "message": "Un desconocido llega a la aldea, apenas aferrado a la vida. Habla de su asentamiento al norte, donde la escasez de comida llevó a los aldeanos a matarse entre sí por desesperación. Pide quedarse unas noches para recuperarse.",
     "title": "El último superviviente"
+  },
+  "leatherboundBookFound": {
+    "choices": {
+      "keepBook": {
+        "label": "Keep the book"
+      }
+    },
+    "message": "In the ruins, your expedition finds an old book bound in leather. A chain symbol is branded into the cover — not painted, but pressed deep into the hide like a scar. The pages are filled with writing you cannot read.",
+    "title": "Leatherbound Book"
   },
   "leatherHarnessGratefulReturn": {
     "choices": {

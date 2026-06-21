@@ -284,6 +284,28 @@
     "message": "Des tambours de guerre résonnent dans la nuit alors qu'une tribu de cannibales surgit des terres sauvages. Ils avancent vers le village avec des armes grossières et de terribles intentions.",
     "title": "Raid cannibale"
   },
+  "chainmasterCollector": {
+    "choices": {
+      "learnSecrets": {
+        "cost": "{{teachCost}} or",
+        "label": "Apprendre ses secrets ({{teachCost}} or)"
+      },
+      "sellBook": {
+        "label": "Vendre le livre ({{sellGold}} or)"
+      }
+    },
+    "log": {
+      "fallback": "Le collectionneur hausse les épaules et disparaît dans la brume forestière. Il murmure qu'il reviendra peut-être.",
+      "fallbackLast": "Le collectionneur s'en va sans un mot. Vous sentez que vous ne le reverrez plus.",
+      "learnOutcome": "Vous payez le collectionneur et il lit le livre d'une voix basse. Il appartenait à un esclavagiste mort depuis longtemps qui se faisait appeler le Maître des chaînes. Il marqua ses esclaves d'un signe de chaîne — une marque qui survivait à la peau comme au cuir. Le savoir s'installe dans votre esprit comme un froid poids.",
+      "sellOutcome": "Le collectionneur compte l'or et prend le livre. « Il appartenait à un esclavagiste qui se faisait appeler le Maître des chaînes », dit-il. « Il marquait ses esclaves d'un signe de chaîne. La marque ne s'efface jamais vraiment. »"
+    },
+    "message": {
+      "lastChance": "Le collectionneur errant réapparaît. Son regard se fixe sur le livre relié de cuir. « C'est ma dernière offre », dit-il doucement. « Vendez-le pour {{sellGold}} pièces d'or, ou payez {{teachCost}} pièces d'or et je vous enseignerai ce qui y est écrit. »",
+      "offer": "Le collectionneur errant apparaît, son regard attardé sur le livre relié de cuir. « J'achèterai ce livre pour {{sellGold}} pièces d'or », propose-t-il, « ou pour {{teachCost}} pièces d'or je peux vous enseigner ses secrets. »"
+    },
+    "title": "L'offre du collectionneur"
+  },
   "compassTreasure": {
     "choices": {
       "followCompass": {
@@ -843,6 +865,15 @@
     },
     "message": "Un étranger arrive au village, à peine accroché à la vie. Il parle de sa colonie au nord, où les pénuries de nourriture ont poussé les villageois à s'entretuer de désespoir. Il demande à rester quelques nuits pour se rétablir.",
     "title": "Le Dernier survivant"
+  },
+  "leatherboundBookFound": {
+    "choices": {
+      "keepBook": {
+        "label": "Keep the book"
+      }
+    },
+    "message": "In the ruins, your expedition finds an old book bound in leather. A chain symbol is branded into the cover — not painted, but pressed deep into the hide like a scar. The pages are filled with writing you cannot read.",
+    "title": "Leatherbound Book"
   },
   "leatherHarnessGratefulReturn": {
     "choices": {

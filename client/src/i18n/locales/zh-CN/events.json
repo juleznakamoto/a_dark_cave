@@ -284,6 +284,28 @@
     "message": "战鼓声回荡在夜色中，一支食人族部落从荒野里现身。他们手持粗陋武器，带着可怖意图向村庄推进。",
     "title": "食人族突袭"
   },
+  "chainmasterCollector": {
+    "choices": {
+      "learnSecrets": {
+        "cost": "{{teachCost}} 金币",
+        "label": "学习其中的秘密（{{teachCost}} 金币）"
+      },
+      "sellBook": {
+        "label": "出售此书（{{sellGold}} 金币）"
+      }
+    },
+    "log": {
+      "fallback": "收藏家耸耸肩，随林间薄雾离去。他低声说也许还会回来。",
+      "fallbackLast": "收藏家一言不发地离开。你感到不会再见到他了。",
+      "learnOutcome": "你付给收藏家报酬，他低声诵读书中内容。此书曾属于一位自称链主的已故奴隶贩子。他以链形印记烙印奴隶——那烙印比皮肉与皮革都更经久。这些知识如冷重般沉入你的脑海。",
+      "sellOutcome": "收藏家数出金币，取走书籍。「它曾属于一个自称链主的奴隶贩子，」他说，「他以链形印记烙印奴隶。那印记从未真正消失。」"
+    },
+    "message": {
+      "lastChance": "流浪收藏家再度出现，目光锁定那本皮革装帧的书。「这是我最后的出价，」他轻声说，「以 {{sellGold}} 金币卖掉它，或付 {{teachCost}} 金币，我便教你其中所写的内容。」",
+      "offer": "流浪收藏家出现，目光流连于那本皮革装帧的书。「我愿以 {{sellGold}} 金币买下此书，」他提出，「或以 {{teachCost}} 金币教你其中的秘密。」"
+    },
+    "title": "收藏家的出价"
+  },
   "compassTreasure": {
     "choices": {
       "followCompass": {
@@ -843,6 +865,15 @@
     },
     "message": "一名陌生人来到村庄，几乎只剩一口气。他讲起北方的定居点，那里食物短缺迫使村民在绝望中自相残杀。他请求留下几晚恢复体力。",
     "title": "最后的幸存者"
+  },
+  "leatherboundBookFound": {
+    "choices": {
+      "keepBook": {
+        "label": "Keep the book"
+      }
+    },
+    "message": "In the ruins, your expedition finds an old book bound in leather. A chain symbol is branded into the cover — not painted, but pressed deep into the hide like a scar. The pages are filled with writing you cannot read.",
+    "title": "Leatherbound Book"
   },
   "leatherHarnessGratefulReturn": {
     "choices": {

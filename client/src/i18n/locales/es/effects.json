@@ -8,6 +8,10 @@
       "description": "Antiguo tomo de un maestro artesano. Revela pistas sutiles sobre la fabricación de objetos y la construcción de edificios.",
       "name": "Libro de artesanía"
     },
+    "book_of_chainmaster": {
+      "description": "Registro descifrado del Maestro de las cadenas — métodos de mando que exprimen más trabajo de los vivos.",
+      "name": "Libro del Maestro de las cadenas"
+    },
     "book_of_trials": {
       "description": "Libro sobre cómo afrontar los desafíos de la vida. Desbloquea recompensas para quienes se prueban mediante logros.",
       "name": "Libro de las pruebas"
@@ -169,6 +173,10 @@
     "knights_burden": {
       "description": "Conocimiento que el caballero compartió contigo, pesado en tu mente",
       "name": "Carga del caballero"
+    },
+    "leatherbound_book": {
+      "description": "Ancient book bound in leather, branded with a chain mark on the cover",
+      "name": "Leatherbound Book"
     },
     "loggers_gloves": {
       "description": "Guantes resistentes de cuero que ayudan a reunir madera",

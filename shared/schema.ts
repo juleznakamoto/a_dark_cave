@@ -227,6 +227,7 @@ export const gameStateSchema = z.object({
       survivors_notes: z.boolean().default(false),
       black_wood: z.boolean().default(false),
       obsidian_orb: z.boolean().default(false),
+      leatherbound_book: z.boolean().default(false),
     })
     .default({}),
   fellowship: z.object(fellowshipShape).default({}),
@@ -256,6 +257,7 @@ export const gameStateSchema = z.object({
       book_of_war: z.boolean().default(false),
       book_of_trials: z.boolean().default(false),
       book_of_craftsmanship: z.boolean().default(false),
+      book_of_chainmaster: z.boolean().default(false),
     })
     .default({}),
   buildings: z
@@ -733,6 +735,12 @@ export const gameStateSchema = z.object({
     .default({ level: 0 }),
 
   disgracedPriorSkills: z
+    .object({
+      level: z.number().default(0),
+    })
+    .default({ level: 0 }),
+
+  chainmasterSkills: z
     .object({
       level: z.number().default(0),
     })

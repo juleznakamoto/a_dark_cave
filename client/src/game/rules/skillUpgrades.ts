@@ -216,3 +216,23 @@ export const CROWS_EYE_UPGRADES = [
   { level: 4, doubleChance: 10, cost: 2000, currency: "gold" },
   { level: 5, doubleChance: 15, cost: 2500, currency: "gold" },
 ];
+
+const MS_PER_MIN = 60 * 1000;
+
+/** Disgust duration when upgrading Chainmaster skill (cruel mode adds 10 minutes). */
+export function chainmasterUpgradeDisgustMs(
+  disgustMinutes: number,
+  cruelMode: boolean,
+): number {
+  return disgustMinutes * MS_PER_MIN + (cruelMode ? 10 * MS_PER_MIN : 0);
+}
+
+// Chainmaster skill upgrade configurations (from Book of Chainmaster)
+export const CHAINMASTER_UPGRADES = [
+  { level: 0, productionBonus: 0.05, cost: 0, disgustMinutes: 0 },
+  { level: 1, productionBonus: 0.1, cost: 500, disgustMinutes: 10 },
+  { level: 2, productionBonus: 0.15, cost: 100, disgustMinutes: 15 },
+  { level: 3, productionBonus: 0.2, cost: 1500, disgustMinutes: 20 },
+  { level: 4, productionBonus: 0.25, cost: 2000, disgustMinutes: 25 },
+  { level: 5, productionBonus: 0.3, cost: 2500, disgustMinutes: 30 },
+];

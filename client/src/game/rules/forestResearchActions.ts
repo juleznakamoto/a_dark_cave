@@ -2,6 +2,8 @@ import type { Action, GameState } from "@shared/schema";
 import type { ActionResult } from "@/game/actions";
 import { getActionLogMessage } from "@/i18n/resolveGameText";
 import { bt } from "./buildingTooltipEffects";
+import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
+import { gameEvents } from "./events";
 
 export const FINANCE_EXPEDITION_TIERS = [
   { gold: 10, food: 250, villagers: 4, executionTime: 30, insight: 250 },
@@ -77,6 +79,10 @@ export function handleFinanceExpedition(
 ): ActionResult {
   const usageCount = getFinanceExpeditionUsageCount(state);
   const tier = getFinanceExpeditionTier(state);
+  const isMaxTier =
+    getFinanceExpeditionTierIndex(state) === FINANCE_EXPEDITION_TIERS.length - 1;
+  const shouldOfferBook =
+    isMaxTier && !state.story.seen.leatherboundBookFound;
 
   const existingStory = result.stateUpdates.story ?? { ...state.story };
   const existingSeen = {
@@ -110,6 +116,15 @@ export function handleFinanceExpedition(
     actionId: "financeExpedition",
     actionLogKey: "complete",
   });
+
+  if (shouldOfferBook) {
+    const eventDef = gameEvents.leatherboundBookFound;
+    result.logEntries!.push(
+      buildLocalizedEventLogEntry("leatherboundBookFound", eventDef, state, {
+        skipEventLog: true,
+      }),
+    );
+  }
 
   return result;
 }

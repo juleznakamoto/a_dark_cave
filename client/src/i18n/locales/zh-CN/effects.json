@@ -8,6 +8,10 @@
       "description": "大师工匠留下的古老典籍。揭示制作物品与建造建筑的微妙诀窍。",
       "name": "工艺之书"
     },
+    "book_of_chainmaster": {
+      "description": "链主的破译账册——记载着从活人身上榨取更多劳力的统御之术。",
+      "name": "链主之书"
+    },
     "book_of_trials": {
       "description": "讲述如何穿越人生试炼的书。为通过成就证明自己的人解锁奖励。",
       "name": "试炼之书"
@@ -169,6 +173,10 @@
     "knights_burden": {
       "description": "骑士与你分享的知识，沉重地压在你的心头",
       "name": "骑士的重负"
+    },
+    "leatherbound_book": {
+      "description": "Ancient book bound in leather, branded with a chain mark on the cover",
+      "name": "Leatherbound Book"
     },
     "loggers_gloves": {
       "description": "结实的皮手套，有助于采集木材",

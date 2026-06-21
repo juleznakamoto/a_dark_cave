@@ -8,6 +8,10 @@
       "description": "Ancien tome d'un maître artisan. Révèle de subtils indices sur la fabrication d'objets et la construction de bâtiments.",
       "name": "Livre de l'artisanat"
     },
+    "book_of_chainmaster": {
+      "description": "Registre décodé du Maître des chaînes — méthodes de commandement pour extorquer davantage de labeur aux vivants.",
+      "name": "Livre du Maître des chaînes"
+    },
     "book_of_trials": {
       "description": "Livre sur la traversée des épreuves de la vie. Débloque des récompenses pour ceux qui font leurs preuves par les succès.",
       "name": "Livre des épreuves"
@@ -169,6 +173,10 @@
     "knights_burden": {
       "description": "Savoir que le chevalier a partagé avec vous, pesant lourdement sur votre esprit",
       "name": "Fardeau du chevalier"
+    },
+    "leatherbound_book": {
+      "description": "Ancient book bound in leather, branded with a chain mark on the cover",
+      "name": "Leatherbound Book"
     },
     "loggers_gloves": {
       "description": "Solides gants de cuir qui aident à ramasser du bois",

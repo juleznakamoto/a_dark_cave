@@ -119,7 +119,11 @@
     "priorUpkeepShort": "Costa {{amount}} Cibo per Azione per Ciclo",
     "priorSummaryBonus": "{{actions}} Azioni, +{{bonus}}% Bonus, {{upkeep}}",
     "priorSummaryNoBonus_one": "{{count}} Azione simultanea, {{upkeep}}",
-    "priorSummaryNoBonus_other": "{{count}} Azioni simultanee, {{upkeep}}"
+    "priorSummaryNoBonus_other": "{{count}} Azioni simultanee, {{upkeep}}",
+    "chainmaster": "Maestro delle catene",
+    "chainmasterProductionBonus": "+{{percent}}% produzione degli abitanti",
+    "chainmasterDisgustDuration": "Disgusto degli abitanti: {{minutes}} min",
+    "chainmasterSummary": "+{{percent}}% produzione degli abitanti"
   },
   "bonuses": {
     "caveExplore": "Esplora Caverna",

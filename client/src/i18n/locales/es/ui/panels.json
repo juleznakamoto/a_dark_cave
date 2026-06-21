@@ -119,7 +119,11 @@
     "priorUpkeepShort": "Cuesta {{amount}} comida por acción por ciclo",
     "priorSummaryBonus": "{{actions}} acciones, +{{bonus}} % de bonificación, {{upkeep}}",
     "priorSummaryNoBonus_one": "{{count}} acción simultánea, {{upkeep}}",
-    "priorSummaryNoBonus_other": "{{count}} acciones simultáneas, {{upkeep}}"
+    "priorSummaryNoBonus_other": "{{count}} acciones simultáneas, {{upkeep}}",
+    "chainmaster": "Maestro de las cadenas",
+    "chainmasterProductionBonus": "+{{percent}} % de producción de aldeanos",
+    "chainmasterDisgustDuration": "Asco de los aldeanos: {{minutes}} min",
+    "chainmasterSummary": "+{{percent}} % de producción de aldeanos"
   },
   "bonuses": {
     "caveExplore": "Explorar cueva",

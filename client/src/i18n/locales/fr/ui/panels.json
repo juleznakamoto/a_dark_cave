@@ -119,7 +119,11 @@
     "priorUpkeepShort": "Coûte {{amount}} nourriture par action par cycle",
     "priorSummaryBonus": "{{actions}} actions, +{{bonus}} % de bonus, {{upkeep}}",
     "priorSummaryNoBonus_one": "{{count}} action simultanée, {{upkeep}}",
-    "priorSummaryNoBonus_other": "{{count}} actions simultanées, {{upkeep}}"
+    "priorSummaryNoBonus_other": "{{count}} actions simultanées, {{upkeep}}",
+    "chainmaster": "Maître des chaînes",
+    "chainmasterProductionBonus": "+{{percent}} % de production des villageois",
+    "chainmasterDisgustDuration": "Dégoût des villageois : {{minutes}} min",
+    "chainmasterSummary": "+{{percent}} % de production des villageois"
   },
   "bonuses": {
     "caveExplore": "Exploration de grotte",

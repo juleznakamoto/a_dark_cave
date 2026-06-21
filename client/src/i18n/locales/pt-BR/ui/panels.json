@@ -119,7 +119,11 @@
     "priorUpkeepShort": "Custa {{amount}} de Comida por Ação a cada Ciclo",
     "priorSummaryBonus": "{{actions}} Ações, +{{bonus}}% de Bônus, {{upkeep}}",
     "priorSummaryNoBonus_one": "{{count}} Ação simultânea, {{upkeep}}",
-    "priorSummaryNoBonus_other": "{{count}} Ações simultâneas, {{upkeep}}"
+    "priorSummaryNoBonus_other": "{{count}} Ações simultâneas, {{upkeep}}",
+    "chainmaster": "Mestre das Correntes",
+    "chainmasterProductionBonus": "+{{percent}}% produção dos aldeões",
+    "chainmasterDisgustDuration": "Repulsa dos aldeões: {{minutes}} min",
+    "chainmasterSummary": "+{{percent}}% produção dos aldeões"
   },
   "bonuses": {
     "caveExplore": "Explorar Caverna",

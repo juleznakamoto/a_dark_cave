@@ -19,6 +19,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import {
+  CHAINMASTER_UPGRADES,
+  chainmasterUpgradeDisgustMs,
   CRUSHING_STRIKE_UPGRADES,
   BLOODFLAME_SPHERE_UPGRADES,
   HUNTING_SKILL_UPGRADES,
@@ -28,6 +30,7 @@ import {
   DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
   DISGRACED_PRIOR_UPGRADES,
 } from "@/game/rules/skillUpgrades";
+import { stackTimedDebuff } from "@/game/stateHelpers";
 import { focusTooltip } from "@/game/rules/tooltips";
 import { formatNumber } from "@/lib/utils";
 import cn from "clsx";
@@ -122,6 +125,8 @@ export default function EstatePanel() {
     combatSkills,
     fellowship,
     disgracedPriorSkills,
+    chainmasterSkills,
+    books,
     setHighlightedResources,
     resources,
     updateFocusState,
@@ -312,6 +317,27 @@ export default function EstatePanel() {
       (s) => s.disgracedPriorSkills?.level ?? 0,
       (_s, level) => ({ disgracedPriorSkills: { level } }),
     );
+
+  const handleChainmasterUpgrade = () => {
+    useGameStore.setState((state) => {
+      const currentLevel = state.chainmasterSkills?.level ?? 0;
+      if (currentLevel >= 5) return state;
+      const next = CHAINMASTER_UPGRADES[currentLevel + 1];
+      if (!next || state.resources.gold < next.cost) return state;
+      return {
+        ...state,
+        chainmasterSkills: { level: currentLevel + 1 },
+        resources: {
+          ...state.resources,
+          gold: state.resources.gold - next.cost,
+        },
+        disgustState: stackTimedDebuff(
+          state.disgustState,
+          chainmasterUpgradeDisgustMs(next.disgustMinutes, state.cruelMode),
+        ),
+      };
+    });
+  };
 
   const handleCrushingStrikeUpgrade = () =>
     handleSkillUpgrade(
@@ -599,7 +625,8 @@ export default function EstatePanel() {
           fellowship.restless_knight ||
           fellowship.elder_wizard ||
           fellowship.one_eyed_crow ||
-          fellowship.disgraced_prior) && (
+          fellowship.disgraced_prior ||
+          books.book_of_chainmaster) && (
             <div className="space-y-1 pt-2">
               <h3 className="text-xs font-medium text-foreground">{t("estate.skills")}</h3>
 
@@ -758,6 +785,48 @@ export default function EstatePanel() {
                     onUpgrade={handleDgracedPriorUpgrade}
                     tooltipContent={tooltipContent}
                     description={description}
+                  />
+                );
+              })()}
+
+              {/* Chainmaster */}
+              {books.book_of_chainmaster && (() => {
+                const lvl = chainmasterSkills?.level ?? 0;
+                const cur = CHAINMASTER_UPGRADES[lvl];
+                const nxt = CHAINMASTER_UPGRADES[lvl + 1];
+                const curPercent = Math.round(cur.productionBonus * 100);
+                const nextPercent = nxt
+                  ? Math.round(nxt.productionBonus * 100)
+                  : 0;
+                const tooltipContent = nxt ? (
+                  <>
+                    <div>
+                      {t("estate.chainmasterProductionBonus", {
+                        percent: nextPercent - curPercent,
+                      })}
+                    </div>
+                    <div>
+                      {t("estate.chainmasterDisgustDuration", {
+                        minutes: nxt.disgustMinutes,
+                      })}
+                    </div>
+                  </>
+                ) : (
+                  <div>{t("estate.maxLevel")}</div>
+                );
+                return (
+                  <SkillUpgradeRow
+                    title={t("estate.chainmaster")}
+                    level={lvl}
+                    upgradeCost={nxt?.cost ?? 0}
+                    canAfford={resources.gold >= (nxt?.cost ?? Infinity)}
+                    tooltipId="upgrade-chainmaster-button"
+                    buttonId="upgrade-chainmaster"
+                    onUpgrade={handleChainmasterUpgrade}
+                    tooltipContent={tooltipContent}
+                    description={t("estate.chainmasterSummary", {
+                      percent: curPercent,
+                    })}
                   />
                 );
               })()}

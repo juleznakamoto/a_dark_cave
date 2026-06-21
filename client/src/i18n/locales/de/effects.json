@@ -8,6 +8,10 @@
       "description": "Alter Foliant eines Meisterhandwerkers. Offenbart Hinweise zum Herstellen von Gegenständen und Errichten von Gebäuden.",
       "name": "Buch der Handwerkskunst"
     },
+    "book_of_chainmaster": {
+      "description": "Entschlüsseltes Register des Kettenmeisters — Methoden des Befehls, die mehr Arbeit aus den Lebenden pressen.",
+      "name": "Buch des Kettenmeisters"
+    },
     "book_of_trials": {
       "description": "Buch über das Bestehen der Prüfungen des Lebens. Schaltet Belohnungen für jene frei, die sich durch Erfolge beweisen.",
       "name": "Buch der Prüfungen"
@@ -169,6 +173,10 @@
     "knights_burden": {
       "description": "Wissen, das der Ritter mit dir teilte und das schwer auf deinem Geist lastet",
       "name": "Bürde des Ritters"
+    },
+    "leatherbound_book": {
+      "description": "Alter in Leder gebundener Foliant, auf dem Deckel mit einer Ketten-Brandmarke gezeichnet",
+      "name": "Ledergebundenes Buch"
     },
     "loggers_gloves": {
       "description": "Robuste Lederhandschuhe, die beim Holzsammeln helfen",
