@@ -27,7 +27,7 @@ import {
   resolveEventDisplayTitle,
   resolveTimedEventCatalogId,
 } from "@/i18n/eventDisplay";
-import { localizeEventChoices } from "@/i18n/eventText";
+import { localizeEventChoices, resolveEventChoiceReward } from "@/i18n/eventText";
 import { getEventChoiceAffordance } from "@/i18n/eventAffordance";
 import type { MerchantTradeData } from "@/game/types";
 import {
@@ -406,10 +406,14 @@ export default function EventDialog({
                   sellAmount: tradeChoice.sellAmount,
                 });
 
+                const rewardText = catalogId
+                  ? resolveEventChoiceReward(catalogId, choice.id, eventI18nVars)
+                  : undefined;
+
                 const tooltipContent =
-                  costBreakdown.length > 0 || showSuccessTooltip ? (
+                  costText || costBreakdown.length > 0 || rewardText || showSuccessTooltip ? (
                     <div className="text-xs whitespace-nowrap">
-                      {costBreakdown.length > 0 && (
+                      {costBreakdown.length > 0 ? (
                         <>
                           {costBreakdown.map((costItem, index) => (
                             <div
@@ -424,10 +428,19 @@ export default function EventDialog({
                             </div>
                           ))}
                         </>
+                      ) : (
+                        costText && <div>{costText}</div>
                       )}
-                      {costBreakdown.length > 0 && showSuccessTooltip && (
+                      {(costText || costBreakdown.length > 0) && rewardText && (
                         <div className="border-t border-border my-1" />
                       )}
+                      {rewardText && (
+                        <div className="text-foreground">{rewardText}</div>
+                      )}
+                      {(costText || costBreakdown.length > 0 || rewardText) &&
+                        showSuccessTooltip && (
+                          <div className="border-t border-border my-1" />
+                        )}
                       {showSuccessTooltip && (
                         <EventChoiceSuccessTooltipContent
                           choice={choice}

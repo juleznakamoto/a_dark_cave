@@ -42,7 +42,7 @@ import {
   resolveEventDisplayTitle,
   resolveTimedEventCatalogId,
 } from "@/i18n/eventDisplay";
-import { localizeEventChoices } from "@/i18n/eventText";
+import { localizeEventChoices, resolveEventChoiceReward } from "@/i18n/eventText";
 import { interpolateFallback } from "@/i18n/resolveGameText";
 import { getEventChoiceAffordance } from "@/i18n/eventAffordance";
 import { getEventChoiceCostBreakdown } from "@/game/rules/index";
@@ -595,8 +595,12 @@ export default function TimedEventPanel() {
                   ? getMerchantTradeEffectTooltipLine(tradeChoice)
                   : null;
 
+              const rewardText = catalogId
+                ? resolveEventChoiceReward(catalogId, choice.id, eventI18nVars)
+                : undefined;
+
               const tooltipContent =
-                costText || showSuccessTooltip || merchantEffectLine ? (
+                costText || rewardText || showSuccessTooltip || merchantEffectLine ? (
                   <div className="text-xs whitespace-nowrap">
                     {costText && (
                       <>
@@ -620,7 +624,13 @@ export default function TimedEventPanel() {
                         )}
                       </>
                     )}
-                    {costText &&
+                    {costText && rewardText && (
+                      <div className="border-t border-border my-1" />
+                    )}
+                    {rewardText && (
+                      <div className="text-foreground">{rewardText}</div>
+                    )}
+                    {(costText || rewardText) &&
                       (showSuccessTooltip || merchantEffectLine) && (
                         <div className="border-t border-border my-1" />
                       )}

@@ -174,6 +174,15 @@ export function resolveEventChoiceCost(
   return cost || fallback;
 }
 
+export function resolveEventChoiceReward(
+  catalogId: string,
+  choiceId: string,
+  vars?: TranslateOptions,
+): string | undefined {
+  const reward = tEvent(catalogId, `choices.${choiceId}.reward`, vars);
+  return reward || undefined;
+}
+
 export function resolveEventLogMessage(
   catalogId: string,
   logKey: string,

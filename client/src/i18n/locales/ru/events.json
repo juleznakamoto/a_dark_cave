@@ -288,10 +288,11 @@
     "choices": {
       "learnSecrets": {
         "cost": "{{teachCost}} золота",
-        "label": "Изучить его тайны ({{teachCost}} золота)"
+        "label": "Изучить тайны"
       },
       "sellBook": {
-        "label": "Продать книгу ({{sellGold}} золота)"
+        "label": "Продать книгу",
+        "reward": "+{{sellGold}} золота"
       }
     },
     "log": {

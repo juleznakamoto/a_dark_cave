@@ -1,7 +1,7 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
-export const CHAINMASTER_SELL_GOLD = 250;
+export const CHAINMASTER_SELL_GOLD = 100;
 export const CHAINMASTER_TEACH_COSTS = [250, 500, 750, 1000] as const;
 export const CHAINMASTER_COLLECTOR_MAX_VISITS = 4;
 

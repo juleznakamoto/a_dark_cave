@@ -288,10 +288,11 @@
     "choices": {
       "learnSecrets": {
         "cost": "{{teachCost}} 金币",
-        "label": "学习其中的秘密（{{teachCost}} 金币）"
+        "label": "学习秘密"
       },
       "sellBook": {
-        "label": "出售此书（{{sellGold}} 金币）"
+        "label": "出售此书",
+        "reward": "+{{sellGold}} 金币"
       }
     },
     "log": {

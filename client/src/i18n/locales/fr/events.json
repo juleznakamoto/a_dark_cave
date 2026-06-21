@@ -288,10 +288,11 @@
     "choices": {
       "learnSecrets": {
         "cost": "{{teachCost}} or",
-        "label": "Apprendre ses secrets ({{teachCost}} or)"
+        "label": "Apprendre les secrets"
       },
       "sellBook": {
-        "label": "Vendre le livre ({{sellGold}} or)"
+        "label": "Vendre le livre",
+        "reward": "+{{sellGold}} or"
       }
     },
     "log": {
