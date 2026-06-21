@@ -175,8 +175,8 @@
       "name": "Бремя рыцаря"
     },
     "leatherbound_book": {
-      "description": "Ancient book bound in leather, branded with a chain mark on the cover",
-      "name": "Leatherbound Book"
+      "description": "Древняя книга в кожаном переплёте с клеймом цепи на обложке",
+      "name": "Книга в кожаном переплёте"
     },
     "loggers_gloves": {
       "description": "Прочные кожаные перчатки, помогающие собирать дерево",

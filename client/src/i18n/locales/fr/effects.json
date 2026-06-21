@@ -175,8 +175,8 @@
       "name": "Fardeau du chevalier"
     },
     "leatherbound_book": {
-      "description": "Ancient book bound in leather, branded with a chain mark on the cover",
-      "name": "Leatherbound Book"
+      "description": "Ancien livre relié de cuir, marqué d'un signe de chaîne sur la couverture",
+      "name": "Livre relié de cuir"
     },
     "loggers_gloves": {
       "description": "Solides gants de cuir qui aident à ramasser du bois",

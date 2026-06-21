@@ -533,225 +533,66 @@ app.post("/api/gender", async (req, res) => {
   }
 });
 
-// API endpoint to fetch admin dashboard data (server-side, bypasses RLS)
-app.get("/api/admin/data", async (req, res) => {
+import {
+  fetchAdminClicks,
+  fetchAdminMetrics,
+  fetchAdminPurchases,
+  fetchAdminSavesSlim,
+  type AdminEnv,
+} from "./adminDashboardData";
+
+function adminDashboardCache(res: Response) {
+  res.set("Cache-Control", "public, max-age=300");
+}
+
+function parseAdminEnv(req: Request): AdminEnv {
+  return (req.query.env as AdminEnv) || "dev";
+}
+
+app.get("/api/admin/metrics", async (req, res) => {
   try {
-    // Cache for 5 minutes to reduce repeated fetches
-    res.set("Cache-Control", "public, max-age=300");
-
-    const env = (req.query.env as "dev" | "prod") || "dev";
-    const adminClient = getAdminClient(env);
-
-    // Calculate date filters
-    const now = new Date();
-    const thirtyDaysAgo = new Date(now);
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    const filterDate = thirtyDaysAgo.toISOString();
-
-    let totalUserCount = 0;
-
-    const ADMIN_DATA_CLICKS_LIMIT = 10_000;
-    const ADMIN_DATA_SAVES_LIMIT = 10_000;
-    const oneYearAgo = new Date(now);
-    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-    const oneYearAgoFilter = oneYearAgo.toISOString();
-
-    const purchasesListColumns =
-      "user_id,item_id,item_name,price_paid,purchased_at,bundle_id,country,cruel_mode,currency,stripe_payment_intent_id,stripe_fx_quote_id,reporting_eur_cents,reporting_usd_cents,payment_type";
-
-    const [
-      clicksResult,
-      savesResult,
-      marketingMetricsRpc,
-      authDashboardRpc,
-      purchaseMetricsRpc,
-    ] = await Promise.all([
-      adminClient
-        .from("button_clicks")
-        .select("user_id,timestamp,clicks,resources")
-        .gte("timestamp", filterDate)
-        .order("timestamp", { ascending: false })
-        .limit(ADMIN_DATA_CLICKS_LIMIT),
-      adminClient
-        .from("game_saves")
-        .select("user_id,username,game_state,game_stats,updated_at,created_at")
-        .or(`created_at.gte.${oneYearAgoFilter},updated_at.gte.${oneYearAgoFilter}`)
-        .order("updated_at", { ascending: false })
-        .limit(ADMIN_DATA_SAVES_LIMIT),
-      adminClient.rpc("admin_marketing_dashboard_metrics"),
-      adminClient.rpc("admin_auth_dashboard_stats"),
-      adminClient.rpc("admin_purchase_metrics"),
-    ]);
-
-    if (clicksResult.error) {
-      throw clicksResult.error;
-    }
-    if (savesResult.error) {
-      throw savesResult.error;
-    }
-
-    let registrationMethodStats = {
-      emailRegistrations: 0,
-      googleRegistrations: 0,
-    };
-
-    let authSignups: Array<{ id: string; created_at: string }> = [];
-
-    let marketingMetrics = {
-      marketingUsersPrompted: 0,
-      marketingUsersOptedIn: 0,
-      marketingOptInRate: 0,
-    };
-    let accountsDeletedAnonymized = 0;
-
-    if (marketingMetricsRpc.error) {
-      log(
-        "⚠️ admin_marketing_dashboard_metrics skipped:",
-        marketingMetricsRpc.error.message ?? marketingMetricsRpc.error,
-      );
-    } else {
-      const mm = marketingMetricsRpc.data as Record<string, unknown> | null;
-      if (mm && typeof mm === "object") {
-        marketingMetrics = {
-          marketingUsersPrompted:
-            Number(mm.marketing_users_prompted) || 0,
-          marketingUsersOptedIn:
-            Number(mm.marketing_users_opted_in) || 0,
-          marketingOptInRate: Number(mm.marketing_opt_in_rate) || 0,
-        };
-        accountsDeletedAnonymized =
-          Number(mm.accounts_deleted_anonymized) || 0;
-      }
-    }
-
-    if (authDashboardRpc.error) {
-      log(
-        "⚠️ admin_auth_dashboard_stats skipped:",
-        authDashboardRpc.error.message ?? authDashboardRpc.error,
-      );
-    } else {
-      const authPayload = authDashboardRpc.data as Record<
-        string,
-        unknown
-      > | null;
-      if (authPayload && typeof authPayload === "object") {
-        totalUserCount = Number(authPayload.total_user_count) || 0;
-        const rms = authPayload.registration_method_stats as
-          | {
-            emailRegistrations?: number;
-            googleRegistrations?: number;
-          }
-          | undefined;
-        if (rms && typeof rms === "object") {
-          registrationMethodStats = {
-            emailRegistrations: Number(rms.emailRegistrations) || 0,
-            googleRegistrations: Number(rms.googleRegistrations) || 0,
-          };
-        }
-        const signups = authPayload.auth_signups;
-        if (Array.isArray(signups)) {
-          authSignups = signups.map((row: any) => ({
-            id: String(row.id),
-            created_at: String(row.created_at),
-          }));
-        }
-      }
-    }
-
-    // All-time paid totals in SQL — not subject to PostgREST max_rows (see migration 012).
-    let purchaseMetrics: {
-      total_revenue_eur_cents: number;
-      total_revenue_usd_cents: number;
-      paid_buyer_count: number;
-      total_revenue_eur_unified_cents: number | null;
-    } | null = null;
-    if (purchaseMetricsRpc.error) {
-      log(
-        "⚠️ admin_purchase_metrics skipped:",
-        purchaseMetricsRpc.error.message ?? purchaseMetricsRpc.error,
-      );
-    } else {
-      const pm = purchaseMetricsRpc.data as Record<string, unknown> | null;
-      if (
-        pm &&
-        typeof pm === "object" &&
-        "total_revenue_eur_cents" in pm &&
-        "total_revenue_usd_cents" in pm &&
-        "paid_buyer_count" in pm
-      ) {
-        const unifiedRaw = pm.total_revenue_eur_unified_cents;
-        purchaseMetrics = {
-          total_revenue_eur_cents:
-            Number(pm.total_revenue_eur_cents) || 0,
-          total_revenue_usd_cents:
-            Number(pm.total_revenue_usd_cents) || 0,
-          paid_buyer_count: Number(pm.paid_buyer_count) || 0,
-          total_revenue_eur_unified_cents:
-            unifiedRaw !== undefined && unifiedRaw !== null
-              ? Number(unifiedRaw) || 0
-              : null,
-        };
-      }
-    }
-
-    // Purchases: paginate with .range() — PostgREST max_rows often caps single .limit() responses (~1000).
-    const PURCHASES_PAGE_SIZE = 1000;
-    const allPurchases: any[] = [];
-    let purchaseOffset = 0;
-    while (true) {
-      const { data: purchasePage, error: purchasesPageError } =
-        await adminClient
-          .from("purchases")
-          .select(purchasesListColumns)
-          .order("id", { ascending: true })
-          .range(
-            purchaseOffset,
-            purchaseOffset + PURCHASES_PAGE_SIZE - 1,
-          );
-      if (purchasesPageError) {
-        throw purchasesPageError;
-      }
-      if (!purchasePage || purchasePage.length === 0) {
-        break;
-      }
-      allPurchases.push(...purchasePage);
-      if (purchasePage.length < PURCHASES_PAGE_SIZE) {
-        break;
-      }
-      purchaseOffset += PURCHASES_PAGE_SIZE;
-    }
-    // Match previous single-query behavior: newest first (by purchase time)
-    allPurchases.sort(
-      (a: { purchased_at?: string }, b: { purchased_at?: string }) => {
-        const ta = a.purchased_at ? new Date(a.purchased_at).getTime() : 0;
-        const tb = b.purchased_at ? new Date(b.purchased_at).getTime() : 0;
-        return tb - ta;
-      },
-    );
-
-    // Referrals tab: pre-aggregated in daily_active_users (see migration 020)
-    let referralMetrics = null;
-    const referralRpc = await adminClient.rpc("admin_referral_dashboard");
-    if (referralRpc.error) {
-      log("⚠️ admin_referral_dashboard skipped:", referralRpc.error.message ?? referralRpc.error);
-    } else if (referralRpc.data) {
-      referralMetrics = referralRpc.data;
-    }
-
-    res.json({
-      clicks: clicksResult.data,
-      saves: savesResult.data,
-      purchases: allPurchases,
-      totalUserCount: totalUserCount || 0,
-      registrationMethodStats: registrationMethodStats,
-      authSignups,
-      marketingMetrics,
-      accountsDeletedAnonymized,
-      purchaseMetrics,
-      referralMetrics,
-    });
+    adminDashboardCache(res);
+    const adminClient = getAdminClient(parseAdminEnv(req));
+    const metrics = await fetchAdminMetrics(adminClient, log);
+    res.json(metrics);
   } catch (error: any) {
-    log("❌ Admin data fetch failed:", error);
+    log("❌ Admin metrics fetch failed:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/admin/clicks", async (req, res) => {
+  try {
+    adminDashboardCache(res);
+    const adminClient = getAdminClient(parseAdminEnv(req));
+    const clicks = await fetchAdminClicks(adminClient);
+    res.json({ clicks });
+  } catch (error: any) {
+    log("❌ Admin clicks fetch failed:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/admin/saves", async (req, res) => {
+  try {
+    adminDashboardCache(res);
+    const adminClient = getAdminClient(parseAdminEnv(req));
+    const saves = await fetchAdminSavesSlim(adminClient);
+    res.json({ saves });
+  } catch (error: any) {
+    log("❌ Admin saves fetch failed:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/admin/purchases", async (req, res) => {
+  try {
+    adminDashboardCache(res);
+    const adminClient = getAdminClient(parseAdminEnv(req));
+    const purchases = await fetchAdminPurchases(adminClient);
+    res.json({ purchases });
+  } catch (error: any) {
+    log("❌ Admin purchases fetch failed:", error);
     res.status(500).json({ error: error.message });
   }
 });

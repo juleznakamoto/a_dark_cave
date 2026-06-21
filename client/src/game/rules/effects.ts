@@ -1585,6 +1585,14 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  leatherbound_book: {
+    id: "leatherbound_book",
+    name: "Leatherbound Book",
+    description:
+      "Ancient book bound in leather, branded with a chain mark on the cover",
+    bonuses: {},
+  },
+
   sealed_chest: {
     id: "sealed_chest",
     name: "Sealed Chest",

@@ -210,11 +210,11 @@ export const DISGRACED_PRIOR_UPGRADES = [
 // Provides chance to double resources from all gathering actions
 export const CROWS_EYE_UPGRADES = [
   { level: 0, doubleChance: 0.5, cost: 0, currency: null },
-  { level: 1, doubleChance: 2.5, cost: 500, currency: "gold" },
-  { level: 2, doubleChance: 5, cost: 1000, currency: "gold" },
-  { level: 3, doubleChance: 7.5, cost: 1500, currency: "gold" },
-  { level: 4, doubleChance: 10, cost: 2000, currency: "gold" },
-  { level: 5, doubleChance: 15, cost: 2500, currency: "gold" },
+  { level: 1, doubleChance: 2.5, cost: 250, currency: "gold" },
+  { level: 2, doubleChance: 5, cost: 500, currency: "gold" },
+  { level: 3, doubleChance: 7.5, cost: 750, currency: "gold" },
+  { level: 4, doubleChance: 10, cost: 1000, currency: "gold" },
+  { level: 5, doubleChance: 15, cost: 1250, currency: "gold" },
 ];
 
 const MS_PER_MIN = 60 * 1000;
@@ -230,9 +230,9 @@ export function chainmasterUpgradeDisgustMs(
 // Chainmaster skill upgrade configurations (from Book of Chainmaster)
 export const CHAINMASTER_UPGRADES = [
   { level: 0, productionBonus: 0.05, cost: 0, disgustMinutes: 0 },
-  { level: 1, productionBonus: 0.1, cost: 500, disgustMinutes: 10 },
-  { level: 2, productionBonus: 0.15, cost: 100, disgustMinutes: 15 },
-  { level: 3, productionBonus: 0.2, cost: 1500, disgustMinutes: 20 },
-  { level: 4, productionBonus: 0.25, cost: 2000, disgustMinutes: 25 },
-  { level: 5, productionBonus: 0.3, cost: 2500, disgustMinutes: 30 },
+  { level: 1, productionBonus: 0.1, cost: 250, disgustMinutes: 10 },
+  { level: 2, productionBonus: 0.15, cost: 500, disgustMinutes: 15 },
+  { level: 3, productionBonus: 0.2, cost: 750, disgustMinutes: 20 },
+  { level: 4, productionBonus: 0.25, cost: 1000, disgustMinutes: 25 },
+  { level: 5, productionBonus: 0.3, cost: 1250, disgustMinutes: 30 },
 ];

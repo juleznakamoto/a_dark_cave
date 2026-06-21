@@ -274,7 +274,7 @@ rate-limited `/api/*` routes.
 | `/api/marketing/*` | `marketing.ts` | Email prefs, unsubscribe |
 | `/api/leaderboard/*`, `/api/account/*`, `/api/session/ping` | inline + Supabase | Leaderboard, account deletion, session heartbeat |
 | `/api/gender` | proxies `services/gender-service/app.py` | First-name gender for marketing CSVs |
-| `/api/admin/*` | inline | Admin dashboard metrics (DAU/sessions/purchases) |
+| `/api/admin/*` | inline + `server/adminDashboardData.ts` | Admin dashboard: split endpoints (`metrics`, `dau`, `saves`, `clicks`, `purchases`); saves return slim `game_state` projection |
 | `/api/version`, `/api/config` | build meta | Version + public Supabase keys |
 
 Support: `server/vite.ts` (dev/prod hosting), `server/supabaseServerClient.ts` (service-role client),

@@ -892,11 +892,11 @@
   "leatherboundBookFound": {
     "choices": {
       "keepBook": {
-        "label": "Keep the book"
+        "label": "Tenere il libro"
       }
     },
-    "message": "In the ruins, your expedition finds an old book bound in leather. A chain symbol is branded into the cover — not painted, but pressed deep into the hide like a scar. The pages are filled with writing you cannot read.",
-    "title": "Leatherbound Book"
+    "message": "In una rovina nella foresta, la vostra spedizione trova un antico libro rilegato in pelle con un simbolo a catena impresso sulla copertina. Le pagine sono piene di scritti che non sapete leggere.",
+    "title": "Libro rilegato in pelle"
   },
   "leatherHarnessGratefulReturn": {
     "choices": {

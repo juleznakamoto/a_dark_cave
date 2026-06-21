@@ -175,8 +175,8 @@
       "name": "Carga del caballero"
     },
     "leatherbound_book": {
-      "description": "Ancient book bound in leather, branded with a chain mark on the cover",
-      "name": "Leatherbound Book"
+      "description": "Antiguo libro encuadernado en cuero, marcado con un símbolo de cadena en la cubierta",
+      "name": "Libro encuadernado en cuero"
     },
     "loggers_gloves": {
       "description": "Guantes resistentes de cuero que ayudan a reunir madera",

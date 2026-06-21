@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useMemo, useCallback, useRef, type ReactNode } from "react";
 import { useLocation } from "wouter";
 import { getSupabaseClient } from "@/lib/supabase";
 import { logger } from "@/lib/logger";
@@ -32,6 +32,11 @@ import {
   type AdminOverviewChartRange,
   type AdminTwelveMonthChartRange,
 } from "./adminChartTimeRange";
+import {
+  sectionsForTab,
+  type AdminDataSection,
+  type AdminTabId,
+} from "./adminTabSections";
 
 // Import tab components
 import OverviewTab from "./tabs/OverviewTab";
@@ -176,6 +181,16 @@ export default function AdminDashboard() {
     new Set(),
   ); // For individual click type chart
   const [environment, setEnvironment] = useState<"dev" | "prod">("prod");
+  const [activeTab, setActiveTab] = useState<AdminTabId>("overview");
+  const [loadedSections, setLoadedSections] = useState<Set<AdminDataSection>>(
+    new Set(),
+  );
+  const [sectionLoading, setSectionLoading] = useState(false);
+  const loadedSectionsRef = useRef<Set<AdminDataSection>>(new Set());
+  /** Tracks env/auth for full reset; avoids stale `activeTab` on env switch. */
+  const adminReloadKeyRef = useRef<{ env: "dev" | "prod"; authorized: boolean } | null>(
+    null,
+  );
   const [showCompletedOnly, setShowCompletedOnly] = useState<boolean>(false);
   const [churnDays, setChurnDays] = useState<1 | 3 | 5 | 7>(3);
 
@@ -303,17 +318,239 @@ export default function AdminDashboard() {
     return s[s.length - 1].buyersPerHundred.toFixed(2);
   }, [buyersPerHundredSignupsSeries]);
 
+  const resetDashboardData = useCallback(() => {
+    loadedSectionsRef.current = new Set();
+    setLoadedSections(new Set());
+    setRawClickData([]);
+    setRawGameSaves([]);
+    setRawPurchases([]);
+    setRawAuthSignups([]);
+    setTotalUserCount(0);
+    setDauData([]);
+    setCurrentDau(0);
+    setCurrentWau(0);
+    setCurrentMau(0);
+    setDailySignupsData([]);
+    setHourlySignupsData([]);
+    setRegistrationMethodStats({
+      emailRegistrations: 0,
+      googleRegistrations: 0,
+    });
+    setMarketingMetrics({
+      marketingUsersPrompted: 0,
+      marketingUsersOptedIn: 0,
+      marketingOptInRate: 0,
+    });
+    setAccountsDeletedAnonymized(0);
+    setPurchaseMetrics(null);
+    setReferralMetrics(null);
+  }, []);
+
+  const applyMetricsPayload = useCallback((data: Record<string, unknown>) => {
+    if (typeof data.totalUserCount === "number") {
+      setTotalUserCount(data.totalUserCount);
+    }
+    if (data.registrationMethodStats) {
+      setRegistrationMethodStats(data.registrationMethodStats);
+    }
+    if (Array.isArray(data.authSignups)) {
+      setRawAuthSignups(data.authSignups);
+    }
+    if (data.marketingMetrics && typeof data.marketingMetrics === "object") {
+      const mm = data.marketingMetrics as Record<string, unknown>;
+      setMarketingMetrics({
+        marketingUsersPrompted: Number(mm.marketingUsersPrompted) || 0,
+        marketingUsersOptedIn: Number(mm.marketingUsersOptedIn) || 0,
+        marketingOptInRate: Number(mm.marketingOptInRate) || 0,
+      });
+    }
+    if (typeof data.accountsDeletedAnonymized === "number") {
+      setAccountsDeletedAnonymized(
+        Math.max(0, Math.floor(data.accountsDeletedAnonymized)),
+      );
+    }
+    const pm = data.purchaseMetrics as
+      | {
+        paid_buyer_count?: number | string;
+        total_revenue_eur_unified_cents?: number | string;
+      }
+      | undefined
+      | null;
+    if (pm && pm.paid_buyer_count != null) {
+      const unifiedRaw = pm.total_revenue_eur_unified_cents;
+      setPurchaseMetrics({
+        paidBuyerCount: Number(pm.paid_buyer_count) || 0,
+        totalRevenueEurUnifiedCents:
+          unifiedRaw !== undefined && unifiedRaw !== null
+            ? Number(unifiedRaw) || 0
+            : null,
+      });
+    } else {
+      setPurchaseMetrics(null);
+    }
+    if (data.referralMetrics && typeof data.referralMetrics === "object") {
+      const rm = data.referralMetrics as Record<string, unknown>;
+      setReferralMetrics({
+        total_referrals: Number(rm.total_referrals) || 0,
+        daily_referrals: Array.isArray(rm.daily_referrals)
+          ? (
+            rm.daily_referrals as Array<{ day?: string; referrals?: number }>
+          ).map((row) => ({
+            day: String(row.day ?? ""),
+            referrals: Number(row.referrals) || 0,
+          }))
+          : [],
+      });
+    } else {
+      setReferralMetrics(null);
+    }
+  }, []);
+
+  const loadAdminSection = useCallback(
+    async (section: AdminDataSection, env: "dev" | "prod") => {
+      const query = `env=${env}`;
+      switch (section) {
+        case "metrics": {
+          const response = await fetch(`/api/admin/metrics?${query}`);
+          if (!response.ok) {
+            throw new Error(`Failed to fetch metrics: ${response.status}`);
+          }
+          applyMetricsPayload(await response.json());
+          break;
+        }
+        case "dau": {
+          const response = await fetch(`/api/admin/dau?${query}`);
+          if (!response.ok) {
+            throw new Error(`Failed to fetch DAU data: ${response.status}`);
+          }
+          const data = await response.json();
+          if (data.dau) setDauData(data.dau);
+          if (typeof data.currentDau === "number") setCurrentDau(data.currentDau);
+          if (typeof data.currentWau === "number") setCurrentWau(data.currentWau);
+          if (typeof data.currentMau === "number") setCurrentMau(data.currentMau);
+          if (Array.isArray(data.dailySignups)) {
+            setDailySignupsData(data.dailySignups);
+          }
+          if (Array.isArray(data.hourlySignups)) {
+            setHourlySignupsData(data.hourlySignups);
+          }
+          break;
+        }
+        case "saves": {
+          const response = await fetch(`/api/admin/saves?${query}`);
+          if (!response.ok) {
+            throw new Error(`Failed to fetch saves: ${response.status}`);
+          }
+          const data = await response.json();
+          if (data.saves) setRawGameSaves(data.saves);
+          break;
+        }
+        case "clicks": {
+          const response = await fetch(`/api/admin/clicks?${query}`);
+          if (!response.ok) {
+            throw new Error(`Failed to fetch clicks: ${response.status}`);
+          }
+          const data = await response.json();
+          if (data.clicks) setRawClickData(data.clicks);
+          break;
+        }
+        case "purchases": {
+          const response = await fetch(`/api/admin/purchases?${query}`);
+          if (!response.ok) {
+            throw new Error(`Failed to fetch purchases: ${response.status}`);
+          }
+          const data = await response.json();
+          if (data.purchases) setRawPurchases(data.purchases);
+          break;
+        }
+      }
+    },
+    [applyMetricsPayload],
+  );
+
+  const ensureSectionsLoaded = useCallback(
+    async (
+      sections: AdminDataSection[],
+      options?: { reset?: boolean },
+    ): Promise<void> => {
+      if (options?.reset) {
+        resetDashboardData();
+      }
+
+      const missing = sections.filter(
+        (section) => !loadedSectionsRef.current.has(section),
+      );
+      if (missing.length === 0) return;
+
+      setSectionLoading(true);
+      try {
+        await Promise.all(
+          missing.map((section) => loadAdminSection(section, environment)),
+        );
+        for (const section of missing) {
+          loadedSectionsRef.current.add(section);
+        }
+        setLoadedSections(new Set(loadedSectionsRef.current));
+        setLastUpdated(new Date());
+      } catch (error) {
+        logger.error("Failed to load admin dashboard section:", error);
+      } finally {
+        setSectionLoading(false);
+      }
+    },
+    [environment, loadAdminSection, resetDashboardData],
+  );
+
+  const isTabDataReady = useCallback(
+    (tab: AdminTabId) =>
+      sectionsForTab(tab).every((section) => loadedSections.has(section)),
+    [loadedSections],
+  );
+
+  const renderTabGate = (tab: AdminTabId, content: ReactNode) => {
+    if (isTabDataReady(tab)) return content;
+    return (
+      <div className="flex items-center justify-center py-16 text-muted-foreground">
+        {sectionLoading ? "Loading tab data…" : "Preparing tab data…"}
+      </div>
+    );
+  };
+
   useEffect(() => {
     checkAdminAccess();
   }, []);
 
-  // Reload data when environment changes
+  // Load sections for the active tab. Full reset+reload when env or auth changes.
   useEffect(() => {
-    if (isAuthorized) {
-      setLoading(true);
-      Promise.all([loadData(), loadDauData()]).finally(() => setLoading(false));
+    if (!isAuthorized) {
+      adminReloadKeyRef.current = null;
+      return;
     }
-  }, [environment, isAuthorized]);
+
+    const prev = adminReloadKeyRef.current;
+    const needsFullReload =
+      prev === null ||
+      prev.env !== environment ||
+      !prev.authorized;
+    adminReloadKeyRef.current = { env: environment, authorized: true };
+
+    if (needsFullReload) {
+      setLoading(true);
+      void ensureSectionsLoaded(sectionsForTab(activeTab), { reset: true }).finally(
+        () => setLoading(false),
+      );
+      return;
+    }
+
+    if (loading) return;
+    void ensureSectionsLoaded(sectionsForTab(activeTab));
+  }, [
+    activeTab,
+    isAuthorized,
+    loading,
+    environment,
+    ensureSectionsLoaded,
+  ]);
 
   // Define all hooks BEFORE conditional returns to comply with React rules
   const getButtonClicksOverTime = useCallback(() => {
@@ -768,137 +1005,10 @@ export default function AdminDashboard() {
       }
 
       setIsAuthorized(true);
-      await loadData();
-      setLoading(false);
     } catch (error) {
       logger.error("Auth check failed:", error);
       setLoading(false);
       setLocation("/");
-    }
-  };
-
-  const loadDauData = async () => {
-    try {
-      const response = await fetch(`/api/admin/dau?env=${environment}`);
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        logger.error("DAU data fetch failed:", response.status, errorText);
-        throw new Error(`Failed to fetch DAU data: ${response.status}`);
-      }
-
-      const data = await response.json();
-      if (data.dau) {
-        setDauData(data.dau);
-      }
-      if (typeof data.currentDau === 'number') {
-        setCurrentDau(data.currentDau);
-      }
-      if (typeof data.currentWau === 'number') {
-        setCurrentWau(data.currentWau);
-      }
-      if (typeof data.currentMau === 'number') {
-        setCurrentMau(data.currentMau);
-      }
-      if (Array.isArray(data.dailySignups)) {
-        setDailySignupsData(data.dailySignups);
-      }
-      if (Array.isArray(data.hourlySignups)) {
-        setHourlySignupsData(data.hourlySignups);
-      }
-    } catch (error) {
-      logger.error("Failed to load DAU data:", error);
-    }
-  };
-
-  // Renamed from loadDashboardData to loadData
-  const loadData = async () => {
-    try {
-      const response = await fetch(`/api/admin/data?env=${environment}`);
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        logger.error("Admin data fetch failed:", response.status, errorText);
-        throw new Error(`Failed to fetch admin data: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      // Set dashboard data for the active environment
-      if (data.clicks) {
-        setRawClickData(data.clicks);
-      }
-      if (data.saves) {
-        setRawGameSaves(data.saves);
-      }
-      if (data.purchases) {
-        setRawPurchases(data.purchases);
-      }
-      if (data.authSignups) {
-        setRawAuthSignups(data.authSignups);
-      }
-      if (typeof data.totalUserCount === 'number') {
-        setTotalUserCount(data.totalUserCount);
-      }
-      if (data.registrationMethodStats) {
-        setRegistrationMethodStats(data.registrationMethodStats);
-      }
-      if (data.marketingMetrics && typeof data.marketingMetrics === "object") {
-        const mm = data.marketingMetrics as Record<string, unknown>;
-        setMarketingMetrics({
-          marketingUsersPrompted:
-            Number(mm.marketingUsersPrompted) || 0,
-          marketingUsersOptedIn:
-            Number(mm.marketingUsersOptedIn) || 0,
-          marketingOptInRate:
-            Number(mm.marketingOptInRate) || 0,
-        });
-      }
-      if (typeof data.accountsDeletedAnonymized === "number") {
-        setAccountsDeletedAnonymized(
-          Math.max(0, Math.floor(data.accountsDeletedAnonymized)),
-        );
-      }
-      const pm = data.purchaseMetrics as
-        | {
-          paid_buyer_count?: number | string;
-          total_revenue_eur_unified_cents?: number | string;
-        }
-        | undefined
-        | null;
-      if (pm && pm.paid_buyer_count != null) {
-        const unifiedRaw = pm.total_revenue_eur_unified_cents;
-        setPurchaseMetrics({
-          paidBuyerCount: Number(pm.paid_buyer_count) || 0,
-          totalRevenueEurUnifiedCents:
-            unifiedRaw !== undefined && unifiedRaw !== null
-              ? Number(unifiedRaw) || 0
-              : null,
-        });
-      } else {
-        setPurchaseMetrics(null);
-      }
-
-      if (data.referralMetrics && typeof data.referralMetrics === "object") {
-        const rm = data.referralMetrics as Record<string, unknown>;
-        setReferralMetrics({
-          total_referrals: Number(rm.total_referrals) || 0,
-          daily_referrals: Array.isArray(rm.daily_referrals)
-            ? (rm.daily_referrals as Array<{ day?: string; referrals?: number }>).map(
-              (row) => ({
-                day: String(row.day ?? ""),
-                referrals: Number(row.referrals) || 0,
-              }),
-            )
-            : [],
-        });
-      } else {
-        setReferralMetrics(null);
-      }
-
-      setLastUpdated(new Date());
-    } catch (error) {
-      logger.error("Failed to load admin data:", error);
     }
   };
 
@@ -1054,7 +1164,11 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <Tabs defaultValue="overview" className="space-y-4">
+            <Tabs
+              value={activeTab}
+              onValueChange={(value) => setActiveTab(value as AdminTabId)}
+              className="space-y-4"
+            >
               <ScrollArea className="w-full whitespace-nowrap">
                 <TabsList className="inline-flex w-auto">
                   <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -1075,370 +1189,400 @@ export default function AdminDashboard() {
               </ScrollArea>
 
               <TabsContent value="overview">
-                <OverviewTab
-                  environment={environment}
-                  gameSaves={gameSaves}
-                  dailyActiveUsersData={dauData}
-                  registrationMethodStats={registrationMethodStats}
-                  getDailyActiveUsers={() => currentDau}
-                  getWeeklyActiveUsers={() => currentWau}
-                  getMonthlyActiveUsers={() => currentMau}
-                  totalUserCount={totalUserCount}
-                  formatTime={formatTime}
-                  getAveragePlaytime={() => {
-                    const completedSaves = showCompletedOnly
-                      ? gameSaves.filter((s) => s.game_state?.gameComplete)
-                      : gameSaves;
+                {renderTabGate(
+                  "overview",
+                  <OverviewTab
+                    environment={environment}
+                    gameSaves={gameSaves}
+                    dailyActiveUsersData={dauData}
+                    registrationMethodStats={registrationMethodStats}
+                    getDailyActiveUsers={() => currentDau}
+                    getWeeklyActiveUsers={() => currentWau}
+                    getMonthlyActiveUsers={() => currentMau}
+                    totalUserCount={totalUserCount}
+                    formatTime={formatTime}
+                    getAveragePlaytime={() => {
+                      const completedSaves = showCompletedOnly
+                        ? gameSaves.filter((s) => s.game_state?.gameComplete)
+                        : gameSaves;
 
-                    if (completedSaves.length === 0) return 0;
+                      if (completedSaves.length === 0) return 0;
 
-                    const totalPlayTime = completedSaves.reduce(
-                      (sum, save) => sum + (save.game_state?.playTime || 0),
-                      0,
-                    );
-                    return Math.floor(totalPlayTime / completedSaves.length / 60000);
-                  }}
-                  getAveragePlaytimeToCompletion={() => {
-                    const completedSaves = gameSaves.filter(
-                      (s) =>
-                        s.game_state?.events?.cube15a ||
-                        s.game_state?.events?.cube15b ||
-                        s.game_state?.events?.cube13 ||
-                        s.game_state?.events?.cube14a ||
-                        s.game_state?.events?.cube14b ||
-                        s.game_state?.events?.cube14c ||
-                        s.game_state?.events?.cube14d,
-                    );
-
-                    if (completedSaves.length === 0) return 0;
-
-                    const totalPlayTime = completedSaves.reduce(
-                      (sum, save) => sum + (save.game_state?.playTime || 0),
-                      0,
-                    );
-                    return Math.floor(totalPlayTime / completedSaves.length / 60000);
-                  }}
-                  getConversionRate={() =>
-                    totalUserCount > 0
-                      ? Math.round((kpiPaidBuyerCount / totalUserCount) * 100)
-                      : 0
-                  }
-                  getBuyersPerHundred={getBuyersPerHundred}
-                  getArpuEur={() =>
-                    totalUserCount > 0
-                      ? (kpiRevenueEurUnifiedCents / 100 / totalUserCount).toFixed(2)
-                      : "0.00"
-                  }
-                  getTotalRevenueEurUnifiedCents={() =>
-                    kpiRevenueEurUnifiedCents
-                  }
-                  getUserRetention={() => {
-                    const data: Array<{ day: string; users: number }> = [];
-                    const now = new Date();
-
-                    const days = ADMIN_OVERVIEW_CHART_DAYS[dauChartTimeRange];
-
-                    for (let i = days - 1; i >= 0; i--) {
-                      const date = subDays(now, i);
-                      const dayStart = startOfDay(date);
-                      const dayEnd = endOfDay(date);
-
-                      const activeUsers = rawGameSaves.filter((save) => { // Use raw for historical accuracy
-                        const activityDate = parseISO(save.updated_at);
-                        return activityDate >= dayStart && activityDate <= dayEnd;
-                      }).length;
-
-                      // Format date based on time range
-                      const dateFormat = days > 90 ? "MMM dd" : "MMM dd";
-                      data.push({
-                        day: format(date, dateFormat),
-                        users: activeUsers,
-                      });
-                    }
-
-                    return data;
-                  }}
-                  getDailySignups={() => {
-                    const days = ADMIN_OVERVIEW_CHART_DAYS[dailySignupsChartTimeRange];
-
-                    // Server keys are UTC calendar dates (DATE(created_at) in Postgres/UTC).
-                    // Generate our range in UTC too so keys align regardless of the browser's timezone.
-                    const lookup = new Map<string, number>();
-                    for (const entry of dailySignupsData) {
-                      lookup.set(entry.day, entry.signups);
-                    }
-
-                    const now = new Date();
-                    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                    return Array.from({ length: days }, (_, i) => {
-                      const d = new Date(Date.UTC(
-                        now.getUTCFullYear(),
-                        now.getUTCMonth(),
-                        now.getUTCDate() - (days - 1 - i),
-                      ));
-                      const key = d.toISOString().slice(0, 10); // "YYYY-MM-DD" UTC
-                      const label = `${monthNames[d.getUTCMonth()]} ${String(d.getUTCDate()).padStart(2, '0')}`;
-                      return { day: label, signups: lookup.get(key) ?? 0 };
-                    });
-                  }}
-                  dailySignupsData={dailySignupsData}
-                  dauChartTimeRange={dauChartTimeRange}
-                  setDauChartTimeRange={setDauChartTimeRange}
-                  dailySignupsChartTimeRange={dailySignupsChartTimeRange}
-                  setDailySignupsChartTimeRange={setDailySignupsChartTimeRange}
-                  buyersPerHundredChartTimeRange={buyersPerHundredChartTimeRange}
-                  setBuyersPerHundredChartTimeRange={setBuyersPerHundredChartTimeRange}
-                  gainPerHundredChartTimeRange={gainPerHundredChartTimeRange}
-                  setGainPerHundredChartTimeRange={setGainPerHundredChartTimeRange}
-                  getHourlySignups={() => {
-                    const now = new Date();
-
-                    // Build a lookup from the server data (HH:00 → count)
-                    const lookup = new Map<string, number>();
-                    for (const entry of hourlySignupsData) {
-                      lookup.set(format(parseISO(entry.hour_start), "HH:mm"), entry.signups);
-                    }
-
-                    // Emit one entry per hour for the last 24 hours so the chart has no gaps
-                    return Array.from({ length: 24 }, (_, i) => {
-                      const hour = new Date(now);
-                      hour.setHours(now.getHours() - (23 - i), 0, 0, 0);
-                      const key = format(hour, "HH:mm");
-                      return { hour: key, signups: lookup.get(key) ?? 0 };
-                    });
-                  }}
-                  getBuyersPerHundredOverTime={getBuyersPerHundredOverTime}
-                  getGainPerHundredOverTime={() => {
-                    const data: Array<{
-                      date: string;
-                      gainPerHundredEur: number;
-                    }> = [];
-                    const now = new Date();
-
-                    const days = ADMIN_OVERVIEW_CHART_DAYS[gainPerHundredChartTimeRange];
-
-                    const paidPurchases = rawPurchases.filter(
-                      (p) => p.price_paid > 0 && !p.bundle_id
-                    );
-
-                    // Rolling 30-day: unified EUR revenue (minor units) per 100 sign-ups.
-                    for (let i = days - 1; i >= 0; i--) {
-                      const date = subDays(now, i);
-                      const windowEnd = endOfDay(date);
-                      const windowStart = startOfDay(subDays(date, 29));
-
-                      // Sign-ups in last 30 days (auth account creation)
-                      const signUpUserIds = new Set(
-                        rawAuthSignups
-                          .filter((u) => {
-                            const createdDate = parseISO(u.created_at);
-                            return createdDate >= windowStart && createdDate <= windowEnd;
-                          })
-                          .map((u) => u.id)
+                      const totalPlayTime = completedSaves.reduce(
+                        (sum, save) => sum + (save.game_state?.playTime || 0),
+                        0,
                       );
-                      const signUps = signUpUserIds.size;
+                      return Math.floor(totalPlayTime / completedSaves.length / 60000);
+                    }}
+                    getAveragePlaytimeToCompletion={() => {
+                      const completedSaves = gameSaves.filter(
+                        (s) =>
+                          s.game_state?.events?.cube15a ||
+                          s.game_state?.events?.cube15b ||
+                          s.game_state?.events?.cube13 ||
+                          s.game_state?.events?.cube14a ||
+                          s.game_state?.events?.cube14b ||
+                          s.game_state?.events?.cube14c ||
+                          s.game_state?.events?.cube14d,
+                      );
 
-                      const inWindow = paidPurchases.filter((p) => {
-                        const purchaseDate = parseISO(p.purchased_at);
-                        return purchaseDate >= windowStart && purchaseDate <= windowEnd;
-                      });
-                      let windowEur = 0;
-                      for (const p of inWindow) {
-                        windowEur += adminUnifiedRevenueEurCents(p);
+                      if (completedSaves.length === 0) return 0;
+
+                      const totalPlayTime = completedSaves.reduce(
+                        (sum, save) => sum + (save.game_state?.playTime || 0),
+                        0,
+                      );
+                      return Math.floor(totalPlayTime / completedSaves.length / 60000);
+                    }}
+                    getConversionRate={() =>
+                      totalUserCount > 0
+                        ? Math.round((kpiPaidBuyerCount / totalUserCount) * 100)
+                        : 0
+                    }
+                    getBuyersPerHundred={getBuyersPerHundred}
+                    getArpuEur={() =>
+                      totalUserCount > 0
+                        ? (kpiRevenueEurUnifiedCents / 100 / totalUserCount).toFixed(2)
+                        : "0.00"
+                    }
+                    getTotalRevenueEurUnifiedCents={() =>
+                      kpiRevenueEurUnifiedCents
+                    }
+                    getUserRetention={() => {
+                      const data: Array<{ day: string; users: number }> = [];
+                      const now = new Date();
+
+                      const days = ADMIN_OVERVIEW_CHART_DAYS[dauChartTimeRange];
+
+                      for (let i = days - 1; i >= 0; i--) {
+                        const date = subDays(now, i);
+                        const dayStart = startOfDay(date);
+                        const dayEnd = endOfDay(date);
+
+                        const activeUsers = rawGameSaves.filter((save) => { // Use raw for historical accuracy
+                          const activityDate = parseISO(save.updated_at);
+                          return activityDate >= dayStart && activityDate <= dayEnd;
+                        }).length;
+
+                        // Format date based on time range
+                        const dateFormat = days > 90 ? "MMM dd" : "MMM dd";
+                        data.push({
+                          day: format(date, dateFormat),
+                          users: activeUsers,
+                        });
                       }
 
-                      const gainPerHundredEur =
-                        signUps > 0
-                          ? (windowEur / 100) / (signUps / 100)
-                          : 0;
+                      return data;
+                    }}
+                    getDailySignups={() => {
+                      const days = ADMIN_OVERVIEW_CHART_DAYS[dailySignupsChartTimeRange];
 
-                      const dateFormat = days > 90 ? "MMM dd" : "MMM dd";
-                      data.push({
-                        date: format(date, dateFormat),
-                        gainPerHundredEur: parseFloat(
-                          gainPerHundredEur.toFixed(2),
-                        ),
+                      // Server keys are UTC calendar dates (DATE(created_at) in Postgres/UTC).
+                      // Generate our range in UTC too so keys align regardless of the browser's timezone.
+                      const lookup = new Map<string, number>();
+                      for (const entry of dailySignupsData) {
+                        lookup.set(entry.day, entry.signups);
+                      }
+
+                      const now = new Date();
+                      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                      return Array.from({ length: days }, (_, i) => {
+                        const d = new Date(Date.UTC(
+                          now.getUTCFullYear(),
+                          now.getUTCMonth(),
+                          now.getUTCDate() - (days - 1 - i),
+                        ));
+                        const key = d.toISOString().slice(0, 10); // "YYYY-MM-DD" UTC
+                        const label = `${monthNames[d.getUTCMonth()]} ${String(d.getUTCDate()).padStart(2, '0')}`;
+                        return { day: label, signups: lookup.get(key) ?? 0 };
                       });
-                    }
+                    }}
+                    dailySignupsData={dailySignupsData}
+                    dauChartTimeRange={dauChartTimeRange}
+                    setDauChartTimeRange={setDauChartTimeRange}
+                    dailySignupsChartTimeRange={dailySignupsChartTimeRange}
+                    setDailySignupsChartTimeRange={setDailySignupsChartTimeRange}
+                    buyersPerHundredChartTimeRange={buyersPerHundredChartTimeRange}
+                    setBuyersPerHundredChartTimeRange={setBuyersPerHundredChartTimeRange}
+                    gainPerHundredChartTimeRange={gainPerHundredChartTimeRange}
+                    setGainPerHundredChartTimeRange={setGainPerHundredChartTimeRange}
+                    getHourlySignups={() => {
+                      const now = new Date();
 
-                    return data;
-                  }}
-                  marketingMetrics={marketingMetrics}
-                  accountsDeletedAnonymized={accountsDeletedAnonymized}
-                  showResendCsvExport={environment === "prod"}
-                  resendCsvBusy={resendCsvBusy}
-                  onResendCsvDownload={downloadResendProdCsv}
-                />
+                      // Build a lookup from the server data (HH:00 → count)
+                      const lookup = new Map<string, number>();
+                      for (const entry of hourlySignupsData) {
+                        lookup.set(format(parseISO(entry.hour_start), "HH:mm"), entry.signups);
+                      }
+
+                      // Emit one entry per hour for the last 24 hours so the chart has no gaps
+                      return Array.from({ length: 24 }, (_, i) => {
+                        const hour = new Date(now);
+                        hour.setHours(now.getHours() - (23 - i), 0, 0, 0);
+                        const key = format(hour, "HH:mm");
+                        return { hour: key, signups: lookup.get(key) ?? 0 };
+                      });
+                    }}
+                    getBuyersPerHundredOverTime={getBuyersPerHundredOverTime}
+                    getGainPerHundredOverTime={() => {
+                      const data: Array<{
+                        date: string;
+                        gainPerHundredEur: number;
+                      }> = [];
+                      const now = new Date();
+
+                      const days = ADMIN_OVERVIEW_CHART_DAYS[gainPerHundredChartTimeRange];
+
+                      const paidPurchases = rawPurchases.filter(
+                        (p) => p.price_paid > 0 && !p.bundle_id
+                      );
+
+                      // Rolling 30-day: unified EUR revenue (minor units) per 100 sign-ups.
+                      for (let i = days - 1; i >= 0; i--) {
+                        const date = subDays(now, i);
+                        const windowEnd = endOfDay(date);
+                        const windowStart = startOfDay(subDays(date, 29));
+
+                        // Sign-ups in last 30 days (auth account creation)
+                        const signUpUserIds = new Set(
+                          rawAuthSignups
+                            .filter((u) => {
+                              const createdDate = parseISO(u.created_at);
+                              return createdDate >= windowStart && createdDate <= windowEnd;
+                            })
+                            .map((u) => u.id)
+                        );
+                        const signUps = signUpUserIds.size;
+
+                        const inWindow = paidPurchases.filter((p) => {
+                          const purchaseDate = parseISO(p.purchased_at);
+                          return purchaseDate >= windowStart && purchaseDate <= windowEnd;
+                        });
+                        let windowEur = 0;
+                        for (const p of inWindow) {
+                          windowEur += adminUnifiedRevenueEurCents(p);
+                        }
+
+                        const gainPerHundredEur =
+                          signUps > 0
+                            ? (windowEur / 100) / (signUps / 100)
+                            : 0;
+
+                        const dateFormat = days > 90 ? "MMM dd" : "MMM dd";
+                        data.push({
+                          date: format(date, dateFormat),
+                          gainPerHundredEur: parseFloat(
+                            gainPerHundredEur.toFixed(2),
+                          ),
+                        });
+                      }
+
+                      return data;
+                    }}
+                    marketingMetrics={marketingMetrics}
+                    accountsDeletedAnonymized={accountsDeletedAnonymized}
+                    showResendCsvExport={environment === "prod"}
+                    resendCsvBusy={resendCsvBusy}
+                    onResendCsvDownload={downloadResendProdCsv}
+                  />,
+                )}
               </TabsContent>
 
               <TabsContent value="engagement">
-                <EngagementTab
-                  getSessionLengthDistribution={() => {
-                    const buckets: Record<string, number> = {};
-                    for (let i = 0; i < 24; i++) {
-                      buckets[`${i}h`] = 0;
-                    }
-                    buckets["24h+"] = 0;
+                {renderTabGate(
+                  "engagement",
+                  <EngagementTab
+                    getSessionLengthDistribution={() => {
+                      const buckets: Record<string, number> = {};
+                      for (let i = 0; i < 24; i++) {
+                        buckets[`${i}h`] = 0;
+                      }
+                      buckets["24h+"] = 0;
 
-                    const completedSaves = showCompletedOnly
-                      ? gameSaves.filter((s) => s.game_state?.gameComplete)
-                      : gameSaves;
+                      const completedSaves = showCompletedOnly
+                        ? gameSaves.filter((s) => s.game_state?.gameComplete)
+                        : gameSaves;
 
-                    completedSaves.forEach((save) => {
-                      const playTime = save.game_state?.playTime || 0;
-                      const playTimeMinutes = Math.floor(playTime / 60000);
-                      const bucket = getBucketLabel(playTimeMinutes);
-                      buckets[bucket]++;
-                    });
+                      completedSaves.forEach((save) => {
+                        const playTime = save.game_state?.playTime || 0;
+                        const playTimeMinutes = Math.floor(playTime / 60000);
+                        const bucket = getBucketLabel(playTimeMinutes);
+                        buckets[bucket]++;
+                      });
 
-                    return Object.entries(buckets).map(([range, count]) => ({
-                      range,
-                      count,
-                    }));
-                  }}
-                  getAveragePlaytime={() => {
-                    const completedSaves = showCompletedOnly
-                      ? gameSaves.filter((s) => s.game_state?.gameComplete)
-                      : gameSaves;
+                      return Object.entries(buckets).map(([range, count]) => ({
+                        range,
+                        count,
+                      }));
+                    }}
+                    getAveragePlaytime={() => {
+                      const completedSaves = showCompletedOnly
+                        ? gameSaves.filter((s) => s.game_state?.gameComplete)
+                        : gameSaves;
 
-                    if (completedSaves.length === 0) return 0;
+                      if (completedSaves.length === 0) return 0;
 
-                    const totalPlayTime = completedSaves.reduce(
-                      (sum, save) => sum + (save.game_state?.playTime || 0),
-                      0,
-                    );
-                    return Math.floor(totalPlayTime / completedSaves.length / 60000);
-                  }}
-                  getAveragePlaytimeToCompletion={() => {
-                    const completedSaves = gameSaves.filter(
-                      (s) =>
-                        s.game_state?.events?.cube15a ||
-                        s.game_state?.events?.cube15b ||
-                        s.game_state?.events?.cube13 ||
-                        s.game_state?.events?.cube14a ||
-                        s.game_state?.events?.cube14b ||
-                        s.game_state?.events?.cube14c ||
-                        s.game_state?.events?.cube14d,
-                    );
+                      const totalPlayTime = completedSaves.reduce(
+                        (sum, save) => sum + (save.game_state?.playTime || 0),
+                        0,
+                      );
+                      return Math.floor(totalPlayTime / completedSaves.length / 60000);
+                    }}
+                    getAveragePlaytimeToCompletion={() => {
+                      const completedSaves = gameSaves.filter(
+                        (s) =>
+                          s.game_state?.events?.cube15a ||
+                          s.game_state?.events?.cube15b ||
+                          s.game_state?.events?.cube13 ||
+                          s.game_state?.events?.cube14a ||
+                          s.game_state?.events?.cube14b ||
+                          s.game_state?.events?.cube14c ||
+                          s.game_state?.events?.cube14d,
+                      );
 
-                    if (completedSaves.length === 0) return 0;
+                      if (completedSaves.length === 0) return 0;
 
-                    const totalPlayTime = completedSaves.reduce(
-                      (sum, save) => sum + (save.game_state?.playTime || 0),
-                      0,
-                    );
-                    return Math.floor(totalPlayTime / completedSaves.length / 60000);
-                  }}
-                  formatTime={formatTime}
-                  gameSaves={gameSaves}
-                  totalUserCount={totalUserCount}
-                  gameCompletionStats={getGameCompletionStats()}
-                  getDailyCompletions={getDailyCompletions}
-                  getDailyCompletionsVsPlayers={getDailyCompletionsVsPlayers}
-                  completionsChartTimeRange={completionsChartTimeRange}
-                  setCompletionsChartTimeRange={setCompletionsChartTimeRange}
-                  COLORS={COLORS}
-                />
+                      const totalPlayTime = completedSaves.reduce(
+                        (sum, save) => sum + (save.game_state?.playTime || 0),
+                        0,
+                      );
+                      return Math.floor(totalPlayTime / completedSaves.length / 60000);
+                    }}
+                    formatTime={formatTime}
+                    gameSaves={gameSaves}
+                    totalUserCount={totalUserCount}
+                    gameCompletionStats={getGameCompletionStats()}
+                    getDailyCompletions={getDailyCompletions}
+                    getDailyCompletionsVsPlayers={getDailyCompletionsVsPlayers}
+                    completionsChartTimeRange={completionsChartTimeRange}
+                    setCompletionsChartTimeRange={setCompletionsChartTimeRange}
+                    COLORS={COLORS}
+                  />,
+                )}
               </TabsContent>
 
               <TabsContent value="clicks">
-                <ClicksTab
-                  gameSaves={gameSaves}
-                  showCompletedOnly={showCompletedOnly}
-                  setShowCompletedOnly={setShowCompletedOnly}
-                  selectedClickTypes={selectedClickTypes}
-                  setSelectedClickTypes={setSelectedClickTypes}
-                  getAllButtonNames={() => {
-                    const buttonNames = new Set<string>();
-                    clickData.forEach((entry) => { // Use filtered clickData
-                      Object.values(entry.clicks).forEach((playtimeClicks: any) => {
-                        Object.keys(playtimeClicks).forEach((button) => {
-                          buttonNames.add(cleanButtonName(button));
+                {renderTabGate(
+                  "clicks",
+                  <ClicksTab
+                    gameSaves={gameSaves}
+                    showCompletedOnly={showCompletedOnly}
+                    setShowCompletedOnly={setShowCompletedOnly}
+                    selectedClickTypes={selectedClickTypes}
+                    setSelectedClickTypes={setSelectedClickTypes}
+                    getAllButtonNames={() => {
+                      const buttonNames = new Set<string>();
+                      clickData.forEach((entry) => { // Use filtered clickData
+                        Object.values(entry.clicks).forEach((playtimeClicks: any) => {
+                          Object.keys(playtimeClicks).forEach((button) => {
+                            buttonNames.add(cleanButtonName(button));
+                          });
                         });
                       });
-                    });
-                    return Array.from(buttonNames);
-                  }}
-                  getButtonClicksOverTime={getButtonClicksOverTime}
-                  getClickTypesByTimestamp={getClickTypesByTimestamp}
-                  getTotalClicksByButton={getTotalClicksByButton}
-                  getAverageClicksByButton={getAverageClicksByButton}
-                  COLORS={COLORS}
-                />
+                      return Array.from(buttonNames);
+                    }}
+                    getButtonClicksOverTime={getButtonClicksOverTime}
+                    getClickTypesByTimestamp={getClickTypesByTimestamp}
+                    getTotalClicksByButton={getTotalClicksByButton}
+                    getAverageClicksByButton={getAverageClicksByButton}
+                    COLORS={COLORS}
+                  />,
+                )}
               </TabsContent>
 
               <TabsContent value="purchases">
-                <PurchasesTab
-                  purchases={purchases}
-                  gameSaves={gameSaves}
-                  getTotalRevenueEurUnifiedCents={() =>
-                    kpiRevenueEurUnifiedCents
-                  }
-                  getDailyPurchases={getDailyPurchases}
-                  purchasesChartTimeRange={purchasesChartTimeRange}
-                  setPurchasesChartTimeRange={setPurchasesChartTimeRange}
-                />
+                {renderTabGate(
+                  "purchases",
+                  <PurchasesTab
+                    purchases={purchases}
+                    gameSaves={gameSaves}
+                    getTotalRevenueEurUnifiedCents={() =>
+                      kpiRevenueEurUnifiedCents
+                    }
+                    getDailyPurchases={getDailyPurchases}
+                    purchasesChartTimeRange={purchasesChartTimeRange}
+                    setPurchasesChartTimeRange={setPurchasesChartTimeRange}
+                  />,
+                )}
               </TabsContent>
 
               <TabsContent value="referrals">
-                <ReferralsTab
-                  totalReferrals={referralMetrics?.total_referrals ?? 0}
-                  getDailyReferrals={getDailyReferrals}
-                  referralsChartTimeRange={referralsChartTimeRange}
-                  setReferralsChartTimeRange={setReferralsChartTimeRange}
-                />
+                {renderTabGate(
+                  "referrals",
+                  <ReferralsTab
+                    totalReferrals={referralMetrics?.total_referrals ?? 0}
+                    getDailyReferrals={getDailyReferrals}
+                    referralsChartTimeRange={referralsChartTimeRange}
+                    setReferralsChartTimeRange={setReferralsChartTimeRange}
+                  />,
+                )}
               </TabsContent>
 
               <TabsContent value="socialPrompt">
-                <SocialPromptTab aggregate={socialPromptAggregate} />
+                {renderTabGate(
+                  "socialPrompt",
+                  <SocialPromptTab aggregate={socialPromptAggregate} />,
+                )}
               </TabsContent>
 
               <TabsContent value="churn">
-                <ChurnTab
-                  gameSaves={gameSaves}
-                  clickData={clickData}
-                  churnDays={churnDays}
-                  setChurnDays={setChurnDays}
-                  selectedCubeEvents={selectedCubeEvents}
-                  setSelectedCubeEvents={setSelectedCubeEvents}
-                  COLORS={COLORS}
-                />
+                {renderTabGate(
+                  "churn",
+                  <ChurnTab
+                    gameSaves={gameSaves}
+                    clickData={clickData}
+                    churnDays={churnDays}
+                    setChurnDays={setChurnDays}
+                    selectedCubeEvents={selectedCubeEvents}
+                    setSelectedCubeEvents={setSelectedCubeEvents}
+                    COLORS={COLORS}
+                  />,
+                )}
               </TabsContent>
 
               <TabsContent value="sleep">
-                <SleepTab
-                  gameSaves={gameSaves}
-                  showCompletedOnly={showCompletedOnly}
-                  setShowCompletedOnly={setShowCompletedOnly}
-                  getSleepUpgradesDistribution={getSleepUpgradesDistribution()}
-                />
+                {renderTabGate(
+                  "sleep",
+                  <SleepTab
+                    gameSaves={gameSaves}
+                    showCompletedOnly={showCompletedOnly}
+                    setShowCompletedOnly={setShowCompletedOnly}
+                    getSleepUpgradesDistribution={getSleepUpgradesDistribution()}
+                  />,
+                )}
               </TabsContent>
 
               <TabsContent value="resources">
-                <ResourcesTab
-                  showCompletedOnly={showCompletedOnly}
-                  setShowCompletedOnly={setShowCompletedOnly}
-                  gameSaves={gameSaves}
-                  selectedStats={selectedStats}
-                  setSelectedStats={setSelectedStats}
-                  selectedResources={selectedResources}
-                  setSelectedResources={setSelectedResources}
-                  statsOverPlaytime={getStatsOverPlaytime}
-                  resourceStatsOverPlaytime={getResourceStatsOverPlaytime}
-                  COLORS={COLORS}
-                />
+                {renderTabGate(
+                  "resources",
+                  <ResourcesTab
+                    showCompletedOnly={showCompletedOnly}
+                    setShowCompletedOnly={setShowCompletedOnly}
+                    gameSaves={gameSaves}
+                    selectedStats={selectedStats}
+                    setSelectedStats={setSelectedStats}
+                    selectedResources={selectedResources}
+                    setSelectedResources={setSelectedResources}
+                    statsOverPlaytime={getStatsOverPlaytime}
+                    resourceStatsOverPlaytime={getResourceStatsOverPlaytime}
+                    COLORS={COLORS}
+                  />,
+                )}
               </TabsContent>
 
               <TabsContent value="upgrades">
-                <UpgradesTab
-                  showCompletedOnly={showCompletedOnly}
-                  setShowCompletedOnly={setShowCompletedOnly}
-                  gameSaves={gameSaves}
-                  selectedMiningTypes={selectedMiningTypes}
-                  setSelectedMiningTypes={setSelectedMiningTypes}
-                  buttonUpgradesOverPlaytime={getButtonUpgradesOverPlaytime}
-                  COLORS={COLORS}
-                />
+                {renderTabGate(
+                  "upgrades",
+                  <UpgradesTab
+                    showCompletedOnly={showCompletedOnly}
+                    setShowCompletedOnly={setShowCompletedOnly}
+                    gameSaves={gameSaves}
+                    selectedMiningTypes={selectedMiningTypes}
+                    setSelectedMiningTypes={setSelectedMiningTypes}
+                    buttonUpgradesOverPlaytime={getButtonUpgradesOverPlaytime}
+                    COLORS={COLORS}
+                  />,
+                )}
               </TabsContent>
 
               <TabsContent value="sessions">
