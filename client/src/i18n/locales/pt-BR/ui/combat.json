@@ -38,8 +38,8 @@
     "manyCasualties": "{{count}} Aldeões morreram.",
     "fellowInjured": "{{name}} se feriu.",
     "buildingDamaged": "{{name}} foi danificado.",
-    "silverClaimed": "{{amount}} de Prata coletada.",
-    "goldClaimed": "{{amount}} de Ouro coletado."
+    "silverClaimed": "{{amount}} Prata coletada.",
+    "goldClaimed": "{{amount}} Ouro coletado."
   },
   "bastion": {
     "heal": "Curar",

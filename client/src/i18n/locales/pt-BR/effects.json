@@ -1,12 +1,12 @@
 {
   "books": {
     "book_of_ascension": {
-      "description": "Livro sobre a ascensão do eu. Concede a habilidade de melhorar nas tarefas por meio da prática.",
+      "description": "Livro sobre a ascensão do eu. Concede a habilidade de melhorar nas tarefas por meio de prática.",
       "name": "Livro da Ascensão"
     },
     "book_of_craftsmanship": {
       "description": "Tomo antigo de um artesão mestre. Revela dicas sutis sobre fabricar itens e construir edifícios.",
-      "name": "Livro do Artesanato"
+      "name": "Livro de Artesanato"
     },
     "book_of_chainmaster": {
       "description": "Livro do Mestre das Correntes morto há muito, contendo métodos severos para levar os trabalhadores além de seus limites.",
@@ -36,11 +36,11 @@
     },
     "ashen_embrace": {
       "description": "Sua capacidade de minerar é aprimorada",
-      "name": "Abraço de Cinzas"
+      "name": "Abraço das Cinzas"
     },
     "ashen_embrace_enhanced": {
-      "description": "Sua capacidade de minerar é muito aprimorada",
-      "name": "Abraço Profundo de Cinzas"
+      "description": "Sua capacidade de minerar é mais aprimorada",
+      "name": "Abraço Profundo das Cinzas"
     },
     "bell_blessing": {
       "description": "Uma misteriosa marca de sino no antebraço. Dobra os Pontos de Foco ganhos durante o Sono.",
@@ -99,7 +99,7 @@
       "name": "Dádiva de Dagon"
     },
     "dagons_gift_enhanced": {
-      "description": "Sua capacidade de caçar é muito aprimorada",
+      "description": "Sua capacidade de caçar é mais aprimorada",
       "name": "Grande Dádiva de Dagon"
     },
     "devourer_crown": {
@@ -135,7 +135,7 @@
       "name": "Toque da Chama"
     },
     "flames_touch_enhanced": {
-      "description": "Os custos de fabricação são muito reduzidos",
+      "description": "Os custos de fabricação são reduzidos ainda mais",
       "name": "Forte Toque da Chama"
     },
     "forests_grace": {
@@ -207,11 +207,11 @@
       "name": "Arco Beladona"
     },
     "obsidian_orb": {
-      "description": "Poderoso orbe de vidro vulcânico que concede força mental",
+      "description": "Poderosa orbe de vidro vulcânico que concede força mental",
       "name": "Orbe de Obsidiana"
     },
     "obsidian_orb_schematic": {
-      "description": "Esquema para fabricar um poderoso orbe de obsidiana",
+      "description": "Esquema para fabricar uma poderosa orbe de obsidiana",
       "name": "Orbe de Obsidiana"
     },
     "occultist_grimoire": {
@@ -239,7 +239,7 @@
       "name": "Grande Marca do Corvo"
     },
     "ravens_orb": {
-      "description": "Orbe escuro abençoado pelos corvos com conhecimento ancestral",
+      "description": "Orbe escura abençoada pelos corvos com conhecimento ancestral",
       "name": "Orbe do Corvo"
     },
     "red_mask": {
@@ -271,7 +271,7 @@
       "name": "Botas da Sombra"
     },
     "shadow_flute": {
-      "description": "Flauta de osso que faz as sombras se moverem de forma antinatural",
+      "description": "Flauta de osso que faz as sombras se moverem de forma sobrenatural",
       "name": "Flauta da Sombra"
     },
     "sharp_aim": {
@@ -371,7 +371,7 @@
       "name": "Picareta de Aço Negro"
     },
     "bone_saw": {
-      "description": "A ferramenta do necromante, antinaturalmente eficiente no abate",
+      "description": "A ferramenta do necromante, estranhamente eficiente no abate",
       "name": "Serra de Osso"
     },
     "crow_harness": {
@@ -427,7 +427,7 @@
       "name": "Corda Reforçada"
     },
     "skeleton_key": {
-      "description": "Uma chave misteriosa que, dizem, abre qualquer fechadura",
+      "description": "Uma chave misteriosa que dizem abrir qualquer fechadura",
       "name": "Chave-Mestra"
     },
     "skull_lantern": {

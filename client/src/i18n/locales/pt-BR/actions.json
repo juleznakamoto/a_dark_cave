@@ -8,7 +8,7 @@
   "banditLair": {
     "label": "Covil do Bandido",
     "log": {
-      "success": "Seu grupo rastreia o bandido até um covil em ruínas. Você o domina, recupera a adaga do mercador e encontra 250 de prata escondidas em meio à pilhagem.",
+      "success": "Seu grupo rastreia o bandido até um covil em ruínas. Você o domina, recupera a adaga do mercador e encontra 250 Prata escondidas em meio à pilhagem.",
       "failure": "Seus aldeões vasculham as colinas, mas não conseguem encurralar o bandido. A trilha esfria, e ele continua com a adaga."
     }
   },
@@ -718,7 +718,7 @@
     "label": "Avançar Mais Fundo",
     "log": {
       "tarnishedAmulet": "Nas sombras da caverna, algo reluz. Você encontra um Amuleto Manchado.",
-      "silverSack": "Você encontra um pequeno saco de couro contendo 50 de Prata.",
+      "silverSack": "Você encontra um pequeno saco de couro contendo 50 Prata.",
       "mapFragment": "No chão da caverna, você encontra um fragmento esfarrapado de um mapa.",
       "firstVisit": "O ar fica mais frio conforme você desce o caminho mais fundo na caverna. As paredes ao seu redor parecem estranhamente lisas, como se moldadas por alguém."
     }

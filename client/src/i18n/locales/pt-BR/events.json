@@ -38,7 +38,7 @@
       "outcome0": "Você compra o espelho. Sua superfície escura oferece vislumbres do seu próprio futuro, empurrando sua sanidade para o abismo.",
       "outcome1": "Você recusa a oferta do mercador. O espelho desaparece na noite junto com ele."
     },
-    "message": "Um mercador errante oferece um espelho alto e rachado, emoldurado em ferro negro. Ele irradia uma aura fria e antinatural. Ele afirma que pode mostrar vislumbres do futuro.",
+    "message": "Um mercador errante oferece um espelho alto e rachado, emoldurado em ferro negro. Ele irradia uma aura fria e estranha. Ele afirma que pode mostrar vislumbres do futuro.",
     "title": "O Espelho Enegrecido"
   },
   "blacksmithHammerChoice": {
@@ -279,7 +279,7 @@
       "hide_manyDeaths": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham a aldeia. Vários aldeões são mortos ou sequestrados.",
       "hide_manyDeaths_loot": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham a aldeia. Vários aldeões são mortos ou sequestrados. Os canibais saqueiam livremente seus estoques antes de escapulir.",
       "victory_one": "Os aldeões repelem os canibais! Um aldeão tomba na batalha, mas a tribo recua em derrota. Entre os corpos, você encontra um colar primitivo feito de ossos humanos.",
-      "victory_many": "Os aldeões lutam valentemente e repelem os canibais! Vários aldeões tombam na batalha, mas a tribo é forçada a recuar. Entre os corpos, você encontra um colar primitivo feito de ossos humanos."
+      "victory_many": "Os aldeões lutam valentemente e repelem os canibais! Vários aldeões caem na batalha, mas a tribo é forçada a recuar. Entre os corpos, você encontra um colar primitivo feito de ossos humanos."
     },
     "message": "Tambores de guerra ecoam pela noite enquanto uma tribo de canibais emerge da selva. Eles avançam sobre a aldeia com armas rudimentares e terríveis intenções.",
     "title": "Ataque dos Canibais"
@@ -587,7 +587,7 @@
       }
     },
     "log": {
-      "outcome0": "Você as abate sem piedade. Seus gritos ecoam pelas cavernas enquanto tombam.",
+      "outcome0": "Você as abate sem piedade. Seus gritos ecoam pelas cavernas enquanto caem.",
       "outcome1": "Você abaixa suas armas e tenta compreendê-las. Através de gestos e palavras truncadas, elas compartilham fragmentos de sua história, deixando você sem palavras."
     },
     "message": "Nas profundezas além do portão estilhaçado, você encontra algumas criaturas que não atacam. Suas formas são vagamente humanas, retorcidas por gerações na escuridão. Elas gesticulam, tentando se comunicar por meio de palavras e sinais truncados.",
@@ -649,13 +649,13 @@
       }
     },
     "log": {
-      "outcome0": "Você paga a mulher, e ela compartilha o segredo do Orbe de Obsidiana.",
+      "outcome0": "Você paga a mulher, e ela compartilha o segredo da Orbe de Obsidiana.",
       "outcome1": "Vinte aldeões são arrastados acorrentados. A mulher compartilha o conhecimento, mas a aldeia fica enojada com o que foi feito.",
       "outcome2": "Você a manda embora. Ela diz que pode voltar quando você estiver pronto.",
       "outcome3": "O tempo se esgota. Ela parte, dizendo que pode voltar quando você estiver pronto."
     },
-    "message": "Uma mulher ricamente adornada, de aparência oriental, chega com dois atendentes musculosos. Ela oferece compartilhar o conhecimento para criar um poderoso Orbe de Obsidiana em troca de ouro ou aldeões.",
-    "title": "O Orbe de Obsidiana"
+    "message": "Uma mulher ricamente adornada, de aparência oriental, chega com dois atendentes musculosos. Ela oferece compartilhar o conhecimento para criar uma poderosa Orbe de Obsidiana em troca de ouro ou aldeões.",
+    "title": "A Orbe de Obsidiana"
   },
   "facesInWalls": {
     "choices": {
@@ -819,8 +819,8 @@
       "outcome1": "Os homens entram nas águas, mas a criatura irrompe com velocidade desumana. Sua beleza se contorce em fileiras de dentes e olhos brilhantes. Aterrorizados, os aldeões fogem para salvar suas vidas.",
       "outcome2": "Você ordena que os aldeões evitem o lago. Alguns resmungam sobre oportunidades perdidas, mas obedecem. Seus segredos permanecem ocultos sob a água.",
       "outcome3": "Você proíbe qualquer aproximação, mas o aldeão que alegou ter visto a criatura não resiste. Certa noite ele se esgueira para longe, para nunca mais voltar. Ao amanhecer, apenas suas roupas jazem à beira da água.",
-      "lakeDrownOne": "A criatura se ergue como um pesadelo, a beleza mascarando uma intenção mortal. Com força antinatural, ela arrasta um aldeão para baixo das águas. Restam apenas ondulações e gritos fracos enquanto os demais fogem aterrorizados.",
-      "lakeDrownMany": "A criatura se ergue como um pesadelo, a beleza mascarando uma intenção mortal. Com força antinatural, ela arrasta os aldeões para baixo das águas. Restam apenas ondulações e gritos fracos enquanto os demais fogem aterrorizados."
+      "lakeDrownOne": "A criatura se ergue como um pesadelo, a beleza mascarando uma intenção mortal. Com força sobrenatural, ela arrasta um aldeão para baixo das águas. Restam apenas ondulações e gritos fracos enquanto os demais fogem aterrorizados.",
+      "lakeDrownMany": "A criatura se ergue como um pesadelo, a beleza mascarando uma intenção mortal. Com força sobrenatural, ela arrasta os aldeões para baixo das águas. Restam apenas ondulações e gritos fracos enquanto os demais fogem aterrorizados."
     },
     "message": "Enquanto coletavam madeira na floresta, os aldeões descobrem um lago oculto entre as árvores. Um aldeão jura ter visto uma figura semelhante a uma mulher emergir brevemente, seu olhar belo, porém desumano. O que você faz?",
     "title": "O Lago Escondido"
@@ -996,7 +996,7 @@
     "log": {
       "outcome0": "Você entrega o ouro. O mercenário o conta lentamente, um sorriso cruel no rosto. 'Um prazer fazer negócios,' diz ele, antes de desaparecer.",
       "outcome1": "O mercenário sinaliza para seus homens atacarem. A batalha é feroz, mas seus aldeões prevalecem. Os mercenários fogem para a floresta, deixando para trás suas armas e feridos.",
-      "outcome2": "O mercenário sinaliza para seus homens atacarem. Apesar dos seus melhores esforços, você é sobrepujado. {{deaths}} aldeões tombam antes de os mercenários finalmente recuarem, satisfeitos com a carnificina.",
+      "outcome2": "O mercenário sinaliza para seus homens atacarem. Apesar dos seus melhores esforços, você é sobrepujado. {{deaths}} aldeões caem antes de os mercenários finalmente recuarem, satisfeitos com a carnificina.",
       "outcome3": "Você lhe oferece o anel voraz que ainda guardava num baú trancado. O mercenário o examina com interesse, deslizando-o no próprio dedo. 'Um belo anel,' diz ele, 'mas não é o bastante. Voltarei amanhã para recolher o ouro.'"
     },
     "message": "Um mercenário cheio de cicatrizes chega à aldeia, a mão pousada em sua lâmina. 'Não estou aqui para causar problemas. Pague-me 100 Ouro, e manterei as coisas em paz. Recuse, e meus homens reduzirão este lugar a cinzas.'",
@@ -1768,7 +1768,7 @@
       "dedicate_dagon": "A Bênção de Dagon flui mais forte do que antes.",
       "dedicate_flame": "A Primeira Chama arde mais intensa do que antes.",
       "dedicate_raven": "A Marca do Corvo se fortalece mais do que antes.",
-      "dedicate_ash": "O Abraço de Cinzas está mais forte do que antes.",
+      "dedicate_ash": "O Abraço das Cinzas está mais forte do que antes.",
       "dedicate_unknown": ""
     },
     "message": "O druida cego emerge: 'O Sanctum está completo,' diz ele, sua voz carregando o peso da sabedoria antiga. 'Agora você deve escolher: aprofundar sua devoção ao caminho que escolheu, ou abraçar todos os deuses e seus dons. Escolha com sabedoria.'",
@@ -1806,7 +1806,7 @@
     "log": {
       "outcome0": "Você fica com a flauta de osso. Suas melodias são belas, mas há uma sutil dissonância que rói silenciosamente sua mente.",
       "outcome1": "Você recoloca a flauta no lugar com cuidado. As sombras retornam à sua quietude natural, e a atmosfera opressiva se dissipa.",
-      "outcome2": "Sua hesitação se mostra custosa. As sombras ficam famintas e violentas, contorcendo-se com vida antinatural. Elas avançam e devoram {{actualDevoured}} membros da sua irmandade. Seus gritos ecoam brevemente antes de serem engolidos pelo silêncio."
+      "outcome2": "Sua hesitação se mostra custosa. As sombras ficam famintas e violentas, contorcendo-se com vida sobrenatural. Elas avançam e devoram {{actualDevoured}} membros da sua irmandade. Seus gritos ecoam brevemente antes de serem engolidos pelo silêncio."
     },
     "message": "Nas profundezas da caverna você descobre uma flauta de osso de fatura perturbadora. Enquanto você a toca, as sombras ao seu redor começam a se mover de modos antinaturais, como se dançassem ao som de uma melodia. Você fica com ela?",
     "title": "A Flauta das Sombras"
@@ -1882,7 +1882,7 @@
     "log": {
       "outcome0": "Você entrega dois dos aldeões. O mercador lhe joga um saco de aço e parte a cavalo com seus novos cativos. Quando os aldeões restantes veem o que você fez, abandonam a aldeia enojados.",
       "outcome1": "Seus homens atacam o escravagista! A luta é brutal, mas vitoriosa. Você liberta os cativos e reivindica o aço do mercador. As almas libertas juntam-se à sua aldeia.",
-      "outcome2": "Seus homens atacam o escravagista, mas ele está preparado! Ele revida ferozmente. {{actualDeaths}} aldeões tombam na luta. O mercador escapa com seus cativos, deixando apenas morte para trás.",
+      "outcome2": "Seus homens atacam o escravagista, mas ele está preparado! Ele revida ferozmente. {{actualDeaths}} aldeões caem na luta. O mercador escapa com seus cativos, deixando apenas morte para trás.",
       "outcome3": "Você recusa a vil oferta do escravagista. Ele cospe no chão enojado e parte a cavalo com seus cativos."
     },
     "message": "Um homem numa carroça puxada por dois cavalos se aproxima da aldeia. Uma jaula de ferro na carroça contém duas almas miseráveis. O mercador sorri maldosamente: 'Pagarei 100 Aço por dois dos seus aldeões. O que me diz?'",
@@ -2491,7 +2491,7 @@
       "hide_manyDeaths": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Vários aldeões são arrastados de suas cabanas, seus gritos ecoando pela noite.",
       "hide_manyDeaths_food": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Vários aldeões são arrastados de suas cabanas, seus gritos ecoando pela noite. Os lobos saqueiam seus suprimentos antes de sumir ao amanhecer."
     },
-    "message": "Perto da meia-noite, os lobos emergem da escuridão, seus olhos brilhando com fome antinatural. Seus uivos ecoam carregados de malícia enquanto circundam a aldeia.",
+    "message": "Perto da meia-noite, os lobos emergem da escuridão, seus olhos brilhando com fome sobrenatural. Seus uivos ecoam carregados de malícia enquanto circundam a aldeia.",
     "title": "Ataque dos Lobos"
   },
   "woodcutter": {
