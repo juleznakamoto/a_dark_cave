@@ -36,7 +36,7 @@
     "playlightTitle": "1 Spiel entdecken (+{{amount}} Gold)",
     "discoverGames": "Spiele entdecken",
     "inviteTitle": "1 Freund einladen (+{{amount}} Gold je Person)",
-    "inviteDesc": "Lade bis zu {{cap}} Freunde ein – jedes Mal erhalten ihr beide {{amount}} Gold ({{count}}/{{cap}} eingeladen).",
+    "inviteDesc": "Du kannst bis zu {{cap}} Freunde einladen. Jedes Mal erhalten ihr beide {{amount}} Gold ({{count}}/{{cap}} eingeladen).",
     "copyInviteLink": "Link kopieren", //ok
     "progressComplete": "Du hast alle Aufgaben abgeschlossen. Du erhältst bald deine Belohnung.",
     "tasksRemaining_one": "1 Aufgabe übrig",

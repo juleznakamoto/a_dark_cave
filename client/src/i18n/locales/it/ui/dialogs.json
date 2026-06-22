@@ -36,7 +36,7 @@
     "playlightTitle": "Scopri 1 gioco (+{{amount}} Oro)",
     "discoverGames": "Scopri giochi",
     "inviteTitle": "Invita 1 amico (+{{amount}} Oro ciascuno)",
-    "inviteDesc": "Invita fino a {{cap}} amici e ogni volta entrambi riceverete {{amount}} Oro ({{count}}/{{cap}} invitati).",
+    "inviteDesc": "Puoi invitare fino a {{cap}} amici. Ogni volta entrambi riceverete {{amount}} Oro ({{count}}/{{cap}} invitati).",
     "copyInviteLink": "Copia link di invito",
     "progressComplete": "Hai completato tutte le attività. Riceverai presto la tua ricompensa.",
     "tasksRemaining_one": "1 attività rimanente",

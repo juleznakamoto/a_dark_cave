@@ -36,7 +36,7 @@
     "playlightTitle": "发现 1 款游戏 (+{{amount}} 黄金)",
     "discoverGames": "发现游戏",
     "inviteTitle": "邀请 1 位好友 (各得 {{amount}} 黄金)",
-    "inviteDesc": "最多邀请 {{cap}} 位好友，每次双方各得 {{amount}} 黄金 ({{count}}/{{cap}} 已邀请)。",
+    "inviteDesc": "最多可邀请 {{cap}} 位好友。每次双方各得 {{amount}} 黄金（{{count}}/{{cap}} 已邀请）。",
     "copyInviteLink": "复制邀请链接",
     "progressComplete": "你已完成所有任务，奖励即将到来。",
     "tasksRemaining_one": "还剩 1 项任务",

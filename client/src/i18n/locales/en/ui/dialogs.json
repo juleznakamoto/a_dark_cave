@@ -36,7 +36,7 @@
     "playlightTitle": "Discover 1 game (+{{amount}} Gold)",
     "discoverGames": "Discover games",
     "inviteTitle": "Invite 1 friend (+{{amount}} Gold each)",
-    "inviteDesc": "Invite up to {{cap}} friends and each time both of you will receive {{amount}} Gold ({{count}}/{{cap}} invited).",
+    "inviteDesc": "You can invite up to {{cap}} friends. Each time both of you will receive {{amount}} Gold ({{count}}/{{cap}} invited).",
     "copyInviteLink": "Copy invite link",
     "progressComplete": "You have finished all tasks. You will soon receive your reward.",
     "tasksRemaining_one": "1 task remaining",

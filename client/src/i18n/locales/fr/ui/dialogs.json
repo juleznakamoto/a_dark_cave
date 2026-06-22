@@ -36,7 +36,7 @@
     "playlightTitle": "Découvrir 1 jeu (+{{amount}} or)",
     "discoverGames": "Découvrir des jeux", //x1.3
     "inviteTitle": "Inviter 1 ami (+{{amount}} or chacun)",
-    "inviteDesc": "Invitez jusqu'à {{cap}} amis — à chaque fois, vous recevrez tous les deux {{amount}} or ({{count}}/{{cap}} invités).",
+    "inviteDesc": "Vous pouvez inviter jusqu'à {{cap}} amis. À chaque fois, vous recevrez tous les deux {{amount}} or ({{count}}/{{cap}} invités).",
     "copyInviteLink": "Copier le lien d'invitation",
     "progressComplete": "Vous avez terminé toutes les tâches. Vous recevrez bientôt votre récompense.",
     "tasksRemaining_one": "1 tâche restante",
