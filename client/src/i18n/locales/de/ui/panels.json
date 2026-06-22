@@ -224,6 +224,7 @@
     "sleeping": "Schlafen",
     "awake": "Du bist wach!",
     "wakingIn": "Erwachen in: {{time}}",
+    "villageProduction": "Dorfproduktion: {{percent}}%",
     "wake": "Aufwachen",
     "getUp": "Aufstehen",
     "focusGainedLog": "Du hast durch deine Ruhe {{count}} Fokus erhalten.",

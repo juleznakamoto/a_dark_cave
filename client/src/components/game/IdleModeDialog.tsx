@@ -7,6 +7,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { useGameStore } from "@/game/state";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
@@ -623,6 +624,13 @@ export default function IdleModeDialog() {
   if (focusPoints > 0) displayResources.push("Focus");
 
   const isTimeUp = remainingTime <= 0;
+  const villageProductionPercent =
+    sleepIntensityConfig.percentage + estateBonusIntensityPct;
+  const sleepProgress = isTimeUp
+    ? 100
+    : IDLE_DURATION_MS > 0 && startTime > 0
+      ? Math.min(100, ((displayNow - startTime) / IDLE_DURATION_MS) * 100)
+      : 0;
 
   return (
     <Dialog
@@ -638,7 +646,7 @@ export default function IdleModeDialog() {
       >
         <DialogHeader>
           <DialogTitle>{t("idleMode.sleeping")}</DialogTitle>
-          <DialogDescription className="py-1">
+          <DialogDescription className="py-1 space-y-2">
             {isTimeUp ? (
               <span className="pt-2">{t("idleMode.awake")}</span>
             ) : (
@@ -646,8 +654,18 @@ export default function IdleModeDialog() {
                 {t("idleMode.wakingIn", { time: formatTime(remainingTime) })}
               </span>
             )}
+            <Progress
+              value={sleepProgress}
+              className="h-2"
+              disableGlow
+              hideBorder
+            />
           </DialogDescription>
         </DialogHeader>
+
+        <div className="text-xs text-muted-foreground pb-1">
+          {t("idleMode.villageProduction", { percent: villageProductionPercent })}
+        </div>
 
         <div className="py-1.5 border-border text-xs space-y-0.5">
           {displayResources.map((resource) => {

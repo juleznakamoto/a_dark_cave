@@ -224,6 +224,7 @@
     "sleeping": "Sleeping",
     "awake": "You are awake!",
     "wakingIn": "Waking up in: {{time}}",
+    "villageProduction": "Village production: {{percent}}%",
     "wake": "Wake Up",
     "getUp": "Get Up",
     "focusGainedLog": "You gained {{count}} Focus from your rest.",
