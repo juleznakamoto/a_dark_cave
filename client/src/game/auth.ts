@@ -30,17 +30,84 @@ export const PENDING_REFERRAL_CODE_KEY = 'adc_pending_referral_code';
 /** Set when starting Google OAuth from Create Account — cleared after load (welcome gold is claimed in rewards dialog). */
 export const PENDING_SIGNUP_WELCOME_KEY = 'adc_pending_signup_welcome_gold';
 
-function stashPendingSignupWelcomeForOAuth(): void {
+/** Milliseconds after `created_at` when a signup-flow claim is still allowed without a pending timestamp. */
+export const SIGNUP_WELCOME_NEW_ACCOUNT_MAX_MS = 15 * 60 * 1000;
+
+/** Pending signup timestamp must align with auth `created_at` (email confirm can finish later). */
+const SIGNUP_WELCOME_PENDING_MATCH_TOLERANCE_MS = 5 * 60 * 1000;
+
+const PENDING_SIGNUP_WELCOME_STARTED_AT_KEY =
+  "adc_pending_signup_welcome_started_at";
+
+export function isAuthUserWithinSignupWelcomeWindow(
+  createdAt: string | undefined | null,
+  nowMs = Date.now(),
+): boolean {
+  if (!createdAt) return false;
+  const createdMs = new Date(createdAt).getTime();
+  if (!Number.isFinite(createdMs)) return false;
+  return nowMs - createdMs <= SIGNUP_WELCOME_NEW_ACCOUNT_MAX_MS;
+}
+
+function isSignupPendingAlignedWithAccountCreation(
+  createdAt: string,
+  pendingStartedAtMs: number,
+): boolean {
+  const createdMs = new Date(createdAt).getTime();
+  if (!Number.isFinite(createdMs)) return false;
+  return (
+    Math.abs(createdMs - pendingStartedAtMs) <=
+    SIGNUP_WELCOME_PENDING_MATCH_TOLERANCE_MS
+  );
+}
+
+/** Pure eligibility check (see {@link isSignupWelcomeGoldClaimEligible}). */
+export function isAuthUserEligibleForSignupWelcomeClaim(
+  createdAt: string | undefined | null,
+  pendingStartedAtMs: number | null,
+  nowMs = Date.now(),
+): boolean {
+  if (isAuthUserWithinSignupWelcomeWindow(createdAt, nowMs)) return true;
+  if (pendingStartedAtMs === null || !createdAt) return false;
+  return isSignupPendingAlignedWithAccountCreation(
+    createdAt,
+    pendingStartedAtMs,
+  );
+}
+
+function getPendingSignupWelcomeStartedAtMs(): number | null {
   try {
-    sessionStorage.setItem(PENDING_SIGNUP_WELCOME_KEY, '1');
+    const raw = sessionStorage.getItem(PENDING_SIGNUP_WELCOME_STARTED_AT_KEY);
+    if (!raw) return null;
+    const ms = Number(raw);
+    return Number.isFinite(ms) ? ms : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Call when the player starts account creation (email form or Google OAuth signup tab). */
+export function markPendingSignupWelcomeFromSignupFlow(): void {
+  try {
+    const startedAt = Date.now();
+    sessionStorage.setItem(PENDING_SIGNUP_WELCOME_KEY, "1");
+    sessionStorage.setItem(
+      PENDING_SIGNUP_WELCOME_STARTED_AT_KEY,
+      String(startedAt),
+    );
   } catch {
     /* ignore */
   }
 }
 
+function stashPendingSignupWelcomeForOAuth(): void {
+  markPendingSignupWelcomeFromSignupFlow();
+}
+
 export function clearPendingSignupWelcome(): void {
   try {
     sessionStorage.removeItem(PENDING_SIGNUP_WELCOME_KEY);
+    sessionStorage.removeItem(PENDING_SIGNUP_WELCOME_STARTED_AT_KEY);
   } catch {
     /* ignore */
   }
@@ -136,16 +203,36 @@ async function applySignupWelcomeGoldBonus(): Promise<boolean> {
   return true;
 }
 
+/** Rewards dialog Claim — requires sign-in and a genuine new-account signup. */
+export async function isSignupWelcomeGoldClaimEligible(): Promise<boolean> {
+  const { useGameStore } = await import("./state");
+  const s = useGameStore.getState();
+  if (!s.isUserSignedIn || s.signupWelcomeGoldClaimed) return false;
+
+  const supabase = await getSupabaseClient();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+  if (error || !user?.created_at) return false;
+
+  return isAuthUserEligibleForSignupWelcomeClaim(
+    user.created_at,
+    getPendingSignupWelcomeStartedAtMs(),
+  );
+}
+
 /** Rewards dialog Claim — requires an active signed-in session. */
 export async function claimSignupWelcomeGold(): Promise<boolean> {
-  const { useGameStore } = await import("./state");
-  if (!useGameStore.getState().isUserSignedIn) return false;
-  return applySignupWelcomeGoldBonus();
+  if (!(await isSignupWelcomeGoldClaimEligible())) return false;
+  const granted = await applySignupWelcomeGoldBonus();
+  if (granted) clearPendingSignupWelcome();
+  return granted;
 }
 
 /**
- * After game state is in the store: clear OAuth signup pending flag once authenticated.
- * Welcome gold is claimed manually in the rewards dialog.
+ * After game state is in the store: drop stale OAuth signup pending for existing accounts.
+ * New accounts keep pending so email-style delayed claims still work via timestamp alignment.
  */
 export async function applySignupWelcomeBonusAfterOAuthLoad(): Promise<void> {
   try {
@@ -157,7 +244,16 @@ export async function applySignupWelcomeBonusAfterOAuthLoad(): Promise<void> {
   const loggedIn = await getCurrentUser();
   if (!loggedIn) return;
 
-  clearPendingSignupWelcome();
+  const supabase = await getSupabaseClient();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+  if (error || !user?.created_at) return;
+
+  if (!isAuthUserWithinSignupWelcomeWindow(user.created_at)) {
+    clearPendingSignupWelcome();
+  }
 }
 
 export type PendingMarketingPayload = {

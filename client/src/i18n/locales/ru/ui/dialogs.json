@@ -41,8 +41,8 @@
     "progressComplete": "Вы выполнили все задачи. Скоро получите награду.",
     "tasksRemaining_one": "Осталась 1 задача",
     "tasksRemaining_other": "Осталось {{count}} задач",
-    "progressToward": "Прогресс к эксклюзивному предмету:",
-    "progressAriaLabel": "Прогресс эксклюзивного предмета",
+    "progressToward": "Эксклюзивная награда:",
+    "progressAriaLabel": "Эксклюзивная награда",
     "alreadyClaimedReward": "Вы уже получили эту награду!",
     "followRewardLog": "Вы получили {{amount}} золота за подписку на нас в {{platform}}!",
     "platforms": {

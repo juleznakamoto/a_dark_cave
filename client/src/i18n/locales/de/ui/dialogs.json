@@ -41,8 +41,8 @@
     "progressComplete": "Du hast alle Aufgaben abgeschlossen. Du erhältst bald deine Belohnung.",
     "tasksRemaining_one": "1 Aufgabe übrig",
     "tasksRemaining_other": "{{count}} Aufgaben übrig",
-    "progressToward": "Fortschritt zum exklusiven Gegenstand:", //ok
-    "progressAriaLabel": "Fortschritt exklusiver Gegenstand", //ok
+    "progressToward": "Exklusive Belohnung:",
+    "progressAriaLabel": "Exklusive Belohnung",
     "alreadyClaimedReward": "Du hast diese Belohnung bereits abgeholt!",
     "playlightDiscoverRewardLog": "Du hast {{amount}} Gold für das Entdecken von Spielen erhalten!",
     "marketingSubscribeLog": "Du hast {{amount}} Gold für die Anmeldung zu E-Mail-Updates erhalten!",

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, type ComponentProps } from "react";
+import { useEffect, useState, type ComponentProps } from "react";
 import {
   Dialog,
   DialogContent,
@@ -29,7 +29,7 @@ import {
 } from "@/game/claimSocialFollowReward";
 import { SocialPlatformGlyph } from "@/components/game/SocialPlatformGlyph";
 import { getCurrentUser } from "@/game/auth";
-import { Check, Circle, Mail, Sparkles, User, UserPlus } from "lucide-react";
+import { Circle, Mail, Sparkles, User, UserPlus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
@@ -50,7 +50,7 @@ import {
   fulfillPlaylightDiscoverReward,
   claimPlaylightDiscoverGoldReward,
 } from "@/game/playlightDiscoverReward";
-import { claimSignupWelcomeGold } from "@/game/auth";
+import { claimSignupWelcomeGold, isSignupWelcomeGoldClaimEligible } from "@/game/auth";
 import {
   isSocialRewardClaimed,
   isSocialRewardFulfilled,
@@ -120,30 +120,11 @@ function LockedSocialButton({
   );
 }
 
-function StatusIcon({
-  claimed,
-  animate,
-}: {
-  claimed: boolean;
-  animate?: boolean;
-}) {
-  if (!claimed) {
-    return (
-      <Circle
-        className="h-5 w-5 shrink-0 text-muted-foreground/60"
-        strokeWidth={2}
-        aria-hidden
-      />
-    );
-  }
-
+function TaskStatusIcon() {
   return (
-    <Check
-      className={cn(
-        "h-5 w-5 shrink-0 text-green-500",
-        animate && "social-task-check-animate",
-      )}
-      strokeWidth={2.5}
+    <Circle
+      className="h-5 w-5 shrink-0 text-muted-foreground/60"
+      strokeWidth={2}
       aria-hidden
     />
   );
@@ -196,27 +177,7 @@ export default function SocialPromptDialog({
   const [subscribeLoading, setSubscribeLoading] = useState(false);
   const [discoverGamesLoading, setDiscoverGamesLoading] = useState(false);
   const [marketingOptIn, setMarketingOptIn] = useState(false);
-  const [animatedCheckmarks, setAnimatedCheckmarks] = useState<Set<string>>(
-    () => new Set(),
-  );
-
-  const markCheckmarkAnimated = useCallback((taskId: string) => {
-    setAnimatedCheckmarks((prev) => {
-      if (prev.has(taskId)) return prev;
-      const next = new Set(prev);
-      next.add(taskId);
-      return next;
-    });
-  }, []);
-
-  const claimWithAnimation = useCallback(
-    (taskId: string, claim: () => boolean | Promise<boolean>) => {
-      void Promise.resolve(claim()).then((granted) => {
-        if (granted) markCheckmarkAnimated(taskId);
-      });
-    },
-    [markCheckmarkAnimated],
-  );
+  const [signUpClaimEligible, setSignUpClaimEligible] = useState(false);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -241,6 +202,20 @@ export default function SocialPromptDialog({
       cancelled = true;
     };
   }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen || signupWelcomeGoldClaimed) {
+      setSignUpClaimEligible(false);
+      return;
+    }
+    let cancelled = false;
+    void isSignupWelcomeGoldClaimEligible().then((eligible) => {
+      if (!cancelled) setSignUpClaimEligible(eligible);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [isOpen, isUserSignedIn, signupWelcomeGoldClaimed]);
 
   useEffect(() => {
     syncSocialPromoExclusiveRewardPending();
@@ -359,7 +334,7 @@ export default function SocialPromptDialog({
     playlightRewardEntry,
   );
   const signUpClaimed = signupWelcomeGoldClaimed;
-  const signUpFulfilled = isUserSignedIn;
+  const signUpFulfilled = signUpClaimEligible;
   const exclusiveInviteDone = isExclusiveInviteStepDone({
     referralCount,
     referrals,
@@ -413,12 +388,11 @@ export default function SocialPromptDialog({
                   "border-lime-500/30 bg-lime-500/[0.04]",
                 )}
               >
-                <div className="shrink-0">
-                  <StatusIcon
-                    claimed={claimed}
-                    animate={animatedCheckmarks.has(platform.id)}
-                  />
-                </div>
+                {!claimed && (
+                  <div className="shrink-0">
+                    <TaskStatusIcon />
+                  </div>
+                )}
                 <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
                   <div className="flex items-center gap-2 min-w-0">
                     <SocialPlatformGlyph platformId={platform.id} />
@@ -430,11 +404,9 @@ export default function SocialPromptDialog({
                     (fulfilled ? (
                       <TaskClaimButton
                         onClick={() =>
-                          claimWithAnimation(platform.id, () =>
-                            claimSocialFollowGoldReward(
-                              platform.id,
-                              platform.reward,
-                            ),
+                          void claimSocialFollowGoldReward(
+                            platform.id,
+                            platform.reward,
                           )
                         }
                       />
@@ -464,12 +436,11 @@ export default function SocialPromptDialog({
               "border-lime-500/30 bg-lime-500/[0.04]",
             )}
           >
-            <div className="shrink-0">
-              <StatusIcon
-                claimed={playlightDiscoverRewardClaimed}
-                animate={animatedCheckmarks.has(PLAYLIGHT_DISCOVER_REWARD_KEY)}
-              />
-            </div>
+            {!playlightDiscoverRewardClaimed && (
+              <div className="shrink-0">
+                <TaskStatusIcon />
+              </div>
+            )}
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex items-center gap-2">
@@ -488,11 +459,7 @@ export default function SocialPromptDialog({
                 (playlightDiscoverRewardFulfilled ? (
                   <TaskClaimButton
                     className="self-center"
-                    onClick={() =>
-                      claimWithAnimation(PLAYLIGHT_DISCOVER_REWARD_KEY, () =>
-                        claimPlaylightDiscoverGoldReward(),
-                      )
-                    }
+                    onClick={() => void claimPlaylightDiscoverGoldReward()}
                   />
                 ) : (
                   <Button
@@ -522,12 +489,11 @@ export default function SocialPromptDialog({
               "border-lime-500/30 bg-lime-500/[0.04]",
             )}
           >
-            <div className="shrink-0">
-              <StatusIcon
-                claimed={signUpClaimed}
-                animate={animatedCheckmarks.has("signup")}
-              />
-            </div>
+            {!signUpClaimed && (
+              <div className="shrink-0">
+                <TaskStatusIcon />
+              </div>
+            )}
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex items-center gap-2">
@@ -546,9 +512,7 @@ export default function SocialPromptDialog({
                 (signUpFulfilled ? (
                   <TaskClaimButton
                     className="self-center"
-                    onClick={() =>
-                      claimWithAnimation("signup", () => claimSignupWelcomeGold())
-                    }
+                    onClick={() => void claimSignupWelcomeGold()}
                   />
                 ) : (
                   <Button
@@ -571,12 +535,11 @@ export default function SocialPromptDialog({
               "border-lime-500/30 bg-lime-500/[0.04]",
             )}
           >
-            <div className="shrink-0">
-              <StatusIcon
-                claimed={emailRewardClaimed}
-                animate={animatedCheckmarks.has(MARKETING_EMAIL_REWARD_KEY)}
-              />
-            </div>
+            {!emailRewardClaimed && (
+              <div className="shrink-0">
+                <TaskStatusIcon />
+              </div>
+            )}
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex items-center gap-2">
@@ -592,11 +555,7 @@ export default function SocialPromptDialog({
                 (emailRewardFulfilled ? (
                   <TaskClaimButton
                     className="self-center"
-                    onClick={() =>
-                      claimWithAnimation(MARKETING_EMAIL_REWARD_KEY, () =>
-                        claimMarketingEmailGoldReward(),
-                      )
-                    }
+                    onClick={() => void claimMarketingEmailGoldReward()}
                   />
                 ) : (
                   <LockedSocialButton
@@ -620,9 +579,11 @@ export default function SocialPromptDialog({
               exclusiveInviteDone && "border-green-500/40 bg-green-500/5",
             )}
           >
-            <div className="shrink-0">
-              <StatusIcon claimed={exclusiveInviteDone} />
-            </div>
+            {!exclusiveInviteDone && (
+              <div className="shrink-0">
+                <TaskStatusIcon />
+              </div>
+            )}
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex items-center gap-2">
@@ -686,7 +647,7 @@ export default function SocialPromptDialog({
                   ) : (
                     <span className="inline-flex flex-wrap items-baseline gap-x-1">
                       <span>{t("socialPrompt.progressToward")}</span>
-                      <span className="inline-flex items-baseline">
+                      <span className="inline-flex items-baseline font-bold">
                         {exclusiveItemName}
                         <ExclusivePromoItemInfoIcon tooltipId="social-prompt-exclusive-item-info" />
                       </span>

@@ -41,8 +41,8 @@
     "progressComplete": "Vous avez terminé toutes les tâches. Vous recevrez bientôt votre récompense.",
     "tasksRemaining_one": "1 tâche restante",
     "tasksRemaining_other": "{{count}} tâches restantes",
-    "progressToward": "Progression vers l'objet exclusif :",
-    "progressAriaLabel": "Progression vers l'objet exclusif",
+    "progressToward": "Récompense exclusive :",
+    "progressAriaLabel": "Récompense exclusive",
     "alreadyClaimedReward": "Vous avez déjà récupéré cette récompense !",
     "followRewardLog": "Vous avez reçu {{amount}} or pour nous suivre sur {{platform}} !",
     "platforms": {

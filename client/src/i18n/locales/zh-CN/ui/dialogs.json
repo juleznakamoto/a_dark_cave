@@ -41,8 +41,8 @@
     "progressComplete": "你已完成所有任务，奖励即将到来。",
     "tasksRemaining_one": "还剩 1 项任务",
     "tasksRemaining_other": "还剩 {{count}} 项任务",
-    "progressToward": "专属物品进度：",
-    "progressAriaLabel": "专属物品进度",
+    "progressToward": "专属奖励：",
+    "progressAriaLabel": "专属奖励",
     "alreadyClaimedReward": "你已领取此奖励！",
     "followRewardLog": "关注 {{platform}} 获得 {{amount}} 黄金！",
     "platforms": {

@@ -16,6 +16,7 @@ import {
   signInWithGoogle,
   clearPendingReferralCode,
   clearPendingSignupWelcome,
+  markPendingSignupWelcomeFromSignupFlow,
 } from "@/game/auth";
 import { saveGame } from "@/game/save";
 import { buildGameState } from "@/game/stateHelpers";
@@ -127,6 +128,7 @@ export default function AuthDialog({
         clearPendingSignupWelcome();
         const referralCode = getReferralCode();
         await signUp(email, password, referralCode || undefined, marketingOptIn);
+        markPendingSignupWelcomeFromSignupFlow();
         useGameStore.getState().setSignUpPromptEligibleForGold(false);
         setSignupSuccess(true);
       } else if (mode === "reset") {
