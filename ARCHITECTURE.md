@@ -130,7 +130,8 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
   function in a rule module → `StateManager.scheduleEffectsUpdate()` recomputes derived stats.
 - **Event path:** `loop.ts`/store → `checkEvents()` → `EventManager` evaluates `allEvents`
   → opens `EventDialog` or `timedEventTab`.
-- **`playlightExitIntent.ts`** — play-time milestone thresholds (1h/2h/4h/6h) and
+- **`playlightExitIntent.ts`** — play-time exit-intent milestones (90m/150m/210m/270m/330m);
+  skips 150m and 270m when Playlight discover social task is fulfilled;
   `getActivePlaylightExitMilestone()`; consumed count persisted as `playlightExitIntentMilestoneIndex`
   in save (read/written by `lib/playlight.ts` on SDK `exitIntent`).
 - **`boost.ts`** — one-time `/boost` URL resource bonus for started saves; gated by persisted

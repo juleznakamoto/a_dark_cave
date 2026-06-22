@@ -3,7 +3,12 @@ import {
   installPlaylightExitIntentCloseButton,
   scanPlaylightExitIntentBar,
 } from "@/lib/playlightExitIntentClose";
-import { getActivePlaylightExitMilestone } from "@/game/playlightExitIntent";
+import {
+  getActivePlaylightExitMilestone,
+  isPlaylightDiscoverSocialTaskFulfilled,
+  normalizePlaylightExitIntentMilestoneIndex,
+  playlightExitIntentMilestoneIndexAfterShow,
+} from "@/game/playlightExitIntent";
 
 /** True when the player landed with the Playlight campaign URL (`?utm_source=playlight`). */
 export function isPlaylightReferralUrl(): boolean {
@@ -142,12 +147,27 @@ export async function initPlaylight() {
 
         const storeState = useGameStore.getState();
         const playTime = storeState.playTime ?? 0;
+        const discoverFulfilled = isPlaylightDiscoverSocialTaskFulfilled(
+          storeState.social_media_rewards,
+        );
         const milestoneIndex = storeState.playlightExitIntentMilestoneIndex ?? 0;
-        const milestone = getActivePlaylightExitMilestone(playTime, milestoneIndex);
+        const normalizedIndex = normalizePlaylightExitIntentMilestoneIndex(
+          milestoneIndex,
+          discoverFulfilled,
+        );
+        const milestone = getActivePlaylightExitMilestone(
+          playTime,
+          milestoneIndex,
+          discoverFulfilled,
+        );
         if (milestone == null) return;
 
         useGameStore.setState({
-          playlightExitIntentMilestoneIndex: milestoneIndex + 1,
+          playlightExitIntentMilestoneIndex:
+            playlightExitIntentMilestoneIndexAfterShow(
+              normalizedIndex,
+              discoverFulfilled,
+            ),
         });
 
         exitIntentDisableDeferredUntil = now + EXIT_INTENT_DISABLE_DEFER_MS;
@@ -175,9 +195,13 @@ export async function initPlaylight() {
           shouldEnableExitIntent = true;
         } else {
           const playTime = state.playTime ?? 0;
+          const discoverFulfilled = isPlaylightDiscoverSocialTaskFulfilled(
+            state.social_media_rewards,
+          );
           const activeMilestone = getActivePlaylightExitMilestone(
             playTime,
             state.playlightExitIntentMilestoneIndex ?? 0,
+            discoverFulfilled,
           );
           const deferActive = Date.now() < exitIntentDisableDeferredUntil;
           if (deferActive) {

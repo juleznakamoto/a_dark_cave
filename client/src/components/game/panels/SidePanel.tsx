@@ -191,7 +191,7 @@ export default function SidePanel() {
     seenResourceKeySet.has(key),
   );
 
-  const PRECIOUS_RESOURCE_ORDER = ["gold", "silver", "insight"] as const;
+  const PRECIOUS_RESOURCE_ORDER = ["silver", "gold", "insight"] as const;
   const preciousResources = seenResourceKeys.filter((key) =>
     PRECIOUS_RESOURCE_ORDER.includes(
       key as (typeof PRECIOUS_RESOURCE_ORDER)[number],

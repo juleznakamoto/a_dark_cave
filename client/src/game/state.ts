@@ -77,7 +77,10 @@ import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { GAME_CONSTANTS } from "@/game/constants";
 import { lastAuthNotificationPlayTimeFloorOnLoad } from "@/game/authNotificationAuto";
-import { playlightExitIntentMilestoneFloorFromPlayTime } from "@/game/playlightExitIntent";
+import {
+  isPlaylightDiscoverSocialTaskFulfilled,
+  playlightExitIntentMilestoneFloorFromPlayTime,
+} from "@/game/playlightExitIntent";
 import { socialPromptMilestoneFloorFromPlayTime } from "@/game/socialPromptAuto";
 import { socialPromoExclusiveStepsCompleted } from "@/game/socialPromoExclusiveReward";
 import {
@@ -2816,7 +2819,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
         playlightExitIntentMilestoneIndex: Math.max(
           (savedState as { playlightExitIntentMilestoneIndex?: number })
             .playlightExitIntentMilestoneIndex ?? 0,
-          playlightExitIntentMilestoneFloorFromPlayTime(loadedPlayTime),
+          playlightExitIntentMilestoneFloorFromPlayTime(
+            loadedPlayTime,
+            isPlaylightDiscoverSocialTaskFulfilled(
+              savedState.social_media_rewards,
+            ),
+          ),
         ),
         feedbackPromptShown:
           (savedState as { feedbackPromptShown?: boolean }).feedbackPromptShown ===
