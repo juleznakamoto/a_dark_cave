@@ -663,11 +663,10 @@ export default function IdleModeDialog() {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="text-xs text-muted-foreground pb-1">
-          {t("idleMode.villageProduction", { percent: villageProductionPercent })}
-        </div>
-
-        <div className="py-1.5 border-border text-xs space-y-0.5">
+        <div className="pb-1.5 border-border text-xs space-y-0.5">
+          <div className="text-muted-foreground">
+            {t("idleMode.villageProduction", { percent: villageProductionPercent })}
+          </div>
           {displayResources.map((resource) => {
             const isFocus = resource === "Focus";
             const resourceLabel = isFocus
