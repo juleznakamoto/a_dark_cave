@@ -127,27 +127,22 @@ function TaskRowStatusIcon({
   claimed: boolean;
   fulfilled?: boolean;
 }) {
-  if (claimed) {
-    return (
-      <div className="shrink-0">
-        <Check
-          className="h-5 w-5 shrink-0 text-green-500"
-          strokeWidth={2.5}
-          aria-hidden
-        />
-      </div>
-    );
-  }
-
-  if (fulfilled) return null;
-
   return (
-    <div className="shrink-0">
-      <Circle
-        className="h-5 w-5 shrink-0 text-muted-foreground/60"
-        strokeWidth={2}
-        aria-hidden
-      />
+    <div
+      className="flex h-5 w-5 shrink-0 items-center justify-center"
+      aria-hidden
+    >
+      {claimed ? (
+        <Check
+          className="h-5 w-5 text-green-500"
+          strokeWidth={2.5}
+        />
+      ) : !fulfilled ? (
+        <Circle
+          className="h-5 w-5 text-muted-foreground/60"
+          strokeWidth={2}
+        />
+      ) : null}
     </div>
   );
 }
