@@ -388,7 +388,7 @@ export default function SocialPromptDialog({
                   "border-lime-500/30 bg-lime-500/[0.04]",
                 )}
               >
-                {!claimed && (
+                {!claimed && !fulfilled && (
                   <div className="shrink-0">
                     <TaskStatusIcon />
                   </div>
@@ -436,11 +436,12 @@ export default function SocialPromptDialog({
               "border-lime-500/30 bg-lime-500/[0.04]",
             )}
           >
-            {!playlightDiscoverRewardClaimed && (
-              <div className="shrink-0">
-                <TaskStatusIcon />
-              </div>
-            )}
+            {!playlightDiscoverRewardClaimed &&
+              !playlightDiscoverRewardFulfilled && (
+                <div className="shrink-0">
+                  <TaskStatusIcon />
+                </div>
+              )}
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex items-center gap-2">
@@ -489,7 +490,7 @@ export default function SocialPromptDialog({
               "border-lime-500/30 bg-lime-500/[0.04]",
             )}
           >
-            {!signUpClaimed && (
+            {!signUpClaimed && !signUpFulfilled && (
               <div className="shrink-0">
                 <TaskStatusIcon />
               </div>
@@ -535,7 +536,7 @@ export default function SocialPromptDialog({
               "border-lime-500/30 bg-lime-500/[0.04]",
             )}
           >
-            {!emailRewardClaimed && (
+            {!emailRewardClaimed && !emailRewardFulfilled && (
               <div className="shrink-0">
                 <TaskStatusIcon />
               </div>
