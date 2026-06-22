@@ -9,6 +9,7 @@ import {
 import { getTotalEventDeathReduction } from "./rules/effectsCalculation";
 import { getVillagerCapForJob } from "./villagerCapUpgrades";
 import { getExecutionTime } from "./rules/executionTime";
+import { GAME_CONSTANTS } from "./constants";
 import { getGameActions } from "./rules/actionsRegistry";
 import { migrateVillagerPresetsPurchasedOnLoad, migrateShopPresetDataFromSequentialBugOnLoad } from "./villagerJobPresets";
 
@@ -564,7 +565,8 @@ export function reconcileInFlightExecutionsOnLoad(
   ]);
 
   for (const actionId of actionIds) {
-    if (!getGameActions()[actionId]) {
+    const isCallMerchant = actionId === "callMerchant";
+    if (!isCallMerchant && !getGameActions()[actionId]) {
       continue;
     }
 
@@ -579,7 +581,9 @@ export function reconcileInFlightExecutionsOnLoad(
       !Number.isFinite(durationSec) ||
       durationSec <= 0
     ) {
-      durationSec = getExecutionTime(actionId, state);
+      durationSec = isCallMerchant
+        ? GAME_CONSTANTS.CALL_MERCHANT_EXECUTION_SECONDS
+        : getExecutionTime(actionId, state);
     }
     if (durationSec <= 0) {
       continue;

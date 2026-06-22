@@ -50,6 +50,7 @@
     "fromHeartfire": "{{percent}} % grâce au feu du foyer",
     "merchantBlocked": "Le marchand ne peut pas être appelé tant qu'un autre événement est actif",
     "merchantAvailableIn": "Disponible dans {{time}}",
+    "merchantAbortCall": "Annuler l'appel",
     "investCompleteIn": "Investissement terminé dans {{time}}",
     "investAvailableIn": "Investissements disponibles dans {{time}}",
     "investPreparing": "Préparation des offres d'investissement…",

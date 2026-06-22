@@ -50,6 +50,7 @@
     "fromHeartfire": "{{percent}}% от очага",
     "merchantBlocked": "Нельзя вызвать торговца, пока активно другое событие",
     "merchantAvailableIn": "Доступно через {{time}}",
+    "merchantAbortCall": "Отменить вызов",
     "investCompleteIn": "Инвестиция завершится через {{time}}",
     "investAvailableIn": "Инвестиции доступны через {{time}}",
     "investPreparing": "Подготовка инвестиционных предложений…",

@@ -444,6 +444,7 @@ interface GameStore extends GameState {
   setCombatDialog: (isOpen: boolean, data?: any) => void;
   setTimedEventTab: (isActive: boolean, event?: LogEntry | null, duration?: number) => Promise<void>;
   callMerchant: () => void;
+  finalizeCallMerchant: () => void;
   startInvestment: (
     offerIndex: number,
     amountGold: number,
@@ -2168,8 +2169,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
         free: (state.villagers.free || 0) + releasedVillagers,
       },
       expeditionVillagers: updatedExpeditionVillagers,
-      _completingExecution: actionId,
+      ...(actionId !== "callMerchant" && { _completingExecution: actionId }),
     });
+
+    if (actionId === "callMerchant") {
+      get().finalizeCallMerchant();
+      return;
+    }
 
     // Execute the actual action (bypasses execution-time check via _completingExecution)
     get().executeAction(actionId);
@@ -2184,14 +2190,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (!state.executionAbortEligible?.[actionId]) {
       return;
     }
-    if ((state.buildings.clerksHut ?? 0) < 1) {
-      return;
+    const isFreeAbort = actionId === "callMerchant";
+    if (!isFreeAbort) {
+      if ((state.buildings.clerksHut ?? 0) < 1) {
+        return;
+      }
     }
     const snapshot = state.executionSpendSnapshots?.[actionId];
     if (!snapshot) {
       return;
     }
-    if ((state.resources.gold ?? 0) < GAME_CONSTANTS.ACTION_ABORT_GOLD_COST) {
+    if (
+      !isFreeAbort &&
+      (state.resources.gold ?? 0) < GAME_CONSTANTS.ACTION_ABORT_GOLD_COST
+    ) {
       return;
     }
 
@@ -2203,8 +2215,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       );
     };
 
-    get().updateResource("gold", -GAME_CONSTANTS.ACTION_ABORT_GOLD_COST);
-    addResourceChange("gold", -GAME_CONSTANTS.ACTION_ABORT_GOLD_COST);
+    if (!isFreeAbort) {
+      get().updateResource("gold", -GAME_CONSTANTS.ACTION_ABORT_GOLD_COST);
+      addResourceChange("gold", -GAME_CONSTANTS.ACTION_ABORT_GOLD_COST);
+    }
     for (const [key, amount] of Object.entries(snapshot.resourceRefund)) {
       if (amount !== 0) {
         get().updateResource(key as keyof GameState["resources"], amount);
@@ -3747,14 +3761,67 @@ export const useGameStore = create<GameStore>((set, get) => ({
   callMerchant: () => {
     const state = get();
     if ((state.buildings?.tradePost ?? 0) < 1) return;
+    if (state.executionStartTimes?.callMerchant) return;
 
     const usageCount =
       (state.story?.seen?.callMerchantUsageCount as number) || 0;
     const price = Math.min(50 + 50 * usageCount, 250);
 
     if ((state.resources?.gold ?? 0) < price) return;
-    if (state.timedEventTab?.isActive && state.timedEventTab?.event?.id?.includes?.("merchant")) return;
+    if (
+      state.timedEventTab?.isActive &&
+      state.timedEventTab?.event?.id?.includes?.("merchant")
+    ) {
+      return;
+    }
+    if (
+      state.timedEventTab?.isActive &&
+      !state.timedEventTab?.event?.id?.includes?.("merchant")
+    ) {
+      return;
+    }
 
+    const now = Date.now();
+    const duration = GAME_CONSTANTS.CALL_MERCHANT_EXECUTION_SECONDS;
+    const resourcesAfter = {
+      ...state.resources,
+      gold: (state.resources?.gold ?? 0) - price,
+    };
+    const costUpdates = { resources: resourcesAfter };
+    const spendSnapshot = buildExecutionSpendSnapshot(
+      state,
+      costUpdates,
+      state.villagers,
+      0,
+    );
+
+    set({
+      resources: resourcesAfter,
+      executionStartTimes: { ...state.executionStartTimes, callMerchant: now },
+      executionDurations: { ...state.executionDurations, callMerchant: duration },
+      executionAbortEligible: {
+        ...state.executionAbortEligible,
+        callMerchant: true,
+      },
+      executionSpendSnapshots: {
+        ...state.executionSpendSnapshots,
+        callMerchant: spendSnapshot,
+      },
+    });
+  },
+
+  finalizeCallMerchant: () => {
+    const state = get();
+    if ((state.buildings?.tradePost ?? 0) < 1) return;
+    if (
+      state.timedEventTab?.isActive &&
+      state.timedEventTab?.event?.id?.includes?.("merchant")
+    ) {
+      return;
+    }
+
+    const usageCount =
+      (state.story?.seen?.callMerchantUsageCount as number) || 0;
     const choices = generateMerchantChoices(state);
     const merchantEvent = merchantEvents.merchant;
     const eventData: LogEntry = {
@@ -3770,10 +3837,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     set((s) => ({
       ...s,
-      resources: {
-        ...s.resources,
-        gold: (s.resources?.gold ?? 0) - price,
-      },
       story: {
         ...s.story,
         seen: {

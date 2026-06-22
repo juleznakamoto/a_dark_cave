@@ -12,4 +12,6 @@ export const GAME_CONSTANTS = {
   EVENT_CHECK_INTERVAL: 1000, // Roll events once per second
   /** Gold cost to abort an in-progress player-started timed action and refund its spent costs. */
   ACTION_ABORT_GOLD_COST: 25,
+  /** Wall-clock seconds to call the travelling merchant after clicking the button. */
+  CALL_MERCHANT_EXECUTION_SECONDS: 5,
 } as const;

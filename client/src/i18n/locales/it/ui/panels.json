@@ -50,6 +50,7 @@
     "fromHeartfire": "{{percent}}% dal Fuoco del Cuore",
     "merchantBlocked": "Il mercante non può essere chiamato mentre è attivo un altro evento",
     "merchantAvailableIn": "Disponibile tra {{time}}",
+    "merchantAbortCall": "Annulla chiamata",
     "investCompleteIn": "Investimento completo tra {{time}}",
     "investAvailableIn": "Investimenti disponibili tra {{time}}",
     "investPreparing": "Preparazione delle offerte di investimento…",

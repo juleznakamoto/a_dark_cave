@@ -665,6 +665,7 @@ export default function VillagePanel() {
         ?.callMerchantLastEndPlayTime as number | undefined;
       const usageCount = (story?.seen?.callMerchantUsageCount as number) || 0;
       const price = Math.min(50 + 50 * usageCount, 250);
+      const isCallingMerchant = !!state.executionStartTimes?.callMerchant;
       const isMerchantActive =
         timedEventTab?.isActive &&
         timedEventTab?.event?.id?.includes?.("merchant");
@@ -678,7 +679,10 @@ export default function VillagePanel() {
         currentPlayTime < cooldownEndPlayTime;
       const remainingMs = Math.max(0, cooldownEndPlayTime - currentPlayTime);
       const canAfford = (resources?.gold ?? 0) >= price;
-      const isDisabled = isOtherEventActive || isOnCooldown || !canAfford;
+      const isDisabled =
+        isOtherEventActive ||
+        isOnCooldown ||
+        (!isCallingMerchant && !canAfford);
 
       const formatRemaining = (ms: number) => {
         const totalSeconds = Math.ceil(ms / 1000);
@@ -1164,7 +1168,10 @@ export default function VillagePanel() {
                 showWhen?: () => boolean;
               };
               if (actionWithShow.showWhen !== undefined) {
-                return actionWithShow.showWhen();
+                return (
+                  actionWithShow.showWhen() ||
+                  !!state.executionStartTimes?.[action.id]
+                );
               }
               return (
                 shouldShowAction(action.id, state) ||

@@ -307,19 +307,32 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     const isAbortActionType =
       actionIdFromProps.startsWith("craft") ||
       actionIdFromProps.startsWith("build");
-    const showAbortOverlay =
-      isAbortActionType &&
+    const isFreeMerchantAbort =
+      actionIdFromProps === "callMerchant" &&
       isExecuting &&
-      hasClerksHut &&
       executionAbortEligible === true &&
       hasAbortSnapshot;
-    const canAffordAbort = gold >= GAME_CONSTANTS.ACTION_ABORT_GOLD_COST;
-    const abortTooltip = tWithFallback(
-      "ui",
-      "cave.abortForGold",
-      `Abort for ${GAME_CONSTANTS.ACTION_ABORT_GOLD_COST} Gold`,
-      { amount: GAME_CONSTANTS.ACTION_ABORT_GOLD_COST },
-    );
+    const showAbortOverlay =
+      isFreeMerchantAbort ||
+      (isAbortActionType &&
+        isExecuting &&
+        hasClerksHut &&
+        executionAbortEligible === true &&
+        hasAbortSnapshot);
+    const canAffordAbort =
+      isFreeMerchantAbort || gold >= GAME_CONSTANTS.ACTION_ABORT_GOLD_COST;
+    const abortTooltip = isFreeMerchantAbort
+      ? tWithFallback(
+        "ui",
+        "village.merchantAbortCall",
+        "Cancel call",
+      )
+      : tWithFallback(
+        "ui",
+        "cave.abortForGold",
+        `Abort for ${GAME_CONSTANTS.ACTION_ABORT_GOLD_COST} Gold`,
+        { amount: GAME_CONSTANTS.ACTION_ABORT_GOLD_COST },
+      );
 
     return (
       <div className="relative inline-block">

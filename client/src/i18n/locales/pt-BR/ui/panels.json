@@ -50,6 +50,7 @@
     "fromHeartfire": "{{percent}}% de Fogo do Coração",
     "merchantBlocked": "O mercador não pode ser chamado enquanto outro evento está ativo",
     "merchantAvailableIn": "Disponível em {{time}}",
+    "merchantAbortCall": "Cancelar chamada",
     "investCompleteIn": "Investimento concluído em {{time}}",
     "investAvailableIn": "Investimentos disponíveis em {{time}}",
     "investPreparing": "Preparando ofertas de investimento…",

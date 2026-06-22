@@ -50,6 +50,7 @@
     "fromHeartfire": "{{percent}} % durch Herzfeuer",
     "merchantBlocked": "Der Händler kann nicht gerufen werden, solange ein anderes Ereignis aktiv ist", //ok
     "merchantAvailableIn": "Verfügbar in {{time}}",
+    "merchantAbortCall": "Anruf abbrechen",
     "investCompleteIn": "Investition abgeschlossen in {{time}}", //ok
     "investAvailableIn": "Investitionen verfügbar in {{time}}",
     "investPreparing": "Investitionsangebote werden vorbereitet…", //ok

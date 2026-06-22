@@ -51,7 +51,6 @@ export default function CavePanel() {
   const {
     executeAction,
     setHighlightedResources,
-    callMerchant,
     story,
     timedEventTab,
     playTime,

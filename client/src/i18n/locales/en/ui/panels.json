@@ -50,6 +50,7 @@
     "fromHeartfire": "{{percent}}% from Heartfire",
     "merchantBlocked": "Merchant cannot be called while another event is active",
     "merchantAvailableIn": "Available in {{time}}",
+    "merchantAbortCall": "Cancel call",
     "investCompleteIn": "Investment complete in {{time}}",
     "investAvailableIn": "Investments available in {{time}}",
     "investPreparing": "Preparing investment offers…",

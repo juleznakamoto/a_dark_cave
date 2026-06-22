@@ -874,3 +874,70 @@ describe("deferred dialog scheduling", () => {
     );
   });
 });
+
+describe("callMerchant execution", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    useGameStore.getState().initialize();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  function setupCallMerchantState(gold = 200) {
+    useGameStore.setState({
+      buildings: { tradePost: 1 },
+      resources: { gold },
+      story: { seen: {}, merchantPurchases: 0 },
+      timedEventTab: {
+        isActive: false,
+        event: null,
+        expiryTime: 0,
+      },
+      executionStartTimes: {},
+      executionDurations: {},
+      executionAbortEligible: {},
+      executionSpendSnapshots: {},
+    });
+  }
+
+  it("starts a 5s execution and deducts gold on click", () => {
+    setupCallMerchantState(200);
+
+    useGameStore.getState().callMerchant();
+
+    const state = useGameStore.getState();
+    expect(state.executionStartTimes?.callMerchant).toBeGreaterThan(0);
+    expect(state.executionDurations?.callMerchant).toBe(5);
+    expect(state.resources.gold).toBe(150);
+    expect(state.timedEventTab.isActive).toBe(false);
+    expect(state.story.seen.callMerchantUsageCount).toBeUndefined();
+  });
+
+  it("spawns the merchant after execution completes", () => {
+    setupCallMerchantState(200);
+
+    useGameStore.getState().callMerchant();
+    vi.advanceTimersByTime(5000);
+    useGameStore.getState().completeActionExecution("callMerchant");
+
+    const state = useGameStore.getState();
+    expect(state.executionStartTimes?.callMerchant).toBeUndefined();
+    expect(state.timedEventTab.isActive).toBe(true);
+    expect(state.timedEventTab.event?.id).toBe("merchant");
+    expect(state.story.seen.callMerchantUsageCount).toBe(1);
+  });
+
+  it("refunds gold for free when aborting the call", () => {
+    setupCallMerchantState(200);
+
+    useGameStore.getState().callMerchant();
+    useGameStore.getState().abortActionExecution("callMerchant");
+
+    const state = useGameStore.getState();
+    expect(state.executionStartTimes?.callMerchant).toBeUndefined();
+    expect(state.resources.gold).toBe(200);
+    expect(state.story.seen.callMerchantUsageCount).toBeUndefined();
+  });
+});

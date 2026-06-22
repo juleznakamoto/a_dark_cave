@@ -50,6 +50,7 @@
     "fromHeartfire": "{{percent}}% 来自炉火",
     "merchantBlocked": "其他事件进行中时无法召唤商人",
     "merchantAvailableIn": "{{time}} 后可用",
+    "merchantAbortCall": "取消召唤",
     "investCompleteIn": "投资 {{time}} 后完成",
     "investAvailableIn": "投资 {{time}} 后可用",
     "investPreparing": "正在准备投资方案……",
