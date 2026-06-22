@@ -409,7 +409,6 @@ const UI_ONLY_PROPERTIES = [
   'shopCheckoutItemId',
   'madnessDialog',
   'insightPotionDialog',
-  'versionCheckDialogOpen',
   'insightRevealing',
   '_completingExecution',
 ] as const;
@@ -446,7 +445,6 @@ export function getTransientDialogResetOnLoad() {
     madnessDialog: { isOpen: false, data: null },
     insightPotionDialog: { isOpen: false, data: null },
     investmentResultDialog: { isOpen: false, data: null },
-    versionCheckDialogOpen: false,
   };
 }
 

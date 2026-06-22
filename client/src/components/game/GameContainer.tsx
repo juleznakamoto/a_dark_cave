@@ -43,7 +43,6 @@ import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark, X } from "lucide-react";
 import { ProfileMenuProvider } from "./ProfileMenu";
 import InviteFriendsFloatingButton from "./InviteFriendsFloatingButton";
-import { startVersionCheck, stopVersionCheck } from "@/game/versionCheck";
 import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
 import MistBackground from "@/components/ui/mist-background";
@@ -506,62 +505,6 @@ export default function GameContainer() {
     traderUnlocked,
     achievementsUnlocked,
   ]);
-
-  // Initialize version check (web only — Steam updates via depot uploads).
-  useEffect(() => {
-    if (isSteamBuild) return;
-
-    logger.log("[VERSION] Initializing version check from GameContainer");
-
-    // Capture toast in closure to ensure it's available when callback fires
-    const showUpdateToast = toast;
-    let updatePending = false;
-
-    // Apply a pending update when the user leaves and comes back to the app.
-    // The game was already saved when the update was detected, so reloading on
-    // re-entry is safe and avoids interrupting active play.
-    const handleVisibilityReload = () => {
-      if (updatePending && document.visibilityState === "visible") {
-        logger.log("[VERSION] Applying pending update on app re-entry");
-        window.location.reload();
-      }
-    };
-    document.addEventListener("visibilitychange", handleVisibilityReload);
-
-    startVersionCheck(async () => {
-      logger.log("[VERSION] Version check callback fired!");
-      try {
-        const { saveGame } = await import("@/game/save");
-        const state = useGameStore.getState();
-        await saveGame(state, false);
-        logger.log("[VERSION] Game saved before update notification");
-        updatePending = true;
-        showUpdateToast({
-          title: i18n.t("versionUpdate.title", { ns: "ui" }),
-          description: i18n.t("versionUpdate.description", { ns: "ui" }),
-          variant: "default",
-          // Persist until acted on; on mobile a timed toast is easily missed.
-          duration: Infinity,
-          action: {
-            label: i18n.t("versionUpdate.refresh", { ns: "ui" }),
-            onClick: () => {
-              logger.log("[VERSION] User clicked refresh button");
-              window.location.reload();
-            },
-          },
-        });
-        logger.log("[VERSION] ✅ Toast notification triggered successfully");
-      } catch (error) {
-        logger.log("[VERSION] ❌ Error triggering toast:", error);
-      }
-    });
-
-    return () => {
-      logger.log("[VERSION] Cleaning up version check");
-      document.removeEventListener("visibilitychange", handleVisibilityReload);
-      stopVersionCheck();
-    };
-  }, []);
 
   // Determine whether to use LimelightNav (always call this hook)
   const useLimelightNav = false;

@@ -214,7 +214,7 @@ run ad hoc for locale maintenance.
 
 | npm script | Key files | Purpose |
 |------------|-----------|---------|
-| `build` | `write-build-meta.mjs` | Embeds version/build metadata for `/api/version`. |
+| `build` | Vite + esbuild | Client bundle + server bundle. |
 | `i18n:extract` | `extract-i18n.mjs` | Scan client strings → locale JSON. |
 | `i18n:translate` | `translate-locales.mjs` | Machine-translate missing locale keys. |
 | `i18n:events:extract` / `i18n:events:migrate` | `extract-events-i18n.mjs`, `migrate-events-i18n.mjs` | Events namespace extraction + migration. |
@@ -277,7 +277,7 @@ rate-limited `/api/*` routes.
 | `/api/leaderboard/*`, `/api/account/*`, `/api/session/ping` | inline + Supabase | Leaderboard, account deletion, session heartbeat |
 | `/api/gender` | proxies `services/gender-service/app.py` | First-name gender for marketing CSVs |
 | `/api/admin/*` | inline + `server/adminDashboardData.ts` | Admin dashboard: split endpoints (`metrics`, `dau`, `saves`, `clicks`, `purchases`); saves return slim `game_state` projection |
-| `/api/version`, `/api/config` | build meta | Version + public Supabase keys |
+| `/api/config` | inline | Public Supabase keys |
 
 Support: `server/vite.ts` (dev/prod hosting), `server/supabaseServerClient.ts` (service-role client),
 `server/paymentVerifyAuth.ts` (payment-verify session/body user match), `server/stripeFxQuote.ts`,

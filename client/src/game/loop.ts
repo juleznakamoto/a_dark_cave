@@ -28,7 +28,6 @@ import {
 import { GAME_CONSTANTS } from "./constants";
 import { POST_COMPLETION_ATTACK_WAVE_ID } from "./rules/attackWaveOrder";
 import { logger } from "@/lib/logger";
-import { stopVersionCheck } from "./versionCheck";
 import { formatSaveTimestamp } from "@/lib/utils";
 import { gameActions, canExecuteAction, shouldShowAction } from "./rules";
 import { getResourceLimit, isResourceLimited } from "./resourceLimits";
@@ -614,8 +613,6 @@ export function stopGameLoop() {
     sessionCheckInterval = null;
   }
 
-  // Clean up version check
-  stopVersionCheck();
 
   detachActivityListeners();
 

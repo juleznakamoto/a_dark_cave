@@ -37,81 +37,6 @@ const getSupabaseConfig = () => {
   };
 };
 
-/** Semver from repo root package.json (read once at startup). */
-function readRootPackageVersion(): string {
-  try {
-    const pkgPath = path.resolve(__dirname, "..", "package.json");
-    const raw = fs.readFileSync(pkgPath, "utf-8");
-    const pkg = JSON.parse(raw) as { version?: string };
-    return typeof pkg.version === "string" && pkg.version.length > 0
-      ? pkg.version
-      : "unknown";
-  } catch {
-    return "unknown";
-  }
-}
-
-const APP_PACKAGE_VERSION = readRootPackageVersion();
-
-type BuildMeta = { sha: string | null; builtAt: string | null };
-
-/** Written by `node scripts/write-build-meta.mjs` at the end of `npm run build`. */
-function readBuildMetaFile(): BuildMeta {
-  const candidates = [
-    path.join(__dirname, "build-meta.json"),
-    path.join(__dirname, "..", "dist", "build-meta.json"),
-  ];
-  for (const metaPath of candidates) {
-    try {
-      if (!fs.existsSync(metaPath)) continue;
-      const raw = fs.readFileSync(metaPath, "utf-8");
-      const j = JSON.parse(raw) as { sha?: unknown; builtAt?: unknown };
-      const sha =
-        typeof j.sha === "string" && j.sha.length > 0 ? j.sha : null;
-      const builtAt =
-        typeof j.builtAt === "string" && j.builtAt.length > 0
-          ? j.builtAt
-          : null;
-      return { sha, builtAt };
-    } catch {
-      /* try next path */
-    }
-  }
-  return { sha: null, builtAt: null };
-}
-
-const BUILD_META_FILE = readBuildMetaFile();
-
-/** Deploy commit id from CI/host env (first non-empty wins). Overrides build-meta. */
-function readDeployGitShaFromEnv(): string | null {
-  for (const key of [
-    "GIT_COMMIT_SHA",
-    "GITHUB_SHA",
-    "VERCEL_GIT_COMMIT_SHA",
-    "RAILWAY_GIT_COMMIT_SHA",
-  ] as const) {
-    const v = process.env[key]?.trim();
-    if (v) return v;
-  }
-  return null;
-}
-
-/** Optional build timestamp from env. Overrides build-meta for builtAt. */
-function readDeployBuiltAtFromEnv(): string | null {
-  const buildTime = process.env.BUILD_TIME?.trim();
-  if (buildTime) return buildTime;
-  const epoch = process.env.SOURCE_DATE_EPOCH?.trim();
-  if (epoch && /^\d+$/.test(epoch)) {
-    return new Date(parseInt(epoch, 10) * 1000).toISOString();
-  }
-  return null;
-}
-
-const DEPLOY_GIT_SHA =
-  readDeployGitShaFromEnv() ?? BUILD_META_FILE.sha;
-const DEPLOY_BUILT_AT =
-  readDeployBuiltAtFromEnv() ?? BUILD_META_FILE.builtAt;
-
 const app = express();
 
 // CRITICAL: Enable trust proxy for accurate rate limiting behind reverse proxy
@@ -246,17 +171,6 @@ app.get("/api/config", (req, res) => {
   // Cache config for 1 hour since it rarely changes
   res.set('Cache-Control', 'public, max-age=3600');
   res.json(config);
-});
-
-app.get("/api/version", (_req, res) => {
-  res.set("Cache-Control", "no-store, no-cache, must-revalidate");
-  res.set("Pragma", "no-cache");
-  res.set("Expires", "0");
-  res.json({
-    version: APP_PACKAGE_VERSION,
-    sha: DEPLOY_GIT_SHA,
-    builtAt: DEPLOY_BUILT_AT,
-  });
 });
 
 // Server-side Supabase admin client (bypasses RLS)

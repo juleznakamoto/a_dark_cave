@@ -230,7 +230,6 @@ interface GameStore extends GameState {
   };
   inactivityDialogOpen: boolean;
   inactivityReason: "timeout" | "multitab" | null;
-  versionCheckDialogOpen: boolean; // Added for version check dialog
   restartGameDialogOpen: boolean;
   deleteAccountDialogOpen: boolean;
   playlightWelcomeDialogOpen: boolean;
@@ -483,7 +482,6 @@ interface GameStore extends GameState {
   togglePause: () => void;
   updatePlayTime: (deltaTime: number) => void;
   trackButtonClick: (buttonId: string) => void;
-  setVersionCheckDialog: (isOpen: boolean) => void;
   updateFocusState: (state: Partial<FocusState> & {
     isActive: boolean;
     endTime: number;
@@ -1239,7 +1237,6 @@ export const createInitialState = (): GameState => ({
   clickAnalytics: {},
   lastResourceSnapshotTime: 0,
   isPausedPreviously: false, // Initialize isPausedPreviously
-  versionCheckDialogOpen: false, // Initialize version check dialog state
 
   // Initialize merchant trades state
   merchantTrades: {
@@ -1563,7 +1560,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
   inactivityDialogOpen: false,
   inactivityReason: null,
-  versionCheckDialogOpen: false, // Initialize version check dialog state
   restartGameDialogOpen: false,
   deleteAccountDialogOpen: false,
   playlightWelcomeDialogOpen: false,
@@ -4161,11 +4157,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // If paused or was previously paused, return state without updating playTime
       return {};
     });
-  },
-
-  // Added action to set the version check dialog state
-  setVersionCheckDialog: (isOpen: boolean) => {
-    set({ versionCheckDialogOpen: isOpen });
   },
 
   updateFocusState: (partial) => {

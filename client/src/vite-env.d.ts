@@ -1,7 +1,6 @@
 /// <reference types="vite/client" />
 
 declare const __BUILD_TIME__: string;
-declare const __BUILD_SHA__: string;
 
 interface ImportMetaEnv {
   /** "1" only in the Steam desktop build (set by the `build:steam` script). */

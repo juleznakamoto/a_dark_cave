@@ -34,38 +34,6 @@ Progress is **saved automatically** in the browser so sessions can resume. Long 
 - **Exploration and events** that complicate the “optimal” plan
 - **Optional purchases** for players who want to support development or access certain conveniences and content in line with the live game
 
-## Deployed version API
-
-The live site exposes a small JSON endpoint you can use to see **which build is currently deployed**. It is intended for operators, support, and automated checks—not for gameplay.
-
-**Endpoint (production):** `https://a-dark-cave.com/api/version`  
-**Method:** `GET`  
-**Caching:** Responses use `Cache-Control: no-store` so proxies and browsers should not cache a stale build identifier.
-
-### Response shape
-
-| Field     | Type             | Meaning |
-| --------- | ---------------- | ------- |
-| `version` | string           | Package semver for the deployment (from the project’s published version label). |
-| `sha`     | string or `null` | Git commit of the **built** snapshot (`git rev-parse HEAD` recorded when `npm run build` finishes), unless a host env var overrides it. `null` if the build ran without a Git checkout. |
-| `builtAt` | string or `null` | ISO time when that build metadata was written, unless overridden by the deployment environment. |
-
-Example (illustrative):
-
-```json
-{
-  "version": "1.0.0",
-  "sha": "a1b2c3d4e5f6…",
-  "builtAt": "2026-04-03T12:00:00.000Z"
-}
-```
-
-### Matching production to GitHub
-
-After each production build, `sha` is the full commit hash of the tree that was built. Compare it to the tip of your branch (for example the `sha` field from GitHub’s API for `GET /repos/<owner>/<repo>/commits/<branch>`). If they are equal, the deployed bundle was produced from that commit.
-
-Some hosts omit the `.git` directory from the build environment; in that case `sha` may be `null` until the pipeline is adjusted so `git rev-parse HEAD` can run during `npm run build`.
-
 ## Play
 
 **[Play A Dark Cave](https://a-dark-cave.com)**
