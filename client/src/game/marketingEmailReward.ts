@@ -1,3 +1,4 @@
+import type { GameState } from "@shared/schema";
 import { apiUrl } from "@/lib/apiUrl";
 import { logger } from "@/lib/logger";
 import { getCurrentUser, getSessionAccessToken } from "@/game/auth";
@@ -7,6 +8,10 @@ import { useGameStore } from "@/game/state";
 import type { LogEntry } from "@/game/rules/events";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
+import {
+  isSocialRewardClaimed,
+  isSocialRewardFulfilled,
+} from "@/game/socialTaskRewards";
 
 /** Persisted key under `social_media_rewards` (see profile menu). */
 export const MARKETING_EMAIL_REWARD_KEY = "marketing_email";
@@ -62,8 +67,8 @@ export async function postMarketingPreference(params: {
     body: JSON.stringify({
       marketing_opt_in: params.marketingOptIn,
       consent_source: params.consentSource,
-      consent_text_version: 1,
       prompt_version: 1,
+      consent_text_version: 1,
     }),
   });
   if (!res.ok) {
@@ -74,18 +79,55 @@ export async function postMarketingPreference(params: {
   }
 }
 
-/** One-time gold + log + save when turning marketing emails on (same rules as Profile). */
-export function applyMarketingSubscribeGoldReward(): void {
-  const scheduleExclusiveRewardSync = () => {
+function persistMarketingRewardState(): void {
+  void (async () => {
+    try {
+      const currentState = useGameStore.getState();
+      const gameState = buildGameState(currentState);
+      await saveGame(gameState, false);
+      useGameStore.setState({
+        lastSaved: new Date().toLocaleTimeString(),
+        isNewGame: false,
+      });
+    } catch (err) {
+      logger.error("Failed to save marketing subscribe reward:", err);
+    }
     syncSocialPromoExclusiveRewardPending();
-  };
+  })();
+}
 
-  if (
-    useGameStore.getState().social_media_rewards[MARKETING_EMAIL_REWARD_KEY]
-      ?.claimed
-  ) {
-    scheduleExclusiveRewardSync();
-    return;
+/** Marks the email task fulfilled without granting gold (rewards dialog Claim step). */
+export function markMarketingEmailFulfilled(): void {
+  const entry =
+    useGameStore.getState().social_media_rewards[MARKETING_EMAIL_REWARD_KEY];
+  if (isSocialRewardFulfilled(entry)) return;
+
+  useGameStore.setState((state) => ({
+    social_media_rewards: {
+      ...state.social_media_rewards,
+      [MARKETING_EMAIL_REWARD_KEY]: {
+        claimed: false,
+        fulfilled: true,
+        timestamp: Date.now(),
+      },
+    },
+  }));
+
+  persistMarketingRewardState();
+}
+
+/** Grants gold for a fulfilled email subscribe task. */
+export function claimMarketingEmailGoldReward(): boolean {
+  const entry =
+    useGameStore.getState().social_media_rewards[MARKETING_EMAIL_REWARD_KEY];
+
+  if (isSocialRewardClaimed(entry)) {
+    syncSocialPromoExclusiveRewardPending();
+    return false;
+  }
+
+  if (!isSocialRewardFulfilled(entry)) {
+    return false;
   }
 
   useGameStore.setState((state) => ({
@@ -93,7 +135,8 @@ export function applyMarketingSubscribeGoldReward(): void {
       ...state.social_media_rewards,
       [MARKETING_EMAIL_REWARD_KEY]: {
         claimed: true,
-        timestamp: Date.now(),
+        fulfilled: true,
+        timestamp: entry?.timestamp ?? Date.now(),
       },
     },
   }));
@@ -113,18 +156,19 @@ export function applyMarketingSubscribeGoldReward(): void {
   };
   useGameStore.getState().addLogEntry(rewardLog);
 
-  void (async () => {
-    try {
-      const currentState = useGameStore.getState();
-      const gameState = buildGameState(currentState);
-      await saveGame(gameState, false);
-      useGameStore.setState({
-        lastSaved: new Date().toLocaleTimeString(),
-        isNewGame: false,
-      });
-    } catch (err) {
-      logger.error("Failed to save marketing subscribe reward:", err);
-    }
-    scheduleExclusiveRewardSync();
-  })();
+  persistMarketingRewardState();
+  return true;
+}
+
+/** Profile settings: fulfill + claim immediately when turning marketing emails on. */
+export function applyMarketingSubscribeGoldReward(): void {
+  markMarketingEmailFulfilled();
+  claimMarketingEmailGoldReward();
+}
+
+/** Email counts as fulfilled if they ever claimed the one-time subscribe reward (persists if they unsubscribe later). */
+export function isMarketingEmailRewardClaimedForPrompt(
+  socialRewards: GameState["social_media_rewards"],
+): boolean {
+  return isSocialRewardFulfilled(socialRewards[MARKETING_EMAIL_REWARD_KEY]);
 }

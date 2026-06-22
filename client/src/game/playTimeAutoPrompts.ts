@@ -3,9 +3,15 @@ import {
   guestAuthNotificationTriggerUpdates,
   shouldTriggerGuestAuthNotification,
 } from "@/game/authNotificationAuto";
-import { socialPromptHighestMilestoneIndexToOpen } from "@/game/socialPromptAuto";
+import {
+  socialPromptHighestMilestoneIndexToOpen,
+  socialPromptMilestoneIndexAfterOpen,
+} from "@/game/socialPromptAuto";
 import { FEEDBACK_PROMPT_PLAY_MS } from "@/game/feedbackPromptAuto";
-import { isSocialPromoExclusiveRewardComplete } from "@/game/socialPromoExclusiveReward";
+import {
+  isSocialPromoExclusiveRewardComplete,
+  socialPromoExclusiveStepsCompleted,
+} from "@/game/socialPromoExclusiveReward";
 import { isSteamBuild } from "@/lib/edition";
 
 /**
@@ -58,9 +64,12 @@ function tryOpenSocialRewardsPrompt(
     return false;
   }
 
+  const completedTasks = socialPromoExclusiveStepsCompleted(state);
+
   const milestoneToOpen = socialPromptHighestMilestoneIndexToOpen(
     playTimeMs,
     state.socialPromptMilestoneIndex ?? 0,
+    completedTasks,
   );
   // When blocked, leave socialPromptMilestoneIndex unchanged so the milestone retries.
   if (milestoneToOpen === null || isModalDialogOpen(state)) {
@@ -69,7 +78,10 @@ function tryOpenSocialRewardsPrompt(
 
   useGameStore.setState({
     socialPromptDialogOpen: true,
-    socialPromptMilestoneIndex: milestoneToOpen + 1,
+    socialPromptMilestoneIndex: socialPromptMilestoneIndexAfterOpen(
+      milestoneToOpen,
+      completedTasks,
+    ),
   });
   return true;
 }

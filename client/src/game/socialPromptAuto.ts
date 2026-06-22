@@ -1,7 +1,8 @@
 import type { GameState } from "@shared/schema";
-import { MARKETING_EMAIL_REWARD_KEY } from "@/game/marketingEmailReward";
+import { isMarketingEmailRewardClaimedForPrompt } from "@/game/marketingEmailReward";
 import { PLAYLIGHT_DISCOVER_REWARD_KEY } from "@/game/playlightDiscoverReward";
 import { SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
+import { isSocialRewardFulfilled } from "@/game/socialTaskRewards";
 
 /**
  * Active-play milestones (ms) at which the rewards dialog auto-opens once each, * for both guests and signed-in players.
@@ -16,16 +17,51 @@ export const SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS = [
 
 export const SOCIAL_PROMPT_AUTO_OPEN_COUNT = SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS.length;
 
+/** Milestone indices skipped when the player has already completed ≥3 exclusive-track tasks. */
+const SOCIAL_PROMPT_SKIP_MILESTONE_INDICES_WHEN_ENGAGED = new Set([1, 3]);
+
+export const SOCIAL_PROMPT_ENGAGED_TASK_SKIP_THRESHOLD = 3;
+
+export function shouldSkipSocialPromptMilestone(
+  index: number,
+  completedTasks: number,
+): boolean {
+  return (
+    completedTasks >= SOCIAL_PROMPT_ENGAGED_TASK_SKIP_THRESHOLD &&
+    SOCIAL_PROMPT_SKIP_MILESTONE_INDICES_WHEN_ENGAGED.has(index)
+  );
+}
+
+/** Advance past milestones that should not auto-open for engaged players. */
+export function normalizeSocialPromptMilestoneIndex(
+  index: number,
+  completedTasks: number,
+): number {
+  let i = Math.max(0, Math.min(index, SOCIAL_PROMPT_AUTO_OPEN_COUNT));
+  while (
+    i < SOCIAL_PROMPT_AUTO_OPEN_COUNT &&
+    shouldSkipSocialPromptMilestone(i, completedTasks)
+  ) {
+    i++;
+  }
+  return i;
+}
+
 /** How many {@link SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS} thresholds `playTimeMs` has already passed (for save migration). */
 export function socialPromptMilestoneFloorFromPlayTime(
   playTimeMs: number,
+  completedTasks = 0,
 ): number {
-  let n = 0;
-  for (const m of SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS) {
-    if (playTimeMs >= m) n++;
-    else break;
+  let passed = 0;
+  for (let i = 0; i < SOCIAL_PROMPT_AUTO_OPEN_COUNT; i++) {
+    if (shouldSkipSocialPromptMilestone(i, completedTasks)) continue;
+    if (playTimeMs >= SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS[i]) {
+      passed = i + 1;
+    } else {
+      break;
+    }
   }
-  return n;
+  return normalizeSocialPromptMilestoneIndex(passed, completedTasks);
 }
 
 /**
@@ -36,21 +72,39 @@ export function socialPromptMilestoneFloorFromPlayTime(
 export function socialPromptHighestMilestoneIndexToOpen(
   playTimeMs: number,
   nextMilestoneIndex: number,
+  completedTasks = 0,
 ): number | null {
-  if (nextMilestoneIndex >= SOCIAL_PROMPT_AUTO_OPEN_COUNT) return null;
+  const start = normalizeSocialPromptMilestoneIndex(
+    nextMilestoneIndex,
+    completedTasks,
+  );
+  if (start >= SOCIAL_PROMPT_AUTO_OPEN_COUNT) return null;
 
-  let target = nextMilestoneIndex;
-  while (
-    target + 1 < SOCIAL_PROMPT_AUTO_OPEN_COUNT &&
-    playTimeMs >= SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS[target + 1]
-  ) {
-    target++;
+  let target = start;
+  while (target + 1 < SOCIAL_PROMPT_AUTO_OPEN_COUNT) {
+    const nextIndex = target + 1;
+    if (playTimeMs < SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS[nextIndex]) break;
+    target = nextIndex;
   }
+
+  target = normalizeSocialPromptMilestoneIndex(target, completedTasks);
+  if (target >= SOCIAL_PROMPT_AUTO_OPEN_COUNT) return null;
 
   if (playTimeMs >= SOCIAL_PROMPT_AUTO_OPEN_PLAY_MS[target]) {
     return target;
   }
   return null;
+}
+
+/** Index to persist after showing the milestone at `openedMilestoneIndex`. */
+export function socialPromptMilestoneIndexAfterOpen(
+  openedMilestoneIndex: number,
+  completedTasks: number,
+): number {
+  return normalizeSocialPromptMilestoneIndex(
+    openedMilestoneIndex + 1,
+    completedTasks,
+  );
 }
 
 export const SOCIAL_PROMPT_REFERRAL_CAP = 10;
@@ -60,23 +114,16 @@ export { REFERRAL_REWARD_GOLD } from "@shared/schema";
 function socialPlatformsRewardDone(
   rewards: GameState["social_media_rewards"],
 ): boolean {
-  return SOCIAL_PLATFORMS.every((p) => !!rewards[p.id]?.claimed);
+  return SOCIAL_PLATFORMS.every((p) => isSocialRewardFulfilled(rewards[p.id]));
 }
 
 function playlightDiscoverRewardDone(
   rewards: GameState["social_media_rewards"],
 ): boolean {
-  return !!rewards[PLAYLIGHT_DISCOVER_REWARD_KEY]?.claimed;
+  return isSocialRewardFulfilled(rewards[PLAYLIGHT_DISCOVER_REWARD_KEY]);
 }
 
-/**
- * Email counts as fulfilled if they ever claimed the one-time subscribe reward (persists if they unsubscribe later).
- */
-export function isMarketingEmailRewardClaimedForPrompt(
-  socialRewards: GameState["social_media_rewards"],
-): boolean {
-  return !!socialRewards[MARKETING_EMAIL_REWARD_KEY]?.claimed;
-}
+export { isMarketingEmailRewardClaimedForPrompt } from "@/game/marketingEmailReward";
 
 /** Minimal slice for eligibility checks (compatible with `GameStore` from `getState()`). */
 export type SocialPromptRewardSlice = {

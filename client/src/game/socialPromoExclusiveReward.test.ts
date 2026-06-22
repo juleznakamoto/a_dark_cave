@@ -48,6 +48,17 @@ describe("socialPromoExclusiveReward", () => {
     ).toBe(true);
   });
 
+  it("counts fulfilled-but-unclaimed rewards toward exclusive-track progress", () => {
+    expect(
+      socialPromoExclusiveStepsCompleted({
+        ...empty,
+        social_media_rewards: {
+          marketing_email: { claimed: false, fulfilled: true, timestamp: 1 },
+        },
+      }),
+    ).toBe(1);
+  });
+
   it("complete when all six exclusive-track steps satisfied", () => {
     const full = {
       isUserSignedIn: true,

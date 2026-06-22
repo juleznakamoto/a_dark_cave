@@ -32,13 +32,16 @@
     "signUpButton": "Registrarse",
     "emailUpdatesTitle": "Actualizaciones por correo (+{{amount}} oro)", //x1.4
     "subscribe": "Suscribirse", //x1.2
+    "claim": "Reclamar",
     "playlightTitle": "Descubrir 1 juego (+{{amount}} oro)",
     "discoverGames": "Descubrir juegos",
     "inviteTitle": "Invitar a 1 amigo (+{{amount}} oro cada uno)",
     "inviteDesc": "Invita hasta {{cap}} amigos — cada vez, ambos recibiréis {{amount}} oro ({{count}}/{{cap}} invitados).",
     "copyInviteLink": "Copiar enlace de invitación",
     "progressComplete": "Has completado todas las tareas. Pronto recibirás tu recompensa.",
-    "progressToward": "Progreso hacia el objeto exclusivo",
+    "tasksRemaining_one": "1 tarea restante",
+    "tasksRemaining_other": "{{count}} tareas restantes",
+    "progressToward": "Progreso hacia el objeto exclusivo:",
     "progressAriaLabel": "Progreso hacia el objeto exclusivo",
     "alreadyClaimedReward": "¡Ya has reclamado esta recompensa!",
     "followRewardLog": "Has recibido {{amount}} de oro por seguirnos en {{platform}}.",

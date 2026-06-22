@@ -79,6 +79,7 @@ import { GAME_CONSTANTS } from "@/game/constants";
 import { lastAuthNotificationPlayTimeFloorOnLoad } from "@/game/authNotificationAuto";
 import { playlightExitIntentMilestoneFloorFromPlayTime } from "@/game/playlightExitIntent";
 import { socialPromptMilestoneFloorFromPlayTime } from "@/game/socialPromptAuto";
+import { socialPromoExclusiveStepsCompleted } from "@/game/socialPromoExclusiveReward";
 import {
   ACTION_TO_UPGRADE_KEY,
   incrementButtonUsage,
@@ -2801,7 +2802,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
         socialPromptMilestoneIndex: Math.max(
           (savedState as { socialPromptMilestoneIndex?: number })
             .socialPromptMilestoneIndex ?? 0,
-          socialPromptMilestoneFloorFromPlayTime(loadedPlayTime),
+          socialPromptMilestoneFloorFromPlayTime(
+            loadedPlayTime,
+            socialPromoExclusiveStepsCompleted({
+              social_media_rewards: savedState.social_media_rewards,
+              referralCount: savedState.referralCount,
+              referrals: savedState.referrals,
+              isUserSignedIn: savedState.isUserSignedIn,
+              signupWelcomeGoldClaimed: savedState.signupWelcomeGoldClaimed,
+            }),
+          ),
         ),
         playlightExitIntentMilestoneIndex: Math.max(
           (savedState as { playlightExitIntentMilestoneIndex?: number })

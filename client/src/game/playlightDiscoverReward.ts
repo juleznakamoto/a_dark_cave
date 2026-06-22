@@ -11,6 +11,10 @@ import {
   PLAYLIGHT_DISCOVER_REWARD_KEY,
 } from "@/game/playlightRewards";
 import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
+import {
+  isSocialRewardClaimed,
+  isSocialRewardFulfilled,
+} from "@/game/socialTaskRewards";
 
 export {
   PLAYLIGHT_DISCOVER_REWARD_COMPLETE_DELAY_MS,
@@ -26,14 +30,31 @@ function delay(ms: number): Promise<void> {
   });
 }
 
-/**
- * Opens Playlight Discovery, waits {@link PLAYLIGHT_DISCOVER_REWARD_COMPLETE_DELAY_MS}, then grants gold once and marks claimed.
- */
-export async function claimPlaylightDiscoverReward(): Promise<boolean> {
-  const store = useGameStore.getState();
-  const currentRewards = store.social_media_rewards;
+function persistPlaylightDiscoverState(): void {
+  void (async () => {
+    try {
+      const currentState = useGameStore.getState();
+      const gameState = buildGameState(currentState);
+      await saveGame(gameState, false);
+      useGameStore.setState({
+        lastSaved: new Date().toLocaleTimeString(),
+        isNewGame: false,
+      });
+    } catch (error) {
+      logger.error("Failed to save Playlight discover reward claim:", error);
+    }
+    syncSocialPromoExclusiveRewardPending();
+  })();
+}
 
-  if (currentRewards[PLAYLIGHT_DISCOVER_REWARD_KEY]?.claimed) {
+/**
+ * Opens Playlight Discovery, waits {@link PLAYLIGHT_DISCOVER_REWARD_COMPLETE_DELAY_MS}, then marks fulfilled (no gold until Claim).
+ */
+export async function fulfillPlaylightDiscoverReward(): Promise<boolean> {
+  const store = useGameStore.getState();
+  const entry = store.social_media_rewards[PLAYLIGHT_DISCOVER_REWARD_KEY];
+
+  if (isSocialRewardClaimed(entry)) {
     const alreadyClaimedLog: LogEntry = {
       id: `playlight-discover-already-${Date.now()}`,
       message: tWithFallback(
@@ -46,6 +67,10 @@ export async function claimPlaylightDiscoverReward(): Promise<boolean> {
     };
     store.addLogEntry(alreadyClaimedLog);
     return false;
+  }
+
+  if (isSocialRewardFulfilled(entry)) {
+    return true;
   }
 
   if (discoverRewardClaimInFlight) {
@@ -72,7 +97,11 @@ export async function claimPlaylightDiscoverReward(): Promise<boolean> {
     await delay(PLAYLIGHT_DISCOVER_REWARD_COMPLETE_DELAY_MS);
 
     const afterWait = useGameStore.getState();
-    if (afterWait.social_media_rewards[PLAYLIGHT_DISCOVER_REWARD_KEY]?.claimed) {
+    if (
+      isSocialRewardClaimed(
+        afterWait.social_media_rewards[PLAYLIGHT_DISCOVER_REWARD_KEY],
+      )
+    ) {
       return false;
     }
 
@@ -80,42 +109,65 @@ export async function claimPlaylightDiscoverReward(): Promise<boolean> {
       social_media_rewards: {
         ...state.social_media_rewards,
         [PLAYLIGHT_DISCOVER_REWARD_KEY]: {
-          claimed: true,
+          claimed: false,
+          fulfilled: true,
           timestamp: Date.now(),
         },
       },
     }));
 
-    useGameStore.getState().updateResource("gold", PLAYLIGHT_DISCOVER_REWARD_GOLD);
-
-    const rewardLog: LogEntry = {
-      id: `playlight-discover-claimed-${Date.now()}`,
-      message: tWithFallback(
-        "ui",
-        "socialPrompt.playlightDiscoverRewardLog",
-        `You received ${PLAYLIGHT_DISCOVER_REWARD_GOLD} Gold for discovering games!`,
-        { amount: PLAYLIGHT_DISCOVER_REWARD_GOLD },
-      ),
-      timestamp: Date.now(),
-      type: "system",
-    };
-    useGameStore.getState().addLogEntry(rewardLog);
-
-    try {
-      const currentState = useGameStore.getState();
-      const gameState = buildGameState(currentState);
-      await saveGame(gameState, false);
-      useGameStore.setState({
-        lastSaved: new Date().toLocaleTimeString(),
-        isNewGame: false,
-      });
-    } catch (error) {
-      logger.error("Failed to save Playlight discover reward claim:", error);
-    }
-    syncSocialPromoExclusiveRewardPending();
-
+    persistPlaylightDiscoverState();
     return true;
   } finally {
     discoverRewardClaimInFlight = false;
   }
+}
+
+/** Grants gold for a fulfilled Playlight discover task. */
+export async function claimPlaylightDiscoverGoldReward(): Promise<boolean> {
+  const store = useGameStore.getState();
+  const entry = store.social_media_rewards[PLAYLIGHT_DISCOVER_REWARD_KEY];
+
+  if (isSocialRewardClaimed(entry)) {
+    return false;
+  }
+
+  if (!isSocialRewardFulfilled(entry)) {
+    return false;
+  }
+
+  useGameStore.setState((state) => ({
+    social_media_rewards: {
+      ...state.social_media_rewards,
+      [PLAYLIGHT_DISCOVER_REWARD_KEY]: {
+        claimed: true,
+        fulfilled: true,
+        timestamp: entry?.timestamp ?? Date.now(),
+      },
+    },
+  }));
+
+  useGameStore.getState().updateResource("gold", PLAYLIGHT_DISCOVER_REWARD_GOLD);
+
+  const rewardLog: LogEntry = {
+    id: `playlight-discover-claimed-${Date.now()}`,
+    message: tWithFallback(
+      "ui",
+      "socialPrompt.playlightDiscoverRewardLog",
+      `You received ${PLAYLIGHT_DISCOVER_REWARD_GOLD} Gold for discovering games!`,
+      { amount: PLAYLIGHT_DISCOVER_REWARD_GOLD },
+    ),
+    timestamp: Date.now(),
+    type: "system",
+  };
+  useGameStore.getState().addLogEntry(rewardLog);
+
+  persistPlaylightDiscoverState();
+  return true;
+}
+
+/** Legacy one-shot: fulfill then claim immediately. */
+export async function claimPlaylightDiscoverReward(): Promise<boolean> {
+  await fulfillPlaylightDiscoverReward();
+  return claimPlaylightDiscoverGoldReward();
 }

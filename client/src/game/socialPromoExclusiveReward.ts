@@ -2,6 +2,7 @@ import type { GameState } from "@shared/schema";
 import { MARKETING_EMAIL_REWARD_KEY } from "@/game/marketingEmailReward";
 import { PLAYLIGHT_DISCOVER_REWARD_KEY } from "@/game/playlightDiscoverReward";
 import { SOCIAL_PLATFORMS } from "@/game/socialPlatforms";
+import { isSocialRewardFulfilled } from "@/game/socialTaskRewards";
 import { SOCIAL_PROMPT_REFERRAL_CAP } from "@/game/socialPromptAuto";
 import { useGameStore } from "@/game/state";
 import { logger } from "@/lib/logger";
@@ -42,9 +43,11 @@ export function areInviteFriendsPrereqsDone(
 ): boolean {
   if (!isSignUpRewardsStepDone(state)) return false;
   const rewards = state.social_media_rewards ?? {};
-  if (!rewards[MARKETING_EMAIL_REWARD_KEY]?.claimed) return false;
-  if (!SOCIAL_PLATFORMS.every((p) => rewards[p.id]?.claimed)) return false;
-  if (!rewards[PLAYLIGHT_DISCOVER_REWARD_KEY]?.claimed) return false;
+  if (!isSocialRewardFulfilled(rewards[MARKETING_EMAIL_REWARD_KEY])) return false;
+  if (!SOCIAL_PLATFORMS.every((p) => isSocialRewardFulfilled(rewards[p.id])))
+    return false;
+  if (!isSocialRewardFulfilled(rewards[PLAYLIGHT_DISCOVER_REWARD_KEY]))
+    return false;
   return true;
 }
 
@@ -63,11 +66,11 @@ export function socialPromoExclusiveStepsCompleted(
   const rewards = state.social_media_rewards ?? {};
   let n = 0;
   if (isSignUpRewardsStepDone(state)) n++;
-  if (!!rewards[MARKETING_EMAIL_REWARD_KEY]?.claimed) n++;
+  if (isSocialRewardFulfilled(rewards[MARKETING_EMAIL_REWARD_KEY])) n++;
   for (const p of SOCIAL_PLATFORMS) {
-    if (rewards[p.id]?.claimed) n++;
+    if (isSocialRewardFulfilled(rewards[p.id])) n++;
   }
-  if (!!rewards[PLAYLIGHT_DISCOVER_REWARD_KEY]?.claimed) n++;
+  if (isSocialRewardFulfilled(rewards[PLAYLIGHT_DISCOVER_REWARD_KEY])) n++;
   if (isExclusiveInviteStepDone(state)) n++;
   return n;
 }

@@ -16,7 +16,6 @@ import {
   signInWithGoogle,
   clearPendingReferralCode,
   clearPendingSignupWelcome,
-  grantSignupWelcomeBonusEmailSignup,
 } from "@/game/auth";
 import { saveGame } from "@/game/save";
 import { buildGameState } from "@/game/stateHelpers";
@@ -24,7 +23,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useGameStore } from "@/game/state";
 import { logger } from "@/lib/logger";
 import { cn } from "@/lib/utils";
-import { SIGN_UP_WELCOME_GOLD } from "@shared/schema";
 import { parseRefParam } from "@shared/referralCode";
 import { useTranslation } from "react-i18next";
 
@@ -130,15 +128,6 @@ export default function AuthDialog({
         const referralCode = getReferralCode();
         await signUp(email, password, referralCode || undefined, marketingOptIn);
         useGameStore.getState().setSignUpPromptEligibleForGold(false);
-        const granted = await grantSignupWelcomeBonusEmailSignup();
-        if (granted) {
-          toast({
-            title: t("auth.welcomeBonusTitle"),
-            description: t("auth.welcomeBonusDesc", {
-              amount: SIGN_UP_WELCOME_GOLD,
-            }),
-          });
-        }
         setSignupSuccess(true);
       } else if (mode === "reset") {
         const { resetPassword } = await import("@/game/auth");

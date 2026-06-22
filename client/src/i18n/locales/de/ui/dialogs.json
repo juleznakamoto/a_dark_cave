@@ -32,13 +32,16 @@
     "signUpButton": "Registrieren", //ok
     "emailUpdatesTitle": "E-Mail-Updates (+{{amount}} Gold)",
     "subscribe": "Abonnieren",
+    "claim": "Abholen",
     "playlightTitle": "1 Spiel entdecken (+{{amount}} Gold)",
     "discoverGames": "Spiele entdecken",
     "inviteTitle": "1 Freund einladen (+{{amount}} Gold je Person)",
     "inviteDesc": "Lade bis zu {{cap}} Freunde ein – jedes Mal erhalten ihr beide {{amount}} Gold ({{count}}/{{cap}} eingeladen).",
     "copyInviteLink": "Link kopieren", //ok
     "progressComplete": "Du hast alle Aufgaben abgeschlossen. Du erhältst bald deine Belohnung.",
-    "progressToward": "Fortschritt zum exklusiven Gegenstand", //ok
+    "tasksRemaining_one": "1 Aufgabe übrig",
+    "tasksRemaining_other": "{{count}} Aufgaben übrig",
+    "progressToward": "Fortschritt zum exklusiven Gegenstand:", //ok
     "progressAriaLabel": "Fortschritt exklusiver Gegenstand", //ok
     "alreadyClaimedReward": "Du hast diese Belohnung bereits abgeholt!",
     "playlightDiscoverRewardLog": "Du hast {{amount}} Gold für das Entdecken von Spielen erhalten!",

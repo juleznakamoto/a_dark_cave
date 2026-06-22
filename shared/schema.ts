@@ -696,6 +696,8 @@ export const gameStateSchema = z.object({
     .record(
       z.object({
         claimed: z.boolean().default(false),
+        /** Task action completed; gold is granted separately via Claim. Legacy saves treat claimed as fulfilled. */
+        fulfilled: z.boolean().optional(),
         timestamp: z.number().optional(),
       }),
     )

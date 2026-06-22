@@ -6,6 +6,8 @@ import {
   SOCIAL_PROMPT_REFERRAL_CAP,
   socialPromptHighestMilestoneIndexToOpen,
   socialPromptMilestoneFloorFromPlayTime,
+  socialPromptMilestoneIndexAfterOpen,
+  shouldSkipSocialPromptMilestone,
 } from "./socialPromptAuto";
 import { PLAYLIGHT_DISCOVER_REWARD_KEY } from "./playlightDiscoverReward";
 
@@ -50,6 +52,18 @@ describe("socialPromptHighestMilestoneIndexToOpen", () => {
   it("respects the next milestone index when play time is between thresholds", () => {
     expect(socialPromptHighestMilestoneIndexToOpen(130 * MIN, 1)).toBe(1);
     expect(socialPromptHighestMilestoneIndexToOpen(70 * MIN, 1)).toBe(null);
+  });
+
+  it("skips 120m and 240m milestones when ≥3 exclusive-track tasks are done", () => {
+    expect(shouldSkipSocialPromptMilestone(1, 3)).toBe(true);
+    expect(shouldSkipSocialPromptMilestone(3, 3)).toBe(true);
+    expect(shouldSkipSocialPromptMilestone(1, 2)).toBe(false);
+
+    expect(socialPromptHighestMilestoneIndexToOpen(130 * MIN, 0, 3)).toBe(null);
+    expect(socialPromptHighestMilestoneIndexToOpen(200 * MIN, 0, 3)).toBe(2);
+    expect(socialPromptMilestoneIndexAfterOpen(0, 3)).toBe(2);
+
+    expect(socialPromptMilestoneFloorFromPlayTime(120 * MIN, 3)).toBe(2);
   });
 });
 

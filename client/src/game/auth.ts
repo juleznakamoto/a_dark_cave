@@ -27,11 +27,8 @@ export const PENDING_MARKETING_OPT_IN_KEY = 'adc_pending_marketing_opt_in';
 /** Pending referrer code from `?ref=` (6-char or legacy UUID) for Google OAuth sign-up. */
 export const PENDING_REFERRAL_CODE_KEY = 'adc_pending_referral_code';
 
-/** Set when starting Google OAuth from Create Account — welcome gold applied after load if the auth user is new. */
+/** Set when starting Google OAuth from Create Account — cleared after load (welcome gold is claimed in rewards dialog). */
 export const PENDING_SIGNUP_WELCOME_KEY = 'adc_pending_signup_welcome_gold';
-
-/** Existing Google accounts signing in via the Sign Up tab must not receive welcome gold (`created_at` gate). */
-const GOOGLE_SIGNUP_NEW_ACCOUNT_MAX_MS = 15 * 60 * 1000;
 
 function stashPendingSignupWelcomeForOAuth(): void {
   try {
@@ -115,76 +112,52 @@ export async function flushPendingReferralToUserMetadata(): Promise<void> {
   }
 }
 
-/** Email/password signup: always grant welcome gold once (tracked in save via `signupWelcomeGoldClaimed`). */
-export async function grantSignupWelcomeBonusEmailSignup(): Promise<boolean> {
-  const { useGameStore } = await import('./state');
+/** One-time welcome gold + persist (idempotent via `signupWelcomeGoldClaimed`). */
+async function applySignupWelcomeGoldBonus(): Promise<boolean> {
+  const { useGameStore } = await import("./state");
   const s = useGameStore.getState();
   if (s.signupWelcomeGoldClaimed) return false;
 
-  s.updateResource('gold', SIGN_UP_WELCOME_GOLD);
+  s.updateResource("gold", SIGN_UP_WELCOME_GOLD);
   s.addLogEntry(buildSignupWelcomeLogEntry());
   useGameStore.setState({ signupWelcomeGoldClaimed: true });
 
   try {
-    const { saveGame } = await import('./save');
+    const { saveGame } = await import("./save");
     await saveGame(useGameStore.getState(), false);
   } catch (e) {
-    logger.warn('[AUTH] signup welcome bonus save failed:', e);
+    logger.warn("[AUTH] signup welcome bonus save failed:", e);
   }
+
+  const { syncSocialPromoExclusiveRewardPending } = await import(
+    "./socialPromoExclusiveReward"
+  );
+  syncSocialPromoExclusiveRewardPending();
   return true;
 }
 
+/** Rewards dialog Claim — requires an active signed-in session. */
+export async function claimSignupWelcomeGold(): Promise<boolean> {
+  const { useGameStore } = await import("./state");
+  if (!useGameStore.getState().isUserSignedIn) return false;
+  return applySignupWelcomeGoldBonus();
+}
+
 /**
- * After game state is in the store: if the user started Google signup from Create Account,
- * grant welcome gold once for genuinely new accounts (`created_at` fresh).
+ * After game state is in the store: clear OAuth signup pending flag once authenticated.
+ * Welcome gold is claimed manually in the rewards dialog.
  */
 export async function applySignupWelcomeBonusAfterOAuthLoad(): Promise<void> {
-  let pending = false;
   try {
-    pending = sessionStorage.getItem(PENDING_SIGNUP_WELCOME_KEY) === '1';
+    if (sessionStorage.getItem(PENDING_SIGNUP_WELCOME_KEY) !== "1") return;
   } catch {
     return;
   }
-  if (!pending) return;
 
   const loggedIn = await getCurrentUser();
   if (!loggedIn) return;
 
-  const supabase = await getSupabaseClient();
-  const {
-    data: { user: authUser },
-    error: userErr,
-  } = await supabase.auth.getUser();
-  if (userErr || !authUser?.created_at) return;
-
-  const createdMs = new Date(authUser.created_at).getTime();
-  if (
-    !Number.isFinite(createdMs) ||
-    Date.now() - createdMs > GOOGLE_SIGNUP_NEW_ACCOUNT_MAX_MS
-  ) {
-    clearPendingSignupWelcome();
-    return;
-  }
-
-  const { useGameStore } = await import('./state');
-  const s = useGameStore.getState();
-  if (s.signupWelcomeGoldClaimed) {
-    clearPendingSignupWelcome();
-    return;
-  }
-
   clearPendingSignupWelcome();
-
-  s.updateResource('gold', SIGN_UP_WELCOME_GOLD);
-  s.addLogEntry(buildSignupWelcomeLogEntry());
-  useGameStore.setState({ signupWelcomeGoldClaimed: true });
-
-  try {
-    const { saveGame } = await import('./save');
-    await saveGame(useGameStore.getState(), false);
-  } catch (e) {
-    logger.warn('[AUTH] OAuth signup welcome bonus save failed:', e);
-  }
 }
 
 export type PendingMarketingPayload = {

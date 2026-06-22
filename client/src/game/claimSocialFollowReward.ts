@@ -9,17 +9,37 @@ import {
   type SocialPlatformConfig,
 } from "@/game/socialPlatforms";
 import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
+import {
+  isSocialRewardClaimed,
+  isSocialRewardFulfilled,
+} from "@/game/socialTaskRewards";
 
-/** Same behavior as Profile → social rows: open link, grant gold once, save. Returns whether a new claim was made. */
-export function claimSocialFollowReward(
+function persistSocialRewardState(): void {
+  void (async () => {
+    try {
+      const currentState = useGameStore.getState();
+      const gameState = buildGameState(currentState);
+      await saveGame(gameState, false);
+      useGameStore.setState({
+        lastSaved: new Date().toLocaleTimeString(),
+        isNewGame: false,
+      });
+    } catch (error) {
+      logger.error("Failed to save social media reward claim:", error);
+    }
+    syncSocialPromoExclusiveRewardPending();
+  })();
+}
+
+/** Opens the platform link and marks the task fulfilled (no gold until Claim). */
+export function fulfillSocialFollowReward(
   platformId: SocialPlatformConfig["id"],
   url: string,
-  reward: number,
 ): boolean {
   const store = useGameStore.getState();
-  const currentRewards = store.social_media_rewards;
+  const entry = store.social_media_rewards[platformId];
 
-  if (currentRewards[platformId]?.claimed) {
+  if (isSocialRewardClaimed(entry)) {
     const alreadyClaimedLog: LogEntry = {
       id: `social-reward-already-claimed-${platformId}-${Date.now()}`,
       message: tWithFallback(
@@ -34,14 +54,50 @@ export function claimSocialFollowReward(
     return false;
   }
 
+  if (isSocialRewardFulfilled(entry)) {
+    return true;
+  }
+
   window.open(url, "_blank");
 
   useGameStore.setState((state) => ({
     social_media_rewards: {
       ...state.social_media_rewards,
       [platformId]: {
-        claimed: true,
+        claimed: false,
+        fulfilled: true,
         timestamp: Date.now(),
+      },
+    },
+  }));
+
+  persistSocialRewardState();
+  return true;
+}
+
+/** Grants gold for a fulfilled social follow task. Returns whether a new claim was made. */
+export function claimSocialFollowGoldReward(
+  platformId: SocialPlatformConfig["id"],
+  reward: number,
+): boolean {
+  const store = useGameStore.getState();
+  const entry = store.social_media_rewards[platformId];
+
+  if (isSocialRewardClaimed(entry)) {
+    return false;
+  }
+
+  if (!isSocialRewardFulfilled(entry)) {
+    return false;
+  }
+
+  useGameStore.setState((state) => ({
+    social_media_rewards: {
+      ...state.social_media_rewards,
+      [platformId]: {
+        claimed: true,
+        fulfilled: true,
+        timestamp: entry?.timestamp ?? Date.now(),
       },
     },
   }));
@@ -62,20 +118,16 @@ export function claimSocialFollowReward(
   };
   useGameStore.getState().addLogEntry(rewardLog);
 
-  void (async () => {
-    try {
-      const currentState = useGameStore.getState();
-      const gameState = buildGameState(currentState);
-      await saveGame(gameState, false);
-      useGameStore.setState({
-        lastSaved: new Date().toLocaleTimeString(),
-        isNewGame: false,
-      });
-    } catch (error) {
-      logger.error("Failed to save social media reward claim:", error);
-    }
-    syncSocialPromoExclusiveRewardPending();
-  })();
-
+  persistSocialRewardState();
   return true;
+}
+
+/** Profile menu: fulfill + claim in one click. */
+export function claimSocialFollowReward(
+  platformId: SocialPlatformConfig["id"],
+  url: string,
+  reward: number,
+): boolean {
+  fulfillSocialFollowReward(platformId, url);
+  return claimSocialFollowGoldReward(platformId, reward);
 }

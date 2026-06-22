@@ -32,13 +32,16 @@
     "signUpButton": "Регистрация",
     "emailUpdatesTitle": "Рассылка по электронной почте (+{{amount}} золота)", //x1.6
     "subscribe": "Подписаться", //x1.2
+    "claim": "Забрать",
     "playlightTitle": "Открыть 1 игру (+{{amount}} золота)",
     "discoverGames": "Открыть игры",
     "inviteTitle": "Пригласить 1 друга (+{{amount}} золота каждому)",
     "inviteDesc": "Пригласите до {{cap}} друзей — каждый раз вы оба получаете {{amount}} золота ({{count}}/{{cap}} приглашено).",
     "copyInviteLink": "Копировать ссылку-приглашение",
     "progressComplete": "Вы выполнили все задачи. Скоро получите награду.",
-    "progressToward": "Прогресс к эксклюзивному предмету",
+    "tasksRemaining_one": "Осталась 1 задача",
+    "tasksRemaining_other": "Осталось {{count}} задач",
+    "progressToward": "Прогресс к эксклюзивному предмету:",
     "progressAriaLabel": "Прогресс эксклюзивного предмета",
     "alreadyClaimedReward": "Вы уже получили эту награду!",
     "followRewardLog": "Вы получили {{amount}} золота за подписку на нас в {{platform}}!",
