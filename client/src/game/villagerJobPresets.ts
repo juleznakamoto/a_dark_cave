@@ -145,47 +145,6 @@ export function migrateVillagerPresetsPurchasedOnLoad(
   return { villagerPresetsPurchased: target };
 }
 
-/**
- * One-time load migration: before shop slots had fixed indices 4–5, a sequential
- * unlock bug placed shop entitlement at storage indices 0–1. Move saved presets
- * into the shop slot range when the player has no Insight-bought slots.
- */
-export function migrateShopPresetDataFromSequentialBugOnLoad(
-  state: Pick<
-    GameState,
-    | "villagerJobPresets"
-    | "villagerPresetsPurchased"
-    | "villagerPresetSlotsFromShop"
-    | "activePresetSlot"
-  >,
-): Partial<Pick<GameState, "villagerJobPresets" | "activePresetSlot">> | null {
-  if (getShopPresetSlotCount(state) <= 0) return null;
-  if (getInsightPurchasedPresetCount(state) > 0) return null;
-
-  const presets = [...(state.villagerJobPresets ?? [])];
-  while (presets.length < MAX_PRESET_SLOTS) {
-    presets.push(null);
-  }
-  let changed = false;
-  let activePresetSlot = state.activePresetSlot ?? 1;
-
-  for (let i = 0; i < SHOP_ADDITIONAL_PRESET_SLOTS; i++) {
-    const from = i;
-    const to = SHOP_PRESET_SLOT_INDEX + i;
-    if (presets[from] != null && presets[to] == null) {
-      presets[to] = presets[from];
-      presets[from] = null;
-      changed = true;
-      if (activePresetSlot === from + 1) {
-        activePresetSlot = to + 1;
-      }
-    }
-  }
-
-  if (!changed) return null;
-  return { villagerJobPresets: presets, activePresetSlot };
-}
-
 /** True once the first archive building exists (preset controls become visible). */
 export function arePresetsVisible(
   state: Pick<GameState, "buildings">,
