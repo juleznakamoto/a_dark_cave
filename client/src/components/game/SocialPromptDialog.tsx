@@ -29,7 +29,7 @@ import {
 } from "@/game/claimSocialFollowReward";
 import { SocialPlatformGlyph } from "@/components/game/SocialPlatformGlyph";
 import { getCurrentUser } from "@/game/auth";
-import { Circle, Mail, Sparkles, User, UserPlus } from "lucide-react";
+import { Check, Circle, Mail, Sparkles, User, UserPlus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
@@ -120,13 +120,35 @@ function LockedSocialButton({
   );
 }
 
-function TaskStatusIcon() {
+function TaskRowStatusIcon({
+  claimed,
+  fulfilled = false,
+}: {
+  claimed: boolean;
+  fulfilled?: boolean;
+}) {
+  if (claimed) {
+    return (
+      <div className="shrink-0">
+        <Check
+          className="h-5 w-5 shrink-0 text-green-500"
+          strokeWidth={2.5}
+          aria-hidden
+        />
+      </div>
+    );
+  }
+
+  if (fulfilled) return null;
+
   return (
-    <Circle
-      className="h-5 w-5 shrink-0 text-muted-foreground/60"
-      strokeWidth={2}
-      aria-hidden
-    />
+    <div className="shrink-0">
+      <Circle
+        className="h-5 w-5 shrink-0 text-muted-foreground/60"
+        strokeWidth={2}
+        aria-hidden
+      />
+    </div>
   );
 }
 
@@ -388,11 +410,7 @@ export default function SocialPromptDialog({
                   "border-lime-500/30 bg-lime-500/[0.04]",
                 )}
               >
-                {!claimed && !fulfilled && (
-                  <div className="shrink-0">
-                    <TaskStatusIcon />
-                  </div>
-                )}
+                <TaskRowStatusIcon claimed={claimed} fulfilled={fulfilled} />
                 <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
                   <div className="flex items-center gap-2 min-w-0">
                     <SocialPlatformGlyph platformId={platform.id} />
@@ -436,12 +454,10 @@ export default function SocialPromptDialog({
               "border-lime-500/30 bg-lime-500/[0.04]",
             )}
           >
-            {!playlightDiscoverRewardClaimed &&
-              !playlightDiscoverRewardFulfilled && (
-                <div className="shrink-0">
-                  <TaskStatusIcon />
-                </div>
-              )}
+            <TaskRowStatusIcon
+              claimed={playlightDiscoverRewardClaimed}
+              fulfilled={playlightDiscoverRewardFulfilled}
+            />
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex items-center gap-2">
@@ -490,11 +506,10 @@ export default function SocialPromptDialog({
               "border-lime-500/30 bg-lime-500/[0.04]",
             )}
           >
-            {!signUpClaimed && !signUpFulfilled && (
-              <div className="shrink-0">
-                <TaskStatusIcon />
-              </div>
-            )}
+            <TaskRowStatusIcon
+              claimed={signUpClaimed}
+              fulfilled={signUpFulfilled}
+            />
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex items-center gap-2">
@@ -536,11 +551,10 @@ export default function SocialPromptDialog({
               "border-lime-500/30 bg-lime-500/[0.04]",
             )}
           >
-            {!emailRewardClaimed && !emailRewardFulfilled && (
-              <div className="shrink-0">
-                <TaskStatusIcon />
-              </div>
-            )}
+            <TaskRowStatusIcon
+              claimed={emailRewardClaimed}
+              fulfilled={emailRewardFulfilled}
+            />
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex items-center gap-2">
@@ -580,11 +594,7 @@ export default function SocialPromptDialog({
               exclusiveInviteDone && "border-green-500/40 bg-green-500/5",
             )}
           >
-            {!exclusiveInviteDone && (
-              <div className="shrink-0">
-                <TaskStatusIcon />
-              </div>
-            )}
+            <TaskRowStatusIcon claimed={exclusiveInviteDone} />
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex items-center gap-2">
