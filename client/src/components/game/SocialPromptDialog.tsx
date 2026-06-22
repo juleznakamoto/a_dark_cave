@@ -70,7 +70,7 @@ function ExclusivePromoItemInfoIcon({ tooltipId }: { tooltipId: string }) {
       tooltipId={tooltipId}
       disabled
       tooltipContentClassName="max-w-xs border border-amber-600"
-      className="inline-flex shrink-0 items-center justify-center w-5 h-5 rounded-full bg-lime-500/15 text-lime-300 ring-1 ring-lime-500/40 hover:bg-lime-500/25 hover:text-lime-200 cursor-pointer motion-safe:animate-shop-info-pulse align-text-bottom translate-y-[0.06em]"
+      className="inline-flex shrink-0 items-center justify-center w-5 h-5 rounded-full text-lime-300 hover:text-lime-200 cursor-pointer motion-safe:animate-shop-info-pulse align-text-bottom translate-y-[0.06em]"
     >
       <span
         className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-base font-normal leading-none"
