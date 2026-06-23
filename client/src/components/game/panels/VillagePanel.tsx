@@ -115,7 +115,10 @@ import {
   cruelModeScale,
   riddleFogDurationMs,
 } from "@/game/cruelMode";
-import { isBuildingUpgrade } from "@/game/buildingHierarchy";
+import {
+  getBuildingUpgradeHighlightId,
+  isBuildingUpgrade,
+} from "@/game/buildingHierarchy";
 import { BuildingUpgradeTooltipIcon } from "@/game/rules/buildingUpgradeTooltipIndicator";
 import cn from "clsx";
 import InvestDialog from "@/components/game/InvestDialog";
@@ -859,7 +862,17 @@ export default function VillagePanel() {
         tooltip={tooltipContent}
         onAnimationTrigger={handleAnimationTrigger}
         onMouseEnter={() => {
-          setHighlightedResources(getResourcesFromActionCost(actionId, state));
+          const highlights = getResourcesFromActionCost(actionId, state);
+          if (isUpgrade && buildingKey) {
+            const buildingHighlight = getBuildingUpgradeHighlightId(
+              buildingKey,
+              state.buildings,
+            );
+            if (buildingHighlight && !highlights.includes(buildingHighlight)) {
+              highlights.push(buildingHighlight);
+            }
+          }
+          setHighlightedResources(highlights);
         }}
         onMouseLeave={() => {
           setHighlightedResources([]);

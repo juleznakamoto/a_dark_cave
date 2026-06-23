@@ -349,11 +349,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           tooltipId={buttonId}
           disabled={isButtonDisabled}
           onClick={triggerPrimaryClick}
-          onMouseEnter={
-            isButtonDisabled
-              ? undefined
-              : onMouseEnter
-          }
+          onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
           {buttonContent}

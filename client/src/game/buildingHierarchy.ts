@@ -109,6 +109,41 @@ export function isBuildingUpgrade(buildingKey: string): boolean {
   return false;
 }
 
+/**
+ * Side-panel building id to highlight when hovering a build upgrade action (green arrow tooltip).
+ */
+export function getBuildingUpgradeHighlightId(
+  buildingKey: string,
+  buildings: Record<string, number>,
+): string | null {
+  if (!isBuildingUpgrade(buildingKey)) return null;
+
+  // Level upgrades reuse the same fortification key (watchtower 1→2, palisades 1→2, …).
+  if (buildingKey === "watchtower" || buildingKey === "palisades") {
+    return (buildings[buildingKey] ?? 0) > 0 ? buildingKey : null;
+  }
+
+  const chain = getBuildingHierarchyChain(buildingKey);
+  if (chain) {
+    const index = chain.indexOf(buildingKey);
+    if (index > 0) {
+      const predecessor = chain[index - 1];
+      return (buildings[predecessor] ?? 0) > 0 ? predecessor : null;
+    }
+    return null;
+  }
+
+  for (const hierarchy of Object.values(BUILDING_HIERARCHIES)) {
+    const index = hierarchy.indexOf(buildingKey);
+    if (index > 0) {
+      const predecessor = hierarchy[index - 1];
+      return (buildings[predecessor] ?? 0) > 0 ? predecessor : null;
+    }
+  }
+
+  return null;
+}
+
 /** Stackable housing — not chain upgrades; omit "Level" in building tooltips. */
 const BUILDING_TOOLTIP_LEVEL_EXCLUSIONS = new Set([
   "woodenHut",
