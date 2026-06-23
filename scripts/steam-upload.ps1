@@ -25,6 +25,44 @@ function Write-Utf8NoBom([string]$Path, [string]$Content) {
   [System.IO.File]::WriteAllText($Path, $Content, $utf8NoBom)
 }
 
+function Get-GameLockProcesses() {
+  Get-Process -ErrorAction SilentlyContinue |
+    Where-Object { $_.ProcessName -like "*Dark Cave*" -or $_.ProcessName -eq "electron" }
+}
+
+function Clear-DirectoryWithRetry([string]$Path, [int]$MaxAttempts = 5) {
+  if (-not (Test-Path $Path)) { return }
+
+  for ($attempt = 1; $attempt -le $MaxAttempts; $attempt++) {
+    try {
+      Remove-Item $Path -Recurse -Force -ErrorAction Stop
+      return
+    } catch {
+      if ($attempt -eq $MaxAttempts) {
+        $locked = Get-GameLockProcesses
+        Write-Host ""
+        Write-Host "Could not clear $Path - files are in use." -ForegroundColor Red
+        Write-Host "Close A Dark Cave / Electron, then run again." -ForegroundColor Yellow
+        if ($locked) {
+          Write-Host "Running processes:" -ForegroundColor Yellow
+          $locked | ForEach-Object { Write-Host "  - $($_.ProcessName) (pid $($_.Id))" }
+        }
+        Write-Host ""
+        throw
+      }
+      Write-Host "  Files locked - close the game if it is running. Retry $attempt/$MaxAttempts ..." -ForegroundColor Yellow
+      Start-Sleep -Seconds 2
+    }
+  }
+}
+
+function Stage-WinUnpacked([string]$Source, [string]$Destination) {
+  Write-Host "Staging win-unpacked to steam\content ..." -ForegroundColor Cyan
+  Clear-DirectoryWithRetry $Destination
+  New-Item -ItemType Directory -Path $Destination -Force | Out-Null
+  Copy-Item -Path (Join-Path $Source "*") -Destination $Destination -Recurse -Force
+}
+
 $configPath = Join-Path $Root "steam\config.local.json"
 if (-not (Test-Path $configPath)) {
   Write-Host ""
@@ -64,16 +102,23 @@ if (-not $SkipBuild -and -not $UploadOnly) {
   if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 
-if (-not $UploadOnly) {
+if ($UploadOnly) {
+  if (-not (Test-Path $winUnpacked)) {
+    Write-Host "Missing release\win-unpacked - run: npm run electron:package" -ForegroundColor Red
+    exit 1
+  }
+  Stage-WinUnpacked $winUnpacked $contentDir
+  $exe = Get-ChildItem $contentDir -Filter "*.exe" | Select-Object -First 1
+  if ($exe) {
+    Write-Host "  Game executable: $($exe.Name)" -ForegroundColor Green
+  }
+} elseif (-not $SkipBuild -or -not (Test-Path $contentDir)) {
   if (-not (Test-Path $winUnpacked)) {
     Write-Host "Missing release\win-unpacked - run: npm run electron:package" -ForegroundColor Red
     exit 1
   }
 
-  Write-Host "Staging win-unpacked to steam\content ..." -ForegroundColor Cyan
-  if (Test-Path $contentDir) { Remove-Item $contentDir -Recurse -Force }
-  New-Item -ItemType Directory -Path $contentDir -Force | Out-Null
-  Copy-Item -Path (Join-Path $winUnpacked "*") -Destination $contentDir -Recurse -Force
+  Stage-WinUnpacked $winUnpacked $contentDir
 
   $exe = Get-ChildItem $contentDir -Filter "*.exe" | Select-Object -First 1
   if ($exe) {
@@ -84,6 +129,8 @@ if (-not $UploadOnly) {
 } elseif (-not (Test-Path $contentDir)) {
   Write-Host "Missing steam\content - run without -UploadOnly first." -ForegroundColor Red
   exit 1
+} else {
+  Write-Host "Using existing steam\content (SkipBuild)." -ForegroundColor DarkGray
 }
 
 New-Item -ItemType Directory -Path $generatedDir -Force | Out-Null
