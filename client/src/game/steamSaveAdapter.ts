@@ -4,7 +4,8 @@
  * In the Steam build the game keeps using IndexedDB for fast local persistence,
  * but also mirrors the already-encoded (`ADC2:`) save blob to a flat file in the
  * Electron `userData` directory via the preload bridge. That file is what Steam
- * Auto-Cloud syncs across machines (configured in the Steamworks partner backend).
+ * Auto-Cloud syncs across machines — paths in `electron/paths.ts`, form values in
+ * `ARCHITECTURE.md` (Steam edition → Steamworks Auto-Cloud).
  *
  * On load we prefer whichever copy (IndexedDB vs Steam file) has more `playTime`,
  * so a fresh machine that only has the cloud-synced file restores correctly and

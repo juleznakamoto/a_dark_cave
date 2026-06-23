@@ -32,7 +32,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 **Root config:** `package.json` (scripts/deps), `vite.config.ts` (client build, aliases, chunks),
 `tsconfig.json` (includes `client/src`, `shared`, `server`), `vitest.config.ts` + `vitest.setup.ts`,
 `tailwind.config.ts`, `components.json` (shadcn/ui), `drizzle.config.ts`,
-`electron-builder.yml` (Steam Windows packaging), `steam_appid.txt` (Steam App ID; `480` = Valve test id).
+`electron-builder.yml` (Steam Windows packaging), `steam_appid.txt` (Steam App ID **4882240**).
 
 **Path aliases:** `@/*` → `client/src/*`, `@shared/*` → `shared/*`, `@assets` → `attached_assets`.
 
@@ -242,6 +242,7 @@ shop, the whole game unlocked, merchant-sold dark artifacts, and local + Steam C
 | Path | Responsibility |
 |------|----------------|
 | `electron/main.ts` | Electron main process: Steamworks init + overlay, loopback server, save-file IPC, single-instance, external-link handling. |
+| `electron/paths.ts` | `APP_USER_DATA_NAME` + `STEAM_CLOUD_SAVE_FILE` — must match Steamworks Auto-Cloud config. |
 | `electron/preload.ts` | `contextBridge` exposing `window.steamBridge` (achievements + Cloud save IPC) to the sandboxed renderer. |
 | `electron/loopbackServer.ts` | Serves built `dist/public` over `http://127.0.0.1:<port>` (absolute-path routing needs HTTP, not `file://`). |
 | `electron/steam.ts` | Defensive `steamworks.js` wrapper (degrades to no-ops when Steam absent). |
@@ -261,6 +262,20 @@ hide shop/leaderboard/share/invite/auth; `pages/end-screen.tsx` unlocks Cruel Mo
 
 **Scripts:** `build:steam` (Vite client build with the flag), `electron:build` (bundle shell),
 `electron:dev` (build + run), `electron:package` (electron-builder Windows installer → `release/`).
+
+**Steamworks Auto-Cloud** (partner backend → app → Technical Settings → Steam Cloud): enable
+Steam Cloud, then add one Auto-Cloud row (Windows-only build):
+
+| Field (DE / EN) | Value |
+|-----------------|-------|
+| Stammverzeichnis / Root | `WinAppDataRoaming` |
+| Unterverzeichnis / Subdirectory | `A Dark Cave` (`electron/paths.ts` → `APP_USER_DATA_NAME`) |
+| Muster / Pattern | `adc-steam-save.dat` (`STEAM_CLOUD_SAVE_FILE`) |
+| Betriebssystem / OS | Windows |
+| Rekursiv / Recursive | off |
+
+On disk: `%APPDATA%\A Dark Cave\adc-steam-save.dat`. Root overrides empty (Windows-only).
+App ID **4882240** in `steam_appid.txt`.
 
 ---
 

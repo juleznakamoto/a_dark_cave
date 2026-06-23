@@ -4,6 +4,7 @@ import { join, dirname } from "node:path";
 import { existsSync, readFileSync } from "node:fs";
 import { startLoopbackServer, type LoopbackServer } from "./loopbackServer";
 import { initSteam, getPlayerName, activateAchievement, isSteamReady } from "./steam";
+import { APP_USER_DATA_NAME, STEAM_CLOUD_SAVE_FILE } from "./paths";
 
 /**
  * Electron main process for the A Dark Cave Steam build.
@@ -15,8 +16,10 @@ import { initSteam, getPlayerName, activateAchievement, isSteamReady } from "./s
  *    Auto-Cloud, configured in the Steamworks partner backend).
  */
 
+// Must run before `app.whenReady()` so userData matches Steam Auto-Cloud Unterverzeichnis.
+app.setName(APP_USER_DATA_NAME);
+
 const DEV_SERVER_URL = process.env.ADC_DEV_SERVER_URL; // set by electron:dev to use Vite dev server
-const SAVE_FILE_NAME = "adc-steam-save.dat";
 
 let mainWindow: BrowserWindow | null = null;
 let loopback: LoopbackServer | null = null;
@@ -42,9 +45,9 @@ function resolveAppId(): number {
   return 480;
 }
 
-/** Path of the local save file (the directory Steam Auto-Cloud should be pointed at). */
+/** Full path of the Steam Cloud save file (`%APPDATA%\\A Dark Cave\\adc-steam-save.dat` on Windows). */
 function saveFilePath(): string {
-  return join(app.getPath("userData"), SAVE_FILE_NAME);
+  return join(app.getPath("userData"), STEAM_CLOUD_SAVE_FILE);
 }
 
 function resolveClientDir(): string {
