@@ -51,6 +51,8 @@
     "autoSaveSignedIn": "Game auto-saves every minute",
     "autoSaveGuest": "Game auto-saves every 15 seconds",
     "signUpCloudSave": "Sign up to save game in the cloud",
+    "autoSaveSteam": "Game auto-saves every 15 seconds",
+    "steamCloudSave": "Progress syncs to Steam Cloud when you save.",
     "lastSave": "Last Save: {{time}}",
     "signedOut": "Signed out successfully",
     "signOutError": "Error signing out",
@@ -65,7 +67,9 @@
     "unsubscribed": "You're unsubscribed",
     "subscribedDesc": "We'll send occasional updates and offers to your email.",
     "unsubscribedDesc": "You won't receive marketing emails from us.",
-    "preferenceUpdateFailed": "Could not update preference"
+    "preferenceUpdateFailed": "Could not update preference",
+    "enterFullscreen": "Full screen",
+    "exitFullscreen": "Exit full screen"
   },
   "pauseHotkey": {
     "hintPrefix": "Use ",

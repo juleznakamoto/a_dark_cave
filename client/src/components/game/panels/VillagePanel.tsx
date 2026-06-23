@@ -122,6 +122,7 @@ import InvestDialog from "@/components/game/InvestDialog";
 import { isInvestmentWaveReadyForUi } from "@/game/rules/investmentHallTables";
 import { GREAT_FEAST_DURATION_MS } from "@shared/shopItems";
 import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
+import { isSteamBuild } from "@/lib/edition";
 
 const VILLAGE_INDICATOR_TOOLTIP_IDS = [
   "production-cycle-progress",
@@ -986,7 +987,11 @@ export default function VillagePanel() {
         }}
       />
       <span className="ml-1 min-w-0 flex-1 text-left text-xs">
-        <span translate="no" className="notranslate" aria-hidden>
+        <span
+          translate="no"
+          className="notranslate font-noto-symbols-2"
+          aria-hidden
+        >
           ↳{" "}
         </span>
         {label}
@@ -1341,7 +1346,8 @@ export default function VillagePanel() {
                             })}
                             {isAdditionalConstructionQueueSlotPurchaseAvailable(
                               state,
-                            ) && (
+                            ) &&
+                              !isSteamBuild && (
                                 <TooltipWrapper
                                   tooltipId="queue-slots-purchase"
                                   tooltip={
@@ -1493,7 +1499,7 @@ export default function VillagePanel() {
                       strokeWidth={2}
                       className="text-gray-400"
                     />
-                    <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[10px] -mt-[1px] text-gray-400">
+                    <span className="absolute inset-0 flex items-center justify-center font-noto-symbols-2 text-[10px] -mt-[1px] text-gray-400">
                       ↦
                     </span>
                   </div>
@@ -1935,6 +1941,7 @@ export default function VillagePanel() {
                     // The "+" buys 2 extra preset slots; visible once the Scribe's
                     // Office exists and the slots have not been bought yet.
                     const showAddPresetSlotsPlus =
+                      !isSteamBuild &&
                       (state.buildings?.scribesOffice ?? 0) > 0 &&
                       !areAdditionalPresetSlotsPurchased(presetState);
                     return (

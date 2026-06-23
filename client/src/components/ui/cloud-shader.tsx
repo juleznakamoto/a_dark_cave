@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { logger } from "@/lib/logger";
+import { getViewportSize, subscribeViewportResize } from "@/lib/viewportSize";
 
 // ---------------- WebGL Renderer ----------------
 class WebGLRenderer {
@@ -29,7 +30,16 @@ class WebGLRenderer {
       throw new Error("WebGL2 context not available");
     }
     this.gl = gl;
-    this.gl.viewport(0, 0, canvas.width * scale, canvas.height * scale);
+    this.gl.viewport(0, 0, canvas.width, canvas.height);
+  }
+
+  resizeToDisplay(displayWidth: number, displayHeight: number) {
+    const baseScale = displayWidth < 600 ? 0.25 : 0.4;
+    const dpr = Math.max(1, baseScale * window.devicePixelRatio);
+    this.scale = dpr;
+    this.canvas.width = Math.round(displayWidth * dpr);
+    this.canvas.height = Math.round(displayHeight * dpr);
+    this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
   }
 
   compile(shader: WebGLShader, source: string) {
@@ -193,10 +203,11 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
           requestAnimationFrame(() => {
             const canvas = canvasRef.current!;
             if (!canvas) return;
-            const baseScale = window.innerWidth < 600 ? 0.25 : 0.4;
+            const { width, height } = getViewportSize();
+            const baseScale = width < 600 ? 0.25 : 0.4;
             const dpr = Math.max(1, baseScale * window.devicePixelRatio);
-            canvas.width = window.innerWidth * dpr;
-            canvas.height = window.innerHeight * dpr;
+            canvas.width = Math.round(width * dpr);
+            canvas.height = Math.round(height * dpr);
 
             try {
               const renderer = new WebGLRenderer(canvas, dpr, shaderSource);
@@ -231,19 +242,16 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
     }
 
     const handleResize = () => {
-      if (!canvasRef.current || !rendererRef.current) return;
-      const canvas = canvasRef.current;
-      const baseScale = window.innerWidth < 600 ? 0.25 : 0.4;
-      const dpr = Math.max(1, baseScale * window.devicePixelRatio);
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
+      if (!rendererRef.current) return;
+      const { width, height } = getViewportSize();
+      rendererRef.current.resizeToDisplay(width, height);
     };
 
-    window.addEventListener("resize", handleResize);
+    const unsubscribeViewport = subscribeViewportResize(handleResize);
 
     return () => {
       isActiveRef.current = false;
-      window.removeEventListener("resize", handleResize);
+      unsubscribeViewport();
       if (animationFrameRef.current)
         cancelAnimationFrame(animationFrameRef.current);
       if (rendererRef.current) {

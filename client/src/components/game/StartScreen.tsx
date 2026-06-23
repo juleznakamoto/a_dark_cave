@@ -17,6 +17,7 @@ import { tWithFallback } from "@/i18n/resolveGameText";
 import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
 import { isSteamBuild } from "@/lib/edition";
+import { FullscreenButton } from "@/components/game/FullscreenButton";
 
 const START_FOOTER_LINK_BASE =
   "inline-flex items-center gap-0 sm:gap-1 hover:text-foreground transition-opacity";
@@ -244,6 +245,12 @@ export default function StartScreen() {
       `}</style>
 
       <CloudShader />
+
+      {isSteamBuild && (
+        <div className="absolute top-2 right-2 z-20">
+          <FullscreenButton />
+        </div>
+      )}
 
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center min-h-screen">
         <div className="text-center mb-4">

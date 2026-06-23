@@ -65,7 +65,11 @@
     "unsubscribed": "Disiscrizione completata",
     "subscribedDesc": "Ti invieremo aggiornamenti e offerte occasionali via email.",
     "unsubscribedDesc": "Non riceverai più email di marketing da noi.",
-    "preferenceUpdateFailed": "Impossibile aggiornare la preferenza"
+    "preferenceUpdateFailed": "Impossibile aggiornare la preferenza",
+    "enterFullscreen": "Full screen",
+    "exitFullscreen": "Exit full screen",
+    "autoSaveSteam": "Game auto-saves every 15 seconds",
+    "steamCloudSave": "Progress syncs to Steam Cloud when you save."
   },
   "pauseHotkey": {
     "hintPrefix": "Usa ",

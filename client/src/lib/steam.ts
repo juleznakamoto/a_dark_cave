@@ -74,3 +74,43 @@ export async function steamQuit(): Promise<void> {
     /* ignore */
   }
 }
+
+/** Whether the Steam desktop window is in full-screen mode. */
+export async function steamIsFullscreen(): Promise<boolean> {
+  const b = bridge();
+  if (!b?.available) return false;
+  try {
+    return await b.isFullscreen();
+  } catch {
+    return false;
+  }
+}
+
+/** Toggle full-screen mode in the Steam desktop shell. Returns the new state. */
+export async function steamToggleFullscreen(): Promise<boolean> {
+  const b = bridge();
+  if (!b?.available) return false;
+  try {
+    return await b.toggleFullscreen();
+  } catch {
+    return false;
+  }
+}
+
+/** Subscribe to full-screen changes in the Steam desktop shell. */
+export function steamOnFullscreenChanged(
+  callback: (isFullscreen: boolean) => void,
+): (() => void) | undefined {
+  const b = bridge();
+  if (!b?.available || !b.onFullscreenChanged) return undefined;
+  return b.onFullscreenChanged(callback);
+}
+
+/** Subscribe to layout changes in the Steam desktop shell (full screen, maximize, etc.). */
+export function steamOnLayoutChanged(
+  callback: () => void,
+): (() => void) | undefined {
+  const b = bridge();
+  if (!b?.available || !b.onLayoutChanged) return undefined;
+  return b.onLayoutChanged(callback);
+}

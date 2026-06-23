@@ -42,6 +42,7 @@ import {
 import { isRewardsTasksShortcutVisible } from "@/game/socialPromoExclusiveReward";
 import PlaylightDiscoveryButton from "./PlaylightDiscoveryButton";
 import { useTranslation } from "react-i18next";
+import { FullscreenButton } from "./FullscreenButton";
 
 const REWARDS_TASKS_ICON_PING_START_MS = 20 * 60 * 1000;
 const REWARDS_TASKS_ICON_PING_INTERVAL_MS = 5 * 60 * 1000;
@@ -137,6 +138,7 @@ function useProfileMenuState() {
   const sleepDialogOpen = idleModeDialog?.isOpen === true;
 
   useEffect(() => {
+    if (isSteamBuild) return;
     checkAuth();
   }, []);
 
@@ -413,6 +415,13 @@ function ProfileMenuDialogs() {
     handleConfirmDeleteAccount,
   } = useProfileMenuContext();
 
+  // Web-only dialog: clear stale open state if something sets the flag on Steam.
+  useEffect(() => {
+    if (isSteamBuild && deleteAccountDialogOpen) {
+      setDeleteAccountDialogOpen(false);
+    }
+  }, [deleteAccountDialogOpen, setDeleteAccountDialogOpen]);
+
   return (
     <>
       {!isSteamBuild && (
@@ -430,14 +439,16 @@ function ProfileMenuDialogs() {
         onClose={() => setRestartGameDialogOpen(false)}
         onConfirm={handleConfirmRestart}
       />
-      <DeleteAccountDialog
-        isOpen={deleteAccountDialogOpen}
-        onClose={() => {
-          if (!deleteAccountInProgress) setDeleteAccountDialogOpen(false);
-        }}
-        onConfirm={handleConfirmDeleteAccount}
-        isDeleting={deleteAccountInProgress}
-      />
+      {!isSteamBuild && (
+        <DeleteAccountDialog
+          isOpen={deleteAccountDialogOpen}
+          onClose={() => {
+            if (!deleteAccountInProgress) setDeleteAccountDialogOpen(false);
+          }}
+          onConfirm={handleConfirmDeleteAccount}
+          isDeleting={deleteAccountInProgress}
+        />
+      )}
     </>
   );
 }
@@ -629,13 +640,31 @@ export function GameHeaderControls() {
           <DropdownMenuItemWithTooltip
             tooltip={
               <div className="text-xs">
-                <p>
-                  {currentUser
-                    ? t("profile.autoSaveSignedIn")
-                    : t("profile.autoSaveGuest")}
-                </p>
-                {!currentUser && (
-                  <p className="mt-1">{t("profile.signUpCloudSave")}</p>
+                {isSteamBuild ? (
+                  <>
+                    <p>
+                      {t("profile.autoSaveSteam", {
+                        defaultValue: "Game auto-saves every 15 seconds",
+                      })}
+                    </p>
+                    <p className="mt-1">
+                      {t("profile.steamCloudSave", {
+                        defaultValue:
+                          "Progress syncs to Steam Cloud when you save.",
+                      })}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p>
+                      {currentUser
+                        ? t("profile.autoSaveSignedIn")
+                        : t("profile.autoSaveGuest")}
+                    </p>
+                    {!currentUser && (
+                      <p className="mt-1">{t("profile.signUpCloudSave")}</p>
+                    )}
+                  </>
                 )}
                 {lastSaved && (
                   <p className="mt-1">
@@ -747,6 +776,7 @@ export function GameHeaderControls() {
           )}
         </DropdownMenuContent>
       </DropdownMenu>
+      <FullscreenButton />
     </div>
   );
 }

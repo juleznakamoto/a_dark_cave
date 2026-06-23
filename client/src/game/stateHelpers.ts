@@ -11,7 +11,12 @@ import { getVillagerCapForJob } from "./villagerCapUpgrades";
 import { getExecutionTime } from "./rules/executionTime";
 import { GAME_CONSTANTS } from "./constants";
 import { getGameActions } from "./rules/actionsRegistry";
-import { migrateVillagerPresetsPurchasedOnLoad } from "./villagerJobPresets";
+import {
+  migrateVillagerPresetsPurchasedOnLoad,
+  SHOP_ADDITIONAL_PRESET_SLOTS,
+} from "./villagerJobPresets";
+import { SHOP_ADDITIONAL_QUEUE_SLOTS } from "./constructionQueueSlots";
+import { isSteamBuild } from "@/lib/edition";
 
 type CombatResultPayload =
   | CombatResultSummary
@@ -646,6 +651,29 @@ export function migratePostCompletionAttackWavesOnLoad(
   return { postCompletionAttackWaveCount: 0 };
 }
 
+/** Steam edition includes shop slot purchases; grant on load for older saves. */
+function migrateSteamShopEntitlementsOnLoad(state: GameState): GameState | null {
+  if (!isSteamBuild) return null;
+
+  const presetSlots = state.villagerPresetSlotsFromShop ?? 0;
+  const queueSlots = state.constructionQueueSlotsFromShop ?? 0;
+  const nextPresetSlots = Math.max(presetSlots, SHOP_ADDITIONAL_PRESET_SLOTS);
+  const nextQueueSlots = Math.max(queueSlots, SHOP_ADDITIONAL_QUEUE_SLOTS);
+
+  if (
+    nextPresetSlots === presetSlots &&
+    nextQueueSlots === queueSlots
+  ) {
+    return null;
+  }
+
+  return {
+    ...state,
+    villagerPresetSlotsFromShop: nextPresetSlots,
+    constructionQueueSlotsFromShop: nextQueueSlots,
+  };
+}
+
 /** Run one-time load migrations on loaded saves (trader shop unlock gate). */
 export function applyGameStateLoadMigrations(state: GameState): GameState {
   let migrated = reconcileInFlightExecutionsOnLoad(state);
@@ -666,6 +694,10 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
     (migrated as { boostMode?: boolean }).boostMode === true
   ) {
     migrated = { ...migrated, boostApplied: true };
+  }
+  const steamShopEntitlements = migrateSteamShopEntitlementsOnLoad(migrated);
+  if (steamShopEntitlements) {
+    migrated = steamShopEntitlements;
   }
   return migrated;
 }

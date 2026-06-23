@@ -65,7 +65,11 @@
     "unsubscribed": "Вы отписались",
     "subscribedDesc": "Мы будем иногда присылать обновления и предложения на вашу почту.",
     "unsubscribedDesc": "Вы не будете получать от нас рекламные письма.",
-    "preferenceUpdateFailed": "Не удалось обновить настройку"
+    "preferenceUpdateFailed": "Не удалось обновить настройку",
+    "enterFullscreen": "Full screen",
+    "exitFullscreen": "Exit full screen",
+    "autoSaveSteam": "Game auto-saves every 15 seconds",
+    "steamCloudSave": "Progress syncs to Steam Cloud when you save."
   },
   "pauseHotkey": {
     "hintPrefix": "Используйте ",

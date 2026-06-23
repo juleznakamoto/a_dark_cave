@@ -82,7 +82,11 @@ export function mountNotoSansSymbols2FontFace(): void {
 
   const done = () => document.documentElement.classList.add("symbols-font-loaded");
   if ("fonts" in document) {
-    void document.fonts.load("400 16px 'Noto Sans Symbols 2'").then(done, done);
+    const face = "400 16px 'Noto Sans Symbols 2'";
+    void Promise.all([
+      document.fonts.load(face),
+      document.fonts.load(face, "\u21B3\u21A6"),
+    ]).then(done, done);
   } else {
     done();
   }

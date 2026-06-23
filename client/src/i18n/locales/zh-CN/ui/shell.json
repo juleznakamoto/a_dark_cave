@@ -65,7 +65,11 @@
     "unsubscribed": "你已取消订阅",
     "subscribedDesc": "我们会偶尔通过邮件向你发送更新和优惠。",
     "unsubscribedDesc": "你将不会收到我们的营销邮件。",
-    "preferenceUpdateFailed": "无法更新偏好设置"
+    "preferenceUpdateFailed": "无法更新偏好设置",
+    "enterFullscreen": "Full screen",
+    "exitFullscreen": "Exit full screen",
+    "autoSaveSteam": "Game auto-saves every 15 seconds",
+    "steamCloudSave": "Progress syncs to Steam Cloud when you save."
   },
   "pauseHotkey": {
     "hintPrefix": "使用 ",

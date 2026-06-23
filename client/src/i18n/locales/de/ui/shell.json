@@ -65,7 +65,11 @@
     "unsubscribed": "Du bist abgemeldet",
     "subscribedDesc": "Wir senden dir gelegentlich Updates und Angebote per E-Mail.",
     "unsubscribedDesc": "Du erhältst keine Marketing-E-Mails von uns.",
-    "preferenceUpdateFailed": "Einstellung konnte nicht aktualisiert werden"
+    "preferenceUpdateFailed": "Einstellung konnte nicht aktualisiert werden",
+    "enterFullscreen": "Full screen",
+    "exitFullscreen": "Exit full screen",
+    "autoSaveSteam": "Game auto-saves every 15 seconds",
+    "steamCloudSave": "Progress syncs to Steam Cloud when you save."
   },
   "pauseHotkey": {
     "hintPrefix": "Nutze ",

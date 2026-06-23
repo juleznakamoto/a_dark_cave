@@ -89,6 +89,19 @@ async function createWindow(): Promise<void> {
     await mainWindow.loadURL(loopback.url + "/");
   }
 
+  const notifyLayoutChange = (): void => {
+    mainWindow?.webContents.send("window:layout-changed");
+    mainWindow?.webContents.send(
+      "window:fullscreen-changed",
+      mainWindow.isFullScreen(),
+    );
+  };
+
+  mainWindow.on("enter-full-screen", notifyLayoutChange);
+  mainWindow.on("leave-full-screen", notifyLayoutChange);
+  mainWindow.on("maximize", notifyLayoutChange);
+  mainWindow.on("unmaximize", notifyLayoutChange);
+
   mainWindow.on("closed", () => {
     mainWindow = null;
   });
@@ -124,6 +137,15 @@ function registerIpc(): void {
 
   ipcMain.handle("app:quit", () => {
     app.quit();
+  });
+
+  ipcMain.handle("window:is-fullscreen", () => mainWindow?.isFullScreen() ?? false);
+
+  ipcMain.handle("window:toggle-fullscreen", () => {
+    if (!mainWindow) return false;
+    const next = !mainWindow.isFullScreen();
+    mainWindow.setFullScreen(next);
+    return mainWindow.isFullScreen();
   });
 }
 
