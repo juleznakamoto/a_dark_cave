@@ -86,7 +86,11 @@ import {
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { AnimatedCounter, ANIMATED_COUNTER_FONT_SIZE, ANIMATED_COUNTER_HEIGHT } from "@/components/ui/animated-counter";
+import {
+  AnimatedCounter,
+  ANIMATED_COUNTER_FONT_SIZE,
+  ANIMATED_COUNTER_HEIGHT,
+} from "@/components/ui/animated-counter";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
 import { ConstructionBoostBadge } from "@/components/game/ConstructionBoostBadge";
@@ -147,10 +151,8 @@ const PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS =
   "inline-flex items-center leading-none";
 /** Preset numbers, construction queue slots, and related header controls. */
 const HEADER_SLOT_SIZE_CLASS = "h-[18px] w-[18px] min-h-0 shrink-0";
-const HEADER_SLOT_INSIGHT_BUTTON_CLASS =
-  `${HEADER_SLOT_SIZE_CLASS} cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer`;
-const HEADER_SLOT_BUTTON_CLASS =
-  `${HEADER_SLOT_SIZE_CLASS} p-0 pointer-events-none inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]`;
+const HEADER_SLOT_INSIGHT_BUTTON_CLASS = `${HEADER_SLOT_SIZE_CLASS} cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer`;
+const HEADER_SLOT_BUTTON_CLASS = `${HEADER_SLOT_SIZE_CLASS} p-0 pointer-events-none inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]`;
 
 export default function VillagePanel() {
   const { t } = useUiTranslation();
@@ -256,7 +258,8 @@ export default function VillagePanel() {
   }, [isPresetUnlockAnimating]);
 
   useEffect(() => {
-    if (isQueueSlotUnlockAnimating) queueSlotUnlockRevealStartedRef.current = true;
+    if (isQueueSlotUnlockAnimating)
+      queueSlotUnlockRevealStartedRef.current = true;
   }, [isQueueSlotUnlockAnimating]);
 
   useEffect(() => {
@@ -640,9 +643,9 @@ export default function VillagePanel() {
             playTimeProgress={
               active
                 ? {
-                  startPlayTime: active.startPlayTime,
-                  endPlayTime: active.endPlayTime,
-                }
+                    startPlayTime: active.startPlayTime,
+                    endPlayTime: active.endPlayTime,
+                  }
                 : null
             }
             size="xs"
@@ -976,8 +979,7 @@ export default function VillagePanel() {
   const maxPopulation = useGameStore((s) => s.total_population);
   const onMissionCount = useGameStore((s) => getExpeditionVillagerCount(s));
   const freeVillagers = villagers.free ?? 0;
-  const atMaxPopulation =
-    maxPopulation > 0 && totalPopulation >= maxPopulation;
+  const atMaxPopulation = maxPopulation > 0 && totalPopulation >= maxPopulation;
 
   const renderVillagerStatRow = (
     key: string,
@@ -1054,8 +1056,7 @@ export default function VillagePanel() {
     const currentCount = villagers[jobId as keyof typeof villagers] || 0;
     const jobKey = jobId as keyof typeof villagers;
     const cap = getVillagerCapForJob(state, jobKey);
-    const showCap =
-      areVillagerCapsEnabled(state) && Number.isFinite(cap);
+    const showCap = areVillagerCapsEnabled(state) && Number.isFinite(cap);
     const atCap = showCap && currentCount >= cap;
     const canAssignMore =
       villagers.free > 0 && (!showCap || currentCount < cap);
@@ -1072,8 +1073,7 @@ export default function VillagePanel() {
       <div key={jobId} className="flex min-w-0 items-center">
         <Button
           onMouseDown={() =>
-            currentCount > 0 &&
-            startHold(() => unassignVillager(jobId), false)
+            currentCount > 0 && startHold(() => unassignVillager(jobId), false)
           }
           onMouseUp={() => stopHold(false)}
           onMouseLeave={() => stopHold(false)}
@@ -1140,11 +1140,7 @@ export default function VillagePanel() {
             lineHeight: `${ANIMATED_COUNTER_HEIGHT}px`,
           }}
         >
-          {jobId === "gatherer"
-            ? "/∞"
-            : showCap
-              ? `/${cap}`
-              : ""}
+          {jobId === "gatherer" ? "/∞" : showCap ? `/${cap}` : ""}
         </span>
         <span className="ml-1 min-w-0 flex-1 text-left text-xs">
           {label}{" "}
@@ -1209,7 +1205,8 @@ export default function VillagePanel() {
                     {isConstructionQueueEnabled(state) &&
                       (() => {
                         const activeBuilds = getActiveBuildCount(state);
-                        const nextUnlockCost = getNextQueueSlotUnlockCost(state);
+                        const nextUnlockCost =
+                          getNextQueueSlotUnlockCost(state);
                         const visibleSlots = getVisibleQueueSlotCount(state);
                         const nextUnlockIndex =
                           getNextPurchasableQueueSlotIndex(state);
@@ -1255,9 +1252,11 @@ export default function VillagePanel() {
                                     className={cn(
                                       getInsightBadgeTriggerClassName({
                                         canAfford:
-                                          canUnlock || isQueueSlotUnlockAnimating,
+                                          canUnlock ||
+                                          isQueueSlotUnlockAnimating,
                                         playing: isQueueSlotUnlockAnimating,
-                                        className: HEADER_SLOT_INSIGHT_BUTTON_CLASS,
+                                        className:
+                                          HEADER_SLOT_INSIGHT_BUTTON_CLASS,
                                       }),
                                     )}
                                     aria-label={t("village.queueSlotUnlock", {
@@ -1285,78 +1284,86 @@ export default function VillagePanel() {
                                   </button>
                                 </TooltipWrapper>
                               )}
-                            {Array.from({ length: visibleSlots }).map((_, i) => {
-                              const slot = i + 1;
-                              const isBuildingLocked = isQueueSlotBuildingLocked(
-                                state,
-                                i,
-                              );
-                              const isLocked = isQueueSlotLockedForUi(state, i);
-                              const isUsed =
-                                isQueueSlotActive(state, i) && i < activeBuilds;
-                              const isPurchasable = isQueueSlotNextPurchasable(
-                                state,
-                                i,
-                              );
-                              const queueTooltipId = `queue-slot-${slot}`;
-                              return (
-                                <TooltipWrapper
-                                  key={queueTooltipId}
-                                  tooltipId={queueTooltipId}
-                                  tooltip={
-                                    <div className="text-xs">
-                                      {isBuildingLocked
-                                        ? t("village.slotBuildingNeededToUnlock", {
-                                          defaultValue:
-                                            "Building required to unlock",
-                                        })
-                                        : isPurchasable && nextUnlockCost !== null
-                                          ? t("village.queueSlotUnlock", {
-                                            cost: formatNumber(nextUnlockCost),
-                                          })
-                                          : isLocked
-                                            ? t("village.queueSlotLocked", {
-                                              slot,
-                                            })
-                                            : isUsed
-                                              ? t("village.queueSlotUsed", {
-                                                slot,
+                            {Array.from({ length: visibleSlots }).map(
+                              (_, i) => {
+                                const slot = i + 1;
+                                const isBuildingLocked =
+                                  isQueueSlotBuildingLocked(state, i);
+                                const isLocked = isQueueSlotLockedForUi(
+                                  state,
+                                  i,
+                                );
+                                const isUsed =
+                                  isQueueSlotActive(state, i) &&
+                                  i < activeBuilds;
+                                const isPurchasable =
+                                  isQueueSlotNextPurchasable(state, i);
+                                const queueTooltipId = `queue-slot-${slot}`;
+                                return (
+                                  <TooltipWrapper
+                                    key={queueTooltipId}
+                                    tooltipId={queueTooltipId}
+                                    tooltip={
+                                      <div className="text-xs">
+                                        {isBuildingLocked
+                                          ? t(
+                                              "village.slotBuildingNeededToUnlock",
+                                              {
+                                                defaultValue:
+                                                  "Building required to unlock",
+                                              },
+                                            )
+                                          : isPurchasable &&
+                                              nextUnlockCost !== null
+                                            ? t("village.queueSlotUnlock", {
+                                                cost: formatNumber(
+                                                  nextUnlockCost,
+                                                ),
                                               })
-                                              : t("village.queueSlotFree", {
-                                                slot,
-                                              })}
-                                    </div>
-                                  }
-                                  tooltipTriggerClassName="inline-flex items-center leading-none"
-                                  className="inline-flex items-center"
-                                >
-                                  <span
-                                    data-testid={queueTooltipId}
-                                    className={cn(
-                                      HEADER_SLOT_SIZE_CLASS,
-                                      "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
-                                      isBuildingLocked && "opacity-70",
-                                    )}
+                                            : isLocked
+                                              ? t("village.queueSlotLocked", {
+                                                  slot,
+                                                })
+                                              : isUsed
+                                                ? t("village.queueSlotUsed", {
+                                                    slot,
+                                                  })
+                                                : t("village.queueSlotFree", {
+                                                    slot,
+                                                  })}
+                                      </div>
+                                    }
+                                    tooltipTriggerClassName="inline-flex items-center leading-none"
+                                    className="inline-flex items-center"
                                   >
-                                    {isLocked ? (
-                                      <span
-                                        aria-hidden
-                                        className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
-                                      >
-                                        ×
-                                      </span>
-                                    ) : (
-                                      isUsed && (
+                                    <span
+                                      data-testid={queueTooltipId}
+                                      className={cn(
+                                        HEADER_SLOT_SIZE_CLASS,
+                                        "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
+                                        isBuildingLocked && "opacity-70",
+                                      )}
+                                    >
+                                      {isLocked ? (
                                         <span
                                           aria-hidden
-                                          className="absolute inset-[3px] rounded-[1px] bg-red-700"
-                                        />
-                                      )
-                                    )}
-                                  </span>
-                                </TooltipWrapper>
-                              );
-                            })}
+                                          className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
+                                        >
+                                          ×
+                                        </span>
+                                      ) : (
+                                        isUsed && (
+                                          <span
+                                            aria-hidden
+                                            className="absolute inset-[3px] rounded-[1px] bg-red-700"
+                                          />
+                                        )
+                                      )}
+                                    </span>
+                                  </TooltipWrapper>
+                                );
+                              },
+                            )}
                             {isAdditionalConstructionQueueSlotPurchaseAvailable(
                               state,
                             ) &&
@@ -1497,7 +1504,9 @@ export default function VillagePanel() {
                   })()}
                   tooltipId="production-cycle-progress"
                   disabled
-                  tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
+                  tooltipTriggerClassName={
+                    PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS
+                  }
                   className={pulseClassName(
                     "production-cycle-progress",
                     PRODUCE_HEADER_INDICATOR_CLASS,
@@ -1512,7 +1521,7 @@ export default function VillagePanel() {
                       strokeWidth={2}
                       className="text-gray-400"
                     />
-                    <span className="absolute inset-0 flex items-center justify-center font-noto-symbols-2 text-[10px] leading-none translate-x-[0.15em] translate-y-[0.1em] text-gray-400">
+                    <span className="absolute inset-0 flex items-center justify-center font-noto-symbols-2 text-[10px] leading-none translate-x-[0.05em] translate-y-[0.1em] text-gray-400">
                       ↦
                     </span>
                   </div>
@@ -1559,7 +1568,9 @@ export default function VillagePanel() {
                           }
                           tooltipId="feast-progress"
                           disabled
-                          tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
+                          tooltipTriggerClassName={
+                            PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS
+                          }
                           className={pulseClassName(
                             "feast-progress",
                             PRODUCE_HEADER_INDICATOR_CLASS,
@@ -1597,7 +1608,9 @@ export default function VillagePanel() {
                           }
                           tooltipId="solstice-progress"
                           disabled
-                          tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
+                          tooltipTriggerClassName={
+                            PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS
+                          }
                           className={pulseClassName(
                             "solstice-progress",
                             PRODUCE_HEADER_INDICATOR_CLASS,
@@ -1629,7 +1642,9 @@ export default function VillagePanel() {
                           }
                           tooltipId="curse-progress"
                           disabled
-                          tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
+                          tooltipTriggerClassName={
+                            PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS
+                          }
                           className={pulseClassName(
                             "curse-progress",
                             PRODUCE_HEADER_INDICATOR_CLASS,
@@ -1674,7 +1689,9 @@ export default function VillagePanel() {
                           }
                           tooltipId="disgust-progress"
                           disabled
-                          tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
+                          tooltipTriggerClassName={
+                            PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS
+                          }
                           className={pulseClassName(
                             "disgust-progress",
                             PRODUCE_HEADER_INDICATOR_CLASS,
@@ -1689,8 +1706,9 @@ export default function VillagePanel() {
                                   0,
                                   disgustState.endTime - Date.now(),
                                 );
-                                const totalDuration =
-                                  disgustDurationMs(state.cruelMode);
+                                const totalDuration = disgustDurationMs(
+                                  state.cruelMode,
+                                );
                                 const elapsed = totalDuration - timeRemaining;
                                 return Math.min(
                                   100,
@@ -1718,7 +1736,9 @@ export default function VillagePanel() {
                           }
                           tooltipId="mining-boost-progress"
                           disabled
-                          tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
+                          tooltipTriggerClassName={
+                            PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS
+                          }
                           className={pulseClassName(
                             "mining-boost-progress",
                             PRODUCE_HEADER_INDICATOR_CLASS,
@@ -1760,13 +1780,19 @@ export default function VillagePanel() {
                           }
                           tooltipId="heartfire-progress"
                           disabled
-                          tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
+                          tooltipTriggerClassName={
+                            PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS
+                          }
                           className={pulseClassName(
                             "heartfire-progress",
                             PRODUCE_HEADER_INDICATOR_CLASS,
                           )}
-                          onMouseEnter={() => onMouseEnter("heartfire-progress")}
-                          onMouseLeave={() => onMouseLeave("heartfire-progress")}
+                          onMouseEnter={() =>
+                            onMouseEnter("heartfire-progress")
+                          }
+                          onMouseLeave={() =>
+                            onMouseLeave("heartfire-progress")
+                          }
                         >
                           <div className="relative inline-flex items-center gap-1 mt-[0px]">
                             <CircularProgress
@@ -1798,13 +1824,19 @@ export default function VillagePanel() {
                           }
                           tooltipId="frostfall-progress"
                           disabled
-                          tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
+                          tooltipTriggerClassName={
+                            PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS
+                          }
                           className={pulseClassName(
                             "frostfall-progress",
                             PRODUCE_HEADER_INDICATOR_CLASS,
                           )}
-                          onMouseEnter={() => onMouseEnter("frostfall-progress")}
-                          onMouseLeave={() => onMouseLeave("frostfall-progress")}
+                          onMouseEnter={() =>
+                            onMouseEnter("frostfall-progress")
+                          }
+                          onMouseLeave={() =>
+                            onMouseLeave("frostfall-progress")
+                          }
                         >
                           <div className="relative inline-flex items-center gap-1 mt-[0px]">
                             <CircularProgress
@@ -1851,7 +1883,9 @@ export default function VillagePanel() {
                             }
                             tooltipId="fog-progress"
                             disabled
-                            tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
+                            tooltipTriggerClassName={
+                              PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS
+                            }
                             className={pulseClassName(
                               "fog-progress",
                               PRODUCE_HEADER_INDICATOR_CLASS,
@@ -1900,7 +1934,9 @@ export default function VillagePanel() {
                             }
                             tooltipId="madness-production"
                             disabled
-                            tooltipTriggerClassName={PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS}
+                            tooltipTriggerClassName={
+                              PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS
+                            }
                             className={pulseClassName(
                               "madness-production",
                               PRODUCE_HEADER_INDICATOR_CLASS,
@@ -2118,8 +2154,8 @@ export default function VillagePanel() {
                                   isActive
                                     ? "group-hover:bg-primary/90"
                                     : gameActionOutlineButtonClassName(false, {
-                                      groupHover: true,
-                                    }),
+                                        groupHover: true,
+                                      }),
                                 )}
                                 style={{ touchAction: "manipulation" }}
                               >
