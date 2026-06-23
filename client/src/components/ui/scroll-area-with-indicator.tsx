@@ -15,6 +15,8 @@ interface ScrollAreaWithIndicatorProps
   persistIndicator?: boolean;
   /** Unique ID for this scroll area - when provided, indicator is hidden permanently after first scroll (persisted) */
   scrollAreaId?: string;
+  /** Viewport padding/classes; defaults include `pl-2` to match game panel chrome. */
+  viewportClassName?: string;
 }
 
 const ScrollAreaWithIndicator = React.forwardRef<
@@ -28,6 +30,7 @@ const ScrollAreaWithIndicator = React.forwardRef<
       showIndicatorWhen = true,
       persistIndicator = false,
       scrollAreaId,
+      viewportClassName,
       ...props
     },
     ref
@@ -80,7 +83,10 @@ const ScrollAreaWithIndicator = React.forwardRef<
       >
         <ScrollAreaPrimitive.Viewport
           ref={viewportRef}
-          className="h-full w-full rounded-[inherit] overflow-x-hidden pl-2"
+          className={cn(
+            "h-full w-full rounded-[inherit] overflow-x-hidden pl-2",
+            viewportClassName,
+          )}
         >
           {children}
         </ScrollAreaPrimitive.Viewport>

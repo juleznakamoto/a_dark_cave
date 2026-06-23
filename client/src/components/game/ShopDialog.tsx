@@ -1704,8 +1704,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   <ScrollAreaWithIndicator
                     className="min-h-0 flex-1"
                     scrollAreaId="shop-dialog-for-sale"
+                    viewportClassName="pl-0 pr-2"
                   >
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                    <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3">
                       {(selectedFilter === null
                         ? HIGHLIGHTS_ORDER.map((id) => SHOP_ITEMS[id]).filter(
                           Boolean,
@@ -2188,8 +2189,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     <ScrollAreaWithIndicator
                       className="min-h-0 flex-1"
                       scrollAreaId="shop-dialog-purchases"
+                      viewportClassName="pl-0 pr-2"
                     >
-                      <div className="space-y-2">
+                      <div className="w-full space-y-2">
                         {Object.entries(gameState.feastActivations || {}).map(
                           ([purchaseId, activationsRemaining]) => {
                             const itemId = purchaseIdToItemId(purchaseId);

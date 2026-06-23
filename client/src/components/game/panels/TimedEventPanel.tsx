@@ -584,7 +584,11 @@ export default function TimedEventPanel() {
                         choice.relevant_stats.map((stat) => (
                           <RelevantStatIcon key={stat} stat={stat} />
                         ))}
-                      {isPurchased && <span className="font-noto-symbols-2">✓</span>}
+                      {isPurchased && (
+                        <span className="inline-flex items-center justify-center text-[11px] leading-none">
+                          ✓
+                        </span>
+                      )}
                     </span>
                   )}
                 </Button>
