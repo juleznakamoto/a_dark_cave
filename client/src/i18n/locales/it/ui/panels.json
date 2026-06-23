@@ -148,6 +148,7 @@
     "priorRemove": "Clicca per rimuovere il Priore Caduto in Disgrazia",
     "priorAssign": "Clicca per assegnare il Priore Caduto in Disgrazia",
     "insightRevealSeeEffects": "Vedi gli effetti per {{cost}} {{resource}}",
+    "insightRevealSeeStatEffects": "Vedi gli effetti delle statistiche per {{cost}} {{resource}}",
     "bonus": "Bonus:",
     "nextBonus": "Prossimo Bonus:",
     "craftMultiplier": "Fabbrica x{{amount}}",
@@ -230,7 +231,4 @@
     "focusGainedLog": "Hai guadagnato {{count}} Concentrazione dal tuo riposo.",
     "villagersProducedLog": "Risorse prodotte dagli abitanti: {{resources}}"
   }
-    "badges": {
-      "insightRevealSeeStatEffects": "See Stats effects for {{cost}} {{resource}}"
-    },
 }

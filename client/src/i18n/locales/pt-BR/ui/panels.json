@@ -148,6 +148,7 @@
     "priorRemove": "Clique para remover o Prior Desonrado",
     "priorAssign": "Clique para atribuir o Prior Desonrado",
     "insightRevealSeeEffects": "Ver efeitos por {{cost}} {{resource}}",
+    "insightRevealSeeStatEffects": "Ver efeitos de atributos por {{cost}} {{resource}}",
     "bonus": "Bônus:",
     "nextBonus": "Próximo Bônus:",
     "craftMultiplier": "Fabricar x{{amount}}",
@@ -230,7 +231,4 @@
     "focusGainedLog": "Você ganhou {{count}} de Foco com seu descanso.",
     "villagersProducedLog": "Os aldeões produziram: {{resources}}"
   }
-    "badges": {
-      "insightRevealSeeStatEffects": "See Stats effects for {{cost}} {{resource}}"
-    },
 }

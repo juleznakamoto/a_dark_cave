@@ -148,6 +148,7 @@
     "priorRemove": "Cliquez pour retirer le Prieur déchu",
     "priorAssign": "Cliquez pour assigner le Prieur déchu",
     "insightRevealSeeEffects": "Voir les effets pour {{cost}} {{resource}}",
+    "insightRevealSeeStatEffects": "Voir les effets des stats pour {{cost}} {{resource}}",
     "bonus": "Bonus :",
     "nextBonus": "Prochain bonus :",
     "craftMultiplier": "Artisanat x{{amount}}",
@@ -230,7 +231,4 @@
     "focusGainedLog": "Vous avez gagné {{count}} de concentration grâce à votre repos.",
     "villagersProducedLog": "Les villageois ont produit : {{resources}}"
   }
-    "badges": {
-      "insightRevealSeeStatEffects": "See Stats effects for {{cost}} {{resource}}"
-    },
 }

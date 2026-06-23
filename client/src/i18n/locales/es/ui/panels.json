@@ -231,7 +231,4 @@
     "focusGainedLog": "Has ganado {{count}} de concentración con tu descanso.",
     "villagersProducedLog": "Los aldeanos produjeron: {{resources}}"
   }
-    "badges": {
-      "insightRevealSeeStatEffects": "See Stats effects for {{cost}} {{resource}}"
-    },
 }
