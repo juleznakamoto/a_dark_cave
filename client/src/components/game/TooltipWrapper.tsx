@@ -51,6 +51,10 @@ export function TooltipWrapper({
   const globalTooltip = useGlobalTooltip();
   const actionExecutedRef = useRef<boolean>(false);
   const wasLongPressTooltipOpenRef = useRef(false);
+  const onMouseEnterRef = useRef(onMouseEnter);
+  const onMouseLeaveRef = useRef(onMouseLeave);
+  onMouseEnterRef.current = onMouseEnter;
+  onMouseLeaveRef.current = onMouseLeave;
 
   // Generate a unique tooltip ID if not provided
   const finalTooltipId = tooltipId || `tooltip-${Math.random().toString(36).substr(2, 9)}`;
@@ -61,19 +65,17 @@ export function TooltipWrapper({
   // Long-press / tap-to-open tooltips do not fire mouseenter on touch devices.
   // Mirror hover callbacks so side-panel resource highlighting works on mobile too.
   useEffect(() => {
-    if (!onMouseEnter && !onMouseLeave) return;
-
     if (isLongPressTooltipOpen) {
       wasLongPressTooltipOpenRef.current = true;
-      onMouseEnter?.();
+      onMouseEnterRef.current?.();
       return;
     }
 
     if (wasLongPressTooltipOpenRef.current) {
       wasLongPressTooltipOpenRef.current = false;
-      onMouseLeave?.();
+      onMouseLeaveRef.current?.();
     }
-  }, [isLongPressTooltipOpen, onMouseEnter, onMouseLeave]);
+  }, [isLongPressTooltipOpen]);
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
