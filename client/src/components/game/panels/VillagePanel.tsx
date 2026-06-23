@@ -1512,7 +1512,7 @@ export default function VillagePanel() {
                       strokeWidth={2}
                       className="text-gray-400"
                     />
-                    <span className="absolute inset-0 flex items-center justify-center font-noto-symbols-2 text-[10px] -mt-[1px] text-gray-400">
+                    <span className="absolute inset-0 flex items-center justify-center font-noto-symbols-2 text-[10px] leading-none translate-x-[0.15em] translate-y-[0.1em] text-gray-400">
                       ↦
                     </span>
                   </div>
