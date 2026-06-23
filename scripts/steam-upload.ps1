@@ -140,9 +140,19 @@ $logPath = Join-Path $outputDir "upload.log"
 
 Push-Location $builderDir
 try {
-  Write-Host "Running steamcmd (password + Steam Guard prompted below)..." -ForegroundColor Cyan
-  & $steamcmd +login $steamUser +run_app_build $appVdfForCmd +quit *>&1 | Tee-Object -FilePath $logPath
-  $exitCode = $LASTEXITCODE
+  Write-Host "Running steamcmd..." -ForegroundColor Cyan
+  Write-Host "Enter your Steam PASSWORD when prompted (input is hidden)." -ForegroundColor Yellow
+  Write-Host "Then enter Steam Guard code if asked." -ForegroundColor Yellow
+  Write-Host ""
+
+  # Do not pipe steamcmd — piping breaks interactive password / Steam Guard prompts.
+  Start-Transcript -Path $logPath -Append:$false | Out-Null
+  try {
+    & $steamcmd +login $steamUser +run_app_build $appVdfForCmd +quit
+    $exitCode = $LASTEXITCODE
+  } finally {
+    Stop-Transcript | Out-Null
+  }
 } finally {
   Pop-Location
 }
