@@ -2,6 +2,10 @@ node_modules
 dist
 dist-electron
 release
+steam/content
+steam/output
+steam/generated
+steam/config.local.json
 .DS_Store
 .env*
 !.env.example
