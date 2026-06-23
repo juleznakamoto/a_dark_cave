@@ -82,6 +82,31 @@ function ExclusivePromoItemInfoIcon({ tooltipId }: { tooltipId: string }) {
   );
 }
 
+function TaskInfoIcon({
+  tooltipId,
+  tooltipText,
+}: {
+  tooltipId: string;
+  tooltipText: string;
+}) {
+  return (
+    <TooltipWrapper
+      tooltip={<p className="text-xs leading-snug">{tooltipText}</p>}
+      tooltipId={tooltipId}
+      disabled
+      tooltipContentClassName="max-w-xs"
+      className="inline-flex shrink-0 items-center justify-center w-5 h-5 rounded-full text-muted-foreground hover:text-foreground cursor-pointer align-text-bottom translate-y-[0.06em]"
+    >
+      <span
+        className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-base font-normal leading-none"
+        aria-hidden
+      >
+        🛈
+      </span>
+    </TooltipWrapper>
+  );
+}
+
 interface SocialPromptDialogProps {
   isOpen: boolean;
 }
@@ -544,7 +569,7 @@ export default function SocialPromptDialog({
               animate={animatedCheckmarks.has("signup")}
             />
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
-              <div className="min-w-0 flex-1 space-y-1">
+              <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <User className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
                   <span className="font-medium text-sm">
@@ -552,12 +577,13 @@ export default function SocialPromptDialog({
                       amount: SIGN_UP_WELCOME_GOLD,
                     })}
                   </span>
+                  {!signUpClaimed && !signUpFulfilled && (
+                    <TaskInfoIcon
+                      tooltipId="social-prompt-signup-info"
+                      tooltipText={t("socialPrompt.signUpDesc")}
+                    />
+                  )}
                 </div>
-                {!signUpClaimed && !signUpFulfilled && (
-                  <p className="text-xs text-muted-foreground leading-snug">
-                    {t("socialPrompt.signUpDesc")}
-                  </p>
-                )}
               </div>
               {!signUpClaimed &&
                 (signUpFulfilled ? (
