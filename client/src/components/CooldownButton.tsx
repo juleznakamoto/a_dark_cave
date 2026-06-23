@@ -8,9 +8,17 @@ import { INSIGHT_REVEAL_DURATION_MS } from "@/game/rules/insightReveal";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { cn } from "@/lib/utils";
 
+/** Uniform gap between game action buttons (horizontal, wrapped rows, stacked row groups). */
+export const GAME_ACTION_BUTTON_GRID_GAP_CLASS = "gap-4";
+
 /** Flex-wrap layout for grids of game action buttons (panels, timed events, dialogs). */
 export function gameActionButtonGridClassName(className?: string): string {
-  return cn("flex flex-wrap gap-x-2 gap-y-4", className);
+  return cn("flex flex-wrap", GAME_ACTION_BUTTON_GRID_GAP_CLASS, className);
+}
+
+/** Vertical stack of separate button rows (e.g. Craft subGroups); gap matches the grid. */
+export function gameActionButtonRowsClassName(className?: string): string {
+  return cn("flex flex-col", GAME_ACTION_BUTTON_GRID_GAP_CLASS, className);
 }
 
 /** Outline border + hover for game action buttons (panels, timed events, dialogs). */

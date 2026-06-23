@@ -11,7 +11,10 @@ import {
   getResourceGainTooltip,
   getActionDurationLine,
 } from "@/game/rules/tooltips";
-import CooldownButton, { gameActionButtonGridClassName } from "@/components/CooldownButton";
+import CooldownButton, {
+  gameActionButtonGridClassName,
+  gameActionButtonRowsClassName,
+} from "@/components/CooldownButton";
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
 import { canRevealEffects } from "@/game/rules/insightReveal";
 import { getCraftItemDescription } from "@/game/rules/craftItemDescription";
@@ -556,24 +559,26 @@ export default function CavePanel() {
                       {group.title}
                     </h3>
                   )}
-                  {group.subGroups.map((subGroup, subGroupIndex) => {
-                    const visibleActions = subGroup.actions.filter((action) => {
-                      if (action.showWhen !== undefined) {
-                        return action.showWhen;
-                      }
-                      return shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id];
-                    });
+                  <div className={gameActionButtonRowsClassName("w-full")}>
+                    {group.subGroups.map((subGroup, subGroupIndex) => {
+                      const visibleActions = subGroup.actions.filter((action) => {
+                        if (action.showWhen !== undefined) {
+                          return action.showWhen;
+                        }
+                        return shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id];
+                      });
 
-                    if (visibleActions.length === 0) return null;
+                      if (visibleActions.length === 0) return null;
 
-                    return (
-                      <div key={subGroupIndex} className={gameActionButtonGridClassName("w-full")}>
-                        {visibleActions.map((action) =>
-                          renderButton(action.id, action.label),
-                        )}
-                      </div>
-                    );
-                  })}
+                      return (
+                        <div key={subGroupIndex} className={gameActionButtonGridClassName("w-full")}>
+                          {visibleActions.map((action) =>
+                            renderButton(action.id, action.label),
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               );
             }
