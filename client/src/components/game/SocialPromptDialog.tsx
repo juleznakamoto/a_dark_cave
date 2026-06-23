@@ -167,12 +167,17 @@ function TaskRowStatusIcon({
           )}
           strokeWidth={2.5}
         />
-      ) : !fulfilled ? (
+      ) : fulfilled ? (
+        <Check
+          className="h-5 w-5 text-muted-foreground/60"
+          strokeWidth={2.5}
+        />
+      ) : (
         <Circle
           className="h-5 w-5 text-muted-foreground/60"
           strokeWidth={2}
         />
-      ) : null}
+      )}
     </div>
   );
 }
@@ -687,10 +692,16 @@ export default function SocialPromptDialog({
           <div
             className={cn(
               "rounded-md border border-border p-3 flex gap-3 items-center",
-              exclusiveInviteDone && "border-green-500/40 bg-green-500/5",
+              referralsComplete && "border-green-500/40 bg-green-500/5",
+              !referralsComplete &&
+              exclusiveInviteDone &&
+              "border-lime-500/30 bg-lime-500/[0.04]",
             )}
           >
-            <TaskRowStatusIcon claimed={exclusiveInviteDone} />
+            <TaskRowStatusIcon
+              claimed={referralsComplete}
+              fulfilled={exclusiveInviteDone && !referralsComplete}
+            />
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
