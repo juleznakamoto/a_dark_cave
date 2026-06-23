@@ -251,7 +251,7 @@ shop, the whole game unlocked, merchant-sold dark artifacts, and local + Steam C
 | `client/src/game/steamSaveAdapter.ts` | Mirrors the encoded `ADC2:` save blob to the Steam Cloud file; reconciles with IndexedDB by `playTime`. |
 | `client/src/achievements/steamAchievements.ts` | Maps the 62 ring achievements to Steam API names (`ACH_*`); unlocks on criteria-met (loop + load backfill). |
 | `scripts/build-electron.mjs` | esbuild bundles `main`/`preload` to `dist-electron/*.cjs`. |
-| `scripts/steam-upload.ps1` | Stages `release/win-unpacked` → `steam/content/` and uploads via SteamPipe (`npm run steam:upload`). |
+| `scripts/steam-upload.ps1` | Uploads `release/win-unpacked` to SteamPipe via `steamcmd` (`npm run steam:upload`). |
 
 **Edition seams (guarded by `isSteamBuild`):** Supabase short-circuits in `lib/supabase.ts`;
 `App.tsx` skips Playlight; `pages/game.tsx` skips session tracker, auth, purchase rehydrate,
@@ -287,7 +287,7 @@ App ID **4882240** in `steam_appid.txt`.
 1. **Depot anlegen** (falls noch keiner da): SteamPipe → *Depots* → Windows-Depot. Depot-ID in `steam/config.local.json` eintragen (Vorlage: `steam/config.example.json`).
 2. **Lokal bauen:** `npm run electron:package` → erzeugt `release/win-unpacked/` (Spieldateien) und `release/A Dark Cave-*-setup.exe` (Installer, **nicht** zu Steam hochladen).
 3. **Steamworks SDK** von der Partner-Seite laden, Pfad in `config.local.json` → `steamworksSdk`.
-4. **Hochladen:** `npm run steam:upload` (baut, staged nach `steam/content/`, läuft `steamcmd +run_app_build`).
+4. **Hochladen:** `npm run steam:upload` (baut bei Bedarf, lädt `release/win-unpacked/` direkt hoch).
 5. **Installation** (SteamPipe → Installation): Startprogramm = `A Dark Cave.exe` im Installationsverzeichnis.
 6. **Testen:** Paket *developer comp* muss das Depot enthalten → Build-Branch `default` in der Steam-Bibliothek testen.
 7. **Veröffentlichen** (Tab *Veröffentlichen*): Cloud-, Build- und Store-Änderungen live schalten.
