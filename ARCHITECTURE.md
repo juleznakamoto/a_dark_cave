@@ -236,7 +236,7 @@ data files for batch locale fixes.
 The same client codebase ships two editions, switched by the build-time flag
 **`isSteamBuild`** (`client/src/lib/edition.ts`, reads `import.meta.env.VITE_STEAM_BUILD === "1"`).
 The Steam build is a Windows desktop app with no online services (Supabase, Stripe,
-leaderboard, social, referral, marketing, Playlight, session/version pings), no real-money
+leaderboard, social, referral, marketing, Playlight, session pings), no real-money
 shop, the whole game unlocked, merchant-sold dark artifacts, and local + Steam Cloud saves.
 
 | Path | Responsibility |
@@ -254,7 +254,7 @@ shop, the whole game unlocked, merchant-sold dark artifacts, and local + Steam C
 **Edition seams (guarded by `isSteamBuild`):** Supabase short-circuits in `lib/supabase.ts`;
 `App.tsx` skips Playlight; `pages/game.tsx` skips session tracker, auth, purchase rehydrate,
 and Stripe return; `game/save.ts` takes the local-only path + Steam Cloud mirror; `game/loop.ts`
-skips version check + syncs Steam achievements; `state.ts` `createInitialState`/`restartGame`
+syncs Steam achievements; `state.ts` `createInitialState`/`restartGame`
 set `BTP=1` and grant `full_game` (merchant artifacts, no paywall); `GameContainer`/`ProfileMenu`
 hide shop/leaderboard/share/invite/auth; `pages/end-screen.tsx` unlocks Cruel Mode free once
 `hasWonAnyGame` is set.
