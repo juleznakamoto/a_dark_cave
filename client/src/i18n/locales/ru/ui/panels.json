@@ -230,4 +230,7 @@
     "focusGainedLog": "Вы получили {{count}} фокуса за отдых.",
     "villagersProducedLog": "Жители произвели: {{resources}}"
   }
+    "badges": {
+      "insightRevealSeeStatEffects": "See Stats effects for {{cost}} {{resource}}"
+    },
 }

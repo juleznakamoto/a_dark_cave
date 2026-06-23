@@ -230,4 +230,7 @@
     "focusGainedLog": "你通过休息获得了 {{count}} 点专注。",
     "villagersProducedLog": "村民生产了：{{resources}}"
   }
+    "badges": {
+      "insightRevealSeeStatEffects": "See Stats effects for {{cost}} {{resource}}"
+    },
 }

@@ -152,12 +152,18 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
           cost,
           resource: insightResource,
         })
-        : t("ui:badges.insightRevealSeeEffects", {
-          defaultValue: "See effects for {{cost}} {{resource}}",
-          cost,
-          resource: insightResource,
-        }),
-    [t, i18n.language, isTimedEvent, cost, insightResource],
+        : isStats
+          ? t("ui:badges.insightRevealSeeStatEffects", {
+            defaultValue: "See Stats effects for {{cost}} {{resource}}",
+            cost,
+            resource: insightResource,
+          })
+          : t("ui:badges.insightRevealSeeEffects", {
+            defaultValue: "See effects for {{cost}} {{resource}}",
+            cost,
+            resource: insightResource,
+          }),
+    [t, i18n.language, isTimedEvent, isStats, cost, insightResource],
   );
 
   if (!canShow || isExecuting) return null;

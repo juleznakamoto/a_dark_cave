@@ -230,4 +230,7 @@
     "focusGainedLog": "Vous avez gagné {{count}} de concentration grâce à votre repos.",
     "villagersProducedLog": "Les villageois ont produit : {{resources}}"
   }
+    "badges": {
+      "insightRevealSeeStatEffects": "See Stats effects for {{cost}} {{resource}}"
+    },
 }

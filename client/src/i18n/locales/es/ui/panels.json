@@ -148,6 +148,7 @@
     "priorRemove": "Haz clic para quitar al Prior deshonrado",
     "priorAssign": "Haz clic para asignar al Prior deshonrado",
     "insightRevealSeeEffects": "Ver efectos por {{cost}} {{resource}}",
+    "insightRevealSeeStatEffects": "Ver efectos de estadísticas por {{cost}} {{resource}}",
     "bonus": "Bonificación:",
     "nextBonus": "Próxima bonificación:",
     "craftMultiplier": "Artesanía x{{amount}}",
@@ -230,4 +231,7 @@
     "focusGainedLog": "Has ganado {{count}} de concentración con tu descanso.",
     "villagersProducedLog": "Los aldeanos produjeron: {{resources}}"
   }
+    "badges": {
+      "insightRevealSeeStatEffects": "See Stats effects for {{cost}} {{resource}}"
+    },
 }
