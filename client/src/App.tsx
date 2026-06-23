@@ -5,10 +5,17 @@ import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { initPlaylight } from "@/lib/playlight";
-import { isSteamBuild } from "@/lib/edition";
+
+const steamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
+
+function redirectHome() {
+  return Promise.resolve({ default: () => <Redirect to="/" /> });
+}
 
 // Lazy load admin dashboard (recharts, date-fns, 11 tabs - only admins need this)
-const AdminDashboard = lazy(() => import("@/pages/admin/dashboard"));
+const AdminDashboard = lazy(() =>
+  steamBuild ? redirectHome() : import("@/pages/admin/dashboard"),
+);
 
 // Lazy load game page (only loads after Light Fire click)
 const Game = lazy(() => import("@/pages/game"));
@@ -18,12 +25,24 @@ const StartScreenPage = lazy(() => import("@/pages/start-screen-page"));
 // Lazy load all other pages
 const EndScreenPage = lazy(() => import("@/pages/end-screen"));
 const NotFound = lazy(() => import("@/pages/not-found"));
-const ResetPassword = lazy(() => import("@/pages/reset-password"));
-const Imprint = lazy(() => import("@/pages/imprint"));
-const Privacy = lazy(() => import("@/pages/privacy"));
-const Terms = lazy(() => import("@/pages/terms"));
-const Withdrawal = lazy(() => import("@/pages/withdrawal"));
-const Unsubscribe = lazy(() => import("@/pages/unsubscribe"));
+const ResetPassword = lazy(() =>
+  steamBuild ? redirectHome() : import("@/pages/reset-password"),
+);
+const Imprint = lazy(() =>
+  steamBuild ? redirectHome() : import("@/pages/imprint"),
+);
+const Privacy = lazy(() =>
+  steamBuild ? redirectHome() : import("@/pages/privacy"),
+);
+const Terms = lazy(() =>
+  steamBuild ? redirectHome() : import("@/pages/terms"),
+);
+const Withdrawal = lazy(() =>
+  steamBuild ? redirectHome() : import("@/pages/withdrawal"),
+);
+const Unsubscribe = lazy(() =>
+  steamBuild ? redirectHome() : import("@/pages/unsubscribe"),
+);
 
 function Router() {
   return (
@@ -37,25 +56,12 @@ function Router() {
         <Route path="/boost" component={StartScreenPage} />
         <Route path="/game">{() => <Redirect to="/" />}</Route>
         <Route path="/end-screen" component={EndScreenPage} />
-        {isSteamBuild ? (
-          <>
-            <Route path="/imprint">{() => <Redirect to="/" />}</Route>
-            <Route path="/privacy">{() => <Redirect to="/" />}</Route>
-            <Route path="/terms">{() => <Redirect to="/" />}</Route>
-            <Route path="/withdrawal">{() => <Redirect to="/" />}</Route>
-            <Route path="/unsubscribe">{() => <Redirect to="/" />}</Route>
-            <Route path="/reset-password">{() => <Redirect to="/" />}</Route>
-          </>
-        ) : (
-          <>
-            <Route path="/imprint" component={Imprint} />
-            <Route path="/privacy" component={Privacy} />
-            <Route path="/terms" component={Terms} />
-            <Route path="/withdrawal" component={Withdrawal} />
-            <Route path="/unsubscribe" component={Unsubscribe} />
-            <Route path="/reset-password" component={ResetPassword} />
-          </>
-        )}
+        <Route path="/imprint" component={Imprint} />
+        <Route path="/privacy" component={Privacy} />
+        <Route path="/terms" component={Terms} />
+        <Route path="/withdrawal" component={Withdrawal} />
+        <Route path="/unsubscribe" component={Unsubscribe} />
+        <Route path="/reset-password" component={ResetPassword} />
         <Route path="/admin/dashboard" component={AdminDashboard} />
         <Route component={NotFound} />
       </Switch>
@@ -66,7 +72,7 @@ function Router() {
 function App() {
   useEffect(() => {
     // Playlight is a web-only discovery SDK; the Steam build ships no online services.
-    if (isSteamBuild) return;
+    if (steamBuild) return;
     initPlaylight().catch(() => { });
   }, []);
 

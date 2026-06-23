@@ -5,6 +5,8 @@ import {
   useMemo,
   useRef,
   useCallback,
+  lazy,
+  Suspense,
 } from "react";
 import GameTabs from "./GameTabs";
 import GameFooter from "./GameFooter";
@@ -31,10 +33,6 @@ import CombatDialog from "./CombatDialog";
 import IdleModeDialog from "./IdleModeDialog";
 import CubeDialog from "./CubeDialog";
 import InactivityDialog from "./InactivityDialog";
-import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
-import { ShopDialog } from "./ShopDialog";
-import LeaderboardDialog from "./LeaderboardDialog";
-import ShareDialog from "./ShareDialog";
 import RewardDialog from "./RewardDialog";
 import InvestmentResultDialog from "./InvestmentResultDialog";
 import MadnessDialog from "./MadnessDialog";
@@ -42,7 +40,6 @@ import InsightPotionDialog from "./InsightPotionDialog";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark, X } from "lucide-react";
 import { ProfileMenuProvider } from "./ProfileMenu";
-import InviteFriendsFloatingButton from "./InviteFriendsFloatingButton";
 import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
 import MistBackground from "@/components/ui/mist-background";
@@ -66,6 +63,11 @@ import { useTranslation } from "react-i18next";
 import { useIOSChromeViewportShell } from "@/hooks/useIOSChromeViewportShell";
 import { usePanelResize } from "./panelResize";
 import PanelResizeHandle from "./PanelResizeHandle";
+
+const steamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
+const WebOnlyDialogs = steamBuild
+  ? null
+  : lazy(() => import("./WebOnlyDialogs"));
 
 export default function GameContainer() {
   const { t } = useTranslation();
@@ -1265,25 +1267,17 @@ export default function GameContainer() {
         {/* Idle Mode Dialog */}
         <IdleModeDialog />
         <CubeDialog />
-        {/* Shop, leaderboard, share, full-game purchase, and invite are all
-            web-only (Stripe/Supabase/social). The Steam build omits them. */}
-        {!isSteamBuild && (
-          <>
-            <ShopDialog
-              isOpen={shopDialogOpen}
-              onClose={() => setShopDialogOpen(false)}
-              onOpen={() => setShopDialogOpen(true)}
+        {WebOnlyDialogs && (
+          <Suspense fallback={null}>
+            <WebOnlyDialogs
+              shopDialogOpen={shopDialogOpen}
+              setShopDialogOpen={setShopDialogOpen}
+              leaderboardDialogOpen={leaderboardDialogOpen}
+              setLeaderboardDialogOpen={setLeaderboardDialogOpen}
+              fullGamePurchaseDialogOpen={fullGamePurchaseDialogOpen}
+              setFullGamePurchaseDialogOpen={setFullGamePurchaseDialogOpen}
             />
-            <LeaderboardDialog
-              isOpen={leaderboardDialogOpen}
-              onClose={() => setLeaderboardDialogOpen(false)}
-            />
-            <ShareDialog />
-            <FullGamePurchaseDialog
-              isOpen={fullGamePurchaseDialogOpen}
-              onClose={() => setFullGamePurchaseDialogOpen(false)}
-            />
-          </>
+          </Suspense>
         )}
         {inactivityDialogOpen && <InactivityDialog />}
 
@@ -1309,7 +1303,6 @@ export default function GameContainer() {
           onClose={() => setInsightPotionDialog(false)}
         />
 
-        {!isSteamBuild && <InviteFriendsFloatingButton />}
       </div>
     </ProfileMenuProvider>
   );

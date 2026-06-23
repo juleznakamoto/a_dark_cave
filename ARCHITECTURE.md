@@ -264,6 +264,10 @@ hide shop/leaderboard/share/invite/auth; `pages/end-screen.tsx` unlocks Cruel Mo
 **Scripts:** `build:steam` (Vite client build with the flag), `electron:build` (bundle shell),
 `electron:dev` (build + run), `electron:package` (electron-builder Windows installer → `release/`).
 
+The Steam Vite build omits web-only chunks (Stripe, Supabase, admin dashboard, shop/leaderboard
+dialogs, legal pages) via `vite.config.ts` aliases to `client/src/stubs/steam/` and build-time
+lazy-import guards in `App.tsx` / `WebOnlyDialogs.tsx`.
+
 **Steamworks Auto-Cloud** (partner backend → app → Technical Settings → Steam Cloud): enable
 Steam Cloud, then add one Auto-Cloud row (Windows-only build):
 

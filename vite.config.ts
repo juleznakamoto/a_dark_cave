@@ -4,6 +4,9 @@ import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 import { compression } from "vite-plugin-compression2";
 
+const isSteamBuild = process.env.VITE_STEAM_BUILD === "1";
+const clientRoot = path.resolve(import.meta.dirname, "client");
+
 export default defineConfig({
   plugins: [
     react(),
@@ -23,12 +26,22 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": path.resolve(import.meta.dirname, "client", "src"),
+      "@": path.resolve(clientRoot, "src"),
       "@shared": path.resolve(import.meta.dirname, "shared"),
       "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+      ...(isSteamBuild
+        ? {
+          "@/lib/supabase": path.resolve(clientRoot, "src/stubs/steam/supabase.ts"),
+          "@/lib/playlight": path.resolve(clientRoot, "src/stubs/steam/playlight.ts"),
+          "@/lib/stripePaymentReturn": path.resolve(
+            clientRoot,
+            "src/stubs/steam/stripePaymentReturn.ts",
+          ),
+        }
+        : {}),
     },
   },
-  root: path.resolve(import.meta.dirname, "client"),
+  root: clientRoot,
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
@@ -41,20 +54,33 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        manualChunks: {
-          "vendor-react": ["react", "react-dom"],
-          "vendor-framer": ["framer-motion"],
-          "vendor-radix": [
-            "@radix-ui/react-dialog",
-            "@radix-ui/react-dropdown-menu",
-            "@radix-ui/react-select",
-            "@radix-ui/react-tabs",
-            "@radix-ui/react-toast",
-            "@radix-ui/react-tooltip",
-          ],
-          "vendor-stripe": ["@stripe/stripe-js", "@stripe/react-stripe-js"],
-          "vendor-supabase": ["@supabase/supabase-js"],
-        },
+        manualChunks: isSteamBuild
+          ? {
+            "vendor-react": ["react", "react-dom"],
+            "vendor-framer": ["framer-motion"],
+            "vendor-radix": [
+              "@radix-ui/react-dialog",
+              "@radix-ui/react-dropdown-menu",
+              "@radix-ui/react-select",
+              "@radix-ui/react-tabs",
+              "@radix-ui/react-toast",
+              "@radix-ui/react-tooltip",
+            ],
+          }
+          : {
+            "vendor-react": ["react", "react-dom"],
+            "vendor-framer": ["framer-motion"],
+            "vendor-radix": [
+              "@radix-ui/react-dialog",
+              "@radix-ui/react-dropdown-menu",
+              "@radix-ui/react-select",
+              "@radix-ui/react-tabs",
+              "@radix-ui/react-toast",
+              "@radix-ui/react-tooltip",
+            ],
+            "vendor-stripe": ["@stripe/stripe-js", "@stripe/react-stripe-js"],
+            "vendor-supabase": ["@supabase/supabase-js"],
+          },
       },
     },
   },
