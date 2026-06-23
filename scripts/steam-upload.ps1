@@ -4,7 +4,7 @@
   Stage the Electron win-unpacked folder and upload to Steam via SteamPipe.
 
 .USAGE
-  1. Copy config.example.json → config.local.json and set depotId + steamworksSdk path.
+  1. Copy config.example.json to config.local.json and set depotId + steamworksSdk path.
   2. Download Steamworks SDK from the partner site (SteamPipe docs link).
   3. Run:  npm run steam:upload
 
@@ -23,8 +23,8 @@ $configPath = Join-Path $Root "steam\config.local.json"
 if (-not (Test-Path $configPath)) {
   Write-Host ""
   Write-Host "Missing steam\config.local.json" -ForegroundColor Red
-  Write-Host "  Copy steam\config.example.json → steam\config.local.json"
-  Write-Host "  Set depotId (Steamworks → SteamPipe → Depots) and steamworksSdk path."
+  Write-Host "  Copy steam\config.example.json to steam\config.local.json"
+  Write-Host "  Set depotId (Steamworks > SteamPipe > Depots) and steamworksSdk path."
   Write-Host ""
   exit 1
 }
@@ -36,7 +36,7 @@ $buildDesc = [string]$config.buildDesc
 $sdkRoot = [string]$config.steamworksSdk
 
 if ($depotId -match "PASTE|YOUR") {
-  Write-Host "Set depotId in steam\config.local.json (Steamworks → SteamPipe → Depots)." -ForegroundColor Red
+  Write-Host "Set depotId in steam\config.local.json (Steamworks > SteamPipe > Depots)." -ForegroundColor Red
   exit 1
 }
 
@@ -59,11 +59,11 @@ if (-not $SkipBuild) {
 }
 
 if (-not (Test-Path $winUnpacked)) {
-  Write-Host "Missing release\win-unpacked — run: npm run electron:package" -ForegroundColor Red
+  Write-Host "Missing release\win-unpacked - run: npm run electron:package" -ForegroundColor Red
   exit 1
 }
 
-Write-Host "Staging win-unpacked → steam\content ..." -ForegroundColor Cyan
+Write-Host "Staging win-unpacked to steam\content ..." -ForegroundColor Cyan
 if (Test-Path $contentDir) { Remove-Item $contentDir -Recurse -Force }
 New-Item -ItemType Directory -Path $contentDir -Force | Out-Null
 Copy-Item -Path (Join-Path $winUnpacked "*") -Destination $contentDir -Recurse -Force
@@ -84,12 +84,13 @@ $outputRoot = ($outputDir -replace "\\", "/")
 $depotVdfName = "depot_build_$depotId.vdf"
 $depotVdfPath = Join-Path $generatedDir $depotVdfName
 $appVdfPath = Join-Path $generatedDir "app_build_$appId.vdf"
+$depotVdfForApp = ($depotVdfPath -replace "\\", "/")
 
-@'
+$depotVdf = @"
 "DepotBuildConfig"
 {
-  "DepotID" "{DEPOT_ID}"
-  "ContentRoot" "{CONTENT_ROOT}/"
+  "DepotID" "$depotId"
+  "ContentRoot" "$contentRoot/"
   "FileMapping"
   {
     "LocalPath" "*"
@@ -98,33 +99,28 @@ $appVdfPath = Join-Path $generatedDir "app_build_$appId.vdf"
   }
   "FileExclusion" "*.pdb"
 }
-'@ -replace '\{DEPOT_ID\}', $depotId -replace '\{CONTENT_ROOT\}', $contentRoot |
-  Set-Content -Path $depotVdfPath -Encoding UTF8
+"@
+Set-Content -Path $depotVdfPath -Value $depotVdf -Encoding UTF8
 
-@'
+$appVdf = @"
 "AppBuild"
 {
-  "AppID" "{APP_ID}"
-  "Desc" "{BUILD_DESC}"
-  "BuildOutput" "{OUTPUT_ROOT}/"
-  "ContentRoot" "{CONTENT_ROOT}/"
+  "AppID" "$appId"
+  "Desc" "$buildDesc"
+  "BuildOutput" "$outputRoot/"
+  "ContentRoot" "$contentRoot/"
   "Depots"
   {
-    "{DEPOT_ID}" "{DEPOT_VDF}"
+    "$depotId" "$depotVdfForApp"
   }
 }
-'@ -replace '\{APP_ID\}', $appId `
-   -replace '\{BUILD_DESC\}', $buildDesc `
-   -replace '\{OUTPUT_ROOT\}', $outputRoot `
-   -replace '\{CONTENT_ROOT\}', $contentRoot `
-   -replace '\{DEPOT_ID\}', $depotId `
-   -replace '\{DEPOT_VDF\}', ($depotVdfName -replace "\\", "/") |
-  Set-Content -Path $appVdfPath -Encoding UTF8
+"@
+Set-Content -Path $appVdfPath -Value $appVdf -Encoding UTF8
 
 Write-Host "  VDF: $appVdfPath" -ForegroundColor DarkGray
 
 if ($StageOnly) {
-  Write-Host "StageOnly — skipped Steam upload." -ForegroundColor Yellow
+  Write-Host "StageOnly - skipped Steam upload." -ForegroundColor Yellow
   exit 0
 }
 
