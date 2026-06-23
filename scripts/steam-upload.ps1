@@ -109,6 +109,7 @@ $appVdf = @"
   "Desc" "$buildDesc"
   "BuildOutput" "$outputRoot/"
   "ContentRoot" "$contentRoot/"
+  "SetLive" "default"
   "Depots"
   {
     "$depotId" "$depotVdfName"
