@@ -585,7 +585,7 @@ export default function TimedEventPanel() {
                           <RelevantStatIcon key={stat} stat={stat} />
                         ))}
                       {isPurchased && (
-                        <span className="inline-flex items-center justify-center text-[11px] leading-none">
+                        <span className="inline-flex items-center justify-center text-[12px] leading-none">
                           ✓
                         </span>
                       )}
