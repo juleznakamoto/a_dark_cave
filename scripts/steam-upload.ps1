@@ -12,12 +12,18 @@
 #>
 param(
   [switch]$SkipBuild,
-  [switch]$StageOnly
+  [switch]$StageOnly,
+  [switch]$UploadOnly
 )
 
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 Set-Location $Root
+
+function Write-Utf8NoBom([string]$Path, [string]$Content) {
+  $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+  [System.IO.File]::WriteAllText($Path, $Content, $utf8NoBom)
+}
 
 $configPath = Join-Path $Root "steam\config.local.json"
 if (-not (Test-Path $configPath)) {
@@ -52,27 +58,32 @@ $contentDir = Join-Path $Root "steam\content"
 $outputDir = Join-Path $Root "steam\output"
 $generatedDir = Join-Path $Root "steam\generated"
 
-if (-not $SkipBuild) {
+if (-not $SkipBuild -and -not $UploadOnly) {
   Write-Host "Building Steam edition (Vite + Electron + NSIS)..." -ForegroundColor Cyan
   npm run electron:package
   if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 
-if (-not (Test-Path $winUnpacked)) {
-  Write-Host "Missing release\win-unpacked - run: npm run electron:package" -ForegroundColor Red
+if (-not $UploadOnly) {
+  if (-not (Test-Path $winUnpacked)) {
+    Write-Host "Missing release\win-unpacked - run: npm run electron:package" -ForegroundColor Red
+    exit 1
+  }
+
+  Write-Host "Staging win-unpacked to steam\content ..." -ForegroundColor Cyan
+  if (Test-Path $contentDir) { Remove-Item $contentDir -Recurse -Force }
+  New-Item -ItemType Directory -Path $contentDir -Force | Out-Null
+  Copy-Item -Path (Join-Path $winUnpacked "*") -Destination $contentDir -Recurse -Force
+
+  $exe = Get-ChildItem $contentDir -Filter "*.exe" | Select-Object -First 1
+  if ($exe) {
+    Write-Host "  Game executable: $($exe.Name)" -ForegroundColor Green
+  } else {
+    Write-Host "  Warning: no .exe found in staged content." -ForegroundColor Yellow
+  }
+} elseif (-not (Test-Path $contentDir)) {
+  Write-Host "Missing steam\content - run without -UploadOnly first." -ForegroundColor Red
   exit 1
-}
-
-Write-Host "Staging win-unpacked to steam\content ..." -ForegroundColor Cyan
-if (Test-Path $contentDir) { Remove-Item $contentDir -Recurse -Force }
-New-Item -ItemType Directory -Path $contentDir -Force | Out-Null
-Copy-Item -Path (Join-Path $winUnpacked "*") -Destination $contentDir -Recurse -Force
-
-$exe = Get-ChildItem $contentDir -Filter "*.exe" | Select-Object -First 1
-if ($exe) {
-  Write-Host "  Game executable: $($exe.Name)" -ForegroundColor Green
-} else {
-  Write-Host "  Warning: no .exe found in staged content." -ForegroundColor Yellow
 }
 
 New-Item -ItemType Directory -Path $generatedDir -Force | Out-Null
@@ -84,7 +95,6 @@ $outputRoot = ($outputDir -replace "\\", "/")
 $depotVdfName = "depot_build_$depotId.vdf"
 $depotVdfPath = Join-Path $generatedDir $depotVdfName
 $appVdfPath = Join-Path $generatedDir "app_build_$appId.vdf"
-$depotVdfForApp = ($depotVdfPath -replace "\\", "/")
 
 $depotVdf = @"
 "DepotBuildConfig"
@@ -100,7 +110,7 @@ $depotVdf = @"
   "FileExclusion" "*.pdb"
 }
 "@
-Set-Content -Path $depotVdfPath -Value $depotVdf -Encoding UTF8
+Write-Utf8NoBom $depotVdfPath $depotVdf
 
 $appVdf = @"
 "AppBuild"
@@ -111,11 +121,11 @@ $appVdf = @"
   "ContentRoot" "$contentRoot/"
   "Depots"
   {
-    "$depotId" "$depotVdfForApp"
+    "$depotId" "$depotVdfName"
   }
 }
 "@
-Set-Content -Path $appVdfPath -Value $appVdf -Encoding UTF8
+Write-Utf8NoBom $appVdfPath $appVdf
 
 Write-Host "  VDF: $appVdfPath" -ForegroundColor DarkGray
 
@@ -126,9 +136,34 @@ if ($StageOnly) {
 
 Write-Host ""
 Write-Host "Uploading to Steam (App $appId, Depot $depotId)..." -ForegroundColor Cyan
-Write-Host "Log in when prompted (Steam Guard if enabled)." -ForegroundColor DarkGray
+Write-Host "You need a Steam account with access to this app in Steamworks." -ForegroundColor DarkGray
 Write-Host ""
 
+$steamUser = $config.steamUsername
+if (-not $steamUser) {
+  $steamUser = Read-Host "Steam username (partner account)"
+}
+
+$builderDir = Split-Path -Parent $steamcmd
 $appVdfForCmd = ($appVdfPath -replace "\\", "/")
-& $steamcmd "+login" "+run_app_build" $appVdfForCmd "+quit"
-exit $LASTEXITCODE
+$logPath = Join-Path $outputDir "upload.log"
+
+Push-Location $builderDir
+try {
+  Write-Host "Running steamcmd (password + Steam Guard prompted below)..." -ForegroundColor Cyan
+  & $steamcmd +login $steamUser +run_app_build $appVdfForCmd +quit *>&1 | Tee-Object -FilePath $logPath
+  $exitCode = $LASTEXITCODE
+} finally {
+  Pop-Location
+}
+
+if ($exitCode -ne 0) {
+  Write-Host ""
+  Write-Host "Upload failed (exit $exitCode). Log: $logPath" -ForegroundColor Red
+  exit $exitCode
+}
+
+Write-Host ""
+Write-Host "Upload finished. Check Steamworks > SteamPipe > Ihre Builds." -ForegroundColor Green
+Write-Host "Then publish: Steamworks > Veroeffentlichen (Publish tab)." -ForegroundColor Yellow
+exit 0

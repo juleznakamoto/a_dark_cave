@@ -17,6 +17,7 @@
     "electron:package": "npm run build:steam && npm run electron:build && electron-builder --win",
     "steam:stage": "powershell -ExecutionPolicy Bypass -File scripts/steam-upload.ps1 -StageOnly",
     "steam:upload": "powershell -ExecutionPolicy Bypass -File scripts/steam-upload.ps1",
+    "steam:upload-only": "powershell -ExecutionPolicy Bypass -File scripts/steam-upload.ps1 -UploadOnly",
     "start": "NODE_ENV=production node dist/index.js",
     "check": "tsc",
     "db:push": "drizzle-kit push",
