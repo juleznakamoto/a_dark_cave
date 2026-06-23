@@ -27,15 +27,15 @@
     "title": "Restez connecté et gagnez des récompenses",
     "description": "Accomplissez les tâches ci-dessous pour recevoir des bonus. Accomplissez toutes les tâches pour recevoir un objet exclusif.",
     "signUpRequiresSignInTooltip": "inscrivez-vous pour accomplir la tâche", //x1.6
-    "signUpTitle": "S'inscrire (+{{amount}} or)",
+    "signUpTitle": "S'inscrire",
     "signUpDesc": "Créez un compte gratuit pour synchroniser votre progression entre vos appareils. Sans compte, votre progression n'est enregistrée que localement et peut être perdue.",
     "signUpButton": "S'inscrire",
-    "emailUpdatesTitle": "Mises à jour par e-mail (+{{amount}} or)",
+    "emailUpdatesTitle": "Mises à jour par e-mail",
     "subscribe": "S'abonner",
     "claim": "Récupérer",
-    "playlightTitle": "Découvrir 1 jeu (+{{amount}} or)",
+    "playlightTitle": "Découvrir 1 jeu",
     "discoverGames": "Découvrir des jeux", //x1.3
-    "inviteTitle": "Inviter 1 ami (+{{amount}} or chacun)",
+    "inviteTitle": "Inviter 1 ami",
     "inviteDesc": "Vous pouvez inviter jusqu'à {{cap}} amis. À chaque fois, vous recevrez tous les deux {{amount}} or ({{count}}/{{cap}} invités).",
     "copyInviteLink": "Copier le lien d'invitation",
     "progressComplete": "Vous avez terminé toutes les tâches. Vous recevrez bientôt votre récompense.",
@@ -47,11 +47,11 @@
     "followRewardLog": "Vous avez reçu {{amount}} or pour nous suivre sur {{platform}} !",
     "platforms": {
       "instagram": {
-        "title": "Instagram (+{{amount}} or)",
+        "title": "Instagram",
         "actionFollow": "Suivre"
       },
       "reddit": {
-        "title": "Reddit (+{{amount}} or)",
+        "title": "Reddit",
         "actionJoin": "Rejoindre"
       }
     },

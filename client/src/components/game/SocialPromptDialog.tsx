@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type ComponentProps } from "react";
+import { useCallback, useEffect, useState, type ComponentProps, type ReactNode } from "react";
 import {
   Dialog,
   DialogContent,
@@ -173,6 +173,32 @@ function TaskRowStatusIcon({
           strokeWidth={2}
         />
       ) : null}
+    </div>
+  );
+}
+
+function TaskGoldBadge({ amount }: { amount: number }) {
+  const { t } = useTranslation("ui");
+  return (
+    <span className="inline-flex shrink-0 items-center rounded px-2 py-0.5 text-[11px] font-semibold tabular-nums bg-yellow-500/15 text-yellow-400 border border-yellow-500/35">
+      {t("invite.goldBonus", { amount })}
+    </span>
+  );
+}
+
+function TaskRowActions({
+  amount,
+  className,
+  children,
+}: {
+  amount: number;
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className={cn("flex shrink-0 items-center gap-2", className)}>
+      <TaskGoldBadge amount={amount} />
+      {children}
     </div>
   );
 }
@@ -465,32 +491,35 @@ export default function SocialPromptDialog({
                   <div className="flex items-center gap-2 min-w-0">
                     <SocialPlatformGlyph platformId={platform.id} />
                     <span className="font-medium text-sm truncate">
-                      {getSocialPlatformTitle(platform.id, platform.reward)}
+                      {getSocialPlatformTitle(platform.id)}
                     </span>
                   </div>
-                  {!claimed &&
-                    (fulfilled ? (
-                      <TaskClaimButton
-                        onClick={() =>
-                          claimWithAnimation(platform.id, () =>
-                            claimSocialFollowGoldReward(
-                              platform.id,
-                              platform.reward,
-                            ),
-                          )
-                        }
-                      />
-                    ) : (
-                      <Button
-                        size="xs"
-                        className="shrink-0 font-medium px-3"
-                        onClick={() =>
-                          fulfillSocialFollowReward(platform.id, platform.url)
-                        }
-                      >
-                        {getSocialPlatformActionLabel(platform.id)}
-                      </Button>
-                    ))}
+                  {!claimed && (
+                    <TaskRowActions amount={platform.reward}>
+                      {fulfilled ? (
+                        <TaskClaimButton
+                          onClick={() =>
+                            claimWithAnimation(platform.id, () =>
+                              claimSocialFollowGoldReward(
+                                platform.id,
+                                platform.reward,
+                              ),
+                            )
+                          }
+                        />
+                      ) : (
+                        <Button
+                          size="xs"
+                          className="shrink-0 font-medium px-3"
+                          onClick={() =>
+                            fulfillSocialFollowReward(platform.id, platform.url)
+                          }
+                        >
+                          {getSocialPlatformActionLabel(platform.id)}
+                        </Button>
+                      )}
+                    </TaskRowActions>
+                  )}
                 </div>
               </div>
             );
@@ -519,38 +548,38 @@ export default function SocialPromptDialog({
                     aria-hidden
                   />
                   <span className="font-medium text-sm">
-                    {t("socialPrompt.playlightTitle", {
-                      amount: PLAYLIGHT_DISCOVER_REWARD_GOLD,
-                    })}
+                    {t("socialPrompt.playlightTitle")}
                   </span>
                 </div>
               </div>
-              {!playlightDiscoverRewardClaimed &&
-                (playlightDiscoverRewardFulfilled ? (
-                  <TaskClaimButton
-                    className="self-center"
-                    onClick={() =>
-                      claimWithAnimation(PLAYLIGHT_DISCOVER_REWARD_KEY, () =>
-                        claimPlaylightDiscoverGoldReward(),
-                      )
-                    }
-                  />
-                ) : (
-                  <Button
-                    size="xs"
-                    className="shrink-0 font-medium px-3 self-center"
-                    disabled={discoverGamesLoading}
-                    onClick={() => {
-                      if (discoverGamesLoading) return;
-                      setDiscoverGamesLoading(true);
-                      void fulfillPlaylightDiscoverReward().finally(() => {
-                        setDiscoverGamesLoading(false);
-                      });
-                    }}
-                  >
-                    {t("socialPrompt.discoverGames")}
-                  </Button>
-                ))}
+              {!playlightDiscoverRewardClaimed && (
+                <TaskRowActions amount={PLAYLIGHT_DISCOVER_REWARD_GOLD} className="self-center">
+                  {playlightDiscoverRewardFulfilled ? (
+                    <TaskClaimButton
+                      onClick={() =>
+                        claimWithAnimation(PLAYLIGHT_DISCOVER_REWARD_KEY, () =>
+                          claimPlaylightDiscoverGoldReward(),
+                        )
+                      }
+                    />
+                  ) : (
+                    <Button
+                      size="xs"
+                      className="shrink-0 font-medium px-3"
+                      disabled={discoverGamesLoading}
+                      onClick={() => {
+                        if (discoverGamesLoading) return;
+                        setDiscoverGamesLoading(true);
+                        void fulfillPlaylightDiscoverReward().finally(() => {
+                          setDiscoverGamesLoading(false);
+                        });
+                      }}
+                    >
+                      {t("socialPrompt.discoverGames")}
+                    </Button>
+                  )}
+                </TaskRowActions>
+              )}
             </div>
           </div>
 
@@ -573,9 +602,7 @@ export default function SocialPromptDialog({
                 <div className="flex items-center gap-2">
                   <User className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
                   <span className="font-medium text-sm">
-                    {t("socialPrompt.signUpTitle", {
-                      amount: SIGN_UP_WELCOME_GOLD,
-                    })}
+                    {t("socialPrompt.signUpTitle")}
                   </span>
                   {!signUpClaimed && !signUpFulfilled && (
                     <TaskInfoIcon
@@ -585,23 +612,25 @@ export default function SocialPromptDialog({
                   )}
                 </div>
               </div>
-              {!signUpClaimed &&
-                (signUpFulfilled ? (
-                  <TaskClaimButton
-                    className="self-center"
-                    onClick={() =>
-                      claimWithAnimation("signup", () => claimSignupWelcomeGold())
-                    }
-                  />
-                ) : (
-                  <Button
-                    size="xs"
-                    className="shrink-0 font-medium px-3 self-center"
-                    onClick={handleSignUpTaskClick}
-                  >
-                    {t("socialPrompt.signUpButton")}
-                  </Button>
-                ))}
+              {!signUpClaimed && (
+                <TaskRowActions amount={SIGN_UP_WELCOME_GOLD} className="self-center">
+                  {signUpFulfilled ? (
+                    <TaskClaimButton
+                      onClick={() =>
+                        claimWithAnimation("signup", () => claimSignupWelcomeGold())
+                      }
+                    />
+                  ) : (
+                    <Button
+                      size="xs"
+                      className="shrink-0 font-medium px-3"
+                      onClick={handleSignUpTaskClick}
+                    >
+                      {t("socialPrompt.signUpButton")}
+                    </Button>
+                  )}
+                </TaskRowActions>
+              )}
             </div>
           </div>
 
@@ -624,35 +653,34 @@ export default function SocialPromptDialog({
                 <div className="flex items-center gap-2">
                   <Mail className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
                   <span className="font-medium text-sm">
-                    {t("socialPrompt.emailUpdatesTitle", {
-                      amount: MARKETING_SUBSCRIBE_GOLD,
-                    })}
+                    {t("socialPrompt.emailUpdatesTitle")}
                   </span>
                 </div>
               </div>
-              {!emailRewardClaimed &&
-                (emailRewardFulfilled ? (
-                  <TaskClaimButton
-                    className="self-center"
-                    onClick={() =>
-                      claimWithAnimation(MARKETING_EMAIL_REWARD_KEY, () =>
-                        claimMarketingEmailGoldReward(),
-                      )
-                    }
-                  />
-                ) : (
-                  <LockedSocialButton
-                    locked={!isUserSignedIn}
-                    tooltipId="social-prompt-subscribe"
-                    tooltipText={t("socialPrompt.signUpRequiresSignInTooltip")}
-                    size="xs"
-                    className="self-center"
-                    disabled={prefLoading || subscribeLoading}
-                    onClick={() => void handleSubscribe()}
-                  >
-                    {t("socialPrompt.subscribe")}
-                  </LockedSocialButton>
-                ))}
+              {!emailRewardClaimed && (
+                <TaskRowActions amount={MARKETING_SUBSCRIBE_GOLD} className="self-center">
+                  {emailRewardFulfilled ? (
+                    <TaskClaimButton
+                      onClick={() =>
+                        claimWithAnimation(MARKETING_EMAIL_REWARD_KEY, () =>
+                          claimMarketingEmailGoldReward(),
+                        )
+                      }
+                    />
+                  ) : (
+                    <LockedSocialButton
+                      locked={!isUserSignedIn}
+                      tooltipId="social-prompt-subscribe"
+                      tooltipText={t("socialPrompt.signUpRequiresSignInTooltip")}
+                      size="xs"
+                      disabled={prefLoading || subscribeLoading}
+                      onClick={() => void handleSubscribe()}
+                    >
+                      {t("socialPrompt.subscribe")}
+                    </LockedSocialButton>
+                  )}
+                </TaskRowActions>
+              )}
             </div>
           </div>
 
@@ -664,37 +692,37 @@ export default function SocialPromptDialog({
           >
             <TaskRowStatusIcon claimed={exclusiveInviteDone} />
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
-              <div className="min-w-0 flex-1 space-y-1">
+              <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <UserPlus
                     className="h-4 w-4 shrink-0 opacity-90"
                     aria-hidden
                   />
                   <span className="font-medium text-sm">
-                    {t("socialPrompt.inviteTitle", {
-                      amount: REFERRAL_REWARD_GOLD,
-                    })}
+                    {t("socialPrompt.inviteTitle")}
                   </span>
+                  <TaskInfoIcon
+                    tooltipId="social-prompt-invite-info"
+                    tooltipText={t("socialPrompt.inviteDesc", {
+                      cap: SOCIAL_PROMPT_REFERRAL_CAP,
+                      amount: REFERRAL_REWARD_GOLD,
+                      count: referralCount,
+                    })}
+                  />
                 </div>
-                <p className="text-xs text-muted-foreground leading-snug">
-                  {t("socialPrompt.inviteDesc", {
-                    cap: SOCIAL_PROMPT_REFERRAL_CAP,
-                    amount: REFERRAL_REWARD_GOLD,
-                    count: referralCount,
-                  })}
-                </p>
               </div>
               {!referralsComplete && (
-                <LockedSocialButton
-                  locked={!isUserSignedIn}
-                  tooltipId="social-prompt-invite"
-                  tooltipText={t("socialPrompt.signUpRequiresSignInTooltip")}
-                  size="xs"
-                  className="self-center"
-                  onClick={() => void handleCopyInvite()}
-                >
-                  {t("socialPrompt.copyInviteLink")}
-                </LockedSocialButton>
+                <TaskRowActions amount={REFERRAL_REWARD_GOLD} className="self-center">
+                  <LockedSocialButton
+                    locked={!isUserSignedIn}
+                    tooltipId="social-prompt-invite"
+                    tooltipText={t("socialPrompt.signUpRequiresSignInTooltip")}
+                    size="xs"
+                    onClick={() => void handleCopyInvite()}
+                  >
+                    {t("socialPrompt.copyInviteLink")}
+                  </LockedSocialButton>
+                </TaskRowActions>
               )}
             </div>
           </div>

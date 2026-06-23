@@ -27,15 +27,15 @@
     "title": "Mantenha-se conectado e ganhe Recompensas",
     "description": "Conclua as tarefas abaixo para receber bônus. Conclua todas as tarefas para receber um item exclusivo.",
     "signUpRequiresSignInTooltip": "cadastre-se para concluir a tarefa",
-    "signUpTitle": "Cadastre-se (+{{amount}} de Ouro)",
+    "signUpTitle": "Cadastre-se",
     "signUpDesc": "Crie uma conta gratuita para sincronizar seu progresso entre dispositivos. Sem uma conta, seu progresso é salvo apenas localmente e pode ser perdido.",
     "signUpButton": "Cadastrar",
-    "emailUpdatesTitle": "Novidades por e-mail (+{{amount}} de Ouro)",
+    "emailUpdatesTitle": "Novidades por e-mail",
     "subscribe": "Inscrever-se",
     "claim": "Resgatar",
-    "playlightTitle": "Descubra 1 jogo (+{{amount}} de Ouro)",
+    "playlightTitle": "Descubra 1 jogo",
     "discoverGames": "Descobrir jogos",
-    "inviteTitle": "Convide 1 amigo (+{{amount}} de Ouro cada)",
+    "inviteTitle": "Convide 1 amigo",
     "inviteDesc": "Você pode convidar até {{cap}} amigos. A cada vez, vocês dois receberão {{amount}} de Ouro ({{count}}/{{cap}} convidados).",
     "copyInviteLink": "Copiar link de convite",
     "progressComplete": "Você concluiu todas as tarefas. Em breve receberá sua recompensa.",
@@ -49,11 +49,11 @@
     "followRewardLog": "Você recebeu {{amount}} de Ouro por nos seguir no {{platform}}!",
     "platforms": {
       "instagram": {
-        "title": "Instagram (+{{amount}} de Ouro)",
+        "title": "Instagram",
         "actionFollow": "Seguir"
       },
       "reddit": {
-        "title": "Reddit (+{{amount}} de Ouro)",
+        "title": "Reddit",
         "actionJoin": "Participar"
       }
     }

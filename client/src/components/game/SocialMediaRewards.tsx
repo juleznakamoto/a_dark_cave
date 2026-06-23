@@ -63,7 +63,7 @@ export default function SocialMediaRewards() {
                 ) : (
                   <img
                     src={platform.icon}
-                    alt={getSocialPlatformTitle(platform.id, platform.reward)}
+                    alt={getSocialPlatformTitle(platform.id)}
                     className="w-3 h-3 opacity-90"
                   />
                 )}

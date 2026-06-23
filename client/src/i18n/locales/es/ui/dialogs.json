@@ -27,15 +27,15 @@
     "title": "Mantente conectado y gana recompensas",
     "description": "Completa las tareas siguientes para recibir bonificaciones. Completa todas las tareas para recibir un objeto exclusivo.",
     "signUpRequiresSignInTooltip": "regístrate para completar la tarea", //x1.4
-    "signUpTitle": "Registrarse (+{{amount}} oro)",
+    "signUpTitle": "Registrarse",
     "signUpDesc": "Crea una cuenta gratuita para sincronizar tu progreso entre dispositivos. Sin cuenta, tu progreso solo se guarda localmente y puede perderse.",
     "signUpButton": "Registrarse",
-    "emailUpdatesTitle": "Actualizaciones por correo (+{{amount}} oro)", //x1.4
+    "emailUpdatesTitle": "Actualizaciones por correo", //x1.4
     "subscribe": "Suscribirse", //x1.2
     "claim": "Reclamar",
-    "playlightTitle": "Descubrir 1 juego (+{{amount}} oro)",
+    "playlightTitle": "Descubrir 1 juego",
     "discoverGames": "Descubrir juegos",
-    "inviteTitle": "Invitar a 1 amigo (+{{amount}} oro cada uno)",
+    "inviteTitle": "Invitar a 1 amigo",
     "inviteDesc": "Puedes invitar hasta {{cap}} amigos. Cada vez, ambos recibiréis {{amount}} de oro ({{count}}/{{cap}} invitados).",
     "copyInviteLink": "Copiar enlace de invitación",
     "progressComplete": "Has completado todas las tareas. Pronto recibirás tu recompensa.",
@@ -47,11 +47,11 @@
     "followRewardLog": "Has recibido {{amount}} de oro por seguirnos en {{platform}}.",
     "platforms": {
       "instagram": {
-        "title": "Instagram (+{{amount}} oro)",
+        "title": "Instagram",
         "actionFollow": "Seguir"
       },
       "reddit": {
-        "title": "Reddit (+{{amount}} oro)",
+        "title": "Reddit",
         "actionJoin": "Unirse"
       }
     },

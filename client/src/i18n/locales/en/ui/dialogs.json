@@ -27,15 +27,15 @@
     "title": "Stay connected and earn Rewards",
     "description": "Complete the tasks below to receive bonuses. Complete all tasks to receive an exclusive item.",
     "signUpRequiresSignInTooltip": "sign up to complete task",
-    "signUpTitle": "Sign up (+{{amount}} Gold)",
+    "signUpTitle": "Sign up",
     "signUpDesc": "Create a free account to sync your game progress across devices. Without an account, your progress is only saved locally and may be lost.",
     "signUpButton": "Sign Up",
-    "emailUpdatesTitle": "Email updates (+{{amount}} Gold)",
+    "emailUpdatesTitle": "Email updates",
     "subscribe": "Subscribe",
     "claim": "Claim",
-    "playlightTitle": "Discover 1 game (+{{amount}} Gold)",
+    "playlightTitle": "Discover 1 game",
     "discoverGames": "Discover games",
-    "inviteTitle": "Invite 1 friend (+{{amount}} Gold each)",
+    "inviteTitle": "Invite 1 friend",
     "inviteDesc": "You can invite up to {{cap}} friends. Each time both of you will receive {{amount}} Gold ({{count}}/{{cap}} invited).",
     "copyInviteLink": "Copy invite link",
     "progressComplete": "You have finished all tasks. You will soon receive your reward.",
@@ -49,11 +49,11 @@
     "followRewardLog": "You received {{amount}} Gold for following us on {{platform}}!",
     "platforms": {
       "instagram": {
-        "title": "Instagram (+{{amount}} Gold)",
+        "title": "Instagram",
         "actionFollow": "Follow"
       },
       "reddit": {
-        "title": "Reddit (+{{amount}} Gold)",
+        "title": "Reddit",
         "actionJoin": "Join"
       }
     }

@@ -27,15 +27,15 @@
     "title": "Bleib in Verbindung und verdiene Belohnungen", //ok
     "description": "Schließe die Aufgaben unten ab, um Boni zu erhalten. Schließe alle Aufgaben ab, um einen exklusiven Gegenstand zu erhalten.",
     "signUpRequiresSignInTooltip": "Registriere dich, um die Aufgabe abzuschließen", //x1.9
-    "signUpTitle": "Registrieren (+{{amount}} Gold)", //ok
+    "signUpTitle": "Registrieren", //ok
     "signUpDesc": "Erstelle ein kostenloses Konto, um deinen Spielfortschritt geräteübergreifend zu synchronisieren. Ohne Konto wird dein Fortschritt nur lokal gespeichert und kann verloren gehen.",
     "signUpButton": "Registrieren", //ok
-    "emailUpdatesTitle": "E-Mail-Updates (+{{amount}} Gold)",
+    "emailUpdatesTitle": "E-Mail-Updates",
     "subscribe": "Abonnieren",
     "claim": "Abholen",
-    "playlightTitle": "1 Spiel entdecken (+{{amount}} Gold)",
+    "playlightTitle": "1 Spiel entdecken",
     "discoverGames": "Spiele entdecken",
-    "inviteTitle": "1 Freund einladen (+{{amount}} Gold je Person)",
+    "inviteTitle": "1 Freund einladen",
     "inviteDesc": "Du kannst bis zu {{cap}} Freunde einladen. Jedes Mal erhalten ihr beide {{amount}} Gold ({{count}}/{{cap}} eingeladen).",
     "copyInviteLink": "Link kopieren", //ok
     "progressComplete": "Du hast alle Aufgaben abgeschlossen. Du erhältst bald deine Belohnung.",
@@ -49,11 +49,11 @@
     "followRewardLog": "Du hast {{amount}} Gold erhalten, weil du uns auf {{platform}} folgst!",
     "platforms": {
       "instagram": {
-        "title": "Instagram (+{{amount}} Gold)",
+        "title": "Instagram",
         "actionFollow": "Folgen"
       },
       "reddit": {
-        "title": "Reddit (+{{amount}} Gold)",
+        "title": "Reddit",
         "actionJoin": "Beitreten"
       }
     }

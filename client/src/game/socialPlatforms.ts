@@ -25,18 +25,8 @@ export const SOCIAL_PLATFORMS: readonly SocialPlatformConfig[] = [
 
 export function getSocialPlatformTitle(
   platformId: SocialPlatformConfig["id"],
-  reward: number,
 ): string {
-  const fallback =
-    platformId === "reddit"
-      ? `Reddit (+${reward} Gold)`
-      : `Instagram (+${reward} Gold)`;
-  return tWithFallback(
-    "ui",
-    `socialPrompt.platforms.${platformId}.title`,
-    fallback,
-    { amount: reward },
-  );
+  return getSocialPlatformName(platformId);
 }
 
 export function getSocialPlatformName(

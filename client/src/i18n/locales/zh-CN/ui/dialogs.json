@@ -27,15 +27,15 @@
     "title": "保持联系，赢取奖励",
     "description": "完成下方任务以获得奖励。全部完成可获得专属物品。",
     "signUpRequiresSignInTooltip": "注册以完成任务",
-    "signUpTitle": "注册 (+{{amount}} 黄金)",
+    "signUpTitle": "注册",
     "signUpDesc": "创建免费账户以跨设备同步游戏进度。没有账户时，进度仅保存在本地，可能会丢失。",
     "signUpButton": "注册",
-    "emailUpdatesTitle": "邮件订阅 (+{{amount}} 黄金)",
+    "emailUpdatesTitle": "邮件订阅",
     "subscribe": "订阅",
     "claim": "领取",
-    "playlightTitle": "发现 1 款游戏 (+{{amount}} 黄金)",
+    "playlightTitle": "发现 1 款游戏",
     "discoverGames": "发现游戏",
-    "inviteTitle": "邀请 1 位好友 (各得 {{amount}} 黄金)",
+    "inviteTitle": "邀请 1 位好友",
     "inviteDesc": "最多可邀请 {{cap}} 位好友。每次双方各得 {{amount}} 黄金（{{count}}/{{cap}} 已邀请）。",
     "copyInviteLink": "复制邀请链接",
     "progressComplete": "你已完成所有任务，奖励即将到来。",
@@ -47,11 +47,11 @@
     "followRewardLog": "关注 {{platform}} 获得 {{amount}} 黄金！",
     "platforms": {
       "instagram": {
-        "title": "照片墙（+{{amount}} 黄金）",
+        "title": "照片墙",
         "actionFollow": "关注"
       },
       "reddit": {
-        "title": "红迪（+{{amount}} 黄金）",
+        "title": "红迪",
         "actionJoin": "加入"
       }
     },

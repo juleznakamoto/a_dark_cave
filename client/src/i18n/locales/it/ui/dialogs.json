@@ -27,15 +27,15 @@
     "title": "Resta connesso e guadagna Ricompense",
     "description": "Completa le attività qui sotto per ricevere bonus. Completa tutte le attività per ricevere un oggetto esclusivo.",
     "signUpRequiresSignInTooltip": "registrati per completare l'attività",
-    "signUpTitle": "Registrati (+{{amount}} Oro)",
+    "signUpTitle": "Registrati",
     "signUpDesc": "Crea un account gratuito per sincronizzare i tuoi progressi su tutti i dispositivi. Senza un account, i tuoi progressi vengono salvati solo localmente e potrebbero andare persi.",
     "signUpButton": "Registrati",
-    "emailUpdatesTitle": "Aggiornamenti email (+{{amount}} Oro)",
+    "emailUpdatesTitle": "Aggiornamenti email",
     "subscribe": "Iscriviti",
     "claim": "Riscatta",
-    "playlightTitle": "Scopri 1 gioco (+{{amount}} Oro)",
+    "playlightTitle": "Scopri 1 gioco",
     "discoverGames": "Scopri giochi",
-    "inviteTitle": "Invita 1 amico (+{{amount}} Oro ciascuno)",
+    "inviteTitle": "Invita 1 amico",
     "inviteDesc": "Puoi invitare fino a {{cap}} amici. Ogni volta entrambi riceverete {{amount}} Oro ({{count}}/{{cap}} invitati).",
     "copyInviteLink": "Copia link di invito",
     "progressComplete": "Hai completato tutte le attività. Riceverai presto la tua ricompensa.",
@@ -49,11 +49,11 @@
     "followRewardLog": "Hai ricevuto {{amount}} Oro per averci seguito su {{platform}}!",
     "platforms": {
       "instagram": {
-        "title": "Instagram (+{{amount}} Oro)",
+        "title": "Instagram",
         "actionFollow": "Segui"
       },
       "reddit": {
-        "title": "Reddit (+{{amount}} Oro)",
+        "title": "Reddit",
         "actionJoin": "Unisciti"
       }
     }
