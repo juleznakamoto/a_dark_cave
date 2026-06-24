@@ -716,7 +716,7 @@ const toolTrades = [
     give: "book",
     giveItem: "book_of_craftsmanship",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 3 && !state.books.book_of_craftsmanship,
+      state.buildings.darkEstate >= 1 && !state.books.book_of_craftsmanship,
     costs: [{ resource: "gold", amounts: [200] }],
 
   },
@@ -726,9 +726,7 @@ const toolTrades = [
     give: "book",
     giveItem: "book_of_war",
     condition: (state: GameState) =>
-      state.buildings.scriptorium >= 1 &&
-      state.buildings.darkEstate >= 1 &&
-      !state.books.book_of_war,
+      state.buildings.darkEstate >= 1 && !state.books.book_of_war,
     costs: [{ resource: "gold", amounts: [300] }],
 
   },
