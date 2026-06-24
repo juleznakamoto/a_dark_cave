@@ -27,6 +27,10 @@ interface SettingsDialogProps {
   onDeleteAccount: () => void;
 }
 
+/** Shared row layout so every settings row lines up its icon column and label. */
+const ROW = "flex items-center gap-3 px-2 min-h-9";
+const ICON_SLOT = "w-7 shrink-0 flex items-center justify-center";
+
 interface AudioControlRowProps {
   iconOn: string;
   iconOff: string;
@@ -52,13 +56,13 @@ function AudioControlRow({
   onVolumeChange,
 }: AudioControlRowProps) {
   return (
-    <div className="flex items-center gap-3">
+    <div className={ROW}>
       <button
         type="button"
         onClick={onToggleMute}
         aria-label={label}
         aria-pressed={!muted}
-        className="group shrink-0 w-9 h-9 flex items-center justify-center rounded-md hover:bg-muted/40 transition-colors"
+        className={`group ${ICON_SLOT} h-7 rounded-md hover:bg-muted/40 transition-colors`}
       >
         <img
           src={muted ? iconOff : iconOn}
@@ -68,7 +72,7 @@ function AudioControlRow({
             }`}
         />
       </button>
-      <span className="w-14 shrink-0 text-sm">{title}</span>
+      <span className="w-16 shrink-0 text-sm">{title}</span>
       <input
         type="range"
         min={0}
@@ -177,9 +181,11 @@ export default function SettingsDialog({
               onToggleMute={toggleSfx}
               onVolumeChange={changeSfxVolume}
             />
-            <div className="flex items-center justify-between gap-3 px-2 py-0.5">
-              <span className="flex items-center gap-2 text-sm">
-                <Globe className="w-4 h-4 shrink-0 opacity-90" aria-hidden />
+            <div className={ROW}>
+              <span className={ICON_SLOT}>
+                <Globe className="w-5 h-5 opacity-90" aria-hidden />
+              </span>
+              <span className="flex-1 text-sm">
                 {t("languageSelector.label")}
               </span>
               <LanguageSelector
@@ -190,7 +196,7 @@ export default function SettingsDialog({
                 inlineLabelVariant="selected"
                 inlineLabelClassName="inline"
                 showChevron
-                buttonClassName="group flex items-center gap-1 rounded-md px-2 py-1 text-sm hover:bg-muted/40 transition-colors"
+                buttonClassName="group -mr-2 flex items-center gap-1 rounded-md px-2 py-1 text-sm hover:bg-muted/40 transition-colors"
               />
             </div>
           </section>
@@ -200,40 +206,42 @@ export default function SettingsDialog({
               <div className="h-px bg-border" />
               <label
                 htmlFor="settings-email-updates"
-                className={`flex items-center justify-between w-full gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted/40 transition-colors cursor-pointer ${marketingPrefLoading ? "opacity-50 cursor-wait" : ""
+                className={`${ROW} rounded-md hover:bg-muted/40 transition-colors cursor-pointer ${marketingPrefLoading ? "opacity-50 cursor-wait" : ""
                   }`}
               >
-                <span className="flex items-center gap-2 min-w-0">
-                  <Mail className="w-4 h-4 shrink-0 opacity-90" aria-hidden />
-                  <span>{t("settings.emails")}</span>
+                <span className={ICON_SLOT}>
+                  <Mail className="w-5 h-5 opacity-90" aria-hidden />
                 </span>
-                <span className="flex items-center gap-2 shrink-0">
-                  {!marketingRewardClaimed && (
-                    <span className="font-semibold">
-                      +
-                      {t("common:currency.goldAmount", {
-                        amount: MARKETING_SUBSCRIBE_GOLD,
-                      })}
-                    </span>
-                  )}
-                  <Checkbox
-                    id="settings-email-updates"
-                    checked={marketingOptIn}
-                    disabled={marketingPrefLoading}
-                    onCheckedChange={() => onToggleMarketing()}
-                    aria-label={t("settings.emails")}
-                  />
-                </span>
+                <span className="flex-1 text-sm">{t("settings.emails")}</span>
+                {!marketingRewardClaimed && (
+                  <span className="text-sm font-semibold shrink-0">
+                    +
+                    {t("common:currency.goldAmount", {
+                      amount: MARKETING_SUBSCRIBE_GOLD,
+                    })}
+                  </span>
+                )}
+                <Checkbox
+                  id="settings-email-updates"
+                  checked={marketingOptIn}
+                  disabled={marketingPrefLoading}
+                  onCheckedChange={() => onToggleMarketing()}
+                  aria-label={t("settings.emails")}
+                />
               </label>
 
               <div className="h-px bg-border" />
               <button
                 type="button"
                 onClick={onDeleteAccount}
-                className="flex items-center gap-2 w-full rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:bg-muted/40 hover:text-foreground transition-colors"
+                className={`${ROW} rounded-md text-muted-foreground hover:bg-muted/40 hover:text-foreground transition-colors`}
               >
-                <Trash2 className="w-4 h-4 shrink-0" aria-hidden />
-                <span>{t("profile.deleteAccount")}</span>
+                <span className={ICON_SLOT}>
+                  <Trash2 className="w-5 h-5" aria-hidden />
+                </span>
+                <span className="flex-1 text-left text-sm">
+                  {t("profile.deleteAccount")}
+                </span>
               </button>
             </>
           )}
