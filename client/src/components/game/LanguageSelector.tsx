@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -49,6 +49,21 @@ export default function LanguageSelector({
       ? localeLabels[locale as SupportedLocale]
       : t("languageSelector.label");
 
+  const dialogPortalReady = !inDialog || menuPortalContainer != null;
+
+  const handleOpenChange = (next: boolean) => {
+    if (inDialog) {
+      if (next && !menuPortalContainer) return;
+      setOpen(next);
+    }
+  };
+
+  useEffect(() => {
+    if (inDialog && !menuPortalContainer) {
+      setOpen(false);
+    }
+  }, [inDialog, menuPortalContainer]);
+
   const trigger = (
     <DropdownMenuTrigger asChild>
       <Button
@@ -75,7 +90,7 @@ export default function LanguageSelector({
   return (
     <DropdownMenu
       open={inDialog ? open : undefined}
-      onOpenChange={inDialog ? setOpen : undefined}
+      onOpenChange={inDialog ? handleOpenChange : undefined}
       modal={!inDialog}
     >
       {showTooltip ? (
@@ -85,33 +100,36 @@ export default function LanguageSelector({
       ) : (
         trigger
       )}
-      <DropdownMenuContent
-        align={menuAlign}
-        portalContainer={inDialog ? menuPortalContainer : undefined}
-        className={cn("w-max min-w-0 text-xs", inDialog && "z-[60]")}
-        onCloseAutoFocus={inDialog ? (e) => e.preventDefault() : undefined}
-      >
-        {locales.map((code) => (
-          <DropdownMenuItem
-            key={code}
-            onClick={() => {
-              void setLocale(code as SupportedLocale);
-              if (inDialog) setOpen(false);
-            }}
-            className={cn(locale === code && "font-semibold")}
-          >
-            <span className="inline-flex items-center gap-1.5">
-              <span>{localeLabels[code as SupportedLocale]}</span>
-              {locale === code && (
-                <span
-                  className="h-1.5 w-1.5 shrink-0 rounded-full bg-red-600"
-                  aria-hidden
-                />
+      {dialogPortalReady && (
+        <DropdownMenuContent
+          align={menuAlign}
+          portalContainer={
+            inDialog ? (menuPortalContainer ?? undefined) : undefined
+          }
+          className={cn(
+            "w-max min-w-0",
+            inDialog ? "text-sm" : "text-xs",
+            inDialog && "z-[60]",
+          )}
+          onCloseAutoFocus={inDialog ? (e) => e.preventDefault() : undefined}
+        >
+          {locales.map((code) => (
+            <DropdownMenuItem
+              key={code}
+              onClick={() => {
+                void setLocale(code as SupportedLocale);
+                if (inDialog) setOpen(false);
+              }}
+              className={cn(
+                locale === code && "font-semibold",
+                inDialog && "text-sm",
               )}
-            </span>
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
+            >
+              {localeLabels[code as SupportedLocale]}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      )}
     </DropdownMenu>
   );
 }
