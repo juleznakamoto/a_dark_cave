@@ -289,6 +289,30 @@ export function getActiveBuildCount(
   return Object.keys(starts).filter((actionId) => actionId.startsWith("build")).length;
 }
 
+/** 0-based slot index: currently occupied by an in-progress build (UI red indicator). */
+export function isQueueSlotInUse(
+  state: Pick<
+    GameState,
+    | "buildings"
+    | "constructionQueueSlotsPurchased"
+    | "constructionQueueSlotsFromShop"
+    | "executionStartTimes"
+  >,
+  slotIndex: number,
+): boolean {
+  if (!isQueueSlotActive(state, slotIndex)) return false;
+  const activeBuilds = getActiveBuildCount(state);
+  if (activeBuilds === 0) return false;
+
+  let activeSlotRank = 0;
+  for (let i = 0; i <= slotIndex; i++) {
+    if (isQueueSlotActive(state, i)) {
+      activeSlotRank++;
+    }
+  }
+  return activeSlotRank <= activeBuilds;
+}
+
 export function hasFreeQueueSlot(state: GameState): boolean {
   if (!isConstructionQueueEnabled(state)) return true;
   return getActiveBuildCount(state) < getTotalQueueSlots(state);

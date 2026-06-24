@@ -71,13 +71,12 @@ import {
 import {
   canPurchaseQueueSlot,
   isAdditionalConstructionQueueSlotPurchaseAvailable,
-  getActiveBuildCount,
+  isQueueSlotInUse,
   getNextPurchasableQueueSlotIndex,
   getNextQueueSlotUnlockCost,
   getVisibleQueueSlotCount,
   isConstructionBoostAvailable,
   isConstructionQueueEnabled,
-  isQueueSlotActive,
   isQueueSlotBuildingLocked,
   isQueueSlotLockedForUi,
   isQueueSlotNextPurchasable,
@@ -978,7 +977,6 @@ export default function VillagePanel() {
   const maxPopulation = useGameStore((s) => s.total_population);
   const onMissionCount = useGameStore((s) => getExpeditionVillagerCount(s));
   const freeVillagers = villagers.free ?? 0;
-  const atMaxPopulation = maxPopulation > 0 && totalPopulation >= maxPopulation;
 
   const renderVillagerStatRow = (
     key: string,
@@ -1017,7 +1015,7 @@ export default function VillagePanel() {
         className={cn(
           "notranslate w-[4ch] shrink-0",
           ANIMATED_COUNTER_TEXT_CLASS,
-          !atMaxPopulation && "text-muted-foreground",
+          "text-muted-foreground",
         )}
       >
         {maxPopulation > 0 ? `/${maxPopulation}` : ""}
@@ -1191,7 +1189,6 @@ export default function VillagePanel() {
                     </h3>
                     {isConstructionQueueEnabled(state) &&
                       (() => {
-                        const activeBuilds = getActiveBuildCount(state);
                         const nextUnlockCost =
                           getNextQueueSlotUnlockCost(state);
                         const visibleSlots = getVisibleQueueSlotCount(state);
@@ -1278,8 +1275,7 @@ export default function VillagePanel() {
                                 i,
                               );
                               const isLocked = isQueueSlotLockedForUi(state, i);
-                              const isUsed =
-                                isQueueSlotActive(state, i) && i < activeBuilds;
+                              const isUsed = isQueueSlotInUse(state, i);
                               const isPurchasable = isQueueSlotNextPurchasable(
                                 state,
                                 i,

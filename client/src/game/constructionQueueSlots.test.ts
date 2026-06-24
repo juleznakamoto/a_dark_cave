@@ -27,6 +27,7 @@ import {
   isConstructionQueueEnabled,
   isQueueSlotActive,
   isQueueSlotBuildingLocked,
+  isQueueSlotInUse,
   isQueueSlotLockedForUi,
   isQueueSlotNextPurchasable,
   SHOP_ADDITIONAL_QUEUE_SLOTS,
@@ -432,6 +433,30 @@ describe("constructionQueueSlots", () => {
       BASE_QUEUE_SLOTS + 2 + SHOP_ADDITIONAL_QUEUE_SLOTS,
     );
     expect(getTotalQueueSlots(withShop)).toBe(BASE_QUEUE_SLOTS + 2);
+  });
+
+  it("marks used queue slots by active-slot rank, not raw slot index", () => {
+    const now = Date.now();
+    const state = baseState({
+      constructionQueueSlotsFromShop: 2,
+      executionStartTimes: {
+        buildAlchemistsHall: now,
+        buildGrandBlacksmith: now,
+        buildImprovedTraps: now,
+      },
+      executionDurations: {
+        buildAlchemistsHall: 60,
+        buildGrandBlacksmith: 60,
+        buildImprovedTraps: 60,
+      },
+    });
+    expect(getActiveBuildCount(state)).toBe(3);
+    expect(getTotalQueueSlots(state)).toBe(BASE_QUEUE_SLOTS + 2);
+    expect(isQueueSlotInUse(state, 0)).toBe(true);
+    expect(isQueueSlotInUse(state, 1)).toBe(false);
+    expect(isQueueSlotInUse(state, 2)).toBe(false);
+    expect(isQueueSlotInUse(state, SHOP_QUEUE_SLOT_INDEX)).toBe(true);
+    expect(isQueueSlotInUse(state, SHOP_QUEUE_SLOT_INDEX + 1)).toBe(true);
   });
 
   it("shows the shop purchase only after Builder's Hall is built", () => {
