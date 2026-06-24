@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,8 +24,9 @@ export default function LanguageSelector({
   /** "static" shows the generic "Language" label; "selected" shows the active language name. */
   inlineLabelVariant = "static",
   showChevron = false,
-  /** Nested in a Radix Dialog — non-modal menu + focus guards to avoid layer conflicts. */
+  /** Nested in a Radix Dialog — non-modal menu portaled into the dialog layer. */
   inDialog = false,
+  menuPortalContainer = null,
 }: {
   buttonClassName?: string;
   iconClassName?: string;
@@ -36,9 +38,11 @@ export default function LanguageSelector({
   inlineLabelVariant?: "static" | "selected";
   showChevron?: boolean;
   inDialog?: boolean;
+  menuPortalContainer?: HTMLElement | null;
 } = {}) {
   const { locale, setLocale, locales, localeLabels } = useLocale();
   const { t } = useTranslation("ui");
+  const [open, setOpen] = useState(false);
 
   const inlineLabel =
     inlineLabelVariant === "selected"
@@ -52,7 +56,7 @@ export default function LanguageSelector({
         size="xs"
         className={buttonClassName}
         aria-label={t("languageSelector.ariaLabel")}
-        onPointerDown={inDialog ? (e) => e.preventDefault() : undefined}
+        aria-expanded={inDialog ? open : undefined}
       >
         {showIcon && <Globe className={iconClassName} aria-hidden />}
         {showInlineLabel && (
@@ -69,7 +73,11 @@ export default function LanguageSelector({
   );
 
   return (
-    <DropdownMenu modal={!inDialog}>
+    <DropdownMenu
+      open={inDialog ? open : undefined}
+      onOpenChange={inDialog ? setOpen : undefined}
+      modal={!inDialog}
+    >
       {showTooltip ? (
         <HoverCalloutTooltip label={t("languageSelector.ariaLabel")} side="top">
           {trigger}
@@ -79,23 +87,17 @@ export default function LanguageSelector({
       )}
       <DropdownMenuContent
         align={menuAlign}
+        portalContainer={inDialog ? menuPortalContainer : undefined}
         className={cn("w-max min-w-0 text-xs", inDialog && "z-[60]")}
         onCloseAutoFocus={inDialog ? (e) => e.preventDefault() : undefined}
-        onInteractOutside={
-          inDialog
-            ? (e) => {
-              const target = e.target as HTMLElement;
-              if (target.closest('[role="dialog"]')) {
-                e.preventDefault();
-              }
-            }
-            : undefined
-        }
       >
         {locales.map((code) => (
           <DropdownMenuItem
             key={code}
-            onClick={() => void setLocale(code as SupportedLocale)}
+            onClick={() => {
+              void setLocale(code as SupportedLocale);
+              if (inDialog) setOpen(false);
+            }}
             className={cn(locale === code && "font-semibold")}
           >
             <span className="inline-flex items-center gap-1.5">

@@ -9,6 +9,7 @@ import { useGameStore } from "@/game/state";
 import { audioManager } from "@/lib/audio";
 import { isSteamBuild } from "@/lib/edition";
 import { Globe, Mail, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "./LanguageSelector";
 import {
@@ -164,21 +165,14 @@ export default function SettingsDialog({
   };
 
   const showAccountSettings = !isSteamBuild && !!currentUser;
+  const [menuPortalContainer, setMenuPortalContainer] =
+    useState<HTMLElement | null>(null);
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent
+        ref={setMenuPortalContainer}
         className="[--adc-dialog-max-w:24rem] gap-3 py-4 px-5"
-        onPointerDownOutside={(e) => {
-          if ((e.target as HTMLElement).closest('[role="menu"]')) {
-            e.preventDefault();
-          }
-        }}
-        onInteractOutside={(e) => {
-          if ((e.target as HTMLElement).closest('[role="menu"]')) {
-            e.preventDefault();
-          }
-        }}
       >
         <DialogHeader className="pb-0">
           <DialogTitle>{t("settings.title")}</DialogTitle>
@@ -217,6 +211,7 @@ export default function SettingsDialog({
               </span>
               <LanguageSelector
                 inDialog
+                menuPortalContainer={menuPortalContainer}
                 showTooltip={false}
                 menuAlign="end"
                 showIcon={false}
