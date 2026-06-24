@@ -1,6 +1,9 @@
 {
   "settings": {
-    "title": "Settings"
+    "title": "Settings",
+    "music": "Music",
+    "sound": "Sound",
+    "emails": "Emails"
   },
   "languageSelector": {
     "label": "Language",

@@ -4,10 +4,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useGameStore } from "@/game/state";
 import { audioManager } from "@/lib/audio";
 import { isSteamBuild } from "@/lib/edition";
-import { Mail, Trash2 } from "lucide-react";
+import { Globe, Mail, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "./LanguageSelector";
 import {
@@ -29,6 +30,9 @@ interface SettingsDialogProps {
 interface AudioControlRowProps {
   iconOn: string;
   iconOff: string;
+  /** Visible channel name, e.g. "Music" / "Sound". */
+  title: string;
+  /** Accessible mute/unmute action label. */
   label: string;
   muted: boolean;
   volume: number;
@@ -36,10 +40,11 @@ interface AudioControlRowProps {
   onVolumeChange: (volume: number) => void;
 }
 
-/** One [icon][slider] row: tapping the icon mutes/unmutes, the slider sets volume. */
+/** One [icon][label][slider] row: tapping the icon mutes/unmutes, the slider sets volume. */
 function AudioControlRow({
   iconOn,
   iconOff,
+  title,
   label,
   muted,
   volume,
@@ -63,6 +68,7 @@ function AudioControlRow({
             }`}
         />
       </button>
+      <span className="w-14 shrink-0 text-sm">{title}</span>
       <input
         type="range"
         min={0}
@@ -152,6 +158,7 @@ export default function SettingsDialog({
             <AudioControlRow
               iconOn="/music_on.png"
               iconOff="/music_off.png"
+              title={t("settings.music")}
               label={
                 musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")
               }
@@ -163,39 +170,42 @@ export default function SettingsDialog({
             <AudioControlRow
               iconOn="/sound_on.png"
               iconOff="/sound_off.png"
+              title={t("settings.sound")}
               label={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
               muted={sfxMuted}
               volume={sfxVolume}
               onToggleMute={toggleSfx}
               onVolumeChange={changeSfxVolume}
             />
-            <LanguageSelector
-              showTooltip={false}
-              menuAlign="start"
-              buttonClassName="group flex items-center gap-2 w-full justify-start rounded-md px-2 py-1.5 text-sm font-normal hover:bg-muted/40 transition-colors"
-              iconClassName="w-4 h-4 shrink-0 opacity-90"
-              showInlineLabel
-              inlineLabelClassName="inline"
-            />
+            <div className="flex items-center justify-between gap-3 px-2 py-0.5">
+              <span className="flex items-center gap-2 text-sm">
+                <Globe className="w-4 h-4 shrink-0 opacity-90" aria-hidden />
+                {t("languageSelector.label")}
+              </span>
+              <LanguageSelector
+                showTooltip={false}
+                menuAlign="end"
+                showIcon={false}
+                showInlineLabel
+                inlineLabelVariant="selected"
+                inlineLabelClassName="inline"
+                showChevron
+                buttonClassName="group flex items-center gap-1 rounded-md px-2 py-1 text-sm hover:bg-muted/40 transition-colors"
+              />
+            </div>
           </section>
 
           {showAccountSettings && (
             <>
               <div className="h-px bg-border" />
-              <button
-                type="button"
-                onClick={onToggleMarketing}
-                disabled={marketingPrefLoading}
-                className={`flex items-center justify-between w-full gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted/40 transition-colors ${marketingPrefLoading ? "opacity-50 cursor-wait" : ""
+              <label
+                htmlFor="settings-email-updates"
+                className={`flex items-center justify-between w-full gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted/40 transition-colors cursor-pointer ${marketingPrefLoading ? "opacity-50 cursor-wait" : ""
                   }`}
               >
                 <span className="flex items-center gap-2 min-w-0">
                   <Mail className="w-4 h-4 shrink-0 opacity-90" aria-hidden />
-                  <span>
-                    {marketingOptIn
-                      ? t("profile.emailsOn")
-                      : t("profile.emailsOff")}
-                  </span>
+                  <span>{t("settings.emails")}</span>
                 </span>
                 <span className="flex items-center gap-2 shrink-0">
                   {!marketingRewardClaimed && (
@@ -206,11 +216,15 @@ export default function SettingsDialog({
                       })}
                     </span>
                   )}
-                  {marketingRewardClaimed && (
-                    <span className="text-xs text-muted-foreground">✓</span>
-                  )}
+                  <Checkbox
+                    id="settings-email-updates"
+                    checked={marketingOptIn}
+                    disabled={marketingPrefLoading}
+                    onCheckedChange={() => onToggleMarketing()}
+                    aria-label={t("settings.emails")}
+                  />
                 </span>
-              </button>
+              </label>
 
               <div className="h-px bg-border" />
               <button
