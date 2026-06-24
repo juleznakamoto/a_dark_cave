@@ -5,6 +5,12 @@
     "sound": "音效",
     "emails": "邮件"
   },
+  "textScale": {
+    "label": "文字大小",
+    "ariaLabel": "选择文字大小",
+    "normal": "标准",
+    "large": "大"
+  },
   "languageSelector": {
     "label": "语言",
     "ariaLabel": "选择语言"

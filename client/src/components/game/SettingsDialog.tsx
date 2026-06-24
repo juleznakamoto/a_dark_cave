@@ -12,6 +12,9 @@ import { Globe, Mail, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "./LanguageSelector";
+import TextScaleSelector, {
+  TextScaleSettingsIcon,
+} from "./TextScaleSelector";
 import {
   MARKETING_SUBSCRIBE_GOLD,
 } from "@/game/marketingEmailReward";
@@ -202,6 +205,17 @@ export default function SettingsDialog({
               onToggleMute={toggleSfx}
               onVolumeChange={changeSfxVolume}
             />
+            <div className={ROW}>
+              <span className={ICON_SLOT}>
+                <TextScaleSettingsIcon />
+              </span>
+              <span className="flex-1 text-sm">{t("textScale.label")}</span>
+              <TextScaleSelector
+                inDialog
+                menuPortalContainer={menuPortalContainer}
+                menuAlign="end"
+              />
+            </div>
             <div className={ROW}>
               <span className={ICON_SLOT}>
                 <Globe className="w-5 h-5 opacity-90" aria-hidden />

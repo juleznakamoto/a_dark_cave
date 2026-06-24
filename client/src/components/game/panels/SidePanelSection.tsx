@@ -15,7 +15,6 @@ import {
   INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
-import { TooltipInfoIndicator } from "@/components/game/TooltipInfoIndicator";
 import ResourceChangeNotification from "./ResourceChangeNotification";
 import { useGameStore } from "@/game/state";
 import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
@@ -205,8 +204,7 @@ interface SidePanelSectionProps {
   showNotifications?: boolean;
   forceNotifications?: boolean; // Added prop
   onResourceChange?: (change: ResourceChange) => void;
-  titleTooltip?: string;
-  /** Shown after the title label and info indicator (e.g. resource cap, population count). */
+  /** Shown after the title label (e.g. resource cap, population count). */
   titleSuffix?: React.ReactNode;
   titleExtra?: React.ReactNode;
   activeTab?: string;
@@ -427,7 +425,6 @@ export default function SidePanelSection({
   className = "",
   resourceChanges = [],
   onResourceChange,
-  titleTooltip,
   titleSuffix,
   titleExtra,
   activeTab,
@@ -498,18 +495,12 @@ export default function SidePanelSection({
 
   // Cancel this section's pending pulse-dismiss timers only (hoveredTooltips persist).
   useEffect(() => {
-    const titleId = sectionId ? `section-title-${sectionId}` : null;
     return () => {
       visibleItemIdsRef.current.forEach((id) =>
         cancelSidePanelPulseDismissTimer(
           getSidePanelScopedTooltipKey(sectionId, id),
         ),
       );
-      if (titleId) {
-        cancelSidePanelPulseDismissTimer(
-          getSidePanelScopedTooltipKey(sectionId, titleId),
-        );
-      }
     };
   }, [sectionId]);
 
@@ -1245,53 +1236,13 @@ export default function SidePanelSection({
     return <div key={item.id}>{itemContent}</div>;
   };
 
-  // Stable per-section key (ReactNode titles must not share one generic id).
-  const tooltipKey = sectionId
-    ? `section-title-${sectionId}`
-    : `section-title-${(typeof title === "string" ? title : "section").split(" ")[0]}`;
-
   const titleHeading = (
-    <h3
-      className={cn(
-        "text-xs font-medium tracking-wide leading-none text-gray-300",
-        titleTooltip &&
-        isItemTooltipHovered(tooltipKey) &&
-        "!text-gray-100",
-      )}
-    >
+    <h3 className="text-xs font-medium tracking-wide leading-none text-gray-300">
       <span className="inline-flex items-end gap-0.5 align-baseline">
         {title}
-        {titleTooltip ? <TooltipInfoIndicator /> : null}
       </span>
       {titleSuffix}
     </h3>
-  );
-
-  const titleLabel = titleTooltip ? (
-    <TooltipWrapper
-      tooltip={<div className="text-xs">{titleTooltip}</div>}
-      tooltipId={tooltipKey}
-      disabled
-      tooltipTriggerAsChild
-      tooltipTriggerClassName="leading-none"
-      onMouseEnter={() => {
-        handleItemTooltipEnter(tooltipKey);
-        if (!hoveredTooltips[tooltipKey]) {
-          setHoveredTooltip(tooltipKey, true);
-        }
-      }}
-      onMouseLeave={() => handleItemTooltipLeave(tooltipKey)}
-      className={cn(
-        "group",
-        titleExtra ? "inline-flex items-center" : "min-w-0 flex-1",
-        globalTooltip.isMobile ? "cursor-pointer" : "",
-        !hoveredTooltips[tooltipKey] && "new-item-pulse",
-      )}
-    >
-      {titleHeading}
-    </TooltipWrapper>
-  ) : (
-    titleHeading
   );
 
   return (
@@ -1304,11 +1255,9 @@ export default function SidePanelSection({
       >
         {titleExtra ? (
           <div className="flex items-center gap-1">
-            {titleLabel}
+            {titleHeading}
             {titleExtra}
           </div>
-        ) : titleTooltip ? (
-          titleLabel
         ) : (
           <div className="min-w-0 flex-1">{titleHeading}</div>
         )}

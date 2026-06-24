@@ -921,7 +921,6 @@ export default function SidePanel() {
                   ) : undefined
                 }
                 activeTab={activeTab}
-                titleTooltip={t("sidePanel.resourceLimitTooltip")}
                 items={resourceItems}
                 onValueChange={(itemId, oldValue, newValue) => {
                   logger.log(

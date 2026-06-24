@@ -5,6 +5,12 @@
     "sound": "Suono",
     "emails": "Email"
   },
+  "textScale": {
+    "label": "Dimensione testo",
+    "ariaLabel": "Seleziona dimensione testo",
+    "normal": "Normale",
+    "large": "Grande"
+  },
   "languageSelector": {
     "label": "Lingua",
     "ariaLabel": "Seleziona lingua"

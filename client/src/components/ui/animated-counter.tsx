@@ -2,17 +2,38 @@
 "use client";
 
 import { MotionValue, motion, useSpring, useTransform } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { TEXT_SCALE_CHANGE_EVENT } from "@/lib/textScale";
 
-/** Digit column height in px — used by scroll animation math only. */
-export const ANIMATED_COUNTER_HEIGHT = 18;
+/** Digit column height in px — derived from root rem × scale for scroll animation. */
+export function getAnimatedCounterHeightPx(): number {
+  if (typeof document === "undefined") return 18;
+  const root = document.documentElement;
+  const rootPx = parseFloat(getComputedStyle(root).fontSize) || 16;
+  const scale =
+    parseFloat(getComputedStyle(root).getPropertyValue("--adc-text-scale")) || 1;
+  return rootPx * 1.125 * scale;
+}
 
-export const ANIMATED_COUNTER_TEXT_CLASS =
-  "text-sm leading-none h-[1.125rem] tabular-nums";
+export const ANIMATED_COUNTER_TEXT_CLASS = "adc-counter-text tabular-nums";
 
-const height = ANIMATED_COUNTER_HEIGHT;
-const counterTextClass = ANIMATED_COUNTER_TEXT_CLASS;
+function useAnimatedCounterHeight(): number {
+  const [height, setHeight] = useState(() => getAnimatedCounterHeightPx());
+
+  useEffect(() => {
+    const update = () => setHeight(getAnimatedCounterHeightPx());
+    update();
+    window.addEventListener(TEXT_SCALE_CHANGE_EVENT, update);
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener(TEXT_SCALE_CHANGE_EVENT, update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  return height;
+}
 
 export function AnimatedCounter({
   value,
@@ -23,6 +44,8 @@ export function AnimatedCounter({
   suffix?: string;
   className?: string;
 }) {
+  const height = useAnimatedCounterHeight();
+
   // Determine how many digits we need
   const digitCount = value === 0 ? 1 : Math.floor(Math.log10(Math.abs(value))) + 1;
 
@@ -36,24 +59,34 @@ export function AnimatedCounter({
     <div
       translate="no"
       className={cn(
-        "notranslate flex items-center tabular-nums",
-        counterTextClass,
+        "notranslate flex items-center",
+        ANIMATED_COUNTER_TEXT_CLASS,
         className,
       )}
     >
-      <div className={cn("flex overflow-hidden", counterTextClass)}>
+      <div className={cn("flex overflow-hidden", ANIMATED_COUNTER_TEXT_CLASS)}>
         {digits.map((place) => (
-          <Digit key={place} place={place} value={value} />
+          <Digit key={place} place={place} value={value} height={height} />
         ))}
       </div>
       {suffix != null && (
-        <span className={cn("inline-block", counterTextClass)}>{suffix}</span>
+        <span className={cn("inline-block", ANIMATED_COUNTER_TEXT_CLASS)}>
+          {suffix}
+        </span>
       )}
     </div>
   );
 }
 
-function Digit({ place, value }: { place: number; value: number }) {
+function Digit({
+  place,
+  value,
+  height,
+}: {
+  place: number;
+  value: number;
+  height: number;
+}) {
   let valueRoundedToPlace = Math.floor(value / place);
   let animatedValue = useSpring(valueRoundedToPlace);
 
@@ -64,13 +97,21 @@ function Digit({ place, value }: { place: number; value: number }) {
   return (
     <div style={{ height }} className="relative w-[1ch]">
       {[...Array(10).keys()].map((i) => (
-        <Number key={i} mv={animatedValue} number={i} />
+        <Number key={i} mv={animatedValue} number={i} height={height} />
       ))}
     </div>
   );
 }
 
-function Number({ mv, number }: { mv: MotionValue; number: number }) {
+function Number({
+  mv,
+  number,
+  height,
+}: {
+  mv: MotionValue;
+  number: number;
+  height: number;
+}) {
   let y = useTransform(mv, (latest) => {
     let placeValue = latest % 10;
     let offset = (10 + number - placeValue) % 10;

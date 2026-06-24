@@ -5,6 +5,12 @@
     "sound": "Звук",
     "emails": "Эл. почта"
   },
+  "textScale": {
+    "label": "Размер текста",
+    "ariaLabel": "Выбрать размер текста",
+    "normal": "Обычный",
+    "large": "Крупный"
+  },
   "languageSelector": {
     "label": "Язык",
     "ariaLabel": "Выбрать язык"

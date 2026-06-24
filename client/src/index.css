@@ -28,6 +28,7 @@ body {
 :root {
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: 'Courier New', monospace;
+  --adc-text-scale: 1;
 }
 
 /* Apply Inter font as soon as it's loaded */
@@ -82,6 +83,60 @@ body {
   /* Force symbol glyphs through Noto — avoid system-ui/Segoe fallbacks (Electron vs browser). */
   .font-noto-symbols-2 {
     font-family: "Noto Sans Symbols 2", sans-serif;
+  }
+
+  /*
+   * Readable UI text scales with Settings → Text size (Large).
+   * Pixel-fixed symbol overlays are excluded — they keep arbitrary text-[Npx].
+   */
+  .text-3xs {
+    font-size: calc(0.5625rem * var(--adc-text-scale, 1));
+  }
+
+  .text-2xs {
+    font-size: calc(0.625rem * var(--adc-text-scale, 1));
+  }
+
+  .text-xxs {
+    font-size: calc(0.6875rem * var(--adc-text-scale, 1));
+  }
+
+  .text-xs-plus {
+    font-size: calc(0.8125rem * var(--adc-text-scale, 1));
+  }
+
+  .text-xs {
+    font-size: calc(0.75rem * var(--adc-text-scale, 1));
+  }
+
+  .text-sm {
+    font-size: calc(0.875rem * var(--adc-text-scale, 1));
+  }
+
+  .text-base {
+    font-size: calc(1rem * var(--adc-text-scale, 1));
+  }
+
+  .text-lg {
+    font-size: calc(1.125rem * var(--adc-text-scale, 1));
+  }
+
+  .text-xl {
+    font-size: calc(1.25rem * var(--adc-text-scale, 1));
+  }
+
+  .text-2xl {
+    font-size: calc(1.5rem * var(--adc-text-scale, 1));
+  }
+
+  .text-3xl {
+    font-size: calc(1.875rem * var(--adc-text-scale, 1));
+  }
+
+  .adc-counter-text {
+    font-size: calc(0.875rem * var(--adc-text-scale, 1));
+    line-height: 1;
+    height: calc(1.125rem * var(--adc-text-scale, 1));
   }
 }
 
