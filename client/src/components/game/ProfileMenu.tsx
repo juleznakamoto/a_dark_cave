@@ -39,7 +39,6 @@ import {
   Save,
   Settings,
   Share2,
-  Trophy,
 } from "lucide-react";
 import {
   MARKETING_EMAIL_REWARD_KEY,
@@ -618,22 +617,6 @@ export function GameHeaderControls() {
           </HoverCalloutTooltip>
         </>
       )}
-      {(hasWonAnyGame || devMode) && !isSteamBuild && (
-        <HoverCalloutTooltip label={t("profile.leaderboard")} side="bottom">
-          <Button
-            type="button"
-            variant="ghost"
-            size="xs"
-            onClick={() => setLeaderboardDialogOpen(true)}
-            aria-label={t("profile.leaderboard")}
-            className={`${HEADER_ICON_BTN} group touch-manipulation`}
-          >
-            <span className={`text-lg leading-none select-none ${HEADER_ICON_SYMBOL_HOVER}`}>
-              ♕
-            </span>
-          </Button>
-        </HoverCalloutTooltip>
-      )}
       <DropdownMenu
         open={accountDropdownOpen}
         onOpenChange={(open) => {
@@ -754,10 +737,12 @@ export function GameHeaderControls() {
                 }}
               >
                 <span className="flex items-center gap-1.5">
-                  <Trophy
-                    className="w-3.5 h-3.5 shrink-0 opacity-90"
+                  <span
+                    className="w-3.5 shrink-0 text-center text-base leading-none opacity-90 select-none"
                     aria-hidden
-                  />
+                  >
+                    ♕
+                  </span>
                   {t("profile.leaderboard")}
                 </span>
               </DropdownMenuItem>
