@@ -14,7 +14,6 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   gameActionButtonGridClassName,
-  gameActionButtonRowsClassName,
   gameActionOutlineButtonClassName,
 } from "@/components/CooldownButton";
 import { cn } from "@/lib/utils";
@@ -488,238 +487,229 @@ export default function TimedEventPanel() {
               })()}
           </h3>
         )}
-        <div
-          className={cn(
-            "mt-2",
-            isMerchantEvent
-              ? gameActionButtonRowsClassName()
-              : gameActionButtonGridClassName(),
-          )}
-        >
-          <div
-            className={isMerchantEvent ? gameActionButtonGridClassName() : "contents"}
-          >
-            {Array.isArray(eventChoices) &&
-              eventChoices.map((choice) => {
-                const tradeChoice = choice as EventChoice & Partial<MerchantTradeData>;
-                const cost = choice.cost;
-                // Evaluate cost if it's a function
-                const costText =
-                  typeof cost === "function" ? cost(gameState) : cost;
+        <div className={gameActionButtonGridClassName("mt-2")}>
+          {Array.isArray(eventChoices) &&
+            eventChoices.map((choice) => {
+              const tradeChoice = choice as EventChoice & Partial<MerchantTradeData>;
+              const cost = choice.cost;
+              // Evaluate cost if it's a function
+              const costText =
+                typeof cost === "function" ? cost(gameState) : cost;
 
-                const affordance = getEventChoiceAffordance(choice, gameState, {
-                  catalogId,
-                  vars: eventI18nVars,
-                });
-                const canAfford = affordance.canAfford;
-                const costBreakdown = getEventChoiceCostBreakdown(cost, gameState, {
-                  catalogId,
-                  choiceId: choice.id,
-                  vars: eventI18nVars,
-                  sellResource: tradeChoice.sellResource,
-                  sellAmount: tradeChoice.sellAmount,
-                });
+              const affordance = getEventChoiceAffordance(choice, gameState, {
+                catalogId,
+                vars: eventI18nVars,
+              });
+              const canAfford = affordance.canAfford;
+              const costBreakdown = getEventChoiceCostBreakdown(cost, gameState, {
+                catalogId,
+                choiceId: choice.id,
+                vars: eventI18nVars,
+                sellResource: tradeChoice.sellResource,
+                sellAmount: tradeChoice.sellAmount,
+              });
 
-                // Evaluate label if it's a function
-                const labelText =
-                  typeof choice.label === "string" ? choice.label : "";
+              // Evaluate label if it's a function
+              const labelText =
+                typeof choice.label === "string" ? choice.label : "";
 
-                const isPurchased =
-                  isMerchantEvent &&
-                  gameState.merchantTrades?.purchasedIds?.includes(choice.id);
+              const isPurchased =
+                isMerchantEvent &&
+                gameState.merchantTrades?.purchasedIds?.includes(choice.id);
 
-                // Check if this is the sacrifice choice in blood moon event
-                let villagersCheckPassed = true;
-                if (choice.id === 'sacrificeVillagers' && eventId === 'bloodMoonAttack') {
-                  const sacrificeAmount = bloodMoonSacrificeAmount(
-                    gameState.cruelMode,
-                    gameState.bloodMoonState?.occurrenceCount ?? 0,
-                  );
-                  const totalVillagers = getVillagersInVillage(gameState);
-                  if (totalVillagers < sacrificeAmount) {
-                    villagersCheckPassed = false;
-                  }
-                }
-
-                // Disable if can't afford, time is up, already purchased, in safety period (non-merchant), or not enough villagers
-                const isDisabled =
-                  !canAfford ||
-                  timeRemaining <= 0 ||
-                  isPurchased ||
-                  (!isMerchantEvent && safetyTimeRemaining > 0) ||
-                  !villagersCheckPassed;
-
-                // Calculate success percentage if this choice has odds (Book of War)
-                let successPercentage: string | null = null;
-                if (
-                  hasDefinedSuccessChance(choice.success_chance) &&
-                  gameState.books?.book_of_war
-                ) {
-                  const successPercent = getEventChoiceSuccessPercent(
-                    choice,
-                    gameState,
-                  );
-                  if (successPercent !== null) {
-                    successPercentage = `${successPercent}%`;
-                  }
-                }
-                const showSuccessTooltip = hasEventChoiceSuccessTooltip(choice);
-
-                const hasChoiceMeta =
-                  !!successPercentage ||
-                  !!(choice.relevant_stats && choice.relevant_stats.length > 0) ||
-                  isPurchased;
-
-                const buttonContent = (
-                  <Button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleChoice(choice.id);
-                    }}
-                    variant="outline"
-                    size="xs"
-                    disabled={isDisabled}
-                    button_id={`timedevent-${choice.id}`}
-                    className={cn(
-                      "h-auto min-h-7 w-fit max-w-full gap-2 py-1 text-left justify-start whitespace-normal",
-                      gameActionOutlineButtonClassName(isDisabled),
-                    )}
-                  >
-                    <span>{labelText}</span>
-                    {hasChoiceMeta && (
-                      <span className="inline-flex items-center gap-1.5 flex-shrink-0">
-                        {successPercentage && (
-                          <span className="text-xs text-muted-foreground whitespace-nowrap">
-                            {successPercentage}
-                          </span>
-                        )}
-                        {choice.relevant_stats &&
-                          choice.relevant_stats.length > 0 &&
-                          choice.relevant_stats.map((stat) => (
-                            <RelevantStatIcon key={stat} stat={stat} />
-                          ))}
-                        {isPurchased && (
-                          <span className="inline-flex items-center justify-center text-[12px] leading-none">
-                            ✓
-                          </span>
-                        )}
-                      </span>
-                    )}
-                  </Button>
+              // Check if this is the sacrifice choice in blood moon event
+              let villagersCheckPassed = true;
+              if (choice.id === 'sacrificeVillagers' && eventId === 'bloodMoonAttack') {
+                const sacrificeAmount = bloodMoonSacrificeAmount(
+                  gameState.cruelMode,
+                  gameState.bloodMoonState?.occurrenceCount ?? 0,
                 );
+                const totalVillagers = getVillagersInVillage(gameState);
+                if (totalVillagers < sacrificeAmount) {
+                  villagersCheckPassed = false;
+                }
+              }
 
-                const merchantEffectLine =
-                  isMerchantEvent && tradeChoice.buyItem
-                    ? getMerchantTradeEffectTooltipLine(tradeChoice)
-                    : null;
+              // Disable if can't afford, time is up, already purchased, in safety period (non-merchant), or not enough villagers
+              const isDisabled =
+                !canAfford ||
+                timeRemaining <= 0 ||
+                isPurchased ||
+                (!isMerchantEvent && safetyTimeRemaining > 0) ||
+                !villagersCheckPassed;
 
-                const rewardText = catalogId
-                  ? resolveEventChoiceReward(catalogId, choice.id, eventI18nVars)
-                  : undefined;
+              // Calculate success percentage if this choice has odds (Book of War)
+              let successPercentage: string | null = null;
+              if (
+                hasDefinedSuccessChance(choice.success_chance) &&
+                gameState.books?.book_of_war
+              ) {
+                const successPercent = getEventChoiceSuccessPercent(
+                  choice,
+                  gameState,
+                );
+                if (successPercent !== null) {
+                  successPercentage = `${successPercent}%`;
+                }
+              }
+              const showSuccessTooltip = hasEventChoiceSuccessTooltip(choice);
 
-                const tooltipContent =
-                  costText || rewardText || showSuccessTooltip || merchantEffectLine ? (
-                    <div className="text-xs whitespace-nowrap">
-                      {costText && (
-                        <>
-                          {costBreakdown.length > 0 ? (
-                            <div>
-                              {costBreakdown.map((costItem, index) => (
-                                <div
-                                  key={index}
-                                  className={
-                                    costItem.satisfied
-                                      ? "text-foreground"
-                                      : "text-muted-foreground"
-                                  }
-                                >
-                                  {costItem.text}
-                                </div>
-                              ))}
-                            </div>
-                          ) : (
-                            costText
-                          )}
-                        </>
+              const hasChoiceMeta =
+                !!successPercentage ||
+                !!(choice.relevant_stats && choice.relevant_stats.length > 0) ||
+                isPurchased;
+
+              const buttonContent = (
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleChoice(choice.id);
+                  }}
+                  variant="outline"
+                  size="xs"
+                  disabled={isDisabled}
+                  button_id={`timedevent-${choice.id}`}
+                  className={cn(
+                    "h-auto min-h-7 w-fit max-w-full gap-2 py-1 text-left justify-start whitespace-normal",
+                    gameActionOutlineButtonClassName(isDisabled),
+                  )}
+                >
+                  <span>{labelText}</span>
+                  {hasChoiceMeta && (
+                    <span className="inline-flex items-center gap-1.5 flex-shrink-0">
+                      {successPercentage && (
+                        <span className="text-xs text-muted-foreground whitespace-nowrap">
+                          {successPercentage}
+                        </span>
                       )}
-                      {costText && rewardText && (
+                      {choice.relevant_stats &&
+                        choice.relevant_stats.length > 0 &&
+                        choice.relevant_stats.map((stat) => (
+                          <RelevantStatIcon key={stat} stat={stat} />
+                        ))}
+                      {isPurchased && (
+                        <span className="inline-flex items-center justify-center text-[12px] leading-none">
+                          ✓
+                        </span>
+                      )}
+                    </span>
+                  )}
+                </Button>
+              );
+
+              const merchantEffectLine =
+                isMerchantEvent && tradeChoice.buyItem
+                  ? getMerchantTradeEffectTooltipLine(tradeChoice)
+                  : null;
+
+              const rewardText = catalogId
+                ? resolveEventChoiceReward(catalogId, choice.id, eventI18nVars)
+                : undefined;
+
+              const tooltipContent =
+                costText || rewardText || showSuccessTooltip || merchantEffectLine ? (
+                  <div className="text-xs whitespace-nowrap">
+                    {costText && (
+                      <>
+                        {costBreakdown.length > 0 ? (
+                          <div>
+                            {costBreakdown.map((costItem, index) => (
+                              <div
+                                key={index}
+                                className={
+                                  costItem.satisfied
+                                    ? "text-foreground"
+                                    : "text-muted-foreground"
+                                }
+                              >
+                                {costItem.text}
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          costText
+                        )}
+                      </>
+                    )}
+                    {costText && rewardText && (
+                      <div className="border-t border-border my-1" />
+                    )}
+                    {rewardText && (
+                      <div className="text-foreground">{rewardText}</div>
+                    )}
+                    {(costText || rewardText) &&
+                      (showSuccessTooltip || merchantEffectLine) && (
                         <div className="border-t border-border my-1" />
                       )}
-                      {rewardText && (
-                        <div className="text-foreground">{rewardText}</div>
-                      )}
-                      {(costText || rewardText) &&
-                        (showSuccessTooltip || merchantEffectLine) && (
-                          <div className="border-t border-border my-1" />
-                        )}
-                      {merchantEffectLine && <div>{merchantEffectLine}</div>}
-                      {showSuccessTooltip && (
-                        <EventChoiceSuccessTooltipContent
-                          choice={choice}
-                          gameState={gameState}
-                        />
-                      )}
-                    </div>
-                  ) : undefined;
-
-                const highlightCostResources = () => {
-                  const costResources = affordance.costs.map(({ resource }) => resource);
-                  if (costResources.length > 0) {
-                    if (isMerchantEvent) {
-                      const buyResource = extractBuyResourceFromLabel(labelText);
-                      const highlightResources = buyResource
-                        ? [...costResources, buyResource]
-                        : costResources;
-                      setHighlightedResources(highlightResources);
-                    } else {
-                      setHighlightedResources(costResources);
-                    }
-                  }
-                };
-
-                return tooltipContent ? (
-                  <TooltipWrapper
-                    key={choice.id}
-                    className="relative inline-block w-fit max-w-full"
-                    tooltipTriggerClassName="inline-block w-fit max-w-full"
-                    tooltip={tooltipContent}
-                    tooltipId={`timedevent-${choice.id}`}
-                    disabled={isDisabled}
-                    onClick={() => handleChoice(choice.id)}
-                    onMouseEnter={costText ? highlightCostResources : undefined}
-                    onMouseLeave={costText ? () => setHighlightedResources([]) : undefined}
-                  >
-                    {buttonContent}
-                  </TooltipWrapper>
-                ) : (
-                  <div key={choice.id} className="w-fit max-w-full">
-                    {buttonContent}
+                    {merchantEffectLine && <div>{merchantEffectLine}</div>}
+                    {showSuccessTooltip && (
+                      <EventChoiceSuccessTooltipContent
+                        choice={choice}
+                        gameState={gameState}
+                      />
+                    )}
                   </div>
-                );
-              })}
-          </div>
+                ) : undefined;
+
+              const highlightCostResources = () => {
+                const costResources = affordance.costs.map(({ resource }) => resource);
+                if (costResources.length > 0) {
+                  if (isMerchantEvent) {
+                    const buyResource = extractBuyResourceFromLabel(labelText);
+                    const highlightResources = buyResource
+                      ? [...costResources, buyResource]
+                      : costResources;
+                    setHighlightedResources(highlightResources);
+                  } else {
+                    setHighlightedResources(costResources);
+                  }
+                }
+              };
+
+              return tooltipContent ? (
+                <TooltipWrapper
+                  key={choice.id}
+                  className="relative inline-block w-fit max-w-full"
+                  tooltipTriggerClassName="inline-block w-fit max-w-full"
+                  tooltip={tooltipContent}
+                  tooltipId={`timedevent-${choice.id}`}
+                  disabled={isDisabled}
+                  onClick={() => handleChoice(choice.id)}
+                  onMouseEnter={costText ? highlightCostResources : undefined}
+                  onMouseLeave={costText ? () => setHighlightedResources([]) : undefined}
+                >
+                  {buttonContent}
+                </TooltipWrapper>
+              ) : (
+                <div key={choice.id} className="w-fit max-w-full">
+                  {buttonContent}
+                </div>
+              );
+            })}
 
           {isMerchantEvent && (
-            <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                setHighlightedResources([]);
-                setTimedEventTab(false);
-              }}
-              variant="outline"
-              size="xs"
-              disabled={
-                timeRemaining <= 0 ||
-                (!isMerchantEvent && safetyTimeRemaining > 0)
-              }
-              className={gameActionOutlineButtonClassName(
-                timeRemaining <= 0 ||
-                (!isMerchantEvent && safetyTimeRemaining > 0),
-              )}
-              button_id="timedevent-say_goodbye"
-            >
-              {t("ui:timedEvent.sayGoodbye")}
-            </Button>
+            <div className="basis-full">
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setHighlightedResources([]);
+                  setTimedEventTab(false);
+                }}
+                variant="outline"
+                size="xs"
+                disabled={
+                  timeRemaining <= 0 ||
+                  (!isMerchantEvent && safetyTimeRemaining > 0)
+                }
+                className={gameActionOutlineButtonClassName(
+                  timeRemaining <= 0 ||
+                  (!isMerchantEvent && safetyTimeRemaining > 0),
+                )}
+                button_id="timedevent-say_goodbye"
+              >
+                {t("ui:timedEvent.sayGoodbye")}
+              </Button>
+            </div>
           )}
         </div>
       </div>
