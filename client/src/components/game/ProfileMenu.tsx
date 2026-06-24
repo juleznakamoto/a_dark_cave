@@ -39,6 +39,7 @@ import {
   Save,
   Settings,
   Share2,
+  Trophy,
 } from "lucide-react";
 import {
   MARKETING_EMAIL_REWARD_KEY,
@@ -743,6 +744,25 @@ export function GameHeaderControls() {
               {t("profile.newGame")}
             </span>
           </DropdownMenuItem>
+          {(hasWonAnyGame || devMode) && !isSteamBuild && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  setAccountDropdownOpen(false);
+                  setLeaderboardDialogOpen(true);
+                }}
+              >
+                <span className="flex items-center gap-1.5">
+                  <Trophy
+                    className="w-3.5 h-3.5 shrink-0 opacity-90"
+                    aria-hidden
+                  />
+                  {t("profile.leaderboard")}
+                </span>
+              </DropdownMenuItem>
+            </>
+          )}
           {/* Account / auth are web-only (Supabase). */}
           {!isSteamBuild && <DropdownMenuSeparator />}
           {!isSteamBuild &&

@@ -43,7 +43,7 @@
     "cruelModeActive": "Grausamer Modus aktiviert" //ok
   },
   "profile": {
-    "title": "Profil",
+    "title": "Menü",
     "signInUp": "Anmelden/Registrieren", //ok
     "emailsOn": "E-Mails an",
     "emailsOff": "E-Mails aus",
