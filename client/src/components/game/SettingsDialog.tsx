@@ -167,7 +167,19 @@ export default function SettingsDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="[--adc-dialog-max-w:24rem] gap-3 py-4 px-5">
+      <DialogContent
+        className="[--adc-dialog-max-w:24rem] gap-3 py-4 px-5"
+        onPointerDownOutside={(e) => {
+          if ((e.target as HTMLElement).closest('[role="menu"]')) {
+            e.preventDefault();
+          }
+        }}
+        onInteractOutside={(e) => {
+          if ((e.target as HTMLElement).closest('[role="menu"]')) {
+            e.preventDefault();
+          }
+        }}
+      >
         <DialogHeader className="pb-0">
           <DialogTitle>{t("settings.title")}</DialogTitle>
         </DialogHeader>
