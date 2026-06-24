@@ -23,6 +23,8 @@ export default function LanguageSelector({
   /** "static" shows the generic "Language" label; "selected" shows the active language name. */
   inlineLabelVariant = "static",
   showChevron = false,
+  /** Nested in a Radix Dialog — avoids instant-close from focus/pointer-outside conflicts. */
+  inDialog = false,
 }: {
   buttonClassName?: string;
   iconClassName?: string;
@@ -33,6 +35,7 @@ export default function LanguageSelector({
   inlineLabelClassName?: string;
   inlineLabelVariant?: "static" | "selected";
   showChevron?: boolean;
+  inDialog?: boolean;
 } = {}) {
   const { locale, setLocale, locales, localeLabels } = useLocale();
   const { t } = useTranslation("ui");
@@ -49,6 +52,7 @@ export default function LanguageSelector({
         size="xs"
         className={buttonClassName}
         aria-label={t("languageSelector.ariaLabel")}
+        onPointerDown={inDialog ? (e) => e.preventDefault() : undefined}
       >
         {showIcon && <Globe className={iconClassName} aria-hidden />}
         {showInlineLabel && (
@@ -65,7 +69,7 @@ export default function LanguageSelector({
   );
 
   return (
-    <DropdownMenu modal={false}>
+    <DropdownMenu modal={inDialog}>
       {showTooltip ? (
         <HoverCalloutTooltip label={t("languageSelector.ariaLabel")} side="top">
           {trigger}
@@ -73,7 +77,21 @@ export default function LanguageSelector({
       ) : (
         trigger
       )}
-      <DropdownMenuContent align={menuAlign} className="w-max min-w-0 text-xs">
+      <DropdownMenuContent
+        align={menuAlign}
+        className={cn("w-max min-w-0 text-xs", inDialog && "z-[80]")}
+        onCloseAutoFocus={inDialog ? (e) => e.preventDefault() : undefined}
+        onInteractOutside={
+          inDialog
+            ? (e) => {
+                const target = e.target as HTMLElement;
+                if (target.closest('[role="dialog"]')) {
+                  e.preventDefault();
+                }
+              }
+            : undefined
+        }
+      >
         {locales.map((code) => (
           <DropdownMenuItem
             key={code}

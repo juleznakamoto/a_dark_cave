@@ -28,8 +28,19 @@ interface SettingsDialogProps {
 }
 
 /** Shared row layout so every settings row lines up its icon column and label. */
-const ROW = "flex items-center gap-3 px-2 min-h-9";
+const ROW = "flex items-center gap-2 px-2 min-h-8";
 const ICON_SLOT = "w-7 shrink-0 flex items-center justify-center";
+/** Dark unfilled track; filled portion stays red (WebKit gradient + Firefox progress). */
+const VOLUME_SLIDER =
+  "flex-1 h-1.5 cursor-pointer appearance-none bg-transparent " +
+  "[&::-webkit-slider-runnable-track]:h-1.5 [&::-webkit-slider-runnable-track]:rounded-full " +
+  "[&::-webkit-slider-runnable-track]:bg-[linear-gradient(to_right,#dc2626_0%,#dc2626_var(--slider-fill),#262626_var(--slider-fill),#262626_100%)] " +
+  "[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3 " +
+  "[&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-red-600 [&::-webkit-slider-thumb]:border-0 " +
+  "[&::-moz-range-track]:h-1.5 [&::-moz-range-track]:rounded-full [&::-moz-range-track]:bg-neutral-800 " +
+  "[&::-moz-range-progress]:h-1.5 [&::-moz-range-progress]:rounded-full [&::-moz-range-progress]:bg-red-600 " +
+  "[&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:rounded-full " +
+  "[&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-red-600";
 
 interface AudioControlRowProps {
   iconOn: string;
@@ -81,9 +92,9 @@ function AudioControlRow({
         value={muted ? 0 : volume}
         disabled={muted}
         aria-label={label}
+        style={{ "--slider-fill": `${(muted ? 0 : volume) * 100}%` } as React.CSSProperties}
         onChange={(e) => onVolumeChange(Number(e.target.value))}
-        className={`flex-1 h-1.5 cursor-pointer accent-red-600 ${muted ? "opacity-40 cursor-not-allowed" : ""
-          }`}
+        className={`${VOLUME_SLIDER} ${muted ? "opacity-40 cursor-not-allowed" : ""}`}
       />
     </div>
   );
@@ -153,13 +164,25 @@ export default function SettingsDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="[--adc-dialog-max-w:24rem]">
-        <DialogHeader>
+      <DialogContent
+        className="[--adc-dialog-max-w:24rem] gap-2 py-4 px-5"
+        onPointerDownOutside={(e) => {
+          if ((e.target as HTMLElement).closest('[role="menu"]')) {
+            e.preventDefault();
+          }
+        }}
+        onInteractOutside={(e) => {
+          if ((e.target as HTMLElement).closest('[role="menu"]')) {
+            e.preventDefault();
+          }
+        }}
+      >
+        <DialogHeader className="pb-0">
           <DialogTitle>{t("settings.title")}</DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-5 py-1">
-          <section className="space-y-3">
+        <div className="space-y-1">
+          <section className="space-y-1">
             <AudioControlRow
               iconOn="/music_on.png"
               iconOff="/music_off.png"
@@ -190,6 +213,7 @@ export default function SettingsDialog({
                 {t("languageSelector.label")}
               </span>
               <LanguageSelector
+                inDialog
                 showTooltip={false}
                 menuAlign="end"
                 showIcon={false}
@@ -207,8 +231,7 @@ export default function SettingsDialog({
               <div className="h-px bg-border" />
               <label
                 htmlFor="settings-email-updates"
-                className={`${ROW} rounded-md hover:bg-muted/40 transition-colors cursor-pointer ${marketingPrefLoading ? "opacity-50 cursor-wait" : ""
-                  }`}
+                className={`${ROW} rounded-md hover:bg-muted/40 transition-colors cursor-pointer`}
               >
                 <span className={ICON_SLOT}>
                   <Mail className="w-5 h-5 opacity-90" aria-hidden />
