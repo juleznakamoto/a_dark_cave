@@ -161,7 +161,7 @@ const VILLAGER_COUNT_BUTTON_CLASS = cn(
   ANIMATED_COUNTER_TEXT_CLASS,
 );
 const VILLAGER_COUNT_CAP_CLASS = cn(
-  "notranslate inline-flex self-end leading-none",
+  "notranslate inline-flex items-end self-end leading-none",
   ANIMATED_COUNTER_TEXT_CLASS,
 );
 const VILLAGER_COUNT_LABEL_CLASS =
