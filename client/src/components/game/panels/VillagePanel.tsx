@@ -1002,12 +1002,8 @@ export default function VillagePanel() {
         }}
       />
       <span className="ml-1 min-w-0 flex-1 text-left text-xs">
-        <span
-          translate="no"
-          className="notranslate font-noto-symbols-2"
-          aria-hidden
-        >
-          ↳{" "}
+        <span translate="no" className="notranslate" aria-hidden>
+          •{" "}
         </span>
         {label}
       </span>
