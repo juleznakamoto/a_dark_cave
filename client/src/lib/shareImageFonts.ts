@@ -48,14 +48,16 @@ async function buildFontEmbedCss(): Promise<string> {
     );
   }
 
-  // Replace each remote Noto woff2 URL in the shared CSS with an inlined data URL,
+  // Replace each Noto woff2 URL in the shared CSS with an inlined data URL,
   // keeping the original unicode-range slicing intact.
   let notoCss = NOTO_SANS_SYMBOLS_2_FONT_FACE_CSS;
   const remoteUrls = Array.from(
     new Set(
       Array.from(
-        notoCss.matchAll(/url\((https:\/\/fonts\.gstatic\.com\/[^)]+)\)/g),
-      ).map((match) => match[1]),
+        notoCss.matchAll(/url\(([^)]+)\)/g),
+      )
+        .map((match) => match[1])
+        .filter((url) => url.startsWith("http") || url.startsWith("/fonts/")),
     ),
   );
   const inlined = await Promise.all(
