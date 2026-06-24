@@ -16,14 +16,14 @@ const FORBIDDEN = {
     /\bRest\b.*font-medium/,
     />\s*Sleep\s*</,
     />\s*Focus\s*</,
-    /Cube Whispers/,
+    /Whispering Cube/,
   ],
   "panels/VillagePanel.tsx": [
     />\s*Produce\s*</,
     /Merchant cannot be called/,
     /Next cycle in \{/,
   ],
-  "panels/BastionPanel.tsx": [ />\s*Heal\s*</, />\s*Repair\s*</ ],
+  "panels/BastionPanel.tsx": [/>\s*Heal\s*</, />\s*Repair\s*</],
   "panels/AttackWavesChart.tsx": [
     /Attack Waves/,
     /It is calm, for now/,

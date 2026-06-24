@@ -340,10 +340,11 @@ Support: `server/vite.ts` (dev/prod hosting), `server/supabaseServerClient.ts` (
 6. **Shared Zod schema** — `shared/schema.ts` is authoritative; defaults flow into `createInitialState()`.
 7. **Logging** — use `client/src/lib/logger.ts`, never `console.*`.
 8. **Backward-compatible saves** — add new fields with `z.default()`; don't rename stored IDs.
-9. **Tooltips** — `TooltipWrapper` + `useGlobalTooltip`; panel action buttons compose layout via
-   `rules/actionTooltipLayout.tsx` (`composeActionTooltip`); focus glow actions add `☩` via
-   `rules/focusTooltipIndicator.tsx` while focus is active; building upgrade construction
-   tooltips add `🠕` via `rules/buildingUpgradeTooltipIndicator.tsx`.
+9. **Tooltips** — `TooltipWrapper` + `useGlobalTooltip` on item/action triggers; side-panel
+   section titles are plain labels (no separate info-glyph component). Panel action buttons
+   compose layout via `rules/actionTooltipLayout.tsx` (`composeActionTooltip`); focus glow
+   actions add `☩` via `rules/focusTooltipIndicator.tsx` while focus is active; building
+   upgrade construction tooltips add `🠕` via `rules/buildingUpgradeTooltipIndicator.tsx`.
 10. **Dual persistence** — IndexedDB always; Supabase when authenticated (optimistic diff saves).
 
 > See `.cursorrules` for the full coding-style/philosophy guide; this file is the navigational map.

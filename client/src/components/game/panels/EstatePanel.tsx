@@ -837,7 +837,7 @@ export default function EstatePanel() {
         <div className="w-full space-y-2 pt-1 pb-4">
           <h3 className="text-xs font-medium text-foreground">{t("estate.cubeWhispers")}</h3>
 
-          <div className="grid grid-cols-6 place-items-center gap-x-2 gap-y-4 w-full">
+          <div className="flex flex-col gap-2 w-full">
             {completedCubeEvents.map((event) => {
               const openCubeEvent = () => {
                 useGameStore.getState().trackButtonClick(`cube-${event.id}`);
@@ -848,25 +848,18 @@ export default function EstatePanel() {
                 (typeof event.title === "string" ? event.title : event.id);
 
               return (
-                <TooltipWrapper
+                <button
                   key={event.id}
-                  tooltip={
-                    <div className="text-xs">{cubeTitle}</div>
-                  }
-                  tooltipId={`cube-${event.id}`}
+                  type="button"
                   onClick={openCubeEvent}
+                  className="flex items-center gap-2 w-full text-left hover:opacity-80 transition-opacity cursor-pointer group"
                 >
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      openCubeEvent();
-                    }}
-                    className="w-6 h-6 bg-neutral-900 border border-neutral-800 rounded-md flex items-center justify-center hover:bg-neutral-800 hover:border-neutral-500 transition-all cursor-pointer group relative"
-                  >
-                    <div className="text-md">▣</div>
-                    <div className="absolute inset-0 cube-dialog-glow opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none rounded"></div>
-                  </button>
-                </TooltipWrapper>
+                  <span className="w-6 h-6 shrink-0 bg-neutral-900 border border-neutral-800 rounded-md flex items-center justify-center group-hover:bg-neutral-800 group-hover:border-neutral-500 transition-all relative">
+                    <span className="text-md">▣</span>
+                    <span className="absolute inset-0 cube-dialog-glow opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none rounded" />
+                  </span>
+                  <span className="text-xs text-foreground">{cubeTitle}</span>
+                </button>
               );
             })}
           </div>
