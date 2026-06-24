@@ -3290,11 +3290,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
           successLog,
           variant: "success",
           title: rewardTitle,
+          ...(madnessChange !== 0 ? { madnessChange } : {}),
         };
         shouldShowRewardDialog = true;
       }
 
-      if (madnessChange !== 0) {
+      // Madness-only popup when there is no reward/outcome dialog to host the line.
+      if (madnessChange !== 0 && !shouldShowRewardDialog) {
         madnessDialogData = {
           rewards: hasRewards ? rewards : undefined,
           successLog,

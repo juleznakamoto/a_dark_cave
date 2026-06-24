@@ -42,7 +42,6 @@ import {
   type GameState,
 } from "@shared/schema";
 import {
-  getStorageLimitText,
   isResourceLimited,
   getResourceLimit,
   COMBAT_ITEM_RESOURCES,
@@ -338,11 +337,6 @@ export default function SidePanel() {
       useGameStore.getState().setFlag("hasHitResourceLimit", true);
     }
   }, [hasResourceAtLimit, gameState.flags.hasHitResourceLimit]);
-
-  const showResourceLimit =
-    resourceOrder.some((key) => isResourceLimited(key, gameState)) &&
-    gameState.flags.hasHitResourceLimit;
-  const resourceLimitText = getStorageLimitText(gameState); // Get the storage limit text
 
   // Dynamically generate tool items from state (only show best tools, no weapons)
 
@@ -909,16 +903,6 @@ export default function SidePanel() {
                   <span className="font-medium">
                     {t("sidePanel.resources")}
                   </span>
-                }
-                titleSuffix={
-                  showResourceLimit ? (
-                    <span className="align-baseline font-normal text-2xs text-muted-foreground">
-                      {" "}
-                      {t("sidePanel.resourceLimitMax", {
-                        limit: resourceLimitText,
-                      })}
-                    </span>
-                  ) : undefined
                 }
                 activeTab={activeTab}
                 items={resourceItems}

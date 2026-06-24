@@ -67,6 +67,8 @@ interface RewardDialogData {
   variant?: "success" | "loss";
   /** Dialog heading; omit for generic action rewards (e.g. cave actions). */
   title?: string;
+  /** When set, show a madness delta line (same copy as MadnessDialog). */
+  madnessChange?: number;
 }
 
 interface RewardDialogProps {
@@ -122,7 +124,7 @@ export default function RewardDialog({
   const { t } = useTranslation(["ui", "common"]);
   if (!data) return null;
 
-  const { rewards, successLog, variant = "success", title } = data;
+  const { rewards, successLog, variant = "success", title, madnessChange } = data;
   const isLossVariant = variant === "loss";
 
   const rewardItems: JSX.Element[] = [];
@@ -277,6 +279,8 @@ export default function RewardDialog({
 
   const hasRewardItems = rewardItems.length > 0;
   const hasLosses = lossItems.length > 0;
+  const hasMadnessChange =
+    typeof madnessChange === "number" && madnessChange !== 0;
   const useSocialPromoIcon =
     variant === "success" &&
     Boolean(rewards.clothing?.includes("gifted_ring"));
@@ -285,6 +289,14 @@ export default function RewardDialog({
     <>
       {hasRewardItems && <div className="space-y-1">{rewardItems}</div>}
       {hasLosses && <div className="space-y-1">{lossItems}</div>}
+      {hasMadnessChange && (
+        <div className="text-sm text-violet-300">
+          {t("ui:madness.change", {
+            sign: madnessChange! > 0 ? "+" : "-",
+            amount: formatNumber(Math.abs(madnessChange!)),
+          })}
+        </div>
+      )}
     </>
   );
 
