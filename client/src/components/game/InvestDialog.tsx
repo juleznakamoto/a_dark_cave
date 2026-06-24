@@ -479,7 +479,12 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                               disabled
                               disabledCursor="default"
                             >
-                              <span className={labelClass}>
+                              <span
+                                className={cn(
+                                  "text-xs tabular-nums",
+                                  labelClass,
+                                )}
+                              >
                                 {t("common:currency.goldAmount", {
                                   amount: formatNumber(a),
                                 })}
@@ -488,7 +493,9 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                           </TooltipWrapper>
                         ) : (
                           <RadioGroup.Item value={String(a)}>
-                            <span className={labelClass}>
+                            <span
+                              className={cn("text-xs tabular-nums", labelClass)}
+                            >
                               {t("common:currency.goldAmount", {
                                 amount: formatNumber(a),
                               })}
@@ -505,13 +512,13 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
             <div className="flex flex-col items-center gap-4 pt-1">
               <p className="text-center text-xs text-muted-foreground tabular-nums">
                 {t("invest.potentialProfit")}{" "}
-                <span className="text-foreground font-medium">
+                <span className="text-xs text-foreground font-medium tabular-nums">
                   {t("common:currency.goldAmount", {
                     amount: formatNumber(potentialProfitGold.normal),
                   })}
                 </span>
                 {" / "}
-                <span className="text-foreground font-medium">
+                <span className="text-xs text-foreground font-medium tabular-nums">
                   {t("common:currency.goldAmount", {
                     amount: formatNumber(potentialProfitGold.luckyChance),
                   })}
