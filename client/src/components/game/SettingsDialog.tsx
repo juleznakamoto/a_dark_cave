@@ -91,9 +91,10 @@ function AudioControlRow({
 
 /**
  * Settings dialog opened from the Profile menu. Houses audio (music + sound effects),
- * email preferences, and account deletion. Intentionally NON-blocking: the simulation
- * keeps running while the player adjusts volume, so its open flag is not added to
- * `isModalDialogOpen` / `isNonRewardBlockingModalOpen`.
+ * language, email preferences, and account deletion. Blocking: while open, the
+ * simulation is frozen and no new event/combat dialogs spawn over it — its
+ * `settingsDialogOpen` store flag is part of `isNonRewardBlockingModalOpen` in
+ * `state.ts` (and listed in `UI_ONLY_PROPERTIES` so it is never persisted).
  */
 export default function SettingsDialog({
   isOpen,

@@ -110,6 +110,8 @@ function useProfileMenuState() {
     setRestartGameDialogOpen, // Added from store
     deleteAccountDialogOpen,
     setDeleteAccountDialogOpen,
+    settingsDialogOpen,
+    setSettingsDialogOpen,
     cooldowns,
     lastSaved,
     devMode,
@@ -122,7 +124,6 @@ function useProfileMenuState() {
   const signupWelcomeGoldClaimedBool = signupWelcomeGoldClaimed === true;
 
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
-  const [settingsDialogOpen, setSettingsDialogOpen] = useState(false);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<{
     id: string;

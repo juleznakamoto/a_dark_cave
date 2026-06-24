@@ -232,6 +232,7 @@ interface GameStore extends GameState {
   inactivityReason: "timeout" | "multitab" | null;
   restartGameDialogOpen: boolean;
   deleteAccountDialogOpen: boolean;
+  settingsDialogOpen: boolean;
   playlightWelcomeDialogOpen: boolean;
   feedbackDialogOpen: boolean;
   /** Persisted: one-time feedback dialog at 105m play time has been shown or skipped. */
@@ -477,6 +478,7 @@ interface GameStore extends GameState {
   grantAdditionalConstructionQueueSlot: () => void;
   setIdleModeDialog: (isOpen: boolean) => void;
   setRestartGameDialogOpen: (isOpen: boolean) => void;
+  setSettingsDialogOpen: (isOpen: boolean) => void;
   setDeleteAccountDialogOpen: (isOpen: boolean) => void;
   updateEffects: () => void;
   updateBastionStats: () => void;
@@ -1345,6 +1347,7 @@ function isBlockingDialogOpen(state: GameStore): boolean {
     state.idleModeDialog.isOpen ||
     state.restartGameDialogOpen ||
     state.deleteAccountDialogOpen ||
+    state.settingsDialogOpen ||
     state.inactivityDialogOpen ||
     state.investmentResultDialog.isOpen ||
     state.madnessDialog.isOpen ||
@@ -1570,6 +1573,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   inactivityReason: null,
   restartGameDialogOpen: false,
   deleteAccountDialogOpen: false,
+  settingsDialogOpen: false,
   playlightWelcomeDialogOpen: false,
   feedbackDialogOpen: false,
   feedbackPromptShown: false,
@@ -2540,6 +2544,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       investDialogOpen: false,
       restartGameDialogOpen: false,
       deleteAccountDialogOpen: false,
+      settingsDialogOpen: false,
       resourceChangeEvents: [],
 
       // Recalculate derived state
@@ -4104,6 +4109,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setDeleteAccountDialogOpen: (isOpen: boolean) => {
     set({ deleteAccountDialogOpen: isOpen });
+  },
+
+  setSettingsDialogOpen: (isOpen: boolean) => {
+    set({ settingsDialogOpen: isOpen });
   },
 
   updateEffects: () => {
