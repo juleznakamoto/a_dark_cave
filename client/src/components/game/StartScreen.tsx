@@ -38,6 +38,8 @@ export default function StartScreen() {
     cruelMode,
     musicMuted,
     sfxMuted,
+    musicVolume,
+    sfxVolume,
     setMusicMuted,
     setSfxMuted,
   } = useGameStore();
@@ -49,9 +51,11 @@ export default function StartScreen() {
   const { locale } = useLocale();
 
   useEffect(() => {
+    audioManager.setMusicVolume(musicVolume ?? 1);
+    audioManager.setSfxVolume(sfxVolume ?? 1);
     audioManager.musicMute(musicMuted);
     audioManager.sfxMute(sfxMuted);
-  }, [musicMuted, sfxMuted]);
+  }, [musicMuted, sfxMuted, musicVolume, sfxVolume]);
 
   useEffect(() => {
     // Wind plays as soon as the user shows intent (mousemove on desktop, touchstart on mobile).

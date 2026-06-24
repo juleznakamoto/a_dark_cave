@@ -340,6 +340,8 @@ interface GameStore extends GameState {
   isPaused: boolean; // New state for pause/unpause
   musicMuted: boolean; // Background music mute state
   sfxMuted: boolean; // Sound effects mute state
+  musicVolume: number; // Background music master volume (0–1)
+  sfxVolume: number; // Sound effects master volume (0–1)
 
   // Analytics tracking
   clickAnalytics: Record<string, number>;
@@ -388,6 +390,8 @@ interface GameStore extends GameState {
   ) => void;
   setMusicMuted: (muted: boolean) => void;
   setSfxMuted: (muted: boolean) => void;
+  setMusicVolume: (volume: number) => void;
+  setSfxVolume: (volume: number) => void;
   setAuthNotificationSeen: (seen: boolean) => void;
   setAuthNotificationVisible: (visible: boolean) => void;
   setSignUpPromptEligibleForGold: (eligible: boolean) => void;
@@ -1190,6 +1194,8 @@ export const createInitialState = (): GameState => ({
   isPaused: false,
   musicMuted: false,
   sfxMuted: false,
+  musicVolume: 1,
+  sfxVolume: 1,
   // Initialize auth notification state
   authNotificationSeen: false,
   authNotificationVisible: false,
@@ -1550,6 +1556,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   shopCheckoutItemId: null,
   musicMuted: false,
   sfxMuted: false,
+  musicVolume: 1,
+  sfxVolume: 1,
   idleModeDialog: {
     isOpen: false,
   },
@@ -1650,6 +1658,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setMusicMuted: (muted: boolean) => set({ musicMuted: muted }),
   setSfxMuted: (muted: boolean) => set({ sfxMuted: muted }),
+  setMusicVolume: (volume: number) =>
+    set({ musicVolume: Math.max(0, Math.min(1, volume)) }),
+  setSfxVolume: (volume: number) =>
+    set({ sfxVolume: Math.max(0, Math.min(1, volume)) }),
   setAuthNotificationSeen: (seen: boolean) =>
     set({ authNotificationSeen: seen }),
   setAuthNotificationVisible: (visible: boolean) =>
@@ -2677,6 +2689,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const saved = savedState as typeof savedState & {
         musicMuted?: boolean;
         sfxMuted?: boolean;
+        musicVolume?: number;
+        sfxVolume?: number;
       };
       // CRITICAL: Extract playTime FIRST before any processing
       const loadedPlayTime =
@@ -2775,6 +2789,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
           savedState.isPaused !== undefined ? savedState.isPaused : false, // Ensure isPaused is loaded
         musicMuted: saved.musicMuted ?? false,
         sfxMuted: saved.sfxMuted ?? false,
+        musicVolume:
+          typeof saved.musicVolume === "number" ? saved.musicVolume : 1,
+        sfxVolume: typeof saved.sfxVolume === "number" ? saved.sfxVolume : 1,
         authNotificationSeen:
           savedState.authNotificationSeen !== undefined
             ? savedState.authNotificationSeen

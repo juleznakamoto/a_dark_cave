@@ -373,6 +373,8 @@ export default function Game() {
         // Note: audioManager may already be initialized for start screen wind sound
         const { audioManager } = await import("@/lib/audio");
         const currentState = useGameStore.getState();
+        audioManager.setMusicVolume(currentState.musicVolume ?? 1);
+        audioManager.setSfxVolume(currentState.sfxVolume ?? 1);
         audioManager.musicMute(currentState.musicMuted);
         audioManager.sfxMute(currentState.sfxMuted);
 

@@ -29,12 +29,19 @@ import {
 import AuthDialog from "./AuthDialog";
 import { RestartGameDialog } from "./RestartGameDialog";
 import { DeleteAccountDialog } from "./DeleteAccountDialog";
+import SettingsDialog from "./SettingsDialog";
 import SocialPromptDialog from "./SocialPromptDialog";
 import { initPlaylight, markPlaylightDiscoveryUserInitiated } from "@/lib/playlight";
-import { Mail, Share2 } from "lucide-react";
+import {
+  LogIn,
+  LogOut,
+  RotateCcw,
+  Save,
+  Settings,
+  Share2,
+} from "lucide-react";
 import {
   MARKETING_EMAIL_REWARD_KEY,
-  MARKETING_SUBSCRIBE_GOLD,
   applyMarketingSubscribeGoldReward,
   fetchMarketingOptInPreference,
   postMarketingPreference,
@@ -115,6 +122,7 @@ function useProfileMenuState() {
   const signupWelcomeGoldClaimedBool = signupWelcomeGoldClaimed === true;
 
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
+  const [settingsDialogOpen, setSettingsDialogOpen] = useState(false);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<{
     id: string;
@@ -397,6 +405,8 @@ function useProfileMenuState() {
     isPaused,
     sleepDialogOpen,
     leaderboardDialogOpen,
+    settingsDialogOpen,
+    setSettingsDialogOpen,
   };
 }
 
@@ -413,6 +423,13 @@ function ProfileMenuDialogs() {
     deleteAccountInProgress,
     setDeleteAccountDialogOpen,
     handleConfirmDeleteAccount,
+    settingsDialogOpen,
+    setSettingsDialogOpen,
+    currentUser,
+    marketingOptIn,
+    marketingPrefLoading,
+    handleMarketingPreferenceToggle,
+    social_media_rewards,
   } = useProfileMenuContext();
 
   // Web-only dialog: clear stale open state if something sets the flag on Steam.
@@ -424,6 +441,23 @@ function ProfileMenuDialogs() {
 
   return (
     <>
+      <SettingsDialog
+        isOpen={settingsDialogOpen}
+        onClose={() => setSettingsDialogOpen(false)}
+        currentUser={currentUser}
+        marketingOptIn={marketingOptIn}
+        marketingPrefLoading={marketingPrefLoading}
+        marketingRewardClaimed={
+          social_media_rewards[MARKETING_EMAIL_REWARD_KEY]?.claimed === true
+        }
+        onToggleMarketing={() => {
+          void handleMarketingPreferenceToggle();
+        }}
+        onDeleteAccount={() => {
+          setSettingsDialogOpen(false);
+          setDeleteAccountDialogOpen(true);
+        }}
+      />
       {!isSteamBuild && (
         <>
           <SocialPromptDialog isOpen={socialPromptDialogOpen} />
@@ -475,17 +509,13 @@ export function GameHeaderControls() {
     handleRestartGame,
     handleSetAuthDialogOpen,
     handleSignOut,
-    handleMarketingPreferenceToggle,
-    marketingOptIn,
-    marketingPrefLoading,
-    social_media_rewards,
     hasWonAnyGame,
     devMode,
     setLeaderboardDialogOpen,
     handleDiscovery,
     isPaused,
     sleepDialogOpen,
-    setDeleteAccountDialogOpen,
+    setSettingsDialogOpen,
   } = useProfileMenuContext();
 
   useEffect(() => {
@@ -637,6 +667,18 @@ export function GameHeaderControls() {
               <DropdownMenuSeparator />
             </>
           )}
+          <DropdownMenuItem
+            onClick={() => {
+              setAccountDropdownOpen(false);
+              setSettingsDialogOpen(true);
+            }}
+          >
+            <span className="flex items-center gap-1.5">
+              <Settings className="w-3.5 h-3.5 shrink-0 opacity-90" aria-hidden />
+              {t("settings.title")}
+            </span>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItemWithTooltip
             tooltip={
               <div className="text-xs">
@@ -685,18 +727,33 @@ export function GameHeaderControls() {
                 : ""
             }
           >
-            {t("profile.save")}
+            <span className="flex items-center gap-1.5">
+              <Save className="w-3.5 h-3.5 shrink-0 opacity-90" aria-hidden />
+              {t("profile.save")}
+            </span>
           </DropdownMenuItemWithTooltip>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleRestartGame}>
-            {t("profile.newGame")}
+            <span className="flex items-center gap-1.5">
+              <RotateCcw
+                className="w-3.5 h-3.5 shrink-0 opacity-90"
+                aria-hidden
+              />
+              {t("profile.newGame")}
+            </span>
           </DropdownMenuItem>
-          {/* Account / auth / marketing are web-only (Supabase). */}
+          {/* Account / auth are web-only (Supabase). */}
           {!isSteamBuild && <DropdownMenuSeparator />}
           {!isSteamBuild &&
             (currentUser ? (
               <DropdownMenuItem onClick={handleSignOut}>
-                {t("profile.signOut")}
+                <span className="flex items-center gap-1.5">
+                  <LogOut
+                    className="w-3.5 h-3.5 shrink-0 opacity-90"
+                    aria-hidden
+                  />
+                  {t("profile.signOut")}
+                </span>
               </DropdownMenuItem>
             ) : (
               <DropdownMenuItem
@@ -706,74 +763,15 @@ export function GameHeaderControls() {
                   setAuthNotificationSeen(true);
                 }}
               >
-                {t("profile.signInUp")}
+                <span className="flex items-center gap-1.5">
+                  <LogIn
+                    className="w-3.5 h-3.5 shrink-0 opacity-90"
+                    aria-hidden
+                  />
+                  {t("profile.signInUp")}
+                </span>
               </DropdownMenuItem>
             ))}
-          {!isSteamBuild && currentUser && (
-            <>
-              <DropdownMenuSeparator />
-              <DropdownMenuItemWithTooltip
-                tooltip={
-                  <p className="text-xs">
-                    {marketingOptIn
-                      ? t("profile.marketingOnTooltip")
-                      : t("profile.marketingOffTooltip")}
-                  </p>
-                }
-                tooltipId="marketing-email-updates-info"
-                tooltipContentClassName="max-w-xs"
-                disabled={marketingPrefLoading}
-                onTooltipAction={() => {
-                  void handleMarketingPreferenceToggle();
-                }}
-                className={
-                  marketingPrefLoading
-                    ? "opacity-50 cursor-wait"
-                    : marketingOptIn
-                      ? "opacity-50"
-                      : ""
-                }
-              >
-                <div className="flex items-center justify-between w-full gap-2">
-                  <div className="flex items-center gap-1.5 min-w-0">
-                    <Mail
-                      className="w-3.5 h-3.5 shrink-0 opacity-90"
-                      aria-hidden
-                    />
-                    <span>
-                      {marketingOptIn
-                        ? t("profile.emailsOn")
-                        : t("profile.emailsOff")}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <span className="font-semibold">
-                      +
-                      {t("common:currency.goldAmount", {
-                        amount: MARKETING_SUBSCRIBE_GOLD,
-                      })}
-                    </span>
-                    {social_media_rewards[MARKETING_EMAIL_REWARD_KEY]
-                      ?.claimed && (
-                        <span className="text-xs text-muted-foreground">
-                          ✓
-                        </span>
-                      )}
-                  </div>
-                </div>
-              </DropdownMenuItemWithTooltip>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                className="text-[10px] text-muted-foreground focus:text-muted-foreground focus:bg-muted/50"
-                onClick={() => {
-                  setAccountDropdownOpen(false);
-                  setDeleteAccountDialogOpen(true);
-                }}
-              >
-                {t("profile.deleteAccount")}
-              </DropdownMenuItem>
-            </>
-          )}
         </DropdownMenuContent>
       </DropdownMenu>
       <FullscreenButton />

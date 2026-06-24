@@ -32,8 +32,25 @@ export class AudioManager {
   private isMusicMuted: boolean = false;
   private backgroundMusicVolume: number = 1;
   private wasBackgroundMusicPlaying: boolean = false;
+  /** Master multipliers (0–1) layered on top of each sound's per-call volume. */
+  private musicMasterVolume: number = 1;
+  private sfxMasterVolume: number = 1;
+  /** Per-call requested volume (pre-master) so master changes can re-apply to live sounds. */
+  private requestedVolumes: Map<string, number> = new Map();
 
   private constructor() { }
+
+  private clampVolume(value: number): number {
+    if (!Number.isFinite(value)) return 1;
+    return Math.max(0, Math.min(1, value));
+  }
+
+  /** Effective Howler volume for a sound: per-call volume scaled by the matching master. */
+  private effectiveVolume(name: string, volume: number): number {
+    const master =
+      name === 'backgroundMusic' ? this.musicMasterVolume : this.sfxMasterVolume;
+    return volume * master;
+  }
 
   static getInstance(): AudioManager {
     if (!AudioManager.instance) {
@@ -76,7 +93,11 @@ export class AudioManager {
                 snd.loop(true);
                 snd.volume(0);
                 snd.play();
-                snd.fade(0, self.backgroundMusicVolume, 1000);
+                snd.fade(
+                  0,
+                  self.effectiveVolume('backgroundMusic', self.backgroundMusicVolume),
+                  1000,
+                );
               }
             });
           }
@@ -99,6 +120,9 @@ export class AudioManager {
     // Resume AudioContext if suspended (autoplay policy)
     this.resumeAudioContext();
 
+    this.requestedVolumes.set(name, volume);
+    const effective = this.effectiveVolume(name, volume);
+
     const sound = this.sounds.get(name);
     if (!sound) {
       const url = this.soundUrls.get(name);
@@ -107,7 +131,7 @@ export class AudioManager {
           const loadedSound = this.sounds.get(name);
           if (loadedSound instanceof Howl) {
             try {
-              loadedSound.volume(volume);
+              loadedSound.volume(effective);
               loadedSound.play();
             } catch (error) {
               logger.warn(`Error playing loaded sound ${name}:`, error);
@@ -121,7 +145,7 @@ export class AudioManager {
     }
 
     try {
-      sound.volume(volume);
+      sound.volume(effective);
       sound.play();
     } catch (error) {
       logger.warn(`Error playing sound ${name}:`, error);
@@ -154,9 +178,12 @@ export class AudioManager {
     }
 
     try {
+      this.requestedVolumes.set(name, volume);
+      const effective = this.effectiveVolume(name, volume);
+
       // IMPORTANT: Set loop BEFORE checking if playing, so loop is always enabled
       sound.loop(true);
-      sound.volume(volume);
+      sound.volume(effective);
 
       // If sound is already playing with loop enabled, we're done
       if (sound.playing && sound.playing()) return;
@@ -166,7 +193,7 @@ export class AudioManager {
         sound.off('fade');
         sound.volume(0);
         sound.play();
-        sound.fade(0, volume, fadeInDuration * 1000);
+        sound.fade(0, effective, fadeInDuration * 1000);
       } else {
         sound.play();
       }
@@ -325,6 +352,42 @@ export class AudioManager {
       this.wasBackgroundMusicPlaying = true; // Track that music should be playing
       this.playLoopingSound('backgroundMusic', this.backgroundMusicVolume, false, 1);
     }
+  }
+
+  /** Set the master music volume (0–1) and apply it live to the background track. */
+  setMusicVolume(volume: number): void {
+    this.musicMasterVolume = this.clampVolume(volume);
+    const bgMusic = this.sounds.get('backgroundMusic');
+    if (bgMusic && typeof bgMusic.volume === 'function') {
+      try {
+        bgMusic.volume(
+          this.effectiveVolume('backgroundMusic', this.backgroundMusicVolume),
+        );
+      } catch (error) {
+        logger.warn('Error applying music volume:', error);
+      }
+    }
+  }
+
+  /** Set the master SFX volume (0–1) and apply it live to any playing looping SFX. */
+  setSfxVolume(volume: number): void {
+    this.sfxMasterVolume = this.clampVolume(volume);
+    this.sounds.forEach((sound, name) => {
+      if (name === 'backgroundMusic') return;
+      if (
+        sound &&
+        typeof sound.playing === 'function' &&
+        sound.playing() &&
+        typeof sound.volume === 'function'
+      ) {
+        const requested = this.requestedVolumes.get(name) ?? 1;
+        try {
+          sound.volume(this.effectiveVolume(name, requested));
+        } catch (error) {
+          logger.warn(`Error applying SFX volume for ${name}:`, error);
+        }
+      }
+    });
   }
 }
 

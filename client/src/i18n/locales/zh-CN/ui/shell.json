@@ -1,4 +1,7 @@
 {
+  "settings": {
+    "title": "设置"
+  },
   "languageSelector": {
     "label": "语言",
     "ariaLabel": "选择语言"

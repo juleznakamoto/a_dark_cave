@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
-import { audioManager } from "@/lib/audio";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import {
@@ -8,7 +7,6 @@ import {
   GAME_FOOTER_RIGHT_ICON_ORDER,
 } from "@/lib/gameFooterSocialLinks";
 import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
-import LanguageSelector from "./LanguageSelector";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { tWithFallback } from "@/i18n/resolveGameText";
@@ -18,8 +16,6 @@ const FOOTER_CONTROL_BTN =
   "group shrink-0 px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-600";
 const FOOTER_CONTROL_BTN_FADE =
   "opacity-80 transition-opacity group-hover:opacity-100";
-const FOOTER_CONTROL_ICON_HOVER =
-  "w-4 h-4 shrink-0 object-contain opacity-80 transition-[filter,opacity] group-hover:opacity-100 [filter:invert(1)] group-hover:[filter:invert(17%)_sepia(89%)_saturate(7458%)_hue-rotate(358deg)_brightness(97%)_contrast(118%)]";
 const FOOTER_CONTROL_SVG_ICON_HOVER =
   "w-4 h-4 text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
 const FOOTER_CONTROL_TEXT =
@@ -34,10 +30,6 @@ export default function GameFooter() {
     setShopDialogOpen,
     isPaused,
     togglePause,
-    musicMuted,
-    sfxMuted,
-    setMusicMuted,
-    setSfxMuted,
     idleModeDialog,
     setFullGamePurchaseDialogOpen,
     fullGamePurchaseDialogOpen,
@@ -55,18 +47,6 @@ export default function GameFooter() {
 
   const handleOfferTribute = () => {
     window.open("https://www.buymeacoffee.com/julez.b", "_blank");
-  };
-
-  const toggleMusic = () => {
-    const next = !musicMuted;
-    setMusicMuted(next);
-    audioManager.musicMute(next);
-  };
-
-  const toggleSfx = () => {
-    const next = !sfxMuted;
-    setSfxMuted(next);
-    audioManager.sfxMute(next);
   };
 
   const socialLinkClass = `group ${FOOTER_CONTROL_BTN} flex items-center justify-center gap-1`;
@@ -107,55 +87,6 @@ export default function GameFooter() {
                 </span>
               </Button>
             </HoverCalloutTooltip>
-            <HoverCalloutTooltip
-              label={
-                musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")
-              }
-              side="top"
-              arrowAlign="start"
-            >
-              <Button
-                variant="ghost"
-                size="xs"
-                onClick={toggleMusic}
-                data-testid="button-toggle-music"
-                className={FOOTER_CONTROL_BTN}
-                aria-label={
-                  musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")
-                }
-              >
-                <img
-                  src={musicMuted ? "/music_off.png" : "/music_on.png"}
-                  alt=""
-                  className={FOOTER_CONTROL_ICON_HOVER}
-                />
-              </Button>
-            </HoverCalloutTooltip>
-            <HoverCalloutTooltip
-              label={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
-              side="top"
-            >
-              <Button
-                variant="ghost"
-                size="xs"
-                onClick={toggleSfx}
-                data-testid="button-toggle-sfx"
-                className={FOOTER_CONTROL_BTN}
-                aria-label={
-                  sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")
-                }
-              >
-                <img
-                  src={sfxMuted ? "/sound_off.png" : "/sound_on.png"}
-                  alt=""
-                  className={FOOTER_CONTROL_ICON_HOVER}
-                />
-              </Button>
-            </HoverCalloutTooltip>
-            <LanguageSelector
-              buttonClassName={FOOTER_CONTROL_BTN}
-              iconClassName={FOOTER_CONTROL_SVG_ICON_HOVER}
-            />
 
             {BTP === 1 && !isSteamBuild ? (
               <Button

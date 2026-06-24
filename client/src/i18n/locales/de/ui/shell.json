@@ -1,4 +1,7 @@
 {
+  "settings": {
+    "title": "Einstellungen"
+  },
   "languageSelector": {
     "label": "Sprache",
     "ariaLabel": "Sprache auswählen"
