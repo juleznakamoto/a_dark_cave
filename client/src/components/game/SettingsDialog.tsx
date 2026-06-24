@@ -28,15 +28,16 @@ interface SettingsDialogProps {
 }
 
 /** Shared row layout so every settings row lines up its icon column and label. */
-const ROW = "flex items-center gap-2 px-2 min-h-8";
+const ROW = "flex items-center gap-2 px-2 min-h-9";
 const ICON_SLOT = "w-7 shrink-0 flex items-center justify-center";
 /** Dark unfilled track; filled portion stays red (WebKit gradient + Firefox progress). */
 const VOLUME_SLIDER =
-  "flex-1 h-1.5 cursor-pointer appearance-none bg-transparent " +
+  "w-full h-4 cursor-pointer appearance-none bg-transparent " +
   "[&::-webkit-slider-runnable-track]:h-1.5 [&::-webkit-slider-runnable-track]:rounded-full " +
   "[&::-webkit-slider-runnable-track]:bg-[linear-gradient(to_right,#dc2626_0%,#dc2626_var(--slider-fill),#262626_var(--slider-fill),#262626_100%)] " +
   "[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3 " +
   "[&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-red-600 [&::-webkit-slider-thumb]:border-0 " +
+  "[&::-webkit-slider-thumb]:mt-[calc(0.375rem/2-0.75rem/2)] " +
   "[&::-moz-range-track]:h-1.5 [&::-moz-range-track]:rounded-full [&::-moz-range-track]:bg-neutral-800 " +
   "[&::-moz-range-progress]:h-1.5 [&::-moz-range-progress]:rounded-full [&::-moz-range-progress]:bg-red-600 " +
   "[&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:rounded-full " +
@@ -84,18 +85,20 @@ function AudioControlRow({
         />
       </button>
       <span className="w-16 shrink-0 text-sm">{title}</span>
-      <input
-        type="range"
-        min={0}
-        max={1}
-        step={0.01}
-        value={muted ? 0 : volume}
-        disabled={muted}
-        aria-label={label}
-        style={{ "--slider-fill": `${(muted ? 0 : volume) * 100}%` } as React.CSSProperties}
-        onChange={(e) => onVolumeChange(Number(e.target.value))}
-        className={`${VOLUME_SLIDER} ${muted ? "opacity-40 cursor-not-allowed" : ""}`}
-      />
+      <div className="flex flex-1 items-center">
+        <input
+          type="range"
+          min={0}
+          max={1}
+          step={0.01}
+          value={muted ? 0 : volume}
+          disabled={muted}
+          aria-label={label}
+          style={{ "--slider-fill": `${(muted ? 0 : volume) * 100}%` } as React.CSSProperties}
+          onChange={(e) => onVolumeChange(Number(e.target.value))}
+          className={`${VOLUME_SLIDER} ${muted ? "opacity-40 cursor-not-allowed" : ""}`}
+        />
+      </div>
     </div>
   );
 }
@@ -164,25 +167,13 @@ export default function SettingsDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent
-        className="[--adc-dialog-max-w:24rem] gap-2 py-4 px-5"
-        onPointerDownOutside={(e) => {
-          if ((e.target as HTMLElement).closest('[role="menu"]')) {
-            e.preventDefault();
-          }
-        }}
-        onInteractOutside={(e) => {
-          if ((e.target as HTMLElement).closest('[role="menu"]')) {
-            e.preventDefault();
-          }
-        }}
-      >
+      <DialogContent className="[--adc-dialog-max-w:24rem] gap-3 py-4 px-5">
         <DialogHeader className="pb-0">
           <DialogTitle>{t("settings.title")}</DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-1">
-          <section className="space-y-1">
+        <div className="space-y-2">
+          <section className="space-y-2">
             <AudioControlRow
               iconOn="/music_on.png"
               iconOff="/music_off.png"
@@ -228,11 +219,8 @@ export default function SettingsDialog({
 
           {showAccountSettings && (
             <>
-              <div className="h-px bg-border" />
-              <label
-                htmlFor="settings-email-updates"
-                className={`${ROW} rounded-md hover:bg-muted/40 transition-colors cursor-pointer`}
-              >
+              <div className="h-px bg-border my-1" />
+              <div className={ROW}>
                 <span className={ICON_SLOT}>
                   <Mail className="w-5 h-5 opacity-90" aria-hidden />
                 </span>
@@ -246,15 +234,14 @@ export default function SettingsDialog({
                   </span>
                 )}
                 <Checkbox
-                  id="settings-email-updates"
                   checked={marketingOptIn}
                   disabled={marketingPrefLoading}
                   onCheckedChange={() => onToggleMarketing()}
                   aria-label={t("settings.emails")}
                 />
-              </label>
+              </div>
 
-              <div className="h-px bg-border" />
+              <div className="h-px bg-border my-1" />
               <button
                 type="button"
                 onClick={onDeleteAccount}

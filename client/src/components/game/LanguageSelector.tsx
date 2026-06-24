@@ -23,7 +23,7 @@ export default function LanguageSelector({
   /** "static" shows the generic "Language" label; "selected" shows the active language name. */
   inlineLabelVariant = "static",
   showChevron = false,
-  /** Nested in a Radix Dialog — avoids instant-close from focus/pointer-outside conflicts. */
+  /** Inside a Radix Dialog — renders a native select to avoid nested DismissableLayer conflicts. */
   inDialog = false,
 }: {
   buttonClassName?: string;
@@ -45,6 +45,35 @@ export default function LanguageSelector({
       ? localeLabels[locale as SupportedLocale]
       : t("languageSelector.label");
 
+  if (inDialog) {
+    return (
+      <div className="relative -mr-2 shrink-0">
+        <select
+          value={locale}
+          onChange={(e) => void setLocale(e.target.value as SupportedLocale)}
+          aria-label={t("languageSelector.ariaLabel")}
+          className={cn(
+            "appearance-none rounded-md bg-transparent pl-2 pr-7 py-1 text-sm",
+            "hover:bg-muted/40 cursor-pointer border-0 outline-none focus:ring-0",
+            buttonClassName,
+          )}
+        >
+          {locales.map((code) => (
+            <option key={code} value={code}>
+              {localeLabels[code as SupportedLocale]}
+            </option>
+          ))}
+        </select>
+        {showChevron && (
+          <ChevronDown
+            className="pointer-events-none absolute right-1.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 opacity-70"
+            aria-hidden
+          />
+        )}
+      </div>
+    );
+  }
+
   const trigger = (
     <DropdownMenuTrigger asChild>
       <Button
@@ -52,7 +81,6 @@ export default function LanguageSelector({
         size="xs"
         className={buttonClassName}
         aria-label={t("languageSelector.ariaLabel")}
-        onPointerDown={inDialog ? (e) => e.preventDefault() : undefined}
       >
         {showIcon && <Globe className={iconClassName} aria-hidden />}
         {showInlineLabel && (
@@ -69,7 +97,7 @@ export default function LanguageSelector({
   );
 
   return (
-    <DropdownMenu modal={inDialog}>
+    <DropdownMenu>
       {showTooltip ? (
         <HoverCalloutTooltip label={t("languageSelector.ariaLabel")} side="top">
           {trigger}
@@ -79,18 +107,7 @@ export default function LanguageSelector({
       )}
       <DropdownMenuContent
         align={menuAlign}
-        className={cn("w-max min-w-0 text-xs", inDialog && "z-[80]")}
-        onCloseAutoFocus={inDialog ? (e) => e.preventDefault() : undefined}
-        onInteractOutside={
-          inDialog
-            ? (e) => {
-                const target = e.target as HTMLElement;
-                if (target.closest('[role="dialog"]')) {
-                  e.preventDefault();
-                }
-              }
-            : undefined
-        }
+        className="w-max min-w-0 text-xs"
       >
         {locales.map((code) => (
           <DropdownMenuItem
