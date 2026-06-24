@@ -4,6 +4,9 @@ import { isInsightUnlocked, getInsightAmount } from "@/game/rules/insightReveal"
 /** Max villagers assignable per profession at each Insight upgrade level (0–5). */
 export const VILLAGER_CAP_BY_LEVEL = [10, 20, 30, 40, 50, 100] as const;
 
+/** Gatherers use a fixed cap (not upgraded via Insight). */
+export const GATHERER_CAP = 100;
+
 export const MAX_VILLAGER_CAP_LEVEL = 5;
 
 export type VillagerCapGroupId =
@@ -114,6 +117,7 @@ export function getVillagerCapForJob(
   state: Pick<GameState, "flags" | "villagerCapUpgrades">,
   jobId: keyof GameState["villagers"],
 ): number {
+  if (jobId === "gatherer") return GATHERER_CAP;
   if (!areVillagerCapsEnabled(state)) return Infinity;
   const groupId = getGroupForJob(jobId);
   if (!groupId) return Infinity;

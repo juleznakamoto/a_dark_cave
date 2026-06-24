@@ -2,6 +2,7 @@ import type { GameState } from "@shared/schema";
 import { populationJobs } from "@/game/population";
 import { getVillagersInVillage } from "@/game/population";
 import { getVillagerCapForJob } from "@/game/villagerCapUpgrades";
+import { isSteamBuild } from "@/lib/edition";
 import {
   getInsightAmount,
   isInsightRevealInProgress,
@@ -68,10 +69,11 @@ export function getInsightPurchasedPresetCount(
   return Math.min(Math.max(0, Math.floor(raw)), MAX_BUILDING_PRESET_SLOTS);
 }
 
-/** Number of extra slots granted by the `additional_preset_slots` shop purchase, 0-2. */
+/** Number of extra slots granted by the `additional_preset_slots` shop purchase, 0-2. Steam has no shop slots. */
 export function getShopPresetSlotCount(
   state: Pick<GameState, "villagerPresetSlotsFromShop">,
 ): number {
+  if (isSteamBuild) return 0;
   const raw = state.villagerPresetSlotsFromShop ?? 0;
   return Math.min(Math.max(0, Math.floor(raw)), SHOP_ADDITIONAL_PRESET_SLOTS);
 }
@@ -84,6 +86,7 @@ export function areAdditionalPresetSlotsPurchased(
 }
 
 export function isShopPresetSlot(slotIndex: number): boolean {
+  if (isSteamBuild) return false;
   return (
     slotIndex >= SHOP_PRESET_SLOT_INDEX &&
     slotIndex < SHOP_PRESET_SLOT_INDEX + SHOP_ADDITIONAL_PRESET_SLOTS

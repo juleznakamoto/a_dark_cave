@@ -11,11 +11,7 @@ import { getVillagerCapForJob } from "./villagerCapUpgrades";
 import { getExecutionTime } from "./rules/executionTime";
 import { GAME_CONSTANTS } from "./constants";
 import { getGameActions } from "./rules/actionsRegistry";
-import {
-  migrateVillagerPresetsPurchasedOnLoad,
-  SHOP_ADDITIONAL_PRESET_SLOTS,
-} from "./villagerJobPresets";
-import { SHOP_ADDITIONAL_QUEUE_SLOTS } from "./constructionQueueSlots";
+import { migrateVillagerPresetsPurchasedOnLoad } from "./villagerJobPresets";
 import { isSteamBuild } from "@/lib/edition";
 
 type CombatResultPayload =
@@ -651,26 +647,17 @@ export function migratePostCompletionAttackWavesOnLoad(
   return { postCompletionAttackWaveCount: 0 };
 }
 
-/** Steam edition includes shop slot purchases; grant on load for older saves. */
-function migrateSteamShopEntitlementsOnLoad(state: GameState): GameState | null {
+/** Steam has no paid shop slots; strip any persisted shop slot counts on load. */
+function migrateSteamShopSlotsOnLoad(state: GameState): Partial<GameState> | null {
   if (!isSteamBuild) return null;
 
   const presetSlots = state.villagerPresetSlotsFromShop ?? 0;
   const queueSlots = state.constructionQueueSlotsFromShop ?? 0;
-  const nextPresetSlots = Math.max(presetSlots, SHOP_ADDITIONAL_PRESET_SLOTS);
-  const nextQueueSlots = Math.max(queueSlots, SHOP_ADDITIONAL_QUEUE_SLOTS);
-
-  if (
-    nextPresetSlots === presetSlots &&
-    nextQueueSlots === queueSlots
-  ) {
-    return null;
-  }
+  if (presetSlots === 0 && queueSlots === 0) return null;
 
   return {
-    ...state,
-    villagerPresetSlotsFromShop: nextPresetSlots,
-    constructionQueueSlotsFromShop: nextQueueSlots,
+    villagerPresetSlotsFromShop: 0,
+    constructionQueueSlotsFromShop: 0,
   };
 }
 
@@ -695,9 +682,9 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
   ) {
     migrated = { ...migrated, boostApplied: true };
   }
-  const steamShopEntitlements = migrateSteamShopEntitlementsOnLoad(migrated);
-  if (steamShopEntitlements) {
-    migrated = steamShopEntitlements;
+  const steamShopSlots = migrateSteamShopSlotsOnLoad(migrated);
+  if (steamShopSlots) {
+    migrated = { ...migrated, ...steamShopSlots };
   }
   return migrated;
 }

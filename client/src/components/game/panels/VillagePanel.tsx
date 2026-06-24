@@ -1055,7 +1055,8 @@ export default function VillagePanel() {
     const jobKey = jobId as keyof typeof villagers;
     const cap = getVillagerCapForJob(state, jobKey);
     const showCap =
-      areVillagerCapsEnabled(state) && Number.isFinite(cap);
+      Number.isFinite(cap) &&
+      (jobId === "gatherer" || areVillagerCapsEnabled(state));
     const atCap = showCap && currentCount >= cap;
     const canAssignMore =
       villagers.free > 0 && (!showCap || currentCount < cap);
@@ -1140,11 +1141,7 @@ export default function VillagePanel() {
             lineHeight: `${ANIMATED_COUNTER_HEIGHT}px`,
           }}
         >
-          {jobId === "gatherer"
-            ? "/∞"
-            : showCap
-              ? `/${cap}`
-              : ""}
+          {showCap ? `/${cap}` : ""}
         </span>
         <span className="ml-1 min-w-0 flex-1 text-left text-xs">
           {label}{" "}

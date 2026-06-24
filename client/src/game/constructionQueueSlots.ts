@@ -4,6 +4,7 @@ import {
   isInsightRevealInProgress,
   isInsightUnlocked,
 } from "@/game/rules/insightReveal";
+import { isSteamBuild } from "@/lib/edition";
 
 /** Player always starts with one construction queue slot. */
 export const BASE_QUEUE_SLOTS = 1;
@@ -71,6 +72,7 @@ export function getBuildingQueueSlotCount(
 }
 
 export function isShopQueueSlot(slotIndex: number): boolean {
+  if (isSteamBuild) return false;
   return (
     slotIndex >= SHOP_QUEUE_SLOT_INDEX &&
     slotIndex < SHOP_QUEUE_SLOT_INDEX + SHOP_ADDITIONAL_QUEUE_SLOTS
@@ -82,10 +84,11 @@ function getShopSlotOffset(slotIndex: number): number | null {
   return slotIndex - SHOP_QUEUE_SLOT_INDEX;
 }
 
-/** Number of extra slots granted by the shop purchase, 0-2. */
+/** Number of extra slots granted by the shop purchase, 0-2. Steam has no shop slots. */
 export function getShopQueueSlotCount(
   state: Pick<GameState, "constructionQueueSlotsFromShop">,
 ): number {
+  if (isSteamBuild) return 0;
   const raw = state.constructionQueueSlotsFromShop ?? 0;
   return Math.min(Math.max(0, Math.floor(raw)), SHOP_ADDITIONAL_QUEUE_SLOTS);
 }
@@ -101,6 +104,7 @@ export function areAdditionalConstructionQueueSlotPurchased(
 export function isAdditionalConstructionQueueSlotPurchaseAvailable(
   state: Pick<GameState, "buildings" | "constructionQueueSlotsFromShop">,
 ): boolean {
+  if (isSteamBuild) return false;
   return (
     (state.buildings?.buildersHall ?? 0) >= 1 &&
     !areAdditionalConstructionQueueSlotPurchased(state)

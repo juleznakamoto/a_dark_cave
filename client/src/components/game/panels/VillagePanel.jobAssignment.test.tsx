@@ -76,6 +76,20 @@ describe("Job assignment - touch/ghost-click fix", () => {
     expect(updates.villagers?.free).toBe(0);
   });
 
+  it("assignVillagerToJob returns empty when gatherer cap is reached", () => {
+    const state = useGameStore.getState();
+    const updates = assignVillagerToJob(
+      {
+        ...state,
+        flags: { ...state.flags, villagerCapsEnabled: false },
+        villagers: { ...state.villagers, gatherer: 100, free: 3 },
+      },
+      "gatherer",
+    );
+
+    expect(updates).toEqual({});
+  });
+
   it("touch handlers call preventDefault when condition met (prevents ghost click)", () => {
     // Verify the VillagePanel touch handler pattern: when we have a valid action,
     // we call e.preventDefault() to block synthetic mouse events.

@@ -8,6 +8,7 @@ import {
   getGroupForBuildingKey,
   getGroupForJob,
   getNextCapUpgradeCost,
+  GATHERER_CAP,
   getVillagerCapForJob,
   getVillagerCapForLevel,
   getVillagerCapLevel,
@@ -66,6 +67,14 @@ describe("villagerCapUpgrades", () => {
     });
     expect(areVillagerCapsEnabled(state)).toBe(false);
     expect(getVillagerCapForJob(state, "hunter")).toBe(Infinity);
+  });
+
+  it("always caps gatherers at GATHERER_CAP regardless of feature gate", () => {
+    const gatedOff = baseState({
+      flags: { villagerCapsEnabled: false } as GameState["flags"],
+    });
+    expect(getVillagerCapForJob(gatedOff, "gatherer")).toBe(GATHERER_CAP);
+    expect(getVillagerCapForJob(baseState(), "gatherer")).toBe(GATHERER_CAP);
   });
 
   it("computes upgrade costs per cap step", () => {

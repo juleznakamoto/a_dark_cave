@@ -4034,6 +4034,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   grantAdditionalPresetSlots: () => {
+    if (isSteamBuild) return;
     set((state) => {
       if (
         (state.villagerPresetSlotsFromShop ?? 0) >= SHOP_ADDITIONAL_PRESET_SLOTS
@@ -4059,6 +4060,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   grantAdditionalConstructionQueueSlot: () => {
+    if (isSteamBuild) return;
     set((state) => {
       if (
         (state.constructionQueueSlotsFromShop ?? 0) >= SHOP_ADDITIONAL_QUEUE_SLOTS
