@@ -8,6 +8,7 @@ import {
   lazy,
   Suspense,
 } from "react";
+import { Helmet } from "react-helmet-async";
 import GameTabs from "./GameTabs";
 import GameFooter from "./GameFooter";
 import GameHeader from "./GameHeader";
@@ -902,6 +903,9 @@ export default function GameContainer() {
 
   return (
     <ProfileMenuProvider>
+      <Helmet>
+        <title>A Dark Cave</title>
+      </Helmet>
       <div
         className="fixed inset-0 bg-background text-foreground flex flex-col"
         style={{

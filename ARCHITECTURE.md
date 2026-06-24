@@ -27,6 +27,7 @@ in the client; **Supabase** handles auth/cloud saves and **Stripe** handles paym
 | `services/` | Internal auxiliary services (currently `gender-service/` — first-name gender inference, localhost only). |
 | `public/`, `attached_assets/` | Static assets (`@assets` alias → `attached_assets`). |
 | `dist/` | Build output (`dist/public` client, `dist/index.js` server). |
+| `build-resources/` | Electron/Windows packaging assets (`icon.ico` for taskbar/installer). |
 | `.cursor/` | Agent config: `rules/`, `hooks.json`, `hooks/`. |
 
 **Root config:** `package.json` (scripts/deps), `vite.config.ts` (client build, aliases, chunks),
@@ -243,7 +244,7 @@ shop, the whole game unlocked, merchant-sold dark artifacts, and local + Steam C
 
 | Path | Responsibility |
 |------|----------------|
-| `electron/main.ts` | Electron main process: Steamworks init + overlay, loopback server, save-file IPC, full-screen/layout IPC, single-instance, external-link handling. |
+| `electron/main.ts` | Electron main process: Steamworks init + overlay, loopback server, save-file IPC, full-screen/layout IPC, window icon/title, single-instance, external-link handling. |
 | `electron/paths.ts` | `APP_USER_DATA_NAME` + `STEAM_CLOUD_SAVE_FILE` — must match Steamworks Auto-Cloud config. |
 | `electron/preload.ts` | `contextBridge` exposing `window.steamBridge` (achievements, Cloud save, full-screen toggle/events) to the sandboxed renderer. |
 | `electron/loopbackServer.ts` | Serves built `dist/public` over `http://127.0.0.1:<port>` (absolute-path routing needs HTTP, not `file://`). |

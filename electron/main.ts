@@ -55,8 +55,23 @@ function resolveClientDir(): string {
   return join(app.getAppPath(), "dist", "public");
 }
 
+/** Windows taskbar / window icon (dev: repo `build-resources/`; packaged: `resources/icon.ico`). */
+function resolveWindowIcon(): string | undefined {
+  const candidates = [
+    join(process.resourcesPath ?? "", "icon.ico"),
+    join(app.getAppPath(), "build-resources", "icon.ico"),
+  ];
+  for (const file of candidates) {
+    if (existsSync(file)) return file;
+  }
+  return undefined;
+}
+
 async function createWindow(): Promise<void> {
+  const iconPath = resolveWindowIcon();
   mainWindow = new BrowserWindow({
+    title: "A Dark Cave",
+    ...(iconPath ? { icon: iconPath } : {}),
     width: 1280,
     height: 800,
     minWidth: 800,
