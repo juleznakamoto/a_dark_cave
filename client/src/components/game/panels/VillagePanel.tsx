@@ -2077,7 +2077,7 @@ export default function VillagePanel() {
                                   <div className="text-xs">
                                     {t("village.presetLocked", {
                                       defaultValue:
-                                        "Locked — available for purchase",
+                                        "Locked: available for purchase",
                                     })}
                                   </div>
                                 }
