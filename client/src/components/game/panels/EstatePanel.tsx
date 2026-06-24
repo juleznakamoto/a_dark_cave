@@ -207,6 +207,42 @@ export default function EstatePanel() {
     setEventDialog(true, logEntry);
   };
 
+  const totalCubeEventCount = Object.keys(cubeEvents).length;
+  const halfCubeEventCount = Math.ceil(totalCubeEventCount / 2);
+  const useTwoCubeColumns = completedCubeEvents.length >= halfCubeEventCount;
+  const cubeColumnSplitIndex = Math.ceil(completedCubeEvents.length / 2);
+  const firstColumnCubeEvents = useTwoCubeColumns
+    ? completedCubeEvents.slice(0, cubeColumnSplitIndex)
+    : completedCubeEvents;
+  const secondColumnCubeEvents = useTwoCubeColumns
+    ? completedCubeEvents.slice(cubeColumnSplitIndex)
+    : [];
+
+  const renderCubeEventRow = (event: (typeof completedCubeEvents)[0]) => {
+    const openCubeEvent = () => {
+      useGameStore.getState().trackButtonClick(`cube-${event.id}`);
+      handleCubeClick(event);
+    };
+    const cubeTitle =
+      resolveEventTitle(event.id, event.title, state) ??
+      (typeof event.title === "string" ? event.title : event.id);
+
+    return (
+      <button
+        key={event.id}
+        type="button"
+        onClick={openCubeEvent}
+        className="flex items-center gap-2 w-full text-left hover:opacity-80 transition-opacity cursor-pointer group"
+      >
+        <span className="w-6 h-6 shrink-0 bg-neutral-900 border border-neutral-800 rounded-md flex items-center justify-center group-hover:bg-neutral-800 group-hover:border-neutral-500 transition-all relative">
+          <span className="text-md">▣</span>
+          <span className="absolute inset-0 cube-dialog-glow opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none rounded" />
+        </span>
+        <span className="text-xs text-foreground">{cubeTitle}</span>
+      </button>
+    );
+  };
+
   // Check if idle mode can be activated (use production without temporary bonuses,
   // since feast/curse/frostfall/etc. are inactive during sleep)
   const totalEffects = getTotalPopulationEffects(
@@ -837,31 +873,23 @@ export default function EstatePanel() {
         <div className="w-full space-y-2 pt-1 pb-4">
           <h3 className="text-xs font-medium text-foreground">{t("estate.cubeWhispers")}</h3>
 
-          <div className="flex flex-col gap-2 w-full">
-            {completedCubeEvents.map((event) => {
-              const openCubeEvent = () => {
-                useGameStore.getState().trackButtonClick(`cube-${event.id}`);
-                handleCubeClick(event);
-              };
-              const cubeTitle =
-                resolveEventTitle(event.id, event.title, state) ??
-                (typeof event.title === "string" ? event.title : event.id);
-
-              return (
-                <button
-                  key={event.id}
-                  type="button"
-                  onClick={openCubeEvent}
-                  className="flex items-center gap-2 w-full text-left hover:opacity-80 transition-opacity cursor-pointer group"
-                >
-                  <span className="w-6 h-6 shrink-0 bg-neutral-900 border border-neutral-800 rounded-md flex items-center justify-center group-hover:bg-neutral-800 group-hover:border-neutral-500 transition-all relative">
-                    <span className="text-md">▣</span>
-                    <span className="absolute inset-0 cube-dialog-glow opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none rounded" />
-                  </span>
-                  <span className="text-xs text-foreground">{cubeTitle}</span>
-                </button>
-              );
-            })}
+          <div
+            className={cn(
+              "w-full",
+              useTwoCubeColumns ? "flex gap-3" : "flex flex-col gap-2",
+            )}
+          >
+            <div className="flex flex-col gap-2 min-w-0 flex-1">
+              {firstColumnCubeEvents.map(renderCubeEventRow)}
+            </div>
+            {useTwoCubeColumns && (
+              <>
+                <div className="w-px shrink-0 bg-border self-stretch" />
+                <div className="flex flex-col gap-2 min-w-0 flex-1">
+                  {secondColumnCubeEvents.map(renderCubeEventRow)}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
