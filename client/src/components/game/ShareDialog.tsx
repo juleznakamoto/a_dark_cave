@@ -273,7 +273,7 @@ function ShareCard({
           </div>
 
           <div
-            className="flex shrink-0 flex-col items-start"
+            className="flex min-h-0 shrink-0 flex-col items-start"
             style={{ marginLeft: ACHIEVEMENT_COLUMN_OFFSET }}
           >
             <div
@@ -282,20 +282,24 @@ function ShareCard({
             >
               {achievementsLabel}
             </div>
-            <div className="grid grid-cols-2" style={{ gap: RING_GRID_GAP }}>
-              {RING_ENTRIES.map(({ config, centerSymbolStyle }) => (
-                <div
-                  key={config.idPrefix}
-                  className="flex items-center justify-center"
-                >
-                  <AchievementMiniRingChart
-                    config={config}
-                    isActive
-                    size={RING_CHART_SIZE}
-                    centerSymbolStyle={centerSymbolStyle}
-                  />
-                </div>
-              ))}
+            {/* Center the 2×2 rings in the remaining height so the shorter
+                achievements column stays balanced against the resource list. */}
+            <div className="flex min-h-0 flex-1 items-center">
+              <div className="grid grid-cols-2" style={{ gap: RING_GRID_GAP }}>
+                {RING_ENTRIES.map(({ config, centerSymbolStyle }) => (
+                  <div
+                    key={config.idPrefix}
+                    className="flex items-center justify-center"
+                  >
+                    <AchievementMiniRingChart
+                      config={config}
+                      isActive
+                      size={RING_CHART_SIZE}
+                      centerSymbolStyle={centerSymbolStyle}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -337,8 +341,8 @@ export default function ShareDialog() {
 
   const percent = open
     ? getOverallAchievementPercent(
-        useGameStore.getState() as unknown as GameState,
-      )
+      useGameStore.getState() as unknown as GameState,
+    )
     : 0;
   const resourcePercent = open
     ? getResourceMilestonePercent(resources, seenResources)
