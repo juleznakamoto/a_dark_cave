@@ -39,10 +39,12 @@ export function AnimatedCounter({
   value,
   suffix,
   className,
+  align = "center",
 }: {
   value: number;
   suffix?: string;
   className?: string;
+  align?: "center" | "end";
 }) {
   const height = useAnimatedCounterHeight();
 
@@ -59,14 +61,15 @@ export function AnimatedCounter({
     <div
       translate="no"
       className={cn(
-        "notranslate flex items-center",
+        "notranslate flex",
+        align === "end" ? "items-end" : "items-center",
         ANIMATED_COUNTER_TEXT_CLASS,
         className,
       )}
     >
       <div className={cn("flex overflow-hidden", ANIMATED_COUNTER_TEXT_CLASS)}>
         {digits.map((place) => (
-          <Digit key={place} place={place} value={value} height={height} />
+          <Digit key={place} place={place} value={value} height={height} align={align} />
         ))}
       </div>
       {suffix != null && (
@@ -82,10 +85,12 @@ function Digit({
   place,
   value,
   height,
+  align,
 }: {
   place: number;
   value: number;
   height: number;
+  align: "center" | "end";
 }) {
   let valueRoundedToPlace = Math.floor(value / place);
   let animatedValue = useSpring(valueRoundedToPlace);
@@ -97,7 +102,7 @@ function Digit({
   return (
     <div style={{ height }} className="relative w-[1ch]">
       {[...Array(10).keys()].map((i) => (
-        <Number key={i} mv={animatedValue} number={i} height={height} />
+        <Number key={i} mv={animatedValue} number={i} height={height} align={align} />
       ))}
     </div>
   );
@@ -107,10 +112,12 @@ function Number({
   mv,
   number,
   height,
+  align,
 }: {
   mv: MotionValue;
   number: number;
   height: number;
+  align: "center" | "end";
 }) {
   let y = useTransform(mv, (latest) => {
     let placeValue = latest % 10;
@@ -125,7 +132,10 @@ function Number({
   return (
     <motion.span
       style={{ y }}
-      className="absolute inset-0 flex items-center justify-center"
+      className={cn(
+        "absolute inset-0 flex justify-center",
+        align === "end" ? "items-end" : "items-center",
+      )}
     >
       {number}
     </motion.span>

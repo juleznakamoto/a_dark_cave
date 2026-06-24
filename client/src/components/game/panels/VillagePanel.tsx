@@ -153,16 +153,19 @@ const HEADER_SLOT_INSIGHT_BUTTON_CLASS = `${HEADER_SLOT_SIZE_CLASS} cursor-point
 const HEADER_SLOT_BUTTON_CLASS = `${HEADER_SLOT_SIZE_CLASS} p-0 pointer-events-none inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]`;
 
 /** − / count / + / cap columns — shared by summary, stat, and job rows. */
+const VILLAGER_COUNT_ROW_CLASS = "flex min-w-0 items-end";
 const VILLAGER_COUNT_CONTROL_GRID_CLASS =
-  "grid shrink-0 grid-cols-[1.25rem_3ch_1.25rem_4ch] items-center";
+  "grid shrink-0 grid-cols-[1.25rem_3ch_1.25rem_4ch] items-end";
 const VILLAGER_COUNT_BUTTON_CLASS = cn(
-  "h-5 w-5 min-h-0 min-w-0 shrink-0 p-0 flex items-center justify-center no-hover font-normal leading-none",
+  "min-h-0 min-w-0 shrink-0 self-end p-0 inline-flex items-end justify-center no-hover font-normal leading-none w-[1.25rem]",
   ANIMATED_COUNTER_TEXT_CLASS,
 );
 const VILLAGER_COUNT_CAP_CLASS = cn(
-  "notranslate inline-flex w-full items-center leading-none",
+  "notranslate inline-flex self-end leading-none",
   ANIMATED_COUNTER_TEXT_CLASS,
 );
+const VILLAGER_COUNT_LABEL_CLASS =
+  "ml-1 min-w-0 flex-1 text-left text-sm leading-none";
 
 export default function VillagePanel() {
   const { t } = useUiTranslation();
@@ -996,16 +999,16 @@ export default function VillagePanel() {
     count: number,
     options?: { className?: string },
   ) => (
-    <div key={key} className="flex min-w-0 items-center">
+    <div key={key} className={VILLAGER_COUNT_ROW_CLASS}>
       <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
-        <div className="h-5 w-5" aria-hidden />
-        <div className="flex justify-center">
-          <AnimatedCounter value={count} className={options?.className} />
+        <span className="inline-block w-[1.25rem]" aria-hidden />
+        <div className="flex self-end justify-center">
+          <AnimatedCounter value={count} align="end" className={options?.className} />
         </div>
-        <div className="h-5 w-5" aria-hidden />
+        <span className="inline-block w-[1.25rem]" aria-hidden />
         <span translate="no" className={VILLAGER_COUNT_CAP_CLASS} aria-hidden />
       </div>
-      <span className="ml-1 min-w-0 flex-1 text-left text-xs">
+      <span className={VILLAGER_COUNT_LABEL_CLASS}>
         <span translate="no" className="notranslate" aria-hidden>
           •{" "}
         </span>
@@ -1015,13 +1018,13 @@ export default function VillagePanel() {
   );
 
   const renderVillagersSummaryRow = () => (
-    <div key="villagers-summary" className="flex min-w-0 items-center">
+    <div key="villagers-summary" className={VILLAGER_COUNT_ROW_CLASS}>
       <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
-        <div className="h-5 w-5" aria-hidden />
-        <div className="flex justify-center">
-          <AnimatedCounter value={totalPopulation} />
+        <span className="inline-block w-[1.25rem]" aria-hidden />
+        <div className="flex self-end justify-center">
+          <AnimatedCounter value={totalPopulation} align="end" />
         </div>
-        <div className="h-5 w-5" aria-hidden />
+        <span className="inline-block w-[1.25rem]" aria-hidden />
         <span
           translate="no"
           className={cn(VILLAGER_COUNT_CAP_CLASS, "text-muted-foreground")}
@@ -1029,10 +1032,10 @@ export default function VillagePanel() {
           {maxPopulation > 0 ? `/${maxPopulation}` : ""}
         </span>
       </div>
-      <span className="ml-1 min-w-0 flex-1 text-left text-xs">
+      <span className={VILLAGER_COUNT_LABEL_CLASS}>
         {t("village.villagers")}{" "}
         {totalPopulation > 0 && (
-          <span className="text-xs text-muted-foreground">
+          <span className="leading-none text-muted-foreground">
             <span translate="no" className="notranslate">
               -{totalPopulation}
             </span>{" "}
@@ -1067,7 +1070,7 @@ export default function VillagePanel() {
       .join("|");
 
     return (
-      <div key={jobId} className="flex min-w-0 items-center">
+      <div key={jobId} className={VILLAGER_COUNT_ROW_CLASS}>
         <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
           <Button
             onMouseDown={() =>
@@ -1095,8 +1098,8 @@ export default function VillagePanel() {
           >
             -
           </Button>
-          <div className="flex justify-center">
-            <AnimatedCounter value={currentCount} />
+          <div className="flex self-end justify-center">
+            <AnimatedCounter value={currentCount} align="end" />
           </div>
           <Button
             onMouseDown={() =>
@@ -1137,9 +1140,9 @@ export default function VillagePanel() {
             {showCap ? `/${cap}` : ""}
           </span>
         </div>
-        <span className="ml-1 min-w-0 flex-1 text-left text-xs">
+        <span className={VILLAGER_COUNT_LABEL_CLASS}>
           {label}{" "}
-          <span key={productionKey} className="text-xs text-muted-foreground">
+          <span key={productionKey} className="leading-none text-muted-foreground">
             {productionEntries.map((prod, i) => (
               <React.Fragment key={prod.resource}>
                 {i > 0 && ", "}
@@ -2232,7 +2235,7 @@ export default function VillagePanel() {
                     );
                   })()}
               </div>
-              <div className="space-y-1 leading-tight">
+              <div className="space-y-1">
                 {renderVillagersSummaryRow()}
                 {renderVillagerStatRow(
                   "villagers-available",
