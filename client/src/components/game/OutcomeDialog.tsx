@@ -17,6 +17,12 @@ export const OUTCOME_DIALOG_INSIGHT_ICON_CLASS =
 
 export type OutcomeDialogVariant = "success" | "loss" | "madness" | "insight";
 
+export interface OutcomeDialogEffectTheme {
+  border: string;
+  iconRing: string;
+  glowRgb: string;
+}
+
 interface OutcomeDialogProps {
   isOpen: boolean;
   onClose: () => void;
@@ -24,9 +30,11 @@ interface OutcomeDialogProps {
   successLog?: string;
   title: string;
   variant: OutcomeDialogVariant;
+  /** When set, overrides variant border/ring/glow (e.g. village timed-effect announcements). */
+  effectTheme?: OutcomeDialogEffectTheme;
   buttonText: string;
   buttonId: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const variantStyles = {
@@ -59,11 +67,21 @@ export default function OutcomeDialog({
   successLog,
   title,
   variant,
+  effectTheme,
   buttonText,
   buttonId,
   children,
 }: OutcomeDialogProps) {
-  const { border, glow, iconRing } = variantStyles[variant];
+  const variantStyle = variantStyles[variant];
+  const border = effectTheme?.border ?? variantStyle.border;
+  const iconRing = effectTheme?.iconRing ?? variantStyle.iconRing;
+  const glowClass = effectTheme
+    ? "outcome-dialog-effect-glow"
+    : variantStyle.glow;
+  const iconRingAlignMadness =
+    !effectTheme && variant === "madness" ? "items-end pb-1.5" : "items-center";
+  const iconUsesColoredGlyph =
+    Boolean(effectTheme) || variant === "madness" || variant === "insight";
 
   return (
     <>
@@ -79,6 +97,9 @@ export default function OutcomeDialog({
         }
         .insight-dialog-glow {
           animation: insight-glow-pulse 2.5s ease-in-out infinite;
+        }
+        .outcome-dialog-effect-glow {
+          animation: outcome-dialog-effect-glow-pulse 2.5s ease-in-out infinite;
         }
         @keyframes reward-glow-pulse-success {
           0%, 100% { box-shadow: 0 0 15px 5px rgba(234, 179, 8, 0.25); }
@@ -96,20 +117,34 @@ export default function OutcomeDialog({
           0%, 100% { box-shadow: 0 0 15px 5px rgba(37, 99, 235, 0.25); }
           50% { box-shadow: 0 0 0px 0px rgba(37, 99, 235, 0.5); }
         }
+        @keyframes outcome-dialog-effect-glow-pulse {
+          0%, 100% { box-shadow: 0 0 15px 5px rgba(var(--outcome-dialog-glow-rgb), 0.25); }
+          50% { box-shadow: 0 0 0px 0px rgba(var(--outcome-dialog-glow-rgb), 0.5); }
+        }
       `}</style>
       <Dialog open={isOpen} onOpenChange={() => { }}>
         <DialogContent
           className={`[--adc-dialog-max-w:24rem] z-[70] [&>button]:hidden border-2 shadow-2xl ${border}`}
         >
-          <div className={`absolute inset-0 -z-10 pointer-events-none ${glow}`} />
+          <div
+            className={`absolute inset-0 -z-10 pointer-events-none ${glowClass}`}
+            style={
+              effectTheme
+                ? ({
+                  ["--outcome-dialog-glow-rgb" as string]:
+                    effectTheme.glowRgb,
+                } as React.CSSProperties)
+                : undefined
+            }
+          />
           <DialogHeader>
             <div className="relative z-[1] flex w-full justify-center">
               <div
                 className={cn(
                   "flex h-14 w-14 shrink-0 justify-center rounded-full border-2",
-                  variant === "madness" ? "items-end pb-1.5" : "items-center",
+                  iconRingAlignMadness,
                   iconRing,
-                  variant !== "madness" && variant !== "insight" && "text-white",
+                  !iconUsesColoredGlyph && "text-white",
                 )}
               >
                 {icon}
@@ -126,7 +161,9 @@ export default function OutcomeDialog({
             <div className="my-2 h-px w-full bg-white/10" />
           </DialogHeader>
 
-          <div className="text-sm pb-2 space-y-1 text-left">{children}</div>
+          {children ? (
+            <div className="text-sm pb-2 space-y-1 text-left">{children}</div>
+          ) : null}
 
           <div className="flex justify-center">
             <Button

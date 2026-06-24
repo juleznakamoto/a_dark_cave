@@ -45,6 +45,10 @@ import {
   markSeenResources,
 } from "@/game/stateHelpers";
 import { capResourceToLimit } from "@/game/resourceLimits";
+import {
+  resolveVillageEffectAnnouncementTheme,
+  type VillageEffectDialogData,
+} from "@/game/villageEffectThemes";
 import { computePersistedSocialTasksGold } from "@/game/socialTasksGold";
 import {
   canRevealEffects,
@@ -376,6 +380,10 @@ interface GameStore extends GameState {
     isOpen: boolean;
     data: any;
   };
+  villageEffectDialog: {
+    isOpen: boolean;
+    data: VillageEffectDialogData | null;
+  };
 
   // Actions
   getAndResetResourceAnalytics: () => Record<string, number> | null;
@@ -499,6 +507,10 @@ interface GameStore extends GameState {
   setRewardDialog: (isOpen: boolean, data?: any) => void;
   setMadnessDialog: (isOpen: boolean, data?: any) => void;
   setInsightPotionDialog: (isOpen: boolean, data?: any) => void;
+  setVillageEffectDialog: (
+    isOpen: boolean,
+    data?: VillageEffectDialogData | null,
+  ) => void;
   /** Session-only: actionId → reveal animation end timestamp (ms). */
   insightRevealing: Record<string, number>;
   revealActionEffects: (actionId: string) => boolean;
@@ -808,6 +820,19 @@ function scheduleInsightPotionDialogWhenClear(
     get,
     (store) => isModalDialogOpen(store) && !store.insightPotionDialog.isOpen,
     () => get().setInsightPotionDialog(true, data),
+    initialDelayMs,
+  );
+}
+
+function scheduleVillageEffectDialogWhenClear(
+  get: () => GameStore,
+  data: NonNullable<GameStore["villageEffectDialog"]["data"]>,
+  initialDelayMs: number,
+): void {
+  scheduleWhenDialogClear(
+    get,
+    (store) => isModalDialogOpen(store) && !store.villageEffectDialog.isOpen,
+    () => get().setVillageEffectDialog(true, data),
     initialDelayMs,
   );
 }
@@ -1284,6 +1309,10 @@ export const createInitialState = (): GameState => ({
     isOpen: false,
     data: null,
   },
+  villageEffectDialog: {
+    isOpen: false,
+    data: null,
+  },
 });
 
 const defaultGameState: GameState = createInitialState();
@@ -1352,6 +1381,7 @@ function isBlockingDialogOpen(state: GameStore): boolean {
     state.investmentResultDialog.isOpen ||
     state.madnessDialog.isOpen ||
     state.insightPotionDialog.isOpen ||
+    state.villageEffectDialog.isOpen ||
     state.socialPromptDialogOpen ||
     state.playlightWelcomeDialogOpen ||
     state.feedbackDialogOpen ||
@@ -3357,18 +3387,37 @@ export const useGameStore = create<GameStore>((set, get) => ({
       !shouldShowMadnessDialog
     ) {
       get().setEventDialog(false);
+      const storedTitle =
+        logEntry?.title && !isI18nReturnedObjectError(logEntry.title)
+          ? logEntry.title
+          : undefined;
+      const outcomeTitle =
+        resolveEventTitle(catalogId, eventDef?.title, state, {
+          ...i18nVars,
+          ...logMessageVars,
+        }) ||
+        storedTitle ||
+        tWithFallback("ui", "event.fallbackTitle", "Event");
+      const villageTheme = resolveVillageEffectAnnouncementTheme(
+        eventId,
+        updatedChanges,
+        state,
+      );
+
+      if (villageTheme) {
+        scheduleVillageEffectDialogWhenClear(
+          get,
+          {
+            themeId: villageTheme,
+            title: outcomeTitle,
+            message: logMessage,
+          },
+          200,
+        );
+        return true;
+      }
+
       setTimeout(() => {
-        const storedTitle =
-          logEntry?.title && !isI18nReturnedObjectError(logEntry.title)
-            ? logEntry.title
-            : undefined;
-        const outcomeTitle =
-          resolveEventTitle(catalogId, eventDef?.title, state, {
-            ...i18nVars,
-            ...logMessageVars,
-          }) ||
-          storedTitle ||
-          tWithFallback("ui", "event.fallbackTitle", "Event");
         const messageEntry: LogEntry = {
           id: `log-message-${Date.now()}`,
           eventId,
@@ -4260,6 +4309,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
       insightPotionDialog: {
         isOpen,
         data: data || null,
+      },
+    }));
+  },
+  setVillageEffectDialog: (isOpen, data) => {
+    if (isOpen && data) {
+      const store = get();
+      if (isModalDialogOpen(store) && !store.villageEffectDialog.isOpen) {
+        scheduleVillageEffectDialogWhenClear(get, data, 0);
+        return;
+      }
+    }
+
+    set(() => ({
+      villageEffectDialog: {
+        isOpen,
+        data: data ?? null,
       },
     }));
   },

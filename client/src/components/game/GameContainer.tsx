@@ -37,6 +37,7 @@ import RewardDialog from "./RewardDialog";
 import InvestmentResultDialog from "./InvestmentResultDialog";
 import MadnessDialog from "./MadnessDialog";
 import InsightPotionDialog from "./InsightPotionDialog";
+import VillageEffectDialog from "./VillageEffectDialog";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark, X } from "lucide-react";
 import { ProfileMenuProvider } from "./ProfileMenu";
@@ -116,6 +117,10 @@ export default function GameContainer() {
   const insightPotionDialog = useGameStore((state) => state.insightPotionDialog);
   const setInsightPotionDialog = useGameStore(
     (state) => state.setInsightPotionDialog,
+  );
+  const villageEffectDialog = useGameStore((state) => state.villageEffectDialog);
+  const setVillageEffectDialog = useGameStore(
+    (state) => state.setVillageEffectDialog,
   );
   const story = useGameStore((state) => state.story);
   const traderDialogOpens = useGameStore((state) => state.traderDialogOpens);
@@ -1301,6 +1306,11 @@ export default function GameContainer() {
           isOpen={insightPotionDialog.isOpen}
           data={insightPotionDialog.data}
           onClose={() => setInsightPotionDialog(false)}
+        />
+        <VillageEffectDialog
+          isOpen={villageEffectDialog.isOpen}
+          data={villageEffectDialog.data}
+          onClose={() => setVillageEffectDialog(false)}
         />
 
       </div>
