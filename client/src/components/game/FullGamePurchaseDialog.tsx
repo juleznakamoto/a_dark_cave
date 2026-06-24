@@ -178,7 +178,7 @@ function CheckoutForm({
       <StripePoweredBy />
 
       <div className="space-y-2 border-t pt-4 mt-4">
-        <p className="text-[11px] text-muted-foreground">
+        <p className="text-xxs text-muted-foreground">
           {t("ui:fullGame.legalConsent")}{" "}
           <a
             href="/terms"

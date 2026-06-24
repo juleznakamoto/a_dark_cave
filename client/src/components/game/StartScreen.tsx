@@ -24,7 +24,7 @@ const START_FOOTER_LINK_BASE =
 const START_FOOTER_SOCIAL_LINK =
   `${START_FOOTER_LINK_BASE} opacity-70 hover:opacity-100`;
 const START_FOOTER_LEGAL_LINK =
-  `${START_FOOTER_LINK_BASE} opacity-40 hover:opacity-100 text-[9px] sm:text-[10px]`;
+  `${START_FOOTER_LINK_BASE} opacity-40 hover:opacity-100 text-3xs sm:text-2xs`;
 const START_FOOTER_LANGUAGE_BTN =
   "inline-flex items-center gap-0 sm:gap-1 bg-transparent hover:bg-transparent hover:text-foreground transition-opacity opacity-70 hover:opacity-100 p-0 h-auto min-h-0 shadow-none";
 const START_AUDIO_BTN =
@@ -287,7 +287,7 @@ export default function StartScreen() {
       </main>
 
       <nav
-        className="absolute bottom-4 left-4 right-4 z-10 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 text-[10px] sm:text-xs text-muted-foreground"
+        className="absolute bottom-4 left-4 right-4 z-10 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 text-2xs sm:text-xs text-muted-foreground"
         aria-label="Site links"
       >
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">

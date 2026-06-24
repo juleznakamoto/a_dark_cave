@@ -335,7 +335,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="text-[11px] leading-snug">
+                    <tbody className="text-xxs leading-snug">
                       {offers.map((offer, i) => {
                         const finalSuccess = getSuccessChancePercent(
                           offer.tier,

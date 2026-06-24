@@ -122,48 +122,48 @@ const RadioGroupItem = React.forwardRef<HTMLLabelElement, RadioGroupItemProps>(
     },
     ref,
   ) {
-  const context = useContext(RadioGroupContext);
-  const isSelected = context?.value === value;
-  const disabled = Boolean(context?.disabled || itemDisabled);
-  const [hovered, setHovered] = useState(false);
+    const context = useContext(RadioGroupContext);
+    const isSelected = context?.value === value;
+    const disabled = Boolean(context?.disabled || itemDisabled);
+    const [hovered, setHovered] = useState(false);
 
-  const disabledCursorClass =
-    disabled &&
-    (disabledCursor === "help"
-      ? "cursor-help"
-      : disabledCursor === "default"
-        ? "cursor-default"
-        : "cursor-not-allowed");
+    const disabledCursorClass =
+      disabled &&
+      (disabledCursor === "help"
+        ? "cursor-help"
+        : disabledCursor === "default"
+          ? "cursor-default"
+          : "cursor-not-allowed");
 
-  return (
-    <label
-      ref={ref}
-      className={cn(
-        "flex items-center gap-2.5 font-sans text-[13px] text-gray-1000 leading-snug group",
-        disabled ? cn("text-gray-500", disabledCursorClass) : "cursor-pointer",
-      )}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <input
-        type="radio"
-        className="sr-only"
-        checked={!!isSelected}
-        onChange={(event) => context?.onChange(event.target.value)}
-        disabled={disabled}
-        required={context?.required}
-        name={context?.name}
-        value={value}
-      />
-      <PriorStyleRadioIndicator
-        isSelected={!!isSelected}
-        disabled={disabled}
-        hovered={hovered}
-        diameterPx={context?.indicatorSizePx ?? DEFAULT_RADIO_INDICATOR_PX}
-      />
-      {children}
-    </label>
-  );
+    return (
+      <label
+        ref={ref}
+        className={cn(
+          "flex items-center gap-2.5 font-sans text-xs-plus text-gray-1000 leading-snug group",
+          disabled ? cn("text-gray-500", disabledCursorClass) : "cursor-pointer",
+        )}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
+        <input
+          type="radio"
+          className="sr-only"
+          checked={!!isSelected}
+          onChange={(event) => context?.onChange(event.target.value)}
+          disabled={disabled}
+          required={context?.required}
+          name={context?.name}
+          value={value}
+        />
+        <PriorStyleRadioIndicator
+          isSelected={!!isSelected}
+          disabled={disabled}
+          hovered={hovered}
+          diameterPx={context?.indicatorSizePx ?? DEFAULT_RADIO_INDICATOR_PX}
+        />
+        {children}
+      </label>
+    );
   },
 );
 
@@ -210,7 +210,7 @@ export const Radio = ({
   return (
     <label
       className={cn(
-        "flex items-center gap-2 cursor-pointer font-sans text-[13px] leading-snug group",
+        "flex items-center gap-2 cursor-pointer font-sans text-xs-plus leading-snug group",
         disabled && "cursor-not-allowed",
       )}
       onMouseEnter={() => setHovered(true)}

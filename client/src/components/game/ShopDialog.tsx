@@ -622,7 +622,7 @@ function CheckoutForm({
       <StripePoweredBy className="py-0.5" />
 
       <div className="space-y-2 border-t pt-3 mt-2">
-        <p className="text-[11px] leading-tight text-muted-foreground">
+        <p className="text-xxs leading-tight text-muted-foreground">
           {t("ui:shop.legalConsent")}{" "}
           <a
             href="/terms"

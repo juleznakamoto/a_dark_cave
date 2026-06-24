@@ -23,7 +23,7 @@ const FOOTER_CONTROL_TEXT =
 const FOOTER_SOCIAL_LABEL =
   `${FOOTER_CONTROL_TEXT} hidden sm:inline`;
 const FOOTER_LEGAL_LINK =
-  "text-[10px] text-neutral-300 opacity-40 hover:opacity-100 transition-opacity";
+  "text-2xs text-neutral-300 opacity-40 hover:opacity-100 transition-opacity";
 
 export default function GameFooter() {
   const {

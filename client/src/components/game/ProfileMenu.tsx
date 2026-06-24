@@ -662,7 +662,7 @@ export function GameHeaderControls() {
         >
           {currentUser && (
             <>
-              <div className="flex items-center px-1 py-0.5 text-[10px] text-muted-foreground truncate max-w-[200px]">
+              <div className="flex items-center px-1 py-0.5 text-2xs text-muted-foreground truncate max-w-[200px]">
                 {currentUser.email}
               </div>
               <DropdownMenuSeparator />

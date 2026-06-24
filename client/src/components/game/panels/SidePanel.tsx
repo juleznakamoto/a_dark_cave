@@ -912,7 +912,7 @@ export default function SidePanel() {
                 }
                 titleSuffix={
                   showResourceLimit ? (
-                    <span className="align-baseline font-normal text-[10px] text-muted-foreground">
+                    <span className="align-baseline font-normal text-2xs text-muted-foreground">
                       {" "}
                       {t("sidePanel.resourceLimitMax", {
                         limit: resourceLimitText,

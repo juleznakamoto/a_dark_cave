@@ -185,7 +185,7 @@ function TaskRowStatusIcon({
 function TaskGoldBadge({ amount }: { amount: number }) {
   const { t } = useTranslation("ui");
   return (
-    <span className="inline-flex shrink-0 items-center rounded px-2 py-0.5 text-[11px] font-semibold tabular-nums bg-yellow-500/15 text-yellow-400 border border-yellow-500/35">
+    <span className="inline-flex shrink-0 items-center rounded px-2 py-0.5 text-xxs font-semibold tabular-nums bg-yellow-500/15 text-yellow-400 border border-yellow-500/35">
       {t("invite.goldBonus", { amount })}
     </span>
   );

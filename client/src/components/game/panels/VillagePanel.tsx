@@ -88,8 +88,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   AnimatedCounter,
-  ANIMATED_COUNTER_FONT_SIZE,
-  ANIMATED_COUNTER_HEIGHT,
+  ANIMATED_COUNTER_TEXT_CLASS,
 } from "@/components/ui/animated-counter";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
@@ -995,11 +994,7 @@ export default function VillagePanel() {
       <div className="h-5 w-5 shrink-0" aria-hidden />
       <span
         translate="no"
-        className="notranslate w-[4ch] shrink-0 tabular-nums text-muted-foreground"
-        style={{
-          fontSize: ANIMATED_COUNTER_FONT_SIZE,
-          lineHeight: `${ANIMATED_COUNTER_HEIGHT}px`,
-        }}
+        className={cn("notranslate w-[4ch] shrink-0", ANIMATED_COUNTER_TEXT_CLASS)}
       />
       <span className="ml-1 min-w-0 flex-1 text-left text-xs">
         <span translate="no" className="notranslate" aria-hidden>
@@ -1020,13 +1015,10 @@ export default function VillagePanel() {
       <span
         translate="no"
         className={cn(
-          "notranslate w-[4ch] shrink-0 tabular-nums",
+          "notranslate w-[4ch] shrink-0",
+          ANIMATED_COUNTER_TEXT_CLASS,
           !atMaxPopulation && "text-muted-foreground",
         )}
-        style={{
-          fontSize: ANIMATED_COUNTER_FONT_SIZE,
-          lineHeight: `${ANIMATED_COUNTER_HEIGHT}px`,
-        }}
       >
         {maxPopulation > 0 ? `/${maxPopulation}` : ""}
       </span>
@@ -1130,13 +1122,10 @@ export default function VillagePanel() {
         <span
           translate="no"
           className={cn(
-            "notranslate w-[4ch] shrink-0 tabular-nums",
+            "notranslate w-[4ch] shrink-0",
+            ANIMATED_COUNTER_TEXT_CLASS,
             !atCap && "text-muted-foreground",
           )}
-          style={{
-            fontSize: ANIMATED_COUNTER_FONT_SIZE,
-            lineHeight: `${ANIMATED_COUNTER_HEIGHT}px`,
-          }}
         >
           {showCap ? `/${cap}` : ""}
         </span>
@@ -2074,7 +2063,7 @@ export default function VillagePanel() {
                                   data-testid={presetTooltipId}
                                   className={cn(
                                     HEADER_SLOT_SIZE_CLASS,
-                                    "inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border text-[10px] tabular-nums opacity-70",
+                                    "inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border text-2xs tabular-nums opacity-70",
                                   )}
                                 >
                                   {slot}
@@ -2140,7 +2129,7 @@ export default function VillagePanel() {
                                 button_id={`preset-slot-${slot}`}
                                 className={cn(
                                   HEADER_SLOT_BUTTON_CLASS,
-                                  "text-[10px] tabular-nums",
+                                  "text-2xs tabular-nums",
                                   isActive
                                     ? "group-hover:bg-primary/90"
                                     : gameActionOutlineButtonClassName(false, {
@@ -2188,7 +2177,7 @@ export default function VillagePanel() {
                               )}
                               style={{ touchAction: "manipulation" }}
                             >
-                              <span className="inline-flex items-center justify-center text-[14px] font-semibold leading-none text-white">
+                              <span className="inline-flex items-center justify-center text-sm font-semibold leading-none text-white">
                                 +
                               </span>
                             </Button>
@@ -2224,7 +2213,7 @@ export default function VillagePanel() {
                               <span
                                 className={
                                   presetSaveConfirmed
-                                    ? "inline-flex items-center justify-center text-[11px] leading-none text-green-500"
+                                    ? "inline-flex items-center justify-center text-xxs leading-none text-green-500"
                                     : "inline-flex items-center justify-center font-noto-symbols-2 text-[12px] leading-none translate-y-0.5"
                                 }
                               >

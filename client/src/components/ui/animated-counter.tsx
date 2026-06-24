@@ -5,11 +5,14 @@ import { MotionValue, motion, useSpring, useTransform } from "framer-motion";
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 
-export const ANIMATED_COUNTER_FONT_SIZE = 14;
+/** Digit column height in px — used by scroll animation math only. */
 export const ANIMATED_COUNTER_HEIGHT = 18;
 
-const fontSize = ANIMATED_COUNTER_FONT_SIZE;
+export const ANIMATED_COUNTER_TEXT_CLASS =
+  "text-sm leading-none h-[1.125rem] tabular-nums";
+
 const height = ANIMATED_COUNTER_HEIGHT;
+const counterTextClass = ANIMATED_COUNTER_TEXT_CLASS;
 
 export function AnimatedCounter({
   value,
@@ -32,27 +35,19 @@ export function AnimatedCounter({
   return (
     <div
       translate="no"
-      style={{ height, fontSize, lineHeight: `${height}px` }}
       className={cn(
         "notranslate flex items-center tabular-nums",
+        counterTextClass,
         className,
       )}
     >
-      <div
-        style={{ height, fontSize, lineHeight: `${height}px` }}
-        className="flex overflow-hidden"
-      >
+      <div className={cn("flex overflow-hidden", counterTextClass)}>
         {digits.map((place) => (
           <Digit key={place} place={place} value={value} />
         ))}
       </div>
       {suffix != null && (
-        <span
-          style={{ fontSize, lineHeight: `${height}px` }}
-          className="inline-block"
-        >
-          {suffix}
-        </span>
+        <span className={cn("inline-block", counterTextClass)}>{suffix}</span>
       )}
     </div>
   );

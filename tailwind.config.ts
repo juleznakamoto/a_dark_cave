@@ -69,6 +69,13 @@ export default {
         sans: ["var(--font-sans)"],
         mono: ["var(--font-mono)"],
       },
+      /** Rem-based aliases for legacy px sizes (16px root). Symbols keep arbitrary px. */
+      fontSize: {
+        "3xs": ["0.5625rem", { lineHeight: "1" }],
+        "2xs": ["0.625rem", { lineHeight: "1" }],
+        xxs: ["0.6875rem", { lineHeight: "1" }],
+        "xs-plus": ["0.8125rem", { lineHeight: "1" }],
+      },
       keyframes: {
         "accordion-down": {
           from: {

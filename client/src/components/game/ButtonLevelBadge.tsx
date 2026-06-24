@@ -57,7 +57,7 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
           }}
         >
           <div
-            className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-red-950 rounded-full text-[10px] font-medium cursor-pointer z-[20] hover:bg-red-900 transition-colors duration-300 ease-in-out"
+            className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-red-950 rounded-full text-2xs font-medium cursor-pointer z-[20] hover:bg-red-900 transition-colors duration-300 ease-in-out"
             data-testid={`level-badge-${upgradeKey}`}
           >
             {info.isMaxLevel ? '★' : info.level}
@@ -89,11 +89,11 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
                         <span className="font-medium">
                           {isCraftUpgrade && produceAmount !== undefined
                             ? t("badges.craftMultiplier", {
-                                amount: produceAmount,
-                              })
+                              amount: produceAmount,
+                            })
                             : t("badges.bonusPercent", {
-                                percent: info.bonus,
-                              })}
+                              percent: info.bonus,
+                            })}
                         </span>
                       </div>
                       <div className="text-xs">
@@ -101,13 +101,13 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
                         <span className="font-medium">
                           {isCraftUpgrade && produceAmount !== undefined && info.nextLevel
                             ? t("badges.craftMultiplier", {
-                                amount: Math.floor(
-                                  1 * (1 + (info.nextLevel.bonus || 0) / 100),
-                                ),
-                              })
+                              amount: Math.floor(
+                                1 * (1 + (info.nextLevel.bonus || 0) / 100),
+                              ),
+                            })
                             : t("badges.bonusPercent", {
-                                percent: info.nextLevel.bonus,
-                              })}
+                              percent: info.nextLevel.bonus,
+                            })}
                         </span>
                       </div>
                     </div>
