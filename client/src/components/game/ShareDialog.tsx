@@ -272,34 +272,27 @@ function ShareCard({
             </div>
           </div>
 
-          <div
-            className="flex min-h-0 shrink-0 flex-col items-start"
-            style={{ marginLeft: ACHIEVEMENT_COLUMN_OFFSET }}
-          >
+          <div className="flex min-w-0 flex-1 flex-col items-center">
             <div
               className={SECTION_HEADING_CLASS}
               style={{ fontSize: SECTION_HEADING_FONT_SIZE }}
             >
               {achievementsLabel}
             </div>
-            {/* Center the 2×2 rings in the remaining height so the shorter
-                achievements column stays balanced against the resource list. */}
-            <div className="flex min-h-0 flex-1 items-center">
-              <div className="grid grid-cols-2" style={{ gap: RING_GRID_GAP }}>
-                {RING_ENTRIES.map(({ config, centerSymbolStyle }) => (
-                  <div
-                    key={config.idPrefix}
-                    className="flex items-center justify-center"
-                  >
-                    <AchievementMiniRingChart
-                      config={config}
-                      isActive
-                      size={RING_CHART_SIZE}
-                      centerSymbolStyle={centerSymbolStyle}
-                    />
-                  </div>
-                ))}
-              </div>
+            <div className="grid grid-cols-2" style={{ gap: RING_GRID_GAP }}>
+              {RING_ENTRIES.map(({ config, centerSymbolStyle }) => (
+                <div
+                  key={config.idPrefix}
+                  className="flex items-center justify-center"
+                >
+                  <AchievementMiniRingChart
+                    config={config}
+                    isActive
+                    size={RING_CHART_SIZE}
+                    centerSymbolStyle={centerSymbolStyle}
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </div>
