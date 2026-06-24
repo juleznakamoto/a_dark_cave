@@ -202,7 +202,7 @@ export default function RewardDialog({
     rewards.blessings.forEach((blessing) => {
       rewardItems.push(
         <div key={`blessing-${blessing}`} className="text-sm text-foreground">
-          +{effectDisplayName(blessing, "blessing")}
+          {effectDisplayName(blessing, "blessing")}
         </div>
       );
     });
