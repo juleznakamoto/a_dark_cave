@@ -17,6 +17,10 @@ import { buildGameState } from "@/game/stateHelpers";
 import { logger } from "@/lib/logger";
 import { formatSaveTimestamp } from "@/lib/utils";
 import { isSteamBuild } from "@/lib/edition";
+import {
+  handleExclusivePromoRingAnimationEnd,
+  pulseExclusivePromoRing,
+} from "@/lib/exclusivePromoShockwave";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { DropdownMenuItemWithTooltip } from "@/components/game/DropdownMenuItemWithTooltip";
 import {
@@ -63,10 +67,7 @@ function rewardsTasksIconPingIndex(playTimeMs: number): number | null {
 }
 
 function pingRewardsTasksRing(ring: HTMLSpanElement | null): void {
-  if (!ring) return;
-  ring.classList.remove("exclusive-promo-shockwave-ring--ping-once");
-  void ring.offsetWidth;
-  ring.classList.add("exclusive-promo-shockwave-ring--ping-once");
+  pulseExclusivePromoRing(ring, "ping-once");
 }
 
 const HEADER_ICON_BTN =
@@ -547,6 +548,9 @@ export function GameHeaderControls() {
         <HoverCalloutTooltip
           label={t("profile.rewardsTasks")}
           side="bottom"
+          onHoverStart={() =>
+            pulseExclusivePromoRing(rewardsTasksRingRef.current, "hover-once")
+          }
         >
           <button
             type="button"
@@ -558,11 +562,9 @@ export function GameHeaderControls() {
               ref={rewardsTasksRingRef}
               className="exclusive-promo-shockwave-ring"
               aria-hidden
-              onAnimationEnd={(e) => {
-                e.currentTarget.classList.remove(
-                  "exclusive-promo-shockwave-ring--ping-once",
-                );
-              }}
+              onAnimationEnd={(e) =>
+                handleExclusivePromoRingAnimationEnd(e.currentTarget, e.nativeEvent)
+              }
             />
             <span
               className="relative z-[1] text-[17px] leading-none select-none text-lime-500"

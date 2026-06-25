@@ -8,7 +8,6 @@ import {
 } from "@/lib/gameFooterSocialLinks";
 import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
 import { useState, useEffect, useRef } from "react";
-import { Heart } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { isSteamBuild } from "@/lib/edition";
@@ -16,7 +15,7 @@ import { isSteamBuild } from "@/lib/edition";
 const FOOTER_CONTROL_BTN =
   "group shrink-0 px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-600";
 const FOOTER_CONTROL_BTN_FADE =
-  "opacity-80 transition-[opacity,color] group-hover:opacity-100";
+  "opacity-80 transition-opacity group-hover:opacity-100";
 const FOOTER_CONTROL_SVG_ICON_HOVER =
   "w-4 h-4 text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
 const FOOTER_CONTROL_TEXT =
@@ -26,19 +25,11 @@ const FOOTER_SOCIAL_LABEL =
 const FOOTER_LEGAL_LINK =
   "text-2xs text-neutral-300 opacity-40 hover:opacity-100 transition-opacity";
 
-function pumpDonateHeart(heart: HTMLElement | null): void {
+function pumpDonateHeart(heart: HTMLSpanElement | null): void {
   if (!heart) return;
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  heart.getAnimations().forEach((animation) => animation.cancel());
-  void heart.animate(
-    [
-      { transform: "scale(1)" },
-      { transform: "scale(1.35)", offset: 0.35 },
-      { transform: "scale(0.92)", offset: 0.65 },
-      { transform: "scale(1)" },
-    ],
-    { duration: 450, easing: "ease-in-out" },
-  );
+  heart.classList.remove("donate-heart-pump-once");
+  void heart.offsetWidth;
+  heart.classList.add("donate-heart-pump-once");
 }
 
 export default function GameFooter() {
@@ -53,7 +44,6 @@ export default function GameFooter() {
   } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const donateHeartRef = useRef<HTMLSpanElement>(null);
-  const pumpDonateHeartOnHover = () => pumpDonateHeart(donateHeartRef.current);
   const { t } = useTranslation("ui");
 
   // Trigger glow animation when pause state changes
@@ -138,21 +128,24 @@ export default function GameFooter() {
                 <HoverCalloutTooltip
                   label={t("footer.supportGame")}
                   side="top"
-                  onHoverStart={pumpDonateHeartOnHover}
                 >
                   <Button
                     variant="ghost"
                     size="xs"
                     onClick={handleOfferTribute}
+                    onMouseEnter={() => pumpDonateHeart(donateHeartRef.current)}
                     aria-label={t("footer.supportGame")}
-                    className={`${FOOTER_CONTROL_BTN} flex items-center gap-1 overflow-visible`}
+                    className={`${FOOTER_CONTROL_BTN} flex items-center gap-1`}
                   >
                     <span
                       ref={donateHeartRef}
                       aria-hidden
-                      className={`donate-heart inline-flex text-red-600 ${FOOTER_CONTROL_BTN_FADE}`}
+                      className={`donate-heart text-red-600 ${FOOTER_CONTROL_BTN_FADE}`}
+                      onAnimationEnd={(e) => {
+                        e.currentTarget.classList.remove("donate-heart-pump-once");
+                      }}
                     >
-                      <Heart className="h-3.5 w-3.5 fill-current" />
+                      ❤︎⁠
                     </span>
                     <span className={FOOTER_CONTROL_TEXT}>
                       {t("footer.donate")}
@@ -198,12 +191,4 @@ export default function GameFooter() {
                 </a>
                 <a href="/imprint" className={FOOTER_LEGAL_LINK}>
                   {t("footer.imprint")}
-                </a>
-              </div>
-            )}
-          </div>
-        </div>
-      </footer>
-    </>
-  );
-}
+           

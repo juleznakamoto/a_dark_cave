@@ -12,17 +12,17 @@ import { resolveOutcomeLogMessage } from "@/i18n/logDisplay";
 import OutcomeDialog, {
   OUTCOME_DIALOG_REWARD_STYLE_ICON_CLASS,
 } from "./OutcomeDialog";
+import {
+  handleExclusivePromoRingAnimationEnd,
+  pulseExclusivePromoRing,
+} from "@/lib/exclusivePromoShockwave";
 
 /** Same center symbol + shockwave as Profile → “Rewards tasks” shortcut (exclusive promo track). */
 function SocialPromoTasksOutcomeIcon() {
   const ringRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    const ring = ringRef.current;
-    if (!ring) return;
-    ring.classList.remove("exclusive-promo-shockwave-ring--ping-once");
-    void ring.offsetWidth;
-    ring.classList.add("exclusive-promo-shockwave-ring--ping-once");
+    pulseExclusivePromoRing(ringRef.current, "ping-once");
   }, []);
 
   return (
@@ -31,11 +31,9 @@ function SocialPromoTasksOutcomeIcon() {
         ref={ringRef}
         className="exclusive-promo-shockwave-ring"
         aria-hidden
-        onAnimationEnd={(e) => {
-          e.currentTarget.classList.remove(
-            "exclusive-promo-shockwave-ring--ping-once",
-          );
-        }}
+        onAnimationEnd={(e) =>
+          handleExclusivePromoRingAnimationEnd(e.currentTarget, e.nativeEvent)
+        }
       />
       <span
         className="relative z-[1] text-[26px] leading-none select-none text-lime-500"
