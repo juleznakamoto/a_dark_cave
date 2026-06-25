@@ -224,29 +224,6 @@ export function isInvestmentWaveReadyForUi(state: {
   return true;
 }
 
-/** Play-time range for the invest button cooldown overlay (maturing investment or post-wave gap). */
-export function getInvestButtonPlayTimeProgress(state: {
-  playTime: number;
-  investmentHallState: GameState["investmentHallState"];
-}): { startPlayTime: number; endPlayTime: number } | null {
-  const ih = state.investmentHallState;
-  const active = ih.active;
-  if (active) {
-    return {
-      startPlayTime: active.startPlayTime,
-      endPlayTime: active.endPlayTime,
-    };
-  }
-  const nextWave = ih.nextWavePlayTime;
-  if (nextWave > 0 && state.playTime < nextWave) {
-    return {
-      startPlayTime: nextWave - getInvestmentWaveGapMs(),
-      endPlayTime: nextWave,
-    };
-  }
-  return null;
-}
-
 export type InvestmentActive = NonNullable<
   GameState["investmentHallState"]["active"]
 >;

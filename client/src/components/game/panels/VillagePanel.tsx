@@ -127,7 +127,7 @@ import { BuildingUpgradeTooltipIcon } from "@/game/rules/buildingUpgradeTooltipI
 import cn from "clsx";
 import InvestDialog from "@/components/game/InvestDialog";
 import {
-  getInvestButtonPlayTimeProgress,
+  getInvestmentWaveGapMs,
   isInvestmentWaveReadyForUi,
 } from "@/game/rules/investmentHallTables";
 import { GAME_CONSTANTS, getCallMerchantGoldCost } from "@/game/constants";
@@ -629,10 +629,18 @@ export default function VillagePanel() {
         playTime: currentPlayTime,
         investmentHallState: ih,
       });
-      const investPlayTimeCooldown = getInvestButtonPlayTimeProgress({
-        playTime: currentPlayTime,
-        investmentHallState: ih,
-      });
+      const investPlayTimeCooldown = active
+        ? {
+          startPlayTime: active.startPlayTime,
+          endPlayTime: active.endPlayTime,
+          mode: "progress" as const,
+        }
+        : nextWave > 0 && currentPlayTime < nextWave
+          ? {
+            startPlayTime: nextWave - getInvestmentWaveGapMs(),
+            endPlayTime: nextWave,
+          }
+          : null;
       const tooltipContent = !investReady ? (
         active ? (
           <div className="text-xs max-w-[220px]">

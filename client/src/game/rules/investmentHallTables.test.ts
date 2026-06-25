@@ -6,8 +6,6 @@ import {
   clampSuccessChance,
   commitInvestmentRolls,
   formatInvestmentCompletionLog,
-  getInvestButtonPlayTimeProgress,
-  getInvestmentWaveGapMs,
   getLuckWinChanceBonus,
   getSuccessChancePercent,
   isInvestmentWaveReadyForUi,
@@ -56,60 +54,6 @@ describe("maxSuccessProfitGold / maxLuckyChanceSuccessProfitGold", () => {
   it("uses top win % and Lucky Chance ×4 multiplier", () => {
     expect(maxSuccessProfitGold(100, "A", 15)).toBe(15);
     expect(maxLuckyChanceSuccessProfitGold(100, "A", 15)).toBe(60);
-  });
-});
-
-describe("getInvestButtonPlayTimeProgress", () => {
-  it("returns active investment range while maturing", () => {
-    expect(
-      getInvestButtonPlayTimeProgress({
-        playTime: 100,
-        investmentHallState: {
-          offers: [],
-          active: {
-            startPlayTime: 50,
-            endPlayTime: 500,
-            amountGold: 100,
-            durationMin: 5,
-            tier: "A",
-            success: true,
-            payoutGold: 105,
-          },
-          nextWavePlayTime: 0,
-        },
-      }),
-    ).toEqual({ startPlayTime: 50, endPlayTime: 500 });
-  });
-
-  it("returns wave-gap range after investment completes", () => {
-    const gap = getInvestmentWaveGapMs();
-    expect(
-      getInvestButtonPlayTimeProgress({
-        playTime: 100,
-        investmentHallState: {
-          offers: [],
-          active: null,
-          nextWavePlayTime: 500,
-        },
-      }),
-    ).toEqual({ startPlayTime: 500 - gap, endPlayTime: 500 });
-  });
-
-  it("returns null when invest is ready", () => {
-    expect(
-      getInvestButtonPlayTimeProgress({
-        playTime: 500,
-        investmentHallState: {
-          offers: [
-            { durationMin: 5, tier: "A" },
-            { durationMin: 15, tier: "B" },
-            { durationMin: 30, tier: "C" },
-          ],
-          active: null,
-          nextWavePlayTime: 0,
-        },
-      }),
-    ).toBeNull();
   });
 });
 
