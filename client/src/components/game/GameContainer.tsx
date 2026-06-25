@@ -887,9 +887,9 @@ export default function GameContainer() {
     ? "opacity-100 text-foreground"
     : "opacity-100";
   const tabButtonClass =
-    "inline-flex h-10 items-center justify-center bg-transparent text-sm font-normal leading-none";
+    "inline-flex h-10 items-center justify-center bg-transparent text-sm font-normal leading-none outline-none focus:outline-none focus-visible:outline-none";
   const tabIconButtonClass =
-    "inline-flex h-10 items-end justify-center bg-transparent pb-3 text-sm font-normal leading-none";
+    "inline-flex h-10 items-end justify-center bg-transparent pb-3 text-sm font-normal leading-none outline-none focus:outline-none focus-visible:outline-none";
 
   const pauseHotkeyHintContent = (
     <span className="inline-flex flex-nowrap items-baseline justify-center gap-x-1">
