@@ -839,56 +839,7 @@ body {
   animation: explore-fun-games-cue-pulse 1.4s ease-in-out infinite;
 }
 
-/* Exclusive promo: idle ring invisible; ambient pulse + hover/milestone one-shots */
-@keyframes exclusive-promo-shockwave {
-  0% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.85;
-    border-color: rgba(132, 204, 22, 0.9);
-  }
-
-  12% {
-    transform: translate(-50%, -50%) scale(2);
-    opacity: 0;
-    border-color: rgba(132, 204, 22, 0);
-  }
-
-  12.01%,
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0;
-    border-color: transparent;
-  }
-}
-
-@keyframes exclusive-promo-shockwave-once {
-  0% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.85;
-    border-color: rgba(132, 204, 22, 0.9);
-  }
-
-  100% {
-    transform: translate(-50%, -50%) scale(2);
-    opacity: 0;
-    border-color: rgba(132, 204, 22, 0);
-  }
-}
-
-@keyframes exclusive-promo-shockwave-hover-once {
-  0% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.85;
-    border-color: rgba(132, 204, 22, 0.9);
-  }
-
-  100% {
-    transform: translate(-50%, -50%) scale(2);
-    opacity: 0;
-    border-color: rgba(132, 204, 22, 0);
-  }
-}
-
+/* Exclusive promo rewards-task ring (position only; pulse via WAAPI in exclusivePromoShockwave.ts) */
 .exclusive-promo-shockwave-ring {
   position: absolute;
   top: 50%;
@@ -902,27 +853,6 @@ body {
   opacity: 0;
   pointer-events: none;
   z-index: 0;
-  animation: exclusive-promo-shockwave 20s cubic-bezier(0.33, 1, 0.68, 1) infinite;
-}
-
-.exclusive-promo-shockwave-ring--ping-once {
-  animation: exclusive-promo-shockwave-once 2.4s cubic-bezier(0.33, 1, 0.68, 1) 1 !important;
-}
-
-.exclusive-promo-shockwave-ring--hover-once {
-  animation: exclusive-promo-shockwave-hover-once 0.75s cubic-bezier(0.33, 1, 0.68, 1) 1 !important;
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-  .exclusive-promo-shockwave-ring {
-    animation: none;
-  }
-
-  .exclusive-promo-shockwave-ring--ping-once,
-  .exclusive-promo-shockwave-ring--hover-once {
-    animation: none !important;
-  }
 }
 
 @keyframes continue-pause-flash {

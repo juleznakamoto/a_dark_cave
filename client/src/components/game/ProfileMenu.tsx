@@ -18,8 +18,9 @@ import { logger } from "@/lib/logger";
 import { formatSaveTimestamp } from "@/lib/utils";
 import { isSteamBuild } from "@/lib/edition";
 import {
-  handleExclusivePromoRingAnimationEnd,
+  EXCLUSIVE_PROMO_AMBIENT_PULSE_MS,
   pulseExclusivePromoRing,
+  runExclusivePromoShockwave,
 } from "@/lib/exclusivePromoShockwave";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { DropdownMenuItemWithTooltip } from "@/components/game/DropdownMenuItemWithTooltip";
@@ -542,32 +543,47 @@ export function GameHeaderControls() {
     }
   }, [showRewardsTasksShortcut, playTime]);
 
+  useEffect(() => {
+    if (!showRewardsTasksShortcut) return;
+
+    const pulseAmbient = () => {
+      runExclusivePromoShockwave(
+        rewardsTasksRingRef.current,
+        EXCLUSIVE_PROMO_AMBIENT_PULSE_MS * 0.12,
+      );
+    };
+
+    pulseAmbient();
+    const intervalId = window.setInterval(
+      pulseAmbient,
+      EXCLUSIVE_PROMO_AMBIENT_PULSE_MS,
+    );
+    return () => window.clearInterval(intervalId);
+  }, [showRewardsTasksShortcut]);
+
+  const triggerRewardsTasksHoverPulse = () => {
+    pulseExclusivePromoRing(rewardsTasksRingRef.current, "hover-once");
+  };
+
   return (
     <div className="flex items-center gap-0.5 shrink-0">
       {showRewardsTasksShortcut && !isSteamBuild && (
         <HoverCalloutTooltip
           label={t("profile.rewardsTasks")}
           side="bottom"
-          onHoverStart={() =>
-            pulseExclusivePromoRing(rewardsTasksRingRef.current, "hover-once")
-          }
+          onHoverStart={triggerRewardsTasksHoverPulse}
         >
           <button
             type="button"
             aria-label={t("profile.rewardsTasks")}
             onClick={() => setSocialPromptDialogOpen(true)}
+            onMouseEnter={triggerRewardsTasksHoverPulse}
             className={`${HEADER_ICON_BTN} relative overflow-visible hover:bg-muted/30 transition-colors`}
           >
             <span
               ref={rewardsTasksRingRef}
               className="exclusive-promo-shockwave-ring"
               aria-hidden
-              onAnimationEnd={(e) =>
-                handleExclusivePromoRingAnimationEnd(
-                  e.currentTarget,
-                  e.animationName,
-                )
-              }
             />
             <span
               className="relative z-[1] text-[17px] leading-none select-none text-lime-500"

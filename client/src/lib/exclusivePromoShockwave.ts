@@ -1,41 +1,52 @@
 export type ExclusivePromoShockwavePulse = "hover-once" | "ping-once";
 
-const PULSE_CLASS_NAMES: Record<ExclusivePromoShockwavePulse, string> = {
-  "hover-once": "exclusive-promo-shockwave-ring--hover-once",
-  "ping-once": "exclusive-promo-shockwave-ring--ping-once",
+const SHOCKWAVE_PULSE_MS: Record<ExclusivePromoShockwavePulse, number> = {
+  "hover-once": 750,
+  "ping-once": 2400,
 };
 
-const ONE_SHOT_ANIMATION_NAMES = new Set([
-  "exclusive-promo-shockwave-once",
-  "exclusive-promo-shockwave-hover-once",
-]);
+const SHOCKWAVE_KEYFRAMES: Keyframe[] = [
+  {
+    transform: "translate(-50%, -50%) scale(1)",
+    opacity: 0.85,
+    borderColor: "rgba(132, 204, 22, 0.9)",
+  },
+  {
+    transform: "translate(-50%, -50%) scale(2)",
+    opacity: 0,
+    borderColor: "rgba(132, 204, 22, 0)",
+  },
+];
 
-/** Restarts a one-shot shockwave on the rewards-task ring (hover or milestone ping). */
-export function pulseExclusivePromoRing(
+const SHOCKWAVE_EASING = "cubic-bezier(0.33, 1, 0.68, 1)";
+
+function prefersReducedMotion(): boolean {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+/** Plays the green expand/fade shockwave on a rewards-task ring element. */
+export function runExclusivePromoShockwave(
   ring: HTMLElement | null,
-  variant: ExclusivePromoShockwavePulse,
-): void {
-  if (!ring) return;
-  for (const className of Object.values(PULSE_CLASS_NAMES)) {
-    ring.classList.remove(className);
-  }
-  void ring.offsetWidth;
-  requestAnimationFrame(() => {
-    ring.classList.add(PULSE_CLASS_NAMES[variant]);
+  durationMs: number,
+): Animation | null {
+  if (!ring || prefersReducedMotion()) return null;
+  ring.getAnimations().forEach((animation) => animation.cancel());
+  return ring.animate(SHOCKWAVE_KEYFRAMES, {
+    duration: durationMs,
+    easing: SHOCKWAVE_EASING,
   });
 }
 
-export function handleExclusivePromoRingAnimationEnd(
-  target: HTMLElement,
-  animationName: string,
-): void {
-  if (!ONE_SHOT_ANIMATION_NAMES.has(animationName)) {
-    return;
-  }
-  for (const className of Object.values(PULSE_CLASS_NAMES)) {
-    target.classList.remove(className);
-  }
+/** Restarts a one-shot shockwave (hover or milestone / reward dialog). */
+export function pulseExclusivePromoRing(
+  ring: HTMLElement | null,
+  variant: ExclusivePromoShockwavePulse,
+): Animation | null {
+  return runExclusivePromoShockwave(ring, SHOCKWAVE_PULSE_MS[variant]);
 }
+
+/** Ambient ~every 20s pulse (same cadence as the original CSS loop). */
+export const EXCLUSIVE_PROMO_AMBIENT_PULSE_MS = 20_000;
 
 export function pumpDonateHeart(heart: HTMLElement | null): void {
   if (!heart) return;
