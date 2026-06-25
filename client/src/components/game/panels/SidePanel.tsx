@@ -1,6 +1,7 @@
 import { useGameStore } from "@/game/state";
 import SidePanelSection, {
   clearSidePanelActiveTooltipHover,
+  SIDE_PANEL_GRID_CLASS,
   SIDE_PANEL_SECTION_SPACING_CLASS,
 } from "./SidePanelSection";
 import StatEffectsTooltip from "@/components/game/StatEffectsTooltip";
@@ -893,7 +894,7 @@ export default function SidePanel() {
       onWheel={clearSidePanelActiveTooltipHover}
     >
       <ScrollArea className="h-full w-full pb-1.5 pr-2">
-        <div className="pb-1 w-full grid grid-cols-[auto_auto] gap-x-1.5 items-start min-w-0">
+        <div className={cn("pb-1", SIDE_PANEL_GRID_CLASS)}>
           {/* First column - Resources */}
           <div className={cn(SIDE_PANEL_SECTION_SPACING_CLASS)}>
             {resourceItems.length > 0 && shouldShowSection("resources") && (
