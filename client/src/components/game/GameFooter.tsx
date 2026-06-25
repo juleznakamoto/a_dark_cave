@@ -191,4 +191,12 @@ export default function GameFooter() {
                 </a>
                 <a href="/imprint" className={FOOTER_LEGAL_LINK}>
                   {t("footer.imprint")}
-           
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      </footer>
+    </>
+  );
+}

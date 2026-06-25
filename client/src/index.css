@@ -941,8 +941,35 @@ body {
   animation: continue-pause-flash 2s ease-in-out infinite;
 }
 
+@keyframes donate-heart-pump {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  35% {
+    transform: scale(1.35);
+  }
+
+  65% {
+    transform: scale(0.92);
+  }
+}
+
 .donate-heart {
+  display: inline-block;
   transform-origin: center;
+}
+
+.donate-heart-pump-once {
+  animation: donate-heart-pump 0.45s ease-in-out 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .donate-heart-pump-once {
+    animation: none;
+  }
 }
 
 /* Pause: help line + [1]… tab badges (desktop md+) */
