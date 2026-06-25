@@ -86,6 +86,8 @@ export interface HoverCalloutTooltipProps {
   forceVisible?: boolean;
   /** When set, the callout is clickable while visible (Playlight discovery). */
   onCalloutClick?: () => void;
+  /** Fires once when a fine pointer (mouse/pen) enters the trigger wrapper. */
+  onHoverStart?: () => void;
 }
 
 /** Playlight-style hover callout with a rotated-square arrow. */
@@ -97,6 +99,7 @@ export function HoverCalloutTooltip({
   className,
   forceVisible = false,
   onCalloutClick,
+  onHoverStart,
 }: HoverCalloutTooltipProps) {
   const [isHovered, setIsHovered] = useState(false);
   const visible = forceVisible || isHovered;
@@ -119,6 +122,7 @@ export function HoverCalloutTooltip({
   const showHoverTooltip = (e: React.PointerEvent) => {
     if (isHoverCapablePointer(e.pointerType)) {
       setIsHovered(true);
+      onHoverStart?.();
     }
   };
 
