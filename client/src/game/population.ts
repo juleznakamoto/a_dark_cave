@@ -499,6 +499,20 @@ export function getDisgracedPriorFoodUpkeepPerCycle(
   return n * DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE;
 }
 
+/** Matches accumulatePopulationSurvival / handleStarvationCheck in loop.ts. */
+export function isVillagerFoodUpkeepActive(
+  state: Pick<GameState, "story">,
+): boolean {
+  return !!state.story?.seen?.hasHunted;
+}
+
+/** Matches accumulatePopulationSurvival in loop.ts. */
+export function isVillagerWoodUpkeepActive(
+  state: Pick<GameState, "story">,
+): boolean {
+  return !!state.story?.seen?.hasHunted;
+}
+
 export const getTotalPopulationEffects = (
   state: GameState,
   visibleJobIds: string[],
@@ -509,10 +523,14 @@ export const getTotalPopulationEffects = (
   // Calculate total population for base consumption
   const totalPopulation = getCurrentPopulation(state);
 
-  // Add base consumption for all villagers (1 wood and 1 food per villager)
+  // Base consumption (1 per villager per 15s) — only after upkeep is active in the loop
   if (totalPopulation > 0) {
-    totalEffects.wood = (totalEffects.wood || 0) - totalPopulation;
-    totalEffects.food = (totalEffects.food || 0) - totalPopulation;
+    if (isVillagerWoodUpkeepActive(state)) {
+      totalEffects.wood = (totalEffects.wood || 0) - totalPopulation;
+    }
+    if (isVillagerFoodUpkeepActive(state)) {
+      totalEffects.food = (totalEffects.food || 0) - totalPopulation;
+    }
   }
 
   // Calculate production for each visible job

@@ -6,6 +6,8 @@ import {
   getPopulationProduction,
   getTotalPopulationEffects,
   getScholarInsightPerWorker,
+  isVillagerFoodUpkeepActive,
+  isVillagerWoodUpkeepActive,
 } from './population';
 import { DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE } from './rules/skillUpgrades';
 import { GameState } from '@shared/schema';
@@ -190,7 +192,10 @@ const createTestState = (overrides?: Partial<GameState>): GameState => {
       starvationActive: false,
     },
     story: {
-      seen: {},
+      seen: {
+        hasHunted: true,
+        hasWood: true,
+      },
     },
     stats: {
       strength: 0,
@@ -270,6 +275,36 @@ describe('getVillagersInVillage', () => {
     });
     expect(getVillagersInVillage(state)).toBe(5);
     expect(getCurrentPopulation(state)).toBe(10);
+  });
+});
+
+describe('villager survival upkeep gating', () => {
+  it('does not apply food or wood upkeep before first hunt', () => {
+    const state = createTestState({
+      story: { seen: { hasWood: true } },
+      villagers: { ...createTestState().villagers, gatherer: 3, free: 2 },
+    });
+
+    expect(isVillagerFoodUpkeepActive(state)).toBe(false);
+    expect(isVillagerWoodUpkeepActive(state)).toBe(false);
+
+    const effects = getTotalPopulationEffects(state, ['gatherer']);
+    expect(effects.food).toBeUndefined();
+    expect(effects.wood).toBe(30); // 3 gatherers × 10, no base consumption
+  });
+
+  it('applies food and wood upkeep after first hunt', () => {
+    const state = createTestState({
+      story: { seen: { hasHunted: true, hasWood: true } },
+      villagers: { ...createTestState().villagers, gatherer: 3, free: 2 },
+    });
+
+    expect(isVillagerFoodUpkeepActive(state)).toBe(true);
+    expect(isVillagerWoodUpkeepActive(state)).toBe(true);
+
+    const effects = getTotalPopulationEffects(state, ['gatherer']);
+    expect(effects.food).toBe(-5);
+    expect(effects.wood).toBe(30 - 5);
   });
 });
 

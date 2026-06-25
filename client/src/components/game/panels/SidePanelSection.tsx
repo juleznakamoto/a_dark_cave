@@ -21,6 +21,10 @@ import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
 import { cn } from "@/lib/utils";
 import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
 import {
+  isVillagerFoodUpkeepActive,
+  isVillagerWoodUpkeepActive,
+} from "@/game/population";
+import {
   getStatEffectLinesSignature,
   shouldPulseStatItem,
   type TooltipStatKey,
@@ -849,12 +853,19 @@ export default function SidePanelSection({
     const isResourcesSection = sectionId === "resources";
     const tabForProductionColors = activeTab ?? storeActiveTab;
     const isVillageTab = tabForProductionColors === "village";
+    const villagerUpkeepActiveForResource =
+      item.id === "food"
+        ? isVillagerFoodUpkeepActive(gameState)
+        : item.id === "wood"
+          ? isVillagerWoodUpkeepActive(gameState)
+          : false;
     const isCriticalZeroResource =
       isResourcesSection &&
       CRITICAL_ZERO_RESOURCES.has(item.id) &&
       typeof item.value === "number" &&
       item.value === 0 &&
-      (gameState.current_population ?? 0) > 0;
+      (gameState.current_population ?? 0) > 0 &&
+      villagerUpkeepActiveForResource;
     const showVillageMaxCapacityHighlight =
       isResourcesSection &&
       isVillageTab &&

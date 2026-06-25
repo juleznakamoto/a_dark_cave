@@ -15,6 +15,8 @@ import { capitalizeWords, cn } from "@/lib/utils";
 import {
   getCurrentPopulation,
   getPopulationProduction,
+  isVillagerFoodUpkeepActive,
+  isVillagerWoodUpkeepActive,
 } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { resetProductionCycle } from "@/game/loop";
@@ -150,15 +152,16 @@ function simulatePopulationConsumption(
   const totalPopulation = getCurrentPopulation(state);
 
   if (totalPopulation > 0) {
-    // Food consumption (1 per villager per 15 seconds)
-    const foodConsumption = totalPopulation * multiplier;
-    accumulatedResources["food"] =
-      (accumulatedResources["food"] || 0) - foodConsumption;
-
-    // Wood consumption (1 per villager per 15 seconds)
-    const woodConsumption = totalPopulation * multiplier;
-    accumulatedResources["wood"] =
-      (accumulatedResources["wood"] || 0) - woodConsumption;
+    if (isVillagerFoodUpkeepActive(state)) {
+      const foodConsumption = totalPopulation * multiplier;
+      accumulatedResources["food"] =
+        (accumulatedResources["food"] || 0) - foodConsumption;
+    }
+    if (isVillagerWoodUpkeepActive(state)) {
+      const woodConsumption = totalPopulation * multiplier;
+      accumulatedResources["wood"] =
+        (accumulatedResources["wood"] || 0) - woodConsumption;
+    }
   }
 }
 

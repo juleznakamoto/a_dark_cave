@@ -45,6 +45,8 @@ import {
   getCurrentPopulation,
   getExpeditionVillagerCount,
   getPopulationProduction,
+  isVillagerFoodUpkeepActive,
+  isVillagerWoodUpkeepActive,
 } from "@/game/population";
 import {
   areVillagerCapsEnabled,
@@ -1034,18 +1036,31 @@ export default function VillagePanel() {
       </div>
       <span className={VILLAGER_COUNT_LABEL_CLASS}>
         {t("village.villagers")}{" "}
-        {totalPopulation > 0 && (
-          <span className="leading-none text-muted-foreground">
-            <span translate="no" className="notranslate">
-              -{totalPopulation}
-            </span>{" "}
-            {formatTooltipResourceName("food")},{" "}
-            <span translate="no" className="notranslate">
-              -{totalPopulation}
-            </span>{" "}
-            {formatTooltipResourceName("wood")}
-          </span>
-        )}
+        {totalPopulation > 0 &&
+          (isVillagerFoodUpkeepActive(state) ||
+            isVillagerWoodUpkeepActive(state)) && (
+            <span className="leading-none text-muted-foreground">
+              {isVillagerFoodUpkeepActive(state) && (
+                <>
+                  <span translate="no" className="notranslate">
+                    -{totalPopulation}
+                  </span>{" "}
+                  {formatTooltipResourceName("food")}
+                </>
+              )}
+              {isVillagerFoodUpkeepActive(state) &&
+                isVillagerWoodUpkeepActive(state) &&
+                ", "}
+              {isVillagerWoodUpkeepActive(state) && (
+                <>
+                  <span translate="no" className="notranslate">
+                    -{totalPopulation}
+                  </span>{" "}
+                  {formatTooltipResourceName("wood")}
+                </>
+              )}
+            </span>
+          )}
       </span>
     </div>
   );
