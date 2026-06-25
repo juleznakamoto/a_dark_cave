@@ -4,6 +4,7 @@ import React, {
   useState,
   useEffect,
   useRef,
+  useCallback,
   type ReactNode,
 } from "react";
 import { Button } from "@/components/ui/button";
@@ -18,9 +19,8 @@ import { logger } from "@/lib/logger";
 import { formatSaveTimestamp } from "@/lib/utils";
 import { isSteamBuild } from "@/lib/edition";
 import {
-  EXCLUSIVE_PROMO_AMBIENT_PULSE_MS,
-  pulseExclusivePromoRing,
-  runExclusivePromoShockwave,
+  triggerExclusivePromoHoverPulse,
+  triggerExclusivePromoPingOnce,
 } from "@/lib/exclusivePromoShockwave";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { DropdownMenuItemWithTooltip } from "@/components/game/DropdownMenuItemWithTooltip";
@@ -68,7 +68,7 @@ function rewardsTasksIconPingIndex(playTimeMs: number): number | null {
 }
 
 function pingRewardsTasksRing(ring: HTMLSpanElement | null): void {
-  pulseExclusivePromoRing(ring, "ping-once");
+  triggerExclusivePromoPingOnce(ring);
 }
 
 const HEADER_ICON_BTN =
@@ -543,27 +543,9 @@ export function GameHeaderControls() {
     }
   }, [showRewardsTasksShortcut, playTime]);
 
-  useEffect(() => {
-    if (!showRewardsTasksShortcut) return;
-
-    const pulseAmbient = () => {
-      runExclusivePromoShockwave(
-        rewardsTasksRingRef.current,
-        EXCLUSIVE_PROMO_AMBIENT_PULSE_MS * 0.12,
-      );
-    };
-
-    pulseAmbient();
-    const intervalId = window.setInterval(
-      pulseAmbient,
-      EXCLUSIVE_PROMO_AMBIENT_PULSE_MS,
-    );
-    return () => window.clearInterval(intervalId);
-  }, [showRewardsTasksShortcut]);
-
-  const triggerRewardsTasksHoverPulse = () => {
-    pulseExclusivePromoRing(rewardsTasksRingRef.current, "hover-once");
-  };
+  const triggerRewardsTasksHoverPulse = useCallback(() => {
+    triggerExclusivePromoHoverPulse(rewardsTasksRingRef.current);
+  }, []);
 
   return (
     <div className="flex items-center gap-0.5 shrink-0">
@@ -571,7 +553,6 @@ export function GameHeaderControls() {
         <HoverCalloutTooltip
           label={t("profile.rewardsTasks")}
           side="bottom"
-          onHoverStart={triggerRewardsTasksHoverPulse}
         >
           <button
             type="button"
@@ -584,6 +565,13 @@ export function GameHeaderControls() {
               ref={rewardsTasksRingRef}
               className="exclusive-promo-shockwave-ring"
               aria-hidden
+              onAnimationEnd={(e) => {
+                if (e.animationName === "exclusive-promo-shockwave-hover-once") {
+                  e.currentTarget.classList.remove(
+                    "exclusive-promo-shockwave-ring--hover-once",
+                  );
+                }
+              }}
             />
             <span
               className="relative z-[1] text-[17px] leading-none select-none text-lime-500"
