@@ -1,5 +1,8 @@
 import React, { useRef, useEffect } from "react";
 import { logger } from "@/lib/logger";
+import { StarshipShader } from "@/components/ui/starship-shader";
+
+export type EndScreenBackgroundVariant = "default" | "starship";
 
 // Types for component props
 interface HeroProps {
@@ -48,6 +51,8 @@ interface HeroProps {
       onClick?: () => void;
     };
   };
+  /** Default flame shader; `starship` for Cruel Mode completion end screen. */
+  backgroundVariant?: EndScreenBackgroundVariant;
   className?: string;
 }
 
@@ -93,7 +98,7 @@ function renderEmojiLabelButtonContent(emoji: string, label: string) {
 }
 
 // Reusable Shader Background Hook
-const useShaderBackground = () => {
+const useShaderBackground = (enabled: boolean) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameRef = useRef<number>();
   const rendererRef = useRef<WebGLRenderer | null>(null);
@@ -371,7 +376,7 @@ void main(){gl_Position=position;}`;
   };
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    if (!enabled || !canvasRef.current) return;
 
     const canvas = canvasRef.current;
     const dpr = Math.max(1, 0.5 * window.devicePixelRatio);
@@ -417,7 +422,7 @@ void main(){gl_Position=position;}`;
       }
       pointersRef.current = null;
     };
-  }, []);
+  }, [enabled]);
 
   return canvasRef;
 };
@@ -431,9 +436,11 @@ const Hero: React.FC<HeroProps> = ({
   subtitle3,
   buttons,
   socialButtons,
+  backgroundVariant = "default",
   className = "",
 }) => {
-  const canvasRef = useShaderBackground();
+  const useDefaultBackground = backgroundVariant === "default";
+  const canvasRef = useShaderBackground(useDefaultBackground);
 
   return (
     <div
@@ -541,11 +548,17 @@ const Hero: React.FC<HeroProps> = ({
         }
       `}</style>
 
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full object-cover min-h-full touch-none"
-        style={{ background: "black" }}
-      />
+      {useDefaultBackground ? (
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full object-cover min-h-full touch-none pointer-events-none"
+          style={{ background: "black" }}
+        />
+      ) : (
+        <div className="pointer-events-none absolute inset-0 min-h-full w-full">
+          <StarshipShader className="h-full w-full" />
+        </div>
+      )}
 
       {/* Hero Content Overlay */}
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-white w-full min-w-0 overflow-x-hidden">

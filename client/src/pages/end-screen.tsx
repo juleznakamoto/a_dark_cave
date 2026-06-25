@@ -27,14 +27,13 @@ export default function EndScreenPage() {
     })();
   }, []);
 
-  const showCruelModePromo = isCruelModeRun !== true;
+  const isCruelModeCompletion = isCruelModeRun === true;
+
   const handleMainMenu = async () => {
     window.location.href = "/";
   };
 
   const handleCruelMode = async () => {
-    // Steam build: Cruel Mode is free once the game has been finished. There is
-    // no shop, so unlock it directly and start a fresh Cruel Mode game.
     if (isSteamBuild) {
       try {
         const store = useGameStore.getState();
@@ -69,7 +68,6 @@ export default function EndScreenPage() {
   };
 
   const handleMoreGames = async () => {
-    // Mirror ProfileMenu discovery: load Playlight SDK if needed, then open discovery.
     let playlightSDK: { setDiscovery?: (open?: boolean) => void } | undefined =
       (window as typeof window & { playlightSDK?: typeof playlightSDK }).playlightSDK;
     if (!playlightSDK) {
@@ -97,6 +95,7 @@ export default function EndScreenPage() {
         <meta name="robots" content="noindex" />
       </Helmet>
       <Hero
+        backgroundVariant={isCruelModeCompletion ? "starship" : "default"}
         trustBadge={{
           text: t("endScreen.trustBadge"),
         }}
@@ -104,11 +103,11 @@ export default function EndScreenPage() {
           line1: t("endScreen.headline1"),
           line2: t("endScreen.headline2"),
         }}
-        subtitle1={showCruelModePromo ? t("endScreen.subtitle1") : ""}
-        subtitle2={showCruelModePromo ? t("endScreen.subtitle2") : ""}
+        subtitle1={isCruelModeCompletion ? "" : t("endScreen.subtitle1")}
+        subtitle2={isCruelModeCompletion ? "" : t("endScreen.subtitle2")}
         subtitle3=""
         buttons={{
-          ...(showCruelModePromo
+          ...(!isCruelModeCompletion
             ? {
               primary: {
                 text: t("endScreen.cruelMode"),
@@ -128,7 +127,6 @@ export default function EndScreenPage() {
             onClick: handleMainMenu,
             buttonId: "end-screen-close",
           },
-          // "More Games" is the Playlight discovery SDK — web only.
           ...(isSteamBuild
             ? {}
             : {
