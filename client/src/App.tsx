@@ -43,6 +43,7 @@ const Withdrawal = lazy(() =>
 const Unsubscribe = lazy(() =>
   steamBuild ? redirectHome() : import("@/pages/unsubscribe"),
 );
+const StarshipShaderDemo = lazy(() => import("@/pages/starship-shader-demo"));
 
 function Router() {
   return (
@@ -63,6 +64,7 @@ function Router() {
         <Route path="/unsubscribe" component={Unsubscribe} />
         <Route path="/reset-password" component={ResetPassword} />
         <Route path="/admin/dashboard" component={AdminDashboard} />
+        <Route path="/dev/starship-shader" component={StarshipShaderDemo} />
         <Route component={NotFound} />
       </Switch>
     </Suspense>
