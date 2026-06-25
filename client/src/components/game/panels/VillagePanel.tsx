@@ -1400,7 +1400,7 @@ export default function VillagePanel() {
                                     </div>
                                   }
                                   tooltipTriggerClassName="inline-flex items-center leading-none"
-                                  className="inline-flex items-center cursor-pointer"
+                                  className="group flex items-center cursor-pointer"
                                   onClick={() => {
                                     setShopCheckoutItemId(
                                       "additional_construction_queue_slot",
@@ -1408,21 +1408,23 @@ export default function VillagePanel() {
                                     setShopDialogOpen(true);
                                   }}
                                 >
-                                  <span
+                                  <Button
+                                    size="xs"
+                                    variant="outline"
                                     data-testid="queue-slots-purchase"
+                                    button_id="queue-slots-purchase"
                                     className={cn(
-                                      HEADER_SLOT_SIZE_CLASS,
-                                      "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
+                                      HEADER_SLOT_BUTTON_CLASS,
+                                      gameActionOutlineButtonClassName(false, {
+                                        groupHover: true,
+                                      }),
                                     )}
                                     style={{ touchAction: "manipulation" }}
                                   >
-                                    <span
-                                      aria-hidden
-                                      className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
-                                    >
+                                    <span className="inline-flex items-center justify-center text-sm font-semibold leading-none text-white">
                                       +
                                     </span>
-                                  </span>
+                                  </Button>
                                 </TooltipWrapper>
                               )}
                           </div>
