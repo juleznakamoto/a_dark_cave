@@ -127,7 +127,7 @@ const LABEL_VALUE_ROW_GRID_CLASS =
 export const SIDE_PANEL_SECTION_SPACING_CLASS = "space-y-2";
 /** Resources column sizes to content; second column fills remaining side-panel width. */
 export const SIDE_PANEL_GRID_CLASS =
-  "grid w-full grid-cols-[auto_minmax(0,1fr)] gap-x-1.5 items-start min-w-0";
+  "grid w-full grid-cols-[auto_minmax(0,1fr)] gap-x-3 items-start min-w-0";
 
 /** One active tooltip-hover highlight for the whole side panel (all sections share this). */
 let sidePanelActiveTooltipHoverId: string | null = null;
