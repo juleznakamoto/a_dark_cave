@@ -963,7 +963,7 @@ body {
 }
 
 .donate-heart-pump-once {
-  animation: donate-heart-pump 0.45s ease-in-out 1;
+  animation: donate-heart-pump 0.45s ease-in-out 1 !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

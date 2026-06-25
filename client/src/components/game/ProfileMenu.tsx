@@ -563,7 +563,10 @@ export function GameHeaderControls() {
               className="exclusive-promo-shockwave-ring"
               aria-hidden
               onAnimationEnd={(e) =>
-                handleExclusivePromoRingAnimationEnd(e.currentTarget, e.nativeEvent)
+                handleExclusivePromoRingAnimationEnd(
+                  e.currentTarget,
+                  e.animationName,
+                )
               }
             />
             <span

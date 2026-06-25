@@ -7,15 +7,19 @@ import {
   GAME_FOOTER_RIGHT_ICON_ORDER,
 } from "@/lib/gameFooterSocialLinks";
 import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { isSteamBuild } from "@/lib/edition";
+import {
+  handleDonateHeartAnimationEnd,
+  pumpDonateHeart,
+} from "@/lib/exclusivePromoShockwave";
 
 const FOOTER_CONTROL_BTN =
   "group shrink-0 px-1 py-1 text-xs text-neutral-300 hover hover:!text-red-600";
 const FOOTER_CONTROL_BTN_FADE =
-  "opacity-80 transition-opacity group-hover:opacity-100";
+  "opacity-80 transition-[opacity,color] group-hover:opacity-100";
 const FOOTER_CONTROL_SVG_ICON_HOVER =
   "w-4 h-4 text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
 const FOOTER_CONTROL_TEXT =
@@ -24,13 +28,9 @@ const FOOTER_SOCIAL_LABEL =
   `${FOOTER_CONTROL_TEXT} hidden sm:inline`;
 const FOOTER_LEGAL_LINK =
   "text-2xs text-neutral-300 opacity-40 hover:opacity-100 transition-opacity";
-
-function pumpDonateHeart(heart: HTMLSpanElement | null): void {
-  if (!heart) return;
-  heart.classList.remove("donate-heart-pump-once");
-  void heart.offsetWidth;
-  heart.classList.add("donate-heart-pump-once");
-}
+/** Heart stays red; opacity-only transition so scale pump is not overridden. */
+const DONATE_HEART =
+  "donate-heart text-red-600 opacity-80 group-hover:opacity-100 transition-opacity";
 
 export default function GameFooter() {
   const {
@@ -45,6 +45,10 @@ export default function GameFooter() {
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const donateHeartRef = useRef<HTMLSpanElement>(null);
   const { t } = useTranslation("ui");
+
+  const triggerDonateHeartPump = useCallback(() => {
+    pumpDonateHeart(donateHeartRef.current);
+  }, []);
 
   // Trigger glow animation when pause state changes
   useEffect(() => {
@@ -128,22 +132,26 @@ export default function GameFooter() {
                 <HoverCalloutTooltip
                   label={t("footer.supportGame")}
                   side="top"
+                  onHoverStart={triggerDonateHeartPump}
                 >
                   <Button
                     variant="ghost"
                     size="xs"
                     onClick={handleOfferTribute}
-                    onMouseEnter={() => pumpDonateHeart(donateHeartRef.current)}
+                    onMouseEnter={triggerDonateHeartPump}
                     aria-label={t("footer.supportGame")}
                     className={`${FOOTER_CONTROL_BTN} flex items-center gap-1`}
                   >
                     <span
                       ref={donateHeartRef}
                       aria-hidden
-                      className={`donate-heart text-red-600 ${FOOTER_CONTROL_BTN_FADE}`}
-                      onAnimationEnd={(e) => {
-                        e.currentTarget.classList.remove("donate-heart-pump-once");
-                      }}
+                      className={DONATE_HEART}
+                      onAnimationEnd={(e) =>
+                        handleDonateHeartAnimationEnd(
+                          e.currentTarget,
+                          e.animationName,
+                        )
+                      }
                     >
                       ❤︎⁠
                     </span>

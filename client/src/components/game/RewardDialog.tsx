@@ -22,7 +22,10 @@ function SocialPromoTasksOutcomeIcon() {
   const ringRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    pulseExclusivePromoRing(ringRef.current, "ping-once");
+    const frame = requestAnimationFrame(() => {
+      pulseExclusivePromoRing(ringRef.current, "ping-once");
+    });
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   return (
@@ -32,7 +35,7 @@ function SocialPromoTasksOutcomeIcon() {
         className="exclusive-promo-shockwave-ring"
         aria-hidden
         onAnimationEnd={(e) =>
-          handleExclusivePromoRingAnimationEnd(e.currentTarget, e.nativeEvent)
+          handleExclusivePromoRingAnimationEnd(e.currentTarget, e.animationName)
         }
       />
       <span

@@ -5,6 +5,11 @@ const PULSE_CLASS_NAMES: Record<ExclusivePromoShockwavePulse, string> = {
   "ping-once": "exclusive-promo-shockwave-ring--ping-once",
 };
 
+const ONE_SHOT_ANIMATION_NAMES = new Set([
+  "exclusive-promo-shockwave-once",
+  "exclusive-promo-shockwave-hover-once",
+]);
+
 /** Restarts a one-shot shockwave on the rewards-task ring (hover or milestone ping). */
 export function pulseExclusivePromoRing(
   ring: HTMLElement | null,
@@ -15,20 +20,38 @@ export function pulseExclusivePromoRing(
     ring.classList.remove(className);
   }
   void ring.offsetWidth;
-  ring.classList.add(PULSE_CLASS_NAMES[variant]);
+  requestAnimationFrame(() => {
+    ring.classList.add(PULSE_CLASS_NAMES[variant]);
+  });
 }
 
 export function handleExclusivePromoRingAnimationEnd(
   target: HTMLElement,
-  event: AnimationEvent,
+  animationName: string,
 ): void {
-  if (
-    event.animationName !== "exclusive-promo-shockwave-once" &&
-    event.animationName !== "exclusive-promo-shockwave-hover-once"
-  ) {
+  if (!ONE_SHOT_ANIMATION_NAMES.has(animationName)) {
     return;
   }
   for (const className of Object.values(PULSE_CLASS_NAMES)) {
     target.classList.remove(className);
   }
+}
+
+export function pumpDonateHeart(heart: HTMLElement | null): void {
+  if (!heart) return;
+  heart.classList.remove("donate-heart-pump-once");
+  void heart.offsetWidth;
+  requestAnimationFrame(() => {
+    heart.classList.add("donate-heart-pump-once");
+  });
+}
+
+export function handleDonateHeartAnimationEnd(
+  target: HTMLElement,
+  animationName: string,
+): void {
+  if (animationName !== "donate-heart-pump") {
+    return;
+  }
+  target.classList.remove("donate-heart-pump-once");
 }
