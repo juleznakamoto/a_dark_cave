@@ -7,8 +7,8 @@ export default function StarshipShaderDemo() {
   }
 
   return (
-    <div className="fixed inset-0 bg-black">
-      <StarshipShader className="w-full h-full" />
+    <div className="fixed inset-0 relative bg-black">
+      <StarshipShader />
     </div>
   );
 }
