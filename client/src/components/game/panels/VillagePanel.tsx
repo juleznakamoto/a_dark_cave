@@ -629,7 +629,7 @@ export default function VillagePanel() {
         playTime: currentPlayTime,
         investmentHallState: ih,
       });
-      const investPlayTimeProgress = getInvestButtonPlayTimeProgress({
+      const investPlayTimeCooldown = getInvestButtonPlayTimeProgress({
         playTime: currentPlayTime,
         investmentHallState: ih,
       });
@@ -663,7 +663,7 @@ export default function VillagePanel() {
             actionId="invest"
             button_id="invest"
             disabled={!investReady}
-            playTimeProgress={investPlayTimeProgress}
+            playTimeCooldown={investPlayTimeCooldown}
             size="xs"
             variant="outline"
             className=""
@@ -702,7 +702,7 @@ export default function VillagePanel() {
         callMerchantLastEndPlayTime != null &&
         currentPlayTime < cooldownEndPlayTime;
       const remainingMs = Math.max(0, cooldownEndPlayTime - currentPlayTime);
-      const merchantPlayTimeProgress =
+      const merchantPlayTimeCooldown =
         isOnCooldown && callMerchantLastEndPlayTime != null
           ? {
             startPlayTime: callMerchantLastEndPlayTime,
@@ -749,7 +749,7 @@ export default function VillagePanel() {
           actionId="callMerchant"
           button_id="callMerchant"
           disabled={isDisabled}
-          playTimeProgress={merchantPlayTimeProgress}
+          playTimeCooldown={merchantPlayTimeCooldown}
           size="xs"
           variant="outline"
           className=""
