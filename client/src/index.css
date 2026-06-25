@@ -841,23 +841,24 @@ body {
 
 /* Exclusive promo rewards-task ring (ambient CSS loop + hover/ping one-shots) */
 @keyframes exclusive-promo-shockwave {
-  0% {
+
+  0%,
+  87.99% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+    border-color: transparent;
+  }
+
+  88% {
     transform: translate(-50%, -50%) scale(1);
     opacity: 0.85;
     border-color: rgba(132, 204, 22, 0.9);
   }
 
-  12% {
+  100% {
     transform: translate(-50%, -50%) scale(2);
     opacity: 0;
     border-color: rgba(132, 204, 22, 0);
-  }
-
-  12.01%,
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0;
-    border-color: transparent;
   }
 }
 
@@ -870,10 +871,18 @@ body {
   box-sizing: border-box;
   transform: translate(-50%, -50%);
   border-radius: 0.5rem;
-  border: 2px solid rgba(132, 204, 22, 0.85);
+  border: 2px solid transparent;
+  opacity: 0;
   pointer-events: none;
   z-index: 0;
   animation: exclusive-promo-shockwave 30s cubic-bezier(0.33, 1, 0.68, 1) infinite;
+}
+
+/* Avoid a visible ring flash when the tab regains focus (animation resume / loop restart). */
+html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shockwave-ring--ping-once) {
+  animation-play-state: paused;
+  opacity: 0 !important;
+  border-color: transparent !important;
 }
 
 @keyframes exclusive-promo-shockwave-once {
