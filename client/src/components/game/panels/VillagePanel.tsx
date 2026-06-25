@@ -126,7 +126,11 @@ import {
 import { BuildingUpgradeTooltipIcon } from "@/game/rules/buildingUpgradeTooltipIndicator";
 import cn from "clsx";
 import InvestDialog from "@/components/game/InvestDialog";
-import { isInvestmentWaveReadyForUi } from "@/game/rules/investmentHallTables";
+import {
+  getInvestButtonPlayTimeProgress,
+  isInvestmentWaveReadyForUi,
+} from "@/game/rules/investmentHallTables";
+import { GAME_CONSTANTS, getCallMerchantGoldCost } from "@/game/constants";
 import { GREAT_FEAST_DURATION_MS } from "@shared/shopItems";
 import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
 import { isSteamBuild } from "@/lib/edition";
@@ -625,6 +629,10 @@ export default function VillagePanel() {
         playTime: currentPlayTime,
         investmentHallState: ih,
       });
+      const investPlayTimeProgress = getInvestButtonPlayTimeProgress({
+        playTime: currentPlayTime,
+        investmentHallState: ih,
+      });
       const tooltipContent = !investReady ? (
         active ? (
           <div className="text-xs max-w-[220px]">
@@ -655,14 +663,7 @@ export default function VillagePanel() {
             actionId="invest"
             button_id="invest"
             disabled={!investReady}
-            playTimeProgress={
-              active
-                ? {
-                  startPlayTime: active.startPlayTime,
-                  endPlayTime: active.endPlayTime,
-                }
-                : null
-            }
+            playTimeProgress={investPlayTimeProgress}
             size="xs"
             variant="outline"
             className=""
@@ -686,7 +687,7 @@ export default function VillagePanel() {
       const callMerchantLastEndPlayTime = story?.seen
         ?.callMerchantLastEndPlayTime as number | undefined;
       const usageCount = (story?.seen?.callMerchantUsageCount as number) || 0;
-      const price = Math.min(50 + 50 * usageCount, 250);
+      const price = getCallMerchantGoldCost(usageCount);
       const isCallingMerchant = !!state.executionStartTimes?.callMerchant;
       const isMerchantActive =
         timedEventTab?.isActive &&
@@ -694,12 +695,20 @@ export default function VillagePanel() {
       const isOtherEventActive = timedEventTab?.isActive && !isMerchantActive;
 
       const cooldownEndPlayTime =
-        (callMerchantLastEndPlayTime ?? 0) + 5 * 60 * 1000;
+        (callMerchantLastEndPlayTime ?? 0) +
+        GAME_CONSTANTS.CALL_MERCHANT_COOLDOWN_MS;
       const currentPlayTime = playTime ?? 0;
       const isOnCooldown =
         callMerchantLastEndPlayTime != null &&
         currentPlayTime < cooldownEndPlayTime;
       const remainingMs = Math.max(0, cooldownEndPlayTime - currentPlayTime);
+      const merchantPlayTimeProgress =
+        isOnCooldown && callMerchantLastEndPlayTime != null
+          ? {
+            startPlayTime: callMerchantLastEndPlayTime,
+            endPlayTime: cooldownEndPlayTime,
+          }
+          : null;
       const canAfford = (resources?.gold ?? 0) >= price;
       const isDisabled =
         isOtherEventActive ||
@@ -740,6 +749,7 @@ export default function VillagePanel() {
           actionId="callMerchant"
           button_id="callMerchant"
           disabled={isDisabled}
+          playTimeProgress={merchantPlayTimeProgress}
           size="xs"
           variant="outline"
           className=""

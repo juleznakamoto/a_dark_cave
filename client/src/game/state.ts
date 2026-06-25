@@ -79,7 +79,7 @@ import {
 import { calculateBastionStats } from "@/game/bastionStats";
 import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
-import { GAME_CONSTANTS } from "@/game/constants";
+import { GAME_CONSTANTS, getCallMerchantGoldCost } from "@/game/constants";
 import { lastAuthNotificationPlayTimeFloorOnLoad } from "@/game/authNotificationAuto";
 import {
   isPlaylightDiscoverSocialTaskFulfilled,
@@ -3852,7 +3852,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     const usageCount =
       (state.story?.seen?.callMerchantUsageCount as number) || 0;
-    const price = Math.min(50 + 50 * usageCount, 250);
+    const price = getCallMerchantGoldCost(usageCount);
 
     if ((state.resources?.gold ?? 0) < price) return;
     if (
@@ -3934,7 +3934,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }));
 
     audioManager.playSound("merchant", SOUND_VOLUME.merchant);
-    get().setTimedEventTab(true, eventData, 4 * 60 * 1000);
+    get().setTimedEventTab(true, eventData, GAME_CONSTANTS.CALL_MERCHANT_VISIT_DURATION_MS);
   },
 
   tickInvestmentHall: () => {

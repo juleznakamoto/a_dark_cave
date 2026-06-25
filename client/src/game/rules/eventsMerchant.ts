@@ -10,6 +10,7 @@ import { GameState } from "@shared/schema";
 import { getTotalKnowledge, getTotalMadness } from "./effectsCalculation";
 import { getTotalMerchantDiscount } from "./effectsStats";
 import { logger } from "@/lib/logger";
+import { GAME_CONSTANTS } from "@/game/constants";
 import type { MerchantTradeData } from "@/game/types";
 
 // Resource prices in gold per unit
@@ -1223,7 +1224,7 @@ export const merchantEvents: Record<string, GameEvent> = {
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 4 * 60 * 1000, // 4 minutes
+    timedTabDuration: GAME_CONSTANTS.CALL_MERCHANT_VISIT_DURATION_MS,
     fallbackChoice: {
       id: "say_goodbye",
       effect: () =>
