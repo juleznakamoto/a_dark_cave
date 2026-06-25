@@ -576,7 +576,7 @@ export function GameHeaderControls() {
             className={`${HEADER_ICON_BTN} cursor-default opacity-70 hover:opacity-100 transition-opacity`}
             aria-label={t("footer.cruelModeActive")}
           >
-            <span className="font-noto-symbols-2 text-red-600 text-[17px] leading-none font-bold select-none">
+            <span className="font-noto-symbols-2 inline-flex items-center justify-center text-red-600 text-[17px] leading-none font-bold select-none translate-y-0.5">
               ⛤
             </span>
           </span>
