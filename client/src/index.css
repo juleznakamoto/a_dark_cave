@@ -873,8 +873,7 @@ body {
   border: 2px solid rgba(132, 204, 22, 0.85);
   pointer-events: none;
   z-index: 0;
-  /* TESTING: 5s — restore to 20s for production */
-  animation: exclusive-promo-shockwave 5s cubic-bezier(0.33, 1, 0.68, 1) infinite;
+  animation: exclusive-promo-shockwave 30s cubic-bezier(0.33, 1, 0.68, 1) infinite;
 }
 
 @keyframes exclusive-promo-shockwave-hover-once {
