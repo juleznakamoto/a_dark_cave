@@ -1,10 +1,12 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import {
   PENDING_SIGNUP_WELCOME_KEY,
+  SIGNUP_WELCOME_CLAIM_MAX_ACCOUNT_AGE_MS,
   SIGNUP_WELCOME_NEW_ACCOUNT_MAX_MS,
   applySignupWelcomeBonusAfterOAuthLoad,
   claimSignupWelcomeGold,
   isAuthUserEligibleForSignupWelcomeClaim,
+  isAuthUserWithinSignupWelcomeClaimWindow,
   isAuthUserWithinSignupWelcomeWindow,
   isSignupWelcomeGoldClaimEligible,
   markPendingSignupWelcomeFromSignupFlow,
@@ -66,9 +68,17 @@ describe("signup welcome gold eligibility", () => {
     expect(isAuthUserWithinSignupWelcomeWindow(createdAt, NOW)).toBe(true);
   });
 
-  it("rejects accounts older than 15 minutes without pending signup", () => {
+  it("allows claim hours after signup without session pending", () => {
+    const createdAt = new Date(NOW - 8 * 60 * 60 * 1000).toISOString();
+    expect(
+      isAuthUserEligibleForSignupWelcomeClaim(createdAt, null, NOW),
+    ).toBe(true);
+    expect(isAuthUserWithinSignupWelcomeClaimWindow(createdAt, NOW)).toBe(true);
+  });
+
+  it("rejects accounts older than the claim window without pending signup", () => {
     const createdAt = new Date(
-      NOW - SIGNUP_WELCOME_NEW_ACCOUNT_MAX_MS - 1,
+      NOW - SIGNUP_WELCOME_CLAIM_MAX_ACCOUNT_AGE_MS - 1,
     ).toISOString();
     expect(
       isAuthUserEligibleForSignupWelcomeClaim(createdAt, null, NOW),
@@ -88,7 +98,9 @@ describe("signup welcome gold eligibility", () => {
   });
 
   it("rejects existing Google accounts that only set pending during signup flow", () => {
-    const createdAt = new Date(NOW - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const createdAt = new Date(
+      NOW - SIGNUP_WELCOME_CLAIM_MAX_ACCOUNT_AGE_MS - 1,
+    ).toISOString();
     expect(
       isAuthUserEligibleForSignupWelcomeClaim(createdAt, NOW - 1000, NOW),
     ).toBe(false);
@@ -118,7 +130,9 @@ describe("signup welcome gold eligibility", () => {
           data: {
             user: {
               id: "user-old",
-              created_at: new Date(NOW - 30 * 24 * 60 * 60 * 1000).toISOString(),
+              created_at: new Date(
+                NOW - SIGNUP_WELCOME_CLAIM_MAX_ACCOUNT_AGE_MS - 1,
+              ).toISOString(),
             },
           },
           error: null,
@@ -149,7 +163,9 @@ describe("signup welcome gold eligibility", () => {
           data: {
             user: {
               id: "user-old",
-              created_at: new Date(NOW - 30 * 24 * 60 * 60 * 1000).toISOString(),
+              created_at: new Date(
+                NOW - SIGNUP_WELCOME_CLAIM_MAX_ACCOUNT_AGE_MS - 1,
+              ).toISOString(),
             },
           },
           error: null,

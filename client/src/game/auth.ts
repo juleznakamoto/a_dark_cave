@@ -30,8 +30,11 @@ export const PENDING_REFERRAL_CODE_KEY = 'adc_pending_referral_code';
 /** Set when starting Google OAuth from Create Account — cleared after load (welcome gold is claimed in rewards dialog). */
 export const PENDING_SIGNUP_WELCOME_KEY = 'adc_pending_signup_welcome_gold';
 
-/** Milliseconds after `created_at` when a signup-flow claim is still allowed without a pending timestamp. */
+/** OAuth return: keep session pending only briefly (see `applySignupWelcomeBonusAfterOAuthLoad`). */
 export const SIGNUP_WELCOME_NEW_ACCOUNT_MAX_MS = 15 * 60 * 1000;
+
+/** Rewards-dialog claim window from auth `created_at` (does not rely on sessionStorage). */
+export const SIGNUP_WELCOME_CLAIM_MAX_ACCOUNT_AGE_MS = 30 * 24 * 60 * 60 * 1000;
 
 /** Pending signup timestamp must align with auth `created_at` (email confirm can finish later). */
 const SIGNUP_WELCOME_PENDING_MATCH_TOLERANCE_MS = 5 * 60 * 1000;
@@ -47,6 +50,16 @@ export function isAuthUserWithinSignupWelcomeWindow(
   const createdMs = new Date(createdAt).getTime();
   if (!Number.isFinite(createdMs)) return false;
   return nowMs - createdMs <= SIGNUP_WELCOME_NEW_ACCOUNT_MAX_MS;
+}
+
+export function isAuthUserWithinSignupWelcomeClaimWindow(
+  createdAt: string | undefined | null,
+  nowMs = Date.now(),
+): boolean {
+  if (!createdAt) return false;
+  const createdMs = new Date(createdAt).getTime();
+  if (!Number.isFinite(createdMs)) return false;
+  return nowMs - createdMs <= SIGNUP_WELCOME_CLAIM_MAX_ACCOUNT_AGE_MS;
 }
 
 function isSignupPendingAlignedWithAccountCreation(
@@ -67,7 +80,7 @@ export function isAuthUserEligibleForSignupWelcomeClaim(
   pendingStartedAtMs: number | null,
   nowMs = Date.now(),
 ): boolean {
-  if (isAuthUserWithinSignupWelcomeWindow(createdAt, nowMs)) return true;
+  if (isAuthUserWithinSignupWelcomeClaimWindow(createdAt, nowMs)) return true;
   if (pendingStartedAtMs === null || !createdAt) return false;
   return isSignupPendingAlignedWithAccountCreation(
     createdAt,
