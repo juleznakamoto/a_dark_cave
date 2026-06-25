@@ -7,7 +7,7 @@ import {
   GAME_FOOTER_RIGHT_ICON_ORDER,
 } from "@/lib/gameFooterSocialLinks";
 import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { isSteamBuild } from "@/lib/edition";
@@ -25,6 +25,13 @@ const FOOTER_SOCIAL_LABEL =
 const FOOTER_LEGAL_LINK =
   "text-2xs text-neutral-300 opacity-40 hover:opacity-100 transition-opacity";
 
+function pumpDonateHeart(heart: HTMLSpanElement | null): void {
+  if (!heart) return;
+  heart.classList.remove("donate-heart-pump-once");
+  void heart.offsetWidth;
+  heart.classList.add("donate-heart-pump-once");
+}
+
 export default function GameFooter() {
   const {
     setShopDialogOpen,
@@ -36,6 +43,7 @@ export default function GameFooter() {
     BTP,
   } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
+  const donateHeartRef = useRef<HTMLSpanElement>(null);
   const { t } = useTranslation("ui");
 
   // Trigger glow animation when pause state changes
@@ -125,12 +133,21 @@ export default function GameFooter() {
                     variant="ghost"
                     size="xs"
                     onClick={handleOfferTribute}
+                    onPointerEnter={(e) => {
+                      if (e.pointerType === "mouse" || e.pointerType === "pen") {
+                        pumpDonateHeart(donateHeartRef.current);
+                      }
+                    }}
                     aria-label={t("footer.supportGame")}
                     className={`${FOOTER_CONTROL_BTN} flex items-center gap-1 overflow-visible`}
                   >
                     <span
+                      ref={donateHeartRef}
                       aria-hidden
                       className={`donate-heart text-red-600 ${FOOTER_CONTROL_BTN_FADE}`}
+                      onAnimationEnd={(e) => {
+                        e.currentTarget.classList.remove("donate-heart-pump-once");
+                      }}
                     >
                       ❤︎⁠
                     </span>

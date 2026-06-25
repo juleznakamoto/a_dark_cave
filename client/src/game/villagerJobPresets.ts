@@ -176,11 +176,11 @@ export function isPresetSlotBuildingLocked(
   return (state.buildings?.[buildingKey] ?? 0) < 1;
 }
 
-/** A slot index (0-based) is usable once it has been bought (Insight or shop). */
+/** A slot index (0-based) is usable once its building exists and it has been bought. */
 export function isPresetSlotUnlocked(
   state: Pick<
     GameState,
-    "villagerPresetsPurchased" | "villagerPresetSlotsFromShop"
+    "buildings" | "villagerPresetsPurchased" | "villagerPresetSlotsFromShop"
   >,
   slotIndex: number,
 ): boolean {
@@ -189,6 +189,7 @@ export function isPresetSlotUnlocked(
     const shopOffset = getShopPresetSlotOffset(slotIndex);
     return shopOffset !== null && getShopPresetSlotCount(state) > shopOffset;
   }
+  if (isPresetSlotBuildingLocked(state, slotIndex)) return false;
   return slotIndex < getInsightPurchasedPresetCount(state);
 }
 
@@ -196,7 +197,7 @@ export function isPresetSlotUnlocked(
 export function getFirstUnlockedPresetSlotIndex(
   state: Pick<
     GameState,
-    "villagerPresetsPurchased" | "villagerPresetSlotsFromShop"
+    "buildings" | "villagerPresetsPurchased" | "villagerPresetSlotsFromShop"
   >,
 ): number | null {
   for (let i = 0; i < MAX_PRESET_SLOTS; i++) {
@@ -209,7 +210,7 @@ export function getFirstUnlockedPresetSlotIndex(
 export function hasAnyUnlockedPresetSlot(
   state: Pick<
     GameState,
-    "villagerPresetsPurchased" | "villagerPresetSlotsFromShop"
+    "buildings" | "villagerPresetsPurchased" | "villagerPresetSlotsFromShop"
   >,
 ): boolean {
   return getFirstUnlockedPresetSlotIndex(state) !== null;
@@ -236,16 +237,14 @@ export function isPresetSlotPurchaseLocked(
 /**
  * 0-based index of the next slot available to purchase, or null when none is
  * available (all purchased, or no further archive building built yet). Slots are
- * bought strictly one after another.
+ * bought strictly one after another — slot N requires its matching building first.
  */
 export function getNextPurchasablePresetSlotIndex(
   state: Pick<GameState, "buildings" | "villagerPresetsPurchased">,
 ): number | null {
   const purchased = getInsightPurchasedPresetCount(state);
-  const available = getBuildingPresetSlotCount(state);
-  if (purchased >= available || purchased >= MAX_BUILDING_PRESET_SLOTS) {
-    return null;
-  }
+  if (purchased >= MAX_BUILDING_PRESET_SLOTS) return null;
+  if (isPresetSlotBuildingLocked(state, purchased)) return null;
   return purchased;
 }
 

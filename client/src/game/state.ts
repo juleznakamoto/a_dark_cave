@@ -118,7 +118,6 @@ import {
   getNextPurchasablePresetSlotIndex,
   getPresetSlot,
   getFirstUnlockedPresetSlotIndex,
-  getPurchasedPresetCount,
   isPresetSlotUnlocked,
   snapshotAssignments,
 } from "@/game/villagerJobPresets";

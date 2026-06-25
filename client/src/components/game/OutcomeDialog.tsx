@@ -141,7 +141,7 @@ export default function OutcomeDialog({
             <div className="relative z-[1] flex w-full justify-center">
               <div
                 className={cn(
-                  "flex h-14 w-14 shrink-0 justify-center rounded-full border-2",
+                  "flex h-14 w-14 shrink-0 items-center justify-center overflow-visible rounded-full border-2",
                   iconRingAlignMadness,
                   iconRing,
                   !iconUsesColoredGlyph && "text-white",

@@ -20,6 +20,8 @@ function SocialPromoTasksOutcomeIcon() {
   useEffect(() => {
     const ring = ringRef.current;
     if (!ring) return;
+    ring.classList.remove("exclusive-promo-shockwave-ring--ping-once");
+    void ring.offsetWidth;
     ring.classList.add("exclusive-promo-shockwave-ring--ping-once");
   }, []);
 

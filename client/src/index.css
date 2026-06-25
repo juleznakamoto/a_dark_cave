@@ -917,12 +917,12 @@ body {
   transform-origin: center;
 }
 
-.group:hover .donate-heart {
+.donate-heart-pump-once {
   animation: donate-heart-pump 0.45s ease-in-out 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .group:hover .donate-heart {
+  .donate-heart-pump-once {
     animation: none;
   }
 }

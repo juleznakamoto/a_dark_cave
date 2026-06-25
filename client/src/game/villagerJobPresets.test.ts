@@ -100,6 +100,16 @@ describe("villagerJobPresets - Insight unlock", () => {
     expect(isPresetSlotUnlocked(state, 1)).toBe(false);
   });
 
+  it("does not unlock a building slot before its archive building exists", () => {
+    const state = makeState({
+      buildings: { scribesOffice: 1 } as any,
+      villagerPresetsPurchased: 2,
+    } as any);
+    expect(isPresetSlotUnlocked(state, 0)).toBe(true);
+    expect(isPresetSlotUnlocked(state, 1)).toBe(false);
+    expect(isPresetSlotUnlocked(state, 2)).toBe(false);
+  });
+
   it("unlocks shop-purchased slots independently of Insight-bought slots", () => {
     const state = makeState({
       buildings: {
