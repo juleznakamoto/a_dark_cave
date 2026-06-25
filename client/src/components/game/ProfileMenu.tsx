@@ -19,8 +19,9 @@ import { logger } from "@/lib/logger";
 import { formatSaveTimestamp } from "@/lib/utils";
 import { isSteamBuild } from "@/lib/edition";
 import {
+  handleExclusivePromoRingAnimationEnd,
+  pingExclusivePromoRing,
   triggerExclusivePromoHoverPulse,
-  triggerExclusivePromoPingOnce,
 } from "@/lib/exclusivePromoShockwave";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { DropdownMenuItemWithTooltip } from "@/components/game/DropdownMenuItemWithTooltip";
@@ -68,7 +69,7 @@ function rewardsTasksIconPingIndex(playTimeMs: number): number | null {
 }
 
 function pingRewardsTasksRing(ring: HTMLSpanElement | null): void {
-  triggerExclusivePromoPingOnce(ring);
+  pingExclusivePromoRing(ring);
 }
 
 const HEADER_ICON_BTN =
@@ -566,11 +567,10 @@ export function GameHeaderControls() {
               className="exclusive-promo-shockwave-ring"
               aria-hidden
               onAnimationEnd={(e) => {
-                if (e.animationName === "exclusive-promo-shockwave-hover-once") {
-                  e.currentTarget.classList.remove(
-                    "exclusive-promo-shockwave-ring--hover-once",
-                  );
-                }
+                handleExclusivePromoRingAnimationEnd(
+                  e.currentTarget,
+                  e.animationName,
+                );
               }}
             />
             <span

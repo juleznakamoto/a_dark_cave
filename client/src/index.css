@@ -839,7 +839,6 @@ body {
   animation: explore-fun-games-cue-pulse 1.4s ease-in-out infinite;
 }
 
-/* Exclusive promo rewards-task ring (ambient CSS loop + hover/ping one-shots) */
 @keyframes exclusive-promo-shockwave {
   0% {
     transform: translate(-50%, -50%) scale(1);
@@ -913,12 +912,16 @@ body {
   animation: exclusive-promo-shockwave-once 2.4s cubic-bezier(0.33, 1, 0.68, 1) 1 !important;
 }
 
-@media (prefers-reduced-motion: reduce) {
+/* Dialog / one-shot contexts: no ambient loop on the base ring */
+.exclusive-promo-shockwave-ring--no-ambient {
+  animation: none;
+  border-color: transparent;
+  opacity: 0;
+}
 
+@media (prefers-reduced-motion: reduce) {
   .exclusive-promo-shockwave-ring {
     animation: none;
-    border-color: transparent;
-    opacity: 0;
   }
 
   .exclusive-promo-shockwave-ring--hover-once,
