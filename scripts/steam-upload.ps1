@@ -39,7 +39,14 @@ if (-not (Test-Path $configPath)) {
 $config = Get-Content $configPath -Raw | ConvertFrom-Json
 $appId = [string]$config.appId
 $depotId = [string]$config.depotId
-$buildDesc = [string]$config.buildDesc
+$buildDescBase = [string]$config.buildDesc
+$buildDesc = "$buildDescBase $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+# Optional beta branch to auto-set live. Leave empty — Steam forbids SetLive "default" via steamcmd.
+$setLiveBranch = if ($config.PSObject.Properties.Name -contains "setLiveBranch") {
+  [string]$config.setLiveBranch
+} else {
+  ""
+}
 $sdkRoot = [string]$config.steamworksSdk
 
 if ($depotId -match "PASTE|YOUR") {
@@ -109,7 +116,7 @@ $appVdf = @"
   "Desc" "$buildDesc"
   "BuildOutput" "$outputRoot/"
   "ContentRoot" "$contentRoot/"
-  "SetLive" "default"
+  "SetLive" "$setLiveBranch"
   "Depots"
   {
     "$depotId" "$depotVdfName"
@@ -165,6 +172,11 @@ if ($exitCode -ne 0) {
 }
 
 Write-Host ""
-Write-Host "Upload finished. Check Steamworks > SteamPipe > Ihre Builds." -ForegroundColor Green
-Write-Host "Then publish: Steamworks > Veroeffentlichen (Publish tab)." -ForegroundColor Yellow
+Write-Host "Upload finished. Check Steamworks > SteamPipe > Builds." -ForegroundColor Green
+if ($setLiveBranch) {
+  Write-Host "Build auto-set live on branch: $setLiveBranch" -ForegroundColor Green
+} else {
+  Write-Host "Set the build live on branch 'default' in Steamworks > SteamPipe > Builds." -ForegroundColor Yellow
+}
+Write-Host "Then publish: Steamworks > Publish tab." -ForegroundColor Yellow
 exit 0
