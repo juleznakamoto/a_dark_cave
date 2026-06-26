@@ -86,7 +86,10 @@ export default function TextScaleSelector({
                 setTextScale(option);
                 if (inDialog) setOpen(false);
               }}
-              className={textScale === option ? "bg-accent" : undefined}
+              className={cn(
+                textScale === option && "font-semibold",
+                inDialog && "text-sm",
+              )}
             >
               {t(TEXT_SCALE_LABEL_KEYS[option])}
             </DropdownMenuItem>

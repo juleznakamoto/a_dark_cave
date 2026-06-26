@@ -214,6 +214,7 @@ export default function SettingsDialog({
                 inDialog
                 menuPortalContainer={menuPortalContainer}
                 menuAlign="end"
+                buttonClassName="group -mr-2 flex items-center gap-1 rounded-md px-2 py-1 text-sm hover:bg-muted/40 transition-colors"
               />
             </div>
             <div className={ROW}>
