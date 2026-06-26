@@ -87,7 +87,9 @@ export default defineConfig({
   server: {
     fs: {
       strict: true,
-      deny: ["**/.*"],
+      // Do not use `**/.*` — it blocks Vite's dep cache (`node_modules/.vite/deps/*`)
+      // and breaks lazy-loaded routes with 404s on pre-bundled chunks (Replit dev).
+      deny: [".env", ".env.*", "**/.git/**"],
     },
   },
 });
