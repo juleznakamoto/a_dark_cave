@@ -383,6 +383,7 @@ export function killVillagers(state: GameState, deathCount: number): Partial<Gam
 const UI_ONLY_PROPERTIES = [
   'activeTab',
   'devMode',
+  'devSteamMode',
   'lastSaved',
   'eventDialog',
   'combatDialog',

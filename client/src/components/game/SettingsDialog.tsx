@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useGameStore } from "@/game/state";
 import { audioManager } from "@/lib/audio";
 import { isSteamBuild } from "@/lib/edition";
+import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { Globe, Mail, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -134,6 +135,8 @@ export default function SettingsDialog({
     setSfxMuted,
     setMusicVolume,
     setSfxVolume,
+    devSteamMode,
+    setDevSteamMode,
   } = useGameStore();
 
   const toggleMusic = () => {
@@ -167,7 +170,9 @@ export default function SettingsDialog({
     }
   };
 
-  const showAccountSettings = !isSteamBuild && !!currentUser;
+  const steamEditionActive = useSteamEditionActive();
+  const showAccountSettings = !steamEditionActive && !!currentUser;
+  const showDevSteamModeToggle = import.meta.env.DEV && !isSteamBuild;
   const [menuPortalContainer, setMenuPortalContainer] =
     useState<HTMLElement | null>(null);
 
@@ -238,6 +243,28 @@ export default function SettingsDialog({
               />
             </div>
           </section>
+
+          {showDevSteamModeToggle && (
+            <>
+              <div className="h-px bg-border my-1" />
+              <div className={ROW}>
+                <span className="flex-1 text-sm">
+                  {t("settings.devSteamMode", {
+                    defaultValue: "Steam Mode (dev)",
+                  })}
+                </span>
+                <Checkbox
+                  checked={devSteamMode}
+                  onCheckedChange={(checked) =>
+                    setDevSteamMode(checked === true)
+                  }
+                  aria-label={t("settings.devSteamMode", {
+                    defaultValue: "Steam Mode (dev)",
+                  })}
+                />
+              </div>
+            </>
+          )}
 
           {showAccountSettings && (
             <>

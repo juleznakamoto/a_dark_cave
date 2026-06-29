@@ -10,7 +10,7 @@ import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { tWithFallback } from "@/i18n/resolveGameText";
-import { isSteamBuild } from "@/lib/edition";
+import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import {
   handleDonateHeartAnimationEnd,
   pumpDonateHeart,
@@ -45,6 +45,7 @@ export default function GameFooter() {
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const donateHeartRef = useRef<HTMLSpanElement>(null);
   const { t } = useTranslation("ui");
+  const steamEditionActive = useSteamEditionActive();
 
   const triggerDonateHeartPump = useCallback(() => {
     pumpDonateHeart(donateHeartRef.current);
@@ -66,7 +67,7 @@ export default function GameFooter() {
 
   return (
     <>
-      {!isSteamBuild && (
+      {!steamEditionActive && (
         <FullGamePurchaseDialog
           isOpen={fullGamePurchaseDialogOpen}
           onClose={() => setFullGamePurchaseDialogOpen(false)}
@@ -100,7 +101,7 @@ export default function GameFooter() {
               </Button>
             </HoverCalloutTooltip>
 
-            {BTP === 1 && !isSteamBuild ? (
+            {BTP === 1 && !steamEditionActive ? (
               <Button
                 variant="ghost"
                 size="xs"
@@ -111,7 +112,7 @@ export default function GameFooter() {
               </Button>
             ) : null}
             {/* Shop + donate are web-only (Stripe / external tip jar). */}
-            {!isSteamBuild && (
+            {!steamEditionActive && (
               <>
                 <HoverCalloutTooltip
                   label={t("footer.openShop")}
@@ -192,7 +193,7 @@ export default function GameFooter() {
                 </a>
               );
             })}
-            {!isSteamBuild && (
+            {!steamEditionActive && (
               <div className="flex flex-col items-end leading-tight sm:flex-row sm:items-center sm:gap-1">
                 <a href="/privacy" className={FOOTER_LEGAL_LINK}>
                   {t("footer.privacy")}

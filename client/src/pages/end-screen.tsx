@@ -6,10 +6,12 @@ import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
 import { useGameStore } from "@/game/state";
 import { useTranslation } from "react-i18next";
 import { isSteamBuild } from "@/lib/edition";
+import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { logger } from "@/lib/logger";
 
 export default function EndScreenPage() {
   const { t } = useTranslation("ui");
+  const steamEditionActive = useSteamEditionActive();
   const [isCruelModeRun, setIsCruelModeRun] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -34,7 +36,7 @@ export default function EndScreenPage() {
   };
 
   const handleCruelMode = async () => {
-    if (isSteamBuild) {
+    if (isSteamBuild || steamEditionActive) {
       try {
         const store = useGameStore.getState();
         useGameStore.setState({
@@ -127,7 +129,7 @@ export default function EndScreenPage() {
             onClick: handleMainMenu,
             buttonId: "end-screen-close",
           },
-          ...(isSteamBuild
+          ...(steamEditionActive
             ? {}
             : {
               secondaryTrailing: {

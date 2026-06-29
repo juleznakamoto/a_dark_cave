@@ -133,7 +133,7 @@ import {
 import { GAME_CONSTANTS, getCallMerchantGoldCost } from "@/game/constants";
 import { GREAT_FEAST_DURATION_MS } from "@shared/shopItems";
 import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
-import { isSteamBuild } from "@/lib/edition";
+import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 
 const VILLAGE_INDICATOR_TOOLTIP_IDS = [
   "production-cycle-progress",
@@ -175,6 +175,7 @@ const VILLAGER_COUNT_LABEL_CLASS =
 
 export default function VillagePanel() {
   const { t } = useUiTranslation();
+  const steamEditionActive = useSteamEditionActive();
   const {
     villagers,
     buildings,
@@ -1388,7 +1389,7 @@ export default function VillagePanel() {
                             {isAdditionalConstructionQueueSlotPurchaseAvailable(
                               state,
                             ) &&
-                              !isSteamBuild && (
+                              !steamEditionActive && (
                                 <TooltipWrapper
                                   tooltipId="queue-slots-purchase"
                                   tooltip={
@@ -2013,7 +2014,7 @@ export default function VillagePanel() {
                     // The "+" buys 2 extra preset slots; visible once the Scribe's
                     // Office exists and the slots have not been bought yet.
                     const showAddPresetSlotsPlus =
-                      !isSteamBuild &&
+                      !steamEditionActive &&
                       (state.buildings?.scribesOffice ?? 0) > 0 &&
                       !areAdditionalPresetSlotsPurchased(presetState);
                     return (

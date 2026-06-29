@@ -18,6 +18,7 @@ import { buildGameState } from "@/game/stateHelpers";
 import { logger } from "@/lib/logger";
 import { formatSaveTimestamp } from "@/lib/utils";
 import { isSteamBuild } from "@/lib/edition";
+import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { triggerExclusivePromoPingOnce } from "@/lib/exclusivePromoShockwave";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { DropdownMenuItemWithTooltip } from "@/components/game/DropdownMenuItemWithTooltip";
@@ -411,6 +412,7 @@ function useProfileMenuState() {
 }
 
 function ProfileMenuDialogs() {
+  const steamEditionActive = useSteamEditionActive();
   const {
     socialPromptDialogOpen,
     authDialogOpen,
@@ -434,10 +436,10 @@ function ProfileMenuDialogs() {
 
   // Web-only dialog: clear stale open state if something sets the flag on Steam.
   useEffect(() => {
-    if (isSteamBuild && deleteAccountDialogOpen) {
+    if (steamEditionActive && deleteAccountDialogOpen) {
       setDeleteAccountDialogOpen(false);
     }
-  }, [deleteAccountDialogOpen, setDeleteAccountDialogOpen]);
+  }, [deleteAccountDialogOpen, setDeleteAccountDialogOpen, steamEditionActive]);
 
   return (
     <>
@@ -458,7 +460,7 @@ function ProfileMenuDialogs() {
           setDeleteAccountDialogOpen(true);
         }}
       />
-      {!isSteamBuild && (
+      {!steamEditionActive && (
         <>
           <SocialPromptDialog isOpen={socialPromptDialogOpen} />
           <AuthDialog
@@ -473,7 +475,7 @@ function ProfileMenuDialogs() {
         onClose={() => setRestartGameDialogOpen(false)}
         onConfirm={handleConfirmRestart}
       />
-      {!isSteamBuild && (
+      {!steamEditionActive && (
         <DeleteAccountDialog
           isOpen={deleteAccountDialogOpen}
           onClose={() => {
@@ -488,6 +490,7 @@ function ProfileMenuDialogs() {
 }
 
 export function GameHeaderControls() {
+  const steamEditionActive = useSteamEditionActive();
   const setShareDialogOpen = useGameStore((s) => s.setShareDialogOpen);
   const playTime = useGameStore((s) => s.playTime);
   const rewardsTasksRingRef = useRef<HTMLSpanElement>(null);
@@ -542,7 +545,7 @@ export function GameHeaderControls() {
 
   return (
     <div className="flex items-center gap-0.5 shrink-0">
-      {showRewardsTasksShortcut && !isSteamBuild && (
+      {showRewardsTasksShortcut && !steamEditionActive && (
         <HoverCalloutTooltip
           label={t("profile.rewardsTasks")}
           side="bottom"
@@ -583,7 +586,7 @@ export function GameHeaderControls() {
         </HoverCalloutTooltip>
       )}
       {/* Playlight discovery + social share are web-only features. */}
-      {!isSteamBuild && (
+      {!steamEditionActive && (
         <>
           <PlaylightDiscoveryButton
             onClick={handleDiscovery}
@@ -661,7 +664,7 @@ export function GameHeaderControls() {
           <DropdownMenuItemWithTooltip
             tooltip={
               <div className="text-xs">
-                {isSteamBuild ? (
+                {steamEditionActive ? (
                   <>
                     <p>
                       {t("profile.autoSaveSteam", {
@@ -721,7 +724,7 @@ export function GameHeaderControls() {
               {t("profile.newGame")}
             </span>
           </DropdownMenuItem>
-          {(hasWonAnyGame || devMode) && !isSteamBuild && (
+          {(hasWonAnyGame || devMode) && !steamEditionActive && (
             <>
               <DropdownMenuSeparator />
               <DropdownMenuItem
@@ -743,8 +746,8 @@ export function GameHeaderControls() {
             </>
           )}
           {/* Account / auth are web-only (Supabase). */}
-          {!isSteamBuild && <DropdownMenuSeparator />}
-          {!isSteamBuild &&
+          {!steamEditionActive && <DropdownMenuSeparator />}
+          {!steamEditionActive &&
             (currentUser ? (
               <DropdownMenuItem onClick={handleSignOut}>
                 <span className="flex items-center gap-1.5">

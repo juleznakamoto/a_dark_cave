@@ -12,7 +12,7 @@ import {
   isSocialPromoExclusiveRewardComplete,
   socialPromoExclusiveStepsCompleted,
 } from "@/game/socialPromoExclusiveReward";
-import { isSteamBuild } from "@/lib/edition";
+import { isSteamEditionActive } from "@/lib/edition";
 
 /**
  * Play-time auto prompts from the game loop. Non-blocking updates (auth dot) may
@@ -21,7 +21,7 @@ import { isSteamBuild } from "@/lib/edition";
  */
 export function processPlayTimeAutoPrompts(): void {
   // Social rewards, feedback, and guest auth prompts are web-only.
-  if (isSteamBuild) return;
+  if (isSteamEditionActive()) return;
 
   let state = useGameStore.getState();
   const playTimeMs = state.playTime || 0;

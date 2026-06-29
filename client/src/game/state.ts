@@ -1,7 +1,7 @@
 // Removed duplicate keys and ensured gameId is correctly handled.
 import { create } from "zustand";
 import { GameState, gameStateSchema, Referral } from "@shared/schema";
-import { isSteamBuild } from "@/lib/edition";
+import { isSteamBuild, isSteamEditionActive, setDevSteamModeOverride } from "@/lib/edition";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
 import {
   EventManager,
@@ -189,6 +189,8 @@ interface GameStore extends GameState {
   | "achievements"
   | "timedevent";
   devMode: boolean;
+  /** Dev-only: simulate Steam edition UI without a Steam build. */
+  devSteamMode: boolean;
   lastSaved: string;
   eventDialog: {
     isOpen: boolean;
@@ -486,6 +488,7 @@ interface GameStore extends GameState {
   setIdleModeDialog: (isOpen: boolean) => void;
   setRestartGameDialogOpen: (isOpen: boolean) => void;
   setSettingsDialogOpen: (isOpen: boolean) => void;
+  setDevSteamMode: (enabled: boolean) => void;
   setDeleteAccountDialogOpen: (isOpen: boolean) => void;
   updateEffects: () => void;
   updateBastionStats: () => void;
@@ -1548,6 +1551,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   ...defaultGameState,
   activeTab: "cave",
   devMode: import.meta.env.DEV,
+  devSteamMode: false,
   lastSaved: "Never",
   cooldowns: {},
   executionStartTimes: {},
@@ -2568,6 +2572,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // UI state
       activeTab: "cave",
       devMode: import.meta.env.DEV,
+      devSteamMode: false,
       idleModeDialog: { isOpen: false }, // Explicitly ensure idle mode dialog is closed
       ...getTimedEventTabCleanupPatch(get().activeTab),
       investDialogOpen: false,
@@ -2803,6 +2808,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         log: savedState.log || [],
         events: savedState.events || defaultGameState.events,
         devMode: import.meta.env.DEV,
+        devSteamMode: false,
         boostApplied: savedState.boostApplied === true,
         effects: calculateTotalEffects(savedState),
         bastion_stats: calculateBastionStats(savedState),
@@ -2965,6 +2971,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         expeditionVillagers: {},
         log: [],
         devMode: import.meta.env.DEV,
+        devSteamMode: false,
         effects: calculateTotalEffects(defaultGameState),
         bastion_stats: calculateBastionStats(defaultGameState),
         startTime: Date.now(), // Set start time for new game
@@ -4106,7 +4113,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   grantAdditionalPresetSlots: () => {
-    if (isSteamBuild) return;
+    if (isSteamEditionActive()) return;
     set((state) => {
       if (
         (state.villagerPresetSlotsFromShop ?? 0) >= SHOP_ADDITIONAL_PRESET_SLOTS
@@ -4132,7 +4139,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   grantAdditionalConstructionQueueSlot: () => {
-    if (isSteamBuild) return;
+    if (isSteamEditionActive()) return;
     set((state) => {
       if (
         (state.constructionQueueSlotsFromShop ?? 0) >= SHOP_ADDITIONAL_QUEUE_SLOTS
@@ -4163,6 +4170,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setSettingsDialogOpen: (isOpen: boolean) => {
     set({ settingsDialogOpen: isOpen });
+  },
+
+  setDevSteamMode: (enabled: boolean) => {
+    if (!import.meta.env.DEV || isSteamBuild) return;
+    setDevSteamModeOverride(enabled);
+    if (enabled) {
+      set({
+        devSteamMode: true,
+        shopDialogOpen: false,
+        shopCheckoutItemId: null,
+        authDialogOpen: false,
+        shareDialogOpen: false,
+        leaderboardDialogOpen: false,
+        fullGamePurchaseDialogOpen: false,
+        deleteAccountDialogOpen: false,
+        socialPromptDialogOpen: false,
+      });
+    } else {
+      set({ devSteamMode: false });
+    }
   },
 
   updateEffects: () => {

@@ -59,7 +59,7 @@ import {
   type TabUnlockBlinkId,
 } from "@/game/tabUnlockBlink";
 import { TraderTabButton } from "@/components/game/TraderTabButton";
-import { isSteamBuild } from "@/lib/edition";
+import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import i18n from "@/i18n";
 import { useTranslation } from "react-i18next";
 import { useIOSChromeViewportShell } from "@/hooks/useIOSChromeViewportShell";
@@ -73,6 +73,7 @@ const WebOnlyDialogs = steamBuild
 
 export default function GameContainer() {
   const { t } = useTranslation();
+  const steamEditionActive = useSteamEditionActive();
   const {
     activeTab,
     flags,
@@ -1213,7 +1214,7 @@ export default function GameContainer() {
                     </div>
                   </div>
 
-                  {traderUnlocked && !isSteamBuild && (
+                  {traderUnlocked && !steamEditionActive && (
                     <div className="pointer-events-auto absolute inset-y-0 right-2 flex items-center">
                       <TraderTabButton
                         tabButtonClass={tabButtonClass}
@@ -1276,7 +1277,7 @@ export default function GameContainer() {
         {/* Idle Mode Dialog */}
         <IdleModeDialog />
         <CubeDialog />
-        {WebOnlyDialogs && (
+        {WebOnlyDialogs && !steamEditionActive && (
           <Suspense fallback={null}>
             <WebOnlyDialogs
               shopDialogOpen={shopDialogOpen}

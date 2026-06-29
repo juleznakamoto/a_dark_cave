@@ -19,6 +19,7 @@ import { syncSocialPromoExclusiveRewardPending } from "@/game/socialPromoExclusi
 import { processStripePaymentReturn } from "@/lib/stripePaymentReturn";
 import { isPlaylightReferralUrl } from "@/lib/playlight";
 import { isSteamBuild } from "@/lib/edition";
+import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
 import type { TimedEventTabState } from "@/game/types";
 import {
@@ -31,6 +32,7 @@ export default function Game() {
   const { setShopDialogOpen, setIsUserSignedIn } = useGameStore();
   const [isInitialized, setIsInitialized] = useState(false);
   const [emailConfirmedDialogOpen, setEmailConfirmedDialogOpen] = useState(false);
+  const steamEditionActive = useSteamEditionActive();
   useEffect(() => {
     logger.log("[GAME PAGE] Initializing game");
     // Session tracking is anonymous online analytics — web only.
@@ -437,7 +439,7 @@ export default function Game() {
     <div>
       <GameContainer />
 
-      {!isSteamBuild && (
+      {!steamEditionActive && (
         <>
           <EmailConfirmedDialog
             isOpen={emailConfirmedDialogOpen}

@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
-import { isSteamBuild } from "@/lib/edition";
+import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { FullscreenButton } from "@/components/game/FullscreenButton";
 
 const START_FOOTER_LINK_BASE =
@@ -49,6 +49,7 @@ export default function StartScreen() {
   const [showParticles, setShowParticles] = useState(false);
   const { t } = useTranslation("ui");
   const { locale } = useLocale();
+  const steamEditionActive = useSteamEditionActive();
 
   useEffect(() => {
     audioManager.setMusicVolume(musicVolume ?? 1);
@@ -180,7 +181,7 @@ export default function StartScreen() {
         ))}
         <link rel="canonical" href="https://a-dark-cave.com/" />
       </Helmet>
-      {!isSteamBuild && (
+      {!steamEditionActive && (
         <div className="absolute bottom-12 right-4 z-20 animate-fade-in-featured">
           <div className="bg-white/25 backdrop-blur-sm rounded-lg px-2 pt-2 pb-2.5 border border-white/25 flex flex-col items-end">
             <p className="text-xs text-gray-300/80 font-medium">{t("startScreen.recommendedBy")}</p>
@@ -250,7 +251,7 @@ export default function StartScreen() {
 
       <CloudShader />
 
-      {isSteamBuild && (
+      {steamEditionActive && (
         <div className="absolute top-2 right-2 z-20">
           <FullscreenButton />
         </div>
@@ -383,7 +384,7 @@ export default function StartScreen() {
               </a>
             );
           })}
-          {!isSteamBuild && (
+          {!steamEditionActive && (
             <div className="flex flex-col items-end leading-tight sm:flex-row sm:items-center sm:gap-x-3">
               <a href="/privacy" className={START_FOOTER_LEGAL_LINK}>
                 {t("footer.privacy")}

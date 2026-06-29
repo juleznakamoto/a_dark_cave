@@ -11,3 +11,22 @@ export const isSteamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
 
 /** Convenience inverse for readability at web-only call sites. */
 export const isWebBuild = !isSteamBuild;
+
+/** Dev-only override synced from `devSteamMode` in the game store. */
+let devSteamModeOverride = false;
+
+/** Called by the store when the dev settings toggle changes. No-op in production. */
+export function setDevSteamModeOverride(enabled: boolean): void {
+  if (import.meta.env.DEV) {
+    devSteamModeOverride = enabled;
+  }
+}
+
+/**
+ * Runtime Steam edition check — compile-time Steam build or dev Steam Mode UI
+ * toggle. Use for UI and shop-slot behavior; keep `isSteamBuild` for build-time
+ * stubs, save backends, and Steam API bridges.
+ */
+export function isSteamEditionActive(): boolean {
+  return isSteamBuild || (import.meta.env.DEV && devSteamModeOverride);
+}
