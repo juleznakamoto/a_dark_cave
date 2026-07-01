@@ -1787,7 +1787,7 @@ export default function VillagePanel() {
                               strokeWidth={2}
                               className="text-amber-600"
                             />
-                            <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[7px] -mt-[0px] text-amber-600">
+                            <span className="font-noto-symbols-2 absolute inset-0 flex items-center justify-center font-extrabold text-[7px] mt-[2px] text-amber-600">
                               ⛰
                             </span>
                           </div>
