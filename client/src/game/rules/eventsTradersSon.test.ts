@@ -1,7 +1,17 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { EventManager } from "./events";
 import { GameState } from "@shared/schema";
 import { tradersSonEvents } from "./eventsTradersSon";
+
+vi.mock("@/lib/edition", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/edition")>();
+  return {
+    ...actual,
+    isSteamEditionActive: vi.fn(actual.isSteamEditionActive),
+  };
+});
+
+import { isSteamEditionActive } from "@/lib/edition";
 
 function createMinimalState(overrides: Partial<GameState> = {}): GameState {
   return {
@@ -31,6 +41,19 @@ function createMinimalState(overrides: Partial<GameState> = {}): GameState {
 }
 
 describe("Trader's Son intro (traders_son)", () => {
+  it("is blocked on Steam edition", () => {
+    vi.mocked(isSteamEditionActive).mockReturnValue(true);
+
+    const state = createMinimalState({
+      flags: { forestUnlocked: true },
+      traderDialogOpens: 10,
+    });
+    expect(tradersSonEvents.traders_son.condition!(state)).toBe(false);
+    expect(tradersSonEvents.traders_son_gratitude.condition!(state)).toBe(false);
+
+    vi.mocked(isSteamEditionActive).mockReturnValue(false);
+  });
+
   it("is eligible when forest is unlocked, dialog gates are met, and the trader's daughter search party was not sent", () => {
     const state = createMinimalState({
       flags: { forestUnlocked: true },

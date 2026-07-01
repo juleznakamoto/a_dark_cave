@@ -1,6 +1,17 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { EventManager } from "./events";
 import { GameState } from "@shared/schema";
+import { tradersDaughterEvents } from "./eventsTradersDaughter";
+
+vi.mock("@/lib/edition", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/edition")>();
+  return {
+    ...actual,
+    isSteamEditionActive: vi.fn(actual.isSteamEditionActive),
+  };
+});
+
+import { isSteamEditionActive } from "@/lib/edition";
 
 function createMinimalState(overrides: Partial<GameState> = {}): GameState {
   return {
@@ -29,6 +40,30 @@ function createMinimalState(overrides: Partial<GameState> = {}): GameState {
 }
 
 describe("Traders Gratitude Event", () => {
+  describe("Steam edition", () => {
+    it("does not trigger traders_daughter or traders_gratitude on Steam", () => {
+      vi.mocked(isSteamEditionActive).mockReturnValue(true);
+
+      const daughterState = createMinimalState({
+        story: { seen: { traderSettled: true } },
+        resources: { food: 600 },
+        buildings: { tradePost: 1 },
+      });
+      expect(tradersDaughterEvents.traders_daughter.condition!(daughterState)).toBe(
+        false,
+      );
+
+      const gratitudeState = createMinimalState({
+        triggeredEvents: { traders_daughter_helped: true },
+      });
+      expect(tradersDaughterEvents.traders_gratitude.condition!(gratitudeState)).toBe(
+        false,
+      );
+
+      vi.mocked(isSteamEditionActive).mockReturnValue(false);
+    });
+  });
+
   describe("accept_traders_gratitude", () => {
     it("should set tradersGratitudeState.accepted to true", () => {
       const state = createMinimalState();

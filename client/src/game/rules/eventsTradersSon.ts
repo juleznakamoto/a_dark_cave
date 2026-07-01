@@ -1,10 +1,12 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
+import { isSteamEditionActive } from "@/lib/edition";
 
 export const tradersSonEvents: Record<string, GameEvent> = {
   traders_son: {
     id: "traders_son",
     condition: (state: GameState) =>
+      !isSteamEditionActive() &&
       ((state.traderDialogOpens ?? 0) >= 10 ||
         (state.completePurchaseDialogOpens ?? 0) >= 1 ||
         state.hasMadeNonFreePurchase === true) &&
@@ -55,6 +57,7 @@ export const tradersSonEvents: Record<string, GameEvent> = {
   traders_son_gratitude: {
     id: "traders_son_gratitude",
     condition: (state: GameState) =>
+      !isSteamEditionActive() &&
       state.story?.seen?.tradersSonLairComplete === true &&
       state.triggeredEvents?.traders_son_gratitude_used !== true,
     timeProbability: 0.5,
