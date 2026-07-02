@@ -234,7 +234,7 @@ function ShareCard({
         backgroundColor: CARD_BG,
       }}
     >
-      <div className="relative flex h-full flex-col p-16">
+      <div className="flex h-full flex-col p-16">
         <div className="mb-12">
           <div
             className="font-bold leading-none tracking-tight text-neutral-100"
@@ -298,29 +298,29 @@ function ShareCard({
             </div>
           </div>
         </div>
+      </div>
 
-        <div
-          className="absolute bottom-0 left-0 font-medium leading-none text-gray-400"
-          style={{ fontSize: 32 }}
-        >
-          Play for free at {SHARE_URL_IMAGE}
+      <div
+        className="absolute bottom-16 left-16 font-medium leading-none text-gray-400"
+        style={{ fontSize: 32 }}
+      >
+        Play for free at {SHARE_URL_IMAGE}
+      </div>
+      <div
+        className="absolute bottom-16 right-16 flex flex-col gap-2 text-right leading-none"
+        style={{ fontSize: 28 }}
+      >
+        <div>
+          <span className="text-gray-400">{cruelModeLabel}</span>{" "}
+          <span className="text-gray-300">
+            {cruelModeValueLabel}
+          </span>
         </div>
-        <div
-          className="absolute bottom-0 right-0 flex flex-col gap-2 text-right leading-none"
-          style={{ fontSize: 28 }}
-        >
-          <div>
-            <span className="text-gray-400">{cruelModeLabel}</span>{" "}
-            <span className="font-mono tabular-nums text-gray-300">
-              {cruelModeValueLabel}
-            </span>
-          </div>
-          <div>
-            <span className="text-gray-400">{playTimeLabel}</span>{" "}
-            <span className="font-mono tabular-nums text-gray-300">
-              {formatSharePlayTime(playTimeMs)}
-            </span>
-          </div>
+        <div>
+          <span className="text-gray-400">{playTimeLabel}</span>{" "}
+          <span className="text-gray-300">
+            {formatSharePlayTime(playTimeMs)}
+          </span>
         </div>
       </div>
     </div>
