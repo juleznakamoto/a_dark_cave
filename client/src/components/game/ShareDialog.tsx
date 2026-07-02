@@ -202,6 +202,8 @@ function ShareCard({
   percent,
   resourcesLabel,
   achievementsLabel,
+  cruelModeLabel,
+  cruelModeValueLabel,
   playTimeLabel,
   playTimeMs,
 }: {
@@ -211,6 +213,8 @@ function ShareCard({
   percent: number;
   resourcesLabel: string;
   achievementsLabel: string;
+  cruelModeLabel: string;
+  cruelModeValueLabel: string;
   playTimeLabel: string;
   playTimeMs: number;
 }) {
@@ -302,13 +306,21 @@ function ShareCard({
           Play for free at {SHARE_URL_IMAGE}
         </div>
         <div
-          className="absolute bottom-16 right-16 text-right leading-none"
+          className="absolute bottom-16 right-16 flex flex-col items-end gap-1 text-right leading-none"
           style={{ fontSize: 28 }}
         >
-          <span className="text-gray-400">{playTimeLabel}</span>{" "}
-          <span className="font-mono tabular-nums text-gray-300">
-            {formatSharePlayTime(playTimeMs)}
-          </span>
+          <div>
+            <span className="text-gray-400">{cruelModeLabel}</span>{" "}
+            <span className="font-mono tabular-nums text-gray-300">
+              {cruelModeValueLabel}
+            </span>
+          </div>
+          <div>
+            <span className="text-gray-400">{playTimeLabel}</span>{" "}
+            <span className="font-mono tabular-nums text-gray-300">
+              {formatSharePlayTime(playTimeMs)}
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -323,6 +335,7 @@ export default function ShareDialog() {
   const resources = useGameStore((s) => s.resources) as Record<string, number>;
   const seenResources = useGameStore((s) => s.seenResources);
   const playTimeMs = useGameStore((s) => s.playTime);
+  const cruelMode = useGameStore((s) => s.cruelMode);
   const referralCount = useGameStore((s) => s.referralCount ?? 0);
 
   const cardRef = useRef<HTMLDivElement>(null);
@@ -505,6 +518,14 @@ export default function ShareDialog() {
                   percent,
                   defaultValue: "Achievements: {{percent}} %",
                 })}
+                cruelModeLabel={t("share.cruelMode", {
+                  defaultValue: "Cruel Mode",
+                })}
+                cruelModeValueLabel={
+                  cruelMode
+                    ? t("share.on", { defaultValue: "On" })
+                    : t("share.off", { defaultValue: "Off" })
+                }
                 playTimeLabel={t("share.playTime", {
                   defaultValue: "Play time",
                 })}
