@@ -306,7 +306,7 @@ function ShareCard({
           Play for free at {SHARE_URL_IMAGE}
         </div>
         <div
-          className="absolute bottom-16 right-16 flex flex-col items-end gap-1 text-right leading-none"
+          className="absolute bottom-16 right-16 flex flex-col gap-2 text-left leading-none"
           style={{ fontSize: 28 }}
         >
           <div>
@@ -356,8 +356,10 @@ export default function ShareDialog() {
     if (!open) return;
     const el = previewWrapRef.current;
     if (!el) return;
-    const update = () =>
-      setPreviewScale(el.clientWidth / SHARE_IMAGE_WIDTH || 0.3);
+    const update = () => {
+      const width = el.getBoundingClientRect().width;
+      setPreviewScale(width / SHARE_IMAGE_WIDTH || 0.3);
+    };
     update();
     const observer = new ResizeObserver(update);
     observer.observe(el);
@@ -491,46 +493,54 @@ export default function ShareDialog() {
         </DialogHeader>
 
         <div className="flex min-h-0 flex-1 justify-center overflow-auto py-2">
-          {/* Outer width drives the preview scale; height reserves the scaled card. */}
+          {/* Outer width drives the preview scale; inner clip box matches scaled size exactly. */}
           <div
             ref={previewWrapRef}
-            className="w-full max-w-[360px] overflow-hidden rounded-md border border-border"
-            style={{ height: SHARE_IMAGE_HEIGHT * previewScale }}
+            className="w-full max-w-[360px] rounded-md border border-border"
+            style={{ backgroundColor: CARD_BG }}
           >
             <div
+              className="overflow-hidden"
               style={{
-                transform: `scale(${previewScale})`,
-                transformOrigin: "top left",
-                width: SHARE_IMAGE_WIDTH,
-                height: SHARE_IMAGE_HEIGHT,
+                width: "100%",
+                height: SHARE_IMAGE_HEIGHT * previewScale,
               }}
             >
-              <ShareCard
-                cardRef={cardRef}
-                resources={resources}
-                seenResources={seenResources}
-                percent={percent}
-                resourcesLabel={t("share.resources", {
-                  percent: resourcePercent,
-                  defaultValue: "Resources: {{percent}} %",
-                })}
-                achievementsLabel={t("share.achievements", {
-                  percent,
-                  defaultValue: "Achievements: {{percent}} %",
-                })}
-                cruelModeLabel={t("share.cruelMode", {
-                  defaultValue: "Cruel Mode",
-                })}
-                cruelModeValueLabel={
-                  cruelMode
-                    ? t("share.on", { defaultValue: "On" })
-                    : t("share.off", { defaultValue: "Off" })
-                }
-                playTimeLabel={t("share.playTime", {
-                  defaultValue: "Play time",
-                })}
-                playTimeMs={playTimeMs}
-              />
+              <div
+                style={{
+                  transform: `scale(${previewScale})`,
+                  transformOrigin: "top left",
+                  width: SHARE_IMAGE_WIDTH,
+                  height: SHARE_IMAGE_HEIGHT,
+                }}
+              >
+                <ShareCard
+                  cardRef={cardRef}
+                  resources={resources}
+                  seenResources={seenResources}
+                  percent={percent}
+                  resourcesLabel={t("share.resources", {
+                    percent: resourcePercent,
+                    defaultValue: "Resources: {{percent}} %",
+                  })}
+                  achievementsLabel={t("share.achievements", {
+                    percent,
+                    defaultValue: "Achievements: {{percent}} %",
+                  })}
+                  cruelModeLabel={t("share.cruelMode", {
+                    defaultValue: "Cruel Mode",
+                  })}
+                  cruelModeValueLabel={
+                    cruelMode
+                      ? t("share.on", { defaultValue: "On" })
+                      : t("share.off", { defaultValue: "Off" })
+                  }
+                  playTimeLabel={t("share.playTime", {
+                    defaultValue: "Play time",
+                  })}
+                  playTimeMs={playTimeMs}
+                />
+              </div>
             </div>
           </div>
         </div>
