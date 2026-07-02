@@ -302,13 +302,13 @@ function ShareCard({
 
       <div
         className="absolute bottom-16 left-16 font-medium leading-none text-gray-400"
-        style={{ fontSize: 32 }}
+        style={{ fontSize: 36 }}
       >
         Play for free at {SHARE_URL_IMAGE}
       </div>
       <div
         className="absolute bottom-16 right-16 flex flex-col gap-3 text-right leading-none"
-        style={{ fontSize: 28 }}
+        style={{ fontSize: 32 }}
       >
         <div>
           <span className="text-gray-400">{cruelModeLabel}</span>{" "}
