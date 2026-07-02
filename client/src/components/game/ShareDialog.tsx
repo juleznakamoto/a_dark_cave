@@ -234,7 +234,7 @@ function ShareCard({
         backgroundColor: CARD_BG,
       }}
     >
-      <div className="flex h-full flex-col p-16">
+      <div className="relative flex h-full flex-col p-16">
         <div className="mb-12">
           <div
             className="font-bold leading-none tracking-tight text-neutral-100"
@@ -244,8 +244,8 @@ function ShareCard({
           </div>
         </div>
 
-        <div className="flex min-h-0 flex-1 gap-10">
-          <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex min-h-0 flex-1 justify-between gap-10">
+          <div className="flex min-w-0 flex-col">
             <div
               className={SECTION_HEADING_CLASS}
               style={{ fontSize: SECTION_HEADING_FONT_SIZE }}
@@ -274,9 +274,9 @@ function ShareCard({
             </div>
           </div>
 
-          <div className="flex min-w-0 flex-1 flex-col items-end">
+          <div className="flex shrink-0 flex-col items-end">
             <div
-              className={cn(SECTION_HEADING_CLASS, "w-full text-right")}
+              className={cn(SECTION_HEADING_CLASS, "text-right")}
               style={{ fontSize: SECTION_HEADING_FONT_SIZE }}
             >
               {achievementsLabel}
@@ -300,13 +300,13 @@ function ShareCard({
         </div>
 
         <div
-          className="absolute bottom-16 left-16 font-medium leading-none text-gray-400"
+          className="absolute bottom-0 left-0 font-medium leading-none text-gray-400"
           style={{ fontSize: 32 }}
         >
           Play for free at {SHARE_URL_IMAGE}
         </div>
         <div
-          className="absolute bottom-16 right-16 flex flex-col gap-2 text-right leading-none"
+          className="absolute bottom-0 right-0 flex flex-col gap-2 text-right leading-none"
           style={{ fontSize: 28 }}
         >
           <div>
@@ -493,54 +493,51 @@ export default function ShareDialog() {
         </DialogHeader>
 
         <div className="flex min-h-0 flex-1 justify-center overflow-auto py-2">
-          {/* Outer width drives the preview scale; inner clip box matches scaled size exactly. */}
           <div
             ref={previewWrapRef}
-            className="w-full max-w-[360px] rounded-md border border-border"
-            style={{ backgroundColor: CARD_BG }}
+            className="relative w-full max-w-[360px] overflow-hidden rounded-md border border-border"
+            style={{
+              aspectRatio: `${SHARE_IMAGE_WIDTH} / ${SHARE_IMAGE_HEIGHT}`,
+              backgroundColor: CARD_BG,
+            }}
           >
             <div
-              className="overflow-hidden"
               style={{
-                width: "100%",
-                height: SHARE_IMAGE_HEIGHT * previewScale,
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: SHARE_IMAGE_WIDTH,
+                height: SHARE_IMAGE_HEIGHT,
+                transform: `scale(${previewScale})`,
+                transformOrigin: "top left",
               }}
             >
-              <div
-                style={{
-                  transform: `scale(${previewScale})`,
-                  transformOrigin: "top left",
-                  width: SHARE_IMAGE_WIDTH,
-                  height: SHARE_IMAGE_HEIGHT,
-                }}
-              >
-                <ShareCard
-                  cardRef={cardRef}
-                  resources={resources}
-                  seenResources={seenResources}
-                  percent={percent}
-                  resourcesLabel={t("share.resources", {
-                    percent: resourcePercent,
-                    defaultValue: "Resources: {{percent}} %",
-                  })}
-                  achievementsLabel={t("share.achievements", {
-                    percent,
-                    defaultValue: "Achievements: {{percent}} %",
-                  })}
-                  cruelModeLabel={t("share.cruelMode", {
-                    defaultValue: "Cruel Mode",
-                  })}
-                  cruelModeValueLabel={
-                    cruelMode
-                      ? t("share.on", { defaultValue: "On" })
-                      : t("share.off", { defaultValue: "Off" })
-                  }
-                  playTimeLabel={t("share.playTime", {
-                    defaultValue: "Play time",
-                  })}
-                  playTimeMs={playTimeMs}
-                />
-              </div>
+              <ShareCard
+                cardRef={cardRef}
+                resources={resources}
+                seenResources={seenResources}
+                percent={percent}
+                resourcesLabel={t("share.resources", {
+                  percent: resourcePercent,
+                  defaultValue: "Resources: {{percent}} %",
+                })}
+                achievementsLabel={t("share.achievements", {
+                  percent,
+                  defaultValue: "Achievements: {{percent}} %",
+                })}
+                cruelModeLabel={t("share.cruelMode", {
+                  defaultValue: "Cruel Mode",
+                })}
+                cruelModeValueLabel={
+                  cruelMode
+                    ? t("share.on", { defaultValue: "On" })
+                    : t("share.off", { defaultValue: "Off" })
+                }
+                playTimeLabel={t("share.playTime", {
+                  defaultValue: "Play time",
+                })}
+                playTimeMs={playTimeMs}
+              />
             </div>
           </div>
         </div>
