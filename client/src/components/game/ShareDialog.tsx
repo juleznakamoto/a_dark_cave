@@ -274,9 +274,9 @@ function ShareCard({
             </div>
           </div>
 
-          <div className="flex min-w-0 flex-1 flex-col items-center">
+          <div className="flex min-w-0 flex-1 flex-col items-end">
             <div
-              className={SECTION_HEADING_CLASS}
+              className={cn(SECTION_HEADING_CLASS, "w-full text-right")}
               style={{ fontSize: SECTION_HEADING_FONT_SIZE }}
             >
               {achievementsLabel}
@@ -306,7 +306,7 @@ function ShareCard({
           Play for free at {SHARE_URL_IMAGE}
         </div>
         <div
-          className="absolute bottom-16 right-16 flex flex-col gap-2 text-left leading-none"
+          className="absolute bottom-16 right-16 flex flex-col gap-2 text-right leading-none"
           style={{ fontSize: 28 }}
         >
           <div>
