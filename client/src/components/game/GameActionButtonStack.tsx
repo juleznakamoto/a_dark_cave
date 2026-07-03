@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
 import { Z_INDEX } from "@/lib/z-index";
 import { GAME_ACTION_BUTTON_STACK_CLASS } from "@/components/CooldownButton";
@@ -9,8 +10,8 @@ import { GAME_ACTION_BUTTON_STACK_CLASS } from "@/components/CooldownButton";
 type Size = { width: number; height: number };
 
 /**
- * Keeps action buttons in a fixed viewport layer above click particles (body z-35)
- * while preserving flex/grid layout via an in-flow size placeholder.
+ * Keeps action buttons in a body-portaled fixed layer (z-40) above click particles
+ * (body z-35) while preserving flex/grid layout via an in-flow size placeholder.
  */
 export function GameActionButtonStack({
   children,
@@ -47,6 +48,22 @@ export function GameActionButtonStack({
     };
   }, [sync, children]);
 
+  const fixedLayer =
+    fixedBox != null ? (
+      <div
+        className={cn("fixed pointer-events-none", className)}
+        style={{
+          zIndex: Z_INDEX.actionButtons,
+          left: fixedBox.left,
+          top: fixedBox.top,
+          width: size?.width,
+          height: size?.height,
+        }}
+      >
+        <div className="pointer-events-auto inline-block">{children}</div>
+      </div>
+    ) : null;
+
   return (
     <>
       <div
@@ -57,19 +74,9 @@ export function GameActionButtonStack({
       >
         {children}
       </div>
-      <div
-        className={cn("fixed pointer-events-none", className)}
-        style={{
-          zIndex: Z_INDEX.actionButtons,
-          left: fixedBox?.left ?? 0,
-          top: fixedBox?.top ?? 0,
-          width: size?.width,
-          height: size?.height,
-          visibility: fixedBox ? "visible" : "hidden",
-        }}
-      >
-        <div className="pointer-events-auto inline-block">{children}</div>
-      </div>
+      {typeof document !== "undefined" && fixedLayer != null
+        ? createPortal(fixedLayer, document.body)
+        : null}
     </>
   );
 }
