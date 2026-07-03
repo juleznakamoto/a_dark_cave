@@ -308,13 +308,11 @@ function ShareCard({
       </div>
       <div
         className="absolute bottom-16 right-16 flex flex-col gap-3 text-right leading-none"
-        style={{ fontSize: 32 }}
+        style={{ fontSize: 32, width: "max-content", maxWidth: "calc(100% - 8rem)" }}
       >
-        <div>
+        <div style={{ whiteSpace: "nowrap" }}>
           <span className="text-gray-400">{cruelModeLabel}</span>{" "}
-          <span className="text-gray-300">
-            {cruelModeValueLabel}
-          </span>
+          <span className="text-gray-300">{cruelModeValueLabel}</span>
         </div>
         <div>
           <span className="text-gray-400">{playTimeLabel}</span>{" "}
@@ -495,9 +493,11 @@ export default function ShareDialog() {
         <div className="flex min-h-0 flex-1 justify-center overflow-auto py-2">
           <div
             ref={previewWrapRef}
-            className="relative w-full max-w-[360px] overflow-hidden rounded-md border border-border"
+            className="relative w-full max-w-[360px] shrink-0 self-center overflow-hidden rounded-md border border-border"
             style={{
-              aspectRatio: `${SHARE_IMAGE_WIDTH} / ${SHARE_IMAGE_HEIGHT}`,
+              // Height must match the transform-scaled card; flex parents otherwise stretch
+              // this box taller than the scaled content and leave empty space below the footer.
+              height: SHARE_IMAGE_HEIGHT * previewScale,
               backgroundColor: CARD_BG,
             }}
           >
