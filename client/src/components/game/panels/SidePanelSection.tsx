@@ -198,6 +198,39 @@ const RESOURCE_ROW_TEXT_CLASS = "text-xs leading-none";
 const RESOURCE_DELTA_SLOT_CLASS =
   "block w-full min-w-[3rem] text-right font-mono tabular-nums whitespace-nowrap";
 
+function ResourceDeltaSlot({
+  resourceId,
+  resourceChanges,
+  onResourceChange,
+  showProductionDelta,
+  productionDeltaCell,
+  layoutPlaceholder,
+}: {
+  resourceId: string;
+  resourceChanges: ResourceChange[];
+  onResourceChange?: (change: ResourceChange) => void;
+  showProductionDelta: boolean;
+  productionDeltaCell: React.ReactNode;
+  layoutPlaceholder: React.ReactNode;
+}) {
+  const [changePopupVisible, setChangePopupVisible] = useState(false);
+
+  return (
+    <div className="relative shrink-0 text-right">
+      {showProductionDelta && !changePopupVisible
+        ? productionDeltaCell
+        : layoutPlaceholder}
+      {onResourceChange ? (
+        <ResourceChangeNotification
+          resource={resourceId}
+          changes={resourceChanges}
+          onVisibleChange={setChangePopupVisible}
+        />
+      ) : null}
+    </div>
+  );
+}
+
 /** Food/wood at zero while villagers remain — blink red in the resources panel. */
 const CRITICAL_ZERO_RESOURCES = new Set(["food", "wood"]);
 
@@ -981,7 +1014,9 @@ export default function SidePanelSection({
         {(item.productionDelta ?? 0) > 0 ? "+" : ""}
         {abbreviateNumber(Math.round(item.productionDelta ?? 0))}
       </span>
-    ) : (
+    ) : null;
+
+    const productionDeltaLayoutPlaceholder = (
       <span
         className={cn(productionDeltaCellClassName, "invisible select-none")}
         aria-hidden="true"
@@ -991,15 +1026,14 @@ export default function SidePanelSection({
     );
 
     const resourceThirdColumn = isResourcesSection ? (
-      <div className="relative shrink-0 text-right">
-        {productionDeltaCell}
-        {onResourceChange ? (
-          <ResourceChangeNotification
-            resource={item.id}
-            changes={resourceChanges}
-          />
-        ) : null}
-      </div>
+      <ResourceDeltaSlot
+        resourceId={item.id}
+        resourceChanges={resourceChanges}
+        onResourceChange={onResourceChange}
+        showProductionDelta={showProductionDelta}
+        productionDeltaCell={productionDeltaCell}
+        layoutPlaceholder={productionDeltaLayoutPlaceholder}
+      />
     ) : null;
 
     const labelValueCells = usesLabelValueGridLayout ? (

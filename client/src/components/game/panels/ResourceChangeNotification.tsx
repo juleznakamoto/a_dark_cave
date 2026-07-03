@@ -20,6 +20,7 @@ interface ResourceChange {
 interface ResourceChangeNotificationProps {
   resource: string;
   changes: ResourceChange[];
+  onVisibleChange?: (visible: boolean) => void;
 }
 
 /** True when a positive gain left this resource at its effective cap (matches side-panel amount yellow). */
@@ -45,6 +46,7 @@ function isPositiveGainAtResourceCap(
 export default function ResourceChangeNotification({
   resource,
   changes,
+  onVisibleChange,
 }: ResourceChangeNotificationProps) {
   const gameState = useGameStore();
   const [visibleChange, setVisibleChange] = useState<ResourceChange | null>(
@@ -147,6 +149,10 @@ export default function ResourceChangeNotification({
     }
   }, [changes.length, visibleChange]);
 
+  useEffect(() => {
+    onVisibleChange?.(visibleChange !== null);
+  }, [visibleChange, onVisibleChange]);
+
   if (!visibleChange) {
     return null;
   }
@@ -159,19 +165,18 @@ export default function ResourceChangeNotification({
 
   return (
     <div
-      className="pointer-events-none absolute inset-0 z-[1] bg-background text-right"
+      className="pointer-events-none absolute inset-0 z-[1] text-right"
       aria-live="polite"
     >
       <span
         className={`
           block w-full text-right text-xs font-mono font-bold tabular-nums leading-none whitespace-nowrap
           animate-in fade-in-0 slide-in-from-left-2 duration-300
-          ${
-            visibleChange.amount > 0
-              ? hitResourceCap
-                ? "text-yellow-600"
-                : "text-green-600"
-              : "text-red-600"
+          ${visibleChange.amount > 0
+            ? hitResourceCap
+              ? "text-yellow-600"
+              : "text-green-600"
+            : "text-red-600"
           }
         `}
       >
