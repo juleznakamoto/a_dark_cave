@@ -314,7 +314,7 @@ function ShareCard({
           <span className="text-gray-400">{cruelModeLabel}</span>{" "}
           <span className="text-gray-300">{cruelModeValueLabel}</span>
         </div>
-        <div>
+        <div style={{ whiteSpace: "nowrap" }}>
           <span className="text-gray-400">{playTimeLabel}</span>{" "}
           <span className="text-gray-300">
             {formatSharePlayTime(playTimeMs)}
