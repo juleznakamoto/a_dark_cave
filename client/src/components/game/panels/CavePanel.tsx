@@ -22,18 +22,12 @@ import { getRevealedEffectsForActionTooltip } from "@/game/rules/insightRevealTo
 import { composeActionTooltip } from "@/game/rules/actionTooltipLayout";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useExplosionEffect } from "@/components/ui/explosion-effect";
-import { useRef, useState, type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import {
-  BubblyButtonGlobalPortal,
-} from "@/components/ui/bubbly-button";
-import {
-  generateParticleData,
-  getBubbleRemoveDelayMs,
   CRAFT_PARTICLE_CONFIG,
   getMineParticleConfig,
   getExploreParticleConfig,
   getChopWoodParticleConfig,
-  type BubbleWithParticles,
 } from "@/components/ui/bubbly-button.particles";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
 import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
@@ -65,60 +59,6 @@ export default function CavePanel() {
 
   // Separate refs for each explosion button
   const blastPortalRef = useRef<HTMLButtonElement>(null);
-
-  // Craft button particle animation
-  const [craftBubbles, setCraftBubbles] = useState<BubbleWithParticles[]>([]);
-  const craftBubbleIdCounter = useRef(0);
-  const handleCraftAnimationTrigger = (x: number, y: number) => {
-    const id = `craft-bubble-${craftBubbleIdCounter.current++}-${Date.now()}`;
-    const particles = generateParticleData(CRAFT_PARTICLE_CONFIG);
-    setCraftBubbles((prev) => [...prev, { id, x, y, particles }]);
-    setTimeout(() => {
-      setCraftBubbles((prev) => prev.filter((b) => b.id !== id));
-    }, getBubbleRemoveDelayMs(CRAFT_PARTICLE_CONFIG));
-  };
-
-  // Mine button particle animation (per-resource highlight colors)
-  const [mineBubbles, setMineBubbles] = useState<BubbleWithParticles[]>([]);
-  const mineBubbleIdCounter = useRef(0);
-  const handleMineAnimationTrigger = (actionId: string, x: number, y: number) => {
-    const upgradeKey = (ACTION_TO_UPGRADE_KEY[actionId] ?? actionId) as UpgradeKey;
-    const level = getUpgradeLevel(upgradeKey, state);
-    const config = getMineParticleConfig(actionId, level);
-    const id = `mine-bubble-${mineBubbleIdCounter.current++}-${Date.now()}`;
-    const particles = generateParticleData(config);
-    setMineBubbles((prev) => [...prev, { id, x, y, particles }]);
-    setTimeout(() => {
-      setMineBubbles((prev) => prev.filter((b) => b.id !== id));
-    }, getBubbleRemoveDelayMs(config));
-  };
-
-  // Cave explore button particle animation (per-explore-level colors)
-  const [exploreBubbles, setExploreBubbles] = useState<BubbleWithParticles[]>([]);
-  const exploreBubbleIdCounter = useRef(0);
-  const handleExploreAnimationTrigger = (actionId: string, x: number, y: number) => {
-    const config = getExploreParticleConfig(actionId);
-    const id = `explore-bubble-${exploreBubbleIdCounter.current++}-${Date.now()}`;
-    const particles = generateParticleData(config);
-    setExploreBubbles((prev) => [...prev, { id, x, y, particles }]);
-    setTimeout(() => {
-      setExploreBubbles((prev) => prev.filter((b) => b.id !== id));
-    }, getBubbleRemoveDelayMs(config));
-  };
-
-  // Chop wood / Gather wood particle animation
-  const [chopWoodBubbles, setChopWoodBubbles] = useState<BubbleWithParticles[]>([]);
-  const chopWoodBubbleIdCounter = useRef(0);
-  const handleChopWoodAnimationTrigger = (x: number, y: number) => {
-    const level = state.buttonUpgrades?.chopWood?.level ?? 0;
-    const config = getChopWoodParticleConfig(level);
-    const id = `chop-bubble-${chopWoodBubbleIdCounter.current++}-${Date.now()}`;
-    const particles = generateParticleData(config);
-    setChopWoodBubbles((prev) => [...prev, { id, x, y, particles }]);
-    setTimeout(() => {
-      setChopWoodBubbles((prev) => prev.filter((b) => b.id !== id));
-    }, getBubbleRemoveDelayMs(config));
-  };
 
   // Define action groups with their actions
   const actionGroups = [
@@ -435,15 +375,19 @@ export default function CavePanel() {
           variant="outline"
           className={`${shouldGlow ? "focus-glow" : ""}`}
           tooltip={tooltipContent}
-          onAnimationTrigger={
+          particleConfig={
             isCraftAction
-              ? handleCraftAnimationTrigger
+              ? CRAFT_PARTICLE_CONFIG
               : isMineAction
-                ? (x, y) => handleMineAnimationTrigger(actionId, x, y)
+                ? () => {
+                  const upgradeKey = (ACTION_TO_UPGRADE_KEY[actionId] ?? actionId) as UpgradeKey;
+                  const level = getUpgradeLevel(upgradeKey, state);
+                  return getMineParticleConfig(actionId, level);
+                }
                 : isCaveExploreAction
-                  ? (x, y) => handleExploreAnimationTrigger(actionId, x, y)
+                  ? () => getExploreParticleConfig(actionId)
                   : isChopWood
-                    ? handleChopWoodAnimationTrigger
+                    ? () => getChopWoodParticleConfig(state.buttonUpgrades?.chopWood?.level ?? 0)
                     : undefined
           }
           onMouseEnter={() => {
@@ -492,15 +436,19 @@ export default function CavePanel() {
         disabled={!canExecute}
         variant="outline"
         className={`${shouldGlow ? "focus-glow" : ""}`}
-        onAnimationTrigger={
+        particleConfig={
           isCraftAction
-            ? handleCraftAnimationTrigger
+            ? CRAFT_PARTICLE_CONFIG
             : isMineAction
-              ? (x, y) => handleMineAnimationTrigger(actionId, x, y)
+              ? () => {
+                const upgradeKey = (ACTION_TO_UPGRADE_KEY[actionId] ?? actionId) as UpgradeKey;
+                const level = getUpgradeLevel(upgradeKey, state);
+                return getMineParticleConfig(actionId, level);
+              }
               : isCaveExploreAction
-                ? (x, y) => handleExploreAnimationTrigger(actionId, x, y)
+                ? () => getExploreParticleConfig(actionId)
                 : isChopWood
-                  ? handleChopWoodAnimationTrigger
+                  ? () => getChopWoodParticleConfig(state.buttonUpgrades?.chopWood?.level ?? 0)
                   : undefined
         }
         onMouseEnter={() => {
@@ -613,7 +561,6 @@ export default function CavePanel() {
         </div>
         <ScrollBar orientation="vertical" />
       </ScrollArea>
-      <BubblyButtonGlobalPortal bubbles={[...craftBubbles, ...mineBubbles, ...exploreBubbles, ...chopWoodBubbles]} />
     </>
   );
 }

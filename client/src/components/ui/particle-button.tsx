@@ -5,7 +5,6 @@ import { useState, useRef, useEffect, forwardRef } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { Z_INDEX } from "@/lib/z-index";
 import { CRUEL_MODE } from "@/game/cruelMode";
 import type { ButtonProps } from "@/components/ui/button";
 
@@ -28,36 +27,45 @@ interface Spark {
 
 function SuccessParticles({
     buttonRef,
+    containerRef,
     sparks,
 }: {
     buttonRef: React.RefObject<HTMLButtonElement>;
+    containerRef: React.RefObject<HTMLDivElement>;
     sparks: Spark[];
 }) {
-    const rect = buttonRef.current?.getBoundingClientRect();
-    if (!rect) return null;
+    const button = buttonRef.current;
+    const container = containerRef.current;
+    if (!button || !container) return null;
+
+    const containerRect = container.getBoundingClientRect();
+    const buttonRect = button.getBoundingClientRect();
+    const originLeft = buttonRect.left - containerRect.left;
+    const originTop = buttonRect.top - containerRect.top;
 
     return (
-        <>
+        <div
+            className="absolute inset-0 pointer-events-none overflow-visible"
+            style={{ zIndex: -1 }}
+        >
             {sparks.map((spark) => {
-                const startX = rect.left + spark.offsetX;
-                const startY = rect.top + 15;
+                const startX = originLeft + spark.offsetX;
+                const startY = originTop + 15;
 
                 const endX = startX + Math.cos(spark.angle) * spark.distance;
                 const endY =
-                    startY - Math.abs(Math.sin(spark.angle) * spark.distance); // always upwards
+                    startY - Math.abs(Math.sin(spark.angle) * spark.distance);
 
                 return (
                     <motion.div
                         key={spark.id}
-                        className="fixed rounded-full shadow-md"
+                        className="absolute rounded-full shadow-md"
                         style={{
                             width: "4px",
                             height: "4px",
                             backgroundColor: spark.color,
                             left: startX,
                             top: startY,
-                            zIndex: Z_INDEX.particles,
-                            pointerEvents: "none",
                             boxShadow: `0 0 ${Math.random() * 8 + 3}px ${spark.color}`,
                         }}
                         initial={{
@@ -80,7 +88,7 @@ function SuccessParticles({
                     />
                 );
             })}
-        </>
+        </div>
     );
 }
 
@@ -102,6 +110,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
         const [isGlowing, setIsGlowing] = useState(false);
         const [glowIntensity, setGlowIntensity] = useState(0);
         const buttonRef = useRef<HTMLButtonElement>(null);
+        const containerRef = useRef<HTMLDivElement>(null);
         const intervalRef = useRef<NodeJS.Timeout | null>(null);
         const rampUpRef = useRef<NodeJS.Timeout | null>(null);
         const glowRampRef = useRef<NodeJS.Timeout | null>(null);
@@ -329,8 +338,15 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
         }, []);
 
         return (
-            <>
-                <SuccessParticles buttonRef={buttonRef} sparks={sparks} />
+            <div
+                ref={containerRef}
+                className="relative inline-block isolate"
+            >
+                <SuccessParticles
+                    buttonRef={buttonRef}
+                    containerRef={containerRef}
+                    sparks={sparks}
+                />
                 <Button
                     ref={(node) => {
                         (buttonRef as React.MutableRefObject<HTMLButtonElement | null>).current = node;
@@ -344,7 +360,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                     className={cn(
-                        "relative transition-all duration-300",
+                        "relative z-10 transition-all duration-300",
                         isGlowing && "text-shadow-glow",
                         className,
                     )}
@@ -357,7 +373,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
                 >
                     {children}
                 </Button>
-            </>
+            </div>
         );
     },
 );

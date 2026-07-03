@@ -7,6 +7,11 @@ import { GAME_CONSTANTS } from "@/game/constants";
 import { INSIGHT_REVEAL_DURATION_MS } from "@/game/rules/insightReveal";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { cn } from "@/lib/utils";
+import {
+  InlineButtonParticleLayer,
+  useInlineButtonParticles,
+} from "@/components/ui/bubbly-button";
+import type { ParticleConfig } from "@/components/ui/bubbly-button.particles";
 
 /** Uniform gap between game action buttons (horizontal, wrapped rows, stacked row groups). */
 export const GAME_ACTION_BUTTON_GRID_GAP_CLASS = "gap-4";
@@ -55,6 +60,9 @@ interface CooldownButtonProps {
   tooltip?: React.ReactNode;
   onMouseEnter?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onMouseLeave?: (e?: React.MouseEvent<HTMLDivElement>) => void;
+  /** Click particle burst rendered behind the button. */
+  particleConfig?: Partial<ParticleConfig> | (() => Partial<ParticleConfig>);
+  /** @deprecated Use particleConfig for click particles behind the button. */
   onAnimationTrigger?: (x: number, y: number) => void;
   /** Play-time overlay while the button is blocked (`cooldown` shrinks 100→0, `progress` fills 0→100). */
   playTimeCooldown?: {
@@ -76,6 +84,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       size = "default",
       "data-testid": testId,
       tooltip,
+      particleConfig,
       onAnimationTrigger,
       onMouseEnter,
       onMouseLeave,
@@ -214,20 +223,29 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           : insightRevealWidth;
 
     const actionExecutedRef = useRef<boolean>(false);
+    const { bursts, triggerParticles } = useInlineButtonParticles(particleConfig);
+
+    const emitClickParticles = () => {
+      if (particleConfig) {
+        triggerParticles();
+      } else if (onAnimationTrigger) {
+        let button: HTMLButtonElement | null = null;
+        if (ref && typeof ref !== "function" && ref.current) {
+          button = ref.current;
+        }
+        if (button) {
+          const rect = button.getBoundingClientRect();
+          onAnimationTrigger(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        }
+      }
+    };
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       if (disabled && !isCoolingDown && !isExecuting && !isInsightRevealing && !isPlayTimeOverlayActive) return;
       if (!isCoolingDown && !isExecuting && !isInsightRevealing && !isPlayTimeOverlayActive) {
         actionExecutedRef.current = true;
 
-        // Trigger animation if provided - use button center, not click position
-        if (onAnimationTrigger) {
-          const button = e.currentTarget;
-          const rect = button.getBoundingClientRect();
-          const centerX = rect.left + rect.width / 2;
-          const centerY = rect.top + rect.height / 2;
-          onAnimationTrigger(centerX, centerY);
-        }
+        emitClickParticles();
 
         onClick();
         // Reset the flag after a short delay
@@ -306,18 +324,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     // onClick never fires.
     const triggerPrimaryClick = (e?: React.MouseEvent | React.TouchEvent) => {
       if (isButtonDisabled) return;
-      if (onAnimationTrigger) {
-        let button: HTMLButtonElement | null = null;
-        if (ref && typeof ref !== "function" && ref.current) {
-          button = ref.current;
-        } else if (e?.target) {
-          button = (e.target as HTMLElement).closest?.("button") ?? null;
-        }
-        if (button) {
-          const rect = button.getBoundingClientRect();
-          onAnimationTrigger(rect.left + rect.width / 2, rect.top + rect.height / 2);
-        }
-      }
+      emitClickParticles();
       onClick();
     };
 
@@ -352,7 +359,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       );
 
     return (
-      <div className="relative inline-block">
+      <div className={cn("relative inline-block", particleConfig && "isolate")}>
+        {particleConfig && <InlineButtonParticleLayer bursts={bursts} />}
         <TooltipWrapper
           tooltip={tooltip}
           tooltipId={buttonId}

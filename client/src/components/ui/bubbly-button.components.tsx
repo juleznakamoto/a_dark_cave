@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 import {
   type BubbleWithParticles,
   type ParticleConfig,
+  generateParticleData,
+  getBubbleRemoveDelayMs,
   mergeParticleConfig,
 } from "@/components/ui/bubbly-button.particles";
 import type { ButtonProps } from "@/components/ui/button";
@@ -210,6 +212,87 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
 );
 
 BubblyButton.displayName = "BubblyButton";
+
+type InlineParticleBurst = {
+  id: string;
+  particles: ReturnType<typeof generateParticleData>;
+  ease: [number, number, number, number];
+};
+
+/** Renders click particles behind a button (same stacking as BubblyButton). */
+export function InlineButtonParticleLayer({
+  bursts,
+}: {
+  bursts: InlineParticleBurst[];
+}) {
+  if (bursts.length === 0) return null;
+
+  return (
+    <div
+      className="absolute inset-0 pointer-events-none overflow-visible"
+      style={{ zIndex: -1 }}
+    >
+      <AnimatePresence>
+        {bursts.map((burst) =>
+          burst.particles.map((particle, index) => (
+            <motion.div
+              key={`${burst.id}-${index}`}
+              className="absolute rounded-full"
+              style={{
+                width: `${particle.size}px`,
+                height: `${particle.size}px`,
+                backgroundColor: particle.color,
+                left: "50%",
+                top: "50%",
+                marginLeft: -particle.size / 2,
+                marginTop: -particle.size / 2,
+                willChange: "transform",
+                transform: "translateZ(0)",
+              }}
+              initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+              animate={{
+                opacity: 0.8,
+                scale: 0,
+                x: particle.endX,
+                y: particle.endY,
+              }}
+              exit={{ opacity: 0.8 }}
+              transition={{
+                duration: particle.duration,
+                ease: burst.ease,
+              }}
+            />
+          )),
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+export function useInlineButtonParticles(
+  particleConfig?: Partial<ParticleConfig> | (() => Partial<ParticleConfig>),
+) {
+  const [bursts, setBursts] = useState<InlineParticleBurst[]>([]);
+  const burstIdCounter = useRef(0);
+
+  const triggerParticles = React.useCallback(() => {
+    if (!particleConfig) return;
+
+    const partial =
+      typeof particleConfig === "function" ? particleConfig() : particleConfig;
+    const config = mergeParticleConfig(partial);
+    const particles = generateParticleData(config);
+    const id = `inline-burst-${burstIdCounter.current++}-${Date.now()}`;
+    const ease = config.ease as [number, number, number, number];
+
+    setBursts((prev) => [...prev, { id, particles, ease }]);
+    setTimeout(() => {
+      setBursts((prev) => prev.filter((burst) => burst.id !== id));
+    }, getBubbleRemoveDelayMs(partial));
+  }, [particleConfig]);
+
+  return { bursts, triggerParticles };
+}
 
 // Global bubble layer component for lifted state pattern
 export const BubblyButtonGlobalPortal = ({

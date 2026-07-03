@@ -106,11 +106,7 @@ import {
   useFeedFireParticles,
 } from "@/components/ui/feed-fire-particles";
 import { audioManager, feedFireVolume } from "@/lib/audio";
-import { BubblyButtonGlobalPortal } from "@/components/ui/bubbly-button";
-import {
-  generateParticleData,
-  type BubbleWithParticles,
-} from "@/components/ui/bubbly-button.particles";
+import { BUILD_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
 import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
 import { PRIOR_ELIGIBLE_ACTIONS } from "@/game/buttonUpgrades";
 import {
@@ -222,10 +218,6 @@ export default function VillagePanel() {
   const feedFireButtonRef = useRef<HTMLButtonElement>(null);
   const { sparks, spawnParticles } = useFeedFireParticles();
 
-  // Bubbly button animation state
-  const [bubbles, setBubbles] = useState<BubbleWithParticles[]>([]);
-  const bubbleIdCounter = useRef(0);
-
   const [presetSaveConfirmed, setPresetSaveConfirmed] = useState(false);
   const presetSaveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
     null,
@@ -310,19 +302,6 @@ export default function VillagePanel() {
     },
     [],
   );
-
-  const handleAnimationTrigger = (x: number, y: number) => {
-    // Use a counter to ensure unique IDs even for rapid clicks
-    const id = `bubble-${bubbleIdCounter.current++}-${Date.now()}`;
-    // Generate particle data once when bubble is created (prevents random regeneration)
-    const particles = generateParticleData();
-    setBubbles((prev) => [...prev, { id, x, y, particles }]);
-
-    // Keep bubbles visible for animation duration
-    setTimeout(() => {
-      setBubbles((prev) => prev.filter((b) => b.id !== id));
-    }, 3000); // Match the bubbly-button animation duration
-  };
 
   // Get progress from game loop state
   const loopProgress = useGameStore((state) => state.loopProgress);
@@ -897,7 +876,7 @@ export default function VillagePanel() {
         variant="outline"
         className=""
         tooltip={tooltipContent}
-        onAnimationTrigger={handleAnimationTrigger}
+        particleConfig={BUILD_PARTICLE_CONFIG}
         onMouseEnter={() => {
           const highlights = getResourcesFromActionCost(actionId, state);
           if (isUpgrade && buildingKey) {
@@ -1203,7 +1182,6 @@ export default function VillagePanel() {
   return (
     <>
       <SuccessParticles buttonRef={feedFireButtonRef} sparks={sparks} />
-      <BubblyButtonGlobalPortal bubbles={bubbles} />
       <ScrollArea className="h-full w-full">
         <div className="w-full space-y-4 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
           {actionGroups.map((group, groupIndex) => {
