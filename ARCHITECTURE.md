@@ -178,7 +178,8 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
   flags, `activeTab`, transient timers). `buildGameState(state)` strips UI keys + functions and
   forces `isPaused: false` on save.
 - **`save.ts`** — IndexedDB (`ADarkCaveDB`); guest saves encode via `saveCodec.ts`
-  (XOR+Base64, `ADC2:` prefix); signed-in saves diff against last cloud state → Supabase.
+  (XOR+Base64, `ADC2:` prefix); signed-in saves diff against last cloud state → Supabase
+  (`omitPlayTimeFromDiffIfUnchanged` drops unchanged `playTime` so the server skips OCC).
   Load applies migrations (e.g. `migrateTraderShopUnlockOnLoad`).
 - **`auth.ts`** — Supabase auth (incl. anonymous guest-checkout via `ensureAnonymousSession`),
   `saveGameToSupabase`/`loadGameFromSupabase`, referral metadata.

@@ -103,9 +103,42 @@ function calculateStateDiff(
     const newValue = newState[key as keyof GameState];
     const oldValue = oldState[key as keyof GameState];
 
+    // playTime: compare floored ms so float jitter does not spuriously include it in the diff
+    if (key === "playTime") {
+      const newPt = Math.floor(Number(newValue) || 0);
+      const oldPt = Math.floor(Number(oldValue) || 0);
+      if (newPt > oldPt) {
+        diff[key] = newValue;
+      }
+      continue;
+    }
+
     if (isDifferent(oldValue, newValue)) {
       diff[key] = newValue;
     }
+  }
+
+  return diff;
+}
+
+/** Drop playTime from an outgoing diff when it has not advanced since lastCloudState. */
+function omitPlayTimeFromDiffIfUnchanged(
+  diff: Partial<GameState>,
+  lastCloudState: GameState | null,
+  newState: GameState,
+): Partial<GameState> {
+  if (!("playTime" in diff) || lastCloudState === null) {
+    return diff;
+  }
+
+  const newPlayTime = Math.floor(
+    Number(diff.playTime ?? newState.playTime ?? 0),
+  );
+  const baselinePlayTime = Math.floor(Number(lastCloudState.playTime ?? 0));
+
+  if (newPlayTime <= baselinePlayTime) {
+    const { playTime: _removed, ...rest } = diff;
+    return rest;
   }
 
   return diff;
@@ -458,8 +491,9 @@ export async function saveGame(
 
         // Get last cloud state for diff calculation
         const lastCloudState = await getLastCloudState(db);
-        const stateDiff = calculateStateDiff(
-          lastCloudState || null,
+        let stateDiff = omitPlayTimeFromDiffIfUnchanged(
+          calculateStateDiff(lastCloudState || null, sanitizedState),
+          lastCloudState,
           sanitizedState,
         );
 

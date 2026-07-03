@@ -1,112 +1,6 @@
+-- Allow idempotent cloud saves when playTime is unchanged; still reject rollbacks (new < existing).
+-- Client: client/src/game/save.ts omitPlayTimeFromDiffIfUnchanged
 
--- Per-environment configuration, readable from any SQL function.
--- In dev: INSERT INTO app_config (key, value) VALUES ('environment', 'development');
--- In prod: leave empty or set to 'production'.
-CREATE TABLE IF NOT EXISTS app_config (
-  key TEXT PRIMARY KEY,
-  value TEXT NOT NULL
-);
-
--- Create the game_saves table
-CREATE TABLE IF NOT EXISTS game_saves (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
-  game_state JSONB NOT NULL,
-  game_stats JSONB DEFAULT '[]'::jsonb,
-  username TEXT,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(user_id)
-);
-
--- Create button_clicks table for analytics
-CREATE TABLE IF NOT EXISTS button_clicks (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  clicks JSONB DEFAULT '{}'::jsonb,
-  resources JSONB DEFAULT '{}'::jsonb,
-  UNIQUE(user_id)
-);
-
--- Create purchases table to track user purchases
-CREATE TABLE IF NOT EXISTS purchases (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  item_id TEXT NOT NULL,
-  item_name TEXT NOT NULL,
-  price_paid INTEGER NOT NULL,
-  bundle_id TEXT,
-  purchased_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
--- Enable Row Level Security
-ALTER TABLE game_saves ENABLE ROW LEVEL SECURITY;
-ALTER TABLE button_clicks ENABLE ROW LEVEL SECURITY;
-ALTER TABLE purchases ENABLE ROW LEVEL SECURITY;
-
--- Drop existing policies if they exist
-DROP POLICY IF EXISTS "Users can view their own saves" ON game_saves;
-DROP POLICY IF EXISTS "Users can insert their own saves" ON game_saves;
-DROP POLICY IF EXISTS "Users can update their own saves" ON game_saves;
-DROP POLICY IF EXISTS "Users can delete their own saves" ON game_saves;
-
-DROP POLICY IF EXISTS "Users can view their own click data" ON button_clicks;
-DROP POLICY IF EXISTS "Users can insert their own click data" ON button_clicks;
-DROP POLICY IF EXISTS "Users can update their own click data" ON button_clicks;
-
-DROP POLICY IF EXISTS "Users can view their own purchases" ON purchases;
-DROP POLICY IF EXISTS "Users can insert their own purchases" ON purchases;
-
--- RLS policies for game_saves (optimized with subquery pattern)
-CREATE POLICY "Users can view their own saves"
-  ON game_saves FOR SELECT
-  USING ((select auth.uid()) = user_id);
-
-CREATE POLICY "Users can insert their own saves"
-  ON game_saves FOR INSERT
-  WITH CHECK ((select auth.uid()) = user_id);
-
-CREATE POLICY "Users can update their own saves"
-  ON game_saves FOR UPDATE
-  USING ((select auth.uid()) = user_id);
-
-CREATE POLICY "Users can delete their own saves"
-  ON game_saves FOR DELETE
-  USING ((select auth.uid()) = user_id);
-
--- RLS policies for button_clicks (optimized with subquery pattern)
-CREATE POLICY "Users can view their own click data" ON button_clicks
-  FOR SELECT USING ((select auth.uid()) = user_id);
-
-CREATE POLICY "Users can insert their own click data" ON button_clicks
-  FOR INSERT WITH CHECK ((select auth.uid()) = user_id);
-
-CREATE POLICY "Users can update their own click data" ON button_clicks
-  FOR UPDATE USING ((select auth.uid()) = user_id);
-
--- RLS policies for purchases (optimized with subquery pattern)
-CREATE POLICY "Users can view their own purchases" ON purchases
-  FOR SELECT USING ((select auth.uid()) = user_id);
-
-CREATE POLICY "Users can insert their own purchases" ON purchases
-  FOR INSERT WITH CHECK ((select auth.uid()) = user_id);
-
--- Create indexes for efficient queries
-CREATE INDEX IF NOT EXISTS game_saves_user_id_idx ON game_saves(user_id);
-CREATE INDEX IF NOT EXISTS button_clicks_user_id_idx ON button_clicks(user_id);
-CREATE INDEX IF NOT EXISTS button_clicks_timestamp_idx ON button_clicks(timestamp);
-CREATE INDEX IF NOT EXISTS purchases_user_id_idx ON purchases(user_id);
-CREATE INDEX IF NOT EXISTS purchases_item_id_idx ON purchases(item_id);
-
--- Drop the old function first to allow parameter changes
-DROP FUNCTION IF EXISTS save_game_with_analytics(UUID, JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN);
-DROP FUNCTION IF EXISTS save_game_with_analytics(JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN);
-DROP FUNCTION IF EXISTS save_game_with_analytics(JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN, BOOLEAN);
-
--- Create a function that saves both game state and click analytics atomically
--- User ID is derived from auth.uid() - never passed from client
 CREATE OR REPLACE FUNCTION save_game_with_analytics(
   p_game_state_diff JSONB,
   p_click_analytics JSONB DEFAULT NULL,
@@ -154,13 +48,13 @@ BEGIN
       RAISE NOTICE 'OCC check SKIPPED: playTime overwrite allowed (game restart) - new: %, existing: %', 
         v_new_playtime, v_existing_playtime;
     ELSE
-      IF v_new_playtime <= v_existing_playtime THEN
-        RAISE EXCEPTION 'OCC violation: new playTime (%) must be greater than existing playTime (%)', 
+      IF v_new_playtime < v_existing_playtime THEN
+        RAISE EXCEPTION 'OCC violation: new playTime (%) must not be less than existing playTime (%)', 
+          v_new_playtime, v_existing_playtime;
+      ELSIF v_new_playtime > v_existing_playtime THEN
+        RAISE NOTICE 'OCC check passed: new playTime (%) > existing playTime (%)',
           v_new_playtime, v_existing_playtime;
       END IF;
-
-      RAISE NOTICE 'OCC check passed: new playTime (%) > existing playTime (%)', 
-        v_new_playtime, v_existing_playtime;
     END IF;
   END IF;
 
@@ -427,8 +321,3 @@ BEGIN
   END IF;
 END;
 $$;
-
--- Only service role (Edge Functions) can call this function
--- Remove public execute permission to prevent direct client access
-REVOKE EXECUTE ON FUNCTION save_game_with_analytics(JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN) FROM authenticated;
-REVOKE EXECUTE ON FUNCTION save_game_with_analytics(JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN) FROM anon;
