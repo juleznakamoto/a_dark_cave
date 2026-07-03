@@ -28,7 +28,10 @@ import {
   resolveTimedEventCatalogId,
 } from "@/i18n/eventDisplay";
 import { localizeEventChoices, resolveEventChoiceReward } from "@/i18n/eventText";
-import { getEventChoiceAffordance } from "@/i18n/eventAffordance";
+import {
+  eventChoiceHasBlockingCost,
+  getEventChoiceAffordance,
+} from "@/i18n/eventAffordance";
 import type { MerchantTradeData } from "@/game/types";
 import {
   EventChoiceSuccessTooltipContent,
@@ -343,7 +346,12 @@ export default function EventDialog({
                   catalogId,
                   vars: eventI18nVars,
                 });
-                if (!affordance.canAfford) {
+                const hasBlockingCost = eventChoiceHasBlockingCost(
+                  choice,
+                  gameState,
+                  { catalogId, vars: eventI18nVars },
+                );
+                if (hasBlockingCost && !affordance.canAfford) {
                   isDisabled = true;
                 }
 

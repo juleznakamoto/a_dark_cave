@@ -231,6 +231,31 @@ type AffordanceChoice = EventChoice & {
   sellAmount?: number;
 };
 
+/** True when the choice spends resources or free villagers (not a free decline/refuse). */
+export function eventChoiceHasBlockingCost(
+  choice: AffordanceChoice,
+  state: GameState,
+  options?: {
+    catalogId?: string;
+    vars?: TranslateOptions;
+  },
+): boolean {
+  const affordance = getEventChoiceAffordance(choice, state, options);
+  if (affordance.costs.length > 0) return true;
+  if ("villagers" in affordance.individualAffordance) return true;
+
+  const cost = choice.cost;
+  if (!cost) return false;
+
+  const costText = typeof cost === "function" ? cost(state) : cost;
+  if (!costText) return false;
+
+  return (
+    parseResourceCostsFromDisplayText(costText, state.resources).length > 0 ||
+    parseVillagerCostFromDisplayText(costText) !== null
+  );
+}
+
 export function getEventChoiceAffordance(
   choice: AffordanceChoice,
   state: GameState,

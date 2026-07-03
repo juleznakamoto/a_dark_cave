@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import i18n from "./index";
 import {
+  eventChoiceHasBlockingCost,
   getEventChoiceAffordance,
   getEventVillagerCostTooltipRows,
   getResourceCostsFromCatalogTemplate,
@@ -142,6 +143,24 @@ describe("eventAffordance", () => {
     });
 
     expect(amount).toBe(20);
+  });
+
+  it("treats traders_daughter do_not_help as cost-free", () => {
+    expect(
+      eventChoiceHasBlockingCost(
+        { id: "do_not_help", effect: () => ({}) },
+        makeState(),
+        { catalogId: "traders_daughter" },
+      ),
+    ).toBe(false);
+
+    expect(
+      eventChoiceHasBlockingCost(
+        { id: "send_search_party", cost: "500 food, 50 torch", effect: () => ({}) },
+        makeState(),
+        { catalogId: "traders_daughter" },
+      ),
+    ).toBe(true);
   });
 
   it("shows free villager cost in tooltip when unaffordable", () => {

@@ -47,7 +47,10 @@ import {
 } from "@/i18n/eventDisplay";
 import { localizeEventChoices, resolveEventChoiceReward } from "@/i18n/eventText";
 import { interpolateFallback } from "@/i18n/resolveGameText";
-import { getEventChoiceAffordance } from "@/i18n/eventAffordance";
+import {
+  eventChoiceHasBlockingCost,
+  getEventChoiceAffordance,
+} from "@/i18n/eventAffordance";
 import { getEventChoiceCostBreakdown } from "@/game/rules/index";
 import type { MerchantTradeData } from "@/game/types";
 import {
@@ -74,7 +77,6 @@ export default function TimedEventPanel() {
 
   // ALL HOOKS MUST BE CALLED BEFORE ANY EARLY RETURNS
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
-  const [safetyTimeRemaining, setSafetyTimeRemaining] = useState<number>(0);
   const lastLoggedEventId = useRef<string | null>(null);
 
   // Gambler dialog state
@@ -170,13 +172,10 @@ export default function TimedEventPanel() {
       !timedEventTab.event
     ) {
       setTimeRemaining(0);
-      setSafetyTimeRemaining(0);
       return;
     }
 
     const event = timedEventTab.event;
-    const startTime = timedEventTab.startTime || Date.now();
-    const safetyEndTime = startTime + 1000;
     /** Interval keeps firing at 0:00; expiry side-effects must run only once per event. */
     let expiryHandled = false;
 
@@ -188,12 +187,9 @@ export default function TimedEventPanel() {
         return;
       }
 
-      const now = Date.now();
       const remaining = getTimedEventTabEffectiveRemainingMs(st) ?? 0;
-      const safetyRemaining = Math.max(0, safetyEndTime - now);
 
       setTimeRemaining(remaining);
-      setSafetyTimeRemaining(safetyRemaining);
 
       if (remaining <= 0) {
         if (expiryHandled) return;
@@ -415,9 +411,6 @@ export default function TimedEventPanel() {
             <ActionInsightBadge
               target="timedEvent"
               timeRemainingMs={timeRemaining}
-              safetyTimeRemainingMs={
-                isMerchantEvent ? 0 : safetyTimeRemaining
-              }
             />
           </div>
         </h2>
@@ -500,6 +493,11 @@ export default function TimedEventPanel() {
                 catalogId,
                 vars: eventI18nVars,
               });
+              const hasBlockingCost = eventChoiceHasBlockingCost(
+                choice,
+                gameState,
+                { catalogId, vars: eventI18nVars },
+              );
               const canAfford = affordance.canAfford;
               const costBreakdown = getEventChoiceCostBreakdown(cost, gameState, {
                 catalogId,
@@ -530,12 +528,11 @@ export default function TimedEventPanel() {
                 }
               }
 
-              // Disable if can't afford, time is up, already purchased, in safety period (non-merchant), or not enough villagers
+              // Disable if can't afford a paid choice, time is up, already purchased, or not enough villagers
               const isDisabled =
-                !canAfford ||
+                (hasBlockingCost && !canAfford) ||
                 timeRemaining <= 0 ||
                 isPurchased ||
-                (!isMerchantEvent && safetyTimeRemaining > 0) ||
                 !villagersCheckPassed;
 
               // Calculate success percentage if this choice has odds (Book of War)
@@ -674,7 +671,7 @@ export default function TimedEventPanel() {
                   tooltip={tooltipContent}
                   tooltipId={`timedevent-${choice.id}`}
                   disabled={isDisabled}
-                  onClick={() => handleChoice(choice.id)}
+                  onClick={isDisabled ? undefined : () => handleChoice(choice.id)}
                   onMouseEnter={costText ? highlightCostResources : undefined}
                   onMouseLeave={costText ? () => setHighlightedResources([]) : undefined}
                 >
@@ -697,14 +694,8 @@ export default function TimedEventPanel() {
                 }}
                 variant="outline"
                 size="xs"
-                disabled={
-                  timeRemaining <= 0 ||
-                  (!isMerchantEvent && safetyTimeRemaining > 0)
-                }
-                className={gameActionOutlineButtonClassName(
-                  timeRemaining <= 0 ||
-                  (!isMerchantEvent && safetyTimeRemaining > 0),
-                )}
+                disabled={timeRemaining <= 0}
+                className={gameActionOutlineButtonClassName(timeRemaining <= 0)}
                 button_id="timedevent-say_goodbye"
               >
                 {t("ui:timedEvent.sayGoodbye")}

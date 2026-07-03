@@ -33,7 +33,9 @@ export function gameActionOutlineButtonClassName(
 ): string {
   const hoverPrefix = options?.groupHover ? "group-hover:" : "hover:";
   return cn(
-    disabled ? "border-orange-950/50" : "border-orange-950",
+    disabled
+      ? "border-orange-950/50 !bg-transparent hover:!bg-transparent"
+      : "border-orange-950 text-foreground",
     !disabled &&
     `${hoverPrefix}bg-accent ${hoverPrefix}text-accent-foreground bg-neutral-600/10`,
   );
@@ -281,7 +283,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           isButtonDisabled && "pointer-events-none",
           // aria-disabled (not native disabled) so outline variant hover styles still apply — reset them.
           isButtonDisabled &&
-          "hover:!bg-background hover:!text-foreground",
+          "!bg-transparent hover:!bg-transparent hover:!text-foreground",
           isCompassGlowing && "compass-glow",
           variant === "outline" && gameActionOutlineButtonClassName(isButtonDisabled),
           className,

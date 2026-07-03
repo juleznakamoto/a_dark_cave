@@ -93,15 +93,21 @@ void main(){gl_Position=position;}`;
   }
 
   reset() {
-    const { gl, program, vs, fs } = this;
+    const { gl, program, vs, fs, buffer } = this;
+    if (buffer) {
+      gl.deleteBuffer(buffer);
+      this.buffer = null;
+    }
     if (!program) return;
     if (vs) {
       gl.detachShader(program, vs);
       gl.deleteShader(vs);
+      this.vs = null;
     }
     if (fs) {
       gl.detachShader(program, fs);
       gl.deleteShader(fs);
+      this.fs = null;
     }
     gl.deleteProgram(program);
     this.program = null;

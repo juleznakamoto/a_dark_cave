@@ -47,9 +47,7 @@ import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
 import MistBackground from "@/components/ui/mist-background";
 import { SmokeBackground } from "@/components/ui/spooky-smoke-animation";
-
-/** Preview blood moon background + smoke without the event active. Set false before release. */
-const BLOOD_MOON_OVERLAY_DEBUG = true;
+import { isBloodMoonOverlayVisible } from "@/game/bloodMoonOverlay";
 import { getUnclaimedAchievementIds } from "@/achievements";
 import { getVisibleHotkeyTabs, isEditableKeyboardTarget } from "./tabHotkeys";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
@@ -881,10 +879,7 @@ export default function GameContainer() {
   }
 
   // Check if blood moon event is active
-  const isBloodMoonActive =
-    timedEventTab.isActive &&
-    timedEventTab.event?.eventId === "bloodMoonAttack";
-  const showBloodMoonOverlay = isBloodMoonActive || BLOOD_MOON_OVERLAY_DEBUG;
+  const showBloodMoonOverlay = isBloodMoonOverlayVisible(timedEventTab);
 
   /** Muted tab labels use ~60% opacity; while paused, distinguish inactive via color (consistent font weight avoids layout shift). */
   const tabInactiveTextClass = isPaused

@@ -42,7 +42,6 @@ type ActionInsightBadgeProps =
     target: "timedEvent";
     layout?: "inline";
     timeRemainingMs: number;
-    safetyTimeRemainingMs: number;
   };
 
 export function ActionInsightBadge(props: ActionInsightBadgeProps) {
@@ -53,8 +52,6 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   const actionId = target === "action" ? props.actionId : undefined;
   const timeRemainingMs =
     target === "timedEvent" ? props.timeRemainingMs : 0;
-  const safetyTimeRemainingMs =
-    target === "timedEvent" ? props.safetyTimeRemainingMs : 0;
 
   const { t, i18n } = useTranslation(["ui", "common"]);
   const state = useGameStore((s) => s as unknown as GameState);
@@ -96,7 +93,6 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   const timedTimerUsable =
     isTimedEvent &&
     timeRemainingMs > 0 &&
-    safetyTimeRemainingMs <= 0 &&
     effectiveTimedRemaining != null &&
     effectiveTimedRemaining > 0;
 
