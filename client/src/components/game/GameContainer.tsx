@@ -918,7 +918,7 @@ export default function GameContainer() {
       >
         {showBloodMoonOverlay && (
           <div
-            className="pointer-events-none absolute inset-0 z-0 opacity-50"
+            className="pointer-events-none absolute inset-0 z-0 opacity-30"
             aria-hidden
           >
             <SmokeBackground smokeColor="#cc0000" className="h-full w-full" />
