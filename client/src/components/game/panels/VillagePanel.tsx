@@ -39,8 +39,8 @@ import {
 import CooldownButton, {
   gameActionButtonGridClassName,
   gameActionOutlineButtonClassName,
-  GAME_ACTION_BUTTON_STACK_CLASS,
 } from "@/components/CooldownButton";
+import { ActionButtonSlot } from "@/components/game/GameActionButtonStack";
 import { Button } from "@/components/ui/button";
 import {
   getCurrentPopulation,
@@ -108,7 +108,6 @@ import {
 } from "@/components/ui/feed-fire-particles";
 import { audioManager, feedFireVolume } from "@/lib/audio";
 import { BUILD_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
-import { ButtonParticlePortalLayer } from "@/components/ui/button-particle-portal";
 import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
 import { PRIOR_ELIGIBLE_ACTIONS } from "@/game/buttonUpgrades";
 import {
@@ -809,10 +808,10 @@ export default function VillagePanel() {
 
       const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
       return isPriorEligible ? (
-        <div key={`${actionId}-wrapper`} className={GAME_ACTION_BUTTON_STACK_CLASS}>
+        <ActionButtonSlot key={`${actionId}-wrapper`} particleStack={false}>
           {button}
           <ButtonPriorBadge actionId={actionId} />
-        </div>
+        </ActionButtonSlot>
       ) : (
         button
       );
@@ -906,17 +905,21 @@ export default function VillagePanel() {
 
     if (showInsightReveal || showConstructionBoost) {
       return (
-        <div key={`${actionId}-wrapper`} className={GAME_ACTION_BUTTON_STACK_CLASS}>
+        <ActionButtonSlot key={`${actionId}-wrapper`} particleStack>
           {button}
           {showConstructionBoost && (
             <ConstructionBoostBadge actionId={actionId} />
           )}
           {showInsightReveal && <ActionInsightBadge actionId={actionId} />}
-        </div>
+        </ActionButtonSlot>
       );
     }
 
-    return button;
+    return (
+      <ActionButtonSlot key={`${actionId}-wrapper`} particleStack>
+        {button}
+      </ActionButtonSlot>
+    );
   };
 
   // Hold-to-repeat state management (moved outside to avoid conditional hooks)
@@ -1186,7 +1189,6 @@ export default function VillagePanel() {
       <SuccessParticles buttonRef={feedFireButtonRef} sparks={sparks} />
       <ScrollArea className="h-full w-full">
         <div className="w-full space-y-4 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
-          <ButtonParticlePortalLayer />
           {actionGroups.map((group, groupIndex) => {
             const visibleActions = group.actions.filter((action) => {
               const actionWithShow = action as {

@@ -14,8 +14,8 @@ import {
 import CooldownButton, {
   gameActionButtonGridClassName,
   gameActionButtonRowsClassName,
-  GAME_ACTION_BUTTON_STACK_CLASS,
 } from "@/components/CooldownButton";
+import { ActionButtonSlot } from "@/components/game/GameActionButtonStack";
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
 import { canRevealEffects } from "@/game/rules/insightReveal";
 import { getCraftItemDescription } from "@/game/rules/craftItemDescription";
@@ -30,7 +30,6 @@ import {
   getExploreParticleConfig,
   getChopWoodParticleConfig,
 } from "@/components/ui/bubbly-button.particles";
-import { ButtonParticlePortalLayer } from "@/components/ui/button-particle-portal";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
 import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
 import {
@@ -255,6 +254,8 @@ export default function CavePanel() {
     const isCaveExploreAction = caveExploreActions.includes(actionId);
     const isChopWood = actionId === "chopWood";
     const isCraftAction = actionId.startsWith("craft");
+    const hasParticleStack =
+      isCraftAction || isMineAction || isCaveExploreAction || isChopWood;
     const expeditionVillagersRequired = action.expeditionVillagersRequired
       ? action.expeditionVillagersRequired(state)
       : 0;
@@ -410,16 +411,22 @@ export default function CavePanel() {
       const needsWrapper = upgradeKey || isPriorEligible;
       const showInsightBadge = canRevealEffects(actionId, state);
       const wrapWithBadges = (inner: React.ReactNode) => {
-        if (!needsWrapper && !showInsightBadge) return inner;
+        if (!needsWrapper && !showInsightBadge) {
+          return (
+            <ActionButtonSlot key={actionId} particleStack={hasParticleStack}>
+              {inner}
+            </ActionButtonSlot>
+          );
+        }
         return (
-          <div key={actionId} className={GAME_ACTION_BUTTON_STACK_CLASS}>
+          <ActionButtonSlot key={actionId} particleStack={hasParticleStack}>
             {inner}
             {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
             {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
             {showInsightBadge && (
               <ActionInsightBadge actionId={actionId} />
             )}
-          </div>
+          </ActionButtonSlot>
         );
       };
       return wrapWithBadges(button);
@@ -470,16 +477,22 @@ export default function CavePanel() {
     const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
     const needsWrapper = upgradeKey || isPriorEligible;
     const showInsightBadge = canRevealEffects(actionId, state);
-    if (!needsWrapper && !showInsightBadge) return button;
+    if (!needsWrapper && !showInsightBadge) {
+      return (
+        <ActionButtonSlot key={actionId} particleStack={hasParticleStack}>
+          {button}
+        </ActionButtonSlot>
+      );
+    }
     return (
-      <div key={actionId} className={GAME_ACTION_BUTTON_STACK_CLASS}>
+      <ActionButtonSlot key={actionId} particleStack={hasParticleStack}>
         {button}
         {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
         {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
         {showInsightBadge && (
           <ActionInsightBadge actionId={actionId} />
         )}
-      </div>
+      </ActionButtonSlot>
     );
   };
 
@@ -488,7 +501,6 @@ export default function CavePanel() {
       <ScrollArea className="h-full w-full">
         {explosionEffect.ExplosionEffectRenderer()}
         <div className="w-full space-y-4 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
-          <ButtonParticlePortalLayer />
           {actionGroups.map((group, groupIndex) => {
             // Handle groups with subGroups (like Craft)
             if (group.subGroups) {

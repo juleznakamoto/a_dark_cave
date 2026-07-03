@@ -12,7 +12,6 @@ import {
 import { Z_INDEX } from "@/lib/z-index";
 
 type ButtonParticlePortalContextValue = {
-  bubbles: BubbleWithParticles[];
   spawnParticles: (
     x: number,
     y: number,
@@ -44,23 +43,13 @@ export function ButtonParticlePortalProvider({
   );
 
   return (
-    <ButtonParticlePortalContext.Provider value={{ bubbles, spawnParticles }}>
+    <ButtonParticlePortalContext.Provider value={{ spawnParticles }}>
       {children}
+      <BubblyButtonGlobalPortal
+        bubbles={bubbles}
+        zIndex={Z_INDEX.actionButtonParticles}
+      />
     </ButtonParticlePortalContext.Provider>
-  );
-}
-
-/** Mount at the top of panel scroll content — above titles, below action buttons. */
-export function ButtonParticlePortalLayer() {
-  const portal = useContext(ButtonParticlePortalContext);
-  if (!portal || portal.bubbles.length === 0) return null;
-
-  return (
-    <BubblyButtonGlobalPortal
-      bubbles={portal.bubbles}
-      zIndex={Z_INDEX.actionButtonParticles}
-      portaled={false}
-    />
   );
 }
 

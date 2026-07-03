@@ -10,8 +10,8 @@ import { cn } from "@/lib/utils";
 import { useButtonParticlePortal } from "@/components/ui/button-particle-portal";
 import type { ParticleConfig } from "@/components/ui/bubbly-button.particles";
 
-/** Stacking class for action buttons — above ButtonParticlePortalLayer. */
-export const GAME_ACTION_BUTTON_STACK_CLASS = "relative z-[20] inline-block";
+/** In-flow wrapper when no GameActionButtonStack is used (no click particles). */
+export const GAME_ACTION_BUTTON_STACK_CLASS = "relative inline-block";
 
 /** Uniform gap between game action buttons (horizontal, wrapped rows, stacked row groups). */
 export const GAME_ACTION_BUTTON_GRID_GAP_CLASS = "gap-4";
