@@ -96,7 +96,10 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
       // Notify parent if callback provided (for lifted state pattern)
       // Pass the absolute center position to parent
       if (onAnimationTrigger) {
-        onAnimationTrigger(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        onAnimationTrigger(
+          rect.left + rect.width / 2,
+          rect.top + rect.height / 2,
+        );
       }
 
       // Call original onClick
@@ -126,23 +129,34 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
         >
           <AnimatePresence>
             {bubbles.map((bubble) => {
-              const particleBubbles = Array.from({ length: config.count }).map(() => {
-                const angle = Math.random() * Math.PI * 2;
-                const distance =
-                  config.distanceMin + Math.random() * (config.distanceMax - config.distanceMin);
-                const size = config.sizeMin + Math.random() * (config.sizeMax - config.sizeMin);
-                const colorPool =
-                  config.smallParticleOnlyColors?.length && size > config.smallParticleMaxSize
-                    ? config.colors.filter((c) => !config.smallParticleOnlyColors!.includes(c))
-                    : config.smallParticleOnlyColors?.length
-                      ? [...config.colors, ...config.smallParticleOnlyColors]
-                      : config.colors;
-                const color = colorPool[Math.floor(Math.random() * colorPool.length)] ?? config.colors[0];
-                const duration =
-                  config.durationMin + Math.random() * (config.durationMax - config.durationMin);
+              const particleBubbles = Array.from({ length: config.count }).map(
+                () => {
+                  const angle = Math.random() * Math.PI * 2;
+                  const distance =
+                    config.distanceMin +
+                    Math.random() * (config.distanceMax - config.distanceMin);
+                  const size =
+                    config.sizeMin +
+                    Math.random() * (config.sizeMax - config.sizeMin);
+                  const colorPool =
+                    config.smallParticleOnlyColors?.length &&
+                    size > config.smallParticleMaxSize
+                      ? config.colors.filter(
+                          (c) => !config.smallParticleOnlyColors!.includes(c),
+                        )
+                      : config.smallParticleOnlyColors?.length
+                        ? [...config.colors, ...config.smallParticleOnlyColors]
+                        : config.colors;
+                  const color =
+                    colorPool[Math.floor(Math.random() * colorPool.length)] ??
+                    config.colors[0];
+                  const duration =
+                    config.durationMin +
+                    Math.random() * (config.durationMax - config.durationMin);
 
-                return { size, angle, distance, color, duration };
-              });
+                  return { size, angle, distance, color, duration };
+                },
+              );
 
               return particleBubbles.map((b, index) => {
                 const endX = Math.cos(b.angle) * b.distance;
@@ -169,7 +183,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                       y: 0,
                     }}
                     animate={{
-                      opacity: 0.8,
+                      opacity: 1,
                       scale: 0.0,
                       x: endX,
                       y: endY,
@@ -251,7 +265,7 @@ export function InlineButtonParticleLayer({
               }}
               initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
               animate={{
-                opacity: 0.8,
+                opacity: 1,
                 scale: 0,
                 x: particle.endX,
                 y: particle.endY,
@@ -321,13 +335,16 @@ function BubblyButtonGlobalPortalContent({
                 }}
                 initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
                 animate={{
-                  opacity: 0.8,
+                  opacity: 1,
                   scale: 0.0,
                   x: particle.endX,
                   y: particle.endY,
                 }}
                 exit={{ opacity: 0.8 }}
-                transition={{ duration: particle.duration, ease: [0, 0, 0.5, 1] }}
+                transition={{
+                  duration: particle.duration,
+                  ease: [0, 0, 0.5, 1],
+                }}
               />
             ))}
           </div>
