@@ -46,6 +46,10 @@ import { ProfileMenuProvider } from "./ProfileMenu";
 import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
 import MistBackground from "@/components/ui/mist-background";
+import { SmokeBackground } from "@/components/ui/spooky-smoke-animation";
+
+/** Preview blood moon background + smoke without the event active. Set false before release. */
+const BLOOD_MOON_OVERLAY_DEBUG = true;
 import { getUnclaimedAchievementIds } from "@/achievements";
 import { getVisibleHotkeyTabs, isEditableKeyboardTarget } from "./tabHotkeys";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
@@ -880,6 +884,7 @@ export default function GameContainer() {
   const isBloodMoonActive =
     timedEventTab.isActive &&
     timedEventTab.event?.eventId === "bloodMoonAttack";
+  const showBloodMoonOverlay = isBloodMoonActive || BLOOD_MOON_OVERLAY_DEBUG;
 
   /** Muted tab labels use ~60% opacity; while paused, distinguish inactive via color (consistent font weight avoids layout shift). */
   const tabInactiveTextClass = isPaused
@@ -911,11 +916,20 @@ export default function GameContainer() {
       <div
         className="fixed inset-0 bg-background text-foreground flex flex-col"
         style={{
-          backgroundColor: isBloodMoonActive ? "hsl(0, 50%, 5%)" : undefined,
+          backgroundColor: showBloodMoonOverlay ? "hsl(0, 50%, 5%)" : undefined,
           transition: "background-color 1s ease-in-out",
           ...iosChromeViewportStyle,
         }}
       >
+        {showBloodMoonOverlay && (
+          <div
+            className="pointer-events-none absolute inset-0 z-0 opacity-50"
+            aria-hidden
+          >
+            <SmokeBackground smokeColor="#cc0000" className="h-full w-full" />
+          </div>
+        )}
+
         <GameHeader />
 
         {/* Pause Overlay - covers panels; header, tabs, and footer stay above */}
