@@ -20,22 +20,22 @@ export interface ParticleConfig {
 
 // Build/stone tones (neutral, gray)
 const BUILD_TONES = [
+  tailwindToHex("neutral-700"),
   tailwindToHex("neutral-800"),
   tailwindToHex("neutral-900"),
-  tailwindToHex("neutral-950"),
-  tailwindToHex("stone-800"),
   tailwindToHex("stone-700"),
+  tailwindToHex("stone-600"),
+  tailwindToHex("stone-800"),
   tailwindToHex("stone-900"),
-  tailwindToHex("stone-950"),
 ];
 
 // Craft tones (amber, copper, bronze) - for craft action buttons
 export const CRAFT_TONES = [
+  tailwindToHex("amber-800"),
   tailwindToHex("amber-900"),
-  tailwindToHex("amber-950"),
-  tailwindToHex("yellow-900"),
-  tailwindToHex("orange-950"),
-  tailwindToHex("red-950"),
+  tailwindToHex("yellow-800"),
+  tailwindToHex("orange-900"),
+  tailwindToHex("red-900"),
 ];
 
 const DEFAULT_PARTICLE_CONFIG: Required<ParticleConfig> = {
@@ -63,6 +63,7 @@ export const BUILD_PARTICLE_CONFIG: Partial<ParticleConfig> = {
 
 const CRAFT_SMALL_PARTICLE_ONLY_COLORS = [
   tailwindToHex("yellow-500"),
+  tailwindToHex("yellow-400"),
   tailwindToHex("red-500"),
 ];
 
@@ -82,21 +83,21 @@ export const CRAFT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
 
 // Mine tones (grey/black base for all mining)
 const MINE_TONES = [
+  tailwindToHex("neutral-700"),
   tailwindToHex("neutral-800"),
   tailwindToHex("neutral-900"),
-  tailwindToHex("neutral-950"),
+  tailwindToHex("stone-700"),
   tailwindToHex("stone-800"),
   tailwindToHex("stone-900"),
-  tailwindToHex("stone-950"),
 ];
 
 // Per-resource highlight colors for small particles (size 1-2)
 const MINE_HIGHLIGHT_COLORS: Record<string, string[]> = {
   mineStone: [tailwindToHex("stone-400"), tailwindToHex("gray-400")],
-  mineIron: [tailwindToHex("red-800"), tailwindToHex("orange-900")],
-  mineCoal: [tailwindToHex("slate-950"), tailwindToHex("gray-950")],
-  mineSulfur: [tailwindToHex("yellow-500"), tailwindToHex("amber-400")],
-  mineObsidian: [tailwindToHex("violet-600"), tailwindToHex("purple-600")],
+  mineIron: [tailwindToHex("red-700"), tailwindToHex("orange-800")],
+  mineCoal: [tailwindToHex("slate-900"), tailwindToHex("gray-900")],
+  mineSulfur: [tailwindToHex("yellow-400"), tailwindToHex("amber-400")],
+  mineObsidian: [tailwindToHex("violet-500"), tailwindToHex("purple-500")],
   mineAdamant: [tailwindToHex("indigo-400"), tailwindToHex("blue-400")],
 };
 
@@ -128,15 +129,15 @@ export function getMineParticleConfig(
 // Cave explore tones - darker/more mysterious as depth increases
 // Cave explore base tones (stone/neutral - same for all levels)
 const EXPLORE_TONES = [
+  tailwindToHex("stone-600"),
   tailwindToHex("stone-700"),
   tailwindToHex("stone-800"),
-  tailwindToHex("stone-900"),
+  tailwindToHex("neutral-600"),
   tailwindToHex("neutral-700"),
   tailwindToHex("neutral-800"),
-  tailwindToHex("neutral-900"),
+  tailwindToHex("slate-600"),
   tailwindToHex("slate-700"),
   tailwindToHex("slate-800"),
-  tailwindToHex("slate-900"),
 ];
 
 // Per-level highlight colors for small particles - based on resources found at each level.
@@ -159,13 +160,13 @@ const EXPLORE_RESOURCES_BY_LEVEL: Record<string, string[]> = {
 };
 
 const RESOURCE_HIGHLIGHT_COLORS: Record<string, string> = {
-  wood: "amber-600",
+  wood: "amber-500",
   stone: "stone-400",
   coal: "slate-600",
   iron: "slate-500",
   sulfur: "yellow-500",
   silver: "slate-400",
-  obsidian: "violet-700",
+  obsidian: "violet-600",
   adamant: "indigo-400",
   gold: "amber-500",
   moonstone: "sky-400",
@@ -238,10 +239,10 @@ export function getExploreParticleConfig(
 export function getChopWoodParticleConfig(level = 0): Partial<ParticleConfig> {
   return {
     colors: [
-      tailwindToHex("amber-950"),
-      tailwindToHex("yellow-950"),
-      tailwindToHex("orange-950"),
-      tailwindToHex("stone-950"),
+      tailwindToHex("amber-900"),
+      tailwindToHex("yellow-900"),
+      tailwindToHex("orange-900"),
+      tailwindToHex("stone-900"),
     ],
     smallParticleOnlyColors: [tailwindToHex("green-950")],
     smallParticleMaxSize: 8,
