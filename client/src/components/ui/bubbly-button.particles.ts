@@ -43,10 +43,10 @@ const DEFAULT_PARTICLE_CONFIG: Required<ParticleConfig> = {
   smallParticleOnlyColors: [],
   smallParticleMaxSize: 2,
   count: 100,
-  durationMin: 0.65,
-  durationMax: 1.0,
-  distanceMin: 40,
-  distanceMax: 80,
+  durationMin: 0.75,
+  durationMax: 1.5,
+  distanceMin: 50,
+  distanceMax: 100,
   sizeMin: 5,
   sizeMax: 25,
   ease: [0, 0, 0.5, 1],
@@ -72,12 +72,12 @@ export const CRAFT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   smallParticleOnlyColors: CRAFT_SMALL_PARTICLE_ONLY_COLORS,
   smallParticleMaxSize: 2,
   count: 100,
-  durationMin: 0.45,
-  durationMax: 0.7,
-  distanceMin: 25,
-  distanceMax: 70,
+  durationMin: 0.5,
+  durationMax: 1,
+  distanceMin: 40,
+  distanceMax: 80,
   sizeMin: 1,
-  sizeMax: 6,
+  sizeMax: 8,
 };
 
 // Mine tones (grey/black base for all mining)
@@ -116,12 +116,12 @@ export function getMineParticleConfig(
     smallParticleOnlyColors: highlightColors,
     smallParticleMaxSize: 5,
     count: getParticleCountForLevel(level),
-    durationMin: 0.5,
-    durationMax: 1,
-    distanceMin: 25,
-    distanceMax: 70,
+    durationMin: 0.6,
+    durationMax: 1.2,
+    distanceMin: 40,
+    distanceMax: 80,
     sizeMin: 1,
-    sizeMax: 10,
+    sizeMax: 12,
   };
 }
 
@@ -225,12 +225,12 @@ export function getExploreParticleConfig(
     smallParticleOnlyColors: highlightColors,
     smallParticleMaxSize: 3,
     count,
-    durationMin: 0.5,
-    durationMax: 1.2,
-    distanceMin: 25,
-    distanceMax: 75,
+    durationMin: 0.75,
+    durationMax: 1.5,
+    distanceMin: 40,
+    distanceMax: 100,
     sizeMin: 2,
-    sizeMax: 10,
+    sizeMax: 12,
   };
 }
 
@@ -246,10 +246,10 @@ export function getChopWoodParticleConfig(level = 0): Partial<ParticleConfig> {
     smallParticleOnlyColors: [tailwindToHex("green-950")],
     smallParticleMaxSize: 8,
     count: getParticleCountForLevel(level),
-    durationMin: 0.35,
-    durationMax: 0.7,
-    distanceMin: 25,
-    distanceMax: 65,
+    durationMin: 0.5,
+    durationMax: 1,
+    distanceMin: 30,
+    distanceMax: 70,
     sizeMin: 2,
     sizeMax: 16,
   };
@@ -405,12 +405,12 @@ export function mergeParticleConfig(
 ): MergedParticleConfig {
   const merged = override
     ? {
-      ...DEFAULT_PARTICLE_CONFIG,
-      ...base,
-      ...override,
-      colors:
-        override.colors ?? base.colors ?? DEFAULT_PARTICLE_CONFIG.colors,
-    }
+        ...DEFAULT_PARTICLE_CONFIG,
+        ...base,
+        ...override,
+        colors:
+          override.colors ?? base.colors ?? DEFAULT_PARTICLE_CONFIG.colors,
+      }
     : { ...DEFAULT_PARTICLE_CONFIG, ...base };
   // All particles start at once, so we only need durationMax + small buffer for cleanup
   return {
@@ -450,10 +450,10 @@ export function generateParticleData(
       config.sizeMin + Math.random() * (config.sizeMax - config.sizeMin);
     const colorPool =
       config.smallParticleOnlyColors?.length &&
-        size > config.smallParticleMaxSize
+      size > config.smallParticleMaxSize
         ? config.colors.filter(
-          (c) => !config.smallParticleOnlyColors!.includes(c),
-        )
+            (c) => !config.smallParticleOnlyColors!.includes(c),
+          )
         : config.smallParticleOnlyColors?.length
           ? [...config.colors, ...config.smallParticleOnlyColors]
           : config.colors;
