@@ -278,7 +278,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           // appearance-none resets native Android Chromium button chrome that otherwise leaks
           // through and makes the dark outline buttons look flat/grey.
           "relative overflow-hidden transition-all duration-200 select-none appearance-none [-webkit-appearance:none]",
-          !isButtonDisabled && "cursor-pointer",
           isButtonDisabled && "pointer-events-none",
           // aria-disabled (not native disabled) so outline variant hover styles still apply — reset them.
           isButtonDisabled &&
