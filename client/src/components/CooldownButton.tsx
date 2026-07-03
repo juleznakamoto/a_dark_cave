@@ -35,7 +35,7 @@ export function gameActionOutlineButtonClassName(
   return cn(
     disabled ? "border-orange-950/50" : "border-orange-950",
     !disabled &&
-    `${hoverPrefix}bg-accent ${hoverPrefix}text-accent-foreground`,
+    `${hoverPrefix}bg-accent ${hoverPrefix}text-accent-foreground bg-neutral-600/10`,
   );
 }
 
