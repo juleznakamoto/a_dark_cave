@@ -13,19 +13,17 @@ import {
 type ExtendedLogEntry =
   | LogEntry
   | {
-      message: string;
-      type: "production";
-      id: string;
-      timestamp: number;
-    };
+    message: string;
+    type: "production";
+    id: string;
+    timestamp: number;
+  };
 
 const MARK_READ_HOVER_MS = 300;
 
 function LogPanel() {
   const { i18n } = useTranslation("ui");
-  const { log, timedEventTab } = useGameStore();
-  const isBloodMoon =
-    timedEventTab?.isActive && timedEventTab?.event?.title === "Blood Moon";
+  const { log } = useGameStore();
   const [readEntries, setReadEntries] = useState<Set<string>>(
     () => new Set(log.map((entry) => entry.id)),
   );
@@ -138,9 +136,8 @@ function LogPanel() {
                 >
                   {showNewIndicator ? (
                     <span
-                      className={`mt-2 h-1 w-1 shrink-0 rounded-full ${
-                        isNewVillager ? "bg-white" : "bg-primary"
-                      }`}
+                      className={`mt-2 h-1 w-1 shrink-0 rounded-full ${isNewVillager ? "bg-white" : "bg-primary"
+                        }`}
                       aria-hidden={true}
                     />
                   ) : (
@@ -155,12 +152,6 @@ function LogPanel() {
               );
             })}
           </div>
-        </div>
-        {/* Gradient overlay at bottom of content area */}
-        <div className="absolute bottom-[-1px] left-0 right-0 h-12 pointer-events-none overflow-hidden">
-          <div
-            className={`absolute inset-0 bg-gradient-to-t to-transparent opacity-50 ${isBloodMoon ? "from-[hsl(0_50%_5%)]" : "from-background"}`}
-          ></div>
         </div>
       </ScrollAreaWithIndicator>
     </div>
