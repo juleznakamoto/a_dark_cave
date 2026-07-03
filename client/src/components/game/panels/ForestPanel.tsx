@@ -14,7 +14,7 @@ import {
 import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
 import { getFocusTooltipHeaderTrailing } from "@/game/rules/focusTooltipIndicator";
 import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
-import CooldownButton, { gameActionButtonGridClassName } from "@/components/CooldownButton";
+import CooldownButton, { gameActionButtonGridClassName, GAME_ACTION_BUTTON_STACK_CLASS } from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
 import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
@@ -34,6 +34,7 @@ import {
   getChopWoodParticleConfig,
   getHuntParticleConfig,
 } from "@/components/ui/bubbly-button.particles";
+import { ButtonParticlePortalLayer } from "@/components/ui/button-particle-portal";
 import type { Action, GameState } from "@shared/schema";
 import { formatNumber } from "@/lib/utils";
 
@@ -465,7 +466,7 @@ export default function ForestPanel() {
       const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
       const needsWrapper = upgradeKey || isPriorEligible;
       return needsWrapper ? (
-        <div key={actionId} className="relative inline-block">
+        <div key={actionId} className={GAME_ACTION_BUTTON_STACK_CLASS}>
           {button}
           {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
           {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
@@ -512,7 +513,7 @@ export default function ForestPanel() {
     const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
     const needsWrapper = upgradeKey || isPriorEligible;
     return needsWrapper ? (
-      <div key={actionId} className="relative inline-block">
+      <div key={actionId} className={GAME_ACTION_BUTTON_STACK_CLASS}>
         {button}
         {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
         {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
@@ -526,6 +527,7 @@ export default function ForestPanel() {
     <>
       <ScrollArea className="h-full w-full">
         <div className="w-full space-y-4 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
+          <ButtonParticlePortalLayer />
           {actionGroups.map((group, groupIndex) => {
             const visibleActions = group.actions.filter((action) =>
               shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id],

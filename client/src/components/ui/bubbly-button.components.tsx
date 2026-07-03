@@ -294,17 +294,14 @@ export function useInlineButtonParticles(
   return { bursts, triggerParticles };
 }
 
-// Global bubble layer component for lifted state pattern
-export const BubblyButtonGlobalPortal = ({
+function BubblyButtonGlobalPortalContent({
   bubbles,
-  zIndex = 5,
+  zIndex,
 }: {
   bubbles: BubbleWithParticles[];
-  zIndex?: number;
-}) => {
-  if (typeof document === "undefined") return null;
-
-  return createPortal(
+  zIndex: number;
+}) {
+  return (
     <div className="fixed inset-0 pointer-events-none" style={{ zIndex }}>
       <AnimatePresence>
         {bubbles.map((bubble) => (
@@ -336,9 +333,31 @@ export const BubblyButtonGlobalPortal = ({
           </div>
         ))}
       </AnimatePresence>
-    </div>,
-    document.body,
+    </div>
   );
+}
+
+// Global bubble layer component for lifted state pattern
+export const BubblyButtonGlobalPortal = ({
+  bubbles,
+  zIndex = 5,
+  portaled = true,
+}: {
+  bubbles: BubbleWithParticles[];
+  zIndex?: number;
+  /** When false, render inline (for panel layers between content and buttons). */
+  portaled?: boolean;
+}) => {
+  if (bubbles.length === 0) return null;
+
+  const content = (
+    <BubblyButtonGlobalPortalContent bubbles={bubbles} zIndex={zIndex} />
+  );
+
+  if (!portaled) return content;
+  if (typeof document === "undefined") return null;
+
+  return createPortal(content, document.body);
 };
 
 export { BubblyButton };

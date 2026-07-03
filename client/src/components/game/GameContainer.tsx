@@ -21,6 +21,7 @@ import BastionPanel from "./panels/BastionPanel";
 import AchievementsPanel from "./panels/AchievementsPanel";
 import TimedEventPanel from "./panels/TimedEventPanel";
 import LogPanel from "./panels/LogPanel";
+import { ButtonParticlePortalProvider } from "@/components/ui/button-particle-portal";
 import StartScreen from "./StartScreen";
 import {
   useGameStore,
@@ -1234,20 +1235,22 @@ export default function GameContainer() {
             </nav>
 
             {/* Action Panels */}
-            <div
-              className={`flex-1 overflow-x-hidden min-h-0 ${activeTab === "achievements"
-                ? "overflow-hidden"
-                : "overflow-y-auto scrollbar-hide"
-                }`}
-            >
-              {activeTab === "cave" && <CavePanel />}
-              {activeTab === "village" && <VillagePanel />}
-              {activeTab === "forest" && <ForestPanel />}
-              {activeTab === "estate" && <EstatePanel />}
-              {activeTab === "bastion" && <BastionPanel />}
-              {activeTab === "achievements" && <AchievementsPanel />}
-              {activeTab === "timedevent" && <TimedEventPanel />}
-            </div>
+            <ButtonParticlePortalProvider>
+              <div
+                className={`flex-1 overflow-x-hidden min-h-0 ${activeTab === "achievements"
+                  ? "overflow-hidden"
+                  : "overflow-y-auto scrollbar-hide"
+                  }`}
+              >
+                {activeTab === "cave" && <CavePanel />}
+                {activeTab === "village" && <VillagePanel />}
+                {activeTab === "forest" && <ForestPanel />}
+                {activeTab === "estate" && <EstatePanel />}
+                {activeTab === "bastion" && <BastionPanel />}
+                {activeTab === "achievements" && <AchievementsPanel />}
+                {activeTab === "timedevent" && <TimedEventPanel />}
+              </div>
+            </ButtonParticlePortalProvider>
           </section>
         </main>
 

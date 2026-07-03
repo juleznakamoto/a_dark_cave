@@ -39,6 +39,7 @@ import {
 import CooldownButton, {
   gameActionButtonGridClassName,
   gameActionOutlineButtonClassName,
+  GAME_ACTION_BUTTON_STACK_CLASS,
 } from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
 import {
@@ -107,6 +108,7 @@ import {
 } from "@/components/ui/feed-fire-particles";
 import { audioManager, feedFireVolume } from "@/lib/audio";
 import { BUILD_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
+import { ButtonParticlePortalLayer } from "@/components/ui/button-particle-portal";
 import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
 import { PRIOR_ELIGIBLE_ACTIONS } from "@/game/buttonUpgrades";
 import {
@@ -807,7 +809,7 @@ export default function VillagePanel() {
 
       const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
       return isPriorEligible ? (
-        <div key={`${actionId}-wrapper`} className="relative inline-block">
+        <div key={`${actionId}-wrapper`} className={GAME_ACTION_BUTTON_STACK_CLASS}>
           {button}
           <ButtonPriorBadge actionId={actionId} />
         </div>
@@ -904,7 +906,7 @@ export default function VillagePanel() {
 
     if (showInsightReveal || showConstructionBoost) {
       return (
-        <div key={`${actionId}-wrapper`} className="relative inline-block">
+        <div key={`${actionId}-wrapper`} className={GAME_ACTION_BUTTON_STACK_CLASS}>
           {button}
           {showConstructionBoost && (
             <ConstructionBoostBadge actionId={actionId} />
@@ -1184,6 +1186,7 @@ export default function VillagePanel() {
       <SuccessParticles buttonRef={feedFireButtonRef} sparks={sparks} />
       <ScrollArea className="h-full w-full">
         <div className="w-full space-y-4 pt-2 md:pt-0 mt-0 md:mt-2 mb-2 pr-2 pb-2">
+          <ButtonParticlePortalLayer />
           {actionGroups.map((group, groupIndex) => {
             const visibleActions = group.actions.filter((action) => {
               const actionWithShow = action as {

@@ -7,11 +7,11 @@ import { GAME_CONSTANTS } from "@/game/constants";
 import { INSIGHT_REVEAL_DURATION_MS } from "@/game/rules/insightReveal";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { cn } from "@/lib/utils";
-import {
-  InlineButtonParticleLayer,
-  useInlineButtonParticles,
-} from "@/components/ui/bubbly-button";
+import { useButtonParticlePortal } from "@/components/ui/button-particle-portal";
 import type { ParticleConfig } from "@/components/ui/bubbly-button.particles";
+
+/** Stacking class for action buttons — above ButtonParticlePortalLayer. */
+export const GAME_ACTION_BUTTON_STACK_CLASS = "relative z-[20] inline-block";
 
 /** Uniform gap between game action buttons (horizontal, wrapped rows, stacked row groups). */
 export const GAME_ACTION_BUTTON_GRID_GAP_CLASS = "gap-4";
@@ -223,20 +223,21 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           : insightRevealWidth;
 
     const actionExecutedRef = useRef<boolean>(false);
-    const { bursts, triggerParticles } = useInlineButtonParticles(particleConfig);
+    const particlePortal = useButtonParticlePortal();
 
-    const emitClickParticles = () => {
-      if (particleConfig) {
-        triggerParticles();
-      } else if (onAnimationTrigger) {
-        let button: HTMLButtonElement | null = null;
-        if (ref && typeof ref !== "function" && ref.current) {
-          button = ref.current;
-        }
-        if (button) {
-          const rect = button.getBoundingClientRect();
-          onAnimationTrigger(rect.left + rect.width / 2, rect.top + rect.height / 2);
-        }
+    const emitClickParticles = (button: HTMLButtonElement | null) => {
+      if (particleConfig && particlePortal && button) {
+        const partial =
+          typeof particleConfig === "function" ? particleConfig() : particleConfig;
+        const rect = button.getBoundingClientRect();
+        particlePortal.spawnParticles(
+          rect.left + rect.width / 2,
+          rect.top + rect.height / 2,
+          partial,
+        );
+      } else if (onAnimationTrigger && button) {
+        const rect = button.getBoundingClientRect();
+        onAnimationTrigger(rect.left + rect.width / 2, rect.top + rect.height / 2);
       }
     };
 
@@ -245,7 +246,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       if (!isCoolingDown && !isExecuting && !isInsightRevealing && !isPlayTimeOverlayActive) {
         actionExecutedRef.current = true;
 
-        emitClickParticles();
+        emitClickParticles(e.currentTarget);
 
         onClick();
         // Reset the flag after a short delay
@@ -324,7 +325,13 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     // onClick never fires.
     const triggerPrimaryClick = (e?: React.MouseEvent | React.TouchEvent) => {
       if (isButtonDisabled) return;
-      emitClickParticles();
+      let button: HTMLButtonElement | null = null;
+      if (ref && typeof ref !== "function" && ref.current) {
+        button = ref.current;
+      } else if (e?.target) {
+        button = (e.target as HTMLElement).closest?.("button") ?? null;
+      }
+      emitClickParticles(button);
       onClick();
     };
 
@@ -359,8 +366,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       );
 
     return (
-      <div className={cn("relative inline-block", particleConfig && "isolate")}>
-        {particleConfig && <InlineButtonParticleLayer bursts={bursts} />}
+      <div className={GAME_ACTION_BUTTON_STACK_CLASS}>
         <TooltipWrapper
           tooltip={tooltip}
           tooltipId={buttonId}

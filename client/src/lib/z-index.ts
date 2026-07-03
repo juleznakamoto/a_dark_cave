@@ -3,11 +3,17 @@
  * Use these constants instead of magic numbers.
  *
  * Hierarchy (low → high):
- * - particles: Transient particle effects (fire, explosions)
+ * - actionButtonParticles: Click bursts above panel content, below buttons
+ * - actionButtons: Game action buttons
+ * - particles: Transient particle effects (feed fire, explosions)
  * - tooltip: Tooltips, must appear above dialogs
  * - topLayer: Full-screen overlays (end screen, start screen CTA)
  */
 export const Z_INDEX = {
+  /** Click bursts above panel content, below action buttons. */
+  actionButtonParticles: 10,
+  /** Game action buttons (CooldownButton) — above actionButtonParticles. */
+  actionButtons: 20,
   particles: 1000,
   particlesForeground: 1001,
   tooltip: 10000,
