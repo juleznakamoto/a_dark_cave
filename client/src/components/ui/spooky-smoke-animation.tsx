@@ -44,7 +44,7 @@ void main(){
 
   col=mix(col, u_color, dot(col,vec3(.21,.71,.07)));
 
-  col=mix(vec3(.08),col,min(time*.1,1.));
+  col=mix(vec3(.08),col,min(time*.25,1.));
   col=clamp(col,.08,1.);
   O=vec4(col,1);
 }`;

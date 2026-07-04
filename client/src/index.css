@@ -1133,6 +1133,21 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
   opacity: 0;
 }
 
+@keyframes blood-moon-smoke-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.3;
+  }
+}
+
+.blood-moon-smoke-fade-in {
+  animation: blood-moon-smoke-fade-in ease-in forwards;
+  opacity: 0;
+}
+
 
 @keyframes bubbly-top {
   0% {
