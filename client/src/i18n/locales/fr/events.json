@@ -112,6 +112,7 @@
         "label": "Se préparer à l'attaque"
       },
       "sacrificeVillagers": {
+        "cost": "{{sacrificeAmount}} Villageois",
         "label": "Se préparer à l'attaque"
       }
     },

@@ -92,9 +92,11 @@ export function TooltipWrapper({
     return <div className={className}>{children}</div>;
   }
 
+  const tooltipTriggerCursorClass = disabled ? "cursor-not-allowed" : undefined;
+
   return (
     <div
-      className={className}
+      className={cn(className, tooltipTriggerCursorClass)}
       data-tooltip-trigger-id={finalTooltipId}
       style={{ touchAction: "manipulation" }}
       onClickCapture={(e) => {
@@ -178,6 +180,7 @@ export function TooltipWrapper({
                       (children as React.ReactElement<{ className?: string }>).props
                         .className,
                       tooltipTriggerClassName,
+                      tooltipTriggerCursorClass,
                     ),
                   },
                 )
@@ -185,7 +188,12 @@ export function TooltipWrapper({
                 children
               )
             ) : (
-              <span className={tooltipTriggerClassName ?? "block w-full"}>
+              <span
+                className={cn(
+                  tooltipTriggerClassName ?? "block w-full",
+                  tooltipTriggerCursorClass,
+                )}
+              >
                 {children}
               </span>
             )}

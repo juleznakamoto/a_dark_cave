@@ -3,6 +3,7 @@ import type { GameState } from "@shared/schema";
 import type { EventChoice } from "@/game/rules/events";
 import { getVillagersInVillage } from "@/game/population";
 import { getResourceName } from "@/i18n/resolveGameText";
+import { resolveEventChoiceCost } from "@/i18n/eventText";
 import { getUiTooltip } from "@/i18n/tooltipLabels";
 
 type TranslateOptions = Record<string, string | number | boolean | undefined>;
@@ -178,12 +179,31 @@ function buildVillagerAffordance(
 export function resolveEventVillagerCostAmount(
   cost: string | ((state: GameState) => string) | undefined,
   state: GameState,
-  options?: { catalogId?: string; choiceId?: string },
+  options?: {
+    catalogId?: string;
+    choiceId?: string;
+    vars?: TranslateOptions;
+  },
 ): number | null {
+  if (
+    eventChoiceUsesTotalVillagerCost(options?.catalogId, options?.choiceId) &&
+    options?.vars
+  ) {
+    const fromVars = parseFormattedCostAmount(options.vars.sacrificeAmount);
+    if (fromVars !== null) {
+      return fromVars;
+    }
+  }
+
   if (options?.catalogId && options?.choiceId) {
-    const template = getCatalogCostTemplate(options.catalogId, options.choiceId);
-    if (template) {
-      const fromCatalog = parseVillagerCostFromDisplayText(template);
+    const resolvedCatalogCost = resolveEventChoiceCost(
+      options.catalogId,
+      options.choiceId,
+      undefined,
+      options.vars,
+    );
+    if (resolvedCatalogCost) {
+      const fromCatalog = parseVillagerCostFromDisplayText(resolvedCatalogCost);
       if (fromCatalog !== null) {
         return fromCatalog;
       }
@@ -289,17 +309,18 @@ export function getEventChoiceAffordance(
   }
 
   if (options?.catalogId) {
-    const catalogTemplate = getCatalogCostTemplate(options.catalogId, choice.id);
-    if (catalogTemplate) {
-      const villagerCost = parseVillagerCostFromDisplayText(catalogTemplate);
-      if (villagerCost !== null) {
-        return buildVillagerAffordance(villagerCost, state, {
-          useTotalInVillage: eventChoiceUsesTotalVillagerCost(
-            options.catalogId,
-            choice.id,
-          ),
-        });
-      }
+    const villagerCost = resolveEventVillagerCostAmount(choice.cost, state, {
+      catalogId: options.catalogId,
+      choiceId: choice.id,
+      vars: options.vars,
+    });
+    if (villagerCost !== null) {
+      return buildVillagerAffordance(villagerCost, state, {
+        useTotalInVillage: eventChoiceUsesTotalVillagerCost(
+          options.catalogId,
+          choice.id,
+        ),
+      });
     }
 
     const catalogCosts = getResourceCostsFromCatalogTemplate(
@@ -315,6 +336,19 @@ export function getEventChoiceAffordance(
 
   const cost = choice.cost;
   if (!cost) {
+    const villagerCost = resolveEventVillagerCostAmount(undefined, state, {
+      catalogId: options?.catalogId,
+      choiceId: choice.id,
+      vars: options?.vars,
+    });
+    if (villagerCost !== null) {
+      return buildVillagerAffordance(villagerCost, state, {
+        useTotalInVillage: eventChoiceUsesTotalVillagerCost(
+          options?.catalogId,
+          choice.id,
+        ),
+      });
+    }
     return { canAfford: true, costs: [], individualAffordance: {} };
   }
 

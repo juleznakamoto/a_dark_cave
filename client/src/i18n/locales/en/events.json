@@ -112,6 +112,7 @@
         "label": "Prepare for attack"
       },
       "sacrificeVillagers": {
+        "cost": "{{sacrificeAmount}} Villagers",
         "label": "Sacrifice villagers"
       }
     },

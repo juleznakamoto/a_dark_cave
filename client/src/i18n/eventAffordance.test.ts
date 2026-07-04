@@ -145,6 +145,16 @@ describe("eventAffordance", () => {
     expect(amount).toBe(20);
   });
 
+  it("resolves blood moon sacrifice amount from event i18n vars without choice cost", () => {
+    const amount = resolveEventVillagerCostAmount(undefined, makeState(), {
+      catalogId: "bloodMoonAttack",
+      choiceId: "sacrificeVillagers",
+      vars: { sacrificeAmount: 10 },
+    });
+
+    expect(amount).toBe(10);
+  });
+
   it("treats traders_daughter do_not_help as cost-free", () => {
     expect(
       eventChoiceHasBlockingCost(

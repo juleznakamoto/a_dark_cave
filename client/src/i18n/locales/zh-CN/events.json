@@ -112,6 +112,7 @@
         "label": "准备迎击"
       },
       "sacrificeVillagers": {
+        "cost": "{{sacrificeAmount}} 村民",
         "label": "准备迎击"
       }
     },

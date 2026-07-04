@@ -542,15 +542,17 @@ export default function TimedEventPanel() {
               const buttonContent = (
                 <Button
                   onClick={(e) => {
+                    if (isDisabled) return;
                     e.stopPropagation();
                     handleChoice(choice.id);
                   }}
                   variant="outline"
                   size="xs"
-                  disabled={isDisabled}
+                  aria-disabled={isDisabled || undefined}
                   button_id={`timedevent-${choice.id}`}
                   className={cn(
                     "h-auto min-h-7 w-fit max-w-full gap-2 py-1 text-left justify-start whitespace-normal",
+                    isDisabled && "pointer-events-none opacity-50",
                     gameActionOutlineButtonClassName(isDisabled),
                   )}
                 >
@@ -587,37 +589,37 @@ export default function TimedEventPanel() {
                 : undefined;
 
               const tooltipContent =
-                costText || rewardText || showSuccessTooltip || merchantEffectLine ? (
+                costText ||
+                  costBreakdown.length > 0 ||
+                  rewardText ||
+                  showSuccessTooltip ||
+                  merchantEffectLine ? (
                   <div className="text-xs whitespace-nowrap">
-                    {costText && (
-                      <>
-                        {costBreakdown.length > 0 ? (
-                          <div>
-                            {costBreakdown.map((costItem, index) => (
-                              <div
-                                key={index}
-                                className={
-                                  costItem.satisfied
-                                    ? "text-foreground"
-                                    : "text-muted-foreground"
-                                }
-                              >
-                                {costItem.text}
-                              </div>
-                            ))}
+                    {costBreakdown.length > 0 ? (
+                      <div>
+                        {costBreakdown.map((costItem, index) => (
+                          <div
+                            key={index}
+                            className={
+                              costItem.satisfied
+                                ? "text-foreground"
+                                : "text-muted-foreground"
+                            }
+                          >
+                            {costItem.text}
                           </div>
-                        ) : (
-                          costText
-                        )}
-                      </>
+                        ))}
+                      </div>
+                    ) : (
+                      costText && <div>{costText}</div>
                     )}
-                    {costText && rewardText && (
+                    {(costText || costBreakdown.length > 0) && rewardText && (
                       <div className="border-t border-border my-1" />
                     )}
                     {rewardText && (
                       <div className="text-foreground">{rewardText}</div>
                     )}
-                    {(costText || rewardText) &&
+                    {(costText || costBreakdown.length > 0 || rewardText) &&
                       (showSuccessTooltip || merchantEffectLine) && (
                         <div className="border-t border-border my-1" />
                       )}
@@ -655,8 +657,16 @@ export default function TimedEventPanel() {
                   tooltipId={`timedevent-${choice.id}`}
                   disabled={isDisabled}
                   onClick={isDisabled ? undefined : () => handleChoice(choice.id)}
-                  onMouseEnter={costText ? highlightCostResources : undefined}
-                  onMouseLeave={costText ? () => setHighlightedResources([]) : undefined}
+                  onMouseEnter={
+                    costText || costBreakdown.length > 0
+                      ? highlightCostResources
+                      : undefined
+                  }
+                  onMouseLeave={
+                    costText || costBreakdown.length > 0
+                      ? () => setHighlightedResources([])
+                      : undefined
+                  }
                 >
                   {buttonContent}
                 </TooltipWrapper>

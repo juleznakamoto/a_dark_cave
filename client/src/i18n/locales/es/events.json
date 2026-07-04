@@ -112,6 +112,7 @@
         "label": "Prepararse para el ataque"
       },
       "sacrificeVillagers": {
+        "cost": "{{sacrificeAmount}} Aldeanos",
         "label": "Prepararse para el ataque"
       }
     },

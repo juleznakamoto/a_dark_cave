@@ -112,6 +112,7 @@
         "label": "Готовиться к атаке"
       },
       "sacrificeVillagers": {
+        "cost": "{{sacrificeAmount}} Жители",
         "label": "Готовиться к атаке"
       }
     },

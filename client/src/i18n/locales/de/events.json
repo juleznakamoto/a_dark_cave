@@ -112,6 +112,7 @@
         "label": "Auf Angriff vorbereiten" //ok
       },
       "sacrificeVillagers": {
+        "cost": "{{sacrificeAmount}} Dorfbewohner",
         "label": "Dorfbewohner opfern"
       }
     },

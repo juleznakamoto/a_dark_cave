@@ -112,6 +112,7 @@
         "label": "Preparati all'attacco"
       },
       "sacrificeVillagers": {
+        "cost": "{{sacrificeAmount}} Abitanti",
         "label": "Sacrifica abitanti"
       }
     },

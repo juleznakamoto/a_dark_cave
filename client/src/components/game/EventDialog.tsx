@@ -358,17 +358,21 @@ export default function EventDialog({
 
                 const showSuccessTooltip = hasEventChoiceSuccessTooltip(choice);
 
-                const selectChoice = () => handleChoice(choice.id);
+                const selectChoice = () => {
+                  if (isDisabled) return;
+                  handleChoice(choice.id);
+                };
                 const buttonContent = (
                   <Button
                     onClick={selectChoice}
                     variant="outline"
                     size="xs"
+                    aria-disabled={isDisabled || undefined}
                     className={cn(
                       "h-auto min-h-7 w-fit max-w-full flex items-center justify-start gap-2 py-1 text-left whitespace-normal",
+                      isDisabled && "pointer-events-none opacity-50",
                       gameActionOutlineButtonClassName(isDisabled),
                     )}
-                    disabled={isDisabled}
                     button_id={`event-choice-${choice.id}`}
                   >
                     <span>{labelText}</span>

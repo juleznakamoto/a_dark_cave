@@ -799,6 +799,7 @@ export function getEventChoiceCostBreakdown(
     const villagerCost = resolveEventVillagerCostAmount(cost, state, {
       catalogId: options.catalogId,
       choiceId: options.choiceId,
+      vars: options.vars,
     });
     if (villagerCost !== null) {
       return getEventVillagerCostTooltipRows(villagerCost, state, {
