@@ -18,7 +18,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 8 && !state.bloodMoonState.hasWon,
     timeProbability: (state: GameState) =>
-      (state.bloodMoonState?.occurrenceCount ?? 0) === 0 ? 45 : 75,
+      (state.bloodMoonState?.occurrenceCount ?? 0) === 0 ? 45 : 75,
     i18nVars: bloodMoonI18nVars,
     priority: 5,
     repeatable: true,
@@ -28,6 +28,13 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "sacrificeVillagers",
+        cost: (state: GameState) => {
+          const amount = bloodMoonSacrificeAmount(
+            state.cruelMode,
+            state.bloodMoonState?.occurrenceCount ?? 0,
+          );
+          return `${amount} Villagers`;
+        },
         effect: (state: GameState) => {
           const sacrificeAmount = bloodMoonSacrificeAmount(
             state.cruelMode,

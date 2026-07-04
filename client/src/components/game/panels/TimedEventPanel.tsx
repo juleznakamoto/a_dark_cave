@@ -26,8 +26,6 @@ import {
   getTotalMerchantDiscount,
   isKnowledgeBonusMaxed,
 } from "@/game/rules/effectsStats";
-import { bloodMoonSacrificeAmount } from "@/game/cruelMode";
-import { getVillagersInVillage } from "@/game/population";
 import { getGamblerLeaveAfterGamesMessage } from "@/game/rules/eventsGambler";
 import GamblerDiceDialog from "@/components/game/GamblerDiceDialog";
 import { getTotalLuck } from "@/game/rules/effectsCalculation";
@@ -515,25 +513,10 @@ export default function TimedEventPanel() {
                 isMerchantEvent &&
                 gameState.merchantTrades?.purchasedIds?.includes(choice.id);
 
-              // Check if this is the sacrifice choice in blood moon event
-              let villagersCheckPassed = true;
-              if (choice.id === 'sacrificeVillagers' && eventId === 'bloodMoonAttack') {
-                const sacrificeAmount = bloodMoonSacrificeAmount(
-                  gameState.cruelMode,
-                  gameState.bloodMoonState?.occurrenceCount ?? 0,
-                );
-                const totalVillagers = getVillagersInVillage(gameState);
-                if (totalVillagers < sacrificeAmount) {
-                  villagersCheckPassed = false;
-                }
-              }
-
-              // Disable if can't afford a paid choice, time is up, already purchased, or not enough villagers
               const isDisabled =
                 (hasBlockingCost && !canAfford) ||
                 timeRemaining <= 0 ||
-                isPurchased ||
-                !villagersCheckPassed;
+                isPurchased;
 
               // Calculate success percentage if this choice has odds (Book of War)
               let successPercentage: string | null = null;

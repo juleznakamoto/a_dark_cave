@@ -1,6 +1,7 @@
 import i18n from "i18next";
 import type { GameState } from "@shared/schema";
 import type { EventChoice } from "@/game/rules/events";
+import { getVillagersInVillage } from "@/game/population";
 import { getResourceName } from "@/i18n/resolveGameText";
 import { getUiTooltip } from "@/i18n/tooltipLabels";
 
@@ -150,12 +151,23 @@ export function getFreeVillagerCount(state: GameState): number {
   return state.villagers?.free ?? 0;
 }
 
+export function eventChoiceUsesTotalVillagerCost(
+  catalogId?: string,
+  choiceId?: string,
+): boolean {
+  return catalogId === "bloodMoonAttack" && choiceId === "sacrificeVillagers";
+}
+
 function buildVillagerAffordance(
   amount: number,
   state: GameState,
+  options?: { useTotalInVillage?: boolean },
 ): EventChoiceAffordance {
-  const free = getFreeVillagerCount(state);
-  const hasEnough = free >= amount;
+  const useTotalInVillage = options?.useTotalInVillage ?? false;
+  const available = useTotalInVillage
+    ? getVillagersInVillage(state)
+    : getFreeVillagerCount(state);
+  const hasEnough = available >= amount;
   return {
     canAfford: hasEnough,
     costs: [],
@@ -186,20 +198,25 @@ export function resolveEventVillagerCostAmount(
   return parseVillagerCostFromDisplayText(costText);
 }
 
-/** Tooltip rows for event choices that cost free villagers. */
+/** Tooltip rows for event choices that cost villagers. */
 export function getEventVillagerCostTooltipRows(
   costAmount: number,
   state: GameState,
+  options?: { useTotalInVillage?: boolean },
 ): Array<{ text: string; satisfied: boolean }> {
-  const free = getFreeVillagerCount(state);
-  const canAfford = free >= costAmount;
+  const useTotalInVillage = options?.useTotalInVillage ?? false;
+  const available = useTotalInVillage
+    ? getVillagersInVillage(state)
+    : getFreeVillagerCount(state);
+  const canAfford = available >= costAmount;
+  const tooltipKey = useTotalInVillage ? "villagerCost" : "freeVillagerCost";
   return [
     {
       text: getUiTooltip(
-        "freeVillagerCost",
+        tooltipKey,
         costAmount === 1
-          ? "-{{count}} Free Villager"
-          : "-{{count}} Free Villagers",
+          ? "-{{count}} Villager"
+          : "-{{count}} Villagers",
         { count: costAmount },
       ),
       satisfied: canAfford,
@@ -276,7 +293,12 @@ export function getEventChoiceAffordance(
     if (catalogTemplate) {
       const villagerCost = parseVillagerCostFromDisplayText(catalogTemplate);
       if (villagerCost !== null) {
-        return buildVillagerAffordance(villagerCost, state);
+        return buildVillagerAffordance(villagerCost, state, {
+          useTotalInVillage: eventChoiceUsesTotalVillagerCost(
+            options.catalogId,
+            choice.id,
+          ),
+        });
       }
     }
 
@@ -308,7 +330,12 @@ export function getEventChoiceAffordance(
 
   const villagerCost = parseVillagerCostFromDisplayText(costText);
   if (villagerCost !== null) {
-    return buildVillagerAffordance(villagerCost, state);
+    return buildVillagerAffordance(villagerCost, state, {
+      useTotalInVillage: eventChoiceUsesTotalVillagerCost(
+        options?.catalogId,
+        choice.id,
+      ),
+    });
   }
 
   return { canAfford: true, costs: [], individualAffordance: {} };

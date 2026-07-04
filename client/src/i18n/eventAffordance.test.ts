@@ -171,4 +171,28 @@ describe("eventAffordance", () => {
     expect(rows[0].text).toContain("Free Villager");
     expect(rows[0].satisfied).toBe(false);
   });
+
+  it("uses total village villagers for blood moon sacrifice tooltip and affordance", () => {
+    const state = makeState({}, { free: 0, gatherer: 12 });
+
+    const affordance = getEventChoiceAffordance(
+      {
+        id: "sacrificeVillagers",
+        effect: () => ({}),
+        cost: "10 Villagers",
+      },
+      state,
+      { catalogId: "bloodMoonAttack" },
+    );
+
+    expect(affordance.canAfford).toBe(true);
+
+    const rows = getEventVillagerCostTooltipRows(10, state, {
+      useTotalInVillage: true,
+    });
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0].text).toBe("-10 Villagers");
+    expect(rows[0].satisfied).toBe(true);
+  });
 });

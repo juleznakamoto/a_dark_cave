@@ -30,6 +30,7 @@ import {
 import {
   getEventChoiceAffordance,
   getEventVillagerCostTooltipRows,
+  eventChoiceUsesTotalVillagerCost,
   parseVillagerCostFromDisplayText,
   resolveEventVillagerCostAmount,
 } from "@/i18n/eventAffordance";
@@ -800,7 +801,12 @@ export function getEventChoiceCostBreakdown(
       choiceId: options.choiceId,
     });
     if (villagerCost !== null) {
-      return getEventVillagerCostTooltipRows(villagerCost, state);
+      return getEventVillagerCostTooltipRows(villagerCost, state, {
+        useTotalInVillage: eventChoiceUsesTotalVillagerCost(
+          options.catalogId,
+          options.choiceId,
+        ),
+      });
     }
   }
 
@@ -856,7 +862,12 @@ export function getEventChoiceCostBreakdown(
 
     const villagerCost = parseVillagerCostFromDisplayText(costText);
     if (villagerCost !== null) {
-      return getEventVillagerCostTooltipRows(villagerCost, state);
+      return getEventVillagerCostTooltipRows(villagerCost, state, {
+        useTotalInVillage: eventChoiceUsesTotalVillagerCost(
+          options?.catalogId,
+          options?.choiceId,
+        ),
+      });
     }
   }
 

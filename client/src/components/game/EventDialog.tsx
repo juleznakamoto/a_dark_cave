@@ -17,8 +17,6 @@ import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import CubeDialog from "./CubeDialog";
-import { bloodMoonSacrificeAmount } from "@/game/cruelMode";
-import { getVillagersInVillage } from "@/game/population";
 import { useTranslation } from "react-i18next";
 import {
   getEventRulesCatalogId,
@@ -326,18 +324,6 @@ export default function EventDialog({
                 const tradeChoice = choice as typeof choice & Partial<MerchantTradeData>;
                 const cost = choice.cost;
                 let isDisabled = (timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current;
-
-                // Check if this is the sacrifice choice in blood moon event
-                if (choice.id === 'sacrificeVillagers' && event.id === 'bloodMoonAttack') {
-                  const sacrificeAmount = bloodMoonSacrificeAmount(
-                    gameState.cruelMode,
-                    gameState.bloodMoonState?.occurrenceCount ?? 0,
-                  );
-                  const totalVillagers = getVillagersInVillage(gameState);
-                  if (totalVillagers < sacrificeAmount) {
-                    isDisabled = true;
-                  }
-                }
 
                 // Evaluate cost if it's a function
                 const costText = typeof cost === 'function' ? cost(gameState) : cost;
