@@ -316,9 +316,10 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
         </div>
       }
       tooltipId={tooltipId}
-      disabled
+      disabled={isDisabled}
       tooltipContentClassName="max-w-xs"
       tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS}
+      onClick={handleClick}
       onMouseEnter={() => setHighlightedResources(["insight"])}
       onMouseLeave={() => {
         if (!playing) setHighlightedResources([]);
@@ -418,9 +419,10 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
         </div>
       }
       tooltipId={tooltipId}
-      disabled
+      disabled={isDisabled}
       tooltipContentClassName="max-w-xs"
       tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS}
+      onClick={handleClick}
       onMouseEnter={() => setHighlightedResources(["insight"])}
       onMouseLeave={() => {
         if (!playing) setHighlightedResources([]);
