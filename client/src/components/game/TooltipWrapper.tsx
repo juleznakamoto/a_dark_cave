@@ -92,7 +92,7 @@ export function TooltipWrapper({
     return <div className={className}>{children}</div>;
   }
 
-  const tooltipTriggerCursorClass = disabled ? "cursor-not-allowed" : undefined;
+  const tooltipTriggerCursorClass = disabled ? "cursor-default" : undefined;
 
   return (
     <div
