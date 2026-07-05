@@ -1365,7 +1365,7 @@ export default function VillagePanel() {
                                             aria-hidden
                                             className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
                                           >
-                                            🗝
+                                            +
                                           </span>
                                         ) : (
                                           <span
@@ -2115,7 +2115,7 @@ export default function VillagePanel() {
                                       aria-hidden
                                       className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
                                     >
-                                      🗝
+                                      +
                                     </span>
                                   ) : (
                                     <span

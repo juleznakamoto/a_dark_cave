@@ -170,7 +170,7 @@ export function isQueueSlotPurchaseLocked(
   );
 }
 
-/** 🗝 — next Insight unlock in sequence (building met; excludes legacy shop slots). */
+/** + — next Insight unlock in sequence (building met; excludes legacy shop slots). */
 export function isQueueSlotInsightPurchaseLocked(
   state: Pick<
     GameState,
