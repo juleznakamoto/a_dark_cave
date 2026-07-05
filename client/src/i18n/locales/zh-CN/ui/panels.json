@@ -36,6 +36,7 @@
     "queueSlotUsed": "队列槽位 {{slot}}: 建造进行中",
     "queueSlotFree": "队列槽位 {{slot}}: 可用",
     "queueSlotLocked": "队列槽位 {{slot}}: 未解锁",
+    "slotInsightUnlockAvailable": "可用 {{cost}} 洞察解锁",
     "slotBuildingNeededToUnlock": "需要建造建筑才能解锁",
     "constructionBoost": "花费 {{cost}} {{resource}} 加速建造 {{time}}",
     "constructionBoostFinish": "花费 {{cost}} {{resource}} 完成建造",

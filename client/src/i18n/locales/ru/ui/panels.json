@@ -36,6 +36,7 @@
     "queueSlotUsed": "Слот {{slot}}: строительство идёт",
     "queueSlotFree": "Слот {{slot}}: свободен",
     "queueSlotLocked": "Слот {{slot}}: заблокирован",
+    "slotInsightUnlockAvailable": "Можно разблокировать за {{cost}} Проницательности",
     "slotBuildingNeededToUnlock": "Для разблокировки требуется здание",
     "constructionBoost": "Ускорить строительство на {{time}} за {{cost}} {{resource}}",
     "constructionBoostFinish": "Завершить строительство за {{cost}} {{resource}}",

@@ -36,6 +36,7 @@
     "queueSlotUsed": "Slot {{slot}}: costruzione in corso",
     "queueSlotFree": "Slot {{slot}}: disponibile",
     "queueSlotLocked": "Slot {{slot}}: bloccato",
+    "slotInsightUnlockAvailable": "Si può sbloccare per {{cost}} Intuizione",
     "slotBuildingNeededToUnlock": "Edificio richiesto per sbloccare",
     "constructionBoost": "Accelera la costruzione di {{time}} per {{cost}} {{resource}}",
     "constructionBoostFinish": "Completa la costruzione per {{cost}} {{resource}}",

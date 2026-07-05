@@ -36,6 +36,7 @@
     "queueSlotUsed": "Vaga {{slot}}: construção em andamento",
     "queueSlotFree": "Vaga {{slot}}: disponível",
     "queueSlotLocked": "Vaga {{slot}}: bloqueada",
+    "slotInsightUnlockAvailable": "Pode ser desbloqueada por {{cost}} Perspicácia",
     "slotBuildingNeededToUnlock": "Edifício requerido para desbloquear",
     "constructionBoost": "Acelerar construção em {{time}} por {{cost}} {{resource}}",
     "constructionBoostFinish": "Concluir construção por {{cost}} {{resource}}",

@@ -183,6 +183,18 @@ export function isPresetSlotPurchaseLocked(
   );
 }
 
+/** 🗝 — building met; unlockable with Insight (excludes legacy shop slots). */
+export function isPresetSlotInsightPurchaseLocked(
+  state: Pick<
+    GameState,
+    "buildings" | "villagerPresetsPurchased" | "villagerPresetSlotsFromShop"
+  >,
+  slotIndex: number,
+): boolean {
+  if (isLegacyShopPresetSlot(slotIndex)) return false;
+  return isPresetSlotPurchaseLocked(state, slotIndex);
+}
+
 /**
  * 0-based index of the next slot available to purchase, or null when none is
  * available (all purchased, or no further archive building built yet).

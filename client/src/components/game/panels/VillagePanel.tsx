@@ -68,7 +68,9 @@ import {
   getVisiblePresetSlotCount,
   hasAnyUnlockedPresetSlot,
   isPresetSlotBuildingLocked,
+  isPresetSlotInsightPurchaseLocked,
   isPresetSlotUnlocked,
+  getPresetUnlockCost,
 } from "@/game/villagerJobPresets";
 import {
   canPurchaseQueueSlot,
@@ -80,7 +82,8 @@ import {
   isConstructionQueueEnabled,
   isQueueSlotBuildingLocked,
   isQueueSlotLockedForUi,
-  isQueueSlotNextPurchasable,
+  isQueueSlotInsightPurchaseLocked,
+  getQueueSlotUnlockCost,
   QUEUE_SLOT_UNLOCK_INSIGHT_KEY,
 } from "@/game/constructionQueueSlots";
 import { CircularProgress } from "@/components/ui/circular-progress";
@@ -1299,11 +1302,13 @@ export default function VillagePanel() {
                                   state,
                                   i,
                                 );
+                                const isInsightPurchaseLocked =
+                                  isQueueSlotInsightPurchaseLocked(state, i);
                                 const isUsed = isQueueSlotInUse(state, i);
-                                const isPurchasable = isQueueSlotNextPurchasable(
-                                  state,
-                                  i,
-                                );
+                                const insightUnlockCost =
+                                  isInsightPurchaseLocked && i > 0
+                                    ? getQueueSlotUnlockCost(i - 1)
+                                    : null;
                                 const queueTooltipId = `queue-slot-${slot}`;
                                 return (
                                   <TooltipWrapper
@@ -1319,13 +1324,17 @@ export default function VillagePanel() {
                                                 "Building required to unlock",
                                             },
                                           )
-                                          : isPurchasable &&
-                                            nextUnlockCost !== null
-                                            ? t("village.queueSlotUnlock", {
-                                              cost: formatNumber(
-                                                nextUnlockCost,
-                                              ),
-                                            })
+                                          : insightUnlockCost !== null
+                                            ? t(
+                                              "village.slotInsightUnlockAvailable",
+                                              {
+                                                cost: formatNumber(
+                                                  insightUnlockCost,
+                                                ),
+                                                defaultValue:
+                                                  "Can be unlocked for {{cost}} Insight",
+                                              },
+                                            )
                                             : isLocked
                                               ? t("village.queueSlotLocked", {
                                                 slot,
@@ -1351,12 +1360,21 @@ export default function VillagePanel() {
                                       )}
                                     >
                                       {isLocked ? (
-                                        <span
-                                          aria-hidden
-                                          className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
-                                        >
-                                          ×
-                                        </span>
+                                        isInsightPurchaseLocked ? (
+                                          <span
+                                            aria-hidden
+                                            className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
+                                          >
+                                            🗝
+                                          </span>
+                                        ) : (
+                                          <span
+                                            aria-hidden
+                                            className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
+                                          >
+                                            ×
+                                          </span>
+                                        )
                                       ) : (
                                         isUsed && (
                                           <span
@@ -2054,16 +2072,32 @@ export default function VillagePanel() {
                           }
 
                           if (!isUnlocked) {
+                            const isInsightPurchaseLocked =
+                              isPresetSlotInsightPurchaseLocked(presetState, i);
+                            const insightUnlockCost = isInsightPurchaseLocked
+                              ? getPresetUnlockCost(i)
+                              : null;
                             return (
                               <TooltipWrapper
                                 key={`preset-slot-${slot}`}
                                 tooltipId={presetTooltipId}
                                 tooltip={
                                   <div className="text-xs">
-                                    {t("village.presetLocked", {
-                                      defaultValue:
-                                        "Locked: available for purchase",
-                                    })}
+                                    {insightUnlockCost !== null
+                                      ? t(
+                                        "village.slotInsightUnlockAvailable",
+                                        {
+                                          cost: formatNumber(
+                                            insightUnlockCost,
+                                          ),
+                                          defaultValue:
+                                            "Can be unlocked for {{cost}} Insight",
+                                        },
+                                      )
+                                      : t("village.presetLocked", {
+                                        defaultValue:
+                                          "Locked: available for purchase",
+                                      })}
                                   </div>
                                 }
                                 tooltipTriggerClassName="inline-flex items-center leading-none"
@@ -2076,12 +2110,21 @@ export default function VillagePanel() {
                                     "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
                                   )}
                                 >
-                                  <span
-                                    aria-hidden
-                                    className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
-                                  >
-                                    ×
-                                  </span>
+                                  {isInsightPurchaseLocked ? (
+                                    <span
+                                      aria-hidden
+                                      className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
+                                    >
+                                      🗝
+                                    </span>
+                                  ) : (
+                                    <span
+                                      aria-hidden
+                                      className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
+                                    >
+                                      ×
+                                    </span>
+                                  )}
                                 </span>
                               </TooltipWrapper>
                             );

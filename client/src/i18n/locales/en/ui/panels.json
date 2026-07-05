@@ -36,6 +36,7 @@
     "queueSlotUsed": "Queue slot {{slot}}: building in progress",
     "queueSlotFree": "Queue slot {{slot}}: available",
     "queueSlotLocked": "Queue slot {{slot}}: locked",
+    "slotInsightUnlockAvailable": "Can be unlocked for {{cost}} Insight",
     "slotBuildingNeededToUnlock": "Building required to unlock",
     "constructionBoost": "Speed up construction by {{time}} for {{cost}} {{resource}}",
     "constructionBoostFinish": "Finish construction for {{cost}} {{resource}}",

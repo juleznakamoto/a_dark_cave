@@ -36,6 +36,7 @@
     "queueSlotUsed": "Warteschlange {{slot}}: Bau in Arbeit",
     "queueSlotFree": "Warteschlange {{slot}}: verfügbar",
     "queueSlotLocked": "Warteschlange {{slot}}: gesperrt",
+    "slotInsightUnlockAvailable": "Kann für {{cost}} Einsicht freigeschaltet werden",
     "slotBuildingNeededToUnlock": "Gebäude zum Freischalten erforderlich",
     "constructionBoost": "Bau um {{time}} für {{cost}} {{resource}} beschleunigen",
     "constructionBoostFinish": "Bau für {{cost}} {{resource}} abschließen",
