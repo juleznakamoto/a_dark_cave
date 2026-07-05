@@ -183,7 +183,7 @@ export function isPresetSlotPurchaseLocked(
   );
 }
 
-/** 🗝 — building met; unlockable with Insight (excludes legacy shop slots). */
+/** 🗝 — next Insight unlock in sequence (building met; excludes legacy shop slots). */
 export function isPresetSlotInsightPurchaseLocked(
   state: Pick<
     GameState,
@@ -192,7 +192,8 @@ export function isPresetSlotInsightPurchaseLocked(
   slotIndex: number,
 ): boolean {
   if (isLegacyShopPresetSlot(slotIndex)) return false;
-  return isPresetSlotPurchaseLocked(state, slotIndex);
+  const nextIndex = getNextPurchasablePresetSlotIndex(state);
+  return nextIndex !== null && nextIndex === slotIndex;
 }
 
 /**

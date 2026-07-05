@@ -170,7 +170,7 @@ export function isQueueSlotPurchaseLocked(
   );
 }
 
-/** 🗝 — building met; unlockable with Insight (excludes legacy shop slots). */
+/** 🗝 — next Insight unlock in sequence (building met; excludes legacy shop slots). */
 export function isQueueSlotInsightPurchaseLocked(
   state: Pick<
     GameState,
@@ -178,8 +178,7 @@ export function isQueueSlotInsightPurchaseLocked(
   >,
   slotIndex: number,
 ): boolean {
-  if (slotIndex === 0 || isLegacyShopQueueSlot(slotIndex)) return false;
-  return isQueueSlotPurchaseLocked(state, slotIndex);
+  return isQueueSlotNextPurchasable(state, slotIndex);
 }
 
 /** Grey × in UI — slot is not yet usable (building and/or Insight missing). */
