@@ -7,7 +7,9 @@ import {
   canUpgradeVillagerCap,
   getGroupForBuildingKey,
   getGroupForJob,
+  getConstructionQueueSlotUnlockCost,
   getNextCapUpgradeCost,
+  getPresetSlotUnlockCost,
   GATHERER_CAP,
   getVillagerCapForJob,
   getVillagerCapForLevel,
@@ -83,6 +85,17 @@ describe("villagerCapUpgrades", () => {
     expect(getNextCapUpgradeCost(2)).toBe(500);
     expect(getNextCapUpgradeCost(3)).toBe(750);
     expect(getNextCapUpgradeCost(4)).toBe(1000);
+  });
+
+  it("defines construction queue slot unlock costs", () => {
+    expect(getConstructionQueueSlotUnlockCost(0)).toBe(2500);
+    expect(getConstructionQueueSlotUnlockCost(1)).toBe(5000);
+  });
+
+  it("defines preset slot unlock costs", () => {
+    expect(getPresetSlotUnlockCost(0)).toBe(2500);
+    expect(getPresetSlotUnlockCost(1)).toBe(5000);
+    expect(getPresetSlotUnlockCost(4)).toBe(12500);
   });
 
   it("reads and clamps stored upgrade levels", () => {

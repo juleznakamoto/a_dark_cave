@@ -5,29 +5,26 @@ import {
   isInsightUnlocked,
 } from "@/game/rules/insightReveal";
 import { isSteamEditionActive } from "@/lib/edition";
+import {
+  CONSTRUCTION_BOOST_INSIGHT_PER_MINUTE,
+  getConstructionQueueSlotUnlockCost,
+} from "@/game/villagerCapUpgrades";
 
 /** Player always starts with one construction queue slot. */
 export const BASE_QUEUE_SLOTS = 1;
 
-/** Insight cost per extra slot purchase (Lodge unlock, then Guild unlock). */
-export const QUEUE_SLOT_UNLOCK_INSIGHT_COSTS = [2500, 5000] as const;
-
 /** Max purchasable extra slots (2) via Insight, plus the base slot. */
 export const MAX_PURCHASABLE_QUEUE_SLOTS = 2;
 
-/** Extra slots granted by the one-time `additional_construction_queue_slot` shop purchase. */
-export const SHOP_ADDITIONAL_QUEUE_SLOTS = 2;
-
-/** 0-based index of the first shop-purchased queue slot (after base + Insight slots). */
-export const SHOP_QUEUE_SLOT_INDEX =
+/** Legacy shop slots (removed from shop; grandfathered on old saves). */
+export const LEGACY_SHOP_QUEUE_SLOT_START =
   BASE_QUEUE_SLOTS + MAX_PURCHASABLE_QUEUE_SLOTS;
+export const LEGACY_SHOP_QUEUE_SLOTS = 2;
 
 export const MAX_QUEUE_SLOTS =
-  BASE_QUEUE_SLOTS + MAX_PURCHASABLE_QUEUE_SLOTS + SHOP_ADDITIONAL_QUEUE_SLOTS;
+  BASE_QUEUE_SLOTS + MAX_PURCHASABLE_QUEUE_SLOTS;
 
 export const QUEUE_SLOT_UNLOCK_INSIGHT_KEY = "constructionQueueSlotUnlock";
-
-export const CONSTRUCTION_BOOST_INSIGHT_PER_MINUTE = 250;
 
 export function isConstructionQueueEnabled(
   state: Pick<GameState, "flags">,
@@ -71,53 +68,31 @@ export function getBuildingQueueSlotCount(
   return count;
 }
 
-export function isShopQueueSlot(slotIndex: number): boolean {
+function isLegacyShopQueueSlot(slotIndex: number): boolean {
   if (isSteamEditionActive()) return false;
   return (
-    slotIndex >= SHOP_QUEUE_SLOT_INDEX &&
-    slotIndex < SHOP_QUEUE_SLOT_INDEX + SHOP_ADDITIONAL_QUEUE_SLOTS
+    slotIndex >= LEGACY_SHOP_QUEUE_SLOT_START &&
+    slotIndex < LEGACY_SHOP_QUEUE_SLOT_START + LEGACY_SHOP_QUEUE_SLOTS
   );
 }
 
-function getShopSlotOffset(slotIndex: number): number | null {
-  if (!isShopQueueSlot(slotIndex)) return null;
-  return slotIndex - SHOP_QUEUE_SLOT_INDEX;
+function getLegacyShopSlotOffset(slotIndex: number): number | null {
+  if (!isLegacyShopQueueSlot(slotIndex)) return null;
+  return slotIndex - LEGACY_SHOP_QUEUE_SLOT_START;
 }
 
-/** Number of extra slots granted by the shop purchase, 0-2. Steam has no shop slots. */
+/** Legacy shop slots (0–2) for players who bought before shop removal. */
 export function getShopQueueSlotCount(
   state: Pick<GameState, "constructionQueueSlotsFromShop">,
 ): number {
   if (isSteamEditionActive()) return 0;
   const raw = state.constructionQueueSlotsFromShop ?? 0;
-  return Math.min(Math.max(0, Math.floor(raw)), SHOP_ADDITIONAL_QUEUE_SLOTS);
+  return Math.min(Math.max(0, Math.floor(raw)), LEGACY_SHOP_QUEUE_SLOTS);
 }
 
-/** True once the additional construction queue slots have been bought from the shop. */
-export function areAdditionalConstructionQueueSlotPurchased(
-  state: Pick<GameState, "constructionQueueSlotsFromShop">,
-): boolean {
-  return getShopQueueSlotCount(state) >= SHOP_ADDITIONAL_QUEUE_SLOTS;
-}
-
-/** True when the "+" shop purchase for 2 extra queue slots should appear. */
-export function isAdditionalConstructionQueueSlotPurchaseAvailable(
-  state: Pick<GameState, "buildings" | "constructionQueueSlotsFromShop">,
-): boolean {
-  if (isSteamEditionActive()) return false;
-  return (
-    (state.buildings?.buildersHall ?? 0) >= 1 &&
-    !areAdditionalConstructionQueueSlotPurchased(state)
-  );
-}
-
-/** Queue slot squares shown in the UI (building-gated slots + purchased shop slots). */
-export function getVisibleQueueSlotCount(
-  state?: Pick<GameState, "constructionQueueSlotsFromShop">,
-): number {
-  const buildingGated = BASE_QUEUE_SLOTS + MAX_PURCHASABLE_QUEUE_SLOTS;
-  if (!state) return buildingGated;
-  return buildingGated + getShopQueueSlotCount(state);
+/** Queue slot squares shown in the UI (base + Insight-gated slots). */
+export function getVisibleQueueSlotCount(): number {
+  return MAX_QUEUE_SLOTS;
 }
 
 export function getPurchasedQueueSlots(
@@ -157,11 +132,9 @@ export function isQueueSlotActive(
   slotIndex: number,
 ): boolean {
   if (slotIndex === 0) return true;
-  if (isShopQueueSlot(slotIndex)) {
-    const shopOffset = getShopSlotOffset(slotIndex);
-    return (
-      shopOffset !== null && getShopQueueSlotCount(state) > shopOffset
-    );
+  if (isLegacyShopQueueSlot(slotIndex)) {
+    const shopOffset = getLegacyShopSlotOffset(slotIndex);
+    return shopOffset !== null && getShopQueueSlotCount(state) > shopOffset;
   }
   return (
     isQueueSlotBuildingUnlocked(state, slotIndex) &&
@@ -174,11 +147,11 @@ export function isQueueSlotBuildingLocked(
   state: Pick<GameState, "buildings">,
   slotIndex: number,
 ): boolean {
-  if (isShopQueueSlot(slotIndex)) return false;
+  if (isLegacyShopQueueSlot(slotIndex)) return false;
   return slotIndex > 0 && !isQueueSlotBuildingUnlocked(state, slotIndex);
 }
 
-/** Grey × — building met but Insight purchase still required (or shop slot not bought). */
+/** Grey × — building met but Insight purchase still required. */
 export function isQueueSlotPurchaseLocked(
   state: Pick<
     GameState,
@@ -187,8 +160,8 @@ export function isQueueSlotPurchaseLocked(
   slotIndex: number,
 ): boolean {
   if (slotIndex === 0) return false;
-  if (isShopQueueSlot(slotIndex)) {
-    const shopOffset = getShopSlotOffset(slotIndex);
+  if (isLegacyShopQueueSlot(slotIndex)) {
+    const shopOffset = getLegacyShopSlotOffset(slotIndex);
     return shopOffset === null || getShopQueueSlotCount(state) <= shopOffset;
   }
   return (
@@ -252,11 +225,19 @@ export function getTotalQueueSlots(
   for (let i = 0; i < MAX_QUEUE_SLOTS; i++) {
     if (isQueueSlotActive(state, i)) total++;
   }
+  // Legacy shop slots beyond the normal 3-cap UI are counted separately.
+  for (
+    let i = LEGACY_SHOP_QUEUE_SLOT_START;
+    i < LEGACY_SHOP_QUEUE_SLOT_START + LEGACY_SHOP_QUEUE_SLOTS;
+    i++
+  ) {
+    if (isQueueSlotActive(state, i)) total++;
+  }
   return total;
 }
 
 export function getQueueSlotUnlockCost(slotIndex: number): number {
-  return QUEUE_SLOT_UNLOCK_INSIGHT_COSTS[slotIndex];
+  return getConstructionQueueSlotUnlockCost(slotIndex);
 }
 
 export function getNextQueueSlotUnlockCost(

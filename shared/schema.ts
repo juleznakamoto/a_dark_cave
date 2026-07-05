@@ -357,8 +357,8 @@ export const gameStateSchema = z.object({
     .default({}),
   villagerCapUpgrades: z.record(z.string(), z.number()).default({}),
   // Villager job presets. Each slot stores job-count assignments (excludes `free`);
-  // null means the slot has not been saved to yet. Up to 5 slots (3 from archive
-  // buildings + 2 from the `additional_preset_slots` shop purchase).
+  // null means the slot has not been saved to yet. Up to 5 slots from archive
+  // buildings (2 + 1 + 2 per tier).
   villagerJobPresets: z
     .array(
       z
@@ -371,17 +371,13 @@ export const gameStateSchema = z.object({
     .default([]),
   // Currently selected preset slot (1-based) that the save button writes to.
   activePresetSlot: z.number().default(1),
-  // Number of preset slots bought with Insight (0-3). Slots must be purchased one
-  // at a time and only once the matching archive building exists. On load, slots
-  // that already contain saved presets are grandfathered (except in dev builds).
+  // Number of preset slots bought with Insight (0–5). Each requires its archive building tier first.
   villagerPresetsPurchased: z.number().default(0),
-  // Extra preset slots bought via the shop (one-time purchase grants 2). Added on top
-  // of the building/Insight-unlocked slots; see `villagerJobPresets.ts`.
+  // Legacy: extra preset slots from the removed shop item; grandfathered on load.
   villagerPresetSlotsFromShop: z.number().default(0),
-  // Number of extra construction queue slots bought with Insight (0-2). Base slot is always 1.
+  // Number of extra construction queue slots bought with Insight (0–2).
   constructionQueueSlotsPurchased: z.number().default(0),
-  // Extra construction queue slots bought via the shop (one-time purchase grants 2). Added on top
-  // of the building/Insight-unlocked slots; see `constructionQueueSlots.ts`.
+  // Legacy: extra queue slots from the removed shop item; grandfathered on load.
   constructionQueueSlotsFromShop: z.number().default(0),
   // One-time Construction Boost per in-progress build action id.
   constructionBoostsUsed: z.record(z.string(), z.boolean()).default({}),

@@ -1,7 +1,10 @@
 import type { GameState } from "@shared/schema";
 import { populationJobs } from "@/game/population";
 import { getVillagersInVillage } from "@/game/population";
-import { getVillagerCapForJob } from "@/game/villagerCapUpgrades";
+import {
+  getPresetSlotUnlockCost,
+  getVillagerCapForJob,
+} from "@/game/villagerCapUpgrades";
 import { isSteamEditionActive } from "@/lib/edition";
 import {
   getInsightAmount,
@@ -11,30 +14,26 @@ import {
 } from "@/game/rules/insightReveal";
 import { updatePopulationCounts } from "@/game/stateHelpers";
 
-/** Base Insight cost for the first preset slot; each later slot costs a multiple of this. */
-export const PRESET_UNLOCK_BASE_INSIGHT_COST = 2500;
+/** Preset slots unlocked per archive building tier (Scribe's → Records → Grand Archive). */
+export const PRESET_SLOTS_BY_BUILDING_TIER = [2, 1, 2] as const;
 
-/** Slots unlocked via the Scribe's Office building chain (one per building). */
-export const MAX_BUILDING_PRESET_SLOTS = 3;
+export const MAX_PRESET_SLOTS = PRESET_SLOTS_BY_BUILDING_TIER.reduce(
+  (sum, count) => sum + count,
+  0,
+);
 
-/** Extra slots granted by the one-time `additional_preset_slots` shop purchase. */
-export const SHOP_ADDITIONAL_PRESET_SLOTS = 2;
+/** Legacy shop slots (old 3-building + 2-shop layout) started at index 3. */
+export const LEGACY_SHOP_PRESET_SLOT_START = 3;
+export const LEGACY_SHOP_PRESET_SLOTS = 2;
 
-/** 0-based index of the first shop-purchased preset slot (after building-gated slots). */
-export const SHOP_PRESET_SLOT_INDEX = MAX_BUILDING_PRESET_SLOTS;
-
-/** Total preset slots shown in the UI (building-unlocked + shop-purchased). */
-export const MAX_PRESET_SLOTS =
-  MAX_BUILDING_PRESET_SLOTS + SHOP_ADDITIONAL_PRESET_SLOTS;
-
-/** Building chain that unlocks preset slots, lowest tier first (one slot each). */
+/** Building chain that unlocks preset slots, lowest tier first. */
 export const PRESET_UNLOCK_BUILDINGS: (keyof GameState["buildings"])[] = [
   "scribesOffice",
   "recordsHall",
   "grandArchive",
 ];
 
-/** Build action id for each archive building that unlocks a preset slot. */
+/** Build action id for each archive building that unlocks preset slots. */
 export const PRESET_UNLOCK_BUILDING_ACTION_IDS: Record<
   (typeof PRESET_UNLOCK_BUILDINGS)[number],
   string
@@ -51,8 +50,7 @@ type VillagerJobKey = keyof GameState["villagers"];
 /** Stable list of job ids (everything in `villagers` except `free`). */
 const JOB_IDS = Object.keys(populationJobs) as VillagerJobKey[];
 
-/** Number of preset slots made *available to buy* by built archive buildings (0-3). */
-export function getBuildingPresetSlotCount(
+function getBuiltPresetTierCount(
   state: Pick<GameState, "buildings">,
 ): number {
   return PRESET_UNLOCK_BUILDINGS.reduce(
@@ -61,68 +59,173 @@ export function getBuildingPresetSlotCount(
   );
 }
 
-/** Number of slots the player has bought with Insight (building-gated), 0-3. */
+/** Preset slots made available to buy by built archive buildings (0–5). */
+export function getBuildingPresetSlotCount(
+  state: Pick<GameState, "buildings">,
+): number {
+  const tierCount = getBuiltPresetTierCount(state);
+  let total = 0;
+  for (let i = 0; i < tierCount; i++) {
+    total += PRESET_SLOTS_BY_BUILDING_TIER[i];
+  }
+  return total;
+}
+
+/** Number of preset slots bought with Insight, 0–5. */
 export function getInsightPurchasedPresetCount(
   state: Pick<GameState, "villagerPresetsPurchased">,
 ): number {
   const raw = state.villagerPresetsPurchased ?? 0;
-  return Math.min(Math.max(0, Math.floor(raw)), MAX_BUILDING_PRESET_SLOTS);
+  return Math.min(Math.max(0, Math.floor(raw)), MAX_PRESET_SLOTS);
 }
 
-/** Number of extra slots granted by the `additional_preset_slots` shop purchase, 0-2. Steam has no shop slots. */
+/** Legacy shop slots (0–2) for players who bought before shop removal. */
 export function getShopPresetSlotCount(
   state: Pick<GameState, "villagerPresetSlotsFromShop">,
 ): number {
   if (isSteamEditionActive()) return 0;
   const raw = state.villagerPresetSlotsFromShop ?? 0;
-  return Math.min(Math.max(0, Math.floor(raw)), SHOP_ADDITIONAL_PRESET_SLOTS);
+  return Math.min(Math.max(0, Math.floor(raw)), LEGACY_SHOP_PRESET_SLOTS);
 }
 
-/** True once the additional preset slots have been bought from the shop. */
-export function areAdditionalPresetSlotsPurchased(
-  state: Pick<GameState, "villagerPresetSlotsFromShop">,
-): boolean {
-  return getShopPresetSlotCount(state) >= SHOP_ADDITIONAL_PRESET_SLOTS;
-}
-
-export function isShopPresetSlot(slotIndex: number): boolean {
+function isLegacyShopPresetSlot(slotIndex: number): boolean {
   if (isSteamEditionActive()) return false;
   return (
-    slotIndex >= SHOP_PRESET_SLOT_INDEX &&
-    slotIndex < SHOP_PRESET_SLOT_INDEX + SHOP_ADDITIONAL_PRESET_SLOTS
+    slotIndex >= LEGACY_SHOP_PRESET_SLOT_START &&
+    slotIndex < LEGACY_SHOP_PRESET_SLOT_START + LEGACY_SHOP_PRESET_SLOTS
   );
 }
 
-function getShopPresetSlotOffset(slotIndex: number): number | null {
-  if (!isShopPresetSlot(slotIndex)) return null;
-  return slotIndex - SHOP_PRESET_SLOT_INDEX;
+function isLegacyShopPresetSlotUnlocked(
+  state: Pick<GameState, "villagerPresetSlotsFromShop">,
+  slotIndex: number,
+): boolean {
+  if (!isLegacyShopPresetSlot(slotIndex)) return false;
+  const offset = slotIndex - LEGACY_SHOP_PRESET_SLOT_START;
+  return getShopPresetSlotCount(state) > offset;
 }
 
-/** Total usable preset slots (Insight-bought + shop-bought), 0-5. */
-export function getPurchasedPresetCount(
+/** Preset slot squares shown in the UI (always show the full building-gated set). */
+export function getVisiblePresetSlotCount(): number {
+  return MAX_PRESET_SLOTS;
+}
+
+/** True once the first archive building exists (preset controls become visible). */
+export function arePresetsVisible(
+  state: Pick<GameState, "buildings">,
+): boolean {
+  return getBuildingPresetSlotCount(state) > 0;
+}
+
+/** Building key required to unlock a 0-based slot, or null for legacy shop slots. */
+export function getPresetSlotUnlockBuildingKey(
+  slotIndex: number,
+): (typeof PRESET_UNLOCK_BUILDINGS)[number] | null {
+  let cursor = 0;
+  for (let i = 0; i < PRESET_UNLOCK_BUILDINGS.length; i++) {
+    const tierSlots = PRESET_SLOTS_BY_BUILDING_TIER[i];
+    if (slotIndex < cursor + tierSlots) {
+      return PRESET_UNLOCK_BUILDINGS[i];
+    }
+    cursor += tierSlots;
+  }
+  return null;
+}
+
+/** Build action id for the building that unlocks a 0-based slot, or null for legacy shop slots. */
+export function getPresetSlotUnlockActionId(slotIndex: number): string | null {
+  const buildingKey = getPresetSlotUnlockBuildingKey(slotIndex);
+  return buildingKey ? PRESET_UNLOCK_BUILDING_ACTION_IDS[buildingKey] : null;
+}
+
+/** Grey preview — archive building for this 0-based slot is not built yet. */
+export function isPresetSlotBuildingLocked(
+  state: Pick<GameState, "buildings" | "villagerPresetSlotsFromShop">,
+  slotIndex: number,
+): boolean {
+  if (isLegacyShopPresetSlotUnlocked(state, slotIndex)) return false;
+
+  const buildingKey = getPresetSlotUnlockBuildingKey(slotIndex);
+  if (!buildingKey) {
+    return isLegacyShopPresetSlot(slotIndex);
+  }
+  return (state.buildings?.[buildingKey] ?? 0) < 1;
+}
+
+/** A slot index (0-based) is usable once its building tier exists and it has been bought. */
+export function isPresetSlotUnlocked(
   state: Pick<
     GameState,
-    "villagerPresetsPurchased" | "villagerPresetSlotsFromShop"
+    "buildings" | "villagerPresetsPurchased" | "villagerPresetSlotsFromShop"
   >,
-): number {
-  return getInsightPurchasedPresetCount(state) + getShopPresetSlotCount(state);
+  slotIndex: number,
+): boolean {
+  if (slotIndex < 0 || slotIndex >= MAX_PRESET_SLOTS) return false;
+  if (isLegacyShopPresetSlotUnlocked(state, slotIndex)) return true;
+  if (isPresetSlotBuildingLocked(state, slotIndex)) return false;
+  return slotIndex < getInsightPurchasedPresetCount(state);
+}
+
+/** Grey × — building met but Insight purchase still required. */
+export function isPresetSlotPurchaseLocked(
+  state: Pick<
+    GameState,
+    "buildings" | "villagerPresetsPurchased" | "villagerPresetSlotsFromShop"
+  >,
+  slotIndex: number,
+): boolean {
+  if (isLegacyShopPresetSlot(slotIndex)) {
+    return !isLegacyShopPresetSlotUnlocked(state, slotIndex);
+  }
+  return (
+    !isPresetSlotBuildingLocked(state, slotIndex) &&
+    !isPresetSlotUnlocked(state, slotIndex)
+  );
 }
 
 /**
- * Highest 1-based slot count implied by saved preset data (0 when none saved).
- * Used for backwards-compat load migration only.
+ * 0-based index of the next slot available to purchase, or null when none is
+ * available (all purchased, or no further archive building built yet).
  */
-export function countUsedPresetSlots(
-  state: Pick<GameState, "villagerJobPresets">,
-): number {
-  const presets = state.villagerJobPresets ?? [];
-  let highestUsedIndex = -1;
-  for (let i = 0; i < MAX_PRESET_SLOTS; i++) {
-    if (presets[i] != null) {
-      highestUsedIndex = i;
-    }
+export function getNextPurchasablePresetSlotIndex(
+  state: Pick<GameState, "buildings" | "villagerPresetsPurchased">,
+): number | null {
+  const purchased = getInsightPurchasedPresetCount(state);
+  const buildingAvailable = getBuildingPresetSlotCount(state);
+  if (purchased >= buildingAvailable || purchased >= MAX_PRESET_SLOTS) {
+    return null;
   }
-  return highestUsedIndex >= 0 ? highestUsedIndex + 1 : 0;
+  if (isPresetSlotBuildingLocked(state, purchased)) return null;
+  return purchased;
+}
+
+/** Insight cost to unlock the slot at the given 0-based index. */
+export function getPresetUnlockCost(slotIndex: number): number {
+  return getPresetSlotUnlockCost(slotIndex);
+}
+
+/** Insight cost for the next purchasable slot, or null when none is available. */
+export function getNextPresetUnlockCost(
+  state: Pick<GameState, "buildings" | "villagerPresetsPurchased">,
+): number | null {
+  const nextIndex = getNextPurchasablePresetSlotIndex(state);
+  return nextIndex === null ? null : getPresetUnlockCost(nextIndex);
+}
+
+/** True when a slot can be purchased now (slot available, Insight unlocked & affordable). */
+export function canPurchasePresetSlot(
+  state: GameState,
+  insightRevealing?: Record<string, number>,
+): boolean {
+  if (
+    isInsightRevealInProgress(PRESET_UNLOCK_INSIGHT_KEY, insightRevealing)
+  ) {
+    return false;
+  }
+  const cost = getNextPresetUnlockCost(state);
+  if (cost === null) return false;
+  if (!isInsightUnlocked(state)) return false;
+  return getInsightAmount(state) >= cost;
 }
 
 /**
@@ -142,55 +245,10 @@ export function migrateVillagerPresetsPurchasedOnLoad(
 
   const current = getInsightPurchasedPresetCount(state);
   const buildingAvailable = getBuildingPresetSlotCount(state);
-  const target = Math.min(usedCount, buildingAvailable, MAX_BUILDING_PRESET_SLOTS);
+  const target = Math.min(usedCount, buildingAvailable, MAX_PRESET_SLOTS);
   if (target <= current) return null;
 
   return { villagerPresetsPurchased: target };
-}
-
-/** True once the first archive building exists (preset controls become visible). */
-export function arePresetsVisible(
-  state: Pick<GameState, "buildings">,
-): boolean {
-  return getBuildingPresetSlotCount(state) > 0;
-}
-
-/** Preset slot squares shown in the UI (building-gated slots + purchased shop slots). */
-export function getVisiblePresetSlotCount(
-  state?: Pick<GameState, "villagerPresetSlotsFromShop">,
-): number {
-  const buildingGated = MAX_BUILDING_PRESET_SLOTS;
-  if (!state) return buildingGated;
-  return buildingGated + getShopPresetSlotCount(state);
-}
-
-/** Grey preview — archive building for this 0-based slot is not built yet. */
-export function isPresetSlotBuildingLocked(
-  state: Pick<GameState, "buildings">,
-  slotIndex: number,
-): boolean {
-  if (slotIndex < 0 || slotIndex >= MAX_BUILDING_PRESET_SLOTS) {
-    return false;
-  }
-  const buildingKey = PRESET_UNLOCK_BUILDINGS[slotIndex];
-  return (state.buildings?.[buildingKey] ?? 0) < 1;
-}
-
-/** A slot index (0-based) is usable once its building exists and it has been bought. */
-export function isPresetSlotUnlocked(
-  state: Pick<
-    GameState,
-    "buildings" | "villagerPresetsPurchased" | "villagerPresetSlotsFromShop"
-  >,
-  slotIndex: number,
-): boolean {
-  if (slotIndex < 0) return false;
-  if (isShopPresetSlot(slotIndex)) {
-    const shopOffset = getShopPresetSlotOffset(slotIndex);
-    return shopOffset !== null && getShopPresetSlotCount(state) > shopOffset;
-  }
-  if (isPresetSlotBuildingLocked(state, slotIndex)) return false;
-  return slotIndex < getInsightPurchasedPresetCount(state);
 }
 
 /** First usable 0-based preset slot index, or null when none are unlocked. */
@@ -206,7 +264,7 @@ export function getFirstUnlockedPresetSlotIndex(
   return null;
 }
 
-/** True when at least one preset slot is usable (Insight- or shop-bought). */
+/** True when at least one preset slot is usable. */
 export function hasAnyUnlockedPresetSlot(
   state: Pick<
     GameState,
@@ -216,84 +274,21 @@ export function hasAnyUnlockedPresetSlot(
   return getFirstUnlockedPresetSlotIndex(state) !== null;
 }
 
-/** Grey × — building met but Insight purchase still required (shop slots only). */
-export function isPresetSlotPurchaseLocked(
-  state: Pick<
-    GameState,
-    "buildings" | "villagerPresetsPurchased" | "villagerPresetSlotsFromShop"
-  >,
-  slotIndex: number,
-): boolean {
-  if (isShopPresetSlot(slotIndex)) {
-    const shopOffset = getShopPresetSlotOffset(slotIndex);
-    return shopOffset === null || getShopPresetSlotCount(state) <= shopOffset;
-  }
-  return (
-    !isPresetSlotBuildingLocked(state, slotIndex) &&
-    !isPresetSlotUnlocked(state, slotIndex)
-  );
-}
-
 /**
- * 0-based index of the next slot available to purchase, or null when none is
- * available (all purchased, or no further archive building built yet). Slots are
- * bought strictly one after another — slot N requires its matching building first.
+ * Highest 1-based slot count implied by saved preset data (0 when none saved).
+ * Used for backwards-compat load migration only.
  */
-export function getNextPurchasablePresetSlotIndex(
-  state: Pick<GameState, "buildings" | "villagerPresetsPurchased">,
-): number | null {
-  const purchased = getInsightPurchasedPresetCount(state);
-  if (purchased >= MAX_BUILDING_PRESET_SLOTS) return null;
-  if (isPresetSlotBuildingLocked(state, purchased)) return null;
-  return purchased;
-}
-
-/** Insight cost to unlock the slot at the given 0-based index (2500, 5000, 7500). */
-export function getPresetUnlockCost(slotIndex: number): number {
-  return PRESET_UNLOCK_BASE_INSIGHT_COST * (slotIndex + 1);
-}
-
-/** Insight cost for the next purchasable slot, or null when none is available. */
-export function getNextPresetUnlockCost(
-  state: Pick<GameState, "buildings" | "villagerPresetsPurchased">,
-): number | null {
-  const nextIndex = getNextPurchasablePresetSlotIndex(state);
-  return nextIndex === null ? null : getPresetUnlockCost(nextIndex);
-}
-
-/** True when a slot can be purchased now (slot available, Insight unlocked & affordable). */
-export function canPurchasePresetSlot(
-  state: GameState,
-  insightRevealing?: Record<string, number>,
-): boolean {
-  if (
-    isInsightRevealInProgress(
-      PRESET_UNLOCK_INSIGHT_KEY,
-      insightRevealing,
-    )
-  ) {
-    return false;
+export function countUsedPresetSlots(
+  state: Pick<GameState, "villagerJobPresets">,
+): number {
+  const presets = state.villagerJobPresets ?? [];
+  let highestUsedIndex = -1;
+  for (let i = 0; i < MAX_PRESET_SLOTS; i++) {
+    if (presets[i] != null) {
+      highestUsedIndex = i;
+    }
   }
-  const cost = getNextPresetUnlockCost(state);
-  if (cost === null) return false;
-  if (!isInsightUnlocked(state)) return false;
-  return getInsightAmount(state) >= cost;
-}
-
-/** Building key required to unlock a 0-based slot (slots 0-2 only). */
-export function getPresetSlotUnlockBuildingKey(
-  slotIndex: number,
-): (typeof PRESET_UNLOCK_BUILDINGS)[number] | null {
-  if (slotIndex < 0 || slotIndex >= MAX_BUILDING_PRESET_SLOTS) {
-    return null;
-  }
-  return PRESET_UNLOCK_BUILDINGS[slotIndex];
-}
-
-/** Build action id for the building that unlocks a 0-based slot, or null for purchase slots. */
-export function getPresetSlotUnlockActionId(slotIndex: number): string | null {
-  const buildingKey = getPresetSlotUnlockBuildingKey(slotIndex);
-  return buildingKey ? PRESET_UNLOCK_BUILDING_ACTION_IDS[buildingKey] : null;
+  return highestUsedIndex >= 0 ? highestUsedIndex + 1 : 0;
 }
 
 /** Saved preset for a 0-based slot index, or null when empty/out of range. */

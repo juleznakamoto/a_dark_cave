@@ -148,20 +148,17 @@ shared/schema.ts— Zod GameState schema (source of truth for persisted shape)
   `assignVillagerToJob`, `upgradeVillagerCap` in `state.ts`, UI in `VillagePanel` / `SidePanelSection` /
   `itemTooltips.tsx`.
 - **`villagerJobPresets.ts`** — villager job presets unlocked by the Scribe's Office → Records Hall → Grand Archive
-  building chain (one slot each, 5 shown / 4-5 reserved). Snapshot/apply helpers (proportional shrink, surplus →
+  building chain (2 + 1 + 2 slots = 5 max). Snapshot/apply helpers (proportional shrink, surplus →
   free, cap-clamped); persisted in `villagerJobPresets` / `activePresetSlot` (`shared/schema.ts`). Store methods
-  `saveVillagerJobPreset` / `applyVillagerJobPreset` / `setActivePresetSlot` / `grantAdditionalPresetSlots` (`state.ts`), UI row in the
-  `VillagePanel` "Produce" header; paid extra slots (`additional_preset_slots`) via the shop's existing checkout, opened
-  directly through `shopCheckoutItemId` on the store (the item is hidden from the shop grid).
-- **`constructionQueueSlots.ts`** — parallel construction queue (base 1 slot; Builder's Lodge/Guild unlock purchasable
-  extras via Insight), build-time/cost reductions from Builder building tiers, and Construction Boost (Insight skip
-  50% of build time). Gated by `flags.constructionQueueEnabled` (set `true` on light fire). UI in `VillagePanel` "Build" header.
-- **`constructionQueueSlots.ts`** — parallel building queue after lighting fire (`flags.constructionQueueEnabled`);
-  Builder's Lodge tier bonuses (build time/cost reduction), slot caps (base 1 + Insight purchases + building tiers),
-  Construction Boost (Insight skip 50% of remaining build time, once per build). Enforced in `canExecuteAction`,
-  `getExecutionTime`, `getTotalBuildingCostReduction`; persisted in `constructionQueueSlotsPurchased` /
-  `constructionBoostsUsed` (`shared/schema.ts`); store methods `purchaseConstructionQueueSlot` / `boostConstruction`
-  (`state.ts`); UI queue indicators + `ConstructionBoostBadge` on build buttons in `VillagePanel`.
+  `saveVillagerJobPreset` / `applyVillagerJobPreset` / `setActivePresetSlot` (`state.ts`); UI row in the
+  `VillagePanel` "Produce" header.
+- **`constructionQueueSlots.ts`** — parallel construction queue (base 1 slot when enabled; Builder's Lodge/Guild
+  unlock 2 extra slots purchasable with Insight = 3 max), build-time/cost reductions from Builder building tiers,
+  and Construction Boost (Insight skip 50% of build time). Gated by `flags.constructionQueueEnabled` (set `true` on
+  light fire). Enforced in `canExecuteAction`, `getExecutionTime`, `getTotalBuildingCostReduction`; persisted in
+  `constructionQueueSlotsPurchased` / `constructionBoostsUsed` (`shared/schema.ts`); store methods
+  `purchaseConstructionQueueSlot` / `boostConstruction` (`state.ts`); UI queue indicators + `ConstructionBoostBadge`
+  on build buttons in `VillagePanel`.
 - **`weaponEnchantments.ts`** — weapon enchantment via Insight, unlocked by Tomewarden Academy
   (`buildings.inkwardenAcademy`). Tiered bow/sword chains: only `blacksteel_bow` / `blacksteel_sword` are
   enchantable; other weapons enchant once (+`1 + floor(stat/10)` Strength/Knowledge each, cost `(added) × 250`);

@@ -80,40 +80,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-red-500",
   },
 
-  /** Legacy `item_id` for stable purchase rows / Stripe metadata; mirrors `gold_1000`. Omitted from the Gold tab in the client. */
-  /** Sold only via the dedicated "+" checkout dialog next to the villager job preset
-   * slots (see VillagePanel). Never listed in the Shop dialog (`hiddenFromShop`). */
-  additional_preset_slots: {
-    id: "additional_preset_slots",
-    name: "2 Additional Preset Slots",
-    description: "Two more villager job preset slots",
-    originalPrice: 199,
-    price: 149, // 1.49 € (0.50 Beta Discount)
-    rewards: {},
-    canPurchaseMultipleTimes: false,
-    category: "tool",
-    activationMessage: "Two additional villager job preset slots have been added.",
-    hiddenFromShop: true,
-    grantedOnPurchase: true,
-  },
-
-  /** Sold only via the dedicated "+" checkout dialog next to the construction
-   * queue slots (see VillagePanel). Never listed in the Shop dialog (`hiddenFromShop`). */
-  additional_construction_queue_slot: {
-    id: "additional_construction_queue_slot",
-    name: "2 Additional Construction Queue Slots",
-    description: "Two more parallel construction slots",
-    originalPrice: 199,
-    price: 149, // 1.49 € (0.50 Beta Discount)
-    rewards: {},
-    canPurchaseMultipleTimes: false,
-    category: "tool",
-    activationMessage:
-      "Two additional construction queue slots have been added.",
-    hiddenFromShop: true,
-    grantedOnPurchase: true,
-  },
-
   gold_250: {
     id: "gold_250",
     name: "1'000 Gold",

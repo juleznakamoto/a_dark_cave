@@ -1866,7 +1866,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Scribe's Office",
     description:
       "A quiet room where scribes keep careful tallies of every hand at work, so no labor is forgotten",
-    tooltipEffects: [archivePresetUnlockTooltip(1)],
+    tooltipEffects: [archivePresetUnlockTooltip(2)],
     building: true,
     show_when: {
       1: {
@@ -1894,7 +1894,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Records Hall",
     description:
       "Hall full of shelves of weathered ledgers and rosters, the village's memory set down in ink and kept in order",
-    tooltipEffects: [archivePresetUnlockTooltip(2)],
+    tooltipEffects: [archivePresetUnlockTooltip(3)],
     building: true,
     show_when: {
       1: {
@@ -1924,7 +1924,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Grand Archive",
     description:
       "A vast vault of scrolls preserving all the village has been, every name and toil etched",
-    tooltipEffects: [archivePresetUnlockTooltip(3)],
+    tooltipEffects: [archivePresetUnlockTooltip(5)],
     building: true,
     show_when: {
       1: {

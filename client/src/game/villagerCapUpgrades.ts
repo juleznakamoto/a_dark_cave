@@ -135,6 +135,27 @@ export function getNextCapUpgradeCost(level: number): number {
   return VILLAGER_CAP_UPGRADE_INSIGHT_COSTS[clamped];
 }
 
+/** Insight cost per extra construction queue slot (Lodge gate, then Guild gate). */
+export const CONSTRUCTION_QUEUE_SLOT_INSIGHT_COSTS = [2500, 5000] as const;
+
+/** Insight cost to unlock construction queue slot at 0-based purchase index. */
+export function getConstructionQueueSlotUnlockCost(slotIndex: number): number {
+  return CONSTRUCTION_QUEUE_SLOT_INSIGHT_COSTS[slotIndex];
+}
+
+/** Insight charged per minute of construction time saved by Construction Boost. */
+export const CONSTRUCTION_BOOST_INSIGHT_PER_MINUTE = 250;
+
+/** Insight cost per villager job preset slot (bought sequentially after each archive building tier). */
+export const PRESET_SLOT_INSIGHT_COSTS = [
+  2500, 5000, 7500, 10000, 12500,
+] as const;
+
+/** Insight cost to unlock preset slot at 0-based purchase index. */
+export function getPresetSlotUnlockCost(slotIndex: number): number {
+  return PRESET_SLOT_INSIGHT_COSTS[slotIndex];
+}
+
 export function canUpgradeVillagerCap(
   state: Pick<GameState, "flags" | "villagerCapUpgrades" | "resources">,
   groupId: VillagerCapGroupId,

@@ -110,7 +110,7 @@ import {
 } from "@/game/villagerCapUpgrades";
 import {
   MAX_PRESET_SLOTS,
-  SHOP_ADDITIONAL_PRESET_SLOTS,
+  LEGACY_SHOP_PRESET_SLOTS,
   applyPresetAssignments,
   canPurchasePresetSlot,
   getInsightPurchasedPresetCount,
@@ -123,14 +123,14 @@ import {
 } from "@/game/villagerJobPresets";
 import {
   canBoostConstruction,
-  canPurchaseQueueSlot,
   getConstructionBoostCost,
   getConstructionBoostReductionSeconds,
+  canPurchaseQueueSlot,
   getNextPurchasableQueueSlotIndex,
-  getNextQueueSlotUnlockCost,
   getPurchasedQueueSlots,
+  getNextQueueSlotUnlockCost,
   QUEUE_SLOT_UNLOCK_INSIGHT_KEY,
-  SHOP_ADDITIONAL_QUEUE_SLOTS,
+  LEGACY_SHOP_QUEUE_SLOTS,
 } from "@/game/constructionQueueSlots";
 import {
   canEnchantWeapon,
@@ -481,9 +481,9 @@ interface GameStore extends GameState {
   setShareDialogOpen: (isOpen: boolean) => void;
   setFullGamePurchaseDialogOpen: (isOpen: boolean) => void;
   setShopCheckoutItemId: (itemId: string | null) => void;
-  /** Grant the 2 extra preset slots from the `additional_preset_slots` shop purchase. */
+  /** Grandfather legacy `additional_preset_slots` shop purchases. */
   grantAdditionalPresetSlots: () => void;
-  /** Grant the 2 extra construction queue slots from the `additional_construction_queue_slot` shop purchase. */
+  /** Grandfather legacy `additional_construction_queue_slot` shop purchases. */
   grantAdditionalConstructionQueueSlot: () => void;
   setIdleModeDialog: (isOpen: boolean) => void;
   setRestartGameDialogOpen: (isOpen: boolean) => void;
@@ -4116,17 +4116,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (isSteamEditionActive()) return;
     set((state) => {
       if (
-        (state.villagerPresetSlotsFromShop ?? 0) >= SHOP_ADDITIONAL_PRESET_SLOTS
+        (state.villagerPresetSlotsFromShop ?? 0) >= LEGACY_SHOP_PRESET_SLOTS
       ) {
         return {};
       }
       const nextState = {
         ...state,
-        villagerPresetSlotsFromShop: SHOP_ADDITIONAL_PRESET_SLOTS,
+        villagerPresetSlotsFromShop: LEGACY_SHOP_PRESET_SLOTS,
       };
       const currentIndex = state.activePresetSlot - 1;
       const patch: Partial<GameState> = {
-        villagerPresetSlotsFromShop: SHOP_ADDITIONAL_PRESET_SLOTS,
+        villagerPresetSlotsFromShop: LEGACY_SHOP_PRESET_SLOTS,
       };
       if (!isPresetSlotUnlocked(nextState, currentIndex)) {
         const first = getFirstUnlockedPresetSlotIndex(nextState);
@@ -4142,12 +4142,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (isSteamEditionActive()) return;
     set((state) => {
       if (
-        (state.constructionQueueSlotsFromShop ?? 0) >= SHOP_ADDITIONAL_QUEUE_SLOTS
+        (state.constructionQueueSlotsFromShop ?? 0) >= LEGACY_SHOP_QUEUE_SLOTS
       ) {
         return {};
       }
       return {
-        constructionQueueSlotsFromShop: SHOP_ADDITIONAL_QUEUE_SLOTS,
+        constructionQueueSlotsFromShop: LEGACY_SHOP_QUEUE_SLOTS,
       };
     });
   },

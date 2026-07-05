@@ -60,7 +60,6 @@ import {
 } from "@/components/game/BuildingActionBadge";
 import { formatNumber } from "@/lib/utils";
 import {
-  areAdditionalPresetSlotsPurchased,
   arePresetsVisible,
   canPurchasePresetSlot,
   getNextPresetUnlockCost,
@@ -73,7 +72,6 @@ import {
 } from "@/game/villagerJobPresets";
 import {
   canPurchaseQueueSlot,
-  isAdditionalConstructionQueueSlotPurchaseAvailable,
   isQueueSlotInUse,
   getNextPurchasableQueueSlotIndex,
   getNextQueueSlotUnlockCost,
@@ -130,7 +128,6 @@ import {
 import { GAME_CONSTANTS, getCallMerchantGoldCost } from "@/game/constants";
 import { GREAT_FEAST_DURATION_MS } from "@shared/shopItems";
 import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
-import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 
 const VILLAGE_INDICATOR_TOOLTIP_IDS = [
   "production-cycle-progress",
@@ -172,7 +169,6 @@ const VILLAGER_COUNT_LABEL_CLASS =
 
 export default function VillagePanel() {
   const { t } = useUiTranslation();
-  const steamEditionActive = useSteamEditionActive();
   const {
     villagers,
     buildings,
@@ -198,8 +194,6 @@ export default function VillagePanel() {
     purchaseVillagerPresetSlot,
     purchaseConstructionQueueSlot,
     constructionQueueSlotsPurchased,
-    setShopDialogOpen,
-    setShopCheckoutItemId,
   } = useGameStore();
   const { pulseClassName, onMouseEnter, onMouseLeave } =
     useNewItemPulseTooltips(VILLAGE_INDICATOR_TOOLTIP_IDS);
@@ -244,25 +238,23 @@ export default function VillagePanel() {
     purchaseConstructionQueueSlot();
   }, [purchaseConstructionQueueSlot]);
 
-  const presetUnlockRevealEnd = useGameStore(
-    (s) => s.insightRevealing?.[PRESET_UNLOCK_INSIGHT_KEY],
-  );
   const insightRevealing = useGameStore((s) => s.insightRevealing);
   const isPresetUnlockAnimating = isInsightRevealInProgress(
     PRESET_UNLOCK_INSIGHT_KEY,
     insightRevealing,
   );
-  const queueSlotUnlockRevealEnd = useGameStore(
-    (s) => s.insightRevealing?.[QUEUE_SLOT_UNLOCK_INSIGHT_KEY],
+  const presetUnlockRevealEnd = useGameStore(
+    (s) => s.insightRevealing?.[PRESET_UNLOCK_INSIGHT_KEY],
   );
   const isQueueSlotUnlockAnimating = isInsightRevealInProgress(
     QUEUE_SLOT_UNLOCK_INSIGHT_KEY,
     insightRevealing,
   );
+  const queueSlotUnlockRevealEnd = useGameStore(
+    (s) => s.insightRevealing?.[QUEUE_SLOT_UNLOCK_INSIGHT_KEY],
+  );
   const [, forcePresetUnlockUpdate] = useState(0);
   const [, forceQueueSlotUnlockUpdate] = useState(0);
-
-  // Suppress idle glyph flash after reveal animation (same pattern as ActionInsightBadge).
   const presetUnlockRevealStartedRef = useRef(false);
   const queueSlotUnlockRevealStartedRef = useRef(false);
 
@@ -1221,7 +1213,7 @@ export default function VillagePanel() {
                       (() => {
                         const nextUnlockCost =
                           getNextQueueSlotUnlockCost(state);
-                        const visibleSlots = getVisibleQueueSlotCount(state);
+                        const visibleSlots = getVisibleQueueSlotCount();
                         const nextUnlockIndex =
                           getNextPurchasableQueueSlotIndex(state);
                         const showQueueSlotUnlock =
@@ -1298,119 +1290,86 @@ export default function VillagePanel() {
                                   </button>
                                 </TooltipWrapper>
                               )}
-                            {Array.from({ length: visibleSlots }).map((_, i) => {
-                              const slot = i + 1;
-                              const isBuildingLocked = isQueueSlotBuildingLocked(
-                                state,
-                                i,
-                              );
-                              const isLocked = isQueueSlotLockedForUi(state, i);
-                              const isUsed = isQueueSlotInUse(state, i);
-                              const isPurchasable = isQueueSlotNextPurchasable(
-                                state,
-                                i,
-                              );
-                              const queueTooltipId = `queue-slot-${slot}`;
-                              return (
-                                <TooltipWrapper
-                                  key={queueTooltipId}
-                                  tooltipId={queueTooltipId}
-                                  tooltip={
-                                    <div className="text-xs">
-                                      {isBuildingLocked
-                                        ? t("village.slotBuildingNeededToUnlock", {
-                                          defaultValue:
-                                            "Building required to unlock",
-                                        })
-                                        : isPurchasable && nextUnlockCost !== null
-                                          ? t("village.queueSlotUnlock", {
-                                            cost: formatNumber(nextUnlockCost),
-                                          })
-                                          : isLocked
-                                            ? t("village.queueSlotLocked", {
-                                              slot,
+                            {Array.from({ length: visibleSlots }).map(
+                              (_, i) => {
+                                const slot = i + 1;
+                                const isBuildingLocked =
+                                  isQueueSlotBuildingLocked(state, i);
+                                const isLocked = isQueueSlotLockedForUi(
+                                  state,
+                                  i,
+                                );
+                                const isUsed = isQueueSlotInUse(state, i);
+                                const isPurchasable = isQueueSlotNextPurchasable(
+                                  state,
+                                  i,
+                                );
+                                const queueTooltipId = `queue-slot-${slot}`;
+                                return (
+                                  <TooltipWrapper
+                                    key={queueTooltipId}
+                                    tooltipId={queueTooltipId}
+                                    tooltip={
+                                      <div className="text-xs">
+                                        {isBuildingLocked
+                                          ? t(
+                                            "village.slotBuildingNeededToUnlock",
+                                            {
+                                              defaultValue:
+                                                "Building required to unlock",
+                                            },
+                                          )
+                                          : isPurchasable &&
+                                            nextUnlockCost !== null
+                                            ? t("village.queueSlotUnlock", {
+                                              cost: formatNumber(
+                                                nextUnlockCost,
+                                              ),
                                             })
-                                            : isUsed
-                                              ? t("village.queueSlotUsed", {
+                                            : isLocked
+                                              ? t("village.queueSlotLocked", {
                                                 slot,
                                               })
-                                              : t("village.queueSlotFree", {
-                                                slot,
-                                              })}
-                                    </div>
-                                  }
-                                  tooltipTriggerClassName="inline-flex items-center leading-none"
-                                  className="inline-flex items-center"
-                                >
-                                  <span
-                                    data-testid={queueTooltipId}
-                                    className={cn(
-                                      HEADER_SLOT_SIZE_CLASS,
-                                      "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
-                                      isBuildingLocked && "opacity-70",
-                                    )}
+                                              : isUsed
+                                                ? t("village.queueSlotUsed", {
+                                                  slot,
+                                                })
+                                                : t("village.queueSlotFree", {
+                                                  slot,
+                                                })}
+                                      </div>
+                                    }
+                                    tooltipTriggerClassName="inline-flex items-center leading-none"
+                                    className="inline-flex items-center"
                                   >
-                                    {isLocked ? (
-                                      <span
-                                        aria-hidden
-                                        className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
-                                      >
-                                        ×
-                                      </span>
-                                    ) : (
-                                      isUsed && (
+                                    <span
+                                      data-testid={queueTooltipId}
+                                      className={cn(
+                                        HEADER_SLOT_SIZE_CLASS,
+                                        "relative inline-flex items-center justify-center rounded-md border border-neutral-400/50 box-border",
+                                        isBuildingLocked && "opacity-70",
+                                      )}
+                                    >
+                                      {isLocked ? (
                                         <span
                                           aria-hidden
-                                          className="absolute inset-[3px] rounded-[1px] bg-red-700"
-                                        />
-                                      )
-                                    )}
-                                  </span>
-                                </TooltipWrapper>
-                              );
-                            })}
-                            {isAdditionalConstructionQueueSlotPurchaseAvailable(
-                              state,
-                            ) &&
-                              !steamEditionActive && (
-                                <TooltipWrapper
-                                  tooltipId="queue-slots-purchase"
-                                  tooltip={
-                                    <div className="text-xs">
-                                      {t("village.queueSlotsPurchase", {
-                                        defaultValue:
-                                          "Add 2 more construction queue slots",
-                                      })}
-                                    </div>
-                                  }
-                                  tooltipTriggerClassName="inline-flex items-center leading-none"
-                                  className="group flex items-center cursor-pointer"
-                                  onClick={() => {
-                                    setShopCheckoutItemId(
-                                      "additional_construction_queue_slot",
-                                    );
-                                    setShopDialogOpen(true);
-                                  }}
-                                >
-                                  <Button
-                                    size="xs"
-                                    variant="outline"
-                                    data-testid="queue-slots-purchase"
-                                    button_id="queue-slots-purchase"
-                                    className={cn(
-                                      HEADER_SLOT_BUTTON_CLASS,
-                                      gameActionOutlineButtonClassName(false, {
-                                        groupHover: true,
-                                      }),
-                                    )}
-                                    style={{ touchAction: "manipulation" }}
-                                  >
-                                    <span className="inline-flex items-center justify-center text-sm font-semibold leading-none text-white">
-                                      +
+                                          className="font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none"
+                                        >
+                                          ×
+                                        </span>
+                                      ) : (
+                                        isUsed && (
+                                          <span
+                                            aria-hidden
+                                            className="absolute inset-[3px] rounded-[1px] bg-red-700"
+                                          />
+                                        )
+                                      )}
                                     </span>
-                                  </Button>
-                                </TooltipWrapper>
-                              )}
+                                  </TooltipWrapper>
+                                );
+                              },
+                            )}
                           </div>
                         );
                       })()}
@@ -1980,7 +1939,7 @@ export default function VillagePanel() {
                       villagerPresetSlotsFromShop,
                       villagerJobPresets,
                     };
-                    const visibleSlots = getVisiblePresetSlotCount(presetState);
+                    const visibleSlots = getVisiblePresetSlotCount();
                     const nextUnlockIndex =
                       getNextPurchasablePresetSlotIndex(presetState);
                     const nextUnlockCost = getNextPresetUnlockCost(presetState);
@@ -1994,12 +1953,6 @@ export default function VillagePanel() {
                     const hidePresetUnlockAfterReveal =
                       presetUnlockRevealStartedRef.current &&
                       !isPresetUnlockAnimating;
-                    // The "+" buys 2 extra preset slots; visible once the Scribe's
-                    // Office exists and the slots have not been bought yet.
-                    const showAddPresetSlotsPlus =
-                      !steamEditionActive &&
-                      (state.buildings?.scribesOffice ?? 0) > 0 &&
-                      !areAdditionalPresetSlotsPurchased(presetState);
                     return (
                       <div className="ml-auto flex shrink-0 items-center gap-1">
                         {showPresetUnlock && !hidePresetUnlockAfterReveal && (
@@ -2175,42 +2128,6 @@ export default function VillagePanel() {
                             </TooltipWrapper>
                           );
                         })}
-                        {showAddPresetSlotsPlus && (
-                          <TooltipWrapper
-                            tooltipId="preset-slots-purchase"
-                            tooltip={
-                              <div className="text-xs">
-                                {t("village.presetSlotsPurchase", {
-                                  defaultValue: "Add 2 more preset slots",
-                                })}
-                              </div>
-                            }
-                            tooltipTriggerClassName="inline-flex items-center leading-none"
-                            className="group flex items-center cursor-pointer"
-                            onClick={() => {
-                              setShopCheckoutItemId("additional_preset_slots");
-                              setShopDialogOpen(true);
-                            }}
-                          >
-                            <Button
-                              size="xs"
-                              variant="outline"
-                              data-testid="preset-slots-purchase"
-                              button_id="preset-slots-purchase"
-                              className={cn(
-                                HEADER_SLOT_BUTTON_CLASS,
-                                gameActionOutlineButtonClassName(false, {
-                                  groupHover: true,
-                                }),
-                              )}
-                              style={{ touchAction: "manipulation" }}
-                            >
-                              <span className="inline-flex items-center justify-center text-sm font-semibold leading-none text-white">
-                                +
-                              </span>
-                            </Button>
-                          </TooltipWrapper>
-                        )}
                         {hasAnyUnlockedPresetSlot(presetState) && (
                           <TooltipWrapper
                             tooltipId="preset-save"

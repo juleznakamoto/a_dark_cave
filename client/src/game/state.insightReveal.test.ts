@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import {
-  PRESET_UNLOCK_INSIGHT_KEY,
   STAT_INSIGHT_REVEAL_KEY,
+  PRESET_UNLOCK_INSIGHT_KEY,
   TIMED_EVENT_INSIGHT_PROLONG_KEY,
   TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
   TIMED_EVENT_TAB_PROLONG_MS,
@@ -290,28 +290,6 @@ describe("purchaseVillagerPresetSlot", () => {
 
     const after = useGameStore.getState();
     expect(after.villagerPresetsPurchased).toBe(1);
-    expect(after.activePresetSlot).toBe(1);
-    expect(after.insightRevealing[PRESET_UNLOCK_INSIGHT_KEY]).toBeUndefined();
-  });
-
-  it("keeps the active preset when unlocking an additional slot", () => {
-    useGameStore.setState({
-      buildings: {
-        ...useGameStore.getState().buildings,
-        scribesOffice: 1,
-        recordsHall: 1,
-      },
-      villagerPresetsPurchased: 1,
-      activePresetSlot: 1,
-      insightRevealing: {
-        [PRESET_UNLOCK_INSIGHT_KEY]: Date.now() - 1,
-      },
-    });
-
-    useGameStore.getState().tickCooldowns();
-
-    const after = useGameStore.getState();
-    expect(after.villagerPresetsPurchased).toBe(2);
     expect(after.activePresetSlot).toBe(1);
     expect(after.insightRevealing[PRESET_UNLOCK_INSIGHT_KEY]).toBeUndefined();
   });
