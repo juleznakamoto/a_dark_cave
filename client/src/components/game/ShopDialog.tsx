@@ -1613,16 +1613,16 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </TabsTrigger>
                   </TabsList>
                   {activeTab === "shop" && (
-                    <div className="mt-3 flex items-center gap-1.5 text-xs font-normal text-foreground">
-                      <span
-                        className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-xs font-normal leading-none text-muted-foreground"
-                        aria-hidden
-                      >
-                        🛈
+                    <div className="mt-3 flex flex-wrap items-center gap-1 text-xs font-normal text-foreground">
+                      <span className="inline-flex shrink-0 items-center justify-center w-4 h-4 text-muted-foreground">
+                        <span
+                          className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none"
+                          aria-hidden
+                        >
+                          🛈
+                        </span>
                       </span>
-                      <p className="m-0 leading-none">
-                        {t("ui:shop.forSalePlaythroughNote")}
-                      </p>
+                      <span>{t("ui:shop.forSalePlaythroughNote")}</span>
                     </div>
                   )}
                   {activeTab === "purchases" && (
