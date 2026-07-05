@@ -5,6 +5,7 @@
     "owned": "Im Besitz",
     "notEnoughGold": "Du hast nicht genug Gold.",
     "forSale": "Kaufen",
+    "forSalePlaythroughNote": "Alle Käufe können in jedem Durchlauf einmal verwendet werden.",
     "purchases": "Käufe",
     "srDescription": "Shop für Gold, Artefakte, Boosts und Bundles",
     "betaDiscountTitle": "Beta-Rabatte von bis zu {{percent}} % sind derzeit aktiv.",
@@ -22,7 +23,7 @@
     "threeXValue": "Wert",
     "availableInOneHour": "Verfügbar in 1 Stunde",
     "availableInHours": "Verfügbar in {{hours}} Stunden",
-    "signInToClaim": "Zum Abholen anmelden",  //x1.3
+    "signInToClaim": "Zum Abholen anmelden", //x1.3
     "alreadyClaimed": "Bereits abgeholt",
     "alreadyPurchased": "Bereits gekauft",
     "continueCheckout": "Weiter",
@@ -30,6 +31,7 @@
     "cruelModeActivateHint": "(zum Spielen aktivieren und neues Spiel starten)",
     "paymentSrDescription": "Schließe deine Zahlung für {{name}} ab",
     "originalPrice": "Originalpreis",
+    "saleDiscount": "Sale-Rabatt",
     "betaDiscount": "Beta-Rabatt",
     "additionalDiscount": "Zusätzlicher Rabatt",
     "total": "Gesamt",
@@ -37,10 +39,10 @@
     "termsOfService": "Nutzungsbedingungen", //ok
     "rightOfWithdrawal": "Widerrufsrecht",
     "completePurchaseFor": "Kauf abschließen für {{price}}",
-    "paymentFailed": "Zahlung fehlgeschlagen",  //x1.6
-    "notAuthenticated": "Benutzer nicht authentifiziert",  //x1.4
+    "paymentFailed": "Zahlung fehlgeschlagen", //x1.6
+    "notAuthenticated": "Benutzer nicht authentifiziert", //x1.4
     "verificationFailed": "Zahlungsüberprüfung fehlgeschlagen. Bitte kontaktiere den Support.",
-    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten",  //x1.4
+    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten", //x1.4
     "purchaseSuccessful": "Kauf erfolgreich!",
     "purchaseAddedSingle": "{{name}} wurde deinen Käufen hinzugefügt. Prüfe den Tab „Käufe“, um es zu aktivieren.",
     "purchaseAddedBundle": "Die Bestandteile von {{name}} wurden deinen Käufen hinzugefügt. Prüfe den Tab „Käufe“, um sie zu aktivieren.",
@@ -53,7 +55,7 @@
     "artifactSkullLantern": {
       "title": "Schädellaterne",
       "caveExploreBonus": "Höhlenerkundung: +200 % Bonus",
-      "caveExploreCooldown": "Höhlenerkundung: -5 s Abklingzeit",  //x1.3
+      "caveExploreCooldown": "Höhlenerkundung: -5 s Abklingzeit", //x1.3
       "miningBonus": "Abbau: +200 % Bonus",
       "miningCooldown": "Abbau: -5s Abklingzeit"
     },
@@ -67,25 +69,25 @@
       "doubleGain": "bis zu 15 % Chance, Aktionsgewinne zu verdoppeln"
     },
     "cruelMode": {
-      "title": "Grausamer Modus",  //x1.5
-      "moreEvents": "Mehr Ereignisse",  //x1.4
-      "moreItems": "Mehr Gegenstände",  //x1.6
+      "title": "Grausamer Modus", //x1.5
+      "moreEvents": "Mehr Ereignisse", //x1.4
+      "moreItems": "Mehr Gegenstände", //x1.6
       "strongerEnemies": "Stärkere Feinde",
-      "harderChallenges": "Härtere Herausforderungen",  //x1.5
-      "reusePurchases": "Bestehende Käufe wiederverwenden"  //x1.3
+      "harderChallenges": "Härtere Herausforderungen", //x1.5
+      "reusePurchases": "Bestehende Käufe wiederverwenden" //x1.3
     },
     "alreadyClaimedItemLog": "Du hast {{name}} bereits abgeholt.",
-    "claimFailedLog": "{{name}} konnte nicht abgeholt werden. Bitte versuche es erneut.",  //x1.5
+    "claimFailedLog": "{{name}} konnte nicht abgeholt werden. Bitte versuche es erneut.", //x1.5
     "activatedDefaultLog": "{{name}} aktiviert! Belohnungen wurden deinem Inventar hinzugefügt.",
     "freeGoldClaimedLog": "Du hast {{amount}} Gold abgeholt. Komm morgen wieder, wenn du die Nacht überstehst.",
     "freeGoldCooldownLog_one": "Du kannst in {{hours}} Stunde wieder kostenloses Gold abholen.",
     "freeGoldCooldownLog_other": "Du kannst in {{hours}} Stunden wieder kostenloses Gold abholen.",
-    "noCardDataStored": "Keine Kartendaten werden auf unseren Servern gespeichert.",  //x1.5
+    "noCardDataStored": "Keine Kartendaten werden auf unseren Servern gespeichert.", //x1.5
     "securePaymentVia": "Sichere Zahlung über",
     "securePaymentWith": "mit",
     "securePurchaseTitle": "Kauf sichern",
     "securePurchaseBody": "Dein Kauf ist nur in diesem Browser gespeichert. Erstelle ein Konto, damit Käufe und Fortschritt erhalten bleiben, wenn du das Gerät wechselst oder Browserdaten löschst.",
-    "securePurchaseSignUp": "Registrieren",  //x1.7
-    "securePurchaseLater": "Vielleicht später"  //x1.5
+    "securePurchaseSignUp": "Registrieren", //x1.7
+    "securePurchaseLater": "Vielleicht später" //x1.5
   }
 }

@@ -1,7 +1,7 @@
 /**
  * Final Stripe amount in cents for shop checkout.
  *
- * Discounts apply to catalog `item.price` in cents (already reflects Beta/sale pricing).
+ * Discounts apply to catalog `item.price` in cents.
  * **Playlight** first purchase: 10% off, same shape as **Trader's Gratitude** (20% off).
  * If multiple %-off apply, the lowest amount (best for the player) is used.
  * **Journey complete** (Cruel Mode card only): caps price at `CRUEL_MODE_JOURNEY_COMPLETE_PRICE_CENTS`

@@ -25,19 +25,12 @@ describe('Shop Items Configuration', () => {
       });
     });
 
-    it('should have valid prices', () => {
+    it('should have valid prices when originalPrice is set for future sales', () => {
       Object.values(SHOP_ITEMS).forEach((item) => {
         if (item.originalPrice !== undefined) {
           expect(item.originalPrice).toBeGreaterThan(item.price);
         }
       });
-    });
-
-    it('sets bundle list (originalPrice) to product MSRP', () => {
-      expect(SHOP_ITEMS.basic_survival_bundle.originalPrice).toBe(849);
-      expect(SHOP_ITEMS.artifact_bundle.originalPrice).toBe(999);
-      expect(SHOP_ITEMS.advanced_bundle.originalPrice).toBe(1399);
-      expect(SHOP_ITEMS.ashen_throne_bundle.originalPrice).toBe(2099);
     });
   });
 
@@ -220,17 +213,24 @@ describe('Shop Items Configuration', () => {
       expect(bundle.description.toLowerCase()).toContain('feast');
     });
 
-    it('should validate basic bundle sale and list prices', () => {
+    it('should validate basic bundle catalog price vs component sum', () => {
       expect(SHOP_ITEMS.basic_survival_bundle.price).toBe(649);
-      expect(SHOP_ITEMS.basic_survival_bundle.originalPrice).toBe(849);
+      const listSum = bundleComponentsListPriceSumCents(
+        SHOP_ITEMS.basic_survival_bundle.bundleComponents!,
+        SHOP_ITEMS,
+      );
+      expect(listSum).toBeGreaterThan(SHOP_ITEMS.basic_survival_bundle.price);
     });
 
-    it('should have bundle with reasonable discount percentage vs list price', () => {
+    it('should have bundle with reasonable discount percentage vs component list sum', () => {
       const bundle = SHOP_ITEMS.basic_survival_bundle;
-      const list = bundle.originalPrice!;
+      const list = bundleComponentsListPriceSumCents(
+        bundle.bundleComponents!,
+        SHOP_ITEMS,
+      );
       const discountPercent = ((list - bundle.price) / list) * 100;
 
-      expect(discountPercent).toBeGreaterThanOrEqual(10);
+      expect(discountPercent).toBeGreaterThanOrEqual(1);
       expect(discountPercent).toBeLessThanOrEqual(50);
     });
 
@@ -280,9 +280,8 @@ describe('Shop Items Configuration', () => {
     it('should have correct pricing for advanced bundle', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
       expect(bundle.price).toBe(999);
-      expect(bundle.originalPrice).toBe(1399); // List 13.99 €
       expect(bundleComponentsListPriceSumCents(bundle.bundleComponents!, SHOP_ITEMS)).toBe(
-        SHOP_ITEMS.gold_20000.originalPrice! + SHOP_ITEMS.great_feast_3.originalPrice!,
+        SHOP_ITEMS.gold_20000.price + SHOP_ITEMS.great_feast_3.price,
       );
     });
 
@@ -292,12 +291,15 @@ describe('Shop Items Configuration', () => {
       expect(bundle.rewards.feastActivations).toBe(3);
     });
 
-    it('should have reasonable discount for advanced bundle vs list price', () => {
+    it('should have reasonable discount for advanced bundle vs component sum', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
-      const list = bundle.originalPrice!;
+      const list = bundleComponentsListPriceSumCents(
+        bundle.bundleComponents!,
+        SHOP_ITEMS,
+      );
       const discountPercent = ((list - bundle.price) / list) * 100;
 
-      expect(discountPercent).toBeGreaterThanOrEqual(10);
+      expect(discountPercent).toBeGreaterThanOrEqual(1);
       expect(discountPercent).toBeLessThanOrEqual(50);
     });
 
@@ -368,15 +370,18 @@ describe('Shop Items Configuration', () => {
     it('should have correct catalog pricing', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
       expect(bundle.price).toBe(1499);
-      expect(bundle.originalPrice).toBe(2099);
       expect(bundleComponentsListPriceSumCents(bundle.bundleComponents!, SHOP_ITEMS)).toBe(
-        2845,
+        2095,
       );
     });
 
-    it('should price below MSRP list and below Pale King + Dark Artifacts bundles combined', () => {
+    it('should price below component sum and below Pale King + Dark Artifacts bundles combined', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
-      expect(bundle.originalPrice).toBeGreaterThan(bundle.price);
+      const listSum = bundleComponentsListPriceSumCents(
+        bundle.bundleComponents!,
+        SHOP_ITEMS,
+      );
+      expect(listSum).toBeGreaterThan(bundle.price);
       expect(bundle.price).toBeLessThan(
         SHOP_ITEMS.advanced_bundle.price + SHOP_ITEMS.artifact_bundle.price,
       );
@@ -396,11 +401,14 @@ describe('Shop Items Configuration', () => {
       );
     });
 
-    it('should have reasonable strikethrough discount vs bundle list price', () => {
+    it('should have reasonable strikethrough discount vs component list sum', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
-      const list = bundle.originalPrice!;
+      const list = bundleComponentsListPriceSumCents(
+        bundle.bundleComponents!,
+        SHOP_ITEMS,
+      );
       const discountPercent = ((list - bundle.price) / list) * 100;
-      expect(discountPercent).toBeGreaterThanOrEqual(10);
+      expect(discountPercent).toBeGreaterThanOrEqual(1);
       expect(discountPercent).toBeLessThanOrEqual(50);
     });
 
@@ -419,7 +427,7 @@ describe('Shop Items Configuration', () => {
   });
 
   describe('shopPackageSavingsPercent', () => {
-    it('computes gold baseline from smallest pack catalog (Beta) price', () => {
+    it('computes gold baseline from smallest pack catalog price', () => {
       expect(goldAmountBaselineCatalogCents(1000, SHOP_ITEMS)).toBe(149);
       expect(goldAmountBaselineCatalogCents(250, SHOP_ITEMS)).toBe(37);
     });
@@ -433,7 +441,7 @@ describe('Shop Items Configuration', () => {
       expect(shopPackageSavingsPercent(SHOP_ITEMS.great_feast_1)).toBeNull();
     });
 
-    it('returns savings vs catalog baselines only (no MSRP / beta-off-list)', () => {
+    it('returns savings vs catalog baselines only (no optional sale originalPrice)', () => {
       expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_1000)).toBeNull();
       expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_2500)).toBe(6);
       expect(shopPackageSavingsPercent(SHOP_ITEMS.great_feast_3)).toBe(33);

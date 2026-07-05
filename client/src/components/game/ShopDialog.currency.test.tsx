@@ -106,6 +106,8 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       greatFeastState: { isActive: false, endTime: 0 },
       hasMadeNonFreePurchase: false,
       isUserSignedIn: true,
+      tradersGratitudeState: { accepted: false },
+      tradersSonGratitudeState: { accepted: false },
       tools: {},
       weapons: {},
       blessings: {},
@@ -298,9 +300,9 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        // Highlights: gold_20000 sale + list (EUR)
+        // Highlights: gold_20000 catalog price (EUR)
         expect(screen.getAllByText('8.99 €').length).toBeGreaterThan(0);
-        expect(screen.getAllByText('12.49 €').length).toBeGreaterThan(0);
+        expect(screen.queryByText('12.49 €')).not.toBeInTheDocument();
       });
     });
 
@@ -318,13 +320,17 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        // Check various USD price formats (gold_20000 on Highlights)
+        // Check USD catalog price for gold_20000 on Highlights
         expect(screen.getAllByText(/\$8\.99/).length).toBeGreaterThan(0);
-        expect(screen.getAllByText(/\$12\.49/).length).toBeGreaterThan(0);
+        expect(screen.queryByText(/\$12\.49/)).not.toBeInTheDocument();
       });
     });
 
-    it('should show both original and discounted prices in correct currency', async () => {
+    it('should show event discount strikethrough when Trader\'s Gratitude is active', async () => {
+      useGameStore.setState({
+        tradersGratitudeState: { accepted: true },
+      });
+
       global.fetch = vi.fn((url) => {
         if (String(url).includes('ipapi.co')) {
           return Promise.resolve({
@@ -338,10 +344,11 @@ describe('ShopDialog Currency Detection', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        // gold_20000 on Highlights: sale vs list in EUR
-        expect(screen.getAllByText(/^8\.99 €$/).length).toBeGreaterThan(0);
-        const originalPrices = screen.getAllByText(/12\.49\s*€/);
-        expect(originalPrices.some((el) => el.classList.contains('line-through'))).toBe(true);
+        const struckCatalog = screen.getAllByText(/^8\.99 €$/);
+        expect(
+          struckCatalog.some((el) => el.classList.contains('line-through')),
+        ).toBe(true);
+        expect(screen.getAllByText(/^7\.19 €$/).length).toBeGreaterThan(0);
       });
     });
   });

@@ -12,7 +12,7 @@ export interface ShopItem {
   name: string;
   description: string;
   price: number; // in cents
-  /** List / MSRP (strikethrough). Bundles: product list price; may differ from summed component MSRP. */
+  /** Optional list price for future sales (strikethrough when greater than `price`). */
   originalPrice?: number; // in cents
   rewards: ShopItemRewards;
   canPurchaseMultipleTimes: boolean;
@@ -53,7 +53,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Full Game",
     description:
       "Unlock the full game and continue your journey.",
-    originalPrice: 1099,
     price: 799, // 7.99 €
     rewards: {},
     canPurchaseMultipleTimes: false,
@@ -69,7 +68,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Cruel Mode",
     description:
       "A more cruel world, expanded story, more items, deadlier foes. Endure, or vanish.",
-    originalPrice: 599, // $5.99
     price: 449, // $4.49
     rewards: {},
     canPurchaseMultipleTimes: false,
@@ -84,7 +82,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_250",
     name: "1'000 Gold",
     description: "A decent amount of Gold",
-    originalPrice: 249,
     price: 149, // 1.49 €
     rewards: {
       resources: { gold: 1000 },
@@ -100,7 +97,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_1000",
     name: "1'000 Gold",
     description: "A decent amount of Gold",
-    originalPrice: 249,
     price: 149, // 1.49 €
     rewards: {
       resources: { gold: 1000 },
@@ -116,7 +112,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_2500",
     name: "2'500 Gold",
     description: "A substantial treasure",
-    originalPrice: 499,
     price: 349, // 3.49 €
     rewards: {
       resources: { gold: 2500 },
@@ -132,7 +127,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_5000",
     name: "5'000 Gold",
     description: "A fortune in Gold",
-    originalPrice: 749,
     price: 549, // 5.49 €
     rewards: {
       resources: { gold: 5000 },
@@ -148,7 +142,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_20000",
     name: "20'000 Gold",
     description: "Unholy amounts of Gold",
-    originalPrice: 1249,
     price: 899, // 8.99 €
     rewards: {
       resources: { gold: 20000 },
@@ -164,7 +157,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "great_feast_1",
     name: "1 Great Feast",
     description: `Boost villager production by 5x for ${GREAT_FEAST_DURATION_MS / 60000} minutes`,
-    originalPrice: 199,
     price: 149, // 1.49 €
     rewards: {
       feastActivations: 1,
@@ -180,7 +172,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "great_feast_3",
     name: "3 Great Feasts",
     description: `Boost villager production by 5x for ${GREAT_FEAST_DURATION_MS / 60000} minutes (3 times)`,
-    originalPrice: 399,
     price: 299, // 2.99 €
     rewards: {
       feastActivations: 3,
@@ -197,7 +188,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Skull Lantern",
     description:
       "Forged from cursed bone illuminating the deepest depths. Unlocks Skull Lantern storyline.",
-    originalPrice: 399,
     price: 299, // 2.99 €
     rewards: {
       tools: ["skull_lantern"],
@@ -215,7 +205,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Tarnished Compass",
     description:
       "Artifact of the vanished civilization, its needle points to hidden places. Unlocks Compass storyline.",
-    originalPrice: 399,
     price: 299, // 2.99 €
     rewards: {
       relics: ["tarnished_compass"],
@@ -233,7 +222,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Crow Harness",
     description:
       "Specially crafted harness for messenger crows. Unlocks Crow storyline. Adds Fellowship Member.",
-    originalPrice: 399,
     price: 299, // 2.99 €
     rewards: {
       tools: ["crow_harness"],
@@ -250,8 +238,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "basic_survival_bundle",
     name: "Fading Wanderer Bundle",
     description: "",
-    originalPrice: 849, // 8.49 € list
-    price: 649, // Beta / sale
+    price: 649, // 6.49 €
     rewards: {
       resources: { gold: 5000 },
       feastActivations: 1,
@@ -269,8 +256,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "artifact_bundle",
     name: "Dark Artifacts Bundle",
     description: "",
-    originalPrice: 999, // 9.99 € list
-    price: 749, // Beta / sale
+    price: 749, // 7.49 €
     rewards: {
       tools: ["skull_lantern", "crow_harness"],
       relics: ["tarnished_compass"],
@@ -287,7 +273,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "advanced_bundle",
     name: "Pale King's Bundle",
     description: "",
-    originalPrice: 1399, // 13.99 € list
     price: 999, // 9.99 €
     rewards: {
       resources: { gold: 20000 },
@@ -306,7 +291,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "ashen_throne_bundle",
     name: "Ashen Throne Bundle",
     description: "",
-    originalPrice: 2099, // 20.99 € list
     price: 1499, // 14.99 €
     rewards: {
       resources: { gold: 20000 },
@@ -369,7 +353,7 @@ export function bundleComponentsListPriceSumCents(
   }, 0);
 }
 
-/** Sum of each component's catalog sale price (`price`). Excludes MSRP; use for "Save %" on top of Beta pricing. */
+/** Sum of each component's catalog price (`price`). Used for bundle "Save %" vs buying components separately. */
 export function bundleComponentsCatalogPriceSumCents(
   componentIds: string[],
   catalog: Record<string, ShopItem> = SHOP_ITEMS,
@@ -400,7 +384,7 @@ export function isShopPaidGoldPackItem(id: string): boolean {
 }
 
 /**
- * What this much gold would cost at the current catalog (Beta) per-unit rate using the smallest pack.
+ * What this much gold would cost at the current catalog per-unit rate using the smallest pack.
  */
 export function goldAmountBaselineCatalogCents(
   goldAmount: number,
@@ -414,7 +398,7 @@ export function goldAmountBaselineCatalogCents(
   return Math.round((goldAmount / unitGold) * catalogPerPack);
 }
 
-/** Catalog (Beta) price for three single Great Feasts — same activations as `great_feast_3`. */
+/** Catalog price for three single Great Feasts — same activations as `great_feast_3`. */
 export function greatFeast3BaselineCatalogCents(
   catalog: Record<string, ShopItem> = SHOP_ITEMS,
 ): number {
@@ -423,7 +407,7 @@ export function greatFeast3BaselineCatalogCents(
 }
 
 /**
- * Red badge: catalog (Beta) baseline vs bundle/catalog `price`.
+ * Red badge: catalog baseline vs bundle/catalog `price`.
  * Gold: smallest-pack rate; great_feast_3: 3× single feast; bundles: summed component `price`.
  */
 export function shopPackageSavingsPercent(

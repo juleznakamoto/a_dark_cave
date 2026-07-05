@@ -146,6 +146,8 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
       hasMadeNonFreePurchase: false,
       lastFreeGoldClaim: 0,
       isUserSignedIn: true,
+      tradersGratitudeState: { accepted: false },
+      tradersSonGratitudeState: { accepted: false },
       tools: {},
       weapons: {},
       blessings: {},
@@ -731,14 +733,32 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
   });
 
   describe('Price Display', () => {
-    it('should show original and discounted prices', async () => {
+    it('should show catalog price without MSRP strikethrough for single items', async () => {
       const onClose = vi.fn();
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        // gold_20000 on Highlights: list 12.49 € vs sale 8.99 €
-        const originalPrice = screen.getByText(/12\.49\s*€/);
-        expect(originalPrice).toHaveClass('line-through');
+        const catalogPrice = screen.getAllByText(/^8\.99 €$/);
+        expect(catalogPrice.some((el) => !el.classList.contains('line-through'))).toBe(
+          true,
+        );
+        expect(screen.queryByText(/12\.49\s*€/)).not.toBeInTheDocument();
+      });
+    });
+
+    it("should show catalog price struck and event discount when Trader's Gratitude is active", async () => {
+      useGameStore.setState({
+        tradersGratitudeState: { accepted: true },
+      });
+      const onClose = vi.fn();
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        const struckCatalog = screen.getAllByText(/^8\.99 €$/);
+        expect(
+          struckCatalog.some((el) => el.classList.contains('line-through')),
+        ).toBe(true);
+        expect(screen.getAllByText(/^7\.19 €$/).length).toBeGreaterThan(0);
       });
     });
   });
@@ -898,11 +918,14 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
         expect(screen.getByText(/^6\.49 €$/)).toBeInTheDocument();
       });
 
-      const strikeEuro = (
-        SHOP_ITEMS.basic_survival_bundle.originalPrice! / 100
+      const componentSumEuro = (
+        bundleComponentsListPriceSumCents(
+          SHOP_ITEMS.basic_survival_bundle.bundleComponents!,
+          SHOP_ITEMS,
+        ) / 100
       ).toFixed(2);
       const originalPrices = screen.getAllByText(
-        new RegExp(`${strikeEuro.replace('.', '\\.')}\\s*€`),
+        new RegExp(`${componentSumEuro.replace('.', '\\.')}\\s*€`),
       );
       expect(originalPrices.some((el) => el.classList.contains('line-through'))).toBe(true);
     }, 20_000);
@@ -1241,12 +1264,15 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
     });
   });
 
-  it('should have bundle with reasonable discount percentage vs list price', () => {
+  it('should have bundle with reasonable discount percentage vs component sum', () => {
     const bundle = SHOP_ITEMS.basic_survival_bundle;
-    const list = bundle.originalPrice!;
+    const list = bundleComponentsListPriceSumCents(
+      bundle.bundleComponents!,
+      SHOP_ITEMS,
+    );
     const discountPercent = ((list - bundle.price) / list) * 100;
 
-    expect(discountPercent).toBeGreaterThanOrEqual(10);
+    expect(discountPercent).toBeGreaterThanOrEqual(1);
     expect(discountPercent).toBeLessThanOrEqual(50);
   });
 
@@ -1278,7 +1304,7 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
       expect(screen.getByText("Pale King's Bundle")).toBeInTheDocument();
     });
 
-    // Pale King's Bundle: catalog price vs explicit list MSRP on the bundle
+    // Pale King's Bundle: catalog price vs summed component catalog prices
     const titleEl = screen.getByText("Pale King's Bundle");
     let bundleScope: HTMLElement | null = titleEl.parentElement;
     while (bundleScope && !within(bundleScope).queryByText('Most popular')) {
@@ -1290,7 +1316,10 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
       salePriceEls.some((el) => !el.className.includes('line-through')),
     ).toBe(true);
     const listSumEuro = (
-      SHOP_ITEMS.advanced_bundle.originalPrice! / 100
+      bundleComponentsListPriceSumCents(
+        SHOP_ITEMS.advanced_bundle.bundleComponents!,
+        SHOP_ITEMS,
+      ) / 100
     ).toFixed(2);
     const originalPrice = within(bundleScope!).getByText(
       new RegExp(`${listSumEuro.replace('.', '\\.')}\\s*€`),

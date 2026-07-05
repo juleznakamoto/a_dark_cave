@@ -118,17 +118,27 @@ function completePaidShopPurchaseInStore() {
 const SHOP_CARD_PROMO_TAG_CLASS =
   "ml-1 px-1 py-[1px] leading-tight text-xs text-green-500 font-medium border border-green-500/40 rounded bg-green-500/5";
 
-/** Strikethrough list price; bundles prefer explicit `originalPrice`, else summed component MSRP. */
-function shopCardStrikethroughListCents(item: ShopItem): number | null {
-  if (item.bundleComponents && item.bundleComponents.length > 0) {
-    if (item.originalPrice != null && item.originalPrice > 0) {
-      return item.originalPrice;
-    }
-    const sum = bundleComponentsListPriceSumCents(item.bundleComponents);
-    return sum > 0 ? sum : null;
+/** Future sale MSRP or bundle component-sum list price (not event discounts). */
+function shopCardCatalogSaleListCents(item: ShopItem): number | null {
+  if (item.originalPrice != null && item.originalPrice > item.price) {
+    return item.originalPrice;
   }
-  const o = item.originalPrice;
-  return o !== undefined && o > 0 ? o : null;
+  if (item.bundleComponents && item.bundleComponents.length > 0) {
+    const sum = bundleComponentsListPriceSumCents(item.bundleComponents);
+    return sum > item.price ? sum : null;
+  }
+  return null;
+}
+
+/** Strikethrough on shop cards: event discount strikes catalog price; else catalog sale / bundle sum. */
+function shopCardStrikethroughCents(
+  item: ShopItem,
+  displayPriceCents: number,
+): number | null {
+  if (item.price > 0 && displayPriceCents < item.price) {
+    return item.price;
+  }
+  return shopCardCatalogSaleListCents(item);
 }
 
 /** Gold tab listings: paid resource packs with gold (excludes free gift + legacy `gold_250`). */
@@ -180,11 +190,13 @@ function getCheckoutPriceBreakdown(
   item: ShopItem,
   gameState: Parameters<typeof getShopCheckoutDiscountOptions>[1],
 ): {
-  listCents: number | null;
-  betaDiscountCents: number;
+  catalogSaleListCents: number | null;
+  catalogSaleDiscountCents: number;
   additionalDiscountCents: number;
   catalogCents: number;
   finalCents: number;
+  hasCatalogSale: boolean;
+  hasEventDiscount: boolean;
 } {
   const catalogCents = item.price;
   const finalCents = getDiscountedShopPriceCents(
@@ -192,19 +204,24 @@ function getCheckoutPriceBreakdown(
     getShopCheckoutDiscountOptions(item, gameState),
     item.id,
   );
-  const listCents = shopCardStrikethroughListCents(item);
-  const betaDiscountCents =
-    listCents != null && listCents > catalogCents
-      ? listCents - catalogCents
+  const catalogSaleListCents =
+    item.originalPrice != null && item.originalPrice > catalogCents
+      ? item.originalPrice
+      : null;
+  const catalogSaleDiscountCents =
+    catalogSaleListCents != null
+      ? catalogSaleListCents - catalogCents
       : 0;
   const additionalDiscountCents =
     catalogCents > finalCents ? catalogCents - finalCents : 0;
   return {
-    listCents,
-    betaDiscountCents,
+    catalogSaleListCents,
+    catalogSaleDiscountCents,
     additionalDiscountCents,
     catalogCents,
     finalCents,
+    hasCatalogSale: catalogSaleDiscountCents > 0,
+    hasEventDiscount: additionalDiscountCents > 0,
   };
 }
 
@@ -1596,11 +1613,14 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </TabsTrigger>
                   </TabsList>
                   {activeTab === "shop" && (
-                    <div className="mt-3 rounded-md border border-green-500/40 bg-green-500/5 px-2 py-2 text-xs font-normal text-foreground">
-                      <p>
-                        {t("ui:shop.betaDiscountTitle", { percent: "40%" })}
-                      </p>
-                      <p>{t("ui:shop.betaDiscountNote")}</p>
+                    <div className="mt-3 flex items-start gap-1.5 text-xs font-normal text-foreground">
+                      <span
+                        className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none text-muted-foreground"
+                        aria-hidden
+                      >
+                        🛈
+                      </span>
+                      <p>{t("ui:shop.forSalePlaythroughNote")}</p>
                     </div>
                   )}
                   {activeTab === "purchases" && (
@@ -1863,21 +1883,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     </CardTitle>
                                     <CardDescription className="!m-0 text-bold flex flex-wrap items-center gap-1">
                                       {(() => {
-                                        const listCents =
-                                          shopCardStrikethroughListCents(item);
-                                        if (
-                                          listCents === null ||
-                                          (item.price > 0 && listCents <= item.price)
-                                        ) {
-                                          return null;
-                                        }
-                                        return (
-                                          <span className="text-xs line-through text-muted-foreground">
-                                            {formatPrice(listCents)}
-                                          </span>
-                                        );
-                                      })()}
-                                      {(() => {
                                         const cruelJourneyDiscountActive =
                                           item.id === "cruel_mode" &&
                                           gameState.story?.seen
@@ -1912,6 +1917,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                               item.id,
                                             )
                                             : item.price;
+                                        const strikethroughCents =
+                                          shopCardStrikethroughCents(
+                                            item,
+                                            displayPrice,
+                                          );
                                         const priceWithoutJourneyCents =
                                           item.price > 0 && item.id === "cruel_mode"
                                             ? getDiscountedShopPriceCents(
@@ -1979,6 +1989,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           displayPrice < priceWithoutJourneyCents;
                                         return (
                                           <>
+                                            {strikethroughCents != null && (
+                                              <span className="text-xs line-through text-muted-foreground">
+                                                {formatPrice(strikethroughCents)}
+                                              </span>
+                                            )}
                                             <span className={priceClassName}>
                                               {item.price === 0
                                                 ? t("common:status.free")
@@ -2358,35 +2373,56 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             </DialogHeader>
             {checkoutPriceBreakdown && (
               <div className="border-b border-border/70 pb-3 text-sm">
-                {checkoutPriceBreakdown.listCents != null &&
-                  checkoutPriceBreakdown.listCents > 0 && (
-                    <div className="flex justify-between gap-4 text-muted-foreground">
-                      <span>{t("ui:shop.originalPrice")}</span>
-                      <span className="shrink-0 text-right line-through tabular-nums">
-                        {formatPrice(checkoutPriceBreakdown.listCents)}
+                {checkoutPriceBreakdown.hasCatalogSale &&
+                  checkoutPriceBreakdown.catalogSaleListCents != null && (
+                    <>
+                      <div className="flex justify-between gap-4 text-muted-foreground">
+                        <span>{t("ui:shop.originalPrice")}</span>
+                        <span className="shrink-0 text-right line-through tabular-nums">
+                          {formatPrice(
+                            checkoutPriceBreakdown.catalogSaleListCents,
+                          )}
+                        </span>
+                      </div>
+                      <div className="flex justify-between gap-4 text-emerald-600 dark:text-emerald-500">
+                        <span>{t("ui:shop.saleDiscount")}</span>
+                        <span className="shrink-0 text-right tabular-nums">
+                          −
+                          {formatPrice(
+                            checkoutPriceBreakdown.catalogSaleDiscountCents,
+                          )}
+                        </span>
+                      </div>
+                    </>
+                  )}
+                {checkoutPriceBreakdown.hasEventDiscount && (
+                  <>
+                    {!checkoutPriceBreakdown.hasCatalogSale && (
+                      <div className="flex justify-between gap-4 text-muted-foreground">
+                        <span>{t("ui:shop.originalPrice")}</span>
+                        <span className="shrink-0 text-right line-through tabular-nums">
+                          {formatPrice(checkoutPriceBreakdown.catalogCents)}
+                        </span>
+                      </div>
+                    )}
+                    <div className="flex justify-between gap-4 text-emerald-600 dark:text-emerald-500">
+                      <span>{t("ui:shop.additionalDiscount")}</span>
+                      <span className="shrink-0 text-right tabular-nums">
+                        −
+                        {formatPrice(
+                          checkoutPriceBreakdown.additionalDiscountCents,
+                        )}
                       </span>
                     </div>
-                  )}
-                {checkoutPriceBreakdown.betaDiscountCents > 0 && (
-                  <div className="flex justify-between gap-4 text-emerald-600 dark:text-emerald-500">
-                    <span>{t("ui:shop.betaDiscount")}</span>
-                    <span className="shrink-0 text-right tabular-nums">
-                      −{formatPrice(checkoutPriceBreakdown.betaDiscountCents)}
-                    </span>
-                  </div>
+                  </>
                 )}
-                {checkoutPriceBreakdown.additionalDiscountCents > 0 && (
-                  <div className="flex justify-between gap-4 text-emerald-600 dark:text-emerald-500">
-                    <span>{t("ui:shop.additionalDiscount")}</span>
-                    <span className="shrink-0 text-right tabular-nums">
-                      −
-                      {formatPrice(
-                        checkoutPriceBreakdown.additionalDiscountCents,
-                      )}
-                    </span>
-                  </div>
-                )}
-                <div className="flex justify-between gap-4 border-t border-border/50 pt-2 font-semibold">
+                <div
+                  className={`flex justify-between gap-4 font-semibold${checkoutPriceBreakdown.hasCatalogSale ||
+                    checkoutPriceBreakdown.hasEventDiscount
+                    ? " border-t border-border/50 pt-2"
+                    : ""
+                    }`}
+                >
                   <span>{t("ui:shop.total")}</span>
                   <span className="shrink-0 tabular-nums">
                     {formatPrice(checkoutPriceBreakdown.finalCents)}

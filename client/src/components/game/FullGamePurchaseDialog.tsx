@@ -433,11 +433,12 @@ export default function FullGamePurchaseDialog({
                         {item.description}
                       </p>
                       <div className="text-2xl font-bold">
-                        {item.originalPrice && (
-                          <span className="line-through text-muted-foreground mr-2 text-lg">
-                            {formatPrice(item.originalPrice)}
-                          </span>
-                        )}
+                        {item.originalPrice != null &&
+                          item.originalPrice > item.price && (
+                            <span className="line-through text-muted-foreground mr-2 text-lg">
+                              {formatPrice(item.originalPrice)}
+                            </span>
+                          )}
                         {formatPrice(fullGameChargeCents)}
                       </div>
                       <p className="text-xs text-muted-foreground mt-1">
