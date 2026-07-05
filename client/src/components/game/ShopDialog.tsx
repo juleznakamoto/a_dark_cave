@@ -1613,7 +1613,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </TabsTrigger>
                   </TabsList>
                   {activeTab === "shop" && (
-                    <div className="mt-3 flex items-start gap-1.5 text-xs font-normal text-foreground">
+                    <div className="mt-3 flex items-center justify-center gap-1.5 text-xs font-normal text-foreground">
                       <span
                         className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-sm font-normal leading-none text-muted-foreground"
                         aria-hidden
