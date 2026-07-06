@@ -41,7 +41,6 @@ import {
   RotateCcw,
   Save,
   Settings,
-  Share2,
 } from "lucide-react";
 import {
   MARKETING_EMAIL_REWARD_KEY,
@@ -606,10 +605,12 @@ export function GameHeaderControls() {
               aria-label={t("share.title", { defaultValue: "Share your progress" })}
               className={`${HEADER_ICON_BTN} group touch-manipulation`}
             >
-              <Share2
-                className={`h-[15px] w-[15px] ${HEADER_ICON_SYMBOL_HOVER}`}
+              <span
+                className={`font-noto-symbols-2 inline-flex items-center justify-center text-[15px] leading-none select-none translate-y-0.5 ${HEADER_ICON_SYMBOL_HOVER}`}
                 aria-hidden="true"
-              />
+              >
+                ➠
+              </span>
             </Button>
           </HoverCalloutTooltip>
         </>
