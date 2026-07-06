@@ -1013,6 +1013,10 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
   animation: focus-glow 3s ease-in-out infinite;
 }
 
+.focus-glow-hover:hover:not([aria-disabled="true"]) {
+  box-shadow: 0 0 2px rgba(20, 184, 166, .5), 0 0 3px rgba(20, 184, 166, .4);
+}
+
 @media (prefers-reduced-motion: reduce) {
 
   .playlight-discovery-btn,
