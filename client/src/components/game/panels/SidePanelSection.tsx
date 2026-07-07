@@ -1284,7 +1284,7 @@ export default function SidePanelSection({
   };
 
   const titleHeading = (
-    <h3 className="text-xs font-medium tracking-wide leading-none text-gray-300">
+    <h3 className="text-sm font-medium tracking-wide leading-none text-gray-300">
       <span
         className={cn(
           "inline-flex items-center",
