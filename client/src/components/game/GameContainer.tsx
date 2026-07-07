@@ -897,9 +897,7 @@ export default function GameContainer() {
     ? "opacity-100 text-foreground"
     : "opacity-100";
   const tabButtonClass =
-    "inline-flex h-10 items-center justify-center bg-transparent text-sm font-normal leading-none outline-none focus:outline-none focus-visible:outline-none";
-  const tabIconButtonClass =
-    "inline-flex h-10 items-end justify-center bg-transparent pb-3 text-sm font-normal leading-none outline-none focus:outline-none focus-visible:outline-none";
+    "inline-flex h-10 items-end justify-center bg-transparent pb-2 text-sm font-normal leading-none outline-none focus:outline-none focus-visible:outline-none";
 
   const pauseHotkeyHintContent = (
     <span className="inline-flex flex-nowrap items-baseline justify-center gap-x-1">
@@ -1095,11 +1093,11 @@ export default function GameContainer() {
                   <>
                     {/* Standard button design */}
                     <div
-                      className={`flex w-full max-w-full flex-nowrap items-center gap-x-2 overflow-hidden${traderUnlocked ? " pr-[4.5rem]" : ""}`}
+                      className={`flex w-full max-w-full flex-nowrap items-end gap-x-2 overflow-hidden${traderUnlocked ? " pr-[4.5rem]" : ""}`}
                     >
                       <div
                         ref={tabButtonRowRef}
-                        className="inline-flex min-w-0 flex-1 flex-nowrap items-center gap-x-2 overflow-x-auto scrollbar-hide"
+                        className="inline-flex min-w-0 flex-1 flex-nowrap items-end gap-x-2 overflow-x-auto scrollbar-hide"
                       >
                         <button
                           className={`${tabButtonClass} ${activeTab === "cave"
@@ -1200,7 +1198,7 @@ export default function GameContainer() {
                         {/* Achievements Tab Button */}
                         {(relics?.survivors_notes || books?.book_of_trials) && (
                           <button
-                            className={`${tabIconButtonClass} ${animatingTabs.has("achievements")
+                            className={`${tabButtonClass} ${animatingTabs.has("achievements")
                               ? fadePhaseTabs.has("achievements")
                                 ? "tab-fade-in"
                                 : "tab-blink-new"
@@ -1227,7 +1225,10 @@ export default function GameContainer() {
                         {/* Timed Event Tab Button */}
                         {timedEventTab.isActive && (
                           <button
-                            className={`${tabIconButtonClass} gap-1 ${tabActiveTextClass}`}
+                            className={`${tabButtonClass} gap-1 ${activeTab === "timedevent"
+                                ? tabActiveTextClass
+                                : tabInactiveTextClass
+                              }`}
                             onClick={() => setActiveTab("timedevent")}
                             data-testid="tab-timedevent"
                           >
