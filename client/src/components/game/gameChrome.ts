@@ -12,3 +12,18 @@ export const TAB_ICON_MASK_BOTTOM =
 
 /** Timed-event hourglass tab icon alignment (tweak `-translate-y-[3px]` if needed). */
 export const TAB_TIMED_EVENT_ICON_CLASS = `${TAB_ICON_MASK_BOTTOM} -translate-y-[3px]`;
+
+/** Lime accent icon idle + hover (trader tab, rewards tasks shortcut). */
+export const LIME_ACCENT_ICON_IDLE =
+  "opacity-80 transition-[opacity,text-shadow,filter] group-hover:opacity-100 group-focus-visible:opacity-100";
+
+/** Text glyphs (e.g. trader ◬). */
+export const LIME_ACCENT_GLOW_TEXT_SHADOW_ACTIVE =
+  "[text-shadow:0_0_4px_rgba(132,204,22,1),0_0_8px_rgba(132,204,22,1),0_0_16px_rgba(132,204,22,1)]";
+
+export const LIME_ACCENT_GLOW_TEXT_SHADOW_HOVER =
+  "group-hover:[text-shadow:0_0_4px_rgba(132,204,22,1),0_0_8px_rgba(132,204,22,1),0_0_16px_rgba(132,204,22,1),0_0_32px_rgba(132,204,22,1)] group-focus-visible:[text-shadow:0_0_4px_rgba(132,204,22,1),0_0_8px_rgba(132,204,22,1),0_0_16px_rgba(132,204,22,1),0_0_32px_rgba(132,204,22,1)]";
+
+/** Mask SVG icons (e.g. rewards tasks diamond) — same glow via filter. */
+export const LIME_ACCENT_GLOW_FILTER_HOVER =
+  "group-hover:[filter:drop-shadow(0_0_4px_rgba(132,204,22,1))_drop-shadow(0_0_8px_rgba(132,204,22,1))_drop-shadow(0_0_16px_rgba(132,204,22,1))_drop-shadow(0_0_32px_rgba(132,204,22,1))] group-focus-visible:[filter:drop-shadow(0_0_4px_rgba(132,204,22,1))_drop-shadow(0_0_8px_rgba(132,204,22,1))_drop-shadow(0_0_16px_rgba(132,204,22,1))_drop-shadow(0_0_32px_rgba(132,204,22,1))]";

@@ -6,15 +6,14 @@ import cn from "clsx";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { TRADER_TAB_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
 import { useGameStore } from "@/game/state";
+import {
+  LIME_ACCENT_GLOW_TEXT_SHADOW_ACTIVE,
+  LIME_ACCENT_GLOW_TEXT_SHADOW_HOVER,
+  LIME_ACCENT_ICON_IDLE,
+} from "./gameChrome";
 
 const TRADER_TAB_HINT_INTERVAL_MS = 15 * 60 * 1000;
 const TRADER_TAB_HINT_DURATION_MS = 10 * 1000;
-
-/** Intense lime glow when hovered, focused, or hint-pulsing (full class strings for Tailwind). */
-const TRADER_ICON_GLOW_ACTIVE =
-  "[text-shadow:0_0_4px_rgba(132,204,22,1),0_0_8px_rgba(132,204,22,1),0_0_16px_rgba(132,204,22,1)]";
-const TRADER_ICON_GLOW_ACTIVE_HOVER =
-  "group-hover:[text-shadow:0_0_4px_rgba(132,204,22,1),0_0_8px_rgba(132,204,22,1),0_0_16px_rgba(132,204,22,1),0_0_32px_rgba(132,204,22,1)] group-focus-visible:[text-shadow:0_0_4px_rgba(132,204,22,1),0_0_8px_rgba(132,204,22,1),0_0_16px_rgba(132,204,22,1),0_0_32px_rgba(132,204,22,1)]";
 
 interface TraderTabButtonProps {
   tabButtonClass: string;
@@ -91,14 +90,11 @@ export function TraderTabButton({
         <span
           ref={iconRef}
           className={cn(
-            "font-noto-symbols-2 text-[19px] leading-none text-lime-500 transition-[opacity,text-shadow] translate-y-[4px]",
+            "font-noto-symbols-2 text-[19px] leading-none text-lime-500 translate-y-[4px]",
+            LIME_ACCENT_ICON_IDLE,
             showActiveGlow
-              ? cn("opacity-100", TRADER_ICON_GLOW_ACTIVE)
-              : cn(
-                "opacity-80",
-                "group-hover:opacity-100 group-focus-visible:opacity-100",
-                TRADER_ICON_GLOW_ACTIVE_HOVER,
-              ),
+              ? cn("opacity-100", LIME_ACCENT_GLOW_TEXT_SHADOW_ACTIVE)
+              : cn(LIME_ACCENT_GLOW_TEXT_SHADOW_HOVER),
           )}
           aria-hidden
         >

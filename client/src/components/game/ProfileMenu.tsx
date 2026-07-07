@@ -47,6 +47,10 @@ import { isRewardsTasksShortcutVisible } from "@/game/socialPromoExclusiveReward
 import PlaylightDiscoveryButton from "./PlaylightDiscoveryButton";
 import { useTranslation } from "react-i18next";
 import { FullscreenButton } from "./FullscreenButton";
+import {
+  LIME_ACCENT_GLOW_FILTER_HOVER,
+  LIME_ACCENT_ICON_IDLE,
+} from "./gameChrome";
 
 const REWARDS_TASKS_ICON_PING_START_MS = 20 * 60 * 1000;
 const REWARDS_TASKS_ICON_PING_INTERVAL_MS = 5 * 60 * 1000;
@@ -560,7 +564,7 @@ export function GameHeaderControls() {
             <GameUiIcon
               name="socialReward"
               sizeClassName={HEADER_ACCENT_ICON_SIZE}
-              className="relative z-[1] text-lime-500"
+              className={`relative z-[1] text-lime-500 ${LIME_ACCENT_ICON_IDLE} ${LIME_ACCENT_GLOW_FILTER_HOVER}`}
             />
           </button>
         </HoverCalloutTooltip>
