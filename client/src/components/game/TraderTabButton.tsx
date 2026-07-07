@@ -82,48 +82,50 @@ export function TraderTabButton({
         {...hoverHandlers}
         className={cn(
           tabButtonClass,
-          "group shrink-0 gap-1.5",
+          "group shrink-0",
           isAnimating ? (isFadePhase ? "tab-fade-in" : "tab-blink-new") : "",
         )}
         onClick={onClick}
         data-testid="tab-trader"
       >
-        <span
-          ref={iconRef}
-          className={cn(
-            "font-noto-symbols-2 text-[19px] leading-none text-lime-500 transition-[opacity,text-shadow]",
-            showActiveGlow
-              ? cn("opacity-100", TRADER_ICON_GLOW_ACTIVE)
-              : cn(
-                "opacity-80",
-                "group-hover:opacity-100 group-focus-visible:opacity-100",
-                TRADER_ICON_GLOW_ACTIVE_HOVER,
-              ),
-          )}
-          aria-hidden
-        >
-          ◬
-        </span>
-        <span className="inline-grid">
+        <span className="inline-flex items-baseline gap-1.5">
           <span
-            className="invisible col-start-1 row-start-1 font-semibold"
+            ref={iconRef}
+            className={cn(
+              "font-noto-symbols-2 text-[19px] leading-none text-lime-500 transition-[opacity,text-shadow] mb-[2px]",
+              showActiveGlow
+                ? cn("opacity-100", TRADER_ICON_GLOW_ACTIVE)
+                : cn(
+                  "opacity-80",
+                  "group-hover:opacity-100 group-focus-visible:opacity-100",
+                  TRADER_ICON_GLOW_ACTIVE_HOVER,
+                ),
+            )}
             aria-hidden
           >
-            {t("tabs.trader", { ns: "common" })}
+            ◬
           </span>
-          <span
-            className={cn(
-              "col-start-1 row-start-1 font-normal transition-opacity",
-              isAnimating
-                ? ""
-                : showActiveGlow
-                  ? "opacity-100 font-semibold"
-                  : isPaused
-                    ? tabInactiveTextClass
-                    : "opacity-80 group-hover:opacity-100 group-hover:font-semibold",
-            )}
-          >
-            {t("tabs.trader", { ns: "common" })}
+          <span className="inline-grid">
+            <span
+              className="invisible col-start-1 row-start-1 font-semibold"
+              aria-hidden
+            >
+              {t("tabs.trader", { ns: "common" })}
+            </span>
+            <span
+              className={cn(
+                "col-start-1 row-start-1 font-normal transition-opacity",
+                isAnimating
+                  ? ""
+                  : showActiveGlow
+                    ? "opacity-100 font-semibold"
+                    : isPaused
+                      ? tabInactiveTextClass
+                      : "opacity-80 group-hover:opacity-100 group-hover:font-semibold",
+              )}
+            >
+              {t("tabs.trader", { ns: "common" })}
+            </span>
           </span>
         </span>
       </button>
