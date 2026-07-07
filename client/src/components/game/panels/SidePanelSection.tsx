@@ -1287,7 +1287,7 @@ export default function SidePanelSection({
     <h3 className="text-xs font-medium tracking-wide leading-none text-gray-300">
       <span className="inline-flex items-center gap-1 align-baseline">
         {sectionId ? (
-          <SidePanelSectionIcon sectionId={sectionId} className="text-gray-400" />
+          <SidePanelSectionIcon sectionId={sectionId} />
         ) : null}
         {title}
       </span>

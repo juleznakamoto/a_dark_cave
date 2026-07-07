@@ -21,7 +21,7 @@ const SIDE_PANEL_SECTION_ICON_SRC: Record<SidePanelSectionId, string> = {
 };
 
 const DEFAULT_CLASS =
-  "inline-block shrink-0 bg-current opacity-90 [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]";
+  "inline-block shrink-0 bg-current text-white opacity-90 [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]";
 
 export function SidePanelSectionIcon({
   sectionId,
