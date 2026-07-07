@@ -90,7 +90,6 @@ export type SidePanelSectionId =
   | "schematics"
   | "blessings"
   | "buildings"
-  | "population"
   | "stats"
   | "bonuses"
   | "books"

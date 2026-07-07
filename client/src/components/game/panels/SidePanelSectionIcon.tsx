@@ -2,9 +2,7 @@ import cn from "clsx";
 import type { SidePanelSectionId } from "./SidePanelSection";
 
 /** White SVG masks in `client/public/icons/side-panel/`. */
-const SIDE_PANEL_SECTION_ICON_SRC: Partial<
-  Record<SidePanelSectionId, string>
-> = {
+const SIDE_PANEL_SECTION_ICON_SRC: Record<SidePanelSectionId, string> = {
   resources: "/icons/side-panel/large_stone.svg",
   tools: "/icons/side-panel/sledge_hammer.svg",
   weapons: "/icons/side-panel/long_sword.svg",
@@ -35,7 +33,6 @@ export function SidePanelSectionIcon({
   sizeClassName?: string;
 }) {
   const src = SIDE_PANEL_SECTION_ICON_SRC[sectionId];
-  if (!src) return null;
 
   return (
     <span
