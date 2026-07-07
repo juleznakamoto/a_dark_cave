@@ -18,6 +18,7 @@ export const GAME_UI_ICON_SRC = {
   share: "/icons/speech_bubble.svg",
   inviteUser: "/icons/add_user.svg",
   socialReward: "/icons/cut_diamond.svg",
+  exclusiveReward: "/icons/diamond_ring.svg",
 } as const;
 
 export type GameUiIconName = keyof typeof GAME_UI_ICON_SRC;

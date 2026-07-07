@@ -745,75 +745,75 @@ export default function SocialPromptDialog({
               : "border-lime-500/40 bg-lime-500/[0.07]",
           )}
         >
-          <div className="flex gap-2.5 items-start">
-            <GameUiIcon
-              name="socialReward"
-              sizeClassName="w-[17px] h-[17px]"
-              className={cn(
-                "shrink-0 pt-0.5",
-                exclusiveRewardComplete ? "text-green-500" : "text-lime-400",
-              )}
-            />
-            <div className="min-w-0 flex-1">
-              <div className="flex justify-between gap-2 text-sm font-medium text-foreground">
-                <span className="min-w-0 leading-snug">
-                  {exclusiveRewardComplete ? (
-                    t("socialPrompt.progressComplete")
-                  ) : (
-                    <span className="inline-flex flex-wrap items-baseline gap-x-1">
-                      <span>{t("socialPrompt.progressToward")}</span>
-                      <span className="inline-flex items-baseline gap-x-2 font-bold">
-                        {exclusiveItemName}
-                        <ExclusivePromoItemInfoIcon tooltipId="social-prompt-exclusive-item-info" />
-                      </span>
+          <div className="space-y-3">
+            <div className="flex justify-between gap-2 text-sm font-medium text-foreground">
+              <span className="min-w-0 leading-snug">
+                {exclusiveRewardComplete ? (
+                  t("socialPrompt.progressComplete")
+                ) : (
+                  <span className="inline-flex flex-wrap items-baseline gap-x-1">
+                    <span>{t("socialPrompt.progressToward")}</span>
+                    <span className="inline-flex items-baseline gap-x-2 font-bold">
+                      {exclusiveItemName}
+                      <ExclusivePromoItemInfoIcon tooltipId="social-prompt-exclusive-item-info" />
                     </span>
-                  )}
-                </span>
-                <span
-                  className={cn(
-                    "shrink-0 tabular-nums",
-                    exclusiveRewardComplete ? "text-green-500" : "text-lime-400",
-                  )}
-                >
-                  {!exclusiveRewardComplete &&
-                    t("socialPrompt.tasksRemaining", {
-                      count:
-                        exclusiveProgress.total - exclusiveProgress.completed,
-                    })}
-                </span>
-              </div>
+                  </span>
+                )}
+              </span>
+              <span
+                className={cn(
+                  "shrink-0 tabular-nums",
+                  exclusiveRewardComplete ? "text-green-500" : "text-lime-400",
+                )}
+              >
+                {!exclusiveRewardComplete &&
+                  t("socialPrompt.tasksRemaining", {
+                    count:
+                      exclusiveProgress.total - exclusiveProgress.completed,
+                  })}
+              </span>
             </div>
-          </div>
-          <div
-            className="relative h-3 w-full overflow-hidden rounded-full border border-border/60 bg-neutral-800/80"
-            role="progressbar"
-            aria-valuenow={exclusiveProgress.completed}
-            aria-valuemin={0}
-            aria-valuemax={exclusiveProgress.total}
-            aria-label={t("socialPrompt.progressAriaLabel")}
-          >
-            <div
-              className={cn(
-                "h-full rounded-full transition-all duration-300 ease-out",
-                exclusiveRewardComplete
-                  ? "bg-green-500"
-                  : "bg-gradient-to-r from-lime-600 to-lime-400",
-              )}
-              style={{ width: `${exclusiveProgress.percent}%` }}
-            />
-            {Array.from(
-              { length: SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL - 1 },
-              (_, i) => i + 1,
-            ).map((step) => (
+            <div className="flex items-center gap-2.5">
               <div
-                key={step}
-                className="pointer-events-none absolute inset-y-0 z-[1] w-px bg-neutral-950/50"
-                style={{
-                  left: `${(step / SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL) * 100}%`,
-                  transform: "translateX(-50%)",
-                }}
+                className="relative h-3 min-w-0 flex-1 overflow-hidden rounded-full border border-border/60 bg-neutral-800/80"
+                role="progressbar"
+                aria-valuenow={exclusiveProgress.completed}
+                aria-valuemin={0}
+                aria-valuemax={exclusiveProgress.total}
+                aria-label={t("socialPrompt.progressAriaLabel")}
+              >
+                <div
+                  className={cn(
+                    "h-full rounded-full transition-all duration-300 ease-out",
+                    exclusiveRewardComplete
+                      ? "bg-green-500"
+                      : "bg-gradient-to-r from-lime-600 to-lime-400",
+                  )}
+                  style={{ width: `${exclusiveProgress.percent}%` }}
+                />
+                {Array.from(
+                  { length: SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL - 1 },
+                  (_, i) => i + 1,
+                ).map((step) => (
+                  <div
+                    key={step}
+                    className="pointer-events-none absolute inset-y-0 z-[1] w-px bg-neutral-950/50"
+                    style={{
+                      left: `${(step / SOCIAL_PROMO_EXCLUSIVE_STEP_TOTAL) * 100}%`,
+                      transform: "translateX(-50%)",
+                    }}
+                  />
+                ))}
+              </div>
+              <GameUiIcon
+                name="exclusiveReward"
+                sizeClassName="w-[22px] h-[22px]"
+                className={cn(
+                  "shrink-0",
+                  exclusiveRewardComplete ? "text-green-500" : "text-lime-400",
+                )}
               />
-            ))}
+            </div>
           </div>
         </div>
       </DialogContent>
