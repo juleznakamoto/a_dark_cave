@@ -48,7 +48,7 @@ import PlaylightDiscoveryButton from "./PlaylightDiscoveryButton";
 import { useTranslation } from "react-i18next";
 import { FullscreenButton } from "./FullscreenButton";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
-import { TRADER_TAB_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
+import { REWARDS_TASKS_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
 import { LIME_ACCENT_MASK_ICON_CLASS } from "./gameChrome";
 
 const REWARDS_TASKS_ICON_PING_START_MS = 20 * 60 * 1000;
@@ -501,7 +501,7 @@ export function GameHeaderControls() {
     portal: rewardsTasksParticlePortal,
   } = useCoinHoverParticles("gold", {
     particleOriginRef: rewardsTasksIconRef,
-    particleConfig: TRADER_TAB_PARTICLE_CONFIG,
+    particleConfig: REWARDS_TASKS_PARTICLE_CONFIG,
     zIndex: 50,
   });
 

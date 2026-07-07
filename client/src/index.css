@@ -850,7 +850,7 @@ body {
 .group:focus-visible .lime-accent-mask-icon {
   opacity: 1;
   filter:
-    drop-shadow(0 0 4px rgba(132, 204, 22, 1)) drop-shadow(0 0 8px rgba(132, 204, 22, 1)) drop-shadow(0 0 16px rgba(132, 204, 22, 1)) drop-shadow(0 0 32px rgba(132, 204, 22, 1));
+    drop-shadow(0 0 6px rgba(132, 204, 22, 1)) drop-shadow(0 0 12px rgba(132, 204, 22, 1)) drop-shadow(0 0 22px rgba(132, 204, 22, 1)) drop-shadow(0 0 36px rgba(132, 204, 22, 1)) drop-shadow(0 0 48px rgba(132, 204, 22, 0.9));
 }
 
 /* Exclusive promo rewards-task ring (ambient CSS loop + hover/ping one-shots) */
