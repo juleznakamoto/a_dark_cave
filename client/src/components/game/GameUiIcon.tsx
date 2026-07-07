@@ -1,22 +1,23 @@
 import cn from "clsx";
 
-/** Grunge UI icons in `client/public/icons/` (white-on-black PNG masks). */
+/** Grunge UI icons in `client/public/icons/` (white SVG masks from Pixarts bundle). */
 export const GAME_UI_ICON_SRC = {
-  settings: "/icons/settings_gear.png",
-  deleteAccount: "/icons/trash_can.png",
-  signOut: "/icons/exit_door.png",
-  saveGame: "/icons/save_game.png",
-  newGame: "/icons/refresh_arrows.png",
-  leaderboard: "/icons/award_star.png",
-  unpause: "/icons/play_button.png",
-  pause: "/icons/pause_button.png",
-  achievements: "/icons/progress_arrows.png",
-  timedEvent: "/icons/time_hourglass.png",
-  language: "/icons/language_bubble.png",
-  textSize: "/icons/zoom_magnifier.png",
-  email: "/icons/grungy_mail.png",
-  share: "/icons/speech_bubble.png",
-  inviteUser: "/icons/add_user.png",
+  settings: "/icons/settings_gear.svg",
+  deleteAccount: "/icons/trash_can.svg",
+  signOut: "/icons/exit_door.svg",
+  saveGame: "/icons/save_game.svg",
+  newGame: "/icons/refresh_arrows.svg",
+  leaderboard: "/icons/award_star.svg",
+  unpause: "/icons/play_button.svg",
+  pause: "/icons/pause_button.svg",
+  achievements: "/icons/progress_arrows.svg",
+  timedEvent: "/icons/time_hourglass.svg",
+  language: "/icons/language_bubble.svg",
+  textSize: "/icons/zoom_magnifier.svg",
+  email: "/icons/grungy_mail.svg",
+  share: "/icons/speech_bubble.svg",
+  inviteUser: "/icons/add_user.svg",
+  socialReward: "/icons/cut_diamond.svg",
 } as const;
 
 export type GameUiIconName = keyof typeof GAME_UI_ICON_SRC;

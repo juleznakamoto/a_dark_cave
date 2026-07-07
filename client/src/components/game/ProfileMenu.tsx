@@ -555,12 +555,11 @@ export function GameHeaderControls() {
               className="exclusive-promo-shockwave-ring"
               aria-hidden
             />
-            <span
-              className="relative z-[1] text-[17px] leading-none select-none text-lime-500"
-              aria-hidden
-            >
-              ⯫
-            </span>
+            <GameUiIcon
+              name="socialReward"
+              sizeClassName="w-[17px] h-[17px]"
+              className="relative z-[1] text-lime-500"
+            />
           </button>
         </HoverCalloutTooltip>
       )}

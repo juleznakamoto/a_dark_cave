@@ -746,15 +746,14 @@ export default function SocialPromptDialog({
           )}
         >
           <div className="flex gap-2.5 items-start">
-            <span
+            <GameUiIcon
+              name="socialReward"
+              sizeClassName="w-[17px] h-[17px]"
               className={cn(
-                "shrink-0 text-[17px] leading-none select-none pt-0.5",
+                "shrink-0 pt-0.5",
                 exclusiveRewardComplete ? "text-green-500" : "text-lime-400",
               )}
-              aria-hidden
-            >
-              ⯫
-            </span>
+            />
             <div className="min-w-0 flex-1">
               <div className="flex justify-between gap-2 text-sm font-medium text-foreground">
                 <span className="min-w-0 leading-snug">
