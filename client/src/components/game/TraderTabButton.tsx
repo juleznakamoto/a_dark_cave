@@ -88,7 +88,7 @@ export function TraderTabButton({
         <span
           ref={iconRef}
           className={cn(
-            "font-noto-symbols-2 text-sm leading-none text-lime-500 transition-[opacity,text-shadow]",
+            "font-noto-symbols-2 text-[19px] leading-none text-lime-500 transition-[opacity,text-shadow]",
             showActiveGlow
               ? cn("opacity-100", TRADER_ICON_GLOW_ACTIVE)
               : cn(
