@@ -17,7 +17,7 @@ const TRADER_ICON_GLOW_ACTIVE_HOVER =
   "group-hover:[text-shadow:0_0_4px_rgba(132,204,22,1),0_0_8px_rgba(132,204,22,1),0_0_16px_rgba(132,204,22,1),0_0_32px_rgba(132,204,22,1)] group-focus-visible:[text-shadow:0_0_4px_rgba(132,204,22,1),0_0_8px_rgba(132,204,22,1),0_0_16px_rgba(132,204,22,1),0_0_32px_rgba(132,204,22,1)]";
 
 interface TraderTabButtonProps {
-  tabButtonClass: string;
+  tabButtonBaseClass: string;
   tabInactiveTextClass: string;
   isPaused: boolean;
   isAnimating: boolean;
@@ -26,7 +26,7 @@ interface TraderTabButtonProps {
 }
 
 export function TraderTabButton({
-  tabButtonClass,
+  tabButtonBaseClass,
   tabInactiveTextClass,
   isPaused,
   isAnimating,
@@ -80,7 +80,7 @@ export function TraderTabButton({
       <button
         type="button"
         {...hoverHandlers}
-        className={`${tabButtonClass} group shrink-0 gap-1.5 pl-2 ${isAnimating ? (isFadePhase ? "tab-fade-in" : "tab-blink-new") : ""
+        className={`${tabButtonBaseClass} items-baseline group shrink-0 gap-1.5 pl-2 ${isAnimating ? (isFadePhase ? "tab-fade-in" : "tab-blink-new") : ""
           }`}
         onClick={onClick}
         data-testid="tab-trader"
@@ -88,7 +88,7 @@ export function TraderTabButton({
         <span
           ref={iconRef}
           className={cn(
-            "font-noto-symbols-2 text-[19px] leading-none text-lime-500 transition-[opacity,text-shadow] relative top-px",
+            "font-noto-symbols-2 text-[19px] leading-none text-lime-500 transition-[opacity,text-shadow]",
             showActiveGlow
               ? cn("opacity-100", TRADER_ICON_GLOW_ACTIVE)
               : cn(

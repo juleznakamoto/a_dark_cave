@@ -896,8 +896,9 @@ export default function GameContainer() {
   const tabActiveTextClass = isPaused
     ? "opacity-100 text-foreground"
     : "opacity-100";
-  const tabButtonClass =
-    "inline-flex h-10 items-end justify-center bg-transparent pb-2 text-sm font-normal leading-none outline-none focus:outline-none focus-visible:outline-none";
+  const tabButtonBaseClass =
+    "inline-flex h-10 justify-center bg-transparent pb-2 text-sm font-normal leading-none outline-none focus:outline-none focus-visible:outline-none";
+  const tabButtonClass = `${tabButtonBaseClass} items-end`;
 
   const pauseHotkeyHintContent = (
     <span className="inline-flex flex-nowrap items-baseline justify-center gap-x-1">
@@ -1245,9 +1246,9 @@ export default function GameContainer() {
                     </div>
 
                     {traderUnlocked && !steamEditionActive && (
-                      <div className="pointer-events-auto absolute inset-y-0 right-2 flex items-center">
+                      <div className="pointer-events-auto absolute inset-y-0 right-2 flex items-end">
                         <TraderTabButton
-                          tabButtonClass={tabButtonClass}
+                          tabButtonBaseClass={tabButtonBaseClass}
                           tabInactiveTextClass={tabInactiveTextClass}
                           isPaused={isPaused}
                           isAnimating={animatingTabs.has("trader")}
