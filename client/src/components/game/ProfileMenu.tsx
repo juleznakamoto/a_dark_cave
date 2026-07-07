@@ -35,13 +35,8 @@ import { DeleteAccountDialog } from "./DeleteAccountDialog";
 import SettingsDialog from "./SettingsDialog";
 import SocialPromptDialog from "./SocialPromptDialog";
 import { initPlaylight, markPlaylightDiscoveryUserInitiated } from "@/lib/playlight";
-import {
-  LogIn,
-  LogOut,
-  RotateCcw,
-  Save,
-  Settings,
-} from "lucide-react";
+import { LogIn } from "lucide-react";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
 import {
   MARKETING_EMAIL_REWARD_KEY,
   applyMarketingSubscribeGoldReward,
@@ -605,12 +600,11 @@ export function GameHeaderControls() {
               aria-label={t("share.title", { defaultValue: "Share your progress" })}
               className={`${HEADER_ICON_BTN} group touch-manipulation`}
             >
-              <span
-                className={`font-noto-symbols-2 inline-flex items-center justify-center text-[15px] leading-none select-none translate-y-0.5 ${HEADER_ICON_SYMBOL_HOVER}`}
-                aria-hidden="true"
-              >
-                ➠
-              </span>
+              <GameUiIcon
+                name="share"
+                sizeClassName="w-3.5 h-3.5"
+                className={HEADER_ICON_SYMBOL_HOVER}
+              />
             </Button>
           </HoverCalloutTooltip>
         </>
@@ -657,7 +651,7 @@ export function GameHeaderControls() {
             }}
           >
             <span className="flex items-center gap-1.5">
-              <Settings className="w-3.5 h-3.5 shrink-0 opacity-90" aria-hidden />
+              <GameUiIcon name="settings" />
               {t("settings.title")}
             </span>
           </DropdownMenuItem>
@@ -711,17 +705,14 @@ export function GameHeaderControls() {
             }
           >
             <span className="flex items-center gap-1.5">
-              <Save className="w-3.5 h-3.5 shrink-0 opacity-90" aria-hidden />
+              <GameUiIcon name="saveGame" />
               {t("profile.save")}
             </span>
           </DropdownMenuItemWithTooltip>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleRestartGame}>
             <span className="flex items-center gap-1.5">
-              <RotateCcw
-                className="w-3.5 h-3.5 shrink-0 opacity-90"
-                aria-hidden
-              />
+              <GameUiIcon name="newGame" />
               {t("profile.newGame")}
             </span>
           </DropdownMenuItem>
@@ -735,12 +726,7 @@ export function GameHeaderControls() {
                 }}
               >
                 <span className="flex items-center gap-1.5">
-                  <span
-                    className="w-3.5 shrink-0 text-center text-base leading-none opacity-90 select-none"
-                    aria-hidden
-                  >
-                    ♕
-                  </span>
+                  <GameUiIcon name="leaderboard" />
                   {t("profile.leaderboard")}
                 </span>
               </DropdownMenuItem>
@@ -752,10 +738,7 @@ export function GameHeaderControls() {
             (currentUser ? (
               <DropdownMenuItem onClick={handleSignOut}>
                 <span className="flex items-center gap-1.5">
-                  <LogOut
-                    className="w-3.5 h-3.5 shrink-0 opacity-90"
-                    aria-hidden
-                  />
+                  <GameUiIcon name="signOut" />
                   {t("profile.signOut")}
                 </span>
               </DropdownMenuItem>

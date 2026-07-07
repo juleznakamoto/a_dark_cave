@@ -9,7 +9,7 @@ import { useGameStore } from "@/game/state";
 import { audioManager } from "@/lib/audio";
 import { isSteamBuild } from "@/lib/edition";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
-import { Globe, Mail, Trash2 } from "lucide-react";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "./LanguageSelector";
@@ -224,7 +224,7 @@ export default function SettingsDialog({
             </div>
             <div className={ROW}>
               <span className={ICON_SLOT}>
-                <Globe className="w-5 h-5 opacity-90" aria-hidden />
+                <GameUiIcon name="language" sizeClassName="w-5 h-5" />
               </span>
               <span className="flex-1 text-sm">
                 {t("languageSelector.label")}
@@ -271,7 +271,7 @@ export default function SettingsDialog({
               <div className="h-px bg-border my-1" />
               <div className={ROW}>
                 <span className={ICON_SLOT}>
-                  <Mail className="w-5 h-5 opacity-90" aria-hidden />
+                  <GameUiIcon name="email" sizeClassName="w-5 h-5" />
                 </span>
                 <span className="flex-1 text-sm">{t("settings.emails")}</span>
                 {!marketingRewardClaimed && (
@@ -297,7 +297,7 @@ export default function SettingsDialog({
                 className={`${ROW} rounded-md text-muted-foreground hover:bg-muted/40 hover:text-foreground transition-colors`}
               >
                 <span className={ICON_SLOT}>
-                  <Trash2 className="w-5 h-5" aria-hidden />
+                  <GameUiIcon name="deleteAccount" sizeClassName="w-5 h-5" />
                 </span>
                 <span className="flex-1 text-left text-sm">
                   {t("profile.deleteAccount")}

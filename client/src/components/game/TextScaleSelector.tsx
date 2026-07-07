@@ -6,7 +6,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Type } from "lucide-react";
+import { ChevronDown } from "lucide-react";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { useTextScale } from "@/i18n/useTextScale";
 import { useTranslation } from "react-i18next";
 import type { TextScale } from "@/lib/textScale";
@@ -101,5 +102,5 @@ export default function TextScaleSelector({
 }
 
 export function TextScaleSettingsIcon() {
-  return <Type className="w-5 h-5 opacity-90" aria-hidden />;
+  return <GameUiIcon name="textSize" sizeClassName="w-5 h-5" />;
 }

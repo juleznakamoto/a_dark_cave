@@ -1,4 +1,5 @@
 import type { FooterSocialPlatformId } from "@/lib/gameFooterSocialLinks";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
 
 const INSTAGRAM_BRAND_GRADIENT_ID = "adc-instagram-brand-gradient";
 
@@ -60,9 +61,11 @@ export function FooterSocialIcon({
       );
     case "contact":
       return (
-        <svg className={brandClassName} viewBox="0 0 24 24" fill="currentColor">
-          <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-        </svg>
+        <GameUiIcon
+          name="email"
+          className={brandClassName}
+          sizeClassName="w-4 h-4"
+        />
       );
     default: {
       const _exhaustive: never = platform;

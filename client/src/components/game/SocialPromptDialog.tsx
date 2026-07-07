@@ -29,7 +29,8 @@ import {
 } from "@/game/claimSocialFollowReward";
 import { SocialPlatformGlyph } from "@/components/game/SocialPlatformGlyph";
 import { getCurrentUser } from "@/game/auth";
-import { Check, Circle, Mail, Sparkles, User, UserPlus } from "lucide-react";
+import { Check, Circle, Sparkles, User } from "lucide-react";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { cn } from "@/lib/utils";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
@@ -656,7 +657,7 @@ export default function SocialPromptDialog({
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
+                  <GameUiIcon name="email" sizeClassName="h-4 w-4" />
                   <span className="font-medium text-sm">
                     {t("socialPrompt.emailUpdatesTitle")}
                   </span>
@@ -705,10 +706,7 @@ export default function SocialPromptDialog({
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <UserPlus
-                    className="h-4 w-4 shrink-0 opacity-90"
-                    aria-hidden
-                  />
+                  <GameUiIcon name="inviteUser" sizeClassName="h-4 w-4" />
                   <span className="font-medium text-sm">
                     {t("socialPrompt.inviteTitle")}
                   </span>

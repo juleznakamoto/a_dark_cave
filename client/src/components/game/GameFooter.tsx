@@ -9,6 +9,7 @@ import {
 import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import {
@@ -95,9 +96,15 @@ export default function GameFooter() {
                 }
                 className={`${FOOTER_CONTROL_BTN} ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "!text-red-600 !opacity-100" : ""} ${isPaused && !idleModeDialog.isOpen ? "continue-pause-flash" : ""}`}
               >
-                <span className={isPaused ? undefined : FOOTER_CONTROL_TEXT}>
-                  {isPaused ? "▶" : "❚❚"}
-                </span>
+                <GameUiIcon
+                  name={isPaused ? "unpause" : "pause"}
+                  sizeClassName="w-4 h-4"
+                  className={
+                    isPaused
+                      ? undefined
+                      : `${FOOTER_CONTROL_TEXT} group-hover:!text-red-600`
+                  }
+                />
               </Button>
             </HoverCalloutTooltip>
 

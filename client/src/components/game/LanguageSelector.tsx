@@ -7,7 +7,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
-import { ChevronDown, Globe } from "lucide-react";
+import { ChevronDown } from "lucide-react";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { useLocale } from "@/i18n/useLocale";
 import { useTranslation } from "react-i18next";
 import type { SupportedLocale } from "@/i18n/locales";
@@ -73,7 +74,13 @@ export default function LanguageSelector({
         aria-label={t("languageSelector.ariaLabel")}
         aria-expanded={inDialog ? open : undefined}
       >
-        {showIcon && <Globe className={iconClassName} aria-hidden />}
+        {showIcon && (
+          <GameUiIcon
+            name="language"
+            className={iconClassName}
+            sizeClassName="w-4 h-4"
+          />
+        )}
         {showInlineLabel && (
           <span className={inlineLabelClassName}>{inlineLabel}</span>
         )}
