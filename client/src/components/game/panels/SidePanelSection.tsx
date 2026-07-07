@@ -16,6 +16,7 @@ import {
 } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import ResourceChangeNotification from "./ResourceChangeNotification";
+import { SidePanelSectionIcon } from "./SidePanelSectionIcon";
 import { useGameStore } from "@/game/state";
 import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
 import { cn } from "@/lib/utils";
@@ -1285,7 +1286,10 @@ export default function SidePanelSection({
 
   const titleHeading = (
     <h3 className="text-xs font-medium tracking-wide leading-none text-gray-300">
-      <span className="inline-flex items-end gap-0.5 align-baseline">
+      <span className="inline-flex items-center gap-1 align-baseline">
+        {sectionId ? (
+          <SidePanelSectionIcon sectionId={sectionId} className="text-gray-400" />
+        ) : null}
         {title}
       </span>
     </h3>
