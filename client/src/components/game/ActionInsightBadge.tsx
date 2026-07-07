@@ -206,7 +206,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   };
 
   const hostClassName = cn(
-    layout === "inline" && "inline-flex shrink-0 items-center self-center",
+    layout === "inline" && "inline-flex shrink-0 items-center",
     isTimedEvent && layout === "inline" && "ml-0.5",
   );
   const hostStyle =
@@ -221,6 +221,8 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
         pointerEvents: "auto" as const,
       }
       : undefined;
+
+  const isCompactInline = layout === "inline" && isStats;
 
   return (
     <div
@@ -259,7 +261,9 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
                 "cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
                 layout === "overlay"
                   ? "flex h-full w-full"
-                  : "h-5 w-5",
+                  : isCompactInline
+                    ? "h-3.5 w-3.5"
+                    : "h-5 w-5",
               ),
             }),
           )}
@@ -276,7 +280,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
             key={playing ? "reveal" : "idle"}
             playing={playing}
             embedded
-            size="lg"
+            size={isCompactInline ? "sm" : "lg"}
           />
         </button>
       </TooltipWrapper>

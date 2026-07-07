@@ -1285,32 +1285,24 @@ export default function SidePanelSection({
 
   const titleHeading = (
     <h3 className="text-xs font-medium tracking-wide leading-none text-gray-300">
-      <span className="inline-flex items-center gap-1 align-baseline">
+      <span
+        className={cn(
+          "inline-flex items-center",
+          titleExtra ? "gap-1.5" : "gap-1",
+        )}
+      >
         {sectionId ? (
           <SidePanelSectionIcon sectionId={sectionId} />
         ) : null}
         {title}
+        {titleExtra}
       </span>
     </h3>
   );
 
   return (
     <div className={cn("min-w-0 w-full", className)}>
-      <div
-        className={cn(
-          "mb-1 flex items-center",
-          titleExtra ? "gap-1.5" : "gap-1",
-        )}
-      >
-        {titleExtra ? (
-          <div className="flex items-center gap-1">
-            {titleHeading}
-            {titleExtra}
-          </div>
-        ) : (
-          <div className="min-w-0 flex-1">{titleHeading}</div>
-        )}
-      </div>
+      <div className="mb-1 min-w-0 flex-1">{titleHeading}</div>
       <div className="min-w-0 text-xs">
         {visibleItems.map((item) => (
           <div
