@@ -1382,14 +1382,21 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
     log("Supabase public config is present (production)");
   }
 
-  server.listen(
-    {
-      port,
-      host: "0.0.0.0",
-      reusePort: true,
-    },
-    () => {
-      log(`serving on port ${port}`);
-    },
-  );
+  const onListening = () => {
+    log(`serving on port ${port}`);
+  };
+
+  // reusePort is Linux-only; Windows throws ENOTSUP.
+  if (process.platform === "win32") {
+    server.listen(port, "0.0.0.0", onListening);
+  } else {
+    server.listen(
+      {
+        port,
+        host: "0.0.0.0",
+        reusePort: true,
+      },
+      onListening,
+    );
+  }
 })();

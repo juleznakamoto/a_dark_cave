@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Globe } from "lucide-react";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { useLocale } from "@/i18n/useLocale";
 import { useTranslation } from "react-i18next";
@@ -20,6 +20,8 @@ export default function LanguageSelector({
   menuAlign = "end",
   showTooltip = true,
   showIcon = true,
+  /** Start screen uses the legacy Lucide globe; elsewhere uses the masked SVG icon. */
+  iconVariant = "game-ui",
   showInlineLabel = false,
   inlineLabelClassName = "sr-only sm:not-sr-only sm:inline",
   /** "static" shows the generic "Language" label; "selected" shows the active language name. */
@@ -34,6 +36,7 @@ export default function LanguageSelector({
   menuAlign?: "start" | "end";
   showTooltip?: boolean;
   showIcon?: boolean;
+  iconVariant?: "globe" | "game-ui";
   showInlineLabel?: boolean;
   inlineLabelClassName?: string;
   inlineLabelVariant?: "static" | "selected";
