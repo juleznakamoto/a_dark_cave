@@ -10,8 +10,8 @@ export const GAME_PANEL_HEADER_BAND =
 export const TAB_ICON_MASK_BOTTOM =
   "[mask-position:bottom] [-webkit-mask-position:bottom]";
 
-/** Timed-event hourglass tab icon alignment (tweak `-translate-y-[3px]` if needed). */
-export const TAB_TIMED_EVENT_ICON_CLASS = `${TAB_ICON_MASK_BOTTOM} -translate-y-[3px]`;
+/** Timed-event hourglass tab icon alignment (tweak `-translate-y-[2px]` if needed). */
+export const TAB_TIMED_EVENT_ICON_CLASS = `${TAB_ICON_MASK_BOTTOM} -translate-y-[2px]`;
 
 /** Lime accent icon idle + hover (trader tab, rewards tasks shortcut). */
 export const LIME_ACCENT_ICON_IDLE =
