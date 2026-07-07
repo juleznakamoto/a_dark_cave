@@ -16,7 +16,7 @@ const SIDE_PANEL_SECTION_ICON_SRC: Record<SidePanelSectionId, string> = {
   buildings: "/icons/side-panel/log_cabin.svg",
   stats: "/icons/side-panel/barbed_crown.svg",
   bonuses: "/icons/side-panel/precision_boost.svg",
-  books: "/icons/side-panel/quest_book.svg",
+  books: "/icons/side-panel/forbidden_tome.svg",
   fellowship: "/icons/side-panel/user_group.svg",
 };
 
