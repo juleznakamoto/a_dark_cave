@@ -48,6 +48,7 @@ import {
   getNextEnchantCost,
   isWeaponEnchantUnlocked,
 } from "@/game/weaponEnchantments";
+import { getUiTooltip } from "@/i18n/tooltipLabels";
 import { GAME_PANEL_HEADER_LABEL_ROW } from "@/components/game/gameChrome";
 
 const STAT_EFFECT_PULSE_STAT_IDS: TooltipStatKey[] = [
