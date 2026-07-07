@@ -16,6 +16,7 @@ import GameHeader from "./GameHeader";
 import {
   GAME_FOOTER_INSET,
   GAME_HEADER_INSET,
+  GAME_PANEL_HEADER_BAND_CLASS,
   GAME_PANEL_HEADER_LABEL_CLASS,
   GAME_PANEL_HEADER_ROW_CLASS,
 } from "./gameChrome";
@@ -902,7 +903,7 @@ export default function GameContainer() {
     ? "opacity-100 text-foreground"
     : "opacity-100";
   const tabButtonClass =
-    `${GAME_PANEL_HEADER_LABEL_CLASS} bg-transparent font-normal outline-none focus:outline-none focus-visible:outline-none`;
+    `${GAME_PANEL_HEADER_LABEL_CLASS} ${GAME_PANEL_HEADER_BAND_CLASS} bg-transparent font-normal outline-none focus:outline-none focus-visible:outline-none`;
 
   const pauseHotkeyHintContent = (
     <span className="inline-flex flex-nowrap items-baseline justify-center gap-x-1">
@@ -1101,10 +1102,10 @@ export default function GameContainer() {
                 ) : (
                   <>
                     {/* Standard button design */}
-                    <div className="flex w-full max-w-full flex-nowrap items-baseline gap-x-2 overflow-hidden">
+                    <div className="flex w-full max-w-full flex-nowrap items-end gap-x-2 overflow-hidden">
                       <div
                         ref={tabButtonRowRef}
-                        className="inline-flex min-w-0 flex-1 flex-nowrap items-baseline gap-x-2 overflow-x-auto scrollbar-hide"
+                        className="inline-flex min-w-0 flex-1 flex-nowrap items-end gap-x-2 overflow-x-auto scrollbar-hide"
                       >
                         <button
                           className={`${tabButtonClass} ${activeTab === "cave"
