@@ -65,6 +65,8 @@ function pingRewardsTasksRing(ring: HTMLSpanElement | null): void {
 
 const HEADER_ICON_BTN =
   "group shrink-0 p-0 w-7 h-7 flex items-center justify-center";
+/** Slightly larger mask icons for header actions (button stays w-7 h-7). */
+const HEADER_ACCENT_ICON_SIZE = "w-[18px] h-[18px]";
 const HEADER_ICON_SYMBOL_HOVER =
   "text-neutral-300 opacity-80 transition-[opacity,color] group-hover:opacity-100 group-hover:!text-red-600";
 
@@ -557,7 +559,7 @@ export function GameHeaderControls() {
             />
             <GameUiIcon
               name="socialReward"
-              sizeClassName="w-[17px] h-[17px]"
+              sizeClassName={HEADER_ACCENT_ICON_SIZE}
               className="relative z-[1] text-lime-500"
             />
           </button>
@@ -601,7 +603,7 @@ export function GameHeaderControls() {
             >
               <GameUiIcon
                 name="share"
-                sizeClassName="w-3.5 h-3.5"
+                sizeClassName={HEADER_ACCENT_ICON_SIZE}
                 className={HEADER_ICON_SYMBOL_HOVER}
               />
             </Button>
