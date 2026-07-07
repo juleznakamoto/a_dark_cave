@@ -13,7 +13,7 @@ import { Helmet } from "react-helmet-async";
 import GameTabs from "./GameTabs";
 import GameFooter from "./GameFooter";
 import GameHeader from "./GameHeader";
-import { GAME_FOOTER_INSET, GAME_HEADER_INSET, GAME_PANEL_HEADER_BAND, TAB_ICON_MASK_BOTTOM } from "./gameChrome";
+import { GAME_FOOTER_INSET, GAME_HEADER_INSET, GAME_PANEL_HEADER_BAND, TAB_TIMED_EVENT_ICON_CLASS } from "./gameChrome";
 import CavePanel from "./panels/CavePanel";
 import VillagePanel from "./panels/VillagePanel";
 import ForestPanel from "./panels/ForestPanel";
@@ -595,7 +595,7 @@ export default function GameContainer() {
           <GameUiIcon
             name="timedEvent"
             sizeClassName={TAB_ICON_SIZE}
-            className={`timer-symbol ${TAB_ICON_MASK_BOTTOM}`}
+            className={`timer-symbol ${TAB_TIMED_EVENT_ICON_CLASS}`}
           />
         ),
         label:
@@ -1234,7 +1234,7 @@ export default function GameContainer() {
                             <GameUiIcon
                               name="timedEvent"
                               sizeClassName={TAB_ICON_SIZE}
-                              className={`timer-symbol ${TAB_ICON_MASK_BOTTOM} ${timedEventTabPulseClass}`}
+                              className={`timer-symbol ${TAB_TIMED_EVENT_ICON_CLASS} ${timedEventTabPulseClass}`}
                             />
                           </button>
                         )}
