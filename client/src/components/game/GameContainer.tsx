@@ -1218,6 +1218,7 @@ export default function GameContainer() {
                             <GameUiIcon
                               name="achievements"
                               sizeClassName={TAB_ICON_SIZE}
+                              className="mb-[2px]"
                             />
                           </button>
                         )}
@@ -1226,9 +1227,9 @@ export default function GameContainer() {
                         {timedEventTab.isActive && (
                           <button
                             className={`${tabButtonClass} gap-1 ${activeTab === "timedevent" ||
-                                timedEventTabPulseClass
-                                ? tabActiveTextClass
-                                : tabInactiveTextClass
+                              timedEventTabPulseClass
+                              ? tabActiveTextClass
+                              : tabInactiveTextClass
                               }`}
                             onClick={() => setActiveTab("timedevent")}
                             data-testid="tab-timedevent"
@@ -1236,7 +1237,7 @@ export default function GameContainer() {
                             <GameUiIcon
                               name="timedEvent"
                               sizeClassName={TAB_ICON_SIZE}
-                              className={`timer-symbol ${timedEventTabPulseClass}`}
+                              className={`timer-symbol mb-[2px] ${timedEventTabPulseClass}`}
                             />
                           </button>
                         )}
