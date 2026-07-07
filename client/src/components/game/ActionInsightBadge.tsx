@@ -206,7 +206,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   };
 
   const hostClassName = cn(
-    layout === "inline" && "inline-flex shrink-0 items-end self-end",
+    layout === "inline" && "inline-flex shrink-0 items-center",
     isTimedEvent && layout === "inline" && "ml-0.5",
   );
   const hostStyle =
@@ -224,10 +224,6 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
 
   const isCompactInline = layout === "inline" && isStats;
 
-  const inlineTooltipTriggerClassName = isCompactInline
-    ? "inline-flex items-end leading-none"
-    : INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS;
-
   return (
     <div
       className={hostClassName}
@@ -238,16 +234,15 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
         tooltip={costTooltip}
         tooltipId={tooltipId}
         tooltipContentClassName="text-white"
-        tooltipTriggerAsChild={layout === "inline"}
         className={
           layout === "overlay"
             ? "block h-full w-full"
-            : "inline-flex items-end"
+            : "inline-flex items-center"
         }
         tooltipTriggerClassName={
           layout === "overlay"
             ? INSIGHT_BADGE_TOOLTIP_TRIGGER_OVERLAY_CLASS
-            : inlineTooltipTriggerClassName
+            : INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS
         }
         disabled={isBadgeDisabled}
         onClick={handleClick}
@@ -267,7 +262,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
                 layout === "overlay"
                   ? "flex h-full w-full"
                   : isCompactInline
-                    ? "flex h-3.5 w-3.5 items-end justify-center"
+                    ? "h-3.5 w-3.5"
                     : "h-5 w-5",
               ),
             }),

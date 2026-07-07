@@ -893,15 +893,10 @@ export default function SidePanel() {
       onPointerLeave={handleSidePanelPointerLeave}
       onWheel={clearSidePanelActiveTooltipHover}
     >
-      <ScrollArea className="h-full w-full pb-1.5 pr-2 [&>[data-radix-scroll-area-viewport]>div]:!block [&>[data-radix-scroll-area-viewport]>div]:!min-h-0">
+      <ScrollArea className="h-full w-full pb-1.5 pr-2">
         <div className={cn("pb-1", SIDE_PANEL_GRID_CLASS)}>
           {/* First column - Resources */}
-          <div
-            className={cn(
-              SIDE_PANEL_SECTION_SPACING_CLASS,
-              "[&>:first-child_h3_span]:h-10",
-            )}
-          >
+          <div className={cn(SIDE_PANEL_SECTION_SPACING_CLASS)}>
             {resourceItems.length > 0 && shouldShowSection("resources") && (
               <SidePanelSection
                 sectionId="resources"
@@ -931,13 +926,7 @@ export default function SidePanel() {
           </div>
 
           {/* Second column - Everything else */}
-          <div
-            className={cn(
-              "min-w-0 w-full",
-              SIDE_PANEL_SECTION_SPACING_CLASS,
-              "[&>:first-child_h3_span]:h-10",
-            )}
-          >
+          <div className={cn("min-w-0 w-full", SIDE_PANEL_SECTION_SPACING_CLASS)}>
             {toolItems.length > 0 && shouldShowSection("tools") && (
               <SidePanelSection
                 sectionId="tools"
