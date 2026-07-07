@@ -70,7 +70,9 @@ import { useTranslation } from "react-i18next";
 import { useIOSChromeViewportShell } from "@/hooks/useIOSChromeViewportShell";
 import { usePanelResize } from "./panelResize";
 import PanelResizeHandle from "./PanelResizeHandle";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
 
+const TAB_ICON_SIZE = "w-3.5 h-3.5";
 const steamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
 const WebOnlyDialogs = steamBuild
   ? null
@@ -579,11 +581,7 @@ export default function GameContainer() {
     if (relics?.survivors_notes || books?.book_of_trials) {
       tabs.push({
         id: "achievements",
-        icon: (
-          <span className="text-sm leading-none font-noto-symbols-2">
-            {"⚜\uFE0E"}
-          </span>
-        ),
+        icon: <GameUiIcon name="achievements" sizeClassName={TAB_ICON_SIZE} />,
         label: "Achievements",
         onClick: () => setActiveTab("achievements"),
       });
@@ -594,9 +592,11 @@ export default function GameContainer() {
       tabs.push({
         id: "timedevent",
         icon: (
-          <span className="timer-symbol text-sm leading-none font-noto-symbols-2">
-            ⊚
-          </span>
+          <GameUiIcon
+            name="timedEvent"
+            sizeClassName={TAB_ICON_SIZE}
+            className="timer-symbol"
+          />
         ),
         label:
           timedEventTab.event?.title ??
@@ -1197,7 +1197,7 @@ export default function GameContainer() {
                           </button>
                         )}
 
-                        {/* Achievements Tab Button ⚜︎ */}
+                        {/* Achievements Tab Button */}
                         {(relics?.survivors_notes || books?.book_of_trials) && (
                           <button
                             className={`${tabIconButtonClass} ${animatingTabs.has("achievements")
@@ -1217,9 +1217,10 @@ export default function GameContainer() {
                             }}
                             data-testid="tab-achievements"
                           >
-                            <span className="text-[14px] leading-none font-noto-symbols-2">
-                              {"⚜\uFE0E"}
-                            </span>
+                            <GameUiIcon
+                              name="achievements"
+                              sizeClassName={TAB_ICON_SIZE}
+                            />
                           </button>
                         )}
 
@@ -1230,11 +1231,11 @@ export default function GameContainer() {
                             onClick={() => setActiveTab("timedevent")}
                             data-testid="tab-timedevent"
                           >
-                            <span
-                              className={`timer-symbol text-[14px] leading-none font-noto-symbols-2 ${timedEventTabPulseClass}`}
-                            >
-                              ⊚
-                            </span>
+                            <GameUiIcon
+                              name="timedEvent"
+                              sizeClassName={TAB_ICON_SIZE}
+                              className={`timer-symbol ${timedEventTabPulseClass}`}
+                            />
                           </button>
                         )}
                       </div>
