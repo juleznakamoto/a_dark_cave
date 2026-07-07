@@ -1093,9 +1093,7 @@ export default function GameContainer() {
                 ) : (
                   <>
                     {/* Standard button design */}
-                    <div
-                      className={`flex w-full max-w-full flex-nowrap items-end gap-x-2 overflow-hidden${traderUnlocked ? " pr-[4.5rem]" : ""}`}
-                    >
+                    <div className="flex w-full max-w-full flex-nowrap items-end gap-x-2 overflow-hidden">
                       <div
                         ref={tabButtonRowRef}
                         className="inline-flex min-w-0 flex-1 flex-nowrap items-end gap-x-2 overflow-x-auto scrollbar-hide"
@@ -1243,12 +1241,10 @@ export default function GameContainer() {
                           </button>
                         )}
                       </div>
-                    </div>
 
-                    {traderUnlocked && !steamEditionActive && (
-                      <div className="pointer-events-auto absolute inset-y-0 right-2 flex items-end">
+                      {traderUnlocked && !steamEditionActive && (
                         <TraderTabButton
-                          tabButtonBaseClass={tabButtonBaseClass}
+                          tabButtonClass={tabButtonClass}
                           tabInactiveTextClass={tabInactiveTextClass}
                           isPaused={isPaused}
                           isAnimating={animatingTabs.has("trader")}
@@ -1258,8 +1254,8 @@ export default function GameContainer() {
                             setShopDialogOpen(true);
                           }}
                         />
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </>
                 )}
               </nav>
