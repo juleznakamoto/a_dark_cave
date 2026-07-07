@@ -7,7 +7,7 @@ const SIDE_PANEL_SECTION_ICON_SRC: Record<SidePanelSectionId, string> = {
   tools: "/icons/side-panel/sledge_hammer.svg",
   weapons: "/icons/side-panel/long_sword.svg",
   bastion: "/icons/side-panel/crossed_swords.svg",
-  fortifications: "/icons/side-panel/wooden_shield_4.svg",
+  fortifications: "/icons/side-panel/clawed_shield_3.svg",
   combatItems: "/icons/side-panel/game_backpack.svg",
   clothing: "/icons/side-panel/ragged_tunic.svg",
   relics: "/icons/side-panel/ornate_goblet.svg",
