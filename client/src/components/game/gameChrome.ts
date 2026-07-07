@@ -24,6 +24,5 @@ export const LIME_ACCENT_GLOW_TEXT_SHADOW_ACTIVE =
 export const LIME_ACCENT_GLOW_TEXT_SHADOW_HOVER =
   "group-hover:[text-shadow:0_0_4px_rgba(132,204,22,1),0_0_8px_rgba(132,204,22,1),0_0_16px_rgba(132,204,22,1),0_0_32px_rgba(132,204,22,1)] group-focus-visible:[text-shadow:0_0_4px_rgba(132,204,22,1),0_0_8px_rgba(132,204,22,1),0_0_16px_rgba(132,204,22,1),0_0_32px_rgba(132,204,22,1)]";
 
-/** Mask SVG icons (e.g. rewards tasks diamond) — same glow via filter. */
-export const LIME_ACCENT_GLOW_FILTER_HOVER =
-  "group-hover:[filter:drop-shadow(0_0_4px_rgba(132,204,22,1))_drop-shadow(0_0_8px_rgba(132,204,22,1))_drop-shadow(0_0_16px_rgba(132,204,22,1))_drop-shadow(0_0_32px_rgba(132,204,22,1))] group-focus-visible:[filter:drop-shadow(0_0_4px_rgba(132,204,22,1))_drop-shadow(0_0_8px_rgba(132,204,22,1))_drop-shadow(0_0_16px_rgba(132,204,22,1))_drop-shadow(0_0_32px_rgba(132,204,22,1))]";
+/** Mask SVG icons (e.g. rewards tasks diamond) — glow via `.lime-accent-mask-icon` in index.css. */
+export const LIME_ACCENT_MASK_ICON_CLASS = "lime-accent-mask-icon";

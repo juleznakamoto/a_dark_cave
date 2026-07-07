@@ -1,4 +1,4 @@
-import cn from "clsx";
+import { cn } from "@/lib/utils";
 
 /** Grunge UI icons in `client/public/icons/` (white SVG masks from Pixarts bundle). */
 export const GAME_UI_ICON_SRC = {

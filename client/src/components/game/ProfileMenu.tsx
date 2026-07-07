@@ -47,10 +47,9 @@ import { isRewardsTasksShortcutVisible } from "@/game/socialPromoExclusiveReward
 import PlaylightDiscoveryButton from "./PlaylightDiscoveryButton";
 import { useTranslation } from "react-i18next";
 import { FullscreenButton } from "./FullscreenButton";
-import {
-  LIME_ACCENT_GLOW_FILTER_HOVER,
-  LIME_ACCENT_ICON_IDLE,
-} from "./gameChrome";
+import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
+import { TRADER_TAB_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
+import { LIME_ACCENT_MASK_ICON_CLASS } from "./gameChrome";
 
 const REWARDS_TASKS_ICON_PING_START_MS = 20 * 60 * 1000;
 const REWARDS_TASKS_ICON_PING_INTERVAL_MS = 5 * 60 * 1000;
@@ -494,8 +493,17 @@ export function GameHeaderControls() {
   const setShareDialogOpen = useGameStore((s) => s.setShareDialogOpen);
   const playTime = useGameStore((s) => s.playTime);
   const rewardsTasksRingRef = useRef<HTMLSpanElement>(null);
+  const rewardsTasksIconRef = useRef<HTMLSpanElement>(null);
   const lastPingIndexRef = useRef<number | null>(null);
   const pingInitRef = useRef(false);
+  const {
+    hoverHandlers: rewardsTasksHoverHandlers,
+    portal: rewardsTasksParticlePortal,
+  } = useCoinHoverParticles("gold", {
+    particleOriginRef: rewardsTasksIconRef,
+    particleConfig: TRADER_TAB_PARTICLE_CONFIG,
+    zIndex: 50,
+  });
 
   const {
     showRewardsTasksShortcut,
@@ -554,6 +562,7 @@ export function GameHeaderControls() {
             type="button"
             aria-label={t("profile.rewardsTasks")}
             onClick={() => setSocialPromptDialogOpen(true)}
+            {...rewardsTasksHoverHandlers}
             className={`${HEADER_ICON_BTN} relative overflow-visible hover:bg-muted/30 transition-colors`}
           >
             <span
@@ -561,14 +570,17 @@ export function GameHeaderControls() {
               className="exclusive-promo-shockwave-ring"
               aria-hidden
             />
-            <GameUiIcon
-              name="socialReward"
-              sizeClassName={HEADER_ACCENT_ICON_SIZE}
-              className={`relative z-[1] text-lime-500 ${LIME_ACCENT_ICON_IDLE} ${LIME_ACCENT_GLOW_FILTER_HOVER}`}
-            />
+            <span ref={rewardsTasksIconRef} className="relative z-[1] inline-flex">
+              <GameUiIcon
+                name="socialReward"
+                sizeClassName={HEADER_ACCENT_ICON_SIZE}
+                className={`text-lime-500 ${LIME_ACCENT_MASK_ICON_CLASS}`}
+              />
+            </span>
           </button>
         </HoverCalloutTooltip>
       )}
+      {rewardsTasksParticlePortal}
       {cruelMode && (
         <HoverCalloutTooltip
           label={t("footer.cruelModeActive")}
