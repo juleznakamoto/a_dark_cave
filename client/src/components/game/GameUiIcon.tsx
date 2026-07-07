@@ -10,7 +10,7 @@ export const GAME_UI_ICON_SRC = {
   leaderboard: "/icons/award_star.png",
   unpause: "/icons/play_button.png",
   pause: "/icons/pause_button.png",
-  language: "/icons/compass_rose.png",
+  language: "/icons/language_bubble.png",
   textSize: "/icons/zoom_magnifier.png",
   email: "/icons/grungy_mail.png",
   share: "/icons/speech_bubble.png",
