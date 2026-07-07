@@ -77,13 +77,16 @@ export default function LanguageSelector({
         aria-label={t("languageSelector.ariaLabel")}
         aria-expanded={inDialog ? open : undefined}
       >
-        {showIcon && (
-          <GameUiIcon
-            name="language"
-            className={iconClassName}
-            sizeClassName="w-4 h-4"
-          />
-        )}
+        {showIcon &&
+          (iconVariant === "globe" ? (
+            <Globe className={iconClassName} aria-hidden />
+          ) : (
+            <GameUiIcon
+              name="language"
+              className={iconClassName}
+              sizeClassName="w-4 h-4"
+            />
+          ))}
         {showInlineLabel && (
           <span className={inlineLabelClassName}>{inlineLabel}</span>
         )}

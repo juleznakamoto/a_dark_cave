@@ -295,6 +295,7 @@ export default function StartScreen() {
           <LanguageSelector
             buttonClassName={START_FOOTER_LANGUAGE_BTN}
             iconClassName="w-3.5 h-3.5 shrink-0"
+            iconVariant="globe"
             menuAlign="start"
             showTooltip={false}
             showInlineLabel
