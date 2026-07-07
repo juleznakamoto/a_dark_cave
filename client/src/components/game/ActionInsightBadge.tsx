@@ -206,7 +206,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   };
 
   const hostClassName = cn(
-    layout === "inline" && "inline-flex shrink-0 items-center",
+    layout === "inline" && "inline-flex shrink-0 items-end",
     isTimedEvent && layout === "inline" && "ml-0.5",
   );
   const hostStyle =
@@ -237,7 +237,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
         className={
           layout === "overlay"
             ? "block h-full w-full"
-            : "inline-flex items-center"
+            : "inline-flex items-end"
         }
         tooltipTriggerClassName={
           layout === "overlay"

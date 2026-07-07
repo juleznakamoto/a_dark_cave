@@ -1287,7 +1287,8 @@ export default function SidePanelSection({
     <h3 className="text-sm font-medium tracking-wide leading-none text-gray-300">
       <span
         className={cn(
-          "inline-flex items-center",
+          // Match the game tab label band (pb-2 + items-end) so titles bottom-align with tabs.
+          "inline-flex items-end pb-2",
           titleExtra ? "gap-1.5" : "gap-1",
         )}
       >
@@ -1302,7 +1303,7 @@ export default function SidePanelSection({
 
   return (
     <div className={cn("min-w-0 w-full", className)}>
-      <div className="mb-1 min-w-0 flex-1">{titleHeading}</div>
+      <div className="min-w-0 flex-1">{titleHeading}</div>
       <div className="min-w-0 text-xs">
         {visibleItems.map((item) => (
           <div
