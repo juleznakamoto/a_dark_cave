@@ -1225,7 +1225,8 @@ export default function GameContainer() {
                         {/* Timed Event Tab Button */}
                         {timedEventTab.isActive && (
                           <button
-                            className={`${tabButtonClass} gap-1 ${activeTab === "timedevent"
+                            className={`${tabButtonClass} gap-1 ${activeTab === "timedevent" ||
+                                timedEventTabPulseClass
                                 ? tabActiveTextClass
                                 : tabInactiveTextClass
                               }`}
