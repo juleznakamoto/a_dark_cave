@@ -3,7 +3,7 @@ import type { SidePanelSectionId } from "./SidePanelSection";
 
 /** White SVG masks in `client/public/icons/side-panel/`. */
 const SIDE_PANEL_SECTION_ICON_SRC: Record<SidePanelSectionId, string> = {
-  resources: "/icons/side-panel/large_stone.svg",
+  resources: "/icons/side-panel/metal_ingot.svg",
   tools: "/icons/side-panel/sledge_hammer.svg",
   weapons: "/icons/side-panel/long_sword.svg",
   bastion: "/icons/side-panel/crossed_swords.svg",
