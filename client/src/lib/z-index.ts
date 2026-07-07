@@ -4,7 +4,8 @@
  *
  * Hierarchy (low → high):
  * - actionButtonParticles: Click bursts above tab bar, below buttons
- * - actionButtons: Fixed action button stacks
+ * - actionButtons: Fixed action button stacks (body-portaled)
+ * - tabHotkeyOverlay: Pause / village hotkey tutorial callout (body-portaled, above buttons)
  * - particles: Transient particle effects (feed fire, explosions)
  * - tooltip: Tooltips, must appear above dialogs
  * - topLayer: Full-screen overlays (end screen, start screen CTA)
@@ -14,6 +15,8 @@ export const Z_INDEX = {
   actionButtonParticles: 35,
   /** Fixed-position action button stacks (above actionButtonParticles). */
   actionButtons: 40,
+  /** Tab hotkey hint/box; must sit above body-portaled action buttons and their badges. */
+  tabHotkeyOverlay: 46,
   particles: 1000,
   particlesForeground: 1001,
   tooltip: 10000,

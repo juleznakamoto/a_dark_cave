@@ -98,7 +98,7 @@ export default function GameFooter() {
               >
                 <GameUiIcon
                   name={isPaused ? "unpause" : "pause"}
-                  sizeClassName="w-4 h-4"
+                  sizeClassName="w-3.5 h-3.5"
                   className={
                     isPaused
                       ? undefined

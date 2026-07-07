@@ -8,6 +8,7 @@ import {
   lazy,
   Suspense,
 } from "react";
+import { createPortal } from "react-dom";
 import { Helmet } from "react-helmet-async";
 import GameTabs from "./GameTabs";
 import GameFooter from "./GameFooter";
@@ -44,6 +45,7 @@ import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark, X } from "lucide-react";
 import { ProfileMenuProvider } from "./ProfileMenu";
 import { logger } from "@/lib/logger";
+import { Z_INDEX } from "@/lib/z-index";
 import { toast } from "@/hooks/use-toast";
 import MistBackground from "@/components/ui/mist-background";
 import { SmokeBackground } from "@/components/ui/spooky-smoke-animation";
@@ -944,70 +946,74 @@ export default function GameContainer() {
           />
         )}
 
-        {showTabHotkeyOverlay && (
-          <div
-            className="pointer-events-none fixed inset-0 z-[45] hidden md:block"
-            aria-hidden={false}
-          >
-            {villageHotkeyBoxLayout != null && (
-              <div
-                className={`absolute z-0 rounded bg-neutral-800${showVillageHotkeyBox ? " pointer-events-auto" : " pointer-events-none"}`}
-                style={{
-                  top: villageHotkeyBoxLayout.top,
-                  left: villageHotkeyBoxLayout.left,
-                  width: villageHotkeyBoxLayout.width,
-                  height: villageHotkeyBoxLayout.height,
-                }}
-                data-testid={
-                  showVillageHotkeyBox
-                    ? "village-hotkey-tutorial-box"
-                    : "pause-hotkey-callout-box"
-                }
-              >
-                {showVillageHotkeyBox && (
-                  <button
-                    type="button"
-                    className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
-                    aria-label={t("villageHotkeyTutorial.dismiss", {
-                      ns: "ui",
-                      defaultValue: "Dismiss",
-                    })}
-                    data-testid="village-hotkey-tutorial-dismiss"
-                    onClick={closeVillageHotkeyTutorial}
-                  >
-                    <X className="h-2.5 w-2.5 stroke-[3]" />
-                  </button>
-                )}
-              </div>
-            )}
-            {pauseHotkeyBadges.map((b) => (
-              <span
-                key={b.key}
-                className="pause-hotkey-badge-animated absolute z-[1] text-xs font-semibold leading-none text-foreground drop-shadow"
-                style={{
-                  left: b.left,
-                  top: b.top,
-                  transform: "translate(-50%, 0)",
-                }}
-              >
-                {b.label}
-              </span>
-            ))}
-            {pauseHotkeyHint != null && (
-              <div
-                data-testid="tab-hotkey-hint"
-                className="pause-hotkey-hint-animated absolute z-[2] w-max max-w-[calc(100vw-1rem)] whitespace-nowrap px-1 text-center text-xs leading-none text-foreground drop-shadow"
-                style={{
-                  top: pauseHotkeyHint.top,
-                  left: pauseHotkeyHint.left,
-                  transform: "translateX(-50%)",
-                }}
-              >
-                {pauseHotkeyHintContent}
-              </div>
-            )}
-          </div>
-        )}
+        {showTabHotkeyOverlay &&
+          typeof document !== "undefined" &&
+          createPortal(
+            <div
+              className="pointer-events-none fixed inset-0 hidden md:block"
+              style={{ zIndex: Z_INDEX.tabHotkeyOverlay }}
+              aria-hidden={false}
+            >
+              {villageHotkeyBoxLayout != null && (
+                <div
+                  className={`absolute z-0 rounded bg-neutral-800${showVillageHotkeyBox ? " pointer-events-auto" : " pointer-events-none"}`}
+                  style={{
+                    top: villageHotkeyBoxLayout.top,
+                    left: villageHotkeyBoxLayout.left,
+                    width: villageHotkeyBoxLayout.width,
+                    height: villageHotkeyBoxLayout.height,
+                  }}
+                  data-testid={
+                    showVillageHotkeyBox
+                      ? "village-hotkey-tutorial-box"
+                      : "pause-hotkey-callout-box"
+                  }
+                >
+                  {showVillageHotkeyBox && (
+                    <button
+                      type="button"
+                      className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
+                      aria-label={t("villageHotkeyTutorial.dismiss", {
+                        ns: "ui",
+                        defaultValue: "Dismiss",
+                      })}
+                      data-testid="village-hotkey-tutorial-dismiss"
+                      onClick={closeVillageHotkeyTutorial}
+                    >
+                      <X className="h-2.5 w-2.5 stroke-[3]" />
+                    </button>
+                  )}
+                </div>
+              )}
+              {pauseHotkeyBadges.map((b) => (
+                <span
+                  key={b.key}
+                  className="pause-hotkey-badge-animated absolute z-[1] text-xs font-semibold leading-none text-foreground drop-shadow"
+                  style={{
+                    left: b.left,
+                    top: b.top,
+                    transform: "translate(-50%, 0)",
+                  }}
+                >
+                  {b.label}
+                </span>
+              ))}
+              {pauseHotkeyHint != null && (
+                <div
+                  data-testid="tab-hotkey-hint"
+                  className="pause-hotkey-hint-animated absolute z-[2] w-max max-w-[calc(100vw-1rem)] whitespace-nowrap px-1 text-center text-xs leading-none text-foreground drop-shadow"
+                  style={{
+                    top: pauseHotkeyHint.top,
+                    left: pauseHotkeyHint.left,
+                    transform: "translateX(-50%)",
+                  }}
+                >
+                  {pauseHotkeyHintContent}
+                </div>
+              )}
+            </div>,
+            document.body,
+          )}
 
         {/* Sleep Mode Mist Background - covers everything except header and footer */}
         {idleModeDialog.isOpen && (
@@ -1097,8 +1103,8 @@ export default function GameContainer() {
                       >
                         <button
                           className={`${tabButtonClass} ${activeTab === "cave"
-                              ? tabActiveTextClass
-                              : tabInactiveTextClass
+                            ? tabActiveTextClass
+                            : tabInactiveTextClass
                             } `}
                           onClick={() => setActiveTab("cave")}
                           data-testid="tab-cave"
@@ -1109,12 +1115,12 @@ export default function GameContainer() {
                         {flags.villageUnlocked && (
                           <button
                             className={`${tabButtonClass} ${animatingTabs.has("village")
-                                ? fadePhaseTabs.has("village")
-                                  ? "tab-fade-in"
-                                  : "tab-blink-new"
-                                : activeTab === "village"
-                                  ? tabActiveTextClass
-                                  : tabInactiveTextClass
+                              ? fadePhaseTabs.has("village")
+                                ? "tab-fade-in"
+                                : "tab-blink-new"
+                              : activeTab === "village"
+                                ? tabActiveTextClass
+                                : tabInactiveTextClass
                               }`}
                             onClick={() => {
                               clearTabAnimation("village");
@@ -1131,12 +1137,12 @@ export default function GameContainer() {
                         {flags.forestUnlocked && (
                           <button
                             className={`${tabButtonClass} ${animatingTabs.has("forest")
-                                ? fadePhaseTabs.has("forest")
-                                  ? "tab-fade-in"
-                                  : "tab-blink-new"
-                                : activeTab === "forest"
-                                  ? tabActiveTextClass
-                                  : tabInactiveTextClass
+                              ? fadePhaseTabs.has("forest")
+                                ? "tab-fade-in"
+                                : "tab-blink-new"
+                              : activeTab === "forest"
+                                ? tabActiveTextClass
+                                : tabInactiveTextClass
                               }`}
                             onClick={() => {
                               clearTabAnimation("forest");
@@ -1152,12 +1158,12 @@ export default function GameContainer() {
                         {(estateUnlocked || buildings.darkEstate >= 1) && (
                           <button
                             className={`${tabButtonClass} ${animatingTabs.has("estate")
-                                ? fadePhaseTabs.has("estate")
-                                  ? "tab-fade-in"
-                                  : "tab-blink-new"
-                                : activeTab === "estate"
-                                  ? tabActiveTextClass
-                                  : tabInactiveTextClass
+                              ? fadePhaseTabs.has("estate")
+                                ? "tab-fade-in"
+                                : "tab-blink-new"
+                              : activeTab === "estate"
+                                ? tabActiveTextClass
+                                : tabInactiveTextClass
                               }`}
                             onClick={() => {
                               clearTabAnimation("estate");
@@ -1172,12 +1178,12 @@ export default function GameContainer() {
                         {flags.bastionUnlocked && (
                           <button
                             className={`${tabButtonClass} ${animatingTabs.has("bastion")
-                                ? fadePhaseTabs.has("bastion")
-                                  ? "tab-fade-in"
-                                  : "tab-blink-new"
-                                : activeTab === "bastion"
-                                  ? tabActiveTextClass
-                                  : tabInactiveTextClass
+                              ? fadePhaseTabs.has("bastion")
+                                ? "tab-fade-in"
+                                : "tab-blink-new"
+                              : activeTab === "bastion"
+                                ? tabActiveTextClass
+                                : tabInactiveTextClass
                               }`}
                             onClick={() => {
                               clearTabAnimation("bastion");
@@ -1195,12 +1201,12 @@ export default function GameContainer() {
                         {(relics?.survivors_notes || books?.book_of_trials) && (
                           <button
                             className={`${tabIconButtonClass} ${animatingTabs.has("achievements")
-                                ? fadePhaseTabs.has("achievements")
-                                  ? "tab-fade-in"
-                                  : "tab-blink-new"
-                                : activeTab === "achievements"
-                                  ? tabActiveTextClass
-                                  : tabInactiveTextClass
+                              ? fadePhaseTabs.has("achievements")
+                                ? "tab-fade-in"
+                                : "tab-blink-new"
+                              : activeTab === "achievements"
+                                ? tabActiveTextClass
+                                : tabInactiveTextClass
                               }`}
                             onClick={() => {
                               clearTabAnimation("achievements");
@@ -1256,8 +1262,8 @@ export default function GameContainer() {
               {/* Action Panels */}
               <div
                 className={`flex-1 overflow-x-hidden min-h-0 ${activeTab === "achievements"
-                    ? "overflow-hidden"
-                    : "overflow-y-auto scrollbar-hide"
+                  ? "overflow-hidden"
+                  : "overflow-y-auto scrollbar-hide"
                   }`}
               >
                 {activeTab === "cave" && <CavePanel />}
