@@ -13,7 +13,7 @@ import { Helmet } from "react-helmet-async";
 import GameTabs from "./GameTabs";
 import GameFooter from "./GameFooter";
 import GameHeader from "./GameHeader";
-import { GAME_FOOTER_INSET, GAME_HEADER_INSET, GAME_PANEL_HEADER_LABEL_ROW, GAME_PANEL_HEADER_ROW_CLASS } from "./gameChrome";
+import { GAME_FOOTER_INSET, GAME_HEADER_INSET, GAME_PANEL_HEADER_BAND, GAME_PANEL_HEADER_PT } from "./gameChrome";
 import CavePanel from "./panels/CavePanel";
 import VillagePanel from "./panels/VillagePanel";
 import ForestPanel from "./panels/ForestPanel";
@@ -897,7 +897,7 @@ export default function GameContainer() {
     ? "opacity-100 text-foreground"
     : "opacity-100";
   const tabButtonClass =
-    `${GAME_PANEL_HEADER_LABEL_ROW} bg-transparent font-normal outline-none focus:outline-none focus-visible:outline-none`;
+    `${GAME_PANEL_HEADER_BAND} bg-transparent font-normal outline-none focus:outline-none focus-visible:outline-none`;
 
   const pauseHotkeyHintContent = (
     <span className="inline-flex flex-nowrap items-baseline justify-center gap-x-1">
@@ -1053,7 +1053,7 @@ export default function GameContainer() {
               handle on its bottom edge (mobile) / right edge (desktop). */}
           <div
             ref={panelResize.sidePanelRef}
-            className={`order-2 md:order-1 relative h-[36vh] md:h-auto min-h-[36vh] md:min-h-0 w-full ${GAME_PANEL_HEADER_ROW_CLASS} pr-0 border-t md:border-t-0 md:border-r border-border overflow-hidden`}
+            className={`order-2 md:order-1 relative h-[36vh] md:h-auto min-h-[36vh] md:min-h-0 w-full ${GAME_PANEL_HEADER_PT} pr-0 border-t md:border-t-0 md:border-r border-border overflow-hidden`}
             style={panelResize.sidePanelStyle}
           >
             <GameTabs />
@@ -1069,10 +1069,10 @@ export default function GameContainer() {
               inner action list scrolls internally — keeping panel heights consistent across tabs
               instead of growing with the active tab's content. (Ignored on desktop grid.) */}
           <ButtonParticlePortalProvider>
-            <section className="order-3 md:order-2 flex-1 min-w-0 flex flex-col min-h-0 md:pl-0">
+            <section className="order-3 md:order-2 flex-1 min-w-0 flex flex-col min-h-0 overflow-hidden md:pl-0">
               {/* Horizontal Game Tabs */}
               <nav
-                className={`relative overflow-visible border-t md:border-t-0 border-border ${GAME_PANEL_HEADER_ROW_CLASS} pl-2 pr-2 flex-shrink-0${isPaused ? " z-[41] pointer-events-auto" : ""}`}
+                className={`relative border-t md:border-t-0 border-border ${GAME_PANEL_HEADER_PT} pl-2 pr-2 flex-shrink-0${isPaused ? " z-[41] pointer-events-auto" : ""}`}
               >
                 {useLimelightNav ? (
                   // Alternative LimelightNav design

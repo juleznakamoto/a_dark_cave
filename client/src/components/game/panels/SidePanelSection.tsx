@@ -49,7 +49,7 @@ import {
   isWeaponEnchantUnlocked,
 } from "@/game/weaponEnchantments";
 import { getUiTooltip } from "@/i18n/tooltipLabels";
-import { GAME_PANEL_HEADER_LABEL_ROW } from "@/components/game/gameChrome";
+import { GAME_PANEL_HEADER_BAND } from "@/components/game/gameChrome";
 
 const STAT_EFFECT_PULSE_STAT_IDS: TooltipStatKey[] = [
   "luck",
@@ -1288,7 +1288,7 @@ export default function SidePanelSection({
     <h3 className="font-medium tracking-wide text-gray-300">
       <span
         className={cn(
-          GAME_PANEL_HEADER_LABEL_ROW,
+          GAME_PANEL_HEADER_BAND,
           titleExtra ? "gap-1.5" : "gap-1",
         )}
       >

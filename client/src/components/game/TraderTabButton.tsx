@@ -82,7 +82,7 @@ export function TraderTabButton({
         {...hoverHandlers}
         className={cn(
           tabButtonClass,
-          "group shrink-0 gap-1.5 items-baseline",
+          "group shrink-0 gap-1.5",
           isAnimating ? (isFadePhase ? "tab-fade-in" : "tab-blink-new") : "",
         )}
         onClick={onClick}
@@ -91,7 +91,7 @@ export function TraderTabButton({
         <span
           ref={iconRef}
           className={cn(
-            "font-noto-symbols-2 text-[19px] leading-none text-lime-500 transition-[opacity,text-shadow] mb-[2px]",
+            "font-noto-symbols-2 text-sm leading-none text-lime-500 transition-[opacity,text-shadow]",
             showActiveGlow
               ? cn("opacity-100", TRADER_ICON_GLOW_ACTIVE)
               : cn(
