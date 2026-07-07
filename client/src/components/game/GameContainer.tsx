@@ -1069,10 +1069,10 @@ export default function GameContainer() {
               inner action list scrolls internally — keeping panel heights consistent across tabs
               instead of growing with the active tab's content. (Ignored on desktop grid.) */}
           <ButtonParticlePortalProvider>
-            <section className="order-3 md:order-2 flex-1 min-w-0 flex flex-col min-h-0 overflow-hidden md:pl-0">
+            <section className="order-3 md:order-2 flex-1 min-w-0 flex flex-col min-h-0 md:pl-0">
               {/* Horizontal Game Tabs */}
               <nav
-                className={`relative border-t md:border-t-0 border-border ${GAME_PANEL_HEADER_ROW_CLASS} pl-2 pr-2 flex-shrink-0${isPaused ? " z-[41] pointer-events-auto" : ""}`}
+                className={`relative overflow-visible border-t md:border-t-0 border-border ${GAME_PANEL_HEADER_ROW_CLASS} pl-2 pr-2 flex-shrink-0${isPaused ? " z-[41] pointer-events-auto" : ""}`}
               >
                 {useLimelightNav ? (
                   // Alternative LimelightNav design
@@ -1092,7 +1092,7 @@ export default function GameContainer() {
                 ) : (
                   <>
                     {/* Standard button design */}
-                    <div className="flex w-full max-w-full flex-nowrap items-end gap-x-2 overflow-hidden">
+                    <div className="flex w-full max-w-full flex-nowrap items-end gap-x-2">
                       <div
                         ref={tabButtonRowRef}
                         className="inline-flex min-w-0 flex-1 flex-nowrap items-end gap-x-2 overflow-x-auto scrollbar-hide"
