@@ -48,7 +48,7 @@ import {
   getNextEnchantCost,
   isWeaponEnchantUnlocked,
 } from "@/game/weaponEnchantments";
-import { getUiTooltip } from "@/i18n/tooltipLabels";
+import { GAME_PANEL_HEADER_LABEL_ROW } from "@/components/game/gameChrome";
 
 const STAT_EFFECT_PULSE_STAT_IDS: TooltipStatKey[] = [
   "luck",
@@ -1284,11 +1284,10 @@ export default function SidePanelSection({
   };
 
   const titleHeading = (
-    <h3 className="text-sm font-medium tracking-wide leading-none text-gray-300">
+    <h3 className="font-medium tracking-wide text-gray-300">
       <span
         className={cn(
-          // Match the game tab label band (pb-2 + items-end) so titles bottom-align with tabs.
-          "inline-flex items-end pb-2",
+          GAME_PANEL_HEADER_LABEL_ROW,
           titleExtra ? "gap-1.5" : "gap-1",
         )}
       >
