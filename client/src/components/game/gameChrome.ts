@@ -7,4 +7,8 @@ export const GAME_PANEL_HEADER_ROW_CLASS = "pt-2 md:pt-3";
 
 /** Label band under panel headers (matches game tab button pb-2 + text-sm leading-none). */
 export const GAME_PANEL_HEADER_LABEL_CLASS =
-  "inline-flex items-baseline pb-2 text-sm leading-none";
+  "inline-flex items-baseline pb-2 text-sm font-normal leading-none";
+
+/** Side-panel section title row — keep label metrics on the inner span (same as tab buttons). */
+export const SIDE_PANEL_SECTION_TITLE_CLASS =
+  "font-medium tracking-wide text-gray-300";

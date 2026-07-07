@@ -206,7 +206,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   };
 
   const hostClassName = cn(
-    layout === "inline" && "inline-flex shrink-0 items-center",
+    layout === "inline" && "inline-flex shrink-0 items-baseline",
     isTimedEvent && layout === "inline" && "ml-0.5",
   );
   const hostStyle =
