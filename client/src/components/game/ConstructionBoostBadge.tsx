@@ -154,7 +154,6 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
           onClick={(e) => {
             e.stopPropagation();
             if (canAfford) boostConstruction(actionId);
-            e.currentTarget.blur();
           }}
         >
           <BuildingActionBadge

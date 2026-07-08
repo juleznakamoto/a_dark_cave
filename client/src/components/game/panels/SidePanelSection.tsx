@@ -294,7 +294,7 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
   const tooltipId = `villager-cap-upgrade-${buildingKey}`;
   const isDisabled = !affordable || playing;
 
-  const handleClick = (e?: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = () => {
     if (isDisabled) return;
     setPlayingUntil(Date.now() + INSIGHT_REVEAL_DURATION_MS);
     setHighlightedResources(["insight"]);
@@ -304,7 +304,6 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
       setHighlightedResources([]);
       setPlayingUntil(0);
     }, INSIGHT_REVEAL_DURATION_MS);
-    e?.currentTarget?.blur();
   };
 
   return (
@@ -338,7 +337,7 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
         disabled={isDisabled}
         onClick={(e) => {
           e.stopPropagation();
-          handleClick(e);
+          handleClick();
         }}
         className={getInsightBadgeTriggerClassName({
           canAfford: affordable,
@@ -396,7 +395,7 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
   const tooltipId = `weapon-enchant-${weaponId}`;
   const isDisabled = !affordable || playing;
 
-  const handleClick = (e?: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = () => {
     if (isDisabled) return;
     setPlayingUntil(Date.now() + INSIGHT_REVEAL_DURATION_MS);
     setHighlightedResources(["insight"]);
@@ -406,7 +405,6 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
       setHighlightedResources([]);
       setPlayingUntil(0);
     }, INSIGHT_REVEAL_DURATION_MS);
-    e?.currentTarget?.blur();
   };
 
   return (
@@ -440,7 +438,7 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
         disabled={isDisabled}
         onClick={(e) => {
           e.stopPropagation();
-          handleClick(e);
+          handleClick();
         }}
         className={getInsightBadgeTriggerClassName({
           canAfford: affordable,
