@@ -395,13 +395,10 @@ body {
   animation: building-action-badge-roundness 1s linear infinite;
 }
 
-@media (hover: hover) and (pointer: fine) {
-
-  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):hover .building-action-badge .building-action-badge__triangle,
-  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):active .building-action-badge .building-action-badge__triangle,
-  .building-action-badge--playing .building-action-badge__triangle {
-    filter: blur(7px);
-  }
+.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):hover .building-action-badge .building-action-badge__triangle,
+.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):active .building-action-badge .building-action-badge__triangle,
+.building-action-badge--playing .building-action-badge__triangle {
+  filter: blur(7px);
 }
 
 .building-action-badge__triangle--one {
