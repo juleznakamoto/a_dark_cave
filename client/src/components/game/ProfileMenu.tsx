@@ -710,7 +710,7 @@ export function GameHeaderControls() {
             }
             tooltipId="manual-save-info"
             disabled={!!currentUser && cooldowns["manualSave"] > 0}
-            onTooltipAction={() => {
+            onClick={() => {
               handleManualSave();
               setAccountDropdownOpen(false);
             }}
