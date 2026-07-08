@@ -17,6 +17,8 @@ export const GAME_UI_ICON_SRC = {
   email: "/icons/grungy_mail.svg",
   share: "/icons/speech_bubble.svg",
   inviteUser: "/icons/add_user.svg",
+  discover: "/icons/light_bulb.svg",
+  signUp: "/icons/up_button.svg",
   socialReward: "/icons/cut_diamond.svg",
   exclusiveReward: "/icons/diamond_ring.svg",
 } as const;

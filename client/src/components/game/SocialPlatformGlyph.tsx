@@ -1,9 +1,17 @@
+import { cn } from "@/lib/utils";
+
 /** Inline icons matching Profile → social rows. */
-export function SocialPlatformGlyph({ platformId }: { platformId: string }) {
+export function SocialPlatformGlyph({
+  platformId,
+  sizeClassName = "w-3.5 h-3.5",
+}: {
+  platformId: string;
+  sizeClassName?: string;
+}) {
   if (platformId === "instagram") {
     return (
       <svg
-        className="w-3.5 h-3.5 shrink-0"
+        className={cn("shrink-0", sizeClassName)}
         viewBox="0 0 24 24"
         fill="currentColor"
         aria-hidden
@@ -15,7 +23,7 @@ export function SocialPlatformGlyph({ platformId }: { platformId: string }) {
   if (platformId === "reddit") {
     return (
       <svg
-        className="w-3.5 h-3.5 shrink-0"
+        className={cn("shrink-0", sizeClassName)}
         viewBox="0 0 24 24"
         fill="currentColor"
         aria-hidden

@@ -29,7 +29,7 @@ import {
 } from "@/game/claimSocialFollowReward";
 import { SocialPlatformGlyph } from "@/components/game/SocialPlatformGlyph";
 import { getCurrentUser } from "@/game/auth";
-import { Check, Circle, Sparkles, User } from "lucide-react";
+import { Check, Circle } from "lucide-react";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { cn } from "@/lib/utils";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
@@ -64,6 +64,11 @@ import { useTranslation } from "react-i18next";
 /** Exclusive promo track reward (see `eventsSocialPromoExclusive`). */
 const EXCLUSIVE_PROMO_REWARD_ITEM_ID = "gifted_ring";
 
+const SOCIAL_TASK_ROW_ICON_SIZE = "h-5 w-5";
+const SOCIAL_TASK_STATUS_ICON_SIZE = "h-6 w-6";
+const SOCIAL_TASK_PLATFORM_ICON_SIZE = "w-5 h-5";
+const SOCIAL_EXCLUSIVE_REWARD_ICON_SIZE = "w-6 h-6";
+
 function ExclusivePromoItemInfoIcon({ tooltipId }: { tooltipId: string }) {
   return (
     <TooltipWrapper
@@ -71,7 +76,7 @@ function ExclusivePromoItemInfoIcon({ tooltipId }: { tooltipId: string }) {
       tooltipId={tooltipId}
       disabled
       tooltipContentClassName="max-w-xs border border-amber-600"
-      className="inline-flex shrink-0 items-center justify-center w-5 h-5 rounded-full text-lime-300 hover:text-lime-200 cursor-pointer motion-safe:animate-shop-info-pulse align-text-bottom translate-y-[0.06em]"
+      className="inline-flex shrink-0 items-center justify-center w-6 h-6 rounded-full text-lime-300 hover:text-lime-200 cursor-pointer motion-safe:animate-shop-info-pulse align-text-bottom translate-y-[0.06em]"
     >
       <span
         className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-base font-normal leading-none"
@@ -96,7 +101,7 @@ function TaskInfoIcon({
       tooltipId={tooltipId}
       disabled
       tooltipContentClassName="max-w-xs"
-      className="inline-flex shrink-0 items-center justify-center w-5 h-5 rounded-full text-muted-foreground hover:text-foreground cursor-pointer align-text-bottom translate-y-[0.06em]"
+      className="inline-flex shrink-0 items-center justify-center w-6 h-6 rounded-full text-muted-foreground hover:text-foreground cursor-pointer align-text-bottom translate-y-[0.06em]"
     >
       <span
         className="inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-base font-normal leading-none"
@@ -157,25 +162,35 @@ function TaskRowStatusIcon({
 }) {
   return (
     <div
-      className="flex h-5 w-5 shrink-0 items-center justify-center"
+      className={cn(
+        "flex shrink-0 items-center justify-center",
+        SOCIAL_TASK_STATUS_ICON_SIZE,
+      )}
       aria-hidden
     >
       {claimed ? (
         <Check
           className={cn(
-            "h-5 w-5 text-green-500",
+            SOCIAL_TASK_STATUS_ICON_SIZE,
+            "text-green-500",
             animate && "social-task-check-animate",
           )}
           strokeWidth={2.5}
         />
       ) : fulfilled ? (
         <Check
-          className="h-5 w-5 text-muted-foreground/60"
+          className={cn(
+            SOCIAL_TASK_STATUS_ICON_SIZE,
+            "text-muted-foreground/60",
+          )}
           strokeWidth={2.5}
         />
       ) : (
         <Circle
-          className="h-5 w-5 text-muted-foreground/60"
+          className={cn(
+            SOCIAL_TASK_STATUS_ICON_SIZE,
+            "text-muted-foreground/60",
+          )}
           strokeWidth={2}
         />
       )}
@@ -495,7 +510,10 @@ export default function SocialPromptDialog({
                 />
                 <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
                   <div className="flex items-center gap-2 min-w-0">
-                    <SocialPlatformGlyph platformId={platform.id} />
+                    <SocialPlatformGlyph
+                      platformId={platform.id}
+                      sizeClassName={SOCIAL_TASK_PLATFORM_ICON_SIZE}
+                    />
                     <span className="font-medium text-sm truncate">
                       {getSocialPlatformTitle(platform.id)}
                     </span>
@@ -549,10 +567,7 @@ export default function SocialPromptDialog({
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex items-center gap-2">
-                  <Sparkles
-                    className="h-4 w-4 shrink-0 opacity-90"
-                    aria-hidden
-                  />
+                  <GameUiIcon name="discover" sizeClassName={SOCIAL_TASK_ROW_ICON_SIZE} />
                   <span className="font-medium text-sm">
                     {t("socialPrompt.playlightTitle")}
                   </span>
@@ -606,7 +621,7 @@ export default function SocialPromptDialog({
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <User className="h-4 w-4 shrink-0 opacity-90" aria-hidden />
+                  <GameUiIcon name="signUp" sizeClassName={SOCIAL_TASK_ROW_ICON_SIZE} />
                   <span className="font-medium text-sm">
                     {t("socialPrompt.signUpTitle")}
                   </span>
@@ -657,7 +672,7 @@ export default function SocialPromptDialog({
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex items-center gap-2">
-                  <GameUiIcon name="email" sizeClassName="h-4 w-4" />
+                  <GameUiIcon name="email" sizeClassName={SOCIAL_TASK_ROW_ICON_SIZE} />
                   <span className="font-medium text-sm">
                     {t("socialPrompt.emailUpdatesTitle")}
                   </span>
@@ -706,7 +721,7 @@ export default function SocialPromptDialog({
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <GameUiIcon name="inviteUser" sizeClassName="h-4 w-4" />
+                  <GameUiIcon name="inviteUser" sizeClassName={SOCIAL_TASK_ROW_ICON_SIZE} />
                   <span className="font-medium text-sm">
                     {t("socialPrompt.inviteTitle")}
                   </span>
@@ -807,7 +822,7 @@ export default function SocialPromptDialog({
               </div>
               <GameUiIcon
                 name="exclusiveReward"
-                sizeClassName="w-[22px] h-[22px]"
+                sizeClassName={SOCIAL_EXCLUSIVE_REWARD_ICON_SIZE}
                 className={cn(
                   "shrink-0",
                   exclusiveRewardComplete ? "text-green-500" : "text-lime-400",

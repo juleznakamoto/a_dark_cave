@@ -35,7 +35,6 @@ import { DeleteAccountDialog } from "./DeleteAccountDialog";
 import SettingsDialog from "./SettingsDialog";
 import SocialPromptDialog from "./SocialPromptDialog";
 import { initPlaylight, markPlaylightDiscoveryUserInitiated } from "@/lib/playlight";
-import { LogIn } from "lucide-react";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import {
   MARKETING_EMAIL_REWARD_KEY,
@@ -768,10 +767,7 @@ export function GameHeaderControls() {
                 }}
               >
                 <span className="flex items-center gap-1.5">
-                  <LogIn
-                    className="w-3.5 h-3.5 shrink-0 opacity-90"
-                    aria-hidden
-                  />
+                  <GameUiIcon name="signUp" />
                   {t("profile.signInUp")}
                 </span>
               </DropdownMenuItem>
