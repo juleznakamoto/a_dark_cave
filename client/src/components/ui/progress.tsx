@@ -1,10 +1,12 @@
 "use client"
 
 import * as React from "react"
+import { createPortal } from "react-dom"
 import * as ProgressPrimitive from "@radix-ui/react-progress"
 import { motion } from "framer-motion"
 
 import { cn } from "@/lib/utils"
+import { Z_INDEX } from "@/lib/z-index"
 
 interface ProgressProps extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
   segments?: number;
@@ -20,13 +22,15 @@ interface ProgressProps extends React.ComponentPropsWithoutRef<typeof ProgressPr
   emitSparksOnGrow?: boolean;
 }
 
-interface GrowSpark {
-  angle: number;
-  distance: number;
+interface GrowSparkParticle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
   size: number;
-  duration: number;
-  delay: number;
   color: string;
+  life: number;
+  maxLife: number;
 }
 
 const GROW_SPARK_COLORS = [
@@ -37,113 +41,126 @@ const GROW_SPARK_COLORS = [
   "#ef4444", // red-500
 ];
 
-function createGrowSpark(): GrowSpark {
-  // Bias sparks toward the right, spraying up and down from the moving tip.
+const GROW_SPARK_EMIT_INTERVAL_MS = 40;
+const GROW_SPARKS_PER_EMIT = 3;
+
+function createGrowSparkParticle(x: number, y: number): GrowSparkParticle {
   const angle = (-70 + Math.random() * 140) * (Math.PI / 180);
+  const speed = 18 + Math.random() * 32;
+  const maxLife = 0.35 + Math.random() * 0.35;
   return {
-    angle,
-    distance: 6 + Math.random() * 14,
+    x,
+    y,
+    vx: Math.cos(angle) * speed,
+    vy: Math.sin(angle) * speed,
     size: 1.5 + Math.random() * 2,
-    duration: 0.35 + Math.random() * 0.4,
-    delay: 0,
     color:
       GROW_SPARK_COLORS[Math.floor(Math.random() * GROW_SPARK_COLORS.length)],
+    life: maxLife,
+    maxLife,
   };
 }
 
-/** Match CSS `ease-out` used by the bar grow transition. */
-function easeOut(t: number): number {
-  return 1 - Math.pow(1 - t, 3);
-}
-
-interface ActiveGrowSpark extends GrowSpark {
-  id: number;
-  leftPct: number;
-}
-
-const GROW_SPARK_EMIT_INTERVAL_MS = 45;
-const GROW_SPARKS_PER_EMIT = 2;
-
 /**
- * Emit sparks along the bar's grow path. Each batch spawns at the eased tip
- * position for the current frame so sparks trail the moving right edge from
- * x → x+1, not only at the destination.
+ * Canvas spark trail driven by a DOM marker on the bar's right edge.
+ * Each frame reads getBoundingClientRect() so sparks follow the actual CSS
+ * grow transition instead of a separately computed percentage path.
  */
-function ProgressGrowSparks({
-  fromPct,
-  toPct,
+function ProgressGrowSparksCanvas({
+  tipMarkerRef,
   durationMs,
+  sessionKey,
 }: {
-  fromPct: number;
-  toPct: number;
+  tipMarkerRef: React.RefObject<HTMLDivElement | null>;
   durationMs: number;
+  sessionKey: number;
 }) {
-  const [activeSparks, setActiveSparks] = React.useState<ActiveGrowSpark[]>([]);
-  const nextSparkIdRef = React.useRef(0);
-
-  const removeSpark = React.useCallback((id: number) => {
-    setActiveSparks((prev) => prev.filter((spark) => spark.id !== id));
-  }, []);
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const particlesRef = React.useRef<GrowSparkParticle[]>([]);
+  const rafRef = React.useRef(0);
+  const lastFrameRef = React.useRef(0);
 
   React.useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
     const start = performance.now();
     let lastEmit = -GROW_SPARK_EMIT_INTERVAL_MS;
-    let rafId = 0;
+    lastFrameRef.current = start;
 
-    const tick = (now: number) => {
+    const loop = (now: number) => {
       const elapsed = now - start;
-      const t = Math.min(1, elapsed / durationMs);
-      const currentPct = fromPct + (toPct - fromPct) * easeOut(t);
+      const dt = Math.min(0.05, (now - lastFrameRef.current) / 1000);
+      lastFrameRef.current = now;
 
-      if (elapsed - lastEmit >= GROW_SPARK_EMIT_INTERVAL_MS) {
+      if (elapsed - lastEmit >= GROW_SPARK_EMIT_INTERVAL_MS && elapsed <= durationMs) {
         lastEmit = elapsed;
-        const batch = Array.from({ length: GROW_SPARKS_PER_EMIT }, () => ({
-          id: nextSparkIdRef.current++,
-          leftPct: currentPct,
-          ...createGrowSpark(),
-        }));
-        setActiveSparks((prev) => [...prev, ...batch]);
+        const marker = tipMarkerRef.current;
+        if (marker) {
+          const rect = marker.getBoundingClientRect();
+          const x = rect.right;
+          const y = rect.top + rect.height / 2;
+          for (let i = 0; i < GROW_SPARKS_PER_EMIT; i++) {
+            particlesRef.current.push(createGrowSparkParticle(x, y));
+          }
+        }
       }
 
-      if (t < 1) {
-        rafId = requestAnimationFrame(tick);
+      particlesRef.current = particlesRef.current.filter((particle) => {
+        particle.x += particle.vx * dt;
+        particle.y += particle.vy * dt;
+        particle.vx *= 0.92;
+        particle.vy *= 0.92;
+        particle.life -= dt;
+        return particle.life > 0;
+      });
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const particle of particlesRef.current) {
+        const alpha = Math.max(0, particle.life / particle.maxLife);
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = particle.color;
+        ctx.shadowColor = particle.color;
+        ctx.shadowBlur = particle.size * 2;
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      ctx.shadowBlur = 0;
+
+      if (elapsed < durationMs || particlesRef.current.length > 0) {
+        rafRef.current = requestAnimationFrame(loop);
       }
     };
 
-    rafId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId);
-  }, [fromPct, toPct, durationMs]);
+    particlesRef.current = [];
+    rafRef.current = requestAnimationFrame(loop);
 
-  return (
-    <div className="pointer-events-none absolute inset-0 z-20 overflow-visible">
-      {activeSparks.map((spark) => (
-        <motion.span
-          key={spark.id}
-          className="absolute top-1/2 rounded-full"
-          style={{
-            left: `${spark.leftPct}%`,
-            width: spark.size,
-            height: spark.size,
-            marginLeft: -spark.size / 2,
-            marginTop: -spark.size / 2,
-            background: spark.color,
-            boxShadow: `0 0 ${spark.size * 2}px ${spark.color}`,
-          }}
-          initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
-          animate={{
-            x: Math.cos(spark.angle) * spark.distance,
-            y: Math.sin(spark.angle) * spark.distance,
-            opacity: 0,
-            scale: 0.2,
-          }}
-          transition={{
-            duration: spark.duration,
-            ease: "easeOut",
-          }}
-          onAnimationComplete={() => removeSpark(spark.id)}
-        />
-      ))}
-    </div>
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      particlesRef.current = [];
+      window.removeEventListener("resize", resize);
+    };
+  }, [tipMarkerRef, durationMs, sessionKey]);
+
+  return createPortal(
+    <canvas
+      ref={canvasRef}
+      className="pointer-events-none fixed inset-0"
+      style={{ zIndex: Z_INDEX.particles }}
+      aria-hidden
+    />,
+    document.body,
   );
 }
 
@@ -153,33 +170,50 @@ const Progress = React.forwardRef<
 >(({ className, value, segments = 1, hideBorder = false, disableGlow = false, flashOnDecrease = false, growAnimationMs = 0, indicatorClassName, emitSparksOnGrow = false, ...props }, ref) => {
   const [animationKey, setAnimationKey] = React.useState(0);
   const [flashKey, setFlashKey] = React.useState(0);
-  const [sparkBurst, setSparkBurst] = React.useState<{
-    key: number;
-    from: number;
-    to: number;
-  } | null>(null);
+  const [growSparkSession, setGrowSparkSession] = React.useState(0);
+  const [growTransitionActive, setGrowTransitionActive] = React.useState(false);
+  const tipMarkerRef = React.useRef<HTMLDivElement>(null);
   const prevValueRef = React.useRef(value || 0);
-  const isGrowing = (value || 0) > prevValueRef.current;
+  const growTransitionTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const currentValue = value ?? 0;
+  const isGrowingThisRender = currentValue > prevValueRef.current;
+  const showGrowTransition =
+    growAnimationMs > 0 && (growTransitionActive || isGrowingThisRender);
 
-  React.useEffect(() => {
-    const currentValue = value ?? 0;
+  React.useLayoutEffect(() => {
+    const nextValue = value ?? 0;
     if (value != null) {
-      if (!disableGlow && currentValue > prevValueRef.current) {
+      if (!disableGlow && nextValue > prevValueRef.current) {
         setAnimationKey(prev => prev + 1);
       }
-      if (emitSparksOnGrow && growAnimationMs > 0 && currentValue > prevValueRef.current) {
-        setSparkBurst(prev => ({
-          key: (prev?.key ?? 0) + 1,
-          from: prevValueRef.current,
-          to: currentValue,
-        }));
+      if (growAnimationMs > 0 && nextValue > prevValueRef.current) {
+        setGrowTransitionActive(true);
+        if (growTransitionTimerRef.current) {
+          clearTimeout(growTransitionTimerRef.current);
+        }
+        growTransitionTimerRef.current = setTimeout(() => {
+          setGrowTransitionActive(false);
+          growTransitionTimerRef.current = null;
+        }, growAnimationMs);
+
+        if (emitSparksOnGrow) {
+          setGrowSparkSession((prev) => prev + 1);
+        }
       }
-      if (flashOnDecrease && currentValue < prevValueRef.current) {
+      if (flashOnDecrease && nextValue < prevValueRef.current) {
         setFlashKey(prev => prev + 1);
       }
     }
-    prevValueRef.current = currentValue;
+    prevValueRef.current = nextValue;
   }, [value, disableGlow, flashOnDecrease, emitSparksOnGrow, growAnimationMs]);
+
+  React.useEffect(() => {
+    return () => {
+      if (growTransitionTimerRef.current) {
+        clearTimeout(growTransitionTimerRef.current);
+      }
+    };
+  }, []);
 
   const root = (
     <ProgressPrimitive.Root
@@ -210,7 +244,7 @@ const Progress = React.forwardRef<
           transform: `translateX(-${100 - (value || 0)}%)`,
           transition: flashOnDecrease
             ? "transform 400ms ease-out"
-            : isGrowing && growAnimationMs > 0
+            : showGrowTransition
               ? `transform ${growAnimationMs}ms ease-out`
               : undefined,
         }}
@@ -235,27 +269,29 @@ const Progress = React.forwardRef<
             transition={{ duration: 0.6, ease: "easeInOut" }}
           />
         )}
+        {emitSparksOnGrow && (
+          <div
+            ref={tipMarkerRef}
+            className="pointer-events-none absolute right-0 top-1/2 h-px w-px -translate-y-1/2"
+            aria-hidden
+          />
+        )}
       </ProgressPrimitive.Indicator>
     </ProgressPrimitive.Root>
   );
 
-  if (!emitSparksOnGrow) {
-    return root;
-  }
-
-  // Wrapper is not clipped so sparks can spray beyond the (thin) bar bounds.
   return (
-    <div className="relative w-full">
+    <>
       {root}
-      {sparkBurst && (
-        <ProgressGrowSparks
-          key={sparkBurst.key}
-          fromPct={sparkBurst.from}
-          toPct={sparkBurst.to}
+      {emitSparksOnGrow && growSparkSession > 0 && (
+        <ProgressGrowSparksCanvas
+          key={growSparkSession}
+          tipMarkerRef={tipMarkerRef}
           durationMs={growAnimationMs}
+          sessionKey={growSparkSession}
         />
       )}
-    </div>
+    </>
   );
 })
 Progress.displayName = ProgressPrimitive.Root.displayName
