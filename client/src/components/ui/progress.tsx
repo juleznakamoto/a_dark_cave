@@ -49,6 +49,28 @@ const BRIGHT_SPARK_COLORS = [
   tailwindToHex("amber-200"),
 ];
 
+function drawTipGlow(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  barHeight: number,
+) {
+  const radius = Math.max(12, barHeight * 5);
+  const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+  gradient.addColorStop(0, tailwindToHex("yellow-200"));
+  gradient.addColorStop(0.2, tailwindToHex("yellow-400"));
+  gradient.addColorStop(0.5, tailwindToHex("yellow-400/60"));
+  gradient.addColorStop(1, "transparent");
+
+  ctx.save();
+  ctx.globalCompositeOperation = "lighter";
+  ctx.fillStyle = gradient;
+  ctx.beginPath();
+  ctx.arc(x, y, radius, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
 
 const GROW_SPARK_EMIT_INTERVAL_MS = Math.floor(Math.random() * 10) + 3;
 const GROW_SPARKS_PER_EMIT = Math.floor(Math.random() * 7) + 3;
@@ -169,6 +191,15 @@ function ProgressGrowSparksCanvas({
       });
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (elapsed <= durationMs) {
+        const marker = tipMarkerRef.current;
+        if (marker) {
+          const rect = marker.getBoundingClientRect();
+          drawTipGlow(ctx, rect.right, rect.top + rect.height / 2, rect.height);
+        }
+      }
+
       for (const particle of particlesRef.current) {
         drawGrowSparkParticle(ctx, particle);
       }
@@ -308,9 +339,13 @@ const Progress = React.forwardRef<
         {emitSparksOnGrow && (
           <div
             ref={tipMarkerRef}
-            className="pointer-events-none absolute right-0 top-1/2 h-px w-px -translate-y-1/2"
+            className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2"
             aria-hidden
-          />
+          >
+            {showGrowTransition && (
+              <div className="absolute right-0 top-1/2 h-full min-h-[8px] w-0.5 -translate-y-1/2 bg-yellow-400 shadow-[0_0_10px_3px] shadow-yellow-400" />
+            )}
+          </div>
         )}
       </ProgressPrimitive.Indicator>
     </ProgressPrimitive.Root>
