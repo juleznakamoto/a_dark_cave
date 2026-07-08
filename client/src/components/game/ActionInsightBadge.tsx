@@ -273,6 +273,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
           onClick={(e) => {
             e.stopPropagation();
             handleClick();
+            e.currentTarget.blur();
           }}
         >
           <BuildingActionBadge

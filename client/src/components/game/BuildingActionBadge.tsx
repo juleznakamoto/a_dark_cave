@@ -22,7 +22,7 @@ export function getInsightBadgeTriggerClassName({
   return cn(
     "insight-action-badge-trigger relative inline-flex shrink-0 items-center justify-center overflow-hidden border-0 bg-transparent p-0 leading-none min-h-0 min-w-0 transition-opacity duration-200",
     className,
-    playing && "opacity-100",
+    playing && "insight-action-badge-trigger--playing opacity-100",
     !playing && canAfford && "opacity-80 hover:opacity-100",
     !playing &&
     !canAfford &&

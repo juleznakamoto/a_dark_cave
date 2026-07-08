@@ -265,16 +265,13 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
   const [, forceUpdate] = useState(0);
   const upgradeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const playing = playingUntil > Date.now();
+  const playing = playingUntil > 0 && playingUntil > Date.now();
 
   useEffect(() => {
-    if (!playing) return;
-    const id = setTimeout(
-      () => forceUpdate((n) => n + 1),
-      Math.max(0, playingUntil - Date.now()),
-    );
-    return () => clearTimeout(id);
-  }, [playing, playingUntil]);
+    if (!playingUntil) return;
+    const interval = setInterval(() => forceUpdate((n) => n + 1), 100);
+    return () => clearInterval(interval);
+  }, [playingUntil]);
 
   useEffect(
     () => () => {
@@ -297,14 +294,17 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
   const tooltipId = `villager-cap-upgrade-${buildingKey}`;
   const isDisabled = !affordable || playing;
 
-  const handleClick = () => {
+  const handleClick = (e?: React.MouseEvent<HTMLButtonElement>) => {
     if (isDisabled) return;
     setPlayingUntil(Date.now() + INSIGHT_REVEAL_DURATION_MS);
     setHighlightedResources(["insight"]);
+    if (upgradeTimerRef.current) clearTimeout(upgradeTimerRef.current);
     upgradeTimerRef.current = setTimeout(() => {
       useGameStore.getState().upgradeVillagerCap(groupId);
       setHighlightedResources([]);
+      setPlayingUntil(0);
     }, INSIGHT_REVEAL_DURATION_MS);
+    e?.currentTarget?.blur();
   };
 
   return (
@@ -338,7 +338,7 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
         disabled={isDisabled}
         onClick={(e) => {
           e.stopPropagation();
-          handleClick();
+          handleClick(e);
         }}
         className={getInsightBadgeTriggerClassName({
           canAfford: affordable,
@@ -369,16 +369,13 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
   const [, forceUpdate] = useState(0);
   const enchantTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const playing = playingUntil > Date.now();
+  const playing = playingUntil > 0 && playingUntil > Date.now();
 
   useEffect(() => {
-    if (!playing) return;
-    const id = setTimeout(
-      () => forceUpdate((n) => n + 1),
-      Math.max(0, playingUntil - Date.now()),
-    );
-    return () => clearTimeout(id);
-  }, [playing, playingUntil]);
+    if (!playingUntil) return;
+    const interval = setInterval(() => forceUpdate((n) => n + 1), 100);
+    return () => clearInterval(interval);
+  }, [playingUntil]);
 
   useEffect(
     () => () => {
@@ -399,14 +396,17 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
   const tooltipId = `weapon-enchant-${weaponId}`;
   const isDisabled = !affordable || playing;
 
-  const handleClick = () => {
+  const handleClick = (e?: React.MouseEvent<HTMLButtonElement>) => {
     if (isDisabled) return;
     setPlayingUntil(Date.now() + INSIGHT_REVEAL_DURATION_MS);
     setHighlightedResources(["insight"]);
+    if (enchantTimerRef.current) clearTimeout(enchantTimerRef.current);
     enchantTimerRef.current = setTimeout(() => {
       useGameStore.getState().enchantWeapon(weaponId);
       setHighlightedResources([]);
+      setPlayingUntil(0);
     }, INSIGHT_REVEAL_DURATION_MS);
+    e?.currentTarget?.blur();
   };
 
   return (
@@ -440,7 +440,7 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
         disabled={isDisabled}
         onClick={(e) => {
           e.stopPropagation();
-          handleClick();
+          handleClick(e);
         }}
         className={getInsightBadgeTriggerClassName({
           canAfford: affordable,
