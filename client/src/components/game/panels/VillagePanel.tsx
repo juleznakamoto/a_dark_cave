@@ -169,6 +169,9 @@ const VILLAGER_COUNT_CAP_CLASS = cn(
 );
 const VILLAGER_COUNT_LABEL_CLASS =
   "ml-1 min-w-0 flex-1 text-left text-sm leading-none";
+/** Secondary resource rates/upkeep beside job labels — smaller with room when wrapped. */
+const VILLAGER_RESOURCE_HINT_CLASS =
+  "text-xs leading-snug text-muted-foreground";
 
 export default function VillagePanel() {
   const { t } = useUiTranslation();
@@ -1037,7 +1040,7 @@ export default function VillagePanel() {
         {totalPopulation > 0 &&
           (isVillagerFoodUpkeepActive(state) ||
             isVillagerWoodUpkeepActive(state)) && (
-            <span className="leading-none text-muted-foreground">
+            <span className={VILLAGER_RESOURCE_HINT_CLASS}>
               {isVillagerFoodUpkeepActive(state) && (
                 <>
                   <span translate="no" className="notranslate">
@@ -1155,7 +1158,7 @@ export default function VillagePanel() {
         </div>
         <span className={VILLAGER_COUNT_LABEL_CLASS}>
           {label}{" "}
-          <span key={productionKey} className="leading-none text-muted-foreground">
+          <span key={productionKey} className={VILLAGER_RESOURCE_HINT_CLASS}>
             {productionEntries.map((prod, i) => (
               <React.Fragment key={prod.resource}>
                 {i > 0 && ", "}
