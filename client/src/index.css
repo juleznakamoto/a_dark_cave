@@ -533,23 +533,6 @@ body {
   }
 }
 
-/* Touch: SVG mask already has feGaussianBlur goo — skip CSS contrast/blur so reveal is not doubly soft. */
-@media (hover: none),
-(pointer: coarse) {
-  .building-action-badge__clip {
-    filter: none;
-  }
-
-  .building-action-badge--playing .building-action-badge__clip {
-    animation: none !important;
-    filter: none !important;
-  }
-
-  .building-action-badge--playing .building-action-badge__triangle {
-    filter: none !important;
-  }
-}
-
 @keyframes gambler-goal-blink {
 
   0%,

@@ -1,4 +1,4 @@
-import { useId, type CSSProperties } from "react";
+import { useId } from "react";
 import { INSIGHT_GLYPH, INSIGHT_TEXT_CLASS } from "@/game/villagerCapUpgrades";
 import { cn } from "@/lib/utils";
 
@@ -55,7 +55,6 @@ export function BuildingActionBadge({
   const id = useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const maskId = `building-action-badge-mask-${id}`;
   const gradientId = `building-action-badge-gradient-${id}`;
-  const gooFilterId = `building-action-badge-goo-${id}`;
 
   return (
     <span
@@ -67,11 +66,6 @@ export function BuildingActionBadge({
         embedded && "building-action-badge--embedded",
         playing && "building-action-badge--playing",
       )}
-      style={
-        {
-          "--building-action-badge-goo-filter": `url(#${gooFilterId})`,
-        } as CSSProperties
-      }
       aria-hidden="true"
     >
       <span className="building-action-badge__idle">
@@ -97,36 +91,8 @@ export function BuildingActionBadge({
             <stop offset="55%" stopColor="#2563eb" />
             <stop offset="100%" stopColor="#1e40af" />
           </linearGradient>
-          {/* Native SVG goo filter — mobile WebKit ignores CSS contrast/blur inside masks. */}
-          <filter
-            id={gooFilterId}
-            x="-50%"
-            y="-50%"
-            width="200%"
-            height="200%"
-            colorInterpolationFilters="sRGB"
-          >
-            <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur" />
-            <feColorMatrix
-              in="blur"
-              type="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
-            >
-              <animate
-                attributeName="values"
-                dur="1s"
-                repeatCount="indefinite"
-                calcMode="linear"
-                keyTimes="0;0.2;0.4;0.6;1"
-                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7;1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 5 -2;1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 5 -2;1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7;1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
-              />
-            </feColorMatrix>
-          </filter>
           <mask id={maskId}>
-            <g
-              className="building-action-badge__clip"
-              filter={`url(#${gooFilterId})`}
-            >
+            <g className="building-action-badge__clip">
               <polygon points="0,0 100,0 100,100 0,100" fill="black" />
               <polygon
                 className="building-action-badge__triangle building-action-badge__triangle--one"
