@@ -1,15 +1,16 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { createPortal } from "react-dom"
-import * as ProgressPrimitive from "@radix-ui/react-progress"
-import { motion } from "framer-motion"
+import * as React from "react";
+import { createPortal } from "react-dom";
+import * as ProgressPrimitive from "@radix-ui/react-progress";
+import { motion } from "framer-motion";
 
-import { cn } from "@/lib/utils"
-import { Z_INDEX } from "@/lib/z-index"
-import { tailwindToHex } from "@/lib/tailwindColors"
+import { cn } from "@/lib/utils";
+import { Z_INDEX } from "@/lib/z-index";
+import { tailwindToHex } from "@/lib/tailwindColors";
 
-interface ProgressProps extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
+interface ProgressProps
+  extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
   segments?: number;
   hideBorder?: boolean;
   disableGlow?: boolean;
@@ -55,7 +56,7 @@ function drawTipGlow(
   y: number,
   barHeight: number,
 ) {
-  const radius = Math.max(12, barHeight * 5);
+  const radius = Math.max(16, barHeight * 5);
   const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
   gradient.addColorStop(0, tailwindToHex("yellow-100"));
   gradient.addColorStop(0.2, tailwindToHex("yellow-200"));
@@ -71,10 +72,9 @@ function drawTipGlow(
   ctx.restore();
 }
 
-
 const GROW_SPARK_EMIT_INTERVAL_MS = Math.floor(Math.random() * 6) + 3;
 const GROW_SPARKS_PER_EMIT = Math.floor(Math.random() * 9) + 4;
-const BRIGHT_SPARKS_PER_EMIT = Math.floor(Math.random() * 11) + 3;
+const BRIGHT_SPARKS_PER_EMIT = Math.floor(Math.random() * 9) + 3;
 
 function createGrowSparkParticle(
   x: number,
@@ -83,15 +83,17 @@ function createGrowSparkParticle(
 ): GrowSparkParticle {
   const angle = (-70 + Math.random() * 140) * (Math.PI / 180);
   const isBright = variant === "bright";
-  const speed = isBright ? 50 + Math.random() * 350 : 20 + Math.random() * 30;
-  const maxLife = isBright ? 0.5 + Math.random() * 2 : 0.2 + Math.random() * 0.4;
+  const speed = isBright ? 50 + Math.random() * 300 : 20 + Math.random() * 30;
+  const maxLife = isBright
+    ? 0.3 + Math.random() * 1
+    : 0.2 + Math.random() * 0.4;
   const colors = isBright ? BRIGHT_SPARK_COLORS : GROW_SPARK_COLORS;
   return {
     x,
     y,
     vx: Math.cos(angle) * speed,
     vy: Math.sin(angle) * speed,
-    size: isBright ? 0.1 + Math.random() * 0.4 : 1 + Math.random() * 5,
+    size: isBright ? 0.2 + Math.random() * 0.8 : 1 + Math.random() * 4,
     color: colors[Math.floor(Math.random() * colors.length)],
     life: maxLife,
     maxLife,
@@ -176,7 +178,10 @@ function ProgressGrowSparksCanvas({
       const dt = Math.min(0.05, (now - lastFrameRef.current) / 1000);
       lastFrameRef.current = now;
 
-      if (elapsed - lastEmit >= GROW_SPARK_EMIT_INTERVAL_MS && elapsed <= durationMs) {
+      if (
+        elapsed - lastEmit >= GROW_SPARK_EMIT_INTERVAL_MS &&
+        elapsed <= durationMs
+      ) {
         lastEmit = elapsed;
         const marker = tipMarkerRef.current;
         if (marker) {
@@ -245,137 +250,168 @@ function ProgressGrowSparksCanvas({
 const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
   ProgressProps
->(({ className, value, segments = 1, hideBorder = false, disableGlow = false, flashOnDecrease = false, growAnimationMs = 0, indicatorClassName, emitSparksOnGrow = false, ...props }, ref) => {
-  const [animationKey, setAnimationKey] = React.useState(0);
-  const [flashKey, setFlashKey] = React.useState(0);
-  const [growSparkSession, setGrowSparkSession] = React.useState(0);
-  const [growTransitionActive, setGrowTransitionActive] = React.useState(false);
-  const tipMarkerRef = React.useRef<HTMLDivElement>(null);
-  const prevValueRef = React.useRef(value || 0);
-  const growTransitionTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-  const currentValue = value ?? 0;
-  const isGrowingThisRender = currentValue > prevValueRef.current;
-  const showGrowTransition =
-    growAnimationMs > 0 && (growTransitionActive || isGrowingThisRender);
+>(
+  (
+    {
+      className,
+      value,
+      segments = 1,
+      hideBorder = false,
+      disableGlow = false,
+      flashOnDecrease = false,
+      growAnimationMs = 0,
+      indicatorClassName,
+      emitSparksOnGrow = false,
+      ...props
+    },
+    ref,
+  ) => {
+    const [animationKey, setAnimationKey] = React.useState(0);
+    const [flashKey, setFlashKey] = React.useState(0);
+    const [growSparkSession, setGrowSparkSession] = React.useState(0);
+    const [growTransitionActive, setGrowTransitionActive] =
+      React.useState(false);
+    const tipMarkerRef = React.useRef<HTMLDivElement>(null);
+    const prevValueRef = React.useRef(value || 0);
+    const growTransitionTimerRef = React.useRef<ReturnType<
+      typeof setTimeout
+    > | null>(null);
+    const currentValue = value ?? 0;
+    const isGrowingThisRender = currentValue > prevValueRef.current;
+    const showGrowTransition =
+      growAnimationMs > 0 && (growTransitionActive || isGrowingThisRender);
 
-  React.useLayoutEffect(() => {
-    const nextValue = value ?? 0;
-    if (value != null) {
-      if (!disableGlow && nextValue > prevValueRef.current) {
-        setAnimationKey(prev => prev + 1);
+    React.useLayoutEffect(() => {
+      const nextValue = value ?? 0;
+      if (value != null) {
+        if (!disableGlow && nextValue > prevValueRef.current) {
+          setAnimationKey((prev) => prev + 1);
+        }
+        if (growAnimationMs > 0 && nextValue > prevValueRef.current) {
+          setGrowTransitionActive(true);
+          if (growTransitionTimerRef.current) {
+            clearTimeout(growTransitionTimerRef.current);
+          }
+          growTransitionTimerRef.current = setTimeout(() => {
+            setGrowTransitionActive(false);
+            growTransitionTimerRef.current = null;
+          }, growAnimationMs);
+
+          if (emitSparksOnGrow) {
+            setGrowSparkSession((prev) => prev + 1);
+          }
+        }
+        if (flashOnDecrease && nextValue < prevValueRef.current) {
+          setFlashKey((prev) => prev + 1);
+        }
       }
-      if (growAnimationMs > 0 && nextValue > prevValueRef.current) {
-        setGrowTransitionActive(true);
+      prevValueRef.current = nextValue;
+    }, [
+      value,
+      disableGlow,
+      flashOnDecrease,
+      emitSparksOnGrow,
+      growAnimationMs,
+    ]);
+
+    React.useEffect(() => {
+      return () => {
         if (growTransitionTimerRef.current) {
           clearTimeout(growTransitionTimerRef.current);
         }
-        growTransitionTimerRef.current = setTimeout(() => {
-          setGrowTransitionActive(false);
-          growTransitionTimerRef.current = null;
-        }, growAnimationMs);
+      };
+    }, []);
 
-        if (emitSparksOnGrow) {
-          setGrowSparkSession((prev) => prev + 1);
-        }
-      }
-      if (flashOnDecrease && nextValue < prevValueRef.current) {
-        setFlashKey(prev => prev + 1);
-      }
-    }
-    prevValueRef.current = nextValue;
-  }, [value, disableGlow, flashOnDecrease, emitSparksOnGrow, growAnimationMs]);
-
-  React.useEffect(() => {
-    return () => {
-      if (growTransitionTimerRef.current) {
-        clearTimeout(growTransitionTimerRef.current);
-      }
-    };
-  }, []);
-
-  const root = (
-    <ProgressPrimitive.Root
-      ref={ref}
-      className={cn(
-        "relative h-4 w-full overflow-hidden rounded-full bg-neutral-900 transition-all",
-        !hideBorder && value === 100 && "border border-red-900",
-        className
-      )}
-      {...props}
-    >
-      {/* Render segment dividers */}
-      {segments > 1 && (
-        <div className="absolute inset-0 flex">
-          {Array.from({ length: segments }).map((_, i) => (
-            <div
-              key={i}
-              className="flex-1 border-r border-neutral-600 last:border-r-0 bg-neutral"
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Progress indicator */}
-      <ProgressPrimitive.Indicator
-        className={cn("h-full w-full flex-1 bg-red-950 relative z-10 overflow-hidden", indicatorClassName)}
-        style={{
-          transform: `translateX(-${100 - (value || 0)}%)`,
-          transition: flashOnDecrease
-            ? "transform 400ms ease-out"
-            : showGrowTransition
-              ? `transform ${growAnimationMs}ms ease-out`
-              : undefined,
-        }}
+    const root = (
+      <ProgressPrimitive.Root
+        ref={ref}
+        className={cn(
+          "relative h-4 w-full overflow-hidden rounded-full bg-neutral-900 transition-all",
+          !hideBorder && value === 100 && "border border-red-900",
+          className,
+        )}
+        {...props}
       >
-        {/* Glow effect - animates on every increase */}
-        {animationKey > 0 && (
-          <motion.div
-            key={animationKey}
-            className={cn("absolute inset-0 bg-gradient-to-r from-transparent to-transparent pointer-events-none", indicatorClassName ? "via-orange-400/80" : "via-red-500/100")}
-            initial={{ x: "-100%", opacity: 1 }}
-            animate={{ x: "100%", opacity: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-          />
-        )}
-        {/* Flash effect - 3 flashes when value decreases */}
-        {flashKey > 0 && (
-          <motion.div
-            key={flashKey}
-            className="absolute inset-0 bg-white pointer-events-none z-20"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 0.6, 0, 0.6, 0, 0.6, 0] }}
-            transition={{ duration: 0.6, ease: "easeInOut" }}
-          />
-        )}
-        {emitSparksOnGrow && (
-          <div
-            ref={tipMarkerRef}
-            className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2"
-            aria-hidden
-          >
-            {showGrowTransition && (
-              <div className="absolute right-0 top-1/2 h-full min-h-[8px] w-0.5 -translate-y-1/2 bg-yellow-400 shadow-[0_0_10px_3px] shadow-yellow-400" />
-            )}
+        {/* Render segment dividers */}
+        {segments > 1 && (
+          <div className="absolute inset-0 flex">
+            {Array.from({ length: segments }).map((_, i) => (
+              <div
+                key={i}
+                className="flex-1 border-r border-neutral-600 last:border-r-0 bg-neutral"
+              />
+            ))}
           </div>
         )}
-      </ProgressPrimitive.Indicator>
-    </ProgressPrimitive.Root>
-  );
 
-  return (
-    <>
-      {root}
-      {emitSparksOnGrow && growSparkSession > 0 && (
-        <ProgressGrowSparksCanvas
-          key={growSparkSession}
-          tipMarkerRef={tipMarkerRef}
-          durationMs={growAnimationMs}
-          sessionKey={growSparkSession}
-        />
-      )}
-    </>
-  );
-})
-Progress.displayName = ProgressPrimitive.Root.displayName
+        {/* Progress indicator */}
+        <ProgressPrimitive.Indicator
+          className={cn(
+            "h-full w-full flex-1 bg-red-950 relative z-10 overflow-hidden",
+            indicatorClassName,
+          )}
+          style={{
+            transform: `translateX(-${100 - (value || 0)}%)`,
+            transition: flashOnDecrease
+              ? "transform 400ms ease-out"
+              : showGrowTransition
+                ? `transform ${growAnimationMs}ms ease-out`
+                : undefined,
+          }}
+        >
+          {/* Glow effect - animates on every increase */}
+          {animationKey > 0 && (
+            <motion.div
+              key={animationKey}
+              className={cn(
+                "absolute inset-0 bg-gradient-to-r from-transparent to-transparent pointer-events-none",
+                indicatorClassName ? "via-orange-400/80" : "via-red-500/100",
+              )}
+              initial={{ x: "-100%", opacity: 1 }}
+              animate={{ x: "100%", opacity: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+            />
+          )}
+          {/* Flash effect - 3 flashes when value decreases */}
+          {flashKey > 0 && (
+            <motion.div
+              key={flashKey}
+              className="absolute inset-0 bg-white pointer-events-none z-20"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 0.6, 0, 0.6, 0, 0.6, 0] }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+            />
+          )}
+          {emitSparksOnGrow && (
+            <div
+              ref={tipMarkerRef}
+              className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2"
+              aria-hidden
+            >
+              {showGrowTransition && (
+                <div className="absolute right-0 top-1/2 h-full min-h-[8px] w-0.5 -translate-y-1/2 bg-yellow-400 shadow-[0_0_10px_3px] shadow-yellow-400" />
+              )}
+            </div>
+          )}
+        </ProgressPrimitive.Indicator>
+      </ProgressPrimitive.Root>
+    );
 
-export { Progress }
+    return (
+      <>
+        {root}
+        {emitSparksOnGrow && growSparkSession > 0 && (
+          <ProgressGrowSparksCanvas
+            key={growSparkSession}
+            tipMarkerRef={tipMarkerRef}
+            durationMs={growAnimationMs}
+            sessionKey={growSparkSession}
+          />
+        )}
+      </>
+    );
+  },
+);
+Progress.displayName = ProgressPrimitive.Root.displayName;
+
+export { Progress };
