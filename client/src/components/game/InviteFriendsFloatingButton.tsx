@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { UserPlus, X } from "lucide-react";
+import { X } from "lucide-react";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { useToast } from "@/hooks/use-toast";
@@ -111,10 +112,7 @@ export default function InviteFriendsFloatingButton() {
             className="invite-friends-float-btn flex items-center gap-2 rounded-md border border-border border-red-700/50 bg-red-950/30 px-2.5 py-1.5 text-xs text-neutral-300 backdrop-blur-sm"
           >
             <div className="flex min-w-0 items-center gap-1.5">
-              <UserPlus
-                className="h-4 w-4 shrink-0 opacity-90"
-                aria-hidden
-              />
+              <GameUiIcon name="inviteUser" sizeClassName="h-4 w-4" />
               <span>{t("invite.button")}</span>
             </div>
             <span className="shrink-0 font-semibold">
