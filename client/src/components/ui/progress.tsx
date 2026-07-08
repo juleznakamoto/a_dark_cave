@@ -99,12 +99,23 @@ function createGrowSparkParticle(
   };
 }
 
+function brightSparkAlpha(life: number, maxLife: number): number {
+  const lifeRatio = Math.max(0, life / maxLife);
+  // Full opacity at spawn; fade only in the last 40% of lifetime.
+  const fadeStart = 0.4;
+  if (lifeRatio >= fadeStart) return 1;
+  return lifeRatio / fadeStart;
+}
+
 function drawGrowSparkParticle(
   ctx: CanvasRenderingContext2D,
   particle: GrowSparkParticle,
 ) {
   const alpha = Math.max(0, particle.life / particle.maxLife);
-  ctx.globalAlpha = particle.variant === "bright" ? Math.min(1, alpha * 1.4) : alpha;
+  ctx.globalAlpha =
+    particle.variant === "bright"
+      ? brightSparkAlpha(particle.life, particle.maxLife)
+      : alpha;
   ctx.fillStyle = particle.color;
 
   if (particle.variant === "bright") {
