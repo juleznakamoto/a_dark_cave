@@ -491,7 +491,7 @@ function renderBuildingItemTooltip(
           )}
         </span>
         {capUpgradeGroupId && (
-          <span className="ml-auto inline-flex items-center gap-1 tabular-nums">
+          <span className="ml-auto inline-flex items-baseline gap-1 tabular-nums">
             <span
               className={`relative top-px !text-sm inline-flex items-center gap-0 leading-none font-noto-symbols-2 tabular-nums ${INSIGHT_TEXT_CLASS}`}
             >
