@@ -268,7 +268,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         // Use aria-disabled instead of the native `disabled` attribute: native disabled triggers
         // `disabled:opacity-50` (and Android/Samsung's own control dimming), which washes out the
         // cooldown/execution progress overlay. Interaction stays blocked via pointer-events-none
-        // plus the guards in handleClick / triggerPrimaryClick.
+        // plus the guards in handleClick.
         aria-disabled={isButtonDisabled || undefined}
         variant={variant}
         size={size}
@@ -316,22 +316,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       </Button>
     );
 
-    // Pass onClick to TooltipWrapper so mobile touch events can execute the action.
-    // TooltipWrapper's touch handlers call this when user taps (short press); without it,
-    // mobile taps do nothing because we preventDefault/stopPropagation and the Button's
-    // onClick never fires.
-    const triggerPrimaryClick = (e?: React.MouseEvent | React.TouchEvent) => {
-      if (isButtonDisabled) return;
-      let button: HTMLButtonElement | null = null;
-      if (ref && typeof ref !== "function" && ref.current) {
-        button = ref.current;
-      } else if (e?.target) {
-        button = (e.target as HTMLElement).closest?.("button") ?? null;
-      }
-      emitClickParticles(button);
-      onClick();
-    };
-
     const isAbortActionType =
       actionIdFromProps.startsWith("craft") ||
       actionIdFromProps.startsWith("build");
@@ -372,7 +356,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           tooltip={tooltip}
           tooltipId={buttonId}
           disabled={isButtonDisabled}
-          onClick={triggerPrimaryClick}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >

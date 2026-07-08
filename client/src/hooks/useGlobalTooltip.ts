@@ -167,7 +167,13 @@ export function useGlobalTooltip() {
     globalTooltipManager.setPressTimer(id, timer);
   }, []);
 
-  const handleMouseUp = useCallback((id: string, disabled: boolean, onClick: () => void, e: React.MouseEvent) => {
+  const handleMouseUp = useCallback((
+    id: string,
+    disabled: boolean,
+    onClick: () => void,
+    e: React.MouseEvent,
+    preferNativeClick = true,
+  ) => {
     const wasPressing = globalTooltipManager.isPressing(id);
     const tooltipWasOpen = globalTooltipManager.isTooltipOpen(id);
     globalTooltipManager.clearPressTimer(id);
@@ -206,8 +212,12 @@ export function useGlobalTooltip() {
         return;
       }
 
+      if (!disabled && preferNativeClick) {
+        // Let the native button click handle the action (standard touch → click path).
+        return;
+      }
+
       if (!disabled) {
-        // Execute the action and prevent the Button's onClick from firing
         e.preventDefault();
         e.stopPropagation();
         onClick();
@@ -229,7 +239,13 @@ export function useGlobalTooltip() {
     globalTooltipManager.setPressTimer(id, timer);
   }, [isMobile]);
 
-  const handleTouchEnd = useCallback((id: string, disabled: boolean, onClick: () => void, e: React.TouchEvent) => {
+  const handleTouchEnd = useCallback((
+    id: string,
+    disabled: boolean,
+    onClick: () => void,
+    e: React.TouchEvent,
+    preferNativeClick = true,
+  ) => {
     // Capture state before clearing (clearPressTimer removes from pressingIds)
     const wasPressing = globalTooltipManager.isPressing(id);
     const tooltipWasOpen = globalTooltipManager.isTooltipOpen(id);
@@ -239,7 +255,7 @@ export function useGlobalTooltip() {
     if (tooltipWasOpen) {
       const wasOpenedByTimer = globalTooltipManager.wasOpenedByTimer(id);
 
-      // If tooltip was opened by long press: keep it open, prevent action. User taps elsewhere to close.
+      // If tooltip was opened by long press: keep it open, prevent action. User clicks elsewhere to close.
       if (wasOpenedByTimer) {
         if (e.cancelable) e.preventDefault();
         e.stopPropagation();
@@ -269,8 +285,12 @@ export function useGlobalTooltip() {
         return;
       }
 
+      if (preferNativeClick) {
+        // Let the native button click handle the action (standard touch → click path).
+        return;
+      }
+
       if (!disabled) {
-        // Execute the action and prevent the Button's onClick from firing
         if (e.cancelable) e.preventDefault();
         e.stopPropagation();
         onClick();

@@ -10,15 +10,16 @@ vi.mock("./use-mobile", () => ({
   useIsMobile: vi.fn(() => true),
 }));
 
-// Test component that uses the tooltip hook
 function TestTooltipButton({
   id,
   disabled,
   onAction,
+  preferNativeClick = true,
 }: {
   id: string;
   disabled: boolean;
   onAction: () => void;
+  preferNativeClick?: boolean;
 }) {
   const globalTooltip = useGlobalTooltip();
 
@@ -30,10 +31,23 @@ function TestTooltipButton({
           globalTooltip.handleTouchStart(id, disabled, false, e)
         }
         onTouchEnd={(e) =>
-          globalTooltip.handleTouchEnd(id, disabled, onAction, e)
+          globalTooltip.handleTouchEnd(
+            id,
+            disabled,
+            onAction,
+            e,
+            preferNativeClick,
+          )
         }
       >
-        <button data-testid={`trigger-${id}`}>Button</button>
+        <button
+          type="button"
+          data-testid={`trigger-${id}`}
+          disabled={disabled}
+          onClick={onAction}
+        >
+          Button
+        </button>
       </div>
       <div data-testid={`open-${id}`}>
         {globalTooltip.isTooltipOpen(id) ? "open" : "closed"}
@@ -63,7 +77,6 @@ describe("useGlobalTooltip - mobile long-press behavior", () => {
     const trigger = screen.getByTestId("trigger-test");
     const outside = screen.getByTestId("outside");
 
-    // Touch start, wait 250ms, touch end - tooltip opens and stays open
     await act(async () => {
       fireEvent.touchStart(trigger);
     });
@@ -76,13 +89,12 @@ describe("useGlobalTooltip - mobile long-press behavior", () => {
 
     expect(onAction).not.toHaveBeenCalled();
 
-    // Click outside - tooltip closes
     await act(async () => {
       fireEvent.click(outside);
     });
   });
 
-  it("executes action on short tap (no long press)", async () => {
+  it("does not call wrapper onAction on short tap when preferNativeClick is true", async () => {
     const onAction = vi.fn();
     render(
       <TestTooltipButton id="test" disabled={false} onAction={onAction} />
@@ -90,13 +102,29 @@ describe("useGlobalTooltip - mobile long-press behavior", () => {
 
     const trigger = screen.getByTestId("trigger-test");
 
-    // Touch start
     await act(async () => {
       fireEvent.touchStart(trigger);
+      fireEvent.touchEnd(trigger);
     });
 
-    // Touch end before 250ms - action should execute
+    expect(onAction).not.toHaveBeenCalled();
+  });
+
+  it("calls wrapper onAction on short tap when preferNativeClick is false", async () => {
+    const onAction = vi.fn();
+    render(
+      <TestTooltipButton
+        id="test"
+        disabled={false}
+        onAction={onAction}
+        preferNativeClick={false}
+      />
+    );
+
+    const trigger = screen.getByTestId("trigger-test");
+
     await act(async () => {
+      fireEvent.touchStart(trigger);
       fireEvent.touchEnd(trigger);
     });
 

@@ -132,11 +132,9 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
         tooltipId={`${actionId}-construction-boost`}
         tooltipContentClassName="text-white"
         className="block h-full w-full"
+        tooltipTriggerAsChild
         tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_OVERLAY_CLASS}
         disabled={!canAfford}
-        onClick={() => {
-          if (canAfford) boostConstruction(actionId);
-        }}
         onMouseEnter={() => setHighlightedResources(["insight"])}
         onMouseLeave={() => setHighlightedResources([])}
       >
@@ -155,7 +153,6 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
           data-testid={`construction-boost-${actionId}`}
           onClick={(e) => {
             e.stopPropagation();
-            e.preventDefault();
             if (canAfford) boostConstruction(actionId);
           }}
         >

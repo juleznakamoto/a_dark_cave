@@ -34,8 +34,8 @@ function CapUpgradeBadgeFixture() {
       tooltip={<div>Improve for 100 Insight</div>}
       tooltipId="villager-cap-upgrade-grandHunterLodge"
       disabled={isDisabled}
+      tooltipTriggerAsChild
       tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS}
-      onClick={handleClick}
       className="inline-flex shrink-0 items-center self-center"
     >
       <button
@@ -43,11 +43,7 @@ function CapUpgradeBadgeFixture() {
         aria-label="Improve for 100 Insight"
         disabled={isDisabled}
         data-testid="cap-upgrade-button"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          handleClick();
-        }}
+        onClick={handleClick}
       >
         upgrade
       </button>
@@ -65,16 +61,15 @@ describe("BuildingCapUpgradeBadge mobile touch", () => {
     vi.useRealTimers();
   });
 
-  it("short tap applies upgrade when wrapper onClick is wired", async () => {
+  it("short tap applies upgrade via native button click", async () => {
     render(<CapUpgradeBadgeFixture />);
 
-    const wrapper = document.querySelector(
-      '[data-tooltip-trigger-id="villager-cap-upgrade-grandHunterLodge"]',
+    const button = document.querySelector(
+      '[data-testid="cap-upgrade-button"]',
     )!;
 
     await act(async () => {
-      fireEvent.touchStart(wrapper);
-      fireEvent.touchEnd(wrapper);
+      fireEvent.click(button);
     });
 
     await act(async () => {

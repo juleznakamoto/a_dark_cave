@@ -23,6 +23,11 @@ export interface TooltipWrapperProps {
    */
   tooltipTriggerAsChild?: boolean;
   tooltipContentClassName?: string;
+  /**
+   * When true (default), enabled controls use the browser's native click on short
+   * tap/press. Set false only for non-button triggers that rely on wrapper onClick.
+   */
+  preferNativeClick?: boolean;
   onMouseEnter?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onMouseLeave?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onClick?: (e?: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => void;
@@ -31,7 +36,7 @@ export interface TooltipWrapperProps {
 /**
  * Wrapper component that adds consistent tooltip behavior to any element
  * - Desktop: tooltips shown on hover AND long press (300ms)
- * - Mobile/Tablets: tooltips shown on long press (250ms) or click if disabled
+ * - Enabled buttons: native click (standard touch → click); long-press still opens tooltip
  * - Long-press tooltips stay open until user clicks/taps elsewhere
  * - Only one tooltip open at a time globally
  */
@@ -44,6 +49,7 @@ export function TooltipWrapper({
   tooltipTriggerClassName,
   tooltipTriggerAsChild = false,
   tooltipContentClassName,
+  preferNativeClick = true,
   onMouseEnter,
   onMouseLeave,
   onClick,
@@ -137,7 +143,13 @@ export function TooltipWrapper({
             }, 100);
           }
           : () => { };
-        globalTooltip.handleMouseUp(finalTooltipId, disabled, wrappedOnClick, e);
+        globalTooltip.handleMouseUp(
+          finalTooltipId,
+          disabled,
+          wrappedOnClick,
+          e,
+          preferNativeClick,
+        );
       }}
       onTouchStart={(e) => {
         // Start hold timer for tooltip (works on all devices including tablets)
@@ -160,7 +172,13 @@ export function TooltipWrapper({
             }, 100);
           }
           : () => { };
-        globalTooltip.handleTouchEnd(finalTooltipId, disabled, wrappedOnClick, e);
+        globalTooltip.handleTouchEnd(
+          finalTooltipId,
+          disabled,
+          wrappedOnClick,
+          e,
+          preferNativeClick,
+        );
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

@@ -84,7 +84,6 @@ function SkillUpgradeRow({
             }
             tooltipId={tooltipId}
             disabled={!canAfford}
-            onClick={canAfford ? onUpgrade : undefined}
             onMouseEnter={() => setHighlightedResources(["gold"])}
             onMouseLeave={() => setHighlightedResources([])}
           >
@@ -453,7 +452,6 @@ export default function EstatePanel() {
             }
             tooltipId="sleep-button"
             disabled={!canActivateIdle}
-            onClick={canActivateIdle ? handleActivateIdleMode : undefined}
           >
             <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
               <Button
@@ -560,7 +558,6 @@ export default function EstatePanel() {
                   }
                   tooltipId="upgrade-length-button"
                   disabled={!canUpgradeLength}
-                  onClick={handleSleepLengthUpgrade}
                   onMouseEnter={() => {
                     setHighlightedResources(["gold"]);
                   }}

@@ -239,13 +239,13 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
             ? "block h-full w-full"
             : "inline-flex items-end"
         }
+        tooltipTriggerAsChild
         tooltipTriggerClassName={
           layout === "overlay"
             ? INSIGHT_BADGE_TOOLTIP_TRIGGER_OVERLAY_CLASS
             : INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS
         }
         disabled={isBadgeDisabled}
-        onClick={handleClick}
         onMouseEnter={() => setHighlightedResources(["insight"])}
         onMouseLeave={() => {
           if (!playing) setHighlightedResources([]);
@@ -261,9 +261,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
                 "cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
                 layout === "overlay"
                   ? "flex h-full w-full"
-                  : isCompactInline
-                    ? "h-3.5 w-3.5"
-                    : "h-5 w-5",
+                  : "h-5 w-5",
               ),
             }),
           )}
@@ -272,7 +270,6 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
           disabled={isBadgeDisabled}
           onClick={(e) => {
             e.stopPropagation();
-            e.preventDefault();
             handleClick();
           }}
         >

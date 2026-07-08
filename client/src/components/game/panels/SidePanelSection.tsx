@@ -319,8 +319,8 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
       tooltipId={tooltipId}
       disabled={isDisabled}
       tooltipContentClassName="max-w-xs"
+      tooltipTriggerAsChild
       tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS}
-      onClick={handleClick}
       onMouseEnter={() => setHighlightedResources(["insight"])}
       onMouseLeave={() => {
         if (!playing) setHighlightedResources([]);
@@ -337,7 +337,6 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
         aria-busy={playing}
         disabled={isDisabled}
         onClick={(e) => {
-          e.preventDefault();
           e.stopPropagation();
           handleClick();
         }}
@@ -345,7 +344,7 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
           canAfford: affordable,
           playing,
           className: cn(
-            "h-[1em] w-[1em] text-[14px] leading-none",
+            "h-7 w-7 leading-none",
             isDisabled ? "cursor-not-allowed" : "cursor-pointer",
           ),
         })}
@@ -422,8 +421,8 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
       tooltipId={tooltipId}
       disabled={isDisabled}
       tooltipContentClassName="max-w-xs"
+      tooltipTriggerAsChild
       tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS}
-      onClick={handleClick}
       onMouseEnter={() => setHighlightedResources(["insight"])}
       onMouseLeave={() => {
         if (!playing) setHighlightedResources([]);
@@ -440,7 +439,6 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
         aria-busy={playing}
         disabled={isDisabled}
         onClick={(e) => {
-          e.preventDefault();
           e.stopPropagation();
           handleClick();
         }}
@@ -448,7 +446,7 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
           canAfford: affordable,
           playing,
           className: cn(
-            "h-[1em] w-[1em] text-[14px] leading-none",
+            "h-7 w-7 leading-none",
             isDisabled ? "cursor-not-allowed" : "cursor-pointer",
           ),
         })}
