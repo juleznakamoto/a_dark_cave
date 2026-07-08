@@ -564,6 +564,9 @@ export default function ShareDialog() {
               size="xs"
               className="shrink-0 font-medium px-3"
               disabled={busy}
+              onClick={() => {
+                void handleCopyInviteLink();
+              }}
             >
               {t("invite.button")}
             </Button>

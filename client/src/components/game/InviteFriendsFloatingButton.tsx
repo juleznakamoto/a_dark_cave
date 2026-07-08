@@ -110,6 +110,9 @@ export default function InviteFriendsFloatingButton() {
           <button
             type="button"
             className="invite-friends-float-btn flex items-center gap-2 rounded-md border border-border border-red-700/50 bg-red-950/30 px-2.5 py-1.5 text-xs text-neutral-300 backdrop-blur-sm"
+            onClick={() => {
+              void handleCopyInviteLink();
+            }}
           >
             <div className="flex min-w-0 items-center gap-1.5">
               <GameUiIcon name="inviteUser" sizeClassName="h-4 w-4" />
