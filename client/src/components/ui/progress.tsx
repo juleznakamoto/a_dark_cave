@@ -37,26 +37,37 @@ const GROW_SPARK_COLORS = [
   "#ef4444", // red-500
 ];
 
-function createGrowSparks(count: number): GrowSpark[] {
-  return Array.from({ length: count }).map(() => {
-    // Bias sparks toward the right, spraying up and down from the moving tip.
-    const angle = (-70 + Math.random() * 140) * (Math.PI / 180);
-    return {
-      angle,
-      distance: 6 + Math.random() * 14,
-      size: 1.5 + Math.random() * 2,
-      duration: 0.35 + Math.random() * 0.4,
-      delay: Math.random() * 0.18,
-      color:
-        GROW_SPARK_COLORS[Math.floor(Math.random() * GROW_SPARK_COLORS.length)],
-    };
-  });
+function createGrowSpark(): GrowSpark {
+  // Bias sparks toward the right, spraying up and down from the moving tip.
+  const angle = (-70 + Math.random() * 140) * (Math.PI / 180);
+  return {
+    angle,
+    distance: 6 + Math.random() * 14,
+    size: 1.5 + Math.random() * 2,
+    duration: 0.35 + Math.random() * 0.4,
+    delay: 0,
+    color:
+      GROW_SPARK_COLORS[Math.floor(Math.random() * GROW_SPARK_COLORS.length)],
+  };
 }
 
+/** Match CSS `ease-out` used by the bar grow transition. */
+function easeOut(t: number): number {
+  return 1 - Math.pow(1 - t, 3);
+}
+
+interface ActiveGrowSpark extends GrowSpark {
+  id: number;
+  leftPct: number;
+}
+
+const GROW_SPARK_EMIT_INTERVAL_MS = 45;
+const GROW_SPARKS_PER_EMIT = 2;
+
 /**
- * Spark burst that rides the bar's growing right tip. The emitter animates its
- * `left` from the previous fill % to the new fill % (matching the bar's grow
- * transition), while each spark flies outward and fades.
+ * Emit sparks along the bar's grow path. Each batch spawns at the eased tip
+ * position for the current frame so sparks trail the moving right edge from
+ * x → x+1, not only at the destination.
  */
 function ProgressGrowSparks({
   fromPct,
@@ -67,20 +78,50 @@ function ProgressGrowSparks({
   toPct: number;
   durationMs: number;
 }) {
-  const sparks = React.useMemo(() => createGrowSparks(10), []);
+  const [activeSparks, setActiveSparks] = React.useState<ActiveGrowSpark[]>([]);
+  const nextSparkIdRef = React.useRef(0);
+
+  const removeSpark = React.useCallback((id: number) => {
+    setActiveSparks((prev) => prev.filter((spark) => spark.id !== id));
+  }, []);
+
+  React.useEffect(() => {
+    const start = performance.now();
+    let lastEmit = -GROW_SPARK_EMIT_INTERVAL_MS;
+    let rafId = 0;
+
+    const tick = (now: number) => {
+      const elapsed = now - start;
+      const t = Math.min(1, elapsed / durationMs);
+      const currentPct = fromPct + (toPct - fromPct) * easeOut(t);
+
+      if (elapsed - lastEmit >= GROW_SPARK_EMIT_INTERVAL_MS) {
+        lastEmit = elapsed;
+        const batch = Array.from({ length: GROW_SPARKS_PER_EMIT }, () => ({
+          id: nextSparkIdRef.current++,
+          leftPct: currentPct,
+          ...createGrowSpark(),
+        }));
+        setActiveSparks((prev) => [...prev, ...batch]);
+      }
+
+      if (t < 1) {
+        rafId = requestAnimationFrame(tick);
+      }
+    };
+
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, [fromPct, toPct, durationMs]);
+
   return (
-    <motion.div
-      className="pointer-events-none absolute top-1/2 z-20"
-      initial={{ left: `${fromPct}%` }}
-      animate={{ left: `${toPct}%` }}
-      transition={{ duration: durationMs / 1000, ease: "easeOut" }}
-      style={{ translateY: "-50%" }}
-    >
-      {sparks.map((spark, i) => (
+    <div className="pointer-events-none absolute inset-0 z-20 overflow-visible">
+      {activeSparks.map((spark) => (
         <motion.span
-          key={i}
-          className="absolute rounded-full"
+          key={spark.id}
+          className="absolute top-1/2 rounded-full"
           style={{
+            left: `${spark.leftPct}%`,
             width: spark.size,
             height: spark.size,
             marginLeft: -spark.size / 2,
@@ -97,12 +138,12 @@ function ProgressGrowSparks({
           }}
           transition={{
             duration: spark.duration,
-            delay: spark.delay,
             ease: "easeOut",
           }}
+          onAnimationComplete={() => removeSpark(spark.id)}
         />
       ))}
-    </motion.div>
+    </div>
   );
 }
 
@@ -121,22 +162,23 @@ const Progress = React.forwardRef<
   const isGrowing = (value || 0) > prevValueRef.current;
 
   React.useEffect(() => {
-    if (value !== undefined) {
-      if (!disableGlow && value > prevValueRef.current) {
+    const currentValue = value ?? 0;
+    if (value != null) {
+      if (!disableGlow && currentValue > prevValueRef.current) {
         setAnimationKey(prev => prev + 1);
       }
-      if (emitSparksOnGrow && growAnimationMs > 0 && value > prevValueRef.current) {
+      if (emitSparksOnGrow && growAnimationMs > 0 && currentValue > prevValueRef.current) {
         setSparkBurst(prev => ({
           key: (prev?.key ?? 0) + 1,
           from: prevValueRef.current,
-          to: value,
+          to: currentValue,
         }));
       }
-      if (flashOnDecrease && value < prevValueRef.current) {
+      if (flashOnDecrease && currentValue < prevValueRef.current) {
         setFlashKey(prev => prev + 1);
       }
     }
-    prevValueRef.current = value || 0;
+    prevValueRef.current = currentValue;
   }, [value, disableGlow, flashOnDecrease, emitSparksOnGrow, growAnimationMs]);
 
   const root = (
