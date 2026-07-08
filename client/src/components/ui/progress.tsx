@@ -41,13 +41,13 @@ const GROW_SPARK_COLORS = [
   "#ef4444", // red-500
 ];
 
-const GROW_SPARK_EMIT_INTERVAL_MS = 40;
-const GROW_SPARKS_PER_EMIT = 3;
+const GROW_SPARK_EMIT_INTERVAL_MS = Math.floor(Math.random() * 11) + 5;
+const GROW_SPARKS_PER_EMIT = Math.floor(Math.random() * 6) + 3;
 
 function createGrowSparkParticle(x: number, y: number): GrowSparkParticle {
   const angle = (-70 + Math.random() * 140) * (Math.PI / 180);
   const speed = 18 + Math.random() * 32;
-  const maxLife = 0.35 + Math.random() * 0.35;
+  const maxLife = 0.35 + Math.random() * 0.65;
   return {
     x,
     y,
