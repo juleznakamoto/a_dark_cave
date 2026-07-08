@@ -57,6 +57,7 @@
     "damaged": "(beschädigt)", //ok
     "level": "Stufe {{level}}",
     "improveForInsight": "Verbessern für {{cost}} Einsicht",
+    "villagerCapJobs": "{{count}} Jobs",
     "enchantForInsight": "Verzaubern für {{cost}} Einsicht",
     "maxHeld": "Max.: {{value}}",
     "doubleActionChance": "{{percent}} % Chance, Aktionsgewinne zu verdoppeln",

@@ -57,6 +57,7 @@
     "damaged": "（受损）",
     "level": "等级 {{level}}",
     "improveForInsight": "消耗 {{cost}} 洞见升级",
+    "villagerCapJobs": "{{count}} 岗位",
     "enchantForInsight": "消耗 {{cost}} 洞见附魔",
     "maxHeld": "上限：{{value}}",
     "doubleActionChance": "{{percent}}% 几率使行动收益翻倍",

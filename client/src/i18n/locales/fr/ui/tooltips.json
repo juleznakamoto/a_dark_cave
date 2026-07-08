@@ -57,6 +57,7 @@
     "damaged": "(endommagé)",
     "level": "Niveau {{level}}",
     "improveForInsight": "Améliorer pour {{cost}} Perspicacité",
+    "villagerCapJobs": "{{count}} emplois",
     "enchantForInsight": "Enchanter pour {{cost}} Perspicacité",
     "maxHeld": "Max : {{value}}",
     "doubleActionChance": "{{percent}} % de chance de doubler les gains d'action",

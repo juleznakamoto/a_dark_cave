@@ -55,9 +55,9 @@ import {
 } from "@/game/obsidianOrb";
 import type { GameState } from "@shared/schema";
 import {
-  areVillagerCapsEnabled,
-  getGroupForBuildingKey,
+  getVillagerCapForGroup,
   getVillagerCapLevel,
+  getVillagerCapUpgradeGroupForBuilding,
   INSIGHT_GLYPH,
   INSIGHT_TEXT_CLASS,
 } from "@/game/villagerCapUpgrades";
@@ -459,12 +459,16 @@ function renderBuildingItemTooltip(
   const titleLabel =
     displayLabel ?? getActionLabel(actionId, buildAction.label);
 
-  const capGroupId = getGroupForBuildingKey(itemId);
-  const insightCapLevel =
-    areVillagerCapsEnabled(gameState) && capGroupId
-      ? getVillagerCapLevel(gameState, capGroupId)
-      : 0;
-  const showInsightCapLevel = insightCapLevel > 0;
+  const capUpgradeGroupId = getVillagerCapUpgradeGroupForBuilding(
+    gameState,
+    itemId,
+  );
+  const insightCapLevel = capUpgradeGroupId
+    ? getVillagerCapLevel(gameState, capUpgradeGroupId)
+    : 0;
+  const villagerJobCap = capUpgradeGroupId
+    ? getVillagerCapForGroup(gameState, capUpgradeGroupId)
+    : 0;
 
   return (
     <div className="text-xs">
@@ -486,12 +490,19 @@ function renderBuildingItemTooltip(
             </span>
           )}
         </span>
-        {showInsightCapLevel && (
-          <span
-            className={`ml-auto !text-sm inline-flex items-center gap-0 font-noto-symbols-2 tabular-nums ${INSIGHT_TEXT_CLASS}`}
-          >
-            <span aria-hidden>{INSIGHT_GLYPH}</span>
-            <span className="font-light text-base">{insightCapLevel}</span>
+        {capUpgradeGroupId && (
+          <span className="ml-auto !text-sm inline-flex items-baseline gap-1 tabular-nums">
+            <span
+              className={`inline-flex items-center gap-0 font-noto-symbols-2 ${INSIGHT_TEXT_CLASS}`}
+            >
+              <span aria-hidden>{INSIGHT_GLYPH}</span>
+              <span className="font-light text-base">{insightCapLevel}</span>
+            </span>
+            <span className="font-normal text-gray-400">
+              {getUiTooltip("villagerCapJobs", "{{count}} jobs", {
+                count: villagerJobCap,
+              })}
+            </span>
           </span>
         )}
       </div>

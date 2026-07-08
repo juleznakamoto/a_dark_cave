@@ -14,6 +14,7 @@ import {
   getVillagerCapForJob,
   getVillagerCapForLevel,
   getVillagerCapLevel,
+  getVillagerCapUpgradeGroupForBuilding,
   MAX_VILLAGER_CAP_LEVEL,
   VILLAGER_CAP_BY_LEVEL,
 } from "./villagerCapUpgrades";
@@ -106,6 +107,35 @@ describe("villagerCapUpgrades", () => {
     expect(getVillagerCapLevel(state, "miner")).toBe(0);
     expect(getVillagerCapForJob(state, "hunter")).toBe(100);
     expect(getVillagerCapForJob(state, "iron_miner")).toBe(10);
+  });
+
+  it("getVillagerCapUpgradeGroupForBuilding gates on caps, insight, and max level", () => {
+    expect(getVillagerCapUpgradeGroupForBuilding(baseState(), "cabin")).toBe(
+      "hunter",
+    );
+    expect(getVillagerCapUpgradeGroupForBuilding(baseState(), "foundry")).toBe(
+      "forger",
+    );
+    expect(getVillagerCapUpgradeGroupForBuilding(baseState(), "storage")).toBe(
+      null,
+    );
+
+    const gatedOff = baseState({
+      flags: { villagerCapsEnabled: false } as GameState["flags"],
+    });
+    expect(getVillagerCapUpgradeGroupForBuilding(gatedOff, "cabin")).toBe(null);
+
+    const noInsight = baseState({
+      buildings: { clerksHut: 0 } as GameState["buildings"],
+    });
+    expect(getVillagerCapUpgradeGroupForBuilding(noInsight, "cabin")).toBe(
+      null,
+    );
+
+    const maxed = baseState({
+      villagerCapUpgrades: { hunter: MAX_VILLAGER_CAP_LEVEL },
+    });
+    expect(getVillagerCapUpgradeGroupForBuilding(maxed, "cabin")).toBe(null);
   });
 
   it("canUpgradeVillagerCap requires gate, insight unlock, and affordability", () => {

@@ -156,6 +156,21 @@ export function getPresetSlotUnlockCost(slotIndex: number): number {
   return PRESET_SLOT_INSIGHT_COSTS[slotIndex];
 }
 
+/** Building shows villager-cap upgrade UI once Insight is unlocked and caps are not maxed. */
+export function getVillagerCapUpgradeGroupForBuilding(
+  state: GameState,
+  buildingKey: string,
+): VillagerCapGroupId | null {
+  if (!areVillagerCapsEnabled(state)) return null;
+  const groupId = getGroupForBuildingKey(buildingKey);
+  if (!groupId) return null;
+  if (!isInsightUnlocked(state)) return null;
+  if (getVillagerCapLevel(state, groupId) >= MAX_VILLAGER_CAP_LEVEL) {
+    return null;
+  }
+  return groupId;
+}
+
 export function canUpgradeVillagerCap(
   state: Pick<GameState, "flags" | "villagerCapUpgrades" | "resources">,
   groupId: VillagerCapGroupId,

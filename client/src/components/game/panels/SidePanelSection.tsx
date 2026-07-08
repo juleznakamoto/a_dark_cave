@@ -38,11 +38,9 @@ import {
 } from "@/game/rules/insightReveal";
 import type { GameState } from "@shared/schema";
 import {
-  areVillagerCapsEnabled,
-  getGroupForBuildingKey,
   getNextCapUpgradeCost,
   getVillagerCapLevel,
-  MAX_VILLAGER_CAP_LEVEL,
+  getVillagerCapUpgradeGroupForBuilding,
 } from "@/game/villagerCapUpgrades";
 import {
   getNextEnchantCost,
@@ -281,14 +279,10 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
     [],
   );
 
-  if (!areVillagerCapsEnabled(gameState)) return null;
-
-  const groupId = getGroupForBuildingKey(buildingKey);
+  const groupId = getVillagerCapUpgradeGroupForBuilding(gameState, buildingKey);
   if (!groupId) return null;
 
   const level = getVillagerCapLevel(gameState, groupId);
-  if (level >= MAX_VILLAGER_CAP_LEVEL) return null;
-  if (!isInsightUnlocked(gameState)) return null;
 
   const cost = getNextCapUpgradeCost(level);
   const affordable = getInsightAmount(gameState) >= cost;

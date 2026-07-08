@@ -60,6 +60,7 @@
     "damaged": "(damaged)",
     "level": "Level {{level}}",
     "improveForInsight": "Improve for {{cost}} Insight",
+    "villagerCapJobs": "{{count}} jobs",
     "enchantForInsight": "Enchant for {{cost}} Insight",
     "maxHeld": "Max: {{value}}",
     "doubleActionChance": "{{percent}}% chance to double action gains",
