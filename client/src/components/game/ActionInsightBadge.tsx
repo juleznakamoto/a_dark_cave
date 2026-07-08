@@ -261,7 +261,9 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
                 "cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
                 layout === "overlay"
                   ? "flex h-full w-full"
-                  : "h-5 w-5",
+                  : isCompactInline
+                    ? "h-3.5 w-3.5"
+                    : "h-5 w-5",
               ),
             }),
           )}

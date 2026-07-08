@@ -344,7 +344,7 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
           canAfford: affordable,
           playing,
           className: cn(
-            "h-7 w-7 leading-none",
+            "h-[1em] w-[1em] text-[14px] leading-none",
             isDisabled ? "cursor-not-allowed" : "cursor-pointer",
           ),
         })}
@@ -446,7 +446,7 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
           canAfford: affordable,
           playing,
           className: cn(
-            "h-7 w-7 leading-none",
+            "h-[1em] w-[1em] text-[14px] leading-none",
             isDisabled ? "cursor-not-allowed" : "cursor-pointer",
           ),
         })}
