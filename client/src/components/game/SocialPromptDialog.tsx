@@ -74,7 +74,8 @@ import { useTranslation } from "react-i18next";
 const EXCLUSIVE_PROMO_REWARD_ITEM_ID = "gifted_ring";
 
 const SOCIAL_TASK_ROW_ICON_SIZE = "h-4 w-4 sm:h-5 sm:w-5";
-const SOCIAL_TASK_STATUS_ICON_SIZE = "h-6 w-6";
+const SOCIAL_TASK_STATUS_ICON_SIZE = "h-5 w-5 sm:h-6 sm:w-6";
+const SOCIAL_TASK_ROW_GAP = "gap-2 sm:gap-3";
 const SOCIAL_TASK_PLATFORM_ICON_SIZE = "w-4 h-4 sm:w-5 sm:h-5";
 const SOCIAL_TASK_ROW_LABEL_CLASS = "font-medium text-xs sm:text-sm";
 const SOCIAL_EXCLUSIVE_REWARD_ICON_SIZE = "w-5 h-5 sm:w-6 sm:h-6";
@@ -508,11 +509,12 @@ export default function SocialPromptDialog({
               <div
                 key={platform.id}
                 className={cn(
-                  "rounded-md border border-border p-3 flex gap-3 items-center",
+                  "rounded-md border border-border p-3 flex items-center",
+                  SOCIAL_TASK_ROW_GAP,
                   claimed && "border-green-500/40 bg-green-500/5",
                   !claimed &&
-                    fulfilled &&
-                    "border-lime-500/30 bg-lime-500/[0.04]",
+                  fulfilled &&
+                  "border-lime-500/30 bg-lime-500/[0.04]",
                 )}
               >
                 <TaskRowStatusIcon
@@ -565,12 +567,13 @@ export default function SocialPromptDialog({
 
           <div
             className={cn(
-              "rounded-md border border-border p-3 flex gap-3 items-center",
+              "rounded-md border border-border p-3 flex items-center",
+              SOCIAL_TASK_ROW_GAP,
               playlightDiscoverRewardClaimed &&
-                "border-green-500/40 bg-green-500/5",
+              "border-green-500/40 bg-green-500/5",
               !playlightDiscoverRewardClaimed &&
-                playlightDiscoverRewardFulfilled &&
-                "border-lime-500/30 bg-lime-500/[0.04]",
+              playlightDiscoverRewardFulfilled &&
+              "border-lime-500/30 bg-lime-500/[0.04]",
             )}
           >
             <TaskRowStatusIcon
@@ -626,11 +629,12 @@ export default function SocialPromptDialog({
 
           <div
             className={cn(
-              "rounded-md border border-border p-3 flex gap-3 items-center",
+              "rounded-md border border-border p-3 flex items-center",
+              SOCIAL_TASK_ROW_GAP,
               signUpClaimed && "border-green-500/40 bg-green-500/5",
               !signUpClaimed &&
-                signUpFulfilled &&
-                "border-lime-500/30 bg-lime-500/[0.04]",
+              signUpFulfilled &&
+              "border-lime-500/30 bg-lime-500/[0.04]",
             )}
           >
             <TaskRowStatusIcon
@@ -685,11 +689,12 @@ export default function SocialPromptDialog({
 
           <div
             className={cn(
-              "rounded-md border border-border p-3 flex gap-3 items-center",
+              "rounded-md border border-border p-3 flex items-center",
+              SOCIAL_TASK_ROW_GAP,
               emailRewardClaimed && "border-green-500/40 bg-green-500/5",
               !emailRewardClaimed &&
-                emailRewardFulfilled &&
-                "border-lime-500/30 bg-lime-500/[0.04]",
+              emailRewardFulfilled &&
+              "border-lime-500/30 bg-lime-500/[0.04]",
             )}
           >
             <TaskRowStatusIcon
@@ -743,11 +748,12 @@ export default function SocialPromptDialog({
 
           <div
             className={cn(
-              "rounded-md border border-border p-3 flex gap-3 items-center",
+              "rounded-md border border-border p-3 flex items-center",
+              SOCIAL_TASK_ROW_GAP,
               referralsComplete && "border-green-500/40 bg-green-500/5",
               !referralsComplete &&
-                exclusiveInviteDone &&
-                "border-lime-500/30 bg-lime-500/[0.04]",
+              exclusiveInviteDone &&
+              "border-lime-500/30 bg-lime-500/[0.04]",
             )}
           >
             <TaskRowStatusIcon
