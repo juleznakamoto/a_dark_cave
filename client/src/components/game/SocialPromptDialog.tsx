@@ -64,10 +64,11 @@ import { useTranslation } from "react-i18next";
 /** Exclusive promo track reward (see `eventsSocialPromoExclusive`). */
 const EXCLUSIVE_PROMO_REWARD_ITEM_ID = "gifted_ring";
 
-const SOCIAL_TASK_ROW_ICON_SIZE = "h-5 w-5";
+const SOCIAL_TASK_ROW_ICON_SIZE = "h-4 w-4 sm:h-5 sm:w-5";
 const SOCIAL_TASK_STATUS_ICON_SIZE = "h-6 w-6";
-const SOCIAL_TASK_PLATFORM_ICON_SIZE = "w-5 h-5";
-const SOCIAL_EXCLUSIVE_REWARD_ICON_SIZE = "w-6 h-6";
+const SOCIAL_TASK_PLATFORM_ICON_SIZE = "w-4 h-4 sm:w-5 sm:h-5";
+const SOCIAL_TASK_ROW_LABEL_CLASS = "font-medium text-xs sm:text-sm";
+const SOCIAL_EXCLUSIVE_REWARD_ICON_SIZE = "w-5 h-5 sm:w-6 sm:h-6";
 
 function ExclusivePromoItemInfoIcon({ tooltipId }: { tooltipId: string }) {
   return (
@@ -514,7 +515,7 @@ export default function SocialPromptDialog({
                       platformId={platform.id}
                       sizeClassName={SOCIAL_TASK_PLATFORM_ICON_SIZE}
                     />
-                    <span className="font-medium text-sm truncate">
+                    <span className={cn(SOCIAL_TASK_ROW_LABEL_CLASS, "truncate")}>
                       {getSocialPlatformTitle(platform.id)}
                     </span>
                   </div>
@@ -568,7 +569,7 @@ export default function SocialPromptDialog({
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex items-center gap-2">
                   <GameUiIcon name="discover" sizeClassName={SOCIAL_TASK_ROW_ICON_SIZE} />
-                  <span className="font-medium text-sm">
+                  <span className={SOCIAL_TASK_ROW_LABEL_CLASS}>
                     {t("socialPrompt.playlightTitle")}
                   </span>
                 </div>
@@ -622,7 +623,7 @@ export default function SocialPromptDialog({
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <GameUiIcon name="signUp" sizeClassName={SOCIAL_TASK_ROW_ICON_SIZE} />
-                  <span className="font-medium text-sm">
+                  <span className={SOCIAL_TASK_ROW_LABEL_CLASS}>
                     {t("socialPrompt.signUpTitle")}
                   </span>
                   {!signUpClaimed && !signUpFulfilled && (
@@ -673,7 +674,7 @@ export default function SocialPromptDialog({
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex items-center gap-2">
                   <GameUiIcon name="email" sizeClassName={SOCIAL_TASK_ROW_ICON_SIZE} />
-                  <span className="font-medium text-sm">
+                  <span className={SOCIAL_TASK_ROW_LABEL_CLASS}>
                     {t("socialPrompt.emailUpdatesTitle")}
                   </span>
                 </div>
@@ -722,7 +723,7 @@ export default function SocialPromptDialog({
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <GameUiIcon name="inviteUser" sizeClassName={SOCIAL_TASK_ROW_ICON_SIZE} />
-                  <span className="font-medium text-sm">
+                  <span className={SOCIAL_TASK_ROW_LABEL_CLASS}>
                     {t("socialPrompt.inviteTitle")}
                   </span>
                   <TaskInfoIcon
