@@ -288,6 +288,11 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
   const affordable = getInsightAmount(gameState) >= cost;
   const tooltipId = `villager-cap-upgrade-${buildingKey}`;
   const isDisabled = !affordable || playing;
+  const upgradeTooltip = getUiTooltip(
+    "unlockMoreJobsForInsight",
+    "Unlock more jobs for {{cost}} Insight",
+    { cost },
+  );
 
   const handleClick = () => {
     if (isDisabled) return;
@@ -307,9 +312,7 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
     <TooltipWrapper
       tooltip={
         <div className="text-xs">
-          {getUiTooltip("improveForInsight", "Improve for {{cost}} Insight", {
-            cost,
-          })}
+          {upgradeTooltip}
         </div>
       }
       tooltipId={tooltipId}
@@ -326,11 +329,7 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
     >
       <button
         type="button"
-        aria-label={getUiTooltip(
-          "improveForInsight",
-          "Improve for {{cost}} Insight",
-          { cost },
-        )}
+        aria-label={upgradeTooltip}
         aria-busy={playing}
         disabled={isDisabled}
         onClick={(e) => {

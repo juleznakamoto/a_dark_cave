@@ -57,6 +57,7 @@
     "damaged": "(dañado)",
     "level": "Nivel {{level}}",
     "improveForInsight": "Mejorar por {{cost}} Perspicacia",
+    "unlockMoreJobsForInsight": "Desbloquear más trabajos por {{cost}} Perspicacia",
     "villagerCapJobs": "{{count}} trabajos",
     "enchantForInsight": "Encantar por {{cost}} Perspicacia",
     "maxHeld": "Máx.: {{value}}",

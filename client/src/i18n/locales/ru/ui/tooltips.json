@@ -57,6 +57,7 @@
     "damaged": "(повреждено)",
     "level": "Уровень {{level}}",
     "improveForInsight": "Улучшить за {{cost}} Прозрение",
+    "unlockMoreJobsForInsight": "Открыть больше мест за {{cost}} Прозрение",
     "villagerCapJobs": "{{count}} мест",
     "enchantForInsight": "Зачаровать за {{cost}} Прозрение",
     "maxHeld": "Макс.: {{value}}",

@@ -60,6 +60,7 @@
     "damaged": "(damaged)",
     "level": "Level {{level}}",
     "improveForInsight": "Improve for {{cost}} Insight",
+    "unlockMoreJobsForInsight": "Unlock more jobs for {{cost}} Insight",
     "villagerCapJobs": "{{count}} jobs",
     "enchantForInsight": "Enchant for {{cost}} Insight",
     "maxHeld": "Max: {{value}}",
