@@ -349,10 +349,12 @@ body {
 }
 
 /* Idle: triangle glyph only. Hover preview (desktop) or --playing (3s reveal) runs blob animation. */
-.building-action-badge:not(.building-action-badge--playing) .building-action-badge__clip,
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--playing) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__clip,
-.building-action-badge:not(.building-action-badge--playing) .building-action-badge__triangle,
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--playing) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__triangle {
+.building-action-badge:not(:hover):not(.building-action-badge--playing) .building-action-badge__clip,
+.insight-action-badge-trigger.insight-action-badge-trigger--suppress-hover:not(.insight-action-badge-trigger--playing) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__clip,
+.insight-action-badge-trigger:not(.insight-action-badge-trigger--playing):not(:hover):not(:active) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__clip,
+.building-action-badge:not(:hover):not(.building-action-badge--playing) .building-action-badge__triangle,
+.insight-action-badge-trigger.insight-action-badge-trigger--suppress-hover:not(.insight-action-badge-trigger--playing) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__triangle,
+.insight-action-badge-trigger:not(.insight-action-badge-trigger--playing):not(:hover):not(:active) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__triangle {
   animation: none !important;
   filter: none;
   transform: none;
