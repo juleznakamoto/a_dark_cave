@@ -31,6 +31,8 @@ interface GrowSparkParticle {
   color: string;
   life: number;
   maxLife: number;
+  /** Warm embers with soft glow; bright sparks stay tiny and crisp. */
+  variant: "warm" | "bright";
 }
 
 const GROW_SPARK_COLORS = [
@@ -41,24 +43,63 @@ const GROW_SPARK_COLORS = [
   "#ef4444", // red-500
 ];
 
-const GROW_SPARK_EMIT_INTERVAL_MS = 40;
-const GROW_SPARKS_PER_EMIT = 3;
+const BRIGHT_SPARK_COLORS = [
+  "#ffffff",
+  "#fffbeb", // amber-50
+  "#fef3c7", // amber-100
+  "#fde68a", // amber-200
+];
 
-function createGrowSparkParticle(x: number, y: number): GrowSparkParticle {
+const GROW_SPARK_EMIT_INTERVAL_MS = 40;
+const GROW_SPARKS_PER_EMIT = 2;
+const BRIGHT_SPARKS_PER_EMIT = 3;
+
+function createGrowSparkParticle(
+  x: number,
+  y: number,
+  variant: GrowSparkParticle["variant"],
+): GrowSparkParticle {
   const angle = (-70 + Math.random() * 140) * (Math.PI / 180);
-  const speed = 18 + Math.random() * 32;
-  const maxLife = 0.35 + Math.random() * 0.35;
+  const isBright = variant === "bright";
+  const speed = isBright ? 28 + Math.random() * 40 : 18 + Math.random() * 32;
+  const maxLife = isBright ? 0.18 + Math.random() * 0.22 : 0.35 + Math.random() * 0.35;
+  const colors = isBright ? BRIGHT_SPARK_COLORS : GROW_SPARK_COLORS;
   return {
     x,
     y,
     vx: Math.cos(angle) * speed,
     vy: Math.sin(angle) * speed,
-    size: 1.5 + Math.random() * 2,
-    color:
-      GROW_SPARK_COLORS[Math.floor(Math.random() * GROW_SPARK_COLORS.length)],
+    size: isBright ? 1 : 1.5 + Math.random() * 2,
+    color: colors[Math.floor(Math.random() * colors.length)],
     life: maxLife,
     maxLife,
+    variant,
   };
+}
+
+function drawGrowSparkParticle(
+  ctx: CanvasRenderingContext2D,
+  particle: GrowSparkParticle,
+) {
+  const alpha = Math.max(0, particle.life / particle.maxLife);
+  ctx.globalAlpha = particle.variant === "bright" ? Math.min(1, alpha * 1.4) : alpha;
+  ctx.fillStyle = particle.color;
+
+  if (particle.variant === "bright") {
+    // Fixed-size pinpoints — no shadow blur so they never bloom/grow.
+    ctx.shadowBlur = 0;
+    ctx.beginPath();
+    ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+    ctx.fill();
+    return;
+  }
+
+  ctx.shadowColor = particle.color;
+  ctx.shadowBlur = particle.size * 2;
+  ctx.beginPath();
+  ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
 }
 
 /**
@@ -110,7 +151,10 @@ function ProgressGrowSparksCanvas({
           const x = rect.right;
           const y = rect.top + rect.height / 2;
           for (let i = 0; i < GROW_SPARKS_PER_EMIT; i++) {
-            particlesRef.current.push(createGrowSparkParticle(x, y));
+            particlesRef.current.push(createGrowSparkParticle(x, y, "warm"));
+          }
+          for (let i = 0; i < BRIGHT_SPARKS_PER_EMIT; i++) {
+            particlesRef.current.push(createGrowSparkParticle(x, y, "bright"));
           }
         }
       }
@@ -126,17 +170,9 @@ function ProgressGrowSparksCanvas({
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (const particle of particlesRef.current) {
-        const alpha = Math.max(0, particle.life / particle.maxLife);
-        ctx.globalAlpha = alpha;
-        ctx.fillStyle = particle.color;
-        ctx.shadowColor = particle.color;
-        ctx.shadowBlur = particle.size * 2;
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fill();
+        drawGrowSparkParticle(ctx, particle);
       }
       ctx.globalAlpha = 1;
-      ctx.shadowBlur = 0;
 
       if (elapsed < durationMs || particlesRef.current.length > 0) {
         rafRef.current = requestAnimationFrame(loop);
