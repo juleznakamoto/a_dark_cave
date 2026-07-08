@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useState, type ComponentProps, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+  type ComponentProps,
+  type ReactNode,
+} from "react";
 import {
   Dialog,
   DialogContent,
@@ -51,7 +57,10 @@ import {
   fulfillPlaylightDiscoverReward,
   claimPlaylightDiscoverGoldReward,
 } from "@/game/playlightDiscoverReward";
-import { claimSignupWelcomeGold, isSignupWelcomeGoldClaimEligible } from "@/game/auth";
+import {
+  claimSignupWelcomeGold,
+  isSignupWelcomeGoldClaimEligible,
+} from "@/game/auth";
 import {
   isSocialRewardClaimed,
   isSocialRewardFulfilled,
@@ -135,7 +144,7 @@ function LockedSocialButton({
     <Button
       {...rest}
       disabled={mergedDisabled}
-      className={cn("shrink-0 font-medium px-3", className)}
+      className={cn("shrink-0 font-medium px-2", className)}
     />
   );
   if (!locked) return button;
@@ -202,7 +211,7 @@ function TaskRowStatusIcon({
 function TaskGoldBadge({ amount }: { amount: number }) {
   const { t } = useTranslation("ui");
   return (
-    <span className="inline-flex shrink-0 items-center rounded px-2 py-0.5 text-xxs font-semibold tabular-nums bg-yellow-500/15 text-yellow-400 border border-yellow-500/35">
+    <span className="inline-flex shrink-0 items-center rounded px-1 py-1 text-xxs font-semibold tabular-nums bg-yellow-500/15 text-yellow-400 border border-yellow-500/35">
       {t("invite.goldBonus", { amount })}
     </span>
   );
@@ -238,7 +247,7 @@ function TaskClaimButton({
   return (
     <Button
       size="xs"
-      className={cn("shrink-0 font-medium px-3", className)}
+      className={cn("shrink-0 font-medium px-2", className)}
       disabled={disabled}
       onClick={onClick}
     >
@@ -262,7 +271,9 @@ export default function SocialPromptDialog({
   const signupWelcomeGoldClaimed = useGameStore(
     (s) => s.signupWelcomeGoldClaimed === true,
   );
-  const giftedRingGranted = useGameStore((s) => s.clothing?.gifted_ring === true);
+  const giftedRingGranted = useGameStore(
+    (s) => s.clothing?.gifted_ring === true,
+  );
   const setAuthDialogOpen = useGameStore((s) => s.setAuthDialogOpen);
   const setSignUpPromptEligibleForGold = useGameStore(
     (s) => s.setSignUpPromptEligibleForGold,
@@ -413,7 +424,8 @@ export default function SocialPromptDialog({
     } catch (e: unknown) {
       toast({
         title: t("profile.preferenceUpdateFailed"),
-        description: e instanceof Error ? e.message : t("profile.tryAgainLater"),
+        description:
+          e instanceof Error ? e.message : t("profile.tryAgainLater"),
         variant: "destructive",
       });
     } finally {
@@ -442,13 +454,12 @@ export default function SocialPromptDialog({
   const emailRewardEntry = social_media_rewards[MARKETING_EMAIL_REWARD_KEY];
   const emailRewardClaimed = isSocialRewardClaimed(emailRewardEntry);
   const emailRewardFulfilled = isSocialRewardFulfilled(emailRewardEntry);
-  const playlightRewardEntry = social_media_rewards[PLAYLIGHT_DISCOVER_REWARD_KEY];
-  const playlightDiscoverRewardClaimed = isSocialRewardClaimed(
-    playlightRewardEntry,
-  );
-  const playlightDiscoverRewardFulfilled = isSocialRewardFulfilled(
-    playlightRewardEntry,
-  );
+  const playlightRewardEntry =
+    social_media_rewards[PLAYLIGHT_DISCOVER_REWARD_KEY];
+  const playlightDiscoverRewardClaimed =
+    isSocialRewardClaimed(playlightRewardEntry);
+  const playlightDiscoverRewardFulfilled =
+    isSocialRewardFulfilled(playlightRewardEntry);
   const signUpClaimed = signupWelcomeGoldClaimed;
   const signUpFulfilled = signUpClaimEligible;
   const exclusiveInviteDone = isExclusiveInviteStepDone({
@@ -500,8 +511,8 @@ export default function SocialPromptDialog({
                   "rounded-md border border-border p-3 flex gap-3 items-center",
                   claimed && "border-green-500/40 bg-green-500/5",
                   !claimed &&
-                  fulfilled &&
-                  "border-lime-500/30 bg-lime-500/[0.04]",
+                    fulfilled &&
+                    "border-lime-500/30 bg-lime-500/[0.04]",
                 )}
               >
                 <TaskRowStatusIcon
@@ -515,7 +526,9 @@ export default function SocialPromptDialog({
                       platformId={platform.id}
                       sizeClassName={SOCIAL_TASK_PLATFORM_ICON_SIZE}
                     />
-                    <span className={cn(SOCIAL_TASK_ROW_LABEL_CLASS, "truncate")}>
+                    <span
+                      className={cn(SOCIAL_TASK_ROW_LABEL_CLASS, "truncate")}
+                    >
                       {getSocialPlatformTitle(platform.id)}
                     </span>
                   </div>
@@ -535,7 +548,7 @@ export default function SocialPromptDialog({
                       ) : (
                         <Button
                           size="xs"
-                          className="shrink-0 font-medium px-3"
+                          className="shrink-0 font-medium px-2"
                           onClick={() =>
                             fulfillSocialFollowReward(platform.id, platform.url)
                           }
@@ -554,10 +567,10 @@ export default function SocialPromptDialog({
             className={cn(
               "rounded-md border border-border p-3 flex gap-3 items-center",
               playlightDiscoverRewardClaimed &&
-              "border-green-500/40 bg-green-500/5",
+                "border-green-500/40 bg-green-500/5",
               !playlightDiscoverRewardClaimed &&
-              playlightDiscoverRewardFulfilled &&
-              "border-lime-500/30 bg-lime-500/[0.04]",
+                playlightDiscoverRewardFulfilled &&
+                "border-lime-500/30 bg-lime-500/[0.04]",
             )}
           >
             <TaskRowStatusIcon
@@ -568,14 +581,20 @@ export default function SocialPromptDialog({
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex items-center gap-2">
-                  <GameUiIcon name="discover" sizeClassName={SOCIAL_TASK_ROW_ICON_SIZE} />
+                  <GameUiIcon
+                    name="discover"
+                    sizeClassName={SOCIAL_TASK_ROW_ICON_SIZE}
+                  />
                   <span className={SOCIAL_TASK_ROW_LABEL_CLASS}>
                     {t("socialPrompt.playlightTitle")}
                   </span>
                 </div>
               </div>
               {!playlightDiscoverRewardClaimed && (
-                <TaskRowActions amount={PLAYLIGHT_DISCOVER_REWARD_GOLD} className="self-center">
+                <TaskRowActions
+                  amount={PLAYLIGHT_DISCOVER_REWARD_GOLD}
+                  className="self-center"
+                >
                   {playlightDiscoverRewardFulfilled ? (
                     <TaskClaimButton
                       onClick={() =>
@@ -587,7 +606,7 @@ export default function SocialPromptDialog({
                   ) : (
                     <Button
                       size="xs"
-                      className="shrink-0 font-medium px-3"
+                      className="shrink-0 font-medium px-2"
                       disabled={discoverGamesLoading}
                       onClick={() => {
                         if (discoverGamesLoading) return;
@@ -610,8 +629,8 @@ export default function SocialPromptDialog({
               "rounded-md border border-border p-3 flex gap-3 items-center",
               signUpClaimed && "border-green-500/40 bg-green-500/5",
               !signUpClaimed &&
-              signUpFulfilled &&
-              "border-lime-500/30 bg-lime-500/[0.04]",
+                signUpFulfilled &&
+                "border-lime-500/30 bg-lime-500/[0.04]",
             )}
           >
             <TaskRowStatusIcon
@@ -622,7 +641,10 @@ export default function SocialPromptDialog({
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <GameUiIcon name="signUp" sizeClassName={SOCIAL_TASK_ROW_ICON_SIZE} />
+                  <GameUiIcon
+                    name="signUp"
+                    sizeClassName={SOCIAL_TASK_ROW_ICON_SIZE}
+                  />
                   <span className={SOCIAL_TASK_ROW_LABEL_CLASS}>
                     {t("socialPrompt.signUpTitle")}
                   </span>
@@ -635,17 +657,22 @@ export default function SocialPromptDialog({
                 </div>
               </div>
               {!signUpClaimed && (
-                <TaskRowActions amount={SIGN_UP_WELCOME_GOLD} className="self-center">
+                <TaskRowActions
+                  amount={SIGN_UP_WELCOME_GOLD}
+                  className="self-center"
+                >
                   {signUpFulfilled ? (
                     <TaskClaimButton
                       onClick={() =>
-                        claimWithAnimation("signup", () => claimSignupWelcomeGold())
+                        claimWithAnimation("signup", () =>
+                          claimSignupWelcomeGold(),
+                        )
                       }
                     />
                   ) : (
                     <Button
                       size="xs"
-                      className="shrink-0 font-medium px-3"
+                      className="shrink-0 font-medium px-2"
                       onClick={handleSignUpTaskClick}
                     >
                       {t("socialPrompt.signUpButton")}
@@ -661,8 +688,8 @@ export default function SocialPromptDialog({
               "rounded-md border border-border p-3 flex gap-3 items-center",
               emailRewardClaimed && "border-green-500/40 bg-green-500/5",
               !emailRewardClaimed &&
-              emailRewardFulfilled &&
-              "border-lime-500/30 bg-lime-500/[0.04]",
+                emailRewardFulfilled &&
+                "border-lime-500/30 bg-lime-500/[0.04]",
             )}
           >
             <TaskRowStatusIcon
@@ -673,14 +700,20 @@ export default function SocialPromptDialog({
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex items-center gap-2">
-                  <GameUiIcon name="email" sizeClassName={SOCIAL_TASK_ROW_ICON_SIZE} />
+                  <GameUiIcon
+                    name="email"
+                    sizeClassName={SOCIAL_TASK_ROW_ICON_SIZE}
+                  />
                   <span className={SOCIAL_TASK_ROW_LABEL_CLASS}>
                     {t("socialPrompt.emailUpdatesTitle")}
                   </span>
                 </div>
               </div>
               {!emailRewardClaimed && (
-                <TaskRowActions amount={MARKETING_SUBSCRIBE_GOLD} className="self-center">
+                <TaskRowActions
+                  amount={MARKETING_SUBSCRIBE_GOLD}
+                  className="self-center"
+                >
                   {emailRewardFulfilled ? (
                     <TaskClaimButton
                       onClick={() =>
@@ -693,7 +726,9 @@ export default function SocialPromptDialog({
                     <LockedSocialButton
                       locked={!isUserSignedIn}
                       tooltipId="social-prompt-subscribe"
-                      tooltipText={t("socialPrompt.signUpRequiresSignInTooltip")}
+                      tooltipText={t(
+                        "socialPrompt.signUpRequiresSignInTooltip",
+                      )}
                       size="xs"
                       disabled={prefLoading || subscribeLoading}
                       onClick={() => void handleSubscribe()}
@@ -711,8 +746,8 @@ export default function SocialPromptDialog({
               "rounded-md border border-border p-3 flex gap-3 items-center",
               referralsComplete && "border-green-500/40 bg-green-500/5",
               !referralsComplete &&
-              exclusiveInviteDone &&
-              "border-lime-500/30 bg-lime-500/[0.04]",
+                exclusiveInviteDone &&
+                "border-lime-500/30 bg-lime-500/[0.04]",
             )}
           >
             <TaskRowStatusIcon
@@ -722,7 +757,10 @@ export default function SocialPromptDialog({
             <div className="min-w-0 flex-1 flex flex-row items-center justify-between gap-3">
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <GameUiIcon name="inviteUser" sizeClassName={SOCIAL_TASK_ROW_ICON_SIZE} />
+                  <GameUiIcon
+                    name="inviteUser"
+                    sizeClassName={SOCIAL_TASK_ROW_ICON_SIZE}
+                  />
                   <span className={SOCIAL_TASK_ROW_LABEL_CLASS}>
                     {t("socialPrompt.inviteTitle")}
                   </span>
@@ -737,7 +775,10 @@ export default function SocialPromptDialog({
                 </div>
               </div>
               {!referralsComplete && (
-                <TaskRowActions amount={REFERRAL_REWARD_GOLD} className="self-center">
+                <TaskRowActions
+                  amount={REFERRAL_REWARD_GOLD}
+                  className="self-center"
+                >
                   <LockedSocialButton
                     locked={!isUserSignedIn}
                     tooltipId="social-prompt-invite"
