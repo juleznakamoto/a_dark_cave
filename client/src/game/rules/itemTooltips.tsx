@@ -493,12 +493,12 @@ function renderBuildingItemTooltip(
         {capUpgradeGroupId && (
           <span className="ml-auto inline-flex items-baseline gap-1 tabular-nums">
             <span
-              className={`inline-flex items-center gap-0 font-noto-symbols-2 ${INSIGHT_TEXT_CLASS}`}
+              className={`!text-sm inline-flex items-center gap-0 font-noto-symbols-2 tabular-nums ${INSIGHT_TEXT_CLASS}`}
             >
               <span aria-hidden>{INSIGHT_GLYPH}</span>
-              <span className="font-light">{insightCapLevel}</span>
+              <span className="font-light text-base">{insightCapLevel}</span>
             </span>
-            <span className="font-normal text-gray-400">
+            <span className="text-xs font-normal text-gray-400">
               {getUiTooltip("villagerCapJobs", "{{count}} jobs", {
                 count: villagerJobCap,
               })}
