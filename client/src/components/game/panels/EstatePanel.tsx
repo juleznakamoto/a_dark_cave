@@ -101,6 +101,7 @@ function SkillUpgradeRow({
         className="h-2"
         segments={maxLevel}
         growAnimationMs={ESTATE_BAR_GROW_ANIMATION_MS}
+        emitSparksOnGrow
       />
       <div className="flex justify-between text-xs text-muted-foreground">
         <span>{description}</span>
@@ -579,6 +580,7 @@ export default function EstatePanel() {
               className="h-2"
               segments={MAX_SLEEP_LENGTH_LEVEL}
               growAnimationMs={ESTATE_BAR_GROW_ANIMATION_MS}
+              emitSparksOnGrow
             />
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>
@@ -640,6 +642,7 @@ export default function EstatePanel() {
               className="h-2"
               segments={MAX_SLEEP_INTENSITY_LEVEL}
               growAnimationMs={ESTATE_BAR_GROW_ANIMATION_MS}
+              emitSparksOnGrow
             />
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>
