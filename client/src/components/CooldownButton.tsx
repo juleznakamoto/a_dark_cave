@@ -346,12 +346,17 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         { amount: GAME_CONSTANTS.ACTION_ABORT_GOLD_COST },
       );
 
+    const buttonWithParticles = particleConfig ? (
+      <div className="relative inline-block isolate">
+        <InlineButtonParticleLayer bursts={bursts} />
+        {buttonContent}
+      </div>
+    ) : (
+      buttonContent
+    );
+
     return (
-      <div
-        className={GAME_ACTION_BUTTON_STACK_CLASS}
-        style={{ isolation: "isolate" }}
-      >
-        {particleConfig ? <InlineButtonParticleLayer bursts={bursts} /> : null}
+      <div className={GAME_ACTION_BUTTON_STACK_CLASS}>
         <TooltipWrapper
           tooltip={tooltip}
           tooltipId={buttonId}
@@ -359,7 +364,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
-          {buttonContent}
+          {buttonWithParticles}
         </TooltipWrapper>
         {showAbortOverlay && (
           <div

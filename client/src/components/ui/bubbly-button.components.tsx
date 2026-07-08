@@ -140,10 +140,10 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                     Math.random() * (config.sizeMax - config.sizeMin);
                   const colorPool =
                     config.smallParticleOnlyColors?.length &&
-                    size > config.smallParticleMaxSize
+                      size > config.smallParticleMaxSize
                       ? config.colors.filter(
-                          (c) => !config.smallParticleOnlyColors!.includes(c),
-                        )
+                        (c) => !config.smallParticleOnlyColors!.includes(c),
+                      )
                       : config.smallParticleOnlyColors?.length
                         ? [...config.colors, ...config.smallParticleOnlyColors]
                         : config.colors;
@@ -261,7 +261,7 @@ export function InlineButtonParticleLayer({
                 marginLeft: -particle.size / 2,
                 marginTop: -particle.size / 2,
                 willChange: "transform",
-                transform: "translateZ(0)",
+                zIndex: -1,
               }}
               initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
               animate={{
