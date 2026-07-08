@@ -491,9 +491,9 @@ function renderBuildingItemTooltip(
           )}
         </span>
         {capUpgradeGroupId && (
-          <span className="ml-auto inline-flex items-baseline gap-1 tabular-nums">
+          <span className="ml-auto inline-flex items-center gap-1 tabular-nums">
             <span
-              className={`!text-sm inline-flex items-center gap-0 font-noto-symbols-2 tabular-nums ${INSIGHT_TEXT_CLASS}`}
+              className={`relative top-px !text-sm inline-flex items-center gap-0 leading-none font-noto-symbols-2 tabular-nums ${INSIGHT_TEXT_CLASS}`}
             >
               <span aria-hidden>{INSIGHT_GLYPH}</span>
               <span className="font-light text-base">{insightCapLevel}</span>
