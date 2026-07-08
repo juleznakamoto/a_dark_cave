@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   clothingEffects,
   weaponEffects,
@@ -19,6 +19,7 @@ import ResourceChangeNotification from "./ResourceChangeNotification";
 import { SidePanelSectionIcon } from "./SidePanelSectionIcon";
 import { useGameStore } from "@/game/state";
 import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
+import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
 import { cn } from "@/lib/utils";
 import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
 import {
@@ -249,12 +250,53 @@ interface SidePanelSectionProps {
 import { logger } from "@/lib/logger";
 import { abbreviateNumber, formatNumber } from "@/lib/utils";
 
+/** New-item pulse + insight highlight for side-panel insight badges (cap upgrade, enchant). */
+function useInsightBadgeTooltipPulse(tooltipId: string) {
+  const setHighlightedResources = useGameStore(
+    (s) => s.setHighlightedResources,
+  );
+  const setHoveredTooltip = useGameStore((s) => s.setHoveredTooltip);
+  const { pulseClassName, onMouseEnter, onMouseLeave } =
+    useNewItemPulseTooltips([tooltipId]);
+
+  const dismissPulse = useCallback(() => {
+    setHoveredTooltip(tooltipId, true);
+  }, [setHoveredTooltip, tooltipId]);
+
+  const handleTooltipEnter = useCallback(() => {
+    setHighlightedResources(["insight"]);
+    onMouseEnter(tooltipId);
+  }, [onMouseEnter, setHighlightedResources, tooltipId]);
+
+  const handleTooltipLeave = useCallback(
+    (playing: boolean) => {
+      onMouseLeave(tooltipId);
+      if (!playing) setHighlightedResources([]);
+    },
+    [onMouseLeave, setHighlightedResources, tooltipId],
+  );
+
+  return {
+    pulseClassName: pulseClassName(tooltipId),
+    dismissPulse,
+    handleTooltipEnter,
+    handleTooltipLeave,
+  };
+}
+
 /**
  * Villager-cap upgrade badge shown next to a building name. Mirrors the insight
  * reveal badges: clicking plays the blob animation for INSIGHT_REVEAL_DURATION_MS
  * (3s) and the actual upgrade is applied when the animation resolves.
  */
 function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
+  const tooltipId = `villager-cap-upgrade-${buildingKey}`;
+  const {
+    pulseClassName,
+    dismissPulse,
+    handleTooltipEnter,
+    handleTooltipLeave,
+  } = useInsightBadgeTooltipPulse(tooltipId);
   const gameState = useGameStore((s) => s as unknown as GameState);
   const setHighlightedResources = useGameStore(
     (s) => s.setHighlightedResources,
@@ -286,7 +328,6 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
 
   const cost = getNextCapUpgradeCost(level);
   const affordable = getInsightAmount(gameState) >= cost;
-  const tooltipId = `villager-cap-upgrade-${buildingKey}`;
   const isDisabled = !affordable || playing;
   const upgradeTooltip = getUiTooltip(
     "unlockMoreJobsForInsight",
@@ -296,6 +337,7 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
 
   const handleClick = () => {
     if (isDisabled) return;
+    dismissPulse();
     setSuppressHover(false);
     setPlayingUntil(Date.now() + INSIGHT_REVEAL_DURATION_MS);
     setHighlightedResources(["insight"]);
@@ -320,10 +362,10 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
       tooltipContentClassName="max-w-xs"
       tooltipTriggerAsChild
       tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS}
-      onMouseEnter={() => setHighlightedResources(["insight"])}
+      onMouseEnter={handleTooltipEnter}
       onMouseLeave={() => {
         setSuppressHover(false);
-        if (!playing) setHighlightedResources([]);
+        handleTooltipLeave(playing);
       }}
       className="inline-flex shrink-0 items-center self-center"
     >
@@ -341,6 +383,7 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
           playing,
           suppressHover,
           className: cn(
+            pulseClassName,
             "h-[1em] w-[1em] text-[14px] leading-none",
             isDisabled ? "cursor-not-allowed" : "cursor-pointer",
           ),
@@ -358,6 +401,13 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
  * INSIGHT_REVEAL_DURATION_MS and the enchantment is applied when the animation resolves.
  */
 function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
+  const tooltipId = `weapon-enchant-${weaponId}`;
+  const {
+    pulseClassName,
+    dismissPulse,
+    handleTooltipEnter,
+    handleTooltipLeave,
+  } = useInsightBadgeTooltipPulse(tooltipId);
   const gameState = useGameStore((s) => s as unknown as GameState);
   const setHighlightedResources = useGameStore(
     (s) => s.setHighlightedResources,
@@ -391,11 +441,16 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
   if (cost == null) return null;
 
   const affordable = getInsightAmount(gameState) >= cost;
-  const tooltipId = `weapon-enchant-${weaponId}`;
   const isDisabled = !affordable || playing;
+  const enchantTooltip = getUiTooltip(
+    "enchantForInsight",
+    "Enchant for {{cost}} Insight",
+    { cost },
+  );
 
   const handleClick = () => {
     if (isDisabled) return;
+    dismissPulse();
     setSuppressHover(false);
     setPlayingUntil(Date.now() + INSIGHT_REVEAL_DURATION_MS);
     setHighlightedResources(["insight"]);
@@ -412,9 +467,7 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
     <TooltipWrapper
       tooltip={
         <div className="text-xs">
-          {getUiTooltip("enchantForInsight", "Enchant for {{cost}} Insight", {
-            cost,
-          })}
+          {enchantTooltip}
         </div>
       }
       tooltipId={tooltipId}
@@ -422,20 +475,16 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
       tooltipContentClassName="max-w-xs"
       tooltipTriggerAsChild
       tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS}
-      onMouseEnter={() => setHighlightedResources(["insight"])}
+      onMouseEnter={handleTooltipEnter}
       onMouseLeave={() => {
         setSuppressHover(false);
-        if (!playing) setHighlightedResources([]);
+        handleTooltipLeave(playing);
       }}
       className="inline-flex shrink-0 items-center self-center"
     >
       <button
         type="button"
-        aria-label={getUiTooltip(
-          "enchantForInsight",
-          "Enchant for {{cost}} Insight",
-          { cost },
-        )}
+        aria-label={enchantTooltip}
         aria-busy={playing}
         disabled={isDisabled}
         onClick={(e) => {
@@ -447,6 +496,7 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
           playing,
           suppressHover,
           className: cn(
+            pulseClassName,
             "h-[1em] w-[1em] text-[14px] leading-none",
             isDisabled ? "cursor-not-allowed" : "cursor-pointer",
           ),
