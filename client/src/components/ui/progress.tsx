@@ -7,6 +7,7 @@ import { motion } from "framer-motion"
 
 import { cn } from "@/lib/utils"
 import { Z_INDEX } from "@/lib/z-index"
+import { tailwindToHex } from "@/lib/tailwindColors"
 
 interface ProgressProps extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
   segments?: number;
@@ -36,25 +37,22 @@ interface GrowSparkParticle {
 }
 
 const GROW_SPARK_COLORS = [
-  "#fde68a", // amber-200
-  "#fbbf24", // amber-400
-  "#f59e0b", // amber-500
-  "#f97316", // orange-500
-  "#ef4444", // red-500
+  tailwindToHex("red-600"),
+  tailwindToHex("red-700"),
+  tailwindToHex("red-800"),
 ];
-
 
 const BRIGHT_SPARK_COLORS = [
-  "#ffffff",
-  "#fffbeb", // amber-50
-  "#fef3c7", // amber-100
-  "#fde68a", // amber-200
+  tailwindToHex("yellow-50"),
+  tailwindToHex("amber-50"),
+  tailwindToHex("amber-100"),
+  tailwindToHex("amber-200"),
 ];
 
 
-const GROW_SPARK_EMIT_INTERVAL_MS = Math.floor(Math.random() * 11) + 5;
-const GROW_SPARKS_PER_EMIT = Math.floor(Math.random() * 6) + 3;
-const BRIGHT_SPARKS_PER_EMIT = Math.floor(Math.random() * 6) + 3;
+const GROW_SPARK_EMIT_INTERVAL_MS = Math.floor(Math.random() * 10) + 3;
+const GROW_SPARKS_PER_EMIT = Math.floor(Math.random() * 7) + 3;
+const BRIGHT_SPARKS_PER_EMIT = Math.floor(Math.random() * 9) + 2;
 
 function createGrowSparkParticle(
   x: number,
@@ -63,15 +61,15 @@ function createGrowSparkParticle(
 ): GrowSparkParticle {
   const angle = (-70 + Math.random() * 140) * (Math.PI / 180);
   const isBright = variant === "bright";
-  const speed = isBright ? 28 + Math.random() * 40 : 18 + Math.random() * 32;
-  const maxLife = isBright ? 0.18 + Math.random() * 0.22 : 0.35 + Math.random() * 0.35;
+  const speed = isBright ? 50 + Math.random() * 300 : 20 + Math.random() * 30;
+  const maxLife = isBright ? 0.5 + Math.random() * 1.5 : 0.2 + Math.random() * 0.5;
   const colors = isBright ? BRIGHT_SPARK_COLORS : GROW_SPARK_COLORS;
   return {
     x,
     y,
     vx: Math.cos(angle) * speed,
     vy: Math.sin(angle) * speed,
-    size: isBright ? 1 : 1.5 + Math.random() * 2,
+    size: isBright ? 0.1 + Math.random() * 0.4 : 2 + Math.random() * 2,
     color: colors[Math.floor(Math.random() * colors.length)],
     life: maxLife,
     maxLife,
