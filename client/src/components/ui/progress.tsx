@@ -43,6 +43,7 @@ const GROW_SPARK_COLORS = [
   "#ef4444", // red-500
 ];
 
+
 const BRIGHT_SPARK_COLORS = [
   "#ffffff",
   "#fffbeb", // amber-50
@@ -50,9 +51,10 @@ const BRIGHT_SPARK_COLORS = [
   "#fde68a", // amber-200
 ];
 
-const GROW_SPARK_EMIT_INTERVAL_MS = 40;
-const GROW_SPARKS_PER_EMIT = 2;
-const BRIGHT_SPARKS_PER_EMIT = 3;
+
+const GROW_SPARK_EMIT_INTERVAL_MS = Math.floor(Math.random() * 11) + 5;
+const GROW_SPARKS_PER_EMIT = Math.floor(Math.random() * 6) + 3;
+const BRIGHT_SPARKS_PER_EMIT = Math.floor(Math.random() * 6) + 3;
 
 function createGrowSparkParticle(
   x: number,
