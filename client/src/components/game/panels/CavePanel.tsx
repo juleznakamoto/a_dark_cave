@@ -254,8 +254,6 @@ export default function CavePanel() {
     const isCaveExploreAction = caveExploreActions.includes(actionId);
     const isChopWood = actionId === "chopWood";
     const isCraftAction = actionId.startsWith("craft");
-    const hasParticleStack =
-      isCraftAction || isMineAction || isCaveExploreAction || isChopWood;
     const expeditionVillagersRequired = action.expeditionVillagersRequired
       ? action.expeditionVillagersRequired(state)
       : 0;
@@ -413,13 +411,13 @@ export default function CavePanel() {
       const wrapWithBadges = (inner: React.ReactNode) => {
         if (!needsWrapper && !showInsightBadge) {
           return (
-            <ActionButtonSlot key={actionId} particleStack={hasParticleStack}>
+            <ActionButtonSlot key={actionId}>
               {inner}
             </ActionButtonSlot>
           );
         }
         return (
-          <ActionButtonSlot key={actionId} particleStack={hasParticleStack}>
+          <ActionButtonSlot key={actionId}>
             {inner}
             {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
             {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
@@ -479,13 +477,13 @@ export default function CavePanel() {
     const showInsightBadge = canRevealEffects(actionId, state);
     if (!needsWrapper && !showInsightBadge) {
       return (
-        <ActionButtonSlot key={actionId} particleStack={hasParticleStack}>
+        <ActionButtonSlot key={actionId}>
           {button}
         </ActionButtonSlot>
       );
     }
     return (
-      <ActionButtonSlot key={actionId} particleStack={hasParticleStack}>
+      <ActionButtonSlot key={actionId}>
         {button}
         {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
         {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}

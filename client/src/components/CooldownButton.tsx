@@ -7,10 +7,13 @@ import { GAME_CONSTANTS } from "@/game/constants";
 import { INSIGHT_REVEAL_DURATION_MS } from "@/game/rules/insightReveal";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { cn } from "@/lib/utils";
-import { useButtonParticlePortal } from "@/components/ui/button-particle-portal";
+import {
+  InlineButtonParticleLayer,
+  useInlineButtonParticles,
+} from "@/components/ui/bubbly-button";
 import type { ParticleConfig } from "@/components/ui/bubbly-button.particles";
 
-/** In-flow wrapper when no GameActionButtonStack is used (no click particles). */
+/** Relative wrapper for action buttons, badges, and inline click particles. */
 export const GAME_ACTION_BUTTON_STACK_CLASS = "relative inline-block";
 
 /** Uniform gap between game action buttons (horizontal, wrapped rows, stacked row groups). */
@@ -225,18 +228,11 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           : insightRevealWidth;
 
     const actionExecutedRef = useRef<boolean>(false);
-    const particlePortal = useButtonParticlePortal();
+    const { bursts, triggerParticles } = useInlineButtonParticles(particleConfig);
 
     const emitClickParticles = (button: HTMLButtonElement | null) => {
-      if (particleConfig && particlePortal && button) {
-        const partial =
-          typeof particleConfig === "function" ? particleConfig() : particleConfig;
-        const rect = button.getBoundingClientRect();
-        particlePortal.spawnParticles(
-          rect.left + rect.width / 2,
-          rect.top + rect.height / 2,
-          partial,
-        );
+      if (particleConfig) {
+        triggerParticles();
       } else if (onAnimationTrigger && button) {
         const rect = button.getBoundingClientRect();
         onAnimationTrigger(rect.left + rect.width / 2, rect.top + rect.height / 2);
@@ -367,7 +363,11 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       );
 
     return (
-      <div className={GAME_ACTION_BUTTON_STACK_CLASS}>
+      <div
+        className={GAME_ACTION_BUTTON_STACK_CLASS}
+        style={{ isolation: "isolate" }}
+      >
+        {particleConfig ? <InlineButtonParticleLayer bursts={bursts} /> : null}
         <TooltipWrapper
           tooltip={tooltip}
           tooltipId={buttonId}

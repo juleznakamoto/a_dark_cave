@@ -803,7 +803,7 @@ export default function VillagePanel() {
 
       const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
       return isPriorEligible ? (
-        <ActionButtonSlot key={`${actionId}-wrapper`} particleStack={false}>
+        <ActionButtonSlot key={`${actionId}-wrapper`}>
           {button}
           <ButtonPriorBadge actionId={actionId} />
         </ActionButtonSlot>
@@ -900,7 +900,7 @@ export default function VillagePanel() {
 
     if (showInsightReveal || showConstructionBoost) {
       return (
-        <ActionButtonSlot key={`${actionId}-wrapper`} particleStack>
+        <ActionButtonSlot key={`${actionId}-wrapper`}>
           {button}
           {showConstructionBoost && (
             <ConstructionBoostBadge actionId={actionId} />
@@ -911,7 +911,7 @@ export default function VillagePanel() {
     }
 
     return (
-      <ActionButtonSlot key={`${actionId}-wrapper`} particleStack>
+      <ActionButtonSlot key={`${actionId}-wrapper`}>
         {button}
       </ActionButtonSlot>
     );

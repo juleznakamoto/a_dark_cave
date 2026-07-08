@@ -247,7 +247,6 @@ export default function ForestPanel() {
     // Check if this is chopWood, hunt, sacrifice, or bomb trade action
     const isChopWood = actionId === "chopWood";
     const isHunt = actionId === "hunt";
-    const hasParticleStack = isChopWood || isHunt;
     const isSacrificeAction =
       actionId === "boneTotems" || actionId === "leatherTotems";
     const isAnimalsSacrifice = actionId === "animals";
@@ -467,13 +466,13 @@ export default function ForestPanel() {
       const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
       const needsWrapper = upgradeKey || isPriorEligible;
       return needsWrapper ? (
-        <ActionButtonSlot key={actionId} particleStack={hasParticleStack}>
+        <ActionButtonSlot key={actionId}>
           {button}
           {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
           {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
         </ActionButtonSlot>
       ) : (
-        <ActionButtonSlot key={actionId} particleStack={hasParticleStack}>
+        <ActionButtonSlot key={actionId}>
           {button}
         </ActionButtonSlot>
       );
@@ -516,13 +515,13 @@ export default function ForestPanel() {
     const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
     const needsWrapper = upgradeKey || isPriorEligible;
     return needsWrapper ? (
-      <ActionButtonSlot key={actionId} particleStack={hasParticleStack}>
+      <ActionButtonSlot key={actionId}>
         {button}
         {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
         {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
       </ActionButtonSlot>
     ) : (
-      <ActionButtonSlot key={actionId} particleStack={hasParticleStack}>
+      <ActionButtonSlot key={actionId}>
         {button}
       </ActionButtonSlot>
     );
