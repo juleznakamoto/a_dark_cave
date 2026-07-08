@@ -13,16 +13,21 @@ export const INSIGHT_BADGE_TOOLTIP_TRIGGER_OVERLAY_CLASS =
 export function getInsightBadgeTriggerClassName({
   canAfford,
   playing,
+  suppressHover = false,
   className,
 }: {
   canAfford: boolean;
   playing: boolean;
+  suppressHover?: boolean;
   className?: string;
 }) {
   return cn(
     "insight-action-badge-trigger relative inline-flex shrink-0 items-center justify-center overflow-hidden border-0 bg-transparent p-0 leading-none min-h-0 min-w-0 transition-opacity duration-200",
     className,
     playing && "insight-action-badge-trigger--playing opacity-100",
+    !playing &&
+    suppressHover &&
+    "insight-action-badge-trigger--suppress-hover",
     !playing && canAfford && "opacity-80 hover:opacity-100",
     !playing &&
     !canAfford &&

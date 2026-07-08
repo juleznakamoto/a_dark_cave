@@ -262,6 +262,7 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
     (s) => s.setHighlightedResources,
   );
   const [playingUntil, setPlayingUntil] = useState(0);
+  const [suppressHover, setSuppressHover] = useState(false);
   const [, forceUpdate] = useState(0);
   const upgradeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -294,8 +295,9 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
   const tooltipId = `villager-cap-upgrade-${buildingKey}`;
   const isDisabled = !affordable || playing;
 
-  const handleClick = (e?: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = () => {
     if (isDisabled) return;
+    setSuppressHover(false);
     setPlayingUntil(Date.now() + INSIGHT_REVEAL_DURATION_MS);
     setHighlightedResources(["insight"]);
     if (upgradeTimerRef.current) clearTimeout(upgradeTimerRef.current);
@@ -303,8 +305,8 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
       useGameStore.getState().upgradeVillagerCap(groupId);
       setHighlightedResources([]);
       setPlayingUntil(0);
+      setSuppressHover(true);
     }, INSIGHT_REVEAL_DURATION_MS);
-    e?.currentTarget?.blur();
   };
 
   return (
@@ -323,6 +325,7 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
       tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS}
       onMouseEnter={() => setHighlightedResources(["insight"])}
       onMouseLeave={() => {
+        setSuppressHover(false);
         if (!playing) setHighlightedResources([]);
       }}
       className="inline-flex shrink-0 items-center self-center"
@@ -338,11 +341,12 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
         disabled={isDisabled}
         onClick={(e) => {
           e.stopPropagation();
-          handleClick(e);
+          handleClick();
         }}
         className={getInsightBadgeTriggerClassName({
           canAfford: affordable,
           playing,
+          suppressHover,
           className: cn(
             "h-[1em] w-[1em] text-[14px] leading-none",
             isDisabled ? "cursor-not-allowed" : "cursor-pointer",
@@ -366,6 +370,7 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
     (s) => s.setHighlightedResources,
   );
   const [playingUntil, setPlayingUntil] = useState(0);
+  const [suppressHover, setSuppressHover] = useState(false);
   const [, forceUpdate] = useState(0);
   const enchantTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -396,8 +401,9 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
   const tooltipId = `weapon-enchant-${weaponId}`;
   const isDisabled = !affordable || playing;
 
-  const handleClick = (e?: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = () => {
     if (isDisabled) return;
+    setSuppressHover(false);
     setPlayingUntil(Date.now() + INSIGHT_REVEAL_DURATION_MS);
     setHighlightedResources(["insight"]);
     if (enchantTimerRef.current) clearTimeout(enchantTimerRef.current);
@@ -405,8 +411,8 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
       useGameStore.getState().enchantWeapon(weaponId);
       setHighlightedResources([]);
       setPlayingUntil(0);
+      setSuppressHover(true);
     }, INSIGHT_REVEAL_DURATION_MS);
-    e?.currentTarget?.blur();
   };
 
   return (
@@ -425,6 +431,7 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
       tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS}
       onMouseEnter={() => setHighlightedResources(["insight"])}
       onMouseLeave={() => {
+        setSuppressHover(false);
         if (!playing) setHighlightedResources([]);
       }}
       className="inline-flex shrink-0 items-center self-center"
@@ -440,11 +447,12 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
         disabled={isDisabled}
         onClick={(e) => {
           e.stopPropagation();
-          handleClick(e);
+          handleClick();
         }}
         className={getInsightBadgeTriggerClassName({
           canAfford: affordable,
           playing,
+          suppressHover,
           className: cn(
             "h-[1em] w-[1em] text-[14px] leading-none",
             isDisabled ? "cursor-not-allowed" : "cursor-pointer",

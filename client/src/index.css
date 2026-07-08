@@ -348,11 +348,11 @@ body {
   pointer-events: none;
 }
 
-/* Idle: insight triangle glyph only. Hover or reveal cooldown (--playing) runs blob animation. */
-.building-action-badge:not(:hover):not(.building-action-badge--playing) .building-action-badge__clip,
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--playing):not(:hover):not(:active) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__clip,
-.building-action-badge:not(:hover):not(.building-action-badge--playing) .building-action-badge__triangle,
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--playing):not(:hover):not(:active) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__triangle {
+/* Idle: triangle glyph only. Hover preview (desktop) or --playing (3s reveal) runs blob animation. */
+.building-action-badge:not(.building-action-badge--playing) .building-action-badge__clip,
+.insight-action-badge-trigger:not(.insight-action-badge-trigger--playing) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__clip,
+.building-action-badge:not(.building-action-badge--playing) .building-action-badge__triangle,
+.insight-action-badge-trigger:not(.insight-action-badge-trigger--playing) .building-action-badge:not(.building-action-badge--playing) .building-action-badge__triangle {
   animation: none !important;
   filter: none;
   transform: none;
@@ -365,18 +365,11 @@ body {
   transform-box: fill-box;
 }
 
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):hover .building-action-badge .building-action-badge__idle {
+/* Insight reveal click animation — exactly INSIGHT_REVEAL_DURATION_MS via --playing in JS. */
+.building-action-badge--playing .building-action-badge__idle {
   opacity: 0;
-  transition: opacity 120ms ease;
 }
 
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):active .building-action-badge .building-action-badge__idle {
-  opacity: 0;
-  transition: opacity 120ms ease;
-}
-
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):hover .building-action-badge .building-action-badge__svg,
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):active .building-action-badge .building-action-badge__svg,
 .building-action-badge--playing .building-action-badge__svg {
   opacity: 1;
   visibility: visible;
@@ -385,41 +378,111 @@ body {
   animation: building-action-badge-blue-glow 2s ease-in-out infinite;
 }
 
-.building-action-badge--playing .building-action-badge__idle {
-  opacity: 0;
-}
-
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):hover .building-action-badge .building-action-badge__clip,
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):active .building-action-badge .building-action-badge__clip,
 .building-action-badge--playing .building-action-badge__clip {
   animation: building-action-badge-roundness 1s linear infinite;
 }
 
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):hover .building-action-badge .building-action-badge__triangle,
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):active .building-action-badge .building-action-badge__triangle,
 .building-action-badge--playing .building-action-badge__triangle {
   filter: blur(7px);
+}
+
+.building-action-badge--playing .building-action-badge__triangle--one {
+  animation: building-action-badge-rotation 2s linear infinite reverse;
+}
+
+.building-action-badge--playing .building-action-badge__triangle--two {
+  animation: building-action-badge-rotation 2s linear infinite;
+  animation-delay: -0.67s;
+}
+
+.building-action-badge--playing .building-action-badge__triangle--three,
+.building-action-badge--playing .building-action-badge__triangle--four {
+  animation: building-action-badge-rotation 2s linear infinite reverse;
+}
+
+.building-action-badge--playing .building-action-badge__triangle--four {
+  animation-delay: -1s;
+}
+
+.building-action-badge--playing .building-action-badge__triangle--five,
+.building-action-badge--playing .building-action-badge__triangle--six {
+  animation: building-action-badge-rotation 2s linear infinite;
+}
+
+.building-action-badge--playing .building-action-badge__triangle--six {
+  animation-delay: -1.33s;
+}
+
+/* Desktop hover preview only — touch has no sticky-hover blob (prevents infinite post-tap animation). */
+@media (hover: hover) and (pointer: fine) {
+
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):hover .building-action-badge .building-action-badge__idle,
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):active .building-action-badge .building-action-badge__idle {
+    opacity: 0;
+    transition: opacity 120ms ease;
+  }
+
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):hover .building-action-badge .building-action-badge__svg,
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):active .building-action-badge .building-action-badge__svg {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: none;
+    transition: opacity 120ms ease;
+    animation: building-action-badge-blue-glow 2s ease-in-out infinite;
+  }
+
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):hover .building-action-badge .building-action-badge__clip,
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):active .building-action-badge .building-action-badge__clip {
+    animation: building-action-badge-roundness 1s linear infinite;
+  }
+
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):hover .building-action-badge .building-action-badge__triangle,
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):active .building-action-badge .building-action-badge__triangle {
+    filter: blur(7px);
+  }
+
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):hover .building-action-badge .building-action-badge__triangle--one,
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):active .building-action-badge .building-action-badge__triangle--one {
+    animation: building-action-badge-rotation 2s linear infinite reverse;
+  }
+
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):hover .building-action-badge .building-action-badge__triangle--two,
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):active .building-action-badge .building-action-badge__triangle--two {
+    animation: building-action-badge-rotation 2s linear infinite;
+    animation-delay: -0.67s;
+  }
+
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):hover .building-action-badge .building-action-badge__triangle--three,
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):active .building-action-badge .building-action-badge__triangle--three,
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):hover .building-action-badge .building-action-badge__triangle--four,
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):active .building-action-badge .building-action-badge__triangle--four {
+    animation: building-action-badge-rotation 2s linear infinite reverse;
+  }
+
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):hover .building-action-badge .building-action-badge__triangle--four,
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):active .building-action-badge .building-action-badge__triangle--four {
+    animation-delay: -1s;
+  }
+
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):hover .building-action-badge .building-action-badge__triangle--five,
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):active .building-action-badge .building-action-badge__triangle--five,
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):hover .building-action-badge .building-action-badge__triangle--six,
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):active .building-action-badge .building-action-badge__triangle--six {
+    animation: building-action-badge-rotation 2s linear infinite;
+  }
+
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):hover .building-action-badge .building-action-badge__triangle--six,
+  .insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):not(.insight-action-badge-trigger--suppress-hover):active .building-action-badge .building-action-badge__triangle--six {
+    animation-delay: -1.33s;
+  }
 }
 
 .building-action-badge__triangle--one {
   transform-origin: 50% 50%;
 }
 
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):hover .building-action-badge .building-action-badge__triangle--one,
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):active .building-action-badge .building-action-badge__triangle--one,
-.building-action-badge--playing .building-action-badge__triangle--one {
-  animation: building-action-badge-rotation 2s linear infinite reverse;
-}
-
 .building-action-badge__triangle--two {
   transform-origin: 50% 60%;
-}
-
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):hover .building-action-badge .building-action-badge__triangle--two,
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):active .building-action-badge .building-action-badge__triangle--two,
-.building-action-badge--playing .building-action-badge__triangle--two {
-  animation: building-action-badge-rotation 2s linear infinite;
-  animation-delay: -0.67s;
 }
 
 .building-action-badge__triangle--three,
@@ -427,39 +490,9 @@ body {
   transform-origin: 40% 40%;
 }
 
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):hover .building-action-badge .building-action-badge__triangle--three,
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):active .building-action-badge .building-action-badge__triangle--three,
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):hover .building-action-badge .building-action-badge__triangle--four,
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):active .building-action-badge .building-action-badge__triangle--four,
-.building-action-badge--playing .building-action-badge__triangle--three,
-.building-action-badge--playing .building-action-badge__triangle--four {
-  animation: building-action-badge-rotation 2s linear infinite reverse;
-}
-
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):hover .building-action-badge .building-action-badge__triangle--four,
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):active .building-action-badge .building-action-badge__triangle--four,
-.building-action-badge--playing .building-action-badge__triangle--four {
-  animation-delay: -1s;
-}
-
 .building-action-badge__triangle--five,
 .building-action-badge__triangle--six {
   transform-origin: 60% 40%;
-}
-
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):hover .building-action-badge .building-action-badge__triangle--five,
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):active .building-action-badge .building-action-badge__triangle--five,
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):hover .building-action-badge .building-action-badge__triangle--six,
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):active .building-action-badge .building-action-badge__triangle--six,
-.building-action-badge--playing .building-action-badge__triangle--five,
-.building-action-badge--playing .building-action-badge__triangle--six {
-  animation: building-action-badge-rotation 2s linear infinite;
-}
-
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):hover .building-action-badge .building-action-badge__triangle--six,
-.insight-action-badge-trigger:not(.insight-action-badge-trigger--unaffordable):not(.insight-action-badge-trigger--playing):active .building-action-badge .building-action-badge__triangle--six,
-.building-action-badge--playing .building-action-badge__triangle--six {
-  animation-delay: -1.33s;
 }
 
 @keyframes building-action-badge-rotation {
@@ -500,7 +533,7 @@ body {
   }
 }
 
-/* Touch devices: WebKit ignores CSS contrast/blur inside SVG masks — use native SVG goo. */
+/* Touch: SVG mask already has feGaussianBlur goo — skip CSS contrast/blur so reveal is not doubly soft. */
 @media (hover: none),
 (pointer: coarse) {
   .building-action-badge__clip {
@@ -508,12 +541,12 @@ body {
   }
 
   .building-action-badge--playing .building-action-badge__clip {
-    filter: var(--building-action-badge-goo-filter);
-    animation: none;
+    animation: none !important;
+    filter: none !important;
   }
 
   .building-action-badge--playing .building-action-badge__triangle {
-    filter: none;
+    filter: none !important;
   }
 }
 
