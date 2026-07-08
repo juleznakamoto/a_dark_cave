@@ -57,9 +57,9 @@ function drawTipGlow(
 ) {
   const radius = Math.max(12, barHeight * 5);
   const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
-  gradient.addColorStop(0, tailwindToHex("yellow-200"));
-  gradient.addColorStop(0.2, tailwindToHex("yellow-400"));
-  gradient.addColorStop(0.5, tailwindToHex("yellow-400/60"));
+  gradient.addColorStop(0, tailwindToHex("yellow-100"));
+  gradient.addColorStop(0.2, tailwindToHex("yellow-200"));
+  gradient.addColorStop(0.5, tailwindToHex("yellow-300/60"));
   gradient.addColorStop(1, "transparent");
 
   ctx.save();
@@ -72,9 +72,9 @@ function drawTipGlow(
 }
 
 
-const GROW_SPARK_EMIT_INTERVAL_MS = Math.floor(Math.random() * 10) + 3;
-const GROW_SPARKS_PER_EMIT = Math.floor(Math.random() * 7) + 3;
-const BRIGHT_SPARKS_PER_EMIT = Math.floor(Math.random() * 9) + 2;
+const GROW_SPARK_EMIT_INTERVAL_MS = Math.floor(Math.random() * 6) + 3;
+const GROW_SPARKS_PER_EMIT = Math.floor(Math.random() * 9) + 4;
+const BRIGHT_SPARKS_PER_EMIT = Math.floor(Math.random() * 11) + 3;
 
 function createGrowSparkParticle(
   x: number,
@@ -83,15 +83,15 @@ function createGrowSparkParticle(
 ): GrowSparkParticle {
   const angle = (-70 + Math.random() * 140) * (Math.PI / 180);
   const isBright = variant === "bright";
-  const speed = isBright ? 50 + Math.random() * 300 : 20 + Math.random() * 30;
-  const maxLife = isBright ? 0.5 + Math.random() * 1.5 : 0.2 + Math.random() * 0.5;
+  const speed = isBright ? 50 + Math.random() * 350 : 20 + Math.random() * 30;
+  const maxLife = isBright ? 0.5 + Math.random() * 2 : 0.2 + Math.random() * 0.4;
   const colors = isBright ? BRIGHT_SPARK_COLORS : GROW_SPARK_COLORS;
   return {
     x,
     y,
     vx: Math.cos(angle) * speed,
     vy: Math.sin(angle) * speed,
-    size: isBright ? 0.1 + Math.random() * 0.4 : 2 + Math.random() * 2,
+    size: isBright ? 0.1 + Math.random() * 0.4 : 1 + Math.random() * 5,
     color: colors[Math.floor(Math.random() * colors.length)],
     life: maxLife,
     maxLife,
