@@ -261,6 +261,7 @@ export function InlineButtonParticleLayer({
                 marginLeft: -particle.size / 2,
                 marginTop: -particle.size / 2,
                 willChange: "transform",
+                transform: "translateZ(0)",
                 zIndex: -1,
               }}
               initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
