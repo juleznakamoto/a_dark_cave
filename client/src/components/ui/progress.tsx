@@ -24,6 +24,8 @@ interface ProgressProps
   emitSparksOnGrow?: boolean;
   /** Particle count for grow sparks — `subtle` emits fewer (e.g. combat heal) */
   growSparkIntensity?: "full" | "subtle";
+  /** Radial tip glow and tip marker while grow sparks play (estate bars) */
+  growSparkTipGlow?: boolean;
   /** Emit soft circle particles near the bar tip while it grows — no tip glow or bright sparks */
   emitCirclesOnGrow?: boolean;
   /** Emit soft circle particles near the bar tip while it shrinks — no tip glow or bright sparks */
@@ -79,21 +81,21 @@ function resolveSparkPalette(indicatorClassName?: string): SparkPalette {
   if (indicatorClassName?.includes("green")) {
     return {
       warmColors: [
+        tailwindToHex("green-500"),
         tailwindToHex("green-600"),
         tailwindToHex("green-700"),
-        tailwindToHex("green-800"),
       ],
       brightColors: [
-        tailwindToHex("green-100"),
-        tailwindToHex("green-200"),
-        tailwindToHex("lime-100"),
-        tailwindToHex("lime-200"),
+        tailwindToHex("green-300"),
+        tailwindToHex("green-400"),
+        tailwindToHex("green-500"),
+        tailwindToHex("emerald-400"),
       ],
-      tipGlowInner: tailwindToHex("green-100"),
-      tipGlowMid: tailwindToHex("green-200"),
-      tipGlowOuter: tailwindToHex("green-300/60"),
+      tipGlowInner: tailwindToHex("green-300"),
+      tipGlowMid: tailwindToHex("green-400"),
+      tipGlowOuter: tailwindToHex("green-500/60"),
       tipMarkerClassName:
-        "bg-green-400 shadow-[0_0_10px_3px] shadow-green-400",
+        "bg-green-500 shadow-[0_0_10px_3px] shadow-green-500",
     };
   }
 
@@ -400,6 +402,7 @@ const Progress = React.forwardRef<
       indicatorClassName,
       emitSparksOnGrow = false,
       growSparkIntensity = "full",
+      growSparkTipGlow = true,
       emitCirclesOnGrow = false,
       emitCirclesOnDecrease = false,
       ...props
@@ -412,13 +415,13 @@ const Progress = React.forwardRef<
       () => resolveSparkPalette(indicatorClassName),
       [indicatorClassName],
     );
-    const particlePalette = React.useMemo(() => {
-      if (emitSparksOnGrow) return sparkPalette;
-      return {
+    const particlePalette = React.useMemo(
+      () => ({
         ...sparkPalette,
         warmColors: resolveGrowCircleColors(indicatorClassName),
-      };
-    }, [emitSparksOnGrow, sparkPalette, indicatorClassName]);
+      }),
+      [sparkPalette, indicatorClassName],
+    );
     const changeAnimationMs =
       growAnimationMs > 0
         ? growAnimationMs
@@ -428,6 +431,8 @@ const Progress = React.forwardRef<
     const [animationKey, setAnimationKey] = React.useState(0);
     const [flashKey, setFlashKey] = React.useState(0);
     const [growSparkSession, setGrowSparkSession] = React.useState(0);
+    const [particleSessionDirection, setParticleSessionDirection] =
+      React.useState<"grow" | "shrink">("grow");
     const [growTransitionActive, setGrowTransitionActive] =
       React.useState(false);
     const [shrinkTransitionActive, setShrinkTransitionActive] =
@@ -465,6 +470,7 @@ const Progress = React.forwardRef<
           changeTransitionTimerRef.current = null;
         }, changeAnimationMs);
         if (emitParticles) {
+          setParticleSessionDirection(direction);
           setGrowSparkSession((prev) => prev + 1);
         }
       },
@@ -504,6 +510,9 @@ const Progress = React.forwardRef<
         }
       };
     }, []);
+
+    const isGrowSparkSession =
+      particleSessionDirection === "grow" && emitSparksOnGrow;
 
     const root = (
       <ProgressPrimitive.Root
@@ -569,14 +578,16 @@ const Progress = React.forwardRef<
               className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2"
               aria-hidden
             >
-              {emitSparksOnGrow && showGrowTransition && (
-                <div
-                  className={cn(
-                    "absolute right-0 top-1/2 h-full min-h-[8px] w-0.5 -translate-y-1/2",
-                    sparkPalette.tipMarkerClassName,
-                  )}
-                />
-              )}
+              {isGrowSparkSession &&
+                growSparkTipGlow &&
+                showGrowTransition && (
+                  <div
+                    className={cn(
+                      "absolute right-0 top-1/2 h-full min-h-[8px] w-0.5 -translate-y-1/2",
+                      sparkPalette.tipMarkerClassName,
+                    )}
+                  />
+                )}
             </div>
           )}
         </ProgressPrimitive.Indicator>
@@ -592,10 +603,14 @@ const Progress = React.forwardRef<
             tipMarkerRef={tipMarkerRef}
             durationMs={changeAnimationMs}
             sessionKey={growSparkSession}
-            showTipGlow={emitSparksOnGrow}
-            showBrightSparks={emitSparksOnGrow}
-            sparkPalette={particlePalette}
-            sparkIntensity={emitSparksOnGrow ? growSparkIntensity : "subtle"}
+            showTipGlow={isGrowSparkSession && growSparkTipGlow}
+            showBrightSparks={isGrowSparkSession}
+            sparkPalette={
+              isGrowSparkSession ? sparkPalette : particlePalette
+            }
+            sparkIntensity={
+              isGrowSparkSession ? growSparkIntensity : "subtle"
+            }
           />
         )}
       </>

@@ -1043,6 +1043,7 @@ export default function CombatDialog({
                           growAnimationMs={COMBAT_BAR_CHANGE_MS}
                           emitSparksOnGrow
                           growSparkIntensity="subtle"
+                          growSparkTipGlow={false}
                           emitCirclesOnDecrease
                           indicatorClassName="bg-green-900"
                           className="h-2 mt-2"
