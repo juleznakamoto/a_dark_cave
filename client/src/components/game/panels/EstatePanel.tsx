@@ -91,7 +91,6 @@ function SkillUpgradeRow({
               onClick={onUpgrade}
               disabled={!canAfford}
               button_id={buttonId}
-              variant="flash"
             />
           </TooltipWrapper>
         ) : null}
@@ -570,7 +569,6 @@ export default function EstatePanel() {
                     onClick={handleSleepLengthUpgrade}
                     disabled={!canUpgradeLength}
                     button_id="upgrade-sleep-length"
-                    variant="flash"
                   />
                 </TooltipWrapper>
               ) : null}
@@ -632,7 +630,6 @@ export default function EstatePanel() {
                     onClick={handleSleepIntensityUpgrade}
                     disabled={!canUpgradeIntensity}
                     button_id="upgrade-sleep-intensity"
-                    variant="flash"
                   />
                 </TooltipWrapper>
               ) : null}

@@ -1223,28 +1223,6 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
   }
 }
 
-/* Improve button: expanding circular pulse ring */
-@keyframes improve-ring-expand {
-  0% {
-    width: 6px;
-    height: 4px;
-    opacity: 1;
-    border-color: rgba(239, 68, 68, 0.9);
-  }
-
-  40% {
-    opacity: 0.45;
-    border-color: rgba(220, 38, 38, 0.6);
-  }
-
-  100% {
-    width: 68px;
-    height: 42px;
-    opacity: 0;
-    border-color: rgba(185, 28, 28, 0);
-  }
-}
-
 /* Improve button: brief red text flash */
 @keyframes improve-text-flash {
   0% {
@@ -1266,36 +1244,6 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
     color: inherit;
     text-shadow: 0 0 0px transparent;
   }
-}
-
-.improve-pulse-ring {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 6px;
-  height: 6px;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  border: 2px solid rgba(239, 68, 68, 0.9);
-  pointer-events: none;
-  opacity: 0;
-  animation: improve-ring-expand 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.improve-pulse-ring-1 {
-  animation-delay: 0s;
-  border: 2px solid rgba(239, 68, 68, 1);
-}
-
-.improve-pulse-ring-2 {
-  animation-delay: 0.1s;
-  border: 2px solid rgba(239, 68, 68, 0.8);
-}
-
-.improve-pulse-ring-3 {
-  animation-delay: 0.2s;
-  border: 2px solid rgba(239, 68, 68, 0.6);
-
 }
 
 .improve-text-flash {

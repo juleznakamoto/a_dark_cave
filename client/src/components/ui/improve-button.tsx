@@ -2,17 +2,15 @@ import * as React from "react";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { Button } from "./button";
 
-// Improve button with a rewarding red pulse wave on click
+// Improve button with a brief red text flash on click
 export function ImproveButton({
   onClick,
   disabled,
   button_id,
-  variant = "ring",
 }: {
   onClick: () => void;
   disabled: boolean;
   button_id: string;
-  variant?: "ring" | "flash";
 }) {
   const [isPulsing, setIsPulsing] = React.useState(false);
   const improveLabelRaw = tWithFallback("ui", "estate.improve", "Improve");
@@ -20,7 +18,7 @@ export function ImproveButton({
     improveLabelRaw === "estate.improve" ? "Improve" : improveLabelRaw;
 
   const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent event bubbling
+    e.stopPropagation();
     if (disabled) return;
     setIsPulsing(true);
     onClick();
@@ -40,13 +38,6 @@ export function ImproveButton({
         >
           {improveLabel}
         </Button>
-        {isPulsing && variant === "ring" && (
-          <>
-            <span className="improve-pulse-ring improve-pulse-ring-1" />
-            <span className="improve-pulse-ring improve-pulse-ring-2" />
-            <span className="improve-pulse-ring improve-pulse-ring-3" />
-          </>
-        )}
       </div>
     </div>
   );

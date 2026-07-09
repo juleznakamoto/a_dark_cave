@@ -98,7 +98,6 @@ export function EstateBarsSection() {
               onClick={() => setLevel((l) => Math.min(maxLevel, l + 1))}
               disabled={false}
               button_id="demo-estate-improve"
-              variant="flash"
             />
           ) : null}
         </div>
@@ -127,22 +126,13 @@ export function ImproveButtonSection() {
     <DemoSection
       id="improve-button"
       title="Improve button"
-      description="Estate upgrade control — ring pulse (default) vs text flash variant."
+      description="Estate upgrade control — brief red text flash on click."
     >
-      <DemoRow label="Ring">
+      <DemoRow label="Enabled">
         <ImproveButton
           onClick={() => setClicks((n) => n + 1)}
           disabled={false}
-          button_id="demo-improve-ring"
-          variant="ring"
-        />
-      </DemoRow>
-      <DemoRow label="Flash">
-        <ImproveButton
-          onClick={() => setClicks((n) => n + 1)}
-          disabled={false}
-          button_id="demo-improve-flash"
-          variant="flash"
+          button_id="demo-improve"
         />
       </DemoRow>
       <DemoRow label="Disabled">
@@ -150,7 +140,6 @@ export function ImproveButtonSection() {
           onClick={() => { }}
           disabled
           button_id="demo-improve-disabled"
-          variant="flash"
         />
       </DemoRow>
       <p className="text-xs text-muted-foreground">Clicks: {clicks}</p>
