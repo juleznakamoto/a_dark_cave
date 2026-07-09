@@ -7,14 +7,11 @@ import { GAME_CONSTANTS } from "@/game/constants";
 import { INSIGHT_REVEAL_DURATION_MS } from "@/game/rules/insightReveal";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { cn } from "@/lib/utils";
-import {
-  InlineButtonParticleLayer,
-  useInlineButtonParticles,
-} from "@/components/ui/bubbly-button";
+import { useButtonParticlePortal } from "@/components/ui/button-particle-portal";
 import type { ParticleConfig } from "@/components/ui/bubbly-button.particles";
 
-/** Relative wrapper for action buttons, badges, and inline click particles. */
-export const GAME_ACTION_BUTTON_STACK_CLASS = "relative inline-block";
+/** Relative wrapper for action buttons — above shared actionButtonParticles layer (z-10). */
+export const GAME_ACTION_BUTTON_STACK_CLASS = "relative z-[20] inline-block";
 
 /** Uniform gap between game action buttons (horizontal, wrapped rows, stacked row groups). */
 export const GAME_ACTION_BUTTON_GRID_GAP_CLASS = "gap-4";
@@ -228,11 +225,18 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           : insightRevealWidth;
 
     const actionExecutedRef = useRef<boolean>(false);
-    const { bursts, triggerParticles } = useInlineButtonParticles(particleConfig);
+    const particlePortal = useButtonParticlePortal();
 
     const emitClickParticles = (button: HTMLButtonElement | null) => {
-      if (particleConfig) {
-        triggerParticles();
+      if (particleConfig && particlePortal && button) {
+        const partial =
+          typeof particleConfig === "function" ? particleConfig() : particleConfig;
+        const rect = button.getBoundingClientRect();
+        particlePortal.spawnParticles(
+          rect.left + rect.width / 2,
+          rect.top + rect.height / 2,
+          partial,
+        );
       } else if (onAnimationTrigger && button) {
         const rect = button.getBoundingClientRect();
         onAnimationTrigger(rect.left + rect.width / 2, rect.top + rect.height / 2);
@@ -275,7 +279,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         className={cn(
           // appearance-none resets native Android Chromium button chrome that otherwise leaks
           // through and makes the dark outline buttons look flat/grey.
-          "relative overflow-hidden transition-all duration-200 select-none appearance-none [-webkit-appearance:none]",
+          "relative overflow-hidden select-none appearance-none [-webkit-appearance:none]",
           isButtonDisabled && "pointer-events-none",
           // aria-disabled (not native disabled) so outline variant hover styles still apply — reset them.
           isButtonDisabled &&
@@ -287,7 +291,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         data-testid={testId}
         button_id={props.button_id || actionIdFromProps}
         {...props}
-        style={{ opacity: 1, position: 'relative', zIndex: 10, willChange: 'transform', transform: 'translateZ(0)', ...style }}
+        style={{ opacity: 1, position: 'relative', zIndex: 10, ...style }}
       >
         {/* Button content */}
         <span className={`relative transition-opacity duration-200 ${isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeOverlayActive || disabled ? "opacity-50" : ""}`}>{children}</span>
@@ -346,15 +350,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         { amount: GAME_CONSTANTS.ACTION_ABORT_GOLD_COST },
       );
 
-    const buttonWithParticles = particleConfig ? (
-      <div className="relative inline-block isolate">
-        <InlineButtonParticleLayer bursts={bursts} />
-        {buttonContent}
-      </div>
-    ) : (
-      buttonContent
-    );
-
     return (
       <div className={GAME_ACTION_BUTTON_STACK_CLASS}>
         <TooltipWrapper
@@ -364,7 +359,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
-          {buttonWithParticles}
+          {buttonContent}
         </TooltipWrapper>
         {showAbortOverlay && (
           <div
