@@ -22,6 +22,8 @@ interface ProgressProps
   indicatorClassName?: string;
   /** Emit spark particles from the bar's right tip while it grows (e.g. estate "Improve" bars) */
   emitSparksOnGrow?: boolean;
+  /** Particle count for grow sparks — `subtle` emits fewer (e.g. combat heal) */
+  growSparkIntensity?: "full" | "subtle";
   /** Emit soft circle particles near the bar tip while it grows — no tip glow or bright sparks */
   emitCirclesOnGrow?: boolean;
   /** Emit soft circle particles near the bar tip while it shrinks — no tip glow or bright sparks */
@@ -54,17 +56,82 @@ const BRIGHT_SPARK_COLORS = [
   tailwindToHex("amber-200"),
 ];
 
+interface SparkPalette {
+  warmColors: string[];
+  brightColors: string[];
+  tipGlowInner: string;
+  tipGlowMid: string;
+  tipGlowOuter: string;
+  tipMarkerClassName: string;
+}
+
+const ESTATE_SPARK_PALETTE: SparkPalette = {
+  warmColors: GROW_SPARK_COLORS,
+  brightColors: BRIGHT_SPARK_COLORS,
+  tipGlowInner: tailwindToHex("yellow-100"),
+  tipGlowMid: tailwindToHex("yellow-200"),
+  tipGlowOuter: tailwindToHex("yellow-300/60"),
+  tipMarkerClassName:
+    "bg-yellow-400 shadow-[0_0_10px_3px] shadow-yellow-400",
+};
+
+function resolveSparkPalette(indicatorClassName?: string): SparkPalette {
+  if (indicatorClassName?.includes("green")) {
+    return {
+      warmColors: [
+        tailwindToHex("green-600"),
+        tailwindToHex("green-700"),
+        tailwindToHex("green-800"),
+      ],
+      brightColors: [
+        tailwindToHex("green-100"),
+        tailwindToHex("green-200"),
+        tailwindToHex("lime-100"),
+        tailwindToHex("lime-200"),
+      ],
+      tipGlowInner: tailwindToHex("green-100"),
+      tipGlowMid: tailwindToHex("green-200"),
+      tipGlowOuter: tailwindToHex("green-300/60"),
+      tipMarkerClassName:
+        "bg-green-400 shadow-[0_0_10px_3px] shadow-green-400",
+    };
+  }
+
+  if (indicatorClassName?.includes("red")) {
+    return {
+      warmColors: [
+        tailwindToHex("red-600"),
+        tailwindToHex("red-700"),
+        tailwindToHex("red-800"),
+      ],
+      brightColors: [
+        tailwindToHex("red-100"),
+        tailwindToHex("red-200"),
+        tailwindToHex("orange-100"),
+        tailwindToHex("orange-200"),
+      ],
+      tipGlowInner: tailwindToHex("red-100"),
+      tipGlowMid: tailwindToHex("red-200"),
+      tipGlowOuter: tailwindToHex("red-300/60"),
+      tipMarkerClassName: "bg-red-400 shadow-[0_0_10px_3px] shadow-red-400",
+    };
+  }
+
+  return ESTATE_SPARK_PALETTE;
+}
+
 function drawTipGlow(
   ctx: CanvasRenderingContext2D,
   x: number,
   y: number,
   barHeight: number,
+  palette: SparkPalette,
 ) {
   const radius = Math.max(17, barHeight * 5);
   const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
-  gradient.addColorStop(0, tailwindToHex("yellow-100"));
-  gradient.addColorStop(0.3, tailwindToHex("yellow-200"));
-  gradient.addColorStop(0.5, tailwindToHex("yellow-300/60"));
+  gradient.addColorStop(0, palette.tipGlowInner);
+  gradient.addColorStop(0.3, palette.tipGlowMid);
+  gradient.addColorStop(0.5, palette.tipGlowOuter);
   gradient.addColorStop(1, "transparent");
 
   ctx.save();
@@ -105,7 +172,7 @@ function createGrowSparkParticle(
   x: number,
   y: number,
   variant: GrowSparkParticle["variant"],
-  circleColors: string[] = GROW_SPARK_COLORS,
+  palette: SparkPalette,
 ): GrowSparkParticle {
   const angle = (-70 + Math.random() * 140) * (Math.PI / 180);
   const isBright = variant === "bright";
@@ -113,7 +180,7 @@ function createGrowSparkParticle(
   const maxLife = isBright
     ? 0.2 + Math.random() * 0.6
     : 0.2 + Math.random() * 0.4;
-  const colors = isBright ? BRIGHT_SPARK_COLORS : circleColors;
+  const colors = isBright ? palette.brightColors : palette.warmColors;
   return {
     x,
     y,
@@ -174,14 +241,16 @@ function ProgressGrowSparksCanvas({
   sessionKey,
   showTipGlow = true,
   showBrightSparks = true,
-  circleColors = GROW_SPARK_COLORS,
+  sparkPalette = ESTATE_SPARK_PALETTE,
+  sparkIntensity = "full",
 }: {
   tipMarkerRef: React.RefObject<HTMLDivElement | null>;
   durationMs: number;
   sessionKey: number;
   showTipGlow?: boolean;
   showBrightSparks?: boolean;
-  circleColors?: string[];
+  sparkPalette?: SparkPalette;
+  sparkIntensity?: "full" | "subtle";
 }) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const particlesRef = React.useRef<GrowSparkParticle[]>([]);
@@ -212,6 +281,15 @@ function ProgressGrowSparksCanvas({
     let lastEmit = -GROW_SPARK_EMIT_INTERVAL_MS;
     lastFrameRef.current = start;
 
+    const warmPerEmit =
+      sparkIntensity === "subtle"
+        ? Math.max(2, Math.floor(GROW_SPARKS_PER_EMIT * 0.35))
+        : GROW_SPARKS_PER_EMIT;
+    const brightPerEmit =
+      sparkIntensity === "subtle"
+        ? Math.max(1, Math.floor(BRIGHT_SPARKS_PER_EMIT * 0.35))
+        : BRIGHT_SPARKS_PER_EMIT;
+
     const loop = (now: number) => {
       const elapsed = now - start;
       const dt = Math.min(0.05, (now - lastFrameRef.current) / 1000);
@@ -227,14 +305,16 @@ function ProgressGrowSparksCanvas({
           const rect = marker.getBoundingClientRect();
           const x = rect.right;
           const y = rect.top + rect.height / 2;
-          for (let i = 0; i < GROW_SPARKS_PER_EMIT; i++) {
+          for (let i = 0; i < warmPerEmit; i++) {
             particlesRef.current.push(
-              createGrowSparkParticle(x, y, "warm", circleColors),
+              createGrowSparkParticle(x, y, "warm", sparkPalette),
             );
           }
           if (showBrightSparks) {
-            for (let i = 0; i < BRIGHT_SPARKS_PER_EMIT; i++) {
-              particlesRef.current.push(createGrowSparkParticle(x, y, "bright"));
+            for (let i = 0; i < brightPerEmit; i++) {
+              particlesRef.current.push(
+                createGrowSparkParticle(x, y, "bright", sparkPalette),
+              );
             }
           }
         }
@@ -255,7 +335,13 @@ function ProgressGrowSparksCanvas({
         const marker = tipMarkerRef.current;
         if (marker) {
           const rect = marker.getBoundingClientRect();
-          drawTipGlow(ctx, rect.right, rect.top + rect.height / 2, rect.height);
+          drawTipGlow(
+            ctx,
+            rect.right,
+            rect.top + rect.height / 2,
+            rect.height,
+            sparkPalette,
+          );
         }
       }
 
@@ -277,7 +363,15 @@ function ProgressGrowSparksCanvas({
       particlesRef.current = [];
       window.removeEventListener("resize", resize);
     };
-  }, [tipMarkerRef, durationMs, sessionKey, showTipGlow, showBrightSparks, circleColors]);
+  }, [
+    tipMarkerRef,
+    durationMs,
+    sessionKey,
+    showTipGlow,
+    showBrightSparks,
+    sparkPalette,
+    sparkIntensity,
+  ]);
 
   return createPortal(
     <canvas
@@ -305,6 +399,7 @@ const Progress = React.forwardRef<
       growAnimationMs = 0,
       indicatorClassName,
       emitSparksOnGrow = false,
+      growSparkIntensity = "full",
       emitCirclesOnGrow = false,
       emitCirclesOnDecrease = false,
       ...props
@@ -313,10 +408,17 @@ const Progress = React.forwardRef<
   ) => {
     const emitGrowParticles = emitSparksOnGrow || emitCirclesOnGrow;
     const emitChangeParticles = emitGrowParticles || emitCirclesOnDecrease;
-    const growCircleColors = React.useMemo(
-      () => resolveGrowCircleColors(indicatorClassName),
+    const sparkPalette = React.useMemo(
+      () => resolveSparkPalette(indicatorClassName),
       [indicatorClassName],
     );
+    const particlePalette = React.useMemo(() => {
+      if (emitSparksOnGrow) return sparkPalette;
+      return {
+        ...sparkPalette,
+        warmColors: resolveGrowCircleColors(indicatorClassName),
+      };
+    }, [emitSparksOnGrow, sparkPalette, indicatorClassName]);
     const changeAnimationMs =
       growAnimationMs > 0
         ? growAnimationMs
@@ -468,7 +570,12 @@ const Progress = React.forwardRef<
               aria-hidden
             >
               {emitSparksOnGrow && showGrowTransition && (
-                <div className="absolute right-0 top-1/2 h-full min-h-[8px] w-0.5 -translate-y-1/2 bg-yellow-400 shadow-[0_0_10px_3px] shadow-yellow-400" />
+                <div
+                  className={cn(
+                    "absolute right-0 top-1/2 h-full min-h-[8px] w-0.5 -translate-y-1/2",
+                    sparkPalette.tipMarkerClassName,
+                  )}
+                />
               )}
             </div>
           )}
@@ -487,11 +594,8 @@ const Progress = React.forwardRef<
             sessionKey={growSparkSession}
             showTipGlow={emitSparksOnGrow}
             showBrightSparks={emitSparksOnGrow}
-            circleColors={
-              emitCirclesOnGrow || emitCirclesOnDecrease
-                ? growCircleColors
-                : GROW_SPARK_COLORS
-            }
+            sparkPalette={particlePalette}
+            sparkIntensity={emitSparksOnGrow ? growSparkIntensity : "subtle"}
           />
         )}
       </>
