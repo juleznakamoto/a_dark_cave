@@ -275,14 +275,12 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         className={cn(
           // appearance-none resets native Android Chromium button chrome that otherwise leaks
           // through and makes the dark outline buttons look flat/grey.
-          "relative overflow-hidden select-none appearance-none [-webkit-appearance:none]",
+          "relative select-none appearance-none [-webkit-appearance:none]",
+          particleConfig ? "overflow-visible" : "overflow-hidden",
           isButtonDisabled && "pointer-events-none",
           // aria-disabled (not native disabled) so outline variant hover styles still apply — reset them.
           isButtonDisabled &&
           "!bg-transparent hover:!bg-transparent hover:!text-foreground",
-          // pointer-events-none already blocks mouse/touch :active, but keyboard activation
-          // (Enter/Space) can still trigger it since aria-disabled keeps the button focusable —
-          // explicitly cancel the press-scale so it only ever shows on active/clickable buttons.
           isButtonDisabled && "active:scale-100",
           isCompassGlowing && "compass-glow",
           variant === "outline" && gameActionOutlineButtonClassName(isButtonDisabled),
@@ -291,8 +289,10 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         data-testid={testId}
         button_id={props.button_id || actionIdFromProps}
         {...props}
-        style={{ opacity: 1, position: 'relative', zIndex: 10, ...style }}
+        style={{ opacity: 1, position: "relative", ...style }}
       >
+        {particleConfig && <InlineButtonParticleLayer bursts={bursts} />}
+
         {/* Button content */}
         <span className={`relative transition-opacity duration-200 ${isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeOverlayActive || disabled ? "opacity-50" : ""}`}>{children}</span>
 
@@ -352,25 +352,15 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
     return (
       <div className={GAME_ACTION_BUTTON_STACK_CLASS}>
-        {/* Isolated stacking context scoped to just particle layer + button: particles
-            (z:-1) are guaranteed to paint behind the button (z:10), regardless of
-            ancestor DOM/CSS. Kept narrow (not wrapping the abort overlay below) so
-            sibling badges (ButtonPriorBadge/ActionInsightBadge etc., rendered by
-            panels via ActionButtonSlot) keep comparing z-index directly against this
-            div and the abort overlay, instead of being trapped behind an opaque
-            isolated box. */}
-        <div className="relative inline-block" style={{ isolation: "isolate" }}>
-          {particleConfig && <InlineButtonParticleLayer bursts={bursts} />}
-          <TooltipWrapper
-            tooltip={tooltip}
-            tooltipId={buttonId}
-            disabled={isButtonDisabled}
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
-            {buttonContent}
-          </TooltipWrapper>
-        </div>
+        <TooltipWrapper
+          tooltip={tooltip}
+          tooltipId={buttonId}
+          disabled={isButtonDisabled}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+        >
+          {buttonContent}
+        </TooltipWrapper>
         {showAbortOverlay && (
           <div
             className={`absolute bottom-[-10px] right-[-7px] z-[30] pointer-events-auto ${!canAffordAbort ? "opacity-40" : ""}`}

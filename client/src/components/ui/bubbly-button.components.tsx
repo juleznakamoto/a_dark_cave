@@ -233,7 +233,7 @@ type InlineParticleBurst = {
   ease: [number, number, number, number];
 };
 
-/** Renders click particles behind a button (same stacking as BubblyButton). */
+/** Renders click particles behind a heavy backdrop-blur face (blocks bleed-through on outline buttons). */
 export function InlineButtonParticleLayer({
   bursts,
 }: {
@@ -242,45 +242,50 @@ export function InlineButtonParticleLayer({
   if (bursts.length === 0) return null;
 
   return (
-    <div
-      className="absolute inset-0 pointer-events-none overflow-visible"
-      style={{ zIndex: -1 }}
-    >
-      <AnimatePresence>
-        {bursts.map((burst) =>
-          burst.particles.map((particle, index) => (
-            <motion.div
-              key={`${burst.id}-${index}`}
-              className="absolute rounded-full"
-              style={{
-                width: `${particle.size}px`,
-                height: `${particle.size}px`,
-                backgroundColor: particle.color,
-                left: "50%",
-                top: "50%",
-                marginLeft: -particle.size / 2,
-                marginTop: -particle.size / 2,
-                willChange: "transform",
-                transform: "translateZ(0)",
-                zIndex: -1,
-              }}
-              initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-              animate={{
-                opacity: 1,
-                scale: 0,
-                x: particle.endX,
-                y: particle.endY,
-              }}
-              exit={{ opacity: 0.8 }}
-              transition={{
-                duration: particle.duration,
-                ease: burst.ease,
-              }}
-            />
-          )),
-        )}
-      </AnimatePresence>
-    </div>
+    <>
+      <div
+        className="absolute inset-0 pointer-events-none overflow-visible"
+        style={{ zIndex: -1 }}
+      >
+        <AnimatePresence>
+          {bursts.map((burst) =>
+            burst.particles.map((particle, index) => (
+              <motion.div
+                key={`${burst.id}-${index}`}
+                className="absolute rounded-full"
+                style={{
+                  width: `${particle.size}px`,
+                  height: `${particle.size}px`,
+                  backgroundColor: particle.color,
+                  left: "50%",
+                  top: "50%",
+                  marginLeft: -particle.size / 2,
+                  marginTop: -particle.size / 2,
+                  willChange: "transform",
+                  transform: "translateZ(0)",
+                }}
+                initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+                animate={{
+                  opacity: 1,
+                  scale: 0,
+                  x: particle.endX,
+                  y: particle.endY,
+                }}
+                exit={{ opacity: 0.8 }}
+                transition={{
+                  duration: particle.duration,
+                  ease: burst.ease,
+                }}
+              />
+            )),
+          )}
+        </AnimatePresence>
+      </div>
+      <div
+        className="absolute inset-0 rounded-md pointer-events-none backdrop-blur-3xl"
+        aria-hidden
+      />
+    </>
   );
 }
 
