@@ -49,7 +49,7 @@ import {
 } from "@/i18n/combatLabels";
 import { useTranslation } from "react-i18next";
 
-const COMBAT_INTEGRITY_BAR_GROW_MS = 500;
+const COMBAT_BAR_CHANGE_MS = 500;
 
 interface CombatDialogProps {
   isOpen: boolean;
@@ -954,7 +954,10 @@ export default function CombatDialog({
                         value={healthPercentage}
                         hideBorder
                         flashOnDecrease
-                        className="h-2 mt-2 [&>div]:bg-red-900" // Darker red for enemy health
+                        growAnimationMs={COMBAT_BAR_CHANGE_MS}
+                        emitCirclesOnDecrease
+                        indicatorClassName="bg-red-900"
+                        className="h-2 mt-2"
                       />
                       {enemyDamageIndicator.visible && (
                         <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-red-900 font-bold text-sm pointer-events-none">
@@ -1037,8 +1040,9 @@ export default function CombatDialog({
                           value={integrityPercentage}
                           hideBorder
                           flashOnDecrease
-                          growAnimationMs={COMBAT_INTEGRITY_BAR_GROW_MS}
+                          growAnimationMs={COMBAT_BAR_CHANGE_MS}
                           emitCirclesOnGrow
+                          emitCirclesOnDecrease
                           indicatorClassName="bg-green-900"
                           className="h-2 mt-2"
                         />

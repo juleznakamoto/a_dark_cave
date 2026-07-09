@@ -24,6 +24,8 @@ interface ProgressProps
   emitSparksOnGrow?: boolean;
   /** Emit soft circle particles near the bar tip while it grows — no tip glow or bright sparks */
   emitCirclesOnGrow?: boolean;
+  /** Emit soft circle particles near the bar tip while it shrinks — no tip glow or bright sparks */
+  emitCirclesOnDecrease?: boolean;
 }
 
 interface GrowSparkParticle {
@@ -304,29 +306,68 @@ const Progress = React.forwardRef<
       indicatorClassName,
       emitSparksOnGrow = false,
       emitCirclesOnGrow = false,
+      emitCirclesOnDecrease = false,
       ...props
     },
     ref,
   ) => {
     const emitGrowParticles = emitSparksOnGrow || emitCirclesOnGrow;
+    const emitChangeParticles = emitGrowParticles || emitCirclesOnDecrease;
     const growCircleColors = React.useMemo(
       () => resolveGrowCircleColors(indicatorClassName),
       [indicatorClassName],
     );
+    const changeAnimationMs =
+      growAnimationMs > 0
+        ? growAnimationMs
+        : emitCirclesOnDecrease || flashOnDecrease
+          ? 400
+          : 0;
     const [animationKey, setAnimationKey] = React.useState(0);
     const [flashKey, setFlashKey] = React.useState(0);
     const [growSparkSession, setGrowSparkSession] = React.useState(0);
     const [growTransitionActive, setGrowTransitionActive] =
       React.useState(false);
+    const [shrinkTransitionActive, setShrinkTransitionActive] =
+      React.useState(false);
     const tipMarkerRef = React.useRef<HTMLDivElement>(null);
     const prevValueRef = React.useRef(value || 0);
-    const growTransitionTimerRef = React.useRef<ReturnType<
+    const changeTransitionTimerRef = React.useRef<ReturnType<
       typeof setTimeout
     > | null>(null);
     const currentValue = value ?? 0;
     const isGrowingThisRender = currentValue > prevValueRef.current;
+    const isShrinkingThisRender = currentValue < prevValueRef.current;
     const showGrowTransition =
-      growAnimationMs > 0 && (growTransitionActive || isGrowingThisRender);
+      changeAnimationMs > 0 &&
+      (growTransitionActive || isGrowingThisRender);
+    const showShrinkTransition =
+      changeAnimationMs > 0 &&
+      (shrinkTransitionActive || isShrinkingThisRender);
+    const showChangeTransition = showGrowTransition || showShrinkTransition;
+
+    const startChangeTransition = React.useCallback(
+      (direction: "grow" | "shrink", emitParticles: boolean) => {
+        if (changeAnimationMs <= 0) return;
+        if (direction === "grow") {
+          setGrowTransitionActive(true);
+        } else {
+          setShrinkTransitionActive(true);
+        }
+        if (changeTransitionTimerRef.current) {
+          clearTimeout(changeTransitionTimerRef.current);
+        }
+        changeTransitionTimerRef.current = setTimeout(() => {
+          setGrowTransitionActive(false);
+          setShrinkTransitionActive(false);
+          changeTransitionTimerRef.current = null;
+        }, changeAnimationMs);
+        if (emitParticles) {
+          setGrowSparkSession((prev) => prev + 1);
+        }
+      },
+      [changeAnimationMs],
+    );
 
     React.useLayoutEffect(() => {
       const nextValue = value ?? 0;
@@ -334,22 +375,14 @@ const Progress = React.forwardRef<
         if (!disableGlow && nextValue > prevValueRef.current) {
           setAnimationKey((prev) => prev + 1);
         }
-        if (growAnimationMs > 0 && nextValue > prevValueRef.current) {
-          setGrowTransitionActive(true);
-          if (growTransitionTimerRef.current) {
-            clearTimeout(growTransitionTimerRef.current);
-          }
-          growTransitionTimerRef.current = setTimeout(() => {
-            setGrowTransitionActive(false);
-            growTransitionTimerRef.current = null;
-          }, growAnimationMs);
-
-          if (emitGrowParticles) {
-            setGrowSparkSession((prev) => prev + 1);
-          }
+        if (nextValue > prevValueRef.current) {
+          startChangeTransition("grow", emitGrowParticles);
         }
-        if (flashOnDecrease && nextValue < prevValueRef.current) {
-          setFlashKey((prev) => prev + 1);
+        if (nextValue < prevValueRef.current) {
+          if (flashOnDecrease) {
+            setFlashKey((prev) => prev + 1);
+          }
+          startChangeTransition("shrink", emitCirclesOnDecrease);
         }
       }
       prevValueRef.current = nextValue;
@@ -358,13 +391,14 @@ const Progress = React.forwardRef<
       disableGlow,
       flashOnDecrease,
       emitGrowParticles,
-      growAnimationMs,
+      emitCirclesOnDecrease,
+      startChangeTransition,
     ]);
 
     React.useEffect(() => {
       return () => {
-        if (growTransitionTimerRef.current) {
-          clearTimeout(growTransitionTimerRef.current);
+        if (changeTransitionTimerRef.current) {
+          clearTimeout(changeTransitionTimerRef.current);
         }
       };
     }, []);
@@ -399,11 +433,9 @@ const Progress = React.forwardRef<
           )}
           style={{
             transform: `translateX(-${100 - (value || 0)}%)`,
-            transition: flashOnDecrease
-              ? "transform 400ms ease-out"
-              : showGrowTransition
-                ? `transform ${growAnimationMs}ms ease-out`
-                : undefined,
+            transition: showChangeTransition
+              ? `transform ${changeAnimationMs}ms ease-out`
+              : undefined,
           }}
         >
           {/* Glow effect - animates on every increase */}
@@ -429,7 +461,7 @@ const Progress = React.forwardRef<
               transition={{ duration: 0.6, ease: "easeInOut" }}
             />
           )}
-          {emitGrowParticles && (
+          {emitChangeParticles && (
             <div
               ref={tipMarkerRef}
               className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2"
@@ -447,16 +479,18 @@ const Progress = React.forwardRef<
     return (
       <>
         {root}
-        {emitGrowParticles && growSparkSession > 0 && (
+        {emitChangeParticles && growSparkSession > 0 && (
           <ProgressGrowSparksCanvas
             key={growSparkSession}
             tipMarkerRef={tipMarkerRef}
-            durationMs={growAnimationMs}
+            durationMs={changeAnimationMs}
             sessionKey={growSparkSession}
             showTipGlow={emitSparksOnGrow}
             showBrightSparks={emitSparksOnGrow}
             circleColors={
-              emitCirclesOnGrow ? growCircleColors : GROW_SPARK_COLORS
+              emitCirclesOnGrow || emitCirclesOnDecrease
+                ? growCircleColors
+                : GROW_SPARK_COLORS
             }
           />
         )}
