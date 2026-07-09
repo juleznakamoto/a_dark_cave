@@ -44,6 +44,7 @@ const Unsubscribe = lazy(() =>
   steamBuild ? redirectHome() : import("@/pages/unsubscribe"),
 );
 const StarshipShaderDemo = lazy(() => import("@/pages/starship-shader-demo"));
+const EstateBarUpgradeDemo = lazy(() => import("@/pages/estate-bar-upgrade-demo"));
 
 function Router() {
   return (
@@ -65,6 +66,7 @@ function Router() {
         <Route path="/reset-password" component={ResetPassword} />
         <Route path="/admin/dashboard" component={AdminDashboard} />
         <Route path="/dev/starship-shader" component={StarshipShaderDemo} />
+        <Route path="/dev/estate-bar-upgrade" component={EstateBarUpgradeDemo} />
         <Route component={NotFound} />
       </Switch>
     </Suspense>
