@@ -91,15 +91,17 @@ export function EstateBarsSection() {
       description="Segmented progress bars with grow transition, tip glow, and canvas sparks — used in EstatePanel skill/sleep upgrades."
     >
       <div className="w-full max-w-md space-y-1">
-        <div className="flex items-center justify-between">
+        <div className="flex h-6 items-center justify-between">
           <span className="text-xs font-medium">Sleep Length</span>
-          {level < maxLevel ? (
-            <ImproveButton
-              onClick={() => setLevel((l) => Math.min(maxLevel, l + 1))}
-              disabled={false}
-              button_id="demo-estate-improve"
-            />
-          ) : null}
+          <div className="flex h-5 shrink-0 items-center justify-end pb-1">
+            {level < maxLevel ? (
+              <ImproveButton
+                onClick={() => setLevel((l) => Math.min(maxLevel, l + 1))}
+                disabled={false}
+                button_id="demo-estate-improve"
+              />
+            ) : null}
+          </div>
         </div>
         <Progress
           value={(level / maxLevel) * 100}

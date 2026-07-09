@@ -40,6 +40,24 @@ import { formatTooltipCostLine } from "@/i18n/tooltipLabels";
 
 const ESTATE_BAR_GROW_ANIMATION_MS = 500;
 
+/** Header row for estate upgrade bars — reserves Improve button width/height when maxed. */
+function EstateUpgradeRowHeader({
+  title,
+  action,
+}: {
+  title: React.ReactNode;
+  action?: React.ReactNode;
+}) {
+  return (
+    <div className="flex h-6 items-center justify-between">
+      <span className="text-xs font-medium text-foreground">{title}</span>
+      <div className="flex h-5 shrink-0 items-center justify-end pb-1">
+        {action}
+      </div>
+    </div>
+  );
+}
+
 interface SkillUpgradeRowProps {
   title: string;
   level: number;
@@ -69,32 +87,34 @@ function SkillUpgradeRow({
   const costLine = formatTooltipCostLine(upgradeCost, "gold");
   return (
     <div className="w-full space-y-1 pt-2">
-      <div className="flex items-center justify-between">
-        <span className="pb-1 text-xs font-medium text-foreground">{title}</span>
-        {level < maxLevel ? (
-          <TooltipWrapper
-            tooltip={
-              <div className="text-xs whitespace-nowrap">
-                {tooltipContent}
-                <div className="border-t border-border my-1" />
-                <div className={canAfford ? "" : "text-muted-foreground"}>
-                  {costLine}
+      <EstateUpgradeRowHeader
+        title={title}
+        action={
+          level < maxLevel ? (
+            <TooltipWrapper
+              tooltip={
+                <div className="text-xs whitespace-nowrap">
+                  {tooltipContent}
+                  <div className="border-t border-border my-1" />
+                  <div className={canAfford ? "" : "text-muted-foreground"}>
+                    {costLine}
+                  </div>
                 </div>
-              </div>
-            }
-            tooltipId={tooltipId}
-            disabled={!canAfford}
-            onMouseEnter={() => setHighlightedResources(["gold"])}
-            onMouseLeave={() => setHighlightedResources([])}
-          >
-            <ImproveButton
-              onClick={onUpgrade}
+              }
+              tooltipId={tooltipId}
               disabled={!canAfford}
-              button_id={buttonId}
-            />
-          </TooltipWrapper>
-        ) : null}
-      </div>
+              onMouseEnter={() => setHighlightedResources(["gold"])}
+              onMouseLeave={() => setHighlightedResources([])}
+            >
+              <ImproveButton
+                onClick={onUpgrade}
+                disabled={!canAfford}
+                button_id={buttonId}
+              />
+            </TooltipWrapper>
+          ) : null
+        }
+      />
       <Progress
         value={(level / maxLevel) * 100}
         className="h-2"
@@ -531,48 +551,48 @@ export default function EstatePanel() {
         <div className="w-full space-y-1 pt-2">
           {/* Sleep Length Upgrade */}
           <div className="space-y-1">
-            <div className="flex items-center justify-between">
-              <span className="pb-1 text-xs font-medium text-foreground">
-                {t("estate.sleepLength")}
-              </span>
-              {sleepUpgrades.lengthLevel < MAX_SLEEP_LENGTH_LEVEL ? (
-                <TooltipWrapper
-                  tooltip={
-                    <div className="text-xs whitespace-nowrap">
-                      <div>
-                        +
-                        {nextLengthUpgrade.hours - currentLengthUpgrade.hours}
-                        h
+            <EstateUpgradeRowHeader
+              title={t("estate.sleepLength")}
+              action={
+                sleepUpgrades.lengthLevel < MAX_SLEEP_LENGTH_LEVEL ? (
+                  <TooltipWrapper
+                    tooltip={
+                      <div className="text-xs whitespace-nowrap">
+                        <div>
+                          +
+                          {nextLengthUpgrade.hours - currentLengthUpgrade.hours}
+                          h
+                        </div>
+                        <div className="border-t border-border my-1" />
+                        <div
+                          className={
+                            resources.gold >= nextLengthUpgrade.cost
+                              ? ""
+                              : "text-muted-foreground"
+                          }
+                        >
+                          -{formatNumber(nextLengthUpgrade.cost)} Gold
+                        </div>
                       </div>
-                      <div className="border-t border-border my-1" />
-                      <div
-                        className={
-                          resources.gold >= nextLengthUpgrade.cost
-                            ? ""
-                            : "text-muted-foreground"
-                        }
-                      >
-                        -{formatNumber(nextLengthUpgrade.cost)} Gold
-                      </div>
-                    </div>
-                  }
-                  tooltipId="upgrade-length-button"
-                  disabled={!canUpgradeLength}
-                  onMouseEnter={() => {
-                    setHighlightedResources(["gold"]);
-                  }}
-                  onMouseLeave={() => {
-                    setHighlightedResources([]);
-                  }}
-                >
-                  <ImproveButton
-                    onClick={handleSleepLengthUpgrade}
+                    }
+                    tooltipId="upgrade-length-button"
                     disabled={!canUpgradeLength}
-                    button_id="upgrade-sleep-length"
-                  />
-                </TooltipWrapper>
-              ) : null}
-            </div>
+                    onMouseEnter={() => {
+                      setHighlightedResources(["gold"]);
+                    }}
+                    onMouseLeave={() => {
+                      setHighlightedResources([]);
+                    }}
+                  >
+                    <ImproveButton
+                      onClick={handleSleepLengthUpgrade}
+                      disabled={!canUpgradeLength}
+                      button_id="upgrade-sleep-length"
+                    />
+                  </TooltipWrapper>
+                ) : null
+              }
+            />
             <Progress
               value={(sleepUpgrades.lengthLevel / MAX_SLEEP_LENGTH_LEVEL) * 100}
               className="h-2"
@@ -591,49 +611,49 @@ export default function EstatePanel() {
 
           {/* Sleep Intensity Upgrade */}
           <div className="space-y-1 pt-2">
-            <div className="flex items-center justify-between">
-              <span className="pb-1 text-xs font-medium text-foreground">
-                {t("estate.sleepIntensity")}
-              </span>
-              {sleepUpgrades.intensityLevel < MAX_SLEEP_INTENSITY_LEVEL ? (
-                <TooltipWrapper
-                  tooltip={
-                    <div className="text-xs whitespace-nowrap">
-                      <div>
-                        +
-                        {nextIntensityUpgrade.percentage -
-                          currentIntensityUpgrade.percentage}
-                        %
+            <EstateUpgradeRowHeader
+              title={t("estate.sleepIntensity")}
+              action={
+                sleepUpgrades.intensityLevel < MAX_SLEEP_INTENSITY_LEVEL ? (
+                  <TooltipWrapper
+                    tooltip={
+                      <div className="text-xs whitespace-nowrap">
+                        <div>
+                          +
+                          {nextIntensityUpgrade.percentage -
+                            currentIntensityUpgrade.percentage}
+                          %
+                        </div>
+                        <div className="border-t border-border my-1" />
+                        <div
+                          className={
+                            resources.gold >= nextIntensityUpgrade.cost
+                              ? ""
+                              : "text-muted-foreground"
+                          }
+                        >
+                          {formatTooltipCostLine(nextIntensityUpgrade.cost, "gold")}
+                        </div>
                       </div>
-                      <div className="border-t border-border my-1" />
-                      <div
-                        className={
-                          resources.gold >= nextIntensityUpgrade.cost
-                            ? ""
-                            : "text-muted-foreground"
-                        }
-                      >
-                        {formatTooltipCostLine(nextIntensityUpgrade.cost, "gold")}
-                      </div>
-                    </div>
-                  }
-                  tooltipId="upgrade-intensity-button"
-                  disabled={!canUpgradeIntensity}
-                  onMouseEnter={() => {
-                    setHighlightedResources(["gold"]);
-                  }}
-                  onMouseLeave={() => {
-                    setHighlightedResources([]);
-                  }}
-                >
-                  <ImproveButton
-                    onClick={handleSleepIntensityUpgrade}
+                    }
+                    tooltipId="upgrade-intensity-button"
                     disabled={!canUpgradeIntensity}
-                    button_id="upgrade-sleep-intensity"
-                  />
-                </TooltipWrapper>
-              ) : null}
-            </div>
+                    onMouseEnter={() => {
+                      setHighlightedResources(["gold"]);
+                    }}
+                    onMouseLeave={() => {
+                      setHighlightedResources([]);
+                    }}
+                  >
+                    <ImproveButton
+                      onClick={handleSleepIntensityUpgrade}
+                      disabled={!canUpgradeIntensity}
+                      button_id="upgrade-sleep-intensity"
+                    />
+                  </TooltipWrapper>
+                ) : null
+              }
+            />
             <Progress
               value={(sleepUpgrades.intensityLevel / MAX_SLEEP_INTENSITY_LEVEL) * 100}
               className="h-2"
