@@ -1,4 +1,5 @@
 import { Redirect } from "wouter";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   ButtonParticlesSection,
   EstateBarsSection,
@@ -27,8 +28,8 @@ export default function AnimationsDemo() {
   }
 
   return (
-    <div className="min-h-[100dvh] w-full bg-black text-foreground">
-      <div className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-4 py-8 lg:max-w-5xl lg:flex-row lg:items-start lg:gap-10">
+    <ScrollArea className="h-[100dvh] w-full bg-black">
+      <div className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-4 py-8 text-foreground lg:max-w-5xl lg:flex-row lg:items-start lg:gap-10">
         <header className="space-y-3 lg:sticky lg:top-8 lg:w-52 lg:shrink-0">
           <div>
             <h1 className="text-lg font-semibold">Animation playground</h1>
@@ -60,6 +61,7 @@ export default function AnimationsDemo() {
           <MiscAnimationsSection />
         </main>
       </div>
-    </div>
+      <ScrollBar orientation="vertical" />
+    </ScrollArea>
   );
 }
