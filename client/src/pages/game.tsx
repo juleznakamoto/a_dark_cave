@@ -18,10 +18,14 @@ import {
 import { syncSocialPromoExclusiveRewardPending } from "@/game/socialPromoExclusiveReward";
 import { processStripePaymentReturn } from "@/lib/stripePaymentReturn";
 import { isPlaylightReferralUrl } from "@/lib/playlight";
-import { isSteamBuild } from "@/lib/edition";
+import { isLocalOnlyEdition, isGalaxyEdition, isSteamBuild } from "@/lib/edition";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
 import type { TimedEventTabState } from "@/game/types";
+import {
+  initGalaxyDemoSession,
+  isGalaxyPlayTimeLimitReached,
+} from "@/game/galaxyDemo";
 import {
   applySaveBoost,
   canApplySaveBoost,
@@ -36,7 +40,7 @@ export default function Game() {
   useEffect(() => {
     logger.log("[GAME PAGE] Initializing game");
     // Session tracking is anonymous online analytics — web only.
-    if (!isSteamBuild) {
+    if (!isLocalOnlyEdition()) {
       initSessionTracker();
     }
     const initializeGame = async () => {
@@ -76,7 +80,7 @@ export default function Game() {
         }
 
         // Check if user just signed in with OAuth (web only; Steam build is offline).
-        const user = isSteamBuild ? null : await getCurrentUser();
+        const user = isLocalOnlyEdition() ? null : await getCurrentUser();
         if (user) {
           logger.log("[GAME PAGE] User authenticated, loading game");
           setIsUserSignedIn(true);
@@ -314,7 +318,7 @@ export default function Game() {
 
         // Online entitlement/payment flows are web only. The Steam build grants
         // the full game locally (see createInitialState) and has no shop.
-        if (!isSteamBuild) {
+        if (!isLocalOnlyEdition()) {
           await applySignupWelcomeBonusAfterOAuthLoad();
 
           const { rehydratePurchasesFromSupabase } = await import(
@@ -392,6 +396,14 @@ export default function Game() {
         }
 
         // Start game loop
+        if (isGalaxyEdition()) {
+          const playTime = useGameStore.getState().playTime ?? 0;
+          initGalaxyDemoSession(playTime);
+          if (isGalaxyPlayTimeLimitReached(playTime)) {
+            useGameStore.setState({ galaxyTimeUpDialogOpen: true });
+          }
+        }
+
         startGameLoop();
 
         // Steam build: backfill Steam achievements for progress already earned.
@@ -413,7 +425,7 @@ export default function Game() {
         }
 
         // Show email confirmed dialog after game is loaded (web auth only)
-        if (isEmailConfirmed && !isSteamBuild) {
+        if (isEmailConfirmed && !isLocalOnlyEdition()) {
           setTimeout(() => {
             setEmailConfirmedDialogOpen(true);
           }, 500);

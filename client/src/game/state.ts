@@ -1,7 +1,7 @@
 // Removed duplicate keys and ensured gameId is correctly handled.
 import { create } from "zustand";
 import { GameState, gameStateSchema, Referral } from "@shared/schema";
-import { isSteamBuild, isSteamEditionActive, setDevSteamModeOverride } from "@/lib/edition";
+import { isFullGameUnlockedEdition, isSteamBuild, isSteamEditionActive, setDevSteamModeOverride } from "@/lib/edition";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
 import {
   EventManager,
@@ -219,6 +219,8 @@ interface GameStore extends GameState {
   leaderboardDialogOpen: boolean;
   shareDialogOpen: boolean;
   fullGamePurchaseDialogOpen: boolean;
+  /** Galaxy demo: blocking dialog when the 1.5h play limit is reached. */
+  galaxyTimeUpDialogOpen: boolean;
   /**
    * Transient: when set, the shop dialog opens straight into checkout for this
    * item id (used for items hidden from the shop grid, e.g. additional preset
@@ -480,6 +482,7 @@ interface GameStore extends GameState {
   setLeaderboardDialogOpen: (isOpen: boolean) => void;
   setShareDialogOpen: (isOpen: boolean) => void;
   setFullGamePurchaseDialogOpen: (isOpen: boolean) => void;
+  setGalaxyTimeUpDialogOpen: (isOpen: boolean) => void;
   setShopCheckoutItemId: (itemId: string | null) => void;
   /** Grandfather legacy `additional_preset_slots` shop purchases. */
   grantAdditionalPresetSlots: () => void;
@@ -1213,8 +1216,8 @@ export const createInitialState = (): GameState => ({
   // runs in BTP mode so the travelling merchant sells the dark artifacts and the
   // rebalanced economy applies. Granting `full_game` keeps the loop's paywall
   // gate from ever pausing the sim (see loop.ts `requiresFullGamePurchase`).
-  activatedPurchases: isSteamBuild ? { full_game: true } : {},
-  BTP: isSteamBuild ? 1 : 0,
+  activatedPurchases: isFullGameUnlockedEdition() ? { full_game: true } : {},
+  BTP: isFullGameUnlockedEdition() ? 1 : 0,
   feastActivations: {},
   cruelMode: false,
   attackWaveTimers: {},
@@ -1375,6 +1378,7 @@ function isBlockingDialogOpen(state: GameStore): boolean {
     state.leaderboardDialogOpen ||
     state.shareDialogOpen ||
     state.fullGamePurchaseDialogOpen ||
+    state.galaxyTimeUpDialogOpen ||
     state.idleModeDialog.isOpen ||
     state.restartGameDialogOpen ||
     state.deleteAccountDialogOpen ||
@@ -1589,6 +1593,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   leaderboardDialogOpen: false,
   shareDialogOpen: false,
   fullGamePurchaseDialogOpen: false,
+  galaxyTimeUpDialogOpen: false,
   shopCheckoutItemId: null,
   musicMuted: false,
   sfxMuted: false,
@@ -2501,6 +2506,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
   restartGame: async () => {
     const state = get();
 
+    const { persistGalaxyDemoProgress, initGalaxyDemoSession } = await import(
+      "@/game/galaxyDemo"
+    );
+    persistGalaxyDemoProgress(state.playTime);
+
     // Check if cruel mode is activated (support both old and new purchase ID formats)
     const isCruelModeActive =
       Object.keys(state.activatedPurchases || {}).some(
@@ -2524,7 +2534,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Purchases that persist
       // Steam build: always keep `full_game` so the paywall never reappears.
       activatedPurchases: {
-        ...(isSteamBuild ? { full_game: true } : {}),
+        ...(isFullGameUnlockedEdition() ? { full_game: true } : {}),
         ...(cruelModePurchaseKey
           ? {
             [cruelModePurchaseKey]:
@@ -2609,6 +2619,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     set(resetState);
+    initGalaxyDemoSession(0);
     StateManager.scheduleEffectsUpdate(get);
 
     const cruelMode = Boolean(preserved.cruelMode);
@@ -4106,6 +4117,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setFullGamePurchaseDialogOpen: (isOpen: boolean) => {
     set({ fullGamePurchaseDialogOpen: isOpen });
+  },
+
+  setGalaxyTimeUpDialogOpen: (isOpen: boolean) => {
+    set({ galaxyTimeUpDialogOpen: isOpen });
   },
 
   setShopCheckoutItemId: (itemId: string | null) => {

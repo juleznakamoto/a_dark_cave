@@ -64,6 +64,8 @@ import {
 } from "@/game/tabUnlockBlink";
 import { TraderTabButton } from "@/components/game/TraderTabButton";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
+import { isGalaxyEdition } from "@/lib/edition";
+import GalaxyTimeUpDialog from "./GalaxyTimeUpDialog";
 import i18n from "@/i18n";
 import { useTranslation } from "react-i18next";
 import { useIOSChromeViewportShell } from "@/hooks/useIOSChromeViewportShell";
@@ -1340,6 +1342,7 @@ export default function GameContainer() {
           data={villageEffectDialog.data}
           onClose={() => setVillageEffectDialog(false)}
         />
+        {isGalaxyEdition() && <GalaxyTimeUpDialog />}
       </div>
     </ProfileMenuProvider>
   );

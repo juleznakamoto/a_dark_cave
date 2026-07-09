@@ -17,6 +17,12 @@ import { tWithFallback } from "@/i18n/resolveGameText";
 import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
+import { isGalaxyEdition } from "@/lib/edition";
+import {
+  initGalaxyDemoSession,
+  isGalaxyPlayTimeLimitReached,
+} from "@/game/galaxyDemo";
+import GalaxyTimeUpDialog from "@/components/game/GalaxyTimeUpDialog";
 import { FullscreenButton } from "@/components/game/FullscreenButton";
 
 const START_FOOTER_LINK_BASE =
@@ -98,6 +104,15 @@ export default function StartScreen() {
 
   const handleLightFire = () => {
     if (executedRef.current) return;
+
+    if (isGalaxyEdition()) {
+      initGalaxyDemoSession(0);
+      if (isGalaxyPlayTimeLimitReached(0)) {
+        useGameStore.setState({ galaxyTimeUpDialogOpen: true });
+        return;
+      }
+    }
+
     executedRef.current = true;
 
     // Preload font dynamically (lazy-loaded for better Lighthouse scores)
@@ -397,6 +412,7 @@ export default function StartScreen() {
           )}
         </div>
       </nav>
+      {isGalaxyEdition() && <GalaxyTimeUpDialog />}
     </div>
   );
 }

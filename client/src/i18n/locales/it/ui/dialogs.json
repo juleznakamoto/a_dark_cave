@@ -229,5 +229,11 @@
     "reddit": "Reddit",
     "instagram": "Instagram",
     "email": "E-Mail"
+  },
+  "galaxy": {
+    "title": "Tempo demo terminato",
+    "description": "Hai giocato 1,5 ore a A Dark Cave. Aggiungi il gioco completo alla tua lista dei desideri su Steam per continuare il viaggio al rilascio.",
+    "wishlistButton": "Aggiungi alla lista dei desideri su Steam",
+    "releaseNote": "Uscita prevista: Q4 2026"
   }
 }

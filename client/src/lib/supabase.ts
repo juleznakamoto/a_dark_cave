@@ -1,7 +1,7 @@
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { logger } from '@/lib/logger';
-import { isSteamBuild } from '@/lib/edition';
+import { isLocalOnlyEdition } from '@/lib/edition';
 
 const isDev = import.meta.env.MODE === 'development';
 
@@ -104,8 +104,8 @@ export async function getSupabaseClient(): Promise<SupabaseClient> {
   // The Steam build has no backend; never create a client or hit the network.
   // Callers across the codebase already try/catch Supabase access, so failing
   // fast here keeps the desktop edition fully offline.
-  if (isSteamBuild) {
-    throw new Error('Supabase is disabled in the Steam build');
+  if (isLocalOnlyEdition()) {
+    throw new Error('Supabase is disabled in the Steam and Galaxy builds');
   }
 
   if (supabaseClient) {

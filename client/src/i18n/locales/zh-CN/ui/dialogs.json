@@ -229,5 +229,11 @@
     "reddit": "Reddit",
     "instagram": "Instagram",
     "email": "E-Mail"
+  },
+  "galaxy": {
+    "title": "试玩时间已用完",
+    "description": "你已游玩 A Dark Cave 1.5 小时。请将完整版加入 Steam 愿望单，以便在发布后继续旅程。",
+    "wishlistButton": "加入 Steam 愿望单",
+    "releaseNote": "计划发售：2026 年第四季度"
   }
 }

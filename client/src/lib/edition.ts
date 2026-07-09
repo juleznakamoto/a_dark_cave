@@ -12,6 +12,25 @@ export const isSteamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
 /** Convenience inverse for readability at web-only call sites. */
 export const isWebBuild = !isSteamBuild;
 
+const GALAXY_PATH_PREFIX = "/galaxy";
+
+/** Galaxy.click demo hosted at https://a-dark-cave.com/galaxy */
+export function isGalaxyEdition(): boolean {
+  if (typeof window === "undefined") return false;
+  const path = window.location.pathname;
+  return path === GALAXY_PATH_PREFIX || path.startsWith(`${GALAXY_PATH_PREFIX}/`);
+}
+
+/** Steam desktop or Galaxy web demo — no Supabase cloud saves or online services. */
+export function isLocalOnlyEdition(): boolean {
+  return isSteamBuild || isGalaxyEdition();
+}
+
+/** Editions where the full game is unlocked without the web shop paywall. */
+export function isFullGameUnlockedEdition(): boolean {
+  return isSteamBuild || isGalaxyEdition();
+}
+
 /** Dev-only override synced from `devSteamMode` in the game store. */
 let devSteamModeOverride = false;
 
@@ -28,5 +47,9 @@ export function setDevSteamModeOverride(enabled: boolean): void {
  * stubs, save backends, and Steam API bridges.
  */
 export function isSteamEditionActive(): boolean {
-  return isSteamBuild || (import.meta.env.DEV && devSteamModeOverride);
+  return (
+    isSteamBuild ||
+    isGalaxyEdition() ||
+    (import.meta.env.DEV && devSteamModeOverride)
+  );
 }

@@ -5,6 +5,7 @@ import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { initPlaylight } from "@/lib/playlight";
+import { isGalaxyEdition } from "@/lib/edition";
 
 const steamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
 
@@ -55,6 +56,7 @@ function Router() {
     >
       <Switch>
         <Route path="/" component={StartScreenPage} />
+        <Route path="/galaxy" component={StartScreenPage} />
         <Route path="/boost" component={StartScreenPage} />
         <Route path="/game">{() => <Redirect to="/" />}</Route>
         <Route path="/end-screen" component={EndScreenPage} />
@@ -78,8 +80,8 @@ function Router() {
 
 function App() {
   useEffect(() => {
-    // Playlight is a web-only discovery SDK; the Steam build ships no online services.
-    if (steamBuild) return;
+    // Playlight is a web-only discovery SDK; Steam and Galaxy editions ship no online services.
+    if (steamBuild || isGalaxyEdition()) return;
     initPlaylight().catch(() => { });
   }, []);
 

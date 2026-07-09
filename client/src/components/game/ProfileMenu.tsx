@@ -17,7 +17,7 @@ import { saveGame } from "@/game/save";
 import { buildGameState } from "@/game/stateHelpers";
 import { logger } from "@/lib/logger";
 import { formatSaveTimestamp } from "@/lib/utils";
-import { isSteamBuild } from "@/lib/edition";
+import { isLocalOnlyEdition } from "@/lib/edition";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { triggerExclusivePromoPingOnce } from "@/lib/exclusivePromoShockwave";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
@@ -145,7 +145,7 @@ function useProfileMenuState() {
   const sleepDialogOpen = idleModeDialog?.isOpen === true;
 
   useEffect(() => {
-    if (isSteamBuild) return;
+    if (isLocalOnlyEdition()) return;
     checkAuth();
   }, []);
 

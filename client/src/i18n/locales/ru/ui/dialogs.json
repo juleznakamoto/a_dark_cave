@@ -229,5 +229,11 @@
     "reddit": "Reddit",
     "instagram": "Instagram",
     "email": "E-Mail"
+  },
+  "galaxy": {
+    "title": "Время демо истекло",
+    "description": "Вы сыграли 1,5 часа в A Dark Cave. Добавьте полную игру в список желаемого Steam, чтобы продолжить путешествие после выхода.",
+    "wishlistButton": "Добавить в список желаемого Steam",
+    "releaseNote": "Планируемый релиз: Q4 2026"
   }
 }

@@ -18,7 +18,7 @@ import {
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
 import { buildGameState } from "./stateHelpers";
-import { isSteamBuild } from "@/lib/edition";
+import { isGalaxyEdition, isLocalOnlyEdition, isSteamBuild } from "@/lib/edition";
 import {
   writeSteamCloudSave,
   readSteamCloudSave,
@@ -40,8 +40,13 @@ interface GameDB extends DBSchema {
 
 const DB_NAME = "ADarkCaveDB";
 const DB_VERSION = 2;
-const SAVE_KEY = "mainSave";
+const SAVE_KEY_MAIN = "mainSave";
+const SAVE_KEY_GALAXY = "galaxySave";
 const LAST_CLOUD_STATE_KEY = "lastCloudState";
+
+function getSaveKey(): string {
+  return isGalaxyEdition() ? SAVE_KEY_GALAXY : SAVE_KEY_MAIN;
+}
 
 /**
  * Order-independent deep equality with early exit on first difference.
@@ -169,7 +174,7 @@ async function putLocalSave(
   data: SaveData,
 ): Promise<void> {
   const encoded = encodeLocalSave(data);
-  await db.put("saves", encoded, SAVE_KEY);
+  await db.put("saves", encoded, getSaveKey());
   // Steam build: also mirror to the Steam Cloud file (no-op on web).
   if (isSteamBuild) {
     await writeSteamCloudSave(encoded);
@@ -179,7 +184,7 @@ async function putLocalSave(
 async function getLocalSave(
   db: Awaited<ReturnType<typeof getDB>>,
 ): Promise<SaveData | undefined> {
-  const raw = await db.get("saves", SAVE_KEY);
+  const raw = await db.get("saves", getSaveKey());
   const local = decodeLocalSave(raw) ?? undefined;
   // Steam build: reconcile IndexedDB with the cloud-synced file (newer wins).
   if (isSteamBuild) {
@@ -574,7 +579,7 @@ export async function saveGame(
 export async function loadGame(): Promise<GameState | null> {
   try {
     // Referral metadata sync is web only (Supabase-backed).
-    if (!isSteamBuild) {
+    if (!isLocalOnlyEdition()) {
       await flushPendingReferralToUserMetadata();
       await processReferralAfterConfirmation();
     }
@@ -607,7 +612,7 @@ export async function loadGame(): Promise<GameState | null> {
     }
 
     // Check if user is authenticated (never on Steam — fully offline).
-    const user = isSteamBuild ? null : await getCurrentUser();
+    const user = isLocalOnlyEdition() ? null : await getCurrentUser();
 
     if (user) {
       // User is authenticated - compare local and cloud saves
@@ -771,7 +776,7 @@ export async function loadGame(): Promise<GameState | null> {
           cooldownDurations: localSave.gameState.cooldownDurations || {},
         };
         // Steam build has no referral system; skip the Supabase-backed processing.
-        const processedState = isSteamBuild
+        const processedState = isLocalOnlyEdition()
           ? stateWithDefaults
           : await processUnclaimedReferrals(stateWithDefaults);
         if (isDev) {
@@ -795,7 +800,7 @@ export async function loadGame(): Promise<GameState | null> {
 export async function deleteSave(): Promise<void> {
   try {
     const db = await getDB();
-    await db.delete("saves", SAVE_KEY);
+    await db.delete("saves", getSaveKey());
   } catch (error) {
     logger.error("Failed to delete save:", error);
   }
