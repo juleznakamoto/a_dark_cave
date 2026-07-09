@@ -7,11 +7,14 @@ import { GAME_CONSTANTS } from "@/game/constants";
 import { INSIGHT_REVEAL_DURATION_MS } from "@/game/rules/insightReveal";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { cn } from "@/lib/utils";
-import { useButtonParticlePortal } from "@/components/ui/button-particle-portal";
+import {
+  InlineButtonParticleLayer,
+  useInlineButtonParticles,
+} from "@/components/ui/bubbly-button";
 import type { ParticleConfig } from "@/components/ui/bubbly-button.particles";
 
-/** Relative wrapper for action buttons — above shared actionButtonParticles layer (z-10). */
-export const GAME_ACTION_BUTTON_STACK_CLASS = "relative z-[20] inline-block";
+/** Relative wrapper for action buttons, badges, and inline click particles. */
+export const GAME_ACTION_BUTTON_STACK_CLASS = "relative inline-block";
 
 /** Uniform gap between game action buttons (horizontal, wrapped rows, stacked row groups). */
 export const GAME_ACTION_BUTTON_GRID_GAP_CLASS = "gap-4";
@@ -225,18 +228,11 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           : insightRevealWidth;
 
     const actionExecutedRef = useRef<boolean>(false);
-    const particlePortal = useButtonParticlePortal();
+    const { bursts, triggerParticles } = useInlineButtonParticles(particleConfig);
 
     const emitClickParticles = (button: HTMLButtonElement | null) => {
-      if (particleConfig && particlePortal && button) {
-        const partial =
-          typeof particleConfig === "function" ? particleConfig() : particleConfig;
-        const rect = button.getBoundingClientRect();
-        particlePortal.spawnParticles(
-          rect.left + rect.width / 2,
-          rect.top + rect.height / 2,
-          partial,
-        );
+      if (particleConfig) {
+        triggerParticles();
       } else if (onAnimationTrigger && button) {
         const rect = button.getBoundingClientRect();
         onAnimationTrigger(rect.left + rect.width / 2, rect.top + rect.height / 2);
@@ -284,6 +280,10 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           // aria-disabled (not native disabled) so outline variant hover styles still apply — reset them.
           isButtonDisabled &&
           "!bg-transparent hover:!bg-transparent hover:!text-foreground",
+          // pointer-events-none already blocks mouse/touch :active, but keyboard activation
+          // (Enter/Space) can still trigger it since aria-disabled keeps the button focusable —
+          // explicitly cancel the press-scale so it only ever shows on active/clickable buttons.
+          isButtonDisabled && "active:scale-100",
           isCompassGlowing && "compass-glow",
           variant === "outline" && gameActionOutlineButtonClassName(isButtonDisabled),
           className,
@@ -352,15 +352,25 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
     return (
       <div className={GAME_ACTION_BUTTON_STACK_CLASS}>
-        <TooltipWrapper
-          tooltip={tooltip}
-          tooltipId={buttonId}
-          disabled={isButtonDisabled}
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-        >
-          {buttonContent}
-        </TooltipWrapper>
+        {/* Isolated stacking context scoped to just particle layer + button: particles
+            (z:-1) are guaranteed to paint behind the button (z:10), regardless of
+            ancestor DOM/CSS. Kept narrow (not wrapping the abort overlay below) so
+            sibling badges (ButtonPriorBadge/ActionInsightBadge etc., rendered by
+            panels via ActionButtonSlot) keep comparing z-index directly against this
+            div and the abort overlay, instead of being trapped behind an opaque
+            isolated box. */}
+        <div className="relative inline-block" style={{ isolation: "isolate" }}>
+          {particleConfig && <InlineButtonParticleLayer bursts={bursts} />}
+          <TooltipWrapper
+            tooltip={tooltip}
+            tooltipId={buttonId}
+            disabled={isButtonDisabled}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+          >
+            {buttonContent}
+          </TooltipWrapper>
+        </div>
         {showAbortOverlay && (
           <div
             className={`absolute bottom-[-10px] right-[-7px] z-[30] pointer-events-auto ${!canAffordAbort ? "opacity-40" : ""}`}

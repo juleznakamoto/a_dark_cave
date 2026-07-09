@@ -22,7 +22,6 @@ import BastionPanel from "./panels/BastionPanel";
 import AchievementsPanel from "./panels/AchievementsPanel";
 import TimedEventPanel from "./panels/TimedEventPanel";
 import LogPanel from "./panels/LogPanel";
-import { ButtonParticlePortalProvider } from "@/components/ui/button-particle-portal";
 import StartScreen from "./StartScreen";
 import {
   useGameStore,
@@ -1068,7 +1067,6 @@ export default function GameContainer() {
               Mobile: flex-1 so the section fills the space left by the fixed log/side panels and its
               inner action list scrolls internally — keeping panel heights consistent across tabs
               instead of growing with the active tab's content. (Ignored on desktop grid.) */}
-          <ButtonParticlePortalProvider>
           <section className="order-3 md:order-2 flex-1 min-w-0 flex flex-col min-h-0 overflow-hidden md:pl-0">
             {/* Horizontal Game Tabs */}
             <nav
@@ -1274,7 +1272,6 @@ export default function GameContainer() {
               {activeTab === "timedevent" && <TimedEventPanel />}
             </div>
           </section>
-          </ButtonParticlePortalProvider>
         </main>
 
         {/* Footer - above pause overlay (z-40) so hover tooltips stay visible when paused */}
