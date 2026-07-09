@@ -257,7 +257,7 @@ export function ButtonParticlesSection() {
     <DemoSection
       id="button-particles"
       title="Button click particles"
-      description="CooldownButton inline particle bursts — village build vs cave craft presets."
+      description="CooldownButton click particle bursts — village build vs cave craft presets."
     >
       <div className="flex flex-wrap gap-4">
         {PARTICLE_PRESETS.map((preset) => (

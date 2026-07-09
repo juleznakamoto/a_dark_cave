@@ -13,7 +13,13 @@ import { Helmet } from "react-helmet-async";
 import GameTabs from "./GameTabs";
 import GameFooter from "./GameFooter";
 import GameHeader from "./GameHeader";
-import { GAME_FOOTER_INSET, GAME_HEADER_INSET, GAME_PANEL_HEADER_BAND, TAB_TIMED_EVENT_ICON_CLASS } from "./gameChrome";
+import {
+  GAME_FOOTER_INSET,
+  GAME_HEADER_INSET,
+  GAME_PANEL_HEADER_BAND,
+  GAME_PARTICLE_LAYER_ID,
+  TAB_TIMED_EVENT_ICON_CLASS,
+} from "./gameChrome";
 import CavePanel from "./panels/CavePanel";
 import VillagePanel from "./panels/VillagePanel";
 import ForestPanel from "./panels/ForestPanel";
@@ -1275,6 +1281,18 @@ export default function GameContainer() {
             </div>
           </section>
         </main>
+
+        {/* Click-particle portal — above side panel, tabs, log, and action panels; below header/footer */}
+        <div
+          id={GAME_PARTICLE_LAYER_ID}
+          className="pointer-events-none fixed inset-x-0"
+          style={{
+            top: GAME_HEADER_INSET,
+            bottom: GAME_FOOTER_INSET,
+            zIndex: Z_INDEX.gameParticleLayer,
+          }}
+          aria-hidden
+        />
 
         {/* Footer - above pause overlay (z-40) so hover tooltips stay visible when paused */}
         <div className="relative z-50 flex-shrink-0 pointer-events-auto">

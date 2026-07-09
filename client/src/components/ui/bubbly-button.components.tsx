@@ -14,6 +14,7 @@ import {
   mergeParticleConfig,
 } from "@/components/ui/bubbly-button.particles";
 import type { ButtonProps } from "@/components/ui/button";
+import { resolveParticlePortalTarget } from "@/lib/particlePortal";
 
 interface BubblyButtonProps extends ButtonProps {
   bubbleColor?: string;
@@ -227,91 +228,43 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
 
 BubblyButton.displayName = "BubblyButton";
 
-type InlineParticleBurst = {
-  id: string;
-  particles: ReturnType<typeof generateParticleData>;
-  ease: [number, number, number, number];
-};
-
-/** Renders click particles behind a heavy backdrop-blur face (blocks bleed-through on outline buttons). */
-export function InlineButtonParticleLayer({
-  bursts,
-}: {
-  bursts: InlineParticleBurst[];
-}) {
-  if (bursts.length === 0) return null;
-
-  return (
-    <>
-      <div
-        className="absolute inset-0 pointer-events-none overflow-visible"
-        style={{ zIndex: -1 }}
-      >
-        <AnimatePresence>
-          {bursts.map((burst) =>
-            burst.particles.map((particle, index) => (
-              <motion.div
-                key={`${burst.id}-${index}`}
-                className="absolute rounded-full"
-                style={{
-                  width: `${particle.size}px`,
-                  height: `${particle.size}px`,
-                  backgroundColor: particle.color,
-                  left: "50%",
-                  top: "50%",
-                  marginLeft: -particle.size / 2,
-                  marginTop: -particle.size / 2,
-                  willChange: "transform",
-                  transform: "translateZ(0)",
-                }}
-                initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-                animate={{
-                  opacity: 1,
-                  scale: 0,
-                  x: particle.endX,
-                  y: particle.endY,
-                }}
-                exit={{ opacity: 0.8 }}
-                transition={{
-                  duration: particle.duration,
-                  ease: burst.ease,
-                }}
-              />
-            )),
-          )}
-        </AnimatePresence>
-      </div>
-      <div
-        className="absolute inset-0 rounded-md pointer-events-none backdrop-blur-3xl"
-        aria-hidden
-      />
-    </>
-  );
-}
-
+/** Click particles portaled above game chrome (side panel, tabs, scroll clips). */
 export function useInlineButtonParticles(
   particleConfig?: Partial<ParticleConfig> | (() => Partial<ParticleConfig>),
+  options?: { zIndex?: number; portalTarget?: HTMLElement | null },
 ) {
-  const [bursts, setBursts] = useState<InlineParticleBurst[]>([]);
-  const burstIdCounter = useRef(0);
+  const [bubbles, setBubbles] = useState<BubbleWithParticles[]>([]);
+  const bubbleIdCounter = useRef(0);
+  const zIndex = options?.zIndex ?? 1;
+  const preferGameParticleLayer = options?.portalTarget === undefined;
 
-  const triggerParticles = React.useCallback(() => {
-    if (!particleConfig) return;
+  const triggerParticles = React.useCallback(
+    (origin: { x: number; y: number }) => {
+      if (!particleConfig) return;
 
-    const partial =
-      typeof particleConfig === "function" ? particleConfig() : particleConfig;
-    const config = mergeParticleConfig(partial);
-    const particles = generateParticleData(config);
-    const id = `inline-burst-${burstIdCounter.current++}-${Date.now()}`;
-    const ease = config.ease as [number, number, number, number];
+      const partial =
+        typeof particleConfig === "function" ? particleConfig() : particleConfig;
+      const id = `click-bubble-${bubbleIdCounter.current++}-${Date.now()}`;
+      const particles = generateParticleData(partial);
 
-    setBursts((prev) => [...prev, { id, particles, ease }]);
-    setTimeout(() => {
-      setBursts((prev) => prev.filter((burst) => burst.id !== id));
-    }, getBubbleRemoveDelayMs(partial));
-  }, [particleConfig]);
+      setBubbles((prev) => [...prev, { id, x: origin.x, y: origin.y, particles }]);
+      setTimeout(() => {
+        setBubbles((prev) => prev.filter((bubble) => bubble.id !== id));
+      }, getBubbleRemoveDelayMs(partial));
+    },
+    [particleConfig],
+  );
 
-  return { bursts, triggerParticles };
+  const portal = (
+    <BubblyButtonGlobalPortal
+      bubbles={bubbles}
+      zIndex={zIndex}
+      portalTarget={options?.portalTarget}
+      preferGameParticleLayer={preferGameParticleLayer}
+    />
+  );
+
+  return { triggerParticles, portal };
 }
 
 function BubblyButtonGlobalPortalContent({
@@ -365,11 +318,17 @@ export const BubblyButtonGlobalPortal = ({
   bubbles,
   zIndex = 5,
   portaled = true,
+  portalTarget,
+  preferGameParticleLayer = false,
 }: {
   bubbles: BubbleWithParticles[];
   zIndex?: number;
   /** When false, render inline (for panel layers between content and buttons). */
   portaled?: boolean;
+  /** Explicit portal mount node; when omitted, see `preferGameParticleLayer`. */
+  portalTarget?: HTMLElement | null;
+  /** When true, resolve `#adc-game-particle-layer` at render time before body fallback. */
+  preferGameParticleLayer?: boolean;
 }) => {
   if (bubbles.length === 0) return null;
 
@@ -380,7 +339,13 @@ export const BubblyButtonGlobalPortal = ({
   if (!portaled) return content;
   if (typeof document === "undefined") return null;
 
-  return createPortal(content, document.body);
+  const target = resolveParticlePortalTarget({
+    explicitTarget: portalTarget,
+    preferGameLayer: preferGameParticleLayer,
+  });
+  if (!target) return null;
+
+  return createPortal(content, target);
 };
 
 export { BubblyButton };

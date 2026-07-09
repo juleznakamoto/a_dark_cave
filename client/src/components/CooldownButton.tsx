@@ -7,13 +7,10 @@ import { GAME_CONSTANTS } from "@/game/constants";
 import { INSIGHT_REVEAL_DURATION_MS } from "@/game/rules/insightReveal";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { cn } from "@/lib/utils";
-import {
-  InlineButtonParticleLayer,
-  useInlineButtonParticles,
-} from "@/components/ui/bubbly-button";
+import { useInlineButtonParticles } from "@/components/ui/bubbly-button";
 import type { ParticleConfig } from "@/components/ui/bubbly-button.particles";
 
-/** Relative wrapper for action buttons, badges, and inline click particles. */
+/** Relative wrapper for action buttons and badges. */
 export const GAME_ACTION_BUTTON_STACK_CLASS = "relative inline-block";
 
 /** Uniform gap between game action buttons (horizontal, wrapped rows, stacked row groups). */
@@ -65,9 +62,9 @@ interface CooldownButtonProps {
   tooltip?: React.ReactNode;
   onMouseEnter?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onMouseLeave?: (e?: React.MouseEvent<HTMLDivElement>) => void;
-  /** Click particle burst rendered behind the button. */
+  /** Click particle burst (portaled above side panel and game tabs). */
   particleConfig?: Partial<ParticleConfig> | (() => Partial<ParticleConfig>);
-  /** @deprecated Use particleConfig for click particles behind the button. */
+  /** @deprecated Use particleConfig for click particles. */
   onAnimationTrigger?: (x: number, y: number) => void;
   /** Play-time overlay while the button is blocked (`cooldown` shrinks 100→0, `progress` fills 0→100). */
   playTimeCooldown?: {
@@ -228,11 +225,15 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           : insightRevealWidth;
 
     const actionExecutedRef = useRef<boolean>(false);
-    const { bursts, triggerParticles } = useInlineButtonParticles(particleConfig);
+    const { triggerParticles, portal } = useInlineButtonParticles(particleConfig);
 
     const emitClickParticles = (button: HTMLButtonElement | null) => {
-      if (particleConfig) {
-        triggerParticles();
+      if (particleConfig && button) {
+        const rect = button.getBoundingClientRect();
+        triggerParticles({
+          x: rect.left + rect.width / 2,
+          y: rect.top + rect.height / 2,
+        });
       } else if (onAnimationTrigger && button) {
         const rect = button.getBoundingClientRect();
         onAnimationTrigger(rect.left + rect.width / 2, rect.top + rect.height / 2);
@@ -291,8 +292,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         {...props}
         style={{ opacity: 1, position: "relative", ...style }}
       >
-        {particleConfig && <InlineButtonParticleLayer bursts={bursts} />}
-
         {/* Button content */}
         <span className={`relative transition-opacity duration-200 ${isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeOverlayActive || disabled ? "opacity-50" : ""}`}>{children}</span>
 
@@ -352,6 +351,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
     return (
       <div className={GAME_ACTION_BUTTON_STACK_CLASS}>
+        {particleConfig && portal}
         <TooltipWrapper
           tooltip={tooltip}
           tooltipId={buttonId}
