@@ -49,6 +49,8 @@ import {
 } from "@/i18n/combatLabels";
 import { useTranslation } from "react-i18next";
 
+const COMBAT_INTEGRITY_BAR_GROW_MS = 500;
+
 interface CombatDialogProps {
   isOpen: boolean;
   onClose: () => void;
@@ -1035,7 +1037,10 @@ export default function CombatDialog({
                           value={integrityPercentage}
                           hideBorder
                           flashOnDecrease
-                          className="h-2 mt-2 [&>div]:bg-green-900" // Darker green for bastion integrity
+                          growAnimationMs={COMBAT_INTEGRITY_BAR_GROW_MS}
+                          emitCirclesOnGrow
+                          indicatorClassName="bg-green-900"
+                          className="h-2 mt-2"
                         />
                         {integrityDamageIndicator.visible && (
                           <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-green-900 font-bold text-sm pointer-events-none">
@@ -1235,8 +1240,8 @@ export default function CombatDialog({
                                   "text-xs w-full inline-flex items-center justify-center gap-1",
                                   gameActionOutlineButtonClassName(
                                     usedCrushingStrike ||
-                                      isProcessingRound ||
-                                      isRestlessKnightWounded,
+                                    isProcessingRound ||
+                                    isRestlessKnightWounded,
                                   ),
                                 )}
                                 button_id="combat-use-crushing-strike"
@@ -1295,12 +1300,12 @@ export default function CombatDialog({
                                   "text-xs w-full inline-flex items-center justify-center gap-1",
                                   gameActionOutlineButtonClassName(
                                     usedBloodflameSphere ||
-                                      isProcessingRound ||
-                                      currentIntegrity <=
-                                        BLOODFLAME_SPHERE_UPGRADES[
-                                          bloodflameSphereLevel
-                                        ].healthCost ||
-                                      isElderWizardWounded,
+                                    isProcessingRound ||
+                                    currentIntegrity <=
+                                    BLOODFLAME_SPHERE_UPGRADES[
+                                      bloodflameSphereLevel
+                                    ].healthCost ||
+                                    isElderWizardWounded,
                                   ),
                                 )}
                                 button_id="combat-use-bloodflame-sphere"
@@ -1335,7 +1340,7 @@ export default function CombatDialog({
                         "w-full",
                         gameActionOutlineButtonClassName(
                           isProcessingRound ||
-                            (currentEnemy?.currentHealth || 0) <= 0,
+                          (currentEnemy?.currentHealth || 0) <= 0,
                         ),
                       )}
                       variant="outline"

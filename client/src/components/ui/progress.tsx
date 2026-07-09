@@ -22,6 +22,8 @@ interface ProgressProps
   indicatorClassName?: string;
   /** Emit spark particles from the bar's right tip while it grows (e.g. estate "Improve" bars) */
   emitSparksOnGrow?: boolean;
+  /** Emit soft circle particles near the bar tip while it grows — no tip glow or bright sparks */
+  emitCirclesOnGrow?: boolean;
 }
 
 interface GrowSparkParticle {
@@ -76,10 +78,32 @@ const GROW_SPARK_EMIT_INTERVAL_MS = Math.floor(Math.random() * 6) + 3;
 const GROW_SPARKS_PER_EMIT = Math.floor(Math.random() * 9) + 4;
 const BRIGHT_SPARKS_PER_EMIT = Math.floor(Math.random() * 9) + 3;
 
+function resolveGrowCircleColors(indicatorClassName?: string): string[] {
+  if (!indicatorClassName) return GROW_SPARK_COLORS;
+  const match = indicatorClassName.match(/bg-([a-z]+)-(\d+)/);
+  if (!match) return GROW_SPARK_COLORS;
+  const [, colorName, shadeStr] = match;
+  const shade = parseInt(shadeStr, 10);
+  const shades = [
+    shade,
+    Math.min(950, shade + 100),
+    Math.max(500, shade - 100),
+  ].filter((s, index, arr) => arr.indexOf(s) === index);
+  return shades.map((s) => tailwindToHex(`${colorName}-${s}`));
+}
+
+function resolveGrowGlowViaClass(indicatorClassName?: string): string {
+  if (!indicatorClassName) return "via-red-500/100";
+  if (indicatorClassName.includes("green")) return "via-green-400/80";
+  if (indicatorClassName.includes("red")) return "via-red-500/100";
+  return "via-orange-400/80";
+}
+
 function createGrowSparkParticle(
   x: number,
   y: number,
   variant: GrowSparkParticle["variant"],
+  circleColors: string[] = GROW_SPARK_COLORS,
 ): GrowSparkParticle {
   const angle = (-70 + Math.random() * 140) * (Math.PI / 180);
   const isBright = variant === "bright";
@@ -87,7 +111,7 @@ function createGrowSparkParticle(
   const maxLife = isBright
     ? 0.2 + Math.random() * 0.6
     : 0.2 + Math.random() * 0.4;
-  const colors = isBright ? BRIGHT_SPARK_COLORS : GROW_SPARK_COLORS;
+  const colors = isBright ? BRIGHT_SPARK_COLORS : circleColors;
   return {
     x,
     y,
@@ -146,10 +170,16 @@ function ProgressGrowSparksCanvas({
   tipMarkerRef,
   durationMs,
   sessionKey,
+  showTipGlow = true,
+  showBrightSparks = true,
+  circleColors = GROW_SPARK_COLORS,
 }: {
   tipMarkerRef: React.RefObject<HTMLDivElement | null>;
   durationMs: number;
   sessionKey: number;
+  showTipGlow?: boolean;
+  showBrightSparks?: boolean;
+  circleColors?: string[];
 }) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const particlesRef = React.useRef<GrowSparkParticle[]>([]);
@@ -196,10 +226,14 @@ function ProgressGrowSparksCanvas({
           const x = rect.right;
           const y = rect.top + rect.height / 2;
           for (let i = 0; i < GROW_SPARKS_PER_EMIT; i++) {
-            particlesRef.current.push(createGrowSparkParticle(x, y, "warm"));
+            particlesRef.current.push(
+              createGrowSparkParticle(x, y, "warm", circleColors),
+            );
           }
-          for (let i = 0; i < BRIGHT_SPARKS_PER_EMIT; i++) {
-            particlesRef.current.push(createGrowSparkParticle(x, y, "bright"));
+          if (showBrightSparks) {
+            for (let i = 0; i < BRIGHT_SPARKS_PER_EMIT; i++) {
+              particlesRef.current.push(createGrowSparkParticle(x, y, "bright"));
+            }
           }
         }
       }
@@ -215,7 +249,7 @@ function ProgressGrowSparksCanvas({
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      if (elapsed <= durationMs) {
+      if (showTipGlow && elapsed <= durationMs) {
         const marker = tipMarkerRef.current;
         if (marker) {
           const rect = marker.getBoundingClientRect();
@@ -241,7 +275,7 @@ function ProgressGrowSparksCanvas({
       particlesRef.current = [];
       window.removeEventListener("resize", resize);
     };
-  }, [tipMarkerRef, durationMs, sessionKey]);
+  }, [tipMarkerRef, durationMs, sessionKey, showTipGlow, showBrightSparks, circleColors]);
 
   return createPortal(
     <canvas
@@ -269,10 +303,16 @@ const Progress = React.forwardRef<
       growAnimationMs = 0,
       indicatorClassName,
       emitSparksOnGrow = false,
+      emitCirclesOnGrow = false,
       ...props
     },
     ref,
   ) => {
+    const emitGrowParticles = emitSparksOnGrow || emitCirclesOnGrow;
+    const growCircleColors = React.useMemo(
+      () => resolveGrowCircleColors(indicatorClassName),
+      [indicatorClassName],
+    );
     const [animationKey, setAnimationKey] = React.useState(0);
     const [flashKey, setFlashKey] = React.useState(0);
     const [growSparkSession, setGrowSparkSession] = React.useState(0);
@@ -304,7 +344,7 @@ const Progress = React.forwardRef<
             growTransitionTimerRef.current = null;
           }, growAnimationMs);
 
-          if (emitSparksOnGrow) {
+          if (emitGrowParticles) {
             setGrowSparkSession((prev) => prev + 1);
           }
         }
@@ -317,7 +357,7 @@ const Progress = React.forwardRef<
       value,
       disableGlow,
       flashOnDecrease,
-      emitSparksOnGrow,
+      emitGrowParticles,
       growAnimationMs,
     ]);
 
@@ -372,7 +412,7 @@ const Progress = React.forwardRef<
               key={animationKey}
               className={cn(
                 "absolute inset-0 bg-gradient-to-r from-transparent to-transparent pointer-events-none",
-                indicatorClassName ? "via-orange-400/80" : "via-red-500/100",
+                resolveGrowGlowViaClass(indicatorClassName),
               )}
               initial={{ x: "-100%", opacity: 1 }}
               animate={{ x: "100%", opacity: 0 }}
@@ -389,13 +429,13 @@ const Progress = React.forwardRef<
               transition={{ duration: 0.6, ease: "easeInOut" }}
             />
           )}
-          {emitSparksOnGrow && (
+          {emitGrowParticles && (
             <div
               ref={tipMarkerRef}
               className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2"
               aria-hidden
             >
-              {showGrowTransition && (
+              {emitSparksOnGrow && showGrowTransition && (
                 <div className="absolute right-0 top-1/2 h-full min-h-[8px] w-0.5 -translate-y-1/2 bg-yellow-400 shadow-[0_0_10px_3px] shadow-yellow-400" />
               )}
             </div>
@@ -407,12 +447,17 @@ const Progress = React.forwardRef<
     return (
       <>
         {root}
-        {emitSparksOnGrow && growSparkSession > 0 && (
+        {emitGrowParticles && growSparkSession > 0 && (
           <ProgressGrowSparksCanvas
             key={growSparkSession}
             tipMarkerRef={tipMarkerRef}
             durationMs={growAnimationMs}
             sessionKey={growSparkSession}
+            showTipGlow={emitSparksOnGrow}
+            showBrightSparks={emitSparksOnGrow}
+            circleColors={
+              emitCirclesOnGrow ? growCircleColors : GROW_SPARK_COLORS
+            }
           />
         )}
       </>
