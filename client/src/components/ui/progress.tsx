@@ -44,8 +44,8 @@ const GROW_SPARK_COLORS = [
 ];
 
 const BRIGHT_SPARK_COLORS = [
-  tailwindToHex("yellow-50"),
-  tailwindToHex("amber-50"),
+  tailwindToHex("yellow-100"),
+  tailwindToHex("yellow-200"),
   tailwindToHex("amber-100"),
   tailwindToHex("amber-200"),
 ];
@@ -56,10 +56,10 @@ function drawTipGlow(
   y: number,
   barHeight: number,
 ) {
-  const radius = Math.max(16, barHeight * 5);
+  const radius = Math.max(18, barHeight * 5);
   const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
   gradient.addColorStop(0, tailwindToHex("yellow-100"));
-  gradient.addColorStop(0.2, tailwindToHex("yellow-200"));
+  gradient.addColorStop(0.3, tailwindToHex("yellow-200"));
   gradient.addColorStop(0.5, tailwindToHex("yellow-300/60"));
   gradient.addColorStop(1, "transparent");
 
@@ -83,9 +83,9 @@ function createGrowSparkParticle(
 ): GrowSparkParticle {
   const angle = (-70 + Math.random() * 140) * (Math.PI / 180);
   const isBright = variant === "bright";
-  const speed = isBright ? 50 + Math.random() * 300 : 20 + Math.random() * 30;
+  const speed = isBright ? 50 + Math.random() * 250 : 20 + Math.random() * 30;
   const maxLife = isBright
-    ? 0.3 + Math.random() * 1
+    ? 0.2 + Math.random() * 0.6
     : 0.2 + Math.random() * 0.4;
   const colors = isBright ? BRIGHT_SPARK_COLORS : GROW_SPARK_COLORS;
   return {
@@ -93,7 +93,7 @@ function createGrowSparkParticle(
     y,
     vx: Math.cos(angle) * speed,
     vy: Math.sin(angle) * speed,
-    size: isBright ? 0.2 + Math.random() * 0.8 : 1 + Math.random() * 4,
+    size: isBright ? 0.2 + Math.random() * 0.8 : 1 + Math.random() * 3,
     color: colors[Math.floor(Math.random() * colors.length)],
     life: maxLife,
     maxLife,
@@ -163,8 +163,15 @@ function ProgressGrowSparksCanvas({
     if (!ctx) return;
 
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const dpr = window.devicePixelRatio || 1;
+
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight}px`;
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
     window.addEventListener("resize", resize);
