@@ -56,7 +56,7 @@ function drawTipGlow(
   y: number,
   barHeight: number,
 ) {
-  const radius = Math.max(18, barHeight * 5);
+  const radius = Math.max(17, barHeight * 5);
   const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
   gradient.addColorStop(0, tailwindToHex("yellow-100"));
   gradient.addColorStop(0.3, tailwindToHex("yellow-200"));
@@ -93,7 +93,7 @@ function createGrowSparkParticle(
     y,
     vx: Math.cos(angle) * speed,
     vy: Math.sin(angle) * speed,
-    size: isBright ? 0.2 + Math.random() * 0.8 : 1 + Math.random() * 3,
+    size: isBright ? 0.2 + Math.random() * 0.6 : 1 + Math.random() * 3,
     color: colors[Math.floor(Math.random() * colors.length)],
     life: maxLife,
     maxLife,
