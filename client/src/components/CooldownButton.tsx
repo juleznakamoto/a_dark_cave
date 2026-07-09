@@ -287,7 +287,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         data-testid={testId}
         button_id={props.button_id || actionIdFromProps}
         {...props}
-        style={{ opacity: 1, position: 'relative', zIndex: 10, ...style }}
+        style={{ opacity: 1, position: 'relative', zIndex: 10, willChange: 'transform', transform: 'translateZ(0)', ...style }}
       >
         {/* Button content */}
         <span className={`relative transition-opacity duration-200 ${isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeOverlayActive || disabled ? "opacity-50" : ""}`}>{children}</span>
