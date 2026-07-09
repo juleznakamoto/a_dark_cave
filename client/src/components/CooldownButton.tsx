@@ -62,7 +62,7 @@ interface CooldownButtonProps {
   tooltip?: React.ReactNode;
   onMouseEnter?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onMouseLeave?: (e?: React.MouseEvent<HTMLDivElement>) => void;
-  /** Click particle burst (portaled above side panel and game tabs). */
+  /** Click particle burst (portaled above side panel/tabs, behind action buttons). */
   particleConfig?: Partial<ParticleConfig> | (() => Partial<ParticleConfig>);
   /** @deprecated Use particleConfig for click particles. */
   onAnimationTrigger?: (x: number, y: number) => void;
@@ -292,6 +292,13 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         {...props}
         style={{ opacity: 1, position: "relative", ...style }}
       >
+        {particleConfig && (
+          <div
+            className="absolute inset-0 rounded-md pointer-events-none backdrop-blur-3xl"
+            aria-hidden
+          />
+        )}
+
         {/* Button content */}
         <span className={`relative transition-opacity duration-200 ${isCoolingDown || isExecuting || isInsightRevealing || isPlayTimeOverlayActive || disabled ? "opacity-50" : ""}`}>{children}</span>
 

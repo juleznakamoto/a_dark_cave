@@ -1035,9 +1035,17 @@ export default function GameContainer() {
           Mobile (stacked top → bottom): event log, side panel, tabs/actions. */}
         <main
           ref={panelResize.mainRef}
-          className="flex-1 pb-0 flex flex-col md:grid md:w-full md:grid-cols-[minmax(20rem,28rem)_minmax(24rem,1fr)_minmax(14rem,26rem)] min-h-0 overflow-hidden"
+          className="relative flex-1 pb-0 flex flex-col md:grid md:w-full md:grid-cols-[minmax(20rem,28rem)_minmax(24rem,1fr)_minmax(14rem,26rem)] min-h-0 overflow-hidden"
           style={panelResize.mainStyle}
         >
+          {/* Click-particle portal — above side panel, tabs, log; below action buttons (z-50) */}
+          <div
+            id={GAME_PARTICLE_LAYER_ID}
+            className="pointer-events-none absolute inset-0"
+            style={{ zIndex: Z_INDEX.gameParticleLayer }}
+            aria-hidden
+          />
+
           {/* Event Log - top on mobile, right column on desktop. Resizable via a handle on
               its bottom edge (mobile) / left edge (desktop). */}
           <div
@@ -1264,12 +1272,13 @@ export default function GameContainer() {
               )}
             </nav>
 
-            {/* Action Panels */}
+            {/* Action Panels — above particle layer so bursts stay behind buttons */}
             <div
-              className={`flex-1 overflow-x-hidden min-h-0 ${activeTab === "achievements"
+              className={`relative flex-1 overflow-x-hidden min-h-0 ${activeTab === "achievements"
                 ? "overflow-hidden"
                 : "overflow-y-auto scrollbar-hide"
                 }`}
+              style={{ zIndex: Z_INDEX.gameActionButtons }}
             >
               {activeTab === "cave" && <CavePanel />}
               {activeTab === "village" && <VillagePanel />}
@@ -1281,18 +1290,6 @@ export default function GameContainer() {
             </div>
           </section>
         </main>
-
-        {/* Click-particle portal — above side panel, tabs, log, and action panels; below header/footer */}
-        <div
-          id={GAME_PARTICLE_LAYER_ID}
-          className="pointer-events-none fixed inset-x-0"
-          style={{
-            top: GAME_HEADER_INSET,
-            bottom: GAME_FOOTER_INSET,
-            zIndex: Z_INDEX.gameParticleLayer,
-          }}
-          aria-hidden
-        />
 
         {/* Footer - above pause overlay (z-40) so hover tooltips stay visible when paused */}
         <div className="relative z-50 flex-shrink-0 pointer-events-auto">

@@ -228,7 +228,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
 
 BubblyButton.displayName = "BubblyButton";
 
-/** Click particles portaled above game chrome (side panel, tabs, scroll clips). */
+/** Click particles portaled above side panel/tabs/log, behind action buttons. */
 export function useInlineButtonParticles(
   particleConfig?: Partial<ParticleConfig> | (() => Partial<ParticleConfig>),
   options?: { zIndex?: number; portalTarget?: HTMLElement | null },

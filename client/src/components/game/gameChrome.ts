@@ -2,7 +2,7 @@
 export const GAME_HEADER_INSET = "36px";
 export const GAME_FOOTER_INSET = "36px";
 
-/** Fixed overlay between header/footer; click particles portal here. */
+/** Fixed overlay between header/footer; click particles portal here (below action buttons). */
 export const GAME_PARTICLE_LAYER_ID = "adc-game-particle-layer";
 
 /** Shared bottom-aligned header label band (tabs + side-panel section titles). */
