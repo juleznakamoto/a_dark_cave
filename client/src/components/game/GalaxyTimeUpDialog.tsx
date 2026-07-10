@@ -26,8 +26,8 @@ export default function GalaxyTimeUpDialog() {
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
         <DialogHeader>
-          <DialogTitle>{t("dialogs.galaxy.title")}</DialogTitle>
-          <DialogDescription>{t("dialogs.galaxy.description")}</DialogDescription>
+          <DialogTitle>{t("galaxy.title")}</DialogTitle>
+          <DialogDescription>{t("galaxy.description")}</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-3 pt-2">
           <Button asChild>
@@ -36,11 +36,11 @@ export default function GalaxyTimeUpDialog() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              {t("dialogs.galaxy.wishlistButton")}
+              {t("galaxy.wishlistButton")}
             </a>
           </Button>
           <p className="text-center text-xs text-muted-foreground">
-            {t("dialogs.galaxy.releaseNote")}
+            {t("galaxy.releaseNote")}
           </p>
         </div>
       </DialogContent>
