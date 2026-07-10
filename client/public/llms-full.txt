@@ -14,6 +14,7 @@
 
 - [A Dark Cave Wiki](https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki): Community wiki with game guides, mechanics, lore, and walkthroughs. Covers crafting recipes, companion quests, and exploration areas.
 - [Reddit r/aDarkCave](https://www.reddit.com/r/aDarkCave/): Community discussion, updates, tips, and player experiences. Active community for incremental game fans.
+- [Steam](https://store.steampowered.com/app/4882240/A_Dark_Cave/): Steam store page. Wishlist for the upcoming Steam release (planned Q4 2026).
 - [itch.io](https://a-dark-cave.itch.io/a-dark-cave): Game page on itch.io. Download-free browser play, ratings, and community feedback.
 - [YouTube Channel](https://www.youtube.com/channel/UCdQDWTJe_Bno7xyjnO1aC-w): Official YouTube channel for A Dark Cave. Trailers, gameplay, and developer updates.
 - [IncrementalDB](https://www.incrementaldb.com/game/a-dark-cave): Game listing on IncrementalDB with genre tags and community ratings.
@@ -39,6 +40,7 @@
 
 - Website: https://a-dark-cave.com
 - Reddit: https://www.reddit.com/r/aDarkCave/
+- Steam: https://store.steampowered.com/app/4882240/A_Dark_Cave/
 - itch.io: https://a-dark-cave.itch.io/a-dark-cave
 - Buy Me a Coffee: https://buymeacoffee.com/julez.b
 - Facebook: https://www.facebook.com/people/A-Dark-Cave/61584724119235/
