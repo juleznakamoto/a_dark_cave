@@ -235,6 +235,7 @@
     "title": "La demo termina aquí",
     "description": "Añade el juego completo a tu lista de deseados de Steam para continuar el viaje cuando se publique.",
     "wishlistButton": "Añadir a la lista de deseados en Steam",
+    "startNewGameButton": "Empezar partida nueva",
     "releaseNote": "Lanzamiento previsto: Q4 2026"
   }
 }

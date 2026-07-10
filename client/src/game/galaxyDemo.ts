@@ -3,8 +3,8 @@ import { isGalaxyEdition } from "@/lib/edition";
 
 const GALAXY_DEMO_STORAGE_KEY = "adc-galaxy-demo-play-ms";
 
-/** Total playable time on the Galaxy demo (1.5 hours). */
-export const GALAXY_PLAY_TIME_LIMIT_MS = 90 * 60 * 1000;
+/** Total playable time on the Galaxy demo (2.5 hours). */
+export const GALAXY_PLAY_TIME_LIMIT_MS = 2.5 * 60 * 60 * 1000;
 
 let galaxyBankedPlayTimeMs = 0;
 let galaxySessionStartPlayTimeMs = 0;
@@ -68,8 +68,8 @@ export function processGalaxyPlayTimeLimit(): void {
   }
 }
 
-/** Test helper — resets in-memory and localStorage demo counters. */
-export function resetGalaxyDemoStateForTests(): void {
+/** Clears cumulative demo play time (localStorage + in-memory). */
+export function resetGalaxyDemoProgress(): void {
   galaxyBankedPlayTimeMs = 0;
   galaxySessionStartPlayTimeMs = 0;
   try {
@@ -77,4 +77,25 @@ export function resetGalaxyDemoStateForTests(): void {
   } catch {
     /* ignore */
   }
+}
+
+/** Fresh run from the demo-end dialog — new save and reset play-time budget. */
+export async function startNewGalaxyDemoGame(): Promise<void> {
+  if (!isGalaxyEdition()) return;
+
+  const { deleteSave } = await import("@/game/save");
+  const store = useGameStore.getState();
+
+  store.setGalaxyTimeUpDialogOpen(false);
+  resetGalaxyDemoProgress();
+  await deleteSave();
+  await store.restartGame();
+  // restartGame persists demo time from the old run before resetting playTime.
+  resetGalaxyDemoProgress();
+  initGalaxyDemoSession(0);
+}
+
+/** Test helper — resets in-memory and localStorage demo counters. */
+export function resetGalaxyDemoStateForTests(): void {
+  resetGalaxyDemoProgress();
 }

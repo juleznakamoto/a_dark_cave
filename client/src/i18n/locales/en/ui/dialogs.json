@@ -235,6 +235,7 @@
     "title": "Demo ends here",
     "description": "Wishlist the full game on Steam to continue your journey when it releases.",
     "wishlistButton": "Wishlist on Steam",
+    "startNewGameButton": "Start New Game",
     "releaseNote": "Planned release: Q4 2026"
   }
 }

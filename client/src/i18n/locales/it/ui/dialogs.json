@@ -235,6 +235,7 @@
     "title": "La demo finisce qui",
     "description": "Aggiungi il gioco completo alla tua lista dei desideri su Steam per continuare il viaggio al rilascio.",
     "wishlistButton": "Aggiungi alla lista dei desideri su Steam",
+    "startNewGameButton": "Inizia una nuova partita",
     "releaseNote": "Uscita prevista: Q4 2026"
   }
 }

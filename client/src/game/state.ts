@@ -219,7 +219,7 @@ interface GameStore extends GameState {
   leaderboardDialogOpen: boolean;
   shareDialogOpen: boolean;
   fullGamePurchaseDialogOpen: boolean;
-  /** Galaxy demo: blocking dialog when the 1.5h play limit is reached. */
+  /** Galaxy demo: blocking dialog when the 2.5h play limit is reached. */
   galaxyTimeUpDialogOpen: boolean;
   /**
    * Transient: when set, the shop dialog opens straight into checkout for this

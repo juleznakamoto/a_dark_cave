@@ -300,7 +300,7 @@ App ID **4882240** in `steam_appid.txt`.
 Web demo for [galaxy.click](https://galaxy.click) at **`https://a-dark-cave.com/galaxy`**. Same gameplay
 shell as the Steam edition (no shop, Playlight, leaderboard, auth, or Supabase cloud saves) with the
 full game unlocked locally. Saves use IndexedDB key `galaxySave` (isolated from `mainSave`). Play is
-capped at **1.5 hours** cumulative time tracked in `localStorage` (`adc-galaxy-demo-play-ms`); when
+capped at **2.5 hours** cumulative time tracked in `localStorage` (`adc-galaxy-demo-play-ms`); when
 the limit is reached, `GalaxyTimeUpDialog` blocks the sim and links to the
 [Steam store page](https://store.steampowered.com/app/4882240/A_Dark_Cave/).
 

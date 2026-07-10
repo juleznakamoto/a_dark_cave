@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
+import { startNewGalaxyDemoGame } from "@/game/galaxyDemo";
 import { useTranslation } from "react-i18next";
 
 const STEAM_STORE_URL =
@@ -17,6 +18,10 @@ export default function GalaxyTimeUpDialog() {
   const galaxyTimeUpDialogOpen = useGameStore(
     (state) => state.galaxyTimeUpDialogOpen,
   );
+
+  const handleStartNewGame = () => {
+    void startNewGalaxyDemoGame();
+  };
 
   return (
     <Dialog open={galaxyTimeUpDialogOpen} onOpenChange={() => { }}>
@@ -39,6 +44,9 @@ export default function GalaxyTimeUpDialog() {
             >
               {t("galaxy.wishlistButton")}
             </a>
+          </Button>
+          <Button variant="outline" onClick={handleStartNewGame}>
+            {t("galaxy.startNewGameButton")}
           </Button>
           <p className="text-center text-xs text-muted-foreground">
             {t("galaxy.releaseNote")}

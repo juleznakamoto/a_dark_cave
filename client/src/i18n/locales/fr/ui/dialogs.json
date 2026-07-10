@@ -235,6 +235,7 @@
     "title": "La démo s'arrête ici",
     "description": "Ajoutez le jeu complet à votre liste de souhaits Steam pour poursuivre l'aventure à sa sortie.",
     "wishlistButton": "Ajouter à la liste de souhaits Steam",
+    "startNewGameButton": "Nouvelle partie",
     "releaseNote": "Sortie prévue : T4 2026"
   }
 }
