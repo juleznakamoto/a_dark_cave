@@ -89,10 +89,7 @@ import {
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import {
-  AnimatedCounter,
-  ANIMATED_COUNTER_TEXT_CLASS,
-} from "@/components/ui/animated-counter";
+import { ANIMATED_COUNTER_TEXT_CLASS } from "@/components/ui/animated-counter";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
 import { ConstructionBoostBadge } from "@/components/game/ConstructionBoostBadge";
@@ -165,6 +162,10 @@ const VILLAGER_COUNT_BUTTON_CLASS = cn(
 );
 const VILLAGER_COUNT_CAP_CLASS = cn(
   "notranslate inline-flex items-end self-end leading-none",
+  ANIMATED_COUNTER_TEXT_CLASS,
+);
+const VILLAGER_COUNT_VALUE_CLASS = cn(
+  "notranslate inline-flex w-full items-end justify-center self-end leading-none",
   ANIMATED_COUNTER_TEXT_CLASS,
 );
 const VILLAGER_COUNT_LABEL_CLASS =
@@ -996,6 +997,12 @@ export default function VillagePanel() {
   const onMissionCount = useGameStore((s) => getExpeditionVillagerCount(s));
   const freeVillagers = villagers.free ?? 0;
 
+  const renderVillagerCount = (value: number, className?: string) => (
+    <span translate="no" className={cn(VILLAGER_COUNT_VALUE_CLASS, className)}>
+      {value}
+    </span>
+  );
+
   const renderVillagerStatRow = (
     key: string,
     label: string,
@@ -1005,9 +1012,7 @@ export default function VillagePanel() {
     <div key={key} className={VILLAGER_COUNT_ROW_CLASS}>
       <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
         <span className="inline-block w-[1.25rem]" aria-hidden />
-        <div className="flex self-end justify-center">
-          <AnimatedCounter value={count} align="end" className={options?.className} />
-        </div>
+        {renderVillagerCount(count, options?.className)}
         <span className="inline-block w-[1.25rem]" aria-hidden />
         <span translate="no" className={VILLAGER_COUNT_CAP_CLASS} aria-hidden />
       </div>
@@ -1024,9 +1029,7 @@ export default function VillagePanel() {
     <div key="villagers-summary" className={VILLAGER_COUNT_ROW_CLASS}>
       <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
         <span className="inline-block w-[1.25rem]" aria-hidden />
-        <div className="flex self-end justify-center">
-          <AnimatedCounter value={totalPopulation} align="end" />
-        </div>
+        {renderVillagerCount(totalPopulation)}
         <span className="inline-block w-[1.25rem]" aria-hidden />
         <span
           translate="no"
@@ -1114,11 +1117,7 @@ export default function VillagePanel() {
           >
             -
           </Button>
-          <div className="flex self-end justify-center">
-            <span translate="no" className={cn("notranslate", ANIMATED_COUNTER_TEXT_CLASS)}>
-              {currentCount}
-            </span>
-          </div>
+          {renderVillagerCount(currentCount)}
           <Button
             onMouseDown={() =>
               canAssignMore && startHold(() => assignVillager(jobId), false)
