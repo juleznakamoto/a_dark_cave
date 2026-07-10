@@ -144,7 +144,7 @@ const VILLAGE_INDICATOR_TOOLTIP_IDS = [
 
 /** Shared with the 18px circular progress indicators in the Produce header row. */
 const PRODUCE_HEADER_INDICATOR_CLASS =
-  "inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center self-center cursor-pointer rounded-full opacity-90 transition-opacity duration-150 hover:opacity-100";
+  "inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center self-center cursor-pointer rounded-full opacity-80 transition-opacity duration-150 hover:opacity-100";
 const PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS =
   "inline-flex items-center leading-none";
 /** Preset numbers, construction queue slots, and related header controls. */
@@ -611,15 +611,15 @@ export default function VillagePanel() {
       });
       const investPlayTimeCooldown = active
         ? {
-          startPlayTime: active.startPlayTime,
-          endPlayTime: active.endPlayTime,
-          mode: "progress" as const,
-        }
+            startPlayTime: active.startPlayTime,
+            endPlayTime: active.endPlayTime,
+            mode: "progress" as const,
+          }
         : nextWave > 0 && currentPlayTime < nextWave
           ? {
-            startPlayTime: nextWave - getInvestmentWaveGapMs(),
-            endPlayTime: nextWave,
-          }
+              startPlayTime: nextWave - getInvestmentWaveGapMs(),
+              endPlayTime: nextWave,
+            }
           : null;
       const tooltipContent = !investReady ? (
         active ? (
@@ -693,9 +693,9 @@ export default function VillagePanel() {
       const merchantPlayTimeCooldown =
         isOnCooldown && callMerchantLastEndPlayTime != null
           ? {
-            startPlayTime: callMerchantLastEndPlayTime,
-            endPlayTime: cooldownEndPlayTime,
-          }
+              startPlayTime: callMerchantLastEndPlayTime,
+              endPlayTime: cooldownEndPlayTime,
+            }
           : null;
       const canAfford = (resources?.gold ?? 0) >= price;
       const isDisabled =
@@ -915,9 +915,7 @@ export default function VillagePanel() {
     }
 
     return (
-      <ActionButtonSlot key={`${actionId}-wrapper`}>
-        {button}
-      </ActionButtonSlot>
+      <ActionButtonSlot key={`${actionId}-wrapper`}>{button}</ActionButtonSlot>
     );
   };
 
@@ -1093,7 +1091,8 @@ export default function VillagePanel() {
         <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
           <Button
             onMouseDown={() =>
-              currentCount > 0 && startHold(() => unassignVillager(jobId), false)
+              currentCount > 0 &&
+              startHold(() => unassignVillager(jobId), false)
             }
             onMouseUp={() => stopHold(false)}
             onMouseLeave={() => stopHold(false)}
@@ -1322,34 +1321,34 @@ export default function VillagePanel() {
                                       <div className="text-xs">
                                         {isBuildingLocked
                                           ? t(
-                                            "village.slotBuildingNeededToUnlock",
-                                            {
-                                              defaultValue:
-                                                "Building required to unlock",
-                                            },
-                                          )
-                                          : insightUnlockCost !== null
-                                            ? t(
-                                              "village.slotInsightUnlockAvailable",
+                                              "village.slotBuildingNeededToUnlock",
                                               {
-                                                cost: formatNumber(
-                                                  insightUnlockCost,
-                                                ),
                                                 defaultValue:
-                                                  "Can be unlocked for {{cost}} Insight",
+                                                  "Building required to unlock",
                                               },
                                             )
+                                          : insightUnlockCost !== null
+                                            ? t(
+                                                "village.slotInsightUnlockAvailable",
+                                                {
+                                                  cost: formatNumber(
+                                                    insightUnlockCost,
+                                                  ),
+                                                  defaultValue:
+                                                    "Can be unlocked for {{cost}} Insight",
+                                                },
+                                              )
                                             : isLocked
                                               ? t("village.queueSlotLocked", {
-                                                slot,
-                                              })
-                                              : isUsed
-                                                ? t("village.queueSlotUsed", {
                                                   slot,
                                                 })
+                                              : isUsed
+                                                ? t("village.queueSlotUsed", {
+                                                    slot,
+                                                  })
                                                 : t("village.queueSlotFree", {
-                                                  slot,
-                                                })}
+                                                    slot,
+                                                  })}
                                       </div>
                                     }
                                     tooltipTriggerClassName="inline-flex items-center leading-none"
@@ -2094,19 +2093,19 @@ export default function VillagePanel() {
                                   <div className="text-xs">
                                     {insightUnlockCost !== null
                                       ? t(
-                                        "village.slotInsightUnlockAvailable",
-                                        {
-                                          cost: formatNumber(
-                                            insightUnlockCost,
-                                          ),
-                                          defaultValue:
-                                            "Can be unlocked for {{cost}} Insight",
-                                        },
-                                      )
+                                          "village.slotInsightUnlockAvailable",
+                                          {
+                                            cost: formatNumber(
+                                              insightUnlockCost,
+                                            ),
+                                            defaultValue:
+                                              "Can be unlocked for {{cost}} Insight",
+                                          },
+                                        )
                                       : t("village.presetLocked", {
-                                        defaultValue:
-                                          "Locked: available for purchase",
-                                      })}
+                                          defaultValue:
+                                            "Locked: available for purchase",
+                                        })}
                                   </div>
                                 }
                                 tooltipTriggerClassName="inline-flex items-center leading-none"
@@ -2166,8 +2165,8 @@ export default function VillagePanel() {
                                   isActive
                                     ? "group-hover:bg-primary/90"
                                     : gameActionOutlineButtonClassName(false, {
-                                      groupHover: true,
-                                    }),
+                                        groupHover: true,
+                                      }),
                                 )}
                                 style={{ touchAction: "manipulation" }}
                               >
