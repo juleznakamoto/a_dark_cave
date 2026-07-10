@@ -1115,7 +1115,9 @@ export default function VillagePanel() {
             -
           </Button>
           <div className="flex self-end justify-center">
-            <AnimatedCounter value={currentCount} align="end" />
+            <span translate="no" className={cn("notranslate", ANIMATED_COUNTER_TEXT_CLASS)}>
+              {currentCount}
+            </span>
           </div>
           <Button
             onMouseDown={() =>
