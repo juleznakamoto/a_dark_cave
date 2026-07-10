@@ -402,10 +402,20 @@ export default function StartScreen() {
           })}
           {!steamEditionActive && (
             <div className="flex flex-col items-end leading-tight sm:flex-row sm:items-center sm:gap-x-3">
-              <a href="/privacy" className={START_FOOTER_LEGAL_LINK}>
+              <a
+                href="/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={START_FOOTER_LEGAL_LINK}
+              >
                 {t("footer.privacy")}
               </a>
-              <a href="/imprint" className={START_FOOTER_LEGAL_LINK}>
+              <a
+                href="/imprint"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={START_FOOTER_LEGAL_LINK}
+              >
                 {t("footer.imprint")}
               </a>
             </div>

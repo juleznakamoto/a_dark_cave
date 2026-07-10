@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
+import { isGalaxyEdition } from "@/lib/edition";
 import {
   handleDonateHeartAnimationEnd,
   pumpDonateHeart,
@@ -47,6 +48,7 @@ export default function GameFooter() {
   const donateHeartRef = useRef<HTMLSpanElement>(null);
   const { t } = useTranslation("ui");
   const steamEditionActive = useSteamEditionActive();
+  const showFooterDonate = !steamEditionActive || isGalaxyEdition();
 
   const triggerDonateHeartPump = useCallback(() => {
     pumpDonateHeart(donateHeartRef.current);
@@ -118,57 +120,57 @@ export default function GameFooter() {
                 <span className={FOOTER_CONTROL_TEXT}>{t("footer.fullGame")}</span>
               </Button>
             ) : null}
-            {/* Shop + donate are web-only (Stripe / external tip jar). */}
+            {/* Shop is web-only (Stripe). Donate is web + Galaxy (external tip jar). */}
             {!steamEditionActive && (
-              <>
-                <HoverCalloutTooltip
-                  label={t("footer.openShop")}
-                  side="top"
+              <HoverCalloutTooltip
+                label={t("footer.openShop")}
+                side="top"
+              >
+                <Button
+                  variant="ghost"
+                  size="xs"
+                  onClick={() => setShopDialogOpen(true)}
+                  aria-label={t("footer.openShop")}
+                  className={FOOTER_CONTROL_BTN}
                 >
-                  <Button
-                    variant="ghost"
-                    size="xs"
-                    onClick={() => setShopDialogOpen(true)}
-                    aria-label={t("footer.openShop")}
-                    className={FOOTER_CONTROL_BTN}
-                  >
-                    <span className={FOOTER_CONTROL_TEXT}>
-                      {t("footer.trader")}
-                    </span>
-                  </Button>
-                </HoverCalloutTooltip>
-                <HoverCalloutTooltip
-                  label={t("footer.supportGame")}
-                  side="top"
-                  onHoverStart={triggerDonateHeartPump}
+                  <span className={FOOTER_CONTROL_TEXT}>
+                    {t("footer.trader")}
+                  </span>
+                </Button>
+              </HoverCalloutTooltip>
+            )}
+            {showFooterDonate && (
+              <HoverCalloutTooltip
+                label={t("footer.supportGame")}
+                side="top"
+                onHoverStart={triggerDonateHeartPump}
+              >
+                <Button
+                  variant="ghost"
+                  size="xs"
+                  onClick={handleOfferTribute}
+                  onMouseEnter={triggerDonateHeartPump}
+                  aria-label={t("footer.supportGame")}
+                  className={`${FOOTER_CONTROL_BTN} flex items-center gap-1`}
                 >
-                  <Button
-                    variant="ghost"
-                    size="xs"
-                    onClick={handleOfferTribute}
-                    onMouseEnter={triggerDonateHeartPump}
-                    aria-label={t("footer.supportGame")}
-                    className={`${FOOTER_CONTROL_BTN} flex items-center gap-1`}
+                  <span
+                    ref={donateHeartRef}
+                    aria-hidden
+                    className={DONATE_HEART}
+                    onAnimationEnd={(e) =>
+                      handleDonateHeartAnimationEnd(
+                        e.currentTarget,
+                        e.animationName,
+                      )
+                    }
                   >
-                    <span
-                      ref={donateHeartRef}
-                      aria-hidden
-                      className={DONATE_HEART}
-                      onAnimationEnd={(e) =>
-                        handleDonateHeartAnimationEnd(
-                          e.currentTarget,
-                          e.animationName,
-                        )
-                      }
-                    >
-                      ❤︎⁠
-                    </span>
-                    <span className={FOOTER_CONTROL_TEXT}>
-                      {t("footer.donate")}
-                    </span>
-                  </Button>
-                </HoverCalloutTooltip>
-              </>
+                    ❤︎⁠
+                  </span>
+                  <span className={FOOTER_CONTROL_TEXT}>
+                    {t("footer.donate")}
+                  </span>
+                </Button>
+              </HoverCalloutTooltip>
             )}
           </div>
           <div className="flex-1 flex justify-end gap-1 items-center">
@@ -202,10 +204,20 @@ export default function GameFooter() {
             })}
             {!steamEditionActive && (
               <div className="flex flex-col items-end leading-tight sm:flex-row sm:items-center sm:gap-1">
-                <a href="/privacy" className={FOOTER_LEGAL_LINK}>
+                <a
+                  href="/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={FOOTER_LEGAL_LINK}
+                >
                   {t("footer.privacy")}
                 </a>
-                <a href="/imprint" className={FOOTER_LEGAL_LINK}>
+                <a
+                  href="/imprint"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={FOOTER_LEGAL_LINK}
+                >
                   {t("footer.imprint")}
                 </a>
               </div>
