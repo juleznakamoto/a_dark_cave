@@ -144,7 +144,7 @@ const VILLAGE_INDICATOR_TOOLTIP_IDS = [
 
 /** Shared with the 18px circular progress indicators in the Produce header row. */
 const PRODUCE_HEADER_INDICATOR_CLASS =
-  "inline-flex shrink-0 items-center self-center cursor-pointer";
+  "inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center self-center cursor-pointer rounded-full transition-shadow duration-150 hover:shadow-[0_0_0_1px_rgba(255,255,255,0.55)]";
 const PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS =
   "inline-flex items-center leading-none";
 /** Preset numbers, construction queue slots, and related header controls. */
