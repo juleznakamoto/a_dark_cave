@@ -7,16 +7,17 @@ export const socialPromoExclusiveEvents: Record<string, GameEvent> = {
     id: "giftedRingDiscovery",
     condition: (state: GameState) =>
       state.socialPromoExclusiveRewardPending === true &&
-      !state.clothing.gifted_ring,
+      state.clothing?.gifted_ring !== true,
     timeProbability: 0.5,
     priority: 10,
-    repeatable: true,
+    repeatable: true,
+
     choices: [
       {
-        id: "takeGiftedRing",
+        id: "takeGiftedRing",
         effect: (state: GameState) => ({
           clothing: {
-            ...state.clothing,
+            ...(state.clothing ?? {}),
             gifted_ring: true,
           },
           socialPromoExclusiveRewardPending: false,

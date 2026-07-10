@@ -5,16 +5,20 @@
 
 export type FooterSocialPlatformId =
   | "reddit"
-  | "instagram"
+  | "steam"
   | "contact";
 
 /** Official subreddit URL (structured data, footer, start screen). */
 export const OFFICIAL_REDDIT_URL =
   "https://www.reddit.com/r/aDarkCave/" as const;
 
-/** Instagram URL for sitelink-style structured data / SEO markup. */
+/** Instagram URL (social rewards / legacy links — not in game footer). */
 export const OFFICIAL_INSTAGRAM_URL =
   "https://www.instagram.com/a_dark_cave/" as const;
+
+/** Steam store page (footer, start screen, SEO sitelinks). */
+export const OFFICIAL_STEAM_URL =
+  "https://store.steampowered.com/app/4882240/A_Dark_Cave/" as const;
 
 export const GAME_FOOTER_RIGHT_ICON_LINKS: Readonly<
   Record<
@@ -26,9 +30,9 @@ export const GAME_FOOTER_RIGHT_ICON_LINKS: Readonly<
     href: OFFICIAL_REDDIT_URL,
     title: "Reddit",
   },
-  instagram: {
-    href: OFFICIAL_INSTAGRAM_URL,
-    title: "Instagram",
+  steam: {
+    href: OFFICIAL_STEAM_URL,
+    title: "Steam",
   },
   contact: {
     href: "mailto:support@a-dark-cave.com",
@@ -39,6 +43,6 @@ export const GAME_FOOTER_RIGHT_ICON_LINKS: Readonly<
 /** Stable row order for the game footer icons and start-screen mirrors. */
 export const GAME_FOOTER_RIGHT_ICON_ORDER: readonly FooterSocialPlatformId[] = [
   "reddit",
-  "instagram",
+  "steam",
   "contact",
 ] as const;

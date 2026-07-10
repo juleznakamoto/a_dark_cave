@@ -242,6 +242,74 @@ async function getDB() {
   }
 }
 
+type ReferralEntry = GameState["referrals"][number];
+
+function mergeReferralEntries(
+  local: ReferralEntry,
+  cloud: ReferralEntry,
+): ReferralEntry {
+  return {
+    userId: local.userId,
+    claimed: local.claimed || cloud.claimed,
+    timestamp: Math.max(local.timestamp, cloud.timestamp),
+  };
+}
+
+/**
+ * Server-side referral processing updates the referrer's cloud save directly.
+ * When local IndexedDB has more playTime, load still prefers local — merge cloud
+ * referrals so invite rewards are not lost.
+ */
+export function mergeCloudReferralsIntoState(
+  localState: GameState,
+  cloudState: Pick<GameState, "referrals" | "referralCount" | "referredUsers">,
+): GameState {
+  const localRefs = Array.isArray(localState.referrals) ? localState.referrals : [];
+  const cloudRefs = Array.isArray(cloudState.referrals) ? cloudState.referrals : [];
+
+  const byUserId = new Map<string, ReferralEntry>();
+  for (const entry of localRefs) {
+    if (entry?.userId) byUserId.set(entry.userId, entry);
+  }
+  for (const entry of cloudRefs) {
+    if (!entry?.userId) continue;
+    const existing = byUserId.get(entry.userId);
+    byUserId.set(
+      entry.userId,
+      existing ? mergeReferralEntries(existing, entry) : entry,
+    );
+  }
+
+  const mergedReferrals = Array.from(byUserId.values()).sort(
+    (a, b) => a.timestamp - b.timestamp,
+  );
+  const referralCount = Math.max(
+    localState.referralCount ?? 0,
+    cloudState.referralCount ?? 0,
+    mergedReferrals.length,
+  );
+  const referredUsers = mergedReferrals.map((entry) => entry.userId);
+
+  const unchanged =
+    mergedReferrals.length === localRefs.length &&
+    (localState.referralCount ?? 0) === referralCount &&
+    localRefs.every(
+      (entry, index) =>
+        entry.userId === mergedReferrals[index]?.userId &&
+        entry.claimed === mergedReferrals[index]?.claimed &&
+        entry.timestamp === mergedReferrals[index]?.timestamp,
+    );
+
+  if (unchanged) return localState;
+
+  return {
+    ...localState,
+    referrals: mergedReferrals,
+    referralCount,
+    referredUsers,
+  };
+}
+
 /** Serialize referral claiming so concurrent loadGame() paths cannot double-award (promise chain: swap gate before awaiting prev). */
 let referralClaimGate = Promise.resolve();
 
@@ -336,7 +404,7 @@ async function processUnclaimedReferralsImpl(
     ...gameState,
     referrals: updatedReferrals,
     resources: {
-      ...gameState.resources,
+      ...(gameState.resources ?? {}),
       gold: newGold,
     },
     log: [...(gameState.log || []), ...logEntriesAdded].slice(-100),
@@ -393,10 +461,8 @@ export async function saveGame(
     // Deep clone and sanitize the game state to remove non-serializable data
     let sanitizedState: any;
     try {
-      // Use custom replacer to convert undefined to null for safe serialization
-      sanitizedState = JSON.parse(JSON.stringify(persistedState, (key, value) => {
-        return value === undefined ? null : value;
-      }));
+      // Omit undefined keys — persisting them as null breaks load (object spread / Object.entries).
+      sanitizedState = JSON.parse(JSON.stringify(persistedState));
     } catch (parseError) {
       logger.warn("[SAVE] ⚠️ JSON serialization failed, using gameState directly:", parseError);
       // Fallback: use gameState directly if JSON round-trip fails
@@ -525,7 +591,8 @@ export async function saveGame(
           currentPlayTime: stateDiff.playTime,
         });
 
-        // Save via Edge Function (handles auth, rate limiting, and trust)
+        // Save via Edge Function → save_game_with_analytics (deep-merges nested JSONB
+        // objects server-side; see supabase/migrations/024_jsonb_deep_merge_game_state.sql).
         const supabaseClient = await getSupabaseClient();
 
         // Verify we have an active session (Supabase client will automatically include the JWT)
@@ -637,7 +704,10 @@ export async function loadGame(): Promise<GameState | null> {
           // Use whichever has more playtime (most progress)
           if (localPlayTime > cloudPlayTime) {
             logger.log("[LOAD] 💾 Local save is newer - using local and syncing to cloud");
-            loadedState = localSave.gameState; // Assign to loadedState
+            loadedState = mergeCloudReferralsIntoState(
+              localSave.gameState,
+              cloudSave.gameState,
+            );
 
             const stateWithDefaults = {
               ...loadedState,

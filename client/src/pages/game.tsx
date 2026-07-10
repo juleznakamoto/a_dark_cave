@@ -187,9 +187,9 @@ export default function Game() {
             ...stateUpdates,
             ...resumeUi,
             flags: {
-              ...savedState.flags,
-              gameStarted: isGamePath ? true : savedState.flags.gameStarted,
-              hasLitFire: isGamePath ? true : savedState.flags.hasLitFire,
+              ...(savedState.flags ?? {}),
+              gameStarted: isGamePath ? true : savedState.flags?.gameStarted,
+              hasLitFire: isGamePath ? true : savedState.flags?.hasLitFire,
               ...(isGamePath
                 ? {
                   constructionQueueEnabled: true,

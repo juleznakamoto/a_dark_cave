@@ -1044,7 +1044,7 @@ const mergeStateUpdates = (
         ? stateUpdates.referrals
         : prevState.referrals, // Merge referrals (was `||`, which wrongly kept [] over prev)
     social_media_rewards:
-      stateUpdates.social_media_rewards !== undefined
+      stateUpdates.social_media_rewards != null
         ? stateUpdates.social_media_rewards
         : prevState.social_media_rewards, // Merge social rewards (was `||`, {} overwrote unintentionally)
     lastResourceSnapshotTime:

@@ -23,7 +23,7 @@ export default function FeedbackDialog() {
 
   const contactLabel = (platform: FooterSocialPlatformId) => {
     if (platform === "reddit") return t("feedback.reddit");
-    if (platform === "instagram") return t("feedback.instagram");
+    if (platform === "steam") return t("feedback.steam");
     return t("feedback.email");
   };
 

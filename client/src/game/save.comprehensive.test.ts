@@ -1,7 +1,7 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { saveGame, loadGame, deleteSave } from './save';
-import { GameState, SaveData } from '@shared/schema';
+import { GameState, SaveData, REFERRAL_REWARD_GOLD } from '@shared/schema';
 import { decodeLocalSave, LOCAL_SAVE_PREFIX } from './saveCodec';
 
 function readMainSave(
@@ -903,6 +903,48 @@ describe('Save Game System - Comprehensive Tests', () => {
   });
 
   describe('6. Referral System Integration', () => {
+    it('merges cloud referrals when local save has more playTime', async () => {
+      const auth = await import('./auth');
+      const localState = createMockGameState({
+        playTime: 5000,
+        referrals: [],
+        referralCount: 0,
+      });
+      const cloudState = createMockGameState({
+        playTime: 2000,
+        referrals: [
+          { userId: 'friend-1', timestamp: 100, claimed: false },
+        ],
+        referralCount: 1,
+      });
+
+      mockGet.mockResolvedValue({
+        gameState: localState,
+        timestamp: Date.now(),
+        playTime: 5000,
+      });
+
+      vi.mocked(auth.getCurrentUser).mockResolvedValue({
+        id: 'user-1',
+        email: 'test@example.com',
+      });
+      vi.mocked(auth.loadGameFromSupabase).mockResolvedValue({
+        gameState: cloudState,
+        timestamp: Date.now() - 180000,
+        playTime: 2000,
+      });
+      vi.mocked(auth.saveGameToSupabase).mockResolvedValue(undefined);
+
+      const loaded = await loadGame();
+
+      expect(loaded?.playTime).toBe(5000);
+      expect(loaded?.referrals).toEqual([
+        { userId: 'friend-1', timestamp: 100, claimed: true },
+      ]);
+      expect(loaded?.referralCount).toBe(1);
+      expect(loaded?.resources.gold).toBe(200 + REFERRAL_REWARD_GOLD);
+    });
+
     it('should process unclaimed referrals on load', async () => {
       const auth = await import('./auth');
       const stateWithReferrals = createMockGameState({

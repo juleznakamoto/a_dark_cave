@@ -1,0 +1,383 @@
+-- Deep-merge nested JSONB objects when applying cloud save diffs.
+-- Top-level `existing || diff` replaces whole object keys (e.g. partial `fellowship`
+-- wiped huntress/prior). Recursively merge object values; arrays/scalars still patch-wins.
+-- Game restarts (`p_allow_playtime_overwrite`) keep shallow top-level merge so a full
+-- reset diff replaces each top-level key wholesale.
+
+CREATE OR REPLACE FUNCTION jsonb_deep_merge_objects(
+  p_base JSONB,
+  p_patch JSONB
+)
+RETURNS JSONB
+LANGUAGE plpgsql
+IMMUTABLE
+AS $$
+DECLARE
+  v_result JSONB := COALESCE(p_base, '{}'::jsonb);
+  v_key TEXT;
+  v_patch_val JSONB;
+  v_base_val JSONB;
+BEGIN
+  IF p_patch IS NULL THEN
+    RETURN v_result;
+  END IF;
+
+  IF jsonb_typeof(p_patch) <> 'object' THEN
+    RETURN p_patch;
+  END IF;
+
+  IF v_result IS NULL OR jsonb_typeof(v_result) <> 'object' THEN
+    RETURN p_patch;
+  END IF;
+
+  FOR v_key IN SELECT jsonb_object_keys(p_patch) LOOP
+    v_patch_val := p_patch -> v_key;
+    v_base_val := v_result -> v_key;
+
+    IF jsonb_typeof(v_patch_val) = 'object'
+       AND v_base_val IS NOT NULL
+       AND jsonb_typeof(v_base_val) = 'object' THEN
+      v_result := jsonb_set(
+        v_result,
+        ARRAY[v_key],
+        jsonb_deep_merge_objects(v_base_val, v_patch_val),
+        true
+      );
+    ELSE
+      v_result := jsonb_set(v_result, ARRAY[v_key], v_patch_val, true);
+    END IF;
+  END LOOP;
+
+  RETURN v_result;
+END;
+$$;
+
+COMMENT ON FUNCTION jsonb_deep_merge_objects(JSONB, JSONB) IS
+  'Recursively deep-merges JSON objects for cloud save diffs. Arrays and scalars are replaced by patch values.';
+
+-- Recreate save_game_with_analytics (from 023) with deep-merge on incremental saves.
+CREATE OR REPLACE FUNCTION save_game_with_analytics(
+  p_game_state_diff JSONB,
+  p_click_analytics JSONB DEFAULT NULL,
+  p_resource_analytics JSONB DEFAULT NULL,
+  p_clear_analytics BOOLEAN DEFAULT FALSE,
+  p_allow_playtime_overwrite BOOLEAN DEFAULT FALSE
+)
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+DECLARE
+  v_user_id UUID;
+  v_existing_state JSONB;
+  v_merged_state JSONB;
+  v_existing_clicks JSONB;
+  v_existing_resources JSONB;
+  v_updated_clicks JSONB;
+  v_updated_resources JSONB;
+  v_playtime_ms NUMERIC;
+  v_playtime_minutes INTEGER;
+  v_playtime_bucket INTEGER;
+  v_playtime_key TEXT;
+  v_existing_playtime NUMERIC;
+  v_new_playtime NUMERIC;
+BEGIN
+  -- Get authenticated user ID from JWT context
+  v_user_id := auth.uid();
+  
+  IF v_user_id IS NULL THEN
+    RAISE EXCEPTION 'Not authenticated';
+  END IF;
+
+  -- Get existing game state
+  SELECT game_state INTO v_existing_state
+  FROM game_saves
+  WHERE user_id = v_user_id;
+
+  -- OCC: Validate playTime if both states exist (unless overwrite is allowed)
+  IF v_existing_state IS NOT NULL AND p_game_state_diff ? 'playTime' THEN
+    v_existing_playtime := COALESCE((v_existing_state->>'playTime')::NUMERIC, 0);
+    v_new_playtime := COALESCE((p_game_state_diff->>'playTime')::NUMERIC, 0);
+
+    IF p_allow_playtime_overwrite THEN
+      RAISE NOTICE 'OCC check SKIPPED: playTime overwrite allowed (game restart) - new: %, existing: %', 
+        v_new_playtime, v_existing_playtime;
+    ELSE
+      IF v_new_playtime < v_existing_playtime THEN
+        RAISE EXCEPTION 'OCC violation: new playTime (%) must not be less than existing playTime (%)', 
+          v_new_playtime, v_existing_playtime;
+      ELSIF v_new_playtime > v_existing_playtime THEN
+        RAISE NOTICE 'OCC check passed: new playTime (%) > existing playTime (%)',
+          v_new_playtime, v_existing_playtime;
+      END IF;
+    END IF;
+  END IF;
+
+  -- Merge the diff with existing state
+  IF v_existing_state IS NOT NULL THEN
+    IF p_allow_playtime_overwrite THEN
+      -- Full reset / restart: each top-level key in the diff replaces wholesale.
+      v_merged_state := v_existing_state || p_game_state_diff;
+    ELSE
+      v_merged_state := jsonb_deep_merge_objects(v_existing_state, p_game_state_diff);
+    END IF;
+  ELSE
+    v_merged_state := p_game_state_diff;
+  END IF;
+
+  -- ========== RESOURCE MANIPULATION PREVENTION ==========
+  -- Validates that resource values in the merged state are within allowed bounds.
+  -- Storage limits for limited resources mirror client/src/game/resourceLimits.ts
+  -- If you change storage tiers or limits, update BOTH this SQL and resourceLimits.ts.
+  -- Skip validation in development (see app_config table)
+  IF v_existing_state IS NOT NULL AND NOT p_allow_playtime_overwrite
+    AND NOT EXISTS (SELECT 1 FROM app_config WHERE key = 'environment' AND value = 'development')
+  THEN
+    DECLARE
+      v_resource_key TEXT;
+      v_old_res NUMERIC;
+      v_new_res NUMERIC;
+      v_storage_level INTEGER := 0;
+      v_resource_limit NUMERIC;
+      v_gold_delta NUMERIC;
+      v_silver_delta NUMERIC;
+    BEGIN
+      -- Determine storage level from merged state buildings
+      -- (mirrors building hierarchy in client/src/game/resourceLimits.ts getResourceLimit)
+      IF COALESCE((v_merged_state->'buildings'->>'greatVault')::INTEGER, 0) > 0 THEN v_storage_level := 6;
+      ELSIF COALESCE((v_merged_state->'buildings'->>'grandRepository')::INTEGER, 0) > 0 THEN v_storage_level := 5;
+      ELSIF COALESCE((v_merged_state->'buildings'->>'villageWarehouse')::INTEGER, 0) > 0 THEN v_storage_level := 4;
+      ELSIF COALESCE((v_merged_state->'buildings'->>'fortifiedStorehouse')::INTEGER, 0) > 0 THEN v_storage_level := 3;
+      ELSIF COALESCE((v_merged_state->'buildings'->>'storehouse')::INTEGER, 0) > 0 THEN v_storage_level := 2;
+      ELSIF COALESCE((v_merged_state->'buildings'->>'supplyHut')::INTEGER, 0) > 0 THEN v_storage_level := 1;
+      END IF;
+
+      -- Storage limits per level (mirrors client/src/game/resourceLimits.ts)
+      v_resource_limit := CASE v_storage_level
+        WHEN 0 THEN 500
+        WHEN 1 THEN 1000
+        WHEN 2 THEN 2500
+        WHEN 3 THEN 5000
+        WHEN 4 THEN 10000
+        WHEN 5 THEN 25000
+        WHEN 6 THEN 50000
+        ELSE 500
+      END;
+
+      -- Validate limited resources (everything except gold/silver/insight) against storage cap
+      IF v_merged_state ? 'resources' THEN
+        FOR v_resource_key IN SELECT jsonb_object_keys(v_merged_state->'resources') LOOP
+          IF v_resource_key NOT IN ('gold', 'silver', 'insight') THEN
+            v_new_res := COALESCE((v_merged_state->'resources'->>v_resource_key)::NUMERIC, 0);
+            IF v_new_res > v_resource_limit THEN
+              RAISE EXCEPTION 'Save rejected: resource % (%) exceeds storage limit (%)',
+                v_resource_key, v_new_res, v_resource_limit;
+            END IF;
+          END IF;
+        END LOOP;
+      END IF;
+
+      -- Validate silver delta: max +5000 per save, unless claimedAchievements changed
+      v_old_res := COALESCE((v_existing_state->'resources'->>'silver')::NUMERIC, 0);
+      v_new_res := COALESCE((v_merged_state->'resources'->>'silver')::NUMERIC, 0);
+      v_silver_delta := v_new_res - v_old_res;
+      IF v_silver_delta > 5000 AND NOT (p_game_state_diff ? 'claimedAchievements') THEN
+        RAISE EXCEPTION 'Save rejected: silver delta % exceeds max 5000 per save (claimedAchievements not in diff)',
+          v_silver_delta;
+      END IF;
+
+      -- Validate gold delta: max +2000 per save, unless activatedPurchases changed
+      v_old_res := COALESCE((v_existing_state->'resources'->>'gold')::NUMERIC, 0);
+      v_new_res := COALESCE((v_merged_state->'resources'->>'gold')::NUMERIC, 0);
+      v_gold_delta := v_new_res - v_old_res;
+      IF v_gold_delta > 2000 AND NOT (p_game_state_diff ? 'activatedPurchases') THEN
+        RAISE EXCEPTION 'Save rejected: gold delta % exceeds max 2000 per save (activatedPurchases not in diff)',
+          v_gold_delta;
+      END IF;
+    END;
+  END IF;
+  -- ========== END RESOURCE MANIPULATION PREVENTION ==========
+
+  -- Check if game was just completed
+  DECLARE
+    v_game_completed BOOLEAN := FALSE;
+    v_existing_game_stats JSONB;
+    v_new_game_stats JSONB;
+    v_completion_record JSONB;
+    v_game_mode TEXT;
+    v_start_time BIGINT;
+    v_finish_time BIGINT;
+    v_playtime_ms BIGINT;
+    v_game_id TEXT;
+    v_already_recorded BOOLEAN := FALSE;
+  BEGIN
+    IF v_merged_state ? 'events' THEN
+      v_game_completed := (
+        (v_merged_state->'events'->>'cube13')::boolean = true OR
+        (v_merged_state->'events'->>'cube14a')::boolean = true OR
+        (v_merged_state->'events'->>'cube14b')::boolean = true OR
+        (v_merged_state->'events'->>'cube14c')::boolean = true OR
+        (v_merged_state->'events'->>'cube14d')::boolean = true OR
+        (v_merged_state->'events'->>'cube15a')::boolean = true OR
+        (v_merged_state->'events'->>'cube15b')::boolean = true
+      );
+    END IF;
+
+    IF v_game_completed AND v_merged_state ? 'playTime' AND v_merged_state ? 'startTime' AND v_merged_state ? 'gameId' THEN
+      v_game_id := v_merged_state->>'gameId';
+
+      SELECT game_stats INTO v_existing_game_stats
+      FROM game_saves
+      WHERE user_id = v_user_id;
+
+      IF v_existing_game_stats IS NULL THEN
+        v_existing_game_stats := '[]'::jsonb;
+      END IF;
+
+      IF v_game_id IS NULL THEN
+        SELECT EXISTS (
+          SELECT 1
+          FROM jsonb_array_elements(v_existing_game_stats) AS elem
+          WHERE (elem->>'gameId') IS NULL
+        ) INTO v_already_recorded;
+      ELSE
+        SELECT EXISTS (
+          SELECT 1
+          FROM jsonb_array_elements(v_existing_game_stats) AS elem
+          WHERE elem->>'gameId' = v_game_id
+        ) INTO v_already_recorded;
+      END IF;
+
+      IF NOT v_already_recorded THEN
+        v_game_mode := CASE 
+          WHEN (v_merged_state->>'cruelMode')::boolean = true THEN 'cruel'
+          ELSE 'normal'
+        END;
+
+        v_start_time := (v_merged_state->>'startTime')::bigint;
+        v_finish_time := EXTRACT(EPOCH FROM NOW())::bigint * 1000;
+        v_playtime_ms := (v_merged_state->>'playTime')::bigint;
+
+        v_completion_record := jsonb_build_object(
+          'gameId', v_game_id,
+          'gameMode', v_game_mode,
+          'startTime', v_start_time,
+          'finishTime', v_finish_time,
+          'playTime', v_playtime_ms
+        );
+
+        v_new_game_stats := v_existing_game_stats || jsonb_build_array(v_completion_record);
+
+        INSERT INTO game_saves (user_id, game_state, game_stats, updated_at)
+        VALUES (v_user_id, v_merged_state, v_new_game_stats, NOW())
+        ON CONFLICT (user_id) 
+        DO UPDATE SET 
+          game_state = EXCLUDED.game_state,
+          game_stats = EXCLUDED.game_stats,
+          updated_at = EXCLUDED.updated_at;
+
+        RAISE NOTICE 'Game completion recorded for gameId: %', v_game_id;
+      ELSE
+        INSERT INTO game_saves (user_id, game_state, updated_at)
+        VALUES (v_user_id, v_merged_state, NOW())
+        ON CONFLICT (user_id) 
+        DO UPDATE SET 
+          game_state = EXCLUDED.game_state,
+          updated_at = EXCLUDED.updated_at;
+
+        RAISE NOTICE 'Game completion already recorded for gameId: %', v_game_id;
+      END IF;
+    ELSE
+      INSERT INTO game_saves (user_id, game_state, updated_at)
+      VALUES (v_user_id, v_merged_state, NOW())
+      ON CONFLICT (user_id) 
+      DO UPDATE SET 
+        game_state = EXCLUDED.game_state,
+        updated_at = EXCLUDED.updated_at;
+    END IF;
+  END;
+
+  -- Handle click and resource analytics
+  IF p_clear_analytics THEN
+    DELETE FROM button_clicks WHERE user_id = v_user_id;
+  ELSE
+    v_playtime_ms := (v_merged_state->>'playTime')::NUMERIC;
+    v_playtime_minutes := FLOOR(v_playtime_ms / 1000 / 60);
+    v_playtime_bucket := FLOOR(v_playtime_minutes / 10) * 10;
+    v_playtime_key := v_playtime_bucket || 'm';
+
+    SELECT clicks, resources INTO v_existing_clicks, v_existing_resources
+    FROM button_clicks
+    WHERE user_id = v_user_id;
+
+    IF p_click_analytics IS NOT NULL AND p_click_analytics != '{}'::jsonb THEN
+      IF v_existing_clicks IS NOT NULL THEN
+        IF v_existing_clicks ? v_playtime_key THEN
+          DECLARE
+            v_existing_bucket JSONB;
+            v_merged_bucket JSONB;
+            v_key TEXT;
+            v_existing_count INTEGER;
+            v_new_count INTEGER;
+          BEGIN
+            v_existing_bucket := v_existing_clicks->v_playtime_key;
+            v_merged_bucket := '{}'::jsonb;
+
+            -- First, add all existing keys with their merged counts
+            FOR v_key IN SELECT jsonb_object_keys(v_existing_bucket) LOOP
+              v_existing_count := (v_existing_bucket->>v_key)::INTEGER;
+              v_new_count := COALESCE((p_click_analytics->>v_key)::INTEGER, 0);
+              v_merged_bucket := jsonb_set(v_merged_bucket, ARRAY[v_key], to_jsonb(v_existing_count + v_new_count));
+            END LOOP;
+
+            -- Then, add any new keys that weren't in the existing bucket
+            FOR v_key IN SELECT jsonb_object_keys(p_click_analytics) LOOP
+              IF NOT (v_existing_bucket ? v_key) THEN
+                v_new_count := (p_click_analytics->>v_key)::INTEGER;
+                v_merged_bucket := jsonb_set(v_merged_bucket, ARRAY[v_key], to_jsonb(v_new_count));
+              END IF;
+            END LOOP;
+
+            v_updated_clicks := jsonb_set(v_existing_clicks, ARRAY[v_playtime_key], v_merged_bucket);
+          END;
+        ELSE
+          v_updated_clicks := v_existing_clicks || jsonb_build_object(v_playtime_key, p_click_analytics);
+        END IF;
+      ELSE
+        v_updated_clicks := jsonb_build_object(v_playtime_key, p_click_analytics);
+      END IF;
+    ELSE
+      v_updated_clicks := v_existing_clicks;
+    END IF;
+
+    IF p_resource_analytics IS NOT NULL AND p_resource_analytics != '{}'::jsonb THEN
+      IF v_existing_resources IS NOT NULL THEN
+        IF v_existing_resources ? v_playtime_key THEN
+          v_updated_resources := jsonb_set(v_existing_resources, ARRAY[v_playtime_key], p_resource_analytics);
+        ELSE
+          v_updated_resources := v_existing_resources || jsonb_build_object(v_playtime_key, p_resource_analytics);
+        END IF;
+      ELSE
+        v_updated_resources := jsonb_build_object(v_playtime_key, p_resource_analytics);
+      END IF;
+    ELSE
+      v_updated_resources := v_existing_resources;
+    END IF;
+
+    IF v_updated_clicks IS NOT NULL OR v_updated_resources IS NOT NULL THEN
+      INSERT INTO button_clicks (user_id, timestamp, clicks, resources)
+      VALUES (
+        v_user_id, 
+        NOW(), 
+        COALESCE(v_updated_clicks, '{}'::jsonb),
+        COALESCE(v_updated_resources, '{}'::jsonb)
+      )
+      ON CONFLICT (user_id)
+      DO UPDATE SET
+        clicks = EXCLUDED.clicks,
+        resources = EXCLUDED.resources,
+        timestamp = EXCLUDED.timestamp;
+    END IF;
+  END IF;
+END;
+$$;
