@@ -232,8 +232,8 @@
     "email": "E-Mail"
   },
   "galaxy": {
-    "title": "Tiempo de demo agotado",
-    "description": "Has jugado 1,5 horas de A Dark Cave. Añade el juego completo a tu lista de deseados de Steam para continuar el viaje cuando se publique.",
+    "title": "La demo termina aquí",
+    "description": "Añade el juego completo a tu lista de deseados de Steam para continuar el viaje cuando se publique.",
     "wishlistButton": "Añadir a la lista de deseados en Steam",
     "releaseNote": "Lanzamiento previsto: Q4 2026"
   }

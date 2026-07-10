@@ -232,8 +232,8 @@
     "email": "E-Mail"
   },
   "galaxy": {
-    "title": "Demo time is up",
-    "description": "You've played 1.5 hours of A Dark Cave. Wishlist the full game on Steam to continue your journey when it releases.",
+    "title": "Demo ends here",
+    "description": "Wishlist the full game on Steam to continue your journey when it releases.",
     "wishlistButton": "Wishlist on Steam",
     "releaseNote": "Planned release: Q4 2026"
   }
