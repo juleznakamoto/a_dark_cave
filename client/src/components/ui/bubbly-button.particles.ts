@@ -46,7 +46,7 @@ const DEFAULT_PARTICLE_CONFIG: Required<ParticleConfig> = {
   durationMin: 0.75,
   durationMax: 1.5,
   distanceMin: 50,
-  distanceMax: 100,
+  distanceMax: 80,
   sizeMin: 5,
   sizeMax: 25,
   ease: [0, 0, 0.5, 1],
@@ -76,7 +76,7 @@ export const CRAFT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   durationMin: 0.5,
   durationMax: 1,
   distanceMin: 40,
-  distanceMax: 80,
+  distanceMax: 70,
   sizeMin: 1,
   sizeMax: 8,
 };
@@ -120,7 +120,7 @@ export function getMineParticleConfig(
     durationMin: 0.6,
     durationMax: 1.2,
     distanceMin: 40,
-    distanceMax: 80,
+    distanceMax: 70,
     sizeMin: 1,
     sizeMax: 12,
   };
@@ -229,7 +229,7 @@ export function getExploreParticleConfig(
     durationMin: 0.9,
     durationMax: 1.8,
     distanceMin: 40,
-    distanceMax: 100,
+    distanceMax: 80,
     sizeMin: 2,
     sizeMax: 12,
   };
@@ -416,12 +416,12 @@ export function mergeParticleConfig(
 ): MergedParticleConfig {
   const merged = override
     ? {
-      ...DEFAULT_PARTICLE_CONFIG,
-      ...base,
-      ...override,
-      colors:
-        override.colors ?? base.colors ?? DEFAULT_PARTICLE_CONFIG.colors,
-    }
+        ...DEFAULT_PARTICLE_CONFIG,
+        ...base,
+        ...override,
+        colors:
+          override.colors ?? base.colors ?? DEFAULT_PARTICLE_CONFIG.colors,
+      }
     : { ...DEFAULT_PARTICLE_CONFIG, ...base };
   // All particles start at once, so we only need durationMax + small buffer for cleanup
   return {
@@ -461,10 +461,10 @@ export function generateParticleData(
       config.sizeMin + Math.random() * (config.sizeMax - config.sizeMin);
     const colorPool =
       config.smallParticleOnlyColors?.length &&
-        size > config.smallParticleMaxSize
+      size > config.smallParticleMaxSize
         ? config.colors.filter(
-          (c) => !config.smallParticleOnlyColors!.includes(c),
-        )
+            (c) => !config.smallParticleOnlyColors!.includes(c),
+          )
         : config.smallParticleOnlyColors?.length
           ? [...config.colors, ...config.smallParticleOnlyColors]
           : config.colors;
