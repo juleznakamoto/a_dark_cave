@@ -352,7 +352,7 @@ const sellTrades = [
     TIER_CONDITIONS.veryEarly,
     ["wood", "stone", "food", "leather", "gold"],
   ),
-  createSellTrade("sell_fur_100_early", "fur", 50, TIER_CONDITIONS.veryEarly, [
+  createSellTrade("sell_fur_100_very_early", "fur", 50, TIER_CONDITIONS.veryEarly, [
     "wood",
     "stone",
     "food",
