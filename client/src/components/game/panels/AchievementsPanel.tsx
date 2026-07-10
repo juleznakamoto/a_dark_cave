@@ -148,9 +148,7 @@ function AchievementTitleInsightBadge({
         className={getInsightBadgeTriggerClassName({
           canAfford: affordable || playing,
           playing,
-          className: cn(
-            "h-5 w-5 cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
-          ),
+          className: "h-5 w-5",
         })}
       >
         <BuildingActionBadge

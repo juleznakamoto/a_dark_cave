@@ -257,14 +257,12 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
             getInsightBadgeTriggerClassName({
               canAfford: canAffordForDisplay,
               playing,
-              className: cn(
-                "cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
+              className:
                 layout === "overlay"
                   ? "flex h-full w-full"
                   : isCompactInline
                     ? "h-3.5 w-3.5"
                     : "h-5 w-5",
-              ),
             }),
           )}
           aria-label={costTooltip}

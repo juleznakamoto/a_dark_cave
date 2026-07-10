@@ -22,6 +22,7 @@ export default function GalaxyTimeUpDialog() {
     <Dialog open={galaxyTimeUpDialogOpen} onOpenChange={() => { }}>
       <DialogContent
         className="max-w-md"
+        hideClose
         onPointerDownOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
       >

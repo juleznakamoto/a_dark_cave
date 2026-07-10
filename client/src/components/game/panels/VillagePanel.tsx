@@ -149,7 +149,7 @@ const PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS =
   "inline-flex items-center leading-none";
 /** Preset numbers, construction queue slots, and related header controls. */
 const HEADER_SLOT_SIZE_CLASS = "h-[18px] w-[18px] min-h-0 shrink-0";
-const HEADER_SLOT_INSIGHT_BUTTON_CLASS = `${HEADER_SLOT_SIZE_CLASS} cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer`;
+const HEADER_SLOT_INSIGHT_BUTTON_CLASS = HEADER_SLOT_SIZE_CLASS;
 const HEADER_SLOT_BUTTON_CLASS = `${HEADER_SLOT_SIZE_CLASS} p-0 pointer-events-none inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]`;
 
 /** − / count / + / cap columns — shared by summary, stat, and job rows. */

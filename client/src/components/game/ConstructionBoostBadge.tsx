@@ -144,8 +144,7 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
             getInsightBadgeTriggerClassName({
               canAfford,
               playing: false,
-              className:
-                "flex h-full w-full cursor-pointer disabled:cursor-not-allowed enabled:cursor-pointer",
+              className: "flex h-full w-full",
             }),
           )}
           aria-label={costTooltip}

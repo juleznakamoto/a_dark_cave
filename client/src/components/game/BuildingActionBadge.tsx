@@ -22,7 +22,7 @@ export function getInsightBadgeTriggerClassName({
   className?: string;
 }) {
   return cn(
-    "insight-action-badge-trigger relative inline-flex shrink-0 items-center justify-center overflow-hidden border-0 bg-transparent p-0 leading-none min-h-0 min-w-0 transition-opacity duration-200",
+    "insight-action-badge-trigger relative inline-flex shrink-0 items-center justify-center overflow-hidden border-0 bg-transparent p-0 leading-none min-h-0 min-w-0 transition-opacity duration-200 enabled:cursor-pointer disabled:cursor-default",
     className,
     playing && "insight-action-badge-trigger--playing opacity-100",
     !playing &&

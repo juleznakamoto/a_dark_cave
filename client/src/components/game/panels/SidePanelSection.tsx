@@ -385,7 +385,6 @@ function BuildingCapUpgradeBadge({ buildingKey }: { buildingKey: string }) {
           className: cn(
             pulseClassName,
             "h-[1em] w-[1em] text-[14px] leading-none",
-            isDisabled ? "cursor-not-allowed" : "cursor-pointer",
           ),
         })}
       >
@@ -498,7 +497,6 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
           className: cn(
             pulseClassName,
             "h-[1em] w-[1em] text-[14px] leading-none",
-            isDisabled ? "cursor-not-allowed" : "cursor-pointer",
           ),
         })}
       >
