@@ -42,7 +42,7 @@ export const GAME_FOOTER_RIGHT_ICON_LINKS: Readonly<
 
 /** Stable row order for the game footer icons and start-screen mirrors. */
 export const GAME_FOOTER_RIGHT_ICON_ORDER: readonly FooterSocialPlatformId[] = [
-  "reddit",
   "steam",
+  "reddit",
   "contact",
 ] as const;
