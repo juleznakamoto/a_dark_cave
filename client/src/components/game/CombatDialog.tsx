@@ -63,10 +63,16 @@ const COMBAT_ITEM_BUTTON_ICONS = {
   ashfire_bomb: { glyph: "🞊", className: "text-yellow-300" },
   void_bomb: { glyph: "🞋", className: "text-violet-400" },
   veinfire_elixir: { glyph: "🞠", className: "text-green-400/60" },
+  poison_arrows: { glyph: "▲", className: "text-green-500" },
 } as const;
 
-const COMBAT_ITEM_BUTTON_ICON_CLASS =
-  "font-noto-symbols-2 inline-flex shrink-0 items-center justify-center leading-none translate-y-[0.12em]";
+const COMBAT_SKILL_BUTTON_ICONS = {
+  crushing_strike: { glyph: "◈", className: "text-yellow-600" },
+  bloodflame_sphere: { glyph: "✵", className: "text-orange-600" },
+} as const;
+
+const COMBAT_BUTTON_ICON_CLASS =
+  "font-noto-symbols-2 inline-flex translate-y-0.5 leading-none";
 
 interface CombatDialogProps {
   isOpen: boolean;
@@ -1247,7 +1253,7 @@ export default function CombatDialog({
                                       {itemButtonIcon ? (
                                         <span
                                           className={cn(
-                                            COMBAT_ITEM_BUTTON_ICON_CLASS,
+                                            COMBAT_BUTTON_ICON_CLASS,
                                             itemButtonIcon.className,
                                           )}
                                           role="img"
@@ -1256,18 +1262,6 @@ export default function CombatDialog({
                                           {itemButtonIcon.glyph}
                                         </span>
                                       ) : null}
-                                      {item.id === "poison_arrows" && (
-                                        <span
-                                          className={cn(
-                                            COMBAT_ITEM_BUTTON_ICON_CLASS,
-                                            "text-green-500",
-                                          )}
-                                          role="img"
-                                          aria-label="poison-icon"
-                                        >
-                                          ▲
-                                        </span>
-                                      )}
                                       {item.name}
                                     </Button>
                                   </div>
@@ -1326,11 +1320,15 @@ export default function CombatDialog({
                                 button_id="combat-use-crushing-strike"
                               >
                                 <span
-                                  className="font-noto-symbols-2 inline-flex translate-y-0.5 leading-none text-yellow-600"
+                                  className={cn(
+                                    COMBAT_BUTTON_ICON_CLASS,
+                                    COMBAT_SKILL_BUTTON_ICONS.crushing_strike
+                                      .className,
+                                  )}
                                   role="img"
                                   aria-label="stun-icon"
                                 >
-                                  ◈
+                                  {COMBAT_SKILL_BUTTON_ICONS.crushing_strike.glyph}
                                 </span>
                                 {t("ui:combat.crushingStrike")}
                               </Button>
@@ -1390,11 +1388,18 @@ export default function CombatDialog({
                                 button_id="combat-use-bloodflame-sphere"
                               >
                                 <span
-                                  className="font-noto-symbols-2 inline-flex translate-y-0.5 leading-none text-orange-600"
+                                  className={cn(
+                                    COMBAT_BUTTON_ICON_CLASS,
+                                    COMBAT_SKILL_BUTTON_ICONS.bloodflame_sphere
+                                      .className,
+                                  )}
                                   role="img"
                                   aria-label="burn-icon"
                                 >
-                                  ✵
+                                  {
+                                    COMBAT_SKILL_BUTTON_ICONS.bloodflame_sphere
+                                      .glyph
+                                  }
                                 </span>
                                 {t("ui:combat.bloodflameSphere")}
                               </Button>
