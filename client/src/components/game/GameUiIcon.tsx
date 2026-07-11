@@ -15,7 +15,7 @@ export const GAME_UI_ICON_SRC = {
   language: "/icons/language_bubble.svg",
   textSize: "/icons/zoom_magnifier.svg",
   email: "/icons/grungy_mail.svg",
-  share: "/icons/speech_bubble.svg",
+  share: "/icons/progress_arrows.svg",
   inviteUser: "/icons/add_user.svg",
   discover: "/icons/light_bulb.svg",
   signUp: "/icons/up_button.svg",
