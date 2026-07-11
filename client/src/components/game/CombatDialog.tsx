@@ -51,6 +51,11 @@ import { useTranslation } from "react-i18next";
 
 const COMBAT_BAR_CHANGE_MS = 500;
 
+/** Stat value rows (health, attack, defense) — same size and icon alignment. */
+const COMBAT_STAT_ROW_CLASS = "flex items-center gap-1 text-sm";
+const COMBAT_STAT_ICON_CLASS =
+  "font-noto-symbols-2 inline-flex shrink-0 items-center justify-center w-4 leading-none";
+
 interface CombatDialogProps {
   isOpen: boolean;
   onClose: () => void;
@@ -902,7 +907,10 @@ export default function CombatDialog({
                         {NIGHTSHADE_BOW_OWNED &&
                           usedItemsInCombat.includes("poison_arrows") && (
                             <span
-                              className="font-noto-symbols-2 inline-flex translate-y-0.5 leading-none text-green-600"
+                              className={cn(
+                                COMBAT_STAT_ICON_CLASS,
+                                "text-green-600",
+                              )}
                               role="img"
                               aria-label="poison-icon"
                             >
@@ -911,7 +919,10 @@ export default function CombatDialog({
                           )}
                         {enemyStunnedRounds > 0 && (
                           <span
-                            className="font-noto-symbols-2 inline-flex translate-y-0.5 leading-none text-yellow-600"
+                            className={cn(
+                              COMBAT_STAT_ICON_CLASS,
+                              "text-yellow-600",
+                            )}
                             role="img"
                             aria-label="stun-icon"
                           >
@@ -920,7 +931,10 @@ export default function CombatDialog({
                         )}
                         {enemyBurnRounds > 0 && (
                           <span
-                            className="font-noto-symbols-2 inline-flex translate-y-0.5 leading-none text-orange-600"
+                            className={cn(
+                              COMBAT_STAT_ICON_CLASS,
+                              "text-orange-600",
+                            )}
                             role="img"
                             aria-label="burn-icon"
                           >
@@ -938,8 +952,13 @@ export default function CombatDialog({
                         disabled
                         className="inline-block"
                       >
-                        <span className="flex items-center gap-1">
-                          <span className="font-noto-symbols-2 inline-flex w-4 translate-y-0.5 justify-center text-green-400/60 leading-none">
+                        <span className={COMBAT_STAT_ROW_CLASS}>
+                          <span
+                            className={cn(
+                              COMBAT_STAT_ICON_CLASS,
+                              "text-green-400/60",
+                            )}
+                          >
                             ✚
                           </span>
                           <span>
@@ -995,8 +1014,13 @@ export default function CombatDialog({
                       disabled
                       className="inline-block"
                     >
-                      <div className="text-xs mt-2 flex items-center gap-1">
-                        <span className="font-noto-symbols-2 inline-flex w-4 justify-center text-red-400/60">
+                      <div className={cn(COMBAT_STAT_ROW_CLASS, "mt-2")}>
+                        <span
+                          className={cn(
+                            COMBAT_STAT_ICON_CLASS,
+                            "text-red-400/60",
+                          )}
+                        >
                           ⟐
                         </span>
                         <span>{formatNumber(currentEnemy?.attack ?? 0)}</span>
@@ -1024,8 +1048,13 @@ export default function CombatDialog({
                           disabled
                           className="inline-block"
                         >
-                          <span className="flex items-center gap-1">
-                            <span className="font-noto-symbols-2 inline-flex w-4 translate-y-0.5 justify-center text-green-400/60 leading-none">
+                          <span className={COMBAT_STAT_ROW_CLASS}>
+                            <span
+                              className={cn(
+                                COMBAT_STAT_ICON_CLASS,
+                                "text-green-400/60",
+                              )}
+                            >
                               ✚
                             </span>
                             <span>
@@ -1061,7 +1090,7 @@ export default function CombatDialog({
                       </div>
                     </div>
 
-                    <div className="text-xs mt-2 flex items-center gap-3">
+                    <div className={cn(COMBAT_STAT_ROW_CLASS, "mt-2 gap-3")}>
                       <TooltipWrapper
                         tooltip={
                           <span className="text-gray-400">
@@ -1072,8 +1101,13 @@ export default function CombatDialog({
                         disabled
                         className="inline-block"
                       >
-                        <div className="flex items-center gap-1">
-                          <span className="font-noto-symbols-2 inline-flex w-4 justify-center text-red-400/60">
+                        <div className={COMBAT_STAT_ROW_CLASS}>
+                          <span
+                            className={cn(
+                              COMBAT_STAT_ICON_CLASS,
+                              "text-red-400/60",
+                            )}
+                          >
                             ⟐
                           </span>
                           <span>{formatNumber(bastionStats.attack)}</span>
@@ -1089,8 +1123,13 @@ export default function CombatDialog({
                         disabled
                         className="inline-block"
                       >
-                        <div className="flex items-center gap-1">
-                          <span className="font-noto-symbols-2 inline-flex w-4 justify-center text-blue-400/60">
+                        <div className={COMBAT_STAT_ROW_CLASS}>
+                          <span
+                            className={cn(
+                              COMBAT_STAT_ICON_CLASS,
+                              "text-blue-400/60",
+                            )}
+                          >
                             ⧈
                           </span>
                           <span>{formatNumber(bastionStats.defense)}</span>
