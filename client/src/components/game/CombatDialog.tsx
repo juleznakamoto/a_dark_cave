@@ -52,9 +52,21 @@ import { useTranslation } from "react-i18next";
 const COMBAT_BAR_CHANGE_MS = 500;
 
 /** Stat value rows (health, attack, defense) — same size and icon alignment. */
-const COMBAT_STAT_ROW_CLASS = "flex items-center gap-1 text-sm";
+const COMBAT_STAT_ROW_CLASS =
+  "inline-flex items-center gap-1 text-sm leading-none tabular-nums";
+/** Matches side-panel resource glyphs: 1em slot + optical centering for Noto symbols. */
 const COMBAT_STAT_ICON_CLASS =
-  "font-noto-symbols-2 inline-flex shrink-0 items-center justify-center w-4 leading-none";
+  "font-noto-symbols-2 inline-flex w-[1em] shrink-0 items-center justify-center leading-none translate-y-[0.12em]";
+
+const COMBAT_ITEM_BUTTON_ICONS = {
+  ember_bomb: { glyph: "🞅", className: "text-red-500" },
+  ashfire_bomb: { glyph: "🞊", className: "text-yellow-300" },
+  void_bomb: { glyph: "🞋", className: "text-violet-400" },
+  veinfire_elixir: { glyph: "🞠", className: "text-green-400/60" },
+} as const;
+
+const COMBAT_ITEM_BUTTON_ICON_CLASS =
+  "font-noto-symbols-2 inline-flex shrink-0 items-center justify-center leading-none translate-y-[0.12em]";
 
 interface CombatDialogProps {
   isOpen: boolean;
@@ -909,7 +921,7 @@ export default function CombatDialog({
                             <span
                               className={cn(
                                 COMBAT_STAT_ICON_CLASS,
-                                "text-green-600",
+                                "text-green-500",
                               )}
                               role="img"
                               aria-label="poison-icon"
@@ -1195,6 +1207,13 @@ export default function CombatDialog({
                                           )
                                           : "";
 
+                              const itemButtonIcon =
+                                item.id in COMBAT_ITEM_BUTTON_ICONS
+                                  ? COMBAT_ITEM_BUTTON_ICONS[
+                                  item.id as keyof typeof COMBAT_ITEM_BUTTON_ICONS
+                                  ]
+                                  : null;
+
                               return (
                                 <TooltipWrapper
                                   key={item.id}
@@ -1225,9 +1244,24 @@ export default function CombatDialog({
                                       )}
                                       button_id={`combat-use-${item.id}`}
                                     >
+                                      {itemButtonIcon ? (
+                                        <span
+                                          className={cn(
+                                            COMBAT_ITEM_BUTTON_ICON_CLASS,
+                                            itemButtonIcon.className,
+                                          )}
+                                          role="img"
+                                          aria-hidden
+                                        >
+                                          {itemButtonIcon.glyph}
+                                        </span>
+                                      ) : null}
                                       {item.id === "poison_arrows" && (
                                         <span
-                                          className="font-noto-symbols-2 inline-flex translate-y-0.5 leading-none text-green-600"
+                                          className={cn(
+                                            COMBAT_ITEM_BUTTON_ICON_CLASS,
+                                            "text-green-500",
+                                          )}
                                           role="img"
                                           aria-label="poison-icon"
                                         >
