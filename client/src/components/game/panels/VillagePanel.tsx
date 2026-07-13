@@ -156,7 +156,7 @@ const HEADER_SLOT_BUTTON_CLASS = `${HEADER_SLOT_SIZE_CLASS} p-0 pointer-events-n
 const VILLAGER_COUNT_BUTTON_SIZE_CLASS = "h-[18px] w-[18px]";
 const VILLAGER_COUNT_ROW_CLASS = "flex min-w-0 items-center";
 const VILLAGER_COUNT_CONTROL_GRID_CLASS =
-  "grid shrink-0 grid-cols-[18px_3ch_18px_4ch] items-center";
+  "grid shrink-0 grid-cols-[18px_3.5ch_18px_4ch] items-center";
 const VILLAGER_COUNT_BUTTON_CLASS = cn(
   VILLAGER_COUNT_BUTTON_SIZE_CLASS,
   "min-h-0 shrink-0 p-0 inline-flex items-center justify-center leading-none font-normal appearance-none [-webkit-appearance:none] disabled:opacity-100",
