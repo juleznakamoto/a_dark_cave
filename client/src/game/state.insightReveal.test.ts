@@ -22,7 +22,7 @@ describe("revealBuildingDescriptions", () => {
       buildings: {
         ...useGameStore.getState().buildings,
         clerksHut: 1,
-        buildersHall: 1,
+        buildersLodge: 1,
       },
       resources: {
         ...useGameStore.getState().resources,
@@ -48,7 +48,7 @@ describe("revealBuildingDescriptions", () => {
       buildings: {
         ...useGameStore.getState().buildings,
         clerksHut: 1,
-        buildersHall: 0,
+        buildersLodge: 0,
       },
       resources: {
         ...useGameStore.getState().resources,
@@ -60,7 +60,7 @@ describe("revealBuildingDescriptions", () => {
     useGameStore.setState({
       buildings: {
         ...useGameStore.getState().buildings,
-        buildersHall: 1,
+        buildersLodge: 1,
       },
       resources: {
         ...useGameStore.getState().resources,

@@ -95,20 +95,20 @@ describe("insightReveal", () => {
     expect(canRevealEffects("buildWatchtower", state)).toBe(false);
   });
 
-  it("building descriptions unlock requires Clerks Hut and Builders Hall", () => {
+  it("building descriptions unlock requires Clerks Hut and Builders Lodge", () => {
     expect(
       isBuildingDescriptionsUnlockAvailable({
-        buildings: { clerksHut: 0, buildersHall: 1 },
+        buildings: { clerksHut: 0, buildersLodge: 1 },
       } as GameState),
     ).toBe(false);
     expect(
       isBuildingDescriptionsUnlockAvailable({
-        buildings: { clerksHut: 1, buildersHall: 0 },
+        buildings: { clerksHut: 1, buildersLodge: 0 },
       } as GameState),
     ).toBe(false);
     expect(
       isBuildingDescriptionsUnlockAvailable({
-        buildings: { clerksHut: 1, buildersHall: 1 },
+        buildings: { clerksHut: 1, buildersLodge: 1 },
       } as GameState),
     ).toBe(true);
   });
@@ -134,7 +134,7 @@ describe("insightReveal", () => {
   it("canRevealBuildingDescriptions checks insight and unlock state", () => {
     const eligible = {
       ...base(),
-      buildings: { ...base().buildings, clerksHut: 1, buildersHall: 1 },
+      buildings: { ...base().buildings, clerksHut: 1, buildersLodge: 1 },
       resources: { ...base().resources, insight: 3000 },
     };
     expect(canRevealBuildingDescriptions(eligible)).toBe(true);

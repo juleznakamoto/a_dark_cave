@@ -127,6 +127,7 @@ import {
 import { GAME_CONSTANTS, getCallMerchantGoldCost } from "@/game/constants";
 import { GREAT_FEAST_DURATION_MS } from "@shared/shopItems";
 import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
+import { GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS } from "@/components/game/gameChrome";
 
 const VILLAGE_INDICATOR_TOOLTIP_IDS = [
   "production-cycle-progress",
@@ -147,7 +148,7 @@ const PRODUCE_HEADER_INDICATOR_CLASS =
 const PRODUCE_HEADER_INDICATOR_TRIGGER_CLASS =
   "inline-flex items-center leading-none";
 /** Preset numbers, construction queue slots, and related header controls. */
-const HEADER_SLOT_SIZE_CLASS = "h-[18px] w-[18px] min-h-0 shrink-0";
+const HEADER_SLOT_SIZE_CLASS = GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS;
 const HEADER_SLOT_INSIGHT_BUTTON_CLASS = HEADER_SLOT_SIZE_CLASS;
 const HEADER_SLOT_BUTTON_CLASS = `${HEADER_SLOT_SIZE_CLASS} p-0 pointer-events-none inline-flex items-center justify-center leading-none transition-colors appearance-none [-webkit-appearance:none]`;
 

@@ -39,6 +39,7 @@ import {
 } from "@/game/state";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
 import { cn } from "@/lib/utils";
+import { GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS } from "@/components/game/gameChrome";
 import type { GameState } from "@shared/schema";
 
 const BADGE_SIZE_PX = 20;
@@ -289,9 +290,9 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
       }
       : undefined;
 
-  const isCompactInline =
-    layout === "inline" &&
-    (isStats || isBuildingDescriptions || isCraftDescriptions);
+  const isCompactInline = layout === "inline" && isStats;
+  const isHeaderInline =
+    layout === "inline" && (isBuildingDescriptions || isCraftDescriptions);
 
   return (
     <div
@@ -329,9 +330,11 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
               className:
                 layout === "overlay"
                   ? "flex h-full w-full"
-                  : isCompactInline
-                    ? "h-3.5 w-3.5"
-                    : "h-5 w-5",
+                  : isHeaderInline
+                    ? GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS
+                    : isCompactInline
+                      ? "h-3.5 w-3.5"
+                      : "h-5 w-5",
             }),
           )}
           aria-label={costTooltip}

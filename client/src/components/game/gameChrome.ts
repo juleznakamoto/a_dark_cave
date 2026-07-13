@@ -9,6 +9,10 @@ export const GAME_PARTICLE_LAYER_ID = "adc-game-particle-layer";
 export const GAME_PANEL_HEADER_BAND =
   "inline-flex h-9 items-end pb-2 text-sm leading-none";
 
+/** Insight unlock blobs in game-panel section headers (Build/Craft, queue slot unlock). */
+export const GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS =
+  "h-[18px] w-[18px] min-h-0 shrink-0";
+
 /** Anchor tall tab SVG masks (e.g. hourglass) to the icon box bottom. */
 export const TAB_ICON_MASK_BOTTOM =
   "[mask-position:bottom] [-webkit-mask-position:bottom]";

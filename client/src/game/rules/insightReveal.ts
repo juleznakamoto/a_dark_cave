@@ -154,7 +154,7 @@ export function isBuildingDescriptionsUnlockAvailable(
 ): boolean {
   return (
     (state.buildings.clerksHut ?? 0) >= 1 &&
-    (state.buildings.buildersHall ?? 0) >= 1
+    (state.buildings.buildersLodge ?? 0) >= 1
   );
 }
 

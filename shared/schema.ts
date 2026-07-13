@@ -669,7 +669,7 @@ export const gameStateSchema = z.object({
   seenResources: z.array(z.string()).default([]),
   /** Action IDs whose full effect rows were revealed via Insight (persisted). */
   revealedEffects: z.array(z.string()).default([]),
-  /** All village build action descriptions unlocked via Insight (Builder's Hall). */
+  /** All village build action descriptions unlocked via Insight (Builder's Lodge). */
   buildingDescriptionsRevealed: z.boolean().default(false),
   /** All cave craft action descriptions unlocked via Insight (Blacksmith). */
   craftDescriptionsRevealed: z.boolean().default(false),
