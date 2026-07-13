@@ -242,97 +242,100 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
   const isHeaderInline =
     layout === "inline" && (isBuildingDescriptions || isCraftDescriptions);
 
-  const inlineHostClassName = isHeaderInline
-    ? cn(
-      "inline-flex shrink-0 items-center justify-center self-center",
-      GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS,
-    )
-    : "inline-flex shrink-0 items-center self-center";
-
-  const hostClassName = cn(
-    layout === "inline" && inlineHostClassName,
-    isTimedEvent && layout === "inline" && "ml-0.5",
-  );
-  const hostStyle =
+  const triggerSizeClass =
     layout === "overlay"
-      ? {
-        position: "absolute" as const,
-        bottom: "-9px",
-        right: "-9px",
-        width: BADGE_SIZE_PX,
-        height: BADGE_SIZE_PX,
-        zIndex: 30,
-        pointerEvents: "auto" as const,
-      }
-      : undefined;
+      ? "flex h-full w-full"
+      : isHeaderInline
+        ? GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS
+        : "h-5 w-5";
 
-  const inlineTooltipWrapperClassName = isHeaderInline
-    ? cn(
-      "inline-flex items-center justify-center",
-      GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS,
-    )
-    : "inline-flex items-center";
+  const canAffordForTrigger = canAffordForDisplay || playing;
+
+  const badgeButton = (
+    <button
+      type="button"
+      className={getInsightBadgeTriggerClassName({
+        canAfford: canAffordForTrigger,
+        playing,
+        className: triggerSizeClass,
+      })}
+      aria-label={costTooltip}
+      aria-busy={playing}
+      disabled={isBadgeDisabled}
+      onClick={(e) => {
+        e.stopPropagation();
+        if (isHeaderInline) {
+          e.preventDefault();
+        }
+        handleClick();
+      }}
+    >
+      <BuildingActionBadge
+        embedded
+        size="lg"
+      />
+    </button>
+  );
+
+  const badgeTooltip = (
+    <TooltipWrapper
+      tooltip={costTooltip}
+      tooltipId={tooltipId}
+      tooltipContentClassName="text-white"
+      className={
+        layout === "overlay"
+          ? "block h-full w-full"
+          : "inline-flex items-center"
+      }
+      tooltipTriggerAsChild={layout === "overlay"}
+      tooltipTriggerClassName={
+        layout === "overlay"
+          ? INSIGHT_BADGE_TOOLTIP_TRIGGER_OVERLAY_CLASS
+          : INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS
+      }
+      disabled={isBadgeDisabled}
+      onMouseEnter={() => setHighlightedResources(["insight"])}
+      onMouseLeave={() => {
+        if (!playing) setHighlightedResources([]);
+      }}
+    >
+      {badgeButton}
+    </TooltipWrapper>
+  );
+
+  if (layout === "overlay") {
+    return (
+      <div
+        className="inline-flex shrink-0 items-center self-center"
+        style={{
+          position: "absolute",
+          bottom: "-9px",
+          right: "-9px",
+          width: BADGE_SIZE_PX,
+          height: BADGE_SIZE_PX,
+          zIndex: 30,
+          pointerEvents: "auto",
+        }}
+        onPointerDown={(e) => e.stopPropagation()}
+      >
+        {badgeTooltip}
+      </div>
+    );
+  }
+
+  if (isHeaderInline) {
+    return badgeTooltip;
+  }
 
   return (
     <div
-      className={hostClassName}
-      style={hostStyle}
+      className={cn(
+        "inline-flex shrink-0 items-center self-center",
+        isTimedEvent && "ml-0.5",
+      )}
       onPointerDown={(e) => e.stopPropagation()}
     >
-      <TooltipWrapper
-        tooltip={costTooltip}
-        tooltipId={tooltipId}
-        tooltipContentClassName="text-white"
-        className={
-          layout === "overlay"
-            ? "block h-full w-full"
-            : inlineTooltipWrapperClassName
-        }
-        tooltipTriggerAsChild
-        tooltipTriggerClassName={
-          layout === "overlay"
-            ? INSIGHT_BADGE_TOOLTIP_TRIGGER_OVERLAY_CLASS
-            : INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS
-        }
-        disabled={isBadgeDisabled}
-        onMouseEnter={() => setHighlightedResources(["insight"])}
-        onMouseLeave={() => {
-          if (!playing) setHighlightedResources([]);
-        }}
-      >
-        <button
-          type="button"
-          className={cn(
-            getInsightBadgeTriggerClassName({
-              canAfford: canAffordForDisplay,
-              playing,
-              className: cn(
-                layout === "overlay"
-                  ? "flex h-full w-full"
-                  : isHeaderInline
-                    ? GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS
-                    : "h-5 w-5",
-                isHeaderInline && "insight-action-badge-trigger--header",
-              ),
-            }),
-          )}
-          aria-label={costTooltip}
-          aria-busy={playing}
-          disabled={isBadgeDisabled}
-          onClick={(e) => {
-            e.stopPropagation();
-            handleClick();
-            e.currentTarget.blur();
-          }}
-        >
-          <BuildingActionBadge
-            key={playing ? "reveal" : "idle"}
-            playing={playing}
-            embedded
-            size="lg"
-          />
-        </button>
-      </TooltipWrapper>
+      {badgeTooltip}
     </div>
   );
 }

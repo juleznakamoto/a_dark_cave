@@ -319,11 +319,6 @@ body {
   transform: translateY(0.18em);
 }
 
-/* 18px header badges (Build/Craft): keep blob aligned with idle glyph center. */
-.insight-action-badge-trigger--header .building-action-badge__glyph {
-  transform: translate(0.5px, 0.18em);
-}
-
 .building-action-badge__idle,
 .building-action-badge__svg {
   position: absolute;
@@ -399,6 +394,8 @@ body {
 
 .building-action-badge--playing .building-action-badge__clip {
   animation: building-action-badge-roundness 1s linear infinite;
+  /* Match hover preview: idle reset clears base contrast so reveal doesn't jump sideways. */
+  filter: none;
 }
 
 .building-action-badge--playing .building-action-badge__triangle {
@@ -429,6 +426,56 @@ body {
 }
 
 .building-action-badge--playing .building-action-badge__triangle--six {
+  animation-delay: -1.33s;
+}
+
+/* Reveal click — same blob position as desktop hover/active preview (trigger --playing, not badge). */
+.insight-action-badge-trigger.insight-action-badge-trigger--playing:not(.insight-action-badge-trigger--unaffordable) .building-action-badge .building-action-badge__idle {
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+.insight-action-badge-trigger.insight-action-badge-trigger--playing:not(.insight-action-badge-trigger--unaffordable) .building-action-badge .building-action-badge__svg {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  animation: building-action-badge-blue-glow 2s ease-in-out infinite;
+}
+
+.insight-action-badge-trigger.insight-action-badge-trigger--playing:not(.insight-action-badge-trigger--unaffordable) .building-action-badge .building-action-badge__clip {
+  animation: building-action-badge-roundness 1s linear infinite;
+  filter: none;
+}
+
+.insight-action-badge-trigger.insight-action-badge-trigger--playing:not(.insight-action-badge-trigger--unaffordable) .building-action-badge .building-action-badge__triangle {
+  filter: blur(7px);
+}
+
+.insight-action-badge-trigger.insight-action-badge-trigger--playing:not(.insight-action-badge-trigger--unaffordable) .building-action-badge .building-action-badge__triangle--one {
+  animation: building-action-badge-rotation 2s linear infinite reverse;
+}
+
+.insight-action-badge-trigger.insight-action-badge-trigger--playing:not(.insight-action-badge-trigger--unaffordable) .building-action-badge .building-action-badge__triangle--two {
+  animation: building-action-badge-rotation 2s linear infinite;
+  animation-delay: -0.67s;
+}
+
+.insight-action-badge-trigger.insight-action-badge-trigger--playing:not(.insight-action-badge-trigger--unaffordable) .building-action-badge .building-action-badge__triangle--three,
+.insight-action-badge-trigger.insight-action-badge-trigger--playing:not(.insight-action-badge-trigger--unaffordable) .building-action-badge .building-action-badge__triangle--four {
+  animation: building-action-badge-rotation 2s linear infinite reverse;
+}
+
+.insight-action-badge-trigger.insight-action-badge-trigger--playing:not(.insight-action-badge-trigger--unaffordable) .building-action-badge .building-action-badge__triangle--four {
+  animation-delay: -1s;
+}
+
+.insight-action-badge-trigger.insight-action-badge-trigger--playing:not(.insight-action-badge-trigger--unaffordable) .building-action-badge .building-action-badge__triangle--five,
+.insight-action-badge-trigger.insight-action-badge-trigger--playing:not(.insight-action-badge-trigger--unaffordable) .building-action-badge .building-action-badge__triangle--six {
+  animation: building-action-badge-rotation 2s linear infinite;
+}
+
+.insight-action-badge-trigger.insight-action-badge-trigger--playing:not(.insight-action-badge-trigger--unaffordable) .building-action-badge .building-action-badge__triangle--six {
   animation-delay: -1.33s;
 }
 
