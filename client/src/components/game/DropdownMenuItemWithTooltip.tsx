@@ -91,17 +91,16 @@ export function DropdownMenuItemWithTooltip({
             style={{ touchAction: "manipulation" }}
             aria-disabled={disabled || undefined}
             className={cn(
-              disabled && "opacity-50 cursor-not-allowed",
+              disabled && "opacity-50 cursor-default",
               className,
             )}
-            onSelect={mergeHandlers(
-              (e) => {
-                if (disabled) {
-                  e.preventDefault();
-                }
-              },
-              onSelect,
-            )}
+            onSelect={(e) => {
+              if (disabled) {
+                e.preventDefault();
+                return;
+              }
+              onSelect?.(e);
+            }}
             onMouseDown={mergeHandlers(
               (e) =>
                 globalTooltip.handleMouseDown(tooltipId, disabled, false, e),

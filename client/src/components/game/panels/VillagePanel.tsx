@@ -155,10 +155,9 @@ const HEADER_SLOT_BUTTON_CLASS = `${HEADER_SLOT_SIZE_CLASS} p-0 pointer-events-n
 /** − / count / + / cap columns — shared by summary, stat, and job rows. */
 const VILLAGER_COUNT_ROW_CLASS = "flex min-w-0 items-end";
 const VILLAGER_COUNT_CONTROL_GRID_CLASS =
-  "grid shrink-0 grid-cols-[1.25rem_3ch_1.25rem_4ch] items-end";
+  "grid shrink-0 grid-cols-[1.5rem_3ch_1.5rem_4ch] items-end";
 const VILLAGER_COUNT_BUTTON_CLASS = cn(
-  "min-h-0 min-w-0 shrink-0 self-end p-0 inline-flex items-end justify-center no-hover font-normal leading-none w-[1.25rem]",
-  ANIMATED_COUNTER_TEXT_CLASS,
+  "min-h-0 min-w-0 shrink-0 self-end p-0 inline-flex items-end justify-center no-hover font-normal leading-none w-[1.5rem] tabular-nums text-base",
 );
 const VILLAGER_COUNT_CAP_CLASS = cn(
   "notranslate inline-flex items-end self-end leading-none",
@@ -1104,7 +1103,11 @@ export default function VillagePanel() {
             disabled={currentCount === 0}
             variant="ghost"
             size="xs"
-            className={VILLAGER_COUNT_BUTTON_CLASS}
+            className={cn(
+              VILLAGER_COUNT_BUTTON_CLASS,
+              currentCount === 0 &&
+              "text-muted-foreground disabled:opacity-100",
+            )}
             style={{ touchAction: "manipulation" }}
             button_id={`unassign-${jobId}`}
           >
@@ -1131,7 +1134,10 @@ export default function VillagePanel() {
             disabled={!canAssignMore}
             variant="ghost"
             size="xs"
-            className={VILLAGER_COUNT_BUTTON_CLASS}
+            className={cn(
+              VILLAGER_COUNT_BUTTON_CLASS,
+              !canAssignMore && "text-muted-foreground disabled:opacity-100",
+            )}
             style={{ touchAction: "manipulation" }}
             button_id={`assign-${jobId}`}
           >
