@@ -239,8 +239,18 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
     revealActionEffects(actionId!);
   };
 
+  const isHeaderInline =
+    layout === "inline" && (isBuildingDescriptions || isCraftDescriptions);
+
+  const inlineHostClassName = isHeaderInline
+    ? cn(
+      "inline-flex shrink-0 items-center justify-center self-center",
+      GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS,
+    )
+    : "inline-flex shrink-0 items-center self-center";
+
   const hostClassName = cn(
-    layout === "inline" && "inline-flex shrink-0 items-end",
+    layout === "inline" && inlineHostClassName,
     isTimedEvent && layout === "inline" && "ml-0.5",
   );
   const hostStyle =
@@ -256,8 +266,12 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
       }
       : undefined;
 
-  const isHeaderInline =
-    layout === "inline" && (isBuildingDescriptions || isCraftDescriptions);
+  const inlineTooltipWrapperClassName = isHeaderInline
+    ? cn(
+      "inline-flex items-center justify-center",
+      GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS,
+    )
+    : "inline-flex items-center";
 
   return (
     <div
@@ -272,7 +286,7 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
         className={
           layout === "overlay"
             ? "block h-full w-full"
-            : "inline-flex items-end"
+            : inlineTooltipWrapperClassName
         }
         tooltipTriggerAsChild
         tooltipTriggerClassName={
@@ -292,12 +306,14 @@ export function ActionInsightBadge(props: ActionInsightBadgeProps) {
             getInsightBadgeTriggerClassName({
               canAfford: canAffordForDisplay,
               playing,
-              className:
+              className: cn(
                 layout === "overlay"
                   ? "flex h-full w-full"
                   : isHeaderInline
                     ? GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS
                     : "h-5 w-5",
+                isHeaderInline && "insight-action-badge-trigger--header",
+              ),
             }),
           )}
           aria-label={costTooltip}

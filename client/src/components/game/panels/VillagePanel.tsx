@@ -167,15 +167,15 @@ const villagerCountButtonClassName = (isDisabled: boolean) =>
     gameActionOutlineButtonClassName(isDisabled),
   );
 const VILLAGER_COUNT_CAP_CLASS = cn(
-  "notranslate inline-flex items-center self-center leading-none",
+  "notranslate ml-1 inline-flex items-center self-center leading-tight",
   ANIMATED_COUNTER_TEXT_CLASS,
 );
 const VILLAGER_COUNT_VALUE_CLASS = cn(
-  "notranslate inline-flex w-full items-center justify-center self-center leading-none",
+  "notranslate inline-flex w-full items-center justify-center self-center leading-tight",
   ANIMATED_COUNTER_TEXT_CLASS,
 );
 const VILLAGER_COUNT_LABEL_CLASS =
-  "ml-1 min-w-0 flex-1 text-left text-sm leading-none";
+  "ml-1 min-w-0 flex-1 text-left text-sm leading-tight";
 /** Secondary resource rates/upkeep beside job labels — smaller with room when wrapped. */
 const VILLAGER_RESOURCE_HINT_CLASS =
   "text-xs leading-snug text-muted-foreground";
@@ -2233,7 +2233,7 @@ export default function VillagePanel() {
                     );
                   })()}
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1.5">
                 {renderVillagersSummaryRow()}
                 {renderVillagerStatRow(
                   "villagers-available",
